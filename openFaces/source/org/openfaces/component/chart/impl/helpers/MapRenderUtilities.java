@@ -60,12 +60,15 @@ public class MapRenderUtilities {
         if (entities != null) {
             int count = entities.getEntityCount();
             ChartView view = chart.getChartView();
+
             for (int i = count - 1; i >= 0; i--) {
                 ChartEntity entity = entities.getEntity(i);
+
                 if (entity.getToolTipText() == null &&
                         entity.getURLText() == null &&
                         getOnClick(chart, chart.getChartView(), entity) == null &&
-                        !viewHasAction(view))
+                        !viewHasAction(view) &&
+                        !viewHasPopup(view))
                     continue;
 
                 String area;
@@ -145,6 +148,7 @@ public class MapRenderUtilities {
         StringBuilder tag = new StringBuilder();
         boolean hasURL = entity.getURLText() != null && !entity.getURLText().equals("");
         boolean hasAction = viewHasAction(view);
+        boolean hasPopup = viewHasPopup(view);
         boolean hasToolTip = entity.getToolTipText() != null && !entity.getToolTipText().equals("");
 
         String onClick = getOnClick(chart, view, entity);
@@ -155,7 +159,7 @@ public class MapRenderUtilities {
         boolean hasCustomOnMouseOut = onMouseOut != null && !onMouseOut.equals("");
         boolean hasCustomClick = onClick != null && !onClick.equals("");
 
-        if (hasURL || hasToolTip || hasAction || hasCustomClick) {
+        if (hasURL || hasToolTip || hasAction || hasPopup || hasCustomClick) {
             String fieldId = view.getParent().getClientId(FacesContext.getCurrentInstance()) + ACTION_FIELD_SUFFIX;
 
             tag.append("<area");
@@ -169,11 +173,61 @@ public class MapRenderUtilities {
             if (!hasAction && hasCustomClick)
                 tag.append(" onclick=\"O$.setValue('").append(fieldId).append("','").append(entityIndex).append("'); ").append(onClick).append("\"");
 
-            if (hasCustomOnMouseOver)
-                tag.append(" onmouseover=\"").append(onMouseOver).append("\"");
 
-            if (hasCustomOnMouseOut)
-                tag.append(" onmouseout=\"").append(onMouseOut).append("\"");
+            // " O$.showChartPopup('"+entityIndex+"', function(){"+onMouseOver+"}) "
+            if (hasCustomOnMouseOver || hasPopup) {
+                StringBuilder mouseOverBuilder = new StringBuilder();
+                if (hasPopup) {
+                    final Integer oldEntityIndex = chart.getEntityIndex();
+                    chart.setEntityIndex(entityIndex);
+                    mouseOverBuilder.append("O$.ChartPopup.show(event,");
+                    mouseOverBuilder.append("'");
+                    mouseOverBuilder.append(chart.getChartView().getChartPopup().getClientId(FacesContext.getCurrentInstance()));
+                    mouseOverBuilder.append("',");
+                    mouseOverBuilder.append("'");
+                    mouseOverBuilder.append(entityIndex);
+                    mouseOverBuilder.append("'");
+                    chart.setEntityIndex(oldEntityIndex);
+
+                    if (hasCustomOnMouseOver) {
+                        mouseOverBuilder.append(", function(){");
+                        mouseOverBuilder.append(onMouseOver);
+                        mouseOverBuilder.append("}");
+                    }
+                } else {
+                    mouseOverBuilder.append(onMouseOver);
+                }
+                mouseOverBuilder.append(");");
+
+                tag.append(" onmouseover=\"").append(mouseOverBuilder.toString()).append("\"");
+            }
+
+            if (hasCustomOnMouseOut || hasPopup) {
+                StringBuilder mouseOutBuilder = new StringBuilder();
+                if (hasPopup) {
+                    final Integer oldEntityIndex = chart.getEntityIndex();
+                    chart.setEntityIndex(entityIndex);
+                    mouseOutBuilder.append("O$.ChartPopup.hide(event,");
+                    mouseOutBuilder.append("'");
+                    mouseOutBuilder.append(chart.getChartView().getChartPopup().getClientId(FacesContext.getCurrentInstance()));
+                    mouseOutBuilder.append("',");
+                    mouseOutBuilder.append("'");
+                    mouseOutBuilder.append(entityIndex);
+                    mouseOutBuilder.append("'");
+                    chart.setEntityIndex(oldEntityIndex);
+
+                    if (hasCustomOnMouseOver) {
+                        mouseOutBuilder.append(", function(){");
+                        mouseOutBuilder.append(onMouseOut);
+                        mouseOutBuilder.append("}");
+                    }
+                } else {
+                    mouseOutBuilder.append(onMouseOut);
+                }
+                mouseOutBuilder.append(");");
+
+                tag.append(" onmouseout=\"").append(mouseOutBuilder.toString()).append("\"");
+            }
 
             tag.append(" shape=\"").append(entity.getShapeType()).append("\"" + " coords=\"").append(entity.getShapeCoords()).append("\"");
 
@@ -189,6 +243,10 @@ public class MapRenderUtilities {
             tag.append("/>");
         }
         return tag.toString();
+    }
+
+    private static boolean viewHasPopup(ChartView view) {
+        return view.getChartPopup() != null;
     }
 
     private static boolean viewHasAction(ChartView view) {

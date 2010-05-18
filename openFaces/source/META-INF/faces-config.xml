@@ -748,6 +748,11 @@
     <component-type>org.openfaces.PrintChartMenuItem</component-type>
     <component-class>org.openfaces.component.chart.PrintChartMenuItem</component-class>
   </component>
+
+  <component>
+    <component-type>org.openfaces.ChartPopup</component-type>
+    <component-class>org.openfaces.component.chart.ChartPopup</component-class>
+  </component>
   <render-kit>
     <renderer>
       <component-family>org.openfaces.DataTable</component-family>
@@ -1234,6 +1239,11 @@
       <component-family>org.openfaces.PrintChartMenuItem</component-family>
       <renderer-type>org.openfaces.PrintChartMenuItemRenderer</renderer-type>
       <renderer-class>org.openfaces.renderkit.chart.PrintChartMenuItemRenderer</renderer-class>
+    </renderer>
+    <renderer>
+      <component-family>org.openfaces.ChartPopup</component-family>
+      <renderer-type>org.openfaces.ChartPopupRenderer</renderer-type>
+      <renderer-class>org.openfaces.renderkit.chart.ChartPopupRenderer</renderer-class>
     </renderer>
 
   </render-kit>

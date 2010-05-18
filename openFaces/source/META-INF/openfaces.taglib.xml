@@ -1152,5 +1152,13 @@
       <handler-class>org.openfaces.taglib.facelets.chart.PrintChartMenuItemTagHandler</handler-class>
     </component>
   </tag>
+  <tag>
+    <tag-name>chartPopup</tag-name>
+    <component>
+      <component-type>org.openfaces.ChartPopup</component-type>
+      <renderer-type>org.openfaces.ChartPopupRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.chart.ChartPopupTagHandler</handler-class>
+    </component>
+  </tag>
 
 </facelet-taglib>

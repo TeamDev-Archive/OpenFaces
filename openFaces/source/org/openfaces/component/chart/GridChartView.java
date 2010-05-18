@@ -41,7 +41,7 @@ public abstract class GridChartView extends ChartView {
     private List<ChartGridLines> gridLines = new ArrayList<ChartGridLines>();
 
     private LineStyle defaultOutlineStyle;
-    private Collection outlines;
+    private Collection<LineStyle> outlines;
 
     private BarChartLabelPosition defaultLabelsPosition;
     private BarChartLabelPosition positiveLabelsPosition;
@@ -204,7 +204,7 @@ public abstract class GridChartView extends ChartView {
         this.defaultOutlineStyle = defaultOutlineStyle;
     }
 
-    public Collection getOutlines() {
+    public Collection<LineStyle> getOutlines() {
         return ValueBindings.get(this, "outlines", outlines, Collection.class);
     }
 

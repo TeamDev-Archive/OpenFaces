@@ -11,9 +11,19 @@
  */
 package org.openfaces.renderkit.chart;
 
+import org.jfree.chart.ChartRenderingInfo;
+import org.jfree.chart.entity.ChartEntity;
+import org.jfree.chart.entity.EntityCollection;
+import org.jfree.chart.imagemap.StandardToolTipTagFragmentGenerator;
+import org.jfree.chart.imagemap.StandardURLTagFragmentGenerator;
 import org.openfaces.component.chart.Chart;
 import org.openfaces.component.chart.ChartView;
+import org.openfaces.component.chart.GridChartView;
+import org.openfaces.component.chart.GridPointInfo;
+import org.openfaces.component.chart.PieChartView;
+import org.openfaces.component.chart.PieSectorInfo;
 import org.openfaces.component.chart.impl.JfcRenderHints;
+import org.openfaces.component.chart.impl.helpers.ChartInfoUtil;
 import org.openfaces.component.chart.impl.helpers.MapRenderUtilities;
 import org.openfaces.component.command.PopupMenu;
 import org.openfaces.component.output.DynamicImage;
@@ -74,6 +84,41 @@ public class ChartRenderer extends RendererBase {
         Rendering.writeNewLine(writer);
 
         final byte[] imageAsByteArray = view.renderAsImageFile();
+        final JfcRenderHints renderHints = chart.getRenderHints();
+        final ChartRenderingInfo renderingInfo = renderHints.getRenderingInfo();
+        String mapId = renderHints.getMapId(chart);
+        String map = MapRenderUtilities.getImageMapExt(chart, mapId, renderingInfo,
+                new StandardToolTipTagFragmentGenerator(), new StandardURLTagFragmentGenerator());
+        renderHints.setMap(map);
+        if (view.getChartPopup() != null) {
+            EntityCollection entities = renderingInfo.getEntityCollection();
+            if (entities != null) {
+                int count = entities.getEntityCount();
+
+                for (int i = count - 1; i >= 0; i--) {
+                    ChartEntity entity = entities.getEntity(i);
+
+                    Map<String, Object> requestMap = facesContext.getExternalContext().getRequestMap();
+                    chart.setEntityIndex(i);
+
+                    if (view instanceof GridChartView) {
+                        final GridPointInfo pointInfo = ChartInfoUtil.getGridPointInfo(entity, chart);
+                        if (pointInfo != null) {
+                            Object oldAttributeValue = requestMap.put("point", pointInfo);
+                            renderChartPopup(facesContext, view);
+                            requestMap.put("point", oldAttributeValue);
+                        }
+                    } else if (view instanceof PieChartView) {
+                        final PieSectorInfo pieSectorInfo = ChartInfoUtil.getPieSectorInfo(entity);
+                        if (pieSectorInfo != null) {
+                            Object oldAttributeValue = requestMap.put("sector", pieSectorInfo);
+                            renderChartPopup(facesContext, view);
+                            requestMap.put("sector", oldAttributeValue);
+                        }
+                    }
+                }
+            }
+        }
 
         chart.setImageBytes(imageAsByteArray);
 
@@ -120,9 +165,7 @@ public class ChartRenderer extends RendererBase {
         dynamicImage.setValueExpression("data", ve);
         dynamicImage.setId(chart.getId() + Rendering.SERVER_ID_SUFFIX_SEPARATOR + "img");
         dynamicImage.setParent(chart);
-        JfcRenderHints jfcRenderHints = chart.getRenderHints();
-        dynamicImage.setMapId(jfcRenderHints.getMapId(chart));
-        String map = jfcRenderHints.getMap();
+        dynamicImage.setMapId(mapId);
         dynamicImage.setMap(map);
         dynamicImage.getAttributes().put(DynamicImageRenderer.DEFAULT_STYLE_ATTR, "o_chart");
         dynamicImage.setWidth(chart.getWidth());
@@ -133,10 +176,16 @@ public class ChartRenderer extends RendererBase {
         dynamicImage.setImageType(ImageType.PNG);
         dynamicImage.encodeBegin(facesContext);
         dynamicImage.encodeEnd(facesContext);
-        if (map != null)
+        if (map != null) {
             Resources.renderJSLinkIfNeeded(facesContext, Resources.getUtilJsURL(facesContext));
+            Resources.renderJSLinkIfNeeded(facesContext, Resources.getInternalURL(facesContext, "chart/chartPopup.js"));
+        }
         writer.endElement("div");
         encodeScripts(facesContext, chart, dynamicImage);
+    }
+
+    private void renderChartPopup(FacesContext facesContext, ChartView view) throws IOException {
+        view.getChartPopup().encodeAll(facesContext);
     }
 
     protected void encodeScripts(FacesContext context, Chart chart, DynamicImage dynamicImage) throws IOException {

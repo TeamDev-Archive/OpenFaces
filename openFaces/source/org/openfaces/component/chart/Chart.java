@@ -12,6 +12,8 @@
 package org.openfaces.component.chart;
 
 import org.openfaces.component.OUIComponentBase;
+import org.openfaces.component.OUIData;
+import org.openfaces.component.OUIObjectIterator;
 import org.openfaces.component.chart.impl.JfcRenderHints;
 import org.openfaces.renderkit.chart.ChartDefaultStyle;
 import org.openfaces.renderkit.cssparser.CSSUtil;
@@ -21,9 +23,15 @@ import org.openfaces.taglib.internal.chart.ChartTag;
 import org.openfaces.util.Components;
 import org.openfaces.util.ValueBindings;
 
+import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
+import javax.faces.render.Renderer;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The Chart component represents various datasets in a graphical form, for example as a pie,
@@ -33,7 +41,7 @@ import java.util.List;
  *
  * @author Ekaterina Shliakhovetskaya
  */
-public class Chart extends OUIComponentBase implements StyledComponent {
+public class Chart extends OUIComponentBase implements StyledComponent, OUIObjectIterator, NamingContainer {
     public static final String COMPONENT_TYPE = "org.openfaces.Chart";
     public static final String COMPONENT_FAMILY = "org.openfaces.Chart";
     public static final StyledComponent DEFAULT_CHART_STYLE = new ChartDefaultStyle();
@@ -53,6 +61,13 @@ public class Chart extends OUIComponentBase implements StyledComponent {
 
     private ChartNoDataMessage noDataMessage;
     private TimePeriod timePeriodPrecision;
+
+    private Object initialDescendantComponentState = null;
+    private Map<String, Object> descendantComponentState = new HashMap<String, Object>();
+    private int entityIndex = -1;
+    private int selectedEntityIndex = -1;
+
+    private String cachedClientId;
 
     public Chart() {
         setRendererType(ChartTag.RENDERER_TYPE);
@@ -198,6 +213,147 @@ public class Chart extends OUIComponentBase implements StyledComponent {
     }
 
     @Override
+    public void encodeBegin(FacesContext context) throws IOException {
+        setEntityIndex(-1);
+        initialDescendantComponentState = null;
+        descendantComponentState.clear();
+        super.encodeBegin(context);
+    }
+
+    @Override
+    public void encodeEnd(FacesContext context) throws IOException {
+        super.encodeEnd(context);
+        setEntityIndex(-1);
+    }
+
+    @Override
+    public void processDecodes(FacesContext context) {
+        super.processDecodes(context);
+        if (getEntityIndex() != -1) {
+            setEntityIndex(-1);
+        }
+    }
+
+    @Override
+    public void processValidators(FacesContext context) {
+        super.processValidators(context);
+        if (getEntityIndex() != -1) {
+            setEntityIndex(-1);
+        }
+    }
+
+    @Override
+    public void processUpdates(FacesContext context) {
+        super.processUpdates(context);
+        if (getEntityIndex() != -1) {
+            setEntityIndex(-1);
+        }
+    }
+
+    public Integer getEntityIndex() {
+        return entityIndex;
+    }
+
+    public void setEntityIndex(Integer index) {
+        if (index < -1) {
+            throw new IllegalArgumentException("index is less than -1");
+        }
+
+        if (this.entityIndex == index) {
+            return;
+        }
+
+        FacesContext facesContext = getFacesContext();
+
+        if (this.entityIndex == -1) {
+            if (initialDescendantComponentState == null) {
+                initialDescendantComponentState = OUIData.saveDescendantComponentStates(getChildren().iterator(), false);
+            }
+        } else {
+            descendantComponentState.put(getClientId(facesContext), OUIData.saveDescendantComponentStates(getChildren().iterator(), false));
+        }
+
+        this.entityIndex = index;
+
+        if (index == -1) {
+            OUIData.restoreDescendantComponentStates(getChildren().iterator(), initialDescendantComponentState, false);
+        } else {
+            Object rowState = descendantComponentState.get(getClientId(facesContext));
+            if (rowState == null) {
+                OUIData.restoreDescendantComponentStates(getChildren().iterator(), initialDescendantComponentState, false);
+            } else {
+                OUIData.restoreDescendantComponentStates(getChildren().iterator(), rowState, false);
+            }
+        }
+    }
+
+    public int getSelectedEntityIndex() {
+        return selectedEntityIndex;
+    }
+
+    public void setSelectedEntityIndex(int selectedEntityIndex) {
+        this.selectedEntityIndex = selectedEntityIndex;
+    }
+
+    public void setObjectId(String objectId) {
+        if (objectId != null) {
+            setEntityIndex(Integer.valueOf(objectId));
+            setId(getId());
+        } else
+            setEntityIndex(null);
+    }
+
+    public String getObjectId() {
+        if (getEntityIndex() != null)
+            return getEntityIndex().toString();
+        else
+            return null;
+    }
+
+    @Override
+    public void setId(String id) {
+        super.setId(id);
+        cachedClientId = null;
+    }
+
+    @Override
+    public String getClientId(FacesContext context) {
+        String clientId = getStandardClientId(context);
+        int index = getEntityIndex();
+        String suffix = index != -1 ? String.valueOf(index) : null;
+        if (suffix == null)
+            return clientId;
+        else
+            return clientId + OBJECT_ID_SEPARATOR + suffix;
+    }
+
+    private String getStandardClientId(FacesContext context) {
+        if (cachedClientId != null)
+            return cachedClientId;
+
+        String id = getId();
+        if (id == null) {
+            UIViewRoot viewRoot = context.getViewRoot();
+            id = viewRoot.createUniqueId();
+            setId(id);
+        }
+
+        UIComponent namingContainer = getParent();
+        while (namingContainer != null && !(namingContainer instanceof NamingContainer))
+            namingContainer = namingContainer.getParent();
+
+        String parentId = namingContainer != null ? namingContainer.getClientId(context) + NamingContainer.SEPARATOR_CHAR : "";
+        String clientId = parentId + id;
+
+        Renderer renderer = getRenderer(context);
+        if (renderer != null)
+            clientId = renderer.convertClientId(context, clientId);
+
+        cachedClientId = clientId;
+        return clientId;
+    }
+
+    @Override
     public Object saveState(FacesContext facesContext) {
         Object superState = super.saveState(facesContext);
 
@@ -211,7 +367,8 @@ public class Chart extends OUIComponentBase implements StyledComponent {
                 textStyle,
                 imageBytes,
                 saveAttachedState(facesContext, renderHints),
-                saveAttachedState(facesContext, timePeriodPrecision)
+                saveAttachedState(facesContext, timePeriodPrecision),
+                selectedEntityIndex
         };
     }
 
@@ -229,6 +386,7 @@ public class Chart extends OUIComponentBase implements StyledComponent {
         imageBytes = (byte[]) state[i++];
         renderHints = (JfcRenderHints) restoreAttachedState(facesContext, state[i++]);
         timePeriodPrecision = (TimePeriod) restoreAttachedState(facesContext, state[i++]);
+        selectedEntityIndex = (Integer) state[i++];
     }
 
     public TimePeriod getTimePeriodPrecision() {

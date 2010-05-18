@@ -13,13 +13,18 @@
 package org.openfaces.component.chart;
 
 import java.awt.*;
+import java.io.Serializable;
 
 /**
  * @author Eugene Goncharov
  */
-public class LineStyle {
+public class LineStyle implements Serializable {
+    
     private Color color;
     private Stroke stroke;
+
+    public LineStyle() {
+    }
 
     public LineStyle(Color color, Stroke stroke) {
         this.color = color;

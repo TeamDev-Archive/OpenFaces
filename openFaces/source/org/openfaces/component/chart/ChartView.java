@@ -13,16 +13,14 @@ package org.openfaces.component.chart;
 
 import org.jfree.chart.ChartRenderingInfo;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.imagemap.StandardToolTipTagFragmentGenerator;
-import org.jfree.chart.imagemap.StandardURLTagFragmentGenerator;
 import org.jfree.chart.plot.Plot;
 import org.openfaces.component.chart.impl.JfcRenderHints;
 import org.openfaces.component.chart.impl.ModelInfo;
 import org.openfaces.component.chart.impl.helpers.JFreeChartAdapter;
-import org.openfaces.component.chart.impl.helpers.MapRenderUtilities;
 import org.openfaces.renderkit.cssparser.CSSUtil;
 import org.openfaces.renderkit.cssparser.StyleObjectModel;
 import org.openfaces.renderkit.cssparser.StyledComponent;
+import org.openfaces.util.Components;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.ValueBindings;
 
@@ -247,6 +245,9 @@ public abstract class ChartView extends UICommand implements StyledComponent, Ha
         return getTextStyle();
     }
 
+    public ChartPopup getChartPopup() {
+        return Components.findChildWithClass(this, ChartPopup.class, "<o:chartPopup>");
+    }
 
     public Paint getBackgroundPaint() {
         return ValueBindings.get(this, "backgroundPaint", backgroundPaint, Paint.class);
@@ -327,12 +328,6 @@ public abstract class ChartView extends UICommand implements StyledComponent, Ha
         BufferedImage image = jFreeChart.createBufferedImage(width, height, chartRenderingInfo);
         byte[] imageAsByteArray = Rendering.encodeAsPNG(image);
 
-        String mapId = renderHints.getMapId(chart);
-        if (mapId != null) {
-            String map = MapRenderUtilities.getImageMapExt(chart, mapId, chartRenderingInfo,
-                    new StandardToolTipTagFragmentGenerator(), new StandardURLTagFragmentGenerator());
-            renderHints.setMap(map);
-        }
 
         return imageAsByteArray;
     }

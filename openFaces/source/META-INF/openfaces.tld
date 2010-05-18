@@ -37404,5 +37404,19 @@ entering a value and returns a list of suggestions from the server -->
     <tag-class>org.openfaces.taglib.jsp.chart.PrintChartMenuItemJspTag</tag-class>
     <body-content>JSP</body-content>
   </tag>
+  <tag>
+    <name>chartPopup</name>
+    <tag-class>org.openfaces.taglib.jsp.chart.ChartPopupJspTag</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+      <name>loadingMode</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType LoadingMode -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+  </tag>
 
 </taglib>
