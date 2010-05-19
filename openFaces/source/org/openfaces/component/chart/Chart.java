@@ -254,17 +254,16 @@ public class Chart extends OUIComponentBase implements StyledComponent, OUIObjec
         return entityIndex;
     }
 
-    public void setEntityIndex(Integer index) {
-        if (index < -1) {
-            throw new IllegalArgumentException("index is less than -1");
-        }
-
+    public void setEntityIndex(int index) {
         if (this.entityIndex == index) {
             return;
         }
 
-        FacesContext facesContext = getFacesContext();
+        if (index < -1) {
+            throw new IllegalArgumentException("index is less than -1");
+        }
 
+        FacesContext facesContext = getFacesContext();
         if (this.entityIndex == -1) {
             if (initialDescendantComponentState == null) {
                 initialDescendantComponentState = OUIData.saveDescendantComponentStates(getChildren().iterator(), false);
@@ -300,7 +299,7 @@ public class Chart extends OUIComponentBase implements StyledComponent, OUIObjec
             setEntityIndex(Integer.valueOf(objectId));
             setId(getId());
         } else
-            setEntityIndex(null);
+            setEntityIndex(-1);
     }
 
     public String getObjectId() {
