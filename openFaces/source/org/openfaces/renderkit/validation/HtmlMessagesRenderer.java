@@ -181,7 +181,7 @@ public class HtmlMessagesRenderer extends BaseHtmlMessageRenderer {
                 styleClass = ((HtmlMessages) messages).getStyleClass();
             }
 
-            Styles.checkCSSStyleForSemicolumn(style);
+            Styles.checkCSSStyleForSemicolon(style);
         }
 
         return new String[]{style, styleClass};

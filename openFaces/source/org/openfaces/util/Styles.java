@@ -444,12 +444,12 @@ public class Styles {
     }
 
     /**
-     * Check css style declaration for semicolumn ending and add it, if nessesary
+     * Check css style declaration for semicolon ending and add it, if necessary
      *
      * @param style The css style declaration to check
-     * @return css style with semicolumn ending
+     * @return css style with semicolon ending
      */
-    public static String checkCSSStyleForSemicolumn(String style) {
+    public static String checkCSSStyleForSemicolon(String style) {
         if (style == null) {
             return style;
         }

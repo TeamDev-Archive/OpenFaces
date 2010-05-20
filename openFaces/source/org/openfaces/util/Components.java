@@ -310,7 +310,7 @@ public class Components {
     }
 
     /**
-     * Check component id and generate it, if nessesary
+     * Check component id and generate it, if necessary
      *
      * @param component The component for id generation
      */

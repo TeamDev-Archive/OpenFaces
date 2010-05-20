@@ -207,7 +207,7 @@ public abstract class BaseHtmlMessageRenderer extends BaseMessageRenderer {
             styleClass = getStyleClass(message);
         }
 
-        Styles.checkCSSStyleForSemicolumn(style);
+        Styles.checkCSSStyleForSemicolon(style);
 
         return new String[]{style, styleClass};
     }
