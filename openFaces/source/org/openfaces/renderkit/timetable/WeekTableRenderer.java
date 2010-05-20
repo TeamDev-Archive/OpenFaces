@@ -37,7 +37,7 @@ public class WeekTableRenderer extends TimeScaleTableRenderer {
     }
 
     protected String getJsLibraryName() {
-        return "weekTable.js";
+        return "timetable/weekTable.js";
     }
 
     protected String getJsInitFunctionName() {

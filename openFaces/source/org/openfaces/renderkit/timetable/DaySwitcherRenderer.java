@@ -160,7 +160,7 @@ public class DaySwitcherRenderer extends RendererBase {
         Rendering.renderInitScript(context, script,
                 Resources.getUtilJsURL(context),
                 Resources.getJsonJsURL(context),
-                Resources.getInternalURL(context, DaySwitcherRenderer.class, "daySwitcher.js"));
+                Resources.getInternalURL(context, "timetable/daySwitcher.js"));
 
     }
 

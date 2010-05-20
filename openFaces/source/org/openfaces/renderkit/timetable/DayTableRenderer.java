@@ -25,7 +25,7 @@ public class DayTableRenderer extends TimeScaleTableRenderer {
     }
 
     protected String getJsLibraryName() {
-        return "dayTable.js";
+        return "timetable/dayTable.js";
     }
 
     protected String getJsInitFunctionName() {

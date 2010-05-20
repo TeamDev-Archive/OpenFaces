@@ -54,11 +54,11 @@ public class EventPreviewRenderer extends RendererBase {
 
         String componentJs;
         if (timetableView instanceof MonthTable) {
-            componentJs = "monthTable.js";
+            componentJs = "timetable/monthTable.js";
         } else if (timetableView instanceof WeekTable) {
-            componentJs = "weekTable.js";
+            componentJs = "timetable/weekTable.js";
         } else {
-            componentJs = "dayTable.js";
+            componentJs = "timetable/dayTable.js";
         }
 
         Rendering.renderInitScript(context,
@@ -73,9 +73,9 @@ public class EventPreviewRenderer extends RendererBase {
                         eventPreview.getHorizontalDistance(),
                         eventPreview.getVerticalDistance()),
                 Resources.getUtilJsURL(context),
-                Resources.getInternalURL(context, TimeScaleTableRenderer.class, "rangeMap.js"),
-                Resources.getInternalURL(context, TimeScaleTableRenderer.class, "timetable.js"),
-                Resources.getInternalURL(context, TimeScaleTableRenderer.class, componentJs));
+                Resources.getInternalURL(context, "timetable/rangeMap.js"),
+                Resources.getInternalURL(context, "timetable/timetable.js"),
+                Resources.getInternalURL(context, componentJs));
 
         writer.endElement("div");
 
