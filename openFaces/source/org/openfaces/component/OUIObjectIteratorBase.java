@@ -12,6 +12,7 @@
 package org.openfaces.component;
 
 import javax.faces.FacesException;
+import javax.faces.application.ResourceDependency;
 import javax.faces.component.ContextCallback;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -21,6 +22,7 @@ import javax.faces.event.FacesEvent;
 /**
  * @author Dmitry Pikhulya
  */
+@ResourceDependency(name = "default.css", library = "openfaces/3_0")
 public abstract class OUIObjectIteratorBase extends OUIComponentBase implements OUIObjectIterator {
 
     @Override

@@ -24,6 +24,7 @@ import org.openfaces.util.ValueBindings;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
+import javax.faces.application.ResourceDependency;
 import javax.faces.component.ActionSource;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.NamingContainer;
@@ -46,6 +47,7 @@ import java.util.HashMap;
  * @author Dmitry Pikhulya
  */
 @ListenerFor(systemEventClass = PostRestoreStateEvent.class)
+@ResourceDependency(name = "default.css", library = "openfaces/3_0")
 public abstract class AbstractTable extends OUIData implements TableStyles, FilterableComponent {
     /*
    Implementation notes:

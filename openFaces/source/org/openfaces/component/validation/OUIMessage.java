@@ -14,6 +14,7 @@ package org.openfaces.component.validation;
 import org.openfaces.component.OUIComponent;
 import org.openfaces.util.ValueBindings;
 
+import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIMessage;
 import javax.faces.context.FacesContext;
@@ -21,6 +22,7 @@ import javax.faces.context.FacesContext;
 /**
  * @author Dmitry Pikhulya
  */
+@ResourceDependency(name = "default.css", library = "openfaces/3_0")
 public abstract class OUIMessage extends UIMessage implements OUIComponent {
     private String style;
     private String styleClass;

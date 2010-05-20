@@ -13,12 +13,14 @@ package org.openfaces.component;
 
 import org.openfaces.util.ValueBindings;
 
+import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 
 /**
  * @author Dmitry Pikhulya
  */
+@ResourceDependency(name = "default.css", library = "openfaces/3_0")
 public class OUIInputBase extends UIInput implements OUIInput {
     private String style;
     private String styleClass;

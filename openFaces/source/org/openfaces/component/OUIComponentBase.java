@@ -13,12 +13,14 @@ package org.openfaces.component;
 
 import org.openfaces.util.ValueBindings;
 
+import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 
 /**
  * @author Dmitry Pikhulya
  */
+@ResourceDependency(name = "default.css", library = "openfaces/3_0")
 public abstract class OUIComponentBase extends UIComponentBase implements OUIComponent {
     protected String style;
     protected String styleClass;
