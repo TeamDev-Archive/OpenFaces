@@ -72,7 +72,7 @@ public class ResourceFilter implements Filter {
 
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        boolean internalResourceRequested = isInternalResourceRequested((HttpServletRequest) servletRequest);
+        boolean internalResourceRequested = false;//isInternalResourceRequested((HttpServletRequest) servletRequest);
         // todo: runtime-library-init-script is a special case of internal resource (according to url) - refactor this
         boolean runtimeLibraryInitScriptsRequested = isRuntimeInitScriptsRequested((HttpServletRequest) servletRequest);
         if (runtimeLibraryInitScriptsRequested) {

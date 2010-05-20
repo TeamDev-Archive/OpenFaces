@@ -12,6 +12,7 @@
 package org.openfaces.util;
 
 import org.ajax4jsf.component.behavior.AjaxBehavior;
+import org.openfaces.application.OpenFacesResourceHandler;
 import org.openfaces.component.OUIClientAction;
 import org.openfaces.component.OUIComponent;
 import org.openfaces.component.OUIInput;
@@ -29,6 +30,7 @@ import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.Application;
+import javax.faces.application.Resource;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
@@ -821,8 +823,7 @@ public class Rendering {
      * @return true, if uri represent dynamic image, false otherwise
      */
     public static boolean isDynamicResource(String uri) {
-        // todo: extract this as a generic mechanism of dynamic resources (see also todo in Rendering.)
-        return (uri.indexOf("dynamicimage") != -1);
+        return (uri.indexOf(OpenFacesResourceHandler.DYNAMIC_RESOURCE_IDENTIFIER) != -1);
     }
 
     /**
@@ -849,8 +850,9 @@ public class Rendering {
             String id = imagePool.putModel(model);
             writer.writeAttribute("id", component.getClientId(context), null);
 
-            String imagePath = ResourceFilter.INTERNAL_RESOURCE_PATH + "dynamicimage." + extension + "?id=" + id; // todo: extract this as a generic mechanism of dynamic resources (this also involves the isDynamicResource method)
-            imageUrl = Resources.getApplicationURL(context, imagePath);
+            String imagePath = OpenFacesResourceHandler.DYNAMIC_RESOURCE_IDENTIFIER + "/" + id + "." + extension;
+            Resource resource = context.getApplication().getResourceHandler().createResource(imagePath);
+            imageUrl = resource.getRequestPath();
         } else {
             imageUrl = "";
         }
