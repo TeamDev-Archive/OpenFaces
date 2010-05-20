@@ -139,7 +139,7 @@ import java.util.Set;
  * @author Manfred Geiler (latest modification by $Author: lu4242 $)
  * @version $Revision: 692318 $ $Date: 2008-09-04 20:20:12 -0500 (Thu, 04 Sep 2008) $
  */
-public class OUIData extends UIData implements NamingContainer, OUIComponent { // <MOD-6/> Extneded UIData instead of UIComponentBase, <MOD-7/>
+public class OUIData extends UIData implements NamingContainer, OUIComponent { // <MOD-6/> Extended UIData instead of UIComponentBase, <MOD-7/>
     public static final String COMPONENT_FAMILY = "javax.faces.Data";
     public static final String COMPONENT_TYPE = "javax.faces.Data"; // for unit tests
 

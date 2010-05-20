@@ -11,10 +11,10 @@
  */
 package org.openfaces.component.table;
 
-import org.openfaces.util.ValueBindings;
+import org.openfaces.component.filter.Filter;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.Faces;
-import org.openfaces.component.filter.Filter;
+import org.openfaces.util.ValueBindings;
 
 import javax.el.ValueExpression;
 import javax.faces.context.ExternalContext;
@@ -26,13 +26,12 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- *
  * The DataTable component is used to display data in a tabular format and effectively manipulate it.
  * It supports the features of the JSF HtmlDataTable component and extends the standard functionality
  * with such advanced features as sorting, row selection (both multiple and single), pagination,
  * filtering, keyboard navigation, and dynamic data loading (using Ajax.) Plus, the DataTable
  * component provides special support for handling large datasets with minimal overhead.
- * 
+ *
  * @author Dmitry Pikhulya
  */
 public class DataTable extends AbstractTable {
@@ -167,9 +166,9 @@ public class DataTable extends AbstractTable {
     }
 
     /**
-     * @return index of a page where a row with the specified rowKey is displayed, or -1 of no such row is being
-     * displayed.
      * @param rowKey row key object for a row whose page index should be detected.
+     * @return index of a page where a row with the specified rowKey is displayed, or -1 of no such row is being
+     *         displayed.
      */
     public int getPageIndexForRowKey(Object rowKey) {
         TableDataModel model = getModel();
@@ -230,7 +229,7 @@ public class DataTable extends AbstractTable {
     }
 
     /**
-     * This method is invoked during the normal DataTable operation, and application developers shouldn't invoke this 
+     * This method is invoked during the normal DataTable operation, and application developers shouldn't invoke this
      * method explicitly.
      */
     public void updateModel(boolean updateSortingFromBindings, boolean updatePageIndex, boolean readActualData) {
