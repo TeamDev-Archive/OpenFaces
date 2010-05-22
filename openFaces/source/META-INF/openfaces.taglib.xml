@@ -1160,5 +1160,13 @@
       <handler-class>org.openfaces.taglib.facelets.chart.ChartPopupTagHandler</handler-class>
     </component>
   </tag>
+  <tag>
+    <tag-name>chartSelection</tag-name>
+    <component>
+      <component-type>org.openfaces.ChartSelection</component-type>
+      <renderer-type>org.openfaces.ChartSelectionRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.chart.ChartSelectionTagHandler</handler-class>
+    </component>
+  </tag>
 
 </facelet-taglib>

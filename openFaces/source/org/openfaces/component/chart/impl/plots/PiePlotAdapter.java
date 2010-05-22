@@ -23,7 +23,10 @@ import org.jfree.util.TableOrder;
 import org.openfaces.component.chart.Chart;
 import org.openfaces.component.chart.ChartLabels;
 import org.openfaces.component.chart.ChartLegend;
+import org.openfaces.component.chart.ChartSelection;
+import org.openfaces.component.chart.LineStyle;
 import org.openfaces.component.chart.PieChartView;
+import org.openfaces.component.chart.PieSectorInfo;
 import org.openfaces.component.chart.PieSectorProperties;
 import org.openfaces.component.chart.impl.PropertiesConverter;
 import org.openfaces.component.chart.impl.generators.DynamicPieGenerator;
@@ -191,7 +194,7 @@ public class PiePlotAdapter extends PiePlot {
                         continue;
 
                     if (sectorPulled != null && sectorPulled > 0) {
-                       plot.setExplodePercent(index, (double) sectorPulled);
+                        plot.setExplodePercent(index, (double) sectorPulled);
                     }
 
                     StyleObjectModel cssSectorModel = sector.getStyleObjectModel();
@@ -211,6 +214,28 @@ public class PiePlotAdapter extends PiePlot {
 
         }
 
+    }
+
+    private void setupSelectionHighlighting(PiePlot plot, Chart chart) {
+        if (chart.getChartSelection() != null && ((PieChartView) chart.getChartView()).getSelectedSector() != null) {
+            final PieSectorInfo info = ((PieChartView) chart.getChartView()).getSelectedSector();
+            final ChartSelection selection = chart.getChartSelection();
+            final LineStyle lineStyle = selection.getLineStyle();
+            Paint outlinePaint = lineStyle.getColor() != null
+                    ? lineStyle.getColor()
+                    : Color.WHITE;
+            final Stroke outlineStroke = lineStyle.getStroke();
+            final Paint selectionPaint = selection.getFillPaint();
+
+            plot.setSectionOutlinePaint(info.getIndex(), outlinePaint);
+            if (outlineStroke != null) {
+                plot.setSectionOutlineStroke(info.getIndex(), outlineStroke);
+            }
+
+            if (selectionPaint != null) {
+                plot.setSectionPaint(info.getIndex(), selectionPaint);
+            }
+        }
     }
 
     private int getIterationCount(CategoryToPieDataset cds) {
@@ -233,7 +258,9 @@ public class PiePlotAdapter extends PiePlot {
         setupTooltipsAndUrls(plot, chartView);
         sectorProcessing(plot, chartView, dataset, categoryDataset);
 
-        setupShadow(plot,chartView);
+        setupSelectionHighlighting(plot, chart);
+
+        setupShadow(plot, chartView);
     }
 
     private void setupShadow(PiePlot plot, PieChartView chartView) {

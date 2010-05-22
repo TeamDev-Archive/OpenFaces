@@ -14,50 +14,52 @@ O$.ChartPopup = {
   _init: function(chartPopupId, loadingMode, chartId) {
     var chartPopup = O$.initComponent(chartPopupId, null, {
       _loadingMode: loadingMode,
-      _contentLoaded: loadingMode == "client"
+      _contentLoaded: loadingMode == "client",
+      _hoverStateHandler: function(mouseInside, element) {
+        element._mouseInside = mouseInside;
+        if ((chartPopup._targetArea && !chartPopup._targetArea._mouseInside) && !chartPopup._mouseInside) {
+          chartPopup.hide();
+        }
+      }
     });
 
-    var popup = O$(chartPopupId);
-    var oldOnMouseOver = popup.onmouseover;
-    var oldOnMouseOut = popup.onmouseout;
-
-
-    popup.onmouseover = function() {
-      popup.mouseOverPopup = true;
-      if (oldOnMouseOver) {
-        oldOnMouseOver();
-      }
-    };
-
-    popup.onmouseout = function() {
-      popup.mouseOverPopup = false;
-
-      if (oldOnMouseOut) {
-        oldOnMouseOut();
-      }
-    };
+    O$.setupHoverStateFunction(chartPopup, chartPopup._hoverStateHandler);
   },
 
   _ajaxResponseProcessor: function(popup, portionName, portionHTML, portionScripts) {
-    var oldComponent, prnt, tempDiv, newControl, oldId;
+    var oldComponent, prnt, tempDiv, newPopup, oldId;
     if (portionName == "content") {
       oldComponent = O$(popup.id);
       prnt = oldComponent.parentNode;
       tempDiv = document.createElement("div");
       tempDiv.innerHTML = portionHTML;
-      newControl = tempDiv.childNodes[0];
+      newPopup = tempDiv.childNodes[0];
       oldId = oldComponent.id;
-      prnt.replaceChild(newControl, oldComponent);
-      newControl.id = oldId;
+      prnt.replaceChild(newPopup, oldComponent);
+      newPopup.id = oldId;
     }
     O$.executeScripts(portionScripts);
-    newControl._contentLoaded = true;
-    newControl.showAtXY(popup._eventX + 2, popup._eventY + 2);
+    newPopup._contentLoaded = true;
+    newPopup._targetArea = popup._targetArea;
+    var chart = newPopup.parentNode;
+    if (chart._visiblePopup) {
+      chart._visiblePopup.hide();
+    }
+    newPopup.showAtXY(popup._eventX + 2, popup._eventY + 2);
+    chart._visiblePopup = newPopup;
   },
 
   show:function(event, chartPopupId) {
-    var eventPoint = O$.getEventPoint(event);
     var popup = O$(chartPopupId);
+    var chart = popup.parentNode;
+    var eventPoint = O$.getEventPoint(event);
+    var targetArea = event.target ? event.target : event.srcElement;
+    popup._targetArea = targetArea;
+
+    if (!targetArea._initialized) {
+      O$.setupHoverStateFunction(targetArea, popup._hoverStateHandler);
+      targetArea._initialized = true;
+    }
 
     if (popup._loadingMode == "ajaxAlways" || !popup._contentLoaded) {
       popup._eventX = eventPoint.x;
@@ -65,7 +67,11 @@ O$.ChartPopup = {
       O$.requestComponentPortions(popup.id, ["content"], null, O$.ChartPopup._ajaxResponseProcessor);
     } else {
       if (!popup.isVisible()) {
+        if (chart._visiblePopup) {
+          chart._visiblePopup.hide();
+        }
         popup.showAtXY(eventPoint.x + 2, eventPoint.y + 2);
+        chart._visiblePopup = popup;
       }
     }
   },
@@ -73,13 +79,6 @@ O$.ChartPopup = {
   hide:function(event, chartPopupId) {
     var popup = O$(chartPopupId);
 
-    if (popup._contentLoaded) {
-      setTimeout(function () {
-        if (!popup.mouseOverPopup) {
-          popup.hide();
-        }
-      }, 100);
-    }
   }
 };
 

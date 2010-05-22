@@ -78,7 +78,7 @@ public class PieChartView extends ChartView {
         this.sector = sector;
     }
 
-     public Boolean isShowShadow() {
+    public Boolean isShowShadow() {
         return ValueBindings.get(this, "showShadow", showShadow, false);
     }
 

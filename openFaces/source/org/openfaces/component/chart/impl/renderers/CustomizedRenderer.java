@@ -9,26 +9,25 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.component.chart;
+
+package org.openfaces.component.chart.impl.renderers;
+
+import java.awt.*;
 
 /**
- * @author Ekaterina Shliakhovetskaya
+ * @author Eugene Goncharov
  */
-public interface GridPointInfo {
+public interface CustomizedRenderer {
 
-    SeriesInfo getSeries();
+    public Paint getItemOutlinePaint(int row, int column);
 
-    void setSeries(SeriesInfo info);
+    public Stroke getItemOutlineStroke(int row, int column);
 
-    void setKey(Object key);
+    public Paint getItemPaint(int row, int column);
 
-    Object getKey();
+    public void setItemOutlinePaint(int row, int column, Paint paint);
 
-    void setValue(Object value);
+    public void setItemOutlineStroke(int row, int column, Stroke stroke);
 
-    Object getValue();
-
-    public int getIndex();
-
-    public void setIndex(int index);
+    public void setItemPaint(int row, int column, Paint paint);
 }

@@ -31,6 +31,7 @@ import org.openfaces.component.chart.ChartDomain;
 import org.openfaces.component.chart.GridChartView;
 import org.openfaces.component.chart.impl.PropertiesConverter;
 import org.openfaces.component.chart.impl.generators.DynamicXYGenerator;
+import org.openfaces.component.chart.impl.helpers.SelectionUtil;
 import org.openfaces.component.chart.impl.renderers.AreaFillRenderer;
 import org.openfaces.renderkit.cssparser.StyleBorderModel;
 import org.openfaces.renderkit.cssparser.StyleObjectModel;
@@ -44,12 +45,14 @@ import java.awt.geom.Rectangle2D;
 public abstract class XYPlotAdapter extends XYPlot {
     private boolean keyAxisVisible;
     private boolean valueAxisVisible;
+    private Chart chart;
     private GridChartView chartView;
 
     public XYPlotAdapter(XYDataset ds, AbstractXYItemRenderer renderer,
                          Chart chart, GridChartView view) {
         setDataset(ds);
         setRenderer(renderer);
+        this.chart = chart;
         this.chartView = view;
         setOrientation(PropertiesConverter.toPlotOrientation(chartView.getOrientation()));
 
@@ -84,6 +87,7 @@ public abstract class XYPlotAdapter extends XYPlot {
         setupColorProperties();
         setupTooltips();
         setupUrls();
+        SelectionUtil.setupSelectionHighlighting(this, chart, chartView);
     }
 
     @Override
@@ -203,6 +207,14 @@ public abstract class XYPlotAdapter extends XYPlot {
 
     public void setChartView(GridChartView chartView) {
         this.chartView = chartView;
+    }
+
+    public Chart getChart() {
+        return chart;
+    }
+
+    public void setChart(Chart chart) {
+        this.chart = chart;
     }
 
     protected void setupColorProperties() {

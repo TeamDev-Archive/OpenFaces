@@ -37418,5 +37418,28 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
   </tag>
+  <tag>
+    <name>chartSelection</name>
+    <tag-class>org.openfaces.taglib.jsp.chart.ChartSelectionJspTag</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+      <name>lineStyle</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType LineStyle -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>fillPaint</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType Paint -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+  </tag>
 
 </taglib>

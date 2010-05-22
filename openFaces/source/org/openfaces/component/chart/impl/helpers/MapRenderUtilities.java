@@ -68,7 +68,8 @@ public class MapRenderUtilities {
                         entity.getURLText() == null &&
                         getOnClick(chart, chart.getChartView(), entity) == null &&
                         !viewHasAction(view) &&
-                        !viewHasPopup(view))
+                        !viewHasPopup(view) &&
+                        chart.getChartSelection() == null)
                     continue;
 
                 String area;
@@ -150,6 +151,7 @@ public class MapRenderUtilities {
         boolean hasAction = viewHasAction(view);
         boolean hasPopup = viewHasPopup(view);
         boolean hasToolTip = entity.getToolTipText() != null && !entity.getToolTipText().equals("");
+        boolean hasSelection = chart.getChartSelection() != null;
 
         String onClick = getOnClick(chart, view, entity);
         String onMouseOut = getOnMouseOut(chart, view, entity);
@@ -159,22 +161,24 @@ public class MapRenderUtilities {
         boolean hasCustomOnMouseOut = onMouseOut != null && !onMouseOut.equals("");
         boolean hasCustomClick = onClick != null && !onClick.equals("");
 
-        if (hasURL || hasToolTip || hasAction || hasPopup || hasCustomClick) {
-            String fieldId = view.getParent().getClientId(FacesContext.getCurrentInstance()) + ACTION_FIELD_SUFFIX;
-
+        if (hasURL || hasToolTip || hasAction || hasPopup || hasCustomClick || hasSelection) {
+            final FacesContext context = FacesContext.getCurrentInstance();
             tag.append("<area");
 
-            if (hasAction && !hasCustomClick)
-                tag.append(" onclick=\"O$.setValue('").append(fieldId).append("','").append(entityIndex).append("'); O$.submitById('").append(fieldId).append("');\"");
+            if (hasAction || hasCustomClick || hasSelection) {
+                tag.append(" onclick=\"O$('").append(chart.getClientId(context)).append("').clickItem(event, '").append(entityIndex).append("'");
+                tag.append(",");
+                if (hasCustomClick) {
+                    tag.append("function(event){").append(onClick).append("}");
+                } else {
+                    tag.append("null");
+                }
+                tag.append(",").append(hasAction);
+                tag.append(",").append(hasSelection);
 
-            if (hasAction && hasCustomClick)
-                tag.append(" onclick=\"O$.setValue('").append(fieldId).append("','").append(entityIndex).append("'); ").append(onClick).append("O$.submitById('").append(fieldId).append("');\"");
+                tag.append(")\"");
+            }
 
-            if (!hasAction && hasCustomClick)
-                tag.append(" onclick=\"O$.setValue('").append(fieldId).append("','").append(entityIndex).append("'); ").append(onClick).append("\"");
-
-
-            // " O$.showChartPopup('"+entityIndex+"', function(){"+onMouseOver+"}) "
             if (hasCustomOnMouseOver || hasPopup) {
                 StringBuilder mouseOverBuilder = new StringBuilder();
                 if (hasPopup) {
@@ -182,7 +186,7 @@ public class MapRenderUtilities {
                     chart.setEntityIndex(entityIndex);
                     mouseOverBuilder.append("O$.ChartPopup.show(event,");
                     mouseOverBuilder.append("'");
-                    mouseOverBuilder.append(chart.getChartView().getChartPopup().getClientId(FacesContext.getCurrentInstance()));
+                    mouseOverBuilder.append(chart.getChartView().getChartPopup().getClientId(context));
                     mouseOverBuilder.append("',");
                     mouseOverBuilder.append("'");
                     mouseOverBuilder.append(entityIndex);
@@ -209,7 +213,7 @@ public class MapRenderUtilities {
                     chart.setEntityIndex(entityIndex);
                     mouseOutBuilder.append("O$.ChartPopup.hide(event,");
                     mouseOutBuilder.append("'");
-                    mouseOutBuilder.append(chart.getChartView().getChartPopup().getClientId(FacesContext.getCurrentInstance()));
+                    mouseOutBuilder.append(chart.getChartView().getChartPopup().getClientId(context));
                     mouseOutBuilder.append("',");
                     mouseOutBuilder.append("'");
                     mouseOutBuilder.append(entityIndex);

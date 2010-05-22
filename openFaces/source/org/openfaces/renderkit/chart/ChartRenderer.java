@@ -91,33 +91,7 @@ public class ChartRenderer extends RendererBase {
                 new StandardToolTipTagFragmentGenerator(), new StandardURLTagFragmentGenerator());
         renderHints.setMap(map);
         if (view.getChartPopup() != null) {
-            EntityCollection entities = renderingInfo.getEntityCollection();
-            if (entities != null) {
-                int count = entities.getEntityCount();
-
-                for (int i = count - 1; i >= 0; i--) {
-                    ChartEntity entity = entities.getEntity(i);
-
-                    Map<String, Object> requestMap = facesContext.getExternalContext().getRequestMap();
-                    chart.setEntityIndex(i);
-
-                    if (view instanceof GridChartView) {
-                        final GridPointInfo pointInfo = ChartInfoUtil.getGridPointInfo(entity, chart);
-                        if (pointInfo != null) {
-                            Object oldAttributeValue = requestMap.put("point", pointInfo);
-                            renderChartPopup(facesContext, view);
-                            requestMap.put("point", oldAttributeValue);
-                        }
-                    } else if (view instanceof PieChartView) {
-                        final PieSectorInfo pieSectorInfo = ChartInfoUtil.getPieSectorInfo(entity);
-                        if (pieSectorInfo != null) {
-                            Object oldAttributeValue = requestMap.put("sector", pieSectorInfo);
-                            renderChartPopup(facesContext, view);
-                            requestMap.put("sector", oldAttributeValue);
-                        }
-                    }
-                }
-            }
+            encodeChartPopup(facesContext, chart, view, renderingInfo);
         }
 
         chart.setImageBytes(imageAsByteArray);
@@ -163,7 +137,7 @@ public class ChartRenderer extends RendererBase {
             }
         };
         dynamicImage.setValueExpression("data", ve);
-        dynamicImage.setId(chart.getId() + Rendering.SERVER_ID_SUFFIX_SEPARATOR + "img");
+        dynamicImage.setId("img");
         dynamicImage.setParent(chart);
         dynamicImage.setMapId(mapId);
         dynamicImage.setMap(map);
@@ -184,15 +158,53 @@ public class ChartRenderer extends RendererBase {
         encodeScripts(facesContext, chart, dynamicImage);
     }
 
+    private void encodeChartPopup(FacesContext facesContext, Chart chart, ChartView view,
+                                  ChartRenderingInfo renderingInfo) throws IOException {
+        EntityCollection entities = renderingInfo.getEntityCollection();
+        if (entities != null) {
+            int count = entities.getEntityCount();
+
+            for (int i = count - 1; i >= 0; i--) {
+                ChartEntity entity = entities.getEntity(i);
+
+                Map<String, Object> requestMap = facesContext.getExternalContext().getRequestMap();
+                chart.setEntityIndex(i);
+
+                if (view instanceof GridChartView) {
+                    final GridPointInfo pointInfo = ChartInfoUtil.getGridPointInfo(entity, chart);
+                    if (pointInfo != null) {
+                        Object oldAttributeValue = requestMap.put("point", pointInfo);
+                        renderChartPopup(facesContext, view);
+                        requestMap.put("point", oldAttributeValue);
+                    }
+                } else if (view instanceof PieChartView) {
+                    final PieSectorInfo pieSectorInfo = ChartInfoUtil.getPieSectorInfo(entity);
+                    if (pieSectorInfo != null) {
+                        Object oldAttributeValue = requestMap.put("sector", pieSectorInfo);
+                        renderChartPopup(facesContext, view);
+                        requestMap.put("sector", oldAttributeValue);
+                    }
+                }
+            }
+        }
+    }
+
     private void renderChartPopup(FacesContext facesContext, ChartView view) throws IOException {
         view.getChartPopup().encodeAll(facesContext);
     }
 
     protected void encodeScripts(FacesContext context, Chart chart, DynamicImage dynamicImage) throws IOException {
         ScriptBuilder buf = new ScriptBuilder();
-        encodeChartMenuSupport(context, chart, dynamicImage, buf);
+        final Integer oldEntityIndex = chart.getEntityIndex();
+        chart.setEntityIndex(-1);
+        buf.initScript(context, chart, "O$.Chart._init");
 
-        Rendering.renderInitScript(context, buf, Resources.getUtilJsURL(context), getChartMenuJsURL(context));
+        encodeChartMenuSupport(context, chart, dynamicImage, buf);
+        Rendering.renderInitScript(context, buf, Resources.getUtilJsURL(context),
+                Resources.getInternalURL(context, "chart/chart.js"),
+                Resources.getAjaxUtilJsURL(context),
+                getChartMenuJsURL(context));
+        chart.setEntityIndex(oldEntityIndex);
     }
 
     private void encodeChartMenuSupport(FacesContext context, Chart chart, DynamicImage dynamicImage,

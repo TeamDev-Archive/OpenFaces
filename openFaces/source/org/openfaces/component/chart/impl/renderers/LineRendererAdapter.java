@@ -15,14 +15,62 @@ import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 import org.jfree.data.category.CategoryDataset;
 import org.openfaces.component.chart.LineChartView;
 
+import java.awt.*;
+
 /**
  * @author Ekaterina Shliakhovetskaya
  */
-public class LineRendererAdapter extends LineAndShapeRenderer {
+public class LineRendererAdapter extends LineAndShapeRenderer implements CustomizedRenderer  {
+    private ItemsRenderer delegate;
+
     public LineRendererAdapter(LineChartView chartView, CategoryDataset dataSet) {
+        delegate = new ItemsRenderer();
         ChartRendering.setupSeriesColors(chartView, this);
 
         ChartRendering.processLineAndShapeRendererProperties(this, dataSet, chartView);
     }
 
+
+
+    @Override
+    public Paint getItemOutlinePaint(int row, int column) {
+        final Paint itemOutlinePaint = delegate.getItemOutlinePaint(row, column);
+        if (itemOutlinePaint != null) {
+            return itemOutlinePaint;
+        }
+
+        return super.getItemOutlinePaint(row, column);
+    }
+
+    @Override
+    public Stroke getItemOutlineStroke(int row, int column) {
+        final Stroke outlineStroke = delegate.getItemOutlineStroke(row, column);
+        if (outlineStroke != null) {
+            return outlineStroke;
+        }
+
+        return super.getItemOutlineStroke(row, column);
+    }
+
+    @Override
+    public Paint getItemPaint(int row, int column) {
+        final Paint itemPaint = delegate.getItemPaint(row, column);
+        if (itemPaint != null) {
+            return itemPaint;
+        }
+
+        return super.getItemPaint(row, column);
+    }
+
+    public void setItemOutlinePaint(int row, int column, Paint paint) {
+        delegate.setItemOutlinePaint(row, column, paint);
+    }
+
+    public void setItemOutlineStroke(int row, int column, Stroke stroke) {
+        delegate.setItemOutlineStroke(row, column, stroke);
+    }
+
+    public void setItemPaint(int row, int column, Paint paint) {
+        delegate.setItemPaint(row, column, paint);
+    }
 }

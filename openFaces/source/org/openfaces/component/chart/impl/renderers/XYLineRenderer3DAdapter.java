@@ -16,14 +16,61 @@ import org.jfree.chart.renderer.xy.XYLine3DRenderer;
 import org.jfree.data.xy.XYDataset;
 import org.openfaces.component.chart.LineChartView;
 
+import java.awt.*;
+
 /**
  * @author Dmitry Pikhulya
  */
-public class XYLineRenderer3DAdapter extends XYLine3DRenderer implements XYRendererAdapter, Chart3DRendererAdapter {
+public class XYLineRenderer3DAdapter extends XYLine3DRenderer implements XYRendererAdapter, Chart3DRendererAdapter, CustomizedRenderer  {
+    private ItemsRenderer delegate;
+
     public XYLineRenderer3DAdapter(LineChartView chartView, XYDataset dataSet) {
+        delegate = new ItemsRenderer();
         ChartRendering.setupSeriesColors(chartView, this);
 
         ChartRendering.processXYLineAndShapeRendererProperties(this, dataSet, chartView);
     }
 
+
+    @Override
+    public Paint getItemOutlinePaint(int row, int column) {
+        final Paint itemOutlinePaint = delegate.getItemOutlinePaint(row, column);
+        if (itemOutlinePaint != null) {
+            return itemOutlinePaint;
+        }
+
+        return super.getItemOutlinePaint(row, column);
+    }
+
+    @Override
+    public Stroke getItemOutlineStroke(int row, int column) {
+        final Stroke outlineStroke = delegate.getItemOutlineStroke(row, column);
+        if (outlineStroke != null) {
+            return outlineStroke;
+        }
+
+        return super.getItemOutlineStroke(row, column);
+    }
+
+    @Override
+    public Paint getItemPaint(int row, int column) {
+        final Paint itemPaint = delegate.getItemPaint(row, column);
+        if (itemPaint != null) {
+            return itemPaint;
+        }
+
+        return super.getItemPaint(row, column);
+    }
+
+    public void setItemOutlinePaint(int row, int column, Paint paint) {
+        delegate.setItemOutlinePaint(row, column, paint);
+    }
+
+    public void setItemOutlineStroke(int row, int column, Stroke stroke) {
+        delegate.setItemOutlineStroke(row, column, stroke);
+    }
+
+    public void setItemPaint(int row, int column, Paint paint) {
+        delegate.setItemPaint(row, column, paint);
+    }
 }

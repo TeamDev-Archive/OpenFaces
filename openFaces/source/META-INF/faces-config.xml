@@ -753,6 +753,11 @@
     <component-type>org.openfaces.ChartPopup</component-type>
     <component-class>org.openfaces.component.chart.ChartPopup</component-class>
   </component>
+
+  <component>
+    <component-type>org.openfaces.ChartSelection</component-type>
+    <component-class>org.openfaces.component.chart.ChartSelection</component-class>
+  </component>
   <render-kit>
     <renderer>
       <component-family>org.openfaces.DataTable</component-family>

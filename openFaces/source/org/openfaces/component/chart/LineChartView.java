@@ -155,6 +155,10 @@ public class LineChartView extends GridChartView {
             ((AreaFillRenderer) renderer).setLineAreaFill(getLineAreaFill());
         }
 
+        if (getChart().getChartSelection() != null && !this.shapesVisible) {
+            throw new IllegalStateException("Chart selection is unsupported with disabled shapes.");
+        }
+
         final boolean fillPaintsSpecified = getFillPaints() != null && !getFillPaints().isEmpty();
         final boolean strokesSpecified = getLineStyles() != null && !getLineStyles().isEmpty();
         final boolean outlinesSpecified = getOutlines() != null && !getOutlines().isEmpty();
@@ -217,6 +221,10 @@ public class LineChartView extends GridChartView {
         if (renderer instanceof AreaFillRenderer) {
             ((AreaFillRenderer) renderer).setBackgroundPaint(getBackgroundPaint());
             ((AreaFillRenderer) renderer).setLineAreaFill(getLineAreaFill());
+        }
+
+        if (getChart().getChartSelection() != null && !this.shapesVisible) {
+            throw new IllegalStateException("Chart selection is unsupported with disabled shapes.");
         }
 
         final boolean fillPaintsSpecified = getFillPaints() != null && !getFillPaints().isEmpty();

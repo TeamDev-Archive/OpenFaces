@@ -109,6 +109,7 @@ public class ChartInfoUtil {
             Comparable seriesKey = ds.getRowKey(en.getSeries());
             Comparable tupleKey = ds.getColumnKey(en.getCategoryIndex());
             Object tupleValue = ds.getValue(seriesKey, tupleKey);
+            info.setIndex(en.getCategoryIndex());
             info.setKey(tupleKey);
             info.setValue(tupleValue);
             info.getSeries().setKey(seriesKey);
@@ -125,7 +126,7 @@ public class ChartInfoUtil {
         GridPointInfo info = new GridPointInfoImpl();
         info.setSeries(new SeriesInfoImpl());
         info.getSeries().setIndex(en.getSeriesIndex());
-
+        info.setIndex(en.getItem());
         ModelInfo modelInfo = new ModelInfo(model);
         if (!modelInfo.isDataEmpty()) {
             if (modelInfo.getModelType() == ModelType.Date) {

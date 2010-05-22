@@ -38,6 +38,7 @@ import org.openfaces.component.chart.impl.helpers.CategoryAxis3DAdapter;
 import org.openfaces.component.chart.impl.helpers.CategoryAxisAdapter;
 import org.openfaces.component.chart.impl.helpers.NumberAxis3DAdapter;
 import org.openfaces.component.chart.impl.helpers.NumberAxisAdapter;
+import org.openfaces.component.chart.impl.helpers.SelectionUtil;
 import org.openfaces.component.chart.impl.renderers.AreaFillRenderer;
 
 import java.awt.*;
@@ -97,6 +98,7 @@ public class GridCategoryPlotAdapter extends CategoryPlot {
         PlotUtil.setupGridLinesProperties(chartView, this, ds);
         setupTooltips(chartView, renderer);
         setupUrls(chartView, renderer);
+        SelectionUtil.setupSelectionHighlighting(this, chart, chartView);
     }
 
     @Override
@@ -146,7 +148,7 @@ public class GridCategoryPlotAdapter extends CategoryPlot {
                                CategoryItemRenderer renderer, CategoryAxis domainAxis, ValueAxis rangeAxis,
                                CategoryDataset currentDataset, int row, int columnCount) {
         int passCount = renderer.getPassCount();
-        
+
         for (int pass = 0; pass < passCount; pass++) {
             if (getColumnRenderingOrder() == SortOrder.ASCENDING) {
                 for (int column = 0; column < columnCount; column++) {
@@ -197,5 +199,4 @@ public class GridCategoryPlotAdapter extends CategoryPlot {
             renderer.setItemURLGenerator(new DynamicCategoryGenerator(chartView, chartView.getDynamicUrl()));
         }
     }
-
 }

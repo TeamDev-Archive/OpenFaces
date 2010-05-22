@@ -17,7 +17,7 @@ O$.ChartMenu = {
 
     chartMenu._chart._download = function() {
       var paramsString = "download=true";
-      var url = O$(chartMenu._chart.id + "--img").src;
+      var url = O$(this.id + ":img").src;
       var params = paramsString.split('&');
       var inputs = '';
 

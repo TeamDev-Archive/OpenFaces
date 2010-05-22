@@ -39,7 +39,8 @@ import java.util.Collection;
 /**
  * @author Eugene Goncharov
  */
-public class LineAreaFillRenderer extends LineAndShapeRenderer implements AreaFillRenderer {
+public class LineAreaFillRenderer extends LineAndShapeRenderer implements AreaFillRenderer, CustomizedRenderer  {
+    private ItemsRenderer delegate;
 
     /**
      * A state object used by this renderer.
@@ -90,6 +91,7 @@ public class LineAreaFillRenderer extends LineAndShapeRenderer implements AreaFi
         super(true, true);
         this.drawFilledArea = true;
         this.endType = AreaRendererEndType.TAPER;
+        delegate = new ItemsRenderer();
 
         ChartRendering.setupSeriesColors(chartView, this);
         ChartRendering.processLineAndShapeRendererProperties(this, dataSet, chartView);
@@ -487,6 +489,49 @@ public class LineAreaFillRenderer extends LineAndShapeRenderer implements AreaFi
      */
     protected boolean isShapesAndLabelsPass(int pass) {
         return pass == 1;
+    }
+
+
+    @Override
+    public Paint getItemOutlinePaint(int row, int column) {
+        final Paint itemOutlinePaint = delegate.getItemOutlinePaint(row, column);
+        if (itemOutlinePaint != null) {
+            return itemOutlinePaint;
+        }
+
+        return super.getItemOutlinePaint(row, column);
+    }
+
+    @Override
+    public Stroke getItemOutlineStroke(int row, int column) {
+        final Stroke outlineStroke = delegate.getItemOutlineStroke(row, column);
+        if (outlineStroke != null) {
+            return outlineStroke;
+        }
+
+        return super.getItemOutlineStroke(row, column);
+    }
+
+    @Override
+    public Paint getItemPaint(int row, int column) {
+        final Paint itemPaint = delegate.getItemPaint(row, column);
+        if (itemPaint != null) {
+            return itemPaint;
+        }
+
+        return super.getItemPaint(row, column);
+    }
+
+    public void setItemOutlinePaint(int row, int column, Paint paint) {
+        delegate.setItemOutlinePaint(row, column, paint);
+    }
+
+    public void setItemOutlineStroke(int row, int column, Stroke stroke) {
+        delegate.setItemOutlineStroke(row, column, stroke);
+    }
+
+    public void setItemPaint(int row, int column, Paint paint) {
+        delegate.setItemPaint(row, column, paint);
     }
 
     /**

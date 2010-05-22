@@ -11,9 +11,8 @@
  */
 package org.openfaces.component.chart;
 
-import org.openfaces.component.OUIComponentBase;
 import org.openfaces.component.OUIData;
-import org.openfaces.component.OUIObjectIterator;
+import org.openfaces.component.OUIObjectIteratorBase;
 import org.openfaces.component.chart.impl.JfcRenderHints;
 import org.openfaces.renderkit.chart.ChartDefaultStyle;
 import org.openfaces.renderkit.cssparser.CSSUtil;
@@ -25,9 +24,7 @@ import org.openfaces.util.ValueBindings;
 
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
-import javax.faces.render.Renderer;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -41,7 +38,7 @@ import java.util.Map;
  *
  * @author Ekaterina Shliakhovetskaya
  */
-public class Chart extends OUIComponentBase implements StyledComponent, OUIObjectIterator, NamingContainer {
+public class Chart extends OUIObjectIteratorBase implements StyledComponent, NamingContainer {
     public static final String COMPONENT_TYPE = "org.openfaces.Chart";
     public static final String COMPONENT_FAMILY = "org.openfaces.Chart";
     public static final StyledComponent DEFAULT_CHART_STYLE = new ChartDefaultStyle();
@@ -65,9 +62,6 @@ public class Chart extends OUIComponentBase implements StyledComponent, OUIObjec
     private Object initialDescendantComponentState = null;
     private Map<String, Object> descendantComponentState = new HashMap<String, Object>();
     private int entityIndex = -1;
-    private int selectedEntityIndex = -1;
-
-    private String cachedClientId;
 
     public Chart() {
         setRendererType(ChartTag.RENDERER_TYPE);
@@ -212,6 +206,10 @@ public class Chart extends OUIComponentBase implements StyledComponent, OUIObjec
         return Components.findChildWithClass(this, ChartMenu.class, "<o:chartMenu>");
     }
 
+    public ChartSelection getChartSelection() {
+        return Components.findChildWithClass(this, ChartSelection.class, "<o:chartSelection>");
+    }
+
     @Override
     public void encodeBegin(FacesContext context) throws IOException {
         setEntityIndex(-1);
@@ -286,14 +284,6 @@ public class Chart extends OUIComponentBase implements StyledComponent, OUIObjec
         }
     }
 
-    public int getSelectedEntityIndex() {
-        return selectedEntityIndex;
-    }
-
-    public void setSelectedEntityIndex(int selectedEntityIndex) {
-        this.selectedEntityIndex = selectedEntityIndex;
-    }
-
     public void setObjectId(String objectId) {
         if (objectId != null) {
             setEntityIndex(Integer.valueOf(objectId));
@@ -303,53 +293,10 @@ public class Chart extends OUIComponentBase implements StyledComponent, OUIObjec
     }
 
     public String getObjectId() {
-        if (getEntityIndex() != null)
+        if (getEntityIndex() != -1)
             return getEntityIndex().toString();
         else
             return null;
-    }
-
-    @Override
-    public void setId(String id) {
-        super.setId(id);
-        cachedClientId = null;
-    }
-
-    @Override
-    public String getClientId(FacesContext context) {
-        String clientId = getStandardClientId(context);
-        int index = getEntityIndex();
-        String suffix = index != -1 ? String.valueOf(index) : null;
-        if (suffix == null)
-            return clientId;
-        else
-            return clientId + OBJECT_ID_SEPARATOR + suffix;
-    }
-
-    private String getStandardClientId(FacesContext context) {
-        if (cachedClientId != null)
-            return cachedClientId;
-
-        String id = getId();
-        if (id == null) {
-            UIViewRoot viewRoot = context.getViewRoot();
-            id = viewRoot.createUniqueId();
-            setId(id);
-        }
-
-        UIComponent namingContainer = getParent();
-        while (namingContainer != null && !(namingContainer instanceof NamingContainer))
-            namingContainer = namingContainer.getParent();
-
-        String parentId = namingContainer != null ? namingContainer.getClientId(context) + NamingContainer.SEPARATOR_CHAR : "";
-        String clientId = parentId + id;
-
-        Renderer renderer = getRenderer(context);
-        if (renderer != null)
-            clientId = renderer.convertClientId(context, clientId);
-
-        cachedClientId = clientId;
-        return clientId;
     }
 
     @Override
@@ -367,7 +314,6 @@ public class Chart extends OUIComponentBase implements StyledComponent, OUIObjec
                 imageBytes,
                 saveAttachedState(facesContext, renderHints),
                 saveAttachedState(facesContext, timePeriodPrecision),
-                selectedEntityIndex
         };
     }
 
@@ -385,7 +331,6 @@ public class Chart extends OUIComponentBase implements StyledComponent, OUIObjec
         imageBytes = (byte[]) state[i++];
         renderHints = (JfcRenderHints) restoreAttachedState(facesContext, state[i++]);
         timePeriodPrecision = (TimePeriod) restoreAttachedState(facesContext, state[i++]);
-        selectedEntityIndex = (Integer) state[i++];
     }
 
     public TimePeriod getTimePeriodPrecision() {
