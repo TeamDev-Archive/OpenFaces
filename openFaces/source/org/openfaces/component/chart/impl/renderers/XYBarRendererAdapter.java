@@ -16,50 +16,22 @@ import org.openfaces.component.chart.BarChartView;
 
 import java.awt.*;
 
-/**
- * @author Ekaterina Shliakhovetskaya
- */
-public class XYBarRendererAdapter extends XYBarRenderer implements CustomizedRenderer  {
+public class XYBarRendererAdapter extends XYBarRenderer implements CustomizedRenderer {
     private ItemsRenderer delegate;
-
-    /**
-     * The shadow paint.
-     */
     private transient Paint shadowPaint;
-
 
     public XYBarRendererAdapter(BarChartView chartView) {
         delegate = new ItemsRenderer();
         ChartRendering.setupSeriesColors(chartView, this);
     }
 
-    /**
-     * Returns the shadow paint.
-     *
-     * @return The shadow paint.
-     * @see #setShadowPaint(java.awt.Paint)
-     * @since 1.0.11
-     */
     public Paint getShadowPaint() {
-        return this.shadowPaint;
+        return shadowPaint;
     }
 
-    /**
-     * Sets the shadow paint and sends a {@link org.jfree.chart.event.RendererChangeEvent} to all
-     * registered listeners.
-     *
-     * @param paint the paint (<code>null</code> not permitted).
-     * @see #getShadowPaint()
-     * @since 1.0.11
-     */
     public void setShadowPaint(Paint paint) {
-        if (paint == null) {
-            throw new IllegalArgumentException("Null 'paint' argument.");
-        }
         this.shadowPaint = paint;
-        fireChangeEvent();
     }
-
 
     @Override
     public Paint getItemOutlinePaint(int row, int column) {
