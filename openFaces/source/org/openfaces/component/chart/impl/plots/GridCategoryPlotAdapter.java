@@ -103,76 +103,77 @@ public class GridCategoryPlotAdapter extends CategoryPlot {
 
     @Override
     public boolean render(Graphics2D g2, Rectangle2D dataArea, int index,
-                          PlotRenderingInfo info, CategoryCrosshairState crosshairState) {
+                          PlotRenderingInfo info, CategoryCrosshairState crossHairState) {
         final boolean customRenderingModeEnabled = getRenderer() != null && getRenderer() instanceof AreaFillRenderer;
 
         if (!customRenderingModeEnabled) {
-            return super.render(g2, dataArea, index, info, crosshairState);
+            return super.render(g2, dataArea, index, info, crossHairState);
         } else {
-            boolean foundData = false;
-            setRowRenderingOrder(SortOrder.DESCENDING);
-            CategoryDataset currentDataset = getDataset(index);
-            CategoryItemRenderer renderer = getRenderer(index);
-            CategoryAxis domainAxis = getDomainAxisForDataset(index);
+            CategoryItemRenderer categoryItemRenderer = getRenderer(index);
+            CategoryDataset categoryDataset = getDataset(index);
 
-            ValueAxis rangeAxis = getRangeAxisForDataset(index);
-            boolean hasData = !DatasetUtilities.isEmptyOrNull(currentDataset);
+            boolean isDataSetNotEmpty = !DatasetUtilities.isEmptyOrNull(categoryDataset);
+            boolean isAscendingRowOrdering = getRowRenderingOrder() == SortOrder.ASCENDING;
+            boolean isRendered = false;
 
-            if (hasData && renderer != null) {
-                foundData = true;
-                CategoryItemRendererState state = renderer.initialise(g2, dataArea,
-                        this, index, info);
-                state.setCrosshairState(crosshairState);
-                int columnCount = currentDataset.getColumnCount();
-                int rowCount = currentDataset.getRowCount();
+            if (isDataSetNotEmpty && categoryItemRenderer != null) {
+                CategoryItemRendererState rendererState = categoryItemRenderer.initialise(g2, dataArea, this, index, info);
+                rendererState.setCrosshairState(crossHairState);
+                int totalRows = categoryDataset.getRowCount();
 
-                if (getRowRenderingOrder() == SortOrder.ASCENDING) {
-                    for (int row = 0; row < rowCount; row++) {
-                        renderColumns(g2, state, dataArea, renderer, domainAxis, rangeAxis,
-                                currentDataset, row, columnCount);
+                if (isAscendingRowOrdering) {
+                    for (int currentRowIndex = 0; currentRowIndex < totalRows; currentRowIndex++) {
+                        renderColumns(g2, rendererState, dataArea, categoryItemRenderer, categoryDataset,
+                                index, currentRowIndex);
                     }
                 } else {
-                    for (int row = rowCount - 1; row >= 0; row--) {
-                        renderColumns(g2, state, dataArea, renderer, domainAxis, rangeAxis,
-                                currentDataset, row, columnCount);
+                    for (int currentRowIndex = totalRows - 1; currentRowIndex >= 0; currentRowIndex--) {
+                        renderColumns(g2, rendererState, dataArea, categoryItemRenderer, categoryDataset,
+                                index, currentRowIndex);
                     }
                 }
-
+                isRendered = true;
             }
 
-            return foundData;
+            return isRendered;
         }
     }
 
     private void renderColumns(Graphics2D g2, CategoryItemRendererState state, Rectangle2D dataArea,
-                               CategoryItemRenderer renderer, CategoryAxis domainAxis, ValueAxis rangeAxis,
-                               CategoryDataset currentDataset, int row, int columnCount) {
-        int passCount = renderer.getPassCount();
+                               CategoryItemRenderer renderer, CategoryDataset currentDataSet, int index, int row) {
+        boolean isAscendingColumnOrder = getColumnRenderingOrder() == SortOrder.ASCENDING;
+        CategoryAxis categoryAxis = getDomainAxisForDataset(index);
+        ValueAxis valueAxis = getRangeAxisForDataset(index);
+        int totalRendererPasses = renderer.getPassCount();
+        int totalColumns = currentDataSet.getColumnCount();
 
-        for (int pass = 0; pass < passCount; pass++) {
-            if (getColumnRenderingOrder() == SortOrder.ASCENDING) {
-                for (int column = 0; column < columnCount; column++) {
-                    renderer.drawItem(g2, state, dataArea, this,
-                            domainAxis, rangeAxis, currentDataset,
-                            row, column, pass);
-
-                    if (column == columnCount - 1) {
-                        ((AreaFillRenderer) renderer).completePass(g2, state, dataArea, this,
-                                domainAxis, rangeAxis, currentDataset, row, pass);
-                    }
+        for (int currentPassIndex = 0; currentPassIndex < totalRendererPasses; currentPassIndex++) {
+            if (isAscendingColumnOrder) {
+                for (int columnIndex = 0; columnIndex < totalColumns; columnIndex++) {
+                    final boolean isLastColumn = columnIndex == totalColumns - 1;
+                    renderColumn(g2, state, dataArea, renderer, currentDataSet, categoryAxis, valueAxis,
+                            row, currentPassIndex, columnIndex, isLastColumn);
                 }
             } else {
-                for (int column = columnCount - 1; column >= 0; column--) {
-                    renderer.drawItem(g2, state, dataArea, this,
-                            domainAxis, rangeAxis, currentDataset,
-                            row, column, pass);
-
-                    if (column == 0) {
-                        ((AreaFillRenderer) renderer).completePass(g2, state, dataArea, this,
-                                domainAxis, rangeAxis, currentDataset, row, pass);
-                    }
+                for (int columnIndex = totalColumns - 1; columnIndex >= 0; columnIndex--) {
+                    final boolean isLastColumn = columnIndex == 0;
+                    renderColumn(g2, state, dataArea, renderer, currentDataSet, categoryAxis, valueAxis,
+                            row, currentPassIndex, columnIndex, isLastColumn);
                 }
             }
+        }
+    }
+
+    private void renderColumn(Graphics2D g2, CategoryItemRendererState state, Rectangle2D dataArea,
+                              CategoryItemRenderer renderer, CategoryDataset currentDataSet,
+                              CategoryAxis categoryAxis, ValueAxis valueAxis,
+                              int row, int currentPassIndex, int columnIndex, boolean lastColumn) {
+        renderer.drawItem(g2, state, dataArea, this, categoryAxis, valueAxis, currentDataSet,
+                row, columnIndex, currentPassIndex);
+
+        if (lastColumn) {
+            ((AreaFillRenderer) renderer).completePass(g2, state, dataArea, this,
+                    categoryAxis, valueAxis, currentDataSet, row, currentPassIndex);
         }
     }
 

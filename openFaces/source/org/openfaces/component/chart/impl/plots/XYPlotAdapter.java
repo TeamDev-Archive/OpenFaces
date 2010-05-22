@@ -98,87 +98,91 @@ public abstract class XYPlotAdapter extends XYPlot {
         if (!customRenderingModeEnabled) {
             return super.render(g2, dataArea, index, info, crosshairState);
         } else {
-            boolean foundData = false;
-            XYDataset dataset = getDataset(index);
-            if (!DatasetUtilities.isEmptyOrNull(dataset)) {
-                foundData = true;
-                ValueAxis xAxis = getDomainAxisForDataset(index);
-                ValueAxis yAxis = getRangeAxisForDataset(index);
-                if (xAxis == null || yAxis == null) {
-                    return foundData;  // can't render anything without axes
-                }
-                XYItemRenderer renderer = getRenderer(index);
-                if (renderer == null) {
-                    renderer = getRenderer();
-                    if (renderer == null) { // no default renderer available
-                        return foundData;
-                    }
+            XYDataset xyDataset = getDataset(index);
+            final boolean isDataSetNotEmpty = !DatasetUtilities.isEmptyOrNull(xyDataset);
+            boolean isRendered = false;
+
+            if (isDataSetNotEmpty) {
+                ValueAxis xValueAxis = getDomainAxisForDataset(index);
+                ValueAxis yValueAxis = getRangeAxisForDataset(index);
+                XYItemRenderer xyItemRenderer = findRenderer(index);
+
+                if (isCanBeRendered(xValueAxis, yValueAxis, xyItemRenderer)) {
+                    return isRendered;
                 }
 
-                XYItemRendererState state = renderer.initialise(g2, dataArea, this,
-                        dataset, info);
-                int passCount = renderer.getPassCount();
+                XYItemRendererState state = xyItemRenderer.initialise(g2, dataArea, this, xyDataset, info);
+                boolean isReverseSeriesRenderingOrder = getSeriesRenderingOrder() == SeriesRenderingOrder.REVERSE;
+                int totalRendererPasses = xyItemRenderer.getPassCount();
+                int totalSeries = xyDataset.getSeriesCount();
 
-                SeriesRenderingOrder seriesOrder = getSeriesRenderingOrder();
-                if (seriesOrder == SeriesRenderingOrder.REVERSE) {
-                    //render series in reverse order
-                    int seriesCount = dataset.getSeriesCount();
-                    for (int series = seriesCount - 1; series >= 0; series--) {
-
-                        for (int pass = 0; pass < passCount; pass++) {
-                            int firstItem = 0;
-                            int lastItem = dataset.getItemCount(series) - 1;
-                            if (lastItem == -1) {
-                                continue;
-                            }
-                            if (state.getProcessVisibleItemsOnly()) {
-                                int[] itemBounds = RendererUtilities.findLiveItems(
-                                        dataset, series, xAxis.getLowerBound(),
-                                        xAxis.getUpperBound());
-                                firstItem = Math.max(itemBounds[0] - 1, 0);
-                                lastItem = Math.min(itemBounds[1] + 1, lastItem);
-                            }
-                            state.startSeriesPass(dataset, series, firstItem,
-                                    lastItem, pass, passCount);
-                            for (int item = firstItem; item <= lastItem; item++) {
-                                renderer.drawItem(g2, state, dataArea, info,
-                                        this, xAxis, yAxis, dataset, series, item,
-                                        crosshairState, pass);
-                            }
-                            state.endSeriesPass(dataset, series, firstItem,
-                                    lastItem, pass, passCount);
-                        }
+                if (isReverseSeriesRenderingOrder) {
+                    for (int seriesIndex = totalSeries - 1; seriesIndex >= 0; seriesIndex--) {
+                        renderItems(g2, dataArea, info, crosshairState, xyDataset, xValueAxis, yValueAxis,
+                                xyItemRenderer, state, totalRendererPasses,
+                                seriesIndex);
                     }
                 } else {
-                    //render series in forward order
-                    int seriesCount = dataset.getSeriesCount();
-                    for (int series = 0; series < seriesCount; series++) {
-
-                        for (int pass = 0; pass < passCount; pass++) {
-                            int firstItem = 0;
-                            int lastItem = dataset.getItemCount(series) - 1;
-                            if (state.getProcessVisibleItemsOnly()) {
-                                int[] itemBounds = RendererUtilities.findLiveItems(
-                                        dataset, series, xAxis.getLowerBound(),
-                                        xAxis.getUpperBound());
-                                firstItem = Math.max(itemBounds[0] - 1, 0);
-                                lastItem = Math.min(itemBounds[1] + 1, lastItem);
-                            }
-                            state.startSeriesPass(dataset, series, firstItem,
-                                    lastItem, pass, passCount);
-                            for (int item = firstItem; item <= lastItem; item++) {
-                                renderer.drawItem(g2, state, dataArea, info,
-                                        this, xAxis, yAxis, dataset, series, item,
-                                        crosshairState, pass);
-                            }
-                            state.endSeriesPass(dataset, series, firstItem,
-                                    lastItem, pass, passCount);
-                        }
+                    for (int seriesIndex = 0; seriesIndex < totalSeries; seriesIndex++) {
+                        renderItems(g2, dataArea, info, crosshairState, xyDataset, xValueAxis, yValueAxis,
+                                xyItemRenderer, state, totalRendererPasses,
+                                seriesIndex);
                     }
                 }
+
+                isRendered = true;
             }
-            return foundData;
+
+            return isRendered;
         }
+    }
+
+    private void renderItems(Graphics2D g2, Rectangle2D dataArea, PlotRenderingInfo info, CrosshairState crosshairState,
+                             XYDataset xyDataset, ValueAxis xValueAxis, ValueAxis yValueAxis,
+                             XYItemRenderer xyItemRenderer, XYItemRendererState state,
+                             int totalRendererPasses, int seriesIndex) {
+        for (int currentPassIndex = 0; currentPassIndex < totalRendererPasses; currentPassIndex++) {
+            if (xyDataset.getItemCount(seriesIndex) == 0) {
+                return;
+            }
+
+            int firstItemIndex = 0;
+            int lastItemIndex = xyDataset.getItemCount(seriesIndex) - 1;
+
+            if (state.getProcessVisibleItemsOnly()) {
+                final double xLowerBound = xValueAxis.getLowerBound();
+                final double xUpperBound = xValueAxis.getUpperBound();
+                int[] itemBounds = RendererUtilities.findLiveItems(xyDataset, seriesIndex, xLowerBound, xUpperBound);
+                final int firstBoundaryIndex = itemBounds[0];
+                final int lastBoundaryIndex = itemBounds[1];
+                firstItemIndex = Math.max(firstBoundaryIndex - 1, 0);
+                lastItemIndex = Math.min(lastBoundaryIndex + 1, lastItemIndex);
+            }
+
+            state.startSeriesPass(xyDataset, seriesIndex, firstItemIndex,
+                    lastItemIndex, currentPassIndex, totalRendererPasses);
+
+            for (int item = firstItemIndex; item <= lastItemIndex; item++) {
+                xyItemRenderer.drawItem(g2, state, dataArea, info,
+                        this, xValueAxis, yValueAxis, xyDataset, seriesIndex, item,
+                        crosshairState, currentPassIndex);
+            }
+
+            state.endSeriesPass(xyDataset, seriesIndex, firstItemIndex,
+                    lastItemIndex, currentPassIndex, totalRendererPasses);
+        }
+    }
+
+    private boolean isCanBeRendered(ValueAxis xValueAxis, ValueAxis yValueAxis, XYItemRenderer xyItemRenderer) {
+        return xValueAxis == null || yValueAxis == null || xyItemRenderer == null;
+    }
+
+    private XYItemRenderer findRenderer(int index) {
+        XYItemRenderer renderer = getRenderer(index);
+        if (renderer == null) {
+            renderer = getRenderer();
+        }
+        return renderer;
     }
 
     abstract ValueAxis getDomainAxisAdapter();
