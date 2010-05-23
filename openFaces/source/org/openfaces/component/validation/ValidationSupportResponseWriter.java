@@ -28,6 +28,7 @@ import javax.faces.component.UIForm;
 import javax.faces.component.UIMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.context.ResponseWriterWrapper;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -41,7 +42,7 @@ import java.util.Set;
 /**
  * @author Pavel Kaplin
  */
-public class ValidationSupportResponseWriter extends ResponseWriter {
+public class ValidationSupportResponseWriter extends ResponseWriterWrapper {
     private static final String[] ELEMENTS_ALLOWED_RENDER_AFTER_THEIR_START = new String[]{
             "td", "tr", "table", "colgroup", "select", "textarea", "option", "script", "optgroup", "map", "fieldset", "frameset"
     };
@@ -53,7 +54,7 @@ public class ValidationSupportResponseWriter extends ResponseWriter {
             "input", "textarea", "select"
     };
 
-    private ResponseWriter writer;
+    private ResponseWriter wrapped;
     private StringWriter validationScriptWriter;
     private List<String> validationScripts;
     private Set<String> formsHaveOnSubmitRendered;
@@ -64,12 +65,17 @@ public class ValidationSupportResponseWriter extends ResponseWriter {
     private ValidationProcessor validationProcessor;
 
     public ValidationSupportResponseWriter(ResponseWriter writer) {
-        this.writer = writer;
+        this.wrapped = writer;
         formsHaveOnSubmitRendered = new HashSet<String>();
     }
 
+    @Override
+    protected ResponseWriter getWrapped() {
+        return wrapped;
+    }
+
     public ValidationSupportResponseWriter(ResponseWriter writer, ValidationSupportResponseWriter parent) {
-        this.writer = writer;
+        this.wrapped = writer;
         validationScriptWriter = parent.validationScriptWriter;
         validationScripts = parent.validationScripts;
         formsHaveOnSubmitRendered = parent.formsHaveOnSubmitRendered;
@@ -77,37 +83,24 @@ public class ValidationSupportResponseWriter extends ResponseWriter {
         element = parent.element;
     }
 
-    public String getContentType() {
-        return writer.getContentType();
-    }
-
-    public String getCharacterEncoding() {
-        return writer.getCharacterEncoding();
-    }
-
     public void write(char cbuf[], int off, int len) throws IOException {
         flushValidationScriptInElement();
-        writer.write(cbuf, off, len);
+        wrapped.write(cbuf, off, len);
     }
 
     public void flush() throws IOException {
         flushValidationScriptInElement();
-        writer.flush();
+        wrapped.flush();
     }
 
     public void close() throws IOException {
         flushValidationScriptInElement();
-        writer.close();
-    }
-
-    public void startDocument() throws IOException {
-        writer.startDocument();
-
+        wrapped.close();
     }
 
     public void endDocument() throws IOException {
         flushValidationScriptInElement();
-        writer.endDocument();
+        wrapped.endDocument();
     }
 
     public void startElement(String name, UIComponent component) throws IOException {
@@ -144,19 +137,19 @@ public class ValidationSupportResponseWriter extends ResponseWriter {
                 }
             }
         }
-        writer.startElement(name, component);
+        wrapped.startElement(name, component);
         element = name;
     }
 
     public void endElement(String name) throws IOException {
         renderClientIdIfNecessary();
-        writer.endElement(name);
+        wrapped.endElement(name);
         element = null;
         flushValidationScriptAfterEnd(name);
     }
 
     public void writeAttribute(String name, Object value, String property) throws IOException {
-        writer.writeAttribute(name, value, property);
+        wrapped.writeAttribute(name, value, property);
         if ("id".equals(name) && clientId != null && clientId.equals(value)) {
             clientId = null;
             clientIdRendered = true;
@@ -164,7 +157,7 @@ public class ValidationSupportResponseWriter extends ResponseWriter {
     }
 
     public void writeURIAttribute(String name, Object value, String property) throws IOException {
-        writer.writeURIAttribute(name, value, property);
+        wrapped.writeURIAttribute(name, value, property);
         if ("id".equals(name) && clientId != null && clientId.equals(value)) {
             clientId = null;
             clientIdRendered = true;
@@ -173,21 +166,21 @@ public class ValidationSupportResponseWriter extends ResponseWriter {
 
     public void writeComment(Object comment) throws IOException {
         flushValidationScriptInElement();
-        writer.writeComment(comment);
+        wrapped.writeComment(comment);
     }
 
     public void writeText(Object text, String property) throws IOException {
         flushValidationScriptInElement();
-        writer.writeText(text, property);
+        wrapped.writeText(text, property);
     }
 
     public void writeText(char[] text, int off, int len) throws IOException {
         flushValidationScriptInElement();
-        writer.writeText(text, off, len);
+        wrapped.writeText(text, off, len);
     }
 
     public ResponseWriter cloneWithWriter(Writer writer) {
-        return new ValidationSupportResponseWriter(this.writer.cloneWithWriter(writer), this);
+        return new ValidationSupportResponseWriter(this.wrapped.cloneWithWriter(writer), this);
     }
 
     private void flushValidationScriptInElement() throws IOException {
@@ -207,7 +200,7 @@ public class ValidationSupportResponseWriter extends ResponseWriter {
         if (isValidationScriptNotEmpty() && clientIdRendered) {
             String validationScript = validationScriptWriter.toString();
             putNewJSLinksInRenderedJsLinks();
-            writer.write(validationScript);
+            wrapped.write(validationScript);
             validationScriptWriter = null;
 
             validationScripts = null;
@@ -420,7 +413,7 @@ public class ValidationSupportResponseWriter extends ResponseWriter {
         try {
             // use original writer when writing js links to avoid recursive startElement...putNewJSLinksInRenderedJsLinks
             // call on this ValidationSupportResponseWriter
-            context.setResponseWriter(writer);
+            context.setResponseWriter(wrapped);
 
             List<String> renderedJsLinks = Resources.getRenderedJsLinks(context);
             for (String js : validationScripts) {
