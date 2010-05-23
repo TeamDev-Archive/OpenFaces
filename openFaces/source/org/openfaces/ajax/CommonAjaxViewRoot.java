@@ -17,21 +17,15 @@ import org.openfaces.component.OUIObjectIterator;
 import org.openfaces.component.ajax.AjaxSettings;
 import org.openfaces.component.ajax.DefaultSessionExpiration;
 import org.openfaces.component.ajax.SilentSessionExpiration;
-import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.util.AjaxLoadBundleComponent;
-import org.openfaces.event.AjaxActionEvent;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.AjaxPortionRenderer;
 import org.openfaces.util.*;
 
-import javax.el.ELContext;
-import javax.el.MethodExpression;
-import javax.el.MethodNotFoundException;
 import javax.faces.FacesException;
 import javax.faces.FactoryFinder;
 import javax.faces.application.StateManager;
-import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
 import javax.faces.component.UIForm;
@@ -40,7 +34,6 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.AbortProcessingException;
-import javax.faces.event.ActionEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.render.RenderKit;
@@ -72,10 +65,6 @@ public abstract class CommonAjaxViewRoot {
 
     private static final String PARAM_EXECUTE = "_of_execute";
     public static final String PARAM_EXECUTE_RENDERED_COMPONENTS = "_of_executeRenderedComponents";
-    private static final String PARAM_ACTION_COMPONENT = "_of_actionComponent";
-    private static final String PARAM_ACTION_LISTENER = "_of_actionListener";
-    private static final String PARAM_ACTION = "_of_action";
-    private static final String PARAM_IMMEDIATE = "_of_immediate";
     // a copy of org.apache.myfaces.shared_impl.renderkit.RendererUtils.SEQUENCE_PARAM
     private static final String MYFACES_SEQUENCE_PARAM = "jsf_sequence";
     public static final long MAX_PORTLET_PARALLEL_REQUEST_TIMEOUT = 20 * 1000;
@@ -314,7 +303,7 @@ public abstract class CommonAjaxViewRoot {
         UIComponent[] components = locateComponents(render, viewRoot, true, false);
         if (!extractSkipExecute(request))
             ajaxApplyRequestValues(context, components, viewRoot, execute, executeRenderedComponents);
-        if (Boolean.valueOf(request.getParameter(PARAM_IMMEDIATE))) {
+        if (Boolean.valueOf(request.getParameter(UtilPhaseListener.PARAM_IMMEDIATE))) {
             doProcessApplication(context);
         }
     }
@@ -417,44 +406,7 @@ public abstract class CommonAjaxViewRoot {
         UIViewRoot viewRoot = context.getViewRoot();
         assertChildren(viewRoot);
 
-        String listener = request.getParameter(PARAM_ACTION_LISTENER);
-        String action = request.getParameter(PARAM_ACTION);
-        String actionComponentId = request.getParameter(PARAM_ACTION_COMPONENT);
-        Log.log(context, "try invoke listener");
-        if (listener != null || action != null) {
-            ELContext elContext = context.getELContext();
-            UIComponent component = null;
-            if (actionComponentId != null)
-                component = findComponentById(viewRoot, actionComponentId, false, false, false);
-            if (component == null)
-                component = viewRoot;
-
-            Object result = null;
-            if (action != null) {
-                MethodExpression methodBinding = context.getApplication().getExpressionFactory().createMethodExpression(
-                        elContext, "#{" + action + "}", String.class, new Class[]{});
-                result = methodBinding.invoke(elContext, null);
-            }
-            if (listener != null) {
-                AjaxActionEvent event = new AjaxActionEvent(component);
-                event.setPhaseId(Boolean.valueOf(request.getParameter(PARAM_IMMEDIATE)) ? PhaseId.APPLY_REQUEST_VALUES : PhaseId.INVOKE_APPLICATION);
-                MethodExpression methodExpression = context.getApplication().getExpressionFactory().createMethodExpression(
-                        elContext, "#{" + listener + "}", void.class, new Class[]{ActionEvent.class});
-                try {
-                    methodExpression.getMethodInfo(elContext);
-                } catch (MethodNotFoundException e) {
-                    // both actionEvent and AjaxActionEvent parameter declarations are allowed
-                    methodExpression = context.getApplication().getExpressionFactory().createMethodExpression(
-                        elContext, "#{" + listener + "}", void.class, new Class[]{AjaxActionEvent.class});
-                }
-                methodExpression.invoke(elContext, new Object[]{event});
-                Object listenerResult = event.getAjaxResult();
-                if (listenerResult != null)
-                    result = listenerResult;
-            }
-            if (result != null)
-                AjaxRequest.getInstance().setAjaxResult(result);
-        }
+        String actionComponentId = UtilPhaseListener.processAjaxExecutePhase(context, request, viewRoot);
         // invoke application should be after notification listeners
         Log.log(context, "invoke listener finished");
         UIComponent[] components = locateComponents(render, viewRoot, false, false);
@@ -1365,118 +1317,7 @@ public abstract class CommonAjaxViewRoot {
                                           String id,
                                           boolean preProcessDecodesOnTables,
                                           boolean preRenderResponseOnTables) {
-        return findComponentById(parent, id, preProcessDecodesOnTables, preRenderResponseOnTables, true);
-    }
-
-    private UIComponent findComponentById(UIComponent parent,
-                                          String id,
-                                          boolean preProcessDecodesOnTables,
-                                          boolean preRenderResponseOnTables,
-                                          boolean checkComponentPresence) {
-        UIComponent componentByPath = findComponentByPath(parent, id, preProcessDecodesOnTables, preRenderResponseOnTables);
-        if (checkComponentPresence && componentByPath == null)
-            throw new FacesException("Component by id not found: " + id);
-        return componentByPath;
-    }
-
-    private UIComponent findComponentByPath(UIComponent parent,
-                                            String path,
-                                            boolean preProcessDecodesOnTables,
-                                            boolean preRenderResponseOnTables) {
-        while (true) {
-            if (path == null) {
-                return null;
-            }
-
-            int separator = path.indexOf(NamingContainer.SEPARATOR_CHAR, 1);
-            if (separator == -1)
-                return componentById(parent, path, true, preProcessDecodesOnTables, preRenderResponseOnTables);
-
-            String id = path.substring(0, separator);
-            UIComponent nextParent = componentById(parent, id, false, preProcessDecodesOnTables, preRenderResponseOnTables);
-            if (nextParent == null) {
-                return null;
-            }
-            parent = nextParent;
-            path = path.substring(separator + 1);
-        }
-    }
-
-    private UIComponent componentById(UIComponent parent, String id, boolean isLastComponentInPath,
-                                      boolean preProcessDecodesOnTables, boolean preRenderResponseOnTables) {
-        if (id.length() > 0 && (isNumberBasedId(id) || id.startsWith(":")) && parent instanceof AbstractTable) {
-            AbstractTable table = ((AbstractTable) parent);
-            if (!isLastComponentInPath) {
-                if (preProcessDecodesOnTables)
-                    table.invokeBeforeProcessDecodes(FacesContext.getCurrentInstance());
-                if (preRenderResponseOnTables) {
-                    table.invokeBeforeRenderResponse(FacesContext.getCurrentInstance());
-                    table.setRowIndex(-1); // make the succeeding setRowIndex call provide the just-read actual row data through request-scope variables
-                }
-
-                int rowIndex = table.getRowIndexByClientSuffix(id);
-                if (table.getRowIndex() == rowIndex) {
-                    // ensure row index setting will be run anew to ensure proper request-scope variable values
-                    table.setRowIndex(-1);
-                }
-                table.setRowIndex(rowIndex);
-            } else {
-                int rowIndex = table.getRowIndexByClientSuffix(id);
-                if (table.getRowIndex() == rowIndex) {
-                    // ensure row index setting will be run anew to ensure proper request-scope variable values
-                    table.setRowIndex(-1);
-                }
-                table.setRowIndex(rowIndex);
-            }
-            return table;
-        } else if (isNumberBasedId(id) && parent instanceof UIData) {
-            UIData grid = ((UIData) parent);
-            int rowIndex = Integer.parseInt(id);
-            grid.setRowIndex(rowIndex);
-            return grid;
-        } else if (id.charAt(0) == ':' && parent instanceof OUIObjectIterator) {
-            id = id.substring(1);
-            OUIObjectIterator iterator = (OUIObjectIterator) parent;
-            iterator.setObjectId(id);
-            return (UIComponent) iterator;
-        } else if (isNumberBasedId(id)) {
-            try {
-                Class clazz = Class.forName("com.sun.facelets.component.UIRepeat");
-                if (clazz.isInstance(parent)) {
-                    ReflectionUtil.invokeMethod("com.sun.facelets.component.UIRepeat", "setIndex",
-                            new Class[]{Integer.TYPE}, new Object[]{Integer.parseInt(id)}, parent);
-                    return parent;
-                }
-            } catch (ClassNotFoundException e) {
-                //do nothing - it's ok - not facelets environment
-            }
-
-        }
-        if (id.equals(parent.getId()))
-            return parent;
-
-        Iterator<UIComponent> iterator = parent.getFacetsAndChildren();
-        while (iterator.hasNext()) {
-            UIComponent child = iterator.next();
-            if (child instanceof NamingContainer) {
-                if (id.equals(child.getId()))
-                    return child;
-            } else {
-                UIComponent component = componentById(child, id,
-                        isLastComponentInPath, preProcessDecodesOnTables, preRenderResponseOnTables);
-                if (component != null)
-                    return component;
-            }
-        }
-        return null;
-    }
-
-    private boolean isNumberBasedId(String id) {
-        if (id == null || id.length() == 0)
-            return false;
-
-        char c = id.charAt(0);
-        return Character.isDigit(c);
+        return UtilPhaseListener.findComponentById(parent, id, preProcessDecodesOnTables, preRenderResponseOnTables, true);
     }
 
     private void writeState(FacesContext context, String clientId, Object state) throws IOException {

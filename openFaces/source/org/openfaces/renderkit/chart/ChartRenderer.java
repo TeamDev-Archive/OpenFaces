@@ -148,8 +148,7 @@ public class ChartRenderer extends RendererBase {
                 "onmousemove", "onmouseover", "onmouseout");
 
         dynamicImage.setImageType(ImageType.PNG);
-        dynamicImage.encodeBegin(facesContext);
-        dynamicImage.encodeEnd(facesContext);
+        dynamicImage.encodeAll(facesContext);
         if (map != null) {
             Resources.renderJSLinkIfNeeded(facesContext, Resources.getUtilJsURL(facesContext));
             Resources.renderJSLinkIfNeeded(facesContext, Resources.getInternalURL(facesContext, "chart/chartPopup.js"));
