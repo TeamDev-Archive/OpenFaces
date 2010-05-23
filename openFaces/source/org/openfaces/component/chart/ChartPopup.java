@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2010, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -15,8 +15,10 @@ import org.openfaces.component.LoadingMode;
 import org.openfaces.component.window.PopupLayer;
 import org.openfaces.util.ValueBindings;
 
+import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 
+@ResourceDependency(name="jsf.js", library="javax.faces")
 public class ChartPopup extends PopupLayer {
     public static final String COMPONENT_TYPE = "org.openfaces.ChartPopup";
     public static final String COMPONENT_FAMILY = "org.openfaces.ChartPopup";

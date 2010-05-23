@@ -22,6 +22,7 @@ import org.openfaces.util.ValueBindings;
 import javax.el.ELContext;
 import javax.el.MethodExpression;
 import javax.faces.FacesException;
+import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
@@ -33,8 +34,8 @@ import java.util.List;
 /**
  * @author Dmitry Pikhulya
  */
+@ResourceDependency(name = "jsf.js", library = "javax.faces")
 public abstract class MultiPageContainer extends OUIPanel {
-
     private Integer selectedIndex;
     private LoadingMode loadingMode;
     private MethodExpression selectionChangeListener;

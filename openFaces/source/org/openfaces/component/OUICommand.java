@@ -13,6 +13,7 @@ package org.openfaces.component;
 
 import org.openfaces.util.ValueBindings;
 
+import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UICommand;
 import javax.faces.context.FacesContext;
@@ -21,7 +22,10 @@ import java.util.Collections;
 /**
  * @author Dmitry Pikhulya
  */
-@ResourceDependency(name = "default.css", library = "openfaces/3_0")
+@ResourceDependencies({
+        @ResourceDependency(name = "default.css", library = "openfaces/3_0"),
+        @ResourceDependency(name="jsf.js", library="javax.faces")
+})
 public abstract class OUICommand extends UICommand implements OUIComponent {
     private Iterable<String> execute;
     private Iterable<String> render;

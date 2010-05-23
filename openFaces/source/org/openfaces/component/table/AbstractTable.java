@@ -24,6 +24,7 @@ import org.openfaces.util.ValueBindings;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
+import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.ActionSource;
 import javax.faces.component.EditableValueHolder;
@@ -39,15 +40,18 @@ import javax.faces.render.Renderer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 
 /**
  * @author Dmitry Pikhulya
  */
 @ListenerFor(systemEventClass = PostRestoreStateEvent.class)
-@ResourceDependency(name = "default.css", library = "openfaces/3_0")
+@ResourceDependencies({
+        @ResourceDependency(name = "default.css", library = "openfaces/3_0"),
+        @ResourceDependency(name = "jsf.js", library = "javax.faces")
+})
 public abstract class AbstractTable extends OUIData implements TableStyles, FilterableComponent {
     /*
    Implementation notes:

@@ -37,26 +37,27 @@ public class OpenFacesApplication extends ApplicationWrapper {
 
     @Override
     public void setViewHandler(ViewHandler viewHandler) {
-        final String viewHandlerClass = viewHandler.getClass().getName();
-        if (viewHandlers.contains(viewHandlerClass) &&
-                !viewHandlerClass.equalsIgnoreCase("org.ajax4jsf.application.AjaxViewHandler")) {
-            return;
-        }
-
-        AjaxViewHandler ajaxViewHandler = viewHandler instanceof AjaxViewHandler
-                ? (AjaxViewHandler) viewHandler
-                : new AjaxViewHandler(viewHandler);
-        wrapped.setViewHandler(ajaxViewHandler);
-
-        viewHandlers.add(viewHandlerClass);
+        wrapped.setViewHandler(viewHandler);
+//        final String viewHandlerClass = viewHandler.getClass().getName();
+//        if (viewHandlers.contains(viewHandlerClass) &&
+//                !viewHandlerClass.equalsIgnoreCase("org.ajax4jsf.application.AjaxViewHandler")) {
+//            return;
+//        }
+//
+//        AjaxViewHandler ajaxViewHandler = viewHandler instanceof AjaxViewHandler
+//                ? (AjaxViewHandler) viewHandler
+//                : new AjaxViewHandler(viewHandler);
+//        wrapped.setViewHandler(ajaxViewHandler);
+//
+//        viewHandlers.add(viewHandlerClass);
     }
 
     @SuppressWarnings({"AssignmentToMethodParameter"})
     @Override
     public UIComponent createComponent(String componentType) throws FacesException {
-        if (Environment.isTrinidad() && componentType.equals(UIViewRoot.COMPONENT_TYPE)) {
-            componentType = AjaxViewRoot.COMPONENT_TYPE;
-        }
+//        if (Environment.isTrinidad() && componentType.equals(UIViewRoot.COMPONENT_TYPE)) {
+//            componentType = AjaxViewRoot.COMPONENT_TYPE;
+//        }
 
         return wrapped.createComponent(componentType);
     }

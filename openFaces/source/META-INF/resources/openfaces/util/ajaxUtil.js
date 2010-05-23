@@ -69,6 +69,8 @@ O$.ajax = {
   request: function(source, event, options) {
     var args = options ? options : {};
 
+    args._source = source;
+    args._event = event;
     args.actionComponent = source && typeof source != "string" ? source.id : source;
     var render = options.render ? options.render.split(" ") : undefined;
     args.execute = options.execute ? options.execute.split(" ") : undefined;
@@ -291,6 +293,21 @@ O$.sendAjaxRequestIfNoFormSubmission = function() {
  *
  */
 O$.sendAjaxRequest = function(render, args) {
+  var source = args._source;
+  if (!source) {
+    var frm = document.forms[0];
+    source = frm.firstChild;
+  }
+  var evt = args._event;
+  var params = args.additionalParams;
+  jsf.ajax.request(source, evt, {
+    execute: args.execute,
+    render: render.join(" "),
+    onevent: args.onevent,
+    onerror: args.onerror,
+    params: params
+  });
+  return;
   if (document.__sessionHasExpired
           && document.__componentsAjaxEventHandlerInitialized
           && render.every(function(element) {

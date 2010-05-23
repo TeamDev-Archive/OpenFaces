@@ -17,6 +17,7 @@ import org.openfaces.util.Components;
 import org.openfaces.util.ValueBindings;
 import org.openfaces.util.AjaxUtil;
 
+import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ComponentSystemEvent;
@@ -24,6 +25,7 @@ import javax.faces.event.ListenerFor;
 import javax.faces.event.PostAddToViewEvent;
 
 @ListenerFor(systemEventClass = PostAddToViewEvent.class)
+@ResourceDependency(name="jsf.js", library="javax.faces")
 public abstract class DropDownFieldBase extends DropDownComponent implements CompoundComponent {
     private Boolean autoComplete;
     private Side listAlignment;
