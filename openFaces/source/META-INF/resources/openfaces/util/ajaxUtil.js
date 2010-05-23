@@ -256,14 +256,14 @@ O$.requestComponentPortions = function(componentId, portionNames, customJsonPara
  */
 O$.sendAjaxRequestIfNoFormSubmission = function() {
   var ajaxArgs = arguments;
-  O$._ajaxRequestScheduled = true;
-  if (O$._ajax_request_processing) {
-    if (!O$._ajax_requests_queue) {
-      O$._ajax_requests_queue = [];
-    }
-    O$._ajax_requests_queue.push(ajaxArgs);
-    return;
-  }
+//  O$._ajaxRequestScheduled = true;
+//  if (O$._ajax_request_processing) {
+//    if (!O$._ajax_requests_queue) {
+//      O$._ajax_requests_queue = [];
+//    }
+//    O$._ajax_requests_queue.push(ajaxArgs);
+//    return;
+//  }
   setTimeout(function() {
     O$._ajaxRequestScheduled = false;
     if (O$.isAjaxInLockedState()) {
@@ -299,20 +299,46 @@ O$.sendAjaxRequest = function(render, args) {
     source = frm.firstChild;
   }
   var evt = args._event;
-  var params = args.additionalParams;
+  var params = {};
   var render = render.join(" ");
+  if (args.additionalParams) {
+    for (var i = 0, count = args.additionalParams.length; i < args.additionalParams; i++) {
+      var param = args.additionalParams[i];
+      var paramName = param[0];
+      var paramValue = param[1];
+      params[paramName] = paramValue;
+    }
+  }
   var execute = args.execute ? args.execute.join(" ") : undefined;
-  if (listener) {
+  if (args.immediate) {
+    if (!params) params = {};
+    params[O$.IMMEDIATE] = args.immediate;
+  }
+  if (args._action) {
+    if (!params) params = {};
+    params[O$.ACTION] = args._action;
+  }
+  if (args.listener) {
     if (!params) params = {};
     params[O$.ACTION_LISTENER] = args.listener;
   }
-  jsf.ajax.request(source, evt, {
+  if (args.actionComponent) {
+    if (!params) params = {};
+    params[O$.ACTION_COMPONENT] = args.actionComponent;
+  }
+  if (args.executeRenderedComponents != null) {
+    if (!params) params = {};
+    params[O$.EXECUTE_RENDERED_COMPONENTS] = args.executeRenderedComponents;
+  }
+  var options = {
     execute: execute,
     render: render,
     onevent: args.onevent,
-    onerror: args.onerror,
-    params: params
-  });
+    onerror: args.onerror
+  };
+  if (params)
+    O$.extend(options, params);
+  jsf.ajax.request(source, evt, options);
   return;
   if (document.__sessionHasExpired
           && document.__componentsAjaxEventHandlerInitialized

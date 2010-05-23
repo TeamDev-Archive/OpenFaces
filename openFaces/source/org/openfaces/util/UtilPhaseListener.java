@@ -58,11 +58,6 @@ public class UtilPhaseListener extends PhaseListenerBase {
     public static final String PARAM_IMMEDIATE = "_of_immediate";
 
     public void beforePhase(PhaseEvent event) {
-        if (event.getPhaseId() == PhaseId.INVOKE_APPLICATION) {
-            FacesContext context = event.getFacesContext();
-            Map<String, String> requestParams = context.getExternalContext().getRequestParameterMap();
-            String actionListener = requestParams.get("_of_actionListener");
-        }
     }
 
     public void afterPhase(PhaseEvent event) {
@@ -211,10 +206,12 @@ public class UtilPhaseListener extends PhaseListenerBase {
     }
 
 
-    public static String processAjaxExecutePhase(FacesContext context, RequestFacade request, UIViewRoot viewRoot) {
-        String listener = request.getParameter(PARAM_ACTION_LISTENER);
-        String action = request.getParameter(PARAM_ACTION);
-        String actionComponentId = request.getParameter(PARAM_ACTION_COMPONENT);
+    public static String processAjaxExecutePhase(FacesContext context) {
+        UIViewRoot viewRoot = context.getViewRoot();
+        Map<String, String> requestParams = context.getExternalContext().getRequestParameterMap();
+        String listener = requestParams.get(PARAM_ACTION_LISTENER);
+        String action = requestParams.get(PARAM_ACTION);
+        String actionComponentId = requestParams.get(PARAM_ACTION_COMPONENT);
         Log.log(context, "try invoke listener");
         if (listener != null || action != null) {
             ELContext elContext = context.getELContext();
@@ -232,7 +229,7 @@ public class UtilPhaseListener extends PhaseListenerBase {
             }
             if (listener != null) {
                 AjaxActionEvent event = new AjaxActionEvent(component);
-                event.setPhaseId(Boolean.valueOf(request.getParameter(PARAM_IMMEDIATE)) ? PhaseId.APPLY_REQUEST_VALUES : PhaseId.INVOKE_APPLICATION);
+                event.setPhaseId(Boolean.valueOf(requestParams.get(PARAM_IMMEDIATE)) ? PhaseId.APPLY_REQUEST_VALUES : PhaseId.INVOKE_APPLICATION);
                 MethodExpression methodExpression = context.getApplication().getExpressionFactory().createMethodExpression(
                         elContext, "#{" + listener + "}", void.class, new Class[]{ActionEvent.class});
                 try {

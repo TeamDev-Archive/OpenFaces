@@ -404,7 +404,7 @@ public abstract class CommonAjaxViewRoot {
         UIViewRoot viewRoot = context.getViewRoot();
         assertChildren(viewRoot);
 
-        String actionComponentId = UtilPhaseListener.processAjaxExecutePhase(context, request, viewRoot);
+        String actionComponentId = UtilPhaseListener.processAjaxExecutePhase(context);
         // invoke application should be after notification listeners
         Log.log(context, "invoke listener finished");
         UIComponent[] components = locateComponents(render, viewRoot, false, false);
