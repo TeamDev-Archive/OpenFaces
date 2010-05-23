@@ -58,6 +58,11 @@ public class UtilPhaseListener extends PhaseListenerBase {
     public static final String PARAM_IMMEDIATE = "_of_immediate";
 
     public void beforePhase(PhaseEvent event) {
+        if (event.getPhaseId() == PhaseId.INVOKE_APPLICATION) {
+            FacesContext context = event.getFacesContext();
+            Map<String, String> requestParams = context.getExternalContext().getRequestParameterMap();
+            String actionListener = requestParams.get("_of_actionListener");
+        }
     }
 
     public void afterPhase(PhaseEvent event) {

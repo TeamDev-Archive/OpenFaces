@@ -11,8 +11,6 @@
  */
 package org.openfaces.util;
 
-import org.openfaces.component.CompoundComponent;
-
 import javax.faces.application.Application;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;

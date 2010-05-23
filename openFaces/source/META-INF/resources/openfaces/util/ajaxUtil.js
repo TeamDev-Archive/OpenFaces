@@ -300,9 +300,15 @@ O$.sendAjaxRequest = function(render, args) {
   }
   var evt = args._event;
   var params = args.additionalParams;
+  var render = render.join(" ");
+  var execute = args.execute ? args.execute.join(" ") : undefined;
+  if (listener) {
+    if (!params) params = {};
+    params[O$.ACTION_LISTENER] = args.listener;
+  }
   jsf.ajax.request(source, evt, {
-    execute: args.execute,
-    render: render.join(" "),
+    execute: execute,
+    render: render,
     onevent: args.onevent,
     onerror: args.onerror,
     params: params

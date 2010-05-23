@@ -38,17 +38,23 @@ import org.openfaces.util.ScriptBuilder;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
+import javax.faces.application.Application;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import java.awt.image.BufferedImage;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.ComponentSystemEvent;
+import javax.faces.event.ComponentSystemEventListener;
+import javax.faces.event.ListenerFor;
+import javax.faces.event.PostAddToViewEvent;
 import java.io.IOException;
 import java.util.Map;
 
 /**
  * @author Ekaterina Shliakhovetskaya
  */
-public class ChartRenderer extends RendererBase {
+@ListenerFor(systemEventClass = PostAddToViewEvent.class)
+public class ChartRenderer extends RendererBase implements ComponentSystemEventListener {
 
     @Override
     public boolean getRendersChildren() {
@@ -63,6 +69,17 @@ public class ChartRenderer extends RendererBase {
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         // This is done to avoid rendering of child tags during component's rendering
+    }
+
+    public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
+        if (event instanceof PostAddToViewEvent) {
+            Chart chart = (Chart) event.getComponent();
+            Application application = FacesContext.getCurrentInstance().getApplication();
+            DynamicImage dynamicImage = (DynamicImage) application.createComponent(DynamicImage.COMPONENT_TYPE);
+            dynamicImage.setId("img");
+            dynamicImage.getAttributes().put(DynamicImageRenderer.DEFAULT_STYLE_ATTR, "o_chart");
+            chart.getChildren().add(dynamicImage);
+        }
     }
 
     @Override
@@ -101,7 +118,7 @@ public class ChartRenderer extends RendererBase {
         chart.setImageBytes(imageAsByteArray);
         final Integer oldEntityIndex = chart.getEntityIndex();
         chart.setEntityIndex(-1);
-        DynamicImage dynamicImage = new DynamicImage();
+        DynamicImage dynamicImage = Components.findChildWithClass(chart, DynamicImage.class);
         ValueExpression ve = new ValueExpression() {
             public Object getValue(ELContext elContext) {
                 return imageAsByteArray;
@@ -142,11 +159,8 @@ public class ChartRenderer extends RendererBase {
             }
         };
         dynamicImage.setValueExpression("data", ve);
-        dynamicImage.setId("img");
-        dynamicImage.setParent(chart);
         dynamicImage.setMapId(mapId);
         dynamicImage.setMap(map);
-        dynamicImage.getAttributes().put(DynamicImageRenderer.DEFAULT_STYLE_ATTR, "o_chart");
         dynamicImage.setWidth(chart.getWidth());
         dynamicImage.setHeight(chart.getHeight());
         copyAttributes(dynamicImage, chart, "onclick", "ondblclick", "onmousedown", "onmouseup",

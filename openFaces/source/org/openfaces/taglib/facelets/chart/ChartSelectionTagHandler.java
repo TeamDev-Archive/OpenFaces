@@ -1,6 +1,6 @@
 /*
- * OpenFaces - JSF Component Library 2.0
- * Copyright (C) 2007-2009, TeamDev Ltd.
+ * OpenFaces - JSF Component Library 3.0
+ * Copyright (C) 2007-2010, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
  * the GNU Lesser General Public License Version 2.1 (the "LGPL" License).
@@ -11,7 +11,7 @@
  */
 package org.openfaces.taglib.facelets.chart;
 
-import com.sun.facelets.tag.jsf.ComponentConfig;
+import javax.faces.view.facelets.ComponentConfig;
 
 public class ChartSelectionTagHandler extends org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler {
 

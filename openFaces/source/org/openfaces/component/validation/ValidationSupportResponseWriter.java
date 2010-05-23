@@ -70,7 +70,7 @@ public class ValidationSupportResponseWriter extends ResponseWriterWrapper {
     }
 
     @Override
-    protected ResponseWriter getWrapped() {
+    public ResponseWriter getWrapped() {
         return wrapped;
     }
 
