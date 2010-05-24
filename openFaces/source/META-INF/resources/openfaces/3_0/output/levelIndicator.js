@@ -63,8 +63,10 @@ O$.LevelIndicator = {
             levelIndicator._height = defaultWidth;
           }
         } else {
-          levelIndicator._width = O$.getNumericElementStyle(levelIndicator, "width", true);
-          levelIndicator._height = O$.getNumericElementStyle(levelIndicator, "height", true);
+          var parentWidth = jQuery(levelIndicator.parentNode).width();
+          var parentHeight = jQuery(levelIndicator.parentNode).height();
+          levelIndicator._width = O$.calculateNumericCSSValue(clientSpecifiedWidth, parentWidth);
+          levelIndicator._height = O$.calculateNumericCSSValue(clientSpecifiedHeight, parentHeight);
         }
 
         if (this._orientation == "horizontal") {

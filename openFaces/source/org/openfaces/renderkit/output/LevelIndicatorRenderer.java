@@ -11,6 +11,7 @@
  */
 package org.openfaces.renderkit.output;
 
+import org.openfaces.component.chart.Orientation;
 import org.openfaces.component.output.LevelIndicator;
 import org.openfaces.renderkit.cssparser.CSSUtil;
 import org.openfaces.util.InitScript;
@@ -55,8 +56,11 @@ public class LevelIndicatorRenderer extends org.openfaces.renderkit.RendererBase
         final ResponseWriter writer = context.getResponseWriter();
         writer.startElement("div", levelIndicator);
         writer.writeAttribute("id", clientId, "id");
+        final boolean verticallyOriented = levelIndicator.getOrientation().equals(Orientation.VERTICAL);
+        String defaultOrientationClass = verticallyOriented ? " vertical" : " horizontal";
         writer.writeAttribute("class", Styles.getCSSClass(context,
-                levelIndicator, levelIndicator.getStyle(), DEFAULT_CLASS, levelIndicator.getStyleClass()), null);
+                levelIndicator, levelIndicator.getStyle(), DEFAULT_CLASS + defaultOrientationClass,
+                levelIndicator.getStyleClass()), null);
         Rendering.writeStandardEvents(writer, levelIndicator);
 
         writer.startElement("div", levelIndicator);

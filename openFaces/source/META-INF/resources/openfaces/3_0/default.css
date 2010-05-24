@@ -1572,6 +1572,16 @@
   padding: 5px;
 }
 
+.o_levelIndicator.horizontal {
+  width: 250px;
+  height: 22px;
+}
+
+.o_levelIndicator.vertical {
+  width: 22px;
+  height: 250px;
+}
+
 .o_levelIndicator_displayArea {
 	background:black;
 	overflow:hidden;
