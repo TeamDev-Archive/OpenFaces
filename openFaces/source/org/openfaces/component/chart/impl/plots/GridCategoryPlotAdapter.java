@@ -108,35 +108,34 @@ public class GridCategoryPlotAdapter extends CategoryPlot {
 
         if (!customRenderingModeEnabled) {
             return super.render(g2, dataArea, index, info, crossHairState);
-        } else {
-            CategoryItemRenderer categoryItemRenderer = getRenderer(index);
-            CategoryDataset categoryDataset = getDataset(index);
-
-            boolean isDataSetNotEmpty = !DatasetUtilities.isEmptyOrNull(categoryDataset);
-            boolean isAscendingRowOrdering = getRowRenderingOrder() == SortOrder.ASCENDING;
-            boolean isRendered = false;
-
-            if (isDataSetNotEmpty && categoryItemRenderer != null) {
-                CategoryItemRendererState rendererState = categoryItemRenderer.initialise(g2, dataArea, this, index, info);
-                rendererState.setCrosshairState(crossHairState);
-                int totalRows = categoryDataset.getRowCount();
-
-                if (isAscendingRowOrdering) {
-                    for (int currentRowIndex = 0; currentRowIndex < totalRows; currentRowIndex++) {
-                        renderColumns(g2, rendererState, dataArea, categoryItemRenderer, categoryDataset,
-                                index, currentRowIndex);
-                    }
-                } else {
-                    for (int currentRowIndex = totalRows - 1; currentRowIndex >= 0; currentRowIndex--) {
-                        renderColumns(g2, rendererState, dataArea, categoryItemRenderer, categoryDataset,
-                                index, currentRowIndex);
-                    }
-                }
-                isRendered = true;
-            }
-
-            return isRendered;
         }
+
+        CategoryItemRenderer categoryItemRenderer = getRenderer(index);
+        CategoryDataset categoryDataset = getDataset(index);
+
+        boolean isDataSetNotEmpty = !DatasetUtilities.isEmptyOrNull(categoryDataset);
+        boolean isAscendingRowOrdering = getRowRenderingOrder() == SortOrder.ASCENDING;
+
+        if (!isDataSetNotEmpty || categoryItemRenderer == null) {
+            return false;
+        }
+        CategoryItemRendererState rendererState = categoryItemRenderer.initialise(g2, dataArea, this, index, info);
+        rendererState.setCrosshairState(crossHairState);
+        int totalRows = categoryDataset.getRowCount();
+
+        if (isAscendingRowOrdering) {
+            for (int currentRowIndex = 0; currentRowIndex < totalRows; currentRowIndex++) {
+                renderColumns(g2, rendererState, dataArea, categoryItemRenderer, categoryDataset,
+                        index, currentRowIndex);
+            }
+        } else {
+            for (int currentRowIndex = totalRows - 1; currentRowIndex >= 0; currentRowIndex--) {
+                renderColumns(g2, rendererState, dataArea, categoryItemRenderer, categoryDataset,
+                        index, currentRowIndex);
+            }
+        }
+
+        return true;
     }
 
     private void renderColumns(Graphics2D g2, CategoryItemRendererState state, Rectangle2D dataArea,

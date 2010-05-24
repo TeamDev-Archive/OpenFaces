@@ -328,7 +328,6 @@ public abstract class ChartView extends UICommand implements StyledComponent, Ha
         BufferedImage image = jFreeChart.createBufferedImage(width, height, chartRenderingInfo);
         byte[] imageAsByteArray = Rendering.encodeAsPNG(image);
 
-
         return imageAsByteArray;
     }
 

@@ -25,8 +25,10 @@ import org.openfaces.component.chart.impl.plots.GridDatePlotAdapter;
 import org.openfaces.component.chart.impl.plots.GridXYPlotAdapter;
 import org.openfaces.component.chart.impl.renderers.AreaFillRenderer;
 import org.openfaces.component.chart.impl.renderers.Chart3DRendererAdapter;
+import org.openfaces.component.chart.impl.renderers.LineFillRenderer;
 import org.openfaces.component.chart.impl.renderers.LineRenderer3DAdapter;
 import org.openfaces.component.chart.impl.renderers.LineRendererAdapter;
+import org.openfaces.component.chart.impl.renderers.XYLineFillRenderer;
 import org.openfaces.component.chart.impl.renderers.XYLineRenderer3DAdapter;
 import org.openfaces.component.chart.impl.renderers.XYLineRendererAdapter;
 import org.openfaces.component.chart.impl.renderers.XYRendererAdapter;
@@ -110,10 +112,7 @@ public class LineChartView extends GridChartView {
         LineAndShapeRenderer renderer;
 
         if (getLineAreaFill() != null) {
-//            renderer = new LineAreaFillRenderer(this, ds);
-            renderer = isEnable3D()
-                    ? new LineRenderer3DAdapter(this, ds)
-                    : new LineRendererAdapter(this, ds);
+            renderer = new LineFillRenderer(this, ds);
         } else {
             renderer = isEnable3D()
                     ? new LineRenderer3DAdapter(this, ds)
@@ -132,10 +131,7 @@ public class LineChartView extends GridChartView {
         AbstractXYItemRenderer renderer;
 
         if (getLineAreaFill() != null) {
-//            renderer = new XYLineAreaFillRenderer(this, ds);
-            renderer = isEnable3D()
-                    ? new XYLineRenderer3DAdapter(this, ds)
-                    : new XYLineRendererAdapter(this, ds);
+            renderer = new XYLineFillRenderer(this, ds);
         } else {
             renderer = isEnable3D()
                     ? new XYLineRenderer3DAdapter(this, ds)

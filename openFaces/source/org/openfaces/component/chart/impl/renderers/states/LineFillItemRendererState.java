@@ -23,15 +23,15 @@ import java.util.Collection;
 /**
  * @author Eugene Goncharov
  */
-public class LineAreaFillItemRendererState extends CategoryItemRendererState {
+public class LineFillItemRendererState extends CategoryItemRendererState {
     private Polygon areaPolygon;
-    private Collection<Line2D.Double> lines;
+    private Collection<Line2D> lines;
 
-    public LineAreaFillItemRendererState(PlotRenderingInfo info) {
+    public LineFillItemRendererState(PlotRenderingInfo info) {
         super(info);
 
         areaPolygon = new Polygon();
-        lines = new ArrayList<Line2D.Double>();
+        lines = new ArrayList<Line2D>();
     }
 
     public Polygon getAreaPolygon() {
@@ -42,11 +42,11 @@ public class LineAreaFillItemRendererState extends CategoryItemRendererState {
         this.areaPolygon = areaPolygon;
     }
 
-    public Collection<Line2D.Double> getLines() {
+    public Collection<Line2D> getLines() {
         return lines;
     }
 
-    public void setLines(Collection<Line2D.Double> lines) {
+    public void setLines(Collection<Line2D> lines) {
         this.lines = lines;
     }
 }
