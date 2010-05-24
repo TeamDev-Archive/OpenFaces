@@ -651,6 +651,17 @@ public class Rendering {
         renderJavascriptStart(writer, null);
         writer.writeText(initScript, null);
         renderJavascriptEnd(writer);
+//        PartialViewContext partialViewContext = context.getPartialViewContext();
+//        if (partialViewContext.isAjaxRequest()) {
+//            PartialResponseWriter partialWriter = partialViewContext.getPartialResponseWriter();
+//            partialWriter.startEval();
+//            partialWriter.writeText(initScript, null);
+//            partialWriter.endEval();
+//        } else {
+//            renderJavascriptStart(writer, null);
+//            writer.writeText(initScript, null);
+//            renderJavascriptEnd(writer);
+//        }
     }
 
     /**
