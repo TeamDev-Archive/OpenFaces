@@ -41,6 +41,7 @@ import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.context.PartialViewContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
@@ -646,22 +647,30 @@ public class Rendering {
                 else
                     Resources.renderJSLinkIfNeeded(context, jsFile);
             }
+        PartialViewContext partialViewContext = context.getPartialViewContext();
+        if (partialViewContext.isAjaxRequest() && Environment.isMozilla()) {
+            // JSF 2.0.2 Ajax doesn't auto-execute in-place scripts under FireFox, so we're simulating this here
+            if (partialViewContext.isAjaxRequest()) {
+                List<InitScript> initScripts = getAjaxInitScripts(context);
+                initScripts.add(new InitScript(script, jsFiles));
+            }
+        } else {
+            ResponseWriter writer = context.getResponseWriter();
+            renderJavascriptStart(writer, null);
+            writer.writeText(initScript, null);
+            renderJavascriptEnd(writer);
+        }
+    }
 
-        ResponseWriter writer = context.getResponseWriter();
-        renderJavascriptStart(writer, null);
-        writer.writeText(initScript, null);
-        renderJavascriptEnd(writer);
-//        PartialViewContext partialViewContext = context.getPartialViewContext();
-//        if (partialViewContext.isAjaxRequest()) {
-//            PartialResponseWriter partialWriter = partialViewContext.getPartialResponseWriter();
-//            partialWriter.startEval();
-//            partialWriter.writeText(initScript, null);
-//            partialWriter.endEval();
-//        } else {
-//            renderJavascriptStart(writer, null);
-//            writer.writeText(initScript, null);
-//            renderJavascriptEnd(writer);
-//        }
+    public static List<InitScript> getAjaxInitScripts(FacesContext context) {
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+        String key = Rendering.class.getName() + ".ajaxInitScripts";
+        List<InitScript> list = (List<InitScript>) requestMap.get(key);
+        if (list == null) {
+            list = new ArrayList<InitScript>();
+            requestMap.put(key, list);
+        }
+        return list;
     }
 
     /**

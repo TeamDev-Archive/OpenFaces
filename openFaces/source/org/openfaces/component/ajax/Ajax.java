@@ -14,7 +14,6 @@ package org.openfaces.component.ajax;
 import org.openfaces.component.OUIClientAction;
 import org.openfaces.component.OUICommand;
 import org.openfaces.util.AjaxUtil;
-import org.openfaces.util.Styles;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.component.UIComponent;

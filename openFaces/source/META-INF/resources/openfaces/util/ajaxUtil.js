@@ -280,6 +280,17 @@ O$.sendAjaxRequestIfNoFormSubmission = function() {
 //  }, 1);
 }
 
+O$._runScript = function(script, libs) {
+  libs.forEach(O$.processJSInclude);
+  function runScriptWhenReady() {
+    if (libs.every(O$.isLibraryLoaded))
+      script();
+    else
+      setTimeout(runScriptWhenReady, 100);
+  }
+  runScriptWhenReady();
+};
+
 /**
  * render - components for which an ajax request is being made
  *
