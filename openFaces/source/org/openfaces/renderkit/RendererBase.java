@@ -14,6 +14,7 @@ package org.openfaces.renderkit;
 import org.openfaces.component.OUICommand;
 import org.openfaces.component.ajax.AjaxInitializer;
 import org.openfaces.util.FunctionCallScript;
+import org.openfaces.util.RawScript;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.Script;
 import org.openfaces.util.ScriptBuilder;
@@ -69,7 +70,9 @@ public class RendererBase extends Renderer {
             AjaxInitializer initializer = new AjaxInitializer();
             componentClickHandler = new ScriptBuilder().functionCall("O$._ajaxReload",
                     initializer.getRenderArray(context, command, render),
-                    initializer.getAjaxParams(context, command)).semicolon().append("return false;");
+                    initializer.getAjaxParams(context, command),
+                    new RawScript("this"),
+                    new RawScript("event")).semicolon().append("return false;");
             ajaxJsRequired = true;
         } else {
             if (submitIfNoAjax != null) {

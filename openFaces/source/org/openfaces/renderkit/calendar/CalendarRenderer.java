@@ -298,7 +298,8 @@ public class CalendarRenderer extends RendererBase implements ComponentSystemEve
     }
 
     public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
-        createSubComponents((Calendar) event.getComponent());
+        if (event instanceof PostAddToViewEvent)
+            createSubComponents((Calendar) event.getComponent());
     }
 
     private void createSubComponents(Calendar calendar) {

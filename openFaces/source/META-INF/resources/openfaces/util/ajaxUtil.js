@@ -88,7 +88,7 @@ O$.ajax = {
       }
     }
 
-    O$._ajaxReload(render, args);
+    O$._ajaxReload(render, args, source, event);
   }
 };
 
@@ -210,8 +210,13 @@ O$.reloadPage = function(loc) {
  *    onajaxstart - (optional) the function that should be invoked before ajax request is started
  *    immediate - (optional) true means that the action should be executed during Apply Request Values phase, rather than waiting until the Invoke Application phase
  */
-O$._ajaxReload = function(render, args) {
+O$._ajaxReload = function(render, args, source, event) {
   if (!args) args = {};
+  if (source)
+    args._source = source;
+  if (event)
+    args._event = event;
+
   var params = args.additionalParams ? args.additionalParams : [];
   var ids = [];
   if (render instanceof Array) {
@@ -264,15 +269,15 @@ O$.sendAjaxRequestIfNoFormSubmission = function() {
 //    O$._ajax_requests_queue.push(ajaxArgs);
 //    return;
 //  }
-  setTimeout(function() {
-    O$._ajaxRequestScheduled = false;
+//  setTimeout(function() {
+//    O$._ajaxRequestScheduled = false;
     if (O$.isAjaxInLockedState()) {
       return;
     }
 
-    O$._ajax_request_processing = true;
+//    O$._ajax_request_processing = true;
     O$.sendAjaxRequest.apply(null, ajaxArgs);
-  }, 1);
+//  }, 1);
 }
 
 /**
@@ -300,6 +305,7 @@ O$.sendAjaxRequest = function(render, args) {
   }
   var evt = args._event;
   var params = {};
+  execute = execute ? execute.join(" ") : undefined;
   var render = render.join(" ");
   if (args.additionalParams) {
     for (var i = 0, count = args.additionalParams.length; i < args.additionalParams; i++) {
