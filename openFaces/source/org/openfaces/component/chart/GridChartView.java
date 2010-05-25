@@ -280,13 +280,17 @@ public abstract class GridChartView extends ChartView {
         for (Marker marker : domainMarkers) {
             org.jfree.chart.plot.Marker domainMarker = initCategoryMarker(marker);
 
-            categoryPlot.addDomainMarker((CategoryMarker) domainMarker, getMarkerLayer(marker));
+            if (marker != null) {
+                categoryPlot.addDomainMarker((CategoryMarker) domainMarker, getMarkerLayer(marker));
+            }
         }
 
         for (Marker marker : rangeMarkers) {
             org.jfree.chart.plot.Marker rangeMarker = initMarker(marker);
 
-            categoryPlot.addRangeMarker(rangeMarker, getMarkerLayer(marker));
+            if (marker != null) {
+                categoryPlot.addRangeMarker(rangeMarker, getMarkerLayer(marker));
+            }
         }
     }
 
@@ -297,13 +301,17 @@ public abstract class GridChartView extends ChartView {
         for (Marker marker : domainMarkers) {
             org.jfree.chart.plot.Marker domainMarker = initMarker(marker);
 
-            xyPlot.addDomainMarker(domainMarker, getMarkerLayer(marker));
+            if (marker != null) {
+                xyPlot.addDomainMarker(domainMarker, getMarkerLayer(marker));
+            }
         }
 
         for (Marker marker : rangeMarkers) {
             org.jfree.chart.plot.Marker rangeMarker = initMarker(marker);
 
-            xyPlot.addRangeMarker(rangeMarker, getMarkerLayer(marker));
+            if (marker != null) {
+                xyPlot.addRangeMarker(rangeMarker, getMarkerLayer(marker));
+            }
         }
     }
 
