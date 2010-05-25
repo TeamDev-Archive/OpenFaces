@@ -1667,7 +1667,7 @@ O$.Table = {
       function updateResizeHandlePositions() {
         for (var i = 0, count = table._columns.length; i < count; i++) {
           var column = table._columns[i];
-          if (column._resizeHandle)
+          if (column._resizeHandle && column._resizeHandle.parentNode)
             column._resizeHandle._updatePos();
         }
       }
@@ -1679,7 +1679,11 @@ O$.Table = {
       });
       if (table._params.scrolling && (O$.isExplorer6() || O$.isExplorer7())) {
         // mouseover can't be handled in these circumstances for some reason
-        setInterval(function() {
+        var updateIntervalId = setInterval(function() {
+          if (table.parentNode == null) {
+            clearInterval(updateIntervalId);
+            return;
+          }
           if (!table._columnResizingInProgress)
             updateResizeHandlePositions();
         }, 1000);
