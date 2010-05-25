@@ -257,6 +257,9 @@ public class LineFillRenderer extends LineAndShapeRenderer implements AreaFillRe
 
             Color mainColor = new Color(red, green, blue, mainColorAlpha);
             Paint bgColor = getBackgroundPaint();
+            if (bgColor == null) {
+                bgColor = plot.getBackgroundPaint();
+            }
             Color secondaryColor = getSecondaryColor(bgColorAlpha, bgColor);
             Paint areaPaint = getAreaFillPaint(plot, plotWidth, plotHeight, mainColor, secondaryColor);
 

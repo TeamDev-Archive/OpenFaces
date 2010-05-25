@@ -211,6 +211,9 @@ public class XYLineFillRenderer extends AbstractXYItemRenderer
 
             Color mainColor = new Color(red, green, blue, mainColorAlpha);
             Paint bgColor = getBackgroundPaint();
+            if (bgColor == null) {
+                bgColor = plot.getBackgroundPaint();
+            }
             Color secondaryColor = getSecondaryColor(bgColorAlpha, bgColor);
 
             Paint areaPaint = getAreaFillPaint(plot, plotWidth, plotHeight, mainColor, secondaryColor);
@@ -239,7 +242,7 @@ public class XYLineFillRenderer extends AbstractXYItemRenderer
         if (itemPaint instanceof Color) {
             Color itemColor = (Color) itemPaint;
             int alpha = transparency >= 0.0 && transparency <= 1.0
-                    ? Math.round(255 * (float)transparency)
+                    ? Math.round(255 * (float) transparency)
                     : 255;
             g2.setPaint(new Color(itemColor.getRed(), itemColor.getGreen(), itemColor.getBlue(), alpha));
         } else {
