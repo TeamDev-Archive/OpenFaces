@@ -27,6 +27,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.component.UIMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.context.PartialViewContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.context.ResponseWriterWrapper;
 import java.io.IOException;
@@ -120,6 +121,11 @@ public class ValidationSupportResponseWriter extends ResponseWriterWrapper {
                         validationScriptWriter = new StringWriter();
 
                     ResponseWriter responseWriter = context.getResponseWriter();
+                    if (responseWriter == null) {
+                        PartialViewContext partialViewContext = context.getPartialViewContext();
+                        if (partialViewContext.isPartialRequest())
+                            responseWriter = partialViewContext.getPartialResponseWriter();
+                    }
                     ResponseWriter clonedResponseWriter = cloneWithWriter(validationScriptWriter);
                     context.setResponseWriter(clonedResponseWriter);
                     List<String> prevRenderedJsLinks = substituteRenderedJsLinks(context);

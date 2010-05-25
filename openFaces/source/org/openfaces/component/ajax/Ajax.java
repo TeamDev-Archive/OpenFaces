@@ -146,7 +146,6 @@ public class Ajax extends OUICommand implements OUIClientAction {
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         AjaxUtil.renderJSLinks(context);
-        Styles.requestDefaultCss(FacesContext.getCurrentInstance());
 
         return new Object[]{superState,
                 event,

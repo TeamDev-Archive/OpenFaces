@@ -151,23 +151,7 @@ public class AjaxUtil {
     }
 
     public static boolean isAjaxRequest(FacesContext context) {
-        if (isPortletRenderRequest(context)) {
-            Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
-            boolean ajaxKeyExists = sessionMap.containsKey(AJAX_REQUEST_MARKER);
-            if (ajaxKeyExists)
-                return true;
-            // isPortletRenderRequest also returns true for action requests under Liferay, so it's safe to perform the default check to address this
-        }
-
-        ExternalContext externalContext = context.getExternalContext();
-        if (isPortletRequest(FacesContext.getCurrentInstance())) {
-            RequestFacade request = RequestFacade.getInstance(externalContext.getRequest());
-            // for portlets: String browser = request.getProperty(...);
-            return request.getParameter(AJAX_REQUEST_MARKER) != null;
-        } else {
-            HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
-            return request.getParameter(AJAX_REQUEST_MARKER) != null;
-        }
+        return context.getPartialViewContext().isAjaxRequest();
     }
 
     private static boolean considerPortlets = true;
