@@ -19199,7 +19199,7 @@ and it is automatically triggered on any form submission. -->
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType BarChartLabelPosition -->
+      <!-- @bindingType ChartLabelPosition -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
@@ -19208,7 +19208,7 @@ and it is automatically triggered on any form submission. -->
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType BarChartLabelPosition -->
+      <!-- @bindingType ChartLabelPosition -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
@@ -19217,7 +19217,7 @@ and it is automatically triggered on any form submission. -->
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType BarChartLabelPosition -->
+      <!-- @bindingType ChartLabelPosition -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
@@ -19558,7 +19558,7 @@ and it is automatically triggered on any form submission. -->
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType BarChartLabelPosition -->
+      <!-- @bindingType ChartLabelPosition -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
@@ -19567,7 +19567,7 @@ and it is automatically triggered on any form submission. -->
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType BarChartLabelPosition -->
+      <!-- @bindingType ChartLabelPosition -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
@@ -19576,7 +19576,7 @@ and it is automatically triggered on any form submission. -->
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType BarChartLabelPosition -->
+      <!-- @bindingType ChartLabelPosition -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>

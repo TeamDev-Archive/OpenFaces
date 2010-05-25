@@ -17,14 +17,14 @@ import org.jfree.chart.labels.ItemLabelAnchor;
 /**
  * @author Eugene Goncharov
  */
-public enum BarChartLabelPosition {
+public enum ChartLabelPosition {
     CENTER(ItemLabelAnchor.CENTER, "center"),
     OUTSIDE_TOP(ItemLabelAnchor.OUTSIDE12, "outsideTop"), OUTSIDE_LEFT(ItemLabelAnchor.OUTSIDE9, "outsideLeft"),
     OUTSIDE_RIGHT(ItemLabelAnchor.OUTSIDE3, "outsideRight"), OUTSIDE_BOTTOM(ItemLabelAnchor.OUTSIDE6, "outsideBottom"),
     INSIDE_TOP(ItemLabelAnchor.INSIDE12, "insideTop"), INSIDE_LEFT(ItemLabelAnchor.INSIDE9, "insideLeft"),
     INSIDE_RIGHT(ItemLabelAnchor.INSIDE3, "insideRight"), INSIDE_BOTTOM(ItemLabelAnchor.INSIDE6, "insideBottom");
 
-    BarChartLabelPosition(ItemLabelAnchor anchor, String name) {
+    ChartLabelPosition(ItemLabelAnchor anchor, String name) {
         this.labelAnchor = anchor;
         this.name = name;
     }

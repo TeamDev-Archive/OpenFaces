@@ -22,10 +22,10 @@ import org.jfree.chart.renderer.category.AbstractCategoryItemRenderer;
 import org.jfree.chart.renderer.xy.AbstractXYItemRenderer;
 import org.jfree.data.general.Dataset;
 import org.jfree.ui.TextAnchor;
-import org.openfaces.component.chart.BarChartLabelPosition;
 import org.openfaces.component.chart.Chart;
 import org.openfaces.component.chart.ChartDomain;
 import org.openfaces.component.chart.ChartGridLines;
+import org.openfaces.component.chart.ChartLabelPosition;
 import org.openfaces.component.chart.ChartLabels;
 import org.openfaces.component.chart.GridChartView;
 import org.openfaces.component.chart.impl.PropertiesConverter;
@@ -170,7 +170,7 @@ class PlotUtil {
         }
     }
 
-    private static ItemLabelPosition createItemLabelPosition(BarChartLabelPosition labelPosition) {
+    private static ItemLabelPosition createItemLabelPosition(ChartLabelPosition labelPosition) {
         return new ItemLabelPosition(labelPosition.getLabelAnchor(), TextAnchor.CENTER);
     }
 
@@ -201,9 +201,9 @@ class PlotUtil {
     }
 
     private static void defaultInit(GridChartView chartView, AbstractRenderer renderer) {
-        final BarChartLabelPosition positiveLabelsPosition = chartView.getPositiveLabelsPosition();
-        final BarChartLabelPosition negativeLabelsPosition = chartView.getNegativeLabelsPosition();
-        final BarChartLabelPosition defaultLabelPosition = chartView.getDefaultLabelsPosition();
+        final ChartLabelPosition positiveLabelsPosition = chartView.getPositiveLabelsPosition();
+        final ChartLabelPosition negativeLabelsPosition = chartView.getNegativeLabelsPosition();
+        final ChartLabelPosition defaultLabelPosition = chartView.getDefaultLabelsPosition();
 
         if (defaultLabelPosition != null && positiveLabelsPosition == null) {
             renderer.setBasePositiveItemLabelPosition(createItemLabelPosition(defaultLabelPosition));

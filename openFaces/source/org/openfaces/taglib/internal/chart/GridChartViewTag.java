@@ -11,8 +11,8 @@
  */
 package org.openfaces.taglib.internal.chart;
 
-import org.openfaces.component.chart.BarChartLabelPosition;
 import org.openfaces.component.chart.ChartDomain;
+import org.openfaces.component.chart.ChartLabelPosition;
 import org.openfaces.component.chart.GridChartView;
 import org.openfaces.component.chart.Orientation;
 
@@ -58,9 +58,9 @@ public abstract class GridChartViewTag extends AbstractChartViewTag {
         setLineStyleObjectProperty(component, "defaultOutlineStyle");
         setObjectProperty(component, "outlines");
 
-        setEnumerationProperty(component, "defaultLabelsPosition", BarChartLabelPosition.class);
-        setEnumerationProperty(component, "positiveLabelsPosition", BarChartLabelPosition.class);
-        setEnumerationProperty(component, "negativeLabelsPosition", BarChartLabelPosition.class);
+        setEnumerationProperty(component, "defaultLabelsPosition", ChartLabelPosition.class);
+        setEnumerationProperty(component, "positiveLabelsPosition", ChartLabelPosition.class);
+        setEnumerationProperty(component, "negativeLabelsPosition", ChartLabelPosition.class);
 
         setDoubleProperty(component, "labelsOffset");
     }

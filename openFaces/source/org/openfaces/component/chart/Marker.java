@@ -17,10 +17,13 @@ import org.openfaces.renderkit.cssparser.StyledComponent;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.context.FacesContext;
+import java.awt.*;
 
 public class Marker extends javax.faces.component.UIComponentBase implements StyledComponent {
     public static final String COMPONENT_TYPE = "org.openfaces.Marker";
     public static final String COMPONENT_FAMILY = "org.openfaces.Marker";
+    private static final LineStyle DEFAULT_LINE_STYLE = new LineStyle(new Color(212, 212, 212), new BasicStroke(1.5f));
+    private static final String DEFAULT_TEXT_STYLE = "color: black;";
 
     private Double startValue;
     private Double endValue;
@@ -82,7 +85,7 @@ public class Marker extends javax.faces.component.UIComponentBase implements Sty
     }
 
     public String getTextStyle() {
-        return ValueBindings.get(this, "testStyle", textStyle);
+        return ValueBindings.get(this, "testStyle", textStyle, DEFAULT_TEXT_STYLE, String.class);
     }
 
     public void setTextStyle(String style) {
@@ -105,7 +108,7 @@ public class Marker extends javax.faces.component.UIComponentBase implements Sty
     }
 
     public LineStyle getLineStyle() {
-        return ValueBindings.get(this, "lineStyle", lineStyle, LineStyle.class);
+        return ValueBindings.get(this, "lineStyle", lineStyle, DEFAULT_LINE_STYLE, LineStyle.class);
     }
 
     public void setLineStyle(LineStyle lineStyle) {
@@ -121,7 +124,7 @@ public class Marker extends javax.faces.component.UIComponentBase implements Sty
     }
 
     public float getAlpha() {
-        return ValueBindings.get(this, "alpha", alpha, 1F, Float.class);
+        return ValueBindings.get(this, "alpha", alpha, 0.6F, Float.class);
     }
 
     public void setAlpha(float alpha) {

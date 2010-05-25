@@ -43,9 +43,9 @@ public abstract class GridChartView extends ChartView {
     private LineStyle defaultOutlineStyle;
     private Collection<LineStyle> outlines;
 
-    private BarChartLabelPosition defaultLabelsPosition;
-    private BarChartLabelPosition positiveLabelsPosition;
-    private BarChartLabelPosition negativeLabelsPosition;
+    private ChartLabelPosition defaultLabelsPosition;
+    private ChartLabelPosition positiveLabelsPosition;
+    private ChartLabelPosition negativeLabelsPosition;
 
     private String keyAxisLabel;
     private String valueAxisLabel;
@@ -241,27 +241,27 @@ public abstract class GridChartView extends ChartView {
         this.valueAxisLabel = valueAxisLabel;
     }
 
-    public BarChartLabelPosition getDefaultLabelsPosition() {
-        return ValueBindings.get(this, "defaultLabelsPosition", defaultLabelsPosition, BarChartLabelPosition.class);
+    public ChartLabelPosition getDefaultLabelsPosition() {
+        return ValueBindings.get(this, "defaultLabelsPosition", defaultLabelsPosition, ChartLabelPosition.class);
     }
 
-    public void setDefaultLabelsPosition(BarChartLabelPosition defaultLabelsPosition) {
+    public void setDefaultLabelsPosition(ChartLabelPosition defaultLabelsPosition) {
         this.defaultLabelsPosition = defaultLabelsPosition;
     }
 
-    public BarChartLabelPosition getPositiveLabelsPosition() {
-        return ValueBindings.get(this, "positiveLabelsPosition", positiveLabelsPosition, BarChartLabelPosition.class);
+    public ChartLabelPosition getPositiveLabelsPosition() {
+        return ValueBindings.get(this, "positiveLabelsPosition", positiveLabelsPosition, ChartLabelPosition.class);
     }
 
-    public void setPositiveLabelsPosition(BarChartLabelPosition positiveLabelsPosition) {
+    public void setPositiveLabelsPosition(ChartLabelPosition positiveLabelsPosition) {
         this.positiveLabelsPosition = positiveLabelsPosition;
     }
 
-    public BarChartLabelPosition getNegativeLabelsPosition() {
-        return ValueBindings.get(this, "negativeLabelsPosition", negativeLabelsPosition, BarChartLabelPosition.class);
+    public ChartLabelPosition getNegativeLabelsPosition() {
+        return ValueBindings.get(this, "negativeLabelsPosition", negativeLabelsPosition, ChartLabelPosition.class);
     }
 
-    public void setNegativeLabelsPosition(BarChartLabelPosition negativeLabelsPosition) {
+    public void setNegativeLabelsPosition(ChartLabelPosition negativeLabelsPosition) {
         this.negativeLabelsPosition = negativeLabelsPosition;
     }
 
@@ -447,9 +447,9 @@ public abstract class GridChartView extends ChartView {
         orientation = (Orientation) restoreAttachedState(facesContext, state[i++]);
         defaultOutlineStyle = (LineStyle) restoreAttachedState(facesContext, state[i++]);
         outlines = (Collection<LineStyle>) restoreAttachedState(facesContext, state[i++]);
-        defaultLabelsPosition = (BarChartLabelPosition) restoreAttachedState(facesContext, state[i++]);
-        positiveLabelsPosition = (BarChartLabelPosition) restoreAttachedState(facesContext, state[i++]);
-        negativeLabelsPosition = (BarChartLabelPosition) restoreAttachedState(facesContext, state[i++]);
+        defaultLabelsPosition = (ChartLabelPosition) restoreAttachedState(facesContext, state[i++]);
+        positiveLabelsPosition = (ChartLabelPosition) restoreAttachedState(facesContext, state[i++]);
+        negativeLabelsPosition = (ChartLabelPosition) restoreAttachedState(facesContext, state[i++]);
         labelsOffset = (Double) state[i++];
     }
 
