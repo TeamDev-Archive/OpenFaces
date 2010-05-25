@@ -40,7 +40,7 @@ import java.util.Iterator;
  * @author Ekaterina Shliakhovetskaya
  */
 public class BarChartView extends GridChartView {
-    private boolean showGradient;
+    private boolean showGradient = true;
     private Double g1WhitePosition = 0.1;
     private Double g2FullIntensityPosition = 0.2;
     private Double g3LightIntensityPosition = 0.8;
@@ -119,6 +119,10 @@ public class BarChartView extends GridChartView {
         if (getDefaultOutlineStyle() != null && !outlinesSpecified) {
             renderer.setBaseOutlinePaint(getDefaultOutlineStyle().getColor());
             renderer.setBaseOutlineStroke(getDefaultOutlineStyle().getStroke());
+            for (int seriesIndex = 0; seriesIndex < seriesCount; seriesIndex++) {
+                renderer.setSeriesOutlinePaint(seriesIndex, getDefaultOutlineStyle().getColor());
+                renderer.setSeriesOutlineStroke(seriesIndex, getDefaultOutlineStyle().getStroke());
+            }
         } else if (outlinesSpecified) {
             final Iterator outlinesIterator = getOutlines().iterator();
             for (int seriesIndex = 0; seriesIndex < seriesCount; seriesIndex++) {
@@ -157,6 +161,10 @@ public class BarChartView extends GridChartView {
         if (getDefaultOutlineStyle() != null && !outlinesSpecified) {
             renderer.setBaseOutlinePaint(getDefaultOutlineStyle().getColor());
             renderer.setBaseOutlineStroke(getDefaultOutlineStyle().getStroke());
+            for (int seriesIndex = 0; seriesIndex < seriesCount; seriesIndex++) {
+                renderer.setSeriesOutlinePaint(seriesIndex, getDefaultOutlineStyle().getColor());
+                renderer.setSeriesOutlineStroke(seriesIndex, getDefaultOutlineStyle().getStroke());
+            }
         } else if (outlinesSpecified) {
             final Iterator outlinesIterator = getOutlines().iterator();
             for (int seriesIndex = 0; seriesIndex < seriesCount; seriesIndex++) {
@@ -204,7 +212,7 @@ public class BarChartView extends GridChartView {
     }
 
     public Boolean isShowGradient() {
-        return ValueBindings.get(this, "showGradient", showGradient, true);
+        return ValueBindings.get(this, "showGradient", showGradient, Boolean.TRUE, Boolean.class);
     }
 
     public void setShowGradient(Boolean showGradient) {

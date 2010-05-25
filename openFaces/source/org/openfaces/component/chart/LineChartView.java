@@ -169,6 +169,9 @@ public class LineChartView extends GridChartView {
 
         if (getDefaultFillColor() != null && !fillPaintsSpecified) {
             renderer.setBaseFillPaint(getDefaultFillColor());
+            for (int seriesIndex = 0; seriesIndex < seriesCount; seriesIndex++) {
+                renderer.setSeriesFillPaint(seriesIndex, getDefaultFillColor());
+            }
         } else if (fillPaintsSpecified) {
             final Iterator fillPaintsIterator = getFillPaints().iterator();
             for (int seriesIndex = 0; seriesIndex < seriesCount; seriesIndex++) {
@@ -181,6 +184,10 @@ public class LineChartView extends GridChartView {
 
         if (getDefaultLineStyle() != null && !strokesSpecified) {
             renderer.setBaseStroke(getDefaultLineStyle().getStroke());
+            // This code is required to avoid JFreeChart functionality to override base stroke values with it's internal defaults
+            for (int seriesIndex = 0; seriesIndex < seriesCount; seriesIndex++) {
+                renderer.setSeriesStroke(seriesIndex, getDefaultLineStyle().getStroke());
+            }
         } else if (strokesSpecified) {
             final Iterator strokesIterator = getLineStyles().iterator();
             for (int seriesIndex = 0; seriesIndex < seriesCount; seriesIndex++) {
@@ -196,8 +203,13 @@ public class LineChartView extends GridChartView {
         }
 
         if (getDefaultOutlineStyle() != null && !outlinesSpecified) {
+            renderer.setUseOutlinePaint(true);
             renderer.setBaseOutlinePaint(getDefaultOutlineStyle().getColor());
             renderer.setBaseOutlineStroke(getDefaultOutlineStyle().getStroke());
+            for (int seriesIndex = 0; seriesIndex < seriesCount; seriesIndex++) {
+                renderer.setSeriesOutlinePaint(seriesIndex, getDefaultOutlineStyle().getColor());
+                renderer.setSeriesOutlineStroke(seriesIndex, getDefaultOutlineStyle().getStroke());
+            }
         } else if (outlinesSpecified) {
             renderer.setUseOutlinePaint(true);
             final Iterator outlinesIterator = getOutlines().iterator();
@@ -237,6 +249,9 @@ public class LineChartView extends GridChartView {
 
         if (getDefaultFillColor() != null && !fillPaintsSpecified) {
             renderer.setBaseFillPaint(getDefaultFillColor());
+            for (int seriesIndex = 0; seriesIndex < seriesCount; seriesIndex++) {
+                renderer.setSeriesFillPaint(seriesIndex, getDefaultFillColor());
+            }
         } else if (fillPaintsSpecified) {
             final Iterator fillPaintsIterator = getFillPaints().iterator();
             for (int seriesIndex = 0; seriesIndex < seriesCount; seriesIndex++) {
@@ -250,6 +265,9 @@ public class LineChartView extends GridChartView {
 
         if (getDefaultLineStyle() != null && !lineStylesSpecified) {
             renderer.setBaseStroke(getDefaultLineStyle().getStroke());
+            for (int seriesIndex = 0; seriesIndex < seriesCount; seriesIndex++) {
+                renderer.setSeriesStroke(seriesIndex, getDefaultLineStyle().getStroke());
+            }
         } else if (lineStylesSpecified) {
             final Iterator strokesIterator = getLineStyles().iterator();
             for (int seriesIndex = 0; seriesIndex < seriesCount; seriesIndex++) {
@@ -265,8 +283,13 @@ public class LineChartView extends GridChartView {
         }
 
         if (getDefaultOutlineStyle() != null && !outlinesSpecified) {
+            renderer.setUseOutlinePaint(true);
             renderer.setBaseOutlinePaint(getDefaultOutlineStyle().getColor());
             renderer.setBaseOutlineStroke(getDefaultOutlineStyle().getStroke());
+            for (int seriesIndex = 0; seriesIndex < seriesCount; seriesIndex++) {
+                renderer.setSeriesOutlinePaint(seriesIndex, getDefaultOutlineStyle().getColor());
+                renderer.setSeriesOutlineStroke(seriesIndex, getDefaultOutlineStyle().getStroke());
+            }
         } else if (outlinesSpecified) {
             renderer.setUseOutlinePaint(true);
             final Iterator outlinesIterator = getOutlines().iterator();
@@ -289,7 +312,7 @@ public class LineChartView extends GridChartView {
     }
 
     public LineStyle getDefaultLineStyle() {
-        return ValueBindings.get(this, "defaultLineStyle", defaultLineStyle, LineStyle.class);
+        return ValueBindings.get(this, "defaultLineStyle", defaultLineStyle, new LineStyle(Color.RED, new BasicStroke(1.25f)), LineStyle.class);
     }
 
     public void setDefaultLineStyle(LineStyle defaultLineStyle) {
