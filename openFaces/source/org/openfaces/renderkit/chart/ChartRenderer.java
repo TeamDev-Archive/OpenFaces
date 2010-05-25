@@ -196,7 +196,9 @@ public class ChartRenderer extends RendererBase {
         ScriptBuilder buf = new ScriptBuilder();
         final Integer oldEntityIndex = chart.getEntityIndex();
         chart.setEntityIndex(-1);
-        buf.initScript(context, chart, "O$.Chart._init");
+        if (chart.getChartSelection() != null || chart.getChartView().getActionListener() != null) {
+            buf.initScript(context, chart, "O$.Chart._init");
+        }
 
         encodeChartMenuSupport(context, chart, dynamicImage, buf);
         Rendering.renderInitScript(context, buf, Resources.getUtilJsURL(context),
