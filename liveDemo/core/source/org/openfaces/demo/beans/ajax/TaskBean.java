@@ -15,10 +15,11 @@ package org.openfaces.demo.beans.ajax;
 import org.openfaces.util.Faces;
 
 import javax.faces.event.ActionEvent;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TaskBean {
+public class TaskBean implements Serializable {
     private List<Task> tasks;
     private String filter;
     private String newTaskName;

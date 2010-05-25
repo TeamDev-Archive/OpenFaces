@@ -12,7 +12,9 @@
 
 package org.openfaces.demo.beans.ajax;
 
-public class Task {
+import java.io.Serializable;
+
+public class Task implements Serializable {
     private static Integer instanceCount = 0;
 
     public static Task createUncompletedTask(String name) {

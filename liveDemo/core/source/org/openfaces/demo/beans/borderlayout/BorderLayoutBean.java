@@ -17,13 +17,14 @@ import org.openfaces.component.table.ExpansionState;
 import org.openfaces.util.Faces;
 
 import javax.faces.event.ActionEvent;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class BorderLayoutBean {
+public class BorderLayoutBean implements Serializable {
 
     public static enum ComponentLevel {
         ROOT, CATEGORY, COMPONENT

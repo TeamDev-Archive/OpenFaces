@@ -71,7 +71,8 @@ public abstract class OUIClientActionHelper {
 
 
     public void onParentChange(final OUIClientAction action, final UIComponent parent) {
-        ensureComponentIdSpecified(parent);
+        if (!action.isStandalone())
+            ensureComponentIdSpecified(parent);
 
         FacesContext context = FacesContext.getCurrentInstance();
         if (action.isStandalone() || action.getFor() != null ||
