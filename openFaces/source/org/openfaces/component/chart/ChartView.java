@@ -35,7 +35,7 @@ import java.awt.image.BufferedImage;
  */
 public abstract class ChartView extends UICommand implements StyledComponent, HasLabels {
     private Boolean enable3D;
-    private Color wallColor = Color.GRAY;
+    private Color wallColor;
 
     private String style;
     private String url;
@@ -59,7 +59,7 @@ public abstract class ChartView extends UICommand implements StyledComponent, Ha
     }
 
     public Color getWallColor() {
-        return ValueBindings.get(this, "wallColor", wallColor, Color.class);
+        return ValueBindings.get(this, "wallColor", wallColor, Color.GRAY, Color.class);
     }
 
     public void setWallColor(Color wallColor) {

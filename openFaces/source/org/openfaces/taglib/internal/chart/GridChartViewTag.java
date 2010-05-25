@@ -53,7 +53,7 @@ public abstract class GridChartViewTag extends AbstractChartViewTag {
         String valueAxisLabel = getPropertyValue("valueAxisLabel");
         view.setValueAxisLabel(valueAxisLabel);
 
-        setColorProperty(component, "wallColor");
+        
 
         setLineStyleObjectProperty(component, "defaultOutlineStyle");
         setObjectProperty(component, "outlines");
