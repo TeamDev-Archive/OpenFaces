@@ -17,9 +17,12 @@ O$.ChartPopup = {
       _contentLoaded: loadingMode == "client",
       _hoverStateHandler: function(mouseInside, element) {
         element._mouseInside = mouseInside;
-        if ((chartPopup._targetArea && !chartPopup._targetArea._mouseInside) && !chartPopup._mouseInside) {
-          chartPopup.hide();
-        }
+
+        setTimeout(function () {
+          if ((chartPopup._targetArea && !chartPopup._targetArea._mouseInside) && !chartPopup._mouseInside) {
+            chartPopup.hide();
+          }
+        }, 100);
       }
     });
 
