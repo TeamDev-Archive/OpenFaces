@@ -36960,7 +36960,8 @@ entering a value and returns a list of suggestions from the server -->
     <body-content>empty</body-content>
   </tag>
 
-  <tag>
+
+ <tag>
     <description>Marker component that provides a support to mark specific value or values on chart.</description>
     <name>marker</name>
     <tag-class>org.openfaces.taglib.jsp.chart.MarkerJspTag</tag-class>
@@ -36996,7 +36997,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Attribute</description>
+      <description>Specifies whether or not marker should be displayed as a line</description>
       <name>drawAsLine</name>
       <deferred-value>
         <type>boolean</type>
@@ -37018,6 +37019,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>Specifies the line style to be used for displaying the marked value</description>
       <name>lineStyle</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -37027,6 +37029,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>Specifies the line style to be used for displaying an outline for the marked value</description>
       <name>outlineStyle</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -37048,6 +37051,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>Specifies the label text that should be displayed on marker</description>
       <name>label</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -37057,6 +37061,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>Specifies the layer where the marker should be rendered. The attribute can be defined as foreground or background, or with a value binding expression that points to a property of type org.openfaces.component.chart.MarkerLayer enumeration.</description>
       <name>layer</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -37066,6 +37071,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>Defines the anchor for the marker's label.</description>
       <name>labelAnchor</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -37075,6 +37081,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>Defines the anchor for the marker's label text.</description>
       <name>labelTextAnchor</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -37084,6 +37091,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>Specifies offset type for displaying the marker's label.</description>
       <name>labelOffsetType</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -37093,6 +37101,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>Specifies offset value for displaying the marker's label.</description>
       <name>labelOffset</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -37118,7 +37127,8 @@ entering a value and returns a list of suggestions from the server -->
     <body-content>JSP</body-content>
   </tag>
 
-  <tag>
+
+<tag>
     <description>LevelIndicator is a chart-like component that displays a meter with three customizable colors.</description>
     <name>levelIndicator</name>
     <tag-class>org.openfaces.taglib.jsp.output.LevelIndicatorJspTag</tag-class>
@@ -37289,6 +37299,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
+	  <description>Represent the current value of this LevelIndicator component</description>
       <name>value</name>
       <deferred-value>
         <type>java.lang.Double</type>
@@ -37299,6 +37310,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
      <attribute>
+ 	  <description>Represent the current value of this LevelIndicator component</description>
       <name>level</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -37348,6 +37360,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
+	  <description>Specifies the size of the segment that would be used to fill the display area</description>
       <name>segmentSize</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -37357,6 +37370,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
+	  <description>Specifies the direction of filling the display area</description>
       <name>fillDirection</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -37366,6 +37380,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
+	  <description>Specifies the colors for this LevelIndicator component that should be used to display segments for corresponding levels</description>
       <name>colors</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -37375,6 +37390,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
+	  <description>Specifies the values where transition between levels take place</description>
       <name>transitionLevels</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -37384,6 +37400,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
+	  <description>Specifies the value for the color intensity that is used to display the inactive segments of this LevelIndicator component</description>
       <name>inactiveSegmentIntensity</name>
       <deferred-value>
         <type>java.lang.Object</type>
