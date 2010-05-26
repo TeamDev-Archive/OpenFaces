@@ -45,6 +45,7 @@ O$.ChartMenu = {
 
   _printChart :function(chartId) {
     var chart = O$(chartId);
-    jQuery(chart).printElement();
+    var img = O$(chart.id + ":img");
+    jQuery(img).printElement();
   }
 };
