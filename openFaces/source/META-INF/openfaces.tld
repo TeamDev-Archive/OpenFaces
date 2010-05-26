@@ -18684,6 +18684,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el false -->
     </attribute>
     <attribute>
+      <description>An attribuite that specifies the time period precision to be used by chart</description>
       <name>timePeriodPrecision</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -18693,8 +18694,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
   </tag>
-
-  <tag>
+<tag>
     <description>The PieChartView component is used to create and customize a pie chart. It can be specified
       only as a child tag of the {@link chart} component. Child tags:
       {@link pieSectorProperties}, {@link chartLabels}, {@link chartNoDataMessage}.
@@ -18848,6 +18848,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
+	  <description>Specifies whether the chart should be displayed with shadows.</description>
       <name>showShadow</name>
       <deferred-value>
         <type>boolean</type>
@@ -18857,6 +18858,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
+	  <description>Specifies the x offset for the shadow.</description>
       <name>shadowXOffset</name>
       <deferred-value>
         <type>java.lang.Double</type>
@@ -18866,6 +18868,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
+	  <description>Specifies the y offset for the shadow.</description>
       <name>shadowYOffset</name>
       <deferred-value>
         <type>java.lang.Double</type>
@@ -18875,6 +18878,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
+	  <description>Specifies the color of the shadow.</description>
       <name>shadowColor</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -18884,6 +18888,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
      <attribute>
+	  <description>Specifies the background paint of the chart.</description>
       <name>backgroundPaint</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -18893,6 +18898,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>Specifies the background paint of the chart's title.</description>
       <name>titlePaint</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -19114,6 +19120,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>Specifies the color of the wall displayed in 3D mode.</description>
       <name>wallColor</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -19123,6 +19130,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
      <attribute>
+	 <description>Specifies the background paint of the chart.</description>
       <name>backgroundPaint</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -19132,6 +19140,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>Specifies the background paint of the chart's title.</description>
       <name>titlePaint</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -19141,6 +19150,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>Specifies the default color that should be used to fill the shapes of chart items.</description>
       <name>defaultFillColor</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -19150,6 +19160,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
+	<description>Specifies the default line style for the chart.</description>
       <name>defaultLineStyle</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -19159,6 +19170,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
+	<description>Specifies the default style of the chart items shape outlines.</description>
       <name>defaultOutlineStyle</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -19168,6 +19180,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
+	  <description>Specifies the outline style of the chart items shapes.</description>
       <name>outlines</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -19177,6 +19190,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>Specifies the line styles for the chart.</description>
       <name>lineStyles</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -19186,6 +19200,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
+	  <description>Specifies the paints that should be used to fill the chart items' shapes.</description>
       <name>fillPaints</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -19195,6 +19210,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>Specifies the default position of chart labels.</description>
       <name>defaultLabelsPosition</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -19204,6 +19220,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>Specifies the position of chart labels for items with positive values.</description>
       <name>positiveLabelsPosition</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -19213,6 +19230,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
+	  <description>Specifies the position of chart labels for items with negative values.</description>
       <name>negativeLabelsPosition</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -19222,6 +19240,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
      <attribute>
+	  <description>Specifies the offset for chart labels.</description>
       <name>labelsOffset</name>
       <deferred-value>
         <type>java.lang.Double</type>
@@ -19446,6 +19465,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
+	  <description>Specifies the value where the white part of the gradient ends. The attribute should be specified as numbers in range [0..1]</description>
       <name>g1WhitePosition</name>
       <deferred-value>
         <type>java.lang.Double</type>
@@ -19455,6 +19475,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
+	<description>Specifies the value where the fully intensity part of the gradient ends. The attribute should be specified as numbers in range [0..1]</description>
       <name>g2FullIntensityPosition</name>
       <deferred-value>
         <type>java.lang.Double</type>
@@ -19464,6 +19485,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
+	  <description>Specifies the value where the light intensity part of the gradient ends. The attribute should be specified as numbers in range [0..1]</description>
       <name>g3LightIntensityPosition</name>
       <deferred-value>
         <type>java.lang.Double</type>
@@ -19473,6 +19495,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
+	  <description>Specifies whether or not the shadow should be displayed on the chart.</description>
       <name>showShadow</name>
       <deferred-value>
         <type>boolean</type>
@@ -19482,6 +19505,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
+	  <description>Specifies the x offset for the shadow displayed on the chart.</description>
       <name>shadowXOffset</name>
       <deferred-value>
         <type>java.lang.Double</type>
@@ -19491,6 +19515,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
+	  <description>Specifies the y offset for the shadow displayed on the chart.</description>
       <name>shadowYOffset</name>
       <deferred-value>
         <type>java.lang.Double</type>
@@ -19500,6 +19525,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
+	  <description>Specifies the color to be used for displaying the shadow on the chart.</description>
       <name>shadowColor</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -19509,6 +19535,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
      <attribute>
+ 	  <description>Specifies the default line style that should be used for displaying outlines for chart items.</description>
       <name>defaultOutlineStyle</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -19518,6 +19545,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
+	  <description>Specifies the line styles that should be used for displaying outlines for chart items.</description>
       <name>outlines</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -19527,6 +19555,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>Specifies the color to be used for displaying the wall for chart in 3D mode.</description>
       <name>wallColor</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -19536,6 +19565,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
+	  <description>Specifies the paint for chart's background.</description>
       <name>backgroundPaint</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -19545,6 +19575,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
+	  <description>Specifies the paint for chart's title background.</description>
       <name>titlePaint</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -19553,7 +19584,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
-    <attribute>
+     <attribute>
+      <description>Specifies the default position of chart labels.</description>
       <name>defaultLabelsPosition</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -19563,6 +19595,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>Specifies the position of chart labels for items with positive values.</description>
       <name>positiveLabelsPosition</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -19572,6 +19605,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
+	  <description>Specifies the position of chart labels for items with negative values.</description>
       <name>negativeLabelsPosition</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -19580,7 +19614,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
-    <attribute>
+     <attribute>
+	  <description>Specifies the offset for chart labels.</description>
       <name>labelsOffset</name>
       <deferred-value>
         <type>java.lang.Double</type>
