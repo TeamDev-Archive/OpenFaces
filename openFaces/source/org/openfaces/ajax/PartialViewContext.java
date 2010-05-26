@@ -102,9 +102,9 @@ public class PartialViewContext extends PartialViewContextWrapper {
         }
 
         partialWriter.startEval();
-        partialWriter.writeText(new FunctionCallScript("O$._runScript",
+        partialWriter.write(new FunctionCallScript("O$._runScript",
                 new AnonymousFunction(sb),
-                jsFiles), null);
+                jsFiles).toString());
         partialWriter.endEval();
     }
 
