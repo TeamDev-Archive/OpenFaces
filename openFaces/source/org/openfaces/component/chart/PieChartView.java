@@ -118,6 +118,10 @@ public class PieChartView extends ChartView {
         ChartEntity entity = chart.getRenderHints().getRenderingInfo().getEntityCollection().getEntity(index);
         PieSectorInfo info = ChartInfoUtil.getPieSectorInfo(entity);
 
+        if (chart.getChartSelection() != null) {
+            chart.getChartSelection().setSelectedItem(info);
+        }
+
         selectedSector = info;
 
         this.queueEvent(new PieSectorEvent(this, info));

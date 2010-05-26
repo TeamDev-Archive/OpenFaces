@@ -14,26 +14,10 @@ package org.openfaces.component.chart;
 /**
  * @author Ekaterina Shliakhovetskaya
  */
-public interface PieSectorInfo {
-    void setKey(Object key);
-
-    Object getKey();
-
-    void setValue(Object value);
-
-    Object getValue();
-
+public interface PieSectorInfo extends ItemInfo {
     void setProportionalValue(Object value);
 
     Object getProportionalValue();
-
-    int getIndex();
-
-    void setIndex(int index);
-
-    SeriesInfo getSeries();
-
-    void setSeries(SeriesInfo info);
 
     double getSeriesTotal();
 

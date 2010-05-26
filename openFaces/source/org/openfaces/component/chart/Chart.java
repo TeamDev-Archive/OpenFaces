@@ -62,6 +62,7 @@ public class Chart extends OUIObjectIteratorBase implements StyledComponent, Nam
     private Object initialDescendantComponentState = null;
     private Map<String, Object> descendantComponentState = new HashMap<String, Object>();
     private int entityIndex = -1;
+    private int selectedIndex = -1;
 
     public Chart() {
         setRendererType(ChartTag.RENDERER_TYPE);

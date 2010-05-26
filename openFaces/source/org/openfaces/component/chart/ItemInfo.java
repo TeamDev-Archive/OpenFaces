@@ -9,10 +9,26 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
+
 package org.openfaces.component.chart;
 
 /**
- * @author Ekaterina Shliakhovetskaya
+ * @author Eugene Goncharov
  */
-public interface GridPointInfo extends ItemInfo {
+public interface ItemInfo {
+    void setKey(Object key);
+
+    Object getKey();
+
+    void setValue(Object value);
+
+    Object getValue();
+
+    public int getIndex();
+
+    public void setIndex(int index);
+
+    SeriesInfo getSeries();
+
+    void setSeries(SeriesInfo info);
 }

@@ -14,19 +14,68 @@ O$.Chart = {
   _init: function(chartId) {
     var chart = O$.initComponent(chartId, null, {
       clickItem: function(event, entityIndex, customOnClick, hasAction, hasSelection) {
-        O$.setValue(chartId + "::af", entityIndex);
+        var oldEntityIndex = O$(chartId + "::af").value;
         if (customOnClick && typeof(customOnClick) == Function) {
           customOnClick(event);
         }
 
+        var valueChanged = oldEntityIndex != entityIndex;
+        if (valueChanged) {
+          O$.setValue(chartId + "::af", entityIndex);
+        }
+
         if (hasAction || hasSelection) {
-          chart.selectItem(event, entityIndex);
+          chart.selectItem(event, entityIndex, valueChanged);
         }
       },
 
-      selectItem:function(event, itemIndex) {
-        O$.ajax.request(chart, event, {render: chart.id, params:{selection:itemIndex}});
+      selectItem:function(event, itemIndex, valueChanged) {
+        var onAjaxEndFunction = function() {
+          if (valueChanged) {
+            if (chart._selectionChangeHandlers) {
+              for (var handlerIdx = 0, handlerCount = chart._selectionChangeHandlers.length;
+                   handlerIdx < handlerCount;
+                   handlerIdx++) {
+                var handler = chart._selectionChangeHandlers[handlerIdx];
+                var obj = handler[0];
+                var methodName = handler[1];
+                obj[methodName]();
+              }
+            }
+          }
+        };
+
+        O$.ajax.request(chart, event, {render: chart.id, params:{selection:itemIndex}, onajaxend: onAjaxEndFunction});
       }
     });
+  },
+
+  _addSelectionChangeHandler: function(chart, handler) {
+    O$.assert(handler, "O$.Chart._addSelectionChangeHandler: handler must be specified. chart.id = " + chart.id);
+    var handlers = chart._selectionChangeHandlers;
+    if (!handlers) {
+      handlers = [];
+      chart._selectionChangeHandlers = handlers;
+    }
+
+    handlers.push(handler);
+  },
+
+  _initSelection: function(chartId, selectionChangeHandler) {
+    var chart = O$.initComponent(chartId);
+    O$.assert(!chart._selectionInitialized, "O$.Chart._initSelection shouldn't be called twice on the same chart component");
+    O$.extend(chart, {
+      _selectionInitialized: true
+    });
+
+    if (selectionChangeHandler) {
+      eval("chart.onchange = function(event) {" + selectionChangeHandler + "}");
+      chart._fireOnSelectionChange = function() {
+        O$.sendEvent(chart, "change");
+      };
+
+      O$.Chart._addSelectionChangeHandler(chart, [chart, "_fireOnSelectionChange"]);
+    }
   }
+
 };

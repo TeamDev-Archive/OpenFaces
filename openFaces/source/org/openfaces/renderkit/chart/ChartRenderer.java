@@ -17,6 +17,7 @@ import org.jfree.chart.entity.EntityCollection;
 import org.jfree.chart.imagemap.StandardToolTipTagFragmentGenerator;
 import org.jfree.chart.imagemap.StandardURLTagFragmentGenerator;
 import org.openfaces.component.chart.Chart;
+import org.openfaces.component.chart.ChartSelection;
 import org.openfaces.component.chart.ChartView;
 import org.openfaces.component.chart.GridChartView;
 import org.openfaces.component.chart.GridPointInfo;
@@ -200,12 +201,21 @@ public class ChartRenderer extends RendererBase {
             buf.initScript(context, chart, "O$.Chart._init");
         }
 
+        encodeChartSelection(context, chart);
         encodeChartMenuSupport(context, chart, dynamicImage, buf);
         Rendering.renderInitScript(context, buf, Resources.getUtilJsURL(context),
                 Resources.getInternalURL(context, "chart/chart.js"),
                 Resources.getAjaxUtilJsURL(context),
                 getChartMenuJsURL(context));
         chart.setEntityIndex(oldEntityIndex);
+    }
+
+    private void encodeChartSelection(FacesContext context, Chart chart) throws IOException {
+        UIComponent component = chart.getChartSelection();
+        if (component == null) return;
+
+        ChartSelection chartSelection = (ChartSelection) component;
+        chartSelection.encodeAll(context);
     }
 
     private void encodeChartMenuSupport(FacesContext context, Chart chart, DynamicImage dynamicImage,

@@ -12,12 +12,12 @@
 package org.openfaces.taglib.internal.chart;
 
 import org.openfaces.component.chart.ChartSelection;
-import org.openfaces.taglib.internal.AbstractComponentTag;
+import org.openfaces.taglib.internal.OUICommandTag;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-public class ChartSelectionTag extends AbstractComponentTag {
+public class ChartSelectionTag extends OUICommandTag {
 
     public String getComponentType() {
         return ChartSelection.COMPONENT_TYPE;
@@ -33,5 +33,7 @@ public class ChartSelectionTag extends AbstractComponentTag {
 
         setLineStyleObjectProperty(component, "lineStyle");
         setObjectProperty(component, "fillPaint");
+        setObjectProperty(component, "selectedItem");
+        setStringProperty(component, "onchange");
     }
 }

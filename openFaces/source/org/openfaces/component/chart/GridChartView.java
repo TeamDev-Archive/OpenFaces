@@ -461,6 +461,10 @@ public abstract class GridChartView extends ChartView {
         ChartEntity entity = chart.getRenderHints().getRenderingInfo().getEntityCollection().getEntity(index);
         GridPointInfo info = ChartInfoUtil.getGridPointInfo(entity, chart);
 
+        if (chart.getChartSelection() != null) {
+            chart.getChartSelection().setSelectedItem(info);
+        }
+
         point = info;
 
         queueEvent(new GridPointEvent(this, info));
