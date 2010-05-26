@@ -33,7 +33,14 @@ import java.util.Map;
  * @author Dmitry Pikhulya
  */
 public class DynamicResource extends Resource {
+    private boolean download;
+
     public DynamicResource(String resourceName) {
+        this(resourceName, false);
+    }
+
+    public DynamicResource(String resourceName, boolean download) {
+        this.download = download;
         setResourceName(resourceName);
 
         int extIdx = resourceName.lastIndexOf(".");
@@ -83,7 +90,14 @@ public class DynamicResource extends Resource {
 
     @Override
     public Map<String, String> getResponseHeaders() {
-        return new HashMap<String, String>();
+        HashMap<String, String> map = new HashMap<String, String>();
+        if (download) {
+            String resourceName = getResourceName();
+            int idx = resourceName.lastIndexOf("/") + 1;
+            String fileName = idx != -1 ? resourceName.substring(idx) : resourceName; 
+            map.put("Content-Disposition", "attachment; filename=" + fileName);
+        }
+        return map;
     }
 
 

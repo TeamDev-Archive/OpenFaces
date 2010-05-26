@@ -15,13 +15,25 @@ import org.openfaces.component.chart.ChartMenu;
 import org.openfaces.component.chart.PrintChartMenuItem;
 import org.openfaces.component.chart.SaveChartMenuItem;
 import org.openfaces.renderkit.command.PopupMenuRenderer;
+import org.openfaces.util.Resources;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.ComponentSystemEvent;
+import javax.faces.event.ComponentSystemEventListener;
+import javax.faces.event.ListenerFor;
+import javax.faces.event.PostAddToViewEvent;
 import java.io.IOException;
 import java.util.List;
 
-public class ChartMenuRenderer extends PopupMenuRenderer {
+@ListenerFor(systemEventClass = PostAddToViewEvent.class)
+public class ChartMenuRenderer extends PopupMenuRenderer implements ComponentSystemEventListener {
+    public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
+        if (event instanceof PostAddToViewEvent)
+            Resources.includeJQuery();
+    }
+
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ChartMenu menu = (ChartMenu) component;
@@ -33,6 +45,5 @@ public class ChartMenuRenderer extends PopupMenuRenderer {
 
         super.encodeBegin(context, component);
     }
-
 
 }

@@ -24,6 +24,11 @@ import org.openfaces.util.Styles;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.ComponentSystemEvent;
+import javax.faces.event.ComponentSystemEventListener;
+import javax.faces.event.ListenerFor;
+import javax.faces.event.PostAddToViewEvent;
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,7 +36,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-public class LevelIndicatorRenderer extends org.openfaces.renderkit.RendererBase {
+@ListenerFor(systemEventClass = PostAddToViewEvent.class)
+public class LevelIndicatorRenderer extends org.openfaces.renderkit.RendererBase implements ComponentSystemEventListener {
     protected static final String DISPLAY_AREA_SUFFIX = "::displayArea";
     protected static final String LABEL_SUFFIX = "::label";
     protected static final String SEGMENT_SUFFIX = "::segment";
@@ -45,10 +51,14 @@ public class LevelIndicatorRenderer extends org.openfaces.renderkit.RendererBase
     private static final String DEFAULT_WIDTH = "250";
     private static final String DEFAULT_HEIGHT = "22";
 
+    public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
+        if (event instanceof PostAddToViewEvent)
+            Resources.includeJQuery();
+    }
+
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         LevelIndicator levelIndicator = (LevelIndicator) component;
-        Resources.includeJQuery(context);
 
         String clientId = levelIndicator.getClientId(context);
 

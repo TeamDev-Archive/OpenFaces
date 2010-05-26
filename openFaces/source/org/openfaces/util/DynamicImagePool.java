@@ -33,7 +33,7 @@ public class DynamicImagePool implements Serializable {
     }
 
     public String putModel(ImageDataModel model) {
-        long id = RANDOM.nextLong();
+        long id = Math.abs(RANDOM.nextLong());
 
         if (pool.isEmpty() || !(model instanceof DefaultImageDataModel)) {
             pool.put(String.valueOf(id), model);

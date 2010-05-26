@@ -21,9 +21,20 @@ import org.openfaces.util.ScriptBuilder;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.ComponentSystemEvent;
+import javax.faces.event.ComponentSystemEventListener;
+import javax.faces.event.ListenerFor;
+import javax.faces.event.PostAddToViewEvent;
 import java.io.IOException;
 
-public class PrintChartMenuItemRenderer extends MenuItemRenderer {
+@ListenerFor(systemEventClass = PostAddToViewEvent.class)
+public class PrintChartMenuItemRenderer extends MenuItemRenderer implements ComponentSystemEventListener {
+    public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
+        if (event instanceof PostAddToViewEvent)
+            Resources.includeJQuery();
+    }
+
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         MenuItem menuItem = (MenuItem) component;
@@ -37,7 +48,6 @@ public class PrintChartMenuItemRenderer extends MenuItemRenderer {
                     context, null, "chart/print.png", false));
 
         super.encodeBegin(context, component);
-        Resources.includeJQuery(context);
         Resources.renderJSLinkIfNeeded(context,
                 Resources.getInternalURL(context, "thirdparty/printelement/printElement.js"));
     }

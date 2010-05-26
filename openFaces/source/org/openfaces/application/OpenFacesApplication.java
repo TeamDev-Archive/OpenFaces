@@ -11,15 +11,15 @@
  */
 package org.openfaces.application;
 
-import org.openfaces.ajax.AjaxViewHandler;
-import org.openfaces.ajax.AjaxViewRoot;
-import org.openfaces.util.Environment;
-
 import javax.faces.FacesException;
 import javax.faces.application.Application;
 import javax.faces.application.ViewHandler;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIViewRoot;
+import javax.faces.component.html.HtmlHead;
+import javax.faces.context.FacesContext;
+import javax.faces.event.PostAddToViewEvent;
+import javax.faces.event.PreRenderViewEvent;
+import javax.faces.event.SystemEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,6 +60,30 @@ public class OpenFacesApplication extends ApplicationWrapper {
 //        }
 
         return wrapped.createComponent(componentType);
+    }
+
+    @Override
+    public void publishEvent(FacesContext context, Class<? extends SystemEvent> systemEventClass, Object source) {
+        super.publishEvent(context, systemEventClass, source);
+        if (PreRenderViewEvent.class.isAssignableFrom(systemEventClass))
+            preRenderView(context);
+        if (PostAddToViewEvent.class.isAssignableFrom(systemEventClass) && source instanceof HtmlHead)
+            headAddedToView(context);
+    }
+
+    @Override
+    public void publishEvent(FacesContext context, Class<? extends SystemEvent> systemEventClass, Class<?> sourceBaseType, Object source) {
+        super.publishEvent(context, systemEventClass, sourceBaseType, source);
+        if (PreRenderViewEvent.class.isAssignableFrom(systemEventClass))
+            preRenderView(context);
+        if (PostAddToViewEvent.class.isAssignableFrom(systemEventClass) && source instanceof HtmlHead)
+            headAddedToView(context);
+    }
+
+    private void preRenderView(FacesContext context) {
+    }
+
+    private void headAddedToView(FacesContext context) {
     }
 
 }

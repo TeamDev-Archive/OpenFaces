@@ -21,9 +21,12 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import javax.faces.FacesException;
+import javax.faces.application.Application;
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
 import javax.faces.application.ViewHandler;
+import javax.faces.component.UIOutput;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.servlet.ServletRequest;
@@ -545,6 +548,15 @@ public class Resources {
         return renderedJsLinks;
     }
 
+    public static void includeJQuery() {
+        try {
+            FacesContext context = FacesContext.getCurrentInstance();
+            includeJQuery(context);
+        } catch (IOException e) {
+            throw new FacesException(e);
+        }
+    }
+
     public static void includeJQuery(FacesContext context) throws IOException {
         String jQueryIncludedKey = "org.openfaces.util.Rendering.JQUERY_INCLUDED";
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
@@ -557,18 +569,18 @@ public class Resources {
             return;
         }
         if (jQueryMode.equals("embedded"))
-            registerJavascriptLibrary(context, getInternalURL(context, "util/jquery-1.4.2.min.js"));
+            addHeaderResource(context, "util/jquery-1.4.2.min.js", "openfaces/3_0");
             /* below are the official jQuery CDNs as referenced here: http://docs.jquery.com/Downloading_jQuery */
         else if (jQueryMode.equals("jquery"))
-            renderJSLinkIfNeeded(context, "http://code.jquery.com/jquery-1.4.2.min.js");
+            addHeaderResource(context, "http://code.jquery.com/jquery-1.4.2.min.js", null);
         else if (jQueryMode.equals("google"))
-            renderJSLinkIfNeeded(context, "http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js");
+            addHeaderResource(context, "http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js", null);
         else if (jQueryMode.equals("microsoft"))
-            renderJSLinkIfNeeded(context, "http://ajax.microsoft.com/ajax/jquery/jquery-1.4.2.min.js");
+            addHeaderResource(context, "http://ajax.microsoft.com/ajax/jquery/jquery-1.4.2.min.js", null);
         else {
             if (!jQueryMode.startsWith("http"))
                 throw new FacesException("Invalid value for the " + PARAM_ORG_OPENFACES_JQUERY + " context parameter: \"" + jQueryMode + "\" ; It should either be one of the predefined values: none, embedded, jquery, google, microsoft, or be a URL string starting with \"http\". ");
-            renderJSLinkIfNeeded(context, jQueryMode);
+            addHeaderResource(context, jQueryMode, null);
         }
 
         String noConflictStr = Rendering.getContextParam(context, "org.openfaces.jQuery.noConflict");
@@ -578,5 +590,22 @@ public class Resources {
             else
                 Rendering.renderInitScript(context, new RawScript("var " + noConflictStr + " = jQuery.noConflict();"));
         }
+    }
+
+    public static void addHeaderResource(FacesContext context, String resourceName, String library) {
+        Application application = context.getApplication();
+        String target = null;
+        UIOutput output = (UIOutput) application.createComponent("javax.faces.Output");
+        ResourceHandler resourceHandler = application.getResourceHandler();
+        String rendererType = resourceHandler.getRendererTypeForResourceName(resourceName);
+        output.setRendererType(rendererType);
+        Map<String, Object> attributes = output.getAttributes();
+        attributes.put("name", resourceName);
+        if (library != null)
+            attributes.put("library", library);
+        if (target != null)
+            attributes.put("target", target);
+        UIViewRoot viewRoot = context.getViewRoot();
+        viewRoot.addComponentResource(context, output);
     }
 }

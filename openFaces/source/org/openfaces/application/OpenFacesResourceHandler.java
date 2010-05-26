@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Map;
 
 /**
  * @author Dmitry Pikhulya
@@ -47,9 +48,40 @@ public class OpenFacesResourceHandler extends ResourceHandlerWrapper {
 
     @Override
     public Resource createResource(String resourceName) {
-        if (resourceName.startsWith(DYNAMIC_RESOURCE_IDENTIFIER))
-            return new DynamicResource(resourceName);
+        if (isExternalResource(resourceName)) {
+            return new ExternalResource(resourceName);
+        }
+        
+        if (resourceName.startsWith(DYNAMIC_RESOURCE_IDENTIFIER)) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+            boolean download = requestMap.containsKey(getDownloadRequestedKey());
+            return new DynamicResource(resourceName, download);
+        }
         return super.createResource(resourceName);
+    }
+
+    @Override
+    public String getRendererTypeForResourceName(String resourceName) {
+        if (!isExternalResource(resourceName))
+            return super.getRendererTypeForResourceName(resourceName);
+
+        if (resourceName.endsWith(".js")) {
+            return "javax.faces.resource.Script";
+        } else if (resourceName.endsWith(".css")) {
+            return "javax.faces.resource.Stylesheet";
+        } else {
+            if (resourceName.contains(".js"))
+                return "javax.faces.resource.Script";
+            else if (resourceName.contains(".css"))
+                return "javax.faces.resource.Stylesheet";
+            else
+                return null;
+        }
+    }
+
+    private boolean isExternalResource(String resourceName) {
+        return resourceName.contains("://");
     }
 
     @Override
@@ -119,6 +151,9 @@ public class OpenFacesResourceHandler extends ResourceHandlerWrapper {
 
         ExternalContext externalContext = context.getExternalContext();
         try {
+            boolean download = externalContext.getRequestParameterMap().containsKey("download");
+            if (download)
+                externalContext.getRequestMap().put(getDownloadRequestedKey(), Boolean.TRUE);
             Resource resource = createResource(resourceName);
             InputStream is = resource.getInputStream();
             if (is == null) {
@@ -130,6 +165,12 @@ public class OpenFacesResourceHandler extends ResourceHandlerWrapper {
             String contentType = resource.getContentType();
             if (contentType != null)
                 externalContext.setResponseContentType(contentType);
+            Map<String, String> headers = resource.getResponseHeaders();
+            for (Map.Entry<String, String> entry : headers.entrySet()) {
+                String name = entry.getKey();
+                String value = entry.getValue();
+                externalContext.setResponseHeader(name, value);
+            }
 
             while (true) {
                 int bytesRead = is.read(buf);
@@ -142,6 +183,10 @@ public class OpenFacesResourceHandler extends ResourceHandlerWrapper {
         } catch (IOException exception) {
             externalContext.setResponseStatus(HttpServletResponse.SC_NOT_FOUND);
         }
+    }
+
+    private String getDownloadRequestedKey() {
+        return OpenFacesResourceHandler.class.getName() + ".dynamicResourceDownloadRequested";
     }
 
     public static String getServletMapping(FacesContext context) {

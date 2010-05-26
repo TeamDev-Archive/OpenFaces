@@ -12,6 +12,7 @@
 package org.openfaces.util;
 
 import org.ajax4jsf.component.behavior.AjaxBehavior;
+import org.openfaces.application.DynamicResource;
 import org.openfaces.application.OpenFacesResourceHandler;
 import org.openfaces.component.OUIClientAction;
 import org.openfaces.component.OUIComponent;
@@ -642,10 +643,7 @@ public class Rendering {
         if (jsFiles != null)
             for (String jsFile : jsFiles) {
                 if (jsFile == null) continue;
-                if (jsFile.equals("jquery.js"))
-                    Resources.includeJQuery(context);
-                else
-                    Resources.renderJSLinkIfNeeded(context, jsFile);
+                Resources.renderJSLinkIfNeeded(context, jsFile);
             }
         PartialViewContext partialViewContext = context.getPartialViewContext();
         if (partialViewContext.isAjaxRequest() && Environment.isMozilla()) {
@@ -871,7 +869,7 @@ public class Rendering {
             writer.writeAttribute("id", component.getClientId(context), null);
 
             String imagePath = OpenFacesResourceHandler.DYNAMIC_RESOURCE_IDENTIFIER + "/" + id + "." + extension;
-            Resource resource = context.getApplication().getResourceHandler().createResource(imagePath);
+            Resource resource = new DynamicResource(imagePath);
             imageUrl = resource.getRequestPath();
         } else {
             imageUrl = "";
