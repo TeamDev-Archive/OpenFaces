@@ -42,7 +42,7 @@ public class LineChartViewTag extends GridChartViewTag {
             view.setShapesVisible(shapesVisible);
         }
 
-        setObjectProperty(component, "defaultFillColor");
+        setColorProperty(component, "defaultFillColor");
         setLineStyleObjectProperty(component, "defaultLineStyle");
 
         setObjectProperty(component, "lineStyles");
