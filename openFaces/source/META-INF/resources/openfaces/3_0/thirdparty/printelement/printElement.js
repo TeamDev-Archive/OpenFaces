@@ -93,11 +93,11 @@
             iframe = document.frames ? document.frames[printElementID] : document.getElementById(printElementID);
             popupOrIframe = iframe.contentWindow || iframe;
         }
-        
+
         documentToWriteTo.open();
         documentToWriteTo.write(html);
         documentToWriteTo.close();
-         
+
     };
 
     function _callPrint(element){
@@ -130,7 +130,7 @@
             //Thanks http://blog.ekini.net/2009/02/24/jquery-getting-the-latest-textvalue-inside-a-textarea/
             var value = $(this).attr('value');
             if ($.browser.mozilla)
-                this.firstChild.textContent = value;
+                this.textContent = value;
             else
                 this.innerHTML = value;
         });
@@ -166,7 +166,11 @@
             $(document).find("link").filter(function(){
                 return $(this).attr("rel").toLowerCase() == "stylesheet";
             }).each(function(){
-                html.push('<link type="text/css" rel="stylesheet" href="' + $(this).attr("href") + '" media="' + $(this).attr('media') + '" >');
+                var media = $(this).attr('media');
+                html.push('<link type="text/css" rel="stylesheet" ' +
+                             'href="' + $(this).attr("href") +
+                             (media ? '" media="' + media : "") +
+                          '" >');
             });
         }
         //Ensure that relative links work

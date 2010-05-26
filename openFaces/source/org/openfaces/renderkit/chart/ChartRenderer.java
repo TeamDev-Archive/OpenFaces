@@ -154,8 +154,8 @@ public class ChartRenderer extends RendererBase {
             Resources.renderJSLinkIfNeeded(facesContext, Resources.getUtilJsURL(facesContext));
             Resources.renderJSLinkIfNeeded(facesContext, Resources.getInternalURL(facesContext, "chart/chartPopup.js"));
         }
-        writer.endElement("div");
         encodeScripts(facesContext, chart, dynamicImage);
+        writer.endElement("div");
     }
 
     private void encodeChartPopup(FacesContext facesContext, Chart chart, ChartView view,
