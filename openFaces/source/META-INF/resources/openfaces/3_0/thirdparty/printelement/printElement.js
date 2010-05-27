@@ -68,7 +68,7 @@
         var popupOrIframe = null;
         var documentToWriteTo = null;
         if (opts.printMode.toLowerCase() == 'popup') {
-          var width = (!($.browser.msie)) ? element.width() + 40 : element.width() + 60;
+          var width = (!($.browser.msie)) ? element.width() + 100 : element.width() + 120;
           var height = (!($.browser.msie))? element.height() + 120 : element.height() + 140;
           popupOrIframe = window.open('about:blank', 'printElementWindow', 'width=' + width + ',height=' + height + ',scrollbars=yes');
             documentToWriteTo = popupOrIframe.document;
@@ -173,13 +173,15 @@
                           '" >');
             });
         }
+        var width = (!($.browser.msie)) ? $element.width() + 40 : $element.width() + 60;
+        var height = (!($.browser.msie))? $element.height() + 80 : $element.height() + 100;
         //Ensure that relative links work
         html.push('<base href="' + _getBaseHref() + '" />');
-        html.push('</head><body style="' + opts.printBodyOptions.styleToAdd + '" class="' + opts.printBodyOptions.classNameToAdd + '">');
-        html.push('<div><input type="button" onclick="print(); return false;" value="Print" style="float:right; margin-bottom: 10px;"/></div>');
-        html.push('<div style="clear:both;"/>');
-        html.push('<div class="' + $element.attr('class') + '">' + elementHtml + '</div>');
-        html.push('<div><input type="button" onclick="print(); return false;" value="Print" style="float:right; margin-top: 10px;"/></div>');
+        html.push('</head><body style="min-width:' + width + 'px; ' + 'width:' + width + 'px;' + ' min-height:' + height + 'px;' + ' height:' + height + 'px; ' + opts.printBodyOptions.styleToAdd + '" class="' + opts.printBodyOptions.classNameToAdd + '">');
+        html.push('<div  style="width:' + width +'px;">'+'<input type="button" onclick="print(); return false;" value="Print" style="float:right; margin-bottom: 10px;"/></div>');
+        
+        html.push('<div  class="' + $element.attr('class') + '">' + elementHtml + '</div>');
+        html.push('<div  style="width:' + width  + 'px;">'+'<input type="button" onclick="print(); return false;" value="Print" style="float:right; margin-top:10px;"/></div>');
         html.push('<div style="clear:both;"/>');
         html.push('<script type="text/javascript">function printPage(){}</script>');
         html.push('</body></html>');
