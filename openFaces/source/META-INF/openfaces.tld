@@ -37308,17 +37308,6 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default 0.5 -->
       <!-- @el true -->
     </attribute>
-
-     <attribute>
- 	  <description>Represent the current value of this LevelIndicator component</description>
-      <name>level</name>
-      <deferred-value>
-        <type>java.lang.Object</type>
-      </deferred-value>
-      <!-- @bindingType Object -->
-      <!-- @default 0.5 -->
-      <!-- @el true -->
-    </attribute>
     <attribute>
       <description>A style for the indicator.</description>
       <name>displayAreaStyle</name>
