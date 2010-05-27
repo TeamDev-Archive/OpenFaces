@@ -1400,6 +1400,7 @@ O$.markLibraryLoaded = function(lib) {
 }
 
 O$.processJSInclude = function(jsInclude) {
+  if (!jsInclude) return;
   var found = O$.isLibraryLoaded(jsInclude);
   if (!found) {
     var newScript = document.createElement("script");

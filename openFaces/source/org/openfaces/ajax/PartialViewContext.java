@@ -101,6 +101,9 @@ public class PartialViewContext extends PartialViewContextWrapper {
                 jsFiles.addAll(Arrays.asList(files));
         }
 
+        // remove the possible null references from js library list which are normally allowed to present
+        jsFiles.remove(null);
+
         partialWriter.startEval();
         partialWriter.write(new FunctionCallScript("O$._runScript",
                 new AnonymousFunction(sb),
