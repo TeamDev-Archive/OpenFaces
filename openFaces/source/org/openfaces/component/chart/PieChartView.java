@@ -119,7 +119,7 @@ public class PieChartView extends ChartView {
         PieSectorInfo info = ChartInfoUtil.getPieSectorInfo(entity);
 
         if (chart.getChartSelection() != null) {
-            chart.getChartSelection().setSelectedItem(info);
+            chart.getChartSelection().setItem(info);
         }
 
         selectedSector = info;

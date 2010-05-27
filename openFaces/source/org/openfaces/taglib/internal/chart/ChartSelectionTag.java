@@ -33,7 +33,7 @@ public class ChartSelectionTag extends OUICommandTag {
 
         setLineStyleObjectProperty(component, "lineStyle");
         setColorProperty(component, "fillPaint");
-        setObjectProperty(component, "selectedItem");
+        setObjectProperty(component, "item");
         setStringProperty(component, "onchange");
     }
 }

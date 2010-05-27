@@ -462,7 +462,7 @@ public abstract class GridChartView extends ChartView {
         GridPointInfo info = ChartInfoUtil.getGridPointInfo(entity, chart);
 
         if (chart.getChartSelection() != null) {
-            chart.getChartSelection().setSelectedItem(info);
+            chart.getChartSelection().setItem(info);
         }
 
         point = info;

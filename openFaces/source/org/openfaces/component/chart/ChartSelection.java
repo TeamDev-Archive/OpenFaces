@@ -31,7 +31,7 @@ public class ChartSelection extends OUICommand {
 
     private LineStyle lineStyle;
     private Paint fillPaint;
-    private ItemInfo selectedItem;
+    private ItemInfo item;
     private String onchange;
 
     public ChartSelection() {
@@ -71,12 +71,11 @@ public class ChartSelection extends OUICommand {
         AjaxUtil.renderJSLinks(context);
     }
 
-
     @Override
     public void processUpdates(FacesContext context) {
         super.processUpdates(context);
-        if (selectedItem != null && ValueBindings.set(this, "selectedItem", selectedItem))
-            selectedItem = null;
+        if (item != null && ValueBindings.set(this, "item", item))
+            item = null;
     }
 
     @Override
@@ -85,7 +84,7 @@ public class ChartSelection extends OUICommand {
                 super.saveState(context),
                 saveAttachedState(context, lineStyle),
                 saveAttachedState(context, fillPaint),
-                saveAttachedState(context, selectedItem),
+                saveAttachedState(context, item),
                 onchange
         };
     }
@@ -97,7 +96,7 @@ public class ChartSelection extends OUICommand {
         super.restoreState(context, state[i++]);
         lineStyle = (LineStyle) restoreAttachedState(context, state[i++]);
         fillPaint = (Paint) restoreAttachedState(context, state[i++]);
-        selectedItem = (ItemInfo) restoreAttachedState(context, state[i++]);
+        item = (ItemInfo) restoreAttachedState(context, state[i++]);
         onchange = (String) state[i++];
     }
 
@@ -117,12 +116,12 @@ public class ChartSelection extends OUICommand {
         this.fillPaint = fillPaint;
     }
 
-    public ItemInfo getSelectedItem() {
-        return ValueBindings.get(this, "selectedItem", selectedItem, ItemInfo.class);
+    public ItemInfo getItem() {
+        return ValueBindings.get(this, "item", item, ItemInfo.class);
     }
 
-    public void setSelectedItem(ItemInfo selectedItem) {
-        this.selectedItem = selectedItem;
+    public void setItem(ItemInfo item) {
+        this.item = item;
     }
 
     public String getOnchange() {

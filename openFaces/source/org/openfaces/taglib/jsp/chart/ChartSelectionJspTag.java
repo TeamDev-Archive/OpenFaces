@@ -28,8 +28,8 @@ public class ChartSelectionJspTag extends org.openfaces.taglib.jsp.AbstractCompo
         getDelegate().setPropertyValue("fillPaint", fillPaint);
     }
 
-    public void setSelectedItem(ValueExpression selectedItem) {
-        getDelegate().setPropertyValue("selectedItem", selectedItem);
+    public void setItem(ValueExpression selectedItem) {
+        getDelegate().setPropertyValue("item", selectedItem);
     }
 
     public void setOnchange(ValueExpression onchange) {
