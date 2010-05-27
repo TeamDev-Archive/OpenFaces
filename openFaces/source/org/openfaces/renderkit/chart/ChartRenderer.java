@@ -197,7 +197,10 @@ public class ChartRenderer extends RendererBase {
         ScriptBuilder buf = new ScriptBuilder();
         final Integer oldEntityIndex = chart.getEntityIndex();
         chart.setEntityIndex(-1);
-        if (chart.getChartSelection() != null || chart.getChartView().getActionListener() != null) {
+        ChartView chartView = chart.getChartView();
+        if (chart.getChartSelection() != null ||
+                chartView.getActionListener() != null ||
+                chartView.getActionListeners().length > 0) {
             buf.initScript(context, chart, "O$.Chart._init");
         }
 
