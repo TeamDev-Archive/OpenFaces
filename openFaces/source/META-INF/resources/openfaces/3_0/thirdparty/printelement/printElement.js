@@ -178,7 +178,7 @@
         //Ensure that relative links work
         html.push('<base href="' + _getBaseHref() + '" />');
         html.push('</head><body style="min-width:' + width + 'px; ' + 'width:' + width + 'px;' + ' min-height:' + height + 'px;' + ' height:' + height + 'px; ' + opts.printBodyOptions.styleToAdd + '" class="' + opts.printBodyOptions.classNameToAdd + '">');
-        html.push('<div  style="width:' + width +'px;">'+'<input type="button" onclick="print(); return false;" value="Print" style="float:right; margin-bottom: 10px;"/></div>');
+        html.push('<div  style="width:' + width +'px;">'+'<input type="button" onclick="print(); return false;" value="Print" style="float:right; margin-bottom: 10px; margin-top:10px;"/></div>');
         
         html.push('<div  class="' + $element.attr('class') + '">' + elementHtml + '</div>');
         html.push('<div  style="width:' + width  + 'px;">'+'<input type="button" onclick="print(); return false;" value="Print" style="float:right; margin-top:10px;"/></div>');
