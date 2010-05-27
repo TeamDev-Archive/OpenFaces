@@ -55,7 +55,7 @@ O$.ChartPopup = {
   show:function(event, chartPopupId) {
     var popup = O$(chartPopupId);
     var chart = popup.parentNode;
-    var eventPoint = O$.getEventPoint(event);
+    var eventPoint = O$.getEventPoint(event, popup);
     var targetArea = event.target ? event.target : event.srcElement;
     popup._targetArea = targetArea;
 
