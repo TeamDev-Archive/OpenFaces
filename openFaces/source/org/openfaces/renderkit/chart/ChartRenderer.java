@@ -96,7 +96,8 @@ public class ChartRenderer extends RendererBase {
         }
 
         chart.setImageBytes(imageAsByteArray);
-
+        final Integer oldEntityIndex = chart.getEntityIndex();
+        chart.setEntityIndex(-1);
         DynamicImage dynamicImage = new DynamicImage();
         ValueExpression ve = new ValueExpression() {
             public Object getValue(ELContext elContext) {
@@ -150,6 +151,7 @@ public class ChartRenderer extends RendererBase {
 
         dynamicImage.setImageType(ImageType.PNG);
         dynamicImage.encodeAll(facesContext);
+        chart.setEntityIndex(oldEntityIndex);
         if (map != null) {
             Resources.renderJSLinkIfNeeded(facesContext, Resources.getUtilJsURL(facesContext));
             Resources.renderJSLinkIfNeeded(facesContext, Resources.getInternalURL(facesContext, "chart/chartPopup.js"));
