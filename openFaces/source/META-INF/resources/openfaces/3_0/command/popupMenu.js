@@ -883,7 +883,7 @@ O$.PopupMenu = {
     }
 
     if (eventName == "contextmenu") {
-      if (O$.isOpera()) {
+      if (O$.isOpera() && !O$.isOpera10_5AndLater()) {
         O$.addEventHandler(forElement, "mouseup", function(evt) {
           if (!O$.isChild(popupMenu, evt.target ? evt.target : evt.srcElement)) {
             if (O$.isCtrlPressed(evt) && evt.button != 2) {

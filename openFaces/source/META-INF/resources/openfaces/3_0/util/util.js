@@ -72,7 +72,7 @@ if (!window.O$) {
           handlerFunction = handlerScript;
         else
           throw "Type of a handler script should either be a string or a function, but it was a " +
-                (typeof handlerScript) + "; " + handlerScript;
+                  (typeof handlerScript) + "; " + handlerScript;
         component._events[eventName] = handlerFunction;
       }
     }
@@ -170,7 +170,7 @@ if (!window.O$) {
 
       containsPoint: function(x, y) {
         return x >= this.getMinX() && x <= this.getMaxX() &&
-               y >= this.getMinY() && y <= this.getMaxY();
+                y >= this.getMinY() && y <= this.getMaxY();
       }
 
     })
@@ -242,11 +242,11 @@ if (!window.O$) {
       var alignment = this.alignment;
       var alignmentCorrection =
               alignment == O$.GraphicLine.ALIGN_BY_TOP_OR_LEFT ? 0 :
-              alignment == O$.GraphicLine.ALIGN_BY_CENTER || !alignment ? -width / 2 :
-              alignment == O$.GraphicLine.ALIGN_BY_BOTTOM_OR_RIGHT ? -width :
-              (function() {
-                throw "Invalid alignment: " + alignment;
-              })();
+                      alignment == O$.GraphicLine.ALIGN_BY_CENTER || !alignment ? -width / 2 :
+                              alignment == O$.GraphicLine.ALIGN_BY_BOTTOM_OR_RIGHT ? -width :
+                                      (function() {
+                                        throw "Invalid alignment: " + alignment;
+                                      })();
       O$.setElementBorderRectangle(this._element,
               horizontal ? new O$.Rectangle(this.x1, this.y1 + alignmentCorrection, this.x2 - this.x1, width)
                       : new O$.Rectangle(this.x1 + alignmentCorrection, this.y1, width, this.y2 - this.y1));
@@ -311,12 +311,12 @@ if (!window.O$) {
     setLineAlignment: function(lineAlignment, dontUpdateNow) {
       var topAndLeftLinesAlignment =
               lineAlignment == O$.GraphicRectangle.ALIGN_INSIDE ? O$.GraphicLine.ALIGN_BY_TOP_OR_LEFT :
-              lineAlignment == O$.GraphicRectangle.ALIGN_OUTSIDE ? O$.GraphicLine.ALIGN_BY_BOTTOM_OR_RIGHT :
-              O$.GraphicLine.ALIGN_BY_CENTER;
+                      lineAlignment == O$.GraphicRectangle.ALIGN_OUTSIDE ? O$.GraphicLine.ALIGN_BY_BOTTOM_OR_RIGHT :
+                              O$.GraphicLine.ALIGN_BY_CENTER;
       var bottomAndRightLinesAlignment =
               lineAlignment == O$.GraphicRectangle.ALIGN_INSIDE ? O$.GraphicLine.ALIGN_BY_BOTTOM_OR_RIGHT :
-              lineAlignment == O$.GraphicRectangle.ALIGN_OUTSIDE ? O$.GraphicLine.ALIGN_BY_TOP_OR_LEFT :
-              O$.GraphicLine.ALIGN_BY_CENTER;
+                      lineAlignment == O$.GraphicRectangle.ALIGN_OUTSIDE ? O$.GraphicLine.ALIGN_BY_TOP_OR_LEFT :
+                              O$.GraphicLine.ALIGN_BY_CENTER;
       this._leftLine.setAlignment(topAndLeftLinesAlignment, dontUpdateNow);
       this._topLine.setAlignment(topAndLeftLinesAlignment, dontUpdateNow);
       this._rightLine.setAlignment(bottomAndRightLinesAlignment, dontUpdateNow);
@@ -337,11 +337,11 @@ if (!window.O$) {
       var alignment = this.alignment;
       var cornerSpacing =
               alignment == O$.GraphicRectangle.ALIGN_INSIDE ? 0 :
-              alignment == O$.GraphicRectangle.ALIGN_OUTSIDE ? lineWidth :
-              alignment == O$.GraphicRectangle.ALIGN_CENTER_LINE || !alignment ? lineWidth / 2 :
-              (function() {
-                throw "Unknown alignment: " + alignment;
-              })();
+                      alignment == O$.GraphicRectangle.ALIGN_OUTSIDE ? lineWidth :
+                              alignment == O$.GraphicRectangle.ALIGN_CENTER_LINE || !alignment ? lineWidth / 2 :
+                                      (function() {
+                                        throw "Unknown alignment: " + alignment;
+                                      })();
 
       this._leftLine.setLine(x1, y1 - cornerSpacing, x1, y2 + cornerSpacing);
       this._rightLine.setLine(x2, y1 - cornerSpacing, x2, y2 + cornerSpacing);
@@ -634,7 +634,7 @@ if (!window.O$) {
 
       for (; from < len; from++) {
         if (from in this &&
-            this[from] === elt)
+                this[from] === elt)
           return from;
       }
       return -1;
@@ -650,7 +650,7 @@ if (!window.O$) {
       var thisp = arguments[1];
       for (var i = 0; i < len; i++) {
         if (i in this &&
-            !fun.call(thisp, this[i], i, this))
+                !fun.call(thisp, this[i], i, this))
           return false;
       }
 
@@ -669,7 +669,7 @@ if (!window.O$) {
       var thisp = arguments[1];
       for (; i < len; i++) {
         if (i in this &&
-            fun.call(thisp, this[i], i, this))
+                fun.call(thisp, this[i], i, this))
           return true;
       }
 
@@ -744,8 +744,8 @@ if (!window.O$) {
     if (!date2)
       return false;
     return date1.getDate() == date2.getDate() &&
-           date1.getMonth() == date2.getMonth() &&
-           date1.getFullYear() == date2.getFullYear();
+            date1.getMonth() == date2.getMonth() &&
+            date1.getFullYear() == date2.getFullYear();
   };
 
   O$.minDefined = function(value1, value2) {
@@ -819,8 +819,8 @@ if (!window.O$) {
   O$.isMozillaFF = function() {
     if (O$._mozilla == undefined)
       O$._mozilla = O$.userAgentContains("mozilla") &&
-                    !O$.userAgentContains("msie") &&
-                    !O$.userAgentContains("safari");
+              !O$.userAgentContains("msie") &&
+              !O$.userAgentContains("safari");
     return O$._mozilla;
   };
 
@@ -917,6 +917,24 @@ if (!window.O$) {
     if (O$._opera == undefined)
       O$._opera = O$.userAgentContains("opera");
     return O$._opera;
+  };
+
+  O$.isOpera10_5AndLater = function() {
+    return O$.isOperaLaterThan(10.5);
+  };
+
+  O$.isOperaLaterThan = function(version) {
+    if (!O$.isOpera())
+      return false;
+
+    if (/version[\/\s](\d+\.\d+)/.test(navigator.userAgent.toLowerCase())) {
+      var operaVersionNumber = new Number(RegExp.$1);
+      if (operaVersionNumber >= version) {
+        return true;
+      }
+    }
+
+    return false;
   };
 
   O$.isSafari = function() {
@@ -1107,16 +1125,16 @@ if (!window.O$) {
     return container;
   };
 
-// ----------------- AJAX RELATED UTILITY FUNCTIONS -----------------------------------------------------
-  O$.lockAjax = function(){
+  // ----------------- AJAX RELATED UTILITY FUNCTIONS -----------------------------------------------------
+  O$.lockAjax = function() {
     O$._ajaxTemporaryLocked = true;
   };
 
-  O$.isAjaxInLockedState = function(){
+  O$.isAjaxInLockedState = function() {
     return O$._ajaxTemporaryLocked;
   };
 
-  O$.resetAjaxState = function(){
+  O$.resetAjaxState = function() {
     O$._ajaxTemporaryLocked = false;
   }
 
@@ -1425,7 +1443,7 @@ if (!window.O$) {
     var safari = O$.isSafari();
     var e = safari ? {} :
             document.createEvent ? document.createEvent("Event") :
-            document.createEventObject();
+                    document.createEventObject();
     if (document.createEvent && !safari) {
       e.initEvent(eventName, true, true);
       e._of_event = true;
@@ -1872,7 +1890,7 @@ if (!window.O$) {
       frm._of_prevSubmit = frm.submit;
       frm.submit = function() {
         if (!this.target || this.target != "_blank") {
-           O$.lockAjax();
+          O$.lockAjax();
           // _formSubmissionJustStarted should be reset so as not to block further ajax actions if this is not actually
           // a normal form submission, but file download (JSFC-2940)
           setTimeout(function() {
@@ -2165,11 +2183,11 @@ if (!window.O$) {
       tagName = tagName.toLowerCase();
     var elementHasItsOwnMouseBehavior =
             tagName == "input" ||
-            tagName == "textarea" ||
-            tagName == "select" ||
-            tagName == "option" ||
-            tagName == "button" ||
-            tagName == "a";
+                    tagName == "textarea" ||
+                    tagName == "select" ||
+                    tagName == "option" ||
+                    tagName == "button" ||
+                    tagName == "a";
     if (!elementHasItsOwnMouseBehavior) {
       elementHasItsOwnMouseBehavior = function(elem) {
         while (elem) {
@@ -2420,7 +2438,7 @@ if (!window.O$) {
 
   O$._simulateFixedPosForBlockingLayer = function() {
     return O$.isExplorer() /* ie doesn't support fixed pos */ ||
-           O$.isMozillaFF() || O$.isSafari3AndLate() /*todo:check whether O$.isSafari3AndLate check is really needed (it was added by mistake)*/ /* mozilla's blocking layer hides cursor of text-field in fixed-pos popup-layer (JSFC-1930) */;
+            O$.isMozillaFF() || O$.isSafari3AndLate() /*todo:check whether O$.isSafari3AndLate check is really needed (it was added by mistake)*/ /* mozilla's blocking layer hides cursor of text-field in fixed-pos popup-layer (JSFC-1930) */;
   };
 
 
@@ -2471,12 +2489,12 @@ if (!window.O$) {
     tagName = tagName.toLowerCase();
     var focusable =
             (tagName == "input" && control.type != "hidden") ||
-            tagName == "select" ||
-            tagName == "textarea" ||
-            tagName == "button" ||
-            tagName == "a" ||
-            (tagName == "span" && O$.checkClassNameUsed(control, "rich-inplace-select")) ||
-            (tagName == "div" && O$.checkClassNameUsed(control, "rich-inplace"));
+                    tagName == "select" ||
+                    tagName == "textarea" ||
+                    tagName == "button" ||
+                    tagName == "a" ||
+                    (tagName == "span" && O$.checkClassNameUsed(control, "rich-inplace-select")) ||
+                    (tagName == "div" && O$.checkClassNameUsed(control, "rich-inplace"));
     if (focusable && !control.disabled)
       return true;
     while (control) {
@@ -2709,7 +2727,7 @@ if (!window.O$) {
       return styleSheet;
     } catch (e) {
       O$.logError("O$.addCssRule throw an exception " + (e ? e.message : e) +
-                  "; tried to add the following rule: " + strRule);
+              "; tried to add the following rule: " + strRule);
       throw e;
     }
 
@@ -3499,7 +3517,7 @@ if (!window.O$) {
       var overflowX = O$.getElementStyle(container, "overflow-x");
       var overflowY = O$.getElementStyle(container, "overflow-y");
       var containerRect = (overflowX != "visible" || overflowY != "visible") ?
-                          O$.getElementPaddingRectangle(container, false, cachedDataContainer) : null;
+              O$.getElementPaddingRectangle(container, false, cachedDataContainer) : null;
       if (overflowX != "visible") {
         left = O$.maxDefined(left, containerRect.getMinX());
         right = O$.minDefined(right, containerRect.getMaxX());
@@ -3853,8 +3871,8 @@ if (!window.O$) {
   O$.isCursorOverElement = function(event, element) {
     var evt = O$.getEvent(event);
     if (!element ||
-        !O$.isElementPresentInDocument(element) ||
-        !O$.isVisibleRecursive(element))
+            !O$.isElementPresentInDocument(element) ||
+            !O$.isVisibleRecursive(element))
       return false;
     var rect = O$.getElementBorderRectangle(element);
     var cursorPos = O$.getEventPoint(evt);
@@ -3872,7 +3890,7 @@ if (!window.O$) {
       } else if (O$.isExplorer()) {
         var borderWidthName = borderName + "Width";
         if (O$.getElementStyle(element, borderStyleName) == "none" &&
-            O$.getElementStyle(element, borderWidthName) == "medium")
+                O$.getElementStyle(element, borderWidthName) == "medium")
           return 0;
       }
     }
@@ -4046,7 +4064,7 @@ if (!window.O$) {
     if (!disableRepositioning) {
       var allowedRectangle = O$.getCuttingContainingRectangle(popup);
       var shouldBeRepositioned = !allowedRectangle.containsRectangle(new O$.Rectangle(x, y, popupWidth, popupHeight)) &&
-                                 allowedRectangle.width >= popupWidth && allowedRectangle.height >= popupHeight;
+              allowedRectangle.width >= popupWidth && allowedRectangle.height >= popupHeight;
       if (shouldBeRepositioned) {
         if (repositioningAttempt)
           return false;
@@ -4307,13 +4325,13 @@ if (!window.O$) {
     else if (property == "position")
       O$.setElementPos(element, value);
     else if (property == "rectangle")
-        O$.setElementBorderRectangle(element, value);
-      else if (property == "height")
-          O$.setElementHeight(element, value);
-        else if (property == "width")
-            O$.setElementWidth(element, value);
-          else
-            element.style[property] = value;
+      O$.setElementBorderRectangle(element, value);
+    else if (property == "height")
+      O$.setElementHeight(element, value);
+    else if (property == "width")
+      O$.setElementWidth(element, value);
+    else
+      element.style[property] = value;
   };
 
   O$.runTransitionEffect = function(element, propertyNames, newValues, transitionPeriod, updateInterval, events) {
@@ -4416,7 +4434,7 @@ if (!window.O$) {
                 !elements.every(function(el) {
                   return O$.isElementPresentInDocument(el);
                 }) ||
-                (workingCondition && !workingCondition())
+                        (workingCondition && !workingCondition())
                 ) {
           clearInterval(fixture.intervalId);
           return;
