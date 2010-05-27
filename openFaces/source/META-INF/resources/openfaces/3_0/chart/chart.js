@@ -13,6 +13,21 @@
 O$.Chart = {
   _init: function(chartId) {
     var chart = O$.initComponent(chartId, null, {
+      areaContextMenuClick: function(event, chartMenuId) {
+        var rightClick = false;
+        if (event.which) rightClick = (event.which == 3);
+        else if (event.button) rightClick = (event.button == 2);
+
+        if (rightClick) {
+          var chartMenu = O$(chartMenuId);
+          O$.disableNativeContextMenuFor(event.target);
+          chartMenu.showForEvent(event);
+          chartMenu.focus();
+
+          O$.breakEvent(event);
+        }
+      },
+
       clickItem: function(event, entityIndex, customOnClick, hasAction, hasSelection) {
         var oldEntityIndex = O$(chartId + "::af").value;
         if (customOnClick && typeof(customOnClick) == Function) {

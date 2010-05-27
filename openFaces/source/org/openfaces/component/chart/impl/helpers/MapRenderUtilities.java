@@ -31,6 +31,7 @@ import org.openfaces.component.chart.GridPointInfo;
 import org.openfaces.component.chart.PieChartView;
 import org.openfaces.component.chart.PieSectorInfo;
 import org.openfaces.component.chart.impl.plots.DynamicPropertiesUtils;
+import org.openfaces.util.Environment;
 import org.openfaces.util.Rendering;
 
 import javax.faces.context.FacesContext;
@@ -166,6 +167,11 @@ public class MapRenderUtilities {
             tag.append("<area");
 
             if (hasAction || hasCustomClick || hasSelection) {
+                if (hasSelection && chart.getChartMenu() != null && Environment.isChrome()) {
+                    tag.append(" oncontextmenu=\"");
+                    tag.append("O$('").append(chart.getClientId(context)).append("').areaContextMenuClick(event, '").append(chart.getChartMenu().getClientId(context)).append("');");
+                    tag.append("\"");
+                }
                 tag.append(" onclick=\"O$('").append(chart.getClientId(context)).append("').clickItem(event, '").append(entityIndex).append("'");
                 tag.append(",");
                 if (hasCustomClick) {
