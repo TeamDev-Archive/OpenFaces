@@ -191,7 +191,7 @@ public class Resources {
             if (VERSION_PLACEHOLDER_STR.equals(version)) {
                 long startTime = System.currentTimeMillis() / 1000;
                 version = Long.toString(startTime, 36);
-            } else if (version.contains("EAP")) {
+            } else if (version.contains("EA")) {
                 int idx2 = buildInfo.indexOf(",", idx1 + 1);
                 String buildStr = buildInfo.substring(idx1 + 1, idx2).trim();
                 String buildNoPrefix1 = "build.nightly-";

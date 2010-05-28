@@ -17,7 +17,7 @@ import org.openfaces.util.Resources;
  * @author Dmitry Pikhulya
  */
 public class VersionStringTest extends ComponentTestCase {
-    private static final String EAP_STRING = "EAP";
+    private static final String EA_STRING = "EA";
 
     /**
      * This test checks the correctness of the value returned by Resources.getVersionString(). This is needed to ensure
@@ -39,8 +39,8 @@ public class VersionStringTest extends ComponentTestCase {
         for (int i = 0, count = versionComponents.length; i < count; i++) {
             String versionComponent = versionComponents[i];
             if (i == count - 2) {
-                if (versionComponent.startsWith(EAP_STRING))
-                    versionComponent = versionComponent.substring(EAP_STRING.length());
+                if (versionComponent.startsWith(EA_STRING))
+                    versionComponent = versionComponent.substring(EA_STRING.length());
             }
             if (i == count - 1) {
                 String ORDINARY_BUILD_NO_PREFIX = "b";

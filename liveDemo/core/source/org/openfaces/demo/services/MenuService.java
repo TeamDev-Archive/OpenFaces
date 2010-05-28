@@ -150,7 +150,7 @@ public class MenuService implements Serializable {
         if (str == null || str.length() == 0 || !Character.isDigit(str.charAt(0)))
             return "";
 
-        if (!str.toUpperCase().contains("EAP"))
+        if (!str.toUpperCase().contains("EA"))
             return str;
         int buildNoSeparator = str.lastIndexOf(".");
         str = str.substring(0, buildNoSeparator);
