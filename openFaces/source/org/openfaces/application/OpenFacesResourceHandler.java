@@ -51,14 +51,26 @@ public class OpenFacesResourceHandler extends ResourceHandlerWrapper {
         if (isExternalResource(resourceName)) {
             return new ExternalResource(resourceName);
         }
-        
+
         if (resourceName.startsWith(DYNAMIC_RESOURCE_IDENTIFIER)) {
             FacesContext context = FacesContext.getCurrentInstance();
             Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
             boolean download = requestMap.containsKey(getDownloadRequestedKey());
             return new DynamicResource(resourceName, download);
         }
+
         return super.createResource(resourceName);
+    }
+
+    @Override
+    public Resource createResource(String resourceName, String libraryName) {
+        if (resourceName.startsWith(DYNAMIC_RESOURCE_IDENTIFIER))
+            return new DynamicResource(resourceName);
+        Resource resource = super.createResource(resourceName, libraryName);
+
+        return libraryName.contains("openfaces")
+                ? new OpenFacesResource(resource)
+                : resource;
     }
 
     @Override
@@ -82,13 +94,6 @@ public class OpenFacesResourceHandler extends ResourceHandlerWrapper {
 
     private boolean isExternalResource(String resourceName) {
         return resourceName.contains("://");
-    }
-
-    @Override
-    public Resource createResource(String resourceName, String libraryName) {
-        if (resourceName.startsWith(DYNAMIC_RESOURCE_IDENTIFIER))
-            return new DynamicResource(resourceName);
-        return super.createResource(resourceName, libraryName);
     }
 
     @Override

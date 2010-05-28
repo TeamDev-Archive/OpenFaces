@@ -160,7 +160,8 @@ public class Resources {
         if (resourcePath == null) throw new NullPointerException("resourcePath");
 
         if (componentClass == null) {
-            Resource resource = context.getApplication().getResourceHandler().createResource(resourcePath, "openfaces/3_0");
+            ResourceHandler resourceHandler = context.getApplication().getResourceHandler();
+            Resource resource = resourceHandler.createResource(resourcePath, "openfaces/3_0");
             resourcePath = resource.getRequestPath();
             return resourcePath;
         }
