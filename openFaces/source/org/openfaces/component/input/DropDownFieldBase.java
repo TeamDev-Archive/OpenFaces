@@ -15,7 +15,6 @@ import org.openfaces.component.CompoundComponent;
 import org.openfaces.component.Side;
 import org.openfaces.util.Components;
 import org.openfaces.util.ValueBindings;
-import org.openfaces.util.AjaxUtil;
 
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
@@ -25,7 +24,7 @@ import javax.faces.event.ListenerFor;
 import javax.faces.event.PostAddToViewEvent;
 
 @ListenerFor(systemEventClass = PostAddToViewEvent.class)
-@ResourceDependency(name="jsf.js", library="javax.faces")
+@ResourceDependency(name = "jsf.js", library = "javax.faces")
 public abstract class DropDownFieldBase extends DropDownComponent implements CompoundComponent {
     private Boolean autoComplete;
     private Side listAlignment;
@@ -399,12 +398,6 @@ public abstract class DropDownFieldBase extends DropDownComponent implements Com
 
         maxlength = (Integer) values[i++];
         size = (Integer) values[i++];
-    }
-
-    @Override
-    public void processRestoreState(FacesContext context, Object state) {
-        Object ajaxState = AjaxUtil.retrieveAjaxStateObject(context, this);
-        super.processRestoreState(context, ajaxState != null ? ajaxState : state);
     }
 
     @Override

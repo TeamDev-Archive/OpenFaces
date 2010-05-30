@@ -15,7 +15,6 @@ package org.openfaces.component.timetable;
 import org.openfaces.component.OUIData;
 import org.openfaces.component.OUIObjectIteratorBase;
 import org.openfaces.component.window.Confirmation;
-import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.CalendarUtil;
 import org.openfaces.util.Components;
 import org.openfaces.util.Rendering;
@@ -73,7 +72,7 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
 
     private String rowStyle;
     private String rowClass;
-    
+
     private Boolean editable;
     private String eventVar = "event";
     private AbstractTimetableEvent event;
@@ -448,19 +447,13 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
     public TimetableEditingOptions getEditingOptions() {
         return Components.getChildWithClass(this, TimetableEditingOptions.class, "editingOptions");
     }
-    
+
     public UIComponent getEventEditor() {
         return getFacet(EVENT_EDITOR_FACET_NAME);
     }
 
     public void setEventEditor(UIComponent dialog) {
         getFacets().put(EVENT_EDITOR_FACET_NAME, dialog);
-    }
-
-    @Override
-    public void processRestoreState(FacesContext context, Object state) {
-        Object ajaxState = AjaxUtil.retrieveAjaxStateObject(context, this);
-        super.processRestoreState(context, ajaxState != null ? ajaxState : state);
     }
 
     public ValueExpression getEventsValueExpression() {

@@ -318,13 +318,27 @@ O$.sendAjaxRequest = function(render, args) {
   var params = {};
   execute = execute ? execute.join(" ") : undefined;
   var render = render.join(" ");
+  params[O$.AJAX_REQUEST_MARKER] = "true";
   if (args.additionalParams) {
-    for (var i = 0, count = args.additionalParams.length; i < args.additionalParams; i++) {
-      var param = args.additionalParams[i];
+    args.additionalParams.forEach(function(param) {
       var paramName = param[0];
       var paramValue = param[1];
       params[paramName] = paramValue;
-    }
+    });
+  }
+  if (args.portionNames) {
+    var buf = new O$.StringBuffer();
+    var commaNeeded = false;
+    args.portionNames.forEach(function(portionName) {
+      var encodedPortionName = O$.escapeSymbol(portionName, ",");
+      if (commaNeeded) buf.append(",");
+      buf.append(encodedPortionName);
+      commaNeeded = true;
+    });
+    params[O$.UPDATE_PORTIONS_SUFFIX] = buf.toString();
+  }
+  if (args.customJsonParam) {
+    params[O$.CUSTOM_JSON_PARAM] = args.customJsonParam;
   }
   var execute = args.execute ? args.execute.join(" ") : undefined;
   if (args.immediate) {
@@ -347,10 +361,46 @@ O$.sendAjaxRequest = function(render, args) {
     if (!params) params = {};
     params[O$.EXECUTE_RENDERED_COMPONENTS] = args.executeRenderedComponents;
   }
+  function eventHandler(data) {
+    if (args.onevent)
+      args.onevent.call(null, data);
+    if (data.status == "complete" && args.portionProcessor) {
+      var atLeastOnePortionProcessed = false;
+      var xml = data.responseXML;
+      if (!xml) {alert("Error while performing Ajax request: No xml response received -- check server logs."); return;}
+      var childNodes = xml.getElementsByTagName("partial-response")[0].childNodes;
+      function processExtension(extensionNode) {
+        var ln = extensionNode.getAttribute("ln");
+        if (ln != "openfaces") return;
+        atLeastOnePortionProcessed = true;
+        var portionName = extensionNode.getAttribute("portion");
+        var portionText = extensionNode.getAttribute("text");
+        var portionDataStr = extensionNode.getAttribute("data");
+        var portionScripts = extensionNode.getAttribute("scripts");
+        var portionData = portionDataStr ? eval("(" + portionDataStr + ")") : null;
+        var component = O$(render);
+        args.portionProcessor(component, portionName, portionText, portionScripts, portionData);
+      }
+      for (var i = 0, count = childNodes.length; i < count; i++) {
+        var childNode = childNodes[i];
+        if (childNode.nodeName == "extension")
+          processExtension(childNode);
+        if (childNode.nodeName == "changes")
+          for (var j = 0, jCount = childNode.childNodes.length; j < jCount; j++) {
+            var change = childNode.childNodes[j];
+            if (change.nodeName == "extension")
+              processExtension(change);
+          }
+      }
+      if (!atLeastOnePortionProcessed) {
+        alert("Error while performing Ajax request: no openfaces extension blocks found in Ajax response."); 
+      }
+    }
+  }
   var options = {
     execute: execute,
     render: render,
-    onevent: args.onevent,
+    onevent: eventHandler,
     onerror: args.onerror
   };
   if (params)
@@ -501,6 +551,36 @@ O$.sendAjaxRequest = function(render, args) {
   ajaxObject._url = url;
 
   O$.saveScrollPositionIfNeeded();
+}
+
+O$.executeScripts = function(source) {
+  if (!source || source.length == 0) return;
+  var idx1 = source.indexOf("<script");
+  var result;
+  if (idx1 > -1) {
+    result = source.substring(idx1);
+    idx1 = result.indexOf(">");
+    idx1 += 1;
+
+    var idx2 = result.indexOf("</script>");
+    var script = result.substring(idx1, idx2);
+    script = script.replace(/<!--/g, "");
+    script = script.replace(/\/\/-->/g, "");
+    script = O$.trim(script);
+    var cdataPrefix = "//<![CDATA[";
+    var cdataSuffix = "//]]>";
+    if (O$.stringStartsWith(script, cdataPrefix)) script = script.substring(cdataPrefix.length);
+    if (O$.stringEndsWith(script, cdataSuffix)) script = script.substring(0, script.length - cdataSuffix.length);
+    try {
+      window.eval(script);
+    } catch (e) {
+      alert("Exception '" + e.message + "' while executing script on Ajax request: \n" + script);
+      throw e;
+    }
+    idx2 += "</script>".length;
+    result = result.substring(idx2);
+    O$.executeScripts(result);
+  }
 }
 
 O$._ajaxRequestsInProgress = 0;
@@ -1440,31 +1520,6 @@ O$.processStylesIncludes = function(styles) {
     var styleElement = styles[i];
     var rule = styleElement.tagName ? styleElement.getAttribute("value") : styleElement.value;
     O$.addCssRule(rule);
-  }
-}
-
-O$.executeScripts = function(source) {
-  if (!source || source.length == 0) return;
-  var idx1 = source.indexOf("<script");
-  var result;
-  if (idx1 > -1) {
-    result = source.substring(idx1);
-    idx1 = result.indexOf(">");
-    idx1 += 1;
-
-    var idx2 = result.indexOf("</script>");
-    var script = result.substring(idx1, idx2);
-    script = script.replace(/<!--/g, "");
-    script = script.replace(/\/\/-->/g, "");
-    try {
-      window.eval(script);
-    } catch (e) {
-      alert("Exception '" + e.message + "' while executing script on Ajax request: \n" + script);
-      throw e;
-    }
-    idx2 += "</script>".length;
-    result = result.substring(idx2);
-    O$.executeScripts(result);
   }
 }
 

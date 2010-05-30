@@ -261,7 +261,7 @@ public abstract class CommonAjaxViewRoot {
         String componentId = request.getParameter(AjaxUtil.PARAM_RENDER);
         String[] render = extractRender(request);
         String[] execute = extractExecute(request);
-        boolean executeRenderedComponents = extractExecuteRenderedComponents(request);
+        boolean executeRenderedComponents = extractExecuteRenderedComponents(context);
 
         if (response instanceof ResponseFacade.ActionResponseFacade) {
             Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
@@ -318,7 +318,7 @@ public abstract class CommonAjaxViewRoot {
 
         String[] render = extractRender(request);
         String[] execute = extractExecute(request);
-        boolean executeRenderedComponents = extractExecuteRenderedComponents(request);
+        boolean executeRenderedComponents = extractExecuteRenderedComponents(context);
 
         UIViewRoot viewRoot = context.getViewRoot();
         assertChildren(viewRoot);
@@ -339,7 +339,7 @@ public abstract class CommonAjaxViewRoot {
 
         String[] render = extractRender(request);
         String[] execute = extractExecute(request);
-        boolean executeRenderedComponents = extractExecuteRenderedComponents(request);
+        boolean executeRenderedComponents = extractExecuteRenderedComponents(context);
 
         UIViewRoot viewRoot = context.getViewRoot();
         assertChildren(viewRoot);
@@ -349,7 +349,7 @@ public abstract class CommonAjaxViewRoot {
             ajaxUpdateModelValues(context, components, viewRoot, execute, executeRenderedComponents);
     }
 
-    private UIComponent[] locateComponents(String[] render, UIViewRoot viewRoot,
+    public static UIComponent[] locateComponents(String[] render, UIViewRoot viewRoot,
                                            boolean preProcessDecodesOnTables,
                                            boolean preRenderResponseOnTables) {
         if (render == null) return new UIComponent[0];
@@ -372,8 +372,9 @@ public abstract class CommonAjaxViewRoot {
         return "true".equals(value);
     }
 
-    private boolean extractExecuteRenderedComponents(RequestFacade request) {
-        String value = request.getParameter(PARAM_EXECUTE_RENDERED_COMPONENTS);
+    public static boolean extractExecuteRenderedComponents(FacesContext context) {
+        ExternalContext externalContext = context.getExternalContext();
+        String value = externalContext.getRequestParameterMap().get(PARAM_EXECUTE_RENDERED_COMPONENTS);
         return Rendering.isNullOrEmpty(value) || value.equalsIgnoreCase("true");
     }
 
@@ -952,7 +953,7 @@ public abstract class CommonAjaxViewRoot {
         // collect all initialization scripts to buffer to use them in runtime loaded js library
         StringBuilder initializationScripts = new StringBuilder();
 
-        List<String> updatePortions = AjaxUtil.getAjaxPortionNames(context, request);
+        List<String> updatePortions = AjaxUtil.getAjaxPortionNames(context);
         for (UIComponent component : components) {
             Log.log(context, "ajaxRenderResponse start for component " + component);
             try {
@@ -1004,13 +1005,13 @@ public abstract class CommonAjaxViewRoot {
         RenderKitFactory factory = (RenderKitFactory) FactoryFinder.getFactory(FactoryFinder.RENDER_KIT_FACTORY);
         RenderKit renderKit = factory.getRenderKit(context, context.getViewRoot().getRenderKitId());
         Renderer renderer = renderKit.getRenderer(component.getFamily(), component.getRendererType());
-        JSONObject customJSONParam = AjaxUtil.getCustomJSONParam(context, request);
+        JSONObject customJSONParam = AjaxUtil.getCustomJSONParam(context);
         AjaxPortionRenderer ajaxComponentRenderer = (AjaxPortionRenderer) renderer;
         for (String nextId : updatePortions) {
             StringBuilder portionOutput;
             JSONObject responseData;
             StringWriter stringWriter = new StringWriter();
-            ResponseWriter originalWriter = substituteResponseWriter(context, request, stringWriter);
+            ResponseWriter originalWriter = substituteResponseWriter(context, stringWriter);
             try {
                 responseData = ajaxComponentRenderer.encodeAjaxPortion(context, component, nextId, customJSONParam);
                 portionOutput = new StringBuilder(stringWriter.toString());
@@ -1032,7 +1033,7 @@ public abstract class CommonAjaxViewRoot {
 
     private void renderSimpleUpdate(RequestFacade request, FacesContext context, UIComponent component, AjaxResponse ajaxResponse, StringBuilder initializationScripts) throws IOException {
         StringWriter wrt = new StringWriter();
-        ResponseWriter originalWriter = substituteResponseWriter(context, request, wrt);
+        ResponseWriter originalWriter = substituteResponseWriter(context, wrt);
         StringBuilder outputBuffer;
         try {
             component.encodeBegin(context);
@@ -1054,7 +1055,7 @@ public abstract class CommonAjaxViewRoot {
         ajaxResponse.addSimpleUpdate(clientId, output, rawScriptsBuffer.toString());
     }
 
-    private void extractScripts(StringBuilder buffer,
+    static void extractScripts(StringBuilder buffer,
                                 StringBuilder rawScriptBuffer,
                                 StringBuilder rtLibraryScriptBuffer) {
         String scriptStart = "<script";
@@ -1073,7 +1074,7 @@ public abstract class CommonAjaxViewRoot {
             String script = purifyScripts(rawScript);
 
             Matcher matcher = JS_VAR_PATTERN.matcher(rawScript);
-            boolean varFound = matcher.find();
+            boolean varFound = false;//matcher.find();
 
             buffer.delete(fromIndex, toIndex);
 
@@ -1175,7 +1176,7 @@ public abstract class CommonAjaxViewRoot {
         boolean savingStateInClient = stateManager.isSavingStateInClient(context);
         if (savingStateInClient) {
             StringWriter stringWriter = new StringWriter();
-            ResponseWriter originalWriter = substituteResponseWriter(context, request, stringWriter);
+            ResponseWriter originalWriter = substituteResponseWriter(context, stringWriter);
             try {
                 for (UIComponent component : components) {
                     Object state = component.processSaveState(context);
@@ -1220,7 +1221,7 @@ public abstract class CommonAjaxViewRoot {
     private void obtainViewStateSequence(FacesContext context, RequestFacade request, StateManager.SerializedView view,
                                          AjaxSavedStateIdxHolder stateIdxHolder) throws IOException {
         StringWriter stringWriter = new StringWriter();
-        ResponseWriter originalWriter = substituteResponseWriter(context, request, stringWriter);
+        ResponseWriter originalWriter = substituteResponseWriter(context, stringWriter);
 
         ResponseStateManager responseStateManager = context.getRenderKit().getResponseStateManager();
         responseStateManager.writeState(context, view);
@@ -1236,7 +1237,7 @@ public abstract class CommonAjaxViewRoot {
                                                    AjaxSavedStateIdxHolder stateIdxHolder)
             throws IOException {
         StringWriter stringWriter = new StringWriter();
-        ResponseWriter originalWriter = substituteResponseWriter(context, request, stringWriter);
+        ResponseWriter originalWriter = substituteResponseWriter(context, stringWriter);
 
         if (!Environment.isFacelets(context)) {
             context.getApplication().getViewHandler().writeState(context);
@@ -1292,7 +1293,7 @@ public abstract class CommonAjaxViewRoot {
         return findComponentById(parent, id, false, false);
     }
 
-    private UIComponent findComponentById(UIComponent parent,
+    private static UIComponent findComponentById(UIComponent parent,
                                           String id,
                                           boolean preProcessDecodesOnTables,
                                           boolean preRenderResponseOnTables) {
@@ -1306,7 +1307,7 @@ public abstract class CommonAjaxViewRoot {
         Rendering.renderHiddenField(writer, fieldName, stateStr);
     }
 
-    private ResponseWriter substituteResponseWriter(FacesContext context, RequestFacade request, Writer innerWriter) {
+    public static ResponseWriter substituteResponseWriter(FacesContext context, Writer innerWriter) {
         ResponseWriter newWriter;
         ResponseWriter responseWriter = context.getResponseWriter();
         if (responseWriter != null) {
@@ -1314,13 +1315,13 @@ public abstract class CommonAjaxViewRoot {
         } else {
             RenderKitFactory factory = (RenderKitFactory) FactoryFinder.getFactory(FactoryFinder.RENDER_KIT_FACTORY);
             RenderKit renderKit = factory.getRenderKit(context, context.getViewRoot().getRenderKitId());
-            newWriter = renderKit.createResponseWriter(innerWriter, null, request.getCharacterEncoding());
+            newWriter = renderKit.createResponseWriter(innerWriter, null, context.getExternalContext().getRequestCharacterEncoding());
         }
         context.setResponseWriter(newWriter);
         return responseWriter;
     }
 
-    private void restoreWriter(FacesContext context, ResponseWriter originalWriter) {
+    public static void restoreWriter(FacesContext context, ResponseWriter originalWriter) {
         if (originalWriter != null)
             context.setResponseWriter(originalWriter);
     }

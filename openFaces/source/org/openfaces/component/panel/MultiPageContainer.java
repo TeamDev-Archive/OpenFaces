@@ -16,7 +16,6 @@ import org.openfaces.component.OUIClientAction;
 import org.openfaces.component.OUIPanel;
 import org.openfaces.event.SelectionChangeEvent;
 import org.openfaces.event.SelectionChangeListener;
-import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.ValueBindings;
 
 import javax.el.ELContext;
@@ -202,12 +201,6 @@ public abstract class MultiPageContainer extends OUIPanel {
 
         if (selectedIndex != null && ValueBindings.set(this, "selectedIndex", selectedIndex))
             selectedIndex = null;
-    }
-
-    @Override
-    public void processRestoreState(FacesContext context, Object state) {
-        Object ajaxState = AjaxUtil.retrieveAjaxStateObject(context, this);
-        super.processRestoreState(context, ajaxState != null ? ajaxState : state);
     }
 
     @Override

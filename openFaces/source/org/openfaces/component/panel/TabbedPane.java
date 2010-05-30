@@ -371,7 +371,7 @@ public class TabbedPane extends MultiPageContainer implements TabSelectionHolder
 
     public void createSubComponents(FacesContext context) {
         UIComponent tabSet = Components.createChildComponent(context, this, TabSet.COMPONENT_TYPE, TAB_SET_SUFFIX);
-        TabSetItems items = new TabSetItems();
+        TabSetItems items = (TabSetItems) context.getApplication().createComponent(TabSetItems.COMPONENT_TYPE);
         tabSet.getChildren().add(items);
     }
 

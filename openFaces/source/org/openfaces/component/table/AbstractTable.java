@@ -17,7 +17,6 @@ import org.openfaces.component.TableStyles;
 import org.openfaces.component.filter.Filter;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.renderkit.table.TableStructure;
-import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.Components;
 import org.openfaces.util.ReflectionUtil;
 import org.openfaces.util.ValueBindings;
@@ -314,12 +313,6 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     public void invokeBeforeProcessDecodes(FacesContext context) {
         beforeProcessDecodes(context);
-    }
-
-    @Override
-    public void processRestoreState(FacesContext context, Object state) {
-        Object ajaxState = AjaxUtil.retrieveAjaxStateObject(context, this);
-        super.processRestoreState(context, ajaxState != null ? ajaxState : state);
     }
 
     protected TableDataModel getModel() {

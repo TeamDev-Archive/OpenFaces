@@ -18,9 +18,9 @@ import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.context.PartialViewContext;
 import javax.portlet.ActionRequest;
 import javax.portlet.RenderRequest;
-import javax.servlet.http.HttpServletRequest;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -327,10 +327,12 @@ public class AjaxUtil {
         return result;
     }
 
-    public static List<String> getRequestedAjaxPortionNames(FacesContext context) {
-        ExternalContext externalContext = context.getExternalContext();
-        RequestFacade request = RequestFacade.getInstance(externalContext.getRequest());
-        return getAjaxPortionNames(context, request);
+
+    public static boolean isAjaxPortionRequest(FacesContext context) {
+        if (!isAjaxRequest(context))
+            return false;
+        List<String> portionNames = getAjaxPortionNames(context);
+        return portionNames != null && portionNames.size() > 0;
     }
 
     /**
@@ -346,23 +348,19 @@ public class AjaxUtil {
     public static boolean isAjaxPortionRequest(FacesContext context, UIComponent component) {
         if (!isAjaxRequest(context))
             return false;
-        RequestFacade request = RequestFacade.getInstance(context.getExternalContext().getRequest());
-        List<String> portionNames = getAjaxPortionNames(context, request);
+        List<String> portionNames = getAjaxPortionNames(context);
         if (portionNames == null || portionNames.size() == 0)
             return false;
-        Map sessionMap = context.getExternalContext().getSessionMap();
-        String componentId = (String) sessionMap.get(PARAM_RENDER);
-        if (componentId == null) // not portlets
-            componentId = request.getParameter(PARAM_RENDER);
+        String componentId = context.getExternalContext().getRequestParameterMap().get(
+                PartialViewContext.PARTIAL_RENDER_PARAM_NAME);
         boolean requestForSpecifiedComponent = component.getClientId(context).equals(componentId);
         return requestForSpecifiedComponent;
 
     }
 
-    public static JSONObject getCustomJSONParam(FacesContext context, RequestFacade request) {
-        String jsonParamStr = isPortletRequest(context)
-                ? (String) context.getExternalContext().getSessionMap().get(CUSTOM_JSON_PARAM)
-                : request.getParameter(CUSTOM_JSON_PARAM);
+    public static JSONObject getCustomJSONParam(FacesContext context) {
+        ExternalContext externalContext = context.getExternalContext();
+        String jsonParamStr = externalContext.getRequestParameterMap().get(CUSTOM_JSON_PARAM);
         if (jsonParamStr == null)
             return null;
         JSONObject param;
@@ -374,10 +372,9 @@ public class AjaxUtil {
         return param;
     }
 
-    public static List<String> getAjaxPortionNames(FacesContext context, RequestFacade request) {
-        String updateIds = isPortletRequest(context)
-                ? (String) context.getExternalContext().getSessionMap().get(UPDATE_PORTIONS_SUFFIX)
-                : request.getParameter(UPDATE_PORTIONS_SUFFIX);
+    public static List<String> getAjaxPortionNames(FacesContext context) {
+        ExternalContext externalContext = context.getExternalContext();
+        String updateIds = externalContext.getRequestParameterMap().get(UPDATE_PORTIONS_SUFFIX);
         List<String> result = new ArrayList<String>();
         if (updateIds == null || updateIds.equals("")) {
             return Collections.emptyList();

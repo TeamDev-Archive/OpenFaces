@@ -18,7 +18,6 @@ import org.openfaces.component.ExpansionToggleButton;
 import org.openfaces.component.LoadingMode;
 import org.openfaces.component.OUIClientAction;
 import org.openfaces.event.StateChangeListener;
-import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.Components;
 import org.openfaces.util.ValueBindings;
 
@@ -193,12 +192,6 @@ public class FoldingPanel extends AbstractPanelWithCaption implements CompoundCo
         focusable = (Boolean) values[i++];
         focusedStyle = (String) values[i++];
         focusedClass = (String) values[i++];
-    }
-
-    @Override
-    public void processRestoreState(FacesContext context, Object state) {
-        Object ajaxState = AjaxUtil.retrieveAjaxStateObject(context, this);
-        super.processRestoreState(context, ajaxState != null ? ajaxState : state);
     }
 
     @Override

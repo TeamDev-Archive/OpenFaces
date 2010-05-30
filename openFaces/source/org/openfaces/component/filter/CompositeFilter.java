@@ -17,7 +17,6 @@ import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.BaseColumn;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.renderkit.filter.FilterRow;
-import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.Components;
 import org.openfaces.util.ValueBindings;
 import org.openfaces.util.ValueExpressionImpl;
@@ -97,12 +96,6 @@ public class CompositeFilter extends Filter {
         filterPropertiesMap = (LinkedHashMap<String, FilterProperty>) state[i++];
         filterPropertyNamesMap = (LinkedHashMap<String, FilterProperty>) state[i++];
         conditionConverter = (Converter) state[i++];
-    }
-
-    @Override
-    public void processRestoreState(FacesContext context, Object state) {
-        Object ajaxState = AjaxUtil.retrieveAjaxStateObject(context, this);
-        super.processRestoreState(context, ajaxState != null ? ajaxState : state);
     }
 
     public Object getValue() {

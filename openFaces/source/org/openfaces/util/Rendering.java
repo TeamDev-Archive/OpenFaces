@@ -646,8 +646,9 @@ public class Rendering {
                 Resources.renderJSLinkIfNeeded(context, jsFile);
             }
         PartialViewContext partialViewContext = context.getPartialViewContext();
-        if (partialViewContext.isAjaxRequest() && Environment.isMozilla()) {
-            // JSF 2.0.2 Ajax doesn't auto-execute in-place scripts under FireFox, so we're simulating this here
+        if (partialViewContext.isAjaxRequest() && Environment.isMozilla() && !AjaxUtil.isAjaxPortionRequest(context)) {
+            // JSF 2.0.2 (Mojarra) Ajax doesn't auto-execute in-place scripts under FireFox 3.6.3 transitional mode,
+            // so we're simulating this here
             if (partialViewContext.isAjaxRequest()) {
                 List<InitScript> initScripts = getAjaxInitScripts(context);
                 initScripts.add(new InitScript(script, jsFiles));

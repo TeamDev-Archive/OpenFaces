@@ -30,6 +30,11 @@ import org.openfaces.util.Styles;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.ComponentSystemEvent;
+import javax.faces.event.ComponentSystemEventListener;
+import javax.faces.event.ListenerFor;
+import javax.faces.event.PostRestoreStateEvent;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -38,13 +43,23 @@ import java.util.List;
 /**
  * @author Andrew Palval
  */
-public class TabbedPaneRenderer extends MultiPageContainerRenderer {
+@ListenerFor(systemEventClass = PostRestoreStateEvent.class)
+public class TabbedPaneRenderer extends MultiPageContainerRenderer implements ComponentSystemEventListener {
 
     private static final String TAB_SET_SUFFIX = "tabSet";
     private static final String DEFAULT_BORDER_CLASS_PREFIX = "o_tabbedpane_border_";
 
     protected String getSelectionHiddenFieldSuffix() {
         return Rendering.SERVER_ID_SUFFIX_SEPARATOR + TAB_SET_SUFFIX + SELECTED_INDEX_SUFFIX;
+    }
+
+    public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
+        if (event instanceof PostRestoreStateEvent) {
+            TabbedPane tabbedPane = (TabbedPane) event.getComponent();
+
+            List<SubPanel> subPanels = tabbedPane.getSubPanels(true);
+            initInnerTabSet(tabbedPane, tabbedPane.getTabSet(), subPanels);
+        }
     }
 
     @Override
