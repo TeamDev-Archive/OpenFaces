@@ -349,7 +349,7 @@
     <copyright>
       <option name="notice" value="OpenFaces - JSF Component Library 2.0&#10;Copyright (C) 2007-&amp;#36;today.year, TeamDev Ltd.&#10;licensing@openfaces.org&#10;Unless agreed in writing the contents of this file are subject to &#10;the GNU Lesser General Public License Version 2.1 (the &quot;LGPL&quot; License).&#10;This library is distributed in the hope that it will be useful, but &#10;WITHOUT ANY WARRANTY; without even the implied warranty of &#10;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. &#10;Please visit http://openfaces.org/licensing/ for more details." />
       <option name="keyword" value="Copyright" />
-      <option name="allowReplaceKeyword" value="" />
+      <option name="allowReplaceKeyword" value="OpenFaces" />
       <option name="myName" value="OpenFaces" />
       <option name="myLocal" value="true" />
     </copyright>
