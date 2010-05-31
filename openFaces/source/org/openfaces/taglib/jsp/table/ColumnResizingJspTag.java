@@ -42,9 +42,8 @@ public class ColumnResizingJspTag extends AbstractComponentJspTag {
     }
 
     public void setResizingState(ValueExpression resizingState) {
-        getDelegate().setPropertyValue("reszingState", resizingState);
+        getDelegate().setPropertyValue("resizingState", resizingState);
     }
-
 
     public void setRolloverSeparatorStyle(ValueExpression rolloverSeparatorStyle) {
         getDelegate().setPropertyValue("rolloverSeparatorStyle", rolloverSeparatorStyle);
@@ -77,7 +76,6 @@ public class ColumnResizingJspTag extends AbstractComponentJspTag {
     public void setDraggedSeparatorHeaderClass(ValueExpression draggedSeparatorHeaderClass) {
         getDelegate().setPropertyValue("draggedSeparatorHeaderClass", draggedSeparatorHeaderClass);
     }
-
 
     public void setAutoSaveState(ValueExpression autoSaveState) {
         getDelegate().setPropertyValue("autoSaveState", autoSaveState);

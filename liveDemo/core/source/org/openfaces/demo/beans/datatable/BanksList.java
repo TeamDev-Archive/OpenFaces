@@ -12,6 +12,7 @@
 
 package org.openfaces.demo.beans.datatable;
 
+import org.openfaces.component.table.ColumnResizingState;
 import org.openfaces.util.Faces;
 import org.openfaces.demo.beans.util.FacesUtils;
 
@@ -38,6 +39,7 @@ public class BanksList implements Serializable {
     private List<PaginatorStyleItem> paginatorStyles = new ArrayList<PaginatorStyleItem>();
     private Collection<State> bankStates;
     private State selectedState;
+    private ColumnResizingState columnResizingState;
 
     public BanksList() {
         paginatorStyleSelectedIndex = 0;
@@ -236,4 +238,11 @@ public class BanksList implements Serializable {
     }
 
 
+    public void setColumnResizingState(ColumnResizingState columnResizingState) {
+        this.columnResizingState = columnResizingState;
+    }
+
+    public ColumnResizingState getColumnResizingState() {
+        return columnResizingState;
+    }
 }

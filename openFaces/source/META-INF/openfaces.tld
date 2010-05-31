@@ -4272,6 +4272,9 @@
         different visits of an appropriate page.
       </description>
       <name>resizingState</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
       <!-- @bindingType org.openfaces.component.table.ColumnResizingState -->
       <!-- @default null -->
       <!-- @el only -->
