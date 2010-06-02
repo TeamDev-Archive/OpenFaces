@@ -158,8 +158,12 @@ O$.Timetable._initEventEditorDialog = function(dayTableId, dialogId, createEvent
         clearInterval(dialog._textareaHeightUpdateInterval);
     };
 
-    if (event.mainElement)
-      O$.correctElementZIndex(this, event.mainElement, 5);
+    if (event.parts){
+      for (var i = 0; i < event.parts.length; i++) {
+        if (event.parts[i].mainElement)
+          O$.correctElementZIndex(this, event.parts[i].mainElement, 5);
+      }
+    }
     if (centered)
       this.showCentered();
     else
@@ -266,12 +270,7 @@ O$.Timetable._initEvent = function(event) {
     this.resourceId = otherEvent.resourceId;
     this.color = otherEvent.color;
   };
-  event.updatePresentation = function(transitionPeriod) {
-    if (event.mainElement) {
-      event.mainElement._update(transitionPeriod);
-      event.mainElement._updateAreaPositions(true);
-    }
-  };
+  
   event._scrollIntoView = function() {
     /*    return; //todo: finish auto-scrolling functionality
      var dayTable = event.mainElement._dayTable;
@@ -322,10 +321,11 @@ O$.Timetable._initEventPreview = function(eventPreviewId, dayTableId, showingDel
     O$.setInnerText(nameElement, event.name, dayTable._escapeEventNames);
     O$.setInnerText(descriptionElement, event.description, dayTable._escapeEventDescriptions);
 
-    if (!event.mainElement)
+    var mainElement = event.parts[0].mainElement;
+    if (!mainElement)
       popupLayer.showCentered();
     else
-      popupLayer.showByElement(event.mainElement,
+      popupLayer.showByElement(mainElement,
               horizontalAlignment, verticalAlignment, horizontalDistance, verticalDistance);
   };
 
@@ -385,9 +385,10 @@ O$.Timetable._initEventActionBar = function(actionBarId, dayTableId, backgroundI
     cell._userClickHandler = cell.onclick;
     cell.onmousedown = function() {
       this._timetableEvent = actionBar._event ? actionBar._event : actionBar._lastEditedEvent;
+      this._timetableEventPart = actionBar._part ? actionBar._part : actionBar._lastEditedPart;
       this._dayTable = O$(dayTableId);
-      if (this._timetableEvent.mainElement._bringToFront) {
-        this._timetableEvent.mainElement._bringToFront();
+      if (this._timetableEventPart.mainElement._bringToFront) {
+        this._timetableEventPart.mainElement._bringToFront();
       }
     };
     cell.onclick = function(e) {
@@ -421,8 +422,9 @@ O$.Timetable._initEventActionBar = function(actionBarId, dayTableId, backgroundI
       var userSpecifiedBackground = O$.getStyleClassProperty(this.className, "background-color");
       if (!userSpecifiedBackground) {
         var event = actionBar._event ? actionBar._event : actionBar._lastEditedEvent;
+        var part = actionBar._part ? actionBar._part : actionBar._lastEditedPart;
         var intensity = pressed ? actionPressedIntensity : mouseInside ? actionRolloverIntensity : backgroundIntensity;
-        this.style.backgroundColor = O$.blendColors(event.mainElement._color, "#ffffff", 1 - intensity);
+        this.style.backgroundColor = O$.blendColors(part.mainElement._color, "#ffffff", 1 - intensity);
       } else
         this.style.backgroundColor = "";
 
@@ -659,4 +661,5 @@ O$.Timetable._PreloadedTimetableEvents = function(events) {
 
   this.setEvents(events);
 };
+
 

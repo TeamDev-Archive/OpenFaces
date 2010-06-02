@@ -199,7 +199,7 @@ O$.MonthTable._init = function(componentId,
         if (cell._cellEvents) {
           for (var i = 0; i < cell._cellEvents.length; i++) {
             var oldCellEvent = cell._cellEvents[i];
-            monthTable._removeEventElement(oldCellEvent);
+            oldCellEvent._removeEventElements();
           }
         }
         cell._cellEvents = [];
@@ -208,18 +208,16 @@ O$.MonthTable._init = function(componentId,
   }
 
   monthTable._updateCellEventElements = function(day) {
-    var result = [];
-
     var cell = O$.MonthTable.getCellForDay(this, day);
 
     if (!cell) {
-      return result;
+      return;
     }
 
     if (cell._cellEvents) {
       for (var i = 0; i < cell._cellEvents.length; i++) {
         var oldCellEvent = cell._cellEvents[i];
-        this._removeEventElement(oldCellEvent);
+        oldCellEvent._removeEventElements();
       }
     }
 
@@ -238,14 +236,11 @@ O$.MonthTable._init = function(componentId,
 
     for (var cellEventIndex = 0; cellEventIndex < cellEvents.length; cellEventIndex++) {
       var cellEvent = cellEvents[cellEventIndex];
-      var newEventElement = this._addEventElement(cellEvent);
-      newEventElement._attachAreas();
-      result.push(newEventElement);
+      this._addEventElements(cellEvent);
     }
     cell._moreLinkElement._update();
     cell._moreLinkData = null;
 
-    return result;
   };
 
   function addMoreLink(cell) {
@@ -299,18 +294,24 @@ O$.MonthTable._init = function(componentId,
   }
 
   var addEventElement = monthTable._addEventElement;
-  monthTable._addEventElement = function(event) {
-    var eventElement = addEventElement(event);
+  monthTable._addEventElement = function(event, part) {
+    var eventElement = addEventElement(event, part);
 
     event._updateRolloverState = function() {
-      var eventElement = event.mainElement;
-      if (!eventElement) {
-        // this can be the case because _updateRolloverState is invoked by time-out, so if mouseOver/mouseOut happens
-        // just before element is replaced with Ajax, this call will be made when there's no original element anymore
-        return;
+
+       var mouseInsideEventElements = false;
+      for (var i = 0; i < event.parts.length; i++) {
+        var eventElement = event.parts[i].mainElement;
+        if (!eventElement) {
+          // this can be the case because _updateRolloverState is invoked by time-out, so if mouseOver/mouseOut happens
+          // just before element is replaced with Ajax, this call will be made when there's no original element anymore
+          return;
+        }
+        mouseInsideEventElements |= eventElement._mouseInside;
       }
+
       var actionBar = monthTable._getEventActionBar();
-      event._setMouseInside(eventElement._mouseInside
+      event._setMouseInside(mouseInsideEventElements
               || (actionBar._event == event && actionBar._actionsArea._mouseInside)
               );
     };
@@ -387,18 +388,18 @@ O$.MonthTable._init = function(componentId,
   };
 
   var removeEventElement = monthTable._removeEventElement;
-  monthTable._removeEventElement = function(event) {
+  monthTable._removeEventElement = function(event, part) {
 
-    if (!event.mainElement)
+    if (!part.mainElement)
       return;
 
-    var areas = event.mainElement._areas;
+    var areas = part.mainElement._areas;
     for (var i = 0, count = areas.length; i < count; i++) {
       var area = areas[i];
       this._hiddenArea.appendChild(area);
     }
 
-    removeEventElement(event);
+    removeEventElement(event, part);
   };
 
 
@@ -451,10 +452,7 @@ O$.MonthTable._init = function(componentId,
     clearAllCellEvents();
 
     for (var cellDate = this._startTime; cellDate < this._endTime; cellDate = O$.MonthTable.__incDay(cellDate)) {
-      var newEventElements = this._updateCellEventElements(cellDate);
-      for (var i = 0; i < newEventElements.length; i++) {
-        this._eventElements.push(newEventElements[i]);
-      }
+      this._updateCellEventElements(cellDate);
     }
 
     this._updateEventZIndexes();
@@ -503,18 +501,7 @@ O$.MonthTable._init = function(componentId,
 
   };
 
-  O$.addInternalLoadEvent(function() {
 
-    var maxScrollOffset = monthTable._scroller.scrollHeight - O$.getElementSize(monthTable._scroller).height;
-    if (maxScrollOffset < 0)
-      maxScrollOffset = 0;
-    if (scrollOffset > maxScrollOffset)
-      scrollOffset = maxScrollOffset;
-    monthTable._scroller.scrollTop = scrollOffset;
-    O$.addEventHandler(monthTable._scroller, "scroll", function() {
-      O$.setHiddenField(monthTable, monthTable.id + "::scrollPos", monthTable._scroller.scrollTop);
-    });
-  });
 
   monthTable._accountForScrollerWidth = function() {
     var firstDataRow = this._table.body._getRows()[0];
@@ -535,6 +522,24 @@ O$.MonthTable._init = function(componentId,
   monthTable._putTimetableChanges(null, null, null, true);
   O$.assignEvents(monthTable, {onchange: onchange}, true);
 
+  O$.addInternalLoadEvent(function() {
+
+    var maxScrollOffset = monthTable._scroller.scrollHeight - O$.getElementSize(monthTable._scroller).height;
+    if (maxScrollOffset < 0)
+      maxScrollOffset = 0;
+    if (scrollOffset > maxScrollOffset)
+      scrollOffset = maxScrollOffset;
+    monthTable._scroller.scrollTop = scrollOffset;
+    O$.addEventHandler(monthTable._scroller, "scroll", function() {
+      O$.setHiddenField(monthTable, monthTable.id + "::scrollPos", monthTable._scroller.scrollTop);
+    });
+
+    monthTable.updateLayout(); // update positions after layout changes that might have had place during loading
+  });
+
+   O$.addEventHandler(window, "resize", function() {
+    monthTable.updateLayout();
+  });
 };
 
 O$.MonthTable.getFirstDay = function(day, firstDayOfWeek) {
