@@ -344,7 +344,7 @@ public class Resources {
      */
     public static void registerJavascriptLibrary(FacesContext context, String jsFileUrl) {
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-        List<String> libraries = (List<String>) requestMap.get(HEADER_JS_LIBRARIES);
+        List<String> libraries = getRegisteredJsLibraries(requestMap);
         if (libraries == null) {
             libraries = new ArrayList<String>();
             requestMap.put(HEADER_JS_LIBRARIES, libraries);
@@ -382,7 +382,7 @@ public class Resources {
 
         if (ajax4jsfScriptParameter != null) {
             Set<String> libraries = (Set<String>) requestMap.get(ajax4jsfScriptParameter);
-            List<String> ourLibraries = (List<String>) requestMap.get(HEADER_JS_LIBRARIES);
+            List<String> ourLibraries = getRegisteredJsLibraries(requestMap);
 
             if (libraries == null) {
                 libraries = new LinkedHashSet<String>();
@@ -396,7 +396,7 @@ public class Resources {
         }
 
         if (headEventsParameter != null) {
-            List<String> ourLibraries = (List<String>) requestMap.get(HEADER_JS_LIBRARIES);
+            List<String> ourLibraries = getRegisteredJsLibraries(requestMap);
             final Node[] headerResources = (Node[]) requestMap.get(headEventsParameter);
 
             if (headerResources != null && ourLibraries != null) {
@@ -406,6 +406,16 @@ public class Resources {
                 requestMap.put(headEventsParameter, mergedNodes);
             }
         }
+    }
+
+    public static List<String> getRegisteredJsLibraries() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+        return getRegisteredJsLibraries(requestMap);
+    }
+
+    public static List<String> getRegisteredJsLibraries(Map<String, Object> requestMap) {
+        return (List<String>) requestMap.get(HEADER_JS_LIBRARIES);
     }
 
 

@@ -12,6 +12,7 @@
 
 package org.openfaces.ajax;
 
+import org.openfaces.org.json.JSONArray;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.AjaxPortionRenderer;
@@ -20,6 +21,7 @@ import org.openfaces.util.AnonymousFunction;
 import org.openfaces.util.FunctionCallScript;
 import org.openfaces.util.InitScript;
 import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
 import org.openfaces.util.Script;
 import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.UtilPhaseListener;
@@ -217,6 +219,7 @@ public class PartialViewContext extends PartialViewContextWrapper {
             extensionAttributes.put("portion", portionName);
             extensionAttributes.put("text", portionOutput.toString());
             extensionAttributes.put("data", responseData != null ? responseData.toString() : "null");
+            extensionAttributes.put("jsLibs", new JSONArray(Resources.getRegisteredJsLibraries()).toString());
             extensionAttributes.put("scripts", rawScriptsBuffer.toString());
 
             partialWriter.startExtension(extensionAttributes);

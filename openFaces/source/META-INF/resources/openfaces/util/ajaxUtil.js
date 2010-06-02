@@ -311,6 +311,8 @@ O$._runScript = function(script, libs) {
 O$.sendAjaxRequest = function(render, args) {
   var source = args._source;
   if (!source) {
+    if (document.forms.length == 0)
+      throw "There should be a <h:form> component on a page for Ajax to work";
     var frm = document.forms[0];
     source = frm.firstChild;
   }
@@ -376,10 +378,14 @@ O$.sendAjaxRequest = function(render, args) {
         var portionName = extensionNode.getAttribute("portion");
         var portionText = extensionNode.getAttribute("text");
         var portionDataStr = extensionNode.getAttribute("data");
+        var jsLibsStr = extensionNode.getAttribute("jsLibs");
         var portionScripts = extensionNode.getAttribute("scripts");
+        var jsLibs = eval(jsLibsStr);
         var portionData = portionDataStr ? eval("(" + portionDataStr + ")") : null;
         var component = O$(render);
-        args.portionProcessor(component, portionName, portionText, portionScripts, portionData);
+        O$._runScript(function() {
+          args.portionProcessor(component, portionName, portionText, portionScripts, portionData);
+        }, jsLibs);
       }
       for (var i = 0, count = childNodes.length; i < count; i++) {
         var childNode = childNodes[i];
