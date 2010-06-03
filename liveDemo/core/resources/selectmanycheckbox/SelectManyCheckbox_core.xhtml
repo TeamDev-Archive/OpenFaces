@@ -34,15 +34,16 @@
                 <div class="demoLibrary-tagsEditBox-tail"><span></span></div>
                 <div class="demoLibrary-tagsEditBox-main">
                   <div class="demoLibrary-tagsEditBox-content">
-                    <o:selectManyCheckbox value="#{BookCatalog.selectedBookLabels}"
+                    <o:selectManyCheckbox id="selectedBookLabels"
+                                          value="#{BookCatalog.selectedBookLabels}"
                                           layout="pageDirection"
                                           rendered="#{BookCatalog.selectedBook.isbn == book.isbn}"
                                           selectedImageUrl="../images/selectmanycheckbox/tags-edit-checkbox-checked.png"
-                                          disabledSelectedImageUrl="../images/selectmanycheckbox/tags-edit-checkbox-checked.png"
+                                          rolloverSelectedImageUrl="../images/selectmanycheckbox/tags-edit-checkbox-checked-hover.png"
                                           unselectedImageUrl="../images/selectmanycheckbox/tags-edit-checkbox-unchecked.png"
-                                          disabledUnselectedImageUrl="../images/selectmanycheckbox/tags-edit-checkbox-unchecked.png"
+                                          rolloverUnselectedImageUrl="../images/selectmanycheckbox/tags-edit-checkbox-unchecked-hover.png"
                             >
-                      <f:selectItems id="selectedBookLabels" value="#{BookCatalog.labelItems}"/>
+                      <f:selectItems value="#{BookCatalog.labelItems}"/>
                     </o:selectManyCheckbox>
 
                   </div>
