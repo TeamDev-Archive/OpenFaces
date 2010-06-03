@@ -308,7 +308,7 @@ O$.WeekTable._init = function(componentId,
   });
 
    O$.addEventHandler(window, "resize", function() {
-    timeTableView.updateLayout();
+    weekTable.updateLayout();
   });
 };
 

@@ -456,12 +456,18 @@ O$.TimeTableView._init = function(componentId,
         var eventElement = event.parts[i].mainElement;
 
         if (value) {
-          O$.setStyleMappings(eventElement, {_rolloverStyle: rolloverEventClass});
+          O$.setStyleMappings(eventElement, {_rolloverStyle: timeTableView._rolloverEventClass});
           eventElement._updateAreaPositionsAndBorder();
           if (part.last) {
             timeTableView._showEventActionBar(event, part);
           }
 
+          if (eventPreview) {
+            setTimeout(function() {
+              if (event._isEventPreviewAllowed())
+                eventPreview.showForEvent(event);
+            }, eventPreview._showingDelay);
+          }
           if (eventElement._onmouseover) {
             eventElement._onmouseover(O$.createEvent("mouseover"));
           }
@@ -470,21 +476,12 @@ O$.TimeTableView._init = function(componentId,
           eventElement._updateAreaPositionsAndBorder();
           timeTableView._hideEventActionBar();
 
+          if (eventPreview) {
+            eventPreview.hide();
+          }
 
           if (eventElement._onmouseout) {
             eventElement._onmouseout(O$.createEvent("mouseout"));
-          }
-        }
-        if (value) {
-          if (eventPreview) {
-            setTimeout(function() {
-              if (event._isEventPreviewAllowed())
-                eventPreview.showForEvent(event);
-            }, eventPreview._showingDelay);
-          }
-        } else {
-          if (eventPreview) {
-            eventPreview.hide();
           }
         }
       }

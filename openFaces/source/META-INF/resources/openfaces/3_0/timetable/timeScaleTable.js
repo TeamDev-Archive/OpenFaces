@@ -11,6 +11,8 @@
  */
 O$.TimeScaleTable = {};
 
+O$.TimeScaleTable.RESOLVE_OVERLAPPING = false;
+
 O$.TimeScaleTable._init = function(componentId,
                                    day,
                                    locale,
@@ -550,19 +552,17 @@ O$.TimeScaleTable._init = function(componentId,
     event._updateRolloverState = function() {
 
       var mouseInsideEventElements = false;
-      if (editingOptions.eventDurationEditable && editable){
-        for (var i = 0; i < event.parts.length; i++) {
-          var eventElement = event.parts[i].mainElement;
-          if (!eventElement) {
-            // this can be the case because _updateRolloverState is invoked by time-out, so if mouseOver/mouseOut happens
-            // just before element is replaced with Ajax, this call will be made when there's no original element anymore
-            return;
-          }
-          mouseInsideEventElements |= eventElement._mouseInside ||
-                  eventElement._topResizeHandle && eventElement._topResizeHandle._mouseInside ||
-                  eventElement._bottomResizeHandle && eventElement._bottomResizeHandle._mouseInside;
-
+      for (var i = 0; i < event.parts.length; i++) {
+        var eventElement = event.parts[i].mainElement;
+        if (!eventElement) {
+          // this can be the case because _updateRolloverState is invoked by time-out, so if mouseOver/mouseOut happens
+          // just before element is replaced with Ajax, this call will be made when there's no original element anymore
+          return;
         }
+        mouseInsideEventElements |= eventElement._mouseInside ||
+                eventElement._topResizeHandle && eventElement._topResizeHandle._mouseInside ||
+                eventElement._bottomResizeHandle && eventElement._bottomResizeHandle._mouseInside;
+
       }
 
       var actionBar = timeScaleTable._getEventActionBar();
@@ -601,8 +601,64 @@ O$.TimeScaleTable._init = function(componentId,
         var scrollerWidth = scroller.offsetWidth - scroller.clientWidth;
         x2 -= scrollerWidth;
       }
-      var rect = new O$.Rectangle(Math.round(x1), Math.round(top.y),
-              Math.round(x2 - x1), Math.round(bottom.y - top.y));
+
+      var rect;
+      if (O$.TimeScaleTable.RESOLVE_OVERLAPPING) {
+        var rangeMap = new O$._RangeMap();
+        var eventRange = {
+          start: part.start.getTime(),
+          end: part.end.getTime()
+        };
+        var intersects = [];
+
+        var tmpEvent;
+        var tmpRange;
+        var intersectRange;
+        var div = 1; //Used to divide width
+        var tmpDiv; //Used to determine div
+
+        var position = 0; //position of event in intersects
+
+        for (var eventIndex = 0, eventCount = timeScaleTable._events.length; eventIndex < eventCount; eventIndex++) {
+          tmpEvent = timeScaleTable._events[eventIndex];
+          tmpRange = {
+            start: tmpEvent.start.getTime(),
+            end: tmpEvent.end.getTime()
+          };
+          tmpDiv = 0;
+          if (rangeMap._rangesIntersectExclude(eventRange, tmpRange)) {
+            intersects.push(tmpEvent);
+            //Determine position to get x value
+            if (event.id == tmpEvent.id) {
+              position = intersects.length - 1;
+            }
+            for (var i = 0; i < intersects.length; i++) {
+              intersectRange = {
+                start: intersects[i].start.getTime(),
+                end: intersects[i].end.getTime()
+              };
+              if (rangeMap._rangesIntersectExclude(tmpRange, intersectRange)) {
+                tmpDiv++;
+              }
+            }
+            if (tmpDiv > div) {
+              div = tmpDiv;
+            }
+
+          }
+        }
+
+        var intersectWidth = Math.round((x2 - x1) / div);
+        var intersectX = Math.round(Math.round(x1) + position * intersectWidth);
+
+        rect = new O$.Rectangle(intersectX, Math.round(top.y),
+                intersectWidth, Math.round(bottom.y - top.y));
+
+      } else {
+
+        rect = new O$.Rectangle(Math.round(x1), Math.round(top.y),
+                Math.round(x2 - x1), Math.round(bottom.y - top.y));
+      }
       this._rect = rect;
       if (!transitionPeriod)
         transitionPeriod = 0;
