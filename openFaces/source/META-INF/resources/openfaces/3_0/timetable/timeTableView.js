@@ -137,10 +137,11 @@ O$.TimeTableView._init = function(componentId,
     };
   }
 
-  timeTableView._showEventActionBar = function(event) {
-    var eventElement = event.mainElement;
+  timeTableView._showEventActionBar = function(event, part) {
+    var eventElement = part.mainElement;
     var actionBar = this._getEventActionBar();
     actionBar._event = event;
+    actionBar._part = part;
     var userSpecifiedStyles = O$.getStyleClassProperties(actionBar._userSpecifiedClass, ["color", "background-color"]);
     actionBar.style.backgroundColor = userSpecifiedStyles.backgroundColor
             ? userSpecifiedStyles.backgroundColor
@@ -193,7 +194,7 @@ O$.TimeTableView._init = function(componentId,
       return;
     for (var elementIndex = 0, elementCount = this._eventElements.length; elementIndex < elementCount; elementIndex++) {
       var eventElement = this._eventElements[elementIndex];
-      var eventZIndex = this._baseZIndex + (elementIndex + 1) * 5;
+      var eventZIndex = timeTableView._baseZIndex + (elementIndex + 1) * 5;
       eventElement.style.zIndex = eventZIndex;
       eventElement._backgroundElement.style.zIndex = eventZIndex - 1;
       if (eventElement._updateZIndex)
@@ -241,14 +242,6 @@ O$.TimeTableView._init = function(componentId,
 
   };
 
-  O$.addInternalLoadEvent(function() {
-    timeTableView.updateLayout(); // update positions after layout changes that might have had place during loading
-  });
-
-  O$.addEventHandler(window, "resize", function() {
-    timeTableView.updateLayout();
-  });
-
   timeTableView._updateHeightForFF = function() {
     // FireFox's scroller height includes the entire table without truncating it according to
     // user-specified height in day table, so we should truncate height ourselves
@@ -288,21 +281,21 @@ O$.TimeTableView._init = function(componentId,
     return this._eventPreview;
   };
 
-  //1044
   timeTableView._hideEventActionBar = function() {
     var actionBar = this._getEventActionBar();
     if (!actionBar._event)
       return;
-    var eventElement = actionBar._event.mainElement;
+    var eventElement = actionBar._part.mainElement;
     actionBar._lastEditedEvent = actionBar._event;
+    actionBar._lastEditedPart = actionBar._event;
     actionBar._event = null;
+    actionBar._part = null;
     eventElement.removeChild(actionBar);
     actionBar.style.visibility = "hidden";
     actionBar._actionsArea.style.visibility = "hidden";
   };
 
 
-  //1254
   timeTableView._putTimetableChanges = function(addedEvents, changedEvents, removedEventIds, initialAssignment) {
     if (!this._addedEvents) this._addedEvents = [];
     if (!this._editedEvents) this._editedEvents = [];
@@ -359,10 +352,152 @@ O$.TimeTableView._init = function(componentId,
       this.saveChanges();
   };
 
-  timeTableView._addEventElement = function(event) {
+
+  timeTableView._splitIntoParts = function(event) {
+    var parts = [];
+    var start = this._startTime < event.start ? event.start : this._startTime;
+    var end = this._endTime < event.end ? this._endTime : event.end;
+    var partStart = start;
+    var partEnd = O$.incDay(new Date(partStart.getFullYear(), partStart.getMonth(), partStart.getDate()));
+    var i = 0;
+    do{
+      var part = {start:partStart, end: (partEnd < end) ? partEnd : end, index: i++, event: event};
+      parts.push(part);
+      partStart = O$.cloneDate(partEnd);
+      partEnd = O$.incDay(O$.cloneDate(partEnd));
+    } while (partStart < end);
+
+    parts[0].first = true;
+    parts[parts.length - 1].last = true;
+
+    return parts;
+  };
+
+  timeTableView._addEventElements = function(event) {
+    var parts = timeTableView._splitIntoParts(event);
+    event.parts = parts;
+
+    for (var i = 0; i < event.parts.length; i++) {
+      timeTableView._addEventElement(event, event.parts[i]);
+    }
+
+    event.updatePresentation = function(transitionPeriod) {
+      var newParts = timeTableView._splitIntoParts(event, false);
+
+      if (newParts.length != event.parts.length) {
+        var eventElementsLength = timeTableView._eventElements.length;
+        var draggablePart;
+        for (var i = 0; i < event.parts.length; i++) {
+          var part = event.parts[i];
+          if (part.mainElement._draggingInProgress) {
+            draggablePart = part;
+          } else {
+            timeTableView._removeEventElement(event, part);
+          }
+        }
+        eventElementsLength = timeTableView._eventElements.length;
+        event.parts = newParts;
+
+        var draggablePartIndex = -1;
+        if (draggablePart) {
+          draggablePartIndex = event._getDraggablePartIndex();
+        }
+        for (i = 0; i < event.parts.length; i++) {
+          part = event.parts[i];
+          if (i == draggablePartIndex) {
+            draggablePart.start = part.start;
+            draggablePart.end = part.end;
+            draggablePart.index = i;
+            event.parts[i] = draggablePart;
+          } else {
+            timeTableView._addEventElement(event, part);
+          }
+        }
+        if (draggablePart) {
+          draggablePart.mainElement._update(0);
+          draggablePart.mainElement._updateAreaPositions(true);
+        }
+
+        timeTableView._updateEventZIndexes();
+        event._updateRolloverState();
+
+      } else {
+        for (i = 0; i < event.parts.length; i++) {
+          var oldPart = event.parts[i];
+          var newPart = newParts[i];
+          oldPart.start = newPart.start;
+          oldPart.end = newPart.end;
+          oldPart.mainElement._update(transitionPeriod);
+          oldPart.mainElement._updateAreaPositions(true);
+        }
+      }
+
+    };
+
+
+    event._removeEventElements = function(refreshAreasAfterReload) {
+      for (var i = 0; i < parts.length; i++) {
+        var part = parts[i];
+        if (refreshAreasAfterReload && part.mainElement) {
+          part.mainElement._attachAreas();
+        }
+        timeTableView._removeEventElement(event, part);
+      }
+    };
+
+    var eventPreview = timeTableView._getEventPreview();
+    event._setMouseInside = function(value) {
+      if (event._mouseInside != value && event._isEventUpdateNotAllowed()){
+        return;
+      }
+      event._mouseInside = value;
+      for (var i = 0; i < event.parts.length; i++) {
+        var part = event.parts[i];
+        var eventElement = event.parts[i].mainElement;
+
+        if (value) {
+          O$.setStyleMappings(eventElement, {_rolloverStyle: timeTableView._rolloverEventClass});
+          eventElement._updateAreaPositionsAndBorder();
+          if (part.last) {
+            timeTableView._showEventActionBar(event, part);
+          }
+
+          if (eventPreview) {
+            setTimeout(function() {
+              if (event._isEventPreviewAllowed())
+                eventPreview.showForEvent(event);
+            }, eventPreview._showingDelay);
+          }
+          if (eventElement._onmouseover) {
+            eventElement._onmouseover(O$.createEvent("mouseover"));
+          }
+        } else {
+          O$.setStyleMappings(eventElement, {_rolloverStyle: null});
+          eventElement._updateAreaPositionsAndBorder();
+          timeTableView._hideEventActionBar();
+
+          if (eventPreview) {
+            eventPreview.hide();
+          }
+
+          if (eventElement._onmouseout) {
+            eventElement._onmouseout(O$.createEvent("mouseout"));
+          }
+        }
+      }
+    };
+
+
+  };
+
+  timeTableView._addEventElement = function(event, part) {
     var eventElement = document.createElement("div");
+    if (!timeTableView._eventElements) {
+      timeTableView._eventElements = [];
+    }
+    timeTableView._eventElements.push(eventElement);
     eventElement._event = event;
-    event.mainElement = eventElement;
+    part.mainElement = eventElement;
 
     O$.Timetable._createEventContentElements(eventElement, eventContent, eventContentClasses);
 
@@ -408,7 +543,7 @@ O$.TimeTableView._init = function(componentId,
     };
     eventElement._updateAreaZIndexes = function(eventZIndex) {
       if (eventZIndex === undefined)
-        eventZIndex = O$.getNumericElementStyle(event.mainElement, "z-index");
+        eventZIndex = O$.getNumericElementStyle(eventElement, "z-index");
 
       for (var areaIndex = 0, areaCount = this._areas.length; areaIndex < areaCount; areaIndex++) {
         var area = this._areas[areaIndex];
@@ -426,12 +561,12 @@ O$.TimeTableView._init = function(componentId,
       O$.combineClassNames([eventClass, "o_explicitly_transparent_background"]);
     eventElement.className = eventClass;
     eventElement.style.margin = "0"; // margin in CSS is for calculating eventsLeftOffset/eventsRightOffset only -- it should be reset to avoid unwanted effects
-    eventElement.style.zIndex = this._baseZIndex + 5;
+    eventElement.style.zIndex = timeTableView._baseZIndex + 5;
 
     eventElement._backgroundElement = document.createElement("div");
     eventElement._backgroundElement.className = eventBackgroundStyleClassName;
-    eventElement._backgroundElement.style.zIndex = this._baseZIndex + 4;
-    event.backgroundElement = eventElement._backgroundElement;
+    eventElement._backgroundElement.style.zIndex = timeTableView._baseZIndex + 4;
+    part.backgroundElement = eventElement._backgroundElement;
 
 
     eventElement._updateShape = function() {
@@ -463,40 +598,6 @@ O$.TimeTableView._init = function(componentId,
       eventElement.style.borderColor = userSpecifiedStyles.borderColor ? userSpecifiedStyles.borderColor : eventElement._color;
     };
 
-    var eventPreview = timeTableView._getEventPreview();
-    event._setMouseInside = function(value) {
-      if (event._mouseInside == value)
-        return;
-      event._mouseInside = value;
-      if (event._isEventUpdateNotAllowed())
-        return;
-      if (value) {
-        O$.setStyleMappings(eventElement, {_rolloverStyle: rolloverEventClass});
-        eventElement._updateAreaPositionsAndBorder();
-        timeTableView._showEventActionBar(event);
-
-        if (eventPreview) {
-          setTimeout(function() {
-            if (event._isEventPreviewAllowed())
-              eventPreview.showForEvent(event);
-          }, eventPreview._showingDelay);
-        }
-        if (eventElement._onmouseover) {
-          eventElement._onmouseover(O$.createEvent("mouseover"));
-        }
-      } else {
-        O$.setStyleMappings(eventElement, {_rolloverStyle: null});
-        eventElement._updateAreaPositionsAndBorder();
-        timeTableView._hideEventActionBar();
-
-        if (eventPreview) {
-          eventPreview.hide();
-        }
-        if (eventElement._onmouseout) {
-          eventElement._onmouseout(O$.createEvent("mouseout"));
-        }
-      }
-    };
 
     O$.setupHoverStateFunction(eventElement, function(mouseInside) {
       if (event._creationInProgress)
@@ -523,25 +624,30 @@ O$.TimeTableView._init = function(componentId,
     return eventElement;
   };
 
-  timeTableView._removeEventElement = function(event) {
-    if (!event.mainElement)
+  timeTableView._removeEventElement = function(event, part) {
+    if (!part.mainElement)
       return;
+
+    var index = O$.findValueInArray(part.mainElement, timeTableView._eventElements);
+    timeTableView._eventElements.splice(index, 1);
     if (timeTableView._getEventActionBar()._event == event)
       timeTableView._hideEventActionBar();
 
-    if (event.mainElement._removeNodes)
-      event.mainElement._removeNodes();
-    event.mainElement.parentNode.removeChild(event.mainElement);
-    var backgroundElement = event.mainElement._backgroundElement;
+    if (part.mainElement._removeNodes)
+      part.mainElement._removeNodes();
+    part.mainElement.parentNode.removeChild(part.mainElement);
+    var backgroundElement = part.mainElement._backgroundElement;
     backgroundElement.parentNode.removeChild(backgroundElement);
-    event.mainElement._event = null;
-    event.mainElement = null;
-    event.backgroundElement = null;
+    part.mainElement._event = null;
+    part.mainElement = null;
+    part.backgroundElement = null;
   };
 
   timeTableView.cancelEventCreation = function(event) {
     event._creationInProgress = undefined;
-    this._removeEventElement(event);
+    if (event._removeEventElements){
+      event._removeEventElements();
+    }
   };
 
   timeTableView.addEvent = function(event) {
@@ -549,7 +655,7 @@ O$.TimeTableView._init = function(componentId,
     event.setEnd(event.end, event.endStr);
     if (event._creationInProgress) {
       event._creationInProgress = undefined;
-      this._removeEventElement(event);
+      event._removeEventElements();
     }
 
     eventProvider.addEvent(event);
@@ -611,8 +717,11 @@ O$.TimeTableView._init = function(componentId,
             var addedEvent = timeTableView._addedEvents[addedIdx];
             addedEvent._copyFrom(portionData.addedEvents[addedIdx]);
             addedEvent.updatePresentation(0 /*dragAndDropCancelingPeriod*/);
-            addedEvent.mainElement._attachAreas();
-            addedEvent.mainElement._updateAreaPositions();
+            for (var i = 0; i < addedEvent.parts.length; i++) {
+              var addedEventPartElement = addedEvent.parts[i].mainElement;
+              addedEventPartElement._attachAreas();
+              addedEventPartElement._updateAreaPositions();
+            }
           }
         }
         if (portionData.editedEvents) {
@@ -621,7 +730,9 @@ O$.TimeTableView._init = function(componentId,
           for (var editedIdx = 0; editedIdx < editedCount; editedIdx++) {
             var editedEvent = timeTableView._editedEvents[editedIdx];
             editedEvent._copyFrom(portionData.editedEvents[editedIdx]);
-            editedEvent.mainElement._attachAreas();
+            for (var j = 0; j < editedEvent.parts.length; j++) {
+              editedEvent.parts[j].mainElement._attachAreas();
+            }
             editedEvent.updatePresentation(0 /*dragAndDropCancelingPeriod*/);
           }
         }

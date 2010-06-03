@@ -73,7 +73,7 @@ O$.DayTable._init = function(componentId,
       columns:columns,
       headerColumns:headerColumns
     };
-  }
+  };
 
   dayTable._initTableCell = function(cell, cellIndex) {
     cell._resource = resources[cellIndex - 1];
@@ -89,7 +89,7 @@ O$.DayTable._init = function(componentId,
   dayTable._initStylesForTables();
   dayTable._table.body._overrideVerticalGridline(0, dayTable._timeColumnSeparator);
 
-  dayTable._getNearestTimeslotForPosition = function(x, y, event) {
+  dayTable._getNearestTimeslotForPosition = function(x, y) {
     var row = this._table.body._rowFromPoint(10, y, true, this._getLayoutCache());
     if (!row)
       return {
@@ -97,7 +97,7 @@ O$.DayTable._init = function(componentId,
         time: y <= 0 ? this._startTime : this._endTime
       };
 
-    return this._getNearestTimeslotForPositionAndRow(x, y, row, event);
+    return this._getNearestTimeslotForPositionAndRow(x, y, row);
   };
 
   dayTable._getVertOffsetByTime = function(time) {
@@ -117,8 +117,8 @@ O$.DayTable._init = function(componentId,
 
 
   var addEventElement = dayTable._addEventElement;
-  dayTable._addEventElement = function(event) {
-    var eventElement = addEventElement(event);
+  dayTable._addEventElement = function(event, part) {
+    var eventElement = addEventElement(event, part);
 
     eventElement._getLeftColBoundaries = function(firstDataRow, resourceColIndex){
       return O$.getElementBorderRectangle(firstDataRow._cells[resourceColIndex != undefined ? resourceColIndex : 1], true, dayTable._getLayoutCache());
@@ -198,6 +198,27 @@ O$.DayTable._init = function(componentId,
 
   dayTable._putTimetableChanges(null, null, null, true);
   O$.assignEvents(dayTable, {onchange: onchange}, true);
+
+  O$.addInternalLoadEvent(function() {
+     var scrollOffset = dayTable._getVertOffsetByTime(dayTable._scrollTime).y;
+    var maxScrollOffset = dayTable._scroller.scrollHeight - O$.getElementSize(dayTable._scroller).height;
+    if (maxScrollOffset < 0)
+      maxScrollOffset = 0;
+    if (scrollOffset > maxScrollOffset)
+      scrollOffset = maxScrollOffset;
+    dayTable._scroller.scrollTop = scrollOffset;
+    O$.addEventHandler(dayTable._scroller, "scroll", function() {
+      //TODO: move null to the end
+      var timeslot = dayTable._getNearestTimeslotForPosition(10, dayTable._scroller.scrollTop);
+      O$.setHiddenField(dayTable, dayTable.id + "::scrollPos", O$.formatTime(timeslot.timeAtPosition));
+    });
+
+    dayTable.updateLayout(); // update positions after layout changes that might have had place during loading
+  });
+
+   O$.addEventHandler(window, "resize", function() {
+    dayTable.updateLayout();
+  });
   
 };
 

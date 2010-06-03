@@ -92,7 +92,7 @@ O$.WeekTable._init = function(componentId,
       columns:columns,
       headerColumns:headerColumns
     };
-  }
+  };
 
   weekTable._initTableCell = function(cell, cellIndex) {
     if (this._useResourceSeparation) {
@@ -141,36 +141,19 @@ O$.WeekTable._init = function(componentId,
     }
   }
 
-  weekTable._getNearestTimeslotForPosition = function(x, y, event) {
+  weekTable._getNearestTimeslotForPosition = function(x, y) {
 
-    var weekday = -1;
-    if (event){
-       weekday = O$.WeekTable.getEventWeekday(this, event);
-    }
-    var row = this._table.body._rowFromPoint(10, y, true, this._getLayoutCache());    
+    var weekday = undefined;
+    var row = this._table.body._rowFromPoint(10, y, true, this._getLayoutCache());
     if (!row) {
-      var time;      
-      if (y <= 0) {
-        time = this._startTime;
-        if (weekday && weekday > 0) {
-          time = new Date(time.getTime() + weekday * 86400000);
-        }
-      } else {
-        time = this._endTime; //TODO
-      }
-
-      return {
-        resource: undefined,
-        time: time
-      };
+      return null;
     }
 
-    var result = this._getNearestTimeslotForPositionAndRow(x, y, row, event);
+    var result = this._getNearestTimeslotForPositionAndRow(x, y, row);    
+    weekday = result.cell._weekday;
 
-    if (weekday && weekday > 0) {
-      result.time = new Date(result.time.getTime() + weekday * 86400000);
-      result.timeAtPosition = new Date(result.timeAtPosition.getTime() + weekday * 86400000);
-    }
+    result.time = new Date(result.time.getTime() + weekday * 86400000);
+    result.timeAtPosition = new Date(result.timeAtPosition.getTime() + weekday * 86400000);
 
     return result;
   };
@@ -203,33 +186,33 @@ O$.WeekTable._init = function(componentId,
     }
     return weekTable._getVertOffsetByHoursAndMinutes(hours, minutes);
 
-  }
+  };
 
   var addEventElement = weekTable._addEventElement;
-  weekTable._addEventElement = function(event) {
-    var eventElement = addEventElement(event);
-
-    var weekday = O$.WeekTable.getEventWeekday(weekTable, event);
-
+  weekTable._addEventElement = function(event, part) {
+    var eventElement = addEventElement(event, part);
+    
     eventElement._getLeftColBoundaries = function(firstDataRow, resourceColIndex){
+      var weekday = O$.WeekTable.getPartWeekday(weekTable, part);
       var leftColIndex = weekday * columnsInWeekday + (resourceColIndex != undefined ? resourceColIndex : 1);
       var leftColBoundaries = O$.getElementBorderRectangle(firstDataRow._cells[leftColIndex], true, weekTable._getLayoutCache());
       return leftColBoundaries; 
     };
 
     eventElement._getRightColBoundaries = function(firstDataRow, resourceColIndex){
+      var weekday = O$.WeekTable.getPartWeekday(weekTable, part);
       var rightColIndex = weekday * columnsInWeekday + (resourceColIndex != undefined ? resourceColIndex : columnsInWeekday);
       var rightColBoundaries = O$.getElementBorderRectangle(firstDataRow._cells[rightColIndex], true, weekTable._getLayoutCache());
       return rightColBoundaries;
     };
 
     eventElement._getTop = function(){
-      return weekTable._getVertOffsetByTime(event.start);
+      return weekTable._getVertOffsetByTime(part.start);
     };
 
     eventElement._getBottom = function(){
-      var isCrossDay = ! O$.WeekTable.isSameDay(event.start, event.end);
-      return weekTable._getVertOffsetByTime(event.end, true, isCrossDay);
+      var isCrossDay = ! O$.WeekTable.isSameDay(part.start, part.end);
+      return weekTable._getVertOffsetByTime(part.end, true, isCrossDay);
     };
     
     eventElement._update();
@@ -306,6 +289,27 @@ O$.WeekTable._init = function(componentId,
 
   weekTable._putTimetableChanges(null, null, null, true);
   O$.assignEvents(weekTable, {onchange: onchange}, true);
+
+  O$.addInternalLoadEvent(function() {
+     var scrollOffset = weekTable._getVertOffsetByTime(weekTable._scrollTime).y;
+    var maxScrollOffset = weekTable._scroller.scrollHeight - O$.getElementSize(weekTable._scroller).height;
+    if (maxScrollOffset < 0)
+      maxScrollOffset = 0;
+    if (scrollOffset > maxScrollOffset)
+      scrollOffset = maxScrollOffset;
+    weekTable._scroller.scrollTop = scrollOffset;
+    O$.addEventHandler(weekTable._scroller, "scroll", function() {
+      //TODO: move null to the end
+      var timeslot = weekTable._getNearestTimeslotForPosition(10, weekTable._scroller.scrollTop);
+      O$.setHiddenField(weekTable, weekTable.id + "::scrollPos", O$.formatTime(timeslot.timeAtPosition));
+    });
+
+    weekTable.updateLayout(); // update positions after layout changes that might have had place during loading
+  });
+
+   O$.addEventHandler(window, "resize", function() {
+    weekTable.updateLayout();
+  });
 };
 
 O$.WeekTable._findEventById = function(events, id) {
@@ -322,10 +326,10 @@ O$.WeekTable._findEventById = function(events, id) {
   return null;
 };
 
-O$.WeekTable.getEventWeekday = function(weekTable, event) {  
+O$.WeekTable.getPartWeekday = function(weekTable, part) {
   var firstDay = weekTable._firstDay;
   var testDate = O$.cloneDate(firstDay);
-  var eventDate = O$.dateByTimeMillis(event.start.getTime());
+  var eventDate = O$.dateByTimeMillis(part.start.getTime());
 
   for (var d = 0; d < 7; d++) {
     if (O$._datesEqual(eventDate, testDate)) {

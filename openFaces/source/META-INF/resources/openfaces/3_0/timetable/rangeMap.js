@@ -17,6 +17,12 @@ O$._RangeMap.prototype._rangesIntersect = function(range1, range2) {
   // Returns true if the ranges intersect. End-point intersection is also not considered as an intersection.
   return range2.end >= range1.start && range2.start <= range1.end;
 };
+
+O$._RangeMap.prototype._rangesIntersectExclude = function(range1, range2) {
+  // Returns true if the ranges intersect. End-point intersection is NOT considered as an intersection.
+  return this._rangesIntersect(range1, range2) && !(range2.end == range1.start || range2.start == range1.end);
+};
+
 O$._RangeMap.prototype._rangeContainsRange = function(range1, range2) {
   // Returns true if range2 is entirely in range1. Equal ranges result in returning true as well.
   return range2.start >= range1.start && range2.end <= range1.end;
@@ -53,6 +59,9 @@ O$._RangeMap.prototype.addRange = function(start, end) {
   }
   this._disjointRanges.push(extendedRange);
 };
+
+
+
 O$._RangeMap.prototype.isRangeFullyInMap = function(start, end) {
   if (this._infiniteRange)
     return true;

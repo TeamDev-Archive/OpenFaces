@@ -11,6 +11,8 @@
  */
 O$.TimeScaleTable = {};
 
+O$.TimeScaleTable.RESOLVE_OVERLAPPING = false;
+
 O$.TimeScaleTable._init = function(componentId,
                                    day,
                                    locale,
@@ -259,28 +261,37 @@ O$.TimeScaleTable._init = function(componentId,
 
   };
 
-  timeScaleTable._getNearestTimeslotForPositionAndRow = function(x, y, row, event) {
+  timeScaleTable._getNearestTimeslotForPositionAndRow = function(x, y, row) {
+    var firstRow = this._table.body._rowFromPoint(1, 1, true, this._getLayoutCache());
+    var timeColumnCell = firstRow._cellFromPoint(1, 1, true, this._getLayoutCache());
+    var minX = timeColumnCell.clientWidth;
+    x = x < minX ? minX : x;
     var cell = row._cellFromPoint(x, y, true, this._getLayoutCache());
+    if (cell == null) {
+      //in case we are butt against cell border
+      cell = row._cellFromPoint(x + 5, y, true, this._getLayoutCache());
+    }
+    if (cell == null) {
+      //in case we are butt against cell border
+      cell = row._cellFromPoint(x - 5, y, true, this._getLayoutCache());
+    }
     var resource;
-    if (cell) {
-      if (cell._cell) {
-        cell = cell._cell;
-        row = cell._row;
-      }
-      var nextCell = cell.nextSibling;
-      if (!nextCell)
-        resource = cell._resource;
+
+    if (cell._cell) {
+      cell = cell._cell;
+      row = cell._row;
+    }
+    var nextCell = cell.nextSibling;
+    if (nextCell) {
+      if (!cell._resource && nextCell._resource)
+        cell = nextCell;
       else {
-        if (!cell._resource && nextCell._resource)
-          resource = nextCell._resource;
-        else {
-          var x1 = O$.getElementPos(cell, true, this._getLayoutCache()).x;
-          var x2 = O$.getElementPos(nextCell, true, this._getLayoutCache()).x;
-          var nearestCell = Math.abs(x - x1) < Math.abs(x - x2) ? cell : nextCell;
-          resource = nearestCell._resource;
-        }
+        var x1 = O$.getElementPos(cell, true, this._getLayoutCache()).x;
+        var x2 = O$.getElementPos(nextCell, true, this._getLayoutCache()).x;
+        cell = Math.abs(x - x1) < Math.abs(x - x2) ? cell : nextCell;
       }
     }
+    resource = cell._resource;
 
     if (row._row)
       row = row._row;
@@ -302,7 +313,7 @@ O$.TimeScaleTable._init = function(componentId,
     }
 
 
-    return {resource: resource, time: time, timeAtPosition: timeAtPosition};
+    return {resource: resource, time: time, timeAtPosition: timeAtPosition, cell: cell};
   };
   var eventResizeHandleHeight = O$.calculateNumericCSSValue("6px");
 
@@ -385,7 +396,6 @@ O$.TimeScaleTable._init = function(componentId,
 
   adjustRolloverPaddings();
 
-  //352
   timeScaleTable._getVertOffsetByHoursAndMinutes = function(hours, minutes) {
     var timeOffsetInMinutes = hours * 60 + minutes - startTimeInMinutes;
     //TODO: duplicatedRows
@@ -413,29 +423,13 @@ O$.TimeScaleTable._init = function(componentId,
     return result;
   };
 
-  O$.addInternalLoadEvent(function() {
-    var scrollOffset = timeScaleTable._getVertOffsetByTime(timeScaleTable._scrollTime).y;
-    var maxScrollOffset = timeScaleTable._scroller.scrollHeight - O$.getElementSize(timeScaleTable._scroller).height;
-    if (maxScrollOffset < 0)
-      maxScrollOffset = 0;
-    if (scrollOffset > maxScrollOffset)
-      scrollOffset = maxScrollOffset;
-    timeScaleTable._scroller.scrollTop = scrollOffset;
-    O$.addEventHandler(timeScaleTable._scroller, "scroll", function() {
-      //TODO: move null to the end
-      var timeslot = timeScaleTable._getNearestTimeslotForPosition(10, timeScaleTable._scroller.scrollTop);
-      O$.setHiddenField(timeScaleTable, timeScaleTable.id + "::scrollPos", O$.formatTime(timeslot.timeAtPosition));
-    });
-  });
 
   timeScaleTable._updateEventElements = function(reacquireDayEvents, refreshAreasAfterReload) {
     this._baseZIndex = O$.getElementZIndex(this);
     if (this._eventElements)
-      for (var elementIndex = 0, elementCount = this._eventElements.length; elementIndex < elementCount; elementIndex++) {
-        var eventElement = this._eventElements[elementIndex];
-        if (refreshAreasAfterReload)
-          eventElement._attachAreas();
-        this._removeEventElement(eventElement._event);
+      for (var eventIndex = 0, eventCount = this._events.length; eventIndex < eventCount; eventIndex++) {
+        var event = this._events[eventIndex];
+        event._removeEventElements(refreshAreasAfterReload);
       }
 
     this._eventElements = [];
@@ -443,9 +437,9 @@ O$.TimeScaleTable._init = function(componentId,
       this._events = this._eventProvider._getEventsForPeriod(this._startTime, this._endTime, function() {
         this._updateEventElements(true, true);
       });
-    for (var eventIndex = 0, eventCount = this._events.length; eventIndex < eventCount; eventIndex++) {
-      var event = this._events[eventIndex];
-      this._eventElements.push(this._addEventElement(event));
+    for (eventIndex = 0,eventCount = this._events.length; eventIndex < eventCount; eventIndex++) {
+      event = this._events[eventIndex];
+      this._addEventElements(event);
     }
     this._updateEventZIndexes();
   };
@@ -474,7 +468,7 @@ O$.TimeScaleTable._init = function(componentId,
   var addEvent = timeScaleTable._addEvent;
   timeScaleTable._addEvent = function(startTime, resourceId) {
     var event = addEvent(startTime, resourceId);
-    this._addEventElement(event);
+    this._addEventElements(event);
   };
 
   timeScaleTable._updateEventsPresentation = function() {
@@ -484,11 +478,105 @@ O$.TimeScaleTable._init = function(componentId,
     }
   };
 
-  var addEventElement = timeScaleTable._addEventElement;
-  timeScaleTable._addEventElement = function(event) {
-    var eventElement = addEventElement(event);
+  var addEventElements = timeScaleTable._addEventElements;
+  timeScaleTable._addEventElements = function(event) {
+    addEventElements(event);
 
-    eventElement._updatePos = function(draggingInProgress, transitionPeriod, transitionEvents) {
+
+    event._onresize = function(top) {
+      var draggableEventElement;
+      if (top) {
+        draggableEventElement = event.parts[0].mainElement;
+      } else {
+        draggableEventElement = event.parts[event.parts.length - 1].mainElement;
+      }
+
+      event._ondragend(draggableEventElement, top);
+    };
+
+    event._ondragend = function(draggableEventElement, top) {
+      if (draggableEventElement._topResizeHandle) {
+        draggableEventElement._topResizeHandle.style.display = "";
+      }
+      if (draggableEventElement._bottomResizeHandle) {
+        draggableEventElement._bottomResizeHandle.style.display = "";
+      }
+      setTimeout(function() {
+        if (event._draggingInProgress) {
+          var draggingCanceled = false;
+          var dropAllowed = timeScaleTable._canEventBeDroppedHere(event);
+
+          if (!(top === undefined)) {
+            if (top) {
+              draggableEventElement = event.parts[0].mainElement;
+            } else {
+              draggableEventElement = event.parts[event.parts.length - 1].mainElement;
+            }
+          }
+          if (!dropAllowed) {
+            event.setStart(event._initialStart);//event._lastValidStart);
+            event.setEnd(event._initialEnd);//event._lastValidEnd);
+            event.resourceId = event._initialResourceId;//event._lastValidResourceId;
+            draggingCanceled = true;
+          }
+
+          event._setDropAllowed(true);
+          if(!draggableEventElement){
+            return;          
+          }
+          draggableEventElement.style.cursor = draggableEventElement._originalCursor;
+
+          event._draggingInProgress = undefined;
+          timeScaleTable._draggingInProgress = undefined;
+          draggableEventElement._draggingInProgress = undefined;
+          event._topResize = undefined;
+
+          if (event.start.getTime() >= timeScaleTable._endTime.getTime() ||
+                  event.end.getTime() <= timeScaleTable._startTime.getTime()) {
+            timeScaleTable._updateEventElements(true);
+          } else {
+            event.updatePresentation(dragAndDropTransitionPeriod);
+            event._scrollIntoView();
+          }
+
+          if (!draggingCanceled) {
+            timeScaleTable._putTimetableChanges(null, [event], null);
+          } else {
+            event._setMouseInside(false);
+          }
+        }
+
+      }, 10);
+    };
+
+    event._updateRolloverState = function() {
+
+      var mouseInsideEventElements = false;
+      for (var i = 0; i < event.parts.length; i++) {
+        var eventElement = event.parts[i].mainElement;
+        if (!eventElement) {
+          // this can be the case because _updateRolloverState is invoked by time-out, so if mouseOver/mouseOut happens
+          // just before element is replaced with Ajax, this call will be made when there's no original element anymore
+          return;
+        }
+        mouseInsideEventElements |= eventElement._mouseInside ||
+                eventElement._topResizeHandle && eventElement._topResizeHandle._mouseInside ||
+                eventElement._bottomResizeHandle && eventElement._bottomResizeHandle._mouseInside;
+
+      }
+
+      var actionBar = timeScaleTable._getEventActionBar();
+      event._setMouseInside(mouseInsideEventElements ||
+              (actionBar._event == event && actionBar._actionsArea._mouseInside));
+    };
+  };
+
+
+  var addEventElement = timeScaleTable._addEventElement;
+  timeScaleTable._addEventElement = function(event, part) {
+    var eventElement = addEventElement(event, part);
+
+    eventElement._updatePos = function(transitionPeriod, transitionEvents) {
       var resourceColIndex;
       if (event.resourceId) {
         var resource = timeScaleTable._getResourceForEvent(event);
@@ -508,13 +596,69 @@ O$.TimeScaleTable._init = function(componentId,
 
       var x1 = leftColBoundaries.getMinX() + (event.type != "reserved" ? eventsLeftOffset : reservedEventsLeftOffset);
       var x2 = rightColBoundaries.getMaxX() - (event.type != "reserved" ? eventsRightOffset : reservedEventsRightOffset);
-      if (O$.isExplorer() && O$.isStrictMode() && (resourceColIndex === undefined || resourceColIndex == columns.length - 1)) {
+      if (O$.isExplorer() && O$.isStrictMode() && (resourceColIndex === undefined || resourceColIndex == timeScaleTable._table._params.columns.length - 1)) {
         var scroller = O$(timeScaleTable.id + "::scroller");
         var scrollerWidth = scroller.offsetWidth - scroller.clientWidth;
         x2 -= scrollerWidth;
       }
-      var rect = new O$.Rectangle(Math.round(x1), Math.round(top.y),
-              Math.round(x2 - x1), Math.round(bottom.y - top.y));
+
+      var rect;
+      if (O$.TimeScaleTable.RESOLVE_OVERLAPPING) {
+        var rangeMap = new O$._RangeMap();
+        var eventRange = {
+          start: part.start.getTime(),
+          end: part.end.getTime()
+        };
+        var intersects = [];
+
+        var tmpEvent;
+        var tmpRange;
+        var intersectRange;
+        var div = 1; //Used to divide width
+        var tmpDiv; //Used to determine div
+
+        var position = 0; //position of event in intersects
+
+        for (var eventIndex = 0, eventCount = timeScaleTable._events.length; eventIndex < eventCount; eventIndex++) {
+          tmpEvent = timeScaleTable._events[eventIndex];
+          tmpRange = {
+            start: tmpEvent.start.getTime(),
+            end: tmpEvent.end.getTime()
+          };
+          tmpDiv = 0;
+          if (rangeMap._rangesIntersectExclude(eventRange, tmpRange)) {
+            intersects.push(tmpEvent);
+            //Determine position to get x value
+            if (event.id == tmpEvent.id) {
+              position = intersects.length - 1;
+            }
+            for (var i = 0; i < intersects.length; i++) {
+              intersectRange = {
+                start: intersects[i].start.getTime(),
+                end: intersects[i].end.getTime()
+              };
+              if (rangeMap._rangesIntersectExclude(tmpRange, intersectRange)) {
+                tmpDiv++;
+              }
+            }
+            if (tmpDiv > div) {
+              div = tmpDiv;
+            }
+
+          }
+        }
+
+        var intersectWidth = Math.round((x2 - x1) / div);
+        var intersectX = Math.round(Math.round(x1) + position * intersectWidth);
+
+        rect = new O$.Rectangle(intersectX, Math.round(top.y),
+                intersectWidth, Math.round(bottom.y - top.y));
+
+      } else {
+
+        rect = new O$.Rectangle(Math.round(x1), Math.round(top.y),
+                Math.round(x2 - x1), Math.round(bottom.y - top.y));
+      }
       this._rect = rect;
       if (!transitionPeriod)
         transitionPeriod = 0;
@@ -537,7 +681,7 @@ O$.TimeScaleTable._init = function(componentId,
       this._lastRectangleTransition = O$.runTransitionEffect(this, ["rectangle"], [rect], transitionPeriod, 20, events);
 
       if (eventElement._updateResizersPos)
-        eventElement._updateResizersPos(draggingInProgress);
+        eventElement._updateResizersPos();
       var eventZIndex = O$.getNumericElementStyle(this, "z-index");
       this._backgroundElement.style.zIndex = eventZIndex - 1;
       if (bottom.bottomTruncated)
@@ -548,26 +692,36 @@ O$.TimeScaleTable._init = function(componentId,
     };
 
     eventElement._update = function(transitionPeriod) {
-      this._updatePos(false, transitionPeriod);
+      this._updatePos(transitionPeriod);
       this._updateShape();
+    };
+
+    eventElement.ondragend = function() {
+      event._ondragend(eventElement);
     };
 
     eventElement._setupDragAndDrop = function() {
       var eventPreview = timeScaleTable._getEventPreview();
 
-      eventElement._updateDropAllowed = function() {
+      event._updateDropAllowed = function() {
         var dropAllowed = timeScaleTable._canEventBeDroppedHere(event);
         if (dropAllowed) {
-          eventElement._lastValidStart = event.start;
-          eventElement._lastValidEnd = event.end;
-          eventElement._lastValidResourceId = event.resourceId;
+          event._lastValidStart = event.start;
+          event._lastValidEnd = event.end;
+          event._lastValidResourceId = event.resourceId;
         }
-        eventElement._setDropAllowed(dropAllowed);
+        event._setDropAllowed(dropAllowed);
       };
-      eventElement._setDropAllowed = function(value) {
+      event._setDropAllowed = function(value) {
         if (this._dropAllowed == value)
           return;
         this._dropAllowed = value;
+        for (var i = 0; i < event.parts.length; i++) {
+          event.parts[i].mainElement._setDropAllowed(value);
+        }
+      };
+
+      eventElement._setDropAllowed = function(value) {
 
         O$.runTransitionEffect(eventElement, ["opacity"], [value ? 1.0 : 1.0 - undroppableEventTransparency], undroppableStateTransitionPeriod, undefined, {
           onupdate: function() {
@@ -579,12 +733,17 @@ O$.TimeScaleTable._init = function(componentId,
       eventElement.onmousedown = function (e) {
         timeScaleTable._resetScrollingCache();
         eventElement._bringToFront();
+
+        var pos = O$.getEventPoint(e, eventElement);
+        event._dragPositionTop = pos.y;
+        event._dragPositionTime = timeScaleTable._getNearestTimeslotForPosition(eventElement._rect.x, event._dragPositionTop).time;
+
         O$.startDragging(e, this);
-        eventElement._initialStart = eventElement._lastValidStart = event.start;
-        eventElement._initialEnd = eventElement._lastValidEnd = event.end;
-        eventElement._initialResourceId = eventElement._lastValidResourceId = event.resourceId;
+        event._initialStart = event._lastValidStart = event.start;
+        event._initialEnd = event._lastValidEnd = event.end;
+        event._initialResourceId = event._lastValidResourceId = event.resourceId;
         eventElement._originalCursor = O$.getElementStyle(eventElement, "cursor");
-        eventElement._dropAllowed = true;
+        event._dropAllowed = true;
       };
 
       function hideExcessiveElementsWhileDragging() {
@@ -594,90 +753,138 @@ O$.TimeScaleTable._init = function(componentId,
           }, 100);
       }
 
+      var containingBlock = O$.getContainingBlock(eventElement, true);
+      eventElement._getContainingBlock = function() {
+        return containingBlock;
+      };
+
+      event._getDraggablePartIndex = function() {
+        if (!(event._topResize === undefined)) {
+          if (event._topResize) {
+            return 0;
+          } else {
+            return event.parts.length - 1;
+          }
+        }
+        for (var i = 0; i < event.parts.length; i++) {
+          part = event.parts[i];
+          if (part.start < event._dragPositionTime && event._dragPositionTime < part.end) {
+            return i;
+          }
+        }
+      };
+
+      eventElement._getPositionTop = function() {
+        return event._dragPositionTop;
+      };
+
+      /**
+       * doesn't allows event to go beyond column bounds
+       */
+      eventElement._adjustTimeIncrement = function(timeIncrement) {
+
+        var newPartStartTime = O$.dateByTimeMillis(part.start.getTime() + timeIncrement);
+        var newPartEndTime = O$.dateByTimeMillis(part.end.getTime() + timeIncrement);
+
+        var columnStartDate;
+        var columnEndDate;
+        //to make possible dnd between days
+        var dayChangeTimeIncrement = 43200000; //12 hours
+        if (part.start.getDate() != newPartStartTime.getDate() &&
+                Math.abs(timeIncrement) > dayChangeTimeIncrement) {
+          columnStartDate = newPartStartTime;
+          columnEndDate = newPartEndTime;
+        } else {
+          columnStartDate = part.start;
+          columnEndDate = part.end;
+        }
+
+        //TODO: introduce column constants
+        var columnStartTime = new Date(columnStartDate.getFullYear(), columnStartDate.getMonth(), columnStartDate.getDate(), timeScaleTable._startTime.getHours(), timeScaleTable._startTime.getMinutes());
+        columnStartTime = (columnStartTime.getTime() > timeScaleTable._startTime.getTime()) ? columnStartTime : timeScaleTable._startTime;
+        var columnEndTime = new Date(columnEndDate.getFullYear(), columnEndDate.getMonth(), columnEndDate.getDate(), timeScaleTable._endTime.getHours(), timeScaleTable._endTime.getMinutes());
+        columnEndTime = (columnEndTime.getTime() <= columnStartTime.getTime()) ? O$.incDay(columnEndTime) : columnEndTime;
+        columnEndTime = (columnEndTime.getTime() < timeScaleTable._endTime.getTime()) ? columnEndTime : timeScaleTable._endTime;
+
+        var minIntersection = 1800000; //30 minutes
+
+        if (newPartEndTime.getTime() < columnStartTime.getTime() + minIntersection) {
+          timeIncrement += columnStartTime.getTime() - newPartEndTime.getTime() + minIntersection;
+        }
+        if (newPartStartTime.getTime() > columnEndTime.getTime() - minIntersection) {
+          timeIncrement -= newPartStartTime.getTime() - columnEndTime.getTime() + minIntersection;
+        }
+
+        return timeIncrement;
+
+      };
+
       eventElement.setPosition = function (left, top) {
         if (topResizeHandle)
           topResizeHandle.style.display = "none";
         if (bottomResizeHandle)
           bottomResizeHandle.style.display = "none";
 
-        var nearestTimeslot = timeScaleTable._getNearestTimeslotForPosition(left, top, event);
-        var newStartTime = nearestTimeslot.time;
-        var newResource = editingOptions.eventResourceEditable ? nearestTimeslot.resource : undefined;
+        var rect = O$.getElementBorderRectangle(timeScaleTable._table, true);
+        var maxTop = rect.height;
+        var maxLeft = rect.width;
+        left = left < 0 ? 0 : left > maxLeft ? maxLeft : left;
+        top = top < 0 ? 0 : top > maxTop ? maxTop : top;
+
+        var nearestTimeslot = timeScaleTable._getNearestTimeslotForPosition(left, top);
+        var timeIncrement = nearestTimeslot.time.getTime() - event._dragPositionTime.getTime();
+
         var eventUpdated = false;
+        if (timeIncrement != 0) {
+          
+          timeIncrement = this._adjustTimeIncrement(timeIncrement);
+          event._dragPositionTime = O$.dateByTimeMillis(event._dragPositionTime.getTime() + timeIncrement);
+
+          var newStartTime = O$.dateByTimeMillis(event.start.getTime() + timeIncrement);
+          var newEndTime = O$.dateByTimeMillis(event.end.getTime() + timeIncrement);
+
+          event.setStart(newStartTime);
+          event.setEnd(newEndTime);
+
+          eventUpdated = true;
+
+        }
+
+        var newResource = editingOptions.eventResourceEditable ? nearestTimeslot.resource : undefined;
         if (event.resourceId && newResource !== undefined) {
           if (event.resourceId != newResource.id) {
             event.resourceId = newResource.id;
             eventUpdated = true;
           }
         }
-        var timeIncrement = newStartTime.getTime() - event.start.getTime();
-        if (timeIncrement != 0) {
-          var newEndTime = O$.dateByTimeMillis(event.end.getTime() + timeIncrement);
-          event.setStart(newStartTime);
-          event.setEnd(newEndTime);
-          eventUpdated = true;
-        }
         if (eventUpdated) {
-          eventElement._updateDropAllowed();
+          event._updateDropAllowed();
           eventElement.style.cursor = "move";//eventElement._setDropAllowed ? "move" : this._originalCursor;
           if (!event._draggingInProgress) {
             event._draggingInProgress = true;
+            eventElement._draggingInProgress = true;
             timeScaleTable._draggingInProgress = true;
             hideExcessiveElementsWhileDragging();
           }
-          event.mainElement._updatePos(true, dragAndDropTransitionPeriod, {
-            onupdate: function() {
-              event._scrollIntoView();
-            }
-          });
 
+          event._dragPositionTop -= eventElement._rect.y + eventElement._rect.height;
+
+          if (timeIncrement < 0) {
+            eventElement._elementPartIndex = part.index;
+            eventElement._elementPartIndexFromTheStart = true;
+
+          } else {
+            eventElement._elementPartIndex = event.parts.length - part.index - 1;
+            eventElement._elementPartIndexFromTheStart = false;
+          }
+          event.updatePresentation(dragAndDropTransitionPeriod);
+          event._scrollIntoView();
+          event._dragPositionTop += eventElement._rect.y + eventElement._rect.height;
         }
       };
-      eventElement.ondragend = function() {
-        if (topResizeHandle)
-          topResizeHandle.style.display = "";
-        if (bottomResizeHandle)
-          bottomResizeHandle.style.display = "";
-
-        setTimeout(function() {
-          if (event._draggingInProgress) {
-            var draggingCanceled = false;
-            var dropAllowed = timeScaleTable._canEventBeDroppedHere(event);
-            if (!dropAllowed) {
-              event.setStart(eventElement._initialStart);//eventElement._lastValidStart);
-              event.setEnd(eventElement._initialEnd);//eventElement._lastValidEnd);
-              event.resourceId = eventElement._initialResourceId;//eventElement._lastValidResourceId;
-              draggingCanceled = true;
-            }
-            eventElement._setDropAllowed(true);
-            eventElement.style.cursor = eventElement._originalCursor;
-
-            if (event.start.getTime() >= timeScaleTable._endTime.getTime() ||
-                    event.end.getTime() <= timeScaleTable._startTime.getTime()) {
-              timeScaleTable._updateEventElements(true);
-            } else {
-              event.mainElement._updatePos(false, dragAndDropCancelingPeriod, {
-                onupdate: function() {
-                  event._scrollIntoView();
-                }
-              });
-            }
-
-            event._draggingInProgress = undefined;
-            timeScaleTable._draggingInProgress = undefined;
-
-            if (!draggingCanceled) {
-              timeScaleTable._putTimetableChanges(null, [event], null);
-            } else {
-              event._setMouseInside(false);
-            }
-          }
-
-        }, 10);
-      };
-      eventElement._updateResizersPos = function(draggingInProgress) {
-        if (!draggingInProgress) {
-          var eventRect = event.mainElement._rect;
+      eventElement._updateResizersPos = function() {
+        if (!event._draggingInProgress) {
+          var eventRect = eventElement._rect;
           if (topResizeHandle)
             O$.setElementBorderRectangle(topResizeHandle, new O$.Rectangle(eventRect.x, eventRect.y - eventResizeHandleHeight / 2, eventRect.width, eventResizeHandleHeight));
           if (bottomResizeHandle)
@@ -687,7 +894,7 @@ O$.TimeScaleTable._init = function(componentId,
       };
       eventElement._updateZIndex = function(eventZIndex) {
         if (eventZIndex === undefined)
-          eventZIndex = O$.getNumericElementStyle(event.mainElement, "z-index");
+          eventZIndex = O$.getNumericElementStyle(eventElement, "z-index");
         if (topResizeHandle)
           topResizeHandle.style.zIndex = eventZIndex + 2;
         if (bottomResizeHandle)
@@ -696,70 +903,99 @@ O$.TimeScaleTable._init = function(componentId,
       };
 
       if (editingOptions.eventDurationEditable) {
-        var topResizeHandle = editingOptions.eventDurationEditable ? document.createElement("div") : null;
-        var bottomResizeHandle = editingOptions.eventDurationEditable ? document.createElement("div") : null;
-        topResizeHandle.style.fontSize = bottomResizeHandle.style.fontSize = "0px";
-        topResizeHandle.style.position = bottomResizeHandle.style.position = "absolute";
-        topResizeHandle.style.cursor = "n-resize";
-        bottomResizeHandle.style.cursor = "s-resize";
 
-        O$.fixIEEventsForTransparentLayer(topResizeHandle);
-        O$.fixIEEventsForTransparentLayer(bottomResizeHandle);
+        if (part.first || part.last) {
 
-        topResizeHandle.onclick = bottomResizeHandle.onclick = function(e) {
-          O$.breakEvent(e);
-        };
-        topResizeHandle.onmousedown = bottomResizeHandle.onmousedown = eventElement.onmousedown;
-        topResizeHandle.setPosition = bottomResizeHandle.setPosition = function(left, top) {
-          var nearestTimeslot = timeScaleTable._getNearestTimeslotForPosition(left, top + eventResizeHandleHeight / 2, event);
-          var eventUpdated = false;
-          if (this == topResizeHandle) {
-            if (event.end.getTime() - nearestTimeslot.time < shortestEventTimeWhileResizing)
-              nearestTimeslot.time = O$.dateByTimeMillis(event.end.getTime() - shortestEventTimeWhileResizing);
-            if (event.start.getTime() != nearestTimeslot.time) {
-              event.setStart(nearestTimeslot.time);
-              eventUpdated = true;
-            }
-          } else {
-            if (nearestTimeslot.time - event.start.getTime() < shortestEventTimeWhileResizing)
-              nearestTimeslot.time = O$.dateByTimeMillis(event.start.getTime() + shortestEventTimeWhileResizing);
-            if (event.end.getTime() != nearestTimeslot.time) {
-              event.setEnd(nearestTimeslot.time);
-              eventUpdated = true;
-            }
+          function setResizerHoverState(mouseInside, resizer) {
+            resizer._mouseInside = mouseInside;
+            O$.invokeFunctionAfterDelay(event._updateRolloverState, timeScaleTable.EVENT_ROLLOVER_STATE_UPDATE_TIMEOUT);
           }
-          if (eventUpdated) {
-            event.mainElement._updatePos(true, dragAndDropTransitionPeriod, {
-              onupdate: function() {
-                event._scrollIntoView();
+
+          /**
+           * @param topResize true for topResizeHandle, false for bottomResizeHandle
+           */
+          function setResizerPosition(left, top, topResize) {
+            var nearestTimeslot = timeScaleTable._getNearestTimeslotForPosition(left, top + eventResizeHandleHeight / 2, part);
+            var eventUpdated = false;
+            if (topResize) {
+              if (event.end.getTime() - nearestTimeslot.time < shortestEventTimeWhileResizing)
+                nearestTimeslot.time = O$.dateByTimeMillis(event.end.getTime() - shortestEventTimeWhileResizing);
+              if (event.start.getTime() != nearestTimeslot.time) {
+                event.setStart(nearestTimeslot.time);
+                eventUpdated = true;
               }
-            });
-            eventElement._updateDropAllowed();
-          }
-          if (eventUpdated && !event._draggingInProgress) {
-            event._draggingInProgress = true;
-            timeScaleTable._draggingInProgress = true;
-            hideExcessiveElementsWhileDragging();
-          }
-          eventElement._updateResizersPos();
-        };
-        topResizeHandle.ondragend = bottomResizeHandle.ondragend = eventElement.ondragend;
+            } else {
+              if (nearestTimeslot.time - event.start.getTime() < shortestEventTimeWhileResizing)
+                nearestTimeslot.time = O$.dateByTimeMillis(event.start.getTime() + shortestEventTimeWhileResizing);
+              if (event.end.getTime() != nearestTimeslot.time) {
+                event.setEnd(nearestTimeslot.time);
+                eventUpdated = true;
+              }
+            }
+            if (eventUpdated) {
+              event.updatePresentation(dragAndDropTransitionPeriod);
+              event._scrollIntoView();
+              event._updateDropAllowed();
+            }
+            if (eventUpdated && !event._draggingInProgress) {
+              event._draggingInProgress = true;
+              timeScaleTable._draggingInProgress = true;
+              eventElement._draggingInProgress = true;
+              event._topResize = topResize;
+              hideExcessiveElementsWhileDragging();
+            }
 
-        function setResizerHoverState(mouseInside, resizer) {
-          resizer._mouseInside = mouseInside;
-          O$.invokeFunctionAfterDelay(event._updateRolloverState, timeScaleTable.EVENT_ROLLOVER_STATE_UPDATE_TIMEOUT);
+            if (part.mainElement) {
+              eventElement._updateResizersPos();
+            }
+          }
+
+          if (part.first) {
+            var topResizeHandle = editingOptions.eventDurationEditable ? document.createElement("div") : null;
+            topResizeHandle.style.fontSize = "0px";
+            topResizeHandle.style.position = "absolute";
+            topResizeHandle.style.cursor = "n-resize";
+            O$.fixIEEventsForTransparentLayer(topResizeHandle);
+            topResizeHandle.onclick = function(e) {
+              O$.breakEvent(e);
+            };
+            topResizeHandle.onmousedown = eventElement.onmousedown;
+            topResizeHandle.ondragend = function() {
+              event._onresize(true);
+            };
+
+            O$.setupHoverStateFunction(topResizeHandle, setResizerHoverState);
+            eventElement._topResizeHandle = topResizeHandle;
+            topResizeHandle.setPosition = function(left, top) {
+              setResizerPosition(left, top, true);
+            };
+            timeScaleTable._absoluteElementsParentNode.appendChild(topResizeHandle);
+          }
+          if (part.last) {
+            var bottomResizeHandle = editingOptions.eventDurationEditable ? document.createElement("div") : null;
+            bottomResizeHandle.style.fontSize = "0px";
+            bottomResizeHandle.style.position = "absolute";
+            bottomResizeHandle.style.cursor = "s-resize";
+            O$.fixIEEventsForTransparentLayer(bottomResizeHandle);
+            bottomResizeHandle.onclick = function(e) {
+              O$.breakEvent(e);
+            };
+            bottomResizeHandle.onmousedown = eventElement.onmousedown;
+            bottomResizeHandle.ondragend = function() {
+              event._onresize(false);
+            };
+
+            O$.setupHoverStateFunction(bottomResizeHandle, setResizerHoverState);
+            eventElement._bottomResizeHandle = bottomResizeHandle;
+            bottomResizeHandle.setPosition = function(left, top) {
+              setResizerPosition(left, top, false);
+            };
+            timeScaleTable._absoluteElementsParentNode.appendChild(bottomResizeHandle);
+          }
+
         }
-
-        O$.setupHoverStateFunction(topResizeHandle, setResizerHoverState);
-        O$.setupHoverStateFunction(bottomResizeHandle, setResizerHoverState);
       }
 
-      eventElement._topResizeHandle = topResizeHandle;
-      eventElement._bottomResizeHandle = bottomResizeHandle;
-      if (topResizeHandle)
-        timeScaleTable._absoluteElementsParentNode.appendChild(topResizeHandle);
-      if (bottomResizeHandle)
-        timeScaleTable._absoluteElementsParentNode.appendChild(bottomResizeHandle);
       eventElement._removeNodes = function() {
         if (topResizeHandle)
           timeScaleTable._absoluteElementsParentNode.removeChild(topResizeHandle);
@@ -780,26 +1016,13 @@ O$.TimeScaleTable._init = function(componentId,
     }
 
     eventElement._bringToFront = function() {
-      var index = O$.findValueInArray(this, timeScaleTable._eventElements);
+      var index = O$.findValueInArray(eventElement, timeScaleTable._eventElements);
       O$.assert(index != -1, "eventElement._bringToFront. Can't find element in _eventElements array.");
       timeScaleTable._eventElements.splice(index, 1);
       timeScaleTable._eventElements.push(this);
       timeScaleTable._updateEventZIndexes();
     };
 
-    event._updateRolloverState = function() {
-      var eventElement = event.mainElement;
-      if (!eventElement) {
-        // this can be the case because _updateRolloverState is invoked by time-out, so if mouseOver/mouseOut happens
-        // just before element is replaced with Ajax, this call will be made when there's no original element anymore
-        return;
-      }
-      var actionBar = timeScaleTable._getEventActionBar();
-      var elementResizable = eventElement._topResizeHandle || eventElement._bottomResizeHandle;
-      event._setMouseInside(eventElement._mouseInside ||
-              elementResizable && (eventElement._topResizeHandle._mouseInside || eventElement._bottomResizeHandle._mouseInside) ||
-              (actionBar._event == event && actionBar._actionsArea._mouseInside));
-    };
 
     eventElement._updateAreaPositionsAndBorder = function() {
       O$.setElementBorderRectangle(this, this._currentRect);
