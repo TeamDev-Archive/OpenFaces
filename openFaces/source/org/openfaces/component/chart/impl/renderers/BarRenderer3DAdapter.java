@@ -13,21 +13,24 @@
 package org.openfaces.component.chart.impl.renderers;
 
 import org.jfree.chart.renderer.category.BarRenderer3D;
-import org.openfaces.component.chart.BarChartView;
+import org.openfaces.component.chart.impl.configuration.ConfigurableRenderer;
+import org.openfaces.component.chart.impl.configuration.RendererConfigurator;
 
 import java.awt.*;
+import java.util.Collection;
 
 /**
  * @author Dmitry Pikhulya
  */
-public class BarRenderer3DAdapter extends BarRenderer3D implements Chart3DRendererAdapter, CustomizedRenderer  {
+public class BarRenderer3DAdapter extends BarRenderer3D implements
+        Chart3DRendererAdapter, CustomizedRenderer, ConfigurableRenderer {
     private ItemsRenderer delegate;
+    private ConfigurableRendererBase configurationDelegate;
 
-    public BarRenderer3DAdapter(BarChartView chartView) {
+    public BarRenderer3DAdapter() {
         delegate = new ItemsRenderer();
-        ChartRendering.setupSeriesColors(chartView, this);
+        configurationDelegate = new ConfigurableRendererBase();
     }
-
 
     @Override
     public Paint getItemOutlinePaint(int row, int column) {
@@ -69,5 +72,17 @@ public class BarRenderer3DAdapter extends BarRenderer3D implements Chart3DRender
 
     public void setItemPaint(int row, int column, Paint paint) {
         delegate.setItemPaint(row, column, paint);
+    }
+
+    public void addConfigurator(RendererConfigurator configurator) {
+        configurationDelegate.addConfigurator(configurator);
+    }
+
+    public Collection<RendererConfigurator> getConfigurators() {
+        return configurationDelegate.getConfigurators();
+    }
+
+    public void configure() {
+        configurationDelegate.configurate(this);
     }
 }

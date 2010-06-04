@@ -32,8 +32,9 @@ import org.jfree.util.BooleanUtilities;
 import org.jfree.util.ShapeUtilities;
 import org.openfaces.component.chart.GradientLineAreaFill;
 import org.openfaces.component.chart.LineAreaFill;
-import org.openfaces.component.chart.LineChartView;
 import org.openfaces.component.chart.SolidLineAreaFill;
+import org.openfaces.component.chart.impl.configuration.ConfigurableRenderer;
+import org.openfaces.component.chart.impl.configuration.RendererConfigurator;
 import org.openfaces.component.chart.impl.renderers.states.XYLineFillItemRendererState;
 
 import java.awt.*;
@@ -45,9 +46,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class XYLineFillRenderer extends AbstractXYItemRenderer
-        implements XYItemRenderer, XYRendererAdapter, AreaFillRenderer, CustomizedRenderer {
+        implements XYItemRenderer, XYRendererAdapter, AreaFillRenderer, CustomizedRenderer, ConfigurableRenderer {
 
     private ItemsRenderer delegate = new ItemsRenderer();
+    private ConfigurableRendererBase configurationDelegate = new ConfigurableRendererBase();
     private Map<Integer, Boolean> seriesLinesVisible = new HashMap<Integer, Boolean>();
     private Map<Integer, Boolean> seriesShapesVisible = new HashMap<Integer, Boolean>();
     private Map<Integer, Boolean> seriesShapesFilled = new HashMap<Integer, Boolean>();
@@ -60,11 +62,6 @@ public class XYLineFillRenderer extends AbstractXYItemRenderer
     private boolean drawOutlines = false;
     private Paint backgroundPaint;
     private LineAreaFill lineAreaFill;
-
-    public XYLineFillRenderer(LineChartView chartView, XYDataset dataSet) {
-        ChartRendering.setupSeriesColors(chartView, this);
-        ChartRendering.processXYLineAndShapeRendererProperties(this, dataSet, chartView);
-    }
 
     public int getPassCount() {
         return 2;
@@ -603,6 +600,18 @@ public class XYLineFillRenderer extends AbstractXYItemRenderer
 
     public void setItemPaint(int row, int column, Paint paint) {
         delegate.setItemPaint(row, column, paint);
+    }
+
+    public void addConfigurator(RendererConfigurator configurator) {
+        configurationDelegate.addConfigurator(configurator);
+    }
+
+    public Collection<RendererConfigurator> getConfigurators() {
+        return configurationDelegate.getConfigurators();
+    }
+
+    public void configure() {
+        configurationDelegate.configurate(this);
     }
 
     @Override

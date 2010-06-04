@@ -11,27 +11,8 @@
  */
 package org.openfaces.component.chart;
 
-import org.jfree.chart.plot.Plot;
-import org.jfree.chart.renderer.category.LineAndShapeRenderer;
-import org.jfree.chart.renderer.xy.AbstractXYItemRenderer;
-import org.jfree.data.category.CategoryDataset;
-import org.jfree.data.time.TimeSeriesCollection;
-import org.jfree.data.xy.XYDataset;
-import org.openfaces.component.chart.impl.ModelConverter;
-import org.openfaces.component.chart.impl.ModelInfo;
-import org.openfaces.component.chart.impl.ModelType;
-import org.openfaces.component.chart.impl.plots.GridCategoryPlotAdapter;
-import org.openfaces.component.chart.impl.plots.GridDatePlotAdapter;
-import org.openfaces.component.chart.impl.plots.GridXYPlotAdapter;
-import org.openfaces.component.chart.impl.renderers.AreaFillRenderer;
-import org.openfaces.component.chart.impl.renderers.Chart3DRendererAdapter;
-import org.openfaces.component.chart.impl.renderers.LineFillRenderer;
-import org.openfaces.component.chart.impl.renderers.LineRenderer3DAdapter;
-import org.openfaces.component.chart.impl.renderers.LineRendererAdapter;
-import org.openfaces.component.chart.impl.renderers.XYLineFillRenderer;
-import org.openfaces.component.chart.impl.renderers.XYLineRenderer3DAdapter;
-import org.openfaces.component.chart.impl.renderers.XYLineRendererAdapter;
-import org.openfaces.component.chart.impl.renderers.XYRendererAdapter;
+import org.openfaces.component.chart.impl.configuration.charts.ChartConfigurator;
+import org.openfaces.component.chart.impl.configuration.charts.LineChartConfigurator;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.component.UIComponent;
@@ -39,7 +20,6 @@ import javax.faces.context.FacesContext;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -83,224 +63,6 @@ public class LineChartView extends GridChartView {
 
     public String getHint() {
         return null;
-    }
-
-    protected Plot createPlot(Chart chart, ChartModel model, ModelInfo info) {
-        if (info.getModelType().equals(ModelType.Number)) {
-            XYDataset ds = ModelConverter.toXYSeriesCollection(info);
-
-            AbstractXYItemRenderer renderer = createRenderer(ds);
-
-            final GridXYPlotAdapter xyPlot = new GridXYPlotAdapter(ds, renderer, chart, this);
-            initMarkers(xyPlot);
-
-            return xyPlot;
-        }
-
-        if (info.getModelType().equals(ModelType.Date)) {
-            TimeSeriesCollection ds = ModelConverter.toTimeSeriesCollection(chart, info);
-
-            AbstractXYItemRenderer renderer = createRenderer(ds);
-
-            final GridDatePlotAdapter xyPlot = new GridDatePlotAdapter(ds, renderer, chart, this);
-            initMarkers(xyPlot);
-
-            return xyPlot;
-        }
-
-        CategoryDataset ds = ModelConverter.toCategoryDataset(info);
-        LineAndShapeRenderer renderer;
-
-        if (getLineAreaFill() != null) {
-            renderer = new LineFillRenderer(this, ds);
-        } else {
-            renderer = isEnable3D()
-                    ? new LineRenderer3DAdapter(this, ds)
-                    : new LineRendererAdapter(this, ds);
-        }
-
-        configureRenderer(renderer, ds.getRowCount());
-
-        final GridCategoryPlotAdapter gridCategoryPlot = new GridCategoryPlotAdapter(ds, renderer, chart, this);
-        initMarkers(gridCategoryPlot);
-
-        return gridCategoryPlot;
-    }
-
-    private AbstractXYItemRenderer createRenderer(XYDataset ds) {
-        AbstractXYItemRenderer renderer;
-
-        if (getLineAreaFill() != null) {
-            renderer = new XYLineFillRenderer(this, ds);
-        } else {
-            renderer = isEnable3D()
-                    ? new XYLineRenderer3DAdapter(this, ds)
-                    : new XYLineRendererAdapter(this, ds);
-        }
-
-        configureRenderer((XYRendererAdapter) renderer, ds.getSeriesCount());
-
-        return renderer;
-    }
-
-    private void configureRenderer(XYRendererAdapter renderer, int seriesCount) {
-        if (isEnable3D() && renderer instanceof Chart3DRendererAdapter) {
-            ((Chart3DRendererAdapter) renderer).setWallPaint(getWallColor());
-        }
-
-        if (renderer instanceof AreaFillRenderer) {
-            ((AreaFillRenderer) renderer).setBackgroundPaint(getBackgroundPaint());
-            ((AreaFillRenderer) renderer).setLineAreaFill(getLineAreaFill());
-        }
-
-        if (getChart().getChartSelection() != null && !this.shapesVisible) {
-            throw new IllegalStateException("Chart selection is unsupported with disabled shapes.");
-        }
-
-        final boolean fillPaintsSpecified = getFillPaints() != null && !getFillPaints().isEmpty();
-        final boolean strokesSpecified = getLineStyles() != null && !getLineStyles().isEmpty();
-        final boolean outlinesSpecified = getOutlines() != null && !getOutlines().isEmpty();
-
-        renderer.setBaseShapesVisible(this.shapesVisible);
-
-        if (getDefaultFillColor() != null || fillPaintsSpecified) {
-            renderer.setUseFillPaint(true);
-        }
-
-        if (getDefaultFillColor() != null && !fillPaintsSpecified) {
-            renderer.setBaseFillPaint(getDefaultFillColor());
-            for (int seriesIndex = 0; seriesIndex < seriesCount; seriesIndex++) {
-                renderer.setSeriesFillPaint(seriesIndex, getDefaultFillColor());
-            }
-        } else if (fillPaintsSpecified) {
-            final Iterator fillPaintsIterator = getFillPaints().iterator();
-            for (int seriesIndex = 0; seriesIndex < seriesCount; seriesIndex++) {
-                if (fillPaintsIterator.hasNext()) {
-                    final Paint paint = (Paint) fillPaintsIterator.next();
-                    renderer.setSeriesFillPaint(seriesIndex, paint);
-                }
-            }
-        }
-
-        if (getDefaultLineStyle() != null && !strokesSpecified) {
-            renderer.setBaseStroke(getDefaultLineStyle().getStroke());
-            // This code is required to avoid JFreeChart functionality to override base stroke values with it's internal defaults
-            for (int seriesIndex = 0; seriesIndex < seriesCount; seriesIndex++) {
-                renderer.setSeriesStroke(seriesIndex, getDefaultLineStyle().getStroke());
-            }
-        } else if (strokesSpecified) {
-            final Iterator strokesIterator = getLineStyles().iterator();
-            for (int seriesIndex = 0; seriesIndex < seriesCount; seriesIndex++) {
-                if (strokesIterator.hasNext()) {
-                    final LineStyle lineStyle = (LineStyle) strokesIterator.next();
-                    renderer.setSeriesStroke(seriesIndex, lineStyle.getStroke());
-                }
-            }
-        }
-
-        if (getDefaultOutlineStyle() != null || outlinesSpecified) {
-            renderer.setDrawOutlines(true);
-        }
-
-        if (getDefaultOutlineStyle() != null && !outlinesSpecified) {
-            renderer.setUseOutlinePaint(true);
-            renderer.setBaseOutlinePaint(getDefaultOutlineStyle().getColor());
-            renderer.setBaseOutlineStroke(getDefaultOutlineStyle().getStroke());
-            for (int seriesIndex = 0; seriesIndex < seriesCount; seriesIndex++) {
-                renderer.setSeriesOutlinePaint(seriesIndex, getDefaultOutlineStyle().getColor());
-                renderer.setSeriesOutlineStroke(seriesIndex, getDefaultOutlineStyle().getStroke());
-            }
-        } else if (outlinesSpecified) {
-            renderer.setUseOutlinePaint(true);
-            final Iterator outlinesIterator = getOutlines().iterator();
-            for (int seriesIndex = 0; seriesIndex < seriesCount; seriesIndex++) {
-                if (outlinesIterator.hasNext()) {
-                    final LineStyle lineStyle = (LineStyle) outlinesIterator.next();
-                    renderer.setSeriesOutlinePaint(seriesIndex, lineStyle.getColor());
-                    renderer.setSeriesOutlineStroke(seriesIndex, lineStyle.getStroke());
-                }
-            }
-        }
-    }
-
-    private void configureRenderer(LineAndShapeRenderer renderer, int seriesCount) {
-        if (isEnable3D() && renderer instanceof Chart3DRendererAdapter) {
-            ((Chart3DRendererAdapter) renderer).setWallPaint(getWallColor());
-        }
-
-        if (renderer instanceof AreaFillRenderer) {
-            ((AreaFillRenderer) renderer).setBackgroundPaint(getBackgroundPaint());
-            ((AreaFillRenderer) renderer).setLineAreaFill(getLineAreaFill());
-        }
-
-        if (getChart().getChartSelection() != null && !this.shapesVisible) {
-            throw new IllegalStateException("Chart selection is unsupported with disabled shapes.");
-        }
-
-        final boolean fillPaintsSpecified = getFillPaints() != null && !getFillPaints().isEmpty();
-        final boolean lineStylesSpecified = getLineStyles() != null && !getLineStyles().isEmpty();
-        final boolean outlinesSpecified = getOutlines() != null && !getOutlines().isEmpty();
-
-        renderer.setBaseShapesVisible(this.shapesVisible);
-
-        if (getDefaultFillColor() != null || fillPaintsSpecified) {
-            renderer.setUseFillPaint(true);
-        }
-
-        if (getDefaultFillColor() != null && !fillPaintsSpecified) {
-            renderer.setBaseFillPaint(getDefaultFillColor());
-            for (int seriesIndex = 0; seriesIndex < seriesCount; seriesIndex++) {
-                renderer.setSeriesFillPaint(seriesIndex, getDefaultFillColor());
-            }
-        } else if (fillPaintsSpecified) {
-            final Iterator fillPaintsIterator = getFillPaints().iterator();
-            for (int seriesIndex = 0; seriesIndex < seriesCount; seriesIndex++) {
-                if (fillPaintsIterator.hasNext()) {
-                    final Paint paint = (Paint) fillPaintsIterator.next();
-                    renderer.setSeriesFillPaint(seriesIndex, paint);
-                    renderer.setSeriesShapesFilled(seriesIndex, true);
-                }
-            }
-        }
-
-        if (getDefaultLineStyle() != null && !lineStylesSpecified) {
-            renderer.setBaseStroke(getDefaultLineStyle().getStroke());
-            for (int seriesIndex = 0; seriesIndex < seriesCount; seriesIndex++) {
-                renderer.setSeriesStroke(seriesIndex, getDefaultLineStyle().getStroke());
-            }
-        } else if (lineStylesSpecified) {
-            final Iterator strokesIterator = getLineStyles().iterator();
-            for (int seriesIndex = 0; seriesIndex < seriesCount; seriesIndex++) {
-                if (strokesIterator.hasNext()) {
-                    final LineStyle lineStyle = (LineStyle) strokesIterator.next();
-                    renderer.setSeriesStroke(seriesIndex, lineStyle.getStroke());
-                }
-            }
-        }
-
-        if (getDefaultOutlineStyle() != null || outlinesSpecified) {
-            renderer.setDrawOutlines(true);
-        }
-
-        if (getDefaultOutlineStyle() != null && !outlinesSpecified) {
-            renderer.setUseOutlinePaint(true);
-            renderer.setBaseOutlinePaint(getDefaultOutlineStyle().getColor());
-            renderer.setBaseOutlineStroke(getDefaultOutlineStyle().getStroke());
-            for (int seriesIndex = 0; seriesIndex < seriesCount; seriesIndex++) {
-                renderer.setSeriesOutlinePaint(seriesIndex, getDefaultOutlineStyle().getColor());
-                renderer.setSeriesOutlineStroke(seriesIndex, getDefaultOutlineStyle().getStroke());
-            }
-        } else if (outlinesSpecified) {
-            renderer.setUseOutlinePaint(true);
-            final Iterator outlinesIterator = getOutlines().iterator();
-            for (int seriesIndex = 0; seriesIndex < seriesCount; seriesIndex++) {
-                if (outlinesIterator.hasNext()) {
-                    final LineStyle lineStyle = (LineStyle) outlinesIterator.next();
-                    renderer.setSeriesOutlinePaint(seriesIndex, lineStyle.getColor());
-                    renderer.setSeriesOutlineStroke(seriesIndex, lineStyle.getStroke());
-                }
-            }
-        }
     }
 
     public Paint getDefaultFillColor() {
@@ -379,4 +141,9 @@ public class LineChartView extends GridChartView {
         lineStyles = (Collection<LineStyle>) restoreAttachedState(facesContext, state[i++]);
     }
 
+    @Override
+    public ChartConfigurator getConfigurator() {
+        final Chart chart = getChart();
+        return new LineChartConfigurator(chart, chart.getModel());
+    }
 }

@@ -12,16 +12,9 @@
 package org.openfaces.component.chart;
 
 import org.jfree.chart.entity.ChartEntity;
-import org.jfree.chart.plot.Plot;
-import org.jfree.data.category.CategoryDataset;
-import org.jfree.data.general.PieDataset;
-import org.jfree.util.TableOrder;
-import org.openfaces.component.chart.impl.ModelConverter;
-import org.openfaces.component.chart.impl.ModelInfo;
+import org.openfaces.component.chart.impl.configuration.charts.ChartConfigurator;
+import org.openfaces.component.chart.impl.configuration.charts.PieChartConfigurator;
 import org.openfaces.component.chart.impl.helpers.ChartInfoUtil;
-import org.openfaces.component.chart.impl.plots.MultiplePiePlotAdapter;
-import org.openfaces.component.chart.impl.plots.PiePlot3DAdapter;
-import org.openfaces.component.chart.impl.plots.PiePlotAdapter;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.context.FacesContext;
@@ -111,9 +104,9 @@ public class PieChartView extends ChartView {
     }
 
     public void decodeAction(String fieldValue) {
-        renderAsImageFile();
-
         Chart chart = getChart();
+        chart.make();
+
         int index = Integer.parseInt(fieldValue);
         ChartEntity entity = chart.getRenderHints().getRenderingInfo().getEntityCollection().getEntity(index);
         PieSectorInfo info = ChartInfoUtil.getPieSectorInfo(entity);
@@ -159,20 +152,9 @@ public class PieChartView extends ChartView {
         return null;
     }
 
-    protected Plot createPlot(Chart chart, ChartModel model, ModelInfo info) {
-        if (info.isDataEmpty()) {
-            return new PiePlotAdapter(null, chart, this);
-        }
-        if (info.getNonEmptySeriesList().length < 2) {
-            PieDataset ds = ModelConverter.toPieDataset(model);
-            final Plot adapter = (isEnable3D())
-                    ? new PiePlot3DAdapter(ds, chart, this)
-                    : new PiePlotAdapter(ds, chart, this);
-            return adapter;
-        }
-        CategoryDataset ds = ModelConverter.toCategoryDataset(info);
-
-        return new MultiplePiePlotAdapter(ds, TableOrder.BY_ROW, chart, this);
+    @Override
+    public ChartConfigurator getConfigurator() {
+        final Chart chart = getChart();
+        return new PieChartConfigurator(chart, chart.getModel());
     }
-
 }

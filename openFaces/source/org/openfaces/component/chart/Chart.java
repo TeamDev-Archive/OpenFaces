@@ -11,9 +11,14 @@
  */
 package org.openfaces.component.chart;
 
+import org.jfree.chart.ChartRenderingInfo;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.Plot;
 import org.openfaces.component.OUIData;
 import org.openfaces.component.OUIObjectIteratorBase;
 import org.openfaces.component.chart.impl.JfcRenderHints;
+import org.openfaces.component.chart.impl.ModelInfo;
+import org.openfaces.component.chart.impl.helpers.JFreeChartAdapter;
 import org.openfaces.renderkit.chart.ChartDefaultStyle;
 import org.openfaces.renderkit.cssparser.CSSUtil;
 import org.openfaces.renderkit.cssparser.StyleObjectModel;
@@ -25,6 +30,7 @@ import org.openfaces.util.ValueBindings;
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -298,6 +304,26 @@ public class Chart extends OUIObjectIteratorBase implements StyledComponent, Nam
             return getEntityIndex().toString();
         else
             return null;
+    }
+
+    private JFreeChart getJFreeChart() {
+        ChartRenderingInfo chartRenderingInfo = new ChartRenderingInfo();
+        renderHints.setRenderingInfo(chartRenderingInfo);
+
+        ChartModel model = getModel();
+        ModelInfo info = new ModelInfo(model);
+        renderHints.setModelInfo(info);
+
+        Plot plot = PlotFactory.createPlot(this, info);
+
+        return new JFreeChartAdapter(plot, this);
+    }
+
+    public BufferedImage make() {
+        JFreeChart jFreeChart = getJFreeChart();
+        ChartRenderingInfo chartRenderingInfo = renderHints.getRenderingInfo();
+
+        return jFreeChart.createBufferedImage(width, height, chartRenderingInfo);
     }
 
     @Override

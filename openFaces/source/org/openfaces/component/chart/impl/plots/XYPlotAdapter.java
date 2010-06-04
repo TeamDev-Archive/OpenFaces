@@ -13,8 +13,6 @@
 package org.openfaces.component.chart.impl.plots;
 
 import org.jfree.chart.axis.ValueAxis;
-import org.jfree.chart.labels.StandardXYItemLabelGenerator;
-import org.jfree.chart.labels.XYToolTipGenerator;
 import org.jfree.chart.plot.CrosshairState;
 import org.jfree.chart.plot.PlotRenderingInfo;
 import org.jfree.chart.plot.SeriesRenderingOrder;
@@ -23,26 +21,28 @@ import org.jfree.chart.renderer.RendererUtilities;
 import org.jfree.chart.renderer.xy.AbstractXYItemRenderer;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.chart.renderer.xy.XYItemRendererState;
-import org.jfree.chart.urls.XYURLGenerator;
 import org.jfree.data.general.DatasetUtilities;
 import org.jfree.data.xy.XYDataset;
 import org.openfaces.component.chart.Chart;
 import org.openfaces.component.chart.ChartDomain;
 import org.openfaces.component.chart.GridChartView;
 import org.openfaces.component.chart.impl.PropertiesConverter;
-import org.openfaces.component.chart.impl.generators.DynamicXYGenerator;
-import org.openfaces.component.chart.impl.helpers.SelectionUtil;
+import org.openfaces.component.chart.impl.configuration.ConfigurablePlot;
+import org.openfaces.component.chart.impl.configuration.PlotColorsConfigurator;
+import org.openfaces.component.chart.impl.configuration.PlotConfigurator;
+import org.openfaces.component.chart.impl.configuration.PlotGridLinesConfigurator;
+import org.openfaces.component.chart.impl.configuration.PlotSelectionConfigurator;
 import org.openfaces.component.chart.impl.renderers.AreaFillRenderer;
-import org.openfaces.renderkit.cssparser.StyleBorderModel;
-import org.openfaces.renderkit.cssparser.StyleObjectModel;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
+import java.util.Collection;
 
 /**
  * @author Eugene Goncharov
  */
-public abstract class XYPlotAdapter extends XYPlot {
+public abstract class XYPlotAdapter extends XYPlot implements ConfigurablePlot {
+    private ConfigurablePlotBase configurationDelegate = new ConfigurablePlotBase();
     private boolean keyAxisVisible;
     private boolean valueAxisVisible;
     private Chart chart;
@@ -54,7 +54,6 @@ public abstract class XYPlotAdapter extends XYPlot {
         setRenderer(renderer);
         this.chart = chart;
         this.chartView = view;
-        setOrientation(PropertiesConverter.toPlotOrientation(chartView.getOrientation()));
 
         ChartDomain showAxes = this.chartView.getShowAxes();
         if (showAxes == null) {
@@ -76,18 +75,13 @@ public abstract class XYPlotAdapter extends XYPlot {
             rangeAxisAdapter.setVisible(false);
         }
 
-        PlotUtil.initGridLabels(this.chartView, renderer);
+        setOrientation(PropertiesConverter.toPlotOrientation(chartView.getOrientation()));
 
-        if (chartView.getLabels() == null || chartView.getLabels().getText() == null) {
-            renderer.setBaseItemLabelGenerator(new StandardXYItemLabelGenerator());
-        }
+        addConfigurator(new PlotGridLinesConfigurator(chartView, ds));
+        addConfigurator(new PlotColorsConfigurator(view));
+        addConfigurator(new PlotSelectionConfigurator(chartView));
 
-        PlotUtil.setupGridLinesProperties(this.chartView, this, ds);
-
-        setupColorProperties();
-        setupTooltips();
-        setupUrls();
-        SelectionUtil.setupSelectionHighlighting(this, chart, chartView);
+        configure();
     }
 
     @Override
@@ -220,42 +214,15 @@ public abstract class XYPlotAdapter extends XYPlot {
         this.chart = chart;
     }
 
-    protected void setupColorProperties() {
-        StyleObjectModel cssChartViewModel = chartView.getStyleObjectModel();
-
-        if (chartView.getBackgroundPaint() != null) {
-            setBackgroundPaint(null);
-        } else {
-            setBackgroundPaint(cssChartViewModel.getBackground());
-        }
-
-        StyleBorderModel border = cssChartViewModel.getBorder();
-        setOutlinePaint(border == null || border.isNone()
-                ? cssChartViewModel.getBackground()
-                : border.getColor());
+    public void addConfigurator(PlotConfigurator configurator) {
+        configurationDelegate.addConfigurator(configurator);
     }
 
-    protected void setupTooltips() {
-        if (chartView.getTooltip() != null) {
-            getRenderer().setBaseToolTipGenerator(new XYToolTipGenerator() {
-                public String generateToolTip(XYDataset xyDataset, int i, int i1) {
-                    return chartView.getTooltip();
-                }
-            });
-        } else if (chartView.getDynamicTooltip() != null) {
-            getRenderer().setBaseToolTipGenerator(new DynamicXYGenerator(chartView, chartView.getDynamicTooltip()));
-        }
+    public Collection<PlotConfigurator> getConfigurators() {
+        return configurationDelegate.getConfigurators();
     }
 
-    protected void setupUrls() {
-        if (chartView.getUrl() != null) {
-            getRenderer().setURLGenerator(new XYURLGenerator() {
-                public String generateURL(XYDataset xyDataset, int i, int i1) {
-                    return chartView.getUrl();
-                }
-            });
-        } else if (chartView.getDynamicUrl() != null) {
-            getRenderer().setURLGenerator(new DynamicXYGenerator(chartView, chartView.getDynamicUrl()));
-        }
+    public void configure() {
+        configurationDelegate.configure(this);
     }
 }
