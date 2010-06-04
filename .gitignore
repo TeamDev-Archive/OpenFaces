@@ -1,0 +1,10 @@
+
+.svn/
+/openFaces/classes/
+/funcTests/target/
+/liveDemo/core/target/
+/openFacesInspectors/out/
+/out/
+/portlets/common/target/
+/testApp/core/out/
+/OpenFaces.iws
