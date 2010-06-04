@@ -47,6 +47,7 @@ import javax.faces.event.ComponentSystemEvent;
 import javax.faces.event.ComponentSystemEventListener;
 import javax.faces.event.ListenerFor;
 import javax.faces.event.PostAddToViewEvent;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Map;
 
