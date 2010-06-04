@@ -367,8 +367,9 @@ O$.MonthTable._init = function(componentId,
       O$.setElementBorderRectangle(backgroundElement, eventElement._rect);
     };
 
-    eventElement._updateAreaPositionsAndBorder = function() {
-      eventElement._updateAreaPositions(true);
+    //TODO: move upper
+    event._updateAreaPositionsAndBorder = function() {
+      event._updateAreaPositions(true);
     };
 
     event._isEventPreviewAllowed = function() {
@@ -392,12 +393,6 @@ O$.MonthTable._init = function(componentId,
 
     if (!part.mainElement)
       return;
-
-    var areas = part.mainElement._areas;
-    for (var i = 0, count = areas.length; i < count; i++) {
-      var area = areas[i];
-      this._hiddenArea.appendChild(area);
-    }
 
     removeEventElement(event, part);
   };

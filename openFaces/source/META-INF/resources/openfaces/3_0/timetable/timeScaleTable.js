@@ -673,7 +673,9 @@ O$.TimeScaleTable._init = function(componentId,
           if (transitionEvents && transitionEvents.onupdate)
             transitionEvents.onupdate();
           eventElement._currentRect = currentRect;
-          eventElement._updateAreaPositions(false);
+          if (part.first || part.last){
+            event._updateAreaPositions(false);
+          }
         }
       };
       if (transitionEvents)
@@ -688,7 +690,7 @@ O$.TimeScaleTable._init = function(componentId,
         O$.appendClassNames(this, ["o_truncatedTimetableEvent"]);
       else
         O$.excludeClassNames(this, ["o_truncatedTimetableEvent"]);
-      this._updateAreaPositions(true);
+      event._updateAreaPositions(true);
     };
 
     eventElement._update = function(transitionPeriod) {
@@ -899,7 +901,9 @@ O$.TimeScaleTable._init = function(componentId,
           topResizeHandle.style.zIndex = eventZIndex + 2;
         if (bottomResizeHandle)
           bottomResizeHandle.style.zIndex = eventZIndex + 2;
-        this._updateAreaZIndexes();
+        if (part.first || part.last){
+          event._updateAreaZIndexes();
+        }
       };
 
       if (editingOptions.eventDurationEditable) {
@@ -1001,13 +1005,7 @@ O$.TimeScaleTable._init = function(componentId,
           timeScaleTable._absoluteElementsParentNode.removeChild(topResizeHandle);
         if (bottomResizeHandle)
           timeScaleTable._absoluteElementsParentNode.removeChild(bottomResizeHandle);
-        var areas = eventElement._areas;
-        for (var i = 0, count = areas.length; i < count; i++) {
-          var area = areas[i];
-          if (area.parentNode == null)
-            continue; // don't add an area back to document if it was already removed by Ajax
-          timeScaleTable._hiddenArea.appendChild(area);
-        }
+
       };
     };
 
@@ -1023,10 +1021,13 @@ O$.TimeScaleTable._init = function(componentId,
       timeScaleTable._updateEventZIndexes();
     };
 
-
-    eventElement._updateAreaPositionsAndBorder = function() {
-      O$.setElementBorderRectangle(this, this._currentRect);
-      eventElement._updateAreaPositions(true);
+    //TODO: move upper
+    event._updateAreaPositionsAndBorder = function() {
+      for (var i = 0; i< event.parts.length; i++){
+        var eventElementI = event.parts[i].mainElement;
+        O$.setElementBorderRectangle(eventElementI, eventElementI._currentRect);
+      }
+      event._updateAreaPositions(true);
     };
 
     event._isEventPreviewAllowed = function() {

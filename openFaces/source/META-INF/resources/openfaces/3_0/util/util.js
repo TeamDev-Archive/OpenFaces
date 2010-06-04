@@ -4121,6 +4121,10 @@ if (!window.O$) {
     return insideHorizontally && insideVertically;
   };
 
+  O$.isAlignmentInTail = function(vertAlignment) {
+    return vertAlignment == O$.BOTTOM || vertAlignment == O$.BELOW;
+  };
+
   O$.fixInputsWidthStrict = function(container) {
     if (!O$.isStrictMode())
       return;
