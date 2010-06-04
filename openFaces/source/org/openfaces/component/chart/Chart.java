@@ -323,7 +323,7 @@ public class Chart extends OUIObjectIteratorBase implements StyledComponent, Nam
         JFreeChart jFreeChart = getJFreeChart();
         ChartRenderingInfo chartRenderingInfo = renderHints.getRenderingInfo();
 
-        return jFreeChart.createBufferedImage(width, height, chartRenderingInfo);
+        return jFreeChart.createBufferedImage(getWidth(), getHeight(), chartRenderingInfo);
     }
 
     @Override
