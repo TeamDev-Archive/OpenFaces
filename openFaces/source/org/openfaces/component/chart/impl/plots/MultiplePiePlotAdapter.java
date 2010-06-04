@@ -20,15 +20,20 @@ import org.jfree.ui.RectangleEdge;
 import org.jfree.util.TableOrder;
 import org.openfaces.component.chart.Chart;
 import org.openfaces.component.chart.PieChartView;
+import org.openfaces.component.chart.impl.configuration.ConfigurablePlot;
+import org.openfaces.component.chart.impl.configuration.PlotColorsConfigurator;
+import org.openfaces.component.chart.impl.configuration.PlotConfigurator;
 import org.openfaces.renderkit.cssparser.CSSUtil;
 import org.openfaces.renderkit.cssparser.StyleObjectModel;
 
 import java.awt.*;
+import java.util.Collection;
 
 /**
  * @author Ekaterina Shliakhovetskaya
  */
-public class MultiplePiePlotAdapter extends MultiplePiePlot {
+public class MultiplePiePlotAdapter extends MultiplePiePlot implements ConfigurablePlot {
+    private ConfigurablePlotBase configurationDelegate = new ConfigurablePlotBase();
 
     public MultiplePiePlotAdapter(CategoryDataset ds, TableOrder order, Chart chart, PieChartView view) {
         super(ds);
@@ -39,13 +44,16 @@ public class MultiplePiePlotAdapter extends MultiplePiePlot {
         PiePlot piePlot = (PiePlot) getPieChart().getPlot();
         piePlot.setDataset(new CategoryToPieDataset(ds, order, 0));
         setDataExtractOrder(order);
+
         if (view.isEnable3D()) {
             new PiePlot3DAdapter(piePlot, ds, order, view, chart);
-        }else{
+        } else {
             new PiePlotAdapter(piePlot, ds, order, view, chart);
         }
 
-        PlotUtil.setupColorProperties(chart, this);
+        addConfigurator(new PlotColorsConfigurator(view));
+
+        configure();
     }
 
     private TextTitle getSeriesTitle(Chart chart) {
@@ -65,4 +73,15 @@ public class MultiplePiePlotAdapter extends MultiplePiePlot {
         return seriesTitle;
     }
 
+    public void addConfigurator(PlotConfigurator configurator) {
+        configurationDelegate.addConfigurator(configurator);
+    }
+
+    public Collection<PlotConfigurator> getConfigurators() {
+        return configurationDelegate.getConfigurators();
+    }
+
+    public void configure() {
+        configurationDelegate.configure(this);
+    }
 }

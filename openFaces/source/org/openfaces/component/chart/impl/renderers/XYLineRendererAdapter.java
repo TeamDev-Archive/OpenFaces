@@ -12,24 +12,24 @@
 package org.openfaces.component.chart.impl.renderers;
 
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
-import org.jfree.data.xy.XYDataset;
-import org.openfaces.component.chart.LineChartView;
+import org.openfaces.component.chart.impl.configuration.ConfigurableRenderer;
+import org.openfaces.component.chart.impl.configuration.RendererConfigurator;
 
 import java.awt.*;
+import java.util.Collection;
 
 /**
  * @author Ekaterina Shliakhovetskaya
  */
-public class XYLineRendererAdapter extends XYLineAndShapeRenderer implements XYRendererAdapter ,CustomizedRenderer  {
-     private ItemsRenderer delegate;
+public class XYLineRendererAdapter extends XYLineAndShapeRenderer implements XYRendererAdapter,
+        CustomizedRenderer, ConfigurableRenderer {
+    private ItemsRenderer delegate;
+    private ConfigurableRendererBase configurationDelegate;
 
-    public XYLineRendererAdapter(LineChartView chartView, XYDataset dataSet) {
+    public XYLineRendererAdapter() {
         delegate = new ItemsRenderer();
-        ChartRendering.setupSeriesColors(chartView, this);
-
-        ChartRendering.processXYLineAndShapeRendererProperties(this, dataSet, chartView);
+        configurationDelegate = new ConfigurableRendererBase();
     }
-
 
     @Override
     public Paint getItemOutlinePaint(int row, int column) {
@@ -71,5 +71,17 @@ public class XYLineRendererAdapter extends XYLineAndShapeRenderer implements XYR
 
     public void setItemPaint(int row, int column, Paint paint) {
         delegate.setItemPaint(row, column, paint);
+    }
+
+    public void addConfigurator(RendererConfigurator configurator) {
+        configurationDelegate.addConfigurator(configurator);
+    }
+
+    public Collection<RendererConfigurator> getConfigurators() {
+        return configurationDelegate.getConfigurators();
+    }
+
+    public void configure() {
+        configurationDelegate.configurate(this);
     }
 }

@@ -41,6 +41,7 @@ import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Map;
 
@@ -84,7 +85,9 @@ public class ChartRenderer extends RendererBase {
         Rendering.renderHiddenField(writer, actionFiledId, null);
         Rendering.writeNewLine(writer);
 
-        final byte[] imageAsByteArray = view.renderAsImageFile();
+        BufferedImage image = chart.make();
+        final byte[] imageAsByteArray = Rendering.encodeAsPNG(image);
+
         final JfcRenderHints renderHints = chart.getRenderHints();
         final ChartRenderingInfo renderingInfo = renderHints.getRenderingInfo();
         String mapId = renderHints.getMapId(chart);

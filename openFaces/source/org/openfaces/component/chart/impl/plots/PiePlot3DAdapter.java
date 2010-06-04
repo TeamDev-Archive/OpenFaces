@@ -25,12 +25,14 @@ import org.jfree.util.TableOrder;
 import org.openfaces.component.chart.Chart;
 import org.openfaces.component.chart.ChartLabels;
 import org.openfaces.component.chart.ChartLegend;
-import org.openfaces.component.chart.ChartSelection;
-import org.openfaces.component.chart.LineStyle;
 import org.openfaces.component.chart.PieChartView;
-import org.openfaces.component.chart.PieSectorInfo;
 import org.openfaces.component.chart.PieSectorProperties;
 import org.openfaces.component.chart.impl.PropertiesConverter;
+import org.openfaces.component.chart.impl.configuration.ConfigurablePlot;
+import org.openfaces.component.chart.impl.configuration.PlotColorsConfigurator;
+import org.openfaces.component.chart.impl.configuration.PlotConfigurator;
+import org.openfaces.component.chart.impl.configuration.PlotSelectionConfigurator;
+import org.openfaces.component.chart.impl.configuration.ShadowConfigurator;
 import org.openfaces.component.chart.impl.generators.DynamicPieGenerator;
 import org.openfaces.renderkit.cssparser.CSSUtil;
 import org.openfaces.renderkit.cssparser.StyleBorderModel;
@@ -38,11 +40,13 @@ import org.openfaces.renderkit.cssparser.StyleObjectModel;
 
 import java.awt.*;
 import java.text.AttributedString;
+import java.util.Collection;
 
 /**
  * @author Eugene Goncharov
  */
-public class PiePlot3DAdapter extends PiePlot3D {
+public class PiePlot3DAdapter extends PiePlot3D implements ConfigurablePlot {
+    private ConfigurablePlotBase configurationDelegate = new ConfigurablePlotBase();
     private TableOrder order;
 
     public PiePlot3DAdapter(PieDataset pieDataset, Chart chart, PieChartView chartView) {
@@ -218,28 +222,6 @@ public class PiePlot3DAdapter extends PiePlot3D {
 
     }
 
-    private void setupSelectionHighlighting(PiePlot plot, Chart chart) {
-        if (chart.getChartSelection() != null && ((PieChartView) chart.getChartView()).getSelectedSector() != null) {
-            final PieSectorInfo info = ((PieChartView) chart.getChartView()).getSelectedSector();
-            final ChartSelection selection = chart.getChartSelection();
-            final LineStyle lineStyle = selection.getLineStyle();
-            Paint outlinePaint = lineStyle.getColor() != null
-                    ? lineStyle.getColor()
-                    : Color.WHITE;
-            final Stroke outlineStroke = lineStyle.getStroke();
-            final Paint selectionPaint = selection.getFillPaint();
-
-            plot.setSectionOutlinePaint(info.getIndex(), outlinePaint);
-            if (outlineStroke != null) {
-                plot.setSectionOutlineStroke(info.getIndex(), outlineStroke);
-            }
-
-            if (selectionPaint != null) {
-                plot.setSectionPaint(info.getIndex(), selectionPaint);
-            }
-        }
-    }
-
     private int getIterationCount(CategoryToPieDataset cds) {
         if (order == TableOrder.BY_ROW) {
             return cds.getUnderlyingDataset().getRowCount();
@@ -252,21 +234,28 @@ public class PiePlot3DAdapter extends PiePlot3D {
     }
 
     private void init(PiePlot plot, Chart chart, PieChartView chartView, PieDataset dataset, CategoryDataset categoryDataset) {
-        PlotUtil.setupColorProperties(chart, plot);
+        addConfigurator(new PlotColorsConfigurator(chartView));
+        addConfigurator(new ShadowConfigurator(chartView));
+
         setupLegendLabels(plot, chart, chartView);
         setupSectionPaints(plot, chartView);
         setupPieLabelGenerator(plot, chartView);
         setupLegendLabels(plot, chart, chartView);
         setupTooltipsAndUrls(plot, chartView);
         sectorProcessing(plot, chartView, dataset, categoryDataset);
-        setupSelectionHighlighting(plot, chart);
-        setupShadow(plot, chartView);
+
+        addConfigurator(new PlotSelectionConfigurator(chartView));
     }
 
-    private void setupShadow(PiePlot plot, PieChartView chartView) {
-        plot.setShadowPaint(chartView.getShadowColor());
-        plot.setShadowXOffset(chartView.getShadowXOffset());
-        plot.setShadowYOffset(chartView.getShadowYOffset());
+    public void addConfigurator(PlotConfigurator configurator) {
+        configurationDelegate.addConfigurator(configurator);
     }
 
+    public Collection<PlotConfigurator> getConfigurators() {
+        return configurationDelegate.getConfigurators();
+    }
+
+    public void configure() {
+        configurationDelegate.configure(this);
+    }
 }

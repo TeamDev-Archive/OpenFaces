@@ -12,17 +12,22 @@
 package org.openfaces.component.chart.impl.renderers;
 
 import org.jfree.chart.renderer.xy.XYBarRenderer;
-import org.openfaces.component.chart.BarChartView;
+import org.openfaces.component.chart.impl.configuration.ConfigurableRenderer;
+import org.openfaces.component.chart.impl.configuration.RendererConfigurator;
 
 import java.awt.*;
+import java.util.Collection;
 
-public class XYBarRendererAdapter extends XYBarRenderer implements CustomizedRenderer {
+public class XYBarRendererAdapter extends XYBarRenderer
+        implements CustomizedRenderer, ConfigurableRenderer {
     private ItemsRenderer delegate;
+    private ConfigurableRendererBase configurationDelegate;
+
     private transient Paint shadowPaint;
 
-    public XYBarRendererAdapter(BarChartView chartView) {
+    public XYBarRendererAdapter() {
         delegate = new ItemsRenderer();
-        ChartRendering.setupSeriesColors(chartView, this);
+        configurationDelegate = new ConfigurableRendererBase();
     }
 
     public Paint getShadowPaint() {
@@ -73,5 +78,17 @@ public class XYBarRendererAdapter extends XYBarRenderer implements CustomizedRen
 
     public void setItemPaint(int row, int column, Paint paint) {
         delegate.setItemPaint(row, column, paint);
+    }
+
+    public void addConfigurator(RendererConfigurator configurator) {
+        configurationDelegate.addConfigurator(configurator);
+    }
+
+    public Collection<RendererConfigurator> getConfigurators() {
+        return configurationDelegate.getConfigurators();
+    }
+
+    public void configure() {
+        configurationDelegate.configurate(this);
     }
 }

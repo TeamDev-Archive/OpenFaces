@@ -25,8 +25,9 @@ import org.jfree.ui.RectangleEdge;
 import org.jfree.util.ShapeUtilities;
 import org.openfaces.component.chart.GradientLineAreaFill;
 import org.openfaces.component.chart.LineAreaFill;
-import org.openfaces.component.chart.LineChartView;
 import org.openfaces.component.chart.SolidLineAreaFill;
+import org.openfaces.component.chart.impl.configuration.ConfigurableRenderer;
+import org.openfaces.component.chart.impl.configuration.RendererConfigurator;
 import org.openfaces.component.chart.impl.helpers.CategoryAxisAdapter;
 import org.openfaces.component.chart.impl.renderers.states.LineFillItemRendererState;
 
@@ -36,20 +37,20 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class LineFillRenderer extends LineAndShapeRenderer implements AreaFillRenderer, CustomizedRenderer {
-    private boolean drawFilledArea;
+public class LineFillRenderer extends LineAndShapeRenderer implements AreaFillRenderer, CustomizedRenderer, ConfigurableRenderer {
     private ItemsRenderer delegate;
+    private ConfigurableRendererBase configurationDelegate;
+
+    private boolean drawFilledArea;
     private LineAreaFill lineAreaFill;
     private Paint backgroundPaint;
 
-    public LineFillRenderer(LineChartView chartView, CategoryDataset dataSet) {
+    public LineFillRenderer() {
         super(true, true);
 
         drawFilledArea = true;
         delegate = new ItemsRenderer();
-
-        ChartRendering.setupSeriesColors(chartView, this);
-        ChartRendering.processLineAndShapeRendererProperties(this, dataSet, chartView);
+        configurationDelegate = new ConfigurableRendererBase();
     }
 
     protected CategoryItemRendererState createState(PlotRenderingInfo info) {
@@ -461,6 +462,18 @@ public class LineFillRenderer extends LineAndShapeRenderer implements AreaFillRe
 
     public void setItemPaint(int row, int column, Paint paint) {
         delegate.setItemPaint(row, column, paint);
+    }
+
+    public void addConfigurator(RendererConfigurator configurator) {
+        configurationDelegate.addConfigurator(configurator);
+    }
+
+    public Collection<RendererConfigurator> getConfigurators() {
+        return configurationDelegate.getConfigurators();
+    }
+
+    public void configure() {
+        configurationDelegate.configurate(this);
     }
 
     @Override

@@ -13,24 +13,23 @@
 package org.openfaces.component.chart.impl.renderers;
 
 import org.jfree.chart.renderer.category.LineRenderer3D;
-import org.jfree.data.category.CategoryDataset;
-import org.openfaces.component.chart.LineChartView;
+import org.openfaces.component.chart.impl.configuration.ConfigurableRenderer;
+import org.openfaces.component.chart.impl.configuration.RendererConfigurator;
 
 import java.awt.*;
+import java.util.Collection;
 
 /**
  * @author Dmitry Pikhulya
  */
-public class LineRenderer3DAdapter extends LineRenderer3D implements Chart3DRendererAdapter, CustomizedRenderer  {
+public class LineRenderer3DAdapter extends LineRenderer3D implements Chart3DRendererAdapter, CustomizedRenderer, ConfigurableRenderer {
     private ItemsRenderer delegate;
+    private ConfigurableRendererBase configurationDelegate;
 
-    public LineRenderer3DAdapter(LineChartView chartView, CategoryDataset dataSet) {
+    public LineRenderer3DAdapter() {
         delegate = new ItemsRenderer();
-        ChartRendering.setupSeriesColors(chartView, this);
-
-        ChartRendering.processLineAndShapeRendererProperties(this, dataSet, chartView);
+        configurationDelegate = new ConfigurableRendererBase();
     }
-
 
     @Override
     public Paint getItemOutlinePaint(int row, int column) {
@@ -72,5 +71,17 @@ public class LineRenderer3DAdapter extends LineRenderer3D implements Chart3DRend
 
     public void setItemPaint(int row, int column, Paint paint) {
         delegate.setItemPaint(row, column, paint);
+    }
+
+    public void addConfigurator(RendererConfigurator configurator) {
+        configurationDelegate.addConfigurator(configurator);
+    }
+
+    public Collection<RendererConfigurator> getConfigurators() {
+        return configurationDelegate.getConfigurators();
+    }
+
+    public void configure() {
+        configurationDelegate.configurate(this);
     }
 }

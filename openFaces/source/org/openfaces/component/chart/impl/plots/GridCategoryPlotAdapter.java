@@ -14,15 +14,12 @@ package org.openfaces.component.chart.impl.plots;
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.ValueAxis;
-import org.jfree.chart.labels.CategoryToolTipGenerator;
-import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
 import org.jfree.chart.plot.CategoryCrosshairState;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotRenderingInfo;
 import org.jfree.chart.renderer.category.AbstractCategoryItemRenderer;
 import org.jfree.chart.renderer.category.CategoryItemRenderer;
 import org.jfree.chart.renderer.category.CategoryItemRendererState;
-import org.jfree.chart.urls.CategoryURLGenerator;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.general.DatasetUtilities;
 import org.jfree.util.SortOrder;
@@ -33,21 +30,26 @@ import org.openfaces.component.chart.ChartDomain;
 import org.openfaces.component.chart.ChartNumberAxis;
 import org.openfaces.component.chart.GridChartView;
 import org.openfaces.component.chart.impl.PropertiesConverter;
-import org.openfaces.component.chart.impl.generators.DynamicCategoryGenerator;
+import org.openfaces.component.chart.impl.configuration.ConfigurablePlot;
+import org.openfaces.component.chart.impl.configuration.PlotColorsConfigurator;
+import org.openfaces.component.chart.impl.configuration.PlotConfigurator;
+import org.openfaces.component.chart.impl.configuration.PlotGridLinesConfigurator;
+import org.openfaces.component.chart.impl.configuration.PlotSelectionConfigurator;
 import org.openfaces.component.chart.impl.helpers.CategoryAxis3DAdapter;
 import org.openfaces.component.chart.impl.helpers.CategoryAxisAdapter;
 import org.openfaces.component.chart.impl.helpers.NumberAxis3DAdapter;
 import org.openfaces.component.chart.impl.helpers.NumberAxisAdapter;
-import org.openfaces.component.chart.impl.helpers.SelectionUtil;
 import org.openfaces.component.chart.impl.renderers.AreaFillRenderer;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
+import java.util.Collection;
 
 /**
  * @author Ekaterina Shliakhovetskaya
  */
-public class GridCategoryPlotAdapter extends CategoryPlot {
+public class GridCategoryPlotAdapter extends CategoryPlot implements ConfigurablePlot {
+    private ConfigurablePlotBase configurationDelegate = new ConfigurablePlotBase();
 
     public GridCategoryPlotAdapter(CategoryDataset ds, AbstractCategoryItemRenderer renderer,
                                    Chart chart, GridChartView chartView) {
@@ -86,19 +88,13 @@ public class GridCategoryPlotAdapter extends CategoryPlot {
         setDomainAxis(categoryAxis);
         setRangeAxis(numberAxis);
 
-        PlotUtil.initGridLabels(chartView, renderer);
-
-        if (chartView.getLabels() != null && chartView.getLabels().getText() != null) {
-            //   renderer.setItemLabelGenerator(new LabelGenerator(myGridChartRenderer.getLabels().getTextDynamicProperty()));
-        } else
-            renderer.setBaseItemLabelGenerator(new StandardCategoryItemLabelGenerator());
-
-        PlotUtil.setupColorProperties(chart, this);
         setOrientation(PropertiesConverter.toPlotOrientation(chartView.getOrientation()));
-        PlotUtil.setupGridLinesProperties(chartView, this, ds);
-        setupTooltips(chartView, renderer);
-        setupUrls(chartView, renderer);
-        SelectionUtil.setupSelectionHighlighting(this, chart, chartView);
+
+        addConfigurator(new PlotColorsConfigurator(chartView));
+        addConfigurator(new PlotGridLinesConfigurator(chartView, ds));
+        addConfigurator(new PlotSelectionConfigurator(chartView));
+
+        configure();
     }
 
     @Override
@@ -176,27 +172,15 @@ public class GridCategoryPlotAdapter extends CategoryPlot {
         }
     }
 
-    private void setupTooltips(final GridChartView chartView, AbstractCategoryItemRenderer renderer) {
-        if (chartView.getTooltip() != null) {
-            renderer.setBaseToolTipGenerator(new CategoryToolTipGenerator() {
-                public String generateToolTip(CategoryDataset categoryDataset, int i, int i1) {
-                    return chartView.getTooltip();
-                }
-            });
-        } else if (chartView.getDynamicTooltip() != null) {
-            renderer.setBaseToolTipGenerator(new DynamicCategoryGenerator(chartView, chartView.getDynamicTooltip()));
-        }
+    public void addConfigurator(PlotConfigurator configurator) {
+        configurationDelegate.addConfigurator(configurator);
     }
 
-    private void setupUrls(final GridChartView chartView, AbstractCategoryItemRenderer renderer) {
-        if (chartView.getUrl() != null) {
-            renderer.setItemURLGenerator(new CategoryURLGenerator() {
-                public String generateURL(CategoryDataset categoryDataset, int i, int i1) {
-                    return chartView.getUrl();
-                }
-            });
-        } else if (chartView.getDynamicUrl() != null) {
-            renderer.setItemURLGenerator(new DynamicCategoryGenerator(chartView, chartView.getDynamicUrl()));
-        }
+    public Collection<PlotConfigurator> getConfigurators() {
+        return configurationDelegate.getConfigurators();
+    }
+
+    public void configure() {
+        configurationDelegate.configure(this);
     }
 }

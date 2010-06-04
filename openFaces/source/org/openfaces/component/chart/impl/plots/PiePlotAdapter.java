@@ -29,6 +29,10 @@ import org.openfaces.component.chart.PieChartView;
 import org.openfaces.component.chart.PieSectorInfo;
 import org.openfaces.component.chart.PieSectorProperties;
 import org.openfaces.component.chart.impl.PropertiesConverter;
+import org.openfaces.component.chart.impl.configuration.ConfigurablePlot;
+import org.openfaces.component.chart.impl.configuration.PlotColorsConfigurator;
+import org.openfaces.component.chart.impl.configuration.PlotConfigurator;
+import org.openfaces.component.chart.impl.configuration.ShadowConfigurator;
 import org.openfaces.component.chart.impl.generators.DynamicPieGenerator;
 import org.openfaces.renderkit.cssparser.CSSUtil;
 import org.openfaces.renderkit.cssparser.StyleBorderModel;
@@ -36,17 +40,22 @@ import org.openfaces.renderkit.cssparser.StyleObjectModel;
 
 import java.awt.*;
 import java.text.AttributedString;
+import java.util.Collection;
 import java.util.List;
 
 /**
  * @author Ekaterina Shliakhovetskaya
  */
-public class PiePlotAdapter extends PiePlot {
+public class PiePlotAdapter extends PiePlot implements ConfigurablePlot {
+    private ConfigurablePlotBase configurationDelegate = new ConfigurablePlotBase();
+
     private TableOrder order;
 
     public PiePlotAdapter(PieDataset pieDataset, Chart chart, PieChartView chartView) {
         setDataset(pieDataset);
         init(this, chart, chartView, pieDataset, null);
+
+        configure();
     }
 
     PiePlotAdapter(PiePlot piePlot, CategoryDataset categoryDataset, TableOrder order, PieChartView chartView, Chart chart) { // todo: consider refactoring -- view the usage
@@ -250,7 +259,9 @@ public class PiePlotAdapter extends PiePlot {
     }
 
     private void init(PiePlot plot, Chart chart, PieChartView chartView, PieDataset dataset, CategoryDataset categoryDataset) {
-        PlotUtil.setupColorProperties(chart, plot);
+        addConfigurator(new PlotColorsConfigurator(chartView));
+        addConfigurator(new ShadowConfigurator(chartView));
+
         setupLegendLabels(plot, chart, chartView);
         setupSectionPaints(plot, chartView);
         setupPieLabelGenerator(plot, chartView);
@@ -259,16 +270,20 @@ public class PiePlotAdapter extends PiePlot {
         sectorProcessing(plot, chartView, dataset, categoryDataset);
 
         setupSelectionHighlighting(plot, chart);
-
-        setupShadow(plot, chartView);
     }
 
-    private void setupShadow(PiePlot plot, PieChartView chartView) {
-        plot.setShadowPaint(chartView.getShadowColor());
-        plot.setShadowXOffset(chartView.getShadowXOffset());
-        plot.setShadowYOffset(chartView.getShadowYOffset());
+
+    public void addConfigurator(PlotConfigurator configurator) {
+        configurationDelegate.addConfigurator(configurator);
     }
 
+    public Collection<PlotConfigurator> getConfigurators() {
+        return configurationDelegate.getConfigurators();
+    }
+
+    public void configure() {
+        configurationDelegate.configure(this);
+    }
 
 }
 

@@ -98,12 +98,16 @@ public class SelectManyInputImageManager {
     }
 
     public static String getDisabledSelectedImageUrl(FacesContext context, OUISelectManyInputBase selectManyInputBase) {
-        String imageUrl = selectManyInputBase.getDisabledSelectedImageUrl();
+        String imageUrl = firstSpecified(
+                selectManyInputBase.getDisabledSelectedImageUrl(),
+                selectManyInputBase.getSelectedImageUrl());
         return Resources.getURL(context, imageUrl, SelectManyInputImageManager.class, null);
     }
 
     public static String getDisabledUnselectedImageUrl(FacesContext context, OUISelectManyInputBase selectManyInputBase) {
-        String imageUrl = selectManyInputBase.getDisabledUnselectedImageUrl();
+        String imageUrl = firstSpecified(
+                selectManyInputBase.getDisabledUnselectedImageUrl(),
+                selectManyInputBase.getUnselectedImageUrl());
         return Resources.getURL(context, imageUrl, SelectManyInputImageManager.class, null);
     }
 

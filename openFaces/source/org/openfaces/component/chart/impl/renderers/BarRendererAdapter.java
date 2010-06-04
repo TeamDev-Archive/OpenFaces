@@ -12,19 +12,23 @@
 package org.openfaces.component.chart.impl.renderers;
 
 import org.jfree.chart.renderer.category.BarRenderer;
-import org.openfaces.component.chart.BarChartView;
+import org.openfaces.component.chart.impl.configuration.ConfigurableRenderer;
+import org.openfaces.component.chart.impl.configuration.RendererConfigurator;
 
 import java.awt.*;
+import java.util.Collection;
 
 /**
  * @author Ekaterina Shliakhovetskaya
  */
-public class BarRendererAdapter extends BarRenderer implements CustomizedRenderer {
+public class BarRendererAdapter extends BarRenderer
+        implements CustomizedRenderer, ConfigurableRenderer{
     private ItemsRenderer delegate;
+    private ConfigurableRendererBase configurationDelegate;
 
-    public BarRendererAdapter(BarChartView chartView) {
+    public BarRendererAdapter() {
         delegate = new ItemsRenderer();
-        ChartRendering.setupSeriesColors(chartView, this);
+        configurationDelegate = new ConfigurableRendererBase();
     }
 
     @Override
@@ -67,6 +71,18 @@ public class BarRendererAdapter extends BarRenderer implements CustomizedRendere
 
     public void setItemPaint(int row, int column, Paint paint) {
         delegate.setItemPaint(row, column, paint);
+    }
+
+    public void addConfigurator(RendererConfigurator configurator) {
+        configurationDelegate.addConfigurator(configurator);
+    }
+
+    public Collection<RendererConfigurator> getConfigurators() {
+        return configurationDelegate.getConfigurators();
+    }
+
+    public void configure() {
+        configurationDelegate.configurate(this);
     }
 }
 
