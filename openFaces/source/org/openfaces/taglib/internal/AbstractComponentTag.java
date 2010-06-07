@@ -18,6 +18,7 @@ import org.openfaces.renderkit.cssparser.StyleObjectModel;
 import org.openfaces.util.CalendarUtil;
 import org.openfaces.util.Enumerations;
 
+import javax.el.ELContext;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -394,9 +395,77 @@ public abstract class AbstractComponentTag extends AbstractTag {
         if (value == null) {
             return;
         }
-        if (!setPropertyAsBinding(component, propertyName, value)) {
-            Collection<String> collection = new ArrayList<String>(Arrays.asList(value.trim().split(" +")));
+        if (setPropertyAsBinding(component, propertyName, value)) {
+            ValueExpression valueExpressionProxy = new LiteralCollectionValueExpressionProxy(component.getValueExpression(propertyName));
+            component.setValueExpression(propertyName, valueExpressionProxy);
+        } else {
+            Collection<String> collection = parseLiteralCollection(value);
             component.getAttributes().put(propertyName, collection);
+        }
+    }
+
+    private static Collection<String> parseLiteralCollection(String value) {
+        return new ArrayList<String>(Arrays.asList(value.trim().split(" +")));
+    }
+
+    private static final class LiteralCollectionValueExpressionProxy extends ValueExpression {
+
+        private ValueExpression delegate;
+
+        private LiteralCollectionValueExpressionProxy(ValueExpression delegate) {
+            this.delegate = delegate;
+        }
+
+        @Override
+        public Object getValue(ELContext elContext) {
+            Object value = delegate.getValue(elContext);
+            if (value instanceof String) {
+                return parseLiteralCollection((String) value);
+            }
+            return value;
+        }
+
+        @Override
+        public void setValue(ELContext elContext, Object o) {
+            delegate.setValue(elContext, o);
+        }
+
+        @Override
+        public boolean isReadOnly(ELContext elContext) {
+            return delegate.isReadOnly(elContext);
+        }
+
+        @Override
+        public Class getType(ELContext elContext) {
+            return delegate.getType(elContext);
+        }
+
+        @Override
+        public Class getExpectedType() {
+            return delegate.getExpectedType();
+        }
+
+        @Override
+        public String getExpressionString() {
+            return delegate.getExpressionString();
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (o instanceof LiteralCollectionValueExpressionProxy) {
+                o = ((LiteralCollectionValueExpressionProxy) o).delegate;
+            }
+            return delegate.equals(o);
+        }
+
+        @Override
+        public int hashCode() {
+            return delegate.hashCode();
+        }
+
+        @Override
+        public boolean isLiteralText() {
+            return delegate.isLiteralText();
         }
     }
 
@@ -555,6 +624,7 @@ public abstract class AbstractComponentTag extends AbstractTag {
     }
 
     // todo: shouldn't this method actually delegate to getExpressionCreator().isValueReference ???  Investigate SVN revision 15673 (JSFC-2594 - fixed)
+
     public static boolean isValueReference(String value) {
         if (value == null) throw new NullPointerException("value");
 
@@ -620,7 +690,7 @@ public abstract class AbstractComponentTag extends AbstractTag {
         component.getAttributes().put(propertyName, color);
     }
 
-    protected void setLineStyleObjectProperty(UIComponent component, String propertyName){
+    protected void setLineStyleObjectProperty(UIComponent component, String propertyName) {
         String value = getPropertyValue(propertyName);
         if (setPropertyAsBinding(component, propertyName, value))
             return;
