@@ -103,7 +103,7 @@ public class ForumTreeTableBean implements Serializable {
         this.forumTreeTableExpansionState = forumTreeTableExpansionState;
     }
 
-    public List getNodeChildren() {
+    public List<ForumMessage> getNodeChildren() {
         ForumMessage message = getMessage();
         return message != null ? message.getReplies() : rootMessages;
     }

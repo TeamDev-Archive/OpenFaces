@@ -31,7 +31,7 @@ public class AjaxSettingsRenderer extends AbstractSettingsRenderer implements Aj
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         AjaxSettings ajaxSettings = (AjaxSettings) component;
-        if (!(AjaxUtil.isAjaxRequest(context))) {
+        if (!AjaxUtil.isAjaxRequest(context)) {
             processOnsessionexpired(context, ajaxSettings);
             Resources.renderJSLinkIfNeeded(context, Resources.getUtilJsURL(context));
             Resources.renderJSLinkIfNeeded(context, Resources.getInternalURL(context, ConfirmationRenderer.JS_SCRIPT_URL));
@@ -39,7 +39,7 @@ public class AjaxSettingsRenderer extends AbstractSettingsRenderer implements Aj
 
         processOnerror(context, ajaxSettings);
 
-        if (!(AjaxUtil.isAjaxRequest(context))) {
+        if (!AjaxUtil.isAjaxRequest(context)) {
             processOnajaxstart(context, ajaxSettings);
             processOnajaxend(context, ajaxSettings);
         }
