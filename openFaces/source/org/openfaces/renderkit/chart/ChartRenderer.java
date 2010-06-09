@@ -157,7 +157,7 @@ public class ChartRenderer extends RendererBase {
         chart.setEntityIndex(oldEntityIndex);
         if (map != null) {
             Resources.renderJSLinkIfNeeded(facesContext, Resources.getUtilJsURL(facesContext));
-            Resources.renderJSLinkIfNeeded(facesContext, Resources.getInternalURL(facesContext, "chart/chartPopup.js"));
+            Resources.renderJSLinkIfNeeded(facesContext, Resources.getInternalURL(facesContext, "chart/chart.js"));
         }
         encodeScripts(facesContext, chart, dynamicImage);
         writer.endElement("div");
@@ -213,8 +213,7 @@ public class ChartRenderer extends RendererBase {
         encodeChartMenuSupport(context, chart, dynamicImage, buf);
         Rendering.renderInitScript(context, buf, Resources.getUtilJsURL(context),
                 Resources.getInternalURL(context, "chart/chart.js"),
-                Resources.getAjaxUtilJsURL(context),
-                getChartMenuJsURL(context));
+                Resources.getAjaxUtilJsURL(context));
         chart.setEntityIndex(oldEntityIndex);
     }
 
@@ -235,10 +234,6 @@ public class ChartRenderer extends RendererBase {
         chartMenu.encodeAll(context);
 
         buf.initScript(context, chartMenu, "O$.ChartMenu._init", chart, dynamicImage.getClientId(context));
-    }
-
-    private String getChartMenuJsURL(FacesContext context) {
-        return Resources.getInternalURL(context, "chart/chartMenu.js");
     }
 
     @Override

@@ -169,10 +169,10 @@ public class MapRenderUtilities {
             if (hasAction || hasCustomClick || hasSelection) {
                 if (hasSelection && chart.getChartMenu() != null && Environment.isChrome()) {
                     tag.append(" oncontextmenu=\"");
-                    tag.append("O$('").append(chart.getClientId(context)).append("').areaContextMenuClick(event, '").append(chart.getChartMenu().getClientId(context)).append("');");
+                    tag.append("O$('").append(chart.getClientId(context)).append("')._areaContextMenuClick(event, '").append(chart.getChartMenu().getClientId(context)).append("');");
                     tag.append("\"");
                 }
-                tag.append(" onclick=\"O$('").append(chart.getClientId(context)).append("').clickItem(event, '").append(entityIndex).append("'");
+                tag.append(" onclick=\"O$('").append(chart.getClientId(context)).append("')._clickItem(event, '").append(entityIndex).append("'");
                 tag.append(",");
                 if (hasCustomClick) {
                     tag.append("function(event){").append(onClick).append("}");
@@ -190,7 +190,7 @@ public class MapRenderUtilities {
                 if (hasPopup) {
                     final Integer oldEntityIndex = chart.getEntityIndex();
                     chart.setEntityIndex(entityIndex);
-                    mouseOverBuilder.append("O$.ChartPopup.show(event,");
+                    mouseOverBuilder.append("O$.ChartPopup._show(event,");
                     mouseOverBuilder.append("'");
                     mouseOverBuilder.append(chart.getChartView().getChartPopup().getClientId(context));
                     mouseOverBuilder.append("',");
@@ -212,31 +212,8 @@ public class MapRenderUtilities {
                 tag.append(" onmouseover=\"").append(mouseOverBuilder.toString()).append("\"");
             }
 
-            if (hasCustomOnMouseOut || hasPopup) {
-                StringBuilder mouseOutBuilder = new StringBuilder();
-                if (hasPopup) {
-                    final Integer oldEntityIndex = chart.getEntityIndex();
-                    chart.setEntityIndex(entityIndex);
-                    mouseOutBuilder.append("O$.ChartPopup.hide(event,");
-                    mouseOutBuilder.append("'");
-                    mouseOutBuilder.append(chart.getChartView().getChartPopup().getClientId(context));
-                    mouseOutBuilder.append("',");
-                    mouseOutBuilder.append("'");
-                    mouseOutBuilder.append(entityIndex);
-                    mouseOutBuilder.append("'");
-                    chart.setEntityIndex(oldEntityIndex);
-
-                    if (hasCustomOnMouseOver) {
-                        mouseOutBuilder.append(", function(){");
-                        mouseOutBuilder.append(onMouseOut);
-                        mouseOutBuilder.append("}");
-                    }
-                } else {
-                    mouseOutBuilder.append(onMouseOut);
-                }
-                mouseOutBuilder.append(");");
-
-                tag.append(" onmouseout=\"").append(mouseOutBuilder.toString()).append("\"");
+            if (hasCustomOnMouseOut) {
+                tag.append(" onmouseout=\"").append(onMouseOut).append("\"");
             }
 
             tag.append(" shape=\"").append(entity.getShapeType()).append("\"" + " coords=\"").append(entity.getShapeCoords()).append("\"");
