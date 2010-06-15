@@ -669,55 +669,60 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
             int rowCount
     ) throws IOException {
         TableStructure tableStructure = createTableStructure(table);
-        ResponseWriter responseWriter = context.getResponseWriter();
-        Writer stringWriter = new StringWriter();
-        ResponseWriter clonedResponseWriter = responseWriter.cloneWithWriter(stringWriter);
-        context.setResponseWriter(clonedResponseWriter);
+        table.getAttributes().put(TableStructure.TABLE_STRUCTURE_ATTR, tableStructure);
         try {
-            if (rowCount > 0) {
-                List<BaseColumn> columns = table.getRenderedColumns();
-                List<BodyRow> rows = tableStructure.getBody().createRows(context, rowIndex, rowCount, columns);
-                if (tableStructure.getScrolling() == null) {
-                    for (int i = 0, count = rows.size(); i < count; i++) {
-                        BodyRow row = rows.get(i);
-                        row.render(context, null);
+            ResponseWriter responseWriter = context.getResponseWriter();
+            Writer stringWriter = new StringWriter();
+            ResponseWriter clonedResponseWriter = responseWriter.cloneWithWriter(stringWriter);
+            context.setResponseWriter(clonedResponseWriter);
+            try {
+                if (rowCount > 0) {
+                    List<BaseColumn> columns = table.getRenderedColumns();
+                    List<BodyRow> rows = tableStructure.getBody().createRows(context, rowIndex, rowCount, columns);
+                    if (tableStructure.getScrolling() == null) {
+                        for (int i = 0, count = rows.size(); i < count; i++) {
+                            BodyRow row = rows.get(i);
+                            row.render(context, null);
+                        }
+                    } else {
+                        if (rows.size() != 1)
+                            throw new IllegalStateException("There should be one pseudo-row in the scrollable version");
+                        BodyRow pseudoRow = rows.get(0);
+                        List<BodyCell> cells = pseudoRow.getCells();
+                        int ci = 0;
+                        List<BodyRow> leftRows = tableStructure.getLeftFixedCols() > 0 ? getScrollingAreaRows(cells.get(ci++)) : null;
+                        List<BodyRow> centerRows = getScrollingAreaRows(cells.get(ci++));
+                        List<BodyRow> rightRows = tableStructure.getRightFixedCols() > 0 ? getScrollingAreaRows(cells.get(ci)) : null;
+                        for (int i = 0, count = centerRows.size(); i < count; i++) {
+                            if (leftRows != null)
+                                leftRows.get(i).render(context, null);
+                            centerRows.get(i).render(context, null);
+                            if (rightRows != null)
+                                rightRows.get(i).render(context, null);
+                        }
                     }
-                } else {
-                    if (rows.size() != 1)
-                        throw new IllegalStateException("There should be one pseudo-row in the scrollable version");
-                    BodyRow pseudoRow = rows.get(0);
-                    List<BodyCell> cells = pseudoRow.getCells();
-                    int ci = 0;
-                    List<BodyRow> leftRows = tableStructure.getLeftFixedCols() > 0 ? getScrollingAreaRows(cells.get(ci++)) : null;
-                    List<BodyRow> centerRows = getScrollingAreaRows(cells.get(ci++));
-                    List<BodyRow> rightRows = tableStructure.getRightFixedCols() > 0 ? getScrollingAreaRows(cells.get(ci)) : null;
-                    for (int i = 0, count = centerRows.size(); i < count; i++) {
-                        if (leftRows != null)
-                            leftRows.get(i).render(context, null);
-                        centerRows.get(i).render(context, null);
-                        if (rightRows != null)
-                            rightRows.get(i).render(context, null);
-                    }
-                }
 
-                AbstractTableSelection selection = table.getSelection();
-                if (selection != null)
-                    selection.encodeOnAjaxNodeFolding(context);
-                for (BaseColumn column : columns) {
-                    if (column instanceof CheckboxColumn)
-                        ((CheckboxColumn) column).encodeOnAjaxNodeFolding(context);
+                    AbstractTableSelection selection = table.getSelection();
+                    if (selection != null)
+                        selection.encodeOnAjaxNodeFolding(context);
+                    for (BaseColumn column : columns) {
+                        if (column instanceof CheckboxColumn)
+                            ((CheckboxColumn) column).encodeOnAjaxNodeFolding(context);
+                    }
                 }
+            } finally {
+                context.setResponseWriter(responseWriter);
             }
+            table.setRowIndex(-1);
+            responseWriter.write(stringWriter.toString());
+
+            JSONObject rowsInitInfo = new JSONObject();
+            fillDynamicRowsInitInfo(context, table, rowIndex, rowCount, tableStructure, rowsInitInfo);
+            return rowsInitInfo;
         } finally {
-            context.setResponseWriter(responseWriter);
+            table.getAttributes().remove(TableStructure.TABLE_STRUCTURE_ATTR);
         }
-        table.setRowIndex(-1);
-        responseWriter.write(stringWriter.toString());
-
-        JSONObject rowsInitInfo = new JSONObject();
-        fillDynamicRowsInitInfo(context, table, rowIndex, rowCount, tableStructure, rowsInitInfo);
-
-        return rowsInitInfo;
+        
     }
 
     private List<BodyRow> getScrollingAreaRows(BodyCell scrollingAreaCell) {
