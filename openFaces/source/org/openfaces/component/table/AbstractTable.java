@@ -48,7 +48,7 @@ import java.util.Map;
  */
 @ListenerFor(systemEventClass = PostRestoreStateEvent.class)
 @ResourceDependencies({
-        @ResourceDependency(name = "default.css", library = "openfaces/3_0"),
+        @ResourceDependency(name = "default.css", library = "openfaces"),
         @ResourceDependency(name = "jsf.js", library = "javax.faces")
 })
 public abstract class AbstractTable extends OUIData implements TableStyles, FilterableComponent {

@@ -20,7 +20,7 @@ import javax.faces.context.FacesContext;
 /**
  * @author Dmitry Pikhulya
  */
-@ResourceDependency(name = "default.css", library = "openfaces/3_0")
+@ResourceDependency(name = "default.css", library = "openfaces")
 public class OUIOutput extends UIOutput implements OUIComponent {
     private String style;
     private String styleClass;

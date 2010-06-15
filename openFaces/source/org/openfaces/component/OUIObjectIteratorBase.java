@@ -22,7 +22,7 @@ import javax.faces.event.FacesEvent;
 /**
  * @author Dmitry Pikhulya
  */
-@ResourceDependency(name = "default.css", library = "openfaces/3_0")
+@ResourceDependency(name = "default.css", library = "openfaces")
 public abstract class OUIObjectIteratorBase extends OUIComponentBase implements OUIObjectIterator {
 
     @Override

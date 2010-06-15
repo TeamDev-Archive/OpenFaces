@@ -22,7 +22,7 @@ import javax.faces.context.FacesContext;
 /**
  * @author Dmitry Pikhulya
  */
-@ResourceDependency(name = "default.css", library = "openfaces/3_0")
+@ResourceDependency(name = "default.css", library = "openfaces")
 public abstract class AbstractPanelWithCaption extends OUIPanel implements ComponentWithCaption {
     private static final String CAPTION_FACET_NAME = "caption";
 

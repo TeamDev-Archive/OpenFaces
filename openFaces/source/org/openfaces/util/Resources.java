@@ -161,7 +161,7 @@ public class Resources {
 
         if (componentClass == null) {
             ResourceHandler resourceHandler = context.getApplication().getResourceHandler();
-            Resource resource = resourceHandler.createResource(resourcePath, "openfaces/3_0");
+            Resource resource = resourceHandler.createResource(resourcePath, "openfaces");
             resourcePath = resource.getRequestPath();
             return resourcePath;
         }
@@ -580,7 +580,7 @@ public class Resources {
             return;
         }
         if (jQueryMode.equals("embedded"))
-            addHeaderResource(context, "util/jquery-1.4.2.min.js", "openfaces/3_0");
+            addHeaderResource(context, "util/jquery-1.4.2.min.js", "openfaces");
             /* below are the official jQuery CDNs as referenced here: http://docs.jquery.com/Downloading_jQuery */
         else if (jQueryMode.equals("jquery"))
             addHeaderResource(context, "http://code.jquery.com/jquery-1.4.2.min.js", null);
