@@ -56,7 +56,7 @@ public class Resources {
     private static final String CLDR = "cldr";
     private static final String NUMBER_LOCALE_SETTINGS = "number.js";
     private static final String PARAM_ORG_OPENFACES_JQUERY = "org.openfaces.jquery";
-    public static final String META_INF_RESOURCES_ROOT = "/META-INF/resources/openfaces/3_0/";
+    public static final String META_INF_RESOURCES_ROOT = "/META-INF/resources/openfaces/";
 
     private Resources() {
     }
