@@ -32,6 +32,7 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
 import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -275,10 +276,10 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
         List<EventArea> eventAreas = getEventAreas();
 
         if (this.event == null)
-            initialDescendantsState = OUIData.saveDescendantComponentStates(eventAreas.iterator(), true);
+            initialDescendantsState = OUIData.saveDescendantComponentStates(new ArrayList<UIComponent>(eventAreas).iterator(), true);
         else {
             String eventId = this.event.getId();
-            Object stateForEvent = OUIData.saveDescendantComponentStates(eventAreas.iterator(), true);
+            Object stateForEvent = OUIData.saveDescendantComponentStates(new ArrayList<UIComponent>(eventAreas).iterator(), true);
             descendantsStateForEvents.put(eventId, stateForEvent);
         }
 
@@ -288,11 +289,11 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
         this.event = event;
 
         if (this.event == null)
-            OUIData.restoreDescendantComponentStates(eventAreas.iterator(), initialDescendantsState, true);
+            OUIData.restoreDescendantComponentStates(new ArrayList<UIComponent>(eventAreas).iterator(), initialDescendantsState, true);
         else {
             Object stateForEvent = descendantsStateForEvents.get(this.event.getId());
             if (stateForEvent != null)
-                OUIData.restoreDescendantComponentStates(eventAreas.iterator(), stateForEvent, true);
+                OUIData.restoreDescendantComponentStates(new ArrayList<UIComponent>(eventAreas).iterator(), stateForEvent, true);
         }
 
         for (int areaIndex = 0, areaCount = eventAreas.size(); areaIndex < areaCount; areaIndex++) {

@@ -59,14 +59,14 @@ public class MultipleRowSelection extends DataTableSelection {
     public Object saveState(FacesContext context) {
         rememberByKeys();
         Object superState = super.saveState(context);
-        return new Object[]{superState, saveAttachedState(context, rowKeys)};
+        return new Object[]{superState, rowKeys};
     }
 
     @Override
     public void restoreState(FacesContext context, Object state) {
         Object[] stateArray = (Object[]) state;
         super.restoreState(context, stateArray[0]);
-        setRowKeys((List<Object>) restoreAttachedState(context, stateArray[1]));
+        setRowKeys((List<Object>) stateArray[1]);
     }
 
     public void setRowIndexes(List<Integer> rowIndexes) {

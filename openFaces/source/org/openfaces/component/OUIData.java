@@ -11,26 +11,34 @@
  */
 package org.openfaces.component;
 
-// todo: resolve datatable package depencencies
+// todo: resolve datatable package dependencies
 
-import org.openfaces.component.table.DynamicCol;
 import org.openfaces.component.table.Cell;
 import org.openfaces.component.table.Columns;
+import org.openfaces.component.table.DynamicCol;
 import org.openfaces.component.table.Row;
 import org.openfaces.renderkit.table.CustomCellRenderingInfo;
 import org.openfaces.renderkit.table.CustomContentCellRenderingInfo;
 import org.openfaces.renderkit.table.CustomRowRenderingInfo;
 import org.openfaces.renderkit.table.TableStructure;
-import org.openfaces.util.ValueBindings;
 
 import javax.el.ValueExpression;
+import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
+import javax.faces.component.ContextCallback;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
+import javax.faces.component.UINamingContainer;
+import javax.faces.component.UIViewRoot;
+import javax.faces.component.UniqueIdVendor;
 import javax.faces.component.behavior.ClientBehavior;
+import javax.faces.component.visit.VisitCallback;
+import javax.faces.component.visit.VisitContext;
+import javax.faces.component.visit.VisitResult;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
@@ -47,6 +55,7 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -54,7 +63,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * This is a modified version of the UIData class copied from MyFaces 1.2.6.
+ * This is a modified version of the UIData class copied from MyFaces 2.0.2.
  * Here's a list of modifications from the original version:
  * <ul>
  * <li>MOD-1: Added the notion of unavailableRowIndexes, for which the processDecodes, processValidations, and processUpdates phases are not performed</li>
@@ -68,9 +77,12 @@ import java.util.Set;
  * having access to the current row data variable. See JSFC-2585.</li>
  * <li>MOD-7: Extended OUIData from OUIComponent and supported all appropriate properties.</li>
  * <li>MOD-8: Fix for "this method is here only to maintain binary compatibility w/ the RI" error when running under JSF RI
- * <li>MOD-9: Removed the invokeOnComponent and getClientId methods to use the ones inherited from the parent UIData.
- * The reason is that the ones copied from MyFaces invoke super.getClientId() method and expect that a method from the
- * UIComponentBase class is invoked, which is not the case, so we just use the appropriate methods inherited from the parent UIData class.
+ * <li>MOD-9: Removed the getClientId method to use the ones inherited from the parent UIData.
+ * The reason is that the one copied from MyFaces invoke super.getClientId() method and expect that a method from the
+ * UIComponentBase class is invoked, which is not the case, so we just use the appropriate method inherited from the parent UIData class.
+ * <li>MOD-10: Replaced super.getClientId() invokation in invokeOnComponent onto its replacement super_getClientId()</li>
+ * <li>MOD-11: Extended visitTree method to account for extensions that are made through component's child tags, in
+ * particular for state saving for such tags as <o:singleRowSelection> to work properly.</li>
  * </ul>
  * <p/>
  * <p/>
@@ -80,94 +92,89 @@ import java.util.Set;
  * <p>
  * The children of this component are expected to be UIColumn components.
  * <p>
- * Note that the same set of child components are reused to implement each row of the table in turn during
- * such phases as apply-request-values and render-response. Altering any of the members of these components
- * therefore affects the attribute for every row, except for the following members:
+ * Note that the same set of child components are reused to implement each row of the table in turn during such phases
+ * as apply-request-values and render-response. Altering any of the members of these components therefore affects the
+ * attribute for every row, except for the following members:
  * <ul>
  * <li>submittedValue
  * <li>value (where no EL binding is used)
  * <li>valid
  * </ul>
  * <p>
- * This reuse of the child components also means that it is not possible to save a reference to a component
- * during table processing, then access it later and expect it to still represent the same row of the table.
+ * This reuse of the child components also means that it is not possible to save a reference to a component during table
+ * processing, then access it later and expect it to still represent the same row of the table.
  * <h1>
- * Implementation Notes
- * </h1>
+ * Implementation Notes</h1>
  * <p>
- * Each of the UIColumn children of this component has a few component children of its own to render the contents
- * of the table cell. However there can be a very large number of rows in a table, so it isn't efficient for the
- * UIColumn and all its child objects to be duplicated for each row in the table. Instead the "flyweight" pattern
- * is used where a serialized state is held for each row. When setRowIndex is invoked, the UIColumn objects and
- * their children serialize their current state then reinitialise themselves from the appropriate saved state.
- * This allows a single set of real objects to represent multiple objects which have the same types but potentially
- * different internal state. When a row is selected for the first time, its state is set to a clean "initial" state.
- * Transient components (including any read-only component) do not save their state; they are just reinitialised as
- * required. The state saved/restored when changing rows is not the complete component state, just the fields that
- * are expected to vary between rows: "submittedValue", "value", "isValid".
+ * Each of the UIColumn children of this component has a few component children of its own to render the contents of the
+ * table cell. However there can be a very large number of rows in a table, so it isn't efficient for the UIColumn and
+ * all its child objects to be duplicated for each row in the table. Instead the "flyweight" pattern is used where a
+ * serialized state is held for each row. When setRowIndex is invoked, the UIColumn objects and their children serialize
+ * their current state then reinitialise themselves from the appropriate saved state. This allows a single set of real
+ * objects to represent multiple objects which have the same types but potentially different internal state. When a row
+ * is selected for the first time, its state is set to a clean "initial" state. Transient components (including any
+ * read-only component) do not save their state; they are just reinitialised as required. The state saved/restored when
+ * changing rows is not the complete component state, just the fields that are expected to vary between rows:
+ * "submittedValue", "value", "isValid".
  * </p>
  * <p>
- * Note that a table is a "naming container", so that components within the table have their ids prefixed with the
- * id of the table. Actually, when setRowIndex has been called on a table with id of "zzz" the table pretends to
- * its children that its ID is "zzz_n" where n is the row index. This means that renderers for child components which
- * call component.getClientId automatically get ids of form "zzz_n:childId" thus ensuring that components in
- * different rows of the table get different ids.
+ * Note that a table is a "naming container", so that components within the table have their ids prefixed with the id of
+ * the table. Actually, when setRowIndex has been called on a table with id of "zzz" the table pretends to its children
+ * that its ID is "zzz_n" where n is the row index. This means that renderers for child components which call
+ * component.getClientId automatically get ids of form "zzz_n:childId" thus ensuring that components in different rows
+ * of the table get different ids.
  * </p>
  * <p>
- * When decoding a submitted page, this class iterates over all its possible rowIndex values, restoring the
- * appropriate serialized row state then calling processDecodes on the child components. Because the child
- * components (or their renderers) use getClientId to get the request key to look for parameter data, and because
- * this object pretends to have a different id per row ("zzz_n") a single child component can decode data from each
- * table row in turn without being aware that it is within a table. The table's data model is updated before each
- * call to child.processDecodes, so the child decode method can assume that the data model's rowData points to the
- * model object associated with the row currently being decoded. Exactly the same process applies for the later
- * validation and updateModel phases.
+ * When decoding a submitted page, this class iterates over all its possible rowIndex values, restoring the appropriate
+ * serialized row state then calling processDecodes on the child components. Because the child components (or their
+ * renderers) use getClientId to get the request key to look for parameter data, and because this object pretends to
+ * have a different id per row ("zzz_n") a single child component can decode data from each table row in turn without
+ * being aware that it is within a table. The table's data model is updated before each call to child.processDecodes, so
+ * the child decode method can assume that the data model's rowData points to the model object associated with the row
+ * currently being decoded. Exactly the same process applies for the later validation and updateModel phases.
  * </p>
  * <p>
- * When the data model for the table is bound to a backing bean property, and no validation errors have occured
- * during processing of a postback, the data model is refetched at the start of the rendering phase (ie after the
- * update model phase) so that the contents of the data model can be changed as a result of the latest form
- * submission. Because the saved row state must correspond to the elements within the data model, the row state
- * must be discarded whenever a new data model is fetched; not doing this would cause all sorts of inconsistency
- * issues. This does imply that changing the state of any of the members "submittedValue", "value" or "valid" of
- * a component within the table during the invokeApplication phase has no effect on the rendering of the table.
- * When a validation error has occurred, a new DataModel is <i>not</i> fetched, and the saved state of the child
- * components is <i>not</i> discarded.
+ * When the data model for the table is bound to a backing bean property, and no validation errors have occured during
+ * processing of a postback, the data model is refetched at the start of the rendering phase (ie after the update model
+ * phase) so that the contents of the data model can be changed as a result of the latest form submission. Because the
+ * saved row state must correspond to the elements within the data model, the row state must be discarded whenever a new
+ * data model is fetched; not doing this would cause all sorts of inconsistency issues. This does imply that changing
+ * the state of any of the members "submittedValue", "value" or "valid" of a component within the table during the
+ * invokeApplication phase has no effect on the rendering of the table. When a validation error has occurred, a new
+ * DataModel is <i>not</i> fetched, and the saved state of the child components is <i>not</i> discarded.
  * </p>
  * see Javadoc of the <a href="http://java.sun.com/j2ee/javaserverfaces/1.2/docs/api/index.html">JSF Specification</a>
  * for more information.
  *
- * @author Manfred Geiler (latest modification by $Author: lu4242 $)
- * @version $Revision: 692318 $ $Date: 2008-09-04 20:20:12 -0500 (Thu, 04 Sep 2008) $
+ * @author Manfred Geiler (latest modification by $Author: jakobk $)
+ * @version $Revision: 933753 $ $Date: 2010-04-13 14:19:14 -0500 (Tue, 13 Apr 2010) $
  */
-public class OUIData extends UIData implements NamingContainer, OUIComponent { // <MOD-6/> Extended UIData instead of UIComponentBase, <MOD-7/>
+public class OUIData extends UIData implements NamingContainer, UniqueIdVendor, OUIComponent // <MOD-6/> Extended UIData instead of UIComponentBase, <MOD-7/>
+{
     public static final String COMPONENT_FAMILY = "javax.faces.Data";
     public static final String COMPONENT_TYPE = "javax.faces.Data"; // for unit tests
 
     private static final String FOOTER_FACET_NAME = "footer";
     private static final String HEADER_FACET_NAME = "header";
-    private static final Class OBJECT_ARRAY_CLASS = (new Object[0]).getClass();
+    private static final Class<Object[]> OBJECT_ARRAY_CLASS = Object[].class;
     private static final int PROCESS_DECODES = 1;
     private static final int PROCESS_VALIDATORS = 2;
     private static final int PROCESS_UPDATES = 3;
 
     private int _rowIndex = -1;
-    private String _var;
 
     // Holds for each row the states of the child components of this UIData.
     // Note that only "partial" component state is saved: the component fields
     // that are expected to vary between rows.
-    private Map _rowStates = new HashMap();
+    private Map<String, Collection<Object[]>> _rowStates = new HashMap<String, Collection<Object[]>>();
     private Map<String, Object> dynamicColumnStates = new HashMap<String, Object>(); // <MOD-5/> added
 
     /**
-     * Handle case where this table is nested inside another table.
-     * See method getDataModel for more details.
+     * Handle case where this table is nested inside another table. See method getDataModel for more details.
      * <p/>
-     * Key: parentClientId (aka rowId when nested within a parent table)
-     * Value: DataModel
+     * Key: parentClientId (aka rowId when nested within a parent table) Value: DataModel
      */
-    private Map _dataModelMap = new HashMap();
+    private Map<String, DataModel> _dataModelMap = new HashMap<String, DataModel>();
 
     // will be set to false if the data should not be refreshed at the beginning of the encode phase
     private boolean _isValidChilds = true;
@@ -175,19 +182,18 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
     private Object _initialDescendantComponentState = null;
     private List<Object> initialDynamicColumnsState; // <MOD-5/> added
 
-    private int _first;
-    private boolean _firstSet;
-    private int _rows;
-    private boolean _rowsSet;
-    private Object _value;
+    //private int _first;
+    //private boolean _firstSet;
+    //private int _rows;
+    //private boolean _rowsSet;
+    //private Object _value;
 
     private static class FacesEventWrapper extends FacesEvent {
         private static final long serialVersionUID = 6648047974065628773L;
         private FacesEvent _wrappedFacesEvent;
         private int _rowIndex;
 
-        public FacesEventWrapper(FacesEvent facesEvent, int rowIndex,
-                                 OUIData redirectComponent) {
+        public FacesEventWrapper(FacesEvent facesEvent, int rowIndex, UIData redirectComponent) {
             super(redirectComponent);
             _wrappedFacesEvent = facesEvent;
             _rowIndex = rowIndex;
@@ -232,7 +238,6 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
         }
     }
 
-
     private static final DataModel EMPTY_DATA_MODEL = new DataModel() {
         @Override
         public boolean isRowAvailable() {
@@ -268,10 +273,9 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
         @Override
         public void setWrappedData(Object obj) {
             if (obj == null) {
-                return; //Clearing is allowed
+                return; // Clearing is allowed
             }
-            throw new UnsupportedOperationException(this.getClass().getName()
-                    + " UnsupportedOperationException");
+            throw new UnsupportedOperationException(this.getClass().getName() + " UnsupportedOperationException");
         }
     };
 
@@ -303,7 +307,121 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
         setRendererType("javax.faces.Table");
     }
 
-    // <MOD-9/> removed the invokeOnComponent method (using the one inherited from UIData instead)
+
+    @Override
+    public boolean invokeOnComponent(FacesContext context, String clientId, ContextCallback callback)
+        throws FacesException
+    {
+        if (context == null || clientId == null || callback == null)
+        {
+            throw new NullPointerException();
+        }
+
+        // searching for this component?
+        boolean returnValue = this.getClientId(context).equals(clientId);
+
+        if (returnValue)
+        {
+            try
+            {
+                callback.invokeContextCallback(context, this);
+            }
+            catch (Exception e)
+            {
+                throw new FacesException(e);
+            }
+            return returnValue;
+        }
+
+        // Now Look throught facets on this UIComponent
+        for (Iterator<UIComponent> it = this.getFacets().values().iterator(); !returnValue && it.hasNext();)
+        {
+            returnValue = it.next().invokeOnComponent(context, clientId, callback);
+        }
+
+        if (returnValue == true)
+        {
+            return returnValue;
+        }
+
+        // Now we have to check if it is searching an inner component
+        String baseClientId = super_getClientId(context); // <MOD-10/> was: super.getClientId(context)
+
+        // is the component an inner component?
+        if (clientId.startsWith(baseClientId))
+        {
+            // Check if the clientId for the component, which we
+            // are looking for, has a rowIndex attached
+            if (clientId.matches(baseClientId + ":[0-9]+:.*"))
+            {
+                String subId = clientId.substring(baseClientId.length() + 1);
+                String clientRow = subId.substring(0, subId.indexOf(':'));
+
+                //Now we save the current position
+                int oldRow = this.getRowIndex();
+
+                // try-finally --> make sure, that the old row index is restored
+                try
+                {
+                    //The conversion is safe, because its already checked on the
+                    //regular expresion
+                    this.setRowIndex(Integer.parseInt(clientRow));
+
+                    // check, if the row is available
+                    if (!isRowAvailable())
+                    {
+                        return false;
+                    }
+
+                    for (Iterator<UIComponent> it1 = getChildren().iterator();
+                            !returnValue && it1.hasNext();)
+                    {
+                        //recursive call to find the component
+                        returnValue = it1.next().invokeOnComponent(context, clientId, callback);
+                    }
+                }
+                finally
+                {
+                    //Restore the old position. Doing this prevent
+                    //side effects.
+                    this.setRowIndex(oldRow);
+                }
+            }
+            else
+            {
+                // MYFACES-2370: search the component in the childrens' facets too.
+                // We have to check the childrens' facets here, because in MyFaces
+                // the rowIndex is not attached to the clientId for the children of
+                // facets of the UIColumns. However, in RI the rowIndex is
+                // attached to the clientId of UIColumns' Facets' children.
+                for (Iterator<UIComponent> itChildren = this.getChildren().iterator();
+                        !returnValue && itChildren.hasNext();)
+                {
+                    // process the child's facets
+                    for (Iterator<UIComponent> itChildFacets = itChildren.next().getFacets().values().iterator();
+                            !returnValue && itChildFacets.hasNext();)
+                    {
+                        //recursive call to find the component
+                        returnValue = itChildFacets.next().invokeOnComponent(context, clientId, callback);
+                    }
+                }
+            }
+        }
+
+        return returnValue;
+    }
+
+    // <MOD-10> (added)
+    private String super_getClientId(FacesContext context) {
+        String clientId = getClientId(context);
+        int rowIndex = getRowIndex();
+        if (rowIndex == -1) return clientId;
+        String suffix = "" + UINamingContainer.getSeparatorChar(context) + rowIndex;
+        if (!clientId.endsWith(suffix)) throw new IllegalStateException(
+                "clientId \"" + clientId + "\" is expected to end with \"" +suffix + "\"");
+        return clientId.substring(0, clientId.length() - suffix.length());
+    }
+    // </MOD-10>
 
     public void setFooter(UIComponent footer) {
         getFacets().put(FOOTER_FACET_NAME, footer);
@@ -362,8 +480,7 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
                 // that we haven't visited before, ie a "saved state" that can
                 // be pushed to the "restoreState" method of all the child
                 // components to set them up to represent a clean row.
-                _initialDescendantComponentState = saveDescendantComponentStates(
-                        getChildren().iterator(), false);
+                _initialDescendantComponentState = saveDescendantComponentStates(getChildren().iterator(), false);
                 initialDynamicColumnsState = saveDynamicColumnsState(); // <MOD-5/> (added)
             }
         } else {
@@ -371,9 +488,7 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
             // move off it, so save the (partial) state of the components
             // representing the current row. Later if this row is revisited
             // then we can restore this state.
-            _rowStates.put(getClientId(facesContext),
-                    saveDescendantComponentStates(getChildren().iterator(),
-                            false));
+            _rowStates.put(getClientId(facesContext), saveDescendantComponentStates(getChildren().iterator(), false));
             dynamicColumnStates.put(getClientId(facesContext), saveDynamicColumnsState()); // <MOD-5/> (added)
         }
 
@@ -382,7 +497,7 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
         DataModel dataModel = getDataModel();
         dataModel.setRowIndex(rowIndex);
 
-        String var = _var;
+        String var = (String) getStateHelper().get(PropertyKeys.var);
         if (rowIndex == -1) {
             if (var != null) {
                 facesContext.getExternalContext().getRequestMap().remove(var);
@@ -391,19 +506,16 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
             if (var != null) {
                 if (isRowAvailable()) {
                     Object rowData = dataModel.getRowData();
-                    facesContext.getExternalContext().getRequestMap().put(var,
-                            rowData);
+                    facesContext.getExternalContext().getRequestMap().put(var, rowData);
                 } else {
-                    facesContext.getExternalContext().getRequestMap().remove(
-                            var);
+                    facesContext.getExternalContext().getRequestMap().remove(var);
                 }
             }
         }
 
         if (_rowIndex == -1) {
             // reset components to initial state
-            restoreDescendantComponentStates(getChildren().iterator(),
-                    _initialDescendantComponentState, false);
+            restoreDescendantComponentStates(getChildren().iterator(), _initialDescendantComponentState, false);
             restoreDynamicColumnsState(initialDynamicColumnsState); // <MOD-5/> (added)
         } else {
             Object rowState = _rowStates.get(getClientId(facesContext));
@@ -412,108 +524,97 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
                 // We haven't been positioned on this row before, so just
                 // configure the child components of this component with
                 // the standard "initial" state
-                restoreDescendantComponentStates(getChildren().iterator(),
-                        _initialDescendantComponentState, false);
+                restoreDescendantComponentStates(getChildren().iterator(), _initialDescendantComponentState, false);
                 restoreDynamicColumnsState(initialDynamicColumnsState); // <MOD-5/> (added)
             } else {
                 // We have been positioned on this row before, so configure
                 // the child components of this component with the (partial)
                 // state that was previously saved. Fields not in the
                 // partial saved state are left with their original values.
-                restoreDescendantComponentStates(getChildren().iterator(),
-                        rowState, false);
+                restoreDescendantComponentStates(getChildren().iterator(), rowState, false);
                 restoreDynamicColumnsState(columnStates); // <MOD-5/> (added)
             }
         }
     }
 
-
     /**
-     * Overwrite the state of the child components of this component
-     * with data previously saved by method saveDescendantComponentStates.
+     * Overwrite the state of the child components of this component with data previously saved by method
+     * saveDescendantComponentStates.
      * <p/>
-     * The saved state info only covers those fields that are expected to
-     * vary between rows of a table. Other fields are not modified.
+     * The saved state info only covers those fields that are expected to vary between rows of a table. Other fields are
+     * not modified.
      */
-    public static void restoreDescendantComponentStates(Iterator childIterator, // <MOD-5/> was just a non-static private declaration
-                                                        Object state, boolean restoreChildFacets) {
-        Iterator descendantStateIterator = null;
+    @SuppressWarnings("unchecked")
+    public static void restoreDescendantComponentStates(Iterator<UIComponent> childIterator, Object state, // <MOD-5/> was just a non-static private declaration
+                                                        boolean restoreChildFacets) {
+        Iterator<? extends Object[]> descendantStateIterator = null;
         while (childIterator.hasNext()) {
             if (descendantStateIterator == null && state != null) {
-                descendantStateIterator = ((Collection) state).iterator();
+                descendantStateIterator = ((Collection<? extends Object[]>) state).iterator();
             }
-            UIComponent component = (UIComponent) childIterator.next();
+            UIComponent component = childIterator.next();
 
             // reset the client id (see spec 3.1.6)
             component.setId(component.getId());
             if (!component.isTransient()) {
                 Object childState = null;
                 Object descendantState = null;
-                if (descendantStateIterator != null
-                        && descendantStateIterator.hasNext()) {
-                    Object[] object = (Object[]) descendantStateIterator.next();
+                if (descendantStateIterator != null && descendantStateIterator.hasNext()) {
+                    Object[] object = descendantStateIterator.next();
                     childState = object[0];
                     descendantState = object[1];
                 }
                 if (component instanceof EditableValueHolder) {
-                    ((EditableValueHolderState) childState)
-                            .restoreState((EditableValueHolder) component);
+                    ((EditableValueHolderState) childState).restoreState((EditableValueHolder) component);
                 }
-                Iterator childsIterator;
+                Iterator<UIComponent> childsIterator;
                 if (restoreChildFacets) {
                     childsIterator = component.getFacetsAndChildren();
                 } else {
                     childsIterator = component.getChildren().iterator();
                 }
-                restoreDescendantComponentStates(childsIterator, descendantState,
-                        true);
+                restoreDescendantComponentStates(childsIterator, descendantState, true);
             }
         }
     }
 
     /**
-     * Walk the tree of child components of this UIData, saving the parts of
-     * their state that can vary between rows.
+     * Walk the tree of child components of this UIData, saving the parts of their state that can vary between rows.
      * <p/>
-     * This is very similar to the process that occurs for normal components
-     * when the view is serialized. Transient components are skipped (no
-     * state is saved for them).
+     * This is very similar to the process that occurs for normal components when the view is serialized. Transient
+     * components are skipped (no state is saved for them).
      * <p/>
-     * If there are no children then null is returned. If there are one or
-     * more children, and all children are transient then an empty collection
-     * is returned; this will happen whenever a table contains only read-only
-     * components.
+     * If there are no children then null is returned. If there are one or more children, and all children are transient
+     * then an empty collection is returned; this will happen whenever a table contains only read-only components.
      * <p/>
-     * Otherwise a collection is returned which contains an object for every
-     * non-transient child component; that object may itself contain a collection
-     * of the state of that child's child components.
+     * Otherwise a collection is returned which contains an object for every non-transient child component; that object
+     * may itself contain a collection of the state of that child's child components.
      */
-    public static Object saveDescendantComponentStates(Iterator childIterator, // <MOD-5/> was just a non-static private declaration
-                                                       boolean saveChildFacets) {
-        Collection childStates = null;
+    public static Collection<Object[]> saveDescendantComponentStates(Iterator<UIComponent> childIterator, // <MOD-5/> was just a non-static private declaration
+                                                                     boolean saveChildFacets) {
+        Collection<Object[]> childStates = null;
         while (childIterator.hasNext()) {
             if (childStates == null) {
-                childStates = new ArrayList();
+                childStates = new ArrayList<Object[]>();
             }
-            UIComponent child = (UIComponent) childIterator.next();
+
+            UIComponent child = childIterator.next();
             if (!child.isTransient()) {
                 // Add an entry to the collection, being an array of two
                 // elements. The first element is the state of the children
                 // of this component; the second is the state of the current
                 // child itself.
 
-                Iterator childsIterator;
+                Iterator<UIComponent> childsIterator;
                 if (saveChildFacets) {
                     childsIterator = child.getFacetsAndChildren();
                 } else {
                     childsIterator = child.getChildren().iterator();
                 }
-                Object descendantState = saveDescendantComponentStates(
-                        childsIterator, true);
+                Object descendantState = saveDescendantComponentStates(childsIterator, true);
                 Object state = null;
                 if (child instanceof EditableValueHolder) {
-                    state = new EditableValueHolderState(
-                            (EditableValueHolder) child);
+                    state = new EditableValueHolderState((EditableValueHolder) child);
                 }
                 childStates.add(new Object[]{state, descendantState});
             }
@@ -525,7 +626,8 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
     public void setValueExpression(String name, ValueExpression binding) {
         if (name == null) {
             throw new NullPointerException("name");
-        } else if (name.equals("uiDataValue")) { // <MOD-2/> "value" was here
+        } else if (name.equals("uiDataValue")) // <MOD-2/> "value" was here
+        {
             _dataModelMap.clear();
         } else if (name.equals("rowIndex")) {
             throw new IllegalArgumentException("name " + name);
@@ -536,23 +638,17 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
     // <MOD-9/> Removed the getClientId method (using the inherited one)
 
     /**
-     * Modify events queued for any child components so that the
-     * UIData state will be correctly configured before the event's
-     * listeners are executed.
+     * Modify events queued for any child components so that the UIData state will be correctly configured before the
+     * event's listeners are executed.
      * <p/>
-     * Child components or their renderers may register events against
-     * those child components. When the listener for that event is
-     * eventually invoked, it may expect the uidata's rowData and
-     * rowIndex to be referring to the same object that caused the
-     * event to fire.
+     * Child components or their renderers may register events against those child components. When the listener for
+     * that event is eventually invoked, it may expect the uidata's rowData and rowIndex to be referring to the same
+     * object that caused the event to fire.
      * <p/>
-     * The original queueEvent call against the child component has been
-     * forwarded up the chain of ancestors in the standard way, making
-     * it possible here to wrap the event in a new event whose source
-     * is <i>this</i> component, not the original one. When the event
-     * finally is executed, this component's broadcast method is invoked,
-     * which ensures that the UIData is set to be at the correct row
-     * before executing the original event.
+     * The original queueEvent call against the child component has been forwarded up the chain of ancestors in the
+     * standard way, making it possible here to wrap the event in a new event whose source is <i>this</i> component, not
+     * the original one. When the event finally is executed, this component's broadcast method is invoked, which ensures
+     * that the UIData is set to be at the correct row before executing the original event.
      */
     @Override
     public void queueEvent(FacesEvent event) {
@@ -560,16 +656,15 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
     }
 
     /**
-     * Ensure that before the event's listeners are invoked this UIData
-     * component's "current row" is set to the row associated with the event.
+     * Ensure that before the event's listeners are invoked this UIData component's "current row" is set to the row
+     * associated with the event.
      * <p/>
      * See queueEvent for more details.
      */
     @Override
     public void broadcast(FacesEvent event) throws AbortProcessingException {
         if (event instanceof FacesEventWrapper) {
-            FacesEvent originalEvent = ((FacesEventWrapper) event)
-                    .getWrappedFacesEvent();
+            FacesEvent originalEvent = ((FacesEventWrapper) event).getWrappedFacesEvent();
             int eventRowIndex = ((FacesEventWrapper) event).getRowIndex();
             int currentRowIndex = getRowIndex();
             setRowIndex(eventRowIndex);
@@ -585,13 +680,33 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
     }
 
     /**
-     * Perform necessary actions when rendering of this component starts,
-     * before delegating to the inherited implementation which calls the
-     * associated renderer's encodeBegin method.
+     * {@inheritDoc}
+     *
+     * @since 2.0
+     */
+    public String createUniqueId(FacesContext context, String seed) {
+        ExternalContext extCtx = context.getExternalContext();
+        StringBuilder bld = new StringBuilder();
+
+        Long uniqueIdCounter = (Long) getStateHelper().get(PropertyKeys.uniqueIdCounter);
+        uniqueIdCounter = (uniqueIdCounter == null) ? 0 : uniqueIdCounter;
+        getStateHelper().put(PropertyKeys.uniqueIdCounter, (uniqueIdCounter + 1L));
+        // Generate an identifier for a component. The identifier will be prefixed with UNIQUE_ID_PREFIX, and will be unique within this UIViewRoot.
+        if (seed == null) {
+            return extCtx.encodeNamespace(bld.append(UIViewRoot.UNIQUE_ID_PREFIX).append(uniqueIdCounter).toString());
+        }
+        // Optionally, a unique seed value can be supplied by component creators which should be included in the generated unique id.
+        else {
+            return extCtx.encodeNamespace(bld.append(UIViewRoot.UNIQUE_ID_PREFIX).append(seed).toString());
+        }
+    }
+
+    /**
+     * Perform necessary actions when rendering of this component starts, before delegating to the inherited
+     * implementation which calls the associated renderer's encodeBegin method.
      */
     @Override
     public void encodeBegin(FacesContext context) throws IOException {
-        setRowIndex(-1);
         _initialDescendantComponentState = null;
         initialDynamicColumnsState = null; // <MOD-5/> (added)
         if (_isValidChilds && !hasErrorMessages(context)) {
@@ -612,8 +727,8 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
     }
 
     private boolean hasErrorMessages(FacesContext context) {
-        for (Iterator iter = context.getMessages(); iter.hasNext();) {
-            FacesMessage message = (FacesMessage) iter.next();
+        for (Iterator<FacesMessage> iter = context.getMessages(); iter.hasNext();) {
+            FacesMessage message = iter.next();
             if (FacesMessage.SEVERITY_ERROR.compareTo(message.getSeverity()) <= 0) {
                 return true;
             }
@@ -694,31 +809,29 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
     }
 
     private void processFacets(FacesContext context, int processAction) {
-        for (Object o : getFacets().values()) {
-            UIComponent facet = (UIComponent) o;
+        for (UIComponent facet : getFacets().values()) {
             process(context, facet, processAction);
         }
     }
 
     /**
-     * Invoke the specified phase on all facets of all UIColumn children
-     * of this component. Note that no methods are called on the UIColumn
-     * child objects themselves.
+     * Invoke the specified phase on all facets of all UIColumn children of this component. Note that no methods are
+     * called on the UIColumn child objects themselves.
      *
      * @param context       is the current faces context.
      * @param processAction specifies a JSF phase: decode, validate or update.
      */
     private void processColumnFacets(FacesContext context, int processAction) {
-        for (Object o1 : getColumnsForProcessing()) {// <MOD-3/> getChildren().iterator() was here
-            UIComponent child = (UIComponent) o1;
+        for (UIComponent child : (Iterable<? extends UIComponent>) getColumnsForProcessing())// <MOD-3/> getChildren().iterator() was here
+        {
             if (child instanceof UIColumn) {
                 if (!child.isRendered()) {
-                    //Column is not visible
+                    // Column is not visible
                     continue;
                 }
 
                 // <MOD-5>
-                Map colFacets;
+                Map<String, UIComponent> colFacets;
                 if (child instanceof DynamicCol) {
                     DynamicCol dynamicCol = (DynamicCol) child;
                     dynamicCol.declareContextVariables();
@@ -727,8 +840,8 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
                     colFacets = child.getFacets();
                 // </MOD-5>
 
-                for (Object o : colFacets.values()) {// <MOD-5/> changed "child.getFacets().values()" to "colFacets.values()"
-                    UIComponent facet = (UIComponent) o;
+                for (UIComponent facet : colFacets.values())// <MOD-5/> changed "child.getFacets().values()" to "colFacets.values()"
+                {
                     process(context, facet, processAction);
                 }
 
@@ -736,15 +849,13 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
                 if (child instanceof DynamicCol)
                     ((DynamicCol) child).undeclareContextVariables();
                 // </MOD-5>
-
             }
         }
     }
 
     /**
-     * Invoke the specified phase on all non-facet children of all UIColumn
-     * children of this component. Note that no methods are called on the
-     * UIColumn child objects themselves.
+     * Invoke the specified phase on all non-facet children of all UIColumn children of this component. Note that no
+     * methods are called on the UIColumn child objects themselves.
      *
      * @param context       is the current faces context.
      * @param processAction specifies a JSF phase: decode, validate or update.
@@ -769,7 +880,7 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
             // </MOD-1>
             setRowIndex(rowIndex);
 
-            //scrolled past the last row
+            // scrolled past the last row
             if (!isRowAvailable()) {
                 break;
             }
@@ -779,12 +890,12 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
             // </MOD-4>
 
             int colIndex = 0;
-            List columnsForProcessing = getColumnsForProcessing(); // <MOD-3/> line added
-            for (Iterator it = columnsForProcessing.iterator(); it.hasNext(); colIndex++) { // <MOD-3/> getChildren().iterator() was here
-                UIComponent child = (UIComponent) it.next();
+            List<UIComponent> columnsForProcessing = getColumnsForProcessing(); // <MOD-3/> line added
+            for (UIComponent child : columnsForProcessing) // <MOD-3/> getChildren() was here
+            {
                 if (child instanceof UIColumn) {
                     if (!child.isRendered()) {
-                        //Column is not visible
+                        // Column is not visible
                         continue;
                     }
 
@@ -804,7 +915,8 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
                         colChildren = child.getChildren();
                     // </MOD-5>
 
-                    for (UIComponent columnChild : colChildren) {// <MOD-5/> changed "child.getChildren()" -> "colChildren"
+                    for (UIComponent columnChild : colChildren)// <MOD-5/> changed "child.getChildren()" -> "colChildren"
+                    {
                         process(context, columnChild, processAction);
                     }
 
@@ -812,10 +924,8 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
                     if (child instanceof DynamicCol)
                         ((DynamicCol) child).undeclareContextVariables();
                     // </MOD-5>
-
                 }
             }
-
             // <MOD-4>
             if (customRowRenderingInfo != null) {
                 List<ClientBehavior> a4jSupportBehaviors = customRowRenderingInfo.getA4jAjaxBehaviorsForThisRow(customRows);
@@ -835,8 +945,7 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
         }
     }
 
-    private void process(FacesContext context, UIComponent component,
-                         int processAction) {
+    private void process(FacesContext context, UIComponent component, int processAction) {
         switch (processAction) {
             case PROCESS_DECODES:
                 component.processDecodes(context);
@@ -851,19 +960,14 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
     }
 
     /**
-     * Return the datamodel for this table, potentially fetching the data from
-     * a backing bean via a value-binding if this is the first time this method
-     * has been called.
+     * Return the datamodel for this table, potentially fetching the data from a backing bean via a value-binding if
+     * this is the first time this method has been called.
      * <p/>
-     * This is complicated by the fact that this table may be nested within
-     * another table. In this case a different datamodel should be fetched
-     * for each row. When nested within a parent table, the parent reference
-     * won't change but parent.getClientId() will, as the suffix changes
-     * depending upon the current row index. A map object on this component
-     * is therefore used to cache the datamodel for each row of the table.
-     * In the normal case where this table is not nested inside a component
-     * that changes its id (like a table does) then this map only ever has
-     * one entry.
+     * This is complicated by the fact that this table may be nested within another table. In this case a different
+     * datamodel should be fetched for each row. When nested within a parent table, the parent reference won't change
+     * but parent.getClientId() will, as the suffix changes depending upon the current row index. A map object on this
+     * component is therefore used to cache the datamodel for each row of the table. In the normal case where this table
+     * is not nested inside a component that changes its id (like a table does) then this map only ever has one entry.
      */
     protected DataModel getDataModel() {
         DataModel dataModel;
@@ -873,7 +977,7 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
         if (parent != null) {
             clientID = parent.getClientId(getFacesContext());
         }
-        dataModel = (DataModel) _dataModelMap.get(clientID);
+        dataModel = _dataModelMap.get(clientID);
         if (dataModel == null) {
             dataModel = createDataModel();
             _dataModelMap.put(clientID, dataModel);
@@ -893,14 +997,12 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
     }
 
     /**
-     * Evaluate this object's value property and convert the result into a
-     * DataModel. Normally this object's value property will be a value-binding
-     * which will cause the value to be fetched from some backing bean.
+     * Evaluate this object's value property and convert the result into a DataModel. Normally this object's value
+     * property will be a value-binding which will cause the value to be fetched from some backing bean.
      * <p/>
-     * The result of fetching the value may be a DataModel object, in which
-     * case that object is returned directly. If the value is of type
-     * List, Array, ResultSet, Result, other object or null then an appropriate
-     * wrapper is created and returned.
+     * The result of fetching the value may be a DataModel object, in which case that object is returned directly. If
+     * the value is of type List, Array, ResultSet, Result, other object or null then an appropriate wrapper is created
+     * and returned.
      * <p/>
      * Null is never returned by this method.
      */
@@ -912,7 +1014,7 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
         } else if (value instanceof DataModel) {
             return (DataModel) value;
         } else if (value instanceof List) {
-            return new ListDataModel((List) value);
+            return new ListDataModel((List<?>) value);
         } else if (OBJECT_ARRAY_CLASS.isAssignableFrom(value.getClass())) {
             return new ArrayDataModel((Object[]) value);
         } else if (value instanceof ResultSet) {
@@ -931,30 +1033,24 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
      * </p>
      * <ul>
      * <li>A value of type DataModel is used directly.</li>
-     * <li>Array-like parameters of type array-of-Object, java.util.List, java.sql.ResultSet
-     * or javax.servlet.jsp.jstl.sql.Result are wrapped in a corresponding DataModel that
-     * knows how to iterate over the elements.</li>
+     * <li>Array-like parameters of type array-of-Object, java.util.List, java.sql.ResultSet or
+     * javax.servlet.jsp.jstl.sql.Result are wrapped in a corresponding DataModel that knows how to iterate over the
+     * elements.</li>
      * <li>Other values are wrapped in a DataModel as a single row.</li>
      * </ul>
      * <p>
-     * Note in particular that unordered collections, eg Set are not supported. Therefore if the
-     * value expression references such an object then the table will be considered to contain just
-     * one element - the collection itself.
+     * Note in particular that unordered collections, eg Set are not supported. Therefore if the value expression
+     * references such an object then the table will be considered to contain just one element - the collection itself.
      * </p>
      */
-    public Object getUiDataValue() { // <MOD-2/> method name was "getValue()"
-        if (_value != null) {
-            return _value;
-        }
-        ValueExpression expression = getValueExpression("uiDataValue"); // <MOD-2/> "value" was here
-        if (expression != null) {
-            return expression.getValue(getFacesContext().getELContext());
-        }
-        return null;
+    public Object getUiDataValue() // <MOD-2/> method name was "getValue()"
+    {
+        return getStateHelper().eval(PropertyKeys.uiDataValue);
     }
 
-    public void setUiDataValue(Object value) { // <MOD-2/> method name was "setValue"
-        _value = value;
+    public void setUiDataValue(Object value) // <MOD-2/> method name was "setValue"
+    {
+        getStateHelper().put(PropertyKeys.uiDataValue, value);
         _dataModelMap.clear();
         _rowStates.clear();
         dynamicColumnStates.clear(); // <MOD-5/> (added)
@@ -965,40 +1061,24 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
      * Defines the index of the first row to be displayed, starting from 0.
      */
     public int getFirst() {
-        if (_firstSet) {
-            return _first;
-        }
-        ValueExpression expression = getValueExpression("first");
-        if (expression != null) {
-            return (Integer) expression.getValue(getFacesContext().getELContext());
-        }
-        return 0;
+        return (Integer) getStateHelper().eval(PropertyKeys.first, 0);
     }
 
     public void setFirst(int first) {
         if (first < 0) {
             throw new IllegalArgumentException("Illegal value for first row: " + first);
         }
-        _first = first;
-        _firstSet = true;
+        getStateHelper().put(PropertyKeys.first, first);
     }
 
     /**
      * Defines the maximum number of rows of data to be displayed.
      * <p>
-     * Specify zero to display all rows from the "first" row to the end
-     * of available data.
+     * Specify zero to display all rows from the "first" row to the end of available data.
      * </p>
      */
     public int getRows() {
-        if (_rowsSet) {
-            return _rows;
-        }
-        ValueExpression expression = getValueExpression("rows");
-        if (expression != null) {
-            return (Integer) expression.getValue(getFacesContext().getELContext());
-        }
-        return 0;
+        return (Integer) getStateHelper().eval(PropertyKeys.rows, 0);
     }
 
     /**
@@ -1008,104 +1088,145 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
         if (rows < 0) {
             throw new IllegalArgumentException("rows: " + rows);
         }
-        _rows = rows;
-        _rowsSet = true;
+        getStateHelper().put(PropertyKeys.rows, rows);
     }
 
     /**
      * Defines the name of the request-scope variable that will hold the current row during iteration.
      * <p>
-     * During rendering of child components of this UIData, the variable with this name can be read to
-     * learn what the "rowData" object for the row currently being rendered is.
+     * During rendering of child components of this UIData, the variable with this name can be read to learn what the
+     * "rowData" object for the row currently being rendered is.
      * </p>
      * <p>
      * This value must be a static value, ie an EL expression is not permitted.
      * </p>
      */
     public String getVar() {
-        return _var;
+        return (String) getStateHelper().get(PropertyKeys.var);
+    }
+
+    /**
+     * Overrides the behavior in
+     * UIComponent.visitTree(javax.faces.component.visit.VisitContext, javax.faces.component.visit.VisitCallback)
+     * to handle iteration correctly.
+     *
+     * @param context  the visit context which handles the processing details
+     * @param callback the callback to be performed
+     * @return false if the processing is not done true if we can shortcut
+     *         the visiting because we are done with everything
+     * @since 2.0
+     */
+    @Override
+    public boolean visitTree(VisitContext context, VisitCallback callback) {
+        if (!isVisitable(context)) {
+            return false;
+        }
+
+        // save the current row index
+        int oldRowIndex = getRowIndex();
+        // set row index to -1 to process the facets and to get the rowless clientId
+        setRowIndex(-1);
+        // push the Component to EL
+        pushComponentToEL(context.getFacesContext(), this);
+        try {
+            VisitResult visitResult = context.invokeVisitCallback(this,
+                    callback);
+            switch (visitResult) {
+                //we are done nothing has to be processed anymore
+                case COMPLETE:
+                    return true;
+
+                case REJECT:
+                    return false;
+
+                //accept
+                default:
+                    // determine if we need to visit our children
+                    Collection<String> subtreeIdsToVisit = context
+                            .getSubtreeIdsToVisit(this);
+                    boolean doVisitChildren = subtreeIdsToVisit != null
+                            && !subtreeIdsToVisit.isEmpty();
+                    if (doVisitChildren) {
+                        // visit the facets of the component
+                        for (UIComponent facet : getFacets().values()) {
+                            if (facet.visitTree(context, callback)) {
+                                return true;
+                            }
+                        }
+                        // visit every column directly without visiting its children
+                        // (the children of every UIColumn will be visited later for
+                        // every row) and also visit the column's facets
+                        for (UIComponent child : getChildren()) {
+                            if (child instanceof UIColumn) {
+                                VisitResult columnResult = context.invokeVisitCallback(child, callback);
+                                if (columnResult == VisitResult.COMPLETE) {
+                                    return true;
+                                }
+                                for (UIComponent facet : child.getFacets().values()) {
+                                    if (facet.visitTree(context, callback)) {
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                        // <MOD-11>
+                        for (UIComponent child : getExtensionComponents()) {
+                            if (child == null) continue;
+                            VisitResult columnResult = context.invokeVisitCallback(child, callback);
+                            if (columnResult == VisitResult.COMPLETE) {
+                                return true;
+                            }
+                        }
+                        // </MOD-11>
+                        // iterate over the rows
+                        int rowsToProcess = getRows();
+                        // if getRows() returns 0, all rows have to be processed
+                        if (rowsToProcess == 0) {
+                            rowsToProcess = getRowCount();
+                        }
+                        int rowIndex = getFirst();
+                        for (int rowsProcessed = 0; rowsProcessed < rowsToProcess; rowsProcessed++, rowIndex++) {
+                            setRowIndex(rowIndex);
+                            if (!isRowAvailable()) {
+                                return false;
+                            }
+                            // visit the children of every child of the UIData that is an instance of UIColumn
+                            for (UIComponent child : getChildren()) {
+                                if (child instanceof UIColumn) {
+                                    for (UIComponent grandchild : child
+                                            .getChildren()) {
+                                        if (grandchild.visitTree(context, callback)) {
+                                            return true;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+            }
+        }
+        finally {
+            // pop the component from EL and restore the old row index
+            popComponentFromEL(context.getFacesContext());
+            setRowIndex(oldRowIndex);
+        }
+
+        // Return false to allow the visiting to continue
+        return false;
     }
 
     public void setVar(String var) {
-        this._var = var;
+        getStateHelper().put(PropertyKeys.var, var);
     }
 
-
-    @Override
-    public Object saveState(FacesContext facesContext) {
-        Object[] values = new Object[8];
-        values[0] = super.saveState(facesContext);
-        values[1] = _value;
-        values[2] = _var;
-        values[3] = _rows;
-        values[4] = _rowsSet;
-        values[5] = _first;
-        values[6] = _firstSet;
-        // <MOD-7> code added
-        values[7] = new Object[]{
-                style,
-                styleClass,
-                rolloverStyle,
-                rolloverClass,
-                onkeypress,
-                onclick,
-                ondblclick,
-                onmousedown,
-                onmouseover,
-                onmousemove,
-                onmouseout,
-                onmouseup,
-                onfocus,
-                onblur,
-                onkeydown,
-                onkeyup,
-                oncontextmenu
-        };
-        // </MOD-7>
-
-        return values;
-    }
-
-    @Override
-    public void restoreState(FacesContext facesContext, Object state) {
-        Object[] values = (Object[]) state;
-        super.restoreState(facesContext, values[0]);
-        _value = values[1];
-        _var = (String) values[2];
-        _rows = (Integer) values[3];
-        _rowsSet = (Boolean) values[4];
-        _first = (Integer) values[5];
-        _firstSet = (Boolean) values[6];
-
-        // <MOD-7> code added
-        int i = 0;
-        Object[] addedFields = (Object[]) values[7];
-        style = (String) addedFields[i++];
-        styleClass = (String) addedFields[i++];
-        rolloverStyle = (String) addedFields[i++];
-        rolloverClass = (String) addedFields[i++];
-        onkeypress = (String) addedFields[i++];
-        onclick = (String) addedFields[i++];
-        ondblclick = (String) addedFields[i++];
-        onmousedown = (String) addedFields[i++];
-        onmouseover = (String) addedFields[i++];
-        onmousemove = (String) addedFields[i++];
-        onmouseout = (String) addedFields[i++];
-        onmouseup = (String) addedFields[i++];
-        onfocus = (String) addedFields[i++];
-        onblur = (String) addedFields[i++];
-        onkeydown = (String) addedFields[i++];
-        onkeyup = (String) addedFields[i++];
-        oncontextmenu = (String) addedFields[i++];
-        // </MOD-7>
-
+    enum PropertyKeys {
+        uiDataValue, first, rows, var, uniqueIdCounter
     }
 
     @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
-
 
     // <MOD-1> code added
     private Set unavailableRowIndexes = null;
@@ -1122,7 +1243,6 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
     }
     // </MOD-1>
 
-
     // <MOD-3> This is the new method which is invoked instead of getChildren in processColumnChildren/processColumnFacets methods
     //         The AbstractTable class overrides this method to exclude the non-rendered columns according to the columnsOrder attribute
 
@@ -1130,7 +1250,6 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
         return getChildren();
     }
     // </MOD-3> "value" was here
-
 
     // <MOD-4>
 
@@ -1145,7 +1264,6 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
         return customRows;
     }
     // </MOD-4>
-
 
     // <MOD-5> (added dynamic column state management methods)
 
@@ -1187,163 +1305,172 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
     }
     // </MOD-5>
 
-
     // <MOD-7> code added
-    private String style;
-    private String styleClass;
-    private String rolloverStyle;
-    private String rolloverClass;
 
-    private String onclick;
-    private String ondblclick;
-    private String onmousedown;
-    private String onmouseover;
-    private String onmousemove;
-    private String onmouseout;
-    private String onmouseup;
-    private String onfocus;
-    private String onblur;
-    private String onkeydown;
-    private String onkeyup;
-    private String onkeypress;
-    private String oncontextmenu;
+    enum Mod7PropertyKeys {
+        style,
+        styleClass,
+        rolloverStyle,
+        rolloverClass,
+
+        onclick,
+        ondblclick,
+        onmousedown,
+        onmouseover,
+        onmousemove,
+        onmouseout,
+        onmouseup,
+        onfocus,
+        onblur,
+        onkeydown,
+        onkeyup,
+        onkeypress,
+        oncontextmenu
+    }
+
 
     public String getStyle() {
-        return ValueBindings.get(this, "style", style);
+        return (String) getStateHelper().eval(Mod7PropertyKeys.style);
     }
 
     public void setStyle(String style) {
-        this.style = style;
+        getStateHelper().put(Mod7PropertyKeys.style, style);
     }
 
     public String getRolloverStyle() {
-        return ValueBindings.get(this, "rolloverStyle", rolloverStyle);
+        return (String) getStateHelper().eval(Mod7PropertyKeys.rolloverStyle);
     }
 
     public void setRolloverStyle(String rolloverStyle) {
-        this.rolloverStyle = rolloverStyle;
+        getStateHelper().put(Mod7PropertyKeys.rolloverStyle, rolloverStyle);
     }
 
     public String getRolloverClass() {
-        return ValueBindings.get(this, "rolloverClass", rolloverClass);
+        return (String) getStateHelper().eval(Mod7PropertyKeys.rolloverClass);
     }
 
     public void setRolloverClass(String rolloverClass) {
-        this.rolloverClass = rolloverClass;
+        getStateHelper().put(Mod7PropertyKeys.rolloverClass, rolloverClass);
     }
 
     public String getStyleClass() {
-        return ValueBindings.get(this, "styleClass", styleClass);
+        return (String) getStateHelper().eval(Mod7PropertyKeys.styleClass);
     }
 
     public void setStyleClass(String styleClass) {
-        this.styleClass = styleClass;
+        getStateHelper().put(Mod7PropertyKeys.styleClass, styleClass);
     }
 
     public String getOnkeypress() {
-        return ValueBindings.get(this, "onkeypress", onkeypress);
+        return (String) getStateHelper().eval(Mod7PropertyKeys.onkeypress);
     }
 
     public void setOnkeypress(String onkeypress) {
-        this.onkeypress = onkeypress;
+        getStateHelper().put(Mod7PropertyKeys.onkeypress, onkeypress);
     }
 
     public String getOncontextmenu() {
-        return ValueBindings.get(this, "oncontextmenu", oncontextmenu);
+        return (String) getStateHelper().eval(Mod7PropertyKeys.oncontextmenu);
     }
 
     public void setOncontextmenu(String oncontextmenu) {
-        this.oncontextmenu = oncontextmenu;
+        getStateHelper().put(Mod7PropertyKeys.oncontextmenu, oncontextmenu);
     }
 
     public String getOnclick() {
-        return ValueBindings.get(this, "onclick", onclick);
+        return (String) getStateHelper().eval(Mod7PropertyKeys.onclick);
     }
 
     public void setOnclick(String onclick) {
-        this.onclick = onclick;
+        getStateHelper().put(Mod7PropertyKeys.onclick, onclick);
     }
 
     public String getOndblclick() {
-        return ValueBindings.get(this, "ondblclick", ondblclick);
+        return (String) getStateHelper().eval(Mod7PropertyKeys.ondblclick);
     }
 
     public void setOndblclick(String ondblclick) {
-        this.ondblclick = ondblclick;
+        getStateHelper().put(Mod7PropertyKeys.ondblclick, ondblclick);
     }
 
     public String getOnmousedown() {
-        return ValueBindings.get(this, "onmousedown", onmousedown);
+        return (String) getStateHelper().eval(Mod7PropertyKeys.onmousedown);
     }
 
     public void setOnmousedown(String onmousedown) {
-        this.onmousedown = onmousedown;
+        getStateHelper().put(Mod7PropertyKeys.onmousedown, onmousedown);
     }
 
     public String getOnmouseover() {
-        return ValueBindings.get(this, "onmouseover", onmouseover);
+        return (String) getStateHelper().eval(Mod7PropertyKeys.onmouseover);
     }
 
     public void setOnmouseover(String onmouseover) {
-        this.onmouseover = onmouseover;
+        getStateHelper().put(Mod7PropertyKeys.onmouseover, onmouseover);
     }
 
     public String getOnmousemove() {
-        return ValueBindings.get(this, "onmousemove", onmousemove);
+        return (String) getStateHelper().eval(Mod7PropertyKeys.onmousemove);
     }
 
     public void setOnmousemove(String onmousemove) {
-        this.onmousemove = onmousemove;
+        getStateHelper().put(Mod7PropertyKeys.onmousemove, onmousemove);
     }
 
     public String getOnmouseout() {
-        return ValueBindings.get(this, "onmouseout", onmouseout);
+        return (String) getStateHelper().eval(Mod7PropertyKeys.onmouseout);
     }
 
     public void setOnmouseout(String onmouseout) {
-        this.onmouseout = onmouseout;
+        getStateHelper().put(Mod7PropertyKeys.onmouseout, onmouseout);
     }
 
     public String getOnmouseup() {
-        return ValueBindings.get(this, "onmouseup", onmouseup);
+        return (String) getStateHelper().eval(Mod7PropertyKeys.onmouseup);
     }
 
     public void setOnmouseup(String onmouseup) {
-        this.onmouseup = onmouseup;
+        getStateHelper().put(Mod7PropertyKeys.onmouseup, onmouseup);
     }
 
     public String getOnfocus() {
-        return ValueBindings.get(this, "onfocus", onfocus);
+        return (String) getStateHelper().eval(Mod7PropertyKeys.onfocus);
     }
 
     public void setOnfocus(String onfocus) {
-        this.onfocus = onfocus;
+        getStateHelper().put(Mod7PropertyKeys.onfocus, onfocus);
     }
 
     public String getOnblur() {
-        return ValueBindings.get(this, "onblur", onblur);
+        return (String) getStateHelper().eval(Mod7PropertyKeys.onblur);
     }
 
     public void setOnblur(String onblur) {
-        this.onblur = onblur;
+        getStateHelper().put(Mod7PropertyKeys.onblur, onblur);
     }
 
     public String getOnkeydown() {
-        return ValueBindings.get(this, "onkeydown", onkeydown);
+        return (String) getStateHelper().eval(Mod7PropertyKeys.onkeydown);
     }
 
     public void setOnkeydown(String onkeydown) {
-        this.onkeydown = onkeydown;
+        getStateHelper().put(Mod7PropertyKeys.onkeydown, onkeydown);
     }
 
     public String getOnkeyup() {
-        return ValueBindings.get(this, "onkeyup", onkeyup);
+        return (String) getStateHelper().eval(Mod7PropertyKeys.onkeyup);
     }
 
     public void setOnkeyup(String onkeyup) {
-        this.onkeyup = onkeyup;
+        getStateHelper().put(Mod7PropertyKeys.onkeyup, onkeyup);
     }
 
     // </MOD-7>
+
+    //<MOD-11>
+    protected List<UIComponent> getExtensionComponents() {
+        return Collections.emptyList();
+    }
+    //
 
 }

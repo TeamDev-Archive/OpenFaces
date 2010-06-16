@@ -37,6 +37,7 @@ import javax.faces.event.ListenerFor;
 import javax.faces.event.PostRestoreStateEvent;
 import javax.faces.render.Renderer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -855,6 +856,17 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         this.sortableHeaderRolloverClass = sortableHeaderRolloverClass;
     }
 
+    @Override
+    protected List<UIComponent> getExtensionComponents() {
+        //noinspection RedundantArrayCreation
+        return Arrays.asList(new UIComponent[]{
+                getSelection(),
+                getColumnReordering(),
+                getColumnResizing(),
+                getScrolling()
+        });
+    }
+
     public AbstractTableSelection getSelection() {
         return findSelectionChild();
     }
@@ -1000,6 +1012,10 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     }
 
     protected void beforeRenderResponse(FacesContext context) {
+        // modify uiDataValue property to move it to the delta map in StateHolder, which turns on
+        // state saving for TableDataModel
+        setUiDataValue(getUiDataValue());
+
         cachedAllColumns = null;
         cachedRenderedColumns = null;
         List<Columns> columnsComponents = Components.findChildrenWithClass(this, Columns.class);
