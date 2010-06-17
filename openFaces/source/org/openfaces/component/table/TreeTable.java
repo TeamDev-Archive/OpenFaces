@@ -709,7 +709,7 @@ public class TreeTable extends AbstractTable {
     @Override
     public void setRowIndex(int rowIndex) {
         super.setRowIndex(rowIndex);
-        boolean rowAvailable = isRowAvailable();
+        boolean rowAvailable = rowIndex != -1 && isRowAvailable();
         Map<String, Object> requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
         if (nodePathVar != null)
             requestMap.put(nodePathVar, rowAvailable ? getNodePath() : null);

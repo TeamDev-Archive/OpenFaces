@@ -35,6 +35,7 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ComponentSystemEvent;
 import javax.faces.event.ListenerFor;
 import javax.faces.event.PostRestoreStateEvent;
+import javax.faces.model.DataModel;
 import javax.faces.render.Renderer;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -318,6 +319,13 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     protected TableDataModel getModel() {
         return (TableDataModel) getUiDataValue();
+    }
+
+    public boolean isRowAvailable() {
+        DataModel dataModel = getDataModel();
+        if (dataModel != getModel())
+            throw new IllegalStateException("table.getDataModel() != table.getModel(). It's possible that getDataModel() during state restoring before table's StateHelper has been restored");
+        return dataModel.isRowAvailable();
     }
 
     @Override
