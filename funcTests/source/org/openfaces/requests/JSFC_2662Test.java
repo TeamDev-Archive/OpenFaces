@@ -12,6 +12,7 @@
 package org.openfaces.requests;
 
 import com.thoughtworks.selenium.Selenium;
+import org.junit.Assert;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.seleniuminspector.ElementInspector;
@@ -28,6 +29,8 @@ public class JSFC_2662Test extends OpenFacesTestCase {
     public void testUnexpectedAlertByKeyboardActions() throws InterruptedException {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/requests/JSFC-2662.jsf");
+        sleep(10000);
+        Assert.assertEquals("JSFC-2662", selenium.getTitle());
 
         ElementInspector suggestionField = element("formID:degree");
         suggestionField.setCursorPosition(0);
