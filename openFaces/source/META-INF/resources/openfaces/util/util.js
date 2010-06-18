@@ -4642,6 +4642,8 @@ if (!window.O$) {
   // ----------------- COMPONENT UTILS -------------------------------------------
 
   O$.addLoadEvent(function() {
+//    if (!O$.findCssRule(".o_default_css_marker"))
+//      O$.logError("default.css file is not loaded. Did you use <head> tag instead of <h:head> tag?");
     O$._loaded = true;
   });
 

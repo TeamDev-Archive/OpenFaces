@@ -14569,6 +14569,20 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>Specifies whether this progress message should be shown for all Ajax requests or just for OpenFaces&apos;
+        ones.
+      </description>
+      <name>mode</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.ajax.ProgressMessageMode -->
+      <!-- @default "all" -->
+      <!-- @value "all" The progress message should be shown for all Ajax requests. -->
+      <!-- @value "openFaces" The progress message should be shown only for OpenFaces Ajax requests. -->
+      <!-- @el true -->
+    </attribute>
   </tag>
 
   <tag>

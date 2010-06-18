@@ -67,4 +67,8 @@ public class DefaultProgressMessageJspTag extends AbstractComponentJspTag {
     public void setBackgroundClass(ValueExpression backgroundClass) {
         getDelegate().setPropertyValue("backgroundClass", backgroundClass);
     }
+
+    public void setMode(ValueExpression mode) {
+        getDelegate().setPropertyValue("mode", mode);
+    }
 }

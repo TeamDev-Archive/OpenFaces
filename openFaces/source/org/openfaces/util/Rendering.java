@@ -13,6 +13,7 @@ package org.openfaces.util;
 
 import org.ajax4jsf.component.behavior.AjaxBehavior;
 import org.openfaces.application.DynamicResource;
+import org.openfaces.application.OpenFacesApplication;
 import org.openfaces.application.OpenFacesResourceHandler;
 import org.openfaces.component.OUIClientAction;
 import org.openfaces.component.OUIComponent;
@@ -645,6 +646,11 @@ public class Rendering {
                 if (jsFile == null) continue;
                 Resources.renderJSLinkIfNeeded(context, jsFile);
             }
+        if (OpenFacesApplication.isConstructingView(context)) {
+            Resources.addHeaderInitScript(context, script);
+            return;
+        }
+
         PartialViewContext partialViewContext = context.getPartialViewContext();
         if (partialViewContext.isAjaxRequest() && /*Environment.isMozilla() && */!AjaxUtil.isAjaxPortionRequest(context)) {
             // JSF 2.0.2 (Mojarra) Ajax doesn't auto-execute in-place scripts under FireFox 3.6.3 transitional mode,

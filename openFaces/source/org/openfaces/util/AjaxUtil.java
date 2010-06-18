@@ -57,7 +57,7 @@ public class AjaxUtil {
     private static long iInitLibraryNameCounter = 0;
     private static final Random random = new Random();
     public static final String ATTR_PORTLET_UNIQUE_RTLIBRARY_NAME = "org.openfaces.portletUniqueRTLibraryName";
-    public static final String AJAX_SUPPORT_RENDERED = "org.openfaces.ajaxSupportOnPageRendered";
+    private static final String AJAX_SUPPORT_RENDERED = "org.openfaces.ajaxSupportOnPageRendered";
 
     /**
      * Runtime javascript library unique name generator. Runtime library is required for third-party JSF components
@@ -237,8 +237,8 @@ public class AjaxUtil {
     }
 
     public static void renderAjaxSupport(FacesContext context) throws IOException {
-        Resources.renderJSLinkIfNeeded(context, Resources.getUtilJsURL(context));
-        Resources.renderJSLinkIfNeeded(context, Resources.getAjaxUtilJsURL(context));
+        Resources.renderJSLinkIfNeeded(context, Resources.UTIL_JS_PATH);
+        Resources.renderJSLinkIfNeeded(context, Resources.AJAX_UTIL_JS_PATH);
         UtilPhaseListener.encodeFormSubmissionAjaxInactivityTimeout(context);
     }
 

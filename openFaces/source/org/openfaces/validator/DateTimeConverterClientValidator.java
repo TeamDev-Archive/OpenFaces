@@ -53,7 +53,7 @@ public class DateTimeConverterClientValidator extends AbstractClientValidator im
     public DateTimeConverterClientValidator() {
         addJavascriptLibrary(new ValidationJavascriptLibrary("dateTimeConverterValidator.js", null));
         addJavascriptLibrary(new ValidationJavascriptLibrary("requestHelper.js", null));
-        addJavascriptLibrary(new ValidationJavascriptLibrary("/" + Resources.JSON_JS_LIB_NAME, null));
+        addJavascriptLibrary(new ValidationJavascriptLibrary("/" + Resources.JSON_JS_PATH, null));
     }
 
     public void setDateTimeConverter(DateTimeConverter dateTimeConverter) {

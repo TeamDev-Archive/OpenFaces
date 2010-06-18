@@ -11,6 +11,7 @@
  */
 package org.openfaces.util;
 
+import org.openfaces.application.OpenFacesApplication;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.org.json.JSONTokener;
@@ -27,6 +28,7 @@ import javax.faces.application.ResourceHandler;
 import javax.faces.application.ViewHandler;
 import javax.faces.component.UIOutput;
 import javax.faces.component.UIViewRoot;
+import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.servlet.ServletRequest;
@@ -53,7 +55,6 @@ public class Resources {
     public static final String HEADER_JS_LIBRARIES = "OF:js_file_included";
     public static final String RENDERED_JS_LINKS = "org.openfaces.util.Rendering.renderedJsLinks";
     public static final String POSTPONE_JS_LINK_RENDERING = "org.openfaces.util.Resources.postponeJsLinkRendering";
-    public static final String JSON_JS_LIB_NAME = "util/json2.js";
 
     private static final String OPENFACES_VERSION_TXT = "/META-INF/openFacesVersion.txt";
     private static final String VERSION_PLACEHOLDER_STR = "version";
@@ -62,6 +63,11 @@ public class Resources {
     private static final String NUMBER_LOCALE_SETTINGS = "number.js";
     private static final String PARAM_ORG_OPENFACES_JQUERY = "org.openfaces.jquery";
     public static final String META_INF_RESOURCES_ROOT = "/META-INF/resources/openfaces/";
+    public static final String LIBRARY_NAME = "openfaces";
+    public static final String UTIL_JS_PATH = "util/util.js";
+    public static final String JSON_JS_PATH = "util/json2.js";
+    public static final String AJAX_UTIL_JS_PATH = "util/ajaxUtil.js";
+
 
     private Resources() {
     }
@@ -161,7 +167,7 @@ public class Resources {
 
         if (componentClass == null) {
             ResourceHandler resourceHandler = context.getApplication().getResourceHandler();
-            Resource resource = resourceHandler.createResource(resourcePath, "openfaces");
+            Resource resource = resourceHandler.createResource(resourcePath, LIBRARY_NAME);
             resourcePath = resource.getRequestPath();
             return resourcePath;
         }
@@ -280,7 +286,7 @@ public class Resources {
         // To be sure that default.css is included to the web page,
         // because it is also required in cases when util.js included into web page
         Styles.requestDefaultCss(context);
-        return getInternalURL(context, "util/util.js");
+        return getInternalURL(context, UTIL_JS_PATH);
     }
 
     public static String getFiltersJsURL(FacesContext context) {
@@ -295,7 +301,7 @@ public class Resources {
      * @return requested URL of ajaxUtil.js file
      */
     public static String getAjaxUtilJsURL(FacesContext context) {
-        return Resources.getInternalURL(context, "util/ajaxUtil.js");
+        return Resources.getInternalURL(context, AJAX_UTIL_JS_PATH);
     }
 
     /**
@@ -305,7 +311,7 @@ public class Resources {
      * @return requested URL of json javascript file
      */
     public static String getJsonJsURL(FacesContext context) {
-        return Resources.getInternalURL(context, JSON_JS_LIB_NAME);
+        return Resources.getInternalURL(context, JSON_JS_PATH);
     }
 
     /**
@@ -532,14 +538,23 @@ public class Resources {
         } else if (AjaxUtil.isAjax4jsfRequest()) {
             registerJavascriptLibrary(context, jsFile);
         } else {
-            writer.startElement("script", null);
-            writer.writeAttribute("src", jsFile, null);
-            writer.writeAttribute("type", "text/javascript", null);
-            // write white-space to avoid creating self-closing <script/> tags
-            // under certain servers, which are not correctly interpreted by browsers (JSFC-2303)
-            if (Environment.isExoPortal())
-                writer.writeText(" ", null);
-            writer.endElement("script");
+            boolean fullResourceString = jsFile.startsWith("/") || jsFile.contains("://");
+            if (OpenFacesApplication.isConstructingView(context)) {
+                if (fullResourceString)
+                    throw new IllegalArgumentException("Resource name should be passed, not resource URL: " + jsFile);
+                Resources.addHeaderResource(context, jsFile, Resources.LIBRARY_NAME);
+            } else {
+                if (!fullResourceString)
+                    jsFile = Resources.getInternalURL(context, jsFile);
+                writer.startElement("script", null);
+                writer.writeAttribute("src", jsFile, null);
+                writer.writeAttribute("type", "text/javascript", null);
+                // write white-space to avoid creating self-closing <script/> tags
+                // under certain servers, which are not correctly interpreted by browsers (JSFC-2303)
+                if (Environment.isExoPortal())
+                    writer.writeText(" ", null);
+                writer.endElement("script");
+            }
         }
     }
 
@@ -580,7 +595,7 @@ public class Resources {
             return;
         }
         if (jQueryMode.equals("embedded"))
-            addHeaderResource(context, "util/jquery-1.4.2.min.js", "openfaces");
+            addHeaderResource(context, "util/jquery-1.4.2.min.js", LIBRARY_NAME);
             /* below are the official jQuery CDNs as referenced here: http://docs.jquery.com/Downloading_jQuery */
         else if (jQueryMode.equals("jquery"))
             addHeaderResource(context, "http://code.jquery.com/jquery-1.4.2.min.js", null);
@@ -619,4 +634,21 @@ public class Resources {
         UIViewRoot viewRoot = context.getViewRoot();
         viewRoot.addComponentResource(context, output);
     }
+
+    public static void addHeaderInitScript(FacesContext context, Script script) {
+        Application application = context.getApplication();
+        String target = null;
+        UIOutput output = (UIOutput) application.createComponent("javax.faces.Output");
+        output.setRendererType("javax.faces.resource.Script");
+        Map<String, Object> attributes = output.getAttributes();
+        if (target != null)
+            attributes.put("target", target);
+        HtmlOutputText scriptTextComponent = (HtmlOutputText) application.createComponent(HtmlOutputText.COMPONENT_TYPE);
+        scriptTextComponent.setEscape(false);
+        scriptTextComponent.setValue(script.toString());
+        output.getChildren().add(scriptTextComponent);
+        UIViewRoot viewRoot = context.getViewRoot();
+        viewRoot.addComponentResource(context, output);
+    }
+
 }

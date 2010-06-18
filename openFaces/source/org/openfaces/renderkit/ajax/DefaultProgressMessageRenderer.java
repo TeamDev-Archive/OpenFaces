@@ -12,12 +12,10 @@
 package org.openfaces.renderkit.ajax;
 
 import org.openfaces.component.ajax.DefaultProgressMessage;
+import org.openfaces.component.ajax.ProgressMessageMode;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.util.AjaxUtil;
-import org.openfaces.util.RawScript;
 import org.openfaces.util.Rendering;
-import org.openfaces.util.ResourceFilter;
-import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.StyleParam;
 import org.openfaces.util.Styles;
@@ -32,61 +30,48 @@ import java.util.Map;
  * @author Eugene Goncharov
  */
 public class DefaultProgressMessageRenderer extends AbstractSettingsRenderer {
-    /**
-     * This request-scope attribute specifies whether the DefaultProgressMessge component is explicitly specified on
-     * the page and if so, it is set for UtilPhaseListener to render the specified component after  the render-response
-     * phase.
-     */
     public static final String PROGRESS_MESSAGE = "org.openfaces.defaultProgressMessage";
-    public static final String RENDERING = "org.openfaces.defaultProgressMessageRendering";
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         DefaultProgressMessage dpm = (DefaultProgressMessage) component;
 
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-
-        if (!requestMap.containsKey(PROGRESS_MESSAGE) && !requestMap.containsKey(AjaxUtil.AJAX_SUPPORT_RENDERED)) {
-            requestMap.put(PROGRESS_MESSAGE, dpm);
-            AjaxUtil.renderAjaxSupport(context);
-            return;
-        }
+        requestMap.put(PROGRESS_MESSAGE, dpm);
+        AjaxUtil.renderAjaxSupport(context);
 
         boolean isAjax4jsfRequest = AjaxUtil.isAjax4jsfRequest();
         boolean isPortletRequest = AjaxUtil.isPortletRequest(context);
 
-        if (requestMap.containsKey(AjaxUtil.AJAX_SUPPORT_RENDERED) || requestMap.containsKey(RENDERING)) {
-            String ajaxMessageHTML = dpm.getAjaxMessageHTML();
+        JSONObject backgroundLayerParams = null;
+        if (dpm.getFillBackground()) {
+            backgroundLayerParams = new JSONObject();
+            Rendering.addJsonParam(backgroundLayerParams, "className", new StyleParam(dpm, "background", "o_ajax_blockingLayer"));
+            Rendering.addJsonParam(backgroundLayerParams, "transparency", /*don't remove (double) cast -- the other function will be invoked*/(double) dpm.getBackgroundTransparency());
+            Rendering.addJsonParam(backgroundLayerParams, "transparencyTransitionPeriod", /*don't remove (int) cast -- the other function will be invoked*/(int) dpm.getBackgroundTransparencyTransitionPeriod());
+        }
+        Styles.renderStyleClasses(context, dpm, true, false);
 
-            JSONObject backgroundLayerParams = null;
-            if (dpm.getFillBackground()) {
-                backgroundLayerParams = new JSONObject();
-                Rendering.addJsonParam(backgroundLayerParams, "className", new StyleParam(dpm, "background", "o_ajax_blockingLayer"));
-                Rendering.addJsonParam(backgroundLayerParams, "transparency", /*don't remove (double) cast -- the other function will be invoked*/(double) dpm.getBackgroundTransparency());
-                Rendering.addJsonParam(backgroundLayerParams, "transparencyTransitionPeriod", /*don't remove (int) cast -- the other function will be invoked*/(int) dpm.getBackgroundTransparencyTransitionPeriod());
-            }
-            Styles.renderStyleClasses(context, dpm, true, true);
+        String ajaxMessageHTML = dpm.getAjaxMessageHTML();
+        ScriptBuilder setMessageScript = new ScriptBuilder().functionCall("O$.setAjaxMessageHTML",
+                ajaxMessageHTML,
+                dpm.getHorizontalAlignment(),
+                dpm.getVerticalAlignment(),
+                dpm.getTransparency(),
+                dpm.getTransparencyTransitionPeriod(),
+                backgroundLayerParams,
+                dpm.getMode() == ProgressMessageMode.ALL).semicolon();
 
-            ScriptBuilder setMessageScript = new ScriptBuilder().functionCall("O$.setAjaxMessageHTML",
-                    ajaxMessageHTML,
-                    dpm.getHorizontalAlignment(),
-                    dpm.getVerticalAlignment(),
-                    dpm.getTransparency(),
-                    dpm.getTransparencyTransitionPeriod(),
-                    backgroundLayerParams).semicolon();
+        if (isAjaxCleanupRequired()) {
+            setMessageScript.functionCall("O$.setAjaxCleanupRequired", true).semicolon();
+        }
 
-            if (isAjaxCleanupRequired()) {
-                setMessageScript.functionCall("O$.setAjaxCleanupRequired", true).semicolon();
-            }
-
-            if (isAjax4jsfRequest || isPortletRequest) {
-                Rendering.appendUniqueRTLibraryScripts(context, setMessageScript);
-            } else {
-                Rendering.appendOnLoadScript(context, setMessageScript);
-                if (isAjaxCleanupRequired()) {
-                    Rendering.appendOnLoadScript(context, new RawScript("O$.setAjaxCleanupRequired(true);"));
-                }
-            }
+        if (isAjax4jsfRequest || isPortletRequest) {
+            Rendering.appendUniqueRTLibraryScripts(context, setMessageScript);
+        } else {
+            if (isAjaxCleanupRequired())
+                setMessageScript.semicolon().append("O$.setAjaxCleanupRequired(true);");
+            Rendering.renderInitScript(context, setMessageScript);
         }
 
     }

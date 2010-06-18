@@ -46,6 +46,7 @@ public class DefaultProgressMessageTag extends AbstractComponentTag {
         setIntProperty(component, "backgroundTransparencyTransitionPeriod");
         setStringProperty(component, "backgroundStyle");
         setStringProperty(component, "backgroundClass");
+        setEnumerationProperty(component, "mode", org.openfaces.component.ajax.ProgressMessageMode.class);
     }
 }
 

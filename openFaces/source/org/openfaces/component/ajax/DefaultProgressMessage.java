@@ -47,6 +47,7 @@ public class DefaultProgressMessage extends ProgressMessage {
     private Integer backgroundTransparencyTransitionPeriod;
     private String backgroundStyle;
     private String backgroundClass;
+    private ProgressMessageMode mode;
 
     public String getFamily() {
         return COMPONENT_FAMILY;
@@ -72,7 +73,8 @@ public class DefaultProgressMessage extends ProgressMessage {
                 backgroundTransparency,
                 backgroundTransparencyTransitionPeriod,
                 backgroundStyle,
-                backgroundClass
+                backgroundClass,
+                mode
         };
     }
 
@@ -94,6 +96,7 @@ public class DefaultProgressMessage extends ProgressMessage {
         backgroundTransparencyTransitionPeriod = (Integer) stateArray[i++];
         backgroundStyle = (String) stateArray[i++];
         backgroundClass = (String) stateArray[i++];
+        mode = (ProgressMessageMode) stateArray[i++];
     }
 
     public String getText() {
@@ -231,5 +234,13 @@ public class DefaultProgressMessage extends ProgressMessage {
 
     public void setBackgroundClass(String backgroundClass) {
         this.backgroundClass = backgroundClass;
+    }
+
+    public ProgressMessageMode getMode() {
+        return ValueBindings.get(this, "mode", mode, ProgressMessageMode.ALL, ProgressMessageMode.class);
+    }
+
+    public void setMode(ProgressMessageMode mode) {
+        this.mode = mode;
     }
 }

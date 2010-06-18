@@ -11,17 +11,21 @@
  */
 package org.openfaces.application;
 
+import org.openfaces.util.UtilPhaseListener;
+
 import javax.faces.FacesException;
 import javax.faces.application.Application;
 import javax.faces.application.ViewHandler;
 import javax.faces.component.UIComponent;
-import javax.faces.component.html.HtmlHead;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
+import javax.faces.event.PhaseId;
 import javax.faces.event.PostAddToViewEvent;
 import javax.faces.event.PreRenderViewEvent;
 import javax.faces.event.SystemEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Eugene Goncharov
@@ -29,6 +33,7 @@ import java.util.List;
 @SuppressWarnings({"RawUseOfParameterizedType", "deprecation"})
 public class OpenFacesApplication extends ApplicationWrapper {
     private final List<String> viewHandlers = new ArrayList<String>();
+    private static final String CONSTRUCTING_VIEW_KEY = OpenFacesApplication.class.getName() + ".appendingHeaderContent";
 
     public OpenFacesApplication(Application application) {
         super(application);
@@ -64,26 +69,66 @@ public class OpenFacesApplication extends ApplicationWrapper {
 
     @Override
     public void publishEvent(FacesContext context, Class<? extends SystemEvent> systemEventClass, Object source) {
+        boolean postAddToViewEvent = PostAddToViewEvent.class.isAssignableFrom(systemEventClass);
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+        Object prevConstructingView = null;
+        if (postAddToViewEvent)
+            prevConstructingView = requestMap.put(CONSTRUCTING_VIEW_KEY, Boolean.TRUE);
         super.publishEvent(context, systemEventClass, source);
         if (PreRenderViewEvent.class.isAssignableFrom(systemEventClass))
             preRenderView(context);
-        if (PostAddToViewEvent.class.isAssignableFrom(systemEventClass) && source instanceof HtmlHead)
-            headAddedToView(context);
+//        if (PostAddToViewEvent.class.isAssignableFrom(systemEventClass) && source instanceof HtmlHead)
+//            headAddedToView(context);
+
+        if (postAddToViewEvent && source instanceof UIViewRoot)
+            viewRootAddedToView(context);
+
+        if (postAddToViewEvent) {
+            if (prevConstructingView == null)
+                requestMap.remove(CONSTRUCTING_VIEW_KEY);
+            else
+                requestMap.put(CONSTRUCTING_VIEW_KEY, prevConstructingView);
+        }
     }
 
     @Override
     public void publishEvent(FacesContext context, Class<? extends SystemEvent> systemEventClass, Class<?> sourceBaseType, Object source) {
+        boolean postAddToViewEvent = PostAddToViewEvent.class.isAssignableFrom(systemEventClass);
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+        Object prevConstructingView = null;
+        if (postAddToViewEvent)
+            prevConstructingView = requestMap.put(CONSTRUCTING_VIEW_KEY, Boolean.TRUE);
         super.publishEvent(context, systemEventClass, sourceBaseType, source);
         if (PreRenderViewEvent.class.isAssignableFrom(systemEventClass))
             preRenderView(context);
-        if (PostAddToViewEvent.class.isAssignableFrom(systemEventClass) && source instanceof HtmlHead)
-            headAddedToView(context);
+//        if (PostAddToViewEvent.class.isAssignableFrom(systemEventClass) && source instanceof HtmlHead)
+//            headAddedToView(context);
+        if (postAddToViewEvent && source instanceof UIViewRoot)
+            viewRootAddedToView(context);
+        
+        if (postAddToViewEvent) {
+            if (prevConstructingView == null)
+                requestMap.remove(CONSTRUCTING_VIEW_KEY);
+            else
+                requestMap.put(CONSTRUCTING_VIEW_KEY, prevConstructingView);
+        }
     }
 
     private void preRenderView(FacesContext context) {
     }
 
     private void headAddedToView(FacesContext context) {
+        if (context.isPostback() && context.getCurrentPhaseId() == PhaseId.RESTORE_VIEW) return;
+         UtilPhaseListener.appendHeaderContent(context);
+    }
+
+    public static boolean isConstructingView(FacesContext context) {
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+        return requestMap.containsKey(CONSTRUCTING_VIEW_KEY);
+    }
+
+    private void viewRootAddedToView(FacesContext context) {
+        headAddedToView(context);
     }
 
 }

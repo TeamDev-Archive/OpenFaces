@@ -11,6 +11,7 @@
  */
 package org.openfaces.util;
 
+import org.openfaces.application.OpenFacesApplication;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 
@@ -317,7 +318,7 @@ public class Styles {
             }
             elementsIds.add(stylesId);
             if (Environment.isExplorer() || Environment.isMozillaXhtmlPlusXmlContentType(context)
-                    || forcedStyleAsScript) {
+                    || forcedStyleAsScript || OpenFacesApplication.isConstructingView(context)) {
                 // Case for fixing JSFC-2341. Style tags added to DOM using JavaScript are ignored by Mozilla with
                 // "application/xhtml+xml" content-type. So to fix this, the styles are added using stylesheet API.
                 // This way of adding styles works on all browsers except Safari 2, however adding styles in this way
@@ -343,10 +344,11 @@ public class Styles {
      */
     public static void writeCssClassesAsScriptElement(FacesContext context, List<String> cssRules, boolean asOnloadScript) throws IOException {
         ScriptBuilder styleRegistrationScript = new ScriptBuilder().functionCall("O$.addCssRules", cssRules).semicolon();
-        if (asOnloadScript)
-            Rendering.appendOnLoadScript(context, styleRegistrationScript);
-        else
+        if (!asOnloadScript || OpenFacesApplication.isConstructingView(context)) {
             Rendering.renderInitScript(context, styleRegistrationScript, Resources.getUtilJsURL(context));
+        } else {
+            Rendering.appendOnLoadScript(context, styleRegistrationScript);
+        }
     }
 
     /**

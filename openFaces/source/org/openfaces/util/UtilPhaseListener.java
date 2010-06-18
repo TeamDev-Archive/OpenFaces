@@ -28,9 +28,7 @@ import javax.faces.component.UIData;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.PhaseEvent;
-import javax.faces.event.PhaseId;
+import javax.faces.event.*;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
@@ -67,47 +65,47 @@ public class UtilPhaseListener extends PhaseListenerBase {
         FacesContext context = event.getFacesContext();
         PhaseId phaseId = event.getPhaseId();
         if (phaseId.equals(PhaseId.RENDER_RESPONSE)) {
-            List<String> renderedJsLinks = Resources.getRenderedJsLinks(context);
-            String utilJs = Resources.getUtilJsURL(context);
-            boolean renderFocusScript = isAutoFocusTrackingEnabled(context);
-            boolean renderScrollingScript = isAutoScrollPosTrackingEnabled(context);
-            boolean renderContextMenuScript = isDisabledContextMenuEnabled(context);
-            if (!renderedJsLinks.contains(utilJs)) {
-                if (renderFocusScript ||
-                        renderScrollingScript ||
-                        renderContextMenuScript ||
-                        getForceIncludingUtilJs(context)) {
-                    Resources.registerJavascriptLibrary(context, utilJs);
-                }
-            }
-            if (renderFocusScript)
-                Rendering.appendOnLoadScript(context, encodeFocusTracking(context));
-            if (renderScrollingScript)
-                Rendering.appendOnLoadScript(context, encodeScrollPosTracking(context));
-
-            if (renderContextMenuScript)
-                Rendering.appendOnLoadScript(context, encodeDisabledContextMenu(context));
-            encodeAjaxProgressMessage(context);
+//            appendHeaderContent(context);
         } else if (phaseId.equals(PhaseId.APPLY_REQUEST_VALUES)) {
             decodeFocusTracking(context);
             decodeScrollPosTracking(context);
         }
     }
 
-    private void encodeAjaxProgressMessage(FacesContext context) {
+    public static void appendHeaderContent(FacesContext context) {
+        List<String> renderedJsLinks = Resources.getRenderedJsLinks(context);
+        String utilJs = Resources.getUtilJsURL(context);
+        boolean renderFocusScript = isAutoFocusTrackingEnabled(context);
+        boolean renderScrollingScript = isAutoScrollPosTrackingEnabled(context);
+        boolean renderContextMenuScript = isDisabledContextMenuEnabled(context);
+        if (!renderedJsLinks.contains(utilJs)) {
+            if (renderFocusScript ||
+                    renderScrollingScript ||
+                    renderContextMenuScript ||
+                    getForceIncludingUtilJs(context)) {
+                Resources.addHeaderResource(context, Resources.UTIL_JS_PATH, Resources.LIBRARY_NAME);
+            }
+        }
+        if (renderFocusScript)
+            Resources.addHeaderInitScript(context, encodeFocusTracking(context));
+        if (renderScrollingScript)
+            Resources.addHeaderInitScript(context, encodeScrollPosTracking(context));
+
+        if (renderContextMenuScript)
+            Rendering.appendOnLoadScript(context, encodeDisabledContextMenu(context));
+        encodeAjaxProgressMessage(context);
+    }
+
+    private static void encodeAjaxProgressMessage(FacesContext context) {
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
 
-        if (requestMap.containsKey(DefaultProgressMessageRenderer.PROGRESS_MESSAGE)) {
-            requestMap.put(DefaultProgressMessageRenderer.RENDERING, Boolean.TRUE);
-            DefaultProgressMessage defaultProgressMessage = (DefaultProgressMessage) requestMap.get(DefaultProgressMessageRenderer.PROGRESS_MESSAGE);
-            renderProgressMessage(context, defaultProgressMessage);
-        } else if (requestMap.containsKey(AjaxUtil.AJAX_SUPPORT_RENDERED)) {
+        /*if (!requestMap.containsKey(DefaultProgressMessageRenderer.PROGRESS_MESSAGE))*/ {
             DefaultProgressMessage defaultProgressMessage = new DefaultProgressMessage();
             renderProgressMessage(context, defaultProgressMessage);
         }
     }
 
-    private void renderProgressMessage(FacesContext context, DefaultProgressMessage defaultProgressMessage) {
+    private static void renderProgressMessage(FacesContext context, DefaultProgressMessage defaultProgressMessage) {
         try {
             defaultProgressMessage.encodeAll(context);
         } catch (IOException e) {
@@ -115,23 +113,23 @@ public class UtilPhaseListener extends PhaseListenerBase {
         }
     }
 
-    private boolean getForceIncludingUtilJs(FacesContext context) {
+    private static boolean getForceIncludingUtilJs(FacesContext context) {
         return Rendering.getBooleanContextParam(context, FORCE_UTIL_JS_CONTEXT_PARAM);
     }
 
-    private boolean isAutoFocusTrackingEnabled(FacesContext context) {
+    private static boolean isAutoFocusTrackingEnabled(FacesContext context) {
         return Rendering.getBooleanContextParam(context, AUTO_FOCUS_TRACKING_CONTEXT_PARAM);
     }
 
-    private boolean isDisabledContextMenuEnabled(FacesContext context) {
+    private static boolean isDisabledContextMenuEnabled(FacesContext context) {
         return Rendering.getBooleanContextParam(context, DISABLED_CONTEXT_MENU_CONTEXT_PARAM);
     }
 
-    private boolean isAutoScrollPosTrackingEnabled(FacesContext context) {
+    private static boolean isAutoScrollPosTrackingEnabled(FacesContext context) {
         return Rendering.getBooleanContextParam(context, AUTO_SCROLL_POS_TRACKING_CONTEXT_PARAM);
     }
 
-    private Script encodeFocusTracking(FacesContext facesContext) {
+    private static Script encodeFocusTracking(FacesContext facesContext) {
         ExternalContext externalContext = facesContext.getExternalContext();
         Map requestMap = externalContext.getRequestMap();
         String focusedComponentId = (String) requestMap.get(FOCUSED_COMPONENT_ID_KEY);
@@ -140,7 +138,7 @@ public class UtilPhaseListener extends PhaseListenerBase {
                 focusedComponentId != null ? focusedComponentId : null).semicolon();
     }
 
-    private Script encodeScrollPosTracking(FacesContext facesContext) {
+    private static Script encodeScrollPosTracking(FacesContext facesContext) {
         ExternalContext externalContext = facesContext.getExternalContext();
         Map requestMap = externalContext.getRequestMap();
         String scrollPos = (String) requestMap.get(SCROLL_POS_KEY);
@@ -149,7 +147,7 @@ public class UtilPhaseListener extends PhaseListenerBase {
                 scrollPos != null ? scrollPos : null).semicolon();
     }
 
-    private Script encodeDisabledContextMenu(FacesContext facesContext) {
+    private static Script encodeDisabledContextMenu(FacesContext facesContext) {
         return new RawScript("O$.disabledContextMenuFor(document);");
     }
 
