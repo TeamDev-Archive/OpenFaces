@@ -181,9 +181,9 @@ public class PartialViewContext extends PartialViewContextWrapper {
                 if (component == null) continue;
                 writeComponentUpdate(context, component);
             }
-        renderAjaxResult(context);
         renderAjaxPortions(context);
         renderAjaxInitScripts(context);
+        renderAjaxResult(context);
     }
 
     private static void renderAjaxInitScripts(FacesContext context) throws IOException {
