@@ -1,7 +1,6 @@
 <div xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
-     xmlns:o="http://openfaces.org/"
-        >
+     xmlns:o="http://openfaces.org/">
 
   <o:ajaxSettings/>
 
@@ -17,8 +16,8 @@
                 <h:outputText value="#{state.stateName}"
                               style="font-size: #{state.quantity le 3 ? 9 : state.quantity * 3}px;"/>
                 <o:ajax event="click"
-                                    listener="#{BanksList.selectState}"
-                                    render=":form:banksList" delay="500">
+                        listener="#{BanksList.selectState}"
+                        render=":form:banksList">
                   <f:param name="state" value="#{state.stateName}"/>
                 </o:ajax>
               </h:commandLink>
