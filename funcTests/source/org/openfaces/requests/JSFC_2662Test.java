@@ -13,6 +13,7 @@ package org.openfaces.requests;
 
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.seleniuminspector.ElementInspector;
@@ -26,6 +27,7 @@ public class JSFC_2662Test extends OpenFacesTestCase {
 
     //todo: test is not completed; there is problem with 'end' key pressing in selenium
     @Test
+    @Ignore
     public void testUnexpectedAlertByKeyboardActions() throws InterruptedException {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/requests/JSFC-2662.jsf");
