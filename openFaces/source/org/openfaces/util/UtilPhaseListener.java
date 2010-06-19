@@ -223,7 +223,7 @@ public class UtilPhaseListener extends PhaseListenerBase {
             if (action != null) {
                 MethodExpression methodBinding = context.getApplication().getExpressionFactory().createMethodExpression(
                         elContext, "#{" + action + "}", String.class, new Class[]{});
-                result = methodBinding.invoke(elContext, null);
+                /*result = */methodBinding.invoke(elContext, null);
             }
             if (listener != null) {
                 AjaxActionEvent event = new AjaxActionEvent(component);
