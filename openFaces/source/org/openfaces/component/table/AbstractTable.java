@@ -11,6 +11,7 @@
  */
 package org.openfaces.component.table;
 
+import org.openfaces.component.ComponentWithExternalParts;
 import org.openfaces.component.FilterableComponent;
 import org.openfaces.component.OUIData;
 import org.openfaces.component.TableStyles;
@@ -39,6 +40,7 @@ import javax.faces.model.DataModel;
 import javax.faces.render.Renderer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -53,13 +55,16 @@ import java.util.Map;
         @ResourceDependency(name = "default.css", library = "openfaces"),
         @ResourceDependency(name = "jsf.js", library = "javax.faces")
 })
-public abstract class AbstractTable extends OUIData implements TableStyles, FilterableComponent {
+public abstract class AbstractTable extends OUIData implements TableStyles, FilterableComponent, ComponentWithExternalParts {
     /*
    Implementation notes:
    - the full life-cycle for the selection child is intentionally ensured. Although implementation of
      selection doesn't require this itself, Ajax4jsf on selection's "onchange" event didn't work until the selection
      component was made to process all phases [JSFC-2049].
     */
+
+    private static final String ABOVE_FACET_NAME = "above";
+    private static final String BELOW_FACET_NAME = "below";
 
     private List<SortingRule> sortingRules;
 
@@ -871,7 +876,9 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
                 getSelection(),
                 getColumnReordering(),
                 getColumnResizing(),
-                getScrolling()
+                getScrolling(),
+                getAbove(),
+                getBelow()
         });
     }
 
@@ -1051,6 +1058,8 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         setUnavailableRowIndexes(null);
 
         checkSortingColumnsValid();
+        ensureFacetHasOwnId(getAbove());
+        ensureFacetHasOwnId(getBelow());
 
         updateModel();
         totalRowCount = getModel().getTotalRowCount();
@@ -1709,4 +1718,64 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
             totalRowCount = getModel().getTotalRowCount();
         return totalRowCount;
     }
+
+    public Collection<String> getExternalPartIds() {
+        FacesContext context = getFacesContext();
+        List<String> result = new ArrayList<String>();
+        addExternalPartIdFromComponent(context, result, getAbove());
+        addExternalPartIdFromComponent(context, result, getBelow());
+        return result;
+    }
+
+    private void addExternalPartIdFromComponent(FacesContext context, List<String> ids, UIComponent component) {
+        if (component == null) return;
+        
+        if (componentIdSpecified(component)) {
+            ids.add(component.getClientId(context));
+            return;
+        }
+        for (UIComponent child : component.getChildren()) {
+            addExternalPartIdFromComponent(context, ids, child);
+        }
+    }
+
+    private boolean componentIdSpecified(UIComponent component) {
+        String id = component.getId();
+        return id != null && !id.startsWith(UIViewRoot.UNIQUE_ID_PREFIX);
+    }
+
+    private void ensureFacetHasOwnId(UIComponent facet) {
+//        if (facet == null) return;
+//        String id = facet.getId();
+//        if (id == null || id.startsWith(UIViewRoot.UNIQUE_ID_PREFIX)) {
+//            String facetAutoIdCounterKey = "facetAutoIdCounter";
+//            Integer counter = (Integer) getStateHelper().get(facetAutoIdCounterKey);
+//            if (counter == null)
+//                counter = 0;
+//            counter++;
+//            getStateHelper().put(facetAutoIdCounterKey, counter);
+//            facet.setId(getId() + Rendering.SERVER_ID_SUFFIX_SEPARATOR + "facetAutoId_" + counter);
+//        }
+    }
+
+    public UIComponent getAbove() {
+        UIComponent component = getFacets().get(ABOVE_FACET_NAME);
+        ensureFacetHasOwnId(component);
+        return component;
+    }
+
+    public void setAbove(UIComponent component) {
+        getFacets().put(ABOVE_FACET_NAME, component);
+    }
+
+    public UIComponent getBelow() {
+        UIComponent component = getFacets().get(BELOW_FACET_NAME);
+        ensureFacetHasOwnId(component);
+        return component;
+    }
+
+    public void setBelow(UIComponent component) {
+        getFacets().put(BELOW_FACET_NAME, component);
+    }
+
 }

@@ -155,7 +155,7 @@ public class TableStructure extends TableElement {
     public void render(FacesContext context, HeaderCell.AdditionalContentWriter additionalContentWriter) throws IOException {
         AbstractTable table = (AbstractTable) component;
         table.setRowIndex(-1);
-        UIComponent aboveFacet = table.getFacet("above");
+        UIComponent aboveFacet = table.getAbove();
         if (aboveFacet != null)
             aboveFacet.encodeAll(context);
         ResponseWriter writer = context.getResponseWriter();
@@ -211,14 +211,12 @@ public class TableStructure extends TableElement {
 
         writer.endElement("table");
         Rendering.writeNewLine(writer);
-        UIComponent belowFacet = table.getFacet("below");
+        UIComponent belowFacet = table.getBelow();
         if (belowFacet != null)
             belowFacet.encodeAll(context);
     }
 
     private void writeStyleAndClass(FacesContext context, AbstractTable table, ResponseWriter writer) throws IOException {
-        List<BaseColumn> columns = table.getRenderedColumns();
-
         String style = table.getStyle();
         String textStyle = getTextStyle(table);
         style = Styles.mergeStyles(style, textStyle);

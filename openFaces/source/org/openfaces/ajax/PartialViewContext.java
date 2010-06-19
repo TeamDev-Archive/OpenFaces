@@ -12,6 +12,7 @@
 
 package org.openfaces.ajax;
 
+import org.openfaces.component.ComponentWithExternalParts;
 import org.openfaces.org.json.JSONArray;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
@@ -29,6 +30,7 @@ import org.openfaces.util.UtilPhaseListener;
 import javax.faces.FacesException;
 import javax.faces.FactoryFinder;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.PartialResponseWriter;
@@ -40,15 +42,7 @@ import javax.faces.render.RenderKitFactory;
 import javax.faces.render.Renderer;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Dmitry Pikhulya
@@ -106,7 +100,48 @@ public class PartialViewContext extends PartialViewContextWrapper {
         FacesContext context = FacesContext.getCurrentInstance();
         if (AjaxUtil.isAjaxPortionRequest(context))
             return Collections.emptyList();
-        return super.getRenderIds();
+        Set<String> result = new LinkedHashSet<String>(super.getRenderIds());
+        result.addAll(AjaxRequest.getInstance().getReloadedComponentIds());
+        List<String> additionalComponents = new ArrayList<String>();
+        UIViewRoot viewRoot = context.getViewRoot();
+        for (String id : result) {
+            UIComponent component = viewRoot.findComponent(id);
+            if (component == null) continue;
+            if (!(component instanceof ComponentWithExternalParts)) continue;
+            Collection<String> externalPartIds = ((ComponentWithExternalParts) component).getExternalPartIds();
+            String componentClientId = component.getClientId(context);
+            List<String> unprocessableIds = new ArrayList<String>();
+            for (String externalPartId : externalPartIds) {
+                // component's facets such as DataTable's "above" and "below" components are included into the
+                // "external components" (as returned by getExternalPartIds), but these components are skipped by the
+                // table's visitTree method and thus these facets don't get automatically included into the rerendered
+                // component list, so we need to collect them and render their "update" portions manually here.
+                if (externalPartId.startsWith(componentClientId)) {
+                    unprocessableIds.add(externalPartId);
+                }
+            }
+            context.getExternalContext().getRequestMap().put(getUnprocessableComponentIdsKey(), unprocessableIds);
+            additionalComponents.addAll(externalPartIds);
+        }
+
+        result.addAll(additionalComponents);
+        return result;
+    }
+
+    private String getUnprocessableComponentIdsKey() {
+        return PartialViewContext.class.getName() + ".unprocessableComponentIds";
+    }
+
+    public Collection<String> getRenderIdsNotRenderedYet(FacesContext context) {
+        Map<String, Object> map = context.getExternalContext().getRequestMap();
+        return (Collection<String>) map.get(getUnprocessableComponentIdsKey());
+    }
+
+    private void writeComponentUpdate(FacesContext context, UIComponent component) throws IOException {
+        PartialResponseWriter writer = getPartialResponseWriter();
+        writer.startUpdate(component.getClientId(context));
+        component.encodeAll(context);
+        writer.endUpdate();
     }
 
     @Override
@@ -126,7 +161,7 @@ public class PartialViewContext extends PartialViewContextWrapper {
         return executeIds;
     }
 
-    public static void renderAdditionalPartialResponse() {
+    public void renderAdditionalPartialResponse() {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
             renderAdditionalPartialResponse(context);
@@ -135,7 +170,14 @@ public class PartialViewContext extends PartialViewContextWrapper {
         }
     }
 
-    private static void renderAdditionalPartialResponse(FacesContext context) throws IOException {
+    private void renderAdditionalPartialResponse(FacesContext context) throws IOException {
+        Collection<String> additionalUpdateList = getRenderIdsNotRenderedYet(context);
+        UIViewRoot viewRoot = context.getViewRoot();
+        for (String componentId : additionalUpdateList) {
+            UIComponent component = viewRoot.findComponent(componentId);
+            if (component == null) continue;
+            writeComponentUpdate(context, component);
+        }
         renderAjaxPortions(context);
         renderAjaxInitScripts(context);
     }
@@ -180,9 +222,10 @@ public class PartialViewContext extends PartialViewContextWrapper {
         if (updatePortions.isEmpty()) return;
         ExternalContext externalContext = context.getExternalContext();
         String renderParam = externalContext.getRequestParameterMap().get(
-                    javax.faces.context.PartialViewContext.PARTIAL_RENDER_PARAM_NAME);
+                javax.faces.context.PartialViewContext.PARTIAL_RENDER_PARAM_NAME);
         String[] renderIds = renderParam.split("[ \t]+");
-        if (renderIds.length != 1) throw new RuntimeException("There should be one target component but was: " + renderIds.length);
+        if (renderIds.length != 1)
+            throw new RuntimeException("There should be one target component but was: " + renderIds.length);
         UIComponent component = UtilPhaseListener.findComponentById(context.getViewRoot(), renderIds[0],
                 false, true, true);
 
