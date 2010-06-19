@@ -26,12 +26,16 @@ import org.openfaces.util.Styles;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.ComponentSystemEvent;
+import javax.faces.event.ComponentSystemEventListener;
+import javax.faces.event.ListenerFor;
 import javax.faces.event.PhaseId;
+import javax.faces.event.PostAddToViewEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
@@ -40,7 +44,9 @@ import java.util.TimeZone;
  * @author Dmitry Pikhulya
  * @author Roman Porotnikov
  */
-public abstract class TimetableViewRenderer extends RendererBase implements AjaxPortionRenderer {
+@ListenerFor(systemEventClass = PostAddToViewEvent.class)
+public abstract class TimetableViewRenderer extends RendererBase
+        implements AjaxPortionRenderer, ComponentSystemEventListener {
 
     public static final String USE_RESOURCE_SEPARATION_MODE_ATTR = "_of_useResourceSeparationMode";
     public static final String EVENTEDITOR_RESOURCES_ATTR = "_resources";
@@ -59,17 +65,29 @@ public abstract class TimetableViewRenderer extends RendererBase implements Ajax
         }
     }
 
+    public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
+        if (event instanceof PostAddToViewEvent) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            TimetableView timetableView = (TimetableView) event.getComponent();
+            getOrCreateEventEditor(context, timetableView);
+        }
+    }
+
     protected void encodeEventEditor(FacesContext context, TimetableView timetableView, List<TimetableResource> resources) throws IOException {
         UIComponent eventEditor = timetableView.getEventEditor();
         if (eventEditor == null) {
-            eventEditor = Components.getOrCreateFacet(context, timetableView,
-                    EventEditorDialog.COMPONENT_TYPE, "eventEditor", "_eventEditor", EventEditorDialog.class);
+            eventEditor = getOrCreateEventEditor(context, timetableView);
         }
         if (eventEditor instanceof EventEditorDialog)
             ((EventEditorDialog) eventEditor).setVisible(false);
         eventEditor.getAttributes().put(EVENTEDITOR_RESOURCES_ATTR, resources);
         eventEditor.encodeAll(context);
         eventEditor.getAttributes().remove(EVENTEDITOR_RESOURCES_ATTR);
+    }
+
+    private EventEditorDialog getOrCreateEventEditor(FacesContext context, TimetableView timetableView) {
+        return Components.getOrCreateFacet(context, timetableView,
+                EventEditorDialog.COMPONENT_TYPE, "eventEditor", "_eventEditor", EventEditorDialog.class);
     }
 
     protected void renderHeader(FacesContext context, TimetableView timetableView, String clientId) throws IOException {
