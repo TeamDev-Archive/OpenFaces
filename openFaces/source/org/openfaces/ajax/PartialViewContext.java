@@ -173,11 +173,12 @@ public class PartialViewContext extends PartialViewContextWrapper {
     private void renderAdditionalPartialResponse(FacesContext context) throws IOException {
         Collection<String> additionalUpdateList = getRenderIdsNotRenderedYet(context);
         UIViewRoot viewRoot = context.getViewRoot();
-        for (String componentId : additionalUpdateList) {
-            UIComponent component = viewRoot.findComponent(componentId);
-            if (component == null) continue;
-            writeComponentUpdate(context, component);
-        }
+        if (additionalUpdateList != null)
+            for (String componentId : additionalUpdateList) {
+                UIComponent component = viewRoot.findComponent(componentId);
+                if (component == null) continue;
+                writeComponentUpdate(context, component);
+            }
         renderAjaxPortions(context);
         renderAjaxInitScripts(context);
     }

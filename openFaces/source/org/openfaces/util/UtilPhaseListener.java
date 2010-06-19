@@ -16,7 +16,6 @@ import org.openfaces.component.OUIObjectIterator;
 import org.openfaces.component.ajax.DefaultProgressMessage;
 import org.openfaces.component.table.AbstractTable;
 import org.openfaces.event.AjaxActionEvent;
-import org.openfaces.renderkit.ajax.DefaultProgressMessageRenderer;
 
 import javax.el.ELContext;
 import javax.el.MethodExpression;
@@ -28,7 +27,9 @@ import javax.faces.component.UIData;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.faces.event.*;
+import javax.faces.event.ActionEvent;
+import javax.faces.event.PhaseEvent;
+import javax.faces.event.PhaseId;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
@@ -99,7 +100,8 @@ public class UtilPhaseListener extends PhaseListenerBase {
     private static void encodeAjaxProgressMessage(FacesContext context) {
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
 
-        /*if (!requestMap.containsKey(DefaultProgressMessageRenderer.PROGRESS_MESSAGE))*/ {
+        /*if (!requestMap.containsKey(DefaultProgressMessageRenderer.PROGRESS_MESSAGE))*/
+        {
             DefaultProgressMessage defaultProgressMessage = new DefaultProgressMessage();
             renderProgressMessage(context, defaultProgressMessage);
         }
@@ -223,7 +225,8 @@ public class UtilPhaseListener extends PhaseListenerBase {
             if (action != null) {
                 MethodExpression methodBinding = context.getApplication().getExpressionFactory().createMethodExpression(
                         elContext, "#{" + action + "}", String.class, new Class[]{});
-                /*result = */methodBinding.invoke(elContext, null);
+                /*result = */
+                methodBinding.invoke(elContext, null);
             }
             if (listener != null) {
                 AjaxActionEvent event = new AjaxActionEvent(component);
@@ -235,7 +238,7 @@ public class UtilPhaseListener extends PhaseListenerBase {
                 } catch (MethodNotFoundException e) {
                     // both actionEvent and AjaxActionEvent parameter declarations are allowed
                     methodExpression = context.getApplication().getExpressionFactory().createMethodExpression(
-                        elContext, "#{" + listener + "}", void.class, new Class[]{AjaxActionEvent.class});
+                            elContext, "#{" + listener + "}", void.class, new Class[]{AjaxActionEvent.class});
                 }
                 methodExpression.invoke(elContext, new Object[]{event});
                 Object listenerResult = event.getAjaxResult();
@@ -249,10 +252,10 @@ public class UtilPhaseListener extends PhaseListenerBase {
     }
 
     public static UIComponent findComponentById(UIComponent parent,
-                                          String id,
-                                          boolean preProcessDecodesOnTables,
-                                          boolean preRenderResponseOnTables,
-                                          boolean checkComponentPresence) {
+                                                String id,
+                                                boolean preProcessDecodesOnTables,
+                                                boolean preRenderResponseOnTables,
+                                                boolean checkComponentPresence) {
         UIComponent componentByPath = findComponentByPath(parent, id, preProcessDecodesOnTables, preRenderResponseOnTables);
         if (checkComponentPresence && componentByPath == null)
             throw new FacesException("Component by id not found: " + id);
@@ -260,9 +263,9 @@ public class UtilPhaseListener extends PhaseListenerBase {
     }
 
     private static UIComponent findComponentByPath(UIComponent parent,
-                                            String path,
-                                            boolean preProcessDecodesOnTables,
-                                            boolean preRenderResponseOnTables) {
+                                                   String path,
+                                                   boolean preProcessDecodesOnTables,
+                                                   boolean preRenderResponseOnTables) {
         while (true) {
             if (path == null) {
                 return null;
@@ -283,7 +286,7 @@ public class UtilPhaseListener extends PhaseListenerBase {
     }
 
     private static UIComponent componentById(UIComponent parent, String id, boolean isLastComponentInPath,
-                                      boolean preProcessDecodesOnTables, boolean preRenderResponseOnTables) {
+                                             boolean preProcessDecodesOnTables, boolean preRenderResponseOnTables) {
         if (id.length() > 0 && (isNumberBasedId(id) || id.startsWith(":")) && parent instanceof AbstractTable) {
             AbstractTable table = ((AbstractTable) parent);
             if (!isLastComponentInPath) {

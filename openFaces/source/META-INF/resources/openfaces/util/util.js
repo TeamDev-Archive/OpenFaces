@@ -1676,7 +1676,9 @@ if (!window.O$) {
   };
 
   O$.initDefaultScrollPosition = function(trackerFieldId, scrollPos) {
-    O$.setHiddenField(null, trackerFieldId, scrollPos);
+    O$.addLoadEvent(function() {
+      O$.setHiddenField(null, trackerFieldId, scrollPos);
+    });
     O$.initScrollPosition_(trackerFieldId, true, 1, null);
   };
 
@@ -1801,7 +1803,9 @@ if (!window.O$) {
   };
 
   O$.initDefaultFocus = function(trackerFieldId, focusedComponentId) {
-    O$.setHiddenField(null, trackerFieldId, focusedComponentId);
+    O$.addLoadEvent(function() {
+      O$.setHiddenField(null, trackerFieldId, focusedComponentId);
+    });
     O$.initFocus_(trackerFieldId, true, 1);
   };
 

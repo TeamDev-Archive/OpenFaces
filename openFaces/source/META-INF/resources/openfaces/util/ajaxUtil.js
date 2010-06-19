@@ -269,7 +269,15 @@ O$.sendAjaxRequestIfNoFormSubmission = function() {
 //    O$._ajax_requests_queue.push(ajaxArgs);
 //    return;
 //  }
-//  setTimeout(function() {
+  var evt = ajaxArgs[1]._event;
+  if (evt && O$.isExplorer()) {
+    // using event object after setTimeout in IE causes JavaScript error (like "member not found" when accessing event.type),
+    // so we're just cloning all properties here
+    var evtCopy = {};
+    O$.extend(evtCopy, evt);
+    ajaxArgs[1]._event = evtCopy;
+  }
+  setTimeout(function() {
 //    O$._ajaxRequestScheduled = false;
     if (O$.isAjaxInLockedState()) {
       return;
@@ -277,7 +285,7 @@ O$.sendAjaxRequestIfNoFormSubmission = function() {
 
 //    O$._ajax_request_processing = true;
     O$.sendAjaxRequest.apply(null, ajaxArgs);
-//  }, 1);
+  }, 1);
 }
 
 O$._runScript = function(script, libs) {
