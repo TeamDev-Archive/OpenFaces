@@ -841,21 +841,22 @@ O$.setAjaxMessageHTML = function(messageHTML, horizAlignment, vertAlignment, tra
 
     O$._ajaxProgressInitialized = true;
     if (O$._ajaxRequestsInProgress == undefined) O$._ajaxRequestsInProgress = 0;
-    jsf.ajax.addOnEvent(function(data) {
-      if (document._ajaxInProgressMessage._includeNonOpenFacesRequests || (data.source && data.source._openFaces_ajax_inProgress)) {
-        if (data.status == "begin") {
-          if (++O$._ajaxRequestsInProgress == 1) {
-            O$.showAjaxProgressMessage();
+    if (window.jsf)
+      jsf.ajax.addOnEvent(function(data) {
+        if (document._ajaxInProgressMessage._includeNonOpenFacesRequests || (data.source && data.source._openFaces_ajax_inProgress)) {
+          if (data.status == "begin") {
+            if (++O$._ajaxRequestsInProgress == 1) {
+              O$.showAjaxProgressMessage();
+            }
+          }
+          if (data.status == "complete") {
+            if (--O$._ajaxRequestsInProgress == 0) {
+              O$.hideAjaxProgressMessage();
+              O$.restoreScrollPositionIfNeeded();
+            }
           }
         }
-        if (data.status == "complete") {
-          if (--O$._ajaxRequestsInProgress == 0) {
-            O$.hideAjaxProgressMessage();
-            O$.restoreScrollPositionIfNeeded();
-          }
-        }
-      }
-    });
+      });
     if (O$._ajaxRequestsInProgress > 0)
       O$.showAjaxProgressMessage();
   }
