@@ -77,6 +77,7 @@ O$.ajax = {
     args.onajaxstart = options.onajaxstart;
     args.onajaxend = options.onajaxend;
     args.onerror = options.onerror;
+    args.onevent = options.onevent;
     args.listener = options.listener;
     args.immediate = options.immediate;
     args.executeRenderedComponents = options.executeRenderedComponents;
@@ -335,7 +336,6 @@ O$.sendAjaxRequest = function(render, args) {
   }
   var evt = args._event;
   var params = {};
-  execute = execute ? execute.join(" ") : undefined;
   var render = render.join(" ");
   params[O$.AJAX_REQUEST_MARKER] = "true";
   if (args.additionalParams) {
@@ -380,20 +380,24 @@ O$.sendAjaxRequest = function(render, args) {
     if (!params) params = {};
     params[O$.EXECUTE_RENDERED_COMPONENTS] = args.executeRenderedComponents;
   }
+  var ajaxResult;
   function eventHandler(data) {
     if (args.onevent)
       args.onevent.call(null, data);
     if (data.status == "complete") {
       setTimeout(function() {source._openFaces_ajax_inProgress = false;}, 1);
-      if (args.portionProcessor) {
-        var atLeastOnePortionProcessed = false;
-        var xml = data.responseXML;
-        if (!xml) {alert("Error while performing Ajax request: No xml response received -- check server logs."); return;}
-        var childNodes = xml.getElementsByTagName("partial-response")[0].childNodes;
-        function processExtension(extensionNode) {
-          var ln = extensionNode.getAttribute("ln");
-          if (ln != "openfaces") return;
-          atLeastOnePortionProcessed = true;
+
+      var atLeastOnePortionProcessed = false;
+      var xml = data.responseXML;
+      if (!xml) {alert("Error while performing Ajax request: No xml response received -- check server logs."); return;}
+      var childNodes = xml.getElementsByTagName("partial-response")[0].childNodes;
+      function processExtension(extensionNode) {
+        var ln = extensionNode.getAttribute("ln");
+        if (ln != "openfaces") return;
+        atLeastOnePortionProcessed = true;
+        var extensionType = extensionNode.getAttribute("type");
+
+        if (extensionType == "portionData") {
           var portionName = extensionNode.getAttribute("portion");
           var portionText = extensionNode.getAttribute("text");
           var portionDataStr = extensionNode.getAttribute("data");
@@ -403,31 +407,57 @@ O$.sendAjaxRequest = function(render, args) {
           var portionData = portionDataStr ? eval("(" + portionDataStr + ")") : null;
           var component = O$(render);
           O$._runScript(function() {
+            if (!args.portionProcessor) throw "OpenFaces Ajax portion node received but no portionProcessor was specified by the request invoker";
             args.portionProcessor(component, portionName, portionText, portionScripts, portionData);
           }, jsLibs);
-        }
-        for (var i = 0, count = childNodes.length; i < count; i++) {
-          var childNode = childNodes[i];
-          if (childNode.nodeName == "extension")
-            processExtension(childNode);
-          if (childNode.nodeName == "changes")
-            for (var j = 0, jCount = childNode.childNodes.length; j < jCount; j++) {
-              var change = childNode.childNodes[j];
-              if (change.nodeName == "extension")
-                processExtension(change);
-            }
-        }
-        if (!atLeastOnePortionProcessed) {
-          alert("Error while performing Ajax request: no openfaces extension blocks found in Ajax response.");
-        }
+        } else if (extensionType == "ajaxResult") {
+          var ajaxResultStr = extensionNode.getAttribute("ajaxResult");
+          try {
+            eval("ajaxResult = " + ajaxResultStr);
+          } catch (e) {
+            ajaxResult = ajaxResultStr;
+          }
+        } else
+          throw "Unknown OpenFaces Ajax extension node type: " + extensionType;
       }
+      for (var i = 0, count = childNodes.length; i < count; i++) {
+        var childNode = childNodes[i];
+        if (childNode.nodeName == "extension")
+          processExtension(childNode);
+        if (childNode.nodeName == "changes")
+          for (var j = 0, jCount = childNode.childNodes.length; j < jCount; j++) {
+            var change = childNode.childNodes[j];
+            if (change.nodeName == "extension")
+              processExtension(change);
+          }
+      }
+
+      if (args.portionProcessor && !atLeastOnePortionProcessed) {
+        alert("Error while performing Ajax request: no openfaces extension blocks found in Ajax response.");
+      }
+    }
+    if (data.status == "success") {
+      if (args.onajaxend) {
+        var ajaxendEvent = O$.createEvent("ajaxend");
+        ajaxendEvent.ajaxResult = ajaxResult;
+        args.onajaxend(ajaxendEvent);
+      }
+    }
+  }
+  function errorHandler(data) {
+    if (args.onerror)
+      args.onerror.call(null, data);
+    if (args.onajaxend) {
+      var ajaxendEvent = O$.createEvent("ajaxend");
+      ajaxendEvent.ajaxResult = ajaxResult;
+      args.onajaxend(ajaxendEvent);
     }
   }
   var options = {
     execute: execute,
     render: render,
     onevent: eventHandler,
-    onerror: args.onerror
+    onerror: errorHandler
   };
   if (params)
     O$.extend(options, params);
@@ -437,7 +467,23 @@ O$.sendAjaxRequest = function(render, args) {
   }
   source._openFaces_ajax_inProgress = true;
   jsf.ajax.request(source, evt, options);
+
+  if (args.onajaxstart) {
+    var ajaxstartEvent = O$.createEvent("ajaxstart");
+    args.onajaxstart(ajaxstartEvent);
+  }
   return;
+
+
+
+
+
+
+
+
+
+
+
 
 
   if (document.__sessionHasExpired

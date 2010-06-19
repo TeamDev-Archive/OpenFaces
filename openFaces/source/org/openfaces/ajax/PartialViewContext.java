@@ -16,6 +16,7 @@ import org.openfaces.component.ComponentWithExternalParts;
 import org.openfaces.org.json.JSONArray;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
+import org.openfaces.org.json.JSONString;
 import org.openfaces.renderkit.AjaxPortionRenderer;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.AnonymousFunction;
@@ -42,6 +43,7 @@ import javax.faces.render.RenderKitFactory;
 import javax.faces.render.Renderer;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.lang.reflect.Array;
 import java.util.*;
 
 /**
@@ -179,6 +181,7 @@ public class PartialViewContext extends PartialViewContextWrapper {
                 if (component == null) continue;
                 writeComponentUpdate(context, component);
             }
+        renderAjaxResult(context);
         renderAjaxPortions(context);
         renderAjaxInitScripts(context);
     }
@@ -260,6 +263,7 @@ public class PartialViewContext extends PartialViewContextWrapper {
             PartialResponseWriter partialWriter = partialViewContext.getPartialResponseWriter();
             Map<String, String> extensionAttributes = new HashMap<String, String>();
             extensionAttributes.put("ln", "openfaces");
+            extensionAttributes.put("type", "portionData");
             extensionAttributes.put("portion", portionName);
             extensionAttributes.put("text", portionOutput.toString());
             extensionAttributes.put("data", responseData != null ? responseData.toString() : "null");
@@ -269,6 +273,56 @@ public class PartialViewContext extends PartialViewContextWrapper {
             partialWriter.startExtension(extensionAttributes);
             partialWriter.endExtension();
         }
+    }
+
+    private static void renderAjaxResult(FacesContext context) throws IOException {
+        javax.faces.context.PartialViewContext partialViewContext = context.getPartialViewContext();
+        PartialResponseWriter partialWriter = partialViewContext.getPartialResponseWriter();
+        Map<String, String> extensionAttributes = new HashMap<String, String>();
+        extensionAttributes.put("ln", "openfaces");
+        extensionAttributes.put("type", "ajaxResult");
+        Object ajaxResult = AjaxRequest.getInstance(context).getAjaxResult();
+        extensionAttributes.put("ajaxResult", resultValueToJsValue(ajaxResult));
+
+        partialWriter.startExtension(extensionAttributes);
+        partialWriter.endExtension();
+    }
+
+    private static String resultValueToJsValue(Object resultValue) {
+        if (resultValue != null && resultValue.getClass().isArray()) {
+            List resultAsList = new ArrayList();
+            for (int i = 0, count = Array.getLength(resultValue); i < count; i++) {
+                resultAsList.add(Array.get(resultValue, i));
+            }
+            resultValue = resultAsList;
+        }
+        String value;
+        if (resultValue == null)
+            value = "null";
+        else if (resultValue instanceof String)
+            value = "\"" + resultValue + "\"";
+        else if (resultValue instanceof JSONString)
+            value = ((JSONString) resultValue).toJSONString();
+        else if (resultValue instanceof Iterable) {
+            StringBuilder sb = new StringBuilder("[");
+            for (Object entry : (Iterable) resultValue) {
+                if (sb.length() > 1) sb.append(",");
+                sb.append(resultValueToJsValue(entry));
+            }
+            sb.append("]");
+            value = sb.toString();
+        } else if (resultValue instanceof Map) {
+            StringBuilder sb = new StringBuilder("{");
+            Set<Map.Entry> entries = ((Map) resultValue).entrySet();
+            for (Map.Entry entry : entries) {
+                if (sb.length() > 1) sb.append(",");
+                sb.append("\"").append(entry.getKey()).append("\":").append(resultValueToJsValue(entry.getValue()));
+            }
+            sb.append("}");
+            value = sb.toString();
+        } else
+            value = resultValue.toString();
+        return value;
     }
 
 
