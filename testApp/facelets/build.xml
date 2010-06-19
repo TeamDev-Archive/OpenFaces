@@ -26,6 +26,9 @@
 
   <fileset id="basic-libraries" dir="${lib.dir}">
     <include name="jstl-1.1.0.jar"/>
+    <include name="slf4j-api-1.5.8.jar"/>
+    <include name="slf4j-log4j12-1.5.8.jar"/>
+    <include name="log4j-1.2.14.jar"/>
   </fileset>
 
   <fileset id="apache" dir="${apache.lib.dir}">
