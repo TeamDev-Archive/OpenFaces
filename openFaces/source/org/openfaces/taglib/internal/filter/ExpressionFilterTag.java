@@ -84,7 +84,6 @@ public abstract class ExpressionFilterTag extends FilterTag {
             inverse = true;
         }
         ExpressionFilterCriterion filterCriterion = new ExpressionFilterCriterion(condition, inverse);
-        filter.setValue(filterCriterion);
-        filter.getAttributes().put("condition", filterCriterion);
+        filter.setCondition(filterCriterion);
     }
 }

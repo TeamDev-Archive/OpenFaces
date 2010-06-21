@@ -18,6 +18,7 @@ import org.openfaces.renderkit.TableUtil;
 import org.openfaces.util.ValueBindings;
 
 import javax.el.ValueExpression;
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
@@ -37,6 +38,7 @@ public abstract class ExpressionFilter extends Filter implements CompoundCompone
     private static final String DEFAULT_NON_EMPTY_RECORDS_CRITERION_NAME = "<Non-empty>";
 
     private ExpressionFilterCriterion value;
+    private ExpressionFilterCriterion condition;
     private Object expression;
     private boolean explicitExpression;
     private Converter converter;
@@ -61,8 +63,8 @@ public abstract class ExpressionFilter extends Filter implements CompoundCompone
     @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
-        return new Object[]{superState, value, saveAttachedState(context, converter), expression, explicitExpression,
-                predefinedCriterionStyle, predefinedCriterionClass,
+        return new Object[]{superState, value, condition, saveAttachedState(context, converter), expression,
+                explicitExpression, predefinedCriterionStyle, predefinedCriterionClass,
                 allRecordsText, emptyRecordsText, nonEmptyRecordsText,
                 promptText, promptTextStyle, promptTextClass, caseSensitive, accesskey, tabindex, title, autoFilterDelay
         };
@@ -74,6 +76,7 @@ public abstract class ExpressionFilter extends Filter implements CompoundCompone
         int i = 0;
         super.restoreState(context, state[i++]);
         value = (ExpressionFilterCriterion) state[i++];
+        condition = (ExpressionFilterCriterion) state[i++];
         converter = (Converter) restoreAttachedState(context, state[i++]);
         expression = state[i++];
         explicitExpression = (Boolean) state[i++];
@@ -360,6 +363,37 @@ public abstract class ExpressionFilter extends Filter implements CompoundCompone
         this.value = (ExpressionFilterCriterion) value;
     }
 
+    public ExpressionFilterCriterion getCondition() {
+        return condition;
+    }
+
+    /**
+     *
+     * @param condition
+     */
+    public void setCondition(ExpressionFilterCriterion condition) {
+        if (condition.getPropertyLocator() != null) throw new IllegalArgumentException("The condition attribute should " +
+                "receive ExpressionFilterCriterion with just \"condition\" and \"inverse\" attributes specified, but " +
+                "propertyLocator was specified.");
+        if (condition.getArg1() != null) throw new IllegalArgumentException("The condition attribute should " +
+                "receive ExpressionFilterCriterion with just \"condition\" and \"inverse\" attributes specified, but " +
+                "arg1 was specified.");
+        FilterCondition filterCondition = condition.getCondition();
+        if (filterCondition == null || filterCondition == FilterCondition.EMPTY || filterCondition == FilterCondition.BETWEEN) {
+            String possibleConditionsStr = "";
+            for (FilterCondition c : FilterCondition.values()) {
+                if (c == FilterCondition.EMPTY || c == FilterCondition.BETWEEN)
+                    continue;
+                if (possibleConditionsStr.length() > 0)
+                    possibleConditionsStr += ", ";
+                String n = c.getName();
+                possibleConditionsStr += n;
+            }
+            throw new FacesException("\"condition\" property value (\"" + value + "\") cannot be \"empty\" or \"between\" here. It should be one of: " + possibleConditionsStr);
+        }
+        this.condition = condition;
+        setValue(new ExpressionFilterCriterion(condition.getCondition(), condition.isInverse()));
+    }
 
     /**
      * @param newCriterion new search criterion

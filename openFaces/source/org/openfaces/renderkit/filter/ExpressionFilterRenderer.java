@@ -100,7 +100,7 @@ public abstract class ExpressionFilterRenderer extends RendererBase {
         FilterCondition condition;
 
         boolean inverse = false;
-        ExpressionFilterCriterion defaultCriterion = (ExpressionFilterCriterion) filter.getAttributes().get("condition");
+        ExpressionFilterCriterion defaultCriterion = filter.getCondition();
         if (defaultCriterion != null) {
             condition = defaultCriterion.getCondition();
             inverse = defaultCriterion.isInverse();

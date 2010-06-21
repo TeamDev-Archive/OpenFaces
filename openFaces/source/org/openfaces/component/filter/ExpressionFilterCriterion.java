@@ -50,6 +50,10 @@ public class ExpressionFilterCriterion extends FilterCriterion {
         setArg1(arg1);
     }
 
+    public ExpressionFilterCriterion(FilterCondition condition) {
+        this(condition, false);
+    }
+
     public ExpressionFilterCriterion(FilterCondition condition, boolean inverse) {
         this.condition = condition;
         this.inverse = inverse;
