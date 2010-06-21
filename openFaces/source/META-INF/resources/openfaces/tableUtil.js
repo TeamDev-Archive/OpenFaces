@@ -435,7 +435,7 @@ O$.Tables = {
                 commonRow._table = table;
               }
               var containerRowIndex = commonRowAbove != undefined
-                      ? (commonRowAbove ? 1 : 0)
+                      ? (commonRowAbove ? 1 : sectionParams.rowCount - 2)
                       : 0;
               var containerRow = immediateRows[containerRowIndex];
               var leftCellIndex = scrolling.leftFixedCols ? 0 : undefined;
@@ -443,27 +443,29 @@ O$.Tables = {
               var rightCellIndex = scrolling.rightFixedCols ? centerCellIndex + 1 : undefined;
 
               function scrollingArea(areaCellIndex, scrollingKind) {
-                var td = containerRow.childNodes[areaCellIndex];
-                td.style.verticalAlign = "top";
-                td.style.textAlign = "left";
-                td.style.overflow = "hidden";
-                var div = O$.getChildNodesWithNames(td, ["div"])[0];
-                var scrollingDivContainer = div && div.className == "o_scrolling_area_container" ? div : null;
-                if (scrollingDivContainer && O$.isExplorer() && O$.isQuirksMode()) {
-                  scrollingDivContainer.style.display = "none"; // hide the container temporarily to overcome non-working "overflow: hidden" on td under IE quirks-mode
-                }
-                var scrollingDiv = O$.getChildNodesWithNames(scrollingDivContainer ? scrollingDivContainer : td, ["div"])[0];
-                var tbl = O$.getChildNodesByClass(scrollingDiv ? scrollingDiv : td, ["o_scrolling_area_table"])[0];
-                var spacer = O$.getChildNodesByClass(scrollingDiv ? scrollingDiv : td, ["o_scrolling_area_spacer"], false, tbl)[0];
+                if (containerRow) {
+                  var td = containerRow.childNodes[areaCellIndex];
+                  td.style.verticalAlign = "top";
+                  td.style.textAlign = "left";
+                  td.style.overflow = "hidden";
+                  var div = O$.getChildNodesWithNames(td, ["div"])[0];
+                  var scrollingDivContainer = div && div.className == "o_scrolling_area_container" ? div : null;
+                  if (scrollingDivContainer && O$.isExplorer() && O$.isQuirksMode()) {
+                    scrollingDivContainer.style.display = "none"; // hide the container temporarily to overcome non-working "overflow: hidden" on td under IE quirks-mode
+                  }
+                  var scrollingDiv = O$.getChildNodesWithNames(scrollingDivContainer ? scrollingDivContainer : td, ["div"])[0];
+                  var tbl = O$.getChildNodesByClass(scrollingDiv ? scrollingDiv : td, ["o_scrolling_area_table"])[0];
+                  var spacer = O$.getChildNodesByClass(scrollingDiv ? scrollingDiv : td, ["o_scrolling_area_spacer"], false, tbl)[0];
 
-                tbl.style.emptyCells = "show";
-                applyStyle(tbl, sectionParams.className);
-                var rowContainer = O$.getChildNodesWithNames(tbl, ["tbody"])[0];
-                if (fakeRowRequired) {
-                  if (!rowContainer._fakeRow) {
-                    rowContainer._fakeRow = document.createElement("tr");
-                    rowContainer._fakeRow.style.display = "none";
-                    rowContainer.insertBefore(rowContainer._fakeRow, rowContainer.firstChild);
+                  tbl.style.emptyCells = "show";
+                  applyStyle(tbl, sectionParams.className);
+                  var rowContainer = O$.getChildNodesWithNames(tbl, ["tbody"])[0];
+                  if (fakeRowRequired) {
+                    if (!rowContainer._fakeRow) {
+                      rowContainer._fakeRow = document.createElement("tr");
+                      rowContainer._fakeRow.style.display = "none";
+                      rowContainer.insertBefore(rowContainer._fakeRow, rowContainer.firstChild);
+                    }
                   }
                 }
 
@@ -474,22 +476,24 @@ O$.Tables = {
                   _scrollingDiv: scrollingDiv,
                   _table: tbl,
                   _rowContainer: rowContainer,
-                  _rows: O$.getChildNodesWithNames(rowContainer, ["tr"]),
+                  _rows: rowContainer ? O$.getChildNodesWithNames(rowContainer, ["tr"]) : [],
                   _spacer: spacer
                 };
-                if (rowContainer._fakeRow)
-                  area._rows = area._rows.slice(1);
-                if (area._scrollingDiv) {
-                  if (scrollingKind == "none") {
-                    // leave overflow as specified during rendering
-                  } else if (scrollingKind == "x")
-                    area._scrollingDiv.style.overflowX = scrolling.autoScrollbars ? "auto" : "scroll";
-                  else if (scrollingKind == "y")
-                      area._scrollingDiv.style.overflowY = scrolling.autoScrollbars ? "auto" : "scroll";
-                  else if (scrollingKind == "both")
-                      area._scrollingDiv.style.overflow = scrolling.autoScrollbars ? "auto" : "scroll";
-                  else
-                    throw "initTableSection/scrollingArea: unknown scrollingKind: " + scrollingKind;
+                if (rowContainer) {
+                  if (rowContainer._fakeRow)
+                    area._rows = area._rows.slice(1);
+                  if (area._scrollingDiv) {
+                    if (scrollingKind == "none") {
+                      // leave overflow as specified during rendering
+                    } else if (scrollingKind == "x")
+                      area._scrollingDiv.style.overflowX = scrolling.autoScrollbars ? "auto" : "scroll";
+                    else if (scrollingKind == "y")
+                        area._scrollingDiv.style.overflowY = scrolling.autoScrollbars ? "auto" : "scroll";
+                    else if (scrollingKind == "both")
+                        area._scrollingDiv.style.overflow = scrolling.autoScrollbars ? "auto" : "scroll";
+                    else
+                      throw "initTableSection/scrollingArea: unknown scrollingKind: " + scrollingKind;
+                  }
                 }
                 return area;
               }
@@ -1396,10 +1400,13 @@ O$.Tables = {
 
           function saveAreaCols(area) {
             if (!area) return;
-            var cols = O$.getChildNodesWithNames(area._table, ["col"]);
-            if (cols.length == 0) {
-              var colGroup = O$.getChildNodesWithNames(area._table, ["colgroup"])[0];
-              cols = colGroup ? O$.getChildNodesWithNames(colGroup, ["col"]) : [];
+            var cols = [];
+            if (area._table) {
+              cols = O$.getChildNodesWithNames(area._table, ["col"]);
+              if (cols.length == 0) {
+                var colGroup = O$.getChildNodesWithNames(area._table, ["colgroup"])[0];
+                cols = colGroup ? O$.getChildNodesWithNames(colGroup, ["col"]) : [];
+              }
             }
             area._colTags = cols;
             for (var i = 0, count = cols.length; i < count; i++,colIndex++) {
@@ -2097,7 +2104,8 @@ O$.Tables = {
           var a = section[areaName];
           verticalAreaForInitialization._areas.push(a);
           var areaTable = a._table;
-          areaTable.style.width = width;
+          if (areaTable)
+            areaTable.style.width = width;
         });
         return width;
       }
@@ -2214,7 +2222,8 @@ O$.Tables = {
                 "[" + mainScrollingArea._scrollingDiv.scrollLeft + "," + mainScrollingArea._scrollingDiv.scrollTop + "]");
         [table.header, table.footer].forEach(function (section) {
           if (!section || !section._centerScrollingArea) return;
-          section._centerScrollingArea._scrollingDiv.scrollLeft = mainScrollingArea._scrollingDiv.scrollLeft;
+          if (section._centerScrollingArea._scrollingDiv)
+            section._centerScrollingArea._scrollingDiv.scrollLeft = mainScrollingArea._scrollingDiv.scrollLeft;
         });
         [table.body._leftScrollingArea, table.body._rightScrollingArea].forEach(function (area) {
           if (!area) return;
@@ -2232,7 +2241,7 @@ O$.Tables = {
         [table.header, table.footer].forEach(function (section) {
           if (!section || !section._centerScrollingArea) return;
           var scrollingDiv = section._centerScrollingArea._scrollingDiv;
-          if (scrollingDiv.scrollLeft != correctScrollLeft)
+          if (scrollingDiv && scrollingDiv.scrollLeft != correctScrollLeft)
             scrollingDiv.scrollLeft = correctScrollLeft;
         });
       }, 250);
@@ -2330,7 +2339,8 @@ O$.Tables = {
         return s && s._centerScrollingArea;
       }).forEach(function(area) {
         if (!area) return;
-        O$.setElementSize(area._spacer, {width: 30, height: 1});
+        if (area._spacer)
+          O$.setElementSize(area._spacer, {width: 30, height: 1});
       });
       [table.body._leftScrollingArea, table.body._rightScrollingArea].forEach(function(area) {
         if (!area) return;

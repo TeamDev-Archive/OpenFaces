@@ -429,10 +429,12 @@ public abstract class TableHeaderOrFooter extends TableSection {
                 cellCoordinates.setRowIndex(cellCoordinates.getRowIndex() + 1);
             return cellCoordinates;
         } else {
-            HeaderRow row = allRows.get(isHeader
+            int rowIndex = isHeader
                     ? (commonHeaderRow != null ? 1 : 0)
-                    : 0
-            );
+                    : allRows.size() - 1 - (commonHeaderRow != null ? 1 : 0);
+            HeaderRow row = rowIndex >= 0 && rowIndex < allRows.size() ? allRows.get(rowIndex) : null;
+            if (row == null) return null;
+            
             List<HeaderCell> cells = row.getCells();
             for (int i = 0, count = cells.size(); i < count; i++) {
                 HeaderCell cell = cells.get(i);

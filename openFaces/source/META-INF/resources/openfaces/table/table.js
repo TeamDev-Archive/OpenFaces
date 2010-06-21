@@ -1511,6 +1511,7 @@ O$.Table = {
               var scrollLeft = scrollingDiv.scrollLeft;
               var scrollTop = scrollingDiv.scrollTop;
               this._column._verticalArea._areas.forEach(function(a) {
+                if (!a._table) return;
                 a._table.style.width = "auto";
               });
             }

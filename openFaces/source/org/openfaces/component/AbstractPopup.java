@@ -11,7 +11,6 @@
  */
 package org.openfaces.component;
 
-import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.Resources;
 import org.openfaces.util.Script;

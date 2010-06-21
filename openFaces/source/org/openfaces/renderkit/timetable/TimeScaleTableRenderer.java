@@ -17,7 +17,6 @@ import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.TableRenderer;
 import org.openfaces.renderkit.TableUtil;
-import org.openfaces.renderkit.cssparser.CSSUtil;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.Components;
 import org.openfaces.util.DataUtil;
@@ -33,7 +32,6 @@ import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.event.PhaseId;
 import java.io.IOException;
 import java.util.*;
 
