@@ -494,17 +494,15 @@ O$.TimeTableView._init = function(componentId,
 
 
     event._removeEventElements = function(refreshAreasAfterReload) {
-      for (var i = 0; i < parts.length; i++) {
-        var part = parts[i];
+      parts.forEach(function(part) {
         timeTableView._removeEventElement(event, part);
-      }
+      });
       var areas = event._areas;
-      for (i = 0,count = areas.length; i < count; i++) {
-        var area = areas[i];
+      areas.forEach(function(area) {
         if (area.parentNode == null)
-          continue; // don't add an area back to document if it was already removed by Ajax
+          return; // don't add an area back to document if it was already removed by Ajax
         timeTableView._hiddenArea.appendChild(area);
-      }
+      });
       if (refreshAreasAfterReload) {
         event._attachAreas();
       }
