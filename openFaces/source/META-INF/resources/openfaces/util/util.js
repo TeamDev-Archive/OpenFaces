@@ -1111,7 +1111,12 @@ if (!window.O$) {
 
   O$.setInnerText = function(element, text, escapeHtml) {
     if (escapeHtml === false) {
-      element.innerHTML = text;
+      try {
+        element.innerHTML = text;
+      } catch(e) {
+        alert("Error: " + e + "; Couldn't set innerHTML to: \"" + text + "\"");
+        throw e;
+      }
       return;
     }
     O$.removeAllChildNodes(element);
