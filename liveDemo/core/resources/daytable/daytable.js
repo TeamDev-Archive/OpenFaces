@@ -20,3 +20,23 @@ function updateLayout() {
     }
   }
 }
+
+function addBorder(btn, r, g, b) {
+  function formatColor(r, g, b) {
+    function intTo2DigitHex(intValue) {
+      var str = intValue.toString(16);
+      if (str.length < 2)
+        str = "0" + str;
+      return str;
+    }
+
+    return "#" + intTo2DigitHex(r) + intTo2DigitHex(g) + intTo2DigitHex(b);
+  }
+  var lineStyle = "1px solid " + formatColor(r, g, b);
+  btn.style.border = lineStyle;
+  btn.style.border = lineStyle;
+}
+
+function removeBorder(btn) {
+  btn.style.border = "0px none white";
+}
