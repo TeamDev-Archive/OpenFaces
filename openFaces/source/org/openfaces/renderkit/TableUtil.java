@@ -18,6 +18,7 @@ import org.openfaces.component.table.ColumnResizing;
 import org.openfaces.component.table.ColumnResizingState;
 import org.openfaces.component.table.Columns;
 import org.openfaces.component.table.DynamicCol;
+import org.openfaces.component.table.DynamicColumn;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.util.Components;
@@ -148,7 +149,7 @@ public class TableUtil {
      * Matches expression of the form:
      * #{var.a.b}
      *
-     * @return Pattern group with indexe 2 of which selects expression after var
+     * @return Pattern group with index 2 of which selects expression after var
      */
     private static Pattern getExpressionPattern(String var) {
         String pattern = "#\\{" + var + "(\\.)((([\\w\\.])*)+)}";
@@ -209,13 +210,22 @@ public class TableUtil {
     }
 
     private static UIOutput obtainOutput(UIComponent component, String var) {
+
         if (component instanceof UIOutput) {
             ValueExpression valueExpression = component.getValueExpression("value");
             if (expressionContainsVar(valueExpression.getExpressionString(), var)) {
                 return (UIOutput) component;
             }
         }
-        for (UIComponent child : component.getChildren()) {
+        List<UIComponent> children;
+        if (component instanceof DynamicColumn) {
+            children = ((DynamicColumn) component).getChildrenForProcessing();
+        } else {
+            children = component.getChildren();
+        }
+
+
+        for (UIComponent child : children) {
             UIOutput childOutput = obtainOutput(child, var);
             if (childOutput != null) {
                 return childOutput;
@@ -297,6 +307,7 @@ public class TableUtil {
                 "Can't find column output component (UIOutput component with a value expression containing variable " +
                         var + ") for column with id: " + column.getId() + "; table id: " + table.getId() +
                         " ; consider declaring the filter expression explicitly if you're using a filter component in this column.");
+
         ValueExpression expression = explicitColumnFilterExpression != null
                 ? explicitColumnFilterExpression : columnOutput.getValueExpression("value");
 

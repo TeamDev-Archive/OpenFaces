@@ -408,7 +408,7 @@ public class FilterRow implements Serializable {
         }
         String propertyValue = (String) propertySelector.getValue();
         FilterProperty newProperty = compositeFilter.getFilterPropertyByTitle(propertyValue);
-        boolean propertyModified = property == null ? newProperty != null : newProperty != null && !newProperty.getTitle().equals(property.getTitle());
+        boolean propertyModified = property == null ? newProperty != null : newProperty != null && !newProperty.getName().equals(property.getName());
         property = newProperty;
         DropDownField operationSelector = findOperationSelector(compositeFilter);
         HtmlSelectBooleanCheckbox inverseCheckBox = findInverseCheckBox(context, compositeFilter);

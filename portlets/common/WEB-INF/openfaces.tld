@@ -32065,9 +32065,9 @@ and it is automatically triggered on any form submission. -->
       </description>
       <name>binding</name>
       <deferred-value>
-        <type>org.openfaces.component.filter.FilterProperty</type>
+        <type>org.openfaces.component.filter.UIFilterProperty</type>
       </deferred-value>
-      <!-- @bindingType org.openfaces.component.filter.FilterProperty-->
+      <!-- @bindingType org.openfaces.component.filter.UIFilterPropertyty-->
       <!-- @default null -->
       <!-- @el only -->
     </attribute>

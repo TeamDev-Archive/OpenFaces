@@ -44,6 +44,13 @@ public class ExpressionFilterCriterion extends FilterCriterion {
         setArg1(arg1);
     }
 
+    public ExpressionFilterCriterion(PropertyLocator propertyLocator, FilterCondition condition, Map<String, Object> parameters, boolean inverse) {
+        this.propertyLocator = propertyLocator;
+        this.condition = condition;
+        this.parameters = parameters;
+        this.inverse = inverse;
+    }
+
     public ExpressionFilterCriterion(PropertyLocator propertyLocator, FilterCondition condition, Object arg1) {
         this.propertyLocator = propertyLocator;
         this.condition = condition;

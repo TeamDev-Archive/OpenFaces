@@ -1033,8 +1033,14 @@
     <tag-name>filterProperty</tag-name>
     <component>
       <component-type>org.openfaces.FilterProperty</component-type>
-      <renderer-type>org.openfaces.FilterPropertyRenderer</renderer-type>
       <handler-class>org.openfaces.taglib.facelets.filter.FilterPropertyTagHandler</handler-class>
+    </component>
+  </tag>
+  <tag>
+    <tag-name>filterProperties</tag-name>
+    <component>
+      <component-type>org.openfaces.FilterProperties</component-type>
+      <handler-class>org.openfaces.taglib.facelets.filter.FilterPropertiesTagHandler</handler-class>
     </component>
   </tag>
   <tag>

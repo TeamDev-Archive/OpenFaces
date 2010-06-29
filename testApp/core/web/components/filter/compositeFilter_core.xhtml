@@ -18,7 +18,7 @@
   <o:compositeFilter id="cf" value="#{CompositeFilterBean.criteria}" labels="#{messages}">
     <o:filterProperty name="firstName" value="#{CompositeFilterBean.firstNameLabel}" type="text"
                       dataProvider="#{CompositeFilterBean.names}" caseSensitive="false"/>
-    <o:filterProperty value="age" type="number" rendered="#{CompositeFilterBean.ageRendered}"/>
+    <o:filterProperty value="age" type="number"/>
     <o:filterProperty name="dateOfBirth" value="Date Of Birth" type="date" pattern="dd-MM-yyyy" timeZone="GMT"/>
     <o:filterProperty name="placeOfBirth.country" value="Country" type="select"
                       dataProvider="#{CompositeFilterBean.countries}"
@@ -61,20 +61,14 @@
     </o:column>
 
   </o:dataTable>
-  <br/>
-  <br/>
 
-  <h1>Automatic attachment to DataTable with autoDetect = false</h1>
 
-  <o:compositeFilter for="table2" id="cf2" autoDetect="false">
-    <o:filterProperty name="firstName" value="#{CompositeFilterBean.firstNameLabel}" type="text"
-                      dataProvider="#{CompositeFilterBean.names}" caseSensitive="false"/>
-    <o:filterProperty name="age" value="Age" type="number" rendered="#{CompositeFilterBean.ageRendered}"/>
+  <o:compositeFilter id="cf2" autoDetect="false" value="#{CompositeFilterBean.criteria2}">
+    <o:filterProperties value="#{CompositeFilterBean.filterProperties}"/>    
     <o:filterProperty name="dateOfBirth" value="Date Of Birth" type="date" pattern="dd-MM-yyyy" timeZone="GMT"/>
-    <o:filterProperty name="placeOfBirth.country" value="Country" type="select"
-                      dataProvider="#{CompositeFilterBean.countries}"
-                      converter="#{CompositeFilterBean.countryConverter}"/>
   </o:compositeFilter>
+
+  <h:outputText value="#{CompositeFilterBean.jsonCriteria}"/>
 
 
   <h:commandButton action="sbmt" value="Submit"/>
@@ -87,7 +81,7 @@
 
     <h:commandButton action="sbmt" value="Submit"/>
 
-    <o:dataTable id="table3" value="#{CompositeFilterBean.users}" var="user">
+    <o:dataTable id="table3" value="#{CompositeFilterBean.filteredUsersForStoredCriterion}" var="user">
       <o:column>
         <f:facet name="header">
           <h:outputText value="Name"/>

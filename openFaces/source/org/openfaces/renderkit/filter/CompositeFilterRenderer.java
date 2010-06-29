@@ -162,7 +162,7 @@ public class CompositeFilterRenderer extends RendererBase implements AjaxPortion
 
         String _for = compositeFilter.getFor();
         if (_for != null) {
-            UICommand applyButton = Components.getOrCreateFacet(context, compositeFilter, HtmlCommandButton.COMPONENT_TYPE, "applyButton", "applyButton", UICommand.class);
+            UICommand applyButton = Components.getOrCreateFacet(context, compositeFilter, HtmlCommandButton.COMPONENT_TYPE, "applyButton", UICommand.class);
             if (applyButton.getValue() == null)
                 applyButton.setValue("Apply");
             applyButton.getAttributes().put("onclick", new ScriptBuilder().O$(compositeFilter).dot().functionCall("apply").append(";return false;").toString());
