@@ -680,9 +680,13 @@
 
   <component>
     <component-type>org.openfaces.FilterProperty</component-type>
-    <component-class>org.openfaces.component.filter.FilterProperty</component-class>
+    <component-class>org.openfaces.component.filter.UIFilterProperty</component-class>
   </component>
 
+  <component>
+    <component-type>org.openfaces.FilterProperties</component-type>
+    <component-class>org.openfaces.component.filter.UIFilterProperties</component-class>
+  </component>
 
   <component>
     <component-type>org.openfaces.validation.AnnotationValidation</component-type>

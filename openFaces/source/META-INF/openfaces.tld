@@ -33156,9 +33156,9 @@ and it is automatically triggered on any form submission. -->
       </description>
       <name>binding</name>
       <deferred-value>
-        <type>org.openfaces.component.filter.FilterProperty</type>
+        <type>org.openfaces.component.filter.UIFilterProperty</type>
       </deferred-value>
-      <!-- @bindingType org.openfaces.component.filter.FilterProperty-->
+      <!-- @bindingType org.openfaces.component.filter.UIFilterProperty-->
       <!-- @default null -->
       <!-- @el only -->
     </attribute>
@@ -33283,6 +33283,52 @@ and it is automatically triggered on any form submission. -->
       <!-- @el false -->
     </attribute>
 
+  </tag>
+  <tag>
+    <name>filterProperties</name>
+    <tag-class>org.openfaces.taglib.jsp.filter.FilterPropertiesJspTag</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+      <description>The component identifier.</description>
+      <name>id</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el false -->
+    </attribute>
+    <attribute>
+      <description>A flag that indicates whether or not the component is visible.</description>
+      <name>rendered</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A value-binding expression that associates the FilterProperties with a backing bean property.
+      </description>
+      <name>binding</name>
+      <deferred-value>
+        <type>org.openfaces.component.filter.UIFilterProperties</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.filter.UIFilterProperties-->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>Display name for property.</description>
+      <name>value</name>
+      <deferred-value>
+        <type>java.util.List</type>
+      </deferred-value>
+      <!-- @bindingType java.util.List -->
+      <!-- @required true-->
+      <!-- @el true -->
+    </attribute>
   </tag>
   <tag>
     <description>A menu item that can be inserted into the column menu for DataTable/TreeTable components to provide

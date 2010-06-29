@@ -35,6 +35,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Natalia Zolochevska
@@ -60,6 +61,8 @@ public class CompositeFilter extends Filter {
      */
     private List<FilterProperty> filterProperties = null;
 
+    private LinkedHashMap<String, FilterProperty> filterPropertiesMap = null;
+    private LinkedHashMap<String, FilterProperty> filterPropertyNamesMap = null;
 
     public CompositeFilter() {
         setRendererType(RENDERER_TYPE);
@@ -73,7 +76,7 @@ public class CompositeFilter extends Filter {
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         return new Object[]{superState,
-                value, filterRows, lastRowIndex, noFilterMessage, labels, autoDetect, filterProperties, conditionConverter};
+                value, filterRows, lastRowIndex, noFilterMessage, labels, autoDetect, filterPropertiesMap, filterPropertyNamesMap, conditionConverter};
     }
 
 
@@ -89,7 +92,8 @@ public class CompositeFilter extends Filter {
         noFilterMessage = (String) state[i++];
         labels = (Map<String, String>) state[i++];
         autoDetect = (Boolean) state[i++];
-        filterProperties = (List<FilterProperty>) state[i++];
+        filterPropertiesMap = (LinkedHashMap<String, FilterProperty>) state[i++];
+        filterPropertyNamesMap = (LinkedHashMap<String, FilterProperty>) state[i++];
         conditionConverter = (Converter) state[i++];
     }
 
@@ -143,14 +147,14 @@ public class CompositeFilter extends Filter {
         final Object dataProvider = expressionType.isEnum() ? expressionType.getEnumConstants() : null;
         final FilterType filterType = FilterType.defineByClass(expressionType);
 
-        return new FilterProperty() {
+        return new FilterPropertyBase() {
             @Override
             public FilterType getType() {
                 return filterType;
             }
 
             @Override
-            public Object getValue() {
+            public String getTitle() {
                 return title;
             }
 
@@ -188,19 +192,53 @@ public class CompositeFilter extends Filter {
                 }
             }
             if (filterProperties == null) {
-                filterProperties = Components.findChildrenWithClass(this, FilterProperty.class, true, false);
+                filterProperties = new ArrayList<FilterProperty>();
+                List<UIComponent> children = getChildren();
+                for (UIComponent child : children) {
+                    if (child.isRendered()) {
+                        if (child instanceof UIFilterProperty) {
+                            filterProperties.add((UIFilterProperty) child);
+                            continue;
+                        }
+                        if (child instanceof UIFilterProperties) {
+                            filterProperties.addAll(((UIFilterProperties) child).getValue());
+                        }
+                    }
+                }
             }
+
         }
         return filterProperties;
-
     }
 
+    private Map<String, FilterProperty> getFilterPropertyNamesMap() {
+           if (filterPropertyNamesMap == null) {
+               Collection<UIComponent> children = getChildren();
+               filterPropertyNamesMap = new LinkedHashMap<String, FilterProperty>(children.size());
+               for (FilterProperty filterProperty : getFilterProperties()) {
+                       filterPropertyNamesMap.put(filterProperty.getName(), filterProperty);
+               }
+           }
+           return filterPropertyNamesMap;
+       }
+
+       private Map<String, FilterProperty> getFilterPropertiesMap() {
+           if (filterPropertiesMap == null) {
+               Collection<UIComponent> children = getChildren();
+               filterPropertiesMap = new LinkedHashMap<String, FilterProperty>(children.size());
+                   for (FilterProperty filterProperty : getFilterProperties()) {
+                       filterPropertiesMap.put(filterProperty.getTitle(), filterProperty);
+
+               }
+           }
+           return filterPropertiesMap;
+       }
 
     public List<String> getFilterPropertiesTitles() {
         List<FilterProperty> filterProperties = getFilterProperties();
         List<String> result = new ArrayList<String>(filterProperties.size());
         for (FilterProperty filterProperty : filterProperties) {
-            result.add((String) filterProperty.getValue());
+            result.add((String) filterProperty.getTitle());
         }
         return result;
     }
@@ -218,21 +256,12 @@ public class CompositeFilter extends Filter {
 
     public FilterProperty getFilterPropertyByTitle(String title) {
         if (title == null) return null;
-        for (FilterProperty filterProperty : getFilterProperties()) {
-            if (title.equals(filterProperty.getValue())) {
-                return filterProperty;
-            }
-        }
-        return null;
+        return getFilterPropertiesMap().get(title);
     }
 
     public FilterProperty getFilterPropertyByPropertyLocator(PropertyLocator propertyLocator) {
-        for (FilterProperty filterProperty : getFilterProperties()) {
-            if (propertyLocator.equals(filterProperty.getPropertyLocator())) {
-                return filterProperty;
-            }
-        }
-        return null;
+        String propertyName = String.valueOf(propertyLocator.getExpression());
+        return getFilterPropertyNamesMap().get(propertyName);        
     }
 
     public FilterRow getLastRow() {

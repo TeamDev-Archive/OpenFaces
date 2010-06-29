@@ -16,7 +16,16 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.openfaces.component.filter.AndFilterCriterion;
 import org.openfaces.component.filter.CompositeFilterCriterion;
+import org.openfaces.component.filter.FilterCriterion;
+import org.openfaces.component.filter.FilterProperty;
+import org.openfaces.component.filter.FilterPropertyBase;
+import static org.openfaces.component.filter.FilterType.*;
+
+import org.openfaces.component.filter.FilterType;
+import org.openfaces.component.filter.JSONBuilder;
 import org.openfaces.component.filter.PredicateBuilder;
+import org.openfaces.org.json.JSONException;
+import org.openfaces.org.json.JSONObject;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -64,6 +73,15 @@ public class CompositeFilterBean {
         return result;
     }
 
+    public List<User> getFilteredUsersForStoredCriterion() throws JSONException {
+        String jsonCriteria = getJsonCriteria();
+        FilterCriterion storedCriteria = JSONBuilder.parse(new JSONObject(jsonCriteria));
+        Predicate predicate = PredicateBuilder.build(storedCriteria);
+        ArrayList<User> result = new ArrayList<User>(users);
+        CollectionUtils.filter(result, predicate);
+        return result;
+    }
+
     public List<User> getUsers() {
         return users;
     }
@@ -86,6 +104,10 @@ public class CompositeFilterBean {
 
     public void setCriteria(CompositeFilterCriterion criteria) {
         this.criteria = criteria;
+    }
+
+    public String getJsonCriteria() {
+        return JSONBuilder.build(criteria2).toString();
     }
 
     public CompositeFilterCriterion getCriteria2() {
@@ -246,7 +268,7 @@ public class CompositeFilterBean {
 
     }
 
-    public static class CountryConverter implements Converter{
+    public static class CountryConverter implements Converter {
         public Object getAsObject(FacesContext context, UIComponent component, String value) throws ConverterException {
             return Country.fromString(value);
         }
@@ -256,12 +278,65 @@ public class CompositeFilterBean {
         }
     }
 
-    public void clearFilter(){
+    public void clearFilter() {
         criteria = new AndFilterCriterion();
     }
 
-    public boolean isAgeRendered(){
+    public boolean isAgeRendered() {
         return (criteria.getCriteria().size() % 2 == 0);
+    }
+
+    public List<FilterProperty> getFilterProperties() {
+        return Arrays.asList(filterProperty("Name", "firstName", TEXT),
+                filterProperty("Age", "age", NUMBER),
+                filterProperty("Country", "placeOfBirth.country.name", TEXT));
+    }
+
+
+     public static FilterProperty filterProperty(String title,String name, FilterType type) {
+            return new FilterPropertyImpl(title,name, type);
+        }
+
+    private static class FilterPropertyImpl extends FilterPropertyBase {
+
+        private String title;
+        private String name;
+        private FilterType type;
+
+
+        private FilterPropertyImpl(String title, String name, FilterType type) {
+            this.title = title;
+            this.name = name;
+            this.type = type;
+        }
+
+        @Override
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        @Override
+        public FilterType getType() {
+            return type;
+        }
+
+        public void setType(FilterType type) {
+            this.type = type;
+        }
+
     }
 
 }

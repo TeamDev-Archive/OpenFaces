@@ -43,18 +43,20 @@ public class PropertyLocator implements Serializable {
         } else if (!(expression instanceof String))
             throw new IllegalArgumentException("expression can be either ValueExpression or String, but it is: " + expression.getClass().getName());
         this.expression = expression;
-        this.component = component;
-        Integer prevUiDataIndex = null;
-        if (component instanceof OUIData) {
-            UIData uiData = (UIData) component;
-            if (uiData.getRowIndex() != -1) {
-                prevUiDataIndex = uiData.getRowIndex();
-                uiData.setRowIndex(-1);
+        if (component!=null){
+            this.component = component;
+            Integer prevUiDataIndex = null;
+            if (component instanceof OUIData) {
+                UIData uiData = (UIData) component;
+                if (uiData.getRowIndex() != -1) {
+                    prevUiDataIndex = uiData.getRowIndex();
+                    uiData.setRowIndex(-1);
+                }
             }
+            this.componentId = ((UIComponent) component).getClientId(FacesContext.getCurrentInstance());
+            if (prevUiDataIndex != null)
+                ((OUIData) component).setRowIndex(prevUiDataIndex);
         }
-        this.componentId = ((UIComponent) component).getClientId(FacesContext.getCurrentInstance());
-        if (prevUiDataIndex != null)
-            ((OUIData) component).setRowIndex(prevUiDataIndex);
     }
 
     private FilterableComponent getComponent() {

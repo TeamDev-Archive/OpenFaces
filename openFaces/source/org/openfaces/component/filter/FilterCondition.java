@@ -12,6 +12,9 @@
 
 package org.openfaces.component.filter;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * This enumeration defines a list of filter conditions that can be used by the filter components. 
  *
@@ -74,6 +77,17 @@ public enum FilterCondition {
             default:
                 throw new IllegalStateException("Unknown filter condition: " + this);
         }
+    }
+
+
+    private static final Map<String, FilterCondition> mapByName = new HashMap<String, FilterCondition>();
+    static{
+        for (FilterCondition filterCondition : values()){
+            mapByName.put(filterCondition.getName(), filterCondition);
+        }
+    }
+    public static FilterCondition byName(String name){
+        return mapByName.get(name);
     }
 
 }
