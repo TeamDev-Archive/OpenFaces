@@ -741,4 +741,24 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         Rendering.addJsonParam(rowsInitInfo, "rowStylesMap", TableUtil.getStylesMapAsJSONObject(rowStylesMap));
         Rendering.addJsonParam(rowsInitInfo, "cellStylesMap", TableUtil.getStylesMapAsJSONObject(cellStylesMap));
     }
+
+    public static boolean isAjaxRowLoadingInProgress(FacesContext context) {
+        return isAjaxPortionRequestInProgress(context, "rows");
+    }
+
+    protected static boolean isAjaxPortionRequestInProgress(FacesContext context, String expectedPortionName) {
+        boolean ajaxRequestInProgress = AjaxUtil.isAjaxRequest(context);
+        if (!ajaxRequestInProgress)
+            return false;
+
+        List<String> portions = AjaxUtil.getRequestedAjaxPortionNames(context);
+        if (portions == null)
+            return false;
+
+        for (String portionName : portions) {
+            if (portionName.startsWith(expectedPortionName))
+                return true;
+        }
+        return false;
+    }
 }

@@ -13,14 +13,13 @@ package org.openfaces.renderkit.table;
 
 import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.BaseColumn;
+import org.openfaces.component.table.NodeInfoForRow;
 import org.openfaces.component.table.TreeColumn;
 import org.openfaces.component.table.TreePath;
 import org.openfaces.component.table.TreeTable;
-import org.openfaces.component.table.NodeInfoForRow;
 import org.openfaces.org.json.JSONArray;
-import org.openfaces.org.json.JSONObject;
 import org.openfaces.org.json.JSONException;
-import org.openfaces.util.AjaxUtil;
+import org.openfaces.org.json.JSONObject;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
@@ -167,19 +166,7 @@ public class TreeTableRenderer extends AbstractTableRenderer {
     }
 
     public static boolean isAjaxFoldingInProgress(FacesContext context) {
-        boolean ajaxRequestInProgress = AjaxUtil.isAjaxRequest(context);
-        if (!ajaxRequestInProgress)
-            return false;
-
-        List<String> portions = AjaxUtil.getRequestedAjaxPortionNames(context);
-        if (portions == null)
-            return false;
-
-        for (String portionName : portions) {
-            if (portionName.startsWith(SUB_ROWS_PORTION))
-                return true;
-        }
-        return false;
+        return isAjaxPortionRequestInProgress(context, SUB_ROWS_PORTION);
     }
 
     @Override

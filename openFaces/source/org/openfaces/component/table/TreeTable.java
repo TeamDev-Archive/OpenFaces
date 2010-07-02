@@ -18,8 +18,6 @@ import org.openfaces.util.Environment;
 import org.openfaces.util.ValueBindings;
 
 import javax.el.ValueExpression;
-import javax.faces.FacesException;
-import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
@@ -115,7 +113,10 @@ public class TreeTable extends AbstractTable {
         super.beforeProcessDecodes(context);
         TableDataModel model = getModel();
         model.prepareForRestoringRowIndexes();
-        boolean readFreshData = TreeTableRenderer.isAjaxFoldingInProgress(context) || isRowsDecodingRequired();
+        boolean readFreshData =
+                TreeTableRenderer.isAjaxFoldingInProgress(context) ||
+                        TreeTableRenderer.isAjaxRowLoadingInProgress(context) ||
+                        isRowsDecodingRequired();
         prepareModelFromTreeStructure(readFreshData);
 
         TableDataModel.RestoredRowIndexes rri = model.restoreRowIndexes();
