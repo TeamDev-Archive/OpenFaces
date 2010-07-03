@@ -754,7 +754,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         if (!ajaxRequestInProgress)
             return false;
 
-        List<String> portions = AjaxUtil.getRequestedAjaxPortionNames(context);
+        List<String> portions = AjaxUtil.getAjaxPortionNames(context);
         if (portions == null)
             return false;
 
