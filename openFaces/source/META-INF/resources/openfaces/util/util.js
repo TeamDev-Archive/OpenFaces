@@ -2627,10 +2627,13 @@ if (!window.O$) {
     };
 
     O$.addEventHandler(component, "click", function(evt) {
-      if (window.getSelection) {
-        if (window.getSelection() != "")
-          return; // don't switch focus to make text selection possible under FF (JSFC-1134)
-      }
+      var selectedText = window.getSelection
+              ? window.getSelection() :
+              (document.selection && document.selection.createRange) ? document.selection.createRange().text : "";
+
+      if (selectedText != "")
+        return; // don't switch focus to make text selection possible under FF (JSFC-1134) and IE
+
       var e = evt ? evt : event;
       if (component._focused)
         return;
