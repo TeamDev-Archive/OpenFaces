@@ -276,6 +276,7 @@ O$.Tables = {
         function addRow(area, rowNode) {
           if (!area || !rowNode) return;
           var nextRowIdx = afterIndex + 1 + i;
+          if (area._rowContainer.childNodes.length > 0 && area._rowContainer.childNodes[0]._fakeRow) nextRowIdx++;
           if (nextRowIdx < area._rowContainer.childNodes.length)
             area._rowContainer.insertBefore(rowNode, area._rowContainer.childNodes[nextRowIdx]);
           else
@@ -404,6 +405,7 @@ O$.Tables = {
               if (fakeRowRequired) {
                 if (!this._fakeRow) {
                   this._fakeRow = document.createElement("tr");
+                  this._fakeRow._fakeRow = true;
                   this._fakeRow.style.display = "none";
                   if (this._tag)
                     this._tag.insertBefore(this._fakeRow, this._tag.firstChild);
@@ -472,6 +474,7 @@ O$.Tables = {
                     if (!rowContainer._fakeRow) {
                       rowContainer._fakeRow = document.createElement("tr");
                       rowContainer._fakeRow.style.display = "none";
+                      rowContainer._fakeRow._fakeRow = true;
                       rowContainer.insertBefore(rowContainer._fakeRow, rowContainer.firstChild);
                     }
                   }
@@ -1583,7 +1586,7 @@ O$.Tables = {
       var colTagClassName = !column._useCellStyles ? column._className : "";
       if (column._useCellStyles && O$.Tables._isFakeRowRequired() && column._className) {
         var width = O$.getStyleClassProperty(column._className, "width");
-        // don't allow the column width to be ignore due to the fake row, e.g. in the 50px width in DayTable's time column
+        // don't allow the column width to be ignored due to the fake row, e.g. in the 50px width in DayTable's time column
         if (width) {
           colTagClassName += " " + O$.createCssClass("width: " + width);
         }
