@@ -332,6 +332,14 @@ O$.Tables = {
     // update body section style in case of the simulated sections mode
     this.body._updateStyle();
 
+    if (this._params.scrolling) {
+      var tbl = this;
+      O$.invokeFunctionAfterDelay(function() {
+        tbl._alignRowHeights();
+        tbl._synchronizeVerticalAreaScrolling();
+      }, 50);
+    }
+
   },
 
 
@@ -2217,18 +2225,24 @@ O$.Tables = {
 
 
     function synchronizeAreaScrolling() {
-      mainScrollingArea._scrollingDiv.onscroll = function(e) {
-        O$.setHiddenField(table, table.id + "::scrollPos",
-                "[" + mainScrollingArea._scrollingDiv.scrollLeft + "," + mainScrollingArea._scrollingDiv.scrollTop + "]");
+      table._synchronizeHorizontalAreaScrolling = function() {
         [table.header, table.footer].forEach(function (section) {
           if (!section || !section._centerScrollingArea) return;
           if (section._centerScrollingArea._scrollingDiv)
             section._centerScrollingArea._scrollingDiv.scrollLeft = mainScrollingArea._scrollingDiv.scrollLeft;
         });
+      };
+      table._synchronizeVerticalAreaScrolling = function() {
         [table.body._leftScrollingArea, table.body._rightScrollingArea].forEach(function (area) {
           if (!area) return;
           area._scrollingDiv.scrollTop = mainScrollingArea._scrollingDiv.scrollTop;
         });
+      };
+      mainScrollingArea._scrollingDiv.onscroll = function(e) {
+        O$.setHiddenField(table, table.id + "::scrollPos",
+                "[" + mainScrollingArea._scrollingDiv.scrollLeft + "," + mainScrollingArea._scrollingDiv.scrollTop + "]");
+        table._synchronizeHorizontalAreaScrolling();
+        table._synchronizeVerticalAreaScrolling();
         if (table.onscroll)
           table.onscroll(e);
       };
