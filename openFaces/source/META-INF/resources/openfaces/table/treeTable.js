@@ -70,7 +70,7 @@ O$.TreeTable = {
 
         }
         O$.invokeFunctionAfterDelay(function() {
-          table._alignRowHeights();
+//          table._alignRowHeights();
           table._synchronizeVerticalAreaScrolling();
         }, 50);
         
