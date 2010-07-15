@@ -115,10 +115,8 @@ public class ColumnResizingRenderer extends RendererBase {
 
         ColumnResizing columnResizing = (ColumnResizing) component;
         ColumnResizingState resizingState = columnResizing.getResizingState();
-        if (resizingState == null) {
+        if (resizingState == null)
             resizingState = new ColumnResizingState();
-            columnResizing.setResizingState(resizingState);
-        }
 
         resizingState.setTableWidth(tableWidth);
 
@@ -133,5 +131,6 @@ public class ColumnResizingRenderer extends RendererBase {
 
             resizingState.setColumnWidth(column.getId(), newWidth);
         }
+        columnResizing.setResizingState(resizingState);
     }
 }
