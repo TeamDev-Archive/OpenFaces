@@ -215,7 +215,7 @@ public class UtilPhaseListener extends PhaseListenerBase {
             ELContext elContext = context.getELContext();
             UIComponent component = null;
             if (actionComponentId != null)
-                component = findComponentById(viewRoot, actionComponentId, false, false, false);
+                component = findComponentById(viewRoot, actionComponentId, true, false, false);
             if (component == null)
                 component = viewRoot;
 
