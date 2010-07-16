@@ -5590,6 +5590,20 @@
     <tag-class>org.openfaces.taglib.jsp.table.SingleRowSelectionJspTag</tag-class>
     <body-content>JSP</body-content>
     <attribute>
+      <description>A flag that indicates whether or not this selection tag should be considered active. Specifying
+        rendered to false is identical to not specifying the selection tag at all. This might be useful for dynamic
+        changing between single and multiple selection by declaring both single and multiple selection tags and
+        specifying rendered to true for only one of them.
+      </description>
+      <name>rendered</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>The index of the selected row. The index of the first row is 0.
         The value "-1" means there is no row currently selected or the selected row
         is not visible because of another page being viewed or filtering applied.
@@ -5767,6 +5781,20 @@
     <name>multipleRowSelection</name>
     <tag-class>org.openfaces.taglib.jsp.table.MultipleRowSelectionJspTag</tag-class>
     <body-content>JSP</body-content>
+    <attribute>
+      <description>A flag that indicates whether or not this selection tag should be considered active. Specifying
+        rendered to false is identical to not specifying the selection tag at all. This might be useful for dynamic
+        changing between single and multiple selection by declaring both single and multiple selection tags and
+        specifying rendered to true for only one of them.
+      </description>
+      <name>rendered</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
     <attribute>
       <description>Indexes of the selected rows. The index of the first row is 0.</description>
       <name>rowIndexes</name>
@@ -9499,6 +9527,20 @@ means that only root nodes and their immediate children are preloaded -->
     <tag-class>org.openfaces.taglib.jsp.table.SingleNodeSelectionJspTag</tag-class>
     <body-content>JSP</body-content>
     <attribute>
+      <description>A flag that indicates whether or not this selection tag should be considered active. Specifying
+        rendered to false is identical to not specifying the selection tag at all. This might be useful for dynamic
+        changing between single and multiple selection by declaring both single and multiple selection tags and
+        specifying rendered to true for only one of them.
+      </description>
+      <name>rendered</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>The node data object for a currently selected node.
         The value "null" means that no node is currently selected.
       </description>
@@ -9675,6 +9717,20 @@ means that only root nodes and their immediate children are preloaded -->
     <name>multipleNodeSelection</name>
     <tag-class>org.openfaces.taglib.jsp.table.MultipleNodeSelectionJspTag</tag-class>
     <body-content>JSP</body-content>
+    <attribute>
+      <description>A flag that indicates whether or not this selection tag should be considered active. Specifying
+        rendered to false is identical to not specifying the selection tag at all. This might be useful for dynamic
+        changing between single and multiple selection by declaring both single and multiple selection tags and
+        specifying rendered to true for only one of them.
+      </description>
+      <name>rendered</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
     <attribute>
       <description>The node data objects for a currently selected node.
         The value "null" means that no node is currently selected.

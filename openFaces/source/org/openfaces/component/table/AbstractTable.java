@@ -872,16 +872,11 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     }
 
     private AbstractTableSelection findSelectionChild() {
-        List<UIComponent> children = getChildren();
-        AbstractTableSelection selection = null;
-        for (UIComponent child : children) {
-            if (child instanceof AbstractTableSelection) {
-                if (selection != null)
-                    throw new RuntimeException("There should be only one selection child under this component: " + getId());
-                selection = (AbstractTableSelection) child;
-            }
-        }
-        return selection;
+        List<AbstractTableSelection> selectionChildren =
+                Components.findChildrenWithClass(this, AbstractTableSelection.class, true, false);
+        if (selectionChildren.size() > 1)
+            throw new RuntimeException("There should be only one selection child with its rendered attribute set to true under this component: " + getId());
+        return selectionChildren.size() > 0 ? selectionChildren.get(0) : null;
     }
 
     protected void rememberSelectionByKeys() {
