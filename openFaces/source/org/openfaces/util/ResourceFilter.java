@@ -436,11 +436,14 @@ public class ResourceFilter implements Filter {
             writer.println("\" rel=\"stylesheet\"/>");
         }
 
-        writer.print("<link type=\"text/css\" href=\"");
-        String defaultCssUrl = httpServletRequest.getContextPath() + INTERNAL_RESOURCE_PATH + Resources.META_INF_RESOURCES_ROOT.substring(1) +
-                "default" + "-" + Resources.getVersionString() + ".css"; // render default.css
-        writer.print(defaultCssUrl);
-        writer.println("\" rel=\"stylesheet\"/>");
+        boolean skipDefaultCss = servletRequest.getParameterMap().containsKey("skipDefaultCss");
+        if (!skipDefaultCss) {
+            writer.print("<link type=\"text/css\" href=\"");
+            String defaultCssUrl = httpServletRequest.getContextPath() + INTERNAL_RESOURCE_PATH + Resources.META_INF_RESOURCES_ROOT.substring(1) +
+                    "default" + "-" + Resources.getVersionString() + ".css"; // render default.css
+            writer.print(defaultCssUrl);
+            writer.println("\" rel=\"stylesheet\"/>");
+        }
 
         List<String> jsLibraries = (List<String>) servletRequest.getAttribute(Resources.HEADER_JS_LIBRARIES);
 
