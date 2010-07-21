@@ -12,9 +12,7 @@
 package org.openfaces.component.panel;
 
 import org.openfaces.component.CaptionArea;
-import org.openfaces.component.CompoundComponent;
 import org.openfaces.component.EditableStateHolder;
-import org.openfaces.component.ExpansionToggleButton;
 import org.openfaces.component.LoadingMode;
 import org.openfaces.component.OUIClientAction;
 import org.openfaces.event.StateChangeListener;
@@ -26,10 +24,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.el.MethodBinding;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.ComponentSystemEvent;
-import javax.faces.event.ListenerFor;
-import javax.faces.event.PostAddToViewEvent;
 import javax.faces.event.ValueChangeListener;
 import javax.faces.validator.Validator;
 
@@ -41,9 +35,8 @@ import javax.faces.validator.Validator;
  *
  * @author Kharchenko
  */
-@ListenerFor(systemEventClass = PostAddToViewEvent.class)
 @ResourceDependency(name = "jsf.js", library = "javax.faces")
-public class FoldingPanel extends AbstractPanelWithCaption implements CompoundComponent, EditableStateHolder {
+public class FoldingPanel extends AbstractPanelWithCaption implements EditableStateHolder {
     public static final String COMPONENT_TYPE = "org.openfaces.FoldingPanel";
     public static final String COMPONENT_FAMILY = "org.openfaces.FoldingPanel";
 
@@ -263,20 +256,6 @@ public class FoldingPanel extends AbstractPanelWithCaption implements CompoundCo
 
     private boolean isContentPreloaded() {
         return Boolean.TRUE.equals(getAttributes().get("_contentPreloaded_"));
-    }
-
-    @Override
-    public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
-        super.processEvent(event);
-        if (event instanceof PostAddToViewEvent) {
-            createSubComponents(getFacesContext());
-        }
-    }
-
-    public void createSubComponents(FacesContext context) {
-        CaptionArea captionArea = Components.getOrCreateFacet(
-                context, this, CaptionArea.COMPONENT_TYPE, "_defaultButtonsArea", CaptionArea.class);
-        Components.createChildComponent(context, captionArea, ExpansionToggleButton.COMPONENT_TYPE, "toggle");
     }
 
     public Object getSubmittedValue() {

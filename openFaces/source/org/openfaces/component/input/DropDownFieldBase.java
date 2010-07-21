@@ -11,21 +11,15 @@
  */
 package org.openfaces.component.input;
 
-import org.openfaces.component.CompoundComponent;
 import org.openfaces.component.Side;
 import org.openfaces.util.Components;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.ComponentSystemEvent;
-import javax.faces.event.ListenerFor;
-import javax.faces.event.PostAddToViewEvent;
 
-@ListenerFor(systemEventClass = PostAddToViewEvent.class)
 @ResourceDependency(name = "jsf.js", library = "javax.faces")
-public abstract class DropDownFieldBase extends DropDownComponent implements CompoundComponent {
+public abstract class DropDownFieldBase extends DropDownComponent {
     private Boolean autoComplete;
     private Side listAlignment;
     private Boolean customValueAllowed;
@@ -61,7 +55,7 @@ public abstract class DropDownFieldBase extends DropDownComponent implements Com
     @Override
     public void setId(String id) {
         super.setId(id);
-        DropDownPopup popup = getPopup();
+        DropDownPopup popup = getPopup(false);
         if (popup != null) {
             popup.setId(popup.getId());
         }
@@ -400,23 +394,17 @@ public abstract class DropDownFieldBase extends DropDownComponent implements Com
         size = (Integer) values[i++];
     }
 
-    @Override
-    public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
-        super.processEvent(event);
-        if (event instanceof PostAddToViewEvent) {
-            createSubComponents(getFacesContext());
-        }
-    }
-
-    public void createSubComponents(FacesContext context) {
-        Components.getOrCreateFacet(context, this, DropDownPopup.COMPONENT_TYPE, "popup", DropDownPopup.class);
+    public DropDownPopup getPopup() {
+        return getPopup(true);
     }
 
     /**
      * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
      * by any application code.
      */
-    public DropDownPopup getPopup() {
+    public DropDownPopup getPopup(boolean create) {
+        if (create)
+            Components.getOrCreateFacet(getFacesContext(), this, DropDownPopup.COMPONENT_TYPE, "popup", DropDownPopup.class);
         return (DropDownPopup) getFacet("popup");
     }
 

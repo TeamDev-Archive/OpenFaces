@@ -26,12 +26,7 @@ import org.openfaces.util.Styles;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.ComponentSystemEvent;
-import javax.faces.event.ComponentSystemEventListener;
-import javax.faces.event.ListenerFor;
 import javax.faces.event.PhaseId;
-import javax.faces.event.PostAddToViewEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,9 +39,7 @@ import java.util.TimeZone;
  * @author Dmitry Pikhulya
  * @author Roman Porotnikov
  */
-@ListenerFor(systemEventClass = PostAddToViewEvent.class)
-public abstract class TimetableViewRenderer extends RendererBase
-        implements AjaxPortionRenderer, ComponentSystemEventListener {
+public abstract class TimetableViewRenderer extends RendererBase implements AjaxPortionRenderer {
 
     public static final String USE_RESOURCE_SEPARATION_MODE_ATTR = "_of_useResourceSeparationMode";
     public static final String EVENTEDITOR_RESOURCES_ATTR = "_resources";
@@ -62,14 +55,6 @@ public abstract class TimetableViewRenderer extends RendererBase
         EventPreview preview = timetableView.getEventPreview();
         if (preview != null) {
             preview.encodeAll(context);
-        }
-    }
-
-    public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
-        if (event instanceof PostAddToViewEvent) {
-            FacesContext context = FacesContext.getCurrentInstance();
-            TimetableView timetableView = (TimetableView) event.getComponent();
-            getOrCreateEventEditor(context, timetableView);
         }
     }
 

@@ -14,7 +14,7 @@ package org.openfaces.component;
 import javax.faces.context.FacesContext;
 
 /**
- * This is an interface for OpenFaces components that need to create other subcomponents for rendering their contents.
+ * This is an interface for OpenFaces components that need to create other sub-components for rendering their contents.
  * Application developers should pay attention to this interface when creating components programmatically in backing
  * beans. All components that implement this interface should have their createSubComponents method invoked when a
  * component is added to the view.

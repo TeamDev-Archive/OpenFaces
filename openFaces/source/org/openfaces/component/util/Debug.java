@@ -11,15 +11,11 @@
  */
 package org.openfaces.component.util;
 
-import org.openfaces.component.CompoundComponent;
 import org.openfaces.component.window.Window;
 import org.openfaces.renderkit.CompoundComponentRenderer;
 
 import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.ComponentSystemEvent;
-import javax.faces.event.ListenerFor;
-import javax.faces.event.PostAddToViewEvent;
+import java.io.IOException;
 
 /**
  * This component is under construction. API is subject to change. Please avoid using this component in a production
@@ -27,8 +23,7 @@ import javax.faces.event.PostAddToViewEvent;
  *
  * @author Dmitry Pikhulya
  */
-@ListenerFor(systemEventClass = PostAddToViewEvent.class)
-public class Debug extends Window implements CompoundComponent {
+public class Debug extends Window {
     public static final String COMPONENT_TYPE = "org.openfaces.Debug";
     public static final String COMPONENT_FAMILY = "org.openfaces.Debug";
 
@@ -47,14 +42,16 @@ public class Debug extends Window implements CompoundComponent {
     }
 
     @Override
-    public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
-        super.processEvent(event);
-        if (event instanceof PostAddToViewEvent) {
-            createSubComponents(getFacesContext());
-        }
+    public void encodeBegin(FacesContext context) throws IOException {
+        createSubComponents(context);
+        super.encodeBegin(context);
     }
 
     public void createSubComponents(FacesContext context) {
+        String createdKey = "_subComponentsCreated";
+        if (getAttributes().containsKey(createdKey)) return;
+        getAttributes().put(createdKey, true);
+
         ((CompoundComponentRenderer) getRenderer(context)).createSubComponents(context, this);
     }
 }

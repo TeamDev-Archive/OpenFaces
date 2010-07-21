@@ -33,7 +33,7 @@ import java.io.IOException;
  *
  * @author Andrew Palval
  */
-public class TabbedPane extends MultiPageContainer implements TabSelectionHolder, CompoundComponent {
+public class TabbedPane extends MultiPageContainer implements TabSelectionHolder {
     public static final String COMPONENT_TYPE = "org.openfaces.TabbedPane";
     public static final String COMPONENT_FAMILY = "org.openfaces.TabbedPane";
 

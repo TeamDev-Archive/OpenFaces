@@ -11,24 +11,14 @@
  */
 package org.openfaces.component.calendar;
 
-import org.openfaces.component.input.DateChooser;
-import org.openfaces.component.input.DateChooserPopup;
-import org.openfaces.renderkit.input.DateChooserRenderer;
-import org.openfaces.util.Components;
 import org.openfaces.util.ValueBindings;
 
-import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.ComponentSystemEvent;
-import javax.faces.event.ListenerFor;
-import javax.faces.event.PostAddToViewEvent;
 
 /**
  * @author Kharchenko
  */
-@ListenerFor(systemEventClass = PostAddToViewEvent.class)
 public class DateRanges extends UIComponentBase {
     public static final String COMPONENT_TYPE = "org.openfaces.DateRanges";
     public static final String COMPONENT_FAMILY = "org.openfaces.DateRanges";
@@ -170,16 +160,4 @@ public class DateRanges extends UIComponentBase {
         rolloverSelectedDayClass = (String) values[i++];
     }
 
-    @Override
-    public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
-        super.processEvent(event);
-        if (event instanceof PostAddToViewEvent) {
-            UIComponent parent = getParent();
-            if (parent instanceof DateChooser) {
-                DateChooserPopup popup = Components.getChildWithClass(parent, DateChooserPopup.class, DateChooserRenderer.POPUP_SUFFIX);
-                Calendar calendar = popup.getCalendar();
-                calendar.getChildren().add(this);
-            }
-        }
-    }
 }

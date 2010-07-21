@@ -18,10 +18,6 @@ import org.openfaces.util.Rendering;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.ComponentSystemEvent;
-import javax.faces.event.ListenerFor;
-import javax.faces.event.PostAddToViewEvent;
 import java.io.IOException;
 
 /**
@@ -30,7 +26,6 @@ import java.io.IOException;
  *
  * @author Kharchenko
  */
-@ListenerFor(systemEventClass = PostAddToViewEvent.class)
 public class DateChooserPopup extends AbstractPopup {
     public static final String COMPONENT_TYPE = "org.openfaces.DateChooserPopup";
 
@@ -49,14 +44,6 @@ public class DateChooserPopup extends AbstractPopup {
 
     protected void encodeContent(FacesContext context) throws IOException {
         Rendering.renderChildren(context, this);
-    }
-
-    @Override
-    public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
-        super.processEvent(event);
-        if (event instanceof PostAddToViewEvent) {
-            Components.getChildWithClass(this, Calendar.class, CALENDAR_SUFFIX);
-        }
     }
 
     public Calendar getCalendar() {

@@ -11,7 +11,6 @@
  */
 package org.openfaces.component.timetable;
 
-import org.openfaces.component.CompoundComponent;
 import org.openfaces.component.input.DateChooser;
 import org.openfaces.component.input.DropDownField;
 import org.openfaces.component.window.Window;
@@ -20,16 +19,12 @@ import org.openfaces.util.ValueBindings;
 
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.ComponentSystemEvent;
-import javax.faces.event.ListenerFor;
-import javax.faces.event.PostAddToViewEvent;
+import java.io.IOException;
 
 /**
  * @author Dmitry Pikhulya
  */
-@ListenerFor(systemEventClass = PostAddToViewEvent.class)
-public class EventEditorDialog extends Window implements CompoundComponent {
+public class EventEditorDialog extends Window {
     public static final String COMPONENT_TYPE = "org.openfaces.EventEditorDialog";
     public static final String COMPONENT_FAMILY = "org.openfaces.EventEditorDialog";
 
@@ -250,14 +245,16 @@ public class EventEditorDialog extends Window implements CompoundComponent {
     }
 
     @Override
-    public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
-        super.processEvent(event);
-        if (event instanceof PostAddToViewEvent) {
-            createSubComponents(getFacesContext());
+    public void encodeBegin(FacesContext context) throws IOException {
+        String subComponentsCreatedKey = "_subComponentsCreated";
+        if (!getAttributes().containsKey(subComponentsCreatedKey)) {
+            getAttributes().put(subComponentsCreatedKey, true);
+            createSubComponents(context);
         }
+        super.encodeBegin(context);
     }
 
-    public void createSubComponents(FacesContext context) {
+    private void createSubComponents(FacesContext context) {
         ((CompoundComponentRenderer) getRenderer(context)).createSubComponents(context, this);
     }
 

@@ -12,6 +12,7 @@
 package org.openfaces.renderkit.input;
 
 import org.openfaces.component.calendar.Calendar;
+import org.openfaces.component.calendar.DateRanges;
 import org.openfaces.component.input.DateChooser;
 import org.openfaces.component.input.DateChooserPopup;
 import org.openfaces.component.input.DropDownComponent;
@@ -178,6 +179,12 @@ public class DateChooserRenderer extends DropDownComponentRenderer {
 
         c.setTodayText(dateChooser.getTodayText());
         c.setNoneText(dateChooser.getNoneText());
+
+        for (UIComponent child : children) {
+            if (child instanceof DateRanges) {
+                c.getChildren().add(child);
+            }
+        }
 
         popup.encodeAll(context);
         Rendering.encodeClientActions(context, component);

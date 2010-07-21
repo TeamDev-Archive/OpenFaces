@@ -13,6 +13,7 @@ package org.openfaces.component;
 
 // todo: resolve datatable package dependencies
 
+import org.openfaces.component.filter.TextSearchFilter;
 import org.openfaces.component.table.Cell;
 import org.openfaces.component.table.Columns;
 import org.openfaces.component.table.DynamicCol;
@@ -83,6 +84,7 @@ import java.util.Set;
  * <li>MOD-10: Replaced super.getClientId() invokation in invokeOnComponent onto its replacement super_getClientId()</li>
  * <li>MOD-11: Extended visitTree method to account for extensions that are made through component's child tags, in
  * particular for state saving for such tags as <o:singleRowSelection> to work properly.</li>
+ * <li>MOD-12: Adjusted row state saving for dynamic component creation in filter components</li>
  * </ul>
  * <p/>
  * <p/>
@@ -600,6 +602,11 @@ public class OUIData extends UIData implements NamingContainer, UniqueIdVendor, 
 
             UIComponent child = childIterator.next();
             if (!child.isTransient()) {
+                // <MOD-12> added
+                if (child instanceof CompoundComponent) {
+                    ((CompoundComponent) child).createSubComponents(FacesContext.getCurrentInstance());
+                }
+                // </MOD-12>
                 // Add an entry to the collection, being an array of two
                 // elements. The first element is the state of the children
                 // of this component; the second is the state of the current

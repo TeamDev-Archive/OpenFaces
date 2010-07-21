@@ -11,7 +11,6 @@
  */
 package org.openfaces.component.filter;
 
-import org.openfaces.component.CompoundComponent;
 import org.openfaces.component.FilterableComponent;
 import org.openfaces.component.table.BaseColumn;
 import org.openfaces.renderkit.TableUtil;
@@ -23,10 +22,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.ComponentSystemEvent;
-import javax.faces.event.ListenerFor;
-import javax.faces.event.PostAddToViewEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -36,8 +31,7 @@ import java.util.TreeSet;
 /**
  * @author Dmitry Pikhulya
  */
-@ListenerFor(systemEventClass = PostAddToViewEvent.class)
-public abstract class ExpressionFilter extends Filter implements CompoundComponent, ValueHolder {
+public abstract class ExpressionFilter extends Filter implements ValueHolder {
     private static final String DEFAULT_ALL_RECORDS_CRITERION_NAME = "<All>";
     private static final String DEFAULT_EMPTY_RECORDS_CRITERION_NAME = "<Empty>";
     private static final String DEFAULT_NON_EMPTY_RECORDS_CRITERION_NAME = "<Non-empty>";
@@ -378,13 +372,13 @@ public abstract class ExpressionFilter extends Filter implements CompoundCompone
     }
 
     /**
-     *
      * @param condition
      */
     public void setCondition(ExpressionFilterCriterion condition) {
-        if (condition.getPropertyLocator() != null) throw new IllegalArgumentException("The condition attribute should " +
-                "receive ExpressionFilterCriterion with just \"condition\" and \"inverse\" attributes specified, but " +
-                "propertyLocator was specified.");
+        if (condition.getPropertyLocator() != null)
+            throw new IllegalArgumentException("The condition attribute should " +
+                    "receive ExpressionFilterCriterion with just \"condition\" and \"inverse\" attributes specified, but " +
+                    "propertyLocator was specified.");
         if (condition.getArg1() != null) throw new IllegalArgumentException("The condition attribute should " +
                 "receive ExpressionFilterCriterion with just \"condition\" and \"inverse\" attributes specified, but " +
                 "arg1 was specified.");
@@ -438,17 +432,6 @@ public abstract class ExpressionFilter extends Filter implements CompoundCompone
             criterionExpression.setValue(context.getELContext(), value);
             criterionModelUpdateRequired = false;
         }
-    }
-
-    @Override
-    public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
-        super.processEvent(event);
-        if (event instanceof PostAddToViewEvent) {
-            createSubComponents(getFacesContext());
-        }
-    }
-
-    public void createSubComponents(FacesContext context) {
     }
 
 }
