@@ -23,6 +23,7 @@ import org.openfaces.renderkit.CaptionButtonRenderer;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.util.AjaxUtil;
+import org.openfaces.util.Components;
 import org.openfaces.util.Environment;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.Resources;
@@ -214,14 +215,14 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
     }
 
     private void encodeColumnMenuSupport(FacesContext context, AbstractTable table, ScriptBuilder buf) throws IOException {
-        UIComponent component = table.getFacet(FACET_COLUMN_MENU);
+        UIComponent component = Components.getFacet(table, FACET_COLUMN_MENU);
         if (component == null) return;
         if (!(component instanceof PopupMenu))
             throw new FacesException(
                     "The component inside of \"" + FACET_COLUMN_MENU + "\" facet must be a PopupMenu or descendant component, " +
                             "though the following component was found: " + component.getClass().getName() +
                             ". table id: \"" + table.getClientId(context) + "\"");
-        UIComponent buttonComponent = table.getFacet(FACET_COLUMN_MENU_BUTTON);
+        UIComponent buttonComponent = Components.getFacet(table, FACET_COLUMN_MENU_BUTTON);
         if (buttonComponent != null && !(buttonComponent instanceof CaptionButton))
             throw new FacesException(
                     "The component inside of \"" + FACET_COLUMN_MENU_BUTTON + "\" facet must be a CaptionButton or descendant component, " +
@@ -725,7 +726,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         } finally {
             table.getAttributes().remove(TableStructure.TABLE_STRUCTURE_ATTR);
         }
-        
+
     }
 
     private List<BodyRow> getScrollingAreaRows(BodyCell scrollingAreaCell) {

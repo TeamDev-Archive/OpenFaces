@@ -72,9 +72,9 @@ public class OpenFacesApplication extends ApplicationWrapper {
         // these 3 lines workaround a Mojarra 2.0.2 bug when PostAddToViewEvent handler can be called during
         // state restoring on a postback (contrary to how PostAddToViewEvent JavaDoc dictates). This was reproducible
         // on EventEditorDialogRenderer's PostAddToView event when switching between DayTable demos (through form submission).
-        if (!context.isProcessingEvents()) return;
+//        if (!context.isProcessingEvents()) return;
         boolean postAddToViewEvent = PostAddToViewEvent.class.isAssignableFrom(systemEventClass);
-        if (postAddToViewEvent && context.getCurrentPhaseId() == PhaseId.RESTORE_VIEW && context.isPostback()) return;
+//        if (postAddToViewEvent && context.getCurrentPhaseId() == PhaseId.RESTORE_VIEW && context.isPostback()) return;
         
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
         Object prevConstructingView = null;
@@ -102,9 +102,9 @@ public class OpenFacesApplication extends ApplicationWrapper {
         // these 3 lines workaround a Mojarra 2.0.2 bug when PostAddToViewEvent handler can be called during
         // state restoring on a postback (contrary to how PostAddToViewEvent JavaDoc dictates). This was reproducible
         // on EventEditorDialogRenderer's PostAddToView event when switching between DayTable demos (through form submission).
-        if (!context.isProcessingEvents()) return;
+//        if (!context.isProcessingEvents()) return;
         boolean postAddToViewEvent = PostAddToViewEvent.class.isAssignableFrom(systemEventClass);
-        if (postAddToViewEvent && context.getCurrentPhaseId() == PhaseId.RESTORE_VIEW && context.isPostback()) return;
+//        if (postAddToViewEvent && context.getCurrentPhaseId() == PhaseId.RESTORE_VIEW && context.isPostback()) return;
 
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
         Object prevConstructingView = null;

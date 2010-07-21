@@ -1527,13 +1527,13 @@
     </library>
     <library name="JSF Implementation - Mojarra 2.0">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/mojarra/jsf-impl-2.0.2.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/mojarra/jsf-api-2.0.2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/mojarra/jsf-impl-2.0.3.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/mojarra/jsf-api-2.0.3.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES>
-        <root url="jar://$PROJECT_DIR$/libsrc/mojarra-2.0.2-source.zip!/jsf-api/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/mojarra-2.0.2-source.zip!/jsf-ri/src" />
+        <root url="jar://$PROJECT_DIR$/libsrc/mojarra-2.0.3-FCS-source.zip!/mojarra-2.0.3-FCS-source/jsf-ri/src/main/java" />
+        <root url="jar://$PROJECT_DIR$/libsrc/mojarra-2.0.3-FCS-source.zip!/mojarra-2.0.3-FCS-source/jsf-api/src/main/java" />
       </SOURCES>
     </library>
     <library name="PrimeFaces">

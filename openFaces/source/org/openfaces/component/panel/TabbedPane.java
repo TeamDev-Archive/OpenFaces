@@ -22,10 +22,7 @@ import org.openfaces.util.ValueBindings;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.ComponentSystemEvent;
-import javax.faces.event.ListenerFor;
-import javax.faces.event.PostAddToViewEvent;
+import java.io.IOException;
 
 /**
  * The TabbedPane component is a container that consists of several sub-containers called
@@ -36,7 +33,6 @@ import javax.faces.event.PostAddToViewEvent;
  *
  * @author Andrew Palval
  */
-@ListenerFor(systemEventClass = PostAddToViewEvent.class)
 public class TabbedPane extends MultiPageContainer implements TabSelectionHolder, CompoundComponent {
     public static final String COMPONENT_TYPE = "org.openfaces.TabbedPane";
     public static final String COMPONENT_FAMILY = "org.openfaces.TabbedPane";
@@ -362,14 +358,16 @@ public class TabbedPane extends MultiPageContainer implements TabSelectionHolder
     }
 
     @Override
-    public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
-        super.processEvent(event);
-        if (event instanceof PostAddToViewEvent) {
-            createSubComponents(getFacesContext());
-        }
+    public void encodeBegin(FacesContext context) throws IOException {
+        createSubComponents(context);
+        super.encodeBegin(context);
     }
 
     public void createSubComponents(FacesContext context) {
+        String alreadyDoneKey = "_subComponentsCreated";
+        if (getAttributes().containsKey(alreadyDoneKey))
+            return;
+        getAttributes().put(alreadyDoneKey, true);
         UIComponent tabSet = Components.createChildComponent(context, this, TabSet.COMPONENT_TYPE, TAB_SET_SUFFIX);
         TabSetItems items = (TabSetItems) context.getApplication().createComponent(TabSetItems.COMPONENT_TYPE);
         tabSet.getChildren().add(items);

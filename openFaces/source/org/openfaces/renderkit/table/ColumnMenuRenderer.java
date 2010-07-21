@@ -23,27 +23,25 @@ import org.openfaces.renderkit.command.PopupMenuRenderer;
 import javax.faces.application.Application;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.ComponentSystemEvent;
-import javax.faces.event.ComponentSystemEventListener;
-import javax.faces.event.ListenerFor;
-import javax.faces.event.PostAddToViewEvent;
+import java.io.IOException;
 import java.util.List;
 
-@ListenerFor(systemEventClass = PostAddToViewEvent.class)
-public class ColumnMenuRenderer extends PopupMenuRenderer implements ComponentSystemEventListener {
-    public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
-        UIComponent component = event.getComponent();
+public class ColumnMenuRenderer extends PopupMenuRenderer {
+
+    @Override
+    public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ColumnMenu menu = (ColumnMenu) component;
         if (menu.getChildren().size() == 0) {
             List<UIComponent> menuItems = menu.getChildren();
-            menuItems.add(new SortAscendingMenuItem());
-            menuItems.add(new SortDescendingMenuItem());
-            menuItems.add(new HideColumnMenuItem());
-            menuItems.add(new MenuSeparator());
             Application application = FacesContext.getCurrentInstance().getApplication();
+            menuItems.add(application.createComponent(SortAscendingMenuItem.COMPONENT_TYPE));
+            menuItems.add(application.createComponent(SortDescendingMenuItem.COMPONENT_TYPE));
+            menuItems.add(application.createComponent(HideColumnMenuItem.COMPONENT_TYPE));
+            menuItems.add(application.createComponent(MenuSeparator.COMPONENT_TYPE));
             ColumnVisibilityMenu columnVisibilityMenu = (ColumnVisibilityMenu) application.createComponent(ColumnVisibilityMenu.COMPONENT_TYPE);
             menuItems.add(new MenuItem("Columns", columnVisibilityMenu));
         }
+
+        super.encodeBegin(context, component);
     }
 }

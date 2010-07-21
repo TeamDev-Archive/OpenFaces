@@ -17,7 +17,11 @@ import org.openfaces.util.MessageUtil;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.application.FacesMessage;
+import javax.faces.component.PartialStateHolder;
+import javax.faces.component.StateHolder;
 import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
+
 import static java.lang.Boolean.valueOf;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -104,6 +108,12 @@ public class DateChooser extends DropDownComponent {
 
     @Override
     public Object saveState(FacesContext context) {
+        Converter converter = getConverter();
+        if (converter instanceof PartialStateHolder) {
+            // make programmatically specified converter to be saved in state
+            ((PartialStateHolder) converter).clearInitialState();
+            clearInitialState();
+        }
         return new Object[]{super.saveState(context), calendarStyle, dayStyle,
                 rolloverDayStyle, inactiveMonthDayStyle, rolloverInactiveMonthDayStyle, selectedDayStyle,
                 rolloverSelectedDayStyle, todayStyle, rolloverTodayStyle, disabledDayStyle,

@@ -31,11 +31,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.DateTimeConverter;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.ComponentSystemEvent;
-import javax.faces.event.ComponentSystemEventListener;
-import javax.faces.event.ListenerFor;
-import javax.faces.event.PostAddToViewEvent;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -47,8 +42,7 @@ import java.util.TimeZone;
 /**
  * @author Pavel Kaplin
  */
-@ListenerFor(systemEventClass = PostAddToViewEvent.class)
-public class DateChooserRenderer extends DropDownComponentRenderer implements ComponentSystemEventListener {
+public class DateChooserRenderer extends DropDownComponentRenderer {
 
     @Override
     protected void registerJS(FacesContext context, UIComponent component) throws IOException {
@@ -111,13 +105,9 @@ public class DateChooserRenderer extends DropDownComponentRenderer implements Co
                 ? dateChooser.getTimeZone()
                 : TimeZone.getDefault();
         converter.setTimeZone(timeZone);
+        converter.clearInitialState();
 
         dateChooser.setConverter(converter);
-    }
-
-    public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
-        DateChooser dateChooser = (DateChooser) event.getComponent();
-        Components.getChildWithClass(dateChooser, DateChooserPopup.class, POPUP_SUFFIX);
     }
 
     @Override

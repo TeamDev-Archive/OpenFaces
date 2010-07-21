@@ -14,6 +14,7 @@ package org.openfaces.util;
 import javax.faces.application.Application;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
+import javax.faces.component.UIPanel;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.html.HtmlCommandButton;
 import javax.faces.component.html.HtmlOutputText;
@@ -423,6 +424,26 @@ public class Components {
             if (parentClass.isAssignableFrom(parent.getClass()))
                 return (E) parent;
         return null;
+    }
+
+    public static UIComponent getFacet(UIComponent component, String facetName) {
+        UIComponent facet = component.getFacet(facetName);
+        if (facet == null) return null;
+        if (isImplicitPanel(facet)) {
+            // deal with an implicit panel creation made by RI
+            facet = facet.getChildren().get(0);
+        }
+        return facet;
+    }
+
+    public static boolean isImplicitPanel(UIComponent facet) {
+        return facet instanceof UIPanel && facet.getAttributes().containsKey("com.sun.faces.facelets.IMPLICIT_PANEL");
+    }
+
+    public static UIComponent getFacetOwner(UIComponent facetComponent) {
+        UIComponent parent = facetComponent.getParent();
+        if (isImplicitPanel(parent)) parent = parent.getParent();
+        return parent;
     }
 
 }
