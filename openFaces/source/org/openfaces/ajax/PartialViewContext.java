@@ -51,6 +51,7 @@ import java.util.*;
  */
 public class PartialViewContext extends PartialViewContextWrapper {
     private javax.faces.context.PartialViewContext wrapped;
+    private static final String PORTION_DATAS_KEY = PartialViewContext.class.getName() + ".ajaxPortionDatas";
 
     public PartialViewContext(javax.faces.context.PartialViewContext wrapped) {
         this.wrapped = wrapped;
@@ -60,6 +61,15 @@ public class PartialViewContext extends PartialViewContextWrapper {
     public PartialResponseWriter getPartialResponseWriter() {
         PartialResponseWriter originalWriter = super.getPartialResponseWriter();
         return new PartialResponseWriterWrapper(originalWriter) {
+
+            @Override
+            public void startUpdate(String targetId) throws IOException {
+                if (targetId.equals(PartialResponseWriter.VIEW_STATE_MARKER)) {
+                    prepareAjaxPortions(FacesContext.getCurrentInstance());
+                }
+                super.startUpdate(targetId);
+            }
+
             @Override
             public void endDocument() throws IOException {
                 renderAdditionalPartialResponse();
@@ -221,7 +231,7 @@ public class PartialViewContext extends PartialViewContextWrapper {
         return script;
     }
 
-    private static void renderAjaxPortions(FacesContext context) throws IOException {
+    private static void prepareAjaxPortions(FacesContext context) throws IOException {
         List<String> updatePortions = AjaxUtil.getAjaxPortionNames(context);
         if (updatePortions.isEmpty()) return;
         ExternalContext externalContext = context.getExternalContext();
@@ -238,6 +248,7 @@ public class PartialViewContext extends PartialViewContextWrapper {
         Renderer renderer = renderKit.getRenderer(component.getFamily(), component.getRendererType());
         JSONObject customJSONParam = AjaxUtil.getCustomJSONParam(context);
         AjaxPortionRenderer ajaxComponentRenderer = (AjaxPortionRenderer) renderer;
+        List<PortionData> portionDatas = new ArrayList<PortionData>();
         for (String portionName : updatePortions) {
             StringBuilder portionOutput;
             JSONObject responseData;
@@ -259,20 +270,56 @@ public class PartialViewContext extends PartialViewContextWrapper {
 //                initializationScripts.append(rtLibraryScriptsBuffer).append("\n");
             }
 
-            javax.faces.context.PartialViewContext partialViewContext = context.getPartialViewContext();
-            PartialResponseWriter partialWriter = partialViewContext.getPartialResponseWriter();
+            PortionData portionData = new PortionData(
+                    portionName,
+                    portionOutput.toString(),
+                    responseData,
+                    Resources.getRegisteredJsLibraries(),
+                    rawScriptsBuffer.toString());
+            portionDatas.add(portionData);
+        }
+        context.getExternalContext().getRequestMap().put(PORTION_DATAS_KEY, portionDatas);
+    }
+
+    private static void renderAjaxPortions(FacesContext context) throws IOException {
+        List<PortionData> portionDatas = (List<PortionData>) context.getExternalContext().getRequestMap().get(PORTION_DATAS_KEY);
+        if (portionDatas == null) return;
+        javax.faces.context.PartialViewContext partialViewContext = context.getPartialViewContext();
+        PartialResponseWriter partialWriter = partialViewContext.getPartialResponseWriter();
+        for (PortionData portionData : portionDatas) {
+            portionData.render(partialWriter);
+        }
+    }
+
+    private static class PortionData {
+        private String portionName;
+        private String portionOutput;
+        private JSONObject responseData;
+        private List<String> registeredJsLibraries;
+        private String scripts;
+
+        private PortionData(String portionName, String portionOutput, JSONObject responseData, List<String> registeredJsLibraries, String scripts) {
+            this.portionName = portionName;
+            this.portionOutput = portionOutput;
+            this.responseData = responseData;
+            this.registeredJsLibraries = registeredJsLibraries;
+            this.scripts = scripts;
+        }
+
+        public void render(PartialResponseWriter writer) throws IOException {
             Map<String, String> extensionAttributes = new HashMap<String, String>();
             extensionAttributes.put("ln", "openfaces");
             extensionAttributes.put("type", "portionData");
             extensionAttributes.put("portion", portionName);
-            extensionAttributes.put("text", portionOutput.toString());
+            extensionAttributes.put("text", portionOutput);
             extensionAttributes.put("data", responseData != null ? responseData.toString() : "null");
-            extensionAttributes.put("jsLibs", new JSONArray(Resources.getRegisteredJsLibraries()).toString());
-            extensionAttributes.put("scripts", rawScriptsBuffer.toString());
+            extensionAttributes.put("jsLibs", new JSONArray(registeredJsLibraries).toString());
+            extensionAttributes.put("scripts", scripts);
 
-            partialWriter.startExtension(extensionAttributes);
-            partialWriter.endExtension();
+            writer.startExtension(extensionAttributes);
+            writer.endExtension();
         }
+
     }
 
     private static void renderAjaxResult(FacesContext context) throws IOException {
@@ -290,7 +337,7 @@ public class PartialViewContext extends PartialViewContextWrapper {
 
     private static String resultValueToJsValue(Object resultValue) {
         if (resultValue != null && resultValue.getClass().isArray()) {
-            List resultAsList = new ArrayList();
+            List<Object> resultAsList = new ArrayList<Object>();
             for (int i = 0, count = Array.getLength(resultValue); i < count; i++) {
                 resultAsList.add(Array.get(resultValue, i));
             }
