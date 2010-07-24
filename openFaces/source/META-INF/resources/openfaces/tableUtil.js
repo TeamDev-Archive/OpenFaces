@@ -1458,17 +1458,42 @@ O$.Tables = {
   },
 
   _initColumnOrGroup: function(column, table) {
-    function newClass(declaration) {
+    function newClass_IE(declaration) {
+      if (!O$.Tables._predefinedColClasses) {
+        var styleElement = document.createElement("style");
+        styleElement.setAttribute("type", "text/css");
+        var headTags = document.getElementsByTagName("head");
+        var styleParent = headTags.length > 0 ? headTags[0] : document.getElementsByTagName("body")[0];
+        styleParent.appendChild(styleElement);
+        var buf = new O$.StringBuffer();
+        for (var i = 0; i < 4 * 50; i++)
+          buf.append(".o_predefinedCol").append(i).append("{overflow:hidden} ");
+        styleElement.styleSheet.cssText = buf.toString();
+        O$.Tables._predefinedColClasses = styleElement.styleSheet.rules;
+        O$.Tables._predefinedColClasses._obtained = 0;
+      }
+      var colClasses = O$.Tables._predefinedColClasses;
+      if (colClasses._obtained < colClasses.length) {
+        return {className: "o_predefinedCol" + colClasses._obtained, classObj: colClasses[colClasses._obtained++]};
+      }
+      return newClass_raw(declaration);
+    }
+    function newClass_raw(declaration) {
       var className = O$.createCssClass(declaration, true);
       var cls = O$.findCssRule("." + className);
       return {className: className, classObj: cls};
     }
+    function newClass(declaration) {
+      if (O$.isExplorer())
+        return newClass_IE(declaration);
+      else
+        return newClass_raw(declaration);
+    }
     column._headerCellsClass = newClass("overflow: hidden");
     column._bodyCellsClass = newClass("overflow: hidden");
-    column._footerCellsClass = newClass("overflow: hidden");
-    column._headerColClass = newClass("overflow: hidden");
-    column._bodyColClass = newClass("overflow: hidden");
-    column._footerColClass = newClass("overflow: hidden");
+    if (column.footer)
+      column._footerCellsClass = newClass("overflow: hidden");
+    column._colClass = newClass("overflow: hidden");
 
     column._table = table;
 
@@ -1568,11 +1593,11 @@ O$.Tables = {
 
     column._colTags.forEach(function(colTag) {
       if (table.header && colTag._section == table.header)
-        O$.setStyleMappings(colTag, {cellWidthClass: column._headerColClass.className});
+        O$.setStyleMappings(colTag, {cellWidthClass: column._colClass.className});
       else if (colTag._section == table.body)
-        O$.setStyleMappings(colTag, {cellWidthClass: column._bodyColClass.className});
+        O$.setStyleMappings(colTag, {cellWidthClass: column._colClass.className});
       else if (table.footer && colTag._section == table.footer)
-        O$.setStyleMappings(colTag, {cellWidthClass: column._footerColClass.className});
+        O$.setStyleMappings(colTag, {cellWidthClass: column._colClass.className});
     });
 
     if (column._super_updateStyle)
@@ -1632,20 +1657,19 @@ O$.Tables = {
       var bodyCell = column.body._cells[0];
       var footerCell = column.footer && column.footer._cell;
 
-      function setWidth(cellClass, colClass, cell, tableSection) {
+      var widthForCol = width;
+      if (widthForCol < 0) widthForCol = 0;
+
+      function setWidth(cellClass, cell, tableSection) {
         if (!cell) return;
         calculateWidthCorrection(cell);
         var widthForCell = width - cell._widthCorrection;
         if (widthForCell < 0) widthForCell = 0;
-        var widthForCol = width;
-        if (widthForCol < 0) widthForCol = 0;
 
         if (cellClass.style.setProperty) {
           cellClass.style.setProperty("width", widthForCell + "px", "important");
-          colClass.style.setProperty("width", widthForCol + "px", "important");
         } else {
           cellClass.style.width = widthForCell + "px";
-          colClass.style.width = widthForCol + "px";
         }
 
         var colTag = null;
@@ -1655,9 +1679,17 @@ O$.Tables = {
         });
         if (colTag) O$.setElementWidth(colTag, widthForCol, getTableWidth);
       }
-      setWidth(this._headerCellsClass.classObj, this._headerColClass.classObj, headerCell, table.header);
-      setWidth(this._bodyCellsClass.classObj, this._bodyColClass.classObj, bodyCell, table.body);
-      setWidth(this._footerCellsClass.classObj, this._footerColClass.classObj, footerCell, table.footer);
+      setWidth(this._headerCellsClass.classObj, headerCell, table.header);
+      setWidth(this._bodyCellsClass.classObj, bodyCell, table.body);
+      if (footerCell)
+        setWidth(this._footerCellsClass.classObj, footerCell, table.footer);
+
+      var colClass = this._colClass.classObj;
+      if (colClass.style.setProperty) {
+        colClass.style.setProperty("width", widthForCol + "px", "important");
+      } else {
+        colClass.style.width = widthForCol + "px";
+      }
 
     };
     column.getDeclaredWidth = function(tableWidth) {
