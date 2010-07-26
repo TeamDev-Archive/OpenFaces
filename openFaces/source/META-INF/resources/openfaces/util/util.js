@@ -1836,7 +1836,7 @@ if (!window.O$) {
           if (prevAjaxEnd)
             prevAjaxEnd();
           O$._autoSavingFocusInitialized = false;
-          setupFocus();
+          setTimeout(setupFocus, 1);
         };
       }
     });

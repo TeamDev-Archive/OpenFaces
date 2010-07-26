@@ -215,7 +215,7 @@ O$.Tables = {
     else {
       visibleInsertedRows = 0;
       rowsToInsert.forEach(function(insertedRow) {
-        insertedRow._visible = (O$.getElementStyle(insertedRow._rowNode, "display") != "none");
+        insertedRow._visible = insertedRow._rowNode.className.indexOf("o_hiddenRow") == -1;
         if (insertedRow._visible)
           visibleInsertedRows++;
       });
@@ -336,8 +336,8 @@ O$.Tables = {
     if (this._params.scrolling) {
       var tbl = this;
       O$.invokeFunctionAfterDelay(function() {
-        tbl._alignRowHeights();
-        tbl._synchronizeVerticalAreaScrolling();
+        if (tbl._alignRowHeights) tbl._alignRowHeights();
+        if (tbl._synchronizeVerticalAreaScrolling) tbl._synchronizeVerticalAreaScrolling();
       }, 50);
     }
 
@@ -786,7 +786,7 @@ O$.Tables = {
       row._rowNode = row;
     }
     if (row._visible === undefined)
-      row._visible = table._params.invisibleRowsAllowed ? O$.getElementStyle(row._rowNode, "display") != "none" : true;
+      row._visible = table._params.invisibleRowsAllowed ? row._rowNode.className.indexOf("o_hiddenRow") == -1 : true;
 
     row._mouseIsOver = false;
     if (!table._params.body.noDataRows && table._params.body.rolloverRowClassName) {
@@ -1929,7 +1929,7 @@ O$.Tables = {
   },
 
   /**
-   * Some CSS styles that can be applid to <col> tags don't behave in a cross-browser way. We extract these styles here
+   * Some CSS styles that can be applied to <col> tags don't behave in a cross-browser way. We extract these styles here
    * for their further applying to column cells in order to simulate the proper behavior.
    */
   _prepareCellStylesForColStyleSimulation: function(column) {
