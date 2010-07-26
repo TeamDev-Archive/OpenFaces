@@ -3669,6 +3669,8 @@ if (!window.O$) {
   };
 
   O$._setElementWidthOrHeight = function(element, property, edge1Property, edge2Property, value, hundredPercentValue, _paddingsHaveBeenReset) {
+    var valueParam = value;
+
     // hundredPercentValue is required to handle percent-based paddings in O$.getNumericElementStyle
     if (!_paddingsHaveBeenReset)
       O$.excludeClassNames(element, ["o_zeroPaddings"]);
@@ -3687,7 +3689,12 @@ if (!window.O$) {
     if (value < 0)
       value = 0;
     if (value != null)
-      element.style[property] = value + "px";
+      try {
+        element.style[property] = value + "px";
+      } catch (e) {
+        alert("O$._setElementWidthOrHeight error. property = " + property + "; valueParam = " + valueParam + "; value = " + value);
+        throw e;
+      }
   };
 
   O$.setElementWidth = function(element, value, hundredPercentValue) {
