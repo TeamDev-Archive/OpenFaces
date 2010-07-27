@@ -40,8 +40,8 @@
           <include name="adf-faces-api-10.1.3.0.4.jar"/>
         </fileset>
         <fileset dir="${jsf.ri.lib.dir}">
-          <include name="jsf-api-2.0.2.jar"/>
-          <include name="jsf-impl-2.0.2.jar"/>
+          <include name="jsf-api-2.0.3.jar"/>
+          <include name="jsf-impl-2.0.3.jar"/>
         </fileset>
         <fileset dir="${myfaces.lib.dir}">
           <include name="myfaces-impl-1.2.3.jar"/>

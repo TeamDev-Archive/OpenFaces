@@ -43,8 +43,8 @@
   </fileset>
 
   <fileset id="mojarra-2.0" dir="${jsf.lib.dir}">
-    <include name="jsf-api-2.0.2.jar"/>
-    <include name="jsf-impl-2.0.2.jar"/>
+    <include name="jsf-api-2.0.3.jar"/>
+    <include name="jsf-impl-2.0.3.jar"/>
   </fileset>
 
   <!-- *** Public Targets ** -->
@@ -113,7 +113,7 @@
       <classpath>
         <fileset dir="${lib.dir}">
           <include name="jsp-api-2.1.jar"/>
-          <include name="mojarra/jsf-api-2.0.2.jar"/>
+          <include name="mojarra/jsf-api-2.0.3.jar"/>
           <include name="servlet-api.jar"/>
           <include name="apache/commons-digester-1.6.jar"/>
           <include name="apache/commons-lang-2.1.jar"/>

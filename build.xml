@@ -84,8 +84,8 @@
         <pathelement path="lib/seleniuminspector/selenium-java-client-driver.jar"/>
         <pathelement path="lib/seleniuminspector/selenium-server.jar"/>
         <pathelement path="lib/seleniuminspector/seleniuminspector.jar"/>
-        <pathelement path="lib/mojarra/jsf-api-2.0.2.jar"/>
-        <pathelement path="lib/mojarra/jsf-impl-2.0.2.jar"/>
+        <pathelement path="lib/mojarra/jsf-api-2.0.3.jar"/>
+        <pathelement path="lib/mojarra/jsf-impl-2.0.3.jar"/>
         <pathelement path="testLib/junit.jar"/>
         <fileset file="${openfaces-jar.file}"/>
       </classpath>
@@ -154,7 +154,7 @@
         <pathelement path="lib/seleniuminspector/patched-selenium-server.jar"/>
         <pathelement path="lib/seleniuminspector/selenium-java-client-driver.jar"/>
         <pathelement path="lib/seleniuminspector/seleniuminspector.jar"/>
-        <pathelement path="lib/mojarra/jsf-api-2.0.2.jar"/>
+        <pathelement path="lib/mojarra/jsf-api-2.0.3.jar"/>
         <pathelement location="${funcTests-target.dir}/classes"/>
         <pathelement path="${openfaces-inspectors-jar.file}"/>
         <pathelement path="testLib/junit.jar"/>
