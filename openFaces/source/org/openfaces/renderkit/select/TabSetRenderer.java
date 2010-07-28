@@ -390,7 +390,7 @@ public class TabSetRenderer extends BaseTabSetRenderer {
         String focusedClass = Styles.getCSSClass(context, tabSet,
                 tabSet.getFocusedStyle(), StyleGroup.selectedStyleGroup(1), tabSet.getFocusedClass(), null);
 
-        String onchange = tabSet.getOnchange();
+        String onchange = Rendering.getChangeHandlerScript(tabSet);
 
         ScriptBuilder sb = new ScriptBuilder();
         sb.initScript(context, tabSet, "O$.TabSet._init",

@@ -40,6 +40,7 @@ import javax.faces.component.UIInput;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.ValueHolder;
 import javax.faces.component.behavior.ClientBehavior;
+import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -59,6 +60,7 @@ import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
@@ -1273,7 +1275,7 @@ public class Rendering {
     public static JSONObject getEventsParam(UIComponent component, String... eventNames) {
         JSONObject events = new JSONObject();
         for (String eventName : eventNames) {
-            String eventHandlerScript = (String) component.getAttributes().get(eventName);
+            String eventHandlerScript = Rendering.getEventHandlerScript(component, eventName);
             if (Rendering.isNullOrEmpty(eventHandlerScript))
                 continue;
             try {
@@ -1349,21 +1351,76 @@ public class Rendering {
     }
 
     public static void writeStandardEvents(ResponseWriter writer, OUIComponent component, boolean skipOnclick) throws IOException {
+        UIComponent c = (UIComponent) component;
         if (!skipOnclick)
-            writeAttribute(writer, "onclick", component.getOnclick());
-        writeAttribute(writer, "ondblclick", component.getOndblclick());
-        writeAttribute(writer, "onmousedown", component.getOnmousedown());
-        writeAttribute(writer, "onmouseup", component.getOnmouseup());
-        writeAttribute(writer, "onmousemove", component.getOnmousemove());
-        writeAttribute(writer, "onmouseout", component.getOnmouseout());
-        writeAttribute(writer, "onmouseover", component.getOnmouseover());
-        writeAttribute(writer, "oncontextmenu", component.getOncontextmenu());
+            writeAttribute(writer, "onclick", getEventHandlerScript(c, "click", "action"));
+        writeAttribute(writer, "ondblclick", getEventHandlerScript(c, "dblclick"));
+        writeAttribute(writer, "onmousedown", getEventHandlerScript(c, "mousedown"));
+        writeAttribute(writer, "onmouseup", getEventHandlerScript(c, "mouseup"));
+        writeAttribute(writer, "onmousemove", getEventHandlerScript(c, "mousemove"));
+        writeAttribute(writer, "onmouseout", getEventHandlerScript(c, "mouseout"));
+        writeAttribute(writer, "onmouseover", getEventHandlerScript(c, "mouseover"));
+        writeAttribute(writer, "oncontextmenu", getEventHandlerScript(c, "contextmenu"));
 
-        writeAttribute(writer, "onfocus", component.getOnfocus());
-        writeAttribute(writer, "onblur", component.getOnblur());
-        writeAttribute(writer, "onkeypress", component.getOnkeypress());
-        writeAttribute(writer, "onkeydown", component.getOnkeydown());
-        writeAttribute(writer, "onkeyup", component.getOnkeyup());
+        writeAttribute(writer, "onfocus", getEventHandlerScript(c, "focus"));
+        writeAttribute(writer, "onblur", getEventHandlerScript(c, "blur"));
+        writeAttribute(writer, "onkeypress", getEventHandlerScript(c, "keypress"));
+        writeAttribute(writer, "onkeydown", getEventHandlerScript(c, "keydown"));
+        writeAttribute(writer, "onkeyup", getEventHandlerScript(c, "keyup"));
+    }
+
+    public static String getEventHandlerScript(UIComponent component, String event) {
+        return getEventHandlerScript(component, event, null);
+    }
+
+    public static String getChangeHandlerScript(UIComponent component) {
+        return getEventHandlerScript(component, "change", "valueChange");
+    }
+
+    public static String getEventHandlerScript(UIComponent component, String event, String logicalEvent) {
+        String script = (String) component.getAttributes().get("on" + event);
+        List<ClientBehavior> behaviors = null;
+        List<ClientBehavior> behaviors2 = null;
+        if (component instanceof ClientBehaviorHolder) {
+            Map<String, List<ClientBehavior>> clientBehaviors = ((ClientBehaviorHolder) component).getClientBehaviors();
+            behaviors = clientBehaviors.get(event);
+            if (logicalEvent != null)
+                behaviors2 = clientBehaviors.get(logicalEvent);
+        }
+
+
+        if (script == null &&
+                (behaviors == null || behaviors.size() == 0) &&
+                (behaviors2 == null || behaviors2.size() == 0)) return null;
+        StringBuilder b = new StringBuilder();
+        if (script != null) {
+            b.append(script);
+            if ((behaviors != null && behaviors.size() > 0) || (behaviors2 != null && behaviors2.size() > 0))
+                if (!script.trim().endsWith(";")) b.append("; ");
+        }
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (behaviors != null)
+            appendBehaviorScripts(context, b, behaviors, component, event);
+        if (behaviors2 != null)
+            appendBehaviorScripts(context, b, behaviors2, component, logicalEvent);
+        return b.toString();
+    }
+
+    private static void appendBehaviorScripts(
+            FacesContext context,
+            StringBuilder stringBuilder,
+            List<ClientBehavior> behaviors,
+            UIComponent component,
+            String event) {
+        for (ClientBehavior behavior : behaviors) {
+            String sourceId = component.getClientId(context);
+            ClientBehaviorContext behaviorContext = ClientBehaviorContext.createClientBehaviorContext(
+                    context, component, event, sourceId,
+                    Collections.<ClientBehaviorContext.Parameter>emptyList());
+            String behaviorScript = behavior.getScript(behaviorContext);
+            stringBuilder.append(behaviorScript);
+            if (!behaviorScript.trim().endsWith(";")) stringBuilder.append(";");
+        }
     }
 
     public static String getEventWithOnPrefix(FacesContext context, OUIClientAction component, String componentName) {

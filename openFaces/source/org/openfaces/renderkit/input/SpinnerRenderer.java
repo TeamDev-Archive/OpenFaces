@@ -106,7 +106,7 @@ public class SpinnerRenderer extends DropDownComponentRenderer {
                 buttonRolloverStyleClass,
                 buttonPressedStyleClass,
                 spinner.isDisabled(),
-                spinner.getOnchange(),
+                Rendering.getChangeHandlerScript(spinner),
                 options);
 
         return new InitScript(sb, new String[]{

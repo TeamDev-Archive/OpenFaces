@@ -13,21 +13,12 @@ package org.openfaces.component;
 
 import org.openfaces.util.ValueBindings;
 
-import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * @author Dmitry Pikhulya
  */
-public class OUIInputText extends OUIInputBase implements ClientBehaviorHolder {
-    private static final List<String> EVENT_NAMES = Collections.unmodifiableList(Arrays.asList("valueChange", "blur", 
-            "change", "click", "dblclick", "focus", "keydown", "keypress", "keyup", "mousedown", "mousemove",
-            "mouseout", "mouseover", "mouseup", "select"));
-
+public class OUIInputText extends OUIInputBase {
     // todo: add "lang" attribute as it is a standard attribute for JSF input components
     // todo: add "dir" attribute as it is a standard attribute for JSF input components
     // todo: add "onselect" attribute as it is a standard attribute for JSF input components
@@ -112,15 +103,5 @@ public class OUIInputText extends OUIInputBase implements ClientBehaviorHolder {
         accesskey = (String) values[i++];
         tabindex = (String) values[i++];
         title = (String) values[i++];
-    }
-
-    @Override
-    public String getDefaultEventName() {
-        return "valueChange";
-    }
-
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
     }
 }

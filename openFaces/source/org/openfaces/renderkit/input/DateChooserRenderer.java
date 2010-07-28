@@ -218,7 +218,7 @@ public class DateChooserRenderer extends DropDownComponentRenderer {
                 pattern,
                 formatDate,
                 dc.getLocale(),
-                dc.getOnchange());
+                Rendering.getChangeHandlerScript(dc));
 
         return new InitScript(sb, new String[]{
                 Resources.getUtilJsURL(context),

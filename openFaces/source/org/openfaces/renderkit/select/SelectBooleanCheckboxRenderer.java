@@ -104,7 +104,7 @@ public class SelectBooleanCheckboxRenderer extends RendererBase {
             writeAttribute(writer, "checked", "checked");
         }
 
-        writeAttribute(writer, "onchange", checkbox.getOnchange());
+        writeAttribute(writer, "onchange", Rendering.getChangeHandlerScript(checkbox));
 
         writer.endElement(TAG_NAME);
 
@@ -210,7 +210,7 @@ public class SelectBooleanCheckboxRenderer extends RendererBase {
         }
 
         AnonymousFunction onchangeFunction = null;
-        String onchange = checkbox.getOnchange();
+        String onchange = Rendering.getChangeHandlerScript(checkbox);
 
         if (onchange != null) {
             onchangeFunction = new AnonymousFunction(onchange, "event");
@@ -294,7 +294,7 @@ public class SelectBooleanCheckboxRenderer extends RendererBase {
         writeAttribute(writer, "accesskey", checkbox.getAccesskey());
         writeAttribute(writer, "dir", checkbox.getDir());
         writeAttribute(writer, "lang", checkbox.getLang());
-        writeAttribute(writer, "onselect", checkbox.getOnselect());
+        writeAttribute(writer, "onselect", Rendering.getEventHandlerScript(checkbox, "select"));
         writeAttribute(writer, "tabindex", checkbox.getTabindex());
         Rendering.writeStandardEvents(writer, checkbox);
     }

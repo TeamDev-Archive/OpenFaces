@@ -327,7 +327,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
         );
         popup.resetChildData();
         if (!dropDown.isDisabled()) {  // todo: write the event parameters more economically
-            String onValueChanged = dropDownField.getOnchange();
+            String onValueChanged = Rendering.getChangeHandlerScript(dropDownField);
             if (onValueChanged != null) {
                 buf.append("O$.DropDownField._setFieldOnChange('");
                 buf.append(clientId);
@@ -335,7 +335,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
                 buf.append(onValueChanged);
                 buf.append("});");
             }
-            String onKeyPressed = dropDownField.getOnkeypress();
+            String onKeyPressed = Rendering.getEventHandlerScript(dropDownField, "keypress");
             if (onKeyPressed != null) {
                 buf.append("O$.DropDownField._setOnKeyPress('");
                 buf.append(clientId);
@@ -343,7 +343,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
                 buf.append(onKeyPressed);
                 buf.append("});");
             }
-            String onDropDown = dropDownField.getOndropdown();
+            String onDropDown = Rendering.getEventHandlerScript(dropDownField, "dropdown");
             if (onDropDown != null) {
                 buf.append("O$.DropDownField._setOnDropDown('");
                 buf.append(clientId);
@@ -351,7 +351,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
                 buf.append(onDropDown);
                 buf.append("});");
             }
-            String onCloseUp = dropDownField.getOncloseup();
+            String onCloseUp = Rendering.getEventHandlerScript(dropDownField, "closeup");
             if (onCloseUp != null) {
                 buf.append("O$.DropDownField._setOnCloseUp('");
                 buf.append(clientId);

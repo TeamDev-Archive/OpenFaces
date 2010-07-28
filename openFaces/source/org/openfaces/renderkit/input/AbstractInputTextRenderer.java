@@ -86,7 +86,7 @@ public abstract class AbstractInputTextRenderer extends RendererBase {
         writeAttribute(writer, "title", inputText.getTitle());
         if (inputText.isDisabled())
             writeAttribute(writer, "disabled", "disabled");
-        writeAttribute(writer, "onchange", inputText.getOnchange());
+        writeAttribute(writer, "onchange", Rendering.getChangeHandlerScript(inputText));
         writeAttribute(writer, "accesskey", inputText.getAccesskey());
         writeAttribute(writer, "tabindex", inputText.getTabindex());
         Rendering.writeStandardEvents(writer, inputText);

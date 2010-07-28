@@ -131,7 +131,7 @@ public class SelectManyCheckboxRenderer extends SelectManyInputRenderer {
             if (isValueEquals(selectManyCheckbox, selectItem)) {
                 writeAttribute(writer, "checked", "checked");
             }
-            writeAttribute(writer, "onchange", selectManyCheckbox.getOnchange());
+            writeAttribute(writer, "onchange", Rendering.getChangeHandlerScript(selectManyCheckbox));
             writer.endElement(TAG_NAME);
 
             writer.startElement("label", selectManyCheckbox);

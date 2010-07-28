@@ -58,7 +58,7 @@ public class RendererBase extends Renderer {
             OUICommand command,
             String submitIfNoAjax
     ) throws IOException {
-        String userClickHandler = command.getOnclick();
+        String userClickHandler = Rendering.getEventHandlerScript(command, "click", "action");
         Script componentClickHandler = null;
         Iterable<String> render = command.getRender();
         Iterable<String> execute = command.getExecute();

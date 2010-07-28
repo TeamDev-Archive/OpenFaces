@@ -122,7 +122,7 @@ public class SelectOneRadioRenderer extends SelectManyInputRenderer {
             if (isValueEquals(selectOneRadio, selectItem)) {
                 writeAttribute(writer, "checked", "checked");
             }
-            writeAttribute(writer, "onchange", selectOneRadio.getOnchange());
+            writeAttribute(writer, "onchange", Rendering.getChangeHandlerScript(selectOneRadio));
             writer.endElement(TAG_NAME);
 
             writer.startElement("label", selectOneRadio);
