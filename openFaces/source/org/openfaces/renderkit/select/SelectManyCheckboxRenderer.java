@@ -150,6 +150,8 @@ public class SelectManyCheckboxRenderer extends SelectManyInputRenderer {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
+        Rendering.decodeBehaviors(context, component);
+        
         SelectManyCheckbox selectManyCheckbox = (SelectManyCheckbox) component;
 
         Map<String, String[]> requestMap = context.getExternalContext().getRequestParameterValuesMap();

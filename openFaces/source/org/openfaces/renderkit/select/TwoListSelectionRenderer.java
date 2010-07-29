@@ -614,6 +614,7 @@ public class TwoListSelectionRenderer extends RendererBase {
     @Override
     public void decode(FacesContext context, UIComponent component) {
         if (!component.isRendered()) return;
+        Rendering.decodeBehaviors(context, component);
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String clientId = component.getClientId(context);
         String key = clientId + LEFT_LISTBOX_SELECTION_SUFFIX;

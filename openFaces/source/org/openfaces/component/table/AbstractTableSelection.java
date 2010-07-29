@@ -208,7 +208,7 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
         ResponseWriter writer = context.getResponseWriter();
         Rendering.renderHiddenField(writer, getSelectionFieldName(context, table), null);
 
-        String onchange = getOnchange();
+        String onchange = Rendering.getEventHandlerScript(this, table, "change", "action");
         Script automaticChangeHandler = null;
         Iterable<String> render = getRender();
         Iterable<String> execute = getExecute();
@@ -287,6 +287,9 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
 
     public void decode(FacesContext context) {
         super.decode(context);
+
+        Rendering.decodeBehaviors(context, this);
+
         AbstractTable table = getTable();
         if (!isEnabled())
             return;

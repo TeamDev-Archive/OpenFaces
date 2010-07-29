@@ -16,8 +16,12 @@ import org.openfaces.util.ValueBindings;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UICommand;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Dmitry Pikhulya
@@ -26,7 +30,11 @@ import java.util.Collections;
         @ResourceDependency(name = "default.css", library = "openfaces"),
         @ResourceDependency(name="jsf.js", library="javax.faces")
 })
-public abstract class OUICommand extends UICommand implements OUIComponent {
+public abstract class OUICommand extends UICommand implements OUIComponent, ClientBehaviorHolder {
+    private static final List<String> EVENT_NAMES = Collections.unmodifiableList(Arrays.asList("action", "blur",
+            "change", "click", "dblclick", "focus", "keydown", "keypress", "keyup", "mousedown", "mousemove",
+            "mouseout", "mouseover", "mouseup", "select"));
+
     private Iterable<String> execute;
     private Iterable<String> render;
     private Boolean executeRenderedComponents;
@@ -96,6 +104,17 @@ public abstract class OUICommand extends UICommand implements OUIComponent {
         onajaxend = (String) state[i++];
         onerror = (String) state[i++];
     }
+
+    @Override
+    public String getDefaultEventName() {
+        return "action";
+    }
+
+    @Override
+    public Collection<String> getEventNames() {
+        return EVENT_NAMES;
+    }
+
 
     public Iterable<String> getExecute() {
         return ValueBindings.get(this, "execute", execute, Collections.<String>emptySet(), Iterable.class);

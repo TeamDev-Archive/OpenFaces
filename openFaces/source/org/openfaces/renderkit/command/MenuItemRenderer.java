@@ -16,6 +16,7 @@ import org.openfaces.component.command.MenuItem;
 import org.openfaces.component.command.PopupMenu;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.AjaxUtil;
+import org.openfaces.util.Rendering;
 import org.openfaces.util.Resources;
 import org.openfaces.util.StyleGroup;
 import org.openfaces.util.Styles;
@@ -294,6 +295,8 @@ public class MenuItemRenderer extends RendererBase {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
+        Rendering.decodeBehaviors(context, component);
+        
         Map<String, String> requestParameters = context.getExternalContext().getRequestParameterMap();
         String key = component.getClientId(context) + "::clicked";
         if (requestParameters.containsKey(key)) {

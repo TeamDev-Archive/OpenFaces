@@ -221,6 +221,8 @@ public class SelectBooleanCheckboxRenderer extends RendererBase {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
+        Rendering.decodeBehaviors(context, component);
+        
         SelectBooleanCheckbox checkbox = (SelectBooleanCheckbox) component;
 
         Map<String, String> requestMap = context.getExternalContext().getRequestParameterMap();

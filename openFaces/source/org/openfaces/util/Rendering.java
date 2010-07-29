@@ -1378,6 +1378,10 @@ public class Rendering {
     }
 
     public static String getEventHandlerScript(UIComponent component, String event, String logicalEvent) {
+        return getEventHandlerScript(component, component, event, logicalEvent);
+    }
+
+    public static String getEventHandlerScript(UIComponent component, UIComponent sourceComponent, String event, String logicalEvent) {
         String script = (String) component.getAttributes().get("on" + event);
         List<ClientBehavior> behaviors = null;
         List<ClientBehavior> behaviors2 = null;
@@ -1400,9 +1404,9 @@ public class Rendering {
         }
         FacesContext context = FacesContext.getCurrentInstance();
         if (behaviors != null)
-            appendBehaviorScripts(context, b, behaviors, component, event);
+            appendBehaviorScripts(context, b, behaviors, component, sourceComponent, event);
         if (behaviors2 != null)
-            appendBehaviorScripts(context, b, behaviors2, component, logicalEvent);
+            appendBehaviorScripts(context, b, behaviors2, component, sourceComponent, logicalEvent);
         return b.toString();
     }
 
@@ -1411,15 +1415,34 @@ public class Rendering {
             StringBuilder stringBuilder,
             List<ClientBehavior> behaviors,
             UIComponent component,
+            UIComponent sourceComponent,
             String event) {
         for (ClientBehavior behavior : behaviors) {
-            String sourceId = component.getClientId(context);
+            String sourceId = sourceComponent.getClientId(context);
             ClientBehaviorContext behaviorContext = ClientBehaviorContext.createClientBehaviorContext(
                     context, component, event, sourceId,
                     Collections.<ClientBehaviorContext.Parameter>emptyList());
             String behaviorScript = behavior.getScript(behaviorContext);
             stringBuilder.append(behaviorScript);
             if (!behaviorScript.trim().endsWith(";")) stringBuilder.append(";");
+        }
+    }
+
+    public static void decodeBehaviors(FacesContext context, UIComponent component) {
+        if (!(component instanceof ClientBehaviorHolder)) return;
+
+        Map<String, List<ClientBehavior>> behaviorsMap = ((ClientBehaviorHolder) component).getClientBehaviors();
+        if (behaviorsMap.size() == 0) return;
+
+        String clientId = component.getClientId();
+        Map<String, String> requestParams = context.getExternalContext().getRequestParameterMap();
+        String event = requestParams.get("javax.faces.behavior.event");
+        String source = requestParams.get("javax.faces.source");
+        if (event == null || source == null || !source.equals(clientId)) return;
+
+        List<ClientBehavior> behaviors = behaviorsMap.get(event);
+        for (ClientBehavior behavior : behaviors) {
+            behavior.decode(context, component);
         }
     }
 

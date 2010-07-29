@@ -36,6 +36,8 @@ public abstract class BaseTabSetRenderer extends RendererBase {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
+        Rendering.decodeBehaviors(context, component);
+        
         String indexKey = component.getClientId(context) + getSelectionHiddenFieldSuffix();
         String tabIndexStr = context.getExternalContext().getRequestParameterMap().get(indexKey);
         if (tabIndexStr == null)

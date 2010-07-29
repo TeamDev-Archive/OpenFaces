@@ -47,7 +47,8 @@ public class ChartSelection extends OUICommand {
     public void encodeBegin(FacesContext context) throws IOException {
         super.encodeBegin(context);
 
-        String onchange = getOnchange();
+        final Chart chart = (Chart) getParent();
+        String onchange = Rendering.getEventHandlerScript(this, chart, "change", "action");
         Script automaticChangeHandler = null;
         Iterable<String> render = getRender();
         Iterable<String> execute = getExecute();
@@ -62,13 +63,19 @@ public class ChartSelection extends OUICommand {
         onchange = Rendering.joinScripts(onchange,
                 automaticChangeHandler != null ? automaticChangeHandler.toString() : null);
 
-        final Chart chart = (Chart) getParent();
+
         ScriptBuilder buf = new ScriptBuilder().initScript(context, chart, "O$.Chart._initSelection", onchange);
 
         Rendering.renderInitScript(context, buf,
                 Resources.getUtilJsURL(context),
                 Resources.getInternalURL(context, "chart/chart.js"));
         AjaxUtil.renderJSLinks(context);
+    }
+
+    @Override
+    public void decode(FacesContext context) {
+        super.decode(context);
+        Rendering.decodeBehaviors(context, this);
     }
 
     @Override

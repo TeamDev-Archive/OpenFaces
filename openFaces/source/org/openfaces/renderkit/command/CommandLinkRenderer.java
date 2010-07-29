@@ -92,6 +92,7 @@ public class CommandLinkRenderer extends RendererBase {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
+        Rendering.decodeBehaviors(context, component);
         Map<String, String> requestParameters = context.getExternalContext().getRequestParameterMap();
         String key = getClickedRequestKey(context, component);
         if (requestParameters.containsKey(key)) {

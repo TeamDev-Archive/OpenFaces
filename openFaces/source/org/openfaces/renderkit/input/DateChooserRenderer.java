@@ -58,6 +58,8 @@ public class DateChooserRenderer extends DropDownComponentRenderer {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
+        Rendering.decodeBehaviors(context, component);
+        
         Map requestMap = context.getExternalContext().getRequestParameterMap();
         String clientId = component.getClientId(context) + FIELD_SUFFIX;
         String value = (String) requestMap.get(clientId);

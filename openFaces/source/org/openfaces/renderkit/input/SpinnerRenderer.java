@@ -156,6 +156,8 @@ public class SpinnerRenderer extends DropDownComponentRenderer {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
+        Rendering.decodeBehaviors(context, component);
+
         Map<String, String> requestMap = context.getExternalContext().getRequestParameterMap();
         DropDownComponent dropDownComponent = (DropDownComponent) component;
         String fieldId = getFieldClientId(context, dropDownComponent);
@@ -166,7 +168,6 @@ public class SpinnerRenderer extends DropDownComponentRenderer {
         if ("false".equals(state) && value != null) {
             dropDownComponent.setSubmittedValue(value);
         }
-
     }
 
     protected void encodeButton(FacesContext context, UIComponent component) throws IOException {

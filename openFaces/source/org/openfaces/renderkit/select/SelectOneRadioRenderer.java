@@ -141,6 +141,8 @@ public class SelectOneRadioRenderer extends SelectManyInputRenderer {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
+        Rendering.decodeBehaviors(context, component);
+        
         SelectOneRadio selectOneRadio = (SelectOneRadio) component;
 
         Map<String, String> requestMap = context.getExternalContext().getRequestParameterMap();

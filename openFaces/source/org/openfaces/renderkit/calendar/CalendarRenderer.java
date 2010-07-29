@@ -84,6 +84,8 @@ public class CalendarRenderer extends RendererBase {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
+        Rendering.decodeBehaviors(context, component);
+        
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         Calendar calendar = ((Calendar) component);
         String newValue = params.get(component.getClientId(context) + VALUE_DATE_HOLDER_SUFFIX);

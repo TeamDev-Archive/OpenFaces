@@ -89,6 +89,8 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
     public void decode(FacesContext context, UIComponent component) {
         if (AjaxUtil.isAjaxPortionRequest(context, component))
             return;
+        Rendering.decodeBehaviors(context, component);
+        
         Map<String, String> requestMap = context.getExternalContext().getRequestParameterMap();
         DropDownFieldBase dropDownField = (DropDownFieldBase) component;
         String fieldId = getFieldClientId(context, dropDownField);

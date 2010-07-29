@@ -47,6 +47,8 @@ public abstract class AbstractInputTextRenderer extends RendererBase {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
+        Rendering.decodeBehaviors(context, component);
+        
         Map requestMap = context.getExternalContext().getRequestParameterMap();
         OUIInputText inputText = (OUIInputText) component;
         String clientId = inputText.getClientId(context);

@@ -329,7 +329,8 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     public boolean isRowAvailable() {
         DataModel dataModel = getDataModel();
         if (dataModel != getModel())
-            throw new IllegalStateException("table.getDataModel() != table.getModel(). It's possible that getDataModel() during state restoring before table's StateHelper has been restored");
+            throw new IllegalStateException("table.getDataModel() != table.getModel(). It's possible that " +
+                    "getDataModel() during state restoring before table's StateHelper has been restored. table id = " + getId());
         return dataModel.isRowAvailable();
     }
 
