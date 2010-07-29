@@ -20165,9 +20165,8 @@ and it is automatically triggered on any form submission. -->
   </tag>
 
   <tag>
-    <description>The ChartNoDataMessage tag is used to specify the text that is shown if there is no data to display in
-      the chart. This tag should be defined as a child tag for the chart-type components ({@link pieChartView},
-      {@link barChartView}, {@link lineChartView}).
+    <description>The &lt;o:chartNoDataMessage&gt; tag is used to specify the text that is shown if there is no data to
+      display in the chart. This tag should be defined as a child of the &lt;o:chart&gt; tag.
     </description>
     <name>chartNoDataMessage</name>
     <tag-class>org.openfaces.taglib.jsp.chart.ChartNoDataMessageJspTag</tag-class>

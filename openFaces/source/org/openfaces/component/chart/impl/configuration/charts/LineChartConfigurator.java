@@ -89,7 +89,7 @@ public class LineChartConfigurator extends GridChartConfigurator {
             throw new IllegalStateException("Chart selection is unsupported with disabled shapes.");
         }
 
-        int rowCount = ds.getRowCount();
+        int rowCount = ds != null ? ds.getRowCount() : 0;
         ConfigurableRenderer configurableRenderer = (ConfigurableRenderer) renderer;
 
         configure(chartView, configurableRenderer, ds, rowCount);
@@ -116,7 +116,7 @@ public class LineChartConfigurator extends GridChartConfigurator {
             throw new IllegalStateException("Chart selection is unsupported with disabled shapes.");
         }
 
-        int seriesCount = ds.getSeriesCount();
+        int seriesCount = ds != null ? ds.getSeriesCount() : 0;
         ConfigurableRenderer configurableRenderer = (ConfigurableRenderer) renderer;
         configure(chartView, configurableRenderer, ds, seriesCount);
 
