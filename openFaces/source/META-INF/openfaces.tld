@@ -9955,9 +9955,9 @@ means that only root nodes and their immediate children are preloaded -->
       <description>The current value of the DropDownField component that is displayed in the text field.</description>
       <name>value</name>
       <deferred-value>
-        <type>java.lang.String</type>
+        <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType java.lang.String -->
+      <!-- @bindingType java.lang.Object -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
@@ -11128,9 +11128,9 @@ entering a value and returns a list of suggestions from the server -->
       <description>The value of the suggestionField component that is displayed in the text field.</description>
       <name>value</name>
       <deferred-value>
-        <type>java.lang.String</type>
+        <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType java.lang.String -->
+      <!-- @bindingType java.lang.Object -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
@@ -22276,9 +22276,9 @@ and it is automatically triggered on any form submission. -->
       </description>
       <name>value</name>
       <deferred-value>
-        <type>java.lang.String</type>
+        <type>java.util.Date</type>
       </deferred-value>
-      <!-- @bindingType java.lang.String -->
+      <!-- @bindingType java.util.Date -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
@@ -23884,9 +23884,9 @@ and it is automatically triggered on any form submission. -->
       <description>The current value of this component.</description>
       <name>value</name>
       <deferred-value>
-        <type>java.lang.String</type>
+        <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType java.lang.String -->
+      <!-- @bindingType java.lang.Object -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
@@ -24419,9 +24419,9 @@ and it is automatically triggered on any form submission. -->
       <description>The current value of this component.</description>
       <name>value</name>
       <deferred-value>
-        <type>java.lang.String</type>
+        <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType java.lang.String -->
+      <!-- @bindingType java.lang.Object -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
@@ -30137,9 +30137,9 @@ and it is automatically triggered on any form submission. -->
       <description>The current value of the Spinner component that is displayed in the text field.</description>
       <name>value</name>
       <deferred-value>
-        <type>java.lang.String</type>
+        <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType java.lang.String -->
+      <!-- @bindingType java.lang.Object -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
