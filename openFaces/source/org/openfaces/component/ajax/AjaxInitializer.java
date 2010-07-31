@@ -146,6 +146,14 @@ public class AjaxInitializer {
                         EXPRESSION_PREFIX.length(), actionExpressionString.length() - EXPRESSION_SUFFIX.length()));
                 result.put("actionComponent", command.getClientId(context));
             }
+            UIComponent source = command;
+            if (source instanceof Ajax) {
+                source = source.getParent();
+                if (source instanceof ComponentConfigurator)
+                    source = ((ComponentConfigurator) source).getConfiguredComponent();
+            }
+//            if (source != null)
+//                result.put("_sourceId", source.getClientId(context));
 
             ValueExpression actionListener = command instanceof Ajax
                     ? command.getValueExpression("listener")

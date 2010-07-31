@@ -156,23 +156,6 @@ public class PartialViewContext extends PartialViewContextWrapper {
         writer.endUpdate();
     }
 
-    @Override
-    public Collection<String> getExecuteIds() {
-        Collection<String> executeIds = super.getExecuteIds();
-
-        FacesContext context = FacesContext.getCurrentInstance();
-        ExternalContext externalContext = context.getExternalContext();
-        boolean openFacesAjax = externalContext.getRequestParameterMap().containsKey(AjaxUtil.AJAX_REQUEST_MARKER);
-        if (!openFacesAjax) return executeIds;
-
-        boolean executeRenderedComponents = CommonAjaxViewRoot.extractExecuteRenderedComponents(context);
-        if (executeRenderedComponents) {
-            executeIds = new HashSet<String>(executeIds);
-            executeIds.addAll(super.getRenderIds());
-        }
-        return executeIds;
-    }
-
     public void renderAdditionalPartialResponse() {
         FacesContext context = FacesContext.getCurrentInstance();
         try {

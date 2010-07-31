@@ -319,6 +319,9 @@ O$._runScript = function(script, libs) {
  */
 O$.sendAjaxRequest = function(render, args) {
   var source = args._source;
+  if (!source && args._sourceId) {
+    source = document.getElementById(args._sourceId);
+  }
   if (!source) {
     if (document.forms.length == 0)
       throw "There should be a <h:form> component on a page for Ajax to work";

@@ -29,6 +29,7 @@
                        autocomplete="false"
                        onkeypress="if (event.keyCode == 13) return false;">
             <o:ajax event="keyup"
+                    execute="filter"
                     render=":form:taskList :form:doneList :form:doneListCaption"
                     delay="500">
             </o:ajax>

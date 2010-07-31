@@ -39,34 +39,6 @@ public class OpenFacesApplication extends ApplicationWrapper {
         super(application);
     }
 
-
-    @Override
-    public void setViewHandler(ViewHandler viewHandler) {
-        wrapped.setViewHandler(viewHandler);
-//        final String viewHandlerClass = viewHandler.getClass().getName();
-//        if (viewHandlers.contains(viewHandlerClass) &&
-//                !viewHandlerClass.equalsIgnoreCase("org.ajax4jsf.application.AjaxViewHandler")) {
-//            return;
-//        }
-//
-//        AjaxViewHandler ajaxViewHandler = viewHandler instanceof AjaxViewHandler
-//                ? (AjaxViewHandler) viewHandler
-//                : new AjaxViewHandler(viewHandler);
-//        wrapped.setViewHandler(ajaxViewHandler);
-//
-//        viewHandlers.add(viewHandlerClass);
-    }
-
-    @SuppressWarnings({"AssignmentToMethodParameter"})
-    @Override
-    public UIComponent createComponent(String componentType) throws FacesException {
-//        if (Environment.isTrinidad() && componentType.equals(UIViewRoot.COMPONENT_TYPE)) {
-//            componentType = AjaxViewRoot.COMPONENT_TYPE;
-//        }
-
-        return wrapped.createComponent(componentType);
-    }
-
     @Override
     public void publishEvent(FacesContext context, Class<? extends SystemEvent> systemEventClass, Object source) {
         boolean postAddToViewEvent = PostAddToViewEvent.class.isAssignableFrom(systemEventClass);
