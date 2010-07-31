@@ -13,7 +13,6 @@ package org.openfaces.component;
 
 // todo: resolve datatable package dependencies
 
-import org.openfaces.component.filter.TextSearchFilter;
 import org.openfaces.component.table.Cell;
 import org.openfaces.component.table.Columns;
 import org.openfaces.component.table.DynamicCol;
@@ -85,6 +84,7 @@ import java.util.Set;
  * <li>MOD-11: Extended visitTree method to account for extensions that are made through component's child tags, in
  * particular for state saving for such tags as <o:singleRowSelection> to work properly.</li>
  * <li>MOD-12: Adjusted row state saving for dynamic component creation in filter components</li>
+ * <li>MOD-13: Made PropertyKeys enumeration protected to allow state manipulation in AbstractTable.java</li>
  * </ul>
  * <p/>
  * <p/>
@@ -1226,7 +1226,7 @@ public class OUIData extends UIData implements NamingContainer, UniqueIdVendor, 
         getStateHelper().put(PropertyKeys.var, var);
     }
 
-    enum PropertyKeys {
+    protected enum PropertyKeys { // <MOD-13/> was without "protected" keyword
         uiDataValue, first, rows, var, uniqueIdCounter
     }
 

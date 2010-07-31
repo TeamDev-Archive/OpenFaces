@@ -31,10 +31,13 @@ import javax.faces.component.EditableValueHolder;
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
+import javax.faces.component.visit.VisitCallback;
+import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ComponentSystemEvent;
 import javax.faces.event.ListenerFor;
+import javax.faces.event.PhaseId;
 import javax.faces.event.PostRestoreStateEvent;
 import javax.faces.model.DataModel;
 import javax.faces.render.Renderer;
@@ -176,6 +179,15 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     @Override
     public Object saveState(FacesContext context) {
+        remindStateSavingOfTableData();
+        // It's possible that row index is not reset when performing partial Ajax request in
+        // PartialViewContext.prepareAjaxPortions method: it specifies rowIndex to to a value other than -1 when
+        // invoking UtilPhaseListener.findComponentById method.
+        // The following two lines make sure row index is reset to -1 for getClientId() to return component's "native"
+        // client id without row index, which is required for proper StateManagementStrategyImpl.saveComponentState
+        // (see line 366 as of Mojarra 2.0.3).
+        if (getRowIndex() != -1) setRowIndex(-1);
+
         Object superState = super.saveState(context);
         return new Object[]{superState, saveAttachedState(context, sortingRules),
                 align, bgcolor, dir, rules, width, tabindex, border, cellspacing, cellpadding,
@@ -318,7 +330,20 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         cachedRenderedColumns = null;
     }
 
+    @Override
+    public boolean visitTree(VisitContext context, VisitCallback callback) {
+        if (context.getFacesContext().getCurrentPhaseId() != PhaseId.RESTORE_VIEW
+                && getRowIndex() == -1 /* beforeProcessDecodes is not expected to be invoked in the midst of iteration over its rows */) 
+            invokeBeforeProcessDecodes(context.getFacesContext());
+        return super.visitTree(context, callback);
+    }
+
     public void invokeBeforeProcessDecodes(FacesContext context) {
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+        if (getRowIndex() != -1) throw new IllegalArgumentException("beforeProcessDecodes is not expected to be invoked in the midst of iteration over its rows");
+        String key = AbstractTable.class.getName() + ".beforeProcessDecodesInvoked_" + getClientId(context);
+        if (requestMap.containsKey(key)) return;
+        requestMap.put(key, true);
         beforeProcessDecodes(context);
     }
 
@@ -937,7 +962,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     @Override
     public void processDecodes(FacesContext context) {
-        beforeProcessDecodes(context);
+        invokeBeforeProcessDecodes(context);
         super.processDecodes(context);
         if (!isRendered())
             return;
@@ -1028,10 +1053,6 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     }
 
     protected void beforeRenderResponse(FacesContext context) {
-        // modify uiDataValue property to move it to the delta map in StateHolder, which turns on
-        // state saving for TableDataModel
-        setUiDataValue(getUiDataValue());
-
         cachedAllColumns = null;
         cachedRenderedColumns = null;
         List<Columns> columnsComponents = Components.findChildrenWithClass(this, Columns.class);
@@ -1068,6 +1089,13 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     protected void updateModel() {
 
+    }
+
+    private void remindStateSavingOfTableData() {
+        // modify uiDataValue property to move it to the delta map in StateHolder and clear "initial state" flag, which
+        // turns on state saving for TableDataModel
+        getStateHelper().put(PropertyKeys.uiDataValue, getUiDataValue());
+        clearInitialState();
     }
 
     private void checkSortingColumnsValid() {
