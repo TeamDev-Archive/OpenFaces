@@ -322,7 +322,6 @@ public class TableUtil {
                 valueConverter = Rendering.getConverter(context, columnOutput);
             else
                 valueConverter = Rendering.getConverterForType(context, valueType);
-            table.setRowIndex(index);
         } catch (Exception e) {
             // means that there's no row data and row with index == 0
             String expressionString = expression.getExpressionString();
@@ -356,6 +355,8 @@ public class TableUtil {
                     }
                 }
             }
+        } finally {
+            table.setRowIndex(index);
         }
         if (valueConverter == null)
             valueConverter = Rendering.getConverterForType(context, valueType);
