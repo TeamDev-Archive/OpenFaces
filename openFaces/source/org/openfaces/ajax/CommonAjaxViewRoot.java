@@ -935,7 +935,7 @@ public abstract class CommonAjaxViewRoot {
             String initScriptsStr = initializationScripts.toString();
             initScriptsStr = initScriptsStr.replaceAll("<!--", "").replaceAll("//-->", "");
             // create special node with runtime js library that contains all initialization scripts
-            String uniqueRTLibraryName = ResourceFilter.RUNTIME_INIT_LIBRARY_PATH + AjaxUtil.generateUniqueInitLibraryName();
+            String uniqueRTLibraryName = ResourceFilter_.RUNTIME_INIT_LIBRARY_PATH + AjaxUtil.generateUniqueInitLibraryName();
             String initLibraryUrl = Resources.getApplicationURL(context, uniqueRTLibraryName);
             ajaxResponse.setInitLibraryName(initLibraryUrl);
 

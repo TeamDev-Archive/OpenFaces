@@ -42,13 +42,13 @@ import java.util.Map;
 /**
  * @author Kharchenko
  */
-public class ResourceFilter implements Filter {
+public class ResourceFilter_ implements Filter {
     public static final String INTERNAL_RESOURCE_PATH = "/openFacesResources/";
     public static final String RUNTIME_INIT_LIBRARY_PATH = INTERNAL_RESOURCE_PATH + "of_ajaxInitLib/";
 
     private static final String PROCESSING_FILTER = "OF:ResourceFilter.doFilter_executing";
     private static final long DEFAULT_LAST_MODIFIED_TIME = System.currentTimeMillis();
-    private static final String RESOURCE_CACHE = ResourceFilter.class.getName() + ".resourcesCache";
+    private static final String RESOURCE_CACHE = ResourceFilter_.class.getName() + ".resourcesCache";
 
     private static final String RESET_CSS_CONTEXT_PARAM = "org.openfaces.resetCSS";
     private static final String RESET_CSS_CONTEXT_PARAM_DEFAULT_VALUE = "default";

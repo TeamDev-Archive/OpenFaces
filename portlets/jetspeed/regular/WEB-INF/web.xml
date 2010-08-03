@@ -16,7 +16,7 @@
 
   <filter>
     <filter-name>ResourceFilter</filter-name>
-    <filter-class>org.openfaces.util.ResourceFilter</filter-class>
+    <filter-class>org.openfaces.util.ResourceFilter_</filter-class>
   </filter>
 
   <filter-mapping>

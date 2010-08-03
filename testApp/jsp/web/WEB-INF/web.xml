@@ -116,7 +116,7 @@
   <!-- FILTER FOR PROCESSING INTERNAL OPENFACES RESOURCES -->
   <filter>
     <filter-name>ResourceFilter</filter-name>
-    <filter-class>org.openfaces.util.ResourceFilter</filter-class>
+    <filter-class>org.openfaces.util.ResourceFilter_</filter-class>
   </filter>
 
   <!--MYFACES EXTENSIONS FILTER-->

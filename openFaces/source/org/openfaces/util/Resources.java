@@ -179,7 +179,7 @@ public class Resources {
 
         String versionString = getVersionString();
         int extensionIndex = resourcePath.lastIndexOf(".");
-        String urlRelativeToContextRoot = ResourceFilter.INTERNAL_RESOURCE_PATH + packagePath +
+        String urlRelativeToContextRoot = ResourceFilter_.INTERNAL_RESOURCE_PATH + packagePath +
                 resourcePath.substring(0, extensionIndex) + "-" + versionString + resourcePath.substring(extensionIndex);
 
         if (!prependContextPath)
@@ -378,7 +378,7 @@ public class Resources {
         if (ajax4jsfStylesParameter != null) {
             Set<String> styles = (Set<String>) requestMap.get(ajax4jsfStylesParameter);
             String defaultCssUrl = ((HttpServletRequest) context.getExternalContext().getRequest()).getContextPath()
-                    + ResourceFilter.INTERNAL_RESOURCE_PATH + "org/openfaces/renderkit/default" + "-" + getVersionString() + ".css";
+                    + ResourceFilter_.INTERNAL_RESOURCE_PATH + "org/openfaces/renderkit/default" + "-" + getVersionString() + ".css";
             if (styles == null) {
                 styles = new LinkedHashSet<String>();
             }

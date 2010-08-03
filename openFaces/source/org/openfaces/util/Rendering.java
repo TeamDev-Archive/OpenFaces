@@ -605,7 +605,7 @@ public class Rendering {
         Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
         String uniqueRTLibraryName = isPortletRequest
                 ? (String) sessionMap.get(AjaxUtil.ATTR_PORTLET_UNIQUE_RTLIBRARY_NAME)
-                : ResourceFilter.RUNTIME_INIT_LIBRARY_PATH + AjaxUtil.generateUniqueInitLibraryName();
+                : ResourceFilter_.RUNTIME_INIT_LIBRARY_PATH + AjaxUtil.generateUniqueInitLibraryName();
 
         String initLibraryUrl = Resources.getApplicationURL(context, uniqueRTLibraryName);
 
