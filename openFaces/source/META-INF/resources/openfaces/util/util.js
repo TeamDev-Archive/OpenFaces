@@ -3681,7 +3681,7 @@ if (!window.O$) {
     if (!_paddingsHaveBeenReset && (value < 0)) {
       // make it possible to specify element rectangle less than the size of element's paddings
       O$.appendClassNames(element, ["o_zeroPaddings"]);
-      O$._setElementWidthOrHeight(element, property, value, hundredPercentValue, true);
+      O$._setElementWidthOrHeight(element, property, edge1Property, edge2Property, value, hundredPercentValue, true);
       return;
     }
     if (value < 0)
