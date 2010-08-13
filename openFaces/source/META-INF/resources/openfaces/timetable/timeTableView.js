@@ -97,17 +97,34 @@ O$.TimeTableView._init = function(componentId,
 
     var properties = ["id", "name", "description", "resourceId", "startStr", "endStr", "color", "type"];
 
-    function arrayToJSON(name, source, properties) {
+    function eventToJSON(event){
+      var result = JSON.stringify(event, properties);
+      if (event.customProperties !== undefined){
+        //add custom properties
+        //associative arrays are not supported by stringify method
+        var customPropertiesJSON = "{";
+        for (var key in event.customProperties) {
+          customPropertiesJSON = customPropertiesJSON + JSON.stringify(key) + ":" +
+                  JSON.stringify(event.customProperties[key]) + ",";
+        }
+        customPropertiesJSON =   customPropertiesJSON.slice(0, customPropertiesJSON.length-1) + "}"; //remove last ',';
+        result = result.slice(0, result.length-1); //remove last '{';
+        result = result + ", customProperties: "+ customPropertiesJSON+"}"
+      }
+      return result;
+    }
+
+    function arrayToJSON(name, source) {
       var result = [];
       for (var i = 0; i < source.length; i++)
-        result[i] = JSON.stringify(source[i], properties);
+        result[i] = eventToJSON(source[i]);
       return JSON.stringify(name) + ":[" + result.join(",") + "]";
     }
 
     var events = [
-      arrayToJSON("addedEvents", this._addedEvents, properties),
-      arrayToJSON("editedEvents", this._editedEvents, properties),
-      arrayToJSON("removedEventIds", this._removedEventIds, properties)
+      arrayToJSON("addedEvents", this._addedEvents),
+      arrayToJSON("editedEvents", this._editedEvents),
+      arrayToJSON("removedEventIds", this._removedEventIds)
     ];
     var changesAsString = "{" + events.join(",") + "}";
     O$.setHiddenField(this, this.id + "::timetableChanges", changesAsString);

@@ -269,6 +269,9 @@ O$.Timetable._initEvent = function(event) {
     this.description = otherEvent.description;
     this.resourceId = otherEvent.resourceId;
     this.color = otherEvent.color;
+    if (otherEvent.customProperties){
+      this.customProperties = otherEvent.customProperties.slice(0);
+    }
   };
   
   event._scrollIntoView = function() {

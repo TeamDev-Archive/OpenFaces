@@ -185,6 +185,13 @@ public abstract class TimetableViewRenderer extends RendererBase implements Ajax
             Object colorObj = eventObj.opt("color");
             String colorStr = JSONObject.NULL != colorObj ? (String) colorObj : null;
             event.setColor(CSSUtil.parseColor(colorStr));
+            JSONObject customPropertiesObj = eventObj.optJSONObject("customProperties");
+            if (customPropertiesObj!=null){
+                for (Iterator<String> keys = customPropertiesObj.keys(); keys.hasNext();){
+                    String key = keys.next();
+                    event.setCustomProperty(key, customPropertiesObj.getString(key));
+                }
+            }
 
             targetArray[i] = event;
         }
