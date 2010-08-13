@@ -2016,10 +2016,13 @@ O$.Table = {
 // -------------------------- COLUMN MENU SUPPORT
 O$.ColumnMenu = {
 
-  _init: function(columnMenuId, tableId, columnMenuButtonId) {
+  _init: function(columnMenuId, tableId, columnMenuButtonId, sortAscMenuId, sortDescMenuId) {
     var table = O$(tableId);
     var menuInvokerAreaTransparency = 0;
     var columnMenu = O$(columnMenuId);
+    columnMenu._sortAscMenuId = sortAscMenuId;
+    columnMenu._sortDescMenuId = sortDescMenuId;
+
     table._unloadHandlers.push(function() {
       if (columnMenu.parentNode)
         columnMenu.parentNode.removeChild(columnMenu);
@@ -2085,6 +2088,8 @@ O$.ColumnMenu = {
         O$.getDefaultAbsolutePositionParent().appendChild(columnMenu);
         O$.correctElementZIndex(columnMenu, columnMenuButton);
       }
+      O$.ColumnMenu._checkSortMenuItems(columnMenuId, tableId, columnMenu._sortAscMenuId, columnMenu._sortDescMenuId,
+              currentColumn._index);
       columnMenu._showByElement(columnMenuButtonTable, O$.LEFT, O$.BELOW, 0, 0);
       var prevOnhide = columnMenu.onhide;
       var headerCell = currentColumn.header._cell;
@@ -2128,6 +2133,63 @@ O$.ColumnMenu = {
     O$._submitInternal(table, null, [
       [table.id + "::columnVisibility", columnIndex]
     ]);
+  },
+
+  _checkSortMenuItems : function(columnMenuId, tableId, sortAscMenuId, sortDescMenuId, columnIndex) {
+    if (!sortAscMenuId && !sortDescMenuId) return;
+    var table = O$(tableId);
+    var columnMenu = O$(columnMenuId);
+    if (columnIndex == undefined) {
+      columnIndex = table._showingMenuForColumn._index;
+    }
+    var column = table._columns[columnIndex];
+    if (!column._sortable) {
+      var sortAscMenuItem = O$(sortAscMenuId);
+      if (sortAscMenuItem) {
+        table._sortAscMenuItem = sortAscMenuItem;
+        for (var i = 0; i < columnMenu.childNodes.length; i++) {
+          if (sortAscMenuItem == columnMenu.childNodes[i]) {
+            table._sortAscMenuIdx = i;
+            break;
+          }
+        }
+        columnMenu.removeChild(sortAscMenuItem);
+      }
+      var sortDescMenuItem = O$(sortDescMenuId);
+      if (sortDescMenuItem) {
+        table._sortDescMenuItem = sortDescMenuItem;
+        for (i = 0; i < columnMenu.childNodes.length; i++) {
+          if (sortDescMenuItem == columnMenu.childNodes[i]) {
+            table._sortDescMenuIdx = i;
+            break;
+          }
+        }
+        columnMenu.removeChild(sortDescMenuItem);
+      }
+    } else {
+      var sortDescMenuItem = table._sortDescMenuItem;
+      if (sortDescMenuItem) {
+        if (table._sortDescMenuIdx >= 0
+            && columnMenu.childNodes.length > table._sortDescMenuIdx)
+          columnMenu.insertBefore(sortDescMenuItem,
+              columnMenu.childNodes[table._sortDescMenuIdx]);
+        else
+          columnMenu.appendChild(sortDescMenuItem);
+        table._sortDescMenuItem = null;
+        table._sortDescMenuIdx = -1;
+      }
+      var sortAscMenuItem = table._sortAscMenuItem;
+      if (sortAscMenuItem) {
+        if (table._sortAscMenuIdx >= 0
+            && columnMenu.childNodes.length > table._sortAscMenuIdx)
+          columnMenu.insertBefore(sortAscMenuItem,
+              columnMenu.childNodes[table._sortAscMenuIdx]);
+        else
+          columnMenu.appendChild(sortAscMenuItem);
+        table._sortAscMenuItem = null;
+        table._sortAscMenuIdx = -1;
+      }
+    }
   },
 
   _sortColumnAscending: function(tableId, columnIndex) {

@@ -413,48 +413,51 @@ public class ResourceFilter implements Filter {
             writer.write(responseString.substring(0, headerInsertionPos));
         }
 
-        if (!hasHeaderTag) {
-            writer.write("<head>");
-        }
-
-        HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
-        String resetCss = httpServletRequest.getSession().getServletContext().getInitParameter(RESET_CSS_CONTEXT_PARAM);
-        if (resetCss != null) {
-            resetCss = resetCss.trim();
-            String resetCssUrl;
-
-            if (resetCss.equals(RESET_CSS_CONTEXT_PARAM_DEFAULT_VALUE)) {
-                resetCssUrl = httpServletRequest.getContextPath() + INTERNAL_RESOURCE_PATH + "org/openfaces/renderkit/reset" + "-" + Resources.getVersionString() + ".css";
-            } else if (!resetCss.startsWith("/") && !resetCss.startsWith("http://")) {
-                resetCssUrl = httpServletRequest.getContextPath() + "/" + resetCss;
-            } else {
-                resetCssUrl = resetCss;
+        boolean skipHeaderInsertion = servletRequest.getParameterMap().containsKey("skipHeaderInsertion");
+        if (!skipHeaderInsertion) {
+            if (!hasHeaderTag) {
+                writer.write("<head>");
             }
 
+            HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
+            String resetCss = httpServletRequest.getSession().getServletContext().getInitParameter(RESET_CSS_CONTEXT_PARAM);
+            if (resetCss != null) {
+                resetCss = resetCss.trim();
+                String resetCssUrl;
+
+                if (resetCss.equals(RESET_CSS_CONTEXT_PARAM_DEFAULT_VALUE)) {
+                    resetCssUrl = httpServletRequest.getContextPath() + INTERNAL_RESOURCE_PATH + "org/openfaces/renderkit/reset" + "-" + Resources.getVersionString() + ".css";
+                } else if (!resetCss.startsWith("/") && !resetCss.startsWith("http://")) {
+                    resetCssUrl = httpServletRequest.getContextPath() + "/" + resetCss;
+                } else {
+                    resetCssUrl = resetCss;
+                }
+
+                writer.print("<link type=\"text/css\" href=\"");
+                writer.print(resetCssUrl);
+                writer.println("\" rel=\"stylesheet\"/>");
+            }
+    
             writer.print("<link type=\"text/css\" href=\"");
-            writer.print(resetCssUrl);
+            String defaultCssUrl = httpServletRequest.getContextPath() + INTERNAL_RESOURCE_PATH + Resources.META_INF_RESOURCES_ROOT.substring(1) +
+                    "default" + "-" + Resources.getVersionString() + ".css"; // render default.css
+            writer.print(defaultCssUrl);
             writer.println("\" rel=\"stylesheet\"/>");
-        }
 
-        writer.print("<link type=\"text/css\" href=\"");
-        String defaultCssUrl = httpServletRequest.getContextPath() + INTERNAL_RESOURCE_PATH + Resources.META_INF_RESOURCES_ROOT.substring(1) +
-                "default" + "-" + Resources.getVersionString() + ".css"; // render default.css
-        writer.print(defaultCssUrl);
-        writer.println("\" rel=\"stylesheet\"/>");
+            List<String> jsLibraries = (List<String>) servletRequest.getAttribute(Resources.HEADER_JS_LIBRARIES);
 
-        List<String> jsLibraries = (List<String>) servletRequest.getAttribute(Resources.HEADER_JS_LIBRARIES);
-
-        if (jsLibraries != null) {
-            for (String jsFileUrl : jsLibraries) {
-                writer.print("<script src=\"");
-                writer.print(jsFileUrl);
-                writer.println("\" type=\"text/javascript\"></script>");
+            if (jsLibraries != null) {
+                for (String jsFileUrl : jsLibraries) {
+                    writer.print("<script src=\"");
+                    writer.print(jsFileUrl);
+                    writer.println("\" type=\"text/javascript\"></script>");
+                }
             }
-        }
 
 
-        if (!hasHeaderTag) {
-            writer.write("</head>");
+            if (!hasHeaderTag) {
+                writer.write("</head>");
+            }
         }
 
         StringInspector restOfResponse;

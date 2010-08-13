@@ -639,7 +639,7 @@ public class TreeTable extends AbstractTable {
                 continue;
             if (!shouldBeExpanded && dontCollapseNodes)
                 continue;
-            if (!getNodeHasChildren()) { // rows without children should have expanded state by default
+            if (!getNodeHasChildren(i)) { // rows without children should have expanded state by default
                 setNodeExpanded(keyPath, true);
             } else {
                 setNodeExpanded(keyPath, shouldBeExpanded);
@@ -793,6 +793,10 @@ public class TreeTable extends AbstractTable {
         if (nodeInfoForRows == null)
             return false;
         int rowIndex = getRowIndex();
+        return getNodeHasChildren(rowIndex);
+    }
+
+    private boolean getNodeHasChildren(int rowIndex) {
         if (rowIndex == -1)
             return false;
         if (!isRowAvailableAfterRestoring(rowIndex))

@@ -207,21 +207,24 @@ O$.Window = {
 
     win._setResizable(win._declaredResizable);
 
-    if (!draggableByContent)
-      win._draggable = false;
     if (win._minWidth < 5)
       win._minWidth = 5;
     if (win._minHeight < 5)
       win._minHeight = 5;
 
-    if (win._caption && !draggableByContent)
-      win._caption.onmousedown = function(e) {
-        if (win._draggingDisabled)
-          return;
-        O$._enableIFrameFix();
-        O$.addEventHandler(document, "mouseup", O$._disableIframeFix, true);
-        O$.startDragging(e, win, win._caption);
-      };
+    var draggable = win._draggable;
+    if (draggable && !draggableByContent) {
+      win._draggable = false;
+      if (win._caption) {
+        win._caption.onmousedown = function(e) {
+          if (win._draggingDisabled)
+            return;
+          O$._enableIFrameFix();
+          O$.addEventHandler(document, "mouseup", O$._disableIframeFix, true);
+          O$.startDragging(e, win, win._caption);
+        };
+      }
+    }
 
     O$.Window._processCaptionStyle(win);
 

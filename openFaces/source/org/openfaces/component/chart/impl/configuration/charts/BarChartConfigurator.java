@@ -60,7 +60,7 @@ public class BarChartConfigurator extends GridChartConfigurator {
             XYBarRenderer renderer = new XYBarRendererAdapter();
             ConfigurableRenderer configurableRenderer = (ConfigurableRenderer) renderer;
 
-            int seriesCount = ds.getSeriesCount();
+            int seriesCount = ds != null ? ds.getSeriesCount() : 0;
             configure(chartView, configurableRenderer, seriesCount);
 
             final GridXYPlotAdapter xyPlotAdapter = new GridXYPlotAdapter(ds, renderer, chart, chartView);
@@ -74,7 +74,7 @@ public class BarChartConfigurator extends GridChartConfigurator {
             XYBarRenderer renderer = new XYBarRendererAdapter();
             ConfigurableRenderer configurableRenderer = (ConfigurableRenderer) renderer;
 
-            int seriesCount = ds.getSeriesCount();
+            int seriesCount = ds != null ? ds.getSeriesCount() : 0;
             configure(chartView, configurableRenderer, seriesCount);
 
             final GridDatePlotAdapter datePlotAdapter = new GridDatePlotAdapter(ds, renderer, chart, chartView);
@@ -84,7 +84,7 @@ public class BarChartConfigurator extends GridChartConfigurator {
         }
 
         CategoryDataset ds = ModelConverter.toCategoryDataset(info);
-        int rowCount = ds.getRowCount();
+        int rowCount = ds != null ? ds.getRowCount() : 0;
 
         BarRenderer renderer = chartView.isEnable3D()
                 ? new BarRenderer3DAdapter()

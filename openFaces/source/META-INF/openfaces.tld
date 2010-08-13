@@ -5590,6 +5590,20 @@
     <tag-class>org.openfaces.taglib.jsp.table.SingleRowSelectionJspTag</tag-class>
     <body-content>JSP</body-content>
     <attribute>
+      <description>A flag that indicates whether or not this selection tag should be considered active. Specifying
+        rendered to false is identical to not specifying the selection tag at all. This might be useful for dynamic
+        changing between single and multiple selection by declaring both single and multiple selection tags and
+        specifying rendered to true for only one of them.
+      </description>
+      <name>rendered</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>The index of the selected row. The index of the first row is 0.
         The value "-1" means there is no row currently selected or the selected row
         is not visible because of another page being viewed or filtering applied.
@@ -5767,6 +5781,20 @@
     <name>multipleRowSelection</name>
     <tag-class>org.openfaces.taglib.jsp.table.MultipleRowSelectionJspTag</tag-class>
     <body-content>JSP</body-content>
+    <attribute>
+      <description>A flag that indicates whether or not this selection tag should be considered active. Specifying
+        rendered to false is identical to not specifying the selection tag at all. This might be useful for dynamic
+        changing between single and multiple selection by declaring both single and multiple selection tags and
+        specifying rendered to true for only one of them.
+      </description>
+      <name>rendered</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
     <attribute>
       <description>Indexes of the selected rows. The index of the first row is 0.</description>
       <name>rowIndexes</name>
@@ -9499,6 +9527,20 @@ means that only root nodes and their immediate children are preloaded -->
     <tag-class>org.openfaces.taglib.jsp.table.SingleNodeSelectionJspTag</tag-class>
     <body-content>JSP</body-content>
     <attribute>
+      <description>A flag that indicates whether or not this selection tag should be considered active. Specifying
+        rendered to false is identical to not specifying the selection tag at all. This might be useful for dynamic
+        changing between single and multiple selection by declaring both single and multiple selection tags and
+        specifying rendered to true for only one of them.
+      </description>
+      <name>rendered</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>The node data object for a currently selected node.
         The value "null" means that no node is currently selected.
       </description>
@@ -9675,6 +9717,20 @@ means that only root nodes and their immediate children are preloaded -->
     <name>multipleNodeSelection</name>
     <tag-class>org.openfaces.taglib.jsp.table.MultipleNodeSelectionJspTag</tag-class>
     <body-content>JSP</body-content>
+    <attribute>
+      <description>A flag that indicates whether or not this selection tag should be considered active. Specifying
+        rendered to false is identical to not specifying the selection tag at all. This might be useful for dynamic
+        changing between single and multiple selection by declaring both single and multiple selection tags and
+        specifying rendered to true for only one of them.
+      </description>
+      <name>rendered</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
     <attribute>
       <description>The node data objects for a currently selected node.
         The value "null" means that no node is currently selected.
@@ -9899,9 +9955,9 @@ means that only root nodes and their immediate children are preloaded -->
       <description>The current value of the DropDownField component that is displayed in the text field.</description>
       <name>value</name>
       <deferred-value>
-        <type>java.lang.String</type>
+        <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType java.lang.String -->
+      <!-- @bindingType java.lang.Object -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
@@ -11072,9 +11128,9 @@ entering a value and returns a list of suggestions from the server -->
       <description>The value of the suggestionField component that is displayed in the text field.</description>
       <name>value</name>
       <deferred-value>
-        <type>java.lang.String</type>
+        <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType java.lang.String -->
+      <!-- @bindingType java.lang.Object -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
@@ -20109,9 +20165,8 @@ and it is automatically triggered on any form submission. -->
   </tag>
 
   <tag>
-    <description>The ChartNoDataMessage tag is used to specify the text that is shown if there is no data to display in
-      the chart. This tag should be defined as a child tag for the chart-type components ({@link pieChartView},
-      {@link barChartView}, {@link lineChartView}).
+    <description>The &lt;o:chartNoDataMessage&gt; tag is used to specify the text that is shown if there is no data to
+      display in the chart. This tag should be defined as a child of the &lt;o:chart&gt; tag.
     </description>
     <name>chartNoDataMessage</name>
     <tag-class>org.openfaces.taglib.jsp.chart.ChartNoDataMessageJspTag</tag-class>
@@ -22220,9 +22275,9 @@ and it is automatically triggered on any form submission. -->
       </description>
       <name>value</name>
       <deferred-value>
-        <type>java.lang.String</type>
+        <type>java.util.Date</type>
       </deferred-value>
-      <!-- @bindingType java.lang.String -->
+      <!-- @bindingType java.util.Date -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
@@ -23828,9 +23883,9 @@ and it is automatically triggered on any form submission. -->
       <description>The current value of this component.</description>
       <name>value</name>
       <deferred-value>
-        <type>java.lang.String</type>
+        <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType java.lang.String -->
+      <!-- @bindingType java.lang.Object -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
@@ -24363,9 +24418,9 @@ and it is automatically triggered on any form submission. -->
       <description>The current value of this component.</description>
       <name>value</name>
       <deferred-value>
-        <type>java.lang.String</type>
+        <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType java.lang.String -->
+      <!-- @bindingType java.lang.Object -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
@@ -30081,9 +30136,9 @@ and it is automatically triggered on any form submission. -->
       <description>The current value of the Spinner component that is displayed in the text field.</description>
       <name>value</name>
       <deferred-value>
-        <type>java.lang.String</type>
+        <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType java.lang.String -->
+      <!-- @bindingType java.lang.Object -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>

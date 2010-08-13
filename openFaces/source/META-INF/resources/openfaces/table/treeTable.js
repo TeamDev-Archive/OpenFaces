@@ -69,6 +69,12 @@ O$.TreeTable = {
           });
 
         }
+        O$.invokeFunctionAfterDelay(function() {
+//          table._alignRowHeights();
+          if (table._synchronizeVerticalAreaScrolling)
+            table._synchronizeVerticalAreaScrolling();
+        }, 50);
+        
         return result;
       },
 
@@ -223,7 +229,7 @@ O$.TreeTable = {
 
 
       /*
-       _setExpanded(expaned) may not be able to set the "expanded" state to true in some cases.
+       _setExpanded(expanded) may not be able to set the "expanded" state to true in some cases.
        Invokers must check _isExpanded() to see if expansion was successful.
        */
       _setExpanded: function(expanded) {

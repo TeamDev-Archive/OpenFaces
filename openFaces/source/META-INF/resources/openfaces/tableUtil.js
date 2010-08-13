@@ -215,7 +215,7 @@ O$.Tables = {
     else {
       visibleInsertedRows = 0;
       rowsToInsert.forEach(function(insertedRow) {
-        insertedRow._visible = (O$.getElementStyle(insertedRow._rowNode, "display") != "none");
+        insertedRow._visible = insertedRow._rowNode.className.indexOf("o_hiddenRow") == -1;
         if (insertedRow._visible)
           visibleInsertedRows++;
       });
@@ -276,6 +276,7 @@ O$.Tables = {
         function addRow(area, rowNode) {
           if (!area || !rowNode) return;
           var nextRowIdx = afterIndex + 1 + i;
+          if (area._rowContainer.childNodes.length > 0 && area._rowContainer.childNodes[0]._fakeRow) nextRowIdx++;
           if (nextRowIdx < area._rowContainer.childNodes.length)
             area._rowContainer.insertBefore(rowNode, area._rowContainer.childNodes[nextRowIdx]);
           else
@@ -331,6 +332,14 @@ O$.Tables = {
     }, this);
     // update body section style in case of the simulated sections mode
     this.body._updateStyle();
+
+    if (this._params.scrolling) {
+      var tbl = this;
+      O$.invokeFunctionAfterDelay(function() {
+        if (tbl._alignRowHeights) tbl._alignRowHeights();
+        if (tbl._synchronizeVerticalAreaScrolling) tbl._synchronizeVerticalAreaScrolling();
+      }, 50);
+    }
 
   },
 
@@ -396,6 +405,7 @@ O$.Tables = {
               if (fakeRowRequired) {
                 if (!this._fakeRow) {
                   this._fakeRow = document.createElement("tr");
+                  this._fakeRow._fakeRow = true;
                   this._fakeRow.style.display = "none";
                   if (this._tag)
                     this._tag.insertBefore(this._fakeRow, this._tag.firstChild);
@@ -464,6 +474,7 @@ O$.Tables = {
                     if (!rowContainer._fakeRow) {
                       rowContainer._fakeRow = document.createElement("tr");
                       rowContainer._fakeRow.style.display = "none";
+                      rowContainer._fakeRow._fakeRow = true;
                       rowContainer.insertBefore(rowContainer._fakeRow, rowContainer.firstChild);
                     }
                   }
@@ -775,7 +786,7 @@ O$.Tables = {
       row._rowNode = row;
     }
     if (row._visible === undefined)
-      row._visible = table._params.invisibleRowsAllowed ? O$.getElementStyle(row._rowNode, "display") != "none" : true;
+      row._visible = table._params.invisibleRowsAllowed ? row._rowNode.className.indexOf("o_hiddenRow") == -1 : true;
 
     row._mouseIsOver = false;
     if (!table._params.body.noDataRows && table._params.body.rolloverRowClassName) {
@@ -1447,17 +1458,42 @@ O$.Tables = {
   },
 
   _initColumnOrGroup: function(column, table) {
-    function newClass(declaration) {
+    function newClass_IE(declaration) {
+      if (!O$.Tables._predefinedColClasses) {
+        var styleElement = document.createElement("style");
+        styleElement.setAttribute("type", "text/css");
+        var headTags = document.getElementsByTagName("head");
+        var styleParent = headTags.length > 0 ? headTags[0] : document.getElementsByTagName("body")[0];
+        styleParent.appendChild(styleElement);
+        var buf = new O$.StringBuffer();
+        for (var i = 0; i < 4 * 50; i++)
+          buf.append(".o_predefinedCol").append(i).append("{overflow:hidden} ");
+        styleElement.styleSheet.cssText = buf.toString();
+        O$.Tables._predefinedColClasses = styleElement.styleSheet.rules;
+        O$.Tables._predefinedColClasses._obtained = 0;
+      }
+      var colClasses = O$.Tables._predefinedColClasses;
+      if (colClasses._obtained < colClasses.length) {
+        return {className: "o_predefinedCol" + colClasses._obtained, classObj: colClasses[colClasses._obtained++]};
+      }
+      return newClass_raw(declaration);
+    }
+    function newClass_raw(declaration) {
       var className = O$.createCssClass(declaration, true);
       var cls = O$.findCssRule("." + className);
       return {className: className, classObj: cls};
     }
+    function newClass(declaration) {
+      if (O$.isExplorer())
+        return newClass_IE(declaration);
+      else
+        return newClass_raw(declaration);
+    }
     column._headerCellsClass = newClass("overflow: hidden");
     column._bodyCellsClass = newClass("overflow: hidden");
-    column._footerCellsClass = newClass("overflow: hidden");
-    column._headerColClass = newClass("overflow: hidden");
-    column._bodyColClass = newClass("overflow: hidden");
-    column._footerColClass = newClass("overflow: hidden");
+    if (column.footer)
+      column._footerCellsClass = newClass("overflow: hidden");
+    column._colClass = newClass("overflow: hidden");
 
     column._table = table;
 
@@ -1557,11 +1593,11 @@ O$.Tables = {
 
     column._colTags.forEach(function(colTag) {
       if (table.header && colTag._section == table.header)
-        O$.setStyleMappings(colTag, {cellWidthClass: column._headerColClass.className});
+        O$.setStyleMappings(colTag, {cellWidthClass: column._colClass.className});
       else if (colTag._section == table.body)
-        O$.setStyleMappings(colTag, {cellWidthClass: column._bodyColClass.className});
+        O$.setStyleMappings(colTag, {cellWidthClass: column._colClass.className});
       else if (table.footer && colTag._section == table.footer)
-        O$.setStyleMappings(colTag, {cellWidthClass: column._footerColClass.className});
+        O$.setStyleMappings(colTag, {cellWidthClass: column._colClass.className});
     });
 
     if (column._super_updateStyle)
@@ -1575,7 +1611,7 @@ O$.Tables = {
       var colTagClassName = !column._useCellStyles ? column._className : "";
       if (column._useCellStyles && O$.Tables._isFakeRowRequired() && column._className) {
         var width = O$.getStyleClassProperty(column._className, "width");
-        // don't allow the column width to be ignore due to the fake row, e.g. in the 50px width in DayTable's time column
+        // don't allow the column width to be ignored due to the fake row, e.g. in the 50px width in DayTable's time column
         if (width) {
           colTagClassName += " " + O$.createCssClass("width: " + width);
         }
@@ -1621,20 +1657,19 @@ O$.Tables = {
       var bodyCell = column.body._cells[0];
       var footerCell = column.footer && column.footer._cell;
 
-      function setWidth(cellClass, colClass, cell, tableSection) {
+      var widthForCol = width;
+      if (widthForCol < 0) widthForCol = 0;
+
+      function setWidth(cellClass, cell, tableSection) {
         if (!cell) return;
         calculateWidthCorrection(cell);
         var widthForCell = width - cell._widthCorrection;
         if (widthForCell < 0) widthForCell = 0;
-        var widthForCol = width;
-        if (widthForCol < 0) widthForCol = 0;
 
         if (cellClass.style.setProperty) {
           cellClass.style.setProperty("width", widthForCell + "px", "important");
-          colClass.style.setProperty("width", widthForCol + "px", "important");
         } else {
           cellClass.style.width = widthForCell + "px";
-          colClass.style.width = widthForCol + "px";
         }
 
         var colTag = null;
@@ -1644,9 +1679,17 @@ O$.Tables = {
         });
         if (colTag) O$.setElementWidth(colTag, widthForCol, getTableWidth);
       }
-      setWidth(this._headerCellsClass.classObj, this._headerColClass.classObj, headerCell, table.header);
-      setWidth(this._bodyCellsClass.classObj, this._bodyColClass.classObj, bodyCell, table.body);
-      setWidth(this._footerCellsClass.classObj, this._footerColClass.classObj, footerCell, table.footer);
+      setWidth(this._headerCellsClass.classObj, headerCell, table.header);
+      setWidth(this._bodyCellsClass.classObj, bodyCell, table.body);
+      if (footerCell)
+        setWidth(this._footerCellsClass.classObj, footerCell, table.footer);
+
+      var colClass = this._colClass.classObj;
+      if (colClass.style.setProperty) {
+        colClass.style.setProperty("width", widthForCol + "px", "important");
+      } else {
+        colClass.style.width = widthForCol + "px";
+      }
 
     };
     column.getDeclaredWidth = function(tableWidth) {
@@ -1886,7 +1929,7 @@ O$.Tables = {
   },
 
   /**
-   * Some CSS styles that can be applid to <col> tags don't behave in a cross-browser way. We extract these styles here
+   * Some CSS styles that can be applied to <col> tags don't behave in a cross-browser way. We extract these styles here
    * for their further applying to column cells in order to simulate the proper behavior.
    */
   _prepareCellStylesForColStyleSimulation: function(column) {
@@ -2217,18 +2260,24 @@ O$.Tables = {
 
 
     function synchronizeAreaScrolling() {
-      mainScrollingArea._scrollingDiv.onscroll = function(e) {
-        O$.setHiddenField(table, table.id + "::scrollPos",
-                "[" + mainScrollingArea._scrollingDiv.scrollLeft + "," + mainScrollingArea._scrollingDiv.scrollTop + "]");
+      table._synchronizeHorizontalAreaScrolling = function() {
         [table.header, table.footer].forEach(function (section) {
           if (!section || !section._centerScrollingArea) return;
           if (section._centerScrollingArea._scrollingDiv)
             section._centerScrollingArea._scrollingDiv.scrollLeft = mainScrollingArea._scrollingDiv.scrollLeft;
         });
+      };
+      table._synchronizeVerticalAreaScrolling = function() {
         [table.body._leftScrollingArea, table.body._rightScrollingArea].forEach(function (area) {
           if (!area) return;
           area._scrollingDiv.scrollTop = mainScrollingArea._scrollingDiv.scrollTop;
         });
+      };
+      mainScrollingArea._scrollingDiv.onscroll = function(e) {
+        O$.setHiddenField(table, table.id + "::scrollPos",
+                "[" + mainScrollingArea._scrollingDiv.scrollLeft + "," + mainScrollingArea._scrollingDiv.scrollTop + "]");
+        table._synchronizeHorizontalAreaScrolling();
+        table._synchronizeVerticalAreaScrolling();
         if (table.onscroll)
           table.onscroll(e);
       };

@@ -13,15 +13,9 @@ package org.openfaces.renderkit.table;
 
 import org.openfaces.component.CaptionButton;
 import org.openfaces.component.TableStyles;
+import org.openfaces.component.command.MenuItem;
 import org.openfaces.component.command.PopupMenu;
-import org.openfaces.component.table.AbstractTable;
-import org.openfaces.component.table.AbstractTableSelection;
-import org.openfaces.component.table.BaseColumn;
-import org.openfaces.component.table.CheckboxColumn;
-import org.openfaces.component.table.Column;
-import org.openfaces.component.table.ColumnReordering;
-import org.openfaces.component.table.ColumnResizing;
-import org.openfaces.component.table.Scrolling;
+import org.openfaces.component.table.*;
 import org.openfaces.org.json.JSONArray;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.AjaxPortionRenderer;
@@ -256,7 +250,16 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         PopupMenu columnMenu = (PopupMenu) component;
         columnMenu.setStandalone(true);
         columnMenu.encodeAll(context);
-        buf.initScript(context, columnMenu, "O$.ColumnMenu._init", table, button);
+
+        MenuItem sortAscMenuItem = null, sortDescMenuItem = null;
+        for (UIComponent child : columnMenu.getChildren()) {
+            if (child instanceof SortAscendingMenuItem)
+                sortAscMenuItem = (MenuItem) child;
+            if (child instanceof SortDescendingMenuItem)
+                sortDescMenuItem = (MenuItem) child;
+        }
+
+        buf.initScript(context, columnMenu, "O$.ColumnMenu._init", table, button, sortAscMenuItem, sortDescMenuItem);
 
         if (temporaryButton)
             table.getFacets().remove(FACET_COLUMN_MENU_BUTTON);
