@@ -12,6 +12,7 @@
 
 package org.openfaces.component.filter;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,7 +28,7 @@ import java.util.Map;
  *
  * @author Natalia Zolochevska
  */
-public class ExpressionFilterCriterion extends FilterCriterion {
+public class ExpressionFilterCriterion extends FilterCriterion implements Serializable{
     private static final String PARAM_ARG1 = "arg1";
     private static final String PARAM_ARG2 = "arg2";
     private static final String PARAM_CASE_SENSITIVE = "caseSensitive";
