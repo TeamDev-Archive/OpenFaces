@@ -335,10 +335,15 @@ public abstract class ExpressionFilter extends Filter implements CompoundCompone
         criterion.setCaseSensitive(caseSensitive);
     }
 
-    private PropertyLocator getPropertyLocator() {
-        return new PropertyLocator(
-                getExpression(),
-                getFilteredComponent());
+    public PropertyLocator getPropertyLocator() {
+        FilterableComponent component = getFilteredComponent();
+        Object expression = getExpression();
+        if (component != null) {
+            final PropertyLocatorFactory factory = new FilterableComponentPropertyLocatorFactory(component);
+            return factory.create(expression);
+        } else {
+            return PropertyLocator.getDefaultInstance(expression);
+        }
     }
 
     public Object getLocalValue() {

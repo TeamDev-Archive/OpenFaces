@@ -58,7 +58,7 @@ public abstract class FilterPropertyBase implements FilterProperty{
     }
 
     public PropertyLocator getPropertyLocator() {
-        return new PropertyLocator(getName());
+        return PropertyLocator.getDefaultInstance(getName());
     }
 
 }

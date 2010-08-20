@@ -193,6 +193,6 @@ public class UIFilterProperty extends OUIComponentBase implements ValueHolder, S
     }
 
     public PropertyLocator getPropertyLocator() {
-        return new PropertyLocator(getName());
+        return PropertyLocator.getDefaultInstance(getName());
     }
 }

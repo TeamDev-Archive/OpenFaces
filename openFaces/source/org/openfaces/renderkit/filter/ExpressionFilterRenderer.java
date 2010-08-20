@@ -96,7 +96,7 @@ public abstract class ExpressionFilterRenderer extends RendererBase {
 
     protected ExpressionFilterCriterion createDefaultCriterion(ExpressionFilter filter, Object specifiedValue) {
         Object expression = filter.getExpression();
-        PropertyLocator propertyLocator = new PropertyLocator(expression, filter.getFilteredComponent());
+        PropertyLocator propertyLocator = filter.getPropertyLocator();
         FilterCondition condition;
 
         boolean inverse = false;
