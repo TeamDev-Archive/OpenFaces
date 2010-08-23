@@ -762,6 +762,7 @@
 
 .o_spinner_button {
   line-height: 0;
+  font-size:0;
   height: 50%;
 }
 
@@ -1440,10 +1441,16 @@
   border-left-color: #c9d8f5;
 }
 
+.o_filter_row .o_spinner,
+.o_filter_row .o_dropdown{
+  height: 22px;
+}
+
 .o_filter_row {
   padding-top: 5px;
   width: 100%;
   clear: both;
+  overflow:hidden;
 }
 
 .o_filter_row: after {
@@ -1459,6 +1466,7 @@
 .o_filter_row_item {
   margin-right: 5px;
   float: left;
+  display:inline;
 }
 
 .o_filter_no_text{
@@ -1472,29 +1480,42 @@
 }
 
 .o_filter_row_item_checkbox {
-  width:20px;
+  height:38px;
 }
 
 .o_filter_parameter {
-  margin-right: 5px;
   float: left;
+  padding:2px 0;
+  margin:0 5px 0 0;
+  display:inline;
+  border:1px solid #808080;
+  height:22px;
+}
+table.o_filter_parameter {
+  padding:0;
+}
+.o_dropdown.o_filter_parameter{
+  display:inline-table;
 }
 
 .o_filter_add_button,
 .o_filter_delete_button {
   width: 25px;
-  padding-top: 0;
+  height:25px;
+  margin-top:1px;
+  padding:0;
 }
 
 .o_filter_inverse_checkbox {
   height: 16px;
+  margin:3px 4px;
 }
 
 .o_filter_inverse_label {
   font-size:9px;
-  left: 5px;
-  position: relative;
-  top:-7px;
+  display:block;
+  margin-top:-7px;
+  text-align:center;
 }
 /* Checkbox */
 .o_checkbox_image {
