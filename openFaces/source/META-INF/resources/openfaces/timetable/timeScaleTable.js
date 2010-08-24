@@ -478,8 +478,28 @@ O$.TimeScaleTable._init = function(componentId,
   timeScaleTable._updateOverlappingPositionsForEvents = function( events, callback) {
 
     var updatedEvents = [];
+    
+    var positions = [];
+    function reservePosition(){
+      var position = positions.length;
+      for (var i=0; i<positions.length; i++){
+        if (positions[i]!=i){
+          position = i;
+          break;
+        }
+      }
+      positions.push(position);
+      return position;
+    }
+    function releasePosition(position){
+        for (var i=0; i<positions.length; i++){
+        if (positions[i]==position){
+          positions = positions.slice(0, position).concat(positions.slice(position+1));
+          break;
+        }
+      }
+    }
 
-    var position = 0;
     var divisor = 0;
     var pendingEvents = [];
     var openEvents = [];
@@ -494,8 +514,7 @@ O$.TimeScaleTable._init = function(componentId,
         var nextEvent = events.shift();
         var positionForEvent;
         if (nextEvent._dropAllowed === undefined || nextEvent._dropAllowed){
-          positionForEvent = position;
-          position++;
+          positionForEvent = reservePosition();
         }else{
           positionForEvent = 0;
         }
@@ -504,7 +523,7 @@ O$.TimeScaleTable._init = function(componentId,
           updatedEvents.push(nextEvent);
         }
 
-        divisor = divisor > position ? divisor : position;
+        divisor = divisor > positions.length ? divisor : positions.length;
         openEvents.push(nextEvent);
         openEvents.sort(O$.Timetable.compareEventsByEnd);
       }
@@ -512,8 +531,8 @@ O$.TimeScaleTable._init = function(componentId,
       while (openEvents.length > 0 && (events.length == 0 || openEvents[0].end <= events[0].start)) {
         var closingEvent = openEvents.shift();
         pendingEvents.push(closingEvent);
-        if (nextEvent._dropAllowed === undefined || nextEvent._dropAllowed){
-          position--;
+        if (closingEvent._dropAllowed === undefined || closingEvent._dropAllowed){
+          releasePosition(closingEvent._position);
         }
 
         if (openEvents.length == 0) {
