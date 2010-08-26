@@ -33159,7 +33159,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el only -->
     </attribute>
     <attribute>
-      <description>No filter text.</description>
+      <description>The text that is displayed by the ??CompositeFilter?? component when no filtering criteria are 
+        specified by the user.</description>
       <name>noFilterMessage</name>
       <deferred-value>
         <type>java.lang.String</type>
