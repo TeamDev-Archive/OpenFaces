@@ -14,6 +14,18 @@ O$.CompositeFilter = {
 
   _init: function(clientId) {
     O$.initComponent(clientId, null, {
+      _init: function(){
+         var noFilterRowContainer = this._noFilterRowContainer();
+          if (noFilterRowContainer) {
+            var addButton = this._addButton(noFilterRowContainer);
+            var _this = this;
+            addButton.onclick = function(){
+              _this.add();
+              return false;
+            }
+         }
+      },
+
       apply: function() {
         this._ajaxForApply().run();
       },
@@ -190,6 +202,9 @@ O$.CompositeFilter = {
         O$.executeScripts(portionScripts);
       }
     });
+    var filter = O$(clientId);
+    filter._init();
+
   },
 
   _htmlToNode: function(html) {
