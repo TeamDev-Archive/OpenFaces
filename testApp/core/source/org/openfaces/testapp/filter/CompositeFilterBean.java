@@ -75,7 +75,7 @@ public class CompositeFilterBean {
 
     public List<User> getFilteredUsersForStoredCriterion() throws JSONException {
         String jsonCriteria = getJsonCriteria();
-        FilterCriterion storedCriteria = JSONBuilder.parse(new JSONObject(jsonCriteria));
+        FilterCriterion storedCriteria = JSONBuilder.getInstance().parse(new JSONObject(jsonCriteria));
         Predicate predicate = PredicateBuilder.build(storedCriteria);
         ArrayList<User> result = new ArrayList<User>(users);
         CollectionUtils.filter(result, predicate);

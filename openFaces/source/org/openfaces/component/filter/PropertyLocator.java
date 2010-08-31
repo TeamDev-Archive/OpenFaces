@@ -11,77 +11,30 @@
  */
 package org.openfaces.component.filter;
 
-import org.openfaces.component.FilterableComponent;
-import org.openfaces.component.OUIData;
-import org.openfaces.util.ReflectionUtil;
-
-import javax.el.ValueExpression;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIData;
-import javax.faces.component.UIViewRoot;
-import javax.faces.context.FacesContext;
 import java.io.Serializable;
 
 /**
  * @author Dmitry Pikhulya
  */
-public class PropertyLocator implements Serializable {
+public abstract class PropertyLocator implements Serializable {
+
+    private static final PropertyLocatorFactory DEFAULT_FACTORY = new SimplePropertyLocatorFactory();
+
+    public static PropertyLocator getDefaultInstance(Object expression) {
+        return DEFAULT_FACTORY.create(expression);
+    }
+
     protected Object expression;
-    protected transient FilterableComponent component;
-    protected String componentId;
 
-    public PropertyLocator(Object expression) {
-        this(expression, null);
-    }
-
-    public PropertyLocator(Object expression, FilterableComponent component) {
-        if (expression == null)
-            throw new IllegalArgumentException("expression can't be null");
-        if (expression instanceof ValueExpression) {
-            if (component == null)
-                throw new IllegalArgumentException("component can't be null when expression is ValueExpression");
-        } else if (!(expression instanceof String))
-            throw new IllegalArgumentException("expression can be either ValueExpression or String, but it is: " + expression.getClass().getName());
+    protected PropertyLocator(Object expression) {
         this.expression = expression;
-        if (component!=null){
-            this.component = component;
-            Integer prevUiDataIndex = null;
-            if (component instanceof OUIData) {
-                UIData uiData = (UIData) component;
-                if (uiData.getRowIndex() != -1) {
-                    prevUiDataIndex = uiData.getRowIndex();
-                    uiData.setRowIndex(-1);
-                }
-            }
-            this.componentId = ((UIComponent) component).getClientId(FacesContext.getCurrentInstance());
-            if (prevUiDataIndex != null)
-                ((OUIData) component).setRowIndex(prevUiDataIndex);
-        }
-    }
-
-    private FilterableComponent getComponent() {
-        if (component != null) return component;
-        if (componentId == null) return null;
-        UIViewRoot viewRoot = FacesContext.getCurrentInstance().getViewRoot();
-        component = (FilterableComponent) viewRoot.findComponent(":" + componentId);
-        if (component == null) throw new IllegalStateException("Couldn't find filtered component by id: " + componentId);
-        return component;
-    }
-
-    public Object getPropertyValue(Object obj) {
-        FilterableComponent component = getComponent();
-        if (component != null) {
-            FacesContext context = FacesContext.getCurrentInstance();
-            return component.getFilteredValueByData(context, obj, expression);
-        } else {
-            return ReflectionUtil.readProperty(obj, (String) expression);
-        }
-
     }
 
     public Object getExpression() {
         return expression;
     }
+
+    public abstract Object getPropertyValue(Object obj);
 
     @Override
     public boolean equals(Object o) {
@@ -90,7 +43,7 @@ public class PropertyLocator implements Serializable {
 
         PropertyLocator that = (PropertyLocator) o;
 
-        if (expression != null ? !expressionToComparableString(expression).equals(expressionToComparableString(that.expression)) : that.expression != null)
+        if (expression != null ? !expression.equals(expression) : that.expression != null)
             return false;
 
         return true;
@@ -98,14 +51,8 @@ public class PropertyLocator implements Serializable {
 
     @Override
     public int hashCode() {
-        int result = expression != null ? expressionToComparableString(expression).hashCode() : 0;
+        int result = expression != null ? expression.hashCode() : 0;
         return result;
     }
 
-    private String expressionToComparableString(Object expression) {
-        // address the case when com.sun.facelets.el.TagValueExpression instance reports inequality with itself
-        if (expression instanceof ValueExpression)
-            return ((ValueExpression) expression).getExpressionString();
-        return expression.toString();
-    }
 }

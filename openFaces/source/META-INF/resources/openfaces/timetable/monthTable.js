@@ -562,16 +562,6 @@ O$.MonthTable.getNextMonthStart = function(date) {
   return new Date(date.getFullYear(), date.getMonth() + 1, 1);
 };
 
-O$.MonthTable.compareEvents = function(firstEvent, secondEvent) {
-  var result = firstEvent.start - secondEvent.start;
-  if (result != 0)
-    return result;
-  if (firstEvent.name < secondEvent.name)
-    return -1;
-  if (firstEvent.name > secondEvent.name)
-    return 1;
-  return 0;
-};
 
 O$.MonthTable.getDayEvents = function(allEvents, day) {
   var result = [];
@@ -584,7 +574,7 @@ O$.MonthTable.getDayEvents = function(allEvents, day) {
       }
     }
   }
-  result.sort(O$.MonthTable.compareEvents);
+  result.sort(O$.Timetable.compareEventsByStart);
   return result;
 };
 

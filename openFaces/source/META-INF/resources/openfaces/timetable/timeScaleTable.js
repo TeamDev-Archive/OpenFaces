@@ -438,11 +438,129 @@ O$.TimeScaleTable._init = function(componentId,
       this._events = this._eventProvider._getEventsForPeriod(this._startTime, this._endTime, function() {
         this._updateEventElements(true, true);
       });
-    for (eventIndex = 0,eventCount = this._events.length; eventIndex < eventCount; eventIndex++) {
+
+    this._updateOverlappingPositions();
+
+    var event;
+    for (var eventIndex = 0, eventCount = this._events.length; eventIndex < eventCount; eventIndex++) {
       event = this._events[eventIndex];
       this._addEventElements(event);
     }
     this._updateEventZIndexes();
+  };
+
+
+  timeScaleTable._updateOverlappingPositions = function(callback) {
+    if (O$.TimeScaleTable.RESOLVE_OVERLAPPING) {
+      if (timeScaleTable._useResourceSeparation) {
+
+        for (var resourceId in timeScaleTable._resourcesByIds) {
+          var eventsByResources = this._events.filter(function(event) {
+            return event.resourceId !== undefined && event.resourceId == resourceId;
+          }).sort(O$.Timetable.compareEventsByStart);
+          this._updateOverlappingPositionsForEvents(eventsByResources, callback);
+        }
+        eventsByResources = this._events.filter(function(event) {
+          return event.resourceId === undefined;
+        }).sort(O$.Timetable.compareEventsByStart);
+        this._updateOverlappingPositionsForEvents(eventsByResources, callback);
+      } else {
+        var events = this._events.slice();
+        events.sort(O$.Timetable.compareEventsByStart);
+        this._updateOverlappingPositionsForEvents(events, callback);
+      }
+    }
+  };
+
+  /**
+   * @param events events for specific resource sorted by start
+   */
+  timeScaleTable._updateOverlappingPositionsForEvents = function( events, callback) {
+
+    var updatedEvents = [];
+    
+    var positions = [];
+    function reservePosition(){
+      var position = positions.length;
+      for (var i=0; i<positions.length; i++){
+        if (positions[i]!=i){
+          position = i;
+          break;
+        }
+      }
+      positions.push(position);
+      return position;
+    }
+    function releasePosition(position){
+        for (var i=0; i<positions.length; i++){
+        if (positions[i]==position){
+          positions = positions.slice(0, position).concat(positions.slice(position+1));
+          break;
+        }
+      }
+    }
+
+    var divisor = 0;
+    var pendingEvents = [];
+    var openEvents = [];
+
+    while (true) {
+
+      if (events.length == 0 && openEvents.length == 0) {
+        break;
+      }
+
+      while (events.length > 0 && (openEvents.length == 0 || events[0].start < openEvents[0].end)) {
+        var nextEvent = events.shift();
+        var positionForEvent;
+        if (nextEvent._dropAllowed === undefined || nextEvent._dropAllowed){
+          positionForEvent = reservePosition();
+        }else{
+          positionForEvent = 0;
+        }
+        if (nextEvent._position === undefined || nextEvent._position != positionForEvent) {
+          nextEvent._position = positionForEvent;
+          updatedEvents.push(nextEvent);
+        }
+
+        divisor = divisor > positions.length ? divisor : positions.length;
+        openEvents.push(nextEvent);
+        openEvents.sort(O$.Timetable.compareEventsByEnd);
+      }
+
+      while (openEvents.length > 0 && (events.length == 0 || openEvents[0].end <= events[0].start)) {
+        var closingEvent = openEvents.shift();
+        pendingEvents.push(closingEvent);
+        if (closingEvent._dropAllowed === undefined || closingEvent._dropAllowed){
+          releasePosition(closingEvent._position);
+        }
+
+        if (openEvents.length == 0) {
+          for (var i = 0; i < pendingEvents.length; i++) {
+            var pendingEvent = pendingEvents[i];
+            var divisorForEvent;
+            if (pendingEvent._dropAllowed === undefined || pendingEvent._dropAllowed){
+              divisorForEvent = divisor;
+            }else{
+              divisorForEvent = 1;
+            }
+            if (pendingEvent._divisor === undefined || pendingEvent._divisor != divisorForEvent) {
+              pendingEvents[i]._divisor = divisorForEvent;
+              updatedEvents.push(pendingEvent);
+            }
+          }
+
+          divisor = 0;
+          pendingEvents = [];
+        }
+      }
+    }
+    if (callback !== undefined) {
+      for (i = 0; i < updatedEvents.length; i++) {
+        callback(updatedEvents[i]);
+      }
+    }
+
   };
 
   timeScaleTable._canEventBeDroppedHere = function(event) {
@@ -473,9 +591,10 @@ O$.TimeScaleTable._init = function(componentId,
   };
 
   timeScaleTable._updateEventsPresentation = function() {
+    this._updateOverlappingPositions();
     for (var eventIndex = 0, eventCount = this._events.length; eventIndex < eventCount; eventIndex++) {
       var event = this._events[eventIndex];
-      event.updatePresentation();
+      event._updatePresentation();
     }
   };
 
@@ -483,6 +602,16 @@ O$.TimeScaleTable._init = function(componentId,
   timeScaleTable._addEventElements = function(event) {
     addEventElements(event);
 
+    event._updatePresentation = event.updatePresentation;
+    event.updatePresentation = function(transitionPeriod) {
+      timeScaleTable._updateOverlappingPositions(function(updatedEvent) {
+        if (event !== updatedEvent){
+          updatedEvent._updatePresentation(transitionPeriod);
+        }
+      });
+      event._updatePresentation(transitionPeriod)
+
+    };
 
     event._onresize = function(top) {
       var draggableEventElement;
@@ -605,52 +734,9 @@ O$.TimeScaleTable._init = function(componentId,
 
       var rect;
       if (O$.TimeScaleTable.RESOLVE_OVERLAPPING) {
-        var rangeMap = new O$._RangeMap();
-        var eventRange = {
-          start: part.start.getTime(),
-          end: part.end.getTime()
-        };
-        var intersects = [];
 
-        var tmpEvent;
-        var tmpRange;
-        var intersectRange;
-        var div = 1; //Used to divide width
-        var tmpDiv; //Used to determine div
-
-        var position = 0; //position of event in intersects
-
-        for (var eventIndex = 0, eventCount = timeScaleTable._events.length; eventIndex < eventCount; eventIndex++) {
-          tmpEvent = timeScaleTable._events[eventIndex];
-          tmpRange = {
-            start: tmpEvent.start.getTime(),
-            end: tmpEvent.end.getTime()
-          };
-          tmpDiv = 0;
-          if (rangeMap._rangesIntersectExclude(eventRange, tmpRange)) {
-            intersects.push(tmpEvent);
-            //Determine position to get x value
-            if (event.id == tmpEvent.id) {
-              position = intersects.length - 1;
-            }
-            for (var i = 0; i < intersects.length; i++) {
-              intersectRange = {
-                start: intersects[i].start.getTime(),
-                end: intersects[i].end.getTime()
-              };
-              if (rangeMap._rangesIntersectExclude(tmpRange, intersectRange)) {
-                tmpDiv++;
-              }
-            }
-            if (tmpDiv > div) {
-              div = tmpDiv;
-            }
-
-          }
-        }
-
-        var intersectWidth = Math.round((x2 - x1) / div);
-        var intersectX = Math.round(Math.round(x1) + position * intersectWidth);
+        var intersectWidth = Math.round((x2 - x1) / event._divisor);
+        var intersectX = Math.round(Math.round(x1) + event._position * intersectWidth);
 
         rect = new O$.Rectangle(intersectX, Math.round(top.y),
                 intersectWidth, Math.round(bottom.y - top.y));

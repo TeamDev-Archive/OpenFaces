@@ -269,6 +269,12 @@ O$.Timetable._initEvent = function(event) {
     this.description = otherEvent.description;
     this.resourceId = otherEvent.resourceId;
     this.color = otherEvent.color;
+    if (otherEvent.customProperties){
+      this.customProperties = new Array();
+      for (var key in otherEvent.customProperties){
+        this.customProperties[key]=otherEvent.customProperties[key];
+      }      
+    }
   };
   
   event._scrollIntoView = function() {
@@ -660,6 +666,29 @@ O$.Timetable._PreloadedTimetableEvents = function(events) {
   };
 
   this.setEvents(events);
+};
+
+O$.Timetable.compareEventsByStart = function(firstEvent, secondEvent) {
+  var result = firstEvent.start - secondEvent.start;
+  if (result != 0)
+    return result;
+  if (firstEvent.name < secondEvent.name)
+    return -1;
+  if (firstEvent.name > secondEvent.name)
+    return 1;
+  return 0;
+};
+
+
+O$.Timetable.compareEventsByEnd = function(firstEvent, secondEvent) {
+  var result = firstEvent.end - secondEvent.end;
+  if (result != 0)
+    return result;
+  if (firstEvent.name < secondEvent.name)
+    return -1;
+  if (firstEvent.name > secondEvent.name)
+    return 1;
+  return 0;
 };
 
 

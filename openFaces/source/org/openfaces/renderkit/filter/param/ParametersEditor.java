@@ -20,10 +20,11 @@ import org.openfaces.renderkit.filter.FilterRow;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public abstract class ParametersEditor {
+public abstract class ParametersEditor implements Serializable{
 
     protected ExpressionFilterCriterion criterion = new ExpressionFilterCriterion();
     protected FilterProperty filterProperty;

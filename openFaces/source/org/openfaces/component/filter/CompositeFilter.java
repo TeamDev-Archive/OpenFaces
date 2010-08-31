@@ -138,7 +138,8 @@ public class CompositeFilter extends Filter {
         final TableUtil.ColumnExpressionData columnExpressionData = TableUtil.getColumnExpressionData(column);
         ValueExpression expression = columnExpressionData.getValueExpression();
         if (expression == null) return null;
-        final PropertyLocator propertyLocator = new PropertyLocator(expression, filteredComponent);
+        final PropertyLocatorFactory factory = new FilterableComponentPropertyLocatorFactory(filteredComponent);
+        final PropertyLocator propertyLocator = factory.create(expression);
 
         final String title = TableUtil.getColumnHeader(column);
         if (title == null) return null;

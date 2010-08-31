@@ -47,33 +47,44 @@ public class JSONBuilder extends FilterCriterionProcessor {
     }
 
     public static FilterCriterion parse(JSONObject jsonObject) throws JSONException {
+        return parse(jsonObject, null);
+    }
+    
+    public static FilterCriterion parse(JSONObject jsonObject, PropertyLocatorFactory locatorFactory) throws JSONException {
         String jsonCriterionType = jsonObject.getString(TYPE);
         CriterionType criterionType = CriterionType.valueOf(jsonCriterionType);
         if (criterionType != null) {
             switch (criterionType) {
                 case EXPRESSION:
-                    return parseExpression(jsonObject);
+                    return parseExpression(jsonObject, locatorFactory);
                 case AND:
-                    return new AndFilterCriterion(parseComposite(jsonObject));
+                    return new AndFilterCriterion(parseComposite(jsonObject, locatorFactory));
                 case OR:
-                    return new OrFilterCriterion(parseComposite(jsonObject));
+                    return new OrFilterCriterion(parseComposite(jsonObject, locatorFactory));
 
             }
         }
         throw new IllegalArgumentException("Unknown criterion type: " + jsonCriterionType);
     }
 
-    private static List<FilterCriterion> parseComposite(JSONObject jsonObject) throws JSONException {
+    private static List<FilterCriterion> parseComposite(JSONObject jsonObject, PropertyLocatorFactory locatorFactory) throws JSONException {
         List<FilterCriterion> result = new ArrayList<FilterCriterion>();
         JSONArray criteria = jsonObject.getJSONArray(CRITERIA);
         for (int i = 0; i < criteria.length(); i++) {
-            result.add(parse(criteria.getJSONObject(i)));
+            result.add(parse(criteria.getJSONObject(i), locatorFactory));
         }
         return result;
     }
 
-    private static ExpressionFilterCriterion parseExpression(JSONObject jsonObject) throws JSONException {
-        PropertyLocator propertyLocator = new PropertyLocator(jsonObject.getString(PROPERTY_LOCATOR_EXPRESSION));
+    private static ExpressionFilterCriterion parseExpression(JSONObject jsonObject, PropertyLocatorFactory locatorFactory) throws JSONException {
+
+        PropertyLocator propertyLocator;
+        String expression = jsonObject.getString(PROPERTY_LOCATOR_EXPRESSION);
+        if (locatorFactory == null) {
+            propertyLocator = PropertyLocator.getDefaultInstance(expression);
+        } else {
+            propertyLocator = locatorFactory.create(expression);
+        }
         Map<String, Object> parameters = new HashMap<String, Object>();
         JSONObject jsonParameters = jsonObject.getJSONObject(PARAMETERS);
         for (Iterator keyIterator = jsonParameters.keys(); keyIterator.hasNext();) {

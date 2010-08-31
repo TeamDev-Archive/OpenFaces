@@ -54,6 +54,7 @@ public class CompositeFilterRenderer extends RendererBase implements AjaxPortion
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
+        component.setId(component.getId());
         if (!component.isRendered()) return;
 
         CompositeFilter compositeFilter = (CompositeFilter) component;
@@ -124,7 +125,6 @@ public class CompositeFilterRenderer extends RendererBase implements AjaxPortion
             addButtonContainer.setStyleClass(FilterRow.DEFAULT_ROW_ITEM_CLASS);
             HtmlCommandButton addButton = (HtmlCommandButton) Components.createChildComponent(context, addButtonContainer, HtmlCommandButton.COMPONENT_TYPE, FilterRow.BUTTON_SUFFIX);
             addButton.setValue("+");
-            addButton.setOnclick("O$('" + compositeFilter.getClientId(context) + "').add(); return false;");
             addButton.setStyleClass(FilterRow.DEFAULT_ADD_BUTTON_CLASS);
         }
         rowContainer.encodeAll(context);
