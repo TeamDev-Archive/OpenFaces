@@ -1364,7 +1364,7 @@ O$.processStylesIncludes = function(styles) {
   }
 }
 
-O$.executeScripts = function(source) { // should not be invoked because all init scripts are moved to runtime generated js library (as for now) // todo: review -- is this really so currently?
+O$.executeScripts = function(source) {
   if (!source || source.length == 0) return;
   var idx1 = source.indexOf("<script");
   var result;
