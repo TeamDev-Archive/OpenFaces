@@ -132,7 +132,7 @@ public class DaySwitcherRenderer extends RendererBase {
             writer.writeAttribute("id", clientId + "::next_button", null);
             writer.writeAttribute("class", Styles.getCSSClass(context,
                     daySwitcher, daySwitcher.getNextButtonStyle(), "o_daySwitcher_next_button", daySwitcher.getNextButtonClass()), null);
-            String nextButtonImageUrl = Resources.getURL(context, daySwitcher.getNextButtonImageUrl(), null, 
+            String nextButtonImageUrl = Resources.getURL(context, daySwitcher.getNextButtonImageUrl(), null,
                     "timetable/nextButton.gif");
             writer.startElement("img", daySwitcher);
             writer.writeAttribute("src", nextButtonImageUrl, null);

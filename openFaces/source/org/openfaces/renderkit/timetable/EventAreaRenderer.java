@@ -13,8 +13,6 @@ package org.openfaces.renderkit.timetable;
 
 import org.openfaces.component.timetable.AbstractTimetableEvent;
 import org.openfaces.component.timetable.EventArea;
-import org.openfaces.component.timetable.MonthTable;
-import org.openfaces.component.timetable.TimeScaleTable;
 import org.openfaces.component.timetable.TimetableEvent;
 import org.openfaces.component.timetable.TimetableView;
 import org.openfaces.renderkit.RendererBase;

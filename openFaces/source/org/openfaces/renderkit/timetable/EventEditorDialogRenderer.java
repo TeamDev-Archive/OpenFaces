@@ -11,13 +11,10 @@
  */
 package org.openfaces.renderkit.timetable;
 
-import org.openfaces.component.OUIComponentBase;
 import org.openfaces.component.input.DateChooser;
 import org.openfaces.component.input.DropDownField;
 import org.openfaces.component.input.DropDownItem;
 import org.openfaces.component.timetable.EventEditorDialog;
-import org.openfaces.component.timetable.MonthTable;
-import org.openfaces.component.timetable.TimeScaleTable;
 import org.openfaces.component.timetable.TimetableEditingOptions;
 import org.openfaces.component.timetable.TimetableResource;
 import org.openfaces.component.timetable.TimetableView;

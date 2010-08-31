@@ -12,34 +12,38 @@
 
 package org.openfaces.renderkit.timetable;
 
-import org.openfaces.component.timetable.*;
+import org.openfaces.component.timetable.AbstractTimetableEvent;
+import org.openfaces.component.timetable.MonthTable;
+import org.openfaces.component.timetable.TimetableResource;
+import org.openfaces.component.timetable.TimetableView;
+import org.openfaces.component.timetable.UITimetableEvent;
 import org.openfaces.org.json.JSONArray;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.TableRenderer;
 import org.openfaces.renderkit.TableUtil;
+import org.openfaces.util.AjaxUtil;
+import org.openfaces.util.Components;
 import org.openfaces.util.DataUtil;
 import org.openfaces.util.Log;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.Styles;
-import org.openfaces.util.Components;
-import org.openfaces.util.AjaxUtil;
 
 import javax.el.ValueExpression;
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.FacesException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
-import java.util.Calendar;
 
 /**
  * @author Roman Porotnikov
@@ -80,7 +84,7 @@ public class MonthTableRenderer extends TimetableViewRenderer {
         writer.startElement("td", timetableView);
         writer.writeAttribute("style", "height: 100%", null);
 
-        renderContentTable(writer, timetableView, clientId , resources);
+        renderContentTable(writer, timetableView, clientId, resources);
         encodeEventEditor(context, timetableView, resources);
         encodeActionBar(context, timetableView);
 
@@ -178,7 +182,7 @@ public class MonthTableRenderer extends TimetableViewRenderer {
         for (AbstractTimetableEvent event : events) {
             loadedEvents.put(event.getId(), event);
         }
-        
+
 
         JSONArray areaSettings = encodeEventAreas(context, timetableView, events);
 
@@ -188,7 +192,6 @@ public class MonthTableRenderer extends TimetableViewRenderer {
                     getComponentName() + " clientId = " + timetableView.getClientId(context));
         UITimetableEvent uiEvent = uiEvents.size() > 0 ? uiEvents.get(0) : null;
 
-        
 
         try {
             Rendering.renderInitScript(context,
@@ -209,7 +212,7 @@ public class MonthTableRenderer extends TimetableViewRenderer {
                             stylingParams,
                             uiEvent != null ? uiEvent.toJSONObject(null) : null,
                             calendarOptions
-                            ),
+                    ),
                     Resources.getUtilJsURL(context),
                     Resources.getJsonJsURL(context),
                     TableUtil.getTableUtilJsURL(context),
@@ -253,7 +256,7 @@ public class MonthTableRenderer extends TimetableViewRenderer {
         }
         return eventParams;
     }
-    
+
 
     private JSONObject getStylingParamsObj(FacesContext context, MonthTable timetableView) {
         JSONObject stylingParams = new JSONObject();

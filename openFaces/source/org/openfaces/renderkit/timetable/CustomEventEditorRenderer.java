@@ -12,7 +12,6 @@
 package org.openfaces.renderkit.timetable;
 
 import org.openfaces.component.timetable.CustomEventEditor;
-import org.openfaces.component.timetable.TimetableView;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.AnonymousFunction;
 import org.openfaces.util.Rendering;

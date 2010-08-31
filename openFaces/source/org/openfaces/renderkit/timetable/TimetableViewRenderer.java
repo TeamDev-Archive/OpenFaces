@@ -17,27 +17,24 @@ import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.AjaxPortionRenderer;
 import org.openfaces.renderkit.RendererBase;
-import org.openfaces.renderkit.TableRenderer;
-import org.openfaces.renderkit.TableUtil;
 import org.openfaces.renderkit.cssparser.CSSUtil;
-import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.Components;
 import org.openfaces.util.DataUtil;
-import org.openfaces.util.Log;
 import org.openfaces.util.Rendering;
-import org.openfaces.util.Resources;
-import org.openfaces.util.ScriptBuilder;
-import org.openfaces.util.StyleGroup;
 import org.openfaces.util.Styles;
 
-import javax.el.ValueExpression;
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.PhaseId;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.TimeZone;
 
 /**
  * @author Dmitry Pikhulya
@@ -186,8 +183,8 @@ public abstract class TimetableViewRenderer extends RendererBase implements Ajax
             String colorStr = JSONObject.NULL != colorObj ? (String) colorObj : null;
             event.setColor(CSSUtil.parseColor(colorStr));
             JSONObject customPropertiesObj = eventObj.optJSONObject("customProperties");
-            if (customPropertiesObj!=null){
-                for (Iterator<String> keys = customPropertiesObj.keys(); keys.hasNext();){
+            if (customPropertiesObj != null) {
+                for (Iterator<String> keys = customPropertiesObj.keys(); keys.hasNext();) {
                     String key = keys.next();
                     event.setCustomProperty(key, customPropertiesObj.getString(key));
                 }
@@ -206,7 +203,7 @@ public abstract class TimetableViewRenderer extends RendererBase implements Ajax
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
     }
-    
+
     protected void encodeLoadEventsPortion(
             FacesContext context,
             TimetableView timetableView,
@@ -338,6 +335,7 @@ public abstract class TimetableViewRenderer extends RendererBase implements Ajax
     }
 
     protected abstract String getComponentName();
+
     protected abstract String getTagName();
 
 }

@@ -11,7 +11,13 @@
  */
 package org.openfaces.renderkit.timetable;
 
-import org.openfaces.component.timetable.*;
+import org.openfaces.component.timetable.AbstractTimetableEvent;
+import org.openfaces.component.timetable.PreloadedEvents;
+import org.openfaces.component.timetable.TimeScaleTable;
+import org.openfaces.component.timetable.TimeTextPosition;
+import org.openfaces.component.timetable.TimetableResource;
+import org.openfaces.component.timetable.TimetableView;
+import org.openfaces.component.timetable.UITimetableEvent;
 import org.openfaces.org.json.JSONArray;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
@@ -33,7 +39,14 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.Map;
+import java.util.TimeZone;
 
 /**
  * @author Dmitry Pikhulya
@@ -409,8 +422,10 @@ public abstract class TimeScaleTableRenderer extends TimetableViewRenderer {
         return DataUtil.listToJSONArray(events, timeZoneParam);
     }
 
-    protected abstract String getJsLibraryName(); 
+    protected abstract String getJsLibraryName();
+
     protected abstract String getJsInitFunctionName();
+
     protected abstract int getDayCount();
 
 }
