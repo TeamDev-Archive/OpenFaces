@@ -12,7 +12,7 @@
           selectedTabClass="tabButton_active"
           frontBorderStyle="0px"
           backBorderStyle="0px">
-  <o:ajax event="change" render="cafeBar" execute="viewSelector"/>
+  <o:ajax render="cafeBar"/>
   <o:tabSetItem>
     <h:outputText id="originalViewTab" value="Original View"/>
   </o:tabSetItem>
@@ -34,7 +34,7 @@
                              selectedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/thumb-espresso-checked.png':''}"
                              unselectedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/thumb-espresso.png':''}"
                              styleClass="checkbox">
-      <o:ajax event="change" render="espressoPanel" listener="#{DrinkOrder.orderDrink}">
+      <o:ajax render="espressoPanel" listener="#{DrinkOrder.orderDrink}">
         <f:param name="drinkReceipt" value="ESPRESSO"/>
       </o:ajax>
     </o:selectBooleanCheckbox>
@@ -101,7 +101,7 @@
                              selectedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/thumb-hot-chocolate-checked.png':''}"
                              unselectedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/thumb-hot-chocolate.png':''}"
                              styleClass="checkbox">
-      <o:ajax event="change" render="chocolatePanel" listener="#{DrinkOrder.orderDrink}">
+      <o:ajax render="chocolatePanel" listener="#{DrinkOrder.orderDrink}">
         <f:param name="drinkReceipt" value="HOT_CHOCOLATE"/>
       </o:ajax>
     </o:selectBooleanCheckbox>
@@ -198,7 +198,7 @@
                              selectedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/thumb-iced-tea-checked.png':''}"
                              unselectedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/thumb-iced-tea.png':''}"
                              styleClass="checkbox">
-      <o:ajax event="change" render="teaPanel" listener="#{DrinkOrder.orderDrink}">
+      <o:ajax render="teaPanel" listener="#{DrinkOrder.orderDrink}">
         <f:param name="drinkReceipt" value="ICED_TEA"/>
       </o:ajax>
     </o:selectBooleanCheckbox>
@@ -265,7 +265,7 @@
                              selectedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/thumb-clean-water-checked.png':''}"
                              unselectedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/thumb-clean-water.png':''}"
                              styleClass="checkbox">
-      <o:ajax event="change" render="waterPanel" listener="#{DrinkOrder.orderDrink}">
+      <o:ajax render="waterPanel" listener="#{DrinkOrder.orderDrink}">
         <f:param name="drinkReceipt" value="CLEAN_WATER"/>
       </o:ajax>
     </o:selectBooleanCheckbox>

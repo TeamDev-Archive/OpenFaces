@@ -118,7 +118,7 @@ public class AjaxInitializer {
             if (execute.iterator().hasNext() || submitAjaxInvoker) {
                 result.put("execute", getExecuteParam(context, command, execute));
             }
-            result.put("executeRenderedComponents", command.getExecuteRenderedComponents());
+            
             String onajaxstart = command.getOnajaxstart();
             if (onajaxstart != null && onajaxstart.length() != 0) {
                 result.put("onajaxstart", new AnonymousFunction(onajaxstart, "event"));
@@ -130,6 +130,10 @@ public class AjaxInitializer {
             String onerror = command.getOnerror();
             if (onerror != null && onerror.length() != 0) {
                 result.put("onerror", new AnonymousFunction(onerror, "event"));
+            }
+            String onevent = (command instanceof Ajax) ? ((Ajax) command).getOnevent() : null;
+            if (onevent != null && onevent.length() != 0) {
+                result.put("onevent", new AnonymousFunction(onevent, "event"));
             }
             Integer delayObj = (Integer) command.getAttributes().get("delay");
             int delay = delayObj != null ? delayObj : 0;
@@ -152,8 +156,8 @@ public class AjaxInitializer {
                 if (source instanceof ComponentConfigurator)
                     source = ((ComponentConfigurator) source).getConfiguredComponent();
             }
-//            if (source != null)
-//                result.put("_sourceId", source.getClientId(context));
+            if (source != null)
+                result.put("_sourceId", source.getClientId(context));
 
             ValueExpression actionListener = command instanceof Ajax
                     ? command.getValueExpression("listener")

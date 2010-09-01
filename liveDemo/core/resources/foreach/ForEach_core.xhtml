@@ -15,8 +15,7 @@
         color: #{state.stateName eq BanksList.selectedState.stateName ? '#FF8400' : 'gray'}; margin-left: 0.5em; margin-right: 0.5em;">
                 <h:outputText value="#{state.stateName}"
                               style="font-size: #{state.quantity le 3 ? 9 : state.quantity * 3}px;"/>
-                <o:ajax event="click"
-                        listener="#{BanksList.selectState}"
+                <o:ajax listener="#{BanksList.selectState}"
                         render=":form:banksList">
                   <f:param name="state" value="#{state.stateName}"/>
                 </o:ajax>

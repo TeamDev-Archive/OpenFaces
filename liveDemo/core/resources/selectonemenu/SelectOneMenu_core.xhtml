@@ -7,12 +7,12 @@
 
     <h:selectOneMenu id="comboBox" value="#{SelectOneMenuBean.selectedCity}" converter="#{SelectOneMenuBean.cityConverter}">
       <f:selectItems value="#{SelectOneMenuBean.cityItems}"/>
-      <o:ajax event="change" render="selectedItem"/>
+      <o:ajax render="selectedItem"/>
     </h:selectOneMenu>
 
     <o:selectOneMenu id="comboBox2" value="#{SelectOneMenuBean.selectedCity}" converter="#{SelectOneMenuBean.cityConverter}">
       <f:selectItems value="#{SelectOneMenuBean.cityItems}"/>
-      <o:ajax event="change" render="selectedItem"/>
+      <o:ajax render="selectedItem"/>
     </o:selectOneMenu>
     <br/>
 

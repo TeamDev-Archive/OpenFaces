@@ -1275,11 +1275,14 @@ public class Rendering {
     public static JSONObject getEventsParam(UIComponent component, String... eventNames) {
         JSONObject events = new JSONObject();
         for (String eventName : eventNames) {
-            String eventHandlerScript = Rendering.getEventHandlerScript(component, eventName);
+            String eventHandlerScript =
+                    "change".equals(eventName)
+                            ? Rendering.getEventHandlerScript(component, eventName, "valueChange")
+                            : Rendering.getEventHandlerScript(component, eventName);
             if (Rendering.isNullOrEmpty(eventHandlerScript))
                 continue;
             try {
-                events.put(eventName, eventHandlerScript);
+                events.put("on" + eventName, eventHandlerScript);
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }

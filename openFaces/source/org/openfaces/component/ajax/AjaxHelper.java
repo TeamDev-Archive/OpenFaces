@@ -13,57 +13,56 @@ package org.openfaces.component.ajax;
 
 import org.openfaces.component.OUIClientAction;
 import org.openfaces.component.OUIClientActionHelper;
-import org.openfaces.component.OUICommand;
-import org.openfaces.org.json.JSONArray;
-import org.openfaces.util.RawScript;
-import org.openfaces.util.Script;
 import org.openfaces.util.ScriptBuilder;
 
+import javax.faces.component.UIComponent;
+import javax.faces.component.behavior.ClientBehavior;
+import javax.faces.component.behavior.ClientBehaviorContext;
+import javax.faces.component.behavior.ClientBehaviorHint;
 import javax.faces.context.FacesContext;
+import javax.faces.event.BehaviorEvent;
+import java.util.Collections;
+import java.util.Set;
 
 /**
  * This class is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
  * by any application code.
- * 
+ *
  * @author Dmitry Pikhulya
  */
-public class AjaxHelper extends OUIClientActionHelper {
+public class AjaxHelper extends OUIClientActionHelper implements ClientBehavior {
+    private Ajax ajax;
+
+    public AjaxHelper(Ajax ajax) {
+        this.ajax = ajax;
+    }
 
     protected String getClientActionScript(FacesContext context, OUIClientAction action) {
         Ajax ajax = (Ajax) action;
+        if (ajax.isDisabled()) return "";
 
-         if (ajax.isDisabled()){
-            return null;
-        }
         ScriptBuilder buf = new ScriptBuilder();
-        String onevent = ajax.getOnevent();
-        if (onevent != null){
-            buf.append(onevent);
-            buf.semicolon();
-        }
-        
-        final String id = ajax.getId();
-        AjaxInitializer ajaxInitializer = new AjaxInitializer() {
-
-            @Override
-            protected Object getAjaxComponentParam(FacesContext context, OUICommand ajax) {
-                return new RawScript("O$._actionIds['" + id + "']");
-            }
-
-            @Override
-            protected Object getExecuteParam(FacesContext context, OUICommand ajax, Iterable<String> execute) {
-                return new RawScript("O$._executeIds['" + id + "']");
-            }
-        };
-
-        JSONArray renderArray = ajaxInitializer.getRenderArray(context, (OUICommand) action, ajax.getRender());
-        String idExpression = "O$._renderIds['" + id + "']";
-        Script render = new RawScript("(" + idExpression + " ? " + idExpression + " : " + renderArray.toString() + ")" );
-
+        AjaxInitializer ajaxInitializer = new AjaxInitializer();
         buf.functionCall("O$._ajaxReload",
-                render,
+                ajaxInitializer.getRenderArray(context, ajax, ajax.getRender()),
                 ajaxInitializer.getAjaxParams(context, ajax)).semicolon();
         return buf.toString();
     }
+
+    public String getScript(ClientBehaviorContext behaviorContext) {
+        return getClientActionScript(behaviorContext.getFacesContext(), ajax);
+    }
+
+    public void decode(FacesContext context, UIComponent component) {
+    }
+
+    public Set<ClientBehaviorHint> getHints() {
+        return Collections.singleton(ClientBehaviorHint.SUBMITTING);
+    }
+
+    public void broadcast(BehaviorEvent event) {
+    }
+
+
 
 }

@@ -89,7 +89,7 @@
       <f:facet name="footer">
         <h:panelGroup layout="block" style="padding: 5px">
           <o:selectBooleanCheckbox id="editPricesCheckbox" value="#{SpinnerBean.pricesEditable}">
-            <o:ajax event="click" execute="table" render="table"/>
+            <o:ajax execute="table" render="table"/>
           </o:selectBooleanCheckbox>
           <h:outputLabel for="editPricesCheckbox" value="Price editing mode -- shows Spinner editors for prices"/>
 

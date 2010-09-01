@@ -53,14 +53,14 @@
                                     sortingAllowed="false">
                   <f:selectItems value="#{TLSStylingBean.customizations}"/>
 
-                  <o:ajax event="change" render="tasksTLS"/>
+                  <o:ajax render="tasksTLS"/>
                 </o:twoListSelection>
               </td>
             </tr>
           </table>
         </td>
         <td style="vertical-align: top; width: 50%;">
-          <o:commandButton value="Update" execute="tlsForm:tasksTLS" render="tlsForm:detailTable"/>
+          <o:commandButton value="Update" execute="tlsForm:tasksTLS" render="detailTable"/>
           <o:dataTable id="detailTable"
                        style="width: 100%;"
                        var="task"

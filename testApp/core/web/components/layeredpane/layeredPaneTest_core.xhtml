@@ -13,7 +13,7 @@
              onchange="O$('form:layeredPane').setSelectedIndex(this.getValue());"/>
 
   <o:spinner value="#{requestScope['pageIndex']}" minValue="0" maxValue="2">
-    <o:ajax event="change" render="layeredPane"/>
+    <o:ajax event="change" execute="layeredPane" render="layeredPane"/>
   </o:spinner>
 
   <o:layeredPane id="layeredPane" style="border: 1px solid black; width: 200px; height: 200px" selectedIndex="#{requestScope['pageIndex']}" loadingMode="client">

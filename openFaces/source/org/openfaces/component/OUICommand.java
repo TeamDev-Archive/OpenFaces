@@ -16,12 +16,21 @@ import org.openfaces.util.ValueBindings;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UICommand;
+import javax.faces.component.UIComponent;
+import javax.faces.component.behavior.ClientBehaviorContext;
+import javax.faces.component.behavior.ClientBehaviorHint;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.BehaviorEvent;
+import javax.faces.event.ComponentSystemEvent;
+import javax.faces.event.PostAddToViewEvent;
+import javax.faces.event.PreRemoveFromViewEvent;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Dmitry Pikhulya
@@ -37,7 +46,6 @@ public abstract class OUICommand extends UICommand implements OUIComponent, Clie
 
     private Iterable<String> execute;
     private Iterable<String> render;
-    private Boolean executeRenderedComponents;
 
     private String style;
     private String styleClass;
@@ -67,7 +75,6 @@ public abstract class OUICommand extends UICommand implements OUIComponent, Clie
         return new Object[]{superState,
                 saveAttachedState(context, execute),
                 saveAttachedState(context, render),
-                executeRenderedComponents,
                 style, styleClass, rolloverStyle, rolloverClass, onclick, ondblclick, onmousedown, onmouseover,
                 onmousemove, onmouseout, onmouseup, onfocus, onblur, onkeydown, onkeyup, onkeypress, oncontextmenu,
                 onajaxstart, onajaxend, onerror};
@@ -82,7 +89,6 @@ public abstract class OUICommand extends UICommand implements OUIComponent, Clie
         super.restoreState(context, state[i++]);
         execute = (Iterable<String>) restoreAttachedState(context, state[i++]);
         render = (Iterable<String>) restoreAttachedState(context, state[i++]);
-        executeRenderedComponents = (Boolean) state[i++];
         style = (String) state[i++];
         styleClass = (String) state[i++];
         rolloverStyle = (String) state[i++];
@@ -292,11 +298,4 @@ public abstract class OUICommand extends UICommand implements OUIComponent, Clie
         this.onerror = onerror;
     }
 
-    public boolean getExecuteRenderedComponents() {
-        return ValueBindings.get(this, "executeRenderedComponents", executeRenderedComponents, true);
-    }
-
-    public void setExecuteRenderedComponents(boolean executeRenderedComponents) {
-        this.executeRenderedComponents = executeRenderedComponents;
-    }
 }

@@ -17,11 +17,21 @@ import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.ComponentSystemEvent;
+import javax.faces.event.ListenerFor;
+import javax.faces.event.ListenersFor;
+import javax.faces.event.PostAddToViewEvent;
 
 /**
  * @author Ilya Musihin
  */
+
+@ListenersFor({
+        @ListenerFor(systemEventClass = PostAddToViewEvent.class)
+})
 public class Ajax extends OUICommand implements OUIClientAction {
     public static final String COMPONENT_TYPE = "org.openfaces.Ajax";
     public static final String COMPONENT_FAMILY = "org.openfaces.Ajax";
@@ -40,8 +50,6 @@ public class Ajax extends OUICommand implements OUIClientAction {
 
     private Boolean disabled;
 
-    private AjaxHelper helper = new AjaxHelper();
-
     public Ajax() {
         setRendererType("org.openfaces.AjaxRenderer");
     }
@@ -52,12 +60,25 @@ public class Ajax extends OUICommand implements OUIClientAction {
     }
 
     @Override
-    public void setParent(UIComponent parent) {
-        super.setParent(parent);
-        if (parent != null)
-            helper.onParentChange(this, parent);
-    }
+    public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
+        super.processEvent(event);
 
+        if (event instanceof PostAddToViewEvent) {
+            if (isStandalone()) return;
+            UIComponent parent = getParent();
+            if (!(parent instanceof ClientBehaviorHolder)) {
+                throw new IllegalStateException("<o:ajax> can only be inserted into components that allow placing " +
+                        "client behaviors inside (components that implement ClientBehaviorHolder interface). " +
+                        "Component id is: " + parent.getClientId());
+            }
+            String eventName = getEvent();
+            ClientBehaviorHolder cbh = (ClientBehaviorHolder) parent;
+            if (eventName == null)
+                eventName = cbh.getDefaultEventName();
+            AjaxHelper ajaxHelper = new AjaxHelper(this);
+            cbh.addClientBehavior(eventName, ajaxHelper);
+        }
+    }
 
     public boolean getSubmitInvoker() { // todo: remove the "submitInvoker" property and hard-code the "true" behavior if no use-case where this should be customizible arises
         return ValueBindings.get(this, "submitInvoker", submitInvoker, false);
@@ -68,7 +89,7 @@ public class Ajax extends OUICommand implements OUIClientAction {
     }
 
     public String getEvent() {
-        return ValueBindings.get(this, "event", this.event, "click");
+        return ValueBindings.get(this, "event", this.event);
     }
 
     public void setEvent(String event) {

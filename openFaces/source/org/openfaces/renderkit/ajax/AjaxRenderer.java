@@ -34,8 +34,6 @@ public class AjaxRenderer extends AbstractSettingsRenderer {
         Ajax ajax = (Ajax) component;
         if (ajax.isStandalone())
             encodeStandaloneInvocationMode(context, ajax);
-        else
-            helper.encodeAutomaticInvocationMode(context, ajax);
     }
 
     private void encodeStandaloneInvocationMode(FacesContext context, Ajax ajax) throws IOException {

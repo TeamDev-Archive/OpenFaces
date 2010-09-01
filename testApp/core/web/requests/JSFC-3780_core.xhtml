@@ -9,7 +9,7 @@
   <br/>
 
   <o:dateChooser id="dateChooser1">
-    <o:ajax render="formID:dateChooser1" event="change" onajaxend="O$('formID:dayTable').nextDay();"/>
+    <o:ajax execute="formID:dateChooser1" render="formID:dateChooser1" event="change" onajaxend="O$('formID:dayTable').nextDay();"/>
   </o:dateChooser>
 
   <o:dayTable id="dayTable"

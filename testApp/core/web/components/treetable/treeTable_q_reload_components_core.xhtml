@@ -50,17 +50,17 @@
   <br/>
   <br/>
   <h:commandButton title="REFRESH" value="REFRESH">
-    <o:ajax event="click" render="permissionsTreeTable"/>
+    <o:ajax event="click" execute="permissionsTreeTable" render="permissionsTreeTable"/>
   </h:commandButton>
   <br/>
   <br/>
   <h:inputText>
-    <o:ajax event="click" render="permissionsTreeTable"/>
+    <o:ajax event="click" execute="permissionsTreeTable" render="permissionsTreeTable"/>
   </h:inputText>
   <br/>
   <br/>
   <h:outputLabel value="REFRESH" id="someOutput">
-    <o:ajax event="click" render="permissionsTreeTable"/>
+    <o:ajax event="click" execute="permissionsTreeTable" render="permissionsTreeTable"/>
   </h:outputLabel>
 
 </div>

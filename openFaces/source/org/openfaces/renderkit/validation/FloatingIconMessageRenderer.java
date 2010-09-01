@@ -95,7 +95,7 @@ public class FloatingIconMessageRenderer extends BaseMessageRenderer {
         String css = Styles.getCSSClass(context, fim,
                 !fim.isNoStyle() ? fim.getStyle() : null, DEFAULT_CLASS,
                 !fim.isNoStyle() ? fim.getStyleClass() : null);
-        JSONObject events = Rendering.getEventsParam(fim, "onclick", "ondblclick", "onmousedown", "onmouseover", "onmousemove", "onmouseout", "onmouseup");
+        JSONObject events = Rendering.getEventsParam(fim, "click", "dblclick", "mousedown", "mouseover", "mousemove", "mouseout", "mouseup");
 
         ScriptBuilder clientValidationScript = new ScriptBuilder().functionCall("O$.addClientMessageRenderer",
                 new NewInstanceScript("O$._FloatingIconMessageRenderer",

@@ -33,7 +33,11 @@
           <o:selectBooleanCheckbox triStateAllowed="true"
                                    value="#{PermissionSchema.permissionsAssignment[PermissionSchema.permissionGroup['ANONYMOUS']][permission].outputState}"
                                    stateList="#{PermissionSchema.stateList[PermissionSchema.permissionGroup['ANONYMOUS']][permission]}"
-                                   onchange="O$.ajax.request(this, event, {render: 'form:permissionsTable', listener: 'PermissionSchema.updateAssignment', actionComponent: this.id});">
+                                   onchange="O$.ajax.request(this, event, {
+                                                execute: 'form:permissionsTable',
+                                                render: 'form:permissionsTable',
+                                                listener: 'PermissionSchema.updateAssignment',
+                                                actionComponent: this.id});">
             <f:param name="group" value="#{PermissionSchema.permissionGroup['ANONYMOUS']}"/>
             <f:param name="permission" value="#{permission}"/>
           </o:selectBooleanCheckbox>
@@ -48,7 +52,11 @@
           <o:selectBooleanCheckbox triStateAllowed="true"
                                    value="#{PermissionSchema.permissionsAssignment[PermissionSchema.permissionGroup['USER']][permission].outputState}"
                                    stateList="#{PermissionSchema.stateList[PermissionSchema.permissionGroup['USER']][permission]}"
-                                   onchange="O$.ajax.request(this, event, {render: 'form:permissionsTable', listener: 'PermissionSchema.updateAssignment', actionComponent: this.id});">
+                                   onchange="O$.ajax.request(this, event, {
+                                                  execute: 'form:permissionsTable',
+                                                  render: 'form:permissionsTable',
+                                                  listener: 'PermissionSchema.updateAssignment',
+                                                  actionComponent: this.id});">
             <f:param name="group" value="#{PermissionSchema.permissionGroup['USER']}"/>
             <f:param name="permission" value="#{permission}"/>
           </o:selectBooleanCheckbox>
@@ -63,7 +71,11 @@
           <o:selectBooleanCheckbox triStateAllowed="true"
                                    value="#{PermissionSchema.permissionsAssignment[PermissionSchema.permissionGroup['ADMINISTRATOR']][permission].outputState}"
                                    stateList="#{PermissionSchema.stateList[PermissionSchema.permissionGroup['ADMINISTRATOR']][permission]}"
-                                   onchange="O$.ajax.request(this, event, {render: 'form:permissionsTable', listener: 'PermissionSchema.updateAssignment', actionComponent: this.id});">
+                                   onchange="O$.ajax.request(this, event, {
+                                                      execute: 'form:permissionsTable',
+                                                      render: 'form:permissionsTable',
+                                                      listener: 'PermissionSchema.updateAssignment',
+                                                      actionComponent: this.id});">
             <f:param name="group" value="#{PermissionSchema.permissionGroup['ADMINISTRATOR']}"/>
             <f:param name="permission" value="#{permission}"/>
           </o:selectBooleanCheckbox>
