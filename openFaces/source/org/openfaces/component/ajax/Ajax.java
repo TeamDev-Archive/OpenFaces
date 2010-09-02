@@ -69,7 +69,7 @@ public class Ajax extends OUICommand implements OUIClientAction {
             if (!(parent instanceof ClientBehaviorHolder)) {
                 throw new IllegalStateException("<o:ajax> can only be inserted into components that allow placing " +
                         "client behaviors inside (components that implement ClientBehaviorHolder interface). " +
-                        "Component id is: " + parent.getClientId());
+                        "Component id is: " + parent.getClientId() + "; Component class: " + parent.getClass().getName());
             }
             String eventName = getEvent();
             ClientBehaviorHolder cbh = (ClientBehaviorHolder) parent;
