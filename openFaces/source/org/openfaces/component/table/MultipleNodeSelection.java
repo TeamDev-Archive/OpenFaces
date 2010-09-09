@@ -233,13 +233,13 @@ public class MultipleNodeSelection extends TreeTableSelection {
     public Object saveState(FacesContext context) {
         rememberByKeys();
         Object superState = super.saveState(context);
-        return new Object[]{superState, UIComponentBase.saveAttachedState(context, nodeKeyPaths)};
+        return new Object[]{superState, nodeKeyPaths};
     }
 
     public void restoreState(FacesContext context, Object state) {
         Object[] stateArray = (Object[]) state;
         super.restoreState(context, stateArray[0]);
-        setNodeKeyPaths((List<TreePath>) UIComponentBase.restoreAttachedState(context, stateArray[1]));
+        setNodeKeyPaths((List<TreePath>) stateArray[1]);
     }
 
 
