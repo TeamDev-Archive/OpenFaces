@@ -232,7 +232,7 @@ public class HibernateCriterionBuilder extends FilterCriterionProcessor {
     public static int getRowCount(Criteria criteria) {
         fillCriteria(criteria, true);
         criteria.setProjection(Projections.rowCount());
-        return (Integer) criteria.list().get(0);
+        return ((Number) criteria.list().get(0)).intValue();
     }
 
     /**
