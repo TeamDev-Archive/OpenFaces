@@ -87,12 +87,6 @@ public abstract class AbstractSettingsRenderer extends RendererBase {
         return !(parentComponent instanceof UIViewRoot) && !(parentComponent instanceof UIForm);
     }
 
-    protected boolean isAjaxSessionExpirationProcessing(FacesContext context) {
-        Map requestMap = context.getExternalContext().getRequestMap();
-        return (AjaxUtil.isAjaxRequest(context) &&
-                requestMap.containsKey(AjaxViewHandler.SESSION_EXPIRATION_PROCESSING));
-    }
-
     protected boolean isAjaxErrorProcessing(FacesContext context) {
         Map requestMap = context.getExternalContext().getRequestMap();
         return AjaxUtil.isAjaxRequest(context) &&

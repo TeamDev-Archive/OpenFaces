@@ -11,6 +11,8 @@
  */
 package org.openfaces.renderkit.ajax;
 
+import org.openfaces.application.ViewExpiredExceptionHandler;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
@@ -22,7 +24,7 @@ public class SilentSessionExpirationRenderer extends AbstractSettingsRenderer {
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
-        if (isAjaxSessionExpirationProcessing(context)) {
+        if (ViewExpiredExceptionHandler.isExpiredView(context)) {
             String location = getRedirectLocationOnSessionExpired(context);
 
             String onsessionexpiredHandlerFunction = "O$.reloadPage(\'" + location + "\');";

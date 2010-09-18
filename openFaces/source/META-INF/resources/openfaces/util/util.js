@@ -706,21 +706,17 @@ if (!window.O$) {
       return res;
     };
   }
-  
-  if (!Array.prototype.filter)
-  {
-    Array.prototype.filter = function(fun /*, thisp*/)
-    {
+
+  if (!Array.prototype.filter) {
+    Array.prototype.filter = function(fun /*, thisp*/) {
       var len = this.length;
       if (typeof fun != "function")
         throw new TypeError();
 
       var res = new Array();
       var thisp = arguments[1];
-      for (var i = 0; i < len; i++)
-      {
-        if (i in this)
-        {
+      for (var i = 0; i < len; i++) {
+        if (i in this) {
           var val = this[i]; // in case fun mutates this
           if (fun.call(thisp, val, i, this))
             res.push(val);
@@ -4043,8 +4039,7 @@ if (!window.O$) {
   O$.alignPopupByElement = function(
           popup, element, horizAlignment, vertAlignment,
           horizDistance, vertDistance, ignoreVisibleArea,
-          disableRepositioning, repositioningAttempt)
-  {
+          disableRepositioning, repositioningAttempt) {
     if (!horizAlignment) horizAlignment = O$.LEFT;
     if (!vertAlignment) vertAlignment = O$.BELOW;
     if (!horizDistance) horizDistance = 0;
@@ -4646,8 +4641,8 @@ if (!window.O$) {
   // ----------------- COMPONENT UTILS -------------------------------------------
 
   O$.addLoadEvent(function() {
-//    if (!O$.findCssRule(".o_default_css_marker"))
-//      O$.logError("default.css file is not loaded. Did you use <head> tag instead of <h:head> tag?");
+    //    if (!O$.findCssRule(".o_default_css_marker"))
+    //      O$.logError("default.css file is not loaded. Did you use <head> tag instead of <h:head> tag?");
     O$._loaded = true;
   });
 

@@ -46,6 +46,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -378,7 +379,7 @@ public abstract class CommonAjaxViewRoot {
         return Rendering.isNullOrEmpty(value) || value.equalsIgnoreCase("true");
     }
 
-    private String[] extractRender(RequestFacade request) {
+    private static String[] extractRender(RequestFacade request) {
         String componentIds = request.getParameter(AjaxUtil.PARAM_RENDER);
         assertComponentId(componentIds);
         String[] render = !Rendering.isNullOrEmpty(componentIds) ? componentIds.split(";") : null;
@@ -430,7 +431,7 @@ public abstract class CommonAjaxViewRoot {
         }
     }
 
-    protected void assertChildren(UIViewRoot viewRoot) {
+    protected static void assertChildren(UIViewRoot viewRoot) {
         if (viewRoot.getChildCount() == 0) {
             throw new IllegalStateException("View should have been already restored.");
         }
@@ -475,29 +476,24 @@ public abstract class CommonAjaxViewRoot {
      * @param componentId it to be verified
      * @throws IllegalStateException if the passed component id is {@code null}
      */
-    private void assertComponentId(String componentId) {
+    private static void assertComponentId(String componentId) {
         if (componentId == null)
             throw new IllegalStateException("processAjaxRequest: " + AjaxUtil.PARAM_RENDER + " is null");
     }
 
-    private void handleSessionExpirationOnEncodeChildren(FacesContext context, RequestFacade request) throws IOException {
+    public static void handleSessionExpirationOnEncodeChildren(FacesContext context, RequestFacade request) throws IOException {
         ExternalContext externalContext = context.getExternalContext();
-        Object originalResponse = externalContext.getResponse();
-        if (originalResponse instanceof HttpServletResponse) {
-            ResponseWrapper response = new ResponseWrapper((HttpServletResponse) originalResponse);
-            response.setHeader(AjaxViewHandler.AJAX_EXPIRED_HEADER, AjaxViewHandler.AJAX_VIEW_EXPIRED);
-        }
 
         UIViewRoot viewRoot = context.getViewRoot();
         List<UIComponent> children = viewRoot.getChildren();
         AjaxSettings ajaxSettings = null;
 
-        String[] componentIds = extractRender(request);
+        Collection<String> componentIds = context.getPartialViewContext().getRenderIds();
         Map<String, Object> requestMap = externalContext.getRequestMap();
 
         assertChildren(viewRoot);
 
-        UIComponent component = componentIds != null && componentIds.length > 0 ? findComponentById(viewRoot, componentIds[0], false, false) : null;
+        UIComponent component = componentIds != null && componentIds.size() > 0 ? findComponentById(viewRoot, componentIds.iterator().next(), false, false) : null;
         if (component != null && component.getChildCount() > 0) {
             List<UIComponent> ajaxSubmittedComponentChildren = component.getChildren();
             ajaxSettings = findAjaxSettings(ajaxSubmittedComponentChildren);
@@ -524,24 +520,7 @@ public abstract class CommonAjaxViewRoot {
             }
         }
 
-        if (ajaxSettings != null) {
-            boolean isNonPortletRequest = !AjaxUtil.isPortletRequest(context);
-            AbstractResponseFacade responseFacade =
-                    finishSessionExpirationAjaxResponse(context, request, new UIComponent[]{ajaxSettings},
-                            isNonPortletRequest);
-            String sessionExpiredResponse = null;
-
-            if (responseFacade.getOutputStream() != null) {
-                ByteArrayOutputStream byteArrayOutputStream = (ByteArrayOutputStream) responseFacade.getOutputStream();
-                sessionExpiredResponse = byteArrayOutputStream.toString("UTF-8");
-            } else if (responseFacade.getWriter() != null) {
-                sessionExpiredResponse = responseFacade.getWriter().toString();
-            }
-
-            if (sessionExpiredResponse != null) {
-                requestMap.put(AjaxViewHandler.SESSION_EXPIRED_RESPONSE, sessionExpiredResponse);
-            }
-        }
+        ajaxSettings.encodeAll(context);
     }
 
     private static void releaseSyncObject(FacesContext context) {
@@ -556,7 +535,7 @@ public abstract class CommonAjaxViewRoot {
         }
     }
 
-    private AjaxSettings findAjaxSettings(List<UIComponent> children) {
+    private static AjaxSettings findAjaxSettings(List<UIComponent> children) {
         AjaxSettings result = null;
         for (Object iteratedChild : children) {
             if (iteratedChild instanceof AjaxSettings) {
@@ -574,7 +553,7 @@ public abstract class CommonAjaxViewRoot {
         return result;
     }
 
-    private AjaxSettings findPageAjaxSettings(List<UIComponent> children) {
+    private static AjaxSettings findPageAjaxSettings(List<UIComponent> children) {
         AjaxSettings result = null;
         for (Object iteratedChild : children) {
             if (iteratedChild instanceof AjaxSettings && isPageSettings((AjaxSettings) iteratedChild)) {
@@ -624,17 +603,17 @@ public abstract class CommonAjaxViewRoot {
 
     }
 
-    private boolean isPageSettings(AjaxSettings ajaxSettings) {
+    private static boolean isPageSettings(AjaxSettings ajaxSettings) {
         return (ajaxSettings.getParent() instanceof UIViewRoot || ajaxSettings.getParent() instanceof UIForm);
     }
 
-    private AjaxSettings createSilentSessionExpirationSettings() {
+    private static AjaxSettings createSilentSessionExpirationSettings() {
         AjaxSettings result = new AjaxSettings();
         result.setSessionExpiration(new SilentSessionExpiration());
         return result;
     }
 
-    private AjaxSettings createDefaultSessionExpirationSettings(FacesContext context) {
+    private static AjaxSettings createDefaultSessionExpirationSettings(FacesContext context) {
         AjaxSettings result = new AjaxSettings();
         DefaultSessionExpiration dse = new DefaultSessionExpiration();
         result.setSessionExpiration(dse);
@@ -862,7 +841,7 @@ public abstract class CommonAjaxViewRoot {
         ajaxResponse.write(response);
     }
 
-    private AbstractResponseFacade finishSessionExpirationAjaxResponse(FacesContext context,
+    private static AbstractResponseFacade finishSessionExpirationAjaxResponse(FacesContext context,
                                                                        RequestFacade request,
                                                                        UIComponent[] components,
                                                                        boolean nonPortletAjaxRequest) throws IOException {
@@ -943,7 +922,7 @@ public abstract class CommonAjaxViewRoot {
         }
     }
 
-    private AjaxResponse ajaxRenderResponse(
+    private static AjaxResponse ajaxRenderResponse(
             RequestFacade request,
             FacesContext context,
             UIComponent[] components
@@ -994,7 +973,7 @@ public abstract class CommonAjaxViewRoot {
         return ajaxResponse;
     }
 
-    private void renderPortionUpdate(
+    private static void renderPortionUpdate(
             RequestFacade request,
             FacesContext context,
             UIComponent component,
@@ -1031,7 +1010,7 @@ public abstract class CommonAjaxViewRoot {
         }
     }
 
-    private void renderSimpleUpdate(RequestFacade request, FacesContext context, UIComponent component, AjaxResponse ajaxResponse, StringBuilder initializationScripts) throws IOException {
+    private static void renderSimpleUpdate(RequestFacade request, FacesContext context, UIComponent component, AjaxResponse ajaxResponse, StringBuilder initializationScripts) throws IOException {
         StringWriter wrt = new StringWriter();
         ResponseWriter originalWriter = substituteResponseWriter(context, wrt);
         StringBuilder outputBuffer;
@@ -1120,7 +1099,7 @@ public abstract class CommonAjaxViewRoot {
         return result.toString();
     }
 
-    private void addJSLibraries(FacesContext context, AjaxResponse ajaxResponse) {
+    private static void addJSLibraries(FacesContext context, AjaxResponse ajaxResponse) {
         List<String> libraries = (List<String>) context.getExternalContext().getRequestMap().get(Resources.HEADER_JS_LIBRARIES);
         if (libraries == null) return;
         for (String jsLibrary : libraries) {
@@ -1138,7 +1117,7 @@ public abstract class CommonAjaxViewRoot {
         }
     }
 
-    private void addStyles(FacesContext context, AjaxResponse ajaxResponse, UIComponent[] components) {
+    private static void addStyles(FacesContext context, AjaxResponse ajaxResponse, UIComponent[] components) {
         for (UIComponent component : components) {
             List<String> styleClasses = Styles.getAllStyleClassesForComponent(context, component);
             addStyleClasses(ajaxResponse, styleClasses);
@@ -1146,7 +1125,7 @@ public abstract class CommonAjaxViewRoot {
         }
     }
 
-    private void addStyleClasses(AjaxResponse ajaxResponse, List<String> styleClasses) {
+    private static void addStyleClasses(AjaxResponse ajaxResponse, List<String> styleClasses) {
         if (styleClasses == null) return;
         for (String style : styleClasses) {
             ajaxResponse.addStyle(style);

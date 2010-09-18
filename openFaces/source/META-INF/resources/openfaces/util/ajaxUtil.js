@@ -384,6 +384,16 @@ O$.sendAjaxRequest = function(render, args) {
     params[O$.EXECUTE_RENDERED_COMPONENTS] = args.executeRenderedComponents;
   }
   var ajaxResult;
+  function ajaxEnd() {
+    var ajaxendEvent = O$.createEvent("ajaxend");
+    ajaxendEvent.ajaxResult = ajaxResult;
+    if (args.onajaxend) {
+      args.onajaxend(ajaxendEvent);
+    }
+    if (OpenFaces.Ajax.Page.onajaxend) {
+      OpenFaces.Ajax.Page.onajaxend(ajaxendEvent);
+    }
+  }
   function eventHandler(data) {
     if (args.onevent)
       args.onevent.call(null, data);
@@ -413,6 +423,18 @@ O$.sendAjaxRequest = function(render, args) {
             if (!args.portionProcessor) throw "OpenFaces Ajax portion node received but no portionProcessor was specified by the request invoker";
             args.portionProcessor(component, portionName, portionText, portionScripts, portionData);
           }, jsLibs);
+        } else if (extensionType == "sessionExpiration") {
+          var html = extensionNode.getAttribute("text");
+          jsLibsStr = extensionNode.getAttribute("jsLibs");
+          portionScripts = extensionNode.getAttribute("scripts");
+          jsLibs = eval(jsLibsStr);
+          O$._runScript(function() {
+            O$._processUpdateOnExpirationOrError(html, portionScripts);
+            if (OpenFaces.Ajax.Page.onsessionexpired) {
+              var sessionExpiredEvent = O$.createEvent("sessionexpired");
+              OpenFaces.Ajax.Page.onsessionexpired(sessionExpiredEvent);
+            }
+          }, jsLibs);
         } else if (extensionType == "ajaxResult") {
           var ajaxResultStr = extensionNode.getAttribute("ajaxResult");
           try {
@@ -440,21 +462,13 @@ O$.sendAjaxRequest = function(render, args) {
       }
     }
     if (data.status == "success") {
-      if (args.onajaxend) {
-        var ajaxendEvent = O$.createEvent("ajaxend");
-        ajaxendEvent.ajaxResult = ajaxResult;
-        args.onajaxend(ajaxendEvent);
-      }
+      ajaxEnd();
     }
   }
   function errorHandler(data) {
     if (args.onerror)
       args.onerror.call(null, data);
-    if (args.onajaxend) {
-      var ajaxendEvent = O$.createEvent("ajaxend");
-      ajaxendEvent.ajaxResult = ajaxResult;
-      args.onajaxend(ajaxendEvent);
-    }
+    ajaxEnd();
   }
   var options = {
     execute: execute,
@@ -475,6 +489,11 @@ O$.sendAjaxRequest = function(render, args) {
     var ajaxstartEvent = O$.createEvent("ajaxstart");
     args.onajaxstart(ajaxstartEvent);
   }
+  if (OpenFaces.Ajax.Page.onajaxstart) {
+    ajaxstartEvent = O$.createEvent("ajaxstart");
+    OpenFaces.Ajax.Page.onajaxstart(ajaxstartEvent);
+  }
+
   return;
 
 
@@ -938,6 +957,29 @@ O$._pageReloadConfirmation = function(confirmationId, location) {
   });
 };
 
+O$._processUpdateOnExpirationOrError = function (updHTML, updScripts) {
+  if (document.__sessionExpirationUpd) {
+    return;
+  }
+  var tempDiv = document.createElement("div");
+  tempDiv.innerHTML = updHTML;
+
+  var newElements = [];
+  for (var childIndex = 0, childCount = tempDiv.childNodes.length; childIndex < childCount; childIndex++) {
+    var newElement = tempDiv.childNodes[childIndex];
+    O$.ajax_pushElementsWithId(newElements, newElement);
+  }
+
+  for (var childIndex = 0, childCount = newElements.length; childIndex < childCount; childIndex++) {
+    var newElement = newElements[childIndex];
+    O$.assert(newElement.id, "_processSimpleUpdate: newElement without id encountered");
+    var parent = document.body;
+    parent.insertBefore(newElement, parent.lastChild);
+  }
+
+  eval(updScripts);
+};
+
 // O$.AjaxObject class
 O$.AjaxObject = function(render) {
   this._targetIds = render;
@@ -1227,47 +1269,7 @@ O$.AjaxObject = function(render) {
       O$.Ajax.onajaxend(ajaxendEvent);
   };
 
-  this._processUpdateOnExpirationOrError = function (updId, updHTML, updScripts, updateStateHTML) {
-    if (document.__sessionExpirationUpd) {
-      return;
-    }
-    var tempDiv = document.createElement("div");
-    tempDiv.innerHTML = updHTML;
 
-    var newElements = [];
-    for (var childIndex = 0, childCount = tempDiv.childNodes.length; childIndex < childCount; childIndex++) {
-      var newElement = tempDiv.childNodes[childIndex];
-      O$.ajax_pushElementsWithId(newElements, newElement);
-    }
-
-    for (var childIndex = 0, childCount = newElements.length; childIndex < childCount; childIndex++) {
-      var newElement = newElements[childIndex];
-      O$.assert(newElement.id, "_processSimpleUpdate: newElement without id encountered");
-      var parent = document.body;
-      parent.insertBefore(newElement, parent.lastChild);
-
-
-      if (O$.isOpera()) { // needed for Opera8.5 only (JSFC-1170)
-        var oldClassName = parent.className;
-        parent.className = parent.className + " _non_existing_class_name_of__123_";
-        parent.className = oldClassName;
-      }
-
-    }
-
-    //todo: insert runtime js library invokation with all initial scripts (instead of scripts passing to ajax response) here.
-    //todo: replace O$.executeScripts() method with runtime js library invokation
-    O$.executeScripts(updScripts);
-
-    O$.processStateUpdate(updId, updateStateHTML);
-
-    if (this._mode == "Expiration-Handling") {
-      O$.processSessionExpiration(this._loc, this._targetIds, this, false);
-      O$.requestFinished(this);
-    }
-
-    document.__sessionExpirationUpd = true;
-  };
   this._processSimpleUpdate = function(updId, updHTML, updScripts, updateStateHTML) {
 
     var replacedElement = O$(updId);

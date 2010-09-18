@@ -65,7 +65,7 @@ public class ScriptBuilder extends Script {
         return append(new FunctionCallScript(functionName, params));
     }
 
-    public ScriptBuilder anonymousFunction(String bodyScript, String... paramNames) {
+    public ScriptBuilder anonymousFunction(Script bodyScript, String... paramNames) {
         return append(new AnonymousFunction(bodyScript, paramNames));
     }
 

@@ -11,6 +11,7 @@
  */
 package org.openfaces.renderkit.ajax;
 
+import org.openfaces.application.ViewExpiredExceptionHandler;
 import org.openfaces.component.ajax.DefaultSessionExpiration;
 import org.openfaces.component.window.Confirmation;
 
@@ -33,7 +34,7 @@ public class DefaultSessionExpirationRenderer extends AbstractSettingsRenderer {
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        if (isAjaxSessionExpirationProcessing(context)) {
+        if (ViewExpiredExceptionHandler.isExpiredView(context)) {
             DefaultSessionExpiration defaultSessionExpiration = (DefaultSessionExpiration) component;
 
             Confirmation confirmation = defaultSessionExpiration.getConfirmation();

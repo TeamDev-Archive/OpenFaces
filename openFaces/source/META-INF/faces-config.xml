@@ -12,6 +12,7 @@
   <factory>
     <application-factory>org.openfaces.application.OpenFacesApplicationFactory</application-factory>
     <partial-view-context-factory>org.openfaces.ajax.PartialViewContextFactory</partial-view-context-factory>
+    <exception-handler-factory>org.openfaces.application.ViewExpiredExceptionHandlerFactory</exception-handler-factory>
   </factory>
 
   <lifecycle>

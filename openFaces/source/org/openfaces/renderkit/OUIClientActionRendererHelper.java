@@ -14,6 +14,7 @@ package org.openfaces.renderkit;
 import org.openfaces.component.OUIClientAction;
 import org.openfaces.component.OUIClientActionHelper;
 import org.openfaces.util.AjaxUtil;
+import org.openfaces.util.RawScript;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.ScriptBuilder;
 
@@ -30,7 +31,7 @@ public abstract class OUIClientActionRendererHelper {
         if (invokerId != null) {
             javaScript.functionCall("O$.byIdOrName", invokerId).dot();
             javaScript.append(Rendering.getEventWithOnPrefix(context, clientAction, null)).append("=");
-            javaScript.anonymousFunction(getClientActionScript(context, clientAction), "event").semicolon();
+            javaScript.anonymousFunction(new RawScript(getClientActionScript(context, clientAction)), "event").semicolon();
         }
         encodeAdditionalScript(context, javaScript, clientAction);
         AjaxUtil.renderAjaxSupport(context);

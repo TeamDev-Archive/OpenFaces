@@ -533,12 +533,15 @@ public class Resources {
         Boolean postponeJsLinkRendering = (Boolean) context.getExternalContext().getRequestMap().get(POSTPONE_JS_LINK_RENDERING);
         if (postponeJsLinkRendering != null && postponeJsLinkRendering)
             return;
+        boolean fullResourceString = jsFile.startsWith("/") || jsFile.contains("://");
         if (AjaxUtil.isAjaxRequest(context)) {
+            if (!fullResourceString)
+                    jsFile = Resources.getInternalURL(context, jsFile);
             registerJavascriptLibrary(context, jsFile);
         } else if (AjaxUtil.isAjax4jsfRequest()) {
             registerJavascriptLibrary(context, jsFile);
         } else {
-            boolean fullResourceString = jsFile.startsWith("/") || jsFile.contains("://");
+
             if (OpenFacesApplication.isConstructingView(context)) {
                 if (fullResourceString)
                     throw new IllegalArgumentException("Resource name should be passed, not resource URL: " + jsFile);

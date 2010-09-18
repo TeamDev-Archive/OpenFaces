@@ -11,6 +11,7 @@
  */
 package org.openfaces.renderkit.ajax;
 
+import org.openfaces.application.ViewExpiredExceptionHandler;
 import org.openfaces.component.ajax.AjaxSettings;
 import org.openfaces.component.ajax.SessionExpiration;
 import org.openfaces.org.json.JSONObject;
@@ -54,7 +55,7 @@ public class AjaxSettingsRenderer extends AbstractSettingsRenderer implements Aj
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         AjaxSettings ajaxSettings = (AjaxSettings) component;
-        if (isAjaxSessionExpirationProcessing(context)) {
+        if (ViewExpiredExceptionHandler.isExpiredView(context)) {
 
             SessionExpiration expirationFacet = ajaxSettings.getSessionExpiration();
             expirationFacet.encodeAll(context);

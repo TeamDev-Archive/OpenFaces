@@ -12,21 +12,14 @@
 
 package org.openfaces.ajax;
 
+import org.openfaces.application.ViewExpiredExceptionHandler;
 import org.openfaces.component.ComponentWithExternalParts;
 import org.openfaces.org.json.JSONArray;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.org.json.JSONString;
 import org.openfaces.renderkit.AjaxPortionRenderer;
-import org.openfaces.util.AjaxUtil;
-import org.openfaces.util.AnonymousFunction;
-import org.openfaces.util.FunctionCallScript;
-import org.openfaces.util.InitScript;
-import org.openfaces.util.Rendering;
-import org.openfaces.util.Resources;
-import org.openfaces.util.Script;
-import org.openfaces.util.ScriptBuilder;
-import org.openfaces.util.UtilPhaseListener;
+import org.openfaces.util.*;
 
 import javax.faces.FacesException;
 import javax.faces.FactoryFinder;
@@ -44,7 +37,16 @@ import javax.faces.render.Renderer;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.lang.reflect.Array;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author Dmitry Pikhulya
@@ -52,6 +54,7 @@ import java.util.*;
 public class PartialViewContext extends PartialViewContextWrapper {
     private javax.faces.context.PartialViewContext wrapped;
     private static final String PORTION_DATAS_KEY = PartialViewContext.class.getName() + ".ajaxPortionDatas";
+    private static final String SESSION_EXPIRATION_EXTENSION_KEY = PartialViewContext.class.getName() + ".sessionExpirationExtension";
 
     public PartialViewContext(javax.faces.context.PartialViewContext wrapped) {
         this.wrapped = wrapped;
@@ -65,7 +68,9 @@ public class PartialViewContext extends PartialViewContextWrapper {
             @Override
             public void startUpdate(String targetId) throws IOException {
                 if (targetId.equals(PartialResponseWriter.VIEW_STATE_MARKER)) {
-                    prepareAjaxPortions(FacesContext.getCurrentInstance());
+                    FacesContext context = FacesContext.getCurrentInstance();
+                    prepareViewExpirationExtension(context);
+                    prepareAjaxPortions(context);
                 }
                 super.startUpdate(targetId);
             }
@@ -108,9 +113,18 @@ public class PartialViewContext extends PartialViewContextWrapper {
     }
 
     @Override
+    public Collection<String> getExecuteIds() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (ViewExpiredExceptionHandler.isExpiredView(context))
+            return Collections.emptyList();
+
+        return super.getExecuteIds();
+    }
+
+    @Override
     public Collection<String> getRenderIds() {
         FacesContext context = FacesContext.getCurrentInstance();
-        if (AjaxUtil.isAjaxPortionRequest(context))
+        if (AjaxUtil.isAjaxPortionRequest(context) || ViewExpiredExceptionHandler.isExpiredView(context))
             return Collections.emptyList();
         Set<String> result = new LinkedHashSet<String>(super.getRenderIds());
         result.addAll(AjaxRequest.getInstance().getReloadedComponentIds());
@@ -179,6 +193,30 @@ public class PartialViewContext extends PartialViewContextWrapper {
         renderAjaxResult(context);
     }
 
+    private void prepareViewExpirationExtension(final FacesContext context) throws IOException {
+        if (!ViewExpiredExceptionHandler.isExpiredView(context)) return;
+        final ExternalContext externalContext = context.getExternalContext();
+        final AjaxExtension extension = prepareExtension(context, "sessionExpiration", "", new ExtensionRenderer() {
+            public JSONObject render() throws IOException {
+                AtomicReference<RequestFacade> requestFacade = new AtomicReference<RequestFacade>(RequestFacade.getInstance(externalContext.getRequest()));
+                CommonAjaxViewRoot.handleSessionExpirationOnEncodeChildren(context, requestFacade.get());
+                return null;
+            }
+        }, true);
+
+        externalContext.getRequestMap().put(SESSION_EXPIRATION_EXTENSION_KEY, extension);
+
+    }
+
+    private static List<String> prepareResourceUrls(Collection<String> resources) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        List<String> result = new ArrayList<String>(resources.size());
+        for (String resource : resources) {
+            result.add(Resources.getInternalURL(context, resource));
+        }
+        return result;
+    }
+
     private static void renderAjaxInitScripts(FacesContext context) throws IOException {
         InitScript script = getCombinedAjaxInitScripts(context);
         if (script == null) return;
@@ -192,7 +230,7 @@ public class PartialViewContext extends PartialViewContextWrapper {
         partialWriter.endEval();
     }
 
-    private static InitScript getCombinedAjaxInitScripts(FacesContext context) {
+    public static InitScript getCombinedAjaxInitScripts(FacesContext context) {
         ScriptBuilder sb = new ScriptBuilder();
         Set<String> jsFiles = new LinkedHashSet<String>();
         List<InitScript> initScripts = Rendering.getAjaxInitScripts(context);
@@ -210,11 +248,15 @@ public class PartialViewContext extends PartialViewContextWrapper {
         initScripts.clear();
         // remove the possible null references, which are normally allowed to present, from js library list
         jsFiles.remove(null);
-        InitScript script = new InitScript(new AnonymousFunction(sb), jsFiles.toArray(new String[jsFiles.size()]));
+        InitScript script = new InitScript(new ScriptBuilder("_temp_=").anonymousFunction(sb).append("();"), jsFiles.toArray(new String[jsFiles.size()]));
         return script;
     }
 
-    private static void prepareAjaxPortions(FacesContext context) throws IOException {
+    private interface ExtensionRenderer {
+        public JSONObject render() throws IOException;
+    }
+
+    private static void prepareAjaxPortions(final FacesContext context) throws IOException {
         List<String> updatePortions = AjaxUtil.getAjaxPortionNames(context);
         if (updatePortions.isEmpty()) return;
         ExternalContext externalContext = context.getExternalContext();
@@ -223,65 +265,98 @@ public class PartialViewContext extends PartialViewContextWrapper {
         String[] renderIds = renderParam.split("[ \t]+");
         if (renderIds.length != 1)
             throw new RuntimeException("There should be one target component but was: " + renderIds.length);
-        UIComponent component = UtilPhaseListener.findComponentById(context.getViewRoot(), renderIds[0],
+        final UIComponent component = UtilPhaseListener.findComponentById(context.getViewRoot(), renderIds[0],
                 false, true, true);
 
         RenderKitFactory factory = (RenderKitFactory) FactoryFinder.getFactory(FactoryFinder.RENDER_KIT_FACTORY);
         RenderKit renderKit = factory.getRenderKit(context, context.getViewRoot().getRenderKitId());
         Renderer renderer = renderKit.getRenderer(component.getFamily(), component.getRendererType());
-        JSONObject customJSONParam = AjaxUtil.getCustomJSONParam(context);
-        AjaxPortionRenderer ajaxComponentRenderer = (AjaxPortionRenderer) renderer;
-        List<PortionData> portionDatas = new ArrayList<PortionData>();
-        for (String portionName : updatePortions) {
-            StringBuilder portionOutput;
-            JSONObject responseData;
-            StringWriter stringWriter = new StringWriter();
-            ResponseWriter originalWriter = CommonAjaxViewRoot.substituteResponseWriter(context, stringWriter);
-            try {
-                responseData = ajaxComponentRenderer.encodeAjaxPortion(context, component, portionName, customJSONParam);
-                portionOutput = new StringBuilder(stringWriter.toString());
-            } catch (JSONException e) {
-                throw new RuntimeException(e);
-            } finally {
-                CommonAjaxViewRoot.restoreWriter(context, originalWriter);
-            }
-
-            StringBuilder rawScriptsBuffer = new StringBuilder();
-            StringBuilder rtLibraryScriptsBuffer = new StringBuilder();
-            CommonAjaxViewRoot.extractScripts(portionOutput, rawScriptsBuffer, rtLibraryScriptsBuffer);
-            if (rtLibraryScriptsBuffer.length() > 0) {
-//                initializationScripts.append(rtLibraryScriptsBuffer).append("\n");
-            }
-
-            PortionData portionData = new PortionData(
-                    portionName,
-                    portionOutput.toString(),
-                    responseData,
-                    Resources.getRegisteredJsLibraries(),
-                    rawScriptsBuffer.toString());
-            portionDatas.add(portionData);
+        final JSONObject customJSONParam = AjaxUtil.getCustomJSONParam(context);
+        final AjaxPortionRenderer ajaxComponentRenderer = (AjaxPortionRenderer) renderer;
+        List<AjaxExtension> extensions = new ArrayList<AjaxExtension>();
+        for (final String portionName : updatePortions) {
+            AjaxExtension extension = prepareExtension(context, "sessionExpiration", portionName, new ExtensionRenderer() {
+                public JSONObject render() throws IOException {
+                    try {
+                        return ajaxComponentRenderer.encodeAjaxPortion(context, component, portionName, customJSONParam);
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }, false);
+            extensions.add(extension);
         }
-        context.getExternalContext().getRequestMap().put(PORTION_DATAS_KEY, portionDatas);
+        context.getExternalContext().getRequestMap().put(PORTION_DATAS_KEY, extensions);
+    }
+
+    private static AjaxExtension prepareExtension(FacesContext context,
+                                                  String extensionType,
+                                                  String portionName,
+                                                  ExtensionRenderer extensionRenderer,
+                                                  boolean appendAjaxInitScripts) throws IOException {
+        StringBuilder portionOutput;
+        JSONObject responseData;
+        StringWriter stringWriter = new StringWriter();
+        ResponseWriter originalWriter = CommonAjaxViewRoot.substituteResponseWriter(context, stringWriter);
+        try {
+            responseData = extensionRenderer.render();
+            portionOutput = new StringBuilder(stringWriter.toString());
+        } finally {
+            CommonAjaxViewRoot.restoreWriter(context, originalWriter);
+        }
+
+        StringBuilder rawScriptsBuffer = new StringBuilder();
+        StringBuilder rtLibraryScriptsBuffer = new StringBuilder();
+        CommonAjaxViewRoot.extractScripts(portionOutput, rawScriptsBuffer, rtLibraryScriptsBuffer);
+
+        Collection<String> libraries = new LinkedHashSet<String>();
+        List<String> registeredJsLibs = Resources.getRegisteredJsLibraries();
+        if (registeredJsLibs != null)
+            libraries.addAll(registeredJsLibs);
+
+        if (appendAjaxInitScripts) {
+            InitScript script = PartialViewContext.getCombinedAjaxInitScripts(context);
+            libraries.addAll(Arrays.asList(script.getJsFiles()));
+            Script additionalScript = script.getScript();
+            rawScriptsBuffer.append(additionalScript);
+        }
+
+        AjaxExtension extension = new AjaxExtension(
+                extensionType,
+                portionName,
+                portionOutput.toString(),
+                responseData,
+                libraries,
+                rawScriptsBuffer.toString());
+        return extension;
     }
 
     private static void renderAjaxPortions(FacesContext context) throws IOException {
-        List<PortionData> portionDatas = (List<PortionData>) context.getExternalContext().getRequestMap().get(PORTION_DATAS_KEY);
-        if (portionDatas == null) return;
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+        AjaxExtension sessionExpirationExtension = (AjaxExtension) requestMap.get(SESSION_EXPIRATION_EXTENSION_KEY);
         javax.faces.context.PartialViewContext partialViewContext = context.getPartialViewContext();
         PartialResponseWriter partialWriter = partialViewContext.getPartialResponseWriter();
-        for (PortionData portionData : portionDatas) {
-            portionData.render(partialWriter);
+        if (sessionExpirationExtension != null) {
+            sessionExpirationExtension.render(partialWriter);
+            return;
         }
+        List<AjaxExtension> extensions = (List<AjaxExtension>) requestMap.get(PORTION_DATAS_KEY);
+        if (extensions != null)
+            for (AjaxExtension extension : extensions) {
+                extension.render(partialWriter);
+            }
     }
 
-    private static class PortionData {
+    private static class AjaxExtension {
+        private String type;
         private String portionName;
         private String portionOutput;
         private JSONObject responseData;
-        private List<String> registeredJsLibraries;
+        private Collection<String> registeredJsLibraries;
         private String scripts;
 
-        private PortionData(String portionName, String portionOutput, JSONObject responseData, List<String> registeredJsLibraries, String scripts) {
+        private AjaxExtension(String type, String portionName, String portionOutput, JSONObject responseData, Collection<String> registeredJsLibraries, String scripts) {
+            this.type = type;
             this.portionName = portionName;
             this.portionOutput = portionOutput;
             this.responseData = responseData;
@@ -292,7 +367,7 @@ public class PartialViewContext extends PartialViewContextWrapper {
         public void render(PartialResponseWriter writer) throws IOException {
             Map<String, String> extensionAttributes = new HashMap<String, String>();
             extensionAttributes.put("ln", "openfaces");
-            extensionAttributes.put("type", "portionData");
+            extensionAttributes.put("type", type);
             extensionAttributes.put("portion", portionName);
             extensionAttributes.put("text", portionOutput);
             extensionAttributes.put("data", responseData != null ? responseData.toString() : "null");
