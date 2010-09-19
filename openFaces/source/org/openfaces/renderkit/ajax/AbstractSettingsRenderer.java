@@ -94,6 +94,9 @@ public abstract class AbstractSettingsRenderer extends RendererBase {
     }
 
     protected String getRedirectLocationOnSessionExpired(FacesContext context) {
-        return (String) context.getExternalContext().getRequestMap().get(AjaxViewHandler.LOCATION_HEADER);
+        UIViewRoot viewRoot = context.getViewRoot();
+        String actionURL = context.getApplication().getViewHandler().getActionURL(context, viewRoot.getViewId());
+        actionURL = context.getExternalContext().encodeActionURL(actionURL);
+        return actionURL;
     }
 }

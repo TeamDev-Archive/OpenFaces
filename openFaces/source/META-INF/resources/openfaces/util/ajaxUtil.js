@@ -318,6 +318,14 @@ O$._runScript = function(script, libs) {
  *
  */
 O$.sendAjaxRequest = function(render, args) {
+  if (window._of_ajax_onsessionexpired) {
+    if (OpenFaces.Ajax.Page.onsessionexpired) {
+      var sessionExpiredEvent = O$.createEvent("sessionexpired");
+      OpenFaces.Ajax.Page.onsessionexpired(sessionExpiredEvent);
+    }
+    return;
+  }
+
   var source = args._source;
   if (!source && args._sourceId) {
     source = document.getElementById(args._sourceId);
@@ -424,6 +432,7 @@ O$.sendAjaxRequest = function(render, args) {
             args.portionProcessor(component, portionName, portionText, portionScripts, portionData);
           }, jsLibs);
         } else if (extensionType == "sessionExpiration") {
+          window._of_ajax_onsessionexpired = true;
           var html = extensionNode.getAttribute("text");
           jsLibsStr = extensionNode.getAttribute("jsLibs");
           portionScripts = extensionNode.getAttribute("scripts");
