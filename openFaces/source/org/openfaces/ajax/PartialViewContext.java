@@ -275,7 +275,7 @@ public class PartialViewContext extends PartialViewContextWrapper {
         final AjaxPortionRenderer ajaxComponentRenderer = (AjaxPortionRenderer) renderer;
         List<AjaxExtension> extensions = new ArrayList<AjaxExtension>();
         for (final String portionName : updatePortions) {
-            AjaxExtension extension = prepareExtension(context, "sessionExpiration", portionName, new ExtensionRenderer() {
+            AjaxExtension extension = prepareExtension(context, "portionData", portionName, new ExtensionRenderer() {
                 public JSONObject render() throws IOException {
                     try {
                         return ajaxComponentRenderer.encodeAjaxPortion(context, component, portionName, customJSONParam);
