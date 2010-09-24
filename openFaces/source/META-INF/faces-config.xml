@@ -169,6 +169,11 @@
   </component>
 
   <component>
+    <component-type>org.openfaces.WeekSwitcher</component-type>
+    <component-class>org.openfaces.component.timetable.WeekSwitcher</component-class>
+  </component>
+
+  <component>
     <component-type>org.openfaces.DaySwitcher</component-type>
     <component-class>org.openfaces.component.timetable.DaySwitcher</component-class>
   </component>
@@ -1041,6 +1046,12 @@
       <renderer-class>org.openfaces.renderkit.timetable.MonthTableRenderer</renderer-class>
     </renderer>
 
+    <renderer>
+      <component-family>org.openfaces.WeekSwitcher</component-family>
+      <renderer-type>org.openfaces.WeekSwitcherRenderer</renderer-type>
+      <renderer-class>org.openfaces.renderkit.timetable.WeekSwitcherRenderer</renderer-class>
+    </renderer>
+    
     <renderer>
       <component-family>org.openfaces.DaySwitcher</component-family>
       <renderer-type>org.openfaces.DaySwitcherRenderer</renderer-type>
