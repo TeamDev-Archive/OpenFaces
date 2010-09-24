@@ -926,6 +926,14 @@ O$.AjaxObject = function(render) {
       var updScripts = upd.tagName ? upd.getAttribute("scripts") : upd.scripts;
       var updData = upd.tagName ? upd.getAttribute("data") : upd.data;
 
+      if (upd.tagName) {
+        var additionalValueChunks = upd.getElementsByTagName("valueChunk");
+        for (var chunkIndex = 0, count = additionalValueChunks.length; chunkIndex < count; chunkIndex++) {
+          var chunkNode = additionalValueChunks[chunkIndex];
+          updHTML += chunkNode.getAttribute("value");
+        }
+      }
+
       // runtime generated library with initialization scripts for all components presented on page
       if (updType == O$.UPDATE_TYPE_INITIALIZATION) {
         rtLibrary = updHTML;

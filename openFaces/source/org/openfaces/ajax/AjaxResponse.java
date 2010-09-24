@@ -466,6 +466,7 @@ class AjaxResponse {
 
 
     private static class Elements {
+        private static final int CHUNK_SIZE = 500 * 1024;
 
         private static Element createUpdatable(
                 String id,
@@ -477,11 +478,30 @@ class AjaxResponse {
             if (id != null)
                 elem.setAttribute("id", id);
             elem.setAttribute("type", type);
-            elem.setAttribute("value", value);
             if (data != null)
                 elem.setAttribute("data", data.toString());
             if (scripts != null)
                 elem.setAttribute("scripts", scripts);
+
+            // dividing response onto chunks is required because of IE8 issue where placing more than ~550K+ inside of
+            // one XML node resulted in the Ajax response being interpreted as an empty(!) one for some reason, and 
+            // separating onto different XML elements solves this
+
+            List<String> chunks = new ArrayList<String>();
+            for (String reminder = value;
+                 reminder.length() > 0;
+                 reminder = reminder.substring(Math.min(reminder.length(), CHUNK_SIZE))) {
+                String chunk = reminder.substring(0, Math.min(reminder.length(), CHUNK_SIZE));
+                chunks.add(chunk);
+            }
+            elem.setAttribute("value", chunks.size() > 0 ? chunks.get(0) : "");
+
+            for (int i = 1, count = chunks.size(); i < count; i++) {
+                String chunk = chunks.get(i);
+                Element chunkElement = new Element("valueChunk");
+                chunkElement.setAttribute("value", chunk);
+                elem.addContent(chunkElement);
+            }
             return elem;
         }
 

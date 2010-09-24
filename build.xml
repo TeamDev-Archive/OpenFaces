@@ -5,6 +5,7 @@
   <property name="target.dir" location="target"/>
   <property name="target-lib.dir" location="${target.dir}/lib"/>
   <property name="openfaces-jar.file" location="${target-lib.dir}/openfaces.jar"/>
+  <property name="openfaces-weblogic-jar.file" location="${target-lib.dir}/openfaces-weblogic-jsp.jar"/>
 
   <property name="test-app-jsp.dir" location="testApp/jsp"/>
   <property name="test-app-facelets.dir" location="testApp/facelets"/>
@@ -38,6 +39,7 @@
     <echo>Building Open Faces core...</echo>
     <ant dir="${components.dir}" target="build" inheritall="false">
       <property name="target-jar.file" value="${openfaces-jar.file}"/>
+      <property name="target-weblogic-jar.file" value="${openfaces-weblogic-jar.file}"/>
       <property name="lib.dir" value="../lib"/>
       <property name="retain.classes.dir" value="true"/>
       <property file="ofversion.properties"/>

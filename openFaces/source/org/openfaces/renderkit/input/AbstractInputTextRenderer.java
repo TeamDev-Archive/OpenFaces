@@ -52,10 +52,12 @@ public abstract class AbstractInputTextRenderer extends RendererBase {
         String clientId = inputText.getClientId(context);
 
         String value = (String) requestMap.get(clientId);
-        String state = (String) requestMap.get(clientId + STATE_PROMPT_SUFFIX);
+        String promptVisibleFlag = (String) requestMap.get(clientId + STATE_PROMPT_SUFFIX);
 
-        if ((state != null && state.equals("false")) && value != null) {
+        if ("false".equals(promptVisibleFlag) && value != null) {
             inputText.setSubmittedValue(value);
+        } else {
+            inputText.setSubmittedValue("");
         }
     }
 
