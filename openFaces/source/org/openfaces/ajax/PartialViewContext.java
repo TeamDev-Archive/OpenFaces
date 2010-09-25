@@ -248,7 +248,7 @@ public class PartialViewContext extends PartialViewContextWrapper {
         initScripts.clear();
         // remove the possible null references, which are normally allowed to present, from js library list
         jsFiles.remove(null);
-        InitScript script = new InitScript(new ScriptBuilder("_temp_=").anonymousFunction(sb).append("();"), jsFiles.toArray(new String[jsFiles.size()]));
+        InitScript script = new InitScript(new AnonymousFunction(sb), jsFiles.toArray(new String[jsFiles.size()]));
         return script;
     }
 
@@ -317,7 +317,7 @@ public class PartialViewContext extends PartialViewContextWrapper {
         if (appendAjaxInitScripts) {
             InitScript script = PartialViewContext.getCombinedAjaxInitScripts(context);
             libraries.addAll(Arrays.asList(script.getJsFiles()));
-            Script additionalScript = script.getScript();
+            Script additionalScript = new ScriptBuilder("_temp_=").append(script.getScript()).append("();");
             rawScriptsBuffer.append(additionalScript);
         }
 
