@@ -12,7 +12,7 @@
 package org.openfaces.renderkit.timetable;
 
 import org.openfaces.component.timetable.DaySwitcher;
-import org.openfaces.component.timetable.DayTable;
+import org.openfaces.component.timetable.TimetableView;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.CalendarUtil;
@@ -48,9 +48,9 @@ public class DaySwitcherRenderer extends RendererBase {
         Locale locale = daySwitcher.getLocale();
         Rendering.registerDateTimeFormatObject(locale);
 
-        DayTable dayTable = daySwitcher.getDayTable();
+        TimetableView timetableView = daySwitcher.getTimetableView();
         TimeZone timeZone = daySwitcher.getTimeZone();
-        Date date = dayTable.getDay();
+        Date date = timetableView.getDay();
 
         Boolean enabled = daySwitcher.isEnabled();
         SimpleDateFormat upperDateFormat = CalendarUtil.getSimpleDateFormat(daySwitcher.getUpperDateFormat(), null,
@@ -121,7 +121,7 @@ public class DaySwitcherRenderer extends RendererBase {
                     daySwitcher, daySwitcher.getTextStyle(), "o_daySwitcher_text", daySwitcher.getTextClass());
             writer.writeAttribute("class", textClass, null);
 
-            writer.write(dateFormat.format(dayTable.getDay()));
+            writer.write(dateFormat.format(timetableView.getDay()));
             writer.endElement("p");
         }
         writer.endElement("td");
@@ -149,8 +149,8 @@ public class DaySwitcherRenderer extends RendererBase {
         Styles.renderStyleClasses(context, daySwitcher);
 
         ScriptBuilder script = new ScriptBuilder().initScript(context, daySwitcher, "O$.DaySwitcher._init",
-                dayTable.getClientId(context),
-                DataUtil.formatDateTimeForJs(dayTable.getDay(), timeZone),
+                timetableView.getClientId(context),
+                DataUtil.formatDateTimeForJs(timetableView.getDay(), timeZone),
                 pattern,
                 upperPattern,
                 locale,

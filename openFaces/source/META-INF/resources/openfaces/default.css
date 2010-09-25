@@ -1587,6 +1587,40 @@ table.o_filter_parameter {
   margin: 0;
 }
 
+/*Week Switcher*/
+.o_weekSwitcher {
+  font-size:14pt;
+  font-family:MS Shell Dlg,Arial,sans-serif;
+  padding: 0 2px;
+}
+
+.o_weekSwitcher_previous_button,
+  .o_weekSwitcher_next_button {
+  cursor: pointer;
+}
+
+.o_weekSwitcher_previous_button {
+  border-right: 1px solid #939393;
+}
+
+.o_weekSwitcher_next_button {
+  border-left: 1px solid #939393;
+}
+
+.o_weekSwitcher_previous_button img,
+  .o_weekSwitcher_next_button img {
+  padding: 0 5px;
+}
+
+.o_weekSwitcher_text {
+  font-size: 1em;
+  line-height:0.8em;
+  padding-bottom:0.2em;
+  padding-left:5px;
+  padding-right:5px;
+  margin: 0 0 -5px 0;
+}
+
 /* Level Indicator */
 .o_levelIndicator{
   display:block;

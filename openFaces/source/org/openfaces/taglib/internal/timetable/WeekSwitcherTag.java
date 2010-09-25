@@ -9,6 +9,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
+
 package org.openfaces.taglib.internal.timetable;
 
 import org.openfaces.component.timetable.DaySwitcher;
@@ -17,28 +18,22 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 /**
- * @author Natalia Zolochevska
+ * @author Roman Gorodischer
  */
-public class DaySwitcherTag extends AbstractSwitcherTag {
+public class WeekSwitcherTag extends AbstractSwitcherTag {
 
     public String getComponentType() {
         return DaySwitcher.COMPONENT_TYPE;
     }
 
     public String getRendererType() {
-        return "org.openfaces.DaySwitcherRenderer";
+        return "org.openfaces.WeekSwitcherRenderer";
     }
 
     @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
-
-        setStringProperty(component, "upperDateFormat");
-        setStringProperty(component, "upperPattern");
-
-        setStringProperty(component, "upperTextStyle"); //upper text
-        setStringProperty(component, "upperTextClass");
-        setStringProperty(component, "upperTextRolloverStyle");
-        setStringProperty(component, "upperTextRolloverClass");
+        setStringProperty(component, "splitter");
     }
+
 }
