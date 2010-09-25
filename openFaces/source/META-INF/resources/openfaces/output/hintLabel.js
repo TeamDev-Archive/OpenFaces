@@ -11,11 +11,12 @@
  */
 
 O$.HintLabel = {
-  _init: function(id, hintTimeout, hintClass, rolloverClass) {
+  _init: function(id, hintTimeout, hintClass, rolloverClass, customHintSpecified) {
     var label = O$.initComponent(id, {rollover: rolloverClass}, {
       _hint: O$(id + "::hint"),
       _hintTimeout: hintTimeout,
-      _hintClass: hintClass
+      _hintClass: hintClass,
+      _customHintSpecified: customHintSpecified
     });
 
     O$.addLoadEvent(function() {
@@ -50,7 +51,7 @@ O$.HintLabel = {
         if (label._oldMouseOver) {
           label._oldMouseOver(e);
         }
-        if (labelInnerHtml == label._hint.innerHTML) { // idea is: do not show hint if hint text is the same as label text and label is not cutted
+        if (!label._customHintSpecified) { // idea is: do not show hint if "hint" attribute is not specified text and label is not cut
           if (!label._fullWidth) {
             label._fullWidth = O$.HintLabel._getElementWidth(label, true) * 1;
           }

@@ -70,7 +70,8 @@ public class HintLabelRenderer extends RendererBase {
         sb.initScript(context, hintLabel, "O$.HintLabel._init",
                 hintLabel.getHintTimeout(),
                 hintClass,
-                Rendering.getRolloverClass(context, hintLabel));
+                Rendering.getRolloverClass(context, hintLabel),
+                hint != null);
 
         Rendering.renderInitScript(context, sb,
                 Resources.getUtilJsURL(context),
