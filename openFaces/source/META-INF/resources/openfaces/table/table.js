@@ -2019,6 +2019,16 @@ O$.ColumnMenu = {
   _init: function(columnMenuId, tableId, columnMenuButtonId, sortAscMenuId, sortDescMenuId) {
     var table = O$(tableId);
     var menuInvokerAreaTransparency = 0;
+    var newMenuParent = O$.getDefaultAbsolutePositionParent();
+    var parentChildren = newMenuParent.childNodes;
+    for (var i = parentChildren.length - 1; i >= 0; i--) {
+      var c = parentChildren[i];
+      if (c.id == columnMenuId) {
+        // remove the previous menu that may have remained before the table was reloaded with Ajax (a4j or jsf 2.0's one)
+        newMenuParent.removeChild(c);
+        break;
+      }
+    }
     var columnMenu = O$(columnMenuId);
     columnMenu._sortAscMenuId = sortAscMenuId;
     columnMenu._sortDescMenuId = sortDescMenuId;
@@ -2084,8 +2094,8 @@ O$.ColumnMenu = {
       O$.correctElementZIndex(columnMenu, currentColumn._resizeHandle);
       table._showingMenuForColumn = currentColumn;
       columnMenu._column = currentColumn;
-      if (columnMenu.parentNode != O$.getDefaultAbsolutePositionParent()) {
-        O$.getDefaultAbsolutePositionParent().appendChild(columnMenu);
+      if (columnMenu.parentNode != newMenuParent) {
+        newMenuParent.appendChild(columnMenu);
         O$.correctElementZIndex(columnMenu, columnMenuButton);
       }
       O$.ColumnMenu._checkSortMenuItems(columnMenuId, tableId, columnMenu._sortAscMenuId, columnMenu._sortDescMenuId,
