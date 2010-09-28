@@ -1074,30 +1074,23 @@ public abstract class CommonAjaxViewRoot {
         String scriptStart = "<script";
         String scriptEnd = "/script>";
         while (true) {
-            StringInspector bufferInspector = new StringInspector(buffer.toString());
-            int fromIndex = bufferInspector.indexOfIgnoreCase(scriptStart);
+            int fromIndex = buffer.indexOf(scriptStart);
             if (fromIndex == -1)
                 break;
 
-            int toIndex = bufferInspector.indexOfIgnoreCase(scriptEnd, fromIndex);
+            int toIndex = buffer.indexOf(scriptEnd, fromIndex);
             if (toIndex == -1)
                 break;
 
             toIndex += scriptEnd.length();
             String rawScript = buffer.substring(fromIndex, toIndex);
-            String script = purifyScripts(new StringInspector(rawScript));
+            String script = purifyScripts(rawScript);
 
             Matcher matcher = JS_VAR_PATTERN.matcher(rawScript);
             boolean varFound = matcher.find();
 
             buffer.delete(fromIndex, toIndex);
 
-            if (new StringInspector(script).indexOfIgnoreCase("document.write") > -1) {
-                if (tempIdCounter == Long.MAX_VALUE) tempIdCounter = 0;
-                String someId = "OpenFaces_Ajax_Placeholder:ajax_placeholser_" + tempIdCounter++;
-                buffer.insert(fromIndex, "<span id=\"" + someId + "\"></span>");
-                script = "O$.substituteDocumentWrite();\n" + script + "\nO$.restoreDocumentWrite('" + someId + "');\n";
-            }
             if (varFound) {
                 rtLibraryScriptBuffer.append(script).append("\n");
             } else {
@@ -1106,34 +1099,34 @@ public abstract class CommonAjaxViewRoot {
         }
     }
 
-    private String purifyScripts(StringInspector script) {
+    private String purifyScripts(String script) {
         StringBuffer result = new StringBuffer();
-        int startIdx = script.indexOfIgnoreCase("<script");
-        int endIdx = script.indexOfIgnoreCase("</script>");
-        if (startIdx == -1 || endIdx == -1) return script.toString();
-        int endScriptInit = script.toString().indexOf(">", startIdx + 1);
+        int startIdx = script.indexOf("<script");
+        int endIdx = script.indexOf("</script>");
+        if (startIdx == -1 || endIdx == -1) return script;
+        int endScriptInit = script.indexOf(">", startIdx + 1);
         if (startIdx > 0) {
             result.append(script.substring(0, startIdx));
             result.append("\n");
             script = script.substring(startIdx);
-            // re-read indices
-            startIdx = script.indexOfIgnoreCase("<script");
-            endIdx = script.indexOfIgnoreCase("</script>");
+            // re-read indexes
+            startIdx = script.indexOf("<script");
+            endIdx = script.indexOf("</script>");
             if (startIdx != -1)
-                endScriptInit = script.toString().indexOf(">", startIdx + 1);
+                endScriptInit = script.indexOf(">", startIdx + 1);
         }
-        if (endScriptInit == -1) return script.toString();
+        if (endScriptInit == -1) return script;
         while (startIdx > -1) {
             result.append(script.substring(endScriptInit + 1, endIdx));
             result.append("\n");
             script = script.substring(endIdx + "</script>".length());
-            // re-read indices
-            startIdx = script.indexOfIgnoreCase("<script");
-            endIdx = script.indexOfIgnoreCase("</script>");
+            // re-read indexes
+            startIdx = script.indexOf("<script");
+            endIdx = script.indexOf("</script>");
             if (startIdx > -1)
-                endScriptInit = script.toString().indexOf(">", startIdx + 1);
+                endScriptInit = script.indexOf(">", startIdx + 1);
         }
-        if (script.toString().length() > 0) {
+        if (script.length() > 0) {
             result.append(script);
             result.append("\n");
         }

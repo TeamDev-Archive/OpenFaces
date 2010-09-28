@@ -22,8 +22,10 @@ public class StringInspector {
 
     public StringInspector(String str) {
         this.str = str;
-        boolean smartSearchRequired = str.toUpperCase().length() != str.length();
-        uppercaseStr = !smartSearchRequired ? str.toUpperCase() : null;
+        String strToUpperCase = str.toUpperCase();
+        System.out.println("str.length=" + str.length());
+        boolean smartSearchRequired = strToUpperCase.length() != str.length();
+        uppercaseStr = !smartSearchRequired ? strToUpperCase : null;
     }
 
     private StringInspector(String str, String uppercaseStr) {
