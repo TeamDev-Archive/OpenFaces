@@ -1065,7 +1065,7 @@ public abstract class CommonAjaxViewRoot {
         }
     }
 
-    private String purifyScripts(String script) {
+    private static String purifyScripts(String script) {
         StringBuffer result = new StringBuffer();
         int startIdx = script.indexOf("<script");
         int endIdx = script.indexOf("</script>");
