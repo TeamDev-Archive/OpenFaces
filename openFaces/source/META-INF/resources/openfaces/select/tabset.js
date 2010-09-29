@@ -40,21 +40,6 @@ O$.TabSet = {
       },
 
       setSelectedIndex: function (index, cancellable) {
-        if (focusable) {
-          O$.setStyleMappings(tabSet._tabs[tabSet._index].childNodes[0], {
-            focused:  null
-          });
-          O$.setStyleMappings(tabSet._tabs[tabSet._index], {
-            focused: null
-          });
-          O$.setStyleMappings(tabSet._tabs[index].childNodes[0], {
-            focused:  focusAreaClass
-          });
-          O$.setStyleMappings(tabSet._tabs[index], {
-            focused: tabSet._focusedTabClass
-          });
-
-        }
         var tab = this._getTabByAbsoluteIndex(index);
         if (tab == null)
           throw "An attempt to select non-rendered or non-existing tab has been made. index =  " + index + "; TabSet id = " + tabSet.id;
@@ -62,10 +47,28 @@ O$.TabSet = {
         if (index == tabSet._index)
           return;
 
-        O$.setStyleMappings(tabSet._tabs[tabSet._index], {
+        var prevTab = this._getTabByAbsoluteIndex(tabSet._index);
+        if (focusable) {
+          O$.setStyleMappings(prevTab.childNodes[0], {
+            focused:  null
+          });
+          O$.setStyleMappings(prevTab, {
+            focused: null
+          });
+          O$.setStyleMappings(tab.childNodes[0], {
+            focused:  focusAreaClass
+          });
+          O$.setStyleMappings(tab, {
+            focused: tabSet._focusedTabClass
+          });
+
+        }
+
+
+        O$.setStyleMappings(prevTab, {
           mouseoverSelected: null
         });
-        O$.setStyleMappings(tabSet._tabs[tabSet._index], {
+        O$.setStyleMappings(prevTab, {
           mouseover_TP: null
         });
 
@@ -247,22 +250,25 @@ O$.TabSet = {
       tabSet.onfocus = function(e) {
         if (tabSet._oldfocus)
           tabSet._oldfocus(e);
-        O$.setStyleMappings(tabSet._tabs[tabSet._index].childNodes[0], {focused:  focusAreaClass});
-        O$.setStyleMappings(tabSet._tabs[tabSet._index], {focused: tabSet._focusedTabClass});
+        var tab = this._getTabByAbsoluteIndex(tabSet._index);
+        O$.setStyleMappings(tab.childNodes[0], {focused:  focusAreaClass});
+        O$.setStyleMappings(tab, {focused: tabSet._focusedTabClass});
       };
 
       tabSet._oldblur = tabSet.onblur;
       tabSet.onblur = function(e) {
         if (tabSet._oldblur)
           tabSet._oldblur(e);
-        O$.setStyleMappings(tabSet._tabs[tabSet._index].childNodes[0], {focused:  null});
+        var tab = this._getTabByAbsoluteIndex(tabSet._index);
+        O$.setStyleMappings(tab.childNodes[0], {focused:  null});
       };
     }
   },
 
-  _setNextIndex: function(tabset, inc) {
-    var number = tabset._tabCount;
-    var nextIndex = tabset._index + inc;
+  _setNextIndex: function(tabSet, inc) {
+    var number = tabSet._tabCount;
+    var tab = tabSet._getTabByAbsoluteIndex(tabSet._index);
+    var nextIndex = tab._index + inc;
 
     if (nextIndex >= number) {
       nextIndex = nextIndex - number;
@@ -270,6 +276,6 @@ O$.TabSet = {
     if (nextIndex < 0) {
       nextIndex = number + nextIndex;
     }
-    tabset.setSelectedIndex(tabset._tabs[nextIndex]._absoluteIndex, true);
+    tabSet.setSelectedIndex(tabSet._tabs[nextIndex]._absoluteIndex, true);
   }
 };
