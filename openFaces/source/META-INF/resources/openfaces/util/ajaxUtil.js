@@ -197,6 +197,15 @@ O$.setComponentAjaxEventHandler = function(eventName, func, componentId) {
   document.__componentsAjaxEventHandlerInitialized[componentId][eventName] = true;
 }
 
+O$.Ajax._attachHandler = function(id, eventName, handler) {
+  var el = O$(id) || (O$.stringStartsWith(id, ":") ? O$(id.substring(1)) : null);
+  if (!el) {
+    O$.logError("<o:ajax> couldn't find a component/HTML node to attach to by id of \"" + id + "\"");
+    return;
+  }
+  if (!eventName) eventName = "click";
+  el["on" + eventName] = handler;
+}
 
 O$.reloadPage = function(loc) {
   window.location = loc;

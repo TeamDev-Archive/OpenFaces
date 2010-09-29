@@ -37,7 +37,7 @@ public class AjaxHelper extends OUIClientActionHelper implements ClientBehavior 
         this.ajax = ajax;
     }
 
-    protected String getClientActionScript(FacesContext context, OUIClientAction action) {
+    public String getClientActionScript(FacesContext context, OUIClientAction action) {
         Ajax ajax = (Ajax) action;
         if (ajax.isDisabled()) return "";
 

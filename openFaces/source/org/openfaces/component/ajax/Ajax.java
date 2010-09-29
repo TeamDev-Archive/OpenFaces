@@ -12,7 +12,9 @@
 package org.openfaces.component.ajax;
 
 import org.openfaces.component.OUIClientAction;
+import org.openfaces.component.OUIClientActionHelper;
 import org.openfaces.component.OUICommand;
+import org.openfaces.renderkit.ajax.AjaxRenderer;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.ValueBindings;
 
@@ -66,13 +68,31 @@ public class Ajax extends OUICommand implements OUIClientAction {
         if (event instanceof PostAddToViewEvent) {
             if (isStandalone()) return;
             UIComponent parent = getParent();
-            if (!(parent instanceof ClientBehaviorHolder)) {
-                throw new IllegalStateException("<o:ajax> can only be inserted into components that allow placing " +
-                        "client behaviors inside (components that implement ClientBehaviorHolder interface). " +
-                        "Component id is: " + parent.getClientId() + "; Component class: " + parent.getClass().getName());
+            ClientBehaviorHolder cbh;
+            if (getFor() == null) {
+                if (!(parent instanceof ClientBehaviorHolder)) {
+                    throw new IllegalStateException("<o:ajax> can only be inserted into components that allow placing " +
+                            "client behaviors inside (components that implement ClientBehaviorHolder interface). " +
+                            "Component id is: " + parent.getClientId() + "; Component class: " + parent.getClass().getName());
+                }
+                cbh = (ClientBehaviorHolder) parent;
+            } else {
+                FacesContext context = FacesContext.getCurrentInstance();
+                String invokerId = OUIClientActionHelper.getClientActionInvoker(context, this);
+                UIComponent targetComponent = context.getViewRoot().findComponent(":" + invokerId);
+                if (targetComponent == null) {
+                    getAttributes().put(AjaxRenderer.ATTACH_ON_CLIENT, true);
+                    return;
+                }
+                if (!(targetComponent instanceof ClientBehaviorHolder)) {
+                    throw new IllegalStateException("<o:ajax> can only be attached to components that support " +
+                            "client behaviors (components that implement ClientBehaviorHolder interface). " +
+                            "Component id is: " + invokerId + "; Component class: " + parent.getClass().getName());
+                }
+                cbh = (ClientBehaviorHolder) targetComponent;
             }
+
             String eventName = getEvent();
-            ClientBehaviorHolder cbh = (ClientBehaviorHolder) parent;
             if (eventName == null)
                 eventName = cbh.getDefaultEventName();
             AjaxHelper ajaxHelper = new AjaxHelper(this);

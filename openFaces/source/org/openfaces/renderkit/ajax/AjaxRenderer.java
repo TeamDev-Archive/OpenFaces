@@ -12,9 +12,12 @@
 package org.openfaces.renderkit.ajax;
 
 import org.openfaces.component.ajax.Ajax;
+import org.openfaces.component.ajax.AjaxHelper;
 import org.openfaces.component.ajax.AjaxInitializer;
 import org.openfaces.util.AjaxUtil;
+import org.openfaces.util.AnonymousFunction;
 import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
 
 import javax.faces.component.UIComponent;
@@ -26,13 +29,19 @@ import java.io.IOException;
  * @author Ilya Musihin
  */
 public class AjaxRenderer extends AbstractSettingsRenderer {
-
     private AjaxRendererHelper helper = new AjaxRendererHelper();
+    public static final String ATTACH_ON_CLIENT = "_attachOnClient";
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         Ajax ajax = (Ajax) component;
-        if (ajax.isStandalone())
+        if(ajax.getAttributes().remove(ATTACH_ON_CLIENT) != null) {
+            AjaxHelper ajaxHelper = new AjaxHelper(ajax);
+            String handlerScript = ajaxHelper.getClientActionScript(context, ajax);
+            ScriptBuilder initScript = new ScriptBuilder().functionCall("O$.Ajax._attachHandler", ajax.getFor(), ajax.getEvent(),
+                    new AnonymousFunction(handlerScript)).semicolon();
+            Rendering.renderInitScript(context, initScript, Resources.getAjaxUtilJsURL(context));
+        } else if (ajax.isStandalone())
             encodeStandaloneInvocationMode(context, ajax);
     }
 
