@@ -178,7 +178,6 @@ public abstract class MultiPageContainer extends OUIPanel {
     @Override
     public void processDecodes(FacesContext context) {
         if (!isRendered()) return;
-        super.processDecodes(context);
         processPhaseForItems(context, new DecodesComponentPhaseProcessor());
         try {
             decode(context);
