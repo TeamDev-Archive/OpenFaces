@@ -95,6 +95,13 @@ public class Ajax extends OUICommand implements OUIClientAction {
             String eventName = getEvent();
             if (eventName == null)
                 eventName = cbh.getDefaultEventName();
+            if (eventName == null) {
+                FacesContext context = getFacesContext();
+                String invokerId = ((UIComponent) cbh).getClientId(context);
+                throw new IllegalStateException("The 'event' attribute of <o:ajax> is not specified and no default event " +
+                        "name exists for component: " + invokerId + " (component class: " + parent.getClass().getName() + "); " +
+                        "you should specify the 'event' attribute for the appropriate <o:ajax> tag");
+            }
             AjaxHelper ajaxHelper = new AjaxHelper(this);
             cbh.addClientBehavior(eventName, ajaxHelper);
         }

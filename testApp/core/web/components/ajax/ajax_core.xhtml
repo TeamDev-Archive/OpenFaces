@@ -61,11 +61,11 @@
 
 
     <h:graphicImage id="image1" url="../datatable/arrowBullet.gif">
-      <o:ajax render="counter" listener="#{TableTestBean.incrementCounter}"/>
+      <o:ajax event="click" render="counter" listener="#{TableTestBean.incrementCounter}"/>
     </h:graphicImage>
     <h:panelGrid>
       <h:graphicImage id="image2" url="../datatable/arrowBullet.gif"/>
-      <o:ajax for="image2" render="counter" listener="#{TableTestBean.incrementCounter}"/>
+      <o:ajax for="image2" event="click" render="counter" listener="#{TableTestBean.incrementCounter}"/>
     </h:panelGrid>
     <h:panelGrid>
       <h:graphicImage id="image3" url="../datatable/arrowBullet.gif" onclick="O$('form1:reload4').run();"/>
