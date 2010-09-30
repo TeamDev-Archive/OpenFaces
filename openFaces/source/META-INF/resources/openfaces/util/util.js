@@ -42,6 +42,7 @@ if (!window.O$) {
 
 
   O$.initComponent = function(clientId, styles, properties, events) {
+    O$._checkDefaultCssPresence();
     var component = O$(clientId);
     if (!component)
       throw "O$.initComponent: couldn't find component by id: " + clientId;
@@ -4640,9 +4641,14 @@ if (!window.O$) {
 
   // ----------------- COMPONENT UTILS -------------------------------------------
 
+  O$._checkDefaultCssPresence = function() {
+    if (O$._defaultCssPresenceChecked) return;
+    O$._defaultCssPresenceChecked = true;
+    if (!O$.findCssRule(".o_default_css_marker"))
+      O$.logError("default.css file is not loaded. Did you use <head> tag instead of <h:head> tag?");
+  };
+
   O$.addLoadEvent(function() {
-    //    if (!O$.findCssRule(".o_default_css_marker"))
-    //      O$.logError("default.css file is not loaded. Did you use <head> tag instead of <h:head> tag?");
     O$._loaded = true;
   });
 
