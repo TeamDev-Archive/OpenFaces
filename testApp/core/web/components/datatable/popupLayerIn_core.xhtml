@@ -13,9 +13,9 @@
 <tr>
 <td class="container">
   <o:dataTable id="popupDataTable"
-               binding="#{TestEventsBean.testTable}"
                pageSize="3"
                var="table8"
+               rowIndexVar="rowIndex"
                value="#{TestEventsBean.tableTestCollection}"
                verticalGridLines="1px solid gray">
     <f:facet name="below">

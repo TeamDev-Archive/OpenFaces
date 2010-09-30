@@ -13,6 +13,7 @@ package org.openfaces.testapp.datatable;
 
 import org.openfaces.component.input.DropDownItem;
 import org.openfaces.component.table.DataTable;
+import org.openfaces.util.Faces;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -32,7 +33,6 @@ public class TestEventsBean { // todo: this backing bean is used in many non eve
     private List checkedList = new ArrayList();
 
     private TestTableItem selectedItem;
-    private DataTable testTable = new DataTable();
     private List calendarSelectionList = new ArrayList();
     private List dropDownSelectionList = new ArrayList();
 
@@ -137,16 +137,8 @@ public class TestEventsBean { // todo: this backing bean is used in many non eve
     public void setDropDownList(List dropDownList) {
     }
 
-    public DataTable getTestTable() {
-        return testTable;
-    }
-
-    public void setTestTable(DataTable testTable) {
-        this.testTable = testTable;
-    }
-
     public int getCurrentRowIndex() {
-        return getTestTable().getRowIndex();
+        return Faces.var("rowIndex", Integer.class) % 3;
     }
 
     public List getCalendarSelectionList() {
