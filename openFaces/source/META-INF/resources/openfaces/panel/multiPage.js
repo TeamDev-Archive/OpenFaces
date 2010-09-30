@@ -12,8 +12,7 @@
 
 O$.MultiPage = {
   _init: function(clientId, rolloverClass, containerClass, loadingMode, pageCount, selectedIndex) {
-    var tabbedPane = O$(clientId);
-    O$.extend(tabbedPane, {
+    var multiPage = O$.initComponent(clientId, null, {
       _loadingMode: loadingMode,
       _rolloverClass: rolloverClass,
       _containerClass: containerClass,
@@ -29,7 +28,7 @@ O$.MultiPage = {
       setSelectedIndex: function(index) {
         if (selectedIndex == index) return;
         selectedIndex = index;
-        tabbedPane.doSetSelectedIndex(index);
+        multiPage.doSetSelectedIndex(index);
       },
 
       _getPageContainer: function(pageIndex) {
@@ -41,59 +40,59 @@ O$.MultiPage = {
         var prevPageContainer = this._currentPageContainer;
         O$.MultiPage._hideContainer(prevPageContainer);
 
-        O$.MultiPage._getContianerStyleElement(newPageContainer).className = tabbedPane._containerClass;
+        O$.MultiPage._getContianerStyleElement(newPageContainer).className = multiPage._containerClass;
         O$.MultiPage._showContainer(newPageContainer);
-        tabbedPane._currentPageContainer = newPageContainer;
-        O$.repaintAreaForOpera(tabbedPane);
+        multiPage._currentPageContainer = newPageContainer;
+        O$.repaintAreaForOpera(multiPage);
       }
     });
 
 
-    var currentPageContainer = tabbedPane._getPageContainer(selectedIndex);
+    var currentPageContainer = multiPage._getPageContainer(selectedIndex);
     if (!currentPageContainer)
       return;
     currentPageContainer.parentNode.fontSize = "0px";
-    tabbedPane._currentPageContainer = currentPageContainer;
+    multiPage._currentPageContainer = currentPageContainer;
     var pagesContainer = currentPageContainer.parentNode;
-    tabbedPane._pagesContainer = pagesContainer;
+    multiPage._pagesContainer = pagesContainer;
 
     // setup methods
-    O$.assignEventHandlerField(tabbedPane, "onmouseover", function () {
+    O$.assignEventHandlerField(multiPage, "onmouseover", function () {
       O$.appendClassNames(this, [this._rolloverClass]);
       O$.repaintAreaForOpera(this, true);
     });
-    O$.assignEventHandlerField(tabbedPane, "onmouseout", function () {
+    O$.assignEventHandlerField(multiPage, "onmouseout", function () {
       O$.excludeClassNames(this, [this._rolloverClass]);
       O$.repaintAreaForOpera(this, true);
     });
 
-    tabbedPane.doSetSelectedIndex = function(absoluteIndex) {
-      O$.setHiddenField(tabbedPane, clientId + "::index", absoluteIndex);
-      var loadingMode = tabbedPane._loadingMode;
+    multiPage.doSetSelectedIndex = function(absoluteIndex) {
+      O$.setHiddenField(multiPage, clientId + "::index", absoluteIndex);
+      var loadingMode = multiPage._loadingMode;
       var newPageContainer;
       if (loadingMode == "server") {
-        O$.submitEnclosingForm(tabbedPane);
+        O$.submitEnclosingForm(multiPage);
       } else if (loadingMode == "ajaxLazy" || loadingMode == "ajaxAlways") {
-        newPageContainer = tabbedPane._getPageContainer(absoluteIndex);
+        newPageContainer = multiPage._getPageContainer(absoluteIndex);
         if (!newPageContainer || loadingMode == "ajaxAlways")
-          O$.requestComponentPortions(tabbedPane.id, ["page:" + absoluteIndex], null, function(tabbedPane, portionName, portionHTML, portionScripts) {
+          O$.requestComponentPortions(multiPage.id, ["page:" + absoluteIndex], null, function(multiPageComponent, portionName, portionHTML, portionScripts) {
             var tempDiv = document.createElement("div");
             tempDiv.innerHTML = portionHTML;
             var newPageContainer = tempDiv.childNodes[0];
-            tabbedPane._pagesContainer.appendChild(newPageContainer);
+            multiPageComponent._pagesContainer.appendChild(newPageContainer);
             O$.executeScripts(portionScripts);
 
             O$.assert(portionName.substring(0, "page:".length) == "page:", "tabbedPanePageLoaded: illegal portion prefix:" + portionName);
             var pageNoStr = portionName.substring("page:".length);
             var pageNo = eval(pageNoStr);
-            tabbedPane._changeCurrentPageContainer(newPageContainer);
-            tabbedPane.setSelectedIndex(pageNo);
+            multiPageComponent._changeCurrentPageContainer(newPageContainer);
+            multiPageComponent.setSelectedIndex(pageNo);
           });
         else
-          tabbedPane._changeCurrentPageContainer(newPageContainer);
+          multiPage._changeCurrentPageContainer(newPageContainer);
       } else if (loadingMode == "client") {
-        newPageContainer = tabbedPane._getPageContainer(absoluteIndex);
-        tabbedPane._changeCurrentPageContainer(newPageContainer);
+        newPageContainer = multiPage._getPageContainer(absoluteIndex);
+        multiPage._changeCurrentPageContainer(newPageContainer);
       } else
         O$.assert(false, "tabSet.onchange - invalid loading mode: " + loadingMode);
     };

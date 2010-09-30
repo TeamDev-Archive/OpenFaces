@@ -15,8 +15,7 @@ O$.DateChooser = {
                   calendarDate,
                   localeStr,
                   valueChangeHandler) {
-    var dc = O$(dateChooserId);
-    O$.extend(dc, {
+    var dc = O$.initComponent(dateChooserId, null, {
       _isDateChooser: true,
       _calendar: O$(dateChooserId + "--popup--calendar"),
 

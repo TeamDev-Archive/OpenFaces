@@ -14,8 +14,9 @@ O$.TabbedPane = {
   _init: function(clientId, rolloverClass,
                   containerClass, rolloverContainerClass, borderClass, loadingMode, focusable, focusedClass,
                   onselectionchange) {
-    var tabbedPane = O$(clientId);
-    tabbedPane._tabSet = O$(clientId + "--tabSet");
+    var tabbedPane = O$.initComponent(clientId, null, {
+      _tabSet: O$(clientId + "--tabSet")
+    });
     O$.MultiPage._init(clientId, rolloverClass, containerClass, loadingMode,
             tabbedPane._tabSet.getTabCount(), tabbedPane._tabSet.getSelectedIndex());
 

@@ -13,22 +13,27 @@
 O$.InputTextarea = {
   
   _init: function (inputTextareaId) {
-    var inputtextarea = O$(inputTextareaId);
+    var textArea = O$.initComponent(inputTextareaId);
 
     if (O$.isExplorer()){
-      inputtextarea.style.overflowY = "visible";
+      textArea.style.overflowY = "visible";
     } else {
-      inputtextarea.style.overflowY = "hidden";
-      inputtextarea.style.resize = "none";
+      textArea.style.overflowY = "hidden";
+      textArea.style.resize = "none";
     }
 
-    O$.addEventHandler(inputtextarea, "keyup", function() {
-      inputtextarea.scrollTop = 0;
-      while (inputtextarea.scrollHeight > inputtextarea.offsetHeight) {
-        var rows = inputtextarea.getAttribute("rows");
+    O$.addEventHandler(textArea, "keyup", function() {
+      textArea.scrollTop = 0;
+      while (textArea.scrollHeight > textArea.offsetHeight) {
+        var rows = textArea.getAttribute("rows");
         if (rows == null)
           rows = 2;
-        inputtextarea.setAttribute("rows", parseInt(rows) + 1);
+        textArea.setAttribute("rows", parseInt(rows) + 1);
+//        if (textArea.scrollHeight > textArea.offsetHeight) {
+//          var additionalHeight = O$.getNumericElementStyle(textArea, "padding-top") + O$.getNumericElementStyle(textArea, "padding-bottom") +
+//                  O$.getNumericElementStyle(textArea, "border-top-width") + O$.getNumericElementStyle(textArea, "border-bottom-width");
+//          O$.runTransitionEffect(textArea, "height", textArea.scrollHeight + additionalHeight, 100);
+//        }
       }
     });
 

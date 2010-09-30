@@ -30,7 +30,7 @@ O$.DayTable._init = function(componentId,
                             minorTimeInterval,
                             showTimeForMinorIntervals
         ) {
-  var dayTable = O$(componentId);
+  var dayTable = O$.initComponent(componentId);
   if (O$.isExplorer()) {
     if (!dayTable._initScheduled) {
       dayTable._initScheduled = true;
