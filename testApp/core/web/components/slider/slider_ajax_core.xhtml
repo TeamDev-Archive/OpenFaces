@@ -1,0 +1,228 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+        >
+<h:panelGrid columns="1">
+  <h:outputLink value="../../main.jsf">
+    <h:outputText value="Return to main page"/>
+  </h:outputLink>
+  <h:outputLink value="../../testPageIndex.jsf">
+    <h:outputText value="Return to testing page"/>
+  </h:outputLink>
+  <h:commandButton id="submitBut" value="submit"/>
+</h:panelGrid>
+
+<h:outputText value="Slider convert $ to UAH and EUR" style="font-size:14pt;"/>
+
+<o:slider id="sliderReloader"
+          value="#{SliderBean.value}"
+          textFieldState="writeEnabled"
+          style="height:100px;width:500px;"
+          textFieldStyle="height:20px;width:50px;"
+          snapToTicks="false"
+        >
+
+  <f:convertNumber pattern="$#,##0.00" groupingUsed="true" minFractionDigits="2" maxFractionDigits="2"/>
+  <o:ajax event="change" render="uaOUT euroOUT"/>
+</o:slider>
+<h:panelGrid columns="2">
+  <h:outputLabel value="UA = "/>
+
+  <h:outputText id="uaOUT" value="#{SliderBean.convertToUAH}">
+    <f:convertNumber pattern="#,##0.00"/>
+  </h:outputText>
+
+  <h:outputLabel value="EUR = "/>
+  <h:outputText id="euroOUT" value="#{SliderBean.convertToEUR}">
+    <f:convertNumber pattern="#,##0.00"/>
+  </h:outputText>
+</h:panelGrid>
+
+<h:outputText value="Slider ajax customization: " style="font-size:14pt;"/>
+<h:panelGrid columns="2" columnClasses="label, sliderContainer">
+  <h:outputLabel value="Default view:"/>
+  <o:slider id="slider_def"/>
+  <h:outputLabel value="Customized horizontal slider: "/>
+  <o:slider id="slider0"
+            value="#{SliderBean.value}"
+            maxValue="#{SliderBean.maxValue}"
+            minValue="#{SliderBean.minValue}"
+            majorTickSpacing="#{SliderBean.majorTickSpacing}"
+            minorTickSpacing="#{SliderBean.minorTickSpacing}"
+            fillDirection="#{SliderBean.fillDirection}"
+            ticksAlignment="#{SliderBean.ticksAlignment}"
+            textFieldState="#{SliderBean.textFieldState}"
+            ticksVisible="#{SliderBean.ticksVisible}"
+            ticksLabelsVisible="#{SliderBean.ticksLabelsVisible}"
+            barVisible="#{SliderBean.barVisible}"
+            barCanChangeValue="#{SliderBean.barCanChangeValue}"
+            snapToTicks="#{SliderBean.snapToTicks}"
+            tooltipEnabled="#{SliderBean.tooltipEnabled}"
+            disabled="#{SliderBean.disabled}"
+            controlButtonsVisible="#{SliderBean.controlButtonsVisible}"
+            transitionPeriod="#{SliderBean.transitionPeriod}"
+            barAutoRepeatClickDelay="#{SliderBean.barAutoRepeatClickDelay}"/>
+
+  <h:outputLabel value="Customized vertical slider: "/>
+  <o:slider id="slider1"
+            value="#{SliderBean.value}"
+            maxValue="#{SliderBean.maxValue}"
+            minValue="#{SliderBean.minValue}"
+            majorTickSpacing="#{SliderBean.majorTickSpacing}"
+            minorTickSpacing="#{SliderBean.minorTickSpacing}"
+            orientation="vertical"
+            fillDirection="#{SliderBean.fillDirection}"
+            ticksAlignment="#{SliderBean.ticksAlignment}"
+            textFieldState="#{SliderBean.textFieldState}"
+            ticksVisible="#{SliderBean.ticksVisible}"
+            ticksLabelsVisible="#{SliderBean.ticksLabelsVisible}"
+            barVisible="#{SliderBean.barVisible}"
+            barCanChangeValue="#{SliderBean.barCanChangeValue}"
+            snapToTicks="#{SliderBean.snapToTicks}"
+            tooltipEnabled="#{SliderBean.tooltipEnabled}"
+            disabled="#{SliderBean.disabled}"
+            controlButtonsVisible="#{SliderBean.controlButtonsVisible}"
+            transitionPeriod="#{SliderBean.transitionPeriod}"
+            barAutoRepeatClickDelay="#{SliderBean.barAutoRepeatClickDelay}"/>
+</h:panelGrid>
+
+<h:panelGrid title="Boolean properties" columns="2" style="float:left;">
+
+  <h:outputText value="disabled: "/>
+  <o:selectBooleanCheckbox id="disabledSlider0" value="#{SliderBean.disabled}">
+    <o:ajax event="change"
+            render="slider0 slider1"/>
+  </o:selectBooleanCheckbox>
+
+  <h:outputText value="ticksVisible: "/>
+  <o:selectBooleanCheckbox id="ticksVisibleSlider0" value="#{SliderBean.ticksVisible}">
+    <o:ajax event="change"
+            render="slider0  slider1"/>
+  </o:selectBooleanCheckbox>
+
+  <h:outputText value="ticksLabelsVisible: "/>
+  <o:selectBooleanCheckbox id="ticksLabelsVisibleSlider0" value="#{SliderBean.ticksLabelsVisible}">
+    <o:ajax event="change"
+            render="slider0  slider1"/>
+  </o:selectBooleanCheckbox>
+
+  <h:outputText value="barVisible: "/>
+  <o:selectBooleanCheckbox id="barVisibleSlider0" value="#{SliderBean.barVisible}">
+    <o:ajax event="change"
+            render="slider0  slider1"/>
+  </o:selectBooleanCheckbox>
+
+  <h:outputText value="barCanChangeValue: "/>
+  <o:selectBooleanCheckbox id="barCanChangeValueSlider0" value="#{SliderBean.barCanChangeValue}">
+    <o:ajax event="change"
+            render="slider0  slider1"/>
+  </o:selectBooleanCheckbox>
+
+  <h:outputText value="snapToTicks: "/>
+  <o:selectBooleanCheckbox id="snapToTicksSlider0" value="#{SliderBean.snapToTicks}">
+    <o:ajax event="change"
+            render="slider0  slider1"/>
+  </o:selectBooleanCheckbox>
+
+  <h:outputText value="tooltipEnabled: "/>
+  <o:selectBooleanCheckbox id="tooltipEnabledSlider0" value="#{SliderBean.tooltipEnabled}">
+    <o:ajax event="change"
+            render="slider0 slider1"/>
+  </o:selectBooleanCheckbox>
+
+  <h:outputText value="controlButtonsVisible: "/>
+  <o:selectBooleanCheckbox id="controlButtonsVisibleSlider0" value="#{SliderBean.controlButtonsVisible}">
+    <o:ajax event="change"
+            render="slider0  slider1"/>
+  </o:selectBooleanCheckbox>
+</h:panelGrid>
+
+<h:panelGrid columns="3" style="float:left;">
+  <h:outputText value="value: "/>
+  <h:inputText id="valueSlider0" value="#{SliderBean.value}">
+    <f:convertNumber type="number"/>
+    <o:ajax event="change"
+            render="slider0  slider1"/>
+  </h:inputText>
+  <h:message id="valueSlider0_errors" for="valueSlider0"/>
+
+  <h:outputText value="minValue: "/>
+  <h:inputText id="minValueSlider0" value="#{SliderBean.minValue}">
+    <f:convertNumber type="number"/>
+    <o:ajax event="change"
+            render="slider0  slider1"/>
+  </h:inputText>
+  <h:message id="minValueSlider0_errors" for="minValueSlider0"/>
+
+  <h:outputText value="maxValue: "/>
+  <h:inputText id="maxValueSlider0" value="#{SliderBean.maxValue}">
+    <f:convertNumber type="number"/>
+    <o:ajax event="change"
+            render="slider0  slider1"/>
+  </h:inputText>
+  <h:message id="maxValueSlider0_errors" for="maxValueSlider0"/>
+
+  <h:outputText value="minorTickSpacing: "/>
+  <h:inputText id="minorTickSpacingSlider0" value="#{SliderBean.minorTickSpacing}">
+    <f:convertNumber type="number"/>
+    <o:ajax event="change"
+            render="slider0  slider1"/>
+  </h:inputText>
+  <h:message id="minorTickSpacingSlider0_errors" for="minorTickSpacingSlider0"/>
+
+  <h:outputText value="majorTickSpacing: "/>
+  <h:inputText id="majorTickSpacingSlider0" value="#{SliderBean.majorTickSpacing}">
+    <f:convertNumber type="number"/>
+    <o:ajax event="change"
+            render="slider0  slider1"/>
+  </h:inputText>
+  <h:message id="majorTickSpacingSlider0_errors" for="majorTickSpacingSlider0"/>
+
+  <h:outputText value="transitionPeriod: "/>
+  <h:inputText id="transitionPeriodSlider0" value="#{SliderBean.transitionPeriod}">
+    <f:convertNumber type="number" integerOnly="true"/>
+    <o:ajax event="change"
+            render="slider0  slider1"/>
+  </h:inputText>
+  <h:message id="transitionPeriodSlider0_errors" for="transitionPeriodSlider0"/>
+
+  <h:outputText value="barAutoRepeatClickDelay: "/>
+  <h:inputText id="barAutoRepeatClickDelaySlider0" value="#{SliderBean.barAutoRepeatClickDelay}">
+    <f:convertNumber type="number" integerOnly="true"/>
+    <o:ajax event="change"
+            render="slider0  slider1"/>
+  </h:inputText>
+  <h:message id="barAutoRepeatClickDelaySlider0_errors" for="barAutoRepeatClickDelaySlider0"/>
+</h:panelGrid>
+
+<h:panelGrid columns="2" style="float:none;">
+
+  <h:outputText value="fillDirection: "/>
+  <h:selectOneRadio id="fillDirectionSlider0" value="#{SliderBean.fillDirection }" converter="fillDirectionConverter">
+    <f:selectItems value="#{SliderBean.fillDirectionList}"/>
+    <o:ajax event="change"
+            render="slider0  slider1"/>
+  </h:selectOneRadio>
+
+  <h:outputText value="ticksAlignment: "/>
+  <h:selectOneRadio id="ticksAlignmentSlider0" value="#{SliderBean.ticksAlignment }"
+                    converter="ticksAlignmentConverter">
+    <f:selectItems value="#{SliderBean.ticksAlignmentList}"/>
+    <o:ajax event="change"
+            render="slider0  slider1"/>
+  </h:selectOneRadio>
+
+  <h:outputText value="textFieldState: "/>
+  <h:selectOneRadio id="textFieldStateSlider0" value="#{SliderBean.textFieldState }"
+                    converter="textFieldStateConverter">
+    <f:selectItems value="#{SliderBean.textFieldStateList}"/>
+    <o:ajax event="change"
+            render="slider0  slider1"/>
+  </h:selectOneRadio>
+</h:panelGrid>
+
+
+</div>

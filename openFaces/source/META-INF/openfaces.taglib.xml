@@ -976,6 +976,15 @@
   </tag>
 
   <tag>
+    <tag-name>slider</tag-name>
+    <component>
+      <component-type>org.openfaces.Slider</component-type>
+      <renderer-type>org.openfaces.SliderRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.input.SliderTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
     <tag-name>spinner</tag-name>
     <component>
       <component-type>org.openfaces.Spinner</component-type>
@@ -1181,6 +1190,15 @@
       <component-type>org.openfaces.ChartSelection</component-type>
       <renderer-type>org.openfaces.ChartSelectionRenderer</renderer-type>
       <handler-class>org.openfaces.taglib.facelets.chart.ChartSelectionTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>tagCloud</tag-name>
+    <component>
+      <component-type>org.openfaces.TagCloud</component-type>
+      <renderer-type>org.openfaces.TagCloudRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.tagcloud.TagCloudHandler</handler-class>
     </component>
   </tag>
 

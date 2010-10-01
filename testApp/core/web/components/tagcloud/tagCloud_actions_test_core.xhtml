@@ -1,0 +1,92 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/">
+  <h:panelGrid id="linksGrid"
+               columns="1">
+    <h:outputLink id="linkMain" value="../../main.jsf">
+      <h:outputText value="Return to main page"/>
+    </h:outputLink>
+    <h:outputLink id="linkIndex" value="../../testPageIndex.jsf">
+      <h:outputText value="Return to testing page"/>
+    </h:outputLink>
+  </h:panelGrid>
+
+  <style>
+    body{
+      font-family:sans-serif;      
+    }
+    
+     .header{
+      font-size: 12pt;
+      color: #9999ff;
+      background: gray;
+      font-weight: bold;
+    }
+    .header,
+    .content,
+    .contentVar {    
+      text-align: center;
+    }
+
+    .contentVar {
+      background: #ffffcc;
+      color: GREEN;
+    }
+
+  </style>
+  
+  <h:outputText id="header" value="TagCloud action and actionListener testing"
+                style="font-size:14pt;"/>
+  <br/><br/>
+
+  <h:panelGrid id="displayGrid"
+               columns="1"
+               rowClasses="header,content,content,content">
+    <h:outputLabel id="listTagCloudLabel"
+                   for="listTagCloud"
+                   value="Default TagCloud"/>
+
+    <o:tagCloud id="listTagCloud"
+                items="#{TagCloudBean.itemsList}"
+                itemText="#{item.text}"
+                itemTitle="#{item.title}"
+                itemUrl="#{item.url}"
+                itemWeight="#{item.weight}"
+                actionListener="#{TagCloudBean.processAction}"
+                action="#{TagCloudBean.actionMethod}"/>
+    
+    <h:outputText id="listOut2" value="Value actionListenerCounter = #{TagCloudBean.actionListenerCounter}"/>
+    <h:outputText id="listOut3" value="Value actionCounter = #{TagCloudBean.actionCounter}"/>
+    
+    <h:commandButton id="but" value="send"/> 
+  </h:panelGrid>
+
+  <br/>
+  <h:outputText id="header2" value="Var value from the tagCloud:" style="font-size: 14pt;"/>
+
+  <h:panelGrid id="displayGrid3"
+               columns="4"
+               rowClasses="header, contentVar">
+    <h:outputLabel id="varTitleLabel"
+                   for="varTitle"
+                   value="Title"/>
+    <h:outputLabel id="varTextLabel"
+                   for="varText"
+                   value="Text value"/>
+    <h:outputLabel id="varUrlLabel"
+                   for="varUrl"
+                   value="URL"/>
+    <h:outputLabel id="varWeightLabel"
+                   for="varWeight"
+                   value="Weight"/>
+
+    <h:outputText id="varTitle"
+                  value="#{TagCloudBean.var.title}"/>
+    <h:outputText id="varText"
+                  value="#{TagCloudBean.var.text}"/>
+    <h:outputText id="varUrl"
+                  value="#{TagCloudBean.var.url}"/>
+    <h:outputText id="varWeight"
+                  value="#{TagCloudBean.var.weight}"/>
+  </h:panelGrid>
+</div>

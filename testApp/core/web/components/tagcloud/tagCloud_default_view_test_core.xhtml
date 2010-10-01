@@ -1,0 +1,65 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/">
+  <h:panelGrid id="linksGrid"
+               columns="1">
+    <h:outputLink id="linkMain" value="../../main.jsf">
+      <h:outputText value="Return to main page"/>
+    </h:outputLink>
+    <h:outputLink id="linkIndex" value="../../testPageIndex.jsf">
+      <h:outputText value="Return to testing page"/>
+    </h:outputLink>
+  </h:panelGrid>
+
+  <style>
+    .header {
+      font-size: 12pt;
+      color: #ccccff;
+      background: #999999;
+      font-weight: bold;
+      width: 300px;
+    }
+    .content {
+      vertical-align: top;
+      text-align:center;
+    }
+  </style>
+  
+  <h:outputText id="header" value="Default tagCloud testing" style="font-size:14pt;font-family:sans-serif"/>
+  
+
+  <h:panelGrid id="displayGrid"
+               columns="3"
+               rowClasses="header,content">
+    <h:outputLabel id="minTagCloudLabel"                   
+                   value="Default TagCloud"/>
+    
+    <h:outputLabel id="listTagCloudLabel"
+                   for="listTagCloud"
+                   value="TagCloud with items from Collection"/>
+
+    <h:outputLabel id="arrayTagCloudLabel"
+                   for="arrayTagCloud"
+                   value="TagCloud with items from an Array"/>
+    
+    <o:tagCloud items="#{TagCloudBean.itemsList}"/>
+
+    <o:tagCloud id="listTagCloud"
+                items="#{TagCloudBean.itemsList}"
+                itemText ="#{item.text}"
+                itemTitle="#{item.title}"
+                itemUrl="#{item.url}"
+                itemWeight="#{item.weight}"/>
+
+    <o:tagCloud id="arrayTagCloud"                
+                items="#{TagCloudBean.itemsArray}"
+                var="tag"
+                itemText="#{tag.text}"
+                itemTitle="#{tag.title}"
+                itemUrl="#{tag.url}"
+                itemWeight="#{tag.weight}"/>
+
+
+  </h:panelGrid>
+
+</div>

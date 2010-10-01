@@ -1,0 +1,63 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/">
+  <h:panelGrid id="linksGrid"
+               columns="1">
+    <h:outputLink id="linkMain" value="../../main.jsf">
+      <h:outputText value="Return to main page"/>
+    </h:outputLink>
+    <h:outputLink id="linkIndex" value="../../testPageIndex.jsf">
+      <h:outputText value="Return to testing page"/>
+    </h:outputLink>
+  </h:panelGrid>
+    
+  <h:outputText id="header" value="TagCloud converters testing" style="font-size:14pt;font-family:sans-serif"/> 
+
+    <style>
+    .header {
+      font-size: 12pt;
+      color: #ccccff;
+      background: #999999;
+      font-weight: bold;
+    }
+
+    .content {
+      vertical-align: top;
+      text-align:center;
+    }
+  </style>
+
+
+  <h:panelGrid id="displayGrid"
+               columns="2"
+               rowClasses="header, content">
+
+  <h:outputLabel id="dateTagCloudLabel"
+                   for="dateTagCloud"
+                   value="This is TagCloud with date converter"/>
+
+    <h:outputLabel id="numberTagCloudLabel"
+                   for="numberTagCloud"
+                   value="This is TagCloud with number converter"/>
+
+    <o:tagCloud id="dateTagCloud"
+                items="#{TagCloudBean.itemsList}"
+                itemTitle="#{item.title}"
+                itemText ="#{item.dateText}"
+                itemUrl="#{item.url}"
+                itemWeight="#{item.weight}"
+                converter="#{TagCloudBean.dateConverter}"
+            />
+
+    <o:tagCloud id="numberTagCloud"
+                items="#{TagCloudBean.itemsList}"
+                itemTitle="#{item.title}"
+                itemText="#{item.numberText}"
+                itemUrl="#{item.url}"
+                itemWeight="#{item.weight}"
+                converter="#{TagCloudBean.numberConverter}"
+            />
+
+  </h:panelGrid>
+
+</div>

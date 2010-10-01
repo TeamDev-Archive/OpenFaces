@@ -22,6 +22,24 @@
     </message-bundle>
   </application>
 
+   <managed-bean>
+    <managed-bean-name>TagCloudBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.tagcloud.TagCloudBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>item</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.tagcloud.Item</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>tag</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.tagcloud.Item</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
   <managed-bean>
     <managed-bean-name>TableColumnsBean</managed-bean-name>
     <managed-bean-class>org.openfaces.testapp.datatable.TableColumnsBean</managed-bean-class>
@@ -622,5 +640,29 @@
     <managed-bean-class>org.openfaces.testapp.primefaces.PrimeFacesBean</managed-bean-class>
     <managed-bean-scope>session</managed-bean-scope>
   </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>SliderBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.slider.SliderBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <converter>
+    <converter-id>orientationConverter</converter-id>
+    <converter-class>org.openfaces.testapp.slider.OrientationConverter</converter-class>
+  </converter>
+
+  <converter>
+    <converter-id>fillDirectionConverter</converter-id>
+    <converter-class>org.openfaces.testapp.slider.FillDirectionConverter</converter-class>
+  </converter>
+  <converter>
+    <converter-id>ticksAlignmentConverter</converter-id>
+    <converter-class>org.openfaces.testapp.slider.TicksAlignmentConverter</converter-class>
+  </converter>
+  <converter>
+    <converter-id>textFieldStateConverter</converter-id>
+    <converter-class>org.openfaces.testapp.slider.TextFieldStateConverter</converter-class>
+  </converter>
 
 </faces-config>

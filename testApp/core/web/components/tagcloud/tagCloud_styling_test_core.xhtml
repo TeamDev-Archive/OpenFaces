@@ -1,0 +1,58 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/">
+  <h:panelGrid id="linksGrid"
+               columns="1">
+    <h:outputLink id="linkMain" value="../../main.jsf">
+      <h:outputText value="Return to main page"/>
+    </h:outputLink>
+    <h:outputLink id="linkIndex" value="../../testPageIndex.jsf">
+      <h:outputText value="Return to testing page"/>
+    </h:outputLink>
+  </h:panelGrid>
+
+  <style>
+        
+    .tagCloudClass2 {
+      background: #cccccc;
+      width: 600px;
+    }
+
+    .itemStyleClass2 {
+      text-align: center;
+      margin-top: 3px;
+      padding:3px;
+      background: url("/components/tagcloud/itemBackgroung.png") repeat-x;
+      border:1px solid #cccccc;
+    }
+
+    .itemStyleClass2_rollover {
+      border:1px solid #5ea8a8;
+      color: #5ea8a8;
+      background: url("/components/tagcloud/itemBackgroung.png") 0 -64px repeat-x;
+    }
+
+  </style>
+
+
+  <h:outputText value="Styled tag clouds:" style="font-size:14pt;"/>
+  <br/>
+  
+  <o:tagCloud id="variant2TagCloud"
+              items="#{TagCloudBean.itemsList}"
+              itemText="#{item.text}"
+              itemTitle="#{item.title}"
+              itemUrl="#{item.url}"
+              itemWeight="#{item.weight}"
+              order="random"
+              itemWeightVisible="true"
+              itemWeightStyle="color: #5ea8a8; vertical-align: baseline; font-size: 0.8em;"
+              itemWeightFormat="-> #,##0.##"
+              styleClass="tagCloudClass2"
+              itemClass="itemStyleClass2"
+              itemRolloverClass="itemStyleClass2_rollover"
+              minItemStyle="font-size: 15px; color: #b76221;"
+              maxItemStyle="font-size: 25px; color: #af6221;"
+          />
+
+</div>
