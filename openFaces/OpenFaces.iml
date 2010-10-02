@@ -52,7 +52,6 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" scope="PROVIDED" name="RichFaces" level="project" />
     <orderEntry type="library" name="JEE" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Jsf-portlet bridge 1.2" level="project" />
     <orderEntry type="module-library" scope="PROVIDED">

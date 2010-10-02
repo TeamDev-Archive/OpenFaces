@@ -8,6 +8,7 @@
   <property name="el.lib.dir" location="../../lib/el"/>
   <property name="tomahawk.lib.dir" location="../../lib/tomahawk"/>
   <property name="richfaces.lib.dir" location="../../lib/richfaces"/>
+  <property name="google.lib.dir" location="../../lib/google"/>
   <property name="hibernate.lib.dir" location="../../lib/hibernate"/>
   <property name="jsf.lib.dir" location="../../lib/mojarra"/>
   <property name="src.dir" location="../core/source"/>
@@ -55,9 +56,15 @@
   </fileset>
 
   <fileset id="richfaces-libs" dir="${richfaces.lib.dir}">
-    <include name="richfaces-api-4.0.0.ALPHA1.jar"/>
-    <include name="richfaces-impl-4.0.0.ALPHA1.jar"/>
-    <include name="core-ui-4.0.0.ALPHA1.jar"/>
+    <include name="richfaces-commons-api-4.0.0.20100826-M2.jar"/>
+    <include name="richfaces-components-api-4.0.0.20100826-M2.jar"/>
+    <include name="richfaces-components-ui-4.0.0.20100826-M2.jar"/>
+    <include name="richfaces-core-api-4.0.0.20100826-M2.jar"/>
+    <include name="richfaces-core-impl-4.0.0.20100826-M2.jar"/>
+  </fileset>
+
+  <fileset id="google-libs" dir="${google.lib.dir}">
+    <include name="guava-r07.jar"/>
   </fileset>
 
   <fileset id="mojarra-2.0" dir="${jsf.lib.dir}">
@@ -125,6 +132,7 @@
       <lib refid="openfaces-dependencies"/>
       <lib refid="tomahawk-libs"/>
       <lib refid="richfaces-libs"/>
+      <lib refid="google-libs"/>
       <lib refid="mojarra-2.0"/>
       <lib refid="el-ri"/>
       <lib refid="hibernate-libs"/>
@@ -153,7 +161,6 @@
           <include name="jstl-1.1.0.jar"/>
           <include name="openfaces-dependencies/cssparser-0.9.5.jar"/>
           <include name="openfaces-dependencies/sac.jar"/>
-          <include name="richfaces/richfaces-api-4.0.0.ALPHA1.jar"/>
           <include name="el/el-api-1.5.0.jar"/>
           <include name="el/el-ri-1.5.0.jar"/>
           <include name="jboss-seam/hibernate-all.jar"/>

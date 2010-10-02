@@ -20,21 +20,6 @@ and for destroying session and application contexts.-->
     </param-value>
   </context-param>
 
-  <context-param>
-    <param-name>org.richfaces.SKIN</param-name>
-    <param-value>blueSky</param-value>
-  </context-param>
-
-  <context-param>
-    <param-name>org.richfaces.LoadScriptStrategy</param-name>
-    <param-value>DEFAULT</param-value>
-  </context-param>
-
-  <context-param>
-    <param-name>org.richfaces.LoadStyleStrategy</param-name>
-    <param-value>DEFAULT</param-value>
-  </context-param>
-
   <!-- Change to "Production" when you are ready to deploy -->
   <context-param>
       <param-name>javax.faces.PROJECT_STAGE</param-name>
@@ -44,13 +29,6 @@ and for destroying session and application contexts.-->
   <context-param>
     <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
     <param-value>server</param-value>
-  </context-param>
-
-  <context-param>
-    <param-name>org.ajax4jsf.COMPRESS_SCRIPT</param-name>
-    <param-value>
-      false
-    </param-value>
   </context-param>
 
   <context-param>

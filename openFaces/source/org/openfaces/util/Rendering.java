@@ -11,7 +11,6 @@
  */
 package org.openfaces.util;
 
-import org.ajax4jsf.component.behavior.AjaxBehavior;
 import org.openfaces.application.DynamicResource;
 import org.openfaces.application.OpenFacesApplication;
 import org.openfaces.application.OpenFacesResourceHandler;
@@ -78,6 +77,16 @@ public class Rendering {
 
     public static final String DEFAULT_FOCUSED_STYLE = "border: 1px dotted black;";
     public static final String ON_LOAD_SCRIPTS_KEY = UtilPhaseListener.class.getName() + ".loadScripts";
+    private static final Class<?> A4J_AJAX_BEHAVIOR_CLASS;
+    static {
+        Class<?> cls;
+        try {
+            cls = Class.forName("org.ajax4jsf.component.behavior.AjaxBehavior");
+        } catch (ClassNotFoundException e) {
+            cls = null;
+        }
+        A4J_AJAX_BEHAVIOR_CLASS = cls;
+    }
 
     private Rendering() {
     }
@@ -1162,12 +1171,12 @@ public class Rendering {
      * @return {@link UIComponent} of ajax support, if component has support, null, otherwise
      */
     public static ClientBehavior getA4jAjaxForComponent(UIComponent component) {
-        if (!(component instanceof ClientBehaviorHolder))
+        if (!(component instanceof ClientBehaviorHolder) || A4J_AJAX_BEHAVIOR_CLASS == null)
             return null;
         Collection<List<ClientBehavior>> behaviors = ((ClientBehaviorHolder) component).getClientBehaviors().values();
         for (List<ClientBehavior> behavior : behaviors) {
             try {
-                if (behavior instanceof AjaxBehavior)
+                if (A4J_AJAX_BEHAVIOR_CLASS.isAssignableFrom(behavior.getClass()))
                     return (ClientBehavior) behavior;
             } catch (Throwable e) {
                 return null; // a component can't have A4j support if AjaxBehavior class can't be found

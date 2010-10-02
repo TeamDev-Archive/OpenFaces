@@ -1449,18 +1449,24 @@
         <root url="jar://$PROJECT_DIR$/lib/apache/commons-logging-1.1.1.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/apache/commons-digester-1.8.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/apache/commons-beanutils-1.7.0.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/richfaces/core-ui-4.0.0.ALPHA1.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/richfaces/richfaces-api-4.0.0.ALPHA1.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/richfaces/richfaces-impl-4.0.0.ALPHA1.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/slf4j-api-1.5.8.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/slf4j-log4j12-1.5.8.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/log4j-1.2.14.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/richfaces/richfaces-commons-api-4.0.0.20100826-M2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/richfaces/richfaces-core-impl-4.0.0.20100826-M2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/richfaces/richfaces-core-api-4.0.0.20100826-M2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/richfaces/richfaces-components-ui-4.0.0.20100826-M2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/richfaces/richfaces-components-api-4.0.0.20100826-M2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/google/guava-r07.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES>
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-impl-4.0.0.ALPHA1-sources.zip!/" />
-        <root url="jar://$PROJECT_DIR$/libsrc/core-ui-4.0.0.ALPHA1-sources.zip!/" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-api-4.0.0.ALPHA1-sources.zip!/" />
+        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-components-api-4.0.0.20100826-M2-sources.jar!/" />
+        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-core-impl-4.0.0.20100826-M2-sources.jar!/" />
+        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-commons-api-4.0.0.20100826-M2-sources.jar!/" />
+        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-components-ui-4.0.0.20100826-M2-sources.jar!/" />
+        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-core-api-4.0.0.20100826-M2-sources.jar!/" />
+        <root url="jar://$PROJECT_DIR$/libsrc/guava-src-r07.zip!/" />
       </SOURCES>
     </library>
     <library name="JBoss Seam 2.1">

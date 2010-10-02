@@ -62,11 +62,6 @@
           <include name="hibernate-validator.jar"/>
           <include name="jboss-el.jar"/>
         </fileset>
-        <fileset dir="${richfaces.lib.dir}">
-          <include name="richfaces-api-4.0.0.ALPHA1.jar"/>
-          <include name="richfaces-impl-4.0.0.ALPHA1.jar"/>
-          <include name="core-ui-4.0.0.ALPHA1.jar"/>
-        </fileset>
         <fileset dir="${apache.lib.dir}">
           <include name="commons-collections-3.2.jar"/>
           <include name="commons-beanutils-1.7.0.jar"/>
