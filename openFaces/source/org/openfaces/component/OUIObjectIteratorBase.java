@@ -41,7 +41,7 @@ public abstract class OUIObjectIteratorBase extends OUIComponentBase implements 
                 return true;
         }
 
-        String idPrefix = super.getClientId(context) + ":";
+        String idPrefix = super.getClientId(context) + OUIObjectIterator.OBJECT_ID_SEPARATOR;
 
         if (!clientId.startsWith(idPrefix))
             return false;

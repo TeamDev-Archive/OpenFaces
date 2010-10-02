@@ -11,8 +11,11 @@
  */
 package org.openfaces.util;
 
+import org.openfaces.component.OUIObjectIterator;
+
 import javax.faces.application.Application;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIData;
 import javax.faces.component.UIForm;
 import javax.faces.component.UIPanel;
 import javax.faces.component.UIViewRoot;
@@ -394,7 +397,35 @@ public class Components {
         }
 
         component = createComponent(context, id, componentType);
+        List<Object> originalParentObjectIds = new ArrayList<Object>();
+        for (UIComponent p = parent; p != null; p = p.getParent()) {
+            // Reset rowIndex/objectId for all parent iterator components for proper functionality fo state saving
+            // mechanism, which listens for component insertions and saves new components by their ids
+            // (com.sun.faces.context.SateContext.AddRemoveListener.handleAddEvent which constructs a list of
+            // "dynamicAdds" at least in Mojarra 2.0.3)
+            // ...and it's important to save component ids without any suffixes that might have place if parent iterator 
+            // components are in the middle of iteration currently.
+            if (p instanceof UIData) {
+                UIData uiData = (UIData) p;
+                originalParentObjectIds.add(uiData.getRowIndex());
+                uiData.setRowIndex(-1);
+            } else if (p instanceof OUIObjectIterator) {
+                OUIObjectIterator objectIterator = (OUIObjectIterator) p;
+                originalParentObjectIds.add(objectIterator.getObjectId());
+                objectIterator.setObjectId(null);
+            }
+        }
         parent.getFacets().put(facetName, component);
+        for (UIComponent p = parent; p != null; p = p.getParent()) {
+            // restore the original iterator positions
+            if (p instanceof UIData) {
+                UIData uiData = (UIData) p;
+                uiData.setRowIndex((Integer)originalParentObjectIds.remove(0));
+            } else if (p instanceof OUIObjectIterator) {
+                OUIObjectIterator objectIterator = (OUIObjectIterator) p;
+                objectIterator.setObjectId((String) originalParentObjectIds.remove(0));
+            }
+        }
         return (E) component;
     }
 
