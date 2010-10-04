@@ -11,6 +11,7 @@
  */
 package org.openfaces.component.popuplayer;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.openfaces.test.RichFacesAjaxLoadingMode;
@@ -25,6 +26,8 @@ import java.awt.*;
  */
 public class PopupLayerTest extends OpenFacesTestCase {
     @Test
+    @Ignore
+    // revive this test when RichFaces 4 is fully functional
     public void testReRenderThroughA4J() {
         testAppFunctionalPage("/components/popuplayer/popupLayer_a4j.jsf");
         PopupLayerInspector popupLayer = popupLayer("formID:popupLayerID");
@@ -47,6 +50,7 @@ public class PopupLayerTest extends OpenFacesTestCase {
     }
 
     @Test
+    @Ignore // revive this test when RichFaces 4 is fully functional
     public void testWithA4JControls() {
         testAppFunctionalPage("/components/popuplayer/popupLayer_a4j.jsf");
         PopupLayerInspector popupLayer = popupLayer("formID:popupLayer_a4j_ID");

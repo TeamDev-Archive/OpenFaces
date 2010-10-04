@@ -22,7 +22,7 @@
   <o:tabSetItem itemValue="server">
     <h:outputText value="Server"/>
   </o:tabSetItem>
-  <a4j:support event="onchange" reRender="selectedTabText"/>
+  <a4j:ajax event="change" render="selectedTabText"/>
 </o:tabSet>
 
 Selected tab value (updated through A4j): <h:outputText id="selectedTabText2"

@@ -42,6 +42,7 @@ public class DateChooserTest extends BaseCalendarTestCase {
     private Map<String, String> firstDaysOfWeek = new HashMap<String, String>();
 
     @Test
+    @Ignore // revive this test when RichFaces 4 is fully functional
     public void testReRenderThroughA4J() {
         testAppFunctionalPage("/components/datechooser/dateChooser_a4j.jsf");
 

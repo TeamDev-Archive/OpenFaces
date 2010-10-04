@@ -11,6 +11,7 @@
  */
 package org.openfaces.component.treetable;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.openfaces.test.RichFacesAjaxLoadingMode;
@@ -30,6 +31,8 @@ import java.util.List;
  */
 public class TreeTableTest extends OpenFacesTestCase {
     @Test
+    @Ignore
+    // revive this test when RichFaces 4 is fully functional
     public void testReRenderThroughA4J() {
         testAppFunctionalPage("/components/treetable/treeTable_a4j.jsf");
 

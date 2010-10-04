@@ -12,6 +12,7 @@
 package org.openfaces.component.calendar;
 
 import com.thoughtworks.selenium.Selenium;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.openfaces.CalendarInspector;
@@ -22,6 +23,7 @@ import org.openfaces.test.RichFacesAjaxLoadingMode;
  */
 public class CalendarTest extends BaseCalendarTestCase {
     @Test
+    @Ignore // revive this test when RichFaces 4 is fully functional
     public void testReRenderThroughA4J() {
         testAppFunctionalPage("/components/calendar/calendar_a4j.jsf");
 
