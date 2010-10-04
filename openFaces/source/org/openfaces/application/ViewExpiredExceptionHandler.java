@@ -16,6 +16,7 @@ import javax.faces.FacesException;
 import javax.faces.application.ViewExpiredException;
 import javax.faces.context.ExceptionHandler;
 import javax.faces.context.ExceptionHandlerWrapper;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ExceptionQueuedEvent;
 import javax.faces.event.ExceptionQueuedEventContext;
@@ -28,6 +29,7 @@ import java.util.Map;
 public class ViewExpiredExceptionHandler extends ExceptionHandlerWrapper {
     private ExceptionHandler wrapped;
     private static final String SESSION_EXPIRED_KEY = ViewExpiredExceptionHandler.class.getName() + ".SESSION_EXPIRED";
+    private static final String SESSION_EXPIRATION_TESTING_PARAM = "of__session_expiration_testing";
 
     public ViewExpiredExceptionHandler(ExceptionHandler wrapped) {
         this.wrapped = wrapped;
@@ -62,6 +64,8 @@ public class ViewExpiredExceptionHandler extends ExceptionHandlerWrapper {
     }
 
     public static boolean isExpiredView(FacesContext context) {
-        return context.getExternalContext().getRequestMap().containsKey(SESSION_EXPIRED_KEY);
+        ExternalContext externalContext = context.getExternalContext();
+        return externalContext.getRequestMap().containsKey(SESSION_EXPIRED_KEY) ||
+                externalContext.getRequestParameterMap().containsKey(SESSION_EXPIRATION_TESTING_PARAM);
     }
 }
