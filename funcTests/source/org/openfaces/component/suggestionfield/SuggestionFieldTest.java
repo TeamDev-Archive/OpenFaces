@@ -59,6 +59,7 @@ public class SuggestionFieldTest extends BaseDropDownTestCase {
     }
 
     @Test
+    @Ignore // todo: bring this test back when it's clear how to disable skinning in RichFaces 4 (M2)
     public void testStyling() {
         checkStyles(false, true, false, "/components/suggestionfield/suggestionFieldStyling.jsf", false);
         checkStyles(true, false, false, "/components/suggestionfield/suggestionFieldStyling.jsf", false);

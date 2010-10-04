@@ -298,6 +298,7 @@ public class ConfirmationTest extends OpenFacesTestCase {
     }
 
     @Test
+    @Ignore // todo: bring this test back when it's clear how to disable skinning in RichFaces 4 (M2)
     public void testStyles() {
         testAppFunctionalPage("/components/confirmation/confirmationStyles.jsf");
 
