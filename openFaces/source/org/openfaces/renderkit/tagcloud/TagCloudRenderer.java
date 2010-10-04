@@ -14,15 +14,7 @@ package org.openfaces.renderkit.tagcloud;
 
 import org.openfaces.component.tagcloud.TagCloud;
 import org.openfaces.renderkit.RendererBase;
-import org.openfaces.util.AjaxUtil;
-import org.openfaces.util.Components;
-import org.openfaces.util.DefaultStyles;
-import org.openfaces.util.Rendering;
-import org.openfaces.util.Resources;
-import org.openfaces.util.Script;
-import org.openfaces.util.ScriptBuilder;
-import org.openfaces.util.StyleGroup;
-import org.openfaces.util.Styles;
+import org.openfaces.util.*;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
@@ -64,7 +56,9 @@ public class TagCloudRenderer extends RendererBase {
 
             cloud.queueEvent(new ActionEvent(cloud));
 
-            requestMap.put(cloud.getVar(), cloud.getPrevVarValue());
+            String var = cloud.getVar();
+            requestMap.put(var,cloud.getPrevVarValue());
+            //requestMap.put(cloud.getVar(), cloud.getPrevVarValue());
 
             ELContext elContext = context.getELContext();
 
@@ -90,14 +84,14 @@ public class TagCloudRenderer extends RendererBase {
                 urlExpression.setValue(elContext, varUrl);
 
             Number weightToSet = null;
-            
+
             if (varWeight != null) {
                 DecimalFormat weightFormat = new DecimalFormat(cloud.getItemWeightFormat());
                 ParsePosition pos = new ParsePosition(0);
                 weightToSet = weightFormat.parse(varWeight, pos);
             }
 
-            if (weightExpression != null && weightToSet != null) {                
+            if (weightExpression != null && weightToSet != null) {
                 weightExpression.setValue(elContext, weightToSet);
             }
         }
@@ -165,9 +159,11 @@ public class TagCloudRenderer extends RendererBase {
     private void encodeVarFields(FacesContext context, TagCloud cloud) throws IOException {
         ELContext elContext = context.getELContext();
         String clientId = cloud.getClientId(context);
-
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
         ResponseWriter writer = context.getResponseWriter();
-
+        String var = cloud.getVar();
+        Object prevVarValue = Faces.var(var);
+        requestMap.put(var, prevVarValue);
         ValueExpression textExpression = cloud.getItemText();
         ValueExpression titleExpression = cloud.getItemTitle();
         ValueExpression urlExpression = cloud.getItemUrl();
@@ -179,7 +175,8 @@ public class TagCloudRenderer extends RendererBase {
 
         String url = urlExpression != null ? (String) urlExpression.getValue(elContext) : "#";
 
-        double weight = weightExpression != null ? (Double) weightExpression.getValue(elContext) : 0;
+        Object weightObj = weightExpression != null ? weightExpression.getValue(elContext) : null;
+        double weight = weightObj != null? (Double) weightObj : 0 ;
         writer.startElement("div", cloud);
 
         writeAttribute(writer, "style", "visibility:hidden;");

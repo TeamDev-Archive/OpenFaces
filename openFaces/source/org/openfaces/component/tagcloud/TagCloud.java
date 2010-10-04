@@ -15,6 +15,7 @@ package org.openfaces.component.tagcloud;
 import org.openfaces.component.OUICommand;
 import org.openfaces.renderkit.cssparser.CSSUtil;
 import org.openfaces.util.Environment;
+import org.openfaces.util.Faces;
 import org.openfaces.util.ValueBindings;
 
 import javax.el.ELException;
@@ -457,8 +458,8 @@ public class TagCloud extends OUICommand {
         String var = getVar();
 
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-
-        prevVarValue = requestMap.get(var);
+        prevVarValue = Faces.var(var);
+        requestMap.put(var,prevVarValue);
 
         if (!itemsData.isEmpty() && prevVarValue == null)
             try {
