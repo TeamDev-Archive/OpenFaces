@@ -525,27 +525,29 @@ public class ValidationTest extends OpenFacesTestCase {
 
     private void isDefaultPresentation() {
         element("dfm0").assertVisible(true);
-        element("testForm:required").assertStyle("background-color: #F8D3D4");
+        String failedBackground = "background-color: #FFFFFF";
+        String failedBackground2 = "background-color: #F8D3D4";
+        element("testForm:required").assertStyle(failedBackground);
         element("dfm1").assertVisible(true);
-        element("testForm:c").assertStyle("background-color: #F8D3D4");
+        element("testForm:c").assertStyle(failedBackground2);
         element("dfm2").assertVisible(true);
-        element("testForm:dch").assertStyle("background-color: #F8D3D4");
+        element("testForm:dch").assertStyle(failedBackground2);
         element("dfm3").assertVisible(true);
-        element("testForm:tls").assertStyle("background-color: #F8D3D4");
+        element("testForm:tls").assertStyle(failedBackground2);
         element("dfm4").assertVisible(true);
-        element("testForm:ddf").assertStyle("background-color: #F8D3D4");
+        element("testForm:ddf").assertStyle(failedBackground2);
         element("dfm5").assertVisible(true);
-        element("testForm:validDR").assertStyle("background-color: #F8D3D4");
+        element("testForm:validDR").assertStyle(failedBackground);
         element("dfm6").assertVisible(true);
-        element("testForm:equal2").assertStyle("background-color: #F8D3D4");
+        element("testForm:equal2").assertStyle(failedBackground);
         element("dfm7").assertVisible(true);
-        element("testForm:url").assertStyle("background-color: #F8D3D4");
+        element("testForm:url").assertStyle(failedBackground);
         element("dfm8").assertVisible(true);
-        element("testForm:email").assertStyle("background-color: #F8D3D4");
+        element("testForm:email").assertStyle(failedBackground);
         element("dfm9").assertVisible(true);
-        element("testForm:regExp").assertStyle("background-color: #F8D3D4");
+        element("testForm:regExp").assertStyle(failedBackground);
         element("dfm10").assertVisible(true);
-        element("testForm:custom").assertStyle("background-color: #F8D3D4");
+        element("testForm:custom").assertStyle(failedBackground);
     }
 
     private void isNotDefaultPresentation() {
