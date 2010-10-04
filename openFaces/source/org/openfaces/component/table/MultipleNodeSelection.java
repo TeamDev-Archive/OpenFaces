@@ -227,7 +227,7 @@ public class MultipleNodeSelection extends TreeTableSelection {
             }
             return result;
         }
-        return Collections.emptyList();
+        return new ArrayList<TreePath>();
     }
 
     public Object saveState(FacesContext context) {

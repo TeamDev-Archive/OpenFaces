@@ -157,7 +157,7 @@ public class MultipleRowSelection extends DataTableSelection {
             }
             return result;
         } else {
-            return Collections.emptyList();
+            return new ArrayList<Object>();
         }
     }
 
