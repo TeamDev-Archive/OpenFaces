@@ -50,7 +50,8 @@ public class HtmlMessagesRenderer extends BaseHtmlMessageRenderer {
             Script clientScript = getClientScript(context, component, styleClassName);
             Rendering.renderInitScript(context, clientScript, getJavascriptLibraryUrls(context));
             boolean globalOnly = ((UIMessages) component).isGlobalOnly();
-            if (!globalOnly) {
+            boolean implicitEndOfPageMessages = component.getParent() == null;
+            if (!globalOnly && !implicitEndOfPageMessages) {
                 ValidatorUtil.renderPresentationExistsForAllInputComponents(context);
             }
         }
