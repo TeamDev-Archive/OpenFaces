@@ -16,17 +16,19 @@ import org.openfaces.util.ValueBindings;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
-import java.io.IOException;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.PreRenderViewEvent;
+import javax.faces.event.SystemEvent;
+import javax.faces.event.SystemEventListener;
 import java.io.Serializable;
 import java.util.*;
 
 /**
- *
  * The LoadBundle component is used for loading a resource bundle localized for the
  * Locale of the current view, and expose it (as a Map) in the request attributes of
  * the current request. The OpenFaces LoadBundle component is similar to the LoadBundle
  * from the RI or MyFaces JSF implementation but can be used in the components with Ajax enabled.
- * 
+ *
  * @author Vladimir Kurganov
  */
 public class LoadBundle extends UIComponentBase implements Serializable, AjaxLoadBundleComponent {
@@ -37,17 +39,28 @@ public class LoadBundle extends UIComponentBase implements Serializable, AjaxLoa
     private String var;
     private String basename;
 
+    public LoadBundle() {
+        FacesContext.getCurrentInstance().getApplication().subscribeToEvent(PreRenderViewEvent.class, new SystemEventListener() {
+            public void processEvent(SystemEvent event) throws AbortProcessingException {
+                loadBundle(getFacesContext());
+            }
+
+            public boolean isListenerForSource(Object source) {
+                return true;
+            }
+        });
+    }
+
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
 
-    @Override
-    public void encodeBegin(FacesContext context) throws IOException {
-        super.encodeBegin(context);
-        loadBundle(context);
-    }
-
     public void loadBundle(FacesContext context) {
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+        String initializedKey = LoadBundle.class + ".loadBundle._initialized";
+        if (requestMap.containsKey(initializedKey)) return;
+        requestMap.put(initializedKey, true);
+
         if (null == basename || null == var) {
             throw new FacesException("null basename or var");
         }
@@ -194,7 +207,7 @@ public class LoadBundle extends UIComponentBase implements Serializable, AjaxLoa
             }
         };
 
-        context.getExternalContext().getRequestMap().put(var, toStore);
+        requestMap.put(var, toStore);
     }
 
     public String getBasename() {

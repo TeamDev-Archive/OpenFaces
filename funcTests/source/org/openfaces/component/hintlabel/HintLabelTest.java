@@ -12,6 +12,7 @@
 package org.openfaces.component.hintlabel;
 
 import com.thoughtworks.selenium.Selenium;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.seleniuminspector.openfaces.HintLabelInspector;
@@ -24,6 +25,7 @@ import org.seleniuminspector.ElementInspector;
 public class HintLabelTest extends OpenFacesTestCase {
 
     @Test
+    @Ignore // revive this test when RichFaces 4 is fully functional
     public void testReRenderThroughA4J() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/hintlabel/hintLabel_a4j.jsf");

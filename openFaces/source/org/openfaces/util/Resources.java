@@ -168,6 +168,8 @@ public class Resources {
         if (componentClass == null) {
             ResourceHandler resourceHandler = context.getApplication().getResourceHandler();
             Resource resource = resourceHandler.createResource(resourcePath, LIBRARY_NAME);
+            if (resource == null)
+                throw new FacesException("Couldn't find resource: " + resourcePath);
             resourcePath = resource.getRequestPath();
             return resourcePath;
         }
