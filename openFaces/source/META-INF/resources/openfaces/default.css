@@ -754,6 +754,80 @@
   width: 175px;
 }
 
+.o_slider {
+  margin: 5px;
+  padding: 10px;
+  border: 0;
+  text-align: left;
+}
+
+.o_slider_focused {
+  padding: 9px;
+  border: 1px dotted black;
+}
+
+.o_slider_horizontal {
+  width: 400px;
+  height: 70px;
+}
+
+.o_slider_vertical {
+  height: 400px;
+  width: 70px;
+}
+
+.o_slider_horizontal_center {
+  width: 400px;
+  height: 80px;
+}
+
+.o_slider_vertical_center {
+  height: 400px;
+  width: 80px;
+}
+
+.o_slider_tooltip {
+  background: #ffffe2;
+  border: 1px solid #dfdfe2;
+  width: 30px;
+  height: 20px;
+  font-size: 8pt;
+  text-align: center;
+  vertical-align: middle;
+  visibility: hidden;
+  color: gray;
+  margin: 0;
+  padding: 0;
+}
+
+.o_slider_text_field {
+  width: 40px;
+  font-size: 8pt;
+  text-align: center;
+  overflow: hidden;
+  border: 1px solid #dfdfe2;
+  margin: 0;
+  padding: 0;
+}
+
+.o_slider_disabled {
+  color: gray;
+}
+
+.o_slider_disabled_text_field {
+  background: #fefefe;
+  color: graytext;
+  border: 1px solid #eee;
+}
+
+.o_slider_disabled_text_field hover {
+  cursor: default;
+}
+
+.o_slider_active_element_rollover {
+  cursor: pointer;
+}
+
 .o_spinner {
   background: white;
   width: 60px;
@@ -1670,4 +1744,67 @@ table.o_filter_parameter {
 	float:right;
 	text-align: center;
 	width:2.6em;
+}
+
+.o_tagCloud_rectangle,
+.o_tagCloud_vertical,
+.o_tagCloud_oval {
+  z-index: 0;
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+  padding: 5px;
+  border: 0 none;
+
+  font-family: "Lucida Grande", Tahoma, Arial, Helvetica, sans-serif;
+  line-height: 2em;
+}
+
+.o_tagCloud_rectangle,
+.o_tagCloud_oval {
+  width: 400px;
+}
+
+.o_tagCloud_rectangle{
+  text-align:center;
+}
+
+.o_tagCloud_vertical {
+  width: 250px;
+  text-align: center;
+}
+
+.o_tagCloud_oval {
+  text-align: left;
+  overflow:visible;
+}
+
+.o_tagCloud_rectangle  a:focus,
+.o_tagCloud_oval  a:focus,
+.o_tagCloud_vertical a:focus {
+  outline: none;
+}
+
+.o_tagCloud_rollover {
+  border: 1px dotted black;
+}
+
+.o_tagCloud_item {
+  display: inline-block;
+
+  z-index: 1;
+  position: relative;
+
+  border: 0 none;
+  margin: 0;
+  padding: 0;
+
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+
+  text-decoration: none;
+}
+
+.o_tagCloud_item_rollover {
+  text-decoration: underline;
 }

@@ -1,0 +1,62 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+        >
+
+  <h:panelGrid columns="1">
+    <h:outputLink value="../../main.jsf">
+      <h:outputText value="Return to main page"/>
+    </h:outputLink>
+    <h:outputLink value="../../testPageIndex.jsf">
+      <h:outputText value="Return to testing page"/>
+    </h:outputLink>
+    <h:commandButton id="submitBut" value="Submit"/>
+  </h:panelGrid>
+  <h:outputText value="Double type: " style="font-size:14pt;"/>
+
+  <style>
+    .testTable {
+      background: #eee;
+      border: 1px solid #444;
+    }
+  </style>
+
+  <o:slider id="slider_1"
+            maxValue="0.001"
+            majorTickSpacing="0.0001"
+            minorTickSpacing="0.00005"
+            textFieldState="readOnly"
+            textFieldStyle="width:60px;"
+            tooltipStyle="width:60px;"
+          >
+    <f:convertNumber pattern="#,##0.0####" groupingUsed="true" minFractionDigits="1" maxFractionDigits="6"/>
+  </o:slider>
+
+  <o:slider id="slider0"
+            ticksAlignment="center"
+            maxValue="1"
+            minorTickSpacing="0.05"
+            majorTickSpacing="0.1">
+    <f:convertNumber pattern="#,##0.00" groupingUsed="true" minFractionDigits="2" maxFractionDigits="2"/>
+  </o:slider>
+
+  <o:slider id="slider1"
+            ticksAlignment="center"
+            snapToTicks="false"
+            minValue="-1"
+            maxValue="1"
+            minorTickSpacing="0.05"
+            majorTickSpacing="0.2">
+    <f:convertNumber pattern="#,##0.00" groupingUsed="true" minFractionDigits="2" maxFractionDigits="2"/>
+  </o:slider>
+
+  <o:slider id="slider2"
+            minValue="-100000"
+            maxValue="100000"
+            minorTickSpacing="5000"
+            majorTickSpacing="50000">
+    <f:convertNumber pattern="#,##0"/>
+  </o:slider>
+
+
+</div>

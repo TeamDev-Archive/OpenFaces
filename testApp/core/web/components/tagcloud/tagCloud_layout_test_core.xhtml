@@ -1,0 +1,75 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/">
+  <h:panelGrid id="linksGrid"
+               columns="1">
+    <h:outputLink id="linkMain" value="../../main.jsf">
+      <h:outputText value="Return to main page"/>
+    </h:outputLink>
+    <h:outputLink id="linkIndex" value="../../testPageIndex.jsf">
+      <h:outputText value="Return to testing page"/>
+    </h:outputLink>
+  </h:panelGrid>
+
+  <style>
+    .header{
+      font-size: 12pt;
+      color: #a9ccff;
+      background:gray;
+      font-weight:bold;
+      text-align:center;
+    }
+    .content{
+      vertical-align:top;
+    }
+
+    .pollo{
+      border:3px solid black;
+    }
+  </style>
+
+  <h:panelGrid id="displayGrid"
+               columns="3"
+          rowClasses="header,content">
+    
+      <h:outputLabel id="rectangleTagCloudLabel"
+                   for="rectangleTagCloud"
+                   value="Rectangle layout"/>
+     <h:outputLabel id="verticalTagCloudLabel"
+                   for="verticalTagCloud"
+                   value="Vertical layout"/>
+     <h:outputLabel id="ovalTagCloudLabel"
+                   for="ovalTagCloud"
+                   value="Oval layout"/>
+
+
+    <o:tagCloud id="rectangleTagCloud"
+                items="#{TagCloudBean.itemsList}"
+                itemText="#{item.text}"
+                itemTitle="#{item.title}"
+                itemUrl="#{item.url}"
+                itemWeight="#{item.weight}"
+                itemWeightVisible="true"
+                layout="rectangle"                
+           />
+
+    <o:tagCloud id="verticalTagCloud"
+                items="#{TagCloudBean.itemsList}"
+                itemText="#{item.text}"
+                itemTitle="#{item.title}"
+                itemUrl="#{item.url}"
+                itemWeight="#{item.weight}"
+                itemWeightVisible="true"
+                layout="vertical"/>
+
+    <o:tagCloud id="ovalTagCloud"
+                items="#{TagCloudBean.itemsList}"
+                itemText="#{item.text}"
+                itemTitle="#{item.title}"
+                itemUrl="#{item.url}"
+                itemWeight="#{item.weight}"
+                itemWeightVisible="true"
+                layout="oval"/>
+  </h:panelGrid>
+
+</div>
