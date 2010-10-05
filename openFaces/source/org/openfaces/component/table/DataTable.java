@@ -223,14 +223,14 @@ public class DataTable extends AbstractTable {
     }
 
     @Override
-    protected void beforeRenderResponse(FacesContext context) {
-        super.beforeRenderResponse(context);
+    protected void updateModel() {
         updateModel(true, true, true);
     }
 
     /**
      * This method is invoked during the normal DataTable operation, and application developers shouldn't invoke this
-     * method explicitly.
+     * method explicitly. Note that this method returns the proper value only after the DataTable is rendered for the
+     * first time.
      */
     public void updateModel(boolean updateSortingFromBindings, boolean updatePageIndex, boolean readActualData) {
         TableDataModel model = getModel();

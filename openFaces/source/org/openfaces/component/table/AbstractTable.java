@@ -139,6 +139,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     private List<Filter> myFilters = new ArrayList<Filter>();
     private Integer autoFilterDelay;
     private Boolean deferBodyLoading;
+    private Integer totalRowCount;
 
     public AbstractTable() {
         super.setUiDataValue(new TableDataModel(this));
@@ -176,7 +177,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
                 rolloverRowStyle, rolloverRowClass, noDataRowStyle, noDataRowClass,
                 noDataMessageAllowed, columnIndexVar, columnIdVar, saveAttachedState(context, columnsOrder),
                 sortedAscendingImageUrl, sortedDescendingImageUrl, cachedClientId,
-                autoFilterDelay, deferBodyLoading};
+                autoFilterDelay, deferBodyLoading, totalRowCount};
     }
 
     @Override
@@ -263,6 +264,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         cachedClientId = (String) state[i++];
         autoFilterDelay = (Integer) state[i++];
         deferBodyLoading = (Boolean) state[i++];
+        totalRowCount = (Integer) state[i++];
 
         beforeUpdateValuesPhase = true;
         toggleColumnSorting = -1;
@@ -1014,6 +1016,13 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         setUnavailableRowIndexes(null);
 
         checkSortingColumnsValid();
+
+        updateModel();
+        totalRowCount = getModel().getTotalRowCount();
+    }
+
+    protected void updateModel() {
+
     }
 
     private void checkSortingColumnsValid() {
@@ -1656,7 +1665,13 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         return clientId;
     }
 
+    /**
+     * @return the total number of rows on all table's pages (if pagination if used) according to the current filtering
+     * parameters
+     */
     public int getTotalRowCount() {
-        return getModel().getTotalRowCount();
+        if (totalRowCount == null)
+            totalRowCount = getModel().getTotalRowCount();
+        return totalRowCount;
     }
 }
