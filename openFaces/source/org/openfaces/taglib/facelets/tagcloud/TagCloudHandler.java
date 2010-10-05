@@ -12,9 +12,10 @@
 
 package org.openfaces.taglib.facelets.tagcloud;
 
-import com.sun.facelets.tag.jsf.ComponentConfig;
 import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
 import org.openfaces.taglib.internal.tagcloud.TagCloudTag;
+
+import javax.faces.view.facelets.ComponentConfig;
 
 /**
  * @author : roman.nikolaienko
