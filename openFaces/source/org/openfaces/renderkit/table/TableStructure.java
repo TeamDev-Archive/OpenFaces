@@ -27,6 +27,7 @@ import org.openfaces.util.Styles;
 import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.FacesContext;
+import javax.faces.context.PartialViewContext;
 import javax.faces.context.ResponseWriter;
 import java.awt.*;
 import java.io.IOException;
@@ -152,11 +153,19 @@ public class TableStructure extends TableElement {
         return footer;
     }
 
+    private boolean isDirectTableRenderingRequest(FacesContext context, AbstractTable table) {
+        PartialViewContext partialViewContext = context.getPartialViewContext();
+        if (!partialViewContext.isAjaxRequest()) return false;
+        String tableClientId = table.getClientId(context);
+        return partialViewContext.getRenderIds().contains(tableClientId);
+    }
+
     public void render(FacesContext context, HeaderCell.AdditionalContentWriter additionalContentWriter) throws IOException {
         AbstractTable table = (AbstractTable) component;
         table.setRowIndex(-1);
+        boolean skipExternalFacets = isDirectTableRenderingRequest(context, table);
         UIComponent aboveFacet = table.getAbove();
-        if (aboveFacet != null)
+        if (aboveFacet != null && !skipExternalFacets)
             aboveFacet.encodeAll(context);
         ResponseWriter writer = context.getResponseWriter();
 
@@ -212,7 +221,7 @@ public class TableStructure extends TableElement {
         writer.endElement("table");
         Rendering.writeNewLine(writer);
         UIComponent belowFacet = table.getBelow();
-        if (belowFacet != null)
+        if (belowFacet != null && !skipExternalFacets)
             belowFacet.encodeAll(context);
     }
 
