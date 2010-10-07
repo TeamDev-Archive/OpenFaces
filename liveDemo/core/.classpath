@@ -20,7 +20,7 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/Libs/apache/commons-collections-3.1.jar">
+	<classpathentry kind="lib" path="/Libs/apache/commons-collections-3.2.1.jar">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
@@ -51,7 +51,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry combineaccessrules="false" kind="src" path="/OpenFaces"/>
-	<classpathentry kind="lib" path="/Libs/apache/commons-lang-2.1.jar">
+	<classpathentry kind="lib" path="/Libs/apache/commons-lang-2.4.jar">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>

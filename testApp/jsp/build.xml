@@ -29,13 +29,13 @@
 
   <fileset id="apache" dir="${apache.lib.dir}">
     <include name="commons-beanutils-1.6.jar"/>
-    <include name="commons-collections-3.1.jar"/>
+    <include name="commons-collections-3.2.1.jar"/>
     <include name="commons-digester-1.6.jar"/>
     <include name="commons-logging-1.0.4.jar"/>
     <include name="commons-el-1.0.jar"/>
     <include name="standard-1.1.2.jar"/>
-    <include name="commons-fileupload-1.0.jar"/>
-    <include name="commons-lang-2.1.jar"/>
+    <include name="commons-fileupload-1.2.1.jar"/>
+    <include name="commons-lang-2.4.jar"/>
   </fileset>
 
   <fileset id="openfaces-dependencies" dir="${openfaces-dependencies.lib.dir}">
@@ -47,7 +47,7 @@
   </fileset>
 
   <fileset id="tomahawk-libs" dir="${tomahawk.lib.dir}">
-    <include name="tomahawk12-1.1.8.jar"/>
+    <include name="tomahawk20-1.1.10.jar"/>
   </fileset>
 
   <fileset id="richfaces-libs" dir="${richfaces.lib.dir}">
@@ -149,7 +149,7 @@
           <include name="jboss-seam/hibernate-all.jar"/>
           <include name="jboss-seam/jboss-ejb3-all.jar"/>
           <include name="jboss-seam/jboss-seam-2.1.1.GA.jar"/>
-          <include name="tomahawk/tomahawk12-1.1.8.jar"/>
+          <include name="tomahawk/tomahawk20-1.1.10.jar"/>
           <include name="apache/commons-collections-3.2.jar"/>
         </fileset>
         <fileset file="${components-jar.file}"/>

@@ -5,7 +5,7 @@
 	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/Apache Tomcat v6.0"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
-	<classpathentry exported="true" kind="lib" path="/Libs/tomahawk/tomahawk12-1.1.8.jar">
+	<classpathentry exported="true" kind="lib" path="/Libs/tomahawk/tomahawk20-1.1.10.jar">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
@@ -15,7 +15,7 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="/Libs/apache/commons-collections-3.1.jar">
+	<classpathentry exported="true" kind="lib" path="/Libs/apache/commons-collections-3.2.1.jar">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
@@ -93,12 +93,12 @@
 	<classpathentry exported="true" kind="lib" path="/Libs/jboss-seam/hibernate-all.jar"/>
 	<classpathentry exported="true" kind="lib" path="/Libs/jboss-seam/jboss-ejb3-all.jar"/>
 	<classpathentry exported="true" kind="lib" path="/Libs/servlet-api.jar"/>
-	<classpathentry exported="true" kind="lib" path="/Libs/apache/commons-fileupload-1.0.jar">
+	<classpathentry exported="true" kind="lib" path="/Libs/apache/commons-fileupload-1.2.1.jar">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="/Libs/apache/commons-lang-2.1.jar">
+	<classpathentry exported="true" kind="lib" path="/Libs/apache/commons-lang-2.4.jar">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
