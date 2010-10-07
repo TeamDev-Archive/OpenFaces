@@ -1906,7 +1906,7 @@ if (!window.O$) {
     for (var i = 0, count = document.forms.length; i < count; i++) {
       var frm = document.forms[i];
       O$.addEventHandler(frm, "submit", function() {
-        if (!this.target || this.target != "_blank") {
+        if (!this.target || this.target == "_self") {
           O$.lockAjax();
           // _formSubmissionJustStarted should be reset so as not to block further ajax actions if this is not actually
           // a normal form submission, but file download (JSFC-2940)
@@ -1918,7 +1918,7 @@ if (!window.O$) {
       if (frm._of_prevSubmit) continue;
       frm._of_prevSubmit = frm.submit;
       frm.submit = function() {
-        if (!this.target || this.target != "_blank") {
+        if (!this.target || this.target == "_self") {
           O$.lockAjax();
           // _formSubmissionJustStarted should be reset so as not to block further ajax actions if this is not actually
           // a normal form submission, but file download (JSFC-2940)
