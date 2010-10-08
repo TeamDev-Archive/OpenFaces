@@ -11,6 +11,7 @@
 
   <o:focus focusedComponentId="byLoadFocused"/>
   <h:commandButton id="submit" value="Submit"/><br/><br/>
+  <o:commandButton id="submit2" type="button" value="Submit2" onclick="O$('formID:byAfterSubmission').focus();setTimeout(function(){document.forms[0].submit()}, 500)"/><br/><br/>
   <table>
     <tr>
       <td class="header">focused by load</td>
