@@ -18,33 +18,33 @@
   </o:foldingPanel>
 
 
-  <o:window id="win" caption="p:menuBar and p:calendar inside of o:window" style="z-index: 1">
+  <o:window id="win" caption="p:menuBar and p:calendar inside of o:window" style="z-index: 1" width="450px">
     <p:menubar>
       <p:submenu label="Barca" styleClass="barca">
-        <p:menuitem label="Home" url="http://www.fcbarcelona.com"></p:menuitem>
+        <p:menuitem value="Home" url="http://www.fcbarcelona.com"/>
       </p:submenu>
 
       <p:submenu label="File">
-        <p:submenu label="New" styleClass="new">
-          <p:menuitem label="Project" url="#" helpText="CTRL+N"/>
-          <p:menuitem label="Other" url="#" helpText="CTRL+O"/>
+        <p:submenu value="New" styleClass="new">
+          <p:menuitem value="Project" url="#" helpText="CTRL+N"/>
+          <p:menuitem value="Other" url="#" helpText="CTRL+O"/>
         </p:submenu>
-        <p:menuitem label="Open" url="#" styleClass="open"></p:menuitem>
-        <p:menuitem label="Quit" url="#"></p:menuitem>
+        <p:menuitem value="Open" url="#" styleClass="open"/>
+        <p:menuitem value="Quit" url="#"/>
       </p:submenu>
 
       <p:submenu label="Edit">
-        <p:menuitem label="Undo" url="#" styleClass="undo" helpText="CTRL+Z"></p:menuitem>
-        <p:menuitem label="Redo" url="#" styleClass="redo" helpText="CTRL+Y"></p:menuitem>
+        <p:menuitem value="Undo" url="#" styleClass="undo" helpText="CTRL+Z"/>
+        <p:menuitem value="Redo" url="#" styleClass="redo" helpText="CTRL+Y"/>
       </p:submenu>
 
       <p:submenu label="Help">
-        <p:menuitem label="Contents" url="#"></p:menuitem>
-        <p:submenu label="Search" styleClass="search">
-          <p:submenu label="Text">
-            <p:menuitem label="Workspace" url="#"/>
+        <p:menuitem value="Contents" url="#"/>
+        <p:submenu value="Search" styleClass="search">
+          <p:submenu value="Text">
+            <p:menuitem value="Workspace" url="#"/>
           </p:submenu>
-          <p:menuitem label="File" url="#"/>
+          <p:menuitem value="File" url="#"/>
         </p:submenu>
       </p:submenu>
 

@@ -64,8 +64,6 @@ public class PartialViewContext extends PartialViewContextWrapper {
     public PartialResponseWriter getPartialResponseWriter() {
         PartialResponseWriter originalWriter = super.getPartialResponseWriter();
         return new PartialResponseWriterWrapper(originalWriter) {
-            private boolean additionalResponseRendered;
-
             @Override
             public void startUpdate(String targetId) throws IOException {
                 if (targetId.equals(PartialResponseWriter.VIEW_STATE_MARKER)) {
@@ -78,20 +76,26 @@ public class PartialViewContext extends PartialViewContextWrapper {
 
             @Override
             public void startExtension(Map<String, String> attributes) throws IOException {
-                if (!additionalResponseRendered) {
-                    additionalResponseRendered = true;
-                    renderAdditionalPartialResponse();
-                }
+                renderAdditionalResponseIfNeeded();
                 super.startExtension(attributes);
             }
 
             @Override
             public void endDocument() throws IOException {
-                if (!additionalResponseRendered) {
-                    additionalResponseRendered = true;
-                    renderAdditionalPartialResponse();
-                }
+                renderAdditionalResponseIfNeeded();
                 super.endDocument();
+            }
+
+            private void renderAdditionalResponseIfNeeded() {
+                FacesContext context = FacesContext.getCurrentInstance();
+                Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+                String additionalResponseRenderedKey = PartialViewContext.class.getName() + ".additionalResponseRendered";
+                if (requestMap.containsKey(additionalResponseRenderedKey))
+                    return;
+
+                requestMap.put(additionalResponseRenderedKey, true);
+                
+                renderAdditionalPartialResponse();
             }
         };
     }
