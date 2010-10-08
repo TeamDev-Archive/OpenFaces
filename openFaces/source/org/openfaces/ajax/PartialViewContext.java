@@ -64,6 +64,7 @@ public class PartialViewContext extends PartialViewContextWrapper {
     public PartialResponseWriter getPartialResponseWriter() {
         PartialResponseWriter originalWriter = super.getPartialResponseWriter();
         return new PartialResponseWriterWrapper(originalWriter) {
+            private boolean additionalResponseRendered;
 
             @Override
             public void startUpdate(String targetId) throws IOException {
@@ -76,8 +77,20 @@ public class PartialViewContext extends PartialViewContextWrapper {
             }
 
             @Override
+            public void startExtension(Map<String, String> attributes) throws IOException {
+                if (!additionalResponseRendered) {
+                    additionalResponseRendered = true;
+                    renderAdditionalPartialResponse();
+                }
+                super.startExtension(attributes);
+            }
+
+            @Override
             public void endDocument() throws IOException {
-                renderAdditionalPartialResponse();
+                if (!additionalResponseRendered) {
+                    additionalResponseRendered = true;
+                    renderAdditionalPartialResponse();
+                }
                 super.endDocument();
             }
         };

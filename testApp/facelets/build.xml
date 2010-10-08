@@ -8,6 +8,7 @@
   <property name="el.lib.dir" location="../../lib/el"/>
   <property name="tomahawk.lib.dir" location="../../lib/tomahawk"/>
   <property name="richfaces.lib.dir" location="../../lib/richfaces"/>
+  <property name="primefaces.lib.dir" location="../../lib/primefaces"/>
   <property name="google.lib.dir" location="../../lib/google"/>
   <property name="hibernate.lib.dir" location="../../lib/hibernate"/>
   <property name="jsf.lib.dir" location="../../lib/mojarra"/>
@@ -61,6 +62,10 @@
     <include name="richfaces-components-ui-4.0.0.20100826-M2.jar"/>
     <include name="richfaces-core-api-4.0.0.20100826-M2.jar"/>
     <include name="richfaces-core-impl-4.0.0.20100826-M2.jar"/>
+  </fileset>
+
+  <fileset id="primefaces-libs" dir="${primefaces.lib.dir}">
+    <include name="primefaces-2.2.RC1-SNAPSHOT.jar"/>
   </fileset>
 
   <fileset id="google-libs" dir="${google.lib.dir}">
@@ -132,6 +137,7 @@
       <lib refid="openfaces-dependencies"/>
       <lib refid="tomahawk-libs"/>
       <lib refid="richfaces-libs"/>
+      <lib refid="primefaces-libs"/>
       <lib refid="google-libs"/>
       <lib refid="mojarra-2.0"/>
       <lib refid="el-ri"/>
