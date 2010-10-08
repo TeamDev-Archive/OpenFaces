@@ -24,16 +24,15 @@ public class JSFC_2257Test extends OpenFacesTestCase {
     public void testTextAreaIsNotAffectedByOpenFacesValidation() throws Exception {
         testAppFunctionalPage("/requests/JSFC_2257.jsf");
 
-        ElementInspector dmf = element("dfm0");
-        dmf.assertElementExists(false);
+        assertPageContainsErrorIcon(false);
         TextAreaInspector textArea = new TextAreaInspector("fm:ta");
         textArea.type("Some text");
         ElementInspector button = element("fm:bt");
         button.clickAndWait();
         textArea.assertValue("Some text");
         textArea.type("");
-        dmf.assertElementExists(false);
+        assertPageContainsErrorIcon(false);
         button.click();
-        dmf.assertElementExists(true);
+        assertPageContainsErrorIcon(true);
     }
 }
