@@ -14,7 +14,7 @@
                var="node"
                expansionState="allCollapsed"
                useAjax="#{A4jParametersBean.useAjax}">
-    <a4j:support event="onclick" reRender="counter" action="#{A4jSupportBean.increase}"/>
+    <a4j:ajax event="click" render="counter" action="#{A4jSupportBean.increase}"/>
     <o:dynamicTreeStructure nodeChildren="#{TreeTableColumnsBean.nodeChildren}"
                             nodeHasChildren="#{TreeTableColumnsBean.nodeHasChildren}"/>
 
@@ -82,10 +82,10 @@
     <o:dynamicTreeStructure nodeChildren="#{TreeTableColumnsBean.nodeChildren}"
                             nodeHasChildren="#{TreeTableColumnsBean.nodeHasChildren}"/>
     <o:checkboxColumn>
-      <a4j:support event="onclick" reRender="counter" action="#{A4jSupportBean.increase}"/>
+      <a4j:ajax event="click" render="counter" action="#{A4jSupportBean.increase}"/>
     </o:checkboxColumn>
     <o:treeColumn id="name" sortingExpression="#{node.name}">
-      <a4j:support event="onclick" reRender="counter" action="#{A4jSupportBean.increase}"/>
+      <a4j:ajax event="click" render="counter" action="#{A4jSupportBean.increase}"/>
       <f:facet name="header">
         <h:outputText id="nameHeader" value="name"/>
       </f:facet>
@@ -149,7 +149,7 @@
     <o:dynamicTreeStructure nodeChildren="#{TreeTableColumnsBean.nodeChildren}"
                             nodeHasChildren="#{TreeTableColumnsBean.nodeHasChildren}"/>
     <o:singleNodeSelection>
-      <a4j:support event="onchange" reRender="counter" action="#{A4jSupportBean.increase}"/>
+      <a4j:ajax event="change" render="counter" action="#{A4jSupportBean.increase}"/>
     </o:singleNodeSelection>
     <o:treeColumn id="name" sortingExpression="#{node.name}">
       <f:facet name="header">

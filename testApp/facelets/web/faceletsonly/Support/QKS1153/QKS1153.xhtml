@@ -29,7 +29,7 @@
 
       <o:singleRowSelection
               rowData="#{QKS1153.selectedCandidate}">
-        <a4j:support event="onchange" reRender="candidateGrid" action="#{QKS1153.editCandidate}"/>
+        <a4j:ajax event="change" render="candidateGrid" action="#{QKS1153.editCandidate}"/>
       </o:singleRowSelection>
 
       <o:column id="candidateIdColumn"

@@ -11,7 +11,7 @@
 
   <h3>The onclick event</h3>
   <o:tabSet id="tabset2">
-    <a4j:support event="onclick" reRender="counter" action="#{A4jSupportBean.increase}"/>
+    <a4j:ajax event="click" render="counter" action="#{A4jSupportBean.increase}"/>
     <o:tabSetItem>
       <h:outputText value="Client"/>
     </o:tabSetItem>

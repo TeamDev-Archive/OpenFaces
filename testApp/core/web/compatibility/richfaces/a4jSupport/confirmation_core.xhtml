@@ -11,7 +11,7 @@
 
   <h:commandButton id="link" value="Show Confirmation" onclick="O$('form1:confirmation').runConfirmedFunction(function(){alert('Action');});return false;"/>
   <o:confirmation id="confirmation" draggable="true" standalone="true">
-    <a4j:support event="onclick" reRender="counter" action="#{A4jSupportBean.increase}"/>
+    <a4j:ajax event="click" render="counter" action="#{A4jSupportBean.increase}"/>
   </o:confirmation>
 
 </div>

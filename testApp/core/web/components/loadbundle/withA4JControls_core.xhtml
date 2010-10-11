@@ -11,7 +11,7 @@
             tabStyle="padding:5px;"
             selectedIndex="#{TabSetLocaleChangerBean.selectedLocaleIndex}">
     <o:tabSetItems value="#{TabSetLocaleChangerBean.locales}"/>
-    <a4j:support event="onchange" reRender="containerID"/>
+    <a4j:ajax event="change" render="containerID"/>
   </o:tabSet>
 
   <br/><br/>

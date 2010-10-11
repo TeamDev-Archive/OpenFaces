@@ -79,9 +79,9 @@
                                styleClass="calendar-current" showWeeksBar="false" showFooter="false"
                                value="#{DayTableBean.calendarDate}" dataModel="#{DayTableBean}"
                                mode="ajax" ondateselect="updateCalendarStyles(this);">
-                    <a4j:support event="onchanged" reRender="dayTableToolBar,dayTable">
+                    <a4j:ajax event="changed" render="dayTableToolBar,dayTable">
                         <f:param name="dateChangeEventSource" value="calendar"/>
-                    </a4j:support>
+                    </a4j:ajax>
                     <h:outputText value="{day}" styleClass="inner"/>
                 </rich:calendar>
             </div>

@@ -15,7 +15,7 @@
              rowKey="#{row.id}"
              useAjax="#{A4jParametersBean.useAjax}"
              pageSize="4">
-  <a4j:support event="onclick" reRender="counter" action="#{A4jSupportBean.increase}"/>
+  <a4j:ajax event="click" render="counter" action="#{A4jSupportBean.increase}"/>
   <f:facet name="below">
     <o:dataTablePaginator/>
   </f:facet>
@@ -73,17 +73,17 @@
              rowKey="#{row.id}"
              useAjax="#{A4jParametersBean.useAjax}"
              pageSize="4">
-  <a4j:support event="onclick" reRender="counter" action="#{A4jSupportBean.increase}"/>
+  <a4j:ajax event="click" render="counter" action="#{A4jSupportBean.increase}"/>
   <f:facet name="below">
     <o:dataTablePaginator/>
   </f:facet>
   <o:checkboxColumn>
-    <a4j:support event="onclick" reRender="counter" action="#{A4jSupportBean.increase}"/>
+    <a4j:ajax event="click" render="counter" action="#{A4jSupportBean.increase}"/>
   </o:checkboxColumn>
 
   <o:column id="col1"
             sortingExpression="#{row.stringField1}">
-    <a4j:support event="onclick" reRender="counter" action="#{A4jSupportBean.increase}"/>
+    <a4j:ajax event="click" render="counter" action="#{A4jSupportBean.increase}"/>
     <f:facet name="header">
       <h:outputText id="id2" value="stringField1"/>
     </f:facet>
@@ -142,7 +142,7 @@
   </o:singleRowSelection>
   <o:column id="col1"
             sortingExpression="#{row.stringField1}">
-    <a4j:support event="onclick" reRender="counter" action="#{A4jSupportBean.increase}"/>
+    <a4j:ajax event="click" render="counter" action="#{A4jSupportBean.increase}"/>
     <f:facet name="header">
       <h:outputText id="id2" value="stringField1"/>
     </f:facet>

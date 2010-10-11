@@ -11,11 +11,11 @@
 
   <h3>The onchange event</h3>
   <o:dateChooser value="#{RichTestBean.dateChooserValue}">
-    <a4j:support event="onchange" reRender="counter" action="#{A4jSupportBean.increase}"/>
+    <a4j:ajax event="onchange" render="counter" action="#{A4jSupportBean.increase}"/>
   </o:dateChooser>
 
   <h3>The onclick event</h3>
   <o:dateChooser>
-    <a4j:support event="onclick" reRender="counter" action="#{A4jSupportBean.increase}"/>
+    <a4j:ajax event="click" render="counter" action="#{A4jSupportBean.increase}"/>
   </o:dateChooser>
 </div>

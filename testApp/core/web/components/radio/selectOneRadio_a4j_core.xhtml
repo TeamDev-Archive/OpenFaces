@@ -27,13 +27,13 @@
               <td class="container">
                 <h:selectOneMenu id="selectOneMenu7" value="#{RadioTest.selectOneMenu7}">
                   <f:selectItems value="#{RadioTest.selectItemsGroup7}"/>
-                  <a4j:support reRender="selectOneRadio7"
-                               event="onchange" action="#{RadioTest.reloadSelectOneRadio7}"/>
+                  <a4j:ajax render="selectOneRadio7"
+                               event="change" action="#{RadioTest.reloadSelectOneRadio7}"/>
                 </h:selectOneMenu>
                 <br/>
                 <h:selectOneRadio id="selectOneRadio7" value="#{RadioTest.radioGroup7}">
                   <f:selectItems value="#{RadioTest.selectItemsGroup7}"/>
-                  <a4j:support reRender="radioGroup7Text" event="onchange"/>
+                  <a4j:ajax render="radioGroup7Text" event="change"/>
                 </h:selectOneRadio>
               </td>
               <td class="container">
@@ -43,8 +43,8 @@
               <td class="container">
                 <h:selectOneMenu id="selectOneMenu8" value="#{RadioTest.selectOneMenu8}">
                   <f:selectItems value="#{RadioTest.selectItemsGroup8}"/>
-                  <a4j:support reRender="selectOneRadio8, spinner1"
-                               event="onchange" action="#{RadioTest.reloadSelectOneRadio8}"/>
+                  <a4j:ajax render="selectOneRadio8, spinner1"
+                               event="change" action="#{RadioTest.reloadSelectOneRadio8}"/>
                 </h:selectOneMenu>
                 <br/>
                 <o:selectOneRadio id="selectOneRadio8" value="#{RadioTest.radioGroup8}"
@@ -57,7 +57,7 @@
                                   disabledSelectedImageUrl="/images/disabledSelectedRadioButton.png"
                                   disabledUnselectedImageUrl="/images/disabledUnselectedRadioButton.png">
                   <f:selectItems value="#{RadioTest.selectOneRadioItemsGroup8}"/>
-                  <a4j:support reRender="radioGroup8Text" event="onchange"/>
+                  <a4j:ajax render="radioGroup8Text" event="change"/>
                 </o:selectOneRadio>
               </td>
               <td class="container">
