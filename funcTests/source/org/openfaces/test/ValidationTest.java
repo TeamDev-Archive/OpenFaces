@@ -12,6 +12,7 @@
 package org.openfaces.test;
 
 import com.thoughtworks.selenium.Selenium;
+import org.junit.Assert;
 import org.junit.Test;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.html.InputInspector;
@@ -20,6 +21,7 @@ import org.seleniuminspector.openfaces.DropDownFieldInspector;
 import org.seleniuminspector.openfaces.InputTextInspector;
 
 import java.awt.event.KeyEvent;
+import java.util.List;
 
 /**
  * @author Tatyana Matveyeva
@@ -34,11 +36,27 @@ public class ValidationTest extends OpenFacesTestCase {
         ElementInspector submit = element("testForm:fmSubmit");
         submit.click();
         waitForPageToLoad();
-        isDefaultPresentation();
+        int firstIconIndex = getFirstIconIndex();
+        isDefaultPresentation(firstIconIndex);
         fillValidDataForClientSideAPI();
         submit.click();
         waitForPageToLoad();
         isNotDefaultPresentation();
+    }
+
+    private int getFirstIconIndex() {
+        Integer firstIconIndex = null;
+        List<ElementInspector> images = window().document().getElementsByTagName("img");
+        for (ElementInspector image : images) {
+            String imageId = image.id();
+            if (imageId == null || !imageId.startsWith("dfm"))
+                continue;
+            int idx = Integer.parseInt(imageId.substring("dfm".length()));
+            if (firstIconIndex == null || idx < firstIconIndex)
+                firstIconIndex = idx;
+        }
+        Assert.assertNotNull("No error message icons were found", firstIconIndex);
+        return firstIconIndex;
     }
 
     @Test
@@ -524,29 +542,33 @@ public class ValidationTest extends OpenFacesTestCase {
     }
 
     private void isDefaultPresentation() {
-        element("dfm0").assertVisible(true);
+        isDefaultPresentation(0);
+    }
+    private void isDefaultPresentation(int startIdx) {
         String failedBackground = "background-color: #FFFFFF";
         String failedBackground2 = "background-color: #F8D3D4";
+        int i = startIdx;
+        element("dfm" + i++).assertVisible(true);
         element("testForm:required").assertStyle(failedBackground);
-        element("dfm1").assertVisible(true);
+        element("dfm" + i++).assertVisible(true);
         element("testForm:c").assertStyle(failedBackground2);
-        element("dfm2").assertVisible(true);
+        element("dfm" + i++).assertVisible(true);
         element("testForm:dch").assertStyle(failedBackground2);
-        element("dfm3").assertVisible(true);
+        element("dfm" + i++).assertVisible(true);
         element("testForm:tls").assertStyle(failedBackground2);
-        element("dfm4").assertVisible(true);
+        element("dfm" + i++).assertVisible(true);
         element("testForm:ddf").assertStyle(failedBackground2);
-        element("dfm5").assertVisible(true);
+        element("dfm" + i++).assertVisible(true);
         element("testForm:validDR").assertStyle(failedBackground);
-        element("dfm6").assertVisible(true);
+        element("dfm" + i++).assertVisible(true);
         element("testForm:equal2").assertStyle(failedBackground);
-        element("dfm7").assertVisible(true);
+        element("dfm" + i++).assertVisible(true);
         element("testForm:url").assertStyle(failedBackground);
-        element("dfm8").assertVisible(true);
+        element("dfm" + i++).assertVisible(true);
         element("testForm:email").assertStyle(failedBackground);
-        element("dfm9").assertVisible(true);
+        element("dfm" + i++).assertVisible(true);
         element("testForm:regExp").assertStyle(failedBackground);
-        element("dfm10").assertVisible(true);
+        element("dfm" + i++).assertVisible(true);
         element("testForm:custom").assertStyle(failedBackground);
     }
 
