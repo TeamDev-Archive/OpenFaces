@@ -38,11 +38,11 @@ public class VersionStringTest extends ComponentTestCase {
                 versionComponents.length >= 2 && versionComponents.length <= 5);
         for (int i = 0, count = versionComponents.length; i < count; i++) {
             String versionComponent = versionComponents[i];
-            if (i == count - 2) {
+            if (i == count - 3) {
                 if (versionComponent.startsWith(EA_STRING))
                     versionComponent = versionComponent.substring(EA_STRING.length());
             }
-            if (i == count - 1) {
+            if (i == count - 2) {
                 String ORDINARY_BUILD_NO_PREFIX = "b";
                 if (versionComponent.startsWith(ORDINARY_BUILD_NO_PREFIX))
                     versionComponent = versionComponent.substring(ORDINARY_BUILD_NO_PREFIX.length());
