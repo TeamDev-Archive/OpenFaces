@@ -25,7 +25,8 @@ public class SessionExpirationTest extends OpenFacesTestCase {
     public void testSessionExpiration() {
         testAppFunctionalPage("/components/sessionexpiration/rawTesting.jsf");
 
-        element("document.getElementsByTagName('img').item(0);").clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
+        element("document.getElementsByTagName('img').item(0);").click();
+        sleep(4000);
 
         ConfirmationInspector confirmation = confirmation("formID:openfaces_internal_sessionexpiration_confirmation");
         confirmation.assertElementExists();

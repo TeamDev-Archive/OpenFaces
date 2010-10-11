@@ -69,7 +69,8 @@ public class PartialViewContext extends PartialViewContextWrapper {
                 if (targetId.equals(PartialResponseWriter.VIEW_STATE_MARKER)) {
                     FacesContext context = FacesContext.getCurrentInstance();
                     prepareViewExpirationExtension(context);
-                    prepareAjaxPortions(context);
+                    if (!ViewExpiredExceptionHandler.isExpiredView(context))
+                        prepareAjaxPortions(context);
                 }
                 super.startUpdate(targetId);
             }
@@ -333,9 +334,11 @@ public class PartialViewContext extends PartialViewContextWrapper {
 
         if (appendAjaxInitScripts) {
             InitScript script = PartialViewContext.getCombinedAjaxInitScripts(context);
-            libraries.addAll(Arrays.asList(script.getJsFiles()));
-            Script additionalScript = new ScriptBuilder("_temp_=").append(script.getScript()).append("();");
-            rawScriptsBuffer.append(additionalScript);
+            if (script != null) {
+                libraries.addAll(Arrays.asList(script.getJsFiles()));
+                Script additionalScript = new ScriptBuilder("_temp_=").append(script.getScript()).append("();");
+                rawScriptsBuffer.append(additionalScript);
+            }
         }
 
         AjaxExtension extension = new AjaxExtension(

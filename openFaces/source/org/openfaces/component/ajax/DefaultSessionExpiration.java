@@ -12,6 +12,7 @@
 package org.openfaces.component.ajax;
 
 import org.openfaces.component.window.Confirmation;
+import org.openfaces.util.Components;
 
 /**
  * @author Eugene Goncharov
@@ -21,7 +22,7 @@ public class DefaultSessionExpiration extends SessionExpiration {
     public static final String COMPONENT_FAMILY = "org.openfaces.DefaultSessionExpiration";
 
     public Confirmation getConfirmation() {
-        return (Confirmation) getFacet("confirmation");
+        return (Confirmation) Components.getFacet(this, "confirmation");
     }
 
     public void setConfirmation(Confirmation confirmation) {

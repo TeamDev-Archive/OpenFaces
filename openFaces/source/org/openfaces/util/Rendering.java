@@ -14,6 +14,7 @@ package org.openfaces.util;
 import org.openfaces.application.DynamicResource;
 import org.openfaces.application.OpenFacesApplication;
 import org.openfaces.application.OpenFacesResourceHandler;
+import org.openfaces.application.ViewExpiredExceptionHandler;
 import org.openfaces.component.OUIClientAction;
 import org.openfaces.component.OUIComponent;
 import org.openfaces.component.OUIInput;
@@ -32,6 +33,7 @@ import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.Application;
 import javax.faces.application.Resource;
+import javax.faces.application.ViewExpiredException;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
@@ -663,7 +665,8 @@ public class Rendering {
         }
 
         PartialViewContext partialViewContext = context.getPartialViewContext();
-        if (partialViewContext.isAjaxRequest() && /*Environment.isMozilla() && */!AjaxUtil.isAjaxPortionRequest(context)) {
+        if (partialViewContext.isAjaxRequest() && /*Environment.isMozilla() && */
+                (!AjaxUtil.isAjaxPortionRequest(context) || ViewExpiredExceptionHandler.isExpiredView(context))) {
             // JSF 2.0.2 (Mojarra) Ajax doesn't auto-execute in-place scripts under FireFox 3.6.3 transitional mode,
             // so we're simulating this here
             if (partialViewContext.isAjaxRequest()) {

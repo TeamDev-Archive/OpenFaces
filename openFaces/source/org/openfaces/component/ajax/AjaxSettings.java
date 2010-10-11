@@ -11,6 +11,7 @@
  */
 package org.openfaces.component.ajax;
 
+import org.openfaces.util.Components;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.application.ResourceDependency;
@@ -60,7 +61,7 @@ public class AjaxSettings extends UIComponentBase {
     }
 
     public ProgressMessage getProgressMessage() {
-        ProgressMessage progressMessage = (ProgressMessage) getFacet(PROGRESS_MESSAGE_FACET);
+        ProgressMessage progressMessage = (ProgressMessage) Components.getFacet(this, PROGRESS_MESSAGE_FACET);
         if (progressMessage == null) {
             progressMessage = new DefaultProgressMessage();
             setProgressMessage(progressMessage);
@@ -69,7 +70,7 @@ public class AjaxSettings extends UIComponentBase {
     }
 
     public SessionExpiration getSessionExpiration() {
-        SessionExpiration sessionExpiration = (SessionExpiration) getFacet(SESSION_EXPIRATION_FACET);
+        SessionExpiration sessionExpiration = (SessionExpiration) Components.getFacet(this, SESSION_EXPIRATION_FACET);
         if (sessionExpiration == null) {
             sessionExpiration = new DefaultSessionExpiration();
             setSessionExpiration(sessionExpiration);
