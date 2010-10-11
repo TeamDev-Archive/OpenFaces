@@ -85,6 +85,7 @@ import java.util.Set;
  * particular for state saving for such tags as <o:singleRowSelection> to work properly.</li>
  * <li>MOD-12: Adjusted row state saving for dynamic component creation in filter components</li>
  * <li>MOD-13: Made PropertyKeys enumeration protected to allow state manipulation in AbstractTable.java</li>
+ * <li>MOD-14: Adjust state saving  for situations when child components add sub-components dynamically</li>
  * </ul>
  * <p/>
  * <p/>
@@ -566,7 +567,7 @@ public class OUIData extends UIData implements NamingContainer, UniqueIdVendor, 
                     childState = object[0];
                     descendantState = object[1];
                 }
-                if (component instanceof EditableValueHolder) {
+                if (childState != null && component instanceof EditableValueHolder) { // <MOD-14/> was just component instanceof EditableValueHolder
                     ((EditableValueHolderState) childState).restoreState((EditableValueHolder) component);
                 }
                 Iterator<UIComponent> childsIterator;
