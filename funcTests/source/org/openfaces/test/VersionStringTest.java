@@ -43,9 +43,9 @@ public class VersionStringTest extends ComponentTestCase {
                     versionComponent = versionComponent.substring(EA_STRING.length());
             }
             if (i == count - 2) {
-                String ORDINARY_BUILD_NO_PREFIX = "b";
-                if (versionComponent.startsWith(ORDINARY_BUILD_NO_PREFIX))
-                    versionComponent = versionComponent.substring(ORDINARY_BUILD_NO_PREFIX.length());
+                String ORDINARY_BUILD_NO_PREFIX = "b3x";
+                if (versionComponent.equals(ORDINARY_BUILD_NO_PREFIX))
+                    continue;
             }
 
             try {
