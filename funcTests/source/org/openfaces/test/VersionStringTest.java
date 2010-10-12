@@ -47,6 +47,11 @@ public class VersionStringTest extends ComponentTestCase {
                 if (versionComponent.equals(ORDINARY_BUILD_NO_PREFIX))
                     continue;
             }
+            if (i == count - 1) {
+                String nightlyPrefix = "nightly-";
+                if (versionComponent.startsWith(nightlyPrefix))
+                    versionComponent = versionComponent.substring(nightlyPrefix.length());
+            }
 
             try {
                 Integer.parseInt(versionComponent);
