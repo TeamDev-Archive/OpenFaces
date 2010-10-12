@@ -11,29 +11,18 @@
  */
 package org.openfaces.util;
 
-import org.openfaces.ajax.AjaxViewHandler;
-import org.openfaces.renderkit.output.DynamicImageRenderer;
-
-import javax.faces.application.ViewExpiredException;
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
 import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.net.URL;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -42,243 +31,15 @@ import java.util.Map;
 /**
  * @author Kharchenko
  */
-public class ResourceFilter_ implements Filter {
+public class ResourceFilter_ {
     public static final String INTERNAL_RESOURCE_PATH = "/openFacesResources/";
     public static final String RUNTIME_INIT_LIBRARY_PATH = INTERNAL_RESOURCE_PATH + "of_ajaxInitLib/";
 
-    private static final String PROCESSING_FILTER = "OF:ResourceFilter.doFilter_executing";
-    private static final long DEFAULT_LAST_MODIFIED_TIME = System.currentTimeMillis();
     private static final String RESOURCE_CACHE = ResourceFilter_.class.getName() + ".resourcesCache";
 
     private static final String RESET_CSS_CONTEXT_PARAM = "org.openfaces.resetCSS";
     private static final String RESET_CSS_CONTEXT_PARAM_DEFAULT_VALUE = "default";
 
-    private ServletContext servletContext;
-
-    public void init(FilterConfig filterConfig) throws ServletException {
-        servletContext = filterConfig.getServletContext();
-    }
-
-    public void doFilter(ServletRequest servletRequest,
-                         ServletResponse servletResponse,
-                         FilterChain filterChain)
-            throws IOException, ServletException {
-        if (servletRequest.getAttribute(PROCESSING_FILTER) != null) {
-            filterChain.doFilter(servletRequest, servletResponse);
-            return;
-        }
-
-        servletRequest.setAttribute(PROCESSING_FILTER, "true");
-
-        HttpServletResponse response = (HttpServletResponse) servletResponse;
-
-        boolean internalResourceRequested = false;//isInternalResourceRequested((HttpServletRequest) servletRequest);
-        // todo: runtime-library-init-script is a special case of internal resource (according to url) - refactor this
-        boolean runtimeLibraryInitScriptsRequested = isRuntimeInitScriptsRequested((HttpServletRequest) servletRequest);
-        if (runtimeLibraryInitScriptsRequested) {
-            processRuntimeInitLibrary((HttpServletRequest) servletRequest, response);
-        } else if (internalResourceRequested) {
-            processInternalResource((HttpServletRequest) servletRequest, response, filterChain, servletContext);
-        } else if (isJavaScriptLibraryRequested((HttpServletRequest) servletRequest)) {
-//      int sizeBefore = response.getOutputSize();
-            filterChain.doFilter(servletRequest, response);
-//      int sizeAfter = response.getOutputSize();
-//            boolean jsWasServed = true;//sizeAfter - sizeBefore > 0;
-//            if (jsWasServed) {
-            // this (jsWasServed) check is needed for a case when the filter returns the 304 "Not Modified" Http result
-            // without writing the output to the stream (was reproduced on WebLogic Portal for its own js-files).
-            // we can't detect the http result so we check if anything was written to the outputStream
-
-//            String libName = getDecodedResourcePath((HttpServletRequest) servletRequest);
-//            ServletOutputStream outputStream = response.getOutputStream();
-//            appendJavaScriptLoadingScript(libName, outputStream);
-//            }
-        } else {
-            ResponseWrapper responseWrapper = new ResponseWrapper(response);
-            try {
-                filterChain.doFilter(servletRequest, responseWrapper);
-            } catch (ServletException e) {
-                if (e.getRootCause() instanceof Exception) {
-                    Exception exception = (Exception) e.getRootCause();
-
-                    while (exception instanceof ServletException) {
-                        exception = (Exception) ((ServletException) exception).getRootCause();
-                    }
-
-                    if (exception instanceof ViewExpiredException && AjaxUtil.isAjaxRequest(RequestFacade.getInstance(servletRequest))) {
-                        String requestURI = getDecodedResourcePath((HttpServletRequest) servletRequest);
-                        String ajaxParameters;
-                        StringBuilder stringBuffer = new StringBuilder();
-                        Enumeration parameters = servletRequest.getParameterNames();
-                        while (parameters.hasMoreElements()) {
-                            String parameterName = (String) parameters.nextElement();
-                            if (parameterName.equalsIgnoreCase(AjaxUtil.PARAM_RENDER)
-                                    || parameterName.equalsIgnoreCase(AjaxUtil.AJAX_REQUEST_MARKER))
-                                stringBuffer.append(parameterName).append("=").
-                                        append(servletRequest.getParameter(parameterName)).append("&");
-                        }
-
-                        ajaxParameters = stringBuffer.toString();
-
-                        if (ajaxParameters != null && ajaxParameters.length() > 0) {
-                            String redirectURL = requestURI + "?" + ajaxParameters + "of_sessionExpiration=true";
-
-                            String url = response.encodeRedirectURL(redirectURL);
-                            response.sendRedirect(url);
-                        }
-                    } else {
-                        throw new ServletException(e); // todo: shouldn't it be just "throw e" ? needs to be tested.
-                    }
-                }
-            }
-            // todo (optimize): seems that servletResponse.getContentType() can be used to skip trying to process header includes for text/html pages
-            String responseString = responseWrapper.getOutputAsString();
-
-            String errorOccurred = (String) servletRequest.getAttribute(AjaxViewHandler.ERROR_OCCURRED);
-            if (errorOccurred != null) {
-                String errorMessage = (String) servletRequest.getAttribute(AjaxViewHandler.ERROR_MESSAGE_HEADER);
-                response.setHeader(AjaxViewHandler.ERROR_MESSAGE_HEADER, errorMessage);
-                servletResponse.setContentType("text/xml;charset=UTF-8");
-                return;
-            }
-
-            String sessionExpiredResponse = (String) servletRequest.getAttribute(AjaxViewHandler.SESSION_EXPIRED_RESPONSE);
-            if (sessionExpiredResponse != null) {
-                responseString = sessionExpiredResponse;
-            }
-
-            if (responseString.length() == 0)
-                return;
-
-            String skipResourceFiltering = (String) servletRequest.getAttribute("org.openfaces.skipResourceFiltering");
-            if ((Rendering.isNullOrEmpty(skipResourceFiltering) || skipResourceFiltering.equalsIgnoreCase("false")) &&
-                    Resources.isHeaderIncludesRegistered(servletRequest)) {
-                servletResponse.getWriter().write(responseString);
-//                renderResponseWithHeader(servletRequest, servletResponse, responseString);
-                return;
-            }
-
-            if (sessionExpiredResponse != null) {
-                servletResponse.setContentType("text/xml;charset=UTF-8");
-                String location = (String) servletRequest.getAttribute(AjaxViewHandler.LOCATION_HEADER);
-                if (servletResponse instanceof HttpServletResponse) {
-                    response.setHeader(AjaxViewHandler.LOCATION_HEADER, location);
-                }
-                servletResponse.getOutputStream().write(responseString.getBytes());
-                return;
-            }
-            servletResponse.getOutputStream().write(responseWrapper.getOutputAsByteArray());
-        }
-
-    }
-
-    public void destroy() {
-    }
-
-    private void processInternalResource(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain, ServletContext servletContext) throws IOException, ServletException {
-        String uri = getDecodedResourcePath(request);
-
-        int packageStartIndex = uri.indexOf(INTERNAL_RESOURCE_PATH) + INTERNAL_RESOURCE_PATH.length() - 1;
-        String resourcePathWithVersion = uri.substring(packageStartIndex);
-        String resourcePath;
-        boolean isDynamicImageResource = Rendering.isDynamicResource(uri);
-        if (!isDynamicImageResource) {
-            boolean metaInfResource = resourcePathWithVersion.startsWith(Resources.META_INF_RESOURCES_ROOT);
-            int versionPrefixIdx = !metaInfResource
-                    ? resourcePathWithVersion.lastIndexOf("-")
-                    : resourcePathWithVersion.substring(Resources.META_INF_RESOURCES_ROOT.length()).lastIndexOf("-");
-
-            if (versionPrefixIdx != -1) {
-                if (metaInfResource) versionPrefixIdx += Resources.META_INF_RESOURCES_ROOT.length();
-                resourcePath = resourcePathWithVersion.substring(0, versionPrefixIdx) +
-                        resourcePathWithVersion.substring(resourcePathWithVersion.lastIndexOf("."));
-            } else {
-                // some rare internal resources are allowed to come without version,
-                // e.g. for images referred to from default.css (see clear.gif as an example)
-                resourcePath = resourcePathWithVersion;
-            }
-        } else {
-            resourcePath = resourcePathWithVersion;
-        }
-        InputStream inputStream;
-
-        if (isDynamicImageResource) {
-            inputStream = getDynamicImageAsInputStream(request, servletContext);
-            response.setContentType(getImageContentType(uri));
-            if (request.getParameter("download") != null) {
-                String sid = request.getParameter("id");
-                response.setHeader("Content-Disposition", "attachment; filename=" + sid + ".png");
-            }
-        } else {
-            if (!(resourcePath.startsWith("/org/openfaces") || resourcePath.startsWith(Resources.META_INF_RESOURCES_ROOT))) {
-                // SECURITY ISSUE: DO NOT LET TO ACCESS /openFacesResources/ HOME AS IT PROVIDES SERVER'S FILES
-                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-                return;
-            }
-
-            URL resourceURL = Rendering.class.getResource(resourcePath);
-            if (resourceURL == null) {
-                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-                return;
-            }
-
-            File resourceFile = getResourceFile(resourceURL);
-            long lastModified = resourceFile != null ? resourceFile.lastModified() : -1;
-
-            if (request.getDateHeader("If-Modified-Since") != -1) {
-                response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
-                return;
-            }
-
-            if (lastModified != -1) {
-                lastModified -= lastModified % 1000;
-                long requestModifiedSince = request.getDateHeader("If-Modified-Since");
-                if (lastModified <= requestModifiedSince) {
-                    response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
-                    return;
-                }
-            }
-            byte[] resource = getCachedResource(servletContext, resourcePath);
-            if (resource == null) {
-                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-                return;
-            }
-            inputStream = new ByteArrayInputStream(resource);
-
-            if (resourcePath.endsWith(".js")) {
-                response.setContentType("text/javascript");
-                // this can be added after GZip of all javascript files
-//        response.setContentType("application/x-javascript");
-//        response.addHeader("Content-Encoding", "gzip");
-            } else if (resourcePath.endsWith(".css"))
-                response.setContentType("text/css");
-            else if (resourcePath.endsWith(".gif"))
-                response.setContentType("image/gif");
-            else if (resourcePath.endsWith(".png"))
-                response.setContentType("image/png");
-            else if (resourcePath.endsWith(".jpg") || resourcePath.endsWith(".jpeg"))
-                response.setContentType("image/jpeg");
-            else if (resourcePath.endsWith(".xml") || resourcePath.endsWith(".xsl"))
-                response.setContentType("text/xml");
-
-            response.setDateHeader("Last-Modified", lastModified != -1 ? lastModified : DEFAULT_LAST_MODIFIED_TIME);
-            response.setHeader("Cache-Control", "must-revalidate");
-//      response.setHeader("ETag", String.valueOf(lastModified != -1 ? lastModified : DEFAULT_LAST_MODIFIED_TIME));
-        }
-
-        if (inputStream != null) {
-            OutputStream outputStream = response.getOutputStream();
-            int result;
-            while ((result = inputStream.read()) != -1) {
-                outputStream.write(result);
-            }
-//            if (uri.endsWith(".js"))
-//                appendJavaScriptLoadingScript(getDecodedResourcePath(request), outputStream);
-            outputStream.close();
-        } else {
-            filterChain.doFilter(request, response);
-        }
-    }
 
     /**
      * Returns path of the requested resource within servlet context after any container decoding, such as removing
@@ -305,23 +66,6 @@ public class ResourceFilter_ implements Filter {
         return byteStream.toByteArray();
     }
 
-    private byte[] getCachedResource(ServletContext servletContext, String resourcePath) throws IOException {
-        Map cache = getCache(servletContext);
-        byte[] resource = (cache.get(resourcePath) != null)
-                ? ((byte[]) cache.get(resourcePath))
-                : null;
-        if (resource == null) {
-            InputStream inputStream = Rendering.class.getResourceAsStream(resourcePath);
-            try {
-                resource = getStreamAsByteArray(inputStream);
-                cache.put(resourcePath, resource);
-            } finally {
-                inputStream.close();
-            }
-        }
-        return resource;
-    }
-
     private Map getCache(ServletContext servletContext) {
         Map cache = (Map) servletContext.getAttribute(RESOURCE_CACHE);
         if (cache == null) {
@@ -331,57 +75,6 @@ public class ResourceFilter_ implements Filter {
         return cache;
     }
 
-    private File getResourceFile(URL resourceUrl) {
-        String protocol = resourceUrl.getProtocol();
-        if (protocol.equals("file"))
-            return new File(resourceUrl.getPath());
-
-        if (!protocol.equals("jar"))
-            return null;
-
-        String path = resourceUrl.getPath();
-        if (!path.startsWith("file"))
-            return null;
-
-        path = path.substring("file".length() + 1);
-        path = path.substring(0, path.indexOf("!"));
-        return new File(path);
-    }
-
-    private String getImageContentType(String uri) {
-        if (uri.toLowerCase().indexOf(".gif") > -1)
-            return "image/gif";
-
-        if (uri.toLowerCase().indexOf(".png") > -1)
-            return "image/png";
-
-        if ((uri.toLowerCase().indexOf(".jpg") > -1) || uri.toLowerCase().indexOf(".jpeg") > -1)
-            return "image/jpeg";
-
-        return "image";
-    }
-
-    private InputStream getDynamicImageAsInputStream(HttpServletRequest request, ServletContext servletContext) {
-        String sid = request.getParameter("id");
-        if (sid == null) {
-            servletContext.log("Couldn't retrieve dynamic image id from request: " + getDecodedResourcePath(request));
-            return null;
-        }
-
-        HttpSession session = request.getSession();
-        DynamicImagePool pool = (DynamicImagePool) session.getAttribute(DynamicImageRenderer.IMAGE_POOL);
-        if (pool == null) {
-            servletContext.log("Couldn't retrieve image pool on processing a dynamic image request");
-            return null;
-        }
-
-        byte[] image = pool.getImage(sid);
-        if (image == null) {
-            servletContext.log("Image was not found in pool: " + sid);
-            return null;
-        }
-        return new ByteArrayInputStream(image);
-    }
 
     private void renderResponseWithHeader(
             ServletRequest servletRequest,
@@ -438,7 +131,7 @@ public class ResourceFilter_ implements Filter {
                 writer.print(resetCssUrl);
                 writer.println("\" rel=\"stylesheet\"/>");
             }
-    
+
             writer.print("<link type=\"text/css\" href=\"");
             String defaultCssUrl = httpServletRequest.getContextPath() + INTERNAL_RESOURCE_PATH + Resources.META_INF_RESOURCES_ROOT.substring(1) +
                     "default" + "-" + Resources.getVersionString() + ".css"; // render default.css
@@ -519,22 +212,4 @@ public class ResourceFilter_ implements Filter {
         }
     }
 
-    private boolean isRuntimeInitScriptsRequested(HttpServletRequest request) {
-        return getDecodedResourcePath(request).indexOf(RUNTIME_INIT_LIBRARY_PATH) != -1;
-    }
-
-    private boolean isJavaScriptLibraryRequested(HttpServletRequest request) {
-        String requestURI = getDecodedResourcePath(request);
-        return requestURI.toLowerCase().endsWith(".js");
-    }
-
-    /**
-     * Checks whether request is for internal resource or not.
-     *
-     * @param request incoming request.
-     * @return <code>true</code> - if request is for internal resource. <code>false</code> otherwise.
-     */
-    private boolean isInternalResourceRequested(HttpServletRequest request) {
-        return getDecodedResourcePath(request).indexOf(INTERNAL_RESOURCE_PATH) != -1;
-    }
 }
