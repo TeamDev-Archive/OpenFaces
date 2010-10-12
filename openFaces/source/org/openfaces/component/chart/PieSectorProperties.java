@@ -25,6 +25,9 @@ import javax.faces.context.FacesContext;
  * @author Ekaterina Shliakhovetskaya
  */
 public class PieSectorProperties extends UIOutput implements StyledComponent {
+    public static final String COMPONENT_TYPE = "org.openfaces.PieSectorProperties";
+    public static final String COMPONENT_FAMILY = "org.openfaces.PieSectorProperties";
+
     private String style;
     private Float pulled;
 
@@ -99,23 +102,20 @@ public class PieSectorProperties extends UIOutput implements StyledComponent {
 
     @Override
     public Object saveState(FacesContext context) {
+        setValueExpression("condition", getValueExpression("condition"));
         Object superState = super.saveState(context);
-        return new Object[]{superState, style, pulled
+        return new Object[]{superState,
+                style,
+                pulled
         };
-
     }
 
     @Override
     public void restoreState(FacesContext facesContext, Object object) {
         Object[] state = (Object[]) object;
         int i = 0;
-        //   PieChartView sectorsComponent = (PieChartView) this.getParent();
-        //   sectorsComponent.getSectors().add(this);
-
         super.restoreState(facesContext, state[i++]);
         style = (String) state[i++];
         pulled = (Float) state[i++];
-
-
     }
 }

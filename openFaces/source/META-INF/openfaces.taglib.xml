@@ -573,6 +573,14 @@
     </component>
   </tag>
   <tag>
+    <tag-name>pieSectorProperties</tag-name>
+
+    <component>
+      <component-type>org.openfaces.PieSectorProperties</component-type>
+      <handler-class>org.openfaces.taglib.facelets.chart.PieSectorPropertiesTagHandler</handler-class>
+    </component>
+  </tag>
+  <tag>
     <tag-name>barChartView</tag-name>
 
     <component>

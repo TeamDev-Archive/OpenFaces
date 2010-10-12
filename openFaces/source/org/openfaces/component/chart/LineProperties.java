@@ -126,6 +126,7 @@ public class LineProperties extends UIOutput implements StyledComponent {
 
     @Override
     public Object saveState(FacesContext context) {
+        setValueExpression("condition", getValueExpression("condition"));
         Object superState = super.saveState(context);
         return new Object[]{superState, style, shapesVisible, showInLegend
         };
