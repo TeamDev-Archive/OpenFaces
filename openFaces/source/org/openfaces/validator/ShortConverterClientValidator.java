@@ -26,7 +26,7 @@ public class ShortConverterClientValidator extends AbstractClientValidator {
     private static final String CONVERSION_MESSAGE_ID = "javax.faces.convert.ShortConverter.CONVERSION";
 
     public ShortConverterClientValidator() {
-        addJavascriptLibrary(new ValidationJavascriptLibrary("shortConverterValidator.js", null));
+        addJavascriptLibrary(new ValidationJavascriptLibrary("shortConverterValidator.js"));
     }
 
     public String getJsValidatorName() {

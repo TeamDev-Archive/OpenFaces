@@ -30,7 +30,7 @@ public abstract class AbstractRegexValidator extends AbstractCustomValidator {
     public abstract String getType();
 
     protected AbstractRegexValidator() {
-        addJavascriptLibrary(new ValidationJavascriptLibrary("regexValidator.js", null));
+        addJavascriptLibrary(new ValidationJavascriptLibrary("regexValidator.js"));
     }
 
     public boolean customServerValidate(FacesContext context, UIComponent component, Object value, Object[] args) {

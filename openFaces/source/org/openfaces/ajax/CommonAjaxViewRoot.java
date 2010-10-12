@@ -890,38 +890,6 @@ public abstract class CommonAjaxViewRoot {
         }
     }
 
-    private void ajaxPrepareInitializationScripts(
-            FacesContext context, AjaxResponse ajaxResponse, List<String> foreignHeadScripts, StringBuilder initializationScripts) {
-        StringBuilder tempBuffer = new StringBuilder();
-        if (foreignHeadScripts != null) {
-            for (String script : foreignHeadScripts) {
-                StringInspector scriptInspector = new StringInspector(script);
-                boolean substituteDocumentWrite = scriptInspector.indexOfIgnoreCase("document.write") > -1;
-                if (substituteDocumentWrite) {
-                    tempBuffer.append("O$.substituteDocumentWrite();\n"); // tricky workaround. see ajaxUtil.js for details
-                }
-                tempBuffer.append(script).append("\n");
-                if (substituteDocumentWrite) {
-                    tempBuffer.append("O$.restoreDocumentWrite();\n"); // tricky workaround. see ajaxUtil.js for details
-                }
-            }
-        }
-        if (tempBuffer.length() > 0) {
-            initializationScripts.insert(0, tempBuffer.toString());
-        }
-
-        if (initializationScripts.length() > 0) {
-            String initScriptsStr = initializationScripts.toString();
-            initScriptsStr = initScriptsStr.replaceAll("<!--", "").replaceAll("//-->", "");
-            // create special node with runtime js library that contains all initialization scripts
-            String uniqueRTLibraryName = ResourceFilter_.RUNTIME_INIT_LIBRARY_PATH + AjaxUtil.generateUniqueInitLibraryName();
-            String initLibraryUrl = Resources.getApplicationURL(context, uniqueRTLibraryName);
-            ajaxResponse.setInitLibraryName(initLibraryUrl);
-
-            context.getExternalContext().getSessionMap().put(uniqueRTLibraryName, initScriptsStr);
-        }
-    }
-
     private static AjaxResponse ajaxRenderResponse(
             RequestFacade request,
             FacesContext context,

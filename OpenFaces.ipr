@@ -222,7 +222,7 @@
           <element id="directory" name="lib">
             <element id="library" level="project" name="OpenFaces Dependencies" />
             <element id="library" level="project" name="RichFaces" />
-            <element id="library" level="project" name="tomahawk12-1.1.8" />
+            <element id="library" level="project" name="Tomahawk" />
             <element id="archive" name="openfaces.jar">
               <element id="module-output" name="OpenFaces" />
             </element>
@@ -1400,7 +1400,7 @@
         <root url="jar://$PROJECT_DIR$/libsrc/trinidad-stub-scr.zip!/" />
       </SOURCES>
     </library>
-    <library name="tomahawk12-1.1.8">
+    <library name="Tomahawk">
       <CLASSES>
         <root url="jar://$PROJECT_DIR$/lib/tomahawk/tomahawk20-1.1.10.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/apache/commons-fileupload-1.2.1.jar!/" />

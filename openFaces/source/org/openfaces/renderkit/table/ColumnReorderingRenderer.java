@@ -49,11 +49,11 @@ public class ColumnReorderingRenderer extends RendererBase {
                         cr.getDraggedCellTransparency(),
                         autoScrollAreaStyle,
                         cr.getAutoScrollAreaTransparency(),
-                        Resources.getURL(context, cr.getAutoScrollLeftImageUrl(), null, "table/autoScrollLeft.gif"),
-                        Resources.getURL(context, cr.getAutoScrollRightImageUrl(), null, "table/autoScrollRight.gif"),
+                        Resources.getURL(context, cr.getAutoScrollLeftImageUrl(), "table/autoScrollLeft.gif"),
+                        Resources.getURL(context, cr.getAutoScrollRightImageUrl(), "table/autoScrollRight.gif"),
                         dropTargetStyle,
-                        Resources.getURL(context, cr.getDropTargetTopImageUrl(), null, "table/dropTargetTop.gif"),
-                        Resources.getURL(context, cr.getDropTargetBottomImageUrl(), null, "table/dropTargetBottom.gif")
+                        Resources.getURL(context, cr.getDropTargetTopImageUrl(), "table/dropTargetTop.gif"),
+                        Resources.getURL(context, cr.getDropTargetBottomImageUrl(), "table/dropTargetBottom.gif")
                 ),
                 AbstractTableRenderer.getTableJsURL(context)
         );

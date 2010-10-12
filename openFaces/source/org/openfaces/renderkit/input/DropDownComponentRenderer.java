@@ -169,10 +169,10 @@ public abstract class DropDownComponentRenderer extends RendererBase {
         String imageUrl;
         if (fieldComponent.isDisabled()) {
             String disabledButtonImageUrl = (String) fieldComponent.getAttributes().get("disabledButtonImageUrl");
-            imageUrl = Resources.getURL(context, disabledButtonImageUrl, null, "input/disabledDropButton.gif");
+            imageUrl = Resources.getURL(context, disabledButtonImageUrl, "input/disabledDropButton.gif");
         } else {
             String buttonImageUrl = (String) fieldComponent.getAttributes().get("buttonImageUrl");
-            imageUrl = Resources.getURL(context, buttonImageUrl, null, "input/dropButton.gif");
+            imageUrl = Resources.getURL(context, buttonImageUrl, "input/dropButton.gif");
         }
         writer.startElement("img", fieldComponent);
         writer.writeAttribute("src", imageUrl, null);

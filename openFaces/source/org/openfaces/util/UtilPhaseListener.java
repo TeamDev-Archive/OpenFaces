@@ -169,15 +169,8 @@ public class UtilPhaseListener extends PhaseListenerBase {
         }
 
         final ScriptBuilder script = new ScriptBuilder("O$.setSubmissionAjaxInactivityTimeout(" + inactivityTimeout + ");");
-        boolean isAjax4jsfRequest = AjaxUtil.isAjax4jsfRequest();
-        boolean isPortletRequest = AjaxUtil.isPortletRequest(context);
 
-        if (isAjax4jsfRequest || isPortletRequest) {
-            Rendering.appendUniqueRTLibraryScripts(context, script);
-        } else {
-            Rendering.appendOnLoadScript(context, script);
-        }
-
+        Rendering.appendOnLoadScript(context, script);
     }
 
     private void decodeFocusTracking(FacesContext facesContext) {

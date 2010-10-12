@@ -34,9 +34,9 @@ public class NumberConverterClientValidator extends AbstractClientValidator impl
     private NumberConverter numberConverter;
 
     public NumberConverterClientValidator() {
-        addJavascriptLibrary(new ValidationJavascriptLibrary("numberConverterValidator.js", null));
-        addJavascriptLibrary(new ValidationJavascriptLibrary("requestHelper.js", null));
-        addJavascriptLibrary(new ValidationJavascriptLibrary("/" + Resources.JSON_JS_PATH, null));
+        addJavascriptLibrary(new ValidationJavascriptLibrary("numberConverterValidator.js"));
+        addJavascriptLibrary(new ValidationJavascriptLibrary("requestHelper.js"));
+        addJavascriptLibrary(new ValidationJavascriptLibrary("/" + Resources.JSON_JS_PATH));
     }
 
     public String getJsValidatorName() {

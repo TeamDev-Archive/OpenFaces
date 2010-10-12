@@ -38,7 +38,7 @@
     <orderEntry type="library" exported="" scope="TEST" name="jbpm-jpdl" level="project" />
     <orderEntry type="library" name="JEE" level="project" />
     <orderEntry type="module" module-name="OpenFaces" exported="" />
-    <orderEntry type="library" exported="" name="tomahawk12-1.1.8" level="project" />
+    <orderEntry type="library" exported="" name="Tomahawk" level="project" />
     <orderEntry type="library" exported="" name="RichFaces" level="project" />
     <orderEntry type="library" exported="" name="PrimeFaces" level="project" />
     <orderEntry type="library" name="servlet-api" level="project" />

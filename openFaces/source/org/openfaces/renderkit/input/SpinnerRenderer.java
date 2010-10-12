@@ -208,10 +208,10 @@ public class SpinnerRenderer extends DropDownComponentRenderer {
         String resultImageUrl;
         if (spinner.isDisabled()) {
             String disabledButtonImageUrl = (String) spinner.getAttributes().get(disabledImageUrlAttr);
-            resultImageUrl = Resources.getURL(context, disabledButtonImageUrl, null, defaultDisabledImagePath);
+            resultImageUrl = Resources.getURL(context, disabledButtonImageUrl, defaultDisabledImagePath);
         } else {
             String buttonImageUrl = (String) spinner.getAttributes().get(imageUrlAttr);
-            resultImageUrl = Resources.getURL(context, buttonImageUrl, null, defaultImagePath);
+            resultImageUrl = Resources.getURL(context, buttonImageUrl, defaultImagePath);
         }
         writer.startElement("img", spinner);
         writer.writeAttribute("src", resultImageUrl, null);

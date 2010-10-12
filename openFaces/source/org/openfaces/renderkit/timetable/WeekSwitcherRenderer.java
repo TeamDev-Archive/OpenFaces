@@ -89,7 +89,7 @@ public class WeekSwitcherRenderer extends RendererBase {
             writer.writeAttribute("class", Styles.getCSSClass(context, weekSwitcher,
                     weekSwitcher.getPreviousButtonStyle(), "o_weekSwitcher_previous_button",
                     weekSwitcher.getPreviousButtonClass()), null);
-            String previousButtonImageUrl = Resources.getURL(context, weekSwitcher.getPreviousButtonImageUrl(), null,
+            String previousButtonImageUrl = Resources.getURL(context, weekSwitcher.getPreviousButtonImageUrl(),
                     "timetable/previousButton.gif");
             writer.startElement("img", weekSwitcher);
             writer.writeAttribute("src", previousButtonImageUrl, null);
@@ -117,7 +117,7 @@ public class WeekSwitcherRenderer extends RendererBase {
             writer.writeAttribute("id", clientId + "::next_button", null);
             writer.writeAttribute("class", Styles.getCSSClass(context,
                     weekSwitcher, weekSwitcher.getNextButtonStyle(), "o_weekSwitcher_next_button", weekSwitcher.getNextButtonClass()), null);
-            String nextButtonImageUrl = Resources.getURL(context, weekSwitcher.getNextButtonImageUrl(), null,
+            String nextButtonImageUrl = Resources.getURL(context, weekSwitcher.getNextButtonImageUrl(),
                     "timetable/nextButton.gif");
             writer.startElement("img", weekSwitcher);
             writer.writeAttribute("src", nextButtonImageUrl, null);

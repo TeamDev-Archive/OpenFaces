@@ -79,17 +79,17 @@ public class SelectBooleanCheckboxImageManager {
 
     public static String getSelectedImageUrl(FacesContext context, SelectBooleanCheckbox checkbox) {
         String imageUrl = checkbox.getSelectedImageUrl();
-        return Resources.getURL(context, imageUrl, null, DEFAULT_SELECTED_IMAGE);
+        return Resources.getURL(context, imageUrl, DEFAULT_SELECTED_IMAGE);
     }
 
     public static String getUnselectedImageUrl(FacesContext context, SelectBooleanCheckbox checkbox) {
         String imageUrl = checkbox.getUnselectedImageUrl();
-        return Resources.getURL(context, imageUrl, null, DEFAULT_UNSELECTED_IMAGE);
+        return Resources.getURL(context, imageUrl, DEFAULT_UNSELECTED_IMAGE);
     }
 
     public static String getUndefinedImageUrl(FacesContext context, SelectBooleanCheckbox checkbox) {
         String imageUrl = checkbox.getUndefinedImageUrl();
-        return Resources.getURL(context, imageUrl, null, DEFAULT_UNDEFINED_IMAGE);
+        return Resources.getURL(context, imageUrl, DEFAULT_UNDEFINED_IMAGE);
     }
 
     public static String getRolloverSelectedImageUrl(FacesContext context, SelectBooleanCheckbox checkbox) {
@@ -97,7 +97,7 @@ public class SelectBooleanCheckboxImageManager {
                 checkbox.getRolloverSelectedImageUrl(),
                 checkbox.getSelectedImageUrl());
 
-        return Resources.getURL(context, imageUrl, null, DEFAULT_ROLLOVER_SELECTED_IMAGE);
+        return Resources.getURL(context, imageUrl, DEFAULT_ROLLOVER_SELECTED_IMAGE);
     }
 
     public static String getRolloverUnselectedImageUrl(FacesContext context, SelectBooleanCheckbox checkbox) {
@@ -105,7 +105,7 @@ public class SelectBooleanCheckboxImageManager {
                 checkbox.getRolloverUnselectedImageUrl(),
                 checkbox.getUnselectedImageUrl());
 
-        return Resources.getURL(context, imageUrl, null, DEFAULT_ROLLOVER_UNSELECTED_IMAGE);
+        return Resources.getURL(context, imageUrl, DEFAULT_ROLLOVER_UNSELECTED_IMAGE);
     }
 
     public static String getRolloverUndefinedImageUrl(FacesContext context, SelectBooleanCheckbox checkbox) {
@@ -113,7 +113,7 @@ public class SelectBooleanCheckboxImageManager {
                 checkbox.getRolloverUndefinedImageUrl(),
                 checkbox.getUndefinedImageUrl());
 
-        return Resources.getURL(context, imageUrl, null, DEFAULT_ROLLOVER_UNDEFINED_IMAGE);
+        return Resources.getURL(context, imageUrl, DEFAULT_ROLLOVER_UNDEFINED_IMAGE);
     }
 
     public static String getPressedSelectedImageUrl(FacesContext context, SelectBooleanCheckbox checkbox) {
@@ -122,7 +122,7 @@ public class SelectBooleanCheckboxImageManager {
                 checkbox.getRolloverSelectedImageUrl(),
                 checkbox.getSelectedImageUrl());
 
-        return Resources.getURL(context, imageUrl, null, DEFAULT_PRESSED_SELECTED_IMAGE);
+        return Resources.getURL(context, imageUrl, DEFAULT_PRESSED_SELECTED_IMAGE);
     }
 
     public static String getPressedUnselectedImageUrl(FacesContext context, SelectBooleanCheckbox checkbox) {
@@ -131,7 +131,7 @@ public class SelectBooleanCheckboxImageManager {
                 checkbox.getRolloverUnselectedImageUrl(),
                 checkbox.getUnselectedImageUrl());
 
-        return Resources.getURL(context, imageUrl, null, DEFAULT_PRESSED_UNSELECTED_IMAGE);
+        return Resources.getURL(context, imageUrl, DEFAULT_PRESSED_UNSELECTED_IMAGE);
     }
 
     public static String getPressedUndefinedImageUrl(FacesContext context, SelectBooleanCheckbox checkbox) {
@@ -140,22 +140,22 @@ public class SelectBooleanCheckboxImageManager {
                 checkbox.getRolloverUndefinedImageUrl(),
                 checkbox.getUndefinedImageUrl());
 
-        return Resources.getURL(context, imageUrl, null, DEFAULT_PRESSED_UNDEFINED_IMAGE);
+        return Resources.getURL(context, imageUrl, DEFAULT_PRESSED_UNDEFINED_IMAGE);
     }
 
     public static String getDisabledSelectedImageUrl(FacesContext context, SelectBooleanCheckbox checkbox) {
         String imageUrl = checkbox.getDisabledSelectedImageUrl();
-        return Resources.getURL(context, imageUrl, null, DEFAULT_DISABLED_SELECTED_IMAGE);
+        return Resources.getURL(context, imageUrl, DEFAULT_DISABLED_SELECTED_IMAGE);
     }
 
     public static String getDisabledUnselectedImageUrl(FacesContext context, SelectBooleanCheckbox checkbox) {
         String imageUrl = checkbox.getDisabledUnselectedImageUrl();
-        return Resources.getURL(context, imageUrl, null, DEFAULT_DISABLED_UNSELECTED_IMAGE);
+        return Resources.getURL(context, imageUrl, DEFAULT_DISABLED_UNSELECTED_IMAGE);
     }
 
     public static String getDisabledUndefinedImageUrl(FacesContext context, SelectBooleanCheckbox checkbox) {
         String imageUrl = checkbox.getDisabledUndefinedImageUrl();
-        return Resources.getURL(context, imageUrl, null, DEFAULT_DISABLED_UNDEFINED_IMAGE);
+        return Resources.getURL(context, imageUrl, DEFAULT_DISABLED_UNDEFINED_IMAGE);
     }
 
 

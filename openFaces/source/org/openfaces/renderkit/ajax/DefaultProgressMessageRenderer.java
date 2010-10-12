@@ -40,14 +40,13 @@ public class DefaultProgressMessageRenderer extends AbstractSettingsRenderer {
         requestMap.put(PROGRESS_MESSAGE, dpm);
         AjaxUtil.renderAjaxSupport(context);
 
-        boolean isAjax4jsfRequest = AjaxUtil.isAjax4jsfRequest();
-        boolean isPortletRequest = AjaxUtil.isPortletRequest(context);
-
         JSONObject backgroundLayerParams = null;
         if (dpm.getFillBackground()) {
             backgroundLayerParams = new JSONObject();
             Rendering.addJsonParam(backgroundLayerParams, "className", new StyleParam(dpm, "background", "o_ajax_blockingLayer"));
+            //noinspection RedundantCast
             Rendering.addJsonParam(backgroundLayerParams, "transparency", /*don't remove (double) cast -- the other function will be invoked*/(double) dpm.getBackgroundTransparency());
+            //noinspection RedundantCast
             Rendering.addJsonParam(backgroundLayerParams, "transparencyTransitionPeriod", /*don't remove (int) cast -- the other function will be invoked*/(int) dpm.getBackgroundTransparencyTransitionPeriod());
         }
         Styles.renderStyleClasses(context, dpm, true, false);
@@ -66,13 +65,9 @@ public class DefaultProgressMessageRenderer extends AbstractSettingsRenderer {
             setMessageScript.functionCall("O$.setAjaxCleanupRequired", true).semicolon();
         }
 
-        if (isAjax4jsfRequest || isPortletRequest) {
-            Rendering.appendUniqueRTLibraryScripts(context, setMessageScript);
-        } else {
-            if (isAjaxCleanupRequired())
-                setMessageScript.semicolon().append("O$.setAjaxCleanupRequired(true);");
-            Rendering.renderInitScript(context, setMessageScript);
-        }
+        if (isAjaxCleanupRequired())
+            setMessageScript.semicolon().append("O$.setAjaxCleanupRequired(true);");
+        Rendering.renderInitScript(context, setMessageScript);
 
     }
 

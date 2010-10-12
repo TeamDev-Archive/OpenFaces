@@ -201,21 +201,21 @@ public class MenuItemRenderer extends RendererBase {
             if (disabledSubmenuImageUrl != null) {
                 addMenuItemParameter(menuItem, "disabledSubmenuImageUrl",
                         Resources.getURL(context, disabledSubmenuImageUrl,
-                                MenuItemRenderer.class, ""));
+                                ""));
             }
 
             String selectedDisabledSubmenuImageUrl = menuItem.getSelectedDisabledSubmenuImageUrl();
             if (selectedDisabledSubmenuImageUrl != null) {
                 addMenuItemParameter(menuItem, "selectedDisabledSubmenuImageUrl",
                         Resources.getURL(context, selectedDisabledSubmenuImageUrl,
-                                MenuItemRenderer.class, ""));
+                                ""));
             }
 
 
             if (submenuImageUrl != null) {
                 addMenuItemParameter(menuItem, "submenuImageUrl",
                         Resources.getURL(context, submenuImageUrl,
-                                MenuItemRenderer.class, ""));
+                                ""));
             }
 
 
@@ -223,7 +223,7 @@ public class MenuItemRenderer extends RendererBase {
             if (selectedSubmenuImageUrl != null) {
                 addMenuItemParameter(menuItem, "selectedSubmenuImageUrl",
                         Resources.getURL(context, selectedSubmenuImageUrl,
-                                MenuItemRenderer.class, ""));
+                                ""));
             }
         }
         writer.endElement("span");

@@ -78,31 +78,27 @@ public class Resources {
      *
      * @param userSpecifiedUrl             optional resource url as specified by the user. This can be a relative URL, or an absolute URL
      * @param defaultResourceFileName      file name for a resource which should be provided if userSpecifiedUrl is null or empty string
-     * @param defaultResourceBaseClassName the class relatively to which defaultResourceFileName is specified
      * @return
      */
-    public static String getURL(FacesContext context, String userSpecifiedUrl,
-                                Class defaultResourceBaseClassName, String defaultResourceFileName) {
-        return getURL(context, userSpecifiedUrl, defaultResourceBaseClassName, defaultResourceFileName, true);
+    public static String getURL(FacesContext context, String userSpecifiedUrl, String defaultResourceFileName) {
+        return getURL(context, userSpecifiedUrl, defaultResourceFileName, true);
     }
 
     /**
      * @param userSpecifiedUrl             optional resource url as specified by the user. This can be a relative URL, or an absolute URL
      * @param defaultResourceFileName      file name for a resource which should be provided if userSpecifiedUrl is null (or empty string).
-     *                                     Empty string is also considered as signal for returning the default resource here because null
-     *                                     is auto-converted to an empty string when passed through a string binding
-     * @param defaultResourceBaseClassName the class relatively to which defaultResourceFileName is specified
+ *                                     Empty string is also considered as signal for returning the default resource here because null
+ *                                     is auto-converted to an empty string when passed through a string binding
      * @param prependContextPath           use true here if you render the attribute yourself, and false if you use pass this URL to HtmlGraphicImage or similar component
      */
     public static String getURL(
             FacesContext context,
             String userSpecifiedUrl,
-            Class defaultResourceBaseClassName,
             String defaultResourceFileName,
             boolean prependContextPath) {
         boolean returnDefaultResource = userSpecifiedUrl == null || userSpecifiedUrl.length() == 0;
         String result = returnDefaultResource
-                ? getInternalURL(context, defaultResourceBaseClassName, defaultResourceFileName, prependContextPath)
+                ? getInternalURL(context, defaultResourceFileName)
                 : (prependContextPath ? getApplicationURL(context, userSpecifiedUrl) : userSpecifiedUrl);
         return result;
     }
@@ -126,18 +122,6 @@ public class Resources {
         return encodedResourceUrl;
     }
 
-    /**
-     * A method which is a facade for JSF 1.2 and JSF 2.0 implementations of resource name generation. It has
-     * different implementations in the appropriate OpenFaces branches.
-     */
-    public static String getInternalURL(FacesContext context, String resourceName) {
-        return getInternalURL(context, null, resourceName, true);
-    }
-
-    public static String getInternalURL(FacesContext context, Class componentClass, String resourceName) {
-        return getInternalURL(context, componentClass, resourceName, true);
-    }
-
     private static String getPackagePath(Class componentClass) {
         String packageName = componentClass == null ? "" : getPackageName(componentClass);
         String packagePath = packageName.replace('.', '/');
@@ -149,45 +133,19 @@ public class Resources {
 
     /**
      * @param context            Current FacesContext
-     * @param componentClass     Class, relative to which the resourcePath is specified
      * @param resourcePath       Path to the resource file
-     * @param prependContextPath true means that the resulting url should be prefixed with context root. This is the case
-     *                           when the returned URL is rendered without any modifications. Passing false to this
-     *                           parameter is required in cases when the returned URL is passed to some component which
-     *                           expects application URL, so the component will prepend the URL with context root itself.
      * @return The requested URL
      */
-    public static String getInternalURL(
-            FacesContext context,
-            Class componentClass,
-            String resourcePath,
-            boolean prependContextPath) {
+    public static String getInternalURL(FacesContext context, String resourcePath) {
         if (context == null) throw new NullPointerException("context");
         if (resourcePath == null) throw new NullPointerException("resourcePath");
 
-        if (componentClass == null) {
-            ResourceHandler resourceHandler = context.getApplication().getResourceHandler();
-            Resource resource = resourceHandler.createResource(resourcePath, LIBRARY_NAME);
-            if (resource == null)
-                throw new FacesException("Couldn't find resource: " + resourcePath);
-            resourcePath = resource.getRequestPath();
-            return resourcePath;
-        }
-        String packagePath = getPackagePath(componentClass);
-        if (resourcePath.startsWith("/")) {
-            packagePath = "";
-            resourcePath = resourcePath.substring(1);
-        }
-
-        String versionString = getVersionString();
-        int extensionIndex = resourcePath.lastIndexOf(".");
-        String urlRelativeToContextRoot = ResourceFilter_.INTERNAL_RESOURCE_PATH + packagePath +
-                resourcePath.substring(0, extensionIndex) + "-" + versionString + resourcePath.substring(extensionIndex);
-
-        if (!prependContextPath)
-            return urlRelativeToContextRoot;
-
-        return getApplicationURL(context, urlRelativeToContextRoot);
+        ResourceHandler resourceHandler = context.getApplication().getResourceHandler();
+        Resource resource = resourceHandler.createResource(resourcePath, LIBRARY_NAME);
+        if (resource == null)
+            throw new FacesException("Couldn't find resource: " + resourcePath);
+        resourcePath = resource.getRequestPath();
+        return resourcePath;
     }
 
     private static String versionString;
@@ -330,18 +288,6 @@ public class Resources {
         } else {
             return className.substring(0, lastIndexOfDot);
         }
-    }
-
-    /**
-     * Register javascript library to future adding to response
-     *
-     * @param context        {@link FacesContext} for the current request
-     * @param baseClass      Class, relative to which the resourcePath is specified
-     * @param relativeJsPath Path to the javascript file
-     */
-    public static void registerJavascriptLibrary(FacesContext context, Class baseClass, String relativeJsPath) {
-        String jsFileUrl = getInternalURL(context, baseClass, relativeJsPath);
-        registerJavascriptLibrary(context, jsFileUrl);
     }
 
     /**

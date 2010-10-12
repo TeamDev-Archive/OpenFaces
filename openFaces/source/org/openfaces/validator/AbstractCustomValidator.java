@@ -41,7 +41,7 @@ public abstract class AbstractCustomValidator extends AbstractClientValidator im
     private List<String> params;
 
     protected AbstractCustomValidator() {
-        addJavascriptLibrary(new ValidationJavascriptLibrary("customValidator.js", null));
+        addJavascriptLibrary(new ValidationJavascriptLibrary("customValidator.js"));
     }
 
     public void setParams(List<String> params) {

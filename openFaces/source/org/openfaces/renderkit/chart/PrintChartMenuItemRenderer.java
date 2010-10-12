@@ -45,7 +45,7 @@ public class PrintChartMenuItemRenderer extends MenuItemRenderer implements Comp
                 getChart("<o:printChartMenuItem>", menuItem)).getScript());
         if (menuItem.getIconUrl() == null)
             menuItem.setIconUrl(Resources.getInternalURL(
-                    context, null, "chart/print.png", false));
+                    context, "chart/print.png"));
 
         super.encodeBegin(context, component);
         Resources.renderJSLinkIfNeeded(context,

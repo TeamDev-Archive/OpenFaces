@@ -37,7 +37,7 @@ public class EqualValidator extends AbstractCustomValidator {
     }
 
     public EqualValidator() {
-        addJavascriptLibrary(new ValidationJavascriptLibrary("equalValidator.js", null));
+        addJavascriptLibrary(new ValidationJavascriptLibrary("equalValidator.js"));
     }
 
     public boolean customServerValidate(FacesContext context, UIComponent component, Object value, Object[] args) {

@@ -416,7 +416,7 @@ public class SliderRenderer extends RendererBase {
         }
         String handleImageUrl = (String) slider.getAttributes().get(isDisabled ?
                 "dragHandleDisabledImageUrl" : "dragHandleImageUrl");
-        handleImageUrl = Resources.getURL(context, handleImageUrl, null, defaultImageUrl);
+        handleImageUrl = Resources.getURL(context, handleImageUrl, defaultImageUrl);
         writer.startElement("img", slider);
         writer.writeAttribute("id", handleId + DEFAULT_ELEMENT_IMAGE_ID, null);
         writer.writeAttribute("style", "display:block;position:absolute;z-index:102;border:0 none;filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + handleImageUrl + "' width:expression(1); height:expression(1); ", null);
@@ -458,8 +458,8 @@ public class SliderRenderer extends RendererBase {
         String defaultMinorImageUrl = isHorizontal ? DEFAULT_MINOR_TICK_URL : DEFAULT_VERTICAL_MINOR_TICK_URL;
         String majorTicksImageUrl = (String) slider.getAttributes().get("majorTickImageUrl");
         String minorTicksImageUrl = (String) slider.getAttributes().get("minorTickImageUrl");
-        majorTicksImageUrl = Resources.getURL(context, majorTicksImageUrl, null, defaultMajorImageUrl);
-        minorTicksImageUrl = Resources.getURL(context, minorTicksImageUrl, null, defaultMinorImageUrl);
+        majorTicksImageUrl = Resources.getURL(context, majorTicksImageUrl, defaultMajorImageUrl);
+        minorTicksImageUrl = Resources.getURL(context, minorTicksImageUrl, defaultMinorImageUrl);
 
         String floatStyle = isHorizontal ? "left;" : "none;";
 
@@ -558,13 +558,13 @@ public class SliderRenderer extends RendererBase {
                 (isDisabled ? DEFAULT_VERTICAL_BAR_END_DISABLED_URL : DEFAULT_VERTICAL_BAR_END_URL);
 
         String barImageUrl = (String) slider.getAttributes().get(isDisabled ? "barDisabledImageUrl" : "barImageUrl");
-        barImageUrl = Resources.getURL(context, barImageUrl, null, defaultImageUrl);
+        barImageUrl = Resources.getURL(context, barImageUrl, defaultImageUrl);
 
         String barStartImageUrl = (String) slider.getAttributes().get(isDisabled ? "barStartDisabledImageUrl" : "barStartImageUrl");
-        barStartImageUrl = Resources.getURL(context, barStartImageUrl, null, defaultStartImageUrl);
+        barStartImageUrl = Resources.getURL(context, barStartImageUrl, defaultStartImageUrl);
 
         String barEndImageUrl = (String) slider.getAttributes().get(isDisabled ? "barEndDisabledImageUrl" : "barEndImageUrl");
-        barEndImageUrl = Resources.getURL(context, barEndImageUrl, null, defaultEndImageUrl);
+        barEndImageUrl = Resources.getURL(context, barEndImageUrl, defaultEndImageUrl);
 
         writer.startElement("td", slider);
         writer.startElement("table", slider);
@@ -662,7 +662,7 @@ public class SliderRenderer extends RendererBase {
             buttonImageUrl = (String) slider.getAttributes().get(isDisabled ? "rightBottomButtonDisabledImageUrl" :
                     "rightBottomButtonImageUrl");
         }
-        buttonImageUrl = Resources.getURL(context, buttonImageUrl, null, defaultImageUrl);
+        buttonImageUrl = Resources.getURL(context, buttonImageUrl, defaultImageUrl);
         writer.startElement("img", slider);
         writer.writeAttribute("id", buttonId + DEFAULT_ELEMENT_IMAGE_ID, null);
         writer.writeAttribute("style", "padding:0;margin:0;border:0 none;display:block;filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + buttonImageUrl + "' width:expression(1); height:expression(1); ", null);
@@ -680,71 +680,71 @@ public class SliderRenderer extends RendererBase {
         boolean isHorizontal = slider.getOrientation().equals(Orientation.HORIZONTAL);
 
         String handleImageUrl = (String) slider.getAttributes().get("dragHandleImageUrl");
-        handleImageUrl = Resources.getURL(context, handleImageUrl, null, isHorizontal ? DEFAULT_HANDLE_URL : DEFAULT_VERTICAL_HANDLE_URL);
+        handleImageUrl = Resources.getURL(context, handleImageUrl, isHorizontal ? DEFAULT_HANDLE_URL : DEFAULT_VERTICAL_HANDLE_URL);
         imagesUrls.add(handleImageUrl);
 
         String handleImageUrl_disabled = (String) slider.getAttributes().get("dragHandleDisabledImageUrl");
-        handleImageUrl_disabled = Resources.getURL(context, handleImageUrl_disabled, null, isHorizontal ? DEFAULT_HANDLE_DISABLED_URL : DEFAULT_VERTICAL_HANDLE_DISABLED_URL);
+        handleImageUrl_disabled = Resources.getURL(context, handleImageUrl_disabled, isHorizontal ? DEFAULT_HANDLE_DISABLED_URL : DEFAULT_VERTICAL_HANDLE_DISABLED_URL);
         imagesUrls.add(handleImageUrl_disabled);
 
         String handleImageUrl_rollover = (String) slider.getAttributes().get("dragHandleRolloverImageUrl");
-        handleImageUrl_rollover = Resources.getURL(context, handleImageUrl_rollover, null, isHorizontal ? DEFAULT_HANDLE_ROLLOVER_URL : DEFAULT_VERTICAL_HANDLE_ROLLOVER_URL);
+        handleImageUrl_rollover = Resources.getURL(context, handleImageUrl_rollover, isHorizontal ? DEFAULT_HANDLE_ROLLOVER_URL : DEFAULT_VERTICAL_HANDLE_ROLLOVER_URL);
         imagesUrls.add(handleImageUrl_rollover);
 
         String leftTopButtonImageUrl = (String) slider.getAttributes().get("leftTopButtonImageUrl");
-        leftTopButtonImageUrl = Resources.getURL(context, leftTopButtonImageUrl, null, isHorizontal ? DEFAULT_LT_BUTTON_URL : DEFAULT_VERTICAL_LT_BUTTON_URL);
+        leftTopButtonImageUrl = Resources.getURL(context, leftTopButtonImageUrl, isHorizontal ? DEFAULT_LT_BUTTON_URL : DEFAULT_VERTICAL_LT_BUTTON_URL);
         imagesUrls.add(leftTopButtonImageUrl);
 
         String leftTopButtonImageUrl_disabled = (String) slider.getAttributes().get("leftTopButtonDisabledImageUrl");
-        leftTopButtonImageUrl_disabled = Resources.getURL(context, leftTopButtonImageUrl_disabled, null, isHorizontal ? DEFAULT_LT_BUTTON_DISABLED_URL : DEFAULT_VERTICAL_LT_BUTTON_DISABLED_URL);
+        leftTopButtonImageUrl_disabled = Resources.getURL(context, leftTopButtonImageUrl_disabled, isHorizontal ? DEFAULT_LT_BUTTON_DISABLED_URL : DEFAULT_VERTICAL_LT_BUTTON_DISABLED_URL);
         imagesUrls.add(leftTopButtonImageUrl_disabled);
 
         String leftTopButtonImageUrl_rollover = (String) slider.getAttributes().get("leftTopButtonRolloverImageUrl");
-        leftTopButtonImageUrl_rollover = Resources.getURL(context, leftTopButtonImageUrl_rollover, null, isHorizontal ? DEFAULT_LT_BUTTON_ROLLOVER_URL : DEFAULT_VERTICAL_LT_BUTTON_ROLLOVER_URL);
+        leftTopButtonImageUrl_rollover = Resources.getURL(context, leftTopButtonImageUrl_rollover, isHorizontal ? DEFAULT_LT_BUTTON_ROLLOVER_URL : DEFAULT_VERTICAL_LT_BUTTON_ROLLOVER_URL);
         imagesUrls.add(leftTopButtonImageUrl_rollover);
 
         String rightBottomImageUrl = (String) slider.getAttributes().get("rightBottomButtonImageUrl");
-        rightBottomImageUrl = Resources.getURL(context, rightBottomImageUrl, null, isHorizontal ? DEFAULT_RB_BUTTON_URL : DEFAULT_VERTICAL_RB_BUTTON_URL);
+        rightBottomImageUrl = Resources.getURL(context, rightBottomImageUrl, isHorizontal ? DEFAULT_RB_BUTTON_URL : DEFAULT_VERTICAL_RB_BUTTON_URL);
         imagesUrls.add(rightBottomImageUrl);
 
         String rightBottomImageUrl_disabled = (String) slider.getAttributes().get("rightBottomButtonDisabledImageUrl");
-        rightBottomImageUrl_disabled = Resources.getURL(context, rightBottomImageUrl_disabled, null, isHorizontal ? DEFAULT_RB_BUTTON_DISABLED_URL : DEFAULT_VERTICAL_RB_BUTTON_DISABLED_URL);
+        rightBottomImageUrl_disabled = Resources.getURL(context, rightBottomImageUrl_disabled, isHorizontal ? DEFAULT_RB_BUTTON_DISABLED_URL : DEFAULT_VERTICAL_RB_BUTTON_DISABLED_URL);
         imagesUrls.add(rightBottomImageUrl_disabled);
 
         String rightBottomImageUrl_rollover = (String) slider.getAttributes().get("rightBottomButtonRolloverImageUrl");
-        rightBottomImageUrl_rollover = Resources.getURL(context, rightBottomImageUrl_rollover, null, isHorizontal ? DEFAULT_RB_BUTTON_ROLLOVER_URL : DEFAULT_VERTICAL_RB_BUTTON_ROLLOVER_URL);
+        rightBottomImageUrl_rollover = Resources.getURL(context, rightBottomImageUrl_rollover, isHorizontal ? DEFAULT_RB_BUTTON_ROLLOVER_URL : DEFAULT_VERTICAL_RB_BUTTON_ROLLOVER_URL);
         imagesUrls.add(rightBottomImageUrl_rollover);
 
         String majorTicksImageUrl = (String) slider.getAttributes().get("majorTickImageUrl");
-        majorTicksImageUrl = Resources.getURL(context, majorTicksImageUrl, null, isHorizontal ? DEFAULT_MAJOR_TICK_URL : DEFAULT_VERTICAL_MAJOR_TICK_URL);
+        majorTicksImageUrl = Resources.getURL(context, majorTicksImageUrl, isHorizontal ? DEFAULT_MAJOR_TICK_URL : DEFAULT_VERTICAL_MAJOR_TICK_URL);
         imagesUrls.add(majorTicksImageUrl);
 
         String minorTicksImageUrl = (String) slider.getAttributes().get("minorTickImageUrl");
-        minorTicksImageUrl = Resources.getURL(context, minorTicksImageUrl, null, isHorizontal ? DEFAULT_MINOR_TICK_URL : DEFAULT_VERTICAL_MINOR_TICK_URL);
+        minorTicksImageUrl = Resources.getURL(context, minorTicksImageUrl, isHorizontal ? DEFAULT_MINOR_TICK_URL : DEFAULT_VERTICAL_MINOR_TICK_URL);
         imagesUrls.add(minorTicksImageUrl);
 
         String barImageUrl = (String) slider.getAttributes().get("barImageUrl");
-        barImageUrl = Resources.getURL(context, barImageUrl, null, isHorizontal ? DEFAULT_BAR_URL : DEFAULT_VERTICAL_BAR_URL);
+        barImageUrl = Resources.getURL(context, barImageUrl, isHorizontal ? DEFAULT_BAR_URL : DEFAULT_VERTICAL_BAR_URL);
         imagesUrls.add(barImageUrl);
 
         String barImageUrl_disabled = (String) slider.getAttributes().get("barDisabledImageUrl");
-        barImageUrl_disabled = Resources.getURL(context, barImageUrl_disabled, null, isHorizontal ? DEFAULT_BAR_DISABLED_URL : DEFAULT_VERTICAL_BAR_DISABLED_URL);
+        barImageUrl_disabled = Resources.getURL(context, barImageUrl_disabled, isHorizontal ? DEFAULT_BAR_DISABLED_URL : DEFAULT_VERTICAL_BAR_DISABLED_URL);
         imagesUrls.add(barImageUrl_disabled);
 
         String barStartImageUrl = (String) slider.getAttributes().get("barStartImageUrl");
-        barStartImageUrl = Resources.getURL(context, barStartImageUrl, null, isHorizontal ? DEFAULT_BAR_START_URL : DEFAULT_VERTICAL_BAR_START_URL);
+        barStartImageUrl = Resources.getURL(context, barStartImageUrl, isHorizontal ? DEFAULT_BAR_START_URL : DEFAULT_VERTICAL_BAR_START_URL);
         imagesUrls.add(barStartImageUrl);
 
         String barStartImageUrl_disabled = (String) slider.getAttributes().get("barStartDisabledImageUrl");
-        barStartImageUrl_disabled = Resources.getURL(context, barStartImageUrl_disabled, null, isHorizontal ? DEFAULT_BAR_START_DISABLED_URL : DEFAULT_VERTICAL_BAR_START_DISABLED_URL);
+        barStartImageUrl_disabled = Resources.getURL(context, barStartImageUrl_disabled, isHorizontal ? DEFAULT_BAR_START_DISABLED_URL : DEFAULT_VERTICAL_BAR_START_DISABLED_URL);
         imagesUrls.add(barStartImageUrl_disabled);
 
         String barEndImageUrl = (String) slider.getAttributes().get("barStartImageUrl");
-        barEndImageUrl = Resources.getURL(context, barEndImageUrl, null, isHorizontal ? DEFAULT_BAR_END_URL : DEFAULT_VERTICAL_BAR_END_URL);
+        barEndImageUrl = Resources.getURL(context, barEndImageUrl, isHorizontal ? DEFAULT_BAR_END_URL : DEFAULT_VERTICAL_BAR_END_URL);
         imagesUrls.add(barEndImageUrl);
 
         String barEndImageUrl_disabled = (String) slider.getAttributes().get("barStartDisabledImageUrl");
-        barEndImageUrl_disabled = Resources.getURL(context, barEndImageUrl_disabled, null, isHorizontal ? DEFAULT_BAR_END_DISABLED_URL : DEFAULT_VERTICAL_BAR_END_DISABLED_URL);
+        barEndImageUrl_disabled = Resources.getURL(context, barEndImageUrl_disabled, isHorizontal ? DEFAULT_BAR_END_DISABLED_URL : DEFAULT_VERTICAL_BAR_END_DISABLED_URL);
         imagesUrls.add(barEndImageUrl_disabled);
 
         return imagesUrls;
@@ -758,22 +758,22 @@ public class SliderRenderer extends RendererBase {
         String activeElementRolloverStyleClass = Styles.getCSSClass(context, slider, rolloverAEStyle, StyleGroup.rolloverStyleGroup(), rolloverAEClass, DEFAULT_ACTIVE_ELEMENT_ROLLOVER_CLASS);
 
         String handleImageUrl = (String) slider.getAttributes().get("dragHandleImageUrl");
-        handleImageUrl = Resources.getURL(context, handleImageUrl, null, isHorizontal ? DEFAULT_HANDLE_URL : DEFAULT_VERTICAL_HANDLE_URL);
+        handleImageUrl = Resources.getURL(context, handleImageUrl, isHorizontal ? DEFAULT_HANDLE_URL : DEFAULT_VERTICAL_HANDLE_URL);
 
         String handleImageUrl_rollover = (String) slider.getAttributes().get("dragHandleRolloverImageUrl");
-        handleImageUrl_rollover = Resources.getURL(context, handleImageUrl_rollover, null, isHorizontal ? DEFAULT_HANDLE_ROLLOVER_URL : DEFAULT_VERTICAL_HANDLE_ROLLOVER_URL);
+        handleImageUrl_rollover = Resources.getURL(context, handleImageUrl_rollover, isHorizontal ? DEFAULT_HANDLE_ROLLOVER_URL : DEFAULT_VERTICAL_HANDLE_ROLLOVER_URL);
 
         String leftTopButtonImageUrl = (String) slider.getAttributes().get("leftTopButtonImageUrl");
-        leftTopButtonImageUrl = Resources.getURL(context, leftTopButtonImageUrl, null, isHorizontal ? DEFAULT_LT_BUTTON_URL : DEFAULT_VERTICAL_LT_BUTTON_URL);
+        leftTopButtonImageUrl = Resources.getURL(context, leftTopButtonImageUrl, isHorizontal ? DEFAULT_LT_BUTTON_URL : DEFAULT_VERTICAL_LT_BUTTON_URL);
 
         String leftTopButtonImageUrl_rollover = (String) slider.getAttributes().get("leftTopButtonRolloverImageUrl");
-        leftTopButtonImageUrl_rollover = Resources.getURL(context, leftTopButtonImageUrl_rollover, null, isHorizontal ? DEFAULT_LT_BUTTON_ROLLOVER_URL : DEFAULT_VERTICAL_LT_BUTTON_ROLLOVER_URL);
+        leftTopButtonImageUrl_rollover = Resources.getURL(context, leftTopButtonImageUrl_rollover, isHorizontal ? DEFAULT_LT_BUTTON_ROLLOVER_URL : DEFAULT_VERTICAL_LT_BUTTON_ROLLOVER_URL);
 
         String rightBottomImageUrl = (String) slider.getAttributes().get("rightBottomButtonImageUrl");
-        rightBottomImageUrl = Resources.getURL(context, rightBottomImageUrl, null, isHorizontal ? DEFAULT_RB_BUTTON_URL : DEFAULT_VERTICAL_RB_BUTTON_URL);
+        rightBottomImageUrl = Resources.getURL(context, rightBottomImageUrl, isHorizontal ? DEFAULT_RB_BUTTON_URL : DEFAULT_VERTICAL_RB_BUTTON_URL);
 
         String rightBottomImageUrl_rollover = (String) slider.getAttributes().get("rightBottomButtonRolloverImageUrl");
-        rightBottomImageUrl_rollover = Resources.getURL(context, rightBottomImageUrl_rollover, null, isHorizontal ? DEFAULT_RB_BUTTON_ROLLOVER_URL : DEFAULT_VERTICAL_RB_BUTTON_ROLLOVER_URL);
+        rightBottomImageUrl_rollover = Resources.getURL(context, rightBottomImageUrl_rollover, isHorizontal ? DEFAULT_RB_BUTTON_ROLLOVER_URL : DEFAULT_VERTICAL_RB_BUTTON_ROLLOVER_URL);
 
 
         JSONObject options;

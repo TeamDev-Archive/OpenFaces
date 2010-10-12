@@ -68,7 +68,7 @@ public class ImageExpansionToggle extends ExpansionToggle {
     public String getToggleImageUrl(FacesContext context, boolean nodeExpanded) {
         String userUrl = nodeExpanded ? getExpandedImageUrl() : getCollapsedImageUrl();
         String defaultImagePath = nodeExpanded ? "table/minus.gif" : "table/plus.gif";
-        String url = Resources.getURL(context, userUrl, null, defaultImagePath);
+        String url = Resources.getURL(context, userUrl, defaultImagePath);
         return url;
     }
 

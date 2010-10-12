@@ -26,7 +26,7 @@ public class BigDecimalConverterClientValidator extends AbstractClientValidator 
     private static final String CONVERSION_MESSAGE_ID = "javax.faces.convert.BigDecimalConverter.CONVERSION";
 
     public BigDecimalConverterClientValidator() {
-        addJavascriptLibrary(new ValidationJavascriptLibrary("bigDecimalConverterValidator.js", null));
+        addJavascriptLibrary(new ValidationJavascriptLibrary("bigDecimalConverterValidator.js"));
     }
 
     public String getJsValidatorName() {

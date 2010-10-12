@@ -223,13 +223,6 @@ public class AjaxUtil {
         if (requestMap.put(AJAX_SUPPORT_RENDERED, Boolean.TRUE) == null) {
             try {
                 renderAjaxSupport(context);
-                if (isPortletRequest(context)) {
-                    String uniqueRTLibraryName = ResourceFilter_.RUNTIME_INIT_LIBRARY_PATH + generateUniqueInitLibraryName();
-                    context.getExternalContext().getSessionMap().put(ATTR_PORTLET_UNIQUE_RTLIBRARY_NAME, uniqueRTLibraryName);
-                    String initLibraryUrl = Resources.getApplicationURL(context, uniqueRTLibraryName);
-                    Resources.renderJSLinkIfNeeded(context, initLibraryUrl);
-                }
-
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

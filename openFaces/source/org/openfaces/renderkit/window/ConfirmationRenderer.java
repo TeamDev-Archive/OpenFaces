@@ -160,7 +160,7 @@ public class ConfirmationRenderer extends AbstractWindowRenderer {
                 iconFacet.encodeAll(FacesContext.getCurrentInstance());
             } else {
                 String iconPath = confirmation.getMessageIconUrl();
-                String iconUrl = Resources.getURL(context, iconPath, null, "window/warnIcon.gif");
+                String iconUrl = Resources.getURL(context, iconPath, "window/warnIcon.gif");
 
                 writer.writeAttribute("width", "1%", null);
                 writer.writeAttribute("id", clientId + ICON_AREA_SUFFIX, null);

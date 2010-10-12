@@ -26,7 +26,7 @@ public class DoubleRangeClientValidator extends AbstractClientValidator {
     private static final double PRECISION = 0.0000001;
 
     public DoubleRangeClientValidator() {
-        addJavascriptLibrary(new ValidationJavascriptLibrary("doubleRangeValidator.js", null));
+        addJavascriptLibrary(new ValidationJavascriptLibrary("doubleRangeValidator.js"));
     }
 
     public void setDoubleRangeValidator(DoubleRangeValidator doubleRangeValidator) {
