@@ -294,7 +294,7 @@ public class ValidationSupportResponseWriter extends ResponseWriterWrapper {
         UIForm parentForm = vc.getParentForm();
         if (vp.isUseDefaultClientValidationPresentationForForm(parentForm) || vp.isUseDefaultServerValidationPresentationForForm(parentForm)) {
             int bubbleIndex = nextBubbleIndex(context);
-            addPresentationComponent(vc.getComponent(), vc.getParentForm(), bubbleIndex, vp);
+            renderPresentationComponent(vc.getComponent(), vc.getParentForm(), bubbleIndex, vp);
         }
         if (!vp.getClientValidationRuleForComponent(vc).equals(ClientValidationMode.OFF)) {
             List<String> javascriptLibraries = vc.getJavascriptLibrariesUrls();
@@ -335,23 +335,18 @@ public class ValidationSupportResponseWriter extends ResponseWriterWrapper {
         return ValidationSupportResponseWriter.class.getName() + ".bubbleIndex";
     }
 
-    private static void addPresentationComponent(UIComponent component, UIForm parentForm, int idx, ValidationProcessor vp) throws IOException {
+    private static void renderPresentationComponent(UIComponent component, UIForm parentForm, int idx, ValidationProcessor vp) throws IOException {
         ClientValidationSupport clientValidationSupport = vp.getClientValidationSupport(parentForm);
-        createPresentationComponent("dfm" + idx, component, clientValidationSupport, vp);
-    }
-
-    private static void createPresentationComponent(String id, UIComponent component, ClientValidationSupport support, ValidationProcessor vp) throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
-        UIMessage defaultMessage = vp.getDefaultPresentationInstance(context, support);
+        UIMessage defaultMessage = vp.getDefaultPresentationInstance(context, clientValidationSupport);
 
-        if (defaultMessage instanceof FloatingIconMessage) {
-            createFloatingIconMessage(context, id, component, (FloatingIconMessage) defaultMessage);
-        } else {
+        if (!(defaultMessage instanceof FloatingIconMessage))
             throw new IllegalStateException("Illegal default presentation component type. Expected FloatingIconMessage, actual " + defaultMessage.getClass());
-        }
+
+        renderFloatingIconMessage(context, "dfm" + idx, component, (FloatingIconMessage) defaultMessage);
     }
 
-    private static FloatingIconMessage createFloatingIconMessage(FacesContext context,
+    private static FloatingIconMessage renderFloatingIconMessage(FacesContext context,
                                                           String id,
                                                           UIComponent component,
                                                           FloatingIconMessage template) throws IOException {
