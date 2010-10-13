@@ -15,11 +15,6 @@ import org.openfaces.application.OpenFacesApplication;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.org.json.JSONTokener;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 import javax.faces.FacesException;
 import javax.faces.application.Application;
@@ -31,22 +26,14 @@ import javax.faces.component.UIViewRoot;
 import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Dmitry Pikhulya
@@ -62,7 +49,6 @@ public class Resources {
     private static final String CLDR = "cldr";
     private static final String NUMBER_LOCALE_SETTINGS = "number.js";
     private static final String PARAM_ORG_OPENFACES_JQUERY = "org.openfaces.jquery";
-    public static final String META_INF_RESOURCES_ROOT = "/META-INF/resources/openfaces/";
     public static final String LIBRARY_NAME = "openfaces";
     public static final String UTIL_JS_PATH = "util/util.js";
     public static final String JSON_JS_PATH = "util/json2.js";
@@ -76,8 +62,8 @@ public class Resources {
      * This method returns the URL string ready for rendering into HTML based on the URL specified by the user. If
      * URL is not specified by the user explicitly then URL to a default internal resource is returned instead.
      *
-     * @param userSpecifiedUrl             optional resource url as specified by the user. This can be a relative URL, or an absolute URL
-     * @param defaultResourceFileName      file name for a resource which should be provided if userSpecifiedUrl is null or empty string
+     * @param userSpecifiedUrl        optional resource url as specified by the user. This can be a relative URL, or an absolute URL
+     * @param defaultResourceFileName file name for a resource which should be provided if userSpecifiedUrl is null or empty string
      * @return
      */
     public static String getURL(FacesContext context, String userSpecifiedUrl, String defaultResourceFileName) {
@@ -85,11 +71,11 @@ public class Resources {
     }
 
     /**
-     * @param userSpecifiedUrl             optional resource url as specified by the user. This can be a relative URL, or an absolute URL
-     * @param defaultResourceFileName      file name for a resource which should be provided if userSpecifiedUrl is null (or empty string).
- *                                     Empty string is also considered as signal for returning the default resource here because null
- *                                     is auto-converted to an empty string when passed through a string binding
-     * @param prependContextPath           use true here if you render the attribute yourself, and false if you use pass this URL to HtmlGraphicImage or similar component
+     * @param userSpecifiedUrl        optional resource url as specified by the user. This can be a relative URL, or an absolute URL
+     * @param defaultResourceFileName file name for a resource which should be provided if userSpecifiedUrl is null (or empty string).
+     *                                Empty string is also considered as signal for returning the default resource here because null
+     *                                is auto-converted to an empty string when passed through a string binding
+     * @param prependContextPath      use true here if you render the attribute yourself, and false if you use pass this URL to HtmlGraphicImage or similar component
      */
     public static String getURL(
             FacesContext context,
@@ -132,8 +118,8 @@ public class Resources {
     }
 
     /**
-     * @param context            Current FacesContext
-     * @param resourcePath       Path to the resource file
+     * @param context      Current FacesContext
+     * @param resourcePath Path to the resource file
      * @return The requested URL
      */
     public static String getInternalURL(FacesContext context, String resourcePath) {
@@ -309,59 +295,6 @@ public class Resources {
 
     }
 
-    public static void processHeadResources(FacesContext context) {
-        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-
-        Class richfacesContextClass = null;
-        try {
-            richfacesContextClass = Class.forName("org.ajax4jsf.context.AjaxContext");
-        } catch (ClassNotFoundException e) {
-            // Just checking for class presence. It's normal that a class can be absent.
-        }
-
-        String ajax4jsfScriptParameter = (String) ReflectionUtil.getStaticFieldValue(richfacesContextClass, "SCRIPTS_PARAMETER");
-        String ajax4jsfStylesParameter = (String) ReflectionUtil.getStaticFieldValue(richfacesContextClass, "STYLES_PARAMETER");
-        String headEventsParameter = (String) ReflectionUtil.getStaticFieldValue(richfacesContextClass, "HEAD_EVENTS_PARAMETER");
-
-        if (ajax4jsfStylesParameter != null) {
-            Set<String> styles = (Set<String>) requestMap.get(ajax4jsfStylesParameter);
-            String defaultCssUrl = ((HttpServletRequest) context.getExternalContext().getRequest()).getContextPath()
-                    + ResourceFilter_.INTERNAL_RESOURCE_PATH + "org/openfaces/renderkit/default" + "-" + getVersionString() + ".css";
-            if (styles == null) {
-                styles = new LinkedHashSet<String>();
-            }
-            styles.add(defaultCssUrl);
-            requestMap.put(ajax4jsfStylesParameter, styles);
-        }
-
-        if (ajax4jsfScriptParameter != null) {
-            Set<String> libraries = (Set<String>) requestMap.get(ajax4jsfScriptParameter);
-            List<String> ourLibraries = getRegisteredJsLibraries(requestMap);
-
-            if (libraries == null) {
-                libraries = new LinkedHashSet<String>();
-            }
-
-            if (ourLibraries != null) {
-                libraries.addAll(ourLibraries);
-            }
-
-            requestMap.put(ajax4jsfScriptParameter, libraries);
-        }
-
-        if (headEventsParameter != null) {
-            List<String> ourLibraries = getRegisteredJsLibraries(requestMap);
-            final Node[] headerResources = (Node[]) requestMap.get(headEventsParameter);
-
-            if (headerResources != null && ourLibraries != null) {
-                final Node[] ourHeaderNodes = prepareHeaderNodes(ourLibraries);
-                final Node[] mergedNodes = mergeHeadResourceNodes(ourHeaderNodes, headerResources);
-
-                requestMap.put(headEventsParameter, mergedNodes);
-            }
-        }
-    }
-
     public static List<String> getRegisteredJsLibraries() {
         FacesContext context = FacesContext.getCurrentInstance();
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
@@ -372,96 +305,6 @@ public class Resources {
         return (List<String>) requestMap.get(HEADER_JS_LIBRARIES);
     }
 
-
-    private static void mergeHeadResourceNode(List<Node> nodes, Set<String> renderedScripts, Node node) {
-        boolean shouldAdd = true;
-
-        String nodeName = node.getNodeName();
-        if ("script".equals(nodeName) || "SCRIPT".equals(nodeName)) {
-            if (node.getFirstChild() == null) {
-                //no text content etc.
-
-                NamedNodeMap attributes = node.getAttributes();
-                if (attributes != null) {
-                    Node item = attributes.getNamedItem("src");
-                    if (item == null) {
-                        attributes.getNamedItem("SRC");
-                    }
-
-                    if (item != null) {
-                        String src = item.getNodeValue();
-                        if (src != null) {
-                            if (renderedScripts.contains(src)) {
-                                shouldAdd = false;
-                            } else {
-                                renderedScripts.add(src);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        if (shouldAdd) {
-            nodes.add(node);
-        }
-    }
-
-    private static Node[] mergeHeadResourceNodes(Node[] headerJsNodes, Node[] richFacesHeaderNodes) {
-        List<Node> result = new ArrayList<Node>();
-
-        Set<String> scripts = new HashSet<String>();
-
-        for (Node node : richFacesHeaderNodes) {
-            mergeHeadResourceNode(result, scripts, node);
-        }
-
-        for (Node node : headerJsNodes) {
-            mergeHeadResourceNode(result, scripts, node);
-        }
-
-        return result.toArray(new Node[result.size()]);
-    }
-
-    private static Node[] prepareHeaderNodes(List<String> headerLibraries) {
-        try {
-            Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-            Node node = document.createElement("head");
-            document.appendChild(node);
-
-            for (String headerLibrary : headerLibraries) {
-                Element element = document.createElement("script");
-                element.setAttribute("src", headerLibrary);
-                element.setAttribute("type", "text/javascript");
-
-                node.appendChild(element);
-            }
-
-            NodeList childNodes = node.getChildNodes();
-            Node[] list = new Node[childNodes.getLength()];
-            for (int i = 0; i < list.length; i++) {
-                list[i] = childNodes.item(i);
-            }
-
-            return list;
-        } catch (ParserConfigurationException e) {
-            throw new FacesException(e.getLocalizedMessage(), e);
-        }
-    }
-
-    public static boolean isHeaderIncludesRegistered(ServletRequest servletRequest) {
-        if (AjaxUtil.isAjaxRequest(RequestFacade.getInstance(servletRequest))) return false;
-        for (Iterator<String> iterator = Styles.getClassKeyIterator(); iterator.hasNext();) {
-            String key = iterator.next();
-            if (servletRequest.getAttribute(key) != null) {
-                return true;
-            }
-        }
-
-        return servletRequest.getAttribute(Rendering.ON_LOAD_SCRIPTS_KEY) != null ||
-                servletRequest.getAttribute(HEADER_JS_LIBRARIES) != null ||
-                servletRequest.getAttribute(Styles.DEFAULT_CSS_REQUESTED) != null;
-    }
 
     /**
      * Render javascript file link, if not rendered early
@@ -484,7 +327,7 @@ public class Resources {
         boolean fullResourceString = jsFile.startsWith("/") || jsFile.contains("://");
         if (AjaxUtil.isAjaxRequest(context)) {
             if (!fullResourceString)
-                    jsFile = Resources.getInternalURL(context, jsFile);
+                jsFile = Resources.getInternalURL(context, jsFile);
             registerJavascriptLibrary(context, jsFile);
         } else if (AjaxUtil.isAjax4jsfRequest()) {
             registerJavascriptLibrary(context, jsFile);

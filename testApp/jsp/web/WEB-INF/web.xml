@@ -113,12 +113,6 @@
     </filter-mapping>-->
 
 
-  <!-- FILTER FOR PROCESSING INTERNAL OPENFACES RESOURCES -->
-  <filter>
-    <filter-name>ResourceFilter</filter-name>
-    <filter-class>org.openfaces.util.ResourceFilter_</filter-class>
-  </filter>
-
   <!--MYFACES EXTENSIONS FILTER-->
   <filter>
     <filter-name>ExtensionsFilter</filter-name>
@@ -135,14 +129,6 @@
     </init-param>
   </filter>
 
-  <!-- MAPPING FOR OPENFACES RESOURCE FILTER -->
-  <filter-mapping>
-    <filter-name>ResourceFilter</filter-name>
-    <servlet-name>Faces Servlet</servlet-name>
-    <dispatcher>REQUEST</dispatcher>
-    <dispatcher>FORWARD</dispatcher>
-  </filter-mapping>
-
   <!--MAPPING FOR MYFACES EXTENSIONS FILTER-->
   <filter-mapping>
     <filter-name>ExtensionsFilter</filter-name>
@@ -154,13 +140,6 @@
   <filter-mapping>
     <filter-name>ExtensionsFilter</filter-name>
     <url-pattern>/faces/myFacesExtensionResource/*</url-pattern>
-  </filter-mapping>
-
-  <filter-mapping>
-    <filter-name>ResourceFilter</filter-name>
-    <url-pattern>/openFacesResources/*</url-pattern>
-    <dispatcher>REQUEST</dispatcher>
-    <dispatcher>FORWARD</dispatcher>
   </filter-mapping>
 
   <servlet>

@@ -33,7 +33,6 @@ import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.Application;
 import javax.faces.application.Resource;
-import javax.faces.application.ViewExpiredException;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
@@ -80,6 +79,7 @@ public class Rendering {
     public static final String DEFAULT_FOCUSED_STYLE = "border: 1px dotted black;";
     public static final String ON_LOAD_SCRIPTS_KEY = UtilPhaseListener.class.getName() + ".loadScripts";
     private static final Class<?> A4J_AJAX_BEHAVIOR_CLASS;
+
     static {
         Class<?> cls;
         try {
@@ -293,20 +293,6 @@ public class Rendering {
             }
         }
         return false;
-    }
-
-    /**
-     * Wraps the passed java string into the quoted javascript string (double quotes are used). The text is properly
-     * escaped to handle non-latin symbols correctly.
-     *
-     * @param text The text that should be quoted into a js string
-     * @return the string which represents a js string literal containing the text passed as a parameter. If null is
-     *         passed as a parameter then this method also return snull
-     */
-    public static String wrapTextIntoJsString(String text) { // todo: replace usages with ScriptBuilder and remove this method
-        if (text == null)
-            return "null";
-        return '\"' + escapeStringForJS(text) + '\"';
     }
 
     static String escapeStringForJS(String str) {
