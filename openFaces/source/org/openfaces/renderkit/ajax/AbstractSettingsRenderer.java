@@ -11,7 +11,6 @@
  */
 package org.openfaces.renderkit.ajax;
 
-import org.openfaces.ajax.AjaxViewHandler;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.RawScript;
@@ -23,7 +22,6 @@ import javax.faces.component.UIForm;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
-import java.util.Map;
 
 /**
  * @author Eugene Goncharov
@@ -85,12 +83,6 @@ public abstract class AbstractSettingsRenderer extends RendererBase {
      */
     private boolean isParentComponentValid(UIComponent parentComponent) {
         return !(parentComponent instanceof UIViewRoot) && !(parentComponent instanceof UIForm);
-    }
-
-    protected boolean isAjaxErrorProcessing(FacesContext context) {
-        Map requestMap = context.getExternalContext().getRequestMap();
-        return AjaxUtil.isAjaxRequest(context) &&
-                requestMap.containsKey(AjaxViewHandler.AJAX_ERROR_PROCESSING);
     }
 
     protected String getRedirectLocationOnSessionExpired(FacesContext context) {

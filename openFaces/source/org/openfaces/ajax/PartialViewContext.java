@@ -14,6 +14,12 @@ package org.openfaces.ajax;
 
 import org.openfaces.application.ViewExpiredExceptionHandler;
 import org.openfaces.component.ComponentWithExternalParts;
+import org.openfaces.component.OUIObjectIterator;
+import org.openfaces.component.ajax.AjaxSettings;
+import org.openfaces.component.ajax.DefaultSessionExpiration;
+import org.openfaces.component.ajax.SilentSessionExpiration;
+import org.openfaces.component.table.AbstractTable;
+import org.openfaces.event.AjaxActionEvent;
 import org.openfaces.org.json.JSONArray;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
@@ -21,32 +27,34 @@ import org.openfaces.org.json.JSONString;
 import org.openfaces.renderkit.AjaxPortionRenderer;
 import org.openfaces.util.*;
 
+import javax.el.ELContext;
+import javax.el.MethodExpression;
+import javax.el.MethodNotFoundException;
 import javax.faces.FacesException;
 import javax.faces.FactoryFinder;
+import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIData;
+import javax.faces.component.UIForm;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.PartialResponseWriter;
 import javax.faces.context.PartialViewContextWrapper;
 import javax.faces.context.ResponseWriter;
+import javax.faces.event.ActionEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.render.RenderKit;
 import javax.faces.render.RenderKitFactory;
 import javax.faces.render.Renderer;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.io.Writer;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Dmitry Pikhulya
@@ -55,6 +63,14 @@ public class PartialViewContext extends PartialViewContextWrapper {
     private javax.faces.context.PartialViewContext wrapped;
     private static final String PORTION_DATAS_KEY = PartialViewContext.class.getName() + ".ajaxPortionDatas";
     private static final String SESSION_EXPIRATION_EXTENSION_KEY = PartialViewContext.class.getName() + ".sessionExpirationExtension";
+    private static final String APPLICATION_SESSION_EXPIRATION_PARAM_NAME = "org.openfaces.ajax.sessionExpiration";
+    private static final String SESSION_EXPIRATION_HANDLING_SILENT = "silent";
+    private static final String SESSION_EXPIRATION_HANDLING_DEFAULT = "default";
+    private static final Pattern JS_VAR_PATTERN = Pattern.compile("\\bvar\\b");
+    private static final String PARAM_ACTION_COMPONENT = "_of_actionComponent";
+    private static final String PARAM_ACTION_LISTENER = "_of_actionListener";
+    private static final String PARAM_ACTION = "_of_action";
+    private static final String PARAM_IMMEDIATE = "_of_immediate";
 
     public PartialViewContext(javax.faces.context.PartialViewContext wrapped) {
         this.wrapped = wrapped;
@@ -116,7 +132,7 @@ public class PartialViewContext extends PartialViewContextWrapper {
         super.processPartial(phaseId);
         if (isAjaxRequest()) {
             if (phaseId == PhaseId.UPDATE_MODEL_VALUES) {
-                UtilPhaseListener.processAjaxExecutePhase(FacesContext.getCurrentInstance());
+                processAjaxExecutePhase(FacesContext.getCurrentInstance());
             }
         }
 
@@ -217,7 +233,7 @@ public class PartialViewContext extends PartialViewContextWrapper {
         final AjaxExtension extension = prepareExtension(context, "sessionExpiration", "", new ExtensionRenderer() {
             public JSONObject render() throws IOException {
                 AtomicReference<RequestFacade> requestFacade = new AtomicReference<RequestFacade>(RequestFacade.getInstance(externalContext.getRequest()));
-                CommonAjaxViewRoot.handleSessionExpirationOnEncodeChildren(context, requestFacade.get());
+                handleSessionExpirationOnEncodeChildren(context, requestFacade.get());
                 return null;
             }
         }, true);
@@ -270,6 +286,354 @@ public class PartialViewContext extends PartialViewContextWrapper {
         return script;
     }
 
+    public static void handleSessionExpirationOnEncodeChildren(FacesContext context, RequestFacade request) throws IOException {
+        ExternalContext externalContext = context.getExternalContext();
+
+        UIViewRoot viewRoot = context.getViewRoot();
+        List<UIComponent> children = viewRoot.getChildren();
+        AjaxSettings ajaxSettings = null;
+
+        Collection<String> componentIds = context.getPartialViewContext().getRenderIds();
+
+        assertChildren(viewRoot);
+
+        UIComponent component = componentIds != null && componentIds.size() > 0 ? findComponentById(viewRoot, componentIds.iterator().next(), false, false) : null;
+        if (component != null && component.getChildCount() > 0) {
+            List<UIComponent> ajaxSubmittedComponentChildren = component.getChildren();
+            ajaxSettings = findAjaxSettings(ajaxSubmittedComponentChildren);
+        }
+
+        if (ajaxSettings == null) {
+            ajaxSettings = findPageAjaxSettings(children);
+        }
+
+        if (ajaxSettings == null) {
+            Map initParameterMap = externalContext.getInitParameterMap();
+            String sessionExpirationHandling = (initParameterMap != null)
+                    ? (String) initParameterMap.get(APPLICATION_SESSION_EXPIRATION_PARAM_NAME)
+                    : null;
+
+            if (sessionExpirationHandling != null && sessionExpirationHandling.length() > 0) {
+                if (sessionExpirationHandling.equalsIgnoreCase(SESSION_EXPIRATION_HANDLING_SILENT)) {
+                    ajaxSettings = createSilentSessionExpirationSettings();
+                } else if (sessionExpirationHandling.equalsIgnoreCase(SESSION_EXPIRATION_HANDLING_DEFAULT)) {
+                    ajaxSettings = createDefaultSessionExpirationSettings(context);
+                }
+            } else {
+                ajaxSettings = createDefaultSessionExpirationSettings(context);
+            }
+        }
+
+        //noinspection ConstantConditions
+        ajaxSettings.encodeAll(context);
+    }
+
+    static AjaxSettings findAjaxSettings(List<UIComponent> children) {
+        AjaxSettings result = null;
+        for (Object iteratedChild : children) {
+            if (iteratedChild instanceof AjaxSettings) {
+                result = (AjaxSettings) iteratedChild;
+                return result;
+            }
+            UIComponent uiComponent = (UIComponent) iteratedChild;
+            if (uiComponent.getChildCount() > 0) {
+                result = findAjaxSettings(uiComponent.getChildren());
+                if (result != null) {
+                    return result;
+                }
+            }
+        }
+        return result;
+    }
+
+    static AjaxSettings findPageAjaxSettings(List<UIComponent> children) {
+        AjaxSettings result = null;
+        for (Object iteratedChild : children) {
+            if (iteratedChild instanceof AjaxSettings && isPageSettings((AjaxSettings) iteratedChild)) {
+                result = (AjaxSettings) iteratedChild;
+                return result;
+            }
+            UIComponent uiComponent = (UIComponent) iteratedChild;
+            if (uiComponent.getChildCount() > 0) {
+                result = findPageAjaxSettings(uiComponent.getChildren());
+                if (result != null) {
+                    return result;
+                }
+            }
+        }
+        return result;
+    }
+
+    static boolean isPageSettings(AjaxSettings ajaxSettings) {
+        return (ajaxSettings.getParent() instanceof UIViewRoot || ajaxSettings.getParent() instanceof UIForm);
+    }
+
+    static AjaxSettings createSilentSessionExpirationSettings() {
+        AjaxSettings result = new AjaxSettings();
+        result.setSessionExpiration(new SilentSessionExpiration());
+        return result;
+    }
+
+    static AjaxSettings createDefaultSessionExpirationSettings(FacesContext context) {
+        AjaxSettings result = new AjaxSettings();
+        DefaultSessionExpiration dse = new DefaultSessionExpiration();
+        result.setSessionExpiration(dse);
+        return result;
+    }
+
+    static UIComponent findComponentById(UIComponent parent,
+                                                 String id,
+                                                 boolean preProcessDecodesOnTables,
+                                                 boolean preRenderResponseOnTables) {
+        return findComponentById(parent, id, preProcessDecodesOnTables, preRenderResponseOnTables, true);
+    }
+
+    static void extractScripts(StringBuilder buffer,
+                               StringBuilder rawScriptBuffer,
+                               StringBuilder rtLibraryScriptBuffer) {
+        String scriptStart = "<script";
+        String scriptEnd = "/script>";
+        while (true) {
+            int fromIndex = buffer.indexOf(scriptStart);
+            if (fromIndex == -1)
+                break;
+
+            int toIndex = buffer.indexOf(scriptEnd, fromIndex);
+            if (toIndex == -1)
+                break;
+
+            toIndex += scriptEnd.length();
+            String rawScript = buffer.substring(fromIndex, toIndex);
+            String script = purifyScripts(rawScript);
+
+            Matcher matcher = JS_VAR_PATTERN.matcher(rawScript);
+            boolean varFound = false;//matcher.find();
+
+            buffer.delete(fromIndex, toIndex);
+
+            if (varFound) {
+                rtLibraryScriptBuffer.append(script).append("\n");
+            } else {
+                rawScriptBuffer.append(rawScript);
+            }
+        }
+    }
+
+    private static String purifyScripts(String script) {
+        StringBuffer result = new StringBuffer();
+        int startIdx = script.indexOf("<script");
+        int endIdx = script.indexOf("</script>");
+        if (startIdx == -1 || endIdx == -1) return script;
+        int endScriptInit = script.indexOf(">", startIdx + 1);
+        if (startIdx > 0) {
+            result.append(script.substring(0, startIdx));
+            result.append("\n");
+            script = script.substring(startIdx);
+            // re-read indexes
+            startIdx = script.indexOf("<script");
+            endIdx = script.indexOf("</script>");
+            if (startIdx != -1)
+                endScriptInit = script.indexOf(">", startIdx + 1);
+        }
+        if (endScriptInit == -1) return script;
+        while (startIdx > -1) {
+            result.append(script.substring(endScriptInit + 1, endIdx));
+            result.append("\n");
+            script = script.substring(endIdx + "</script>".length());
+            // re-read indexes
+            startIdx = script.indexOf("<script");
+            endIdx = script.indexOf("</script>");
+            if (startIdx > -1)
+                endScriptInit = script.indexOf(">", startIdx + 1);
+        }
+        if (script.length() > 0) {
+            result.append(script);
+            result.append("\n");
+        }
+        return result.toString();
+    }
+
+    public static ResponseWriter substituteResponseWriter(FacesContext context, Writer innerWriter) {
+        ResponseWriter newWriter;
+        ResponseWriter responseWriter = context.getResponseWriter();
+        if (responseWriter != null) {
+            newWriter = responseWriter.cloneWithWriter(innerWriter);
+        } else {
+            RenderKitFactory factory = (RenderKitFactory) FactoryFinder.getFactory(FactoryFinder.RENDER_KIT_FACTORY);
+            RenderKit renderKit = factory.getRenderKit(context, context.getViewRoot().getRenderKitId());
+            newWriter = renderKit.createResponseWriter(innerWriter, null, context.getExternalContext().getRequestCharacterEncoding());
+        }
+        context.setResponseWriter(newWriter);
+        return responseWriter;
+    }
+
+    public static void restoreWriter(FacesContext context, ResponseWriter originalWriter) {
+        if (originalWriter != null)
+            context.setResponseWriter(originalWriter);
+    }
+
+    protected static void assertChildren(UIViewRoot viewRoot) {
+        if (viewRoot.getChildCount() == 0) {
+            throw new IllegalStateException("View should have been already restored.");
+        }
+    }
+
+    public static String processAjaxExecutePhase(FacesContext context) {
+        UIViewRoot viewRoot = context.getViewRoot();
+        Map<String, String> requestParams = context.getExternalContext().getRequestParameterMap();
+        String listener = requestParams.get(PARAM_ACTION_LISTENER);
+        String action = requestParams.get(PARAM_ACTION);
+        String actionComponentId = requestParams.get(PARAM_ACTION_COMPONENT);
+        Log.log(context, "try invoke listener");
+        if (listener != null || action != null) {
+            ELContext elContext = context.getELContext();
+            UIComponent component = null;
+            if (actionComponentId != null)
+                component = findComponentById(viewRoot, actionComponentId, true, false, false);
+            if (component == null)
+                component = viewRoot;
+
+            Object result = null;
+            if (action != null) {
+                MethodExpression methodBinding = context.getApplication().getExpressionFactory().createMethodExpression(
+                        elContext, "#{" + action + "}", String.class, new Class[]{});
+                /*result = */
+                methodBinding.invoke(elContext, null);
+            }
+            if (listener != null) {
+                AjaxActionEvent event = new AjaxActionEvent(component);
+                event.setPhaseId(Boolean.valueOf(requestParams.get(PARAM_IMMEDIATE)) ? PhaseId.APPLY_REQUEST_VALUES : PhaseId.INVOKE_APPLICATION);
+                MethodExpression methodExpression = context.getApplication().getExpressionFactory().createMethodExpression(
+                        elContext, "#{" + listener + "}", void.class, new Class[]{ActionEvent.class});
+                try {
+                    methodExpression.getMethodInfo(elContext);
+                } catch (MethodNotFoundException e) {
+                    // both actionEvent and AjaxActionEvent parameter declarations are allowed
+                    methodExpression = context.getApplication().getExpressionFactory().createMethodExpression(
+                            elContext, "#{" + listener + "}", void.class, new Class[]{AjaxActionEvent.class});
+                }
+                methodExpression.invoke(elContext, new Object[]{event});
+                Object listenerResult = event.getAjaxResult();
+                if (listenerResult != null)
+                    result = listenerResult;
+            }
+            if (result != null)
+                AjaxRequest.getInstance().setAjaxResult(result);
+        }
+        return actionComponentId;
+    }
+
+    public static UIComponent findComponentById(UIComponent parent,
+                                                String id,
+                                                boolean preProcessDecodesOnTables,
+                                                boolean preRenderResponseOnTables,
+                                                boolean checkComponentPresence) {
+        UIComponent componentByPath = findComponentByPath(parent, id, preProcessDecodesOnTables, preRenderResponseOnTables);
+        if (checkComponentPresence && componentByPath == null)
+            throw new FacesException("Component by id not found: " + id);
+        return componentByPath;
+    }
+
+    private static UIComponent findComponentByPath(UIComponent parent,
+                                                   String path,
+                                                   boolean preProcessDecodesOnTables,
+                                                   boolean preRenderResponseOnTables) {
+        while (true) {
+            if (path == null) {
+                return null;
+            }
+
+            int separator = path.indexOf(NamingContainer.SEPARATOR_CHAR, 1);
+            if (separator == -1)
+                return componentById(parent, path, true, preProcessDecodesOnTables, preRenderResponseOnTables);
+
+            String id = path.substring(0, separator);
+            UIComponent nextParent = componentById(parent, id, false, preProcessDecodesOnTables, preRenderResponseOnTables);
+            if (nextParent == null) {
+                return null;
+            }
+            parent = nextParent;
+            path = path.substring(separator + 1);
+        }
+    }
+
+    private static UIComponent componentById(UIComponent parent, String id, boolean isLastComponentInPath,
+                                             boolean preProcessDecodesOnTables, boolean preRenderResponseOnTables) {
+        if (id.length() > 0 && (isNumberBasedId(id) || id.startsWith(":")) && parent instanceof AbstractTable) {
+            AbstractTable table = ((AbstractTable) parent);
+            if (!isLastComponentInPath) {
+                if (preProcessDecodesOnTables)
+                    table.invokeBeforeProcessDecodes(FacesContext.getCurrentInstance());
+                if (preRenderResponseOnTables) {
+                    table.invokeBeforeRenderResponse(FacesContext.getCurrentInstance());
+                    table.setRowIndex(-1); // make the succeeding setRowIndex call provide the just-read actual row data through request-scope variables
+                }
+
+                int rowIndex = table.getRowIndexByClientSuffix(id);
+                if (table.getRowIndex() == rowIndex) {
+                    // ensure row index setting will be run anew to ensure proper request-scope variable values
+                    table.setRowIndex(-1);
+                }
+                table.setRowIndex(rowIndex);
+            } else {
+                int rowIndex = table.getRowIndexByClientSuffix(id);
+                if (table.getRowIndex() == rowIndex) {
+                    // ensure row index setting will be run anew to ensure proper request-scope variable values
+                    table.setRowIndex(-1);
+                }
+                table.setRowIndex(rowIndex);
+            }
+            return table;
+        } else if (isNumberBasedId(id) && parent instanceof UIData) {
+            UIData grid = ((UIData) parent);
+            int rowIndex = Integer.parseInt(id);
+            grid.setRowIndex(rowIndex);
+            return grid;
+        } else if (id.charAt(0) == ':' && parent instanceof OUIObjectIterator) {
+            id = id.substring(1);
+            OUIObjectIterator iterator = (OUIObjectIterator) parent;
+            iterator.setObjectId(id);
+            return (UIComponent) iterator;
+        } else if (isNumberBasedId(id)) {
+            try {
+                Class clazz = Class.forName("com.sun.facelets.component.UIRepeat");
+                if (clazz.isInstance(parent)) {
+                    ReflectionUtil.invokeMethod("com.sun.facelets.component.UIRepeat", "setIndex",
+                            new Class[]{Integer.TYPE}, new Object[]{Integer.parseInt(id)}, parent);
+                    return parent;
+                }
+            } catch (ClassNotFoundException e) {
+                //do nothing - it's ok - not facelets environment
+            }
+
+        }
+        if (id.equals(parent.getId()))
+            return parent;
+
+        Iterator<UIComponent> iterator = parent.getFacetsAndChildren();
+        while (iterator.hasNext()) {
+            UIComponent child = iterator.next();
+            if (child instanceof NamingContainer) {
+                if (id.equals(child.getId()))
+                    return child;
+            } else {
+                UIComponent component = componentById(child, id,
+                        isLastComponentInPath, preProcessDecodesOnTables, preRenderResponseOnTables);
+                if (component != null)
+                    return component;
+            }
+        }
+        return null;
+    }
+
+    private static boolean isNumberBasedId(String id) {
+        if (id == null || id.length() == 0)
+            return false;
+
+        char c = id.charAt(0);
+        return Character.isDigit(c);
+    }
+
     private interface ExtensionRenderer {
         public JSONObject render() throws IOException;
     }
@@ -283,7 +647,7 @@ public class PartialViewContext extends PartialViewContextWrapper {
         String[] renderIds = renderParam.split("[ \t]+");
         if (renderIds.length != 1)
             throw new RuntimeException("There should be one target component but was: " + renderIds.length);
-        final UIComponent component = UtilPhaseListener.findComponentById(context.getViewRoot(), renderIds[0],
+        final UIComponent component = findComponentById(context.getViewRoot(), renderIds[0],
                 false, true, true);
 
         RenderKitFactory factory = (RenderKitFactory) FactoryFinder.getFactory(FactoryFinder.RENDER_KIT_FACTORY);
@@ -315,17 +679,17 @@ public class PartialViewContext extends PartialViewContextWrapper {
         StringBuilder portionOutput;
         JSONObject responseData;
         StringWriter stringWriter = new StringWriter();
-        ResponseWriter originalWriter = CommonAjaxViewRoot.substituteResponseWriter(context, stringWriter);
+        ResponseWriter originalWriter = substituteResponseWriter(context, stringWriter);
         try {
             responseData = extensionRenderer.render();
             portionOutput = new StringBuilder(stringWriter.toString());
         } finally {
-            CommonAjaxViewRoot.restoreWriter(context, originalWriter);
+            restoreWriter(context, originalWriter);
         }
 
         StringBuilder rawScriptsBuffer = new StringBuilder();
         StringBuilder rtLibraryScriptsBuffer = new StringBuilder();
-        CommonAjaxViewRoot.extractScripts(portionOutput, rawScriptsBuffer, rtLibraryScriptsBuffer);
+        extractScripts(portionOutput, rawScriptsBuffer, rtLibraryScriptsBuffer);
 
         Collection<String> libraries = new LinkedHashSet<String>();
         List<String> registeredJsLibs = Resources.getRegisteredJsLibraries();

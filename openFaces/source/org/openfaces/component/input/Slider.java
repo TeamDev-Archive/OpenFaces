@@ -95,12 +95,6 @@ public class Slider extends OUIInputBase {
         return COMPONENT_FAMILY;
     }
 
-    public void processRestoreState(FacesContext context, Object state) {
-        Object ajaxState = AjaxUtil.retrieveAjaxStateObject(context, this);
-        super.processRestoreState(context, ajaxState != null ? ajaxState : state);
-    }
-
-
     public Object saveState(FacesContext context) {
         return new Object[]{
                 super.saveState(context),

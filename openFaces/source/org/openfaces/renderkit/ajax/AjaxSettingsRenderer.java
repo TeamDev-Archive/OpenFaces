@@ -61,11 +61,6 @@ public class AjaxSettingsRenderer extends AbstractSettingsRenderer implements Aj
             expirationFacet.encodeAll(context);
         }
 
-        if (isAjaxErrorProcessing(context)) {
-
-            // TODO [Eugene Goncharov]: add error processing here
-        }
-
         processAjaxProgressMessage(context, (AjaxSettings) component);
     }
 

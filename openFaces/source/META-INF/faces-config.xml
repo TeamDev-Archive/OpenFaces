@@ -28,11 +28,6 @@
     <phase-listener>org.openfaces.util.RendererRequestPhaseListener</phase-listener>
   </lifecycle>
 
-  <component>
-    <component-type>org.openfaces.ajax.AjaxViewRoot</component-type>
-    <component-class>org.openfaces.ajax.AjaxViewRoot</component-class>
-  </component>
-
   <!-- TABLE-RELATED COMPONENTS DECLARATION -->
   <component>
     <component-type>org.openfaces.DataTable</component-type>

@@ -11,8 +11,6 @@
  */
 package org.openfaces.util;
 
-import org.openfaces.ajax.AjaxViewHandler;
-
 import javax.faces.FactoryFinder;
 import javax.faces.application.StateManager;
 import javax.faces.component.UIViewRoot;
@@ -73,7 +71,7 @@ public class Environment {
 
     public static boolean isFacelets(FacesContext context) {
         Map<String, Object> applicationMap = context.getExternalContext().getApplicationMap();
-        String isFaceletsKey = AjaxViewHandler.class.getName() + ".isFacelets";
+        String isFaceletsKey = Environment.class.getName() + ".isFacelets";
         Boolean faceletsFlag = (Boolean) applicationMap.get(isFaceletsKey);
         if (faceletsFlag == null) {
             boolean facelets = isFacelets_internal(context);
