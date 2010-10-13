@@ -27,7 +27,7 @@ public class SilentSessionExpirationRenderer extends AbstractSettingsRenderer {
         if (ViewExpiredExceptionHandler.isExpiredView(context)) {
             String location = getRedirectLocationOnSessionExpired(context);
 
-            String onsessionexpiredHandlerFunction = "O$.reloadPage(\'" + location + "\');";
+            String onsessionexpiredHandlerFunction = "O$.Ajax.reloadPage(\'" + location + "\');";
             UIComponent ajaxSettings = component.getParent();
             processEvent(context, ajaxSettings, "onsessionexpired", onsessionexpiredHandlerFunction);
         }

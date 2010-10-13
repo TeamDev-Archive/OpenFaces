@@ -51,7 +51,7 @@ O$.Table = {
         return this._showingMenuForColumn ? this._showingMenuForColumn : null;
       },
       _loadRows: function(completionCallback) {
-        O$.requestComponentPortions(this.id, ["rows"], null, function(table, portionName, portionHTML, portionScripts, portionData) {
+        O$.Ajax.requestComponentPortions(this.id, ["rows"], null, function(table, portionName, portionHTML, portionScripts, portionData) {
           if (portionName != "rows") throw "Unknown portionName: " + portionName;
           table.body._removeAllRows();
           O$.Table._acceptLoadedRows(table, portionName, portionHTML, portionScripts, portionData);
@@ -273,7 +273,7 @@ O$.Table = {
     table.__newRows = newRows;
 
     table._addLoadedRows(portionData);
-    O$.executeScripts(portionScripts);
+    O$.Ajax.executeScripts(portionScripts);
   },
 
   // -------------------------- KEYBOARD NAVIGATION SUPPORT
@@ -1574,7 +1574,7 @@ O$.Table = {
             colWidthsField.value = (O$.isOpera() ? table.style.width : totalWidth + "px") + ":" +
                                    "[" + colWidths.join(",") + "]";
             if (autoSaveState) {
-              O$.requestComponentPortions(table.id, ["columnResizingState"], null, function() {
+              O$.Ajax.requestComponentPortions(table.id, ["columnResizingState"], null, function() {
                 // no client-side updates are required -- the request was just for saving data
               }, null, true);
             }

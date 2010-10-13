@@ -52,7 +52,7 @@ public class DefaultProgressMessageRenderer extends AbstractSettingsRenderer {
         Styles.renderStyleClasses(context, dpm, true, false);
 
         String ajaxMessageHTML = dpm.getAjaxMessageHTML();
-        ScriptBuilder setMessageScript = new ScriptBuilder().functionCall("O$.setAjaxMessageHTML",
+        ScriptBuilder setMessageScript = new ScriptBuilder().functionCall("O$.Ajax.setMessageHTML",
                 ajaxMessageHTML,
                 dpm.getHorizontalAlignment(),
                 dpm.getVerticalAlignment(),
@@ -61,23 +61,8 @@ public class DefaultProgressMessageRenderer extends AbstractSettingsRenderer {
                 backgroundLayerParams,
                 dpm.getMode() == ProgressMessageMode.ALL).semicolon();
 
-        if (isAjaxCleanupRequired()) {
-            setMessageScript.functionCall("O$.setAjaxCleanupRequired", true).semicolon();
-        }
-
-        if (isAjaxCleanupRequired())
-            setMessageScript.semicolon().append("O$.setAjaxCleanupRequired(true);");
         Rendering.renderInitScript(context, setMessageScript);
 
     }
-
-    private static boolean isAjaxCleanupRequired() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        ExternalContext externalContext = context.getExternalContext();
-        String paramStr = externalContext.getInitParameter("org.openfaces.ajaxCleanupRequired");
-        Boolean ajaxCleanupRequired = paramStr != null ? Boolean.valueOf(paramStr) : Boolean.FALSE;
-        return ajaxCleanupRequired;
-    }
-
 
 }

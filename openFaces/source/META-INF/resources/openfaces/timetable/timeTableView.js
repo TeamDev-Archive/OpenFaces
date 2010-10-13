@@ -728,14 +728,14 @@ O$.TimeTableView._init = function(componentId,
   };
 
   timeTableView._saveChanges = function(reloadAllEvents, serverAction, reloadStartTime, reloadEndTime) {
-    O$.requestComponentPortions(this.id, ["saveEventChanges"], JSON.stringify(
+    O$.Ajax.requestComponentPortions(this.id, ["saveEventChanges"], JSON.stringify(
     {reloadAllEvents: !!reloadAllEvents, startTime: O$.formatDateTime(reloadStartTime), endTime: O$.formatDateTime(reloadEndTime)},
             ["reloadAllEvents", "startTime", "endTime"]), function(
             component, portionName, portionHTML, portionScripts, portionData) {
-      var remainingElements = O$.replaceDocumentElements(portionHTML, true);
+      var remainingElements = O$.Timetable.replaceDocumentElements(portionHTML, true);
       if (remainingElements.hasChildNodes())
         hiddenArea.appendChild(remainingElements);
-      O$.executeScripts(portionScripts);
+      O$.Ajax.executeScripts(portionScripts);
 
       if (portionData.reloadedEvents) {
         eventProvider.setEvents(portionData.reloadedEvents, reloadStartTime, reloadEndTime);

@@ -31,7 +31,7 @@ public abstract class AbstractSettingsRenderer extends RendererBase {
     protected void processEvent(FacesContext context, UIComponent component, String eventName, String eventHandlerJavascript) throws IOException {
         String eventFunction = getEventFunction(eventHandlerJavascript);
 
-        String eventHandlingJavascript = getEventScript(eventName, eventFunction, component);
+        String eventHandlingJavascript = getEventScript(eventName, eventFunction);
         renderInitScript(context, eventHandlingJavascript);
     }
 
@@ -40,15 +40,8 @@ public abstract class AbstractSettingsRenderer extends RendererBase {
         Rendering.renderInitScript(context, new ScriptBuilder().onLoadScript(new RawScript(javaScript)));
     }
 
-    protected String getEventScript(String eventName, String eventFunction, UIComponent component) {
-        String javaScript;
-
-        UIComponent parentComponent = component.getParent();
-
-        boolean isEventForComponent = isParentComponentValid(parentComponent) && (getComponentId(parentComponent) != null);
-        javaScript = (isEventForComponent)
-                ? "O$.setComponentAjaxEventHandler('" + eventName + "'," + eventFunction + ",'" + getComponentId(parentComponent) + "');"
-                : "O$.setCommonAjaxEventHandler('" + eventName + "'," + eventFunction + ");";
+    protected String getEventScript(String eventName, String eventFunction) {
+        String javaScript = "O$.Ajax.setCommonAjaxEventHandler('" + eventName + "'," + eventFunction + ");";
         return javaScript;
     }
 

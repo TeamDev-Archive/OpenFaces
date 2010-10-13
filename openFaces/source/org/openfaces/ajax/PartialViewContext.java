@@ -259,7 +259,7 @@ public class PartialViewContext extends PartialViewContextWrapper {
         PartialResponseWriter partialWriter = partialViewContext.getPartialResponseWriter();
         partialWriter.startEval();
         partialWriter.write(
-                new FunctionCallScript("O$._runScript", script.getScript(), script.getJsFiles()).toString()
+                new FunctionCallScript("O$.Ajax._runScript", script.getScript(), script.getJsFiles()).toString()
         );
         partialWriter.endEval();
     }

@@ -4688,7 +4688,7 @@ if (!window.O$) {
         }
       O$.submitEnclosingForm(component);
     } else {
-      O$._ajaxReload([component.id], {
+      O$.Ajax._reload([component.id], {
         onajaxend: completionCallback,
         additionalParams: additionalParams,
         execute: execute});

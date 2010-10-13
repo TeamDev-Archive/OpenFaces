@@ -263,7 +263,7 @@ O$.TreeTable = {
             if (O$._ajaxRequestScheduled || O$._ajax_request_processing)
               ajaxFailedProcessor();
             else
-              O$.requestComponentPortions(rowTable.id, ["subRows:" + this._index], null, O$.Table._acceptLoadedRows, ajaxFailedProcessor);
+              O$.Ajax.requestComponentPortions(rowTable.id, ["subRows:" + this._index], null, O$.Table._acceptLoadedRows, ajaxFailedProcessor);
           } else
             O$.submitFormWithAdditionalParam(rowTable, rowTable.id + "::toggleExpansion", this._index);
         } else {

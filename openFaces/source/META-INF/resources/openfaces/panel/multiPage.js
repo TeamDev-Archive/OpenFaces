@@ -75,12 +75,12 @@ O$.MultiPage = {
       } else if (loadingMode == "ajaxLazy" || loadingMode == "ajaxAlways") {
         newPageContainer = multiPage._getPageContainer(absoluteIndex);
         if (!newPageContainer || loadingMode == "ajaxAlways")
-          O$.requestComponentPortions(multiPage.id, ["page:" + absoluteIndex], null, function(multiPageComponent, portionName, portionHTML, portionScripts) {
+          O$.Ajax.requestComponentPortions(multiPage.id, ["page:" + absoluteIndex], null, function(multiPageComponent, portionName, portionHTML, portionScripts) {
             var tempDiv = document.createElement("div");
             tempDiv.innerHTML = portionHTML;
             var newPageContainer = tempDiv.childNodes[0];
             multiPageComponent._pagesContainer.appendChild(newPageContainer);
-            O$.executeScripts(portionScripts);
+            O$.Ajax.executeScripts(portionScripts);
 
             O$.assert(portionName.substring(0, "page:".length) == "page:", "tabbedPanePageLoaded: illegal portion prefix:" + portionName);
             var pageNoStr = portionName.substring("page:".length);

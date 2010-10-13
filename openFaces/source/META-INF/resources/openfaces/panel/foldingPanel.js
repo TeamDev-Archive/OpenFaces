@@ -54,7 +54,7 @@ O$.FoldingPanel = {
         contentHolder.style.display = this._expanded ? "block" : "none";
         if (this._expanded && (!this._contentLoaded || loadingMode == "ajaxAlways")) {
           if (loadingMode != "server") {
-            O$.requestComponentPortions(this.id, ["content"], null, O$.FoldingPanel._ajaxResponseProcessor);
+            O$.Ajax.requestComponentPortions(this.id, ["content"], null, O$.FoldingPanel._ajaxResponseProcessor);
           } else {
             O$.submitEnclosingForm(this);
           }
@@ -155,7 +155,7 @@ O$.FoldingPanel = {
       prnt.replaceChild(newControl, oldComponent);
       newControl.id = oldId;
     }
-    O$.executeScripts(portionScripts);
+    O$.Ajax.executeScripts(portionScripts);
     fp._contentLoaded = true;
   },
 

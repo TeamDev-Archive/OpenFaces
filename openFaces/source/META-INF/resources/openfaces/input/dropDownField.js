@@ -129,7 +129,7 @@ O$.DropDownField = {
         dropDown._filterCriterion = text;
         if (suggestionMode == "custom") {
           if (!dropDown._showCachedSuggestions(text, autoCompletionAllowedForThisKey))
-            O$.requestComponentPortions(dropDownId,
+            O$.Ajax.requestComponentPortions(dropDownId,
                     ["filterCriterion:" + ((text != null) ? "[" + text + "]" : "null")],
                     null,
                     O$.DropDownField._filteredItemsLoaded);
@@ -1008,7 +1008,7 @@ O$.DropDownField = {
 
         dropDownField._showCachedSuggestions(filterCriterion);
       };
-      O$.executeScripts(portionScripts);
+      O$.Ajax.executeScripts(portionScripts);
     } finally {
       if (cacheOnly)
         document.body.removeChild(tempDiv);

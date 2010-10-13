@@ -1222,17 +1222,6 @@
       <JAVADOC />
       <SOURCES />
     </library>
-    <library name="Facelets">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/facelets/jsf-facelets-1.1.14.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/el/el-api.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/el/el-ri.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES>
-        <root url="jar://$PROJECT_DIR$/libsrc/facelets-1.1.14-src.zip!/facelets-1.1.14-src/java" />
-      </SOURCES>
-    </library>
     <library name="JUnit">
       <CLASSES>
         <root url="jar://$PROJECT_DIR$/testLib/junit.jar!/" />
@@ -1272,31 +1261,6 @@
       <JAVADOC />
       <SOURCES />
     </library>
-    <library name="JSF Implementation - Mojarra 1.2">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/apache/commons-digester-1.8.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/apache/commons-collections-3.1.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/apache/standard-1.1.2.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/jstl-1.1.0.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/apache/commons-beanutils-1.6.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/apache/commons-logging-1.0.4.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/apache/commons-el-1.0.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/mojarra/jsf-impl-1.2_12-b01.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/mojarra/jsf-api-1.2_12-b01.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES>
-        <root url="jar://$PROJECT_DIR$/libsrc/mojarra-1.2_12-source.zip!/mojarra-1.2_12-b01-FCS-sources/jsf-api/src" />
-        <root url="jar://$PROJECT_DIR$/libsrc/mojarra-1.2_12-source.zip!/mojarra-1.2_12-b01-FCS-sources/jsf-ri/src" />
-      </SOURCES>
-    </library>
-    <library name="jsf-portlet bridge 1.1">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/portals/jsf-portlet-1.1.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES />
-    </library>
     <library name="portals-bridges-jsf-1.0">
       <CLASSES>
         <root url="jar://$PROJECT_DIR$/lib/portals/portals-bridges-jsf-1.0.jar!/" />
@@ -1321,7 +1285,6 @@
     </library>
     <library name="OpenFaces Dependencies">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/jdom-1.0.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/jboss-el.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/hibernate-validator.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/hibernate-commons-annotations.jar!/" />
@@ -1333,24 +1296,6 @@
       </CLASSES>
       <JAVADOC />
       <SOURCES />
-    </library>
-    <library name="JSF Implementation - MyFaces 1.2">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/apache/commons-collections-3.2.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/apache/commons-digester-1.8.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/apache/commons-beanutils-1.7.0.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/apache/commons-el-1.0.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/apache/commons-discovery-0.4.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/apache/commons-codec-1.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/myfaces/myfaces-api-1.2.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/myfaces/myfaces-impl-1.2.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/apache/commons-logging-1.1.1.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES>
-        <root url="jar://$PROJECT_DIR$/libsrc/myfaces-impl-1.2.3-sources.zip!/" />
-        <root url="jar://$PROJECT_DIR$/libsrc/myfaces-api-1.2.3-sources.zip!/" />
-      </SOURCES>
     </library>
     <library name="JBoss Seam 2.0">
       <CLASSES>
@@ -1371,17 +1316,6 @@
         <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/pdf" />
         <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/ui/src/test/java" />
         <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/debug" />
-      </SOURCES>
-    </library>
-    <library name="Facelets (without el-api.jar -- for Tomcat 6.0)">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/facelets/jsf-facelets-1.1.14.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/el/el-ri.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES>
-        <root url="jar://$PROJECT_DIR$/libsrc/facelets-1.1.14-src.zip!/facelets-1.1.14-src/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/facelets-1.1.14-src.zip!/facelets-1.1.14-src/test" />
       </SOURCES>
     </library>
     <library name="jbpm-jpdl">
@@ -1425,15 +1359,6 @@
         <root url="jar://$PROJECT_DIR$/lib/portals/WebSphere/jsf-ibm.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/portals/WebSphere/jsf-impl-messages.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/portals/WebSphere/ws-jsf.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES />
-    </library>
-    <library name="eXoPortal">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/portals/Exo Portal/exo-portal.jsf.jsf-ri-1.1.4.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/portals/Exo Portal/exo-portlet-container.services.jsr168.impl-1.4.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/portals/Exo Portal/exo-portlet-container.services.jsr168.api-1.4.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />

@@ -43,8 +43,6 @@ public class AjaxUtil {
     private static final int LENGTH_UNICODE = 4;
     private static final int LENGTH_BACKSLASH_AND_UNICODE = 5;
 
-    private static long iInitLibraryNameCounter = 0;
-    private static final Random random = new Random();
     private static final String AJAX_SUPPORT_RENDERED = "org.openfaces.ajaxSupportOnPageRendered";
 
     public static boolean isAjax4jsfRequest() {

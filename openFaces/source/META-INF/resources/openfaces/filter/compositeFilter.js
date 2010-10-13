@@ -31,27 +31,27 @@ O$.CompositeFilter = {
       },
 
       add: function() {
-        O$.requestComponentPortions(clientId, ["newRow"], JSON.stringify({operation: "add"}),
+        O$.Ajax.requestComponentPortions(clientId, ["newRow"], JSON.stringify({operation: "add"}),
                 this._ajaxResponseProcessor);
       },
 
       clear: function() {
-        O$.requestComponentPortions(clientId, ["removedFilter"], JSON.stringify({operation: "clear"}),
+        O$.Ajax.requestComponentPortions(clientId, ["removedFilter"], JSON.stringify({operation: "clear"}),
                 this._ajaxResponseProcessor);
       },
 
       remove: function(index) {
-        O$.requestComponentPortions(clientId, ["removedRow:" + index], JSON.stringify({operation: "remove", index: index}),
+        O$.Ajax.requestComponentPortions(clientId, ["removedRow:" + index], JSON.stringify({operation: "remove", index: index}),
                 this._ajaxResponseProcessor);
       },
 
       _propertyChange: function(index) {
-        O$.requestComponentPortions(clientId, ["operation:" + index], JSON.stringify({operation: "propertyChange", index: index}),
+        O$.Ajax.requestComponentPortions(clientId, ["operation:" + index], JSON.stringify({operation: "propertyChange", index: index}),
                 this._ajaxResponseProcessor);
       },
 
       _operationChange: function(index) {
-        O$.requestComponentPortions(clientId, ["parameters:" + index], JSON.stringify({operation: "operationChange", index: index}),
+        O$.Ajax.requestComponentPortions(clientId, ["parameters:" + index], JSON.stringify({operation: "operationChange", index: index}),
                 this._ajaxResponseProcessor);
       },
 
@@ -199,7 +199,7 @@ O$.CompositeFilter = {
           }
           focusLastField(rowContainer);
         }
-        O$.executeScripts(portionScripts);
+        O$.Ajax.executeScripts(portionScripts);
       }
     });
     var filter = O$(clientId);

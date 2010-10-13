@@ -68,7 +68,7 @@ public class RendererBase extends Renderer {
                 throw new FacesException("'execute' attribute can't be specified without the 'render' attribute. Component id: " + command.getId());
 
             AjaxInitializer initializer = new AjaxInitializer();
-            componentClickHandler = new ScriptBuilder().functionCall("O$._ajaxReload",
+            componentClickHandler = new ScriptBuilder().functionCall("O$.Ajax._reload",
                     initializer.getRenderArray(context, command, render),
                     initializer.getAjaxParams(context, command),
                     new RawScript("this"),

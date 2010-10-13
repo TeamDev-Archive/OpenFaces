@@ -43,7 +43,7 @@ public class AjaxHelper extends OUIClientActionHelper implements ClientBehavior 
 
         ScriptBuilder buf = new ScriptBuilder();
         AjaxInitializer ajaxInitializer = new AjaxInitializer();
-        buf.functionCall("O$._ajaxReload",
+        buf.functionCall("O$.Ajax._reload",
                 ajaxInitializer.getRenderArray(context, ajax, ajax.getRender()),
                 ajaxInitializer.getAjaxParams(context, ajax)).semicolon();
         return buf.toString();

@@ -55,7 +55,7 @@ public class ChartSelection extends OUICommand {
 
         if (render != null || (execute != null && execute.iterator().hasNext())) {
             AjaxInitializer initializer = new AjaxInitializer();
-            automaticChangeHandler = new ScriptBuilder().functionCall("O$._ajaxReload",
+            automaticChangeHandler = new ScriptBuilder().functionCall("O$.Ajax._reload",
                     initializer.getRenderArray(context, this, render),
                     initializer.getAjaxParams(context, this)).semicolon().append("return false;");
         }

@@ -218,7 +218,7 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
                 throw new FacesException("'execute' attribute can't be specified without the 'render' attribute. Component id: " + getId());
 
             AjaxInitializer initializer = new AjaxInitializer();
-            automaticChangeHandler = new ScriptBuilder().functionCall("O$._ajaxReload",
+            automaticChangeHandler = new ScriptBuilder().functionCall("O$.Ajax._reload",
                     initializer.getRenderArray(context, this, render),
                     initializer.getAjaxParams(context, this)).semicolon().append("return false;");
             ajaxJsRequired = true;
