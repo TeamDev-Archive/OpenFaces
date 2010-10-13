@@ -33,12 +33,6 @@
           <include name="el-api-1.5.0.jar"/>
           <include name="el-ri-1.5.0.jar"/>
         </fileset>
-        <fileset dir="${trinidad.lib.dir}">
-          <include name="trinidad-stub.jar"/>
-        </fileset>
-        <fileset dir="${adffaces.lib.dir}">
-          <include name="adf-faces-api-10.1.3.0.4.jar"/>
-        </fileset>
         <fileset dir="${jsf.ri.lib.dir}">
           <include name="jsf-api-2.0.3.jar"/>
           <include name="jsf-impl-2.0.3.jar"/>
@@ -84,8 +78,6 @@
   <target name="-build-if-lib-set" if="lib.dir"
           description="generate the distribution">
     <property name="el.lib.dir" location="${lib.dir}/el"/>
-    <property name="trinidad.lib.dir" location="${lib.dir}/trinidad"/>
-    <property name="adffaces.lib.dir" location="${lib.dir}/adf-faces"/>
     <property name="jsf.ri.lib.dir" location="${lib.dir}/mojarra"/>
     <property name="portlets.lib.dir" location="${lib.dir}/portals"/>
     <property name="openfaces.dependencies.lib.dir" location="${lib.dir}/openfaces-dependencies"/>
@@ -100,8 +92,6 @@
           description="generate the distribution">
     <property name="lib.dir" location="lib"/>
     <property name="el.lib.dir" location="${lib.dir}/el"/>
-    <property name="trinidad.lib.dir" location="${lib.dir}/trinidad"/>
-    <property name="adffaces.lib.dir" location="${lib.dir}/adf-faces"/>
     <property name="jsf.ri.lib.dir" location="${lib.dir}/mojarra"/>
     <property name="portlets.lib.dir" location="${lib.dir}/portals"/>
     <property name="openfaces.dependencies.lib.dir" location="${lib.dir}/openfaces-dependencies"/>

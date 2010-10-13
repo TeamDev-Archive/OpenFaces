@@ -13,7 +13,6 @@
     <orderEntry type="library" scope="PROVIDED" name="jstl" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="portlet-api-lib" level="project" />
     <orderEntry type="library" exported="" scope="PROVIDED" name="OpenFaces Dependencies" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="trinidad-stub" level="project" />
     <orderEntry type="module-library" scope="PROVIDED">
       <library>
         <CLASSES>
@@ -23,7 +22,6 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" scope="PROVIDED" name="adf-faces" level="project" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>

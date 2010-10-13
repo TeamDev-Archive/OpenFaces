@@ -26,8 +26,6 @@ import java.util.Map;
  * @author Eugene Goncharov
  */
 public class Environment {
-    public static final String PARAM_ENVIRONMENT_TRINIDAD_SUPPORT = "org.openfaces.environment.trinidadSupport";
-
     private static final String KEY_UNDEFINED_BROWSER = "undefined_browser";
     private static final String KEY_EXPLORER_BROWSER = "explorer_browser";
     private static final String KEY_OPERA_BROWSER = "opera_browser";
@@ -167,12 +165,6 @@ public class Environment {
             exoPortal = false;
         }
         return exoPortal;
-    }
-
-    public static boolean isTrinidad() {
-        Map applicationMap = FacesContext.getCurrentInstance().getExternalContext().getApplicationMap();
-        Boolean trinidadSupport = (Boolean) applicationMap.get(PARAM_ENVIRONMENT_TRINIDAD_SUPPORT);
-        return trinidadSupport != null && trinidadSupport.equals(Boolean.TRUE);
     }
 
     public static boolean isExplorer() {
