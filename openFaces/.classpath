@@ -9,7 +9,6 @@
 	<classpathentry kind="lib" path="/Libs/jsp-api-2.1.jar"/>
 	<classpathentry kind="lib" path="/Libs/portals/portlet-api-lib.jar"/>
 	<classpathentry kind="lib" path="/Libs/openfaces-dependencies/jcommon-1.0.15.jar"/>
-	<classpathentry kind="lib" path="/Libs/openfaces-dependencies/jdom-1.0.jar"/>
 	<classpathentry kind="lib" path="/Libs/openfaces-dependencies/jfreechart-1.0.12.jar"/>
 	<classpathentry kind="lib" path="/Libs/openfaces-dependencies/ss_css2-0.9.4.jar"/>
 	<classpathentry kind="lib" path="/Libs/adf-faces/adf-faces-api-10.1.3.0.4.jar"/>

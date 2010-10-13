@@ -857,11 +857,11 @@
 }
 
 .o_dropdown_field {
-  background: url(clear.gif) repeat center center;
+  background: url(clear.gif) repeat center center !important; /*"important" overrides RichFaces default skin's border */
 
   margin: 0;
   padding: 2px 2px 0 2px;
-  border: 0 solid;
+  border: 0 solid !important; /*"important" overrides RichFaces default skin's border */
   width: 100%;
   outline: none;
 }
