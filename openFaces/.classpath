@@ -17,7 +17,6 @@
 	<classpathentry kind="lib" path="/Libs/richfaces/richfaces-core-impl-4.0.0.20101004-M3.jar"/>
 	<classpathentry kind="lib" path="/Libs/richfaces/richfaces-impl-3.3.0.GA.jar"/>
 	<classpathentry kind="lib" path="/Libs/richfaces/richfaces-ui-3.3.0.GA.jar"/>
-	<classpathentry kind="lib" path="/Libs/portals/Exo Portal/exo-portal.jsf.jsf-ri-1.1.4.jar"/>
 	<classpathentry kind="lib" path="/Libs/mojarra/jsf-api-2.0.2.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="output" path="classes"/>
