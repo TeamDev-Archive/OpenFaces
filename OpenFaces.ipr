@@ -1268,13 +1268,6 @@
         <root url="jar://$PROJECT_DIR$/libsrc/mojarra-1.2_12-source.zip!/mojarra-1.2_12-b01-FCS-sources/jsf-ri/src" />
       </SOURCES>
     </library>
-    <library name="jsf-portlet bridge 1.1">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/portals/jsf-portlet-1.1.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES />
-    </library>
     <library name="portals-bridges-jsf-1.0">
       <CLASSES>
         <root url="jar://$PROJECT_DIR$/lib/portals/portals-bridges-jsf-1.0.jar!/" />
@@ -1307,7 +1300,7 @@
         <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/sac.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/jcommon-1.0.16.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/jfreechart-1.0.13.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/commons-collections-3.1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/commons-collections-3.2.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
@@ -1392,24 +1385,6 @@
         <root url="jar://$PROJECT_DIR$/testLib/jai/mlibwrapper_jai.jar!/" />
         <root url="jar://$PROJECT_DIR$/testLib/jai/jai_core.jar!/" />
         <root url="jar://$PROJECT_DIR$/testLib/jai/jai_codec.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES />
-    </library>
-    <library name="WebSphere">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/portals/WebSphere/jsf-ibm.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/portals/WebSphere/jsf-impl-messages.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/portals/WebSphere/ws-jsf.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES />
-    </library>
-    <library name="eXoPortal">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/portals/Exo Portal/exo-portal.jsf.jsf-ri-1.1.4.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/portals/Exo Portal/exo-portlet-container.services.jsr168.impl-1.4.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/portals/Exo Portal/exo-portlet-container.services.jsr168.api-1.4.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
