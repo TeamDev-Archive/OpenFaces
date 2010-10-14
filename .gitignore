@@ -3,8 +3,16 @@
 /openFaces/classes/
 /funcTests/target/
 /liveDemo/core/target/
+/liveDemo/facelets/target/
+/liveDemo/jsp/target/
+/openFaces/build.number
+/openFaces/target/
+/openFacesInspectors/distribution/
 /openFacesInspectors/out/
 /out/
 /portlets/common/target/
 /testApp/core/out/
+/testApp/facelets/target/
+/testApp/jsp/target/
+/target/
 /OpenFaces.iws
