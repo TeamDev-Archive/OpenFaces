@@ -28,13 +28,11 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 /**
  * @author Eugene Goncharov
  */
 public class AjaxUtil {
-    public static final String AJAX_REQUEST_MARKER = "_openFaces_ajax";
     private static final String COMPONENT_DELIMITER = ",";
     public static final String UPDATE_PORTIONS_SUFFIX = "_of_ajax_portions";
     public static final String CUSTOM_JSON_PARAM = "_of_customJsonParam";
@@ -104,17 +102,6 @@ public class AjaxUtil {
             return false;
         }
         return false;
-    }
-
-    /**
-     * Checks whether the current request is an Ajax request
-     *
-     * @param request incoming request.
-     * @return <code>true</code> - if the current request is an Ajax request. <code>false</code> otherwise.
-     */
-    public static boolean isAjaxRequest(RequestFacade request) {
-        // for portlets: String browser = request.getProperty(...);
-        return request.getParameter(AJAX_REQUEST_MARKER) != null;
     }
 
     public static boolean isAjaxRequest(FacesContext context) {

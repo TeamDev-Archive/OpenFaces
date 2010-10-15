@@ -266,8 +266,8 @@ public class Environment {
     }
 
     private static String getUserAgent(FacesContext context) {
-        RequestFacade request = RequestFacade.getInstance(context.getExternalContext().getRequest());
-        String userAgent = request.getHeader("user-agent");
+        Map<String, String> requestHeaderMap = context.getExternalContext().getRequestHeaderMap();
+        String userAgent = requestHeaderMap.get("user-agent");
         return userAgent;
     }
 

@@ -14,6 +14,7 @@ package org.openfaces.util;
 import org.openfaces.component.validation.ValidatorPhaseListener;
 
 import javax.faces.FactoryFinder;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
@@ -33,21 +34,20 @@ public abstract class PhaseListenerBase implements PhaseListener {
         if (!AjaxUtil.isPortletRequest(facesContext))
             return false;
 
-        Object request = facesContext.getExternalContext().getRequest();
-        RequestFacade requestFacade = RequestFacade.getInstance(request);
+        ExternalContext extContext = facesContext.getExternalContext();
         String phasePassedKey = this.getClass().getName() + ".OF_PHASE_PASSED:" + phaseEvent.getPhaseId().getOrdinal() + ":" + beforePhaseNotifcation;
-        if (requestFacade.getAttribute(phasePassedKey) != null)
+        if (extContext.getRequestMap().get(phasePassedKey) != null)
             return true;
-        requestFacade.setAttribute(phasePassedKey, Boolean.TRUE);
+        extContext.getRequestMap().put(phasePassedKey, Boolean.TRUE);
         return false;
     }
 
     protected void checkOurPhaseListenerInvokedOnce(PhaseEvent event) {
         PhaseId phaseId = event.getPhaseId();
-        FacesContext facesContext = event.getFacesContext();
-        RequestFacade request = RequestFacade.getInstance(facesContext.getExternalContext().getRequest());
+        FacesContext context = event.getFacesContext();
+        ExternalContext extContext = context.getExternalContext();
         String phaseNotificationKey = this.getClass().getName() + ":phase_passed:" + phaseId.getOrdinal();
-        if (request.getAttribute(phaseNotificationKey) != null) {
+        if (extContext.getRequestMap().get(phaseNotificationKey) != null) {
             Lifecycle lifecycle = getLifecycle();
             PhaseListener[] phaseListeners = lifecycle.getPhaseListeners();
             int ownReferencesFound = 0;
@@ -55,12 +55,12 @@ public abstract class PhaseListenerBase implements PhaseListener {
                 if (phaseListener instanceof ValidatorPhaseListener)
                     ownReferencesFound++;
             }
-            if (ownReferencesFound > 1 && !AjaxUtil.isPortletRenderRequest(facesContext)) {
+            if (ownReferencesFound > 1 && !AjaxUtil.isPortletRenderRequest(context)) {
                 throw new IllegalStateException("Second notification for the same phase in the same request occurred. phaseId.ordinal: " + phaseId.getOrdinal() +
                         "; phaseId = " + phaseId + "; More than one ValidatorPhaseListener is found to be registered (" + ownReferencesFound + "). Check that only one JSF implementation is deployed with your application.");
             }
         }
-        request.setAttribute(phaseNotificationKey, "PhaseId: " + phaseId);
+        extContext.getRequestMap().put(phaseNotificationKey, "PhaseId: " + phaseId);
     }
 
     protected static Lifecycle getLifecycle() {

@@ -22,7 +22,6 @@ import org.openfaces.util.Components;
 import org.openfaces.util.DataUtil;
 import org.openfaces.util.InitScript;
 import org.openfaces.util.Rendering;
-import org.openfaces.util.RequestFacade;
 import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
 
@@ -51,7 +50,7 @@ public class DateChooserRenderer extends DropDownComponentRenderer {
         DateChooser dateChooser = (DateChooser) component;
         Locale locale = dateChooser.getLocale();
         if (locale == null) {
-            locale = RequestFacade.getInstance(context.getExternalContext().getRequest()).getLocale();
+            locale = context.getExternalContext().getRequestLocale();
         }
         Rendering.registerDateTimeFormatObject(locale);
     }
@@ -59,7 +58,7 @@ public class DateChooserRenderer extends DropDownComponentRenderer {
     @Override
     public void decode(FacesContext context, UIComponent component) {
         Rendering.decodeBehaviors(context, component);
-        
+
         Map requestMap = context.getExternalContext().getRequestParameterMap();
         String clientId = component.getClientId(context) + FIELD_SUFFIX;
         String value = (String) requestMap.get(clientId);
@@ -173,9 +172,7 @@ public class DateChooserRenderer extends DropDownComponentRenderer {
 
         Locale locale = dateChooser.getLocale();
         if (locale == null) {
-            Object requestObj = context.getExternalContext().getRequest();
-            RequestFacade requestFacade = RequestFacade.getInstance(requestObj);
-            locale = requestFacade.getLocale();
+            locale = context.getExternalContext().getRequestLocale();
         }
         c.setLocale(locale);
 

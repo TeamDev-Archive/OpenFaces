@@ -54,7 +54,6 @@ import java.awt.*;
 import java.awt.image.RenderedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.Writer;
 import java.lang.reflect.Array;
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
@@ -133,7 +132,7 @@ public class Rendering {
     }
 
     /**
-     * Write attibute and replace <code>styleClass</code> attribute with <code>style</code>
+     * Write attribute and replace <code>styleClass</code> attribute with <code>style</code>
      *
      * @param writer            The character-based output
      * @param attrName          Attribute name to be added
@@ -175,32 +174,6 @@ public class Rendering {
     public static void renderJavascriptEnd(ResponseWriter writer) throws IOException {
         writer.write("\n");
         writer.endElement("script");
-    }
-
-    /**
-     * Write javascript function start with name and opening bracket
-     *
-     * @param writer The character-based output
-     * @param name   The name of javascript function
-     * @throws IOException if an input/output error occurs
-     */
-    public static void renderJavascriptFunctionStart(Writer writer, String name) throws IOException {
-        if (name == null)
-            throw new IllegalArgumentException("Name for Javascript function can not be null");
-        if (name.length() == 0)
-            throw new IllegalArgumentException("Name for Javascript function can not be empty");
-        writer.write("\n");
-        writer.write("function " + name + "(){\n");
-    }
-
-    /**
-     * Write javascript function end with closing bracket
-     *
-     * @param writer The character-based output
-     * @throws IOException if an input/output error occurs
-     */
-    public static void renderJavascriptFunctionEnd(Writer writer) throws IOException {
-        writer.write("}\n");
     }
 
     private static List<String> allButEmpty(String[] strings) {

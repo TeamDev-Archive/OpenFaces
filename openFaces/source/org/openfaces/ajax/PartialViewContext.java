@@ -52,7 +52,6 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Array;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -111,7 +110,7 @@ public class PartialViewContext extends PartialViewContextWrapper {
                     return;
 
                 requestMap.put(additionalResponseRenderedKey, true);
-                
+
                 renderAdditionalPartialResponse();
             }
         };
@@ -232,8 +231,7 @@ public class PartialViewContext extends PartialViewContextWrapper {
         final ExternalContext externalContext = context.getExternalContext();
         final AjaxExtension extension = prepareExtension(context, "sessionExpiration", "", new ExtensionRenderer() {
             public JSONObject render() throws IOException {
-                AtomicReference<RequestFacade> requestFacade = new AtomicReference<RequestFacade>(RequestFacade.getInstance(externalContext.getRequest()));
-                handleSessionExpirationOnEncodeChildren(context, requestFacade.get());
+                handleSessionExpirationOnEncodeChildren(context);
                 return null;
             }
         }, true);
@@ -286,7 +284,7 @@ public class PartialViewContext extends PartialViewContextWrapper {
         return script;
     }
 
-    public static void handleSessionExpirationOnEncodeChildren(FacesContext context, RequestFacade request) throws IOException {
+    public static void handleSessionExpirationOnEncodeChildren(FacesContext context) throws IOException {
         ExternalContext externalContext = context.getExternalContext();
 
         UIViewRoot viewRoot = context.getViewRoot();
@@ -382,9 +380,9 @@ public class PartialViewContext extends PartialViewContextWrapper {
     }
 
     static UIComponent findComponentById(UIComponent parent,
-                                                 String id,
-                                                 boolean preProcessDecodesOnTables,
-                                                 boolean preRenderResponseOnTables) {
+                                         String id,
+                                         boolean preProcessDecodesOnTables,
+                                         boolean preRenderResponseOnTables) {
         return findComponentById(parent, id, preProcessDecodesOnTables, preRenderResponseOnTables, true);
     }
 
