@@ -30,7 +30,7 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="/Libs/apache/commons-logging-1.0.4.jar">
+	<classpathentry exported="true" kind="lib" path="/Libs/apache/commons-logging-1.1.1.jar">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>

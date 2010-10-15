@@ -33,7 +33,7 @@
     <include name="commons-beanutils-1.6.jar"/>
     <include name="commons-collections-3.2.jar"/>
     <include name="commons-digester-1.6.jar"/>
-    <include name="commons-logging-1.0.4.jar"/>
+    <include name="commons-logging-1.1.1.jar"/>
     <include name="commons-el-1.0.jar"/>
     <include name="standard-1.1.2.jar"/>
     <include name="commons-fileupload-1.0.jar"/>
@@ -148,7 +148,7 @@
           <include name="mojarra/jsf-api-1.2_12-b01.jar"/>
           <include name="servlet-api.jar"/>
           <include name="apache/commons-digester-1.6.jar"/>
-          <include name="apache/commons-logging-1.0.4.jar"/>
+          <include name="apache/commons-logging-1.1.1.jar"/>
           <include name="openfaces-dependencies/jdom-1.0.jar"/>
           <include name="openfaces-dependencies/jfreechart-1.0.13.jar"/>
           <include name="openfaces-dependencies/jcommon-1.0.16.jar"/>          
