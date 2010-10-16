@@ -1801,7 +1801,11 @@ if (!window.O$) {
 
   O$.initDefaultFocus = function(trackerFieldId, focusedComponentId) {
     O$.addLoadEvent(function() {
-      O$.setHiddenField(null, trackerFieldId, focusedComponentId);
+      try {
+        O$.setHiddenField(null, trackerFieldId, focusedComponentId);
+      } catch (e) {
+        // absence of a form on one page in case of application-wide focus tracking configuration is not critical
+      }
     });
     O$.initFocus_(trackerFieldId, true, 1);
   };
@@ -4644,8 +4648,10 @@ if (!window.O$) {
   O$._checkDefaultCssPresence = function() {
     if (O$._defaultCssPresenceChecked) return;
     O$._defaultCssPresenceChecked = true;
-    if (!O$.findCssRule(".o_default_css_marker"))
-      O$.logError("OpenFaces default.css file is not loaded. Did you use <head> tag instead of <h:head> tag?");
+    O$.addLoadEvent(function() {
+      if (!O$.findCssRule(".o_default_css_marker"))
+        O$.logError("OpenFaces default.css file is not loaded. Did you use <head> tag instead of <h:head> tag?");
+    });
   };
 
   O$.addLoadEvent(function() {
