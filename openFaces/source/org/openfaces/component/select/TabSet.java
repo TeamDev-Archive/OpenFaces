@@ -20,6 +20,7 @@ import javax.el.ELContext;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
+import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
@@ -39,6 +40,7 @@ import java.util.List;
  * 
  * @author Andrew Palval
  */
+@ResourceDependency(name = "default.css", library = "openfaces")
 public class TabSet extends OUIInputBase implements TabSelectionHolder {
     public static final String COMPONENT_TYPE = "org.openfaces.TabSet";
     public static final String COMPONENT_FAMILY = "org.openfaces.TabSet";

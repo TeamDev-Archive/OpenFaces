@@ -20,10 +20,16 @@ import org.openfaces.util.Script;
 import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.ValueBindings;
 
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 import java.awt.*;
 import java.io.IOException;
 
+@ResourceDependencies({
+        @ResourceDependency(name = "jsf.js", library = "javax.faces"),
+        @ResourceDependency(name = "default.css", library = "openfaces")
+})
 public class ChartSelection extends OUICommand {
     public static final String COMPONENT_TYPE = "org.openfaces.ChartSelection";
     public static final String COMPONENT_FAMILY = "org.openfaces.ChartSelection";

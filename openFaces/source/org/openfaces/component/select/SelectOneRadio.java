@@ -12,9 +12,12 @@
 
 package org.openfaces.component.select;
 
+import javax.faces.application.ResourceDependency;
+
 /**
  * @author Oleg Marshalenko
  */
+@ResourceDependency(name = "default.css", library = "openfaces")
 public class SelectOneRadio extends OUISelectManyInputBase {
     public static final String COMPONENT_TYPE = "org.openfaces.SelectOneRadio";
     public static final String COMPONENT_FAMILY = "org.openfaces.SelectOneRadio";

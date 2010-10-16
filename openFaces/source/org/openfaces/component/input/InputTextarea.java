@@ -14,11 +14,13 @@ package org.openfaces.component.input;
 import org.openfaces.component.OUIInputText;
 import org.openfaces.util.ValueBindings;
 
+import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 
 /**
  * @author Alexander Golubev
  */
+@ResourceDependency(name = "default.css", library = "openfaces")
 public class InputTextarea extends OUIInputText {
     public static final String COMPONENT_TYPE = "org.openfaces.InputTextarea";
     public static final String COMPONENT_FAMILY = "org.openfaces.InputTextarea";

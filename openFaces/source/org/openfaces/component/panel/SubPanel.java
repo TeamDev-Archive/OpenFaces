@@ -11,6 +11,7 @@
  */
 package org.openfaces.component.panel;
 
+import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import java.io.Serializable;
 import java.util.Arrays;
@@ -18,6 +19,7 @@ import java.util.Arrays;
 /**
  * @author Andrew Palval
  */
+@ResourceDependency(name = "default.css", library = "openfaces")
 public class SubPanel extends AbstractPanelWithCaption implements Serializable {
     public static final String COMPONENT_TYPE = "org.openfaces.SubPanel";
     public static final String COMPONENT_FAMILY = "org.openfaces.SubPanel";

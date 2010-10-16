@@ -16,6 +16,7 @@ import org.openfaces.util.ValueBindings;
 import org.openfaces.util.CalendarUtil;
 import org.openfaces.util.DataUtil;
 
+import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -35,6 +36,7 @@ import java.util.TimeZone;
  * 
  * @author Kharchenko
  */
+@ResourceDependency(name = "default.css", library = "openfaces")
 public class Calendar extends OUIInputBase {
     public static final String COMPONENT_TYPE = "org.openfaces.Calendar";
     public static final String COMPONENT_FAMILY = "org.openfaces.Calendar";

@@ -20,6 +20,7 @@ import org.openfaces.component.select.TabSetItems;
 import org.openfaces.util.Components;
 import org.openfaces.util.ValueBindings;
 
+import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
@@ -33,6 +34,7 @@ import java.io.IOException;
  *
  * @author Andrew Palval
  */
+@ResourceDependency(name = "default.css", library = "openfaces")
 public class TabbedPane extends MultiPageContainer implements TabSelectionHolder {
     public static final String COMPONENT_TYPE = "org.openfaces.TabbedPane";
     public static final String COMPONENT_FAMILY = "org.openfaces.TabbedPane";

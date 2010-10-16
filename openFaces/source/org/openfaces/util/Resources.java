@@ -231,7 +231,6 @@ public class Resources {
     public static String getUtilJsURL(FacesContext context) {
         // To be sure that default.css is included to the web page,
         // because it is also required in cases when util.js included into web page
-        Styles.requestDefaultCss(context);
         return getInternalURL(context, UTIL_JS_PATH);
     }
 

@@ -13,8 +13,14 @@ package org.openfaces.component.table;
 
 import org.openfaces.component.command.PopupMenu;
 
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 
+@ResourceDependencies({
+        @ResourceDependency(name = "jsf.js", library = "javax.faces"),
+        @ResourceDependency(name = "default.css", library = "openfaces")
+})
 public class ColumnMenu extends PopupMenu {
     public static final String COMPONENT_TYPE = "org.openfaces.ColumnMenu";
     public static final String COMPONENT_FAMILY = "org.openfaces.ColumnMenu";

@@ -14,7 +14,6 @@ package org.openfaces.component;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.Components;
 import org.openfaces.util.Rendering;
-import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlCommandButton;
@@ -79,7 +78,6 @@ public abstract class OUIClientActionHelper {
                 parent instanceof HtmlCommandButton || parent instanceof HtmlCommandLink) {
             if (context.getResponseWriter() != null) {
                 AjaxUtil.renderJSLinks(context);
-                Styles.requestDefaultCss(context);
             }
             return;
         }
@@ -87,7 +85,6 @@ public abstract class OUIClientActionHelper {
         String script = getClientActionScript(context, action);
         if (context.getResponseWriter() != null) {
             AjaxUtil.renderJSLinks(context);
-            Styles.requestDefaultCss(context);
         }
 
         String event = Rendering.getEventWithOnPrefix(context, action, null);

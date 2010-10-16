@@ -11,8 +11,10 @@
  */
 package org.openfaces.component.panel;
 
+import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 
+@ResourceDependency(name = "default.css", library = "openfaces")
 public class LayeredPane extends MultiPageContainer {
     public static final String COMPONENT_TYPE = "org.openfaces.LayeredPane";
     public static final String COMPONENT_FAMILY = "org.openfaces.LayeredPane";

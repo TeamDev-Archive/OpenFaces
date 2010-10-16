@@ -17,6 +17,7 @@ import org.openfaces.util.MessageUtil;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.application.FacesMessage;
+import javax.faces.application.ResourceDependency;
 import javax.faces.component.PartialStateHolder;
 import javax.faces.component.StateHolder;
 import javax.faces.context.FacesContext;
@@ -34,6 +35,7 @@ import java.util.TimeZone;
  *
  * @author Kharchenko
  */
+@ResourceDependency(name = "default.css", library = "openfaces")
 public class DateChooser extends DropDownComponent {
     public static final String COMPONENT_TYPE = "org.openfaces.DateChooser";
     public static final String COMPONENT_FAMILY = "org.openfaces.DateChooser";

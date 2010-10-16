@@ -16,11 +16,13 @@ import org.openfaces.component.Side;
 import org.openfaces.util.ValueBindings;
 import org.openfaces.util.NullTypeELResolver;
 
+import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 
 /**
  * @author Alexander Golubev
  */
+@ResourceDependency(name = "default.css", library = "openfaces")
 public class Spinner extends DropDownComponent {
     public static final String COMPONENT_TYPE = "org.openfaces.Spinner";
     public static final String COMPONENT_FAMILY = "org.openfaces.Spinner";

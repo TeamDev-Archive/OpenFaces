@@ -13,11 +13,17 @@ package org.openfaces.component.timetable;
 
 import org.openfaces.util.ValueBindings;
 
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 
 /**
  * @author Roman Porotnikov
  */
+@ResourceDependencies({
+        @ResourceDependency(name = "jsf.js", library = "javax.faces"),
+        @ResourceDependency(name = "default.css", library = "openfaces")
+})
 public class WeekTable extends TimeScaleTable {
     public static final String COMPONENT_TYPE = "org.openfaces.WeekTable";
     public static final String COMPONENT_FAMILY = "org.openfaces.WeekTable";

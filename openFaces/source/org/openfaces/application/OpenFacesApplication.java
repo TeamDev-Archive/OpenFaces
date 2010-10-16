@@ -13,10 +13,7 @@ package org.openfaces.application;
 
 import org.openfaces.util.UtilPhaseListener;
 
-import javax.faces.FacesException;
 import javax.faces.application.Application;
-import javax.faces.application.ViewHandler;
-import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
@@ -79,7 +76,7 @@ public class OpenFacesApplication extends ApplicationWrapper {
 //            headAddedToView(context);
         if (postAddToViewEvent && source instanceof UIViewRoot)
             viewRootAddedToView(context);
-        
+
         if (postAddToViewEvent) {
             if (prevConstructingView == null)
                 requestMap.remove(CONSTRUCTING_VIEW_KEY);
@@ -93,7 +90,7 @@ public class OpenFacesApplication extends ApplicationWrapper {
 
     private void headAddedToView(FacesContext context) {
         if (context.isPostback() && context.getCurrentPhaseId() == PhaseId.RESTORE_VIEW) return;
-         UtilPhaseListener.appendHeaderContent(context);
+        UtilPhaseListener.appendHeaderContent(context);
     }
 
     public static boolean isConstructingView(FacesContext context) {

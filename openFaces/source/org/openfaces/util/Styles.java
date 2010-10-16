@@ -33,8 +33,6 @@ import java.util.SortedSet;
  * @author Dmitry Pikhulya
  */
 public class Styles {
-    public static final String DEFAULT_CSS_REQUESTED = Styles.class.getName() + ".defaultCssRequested";
-
     private static final String GENERATED_CLASS_NAME_PREFIX = "o_class_";
     private static final String REGISTERED_STYLE_PREFIX = Styles.class.getName() + ".registeredStyle:";
     private static final String REGISTERED_STYLE_CLASSES = Styles.class.getName() + ".registeredStyleClasses";
@@ -304,7 +302,6 @@ public class Styles {
      */
     public static void renderStyleClasses(FacesContext context, UIComponent component,
                                           boolean forcedStyleAsScript, boolean forceStyleAsOnloadScript) throws IOException {
-        requestDefaultCss(context);
         List<String> cssClasses = getAllStyleClassesForComponent(context, component);
         if (cssClasses != null && cssClasses.size() > 0) {
             String stylesId = component.getClientId(context) + STYLES_ID_SUFFIX;
@@ -312,9 +309,6 @@ public class Styles {
             int suffix = 1;
             while (elementsIds.contains(stylesId)) {
                 stylesId = component.getClientId(context) + STYLES_ID_SUFFIX + suffix++;
-//        logWarning(context, "Style elements with id \"" + stylesId + "\" already rendered. Component: " + component);
-
-                // warning was removed because there are cases when renderStyleClasses should be invoked several times per component - see AbstractTableRenderer as an example
             }
             elementsIds.add(stylesId);
             if (Environment.isExplorer() || Environment.isMozillaXhtmlPlusXmlContentType(context)
@@ -434,15 +428,6 @@ public class Styles {
             newClassKeys.add(REGISTERED_CSS_CLASSES_PREFIX + group);
         }
         return newClassKeys.iterator();
-    }
-
-    /**
-     * Add default css to request
-     *
-     * @param context {@link FacesContext} for the current request
-     */
-    public static void requestDefaultCss(FacesContext context) {
-        context.getExternalContext().getRequestMap().put(DEFAULT_CSS_REQUESTED, Boolean.TRUE);
     }
 
     /**

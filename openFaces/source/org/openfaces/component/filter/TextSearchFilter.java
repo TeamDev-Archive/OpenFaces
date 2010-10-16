@@ -23,7 +23,6 @@ import java.util.List;
  * @author Dmitry Pikhulya
  */
 public abstract class TextSearchFilter extends ExpressionFilter implements CompoundComponent {
-
     public static final String SEARCH_COMPONENT_SUFFIX = "searchComponent";
 
     private String rolloverStyle;

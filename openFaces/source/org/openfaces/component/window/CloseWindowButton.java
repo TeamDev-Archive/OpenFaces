@@ -13,9 +13,12 @@ package org.openfaces.component.window;
 
 import org.openfaces.component.CaptionButton;
 
+import javax.faces.application.ResourceDependency;
+
 /**
  * @author Dmitry Pikhulya
  */
+@ResourceDependency(name = "default.css", library = "openfaces")
 public class CloseWindowButton extends CaptionButton {
     public static final String COMPONENT_TYPE = "org.openfaces.CloseWindowButton";
     public static final String COMPONENT_FAMILY = "org.openfaces.CloseWindowButton";

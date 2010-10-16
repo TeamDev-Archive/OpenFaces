@@ -14,6 +14,7 @@ package org.openfaces.component.output;
 import org.openfaces.component.OUIOutput;
 import org.openfaces.util.ValueBindings;
 
+import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 
 /**
@@ -24,6 +25,7 @@ import javax.faces.context.FacesContext;
  * 
  * @author Andrew Palval
  */
+@ResourceDependency(name = "default.css", library = "openfaces")
 public class HintLabel extends OUIOutput {
     public static final String COMPONENT_TYPE = "org.openfaces.HintLabel";
     public static final String COMPONENT_FAMILY = "org.openfaces.HintLabel";

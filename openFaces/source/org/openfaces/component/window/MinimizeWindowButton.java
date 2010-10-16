@@ -13,12 +13,14 @@ package org.openfaces.component.window;
 
 import org.openfaces.component.ToggleCaptionButton;
 
+import javax.faces.application.ResourceDependency;
 import java.util.Map;
 import java.util.HashMap;
 
 /**
  * @author Dmitry Pikhulya
  */
+@ResourceDependency(name = "default.css", library = "openfaces")
 public class MinimizeWindowButton extends ToggleCaptionButton {
     public static final String COMPONENT_TYPE = "org.openfaces.MinimizeWindowButton";
     public static final String COMPONENT_FAMILY = "org.openfaces.MinimizeWindowButton";

@@ -4645,7 +4645,7 @@ if (!window.O$) {
     if (O$._defaultCssPresenceChecked) return;
     O$._defaultCssPresenceChecked = true;
     if (!O$.findCssRule(".o_default_css_marker"))
-      O$.logError("default.css file is not loaded. Did you use <head> tag instead of <h:head> tag?");
+      O$.logError("OpenFaces default.css file is not loaded. Did you use <head> tag instead of <h:head> tag?");
   };
 
   O$.addLoadEvent(function() {

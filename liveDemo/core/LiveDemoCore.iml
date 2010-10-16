@@ -37,16 +37,16 @@
     <orderEntry type="module-library" exported="" scope="RUNTIME">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../lib/apache/commons-logging-1.1.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../lib/apache/commons-beanutils-1.7.0.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library" exported="" scope="RUNTIME">
+    <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../lib/apache/commons-beanutils-1.7.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../lib/apache/commons-logging-1.1.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

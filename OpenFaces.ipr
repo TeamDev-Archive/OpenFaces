@@ -83,6 +83,7 @@
             </element>
             <element id="library" level="project" name="OpenFaces Dependencies" />
             <element id="library" level="project" name="commons-lang" />
+            <element id="file-copy" path="$PROJECT_DIR$/lib/apache/commons-logging-1.1.1.jar" />
           </element>
         </element>
       </root>

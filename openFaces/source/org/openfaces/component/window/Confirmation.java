@@ -15,6 +15,7 @@ import org.openfaces.component.OUIClientAction;
 import org.openfaces.component.OUIClientActionHelper;
 import org.openfaces.util.ValueBindings;
 
+import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import static java.lang.Boolean.valueOf;
@@ -29,6 +30,7 @@ import static java.lang.Boolean.valueOf;
  * 
  * @author Andrew Palval
  */
+@ResourceDependency(name = "default.css", library = "openfaces")
 public class Confirmation extends AbstractWindow implements OUIClientAction {
     public static final String COMPONENT_TYPE = "org.openfaces.Confirmation";
     public static final String COMPONENT_FAMILY = "org.openfaces.Confirmation";

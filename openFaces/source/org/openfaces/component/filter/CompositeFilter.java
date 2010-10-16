@@ -23,6 +23,7 @@ import org.openfaces.util.ValueExpressionImpl;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
+import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -40,7 +41,10 @@ import java.util.Set;
 /**
  * @author Natalia Zolochevska
  */
-@ResourceDependency(name = "jsf.js", library = "javax.faces")
+@ResourceDependencies({
+        @ResourceDependency(name = "jsf.js", library = "javax.faces"),
+        @ResourceDependency(name = "default.css", library = "openfaces")
+})
 public class CompositeFilter extends Filter {
     public static final String COMPONENT_FAMILY = "org.openfaces.CompositeFilter";
     public static final String COMPONENT_TYPE = "org.openfaces.CompositeFilter";

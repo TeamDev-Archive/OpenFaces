@@ -21,6 +21,8 @@ import org.openfaces.util.ValueBindings;
 import javax.el.ELException;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import java.awt.*;
@@ -37,6 +39,10 @@ import java.util.StringTokenizer;
 /**
  * @author : roman.nikolaienko
  */
+@ResourceDependencies({
+        @ResourceDependency(name = "jsf.js", library = "javax.faces"),
+        @ResourceDependency(name = "default.css", library = "openfaces")
+})
 public class TagCloud extends OUICommand {
 
     public static final String COMPONENT_TYPE = "org.openfaces.TagCloud";

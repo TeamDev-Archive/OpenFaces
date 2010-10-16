@@ -15,10 +15,14 @@ import org.openfaces.component.LoadingMode;
 import org.openfaces.component.window.PopupLayer;
 import org.openfaces.util.ValueBindings;
 
+import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 
-@ResourceDependency(name="jsf.js", library="javax.faces")
+@ResourceDependencies({
+        @ResourceDependency(name = "jsf.js", library = "javax.faces"),
+        @ResourceDependency(name = "default.css", library = "openfaces")
+})
 public class ChartPopup extends PopupLayer {
     public static final String COMPONENT_TYPE = "org.openfaces.ChartPopup";
     public static final String COMPONENT_FAMILY = "org.openfaces.ChartPopup";

@@ -11,11 +11,13 @@
  */
 package org.openfaces.component.window;
 
+import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 
 /**
  * @author Dmitry Pikhulya
  */
+@ResourceDependency(name = "default.css", library = "openfaces")
 public class Window extends AbstractWindow {
     public static final String COMPONENT_TYPE = "org.openfaces.Window";
     public static final String COMPONENT_FAMILY = "org.openfaces.Window";

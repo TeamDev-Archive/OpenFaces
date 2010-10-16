@@ -12,6 +12,7 @@
 
 package org.openfaces.component.timetable;
 
+import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 import java.util.Calendar;
 import java.util.Date;
@@ -19,8 +20,8 @@ import java.util.Date;
 /**
  * @author Roman Gorodischer
  */
+@ResourceDependency(name = "default.css", library = "openfaces")
 public class WeekSwitcher extends AbstractSwitcher<WeekTable> {
-
     public static final String COMPONENT_TYPE = "org.openfaces.WeekSwitcher";
     public static final String COMPONENT_FAMILY = "org.openfaces.WeekSwitcher";
 

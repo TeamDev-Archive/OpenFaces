@@ -11,12 +11,14 @@
  */
 package org.openfaces.component;
 
+import javax.faces.application.ResourceDependency;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * @author Dmitry Pikhulya
  */
+@ResourceDependency(name = "default.css", library = "openfaces")
 public class ExpansionToggleButton extends ToggleCaptionButton {
     public static final String COMPONENT_TYPE = "org.openfaces.ExpansionToggleButton";
     public static final String COMPONENT_FAMILY = "org.openfaces.ExpansionToggleButton";

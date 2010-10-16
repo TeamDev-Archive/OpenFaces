@@ -19,6 +19,7 @@ import org.openfaces.event.StateChangeListener;
 import org.openfaces.util.Components;
 import org.openfaces.util.ValueBindings;
 
+import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -35,7 +36,10 @@ import javax.faces.validator.Validator;
  *
  * @author Kharchenko
  */
-@ResourceDependency(name = "jsf.js", library = "javax.faces")
+@ResourceDependencies({
+        @ResourceDependency(name = "jsf.js", library = "javax.faces"),
+        @ResourceDependency(name = "default.css", library = "openfaces")
+})
 public class FoldingPanel extends AbstractPanelWithCaption implements EditableStateHolder {
     public static final String COMPONENT_TYPE = "org.openfaces.FoldingPanel";
     public static final String COMPONENT_FAMILY = "org.openfaces.FoldingPanel";

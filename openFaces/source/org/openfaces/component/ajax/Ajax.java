@@ -18,6 +18,8 @@ import org.openfaces.renderkit.ajax.AjaxRenderer;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.ValueBindings;
 
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
@@ -34,6 +36,7 @@ import javax.faces.event.PostAddToViewEvent;
 @ListenersFor({
         @ListenerFor(systemEventClass = PostAddToViewEvent.class)
 })
+@ResourceDependency(name="jsf.js", library="javax.faces")
 public class Ajax extends OUICommand implements OUIClientAction {
     public static final String COMPONENT_TYPE = "org.openfaces.Ajax";
     public static final String COMPONENT_FAMILY = "org.openfaces.Ajax";

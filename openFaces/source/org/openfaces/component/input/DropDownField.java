@@ -13,6 +13,9 @@ package org.openfaces.component.input;
 
 import org.openfaces.component.Side;
 
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
+
 /**
  *
  * The DropDownField is an input component which allows either type in a value or select one
@@ -22,6 +25,10 @@ import org.openfaces.component.Side;
  * 
  * @author Andriy Palval
  */
+@ResourceDependencies({
+        @ResourceDependency(name = "jsf.js", library = "javax.faces"),
+        @ResourceDependency(name = "default.css", library = "openfaces")
+})
 public class DropDownField extends DropDownFieldBase {
     public static final String COMPONENT_TYPE = "org.openfaces.DropDownField";
     public static final String COMPONENT_FAMILY = "org.openfaces.DropDownField";
