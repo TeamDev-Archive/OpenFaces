@@ -21,8 +21,6 @@ import org.openfaces.util.ValueBindings;
 import javax.el.ELException;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import java.awt.*;
@@ -39,10 +37,6 @@ import java.util.StringTokenizer;
 /**
  * @author : roman.nikolaienko
  */
-@ResourceDependencies({
-        @ResourceDependency(name = "jsf.js", library = "javax.faces"),
-        @ResourceDependency(name = "default.css", library = "openfaces")
-})
 public class TagCloud extends OUICommand {
 
     public static final String COMPONENT_TYPE = "org.openfaces.TagCloud";
@@ -112,7 +106,7 @@ public class TagCloud extends OUICommand {
     public Object saveState(FacesContext context) {
         return new Object[]{
                 super.saveState(context),
-                
+
                 prevVarValue,
                 itemClass,
                 itemStyle,
@@ -178,8 +172,8 @@ public class TagCloud extends OUICommand {
         minColor = (Color) values[i++];
         maxColor = (Color) values[i++];
 
-        itemWeightFormat =  (String) values[i++];
-        itemWeightStyle= (String) values[i++];
+        itemWeightFormat = (String) values[i++];
+        itemWeightStyle = (String) values[i++];
 
         converter = (Converter) restoreAttachedState(context, values[i]);
 
@@ -465,7 +459,7 @@ public class TagCloud extends OUICommand {
 
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
         prevVarValue = Faces.var(var);
-        requestMap.put(var,prevVarValue);
+        requestMap.put(var, prevVarValue);
 
         if (!itemsData.isEmpty() && prevVarValue == null)
             try {
@@ -596,7 +590,7 @@ public class TagCloud extends OUICommand {
                     else
                         setMinFontSize(value);
                 }
-                if (attribute.equalsIgnoreCase("opacity")) {                    
+                if (attribute.equalsIgnoreCase("opacity")) {
                     if (isMax)
                         setMaxOpacity(Double.parseDouble(value));
                     else
@@ -678,10 +672,10 @@ public class TagCloud extends OUICommand {
     private double getOpacity(TagCloudItem item) {
         double minOpacity = getMinOpacity();
         double maxOpacity = getMaxOpacity();
-        if (minOpacity == 0 && maxOpacity == 0){
+        if (minOpacity == 0 && maxOpacity == 0) {
             return 1;
         }
-        
+
         minOpacity = minOpacity == 0 ? DEFAULT_MIN_OPACITY : minOpacity;
         maxOpacity = maxOpacity == 0 ? DEFAULT_MAX_OPACITY : maxOpacity;
         return Math.round(getParameterGradient(item, minOpacity, maxOpacity) * 100) / 100.;

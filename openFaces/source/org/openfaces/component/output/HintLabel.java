@@ -14,18 +14,15 @@ package org.openfaces.component.output;
 import org.openfaces.component.OUIOutput;
 import org.openfaces.util.ValueBindings;
 
-import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 
 /**
- *
  * The HintLabel component is used to display a single-line text that may not fit in the
  * allotted space, but when the user places mouse pointer over the truncated text, the
  * full text is displayed in a tool-tip.
- * 
+ *
  * @author Andrew Palval
  */
-@ResourceDependency(name = "default.css", library = "openfaces")
 public class HintLabel extends OUIOutput {
     public static final String COMPONENT_TYPE = "org.openfaces.HintLabel";
     public static final String COMPONENT_FAMILY = "org.openfaces.HintLabel";

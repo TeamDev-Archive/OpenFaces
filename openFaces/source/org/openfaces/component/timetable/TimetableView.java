@@ -25,6 +25,7 @@ import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
+import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -45,7 +46,10 @@ import java.util.TimeZone;
  * @author Dmitry Pikhulya
  * @author Roman Porotnikov
  */
-@ResourceDependency(name = "jsf.js", library = "javax.faces")
+@ResourceDependencies({
+        @ResourceDependency(name = "jsf.js", library = "javax.faces"),
+        @ResourceDependency(name = "default.css", library = "openfaces")
+})
 public abstract class TimetableView extends OUIObjectIteratorBase {
 
     private static final String EVENT_EDITOR_FACET_NAME = "eventEditor";

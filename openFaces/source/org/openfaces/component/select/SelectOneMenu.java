@@ -15,10 +15,8 @@ import org.openfaces.component.Side;
 import org.openfaces.component.input.DropDownFieldBase;
 import org.openfaces.component.input.SuggestionMode;
 
-import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 
-@ResourceDependency(name = "default.css", library = "openfaces")
 public class SelectOneMenu extends DropDownFieldBase {
     public static final String COMPONENT_TYPE = "org.openfaces.SelectOneMenu";
     public static final String COMPONENT_FAMILY = "org.openfaces.SelectOneMenu";

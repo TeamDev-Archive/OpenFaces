@@ -15,22 +15,20 @@ import org.openfaces.component.OUIClientAction;
 import org.openfaces.component.OUIClientActionHelper;
 import org.openfaces.util.ValueBindings;
 
-import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+
 import static java.lang.Boolean.valueOf;
 
 /**
- *
  * The Confirmation component allows users to confirm or reject critical actions before
  * their execution. It is displayed over other page elements like a modal dialog and can be
  * attached to a client-side event of any component or invoked from JavaScript explicitly.
  * The Confirmation component has a lot of options to customize its appearance and provides a
  * flexible invocation mechanism.
- * 
+ *
  * @author Andrew Palval
  */
-@ResourceDependency(name = "default.css", library = "openfaces")
 public class Confirmation extends AbstractWindow implements OUIClientAction {
     public static final String COMPONENT_TYPE = "org.openfaces.Confirmation";
     public static final String COMPONENT_FAMILY = "org.openfaces.Confirmation";

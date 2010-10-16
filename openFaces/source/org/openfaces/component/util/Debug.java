@@ -14,7 +14,6 @@ package org.openfaces.component.util;
 import org.openfaces.component.window.Window;
 import org.openfaces.renderkit.CompoundComponentRenderer;
 
-import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
 
@@ -24,7 +23,6 @@ import java.io.IOException;
  *
  * @author Dmitry Pikhulya
  */
-@ResourceDependency(name = "default.css", library = "openfaces")
 public class Debug extends Window {
     public static final String COMPONENT_TYPE = "org.openfaces.Debug";
     public static final String COMPONENT_FAMILY = "org.openfaces.Debug";

@@ -17,11 +17,9 @@ import org.openfaces.component.chart.Orientation;
 import org.openfaces.util.ValueBindings;
 
 import javax.el.ValueExpression;
-import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 
-@ResourceDependency(name = "default.css", library = "openfaces")
 public class LevelIndicator extends OUIOutput {
     public static final String COMPONENT_TYPE = "org.openfaces.LevelIndicator";
     public static final String COMPONENT_FAMILY = "org.openfaces.LevelIndicator";

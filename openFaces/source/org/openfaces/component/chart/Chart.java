@@ -27,7 +27,6 @@ import org.openfaces.taglib.internal.chart.ChartTag;
 import org.openfaces.util.Components;
 import org.openfaces.util.ValueBindings;
 
-import javax.faces.application.ResourceDependency;
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -45,7 +44,6 @@ import java.util.Map;
  *
  * @author Ekaterina Shliakhovetskaya
  */
-@ResourceDependency(name = "default.css", library = "openfaces")
 public class Chart extends OUIObjectIteratorBase implements StyledComponent, NamingContainer {
     public static final String COMPONENT_TYPE = "org.openfaces.Chart";
     public static final String COMPONENT_FAMILY = "org.openfaces.Chart";

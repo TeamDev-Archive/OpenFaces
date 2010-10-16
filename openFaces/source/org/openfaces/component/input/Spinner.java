@@ -13,16 +13,14 @@
 package org.openfaces.component.input;
 
 import org.openfaces.component.Side;
-import org.openfaces.util.ValueBindings;
 import org.openfaces.util.NullTypeELResolver;
+import org.openfaces.util.ValueBindings;
 
-import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 
 /**
  * @author Alexander Golubev
  */
-@ResourceDependency(name = "default.css", library = "openfaces")
 public class Spinner extends DropDownComponent {
     public static final String COMPONENT_TYPE = "org.openfaces.Spinner";
     public static final String COMPONENT_FAMILY = "org.openfaces.Spinner";
@@ -293,7 +291,7 @@ public class Spinner extends DropDownComponent {
         return super.getDisabledButtonStyle();
     }
 
-     @Override
+    @Override
     public void updateModel(FacesContext context) {
         boolean intercept = isLocalValueSet() && getLocalValue() == null && !NullTypeELResolver.isActive();
 

@@ -14,6 +14,7 @@ package org.openfaces.component.ajax;
 import org.openfaces.util.Components;
 import org.openfaces.util.ValueBindings;
 
+import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
@@ -21,7 +22,9 @@ import javax.faces.context.FacesContext;
 /**
  * @author Eugene Goncharov
  */
-@ResourceDependency(name="jsf.js", library="javax.faces")
+@ResourceDependencies({
+        @ResourceDependency(name = "jsf.js", library = "javax.faces")
+})
 public class AjaxSettings extends UIComponentBase {
     public static final String COMPONENT_TYPE = "org.openfaces.AjaxSettings";
     public static final String COMPONENT_FAMILY = "org.openfaces.AjaxSettings";

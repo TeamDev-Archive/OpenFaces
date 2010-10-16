@@ -12,7 +12,6 @@
 
 package org.openfaces.component.timetable;
 
-import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 import java.util.Calendar;
 import java.util.Date;
@@ -20,7 +19,6 @@ import java.util.Date;
 /**
  * @author Roman Gorodischer
  */
-@ResourceDependency(name = "default.css", library = "openfaces")
 public class WeekSwitcher extends AbstractSwitcher<WeekTable> {
     public static final String COMPONENT_TYPE = "org.openfaces.WeekSwitcher";
     public static final String COMPONENT_FAMILY = "org.openfaces.WeekSwitcher";
@@ -46,7 +44,7 @@ public class WeekSwitcher extends AbstractSwitcher<WeekTable> {
         this.splitter = splitter;
     }
 
-    public Date getFirstDayOfTheWeek () {
+    public Date getFirstDayOfTheWeek() {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(getTimetableView().getDay());
         int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
@@ -54,13 +52,13 @@ public class WeekSwitcher extends AbstractSwitcher<WeekTable> {
         return calendar.getTime();
     }
 
-    public Date getLastDayOfTheWeek () {
+    public Date getLastDayOfTheWeek() {
         final Calendar calendar = Calendar.getInstance();
         calendar.setTime(getTimetableView().getDay());
         int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
         calendar.add(Calendar.DATE, 7 - dayOfWeek);
-        return calendar.getTime ();
-    }    
+        return calendar.getTime();
+    }
 
     @Override
     public Object saveState(FacesContext context) {

@@ -17,7 +17,6 @@ import org.openfaces.component.window.Window;
 import org.openfaces.renderkit.CompoundComponentRenderer;
 import org.openfaces.util.ValueBindings;
 
-import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
@@ -25,7 +24,6 @@ import java.io.IOException;
 /**
  * @author Dmitry Pikhulya
  */
-@ResourceDependency(name = "default.css", library = "openfaces")
 public class EventEditorDialog extends Window {
     public static final String COMPONENT_TYPE = "org.openfaces.EventEditorDialog";
     public static final String COMPONENT_FAMILY = "org.openfaces.EventEditorDialog";

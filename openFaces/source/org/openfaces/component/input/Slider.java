@@ -15,16 +15,13 @@ package org.openfaces.component.input;
 import org.openfaces.component.FillDirection;
 import org.openfaces.component.OUIInputBase;
 import org.openfaces.component.chart.Orientation;
-import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.ValueBindings;
 
-import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 
 /**
  * @author : roman.nikolaienko
  */
-@ResourceDependency(name = "default.css", library = "openfaces")
 public class Slider extends OUIInputBase {
     public static final String COMPONENT_TYPE = "org.openfaces.Slider";
     public static final String COMPONENT_FAMILY = "org.openfaces.Slider";

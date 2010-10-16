@@ -15,7 +15,6 @@ package org.openfaces.component.select;
 import org.openfaces.util.MessageUtil;
 
 import javax.faces.application.FacesMessage;
-import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 import java.lang.reflect.Array;
 import java.util.List;
@@ -23,7 +22,6 @@ import java.util.List;
 /**
  * @author Oleg Marshalenko
  */
-@ResourceDependency(name = "default.css", library = "openfaces")
 public class SelectManyCheckbox extends OUISelectManyInputBase {
     public static final String COMPONENT_TYPE = "org.openfaces.SelectManyCheckbox";
     public static final String COMPONENT_FAMILY = "org.openfaces.SelectManyCheckbox";

@@ -13,17 +13,11 @@ package org.openfaces.component.timetable;
 
 import org.openfaces.util.ValueBindings;
 
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 
 /**
  * @author Roman Porotnikov
  */
-@ResourceDependencies({
-        @ResourceDependency(name = "jsf.js", library = "javax.faces"),
-        @ResourceDependency(name = "default.css", library = "openfaces")
-})
 public class WeekTable extends TimeScaleTable {
     public static final String COMPONENT_TYPE = "org.openfaces.WeekTable";
     public static final String COMPONENT_FAMILY = "org.openfaces.WeekTable";
@@ -115,7 +109,7 @@ public class WeekTable extends TimeScaleTable {
 
     @Override
     public Object saveState(FacesContext context) {
-        return new Object[] {
+        return new Object[]{
                 super.saveState(context),
                 firstDayOfWeek,
                 weekdayColumnSeparator,
@@ -133,7 +127,7 @@ public class WeekTable extends TimeScaleTable {
         Object[] state = (Object[]) stateObj;
         int i = 0;
         super.restoreState(context, state[i++]);
-        firstDayOfWeek = (Integer) state[i++]; 
+        firstDayOfWeek = (Integer) state[i++];
         weekdayColumnSeparator = (String) state[i++];
         weekdayHeadersRowSeparator = (String) state[i++];
         weekdayHeadersRowStyle = (String) state[i++];

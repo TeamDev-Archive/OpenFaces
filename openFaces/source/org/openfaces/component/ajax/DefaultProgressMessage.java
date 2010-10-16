@@ -16,6 +16,8 @@ import org.openfaces.component.VerticalAlignment;
 import org.openfaces.util.Resources;
 import org.openfaces.util.ValueBindings;
 
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import java.text.MessageFormat;
@@ -23,6 +25,9 @@ import java.text.MessageFormat;
 /**
  * @author Eugene Goncharov
  */
+@ResourceDependencies({
+        @ResourceDependency(name = "default.css", library = "openfaces")
+})
 public class DefaultProgressMessage extends ProgressMessage {
     public static final String COMPONENT_TYPE = "org.openfaces.DefaultProgressMessage";
     public static final String COMPONENT_FAMILY = "org.openfaces.DefaultProgressMessage";

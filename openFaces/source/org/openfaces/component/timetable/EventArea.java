@@ -16,14 +16,12 @@ import org.openfaces.component.OUIPanel;
 import org.openfaces.component.VerticalAlignment;
 import org.openfaces.util.ValueBindings;
 
-import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 /**
  * @author Dmitry Pikhulya
  */
-@ResourceDependency(name = "default.css", library = "openfaces")
 public class EventArea extends OUIPanel {
     public static final String COMPONENT_TYPE = "org.openfaces.EventArea";
     public static final String COMPONENT_FAMILY = "org.openfaces.EventArea";
@@ -79,7 +77,7 @@ public class EventArea extends OUIPanel {
     private AbstractTimetableEvent getEvent() {
         UIComponent parent = getParent();
         if (parent instanceof TimetableView) {
-            return ((TimetableView)parent).getEvent();
+            return ((TimetableView) parent).getEvent();
         }
         throw new IllegalStateException("EventArea parent is not a TimetableView");
     }

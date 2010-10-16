@@ -13,13 +13,11 @@ package org.openfaces.component.timetable;
 
 import org.openfaces.util.ValueBindings;
 
-import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 
 /**
  * @author Natalia Zolochevska
  */
-@ResourceDependency(name = "default.css", library = "openfaces")
 public class DaySwitcher extends AbstractSwitcher<DayTable> {
     public static final String COMPONENT_TYPE = "org.openfaces.DaySwitcher";
     public static final String COMPONENT_FAMILY = "org.openfaces.DaySwitcher";

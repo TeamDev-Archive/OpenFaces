@@ -13,6 +13,7 @@ package org.openfaces.component;
 
 import org.openfaces.util.ValueBindings;
 
+import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
@@ -20,7 +21,9 @@ import javax.faces.context.FacesContext;
 /**
  * @author Dmitry Pikhulya
  */
-@ResourceDependency(name = "default.css", library = "openfaces")
+@ResourceDependencies({
+        @ResourceDependency(name = "default.css", library = "openfaces")
+})
 public class OUIOutput extends UIOutput implements OUIComponent {
     private String style;
     private String styleClass;

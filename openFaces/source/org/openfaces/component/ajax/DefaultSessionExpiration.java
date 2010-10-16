@@ -14,9 +14,15 @@ package org.openfaces.component.ajax;
 import org.openfaces.component.window.Confirmation;
 import org.openfaces.util.Components;
 
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
+
 /**
  * @author Eugene Goncharov
  */
+@ResourceDependencies({
+        @ResourceDependency(name = "default.css", library = "openfaces")
+})
 public class DefaultSessionExpiration extends SessionExpiration {
     public static final String COMPONENT_TYPE = "org.openfaces.DefaultSessionExpiration";
     public static final String COMPONENT_FAMILY = "org.openfaces.DefaultSessionExpiration";

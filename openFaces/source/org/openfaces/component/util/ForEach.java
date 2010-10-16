@@ -13,12 +13,11 @@ package org.openfaces.component.util;
 
 import org.openfaces.component.OUIData;
 import org.openfaces.component.OUIObjectIteratorBase;
-import org.openfaces.util.ValueBindings;
-import org.openfaces.util.DataUtil;
 import org.openfaces.util.Components;
+import org.openfaces.util.DataUtil;
+import org.openfaces.util.ValueBindings;
 
 import javax.faces.FacesException;
-import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
@@ -34,7 +33,6 @@ import java.util.Map;
  *
  * @author Alexey Tarasyuk
  */
-@ResourceDependency(name = "default.css", library = "openfaces")
 public class ForEach extends OUIObjectIteratorBase {
     public static final String COMPONENT_TYPE = "org.openfaces.ForEach";
     public static final String COMPONENT_FAMILY = "org.openfaces.ForEach";

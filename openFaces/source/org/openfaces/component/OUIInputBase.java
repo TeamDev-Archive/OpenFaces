@@ -13,6 +13,7 @@ package org.openfaces.component;
 
 import org.openfaces.util.ValueBindings;
 
+import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIInput;
 import javax.faces.component.behavior.ClientBehaviorHolder;
@@ -25,12 +26,14 @@ import java.util.List;
 /**
  * @author Dmitry Pikhulya
  */
-@ResourceDependency(name = "default.css", library = "openfaces")
+@ResourceDependencies({
+        @ResourceDependency(name = "default.css", library = "openfaces")
+})
 public class OUIInputBase extends UIInput implements OUIInput, ClientBehaviorHolder {
     private static final List<String> EVENT_NAMES = Collections.unmodifiableList(Arrays.asList("valueChange", "blur",
             "change", "click", "dblclick", "focus", "keydown", "keypress", "keyup", "mousedown", "mousemove",
             "mouseout", "mouseover", "mouseup", "select"));
-    
+
     private String style;
     private String styleClass;
     private String rolloverStyle;

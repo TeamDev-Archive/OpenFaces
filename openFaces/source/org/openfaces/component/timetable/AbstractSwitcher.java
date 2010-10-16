@@ -18,6 +18,8 @@ import org.openfaces.util.Components;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.FacesException;
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import java.lang.reflect.ParameterizedType;
@@ -28,6 +30,9 @@ import java.util.TimeZone;
 /**
  * @author Roman Gorodischer
  */
+@ResourceDependencies({
+        @ResourceDependency(name = "default.css", library = "openfaces")
+})
 public abstract class AbstractSwitcher<E extends TimetableView> extends OUIComponentBase {
 
     private String _for;
@@ -73,7 +78,7 @@ public abstract class AbstractSwitcher<E extends TimetableView> extends OUICompo
         this._for = _for;
     }
 
-    @SuppressWarnings("unchecked") 
+    @SuppressWarnings("unchecked")
     public E getTimetableView() {
         if (timetableView == null) {
             String _for = getFor();

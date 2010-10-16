@@ -13,14 +13,13 @@ package org.openfaces.component.panel;
 
 import org.openfaces.util.ValueBindings;
 
-import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
+
 import static java.lang.Boolean.valueOf;
 
 /**
  * @author Alexey Tarasyuk
  */
-@ResourceDependency(name = "default.css", library = "openfaces")
 public class SidePanel extends AbstractPanelWithCaption {
     public static final String COMPONENT_TYPE = "org.openfaces.SidePanel";
     public static final String COMPONENT_FAMILY = "org.openfaces.SidePanel";

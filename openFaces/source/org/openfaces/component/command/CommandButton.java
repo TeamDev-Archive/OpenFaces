@@ -14,8 +14,6 @@ package org.openfaces.component.command;
 import org.openfaces.component.OUICommand;
 import org.openfaces.util.ValueBindings;
 
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 
 /**
@@ -24,10 +22,6 @@ import javax.faces.context.FacesContext;
  *
  * @author Dmitry Pikhulya
  */
-@ResourceDependencies({
-        @ResourceDependency(name = "jsf.js", library = "javax.faces"),
-        @ResourceDependency(name = "default.css", library = "openfaces")
-})
 public class CommandButton extends OUICommand {
     public static final String COMPONENT_TYPE = "org.openfaces.CommandButton";
     public static final String COMPONENT_FAMILY = "org.openfaces.CommandButton";

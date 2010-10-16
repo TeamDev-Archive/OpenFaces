@@ -14,7 +14,6 @@ package org.openfaces.component.window;
 import org.openfaces.component.OUIPanel;
 import org.openfaces.util.ValueBindings;
 
-import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 
 /**
@@ -25,7 +24,6 @@ import javax.faces.context.FacesContext;
  *
  * @author Andrew Palval
  */
-@ResourceDependency(name = "default.css", library = "openfaces")
 public class PopupLayer extends OUIPanel {
     public static final String COMPONENT_TYPE = "org.openfaces.PopupLayer";
     public static final String COMPONENT_FAMILY = "org.openfaces.PopupLayer";

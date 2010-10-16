@@ -14,13 +14,11 @@ package org.openfaces.component.panel;
 import org.openfaces.component.OUIPanel;
 import org.openfaces.util.ValueBindings;
 
-import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 
 /**
  * @author Alexey Tarasyuk
  */
-@ResourceDependency(name = "default.css", library = "openfaces")
 public class BorderLayoutPanel extends OUIPanel {
     public static final String COMPONENT_TYPE = "org.openfaces.BorderLayoutPanel";
     public static final String COMPONENT_FAMILY = "org.openfaces.BorderLayoutPanel";

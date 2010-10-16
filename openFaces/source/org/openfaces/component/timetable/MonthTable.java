@@ -12,22 +12,13 @@
 
 package org.openfaces.component.timetable;
 
-import org.openfaces.util.Components;
 import org.openfaces.util.ValueBindings;
 
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import java.util.Iterator;
 
 /**
  * @author Roman Porotnikov
  */
-@ResourceDependencies({
-        @ResourceDependency(name = "jsf.js", library = "javax.faces"),
-        @ResourceDependency(name = "default.css", library = "openfaces")
-})
 public class MonthTable extends TimetableView {
     public static final String COMPONENT_TYPE = "org.openfaces.MonthTable";
     public static final String COMPONENT_FAMILY = "org.openfaces.MonthTable";

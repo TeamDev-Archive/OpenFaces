@@ -15,10 +15,14 @@ import org.openfaces.component.Side;
 import org.openfaces.util.Components;
 import org.openfaces.util.ValueBindings;
 
+import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 
-@ResourceDependency(name = "jsf.js", library = "javax.faces")
+@ResourceDependencies({
+        @ResourceDependency(name = "jsf.js", library = "javax.faces"),
+        @ResourceDependency(name = "default.css", library = "openfaces")
+})
 public abstract class DropDownFieldBase extends DropDownComponent {
     private Boolean autoComplete;
     private Side listAlignment;

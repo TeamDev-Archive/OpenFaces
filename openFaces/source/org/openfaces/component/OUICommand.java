@@ -16,28 +16,19 @@ import org.openfaces.util.ValueBindings;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UICommand;
-import javax.faces.component.UIComponent;
-import javax.faces.component.behavior.ClientBehaviorContext;
-import javax.faces.component.behavior.ClientBehaviorHint;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.BehaviorEvent;
-import javax.faces.event.ComponentSystemEvent;
-import javax.faces.event.PostAddToViewEvent;
-import javax.faces.event.PreRemoveFromViewEvent;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author Dmitry Pikhulya
  */
 @ResourceDependencies({
         @ResourceDependency(name = "default.css", library = "openfaces"),
-        @ResourceDependency(name="jsf.js", library="javax.faces")
+        @ResourceDependency(name = "jsf.js", library = "javax.faces")
 })
 public abstract class OUICommand extends UICommand implements OUIComponent, ClientBehaviorHolder {
     private static final List<String> EVENT_NAMES = Collections.unmodifiableList(Arrays.asList("action", "blur",
@@ -84,7 +75,7 @@ public abstract class OUICommand extends UICommand implements OUIComponent, Clie
 
     @Override
     public void restoreState(FacesContext context, Object object) {
-        Object[] state = (Object[]) object;                                 
+        Object[] state = (Object[]) object;
         int i = 0;
         super.restoreState(context, state[i++]);
         execute = (Iterable<String>) restoreAttachedState(context, state[i++]);

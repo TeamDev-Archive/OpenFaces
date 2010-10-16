@@ -13,8 +13,6 @@ package org.openfaces.component.input;
 
 import org.openfaces.util.ValueBindings;
 
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 
 /**
@@ -22,12 +20,7 @@ import javax.faces.context.FacesContext;
  * based on user input and completes user input right in the input field. It has a similar
  * functionality to DropDownField, but unlike DropDownField it looks like a plain text field.
  * You can create a multi-column drop-down list and embed JSF components into it.
- * 
  */
-@ResourceDependencies({
-        @ResourceDependency(name = "jsf.js", library = "javax.faces"),
-        @ResourceDependency(name = "default.css", library = "openfaces")
-})
 public class SuggestionField extends DropDownFieldBase {
     public static final String COMPONENT_TYPE = "org.openfaces.SuggestionField";
     public static final String COMPONENT_FAMILY = "org.openfaces.SuggestionField";

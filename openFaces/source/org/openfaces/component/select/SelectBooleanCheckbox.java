@@ -15,14 +15,12 @@ import org.openfaces.component.OUIInputBase;
 import org.openfaces.util.NullTypeELResolver;
 import org.openfaces.util.ValueBindings;
 
-import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.ConverterException;
 
 /**
  * @author Roman Porotnikov
  */
-@ResourceDependency(name = "default.css", library = "openfaces")
 public class SelectBooleanCheckbox extends OUIInputBase {
     public static final String SELECTED_STATE = "selected";
     public static final String UNSELECTED_STATE = "unselected";

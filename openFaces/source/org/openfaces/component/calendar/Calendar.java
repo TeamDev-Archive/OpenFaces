@@ -36,7 +36,6 @@ import java.util.TimeZone;
  * 
  * @author Kharchenko
  */
-@ResourceDependency(name = "default.css", library = "openfaces")
 public class Calendar extends OUIInputBase {
     public static final String COMPONENT_TYPE = "org.openfaces.Calendar";
     public static final String COMPONENT_FAMILY = "org.openfaces.Calendar";

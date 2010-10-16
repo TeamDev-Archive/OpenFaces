@@ -13,17 +13,11 @@ package org.openfaces.component;
 
 import org.openfaces.util.ValueBindings;
 
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 
 /**
  * @author Dmitry Pikhulya
  */
-@ResourceDependencies({
-        @ResourceDependency(name = "default.css", library = "openfaces"),
-        @ResourceDependency(name="jsf.js", library="javax.faces")
-})
 public class CaptionButton extends OUICommand {
     public static final String COMPONENT_TYPE = "org.openfaces.CaptionButton";
     public static final String COMPONENT_FAMILY = "org.openfaces.CaptionButton";

@@ -14,14 +14,12 @@ package org.openfaces.component.window;
 import org.openfaces.component.ComponentWithCaption;
 import org.openfaces.util.ValueBindings;
 
-import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 /**
  * @author Dmitry Pikhulya
  */
-@ResourceDependency(name = "default.css", library = "openfaces")
 public class AbstractWindow extends PopupLayer implements ComponentWithCaption {
     private static final String CAPTION_FACET_NAME = "caption";
 
