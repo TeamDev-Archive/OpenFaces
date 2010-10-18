@@ -21,7 +21,7 @@ public class AnonymousFunction extends Script {
     public AnonymousFunction(Script bodyScript, String... paramNames) {
         this(bodyScript.toString(), paramNames);
     }
-    
+
     public AnonymousFunction(String bodyScript, String... paramNames) {
         this.paramNames = paramNames;
         this.bodyScript = bodyScript;

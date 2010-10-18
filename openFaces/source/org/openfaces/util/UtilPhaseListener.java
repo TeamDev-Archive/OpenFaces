@@ -11,27 +11,14 @@
  */
 package org.openfaces.util;
 
-import org.openfaces.ajax.AjaxRequest;
-import org.openfaces.component.OUIObjectIterator;
 import org.openfaces.component.ajax.DefaultProgressMessage;
-import org.openfaces.component.table.AbstractTable;
-import org.openfaces.event.AjaxActionEvent;
 
-import javax.el.ELContext;
-import javax.el.MethodExpression;
-import javax.el.MethodNotFoundException;
 import javax.faces.FacesException;
-import javax.faces.component.NamingContainer;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIData;
-import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 

@@ -11,14 +11,13 @@
  */
 package org.openfaces.util;
 
-import java.beans.FeatureDescriptor;
-import java.util.Iterator;
-
 import javax.el.ELContext;
 import javax.el.ELException;
 import javax.el.ELResolver;
 import javax.el.PropertyNotFoundException;
 import javax.el.PropertyNotWritableException;
+import java.beans.FeatureDescriptor;
+import java.util.Iterator;
 
 /**
  * @author Roman Porotnikov

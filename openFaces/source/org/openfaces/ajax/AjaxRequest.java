@@ -13,11 +13,11 @@ package org.openfaces.ajax;
 
 import org.openfaces.util.AjaxUtil;
 
-import javax.faces.context.FacesContext;
 import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.HashSet;
 
 /**
  * @author Dmitry Pikhulya
@@ -37,7 +37,7 @@ public class AjaxRequest {
     }
 
     public static AjaxRequest getInstance(FacesContext context) {
-        Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
         String key = AjaxRequest.class.getName();
         AjaxRequest instance = (AjaxRequest) requestMap.get(key);
         if (instance != null)

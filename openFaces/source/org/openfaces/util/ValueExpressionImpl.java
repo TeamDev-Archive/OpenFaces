@@ -12,8 +12,8 @@
 
 package org.openfaces.util;
 
-import javax.el.ValueExpression;
 import javax.el.ELContext;
+import javax.el.ValueExpression;
 
 public class ValueExpressionImpl extends ValueExpression {
 

@@ -23,7 +23,8 @@ import javax.faces.context.FacesContext;
  * @author Eugene Goncharov
  */
 @ResourceDependencies({
-        @ResourceDependency(name = "jsf.js", library = "javax.faces")
+        @ResourceDependency(name = "jsf.js", library = "javax.faces"),
+        @ResourceDependency(name = "default.css", library = "openfaces")
 })
 public class AjaxSettings extends UIComponentBase {
     public static final String COMPONENT_TYPE = "org.openfaces.AjaxSettings";

@@ -14,8 +14,8 @@ package org.openfaces.util;
 import org.openfaces.renderkit.DefaultImageDataModel;
 import org.openfaces.renderkit.ImageDataModel;
 
-import java.io.Serializable;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.Random;
@@ -28,7 +28,7 @@ public class DynamicImagePool implements Serializable {
     private Map<String, ImageDataModel> pool = new Hashtable<String, ImageDataModel>();
     private transient Random RANDOM = new Random();
 
-    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException{
+    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
         RANDOM = new Random();
     }
 

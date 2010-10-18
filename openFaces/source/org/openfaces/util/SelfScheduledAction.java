@@ -13,7 +13,7 @@ package org.openfaces.util;
 
 /**
  * @author Dmitry Pikhulya
-*/
+ */
 public interface SelfScheduledAction {
     boolean executeIfReady();
 }

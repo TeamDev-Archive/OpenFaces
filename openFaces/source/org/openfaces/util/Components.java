@@ -420,7 +420,7 @@ public class Components {
             // restore the original iterator positions
             if (p instanceof UIData) {
                 UIData uiData = (UIData) p;
-                uiData.setRowIndex((Integer)originalParentObjectIds.remove(0));
+                uiData.setRowIndex((Integer) originalParentObjectIds.remove(0));
             } else if (p instanceof OUIObjectIterator) {
                 OUIObjectIterator objectIterator = (OUIObjectIterator) p;
                 objectIterator.setObjectId((String) originalParentObjectIds.remove(0));
