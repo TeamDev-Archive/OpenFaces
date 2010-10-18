@@ -43,4 +43,8 @@ public class CheckboxColumnJspTag extends BaseColumnJspTag {
     public void setDisabled(ValueExpression disabled) {
         getDelegate().setPropertyValue("disabled", disabled);
     }
+
+    public void setVisible(ValueExpression visible) {
+        getDelegate().setPropertyValue("visible", visible);
+    }
 }
