@@ -28,6 +28,7 @@ import java.util.Map;
 public class Environment {
     private static final String KEY_UNDEFINED_BROWSER = "undefined_browser";
     private static final String KEY_EXPLORER_BROWSER = "explorer_browser";
+    private static final String KEY_EXPLORER6_BROWSER = "explorer6_browser";
     private static final String KEY_OPERA_BROWSER = "opera_browser";
     private static final String KEY_MOZILLA_BROWSER = "mozilla_browser";
     private static final String KEY_SAFARI_BROWSER = "safari_browser";
@@ -175,6 +176,16 @@ public class Environment {
         }
         return isExplorer;
     }
+
+    public static boolean isExplorer6() {
+        Boolean isExplorer6 = (Boolean) getSessionMap().get(KEY_EXPLORER6_BROWSER);
+        if (isExplorer6 == null) {
+            isExplorer6 = isExplorer() && isBrowser("msie 6") && !isOpera();
+            getSessionMap().put(KEY_EXPLORER_BROWSER, isExplorer6);
+        }
+        return isExplorer6;
+    }
+
 
     public static boolean isMozilla() {
         Boolean isMozilla = (Boolean) getSessionMap().get(KEY_MOZILLA_BROWSER);

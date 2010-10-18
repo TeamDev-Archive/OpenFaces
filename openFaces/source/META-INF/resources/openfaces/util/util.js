@@ -860,7 +860,9 @@ if (!window.O$) {
   };
 
   O$.isExplorer6 = function() {
-    return O$.isExplorer() && !O$.isExplorer7() && !O$.isExplorer8();
+    if (O$._explorer6 == undefined)
+      O$._explorer6 = O$.isExplorer() && O$.userAgentContains("MSIE 6");
+    return O$._explorer6;
   };
 
   O$.isExplorer7 = function() {
@@ -873,6 +875,12 @@ if (!window.O$) {
     if (O$._explorer8 == undefined)
       O$._explorer8 = O$.isExplorer() && O$.userAgentContains("MSIE 8");
     return O$._explorer8;
+  };
+
+  O$.isExplorer9 = function() {
+    if (O$._explorer9 == undefined)
+      O$._explorer9 = O$.isExplorer() && O$.userAgentContains("MSIE 9");
+    return O$._explorer9;
   };
 
   O$.isOpera9AndLate = function() {
