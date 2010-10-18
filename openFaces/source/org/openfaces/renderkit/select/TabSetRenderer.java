@@ -167,7 +167,8 @@ public class TabSetRenderer extends BaseTabSetRenderer {
 
             if (tabSet.isFocusable()) {
                 writer.startElement("div", tabSet);
-                String defaultFocusedClass = Styles.getCSSClass(context, component, "border: 1px solid transparent;", StyleGroup.selectedStyleGroup(1));
+                String defaultFocusedClass = Styles.getCSSClass(context, component,
+                        !Environment.isExplorer6() ? "border: 1px solid transparent;" : "", StyleGroup.selectedStyleGroup(1));
                 writer.writeAttribute("class", defaultFocusedClass, null);
             }
 
