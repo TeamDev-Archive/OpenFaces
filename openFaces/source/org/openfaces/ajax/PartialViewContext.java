@@ -482,7 +482,6 @@ public class PartialViewContext extends PartialViewContextWrapper {
         String listener = requestParams.get(PARAM_ACTION_LISTENER);
         String action = requestParams.get(PARAM_ACTION);
         String actionComponentId = requestParams.get(PARAM_ACTION_COMPONENT);
-        Log.log(context, "try invoke listener");
         if (listener != null || action != null) {
             ELContext elContext = context.getELContext();
             UIComponent component = null;
