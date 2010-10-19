@@ -7212,6 +7212,18 @@
       <!-- @default false -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>Allows specifying EL expression to show only some of the check-boxes according to application&apos;s
+        logic.
+      </description>
+      <name>visible</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
 
   </tag>
 

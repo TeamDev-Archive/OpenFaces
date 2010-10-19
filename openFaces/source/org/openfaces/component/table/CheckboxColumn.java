@@ -41,6 +41,7 @@ public class CheckboxColumn extends BaseColumn {
     private AbstractTableSelection selectedRows;
     private Map<String, ValueExpression> deferredValueExpressions;
     private Boolean disabled;
+    private Boolean visible;
 
     public CheckboxColumn() {
         setRendererType("org.openfaces.CheckboxColumnRenderer");
@@ -60,17 +61,20 @@ public class CheckboxColumn extends BaseColumn {
                 saveAttachedState(context, selectedRows),
                 saveExpressionMap(context, deferredValueExpressions),
                 sortable,
-                disabled};
+                disabled,
+                visible};
     }
 
     @Override
     public void restoreState(FacesContext context, Object stateObj) {
         Object[] state = (Object[]) stateObj;
-        super.restoreState(context, state[0]);
-        selectedRows = (AbstractTableSelection) restoreAttachedState(context, state[1]);
-        deferredValueExpressions = restoreExpressionMap(context, state[2]);
-        sortable = (Boolean) state[3];
-        disabled = (Boolean) state[4];
+        int i = 0;
+        super.restoreState(context, state[i++]);
+        selectedRows = (AbstractTableSelection) restoreAttachedState(context, state[i++]);
+        deferredValueExpressions = restoreExpressionMap(context, state[i++]);
+        sortable = (Boolean) state[i++];
+        disabled = (Boolean) state[i++];
+        visible =(Boolean) state[i++];
         assignDataModel();
     }
 
@@ -307,5 +311,13 @@ public class CheckboxColumn extends BaseColumn {
 
     public void setDisabled(boolean disabled) {
         this.disabled = disabled;
+    }
+
+    public boolean getVisible() {
+        return ValueBindings.get(this, "visible", visible, true);
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 }
