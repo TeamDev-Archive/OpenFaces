@@ -1202,14 +1202,12 @@
     </library>
     <library name="Facelets">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/facelets/jsf-facelets-1.1.14.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/el/el-api.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/el/el-ri.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/facelets/jsf-facelets-1.1.15.jar!/" />
       </CLASSES>
       <JAVADOC />
-      <SOURCES>
-        <root url="jar://$PROJECT_DIR$/libsrc/facelets-1.1.14-src.zip!/facelets-1.1.14-src/java" />
-      </SOURCES>
+      <SOURCES />
     </library>
     <library name="JUnit">
       <CLASSES>

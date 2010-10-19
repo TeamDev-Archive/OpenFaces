@@ -69,7 +69,7 @@
   </fileset>
 
   <fileset id="facelets" dir="${facelets.lib.dir}">
-    <include name="jsf-facelets-1.1.14.jar"/>
+    <include name="jsf-facelets-1.1.15.jar"/>
   </fileset>
 
   <fileset id="el-ri" dir="${el.lib.dir}">
@@ -156,7 +156,7 @@
           <include name="jstl-1.1.0.jar"/>
           <include name="openfaces-dependencies/cssparser-0.9.5.jar"/>
           <include name="openfaces-dependencies/sac.jar"/>
-          <include name="facelets/jsf-facelets-1.1.14.jar"/>
+          <include name="facelets/jsf-facelets-1.1.15.jar"/>
           <include name="richfaces/richfaces-api-3.3.1.GA.jar"/>
           <include name="el/el-api-1.5.0.jar"/>
           <include name="el/el-ri-1.5.0.jar"/>

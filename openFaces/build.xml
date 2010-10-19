@@ -27,7 +27,7 @@
           <include name="jstl-1.1.0.jar"/>
         </fileset>
         <fileset dir="${facelets.lib.dir}">
-          <include name="jsf-facelets-1.1.14.jar"/>
+          <include name="jsf-facelets-1.1.15.jar"/>
         </fileset>
         <fileset dir="${el.lib.dir}">
           <include name="el-api-1.5.0.jar"/>
