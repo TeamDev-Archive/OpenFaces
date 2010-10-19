@@ -656,6 +656,20 @@ window.OpenFaces.Ajax = {
     });
   },
 
+  _pushElementsWithId: function(destElements, element) {
+    if (!element)
+      return;
+    if (element.id) {
+      destElements.push(element);
+      return;
+    }
+
+    for (var childIndex = 0, childCount = element.childNodes.length; childIndex < childCount; childIndex++) {
+      var subElement = element.childNodes[childIndex];
+      O$.Ajax.pushElementsWithId(destElements, subElement);
+    }
+  },
+
   _processUpdateOnExpirationOrError: function (updHTML, updScripts) {
     var tempDiv = document.createElement("div");
     tempDiv.innerHTML = updHTML;
@@ -663,20 +677,7 @@ window.OpenFaces.Ajax = {
     var newElements = [];
     for (var childIndex = 0, childCount = tempDiv.childNodes.length; childIndex < childCount; childIndex++) {
       var newElement = tempDiv.childNodes[childIndex];
-      function pushElementsWithId(destElements, element) {
-        if (!element)
-          return;
-        if (element.id) {
-          destElements.push(element);
-          return;
-        }
-
-        for (var childIndex = 0, childCount = element.childNodes.length; childIndex < childCount; childIndex++) {
-          var subElement = element.childNodes[childIndex];
-          pushElementsWithId(destElements, subElement);
-        }
-      }
-      pushElementsWithId(newElements, newElement);
+      O$.Ajax.pushElementsWithId(newElements, newElement);
     }
 
     newElements.forEach(function(newElement) {

@@ -48,6 +48,10 @@ public class ReflectionUtil {
                                       Class[] methodParameterClasses,
                                       Object[] methodParameterObjects,
                                       Object invokeOnObject) {
+        if (methodParameterClasses == null)
+            methodParameterClasses = new Class[0];
+        if (methodParameterObjects == null)
+            methodParameterObjects = new Object[0];
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         Object result = null;
         String className = clazz.getName();

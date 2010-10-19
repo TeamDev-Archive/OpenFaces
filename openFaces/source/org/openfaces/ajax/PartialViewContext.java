@@ -485,8 +485,10 @@ public class PartialViewContext extends PartialViewContextWrapper {
         if (listener != null || action != null) {
             ELContext elContext = context.getELContext();
             UIComponent component = null;
+            List<Runnable> restoreDataPointerRunnables = new ArrayList<Runnable>();
             if (actionComponentId != null)
-                component = findComponentById(viewRoot, actionComponentId, true, false, false);
+                component = findComponentById(viewRoot, actionComponentId, true, false, false,
+                        restoreDataPointerRunnables);
             if (component == null)
                 component = viewRoot;
 
@@ -516,6 +518,9 @@ public class PartialViewContext extends PartialViewContextWrapper {
             }
             if (result != null)
                 AjaxRequest.getInstance().setAjaxResult(result);
+            for (Runnable restoreDataPointerRunnable : restoreDataPointerRunnables) {
+                restoreDataPointerRunnable.run();
+            }
         }
         return actionComponentId;
     }
@@ -525,7 +530,20 @@ public class PartialViewContext extends PartialViewContextWrapper {
                                                 boolean preProcessDecodesOnTables,
                                                 boolean preRenderResponseOnTables,
                                                 boolean checkComponentPresence) {
-        UIComponent componentByPath = findComponentByPath(parent, id, preProcessDecodesOnTables, preRenderResponseOnTables);
+        return findComponentById(parent, id,
+                preProcessDecodesOnTables,
+                preRenderResponseOnTables,
+                checkComponentPresence,
+                null);
+    }
+    public static UIComponent findComponentById(UIComponent parent,
+                                                String id,
+                                                boolean preProcessDecodesOnTables,
+                                                boolean preRenderResponseOnTables,
+                                                boolean checkComponentPresence,
+                                                List<Runnable> restoreDataPointerRunnables) {
+        UIComponent componentByPath = findComponentByPath(parent, id, preProcessDecodesOnTables,
+                preRenderResponseOnTables, restoreDataPointerRunnables);
         if (checkComponentPresence && componentByPath == null)
             throw new FacesException("Component by id not found: " + id);
         return componentByPath;
@@ -534,7 +552,8 @@ public class PartialViewContext extends PartialViewContextWrapper {
     private static UIComponent findComponentByPath(UIComponent parent,
                                                    String path,
                                                    boolean preProcessDecodesOnTables,
-                                                   boolean preRenderResponseOnTables) {
+                                                   boolean preRenderResponseOnTables,
+                                                   List<Runnable> restoreDataPointerRunnables) {
         while (true) {
             if (path == null) {
                 return null;
@@ -542,10 +561,10 @@ public class PartialViewContext extends PartialViewContextWrapper {
 
             int separator = path.indexOf(NamingContainer.SEPARATOR_CHAR, 1);
             if (separator == -1)
-                return componentById(parent, path, true, preProcessDecodesOnTables, preRenderResponseOnTables);
+                return componentById(parent, path, true, preProcessDecodesOnTables, preRenderResponseOnTables, restoreDataPointerRunnables);
 
             String id = path.substring(0, separator);
-            UIComponent nextParent = componentById(parent, id, false, preProcessDecodesOnTables, preRenderResponseOnTables);
+            UIComponent nextParent = componentById(parent, id, false, preProcessDecodesOnTables, preRenderResponseOnTables, restoreDataPointerRunnables);
             if (nextParent == null) {
                 return null;
             }
@@ -555,9 +574,10 @@ public class PartialViewContext extends PartialViewContextWrapper {
     }
 
     private static UIComponent componentById(UIComponent parent, String id, boolean isLastComponentInPath,
-                                             boolean preProcessDecodesOnTables, boolean preRenderResponseOnTables) {
+                                             boolean preProcessDecodesOnTables, boolean preRenderResponseOnTables,
+                                             List<Runnable> restoreDataPointerRunnables) {
         if (id.length() > 0 && (isNumberBasedId(id) || id.startsWith(":")) && parent instanceof AbstractTable) {
-            AbstractTable table = ((AbstractTable) parent);
+            final AbstractTable table = ((AbstractTable) parent);
             if (!isLastComponentInPath) {
                 if (preProcessDecodesOnTables)
                     table.invokeBeforeProcessDecodes(FacesContext.getCurrentInstance());
@@ -567,36 +587,68 @@ public class PartialViewContext extends PartialViewContextWrapper {
                 }
 
                 int rowIndex = table.getRowIndexByClientSuffix(id);
-                if (table.getRowIndex() == rowIndex) {
+                final int prevRowIndex = table.getRowIndex();
+                if (prevRowIndex == rowIndex) {
                     // ensure row index setting will be run anew to ensure proper request-scope variable values
                     table.setRowIndex(-1);
                 }
                 table.setRowIndex(rowIndex);
+                restoreDataPointerRunnables.add(new Runnable() {
+                    public void run() {
+                        table.setRowIndex(prevRowIndex);
+                    }
+                });
             } else {
                 int rowIndex = table.getRowIndexByClientSuffix(id);
-                if (table.getRowIndex() == rowIndex) {
+                final int prevRowIndex = table.getRowIndex();
+                if (prevRowIndex == rowIndex) {
                     // ensure row index setting will be run anew to ensure proper request-scope variable values
                     table.setRowIndex(-1);
                 }
                 table.setRowIndex(rowIndex);
+                restoreDataPointerRunnables.add(new Runnable() {
+                    public void run() {
+                        table.setRowIndex(prevRowIndex);
+                    }
+                });
             }
             return table;
         } else if (isNumberBasedId(id) && parent instanceof UIData) {
-            UIData grid = ((UIData) parent);
+            final UIData grid = ((UIData) parent);
             int rowIndex = Integer.parseInt(id);
+            final int prevRowIndex = grid.getRowIndex();
             grid.setRowIndex(rowIndex);
+            restoreDataPointerRunnables.add(new Runnable() {
+                public void run() {
+                    grid.setRowIndex(prevRowIndex);
+                }
+            });
             return grid;
         } else if (id.charAt(0) == ':' && parent instanceof OUIObjectIterator) {
             id = id.substring(1);
-            OUIObjectIterator iterator = (OUIObjectIterator) parent;
+            final OUIObjectIterator iterator = (OUIObjectIterator) parent;
+            final String prevObjectId = iterator.getObjectId();
             iterator.setObjectId(id);
+            restoreDataPointerRunnables.add(new Runnable() {
+                public void run() {
+                    iterator.setObjectId(prevObjectId);
+                }
+            });
             return (UIComponent) iterator;
         } else if (isNumberBasedId(id)) {
             try {
                 Class clazz = Class.forName("com.sun.facelets.component.UIRepeat");
                 if (clazz.isInstance(parent)) {
+                    final Object uiRepeat = parent;
+                    final Object prevIndex = ReflectionUtil.invokeMethod("com.sun.facelets.component.UIRepeat", "getIndex", null, null, uiRepeat);
                     ReflectionUtil.invokeMethod("com.sun.facelets.component.UIRepeat", "setIndex",
-                            new Class[]{Integer.TYPE}, new Object[]{Integer.parseInt(id)}, parent);
+                            new Class[]{Integer.TYPE}, new Object[]{Integer.parseInt(id)}, uiRepeat);
+                    restoreDataPointerRunnables.add(new Runnable() {
+                        public void run() {
+                            ReflectionUtil.invokeMethod("com.sun.facelets.component.UIRepeat", "setIndex",
+                                    new Class[]{Integer.TYPE}, new Object[]{prevIndex}, uiRepeat);
+                        }
+                    });
                     return parent;
                 }
             } catch (ClassNotFoundException e) {
@@ -615,7 +667,8 @@ public class PartialViewContext extends PartialViewContextWrapper {
                     return child;
             } else {
                 UIComponent component = componentById(child, id,
-                        isLastComponentInPath, preProcessDecodesOnTables, preRenderResponseOnTables);
+                        isLastComponentInPath, preProcessDecodesOnTables, preRenderResponseOnTables,
+                        restoreDataPointerRunnables);
                 if (component != null)
                     return component;
             }

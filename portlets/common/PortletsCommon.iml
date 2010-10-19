@@ -27,7 +27,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="OpenFaces" exported="" />
     <orderEntry type="library" scope="TEST" name="JSF Implementation - Mojarra 2.0" level="project" />
-    <orderEntry type="library" name="JSF Implementation - MyFaces 2.0" level="project" />
   </component>
 </module>
 

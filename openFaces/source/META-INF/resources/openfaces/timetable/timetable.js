@@ -710,7 +710,7 @@ O$.Timetable.replaceDocumentElements = function(htmlPortion, allowElementsWithNe
   var newElements = [];
   for (var i = 0, count = tempDiv.childNodes.length; i < count; i++) {
     var el = tempDiv.childNodes[i];
-    O$.ajax_pushElementsWithId(newElements, el);
+    O$.Ajax._pushElementsWithId(newElements, el);
   }
   for (var childIndex = 0, childCount = newElements.length; childIndex < childCount; childIndex++) {
     var newElement = newElements[childIndex];
