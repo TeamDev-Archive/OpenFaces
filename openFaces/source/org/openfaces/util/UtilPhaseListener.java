@@ -32,6 +32,7 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -214,8 +215,9 @@ public class UtilPhaseListener extends PhaseListenerBase {
         if (listener != null || action != null) {
             ELContext elContext = context.getELContext();
             UIComponent component = null;
+            List<Runnable> restoreDataPointerRunnables = new ArrayList<Runnable>();
             if (actionComponentId != null)
-                component = findComponentById(viewRoot, actionComponentId, true, false, false);
+                component = findComponentById(viewRoot, actionComponentId, true, false, false, restoreDataPointerRunnables);
             if (component == null)
                 component = viewRoot;
 
@@ -244,6 +246,9 @@ public class UtilPhaseListener extends PhaseListenerBase {
             }
             if (result != null)
                 AjaxRequest.getInstance().setAjaxResult(result);
+            for (Runnable restoreDataPointerRunnable : restoreDataPointerRunnables) {
+                restoreDataPointerRunnable.run();
+            }
         }
         return actionComponentId;
     }
@@ -253,7 +258,16 @@ public class UtilPhaseListener extends PhaseListenerBase {
                                           boolean preProcessDecodesOnTables,
                                           boolean preRenderResponseOnTables,
                                           boolean checkComponentPresence) {
-        UIComponent componentByPath = findComponentByPath(parent, id, preProcessDecodesOnTables, preRenderResponseOnTables);
+        return findComponentById(parent, id, preProcessDecodesOnTables, preRenderResponseOnTables, checkComponentPresence, null);
+    }
+    public static UIComponent findComponentById(UIComponent parent,
+                                          String id,
+                                          boolean preProcessDecodesOnTables,
+                                          boolean preRenderResponseOnTables,
+                                          boolean checkComponentPresence,
+                                          List<Runnable> restoreDataPointerRunnables) {
+        UIComponent componentByPath = findComponentByPath(parent, id, preProcessDecodesOnTables,
+                preRenderResponseOnTables, restoreDataPointerRunnables);
         if (checkComponentPresence && componentByPath == null)
             throw new FacesException("Component by id not found: " + id);
         return componentByPath;
@@ -262,7 +276,8 @@ public class UtilPhaseListener extends PhaseListenerBase {
     private static UIComponent findComponentByPath(UIComponent parent,
                                             String path,
                                             boolean preProcessDecodesOnTables,
-                                            boolean preRenderResponseOnTables) {
+                                            boolean preRenderResponseOnTables,
+                                            List<Runnable> restoreDataPointerRunnables) {
         while (true) {
             if (path == null) {
                 return null;
@@ -270,10 +285,12 @@ public class UtilPhaseListener extends PhaseListenerBase {
 
             int separator = path.indexOf(NamingContainer.SEPARATOR_CHAR, 1);
             if (separator == -1)
-                return componentById(parent, path, true, preProcessDecodesOnTables, preRenderResponseOnTables, null);
+                return componentById(parent, path, true, preProcessDecodesOnTables,
+                        preRenderResponseOnTables, restoreDataPointerRunnables);
 
             String id = path.substring(0, separator);
-            UIComponent nextParent = componentById(parent, id, false, preProcessDecodesOnTables, preRenderResponseOnTables, null);
+            UIComponent nextParent = componentById(parent, id, false, preProcessDecodesOnTables,
+                    preRenderResponseOnTables, restoreDataPointerRunnables);
             if (nextParent == null) {
                 return null;
             }
