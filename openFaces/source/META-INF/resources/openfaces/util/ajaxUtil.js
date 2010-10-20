@@ -410,7 +410,7 @@ window.OpenFaces.Ajax = {
       var render1 = firstSeparator != -1 ? render.substring(0, firstSeparator) : render;
       firstSeparator = execute ? render.indexOf(" ") : -1;
       var execute1 = firstSeparator != -1 ? execute.substring(0, firstSeparator) : execute;
-      var executeElement = O$(render1) || O$(execute1);
+      var executeElement = O$(execute1) || O$(render1);
       var frm = O$.getParentNode(executeElement, "FORM");
       if (!frm) frm = document.forms[0];
       var frmChildren = frm.childNodes;
