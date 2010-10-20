@@ -593,11 +593,12 @@ public class PartialViewContext extends PartialViewContextWrapper {
                     table.setRowIndex(-1);
                 }
                 table.setRowIndex(rowIndex);
-                restoreDataPointerRunnables.add(new Runnable() {
-                    public void run() {
-                        table.setRowIndex(prevRowIndex);
-                    }
-                });
+                if (restoreDataPointerRunnables != null)
+                    restoreDataPointerRunnables.add(new Runnable() {
+                        public void run() {
+                            table.setRowIndex(prevRowIndex);
+                        }
+                    });
             } else {
                 int rowIndex = table.getRowIndexByClientSuffix(id);
                 final int prevRowIndex = table.getRowIndex();
@@ -606,11 +607,12 @@ public class PartialViewContext extends PartialViewContextWrapper {
                     table.setRowIndex(-1);
                 }
                 table.setRowIndex(rowIndex);
-                restoreDataPointerRunnables.add(new Runnable() {
-                    public void run() {
-                        table.setRowIndex(prevRowIndex);
-                    }
-                });
+                if (restoreDataPointerRunnables != null)
+                    restoreDataPointerRunnables.add(new Runnable() {
+                        public void run() {
+                            table.setRowIndex(prevRowIndex);
+                        }
+                    });
             }
             return table;
         } else if (isNumberBasedId(id) && parent instanceof UIData) {
@@ -618,22 +620,24 @@ public class PartialViewContext extends PartialViewContextWrapper {
             int rowIndex = Integer.parseInt(id);
             final int prevRowIndex = grid.getRowIndex();
             grid.setRowIndex(rowIndex);
-            restoreDataPointerRunnables.add(new Runnable() {
-                public void run() {
-                    grid.setRowIndex(prevRowIndex);
-                }
-            });
+            if (restoreDataPointerRunnables != null)
+                restoreDataPointerRunnables.add(new Runnable() {
+                    public void run() {
+                        grid.setRowIndex(prevRowIndex);
+                    }
+                });
             return grid;
         } else if (id.charAt(0) == ':' && parent instanceof OUIObjectIterator) {
             id = id.substring(1);
             final OUIObjectIterator iterator = (OUIObjectIterator) parent;
             final String prevObjectId = iterator.getObjectId();
             iterator.setObjectId(id);
-            restoreDataPointerRunnables.add(new Runnable() {
-                public void run() {
-                    iterator.setObjectId(prevObjectId);
-                }
-            });
+            if (restoreDataPointerRunnables != null)
+                restoreDataPointerRunnables.add(new Runnable() {
+                    public void run() {
+                        iterator.setObjectId(prevObjectId);
+                    }
+                });
             return (UIComponent) iterator;
         } else if (isNumberBasedId(id)) {
             try {
@@ -643,12 +647,13 @@ public class PartialViewContext extends PartialViewContextWrapper {
                     final Object prevIndex = ReflectionUtil.invokeMethod("com.sun.facelets.component.UIRepeat", "getIndex", null, null, uiRepeat);
                     ReflectionUtil.invokeMethod("com.sun.facelets.component.UIRepeat", "setIndex",
                             new Class[]{Integer.TYPE}, new Object[]{Integer.parseInt(id)}, uiRepeat);
-                    restoreDataPointerRunnables.add(new Runnable() {
-                        public void run() {
-                            ReflectionUtil.invokeMethod("com.sun.facelets.component.UIRepeat", "setIndex",
-                                    new Class[]{Integer.TYPE}, new Object[]{prevIndex}, uiRepeat);
-                        }
-                    });
+                    if (restoreDataPointerRunnables != null)
+                        restoreDataPointerRunnables.add(new Runnable() {
+                            public void run() {
+                                ReflectionUtil.invokeMethod("com.sun.facelets.component.UIRepeat", "setIndex",
+                                        new Class[]{Integer.TYPE}, new Object[]{prevIndex}, uiRepeat);
+                            }
+                        });
                     return parent;
                 }
             } catch (ClassNotFoundException e) {
