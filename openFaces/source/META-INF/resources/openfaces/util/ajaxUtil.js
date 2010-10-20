@@ -666,7 +666,7 @@ window.OpenFaces.Ajax = {
 
     for (var childIndex = 0, childCount = element.childNodes.length; childIndex < childCount; childIndex++) {
       var subElement = element.childNodes[childIndex];
-      O$.Ajax.pushElementsWithId(destElements, subElement);
+      O$.Ajax._pushElementsWithId(destElements, subElement);
     }
   },
 
@@ -677,7 +677,7 @@ window.OpenFaces.Ajax = {
     var newElements = [];
     for (var childIndex = 0, childCount = tempDiv.childNodes.length; childIndex < childCount; childIndex++) {
       var newElement = tempDiv.childNodes[childIndex];
-      O$.Ajax.pushElementsWithId(newElements, newElement);
+      O$.Ajax._pushElementsWithId(newElements, newElement);
     }
 
     newElements.forEach(function(newElement) {
