@@ -3706,10 +3706,12 @@ if (!window.O$) {
     // hundredPercentValue is required to handle percent-based paddings in O$.getNumericElementStyle
     if (!_paddingsHaveBeenReset)
       O$.excludeClassNames(element, ["o_zeroPaddings"]);
-    if (!O$.isExplorer() || O$.isStrictMode()) {
-      if (value != null) {
-        value -= O$.getNumericElementStyle(element, "padding-" + edge1Property, false, hundredPercentValue) + O$.getNumericElementStyle(element, "padding-" + edge2Property, false, hundredPercentValue);
-        value -= O$.getNumericElementStyle(element, "border-" + edge1Property + "-width", false, hundredPercentValue) + O$.getNumericElementStyle(element, "border-" + edge2Property + "-width", false, hundredPercentValue);
+    if (element.nodeName.toLowerCase() != "table") {
+      if (!O$.isExplorer() || O$.isStrictMode()) {
+        if (value != null) {
+          value -= O$.getNumericElementStyle(element, "padding-" + edge1Property, false, hundredPercentValue) + O$.getNumericElementStyle(element, "padding-" + edge2Property, false, hundredPercentValue);
+          value -= O$.getNumericElementStyle(element, "border-" + edge1Property + "-width", false, hundredPercentValue) + O$.getNumericElementStyle(element, "border-" + edge2Property + "-width", false, hundredPercentValue);
+        }
       }
     }
     if (!_paddingsHaveBeenReset && (value < 0)) {
