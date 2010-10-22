@@ -511,7 +511,7 @@ O$.Tables = {
 
               var scrollingKinds;
               if (sectionTagName == "thead") scrollingKinds = {left: "none", center: "none", right: "none"};
-              else if (sectionTagName == "tbody") scrollingKinds = {left: "none", center: scrolling.horizontal ? "both" : "y", right: "none"};
+              else if (sectionTagName == "tbody") scrollingKinds = {left: "none", center: scrolling.vertical ? (scrolling.horizontal ? "both" : "y") : (scrolling.horizontal ? "x" : "none"), right: "none"};
               else if (sectionTagName == "tfoot") scrollingKinds = {left: "none", center: "none", right: "none"};
                 else throw "initTableSection: unknown sectionTagName: " + sectionTagName;
               this._leftScrollingArea = leftCellIndex != undefined ? scrollingArea(leftCellIndex, scrollingKinds.left) : null;
@@ -2127,11 +2127,7 @@ O$.Tables = {
           scrollingAreaColTags.push(O$.Tables._getTableColTags(area._sectionTable));
       });
       function areaWidthByColumns(section, areaName, verticalAreaForInitialization) {
-
-        var scrollerWidth = O$.isExplorer() || /* explorer reports too big values*/
-                            O$.isMozillaFF() /* mozilla reports 0 in some cases (see TreeTable demo 1) */
-                ? 17
-                : mainScrollingArea._scrollingDiv.offsetWidth - mainScrollingArea._scrollingDiv.clientWidth;
+        var scrollerWidth = scrolling.vertical ? O$.Tables.getScrollerWidth(mainScrollingArea._scrollingDiv) : 0;
         var area = section[areaName];
         var areaWidth = O$.Tables._alignTableColumns(
                 area._colTags, table, firstInitialization,
@@ -2227,25 +2223,49 @@ O$.Tables = {
       setTimeout(alignColumnWidths, 100);
 
     function fixBodyHeight() {
-      var fixture = O$.fixElement(table.body._sectionTable, {
-        height: function() {
-          var height = O$.getElementPaddingRectangle(table).height;
-          [table.header, table.footer].forEach(function (section) {
-            if (!section) return;
-            var sectionTable = section._sectionTable;
-            var sectionHeight = sectionTable.offsetHeight;
-            height -= sectionHeight;
+      var fixture = scrolling.vertical
+        ? O$.fixElement(table.body._sectionTable, {
+          height: function() {
+            var height = O$.getElementPaddingRectangle(table).height;
+            [table.header, table.footer].forEach(function (section) {
+              if (!section) return;
+              var sectionTable = section._sectionTable;
+              var sectionHeight = sectionTable.offsetHeight;
+              height -= sectionHeight;
+            });
+            return height;
+          }
+        }, null, {onchange: function() {
+          var fixture = this;
+          [table.body._leftScrollingArea, table.body._centerScrollingArea, table.body._rightScrollingArea].forEach(function (scrollingArea) {
+            if (!scrollingArea || !scrollingArea._scrollingDiv) return;
+            var height = fixture.values.height;
+            O$.setElementHeight(scrollingArea._scrollingDiv, height);
           });
-          return height;
-        }
-      }, null, {onchange: function() {
-        var fixture = this;
-        [table.body._leftScrollingArea, table.body._centerScrollingArea, table.body._rightScrollingArea].forEach(function (scrollingArea) {
-          if (!scrollingArea || !scrollingArea._scrollingDiv) return;
-          var height = fixture.values.height;
-          O$.setElementHeight(scrollingArea._scrollingDiv, height);
-        });
-      }});
+        }})
+      : O$.fixElement(table, {
+          height: function() {
+            var height = O$.getElementSize(table.body._centerScrollingArea._table).height;
+            [table.header, table.footer].forEach(function (section) {
+              if (!section) return;
+              var sectionTable = section._sectionTable;
+              var sectionHeight = sectionTable.offsetHeight;
+              height += sectionHeight;
+            });
+            height += O$.getNumericElementStyle(table, "border-top-width") + O$.getNumericElementStyle(table, "border-bottom-width");
+            height += scrolling.horizontal ? O$.Tables.getScrollerHeight(table.body._centerScrollingArea._scrollingDiv) : 0;
+            return height;
+          }
+        }, null, {onchange: function() {
+          var bodyHeight = O$.getElementSize(table.body._centerScrollingArea._table).height;
+          bodyHeight += scrolling.horizontal ? O$.Tables.getScrollerHeight(table.body._centerScrollingArea._scrollingDiv) : 0;
+          O$.setElementHeight(table.body._sectionTable, bodyHeight);
+          [table.body._leftScrollingArea, table.body._centerScrollingArea, table.body._rightScrollingArea].forEach(function (scrollingArea) {
+            if (!scrollingArea || !scrollingArea._scrollingDiv) return;
+            O$.setElementHeight(scrollingArea._scrollingDiv, bodyHeight);
+          });
+        }});
+
       [table.body._leftScrollingArea, table.body._centerScrollingArea, table.body._rightScrollingArea].forEach(function (area) {
         if (!area) return;
         if (area._scrollingDivContainer && area._scrollingDivContainer.style.display == "none")
@@ -2534,8 +2554,21 @@ O$.Tables = {
       });
     }
     return tblWidth;
-  }
+  },
 
+  getScrollerWidth: function(el) {
+    return O$.isExplorer() || /* explorer reports too big values*/
+            O$.isMozillaFF() /* mozilla reports 0 in some cases (see TreeTable demo 1) */
+            ? 17
+            : el.offsetWidth - el.clientWidth;
+  },
+
+  getScrollerHeight: function(el) {
+    return O$.isExplorer() || /* explorer reports too big values*/
+            O$.isMozillaFF() /* mozilla reports 0 in some cases (see TreeTable demo 1) */
+            ? 17
+            : el.offsetHeight - el.clientHeight;
+  }
 
 
 };

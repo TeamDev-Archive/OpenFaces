@@ -48,8 +48,8 @@ public abstract class OUIObjectIteratorBase extends OUIComponentBase implements 
 
                 if (directChildren != null)
                     while (directChildren.hasNext()) {
-                        UIComponent с = directChildren.next();
-                        if (с.visitTree(context, callback))
+                        UIComponent c = directChildren.next();
+                        if (c.visitTree(context, callback))
                             return true;
                     }
 
