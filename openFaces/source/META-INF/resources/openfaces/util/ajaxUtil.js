@@ -221,11 +221,21 @@ window.OpenFaces.Ajax = {
   },
 
   _runScript: function(script, libs) {
+    var runScriptState = {
+      postExecuteHandler: null
+    };
+    O$.Ajax._currentlyScheduledScript = runScriptState;
     libs.forEach(O$.Ajax.loadLibrary);
     function runScriptWhenReady() {
-      if (libs.every(O$.Ajax.isLibraryLoaded))
+      if (libs.every(O$.Ajax.isLibraryLoaded)) {
         script();
-      else
+        if (O$.Ajax._currentlyScheduledScript == runScriptState) {
+          O$.Ajax._currentlyScheduledScript = null;
+          if (runScriptState.postExecuteHandler) {
+            runScriptState.postExecuteHandler();
+          }
+        }
+      } else
         setTimeout(runScriptWhenReady, 100);
     }
     runScriptWhenReady();
@@ -309,6 +319,10 @@ window.OpenFaces.Ajax = {
     }
     var ajaxResult;
     function ajaxEnd() {
+      if (O$.Ajax._currentlyScheduledScript) {
+        O$.Ajax._currentlyScheduledScript.postExecuteHandler = ajaxEnd;
+        return;
+      }
       var ajaxendEvent = O$.createEvent("ajaxend");
       ajaxendEvent.ajaxResult = ajaxResult;
       if (args.onajaxend) {
@@ -744,3 +758,7 @@ window.OpenFaces.Ajax = {
   }
 
 };
+
+O$.addLoadEvent(function() {
+  O$.Ajax._markPreloadedLibraries();
+});

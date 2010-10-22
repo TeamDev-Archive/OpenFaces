@@ -579,23 +579,23 @@
       </demoItem>
     </demos>
   </menuItem>
-  <menuItem>
-    <name>Select One Menu</name>
-    <componentName>Select One Menu</componentName>
-    <url>/selectonemenu/SelectOneMenu.jsf</url>
-    <shortPath>/selectonemenu/</shortPath>
-    <image>SelectOneMenu</image>
-    <selectedImage>/images/components/titles/SelectOneMenu.png</selectedImage>
-    <keyFeatures>
-      <feature>All features of the standard &lt;h:selectOneMenu&gt; component</feature>
-    </keyFeatures>
-    <demos>
-      <demoItem>
-        <demoName>General</demoName>
-        <demoUrl>/selectonemenu/SelectOneMenu.jsf</demoUrl>
-      </demoItem>
-    </demos>
-  </menuItem>
+  <!--<menuItem>-->
+    <!--<name>Select One Menu</name>-->
+    <!--<componentName>Select One Menu</componentName>-->
+    <!--<url>/selectonemenu/SelectOneMenu.jsf</url>-->
+    <!--<shortPath>/selectonemenu/</shortPath>-->
+    <!--<image>SelectOneMenu</image>-->
+    <!--<selectedImage>/images/components/titles/SelectOneMenu.png</selectedImage>-->
+    <!--<keyFeatures>-->
+      <!--<feature>All features of the standard &lt;h:selectOneMenu&gt; component</feature>-->
+    <!--</keyFeatures>-->
+    <!--<demos>-->
+      <!--<demoItem>-->
+        <!--<demoName>General</demoName>-->
+        <!--<demoUrl>/selectonemenu/SelectOneMenu.jsf</demoUrl>-->
+      <!--</demoItem>-->
+    <!--</demos>-->
+  <!--</menuItem>-->
   <menuItem>
     <name>Select One Radio</name>
     <componentName>Select One Radio</componentName>
