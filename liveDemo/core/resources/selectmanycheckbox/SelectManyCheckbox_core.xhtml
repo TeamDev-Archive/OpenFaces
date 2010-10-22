@@ -6,7 +6,7 @@
   <div id="Demo">
 
     <h:panelGroup id="bookList">
-      <o:forEach items="#{BookCatalog.books}" var="book">
+      <o:forEach id="books" items="#{BookCatalog.books}" var="book">
         <dl class="demoLibrary">
           <h:panelGroup styleClass="#{(BookCatalog.selectedBook.isbn == book.isbn)?'active':''}">
             <dt><h:outputText value="#{book.title}"/></dt>

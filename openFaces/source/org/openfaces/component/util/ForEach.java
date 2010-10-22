@@ -18,13 +18,16 @@ import org.openfaces.util.DataUtil;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.FacesListener;
 import javax.faces.event.PhaseId;
 import javax.faces.model.DataModel;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -140,12 +143,15 @@ public class ForEach extends OUIObjectIteratorBase {
         return index;
     }
 
+
+
     /**
      * The base method to perform iteration. Also reset all inner variables when 'index' is null.
      *
      * @param index index of row or
      */
     private void setIndex(Integer index) {
+        super.setObjectId(index == null ? null : index.toString());
         if (index == null) {
             reset();
         } else {
@@ -208,6 +214,16 @@ public class ForEach extends OUIObjectIteratorBase {
             int count = 1 + (index - first) / step;
             status = new IterationStatus(currentItem, index, count, index == first, !hasNext(), getBegin(), getEnd(), getStep());
         }
+    }
+
+    @Override
+    protected Iterator<UIComponent> getDirectChildren() {
+        return null;
+    }
+
+    @Override
+    protected Collection<UIComponent> getIteratedChildren() {
+        return getChildren();
     }
 
     public void setObjectId(String objectId) {

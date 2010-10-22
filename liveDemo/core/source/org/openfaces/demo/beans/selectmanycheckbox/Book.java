@@ -14,14 +14,14 @@ package org.openfaces.demo.beans.selectmanycheckbox;
 
 import org.apache.commons.lang.StringUtils;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
 /**
  * @author Natalia Zolochevska
  */
-public class Book {
-    
+public class Book implements Serializable {
     private String isbn;
     private String title;
     private List<String> authors;

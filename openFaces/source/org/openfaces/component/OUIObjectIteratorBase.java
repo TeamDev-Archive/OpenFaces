@@ -14,14 +14,109 @@ package org.openfaces.component;
 import javax.faces.FacesException;
 import javax.faces.component.ContextCallback;
 import javax.faces.component.UIComponent;
+import javax.faces.component.visit.VisitCallback;
+import javax.faces.component.visit.VisitContext;
+import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author Dmitry Pikhulya
  */
 public abstract class OUIObjectIteratorBase extends OUIComponentBase implements OUIObjectIterator {
+
+    @Override
+    public boolean visitTree(VisitContext context, VisitCallback callback) {
+        if (!isVisitable(context))
+            return false;
+        FacesContext facesContext = context.getFacesContext();
+        pushComponentToEL(facesContext, null);
+        try {
+            VisitResult result = context.invokeVisitCallback(this, callback);
+
+            if (result == VisitResult.COMPLETE)
+                return true;
+
+            if (result == VisitResult.ACCEPT) {
+                Iterator<UIComponent> directChildren = getDirectChildren();
+
+                if (directChildren != null)
+                    while (directChildren.hasNext()) {
+                        UIComponent с = directChildren.next();
+                        if (с.visitTree(context, callback))
+                            return true;
+                    }
+
+                Collection<UIComponent> iteratedChildren = getIteratedChildren();
+                if (iteratedChildren != null && iteratedChildren.size() > 0) {
+                    Iterable<String> objectIds = getObjectIds();
+                    String originalObjectId = getObjectId();
+                    try {
+                        for (String objectId : objectIds) {
+                            setObjectId(objectId);
+                            for (UIComponent component : iteratedChildren) {
+                                if (component.visitTree(context, callback))
+                                    return true;
+                            }
+                        }
+                    } finally {
+                        setObjectId(originalObjectId);
+                    }
+
+                }
+            }
+            return false;
+        } finally {
+            popComponentFromEL(facesContext);
+        }
+    }
+
+    protected Iterator<UIComponent> getDirectChildren() {
+        return this.getFacetsAndChildren();
+    }
+
+    protected Collection<UIComponent> getIteratedChildren() {
+        return Collections.emptyList();
+    }
+
+    private List<String> getObjectIds() {
+        FacesContext context = getFacesContext();
+        String objectIdsKey = "_renderedObjectIds";
+        List<String> result = (List<String>) getAttributes().get(objectIdsKey);
+        if (result == null) {
+            result = new ArrayList<String>();
+            getAttributes().put(objectIdsKey, result);
+        }
+        return result;
+    }
+
+    private boolean objectIterationAndRendering;
+
+    public void startObjectIterationAndRendering() {
+        if (objectIterationAndRendering)
+            throw new IllegalStateException("startObjectIterationAndRendering has already been called on this component: " +
+                    getClientId(getFacesContext()));
+        getObjectIds().clear();
+        objectIterationAndRendering = true;
+    }
+
+    public void stopObjectIterationAndRendering() {
+        if (!objectIterationAndRendering)
+            throw new IllegalStateException("startObjectIterationAndRendering hasn't been called on this component: " +
+                    getClientId(getFacesContext()));
+        objectIterationAndRendering = false;
+    }
+
+    public void setObjectId(String objectId) {
+        if (objectIterationAndRendering)
+            getObjectIds().add(objectId);
+    }
 
     @Override
     public boolean invokeOnComponent(

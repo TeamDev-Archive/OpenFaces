@@ -30,14 +30,11 @@ import java.util.Map;
  * @author Eugene Goncharov
  */
 public class DefaultProgressMessageRenderer extends AbstractSettingsRenderer {
-    public static final String PROGRESS_MESSAGE = "org.openfaces.defaultProgressMessage";
-
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         DefaultProgressMessage dpm = (DefaultProgressMessage) component;
 
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-        requestMap.put(PROGRESS_MESSAGE, dpm);
         AjaxUtil.renderAjaxSupport(context);
 
         JSONObject backgroundLayerParams = null;

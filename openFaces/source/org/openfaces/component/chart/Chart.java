@@ -292,6 +292,7 @@ public class Chart extends OUIObjectIteratorBase implements StyledComponent, Nam
     }
 
     public void setObjectId(String objectId) {
+        super.setObjectId(objectId);
         if (objectId != null) {
             setEntityIndex(Integer.valueOf(objectId));
             setId(getId());

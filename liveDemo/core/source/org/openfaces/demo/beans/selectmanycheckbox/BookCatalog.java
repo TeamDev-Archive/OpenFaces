@@ -16,6 +16,7 @@ import org.openfaces.demo.beans.util.FacesUtils;
 
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -26,7 +27,7 @@ import java.util.TreeSet;
 /**
  * @author Natalia Zolochevska
  */
-public class BookCatalog {
+public class BookCatalog implements Serializable {
 
     private List<Book> books;
     private Book selectedBook;

@@ -52,10 +52,12 @@ public class ForEachRenderer extends RendererBase {
             return;
         ForEach forEach = (ForEach) component;
         forEach.setObjectId(null);
+        forEach.startObjectIterationAndRendering();
         while (forEach.hasNext()) {
             forEach.next();
             super.encodeChildren(context, component);
         }
+        forEach.stopObjectIterationAndRendering();
         forEach.setObjectId(null);
     }
 

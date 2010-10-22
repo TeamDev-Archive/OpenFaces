@@ -308,6 +308,7 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
     }
 
     public void setObjectId(String objectId) {
+        super.setObjectId(objectId);
         if (objectId == null) {
             setEvent(null);
             return;
