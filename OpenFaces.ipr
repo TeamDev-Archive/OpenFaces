@@ -1293,7 +1293,7 @@
         <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/sac.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/jcommon-1.0.16.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/jfreechart-1.0.13.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/commons-collections-3.2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/commons-collections-3.2.1.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
@@ -1432,7 +1432,6 @@
     </library>
     <library name="JSF Implementation - MyFaces 2.0">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/apache/commons-collections-3.2.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/apache/commons-digester-1.8.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/apache/commons-beanutils-1.7.0.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/apache/commons-el-1.0.jar!/" />
@@ -1441,6 +1440,7 @@
         <root url="jar://$PROJECT_DIR$/lib/apache/commons-logging-1.1.1.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/myfaces/myfaces-api-2.0.0.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/myfaces/myfaces-impl-2.0.0.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/apache/commons-collections-3.2.1.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES>
