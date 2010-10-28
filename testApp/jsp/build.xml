@@ -29,7 +29,7 @@
 
   <fileset id="apache" dir="${apache.lib.dir}">
     <include name="commons-beanutils-1.6.jar"/>
-    <include name="commons-collections-3.2.jar"/>
+    <include name="commons-collections-3.2.1.jar"/>
     <include name="commons-digester-1.6.jar"/>
     <include name="commons-logging-1.1.1.jar"/>
     <include name="commons-el-1.0.jar"/>
@@ -150,7 +150,7 @@
           <include name="jboss-seam/jboss-ejb3-all.jar"/>
           <include name="jboss-seam/jboss-seam-2.1.1.GA.jar"/>
           <include name="tomahawk/tomahawk12-1.1.8.jar"/>
-          <include name="apache/commons-collections-3.2.jar"/>
+          <include name="apache/commons-collections-3.2.1.jar"/>
         </fileset>
         <fileset file="${components-jar.file}"/>
       </classpath>
