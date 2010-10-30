@@ -107,12 +107,8 @@ public class Ajax extends OUICommand implements OUIClientAction {
         }
     }
 
-    public boolean getSubmitInvoker() { // todo: remove the "submitInvoker" property and hard-code the "true" behavior if no use-case where this should be customizible arises
-        return ValueBindings.get(this, "submitInvoker", submitInvoker, false);
-    }
-
-    public void setSubmitInvoker(boolean submitInvoker) {
-        this.submitInvoker = submitInvoker;
+    public final boolean getSubmitInvoker() { // todo: clean up usages
+        return false;
     }
 
     public String getEvent() {

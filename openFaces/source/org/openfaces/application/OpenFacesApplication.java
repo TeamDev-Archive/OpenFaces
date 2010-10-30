@@ -20,8 +20,6 @@ import javax.faces.event.PhaseId;
 import javax.faces.event.PostAddToViewEvent;
 import javax.faces.event.PreRenderViewEvent;
 import javax.faces.event.SystemEvent;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,7 +27,6 @@ import java.util.Map;
  */
 @SuppressWarnings({"RawUseOfParameterizedType", "deprecation"})
 public class OpenFacesApplication extends ApplicationWrapper {
-    private final List<String> viewHandlers = new ArrayList<String>();
     private static final String CONSTRUCTING_VIEW_KEY = OpenFacesApplication.class.getName() + ".appendingHeaderContent";
 
     public OpenFacesApplication(Application application) {
@@ -45,10 +42,6 @@ public class OpenFacesApplication extends ApplicationWrapper {
         if (postAddToViewEvent)
             prevConstructingView = requestMap.put(CONSTRUCTING_VIEW_KEY, Boolean.TRUE);
         super.publishEvent(context, systemEventClass, source);
-        if (PreRenderViewEvent.class.isAssignableFrom(systemEventClass))
-            preRenderView(context);
-//        if (PostAddToViewEvent.class.isAssignableFrom(systemEventClass) && source instanceof HtmlHead)
-//            headAddedToView(context);
 
         if (postAddToViewEvent && source instanceof UIViewRoot)
             viewRootAddedToView(context);
@@ -70,10 +63,6 @@ public class OpenFacesApplication extends ApplicationWrapper {
         if (postAddToViewEvent)
             prevConstructingView = requestMap.put(CONSTRUCTING_VIEW_KEY, Boolean.TRUE);
         super.publishEvent(context, systemEventClass, sourceBaseType, source);
-        if (PreRenderViewEvent.class.isAssignableFrom(systemEventClass))
-            preRenderView(context);
-//        if (PostAddToViewEvent.class.isAssignableFrom(systemEventClass) && source instanceof HtmlHead)
-//            headAddedToView(context);
         if (postAddToViewEvent && source instanceof UIViewRoot)
             viewRootAddedToView(context);
 
@@ -83,9 +72,6 @@ public class OpenFacesApplication extends ApplicationWrapper {
             else
                 requestMap.put(CONSTRUCTING_VIEW_KEY, prevConstructingView);
         }
-    }
-
-    private void preRenderView(FacesContext context) {
     }
 
     private void headAddedToView(FacesContext context) {
