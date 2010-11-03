@@ -1,7 +1,6 @@
 <div xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
-     xmlns:o="http://openfaces.org/"
-        >
+     xmlns:o="http://openfaces.org/">
 
   <div id="Description">
     The Chart component lets you plot data in pie, bar, or line charts. With numerous chart options, you can modify any
@@ -14,95 +13,71 @@
     <div style="margin-bottom:10px;">
       <o:commandButton value="Generate New Data"
                        actionListener="#{ChartDemo.generateNewData}"
-                       render="yearPrecipitationChart temperatureChart monthPrecipitationChart temperatureChart2"/>
+                       render="cityPrecipitationChart month_line monthPrecipitationChart"/>
     </div>
 
     <table>
       <tr>
         <td width="50%" valign="top" align="center" style="padding-bottom: 20px; padding-right: 20px;">
-          <o:chart id="yearPrecipitationChart"
-                   model="#{CityPrecipitation}"
-                   width="320"
-                   height="275"
-                   legendVisible="false">
-            <o:pieChartView colors="#5a87be, #94c237, #fff555, #da6a28" labelsVisible="true"/>
-            <o:chartTitle text="Amount of Precipitation During the Year"
-                          style="font-size: 14px;"/>
+          <o:chart id="monthPrecipitationChart"
+                  model="#{MonthPrecipitation}"
+                   width="320" height="275">
+            <o:chartSelection render="form:month_line" lineStyle="3px solid #3366FF"/>
+            <o:barChartView colors="#E84102,#298E01" backgroundPaint="#F6F7F8"/>
           </o:chart>
-
-          <div id="Description">
-            <h:outputText escape="false"
-                          value="A pie chart with each pie sector uniquely colored and the labels positioned on the left and right sides and connected to the sectors with lines."/>
-          </div>
         </td>
         <td width="50%" valign="top" align="center" style="padding-bottom: 20px; padding-left: 20px">
-          <o:chart id="temperatureChart"
-                   width="320" height="275"
-                   model="#{AverageTemp}"
-                   legendVisible="false">
-            <o:barChartView orientation="horizontal"
-                            labelsVisible="false"
-                            colors="#699cd5">
-              <o:chartLabels style="font-size: 8pt;"/>
-              <o:categoryAxis domain="key" position="up_45"/>
-              <o:numberAxis domain="value" lowerBound="0" upperBound="45"/>
-              <o:chartAxis style="color: #4747b3;"/>
-            </o:barChartView>
-
-            <o:chartTitle text="Average Temperature During the Year"
-                          style="font-size: 14px;"/>
+          <o:chart id="month_line" model="#{ChartDemo.monthPrecipitationDynamic}"
+                   width="320" height="275">
+            <o:chartMenu/>
+            <o:lineChartView
+                    backgroundPaint="#F6F7F8"
+                    lineStyles="#{ChartDemo.lineStyles}"
+                    outlines="#{ChartDemo.outlines}"
+                    fillPaints="#{ChartDemo.fillPaints}">
+            </o:lineChartView>
           </o:chart>
-
-          <div id="Description">
-            <h:outputText escape="false"
-                          value="A horizontal bar chart with reversely oriented key and values axes, labels rotated by 45 degrees and dotted vertical grid line."/>
-          </div>
         </td>
       </tr>
       <tr>
         <td width="50%" valign="top" align="center" style="padding-top: 20px; padding-right: 20px">
-          <o:chart id="monthPrecipitationChart"
-                   width="320" height="275"
-                   model="#{MonthPrecipitation}"
-                   textStyle="background: #fff">
-            <o:barChartView labelsVisible="true"
-                            showAxes="key"
-                            colors="#0000CD, #7B68EE">
-              <o:categoryAxis domain="key" position="up_45"/>
-            </o:barChartView>
-            <o:chartLegend position="left"/>
-            <o:chartTitle text="Amount of Monthly Precipitation"
-                          style="font-size: 14px;"/>
-          </o:chart>
+          <o:chart id="cityPrecipitationChart" model="#{CityPrecipitation}"
+                   width="320" height="275">
+            <o:pieChartView
+                    enable3D="true"
+                    backgroundPaint="#F6F7F8"
+                    colors="#{ChartDemo.pieChartColors}"
+                    defaultOutlineStyle="#{ChartDemo.pieChartOutline}">
+              <o:chartPopup>
+                <o:chart model="#{ChartDemo.numericChartModel}"
+                         timePeriodPrecision="minute"
+                         width="300" height="300">
+                  <o:lineChartView
+                          shapesVisible="false"
+                          backgroundPaint="#{ChartDemo.blackColor}"
+                          colors="red,cyan">
+                    <o:gradientLineAreaFill/>
+                    <o:chartGridLines style="border: 1px solid #666; color: #eee;"/>
+                    <o:chartAxis style="color: #ccc;"/>
 
-          <div id="Description">
-            <h:outputText escape="false"
-                          value="A vertical bar chart displaying 2 data series, legend keys to the left, horizontally oriented key axis with the labels rotated by 45 degrees, and dotted horizontal grid line."/>
-          </div>
+                    <o:numberAxis domain="value" lowerBound="0" upperBound="12.5"/>
+                    <o:dateAxis domain="key" dateFormat="#{ChartDemo.mediumDateFormat}"/>
+                  </o:lineChartView>
+                </o:chart>
+              </o:chartPopup>
+            </o:pieChartView>
+          </o:chart>
         </td>
         <td width="50%" valign="top" align="center" style="padding-top: 20px; padding-left: 20px">
-          <o:chart id="temperatureChart2"
-                   width="320" height="275"
-                   model="#{CityTemperature}"
-                   textStyle="background: #fff">
-            <o:lineChartView orientation="vertical"
-                             labelsVisible="true"
-                             colors="#0000ff, #228b22, #ff8c00">
 
-              <o:numberAxis domain="value" lowerBound="-35" upperBound="35"/>
-              <o:dateAxis domain="key" dateFormat="#{ChartDemo.mediumDateFormat}"/>
-            </o:lineChartView>
-            <o:chartLegend position="bottom"
-                           style="width: 250px; height: 200px; margin: 5px;"/>
-            <o:chartTitle text="Temperature Distributions During the Year"
-                          style="font-size: 14px;"/>
-            <o:chartAxis style="border: 3px solid red;" domain="both"/>
-          </o:chart>
+        </td>
+      </tr>
+      <tr>
+        <td width="50%" valign="top" align="center" style="padding-top: 20px; padding-right: 20px">
 
-          <div id="Description">
-            <h:outputText escape="false"
-                          value="A line chart displaying 3 data series with different markers for each data point, key and values axes, dotted grid lines, and legend keys at the bottom."/>
-          </div>
+        </td>
+        <td width="50%" valign="top" align="center" style="padding-top: 20px; padding-left: 20px">
+
         </td>
       </tr>
     </table>

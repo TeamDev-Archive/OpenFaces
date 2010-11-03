@@ -188,6 +188,10 @@
       <value>#{MonthPrecipitation}</value>
     </managed-property>
     <managed-property>
+      <property-name>monthPrecipitationDynamic</property-name>
+      <value>#{MonthPrecipitationDynamic}</value>
+    </managed-property>
+    <managed-property>
       <property-name>cityTemperature</property-name>
       <value>#{CityTemperature}</value>
     </managed-property>
@@ -201,6 +205,12 @@
 
   <managed-bean>
     <managed-bean-name>MonthPrecipitation</managed-bean-name>
+    <managed-bean-class>org.openfaces.demo.beans.chart.MonthPrecipitation</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>MonthPrecipitationDynamic</managed-bean-name>
     <managed-bean-class>org.openfaces.demo.beans.chart.MonthPrecipitation</managed-bean-class>
     <managed-bean-scope>session</managed-bean-scope>
   </managed-bean>

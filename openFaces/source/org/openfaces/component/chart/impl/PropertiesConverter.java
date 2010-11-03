@@ -20,6 +20,9 @@ import org.openfaces.renderkit.cssparser.CSSUtil;
 import org.openfaces.renderkit.cssparser.StyleBorderModel;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 
 /**
  * @author Ekaterina Shliakhovetskaya
@@ -46,29 +49,39 @@ public class PropertiesConverter {
         return intSize;
     }
 
-    public static Color[] getColors(String colorList) {
-        if (colorList == null)
-            return null;
+    public static Collection<Paint> getColors(Object colors) {
+        Collection<Paint> resultColors = new ArrayList<Paint>();
+        if (colors == null)
+            return resultColors;
 
-        String[] st_colors = colorList.split(",");
+        if (colors != null) {
+            if (colors instanceof String) {
+                String[] st_colors = ((String) colors).split(",");
 
-        if (st_colors == null)
-            return null;
+                if (st_colors == null)
+                    return resultColors;
 
-        if (st_colors.length == 0)
-            return null;
+                if (st_colors.length == 0)
+                    return resultColors;
 
-        Color[] colors = new Color[st_colors.length];
-        for (int i = 0; i < st_colors.length; i++) {
-            String st_color = st_colors[i];
-            try {
-                colors[i] = CSSUtil.parseColor(st_color);
-            } catch (NumberFormatException e) {
-                throw new IllegalArgumentException("Can't parse color string: " + st_color);
-            }
+                for (String st_color : st_colors) {
+                    try {
+                        resultColors.add(CSSUtil.parseColor(st_color));
+                    } catch (NumberFormatException e) {
+                        throw new IllegalArgumentException("Can't parse color string: " + st_color);
+                    }
+                }
+            } else if (colors.getClass().isArray()) {
+                resultColors = Arrays.asList((Paint[]) colors);
+            } else if (colors instanceof Collection)
+                resultColors = (Collection<Paint>) colors;
+            else
+                throw new IllegalArgumentException("'colors' attribute of chart view tag should contain either " +
+                        "an array or a collection of colors, but a value of the following type encountered: "
+                        + colors.getClass().getName());
         }
 
-        return colors;
+        return resultColors;
     }
 
     public static PlotOrientation toPlotOrientation(Orientation orientation) {
