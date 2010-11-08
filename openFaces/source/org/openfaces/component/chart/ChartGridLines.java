@@ -25,7 +25,7 @@ import javax.faces.context.FacesContext;
  */
 public class ChartGridLines extends UIOutput implements StyledComponent {
     private String style;
-    private boolean visible = true;
+    private Boolean visible;
     private ChartDomain domain = ChartDomain.BOTH;
 
     public ChartGridLines() {
@@ -41,7 +41,7 @@ public class ChartGridLines extends UIOutput implements StyledComponent {
     }
 
     public boolean isVisible() {
-        return visible;
+        return ValueBindings.get(this, "visible", visible, true);
     }
 
     public void setVisible(boolean visible) {

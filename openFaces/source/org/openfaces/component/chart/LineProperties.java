@@ -83,7 +83,7 @@ public class LineProperties extends UIOutput implements StyledComponent {
     }
 
     public String getTextStyle() {
-        return style;
+        return ValueBindings.get(this, "style", style);
     }
 
     public void setTextStyle(String style) {

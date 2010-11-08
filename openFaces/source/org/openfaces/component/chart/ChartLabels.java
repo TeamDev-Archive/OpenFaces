@@ -25,7 +25,6 @@ import javax.faces.context.FacesContext;
  * @author Ekaterina Shliakhovetskaya
  */
 public class ChartLabels extends UIOutput implements StyledComponent {
-
     private String style;
     private String text;
 
@@ -49,7 +48,7 @@ public class ChartLabels extends UIOutput implements StyledComponent {
     }
 
     public String getText() {
-        return text;
+        return ValueBindings.get(this, "text", text);
     }
 
     public void setText(String text) {

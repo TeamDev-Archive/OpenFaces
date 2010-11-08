@@ -202,7 +202,7 @@ public abstract class ChartView extends UICommand implements StyledComponent, Ha
     }
 
     public String getTooltip() {
-        return tooltip;
+        return ValueBindings.get(this, "tooltip", tooltip);
     }
 
     public void setTooltip(String tooltip) {
@@ -210,7 +210,7 @@ public abstract class ChartView extends UICommand implements StyledComponent, Ha
     }
 
     public String getUrl() {
-        return url;
+        return ValueBindings.get(this, "url", url);
     }
 
     public void setUrl(String url) {

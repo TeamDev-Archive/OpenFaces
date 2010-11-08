@@ -26,7 +26,7 @@ import java.util.List;
  * @author Ekaterina Shliakhovetskaya
  */
 public class LineChartView extends GridChartView {
-    private boolean shapesVisible = true;
+    private Boolean shapesVisible;
     private List<LineProperties> linePropertiesList = new ArrayList<LineProperties>();
 
     private Paint defaultFillColor;
@@ -35,7 +35,7 @@ public class LineChartView extends GridChartView {
     private Collection fillPaints;
 
     public boolean isShapesVisible() {
-        return shapesVisible;
+        return ValueBindings.get(this, "shapesVisible", shapesVisible, true);
     }
 
     public void setShapesVisible(boolean shapesVisible) {

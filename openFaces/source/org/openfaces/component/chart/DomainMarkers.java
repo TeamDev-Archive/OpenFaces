@@ -13,10 +13,11 @@ package org.openfaces.component.chart;
 
 import org.openfaces.util.Components;
 
+import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 import java.util.Collection;
 
-public class DomainMarkers extends javax.faces.component.UIComponentBase implements MarkersContainer{
+public class DomainMarkers extends UIComponentBase implements MarkersContainer{
     public static final String COMPONENT_TYPE = "org.openfaces.DomainMarkers";
     public static final String COMPONENT_FAMILY = "org.openfaces.DomainMarkers";
 
