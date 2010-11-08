@@ -1,0 +1,215 @@
+.default .content,
+.theme1 .content,
+.theme2 .content {
+  width: 440px;
+}
+
+.default .currentEntities,
+.theme1 .currentEntities,
+.theme2 .currentEntities {
+  display: block;
+  height: 450px;
+  width: 430px;
+  overflow-y: auto;
+  text-align: left;
+}
+
+.theme2 .currentEntities {
+  font-size: 1.1em;
+}
+
+.default .tagCloud_container .tagCloud,
+.theme1 .tagCloud_container .tagCloud,
+.theme2 .tagCloud_container .tagCloud {
+  width: 250px;
+  height: 450px;
+  overflow-y: auto;
+}
+
+.default,
+.default .content,
+.default .tagCloud_container {
+  font-family: sans-serif;
+  border: 1px solid #999999;
+  background: #ffffff;
+}
+
+.theme1,
+.theme1 .content,
+.theme1 .tagCloud_container {
+  border: 1px solid #666600;
+}
+
+.theme1,
+.theme1 .content,
+.theme1 .tagCloud_container,
+.theme1 .tagCloud_container .tagCloud {
+  background: #fffef4;
+}
+
+
+.theme2,
+.theme2 .content,
+.theme2 .tagCloud_container {  
+  border: 1px solid #92a49b;
+  text-align: right;
+}
+
+.theme2,
+.theme2 .content,
+.theme2 .tagCloud_container,
+.theme2 .tagCloud_container .tagCloud {
+  font-family: monospace;
+  background: #e6fae6;
+}
+
+.theme1 .tagCloud_container .tagCloud_item {
+  background: transparent;
+}
+
+.theme2 .tagCloud_container .tagCloud_item {
+  background: transparent;
+}
+
+.theme1 .tagCloud_container .tagCloud_item_rollover {
+  background: #e4f7e4;
+}
+
+.theme1 .tagCloud_container .tagCloud_item_rollover .o_tagCloud_item_inner_text {
+  color: #1E9660;
+  text-decoration: underline;
+}
+
+.theme2 .tagCloud_container .tagCloud_item_rollover {
+  background: #ccffcc;
+  border: #339900;
+}
+
+.theme2 .tagCloud_container .tagCloud_item_rollover .o_tagCloud_item_inner_text {
+  color: #8f4c04;
+  text-decoration: underline;
+}
+
+.default .tagCloud_container,
+.theme1 .tagCloud_container,
+.theme2 .tagCloud_container,
+.default .content,
+.theme1 .content,
+.theme2 .content {
+  vertical-align: top;
+  text-align: center;
+}
+
+.default .content .photo .views,
+.default .content .article .views,
+.default .content .book .views {
+  font-size: 0.8em;
+  color: #007ECE;
+  text-align: right;
+}
+
+.theme1 .content .photo .views,
+.theme1 .content .article .views,
+.theme1 .content .book .views {
+  font-size: 0.8em;
+  color: #009999;
+  text-align: right;
+}
+
+.theme2 .content .photo .views,
+.theme2 .content .article .views,
+.theme2 .content .book .views {
+  font-size: 0.8em;
+  color: #de821f;
+  text-align: right;
+}
+
+.default .content .photo .publisher,
+.default .content .article .publisher,
+.default .content .book .publisher {
+  font-size: 1.1em;
+}
+
+.theme1 .content .photo .publisher,
+.theme1 .content .article .publisher,
+.theme1 .content .book .publisher {
+  font-size: 1.1em;
+}
+
+.theme2 .content .photo .publisher,
+.theme2 .content .article .publisher,
+.theme2 .content .book .publisher {
+  font-size: 1.1em;  
+}
+
+.default .content .photo .tags,
+.default .content .article .tags,
+.default .content .book .tags {
+  font-size: 0.9em;
+  font-style: italic;
+  color: #007ECE;
+  clear: both;
+}
+
+.theme1 .content .photo .tags,
+.theme1 .content .article .tags,
+.theme1 .content .book .tags {
+  font-size: 0.9em;
+  font-style: italic;
+  color: #00ce99;
+  clear: both;
+}
+
+.theme2 .content .photo .tags,
+.theme2 .content .article .tags,
+.theme2 .content .book .tags {
+  font-size: 0.9em;
+  font-style: italic;
+  color: #c4910e;
+  clear: both;
+}
+
+.default .content .photo .date,
+.default .content .article .date,
+.default .content .book .date,
+.theme1 .content .photo .date,
+.theme1 .content .article .date,
+.theme1 .content .book .date,
+.theme2 .content .photo .date,
+.theme2 .content .article .date,
+.theme2 .content .book .date{
+  font-size: 1em;
+  float: left;
+}
+
+.default .content .article .title,
+.default .content .book .title,
+.theme1 .content .article .title,
+.theme1 .content .book .title,
+.theme2 .content .article .title,
+.theme2 .content .book .title {
+  font-size: 1.4em;
+  font-weight: bold;
+  margin-left: 30px;
+  text-decoration: underline; 
+}
+
+.default .content .article .text,
+.theme1 .content .article .text,
+.theme2 .content .article .text {
+  font-size: 1.2em;
+  text-indent: 5em;
+  text-align: justify;
+  margin: 3px;
+}
+
+.default .content .book .cover,
+.theme1 .content .book .cover,
+.theme2 .content .book .cover {
+  float: left;
+}
+
+.headerMain,
+.headerResult {
+  font-size: 1.4em;
+}

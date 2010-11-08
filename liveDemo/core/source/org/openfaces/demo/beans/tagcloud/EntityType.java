@@ -10,21 +10,17 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-package org.openfaces.component.tagcloud;
+package org.openfaces.demo.beans.tagcloud;
 
 /**
  * @author : roman.nikolaienko
  */
-public enum Layout {
-    RECTANGLE("rectangle"),
-    VERTICAL("vertical"),
-    OVAL("oval"),
-    SPHERE("sphere");
+public enum EntityType {
+    ARTICLES("Articles"), PHOTOS("Photos"), BOOKS("Books");
     private String value;
 
-
-    Layout(String value) {
-        this.value = value;
+    EntityType(String s) {
+        this.value = s;
     }
 
     public String getValue() {
@@ -35,7 +31,7 @@ public enum Layout {
         this.value = value;
     }
 
-    public String toString() {
-        return value;
+    public String toString(){
+        return getValue();
     }
 }

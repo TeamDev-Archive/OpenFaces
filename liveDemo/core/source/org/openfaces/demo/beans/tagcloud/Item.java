@@ -10,7 +10,7 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-package org.openfaces.testapp.tagcloud;
+package org.openfaces.demo.beans.tagcloud;
 
 import java.io.Serializable;
 import java.util.Date;

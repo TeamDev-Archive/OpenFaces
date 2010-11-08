@@ -733,6 +733,27 @@
       </demoItem>
     </demos>
   </menuItem>
+    <menuItem>
+    <name>Tag Cloud</name>
+    <componentName>Tag Cloud</componentName>
+    <url>/tagcloud/TagCloud_information.jsf</url>
+    <shortPath>/tagcloud/</shortPath>
+    <image>TagCloud</image>
+    <selectedImage>/images/components/titles/TagCloud.png</selectedImage>
+    <keyFeatures>
+      <feature>Customizable tags layout</feature>
+      <feature>Different order of tags rendering</feature>
+      <feature>Displaying tags weight and its customization</feature>
+      <feature>Tag Cloud style and tags style customization</feature>
+      <feature>Sphere layout with 3d animation, rotation and stop speed customization</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>Informational Tag Cloud</demoName>
+        <demoUrl>/tagcloud/TagCloud_information.jsf</demoUrl>
+      </demoItem>        
+    </demos>
+  </menuItem>
   <menuItem>
     <name>Tree Table</name>
     <componentName>Tree Table</componentName>
