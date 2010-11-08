@@ -4203,7 +4203,7 @@
     <tag-class>org.openfaces.taglib.jsp.table.ScrollingJspTag</tag-class>
     <body-content>empty</body-content>
     <attribute>
-      <description>Defines whether horizontal scroling should be activated (false by default).</description>
+      <description>Defines whether horizontal scrolling should be activated (false by default).</description>
       <name>horizontal</name>
       <deferred-value>
         <type>boolean</type>
@@ -4213,7 +4213,7 @@
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Defines whether vertical scroling should be activated (true by default).</description>
+      <description>Defines whether vertical scrolling should be activated (true by default).</description>
       <name>vertical</name>
       <deferred-value>
         <type>boolean</type>

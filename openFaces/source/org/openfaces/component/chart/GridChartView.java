@@ -216,7 +216,7 @@ public abstract class GridChartView extends ChartView {
     }
 
     public String getKeyAxisLabel() {
-        return keyAxisLabel;
+        return ValueBindings.get(this, "keyAxisLabel", keyAxisLabel);
     }
 
     public void setKeyAxisLabel(String keyAxisLabel) {
@@ -224,7 +224,7 @@ public abstract class GridChartView extends ChartView {
     }
 
     public String getValueAxisLabel() {
-        return valueAxisLabel;
+        return ValueBindings.get(this, "valueAxisLabel", valueAxisLabel);
     }
 
     public void setValueAxisLabel(String valueAxisLabel) {

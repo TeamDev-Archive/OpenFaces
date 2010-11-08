@@ -43,6 +43,10 @@ public abstract class ChartView extends UICommand implements StyledComponent, Ha
     private Paint backgroundPaint;
     private Paint titlePaint;
 
+    protected ChartView() {
+        setRendererType(null);
+    }
+
     public boolean isEnable3D() {
         return ValueBindings.get(this, "enable3D", enable3D, false);
     }
@@ -60,7 +64,7 @@ public abstract class ChartView extends UICommand implements StyledComponent, Ha
     }
 
     public String getOnmouseover() {
-        return onmouseover;
+        return ValueBindings.get(this, "onmouseover", onmouseover);
     }
 
     public void setOnmouseover(String onmouseover) {
@@ -68,7 +72,7 @@ public abstract class ChartView extends UICommand implements StyledComponent, Ha
     }
 
     public String getOnmouseout() {
-        return onmouseout;
+        return ValueBindings.get(this, "onmouseout", onmouseout);
     }
 
     public void setOnmouseout(String onmouseout) {
@@ -76,15 +80,11 @@ public abstract class ChartView extends UICommand implements StyledComponent, Ha
     }
 
     public String getOnclick() {
-        return onclick;
+        return ValueBindings.get(this, "onclick", onclick);
     }
 
     public void setOnclick(String onclick) {
         this.onclick = onclick;
-    }
-
-    protected ChartView() {
-        setRendererType(null);
     }
 
     /**
