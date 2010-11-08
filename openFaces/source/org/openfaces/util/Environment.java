@@ -129,12 +129,24 @@ public class Environment {
 
             if (resultHandler != null) {
                 faceletsViewHandler = isFaceletsViewHandler(resultHandler, faceletsViewHandlerClass);
+                Class<?> richFacesViewHandlerWrapper = null;
+                try {
+                    richFacesViewHandlerWrapper = Class.forName("org.ajax4jsf.application.ViewHandlerWrapper");
+                } catch (ClassNotFoundException e) {
+                    // Empty catch block
+                }
 
-                if (!faceletsViewHandler && resultHandler instanceof ViewHandlerWrapper) {
-                    resultHandler = ((ViewHandlerWrapper) resultHandler).getWrapped();
+                if (!faceletsViewHandler && (resultHandler instanceof ViewHandlerWrapper ||
+                        (richFacesViewHandlerWrapper != null && richFacesViewHandlerWrapper.isAssignableFrom(resultHandler.getClass())))) {
+                    if (resultHandler instanceof ViewHandlerWrapper) {
+                        resultHandler = ((ViewHandlerWrapper) resultHandler).getWrapped();
+                    } else {
+                        resultHandler = getWrappedHandler(resultHandler);
+                    }
+
                     faceletsViewHandler = isFaceletsViewHandler(resultHandler, faceletsViewHandlerClass);
                     if (!faceletsViewHandler) {
-                        isFaceletsViewHandlerInUse(resultHandler, faceletsViewHandlerClass);
+                        faceletsViewHandler = isFaceletsViewHandlerInUse(resultHandler, faceletsViewHandlerClass);
                     }
                 }
             }
@@ -147,6 +159,10 @@ public class Environment {
     }
 
     private static Object getWrappedHandler(Object handler) {
+        if (handler instanceof ViewHandlerWrapper) {
+            handler = ((ViewHandlerWrapper) handler).getWrapped();
+        }
+
         if (handler.getClass().getName().equalsIgnoreCase("org.apache.portals.bridges.jsf.PortletViewHandlerImpl")) {
             try {
                 Class portletHandlerClass = handler.getClass();
@@ -159,13 +175,24 @@ public class Environment {
             } catch (NoSuchFieldException e) {
                 return null;
             }
-        }else if(handler.getClass().getName().equalsIgnoreCase("org.ajax4jsf.application.AjaxViewHandler")){
-              try {
+        } else if (handler.getClass().getName().equalsIgnoreCase("org.ajax4jsf.application.AjaxViewHandler")) {
+            try {
                 Class handlerWrapperClass = handler.getClass().getSuperclass();
                 Field handlerField = handlerWrapperClass.getDeclaredField("_handler");
                 handlerField.setAccessible(true);
                 return handlerField.get(handler);
 
+            } catch (IllegalAccessException e) {
+                return null;
+            } catch (NoSuchFieldException e) {
+                return null;
+            }
+        } else if (handler.getClass().getName().equalsIgnoreCase("org.springframework.faces.webflow.FlowViewHandler")) {
+            try {
+                Class handlerWrapperClass = handler.getClass();
+                Field handlerField = handlerWrapperClass.getDeclaredField("delegate");
+                handlerField.setAccessible(true);
+                return handlerField.get(handler);
             } catch (IllegalAccessException e) {
                 return null;
             } catch (NoSuchFieldException e) {
@@ -236,6 +263,7 @@ public class Environment {
     }
 
     private static Boolean exoPortal;
+
     public static boolean isExoPortal() {
         if (exoPortal != null)
             return exoPortal;

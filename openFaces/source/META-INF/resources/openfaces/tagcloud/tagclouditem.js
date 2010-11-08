@@ -11,52 +11,34 @@
  */
 
 O$.TagCloudItem = {
-  _init: function(tagId,
-                  cloudId,
-                  itemRolloverStyleClass) {
+  _init: function(tagId,                  
+                  itemStyleClass,
+                  itemRolloverStyleClass,
+          cloudId) {
 
-    var tag = O$.initComponent(cloudId + "::" + tagId, {rollover: itemRolloverStyleClass}, {
-      _cloudId : cloudId,
-      _innerText : O$(cloudId + "::" + tagId + "::item_textValue").innerHTML,
-      _weight : O$(cloudId + "::" + tagId + "::item_weight").innerHTML,
-
-      _setVarParameters : function() {
-        O$.setValue(tag._cloudId + "::var_title", tag.title);
-        O$.setValue(tag._cloudId + "::var_textValue", tag._innerText);
-        O$.setValue(tag._cloudId + "::var_weight", tag._weight);
-        O$.setValue(tag._cloudId + "::var_url", tag.href);
-      },
-
-      _submitVarParameters : function() {
-        tag._setVarParameters();
-        var form = O$.getParentNode(tag, "form");
-        form.submit();
-      },
-
-      _fixOpacity : function(tag) {
-        var tagCloud = O$(tag._cloudId);
-        var tagCloudClass = O$.getElementOwnStyle(tagCloud);
-        var tagClass = O$.getElementOwnStyle(tag);
-        var backGroundCloud = O$.getStyleClassProperty(tagCloudClass, "background");
-        var backGroundSelf = O$.getStyleClassProperty(tagClass, "background");
-
-        if (!backGroundSelf) {
-          if (!backGroundCloud) {
-            if (O$.isSafari()) {
-              backGroundCloud = "white";
-            } else {
-              backGroundCloud = "Window";
-            }
-          }
-
-          tag.style.background = backGroundCloud;
-
-        }
-
+    var tag = O$.initComponent(tagId, {rollover: itemRolloverStyleClass}, {
+      _submitVarParameters : function() {        
+        O$.setValue(cloudId+"::id",tagId);
+        O$.submitEnclosingForm(tag);
       }
     });
 
-    tag._fixOpacity(tag);
+//    var itemClass = O$.getElementOwnStyle(tag);
+//    var itemColor = O$.getStyleClassProperty(itemClass, "color");
+//    var itemBackground = O$.getStyleClassProperty(itemClass, "background");
+//    if (itemBackground == null) {
+//      itemBackground = O$.getElementStyle(tag, "background");
+//    }
+//
+//    O$.setupHoverStateFunction(tag, function(mouseInside) {
+//      if (mouseInside) {
+//        tag.style.color = O$.getStyleClassProperty(itemRolloverStyleClass, "color");
+//        tag.style.background = O$.getStyleClassProperty(itemRolloverStyleClass, "background");
+//      } else {
+//        tag.style.color = itemColor;
+//        tag.style.background = itemBackground;
+//      }
+//    });
 
     O$.addEventHandler(tag, "mouseup", tag._submitVarParameters);
   }

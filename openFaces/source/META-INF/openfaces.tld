@@ -39244,12 +39244,25 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
+      <description>
+        A item key that must uniquely identify an appropriate row. All itemKey objects should be
+        serializable and correctly implement the equals() and hashCode() methods.
+      </description>
+      <name>itemKey</name>              
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+
+    <attribute>
       <description>A value-binding expression that should reference an text value for each item which will be
         displayed as tag text. You can use a column data variable specified in the "var" in the expression for this
         attribute.
       </description>       
       <name>itemText</name>
-            
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -39332,9 +39345,9 @@ entering a value and returns a list of suggestions from the server -->
       </description>
       <name>itemWeightStyle</name>
       <deferred-value>
-        <type>boolean</type>
+        <type>java.lang.String</type>
       </deferred-value>
-      <!-- @bindingType boolean -->
+      <!-- @bindingType java.lang.String -->
       <!-- @default false -->
       <!-- @el true -->
     </attribute>
@@ -39373,7 +39386,49 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default "rectangle" -->
       <!-- @el false -->
     </attribute>
+      
+    <attribute>
+      <description>
+        Speed of sphere rotation for sphere layout.
+        Units - degrees per second.
+      </description>
+      <name>rotationSpeed3D</name>
+      <deferred-value>
+        <type>java.lang.Double</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.Double -->
+      <!-- @default "45" -->
+      <!-- @el true -->
+    </attribute>
 
+    <attribute>
+      <description>
+        Coefficient of text shadowing for the farthest sphere point of sphere layout. Values are from 0 to 1. If this
+        attribute assigned to 1 than the farthest item will have the same color as background. If 0 shadowing will
+        turned off.
+      </description>
+      <name>shadowScale3D</name>
+      <deferred-value>
+        <type>java.lang.Double</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.Double -->
+      <!-- @default "0.7" -->
+      <!-- @el true -->
+    </attribute>
+
+     <attribute>
+      <description>
+        Time in seconds. from mouse out till tag cloud stop rotation. 
+      </description>
+      <name>stopRotationPeriod3D</name>
+      <deferred-value>
+        <type>java.lang.Double</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.Double -->
+      <!-- @default "4" -->
+      <!-- @el true -->
+    </attribute>
+        
     <attribute>
       <description>A style for the entire tag cloud.
       </description>

@@ -29,6 +29,8 @@ import org.openfaces.component.chart.PieChartView;
 import org.openfaces.component.chart.PieSectorProperties;
 import org.openfaces.component.chart.impl.PropertiesConverter;
 import org.openfaces.component.chart.impl.configuration.ConfigurablePlot;
+import org.openfaces.component.chart.impl.configuration.ItemsColorConfigurator;
+import org.openfaces.component.chart.impl.configuration.OutlineConfigurator;
 import org.openfaces.component.chart.impl.configuration.PlotColorsConfigurator;
 import org.openfaces.component.chart.impl.configuration.PlotConfigurator;
 import org.openfaces.component.chart.impl.configuration.PlotSelectionConfigurator;
@@ -105,18 +107,6 @@ public class PiePlot3DAdapter extends PiePlot3D implements ConfigurablePlot {
             }
         } else {
             plot.setLabelGenerator(null);
-        }
-    }
-
-    private void setupSectionPaints(PiePlot plot, PieChartView chartView) {
-        if (chartView.getColors() != null) {
-            Color[] colors = PropertiesConverter.getColors(chartView.getColors());
-            if (colors != null) {
-                for (int i = 0; i < colors.length; i++) {
-                    Color color = colors[i];
-                    plot.setSectionPaint(i, color);
-                }
-            }
         }
     }
 
@@ -238,13 +228,16 @@ public class PiePlot3DAdapter extends PiePlot3D implements ConfigurablePlot {
         addConfigurator(new ShadowConfigurator(chartView));
 
         setupLegendLabels(plot, chart, chartView);
-        setupSectionPaints(plot, chartView);
         setupPieLabelGenerator(plot, chartView);
         setupLegendLabels(plot, chart, chartView);
         setupTooltipsAndUrls(plot, chartView);
         sectorProcessing(plot, chartView, dataset, categoryDataset);
 
         addConfigurator(new PlotSelectionConfigurator(chartView));
+        addConfigurator(new ItemsColorConfigurator(chartView));
+        addConfigurator(new OutlineConfigurator(chartView));
+
+        configure();
     }
 
     public void addConfigurator(PlotConfigurator configurator) {

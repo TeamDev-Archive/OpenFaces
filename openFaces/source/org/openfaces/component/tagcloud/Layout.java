@@ -18,8 +18,10 @@ package org.openfaces.component.tagcloud;
 public enum Layout {
     RECTANGLE("rectangle"),
     VERTICAL("vertical"),
-    OVAL("oval");
+    OVAL("oval"),
+    SPHERE("sphere");
     private String value;
+
 
     Layout(String value) {
         this.value = value;

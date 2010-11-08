@@ -23,15 +23,15 @@ import org.jfree.util.TableOrder;
 import org.openfaces.component.chart.Chart;
 import org.openfaces.component.chart.ChartLabels;
 import org.openfaces.component.chart.ChartLegend;
-import org.openfaces.component.chart.ChartSelection;
-import org.openfaces.component.chart.LineStyle;
 import org.openfaces.component.chart.PieChartView;
-import org.openfaces.component.chart.PieSectorInfo;
 import org.openfaces.component.chart.PieSectorProperties;
 import org.openfaces.component.chart.impl.PropertiesConverter;
 import org.openfaces.component.chart.impl.configuration.ConfigurablePlot;
+import org.openfaces.component.chart.impl.configuration.ItemsColorConfigurator;
+import org.openfaces.component.chart.impl.configuration.OutlineConfigurator;
 import org.openfaces.component.chart.impl.configuration.PlotColorsConfigurator;
 import org.openfaces.component.chart.impl.configuration.PlotConfigurator;
+import org.openfaces.component.chart.impl.configuration.PlotSelectionConfigurator;
 import org.openfaces.component.chart.impl.configuration.ShadowConfigurator;
 import org.openfaces.component.chart.impl.generators.DynamicPieGenerator;
 import org.openfaces.renderkit.cssparser.CSSUtil;
@@ -54,8 +54,6 @@ public class PiePlotAdapter extends PiePlot implements ConfigurablePlot {
     public PiePlotAdapter(PieDataset pieDataset, Chart chart, PieChartView chartView) {
         setDataset(pieDataset);
         init(this, chart, chartView, pieDataset, null);
-
-        configure();
     }
 
     PiePlotAdapter(PiePlot piePlot, CategoryDataset categoryDataset, TableOrder order, PieChartView chartView, Chart chart) { // todo: consider refactoring -- view the usage
@@ -108,18 +106,6 @@ public class PiePlotAdapter extends PiePlot implements ConfigurablePlot {
             }
         } else {
             plot.setLabelGenerator(null);
-        }
-    }
-
-    private void setupSectionPaints(PiePlot plot, PieChartView chartView) {
-        if (chartView.getColors() != null) {
-            Color[] colors = PropertiesConverter.getColors(chartView.getColors());
-            if (colors != null) {
-                for (int i = 0; i < colors.length; i++) {
-                    Color color = colors[i];
-                    plot.setSectionPaint(i, color);
-                }
-            }
         }
     }
 
@@ -225,27 +211,6 @@ public class PiePlotAdapter extends PiePlot implements ConfigurablePlot {
 
     }
 
-    private void setupSelectionHighlighting(PiePlot plot, Chart chart) {
-        if (chart.getChartSelection() != null && ((PieChartView) chart.getChartView()).getSelectedSector() != null) {
-            final PieSectorInfo info = ((PieChartView) chart.getChartView()).getSelectedSector();
-            final ChartSelection selection = chart.getChartSelection();
-            final LineStyle lineStyle = selection.getLineStyle();
-            Paint outlinePaint = lineStyle.getColor() != null
-                    ? lineStyle.getColor()
-                    : Color.WHITE;
-            final Stroke outlineStroke = lineStyle.getStroke();
-            final Paint selectionPaint = selection.getFillPaint();
-
-            plot.setSectionOutlinePaint(info.getIndex(), outlinePaint);
-            if (outlineStroke != null) {
-                plot.setSectionOutlineStroke(info.getIndex(), outlineStroke);
-            }
-
-            if (selectionPaint != null) {
-                plot.setSectionPaint(info.getIndex(), selectionPaint);
-            }
-        }
-    }
 
     private int getIterationCount(CategoryToPieDataset cds) {
         if (order == TableOrder.BY_ROW) {
@@ -261,15 +226,16 @@ public class PiePlotAdapter extends PiePlot implements ConfigurablePlot {
     private void init(PiePlot plot, Chart chart, PieChartView chartView, PieDataset dataset, CategoryDataset categoryDataset) {
         addConfigurator(new PlotColorsConfigurator(chartView));
         addConfigurator(new ShadowConfigurator(chartView));
+        addConfigurator(new PlotSelectionConfigurator(chartView));
+        addConfigurator(new ItemsColorConfigurator(chartView));
+        addConfigurator(new OutlineConfigurator(chartView));
 
-        setupLegendLabels(plot, chart, chartView);
-        setupSectionPaints(plot, chartView);
         setupPieLabelGenerator(plot, chartView);
         setupLegendLabels(plot, chart, chartView);
         setupTooltipsAndUrls(plot, chartView);
         sectorProcessing(plot, chartView, dataset, categoryDataset);
 
-        setupSelectionHighlighting(plot, chart);
+        configure();
     }
 
 
