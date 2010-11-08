@@ -28,7 +28,7 @@
 
   <fileset id="apache" dir="${apache.lib.dir}">
     <include name="commons-beanutils-1.6.jar"/>
-    <include name="commons-collections-3.2.jar"/>
+    <include name="commons-collections-3.2.1.jar"/>
     <include name="commons-digester-1.6.jar"/>
     <include name="commons-logging-1.1.1.jar"/>
     <include name="commons-lang-2.1.jar"/>
