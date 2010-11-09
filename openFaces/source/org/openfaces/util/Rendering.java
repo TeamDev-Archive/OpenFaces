@@ -37,6 +37,7 @@ import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.component.UIInput;
+import javax.faces.component.UIParameter;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.ValueHolder;
 import javax.faces.component.behavior.ClientBehavior;
@@ -59,7 +60,6 @@ import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
@@ -1363,11 +1363,23 @@ public class Rendering {
             String sourceId = sourceComponent.getClientId(context);
             ClientBehaviorContext behaviorContext = ClientBehaviorContext.createClientBehaviorContext(
                     context, component, event, sourceId,
-                    Collections.<ClientBehaviorContext.Parameter>emptyList());
+                    getBehaviorParameters(sourceComponent));
             String behaviorScript = behavior.getScript(behaviorContext);
             stringBuilder.append(behaviorScript);
             if (!behaviorScript.trim().endsWith(";")) stringBuilder.append(";");
         }
+    }
+
+    public static Collection<ClientBehaviorContext.Parameter> getBehaviorParameters(UIComponent sourceComponent) {
+        List<ClientBehaviorContext.Parameter> result = new ArrayList<ClientBehaviorContext.Parameter>();
+        List<UIParameter> uiParameters = Components.findChildrenWithClass(sourceComponent, UIParameter.class);
+        for (UIParameter uiParameter : uiParameters) {
+            String name = uiParameter.getName();
+            if (name == null || name.equals("")) continue;
+            Object value = uiParameter.getValue();
+            result.add(new ClientBehaviorContext.Parameter(name, value));
+        }
+        return result;
     }
 
     public static void decodeBehaviors(FacesContext context, UIComponent component) {

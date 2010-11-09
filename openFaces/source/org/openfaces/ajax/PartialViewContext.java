@@ -37,12 +37,14 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
 import javax.faces.component.UIForm;
 import javax.faces.component.UIViewRoot;
+import javax.faces.component.behavior.Behavior;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.PartialResponseWriter;
 import javax.faces.context.PartialViewContextWrapper;
 import javax.faces.context.ResponseWriter;
-import javax.faces.event.ActionEvent;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.BehaviorEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.render.RenderKit;
 import javax.faces.render.RenderKitFactory;
@@ -500,10 +502,14 @@ public class PartialViewContext extends PartialViewContextWrapper {
                 methodBinding.invoke(elContext, null);
             }
             if (listener != null) {
-                AjaxActionEvent event = new AjaxActionEvent(component);
+                AjaxActionEvent event = new AjaxActionEvent(component, new Behavior() {
+                    public void broadcast(BehaviorEvent event) {
+                        throw new UnsupportedOperationException("This method is not expected to be invoked.");
+                    }
+                });
                 event.setPhaseId(Boolean.valueOf(requestParams.get(PARAM_IMMEDIATE)) ? PhaseId.APPLY_REQUEST_VALUES : PhaseId.INVOKE_APPLICATION);
                 MethodExpression methodExpression = context.getApplication().getExpressionFactory().createMethodExpression(
-                        elContext, "#{" + listener + "}", void.class, new Class[]{ActionEvent.class});
+                        elContext, "#{" + listener + "}", void.class, new Class[]{AjaxBehaviorEvent.class});
                 try {
                     methodExpression.getMethodInfo(elContext);
                 } catch (MethodNotFoundException e) {

@@ -82,10 +82,10 @@ O$.ajax = {
     args.immediate = options.immediate;
     args.executeRenderedComponents = options.executeRenderedComponents;
     if (options.params) {
-      args.additionalParams = [];
+      args.params = [];
       for (var param in options.params) {
         var value = options.params[param];
-        args.additionalParams.push([param, value]);
+        args.params.push([param, value]);
       }
     }
 
@@ -163,14 +163,14 @@ window.OpenFaces.Ajax = {
     if (event)
       args._event = event;
 
-    var params = args.additionalParams ? args.additionalParams : [];
+    var params = args.params ? args.params : [];
     var ids = [];
     if (render instanceof Array) {
       ids = render;
     } else {
       ids[0] = render;
     }
-    args.additionalParams = params;
+    args.params = params;
     if (!args.delay)
       O$.Ajax.sendRequestIfNoFormSubmission(ids, args);
     else {
@@ -197,7 +197,7 @@ window.OpenFaces.Ajax = {
       throw "O$.Ajax.requestComponentPortions: portionProcessor should be specified";
     var params = skipExecute ? [["_of_skipExecute", "true"]] : [];
     O$.Ajax.sendRequestIfNoFormSubmission([componentId], {portionNames: portionNames, portionProcessor: portionProcessor,
-      additionalParams: params, onerror: onerror, customJsonParam: customJsonParam});
+      params: params, onerror: onerror, customJsonParam: customJsonParam});
   },
   /*
    Sends ajax request only if no form submission is initated in the same event handler
@@ -249,7 +249,7 @@ window.OpenFaces.Ajax = {
    * portionProcessor - must be specified if portionNames is specified
    * onajaxend - (optional) the function that should be invoked when ajax request is fully processed
    * execute - (optional) array of clientIds for components whose processDecodes->...->processUpdates phases should be invoked in addition to the component being reloaded
-   * additionalParams - (optional) array of parameters those should be submitted in addition to form field data parameters
+   * params - (optional) array of parameters those should be submitted in addition to form field data parameters
    * onerror - (optional) the function that should be invoked when ajax request fails to complete successfully for some reason
    * onajaxstart -
    * immediate -
@@ -275,12 +275,20 @@ window.OpenFaces.Ajax = {
     var params = {};
     var render = render.join(" ");
     params[O$.AJAX_REQUEST_MARKER] = "true";
-    if (args.additionalParams) {
-      args.additionalParams.forEach(function(param) {
-        var paramName = param[0];
-        var paramValue = param[1];
-        params[paramName] = paramValue;
-      });
+    if (args.params) {
+      if (args.params instanceof Array) {
+        args.params.forEach(function(param) {
+          var paramName = param[0];
+          var paramValue = param[1];
+          params[paramName] = paramValue;
+        });
+      } else {
+        for (var param in args.params) {
+          var value = args.params[param];
+          params[param] = value;
+        }
+
+      }
     }
     if (args.portionNames) {
       var buf = new O$.StringBuffer();

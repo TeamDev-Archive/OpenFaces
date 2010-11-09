@@ -19,12 +19,15 @@ import org.openfaces.org.json.JSONArray;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.util.AnonymousFunction;
+import org.openfaces.util.Rendering;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
+import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.context.FacesContext;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -156,8 +159,18 @@ public class AjaxInitializer {
                 if (source instanceof ComponentConfigurator)
                     source = ((ComponentConfigurator) source).getConfiguredComponent();
             }
-            if (source != null)
+            if (source != null) {
                 result.put("_sourceId", source.getClientId(context));
+                Collection<ClientBehaviorContext.Parameter> behaviorParams = Rendering.getBehaviorParameters(source);
+                if (behaviorParams != null && behaviorParams.size() > 0) {
+                    JSONObject params = new JSONObject();
+                    for (ClientBehaviorContext.Parameter behaviorParam : behaviorParams) {
+                        params.put(behaviorParam.getName(), behaviorParam.getValue());
+                    }
+                    result.put("params", params);
+                }
+            }
+
 
             ValueExpression actionListener = command instanceof Ajax
                     ? command.getValueExpression("listener")

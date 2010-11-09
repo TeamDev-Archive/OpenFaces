@@ -4706,7 +4706,7 @@ if (!window.O$) {
     } else {
       O$.Ajax._reload([component.id], {
         onajaxend: completionCallback,
-        additionalParams: additionalParams,
+        params: additionalParams,
         execute: execute});
     }
   };

@@ -19,6 +19,7 @@ import org.openfaces.util.Rendering;
 import org.openfaces.util.Resources;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
@@ -89,7 +90,7 @@ public class CommandButtonRenderer extends RendererBase {
     private boolean isButtonTagMode(CommandButton button) {
         List<UIComponent> children = button.getChildren();
         for (UIComponent child : children) {
-            if (!(child instanceof OUIClientAction))
+            if (!(child instanceof OUIClientAction || child instanceof UIParameter))
                 return true;
         }
         return false;

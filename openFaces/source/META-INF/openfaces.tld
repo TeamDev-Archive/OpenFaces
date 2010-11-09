@@ -26280,7 +26280,7 @@ and it is automatically triggered on any form submission. -->
       </description>
       <name>listener</name>
       <deferred-method>
-        <method-signature>void actionListener(javax.faces.event.ActionEvent)</method-signature>
+        <method-signature>void actionListener(javax.faces.event.AjaxBehaviorEvent)</method-signature>
       </deferred-method>
       <!-- @bindingType javax.el.MethodExpression -->
       <!-- @default null -->
