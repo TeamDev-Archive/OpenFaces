@@ -1757,7 +1757,7 @@ table.o_filter_parameter {
 	text-align: center;
 	width:2.6em;
 }
-
+/*Tag Cloud*/
 .o_tagCloud_rectangle,
 .o_tagCloud_vertical,
 .o_tagCloud_oval {
@@ -1767,8 +1767,6 @@ table.o_filter_parameter {
   margin: 0;
   padding: 5px;
   border: 0 none;
-
-  font-family: "Lucida Grande", Tahoma, Arial, Helvetica, sans-serif;
   line-height: 2em;
 }
 
@@ -1777,46 +1775,87 @@ table.o_filter_parameter {
   width: 400px;
 }
 
-.o_tagCloud_rectangle{
-  text-align:center;
+.o_tagCloud_rectangle,
+.o_tagCloud_vertical {
+  text-align: center;
 }
 
 .o_tagCloud_vertical {
   width: 250px;
-  text-align: center;
+  line-height: 2.5em;
 }
 
 .o_tagCloud_oval {
   text-align: left;
-  overflow:visible;
+  overflow: visible;
 }
 
+.o_tagCloud_3d {
+  width:300px;
+  overflow: hidden;
+  z-index: 0;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  border: 0 none;
+
+  vertical-align: top;
+  text-align:center;
+
+}
+
+.o_tagCloud_rectangle,
+  .o_tagCloud_oval,
+  .o_tagCloud_vertical,
+  .o_tagCloud_3d {
+  visibility: hidden;
+  background: #ffffff;
+  font-family: "Lucida Grande", Tahoma, Arial, Helvetica, sans-serif;
+  letter-spacing: 0.05em;
+}
+/*Tag Cloud Item*/
 .o_tagCloud_rectangle  a:focus,
 .o_tagCloud_oval  a:focus,
-.o_tagCloud_vertical a:focus {
+.o_tagCloud_vertical a:focus,
+.o_tagCloud_3d a:focus {
   outline: none;
 }
 
-.o_tagCloud_rollover {
-  border: 1px dotted black;
-}
-
-.o_tagCloud_item {
+.o_tagCloud_item,
+.o_tagCloud_item_3d {
   display: inline-block;
-
   z-index: 1;
-  position: relative;
-
-  border: 0 none;
+  padding: 2px;
   margin: 0;
-  padding: 0;
-
-  margin-left: 0.5em;
-  margin-right: 0.5em;
-
   text-decoration: none;
 }
 
-.o_tagCloud_item_rollover {
-  text-decoration: underline;
+.o_tagCloud_item{
+  position: relative;
+  background: #ffffff;
+  border: 0 none;
+  margin-left: 0.5em;
+  margin-right: 0.5em;      
+}
+
+.o_tagCloud_item_3d {
+  position: absolute;
+  background:transparent;
+  overflow:visible;
+  border:1px none;
+}
+
+.o_tagCloud_item_3d_rollover{
+    background: inherit;
+}
+
+.o_tagCloud_item_rollover .o_tagCloud_item_inner_text,
+.o_tagCloud_item_3d_rollover .o_tagCloud_item_inner_text{
+  text-decoration:underline;
+  color: #007ECE;
+}
+
+.o_tagCloud_item_rollover .o_tagCloud_item_inner_weight,
+.o_tagCloud_item_3d_rollover .o_tagCloud_item_inner_weight{  
+   color: #f59c16; 
 }

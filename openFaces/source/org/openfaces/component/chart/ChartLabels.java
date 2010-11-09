@@ -25,10 +25,13 @@ import javax.faces.context.FacesContext;
  * @author Ekaterina Shliakhovetskaya
  */
 public class ChartLabels extends UIOutput implements StyledComponent {
-
     private String style;
     private String text;
 
+    /**
+     * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
+     * by any application code.
+     */
     public ChartViewValueExpression getDynamicText() {
         ValueExpression ve = getValueExpression("text");
         if (ve == null)

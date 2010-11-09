@@ -13,12 +13,12 @@
 
   <style>
         
-    .tagCloudClass2 {
+    .tagCloudClass1 {
       background: #cccccc;
       width: 600px;
     }
 
-    .itemStyleClass2 {
+    .itemStyleClass1 {
       text-align: center;
       margin-top: 3px;
       padding:3px;
@@ -26,10 +26,43 @@
       border:1px solid #cccccc;
     }
 
-    .itemStyleClass2_rollover {
+    .itemStyleClass1_rollover .o_tagCloud_item_inner_text{
       border:1px solid #5ea8a8;
-      color: #5ea8a8;
       background: url("/components/tagcloud/itemBackgroung.png") 0 -64px repeat-x;
+    }
+    .itemStyleClass1_rollover .o_tagCloud_item_inner_text{
+      color: #5ea8a8;
+    }
+    .itemStyleClass1_rollover .o_tagCloud_item_inner_weight{
+      color: #ff9966;
+    }
+
+    .tagCloudClass2{
+      font-family:cursive;
+      background: #ffeed5;
+    }
+
+    .itemStyleClass2 {
+      text-align: center;
+      background: #ffeed5;
+
+    }
+     .itemStyleClass2 .o_tagCloud_item_inner_text{
+       text-decoration:underline;
+       color: #fbaa4d;
+     }
+
+    .itemStyleClass2_rollover {
+      text-decoration:none;
+      background: #fcdb87;
+    }
+    .itemStyleClass2_rollover .o_tagCloud_item_inner_text{
+      text-decoration:none;
+      color: #f97942;      
+    }
+    .itemStyleClass2_rollover .o_tagCloud_item_inner_weight{
+      text-decoration:none;
+      color: #f97942;
     }
 
   </style>
@@ -37,8 +70,9 @@
 
   <h:outputText value="Styled tag clouds:" style="font-size:14pt;"/>
   <br/>
-  
-  <o:tagCloud id="variant2TagCloud"
+  <h:outputText value="First variant:" style="font-size:12pt;"/>
+  <br/>
+  <o:tagCloud id="variant1TagCloud"
               items="#{TagCloudBean.itemsList}"
               itemText="#{item.text}"
               itemTitle="#{item.title}"
@@ -48,11 +82,55 @@
               itemWeightVisible="true"
               itemWeightStyle="color: #5ea8a8; vertical-align: baseline; font-size: 0.8em;"
               itemWeightFormat="-> #,##0.##"
-              styleClass="tagCloudClass2"
-              itemClass="itemStyleClass2"
-              itemRolloverClass="itemStyleClass2_rollover"
+              styleClass="tagCloudClass1"
+              itemClass="itemStyleClass1"
+              itemRolloverClass="itemStyleClass1_rollover"
               minItemStyle="font-size: 15px; color: #b76221;"
               maxItemStyle="font-size: 25px; color: #af6221;"
           />
+   <br/>
+    <h:outputText value="Second variant:" style="font-size:12pt;"/>
+  <br/>
 
+  <o:tagCloud id="variant2TagCloud"
+              items="#{TagCloudBean.itemsList}"
+              itemText="#{item.text}"
+              itemWeight="#{item.weight}"
+              styleClass="tagCloudClass2"
+              itemClass="itemStyleClass2"
+              itemRolloverClass="itemStyleClass2_rollover"
+              minItemStyle="font-size: 10px;"
+              maxItemStyle="font-size: 22px;"/>
+   <br/>
+  <h:outputText value="Third variant:" style="font-size:12pt;"/>
+  <br/>
+
+  <o:tagCloud id="variant3TagCloud"
+              items="#{TagCloudBean.itemsList}"
+              itemText="#{item.text}"
+              itemWeight="#{item.weight}"
+
+              itemStyle="color: #007ece;"
+              itemRolloverStyle=" background: #007efe; text-decoration:none;"
+              minItemStyle="font-size: 8pt; opacity: 0.8;"
+              maxItemStyle="font-size: 20pt; opacity: 1;"/>
+   <br/>
+   <h:outputText value="Fourth variant:" style="font-size:12pt;"/>
+  <br/>
+  <o:tagCloud id="variant4TagCloud"
+              items="#{TagCloudBean.itemsList}"
+              itemText="#{item.text}"
+              itemTitle="#{item.title}"
+              itemUrl="#{item.url}"
+              itemWeight="#{item.weight}"
+              layout="oval"
+              style="padding-top: 30px;
+               background: url('/components/tagcloud/tagBackground1.png') no-repeat #e0ffee;
+               font-family: monospace;"
+              
+              itemStyle="background:transparent; padding: 2px;"
+              itemRolloverStyle="background: #f0ffee;"
+              minItemStyle="font-size: 10px; color:#aaaaaa"
+              maxItemStyle="font-size: 20px;color:#5DC440"
+          />
 </div>

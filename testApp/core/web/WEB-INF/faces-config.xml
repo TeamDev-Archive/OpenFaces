@@ -29,12 +29,6 @@
   </managed-bean>
   
   <managed-bean>
-    <managed-bean-name>tag</managed-bean-name>
-    <managed-bean-class>org.openfaces.testapp.tagcloud.Item</managed-bean-class>
-    <managed-bean-scope>session</managed-bean-scope>
-  </managed-bean>
-
-  <managed-bean>
     <managed-bean-name>TableColumnsBean</managed-bean-name>
     <managed-bean-class>org.openfaces.testapp.datatable.TableColumnsBean</managed-bean-class>
     <managed-bean-scope>session</managed-bean-scope>

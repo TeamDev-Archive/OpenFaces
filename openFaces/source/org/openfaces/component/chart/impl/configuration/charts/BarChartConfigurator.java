@@ -27,8 +27,8 @@ import org.openfaces.component.chart.impl.ModelType;
 import org.openfaces.component.chart.impl.configuration.BarsPainterConfigurator;
 import org.openfaces.component.chart.impl.configuration.ConfigurableRenderer;
 import org.openfaces.component.chart.impl.configuration.GridLabelsConfigurator;
+import org.openfaces.component.chart.impl.configuration.ItemsColorConfigurator;
 import org.openfaces.component.chart.impl.configuration.OutlineConfigurator;
-import org.openfaces.component.chart.impl.configuration.SeriesColorConfigurator;
 import org.openfaces.component.chart.impl.configuration.ShadowConfigurator;
 import org.openfaces.component.chart.impl.configuration.TooltipsConfigurator;
 import org.openfaces.component.chart.impl.configuration.UrlsConfigurator;
@@ -104,7 +104,7 @@ public class BarChartConfigurator extends GridChartConfigurator {
     }
 
     private void configure(BarChartView chartView, ConfigurableRenderer configurableRenderer, int seriesCount) {
-        configurableRenderer.addConfigurator(new SeriesColorConfigurator(chartView));
+        configurableRenderer.addConfigurator(new ItemsColorConfigurator(chartView));
         configurableRenderer.addConfigurator(new ShadowConfigurator(chartView));
         configurableRenderer.addConfigurator(new BarsPainterConfigurator(chartView));
         configurableRenderer.addConfigurator(new OutlineConfigurator(chartView, seriesCount));

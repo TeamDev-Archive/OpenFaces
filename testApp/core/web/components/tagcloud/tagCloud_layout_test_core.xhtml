@@ -12,36 +12,41 @@
   </h:panelGrid>
 
   <style>
-    .header{
+    .header {
       font-size: 12pt;
       color: #a9ccff;
-      background:gray;
-      font-weight:bold;
-      text-align:center;
-    }
-    .content{
-      vertical-align:top;
+      background: gray;
+      font-weight: bold;
+      text-align: center;
     }
 
-    .pollo{
-      border:3px solid black;
+    .content {
+      vertical-align: top;
+    }
+
+    .pollo {
+      border: 3px solid black;
     }
   </style>
 
   <h:panelGrid id="displayGrid"
-               columns="3"
-          rowClasses="header,content">
-    
-      <h:outputLabel id="rectangleTagCloudLabel"
+               columns="2"
+               rowClasses="header,content">
+    <h:outputLabel id="sphereTagCloudLabel"
+                   for="sphereTagCloud"
+                   value="Sphere layout"/>
+    <h:outputLabel id="rectangleTagCloudLabel"
                    for="rectangleTagCloud"
                    value="Rectangle layout"/>
-     <h:outputLabel id="verticalTagCloudLabel"
-                   for="verticalTagCloud"
-                   value="Vertical layout"/>
-     <h:outputLabel id="ovalTagCloudLabel"
-                   for="ovalTagCloud"
-                   value="Oval layout"/>
 
+    <o:tagCloud id="sphereTagCloud"
+                items="#{TagCloudBean.itemsList}"
+                itemText="#{item.text}"
+                itemTitle="#{item.title}"
+                itemUrl="#{item.url}"
+                itemWeight="#{item.weight}"
+                itemWeightVisible="true"
+                layout="sphere"/>
 
     <o:tagCloud id="rectangleTagCloud"
                 items="#{TagCloudBean.itemsList}"
@@ -50,8 +55,16 @@
                 itemUrl="#{item.url}"
                 itemWeight="#{item.weight}"
                 itemWeightVisible="true"
-                layout="rectangle"                
-           />
+                layout="rectangle"
+            />
+
+    <h:outputLabel id="verticalTagCloudLabel"
+                   for="verticalTagCloud"
+                   value="Vertical layout"/>
+
+    <h:outputLabel id="ovalTagCloudLabel"
+                   for="ovalTagCloud"
+                   value="Oval layout"/>
 
     <o:tagCloud id="verticalTagCloud"
                 items="#{TagCloudBean.itemsList}"
@@ -61,7 +74,6 @@
                 itemWeight="#{item.weight}"
                 itemWeightVisible="true"
                 layout="vertical"/>
-
     <o:tagCloud id="ovalTagCloud"
                 items="#{TagCloudBean.itemsList}"
                 itemText="#{item.text}"
@@ -70,6 +82,8 @@
                 itemWeight="#{item.weight}"
                 itemWeightVisible="true"
                 layout="oval"/>
+
+
   </h:panelGrid>
 
 </div>

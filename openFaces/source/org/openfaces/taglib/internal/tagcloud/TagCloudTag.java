@@ -43,6 +43,7 @@ public class TagCloudTag extends AbstractComponentTag {
 
         setPropertyBinding(component, "items");
 
+        setPropertyBinding(component, "itemKey");
         setPropertyBinding(component, "itemText");
         setPropertyBinding(component, "itemUrl");
         setPropertyBinding(component, "itemWeight");
@@ -63,6 +64,10 @@ public class TagCloudTag extends AbstractComponentTag {
 
         setStringProperty(component, "minItemStyle");
         setStringProperty(component, "maxItemStyle");
+                
+        setDoubleProperty(component,"rotationSpeed3D");
+        setDoubleProperty(component,"shadowScale3D");
+        setDoubleProperty(component,"stopRotationPeriod3D");
 
         setStringProperty(component, "var");
     }

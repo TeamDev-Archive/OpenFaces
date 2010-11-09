@@ -492,6 +492,25 @@
     </demos>
   </menuItem>
   <menuItem>
+    <name>Level Indicator</name>
+    <componentName>Level Indicator</componentName>
+    <url>/levelindicator/LevelIndicator.jsf</url>
+    <shortPath>/levelindicator/</shortPath>
+    <image>LevelIndicator</image>
+    <selectedImage>/images/components/titles/LevelIndicator.png</selectedImage>
+    <keyFeatures>
+      <feature>Client side page switching with different loading modes</feature>
+      <feature>Declaring a static list of pages right within jsp/xhtml page</feature>
+      <feature>Support for a dynamic list of pages constructed programmatically</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>General</demoName>
+        <demoUrl>/levelindicator/LevelIndicator.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
     <name>Popup Layer</name>
     <componentName>Popup Layer</componentName>
     <url>/popuplayer/PopupLayer.jsf</url>
@@ -712,6 +731,27 @@
         <demoName>Styling</demoName>
         <demoUrl>/tabbedpane/TabbedPane_styling.jsf</demoUrl>
       </demoItem>
+    </demos>
+  </menuItem>
+    <menuItem>
+    <name>Tag Cloud</name>
+    <componentName>Tag Cloud</componentName>
+    <url>/tagcloud/TagCloud_information.jsf</url>
+    <shortPath>/tagcloud/</shortPath>
+    <image>TagCloud</image>
+    <selectedImage>/images/components/titles/TagCloud.png</selectedImage>
+    <keyFeatures>
+      <feature>Customizable tags layout</feature>
+      <feature>Different order of tags rendering</feature>
+      <feature>Displaying tags weight and its customization</feature>
+      <feature>Tag Cloud style and tags style customization</feature>
+      <feature>Sphere layout with 3d animation, rotation and stop speed customization</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>Informational Tag Cloud</demoName>
+        <demoUrl>/tagcloud/TagCloud_information.jsf</demoUrl>
+      </demoItem>        
     </demos>
   </menuItem>
   <menuItem>

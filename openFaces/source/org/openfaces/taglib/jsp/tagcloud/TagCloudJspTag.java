@@ -21,7 +21,7 @@ import javax.el.ValueExpression;
  * @author : roman.nikolaienko
  */
 public class TagCloudJspTag extends OUICommandJspTag {
-     public TagCloudJspTag() {
+    public TagCloudJspTag() {
         super(new TagCloudTag());
     }
 
@@ -32,6 +32,10 @@ public class TagCloudJspTag extends OUICommandJspTag {
 
     public void setItems(ValueExpression items) {
         getDelegate().setPropertyValue("items", items);
+    }
+
+    public void setItemKey(ValueExpression itemKey) {
+        getDelegate().setPropertyValue("itemKey", itemKey);
     }
 
     public void setItemUrl(ValueExpression itemUrl) {
@@ -61,7 +65,7 @@ public class TagCloudJspTag extends OUICommandJspTag {
     public void setItemWeightFormat(ValueExpression itemWeightFormat) {
         getDelegate().setPropertyValue("itemWeightFormat", itemWeightFormat);
     }
-    
+
     public void setOrder(ValueExpression order) {
         getDelegate().setPropertyValue("order", order);
     }
@@ -78,23 +82,35 @@ public class TagCloudJspTag extends OUICommandJspTag {
         getDelegate().setPropertyValue("layout", layout);
     }
 
-     public void setItemClass(ValueExpression itemClass) {
+    public void setItemClass(ValueExpression itemClass) {
         getDelegate().setPropertyValue("itemClass", itemClass);
     }
 
-      public void setItemStyle(ValueExpression itemStyle) {
+    public void setItemStyle(ValueExpression itemStyle) {
         getDelegate().setPropertyValue("itemStyle", itemStyle);
     }
 
-     public void setItemRolloverClass(ValueExpression itemRolloverClass) {
+    public void setItemRolloverClass(ValueExpression itemRolloverClass) {
         getDelegate().setPropertyValue("itemRolloverClass", itemRolloverClass);
     }
 
-      public void setItemRolloverStyle(ValueExpression itemRolloverStyle) {
+    public void setItemRolloverStyle(ValueExpression itemRolloverStyle) {
         getDelegate().setPropertyValue("itemRolloverStyle", itemRolloverStyle);
     }
+       
+    public void setShadowScale3D(ValueExpression shadowScale3D) {
+        getDelegate().setPropertyValue("shadowScale3D", shadowScale3D);
+    }
 
-     public void setVar(ValueExpression var) {
+    public void setRotationSpeed3D(ValueExpression rotationSpeed3D) {
+        getDelegate().setPropertyValue("rotationSpeed3D", rotationSpeed3D);
+    }
+
+    public void setStopRotationPeriod3D(ValueExpression stopRotationPeriod3D) {
+        getDelegate().setPropertyValue("stopRotationPeriod3D", stopRotationPeriod3D);
+    }
+
+    public void setVar(ValueExpression var) {
         getDelegate().setPropertyValue("var", var);
     }
 }

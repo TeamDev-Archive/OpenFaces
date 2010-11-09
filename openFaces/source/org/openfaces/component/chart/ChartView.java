@@ -22,6 +22,7 @@ import javax.el.ValueExpression;
 import javax.faces.component.UICommand;
 import javax.faces.context.FacesContext;
 import java.awt.*;
+import java.util.Collection;
 
 /**
  * @author Ekaterina Shliakhovetskaya
@@ -34,7 +35,7 @@ public abstract class ChartView extends UICommand implements StyledComponent, Ha
     private String url;
     private String tooltip;
     private ChartLabels labels;
-    private String colors;
+    private Object colors;
     private Float foregroundAlpha;
     private String onmouseover;
     private String onmouseout;
@@ -42,6 +43,12 @@ public abstract class ChartView extends UICommand implements StyledComponent, Ha
 
     private Paint backgroundPaint;
     private Paint titlePaint;
+    protected LineStyle defaultOutlineStyle;
+    protected Collection<LineStyle> outlines;
+
+    protected ChartView() {
+        setRendererType(null);
+    }
 
     public boolean isEnable3D() {
         return ValueBindings.get(this, "enable3D", enable3D, false);
@@ -81,10 +88,6 @@ public abstract class ChartView extends UICommand implements StyledComponent, Ha
 
     public void setOnclick(String onclick) {
         this.onclick = onclick;
-    }
-
-    protected ChartView() {
-        setRendererType(null);
     }
 
     /**
@@ -190,11 +193,11 @@ public abstract class ChartView extends UICommand implements StyledComponent, Ha
         return (Chart) getParent();
     }
 
-    public String getColors() {
-        return colors;
+    public Object getColors() {
+        return ValueBindings.get(this, "colors", colors, Object.class);
     }
 
-    public void setColors(String colors) {
+    public void setColors(Object colors) {
         this.colors = colors;
     }
 
@@ -276,13 +279,17 @@ public abstract class ChartView extends UICommand implements StyledComponent, Ha
         return new Object[]{superState, style,
                 url,
                 tooltip,
-                colors,
+                saveAttachedState(context, colors),
                 foregroundAlpha,
                 onmouseout,
                 onmouseover,
                 onclick,
                 enable3D,
-                saveAttachedState(context, wallColor)
+                saveAttachedState(context, wallColor),
+                saveAttachedState(context, backgroundPaint),
+                saveAttachedState(context, titlePaint),
+                saveAttachedState(context, defaultOutlineStyle),
+                saveAttachedState(context, outlines)
         };
     }
 
@@ -294,17 +301,36 @@ public abstract class ChartView extends UICommand implements StyledComponent, Ha
         style = (String) state[i++];
         url = (String) state[i++];
         tooltip = (String) state[i++];
-        colors = (String) state[i++];
+        colors = (Object) restoreAttachedState(facesContext, state[i++]);
         foregroundAlpha = (Float) state[i++];
         onmouseout = (String) state[i++];
         onmouseover = (String) state[i++];
         onclick = (String) state[i++];
         enable3D = (Boolean) state[i++];
         wallColor = (Color) restoreAttachedState(facesContext, state[i++]);
+        backgroundPaint = (Paint) restoreAttachedState(facesContext, state[i++]);
+        titlePaint = (Paint) restoreAttachedState(facesContext, state[i++]);
+        defaultOutlineStyle = (LineStyle) restoreAttachedState(facesContext, state[i++]);
+        outlines = (Collection<LineStyle>) restoreAttachedState(facesContext, state[i++]);
     }
 
     public abstract ChartConfigurator getConfigurator();
 
     public abstract void decodeAction(String fieldValue);
 
+    public LineStyle getDefaultOutlineStyle() {
+        return ValueBindings.get(this, "defaultOutlineStyle", defaultOutlineStyle, LineStyle.class);
+    }
+
+    public void setDefaultOutlineStyle(LineStyle defaultOutlineStyle) {
+        this.defaultOutlineStyle = defaultOutlineStyle;
+    }
+
+    public Collection<LineStyle> getOutlines() {
+        return ValueBindings.get(this, "outlines", outlines, Collection.class);
+    }
+
+    public void setOutlines(Collection outlines) {
+        this.outlines = outlines;
+    }
 }

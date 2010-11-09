@@ -31,9 +31,9 @@ public class PieChartView extends ChartView {
     private PieSectorInfo selectedSector;
     private PieSectorInfo sector;
 
-    private boolean labelsVisible;
+    private Boolean labelsVisible;
 
-    private boolean showShadow;
+    private Boolean showShadow;
     private Double shadowXOffset = 4.0;
     private Double shadowYOffset = 4.0;
     private Color shadowColor = Color.GRAY;
@@ -52,7 +52,7 @@ public class PieChartView extends ChartView {
     }
 
     public boolean isLabelsVisible() {
-        return labelsVisible;
+        return ValueBindings.get(this, "labelsVisible", labelsVisible, false);
     }
 
     public void setLabelsVisible(boolean labelsVisible) {

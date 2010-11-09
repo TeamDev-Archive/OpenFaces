@@ -41,8 +41,13 @@ public abstract class GridChartView extends ChartView {
     private String valueAxisLabel;
     private List<ChartAxis> axes = new ArrayList<ChartAxis>();
 
-    private boolean labelsVisible = false;
+    private Boolean labelsVisible;
     private Double labelsOffset;
+
+    @Override
+    public String getFamily() {
+        return "org.openfaces.GridChartView";
+    }
 
     public GridPointInfo getPoint() {
         return point;
@@ -175,7 +180,7 @@ public abstract class GridChartView extends ChartView {
     }
 
     public boolean isLabelsVisible() {
-        return labelsVisible;
+        return ValueBindings.get(this, "labelsVisible", labelsVisible, false);
     }
 
     public void setLabelsVisible(boolean labelsVisible) {
@@ -210,13 +215,8 @@ public abstract class GridChartView extends ChartView {
         this.showAxes = showAxes;
     }
 
-    @Override
-    public String getFamily() {
-        return "org.openfaces.GridChartView";
-    }
-
     public String getKeyAxisLabel() {
-        return keyAxisLabel;
+        return ValueBindings.get(this, "keyAxisLabel", keyAxisLabel);
     }
 
     public void setKeyAxisLabel(String keyAxisLabel) {
@@ -224,7 +224,7 @@ public abstract class GridChartView extends ChartView {
     }
 
     public String getValueAxisLabel() {
-        return valueAxisLabel;
+        return ValueBindings.get(this, "valueAxisLabel", valueAxisLabel);
     }
 
     public void setValueAxisLabel(String valueAxisLabel) {

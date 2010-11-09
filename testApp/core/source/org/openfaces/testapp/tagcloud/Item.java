@@ -12,14 +12,17 @@
 
 package org.openfaces.testapp.tagcloud;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Random;
 
 /**
  * @author : roman.nikolaienko
  */
-public class Item {
+public class Item implements Serializable {
     private static final Random random = new Random();
+
+    private String id;
     private String text;
     private Date dateText;
     private Number numberText;
@@ -28,20 +31,20 @@ public class Item {
     private String url;
     private double weight;
 
-    public Item() {
-        this.text = "empty";
+     public Item() {
+        this.text = "";
         this.dateText = new Date(System.nanoTime());
         this.numberText = 0;
-        this.title = "title"+numberText;
+        this.title = "title" + numberText;
         this.url = "#";
-        this.weight = 0;
+        this.weight = 0;      
     }
 
     public Item(String text, Date dateText, Number numberText) {
         this.text = text;
         this.dateText = dateText;
         this.numberText = numberText;
-        this.title = "title"+numberText;
+        this.title = "title" + numberText;
         this.url = "#";
         this.weight = random.nextInt(500);
     }
@@ -51,6 +54,8 @@ public class Item {
         this.title = title;
         this.url = url;
         this.weight = weight;
+        this.dateText = new Date(System.nanoTime());
+        this.numberText  = random.nextInt(500);
     }
 
     public Item(Date dateText, String title, String url, int weight) {
@@ -65,6 +70,7 @@ public class Item {
         this.title = title;
         this.url = url;
         this.weight = weight;
+
     }
 
     public String getText() {
@@ -115,7 +121,18 @@ public class Item {
         this.weight = weight;
     }
 
-    public String toString(){
-        return text;
+    public String toString() {
+//        StringBuilder rez = new StringBuilder();
+//        rez.append("Item[text = ").append(text).append(", ");
+//        rez.append("dateText = ").append(dateText).append(", ");
+//        rez.append("numberText = ").append(numberText).append(", ");
+//        rez.append("title = ").append(title).append(", ");
+//        rez.append("url = ").append(url).append(", ");
+//        rez.append("weight = ").append(weight).append("] ");
+//
+//        return rez.toString();
+        return getText();
     }
+
+
 }

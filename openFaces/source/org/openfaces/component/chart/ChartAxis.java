@@ -25,9 +25,9 @@ import javax.faces.context.FacesContext;
  */
 public class ChartAxis extends UIOutput implements StyledComponent, HasLabels {
     private String style;
-    private boolean labelVisible = true;
-    private boolean ticksVisible = true;
-    private boolean tickLabelsVisible = true;
+    private Boolean labelVisible;
+    private Boolean ticksVisible;
+    private Boolean tickLabelsVisible;
     private ChartAxisTicks ticks;
     private ChartLabels labels;
     private ChartDomain domain;
@@ -37,7 +37,7 @@ public class ChartAxis extends UIOutput implements StyledComponent, HasLabels {
     }
 
     public boolean isTickLabelsVisible() {
-        return tickLabelsVisible;
+        return ValueBindings.get(this, "tickLabelsVisible", tickLabelsVisible, true);
     }
 
     public void setTickLabelsVisible(boolean tickLabelsVisible) {
@@ -69,7 +69,7 @@ public class ChartAxis extends UIOutput implements StyledComponent, HasLabels {
     }
 
     public boolean isLabelVisible() {
-        return labelVisible;
+        return ValueBindings.get(this, "labelVisible", labelVisible, true);
     }
 
     public void setLabelVisible(boolean labelVisible) {
@@ -77,7 +77,7 @@ public class ChartAxis extends UIOutput implements StyledComponent, HasLabels {
     }
 
     public boolean isTicksVisible() {
-        return ticksVisible;
+        return ValueBindings.get(this, "ticksVisible", ticksVisible, true);
     }
 
     public void setTicksVisible(boolean ticksVisible) {

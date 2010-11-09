@@ -13,9 +13,6 @@
 package org.openfaces.component.tagcloud;
 
 import org.openfaces.component.OUICommand;
-import org.openfaces.renderkit.cssparser.CSSUtil;
-import org.openfaces.util.Environment;
-import org.openfaces.util.Faces;
 import org.openfaces.util.ValueBindings;
 
 import javax.el.ELException;
@@ -23,16 +20,12 @@ import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
-import java.awt.*;
 import java.lang.reflect.Array;
-import java.text.DecimalFormat;
-import java.text.ParsePosition;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.StringTokenizer;
 
 /**
  * @author : roman.nikolaienko
@@ -42,26 +35,11 @@ public class TagCloud extends OUICommand {
     public static final String COMPONENT_TYPE = "org.openfaces.TagCloud";
     public static final String COMPONENT_FAMILY = "org.openfaces.TagCloud";
 
-    private static final double DEFAULT_MAX_FONT_SIZE = 25;
-    private static final double DEFAULT_MIN_FONT_SIZE = 10;
+    public static final String DEFAULT_ITEM_ID_PREFIX = "_item_";
 
-    private static final double DEFAULT_MAX_OPACITY = 1;
-    private static final double DEFAULT_MIN_OPACITY = 0.8;
-
-    private static final int DEFAULT_MAX_RED = 0;
-    private static final int DEFAULT_MAX_GREEN = 0;
-    private static final int DEFAULT_MAX_BLUE = 0;
-
-    private static final int DEFAULT_MIN_RED = 140;
-    private static final int DEFAULT_MIN_GREEN = 140;
-    private static final int DEFAULT_MIN_BLUE = 140;
-
-    private static final String DEFAULT_ITEM_ID_PREFIX = "item";
-
-    private Object prevVarValue = null;
     private List<TagCloudItem> itemsList;
 
-    private boolean itemWeightVisible;
+    private Boolean itemWeightVisible;
 
     private String itemStyle;
     private String itemClass;
@@ -78,20 +56,16 @@ public class TagCloud extends OUICommand {
 
     private Converter converter = null;
 
-    private double minItemWeight;
-    private double maxItemWeight;
-
-    private String minFontSize;
-    private String maxFontSize;
-
-    private double minOpacity;
-    private double maxOpacity;
-
-    private Color minColor;
-    private Color maxColor;
-
     private String itemWeightFormat;
+
     private String itemWeightStyle;
+
+    private Double rotationSpeed3D;
+    private Double shadowScale3D;
+    private Double stopRotationPeriod3D;
+
+    private Double minItemWeight;
+    private Double maxItemWeight;
 
     public TagCloud() {
         setRendererType("org.openfaces.TagCloudRenderer");
@@ -107,7 +81,6 @@ public class TagCloud extends OUICommand {
         return new Object[]{
                 super.saveState(context),
 
-                prevVarValue,
                 itemClass,
                 itemStyle,
                 itemRolloverClass,
@@ -120,21 +93,16 @@ public class TagCloud extends OUICommand {
 
                 minItemStyle,
                 maxItemStyle,
-
-                var,
                 minItemWeight,
                 maxItemWeight,
+                var,
 
-                minFontSize,
-                maxFontSize,
-
-                minOpacity,
-                maxOpacity,
-
-                minColor,
-                maxColor,
                 itemWeightFormat,
                 itemWeightStyle,
+
+                rotationSpeed3D,
+                shadowScale3D,
+                stopRotationPeriod3D,
                 saveAttachedState(context, converter)
         };
     }
@@ -145,7 +113,6 @@ public class TagCloud extends OUICommand {
         int i = 0;
         super.restoreState(context, values[i++]);
 
-        prevVarValue = values[i++];
         itemClass = (String) values[i++];
         itemStyle = (String) values[i++];
         itemRolloverClass = (String) values[i++];
@@ -158,33 +125,23 @@ public class TagCloud extends OUICommand {
 
         minItemStyle = (String) values[i++];
         maxItemStyle = (String) values[i++];
-
-        var = (String) values[i++];
         minItemWeight = (Double) values[i++];
         maxItemWeight = (Double) values[i++];
 
-        minFontSize = (String) values[i++];
-        maxFontSize = (String) values[i++];
-
-        minOpacity = (Double) values[i++];
-        maxOpacity = (Double) values[i++];
-
-        minColor = (Color) values[i++];
-        maxColor = (Color) values[i++];
+        var = (String) values[i++];
 
         itemWeightFormat = (String) values[i++];
+
         itemWeightStyle = (String) values[i++];
 
+        rotationSpeed3D = (Double) values[i++];
+        shadowScale3D = (Double) values[i++];
+        stopRotationPeriod3D = (Double) values[i++];
+
         converter = (Converter) restoreAttachedState(context, values[i]);
-
-    }
-
-    public ValueExpression getItems() {
-        return getValueExpression("items");
     }
 
     public Converter getConverter() {
-
         if (this.converter != null) {
             return (this.converter);
         }
@@ -201,13 +158,24 @@ public class TagCloud extends OUICommand {
         }
     }
 
-
     public void setConverter(Converter converter) {
         this.converter = converter;
     }
 
+    public ValueExpression getItems() {
+        return getValueExpression("items");
+    }
+
     public void setItems(ValueExpression items) {
         setValueExpression("items", items);
+    }
+
+    public ValueExpression getItemKey() {
+        return getValueExpression("itemKey");
+    }
+
+    public void setItemKey(ValueExpression itemKey) {
+        setValueExpression("itemKey", itemKey);
     }
 
     public ValueExpression getItemText() {
@@ -258,6 +226,29 @@ public class TagCloud extends OUICommand {
         this.layout = layout;
     }
 
+    public double getRotationSpeed3D() {
+        return ValueBindings.get(this, "rotationSpeed3D", rotationSpeed3D, 80);
+    }
+
+    public void setRotationSpeed3D(double rotationSpeed3D) {
+        this.rotationSpeed3D = rotationSpeed3D;
+    }
+
+    public double getShadowScale3D() {
+        return ValueBindings.get(this, "shadowScale3D", shadowScale3D, 0.7);
+    }
+
+    public void setShadowScale3D(double shadowScale3D) {
+        this.shadowScale3D = shadowScale3D;
+    }
+
+    public Double getStopRotationPeriod3D() {
+        return ValueBindings.get(this, "stopRotationPeriod3D", stopRotationPeriod3D, 4);
+    }
+
+    public void setStopRotationPeriod3D(Double stopRotationPeriod3D) {
+        this.stopRotationPeriod3D = stopRotationPeriod3D;
+    }
 
     public boolean isItemWeightVisible() {
         return ValueBindings.get(this, "itemWeightVisible", itemWeightVisible, false);
@@ -323,16 +314,8 @@ public class TagCloud extends OUICommand {
         this.var = var;
     }
 
-    public Object getPrevVarValue() {
-        return prevVarValue;
-    }
-
-    public void setPrevVarValue(Object prevVarValue) {
-        this.prevVarValue = prevVarValue;
-    }
-
     public double getMinItemWeight() {
-        return ValueBindings.get(this, "minItemWeight", minItemWeight, -1);
+        return this.minItemWeight;
     }
 
     public void setMinItemWeight(double minItemWeight) {
@@ -340,59 +323,11 @@ public class TagCloud extends OUICommand {
     }
 
     public double getMaxItemWeight() {
-        return ValueBindings.get(this, "maxItemWeight", maxItemWeight, -1);
+        return this.maxItemWeight;
     }
 
     public void setMaxItemWeight(double maxItemWeight) {
         this.maxItemWeight = maxItemWeight;
-    }
-
-    public String getMinFontSize() {
-        return ValueBindings.get(this, "minFontSize", minFontSize, "");
-    }
-
-    public void setMinFontSize(String minFontSize) {
-        this.minFontSize = minFontSize;
-    }
-
-    public String getMaxFontSize() {
-        return ValueBindings.get(this, "maxFontSize", maxFontSize, "");
-    }
-
-    public void setMaxFontSize(String maxFontSize) {
-        this.maxFontSize = maxFontSize;
-    }
-
-    public double getMinOpacity() {
-        return ValueBindings.get(this, "minOpacity", minOpacity, 0);
-    }
-
-    public void setMinOpacity(double minOpacity) {
-        this.minOpacity = minOpacity;
-    }
-
-    public double getMaxOpacity() {
-        return ValueBindings.get(this, "maxOpacity", maxOpacity, 0);
-    }
-
-    public void setMaxOpacity(double maxOpacity) {
-        this.maxOpacity = maxOpacity;
-    }
-
-    public Color getMinColor() {
-        return ValueBindings.get(this, "minColor", minColor, null, Color.class);
-    }
-
-    public void setMinColor(Color minColor) {
-        this.minColor = minColor;
-    }
-
-    public Color getMaxColor() {
-        return ValueBindings.get(this, "maxColor", maxColor, null, Color.class);
-    }
-
-    public void setMaxColor(Color maxColor) {
-        this.maxColor = maxColor;
     }
 
     public String getItemWeightFormat() {
@@ -410,6 +345,31 @@ public class TagCloud extends OUICommand {
     public void setItemWeightStyle(String itemWeightStyle) {
         this.itemWeightStyle = itemWeightStyle;
     }
+      
+    public List<TagCloudItem> itemsToTheList(FacesContext context) {
+        if (itemsList == null)
+            itemsList = createItemsList(context);
+        return itemsList;
+    }
+
+    public void selectItemObject(FacesContext context,String hashCode) {
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+        Collection itemsData = getItemsData(context);
+        String var = getVar();
+        Object prevValue = requestMap.get(var);
+        ValueExpression keyValueExpression = getItemKey();
+        int itemHashCode;
+        for(Object item : itemsData){
+            requestMap.put(var, item);
+            itemHashCode = keyValueExpression != null ?
+                    getVarParameter(keyValueExpression).hashCode() : item.hashCode();
+
+            if(itemHashCode == Integer.parseInt(hashCode)){
+                return;
+            }
+            requestMap.put(getVar(), prevValue);
+        }
+    }
 
     private Object getVarParameter(ValueExpression parameterExpression) {
         return parameterExpression.getValue(getFacesContext().getELContext());
@@ -421,74 +381,32 @@ public class TagCloud extends OUICommand {
         parameterExpression.setValue(getFacesContext().getELContext(), value);
     }
 
-    private String getGradientStyle(TagCloudItem item) {
-        StringBuilder styleBuilder = new StringBuilder();
-        Color color = getColor(item);
-        double opacity = getOpacity(item);
-        String opacityToRender = new java.text.DecimalFormat("0.00").format(opacity);
-        int ieOpacity = (int) Math.round(opacity * 100);
-        String fonSize = getFontSize(item);
-        String colorToRender = CSSUtil.formatColor(color);
-
-        styleBuilder.append("color: ").append(colorToRender).append("; ");
-
-        styleBuilder.append("font-size: ").append(fonSize).append("; ");
-
-        if (opacity < 1) {
-            styleBuilder.append("opacity: ").append(opacityToRender).append("; ");
-            if (Environment.isExplorer()) {
-                styleBuilder.append("filter: alpha(opacity=");
-                styleBuilder.append(ieOpacity).append("); ");
-            }
-        }
-
-        return styleBuilder.toString();
-    }
-
-    public List<TagCloudItem> itemsToTheList(FacesContext context) {
-        if (itemsList == null)
-            itemsList = createItemsList(context);
-        return itemsList;
-    }
-
     private List<TagCloudItem> createItemsList(FacesContext context) {
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
         Collection itemsData = getItemsData(context);
         List<TagCloudItem> items = new ArrayList<TagCloudItem>(itemsData.size());
 
         String var = getVar();
-
-        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-        prevVarValue = Faces.var(var);
-        requestMap.put(var, prevVarValue);
-
-        if (!itemsData.isEmpty() && prevVarValue == null)
-            try {
-                prevVarValue = itemsData.iterator().next().getClass().newInstance();
-            } catch (InstantiationException e) {
-                throw new FacesException(e.getMessage(), e);
-            } catch (IllegalAccessException e) {
-                throw new FacesException(e.getMessage(), e);
-            }
-
+        Object prevVarValue = requestMap.get(var);
+        ValueExpression keyValueExpression = getItemKey();
         ValueExpression textValueExpression = getItemText();
         ValueExpression titleExpression = getItemTitle();
         ValueExpression urlExpression = getItemUrl();
         ValueExpression weightExpression = getItemWeight();
 
-        setItemGradientMaxMinStyles(getMaxItemStyle(), getMinItemStyle());
-        double curWeight = 0;
-        String cloudId = getClientId(context);
-        int itemId = 1;
+        double curWeight;
+        String cloudId = getId();
+        int itemId;
         setMaxItemWeight(-1);
         setMinItemWeight(-1);
 
         for (Object itemData : itemsData) {
             requestMap.put(var, itemData);
-
             TagCloudItem item = new TagCloudItem();
-
-            item.setId(DEFAULT_ITEM_ID_PREFIX + (itemId++));
-            item.setCloudId(cloudId);
+            itemId = keyValueExpression != null ?
+                    getVarParameter(keyValueExpression).hashCode() : itemData.hashCode();
+            
+            item.setId(cloudId + DEFAULT_ITEM_ID_PREFIX + itemId);
 
             item.setTitle(titleExpression != null ?
                     (String) getVarParameter(titleExpression) : "");
@@ -514,32 +432,33 @@ public class TagCloud extends OUICommand {
             item.setStyle(getItemStyle());
             item.setStyleClass(getItemClass());
 
-            item.setConverter(getConverter());
-
             item.setRolloverClass(getItemRolloverClass());
             item.setRolloverStyle(getItemRolloverStyle());
 
-            item.setWeightVisible(isItemWeightVisible());
+            item.setConverter(getConverter());
+
             item.setParent(this);
             items.add(item);
 
             requestMap.put(var, prevVarValue);
         }
+         
+        TagCloudGradientStyleGenerator gradientStyleGenerator =
+                new TagCloudGradientStyleGenerator(getMaxItemStyle(), getMinItemStyle(),
+                        getMaxItemWeight(), getMinItemWeight());
 
         for (TagCloudItem item : items)
-            item.setGradientStyle(getGradientStyle(item));
+            item.setGradientStyle(gradientStyleGenerator.generateStyle(item));
 
         return items;
     }
 
     private Collection getItemsData(FacesContext context) {
-
         ValueExpression itemsExpression = getItems();
         if (itemsExpression == null) {
             return Collections.EMPTY_LIST;
         }
         Object items = itemsExpression.getValue(context.getELContext());
-
         Collection data;
         if (items == null) {
             data = Collections.EMPTY_LIST;
@@ -558,156 +477,4 @@ public class TagCloud extends OUICommand {
         }
         return data;
     }
-
-    private void setItemGradientMaxMinStyles(String maxStyle, String minStyle) {
-        setMaxMinItemStyle(maxStyle, true);
-        setMaxMinItemStyle(minStyle, false);
-    }
-
-    private void setMaxMinItemStyle(String style, boolean isMax) {
-        if (style == null)
-            return;
-        StringTokenizer worker = new StringTokenizer(style.replace(" ", "").trim(), ";");
-        StringTokenizer workerSmall;
-        String stylePie;
-        String attribute = "";
-        String value = "";
-        while (worker.hasMoreElements()) {
-            stylePie = worker.nextToken().trim();
-            workerSmall = new StringTokenizer(stylePie, ":");
-            if (workerSmall.hasMoreElements() && workerSmall.countTokens() == 2) {
-                attribute = workerSmall.nextToken().trim();
-                value = workerSmall.nextToken().trim();
-                if (attribute.equalsIgnoreCase("color")) {
-                    if (isMax)
-                        setMaxColor(CSSUtil.parseColor(value));
-                    else
-                        setMinColor(CSSUtil.parseColor(value));
-                }
-                if (attribute.equalsIgnoreCase("font-size")) {
-                    if (isMax)
-                        setMaxFontSize(value);
-                    else
-                        setMinFontSize(value);
-                }
-                if (attribute.equalsIgnoreCase("opacity")) {
-                    if (isMax)
-                        setMaxOpacity(Double.parseDouble(value));
-                    else
-                        setMinOpacity(Double.parseDouble(value));
-                }
-            }
-
-        }
-    }
-
-    private String getUnits(String cssFontString, ParsePosition pos) {
-        if (pos.getIndex() == cssFontString.length())
-            return "";
-        String fontUnits = cssFontString.substring(pos.getIndex()).trim();
-        String[] allUnits = new String[]{"em", "ex", "px", "pt", "pc", "in", "mm", "cm", "%"};
-        for (String curUnit : allUnits) {
-            if (fontUnits.equalsIgnoreCase(curUnit))
-                return curUnit;
-        }
-        throw new FacesException("Units are wrong " + fontUnits);
-    }
-
-    private String getFontSize(TagCloudItem item) {
-        DecimalFormat format = new DecimalFormat();
-        Number maxFontSizeValue = 0;
-        Number minFontSizeValue = 0;
-
-        String maxFontSize = getMaxFontSize();
-        String minFontSize = getMinFontSize();
-        String maxFontUnits = "em";
-        String minFontUnits = "em";
-
-        ParsePosition pos = new ParsePosition(0);
-
-        if (maxFontSize.length() != 0) {
-            maxFontSizeValue = format.parse(maxFontSize, pos);
-            maxFontUnits = getUnits(maxFontSize, pos);
-        }
-
-        pos.setIndex(0);
-
-        if (minFontSize.length() != 0) {
-            minFontSizeValue = format.parse(minFontSize, pos);
-            minFontUnits = getUnits(minFontSize, pos);
-        }
-
-        double resultDoubleValue;
-
-        StringBuilder toReturn = new StringBuilder();
-
-        if (maxFontSize.length() == 0 && minFontSize.length() == 0) {
-            resultDoubleValue = Math.round(getParameterGradient(item, DEFAULT_MIN_FONT_SIZE, DEFAULT_MAX_FONT_SIZE) * 100) / 100.;
-            return toReturn.append(String.valueOf(resultDoubleValue)).append("px").toString();
-        }
-
-        if (maxFontSize.length() != 0 && minFontSize.length() == 0) {
-            double max = maxFontSizeValue.doubleValue();
-            resultDoubleValue = Math.round(getParameterGradient(item, max - 0.4 * max, max) * 100) / 100.;
-            return toReturn.append(String.valueOf(resultDoubleValue)).append(maxFontUnits).toString();
-        }
-
-        if (maxFontSize.length() == 0 && minFontSize.length() != 0) {
-            double min = minFontSizeValue.doubleValue();
-            resultDoubleValue = Math.round(getParameterGradient(item, min, min + 0.4 * min) * 100) / 100.;
-            return toReturn.append(String.valueOf(resultDoubleValue)).append(maxFontUnits).toString();
-        }
-
-        if (!maxFontUnits.equalsIgnoreCase(minFontUnits))
-            throw new FacesException("Units of font-size attribute must be the same, but was: " +
-                    minFontUnits + " from minItemStyle, and " + maxFontUnits + " from maxItemStyle.");
-
-        resultDoubleValue = getParameterGradient(item, minFontSizeValue.doubleValue(), maxFontSizeValue.doubleValue());
-        resultDoubleValue = Math.round(resultDoubleValue * 100) / 100.;
-
-        return toReturn.append(String.valueOf(resultDoubleValue)).append(minFontUnits).toString();
-
-    }
-
-    private double getOpacity(TagCloudItem item) {
-        double minOpacity = getMinOpacity();
-        double maxOpacity = getMaxOpacity();
-        if (minOpacity == 0 && maxOpacity == 0) {
-            return 1;
-        }
-
-        minOpacity = minOpacity == 0 ? DEFAULT_MIN_OPACITY : minOpacity;
-        maxOpacity = maxOpacity == 0 ? DEFAULT_MAX_OPACITY : maxOpacity;
-        return Math.round(getParameterGradient(item, minOpacity, maxOpacity) * 100) / 100.;
-    }
-
-    private Color getColor(TagCloudItem item) {
-        Color maxColor = getMaxColor();
-        Color minColor = getMinColor();
-
-        int maxRed = maxColor != null ? maxColor.getRed() : DEFAULT_MAX_RED;
-        int maxGreen = maxColor != null ? maxColor.getGreen() : DEFAULT_MAX_GREEN;
-        int maxBlue = maxColor != null ? maxColor.getBlue() : DEFAULT_MAX_BLUE;
-
-        int minRed = minColor != null ? minColor.getRed() : DEFAULT_MIN_RED;
-        int minGreen = minColor != null ? minColor.getGreen() : DEFAULT_MIN_GREEN;
-        int minBlue = minColor != null ? minColor.getBlue() : DEFAULT_MIN_BLUE;
-
-        int red = (int) getParameterGradient(item, minRed, maxRed);
-        int green = (int) getParameterGradient(item, minGreen, maxGreen);
-        int blue = (int) getParameterGradient(item, minBlue, maxBlue);
-
-        return new Color(red, green, blue);
-
-    }
-
-    private double getParameterGradient(TagCloudItem item, double minParameterValue, double maxParameterValue) {
-        if (getMaxItemWeight() == getMinItemWeight())
-            return Math.round((maxParameterValue + minParameterValue) / 2);
-        double weight = item.getWeight();
-        if (weight <= getMinItemWeight())
-            return minParameterValue;
-        return (maxParameterValue - minParameterValue) * (weight - getMinItemWeight()) / (getMaxItemWeight() - getMinItemWeight()) + minParameterValue;
-    }
-
 }

@@ -12,6 +12,7 @@
 
 package org.openfaces.component.chart.impl.configuration;
 
+import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.renderer.AbstractRenderer;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.LineAndShapeRenderer;
@@ -26,7 +27,7 @@ import java.util.Iterator;
 /**
  * @author Eugene Goncharov
  */
-public class OutlineConfigurator extends AbstractConfigurator implements RendererConfigurator {
+public class OutlineConfigurator extends AbstractConfigurator implements RendererConfigurator, PlotConfigurator {
     private int seriesCount;
 
     public OutlineConfigurator(ChartView view) {
@@ -44,6 +45,30 @@ public class OutlineConfigurator extends AbstractConfigurator implements Rendere
 
     public void setSeriesCount(int seriesCount) {
         this.seriesCount = seriesCount;
+    }
+
+    public void configure(ConfigurablePlot plot) {
+        PiePlot piePlot = (PiePlot) plot;
+        ChartView chartView = getView();
+        boolean outlinesSpecified = chartView.getOutlines() != null && !chartView.getOutlines().isEmpty();
+
+        if (chartView.getDefaultOutlineStyle() != null && !outlinesSpecified) {
+            piePlot.setBaseSectionOutlinePaint(chartView.getDefaultOutlineStyle().getColor());
+            piePlot.setBaseSectionOutlineStroke(chartView.getDefaultOutlineStyle().getStroke());
+            for (int seriesIndex = 0; seriesIndex < seriesCount; seriesIndex++) {
+                piePlot.setSectionOutlinePaint(seriesIndex, chartView.getDefaultOutlineStyle().getColor());
+                piePlot.setSectionOutlineStroke(seriesIndex, chartView.getDefaultOutlineStyle().getStroke());
+            }
+        } else if (outlinesSpecified) {
+            final Iterator outlinesIterator = chartView.getOutlines().iterator();
+            for (int seriesIndex = 0; seriesIndex < seriesCount; seriesIndex++) {
+                if (outlinesIterator.hasNext()) {
+                    final LineStyle lineStyle = (LineStyle) outlinesIterator.next();
+                    piePlot.setSectionOutlinePaint(seriesIndex, lineStyle.getColor());
+                    piePlot.setSectionOutlineStroke(seriesIndex, lineStyle.getStroke());
+                }
+            }
+        }
     }
 
     public void configure(ConfigurableRenderer configurableRenderer) {

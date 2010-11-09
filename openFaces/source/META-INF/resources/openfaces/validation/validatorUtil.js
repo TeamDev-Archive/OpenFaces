@@ -233,7 +233,7 @@ O$.getValue = function(input) {
   } else if (input.tagName.toUpperCase() == "SPAN") {
     for (var i = 0, count = input.childNodes.length; i < count; i++) {
       var child = input.childNodes[i];
-      if (child.nodeType != Node.ELEMENT_NODE)
+      if (child.nodeType != 1)
         value += child.nodeValue;
     }
   } else {

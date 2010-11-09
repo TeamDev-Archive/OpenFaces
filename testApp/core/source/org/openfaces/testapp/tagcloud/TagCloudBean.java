@@ -22,16 +22,21 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
-import java.security.SecureRandom;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 import java.util.TimeZone;
 
 /**
  * @author : roman.nikolaienko
  */
-public class TagCloudBean implements ActionListener {
+public class TagCloudBean implements ActionListener, Serializable {
+
+    private Random random = new Random();
+    private Item var = new Item();
 
     private int actionCounter = 0;
     private int actionListenerCounter = 0;
@@ -39,17 +44,11 @@ public class TagCloudBean implements ActionListener {
     private List<Item> itemsList;
     private Item[] itemsArray;
 
-    private Item var = new Item();
-
-    private SecureRandom random = new SecureRandom();
+    private List<Item> smallItemsList;
 
     private Converter numberConverter = new Converter() {
-
-        public Object getAsObject(FacesContext context,
-                                  UIComponent component,
-                                  String value) {
+        public Object getAsObject(FacesContext context, UIComponent component, String value) {
             if ("".equals(value)) return null;
-
             return Double.parseDouble(value.substring(1));
         }
 
@@ -60,39 +59,48 @@ public class TagCloudBean implements ActionListener {
     };
 
     private Converter dateConverter = new Converter() {
-
-        public Object getAsObject(FacesContext context,
-                                  UIComponent component,
-                                  String value) {
+        public Object getAsObject(FacesContext context, UIComponent component, String value) {
             if ("".equals(value))
                 return null;
-
             TimeZone timeZone = TimeZone.getDefault();
             return DataUtil.parseDateFromJs(value, timeZone);
         }
 
         public String getAsString(FacesContext context, UIComponent component, Object value) {
-            if (value == null) {
-                return "";
-            }
+            if (value == null) return "";
             try {
                 return DataUtil.formatDateForJs((Date) value, TimeZone.getDefault());
-            }
-            catch (IllegalArgumentException e) {
+            } catch (IllegalArgumentException e) {
                 throw new ConverterException("Cannot convert value '" + value + "'");
             }
         }
     };
 
     public TagCloudBean() {
-        int length = getRandomLength(20, 35);
+        initItemsListAndArray();
+        initSmallItemList();
+
+    }
+
+    private void initItemsListAndArray() {
+        int length = getRandomLength(10, 20);
         itemsList = new ArrayList<Item>(length);
         itemsArray = new Item[length];
         Item curItem;
         for (int i = 0; i < length; i++) {
-            curItem = new Item(getRandomText(), getRandomDate(), getRandomNumber());
+            curItem = new Item(getRandomText(4, 10), getRandomDate(), getRandomNumber());
             itemsArray[i] = curItem;
             itemsList.add(curItem);
+        }
+    }
+
+    private void initSmallItemList() {
+        int length = getRandomLength(100, 120);
+        smallItemsList = new ArrayList<Item>(length);
+        Item item;
+        for (int i = 0; i < length; i++) {
+            item = new Item(getRandomText(1, 2), getRandomDate(), getRandomNumber());
+            smallItemsList.add(item);
         }
     }
 
@@ -105,17 +113,26 @@ public class TagCloudBean implements ActionListener {
     }
 
     private Date getRandomDate() {
-        return new Date(random.nextInt() + random.nextInt(40) * 12 * 30 * 24 * 3600 * 1000L);
+        return new Date(random.nextInt() + getRandomLength(32, 40) * 12 * 30 * 24 * 3600 * 1000L);
     }
 
-    private String getRandomText() {
-        int curLength = getRandomLength(4, 15);
+    private String getRandomText(int minLength, int maxLength) {
+        int curLength = getRandomLength(minLength, maxLength);
         StringBuilder buf = new StringBuilder();
         buf.append((char) (random.nextInt('Z' - 'A') + 'A'));
         for (int i = 0; i < curLength; i++) {
             buf.append((char) (random.nextInt('z' - 'a') + 'a'));
         }
+        return buf.toString();
+    }
 
+    private String getRandomTextWithWhiteSpaces(int minLength, int maxLength) {
+        int curLength = getRandomLength(minLength, maxLength);
+        StringBuilder buf = new StringBuilder();
+        for (int i = 0; i < curLength; i++) {
+            buf.append(getRandomText(2, 12)).append(" ");
+        }
+        buf.append(".");
         return buf.toString();
     }
 
@@ -133,6 +150,14 @@ public class TagCloudBean implements ActionListener {
 
     public Converter getDateConverter() {
         return dateConverter;
+    }
+
+    public List<Item> getSmallItemsList() {
+        return smallItemsList;
+    }
+
+    public void setSmallItemsList(List<Item> smallItemsList) {
+        this.smallItemsList = smallItemsList;
     }
 
     public int getActionCounter() {
@@ -155,11 +180,11 @@ public class TagCloudBean implements ActionListener {
     public void processAction(ActionEvent event) {
         actionListenerCounter++;
         TagCloud cloud = (TagCloud) event.getComponent();
-        var = (Item) cloud.getPrevVarValue();
+        Map<String, Object> requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
+        var = (Item) requestMap.get(cloud.getVar());
     }
 
     public Item getVar() {
         return var;
     }
-
 }

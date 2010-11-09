@@ -55,7 +55,7 @@ public class Chart extends OUIObjectIteratorBase implements StyledComponent, Nam
     private ChartViewType view;
     private ChartModel model;
     private ChartLegend legend;
-    private boolean legendVisible = true;
+    private Boolean legendVisible;
     private String textStyle;
     private ChartTitle title; //todo(question): maybe better reduce API to just using <chartTitle> tag?
     private JfcRenderHints renderHints = new JfcRenderHints();
@@ -127,7 +127,7 @@ public class Chart extends OUIObjectIteratorBase implements StyledComponent, Nam
     }
 
     public boolean isLegendVisible() {
-        return legendVisible;
+        return ValueBindings.get(this, "legendVisible", legendVisible, true);
     }
 
     public void setLegendVisible(boolean legendVisible) {

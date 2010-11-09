@@ -125,7 +125,7 @@ public class LineChartConfigurator extends GridChartConfigurator {
 
 
     private void configure(LineChartView chartView, ConfigurableRenderer configurableRenderer, Dataset ds, int rowCount) {
-        configurableRenderer.addConfigurator(new SeriesColorConfigurator(chartView));
+        configurableRenderer.addConfigurator(new ItemsColorConfigurator(chartView));
         configurableRenderer.addConfigurator(new LineAndShapePropertiesConfigurator(chartView, ds));
         configurableRenderer.addConfigurator(new OutlineConfigurator(chartView, rowCount));
         configurableRenderer.addConfigurator(new FillPaintConfigurator(chartView, rowCount));

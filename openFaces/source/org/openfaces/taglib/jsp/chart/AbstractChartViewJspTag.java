@@ -65,4 +65,12 @@ public abstract class AbstractChartViewJspTag extends AbstractStyledComponentJsp
         getDelegate().setPropertyValue("titlePaint", titlePaint);
     }
 
+    public void setDefaultOutlineStyle(ValueExpression defaultOutlineStyle) {
+        getDelegate().setPropertyValue("defaultOutlineStyle", defaultOutlineStyle);
+    }
+
+    public void setOutlines(ValueExpression outlines) {
+        getDelegate().setPropertyValue("outlines", outlines);
+    }
+
 }

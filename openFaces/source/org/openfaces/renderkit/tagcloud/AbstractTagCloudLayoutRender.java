@@ -28,12 +28,17 @@ import java.util.List;
  */
 public abstract class AbstractTagCloudLayoutRender extends RendererBase {
 
-    public void renderLayout(FacesContext context, UIComponent component) throws IOException {        
+    public void renderLayout(FacesContext context, UIComponent component) throws IOException {
         TagCloud cloud = (TagCloud) component;
-        
+
         List<TagCloudItem> items = cloud.itemsToTheList(context);
 
-        TagsOrderingStrategy orderingStrategy = AbstractTagsOrderingStrategy.getInstance(cloud.getOrder());        
+        TagsOrderingStrategy orderingStrategy;
+        if (cloud.getLayout().equals(Layout.SPHERE)) {
+            orderingStrategy = new TagsWeightReverseOrdering();
+        } else {
+            orderingStrategy = AbstractTagsOrderingStrategy.getInstance(cloud.getOrder());
+        }
         orderingStrategy.order(items);
 
         renderItems(context, cloud, items);
@@ -50,6 +55,8 @@ public abstract class AbstractTagCloudLayoutRender extends RendererBase {
                 return new TagCloudVerticalLayoutRender();
             case OVAL:
                 return new TagCloudOvalLayoutRender();
+            case SPHERE:
+                return new TagCloudRectangleLayoutRender();
         }
         throw new FacesException("Wrong layout type: " + layout);
     }
