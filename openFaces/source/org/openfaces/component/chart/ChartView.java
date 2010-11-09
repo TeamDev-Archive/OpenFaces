@@ -67,7 +67,7 @@ public abstract class ChartView extends UICommand implements StyledComponent, Ha
     }
 
     public String getOnmouseover() {
-        return ValueBindings.get(this, "onmouseover", onmouseover);
+        return onmouseover;
     }
 
     public void setOnmouseover(String onmouseover) {
@@ -75,7 +75,7 @@ public abstract class ChartView extends UICommand implements StyledComponent, Ha
     }
 
     public String getOnmouseout() {
-        return ValueBindings.get(this, "onmouseout", onmouseout);
+        return onmouseout;
     }
 
     public void setOnmouseout(String onmouseout) {
@@ -83,7 +83,7 @@ public abstract class ChartView extends UICommand implements StyledComponent, Ha
     }
 
     public String getOnclick() {
-        return ValueBindings.get(this, "onclick", onclick);
+        return onclick;
     }
 
     public void setOnclick(String onclick) {
@@ -202,7 +202,7 @@ public abstract class ChartView extends UICommand implements StyledComponent, Ha
     }
 
     public String getTooltip() {
-        return ValueBindings.get(this, "tooltip", tooltip);
+        return tooltip;
     }
 
     public void setTooltip(String tooltip) {
@@ -210,7 +210,7 @@ public abstract class ChartView extends UICommand implements StyledComponent, Ha
     }
 
     public String getUrl() {
-        return ValueBindings.get(this, "url", url);
+        return url;
     }
 
     public void setUrl(String url) {
