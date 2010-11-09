@@ -27496,313 +27496,313 @@ and it is automatically triggered on any form submission. -->
 
   </tag>
 
-  <!--<tag>-->
-    <!--<description>Displays a week switcher for a WeekTable component.</description>-->
-    <!--<name>weekSwitcher</name>-->
-    <!--<tag-class>org.openfaces.taglib.jsp.timetable.WeekSwitcherJspTag</tag-class>-->
-    <!--<body-content>empty</body-content>-->
-    <!--<attribute>-->
-      <!--<description>A value-binding expression that associates the WeekSwitcher with a backing bean property.-->
-      <!--</description>-->
-      <!--<name>binding</name>-->
-      <!--<deferred-value>-->
-        <!--<type>org.openfaces.component.timetable.WeekSwitcher</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType org.openfaces.component.timetable.WeekSwitcher &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el only &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>The component identifier.</description>-->
-      <!--<name>id</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el false &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>A flag that indicates whether or not the component is visible.</description>-->
-      <!--<name>rendered</name>-->
-      <!--<deferred-value>-->
-        <!--<type>boolean</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType boolean &ndash;&gt;-->
-      <!--&lt;!&ndash; @default false &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>ID of a WeekTable component that should be synchronized with this component. It should be defined in-->
-        <!--the same way as the "for" property of the standard HTMLOutputLabel component. If this attribute is not specified-->
-        <!--then this filter component should be located inside of a WeekTable component.-->
-      <!--</description>-->
-      <!--<name>for</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el false &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>This attribute defines which of the predefined date formats for a given locale should be used for-->
-        <!--text.-->
-      <!--</description>-->
-      <!--<name>dateFormat</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default "medium" &ndash;&gt;-->
-      <!--&lt;!&ndash; @value "short" the same as "SHORT" format in the java.text.DateFormat &ndash;&gt;-->
-      <!--&lt;!&ndash; @value "medium" the same as "MEDIUM" format in the java.text.DateFormat &ndash;&gt;-->
-      <!--&lt;!&ndash; @value "long" the same as "LONG" format in the java.text.DateFormat &ndash;&gt;-->
-      <!--&lt;!&ndash; @value "full" the same as "FULL" format in the java.text.DateFormat &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>The date format with the pattern similar to that in the java.text.SimpleDateFormat-->
-        <!--class.-->
-      <!--</description>-->
-      <!--<name>pattern</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el false &ndash;&gt;-->
-    <!--</attribute>-->
+  <tag>
+    <description>Displays a week switcher for a WeekTable component.</description>
+    <name>weekSwitcher</name>
+    <tag-class>org.openfaces.taglib.jsp.timetable.WeekSwitcherJspTag</tag-class>
+    <body-content>empty</body-content>
+    <attribute>
+      <description>A value-binding expression that associates the WeekSwitcher with a backing bean property.
+      </description>
+      <name>binding</name>
+      <deferred-value>
+        <type>org.openfaces.component.timetable.WeekSwitcher</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.timetable.WeekSwitcher -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>The component identifier.</description>
+      <name>id</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el false -->
+    </attribute>
+    <attribute>
+      <description>A flag that indicates whether or not the component is visible.</description>
+      <name>rendered</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>ID of a WeekTable component that should be synchronized with this component. It should be defined in
+        the same way as the "for" property of the standard HTMLOutputLabel component. If this attribute is not specified
+        then this filter component should be located inside of a WeekTable component.
+      </description>
+      <name>for</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el false -->
+    </attribute>
+    <attribute>
+      <description>This attribute defines which of the predefined date formats for a given locale should be used for
+        text.
+      </description>
+      <name>dateFormat</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "medium" -->
+      <!-- @value "short" the same as "SHORT" format in the java.text.DateFormat -->
+      <!-- @value "medium" the same as "MEDIUM" format in the java.text.DateFormat -->
+      <!-- @value "long" the same as "LONG" format in the java.text.DateFormat -->
+      <!-- @value "full" the same as "FULL" format in the java.text.DateFormat -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The date format with the pattern similar to that in the java.text.SimpleDateFormat
+        class.
+      </description>
+      <name>pattern</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el false -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>The locale used by DateChooser component. You can specify the "locale" attribute-->
-        <!--as a value-binding expression or as a String in "ll_CC_vv" format, where:&lt;br/&gt;-->
-        <!--ll stands for the language - lowercase two-letter ISO-639 code.&lt;br/&gt;-->
-        <!--CC stands for the country - uppercase two-letter ISO-3166 code (optional).&lt;br/&gt;-->
-        <!--vv stands for the variant - vendor and browser specific code (optional).&lt;br/&gt;-->
-      <!--</description>-->
-      <!--<name>locale</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.util.Locale</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.util.Locale &ndash;&gt;-->
-      <!--&lt;!&ndash; @default client's locale &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>Time zone in which to interpret any time information in the date String. Value must be either a VB-->
-        <!--expression that evaluates to a java.util.TimeZone instance, or a String that is a timezone ID as described in-->
-        <!--the javadocs for java.util.TimeZone.getTimeZone().-->
-      <!--</description>-->
-      <!--<name>timeZone</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.util.TimeZone</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.util.TimeZone &ndash;&gt;-->
-      <!--&lt;!&ndash; @default The server's default time zone &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>The locale used by DateChooser component. You can specify the "locale" attribute
+        as a value-binding expression or as a String in "ll_CC_vv" format, where:&lt;br/&gt;
+        ll stands for the language - lowercase two-letter ISO-639 code.&lt;br/&gt;
+        CC stands for the country - uppercase two-letter ISO-3166 code (optional).&lt;br/&gt;
+        vv stands for the variant - vendor and browser specific code (optional).&lt;br/&gt;
+      </description>
+      <name>locale</name>
+      <deferred-value>
+        <type>java.util.Locale</type>
+      </deferred-value>
+      <!-- @bindingType java.util.Locale -->
+      <!-- @default client's locale -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Time zone in which to interpret any time information in the date String. Value must be either a VB
+        expression that evaluates to a java.util.TimeZone instance, or a String that is a timezone ID as described in
+        the javadocs for java.util.TimeZone.getTimeZone().
+      </description>
+      <name>timeZone</name>
+      <deferred-value>
+        <type>java.util.TimeZone</type>
+      </deferred-value>
+      <!-- @bindingType java.util.TimeZone -->
+      <!-- @default The server's default time zone -->
+      <!-- @el true -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>A flag that indicates whether or not the user can change selection.</description>-->
-      <!--<name>enabled</name>-->
-      <!--<deferred-value>-->
-        <!--<type>boolean</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType boolean &ndash;&gt;-->
-      <!--&lt;!&ndash; @default true &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<name>style</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<name>styleClass</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<name>rolloverStyle</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<name>rolloverClass</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<name>previousButtonStyle</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<name>previousButtonClass</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<name>previousButtonRolloverStyle</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<name>previousButtonRolloverClass</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<name>previousButtonPressedStyle</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<name>previousButtonPressedClass</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<name>previousButtonImageUrl</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>A flag that indicates whether or not the user can change selection.</description>
+      <name>enabled</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>style</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>styleClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>rolloverStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>rolloverClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>previousButtonStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>previousButtonClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>previousButtonRolloverStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>previousButtonRolloverClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>previousButtonPressedStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>previousButtonPressedClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>previousButtonImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<name>nextButtonStyle</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<name>nextButtonClass</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<name>nextButtonRolloverStyle</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<name>nextButtonRolloverClass</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<name>nextButtonPressedStyle</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<name>nextButtonPressedClass</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<name>nextButtonImageUrl</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <name>nextButtonStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>nextButtonClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>nextButtonRolloverStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>nextButtonRolloverClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>nextButtonPressedStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>nextButtonPressedClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>nextButtonImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<name>textStyle</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<name>textClass</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<name>textRolloverStyle</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<name>textRolloverClass</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <name>textStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>textClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>textRolloverStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>textRolloverClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>A splitter string between the first day of week and the last day of week.</description>-->
-      <!--<name>splitter</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>A splitter string between the first day of week and the last day of week.</description>
+      <name>splitter</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
 
-  <!--</tag>-->
+  </tag>
 
 
   <tag>
@@ -30443,906 +30443,906 @@ and it is automatically triggered on any form submission. -->
   </tag>
 
   <!-- SLIDER TAG DECLARATION -->
-  <!--<tag>-->
-    <!--<description>-->
-      <!--The Slider component enables the user to select numeric one from the predifined range value.-->
-    <!--</description>-->
-    <!--<name>slider</name>-->
-    <!--<tag-class>org.openfaces.taglib.jsp.input.SliderJspTag</tag-class>-->
-    <!--<body-content>JSP</body-content>-->
-    <!--<attribute>-->
-      <!--<description>The component identifier.</description>-->
-      <!--<name>id</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el false &ndash;&gt;-->
-    <!--</attribute>-->
+  <tag>
+    <description>
+      The Slider component enables the user to select numeric one from the predifined range value.
+    </description>
+    <name>slider</name>
+    <tag-class>org.openfaces.taglib.jsp.input.SliderJspTag</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+      <description>The component identifier.</description>
+      <name>id</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el false -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>A flag that indicates whether or not the component is visible.</description>-->
-      <!--<name>rendered</name>-->
-      <!--<deferred-value>-->
-        <!--<type>boolean</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType boolean &ndash;&gt;-->
-      <!--&lt;!&ndash; @default false &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>A flag that indicates whether or not the component is visible.</description>
+      <name>rendered</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>A value-binding expression that associates the Slider with a backing bean property.</description>-->
-      <!--<name>binding</name>-->
-      <!--<deferred-value>-->
-        <!--<type>org.openfaces.component.input.Slider</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType org.openfaces.component.input.Slider&ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el only &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>A value-binding expression that associates the Slider with a backing bean property.</description>
+      <name>binding</name>
+      <deferred-value>
+        <type>org.openfaces.component.input.Slider</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.input.Slider-->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>A flag that indicates whether or not the Sider requires a value.</description>-->
-      <!--<name>required</name>-->
-      <!--<deferred-value>-->
-        <!--<type>boolean</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType boolean &ndash;&gt;-->
-      <!--&lt;!&ndash; @default false &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>A flag that indicates whether or not the Sider requires a value.</description>
+      <name>required</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>A flag that enables or disables the component.</description>-->
-      <!--<name>disabled</name>-->
-      <!--<deferred-value>-->
-        <!--<type>boolean</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType boolean &ndash;&gt;-->
-      <!--&lt;!&ndash; @default false &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>A flag that enables or disables the component.</description>
+      <name>disabled</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>A CSS class name for the Slider component.</description>-->
-      <!--<name>styleClass</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>A CSS class name for the Slider component.</description>
+      <name>styleClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>A style for the Slider component.</description>-->
-      <!--<name>style</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>A style for the Slider component.</description>
+      <name>style</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>A style of the Slider component when it is focused.</description>-->
-      <!--<name>focusedStyle</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>A CSS class name of the Slider component when it is focused.</description>-->
-      <!--<name>focusedClass</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>A style of the Slider component when it is focused.</description>
+      <name>focusedStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name of the Slider component when it is focused.</description>
+      <name>focusedClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>A localized user presentable name for this component. Used when constructing validation messages for-->
-        <!--this component in the same way as for the standard &lt;h:inputText> component.-->
-      <!--</description>-->
-      <!--<name>label</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>Position of the component in the focus transition chain for the current document.</description>-->
-      <!--<name>tabindex</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>An access key for the Slider component.</description>-->
-      <!--<name>accesskey</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>A localized user presentable name for this component. Used when constructing validation messages for
+        this component in the same way as for the standard &lt;h:inputText> component.
+      </description>
+      <name>label</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Position of the component in the focus transition chain for the current document.</description>
+      <name>tabindex</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>An access key for the Slider component.</description>
+      <name>accesskey</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>-->
-        <!--Specifies time in milliseconds for smooth transition between old and new value button or bar onclicks-->
-      <!--</description>-->
-      <!--<name>transitionPeriod</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.Object</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.Integer &ndash;&gt;-->
-      <!--&lt;!&ndash; @default 100 &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>
+        Specifies time in milliseconds for smooth transition between old and new value button or bar onclicks
+      </description>
+      <name>transitionPeriod</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.Integer -->
+      <!-- @default 100 -->
+      <!-- @el true -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>-->
-        <!--Specifies time in milliseconds for delay before bar onclick repeats-->
-      <!--</description>-->
-      <!--<name>barAutoRepeatClickDelay</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.Object</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.Integer &ndash;&gt;-->
-      <!--&lt;!&ndash; @default 500 &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>
+        Specifies time in milliseconds for delay before bar onclick repeats
+      </description>
+      <name>barAutoRepeatClickDelay</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.Integer -->
+      <!-- @default 500 -->
+      <!-- @el true -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>-->
-        <!--The current value of the Slider component.-->
-      <!--</description>-->
-      <!--<name>value</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.Object</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.Number &ndash;&gt;-->
-      <!--&lt;!&ndash; @default 0 &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>
+        The current value of the Slider component.
+      </description>
+      <name>value</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.Number -->
+      <!-- @default 0 -->
+      <!-- @el true -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>-->
-        <!--Minimal value of slider-->
-      <!--</description>-->
-      <!--<name>minValue</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.Object</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.Number &ndash;&gt;-->
-      <!--&lt;!&ndash; @default 0 &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>-->
-        <!--Maximal value of slider-->
-      <!--</description>-->
-      <!--<name>maxValue</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.Object</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.Number &ndash;&gt;-->
-      <!--&lt;!&ndash; @default 100 &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>-->
-        <!--Defines orientation of slider.-->
-      <!--</description>-->
-      <!--<name>orientation</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default "horizontal" &ndash;&gt;-->
-      <!--&lt;!&ndash; @value "horizontal" &ndash;&gt;-->
-      <!--&lt;!&ndash; @value "vertical" &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
+    <attribute>
+      <description>
+        Minimal value of slider
+      </description>
+      <name>minValue</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.Number -->
+      <!-- @default 0 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>
+        Maximal value of slider
+      </description>
+      <name>maxValue</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.Number -->
+      <!-- @default 100 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>
+        Defines orientation of slider.
+      </description>
+      <name>orientation</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "horizontal" -->
+      <!-- @value "horizontal" -->
+      <!-- @value "vertical" -->
+      <!-- @el true -->
 
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>-->
-        <!--Defines step between big ticks of slider-->
-      <!--</description>-->
-      <!--<name>majorTickSpacing</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.Object</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.Number &ndash;&gt;-->
-      <!--&lt;!&ndash; @default 10 &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    </attribute>
+    <attribute>
+      <description>
+        Defines step between big ticks of slider
+      </description>
+      <name>majorTickSpacing</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.Number -->
+      <!-- @default 10 -->
+      <!-- @el true -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>-->
-        <!--Defines step between small ticks of slider-->
-      <!--</description>-->
-      <!--<name>minorTickSpacing</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.Object</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.Number &ndash;&gt;-->
-      <!--&lt;!&ndash; @default 5 &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>-->
-        <!--Defines direction in which ticks labels will appears and value will grow.-->
-        <!--For horizontal orientation "fromStart" means than minValue will be on the left and maxValue wil be on the right.-->
-        <!--For vertical orientation: minValue - on the bottom, maxValue on the top.-->
-      <!--</description>-->
-      <!--<name>fillDirection</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default "fromStart" &ndash;&gt;-->
-      <!--&lt;!&ndash; @value "fromStart" &ndash;&gt;-->
-      <!--&lt;!&ndash; @value "fromEnd" &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>-->
-        <!--Defines if slider ticks will be visible-->
-      <!--</description>-->
-      <!--<name>ticksVisible</name>-->
-      <!--<deferred-value>-->
-        <!--<type>boolean</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType boolean &ndash;&gt;-->
-      <!--&lt;!&ndash; @default true &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>-->
-        <!--Defines if slider ticks labels will be visible-->
-      <!--</description>-->
-      <!--<name>ticksLabelsVisible</name>-->
-      <!--<deferred-value>-->
-        <!--<type>boolean</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType  boolean&ndash;&gt;-->
-      <!--&lt;!&ndash; @default true &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>
+        Defines step between small ticks of slider
+      </description>
+      <name>minorTickSpacing</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.Number -->
+      <!-- @default 5 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>
+        Defines direction in which ticks labels will appears and value will grow.
+        For horizontal orientation "fromStart" means than minValue will be on the left and maxValue wil be on the right.
+        For vertical orientation: minValue - on the bottom, maxValue on the top.
+      </description>
+      <name>fillDirection</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "fromStart" -->
+      <!-- @value "fromStart" -->
+      <!-- @value "fromEnd" -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>
+        Defines if slider ticks will be visible
+      </description>
+      <name>ticksVisible</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>
+        Defines if slider ticks labels will be visible
+      </description>
+      <name>ticksLabelsVisible</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType  boolean-->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>-->
-        <!--Defines ticks and ticks labels position. For horizontal orientation default is "leftOrTop" value, and for-->
-        <!--vertical orientation - "rightOrBottom".-->
-        <!--Value "center" means that ticks will be displayed both left/top and right/bottom side of bar.-->
-      <!--</description>-->
-      <!--<name>ticksAlignment</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @value "rightOrBottom" &ndash;&gt;-->
-      <!--&lt;!&ndash; @value "center" &ndash;&gt;-->
-      <!--&lt;!&ndash; @value "leftOrTop" &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>-->
-        <!--Defines image of big tick-->
-      <!--</description>-->
-      <!--<name>majorTickImageUrl</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default  null&ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>
+        Defines ticks and ticks labels position. For horizontal orientation default is "leftOrTop" value, and for
+        vertical orientation - "rightOrBottom".
+        Value "center" means that ticks will be displayed both left/top and right/bottom side of bar.
+      </description>
+      <name>ticksAlignment</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @value "rightOrBottom" -->
+      <!-- @value "center" -->
+      <!-- @value "leftOrTop" -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>
+        Defines image of big tick
+      </description>
+      <name>majorTickImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  null-->
+      <!-- @el true -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>-->
-        <!--Defines image of small tick-->
-      <!--</description>-->
-      <!--<name>minorTickImageUrl</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default  null&ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>
+        Defines image of small tick
+      </description>
+      <name>minorTickImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  null-->
+      <!-- @el true -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>-->
-        <!--Defines visibility of slider bar-->
-      <!--</description>-->
-      <!--<name>barVisible</name>-->
-      <!--<deferred-value>-->
-        <!--<type>boolean</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType boolean &ndash;&gt;-->
-      <!--&lt;!&ndash; @default  true&ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>
+        Defines visibility of slider bar
+      </description>
+      <name>barVisible</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default  true-->
+      <!-- @el true -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>-->
-        <!--If this attribute has "true" value, than bar will be clicked it will change the slider value-->
-      <!--</description>-->
-      <!--<name>barCanChangeValue</name>-->
-      <!--<deferred-value>-->
-        <!--<type>boolean</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType boolean &ndash;&gt;-->
-      <!--&lt;!&ndash; @default  true&ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>-->
-        <!--Defines image of middle part of slider bar-->
-      <!--</description>-->
-      <!--<name>barImageUrl</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default  null&ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>
+        If this attribute has "true" value, than bar will be clicked it will change the slider value
+      </description>
+      <name>barCanChangeValue</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default  true-->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>
+        Defines image of middle part of slider bar
+      </description>
+      <name>barImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  null-->
+      <!-- @el true -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>-->
-        <!--Defines image of middle part of disabled slider bar-->
-      <!--</description>-->
-      <!--<name>barDisabledImageUrl</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default  null&ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>
+        Defines image of middle part of disabled slider bar
+      </description>
+      <name>barDisabledImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  null-->
+      <!-- @el true -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>-->
-        <!--Defines image of left/top part of slider bar-->
-      <!--</description>-->
-      <!--<name>barStartImageUrl</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default  null&ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>
+        Defines image of left/top part of slider bar
+      </description>
+      <name>barStartImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  null-->
+      <!-- @el true -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>-->
-        <!--Defines image of left/top part of disabled slider bar-->
-      <!--</description>-->
-      <!--<name>barStartDisabledImageUrl</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default  null&ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>
+        Defines image of left/top part of disabled slider bar
+      </description>
+      <name>barStartDisabledImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  null-->
+      <!-- @el true -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>-->
-        <!--Defines image of right/bottom part of slider bar-->
-      <!--</description>-->
-      <!--<name>barEndImageUrl</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default  null&ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>
+        Defines image of right/bottom part of slider bar
+      </description>
+      <name>barEndImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  null-->
+      <!-- @el true -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>-->
-        <!--Defines image of right/bottom part of disabled slider bar-->
-      <!--</description>-->
-      <!--<name>barEndDisabledImageUrl</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default  null&ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-
-
-    <!--<attribute>-->
-      <!--<description>-->
-        <!--Defines image of slider drag handle-->
-      <!--</description>-->
-      <!--<name>dragHandleImageUrl</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default  null&ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-
-    <!--<attribute>-->
-      <!--<description>-->
-        <!--Defines image of disabled slider drag handle-->
-      <!--</description>-->
-      <!--<name>dragHandleDisabledImageUrl</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default  null&ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-
-    <!--<attribute>-->
-      <!--<description>-->
-        <!--Defines image of slider right/bottom button when mouse is over it-->
-      <!--</description>-->
-      <!--<name>rightBottomButtonRolloverImageUrl</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default  null&ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>
+        Defines image of right/bottom part of disabled slider bar
+      </description>
+      <name>barEndDisabledImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  null-->
+      <!-- @el true -->
+    </attribute>
 
 
-    <!--<attribute>-->
-      <!--<description>-->
-        <!--Defines image of slider left/top button when mouse is over it-->
-      <!--</description>-->
-      <!--<name>leftTopButtonRolloverImageUrl</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default  null&ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>
+        Defines image of slider drag handle
+      </description>
+      <name>dragHandleImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  null-->
+      <!-- @el true -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>-->
-        <!--Defines image of slider drag handle when mouse is over it-->
-      <!--</description>-->
-      <!--<name>dragHandleRolloverImageUrl</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default  null&ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>
+        Defines image of disabled slider drag handle
+      </description>
+      <name>dragHandleDisabledImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  null-->
+      <!-- @el true -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>-->
-        <!--If value of this attribute is "true", than drag the slider handle it will move exactly to tick.-->
-      <!--</description>-->
-      <!--<name>snapToTicks</name>-->
-      <!--<deferred-value>-->
-        <!--<type>boolean</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType boolean &ndash;&gt;-->
-      <!--&lt;!&ndash; @default  null&ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>
+        Defines image of slider right/bottom button when mouse is over it
+      </description>
+      <name>rightBottomButtonRolloverImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  null-->
+      <!-- @el true -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>-->
-        <!--Defines state of text field.-->
-      <!--</description>-->
-      <!--<name>textFieldState</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default  "off"&ndash;&gt;-->
-      <!--&lt;!&ndash; @value "off" &ndash;&gt;-->
-      <!--&lt;!&ndash; @value "readOnly" &ndash;&gt;-->
-      <!--&lt;!&ndash; @value "writeEnable" &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
 
-    <!--<attribute>-->
-      <!--<description>-->
-        <!--A CSS class name for the slider text field.-->
-      <!--</description>-->
-      <!--<name>textFieldClass</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default  null&ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>
+        Defines image of slider left/top button when mouse is over it
+      </description>
+      <name>leftTopButtonRolloverImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  null-->
+      <!-- @el true -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>-->
-        <!--A style atribute for the slider text field.-->
-      <!--</description>-->
-      <!--<name>textFieldStyle</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default  null&ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>
+        Defines image of slider drag handle when mouse is over it
+      </description>
+      <name>dragHandleRolloverImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  null-->
+      <!-- @el true -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>-->
-        <!--A CSS class name for the disabled slider text field.-->
-      <!--</description>-->
-      <!--<name>textFieldDisabledClass</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default  null&ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>
+        If value of this attribute is "true", than drag the slider handle it will move exactly to tick.
+      </description>
+      <name>snapToTicks</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default  null-->
+      <!-- @el true -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>-->
-        <!--A style atribute for the disabled slider text field.-->
-      <!--</description>-->
-      <!--<name>textFieldDisabledStyle</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default  null&ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>
+        Defines state of text field.
+      </description>
+      <name>textFieldState</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  "off"-->
+      <!-- @value "off" -->
+      <!-- @value "readOnly" -->
+      <!-- @value "writeEnable" -->
+      <!-- @el true -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>-->
-        <!--This atribute enables tooltip-->
-      <!--</description>-->
-      <!--<name>tooltipEnabled</name>-->
-      <!--<deferred-value>-->
-        <!--<type>boolean</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType boolean &ndash;&gt;-->
-      <!--&lt;!&ndash; @default  null&ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>
+        A CSS class name for the slider text field.
+      </description>
+      <name>textFieldClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  null-->
+      <!-- @el true -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>-->
-        <!--A CSS class name for the slider tooltip.-->
-      <!--</description>-->
-      <!--<name>tooltipClass</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default  null&ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>
+        A style atribute for the slider text field.
+      </description>
+      <name>textFieldStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  null-->
+      <!-- @el true -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>-->
-        <!--A style attribute for the slider tooltip.-->
-      <!--</description>-->
-      <!--<name>tooltipStyle</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default  null&ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>
+        A CSS class name for the disabled slider text field.
+      </description>
+      <name>textFieldDisabledClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  null-->
+      <!-- @el true -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>-->
-        <!--This attribute make slider control buttons visible if it has value "true"-->
-      <!--</description>-->
-      <!--<name>controlButtonsVisible</name>-->
-      <!--<deferred-value>-->
-        <!--<type>boolean</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType boolean&ndash;&gt;-->
-      <!--&lt;!&ndash; @default  true&ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>
+        A style atribute for the disabled slider text field.
+      </description>
+      <name>textFieldDisabledStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  null-->
+      <!-- @el true -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>-->
-        <!--Defines image of right/bottom slider control button-->
-      <!--</description>-->
-      <!--<name>rightBottomButtonImageUrl</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default  null&ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>
+        This atribute enables tooltip
+      </description>
+      <name>tooltipEnabled</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default  null-->
+      <!-- @el true -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>-->
-        <!--Defines image of left/top slider control button-->
-      <!--</description>-->
-      <!--<name>leftTopButtonImageUrl</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default  null&ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>
+        A CSS class name for the slider tooltip.
+      </description>
+      <name>tooltipClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  null-->
+      <!-- @el true -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>-->
-        <!--Defines image of right/bottom disabled slider control button-->
-      <!--</description>-->
-      <!--<name>rightBottomButtonDisabledImageUrl</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default  null&ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>
+        A style attribute for the slider tooltip.
+      </description>
+      <name>tooltipStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  null-->
+      <!-- @el true -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>-->
-        <!--Defines image of left/top disabled slider control button-->
-      <!--</description>-->
-      <!--<name>leftTopButtonDisabledImageUrl</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default  null&ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>
+        This attribute make slider control buttons visible if it has value "true"
+      </description>
+      <name>controlButtonsVisible</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean-->
+      <!-- @default  true-->
+      <!-- @el true -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>-->
-        <!--A CSS class name for all active elements in case mouse is over the element-->
-      <!--</description>-->
-      <!--<name>activeElementRolloverClass</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default  null&ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>-->
-        <!--A CSS class name for all active elements in case user click the element-->
-      <!--</description>-->
-      <!--<name>activeElementPressedClass</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default  null&ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>
+        Defines image of right/bottom slider control button
+      </description>
+      <name>rightBottomButtonImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  null-->
+      <!-- @el true -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>-->
-        <!--A style attribute for all active elements in case mouse is over the element-->
-      <!--</description>-->
-      <!--<name>activeElementRolloverStyle</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default  null&ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>-->
-        <!--A style attribute for all active elements in case user click the element-->
-      <!--</description>-->
-      <!--<name>activeElementPressedStyle</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default  null&ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>JavaScript code that should be executed on the client when the Slider's value has changed.-->
-      <!--</description>-->
-      <!--<name>onchange</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>
+        Defines image of left/top slider control button
+      </description>
+      <name>leftTopButtonImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  null-->
+      <!-- @el true -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>JavaScript code that should be executed on the client when the user presses and releases a key-->
-        <!--over the Slider.-->
-      <!--</description>-->
-      <!--<name>onkeypress</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>JavaScript code that should be executed on the client when the user clicks-->
-        <!--the left mouse button over the Slider.-->
-      <!--</description>-->
-      <!--<name>onclick</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>JavaScript code that should be executed on the client when the user double-clicks-->
-        <!--the left mouse button over the Slider.-->
-      <!--</description>-->
-      <!--<name>ondblclick</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>JavaScript code that should be executed when the user clicks over-->
-        <!--the Slider with either mouse button.-->
-      <!--</description>-->
-      <!--<name>onmousedown</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>JavaScript code that should be executed when the user moves the mouse pointer onto the Slider.-->
-      <!--</description>-->
-      <!--<name>onmouseover</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>JavaScript code that should be executed when the user moves the mouse pointer over the Slider.-->
-      <!--</description>-->
-      <!--<name>onmousemove</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>JavaScript code that should be executed when the user moves the mouse pointer away from the Slider.-->
-      <!--</description>-->
-      <!--<name>onmouseout</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>JavaScript code that should be executed when the user releases the mouse button over the Slider.-->
-      <!--</description>-->
-      <!--<name>onmouseup</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>JavaScript code that should be executed when the user presses right mouse button over the component-->
-        <!--(or performs the other context menu invocation action depending on the platform).-->
-      <!--</description>-->
-      <!--<name>oncontextmenu</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>JavaScript code that should be executed when the Slider receives focus.</description>-->
-      <!--<name>onfocus</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>JavaScript code that should be executed when the Slider loses focus.</description>-->
-      <!--<name>onblur</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>JavaScript code that should be executed when the user presses a key over the Slider.-->
-      <!--</description>-->
-      <!--<name>onkeydown</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>JavaScript code that should be executed when the user releases a key over the Slider.-->
-      <!--</description>-->
-      <!--<name>onkeyup</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>
+        Defines image of right/bottom disabled slider control button
+      </description>
+      <name>rightBottomButtonDisabledImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  null-->
+      <!-- @el true -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>JavaScript code that should be executed when the user is changing the Slider value.-->
-      <!--</description>-->
-      <!--<name>onchanging</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>
+        Defines image of left/top disabled slider control button
+      </description>
+      <name>leftTopButtonDisabledImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  null-->
+      <!-- @el true -->
+    </attribute>
 
-  <!--</tag>-->
+    <attribute>
+      <description>
+        A CSS class name for all active elements in case mouse is over the element
+      </description>
+      <name>activeElementRolloverClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  null-->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>
+        A CSS class name for all active elements in case user click the element
+      </description>
+      <name>activeElementPressedClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  null-->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>
+        A style attribute for all active elements in case mouse is over the element
+      </description>
+      <name>activeElementRolloverStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  null-->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>
+        A style attribute for all active elements in case user click the element
+      </description>
+      <name>activeElementPressedStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  null-->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the Slider's value has changed.
+      </description>
+      <name>onchange</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user presses and releases a key
+        over the Slider.
+      </description>
+      <name>onkeypress</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user clicks
+        the left mouse button over the Slider.
+      </description>
+      <name>onclick</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user double-clicks
+        the left mouse button over the Slider.
+      </description>
+      <name>ondblclick</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user clicks over
+        the Slider with either mouse button.
+      </description>
+      <name>onmousedown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer onto the Slider.
+      </description>
+      <name>onmouseover</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer over the Slider.
+      </description>
+      <name>onmousemove</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer away from the Slider.
+      </description>
+      <name>onmouseout</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user releases the mouse button over the Slider.
+      </description>
+      <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the Slider receives focus.</description>
+      <name>onfocus</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the Slider loses focus.</description>
+      <name>onblur</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses a key over the Slider.
+      </description>
+      <name>onkeydown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user releases a key over the Slider.
+      </description>
+      <name>onkeyup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>JavaScript code that should be executed when the user is changing the Slider value.
+      </description>
+      <name>onchanging</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+  </tag>
 
   <!-- SPINNER TAG DECLARATION -->
   <tag>
@@ -39174,445 +39174,445 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
   </tag>
 
-  <!--<tag>-->
-    <!--<description>-->
-      <!--The TagCloud shows tags in some order using some layout-->
-    <!--</description>-->
-    <!--<name>tagCloud</name>-->
-    <!--<tag-class>org.openfaces.taglib.jsp.tagcloud.TagCloudJspTag</tag-class>-->
-    <!--<body-content>JSP</body-content>-->
-    <!--<attribute>-->
-      <!--<description>The component identifier.</description>-->
-      <!--<name>id</name>-->
+  <tag>
+    <description>
+      The TagCloud shows tags in some order using some layout
+    </description>
+    <name>tagCloud</name>
+    <tag-class>org.openfaces.taglib.jsp.tagcloud.TagCloudJspTag</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+      <description>The component identifier.</description>
+      <name>id</name>
 
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el false &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>Similar to the "action" attribute of the HTMLCommandButton component. It can be defined as a-->
-        <!--MethodBinding that should point to an action method that is called when the user clicks this button.-->
-      <!--</description>-->
-      <!--<name>action</name>-->
-      <!--<deferred-method>-->
-        <!--<method-signature>java.lang.Object action()</method-signature>-->
-      <!--</deferred-method>-->
-      <!--&lt;!&ndash; @bindingType javax.el.MethodExpression &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>Similar to the "actionListener" attribute of the HTMLCommandButton component.-->
-        <!--A MethodBinding that should point to an action listener that is called when the user invokes this action.-->
-      <!--</description>-->
-      <!--<name>actionListener</name>-->
-      <!--<deferred-method>-->
-        <!--<method-signature>void actionListener(javax.faces.event.ActionEvent)</method-signature>-->
-      <!--</deferred-method>-->
-      <!--&lt;!&ndash; @bindingType javax.el.MethodExpression &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el false -->
+    </attribute>
+    <attribute>
+      <description>Similar to the "action" attribute of the HTMLCommandButton component. It can be defined as a
+        MethodBinding that should point to an action method that is called when the user clicks this button.
+      </description>
+      <name>action</name>
+      <deferred-method>
+        <method-signature>java.lang.Object action()</method-signature>
+      </deferred-method>
+      <!-- @bindingType javax.el.MethodExpression -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Similar to the "actionListener" attribute of the HTMLCommandButton component.
+        A MethodBinding that should point to an action listener that is called when the user invokes this action.
+      </description>
+      <name>actionListener</name>
+      <deferred-method>
+        <method-signature>void actionListener(javax.faces.event.ActionEvent)</method-signature>
+      </deferred-method>
+      <!-- @bindingType javax.el.MethodExpression -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
 
-     <!--<attribute>-->
-      <!--<description>A converter for the itemText. Should be specified as a value-binding expression or converter-->
-        <!--identifier.-->
-      <!--</description>-->
-      <!--<name>converter</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+     <attribute>
+      <description>A converter for the itemText. Should be specified as a value-binding expression or converter
+        identifier.
+      </description>
+      <name>converter</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>Specifies an array or a collection of objects that serve as tag cloud item data objects.-->
-        <!--&lt;The o:tagCloud&gt; tag results in adding one tag per each object found in this collection.-->
-      <!--</description>-->
-      <!--<name>items</name>-->
-      <!--<required>true</required>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.Object</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType array &ndash;&gt;-->
-      <!--&lt;!&ndash; @bindingType java.util.Collection &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el only &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>The name of the request-scope variable under which the current item data object is-->
-        <!--available when evaluating value binding expressions specified in this tag's attributes.-->
-      <!--</description>-->
-      <!--<name>var</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default "item" &ndash;&gt;-->
-      <!--&lt;!&ndash; @el false &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>Specifies an array or a collection of objects that serve as tag cloud item data objects.
+        &lt;The o:tagCloud&gt; tag results in adding one tag per each object found in this collection.
+      </description>
+      <name>items</name>
+      <required>true</required>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType array -->
+      <!-- @bindingType java.util.Collection -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>The name of the request-scope variable under which the current item data object is
+        available when evaluating value binding expressions specified in this tag's attributes.
+      </description>
+      <name>var</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "item" -->
+      <!-- @el false -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>A value-binding expression that should reference an text value for each item which will be-->
-        <!--displayed as tag text. You can use a column data variable specified in the "var" in the expression for this-->
-        <!--attribute.-->
-      <!--</description>       -->
-      <!--<name>itemText</name>-->
-            <!---->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el only &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>A value-binding expression that should reference an title for each item which will be-->
-        <!--displayed as tag title on rollover. You can use a column data variable specified in the "var" in the expression-->
-        <!--for this attribute.-->
-      <!--</description>-->
-      <!--<name>itemTitle</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el only &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>A value-binding expression that should reference an text value for each item which will be
+        displayed as tag text. You can use a column data variable specified in the "var" in the expression for this
+        attribute.
+      </description>
+      <name>itemText</name>
 
-    <!--<attribute>-->
-      <!--<description>A value-binding expression that should reference an url for each item which will be-->
-        <!--rendered as href atribute of tag.-->
-        <!--You can use a column data variable specified in the "var" in the expression for this attribute.-->
-      <!--</description>-->
-      <!--<name>itemUrl</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el only &ndash;&gt;-->
-    <!--</attribute>-->
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>A value-binding expression that should reference an title for each item which will be
+        displayed as tag title on rollover. You can use a column data variable specified in the "var" in the expression
+        for this attribute.
+      </description>
+      <name>itemTitle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>A value-binding expression that should reference an text value for each item which assign to weight-->
-        <!--of each tag. Weight of tag could be its popularity or frequency or something else.-->
-        <!--You can use a column data variable specified in the "var" in the expression for this attribute.-->
-      <!--</description>-->
-      <!--<name>itemWeight</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.Double</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.Double &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el only &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>A flag that indicates whether or not each item display its weight near itself. Can be specified-->
-        <!--right on the page (one and the same value for all dynamic columns is used) or as a value-binding-->
-        <!--expression. You can use a column data variable specified in the "var" in the expression for this-->
-        <!--attribute.-->
-      <!--</description>-->
-      <!--<name>itemWeightVisible</name>-->
-      <!--<deferred-value>-->
-        <!--<type>boolean</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType boolean &ndash;&gt;-->
-      <!--&lt;!&ndash; @default false &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>A value-binding expression that should reference an url for each item which will be
+        rendered as href atribute of tag.
+        You can use a column data variable specified in the "var" in the expression for this attribute.
+      </description>
+      <name>itemUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
 
-     <!--<attribute>-->
-      <!--<description>-->
-        <!--Format for displaying weight. This is String pattern for java.text.DecimalFormat-->
-      <!--</description>-->
-      <!--<name>itemWeightFormat</name>-->
-      <!--<deferred-value>-->
-        <!--<type>boolean</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType boolean &ndash;&gt;-->
-      <!--&lt;!&ndash; @default false &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>A value-binding expression that should reference an text value for each item which assign to weight
+        of each tag. Weight of tag could be its popularity or frequency or something else.
+        You can use a column data variable specified in the "var" in the expression for this attribute.
+      </description>
+      <name>itemWeight</name>
+      <deferred-value>
+        <type>java.lang.Double</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.Double -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>A flag that indicates whether or not each item display its weight near itself. Can be specified
+        right on the page (one and the same value for all dynamic columns is used) or as a value-binding
+        expression. You can use a column data variable specified in the "var" in the expression for this
+        attribute.
+      </description>
+      <name>itemWeightVisible</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>-->
-        <!--A CSS style for item weight.-->
-      <!--</description>-->
-      <!--<name>itemWeightStyle</name>-->
-      <!--<deferred-value>-->
-        <!--<type>boolean</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType boolean &ndash;&gt;-->
-      <!--&lt;!&ndash; @default false &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+     <attribute>
+      <description>
+        Format for displaying weight. This is String pattern for java.text.DecimalFormat
+      </description>
+      <name>itemWeightFormat</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>-->
-        <!--String value which indicate order of tags rendering.-->
-      <!--</description>-->
-      <!--<name>order</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @value "alphabetically" &ndash;&gt;-->
-      <!--&lt;!&ndash; @value "original" &ndash;&gt;-->
-      <!--&lt;!&ndash; @value "random" &ndash;&gt;-->
-      <!--&lt;!&ndash; @value "weight" &ndash;&gt;-->
-      <!--&lt;!&ndash; @value "weightRevers" &ndash;&gt;-->
-      <!--&lt;!&ndash; @default "alphabetically" &ndash;&gt;-->
-      <!--&lt;!&ndash; @el false &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>
+        A CSS style for item weight.
+      </description>
+      <name>itemWeightStyle</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>-->
-        <!--String value which indicate layout for tags rendering.-->
-      <!--</description>-->
-      <!--<name>layout</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.util.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @value "rectangle" &ndash;&gt;-->
-      <!--&lt;!&ndash; @value "vertical" &ndash;&gt;-->
-      <!--&lt;!&ndash; @value "oval" &ndash;&gt;-->
+    <attribute>
+      <description>
+        String value which indicate order of tags rendering.
+      </description>
+      <name>order</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @value "alphabetically" -->
+      <!-- @value "original" -->
+      <!-- @value "random" -->
+      <!-- @value "weight" -->
+      <!-- @value "weightRevers" -->
+      <!-- @default "alphabetically" -->
+      <!-- @el false -->
+    </attribute>
 
-      <!--&lt;!&ndash; @default "rectangle" &ndash;&gt;-->
-      <!--&lt;!&ndash; @el false &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>
+        String value which indicate layout for tags rendering.
+      </description>
+      <name>layout</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.util.String -->
+      <!-- @value "rectangle" -->
+      <!-- @value "vertical" -->
+      <!-- @value "oval" -->
 
-    <!--<attribute>-->
-      <!--<description>A style for the entire tag cloud.-->
-      <!--</description>-->
-      <!--<name>style</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>A CSS class name for the entire tag cloud.-->
-      <!--</description>-->
-      <!--<name>styleClass</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+      <!-- @default "rectangle" -->
+      <!-- @el false -->
+    </attribute>
 
-     <!--<attribute>-->
-      <!--<description>A rollover style for the entire tag cloud.-->
-      <!--</description>-->
-      <!--<name>rolloverStyle</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>A rollover CSS class name for the entire tag cloud.-->
-      <!--</description>-->
-      <!--<name>rolloverClass</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>A style for the entire tag cloud.
+      </description>
+      <name>style</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the entire tag cloud.
+      </description>
+      <name>styleClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>A style for the tag item. Can be specified as a value-binding expression-->
-        <!--that uses a column data variable specified in the "var" attribute.-->
-      <!--</description>-->
-      <!--<name>itemStyle</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>A CSS class name for tag item Can be specified as a value-binding expression-->
-        <!--that uses a column data variable specified in the "var" attribute.-->
-      <!--</description>-->
-      <!--<name>itemClass</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+     <attribute>
+      <description>A rollover style for the entire tag cloud.
+      </description>
+      <name>rolloverStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A rollover CSS class name for the entire tag cloud.
+      </description>
+      <name>rolloverClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>A style for the tag item when mouse is over. Can be specified as a value-binding expression-->
-        <!--that uses a column data variable specified in the "var" attribute.-->
-      <!--</description>-->
-      <!--<name>itemRolloverStyle</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>A CSS class name for tag item when mouse is over. Can be specified as a value-binding expression-->
-        <!--that uses a column data variable specified in the "var" attribute.-->
-      <!--</description>-->
-      <!--<name>itemRolloverClass</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>A style for the tag item. Can be specified as a value-binding expression
+        that uses a column data variable specified in the "var" attribute.
+      </description>
+      <name>itemStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for tag item Can be specified as a value-binding expression
+        that uses a column data variable specified in the "var" attribute.
+      </description>
+      <name>itemClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
 
-    <!--<attribute>-->
-      <!--<description>-->
-        <!--A style for the tag item with minimal weight.-->
-      <!--</description>-->
-      <!--<name>minItemStyle</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>A style for the tag item with maximal weight.-->
+    <attribute>
+      <description>A style for the tag item when mouse is over. Can be specified as a value-binding expression
+        that uses a column data variable specified in the "var" attribute.
+      </description>
+      <name>itemRolloverStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for tag item when mouse is over. Can be specified as a value-binding expression
+        that uses a column data variable specified in the "var" attribute.
+      </description>
+      <name>itemRolloverClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
 
-      <!--</description>-->
-      <!--<name>maxItemStyle</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>
+        A style for the tag item with minimal weight.
+      </description>
+      <name>minItemStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A style for the tag item with maximal weight.
 
-    <!--<attribute>-->
-      <!--<description>JavaScript code that should be executed on the client when the user clicks-->
-        <!--the left mouse button over the dynamic column. Can be specified as a value-binding expression-->
-        <!--that uses a column data variable specified in the "var" attribute.-->
-      <!--</description>-->
-      <!--<name>onclick</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>JavaScript code that should be executed on the client when the user double-clicks-->
-        <!--the left mouse button over the dynamic column. Can be specified as a value-binding expression-->
-        <!--that uses a column data variable specified in the "var" attribute.-->
-      <!--</description>-->
-      <!--<name>ondblclick</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>JavaScript code that should be executed when the user clicks-->
-        <!--over the dynamic column with either mouse button. Can be specified as a value-binding expression-->
-        <!--that uses a column data variable specified in the "var" attribute.-->
-      <!--</description>-->
-      <!--<name>onmousedown</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>JavaScript code that should be executed when the user moves the mouse pointer-->
-        <!--onto the dynamic column. Can be specified as a value-binding expression-->
-        <!--that uses a column data variable specified in the "var" attribute.-->
-      <!--</description>-->
-      <!--<name>onmouseover</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>JavaScript code that should be executed when the user moves the mouse pointer-->
-        <!--over the dynamic column. Can be specified as a value-binding expression-->
-        <!--that uses a column data variable specified in the "var" attribute.-->
-      <!--</description>-->
-      <!--<name>onmousemove</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>JavaScript code that should be executed when the user moves the mouse pointer-->
-        <!--away from the dynamic column. Can be specified as a value-binding expression-->
-        <!--that uses a column data variable specified in the "var" attribute.-->
-      <!--</description>-->
-      <!--<name>onmouseout</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>JavaScript code that should be executed when the user releases the mouse button-->
-        <!--over the dynamic column. Can be specified as a value-binding expression-->
-        <!--that uses a column data variable specified in the "var" attribute.-->
-      <!--</description>-->
-      <!--<name>onmouseup</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>JavaScript code that should be executed when the user presses right mouse button over the component-->
-        <!--(or performs the other context menu invocation action depending on the platform).-->
-      <!--</description>-->
-      <!--<name>oncontextmenu</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+      </description>
+      <name>maxItemStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
 
-  <!--</tag>-->
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user clicks
+        the left mouse button over the dynamic column. Can be specified as a value-binding expression
+        that uses a column data variable specified in the "var" attribute.
+      </description>
+      <name>onclick</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user double-clicks
+        the left mouse button over the dynamic column. Can be specified as a value-binding expression
+        that uses a column data variable specified in the "var" attribute.
+      </description>
+      <name>ondblclick</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user clicks
+        over the dynamic column with either mouse button. Can be specified as a value-binding expression
+        that uses a column data variable specified in the "var" attribute.
+      </description>
+      <name>onmousedown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer
+        onto the dynamic column. Can be specified as a value-binding expression
+        that uses a column data variable specified in the "var" attribute.
+      </description>
+      <name>onmouseover</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer
+        over the dynamic column. Can be specified as a value-binding expression
+        that uses a column data variable specified in the "var" attribute.
+      </description>
+      <name>onmousemove</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer
+        away from the dynamic column. Can be specified as a value-binding expression
+        that uses a column data variable specified in the "var" attribute.
+      </description>
+      <name>onmouseout</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user releases the mouse button
+        over the dynamic column. Can be specified as a value-binding expression
+        that uses a column data variable specified in the "var" attribute.
+      </description>
+      <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+  </tag>
 
 </taglib>
