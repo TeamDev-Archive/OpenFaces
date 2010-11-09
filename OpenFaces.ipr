@@ -671,7 +671,7 @@
         <inspection_tool class="NoopMethodInAbstractClass" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="NumericToString" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="ObsoleteCollection" enabled="true" level="WARNING" enabled_by_default="true">
-          <option name="ignoreLibraryArguments" value="false" />
+          <option name="ignoreRequiredObsoleteCollectionTypes" value="false" />
         </inspection_tool>
         <inspection_tool class="OverlyComplexBooleanExpression" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="m_limit" value="3" />
@@ -1258,7 +1258,7 @@
         <root url="jar://$PROJECT_DIR$/lib/mojarra/jsf-impl-1.2_12-b01.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/mojarra/jsf-api-1.2_12-b01.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/apache/commons-logging-1.1.1.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/apache/commons-collections-3.2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/commons-collections-3.2.1.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES>
@@ -1298,14 +1298,13 @@
         <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/sac.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/jcommon-1.0.16.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/jfreechart-1.0.13.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/commons-collections-3.2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/commons-collections-3.2.1.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
     </library>
     <library name="JSF Implementation - MyFaces 1.2">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/apache/commons-collections-3.2.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/apache/commons-digester-1.8.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/apache/commons-beanutils-1.7.0.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/apache/commons-el-1.0.jar!/" />
@@ -1314,6 +1313,7 @@
         <root url="jar://$PROJECT_DIR$/lib/myfaces/myfaces-api-1.2.3.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/myfaces/myfaces-impl-1.2.3.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/apache/commons-logging-1.1.1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/commons-collections-3.2.1.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES>

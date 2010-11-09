@@ -33,7 +33,7 @@ public class LiveDemoTest extends OpenFacesTestCase {
         assertDemoPageAvailable("/calendar/Calendar_styles.jsf", "Calendar \u2014 OpenFaces Demo");
         assertDemoPageAvailable("/calendar/Calendar_dateRanges.jsf", "Calendar \u2014 OpenFaces Demo");
         assertDemoPageAvailable("/calendar/Calendar_internationalization.jsf", "Calendar \u2014 OpenFaces Demo");
-        assertDemoPageAvailable("/chart/ChartTypes.jsf", "Chart \u2014 OpenFaces Demo");
+//        assertDemoPageAvailable("/chart/ChartTypes.jsf", "Chart \u2014 OpenFaces Demo");
 
         assertDemoPageAvailable("/chart/ChartInteractive.jsf", "Chart \u2014 OpenFaces Demo");
         assertDemoPageAvailable("/datatable/DataTable_general.jsf", "Data Table \u2014 OpenFaces Demo");
