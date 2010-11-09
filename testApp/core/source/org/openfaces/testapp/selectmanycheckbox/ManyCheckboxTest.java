@@ -13,6 +13,7 @@
 package org.openfaces.testapp.selectmanycheckbox;
 
 import javax.faces.event.ActionEvent;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import java.util.ArrayList;
@@ -175,7 +176,7 @@ public class ManyCheckboxTest {
         reloadSelectManyCheckbox7(null);
     }
 
-    public void reloadSelectManyCheckbox7(ActionEvent event) {
+    public void reloadSelectManyCheckbox7(AjaxBehaviorEvent event) {
         int selectedForDisable = Integer.parseInt(selectOneMenu7);
         this.selectManyCheckboxItemsGroup7 = new ArrayList<SelectItem>();
         for (int i = 1; i < 6; i++) {
@@ -237,7 +238,7 @@ public class ManyCheckboxTest {
         reloadSelectManyCheckbox8(null);
     }
 
-    public void reloadSelectManyCheckbox8(ActionEvent event) {
+    public void reloadSelectManyCheckbox8(AjaxBehaviorEvent event) {
         int selectedForDisable = Integer.parseInt(selectOneMenu8);
         this.selectManyCheckboxItemsGroup8 = new ArrayList<SelectItem>();
         for (int i = 1; i < 6; i++) {

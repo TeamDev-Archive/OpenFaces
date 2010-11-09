@@ -17,6 +17,7 @@ import org.openfaces.component.table.ExpansionState;
 import org.openfaces.util.Faces;
 
 import javax.faces.event.ActionEvent;
+import javax.faces.event.AjaxBehaviorEvent;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -142,7 +143,7 @@ public class BorderLayoutBean implements Serializable {
 		return getTreeLevel(getTreeNode());
 	}
 
-    public String selectComponent(ActionEvent event) {
+    public String selectComponent(AjaxBehaviorEvent event) {
         
         if (COMPONENTS_ROOT.equals(selectedComponent)
                 || componentsByCategories.keySet().contains(selectedComponent)) {

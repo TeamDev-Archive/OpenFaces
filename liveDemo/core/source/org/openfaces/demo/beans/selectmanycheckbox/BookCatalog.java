@@ -14,7 +14,7 @@ package org.openfaces.demo.beans.selectmanycheckbox;
 
 import org.openfaces.demo.beans.util.FacesUtils;
 
-import javax.faces.event.ActionEvent;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.model.SelectItem;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -88,7 +88,7 @@ public class BookCatalog implements Serializable {
             Set<String> labels = new TreeSet<String>();
             for (Book book : getBooks()) {
                 Collection<String> bookLabels = book.getLabels();
-                if (bookLabels != null){
+                if (bookLabels != null) {
                     labels.addAll(bookLabels);
                 }
             }
@@ -110,13 +110,13 @@ public class BookCatalog implements Serializable {
         return null;
     }
 
-    public void selectBook(ActionEvent event) {
+    public void selectBook(AjaxBehaviorEvent event) {
         String isbn = FacesUtils.getEventParameter(event, "isbn");
         selectedBook = findBookByIsbn(isbn);
         Collection<String> bookLabels = selectedBook.getLabels();
-        if (bookLabels!=null){
+        if (bookLabels != null) {
             selectedBookLabels = new ArrayList<String>(bookLabels);
-        }else{
+        } else {
             selectedBookLabels = null;
         }
     }
@@ -133,8 +133,8 @@ public class BookCatalog implements Serializable {
         this.selectedBookLabels = selectedBookLabels;
     }
 
-    public void saveBookLabels(ActionEvent event) {
-        if (selectedBook != null){
+    public void saveBookLabels(AjaxBehaviorEvent event) {
+        if (selectedBook != null) {
             selectedBook.setLabels(selectedBookLabels);
             selectedBook = null;
             selectedBookLabels = null;

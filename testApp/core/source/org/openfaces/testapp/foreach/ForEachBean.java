@@ -14,6 +14,7 @@ package org.openfaces.testapp.foreach;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.AjaxBehaviorEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -64,7 +65,7 @@ public class ForEachBean {
         return testList;
     }
 
-    public void removeTestListItem(ActionEvent event) {
+    public void removeTestListItem(AjaxBehaviorEvent event) {
         ListItem itemId = (ListItem) getEventParameter(event, "itemId");
         testList.remove(itemId);
     }
@@ -100,7 +101,7 @@ public class ForEachBean {
         return scalarData;
     }
 
-    public static Object getEventParameter(ActionEvent event, String paramName) {
+    public static Object getEventParameter(AjaxBehaviorEvent event, String paramName) {
 
         Iterator<UIComponent> iterator = event.getComponent().getFacetsAndChildren();
 
@@ -150,7 +151,7 @@ public class ForEachBean {
         return validationObjectList;
     }
 
-    public void removeValidationObjectListItem(ActionEvent event) {
+    public void removeValidationObjectListItem(AjaxBehaviorEvent event) {
         ValidationObject itemId = (ValidationObject) getEventParameter(event, "itemId");
         validationObjectList.remove(itemId);
     }

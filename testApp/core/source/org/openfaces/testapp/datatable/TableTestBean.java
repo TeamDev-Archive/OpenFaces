@@ -18,8 +18,8 @@ import org.openfaces.component.filter.ExpressionFilterCriterion;
 import org.openfaces.component.table.FilterKind;
 import org.openfaces.util.Faces;
 
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.ValueChangeEvent;
-import javax.faces.event.ActionEvent;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -479,11 +479,11 @@ public class TableTestBean {
         return "requestNo_" + _requestCounter++;
     }
 
-    public void resetCounter(ActionEvent actionEvent) {
+    public void resetCounter(AjaxBehaviorEvent event) {
         counter = 0;
     }
 
-    public void incrementCounter(ActionEvent actionEvent) {
+    public void incrementCounter(AjaxBehaviorEvent event) {
         counter++;
     }
 

@@ -17,6 +17,7 @@ import static org.openfaces.demo.beans.selectbooleancheckbox.Permission.*;
 import org.openfaces.demo.beans.util.FacesUtils;
 
 import javax.faces.event.ActionEvent;
+import javax.faces.event.AjaxBehaviorEvent;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -222,8 +223,7 @@ public class PermissionSchema {
 
     }
 
-    public void updateAssignment(ActionEvent event) {
-
+    public void updateAssignment(AjaxBehaviorEvent event) {
         String groupString = String.valueOf(FacesUtils.getEventParameter(event, "group"));
         PermissionGroup permissionGroup = PermissionGroup.valueOf(groupString);
         String permissionString = String.valueOf(FacesUtils.getEventParameter(event, "permission"));

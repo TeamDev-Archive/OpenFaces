@@ -12,24 +12,24 @@
 
 package org.openfaces.demo.beans.util;
 
-import javax.faces.event.ActionEvent;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
+import javax.faces.event.AjaxBehaviorEvent;
 import java.util.List;
 
 public class FacesUtils {
     private FacesUtils() {
-        
+
     }
 
     @SuppressWarnings("unchecked")
-    public static <E> E getEventParameter(ActionEvent event, String paramName) {
+    public static <E> E getEventParameter(AjaxBehaviorEvent event, String paramName) {
         List<UIComponent> children = event.getComponent().getChildren();
         for (UIComponent component : children) {
             if (component instanceof UIParameter) {
                 UIParameter uiParameter = (UIParameter) component;
-                if (paramName.equals(uiParameter.getName())) {                    
-                    return (E) uiParameter.getValue();                    
+                if (paramName.equals(uiParameter.getName())) {
+                    return (E) uiParameter.getValue();
                 }
             }
         }
