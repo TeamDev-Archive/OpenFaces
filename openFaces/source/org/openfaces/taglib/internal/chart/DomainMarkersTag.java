@@ -12,11 +12,12 @@
 package org.openfaces.taglib.internal.chart;
 
 import org.openfaces.component.chart.DomainMarkers;
+import org.openfaces.taglib.internal.AbstractComponentTag;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-public class DomainMarkersTag extends org.openfaces.taglib.internal.AbstractComponentTag {
+public class DomainMarkersTag extends AbstractComponentTag {
 
     public String getComponentType() {
         return DomainMarkers.COMPONENT_TYPE;

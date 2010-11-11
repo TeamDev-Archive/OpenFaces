@@ -11,10 +11,10 @@
  */
 package org.openfaces.component.chart;
 
-import org.openfaces.util.ValueBindings;
 import org.openfaces.renderkit.cssparser.CSSUtil;
 import org.openfaces.renderkit.cssparser.StyleObjectModel;
 import org.openfaces.renderkit.cssparser.StyledComponent;
+import org.openfaces.util.ValueBindings;
 
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
@@ -50,20 +50,20 @@ public class LineProperties extends UIOutput implements StyledComponent {
         setValueExpression("condition", dynamicCondition);
     }
 
-    public Boolean getShapesVisible() {
-        return ValueBindings.get(this, "shapesVisible", shapesVisible, Boolean.class);
+    public boolean getShapesVisible() {
+        return ValueBindings.get(this, "shapesVisible", shapesVisible, false);
     }
 
-    public Boolean getShowInLegend() {
-        return ValueBindings.get(this, "showInLegend", shapesVisible, Boolean.class);
+    public boolean getShowInLegend() {
+        return ValueBindings.get(this, "showInLegend", shapesVisible, false);
     }
 
-    public Boolean getHideSeries() {
-        return ValueBindings.get(this, "hideSeries", hideSeries, Boolean.class);
+    public boolean getHideSeries() {
+        return ValueBindings.get(this, "hideSeries", hideSeries, false);
     }
 
-    public Boolean getLabelsVisible() {
-        return ValueBindings.get(this, "labelsVisible", labelsVisible, Boolean.class);
+    public boolean getLabelsVisible() {
+        return ValueBindings.get(this, "labelsVisible", labelsVisible, false);
     }
 
     public void setShapesVisible(Boolean shapesVisible) {
@@ -127,7 +127,10 @@ public class LineProperties extends UIOutput implements StyledComponent {
     @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
-        return new Object[]{superState, style, shapesVisible, showInLegend
+        return new Object[]{superState,
+                style,
+                shapesVisible,
+                showInLegend
         };
 
     }

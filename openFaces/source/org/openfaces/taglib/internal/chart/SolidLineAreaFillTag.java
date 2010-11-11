@@ -12,11 +12,12 @@
 package org.openfaces.taglib.internal.chart;
 
 import org.openfaces.component.chart.SolidLineAreaFill;
+import org.openfaces.taglib.internal.AbstractComponentTag;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-public class SolidLineAreaFillTag extends org.openfaces.taglib.internal.AbstractComponentTag {
+public class SolidLineAreaFillTag extends AbstractComponentTag {
 
     public String getComponentType() {
         return SolidLineAreaFill.COMPONENT_TYPE;

@@ -11,10 +11,10 @@
  */
 package org.openfaces.component.chart;
 
-import org.openfaces.util.ValueBindings;
 import org.openfaces.renderkit.cssparser.CSSUtil;
 import org.openfaces.renderkit.cssparser.StyleObjectModel;
 import org.openfaces.renderkit.cssparser.StyledComponent;
+import org.openfaces.util.ValueBindings;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput;
@@ -60,11 +60,11 @@ public class ChartNoDataMessage extends UIOutput implements StyledComponent {
     }
 
     public StyledComponent[] getComponentsChain() {
-
-        StyledComponent[] chain = new StyledComponent[3];
-        chain[0] = Chart.DEFAULT_CHART_STYLE;
-        chain[1] = (StyledComponent) this.getParent();    //chart
-        chain[2] = this;
+        StyledComponent[] chain = new StyledComponent[]{
+                Chart.DEFAULT_CHART_STYLE,
+                (StyledComponent) this.getParent(),    //chart
+                this
+        };
 
         return chain;
     }

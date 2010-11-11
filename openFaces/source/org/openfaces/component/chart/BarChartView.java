@@ -22,7 +22,7 @@ import java.awt.*;
  * @author Ekaterina Shliakhovetskaya
  */
 public class BarChartView extends GridChartView {
-    private boolean showGradient = true;
+    private Boolean showGradient;
     private Double g1WhitePosition = 0.1;
     private Double g2FullIntensityPosition = 0.2;
     private Double g3LightIntensityPosition = 0.8;
@@ -41,11 +41,11 @@ public class BarChartView extends GridChartView {
         return null;
     }
 
-    public Boolean isShowGradient() {
-        return ValueBindings.get(this, "showGradient", showGradient, Boolean.TRUE, Boolean.class);
+    public boolean isShowGradient() {
+        return ValueBindings.get(this, "showGradient", showGradient, true);
     }
 
-    public void setShowGradient(Boolean showGradient) {
+    public void setShowGradient(boolean showGradient) {
         this.showGradient = showGradient;
     }
 

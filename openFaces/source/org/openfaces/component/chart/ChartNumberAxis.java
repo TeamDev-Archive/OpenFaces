@@ -11,6 +11,8 @@
  */
 package org.openfaces.component.chart;
 
+import org.openfaces.util.ValueBindings;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
@@ -20,10 +22,10 @@ import javax.faces.context.FacesContext;
 public class ChartNumberAxis extends ChartAxis {
     private Double lowerBound;
     private Double upperBound;
-    private boolean logarithmic;
+    private Boolean logarithmic;
 
     public Double getLowerBound() {
-        return lowerBound;
+        return ValueBindings.get(this, "lowerBound", lowerBound, 0.0);
     }
 
     public void setLowerBound(Double lowerBound) {
@@ -31,7 +33,7 @@ public class ChartNumberAxis extends ChartAxis {
     }
 
     public boolean isLogarithmic() {
-        return logarithmic;
+        return ValueBindings.get(this, "logarithmic", logarithmic, false);
     }
 
     public void setLogarithmic(boolean value) {
@@ -39,7 +41,7 @@ public class ChartNumberAxis extends ChartAxis {
     }
 
     public Double getUpperBound() {
-        return upperBound;
+        return ValueBindings.get(this, "upperBound", upperBound, 0.0);
     }
 
     public void setUpperBound(Double upperBound) {
@@ -71,9 +73,7 @@ public class ChartNumberAxis extends ChartAxis {
         super.restoreState(facesContext, state[i++]);
         lowerBound = (Double) state[i++];
         upperBound = (Double) state[i++];
-        logarithmic = ((Boolean) state[i++]).booleanValue();
-
-
+        logarithmic = (Boolean) state[i++];
     }
 
 }

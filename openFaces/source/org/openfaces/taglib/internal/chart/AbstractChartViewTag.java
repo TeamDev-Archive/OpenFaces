@@ -40,8 +40,6 @@ public abstract class AbstractChartViewTag extends AbstractStyledComponentTag {
         setPropertyBinding(view, "tooltip");
         setPropertyAsBinding(view, "url");
 
-        //String colors = getPropertyValue("colors");
-        //view.setColors(colors);
         setObjectProperty(component, "colors");
 
         setFloatProperty(component, "foregroundAlpha");

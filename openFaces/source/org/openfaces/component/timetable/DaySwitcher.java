@@ -19,7 +19,6 @@ import javax.faces.context.FacesContext;
  * @author Natalia Zolochevska
  */
 public class DaySwitcher extends AbstractSwitcher<DayTable> {
-
     public static final String COMPONENT_TYPE = "org.openfaces.DaySwitcher";
     public static final String COMPONENT_FAMILY = "org.openfaces.DaySwitcher";
 

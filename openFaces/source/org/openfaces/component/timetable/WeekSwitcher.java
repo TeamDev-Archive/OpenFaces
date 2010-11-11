@@ -20,7 +20,6 @@ import java.util.Date;
  * @author Roman Gorodischer
  */
 public class WeekSwitcher extends AbstractSwitcher<WeekTable> {
-
     public static final String COMPONENT_TYPE = "org.openfaces.WeekSwitcher";
     public static final String COMPONENT_FAMILY = "org.openfaces.WeekSwitcher";
 

@@ -29,7 +29,6 @@ import java.util.TimeZone;
  * @author Roman Gorodischer
  */
 public abstract class AbstractSwitcher<E extends TimetableView> extends OUIComponentBase {
-
     private String _for;
     private E timetableView;
 

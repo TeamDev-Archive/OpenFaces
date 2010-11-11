@@ -12,7 +12,6 @@
 package org.openfaces.taglib.internal.chart;
 
 import org.openfaces.component.chart.ChartDomain;
-import org.openfaces.component.chart.ChartGridLines;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -34,12 +33,7 @@ public class ChartGridLinesTag extends AbstractStyledComponentTag {
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
-        ChartGridLines gridLines = (ChartGridLines) component;
-
-        setEnumerationProperty(gridLines, "domain", ChartDomain.class);
-
-        String visible = getPropertyValue("visible");
-        if (visible != null)
-            gridLines.setVisible(Boolean.valueOf(visible));
+        setEnumerationProperty(component, "domain", ChartDomain.class);
+        setBooleanProperty(component, "visible");
     }
 }

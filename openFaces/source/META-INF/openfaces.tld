@@ -24,7 +24,6 @@
     <attribute>
       <description>The component identifier.</description>
       <name>id</name>
-
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -18762,10 +18761,10 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- @default true -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
-      <description>An attribuite that specifies the time period precision to be used by chart</description>
+      <description>An attribute that specifies the time period precision to be used by chart</description>
       <name>timePeriodPrecision</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -18803,7 +18802,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>A flag that indicates whether or not the callout labels are visible.</description>
@@ -18813,7 +18812,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- @default false -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>A value-binding expression that associates the PieChartView component with a backing bean property.
@@ -18881,7 +18880,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType java.lang.Float -->
       <!-- @default 1 -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>JavaScript code that should be executed when the user moves the mouse pointer onto the PieChartView.
@@ -19030,7 +19029,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- @default false -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>A value-binding expression that associates the LineChartView component with a backing bean property.
@@ -19085,7 +19084,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>Text for the "value" axis title.</description>
@@ -19095,7 +19094,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>Similar to the "action" attribute of the HTMLCommandButton component. It can either specify a string
@@ -19132,7 +19131,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>A flag that indicates whether or not the data markers on the line chart are visible.</description>
@@ -19142,18 +19141,18 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- @default true -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Specifies percentage of transparency for the chart. Can take float-pointing values from "0" to "1".
+      <description>Specifies percentage of transparency for the chart. Can take float-pointing values from 0.0 to "1.0.
       </description>
       <name>foregroundAlpha</name>
       <deferred-value>
         <type>java.lang.Float</type>
       </deferred-value>
       <!-- @bindingType java.lang.Float -->
-      <!-- @default 1 -->
-      <!-- @el false -->
+      <!-- @default 1.0 -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>JavaScript code that should be executed when the user moves the mouse pointer onto the LineChartView.
@@ -19372,7 +19371,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- @default false -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>A value-binding expression that associates the BarChartView component with
@@ -19428,7 +19427,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>Text for the "value" axis title.</description>
@@ -19438,7 +19437,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>Similar to the "action" attribute of the HTMLCommandButton component.
@@ -19477,7 +19476,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>Specifies percentage of transparency for the chart. Can take float-pointing values from "0" to "1".
@@ -19488,7 +19487,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType java.lang.Float -->
       <!-- @default 1 -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>JavaScript code that should be executed when the user moves the mouse pointer onto the BarChartView.
@@ -19733,7 +19732,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- @default true -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>A flag that indicates whether or not to show ticks on the axis.</description>
@@ -19743,7 +19742,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- @default true -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>A flag that indicates whether or not to show tick-mark labels on the axis.</description>
@@ -19753,7 +19752,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- @default true -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>Specifies for which axes to apply the values of the attributes specified in the chartAxis tag.
@@ -19796,7 +19795,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- @default true -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>A flag that indicates whether or not to show ticks on the axis.</description>
@@ -19806,7 +19805,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- @default true -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>A flag that indicates whether or not to show tick-mark labels on the axis.</description>
@@ -19816,7 +19815,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- @default true -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>Specifies for which axes to apply the values of the attributes specified in the numberAxis tag.
@@ -19840,7 +19839,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType java.lang.Double -->
       <!-- @default null -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>The maximum scale value to be displayed on the axis.</description>
@@ -19850,7 +19849,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType java.lang.Double -->
       <!-- @default null -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
   </tag>
 
@@ -19879,7 +19878,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- @default true -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>A flag that indicates whether or not to show ticks on the axis.</description>
@@ -19889,7 +19888,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- @default true -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>A flag that indicates whether or not o show tick-mark labels on the axis.</description>
@@ -19899,7 +19898,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- @default true -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>Specifies for which axes to apply the values of the attributes specified in the dateAxis tag.
@@ -19923,7 +19922,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType java.lang.Double -->
       <!-- @default null -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>The maximum scale value to be displayed on the axis.</description>
@@ -19933,7 +19932,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType java.lang.Double -->
       <!-- @default null -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>The format of dates displayed on the tick-mark labels.</description>
@@ -19973,7 +19972,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- @default true -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>A flag that indicates whether or not to show ticks on the axis.</description>
@@ -19983,7 +19982,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- @default true -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>A flag that indicates whether or not to show tick-mark labels on the axis.</description>
@@ -19993,7 +19992,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- @default true -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>Specifies for which axes to apply the values of the attributes specified in the categoryAxis tag.
@@ -20277,7 +20276,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- @default true -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>A style for the gridlines.</description>
@@ -27198,7 +27197,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>This attribute defines which of the predefined date formats for a given locale should be used for
@@ -27226,7 +27225,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
 
     <attribute>
@@ -27557,7 +27556,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
 
     <attribute>
@@ -39170,7 +39169,6 @@ entering a value and returns a list of suggestions from the server -->
     <attribute>
       <description>The component identifier.</description>
       <name>id</name>
-
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -39367,7 +39365,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @value "weight" -->
       <!-- @value "weightRevers" -->
       <!-- @default "alphabetically" -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
 
     <attribute>
@@ -39382,9 +39380,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @value "rectangle" -->
       <!-- @value "vertical" -->
       <!-- @value "oval" -->
-
       <!-- @default "rectangle" -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
       
     <attribute>
