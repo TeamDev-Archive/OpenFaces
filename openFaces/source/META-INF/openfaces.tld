@@ -342,6 +342,20 @@
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>Allows receiving row data objects for the currently displayed rows. This attribute should be
+        specified as a value binding expression to a write-only property of type java.util.List, java.util.Set, or
+        Object[].</description>
+      <name>displayedRowDatas</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType list of data objects -->
+      <!-- @bindingType set of data objects -->
+      <!-- @bindingType array of data objects -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
       <description>Specifies the delay in milliseconds when the filtering is performed automatically after the user has
         entered some value in an associated filter, or turns off automatic filtering in case -1 is specified as a value
         for this attribute.
@@ -7704,6 +7718,20 @@ means that only root nodes and their immediate children are preloaded -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>Allows receiving row data objects for the currently displayed rows. This attribute should be
+        specified as a value binding expression to a write-only property of type java.util.List, java.util.Set, or
+        Object[].</description>
+      <name>displayedRowDatas</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType list of data objects -->
+      <!-- @bindingType set of data objects -->
+      <!-- @bindingType array of data objects -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
       <description>The text that is displayed instead of "&lt;All&gt;" in the "comboBox" or
         "dropDownField" when filtering is used.
       </description>
@@ -10207,6 +10235,50 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default 350 -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>Applicable only to the "custom" suggestion mode. Specifies how much items from the full unfiltered
+        list should be preloaded along with the page. The value of -1 (default) means that all items are preloaded, and
+        so the whole default suggestion list will be shown without any additional server requests when the user expands
+        the suggestion list. Other values (0 or greater) restrict the number of preloaded items, and the remaining
+        unloaded items will be loaded on demand as the user scrolls through the suggestion list. See also the
+        pageSize attribute, which specifies portion size for loading the additional items in this case, and
+        totalItemCount, which specifies the number of all drop-down items.
+      </description>
+      <name>preloadedItemCount</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default -1 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Applicable only to the "custom" suggestion mode. This attribute should be specified when
+        preloadedItemCount is specified to a value other than -1. This attribute should be specified as a value binding
+        that returns the total row count if the entire drop-down list is fully loaded.
+      </description>
+      <name>totalItemCount</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>Applicable only to the "custom" suggestion mode. Specifies the number of items that will be loaded
+        along with each additional portion when scrolling through the suggestion list. See the preloadedItemCount
+        attribute. The valid values are -1, or any positive number. The value of -1 means that all remaining items
+        should be loaded.
+      </description>
+      <name>pageSize</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default -1 -->
+      <!-- @el true -->
+    </attribute>
 
     <attribute>
       <description>Defines whether the button that opens the drop-down list is positioned to the right or to
@@ -11388,6 +11460,37 @@ entering a value and returns a list of suggestions from the server -->
       </deferred-value>
       <!-- @bindingType int -->
       <!-- @default 350 -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>Applicable only to the "custom" suggestion mode. Specifies how much items from the full unfiltered
+        list should be preloaded along with the page. The value of -1 (default) means that all items are preloaded, and
+        so the whole default suggestion list will be shown without any additional server requests when the user expands
+        the suggestion list. Other values (0 or greater) restrict the number of preloaded items, and the remaining
+        unloaded items will be loaded on demand as the user scrolls through the suggestion list. See also the
+        pageSize attribute, which specifies portion size for loading the additional items in this case.
+      </description>
+      <name>preloadedItemCount</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default -1 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Applicable only to the "custom" suggestion mode. Specifies the number of items that will be loaded
+        along with each additional portion when scrolling through the suggestion list. See the preloadedItemCount
+        attribute. The valid values are -1, or any positive number. The value of -1 means that all remaining items
+        should be loaded.
+      </description>
+      <name>pageSize</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default -1 -->
       <!-- @el true -->
     </attribute>
 
@@ -36009,6 +36112,37 @@ entering a value and returns a list of suggestions from the server -->
       </deferred-value>
       <!-- @bindingType int -->
       <!-- @default 0 -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>Applicable only to the "custom" suggestion mode. Specifies how much items from the full unfiltered
+        list should be preloaded along with the page. The value of -1 (default) means that all items are preloaded, and
+        so the whole default suggestion list will be shown without any additional server requests when the user expands
+        the suggestion list. Other values (0 or greater) restrict the number of preloaded items, and the remaining
+        unloaded items will be loaded on demand as the user scrolls through the suggestion list. See also the
+        pageSize attribute, which specifies portion size for loading the additional items in this case.
+      </description>
+      <name>preloadedItemCount</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default -1 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Applicable only to the "custom" suggestion mode. Specifies the number of items that will be loaded
+        along with each additional portion when scrolling through the suggestion list. See the preloadedItemCount
+        attribute. The valid values are -1, or any positive number. The value of -1 means that all remaining items
+        should be loaded.
+      </description>
+      <name>pageSize</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default -1 -->
       <!-- @el true -->
     </attribute>
 

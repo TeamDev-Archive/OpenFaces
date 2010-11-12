@@ -16,6 +16,7 @@ import org.openfaces.component.input.DropDownComponent;
 import org.openfaces.component.input.DropDownFieldBase;
 import org.openfaces.component.input.DropDownPopup;
 import org.openfaces.component.input.SuggestionMode;
+import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.AjaxPortionRenderer;
 import org.openfaces.renderkit.DefaultTableStyles;
@@ -31,6 +32,7 @@ import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.StyleGroup;
 import org.openfaces.util.Styles;
 
+import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectItem;
 import javax.faces.component.UISelectItems;
@@ -66,6 +68,10 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
     private static final String CURRENT_FIELD_VALUE_ATTR = "_of_currentFieldValue";
 
     private static final String LOAD_FILTERED_ROWS_PORTION = "filterCriterion:";
+    private static final String VAR_PAGE_START = "pageStart";
+
+    private static final String VAR_PAGE_SIZE = "pageSize";
+    private static final String ATTR_TOTAL_ITEM_COUNT = "_totalItemCount";
 
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) {
@@ -131,21 +137,29 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
         DropDownFieldBase dropDownField = (DropDownFieldBase) uiComponent;
 
         SuggestionMode suggestionMode = dropDownField.getSuggestionMode();
-        boolean needRootItemsPreloading;
+        int preloadedItemCount = dropDownField.getPreloadedItemCount();
+        int totalItemCount = -1;
         if (
                 SuggestionMode.ALL.equals(suggestionMode) ||
                         SuggestionMode.STRING_START.equals(suggestionMode) ||
                         SuggestionMode.SUBSTRING.equals(suggestionMode) ||
                         SuggestionMode.STRING_END.equals(suggestionMode)) {
-            needRootItemsPreloading = true;
+            preloadedItemCount = -1;
         } else if (SuggestionMode.NONE.equals(suggestionMode)) {
-            needRootItemsPreloading = isManualListOpeningAllowed(dropDownField) || dropDownField.getAutoComplete();
+            preloadedItemCount = (isManualListOpeningAllowed(dropDownField) || dropDownField.getAutoComplete()) ? -1 : 0;
         } else if (SuggestionMode.CUSTOM.equals(suggestionMode)) {
-            needRootItemsPreloading = isManualListOpeningAllowed(dropDownField);
+            if (!isManualListOpeningAllowed(dropDownField))
+                preloadedItemCount = 0;
+            else {
+                ValueExpression ve = dropDownField.getValueExpression("totalItemCount");
+                totalItemCount = ve != null ? (Integer) ve.getValue(context.getELContext()) : -1;
+            }
         } else {
             throw new IllegalStateException("Unknown SuggestionMode enumeration value: " + suggestionMode);
         }
-        Collection<UISelectItem> items = needRootItemsPreloading ? collectSelectItems(dropDownField) : null;
+        if (preloadedItemCount == -1 && totalItemCount != -1)
+            preloadedItemCount = totalItemCount;
+        Collection<UISelectItem> items = preloadedItemCount != 0 ? collectSelectItems(dropDownField, 0, preloadedItemCount) : null;
         List<String[]> itemValues = prepareItemValues(context, dropDownField, items);
         if (itemValues != null) {
             dropDownField.getAttributes().put(ITEM_VALUES_ATTR_NAME, itemValues);
@@ -157,6 +171,8 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
         popup.setDropDownList(items);
         popup.encodeAll(context);
         Rendering.encodeClientActions(context, uiComponent);
+
+        dropDownField.getAttributes().put(ATTR_TOTAL_ITEM_COUNT, totalItemCount);
     }
 
     private List<String[]> prepareItemValues(FacesContext context, DropDownFieldBase dropDownField, Collection<UISelectItem> items) {
@@ -274,6 +290,14 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
     }
 
     private List<UISelectItem> collectSelectItems(DropDownFieldBase dropDownField) {
+        return collectSelectItems(dropDownField, 0, -1);
+    }
+
+    private List<UISelectItem> collectSelectItems(DropDownFieldBase dropDownField, int pageStart, int pageSize) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+        Object prevPageStart = requestMap.put(VAR_PAGE_START, pageStart);
+        Object prevPageSize = requestMap.put(VAR_PAGE_SIZE, pageSize);
         Collection<UIComponent> children = dropDownField.getChildren();
         List<UISelectItem> items = new ArrayList<UISelectItem>();
         for (UIComponent child : children) {
@@ -282,6 +306,8 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
                 items.addAll(tmpCollection);
             }
         }
+        requestMap.put(VAR_PAGE_START, prevPageStart);
+        requestMap.put(VAR_PAGE_SIZE, prevPageSize);
         return items;
     }
 
@@ -322,6 +348,8 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
                 dropDownField.getSuggestionMinChars(),
                 isManualListOpeningAllowed(dropDownField),
                 dropDownField.getAutoComplete(),
+                dropDownField.getAttributes().get(ATTR_TOTAL_ITEM_COUNT),
+                dropDownField.getPageSize(),
 
                 tableStructure.getInitParam(context, POPUP_TABLE_DEFAULT_STYLES)
         );
@@ -436,7 +464,17 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
             Collection<UISelectItem> items;
             Object oldVarValue = requestMap.put(var, criterion);
             try {
-                items = collectSelectItems(dropDownField);
+                if (jsonParam == null) {
+                    items = collectSelectItems(dropDownField);
+                } else {
+                    try {
+                        int pageStart = jsonParam.getInt("pageStart");
+                        int pageSize = jsonParam.getInt("pageSize");
+                        items = collectSelectItems(dropDownField, pageStart, pageSize);
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
                 itemValues = prepareItemValues(context, dropDownField, items);
             } finally {
                 requestMap.put(var, oldVarValue);

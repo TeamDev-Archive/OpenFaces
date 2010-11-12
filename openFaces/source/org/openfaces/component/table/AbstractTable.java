@@ -34,9 +34,9 @@ import javax.faces.render.Renderer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 
 /**
  * @author Dmitry Pikhulya
@@ -945,6 +945,10 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
             filter.processUpdates(context);
         }
 
+        ValueExpression displayedRowDatasExpression = getValueExpression("displayedRowDatas");
+        if (displayedRowDatasExpression != null)
+            ValueBindings.setFromList(this, "displayedRowDatas", getDisplayedRowDatas());
+
         ColumnResizing columnResizing = getColumnResizing();
         if (columnResizing != null)
             columnResizing.processUpdates(context);
@@ -1667,11 +1671,27 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     /**
      * @return the total number of rows on all table's pages (if pagination if used) according to the current filtering
-     * parameters
+     *         parameters
      */
     public int getTotalRowCount() {
         if (totalRowCount == null)
             totalRowCount = getModel().getTotalRowCount();
         return totalRowCount;
+    }
+
+    public List<Object> getDisplayedRowDatas() {
+        List<Object> rowDatas = new ArrayList<Object>();
+        int oldRowIndex = getRowIndex();
+        int rowCount = getRowCount();
+        int rows = (rowCount != -1) ? rowCount : Integer.MAX_VALUE; // getRowCount can return -1, which means that iteration should be performed until isRowAvailable returns false
+        for (int rowIndex = getFirst(); rowIndex < rows; rowIndex++) {
+            setRowIndex(rowIndex);
+            if (!isRowAvailable())
+                break;
+            Object rowData = getRowData();
+            rowDatas.add(rowData);
+        }
+        setRowIndex(oldRowIndex);
+        return rowDatas;
     }
 }
