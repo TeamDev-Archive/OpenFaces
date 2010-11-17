@@ -3,10 +3,15 @@ th{
 }
 td {
   text-align: left;
-  margin:3px;
+   margin-top: 20px;
 }
-td input{
-  text-align: left;
+td label{
+  text-align: left;  
+  margin-left: 20px;
+}
+input[type="checkbox"]{
+  margin-left: 20px;
+
 }
 
 .largeFont {
@@ -52,7 +57,7 @@ td input{
 
 .rectangle .tagCloud_container {  
   padding-top: 1em;
-  background: url("/tagcloud/images/border.png") 0 bottom repeat-x;
+  background: url("../tagcloud/images/border.png") 0 bottom repeat-x;
 
 }
 
@@ -80,7 +85,7 @@ td input{
 }
 
 .rectangle dl:hover {  
-  background: url("/tagcloud/images/rectangle_dl_hover.png") repeat-x;
+  background: url("../tagcloud/images/rectangle_dl_hover.png") repeat-x;
 }
 
 /*Vertical Theme*/
@@ -88,7 +93,7 @@ td input{
 .vertical .content {
   width: 395px;
   overflow-y: auto;
-  background: url("/tagcloud/images/border.png") 0 top repeat-x;
+  background: url("../tagcloud/images/border.png") 0 top repeat-x;
 }
 
 .vertical .tagCloud_container {
@@ -100,7 +105,7 @@ td input{
 .vertical .tagCloud {
   width: 250px;
   margin-left: 20px;
-  background: url("/tagcloud/images/vertical_cloud_background.png") repeat-y;
+  background: url("../tagcloud/images/vertical_cloud_background.png") repeat-y;
 }
 
 .vertical .currentEntities {
@@ -110,7 +115,7 @@ td input{
 
 .vertical .content a:hover,
 .vertical .tagCloud_container .tagCloud_item_rollover {
-  background: url("/tagcloud/images/vertical_tag_background.png") repeat-x 0 top;
+  background: url("../tagcloud/images/vertical_tag_background.png") repeat-x 0 top;
 }
 
 .vertical .content a:hover,
@@ -124,7 +129,7 @@ td input{
 
 .vertical dl:hover {
   color: #B37838;
-  background: url("/tagcloud/images/vertical_dl_hover.png") repeat-x;
+  background: url("../tagcloud/images/vertical_dl_hover.png") repeat-x;
 }
 
 /*Oval theme*/
@@ -140,7 +145,7 @@ td input{
 
 .oval .content a,
 .oval .tagCloud_container .tagCloud_item {
-  background: url("/tagcloud/images/oval_tag_background.png") repeat-x 0 bottom;
+  background: url("../tagcloud/images/oval_tag_background.png") repeat-x 0 bottom;
 }
 
 .oval .content a:hover,
@@ -158,7 +163,7 @@ td input{
 }
 
 .oval dl:hover {
-  background: url("/tagcloud/images/oval_dl_hover.png") repeat-x;
+  background: url("../tagcloud/images/oval_dl_hover.png") repeat-x;
 }
 
 /*Sphere theme*/
@@ -167,7 +172,7 @@ td input{
   padding:0;
   height: 350px;
   overflow-y:auto;
-  background: url("/tagcloud/images/sphere_cloudContainer_background.png") repeat-x;
+  background: url("../tagcloud/images/sphere_cloudContainer_background.png") repeat-x;
 }
 
 .sphere .tagCloud {
@@ -186,7 +191,7 @@ td input{
 }
 
 .sphere dl:hover {
-  background: url("/tagcloud/images/sphere_dl_hover.png") repeat-x;
+  background: url("../tagcloud/images/sphere_dl_hover.png") repeat-x;
   color: #ffffff;
 }
 
