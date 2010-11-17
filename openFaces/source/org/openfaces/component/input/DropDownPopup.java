@@ -126,7 +126,7 @@ public class DropDownPopup extends AbstractPopup {
 
         writer.startElement("tbody", this);
         if (dropDownList != null)
-            renderRows(context, dropDownField, childData, dropDownList);
+            renderRows(context, dropDownField, childData, dropDownList, 0);
         writer.endElement("tbody");
 
         TableFooter tableFooter = tableStructure.getFooter();
@@ -139,7 +139,8 @@ public class DropDownPopup extends AbstractPopup {
             FacesContext context,
             DropDownFieldBase dropDownField,
             ChildData childData,
-            Collection<UISelectItem> items) throws IOException {
+            Collection<UISelectItem> items,
+            int startIndex) throws IOException {
         List<BaseColumn> columns = childData.getColumns();
         List<UIComponent> childComponents = childData.getChildComponents();
         int colCount = columns.size();
@@ -149,7 +150,7 @@ public class DropDownPopup extends AbstractPopup {
         String var = dropDownField.getVar();
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
         String itemIdPrefix = getClientId(context) + ITEM_PREFIX;
-        int index = 0;
+        int index = startIndex;
         for (UISelectItem item : items) {
             Object originalValue = item.getAttributes().get(DropDownFieldRenderer.ORIGINAL_VALUE_ATTR);
             String displayedItemText = (String) item.getAttributes().get(DropDownFieldRenderer.DISPLAYED_VALUE_ATTR);

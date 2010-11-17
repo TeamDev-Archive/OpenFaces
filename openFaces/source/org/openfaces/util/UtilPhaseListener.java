@@ -211,7 +211,6 @@ public class UtilPhaseListener extends PhaseListenerBase {
         String listener = request.getParameter(PARAM_ACTION_LISTENER);
         String action = request.getParameter(PARAM_ACTION);
         String actionComponentId = request.getParameter(PARAM_ACTION_COMPONENT);
-        Log.log(context, "try invoke listener");
         if (listener != null || action != null) {
             ELContext elContext = context.getELContext();
             UIComponent component = null;

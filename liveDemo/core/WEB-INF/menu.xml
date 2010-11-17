@@ -749,7 +749,7 @@
     </keyFeatures>
     <demos>
       <demoItem>
-        <demoName>Informational Tag Cloud</demoName>
+        <demoName>Tag Cloud</demoName>
         <demoUrl>/tagcloud/TagCloud.jsf</demoUrl>
       </demoItem>        
     </demos>

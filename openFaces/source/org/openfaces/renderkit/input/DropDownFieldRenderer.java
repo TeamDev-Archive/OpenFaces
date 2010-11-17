@@ -33,6 +33,7 @@ import org.openfaces.util.StyleGroup;
 import org.openfaces.util.Styles;
 
 import javax.el.ValueExpression;
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectItem;
 import javax.faces.component.UISelectItems;
@@ -152,6 +153,9 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
                 preloadedItemCount = 0;
             else {
                 ValueExpression ve = dropDownField.getValueExpression("totalItemCount");
+                if (ve == null && preloadedItemCount != -1)
+                    throw new FacesException("totalItemCount attribute should be specified for the DropDownField " +
+                            "component with preloadedItemCount attribute. Component id: " + dropDownField.getClientId(context));
                 totalItemCount = ve != null ? (Integer) ve.getValue(context.getELContext()) : -1;
             }
         } else {
@@ -461,6 +465,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
             String var = "searchString";
             Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
 
+            int pageStart = 0;
             Collection<UISelectItem> items;
             Object oldVarValue = requestMap.put(var, criterion);
             try {
@@ -468,7 +473,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
                     items = collectSelectItems(dropDownField);
                 } else {
                     try {
-                        int pageStart = jsonParam.getInt("pageStart");
+                        pageStart = jsonParam.getInt("pageStart");
                         int pageSize = jsonParam.getInt("pageSize");
                         items = collectSelectItems(dropDownField, pageStart, pageSize);
                     } catch (JSONException e) {
@@ -484,7 +489,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
             popup.setDropDownList(items);
 
             DropDownPopup.ChildData childData = popup.getChildData();
-            popup.renderRows(context, dropDownField, childData, items);
+            popup.renderRows(context, dropDownField, childData, items, pageStart);
             popup.resetChildData();
         } finally {
             context.setResponseWriter(responseWriter);
@@ -493,7 +498,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
         ScriptBuilder sb = new ScriptBuilder();
         sb.functionCall("O$.DropDownField._acceptLoadedItems",
                 dropDownField,
-                new NewInstanceScript("Array", null, null, getItemValuesArray(itemValues))
+                new NewInstanceScript("Array", null, null, getItemValuesArray(itemValues), jsonParam != null)
         );
 
         Rendering.renderInitScript(context, sb);

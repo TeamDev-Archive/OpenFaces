@@ -1,15 +1,18 @@
-th{
+th {
   text-align: left;
 }
+
 td {
   text-align: left;
-   margin-top: 20px;
+  margin-top: 20px;
 }
-td label{
-  text-align: left;  
+
+td label {
+  text-align: left;
   margin-left: 20px;
 }
-input[type="checkbox"]{
+
+input[type="checkbox"] {
   margin-left: 20px;
 
 }
@@ -37,7 +40,7 @@ input[type="checkbox"]{
 
 .content,
 .tagCloud_container {
-  width: 700px;   
+  width: 700px;
   font-size: 85%;
   padding: 10px;
   padding-right: 0;
@@ -54,18 +57,17 @@ input[type="checkbox"]{
   border-spacing: 0;
 }
 
-
-.rectangle .tagCloud_container {  
+.rectangle .tagCloud_container {
   padding-top: 1em;
   background: url("../tagcloud/images/border.png") 0 bottom repeat-x;
 
 }
 
 .rectangle .content {
-   height: 250px;
+  height: 250px;
 }
 
-.rectangle .tagCloud {  
+.rectangle .tagCloud {
   width: 680px;
 }
 
@@ -84,7 +86,7 @@ input[type="checkbox"]{
   color: #3399ff;
 }
 
-.rectangle dl:hover {  
+.rectangle dl:hover {
   background: url("../tagcloud/images/rectangle_dl_hover.png") repeat-x;
 }
 
@@ -135,7 +137,7 @@ input[type="checkbox"]{
 /*Oval theme*/
 
 .oval .tagCloud_container {
-  padding: 5px; 
+  padding: 5px;
 }
 
 .oval .tagCloud {
@@ -150,7 +152,7 @@ input[type="checkbox"]{
 
 .oval .content a:hover,
 .oval .tagCloud_container .tagCloud_item_rollover {
-  background: url("/tagcloud/images/oval_tag_background_rollover.png") repeat-x 0 bottom;
+  background: url("../tagcloud/images/oval_tag_background_rollover.png") repeat-x 0 bottom;
 }
 
 .oval .content a:hover,
@@ -169,14 +171,14 @@ input[type="checkbox"]{
 /*Sphere theme*/
 
 .sphere .tagCloud_container {
-  padding:0;
+  padding: 0;
   height: 350px;
-  overflow-y:auto;
+  overflow-y: auto;
   background: url("../tagcloud/images/sphere_cloudContainer_background.png") repeat-x;
 }
 
 .sphere .tagCloud {
-  width: 350px;  
+  width: 350px;
   vertical-align: middle;
   margin-left: 185px;
 }
@@ -186,15 +188,15 @@ input[type="checkbox"]{
   color: #ffffff;
   text-decoration: underline;
 }
+
 .sphere .tagCloud_container .tagCloud_item_rollover .item_inner_weight {
-  color: #fbeebc;  
+  color: #fbeebc;
 }
 
 .sphere dl:hover {
   background: url("../tagcloud/images/sphere_dl_hover.png") repeat-x;
   color: #ffffff;
 }
-
 
 /*Common theme settings for content*/
 .currentEntities {

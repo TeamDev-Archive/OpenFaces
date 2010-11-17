@@ -120,12 +120,15 @@ O$.DropDownField = {
             rowsToStylesMap: newRowsToStylesMap,
             cellsToStylesMap: newRowCellsToStylesMap,
             values: itemValues};
+          return 0;
         } else {
           var suggestionsData = dropDown._cachedSuggestionLists[cacheMapKey];
+          var prevSuggestionCount = suggestionsData.rows.length;
           suggestionsData.rows = suggestionsData.rows.concat(newRows);
           O$.extend(suggestionsData.rowsToStylesMap, newRowsToStylesMap);
           O$.extend(suggestionsData.cellsToStylesMap, newRowCellsToStylesMap);
           suggestionsData.values = suggestionsData.values.concat(itemValues);
+          return prevSuggestionCount;
         }
       },
 
@@ -135,13 +138,26 @@ O$.DropDownField = {
       },
 
       _checkAdditionalPageNeeded: function() {
-        if (suggestionMode != "custom") return;
+        if (suggestionMode != "custom" || dropDown._filterCriterion) return;
         var itemsLoaded = dropDown._items.length;
         if (itemsLoaded >= totalItemCount) return;
+
+        if (innerTable.offsetHeight > popup.clientHeight) {
+          var bottomEdge = popup.scrollTop + popup.clientHeight;
+          var unrevealedBottomSpace = innerTable.offsetHeight - bottomEdge;
+          if (unrevealedBottomSpace > 50) return;
+        }
+
+        if (dropDown._additionalPageRequestedAfterItemCount == itemsLoaded) return;
+        dropDown._additionalPageRequestedAfterItemCount = itemsLoaded;
+
         var text = dropDown._filterCriterion;
+        var rowCount = totalItemCount - itemsLoaded;
+        if (pageSize != -1 && rowCount > pageSize)
+          rowCount = pageSize;
         O$.requestComponentPortions(dropDownId,
                     ["filterCriterion:" + ((text != null) ? "[" + text + "]" : "null")],
-                    {pageStart: itemsLoaded, pageSize: pageSize},
+                    "{pageStart: " + itemsLoaded + ", pageSize: " + rowCount + "}",
                     O$.DropDownField._filteredItemsLoaded);
       },
 
@@ -155,30 +171,43 @@ O$.DropDownField = {
                     ["filterCriterion:" + ((text != null) ? "[" + text + "]" : "null")],
                     null,
                     O$.DropDownField._filteredItemsLoaded);
+          else {
+            dropDown._checkAdditionalPageNeeded();
+          }
         } else {
           dropDown._filterItems();
           dropDown._completeShowingSuggestions(text, autoCompletionAllowedForThisKey);
         }
       },
 
-      _showCachedSuggestions: function (text, autoCompletionAllowedForThisKey) {
+      _showCachedSuggestions: function (text, autoCompletionAllowedForThisKey, itemsAppended) {
         var cacheMapKey = text ? text.toLowerCase() : "";
         var cachedSuggestions = dropDown._cachedSuggestionLists ? dropDown._cachedSuggestionLists[cacheMapKey] : null;
         if (!cachedSuggestions)
           return false;
 
         var innerTable = O$(dropDown._popup.id + "::innerTable");
-        dropDown._setHighlightedItemIndex(-1);
-        innerTable.body._removeAllRows();
-        innerTable._insertRowsAfter(-1, cachedSuggestions.rows, cachedSuggestions.rowsToStylesMap, cachedSuggestions.cellsToStylesMap);
+        if (itemsAppended == undefined) {
+          dropDown._setHighlightedItemIndex(-1);
+          innerTable.body._removeAllRows();
+          innerTable._insertRowsAfter(-1, cachedSuggestions.rows, cachedSuggestions.rowsToStylesMap, cachedSuggestions.cellsToStylesMap);
+        } else {
+          var from = cachedSuggestions.rows.length - itemsAppended;
+          innerTable._insertRowsAfter(
+                  innerTable.body._getRows().length - 1,
+                  cachedSuggestions.rows.concat([]).splice(from, itemsAppended),
+                  cachedSuggestions.rowsToStylesMap, cachedSuggestions.cellsToStylesMap);
+        }
 
         // Safari 3 painting fix (JSFC-3270)
         O$.repaintWindowForSafari(true);
-        dropDown._setHighlightedItemIndex(-1);
+        if (itemsAppended == undefined)
+          dropDown._setHighlightedItemIndex(-1);
         dropDown._items = O$.DropDownField._prepareListElements(dropDown);
-        dropDown._initItems(cachedSuggestions.values);
+        dropDown._initItems(cachedSuggestions.values, itemsAppended ? cachedSuggestions.values.length - itemsAppended : 0);
 
-        dropDown._completeShowingSuggestions(text, autoCompletionAllowedForThisKey);
+        if (itemsAppended == undefined)
+          dropDown._completeShowingSuggestions(text, autoCompletionAllowedForThisKey);
         return true;
       },
 
@@ -293,8 +322,8 @@ O$.DropDownField = {
       _getHighlightedItemIndex: function() {
         return dropDown._highlightedItemIndex;
       },
-      _initItems: function(itemValues) {
-        for (var i = 0, count = dropDown._items.length; i < count; i++) {
+      _initItems: function(itemValues, fromIndex) {
+        for (var i = fromIndex, count = dropDown._items.length; i < count; i++) {
           var item = dropDown._items[i];
           item.onmouseover = function() {
             dropDown._setHighlightedItemIndex(this._index);
@@ -501,8 +530,10 @@ O$.DropDownField = {
       _showHidePopup: function () {
         if (dropDown.isOpened())
           dropDown.closeUp();
-        else
+        else {
           dropDown.dropDown();
+          dropDown._checkAdditionalPageNeeded();
+        }
 
         // reacquire focus when pressing the dropper button
         if (!dropDown._ddf_focused) {
@@ -544,6 +575,7 @@ O$.DropDownField = {
 
     var field = dropDown._field;
     var popup = dropDown._popup;
+    popup.onscroll = dropDown._checkAdditionalPageNeeded;
 
     dropDown.value = field.value;
 
@@ -566,7 +598,7 @@ O$.DropDownField = {
     dropDown._items = O$.DropDownField._prepareListElements(dropDown);
 
     if (itemValues) {
-      dropDown._initItems(itemValues);
+      dropDown._initItems(itemValues, 0);
       dropDown._addCachedSuggestions(null, dropDown._items,
               popupTableStructureAndStyleParams.rowStylesMap, 
               popupTableStructureAndStyleParams.cellStylesMap,
@@ -850,7 +882,7 @@ O$.DropDownField = {
     var keyCode = evt.keyCode;
     var dropDown = this._dropDown;
     var popup = dropDown._popup;
-    var needCancelBuble = false;
+    var needCancelBubble = false;
     var highlightedItemIndex = dropDown._getHighlightedItemIndex();
     var newHighlightedItemIndex = null;
     if (keyCode == 40) { // Down
@@ -860,13 +892,14 @@ O$.DropDownField = {
         popup._prepareForRearrangementBeforeShowing();
         O$.DropDown._initPopup(dropDown);
         O$.correctElementZIndex(popup, dropDown);
+        dropDown._checkAdditionalPageNeeded();
         popup.show();
       } else {
         // Change selected index
         newHighlightedItemIndex = O$.DropDownField._getNeighboringVisibleItem(dropDown, highlightedItemIndex, false);
       }
 
-      needCancelBuble = true;
+      needCancelBubble = true;
       if (dropDown._popupCloseTimer) {
         clearTimeout(dropDown._popupCloseTimer);
       }
@@ -876,19 +909,19 @@ O$.DropDownField = {
     var itemBounds;
     if (dropDown.isOpened()) {
       if (keyCode == 38) { // Up
-        needCancelBuble = true;
+        needCancelBubble = true;
         dropDown._keyNavigationStarted = true;
         newHighlightedItemIndex = O$.DropDownField._getNeighboringVisibleItem(dropDown, highlightedItemIndex, true);
       } else if (keyCode == 36) { // Home
-        needCancelBuble = true;
+        needCancelBubble = true;
         dropDown._keyNavigationStarted = true;
         newHighlightedItemIndex = dropDown._getFirstVisibleItemIndex();
       } else if (keyCode == 35) { // End
-        needCancelBuble = true;
+        needCancelBubble = true;
         dropDown._keyNavigationStarted = true;
         newHighlightedItemIndex = dropDown._getLastVisibleItemIndex();
       } else if (keyCode == 33) { // Page Up
-        needCancelBuble = true;
+        needCancelBubble = true;
         dropDown._keyNavigationStarted = true;
         itemBounds = dropDown._getItemVerticalBounds(highlightedItemIndex);
         var newScrollTop = itemBounds.top - popup.offsetHeight;
@@ -899,7 +932,7 @@ O$.DropDownField = {
         if (newHighlightedItemIndex == -1)
           newHighlightedItemIndex = dropDown._getFirstVisibleItemIndex();
       } else if (keyCode == 34) { // Page Down
-        needCancelBuble = true;
+        needCancelBubble = true;
         dropDown._keyNavigationStarted = true;
         itemBounds = dropDown._getItemVerticalBounds(highlightedItemIndex);
         var newScrollBottom = itemBounds.bottom + popup.offsetHeight;
@@ -923,7 +956,7 @@ O$.DropDownField = {
       dropDown._scrollToHighlightedItem();
     }
 
-    if (needCancelBuble) {
+    if (needCancelBubble) {
       evt.cancelBubble = true;
       return true;
     }
@@ -1024,11 +1057,12 @@ O$.DropDownField = {
 
       dropDownField.__acceptLoadedItems = function(newRowsToStylesMap, newRowCellsToStylesMap, itemValues, appendItems) {
         dropDownField.__acceptLoadedItems = undefined;
-        dropDownField._addCachedSuggestions(filterCriterion, newRows, newRowsToStylesMap, newRowCellsToStylesMap, itemValues, appendItems);
-        if (cacheOnly)
+        var prevSuggestionCount = dropDownField._addCachedSuggestions(filterCriterion, newRows, newRowsToStylesMap, newRowCellsToStylesMap, itemValues, appendItems);
+        if (!appendItems && cacheOnly)
           return;
-
-        dropDownField._showCachedSuggestions(filterCriterion);
+        if (prevSuggestionCount == 0)
+          appendItems = false;
+        dropDownField._showCachedSuggestions(filterCriterion, undefined, appendItems ? newRows.length : undefined);
       };
       O$.executeScripts(portionScripts);
     } finally {

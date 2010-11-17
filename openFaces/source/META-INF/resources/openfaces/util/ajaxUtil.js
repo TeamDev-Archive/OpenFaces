@@ -539,10 +539,10 @@ O$.requestFinished = function(ajaxObject) {
     O$.restoreScrollPositionIfNeeded();
   }
 
-  setTimeout(function() {
+//  setTimeout(function() {
     if (!newRequestStarted)
       O$._ajax_request_processing = false;
-  }, 1);
+//  }, 1);
 
 
   if (ajaxObject._clientSideExceptions && ajaxObject._clientSideExceptions.length >= 0) {
