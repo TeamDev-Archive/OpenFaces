@@ -46,6 +46,9 @@ public class TagCloud extends OUICommand {
     private String itemRolloverClass;
     private String itemRolloverStyle;
 
+    private String itemTextStyle;
+    private String itemTextClass;
+    
     private TagsOrder order;
     private Layout layout;
 
@@ -59,6 +62,7 @@ public class TagCloud extends OUICommand {
     private String itemWeightFormat;
 
     private String itemWeightStyle;
+    private String itemWeightClass;
 
     private Double rotationSpeed3D;
     private Double shadowScale3D;
@@ -86,6 +90,9 @@ public class TagCloud extends OUICommand {
                 itemRolloverClass,
                 itemRolloverStyle,
 
+                itemTextClass,
+                itemTextStyle,
+
                 itemWeightVisible,
 
                 order,
@@ -99,6 +106,7 @@ public class TagCloud extends OUICommand {
 
                 itemWeightFormat,
                 itemWeightStyle,
+                itemWeightClass,
 
                 rotationSpeed3D,
                 shadowScale3D,
@@ -118,6 +126,9 @@ public class TagCloud extends OUICommand {
         itemRolloverClass = (String) values[i++];
         itemRolloverStyle = (String) values[i++];
 
+        itemTextClass = (String) values[i++];
+        itemTextStyle = (String) values[i++];
+
         itemWeightVisible = (Boolean) values[i++];
 
         order = (TagsOrder) values[i++];
@@ -133,6 +144,7 @@ public class TagCloud extends OUICommand {
         itemWeightFormat = (String) values[i++];
 
         itemWeightStyle = (String) values[i++];
+        itemWeightClass = (String) values[i++];
 
         rotationSpeed3D = (Double) values[i++];
         shadowScale3D = (Double) values[i++];
@@ -306,6 +318,23 @@ public class TagCloud extends OUICommand {
         this.itemRolloverStyle = itemRolloverStyle;
     }
 
+    public String getItemTextClass() {
+        return ValueBindings.get(this, "itemTextClass", itemTextClass);
+    }
+
+    public void setItemTextClass(String itemTextClass) {
+        this.itemTextClass = itemTextClass;
+    }
+
+    public String getItemTextStyle() {
+        return ValueBindings.get(this, "itemTextStyle", itemTextStyle);
+    }
+
+    public void setItemTextStyle(String itemTextStyle) {
+        this.itemTextStyle = itemTextStyle;
+    }
+
+
     public String getVar() {
         return ValueBindings.get(this, "var", var, "item");
     }
@@ -344,6 +373,13 @@ public class TagCloud extends OUICommand {
 
     public void setItemWeightStyle(String itemWeightStyle) {
         this.itemWeightStyle = itemWeightStyle;
+    }
+     public String getItemWeightClass() {
+        return ValueBindings.get(this, "itemWeightClass", itemWeightClass);
+    }
+
+    public void setItemWeightClass(String itemWeightClass) {
+        this.itemWeightClass = itemWeightClass;
     }
       
     public List<TagCloudItem> itemsToTheList(FacesContext context) {
@@ -434,6 +470,12 @@ public class TagCloud extends OUICommand {
 
             item.setRolloverClass(getItemRolloverClass());
             item.setRolloverStyle(getItemRolloverStyle());
+
+            item.setTextClass(getItemTextClass());
+            item.setTextStyle(getItemTextStyle());
+
+            item.setWeightClass(getItemWeightClass());
+            item.setWeightStyle(getItemWeightStyle());
 
             item.setConverter(getConverter());
 

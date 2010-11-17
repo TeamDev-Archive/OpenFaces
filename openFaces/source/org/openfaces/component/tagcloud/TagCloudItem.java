@@ -41,13 +41,18 @@ public class TagCloudItem extends OUIOutput {
     private static final String DEFAULT_CLASS_3D = "o_tagCloud_item_3d";
     private static final String DEFAULT_ROLLOVER_CLASS_3D = "o_tagCloud_item_3d_rollover";
 
-    private static final String DEFAULT_WEIGHT_STYLE = "margin-left:3px;font-size: 0.7em; vertical-align: super;";
     private static final String DEFAULT_INNER_WEIGHT_CLASS = "o_tagCloud_item_inner_weight";
     private static final String DEFAULT_INNER_TEXT_CLASS = "o_tagCloud_item_inner_text";
 
     private String title;
     private String url;
     private Double weight;
+
+    private String textClass;
+    private String textStyle;
+
+    private String weightClass;
+    private String weightStyle;
 
     private String gradientStyle;
 
@@ -63,6 +68,14 @@ public class TagCloudItem extends OUIOutput {
     private String getDefaultRolloverClass() {
         return ((TagCloud)getParent()).getLayout().equals(Layout.SPHERE) ?
                DEFAULT_ROLLOVER_CLASS_3D : DEFAULT_ROLLOVER_CLASS;
+    }
+
+    private String getDefaultTextClass(){
+        return getRolloverStyle() != null ? "" : DEFAULT_INNER_TEXT_CLASS;
+    }
+
+    private String getDefaultWeightClass(){
+        return getRolloverStyle() != null ? "" : DEFAULT_INNER_WEIGHT_CLASS;
     }
 
     private String getStyles() {
@@ -83,6 +96,14 @@ public class TagCloudItem extends OUIOutput {
                 getDefaultRolloverClass());
     }
 
+    private String getTextStyleClass(FacesContext context){
+        return Styles.mergeClassNames(getDefaultTextClass(),getTextClass());
+    }
+
+    private String getWeightStyleClass(FacesContext context){
+        return Styles.mergeClassNames(getDefaultWeightClass(),getWeightClass());
+    }
+
     @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
@@ -96,6 +117,12 @@ public class TagCloudItem extends OUIOutput {
                 url,
                 weight,
 
+                textClass,
+                textStyle,
+
+                weightClass,
+                weightStyle,
+
                 gradientStyle
         };
     }
@@ -108,6 +135,12 @@ public class TagCloudItem extends OUIOutput {
         title = (String) values[i++];
         url = (String) values[i++];
         weight = (Double) values[i++];
+
+        textClass = (String) values[i++];
+        textStyle = (String) values[i++];
+
+        weightClass = (String) values[i++];
+        weightStyle = (String) values[i++];
 
         gradientStyle=(String) values[i++];
     }
@@ -135,8 +168,40 @@ public class TagCloudItem extends OUIOutput {
     public void setWeight(double weight) {
         this.weight = weight;
     }
-  
-     public String getGradientStyle() {
+
+    public String getTextClass() {
+        return textClass;
+    }
+
+    public void setTextClass(String textClass) {
+        this.textClass = textClass;
+    }
+
+    public String getTextStyle() {
+        return textStyle;
+    }
+
+    public void setTextStyle(String textStyle) {
+        this.textStyle = textStyle;
+    }
+
+    public String getWeightClass() {
+        return weightClass;
+    }
+
+    public void setWeightClass(String weightClass) {
+        this.weightClass = weightClass;
+    }
+
+    public String getWeightStyle() {
+        return weightStyle;
+    }
+
+    public void setWeightStyle(String weightStyle) {
+        this.weightStyle = weightStyle;
+    }
+
+    public String getGradientStyle() {
         return gradientStyle;
     }
 
@@ -154,10 +219,13 @@ public class TagCloudItem extends OUIOutput {
         String id = getClientId(context);
         String styleClass = getStyleClass(context);
         String rolloverStyleClass = getRolloverStyleClass(context);
+        String textStyleClass = getTextStyleClass(context);
+        String weightStyleClass = getWeightStyleClass(context);
+
         Styles.renderStyleClasses(context, this, false, true);
         TagCloud cloud = (TagCloud) getParent();
         DecimalFormat weightFormat = new DecimalFormat(cloud.getItemWeightFormat());
-        String weightStyle = cloud.getItemWeightStyle();
+        String weightStyle = getWeightStyle();
 
         writer.startElement("a", cloud);
 
@@ -169,21 +237,22 @@ public class TagCloudItem extends OUIOutput {
 
         writer.startElement("span", this);
         writer.writeAttribute("id", id + DEFAULT_TEXT_CONTAINER, null);
-        writer.writeAttribute("class", DEFAULT_INNER_TEXT_CLASS, null);
+        writer.writeAttribute("class", textStyleClass, null);
+        writer.writeAttribute("style", getTextStyle(), null);
         writer.writeText(getTextValue(), null);
         writer.endElement("span");
-        StringBuilder styleBuilder = new StringBuilder(getDefaultWeightStyle());
+        StringBuilder styleBuilder = new StringBuilder("");
         if (weightStyle != null)
             styleBuilder.append(weightStyle);
-        writer.startElement("span", this);
-        writer.writeAttribute("id", id + DEFAULT_WEIGHT, null);
-        writer.writeAttribute("class", DEFAULT_INNER_WEIGHT_CLASS, null);
-
-        if (!cloud.isItemWeightVisible()){            
+        if (!cloud.isItemWeightVisible()){
             styleBuilder.append(";display:none;");
         } else{
             styleBuilder.append(";display:inline;");
         }
+
+        writer.startElement("span", this);
+        writer.writeAttribute("id", id + DEFAULT_WEIGHT, null);
+        writer.writeAttribute("class", weightStyleClass, null);
 
         writer.writeAttribute("style", styleBuilder.toString(), null);
         writer.writeText(weightFormat.format(getWeight()), null);
@@ -198,11 +267,6 @@ public class TagCloudItem extends OUIOutput {
         );
         Rendering.renderInitScript(context, initScript);
     }
-
-    private String getDefaultWeightStyle() {
-        return DEFAULT_WEIGHT_STYLE;
-    }
-
 
     public void encodeEnd(FacesContext context) throws IOException {
 

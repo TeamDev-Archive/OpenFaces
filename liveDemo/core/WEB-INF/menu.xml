@@ -736,7 +736,7 @@
     <menuItem>
     <name>Tag Cloud</name>
     <componentName>Tag Cloud</componentName>
-    <url>/tagcloud/TagCloud_information.jsf</url>
+    <url>/tagcloud/TagCloud.jsf</url>
     <shortPath>/tagcloud/</shortPath>
     <image>TagCloud</image>
     <selectedImage>/images/components/titles/TagCloud.png</selectedImage>
@@ -750,7 +750,7 @@
     <demos>
       <demoItem>
         <demoName>Informational Tag Cloud</demoName>
-        <demoUrl>/tagcloud/TagCloud_information.jsf</demoUrl>
+        <demoUrl>/tagcloud/TagCloud.jsf</demoUrl>
       </demoItem>        
     </demos>
   </menuItem>

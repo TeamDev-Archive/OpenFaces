@@ -38,7 +38,16 @@
     }
 
     .coloring0 {
-      background: #333333;      
+      background: #333333;
+    }
+
+    .coloring0_rollover .inner_text {
+      color: #ffffff;
+      text-decoration: underline;
+    }
+
+    .coloring0_rollover .inner_weight {
+      color: #ffffcc;
     }
 
     .coloring2 {
@@ -47,11 +56,12 @@
 
     .coloring4 {
       background: #c0defa;
-      
-      font-variant:small-caps;
+
+      font-variant: small-caps;
       text-shadow: 2px 1px 0 #ffffcc;
     }
-    .coloring4_rollover .o_tagCloud_item_inner_text{      
+
+    .coloring4_rollover .o_tagCloud_item_inner_text {
       text-shadow: 2px 1px 0 #fff;
     }
 
@@ -78,7 +88,7 @@
                    value="Variant 2"
             />
 
-     <o:tagCloud id="defaultCloud"
+    <o:tagCloud id="defaultCloud"
                 items="#{TagCloudBean.itemsList}"
                 itemText="#{item.text}"
                 itemTitle="#{item.title}"
@@ -97,7 +107,9 @@
                 itemWeightFormat="(amount = #0.##)"
                 itemWeightStyle="vertical-align:bottom; font-size: 0.95em;"
                 styleClass="coloring0"
-                itemClass="coloring0"
+                itemRolloverClass="coloring0_rollover"
+                itemTextClass="inner_text"
+                itemWeightClass="inner_weight"
                 minItemStyle="color:#ff2233;font-size:8pt;"
                 maxItemStyle="color:#ff8899;font-size:16pt;"
             />
@@ -163,15 +175,15 @@
                 minItemStyle="color: #D37E66; font-size:90%"
                 maxItemStyle="color: #F37E66; font-size:140%;"/>
 
-     <o:tagCloud id="variant5Cloud"
+    <o:tagCloud id="variant5Cloud"
                 items="#{TagCloudBean.itemsList}"
                 itemText="#{item.text}"
                 itemTitle="#{item.title}"
                 itemUrl="#{item.url}"
                 itemWeight="#{item.weight}"
                 itemWeightVisible="true"
-                
                 layout="oval"
+                itemStyle="background: #ffffff;"
                 style="font-family: monospace; font-weight: bold;"
                 minItemStyle="color: #000000; opacity: 1;"
                 maxItemStyle="color: #000000; opacity: 0.5;"/>

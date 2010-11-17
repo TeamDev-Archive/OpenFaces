@@ -39483,6 +39483,18 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default false -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>
+        A CSS style class for item weight.
+      </description>
+      <name>itemWeightClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
 
     <attribute>
       <description>
@@ -39648,6 +39660,31 @@ entering a value and returns a list of suggestions from the server -->
         that uses a column data variable specified in the "var" attribute.
       </description>
       <name>itemRolloverClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A style for the tag item when mouse is over. Can be specified as a value-binding expression
+        that uses a column data variable specified in the "var" attribute.
+      </description>
+      <name>itemTextStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for tag item when mouse is over. Can be specified as a value-binding expression
+        that uses a column data variable specified in the "var" attribute.
+      </description>
+      <name>itemTextClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>

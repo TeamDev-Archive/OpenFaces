@@ -17,6 +17,11 @@
       background: #cccccc;
       width: 600px;
     }
+    .tagCloudClass1 .inner_weight{
+      color: #5ea8a8;
+      vertical-align: baseline;
+      font-size: 0.8em;
+    }
 
     .itemStyleClass1 {
       text-align: center;
@@ -26,14 +31,15 @@
       border:1px solid #cccccc;
     }
 
-    .itemStyleClass1_rollover .o_tagCloud_item_inner_text{
+    .itemStyleClass1_rollover{
       border:1px solid #5ea8a8;
       background: url("/components/tagcloud/itemBackgroung.png") 0 -64px repeat-x;
     }
-    .itemStyleClass1_rollover .o_tagCloud_item_inner_text{
+
+    .itemStyleClass1_rollover .inner_text{
       color: #5ea8a8;
     }
-    .itemStyleClass1_rollover .o_tagCloud_item_inner_weight{
+    .itemStyleClass1_rollover .inner_weight{
       color: #ff9966;
     }
 
@@ -80,11 +86,13 @@
               itemWeight="#{item.weight}"
               order="random"
               itemWeightVisible="true"
-              itemWeightStyle="color: #5ea8a8; vertical-align: baseline; font-size: 0.8em;"
               itemWeightFormat="-> #,##0.##"
+
               styleClass="tagCloudClass1"
               itemClass="itemStyleClass1"
               itemRolloverClass="itemStyleClass1_rollover"
+              itemTextClass="inner_text"
+              itemWeightClass="inner_weight"
               minItemStyle="font-size: 15px; color: #b76221;"
               maxItemStyle="font-size: 25px; color: #af6221;"
           />
@@ -109,9 +117,9 @@
               items="#{TagCloudBean.itemsList}"
               itemText="#{item.text}"
               itemWeight="#{item.weight}"
-
-              itemStyle="color: #007ece;"
-              itemRolloverStyle=" background: #007efe; text-decoration:none;"
+              itemStyle="background: #ffffff;"
+              itemTextStyle="text-decoration: none; color: #007ece;"
+              itemRolloverStyle="background: #007efe; text-decoration:none; color:#ffffff;"
               minItemStyle="font-size: 8pt; opacity: 0.8;"
               maxItemStyle="font-size: 20pt; opacity: 1;"/>
    <br/>
@@ -128,8 +136,8 @@
                background: url('/components/tagcloud/tagBackground1.png') no-repeat #e0ffee;
                font-family: monospace;"
               
-              itemStyle="background:transparent; padding: 2px;"
-              itemRolloverStyle="background: #f0ffee;"
+              itemStyle="padding: 2px;"
+              itemRolloverStyle="background: #f0ffee; text-decoration: underline;"
               minItemStyle="font-size: 10px; color:#aaaaaa"
               maxItemStyle="font-size: 20px;color:#5DC440"
           />

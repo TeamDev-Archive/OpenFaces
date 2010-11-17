@@ -55,38 +55,27 @@ O$.TagCloud = {
       _initMaxParametersAndSquare: function() {
         var ch = tagCloud.childNodes;
         tagCloud._ITEM_SQUARE = 0;
-        //var itemSize;
+
         var itemWidth;
         var itemHeight;
-        //        var itemPaddingRight = O$.getNumericElementStyle(tagCloud, "padding-right");
-        //        var itemPaddingLeft = O$.getNumericElementStyle(tagCloud, "padding-left");
-        //        var itemPaddingTop = O$.getNumericElementStyle(tagCloud, "padding-right");
-        //        var itemPaddingBottom = O$.getNumericElementStyle(tagCloud, "padding-left");
-        //
-        //        var itemBorderLeft = O$.getNumericElementStyle(tagCloud, "border-left-width");
-        //        var itemBorderRight = O$.getNumericElementStyle(tagCloud, "border-left-right");
-        //        var itemBorderTop = O$.getNumericElementStyle(tagCloud, "border-left-width");
-        //        var itemBorderBottom = O$.getNumericElementStyle(tagCloud, "border-left-right");
         for (var i = 0; i < ch.length; i++) {
           if (ch[i].nodeName == "A") {
             tagCloud._ITEM_AMOUNT++;
-            //itemSize = O$.getElementSize(ch[i]);
+
             itemWidth = ch[i].clientWidth;
             itemHeight = ch[i].clientHeight;
-            tagCloud._ITEM_SQUARE += itemHeight * itemWidth;
+
             if (itemHeight > tagCloud._ITEM_MAX_HEIGHT) {
               tagCloud._ITEM_MAX_HEIGHT = itemHeight;
             }
             if (itemWidth > tagCloud._ITEM_MAX_WIDTH) {
               tagCloud._ITEM_MAX_WIDTH = itemWidth;
             }
-            //            tagCloud._ITEM_SQUARE += itemSize.height * itemSize.width;
-            //            if (itemSize.height > tagCloud._ITEM_MAX_HEIGHT) {
-            //              tagCloud._ITEM_MAX_HEIGHT = itemSize.height;
-            //            }
-            //            if (itemSize.width > tagCloud._ITEM_MAX_WIDTH) {
-            //              tagCloud._ITEM_MAX_WIDTH = itemSize.width;
-            //            }
+          }
+        }
+        for (var i = 0; i < ch.length; i++) {
+          if (ch[i].nodeName == "A") {
+            tagCloud._ITEM_SQUARE += tagCloud._ITEM_MAX_HEIGHT * ch[i].clientWidth;           
           }
         }
       },
@@ -146,7 +135,6 @@ O$.TagCloud = {
               curPos += items[i + k]._element.clientWidth;
               k++;
             }
-
             curPos = currentP.xRight - curPos - items[i + k]._element.clientWidth;
 
             for (var j = 1; j <= k; j++) {

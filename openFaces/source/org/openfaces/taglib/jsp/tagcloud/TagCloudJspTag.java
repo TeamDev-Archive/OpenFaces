@@ -62,6 +62,10 @@ public class TagCloudJspTag extends OUICommandJspTag {
         getDelegate().setPropertyValue("itemWeightStyle", itemWeightStyle);
     }
 
+     public void setItemWeightClass(ValueExpression itemWeightClass) {
+        getDelegate().setPropertyValue("itemWeightClass", itemWeightClass);
+    }
+
     public void setItemWeightFormat(ValueExpression itemWeightFormat) {
         getDelegate().setPropertyValue("itemWeightFormat", itemWeightFormat);
     }
@@ -96,6 +100,14 @@ public class TagCloudJspTag extends OUICommandJspTag {
 
     public void setItemRolloverStyle(ValueExpression itemRolloverStyle) {
         getDelegate().setPropertyValue("itemRolloverStyle", itemRolloverStyle);
+    }
+
+    public void setItemTextClass(ValueExpression itemTextClass) {
+        getDelegate().setPropertyValue("itemTextClass", itemTextClass);
+    }
+
+    public void setItemTextStyle(ValueExpression itemTextStyle) {
+        getDelegate().setPropertyValue("itemTextStyle", itemTextStyle);
     }
        
     public void setShadowScale3D(ValueExpression shadowScale3D) {

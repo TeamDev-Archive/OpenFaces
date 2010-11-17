@@ -1,0 +1,246 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/">
+
+<div id="Demo">
+
+  <h:panelGrid id="customizeGrid"
+               columns="1"
+               style="vertical-align:top;height:200px; width: 710px;">
+    <h:panelGrid id="themeSelection"
+                 columns="4"
+            style="height:40px; width: 710px;">
+      <f:facet name="header">
+        <h:outputText value="Select Theme:"/>
+      </f:facet>
+
+      <o:commandLink actionListener="#{TagCloudBean.setRectangleTheme}"
+                     render="contentGrid customizeGrid"
+                     styleClass="largeFont commandLink">
+        <h:graphicImage url="./images/rectangle-icon.png"/>
+        <span>Sunny Day</span>
+      </o:commandLink>
+      <o:commandLink actionListener="#{TagCloudBean.setVerticalTheme}"
+                     render="contentGrid customizeGrid"
+                     styleClass="largeFont commandLink">
+        <h:graphicImage url="./images/vertical-icon.png"/>
+        <span>Bronze</span>
+      </o:commandLink>
+      <o:commandLink actionListener="#{TagCloudBean.setOvalTheme}"
+                     render="contentGrid customizeGrid"
+                      styleClass="largeFont commandLink">
+        <h:graphicImage url="./images/oval-icon.png"/>
+        <span>Mix Colors</span>
+      </o:commandLink>
+      <o:commandLink actionListener="#{TagCloudBean.setSphereTheme}"
+                     render="contentGrid customizeGrid"
+                      styleClass="largeFont commandLink">
+        <h:graphicImage url="./images/sphere-icon.png" />
+        <span>3D Ghost</span>
+      </o:commandLink>
+
+    </h:panelGrid>
+
+    <h:panelGrid id="propertiesGrid"
+                 columns="6"
+                 style="padding: 3px;">
+      <f:facet name="header">
+        <h:outputText value="Customize Tag Cloud:"/>
+      </f:facet>
+
+      <h:outputLabel id="orderSelection"
+                     value="order:"/>
+      <o:selectOneMenu id="order"
+                       value="#{TagCloudBean.order}"
+                       var="orderValue"
+                       converter="#{TagCloudBean.orderConverter}"
+                       style="width: 120px;">
+        <f:selectItems value="#{TagCloudBean.orderList}"/>    
+        <o:column>
+          <h:graphicImage url="./images/order-#{orderValue}.png" style="vertical-align: middle;"/>
+        </o:column>
+        <o:column>
+          <h:outputText value="#{orderValue}" style="font-family:sans-serif;font-size:0.8em;"/>
+        </o:column>
+        <o:ajax event="change"
+                render="contentGrid"/>
+      </o:selectOneMenu>
+
+      <h:outputLabel id="minColorLabel"
+                     value="minColor:"/>
+      <o:dropDownField id="minColor"
+                       value="#{TagCloudBean.minColor}"
+                       var="color"
+                       converter="#{DropDownBean.colorConverter}"
+                       customValueAllowed="false"
+                       required="true"
+                       suggestionMode="substring"
+                       autoComplete="true"
+                       style="width: 120px;"
+                       listItemStyle="padding: 2px 4px 2px 4px;">
+        <o:dropDownItems value="#{DropDownBean.colors}"/>
+        <o:column width="5px">
+          <h:outputText styleClass="colorSelection_box" style="background: #{color.name};"/>
+        </o:column>
+        <o:column>
+          <h:outputText value="#{color.name}" style="font-family:sans-serif;font-size:0.8em;"/>
+        </o:column>
+        <o:ajax event="change"
+                render="contentGrid"/>
+      </o:dropDownField>
+      <h:outputLabel id="maxColorLabel"
+                     value="maxColor:"/>
+      <o:dropDownField id="maxColor"
+                       value="#{TagCloudBean.maxColor}"
+                       var="color"
+                       converter="#{DropDownBean.colorConverter}"
+                       customValueAllowed="false"
+                       required="true"
+                       suggestionMode="substring"
+                       autoComplete="true"
+                       style="width: 120px;"
+                       listItemStyle="padding: 2px 4px 2px 4px;">
+        <o:ajax event="change"
+                render="listTagCloud"/>
+        <o:dropDownItems value="#{DropDownBean.colors}"/>
+        <o:column width="5px">
+          <h:outputText styleClass="colorSelection_box" style="background: #{color.name};"/>
+        </o:column>
+        <o:column>
+          <h:outputText value="#{color.name}" style="font-family:sans-serif;font-size:0.8em;"/>
+        </o:column>
+      </o:dropDownField>
+
+      <h:outputLabel id="layoutSelection"
+                     value="layout:"/>
+      <o:selectOneMenu id="layout"
+                       value="#{TagCloudBean.layout}"
+                       var="layoutValue"
+                       converter="#{TagCloudBean.layoutConverter}"
+                       style="width: 120px;">
+        <f:selectItems value="#{TagCloudBean.layoutList}"/>
+        <o:column>
+          <h:graphicImage url="./images/#{layoutValue}-icon.png" style="vertical-align: middle;"/>
+        </o:column>
+        <o:column>
+          <h:outputText value="#{layoutValue}" style="font-family:sans-serif;font-size:0.8em;"/>
+        </o:column>
+        <o:ajax event="change"
+                render="contentGrid order"/>
+      </o:selectOneMenu>
+
+
+      <h:outputLabel id="minFontSizeLabel"
+                     value="minFontSize:"/>
+      <o:spinner id="minFontSize" value="#{TagCloudBean.minFontSize}"
+                 style="width: 120px;"
+                 minValue="10"
+                 maxValue="#{TagCloudBean.maxFontSize}"
+                 step="1">
+        <f:convertNumber pattern="#0px"/>
+        <o:ajax event="change"
+                render="listTagCloud maxFontSizeLabel"/>
+      </o:spinner>
+      <h:outputLabel id="maxFontSizeLabel"
+                     value="maxFontSize:"/>
+      <o:spinner id="maxFontSize" value="#{TagCloudBean.maxFontSize}"
+                 style="width: 120px;"
+                 minValue="#{TagCloudBean.minFontSize}"
+                 maxValue="50"
+                 step="1">
+        <f:convertNumber pattern="#0px"/>
+        <o:ajax event="change"
+                render="listTagCloud minFontSizeLabel"/>
+      </o:spinner>
+      <h:outputLabel id="weightFormatSelection"
+                     value="weightFormat:"/>
+      <o:selectOneMenu id="weightFormat"
+                       value="#{TagCloudBean.itemWeightFormat}"
+                       var="weightFormat"
+                       style="width: 120px;">
+        <f:selectItems value="#{TagCloudBean.weightFormatList}"/>
+        <o:ajax event="change"
+                render="contentGrid"/>
+      </o:selectOneMenu>
+
+      <o:selectBooleanCheckbox value="#{TagCloudBean.itemWeightVisible}">
+        <h:outputText value="weightVisible"/>
+        <o:ajax event="mouseup"
+                render="listTagCloud"/>
+      </o:selectBooleanCheckbox>
+      
+
+    </h:panelGrid>
+  </h:panelGrid>
+  <h:panelGrid id="contentGrid"
+               columns="#{(TagCloudBean.vertical) ? '2':'1'}"
+               styleClass="#{TagCloudBean.skin}">
+    <f:facet name="header">
+      <h:outputText value="Customized Layout:"/>
+    </f:facet>
+  
+    <h:panelGroup styleClass="tagCloud_container" style="display:block;">
+      <o:tagCloud id="listTagCloud"                  
+                  items="#{ (TagCloudBean.oval) ? TagCloudBean.coloredItemsList : TagCloudBean.entitiesItemsList}"
+                  itemKey="#{item.text}"
+                  itemText="#{item.text}"
+                  itemTitle="#{item.title}"
+                  itemUrl="#{item.url}"
+                  itemWeight="#{item.weight}"
+                  itemStyle="color:#{item.color.hex}"
+                  itemWeightVisible="#{TagCloudBean.itemWeightVisible}"
+                  layout="#{TagCloudBean.layout}"
+                  order="#{TagCloudBean.order}"
+                  styleClass="tagCloud"
+                  rolloverClass="tagCloud_rollover"
+                  itemClass="tagCloud_item"
+                  itemRolloverClass="tagCloud_item_rollover"
+
+                  itemWeightFormat="#{TagCloudBean.itemWeightFormat}"
+                  itemWeightStyle="#{TagCloudBean.itemWeightStyle}"
+
+                  itemTextClass="item_inner_text"
+                  itemWeightClass="item_inner_weight"
+                  maxItemStyle="#{TagCloudBean.maxItemStyle}"
+                  minItemStyle="#{TagCloudBean.minItemStyle}"
+
+                  actionListener="#{TagCloudBean.processAction}"/>
+    </h:panelGroup>
+
+    <h:panelGroup styleClass="content2" style="display:block;" rendered="true">
+       <h:outputText id="headerResult2"
+      styleClass="headerResult"
+      value="Selected tag: #{TagCloudBean.var.text}"
+      escape="false"/>
+      <!--<h:outputText id="currentEntities" style="display:block;"
+                    styleClass="currentEntities"
+                    value="#{TagCloudBean.currentEntities}"
+                    escape="false"/>-->
+
+    </h:panelGroup>
+  </h:panelGrid>
+
+
+</div>
+
+<div id="Description">
+  <h4>Demonstrated Features</h4>
+  <ul class="hang">
+    <li><strong>Layout</strong> - there are four layout types. Select it by radio button</li>
+    <li><strong>Ordering</strong> - you can order tags in different ways. Select it by radio button</li>
+    <li><strong>Styling</strong> - you can style tag cloud, tag cloud item, and weight of tag cloud item.
+      Select skin from drop down
+    </li>
+    <li><strong>Specifying number conversion settings and pattern for weight</strong> -
+      Select skin from drop down and select "Weight Visible" checkbox.
+    </li>
+    <li><strong>Support of Collections and Arrays</strong> - Tag Cloud could be generated from Collection or
+      Array of any object type
+    </li>
+    <li><strong>Accessibility of tag cloud item object on server</strong> -
+      When you select some tag cloud item then you can get object of this item from context
+      using var parameter. This example use this feature to display resources.
+    </li>
+  </ul>
+</div>
+</div>

@@ -68,7 +68,7 @@
 
       <div id="Content">
         <!-- start content -->
-        <%@ include file="TagCloud_information_core.xhtml" %>
+        <%@ include file="TagCloud_core.xhtml" %>
         <!-- end content -->
       </div>
     </h:form>
