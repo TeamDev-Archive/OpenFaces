@@ -11,8 +11,6 @@
  */
 package org.openfaces.taglib.internal.chart;
 
-import org.openfaces.component.chart.LineProperties;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
@@ -33,12 +31,10 @@ public class LinePropertiesTag extends AbstractStyledComponentTag {
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
-        LineProperties lineProperties = (LineProperties) component;
-
-        setBooleanProperty(lineProperties, "shapesVisible");
-        setBooleanProperty(lineProperties, "showInLegend");
-        setBooleanProperty(lineProperties, "hideSeries");
-        setBooleanProperty(lineProperties, "labelsVisible");
-        setPropertyBinding(lineProperties, "condition");
+        setBooleanProperty(component, "shapesVisible");
+        setBooleanProperty(component, "showInLegend");
+        setBooleanProperty(component, "hideSeries");
+        setBooleanProperty(component, "labelsVisible");
+        setPropertyBinding(component, "condition");
     }
 }

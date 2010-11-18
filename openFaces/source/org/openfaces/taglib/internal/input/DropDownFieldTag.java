@@ -43,6 +43,9 @@ public class DropDownFieldTag extends DropDownComponentTag {
         setIntProperty(component, "suggestionMinChars");
         setIntProperty(component, "suggestionDelay");
         setBooleanProperty(component, "autoComplete");
+        setIntProperty(component, "preloadedItemCount");
+        setIntProperty(component, "pageSize");
+        setObjectProperty(component, "totalItemCount");
 
         setStringProperty(component, "rolloverStyle");
         setStringProperty(component, "rolloverStyle");

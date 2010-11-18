@@ -11,8 +11,6 @@
  */
 package org.openfaces.taglib.internal.chart;
 
-import org.openfaces.component.chart.LineChartView;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
@@ -34,13 +32,7 @@ public class LineChartViewTag extends GridChartViewTag {
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
-        LineChartView view = (LineChartView) component;
-
-        String shapesVisibleString = getPropertyValue("shapesVisible");
-        if (shapesVisibleString != null) {
-            Boolean shapesVisible = Boolean.valueOf(shapesVisibleString);
-            view.setShapesVisible(shapesVisible);
-        }
+        setBooleanProperty(component, "shapesVisible");
 
         setColorProperty(component, "defaultFillColor");
         setLineStyleObjectProperty(component, "defaultLineStyle");

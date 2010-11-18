@@ -11,7 +11,6 @@
  */
 package org.openfaces.taglib.internal.chart;
 
-import org.openfaces.component.chart.ChartAxis;
 import org.openfaces.component.chart.ChartDomain;
 
 import javax.faces.component.UIComponent;
@@ -34,18 +33,9 @@ public class ChartAxisTag extends AbstractStyledComponentTag {
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
-        ChartAxis axis = (ChartAxis) component;
-
         setEnumerationProperty(component, "domain", ChartDomain.class);
-
-        String labelVisible = getPropertyValue("labelVisible"); // todo: support bindings for all chart AIP
-        if (labelVisible != null)
-            axis.setLabelVisible(Boolean.valueOf(labelVisible));
-        String ticksVisible = getPropertyValue("ticksVisible");
-        if (ticksVisible != null)
-            axis.setTicksVisible(Boolean.valueOf(ticksVisible));
-        String ticksLabelsVisible = getPropertyValue("ticksLabelsVisible");
-        if (ticksLabelsVisible != null)
-            axis.setTickLabelsVisible(Boolean.valueOf(ticksLabelsVisible));
+        setBooleanProperty(component, "labelVisible");
+        setBooleanProperty(component, "ticksVisible");
+        setBooleanProperty(component, "ticksLabelsVisible");
     }
 }

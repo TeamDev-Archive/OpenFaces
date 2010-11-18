@@ -13,7 +13,6 @@ package org.openfaces.taglib.internal.chart;
 
 import org.openfaces.component.chart.ChartDomain;
 import org.openfaces.component.chart.ChartLabelPosition;
-import org.openfaces.component.chart.GridChartView;
 import org.openfaces.component.chart.Orientation;
 
 import javax.faces.component.UIComponent;
@@ -37,23 +36,13 @@ public abstract class GridChartViewTag extends AbstractChartViewTag {
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
-        GridChartView view = (GridChartView) component;
-
         setEnumerationProperty(component, "orientation", Orientation.class);
 
-        String labelsVisible = getPropertyValue("labelsVisible");
-        if (labelsVisible != null) {
-            Boolean labelVisible = Boolean.valueOf(labelsVisible);
-            view.setLabelsVisible(labelVisible);
-        }
-        setEnumerationProperty(view, "showAxes", ChartDomain.class);
+        setBooleanProperty(component, "labelsVisible");
+        setEnumerationProperty(component, "showAxes", ChartDomain.class);
 
-        String keyAxisLabel = getPropertyValue("keyAxisLabel");
-        view.setKeyAxisLabel(keyAxisLabel);
-        String valueAxisLabel = getPropertyValue("valueAxisLabel");
-        view.setValueAxisLabel(valueAxisLabel);
-
-        
+        setStringProperty(component, "keyAxisLabel");
+        setStringProperty(component, "valueAxisLabel");
 
         setLineStyleObjectProperty(component, "defaultOutlineStyle");
         setObjectProperty(component, "outlines");

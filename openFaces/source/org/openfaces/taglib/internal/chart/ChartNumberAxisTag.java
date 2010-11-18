@@ -11,8 +11,6 @@
  */
 package org.openfaces.taglib.internal.chart;
 
-import org.openfaces.component.chart.ChartNumberAxis;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
@@ -34,18 +32,8 @@ public class ChartNumberAxisTag extends ChartAxisTag {
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
-        ChartNumberAxis axis = (ChartNumberAxis) component;
-
-        String logarithmic = getPropertyValue("logarithmic");
-        if (logarithmic != null)
-            axis.setLogarithmic(Boolean.valueOf(logarithmic));
-
-        String lowerBound = getPropertyValue("lowerBound");
-        if (lowerBound != null)
-            axis.setLowerBound(Double.parseDouble(lowerBound));
-
-        String upperBound = getPropertyValue("upperBound");
-        if (upperBound != null)
-            axis.setUpperBound(Double.parseDouble(upperBound));
+        setBooleanProperty(component, "logarithmic");
+        setDoubleProperty(component, "lowerBound");
+        setDoubleProperty(component, "upperBound");
     }
 }

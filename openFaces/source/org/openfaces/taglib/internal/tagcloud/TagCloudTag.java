@@ -52,12 +52,16 @@ public class TagCloudTag extends AbstractComponentTag {
         setBooleanProperty(component, "itemWeightVisible");
         
         setStringProperty(component, "itemWeightStyle");
+        setStringProperty(component, "itemWeightClass");
         setStringProperty(component, "itemWeightFormat");
         
         setStringProperty(component, "itemStyle");
         setStringProperty(component, "itemClass");
         setStringProperty(component, "itemRolloverClass");
         setStringProperty(component, "itemRolloverStyle");
+
+        setStringProperty(component, "itemTextClass");
+        setStringProperty(component, "itemTextStyle");
 
         setEnumerationProperty(component, "order", TagsOrder.class);
         setEnumerationProperty(component, "layout", Layout.class);

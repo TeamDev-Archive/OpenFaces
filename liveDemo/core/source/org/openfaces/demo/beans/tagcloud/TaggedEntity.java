@@ -79,7 +79,7 @@ public abstract class TaggedEntity implements Serializable{
         this.views = views;
     }
 
-    abstract String getInfo();
+    public abstract String getInfo();
 
     public void deleteTag(String tag){
         tags.remove(tag);

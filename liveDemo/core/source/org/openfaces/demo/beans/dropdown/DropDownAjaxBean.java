@@ -101,8 +101,16 @@ public class DropDownAjaxBean {
     }
 
     public List<String> getSuggestedAnimals() {
-        List<String> suggestedAnimals = new ArrayList<String>();
         String typedValue = Faces.var("searchString", String.class);
+        int pageStart = Faces.var("pageStart", Integer.class);
+        int pageSize = Faces.var("pageSize", Integer.class);
+
+        List<String> suggestedAnimals = getSuggestedAnimals(typedValue);
+        return pageSize == -1 ? suggestedAnimals : suggestedAnimals.subList(pageStart, pageStart + pageSize);
+    }
+
+    private List<String> getSuggestedAnimals(String typedValue) {
+        List<String> suggestedAnimals = new ArrayList<String>();
         if (typedValue != null) {
             for (String animal : animals) {
                 String animalForComparison = animal.toLowerCase();
@@ -111,19 +119,35 @@ public class DropDownAjaxBean {
                     suggestedAnimals.add(animal);
             }
         } else {
-            for (int i = 0; i < animals.size(); i++) {
-                if (i % 20 == 0) {
-                    String animal = animals.get(i);
-                    suggestedAnimals.add(animal);
-                }
-            }
+            return animals;
         }
         return suggestedAnimals;
     }
 
+    public int getTotalPlants() {
+        return getSuggestedPlants(null).size();
+    }
+
+    public int getTotalAnimals() {
+        return getSuggestedAnimals(null).size();
+    }
+
+    public int getTotalCities() {
+        return getSuggestedCities(null).size();
+    }
+
+
     public List<String> getSuggestedPlants() {
-        List<String> suggestedPlants = new ArrayList<String>();
         String typedValue = Faces.var("searchString", String.class);
+        int pageStart = Faces.var("pageStart", Integer.class);
+        int pageSize = Faces.var("pageSize", Integer.class);
+        List<String> suggestedPlants = getSuggestedPlants(typedValue);
+
+        return pageSize == -1 ? suggestedPlants : suggestedPlants.subList(pageStart, pageStart + pageSize);
+    }
+
+    private List<String> getSuggestedPlants(String typedValue) {
+        List<String> suggestedPlants = new ArrayList<String>();
         if (typedValue != null) {
             for (String plant : plants) {
                 String plantForComparison = plant.toLowerCase();
@@ -132,20 +156,23 @@ public class DropDownAjaxBean {
                     suggestedPlants.add(plant);
             }
         } else {
-            for (int i = 0; i < plants.size(); i++) {
-                if (i % 20 == 0) {
-                    String plant = plants.get(i);
-                    suggestedPlants.add(plant);
-                }
-            }
+            return plants;
         }
         return suggestedPlants;
     }
 
 
     public List<City> getSuggestedCities() {
-        List<City> suggestedCities = new ArrayList<City>();
         String typedValue = Faces.var("searchString", String.class);
+        int pageStart = Faces.var("pageStart", Integer.class);
+        int pageSize = Faces.var("pageSize", Integer.class);
+
+        List<City> suggestedCities = getSuggestedCities(typedValue);
+        return pageSize == -1 ? suggestedCities : suggestedCities.subList(pageStart, pageStart + pageSize);
+    }
+
+    private List<City> getSuggestedCities(String typedValue) {
+        List<City> suggestedCities = new ArrayList<City>();
         if (typedValue != null) {
             for (City city : cities) {
                 String cityForComparison = city.getName().toLowerCase();
@@ -154,12 +181,7 @@ public class DropDownAjaxBean {
                     suggestedCities.add(city);
             }
         } else {
-            for (int i = 0; i < cities.size(); i++) {
-                if (i % 15 == 0) {
-                    City city = cities.get(i);
-                    suggestedCities.add(city);
-                }
-            }
+            return cities;
         }
         return suggestedCities;
     }

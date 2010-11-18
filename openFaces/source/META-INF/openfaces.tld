@@ -24,7 +24,6 @@
     <attribute>
       <description>The component identifier.</description>
       <name>id</name>
-
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -341,6 +340,20 @@
       <!-- @bindingType int -->
       <!-- @default 0 -->
       <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Allows receiving row data objects for the currently displayed rows. This attribute should be
+        specified as a value binding expression to a write-only property of type java.util.List, java.util.Set, or
+        Object[].</description>
+      <name>displayedRowDatas</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType list of data objects -->
+      <!-- @bindingType set of data objects -->
+      <!-- @bindingType array of data objects -->
+      <!-- @default null -->
+      <!-- @el only -->
     </attribute>
     <attribute>
       <description>Specifies the delay in milliseconds when the filtering is performed automatically after the user has
@@ -7705,6 +7718,20 @@ means that only root nodes and their immediate children are preloaded -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>Allows receiving row data objects for the currently displayed rows. This attribute should be
+        specified as a value binding expression to a write-only property of type java.util.List, java.util.Set, or
+        Object[].</description>
+      <name>displayedRowDatas</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType list of data objects -->
+      <!-- @bindingType set of data objects -->
+      <!-- @bindingType array of data objects -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
       <description>The text that is displayed instead of "&lt;All&gt;" in the "comboBox" or
         "dropDownField" when filtering is used.
       </description>
@@ -10208,6 +10235,50 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default 350 -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>Applicable only to the "custom" suggestion mode. Specifies how much items from the full unfiltered
+        list should be preloaded along with the page. The value of -1 (default) means that all items are preloaded, and
+        so the whole default suggestion list will be shown without any additional server requests when the user expands
+        the suggestion list. Other values (0 or greater) restrict the number of preloaded items, and the remaining
+        unloaded items will be loaded on demand as the user scrolls through the suggestion list. See also the
+        pageSize attribute, which specifies portion size for loading the additional items in this case, and
+        totalItemCount, which specifies the number of all drop-down items.
+      </description>
+      <name>preloadedItemCount</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default -1 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Applicable only to the "custom" suggestion mode. This attribute should be specified when
+        preloadedItemCount is specified to a value other than -1. This attribute should be specified as a value binding
+        that returns the total row count if the entire drop-down list is fully loaded.
+      </description>
+      <name>totalItemCount</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>Applicable only to the "custom" suggestion mode. Specifies the number of items that will be loaded
+        along with each additional portion when scrolling through the suggestion list. See the preloadedItemCount
+        attribute. The valid values are -1, or any positive number. The value of -1 means that all remaining items
+        should be loaded.
+      </description>
+      <name>pageSize</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default -1 -->
+      <!-- @el true -->
+    </attribute>
 
     <attribute>
       <description>Defines whether the button that opens the drop-down list is positioned to the right or to
@@ -11393,6 +11464,37 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
+      <description>Applicable only to the "custom" suggestion mode. Specifies how much items from the full unfiltered
+        list should be preloaded along with the page. The value of -1 (default) means that all items are preloaded, and
+        so the whole default suggestion list will be shown without any additional server requests when the user expands
+        the suggestion list. Other values (0 or greater) restrict the number of preloaded items, and the remaining
+        unloaded items will be loaded on demand as the user scrolls through the suggestion list. See also the
+        pageSize attribute, which specifies portion size for loading the additional items in this case.
+      </description>
+      <name>preloadedItemCount</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default -1 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Applicable only to the "custom" suggestion mode. Specifies the number of items that will be loaded
+        along with each additional portion when scrolling through the suggestion list. See the preloadedItemCount
+        attribute. The valid values are -1, or any positive number. The value of -1 means that all remaining items
+        should be loaded.
+      </description>
+      <name>pageSize</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default -1 -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
       <description>A flag that indicates whether a drop-down suggestion list can be opened using the "Down Arrow" key.
       </description>
       <name>manualListOpeningAllowed</name>
@@ -12461,7 +12563,7 @@ entering a value and returns a list of suggestions from the server -->
         <type>boolean</type>
       </deferred-value>
       <!-- @bindingType boolean -->
-      <!-- @default true -->
+      <!-- @default false -->
       <!-- @el only -->
     </attribute>
     <attribute>
@@ -18776,10 +18878,10 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- @default true -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
-      <description>An attribuite that specifies the time period precision to be used by chart</description>
+      <description>An attribute that specifies the time period precision to be used by chart</description>
       <name>timePeriodPrecision</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -18817,7 +18919,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>A flag that indicates whether or not the callout labels are visible.</description>
@@ -18827,7 +18929,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- @default false -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>A value-binding expression that associates the PieChartView component with a backing bean property.
@@ -18895,7 +18997,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType java.lang.Float -->
       <!-- @default 1 -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>JavaScript code that should be executed when the user moves the mouse pointer onto the PieChartView.
@@ -19044,7 +19146,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- @default false -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>A value-binding expression that associates the LineChartView component with a backing bean property.
@@ -19099,7 +19201,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>Text for the "value" axis title.</description>
@@ -19109,7 +19211,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>Similar to the "action" attribute of the HTMLCommandButton component. It can either specify a string
@@ -19146,7 +19248,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>A flag that indicates whether or not the data markers on the line chart are visible.</description>
@@ -19156,18 +19258,18 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- @default true -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Specifies percentage of transparency for the chart. Can take float-pointing values from "0" to "1".
+      <description>Specifies percentage of transparency for the chart. Can take float-pointing values from 0.0 to "1.0.
       </description>
       <name>foregroundAlpha</name>
       <deferred-value>
         <type>java.lang.Float</type>
       </deferred-value>
       <!-- @bindingType java.lang.Float -->
-      <!-- @default 1 -->
-      <!-- @el false -->
+      <!-- @default 1.0 -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>JavaScript code that should be executed when the user moves the mouse pointer onto the LineChartView.
@@ -19386,7 +19488,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- @default false -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>A value-binding expression that associates the BarChartView component with
@@ -19442,7 +19544,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>Text for the "value" axis title.</description>
@@ -19452,7 +19554,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>Similar to the "action" attribute of the HTMLCommandButton component.
@@ -19491,7 +19593,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>Specifies percentage of transparency for the chart. Can take float-pointing values from "0" to "1".
@@ -19502,7 +19604,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType java.lang.Float -->
       <!-- @default 1 -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>JavaScript code that should be executed when the user moves the mouse pointer onto the BarChartView.
@@ -19747,7 +19849,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- @default true -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>A flag that indicates whether or not to show ticks on the axis.</description>
@@ -19757,7 +19859,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- @default true -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>A flag that indicates whether or not to show tick-mark labels on the axis.</description>
@@ -19767,7 +19869,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- @default true -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>Specifies for which axes to apply the values of the attributes specified in the chartAxis tag.
@@ -19810,7 +19912,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- @default true -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>A flag that indicates whether or not to show ticks on the axis.</description>
@@ -19820,7 +19922,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- @default true -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>A flag that indicates whether or not to show tick-mark labels on the axis.</description>
@@ -19830,7 +19932,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- @default true -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>Specifies for which axes to apply the values of the attributes specified in the numberAxis tag.
@@ -19854,7 +19956,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType java.lang.Double -->
       <!-- @default null -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>The maximum scale value to be displayed on the axis.</description>
@@ -19864,7 +19966,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType java.lang.Double -->
       <!-- @default null -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
   </tag>
 
@@ -19893,7 +19995,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- @default true -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>A flag that indicates whether or not to show ticks on the axis.</description>
@@ -19903,7 +20005,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- @default true -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>A flag that indicates whether or not o show tick-mark labels on the axis.</description>
@@ -19913,7 +20015,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- @default true -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>Specifies for which axes to apply the values of the attributes specified in the dateAxis tag.
@@ -19937,7 +20039,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType java.lang.Double -->
       <!-- @default null -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>The maximum scale value to be displayed on the axis.</description>
@@ -19947,7 +20049,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType java.lang.Double -->
       <!-- @default null -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>The format of dates displayed on the tick-mark labels.</description>
@@ -19987,7 +20089,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- @default true -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>A flag that indicates whether or not to show ticks on the axis.</description>
@@ -19997,7 +20099,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- @default true -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>A flag that indicates whether or not to show tick-mark labels on the axis.</description>
@@ -20007,7 +20109,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- @default true -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>Specifies for which axes to apply the values of the attributes specified in the categoryAxis tag.
@@ -20291,7 +20393,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- @default true -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>A style for the gridlines.</description>
@@ -27212,7 +27314,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>This attribute defines which of the predefined date formats for a given locale should be used for
@@ -27240,7 +27342,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
 
     <attribute>
@@ -27571,7 +27673,7 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
 
     <attribute>
@@ -36028,6 +36130,37 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
+      <description>Applicable only to the "custom" suggestion mode. Specifies how much items from the full unfiltered
+        list should be preloaded along with the page. The value of -1 (default) means that all items are preloaded, and
+        so the whole default suggestion list will be shown without any additional server requests when the user expands
+        the suggestion list. Other values (0 or greater) restrict the number of preloaded items, and the remaining
+        unloaded items will be loaded on demand as the user scrolls through the suggestion list. See also the
+        pageSize attribute, which specifies portion size for loading the additional items in this case.
+      </description>
+      <name>preloadedItemCount</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default -1 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Applicable only to the "custom" suggestion mode. Specifies the number of items that will be loaded
+        along with each additional portion when scrolling through the suggestion list. See the preloadedItemCount
+        attribute. The valid values are -1, or any positive number. The value of -1 means that all remaining items
+        should be loaded.
+      </description>
+      <name>pageSize</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default -1 -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
       <description>Defines whether the button that opens the drop-down list is positioned to the right or to
         the left of the text field.
       </description>
@@ -39184,7 +39317,6 @@ entering a value and returns a list of suggestions from the server -->
     <attribute>
       <description>The component identifier.</description>
       <name>id</name>
-
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -39365,6 +39497,18 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default false -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>
+        A CSS style class for item weight.
+      </description>
+      <name>itemWeightClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
 
     <attribute>
       <description>
@@ -39381,7 +39525,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @value "weight" -->
       <!-- @value "weightRevers" -->
       <!-- @default "alphabetically" -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
 
     <attribute>
@@ -39396,9 +39540,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @value "rectangle" -->
       <!-- @value "vertical" -->
       <!-- @value "oval" -->
-
       <!-- @default "rectangle" -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
       
     <attribute>
@@ -39531,6 +39674,31 @@ entering a value and returns a list of suggestions from the server -->
         that uses a column data variable specified in the "var" attribute.
       </description>
       <name>itemRolloverClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A style for the tag item when mouse is over. Can be specified as a value-binding expression
+        that uses a column data variable specified in the "var" attribute.
+      </description>
+      <name>itemTextStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for tag item when mouse is over. Can be specified as a value-binding expression
+        that uses a column data variable specified in the "var" attribute.
+      </description>
+      <name>itemTextClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>

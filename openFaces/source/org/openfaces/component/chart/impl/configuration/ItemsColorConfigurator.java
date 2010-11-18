@@ -31,8 +31,9 @@ public class ItemsColorConfigurator extends AbstractConfigurator implements Rend
     }
 
     public void configure(ConfigurablePlot plot) {
-        if (getView().getColors() != null) {
-            Collection<Paint> colors = PropertiesConverter.getColors(getView().getColors());
+        Object colorsStr = getView().getColors();
+        if (colorsStr != null) {
+            Collection<Paint> colors = PropertiesConverter.getColors(colorsStr);
 
             Iterator<Paint> colorsIterator = colors.iterator();
             int colorIndex = 0;

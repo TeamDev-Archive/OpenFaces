@@ -12,6 +12,8 @@
 
 package org.openfaces.demo.beans.tagcloud;
 
+import org.openfaces.demo.beans.dropdown.Color;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Random;
@@ -31,6 +33,8 @@ public class Item implements Serializable {
     private String url;
     private double weight;
 
+    private Color color;
+
      public Item() {
         this.text = "";
         this.dateText = new Date(System.nanoTime());
@@ -49,11 +53,22 @@ public class Item implements Serializable {
         this.weight = random.nextInt(500);
     }
 
+
     public Item(String text, String title, String url, int weight) {
         this.text = text;
         this.title = title;
         this.url = url;
         this.weight = weight;
+        this.dateText = new Date(System.nanoTime());
+        this.numberText  = random.nextInt(500);
+    }
+
+    public Item(String text, String title, String url, int weight, Color color) {
+        this.text = text;
+        this.title = title;
+        this.url = url;
+        this.weight = weight;
+        this.color = color;
         this.dateText = new Date(System.nanoTime());
         this.numberText  = random.nextInt(500);
     }
@@ -71,6 +86,14 @@ public class Item implements Serializable {
         this.url = url;
         this.weight = weight;
 
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 
     public String getText() {

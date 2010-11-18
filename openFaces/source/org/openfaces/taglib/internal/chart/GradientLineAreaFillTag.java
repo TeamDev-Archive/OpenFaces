@@ -12,11 +12,12 @@
 package org.openfaces.taglib.internal.chart;
 
 import org.openfaces.component.chart.GradientLineAreaFill;
+import org.openfaces.taglib.internal.AbstractComponentTag;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-public class GradientLineAreaFillTag extends org.openfaces.taglib.internal.AbstractComponentTag {
+public class GradientLineAreaFillTag extends AbstractComponentTag {
 
     public String getComponentType() {
         return GradientLineAreaFill.COMPONENT_TYPE;

@@ -132,11 +132,11 @@ public class ValueBindings {
     private static void setValueExpressionFromList(FacesContext context, ValueExpression valueExpression,
                                                    String propertyName, List propertyValueAsList) {
         Object adaptedValue;
-        ELContext elCotnext = context.getELContext();
+        ELContext elContext = context.getELContext();
         if (propertyValueAsList == null)
             adaptedValue = null;
         else {
-            Class expressionType = valueExpression.getType(elCotnext);
+            Class expressionType = valueExpression.getType(elContext);
             if (List.class.isAssignableFrom(expressionType))
                 adaptedValue = propertyValueAsList;
             else if (Set.class.isAssignableFrom(expressionType))
@@ -156,7 +156,7 @@ public class ValueBindings {
                 throw new RuntimeException("Unsupported expression type: " + expressionType + "; property: " + propertyName + "; only lists, sets or arrays are supported.");
         }
 
-        valueExpression.setValue(elCotnext, adaptedValue);
+        valueExpression.setValue(elContext, adaptedValue);
     }
 
     public static void writeValueExpression(ObjectOutput out, ValueExpression expression) throws IOException {

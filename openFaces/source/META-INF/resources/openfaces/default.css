@@ -1767,7 +1767,7 @@ table.o_filter_parameter {
   margin: 0;
   padding: 5px;
   border: 0 none;
-  line-height: 2em;
+
 }
 
 .o_tagCloud_rectangle,
@@ -1782,7 +1782,6 @@ table.o_filter_parameter {
 
 .o_tagCloud_vertical {
   width: 250px;
-  line-height: 2.5em;
 }
 
 .o_tagCloud_oval {
@@ -1809,7 +1808,6 @@ table.o_filter_parameter {
   .o_tagCloud_vertical,
   .o_tagCloud_3d {
   visibility: hidden;
-  background: #ffffff;
   font-family: "Lucida Grande", Tahoma, Arial, Helvetica, sans-serif;
   letter-spacing: 0.05em;
 }
@@ -1832,10 +1830,9 @@ table.o_filter_parameter {
 
 .o_tagCloud_item{
   position: relative;
-  background: #ffffff;
   border: 0 none;
   margin-left: 0.5em;
-  margin-right: 0.5em;      
+  margin-right: 0.5em;
 }
 
 .o_tagCloud_item_3d {
@@ -1855,7 +1852,14 @@ table.o_filter_parameter {
   color: #007ECE;
 }
 
+.o_tagCloud_item .o_tagCloud_item_inner_weight,
+.o_tagCloud_item_3d .o_tagCloud_item_inner_weight {
+  margin-left: 3px;
+  font-size: 0.8em;
+  vertical-align: top;
+}
+
 .o_tagCloud_item_rollover .o_tagCloud_item_inner_weight,
-.o_tagCloud_item_3d_rollover .o_tagCloud_item_inner_weight{  
-   color: #f59c16; 
+.o_tagCloud_item_3d_rollover .o_tagCloud_item_inner_weight{
+   color: #f59c16;
 }

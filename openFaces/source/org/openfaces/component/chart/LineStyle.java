@@ -19,7 +19,6 @@ import java.io.Serializable;
  * @author Eugene Goncharov
  */
 public class LineStyle implements Serializable {
-    
     private Color color;
     private Stroke stroke;
 

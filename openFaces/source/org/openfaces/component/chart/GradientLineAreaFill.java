@@ -18,11 +18,11 @@ import javax.faces.context.FacesContext;
 public class GradientLineAreaFill extends javax.faces.component.UIComponentBase implements LineAreaFill{
     public static final String COMPONENT_TYPE = "org.openfaces.GradientLineAreaFill";
     public static final String COMPONENT_FAMILY = "org.openfaces.GradientLineAreaFill";
+
     private Double minValueTransparency;
     private Double maxValueTransparency;
 
     public GradientLineAreaFill() {
-
     }
 
     @Override
@@ -48,7 +48,6 @@ public class GradientLineAreaFill extends javax.faces.component.UIComponentBase 
         Object[] state = (Object[]) stateObj;
         int i = 0;
         super.restoreState(context, state[i++]);
-
     }
 
     public double getMinValueTransparency() {

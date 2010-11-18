@@ -34,7 +34,6 @@ import java.util.TimeZone;
         @ResourceDependency(name = "default.css", library = "openfaces")
 })
 public abstract class AbstractSwitcher<E extends TimetableView> extends OUIComponentBase {
-
     private String _for;
     private E timetableView;
 

@@ -155,4 +155,20 @@ public abstract class DropDownFieldJspTagBase extends DropDownComponentJspTag {
     public void setMaxlength(ValueExpression maxlength) {
         getDelegate().setPropertyValue("maxlength", maxlength);
     }
+
+    
+    public void setPreloadedItemCount(ValueExpression preloadedItemCount) {
+        getDelegate().setPropertyValue("preloadedItemCount", preloadedItemCount);
+    }
+
+
+    public void setPageSize(ValueExpression pageSize) {
+        getDelegate().setPropertyValue("pageSize", pageSize);
+    }
+
+    public void setTotalItemCount(ValueExpression totalItemCount) {
+        getDelegate().setPropertyValue("totalItemCount", totalItemCount);
+    }
+
+
 }

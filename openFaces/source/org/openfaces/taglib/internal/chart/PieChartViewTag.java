@@ -11,8 +11,6 @@
  */
 package org.openfaces.taglib.internal.chart;
 
-import org.openfaces.component.chart.PieChartView;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
@@ -35,13 +33,7 @@ public class PieChartViewTag extends AbstractChartViewTag {
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
-        PieChartView view = (PieChartView) component;
-
-        String labelsVisible = getPropertyValue("labelsVisible");
-        if (labelsVisible != null) {
-            Boolean labelVisible = Boolean.valueOf(labelsVisible);
-            view.setLabelsVisible(labelVisible);
-        }
+        setBooleanProperty(component, "labelsVisible");
 
         setBooleanProperty(component, "showShadow");
         setDoubleProperty(component, "shadowXOffset");

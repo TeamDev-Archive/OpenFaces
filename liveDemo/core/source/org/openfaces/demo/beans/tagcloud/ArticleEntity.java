@@ -48,21 +48,21 @@ public class ArticleEntity extends TaggedEntity {
     }
 
     @Override
-    String getInfo() {
+    public String getInfo() {
         StringBuilder rez = new StringBuilder();
-        rez.append("<div class='article'>");
+        rez.append("<dl class='article'>");
 
-        rez.append("<div class='title'> ").append(getTitle()).append("</div>");
-        rez.append("<div class='text'> ").append(getText()).append("</div>");
-        rez.append("<div class='publisher'><b>Published by:</b> ").append(getPublisher()).append("</div>");
+        rez.append("<dt class='title'> ").append(getTitle()).append("</dt>");
+        rez.append("<dd class='text'> ").append(getText()).append("</dd>");
+        rez.append("<dd class='publisher'><b>Published by:</b> ").append(getPublisher()).append("</dd>");
 
-        rez.append("<div class='tags'><b>Related Tags:</b><i> ");
+        rez.append("<dd class='tags'><b>Related Tags:</b> ");
         for (String tag : getTags()) {
-            rez.append("<a href='#'>").append(tag).append("</a> ");
+            rez.append("<a class='tag' href='#'>").append(tag).append("</a> ");
         }
         
-        rez.append("</i></div><div class='date'><b>Date:</b> ").append(getDate()).append("</div>");
-        rez.append("<div class='views'><b>Views: </b>").append(getViews()).append("</div></div>");
+        rez.append("</dd><dd class='date'><b>Date:</b> ").append(getDate()).append("</dd>");
+        rez.append("<dd class='views'><b>Views:</b> ").append(getViews()).append("</dd></dl>");
 
         return rez.toString();
     }

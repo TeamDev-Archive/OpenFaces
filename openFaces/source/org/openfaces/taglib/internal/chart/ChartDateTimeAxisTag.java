@@ -11,8 +11,6 @@
  */
 package org.openfaces.taglib.internal.chart;
 
-import org.openfaces.component.chart.ChartDateAxis;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
@@ -31,13 +29,11 @@ public class ChartDateTimeAxisTag extends ChartAxisTag {
     }
 
     @Override
-    public void setComponentProperties(FacesContext facesContext, UIComponent uiComponent) {
-        super.setComponentProperties(facesContext, uiComponent);
+    public void setComponentProperties(FacesContext facesContext, UIComponent component) {
+        super.setComponentProperties(facesContext, component);
 
-        ChartDateAxis axis = (ChartDateAxis) uiComponent;
-
-        setObjectProperty(axis, "lowerBound");
-        setObjectProperty(axis, "upperBound");
-        setObjectProperty(axis, "dateFormat");
+        setObjectProperty(component, "lowerBound");
+        setObjectProperty(component, "upperBound");
+        setObjectProperty(component, "dateFormat");
     }
 }

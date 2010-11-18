@@ -97,10 +97,10 @@ public class Marker extends javax.faces.component.UIComponentBase implements Sty
     }
 
     public StyledComponent[] getComponentsChain() {
-        StyledComponent[] chain = new StyledComponent[2];
-        chain[0] = Chart.DEFAULT_CHART_STYLE;
-        chain[1] = this;
-        return chain;
+        return new StyledComponent[]{
+                Chart.DEFAULT_CHART_STYLE,
+                this
+        };
     }
 
     public String getHint() {

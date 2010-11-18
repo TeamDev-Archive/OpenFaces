@@ -30,9 +30,14 @@ public abstract class DropDownFieldBase extends DropDownComponent {
     private String var;
     private SuggestionMode suggestionMode;
     private Integer suggestionDelay;
+    private Integer suggestionMinChars;
+    private Integer preloadedItemCount;
+    private Integer pageSize;
+    
     private Integer timeout;
     private String ondropdown;
     private String oncloseup;
+
     private String horizontalGridLines;
     private String verticalGridLines;
     private String headerHorizSeparator;
@@ -51,7 +56,6 @@ public abstract class DropDownFieldBase extends DropDownComponent {
     private String listHeaderRowClass;
     private String listFooterRowStyle;
     private String listFooterRowClass;
-    private Integer suggestionMinChars;
 
     private Integer maxlength;
     private Integer size;
@@ -333,6 +337,8 @@ public abstract class DropDownFieldBase extends DropDownComponent {
                 suggestionDelay,
                 suggestionMinChars,
                 autoComplete,
+                preloadedItemCount,
+                pageSize,
 
                 horizontalGridLines,
                 verticalGridLines,
@@ -377,6 +383,8 @@ public abstract class DropDownFieldBase extends DropDownComponent {
         suggestionDelay = (Integer) values[i++];
         suggestionMinChars = (Integer) values[i++];
         autoComplete = (Boolean) values[i++];
+        preloadedItemCount = (Integer) values[i++];
+        pageSize = (Integer) values[i++];
 
         horizontalGridLines = (String) values[i++];
         verticalGridLines = (String) values[i++];
@@ -423,5 +431,21 @@ public abstract class DropDownFieldBase extends DropDownComponent {
 
     public void setSuggestionMinChars(int suggestionMinChars) {
         this.suggestionMinChars = suggestionMinChars;
+    }
+
+    public int getPreloadedItemCount() {
+        return ValueBindings.get(this, "preloadedItemCount", preloadedItemCount, -1);
+    }
+
+    public void setPreloadedItemCount(int preloadedItemCount) {
+        this.preloadedItemCount = preloadedItemCount;
+    }
+
+    public int getPageSize() {
+        return ValueBindings.get(this, "pageSize", pageSize, -1);
+    }
+
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
     }
 }

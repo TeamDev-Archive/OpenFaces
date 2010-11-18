@@ -16,11 +16,12 @@ import org.openfaces.component.chart.MarkerLabelAnchor;
 import org.openfaces.component.chart.MarkerLabelOffsetType;
 import org.openfaces.component.chart.MarkerLabelTextAnchor;
 import org.openfaces.component.chart.MarkerLayer;
+import org.openfaces.taglib.internal.AbstractComponentTag;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-public class MarkerTag extends org.openfaces.taglib.internal.AbstractComponentTag {
+public class MarkerTag extends AbstractComponentTag {
     public static final String COMPONENT_TYPE = "org.openfaces.Marker";
     public static final String COMPONENT_FAMILY = "org.openfaces.Marker";
 

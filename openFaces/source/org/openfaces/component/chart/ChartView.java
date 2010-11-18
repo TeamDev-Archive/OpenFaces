@@ -266,17 +266,18 @@ public abstract class ChartView extends UICommand implements StyledComponent, Ha
     }
 
     public StyledComponent[] getComponentsChain() {
-        StyledComponent[] chain = new StyledComponent[3];
-        chain[0] = Chart.DEFAULT_CHART_STYLE;
-        chain[1] = getChart();
-        chain[2] = this;
-        return chain;
+        return new StyledComponent[]{
+                Chart.DEFAULT_CHART_STYLE,
+                getChart(),
+                this
+        };
     }
 
     @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
-        return new Object[]{superState, style,
+        return new Object[]{superState,
+                style,
                 url,
                 tooltip,
                 saveAttachedState(context, colors),

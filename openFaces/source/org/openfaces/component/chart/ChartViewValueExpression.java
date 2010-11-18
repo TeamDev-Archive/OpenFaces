@@ -20,7 +20,6 @@ import javax.el.ValueExpression;
  * @author Ekaterina Shliakhovetskaya
  */
 public class ChartViewValueExpression extends ValueExpression {
-
     private ChartView chartView;
     private ValueExpression valueExpression;
 
