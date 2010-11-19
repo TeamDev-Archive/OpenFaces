@@ -1227,14 +1227,23 @@ if (!window.O$) {
   };
 
   O$.setHiddenField = function(element, fieldName, fieldValue) {
+    var silent = true;
     var frm;
     if (!element) {
       frm = document.forms[0];
-      O$.assert(frm, "O$.setHiddenField: There must be a form in the document");
+      if (!frm) {
+        if (!silent)
+          O$.assert(frm, "O$.setHiddenField: There must be a form in the document");
+      }
     } else {
       frm = element._form ? element._form : O$.getParentNode(element, "FORM");
-      O$.assert(frm, "O$.setHiddenField: Enclosing form not found for element with id: " + element.id + "; element tag name: " + element.tagName);
+      if (!frm) {
+        if (!silent)
+          O$.assert(frm, "O$.setHiddenField: Enclosing form not found for element with id: " + element.id + "; element tag name: " + element.tagName);
+      }
     }
+    if (!frm)
+      frm = O$.getDefaultAbsolutePositionParent();
     var existingField = O$(fieldName);
     var newParamField = existingField ? existingField : document.createElement("input");
     if (!existingField) {
