@@ -73,6 +73,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
 
     private static final String VAR_PAGE_SIZE = "pageSize";
     private static final String ATTR_TOTAL_ITEM_COUNT = "_totalItemCount";
+    private static final String ATTR_PAGE_SIZE = "_pageSize";
 
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) {
@@ -139,6 +140,14 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
 
         SuggestionMode suggestionMode = dropDownField.getSuggestionMode();
         int preloadedItemCount = dropDownField.getPreloadedItemCount();
+        if (preloadedItemCount < -1)
+            throw new FacesException("preloadedItemCount attribute should be specified as -1, 0, or a positive " +
+                    "number, but was specified as: " + preloadedItemCount +
+                    ". Component id: " + dropDownField.getClientId(context));
+        int pageSize = dropDownField.getPageSize();
+        if (pageSize == 0 || pageSize < -1)
+            throw new FacesException("pageSize should be specified as -1 or a positive number, but the current value " +
+                    "is: " + preloadedItemCount + ". Component id: " + dropDownField.getClientId(context));
         int totalItemCount = -1;
         if (
                 SuggestionMode.ALL.equals(suggestionMode) ||
@@ -153,7 +162,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
                 preloadedItemCount = 0;
             else {
                 ValueExpression ve = dropDownField.getValueExpression("totalItemCount");
-                if (ve == null && preloadedItemCount != -1)
+                if (ve == null && preloadedItemCount != -1 && pageSize != -1)
                     throw new FacesException("totalItemCount attribute should be specified for the DropDownField " +
                             "component with preloadedItemCount attribute. Component id: " + dropDownField.getClientId(context));
                 totalItemCount = ve != null ? (Integer) ve.getValue(context.getELContext()) : -1;
@@ -177,6 +186,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
         Rendering.encodeClientActions(context, uiComponent);
 
         dropDownField.getAttributes().put(ATTR_TOTAL_ITEM_COUNT, totalItemCount);
+        dropDownField.getAttributes().put(ATTR_PAGE_SIZE, pageSize);
     }
 
     private List<String[]> prepareItemValues(FacesContext context, DropDownFieldBase dropDownField, Collection<UISelectItem> items) {
@@ -353,7 +363,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
                 isManualListOpeningAllowed(dropDownField),
                 dropDownField.getAutoComplete(),
                 dropDownField.getAttributes().get(ATTR_TOTAL_ITEM_COUNT),
-                dropDownField.getPageSize(),
+                dropDownField.getAttributes().get(ATTR_PAGE_SIZE),
 
                 tableStructure.getInitParam(context, POPUP_TABLE_DEFAULT_STYLES)
         );

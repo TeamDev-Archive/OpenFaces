@@ -41,9 +41,9 @@
                            customValueAllowed="false"
                            value="#{DropDownAjaxBean.selectedPlant}"
                            listItemStyle="white-space: nowrap;"
-                           preloadedItemCount="30"
+                           preloadedItemCount="50"
                            totalItemCount="#{DropDownAjaxBean.totalPlants}"
-                           pageSize="40">
+                           pageSize="100">
             <o:dropDownItems value="#{DropDownAjaxBean.suggestedPlants}"/>
           </o:dropDownField>
         </td>
@@ -53,9 +53,9 @@
         <td>
           <o:dropDownField id="animals"
                            suggestionMode="custom"
-                           preloadedItemCount="30"
+                           preloadedItemCount="50"
                            totalItemCount="#{DropDownAjaxBean.totalAnimals}"
-                           pageSize="40"
+                           pageSize="100"
                            customValueAllowed="false"
                            value="#{DropDownAjaxBean.selectedAnimal}"
                            oddListItemStyle="background: #ebf3ff; font-size: 11px; padding-left: 2px; white-space: nowrap; font-family: MS Shell Dlg,Arial,sans-serif; height: 16px; line-height: 16px;"
@@ -78,9 +78,9 @@
                            var="city"
                            value="#{DropDownAjaxBean.selectedCity}"
                            suggestionMode="custom"
-                           preloadedItemCount="30"
+                           preloadedItemCount="50"
                            totalItemCount="#{DropDownAjaxBean.totalCities}"
-                           pageSize="40"
+                           pageSize="100"
                            converter="#{DropDownAjaxBean.cityConverter}"
                            horizontalGridLines="1px solid #dedede"
                            customValueAllowed="false"
