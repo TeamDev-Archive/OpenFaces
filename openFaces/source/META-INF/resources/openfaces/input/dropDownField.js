@@ -140,7 +140,11 @@ O$.DropDownField = {
       _checkAdditionalPageNeeded: function() {
         if (suggestionMode != "custom" || dropDown._filterCriterion) return;
         var itemsLoaded = dropDown._items.length;
-        if (itemsLoaded >= totalItemCount) return;
+        if (totalItemCount != -1) {
+          if (itemsLoaded >= totalItemCount) return;
+        } else {
+          if (itemsLoaded > 0) return;
+        }
 
         if (innerTable.offsetHeight > popup.clientHeight) {
           var bottomEdge = popup.scrollTop + popup.clientHeight;
