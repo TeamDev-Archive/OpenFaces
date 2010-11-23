@@ -164,7 +164,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
                 ValueExpression ve = dropDownField.getValueExpression("totalItemCount");
                 if (ve == null && preloadedItemCount != -1 && pageSize != -1)
                     throw new FacesException("totalItemCount attribute should be specified for the DropDownField " +
-                            "component with preloadedItemCount attribute. Component id: " + dropDownField.getClientId(context));
+                            "component with pageSize attributes. Component id: " + dropDownField.getClientId(context));
                 totalItemCount = ve != null ? (Integer) ve.getValue(context.getELContext()) : -1;
             }
         } else {
