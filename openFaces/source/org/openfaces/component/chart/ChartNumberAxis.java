@@ -23,6 +23,7 @@ public class ChartNumberAxis extends ChartAxis {
     private Double lowerBound;
     private Double upperBound;
     private Boolean logarithmic;
+    private Double tickInterval;
 
     public Double getLowerBound() {
         return ValueBindings.get(this, "lowerBound", lowerBound, 0.0);
@@ -57,13 +58,23 @@ public class ChartNumberAxis extends ChartAxis {
         }
     }
 
+    public Double getTickInterval() {
+        return ValueBindings.get(this, "tickInterval", tickInterval, null, Double.class);
+    }
+
+    public void setTickInterval(Double tickInterval) {
+        this.tickInterval = tickInterval;
+    }
+
     @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         return new Object[]{superState,
                 lowerBound,
                 upperBound,
-                logarithmic};
+                logarithmic,
+                tickInterval
+        };
     }
 
     @Override
@@ -74,6 +85,7 @@ public class ChartNumberAxis extends ChartAxis {
         lowerBound = (Double) state[i++];
         upperBound = (Double) state[i++];
         logarithmic = (Boolean) state[i++];
+        tickInterval = (Double) state[i++];
     }
 
 }

@@ -37,5 +37,11 @@ public class ChartAxisTag extends AbstractStyledComponentTag {
         setBooleanProperty(component, "labelVisible");
         setBooleanProperty(component, "ticksVisible");
         setBooleanProperty(component, "ticksLabelsVisible");
+        setIntProperty(component, "tickInsideLength");
+        setIntProperty(component, "tickOutsideLength");
+        setBooleanProperty(component, "minorTicksVisible");
+        setIntProperty(component, "minorTickCount");
+        setIntProperty(component, "minorTickInsideLength");
+        setIntProperty(component, "minorTickOutsideLength");
     }
 }

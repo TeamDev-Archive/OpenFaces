@@ -44,4 +44,28 @@ public class ChartAxisJspTag extends AbstractStyledComponentJspTag {
     public void setTicksLabelsVisible(ValueExpression ticksLabelsVisible) {
         getDelegate().setPropertyValue("ticksLabelsVisible", ticksLabelsVisible);
     }
+
+    public void setTickInsideLength(ValueExpression tickInsideLength) {
+        getDelegate().setPropertyValue("tickInsideLength", tickInsideLength);
+    }
+
+    public void setTickOutsideLength(ValueExpression tickOutsideLength) {
+        getDelegate().setPropertyValue("tickOutsideLength", tickOutsideLength);
+    }
+    public void setMinorTicksVisible(ValueExpression minorTicksVisible) {
+        getDelegate().setPropertyValue("minorTicksVisible", minorTicksVisible);
+    }
+
+    public void setMinorTickCount(ValueExpression minorTickCount) {
+        getDelegate().setPropertyValue("minorTickCount", minorTickCount);
+    }
+
+    public void setMinorTickInsideLength(ValueExpression minorTickInsideLength) {
+        getDelegate().setPropertyValue("minorTickInsideLength", minorTickInsideLength);
+    }
+
+    public void setMinorTickOutsideLength(ValueExpression minorTickOutsideLength) {
+        getDelegate().setPropertyValue("minorTickOutsideLength", minorTickOutsideLength);
+    }
+
 }

@@ -13,6 +13,7 @@ package org.openfaces.component.chart.impl.helpers;
 
 import org.openfaces.component.chart.Chart;
 import org.openfaces.component.chart.ChartAxis;
+import org.openfaces.component.chart.ChartNumberAxis;
 import org.openfaces.component.chart.GridChartView;
 import org.openfaces.renderkit.cssparser.CSSUtil;
 import org.openfaces.renderkit.cssparser.StyleObjectModel;
@@ -25,6 +26,14 @@ class FakeAxisStyle implements StyledComponent { // needed for cascading axis st
     private String style;
     private StyledComponent[] chain;
     private boolean ticksVisible = true;
+    private Double tickInterval;
+    private int tickInsideLength;
+    private int tickOutsideLength;
+    private boolean minorTicksVisible;
+    private int minorTickCount;
+    private int minorTickInsideLength;
+    private int minorTickOutsideLength;
+
     private boolean labelVisible = true;
     private boolean tickLabelsVisible = true;
 
@@ -38,9 +47,16 @@ class FakeAxisStyle implements StyledComponent { // needed for cascading axis st
                 }
             }
             style = baseAxis.getTextStyle();
+            tickInterval = baseAxis instanceof ChartNumberAxis ? ((ChartNumberAxis) baseAxis).getTickInterval() : null;
             ticksVisible = baseAxis.isTicksVisible();
             labelVisible = baseAxis.isLabelVisible();
             tickLabelsVisible = baseAxis.isTickLabelsVisible();
+            tickInsideLength = baseAxis.getTickInsideLength();
+            tickOutsideLength = baseAxis.getTickOutsideLength();
+            minorTicksVisible = baseAxis.getMinorTicksVisible();
+            minorTickCount = baseAxis.getMinorTickCount();
+            minorTickInsideLength = baseAxis.getMinorTickInsideLength();
+            minorTickOutsideLength = baseAxis.getMinorTickOutsideLength();
         }
 
         if (axis != null) {
@@ -66,9 +82,16 @@ class FakeAxisStyle implements StyledComponent { // needed for cascading axis st
                     }
                 }
             }
+            tickInterval= axis instanceof ChartNumberAxis ? ((ChartNumberAxis) axis).getTickInterval() : null;
             ticksVisible = axis.isTicksVisible();
             labelVisible = axis.isLabelVisible();
             tickLabelsVisible = axis.isTickLabelsVisible();
+            tickInsideLength = axis.getTickInsideLength();
+            tickOutsideLength = axis.getTickOutsideLength();
+            minorTicksVisible = axis.getMinorTicksVisible();
+            minorTickCount = axis.getMinorTickCount();
+            minorTickInsideLength = axis.getMinorTickInsideLength();
+            minorTickOutsideLength = axis.getMinorTickOutsideLength();
         }
 
         chain = new StyledComponent[]{
@@ -78,6 +101,34 @@ class FakeAxisStyle implements StyledComponent { // needed for cascading axis st
                 this
         };
 
+    }
+
+    public Double getTickInterval() {
+        return tickInterval;
+    }
+
+    public int getTickInsideLength() {
+        return tickInsideLength;
+    }
+
+    public int getTickOutsideLength() {
+        return tickOutsideLength;
+    }
+
+    public boolean getMinorTicksVisible() {
+        return minorTicksVisible;
+    }
+
+    public int getMinorTickCount() {
+        return minorTickCount;
+    }
+
+    public int getMinorTickInsideLength() {
+        return minorTickInsideLength;
+    }
+
+    public int getMinorTickOutsideLength() {
+        return minorTickOutsideLength;
     }
 
     public boolean isTicksVisible() {

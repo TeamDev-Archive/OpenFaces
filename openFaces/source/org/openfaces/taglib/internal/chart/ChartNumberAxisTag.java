@@ -35,5 +35,6 @@ public class ChartNumberAxisTag extends ChartAxisTag {
         setBooleanProperty(component, "logarithmic");
         setDoubleProperty(component, "lowerBound");
         setDoubleProperty(component, "upperBound");
+        setDoubleProperty(component, "tickInterval");
     }
 }

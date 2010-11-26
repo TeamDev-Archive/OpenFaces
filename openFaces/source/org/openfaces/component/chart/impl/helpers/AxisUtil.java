@@ -12,6 +12,9 @@
 package org.openfaces.component.chart.impl.helpers;
 
 import org.jfree.chart.axis.Axis;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.NumberTickUnit;
+import org.jfree.chart.axis.ValueAxis;
 import org.openfaces.component.chart.impl.PropertiesConverter;
 import org.openfaces.renderkit.cssparser.CSSUtil;
 import org.openfaces.renderkit.cssparser.StyleBorderModel;
@@ -64,6 +67,29 @@ class AxisUtil {
             axis.setTickLabelsVisible(false);
         }
 
+        Double tickInterval = axisStyle.getTickInterval();
+        if (tickInterval != null && axis instanceof NumberAxis) {
+            NumberAxis numberAxis = (NumberAxis) axis;
+            numberAxis.setTickUnit(new NumberTickUnit(tickInterval));
+            numberAxis.setMinorTickMarksVisible(true);
+            numberAxis.setMinorTickCount(2);
+            numberAxis.setMinorTickMarkOutsideLength(3);
+            numberAxis.setMinorTickMarkInsideLength(3);
+            numberAxis.setTickMarkInsideLength(5);
+            numberAxis.setTickMarkOutsideLength(5);
+        }
+
+        axis.setTickMarkInsideLength(axisStyle.getTickInsideLength());
+        axis.setTickMarkOutsideLength(axisStyle.getTickOutsideLength());
+        if (axisStyle.getMinorTicksVisible()) {
+            axis.setMinorTickMarksVisible(true);
+            if (axis instanceof ValueAxis)
+                ((ValueAxis) axis).setMinorTickCount(axisStyle.getMinorTickCount() + 1);
+            axis.setMinorTickMarkInsideLength(axisStyle.getMinorTickInsideLength());
+            axis.setMinorTickMarkOutsideLength(axisStyle.getMinorTickOutsideLength());
+        } else {
+            axis.setMinorTickMarksVisible(false);
+        }
     }
 
 

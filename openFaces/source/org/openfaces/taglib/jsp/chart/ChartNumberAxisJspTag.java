@@ -36,4 +36,8 @@ public class ChartNumberAxisJspTag extends ChartAxisJspTag {
         getDelegate().setPropertyValue("logarithmic", logarithmic);
     }
 
+    public void setTickInterval(ValueExpression tickInterval) {
+        getDelegate().setPropertyValue("tickInterval", tickInterval);
+    }
+
 }
