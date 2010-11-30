@@ -19,7 +19,7 @@
 
       <h:panelGroup rendered="#{status.index ne MenuService.selectedMenu.selectedTabIndex}">
         <li>
-          <h:outputLink value="#{MenuService.subDemoUrl}" immediate="true">
+          <h:outputLink value="#{MenuService.subDemoUrl}">
             <h:outputText value="#{demoItem.demoName}"/>
           </h:outputLink>
         </li>
