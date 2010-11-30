@@ -19,10 +19,9 @@
 
       <h:panelGroup rendered="#{status.index ne MenuService.selectedMenu.selectedTabIndex}">
         <li>
-          <h:commandLink actionListener="#{MenuService.selectionChanged}" immediate="true">
-            <f:param name="menuItemIndex" value="#{status.index}"/>
+          <h:outputLink value="#{MenuService.subDemoUrl}" immediate="true">
             <h:outputText value="#{demoItem.demoName}"/>
-          </h:commandLink>
+          </h:outputLink>
         </li>
       </h:panelGroup>
     </o:forEach>

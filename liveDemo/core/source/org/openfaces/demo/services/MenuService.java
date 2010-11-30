@@ -13,6 +13,7 @@
 package org.openfaces.demo.services;
 
 import org.apache.commons.digester.Digester;
+import org.openfaces.component.util.IterationStatus;
 import org.openfaces.util.Faces;
 import org.openfaces.util.Log;
 import org.openfaces.util.Resources;
@@ -20,7 +21,6 @@ import org.xml.sax.SAXException;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.Serializable;
@@ -88,21 +88,16 @@ public class MenuService implements Serializable {
         return selectedMenu;
     }
 
-    public void selectionChanged(ActionEvent e) {
+    public String getSubDemoUrl() {
+        IterationStatus status = Faces.var("status", IterationStatus.class);
+        int newIndex = status.getIndex();
         MenuItem selectedMenu = getSelectedMenu();
-        int newIndex = Faces.requestParam("menuItemIndex", Integer.class);
         DemoItem di = selectedMenu.getDemos().get(newIndex);
         selectedMenu.setSelectedDemo(di);
         selectedMenu.setSelectedTabIndex(newIndex);
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext externalContext = context.getExternalContext();
-        try {
-            externalContext.redirect(externalContext.getRequestContextPath() + di.getDemoUrl());
-        } catch (IOException e1) {
-            throw new RuntimeException(e1);
-        } finally {
-            context.responseComplete();
-        }
+        return externalContext.getRequestContextPath() + di.getDemoUrl();
     }
 
     private MenuItem getSelectedMenu_internal() {
