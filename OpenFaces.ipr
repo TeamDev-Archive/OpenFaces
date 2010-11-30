@@ -1423,12 +1423,10 @@
     </library>
     <library name="PrimeFaces">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/primefaces/primefaces-2.2.RC1-SNAPSHOT.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/primefaces/primefaces-2.2.RC2.jar!/" />
       </CLASSES>
       <JAVADOC />
-      <SOURCES>
-        <root url="jar://$PROJECT_DIR$/libsrc/primefaces-2.2.M1-sources.jar!/" />
-      </SOURCES>
+      <SOURCES />
     </library>
     <library name="JSF Implementation - MyFaces 2.0">
       <CLASSES>

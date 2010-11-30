@@ -63,7 +63,7 @@
   </fileset>
 
   <fileset id="primefaces-libs" dir="${primefaces.lib.dir}">
-    <include name="primefaces-2.2.RC1-SNAPSHOT.jar"/>
+    <include name="primefaces-2.2.RC2.jar"/>
   </fileset>
 
   <fileset id="google-libs" dir="${google.lib.dir}">

@@ -20,6 +20,8 @@ import javax.faces.context.FacesContext;
  * @author Ekaterina Shliakhovetskaya
  */
 public class ChartNumberAxis extends ChartAxis {
+    public static final double INTEGER_TICK_INTERVAL = -1;
+
     private Double lowerBound;
     private Double upperBound;
     private Boolean logarithmic;
