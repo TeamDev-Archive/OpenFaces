@@ -18,7 +18,6 @@ import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PostAddToViewEvent;
-import javax.faces.event.PreRenderViewEvent;
 import javax.faces.event.SystemEvent;
 import java.util.Map;
 
@@ -58,10 +57,12 @@ public class OpenFacesApplication extends ApplicationWrapper {
     public void publishEvent(FacesContext context, Class<? extends SystemEvent> systemEventClass, Class<?> sourceBaseType, Object source) {
         boolean postAddToViewEvent = PostAddToViewEvent.class.isAssignableFrom(systemEventClass);
 
-        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+        Map<String, Object> requestMap = null; // avoid invoking getRequestMap() here for MyFaces compatibility (see http://requests.openfaces.org/browse/OF-65) 
         Object prevConstructingView = null;
-        if (postAddToViewEvent)
+        if (postAddToViewEvent) {
+            requestMap = context.getExternalContext().getRequestMap();
             prevConstructingView = requestMap.put(CONSTRUCTING_VIEW_KEY, Boolean.TRUE);
+        }
         super.publishEvent(context, systemEventClass, sourceBaseType, source);
         if (postAddToViewEvent && source instanceof UIViewRoot)
             viewRootAddedToView(context);
