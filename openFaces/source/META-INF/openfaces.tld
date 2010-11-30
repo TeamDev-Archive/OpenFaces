@@ -19872,6 +19872,68 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>Lengths of tick mark's part that lies on the inside part of the chart.</description>
+      <name>tickInsideLength</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default 0 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Lengths of tick mark's part that lies on the outside part of the chart.</description>
+      <name>tickOutsideLength</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default 2 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Lengths of minor tick mark's part that lies on the inside part of the chart.</description>
+      <name>minorTickInsideLength</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default 0 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Lengths of minor tick mark's part that lies on the outside part of the chart.</description>
+      <name>minorTickOutsideLength</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default 2 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Setting this attribute to true shows additional tick marks, called minor tick marks, between the
+        regular tick marks, called major tick marks.</description>
+      <name>minorTicksVisible</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean-->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Lengths of minor tick mark's part that lies on the outside part of the chart.</description>
+      <name>minorTickCount</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default 1 -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
       <description>Specifies for which axes to apply the values of the attributes specified in the chartAxis tag.
       </description>
       <name>domain</name>
@@ -19934,6 +19996,78 @@ and it is automatically triggered on any form submission. -->
       <!-- @default true -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>Specifies the distance between the axis ticks.</description>
+      <name>tickInterval</name>
+      <deferred-value>
+        <type>java.lang.Double</type>
+      </deferred-value>
+      <!-- @bindingType double -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Lengths of tick mark's part that lies on the inside part of the chart.</description>
+      <name>tickInsideLength</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default 0 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Lengths of tick mark's part that lies on the outside part of the chart.</description>
+      <name>tickOutsideLength</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default 2 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Lengths of minor tick mark's part that lies on the inside part of the chart.</description>
+      <name>minorTickInsideLength</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default 0 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Lengths of minor tick mark's part that lies on the outside part of the chart.</description>
+      <name>minorTickOutsideLength</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default 2 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Setting this attribute to true shows additional tick marks, called minor tick marks, between the
+        regular tick marks, called major tick marks.</description>
+      <name>minorTicksVisible</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean-->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Lengths of minor tick mark's part that lies on the outside part of the chart.</description>
+      <name>minorTickCount</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default 1 -->
+      <!-- @el true -->
+    </attribute>
+
     <attribute>
       <description>Specifies for which axes to apply the values of the attributes specified in the numberAxis tag.
       </description>
@@ -20017,6 +20151,68 @@ and it is automatically triggered on any form submission. -->
       <!-- @default true -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>Lengths of tick mark's part that lies on the inside part of the chart.</description>
+      <name>tickInsideLength</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default 0 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Lengths of tick mark's part that lies on the outside part of the chart.</description>
+      <name>tickOutsideLength</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default 2 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Lengths of minor tick mark's part that lies on the inside part of the chart.</description>
+      <name>minorTickInsideLength</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default 0 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Lengths of minor tick mark's part that lies on the outside part of the chart.</description>
+      <name>minorTickOutsideLength</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default 2 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Setting this attribute to true shows additional tick marks, called minor tick marks, between the
+        regular tick marks, called major tick marks.</description>
+      <name>minorTicksVisible</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean-->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Lengths of minor tick mark's part that lies on the outside part of the chart.</description>
+      <name>minorTickCount</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default 1 -->
+      <!-- @el true -->
+    </attribute>
+
     <attribute>
       <description>Specifies for which axes to apply the values of the attributes specified in the dateAxis tag.
       </description>
@@ -20111,6 +20307,27 @@ and it is automatically triggered on any form submission. -->
       <!-- @default true -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>Lengths of tick mark's part that lies on the inside part of the chart.</description>
+      <name>tickInsideLength</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default 0 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Lengths of tick mark's part that lies on the outside part of the chart.</description>
+      <name>tickOutsideLength</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default 2 -->
+      <!-- @el true -->
+    </attribute>
+
     <attribute>
       <description>Specifies for which axes to apply the values of the attributes specified in the categoryAxis tag.
       </description>
