@@ -36,9 +36,6 @@
           <include name="jsf-api-2.0.3.jar"/>
           <include name="jsf-impl-2.0.3.jar"/>
         </fileset>
-        <fileset dir="${myfaces.lib.dir}">
-          <include name="myfaces-impl-1.2.3.jar"/>
-        </fileset>
         <fileset dir="${portlets.lib.dir}">
           <include name="exoportal-stub.jar"/>
           <include name="portlet-api-lib.jar"/>
