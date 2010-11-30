@@ -19,6 +19,7 @@ import org.openfaces.component.filter.Filter;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.renderkit.table.TableStructure;
 import org.openfaces.util.Components;
+import org.openfaces.util.Log;
 import org.openfaces.util.ReflectionUtil;
 import org.openfaces.util.ValueBindings;
 
@@ -333,14 +334,15 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     @Override
     public boolean visitTree(VisitContext context, VisitCallback callback) {
         if (context.getFacesContext().getCurrentPhaseId() != PhaseId.RESTORE_VIEW
-                && getRowIndex() == -1 /* beforeProcessDecodes is not expected to be invoked in the midst of iteration over its rows */) 
+                && getRowIndex() == -1 /* beforeProcessDecodes is not expected to be invoked in the midst of iteration over its rows */)
             invokeBeforeProcessDecodes(context.getFacesContext());
         return super.visitTree(context, callback);
     }
 
     public void invokeBeforeProcessDecodes(FacesContext context) {
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-        if (getRowIndex() != -1) throw new IllegalArgumentException("beforeProcessDecodes is not expected to be invoked in the midst of iteration over its rows");
+        if (getRowIndex() != -1)
+            throw new IllegalArgumentException("beforeProcessDecodes is not expected to be invoked in the midst of iteration over its rows");
         String key = AbstractTable.class.getName() + ".beforeProcessDecodesInvoked_" + getClientId(context);
         if (requestMap.containsKey(key)) return;
         requestMap.put(key, true);
@@ -1084,8 +1086,9 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         setUnavailableRowIndexes(null);
 
         checkSortingColumnsValid();
-        ensureFacetHasOwnId(getAbove());
-        ensureFacetHasOwnId(getBelow());
+        // ensure facets has own ids in calls to these methods
+        getAbove();
+        getBelow();
 
         updateModel();
         totalRowCount = getModel().getTotalRowCount();
@@ -1762,7 +1765,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     private void addExternalPartIdFromComponent(FacesContext context, List<String> ids, UIComponent component) {
         if (component == null) return;
-        
+
         if (componentIdSpecified(component)) {
             ids.add(component.getClientId(context));
             return;
@@ -1777,10 +1780,16 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         return id != null && !id.startsWith(UIViewRoot.UNIQUE_ID_PREFIX);
     }
 
-    private void ensureFacetHasOwnId(UIComponent facet) {
-//        if (facet == null) return;
-//        String id = facet.getId();
-//        if (id == null || id.startsWith(UIViewRoot.UNIQUE_ID_PREFIX)) {
+    private void ensureFacetHasOwnId(UIComponent facet, String facetName) {
+        if (facet == null) return;
+        String id = facet.getId();
+        if (id == null || id.startsWith(UIViewRoot.UNIQUE_ID_PREFIX)) {
+            Log.log("OpenFaces warning: component " + facet.getClass().getName() + " in \"" + facetName + "\" facet " +
+                    "of component with id \"" + getClientId(getFacesContext()) + "\" doesn't have its id attribute specified. " +
+                    "You might need to specify id for a component inside of this facet if it isn't updated properly " +
+                    "during Ajax actions such as pagination or others. See the \"Specifying the content of the above and below facets\" " +
+                    "documentation section for details: http://openfaces.org/documentation/developersGuide/datatable.html" +
+                    "#DataTable-Specifyingthecontentofthe%22above%22and%22below%22facets");
 //            String facetAutoIdCounterKey = "facetAutoIdCounter";
 //            Integer counter = (Integer) getStateHelper().get(facetAutoIdCounterKey);
 //            if (counter == null)
@@ -1788,12 +1797,12 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 //            counter++;
 //            getStateHelper().put(facetAutoIdCounterKey, counter);
 //            facet.setId(getId() + Rendering.SERVER_ID_SUFFIX_SEPARATOR + "facetAutoId_" + counter);
-//        }
+        }
     }
 
     public UIComponent getAbove() {
         UIComponent component = getFacets().get(ABOVE_FACET_NAME);
-        ensureFacetHasOwnId(component);
+        ensureFacetHasOwnId(component, "above");
         return component;
     }
 
@@ -1803,7 +1812,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     public UIComponent getBelow() {
         UIComponent component = getFacets().get(BELOW_FACET_NAME);
-        ensureFacetHasOwnId(component);
+        ensureFacetHasOwnId(component, "below");
         return component;
     }
 
