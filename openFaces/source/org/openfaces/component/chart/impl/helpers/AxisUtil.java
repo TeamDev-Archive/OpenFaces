@@ -14,11 +14,14 @@ package org.openfaces.component.chart.impl.helpers;
 import org.jfree.chart.axis.Axis;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.NumberTickUnit;
+import org.jfree.chart.axis.TickUnitSource;
 import org.jfree.chart.axis.ValueAxis;
 import org.openfaces.component.chart.impl.PropertiesConverter;
 import org.openfaces.renderkit.cssparser.CSSUtil;
 import org.openfaces.renderkit.cssparser.StyleBorderModel;
 import org.openfaces.renderkit.cssparser.StyleObjectModel;
+
+import javax.faces.FacesException;
 
 /**
  * @author Ekaterina Shliakhovetskaya
@@ -68,9 +71,19 @@ class AxisUtil {
         }
 
         Double tickInterval = axisStyle.getTickInterval();
-        if (tickInterval != null && axis instanceof NumberAxis) {
+        if (tickInterval != null && tickInterval != 0 && axis instanceof NumberAxis) {
             NumberAxis numberAxis = (NumberAxis) axis;
-            numberAxis.setTickUnit(new NumberTickUnit(tickInterval));
+            if (tickInterval > 0) {
+                NumberTickUnit tickUnit = new NumberTickUnit(tickInterval);
+                numberAxis.setTickUnit(tickUnit);
+            } else if (tickInterval == -1) {
+                TickUnitSource tickUnits = NumberAxis.createIntegerTickUnits();
+                numberAxis.setStandardTickUnits(tickUnits);
+            } else {
+                throw new FacesException("tickInterval must be a positive number for a fixed tick interval, " +
+                        "or -1 for automatic integer tick selection: " + tickInterval);
+            }
+
             numberAxis.setMinorTickMarksVisible(true);
             numberAxis.setMinorTickCount(2);
             numberAxis.setMinorTickMarkOutsideLength(3);

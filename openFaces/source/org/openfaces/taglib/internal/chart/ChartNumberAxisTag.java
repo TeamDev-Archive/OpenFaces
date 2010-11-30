@@ -35,6 +35,12 @@ public class ChartNumberAxisTag extends ChartAxisTag {
         setBooleanProperty(component, "logarithmic");
         setDoubleProperty(component, "lowerBound");
         setDoubleProperty(component, "upperBound");
-        setDoubleProperty(component, "tickInterval");
+        setTickIntervalProperty(component);
+    }
+
+    private void setTickIntervalProperty(UIComponent component) {
+        String value = getPropertyValue("tickInterval");
+        if ("integer".equals(value)) value = "-1";
+        setDoubleProperty(component, "tickInterval", value);
     }
 }

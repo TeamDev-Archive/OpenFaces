@@ -19997,7 +19997,11 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Specifies the distance between the axis ticks.</description>
+      <description>Specifies the distance between the axis ticks. It can be specified either as a positive number for
+        a fixed interval regardless of axis value range, or it can be specified as -1 (or a special value of "integer"
+        which can be used as an alternative unless you're using Java API) for automatic integer tick selection. The
+        value of -1 (or "integer") is similar to the default behavior when this attribute is unspecified when tick
+        interval is deteted automatically, but only integer ticks will be generated in this case.</description>
       <name>tickInterval</name>
       <deferred-value>
         <type>java.lang.Double</type>
