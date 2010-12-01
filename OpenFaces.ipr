@@ -1426,7 +1426,9 @@
         <root url="jar://$PROJECT_DIR$/lib/primefaces/primefaces-2.2.RC2.jar!/" />
       </CLASSES>
       <JAVADOC />
-      <SOURCES />
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/libsrc/primefaces-2.2.RC2-sources.jar!/" />
+      </SOURCES>
     </library>
     <library name="JSF Implementation - MyFaces 2.0">
       <CLASSES>
