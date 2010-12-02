@@ -338,6 +338,9 @@ public abstract class ExpressionFilter extends Filter implements CompoundCompone
     public PropertyLocator getPropertyLocator() {
         FilterableComponent component = getFilteredComponent();
         Object expression = getExpression();
+        if (expression == null)
+            throw new FacesException("Filter expression cannot be detected automatically and is not specified " +
+                    "explicitly. Filter id: " + getClientId(getFacesContext()));
         if (component != null) {
             final PropertyLocatorFactory factory = new FilterableComponentPropertyLocatorFactory(component);
             return factory.create(expression);

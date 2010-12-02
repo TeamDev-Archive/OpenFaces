@@ -1204,9 +1204,9 @@ if (!window.O$) {
     frm.submit();
   };
 
-  O$.submitFormWithAdditionalParams = function(element, params) {
-    O$.assert(element, "element should be passed to O$.submitFormWithAdditionalParams");
-    O$.assert(params, "params should be passed to O$.submitFormWithAdditionalParams");
+  O$.submitWithParams = function(element, params) {
+    O$.assert(element, "element should be passed to O$.submitWithParams");
+    O$.assert(params, "params should be passed to O$.submitWithParams");
     for (var i = 0, count = params.length; i < count; i++) {
       var param = params[i];
       O$.setHiddenField(element, param[0], param[1]);
@@ -1216,12 +1216,10 @@ if (!window.O$) {
     frm.submit();
   };
 
-  O$.submitWithParam = function(eltId, paramName, paramValue) {
-    O$.submitFormWithAdditionalParam(O$(eltId), paramName, paramValue);
-  };
-
-  O$.submitFormWithAdditionalParam = function(element, paramName, paramValue) {
-    O$.submitFormWithAdditionalParams(element, [
+  O$.submitWithParam = function(elt, paramName, paramValue) {
+    if (typeof elt == "string")
+      elt = O$(elt);
+    O$.submitWithParams(elt, [
       [paramName, paramValue]
     ]);
   };

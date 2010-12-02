@@ -265,7 +265,7 @@ O$.TreeTable = {
             else
               O$.requestComponentPortions(rowTable.id, ["subRows:" + this._index], null, O$.Table._acceptLoadedRows, ajaxFailedProcessor);
           } else
-            O$.submitFormWithAdditionalParam(rowTable, rowTable.id + "::toggleExpansion", this._index);
+            O$.submitWithParam(rowTable, rowTable.id + "::toggleExpansion", this._index);
         } else {
           rowTable._updateRowVisibility();
         }

@@ -275,7 +275,7 @@ public class DataTablePaginatorRenderer extends RendererBase {
         Script submitScript = useAjax
                 ? new ScriptBuilder().functionCall("O$.Table._performPaginatorAction",
                                         table, new RawScript(focusTable ? "null" : "this"), paramName, paramValue).semicolon()
-                : new ScriptBuilder().functionCall("O$.submitFormWithAdditionalParam",
+                : new ScriptBuilder().functionCall("O$.submitWithParam",
                                         new RawScript("this"), paramName, paramValue).semicolon();
         return submitScript;
     }
