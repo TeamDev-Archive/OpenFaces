@@ -327,7 +327,7 @@
 
   <managed-bean>
     <managed-bean-name>CommandLinkBean</managed-bean-name>
-    <managed-bean-class>org.openfaces.demo.beans.commandink.CommandLinkBean</managed-bean-class>
+    <managed-bean-class>org.openfaces.demo.beans.commandlink.CommandLinkBean</managed-bean-class>
     <managed-bean-scope>session</managed-bean-scope>
   </managed-bean>
 
