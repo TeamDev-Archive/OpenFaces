@@ -9,7 +9,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.demo.beans.selctonemenu;
+package org.openfaces.demo.beans.selectonemenu;
 
 import org.openfaces.demo.beans.datatable.CitiesDB;
 import org.openfaces.demo.beans.util.City;
