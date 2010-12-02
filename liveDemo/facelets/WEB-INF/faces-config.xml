@@ -332,7 +332,7 @@
 
   <managed-bean>
     <managed-bean-name>SelectOneMenuBean</managed-bean-name>
-    <managed-bean-class>org.openfaces.demo.beans.selctonemenu.SelectOneMenuBean</managed-bean-class>
+    <managed-bean-class>org.openfaces.demo.beans.selectonemenu.SelectOneMenuBean</managed-bean-class>
     <managed-bean-scope>session</managed-bean-scope>
   </managed-bean>
 

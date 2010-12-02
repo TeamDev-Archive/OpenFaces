@@ -59,7 +59,7 @@ O$._initCaptionButton = function(componentId,
   };
   if (supportActionAttribute)
     O$.addEventHandler(btn, "click", function() {
-      O$.submitFormWithAdditionalParam(btn, componentId + "::clicked", "true");
+      O$.submitWithParam(btn, componentId + "::clicked", "true");
     });
 };
 

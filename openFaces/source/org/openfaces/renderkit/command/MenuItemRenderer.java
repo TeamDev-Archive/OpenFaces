@@ -248,7 +248,7 @@ public class MenuItemRenderer extends RendererBase {
                 menuItem.getAttributes().put("_ajaxRequired", Boolean.TRUE);
             else {
                 if ((menuItem.getActionExpression() != null || menuItem.getActionListeners().length > 0))
-                    addMenuItemParameter(menuItem, "action", "O$.submitFormWithAdditionalParam(this, '" + menuItem.getClientId(context) + "::clicked', 'true');");
+                    addMenuItemParameter(menuItem, "action", "O$.submitWithParam(this, '" + menuItem.getClientId(context) + "::clicked', 'true');");
             }
         }
     }

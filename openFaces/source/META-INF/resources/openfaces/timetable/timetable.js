@@ -210,7 +210,7 @@ O$.Timetable._initEventEditorPage = function(dayTableId, thisComponentId, action
                      [modeParamName, mode],
                      [eventIdParamName, event.id]
                    ];
-      O$.submitFormWithAdditionalParams(dayTable, params);
+      O$.submitWithParams(dayTable, params);
       return;
     }
     var newPageUrl = url + "?" + modeParamName + "=" + mode + "&";

@@ -13,6 +13,8 @@ package org.openfaces.component.chart;
 
 import org.openfaces.component.OUICommand;
 import org.openfaces.component.ajax.AjaxInitializer;
+import org.openfaces.org.json.JSONException;
+import org.openfaces.org.json.JSONObject;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.Resources;
@@ -20,7 +22,13 @@ import org.openfaces.util.Script;
 import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.ValueBindings;
 
+import javax.el.MethodExpression;
+import javax.faces.FacesException;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+import javax.faces.event.FacesEvent;
+import javax.faces.event.PhaseId;
 import java.awt.*;
 import java.io.IOException;
 
@@ -47,22 +55,39 @@ public class ChartSelection extends OUICommand {
     public void encodeBegin(FacesContext context) throws IOException {
         super.encodeBegin(context);
 
-        final Chart chart = (Chart) getParent();
-        String onchange = Rendering.getEventHandlerScript(this, chart, "change", "action");
+        String onchange = getOnchange();
         Script automaticChangeHandler = null;
         Iterable<String> render = getRender();
         Iterable<String> execute = getExecute();
+        final Chart chart = (Chart) getParent();
 
         if (render != null || (execute != null && execute.iterator().hasNext())) {
             AjaxInitializer initializer = new AjaxInitializer();
-            automaticChangeHandler = new ScriptBuilder().functionCall("O$.Ajax._reload",
+            JSONObject ajaxParams = initializer.getAjaxParams(context, this);
+            MethodExpression actionExpression = getActionExpression();
+            if (actionExpression != null) {
+                String expr = actionExpression.getExpressionString().trim();
+                if (!expr.startsWith("#{")) throw new FacesException("<o:selection> action expression is expected to start with #{ symbols: " + expr);
+                expr = expr.substring(2, expr.length() - 1);
+                try {
+                    ajaxParams.put("_action", expr);
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            automaticChangeHandler = new ScriptBuilder().functionCall("O$._ajaxReload",
                     initializer.getRenderArray(context, this, render),
-                    initializer.getAjaxParams(context, this)).semicolon().append("return false;");
+                    ajaxParams).semicolon().append("return false;");
+        } else {
+            MethodExpression actionExpression = getActionExpression();
+            if (actionExpression != null) {
+                automaticChangeHandler = new ScriptBuilder().functionCall("O$.submitWithParam",
+                        new ScriptBuilder().O$(chart), getActionFieldName(), "true");
+            }
         }
 
         onchange = Rendering.joinScripts(onchange,
                 automaticChangeHandler != null ? automaticChangeHandler.toString() : null);
-
 
         ScriptBuilder buf = new ScriptBuilder().initScript(context, chart, "O$.Chart._initSelection", onchange);
 
@@ -70,12 +95,6 @@ public class ChartSelection extends OUICommand {
                 Resources.getUtilJsURL(context),
                 Resources.getInternalURL(context, "chart/chart.js"));
         AjaxUtil.renderJSLinks(context);
-    }
-
-    @Override
-    public void decode(FacesContext context) {
-        super.decode(context);
-        Rendering.decodeBehaviors(context, this);
     }
 
     @Override
@@ -137,5 +156,23 @@ public class ChartSelection extends OUICommand {
 
     public void setOnchange(String onchange) {
         this.onchange = onchange;
+    }
+
+    private String getActionFieldName() {
+        return getClientId(getFacesContext()) + Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "_action";
+    }
+
+    @Override
+    public void decode(FacesContext context) {
+        super.decode(context);
+        Rendering.decodeBehaviors(context, this);
+
+        ExternalContext externalContext = context.getExternalContext();
+        String actionFieldName = externalContext.getRequestParameterMap().get(getActionFieldName());
+        if (actionFieldName != null && actionFieldName.equals("true")) {
+            FacesEvent event = new ActionEvent(this);
+            event.setPhaseId(PhaseId.INVOKE_APPLICATION);
+            queueEvent(event);
+        }
     }
 }
