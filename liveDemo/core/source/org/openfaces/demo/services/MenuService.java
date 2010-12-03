@@ -71,14 +71,14 @@ public class MenuService implements Serializable {
         }
     }
 
-    public List getMenus() {
+    public List<MenuItem> getMenus() {
         getSelectedMenu();
         return menus;
     }
 
     public MenuItem getSelectedMenu() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        Map requestMap = facesContext.getExternalContext().getRequestMap();
+        Map<String, Object> requestMap = facesContext.getExternalContext().getRequestMap();
         String key = MenuService.class.getName() + ".selectedMenu";
         MenuItem selectedMenu = (MenuItem) requestMap.get(key);
         if (selectedMenu == null) {
@@ -93,8 +93,6 @@ public class MenuService implements Serializable {
         int newIndex = status.getIndex();
         MenuItem selectedMenu = getSelectedMenu();
         DemoItem di = selectedMenu.getDemos().get(newIndex);
-        selectedMenu.setSelectedDemo(di);
-        selectedMenu.setSelectedTabIndex(newIndex);
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext externalContext = context.getExternalContext();
         return externalContext.getRequestContextPath() + di.getDemoUrl();
@@ -108,10 +106,10 @@ public class MenuService implements Serializable {
         menusIteration:
         for (MenuItem menuItem : menus) {
             menuItem.setSelected(false);
-            List demos = menuItem.getDemos();
+            List<DemoItem> demos = menuItem.getDemos();
             if (demos != null && demos.size() > 0) {
                 for (int i = 0, count = demos.size(); i < count; i++) {
-                    DemoItem di = (DemoItem) demos.get(i);
+                    DemoItem di = demos.get(i);
                     String demoUrl = normalizeMenuUrl(di.getDemoUrl());
                     if (requestURL.endsWith(demoUrl) && demoUrl.length() > 0) {
                         selectedMenu = menuItem;

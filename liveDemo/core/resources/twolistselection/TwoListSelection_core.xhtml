@@ -1,7 +1,6 @@
 <div xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
-     xmlns:o="http://openfaces.org/"
-     >
+     xmlns:o="http://openfaces.org/">
 
   <div id="Description">
     Click the <strong>Update</strong> button above the <strong>Tasks</strong> list to apply changes made in the upper TwoListSelection
@@ -33,6 +32,7 @@
                                     leftListboxHeader="#{TLSStylingBean.leftCaption}"
                                     rightListboxHeader="#{TLSStylingBean.rightCaption}"
                                     value="#{TwoListSelectionBean.selectedTasks}">
+                  <o:ajax event="change" render="detailTable"/>
                   <f:selectItems value="#{TwoListSelectionBean.tasks}"/>
                 </o:twoListSelection>
               </td>
@@ -60,7 +60,6 @@
           </table>
         </td>
         <td style="vertical-align: top; width: 50%;">
-          <o:commandButton value="Update" execute="tlsForm:tasksTLS" render="tlsForm:detailTable"/>
           <o:dataTable id="detailTable"
                        style="width: 100%;"
                        var="task"
@@ -71,7 +70,7 @@
                        noDataMessageAllowed="false">
             <o:column>
               <f:facet name="header">
-                <h:outputText value="Tasks"/>
+                <h:outputText value="Selected tasks received via API:"/>
               </f:facet>
               <h:panelGroup>
                 <h:panelGrid style="border: 1px solid #7070ff; background-color: #ffffa3; width: 100%;" columns="1">
