@@ -13,19 +13,19 @@
 package org.openfaces.demo.beans.daytable;
 
 import org.openfaces.component.timetable.AbstractTimetableEvent;
-import org.openfaces.component.timetable.TimetableChangeEvent;
-import org.openfaces.component.timetable.TimetableEvent;
 import org.openfaces.component.timetable.EventActionEvent;
 import org.openfaces.component.timetable.ReservedTimeEvent;
+import org.openfaces.component.timetable.TimetableChangeEvent;
+import org.openfaces.component.timetable.TimetableEvent;
 import org.openfaces.util.Faces;
 
-import javax.faces.event.ActionEvent;
+import javax.faces.event.AjaxBehaviorEvent;
 import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Dmitry Pikhulya
@@ -142,7 +142,7 @@ public class DayTableBean1 extends DayTableBean implements Serializable {
         }
     }
 
-    public void doLater(ActionEvent actionEvent) {
+    public void doLater(AjaxBehaviorEvent actionEvent) {
         TimetableEvent modifiedEvent = getEvent();
         if (modifiedEvent != null) {
             AbstractTimetableEvent event = eventById(events, modifiedEvent.getId());

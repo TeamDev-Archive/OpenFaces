@@ -12,6 +12,7 @@
 package org.openfaces.demo.beans.commandlink;
 
 import javax.faces.event.ActionEvent;
+import javax.faces.event.AjaxBehaviorEvent;
 import java.io.Serializable;
 
 /**
@@ -38,8 +39,11 @@ public class CommandLinkBean implements Serializable {
         this.lastName = lastName;
     }
 
-
     public void composeFullName(ActionEvent event) {
+        fullName = firstName + " " + lastName;
+    }
+
+    public void composeFullName(AjaxBehaviorEvent event) {
         fullName = firstName + " " + lastName;
     }
 
