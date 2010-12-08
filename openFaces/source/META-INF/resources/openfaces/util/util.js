@@ -3559,13 +3559,19 @@ if (!window.O$) {
   O$.getCuttingContainingRectangle = function(element, cachedDataContainer) {
     var left, right, top, bottom;
 
-    var position = O$.getElementStyle(element, "position");
-    if (position != "static" && !(O$.isExplorer() && O$.isQuirksMode()))
-      return O$.getVisibleAreaRectangle();
+    var position = O$.getElementStyle(element, "position", true);
+    var clippingByNonStaticOnly = position != "static" && !(O$.isExplorer() && O$.isQuirksMode());
     while (true) {
       var container = element.parentNode;
       if (!container || container == document)
         break;
+      if (clippingByNonStaticOnly) {
+        var containerPosition = O$.getElementStyle(container, "position", true);
+        if (containerPosition == "static") {
+          element = container;
+          continue;
+        }
+      }
       var overflowX = O$.getElementStyle(container, "overflow-x");
       var overflowY = O$.getElementStyle(container, "overflow-y");
       var containerRect = (overflowX != "visible" || overflowY != "visible") ?
