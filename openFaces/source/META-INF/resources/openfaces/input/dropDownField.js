@@ -358,10 +358,11 @@ O$.DropDownField = {
 
       _selectCurrentValue: function(e) {
         dropDown._checkFieldValueAgainstList(true);
-        if (field.value != dropDown.value)
+        if (field.value != dropDown.value) {
           dropDown._setValue(field.value, undefined, false, e); // the case for clipboard-pasted text
-        else
+        } else {
           dropDown._setValue(dropDown.value, dropDown._selectedItemValue, false, e);
+        }
       },
 
       _fireOnChangeIfChanged: function() {
@@ -652,10 +653,13 @@ O$.DropDownField = {
       if (!dropDown._reacquireFocus)
         dropDown._blurWaiter = setTimeout(function() {
           if (field.value != dropDown._promptText) {
+            var currentTime = new Date().getTime();
+            if (dropDown._lastItemClickTime && currentTime - dropDown._lastItemClickTime < 200)
+              return;
             handleFieldChange(e);
           }
-          // for IE/Mozilla not firing field change when field is changed explicitly with autocompletion
-        }, 50);
+          // for IE/Mozilla not firing field change when field is changed explicitly with auto-completion
+        }, 100);
       else {
         dropDown._reacquireFocus = undefined;
         dropDown.focus();
@@ -968,6 +972,7 @@ O$.DropDownField = {
   },
 
   _itemClicked: function(dropDown, dropDownItem) {
+    dropDown._lastItemClickTime = new Date().getTime();
     dropDown.closeUp();
     dropDown.focus();
     if (dropDown._dropDownMouseOut)
