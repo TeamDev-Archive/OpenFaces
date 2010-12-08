@@ -33,8 +33,8 @@
           <include name="el-ri-1.5.0.jar"/>
         </fileset>
         <fileset dir="${jsf.ri.lib.dir}">
-          <include name="jsf-api-2.1.b07.jar"/>
-          <include name="jsf-impl-2.1.b07.jar"/>
+          <include name="jsf-api-2.0.3.jar"/>
+          <include name="jsf-impl-2.0.3.jar"/>
         </fileset>
         <fileset dir="${portlets.lib.dir}">
           <include name="exoportal-stub.jar"/>
