@@ -7,7 +7,6 @@
           <root url="file://$MODULE_DIR$/resources" relative="/" />
           <root url="file://$MODULE_DIR$/WEB-INF" relative="/WEB-INF" />
         </webroots>
-        <context-artifact name="LiveDemoJsp:LiveDemoJsp exploded" />
       </configuration>
     </facet>
   </component>

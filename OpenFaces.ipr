@@ -239,6 +239,7 @@
             <option name="SMART_TABS" value="false" />
             <option name="LABEL_INDENT_SIZE" value="0" />
             <option name="LABEL_INDENT_ABSOLUTE" value="false" />
+            <option name="USE_RELATIVE_INDENTS" value="false" />
           </value>
         </option>
         <option name="CLASS_COUNT_TO_USE_IMPORT_ON_DEMAND" value="10" />
@@ -251,6 +252,7 @@
           <option name="SMART_TABS" value="false" />
           <option name="LABEL_INDENT_SIZE" value="0" />
           <option name="LABEL_INDENT_ABSOLUTE" value="false" />
+          <option name="USE_RELATIVE_INDENTS" value="false" />
         </ADDITIONAL_INDENT_OPTIONS>
         <ADDITIONAL_INDENT_OPTIONS fileType="gsp">
           <option name="INDENT_SIZE" value="2" />
@@ -260,6 +262,7 @@
           <option name="SMART_TABS" value="false" />
           <option name="LABEL_INDENT_SIZE" value="0" />
           <option name="LABEL_INDENT_ABSOLUTE" value="false" />
+          <option name="USE_RELATIVE_INDENTS" value="false" />
         </ADDITIONAL_INDENT_OPTIONS>
         <ADDITIONAL_INDENT_OPTIONS fileType="java">
           <option name="INDENT_SIZE" value="4" />
@@ -269,6 +272,7 @@
           <option name="SMART_TABS" value="false" />
           <option name="LABEL_INDENT_SIZE" value="0" />
           <option name="LABEL_INDENT_ABSOLUTE" value="false" />
+          <option name="USE_RELATIVE_INDENTS" value="false" />
         </ADDITIONAL_INDENT_OPTIONS>
         <ADDITIONAL_INDENT_OPTIONS fileType="js">
           <option name="INDENT_SIZE" value="2" />
@@ -278,6 +282,7 @@
           <option name="SMART_TABS" value="false" />
           <option name="LABEL_INDENT_SIZE" value="0" />
           <option name="LABEL_INDENT_ABSOLUTE" value="false" />
+          <option name="USE_RELATIVE_INDENTS" value="false" />
         </ADDITIONAL_INDENT_OPTIONS>
         <ADDITIONAL_INDENT_OPTIONS fileType="jsp">
           <option name="INDENT_SIZE" value="2" />
@@ -287,6 +292,7 @@
           <option name="SMART_TABS" value="false" />
           <option name="LABEL_INDENT_SIZE" value="0" />
           <option name="LABEL_INDENT_ABSOLUTE" value="false" />
+          <option name="USE_RELATIVE_INDENTS" value="false" />
         </ADDITIONAL_INDENT_OPTIONS>
         <ADDITIONAL_INDENT_OPTIONS fileType="sql">
           <option name="INDENT_SIZE" value="2" />
@@ -296,6 +302,7 @@
           <option name="SMART_TABS" value="false" />
           <option name="LABEL_INDENT_SIZE" value="0" />
           <option name="LABEL_INDENT_ABSOLUTE" value="false" />
+          <option name="USE_RELATIVE_INDENTS" value="false" />
         </ADDITIONAL_INDENT_OPTIONS>
         <ADDITIONAL_INDENT_OPTIONS fileType="xml">
           <option name="INDENT_SIZE" value="2" />
@@ -305,6 +312,7 @@
           <option name="SMART_TABS" value="false" />
           <option name="LABEL_INDENT_SIZE" value="0" />
           <option name="LABEL_INDENT_ABSOLUTE" value="false" />
+          <option name="USE_RELATIVE_INDENTS" value="false" />
         </ADDITIONAL_INDENT_OPTIONS>
         <ADDITIONAL_INDENT_OPTIONS fileType="yml">
           <option name="INDENT_SIZE" value="2" />
@@ -314,6 +322,7 @@
           <option name="SMART_TABS" value="false" />
           <option name="LABEL_INDENT_SIZE" value="0" />
           <option name="LABEL_INDENT_ABSOLUTE" value="false" />
+          <option name="USE_RELATIVE_INDENTS" value="false" />
         </ADDITIONAL_INDENT_OPTIONS>
       </value>
     </option>
@@ -571,7 +580,7 @@
         <inspection_tool class="ClassReferencesSubclass" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="ClassUnconnectedToPackage" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="ClassWithMultipleLoggers" enabled="true" level="WARNING" enabled_by_default="true">
-          <option name="loggerClassName" value="java.util.logging.Logger" />
+          <option name="loggerNamesString" value="java.util.logging.Logger,org.slf4j.Logger,org.apache.commons.logging.Log,org.apache.log4j.Logger" />
         </inspection_tool>
         <inspection_tool class="ClassWithTooManyDependencies" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="limit" value="10" />
@@ -630,9 +639,12 @@
         <inspection_tool class="InnerClassMayBeStatic" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="InstanceVariableUninitializedUse" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="m_ignorePrimitives" value="false" />
+          <option name="annotationNamesString" value="" />
         </inspection_tool>
         <inspection_tool class="InstanceofCatchParameter" enabled="true" level="WARNING" enabled_by_default="true" />
-        <inspection_tool class="InstanceofChain" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="InstanceofChain" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="ignoreInstanceofOnLibraryClasses" value="false" />
+        </inspection_tool>
         <inspection_tool class="InstanceofThis" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="JavaLangImport" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="KeySetIterationMayUseEntrySet" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -647,10 +659,14 @@
         <inspection_tool class="MapReplaceableByEnumMap" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="MethodOnlyUsedFromInnerClass" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="ignoreMethodsAccessedFromAnonymousClass" value="true" />
+          <option name="ignoreStaticMethodsFromNonStaticInnerClass" value="false" />
+          <option name="onlyReportStaticMethods" value="false" />
         </inspection_tool>
         <inspection_tool class="MethodWithMultipleLoops" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="MissingDeprecatedAnnotation" enabled="true" level="WARNING" enabled_by_default="true" />
-        <inspection_tool class="MissingOverrideAnnotation" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="MissingOverrideAnnotation" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="ignoreObjectMethods" value="true" />
+        </inspection_tool>
         <inspection_tool class="MissortedModifiers" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="m_requireAnnotationsFirst" value="true" />
         </inspection_tool>
@@ -1127,6 +1143,9 @@
       <module fileurl="file://$PROJECT_DIR$/testApp/jsp/TestAppJsp.iml" filepath="$PROJECT_DIR$/testApp/jsp/TestAppJsp.iml" group="TestApp" />
     </modules>
   </component>
+  <component name="ProjectResources">
+    <default-html-doctype>http://www.w3.org/1999/xhtml</default-html-doctype>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="1.5" project-jdk-type="JavaSDK" />
   <component name="ResourceManagerContainer">
     <option name="myResourceBundles">
@@ -1186,16 +1205,25 @@
     <setting name="OPEN_NEW_TAB" value="false" />
   </component>
   <component name="libraryTable">
-    <library name="servlet-api">
+    <library name="adf-faces">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/servlet-api.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/adf-faces/adf-faces-api-10.1.3.0.4.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/adf-faces/adf-faces-impl-10.1.3.0.4.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
     </library>
-    <library name="jstl">
+    <library name="commons-lang">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/jstl-1.1.0.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/apache/commons-lang-2.1.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
+    <library name="el">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/lib/el/el-api.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/el/el-ri.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
@@ -1209,41 +1237,88 @@
       <JAVADOC />
       <SOURCES />
     </library>
-    <library name="JUnit">
+    <library name="Facelets (without el-api.jar -- for Tomcat 6.0)">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/testLib/junit.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/facelets/jsf-facelets-1.1.14.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/el/el-ri.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/libsrc/facelets-1.1.14-src.zip!/facelets-1.1.14-src/java" />
+        <root url="jar://$PROJECT_DIR$/libsrc/facelets-1.1.14-src.zip!/facelets-1.1.14-src/test" />
+      </SOURCES>
+    </library>
+    <library name="hibernate">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/lib/hibernate/hibernate3.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/hibernate/hibernate-annotations.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
     </library>
-    <library name="selenium-java-client-driver">
+    <library name="jai">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/seleniuminspector/selenium-java-client-driver.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES>
-        <root url="jar://$PROJECT_DIR$/libsrc/selenium-java-client-driver-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="selenium-server">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/seleniuminspector/patched-selenium-server.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES>
-        <root url="jar://$PROJECT_DIR$/libsrc/selenium-server-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="portlet-api-lib">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/portals/portlet-api-lib.jar!/" />
+        <root url="jar://$PROJECT_DIR$/testLib/jai/mlibwrapper_jai.jar!/" />
+        <root url="jar://$PROJECT_DIR$/testLib/jai/jai_core.jar!/" />
+        <root url="jar://$PROJECT_DIR$/testLib/jai/jai_codec.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
     </library>
-    <library name="Jsf-portlet bridge 1.2">
+    <library name="jboss portlet brige">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/portals/jsf-portlet-1.2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/portals/jboss/portletbridge-api-1.0.0.CR2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/portals/jboss/portletbridge-impl-1.0.0.CR2.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/libsrc/JBossPortletBridge-1.0.0.CR2-src.zip!/core/portletbridge-impl/src/test/java" />
+        <root url="jar://$PROJECT_DIR$/libsrc/JBossPortletBridge-1.0.0.CR2-src.zip!/core/portletbridge-impl/src/main/java" />
+        <root url="jar://$PROJECT_DIR$/libsrc/JBossPortletBridge-1.0.0.CR2-src.zip!/core/portletbridge-api/src/main/java" />
+        <root url="jar://$PROJECT_DIR$/libsrc/JBossPortletBridge-1.0.0.CR2-src.zip!/core/portletbridge-api/src/test/java" />
+      </SOURCES>
+    </library>
+    <library name="JBoss Seam 2.0">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/lib/jboss-seam/jboss-el.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/jboss-seam/jboss-seam-ui-2.0.0.GA.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/jboss-seam/jboss-seam-2.0.0.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/test/integration/src" />
+        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/main" />
+        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/remoting" />
+        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/ioc" />
+        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/gen" />
+        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/ui/src/main/java" />
+        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/mail" />
+        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/test/unit" />
+        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/pdf" />
+        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/ui/src/test/java" />
+        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/debug" />
+      </SOURCES>
+    </library>
+    <library name="JBoss Seam 2.1">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/lib/jboss-seam/jboss-el.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/jboss-seam/jboss-seam-ui-2.1.1.GA.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/jboss-seam/jboss-seam-2.1.1.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
+    <library name="jbpm-jpdl">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/lib/jboss-seam/jbpm-jpdl.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
+    <library name="JEE">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/lib/jboss-seam/jboss-ejb3-all.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/jboss-seam/hibernate-all.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
@@ -1266,9 +1341,52 @@
         <root url="jar://$PROJECT_DIR$/libsrc/mojarra-1.2_12-source.zip!/mojarra-1.2_12-b01-FCS-sources/jsf-ri/src" />
       </SOURCES>
     </library>
-    <library name="portals-bridges-jsf-1.0">
+    <library name="JSF Implementation - Mojarra 2.0">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/portals/portals-bridges-jsf-1.0.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/mojarra/jsf-impl-2.0.2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/mojarra/jsf-api-2.0.2.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/libsrc/mojarra-2.0.2-source.zip!/jsf-api/src/main/java" />
+        <root url="jar://$PROJECT_DIR$/libsrc/mojarra-2.0.2-source.zip!/jsf-ri/src" />
+      </SOURCES>
+    </library>
+    <library name="JSF Implementation - MyFaces 1.2">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/lib/apache/commons-digester-1.8.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/apache/commons-beanutils-1.7.0.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/apache/commons-el-1.0.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/apache/commons-discovery-0.4.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/apache/commons-codec-1.3.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/myfaces/myfaces-api-1.2.3.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/myfaces/myfaces-impl-1.2.3.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/apache/commons-logging-1.1.1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/commons-collections-3.2.1.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/libsrc/myfaces-impl-1.2.3-sources.zip!/" />
+        <root url="jar://$PROJECT_DIR$/libsrc/myfaces-api-1.2.3-sources.zip!/" />
+      </SOURCES>
+    </library>
+    <library name="Jsf-portlet bridge 1.2">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/lib/portals/jsf-portlet-1.2.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
+    <library name="jstl">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/lib/jstl-1.1.0.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
+    <library name="JUnit">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/testLib/junit.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
@@ -1303,97 +1421,28 @@
       <JAVADOC />
       <SOURCES />
     </library>
-    <library name="JSF Implementation - MyFaces 1.2">
+    <library name="portals-bridges-jsf-1.0">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/apache/commons-digester-1.8.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/apache/commons-beanutils-1.7.0.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/apache/commons-el-1.0.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/apache/commons-discovery-0.4.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/apache/commons-codec-1.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/myfaces/myfaces-api-1.2.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/myfaces/myfaces-impl-1.2.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/apache/commons-logging-1.1.1.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/commons-collections-3.2.1.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES>
-        <root url="jar://$PROJECT_DIR$/libsrc/myfaces-impl-1.2.3-sources.zip!/" />
-        <root url="jar://$PROJECT_DIR$/libsrc/myfaces-api-1.2.3-sources.zip!/" />
-      </SOURCES>
-    </library>
-    <library name="JBoss Seam 2.0">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/jboss-seam/jboss-el.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/jboss-seam/jboss-seam-ui-2.0.0.GA.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/jboss-seam/jboss-seam-2.0.0.GA.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES>
-        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/test/integration/src" />
-        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/main" />
-        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/remoting" />
-        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/ioc" />
-        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/gen" />
-        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/ui/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/mail" />
-        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/test/unit" />
-        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/pdf" />
-        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/ui/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/debug" />
-      </SOURCES>
-    </library>
-    <library name="Facelets (without el-api.jar -- for Tomcat 6.0)">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/facelets/jsf-facelets-1.1.14.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/el/el-ri.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES>
-        <root url="jar://$PROJECT_DIR$/libsrc/facelets-1.1.14-src.zip!/facelets-1.1.14-src/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/facelets-1.1.14-src.zip!/facelets-1.1.14-src/test" />
-      </SOURCES>
-    </library>
-    <library name="jbpm-jpdl">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/jboss-seam/jbpm-jpdl.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/portals/portals-bridges-jsf-1.0.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
     </library>
-    <library name="trinidad-stub">
+    <library name="portlet-api-lib">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/trinidad/trinidad-stub.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/portals/portlet-api-lib.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
+    <library name="PrimeFaces">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/lib/primefaces/primefaces-1.0.0.RC.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES>
-        <root url="jar://$PROJECT_DIR$/libsrc/trinidad-stub-scr.zip!/" />
+        <root url="jar://$PROJECT_DIR$/libsrc/primefaces-1.0.0.RC-sources.jar!/" />
       </SOURCES>
-    </library>
-    <library name="tomahawk12-1.1.8">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/apache/commons-lang-2.1.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/apache/commons-fileupload-1.0.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/tomahawk/tomahawk12-1.1.8.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES />
-    </library>
-    <library name="jai">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/testLib/jai/mlibwrapper_jai.jar!/" />
-        <root url="jar://$PROJECT_DIR$/testLib/jai/jai_core.jar!/" />
-        <root url="jar://$PROJECT_DIR$/testLib/jai/jai_codec.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES />
-    </library>
-    <library name="adf-faces">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/adf-faces/adf-faces-api-10.1.3.0.4.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/adf-faces/adf-faces-impl-10.1.3.0.4.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES />
     </library>
     <library name="RichFaces">
       <CLASSES>
@@ -1538,49 +1587,22 @@
         <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/tooltip/src/main/java" />
       </SOURCES>
     </library>
-    <library name="JBoss Seam 2.1">
+    <library name="selenium-java-client-driver">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/jboss-seam/jboss-el.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/jboss-seam/jboss-seam-ui-2.1.1.GA.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/jboss-seam/jboss-seam-2.1.1.GA.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES />
-    </library>
-    <library name="JEE">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/jboss-seam/jboss-ejb3-all.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/jboss-seam/hibernate-all.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES />
-    </library>
-    <library name="commons-lang">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/apache/commons-lang-2.1.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES />
-    </library>
-    <library name="el">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/el/el-api.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/el/el-ri.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES />
-    </library>
-    <library name="jboss portlet brige">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/portals/jboss/portletbridge-api-1.0.0.CR2.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/portals/jboss/portletbridge-impl-1.0.0.CR2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/seleniuminspector/selenium-java-client-driver.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES>
-        <root url="jar://$PROJECT_DIR$/libsrc/JBossPortletBridge-1.0.0.CR2-src.zip!/core/portletbridge-impl/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/JBossPortletBridge-1.0.0.CR2-src.zip!/core/portletbridge-impl/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/JBossPortletBridge-1.0.0.CR2-src.zip!/core/portletbridge-api/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/JBossPortletBridge-1.0.0.CR2-src.zip!/core/portletbridge-api/src/test/java" />
+        <root url="jar://$PROJECT_DIR$/libsrc/selenium-java-client-driver-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="selenium-server">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/lib/seleniuminspector/patched-selenium-server.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/libsrc/selenium-server-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="SeleniumInspector">
@@ -1592,32 +1614,29 @@
         <root url="jar://$PROJECT_DIR$/libsrc/seleniuminspector-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="hibernate">
+    <library name="servlet-api">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/hibernate/hibernate3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/hibernate/hibernate-annotations.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/servlet-api.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
     </library>
-    <library name="JSF Implementation - Mojarra 2.0">
+    <library name="tomahawk12-1.1.8">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/mojarra/jsf-impl-2.0.2.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/mojarra/jsf-api-2.0.2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/apache/commons-lang-2.1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/apache/commons-fileupload-1.0.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/tomahawk/tomahawk12-1.1.8.jar!/" />
       </CLASSES>
       <JAVADOC />
-      <SOURCES>
-        <root url="jar://$PROJECT_DIR$/libsrc/mojarra-2.0.2-source.zip!/jsf-api/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/mojarra-2.0.2-source.zip!/jsf-ri/src" />
-      </SOURCES>
+      <SOURCES />
     </library>
-    <library name="PrimeFaces">
+    <library name="trinidad-stub">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/primefaces/primefaces-1.0.0.RC.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/trinidad/trinidad-stub.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES>
-        <root url="jar://$PROJECT_DIR$/libsrc/primefaces-1.0.0.RC-sources.jar!/" />
+        <root url="jar://$PROJECT_DIR$/libsrc/trinidad-stub-scr.zip!/" />
       </SOURCES>
     </library>
   </component>

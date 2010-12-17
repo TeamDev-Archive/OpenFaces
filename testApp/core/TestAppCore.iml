@@ -6,7 +6,6 @@
         <webroots>
           <root url="file://$MODULE_DIR$/web" relative="/" />
         </webroots>
-        <context-artifact name="TestAppJsp:TestAppJsp exploded" />
       </configuration>
     </facet>
     <facet type="ejb" name="EJB">
@@ -17,7 +16,6 @@
         <ejbRoots>
           <root url="file://$MODULE_DIR$/source" />
         </ejbRoots>
-        <context-artifact name="TestAppCore:EJB exploded" />
       </configuration>
     </facet>
     <facet type="Seam" name="Seam">
