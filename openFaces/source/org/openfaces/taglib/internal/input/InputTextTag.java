@@ -38,7 +38,6 @@ public class InputTextTag extends OUIInputTextTag {
         setStringProperty(component, "lang");
         setStringProperty(component, "alt");
         setStringProperty(component, "onselect");
-        setBooleanProperty(component, "readonly");
         setIntProperty(component, "maxlength");
         setIntProperty(component, "size");
         setStringProperty(component, "autocomplete");

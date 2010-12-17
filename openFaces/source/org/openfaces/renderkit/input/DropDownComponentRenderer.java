@@ -13,15 +13,15 @@ package org.openfaces.renderkit.input;
 
 import org.openfaces.component.Side;
 import org.openfaces.component.input.DropDownComponent;
-import org.openfaces.util.InitScript;
 import org.openfaces.renderkit.RendererBase;
+import org.openfaces.util.AjaxUtil;
+import org.openfaces.util.DefaultStyles;
+import org.openfaces.util.InitScript;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
-import org.openfaces.util.Styles;
-import org.openfaces.util.AjaxUtil;
-import org.openfaces.util.DefaultStyles;
 import org.openfaces.util.StyleGroup;
+import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -119,9 +119,11 @@ public abstract class DropDownComponentRenderer extends RendererBase {
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
 
-        if (fieldComponent.isDisabled()) {
+        if (fieldComponent.isDisabled())
             writer.writeAttribute("disabled", "disabled", null);
-        }
+
+        if (fieldComponent.isReadonly())
+            writer.writeAttribute("readonly", "readonly", null);
 
         writeFieldAttributes(writer, fieldComponent);
         writer.endElement("input");
@@ -167,7 +169,7 @@ public abstract class DropDownComponentRenderer extends RendererBase {
         writer.writeAttribute("align", "center", null);
         writer.writeAttribute("valign", "middle", null);
         String imageUrl;
-        if (fieldComponent.isDisabled()) {
+        if (fieldComponent.isDisabled() || fieldComponent.isReadonly()) {
             String disabledButtonImageUrl = (String) fieldComponent.getAttributes().get("disabledButtonImageUrl");
             imageUrl = Resources.getURL(context, disabledButtonImageUrl, null, "input/disabledDropButton.gif");
         } else {
@@ -225,7 +227,7 @@ public abstract class DropDownComponentRenderer extends RendererBase {
         params.add(fieldText);
         params.addAll(rendererInputStyles(facesContext, dropDown));
         params.addAll(getButtonAndListStyles(facesContext, dropDown));
-        params.add(dropDown.isDisabled());
+        params.add(dropDown.isDisabled() || dropDown.isReadonly());
         params.add(promptText);
         params.add(promptTextStyleClass);
         ScriptBuilder buf = new ScriptBuilder().initScript(facesContext, dropDown, "O$.DropDown._init",

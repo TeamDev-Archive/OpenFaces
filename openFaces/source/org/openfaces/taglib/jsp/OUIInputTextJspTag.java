@@ -23,6 +23,10 @@ public class OUIInputTextJspTag extends UIInputJspTag {
         super(delegate);
     }
 
+    public void setReadOnly(ValueExpression readOnly) {
+        getDelegate().setPropertyValue("readOnly", readOnly);
+    }
+
     public void setPromptText(ValueExpression promptText) {
         getDelegate().setPropertyValue("promptText", promptText);
     }

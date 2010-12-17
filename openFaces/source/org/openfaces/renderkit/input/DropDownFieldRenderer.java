@@ -369,7 +369,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
                 dropDownField.isCachingAllowed()
         );
         popup.resetChildData();
-        if (!dropDown.isDisabled()) {  // todo: write the event parameters more economically
+        if (!dropDown.isDisabled() && !dropDown.isReadonly()) {  // todo: write the event parameters more economically
             String onValueChanged = dropDownField.getOnchange();
             if (onValueChanged != null) {
                 buf.append("O$.DropDownField._setFieldOnChange('");

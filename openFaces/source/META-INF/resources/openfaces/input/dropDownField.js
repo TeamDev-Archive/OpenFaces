@@ -896,7 +896,7 @@ O$.DropDownField = {
     var newHighlightedItemIndex = null;
     if (keyCode == 40) { // Down
       if (!dropDown.isOpened()) {
-        if (!dropDown._manualListOpeningAllowed)
+        if (!dropDown._manualListOpeningAllowed || dropDown._disabled)
           return true;
         popup._prepareForRearrangementBeforeShowing();
         O$.DropDown._initPopup(dropDown);

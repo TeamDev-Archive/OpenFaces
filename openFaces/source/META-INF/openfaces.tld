@@ -10100,6 +10100,18 @@ means that only root nodes and their immediate children are preloaded -->
       <!-- @default false -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>A flag indicating that this component will prohibit changes by
+        the user. The element may receive focus unless it has also been disabled.
+      </description>
+      <name>readonly</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
 
     <attribute>
       <description>An advisory title for the text field of the DropDownField component.</description>
@@ -11036,7 +11048,7 @@ entering a value and returns a list of suggestions from the server -->
     <!--<body-content>JSP</body-content>-->
 
     <!--<attribute>-->
-      <!--<description>Flag indicating whether or not this component should be rendered (during Render Response Phase),-->
+      <!--<description>A flag indicating whether or not this component should be rendered (during Render Response Phase),-->
         <!--or processed on any subsequent form submit. The default value for this property is true.-->
       <!--</description>-->
       <!--<name>rendered</name>-->
@@ -11091,7 +11103,7 @@ entering a value and returns a list of suggestions from the server -->
       <!--&lt;!&ndash; @el true &ndash;&gt;-->
     <!--</attribute>-->
     <!--<attribute>-->
-      <!--<description>Flag indicating whether the option created by this component is disabled.-->
+      <!--<description>A flag indicating whether the option created by this component is disabled.-->
         <!--Expressions must evaluate to a boolean. Default value is false.-->
       <!--</description>-->
       <!--<name>itemDisabled</name>-->
@@ -11389,6 +11401,18 @@ entering a value and returns a list of suggestions from the server -->
     <attribute>
       <description>A flag that enables or disables the component.</description>
       <name>disabled</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A flag indicating that this component will prohibit changes by
+        the user. The element may receive focus unless it has also been disabled.
+      </description>
+      <name>readonly</name>
       <deferred-value>
         <type>boolean</type>
       </deferred-value>
@@ -24745,7 +24769,7 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
-      <description>Flag indicating that this component will prohibit changes by
+      <description>A flag indicating that this component will prohibit changes by
         the user. The element may receive focus unless it has also been disabled.
       </description>
       <name>readonly</name>
@@ -25302,7 +25326,7 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
-      <description>Flag indicating that this component will prohibit changes by the user. The element may receive focus
+      <description>A flag indicating that this component will prohibit changes by the user. The element may receive focus
         unless it has also been disabled.
       </description>
       <name>readonly</name>
@@ -26329,7 +26353,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Flag indicating whether or not this component should be rendered
+      <description>A flag indicating whether or not this component should be rendered
         (during Render Response Phase), or processed on any subsequent form submit.
         The default value for this property is true.
       </description>
@@ -33286,7 +33310,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el false -->
     </attribute>
     <attribute>
-      <description>Flag that indicates whether or not valueChangeListener
+      <description>A flag that indicates whether or not valueChangeListener
         should be executed immediately (during the Apply Request Values phase of the
         request processing life-cycle instead of Process Validations phase) and the
         component's input should be converted and validated immediately (during
@@ -33340,7 +33364,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Flag indicating that this component will prohibit changes by the user.
+      <description>A flag indicating that this component will prohibit changes by the user.
         The element may receive focus unless it has also been disabled. A value of false
         causes no attribute to be rendered, while a value of true causes the attribute to
         be rendered as readonly="readonly".
@@ -33411,7 +33435,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Flag indicating that the user is required to provide a submitted
+      <description>A flag indicating that the user is required to provide a submitted
         value for this input component.
       </description>
       <name>required</name>
@@ -33980,7 +34004,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el false -->
     </attribute>
     <attribute>
-      <description>Flag that indicates whether or not valueChangeListener
+      <description>A flag that indicates whether or not valueChangeListener
         should be executed immediately (during the Apply Request Values phase of the
         request processing life-cycle instead of Process Validations phase) and the
         component's input should be converted and validated immediately (during
@@ -34034,7 +34058,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Flag indicating that this component will prohibit changes by the user.
+      <description>A flag indicating that this component will prohibit changes by the user.
         The element may receive focus unless it has also been disabled. A value of false
         causes no attribute to be rendered, while a value of true causes the attribute to
         be rendered as readonly="readonly".
@@ -34106,7 +34130,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el only -->
     </attribute>
     <attribute>
-      <description>Flag indicating that the user is required to provide a submitted
+      <description>A flag indicating that the user is required to provide a submitted
         value for this input component.
       </description>
       <name>required</name>
@@ -36275,6 +36299,18 @@ and it is automatically triggered on any form submission. -->
     <attribute>
       <description>A flag that enables or disables the component.</description>
       <name>disabled</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A flag indicating that this component will prohibit changes by
+        the user. The element may receive focus unless it has also been disabled.
+      </description>
+      <name>readonly</name>
       <deferred-value>
         <type>boolean</type>
       </deferred-value>

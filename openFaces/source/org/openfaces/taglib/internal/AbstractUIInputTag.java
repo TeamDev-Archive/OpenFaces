@@ -33,6 +33,7 @@ public abstract class AbstractUIInputTag extends AbstractComponentTag {
 
         setConverterProperty(facesContext, component, "converter");
 
+        setBooleanProperty(component, "disabled");
         setBooleanProperty(component, "required");
         setBooleanProperty(component, "immediate");
         setStringProperty(component, "label");

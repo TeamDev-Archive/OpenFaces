@@ -22,7 +22,7 @@ public abstract class OUIInputTextTag extends AbstractUIInputTag {
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
-        setBooleanProperty(component, "disabled");
+        setBooleanProperty(component, "readonly");
         setStringProperty(component, "promptText");
         setStringProperty(component, "promptTextStyle");
         setStringProperty(component, "promptTextClass");

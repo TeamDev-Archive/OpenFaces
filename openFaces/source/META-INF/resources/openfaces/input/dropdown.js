@@ -195,6 +195,7 @@ O$.DropDown = {
 
     dropDown._button = O$(dropDownId + "::button");
     dropDown._popup = O$(dropDownId + "--popup");
+    dropDown._disabled = disabled;
 
     var field = dropDown._field;
     var button = dropDown._button;
