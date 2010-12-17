@@ -46,6 +46,7 @@ public class DropDownFieldTag extends DropDownComponentTag {
         setIntProperty(component, "preloadedItemCount");
         setIntProperty(component, "pageSize");
         setObjectProperty(component, "totalItemCount");
+        setBooleanProperty(component, "cachingAllowed");
 
         setStringProperty(component, "rolloverStyle");
         setStringProperty(component, "rolloverStyle");

@@ -170,5 +170,9 @@ public abstract class DropDownFieldJspTagBase extends DropDownComponentJspTag {
         getDelegate().setPropertyValue("totalItemCount", totalItemCount);
     }
 
+    public void setCachingAllowed(ValueExpression cachingAllowed) {
+        getDelegate().setPropertyValue("cachingAllowed", cachingAllowed);
+    }
+
 
 }

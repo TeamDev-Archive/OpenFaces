@@ -10281,6 +10281,20 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
+      <description>Applicable only with suggestionMode="custom". Setting this attribute to false disables caching and
+        makes Ajax request each time the suggestion list is needed, or when the list is opened. This behavior overrides
+        the behavior specified with preloadedItemCount attribute.
+      </description>
+      <name>cachingAllowed</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
       <description>Defines whether the button that opens the drop-down list is positioned to the right or to
         the left of the text field.
       </description>
@@ -11480,6 +11494,19 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>Applicable only to the "custom" suggestion mode. This attribute should be specified when
+        preloadedItemCount is specified to a value other than -1. This attribute should be specified as a value binding
+        that returns the total row count if the entire drop-down list is fully loaded.
+      </description>
+      <name>totalItemCount</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
       <description>Applicable only to the "custom" suggestion mode. Specifies the number of items that will be loaded
         along with each additional portion when scrolling through the suggestion list. See the preloadedItemCount
         attribute. The valid values are -1, or any positive number. The value of -1 means that all remaining items
@@ -11493,6 +11520,20 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default -1 -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>Applicable only with suggestionMode="custom". Setting this attribute to false disables caching and
+        makes Ajax request each time the suggestion list is needed, or when the list is opened. This behavior overrides
+        the behavior specified with preloadedItemCount attribute.
+      </description>
+      <name>cachingAllowed</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+
 
     <attribute>
       <description>A flag that indicates whether a drop-down suggestion list can be opened using the "Down Arrow" key.
@@ -36353,6 +36394,19 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>Applicable only to the "custom" suggestion mode. This attribute should be specified when
+        preloadedItemCount is specified to a value other than -1. This attribute should be specified as a value binding
+        that returns the total row count if the entire drop-down list is fully loaded.
+      </description>
+      <name>totalItemCount</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
       <description>Applicable only to the "custom" suggestion mode. Specifies the number of items that will be loaded
         along with each additional portion when scrolling through the suggestion list. See the preloadedItemCount
         attribute. The valid values are -1, or any positive number. The value of -1 means that all remaining items
@@ -36364,6 +36418,19 @@ entering a value and returns a list of suggestions from the server -->
       </deferred-value>
       <!-- @bindingType int -->
       <!-- @default -1 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Applicable only with suggestionMode="custom". Setting this attribute to false disables caching and
+        makes Ajax request each time the suggestion list is needed, or when the list is opened. This behavior overrides
+        the behavior specified with preloadedItemCount attribute.
+      </description>
+      <name>cachingAllowed</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
       <!-- @el true -->
     </attribute>
 

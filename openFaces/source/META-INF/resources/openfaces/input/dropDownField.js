@@ -11,21 +11,7 @@
  */
 
 O$.DropDownField = {
-  _init: function(dropDownId,
-                  popupTimeout,
-                  listAlignment,
-                  rolloverPopupItemClass,
-                  itemValues,
-                  customValueAllowed,
-                  required,
-                  suggestionMode,
-                  suggestionDelay,
-                  suggestionMinChars,
-                  manualListOpeningAllowed,
-                  autoCompleteOn,
-                  totalItemCount,
-                  pageSize,
-                  popupTableStructureAndStyleParams) {
+  _init: function(dropDownId, popupTimeout, listAlignment, rolloverPopupItemClass, itemValues, customValueAllowed, required, suggestionMode, suggestionDelay, suggestionMinChars, manualListOpeningAllowed, autoCompleteOn, totalItemCount, pageSize, popupTableStructureAndStyleParams, cachingAllowed) {
     var dropDown = O$.initComponent(dropDownId, null, {
       _listAlignment: listAlignment,
       _customValueAllowed: customValueAllowed,
@@ -34,6 +20,7 @@ O$.DropDownField = {
       _keyNavigationStarted: false,
       _popupTimeout: popupTimeout,
       _highlightedItemIndex: -1,
+      _cachingAllowed: cachingAllowed,
 
       _initListStyles: function() {
         var oldCursor = document.body.style.cursor;
@@ -107,10 +94,7 @@ O$.DropDownField = {
         }
       },
 
-      _addCachedSuggestions: function(
-              filterCriterionText,
-              newRows, newRowsToStylesMap, newRowCellsToStylesMap, itemValues,
-              appendItems) {
+      _addCachedSuggestions: function(filterCriterionText, newRows, newRowsToStylesMap, newRowCellsToStylesMap, itemValues, appendItems) {
         var cacheMapKey = filterCriterionText ? filterCriterionText.toLowerCase() : "";
         if (!dropDown._cachedSuggestionLists)
           dropDown._cachedSuggestionLists = [];
@@ -137,22 +121,22 @@ O$.DropDownField = {
         return dropDown._filterCriterion;
       },
 
-      _checkAdditionalPageNeeded: function() {
+      _checkAdditionalPageNeeded: function(forceReload) {
         if (suggestionMode != "custom" || dropDown._filterCriterion) return;
-        var itemsLoaded = dropDown._items.length;
+        var itemsLoaded = forceReload ? 0 : dropDown._items.length;
         if (totalItemCount != -1) {
           if (itemsLoaded >= totalItemCount) return;
         } else {
           if (itemsLoaded > 0) return;
         }
 
-        if (innerTable.offsetHeight > popup.clientHeight) {
+        if (!forceReload && innerTable.offsetHeight > popup.clientHeight) {
           var bottomEdge = popup.scrollTop + popup.clientHeight;
           var unrevealedBottomSpace = innerTable.offsetHeight - bottomEdge;
           if (unrevealedBottomSpace > 50) return;
         }
 
-        if (dropDown._additionalPageRequestedAfterItemCount == itemsLoaded) return;
+        if (!forceReload && dropDown._additionalPageRequestedAfterItemCount == itemsLoaded) return;
         dropDown._additionalPageRequestedAfterItemCount = itemsLoaded;
 
         var text = dropDown._filterCriterion;
@@ -160,9 +144,9 @@ O$.DropDownField = {
         if (pageSize != -1 && rowCount > pageSize)
           rowCount = pageSize;
         O$.requestComponentPortions(dropDownId,
-                    ["filterCriterion:" + ((text != null) ? "[" + text + "]" : "null")],
-                    "{pageStart: " + itemsLoaded + ", pageSize: " + rowCount + "}",
-                    O$.DropDownField._filteredItemsLoaded);
+                ["filterCriterion:" + ((text != null) ? "[" + text + "]" : "null")],
+                "{pageStart: " + itemsLoaded + ", pageSize: " + rowCount + ", forceReload:" + (forceReload === true) + "}",
+                O$.DropDownField._filteredItemsLoaded);
       },
 
       _setFilterCriterion: function(text, autoCompletionAllowedForThisKey) {
@@ -184,34 +168,47 @@ O$.DropDownField = {
         }
       },
 
-      _showCachedSuggestions: function (text, autoCompletionAllowedForThisKey, itemsAppended) {
-        var cacheMapKey = text ? text.toLowerCase() : "";
-        var cachedSuggestions = dropDown._cachedSuggestionLists ? dropDown._cachedSuggestionLists[cacheMapKey] : null;
-        if (!cachedSuggestions)
-          return false;
+      _clearSuggestions: function() {
+        dropDown._showSuggestions("", null, false);
+      },
 
+      _showSuggestions: function(text, cachedSuggestions, autoCompletionAllowedForThisKey, itemsAppended) {
         var innerTable = O$(dropDown._popup.id + "::innerTable");
         if (itemsAppended == undefined) {
           dropDown._setHighlightedItemIndex(-1);
           innerTable.body._removeAllRows();
-          innerTable._insertRowsAfter(-1, cachedSuggestions.rows, cachedSuggestions.rowsToStylesMap, cachedSuggestions.cellsToStylesMap);
-        } else {
+          if (cachedSuggestions)
+            innerTable._insertRowsAfter(-1, cachedSuggestions.rows, cachedSuggestions.rowsToStylesMap, cachedSuggestions.cellsToStylesMap);
+        } else if (cachedSuggestions) {
           var from = cachedSuggestions.rows.length - itemsAppended;
           innerTable._insertRowsAfter(
                   innerTable.body._getRows().length - 1,
                   cachedSuggestions.rows.concat([]).splice(from, itemsAppended),
                   cachedSuggestions.rowsToStylesMap, cachedSuggestions.cellsToStylesMap);
         }
-
         // Safari 3 painting fix (JSFC-3270)
         O$.repaintWindowForSafari(true);
         if (itemsAppended == undefined)
           dropDown._setHighlightedItemIndex(-1);
         dropDown._items = O$.DropDownField._prepareListElements(dropDown);
-        dropDown._initItems(cachedSuggestions.values, itemsAppended ? cachedSuggestions.values.length - itemsAppended : 0);
-
+        if (cachedSuggestions)
+          dropDown._initItems(cachedSuggestions.values, itemsAppended ? cachedSuggestions.values.length - itemsAppended : 0);
         if (itemsAppended == undefined)
           dropDown._completeShowingSuggestions(text, autoCompletionAllowedForThisKey);
+      },
+
+
+      _showCachedSuggestions: function (text, autoCompletionAllowedForThisKey, itemsLoadedCallback, itemsAppended) {
+        var cacheMapKey = text ? text.toLowerCase() : "";
+        var cachedSuggestions = dropDown._cachedSuggestionLists ? dropDown._cachedSuggestionLists[cacheMapKey] : null;
+        if (!cachedSuggestions)
+          return false;
+
+        if (!dropDown._cachingAllowed && !itemsLoadedCallback) {
+          // if caching is not allowed, issue a new request each time suggestions are needed
+          return false;
+        }
+        dropDown._showSuggestions(text, cachedSuggestions, autoCompletionAllowedForThisKey, itemsAppended);
         return true;
       },
 
@@ -537,7 +534,9 @@ O$.DropDownField = {
           dropDown.closeUp();
         else {
           dropDown.dropDown();
-          dropDown._checkAdditionalPageNeeded();
+          if (!dropDown._cachingAllowed)
+            dropDown._clearSuggestions();
+          dropDown._checkAdditionalPageNeeded(!dropDown._cachingAllowed);
         }
 
         // reacquire focus when pressing the dropper button
@@ -570,7 +569,7 @@ O$.DropDownField = {
           O$.repaintAreaForOpera(document.body, true);
         }
       }
-      
+
     });
 
     if (suggestionMinChars < 0)
@@ -580,7 +579,9 @@ O$.DropDownField = {
 
     var field = dropDown._field;
     var popup = dropDown._popup;
-    popup.onscroll = dropDown._checkAdditionalPageNeeded;
+    popup.onscroll = function() {
+      dropDown._checkAdditionalPageNeeded()
+    };
 
     dropDown.value = field.value;
 
@@ -605,7 +606,7 @@ O$.DropDownField = {
     if (itemValues) {
       dropDown._initItems(itemValues, 0);
       dropDown._addCachedSuggestions(null, dropDown._items,
-              popupTableStructureAndStyleParams.rowStylesMap, 
+              popupTableStructureAndStyleParams.rowStylesMap,
               popupTableStructureAndStyleParams.cellStylesMap,
               itemValues);
     }
@@ -960,7 +961,7 @@ O$.DropDownField = {
     if (newHighlightedItemIndex != null && newHighlightedItemIndex != highlightedItemIndex) {
       dropDown._setHighlightedItemIndex(newHighlightedItemIndex);
       if (dropDown.onDropdownNavigation)
-        dropDown.onDropdownNavigation();  
+        dropDown.onDropdownNavigation();
       dropDown._scrollToHighlightedItem();
     }
 
@@ -1037,7 +1038,7 @@ O$.DropDownField = {
       filterCriterion = filterCriterionStr.substring(1, filterCriterionStr.length - 1);
     }
 
-    var cacheOnly = dropDownField._field.value != filterCriterion;
+    var cacheOnly = dropDownField._field.value != (filterCriterion || "");
 
     var tempDiv = document.createElement("div");
     tempDiv.style.display = "none";
@@ -1071,7 +1072,7 @@ O$.DropDownField = {
           return;
         if (prevSuggestionCount == 0)
           appendItems = false;
-        dropDownField._showCachedSuggestions(filterCriterion, undefined, appendItems ? newRows.length : undefined);
+        dropDownField._showCachedSuggestions(filterCriterion, undefined, true, appendItems ? newRows.length : undefined);
       };
       O$.executeScripts(portionScripts);
     } finally {
