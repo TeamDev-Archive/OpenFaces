@@ -1201,5 +1201,13 @@
       <handler-class>org.openfaces.taglib.facelets.tagcloud.TagCloudHandler</handler-class>
     </component>
   </tag>
+  <tag>
+    <tag-name>disqusComments</tag-name>
+    <component>
+      <component-type>org.openfaces.DisqusComments</component-type>
+      <renderer-type>org.openfaces.DisqusCommentsRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.social.DisqusCommentsTagHandler</handler-class>
+    </component>
+  </tag>
 
 </facelet-taglib>
