@@ -173,7 +173,7 @@ O$.DropDownField = {
       },
 
       _showSuggestions: function(text, cachedSuggestions, autoCompletionAllowedForThisKey, itemsAppended) {
-        var innerTable = O$(dropDown._popup.id + "::innerTable");
+        var innerTable = O$(dropDown.id + "--popup::innerTable");
         if (itemsAppended == undefined) {
           dropDown._setHighlightedItemIndex(-1);
           innerTable.body._removeAllRows();
@@ -585,7 +585,7 @@ O$.DropDownField = {
 
     dropDown.value = field.value;
 
-    var innerTable = O$(popup.id + "::innerTable");
+    var innerTable = O$(dropDown.id + "--popup::innerTable");
     innerTable._selectionClass = rolloverPopupItemClass;
     popupTableStructureAndStyleParams.body.rolloverRowClassName = null;
 

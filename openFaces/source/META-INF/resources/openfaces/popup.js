@@ -11,6 +11,7 @@
  */
 
 O$.Popup = {
+  PULLED_OUT_ID_SUFFIX: "_pulledOut",
   _init: function(popupId, useDisplayNoneByDefault) {
     var popup = O$.initComponent(popupId, null, {
       _visibilityChangeListeners: null,
@@ -98,6 +99,18 @@ O$.Popup = {
       isVisible: function() {
         var visible = (this.style.visibility == "visible") && (this.style.display != "none");
         return visible;
+      },
+
+      _pullFromContainer: function() {
+        if (this._pulledOut) return;
+        this._pulledOut = true;
+        var newParent = O$.getDefaultAbsolutePositionParent();
+        var newId = this.id + O$.Popup.PULLED_OUT_ID_SUFFIX;
+        var oldPopup = O$(newId);
+        if (oldPopup)
+          oldPopup.parentNode.removeChild(oldPopup);
+        this.id = newId;
+        newParent.appendChild(this);
       }
     });
 
@@ -127,7 +140,7 @@ O$.Popup = {
     if (!O$._popupsOnPage)
       return;
     O$._popupsOnPage.forEach(function(popupId){
-      var currPopup = O$(popupId);
+      var currPopup = O$(popupId) || O$(popupId + O$.Popup.PULLED_OUT_ID_SUFFIX);
       if (!currPopup)
         return; // popup can be removed from page with A4J
       if (currPopup != popupToRetain)
@@ -151,7 +164,7 @@ document._addClickListener(function(e) {
   var clickedElementId = clickedElement.id;
 
   O$._popupsOnPage.forEach(function(popupId){
-    var popup = O$(popupId);
+    var popup = O$(popupId) || O$(popupId + O$.Popup.PULLED_OUT_ID_SUFFIX);
     if (!popup)
       return; // popup can be removed from page with A4J
     var clickedOnChild = O$.isChild(popup, clickedElement);
@@ -166,7 +179,7 @@ O$.addEventHandler(document, "keydown", function(e) {
   if (evt.keyCode != 27 || !O$._popupsOnPage) return;
 
   O$._popupsOnPage.forEach(function(popupId){
-    var popup = O$(popupId);
+    var popup = O$(popupId) || O$(popupId + O$.Popup.PULLED_OUT_ID_SUFFIX);
     if (popup.blur)
       popup.blur();
     if (popup)

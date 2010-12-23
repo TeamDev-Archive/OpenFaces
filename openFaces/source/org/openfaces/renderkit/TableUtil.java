@@ -213,9 +213,10 @@ public class TableUtil {
 
         if (component instanceof UIOutput) {
             ValueExpression valueExpression = component.getValueExpression("value");
-            if (expressionContainsVar(valueExpression.getExpressionString(), var)) {
-                return (UIOutput) component;
-            }
+            if (valueExpression != null)
+                if (expressionContainsVar(valueExpression.getExpressionString(), var)) {
+                    return (UIOutput) component;
+                }
         }
         List<UIComponent> children;
         if (component instanceof DynamicColumn) {
@@ -304,9 +305,9 @@ public class TableUtil {
         String var = column.getTable().getVar();
         UIOutput columnOutput = explicitColumnFilterExpression != null ? null : obtainOutput(column, var);
         if (columnOutput == null && explicitColumnFilterExpression == null) throw new FacesException(
-                "Can't find column output component (UIOutput component with a value expression containing variable " +
-                        var + ") for column with id: " + column.getId() + "; table id: " + table.getId() +
-                        " ; consider declaring the filter expression explicitly if you're using a filter component in this column.");
+                "Can't find column output component (UIOutput component with a value expression containing variable \"" +
+                        var + "\") for column with id: \"" + column.getId() + "\"; table id: \"" + table.getId() +
+                        "\" ; consider declaring the filter expression explicitly if you're using a filter component in this column.");
 
         ValueExpression expression = explicitColumnFilterExpression != null
                 ? explicitColumnFilterExpression : columnOutput.getValueExpression("value");

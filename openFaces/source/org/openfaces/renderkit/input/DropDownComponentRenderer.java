@@ -230,6 +230,11 @@ public abstract class DropDownComponentRenderer extends RendererBase {
         params.add(dropDown.isDisabled() || dropDown.isReadonly());
         params.add(promptText);
         params.add(promptTextStyleClass);
+
+        Object pullPopupFromContainerObj = dropDown.getAttributes().get("pullPopupFromContainer");
+        boolean pullPopupFromContainer = pullPopupFromContainerObj != null &&
+                (pullPopupFromContainerObj.equals("true") || pullPopupFromContainerObj.equals(Boolean.TRUE));
+        params.add(pullPopupFromContainer);
         ScriptBuilder buf = new ScriptBuilder().initScript(facesContext, dropDown, "O$.DropDown._init",
                 params.toArray());
 
