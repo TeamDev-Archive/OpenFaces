@@ -224,7 +224,7 @@ public class OpenFacesJSFPortlet extends GenericPortlet {
             PortletSession session = (PortletSession) context.getExternalContext().getSession(true);
             PortletMode mode = request.getPortletMode();
             Boolean errorFlag = (Boolean) session.getAttribute(BridgeConstants.ERROR_FLAG);
-            // If any error occured use the same mode
+            // If any error occurred use the same mode
             if (errorFlag != null && errorFlag.equals(Boolean.TRUE)) {
                 response.setPortletMode(mode);
             } else {

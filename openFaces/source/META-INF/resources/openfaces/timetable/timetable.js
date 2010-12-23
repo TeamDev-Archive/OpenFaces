@@ -280,8 +280,8 @@ O$.Timetable._initEvent = function(event) {
   event._scrollIntoView = function() {
     /*    return; //todo: finish auto-scrolling functionality
      var dayTable = event.mainElement._dayTable;
-     var scrollingOccured = O$.scrollElementIntoView(event.mainElement, dayTable._getScrollingCache());
-     if (scrollingOccured)
+     var scrollingOccurred = O$.scrollElementIntoView(event.mainElement, dayTable._getScrollingCache());
+     if (scrollingOccurred)
      dayTable._resetScrollingCache();*/
   };
   if (event.start || event.startStr)

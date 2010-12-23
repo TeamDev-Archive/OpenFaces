@@ -24,6 +24,6 @@ public class MyStateChangeListener implements StateChangeListener {
     Logger logger = Logger.getLogger(MyStateChangeListener.class.getName());
 
     public void processStateChange(StateChangeEvent event) {
-        logger.info("=============== StateChange occured ===============");
+        logger.info("=============== StateChange occurred ===============");
     }
 }

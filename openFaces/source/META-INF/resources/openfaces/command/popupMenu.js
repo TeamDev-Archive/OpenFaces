@@ -169,7 +169,7 @@ O$.PopupMenu = {
       if (initialized) return;
       initialized = true;
       if (!O$.isElementPresentInDocument(popupMenu)) {
-        // can be the case if a PopupMenu was unloaded earlier than the postponed initialization occured
+        // can be the case if a PopupMenu was unloaded earlier than the postponed initialization occurred
         return;
       }
       O$.PopupMenu._handlePaddings(popupMenu);
