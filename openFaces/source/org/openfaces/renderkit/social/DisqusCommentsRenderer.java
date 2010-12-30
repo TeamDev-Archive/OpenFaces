@@ -39,7 +39,9 @@ public class DisqusCommentsRenderer extends RendererBase {
                 "    var disqus_shortname = '" + disqusShortname + "'; // required: replace example with your forum shortname\n" +
                 "\n" +
                 "    // The following are highly recommended additional parameters. Remove the slashes in front to use.\n" +
-                "    // var disqus_identifier = 'unique_dynamic_id_1234';\n" +
+                "     var disqus_identifier = 'unique_dynamic_id_1234lkjdeflkjsd';\n" +
+                "     var disqus_developer = " + (disqusDeveloper ? 1 : 0) + ";\n" +
+
                 "    // var disqus_url = 'http://example.com/permalink-to-page.html';\n" +
                 "\n" +
                 "    /* * * DON'T EDIT BELOW THIS LINE * * */\n" +

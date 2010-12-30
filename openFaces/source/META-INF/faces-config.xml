@@ -785,6 +785,11 @@
     <component-type>org.openfaces.DisqusComments</component-type>
     <component-class>org.openfaces.component.social.DisqusComments</component-class>
   </component>
+
+  <component>
+    <component-type>org.openfaces.Timetable</component-type>
+    <component-class>org.openfaces.component.timetable.Timetable</component-class>
+  </component>
   <render-kit>
     <renderer>
       <component-family>org.openfaces.DataTable</component-family>
@@ -1298,6 +1303,11 @@
       <component-family>org.openfaces.DisqusComments</component-family>
       <renderer-type>org.openfaces.DisqusCommentsRenderer</renderer-type>
       <renderer-class>org.openfaces.renderkit.social.DisqusCommentsRenderer</renderer-class>
+    </renderer>
+    <renderer>
+      <component-family>org.openfaces.Timetable</component-family>
+      <renderer-type>org.openfaces.TimetableRenderer</renderer-type>
+      <renderer-class>org.openfaces.renderkit.timetable.TimetableRenderer</renderer-class>
     </renderer>
 
   </render-kit>

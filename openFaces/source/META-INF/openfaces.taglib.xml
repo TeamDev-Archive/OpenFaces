@@ -1209,5 +1209,13 @@
       <handler-class>org.openfaces.taglib.facelets.social.DisqusCommentsTagHandler</handler-class>
     </component>
   </tag>
+  <tag>
+    <tag-name>timetable</tag-name>
+    <component>
+      <component-type>org.openfaces.Timetable</component-type>
+      <renderer-type>org.openfaces.TimetableRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.timetable.TimetableTagHandler</handler-class>
+    </component>
+  </tag>
 
 </facelet-taglib>
