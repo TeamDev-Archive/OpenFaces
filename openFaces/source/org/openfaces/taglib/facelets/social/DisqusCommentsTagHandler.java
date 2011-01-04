@@ -11,8 +11,9 @@
  */
 package org.openfaces.taglib.facelets.social;
 
-import com.sun.facelets.tag.jsf.ComponentConfig;
 import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
+
+import javax.faces.view.facelets.ComponentConfig;
 
 public class DisqusCommentsTagHandler extends AbstractFaceletsComponentHandler {
 
