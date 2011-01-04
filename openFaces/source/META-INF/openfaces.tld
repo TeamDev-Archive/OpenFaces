@@ -10100,6 +10100,18 @@ means that only root nodes and their immediate children are preloaded -->
       <!-- @default false -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>A flag indicating that this component will prohibit changes by
+        the user. The element may receive focus unless it has also been disabled.
+      </description>
+      <name>readonly</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
 
     <attribute>
       <description>An advisory title for the text field of the DropDownField component.</description>
@@ -10277,6 +10289,20 @@ entering a value and returns a list of suggestions from the server -->
       </deferred-value>
       <!-- @bindingType int -->
       <!-- @default -1 -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>Applicable only with suggestionMode="custom". Setting this attribute to false disables caching and
+        makes Ajax request each time the suggestion list is needed, or when the list is opened. This behavior overrides
+        the behavior specified with preloadedItemCount attribute.
+      </description>
+      <name>cachingAllowed</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
       <!-- @el true -->
     </attribute>
 
@@ -11022,7 +11048,7 @@ entering a value and returns a list of suggestions from the server -->
     <!--<body-content>JSP</body-content>-->
 
     <!--<attribute>-->
-      <!--<description>Flag indicating whether or not this component should be rendered (during Render Response Phase),-->
+      <!--<description>A flag indicating whether or not this component should be rendered (during Render Response Phase),-->
         <!--or processed on any subsequent form submit. The default value for this property is true.-->
       <!--</description>-->
       <!--<name>rendered</name>-->
@@ -11077,7 +11103,7 @@ entering a value and returns a list of suggestions from the server -->
       <!--&lt;!&ndash; @el true &ndash;&gt;-->
     <!--</attribute>-->
     <!--<attribute>-->
-      <!--<description>Flag indicating whether the option created by this component is disabled.-->
+      <!--<description>A flag indicating whether the option created by this component is disabled.-->
         <!--Expressions must evaluate to a boolean. Default value is false.-->
       <!--</description>-->
       <!--<name>itemDisabled</name>-->
@@ -11382,6 +11408,18 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default false -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>A flag indicating that this component will prohibit changes by
+        the user. The element may receive focus unless it has also been disabled.
+      </description>
+      <name>readonly</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
 
     <attribute>
       <description>The name of a request-scope variable under which the current item
@@ -11480,6 +11518,19 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>Applicable only to the "custom" suggestion mode. This attribute should be specified when
+        preloadedItemCount is specified to a value other than -1. This attribute should be specified as a value binding
+        that returns the total row count if the entire drop-down list is fully loaded.
+      </description>
+      <name>totalItemCount</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
       <description>Applicable only to the "custom" suggestion mode. Specifies the number of items that will be loaded
         along with each additional portion when scrolling through the suggestion list. See the preloadedItemCount
         attribute. The valid values are -1, or any positive number. The value of -1 means that all remaining items
@@ -11493,6 +11544,20 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default -1 -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>Applicable only with suggestionMode="custom". Setting this attribute to false disables caching and
+        makes Ajax request each time the suggestion list is needed, or when the list is opened. This behavior overrides
+        the behavior specified with preloadedItemCount attribute.
+      </description>
+      <name>cachingAllowed</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+
 
     <attribute>
       <description>A flag that indicates whether a drop-down suggestion list can be opened using the "Down Arrow" key.
@@ -24718,7 +24783,7 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
-      <description>Flag indicating that this component will prohibit changes by
+      <description>A flag indicating that this component will prohibit changes by
         the user. The element may receive focus unless it has also been disabled.
       </description>
       <name>readonly</name>
@@ -25275,7 +25340,7 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
-      <description>Flag indicating that this component will prohibit changes by the user. The element may receive focus
+      <description>A flag indicating that this component will prohibit changes by the user. The element may receive focus
         unless it has also been disabled.
       </description>
       <name>readonly</name>
@@ -26302,7 +26367,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Flag indicating whether or not this component should be rendered
+      <description>A flag indicating whether or not this component should be rendered
         (during Render Response Phase), or processed on any subsequent form submit.
         The default value for this property is true.
       </description>
@@ -33259,7 +33324,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el false -->
     </attribute>
     <attribute>
-      <description>Flag that indicates whether or not valueChangeListener
+      <description>A flag that indicates whether or not valueChangeListener
         should be executed immediately (during the Apply Request Values phase of the
         request processing life-cycle instead of Process Validations phase) and the
         component's input should be converted and validated immediately (during
@@ -33313,7 +33378,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Flag indicating that this component will prohibit changes by the user.
+      <description>A flag indicating that this component will prohibit changes by the user.
         The element may receive focus unless it has also been disabled. A value of false
         causes no attribute to be rendered, while a value of true causes the attribute to
         be rendered as readonly="readonly".
@@ -33384,7 +33449,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Flag indicating that the user is required to provide a submitted
+      <description>A flag indicating that the user is required to provide a submitted
         value for this input component.
       </description>
       <name>required</name>
@@ -33953,7 +34018,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el false -->
     </attribute>
     <attribute>
-      <description>Flag that indicates whether or not valueChangeListener
+      <description>A flag that indicates whether or not valueChangeListener
         should be executed immediately (during the Apply Request Values phase of the
         request processing life-cycle instead of Process Validations phase) and the
         component's input should be converted and validated immediately (during
@@ -34007,7 +34072,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Flag indicating that this component will prohibit changes by the user.
+      <description>A flag indicating that this component will prohibit changes by the user.
         The element may receive focus unless it has also been disabled. A value of false
         causes no attribute to be rendered, while a value of true causes the attribute to
         be rendered as readonly="readonly".
@@ -34079,7 +34144,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el only -->
     </attribute>
     <attribute>
-      <description>Flag indicating that the user is required to provide a submitted
+      <description>A flag indicating that the user is required to provide a submitted
         value for this input component.
       </description>
       <name>required</name>
@@ -36255,6 +36320,18 @@ and it is automatically triggered on any form submission. -->
       <!-- @default false -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>A flag indicating that this component will prohibit changes by
+        the user. The element may receive focus unless it has also been disabled.
+      </description>
+      <name>readonly</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
 
     <attribute>
       <description>An advisory title for the text field of the SelectOneMenu component.</description>
@@ -36367,6 +36444,19 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>Applicable only to the "custom" suggestion mode. This attribute should be specified when
+        preloadedItemCount is specified to a value other than -1. This attribute should be specified as a value binding
+        that returns the total row count if the entire drop-down list is fully loaded.
+      </description>
+      <name>totalItemCount</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
       <description>Applicable only to the "custom" suggestion mode. Specifies the number of items that will be loaded
         along with each additional portion when scrolling through the suggestion list. See the preloadedItemCount
         attribute. The valid values are -1, or any positive number. The value of -1 means that all remaining items
@@ -36378,6 +36468,19 @@ entering a value and returns a list of suggestions from the server -->
       </deferred-value>
       <!-- @bindingType int -->
       <!-- @default -1 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Applicable only with suggestionMode="custom". Setting this attribute to false disables caching and
+        makes Ajax request each time the suggestion list is needed, or when the list is opened. This behavior overrides
+        the behavior specified with preloadedItemCount attribute.
+      </description>
+      <name>cachingAllowed</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
       <!-- @el true -->
     </attribute>
 
@@ -40058,5 +40161,22 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
   </tag>
+  <tag>
+    <description>A component which displays a schedule of events, where the user can switch between different views,
+      which display different periods of time: day view, week view, and month view.
+    </description>
+    <name>timetable</name>
+    <tag-class>org.openfaces.taglib.jsp.timetable.TimetableJspTag</tag-class>
+    <body-content>JSP</body-content>
+  </tag>
+  <!--<tag>-->
+    <!--<description>This component is under construction. Displays a box where users may read and write comments. This component works on top of the Disqus-->
+      <!--(http://disqus.com) service. You don&apos;t have to provide storage for the comments. You just have to create an-->
+      <!--account for your site to get started: http://disqus.com/admin/register/-->
+    <!--</description>-->
+    <!--<name>disqusComments</name>-->
+    <!--<tag-class>org.openfaces.taglib.jsp.social.DisqusCommentsJspTag</tag-class>-->
+    <!--<body-content>JSP</body-content>-->
+  <!--</tag>-->
 
 </taglib>

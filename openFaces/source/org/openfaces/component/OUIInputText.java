@@ -28,6 +28,7 @@ public class OUIInputText extends OUIInputBase {
     private String accesskey;
     private String tabindex;
     private String title;
+    private Boolean readonly;
 
     public String getPromptText() {
         return ValueBindings.get(this, "promptText", promptText);
@@ -77,13 +78,22 @@ public class OUIInputText extends OUIInputBase {
         this.tabindex = tabindex;
     }
 
+    public boolean isReadonly() {
+        return ValueBindings.get(this, "readonly", readonly, false);
+    }
+
+    public void setReadonly(boolean readonly) {
+        this.readonly = readonly;
+    }
+
+
     @Override
     public Object saveState(FacesContext context) {
         return new Object[]{super.saveState(context),
+                readonly,
                 promptText,
                 promptTextStyle,
                 promptTextClass,
-
 
                 accesskey,
                 tabindex,
@@ -96,6 +106,7 @@ public class OUIInputText extends OUIInputBase {
         Object[] values = (Object[]) state;
         int i = 0;
         super.restoreState(context, values[i++]);
+        readonly = (Boolean) values[i++];
         promptText = (String) values[i++];
         promptTextStyle = (String) values[i++];
         promptTextClass = (String) values[i++];

@@ -179,7 +179,8 @@ O$.DropDown = {
                   rolloverPopupClass,
                   disabled,
                   promptText,
-                  promptTextClass) {
+                  promptTextClass,
+                  pullPopupFromContainer) {
 
     O$.DropDown._initInput(dropDownId,
             initialText,
@@ -195,6 +196,10 @@ O$.DropDown = {
 
     dropDown._button = O$(dropDownId + "::button");
     dropDown._popup = O$(dropDownId + "--popup");
+    dropDown._disabled = disabled;
+    if (pullPopupFromContainer) {
+      dropDown._popup._pullFromContainer();
+    }
 
     var field = dropDown._field;
     var button = dropDown._button;
@@ -368,7 +373,7 @@ O$.DropDown = {
     if (calendar) {
       popup.style.width = calendar.offsetWidth + "px";
     } else {
-      var innerTable = O$(popup.id + "::innerTable");
+      var innerTable = O$(dropDown.id + "--popup::innerTable");
       var tableWidth = innerTable.offsetWidth;
       var tableHeight = innerTable.offsetHeight;
       if (popup._initializedTableWidth != tableWidth || popup._initializedTableHeight != tableHeight) {

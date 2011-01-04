@@ -9,7 +9,6 @@
         <webroots>
           <root url="file://$MODULE_DIR$/web" relative="/" />
         </webroots>
-        <context-artifact name="TestAppFacelets:TestAppFacelets exploded" />
       </configuration>
       <facet type="jsf" name="JSF">
         <configuration />

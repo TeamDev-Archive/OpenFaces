@@ -222,6 +222,10 @@ O$.TreeTable = {
     var toggles = expanded ? expandedToggles : collapsedToggles;
 
     var hasChildren = toggles && toggles.length > 0;
+    function updateExpansionStateClass() {
+      O$.setStyleMappings(row._rowNode, {expansion: row._expanded ? "o_expandedNode" : "o_collapsedNode"});
+    }
+
     O$.extend(row, {
       _toggles: toggles,
       _hasChildren: hasChildren,
@@ -241,6 +245,7 @@ O$.TreeTable = {
         var prevExpanded = this._expanded;
         this._expanded = expanded;
         var thisRow = this;
+        updateExpansionStateClass();
 
         function changeToggleImage(showExpandedImage) {
           var toggles = thisRow._toggles;
@@ -274,6 +279,8 @@ O$.TreeTable = {
         return this._expanded;
       }
     });
+
+    updateExpansionStateClass();
 
     var table = row._table;
     toggles.forEach(function(toggle) {

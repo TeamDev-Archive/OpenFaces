@@ -12,6 +12,7 @@
 package org.openfaces.component.input;
 
 import org.openfaces.component.Side;
+import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.Components;
 import org.openfaces.util.ValueBindings;
 
@@ -33,6 +34,7 @@ public abstract class DropDownFieldBase extends DropDownComponent {
     private Integer suggestionMinChars;
     private Integer preloadedItemCount;
     private Integer pageSize;
+    private Boolean cachingAllowed;
     
     private Integer timeout;
     private String ondropdown;
@@ -339,6 +341,7 @@ public abstract class DropDownFieldBase extends DropDownComponent {
                 autoComplete,
                 preloadedItemCount,
                 pageSize,
+                cachingAllowed,
 
                 horizontalGridLines,
                 verticalGridLines,
@@ -385,6 +388,7 @@ public abstract class DropDownFieldBase extends DropDownComponent {
         autoComplete = (Boolean) values[i++];
         preloadedItemCount = (Integer) values[i++];
         pageSize = (Integer) values[i++];
+        cachingAllowed = (Boolean) values[i++];
 
         horizontalGridLines = (String) values[i++];
         verticalGridLines = (String) values[i++];
@@ -447,5 +451,13 @@ public abstract class DropDownFieldBase extends DropDownComponent {
 
     public void setPageSize(int pageSize) {
         this.pageSize = pageSize;
+    }
+
+    public boolean isCachingAllowed() {
+        return ValueBindings.get(this, "cachingAllowed", cachingAllowed, true);
+    }
+
+    public void setCachingAllowed(boolean cachingAllowed) {
+        this.cachingAllowed = cachingAllowed;
     }
 }

@@ -27,7 +27,6 @@ public class InputText extends OUIInputText {
     private String lang;
     private String alt;
     private String onselect;
-    private Boolean readonly;
     private Integer maxlength;
     private Integer size;
     private String autocomplete;
@@ -55,10 +54,6 @@ public class InputText extends OUIInputText {
 
     public void setSize(int size) {
         this.size = size;
-    }
-
-    public boolean isReadonly() {
-        return ValueBindings.get(this, "readonly", readonly, false);
     }
 
     public String getDir() {
@@ -93,14 +88,9 @@ public class InputText extends OUIInputText {
         this.onselect = onselect;
     }
 
-    public void setReadonly(boolean readonly) {
-        this.readonly = readonly;
-    }
-
     public int getMaxlength() {
         return ValueBindings.get(this, "maxLength", maxlength, Integer.MIN_VALUE);
     }
-
 
     public void setMaxlength(int maxlength) {
         this.maxlength = maxlength;
@@ -114,7 +104,6 @@ public class InputText extends OUIInputText {
                 lang,
                 alt,
                 onselect,
-                readonly,
                 maxlength,
                 size,
                 autocomplete
@@ -131,7 +120,6 @@ public class InputText extends OUIInputText {
         lang = (String) values[i++];
         alt = (String) values[i++];
         onselect = (String) values[i++];
-        readonly = (Boolean) values[i++];
         maxlength = (Integer) values[i++];
         size = (Integer) values[i++];
         autocomplete = (String) values[i++];

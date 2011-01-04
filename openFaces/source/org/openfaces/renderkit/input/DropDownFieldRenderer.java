@@ -367,7 +367,8 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
                 dropDownField.getAttributes().get(ATTR_TOTAL_ITEM_COUNT),
                 dropDownField.getAttributes().get(ATTR_PAGE_SIZE),
 
-                tableStructure.getInitParam(context, POPUP_TABLE_DEFAULT_STYLES)
+                tableStructure.getInitParam(context, POPUP_TABLE_DEFAULT_STYLES),
+                dropDownField.isCachingAllowed()
         );
         popup.resetChildData();
         if (!dropDown.isDisabled()) {  // todo: write the event parameters more economically
@@ -473,6 +474,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
         ResponseWriter clonedResponseWriter = responseWriter.cloneWithWriter(stringWriter);
         context.setResponseWriter(clonedResponseWriter);
         List<String[]> itemValues;
+        boolean appendItems;
         try {
             String var = "searchString";
             Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
@@ -482,12 +484,14 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
             Object oldVarValue = requestMap.put(var, criterion);
             try {
                 if (jsonParam == null) {
+                    appendItems = false;
                     items = collectSelectItems(dropDownField);
                 } else {
                     try {
                         pageStart = jsonParam.getInt("pageStart");
                         int pageSize = jsonParam.getInt("pageSize");
                         items = collectSelectItems(dropDownField, pageStart, pageSize);
+                        appendItems = !jsonParam.getBoolean("forceReload");
                     } catch (JSONException e) {
                         throw new RuntimeException(e);
                     }
@@ -510,7 +514,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
         ScriptBuilder sb = new ScriptBuilder();
         sb.functionCall("O$.DropDownField._acceptLoadedItems",
                 dropDownField,
-                new NewInstanceScript("Array", null, null, getItemValuesArray(itemValues), jsonParam != null)
+                new NewInstanceScript("Array", null, null, getItemValuesArray(itemValues), appendItems)
         );
 
         Rendering.renderInitScript(context, sb);

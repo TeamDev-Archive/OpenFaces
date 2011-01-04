@@ -10,7 +10,6 @@
           <root url="file://$MODULE_DIR$/resources" relative="/" />
           <root url="file://$MODULE_DIR$/WEB-INF" relative="/WEB-INF" />
         </webroots>
-        <context-artifact name="LiveDemoFacelets:LiveDemoFacelets exploded" />
       </configuration>
       <facet type="jsf" name="JSF">
         <configuration />
