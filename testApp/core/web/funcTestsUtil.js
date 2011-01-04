@@ -25,7 +25,8 @@ function singleSelectionChanged(dataTableID, divID) { // todo: reimplement this 
   for (var i = 0; i < childerNumber; i++) {
     var currentRow = tbody.childNodes[i];
     if (currentRow.tagName && currentRow.tagName && currentRow.tagName.toLowerCase() == "tr") {
-      if (currentRow.className && currentRow.className != "o_hiddenRow") // selection style is applied to <tr> or embedded <td> tags depending on browser and other conditions
+      var rowClass = currentRow.className;
+      if (rowClass && rowClass.indexOf("o_hiddenRow") == -1 && rowClass != "o_expandedNode" && rowClass != "o_collapsedNode") // selection style is applied to <tr> or embedded <td> tags depending on browser and other conditions
         showSelectedIndex(i, divID);
       else {
         var firstRowChild = currentRow.childNodes[0];
@@ -62,12 +63,13 @@ function multipleSelectionChanged(dataTableID, divID) {// todo: reimplement this
   for (var i = 0; i < childerNumber; i++) {
     var currentRow = tbody.childNodes[i];
     if (currentRow.tagName && currentRow.tagName.toLowerCase() == "tr") {
-      if (currentRow.className && currentRow.className != "o_hiddenRow") // selection style is applied to <tr> or embedded <td> tags depending on browser and other conditions
+      var rowClass = currentRow.className;
+      if (rowClass && rowClass.indexOf("o_hiddenRow") == -1 && rowClass != "o_expandedNode" && rowClass != "o_collapsedNode") // selection style is applied to <tr> or embedded <td> tags depending on browser and other conditions
         result += " " + i;
       else {
         var firstRowChild = currentRow.childNodes[0];
         if (firstRowChild) {
-          if (firstRowChild.className && currentRow.className.indexOf("o_class") != -1) {
+          if (firstRowChild.className && rowClass.indexOf("o_class") != -1) {
             result += " " + i;
           }
         }
