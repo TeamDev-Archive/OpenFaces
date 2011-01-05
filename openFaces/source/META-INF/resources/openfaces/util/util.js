@@ -3722,8 +3722,13 @@ if (!window.O$) {
     if (element.nodeName.toLowerCase() != "table") {
       if (!O$.isExplorer() || O$.isStrictMode()) {
         if (value != null) {
-          value -= O$.getNumericElementStyle(element, "padding-" + edge1Property, false, hundredPercentValue) + O$.getNumericElementStyle(element, "padding-" + edge2Property, false, hundredPercentValue);
-          value -= O$.getNumericElementStyle(element, "border-" + edge1Property + "-width", false, hundredPercentValue) + O$.getNumericElementStyle(element, "border-" + edge2Property + "-width", false, hundredPercentValue);
+          if (O$._setElementWidthOrHeight._totalPaddingsAndBordersWidth != null) {
+            value -= O$._setElementWidthOrHeight._totalPaddingsAndBordersWidth;
+            O$._setElementWidthOrHeight._totalPaddingsAndBordersWidth = null;
+          } else {
+            value -= O$.getNumericElementStyle(element, "padding-" + edge1Property, false, hundredPercentValue) + O$.getNumericElementStyle(element, "padding-" + edge2Property, false, hundredPercentValue);
+            value -= O$.getNumericElementStyle(element, "border-" + edge1Property + "-width", false, hundredPercentValue) + O$.getNumericElementStyle(element, "border-" + edge2Property + "-width", false, hundredPercentValue);
+          }
         }
       }
     }
