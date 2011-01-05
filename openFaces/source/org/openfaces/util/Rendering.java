@@ -819,7 +819,7 @@ public class Rendering {
      * @return true, if uri represent dynamic image, false otherwise
      */
     public static boolean isDynamicResource(String uri) {
-        // todo: extract this as a generic mechanism of dynamic resources (see also todo in Rendering.)
+        // todo: extract this as a generic mechanism of dynamic resources (see also todo in startWriteIMG method)
         return (uri.indexOf("dynamicimage") != -1);
     }
 
