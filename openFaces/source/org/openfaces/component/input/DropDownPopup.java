@@ -12,7 +12,7 @@
 package org.openfaces.component.input;
 
 import org.openfaces.component.AbstractPopup;
-import org.openfaces.component.ajax.Ajax;
+import org.openfaces.component.OUIClientAction;
 import org.openfaces.component.table.BaseColumn;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.renderkit.input.DropDownFieldRenderer;
@@ -64,7 +64,8 @@ public class DropDownPopup extends AbstractPopup {
         List<UIComponent> dropDownChildren = dropDownField.getChildren();
         List<UIComponent> childComponents = new ArrayList<UIComponent>(dropDownChildren.size());
         for (UIComponent component : dropDownChildren) {
-            if (!isDropDownAuxiliaryComponent(component) && !(component instanceof BaseColumn) && !(component instanceof Ajax))
+            if (!isDropDownAuxiliaryComponent(component) && !(component instanceof BaseColumn) &&
+                    !(component instanceof OUIClientAction) && !Rendering.isA4jSupportComponent(component))
                 childComponents.add(component);
         }
 
@@ -204,7 +205,7 @@ public class DropDownPopup extends AbstractPopup {
     }
 
     private boolean isDropDownAuxiliaryComponent(UIComponent component) {
-        return (component instanceof UISelectItem || component instanceof UISelectItems);
+        return component instanceof UISelectItem || component instanceof UISelectItems;
     }
 
     public void setDropDownList(Collection<UISelectItem> dropDownList) {
