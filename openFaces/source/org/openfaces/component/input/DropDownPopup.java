@@ -65,7 +65,7 @@ public class DropDownPopup extends AbstractPopup {
         List<UIComponent> childComponents = new ArrayList<UIComponent>(dropDownChildren.size());
         for (UIComponent component : dropDownChildren) {
             if (!isDropDownAuxiliaryComponent(component) && !(component instanceof BaseColumn) &&
-                    !(component instanceof OUIClientAction) && !Rendering.isA4jSupportComponent(component))
+                    !(component instanceof OUIClientAction))
                 childComponents.add(component);
         }
 
