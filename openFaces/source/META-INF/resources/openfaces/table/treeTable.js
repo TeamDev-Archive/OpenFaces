@@ -28,6 +28,9 @@ O$.TreeTable = {
       __setSelectedNodeIndex: function (nodeIndex) {
         this.__setSelectedRowIndex(nodeIndex);
       },
+      clearSelection: function() {
+        this.__clearSelection();
+      },
       isSelectionEmpty: function() {
         return this.__isSelectionEmpty();
       },

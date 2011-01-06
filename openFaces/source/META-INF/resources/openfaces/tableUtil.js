@@ -1644,14 +1644,28 @@ O$.Tables = {
         if (tableWidth == null)
           tableWidth = O$.getElementSize(table).width;
         return tableWidth;
-      };
-      function calculateWidthCorrection(cell) {
+      }
+      function calculateWidthCorrection(cell, gridlinesSpec) {
         if (cell._widthCorrection != undefined) return;
+        // inferring border widths from grid-line specifications to avoid border calculation for optimization purposes
+        var leftBorderWidth = 0;
+        var rightBorderWidth = (!gridlinesSpec && gridlinesSpec == "") ? 0 :
+                gridlinesSpec.indexOf(",") != -1 || gridlinesSpec.indexOf("px") == -1 ? O$.getNumericElementStyle(cell, "border-right-width", true, getTableWidth) :
+                eval(gridlinesSpec.substring(0, gridlinesSpec.indexOf("px")));
+        // The proper calculation of width correction doesn't seem to be required (checked on scrollable/non-scrollable
+        // tables with column resizing under quirks/strict modes in all browsers), but padding calculation is very
+        // expensive under FF/Chrome on tables with many columns (see OFCS-22), so we're just hard-coding the most
+        // typical value of 4 here (2px left + 2px right).
+        // If the configuration where proper calculation is important arises then the actual calculation should be
+        // performed only when running under that particular configuration to minimize performance hit for other
+        // configurations. If no such configuration emerges then width correction calculation should probably be removed
+        // at all.
+        var totalPadding = 4;/*O$.getNumericElementStyle(cell, "padding-left", true, getTableWidth) +
+                O$.getNumericElementStyle(cell, "padding-right", true, getTableWidth);*/
         cell._widthCorrection = !cell ? 0 :
-                                  O$.getNumericElementStyle(cell, "padding-left", true, getTableWidth) +
-                                  O$.getNumericElementStyle(cell, "padding-right", true, getTableWidth) +
-                                  O$.getNumericElementStyle(cell, "border-left-width", true, getTableWidth) +
-                                  O$.getNumericElementStyle(cell, "border-right-width", true, getTableWidth);
+                                  totalPadding +
+                                  leftBorderWidth +
+                                  rightBorderWidth;
       }
       var headerCell = (column.header && column.header._cell) || (column.subHeader && column.subHeader._cell);
       var bodyCell = column.body._cells[0];
@@ -1660,9 +1674,10 @@ O$.Tables = {
       var widthForCol = width;
       if (widthForCol < 0) widthForCol = 0;
 
-      function setWidth(cellClass, cell, tableSection) {
+      function setWidth(cellClass, cell, tableSection, gridlinesSpec) {
         if (!cell) return;
-        calculateWidthCorrection(cell);
+        if (!gridlinesSpec) gridlinesSpec = table._gridLines.vertical;
+        calculateWidthCorrection(cell, gridlinesSpec);
         var widthForCell = width - cell._widthCorrection;
         if (widthForCell < 0) widthForCell = 0;
 
@@ -1677,12 +1692,15 @@ O$.Tables = {
           if (col._section == tableSection)
             colTag = col;
         });
-        if (colTag) O$.setElementWidth(colTag, widthForCol, getTableWidth);
+        if (colTag) {
+          O$._setElementWidthOrHeight._totalPaddingsAndBordersWidth = 0;
+          O$.setElementWidth(colTag, widthForCol, getTableWidth);
+        }
       }
-      setWidth(this._headerCellsClass.classObj, headerCell, table.header);
+      setWidth(this._headerCellsClass.classObj, headerCell, table.header, table._gridLines.headerVert);
       setWidth(this._bodyCellsClass.classObj, bodyCell, table.body);
       if (footerCell)
-        setWidth(this._footerCellsClass.classObj, footerCell, table.footer);
+        setWidth(this._footerCellsClass.classObj, footerCell, table.footer, table._gridLines.footerVert);
 
       var colClass = this._colClass.classObj;
       if (colClass.style.setProperty) {
