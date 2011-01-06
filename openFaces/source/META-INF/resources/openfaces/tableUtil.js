@@ -1677,15 +1677,15 @@ O$.Tables = {
       function setWidth(cellClass, cell, tableSection, gridlinesSpec) {
         if (!cell) return;
         if (!gridlinesSpec) gridlinesSpec = table._gridLines.vertical;
-        calculateWidthCorrection(cell, gridlinesSpec);
+//        calculateWidthCorrection(cell, gridlinesSpec);
         var widthForCell = width - cell._widthCorrection;
         if (widthForCell < 0) widthForCell = 0;
-
-        if (cellClass.style.setProperty) {
-          cellClass.style.setProperty("width", widthForCell + "px", "important");
-        } else {
-          cellClass.style.width = widthForCell + "px";
-        }
+//  setting cell width seems not to be required (see a note in calculateWidthCorrection)
+//        if (cellClass.style.setProperty) {
+//          cellClass.style.setProperty("width", widthForCell + "px", "important");
+//        } else {
+//          cellClass.style.width = widthForCell + "px";
+//        }
 
         var colTag = null;
         column._colTags.forEach(function(col) {
@@ -1702,12 +1702,13 @@ O$.Tables = {
       if (footerCell)
         setWidth(this._footerCellsClass.classObj, footerCell, table.footer, table._gridLines.footerVert);
 
-      var colClass = this._colClass.classObj;
-      if (colClass.style.setProperty) {
-        colClass.style.setProperty("width", widthForCol + "px", "important");
-      } else {
-        colClass.style.width = widthForCol + "px";
-      }
+//  this doesn't seem to be required according to the current testing, but it causes performance loss (see also a note in calculateWidthCorrection)
+//      var colClass = this._colClass.classObj;
+//      if (colClass.style.setProperty) {
+//        colClass.style.setProperty("width", widthForCol + "px", "important");
+//      } else {
+//        colClass.style.width = widthForCol + "px";
+//      }
 
     };
     column.getDeclaredWidth = function(tableWidth) {

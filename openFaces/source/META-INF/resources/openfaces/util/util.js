@@ -2778,7 +2778,7 @@ if (!window.O$) {
       }
       return styleSheet;
     } catch (e) {
-      O$.logError("O$.addCssRule throw an exception " + (e ? e.message : e) +
+      O$.logError("O$.addCssRule threw an exception " + (e ? e.message : e) +
               "; tried to add the following rule: " + strRule);
       throw e;
     }
