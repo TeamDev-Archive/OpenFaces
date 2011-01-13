@@ -395,6 +395,16 @@ public class ResourceFilter implements Filter {
             if (headerOpeningTagEnd != -1) {
                 headerInsertionPos = headerOpeningTagEnd + 1;
                 hasHeaderTag = true;
+                int metaTagStart = 0;
+                if ((metaTagStart = responseStringInspector.indexOfIgnoreCase("<meta", headerInsertionPos)) >= 0){
+                    // fix for IE: compatible meta header should be first tag in header
+                    // <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+                    // skip first meta tag
+                    int metaTagEnd = responseString.indexOf('>', metaTagStart);
+                    if (metaTagEnd != -1) {
+                        headerInsertionPos = metaTagEnd + 1;
+                    }
+                }
             } else
                 headerInsertionPos = 0;
         } else {
