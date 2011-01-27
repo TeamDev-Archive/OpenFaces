@@ -1071,9 +1071,9 @@ O$.Table = {
     };
 
     header.onclick = function(e) {
-      var col = cell._column;
-      O$.Table._setAllCheckboxes(col, this.checked);
       var columnObj = O$(this._columnObjectId);
+      var col = columnObj._tableColumn;
+      O$.Table._setAllCheckboxes(col, this.checked);
       columnObj._updateHeaderCheckBoxes();
       col._updateSubmissionField();
       var evt = O$.getEvent(e);
