@@ -54,6 +54,7 @@ public class TableBody extends TableSection {
 
     private TableStructure tableStructure;
     private boolean noDataRows;
+    private List<String> clientRowKeys;
 
     public TableBody(TableStructure tableStructure) {
         super(tableStructure);
@@ -83,6 +84,7 @@ public class TableBody extends TableSection {
         }
 
         result.put("noDataRows", isNoDataRows());
+        result.put("rowKeys", clientRowKeys);
     }
 
     private String getBodyOddRowClass(TableStyles table, TableStyles defaultStyles) {
@@ -235,6 +237,10 @@ public class TableBody extends TableSection {
             table.setRowIndex(rowIndex);
             if (!table.isRowAvailable())
                 break;
+
+            Object rowKey = table.getRowKey();
+            if (clientRowKeys == null) clientRowKeys = new ArrayList<String>();
+            clientRowKeys.add(rowKey != null ? rowKey.toString() : null);
 
             BodyRow leftRow = leftRows != null ? new BodyRow() : null;
             BodyRow row = new BodyRow();
