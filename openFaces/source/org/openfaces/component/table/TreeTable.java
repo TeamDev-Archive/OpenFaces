@@ -805,6 +805,14 @@ public class TreeTable extends AbstractTable {
         return nodeInfo.getNodeHasChildren();
     }
 
+    @Override
+    public String getClientRowKey() {
+        TreePath treePath = (TreePath) super.getRowKey();
+        Object nodeKey = treePath.getValue();
+        if (nodeKey == null) return null;
+        return nodeKey.toString();
+    }
+
     public boolean isNodeExpanded() {
         if (nodeInfoForRows == null)
             return false;

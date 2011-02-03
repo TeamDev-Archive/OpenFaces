@@ -36,6 +36,18 @@ O$.Table = {
       setSelectedRowIndexes: function(rowIndexes) {
         this.__setSelectedRowIndexes(rowIndexes);
       },
+      getSelectedRowKey: function() {
+        return this.__getSelectedRowKey();
+      },
+      setSelectedRowKey: function(rowKey) {
+        this.__setSelectedRowKey(rowKey);
+      },
+      getSelectedRowKeys: function() {
+        return this.__getSelectedRowKeys();
+      },
+      setSelectedRowKeys: function(rowKey) {
+        this.__setSelectedRowKeys(rowKey);
+      },
       getRowCount: function() {
         return this.__getRowCount();
       }
@@ -64,8 +76,9 @@ O$.Table = {
         var afterRowIndex = this.__afterRowIndex;
         var newRowsToStylesMap = rowsData["rowStylesMap"];
         var newRowCellsToStylesMap = rowsData["cellStylesMap"];
+        var rowKeys = rowsData["rowKeys"];
 
-        this._insertRowsAfter(afterRowIndex, newRows, newRowsToStylesMap, newRowCellsToStylesMap);
+        this._insertRowsAfter(afterRowIndex, newRows, newRowsToStylesMap, newRowCellsToStylesMap, rowKeys);
       }
 
     });
@@ -196,11 +209,57 @@ O$.Table = {
         }
         this._setSelectedItems(rowIndexes);
       },
+      __getSelectedRowKey: function() {
+        var rowIndex = this.__getSelectedRowIndex();
+        if (rowIndex == -1) return null;
+        var rowKey = this.__getRowKey(rowIndex);
+        return rowKey;
+      },
+      __setSelectedRowKey: function(rowKey) {
+        var rowIndex = this.__getRowIndexByKey(rowKey);
+        this.__setSelectedRowIndex(rowIndex);
+      },
+      __getSelectedRowKeys: function() {
+        var indexes = this.__getSelectedRowIndexes();
+        var keys = [];
+        for (var i = 0, count = indexes.length; i < count; i++) {
+          var idx = indexes[i];
+          keys[i] = this.__getRowKey(idx);
+        }
+        return keys;
+      },
+      __setSelectedRowKeys: function(keys) {
+        var indexes = [];
+        for (var i = 0, count = keys.length; i < count; i++) {
+          var key = keys[i];
+          indexes[i] = this.__getRowIndexByKey(key);
+        }
+        this.__setSelectedRowIndexes(indexes);
+      },
       __getRowCount: function() {
         if (this._params.body.noDataRows)
           return 0;
         var bodyRows = this.body._getRows();
         return bodyRows.length;
+      },
+      __getRowKey: function(rowIndex) {
+        if (this._params.body.noDataRows)
+          throw "There are no rows in this table";
+        var bodyRows = this.body._getRows();
+        if (rowIndex < 0 || rowIndex >= bodyRows.length)
+          throw "getRowKey parameter is out of range (" + rowIndex + "); table's clientId is: " + this.id + "; number of rows is: " + bodyRows.length;
+        return bodyRows[rowIndex]._rowKey;
+      },
+      __getRowIndexByKey: function(rowKey) {
+        if (this._params.body.noDataRows)
+          return -1;
+        var bodyRows = this.body._getRows();
+        for (var i = 0, count = bodyRows.length; i < count; i++) {
+          var row = bodyRows[i];
+          if (row._rowKey == rowKey)
+            return i;
+        }
+        return -1;
       }
     });
   },

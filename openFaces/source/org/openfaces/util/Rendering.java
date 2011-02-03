@@ -1021,6 +1021,14 @@ public class Rendering {
             }
             paramValue = array;
         }
+        if (paramValue instanceof List) {
+            List params = ((List) paramValue);
+            JSONArray array = new JSONArray();
+            for (Object param : params) {
+                array.put(param);
+            }
+            paramValue = array;
+        }
         if (paramValue != null && !paramValue.equals(defaultValue))
             try {
                 if (paramValue instanceof JSONObject || paramValue instanceof JSONArray || paramValue instanceof JSONString)
