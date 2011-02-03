@@ -36,7 +36,20 @@ O$.TreeTable = {
       },
       getSelectedNodeCount: function() {
         return this.__getSelectedNodeCount();
+      },
+      getSelectedNodeKey: function() {
+        return this.__getSelectedRowKey();
+      },
+      setSelectedNodeKey: function(rowKey) {
+        this.__setSelectedRowKey(rowKey);
+      },
+      getSelectedNodeKeys: function() {
+        return this.__getSelectedRowKeys();
+      },
+      setSelectedNodeKeys: function(rowKey) {
+        this.__setSelectedRowKeys(rowKey);
       }
+
     });
   },
 

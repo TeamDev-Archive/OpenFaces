@@ -87,6 +87,10 @@ public class TableBody extends TableSection {
         result.put("rowKeys", clientRowKeys);
     }
 
+    public List<String> getClientRowKeys() {
+        return clientRowKeys;
+    }
+
     private String getBodyOddRowClass(TableStyles table, TableStyles defaultStyles) {
         String bodyOddRowClass = table.getBodyOddRowClass();
         return TableUtil.getClassWithDefaultStyleClass(
@@ -238,9 +242,9 @@ public class TableBody extends TableSection {
             if (!table.isRowAvailable())
                 break;
 
-            Object rowKey = table.getRowKey();
+            String clientRowKey = table.getClientRowKey();
             if (clientRowKeys == null) clientRowKeys = new ArrayList<String>();
-            clientRowKeys.add(rowKey != null ? rowKey.toString() : null);
+            clientRowKeys.add(clientRowKey);
 
             BodyRow leftRow = leftRows != null ? new BodyRow() : null;
             BodyRow row = new BodyRow();

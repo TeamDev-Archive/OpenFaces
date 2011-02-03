@@ -172,7 +172,7 @@ O$.Tables = {
     };
   },
 
-  _insertRowsAfter: function(afterIndex, rowsToInsert, newRowsToStylesMap, newRowCellsToStylesMap) {
+  _insertRowsAfter: function(afterIndex, rowsToInsert, newRowsToStylesMap, newRowCellsToStylesMap, rowKeys) {
     if (rowsToInsert.length == 0) {
       return;
     }
@@ -260,6 +260,8 @@ O$.Tables = {
     var callbackIndex, callbackCount;
     for (i = 0,count = rowsToInsert.length; i < count; i++) {
       var newRow = rowsToInsert[i];
+      if (rowKeys)
+        newRow._rowKey = rowKeys[i];
       if (!this._params.scrolling) {
         if (bodyRows.length > 0) {
           var nextRowIdx = afterIndex + 1 + addedRowCount;
@@ -539,6 +541,8 @@ O$.Tables = {
                   _table: table,
                   _index: rowIndex
                 };
+                if (sectionParams.rowKeys)
+                  row._rowKey = sectionParams.rowKeys[areaRowIndex];
                 rows[rowIndex] = row;
                 var cells = [];
                 if (row._leftRowNode) {

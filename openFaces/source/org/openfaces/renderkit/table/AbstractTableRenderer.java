@@ -742,8 +742,10 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
                                            JSONObject rowsInitInfo) {
         Map<Object, String> rowStylesMap = tableStructure.getRowStylesMap();
         Map<Object, String> cellStylesMap = tableStructure.getCellStylesMap();
+        List<String> rowKeys = tableStructure.getBody().getClientRowKeys();
         Rendering.addJsonParam(rowsInitInfo, "rowStylesMap", TableUtil.getStylesMapAsJSONObject(rowStylesMap));
         Rendering.addJsonParam(rowsInitInfo, "cellStylesMap", TableUtil.getStylesMapAsJSONObject(cellStylesMap));
+        Rendering.addJsonParam(rowsInitInfo, "rowKeys", rowKeys);
     }
 
     public static boolean isAjaxRowLoadingInProgress(FacesContext context) {

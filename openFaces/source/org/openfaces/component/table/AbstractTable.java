@@ -1299,6 +1299,12 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         return getModel().getRowKey();
     }
 
+    public String getClientRowKey() {
+        Object rowKey = getRowKey();
+        if (rowKey == null) return null;
+        return rowKey.toString();
+    }
+
     protected Comparator<Object> createRowDataComparator(List<SortingRule> sortingRules) {
         if (sortingRules == null)
             return null;
