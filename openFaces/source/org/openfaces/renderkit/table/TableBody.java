@@ -15,7 +15,6 @@ import org.openfaces.component.TableStyles;
 import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.BaseColumn;
 import org.openfaces.component.table.Cell;
-import org.openfaces.component.table.Column;
 import org.openfaces.component.table.Row;
 import org.openfaces.component.table.Scrolling;
 import org.openfaces.component.table.TreeColumn;
@@ -55,6 +54,7 @@ public class TableBody extends TableSection {
 
     private TableStructure tableStructure;
     private boolean noDataRows;
+    private List<String> clientRowKeys;
 
     public TableBody(TableStructure tableStructure) {
         super(tableStructure);
@@ -84,6 +84,7 @@ public class TableBody extends TableSection {
         }
 
         result.put("noDataRows", isNoDataRows());
+        result.put("rowKeys", clientRowKeys);
     }
 
     private String getBodyOddRowClass(TableStyles table, TableStyles defaultStyles) {
@@ -236,6 +237,10 @@ public class TableBody extends TableSection {
             table.setRowIndex(rowIndex);
             if (!table.isRowAvailable())
                 break;
+
+            Object rowKey = table.getRowKey();
+            if (clientRowKeys == null) clientRowKeys = new ArrayList<String>();
+            clientRowKeys.add(rowKey != null ? rowKey.toString() : null);
 
             BodyRow leftRow = leftRows != null ? new BodyRow() : null;
             BodyRow row = new BodyRow();
@@ -417,7 +422,7 @@ public class TableBody extends TableSection {
                 int endIdx = buf.length();
                 String content = buf.substring(startIdx, endIdx);
                 cell.setContent(content);
-                
+
                 if (columnIndexVar != null)
                     requestMap.put(columnIndexVar, prevColumnIndexVarValue);
                 if (columnIdVar != null)

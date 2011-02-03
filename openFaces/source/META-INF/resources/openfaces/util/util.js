@@ -3103,22 +3103,22 @@ if (!window.O$) {
     if (!O$._capitalizedValues) O$._capitalizedValues = {};
     var value = O$._capitalizedValues[propertyName];
     if (value) return value;
-    var originalPropertyName = propertyName;
+    var _propertyName = propertyName;
     while (true) {
-      var idx = propertyName.indexOf("-");
+      var idx = _propertyName.indexOf("-");
       if (idx == -1) {
-        O$._capitalizedValues[originalPropertyName] = propertyName;
-        return propertyName;
+        O$._capitalizedValues[propertyName] = _propertyName;
+        return _propertyName;
       }
-      var firstPart = propertyName.substring(0, idx);
-      var secondPart = propertyName.substring(idx + 1);
+      var firstPart = _propertyName.substring(0, idx);
+      var secondPart = _propertyName.substring(idx + 1);
       if (secondPart.length > 0) {
         var firstChar = secondPart.substring(0, 1);
         firstChar = firstChar.toUpperCase();
         var otherChars = secondPart.substring(1);
         secondPart = firstChar + otherChars;
       }
-      propertyName = firstPart + secondPart;
+      _propertyName = firstPart + secondPart;
     }
   };
 

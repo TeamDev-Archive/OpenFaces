@@ -16,6 +16,7 @@ import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.Environment;
 import org.openfaces.util.HTML;
+import org.openfaces.util.Log;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
@@ -246,7 +247,7 @@ public class TwoListSelectionRenderer extends RendererBase {
         Converter converter = null;
         FacesContext context = FacesContext.getCurrentInstance();
         // If there is a converter attribute, use it to to ask application
-        // instance for a converter with this identifer.
+        // instance for a converter with this identifier.
 
         if (component instanceof ValueHolder) {
             converter = ((ValueHolder) component).getConverter();
@@ -273,6 +274,8 @@ public class TwoListSelectionRenderer extends RendererBase {
             // if there is no default converter available for this identifier,
             // assume the model type to be String.
             if (converter == null) {
+                Log.log("No converter was specified for TwoListSelection with id \"" + component.getClientId(context) +
+                        "\", and item value type is not String: " + value.getClass().getName());
                 result = value.toString();
                 return result;
             }

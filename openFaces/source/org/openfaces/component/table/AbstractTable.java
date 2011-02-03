@@ -1019,6 +1019,10 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         if (columnResizing != null)
             columnResizing.processUpdates(context);
 
+        Scrolling scrolling = getScrolling();
+        if (scrolling != null)
+            scrolling.processUpdates(context);
+
         Iterable<String> submittedColumnsOrder = (Iterable<String>) getAttributes().get("submittedColumnsOrder");
         if (submittedColumnsOrder != null) {
             getAttributes().remove("submittedColumnsOrder");
@@ -1289,6 +1293,10 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
             setSortColumnId(columnId);
             setSortAscending(ascending != null ? ascending : true);
         }
+    }
+
+    public Object getRowKey() {
+        return getModel().getRowKey();
     }
 
     protected Comparator<Object> createRowDataComparator(List<SortingRule> sortingRules) {
