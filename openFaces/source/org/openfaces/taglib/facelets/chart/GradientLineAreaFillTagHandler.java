@@ -11,16 +11,10 @@
  */
 package org.openfaces.taglib.facelets.chart;
 
-<<<<<<< HEAD
 import org.openfaces.taglib.internal.chart.GradientLineAreaFillTag;
 
 import javax.faces.view.facelets.ComponentConfig;
 
-=======
-import com.sun.facelets.tag.jsf.ComponentConfig;
-import org.openfaces.taglib.internal.chart.GradientLineAreaFillTag;
-
->>>>>>> master
 public class GradientLineAreaFillTagHandler extends org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler {
 
     public GradientLineAreaFillTagHandler(ComponentConfig componentConfig) {

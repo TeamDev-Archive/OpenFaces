@@ -11,18 +11,11 @@
  */
 package org.openfaces.taglib.facelets.chart;
 
-<<<<<<< HEAD
 import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
 import org.openfaces.taglib.internal.chart.ChartPopupTag;
 
 import javax.faces.view.facelets.ComponentConfig;
 
-=======
-import com.sun.facelets.tag.jsf.ComponentConfig;
-import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
-import org.openfaces.taglib.internal.chart.ChartPopupTag;
-
->>>>>>> master
 public class ChartPopupTagHandler extends AbstractFaceletsComponentHandler {
 
     public ChartPopupTagHandler(ComponentConfig componentConfig) {

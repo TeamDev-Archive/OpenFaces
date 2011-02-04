@@ -26,11 +26,7 @@ public class LongConverterClientValidator extends AbstractClientValidator {
     private static final String CONVERSION_MESSAGE_ID = "javax.faces.convert.LongConverter.CONVERSION";
 
     public LongConverterClientValidator() {
-<<<<<<< HEAD
         addJavascriptLibrary(new ValidationJavascriptLibrary("longConverterValidator.js"));
-=======
-        addJavascriptLibrary(new ValidationJavascriptLibrary("longConverterValidator.js", null));
->>>>>>> master
     }
 
     public String getJsValidatorName() {

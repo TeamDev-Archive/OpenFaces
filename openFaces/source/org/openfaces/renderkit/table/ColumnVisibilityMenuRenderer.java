@@ -19,10 +19,7 @@ import org.openfaces.component.table.ColumnVisibilityMenu;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.renderkit.command.PopupMenuRenderer;
 import org.openfaces.renderkit.select.SelectBooleanCheckboxImageManager;
-<<<<<<< HEAD
 import org.openfaces.util.Components;
-=======
->>>>>>> master
 import org.openfaces.util.Resources;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.ScriptBuilder;
@@ -53,30 +50,18 @@ public class ColumnVisibilityMenuRenderer extends PopupMenuRenderer {
             MenuItem menuItem = new MenuItem();
             menuItem.setValue(TableUtil.getColumnHeader(column));
             boolean columnVisible = visibleColumns.contains(column);
-<<<<<<< HEAD
             menuItem.setIconUrl(Resources.getInternalURL(context,
                     columnVisible
                             ? SelectBooleanCheckboxImageManager.DEFAULT_SELECTED_IMAGE
                             : SelectBooleanCheckboxImageManager.DEFAULT_UNSELECTED_IMAGE
             ));
-=======
-            menuItem.setIconUrl(Resources.getInternalURL(context, null,
-                    columnVisible
-                            ? SelectBooleanCheckboxImageManager.DEFAULT_SELECTED_IMAGE
-                            : SelectBooleanCheckboxImageManager.DEFAULT_UNSELECTED_IMAGE,
-                    false));
->>>>>>> master
             menuChildren.add(menuItem);
         }
     }
 
     private AbstractTable getTable(ColumnVisibilityMenu cvm) {
         UIComponent parent = cvm.getParent();
-<<<<<<< HEAD
         while (parent != null && (parent instanceof MenuItem || parent instanceof PopupMenu || Components.isImplicitPanel(parent)))
-=======
-        while (parent != null && (parent instanceof MenuItem || parent instanceof PopupMenu))
->>>>>>> master
             parent = parent.getParent();
         if (!(parent instanceof AbstractTable))
             throw new FacesException("<o:columnVisibilityMenu> can only be inserted into the \"columnMenu\" facet of " +

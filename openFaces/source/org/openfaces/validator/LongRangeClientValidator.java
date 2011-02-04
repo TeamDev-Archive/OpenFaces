@@ -26,11 +26,7 @@ public class LongRangeClientValidator extends AbstractClientValidator {
     private LongRangeValidator longRangeValidator;
 
     public LongRangeClientValidator() {
-<<<<<<< HEAD
         addJavascriptLibrary(new ValidationJavascriptLibrary("longRangeValidator.js"));
-=======
-        addJavascriptLibrary(new ValidationJavascriptLibrary("longRangeValidator.js", null));
->>>>>>> master
     }
 
     public void setLongRangeValidator(LongRangeValidator longRangeValidator) {

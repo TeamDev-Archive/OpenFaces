@@ -11,18 +11,11 @@
  */
 package org.openfaces.taglib.facelets.panel;
 
-<<<<<<< HEAD
 import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
 import org.openfaces.taglib.internal.panel.LayeredPaneTag;
 
 import javax.faces.view.facelets.ComponentConfig;
 
-=======
-import com.sun.facelets.tag.jsf.ComponentConfig;
-import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
-import org.openfaces.taglib.internal.panel.LayeredPaneTag;
-
->>>>>>> master
 public class LayeredPaneTagHandler extends AbstractFaceletsComponentHandler {
 
     public LayeredPaneTagHandler(ComponentConfig componentConfig) {

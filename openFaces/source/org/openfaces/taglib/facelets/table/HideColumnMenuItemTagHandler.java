@@ -11,18 +11,11 @@
  */
 package org.openfaces.taglib.facelets.table;
 
-<<<<<<< HEAD
 import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
 import org.openfaces.taglib.internal.table.HideColumnMenuItemTag;
 
 import javax.faces.view.facelets.ComponentConfig;
 
-=======
-import com.sun.facelets.tag.jsf.ComponentConfig;
-import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
-import org.openfaces.taglib.internal.table.HideColumnMenuItemTag;
-
->>>>>>> master
 public class HideColumnMenuItemTagHandler extends AbstractFaceletsComponentHandler {
 
     public HideColumnMenuItemTagHandler(ComponentConfig componentConfig) {

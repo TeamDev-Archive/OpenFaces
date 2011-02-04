@@ -29,11 +29,7 @@ public abstract class AbstractClientValidator implements ClientValidator {
     private static final Object[] EMPTY_ARRAY = new Object[0];
 
     protected AbstractClientValidator() {
-<<<<<<< HEAD
         addJavascriptLibrary(new ValidationJavascriptLibrary("validatorUtil.js"));
-=======
-        addJavascriptLibrary(new ValidationJavascriptLibrary("validatorUtil.js", null));
->>>>>>> master
     }
 
     public Script getClientScript(FacesContext context, final UIComponent component) {

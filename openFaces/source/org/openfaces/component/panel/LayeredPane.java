@@ -29,11 +29,7 @@ public class LayeredPane extends MultiPageContainer {
     @Override
     public Object saveState(FacesContext context) {
         return new Object[]{
-<<<<<<< HEAD
                 super.saveState(context),
-=======
-            super.saveState(context),
->>>>>>> master
 
         };
     }

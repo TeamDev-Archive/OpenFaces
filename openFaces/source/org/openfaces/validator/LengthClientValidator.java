@@ -26,11 +26,7 @@ public class LengthClientValidator extends AbstractClientValidator {
     private LengthValidator lengthValidator;
 
     public LengthClientValidator() {
-<<<<<<< HEAD
         addJavascriptLibrary(new ValidationJavascriptLibrary("lengthValidator.js"));
-=======
-        addJavascriptLibrary(new ValidationJavascriptLibrary("lengthValidator.js", null));
->>>>>>> master
     }
 
     public void setLengthValidator(LengthValidator lengthValidator) {

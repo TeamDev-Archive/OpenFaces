@@ -1,9 +1,5 @@
 /*
-<<<<<<< HEAD:openFaces/source/org/openfaces/component/ComponentWithExternalParts.java
  * OpenFaces - JSF Component Library 3.0
-=======
- * OpenFaces - JSF Component Library 2.0
->>>>>>> master:openFaces/source/org/openfaces/ajax/WrappedAjaxRoot.java
  * Copyright (C) 2007-2011, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
