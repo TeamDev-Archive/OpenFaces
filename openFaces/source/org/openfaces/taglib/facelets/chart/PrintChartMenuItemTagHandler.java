@@ -11,11 +11,18 @@
  */
 package org.openfaces.taglib.facelets.chart;
 
+<<<<<<< HEAD
 import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
 import org.openfaces.taglib.internal.chart.PrintChartMenuItemTag;
 
 import javax.faces.view.facelets.ComponentConfig;
 
+=======
+import com.sun.facelets.tag.jsf.ComponentConfig;
+import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
+import org.openfaces.taglib.internal.chart.PrintChartMenuItemTag;
+
+>>>>>>> master
 public class PrintChartMenuItemTagHandler extends AbstractFaceletsComponentHandler {
 
     public PrintChartMenuItemTagHandler(ComponentConfig componentConfig) {

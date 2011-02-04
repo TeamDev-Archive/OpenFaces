@@ -15,6 +15,7 @@ import org.openfaces.component.chart.ChartMenu;
 import org.openfaces.component.chart.PrintChartMenuItem;
 import org.openfaces.component.chart.SaveChartMenuItem;
 import org.openfaces.renderkit.command.PopupMenuRenderer;
+<<<<<<< HEAD
 import org.openfaces.util.Resources;
 
 import javax.faces.component.UIComponent;
@@ -34,6 +35,15 @@ public class ChartMenuRenderer extends PopupMenuRenderer implements ComponentSys
             Resources.includeJQuery();
     }
 
+=======
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import java.io.IOException;
+import java.util.List;
+
+public class ChartMenuRenderer extends PopupMenuRenderer {
+>>>>>>> master
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ChartMenu menu = (ChartMenu) component;
@@ -46,4 +56,8 @@ public class ChartMenuRenderer extends PopupMenuRenderer implements ComponentSys
         super.encodeBegin(context, component);
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
 }

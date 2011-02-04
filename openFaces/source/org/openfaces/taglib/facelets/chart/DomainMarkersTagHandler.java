@@ -11,7 +11,11 @@
  */
 package org.openfaces.taglib.facelets.chart;
 
+<<<<<<< HEAD
 import javax.faces.view.facelets.ComponentConfig;
+=======
+import com.sun.facelets.tag.jsf.ComponentConfig;
+>>>>>>> master
 
 public class DomainMarkersTagHandler extends org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler {
 

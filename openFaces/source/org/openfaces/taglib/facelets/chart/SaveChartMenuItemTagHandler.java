@@ -11,11 +11,18 @@
  */
 package org.openfaces.taglib.facelets.chart;
 
+<<<<<<< HEAD
 import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
 import org.openfaces.taglib.internal.chart.SaveChartMenuItemTag;
 
 import javax.faces.view.facelets.ComponentConfig;
 
+=======
+import com.sun.facelets.tag.jsf.ComponentConfig;
+import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
+import org.openfaces.taglib.internal.chart.SaveChartMenuItemTag;
+
+>>>>>>> master
 public class SaveChartMenuItemTagHandler extends AbstractFaceletsComponentHandler {
 
     public SaveChartMenuItemTagHandler(ComponentConfig componentConfig) {

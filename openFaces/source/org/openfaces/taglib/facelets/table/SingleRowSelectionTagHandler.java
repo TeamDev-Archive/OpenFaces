@@ -11,11 +11,18 @@
  */
 package org.openfaces.taglib.facelets.table;
 
+<<<<<<< HEAD
 import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
 import org.openfaces.taglib.internal.table.SingleRowSelectionTag;
 
 import javax.faces.view.facelets.ComponentConfig;
 
+=======
+import com.sun.facelets.tag.jsf.ComponentConfig;
+import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
+import org.openfaces.taglib.internal.table.SingleRowSelectionTag;
+
+>>>>>>> master
 public class SingleRowSelectionTagHandler extends AbstractFaceletsComponentHandler {
 
     public SingleRowSelectionTagHandler(ComponentConfig componentConfig) {

@@ -11,10 +11,16 @@
  */
 package org.openfaces.taglib.facelets.chart;
 
+<<<<<<< HEAD
 import org.openfaces.taglib.internal.chart.SolidLineAreaFillTag;
 
 import javax.faces.view.facelets.ComponentConfig;
 
+=======
+import com.sun.facelets.tag.jsf.ComponentConfig;
+import org.openfaces.taglib.internal.chart.SolidLineAreaFillTag;
+
+>>>>>>> master
 public class SolidLineAreaFillTagHandler extends org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler {
 
     public SolidLineAreaFillTagHandler(ComponentConfig componentConfig) {

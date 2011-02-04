@@ -11,11 +11,18 @@
  */
 package org.openfaces.taglib.facelets.command;
 
+<<<<<<< HEAD
 import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
 import org.openfaces.taglib.internal.command.CommandLinkTag;
 
 import javax.faces.view.facelets.ComponentConfig;
 
+=======
+import com.sun.facelets.tag.jsf.ComponentConfig;
+import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
+import org.openfaces.taglib.internal.command.CommandLinkTag;
+
+>>>>>>> master
 public class CommandLinkTagHandler extends AbstractFaceletsComponentHandler {
 
     public CommandLinkTagHandler(ComponentConfig componentConfig) {

@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.util.List;
 
 public class ColumnMenuRenderer extends PopupMenuRenderer {
-
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ColumnMenu menu = (ColumnMenu) component;

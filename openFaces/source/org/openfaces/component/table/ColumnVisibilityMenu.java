@@ -31,7 +31,11 @@ public class ColumnVisibilityMenu extends PopupMenu {
     @Override
     public Object saveState(FacesContext context) {
         return new Object[]{
+<<<<<<< HEAD
                 super.saveState(context),
+=======
+            super.saveState(context),
+>>>>>>> master
 
         };
     }

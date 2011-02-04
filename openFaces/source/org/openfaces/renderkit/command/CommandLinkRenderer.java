@@ -63,7 +63,11 @@ public class CommandLinkRenderer extends RendererBase {
             boolean hasExplicitContent = false;
             List<UIComponent> children = link.getChildren();
             for (UIComponent child : children) {
+<<<<<<< HEAD
                 if (!(child instanceof OUIClientAction)) {
+=======
+                if (!(child instanceof OUIClientAction) && !Rendering.isA4jSupportComponent(child)) {
+>>>>>>> master
                     hasExplicitContent = true;
                     break;
                 }
@@ -92,7 +96,10 @@ public class CommandLinkRenderer extends RendererBase {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
+<<<<<<< HEAD
         Rendering.decodeBehaviors(context, component);
+=======
+>>>>>>> master
         Map<String, String> requestParameters = context.getExternalContext().getRequestParameterMap();
         String key = getClickedRequestKey(context, component);
         if (requestParameters.containsKey(key)) {

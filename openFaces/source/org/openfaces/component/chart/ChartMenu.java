@@ -11,11 +11,17 @@
  */
 package org.openfaces.component.chart;
 
+<<<<<<< HEAD
 import org.openfaces.component.command.PopupMenu;
 
 import javax.faces.context.FacesContext;
 
 public class ChartMenu extends PopupMenu {
+=======
+import javax.faces.context.FacesContext;
+
+public class ChartMenu extends org.openfaces.component.command.PopupMenu {
+>>>>>>> master
     public static final String COMPONENT_TYPE = "org.openfaces.ChartMenu";
     public static final String COMPONENT_FAMILY = "org.openfaces.ChartMenu";
 

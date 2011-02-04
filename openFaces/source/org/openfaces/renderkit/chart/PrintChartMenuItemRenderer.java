@@ -21,6 +21,7 @@ import org.openfaces.util.ScriptBuilder;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+<<<<<<< HEAD
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ComponentSystemEvent;
 import javax.faces.event.ComponentSystemEventListener;
@@ -35,6 +36,11 @@ public class PrintChartMenuItemRenderer extends MenuItemRenderer implements Comp
             Resources.includeJQuery();
     }
 
+=======
+import java.io.IOException;
+
+public class PrintChartMenuItemRenderer extends MenuItemRenderer {
+>>>>>>> master
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         MenuItem menuItem = (MenuItem) component;
@@ -45,9 +51,16 @@ public class PrintChartMenuItemRenderer extends MenuItemRenderer implements Comp
                 getChart("<o:printChartMenuItem>", menuItem)).getScript());
         if (menuItem.getIconUrl() == null)
             menuItem.setIconUrl(Resources.getInternalURL(
+<<<<<<< HEAD
                     context, "chart/print.png"));
 
         super.encodeBegin(context, component);
+=======
+                    context, null, "chart/print.png", false));
+
+        super.encodeBegin(context, component);
+        Resources.includeJQuery(context);
+>>>>>>> master
         Resources.renderJSLinkIfNeeded(context,
                 Resources.getInternalURL(context, "thirdparty/printelement/printElement.js"));
     }

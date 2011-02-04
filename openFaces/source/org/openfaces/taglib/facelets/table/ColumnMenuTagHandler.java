@@ -11,11 +11,18 @@
  */
 package org.openfaces.taglib.facelets.table;
 
+<<<<<<< HEAD
 import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
 import org.openfaces.taglib.internal.table.ColumnMenuTag;
 
 import javax.faces.view.facelets.ComponentConfig;
 
+=======
+import com.sun.facelets.tag.jsf.ComponentConfig;
+import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
+import org.openfaces.taglib.internal.table.ColumnMenuTag;
+
+>>>>>>> master
 public class ColumnMenuTagHandler extends AbstractFaceletsComponentHandler {
 
     public ColumnMenuTagHandler(ComponentConfig componentConfig) {

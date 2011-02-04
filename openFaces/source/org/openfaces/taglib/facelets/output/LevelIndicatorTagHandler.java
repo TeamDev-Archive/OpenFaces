@@ -11,10 +11,16 @@
  */
 package org.openfaces.taglib.facelets.output;
 
+<<<<<<< HEAD
 import org.openfaces.taglib.internal.output.LevelIndicatorTag;
 
 import javax.faces.view.facelets.ComponentConfig;
 
+=======
+import com.sun.facelets.tag.jsf.ComponentConfig;
+import org.openfaces.taglib.internal.output.LevelIndicatorTag;
+
+>>>>>>> master
 public class LevelIndicatorTagHandler extends org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler {
 
     public LevelIndicatorTagHandler(ComponentConfig componentConfig) {
