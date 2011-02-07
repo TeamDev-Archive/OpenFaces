@@ -81,11 +81,12 @@ O$.ajax = {
     args.listener = options.listener;
     args.immediate = options.immediate;
     args.executeRenderedComponents = options.executeRenderedComponents;
-    if (options.params) {
+    var paramsObject = options.params;
+    if (paramsObject) {
       args.params = [];
-      for (var param in options.params) {
-        var value = options.params[param];
-        args.params.push([param, value]);
+      for (var paramName in paramsObject) {
+        var paramValue = paramsObject[paramName];
+        args.params.push([paramName, paramValue]);
       }
     }
 

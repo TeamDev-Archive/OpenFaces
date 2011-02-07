@@ -57,7 +57,8 @@ public abstract class PhaseListenerBase implements PhaseListener {
             }
             if (ownReferencesFound > 1 && !AjaxUtil.isPortletRenderRequest(context)) {
                 throw new IllegalStateException("Second notification for the same phase in the same request occurred. phaseId.ordinal: " + phaseId.getOrdinal() +
-                        "; phaseId = " + phaseId + "; More than one ValidatorPhaseListener is found to be registered (" + ownReferencesFound + "). Check that only one JSF implementation is deployed with your application.");
+                        "; phaseId = " + phaseId + "; More than one " + this.getClass().getName() +
+                        " is found to be registered (" + ownReferencesFound + "). Check that only one JSF implementation is deployed with your application.");
             }
         }
         extContext.getRequestMap().put(phaseNotificationKey, "PhaseId: " + phaseId);
