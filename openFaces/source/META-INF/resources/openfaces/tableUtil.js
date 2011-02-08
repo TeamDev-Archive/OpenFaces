@@ -1463,24 +1463,37 @@ O$.Tables = {
 
   _initColumnOrGroup: function(column, table) {
     function newClass_IE(declaration) {
-      if (!O$.Tables._predefinedColClasses) {
+      function createPredefinedColClasses(prefix, preallocateCount) {
         var styleElement = document.createElement("style");
         styleElement.setAttribute("type", "text/css");
         var headTags = document.getElementsByTagName("head");
         var styleParent = headTags.length > 0 ? headTags[0] : document.getElementsByTagName("body")[0];
         styleParent.appendChild(styleElement);
         var buf = new O$.StringBuffer();
-        for (var i = 0; i < 4 * 50; i++)
-          buf.append(".o_predefinedCol").append(i).append("{overflow:hidden} ");
+        for (var i = 0; i < 4 * preallocateCount; i++)
+          buf.append("." + prefix).append(i).append("{overflow:hidden} ");
         styleElement.styleSheet.cssText = buf.toString();
-        O$.Tables._predefinedColClasses = styleElement.styleSheet.rules;
-        O$.Tables._predefinedColClasses._obtained = 0;
+        var predefinedColClasses = styleElement.styleSheet.rules;
+        predefinedColClasses._obtained = 0;
+        predefinedColClasses._prefix = prefix;
+        return predefinedColClasses;
       }
-      var colClasses = O$.Tables._predefinedColClasses;
-      if (colClasses._obtained < colClasses.length) {
-        return {className: "o_predefinedCol" + colClasses._obtained, classObj: colClasses[colClasses._obtained++]};
+      var colClasses = null;
+      if (!O$.Tables._predefinedColClasses)
+        O$.Tables._predefinedColClasses = createPredefinedColClasses("o_predefinedCol", 50);
+      if (O$.Tables._predefinedColClasses._obtained < O$.Tables._predefinedColClasses.length)
+        colClasses = O$.Tables._predefinedColClasses;
+      else {
+        if (!O$.Tables._predefinedColClassesLonger)
+          O$.Tables._predefinedColClassesLonger = createPredefinedColClasses("o_predefinedColL", 200);
+        if (O$.Tables._predefinedColClassesLonger._obtained < O$.Tables._predefinedColClassesLonger.length)
+          colClasses = O$.Tables._predefinedColClassesLonger;
       }
-      return newClass_raw(declaration);
+      if (colClasses) {
+        return {className: colClasses._prefix + colClasses._obtained, classObj: colClasses[colClasses._obtained++]};
+      } else {
+        return newClass_raw(declaration);
+      }
     }
     function newClass_raw(declaration) {
       var className = O$.createCssClass(declaration, true);
