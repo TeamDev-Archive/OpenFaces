@@ -19,7 +19,7 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/Libs/mojarra/jsf-api-2.0.3.jar">
+	<classpathentry kind="lib" path="/Libs/mojarra/jsf-api-2.0.4.jar">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
