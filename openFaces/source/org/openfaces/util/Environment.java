@@ -328,7 +328,6 @@ public class Environment {
             Enumeration<URL> resources = classLoader.getResources("META-INF/MANIFEST.MF");
             while (resources.hasMoreElements()) {
                 URL url = resources.nextElement();
-                System.out.println("manifest url: " + url);
                 Map<String, String> attributes = new HashMap<String, String>();
                 readManifestAttributes(url, attributes);
 

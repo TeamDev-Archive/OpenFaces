@@ -166,7 +166,16 @@ public class PartialViewContext extends PartialViewContextWrapper {
         List<String> additionalComponents = new ArrayList<String>();
         UIViewRoot viewRoot = context.getViewRoot();
         for (String id : result) {
-            UIComponent component = viewRoot.findComponent(id);
+            UIComponent component = null;
+            try {
+                component = viewRoot.findComponent(id);
+            } catch (IllegalArgumentException e) {
+                // this can be the case when using <f:ajax> on <h:selectOneRadio>, which generates several
+                // <input type="radio"> tags with ids like form:radio:N, where N is a number of item, and
+                // UIComponentBase tries to treat the component as a NamingContainer in this case. This situation can
+                // happen only for foreign (non-OpenFaces) components, and components which implement
+                // ComponentWithExternalParts, which are actually of interest here don't have this problem. (OF-77)
+            }
             if (component == null) continue;
             if (!(component instanceof ComponentWithExternalParts)) continue;
             Collection<String> externalPartIds = ((ComponentWithExternalParts) component).getExternalPartIds();
