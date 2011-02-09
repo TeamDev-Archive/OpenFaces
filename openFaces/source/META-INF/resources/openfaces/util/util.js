@@ -4206,13 +4206,13 @@ if (!window.O$) {
       input._strictWidthFixed = true;
       var parent = input.parentNode;
       var widthCorrection;
-      if (O$.getStyleClassProperty(input.className, "width") == "100%") {
-        var bordersX = O$.getNumericElementStyle(input, "border-left-width") + O$.getNumericElementStyle(input, "border-right-width");
+      if ((input._o_fullWidth == undefined && O$.getStyleClassProperty(input.className, "width") == "100%") || input._o_fullWidth) {
+        var bordersX = input._o_zeroBorders ? 0 : O$.getNumericElementStyle(input, "border-left-width") + O$.getNumericElementStyle(input, "border-right-width");
         var paddingsX = O$.getNumericElementStyle(input, "padding-left") + O$.getNumericElementStyle(input, "padding-right");
         widthCorrection = bordersX + paddingsX;
       }
       var heightCorrection;
-      if (O$.getStyleClassProperty(input.className, "height") == "100%") {
+      if ((input._o_fullHeight == undefined && O$.getStyleClassProperty(input.className, "height") == "100%") || input._o_fullHeight) {
         var bordersY = O$.getNumericElementStyle(input, "border-top-width") + O$.getNumericElementStyle(input, "border-bottom-width");
         var paddingsY = O$.getNumericElementStyle(input, "padding-top") + O$.getNumericElementStyle(input, "padding-bottom");
         heightCorrection = bordersY + paddingsY;

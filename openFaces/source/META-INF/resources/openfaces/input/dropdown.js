@@ -162,6 +162,9 @@ O$.DropDown = {
       dropDown._skipValidation = false;
     }, 100);
 
+    field._o_zeroBorders = true;
+    field._o_fullWidth = true;
+    field._o_fullHeight = false;
     O$.fixInputsWidthStrict(dropDown);
   },
 
