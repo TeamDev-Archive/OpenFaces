@@ -21,6 +21,7 @@ import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 import javax.faces.lifecycle.Lifecycle;
 import javax.faces.lifecycle.LifecycleFactory;
+import java.util.Map;
 
 public abstract class PhaseListenerBase implements PhaseListener {
     /**
@@ -42,6 +43,31 @@ public abstract class PhaseListenerBase implements PhaseListener {
         return false;
     }
 
+    protected void checkEnvironment(PhaseEvent event) {
+        checkOurPhaseListenerInvokedOnce(event);
+
+        checkMojarraVersion();
+    }
+
+    private void checkMojarraVersion()  {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Map<String, Object> applicationMap = context.getExternalContext().getApplicationMap();
+        String alreadyChecked = getClass().getName() + ".checkMojarraVersion()._alreadyChecked";
+        if (applicationMap.containsKey(alreadyChecked)) return;
+        applicationMap.put(alreadyChecked, true);
+
+        String mojarraVersion = Environment.getMojarraVersion(context);
+        if (mojarraVersion.equals("")) {
+//            Log.log("OpenFaces warning: couldn't find Mojarra manifest file to check Mojarra version (Mojarra 2.0.3 or higher is required)");
+            return;
+        }
+        if (mojarraVersion.compareTo("2.0.3") < 0) {
+            String message = "OpenFaces requires Mojarra version 2.0.3 or higher, but the following version was found: " + mojarraVersion;
+            Log.log("OpenFaces error: " + message);
+            throw new IllegalStateException(message);
+        }
+    }
+
     protected void checkOurPhaseListenerInvokedOnce(PhaseEvent event) {
         PhaseId phaseId = event.getPhaseId();
         FacesContext context = event.getFacesContext();
@@ -58,10 +84,13 @@ public abstract class PhaseListenerBase implements PhaseListener {
             if (ownReferencesFound > 1 && !AjaxUtil.isPortletRenderRequest(context)) {
                 throw new IllegalStateException("Second notification for the same phase in the same request occurred. phaseId.ordinal: " + phaseId.getOrdinal() +
                         "; phaseId = " + phaseId + "; More than one " + this.getClass().getName() +
-                        " is found to be registered (" + ownReferencesFound + "). Check that only one JSF implementation is deployed with your application.");
+                        " is found to be registered (" + ownReferencesFound + "). Check that only one JSF " +
+                        "implementation is deployed with your application's classpath, and openfaces.jar is not " +
+                        "duplicated in application's and server's libraries.");
             }
         }
         extContext.getRequestMap().put(phaseNotificationKey, "PhaseId: " + phaseId);
+
     }
 
     protected static Lifecycle getLifecycle() {

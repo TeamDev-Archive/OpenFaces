@@ -18,9 +18,20 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewDeclarationLanguage;
 import javax.faces.view.ViewDeclarationLanguageFactory;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.LineNumberReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Eugene Goncharov
@@ -282,4 +293,93 @@ public class Environment {
         return userAgent;
     }
 
+    /**
+     * Returns Mojarra version as can be found in the appropriate manifest.mf file, or an empty string if no
+     * Mojarra manifest files were found
+     */
+    public static String getMojarraVersion(FacesContext context) {
+        Map<String, Object> applicationMap = context.getExternalContext().getApplicationMap();
+        String key = Environment.class.getName() + ".MOJARRA_VERSION";
+        String version = (String) applicationMap.get(key);
+        if (version == null) {
+            Map<String, String> manifestAttributes = Environment.findManifestFile("Mojarra");
+            if (manifestAttributes == null)
+                version = "";
+            else
+                version = manifestAttributes.get("Implementation-Version");
+            applicationMap.put(key, version);
+        }
+        return version;
+    }
+
+    private static Map<String, String> findManifestFile(String bundleNameSubstring) {
+        Set<ClassLoader> classLoaders = new HashSet<ClassLoader>();
+        classLoaders.add(Environment.class.getClassLoader());
+
+        for (ClassLoader classLoader : classLoaders) {
+            Map<String, String> manifestFile = findManifestFile(classLoader, bundleNameSubstring);
+            if (manifestFile != null) return manifestFile;
+        }
+        return null;
+    }
+
+    private static Map<String, String> findManifestFile(ClassLoader classLoader, String bundleNameSubstring) {
+        try {
+            Enumeration<URL> resources = classLoader.getResources("META-INF/MANIFEST.MF");
+            while (resources.hasMoreElements()) {
+                URL url = resources.nextElement();
+                System.out.println("manifest url: " + url);
+                Map<String, String> attributes = new HashMap<String, String>();
+                readManifestAttributes(url, attributes);
+
+                String bundleName = attributes.get("Bundle-Name");
+                if (bundleName == null || !bundleName.contains(bundleNameSubstring)) continue;
+                return attributes;
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    static void readManifestAttributes(URL url, Map<String, String> attributes) throws IOException {
+        InputStream inputStream = url.openStream();
+        InputStreamReader isr = new InputStreamReader(inputStream);
+        LineNumberReader reader = new LineNumberReader(isr);
+        try {
+            List<String> lines = new ArrayList<String>();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                lines.add(line);
+            }
+            while (lines.size() > 0) {
+                String[] attribute = readManifestAttribute(lines);
+                if (attribute != null)
+                    attributes.put(attribute[0], attribute[1]);
+            }
+        } finally {
+            reader.close();
+        }
+    }
+
+    static String[] readManifestAttribute(List<String> lines) {
+        while (lines.size() > 0) {
+            String line = lines.remove(0);
+            int separatorIndex = line.indexOf(":");
+            if (separatorIndex == -1) continue;
+            String name = line.substring(0, separatorIndex);
+            String value = line.substring(separatorIndex + 1);
+            if (value.startsWith(" ")) value = value.substring(1);
+            while (lines.size() > 0) {
+                line = lines.remove(0);
+                if (!line.startsWith(" ")) {
+                    lines.add(0, line);
+                    break;
+                }
+                value += line.substring(1);
+            }
+            return new String[] {name, value};
+        }
+        return null;
+    }
 }

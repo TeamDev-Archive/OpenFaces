@@ -54,7 +54,7 @@ public class ValidatorPhaseListener extends PhaseListenerBase {
 
         Object requestObj = context.getExternalContext().getRequest();
         RequestFacade request = RequestFacade.getInstance(requestObj);
-        checkOurPhaseListenerInvokedOnce(phaseEvent);
+        checkEnvironment(phaseEvent);
 
         if (isAjaxValidatorRequest(context)) {
             try {
