@@ -92,9 +92,7 @@ public class HtmlMessagesRenderer extends BaseHtmlMessageRenderer {
                 ValidatorUtil.getValidatorUtilJsUrl(context)};
     }
 
-    protected void renderMessages(FacesContext facesContext,
-                                  UIComponent messages)
-            throws IOException {
+    protected void renderMessages(FacesContext facesContext, UIMessages messages) throws IOException {
         MessagesIterator messagesIterator = new MessagesIterator(facesContext, isGlobalOnly(messages));
 
         if (messagesIterator.hasNext()) {
@@ -111,7 +109,7 @@ public class HtmlMessagesRenderer extends BaseHtmlMessageRenderer {
     }
 
     private void renderList(FacesContext facesContext,
-                            UIComponent messages,
+                            UIMessages messages,
                             MessagesIterator messagesIterator)
             throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
@@ -120,11 +118,11 @@ public class HtmlMessagesRenderer extends BaseHtmlMessageRenderer {
         Rendering.writeIdIfNecessary(writer, messages, facesContext);
 
         while (messagesIterator.hasNext()) {
+            FacesMessage message = messagesIterator.next();
+            if (message.isRendered() && !(messages != null && messages.isRedisplay()))
+                continue;
             writer.startElement("li", messages);
-            renderSingleFacesMessage(facesContext,
-                    messages,
-                    messagesIterator.next(),
-                    messagesIterator.getClientId());
+            renderSingleFacesMessage(facesContext, messages, message);
             writer.endElement("li");
         }
 
@@ -132,7 +130,7 @@ public class HtmlMessagesRenderer extends BaseHtmlMessageRenderer {
     }
 
     private void renderTable(FacesContext facesContext,
-                             UIComponent messages,
+                             UIMessages messages,
                              MessagesIterator messagesIterator)
             throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
@@ -141,12 +139,13 @@ public class HtmlMessagesRenderer extends BaseHtmlMessageRenderer {
         Rendering.writeIdIfNecessary(writer, messages, facesContext);
 
         while (messagesIterator.hasNext()) {
+            FacesMessage message = messagesIterator.next();
+            if (message.isRendered() && !(messages != null && messages.isRedisplay()))
+                continue;
+
             writer.startElement("tr", messages);
             writer.startElement("td", messages);
-            renderSingleFacesMessage(facesContext,
-                    messages,
-                    messagesIterator.next(),
-                    messagesIterator.getClientId());
+            renderSingleFacesMessage(facesContext, messages, message);
 
             writer.endElement("td");
             writer.endElement("tr");
@@ -230,7 +229,7 @@ public class HtmlMessagesRenderer extends BaseHtmlMessageRenderer {
             this.facesContext = facesContext;
             globalMessagesIterator = facesContext.getMessages(null);
             if (globalOnly) {
-                clientIdsWithMessagesIterator = Collections.EMPTY_LIST.iterator();
+                clientIdsWithMessagesIterator = Collections.<String>emptyList().iterator();
             } else {
                 Iterator<String> idsWithMessages = facesContext.getClientIdsWithMessages();
                 Set<String> uniqueIds = new LinkedHashSet<String>();
