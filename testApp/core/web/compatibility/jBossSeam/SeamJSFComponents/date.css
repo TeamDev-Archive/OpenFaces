@@ -10,8 +10,7 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-div.seam-date
-{
+div.seam-date {
   margin-top: 5px;
   border: 1px solid #AAAAAA;
   background: #fff url(../img/input.bg.gif) 0 0 repeat-x;
