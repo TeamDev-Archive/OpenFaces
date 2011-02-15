@@ -100,6 +100,7 @@ public class Columns extends UIComponentBase implements NamingContainer {
     private int columnIndex = -1;
     private Object defaultState;
     private Map<String, Object> columnStates = new HashMap<String, Object>();
+    private String indexVar;
 
     public Columns() {
     }
@@ -113,7 +114,7 @@ public class Columns extends UIComponentBase implements NamingContainer {
     public Object saveState(FacesContext context) {
         return new Object[]{
                 super.saveState(context), prevValueFromBinding,
-                columnRendered, headerValue, footerValue, var, sortingEnabled, sortingComparator,
+                columnRendered, headerValue, footerValue, var, indexVar, sortingEnabled, sortingComparator,
                 align, valign, width, resizable, minResizingWidth,
                 style, styleClass, headerStyle, headerClass,
                 subHeaderStyle, subHeaderClass, bodyStyle, bodyClass, footerStyle, footerClass,
@@ -136,6 +137,7 @@ public class Columns extends UIComponentBase implements NamingContainer {
         headerValue = (String) state[i++];
         footerValue = (String) state[i++];
         var = (String) state[i++];
+        indexVar = (String) state[i++];
         sortingEnabled = (Boolean) state[i++];
         sortingComparator = (Comparator) state[i++];
 
@@ -828,6 +830,14 @@ public class Columns extends UIComponentBase implements NamingContainer {
 
     public void resetCachedColumnList() {
         columnList = null;
+    }
+
+    public String getIndexVar() {
+        return indexVar;
+    }
+
+    public void setIndexVar(String indexVar) {
+        this.indexVar = indexVar;
     }
 
 

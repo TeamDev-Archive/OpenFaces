@@ -31,6 +31,7 @@ public class DynamicColumn extends Column implements DynamicCol {
     private Columns columns;
     private Object colData;
     private Object prevVarValue;
+    private Object prevIndexVarValue;
     private int colIndex;
 
     public DynamicColumn() {
@@ -90,16 +91,30 @@ public class DynamicColumn extends Column implements DynamicCol {
 
     public void declareContextVariables() {
         Map<String, Object> requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
+
         String var = columns.getVar();
-        prevVarValue = requestMap.get(var);
-        requestMap.put(var, colData);
+        prevVarValue = requestMap.put(var, colData);
+
+        String indexVar = columns.getIndexVar();
+        if (indexVar != null)
+            prevIndexVarValue = requestMap.put(indexVar, colIndex);
+
         columns.setColumnIndex(colIndex);
     }
 
     public void undeclareContextVariables() {
         Map<String, Object> requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
-        requestMap.put(columns.getVar(), prevVarValue);
+
+        String var = columns.getVar();
+        requestMap.put(var, prevVarValue);
         prevVarValue = null;
+
+        String indexVar = columns.getIndexVar();
+        if (indexVar != null) {
+            requestMap.put(indexVar, prevIndexVarValue);
+            prevIndexVarValue = null;
+        }
+
         columns.setColumnIndex(-1);
     }
 
