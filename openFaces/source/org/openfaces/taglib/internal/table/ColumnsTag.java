@@ -36,6 +36,7 @@ public class ColumnsTag extends AbstractComponentTag {
 
         setPropertyBinding(component, "value");
         setStringProperty(component, "var", false, true);
+        setStringProperty(component, "indexVar");
         setPropertyBinding(component, "headerValue", getPropertyValue("header"), "header");
 
         setPropertyBinding(component, "columnId");

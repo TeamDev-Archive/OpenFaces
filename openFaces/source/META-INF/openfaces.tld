@@ -3710,6 +3710,18 @@
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>The name of the request-scope variable under which the current column index is available when
+        evaluating value binding expressions specified in this tag&apos;s attributes.
+      </description>
+      <name>indexVar</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType String -->
+      <!-- @default null -->
+      <!-- @el false -->
+    </attribute>
 
   </tag>
 

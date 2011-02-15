@@ -192,4 +192,7 @@ public class ColumnsJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("footerOnmouseup", footerOnmouseup);
     }
 
+    public void setIndexVar(ValueExpression indexVar) {
+        getDelegate().setPropertyValue("indexVar", indexVar);
+    }
 }
