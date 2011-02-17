@@ -519,7 +519,7 @@ O$.Table = {
           passEvent = this._onKeyboardNavigation(e);
       }
       if (!passEvent) {
-        e.cancelBubble = true;
+        O$.breakEvent(e);
       }
 
       var tabPressed = e.keyCode == 9;
