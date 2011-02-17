@@ -33,15 +33,15 @@ O$._initBorderLayoutPanel = function(borderLayoutPanelId) {
   borderLayoutPanel.style.height = O$._calculateNumericHeight(borderLayoutPanel, true) + "px";
 
   if (borderLayoutPanel._isCoupled) {
-    var borderLayoutPanelLeft = O$.getElementStyle(borderLayoutPanel, "left");
+    var borderLayoutPanelLeft = O$.getNumericElementStyle(borderLayoutPanel, "left");
     if (!borderLayoutPanelLeft) {
-      borderLayoutPanelLeft = "0";
+      borderLayoutPanelLeft = 0;
     }
-    var borderLayoutPanelTop = O$.getElementStyle(borderLayoutPanel, "top");
+    var borderLayoutPanelTop = O$.getNumericElementStyle(borderLayoutPanel, "top");
     if (!borderLayoutPanelTop) {
-      borderLayoutPanelTop = "0";
+      borderLayoutPanelTop = 0;
     }
-    O$._setInnerElementOuterLeftTopCorner(borderLayoutPanel, parseInt(borderLayoutPanelLeft), parseInt(borderLayoutPanelTop), false);
+    O$._setInnerElementOuterLeftTopCorner(borderLayoutPanel, borderLayoutPanelLeft, borderLayoutPanelTop, false);
     borderLayoutPanel.style.position = "absolute";
     borderLayoutPanel.parentNode.style.overflow = "hidden";
   } else {
