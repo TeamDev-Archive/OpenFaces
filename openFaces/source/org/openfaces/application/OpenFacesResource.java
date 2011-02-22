@@ -23,6 +23,7 @@ import javax.faces.application.ResourceWrapper;
 public class OpenFacesResource extends ResourceWrapper {
     private Resource wrapped;
     public OpenFacesResource(Resource wrapped) {
+        if (wrapped == null) throw new IllegalArgumentException("wrapped param can't be null");
         this.wrapped = wrapped;
     }
 
