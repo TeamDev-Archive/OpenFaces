@@ -1411,25 +1411,6 @@ O$.prepareUpdates = function(buf, componentId, portionName) {
   return true;
 }
 
-O$.escapeSymbol = function(portionName, escapedChars) {
-  var res = new O$.StringBuffer();
-  for (var i = 0, count = portionName.length; i < count; i++) {
-    var currChar = portionName.charAt(i);
-    if (currChar == "\\") {
-      res.append("\\");
-    } else {
-      var index = escapedChars.indexOf(currChar);
-      if (index != -1) {
-        var fullCharCode = new String(escapedChars[index].charCodeAt() + 10000);
-        res.append("\\" + fullCharCode.substr(1, fullCharCode.length));
-        continue;
-      }
-    }
-    res.append(currChar);
-  }
-  return res.toString();
-}
-
 O$.prepareFormParams = function(form, buf) {
   var elements = form.elements;
   for (var i = 0, count = elements.length; i < count; i++) {

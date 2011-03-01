@@ -741,14 +741,15 @@ public class TwoListSelectionRenderer extends RendererBase {
         List<String> result = new ArrayList<String>();
         int idx = string.indexOf(",");
         if (idx == -1) {
-            result.add(string);
+            result.add(AjaxUtil.unescapeSymbol(string));
         } else {
             while (idx != -1) {
                 String part = string.substring(0, idx);
-                result.add(part.trim());
+                result.add(AjaxUtil.unescapeSymbol(part.trim()));
                 string = string.substring(idx + 1);
                 idx = string.indexOf(",");
             }
+            string = AjaxUtil.unescapeSymbol(string);
             result.add(string.trim());
         }
         String[] resultArray = new String[result.size()];

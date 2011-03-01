@@ -413,7 +413,7 @@ public class AjaxUtil {
         return result;
     }
 
-    private static String unescapeSymbol(String str) {
+    public static String unescapeSymbol(String str) {
         StringBuilder buf = new StringBuilder();
         char[] chars = str.toCharArray();
         for (int i = 0; i < str.length();) {

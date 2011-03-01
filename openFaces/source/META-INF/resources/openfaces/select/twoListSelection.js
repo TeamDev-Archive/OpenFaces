@@ -229,7 +229,7 @@ O$.TwoListSelection = {
     var values = O$.getArrayFromString(value, ",");
 
     for (var i = 0; i < values.length; i++) {
-      var newValue = values[i];
+      var newValue = O$.unescapeSymbol(values[i]);
       for (var j = 0; j < leftListBox.options.length; j++) {
         var option = leftListBox.options[j];
         if (option.value == newValue && !option.disabled) {
@@ -253,7 +253,7 @@ O$.TwoListSelection = {
     if (isSubmit && leftSelectionField.value) {
       var values = O$.getArrayFromString(leftSelectionField.value, ",");
       for (valueIndex = 0, valueCount = values.length; valueIndex < valueCount; valueIndex++) {
-        value = values[valueIndex];
+        value = O$.unescapeSymbol(values[valueIndex]);
         for (optionIndex = 0; optionIndex < leftListSize; optionIndex++) {
           option = leftListOptions[optionIndex];
           if (option.value == value) {
@@ -274,7 +274,7 @@ O$.TwoListSelection = {
       var firstSelectedIndex = -1;
       var lastSelectedIndex = -1;
       for (valueIndex = 0; valueIndex < highlightedValues.length; valueIndex++) {
-        value = highlightedValues[valueIndex];
+        value = O$.unescapeSymbol(highlightedValues[valueIndex]);
         for (optionIndex = 0; optionIndex < rightListSize; optionIndex++) {
           option = rightListOptions[optionIndex];
           if (option.value != value)
@@ -332,7 +332,8 @@ O$.TwoListSelection = {
     var result = "";
     for (var i = 0; i < rightListSize; i++) {
       var obj = rightListOptions[i];
-      result += obj.value;
+      var str = O$.escapeSymbol(obj.value, ",");
+      result += str;
       if (i < rightListSize - 1) {
         result += ",";
       }
