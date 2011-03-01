@@ -428,6 +428,19 @@
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>Specifies how the current DataTable page is changed when the user changes table sorting order.
+      </description>
+      <name>paginationOnSorting</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.table.PaginationOnSorting -->
+      <!-- @default "samePage" -->
+      <!-- @value "samePage" Specifies that page index should stay the same when sorting is performed. -->
+      <!-- @value "firstPage" Specifies that the first page should be shown when sorting is performed. -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>URL to the image file that is used to render the image
         that displays the ascending sort direction.
       </description>
@@ -18964,7 +18977,17 @@ and it is automatically triggered on any form submission. -->
         <type>java.lang.Object</type>
       </deferred-value>
       <!-- @bindingType TimePeriod -->
-      <!-- @default null -->
+      <!-- @default "day" -->
+      <!-- @value "fixedMillisecond" -->
+      <!-- @value "millisecond" -->
+      <!-- @value "second" -->
+      <!-- @value "minute" -->
+      <!-- @value "hour" -->
+      <!-- @value "day" -->
+      <!-- @value "week" -->
+      <!-- @value "month" -->
+      <!-- @value "quarter" -->
+      <!-- @value "year" -->
       <!-- @el true -->
     </attribute>
   </tag>
@@ -40180,7 +40203,736 @@ entering a value and returns a list of suggestions from the server -->
     <name>timetable</name>
     <tag-class>org.openfaces.taglib.jsp.timetable.TimetableJspTag</tag-class>
     <body-content>JSP</body-content>
+    <attribute>
+      <description>A value-binding expression that associates the Timetable with a backing bean property.</description>
+      <name>binding</name>
+      <deferred-value>
+        <type>org.openfaces.component.timetable.Timetable</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.timetable. Timetable -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>The component identifier.</description>
+      <name>id</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el false -->
+    </attribute>
+    <attribute>
+      <description>A flag that indicates whether or not the component is visible.</description>
+      <name>rendered</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>Specifies name of the request-scope variable under which the current event object is available
+        when rendering event areas and processing server-side events from event area components.
+      </description>
+      <name>eventVar</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "event" -->
+      <!-- @el false -->
+    </attribute>
+
+    <attribute>
+      <description>A day for which this Timetable is going to show events.</description>
+      <name>day</name>
+      <deferred-value>
+        <type>java.util.Date</type>
+      </deferred-value>
+      <!-- @bindingType java.util.Date -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>The locale used by the Timetable component. You can specify the "locale" attribute
+        as a value-binding expression or as String in "ll_CC_vv" format, where:&lt;br/&gt;
+        ll stands for the language - lowercase two-letter ISO-639 code.&lt;br/&gt;
+        CC stands for the country - uppercase two-letter ISO-3166 code (optional).&lt;br/&gt;
+        vv stands for the variant - vendor and browser specific code (optional).&lt;br/&gt;
+      </description>
+      <name>locale</name>
+      <deferred-value>
+        <type>java.util.Locale</type>
+      </deferred-value>
+      <!-- @bindingType java.util.Locale -->
+      <!-- @default client's locale -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Time zone in which to interpret any time information in the date String. Value must be either a VB
+        expression that evaluates to a java.util.TimeZone instance, or a String that is a timezone ID as described in
+        the javadocs for java.util.TimeZone.getTimeZone().
+      </description>
+      <name>timeZone</name>
+      <deferred-value>
+        <type>java.util.TimeZone</type>
+      </deferred-value>
+      <!-- @bindingType java.util.TimeZone -->
+      <!-- @default The server's default time zone -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A set of events those should be shown in this timetable. Each entry in this set
+        should be an instance of org.openfaces.component.timetable.TimetableEvent class.
+      </description>
+      <name>events</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType array -->
+      <!-- @bindingType java.util.Collection -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>Using this attribute turns on the multi-resource mode for this Timetable. This attribute specifies a
+        set of resources those should be displayed in this timetable. Each entry in this set should be an instance of
+        the org.openfaces.component.timetable.TimetableResource class.
+      </description>
+      <name>resources</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType array -->
+      <!-- @bindingType java.util.Collection -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>Defines the amount of events that are preloaded on the client when a page with the Timetable component
+        is loaded.
+      </description>
+      <name>preloadedEvents</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.timetable. PreloadedEvents-->
+      <!-- @default "all" -->
+      <!-- @value "none" events for days other than the current one are not preloaded and are loaded only when a user
+                         switches the current day -->
+      <!-- @value "all" all events are preloaded and no loading is required when switching between the days -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A flag that indicates whether or not a user can edit events in this Timetable component.</description>
+      <name>editable</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>Allows handling of client-side event changes performed by the user for saving these changes into the
+        underlying storage on the server. This attribute is a MethodBinding that must point to the method that accepts
+        a org.openfaces.component.timetable.TimetableChangeEvent parameter.
+      </description>
+      <name>timetableChangeListener</name>
+      <deferred-method>
+        <method-signature>void timetableChangeListener(org.openfaces.component.timetable.TimetableChangeEvent)
+        </method-signature>
+      </deferred-method>
+      <!-- @bindingType javax.el.MethodExpression -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when any data is edited inside of the Timetable. Note that
+        the changes that don't affect the underlying data (such as switching the current day) don't trigger the onchange
+        event.
+      </description>
+      <name>onchange</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Time the marks the start of the day period that will be shown in this Timetable component.
+        By default the entire day's time is shown. The time should be specified as a string in the "HH:mm" format,
+        e.g. "16:00". Only the hour component of the specified time is used currently.
+      </description>
+      <name>startTime</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>Time the marks the end of the day period that will be shown in this Timetable component.
+        By default the entire day's time is shown. The time should be specified as a string in the "HH:mm" format,
+        e.g. "16:00". Only the hour component of the specified time is used currently.
+      </description>
+      <name>endTime</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>Works only for scrollable Timetables. Specifies the time to which the top Timetable's top edge will
+        be scrolled. The time should be specified as a string in the "HH:mm" format, e.g. "10:00".
+      </description>
+      <name>scrollTime</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>Specifies whether a time is written right against an appropriate hour separator line ("againstMark"),
+        or below hour separator line ("underMark" -- default).
+      </description>
+      <name>timeTextPosition</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.timetable. TimeTextPosition-->
+      <!-- @default "underMark" -->
+      <!-- @value "underMark" -->
+      <!-- @value "againstMark" -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A style for the entire Timetable component.</description>
+      <name>style</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the entire Timetable component.</description>
+      <name>styleClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A style for the Timetable component in the rollover state.</description>
+      <name>rolloverStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the Timetable component in the rollover state.</description>
+      <name>rolloverClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user clicks
+        the left mouse button over the Timetable.
+      </description>
+      <name>onclick</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user double-clicks
+        the left mouse button over the Timetable.
+      </description>
+      <name>ondblclick</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user clicks over the Timetable with either
+        mouse button.
+      </description>
+      <name>onmousedown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer onto the Timetable.
+      </description>
+      <name>onmouseover</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer over the Timetable.
+      </description>
+      <name>onmousemove</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer away from the Timetable.
+      </description>
+      <name>onmouseout</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user releases a mouse button over the Timetable.
+      </description>
+      <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <name>headerStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>headerClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>footerStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>footerClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>resourceHeadersRowStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>resourceHeadersRowClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <name>rowStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>rowClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <name>timeColumnStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>timeColumnClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <name>timePattern</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "H" -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>timeSuffixPattern</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "mm" -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <name>majorTimeInterval</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default 60 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>minorTimeInterval</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default 60 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>showTimeForMinorIntervals</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <name>majorTimeStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>majorTimeClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>minorTimeStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>minorTimeClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <name>timeSuffixStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>timeSuffixClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>Specifies a color that should be used for all events without explicitl speicified color. See
+        TimetableEvent claess'es "color" property.
+      </description>
+      <name>defaultEventColor</name>
+      <deferred-value>
+        <type>java.awt.Color</type>
+      </deferred-value>
+      <!-- @bindingType java.awt.Color -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>Specifies a color that should be used for all reserved time events.</description>
+      <name>reservedTimeEventColor</name>
+      <deferred-value>
+        <type>java.awt.Color</type>
+      </deferred-value>
+      <!-- @bindingType java.awt.Color -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <name>reservedTimeEventStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>reservedTimeEventClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+
+    <attribute>
+      <description>Specifies time in milliseconds for smooth transition between time-slots when using drag and drop.
+        Smooth transition during drag and drop can be turned off by specifying 0 in this attribute.
+      </description>
+      <name>dragAndDropTransitionPeriod</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default 70 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Specifies time in milliseconds for smooth transition of event rectangle to its original location
+        upon an attempt to move an event to a disallowed location (e.g. reserved time). Smooth transition can be turned
+        off by specifying 0 in this attribute.
+      </description>
+      <name>dragAndDropCancelingPeriod</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default 200 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Specifies time in milliseconds that is requird to change event highlighting smoothly when
+        enters/exits an "undroppable" state, that is when an event is hovered over a disallowed location such as a
+        reserved time. Smooth state highlighting transition can be turned off by specifying 0 in this attribute.
+      </description>
+      <name>undroppableStateTransitionPeriod</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default 250 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>An event becomes semi-transparent when it enters an undroppable state. An event can have the
+        undroppable state in the process of drag and drop when the user moves the event over a disallowed location such
+        as a reserved time. An attempt to drop the event in such location will result in returning the event to its
+        original location. This attribute specifies the level of event rectangle's transparency in an undroppable state
+        in range 0..1. 1 corresponds to the fully transparent event, and 0 means that event's transparency won't be
+        affected.
+      </description>
+      <name>undroppableEventTransparency</name>
+      <deferred-value>
+        <type>java.lang.Double</type>
+      </deferred-value>
+      <!-- @bindingType double -->
+      <!-- @default 0.5 -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <name>resourceColumnSeparator</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>resourceHeadersRowSeparator</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>timeColumnSeparator</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>primaryRowSeparator</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>secondaryRowSeparator</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>timeColumnPrimaryRowSeparator</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>timeColumnSecondaryRowSeparator</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Determines the current view of this Timetable component.</description>
+      <name>view</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.timetable.Timetable.View -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
   </tag>
+  <tag>
+    <description>A component which provides UI for switching between Timetable views.</description>
+    <name>timetableViewSwitcher</name>
+    <tag-class>org.openfaces.taglib.jsp.timetable.TimetableViewSwitcherJspTag</tag-class>
+    <body-content>JSP</body-content>
+  </tag>
+
   <!--<tag>-->
     <!--<description>This component is under construction. Displays a box where users may read and write comments. This component works on top of the Disqus-->
       <!--(http://disqus.com) service. You don&apos;t have to provide storage for the comments. You just have to create an-->

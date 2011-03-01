@@ -12,6 +12,7 @@
 package org.openfaces.taglib.internal.table;
 
 import org.openfaces.component.table.DataTable;
+import org.openfaces.component.table.PaginationOnSorting;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -40,6 +41,7 @@ public class DataTableTag extends AbstractTableTag {
 
         setStringProperty(component, "rowIndexVar");
         setBooleanProperty(component, "paginationKeyboardSupport");
+        setEnumerationProperty(component, "paginationOnSorting", PaginationOnSorting.class);
         setPropertyBinding(component, "totalRowCount");
         setBooleanProperty(component, "customDataProviding");
     }

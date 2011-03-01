@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 3.0
+ * OpenFaces - JSF Component Library 2.0
  * Copyright (C) 2007-2011, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -9,17 +9,25 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.taglib.facelets.timetable;
 
-import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
+package org.openfaces.component.table;
 
-import javax.faces.view.facelets.ComponentConfig;
-import org.openfaces.taglib.internal.timetable.TimetableTag;
+/**
+ * @author Dmitry Pikhulya
+ */
+public enum PaginationOnSorting {
+    SAME_PAGE("samePage"),
+    FIRST_PAGE("firstPage");
 
-public class TimetableTagHandler extends AbstractFaceletsComponentHandler {
+    private final String value;
 
-    public TimetableTagHandler(ComponentConfig componentConfig) {
-        super(componentConfig, new TimetableTag());
+    PaginationOnSorting(String value) {
+        this.value = value;
     }
 
+
+    @Override
+    public String toString() {
+        return value;
+    }
 }

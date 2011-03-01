@@ -6,6 +6,7 @@
     <attr name= "headerSectionClass,bodySectionClass,footerSectionClass,sortedColumnClass,sortedColumnHeaderClass,sortedColumnBodyClass,sortedColumnFooterClass,sortableHeaderClass,sortableHeaderRolloverClass,bodyRowClass,bodyOddRowClass,headerRowClass,commonHeaderRowClass,footerRowClass,commonFooterRowClass,noDataRowClass,subHeaderRowClass,rolloverClass,rolloverRowClass,focusedClass" converter="styleClass" />
     <attr name= "sortedAscendingImageUrl,sortedDescendingImageUrl" converter="path" />
     <attr name= "border,totalRowCount,pageSize,pageIndex,autoFilterDelay" converter="integer" />
+    <attr name= "paginationOnSorting" converter="samePage,firstPage" />
   </tag>
   <tag name="column">
     <attr name= "valign" converter="variants" userData="top,middle,bottom,baseline"/>
@@ -282,7 +283,8 @@
     <attr name= "type" converter="class" userData="org.openfaces.event.SelectionChangeListener" />
   </tag>
   <tag name="chart">
-    <attr name= "view" converter="bar,line,pie" />
+    <attr name= "view" converter="variants" userData="bar,line,pie" />
+    <attr name= "timePeriodPrecision" converter="variants" userData="fixedMillisecond,millisecond,second,minute,hour,day,week,month,quarter,year");
     <attr name= "rendered,legendVisible" converter="boolean" />
   </tag>
   <tag name="pieChartView">

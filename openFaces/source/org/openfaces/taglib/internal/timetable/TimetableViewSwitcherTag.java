@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 3.0
+ * OpenFaces - JSF Component Library 2.0
  * Copyright (C) 2007-2011, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -11,25 +11,25 @@
  */
 package org.openfaces.taglib.internal.timetable;
 
-import org.openfaces.component.timetable.Timetable;
+import org.openfaces.component.timetable.TimetableViewSwitcher;
+import org.openfaces.taglib.internal.AbstractComponentTag;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-public class TimetableTag extends TimeScaleTableTag {
+public class TimetableViewSwitcherTag extends AbstractComponentTag {
 
     public String getComponentType() {
-        return Timetable.COMPONENT_TYPE;
+        return TimetableViewSwitcher.COMPONENT_TYPE;
     }
 
     public String getRendererType() {
-        return "org.openfaces.TimetableRenderer";
+        return "org.openfaces.TimetableViewSwitcherRenderer";
     }
 
     @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
-        setEnumerationProperty(component, "view", Timetable.View.class);
     }
 }

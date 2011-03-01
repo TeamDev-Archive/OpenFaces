@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 3.0
+ * OpenFaces - JSF Component Library 2.0
  * Copyright (C) 2007-2011, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -11,20 +11,14 @@
  */
 package org.openfaces.taglib.jsp.timetable;
 
-import org.openfaces.taglib.internal.timetable.TimetableTag;
+import org.openfaces.taglib.internal.timetable.TimetableViewSwitcherTag;
 import org.openfaces.taglib.jsp.AbstractComponentJspTag;
-import org.openfaces.validation.core.Expressions;
 
-import javax.el.ValueExpression;
+public class TimetableViewSwitcherJspTag extends AbstractComponentJspTag {
 
-public class TimetableJspTag extends TimeScaleTableJspTag {
-
-    public TimetableJspTag() {
-        super(new TimetableTag());
+    public TimetableViewSwitcherJspTag() {
+        super(new TimetableViewSwitcherTag());
     }
 
 
-    public void setView(ValueExpression view) {
-        getDelegate().setPropertyValue("view", view);
-    }
 }

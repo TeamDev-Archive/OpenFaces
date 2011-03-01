@@ -10,7 +10,31 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-O$.Timetable = {};
+O$.Timetable = {
+  DAY: "day",
+  WEEK: "week",
+  MONTH: "month",
+
+  _init: function(timetableId, currentView) {
+    var timetable = O$.initComponent(timetableId, null, {
+      _view: currentView,
+
+      getView: function() {
+        return this._view;
+      },
+      setView: function(view) {
+        if (view != O$.Timetable.DAY &&
+                view != O$.Timetable.WEEK &&
+                view != O$.Timetable.MONTH)
+          throw "O$.Timetable.setView. illegal view parameter: \"" + view + "\"";
+        this._view = view;
+        O$.setHiddenField(this, timetableId + "::view", view);
+
+      }
+    });
+  }
+};
+
 
 O$.Timetable._initEventEditorDialog = function(dayTableId, dialogId, createEventCaption, editEventCaption, centered) {
   var dayTable = O$(dayTableId);

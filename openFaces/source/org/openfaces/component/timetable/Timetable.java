@@ -11,12 +11,38 @@
  */
 package org.openfaces.component.timetable;
 
-import javax.faces.component.UIComponentBase;
+import org.openfaces.util.Components;
+import org.openfaces.util.ValueBindings;
+
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-public class Timetable extends org.openfaces.component.OUIComponentBase {
+public class Timetable extends TimeScaleTable {
     public static final String COMPONENT_TYPE = "org.openfaces.Timetable";
     public static final String COMPONENT_FAMILY = "org.openfaces.Timetable";
+    private static final String FACET_DAY_VIEW = "dayView";
+    private static final String FACET_WEEK_VIEW = "weekView";
+    private static final String FACET_MONTH_VIEW = "monthView";
+
+    public static enum View {
+        MONTH("month"),
+        WEEK("week"),
+        DAY("day");
+
+        private String value;
+
+        View(String value) {
+            this.value = value;
+        }
+
+
+        @Override
+        public String toString() {
+            return value;
+        }
+    }
+
+    private View view;
 
     public Timetable() {
         setRendererType("org.openfaces.TimetableRenderer");
@@ -30,8 +56,8 @@ public class Timetable extends org.openfaces.component.OUIComponentBase {
     @Override
     public Object saveState(FacesContext context) {
         return new Object[]{
-            super.saveState(context),
-
+                super.saveState(context),
+                view
         };
     }
 
@@ -40,6 +66,31 @@ public class Timetable extends org.openfaces.component.OUIComponentBase {
         Object[] state = (Object[]) stateObj;
         int i = 0;
         super.restoreState(context, state[i++]);
+        view = (View) state[i++];
 
     }
+
+    public View getView() {
+        return ValueBindings.get(this, "view", view, View.MONTH, View.class);
+    }
+
+    public void setView(View view) {
+        this.view = view;
+    }
+
+    public DayTable getDayView() {
+        DayTable result = Components.getChildWithClass(this, DayTable.class, "dayView");
+        return result;
+    }
+
+    public WeekTable getWeekView() {
+        WeekTable result = Components.getChildWithClass(this, WeekTable.class, "weekView");
+        return result;
+    }
+
+    public MonthTable getMonthView() {
+        MonthTable result = Components.getChildWithClass(this, MonthTable.class, "monthView");
+        return result;
+    }
+
 }

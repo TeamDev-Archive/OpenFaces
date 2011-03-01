@@ -592,6 +592,49 @@ if (!window.O$) {
     return actualStartText == text;
   };
 
+  O$.escapeSymbol = function(str, escapedChars) {
+    var res = new O$.StringBuffer();
+    for (var i = 0, count = str.length; i < count; i++) {
+      var currChar = str.charAt(i);
+      if (currChar == "\\") {
+        res.append("\\");
+      } else {
+        var index = escapedChars.indexOf(currChar);
+        if (index != -1) {
+          var fullCharCode = new String(escapedChars[index].charCodeAt() + 10000);
+          res.append("\\" + fullCharCode.substr(1, fullCharCode.length));
+          continue;
+        }
+      }
+      res.append(currChar);
+    }
+    return res.toString();
+  };
+
+  O$.unescapeSymbol = function(str) {
+    var LENGTH_UNICODE = 4;
+    var LENGTH_BACKSLASH_AND_UNICODE = 5;
+    var buf = "";
+    for (var i = 0; i < str.length;) {
+      var c = str.charAt(i);
+      if (c == '\\' && i < str.length - LENGTH_UNICODE) {
+        if (str.charAt(i + 1) == '\\') {
+          buf += '\\';
+          i = i + 2;
+          continue;
+        } else {
+          var charCode = eval(str.substring(i + 1, i + LENGTH_BACKSLASH_AND_UNICODE));
+          buf += String.fromCharCode(charCode);
+          i = i + LENGTH_BACKSLASH_AND_UNICODE;
+          continue;
+        }
+      }
+      buf += c;
+      i++;
+    }
+    return buf;
+  };
+
   O$.findValueInArray = function(value, arr) {
     return arr.indexOf(value);// todo: inline and remove this method
   };

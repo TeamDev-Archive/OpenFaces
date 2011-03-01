@@ -151,7 +151,13 @@ public abstract class TimeScaleTable extends TimetableView {
     }
 
     public UIComponent getResourceHeader() {
-        return getFacet(RESOURCE_HEADER_FACET_NAME);
+        UIComponent result = getFacet(RESOURCE_HEADER_FACET_NAME);
+        if (result == null) {
+            Timetable timetable = getTimetable();
+            if (timetable != null)
+                result = timetable.getResourceHeader();
+        }
+        return result;
     }
 
     public void setResourceHeader(UIComponent component) {
@@ -159,7 +165,7 @@ public abstract class TimeScaleTable extends TimetableView {
     }
 
     public String getStartTime() {
-        String startTime = ValueBindings.get(this, "startTime", this.startTime);
+        String startTime = ValueBindings.get(this, getTimetable(), "startTime", this.startTime);
         checkTimeString(startTime);
         return startTime;
     }
@@ -181,7 +187,7 @@ public abstract class TimeScaleTable extends TimetableView {
     }
 
     public String getEndTime() {
-        String endTime = ValueBindings.get(this, "endTime", this.endTime);
+        String endTime = ValueBindings.get(this, getTimetable(), "endTime", this.endTime);
         checkTimeString(endTime);
         return endTime;
     }
@@ -192,7 +198,7 @@ public abstract class TimeScaleTable extends TimetableView {
     }
 
     public String getScrollTime() {
-        String scrollTime = ValueBindings.get(this, "scrollTime", this.scrollTime);
+        String scrollTime = ValueBindings.get(this, getTimetable(), "scrollTime", this.scrollTime);
         checkTimeString(scrollTime);
         return scrollTime;
     }
@@ -205,7 +211,7 @@ public abstract class TimeScaleTable extends TimetableView {
 
 
     public TimeTextPosition getTimeTextPosition() {
-        return ValueBindings.get(this, "timeTextPosition", timeTextPosition, TimeTextPosition.UNDER_MARK, TimeTextPosition.class);
+        return ValueBindings.get(this, getTimetable(), "timeTextPosition", timeTextPosition, TimeTextPosition.UNDER_MARK, TimeTextPosition.class);
     }
 
     public void setTimeTextPosition(TimeTextPosition timeTextPosition) {
@@ -213,7 +219,7 @@ public abstract class TimeScaleTable extends TimetableView {
     }
 
     public String getResourceHeadersRowStyle() {
-        return ValueBindings.get(this, "resourceHeadersRowStyle", resourceHeadersRowStyle);
+        return ValueBindings.get(this, getTimetable(), "resourceHeadersRowStyle", resourceHeadersRowStyle);
     }
 
     public void setResourceHeadersRowStyle(String resourceHeadersRowStyle) {
@@ -221,7 +227,7 @@ public abstract class TimeScaleTable extends TimetableView {
     }
 
     public String getResourceHeadersRowClass() {
-        return ValueBindings.get(this, "resourceHeadersRowClass", resourceHeadersRowClass);
+        return ValueBindings.get(this, getTimetable(), "resourceHeadersRowClass", resourceHeadersRowClass);
     }
 
     public void setResourceHeadersRowClass(String resourceHeadersRowClass) {
@@ -229,7 +235,7 @@ public abstract class TimeScaleTable extends TimetableView {
     }
 
     public String getTimeColumnStyle() {
-        return ValueBindings.get(this, "timeColumnStyle", timeColumnStyle);
+        return ValueBindings.get(this, getTimetable(), "timeColumnStyle", timeColumnStyle);
     }
 
     public void setTimeColumnStyle(String timeColumnStyle) {
@@ -237,7 +243,7 @@ public abstract class TimeScaleTable extends TimetableView {
     }
 
     public String getTimeColumnClass() {
-        return ValueBindings.get(this, "timeColumnClass", timeColumnClass);
+        return ValueBindings.get(this, getTimetable(), "timeColumnClass", timeColumnClass);
     }
 
     public void setTimeColumnClass(String timeColumnClass) {
@@ -246,7 +252,7 @@ public abstract class TimeScaleTable extends TimetableView {
 
 
     public String getTimePattern() {
-        return ValueBindings.get(this, "timePattern", timePattern, "H");
+        return ValueBindings.get(this, getTimetable(), "timePattern", timePattern, "H");
     }
 
     public void setTimePattern(String timePattern) {
@@ -254,7 +260,7 @@ public abstract class TimeScaleTable extends TimetableView {
     }
 
     public String getTimeSuffixPattern() {
-        return ValueBindings.get(this, "timeSuffixPattern", timeSuffixPattern, "mm");
+        return ValueBindings.get(this, getTimetable(), "timeSuffixPattern", timeSuffixPattern, "mm");
     }
 
     public void setTimeSuffixPattern(String timeSuffixPattern) {
@@ -262,7 +268,7 @@ public abstract class TimeScaleTable extends TimetableView {
     }
 
     public int getMajorTimeInterval() {
-        return ValueBindings.get(this, "majorTimeInterval", majorTimeInterval, 60);
+        return ValueBindings.get(this, getTimetable(), "majorTimeInterval", majorTimeInterval, 60);
     }
 
     public void setMajorTimeInterval(int majorTimeInterval) {
@@ -270,7 +276,7 @@ public abstract class TimeScaleTable extends TimetableView {
     }
 
     public int getMinorTimeInterval() {
-        return ValueBindings.get(this, "minorTimeInterval", minorTimeInterval, 30);
+        return ValueBindings.get(this, getTimetable(), "minorTimeInterval", minorTimeInterval, 30);
     }
 
     public void setMinorTimeInterval(int minorTimeInterval) {
@@ -278,7 +284,7 @@ public abstract class TimeScaleTable extends TimetableView {
     }
 
     public boolean getShowTimeForMinorIntervals() {
-        return ValueBindings.get(this, "showTimeForMinorIntervals", showTimeForMinorIntervals, false);
+        return ValueBindings.get(this, getTimetable(), "showTimeForMinorIntervals", showTimeForMinorIntervals, false);
     }
 
     public void setShowTimeForMinorIntervals(boolean showTimeForMinorIntervals) {
@@ -286,7 +292,7 @@ public abstract class TimeScaleTable extends TimetableView {
     }
 
     public String getMajorTimeStyle() {
-        return ValueBindings.get(this, "majorTimeStyle", majorTimeStyle);
+        return ValueBindings.get(this, getTimetable(), "majorTimeStyle", majorTimeStyle);
     }
 
     public void setMajorTimeStyle(String majorTimeStyle) {
@@ -294,7 +300,7 @@ public abstract class TimeScaleTable extends TimetableView {
     }
 
     public String getMajorTimeClass() {
-        return ValueBindings.get(this, "majorTimeClass", majorTimeClass);
+        return ValueBindings.get(this, getTimetable(), "majorTimeClass", majorTimeClass);
     }
 
     public void setMajorTimeClass(String majorTimeClass) {
@@ -302,7 +308,7 @@ public abstract class TimeScaleTable extends TimetableView {
     }
 
     public String getMinorTimeStyle() {
-        return ValueBindings.get(this, "minorTimeStyle", minorTimeStyle);
+        return ValueBindings.get(this, getTimetable(), "minorTimeStyle", minorTimeStyle);
     }
 
     public void setMinorTimeStyle(String minorTimeStyle) {
@@ -310,7 +316,7 @@ public abstract class TimeScaleTable extends TimetableView {
     }
 
     public String getMinorTimeClass() {
-        return ValueBindings.get(this, "minorTimeClass", minorTimeClass);
+        return ValueBindings.get(this, getTimetable(), "minorTimeClass", minorTimeClass);
     }
 
     public void setMinorTimeClass(String minorTimeClass) {
@@ -318,7 +324,7 @@ public abstract class TimeScaleTable extends TimetableView {
     }
 
     public String getTimeSuffixStyle() {
-        return ValueBindings.get(this, "timeSuffixStyle", timeSuffixStyle);
+        return ValueBindings.get(this, getTimetable(), "timeSuffixStyle", timeSuffixStyle);
     }
 
     public void setTimeSuffixStyle(String timeSuffixStyle) {
@@ -326,7 +332,7 @@ public abstract class TimeScaleTable extends TimetableView {
     }
 
     public String getTimeSuffixClass() {
-        return ValueBindings.get(this, "timeSuffixClass", timeSuffixClass);
+        return ValueBindings.get(this, getTimetable(), "timeSuffixClass", timeSuffixClass);
     }
 
     public void setTimeSuffixClass(String timeSuffixClass) {
@@ -334,7 +340,7 @@ public abstract class TimeScaleTable extends TimetableView {
     }
 
     public int getDragAndDropTransitionPeriod() {
-        return ValueBindings.get(this, "dragAndDropTransitionPeriod", dragAndDropTransitionPeriod, 70);
+        return ValueBindings.get(this, getTimetable(), "dragAndDropTransitionPeriod", dragAndDropTransitionPeriod, 70);
     }
 
     public void setDragAndDropTransitionPeriod(int dragAndDropTransitionPeriod) {
@@ -342,7 +348,7 @@ public abstract class TimeScaleTable extends TimetableView {
     }
 
     public int getDragAndDropCancelingPeriod() {
-        return ValueBindings.get(this, "dragAndDropCancelingPeriod", dragAndDropCancelingPeriod, 200);
+        return ValueBindings.get(this, getTimetable(), "dragAndDropCancelingPeriod", dragAndDropCancelingPeriod, 200);
     }
 
     public void setDragAndDropCancelingPeriod(int dragAndDropCancelingPeriod) {
@@ -350,7 +356,7 @@ public abstract class TimeScaleTable extends TimetableView {
     }
 
     public int getUndroppableStateTransitionPeriod() {
-        return ValueBindings.get(this, "undroppableStateTransitionPeriod", undroppableStateTransitionPeriod, 250);
+        return ValueBindings.get(this, getTimetable(), "undroppableStateTransitionPeriod", undroppableStateTransitionPeriod, 250);
     }
 
     public void setUndroppableStateTransitionPeriod(int undroppableStateTransitionPeriod) {
@@ -358,7 +364,7 @@ public abstract class TimeScaleTable extends TimetableView {
     }
 
     public double getUndroppableEventTransparency() {
-        return ValueBindings.get(this, "undroppableEventTransparency", undroppableEventTransparency, 0.5);
+        return ValueBindings.get(this, getTimetable(), "undroppableEventTransparency", undroppableEventTransparency, 0.5);
     }
 
     public void setUndroppableEventTransparency(double undroppableEventTransparency) {
@@ -366,7 +372,7 @@ public abstract class TimeScaleTable extends TimetableView {
     }
 
     public String getResourceColumnSeparator() {
-        return ValueBindings.get(this, "resourceColumnSeparator", resourceColumnSeparator);
+        return ValueBindings.get(this, getTimetable(), "resourceColumnSeparator", resourceColumnSeparator);
     }
 
     public void setResourceColumnSeparator(String resourceColumnSeparator) {
@@ -374,7 +380,7 @@ public abstract class TimeScaleTable extends TimetableView {
     }
 
     public String getResourceHeadersRowSeparator() {
-        return ValueBindings.get(this, "resourceHeadersRowSeparator", resourceHeadersRowSeparator);
+        return ValueBindings.get(this, getTimetable(), "resourceHeadersRowSeparator", resourceHeadersRowSeparator);
     }
 
     public void setResourceHeadersRowSeparator(String resourceHeadersRowSeparator) {
@@ -382,7 +388,7 @@ public abstract class TimeScaleTable extends TimetableView {
     }
 
     public String getTimeColumnSeparator() {
-        return ValueBindings.get(this, "timeColumnSeparator", timeColumnSeparator);
+        return ValueBindings.get(this, getTimetable(), "timeColumnSeparator", timeColumnSeparator);
     }
 
     public void setTimeColumnSeparator(String timeColumnSeparator) {
@@ -390,7 +396,7 @@ public abstract class TimeScaleTable extends TimetableView {
     }
 
     public String getPrimaryRowSeparator() {
-        return ValueBindings.get(this, "primaryRowSeparator", primaryRowSeparator);
+        return ValueBindings.get(this, getTimetable(), "primaryRowSeparator", primaryRowSeparator);
     }
 
     public void setPrimaryRowSeparator(String primaryRowSeparator) {
@@ -398,7 +404,7 @@ public abstract class TimeScaleTable extends TimetableView {
     }
 
     public String getSecondaryRowSeparator() {
-        return ValueBindings.get(this, "secondaryRowSeparator", secondaryRowSeparator);
+        return ValueBindings.get(this, getTimetable(), "secondaryRowSeparator", secondaryRowSeparator);
     }
 
     public void setSecondaryRowSeparator(String secondaryRowSeparator) {
@@ -406,7 +412,7 @@ public abstract class TimeScaleTable extends TimetableView {
     }
 
     public String getTimeColumnPrimaryRowSeparator() {
-        return ValueBindings.get(this, "timeColumnPrimaryRowSeparator", timeColumnPrimaryRowSeparator);
+        return ValueBindings.get(this, getTimetable(), "timeColumnPrimaryRowSeparator", timeColumnPrimaryRowSeparator);
     }
 
     public void setTimeColumnPrimaryRowSeparator(String timeColumnPrimaryRowSeparator) {
@@ -414,7 +420,7 @@ public abstract class TimeScaleTable extends TimetableView {
     }
 
     public String getTimeColumnSecondaryRowSeparator() {
-        return ValueBindings.get(this, "timeColumnSecondaryRowSeparator", timeColumnSecondaryRowSeparator);
+        return ValueBindings.get(this, getTimetable(), "timeColumnSecondaryRowSeparator", timeColumnSecondaryRowSeparator);
     }
 
     public void setTimeColumnSecondaryRowSeparator(String timeColumnSecondaryRowSeparator) {

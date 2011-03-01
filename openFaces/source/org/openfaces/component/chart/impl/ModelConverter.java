@@ -49,8 +49,8 @@ public class ModelConverter {
 
         Series[] series = info.getNonEmptySeriesList();
 
-        for (Series sery : series) {
-            Tuple[] tuples = sery.getTuples();
+        for (Series s : series) {
+            Tuple[] tuples = s.getTuples();
             if (tuples == null)
                 continue;
 
@@ -79,14 +79,14 @@ public class ModelConverter {
 
         Series[] series = info.getNonEmptySeriesList();
 
-        for (Series sery : series) {
-            Tuple[] tuples = sery.getTuples();
+        for (Series s : series) {
+            Tuple[] tuples = s.getTuples();
             for (Tuple tuple : tuples) {
                 Object key = tuple.getKey();
                 Object value = tuple.getValue();
                 if (value != null && !(value instanceof Number))
                     throw new DataConversionException("Incorrect Value type for Key = " + key + ". Required: Number. Currently defined: " + value.getClass().getName());
-                categoryResult.addValue((Number) value, sery.getKey(), tuple.getKey());
+                categoryResult.addValue((Number) value, s.getKey(), tuple.getKey());
             }
         }
 
@@ -158,8 +158,8 @@ public class ModelConverter {
         XYSeriesCollection xyResult = new XYSeriesCollection();
 
         Series[] series = info.getNonEmptySeriesList();
-        for (Series sery : series) {
-            XYSeries xySeries = toXYSeries(sery);
+        for (Series s : series) {
+            XYSeries xySeries = toXYSeries(s);
             if (xySeries != null)
                 xyResult.addSeries(xySeries);
         }
@@ -174,8 +174,8 @@ public class ModelConverter {
         TimeSeriesCollection xyResult = new TimeSeriesCollection();
 
         Series[] series = info.getNonEmptySeriesList();
-        for (Series sery : series) {
-            TimeSeries tSeries = toTimeSeries(sery, chart.getTimePeriodPrecision());
+        for (Series s : series) {
+            TimeSeries tSeries = toTimeSeries(s, chart.getTimePeriodPrecision());
             if (tSeries != null)
                 xyResult.addSeries(tSeries);
         }

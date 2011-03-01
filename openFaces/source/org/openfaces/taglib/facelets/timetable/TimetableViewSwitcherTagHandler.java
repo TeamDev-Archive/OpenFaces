@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 3.0
+ * OpenFaces - JSF Component Library 2.0
  * Copyright (C) 2007-2011, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -11,15 +11,14 @@
  */
 package org.openfaces.taglib.facelets.timetable;
 
+import com.sun.facelets.tag.jsf.ComponentConfig;
 import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
+import org.openfaces.taglib.internal.timetable.TimetableViewSwitcherTag;
 
-import javax.faces.view.facelets.ComponentConfig;
-import org.openfaces.taglib.internal.timetable.TimetableTag;
+public class TimetableViewSwitcherTagHandler extends AbstractFaceletsComponentHandler {
 
-public class TimetableTagHandler extends AbstractFaceletsComponentHandler {
-
-    public TimetableTagHandler(ComponentConfig componentConfig) {
-        super(componentConfig, new TimetableTag());
+    public TimetableViewSwitcherTagHandler(ComponentConfig componentConfig) {
+        super(componentConfig, new TimetableViewSwitcherTag());
     }
 
 }
