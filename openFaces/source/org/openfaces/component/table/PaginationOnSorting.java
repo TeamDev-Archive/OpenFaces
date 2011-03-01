@@ -9,22 +9,25 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.taglib.jsp.timetable;
 
-import org.openfaces.taglib.internal.timetable.TimetableTag;
-import org.openfaces.taglib.jsp.AbstractComponentJspTag;
-import org.openfaces.validation.core.Expressions;
+package org.openfaces.component.table;
 
-import javax.el.ValueExpression;
+/**
+ * @author Dmitry Pikhulya
+ */
+public enum PaginationOnSorting {
+    SAME_PAGE("samePage"),
+    FIRST_PAGE("firstPage");
 
-public class TimetableJspTag extends TimeScaleTableJspTag {
+    private final String value;
 
-    public TimetableJspTag() {
-        super(new TimetableTag());
+    PaginationOnSorting(String value) {
+        this.value = value;
     }
 
 
-    public void setView(ValueExpression view) {
-        getDelegate().setPropertyValue("view", view);
+    @Override
+    public String toString() {
+        return value;
     }
 }

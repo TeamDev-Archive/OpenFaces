@@ -1217,5 +1217,13 @@
       <handler-class>org.openfaces.taglib.facelets.timetable.TimetableTagHandler</handler-class>
     </component>
   </tag>
+  <tag>
+    <tag-name>timetableViewSwitcher</tag-name>
+    <component>
+      <component-type>org.openfaces.TimetableViewSwitcher</component-type>
+      <renderer-type>org.openfaces.TimetableViewSwitcherRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.timetable.TimetableViewSwitcherTagHandler</handler-class>
+    </component>
+  </tag>
 
 </facelet-taglib>

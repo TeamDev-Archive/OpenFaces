@@ -81,8 +81,16 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
 
     protected boolean childrenValid = true;
 
+    protected Timetable getTimetable() {
+        UIComponent parent = getParent();
+        if (!(parent instanceof Timetable)) return null;
+        if (this instanceof Timetable)
+            throw new IllegalStateException("Timetable cannot be nested within another timetable");
+        return (Timetable) parent;
+    }
+
     public Date getDay() {
-        return ValueBindings.get(this, "day", day, new Date(), Date.class);
+        return ValueBindings.get(this, getTimetable(), "day", day, new Date(), Date.class);
     }
 
     public void setDay(Date day) {
@@ -98,7 +106,7 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
     }
 
     public String getOnchange() {
-        return ValueBindings.get(this, "onchange", onchange);
+        return ValueBindings.get(this, getTimetable(), "onchange", onchange);
     }
 
     public void setOnchange(String onchange) {
@@ -106,20 +114,30 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
     }
 
     public void addTimetableChangeListener(TimetableChangeListener listener) {
+        if (getTimetable() != null)
+            throw new FacesException("TimetableChangeListener can't be specified for individual views when a view " +
+                    "is in Timetable -- it must be specified for the Timetable component itself.");
         addFacesListener(listener);
     }
 
     public void removeTimetableChangeListener(TimetableChangeListener listener) {
+        if (getTimetable() != null)
+            throw new FacesException("TimetableChangeListener can't be specified for individual views when a view " +
+                    "is in Timetable -- it must be specified for the Timetable component itself.");
         removeFacesListener(listener);
     }
 
     public TimetableChangeListener[] getTimetableChangeListeners() {
-        return (TimetableChangeListener[]) getFacesListeners(TimetableChangeListener.class);
+        if (getTimetable() != null)
+            return getTimetable().getTimetableChangeListeners();
+        else
+            return (TimetableChangeListener[]) getFacesListeners(TimetableChangeListener.class);
     }
 
     @Override
     public void broadcast(FacesEvent event) throws AbortProcessingException {
         super.broadcast(event);
+        MethodExpression timetableChangeListener = getTimetableChangeListener();
         if (timetableChangeListener == null || !(event instanceof TimetableChangeEvent))
             return;
 
@@ -135,7 +153,7 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
     }
 
     public Locale getLocale() {
-        return CalendarUtil.getBoundPropertyValueAsLocale(this, "locale", locale);
+        return CalendarUtil.getBoundPropertyValueAsLocale(this, getTimetable(), "locale", locale);
     }
 
     public void setLocale(Locale locale) {
@@ -143,7 +161,7 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
     }
 
     public TimeZone getTimeZone() {
-        return ValueBindings.get(this, "timeZone", timeZone,
+        return ValueBindings.get(this, getTimetable(), "timeZone", timeZone,
                 TimeZone.getDefault(), TimeZone.class);
     }
 
@@ -152,7 +170,7 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
     }
 
     public PreloadedEvents getPreloadedEvents() {
-        return ValueBindings.get(this, "preloadedEvents", preloadedEvents, PreloadedEvents.ALL, PreloadedEvents.class);
+        return ValueBindings.get(this, getTimetable(), "preloadedEvents", preloadedEvents, PreloadedEvents.ALL, PreloadedEvents.class);
     }
 
     public void setPreloadedEvents(PreloadedEvents preloadedEvents) {
@@ -160,7 +178,7 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
     }
 
     public Color getDefaultEventColor() {
-        return ValueBindings.get(this, "defaultEventColor", defaultEventColor, Color.class);
+        return ValueBindings.get(this, getTimetable(), "defaultEventColor", defaultEventColor, Color.class);
     }
 
     public void setDefaultEventColor(Color defaultEventColor) {
@@ -168,7 +186,7 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
     }
 
     public Color getReservedTimeEventColor() {
-        return ValueBindings.get(this, "reservedTimeEventColor", reservedTimeEventColor, Color.class);
+        return ValueBindings.get(this, getTimetable(), "reservedTimeEventColor", reservedTimeEventColor, Color.class);
     }
 
     public void setReservedTimeEventColor(Color reservedTimeEventColor) {
@@ -176,7 +194,7 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
     }
 
     public String getReservedTimeEventStyle() {
-        return ValueBindings.get(this, "reservedTimeEventStyle", reservedTimeEventStyle);
+        return ValueBindings.get(this, getTimetable(), "reservedTimeEventStyle", reservedTimeEventStyle);
     }
 
     public void setReservedTimeEventStyle(String reservedTimeEventStyle) {
@@ -184,7 +202,7 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
     }
 
     public String getReservedTimeEventClass() {
-        return ValueBindings.get(this, "reservedTimeEventClass", reservedTimeEventClass);
+        return ValueBindings.get(this, getTimetable(), "reservedTimeEventClass", reservedTimeEventClass);
     }
 
     public void setReservedTimeEventClass(String reservedTimeEventClass) {
@@ -192,7 +210,7 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
     }
 
     public String getRolloverEventNoteStyle() {
-        return ValueBindings.get(this, "rolloverEventNoteStyle", rolloverEventNoteStyle);
+        return ValueBindings.get(this, getTimetable(), "rolloverEventNoteStyle", rolloverEventNoteStyle);
     }
 
     public void setRolloverEventNoteStyle(String rolloverEventNoteStyle) {
@@ -200,7 +218,7 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
     }
 
     public String getRolloverEventNoteClass() {
-        return ValueBindings.get(this, "rolloverEventNoteClass", rolloverEventNoteClass);
+        return ValueBindings.get(this, getTimetable(), "rolloverEventNoteClass", rolloverEventNoteClass);
     }
 
     public void setRolloverEventNoteClass(String rolloverEventNoteClass) {
@@ -208,7 +226,7 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
     }
 
     public String getHeaderStyle() {
-        return ValueBindings.get(this, "headerStyle", headerStyle);
+        return ValueBindings.get(this, getTimetable(), "headerStyle", headerStyle);
     }
 
     public void setHeaderStyle(String headerStyle) {
@@ -216,7 +234,7 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
     }
 
     public String getHeaderClass() {
-        return ValueBindings.get(this, "headerClass", headerClass);
+        return ValueBindings.get(this, getTimetable(), "headerClass", headerClass);
     }
 
     public void setHeaderClass(String headerClass) {
@@ -224,7 +242,7 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
     }
 
     public String getFooterStyle() {
-        return ValueBindings.get(this, "footerStyle", footerStyle);
+        return ValueBindings.get(this, getTimetable(), "footerStyle", footerStyle);
     }
 
     public void setFooterStyle(String footerStyle) {
@@ -232,7 +250,7 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
     }
 
     public String getFooterClass() {
-        return ValueBindings.get(this, "footerClass", footerClass);
+        return ValueBindings.get(this, getTimetable(), "footerClass", footerClass);
     }
 
     public void setFooterClass(String footerClass) {
@@ -240,7 +258,7 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
     }
 
     public String getRowStyle() {
-        return ValueBindings.get(this, "rowStyle", rowStyle);
+        return ValueBindings.get(this, getTimetable(), "rowStyle", rowStyle);
     }
 
     public void setRowStyle(String rowStyle) {
@@ -248,7 +266,7 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
     }
 
     public String getRowClass() {
-        return ValueBindings.get(this, "rowClass", rowClass);
+        return ValueBindings.get(this, getTimetable(), "rowClass", rowClass);
     }
 
     public void setRowClass(String rowClass) {
@@ -256,7 +274,7 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
     }
 
     public boolean isEditable() {
-        return ValueBindings.get(this, "editable", editable, true);
+        return ValueBindings.get(this, getTimetable(), "editable", editable, true);
     }
 
     public void setEditable(boolean value) {
@@ -270,6 +288,10 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
     public void setEvent(AbstractTimetableEvent event) {
         if (this.event == event)
             return;
+
+        Timetable timetable = getTimetable();
+        if (timetable != null)
+            timetable.setEvent(event);
 
         List<EventArea> eventAreas = getEventAreas();
 
@@ -317,11 +339,18 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
     }
 
     public List<EventArea> getEventAreas() {
-        return Components.findChildrenWithClass(this, EventArea.class);
+        List<EventArea> eventAreas = Components.findChildrenWithClass(this, EventArea.class);
+        if (eventAreas.size() == 0) {
+            Timetable timetable = getTimetable();
+            if (timetable != null)
+                eventAreas = timetable.getEventAreas();
+        }
+        return eventAreas;
     }
 
     public String getEventVar() {
-        return eventVar;
+        Timetable timetable = getTimetable();
+        return timetable != null ? timetable.getEventVar() : eventVar;
     }
 
     public void setEventVar(String eventVar) {
@@ -424,6 +453,11 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
         FacesContext context = FacesContext.getCurrentInstance();
         Confirmation confirmation = getDeleteEventConfirmation();
         if (confirmation == null) {
+            Timetable timetable = getTimetable();
+            if (timetable != null)
+                confirmation = timetable.getDeleteEventConfirmation();
+        }
+        if (confirmation == null) {
             confirmation = (Confirmation) Components.createComponent(context,
                     getId() + Rendering.SERVER_ID_SUFFIX_SEPARATOR + "deleteEventConfirmation",
                     Confirmation.COMPONENT_TYPE);
@@ -444,11 +478,20 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
     }
 
     public TimetableEditingOptions getEditingOptions() {
-        return Components.getChildWithClass(this, TimetableEditingOptions.class, "editingOptions");
+        Timetable timetable = getTimetable();
+        return timetable != null
+                ? timetable.getEditingOptions()
+                : Components.getChildWithClass(this, TimetableEditingOptions.class, "editingOptions");
     }
     
     public UIComponent getEventEditor() {
-        return getFacet(EVENT_EDITOR_FACET_NAME);
+        UIComponent result = getFacet(EVENT_EDITOR_FACET_NAME);
+        if (result == null) {
+            Timetable timetable = getTimetable();
+            if (timetable != null)
+                result = timetable.getEventEditor();
+        }
+        return result;
     }
 
     public void setEventEditor(UIComponent dialog) {
@@ -462,7 +505,8 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
     }
 
     public ValueExpression getEventsValueExpression() {
-        return getValueExpression("events");
+        Timetable timetable = getTimetable();
+        return timetable != null ? timetable.getEventsValueExpression() : getValueExpression("events");
     }
 
     public void setEventsValueExpression(ValueExpression expression) {
@@ -470,7 +514,8 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
     }
 
     public ValueExpression getResourcesValueExpression() {
-        return getValueExpression("resources");
+        Timetable timetable = getTimetable();
+        return timetable != null ? timetable.getResourcesValueExpression() : getValueExpression("resources");
     }
 
     public void setResourcesValueExpression(ValueExpression expression) {
@@ -478,11 +523,78 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
     }
 
     public EventActionBar getEventActionBar() {
-        return Components.getChildWithClass(this, EventActionBar.class, "eventActionBar");
+        EventActionBar result = Components.getChildWithClass(this, EventActionBar.class, "eventActionBar");
+        if (result == null) {
+            Timetable timetable = getTimetable();
+            if (timetable != null)
+                result = timetable.getEventActionBar();
+        }
+        return result;
     }
 
     public EventPreview getEventPreview() {
-        return Components.findChildWithClass(this, EventPreview.class);
+        EventPreview result = Components.findChildWithClass(this, EventPreview.class);
+        if (result == null) {
+            Timetable timetable = getTimetable();
+            if (timetable != null)
+                result = timetable.getEventPreview();
+        }
+        return result;
+    }
+
+    public UIComponent getHeader() {
+        UIComponent result = getFacet("header");
+        if (result == null) {
+            Timetable timetable = getTimetable();
+            if (timetable != null)
+                result = timetable.getHeader();
+        }
+        return result;
+    }
+
+    public void setHeader(UIComponent header) {
+        getFacets().put("header", header);
+    }
+
+    public UIComponent getHeaderRight() {
+        UIComponent result = getFacet("headerRight");
+        if (result == null) {
+            Timetable timetable = getTimetable();
+            if (timetable != null)
+                result = timetable.getHeaderRight();
+        }
+        return result;
+    }
+
+    public void setHeaderRight(UIComponent header) {
+        getFacets().put("headerRight", header);
+    }
+
+    public UIComponent getFooter() {
+        UIComponent result = getFacet("footer");
+        if (result == null) {
+            Timetable timetable = getTimetable();
+            if (timetable != null)
+                result = timetable.getFooter();
+        }
+        return result;
+    }
+
+    public void setFooter(UIComponent footer) {
+        getFacets().put("footer", footer);
+    }
+    public UIComponent getFooterRight() {
+        UIComponent result = getFacet("footerRight");
+        if (result == null) {
+            Timetable timetable = getTimetable();
+            if (timetable != null)
+                result = timetable.getFooterRight();
+        }
+        return result;
+    }
+
+    public void setFooterRight(UIComponent footerRight) {
+        getFacets().put("footerRight", footerRight);
     }
 
 }

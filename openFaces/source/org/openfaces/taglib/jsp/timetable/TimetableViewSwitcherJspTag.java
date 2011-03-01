@@ -11,20 +11,14 @@
  */
 package org.openfaces.taglib.jsp.timetable;
 
-import org.openfaces.taglib.internal.timetable.TimetableTag;
+import org.openfaces.taglib.internal.timetable.TimetableViewSwitcherTag;
 import org.openfaces.taglib.jsp.AbstractComponentJspTag;
-import org.openfaces.validation.core.Expressions;
 
-import javax.el.ValueExpression;
+public class TimetableViewSwitcherJspTag extends AbstractComponentJspTag {
 
-public class TimetableJspTag extends TimeScaleTableJspTag {
-
-    public TimetableJspTag() {
-        super(new TimetableTag());
+    public TimetableViewSwitcherJspTag() {
+        super(new TimetableViewSwitcherTag());
     }
 
 
-    public void setView(ValueExpression view) {
-        getDelegate().setPropertyValue("view", view);
-    }
 }

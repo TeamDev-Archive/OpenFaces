@@ -44,12 +44,24 @@ public class CalendarUtil {
     }
 
     public static Locale getBoundPropertyValueAsLocale(UIComponent component, String property, Locale fieldValue) {
-        Locale defaultLocale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
-        return getBoundPropertyValueAsLocale(component, property, defaultLocale, fieldValue);
+        return getBoundPropertyValueAsLocale(component, null, property, fieldValue);
     }
 
-    public static Locale getBoundPropertyValueAsLocale(UIComponent component, String property, Locale defaultLocale, Locale fieldValue) {
-        Object propertyValue = ValueBindings.get(component, property, fieldValue, defaultLocale, Object.class);
+    public static Locale getBoundPropertyValueAsLocale(UIComponent component, UIComponent parentComponent,
+                                                       String property, Locale fieldValue) {
+        Locale defaultLocale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+        return getBoundPropertyValueAsLocale(component, parentComponent, property, defaultLocale, fieldValue);
+    }
+
+    public static Locale getBoundPropertyValueAsLocale(UIComponent component,
+                                                       String property, Locale defaultLocale, Locale fieldValue) {
+        return getBoundPropertyValueAsLocale(component, null, property, defaultLocale, fieldValue);
+    }
+
+    public static Locale getBoundPropertyValueAsLocale(UIComponent component, UIComponent parentComponent,
+                                                       String property, Locale defaultLocale, Locale fieldValue) {
+        Object propertyValue = ValueBindings.get(component, parentComponent,
+                property, fieldValue, defaultLocale, Object.class);
         if (propertyValue == null) {
             return FacesContext.getCurrentInstance().getViewRoot().getLocale();
         } else if (propertyValue instanceof Locale) {
@@ -60,11 +72,13 @@ public class CalendarUtil {
     }
 
     public static String getDatePattern(UIComponent component, String dateFormat, String pattern, Locale locale) {
-        SimpleDateFormat sdf = (SimpleDateFormat) DateFormat.getDateInstance(convertToDateFormatStyle(dateFormat), locale);
+        SimpleDateFormat sdf = (SimpleDateFormat) DateFormat.getDateInstance(
+                convertToDateFormatStyle(dateFormat), locale);
         return ValueBindings.get(component, "pattern", pattern, sdf.toPattern());
     }
 
-    public static SimpleDateFormat getSimpleDateFormat(String dateFormat, String defaultDateFormat, String pattern, String defaultPattern, Locale locale, TimeZone timeZone){
+    public static SimpleDateFormat getSimpleDateFormat(String dateFormat, String defaultDateFormat, String pattern,
+                                                       String defaultPattern, Locale locale, TimeZone timeZone){
         SimpleDateFormat sdf;
         if (pattern != null) {
             sdf = new SimpleDateFormat(pattern, locale);
@@ -93,11 +107,4 @@ public class CalendarUtil {
         }
     }
 
-//  public static Locale getLocaleProperty (UIComponent component, Locale locale) {
-//    FacesContext context = FacesContext.getCurrentInstance();
-//    Locale defaultLocale = context.getViewRoot().getLocale();
-//    Object locale = component.getBoundPropertyValue(component, "locale", locale, defaultLocale);
-//    Components.
-//    return ;
-//  }
 }

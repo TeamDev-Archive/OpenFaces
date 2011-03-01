@@ -13,11 +13,12 @@ package org.openfaces.taglib.facelets.timetable;
 
 import com.sun.facelets.tag.jsf.ComponentConfig;
 import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
+import org.openfaces.taglib.internal.timetable.TimetableTag;
 
-public class TimetableTagHandler extends org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler {
+public class TimetableTagHandler extends AbstractFaceletsComponentHandler {
 
     public TimetableTagHandler(ComponentConfig componentConfig) {
-        super(componentConfig, new org.openfaces.taglib.internal.timetable.TimetableTag());
+        super(componentConfig, new TimetableTag());
     }
 
 }

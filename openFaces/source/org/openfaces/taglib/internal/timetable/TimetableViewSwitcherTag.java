@@ -11,25 +11,25 @@
  */
 package org.openfaces.taglib.internal.timetable;
 
-import org.openfaces.component.timetable.Timetable;
+import org.openfaces.component.timetable.TimetableViewSwitcher;
+import org.openfaces.taglib.internal.AbstractComponentTag;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-public class TimetableTag extends TimeScaleTableTag {
+public class TimetableViewSwitcherTag extends AbstractComponentTag {
 
     public String getComponentType() {
-        return Timetable.COMPONENT_TYPE;
+        return TimetableViewSwitcher.COMPONENT_TYPE;
     }
 
     public String getRendererType() {
-        return "org.openfaces.TimetableRenderer";
+        return "org.openfaces.TimetableViewSwitcherRenderer";
     }
 
     @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
-        setEnumerationProperty(component, "view", Timetable.View.class);
     }
 }

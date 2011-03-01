@@ -49,6 +49,10 @@ public class DataTableJspTag extends AbstractTableJspTag {
         getDelegate().setPropertyValue("paginationKeyboardSupport", paginationKeyboardSupport);
     }
 
+    public void setPaginationOnSorting(ValueExpression paginationOnSorting) {
+        getDelegate().setPropertyValue("paginationOnSorting", paginationOnSorting);
+    }
+
     public void setTotalRowCount(ValueExpression totalRowCount) {
         getDelegate().setPropertyValue("totalRowCount", totalRowCount);
     }
@@ -57,9 +61,8 @@ public class DataTableJspTag extends AbstractTableJspTag {
         getDelegate().setPropertyValue("rowDataByKey", rowDataByKey);
     }
 
+
     public void setCustomDataProviding(ValueExpression customDataProviding) {
         getDelegate().setPropertyValue("customDataProviding", customDataProviding);
     }
-
-
 }

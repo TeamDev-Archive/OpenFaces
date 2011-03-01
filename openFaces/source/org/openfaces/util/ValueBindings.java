@@ -39,28 +39,69 @@ public class ValueBindings {
         return get(component, property, fieldValue, (String) null);
     }
 
+    public static String get(UIComponent component, UIComponent parentComponent, String property, String fieldValue) {
+        return get(component, parentComponent, property, fieldValue, null, false, String.class);
+    }
+
+
     public static String get(UIComponent component, String property, String fieldValue, String defaultValue) {
         return get(component, property, fieldValue, defaultValue, String.class);
     }
 
+    public static String get(UIComponent component, UIComponent parentComponent, String property, String fieldValue, String defaultValue) {
+        return get(component, parentComponent, property, fieldValue, defaultValue, false, String.class);
+    }
+
+
     public static boolean get(UIComponent component, String property, Boolean fieldValue, boolean defaultValue) {
         return get(component, property, fieldValue, defaultValue, Boolean.class);
+    }
+
+    public static boolean get(UIComponent component, UIComponent parentComponent, String property,
+                              Boolean fieldValue, boolean defaultValue) {
+        return get(component, parentComponent, property, fieldValue, defaultValue, false, Boolean.class);
     }
 
     public static int get(UIComponent component, String property, Integer fieldValue, int defaultValue) {
         return get(component, property, fieldValue, defaultValue, Integer.class);
     }
 
+    public static int get(UIComponent component, UIComponent parentComponent, String property, Integer fieldValue, int defaultValue) {
+        return get(component, parentComponent, property, fieldValue, defaultValue, false, Integer.class);
+    }
+
     public static double get(UIComponent component, String property, Double fieldValue, double defaultValue) {
         return get(component, property, fieldValue, defaultValue, Double.class);
+    }
+
+    public static double get(UIComponent component, UIComponent parentComponent, String property, Double fieldValue, double defaultValue) {
+        return get(component, parentComponent, property, fieldValue, defaultValue, false, Double.class);
     }
 
     public static <T> T get(UIComponent component, String property, T fieldValue, Class<T> cls) {
         return get(component, property, fieldValue, null, cls);
     }
 
+    public static <T> T get(UIComponent component, UIComponent parentComponent, String property,
+                            T fieldValue, Class<T> cls) {
+        return get(component, parentComponent, property, fieldValue, null, false, cls);
+    }
+
+
     public static <T> T get(UIComponent component, String property, T fieldValue, T defaultValue, Class<T> cls) {
         return get(component, property, fieldValue, defaultValue, false, cls);
+    }
+
+    public static <T> T get(UIComponent component, UIComponent parentComponent, String property, T fieldValue, T defaultValue, Class<T> cls) {
+        return get(component, property, fieldValue, defaultValue, false, cls);
+    }
+
+    public static <T> T get(UIComponent component, UIComponent parentComponent, String property, T fieldValue,
+                            T defaultValue, boolean allowNullBinding, Class<T> cls) {
+        T ownValue = get(component, property, fieldValue, parentComponent != null ? null : defaultValue, allowNullBinding, cls);
+        if (parentComponent == null || ownValue != null)
+            return ownValue;
+        return (T) parentComponent.getAttributes().get(property);
     }
 
     public static <T> T get(UIComponent component, String property, T fieldValue,

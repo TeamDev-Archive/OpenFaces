@@ -9,22 +9,16 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.taglib.jsp.timetable;
+package org.openfaces.taglib.facelets.timetable;
 
-import org.openfaces.taglib.internal.timetable.TimetableTag;
-import org.openfaces.taglib.jsp.AbstractComponentJspTag;
-import org.openfaces.validation.core.Expressions;
+import com.sun.facelets.tag.jsf.ComponentConfig;
+import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
+import org.openfaces.taglib.internal.timetable.TimetableViewSwitcherTag;
 
-import javax.el.ValueExpression;
+public class TimetableViewSwitcherTagHandler extends AbstractFaceletsComponentHandler {
 
-public class TimetableJspTag extends TimeScaleTableJspTag {
-
-    public TimetableJspTag() {
-        super(new TimetableTag());
+    public TimetableViewSwitcherTagHandler(ComponentConfig componentConfig) {
+        super(componentConfig, new TimetableViewSwitcherTag());
     }
 
-
-    public void setView(ValueExpression view) {
-        getDelegate().setPropertyValue("view", view);
-    }
 }

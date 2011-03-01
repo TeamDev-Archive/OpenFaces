@@ -44,6 +44,7 @@ public class DataTable extends AbstractTable {
 
     private String rowIndexVar;
     private Boolean paginationKeyboardSupport;
+    private PaginationOnSorting paginationOnSorting;
     private Boolean customDataProviding;
 
     public DataTable() {
@@ -68,7 +69,7 @@ public class DataTable extends AbstractTable {
     public Object saveState(FacesContext facesContext) {
         Object superState = super.saveState(facesContext);
         return new Object[]{superState, rowIndexVar, pageSize, pageIndex, paginationKeyboardSupport,
-                customDataProviding};
+                paginationOnSorting, customDataProviding};
     }
 
     @Override
@@ -80,6 +81,7 @@ public class DataTable extends AbstractTable {
         pageSize = (Integer) state[i++];
         pageIndex = (Integer) state[i++];
         paginationKeyboardSupport = (Boolean) state[i++];
+        paginationOnSorting = (PaginationOnSorting) state[i++];
         customDataProviding = (Boolean) state[i++];
     }
 
@@ -133,6 +135,14 @@ public class DataTable extends AbstractTable {
         this.paginationKeyboardSupport = paginationKeyboardSupport;
     }
 
+    public PaginationOnSorting getPaginationOnSorting() {
+        return ValueBindings.get(this, "paginationOnSorting", paginationOnSorting, PaginationOnSorting.SAME_PAGE, PaginationOnSorting.class);
+    }
+
+    public void setPaginationOnSorting(PaginationOnSorting paginationOnSorting) {
+        this.paginationOnSorting = paginationOnSorting;
+    }
+
     /**
      * @return the number of pages if pagination is currently enabled. If pagination is disabled (by setting pageSize to 0) or
      *         if the total number of rows is unknown then -1 is returned. Note the that if pagination is enabled then there will
@@ -157,6 +167,19 @@ public class DataTable extends AbstractTable {
     @Override
     protected void processModelUpdates(FacesContext context) {
         super.processModelUpdates(context);
+
+        if (isSortingToggledInThisRequest(context) && getPageSize() > 0) {
+            PaginationOnSorting paginationOnSorting = getPaginationOnSorting();
+            switch (paginationOnSorting) {
+                case SAME_PAGE:
+                    break;
+                case FIRST_PAGE:
+                    pageIndex = 0;
+                    break;
+                default:
+                    throw new IllegalStateException("Unknown value of PaginationOnSorting enumeration: " + paginationOnSorting);
+            }
+        }
 
         if (pageIndex != null)
             rememberSelectionByKeys();
@@ -331,7 +354,7 @@ public class DataTable extends AbstractTable {
         } else if (column instanceof CheckboxColumn) {
             return ((CheckboxColumn) column).getSelectedRowKeys();
         } else
-            throw new IllegalArgumentException("Unkown column type: " + (column != null ? column.getClass().getName() : "null"));
+            throw new IllegalArgumentException("Unknown column type: " + (column != null ? column.getClass().getName() : "null"));
     }
 
     @Override

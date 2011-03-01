@@ -42,6 +42,7 @@ import java.util.Map;
  * @author Dmitry Pikhulya
  */
 public abstract class AbstractTable extends OUIData implements TableStyles, FilterableComponent {
+    private static final String KEY_SORTING_TOGGLED = AbstractTable.class + ".processModelUpdates().sortingToggled";
     /*
    Implementation notes:
    - the full life-cycle for the selection child is intentionally ensured. Although implementation of
@@ -973,7 +974,12 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
             doToggleSorting(toggleColumnSorting, toggleColumnSortingDirection);
             toggleColumnSorting = -1;
             toggleColumnSortingDirection = null;
+            context.getExternalContext().getRequestMap().put(KEY_SORTING_TOGGLED, true);
         }
+    }
+
+    protected boolean isSortingToggledInThisRequest(FacesContext context) {
+        return context.getExternalContext().getRequestMap().containsKey(KEY_SORTING_TOGGLED);
     }
 
     protected void processModelDependentUpdates(FacesContext context) {
