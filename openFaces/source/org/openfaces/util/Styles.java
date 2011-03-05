@@ -424,8 +424,10 @@ public class Styles {
     public static Iterator<String> getClassKeyIterator() {
         List<String> newClassKeys = new ArrayList<String>();
         SortedSet<StyleGroup> allGroups = StyleGroup.getAllGroups();
-        for (StyleGroup group : allGroups) {
-            newClassKeys.add(REGISTERED_CSS_CLASSES_PREFIX + group);
+        synchronized (allGroups) {
+            for (StyleGroup group : allGroups) {
+                newClassKeys.add(REGISTERED_CSS_CLASSES_PREFIX + group);
+            }
         }
         return newClassKeys.iterator();
     }

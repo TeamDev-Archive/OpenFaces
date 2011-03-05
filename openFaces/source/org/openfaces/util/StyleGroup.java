@@ -13,6 +13,7 @@ package org.openfaces.util;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -32,7 +33,7 @@ public class StyleGroup implements Serializable, Comparable {
             SELECTED_GROUP_TYPE,
             DISABLED_GROUP_TYPE);
 
-    private static SortedSet<StyleGroup> allGroups = new TreeSet<StyleGroup>();
+    private static final SortedSet<StyleGroup> allGroups = Collections.synchronizedSortedSet(new TreeSet<StyleGroup>());
 
     public static SortedSet<StyleGroup> getAllGroups() {
         return allGroups;
@@ -84,7 +85,9 @@ public class StyleGroup implements Serializable, Comparable {
             throw new IllegalArgumentException("Index should be equal or greater than 0");
         groupType = type;
         this.index = index;
-        allGroups.add(this);
+        synchronized (allGroups) {
+            allGroups.add(this);
+        }
     }
 
     @Override
