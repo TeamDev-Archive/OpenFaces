@@ -53,7 +53,6 @@ import java.util.TimeZone;
  * @author Roman Porotnikov
  */
 public abstract class TimeScaleTableRenderer extends TimetableViewRenderer {
-
     private static final String START_TIME = "startTime";
     private static final String END_TIME = "endTime";
 

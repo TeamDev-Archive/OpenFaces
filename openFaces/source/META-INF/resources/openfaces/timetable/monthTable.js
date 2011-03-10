@@ -32,7 +32,9 @@ O$.MonthTable._init = function(componentId,
                                calendarOptions
         ) {
 
-  var monthTable = O$(componentId);
+  var monthTable = O$.initComponent(componentId, null, {
+    _viewType: "month"
+  });
 
   if (O$.isExplorer()) {
     if (!monthTable._initScheduled) {

@@ -67,7 +67,6 @@ public class Timetable extends TimeScaleTable {
         int i = 0;
         super.restoreState(context, state[i++]);
         view = (View) state[i++];
-
     }
 
     public View getView() {
@@ -93,4 +92,17 @@ public class Timetable extends TimeScaleTable {
         return result;
     }
 
+    @Override
+    public UIComponent getHeaderRight() {
+        UIComponent headerRight = super.getHeaderRight();
+        if (headerRight == null) {
+            return getDefaultViewSwitcher();
+        }
+        return headerRight;
+    }
+
+    private TimetableViewSwitcher getDefaultViewSwitcher() {
+        return Components.getOrCreateFacet(getFacesContext(), this, TimetableViewSwitcher.COMPONENT_TYPE,
+                "_defaultViewSwitcher", TimetableViewSwitcher.class);
+    }
 }

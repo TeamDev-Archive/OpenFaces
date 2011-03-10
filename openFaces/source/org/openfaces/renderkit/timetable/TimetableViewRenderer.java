@@ -41,7 +41,6 @@ import java.util.TimeZone;
  * @author Roman Porotnikov
  */
 public abstract class TimetableViewRenderer extends RendererBase implements AjaxPortionRenderer {
-
     public static final String USE_RESOURCE_SEPARATION_MODE_ATTR = "_of_useResourceSeparationMode";
     public static final String EVENTEDITOR_RESOURCES_ATTR = "_resources";
 
@@ -74,25 +73,39 @@ public abstract class TimetableViewRenderer extends RendererBase implements Ajax
 
     protected void renderHeader(FacesContext context, TimetableView timetableView, String clientId) throws IOException {
         UIComponent header = timetableView.getHeader();
-        if (header == null) return;
+        UIComponent headerRight = timetableView.getHeaderRight();
+        if (header == null && headerRight == null) return;
 
         ResponseWriter writer = context.getResponseWriter();
-        writer.startElement("tr", header);
-        writer.startElement("td", header);
-        writer.startElement("table", header);
+        writer.startElement("tr", timetableView);
+        writer.startElement("td", timetableView);
+        writer.startElement("table", timetableView);
         String headerClass = Styles.getCSSClass(context,
                 timetableView, timetableView.getHeaderStyle(), "o_timetableView_header", timetableView.getHeaderClass());
         writer.writeAttribute("class", headerClass, null);
 
-        writer.startElement("tr", header);
-        writer.startElement("td", header);
-        header.encodeAll(context);
+        writer.startElement("tr", timetableView);
+        writer.startElement("td", timetableView);
+        if (header != null)
+            header.encodeAll(context);
         writer.endElement("td");
+
+        if (headerRight != null) {
+            writer.startElement("td", timetableView);
+            writer.writeAttribute("style", "width: 1px", null);
+            renderHeaderRight(context, headerRight);
+            writer.endElement("td");
+        }
+
         writer.endElement("tr");
 
         writer.endElement("table");
         writer.endElement("td");
         writer.endElement("tr");
+    }
+
+    protected void renderHeaderRight(FacesContext context, UIComponent headerRight) throws IOException {
+        headerRight.encodeAll(context);
     }
 
     protected void renderFooter(FacesContext context, TimetableView timetableView, String clientId) throws IOException {

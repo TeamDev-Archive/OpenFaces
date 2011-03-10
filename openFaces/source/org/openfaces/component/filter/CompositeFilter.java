@@ -338,6 +338,9 @@ public class CompositeFilter extends Filter {
 
         if (!ValueBindings.set(this, "value", andCriterion))
             value = andCriterion;
+
+//        FilterableComponent filteredComponent = getFilteredComponent();
+//        filteredComponent.filterChanged(this);
     }
 
     public void updateValueFromBinding(FacesContext context) {

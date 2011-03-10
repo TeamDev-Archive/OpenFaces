@@ -23,7 +23,6 @@ import java.util.Iterator;
  * @author Roman Porotnikov
  */
 public class MonthTable extends TimetableView {
-
     public static final String COMPONENT_TYPE = "org.openfaces.MonthTable";
     public static final String COMPONENT_FAMILY = "org.openfaces.MonthTable";
 
@@ -69,6 +68,10 @@ public class MonthTable extends TimetableView {
     private String moreLinkText;
 
     private Integer scrollOffset = 0;
+
+    public MonthTable() {
+        setRendererType("org.openfaces.MonthTableRenderer");
+    }
 
     public String getFamily() {
         return COMPONENT_FAMILY;

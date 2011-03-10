@@ -32,7 +32,9 @@ O$.WeekTable._init = function(componentId,
                             calendarOptions
         ) {
 
-  var weekTable = O$(componentId);
+  var weekTable = O$.initComponent(componentId, null, {
+    _viewType: "week"
+  });
 
   if (O$.isExplorer()) {
     if (!weekTable._initScheduled) {

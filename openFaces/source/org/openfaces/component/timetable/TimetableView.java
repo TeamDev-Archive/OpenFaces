@@ -83,7 +83,9 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
 
     protected Timetable getTimetable() {
         UIComponent parent = getParent();
-        if (!(parent instanceof Timetable)) return null;
+        while (parent != null && !(parent instanceof Timetable))
+            parent = parent.getParent();
+        if (parent == null) return null;
         if (this instanceof Timetable)
             throw new IllegalStateException("Timetable cannot be nested within another timetable");
         return (Timetable) parent;
