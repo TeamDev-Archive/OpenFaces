@@ -19,11 +19,13 @@ import org.openfaces.component.timetable.MonthTable;
 import org.openfaces.component.timetable.Timetable;
 import org.openfaces.component.timetable.TimetableView;
 import org.openfaces.component.timetable.WeekTable;
-import org.openfaces.renderkit.RendererBase;
+import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.Components;
 import org.openfaces.util.Faces;
 import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
+import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -32,15 +34,38 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TimetableRenderer extends RendererBase {
+public class TimetableRenderer extends TimetableRendererBase {
+
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Timetable timetable = (Timetable) component;
-        writer.startElement("div", timetable);
-        Rendering.writeIdAttribute(context, timetable);
-        Rendering.writeStyleAndClassAttributes(writer, timetable);
+
+        if (!component.isRendered())
+            return;
+
+        Rendering.registerDateTimeFormatObject(timetable.getLocale());
+        AjaxUtil.prepareComponentForAjax(context, timetable);
+
+        timetable.setEvent(null);
+        String clientId = timetable.getClientId(context);
+        writer.startElement("table", timetable);
+        writer.writeAttribute("id", clientId, "id");
+        writer.writeAttribute("cellspacing", "0", null);
+        writer.writeAttribute("cellpadding", "0", null);
+        writer.writeAttribute("border", "0", null);
+        writer.writeAttribute("class", Styles.getCSSClass(context,
+                timetable, timetable.getStyle(), "o_timetableView", timetable.getStyleClass()), null);
         Rendering.writeStandardEvents(writer, timetable);
+        writer.startElement("tbody", timetable);
+
+        renderHeader(context, timetable);
+
+        writer.startElement("tr", timetable);
+        writer.writeAttribute("class", "o_timetableView_tableRow", null);
+        writer.startElement("td", timetable);
+        writer.writeAttribute("style", "height: 100%", null);
+
         LayeredPane layeredPane = getLayeredPane(timetable);
         layeredPane.encodeAll(context);
 
@@ -57,9 +82,17 @@ public class TimetableRenderer extends RendererBase {
                 layeredPane,
                 viewIds,
                 timetable.getView()
-        ),
-                "timetable/timetable.js");
-        writer.endElement("div");
+        ), Resources.getInternalURL(context, "timetable/timetable.js"));
+
+        writer.endElement("td");
+        writer.endElement("tr");
+
+        renderFooter(context, timetable);
+
+        writer.endElement("tbody");
+        writer.endElement("table");
+
+        Styles.renderStyleClasses(context, timetable);
 
 
     }
@@ -75,6 +108,8 @@ public class TimetableRenderer extends RendererBase {
 
     private LayeredPane getLayeredPane(Timetable timetable) {
         LayeredPane layeredPane = Components.getChildWithClass(timetable, LayeredPane.class, "layeredPane");
+        layeredPane.setStyle("width: 100%");
+        layeredPane.setContainerStyle("padding: 0");
         layeredPane.setLoadingMode(LoadingMode.CLIENT);
         if (layeredPane.getChildCount() == 0) {
             List<UIComponent> children = layeredPane.getChildren();

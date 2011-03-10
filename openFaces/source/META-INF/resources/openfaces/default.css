@@ -421,6 +421,10 @@
   font-size: 0 ! important;
 }
 
+.o_timetableView_embedded {
+  border: none;
+}
+
 .o_timetableView_tableRow {
   height: 100%;
   vertical-align: top;

@@ -165,9 +165,10 @@ O$.MonthTable._init = function(componentId,
       var cell = cells[cellIndex];
       cell.onclick = function() {
         // onclick event can be fired on drag end under IE
-        if (editable)
+        if (editable) {
           var newEventTime = this._cellDay;
-        monthTable._addEvent(newEventTime, this._resource ? this._resource.id : null);
+          monthTable._addEvent(newEventTime, this._resource ? this._resource.id : null);
+        }
       };
     }
     cells[cells.length - 1]._last = true;

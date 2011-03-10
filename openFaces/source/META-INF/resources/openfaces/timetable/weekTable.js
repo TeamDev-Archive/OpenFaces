@@ -105,9 +105,10 @@ O$.WeekTable._init = function(componentId,
       // onclick event can be fired on drag end under IE
       if (weekTable._draggingInProgress)
         return;
-      if (editable)
+      if (editable) {
         var newEventTime = new Date(this._row._time.getTime() + 86400000 * this._weekday);
-      weekTable._addEvent(newEventTime, this._resource ? this._resource.id : null);
+        weekTable._addEvent(newEventTime, this._resource ? this._resource.id : null);
+      }
     };
   };
 

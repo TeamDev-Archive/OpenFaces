@@ -81,7 +81,7 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
 
     protected boolean childrenValid = true;
 
-    protected Timetable getTimetable() {
+    public Timetable getTimetable() {
         UIComponent parent = getParent();
         while (parent != null && !(parent instanceof Timetable))
             parent = parent.getParent();
@@ -546,11 +546,6 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
 
     public UIComponent getHeader() {
         UIComponent result = getFacet("header");
-        if (result == null) {
-            Timetable timetable = getTimetable();
-            if (timetable != null)
-                result = timetable.getHeader();
-        }
         return result;
     }
 
@@ -560,11 +555,6 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
 
     public UIComponent getHeaderRight() {
         UIComponent result = getFacet("headerRight");
-        if (result == null) {
-            Timetable timetable = getTimetable();
-            if (timetable != null)
-                result = timetable.getHeaderRight();
-        }
         return result;
     }
 
@@ -574,11 +564,6 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
 
     public UIComponent getFooter() {
         UIComponent result = getFacet("footer");
-        if (result == null) {
-            Timetable timetable = getTimetable();
-            if (timetable != null)
-                result = timetable.getFooter();
-        }
         return result;
     }
 
@@ -587,11 +572,6 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
     }
     public UIComponent getFooterRight() {
         UIComponent result = getFacet("footerRight");
-        if (result == null) {
-            Timetable timetable = getTimetable();
-            if (timetable != null)
-                result = timetable.getFooterRight();
-        }
         return result;
     }
 

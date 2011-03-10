@@ -34,6 +34,9 @@ O$.Timetable = {
         this._view = view;
         O$.setHiddenField(this, timetableId + "::view", view);
         timetableView.refreshEvents();
+        setTimeout(function() {
+          timetableView.updateLayout();
+        }, 1);
 
         var viewIndex;
         for (var i = 0, count = this._views.length; i < count; i++) {
