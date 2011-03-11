@@ -16,16 +16,13 @@ import org.openfaces.org.json.JSONArray;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.AjaxPortionRenderer;
-import org.openfaces.renderkit.RendererBase;
 import org.openfaces.renderkit.cssparser.CSSUtil;
 import org.openfaces.util.Components;
 import org.openfaces.util.DataUtil;
 import org.openfaces.util.Rendering;
-import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 import javax.faces.event.PhaseId;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,8 +37,7 @@ import java.util.TimeZone;
  * @author Dmitry Pikhulya
  * @author Roman Porotnikov
  */
-public abstract class TimetableViewRenderer extends RendererBase implements AjaxPortionRenderer {
-
+public abstract class TimetableViewRenderer extends TimetableRendererBase implements AjaxPortionRenderer {
     public static final String USE_RESOURCE_SEPARATION_MODE_ATTR = "_of_useResourceSeparationMode";
     public static final String EVENTEDITOR_RESOURCES_ATTR = "_resources";
 
@@ -74,52 +70,6 @@ public abstract class TimetableViewRenderer extends RendererBase implements Ajax
     private EventEditorDialog getOrCreateEventEditor(FacesContext context, TimetableView timetableView) {
         return Components.getOrCreateFacet(context, timetableView,
                 EventEditorDialog.COMPONENT_TYPE, "eventEditor", "_eventEditor", EventEditorDialog.class);
-    }
-
-    protected void renderHeader(FacesContext context, TimetableView timetableView, String clientId) throws IOException {
-        UIComponent header = timetableView.getHeader();
-        if (header == null) return;
-
-        ResponseWriter writer = context.getResponseWriter();
-        writer.startElement("tr", header);
-        writer.startElement("td", header);
-        writer.startElement("table", header);
-        String headerClass = Styles.getCSSClass(context,
-                timetableView, timetableView.getHeaderStyle(), "o_timetableView_header", timetableView.getHeaderClass());
-        writer.writeAttribute("class", headerClass, null);
-
-        writer.startElement("tr", header);
-        writer.startElement("td", header);
-        header.encodeAll(context);
-        writer.endElement("td");
-        writer.endElement("tr");
-
-        writer.endElement("table");
-        writer.endElement("td");
-        writer.endElement("tr");
-    }
-
-    protected void renderFooter(FacesContext context, TimetableView timetableView, String clientId) throws IOException {
-        UIComponent footer = timetableView.getFooter();
-        if (footer == null) return;
-
-        ResponseWriter writer = context.getResponseWriter();
-        writer.startElement("tr", footer);
-        writer.startElement("td", footer);
-        writer.startElement("table", footer);
-        String footerClass = Styles.getCSSClass(context,
-                timetableView, timetableView.getFooterStyle(), "o_timetableView_footer", timetableView.getFooterClass());
-        writer.writeAttribute("class", footerClass, null);
-
-        writer.startElement("tr", footer);
-        writer.startElement("td", footer);
-        footer.encodeAll(context);
-        writer.endElement("td");
-        writer.endElement("tr");
-
-        writer.endElement("table");
-        writer.endElement("td");
-        writer.endElement("tr");
     }
 
     protected void decodeTimetableChanges(FacesContext context, TimetableView timetableView) {
@@ -197,15 +147,6 @@ public abstract class TimetableViewRenderer extends RendererBase implements Ajax
             targetArray[i] = event;
         }
         return targetArray;
-    }
-
-    @Override
-    public boolean getRendersChildren() {
-        return true;
-    }
-
-    @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
     }
 
     protected void encodeLoadEventsPortion(

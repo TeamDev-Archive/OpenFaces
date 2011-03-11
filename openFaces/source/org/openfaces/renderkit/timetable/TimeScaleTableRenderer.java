@@ -15,6 +15,7 @@ import org.openfaces.component.timetable.AbstractTimetableEvent;
 import org.openfaces.component.timetable.PreloadedEvents;
 import org.openfaces.component.timetable.TimeScaleTable;
 import org.openfaces.component.timetable.TimeTextPosition;
+import org.openfaces.component.timetable.Timetable;
 import org.openfaces.component.timetable.TimetableResource;
 import org.openfaces.component.timetable.TimetableView;
 import org.openfaces.component.timetable.UITimetableEvent;
@@ -53,7 +54,6 @@ import java.util.TimeZone;
  * @author Roman Porotnikov
  */
 public abstract class TimeScaleTableRenderer extends TimetableViewRenderer {
-
     private static final String START_TIME = "startTime";
     private static final String END_TIME = "endTime";
 
@@ -74,12 +74,15 @@ public abstract class TimeScaleTableRenderer extends TimetableViewRenderer {
         writer.writeAttribute("cellspacing", "0", null);
         writer.writeAttribute("cellpadding", "0", null);
         writer.writeAttribute("border", "0", null);
+        Timetable timetable = timetableView.getTimetable();
         writer.writeAttribute("class", Styles.getCSSClass(context,
-                timetableView, timetableView.getStyle(), "o_timetableView", timetableView.getStyleClass()), null);
+                timetableView, timetableView.getStyle(),
+                timetable == null ? "o_timetableView" : "o_timetableView o_timetableView_embedded",
+                timetableView.getStyleClass()), null);
         Rendering.writeStandardEvents(writer, timetableView);
         writer.startElement("tbody", timetableView);
 
-        renderHeader(context, timetableView, clientId);
+        renderHeader(context, timetableView);
         renderSpecificHeaders(context, timetableView, clientId);
         List<TimetableResource> resources = renderResourceHeadersRow(context, timetableView, clientId);
 
@@ -95,7 +98,7 @@ public abstract class TimeScaleTableRenderer extends TimetableViewRenderer {
         writer.endElement("td");
         writer.endElement("tr");
 
-        renderFooter(context, timetableView, clientId);
+        renderFooter(context, timetableView);
 
         writer.endElement("tbody");
         writer.endElement("table");
@@ -111,7 +114,7 @@ public abstract class TimeScaleTableRenderer extends TimetableViewRenderer {
         ValueExpression resourcesExpression = timetableView.getResourcesValueExpression();
         final List<TimetableResource> resources = resourcesExpression != null
                 ? DataUtil.readDataModelExpressionAsList(context, resourcesExpression)
-                : Collections.EMPTY_LIST;
+                : Collections.<TimetableResource>emptyList();
         if (resources.size() > 0) {
             int dayCount = getDayCount();
             final int colCount = 1 + dayCount * (resources.size() > 0 ? resources.size() : 1);
@@ -157,9 +160,8 @@ public abstract class TimeScaleTableRenderer extends TimetableViewRenderer {
         boolean editable = timetableView.isEditable();
         boolean thereIsChangeListener = timetableView.getTimetableChangeListener() != null ||
                 timetableView.getTimetableChangeListeners().length > 0;
-        if (!thereIsChangeListener) {
-            Log.log(context, "The " + getComponentName() + " with clientID=[" + clientId + "] is set to be editable, but is not configured to accept the changes. " +
-                    "You should either make it read-only explicitly (using editable=\"false\" attribute), or define timetableChangeListener attribute to accept the changes (see " + getComponentName() + " reference).");
+        if (editable && !thereIsChangeListener) {
+            Log.log(context, "The " + getComponentName() + " with clientID=[" + clientId + "] is set to be editable, but is not configured to accept the changes. You should either make it read-only explicitly (using editable=\"false\" attribute), or define timetableChangeListener attribute to accept the changes (see " + getComponentName() + " reference).");
             editable = false;
         }
         List<AbstractTimetableEvent> events = new ArrayList<AbstractTimetableEvent>();

@@ -15,9 +15,11 @@ O$.Timetable = {
   WEEK: "week",
   MONTH: "month",
 
-  _init: function(timetableId, currentView) {
+  _init: function(timetableId, layeredPaneId, viewIds, currentView) {
     var timetable = O$.initComponent(timetableId, null, {
+      _views: viewIds.map(O$),
       _view: currentView,
+      _layeredPane: O$(layeredPaneId),
 
       getView: function() {
         return this._view;
@@ -26,10 +28,35 @@ O$.Timetable = {
         if (view != O$.Timetable.DAY &&
                 view != O$.Timetable.WEEK &&
                 view != O$.Timetable.MONTH)
-          throw "O$.Timetable.setView. illegal view parameter: \"" + view + "\"";
+          throw "O$.Timetable.setView: illegal view parameter: \"" + view + "\"";
+        var timetableView = this._viewByType(view);
+        if (this._view == view) return;
         this._view = view;
         O$.setHiddenField(this, timetableId + "::view", view);
+        timetableView.refreshEvents();
+        setTimeout(function() {
+          timetableView.updateLayout();
+        }, 1);
 
+        var viewIndex;
+        for (var i = 0, count = this._views.length; i < count; i++) {
+          var v = this._views[i];
+          if (v._viewType == view) {
+            viewIndex = i;
+            break;
+          }
+        }
+        if (viewIndex == undefined) throw "O$.Timetable.setView: couldn't find view for type: " + view;
+        this._layeredPane.setSelectedIndex(viewIndex);
+      },
+
+      _viewByType: function(viewType) {
+        for (var i = 0, count = this._views.length; i < count; i++) {
+          var view = this._views[i];
+          if (view._viewType == viewType)
+            return view;
+        }
+        throw "View not found for the following type: " + viewType;
       }
     });
   }

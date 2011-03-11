@@ -133,16 +133,6 @@ public abstract class AbstractWindowRenderer extends PopupLayerRenderer {
 
     protected abstract void encodeContentPane(FacesContext context, AbstractWindow window) throws IOException;
 
-    private void encodeAnchor(FacesContext context, AbstractWindow window, String postfix) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        String clientId = window.getClientId(context);
-
-        writer.startElement("a", window);
-        writer.writeAttribute("href", "javascript: ;", null);
-        writer.writeAttribute("id", clientId + postfix, null);
-        writer.endElement("a");
-    }
-
     protected String getDefaultContentClass() {
         return null;
     }

@@ -66,6 +66,10 @@ public class MonthTable extends TimetableView {
 
     private Integer scrollOffset = 0;
 
+    public MonthTable() {
+        setRendererType("org.openfaces.MonthTableRenderer");
+    }
+
     public String getFamily() {
         return COMPONENT_FAMILY;
     }

@@ -11,6 +11,7 @@
  */
 package org.openfaces.renderkit.timetable;
 
+import org.openfaces.component.select.TabSetItem;
 import org.openfaces.component.timetable.Timetable;
 import org.openfaces.component.timetable.TimetableViewSwitcher;
 import org.openfaces.renderkit.select.TabSetRenderer;
@@ -19,11 +20,9 @@ import org.openfaces.util.RawScript;
 import org.openfaces.util.ScriptBuilder;
 
 import javax.faces.component.UIComponent;
-import javax.faces.component.UISelectItems;
+import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class TimetableViewSwitcherRenderer extends TabSetRenderer {
@@ -31,19 +30,24 @@ public class TimetableViewSwitcherRenderer extends TabSetRenderer {
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         TimetableViewSwitcher switcher = (TimetableViewSwitcher) component;
         Timetable timetable = switcher.getTimetable();
-        UISelectItems selectItems = Components.getChildWithClass(switcher, UISelectItems.class, "items");
-        List<SelectItem> items = new ArrayList<SelectItem>();
-        items.add(new SelectItem("Month"));
-        items.add(new SelectItem("Week"));
-        items.add(new SelectItem("Day"));
-        selectItems.setValue(items);
+        List<UIComponent> children = switcher.getChildren();
+        children.add(createTabSetItem("Month"));
+        children.add(createTabSetItem("Week"));
+        children.add(createTabSetItem("Day"));
         switcher.setOnchange(
-                new ScriptBuilder().O$(timetable).functionCall("setView",
+                new ScriptBuilder().O$(timetable).dot().functionCall("setView",
                         new RawScript("['month','week','day'][O$('" + switcher.getClientId(context) + "').getSelectedIndex()]")
                 ).toString()
         );
 
         super.encodeBegin(context, component);
 
+    }
+
+    private TabSetItem createTabSetItem(String text) {
+        TabSetItem tabSetItem = new TabSetItem();
+        HtmlOutputText outputText = Components.createOutputText(FacesContext.getCurrentInstance(), text);
+        tabSetItem.getChildren().add(outputText);
+        return tabSetItem;
     }
 }

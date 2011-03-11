@@ -54,6 +54,8 @@ public class CaptionButtonRenderer extends RendererBase {
             writeAttribute(writer, "title", hint);
         }
 
+        writer.endElement("img");
+
         renderAdditionalContent(context, btn);
         List params = getInitParams(context, btn);
         ScriptBuilder script = new ScriptBuilder();
@@ -63,7 +65,6 @@ public class CaptionButtonRenderer extends RendererBase {
 
         Styles.renderStyleClasses(context, component);
 
-        writer.endElement("img");
 
         if (component.getAttributes().remove("_ajaxRequired") != null)
             AjaxUtil.renderJSLinks(context);
