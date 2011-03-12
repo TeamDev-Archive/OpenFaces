@@ -308,6 +308,26 @@
           <option name="LABEL_INDENT_ABSOLUTE" value="false" />
           <option name="USE_RELATIVE_INDENTS" value="false" />
         </ADDITIONAL_INDENT_OPTIONS>
+        <ADDITIONAL_INDENT_OPTIONS fileType="php">
+          <option name="INDENT_SIZE" value="4" />
+          <option name="CONTINUATION_INDENT_SIZE" value="8" />
+          <option name="TAB_SIZE" value="4" />
+          <option name="USE_TAB_CHARACTER" value="false" />
+          <option name="SMART_TABS" value="false" />
+          <option name="LABEL_INDENT_SIZE" value="0" />
+          <option name="LABEL_INDENT_ABSOLUTE" value="false" />
+          <option name="USE_RELATIVE_INDENTS" value="false" />
+        </ADDITIONAL_INDENT_OPTIONS>
+        <ADDITIONAL_INDENT_OPTIONS fileType="sass">
+          <option name="INDENT_SIZE" value="2" />
+          <option name="CONTINUATION_INDENT_SIZE" value="8" />
+          <option name="TAB_SIZE" value="4" />
+          <option name="USE_TAB_CHARACTER" value="false" />
+          <option name="SMART_TABS" value="false" />
+          <option name="LABEL_INDENT_SIZE" value="0" />
+          <option name="LABEL_INDENT_ABSOLUTE" value="false" />
+          <option name="USE_RELATIVE_INDENTS" value="false" />
+        </ADDITIONAL_INDENT_OPTIONS>
         <ADDITIONAL_INDENT_OPTIONS fileType="sql">
           <option name="INDENT_SIZE" value="2" />
           <option name="CONTINUATION_INDENT_SIZE" value="8" />
@@ -381,73 +401,18 @@
     </module2copyright>
     <LanguageOptions name="HTML">
       <option name="fileTypeOverride" value="1" />
-      <option name="relativeBefore" value="true" />
-      <option name="addBlankAfter" value="true" />
-      <option name="fileLocation" value="1" />
-      <option name="block" value="true" />
-      <option name="separateBefore" value="false" />
-      <option name="separateAfter" value="false" />
-      <option name="prefixLines" value="true" />
-      <option name="lenBefore" value="80" />
-      <option name="lenAfter" value="80" />
-      <option name="box" value="false" />
-      <option name="filler" value=" " />
     </LanguageOptions>
     <LanguageOptions name="JSP">
       <option name="fileTypeOverride" value="1" />
-      <option name="relativeBefore" value="true" />
-      <option name="addBlankAfter" value="true" />
-      <option name="fileLocation" value="1" />
-      <option name="block" value="true" />
-      <option name="separateBefore" value="false" />
-      <option name="separateAfter" value="false" />
-      <option name="prefixLines" value="true" />
-      <option name="lenBefore" value="80" />
-      <option name="lenAfter" value="80" />
-      <option name="box" value="false" />
-      <option name="filler" value=" " />
     </LanguageOptions>
     <LanguageOptions name="JSPX">
       <option name="fileTypeOverride" value="1" />
-      <option name="relativeBefore" value="true" />
-      <option name="addBlankAfter" value="true" />
-      <option name="fileLocation" value="1" />
-      <option name="block" value="true" />
-      <option name="separateBefore" value="false" />
-      <option name="separateAfter" value="false" />
-      <option name="prefixLines" value="true" />
-      <option name="lenBefore" value="80" />
-      <option name="lenAfter" value="80" />
-      <option name="box" value="false" />
-      <option name="filler" value=" " />
     </LanguageOptions>
     <LanguageOptions name="Properties">
       <option name="fileTypeOverride" value="1" />
-      <option name="relativeBefore" value="true" />
-      <option name="addBlankAfter" value="true" />
-      <option name="fileLocation" value="1" />
-      <option name="block" value="true" />
-      <option name="separateBefore" value="false" />
-      <option name="separateAfter" value="false" />
-      <option name="prefixLines" value="true" />
-      <option name="lenBefore" value="80" />
-      <option name="lenAfter" value="80" />
-      <option name="box" value="false" />
-      <option name="filler" value=" " />
     </LanguageOptions>
     <LanguageOptions name="XML">
       <option name="fileTypeOverride" value="1" />
-      <option name="relativeBefore" value="true" />
-      <option name="addBlankAfter" value="true" />
-      <option name="fileLocation" value="1" />
-      <option name="block" value="true" />
-      <option name="separateBefore" value="false" />
-      <option name="separateAfter" value="false" />
-      <option name="prefixLines" value="true" />
-      <option name="lenBefore" value="80" />
-      <option name="lenAfter" value="80" />
-      <option name="box" value="false" />
-      <option name="filler" value=" " />
     </LanguageOptions>
   </component>
   <component name="DependenciesAnalyzeManager">
@@ -478,15 +443,23 @@
   </component>
   <component name="FacetAutodetectingManager">
     <autodetection-disabled>
-      <facet-type id="jsf">
+      <facet-type id="ejb">
         <modules>
-          <module name="TeamDevComponents">
-            <files>
-              <file url="file://$PROJECT_DIR$/TeamDevComponents/source/META-INF/faces-config.xml" />
-            </files>
-          </module>
           <module name="Root" />
           <module name="TestAppCore" />
+          <module name="TestAppFacelets" />
+          <module name="TestAppJsp" />
+        </modules>
+      </facet-type>
+      <facet-type id="jpa">
+        <modules>
+          <module name="Root" />
+          <module name="TestAppCore" />
+          <module name="TestAppJsp" />
+        </modules>
+      </facet-type>
+      <facet-type id="jsf">
+        <modules>
           <module name="LiveDemoFacelets">
             <files>
               <file url="file://$PROJECT_DIR$/liveDemo/facelets/WEB-INF/faces-config.xml" />
@@ -497,13 +470,20 @@
               <file url="file://$PROJECT_DIR$/liveDemo/jsp/WEB-INF/faces-config.xml" />
             </files>
           </module>
+          <module name="Root" />
+          <module name="TeamDevComponents">
+            <files>
+              <file url="file://$PROJECT_DIR$/TeamDevComponents/source/META-INF/faces-config.xml" />
+            </files>
+          </module>
+          <module name="TestAppCore" />
         </modules>
       </facet-type>
       <facet-type id="Seam">
         <modules>
-          <module name="TestAppJsp">
+          <module name="TestAppCore">
             <files>
-              <file url="file://$PROJECT_DIR$/TestApp/TestAppJsp/target/resources/WEB-INF/components.xml" />
+              <file url="file://$PROJECT_DIR$/testApp/core/web/WEB-INF/components.xml" />
             </files>
           </module>
           <module name="TestAppFacelets">
@@ -511,29 +491,15 @@
               <file url="file://$PROJECT_DIR$/TestApp/TestAppFacelets/target/resources/WEB-INF/components.xml" />
             </files>
           </module>
-          <module name="TestAppCore">
+          <module name="TestAppJsp">
             <files>
-              <file url="file://$PROJECT_DIR$/testApp/core/web/WEB-INF/components.xml" />
+              <file url="file://$PROJECT_DIR$/TestApp/TestAppJsp/target/resources/WEB-INF/components.xml" />
             </files>
           </module>
-        </modules>
-      </facet-type>
-      <facet-type id="jpa">
-        <modules>
-          <module name="TestAppCore" />
-          <module name="TestAppJsp" />
-          <module name="Root" />
         </modules>
       </facet-type>
       <facet-type id="web">
         <modules>
-          <module name="Root" />
-          <module name="TestAppJsp">
-            <files>
-              <file url="file://$PROJECT_DIR$/testApp/jsp/web/WEB-INF/web.xml" />
-            </files>
-          </module>
-          <module name="TestAppFacelets" />
           <module name="LiveDemoFacelets">
             <files>
               <file url="file://$PROJECT_DIR$/liveDemo/facelets/WEB-INF/web.xml" />
@@ -544,14 +510,13 @@
               <file url="file://$PROJECT_DIR$/liveDemo/jsp/WEB-INF/web.xml" />
             </files>
           </module>
-        </modules>
-      </facet-type>
-      <facet-type id="ejb">
-        <modules>
-          <module name="TestAppCore" />
-          <module name="TestAppJsp" />
           <module name="Root" />
           <module name="TestAppFacelets" />
+          <module name="TestAppJsp">
+            <files>
+              <file url="file://$PROJECT_DIR$/testApp/jsp/web/WEB-INF/web.xml" />
+            </files>
+          </module>
         </modules>
       </facet-type>
     </autodetection-disabled>
@@ -806,12 +771,13 @@
     <option name="PROJECT_PROFILE" value="Project Default" />
     <option name="USE_PROJECT_PROFILE" value="true" />
     <version value="1.0" />
-    <list size="5">
+    <list size="6">
       <item index="0" class="java.lang.String" itemvalue="SERVER PROBLEM" />
-      <item index="1" class="java.lang.String" itemvalue="INFO" />
-      <item index="2" class="java.lang.String" itemvalue="TYPO" />
-      <item index="3" class="java.lang.String" itemvalue="WARNING" />
-      <item index="4" class="java.lang.String" itemvalue="ERROR" />
+      <item index="1" class="java.lang.String" itemvalue="WEAK WARNING" />
+      <item index="2" class="java.lang.String" itemvalue="INFO" />
+      <item index="3" class="java.lang.String" itemvalue="TYPO" />
+      <item index="4" class="java.lang.String" itemvalue="WARNING" />
+      <item index="5" class="java.lang.String" itemvalue="ERROR" />
     </list>
   </component>
   <component name="JavadocGenerationManager">
