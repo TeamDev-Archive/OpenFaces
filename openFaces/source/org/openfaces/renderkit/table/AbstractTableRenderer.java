@@ -240,6 +240,8 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
 
         button.getAttributes().put(CaptionButtonRenderer.ATTR_DEFAULT_STYLE_CLASS, "o_columnMenuInvoker");
 
+        Resources.renderJSLinkIfNeeded(context, Resources.getUtilJsURL(context));
+        Resources.renderJSLinkIfNeeded(context, Resources.getInternalURL(context, "captionButton.js"));
         ResponseWriter writer = context.getResponseWriter();
         // mock table/tr enclosing tags must be rendered for IE8 to process the button's td tag properly 
         writer.startElement("table", table);
