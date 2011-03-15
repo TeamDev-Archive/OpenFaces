@@ -49,10 +49,18 @@ public class AjaxRequest {
         return instance;
     }
 
+    /**
+     * Makes a component with the specified id to be reloaded during this Ajax request.
+     * @param clientId client id of a component which should be reloaded
+     */
     public void addReloadedComponent(String clientId) {
         reloadedComponentIds.add(clientId);
     }
 
+    /**
+     * Makes the specified component to be reloaded during this Ajax request.
+     * @param component a component which should be reloaded
+     */
     public void addReloadedComponent(UIComponent component) {
         String componentId = component.getClientId(context);
         reloadedComponentIds.add(componentId);
