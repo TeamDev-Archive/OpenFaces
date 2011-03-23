@@ -46,7 +46,7 @@ public abstract class TreeStructure extends UIComponentBase {
 
     public abstract int getNodeCount();
 
-    public abstract void setNodeIndex(int curentNodeIndex);
+    public abstract void setNodeIndex(int currentNodeIndex);
 
     public abstract int getNodeIndex();
 
