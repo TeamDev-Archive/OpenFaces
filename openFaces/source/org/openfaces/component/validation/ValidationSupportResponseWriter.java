@@ -387,23 +387,23 @@ public class ValidationSupportResponseWriter extends ResponseWriterWrapper {
         if (validationScripts == null) {
             validationScripts = new ArrayList<String>();
         }
-        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-        List<String> renderedJsLinks = (List<String>) requestMap.get(Resources.RENDERED_JS_LINKS);
+        Map<Object, Object> contextAttributes = context.getAttributes();
+        List<String> renderedJsLinks = (List<String>) contextAttributes.get(Resources.renderedJsLinksKey(context));
         if (renderedJsLinks != null) {
             for (String js : renderedJsLinks) {
                 if (!validationScripts.contains(js))
                     validationScripts.add(js);
             }
         }
-        requestMap.put(Resources.RENDERED_JS_LINKS, validationScripts);
-        requestMap.put(Resources.POSTPONE_JS_LINK_RENDERING, Boolean.TRUE);
+        contextAttributes.put(Resources.renderedJsLinksKey(context), validationScripts);
+        contextAttributes.put(Resources.POSTPONE_JS_LINK_RENDERING, Boolean.TRUE);
         return renderedJsLinks;
     }
 
     private void restoreRenderedJsLinks(FacesContext context, List<String> prevRenderedJsLinks) {
-        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-        requestMap.put(Resources.RENDERED_JS_LINKS, prevRenderedJsLinks);
-        requestMap.put(Resources.POSTPONE_JS_LINK_RENDERING, Boolean.FALSE);
+        Map<Object, Object> contextAttributes = context.getAttributes();
+        contextAttributes.put(Resources.renderedJsLinksKey(context), prevRenderedJsLinks);
+        contextAttributes.put(Resources.POSTPONE_JS_LINK_RENDERING, Boolean.FALSE);
     }
 
     private void putNewJSLinksInRenderedJsLinks() throws IOException {

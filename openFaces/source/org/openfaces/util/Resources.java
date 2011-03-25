@@ -40,7 +40,7 @@ import java.util.Map;
  */
 public class Resources {
     public static final String HEADER_JS_LIBRARIES = "OF:js_file_included";
-    public static final String RENDERED_JS_LINKS = "org.openfaces.util.Rendering.renderedJsLinks";
+    private static final String RENDERED_JS_LINKS = "org.openfaces.util.Rendering.renderedJsLinks";
     public static final String POSTPONE_JS_LINK_RENDERING = "org.openfaces.util.Resources.postponeJsLinkRendering";
 
     private static final String OPENFACES_VERSION_TXT = "/META-INF/openFacesVersion.txt";
@@ -282,11 +282,11 @@ public class Resources {
      * @param jsFileUrl Url for the javascript file
      */
     public static void registerJavascriptLibrary(FacesContext context, String jsFileUrl) {
-        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-        List<String> libraries = getRegisteredJsLibraries(requestMap);
+        Map<Object, Object> contextAttributes = context.getAttributes();
+        List<String> libraries = getRegisteredJsLibraries(contextAttributes);
         if (libraries == null) {
             libraries = new ArrayList<String>();
-            requestMap.put(HEADER_JS_LIBRARIES, libraries);
+            contextAttributes.put(HEADER_JS_LIBRARIES, libraries);
         }
 
         if (libraries.contains(jsFileUrl)) return;
@@ -296,12 +296,12 @@ public class Resources {
 
     public static List<String> getRegisteredJsLibraries() {
         FacesContext context = FacesContext.getCurrentInstance();
-        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+        Map<Object, Object> requestMap = context.getAttributes();
         return getRegisteredJsLibraries(requestMap);
     }
 
-    public static List<String> getRegisteredJsLibraries(Map<String, Object> requestMap) {
-        return (List<String>) requestMap.get(HEADER_JS_LIBRARIES);
+    public static List<String> getRegisteredJsLibraries(Map<Object, Object> contextMap) {
+        return (List<String>) contextMap.get(HEADER_JS_LIBRARIES);
     }
 
 
@@ -320,7 +320,7 @@ public class Resources {
         }
         renderedJsLinks.add(jsFile);
 
-        Boolean postponeJsLinkRendering = (Boolean) context.getExternalContext().getRequestMap().get(POSTPONE_JS_LINK_RENDERING);
+        Boolean postponeJsLinkRendering = (Boolean) context.getAttributes().get(POSTPONE_JS_LINK_RENDERING);
         if (postponeJsLinkRendering != null && postponeJsLinkRendering)
             return;
         boolean fullResourceString = jsFile.startsWith("/") || jsFile.contains("://");
@@ -358,11 +358,12 @@ public class Resources {
      * @return list of already rendered javascript links
      */
     public static List<String> getRenderedJsLinks(FacesContext context) {
-        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-        List<String> renderedJsLinks = (List<String>) requestMap.get(RENDERED_JS_LINKS);
+        Map<Object, Object> contextAttributes = context.getAttributes();
+        Object key = renderedJsLinksKey(context);
+        List<String> renderedJsLinks = (List<String>) contextAttributes.get(key);
         if (renderedJsLinks == null) {
             renderedJsLinks = new ArrayList<String>();
-            requestMap.put(RENDERED_JS_LINKS, renderedJsLinks);
+            contextAttributes.put(key, renderedJsLinks);
         }
         return renderedJsLinks;
     }
@@ -376,11 +377,24 @@ public class Resources {
         }
     }
 
+    public static Object viewBasedKey(FacesContext context, String key) {
+        List tuple = new ArrayList(2);
+        tuple.add(context.getViewRoot());
+        tuple.add(key);
+        return tuple;
+    }
+
+    // a different view can be created on the rendering phase, and links should be recalculated in that case
+    // e.g. reproducible with Spring WebFlow on the app here: https://groups.google.com/a/teamdev.com/group/openfaces-forum/browse_thread/thread/a72ad22c8c47a80b/5ea4af5d4bc068ec#5ea4af5d4bc068ec
+    public static Object renderedJsLinksKey(FacesContext context) {
+        return viewBasedKey(context, RENDERED_JS_LINKS);
+    }
+
     public static void includeJQuery(FacesContext context) throws IOException {
         String jQueryIncludedKey = "org.openfaces.util.Rendering.JQUERY_INCLUDED";
-        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-        if (requestMap.containsKey(jQueryIncludedKey)) return;
-        requestMap.put(jQueryIncludedKey, true);
+        Map<Object, Object> contextAttributes = context.getAttributes();
+        if (contextAttributes.containsKey(jQueryIncludedKey)) return;
+        contextAttributes.put(jQueryIncludedKey, true);
         String jQueryMode = Rendering.getContextParam(context, PARAM_ORG_OPENFACES_JQUERY, "embedded");
         if (jQueryMode.equals("none")) {
             // the org.openfaces.jQuery=none parameter might be required to avoid conflicts when jQuery.js is

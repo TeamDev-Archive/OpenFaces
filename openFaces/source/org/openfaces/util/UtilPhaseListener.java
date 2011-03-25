@@ -80,13 +80,8 @@ public class UtilPhaseListener extends PhaseListenerBase {
     }
 
     private static void encodeAjaxProgressMessage(FacesContext context) {
-        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-
-        /*if (!requestMap.containsKey(DefaultProgressMessageRenderer.PROGRESS_MESSAGE))*/
-        {
-            DefaultProgressMessage defaultProgressMessage = new DefaultProgressMessage();
-            renderProgressMessage(context, defaultProgressMessage);
-        }
+        DefaultProgressMessage defaultProgressMessage = new DefaultProgressMessage();
+        renderProgressMessage(context, defaultProgressMessage);
     }
 
     private static void renderProgressMessage(FacesContext context, DefaultProgressMessage defaultProgressMessage) {

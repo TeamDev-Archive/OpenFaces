@@ -34,7 +34,6 @@ public class DefaultProgressMessageRenderer extends AbstractSettingsRenderer {
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         DefaultProgressMessage dpm = (DefaultProgressMessage) component;
 
-        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
         AjaxUtil.renderAjaxSupport(context);
 
         JSONObject backgroundLayerParams = null;
