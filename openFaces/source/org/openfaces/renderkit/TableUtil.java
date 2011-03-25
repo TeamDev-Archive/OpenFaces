@@ -255,6 +255,7 @@ public class TableUtil {
         private ValueExpression valueExpression;
         private Class valueType;
         private Converter valueConverter;
+        private Object serializedConverter;
 
         public ColumnExpressionData() {
         }
@@ -263,20 +264,20 @@ public class TableUtil {
             this.valueExpression = valueExpression;
             this.valueType = valueType;
             this.valueConverter = valueConverter;
+            FacesContext context = FacesContext.getCurrentInstance();
+            this.serializedConverter = UIComponentBase.saveAttachedState(context, valueConverter);
         }
 
         public void writeExternal(ObjectOutput out) throws IOException {
             ValueBindings.writeValueExpression(out, valueExpression);
             out.writeObject(valueType);
-            FacesContext context = FacesContext.getCurrentInstance();
-            out.writeObject(UIComponentBase.saveAttachedState(context, valueConverter));
+            out.writeObject(serializedConverter);
         }
 
         public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
             valueExpression = ValueBindings.readValueExpression(in);
             valueType = (Class) in.readObject();
-            FacesContext context = FacesContext.getCurrentInstance();
-            valueConverter = (Converter) UIComponentBase.restoreAttachedState(context, in.readObject());
+            serializedConverter = in.readObject();
         }
 
         public ValueExpression getValueExpression() {
@@ -288,6 +289,10 @@ public class TableUtil {
         }
 
         public Converter getValueConverter() {
+            if (valueConverter == null && serializedConverter != null) {
+                FacesContext context = FacesContext.getCurrentInstance();
+                valueConverter = (Converter) UIComponentBase.restoreAttachedState(context, serializedConverter);
+            }
             return valueConverter;
         }
     }
