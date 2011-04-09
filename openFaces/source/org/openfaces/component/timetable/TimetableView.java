@@ -106,6 +106,9 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
     }
 
     public MethodExpression getTimetableChangeListener() {
+        Timetable timetable = getTimetable();
+        if (timetable != null)
+            return timetable.getTimetableChangeListener();
         return timetableChangeListener;
     }
 

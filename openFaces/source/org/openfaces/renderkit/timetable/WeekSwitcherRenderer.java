@@ -37,6 +37,7 @@ import java.util.TimeZone;
  * @author Roman Gorodischer
  */
 public class WeekSwitcherRenderer extends RendererBase {
+    private static final String DEFAULT_DATE_FORMAT = "long";
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
@@ -51,15 +52,12 @@ public class WeekSwitcherRenderer extends RendererBase {
         TimetableView timetableView = weekSwitcher.getTimetableView();
         TimeZone timeZone = weekSwitcher.getTimeZone();
 
-        String splitter = weekSwitcher.getSplitter();
-        if (splitter == null) {
-            splitter = " - ";
-        }
+        String splitter = " \u2013 ";
 
         Boolean enabled = weekSwitcher.isEnabled();
 
         SimpleDateFormat dateFormat = CalendarUtil.getSimpleDateFormat(weekSwitcher.getDateFormat(),
-                WeekSwitcher.DEFAULT_DATE_FORMAT, weekSwitcher.getPattern(), null, locale, timeZone);
+                DEFAULT_DATE_FORMAT, weekSwitcher.getPattern(), null, locale, timeZone);
         String pattern = dateFormat.toPattern();
         boolean renderText = pattern.length() != 0;
 

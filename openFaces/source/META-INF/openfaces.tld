@@ -28215,16 +28215,6 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
 
-    <attribute>
-      <description>A splitter string between the first day of week and the last day of week.</description>
-      <name>splitter</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @el true -->
-    </attribute>
-
   </tag>
 
 

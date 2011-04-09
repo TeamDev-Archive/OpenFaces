@@ -33,7 +33,6 @@ public class WeekSwitcherTag extends AbstractSwitcherTag {
     @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
-        setStringProperty(component, "splitter");
     }
 
 }

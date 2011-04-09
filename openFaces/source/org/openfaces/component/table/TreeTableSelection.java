@@ -154,6 +154,7 @@ public abstract class TreeTableSelection extends AbstractTableSelection {
                 TreePath keyPath = treeTable.getNodeKeyPath(i);
                 outputPaths[0] = nodePath;
                 outputPaths[1] = keyPath;
+                return;
             }
         }
         TreeStructure treeStructure = treeTable.getTreeStructure();

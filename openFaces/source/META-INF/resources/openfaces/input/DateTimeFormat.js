@@ -200,6 +200,34 @@ O$.extend(O$.DateTimeFormat.prototype, {
   },
 
   format: function(dDate, format) {
+    var portions = [];
+    var currentPortion = "";
+    for(var charIndex = 0; charIndex < format.length; charIndex++) {
+      var ch = format.charAt(charIndex);
+      if (ch == "\'") {
+        portions.push(currentPortion);
+        currentPortion = "";
+      } else {
+        currentPortion += ch;
+      }
+    }
+    portions.push(currentPortion);
+
+    var result = "";
+    var formattedPortion = true;
+    for (var i = 0; i < portions.length; i++, formattedPortion = !formattedPortion) {
+      var portion = portions[i];
+      if (formattedPortion) {
+        var formattedText = this.format2(dDate, portion);
+        result += formattedText;
+      } else {
+        result += portion;
+      }
+    }
+    return result;
+  },
+
+  format2: function(dDate, format) {
     if (!dDate)
       return "";
     var day = dDate.getDay();
