@@ -23,10 +23,6 @@ public class WeekSwitcher extends AbstractSwitcher<WeekTable> {
     public static final String COMPONENT_TYPE = "org.openfaces.WeekSwitcher";
     public static final String COMPONENT_FAMILY = "org.openfaces.WeekSwitcher";
 
-    public static final String DEFAULT_DATE_FORMAT = "long";
-
-    private String splitter;
-
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
@@ -34,14 +30,6 @@ public class WeekSwitcher extends AbstractSwitcher<WeekTable> {
     @Override
     protected String getTimetableNotFoundMsg() {
         return "WeekSwitcher's \"for\" attribute must refer to a WeekTable component.";
-    }
-
-    public String getSplitter() {
-        return splitter;
-    }
-
-    public void setSplitter(String splitter) {
-        this.splitter = splitter;
     }
 
     public Date getFirstDayOfTheWeek () {
@@ -64,7 +52,6 @@ public class WeekSwitcher extends AbstractSwitcher<WeekTable> {
     public Object saveState(FacesContext context) {
         return new Object[]{
                 super.saveState(context),
-                splitter
         };
     }
 
@@ -73,7 +60,6 @@ public class WeekSwitcher extends AbstractSwitcher<WeekTable> {
         Object[] state = (Object[]) stateObj;
         int i = 0;
         super.restoreState(context, state[i++]);
-        splitter = (String) state[i++];
     }
 
 }
