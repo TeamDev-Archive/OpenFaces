@@ -892,7 +892,7 @@ if (!window.O$) {
   };
 
   O$.isMozillaFF2 = function() {
-    return O$.isMozillaFF() && !O$.userAgentContains("Firefox/3.");
+    return O$.isMozillaFF() && !O$.userAgentContains("Firefox/3.") && !O$.userAgentContains("Firefox/4.");
   };
 
   O$.isMozillaFF3 = function() {
