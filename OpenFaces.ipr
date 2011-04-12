@@ -643,7 +643,9 @@
         <inspection_tool class="MissortedModifiers" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="m_requireAnnotationsFirst" value="true" />
         </inspection_tool>
-        <inspection_tool class="MultipleDeclaration" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="MultipleDeclaration" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="ignoreForLoopDeclarations" value="true" />
+        </inspection_tool>
         <inspection_tool class="NestedSwitchStatement" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="NestedTryStatement" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="NestingDepth" enabled="true" level="WARNING" enabled_by_default="true">
