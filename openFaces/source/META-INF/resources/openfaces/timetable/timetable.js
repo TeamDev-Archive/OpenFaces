@@ -202,11 +202,15 @@ O$.Timetable._initEventEditorDialog = function(dayTableId, dialogId, createEvent
         dayTable.deleteEvent(event);
     };
 
+    var previousHide = this.onhide;
     this.onhide = function() {
       if (!this._okProcessed && mode == "create")
         dayTable.cancelEventCreation(event);
       if (dialog._textareaHeightUpdateInterval)
         clearInterval(dialog._textareaHeightUpdateInterval);
+      if (previousHide) {
+        previousHide.apply(this);
+      }
     };
 
     if (event.parts){
