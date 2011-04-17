@@ -1,3 +1,14 @@
+/*
+ * OpenFaces - JSF Component Library 2.0
+ * Copyright (C) 2007-2011, TeamDev Ltd.
+ * licensing@openfaces.org
+ * Unless agreed in writing the contents of this file are subject to
+ * the GNU Lesser General Public License Version 2.1 (the "LGPL" License).
+ * This library is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * Please visit http://openfaces.org/licensing/ for more details.
+ */
 package org.openfaces.renderkit.timetable;
 
 import org.openfaces.component.timetable.AbstractSwitcher;
@@ -23,11 +34,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Dallas
- * Date: 4/17/11
- * Time: 7:00 PM
- * To change this template use File | Settings | File Templates.
+ * @author Dmitry Pikhulya
  */
 public abstract class AbstractSwitcherRenderer extends RendererBase {
     private static final String DEFAULT_DATE_FORMAT = "long";
