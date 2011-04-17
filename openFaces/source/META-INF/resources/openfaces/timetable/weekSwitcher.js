@@ -13,7 +13,7 @@
 O$.WeekSwitcher = {
   _init: function(switcherId,
                   timeTableId,
-                  firstDay,
+                  day,
                   pattern,
                   locale,
                   stylingParams,
@@ -21,7 +21,7 @@ O$.WeekSwitcher = {
                   splitter) {
     var dtf = O$.getDateTimeFormatObject(locale);
     var switcher = O$.initComponent(switcherId, {rollover: stylingParams.rolloverClass}, {
-      _firstDay: dtf.parse(firstDay, "dd/MM/yyyy"),
+      _day: dtf.parse(day, "dd/MM/yyyy"),
       _timeTableId: timeTableId,
       _pattern: pattern,
       _locale: locale,
@@ -76,31 +76,22 @@ O$.WeekSwitcher = {
       return switcher._timeTable;
     };
 
-    switcher.getFirstDay = function() {
-      return switcher._firstDay;
+    switcher.getDay = function() {
+      return switcher._day;
     };
 
-    switcher.setFirstDay = function(firstDay) {
-      if (O$._datesEqual(switcher._firstDay, firstDay))
+    switcher.setDay = function(day) {
+      if (O$._datesEqual(switcher._day, day))
         return;
-      switcher._firstDay = firstDay;
+      switcher._day = day;
 
       if (switcher._pattern) {
         var dtf = O$.getDateTimeFormatObject(switcher._locale);
-        var lastDay = O$.incDay(firstDay, 6);
+        var lastDay = O$.incDay(day, 6);
 
-        var text = dtf.format(firstDay, switcher._pattern)
+        switcher._text.innerHTML = dtf.format(day, switcher._pattern)
             .concat(switcher._splitter)
             .concat(dtf.format(lastDay, switcher._pattern));
-        if (!isChrome()) {
-          switcher._text.innerHTML = text;
-        } else {
-          var cloned = switcher._text.cloneNode();
-          var origin = switcher._text;
-          cloned.innerHTML = text;
-          switcher._text.parentNode.replaceChild(cloned, origin);
-          switcher._text = cloned;
-        }
       }
 
       var timeTable = switcher._getTimeTable();
@@ -108,21 +99,17 @@ O$.WeekSwitcher = {
         return;
       }
 
-      switcher._timeTable.setDay(firstDay)
-    };
-
-    isChrome = function() {
-      return Boolean(window.chrome);
+      switcher._timeTable.setDay(day);
     };
 
     switcher.previousPeriod = function() {
-      var prevDay = O$.incDay(switcher._firstDay, -7);
-      switcher.setFirstDay(prevDay);
+      var prevDay = O$.incDay(switcher._day, -7);
+      switcher.setDay(prevDay);
     };
 
     switcher.nextPeriod = function() {
-      var nextDay = O$.incDay(switcher._firstDay, 7);
-      switcher.setFirstDay(nextDay);
+      var nextDay = O$.incDay(switcher._day, 7);
+      switcher.setDay(nextDay);
     };
 
     if (enabled) {
@@ -146,12 +133,12 @@ O$.WeekSwitcher = {
           return;
         }
 
-        var _onWeekChange = timeTable._onWeekChange;
-        timeTable._onWeekChange = function(firstDay) {
-          if (_onWeekChange) {
-            _onWeekChange(firstDay);
+        var _onPeriodChange = timeTable._onPeriodChange;
+        timeTable._onPeriodChange = function(day) {
+          if (_onPeriodChange) {
+            _onPeriodChange(day);
           }
-          switcher.setFirstDay(firstDay);
+          switcher.setDay(day);
         };
       });
 

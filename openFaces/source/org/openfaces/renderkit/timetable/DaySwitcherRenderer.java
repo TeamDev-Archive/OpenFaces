@@ -80,10 +80,6 @@ public class DaySwitcherRenderer extends AbstractSwitcherRenderer {
             writer.endElement("p");
         }
         if (renderText) {
-            /*if (renderUpperText){
-                writer.startElement("br", switcher);
-                writer.endElement("br");
-            } */
             //text
             writer.startElement("p", switcher);
             writer.writeAttribute("id", clientId + "::text", null);

@@ -86,7 +86,6 @@ O$.DaySwitcher = {
       return switcher._day;
     };
 
-
     switcher.setDay = function(day) {
       if (O$._datesEqual(switcher._day, day))
         return;
@@ -146,10 +145,10 @@ O$.DaySwitcher = {
           return;
         }
 
-        var _onDayChange = timeTable._onDayChange;
-        timeTable._onDayChange = function(day) {
-          if (_onDayChange) {
-            _onDayChange(day);
+        var _onPeriodChange = timeTable._onPeriodChange;
+        timeTable._onPeriodChange = function(day) {
+          if (_onPeriodChange) {
+            _onPeriodChange(day);
           }
           switcher.setDay(day);
         };

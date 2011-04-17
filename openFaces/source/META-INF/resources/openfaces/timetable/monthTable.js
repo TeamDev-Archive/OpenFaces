@@ -411,7 +411,7 @@ O$.MonthTable._init = function(componentId,
 
   monthTable._updateStartEndTime = function() {
 
-    this._startTime = O$.MonthTable.getFirstDay(this._day, firstDayOfWeek);
+    this._startTime = O$.MonthTable.getDay(this._day, firstDayOfWeek);
     this._endTime = O$.MonthTable.getFirstDayOut(this._day, firstDayOfWeek);
 
     O$.MonthTable.updateCellDays(this);
@@ -540,7 +540,7 @@ O$.MonthTable._init = function(componentId,
   });
 };
 
-O$.MonthTable.getFirstDay = function(day, firstDayOfWeek) {
+O$.MonthTable.getDay = function(day, firstDayOfWeek) {
   var firstDayOfMonth = O$.cloneDate(day);
   firstDayOfMonth.setDate(1);
 
