@@ -1267,13 +1267,13 @@
     </library>
     <library name="JSF Implementation - Mojarra 2.0">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/mojarra/jsf-api-2.0.4.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/mojarra/jsf-impl-2.0.4.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/mojarra/jsf-impl-2.1.1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/mojarra/jsf-api-2.1.1.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES>
-        <root url="jar://$PROJECT_DIR$/libsrc/mojarra-2.0.3-FCS-source.zip!/mojarra-2.0.3-FCS-source/jsf-ri/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/mojarra-2.0.3-FCS-source.zip!/mojarra-2.0.3-FCS-source/jsf-api/src/main/java" />
+        <root url="jar://$PROJECT_DIR$/libsrc/mojarra-2.1.1-FCS-source.zip!/mojarra-2.1.1-FCS-source/jsf-ri/src/main/java" />
+        <root url="jar://$PROJECT_DIR$/libsrc/mojarra-2.1.1-FCS-source.zip!/mojarra-2.1.1-FCS-source/jsf-api/src/main/java" />
       </SOURCES>
     </library>
     <library name="JSF Implementation - Mojarra 2.1">
