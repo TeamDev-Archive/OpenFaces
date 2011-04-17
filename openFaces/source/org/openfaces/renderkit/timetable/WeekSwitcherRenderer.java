@@ -9,7 +9,6 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-
 package org.openfaces.renderkit.timetable;
 
 import org.openfaces.component.timetable.AbstractSwitcher;

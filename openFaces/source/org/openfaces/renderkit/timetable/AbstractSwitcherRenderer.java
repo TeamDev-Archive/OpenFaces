@@ -9,7 +9,6 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-
 package org.openfaces.renderkit.timetable;
 
 import org.openfaces.component.timetable.AbstractSwitcher;
@@ -35,11 +34,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Dallas
- * Date: 4/17/11
- * Time: 7:00 PM
- * To change this template use File | Settings | File Templates.
+ * @author Dmitry Pikhulya
  */
 public abstract class AbstractSwitcherRenderer extends RendererBase {
     private static final String DEFAULT_DATE_FORMAT = "long";
