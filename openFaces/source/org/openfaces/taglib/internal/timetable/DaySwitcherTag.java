@@ -38,7 +38,5 @@ public class DaySwitcherTag extends AbstractSwitcherTag {
 
         setStringProperty(component, "upperTextStyle"); //upper text
         setStringProperty(component, "upperTextClass");
-        setStringProperty(component, "upperTextRolloverStyle");
-        setStringProperty(component, "upperTextRolloverClass");
     }
 }

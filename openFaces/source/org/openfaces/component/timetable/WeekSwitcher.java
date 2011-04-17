@@ -32,22 +32,6 @@ public class WeekSwitcher extends AbstractSwitcher<WeekTable> {
         return "WeekSwitcher's \"for\" attribute must refer to a WeekTable component.";
     }
 
-    public Date getFirstDayOfTheWeek () {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(getTimetableView().getDay());
-        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-        calendar.add(Calendar.DATE, 1 - dayOfWeek);
-        return calendar.getTime();
-    }
-
-    public Date getLastDayOfTheWeek () {
-        final Calendar calendar = Calendar.getInstance();
-        calendar.setTime(getTimetableView().getDay());
-        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-        calendar.add(Calendar.DATE, 7 - dayOfWeek);
-        return calendar.getTime ();
-    }    
-
     @Override
     public Object saveState(FacesContext context) {
         return new Object[]{

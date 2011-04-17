@@ -12,8 +12,8 @@
 
 package org.openfaces.renderkit.timetable;
 
+import org.openfaces.component.timetable.AbstractSwitcher;
 import org.openfaces.component.timetable.TimetableView;
-import org.openfaces.component.timetable.WeekSwitcher;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.CalendarUtil;
@@ -30,6 +30,11 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -44,80 +49,62 @@ public class WeekSwitcherRenderer extends RendererBase {
         if (!component.isRendered())
             return;
 
-        WeekSwitcher weekSwitcher = (WeekSwitcher) component;
-            
-        Locale locale = weekSwitcher.getLocale();
+        AbstractSwitcher switcher = (AbstractSwitcher) component;
+
+        Locale locale = switcher.getLocale();
         Rendering.registerDateTimeFormatObject(locale);
 
-        TimetableView timetableView = weekSwitcher.getTimetableView();
-        TimeZone timeZone = weekSwitcher.getTimeZone();
+        TimetableView timetableView = switcher.getTimetableView();
+        TimeZone timeZone = switcher.getTimeZone();
 
-        String splitter = " \u2013 ";
-
-        Boolean enabled = weekSwitcher.isEnabled();
-
-        SimpleDateFormat dateFormat = CalendarUtil.getSimpleDateFormat(weekSwitcher.getDateFormat(),
-                DEFAULT_DATE_FORMAT, weekSwitcher.getPattern(), null, locale, timeZone);
+        SimpleDateFormat dateFormat = CalendarUtil.getSimpleDateFormat(switcher.getDateFormat(),
+                DEFAULT_DATE_FORMAT, switcher.getPattern(), null, locale, timeZone);
         String pattern = dateFormat.toPattern();
-        boolean renderText = pattern.length() != 0;
 
-        if (!renderText) {
-            throw new FacesException("WeekSwitcher's pattern is empty.");
-        }
-
-        String clientId = weekSwitcher.getClientId(context);
+        String clientId = switcher.getClientId(context);
 
         ResponseWriter writer = context.getResponseWriter();
-        writer.startElement("table", weekSwitcher);
+        writer.startElement("table", switcher);
 
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("cellspacing", "0", null);
         writer.writeAttribute("cellpadding", "0", null);
         writer.writeAttribute("border", "0", null);
         String styleClass = Styles.getCSSClass(context,
-                weekSwitcher, weekSwitcher.getStyle(), "o_weekSwitcher", weekSwitcher.getStyleClass());
+                switcher, switcher.getStyle(), "o_timeSwitcher", switcher.getStyleClass());
         writer.writeAttribute("class", styleClass, null);
-        writer.startElement("tbody", weekSwitcher);
-        writer.startElement("tr", weekSwitcher);
+        writer.startElement("tbody", switcher);
+        writer.startElement("tr", switcher);
 
+        Boolean enabled = switcher.isEnabled();
         //previous button
         if (enabled) {
-            writer.startElement("td", weekSwitcher);
+            writer.startElement("td", switcher);
             writer.writeAttribute("id", clientId + "::previous_button", null);
-            writer.writeAttribute("class", Styles.getCSSClass(context, weekSwitcher,
-                    weekSwitcher.getPreviousButtonStyle(), "o_weekSwitcher_previous_button",
-                    weekSwitcher.getPreviousButtonClass()), null);
-            String previousButtonImageUrl = Resources.getURL(context, weekSwitcher.getPreviousButtonImageUrl(), null,
+            writer.writeAttribute("class", Styles.getCSSClass(context, switcher,
+                    switcher.getPreviousButtonStyle(), "o_timeSwitcher_previous_button",
+                    switcher.getPreviousButtonClass()), null);
+            String previousButtonImageUrl = Resources.getURL(context, switcher.getPreviousButtonImageUrl(), null,
                     "timetable/previousButton.gif");
-            writer.startElement("img", weekSwitcher);
+            writer.startElement("img", switcher);
             writer.writeAttribute("src", previousButtonImageUrl, null);
             writer.endElement("img");
             writer.endElement("td");
         }
 
-        writer.startElement("td", weekSwitcher);
-
-        writer.startElement("p", weekSwitcher);
-        writer.writeAttribute("id", clientId + "::text", null);
-        String textClass = Styles.getCSSClass(context,
-                weekSwitcher, weekSwitcher.getTextStyle(), "o_weekSwitcher_text", weekSwitcher.getTextClass());
-        writer.writeAttribute("class", textClass, null);
-
-        writer.write(dateFormat.format(weekSwitcher.getFirstDayOfTheWeek()) + splitter
-                  + dateFormat.format(weekSwitcher.getLastDayOfTheWeek()));
-        writer.endElement("p");
-
+        writer.startElement("td", switcher);
+        renderText(context, switcher, timetableView, dateFormat);
         writer.endElement("td");
 
         //next button
         if (enabled) {
-            writer.startElement("td", weekSwitcher);
+            writer.startElement("td", switcher);
             writer.writeAttribute("id", clientId + "::next_button", null);
             writer.writeAttribute("class", Styles.getCSSClass(context,
-                    weekSwitcher, weekSwitcher.getNextButtonStyle(), "o_weekSwitcher_next_button", weekSwitcher.getNextButtonClass()), null);
-            String nextButtonImageUrl = Resources.getURL(context, weekSwitcher.getNextButtonImageUrl(), null,
+                    switcher, switcher.getNextButtonStyle(), "o_timeSwitcher_next_button", switcher.getNextButtonClass()), null);
+            String nextButtonImageUrl = Resources.getURL(context, switcher.getNextButtonImageUrl(), null,
                     "timetable/nextButton.gif");
-            writer.startElement("img", weekSwitcher);
+            writer.startElement("img", switcher);
             writer.writeAttribute("src", nextButtonImageUrl, null);
             writer.endElement("img");
             writer.endElement("td");
@@ -128,43 +115,109 @@ public class WeekSwitcherRenderer extends RendererBase {
         writer.endElement("tbody");
         writer.endElement("table");
 
-        JSONObject stylingParams = getStylingParamsObj(context, weekSwitcher);
-        Styles.renderStyleClasses(context, weekSwitcher);
+        JSONObject stylingParams = getStylingParamsObj(context, switcher);
+        Styles.renderStyleClasses(context, switcher);
 
-        ScriptBuilder script = new ScriptBuilder().initScript(context, weekSwitcher, "O$.WeekSwitcher._init",
-                timetableView.getClientId(context),
-                DataUtil.formatDateTimeForJs(weekSwitcher.getFirstDayOfTheWeek(), timeZone),
+        Object[] params = {
+                timetableView,
+                formatDayInitParam(timetableView, timeZone),
                 pattern,
                 locale,
                 stylingParams,
-                enabled,
-                splitter);
+                enabled
+        };
+
+        Object[] additionalParams = getAdditionalParams(context);
+
+        String switcherClassName = switcher.getClass().getName();
+        int i = switcherClassName.lastIndexOf(".");
+        switcherClassName = switcherClassName.substring(i + 1);
+
+        ScriptBuilder script = new ScriptBuilder().initScript(context, switcher, "O$." + switcherClassName + "._init",
+                concatenateArrays(params, additionalParams)
+        );
 
         Rendering.renderInitScript(context, script,
                 Resources.getUtilJsURL(context),
                 Resources.getJsonJsURL(context),
-                Resources.getInternalURL(context, "timetable/weekSwitcher.js"));
-
+                Resources.getInternalURL(context, "timetable/weekSwitcher.js"),
+                Resources.getInternalURL(context, "timetable/daySwitcher.js"));
     }
 
-    private JSONObject getStylingParamsObj(FacesContext context, WeekSwitcher weekSwitcher) {
+    private JSONObject getStylingParamsObj(FacesContext context, AbstractSwitcher switcher) {
         JSONObject stylingParams = new JSONObject();
-        Styles.addStyleJsonParam(context, weekSwitcher, stylingParams, "rolloverClass",
-                weekSwitcher.getRolloverStyle(), weekSwitcher.getRolloverClass());
-        Styles.addStyleJsonParam(context, weekSwitcher, stylingParams, "previousButtonRolloverClass",
-                weekSwitcher.getPreviousButtonRolloverStyle(), weekSwitcher.getPreviousButtonRolloverClass());
-        Styles.addStyleJsonParam(context, weekSwitcher, stylingParams, "previousButtonPressedClass",
-                weekSwitcher.getPreviousButtonPressedStyle(), weekSwitcher.getPreviousButtonPressedClass(), StyleGroup.rolloverStyleGroup());
-        Styles.addStyleJsonParam(context, weekSwitcher, stylingParams, "nextButtonRolloverClass",
-                weekSwitcher.getNextButtonRolloverStyle(), weekSwitcher.getNextButtonRolloverClass(), StyleGroup.rolloverStyleGroup());
-        Styles.addStyleJsonParam(context, weekSwitcher, stylingParams, "nextButtonPressedClass",
-                weekSwitcher.getNextButtonPressedStyle(), weekSwitcher.getNextButtonPressedClass(), StyleGroup.rolloverStyleGroup());
-        Styles.addStyleJsonParam(context, weekSwitcher, stylingParams, "labelRolloverClass",
-                weekSwitcher.getTextRolloverStyle(), weekSwitcher.getTextRolloverClass(), StyleGroup.rolloverStyleGroup());
+        Styles.addStyleJsonParam(context, switcher, stylingParams, "rolloverClass",
+                switcher.getRolloverStyle(), switcher.getRolloverClass());
+        Styles.addStyleJsonParam(context, switcher, stylingParams, "previousButtonRolloverClass",
+                switcher.getPreviousButtonRolloverStyle(), switcher.getPreviousButtonRolloverClass());
+        Styles.addStyleJsonParam(context, switcher, stylingParams, "previousButtonPressedClass",
+                switcher.getPreviousButtonPressedStyle(), switcher.getPreviousButtonPressedClass(), StyleGroup.rolloverStyleGroup());
+        Styles.addStyleJsonParam(context, switcher, stylingParams, "nextButtonRolloverClass",
+                switcher.getNextButtonRolloverStyle(), switcher.getNextButtonRolloverClass(), StyleGroup.rolloverStyleGroup());
+        Styles.addStyleJsonParam(context, switcher, stylingParams, "nextButtonPressedClass",
+                switcher.getNextButtonPressedStyle(), switcher.getNextButtonPressedClass(), StyleGroup.rolloverStyleGroup());
+        Styles.addStyleJsonParam(context, switcher, stylingParams, "labelRolloverClass",
+                switcher.getTextRolloverStyle(), switcher.getTextRolloverClass(), StyleGroup.rolloverStyleGroup());
 
         return stylingParams;
     }
 
+    private Object[] concatenateArrays(Object[] a1, Object[] a2) {
+        List<Object> list = new ArrayList<Object>(Arrays.asList(a1));
+        list.addAll(Arrays.asList(a2));
+        return list.toArray();
+    }
 
+
+    private Object[] getAdditionalParams(FacesContext context) {
+        return new Object[]{
+                DATE_RANGE_SEPARATOR
+        };
+    }
+
+    private String formatDayInitParam(TimetableView timetableView, TimeZone timeZone) {
+        return DataUtil.formatDateTimeForJs(getFirstDayOfTheWeek(timetableView), timeZone);
+    }
+
+
+    private void renderText(FacesContext context, AbstractSwitcher switcher, TimetableView timetableView, SimpleDateFormat dateFormat) throws IOException {
+        String pattern = dateFormat.toPattern();
+        boolean renderText = pattern.length() != 0;
+
+        if (!renderText) {
+            throw new FacesException("WeekSwitcher's pattern is empty.");
+        }
+
+
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = switcher.getClientId(context);
+        writer.startElement("p", switcher);
+        writer.writeAttribute("id", clientId + "::text", null);
+        String textClass = Styles.getCSSClass(context,
+                switcher, switcher.getTextStyle(), "o_timeSwitcher_text", switcher.getTextClass());
+        writer.writeAttribute("class", textClass, null);
+
+        writer.write(dateFormat.format(getFirstDayOfTheWeek(timetableView)) + DATE_RANGE_SEPARATOR
+                + dateFormat.format(getLastDayOfTheWeek(timetableView)));
+        writer.endElement("p");
+    }
+
+    private static final String DATE_RANGE_SEPARATOR = " \u2013 ";
+
+    private Date getFirstDayOfTheWeek(TimetableView timetableView) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(timetableView.getDay());
+        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+        calendar.add(Calendar.DATE, 1 - dayOfWeek);
+        return calendar.getTime();
+    }
+
+    private Date getLastDayOfTheWeek(TimetableView timetableView) {
+        final Calendar calendar = Calendar.getInstance();
+        calendar.setTime(timetableView.getDay());
+        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+        calendar.add(Calendar.DATE, 7 - dayOfWeek);
+        return calendar.getTime();
+    }
 
 }

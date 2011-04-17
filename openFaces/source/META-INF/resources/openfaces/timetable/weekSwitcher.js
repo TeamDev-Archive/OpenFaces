@@ -11,8 +11,8 @@
  */
 
 O$.WeekSwitcher = {
-  _init: function(weekSwitcherId,
-                  weekTableId,
+  _init: function(switcherId,
+                  timeTableId,
                   firstDay,
                   pattern,
                   locale,
@@ -20,30 +20,30 @@ O$.WeekSwitcher = {
                   enabled,
                   splitter) {
     var dtf = O$.getDateTimeFormatObject(locale);
-    var weekSwitcher = O$.initComponent(weekSwitcherId, {rollover: stylingParams.rolloverClass}, {
+    var switcher = O$.initComponent(switcherId, {rollover: stylingParams.rolloverClass}, {
       _firstDay: dtf.parse(firstDay, "dd/MM/yyyy"),
-      _weekTableId: weekTableId,
+      _timeTableId: timeTableId,
       _pattern: pattern,
       _locale: locale,
       _splitter: splitter
     });
 
-    var textId = weekSwitcherId + "::text";
-    weekSwitcher._text = O$(textId);
-    if (weekSwitcher._text) {
+    var textId = switcherId + "::text";
+    switcher._text = O$(textId);
+    if (switcher._text) {
       O$.initComponent(textId, {rollover: stylingParams.textRolloverClass});
     }
 
     if (enabled) {
-      var previousButtonId = weekSwitcherId + "::previous_button";
+      var previousButtonId = switcherId + "::previous_button";
       O$.initComponent(previousButtonId, {rollover: stylingParams.previousButtonRolloverClass});
-      weekSwitcher._previousButton = O$(previousButtonId);
-      var previousButton = weekSwitcher._previousButton;
+      switcher._previousButton = O$(previousButtonId);
+      var previousButton = switcher._previousButton;
 
-      var nextButtonId = weekSwitcherId + "::next_button";
+      var nextButtonId = switcherId + "::next_button";
       O$.initComponent(nextButtonId, {rollover: stylingParams.nextButtonRolloverClass});
-      weekSwitcher._nextButton = O$(nextButtonId);
-      var nextButton = weekSwitcher._nextButton;
+      switcher._nextButton = O$(nextButtonId);
+      var nextButton = switcher._nextButton;
 
       previousButton.onmouseup = function () {
         O$.setStyleMappings(previousButton, {
@@ -69,60 +69,60 @@ O$.WeekSwitcher = {
 
     }
 
-    weekSwitcher._getWeekTable = function() {
-      if (!weekSwitcher._weekTable) {
-        weekSwitcher._weekTable = O$(weekSwitcher._weekTableId);
+    switcher._getTimeTable = function() {
+      if (!switcher._timeTable) {
+        switcher._timeTable = O$(switcher._timeTableId);
       }
-      return weekSwitcher._weekTable;
+      return switcher._timeTable;
     };
 
-    weekSwitcher.getFirstDay = function() {
-      return weekSwitcher._firstDay;
+    switcher.getFirstDay = function() {
+      return switcher._firstDay;
     };
 
-    weekSwitcher.setFirstDay = function(firstDay) {
-      if (O$._datesEqual(weekSwitcher._firstDay, firstDay))
+    switcher.setFirstDay = function(firstDay) {
+      if (O$._datesEqual(switcher._firstDay, firstDay))
         return;
-      weekSwitcher._firstDay = firstDay;
+      switcher._firstDay = firstDay;
 
-      if (weekSwitcher._pattern) {
-        var dtf = O$.getDateTimeFormatObject(weekSwitcher._locale);
+      if (switcher._pattern) {
+        var dtf = O$.getDateTimeFormatObject(switcher._locale);
         var lastDay = O$.incDay(firstDay, 6);
 
-        var text = dtf.format(firstDay, weekSwitcher._pattern)
-            .concat(weekSwitcher._splitter)
-            .concat(dtf.format(lastDay, weekSwitcher._pattern));
+        var text = dtf.format(firstDay, switcher._pattern)
+            .concat(switcher._splitter)
+            .concat(dtf.format(lastDay, switcher._pattern));
         if (!isChrome()) {
-          weekSwitcher._text.innerHTML = text;
+          switcher._text.innerHTML = text;
         } else {
-          var cloned = weekSwitcher._text.cloneNode();
-          var origin = weekSwitcher._text;
+          var cloned = switcher._text.cloneNode();
+          var origin = switcher._text;
           cloned.innerHTML = text;
-          weekSwitcher._text.parentNode.replaceChild(cloned, origin);
-          weekSwitcher._text = cloned;
+          switcher._text.parentNode.replaceChild(cloned, origin);
+          switcher._text = cloned;
         }
       }
 
-      var weekTable = weekSwitcher._getWeekTable();
-      if (!weekTable) {
+      var timeTable = switcher._getTimeTable();
+      if (!timeTable) {
         return;
       }
 
-      weekSwitcher._weekTable.setDay(firstDay)
+      switcher._timeTable.setDay(firstDay)
     };
 
     isChrome = function() {
       return Boolean(window.chrome);
     };
 
-    weekSwitcher.previousWeek = function() {
-      var prevDay = O$.incDay(weekSwitcher._firstDay, -7);
-      weekSwitcher.setFirstDay(prevDay);
+    switcher.previousPeriod = function() {
+      var prevDay = O$.incDay(switcher._firstDay, -7);
+      switcher.setFirstDay(prevDay);
     };
 
-    weekSwitcher.nextWeek = function() {
-      var nextDay = O$.incDay(weekSwitcher._firstDay, 7);
-      weekSwitcher.setFirstDay(nextDay);
+    switcher.nextPeriod = function() {
+      var nextDay = O$.incDay(switcher._firstDay, 7);
+      switcher.setFirstDay(nextDay);
     };
 
     if (enabled) {
@@ -130,28 +130,28 @@ O$.WeekSwitcher = {
         O$.setStyleMappings(previousButton, {
           pressed: stylingParams.previousButtonPressedClass
         });
-        weekSwitcher.previousWeek();
+        switcher.previousPeriod();
       };
 
       nextButton.onmousedown = function () {
         O$.setStyleMappings(nextButton, {
           pressed: stylingParams.nextButtonPressedClass
         });
-        weekSwitcher.nextWeek();
+        switcher.nextPeriod();
       };
 
       O$.addLoadEvent(function () {
-        var weekTable = weekSwitcher._getWeekTable();
-        if (!weekTable) {
+        var timeTable = switcher._getTimeTable();
+        if (!timeTable) {
           return;
         }
 
-        var _onWeekChange = weekTable._onWeekChange;
-        weekTable._onWeekChange = function(firstDay) {
+        var _onWeekChange = timeTable._onWeekChange;
+        timeTable._onWeekChange = function(firstDay) {
           if (_onWeekChange) {
             _onWeekChange(firstDay);
           }
-          weekSwitcher.setFirstDay(firstDay);
+          switcher.setFirstDay(firstDay);
         };
       });
 

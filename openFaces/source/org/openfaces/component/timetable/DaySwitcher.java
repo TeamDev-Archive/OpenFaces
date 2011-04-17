@@ -22,16 +22,11 @@ public class DaySwitcher extends AbstractSwitcher<DayTable> {
     public static final String COMPONENT_TYPE = "org.openfaces.DaySwitcher";
     public static final String COMPONENT_FAMILY = "org.openfaces.DaySwitcher";
 
-    public static final String DEFAULT_DATE_FORMAT = "long";
-    public static final String DEFAULT_SUP_PATTERN = "EEEE";
-
     private String upperDateFormat;
     private String upperPattern;
 
     private String upperTextStyle;
     private String upperTextClass;
-    private String upperTextRolloverStyle;
-    private String upperTextRolloverClass;
 
     @Override
     protected String getTimetableNotFoundMsg() {
@@ -70,22 +65,6 @@ public class DaySwitcher extends AbstractSwitcher<DayTable> {
         this.upperTextClass = upperTextClass;
     }
 
-    public String getUpperTextRolloverStyle() {
-        return ValueBindings.get(this, "upperTextRolloverStyle", upperTextRolloverStyle);
-    }
-
-    public void setUpperTextRolloverStyle(String upperTextRolloverStyle) {
-        this.upperTextRolloverStyle = upperTextRolloverStyle;
-    }
-
-    public String getUpperTextRolloverClass() {
-        return ValueBindings.get(this, "upperTextRolloverClass", upperTextRolloverClass);
-    }
-
-    public void setUpperTextRolloverClass(String upperTextRolloverClass) {
-        this.upperTextRolloverClass = upperTextRolloverClass;
-    }
-
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
@@ -97,10 +76,7 @@ public class DaySwitcher extends AbstractSwitcher<DayTable> {
                 upperDateFormat,
                 upperPattern,
                 upperTextStyle,
-                upperTextClass,
-                upperTextRolloverStyle,
-                upperTextRolloverClass
-
+                upperTextClass
         };
     }
 
@@ -115,8 +91,6 @@ public class DaySwitcher extends AbstractSwitcher<DayTable> {
 
         upperTextStyle = (String) state[i++];
         upperTextClass = (String) state[i++];
-        upperTextRolloverStyle = (String) state[i++];
-        upperTextRolloverClass = (String) state[i++];
     }
 
 
