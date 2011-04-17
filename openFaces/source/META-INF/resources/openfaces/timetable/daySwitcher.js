@@ -11,45 +11,45 @@
  */
 
 O$.DaySwitcher = {
-  _init: function(daySwitcherId,
-                  dayTableId,
+  _init: function(switcherId,
+                  timeTableId,
                   day,
                   pattern,
-                  upperPattern,
                   locale,
                   stylingParams,
-                  enabled) {
+                  enabled,
+                  upperPattern) {
     var dtf = O$.getDateTimeFormatObject(locale);
-    var daySwitcher = O$.initComponent(daySwitcherId, {rollover: stylingParams.rolloverClass}, {
+    var switcher = O$.initComponent(switcherId, {rollover: stylingParams.rolloverClass}, {
       _day: dtf.parse(day, "dd/MM/yyyy"),
-      _dayTableId: dayTableId,
+      _timeTableId: timeTableId,
       _pattern: pattern,
       _upperPattern: upperPattern,
       _locale: locale
     });
 
-    var textId = daySwitcherId + "::text";
-    daySwitcher._text = O$(textId);
-    if (daySwitcher._text) {
+    var textId = switcherId + "::text";
+    switcher._text = O$(textId);
+    if (switcher._text) {
       O$.initComponent(textId, {rollover: stylingParams.textRolloverClass});
     }
 
-    var upperTextId = daySwitcherId + "::upper_text";
-    daySwitcher._upperText = O$(upperTextId);
-    if (daySwitcher._upperText) {
+    var upperTextId = switcherId + "::upper_text";
+    switcher._upperText = O$(upperTextId);
+    if (switcher._upperText) {
       O$.initComponent(upperTextId, {rollover: stylingParams.upperTextRolloverClass});
     }
 
     if (enabled) {
-      var previousButtonId = daySwitcherId + "::previous_button";
+      var previousButtonId = switcherId + "::previous_button";
       O$.initComponent(previousButtonId, {rollover: stylingParams.previousButtonRolloverClass});
-      daySwitcher._previousButton = O$(previousButtonId);
-      var previousButton = daySwitcher._previousButton;
+      switcher._previousButton = O$(previousButtonId);
+      var previousButton = switcher._previousButton;
 
-      var nextButtonId = daySwitcherId + "::next_button";
+      var nextButtonId = switcherId + "::next_button";
       O$.initComponent(nextButtonId, {rollover: stylingParams.nextButtonRolloverClass});
-      daySwitcher._nextButton = O$(nextButtonId);
-      var nextButton = daySwitcher._nextButton;
+      switcher._nextButton = O$(nextButtonId);
+      var nextButton = switcher._nextButton;
 
       previousButton.onmouseup = function () {
         O$.setStyleMappings(previousButton, {
@@ -75,54 +75,53 @@ O$.DaySwitcher = {
 
     }
 
-    daySwitcher._getDayTable = function() {
-      if (!daySwitcher._dayTable) {
-        daySwitcher._dayTable = O$(daySwitcher._dayTableId);
+    switcher._getTimeTable = function() {
+      if (!switcher._timeTable) {
+        switcher._timeTable = O$(switcher._timeTableId);
       }
-      return daySwitcher._dayTable;
+      return switcher._timeTable;
     };
 
-    daySwitcher.getDay = function() {
-      return daySwitcher._day;
+    switcher.getDay = function() {
+      return switcher._day;
     };
 
-
-    daySwitcher.setDay = function(day) {
-      if (O$._datesEqual(daySwitcher._day, day))
+    switcher.setDay = function(day) {
+      if (O$._datesEqual(switcher._day, day))
         return;
-      daySwitcher._day = day;
+      switcher._day = day;
 
-      if (daySwitcher._pattern) {
-        var dtf = O$.getDateTimeFormatObject(daySwitcher._locale);
-        daySwitcher._text.innerHTML = dtf.format(day, daySwitcher._pattern);
+      if (switcher._pattern) {
+        var dtf = O$.getDateTimeFormatObject(switcher._locale);
+        switcher._text.innerHTML = dtf.format(day, switcher._pattern);
       }
 
-      if (daySwitcher._upperPattern) {
-        dtf = O$.getDateTimeFormatObject(daySwitcher._locale);
-        daySwitcher._upperText.innerHTML = dtf.format(day, daySwitcher._upperPattern);
+      if (switcher._upperPattern) {
+        dtf = O$.getDateTimeFormatObject(switcher._locale);
+        switcher._upperText.innerHTML = dtf.format(day, switcher._upperPattern);
       }
 
-      var dayTable = daySwitcher._getDayTable();
-      if (!dayTable) {
+      var timeTable = switcher._getTimeTable();
+      if (!timeTable) {
         return;
       }
 
-      daySwitcher._dayTable.setDay(day);
+      switcher._timeTable.setDay(day);
     };
 
-    daySwitcher.previousDay = function() {
-      var prevDay = O$.incDay(daySwitcher._day, -1);
-      daySwitcher.setDay(prevDay);
+    switcher.previousPeriod = function() {
+      var prevDay = O$.incDay(switcher._day, -1);
+      switcher.setDay(prevDay);
     };
 
-    daySwitcher.nextDay = function() {
-      var nextDay = O$.incDay(daySwitcher._day, 1);
-      daySwitcher.setDay(nextDay);
+    switcher.nextPeriod = function() {
+      var nextDay = O$.incDay(switcher._day, 1);
+      switcher.setDay(nextDay);
     };
 
-    daySwitcher.today = function() {
+    switcher.today = function() {
       var today = new Date();
-      daySwitcher.setDay(today);
+      switcher.setDay(today);
     };
 
     if (enabled) {
@@ -130,28 +129,28 @@ O$.DaySwitcher = {
         O$.setStyleMappings(previousButton, {
           pressed: stylingParams.previousButtonPressedClass
         });
-        daySwitcher.previousDay();
+        switcher.previousPeriod();
       };
 
       nextButton.onmousedown = function () {
         O$.setStyleMappings(nextButton, {
           pressed: stylingParams.nextButtonPressedClass
         });
-        daySwitcher.nextDay();
+        switcher.nextPeriod();
       };
 
       O$.addLoadEvent(function () {
-        var dayTable = daySwitcher._getDayTable();
-        if (!dayTable) {
+        var timeTable = switcher._getTimeTable();
+        if (!timeTable) {
           return;
         }
 
-        var _onDayChange = dayTable._onDayChange;
-        dayTable._onDayChange = function(day) {
-          if (_onDayChange) {
-            _onDayChange(day);
+        var _onPeriodChange = timeTable._onPeriodChange;
+        timeTable._onPeriodChange = function(day) {
+          if (_onPeriodChange) {
+            _onPeriodChange(day);
           }
-          daySwitcher.setDay(day);
+          switcher.setDay(day);
         };
       });
 

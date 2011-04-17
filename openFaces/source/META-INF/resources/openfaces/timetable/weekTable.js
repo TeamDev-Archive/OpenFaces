@@ -224,7 +224,7 @@ O$.WeekTable._init = function(componentId,
 
   weekTable._updateStartEndTime = function() {
 
-    var firstDay = O$.WeekTable.getFirstDay(this._day, firstDayOfWeek);
+    var firstDay = O$.WeekTable.getDay(this._day, firstDayOfWeek);
     this._firstDay = firstDay;
     this._startTime = O$.parseTime(this._startTimeStr, O$.cloneDate(firstDay));
     this._endTime = O$.parseTime(this._endTimeStr, O$.incDay(O$.cloneDate(firstDay), 6));
@@ -344,7 +344,7 @@ O$.WeekTable.getPartWeekday = function(weekTable, part) {
   return null;
 };
 
-O$.WeekTable.getFirstDay = function(day, firstDayOfWeek) {
+O$.WeekTable.getDay = function(day, firstDayOfWeek) {
   var dayOfWeek = day.getDay();
   var decrement = dayOfWeek - firstDayOfWeek;
   if (decrement < 0) {

@@ -40,12 +40,4 @@ public class DaySwitcherJspTag extends AbstractSwitcherJspTag {
         getDelegate().setPropertyValue("upperTextClass", textClass);
     }
 
-    public void setUpperTextRolloverStyle(ValueExpression textRolloverStyle) {
-        getDelegate().setPropertyValue("upperTextRolloverStyle", textRolloverStyle);
-    }
-
-    public void setUpperTextRolloverClass(ValueExpression textRolloverClass) {
-        getDelegate().setPropertyValue("upperTextRolloverClass", textRolloverClass);
-    }
-
 }

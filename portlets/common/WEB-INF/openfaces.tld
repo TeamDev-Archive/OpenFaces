@@ -26347,23 +26347,6 @@ and it is automatically triggered on any form submission. -->
       <!-- @bindingType java.lang.String -->
       <!-- @el true -->
     </attribute>
-    <attribute>
-      <name>upperTextRolloverStyle</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <name>upperTextRolloverClass</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @el true -->
-    </attribute>
-
   </tag>
 
   <tag>
