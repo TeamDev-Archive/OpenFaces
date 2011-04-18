@@ -17,7 +17,6 @@ import org.openfaces.component.timetable.AbstractSwitcher;
 import org.openfaces.component.timetable.DaySwitcher;
 import org.openfaces.component.timetable.TimetableView;
 import org.openfaces.util.CalendarUtil;
-import org.openfaces.util.DataUtil;
 import org.openfaces.util.Styles;
 
 import javax.faces.FacesException;
@@ -41,13 +40,12 @@ public class DaySwitcherRenderer extends AbstractSwitcherRenderer {
 
     protected Object[] getAdditionalParams(FacesContext context) {
         return new Object[]{
-                context.getExternalContext().getRequestMap().get(getUpperPatternKey())/*,
-                calendar*/
+                context.getExternalContext().getRequestMap().get(getUpperPatternKey())
         };
     }
 
-    protected String formatDayInitParam(TimetableView timetableView, TimeZone timeZone) {
-        return DataUtil.formatDateTimeForJs(timetableView.getDay(), timeZone);
+    protected Date getDayInitParam(TimetableView timetableView) {
+        return timetableView.getDay();
     }
 
     protected void renderText(FacesContext context, AbstractSwitcher switcher, TimetableView timetableView, SimpleDateFormat dateFormat) throws IOException {

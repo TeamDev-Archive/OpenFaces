@@ -52,13 +52,21 @@ O$.TimePeriodSwitcher = {
         this._timeTable.setDay(day);
       },
 
+      _previousPeriod: function(date) {
+        return O$.incDay(date, -this._getPeriodSize())
+      },
+
+      _nextPeriod: function(date) {
+        return O$.incDay(date, this._getPeriodSize())
+      },
+
       previousPeriod: function() {
-        var prevDay = O$.incDay(this._day, -this._getPeriodSize());
+        var prevDay = this._previousPeriod(this._day);
         this.setDay(prevDay);
       },
 
       nextPeriod: function() {
-        var nextDay = O$.incDay(this._day, this._getPeriodSize());
+        var nextDay = this._nextPeriod(this._day);
         this.setDay(nextDay);
       }
 
@@ -111,6 +119,41 @@ O$.TimePeriodSwitcher = {
       });
 
     }
+  }
+};
+
+O$.MonthSwitcher = {
+  _init: function(switcherId,
+                  timeTableId,
+                  day,
+                  pattern,
+                  locale,
+                  stylingParams,
+                  enabled) {
+    O$.TimePeriodSwitcher._init.apply(null, arguments);
+
+    var switcher = O$.initComponent(switcherId, null, {
+      _updateText: function() {
+        if (this._pattern) {
+          var dtf = O$.getDateTimeFormatObject(switcher._locale);
+          this._text.innerHTML = dtf.format(this._day, this._pattern);
+        }
+      },
+
+      _previousPeriod: function(date) {
+        var result = O$.cloneDate(date);
+        result.setMonth(result.getMonth() - 1);
+        return result;
+      },
+
+      _nextPeriod: function(date) {
+        var result = O$.cloneDate(date);
+        result.setMonth(result.getMonth() + 1);
+        return result;
+      }
+
+    });
+
   }
 };
 

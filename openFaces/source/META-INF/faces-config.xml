@@ -795,6 +795,11 @@
     <component-type>org.openfaces.TimetableViewSwitcher</component-type>
     <component-class>org.openfaces.component.timetable.TimetableViewSwitcher</component-class>
   </component>
+
+  <component>
+    <component-type>org.openfaces.MonthSwitcher</component-type>
+    <component-class>org.openfaces.component.timetable.MonthSwitcher</component-class>
+  </component>
   <render-kit>
     <renderer>
       <component-family>org.openfaces.DataTable</component-family>
@@ -1318,6 +1323,11 @@
       <component-family>org.openfaces.TimetableViewSwitcher</component-family>
       <renderer-type>org.openfaces.TimetableViewSwitcherRenderer</renderer-type>
       <renderer-class>org.openfaces.renderkit.timetable.TimetableViewSwitcherRenderer</renderer-class>
+    </renderer>
+    <renderer>
+      <component-family>org.openfaces.MonthSwitcher</component-family>
+      <renderer-type>org.openfaces.MonthSwitcherRenderer</renderer-type>
+      <renderer-class>org.openfaces.renderkit.timetable.MonthSwitcherRenderer</renderer-class>
     </renderer>
 
   </render-kit>

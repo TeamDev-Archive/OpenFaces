@@ -16,6 +16,7 @@ import org.openfaces.component.timetable.TimetableView;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.CalendarUtil;
+import org.openfaces.util.DataUtil;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
@@ -29,6 +30,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -53,15 +55,13 @@ public abstract class AbstractSwitcherRenderer extends RendererBase {
         TimeZone timeZone = switcher.getTimeZone();
 
         SimpleDateFormat dateFormat = CalendarUtil.getSimpleDateFormat(switcher.getDateFormat(),
-                DEFAULT_DATE_FORMAT, switcher.getPattern(), null, locale, timeZone);
+                DEFAULT_DATE_FORMAT, getPattern(switcher), null, locale, timeZone);
         String pattern = dateFormat.toPattern();
-
-        String clientId = switcher.getClientId(context);
 
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("table", switcher);
 
-        writer.writeAttribute("id", clientId, "id");
+        writeIdAttribute(context, switcher);
         writer.writeAttribute("cellspacing", "0", null);
         writer.writeAttribute("cellpadding", "0", null);
         writer.writeAttribute("border", "0", null);
@@ -72,38 +72,20 @@ public abstract class AbstractSwitcherRenderer extends RendererBase {
         writer.startElement("tr", switcher);
 
         boolean enabled = switcher.isEnabled();
-        // previous button
+
         if (enabled) {
-            writer.startElement("td", switcher);
-            writer.writeAttribute("id", clientId + "::previous_button", null);
-            writer.writeAttribute("class", Styles.getCSSClass(context, switcher,
-                    switcher.getPreviousButtonStyle(), "o_timeSwitcher_previous_button",
-                    switcher.getPreviousButtonClass()), null);
-            String previousButtonImageUrl = Resources.getURL(context, switcher.getPreviousButtonImageUrl(), null,
-                    "timetable/previousButton.gif");
-            writer.startElement("img", switcher);
-            writer.writeAttribute("src", previousButtonImageUrl, null);
-            writer.endElement("img");
-            writer.endElement("td");
+            renderPreviousButton(context, switcher);
         }
 
         writer.startElement("td", switcher);
         writer.writeAttribute("class", "o_timeTextContainer", null);
+
         renderText(context, switcher, timetableView, dateFormat);
+
         writer.endElement("td");
 
-        // next button
         if (enabled) {
-            writer.startElement("td", switcher);
-            writer.writeAttribute("id", clientId + "::next_button", null);
-            writer.writeAttribute("class", Styles.getCSSClass(context,
-                    switcher, switcher.getNextButtonStyle(), "o_timeSwitcher_next_button", switcher.getNextButtonClass()), null);
-            String nextButtonImageUrl = Resources.getURL(context, switcher.getNextButtonImageUrl(), null,
-                    "timetable/nextButton.gif");
-            writer.startElement("img", switcher);
-            writer.writeAttribute("src", nextButtonImageUrl, null);
-            writer.endElement("img");
-            writer.endElement("td");
+            renderNextButton(context, switcher);
         }
 
         writer.endElement("tr");
@@ -114,9 +96,10 @@ public abstract class AbstractSwitcherRenderer extends RendererBase {
         JSONObject stylingParams = getStylingParamsObj(context, switcher);
         Styles.renderStyleClasses(context, switcher);
 
+        Date dayInitParam = getDayInitParam(timetableView);
         Object[] params = {
                 timetableView,
-                formatDayInitParam(timetableView, timeZone),
+                DataUtil.formatDateTimeForJs(dayInitParam, timeZone),
                 pattern,
                 locale,
                 stylingParams,
@@ -138,6 +121,41 @@ public abstract class AbstractSwitcherRenderer extends RendererBase {
                 Resources.getJsonJsURL(context),
                 Resources.getInternalURL(context, "timetable/timeSwitcher.js"));
         Resources.includeJQuery(context);
+    }
+
+    protected String getPattern(AbstractSwitcher switcher) {
+        return switcher.getPattern();
+    }
+
+    private void renderPreviousButton(FacesContext context, AbstractSwitcher switcher) throws IOException {
+        String clientId = switcher.getClientId(context);
+        ResponseWriter writer = context.getResponseWriter();
+        writer.startElement("td", switcher);
+        writer.writeAttribute("id", clientId + "::previous_button", null);
+        writer.writeAttribute("class", Styles.getCSSClass(context, switcher,
+                switcher.getPreviousButtonStyle(), "o_timeSwitcher_previous_button",
+                switcher.getPreviousButtonClass()), null);
+        String previousButtonImageUrl = Resources.getURL(context, switcher.getPreviousButtonImageUrl(), null,
+                "timetable/previousButton.gif");
+        writer.startElement("img", switcher);
+        writer.writeAttribute("src", previousButtonImageUrl, null);
+        writer.endElement("img");
+        writer.endElement("td");
+    }
+
+    private void renderNextButton(FacesContext context, AbstractSwitcher switcher) throws IOException {
+        String clientId = switcher.getClientId(context);
+        ResponseWriter writer = context.getResponseWriter();
+        writer.startElement("td", switcher);
+        writer.writeAttribute("id", clientId + "::next_button", null);
+        writer.writeAttribute("class", Styles.getCSSClass(context,
+                switcher, switcher.getNextButtonStyle(), "o_timeSwitcher_next_button", switcher.getNextButtonClass()), null);
+        String nextButtonImageUrl = Resources.getURL(context, switcher.getNextButtonImageUrl(), null,
+                "timetable/nextButton.gif");
+        writer.startElement("img", switcher);
+        writer.writeAttribute("src", nextButtonImageUrl, null);
+        writer.endElement("img");
+        writer.endElement("td");
     }
 
     private JSONObject getStylingParamsObj(FacesContext context, AbstractSwitcher switcher) {
@@ -166,7 +184,7 @@ public abstract class AbstractSwitcherRenderer extends RendererBase {
 
     protected abstract Object[] getAdditionalParams(FacesContext context);
 
-    protected abstract String formatDayInitParam(TimetableView timetableView, TimeZone timeZone);
-
     protected abstract void renderText(FacesContext context, AbstractSwitcher switcher, TimetableView timetableView, SimpleDateFormat dateFormat) throws IOException;
+
+    protected abstract Date getDayInitParam(TimetableView timetableView);
 }
