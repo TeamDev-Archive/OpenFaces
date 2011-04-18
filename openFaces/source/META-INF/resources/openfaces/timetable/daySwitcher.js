@@ -24,20 +24,14 @@ O$.DaySwitcher = {
       _day: dtf.parse(day, "dd/MM/yyyy"),
       _timeTableId: timeTableId,
       _pattern: pattern,
-      _upperPattern: upperPattern,
-      _locale: locale
+      _locale: locale,
+      _upperPattern: upperPattern
     });
 
     var textId = switcherId + "::text";
     switcher._text = O$(textId);
     if (switcher._text) {
       O$.initComponent(textId, {rollover: stylingParams.textRolloverClass});
-    }
-
-    var upperTextId = switcherId + "::upper_text";
-    switcher._upperText = O$(upperTextId);
-    if (switcher._upperText) {
-      O$.initComponent(upperTextId, {rollover: stylingParams.upperTextRolloverClass});
     }
 
     if (enabled) {
@@ -91,15 +85,7 @@ O$.DaySwitcher = {
         return;
       switcher._day = day;
 
-      if (switcher._pattern) {
-        var dtf = O$.getDateTimeFormatObject(switcher._locale);
-        switcher._text.innerHTML = dtf.format(day, switcher._pattern);
-      }
-
-      if (switcher._upperPattern) {
-        dtf = O$.getDateTimeFormatObject(switcher._locale);
-        switcher._upperText.innerHTML = dtf.format(day, switcher._upperPattern);
-      }
+      switcher._updateText();
 
       var timeTable = switcher._getTimeTable();
       if (!timeTable) {
@@ -110,18 +96,13 @@ O$.DaySwitcher = {
     };
 
     switcher.previousPeriod = function() {
-      var prevDay = O$.incDay(switcher._day, -1);
+      var prevDay = O$.incDay(switcher._day, -this._getPeriodSize());
       switcher.setDay(prevDay);
     };
 
     switcher.nextPeriod = function() {
-      var nextDay = O$.incDay(switcher._day, 1);
+      var nextDay = O$.incDay(switcher._day, this._getPeriodSize());
       switcher.setDay(nextDay);
-    };
-
-    switcher.today = function() {
-      var today = new Date();
-      switcher.setDay(today);
     };
 
     if (enabled) {
@@ -156,6 +137,32 @@ O$.DaySwitcher = {
 
     }
 
+    var upperTextId = switcherId + "::upper_text";
+    switcher._upperText = O$(upperTextId);
+    if (switcher._upperText) {
+      O$.initComponent(upperTextId, {rollover: stylingParams.upperTextRolloverClass});
+    }
+
+    switcher.today = function() {
+      var today = new Date();
+      switcher.setDay(today);
+    };
+
+    switcher._updateText = function() {
+      if (switcher._pattern) {
+        var dtf = O$.getDateTimeFormatObject(switcher._locale);
+        switcher._text.innerHTML = dtf.format(this._day, switcher._pattern);
+      }
+
+      if (switcher._upperPattern) {
+        dtf = O$.getDateTimeFormatObject(switcher._locale);
+        switcher._upperText.innerHTML = dtf.format(this._day, switcher._upperPattern);
+      }
+    };
+
+    switcher._getPeriodSize = function() {
+      return 1;
+    }
 
   }
 };

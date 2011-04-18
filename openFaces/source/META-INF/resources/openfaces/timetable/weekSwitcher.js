@@ -85,14 +85,7 @@ O$.WeekSwitcher = {
         return;
       switcher._day = day;
 
-      if (switcher._pattern) {
-        var dtf = O$.getDateTimeFormatObject(switcher._locale);
-        var lastDay = O$.incDay(day, 6);
-
-        switcher._text.innerHTML = dtf.format(day, switcher._pattern)
-            .concat(switcher._splitter)
-            .concat(dtf.format(lastDay, switcher._pattern));
-      }
+      switcher._updateText();
 
       var timeTable = switcher._getTimeTable();
       if (!timeTable) {
@@ -103,12 +96,12 @@ O$.WeekSwitcher = {
     };
 
     switcher.previousPeriod = function() {
-      var prevDay = O$.incDay(switcher._day, -7);
+      var prevDay = O$.incDay(switcher._day, -this._getPeriodSize());
       switcher.setDay(prevDay);
     };
 
     switcher.nextPeriod = function() {
-      var nextDay = O$.incDay(switcher._day, 7);
+      var nextDay = O$.incDay(switcher._day, this._getPeriodSize());
       switcher.setDay(nextDay);
     };
 
@@ -142,6 +135,21 @@ O$.WeekSwitcher = {
         };
       });
 
+    }
+
+    switcher._updateText = function() {
+      if (switcher._pattern) {
+        var dtf = O$.getDateTimeFormatObject(switcher._locale);
+        var lastDay = O$.incDay(day, 6);
+
+        switcher._text.innerHTML = dtf.format(day, switcher._pattern)
+            .concat(switcher._splitter)
+            .concat(dtf.format(lastDay, switcher._pattern));
+      }
+    };
+
+    switcher._getPeriodSize = function() {
+      return 7;
     }
 
 
