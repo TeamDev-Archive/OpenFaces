@@ -135,8 +135,7 @@ public abstract class AbstractSwitcherRenderer extends RendererBase {
         Rendering.renderInitScript(context, script,
                 Resources.getUtilJsURL(context),
                 Resources.getJsonJsURL(context),
-                Resources.getInternalURL(context, "timetable/weekSwitcher.js"),
-                Resources.getInternalURL(context, "timetable/daySwitcher.js"));
+                Resources.getInternalURL(context, "timetable/timeSwitcher.js"));
     }
 
     private JSONObject getStylingParamsObj(FacesContext context, AbstractSwitcher switcher) {

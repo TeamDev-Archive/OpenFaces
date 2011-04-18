@@ -11,6 +11,7 @@
  */
 package org.openfaces.renderkit.timetable;
 
+import org.openfaces.component.calendar.Calendar;
 import org.openfaces.component.timetable.AbstractSwitcher;
 import org.openfaces.component.timetable.DaySwitcher;
 import org.openfaces.component.timetable.TimetableView;
@@ -38,8 +39,15 @@ public class DaySwitcherRenderer extends AbstractSwitcherRenderer {
     }
 
     protected Object[] getAdditionalParams(FacesContext context) {
+//        Calendar calendar = new Calendar();
+//        try {
+//            calendar.encodeAll(context);
+//        } catch (IOException e) {
+//            throw new RuntimeException();
+//        }
         return new Object[]{
-                context.getExternalContext().getRequestMap().get(getUpperPatternKey())
+                context.getExternalContext().getRequestMap().get(getUpperPatternKey())/*,
+                calendar*/
         };
     }
 

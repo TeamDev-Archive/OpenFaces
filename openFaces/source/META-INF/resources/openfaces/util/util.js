@@ -55,6 +55,10 @@ if (!window.O$) {
         O$.setupFocusedStateFunction(component, function(focused) {
           O$.setStyleMappings(component, {_focusedStyle: focused ? styles.focused : null});
         });
+      if (styles.pressed)
+        O$.setupMousePressedStateFunction(component, function(pressed) {
+          O$.setStyleMappings(component, {_pressedStyle: pressed ? styles.pressed : null});
+        });
     }
     if (properties) {
       O$.extend(component, properties);
