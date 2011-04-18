@@ -10,22 +10,20 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-O$.WeekSwitcher = {
+O$.TimePeriodSwitcher = {
   _init: function(switcherId,
                   timeTableId,
                   day,
                   pattern,
                   locale,
                   stylingParams,
-                  enabled,
-                  splitter) {
+                  enabled) {
     var dtf = O$.getDateTimeFormatObject(locale);
     var switcher = O$.initComponent(switcherId, {rollover: stylingParams.rolloverClass}, {
       _day: dtf.parse(day, "dd/MM/yyyy"),
       _timeTableId: timeTableId,
       _pattern: pattern,
-      _locale: locale,
-      _splitter: splitter
+      _locale: locale
     });
 
     var textId = switcherId + "::text";
@@ -136,13 +134,30 @@ O$.WeekSwitcher = {
       });
 
     }
+  }
+};
+
+O$.WeekSwitcher = {
+  _init: function(switcherId,
+                  timeTableId,
+                  day,
+                  pattern,
+                  locale,
+                  stylingParams,
+                  enabled,
+                  splitter) {
+    O$.TimePeriodSwitcher._init.apply(null, arguments);
+
+    var switcher = O$.initComponent(switcherId, null, {
+      _splitter: splitter
+    });
 
     switcher._updateText = function() {
       if (switcher._pattern) {
         var dtf = O$.getDateTimeFormatObject(switcher._locale);
-        var lastDay = O$.incDay(day, 6);
+        var lastDay = O$.incDay(this._day, 6);
 
-        switcher._text.innerHTML = dtf.format(day, switcher._pattern)
+        switcher._text.innerHTML = dtf.format(this._day, switcher._pattern)
             .concat(switcher._splitter)
             .concat(dtf.format(lastDay, switcher._pattern));
       }
@@ -152,6 +167,50 @@ O$.WeekSwitcher = {
       return 7;
     }
 
+  }
+};
+
+O$.DaySwitcher = {
+  _init: function(switcherId,
+                  timeTableId,
+                  day,
+                  pattern,
+                  locale,
+                  stylingParams,
+                  enabled,
+                  upperPattern) {
+    O$.TimePeriodSwitcher._init.apply(null, arguments);
+
+    var switcher = O$.initComponent(switcherId, null, {
+      _upperPattern: upperPattern
+    });
+
+    var upperTextId = switcherId + "::upper_text";
+    switcher._upperText = O$(upperTextId);
+    if (switcher._upperText) {
+      O$.initComponent(upperTextId, {rollover: stylingParams.upperTextRolloverClass});
+    }
+
+    switcher.today = function() {
+      var today = new Date();
+      switcher.setDay(today);
+    };
+
+    switcher._updateText = function() {
+      if (switcher._pattern) {
+        var dtf = O$.getDateTimeFormatObject(switcher._locale);
+        switcher._text.innerHTML = dtf.format(this._day, switcher._pattern);
+      }
+
+      if (switcher._upperPattern) {
+        dtf = O$.getDateTimeFormatObject(switcher._locale);
+        switcher._upperText.innerHTML = dtf.format(this._day, switcher._upperPattern);
+      }
+    };
+
+    switcher._getPeriodSize = function() {
+      return 1;
+    }
 
   }
 };
