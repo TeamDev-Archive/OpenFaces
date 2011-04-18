@@ -19,13 +19,12 @@ O$.TimePeriodSwitcher = {
                   stylingParams,
                   enabled) {
     var dtf = O$.getDateTimeFormatObject(locale);
-    var textId = switcherId + "::text";
     var switcher = O$.initComponent(switcherId, {rollover: stylingParams.rolloverClass}, {
       _day: dtf.parse(day, "dd/MM/yyyy"),
       _timeTableId: timeTableId,
       _pattern: pattern,
       _locale: locale,
-      _text: O$(textId),
+      _text: O$(switcherId + "::text"),
 
       _getTimeTable: function() {
         if (!this._timeTable) {
@@ -66,7 +65,7 @@ O$.TimePeriodSwitcher = {
     });
 
     if (switcher._text) {
-      O$.initComponent(textId, {rollover: stylingParams.textRolloverClass});
+      O$.initComponent(switcher._text.id, {rollover: stylingParams.textRolloverClass});
     }
 
     if (enabled) {
@@ -89,10 +88,8 @@ O$.TimePeriodSwitcher = {
         }
       });
 
-      previousButton.ondragstart = nextButton.ondragstart = previousButton.onselectstart = nextButton.onselectstart =
-              function(e) {
-                O$.breakEvent(e);
-              };
+      previousButton.ondragstart = nextButton.ondragstart =
+              previousButton.onselectstart = nextButton.onselectstart = O$.breakEvent;
       previousButton.ondblclick = nextButton.ondblclick = function(e) {
         O$.repeatClickOnDblclick(e);
         O$.breakEvent(e)
@@ -104,10 +101,10 @@ O$.TimePeriodSwitcher = {
           return;
         }
 
-        var _onPeriodChange = timeTable._onPeriodChange;
-        timeTable._onPeriodChange = function(day) {
-          if (_onPeriodChange) {
-            _onPeriodChange.apply(this, arguments);
+        var prevOnperiodchange = timeTable.onperiodchange;
+        timeTable.onperiodchange = function(day) {
+          if (prevOnperiodchange) {
+            prevOnperiodchange.apply(this, arguments);
           }
           switcher.setDay(day);
         };
@@ -162,11 +159,9 @@ O$.DaySwitcher = {
                   upperPattern) {
     O$.TimePeriodSwitcher._init.apply(null, arguments);
 
-    var upperTextId = switcherId + "::upper_text";
-
     var switcher = O$.initComponent(switcherId, null, {
       _upperPattern: upperPattern,
-      _upperText: O$(upperTextId),
+      _upperText: O$(switcherId + "::upper_text"),
 
       today: function() {
         var today = new Date();
@@ -191,8 +186,29 @@ O$.DaySwitcher = {
 
     });
 
+    if (switcher._text) {
+      var textCell = switcher._text.parentNode;
+      var popup = jQuery(textCell).find(".o_daySwitcherPopup")[0];
+      if (popup) {
+        O$.appendClassNames(textCell, ["o_daySwitcherClickableCell"]);
+        var calendar = jQuery(popup).find(".o_calendar")[0];
+        textCell.onclick = function(e) {
+          calendar.setSelectedDate(switcher.getDay());
+          popup.show();
+          O$.correctElementZIndex(popup, switcher._getTimeTable());
+        };
+        calendar.onchange = function() {
+          var newDate = this.getSelectedDate();
+          if (!newDate) return;
+          switcher.setDay(newDate);
+          popup.hide();
+        }
+      }
+    }
+
+
     if (switcher._upperText) {
-      O$.initComponent(upperTextId, {rollover: stylingParams.upperTextRolloverClass});
+      O$.initComponent(switcher._upperText.id, {rollover: stylingParams.upperTextRolloverClass});
     }
 
   }

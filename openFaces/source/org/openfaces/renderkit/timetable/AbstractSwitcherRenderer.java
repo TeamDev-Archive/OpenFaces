@@ -71,8 +71,8 @@ public abstract class AbstractSwitcherRenderer extends RendererBase {
         writer.startElement("tbody", switcher);
         writer.startElement("tr", switcher);
 
-        Boolean enabled = switcher.isEnabled();
-        //previous button
+        boolean enabled = switcher.isEnabled();
+        // previous button
         if (enabled) {
             writer.startElement("td", switcher);
             writer.writeAttribute("id", clientId + "::previous_button", null);
@@ -88,10 +88,11 @@ public abstract class AbstractSwitcherRenderer extends RendererBase {
         }
 
         writer.startElement("td", switcher);
+        writer.writeAttribute("class", "o_timeTextContainer", null);
         renderText(context, switcher, timetableView, dateFormat);
         writer.endElement("td");
 
-        //next button
+        // next button
         if (enabled) {
             writer.startElement("td", switcher);
             writer.writeAttribute("id", clientId + "::next_button", null);
@@ -136,6 +137,7 @@ public abstract class AbstractSwitcherRenderer extends RendererBase {
                 Resources.getUtilJsURL(context),
                 Resources.getJsonJsURL(context),
                 Resources.getInternalURL(context, "timetable/timeSwitcher.js"));
+        Resources.includeJQuery(context);
     }
 
     private JSONObject getStylingParamsObj(FacesContext context, AbstractSwitcher switcher) {

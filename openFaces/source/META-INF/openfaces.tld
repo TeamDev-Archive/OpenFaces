@@ -27886,6 +27886,16 @@ and it is automatically triggered on any form submission. -->
       <!-- @bindingType java.lang.String -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>Specifies whether the user can bring up a pop-up calendar for explicit date selection</description>
+      <name>popupCalendarEnabled</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
 
   </tag>
 

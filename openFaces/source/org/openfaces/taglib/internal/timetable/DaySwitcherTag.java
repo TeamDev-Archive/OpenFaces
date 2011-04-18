@@ -36,7 +36,8 @@ public class DaySwitcherTag extends AbstractSwitcherTag {
         setStringProperty(component, "upperDateFormat");
         setStringProperty(component, "upperPattern");
 
-        setStringProperty(component, "upperTextStyle"); //upper text
+        setStringProperty(component, "upperTextStyle");
         setStringProperty(component, "upperTextClass");
+        setBooleanProperty(component, "popupCalendarEnabled");
     }
 }

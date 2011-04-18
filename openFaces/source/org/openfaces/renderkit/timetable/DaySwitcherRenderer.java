@@ -11,6 +11,7 @@
  */
 package org.openfaces.renderkit.timetable;
 
+import org.openfaces.component.SimplePopup;
 import org.openfaces.component.calendar.Calendar;
 import org.openfaces.component.timetable.AbstractSwitcher;
 import org.openfaces.component.timetable.DaySwitcher;
@@ -39,12 +40,6 @@ public class DaySwitcherRenderer extends AbstractSwitcherRenderer {
     }
 
     protected Object[] getAdditionalParams(FacesContext context) {
-//        Calendar calendar = new Calendar();
-//        try {
-//            calendar.encodeAll(context);
-//        } catch (IOException e) {
-//            throw new RuntimeException();
-//        }
         return new Object[]{
                 context.getExternalContext().getRequestMap().get(getUpperPatternKey())/*,
                 calendar*/
@@ -63,8 +58,9 @@ public class DaySwitcherRenderer extends AbstractSwitcherRenderer {
         String pattern = dateFormat.toPattern();
         boolean renderText = pattern.length() != 0;
 
-        SimpleDateFormat upperDateFormat = CalendarUtil.getSimpleDateFormat(((DaySwitcher) switcher).getUpperDateFormat(), null,
-                ((DaySwitcher) switcher).getUpperPattern(), DEFAULT_SUP_PATTERN, locale, timeZone);
+        DaySwitcher daySwitcher = (DaySwitcher) switcher;
+        SimpleDateFormat upperDateFormat = CalendarUtil.getSimpleDateFormat(daySwitcher.getUpperDateFormat(), null,
+                daySwitcher.getUpperPattern(), DEFAULT_SUP_PATTERN, locale, timeZone);
         String upperPattern = upperDateFormat.toPattern();
         context.getExternalContext().getRequestMap().put(getUpperPatternKey(), upperPattern);
         boolean renderUpperText = upperPattern.length() != 0;
@@ -76,27 +72,39 @@ public class DaySwitcherRenderer extends AbstractSwitcherRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = switcher.getClientId(context);
         if (renderUpperText) {
-            //upper text
-            writer.startElement("p", switcher);
+            writer.startElement("div", switcher);
             writer.writeAttribute("id", clientId + "::upper_text", null);
             String upperTextClass = Styles.getCSSClass(context,
-                    switcher, ((DaySwitcher) switcher).getUpperTextStyle(),
-                    "o_daySwitcher_upper_text", ((DaySwitcher) switcher).getUpperTextClass());
+                    switcher, daySwitcher.getUpperTextStyle(),
+                    "o_daySwitcher_upper_text", daySwitcher.getUpperTextClass());
             writer.writeAttribute("class", upperTextClass, null);
 
             writer.write(upperDateFormat.format(date));
-            writer.endElement("p");
+            writer.endElement("div");
         }
+
         if (renderText) {
-            //text
-            writer.startElement("p", switcher);
+            writer.startElement("div", switcher);
             writer.writeAttribute("id", clientId + "::text", null);
             String textClass = Styles.getCSSClass(context,
                     switcher, switcher.getTextStyle(), "o_timeSwitcher_text", switcher.getTextClass());
             writer.writeAttribute("class", textClass, null);
 
             writer.write(dateFormat.format(timetableView.getDay()));
-            writer.endElement("p");
+
+            writer.endElement("div");
+
+            if (daySwitcher.isPopupCalendarEnabled()) {
+                Calendar calendar = daySwitcher.getPopupCalendar();
+                calendar.setRequired(true);
+
+                SimplePopup popup = new SimplePopup("o_daySwitcherPopup", calendar);
+                try {
+                    popup.encodeAll(context);
+                } catch (IOException e) {
+                    throw new RuntimeException();
+                }
+            }
         }
     }
 

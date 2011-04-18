@@ -1683,6 +1683,14 @@ table.o_filter_parameter {
   margin: 0;
 }
 
+.o_daySwitcherClickableCell {
+  cursor: pointer;
+}
+
+.o_daySwitcherClickableCell .o_daySwitcherPopup{
+  cursor: default;
+}
+
 /* Level Indicator */
 .o_levelIndicator{
   display:block;
