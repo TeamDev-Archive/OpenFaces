@@ -280,11 +280,11 @@ O$.WeekTable._init = function(componentId,
       lastHeaderColWidth = 0;
     if (lastHeaderColWidth == 0 && O$.isOpera())
       lastHeaderColWidth = 1;
-    weekdayHeaderRow._cells[weekdayHeaderRow._cells.length - 1].style.width = lastHeaderColWidth + "px";
+    O$.setElementWidth(weekdayHeaderRow._cells[weekdayHeaderRow._cells.length - 1], lastHeaderColWidth);
 
     if (this._useResourceSeparation) {
       var resourceHeaderRow = this._resourceHeadersTable.body._getRows()[0];
-      resourceHeaderRow._cells[resourceHeaderRow._cells.length - 1].style.width = lastHeaderColWidth + "px";
+      O$.setElementWidth(resourceHeaderRow._cells[resourceHeaderRow._cells.length - 1], lastHeaderColWidth);
     }
   };
 

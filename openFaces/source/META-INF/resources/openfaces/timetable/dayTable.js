@@ -193,7 +193,7 @@ O$.DayTable._init = function(componentId,
       lastColWidth = 0;
     if (lastColWidth == 0 && O$.isOpera())
       lastColWidth = 1;
-    firstHeaderRow._cells[firstHeaderRow._cells.length - 1].style.width = lastColWidth + "px";
+    O$.setElementWidth(firstHeaderRow._cells[firstHeaderRow._cells.length - 1], lastColWidth);
   };
 
   dayTable._updateHeightForFF();

@@ -716,7 +716,7 @@ public class Rendering {
     }
 
     /**
-     * Check string for nullable and empty
+     * Checks the string for null and emptiness.
      *
      * @param string The string to check
      * @return true, if string is null or empty, false otherwise

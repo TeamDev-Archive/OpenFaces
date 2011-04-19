@@ -237,6 +237,13 @@ O$._ajaxReload = function(render, args) {
 }
 
 O$.requestComponentPortions = function(componentId, portionNames, customJsonParam, portionProcessor, onerror, skipExecute) {
+  var args = arguments;
+  if (!O$.isLoadedFullPage()) {
+    O$.addLoadEvent(function() {
+      O$.requestComponentPortions.apply(null, args);
+    });
+    return;
+  }
   if (!componentId)
     throw "componentId should be specified";
   if (! (portionNames instanceof Array))

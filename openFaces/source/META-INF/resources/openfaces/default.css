@@ -447,6 +447,7 @@
 }
 
 .o_resourceHeadersRow {
+  padding: 2px;
   font-family: MS Shell Dlg, Arial, sans-serif;
   font-size: 11pt;
   text-align: center;
@@ -454,6 +455,7 @@
 }
 
 .o_weekdayHeadersRow {
+  padding: 2px;
 }
 
 .o_defaultScrollBarWidth {
@@ -461,6 +463,7 @@
 }
 
 .o_timetableViewRowClass {
+  padding: 2px;
   font-size: 0;
   height: 25px;
 }
