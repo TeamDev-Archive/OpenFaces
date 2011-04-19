@@ -12,8 +12,6 @@
 
 package org.openfaces.application;
 
-import org.openfaces.util.Rendering;
-
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
 import javax.faces.application.ResourceHandlerWrapper;
@@ -106,23 +104,32 @@ public class OpenFacesResourceHandler extends ResourceHandlerWrapper {
 
     @Override
     public boolean isResourceRequest(FacesContext context) {
-        String path = getDecodedResourcePath((HttpServletRequest) context.getExternalContext().getRequest());
-        if (Rendering.isDynamicResource(path))
-            return true;
+        if (isDynamicResourceRequest(context)) return true;
         return super.isResourceRequest(context);
     }
 
-    private String getDecodedResourcePath(HttpServletRequest request) {
-        String uri = request.getPathInfo();
-        if (uri == null)
-            uri = request.getRequestURI();
-        return uri;
+    private boolean isDynamicResourceRequest(FacesContext context) {
+        String path = getDecodedResourcePath(context.getExternalContext());
+        if ((path.indexOf(DYNAMIC_RESOURCE_IDENTIFIER) != -1))
+            return true;
+        return false;
+    }
+
+    private String getDecodedResourcePath(ExternalContext extCtx) {
+    	if (extCtx.getRequest() instanceof HttpServletRequest) {
+            HttpServletRequest request = (HttpServletRequest) extCtx.getRequest();
+            String uri = request.getPathInfo();
+            if (uri == null)
+                uri = request.getRequestURI();
+            return uri;
+        } else {
+    		return extCtx.getRequestPathInfo();
+    	}
     }
 
     @Override
     public void handleResourceRequest(FacesContext context) throws IOException {
-        String path = getDecodedResourcePath((HttpServletRequest) context.getExternalContext().getRequest());
-        if (Rendering.isDynamicResource(path))
+        if (isDynamicResourceRequest(context))
             handleDynamicResourceRequest(context);
         else
             super.handleResourceRequest(context);

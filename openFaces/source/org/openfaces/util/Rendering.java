@@ -783,16 +783,6 @@ public class Rendering {
     }
 
     /**
-     * Check resource uri if it is dymamic resource or not
-     *
-     * @param uri The uri to check
-     * @return true, if uri represent dynamic image, false otherwise
-     */
-    public static boolean isDynamicResource(String uri) {
-        return (uri.indexOf(OpenFacesResourceHandler.DYNAMIC_RESOURCE_IDENTIFIER) != -1);
-    }
-
-    /**
      * Render image html tag with hack for ie transparency
      *
      * @param writer    The character-based output
