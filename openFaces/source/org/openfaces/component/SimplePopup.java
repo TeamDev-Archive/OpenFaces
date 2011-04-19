@@ -65,7 +65,11 @@ public class SimplePopup extends UIPanel {
 
     @Override
     public void restoreState(FacesContext context, Object state) {
-        super.restoreState(context, state);
+        Object[] stateArray = (Object[]) state;
+        int i = 0;
+        super.restoreState(context, stateArray[i++]);
+        styleClass = (String) stateArray[i++];
+
     }
 
     public String getStyleClass() {
