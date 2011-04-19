@@ -455,6 +455,8 @@
 }
 
 .o_weekdayHeadersRow {
+  font-family: MS Shell Dlg, Arial, sans-serif;
+  font-size: 10pt;
   padding: 2px;
 }
 
@@ -475,50 +477,59 @@
 }
 
 .o_monthTableWeekdayHeaderCell {
-  text-align: right;
+  font-family: MS Shell Dlg, Arial, sans-serif;
+  padding: 2px;
+  font-size: 10pt;
+  text-align: center;
   vertical-align: text-top;
   height: 20px;
   overflow: hidden;
 }
 
 .o_monthTableWeekendWeekdayHeaderCell {
-  background: #ffe4e1;
+  background: #ffffff;
 }
 
 .o_monthTableCellHeader {
-  height: 20px;
+  font-family: MS Shell Dlg, Arial, sans-serif;
+  padding: 0 2px 0 2px;
+  font-size: 9pt;
+  height: 16px;
   text-align: right;
   vertical-align: text-top;
   overflow: hidden;
+  color: #707070;
 }
 
 .o_monthTableCell {
+  padding: 2px;
   height: 120px;
   overflow: hidden;
 }
 
 .o_monthTableWeekendCellHeader {
-  background: #ffe4e1;
+  background: #ffffff;
 }
 
 .o_monthTableWeekendCell {
-  background: #ffe4e1;
+  background: #ffffff;
 }
 
 .o_monthTableInactiveMonthCellHeader {
-  background: #dcdcdc;
+  color: #909090;
+  background: #f4f4f4;
 }
 
 .o_monthTableInactiveMonthCell {
-  background: #dcdcdc;
+  background: #f4f4f4;
 }
 
 .o_monthTableTodayCellHeader {
-  background: #ffebcd;
+  background: #fff4d8;
 }
 
 .o_monthTableTodayCell {
-  background: #ffebcd;
+  background: #fff4d8;
 }
 
 .o_moreLinkElement {

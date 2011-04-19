@@ -62,7 +62,7 @@ O$.WeekTable._init = function(componentId,
   var weekdayStyle = O$.combineClassNames(["o_weekdayText", stylingParams.weekdayClass]);
   var weekdayPattern = stylingParams.weekdayPattern ? stylingParams.weekdayPattern : "EEE MMM d";
   var weekdayHeadersRowSeparator = stylingParams.weekdayHeadersRowSeparator ? stylingParams.weekdayHeadersRowSeparator : "1px solid gray";
-  var weekdayColumnSeparator = stylingParams.weekdayColumnSeparator ? stylingParams.weekdayColumnSeparator : "1px solid silver";
+  var weekdayColumnSeparator = stylingParams.weekdayColumnSeparator ? stylingParams.weekdayColumnSeparator : "1px solid #c0c0c0";
   var weekdayHeadersTable = O$(componentId + "::weekdayHeaders");
 
   var firstDayOfWeek = (calendarOptions && calendarOptions.firstDayOfWeek) ? calendarOptions.firstDayOfWeek : 0;
