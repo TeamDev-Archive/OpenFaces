@@ -89,7 +89,7 @@ public class Rendering {
     }
 
     /**
-     * This method calls {@link javax.faces.component.UIComponent#encodeAll encodeAll} with a given context for all
+     * This method calls {@link javax.faces.component.UIComponent#encodeAll(javax.faces.context.FacesContext)} with a given context for all
      * passed components
      *
      * @param context    {@link FacesContext} for the current request
@@ -113,7 +113,7 @@ public class Rendering {
     }
 
     /**
-     * Write attibute and replace <code>styleClass</code> attribute with <code>style</code>
+     * Write attribute and replace <code>styleClass</code> attribute with <code>style</code>
      *
      * @param writer            The character-based output
      * @param attrName          Attribute name to be added
@@ -359,7 +359,7 @@ public class Rendering {
     }
 
     /**
-     * Retrive array of converted submitted values from {@link javax.faces.component.UISelectMany} component
+     * Retrieve array of converted submitted values from {@link javax.faces.component.UISelectMany} component
      *
      * @param context        {@link FacesContext} for the current request
      * @param selectMany     The submitted component
@@ -813,7 +813,7 @@ public class Rendering {
     }
 
     /**
-     * Check resource uri if it is dymamic resource or not
+     * Check resource uri if it is dynamic resource or not
      *
      * @param uri The uri to check
      * @return true, if uri represent dynamic image, false otherwise
@@ -831,7 +831,7 @@ public class Rendering {
      * @param component The {@link UIComponent} (if any) to which this element corresponds
      * @param extension The image extension
      * @param model     The data model of image - array of byte
-     * @param size      The array of integers, where first element is width of image and second is a heigth
+     * @param size      The array of integers, where first element is width of image and second is a height
      * @throws IOException if an input/output error occurs
      */
     public static void startWriteIMG(ResponseWriter writer, FacesContext context,
@@ -1167,7 +1167,7 @@ public class Rendering {
     }
 
     /**
-     * Render javascript initialization of component and css style and styleclasses
+     * Render javascript initialization of component and css style and style classes
      *
      * @param context   {@link FacesContext} for the current request
      * @param component The component, which init script is rendered
@@ -1179,7 +1179,7 @@ public class Rendering {
     }
 
     /**
-     * Render javascript initialization of component and css style and styleclasses
+     * Render javascript initialization of component and css style and style classes
      *
      * @param context         {@link FacesContext} for the current request
      * @param component       The component, which init script is rendered
