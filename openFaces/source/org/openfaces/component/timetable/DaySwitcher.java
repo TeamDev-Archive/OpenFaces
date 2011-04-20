@@ -11,6 +11,8 @@
  */
 package org.openfaces.component.timetable;
 
+import org.openfaces.component.calendar.Calendar;
+import org.openfaces.util.Components;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.context.FacesContext;
@@ -27,6 +29,7 @@ public class DaySwitcher extends AbstractSwitcher<DayTable> {
 
     private String upperTextStyle;
     private String upperTextClass;
+    private Boolean popupCalendarEnabled;
 
     @Override
     protected String getTimetableNotFoundMsg() {
@@ -76,7 +79,8 @@ public class DaySwitcher extends AbstractSwitcher<DayTable> {
                 upperDateFormat,
                 upperPattern,
                 upperTextStyle,
-                upperTextClass
+                upperTextClass,
+                popupCalendarEnabled
         };
     }
 
@@ -91,7 +95,22 @@ public class DaySwitcher extends AbstractSwitcher<DayTable> {
 
         upperTextStyle = (String) state[i++];
         upperTextClass = (String) state[i++];
+
+        popupCalendarEnabled = (Boolean) state[i++];
     }
 
+    public boolean isPopupCalendarEnabled() {
+        return ValueBindings.get(this, "popupCalendarEnabled", popupCalendarEnabled, true);
+    }
+
+    public void setPopupCalendarEnabled(boolean popupCalendarEnabled) {
+        this.popupCalendarEnabled = popupCalendarEnabled;
+    }
+
+    public Calendar getPopupCalendar() {
+        Calendar calendar = Components.getOrCreateFacet(
+                getFacesContext(), this, Calendar.COMPONENT_TYPE, "popupCalendar", Calendar.class);
+        return calendar;
+    }
 
 }

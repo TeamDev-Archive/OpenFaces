@@ -11,7 +11,7 @@
  */
 package org.openfaces.component.input;
 
-import org.openfaces.component.AbstractPopup;
+import org.openfaces.component.SimplePopup;
 import org.openfaces.component.OUIClientAction;
 import org.openfaces.component.table.BaseColumn;
 import org.openfaces.renderkit.TableUtil;
@@ -40,7 +40,7 @@ import java.util.Map;
  *
  * @author Kharchenko
  */
-public class DropDownPopup extends AbstractPopup {
+public class DropDownPopup extends SimplePopup {
     public static final String COMPONENT_TYPE = "org.openfaces.DropDownPopup";
 
     public static final String INNER_TABLE_SUFFIX = "::innerTable";

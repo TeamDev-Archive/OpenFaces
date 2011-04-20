@@ -1233,5 +1233,13 @@
       <handler-class>org.openfaces.taglib.facelets.timetable.TimetableViewSwitcherTagHandler</handler-class>
     </component>
   </tag>
+  <tag>
+    <tag-name>monthSwitcher</tag-name>
+    <component>
+      <component-type>org.openfaces.MonthSwitcher</component-type>
+      <renderer-type>org.openfaces.MonthSwitcherRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.timetable.MonthSwitcherTagHandler</handler-class>
+    </component>
+  </tag>
 
 </facelet-taglib>

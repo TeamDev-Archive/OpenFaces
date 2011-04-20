@@ -11,7 +11,7 @@
  */
 package org.openfaces.component.input;
 
-import org.openfaces.component.AbstractPopup;
+import org.openfaces.component.SimplePopup;
 import org.openfaces.component.calendar.Calendar;
 import org.openfaces.util.Components;
 import org.openfaces.util.Rendering;
@@ -26,7 +26,7 @@ import java.io.IOException;
  *
  * @author Kharchenko
  */
-public class DateChooserPopup extends AbstractPopup {
+public class DateChooserPopup extends SimplePopup {
     public static final String COMPONENT_TYPE = "org.openfaces.DateChooserPopup";
 
     public static final String CALENDAR_SUFFIX = Rendering.SERVER_ID_SUFFIX_SEPARATOR + "calendar";

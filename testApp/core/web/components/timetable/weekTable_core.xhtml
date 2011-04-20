@@ -10,19 +10,16 @@
       <input type="button" value="Current" onclick="O$('form:weekTable').currentWeek();"/>
       <input type="button" value="Next" onclick="O$('form:weekTable').nextWeek();"/>
 
+      <o:weekSwitcher for="weekTable"/>
+
       <o:weekTable id="weekTable"
                 events="#{DayTableBean1.events}"
                 day="#{DayTableBean1.date}"
                 startTime="6:00"
                 timetableChangeListener="#{DayTableBean1.processTimetableChanges}"
-                majorTimeStyle="font-family: MS Shell Dlg,Arial,sans-serif; font-size: 14pt;"
-                timeSuffixStyle="font-size: 7pt; line-height: 1em;"
-                headerStyle="float:center"
-                weekdayStyle="color:blue"
-                rowStyle="height: 20px"
             >
         <f:facet name="header">
-            <o:weekSwitcher splitter=" &#x2014; "/>
+            <o:weekSwitcher/>
         </f:facet>
       </o:weekTable>
     </o:subPanel>
@@ -35,22 +32,11 @@
       <input type="button" value="Current" onclick="O$('form:weekTable2').currentWeek();"/>
       <input type="button" value="Next" onclick="O$('form:weekTable2').nextWeek();"/>
 
+      <o:weekSwitcher for="weekTable2"/>
+
       <o:weekTable id="weekTable2" events="#{TimeTableBean.events2}" resources="#{TimeTableBean.resources}"
               timetableChangeListener="#{TimeTableBean.processTimetableChanges2}"
-              style="border: none;"
-              startTime="8:00"
-              endTime="19:00"
-              timeColumnStyle="color: black; background: transparent;"
-              timeTextPosition="againstMark"
-              timeColumnSeparator="none"
-              timeColumnPrimaryRowSeparator="none"
-              timeColumnSecondaryRowSeparator="none"
-              rowStyle="height: 45px;"
-              showTimeForMinorIntervals="true"
-              minorTimeStyle="color: gray"
-              reservedTimeEventStyle="border-left: none; border-right: none; margin: 0;"
-              locale="ru"
-          >
+              >
         <f:facet name="eventEditor">
           <o:eventEditorDialog labelStyle="font: normal 10pt Tahoma, Arial; color: gray" captionStyle="font: normal 12pt Tahoma, Arial; color: gray" deleteButtonStyle="color: red;">
             <f:facet name="nameField">
@@ -88,6 +74,8 @@
       <input type="button" value="Previous" onclick="O$('form:weekTable2s').previousWeek();"/>
       <input type="button" value="Current" onclick="O$('form:weekTable2s').currentWeek();"/>
       <input type="button" value="Next" onclick="O$('form:weekTable2s').nextWeek();"/>
+
+      <o:weekSwitcher for="weekTable2s"/>
 
       <o:weekTable id="weekTable2s" events="#{TimeTableBean.events2}" resources="#{TimeTableBean.resources}"
               timetableChangeListener="#{TimeTableBean.processTimetableChanges2}"

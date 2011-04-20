@@ -22,6 +22,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 /**
  * @author Roman Porotnikov
@@ -46,6 +49,22 @@ public class WeekTableRenderer extends TimeScaleTableRenderer {
 
     protected int getDayCount() {
         return 7;
+    }
+
+    protected Date getFirstDayForDefaultPeriod(TimeScaleTable timetableView, TimeZone timeZone) {
+        GregorianCalendar c = new GregorianCalendar(timeZone);
+        Date day = timetableView.getDay();
+        c.setTime(day);
+        c.set(Calendar.DAY_OF_WEEK, ((WeekTable) timetableView).getFirstDayOfWeek());
+        return c.getTime();
+    }
+
+    protected Date getLastDayForDefaultPeriod(TimeScaleTable timetableView, TimeZone timeZone) {
+        GregorianCalendar c = new GregorianCalendar(timeZone);
+        Date day = timetableView.getDay();
+        c.setTime(day);
+        c.set(Calendar.DAY_OF_WEEK, ((WeekTable) timetableView).getFirstDayOfWeek() + 6);
+        return c.getTime();
     }
 
     @Override

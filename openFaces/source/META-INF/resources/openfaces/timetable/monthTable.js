@@ -79,6 +79,7 @@ O$.MonthTable._init = function(componentId,
   var weekdayHeadersRowSeparator = stylingParams.weekdayHeadersRowSeparator ? stylingParams.weekdayHeadersRowSeparator : "1px solid gray";
   var weekdayColumnSeparator = stylingParams.weekdayColumnSeparator ? stylingParams.weekdayColumnSeparator : "1px solid silver";
   var rowSeparator = stylingParams.rowSeparator ? stylingParams.rowSeparator : "1px solid #b0b0b0";
+  var secondaryRowSeparator = stylingParams.secondaryRowSeparator ? stylingParams.secondaryRowSeparator : "1px solid #e8e8e8";
   var columnSeparator = stylingParams.columnSeparator ? stylingParams.columnSeparator : "1px solid #b0b0b0";
   var dayHeaderRowClass = O$.combineClassNames(["o_monthTableDayHeaderRow", stylingParams.dayHeaderRowClass]);
   var timetableViewRowClass = O$.combineClassNames(["o_monthTableRow", stylingParams.rowClass]);
@@ -176,6 +177,17 @@ O$.MonthTable._init = function(componentId,
 
   // workaround to show *horizontal* gridlines
   monthTable._table.body._overrideVerticalGridline(0, columnSeparator);
+
+  var rowCount = monthTable._table.body._getRows().length;
+  monthTable._table.body._getBorderBottomForCell = function(rowIndex, colIndex, cell) {
+    if (rowIndex == rowCount - 1) return "none";
+    if (rowIndex % 2 == 0)
+      return secondaryRowSeparator;
+    else
+      return rowSeparator;
+  };
+
+  monthTable._table.body._updateVerticalGridlines();
 
   monthTable._getEventEditor = function() {
     if (!editable)
@@ -512,7 +524,7 @@ O$.MonthTable._init = function(componentId,
       lastHeaderColWidth = 0;
     if (lastHeaderColWidth == 0 && O$.isOpera())
       lastHeaderColWidth = 1;
-    weekdayHeaderRow._cells[weekdayHeaderRow._cells.length - 1].style.width = lastHeaderColWidth + "px";
+    O$.setElementWidth(weekdayHeaderRow._cells[weekdayHeaderRow._cells.length - 1], lastHeaderColWidth);
   };
 
   monthTable._updateHeightForFF();

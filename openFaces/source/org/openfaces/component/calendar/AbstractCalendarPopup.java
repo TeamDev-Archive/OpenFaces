@@ -11,7 +11,7 @@
  */
 package org.openfaces.component.calendar;
 
-import org.openfaces.component.AbstractPopup;
+import org.openfaces.component.SimplePopup;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -23,7 +23,7 @@ import java.io.IOException;
  *
  * @author Dmitry Pikhulya
  */
-public class AbstractCalendarPopup extends AbstractPopup {
+public class AbstractCalendarPopup extends SimplePopup {
     protected void encodeContent(FacesContext context) throws IOException {
     }
 

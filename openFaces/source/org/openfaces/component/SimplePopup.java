@@ -16,6 +16,7 @@ import org.openfaces.util.Resources;
 import org.openfaces.util.Script;
 import org.openfaces.util.ScriptBuilder;
 
+import javax.faces.component.UIComponent;
 import javax.faces.component.UIPanel;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -27,18 +28,56 @@ import java.io.IOException;
  *
  * @author Kharchenko
  */
-public abstract class AbstractPopup extends UIPanel {
+public class SimplePopup extends UIPanel {
     public static final String COMPONENT_TYPE = "org.openfaces.Popup";
     public static final String COMPONENT_FAMILY = "org.openfaces.Popup";
 
     private static final String POPUP_STYLE = "position: absolute; visibility: hidden;";
 
-    protected AbstractPopup() {
+    private String styleClass;
+    /* The purpose of storing a single UIComponent in a field and not saving it in state is a use-case when
+       SimplePopup is created temporarily to embed a single component during the rendering time and then thrown away,
+       the child-parent hierarchy of the appropriate component should stay unaffected, hence this component is rendered
+       manually here without adding it as a child.
+     */
+    private UIComponent component;
+
+    public SimplePopup() {
+    }
+
+    public SimplePopup(String styleClass, UIComponent component) {
+        setStyleClass(styleClass);
+        this.component = component;
     }
 
     @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
+    }
+
+    @Override
+    public Object saveState(FacesContext context) {
+        return new Object[] {
+                super.saveState(context),
+                styleClass
+        };
+    }
+
+    @Override
+    public void restoreState(FacesContext context, Object state) {
+        Object[] stateArray = (Object[]) state;
+        int i = 0;
+        super.restoreState(context, stateArray[i++]);
+        styleClass = (String) stateArray[i++];
+
+    }
+
+    public String getStyleClass() {
+        return styleClass;
+    }
+
+    public void setStyleClass(String styleClass) {
+        this.styleClass = styleClass;
     }
 
     @Override
@@ -52,6 +91,9 @@ public abstract class AbstractPopup extends UIPanel {
         writer.startElement("div", this);
         writer.writeAttribute("id", getClientId(context), "id");
         writer.writeAttribute("style", getPopupStyle(), null);
+        String styleClass = getStyleClass();
+        if (styleClass != null)
+            writer.writeAttribute("class", styleClass, null);
     }
 
     protected String getPopupStyle() {
@@ -80,7 +122,11 @@ public abstract class AbstractPopup extends UIPanel {
     /**
      * Abstract method for popup's content rendering
      */
-    protected abstract void encodeContent(FacesContext context) throws IOException;
+    protected void encodeContent(FacesContext context) throws IOException {
+        Rendering.renderChildren(context, this);
+        if (component != null)
+            component.encodeAll(context);
+    }
 
     @Override
     public boolean getRendersChildren() {

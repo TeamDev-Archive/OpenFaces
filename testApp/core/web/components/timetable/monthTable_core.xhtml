@@ -10,6 +10,8 @@
       <input type="button" value="Current" onclick="O$('form:monthTable').currentMonth();"/>
       <input type="button" value="Next" onclick="O$('form:monthTable').nextMonth();"/>
 
+      <o:monthSwitcher for="monthTable"/>
+
       <o:monthTable id="monthTable"
               timetableChangeListener="#{DayTableBean1.processTimetableChanges}"
               events="#{DayTableBean1.events}"
@@ -43,6 +45,8 @@
       <input type="button" value="Current" onclick="O$('form:monthTable2').currentMonth();"/>
       <input type="button" value="Next" onclick="O$('form:monthTable2').nextMonth();"/>
 
+      <o:monthSwitcher for="monthTable2"/>
+
       <o:monthTable id="monthTable2" events="#{TimeTableBean.events2}" resources="#{TimeTableBean.resources}"
                   timetableChangeListener="#{TimeTableBean.processTimetableChanges2}"
               >
@@ -70,6 +74,8 @@
       <input type="button" value="Previous" onclick="O$('form:monthTableS').previousMonth();"/>
       <input type="button" value="Current" onclick="O$('form:monthTableS').currentMonth();"/>
       <input type="button" value="Next" onclick="O$('form:monthTableS').nextMonth();"/>
+
+      <o:monthSwitcher for="monthTableS"/>
 
       <o:monthTable id="monthTableS"
               timetableChangeListener="#{DayTableBean1.processTimetableChanges}"

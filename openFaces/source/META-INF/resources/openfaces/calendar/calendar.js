@@ -594,9 +594,9 @@ O$.Calendar = {
         ys.innerHTML = today.getFullYear();
       }
     }
-    if (calendar._onPeriodChange) {
+    if (calendar.onperiodchange) {
       var e = O$.createEvent("periodchange");
-      calendar._onPeriodChange(e);
+      calendar.onperiodchange(e);
     }
     calendar._dropsInitialized = false;
     O$.repaintAreaForOpera(calendar, true);
@@ -662,8 +662,8 @@ O$.Calendar = {
 
   _cellClick: function(cal, date) {
     O$.Calendar._setSelectedDate(cal.id, O$.cloneDateTime(date));
-    if (cal._onDateChange) {
-      cal._onDateChange();
+    if (cal.onchange) {
+      cal.onchange();
     }
   },
 
@@ -821,8 +821,8 @@ O$.Calendar = {
   _setTodaySettings: function(cal, date) {
     O$.Calendar._setSelectedDate(cal.id, date);
 
-    if (cal._onDateChange) {
-      cal._onDateChange();
+    if (cal.onchange) {
+      cal.onchange();
     }
   },
 
@@ -867,8 +867,8 @@ O$.Calendar = {
         };
       }
     }
-    if (calendar._onDateChange) {
-      calendar._onDateChange();
+    if (calendar.onchange) {
+      calendar.onchange();
     }
   },
 
@@ -1136,8 +1136,8 @@ O$.Calendar = {
     if (calendar._showFooter) {
       O$.Calendar._updateToday(calendar);
     }
-    if (calendar._onDateChange) {
-      calendar._onDateChange();
+    if (calendar.onchange) {
+      calendar.onchange();
     }
     O$.Calendar._notifyDateChangeListeners(calendar);
   },

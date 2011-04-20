@@ -36,8 +36,12 @@ public class DaySwitcherJspTag extends AbstractSwitcherJspTag {
         getDelegate().setPropertyValue("upperTextStyle", textStyle);
     }
 
-     public void setUpperTextClass(ValueExpression textClass) {
+    public void setUpperTextClass(ValueExpression textClass) {
         getDelegate().setPropertyValue("upperTextClass", textClass);
+    }
+
+    public void setPopupCalendarEnabled(ValueExpression popupCalendarEnabled) {
+        getDelegate().setPropertyValue("popupCalendarEnabled", popupCalendarEnabled);
     }
 
 }

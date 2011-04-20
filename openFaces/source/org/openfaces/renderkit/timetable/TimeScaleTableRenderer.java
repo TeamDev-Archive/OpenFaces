@@ -244,8 +244,10 @@ public abstract class TimeScaleTableRenderer extends TimetableViewRenderer {
         if (preloadedEvents == PreloadedEvents.NONE) {
             String dayStartTime = timetableView.getStartTime();
             String dayEndTime = timetableView.getEndTime();
-            startTime = getDayTimeAtTimeZone(timetableView.getDay(), dayStartTime != null ? dayStartTime : "00:00", timeZone);
-            endTime = getDayTimeAtTimeZone(timetableView.getDay(), dayEndTime != null ? dayEndTime : "24:00", timeZone);
+            Date firstDay = getFirstDayForDefaultPeriod(timetableView, timeZone);
+            Date lastDay = getLastDayForDefaultPeriod(timetableView, timeZone);
+            startTime = getDayTimeAtTimeZone(firstDay, dayStartTime != null ? dayStartTime : "00:00", timeZone);
+            endTime = getDayTimeAtTimeZone(lastDay, dayEndTime != null ? dayEndTime : "24:00", timeZone);
             prevStartTimeValue = requestMap.put(START_TIME, startTime);
             prevEndTimeValue = requestMap.put(END_TIME, endTime);
         }
@@ -273,6 +275,14 @@ public abstract class TimeScaleTableRenderer extends TimetableViewRenderer {
             throw new RuntimeException(e);
         }
         return eventParams;
+    }
+
+    protected Date getFirstDayForDefaultPeriod(TimeScaleTable timetableView, TimeZone timeZone) {
+        return timetableView.getDay();
+    }
+
+    protected Date getLastDayForDefaultPeriod(TimeScaleTable timetableView, TimeZone timeZone) {
+        return timetableView.getDay();
     }
 
     private JSONObject getStylingParamsObj(FacesContext context, TimeScaleTable timetableView) {

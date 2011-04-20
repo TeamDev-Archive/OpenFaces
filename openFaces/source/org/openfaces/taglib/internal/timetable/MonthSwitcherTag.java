@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 3.0
+ * OpenFaces - JSF Component Library 2.0
  * Copyright (C) 2007-2011, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -11,33 +11,24 @@
  */
 package org.openfaces.taglib.internal.timetable;
 
-import org.openfaces.component.timetable.DaySwitcher;
+import org.openfaces.component.timetable.MonthSwitcher;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-/**
- * @author Natalia Zolochevska
- */
-public class DaySwitcherTag extends AbstractSwitcherTag {
+public class MonthSwitcherTag extends AbstractSwitcherTag {
 
     public String getComponentType() {
-        return DaySwitcher.COMPONENT_TYPE;
+        return MonthSwitcher.COMPONENT_TYPE;
     }
 
     public String getRendererType() {
-        return "org.openfaces.DaySwitcherRenderer";
+        return "org.openfaces.MonthSwitcherRenderer";
     }
 
     @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
-        setStringProperty(component, "upperDateFormat");
-        setStringProperty(component, "upperPattern");
-
-        setStringProperty(component, "upperTextStyle");
-        setStringProperty(component, "upperTextClass");
-        setBooleanProperty(component, "popupCalendarEnabled");
     }
 }

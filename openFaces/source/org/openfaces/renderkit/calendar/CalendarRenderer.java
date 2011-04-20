@@ -196,13 +196,13 @@ public class CalendarRenderer extends RendererBase {
 
         String onchange = Rendering.getChangeHandlerScript(calendar);
         if (onchange != null && onchange.length() > 0) {
-            sb.append("O$('").append(clientId).append("')._onDateChange = " +  // todo: refactor passing events into passing them as a single JSON param to the initialization function
+            sb.append("O$('").append(clientId).append("').onchange = " +  // todo: refactor passing events into passing them as a single JSON param to the initialization function
                     "function(event) {").append(onchange).append("};\n");
         }
 
         String onPeriodChange = Rendering.getEventHandlerScript(calendar, "periodchange");
         if (onPeriodChange != null && onPeriodChange.length() > 0) {
-            sb.append("O$('").append(clientId).append("')._onPeriodChange = " +
+            sb.append("O$('").append(clientId).append("').onperiodchange = " +
                     "function(event) {").append(onPeriodChange).append("};\n");
         }
 

@@ -184,8 +184,8 @@ O$.TimeTableView._init = function(componentId,
   timeTableView.setDay = function(day) {
     if (O$._datesEqual(this._day, day))
       return;
-    if (this._onPeriodChange) {
-      this._onPeriodChange(day);
+    if (this.onperiodchange) {
+      this.onperiodchange(day);
     }
 
     var dtf = O$.getDateTimeFormatObject(locale);
