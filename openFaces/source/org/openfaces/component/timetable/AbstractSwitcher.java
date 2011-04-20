@@ -83,12 +83,27 @@ public abstract class AbstractSwitcher<E extends TimetableView> extends OUICompo
                 timetableView = (E) referredComponent;
             } else {
                 UIComponent component = getParent();
-                while (component != null && !(component.getClass().equals(getGenericParameterType())))
+                while (component != null && !(component instanceof TimetableView))
                     component = component.getParent();
+                String switcherComponentName = componentNameByClass(getClass());
+                if (component == null)
+                    throw new IllegalStateException(switcherComponentName + " must either be inserted into the " +
+                            "appropriate timetable component or attached to it explicitly using the 'for' attribute");
+
+                if (!(component.getClass().equals(getGenericParameterType()))) {
+                    String parentComponentName = componentNameByClass(component.getClass());
+                    throw new FacesException(switcherComponentName + " cannot be placed into " + parentComponentName);
+                }
                 timetableView = (E) component;
             }
         }
         return timetableView;
+    }
+
+    private String componentNameByClass(Class cls) {
+        String className = cls.getName();
+        int ldi = className.lastIndexOf('.');
+        return className.substring(ldi + 1);
     }
 
     protected abstract String getTimetableNotFoundMsg();

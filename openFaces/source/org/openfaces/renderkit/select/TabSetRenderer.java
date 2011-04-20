@@ -227,11 +227,13 @@ public class TabSetRenderer extends BaseTabSetRenderer {
 
     private void writeHorizontalGap(ResponseWriter writer, TabSet tabSet, int gapWidth, String emptySpaceClasses) throws IOException {
         writer.startElement("td", tabSet);
-//    writer.writeAttribute("style", "width: " + gapWidth + ";", null);
         writer.writeAttribute("width", gapWidth + "px", null);
         writer.writeAttribute("class", emptySpaceClasses, null);
         writer.writeAttribute("nowrap", "nowrap", null);
+        writer.startElement("div", tabSet);
+        writer.writeAttribute("style", "width: " + gapWidth + "px", null);
         writer.write(HTML.NBSP_ENTITY);
+        writer.endElement("div");
         writer.endElement("td");
     }
 

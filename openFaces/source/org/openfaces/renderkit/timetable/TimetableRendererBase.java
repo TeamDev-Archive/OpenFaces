@@ -34,6 +34,7 @@ public class TimetableRendererBase extends RendererBase {
         writer.startElement("tr", timetableView);
         writer.startElement("td", timetableView);
         writer.startElement("table", timetableView);
+        writeHeaderTableAttributes(writer);
         String headerClass = Styles.getCSSClass(context,
                 timetableView, timetableView.getHeaderStyle(), "o_timetableView_header", timetableView.getHeaderClass());
         writer.writeAttribute("class", headerClass, null);
@@ -47,6 +48,7 @@ public class TimetableRendererBase extends RendererBase {
         if (headerRight != null) {
             writer.startElement("td", timetableView);
             writer.writeAttribute("style", "width: 1px", null);
+            writeHeaderRightAreaAttributes(writer, timetableView);
             headerRight.encodeAll(context);
             writer.endElement("td");
         }
@@ -56,6 +58,14 @@ public class TimetableRendererBase extends RendererBase {
         writer.endElement("table");
         writer.endElement("td");
         writer.endElement("tr");
+    }
+
+    protected void writeHeaderTableAttributes(ResponseWriter writer) throws IOException {
+
+    }
+
+    protected void writeHeaderRightAreaAttributes(ResponseWriter writer, TimetableView timetableView) throws IOException {
+
     }
 
     protected void renderFooter(FacesContext context, TimetableView timetableView) throws IOException {

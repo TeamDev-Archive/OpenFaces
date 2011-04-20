@@ -93,8 +93,19 @@ public class TimetableRenderer extends TimetableRendererBase {
         writer.endElement("table");
 
         Styles.renderStyleClasses(context, timetable);
+    }
 
+    @Override
+    protected void writeHeaderTableAttributes(ResponseWriter writer) throws IOException {
+        writer.writeAttribute("cellspacing", "0", null);
+        writer.writeAttribute("cellpadding", "0", null);
+        writer.writeAttribute("border", "0", null);
+    }
 
+    @Override
+    protected void writeHeaderRightAreaAttributes(ResponseWriter writer, TimetableView timetableView) throws IOException {
+        Timetable timetable = (Timetable) timetableView;
+        Rendering.writeStyleAndClassAttributes(writer, timetable, "headerRight", "o_timetable_headerRightCell");
     }
 
     @Override

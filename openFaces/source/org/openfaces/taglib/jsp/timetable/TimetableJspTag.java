@@ -27,4 +27,12 @@ public class TimetableJspTag extends TimeScaleTableJspTag {
     public void setView(ValueExpression view) {
         getDelegate().setPropertyValue("view", view);
     }
+
+    public void setHeaderRightStyle(ValueExpression headerRightStyle) {
+        getDelegate().setPropertyValue("headerRightStyle", headerRightStyle);
+    }
+
+    public void setHeaderRightClass(ValueExpression headerRightClass) {
+        getDelegate().setPropertyValue("headerRightClass", headerRightClass);
+    }
 }
