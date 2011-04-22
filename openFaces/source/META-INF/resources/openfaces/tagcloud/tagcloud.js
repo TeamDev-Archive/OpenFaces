@@ -22,14 +22,13 @@ O$.TagCloud = {
           ) {
 
     var tagCloud = O$.initComponent(tagCloudId, {rollover: rolloverStyleClass}, {
+      _ITEM_MAX_HEIGHT: 0,
+      _ITEM_MAX_WIDTH: 0,
 
-      _ITEM_MAX_HEIGHT : 0,
-      _ITEM_MAX_WIDTH : 0,
+      _ITEM_AMOUNT: 0,
+      _ITEM_SQUARE: 0,
 
-      _ITEM_AMOUNT : 0,
-      _ITEM_SQUARE : 0,
-
-      _getItems : function() {
+      _getItems: function() {
         var cloudChildren = tagCloud.childNodes;
         var chLength = cloudChildren.length;
         var items = new Array();
@@ -80,7 +79,7 @@ O$.TagCloud = {
         }
       },
 
-      _ovalPrepareSize : function() {
+      _ovalPrepareSize: function() {
         var maxWidth = tagCloud._ITEM_MAX_WIDTH;
         var maxHeight = tagCloud._ITEM_MAX_HEIGHT;
         var tagCloudClass = O$.getElementOwnStyle(tagCloud);
@@ -104,7 +103,7 @@ O$.TagCloud = {
         return {width:width, height:height}
       },
 
-      _ovalItemsReposition : function() {
+      _ovalItemsReposition: function() {
         if (layout && layout == "oval") {
           tagCloud._initMaxParametersAndSquare();
 
@@ -151,11 +150,11 @@ O$.TagCloud = {
         }
       },
 
-      _isOvalContainPoint : function(a, b, x, y) {
+      _isOvalContainPoint: function(a, b, x, y) {
         return (x - a) * ( x - a) / ( a * a ) + ( y - b) * (y - b) / ( b * b) <= 1;
       },
 
-      _getStartY : function(a, b) {
+      _getStartY: function(a, b) {
         var rezY = 0;
         var currentP = tagCloud._getNewLinePoints(a, b, rezY);
         var lineLength = (currentP.xRight - currentP.xLeft);
@@ -169,7 +168,7 @@ O$.TagCloud = {
         return  rezY;
       },
 
-      _getNewLinePoints : function(a, b, y) {
+      _getNewLinePoints: function(a, b, y) {
         if (y > 2 * b)
           return {xLeft: 0, xRight:2 * a, y:2 * b};
 
@@ -180,11 +179,11 @@ O$.TagCloud = {
 
       },
       //sphere layout
-      _isOnSphere : function(x, y, z, R) {
+      _isOnSphere: function(x, y, z, R) {
         return x * x + y * y + z * z <= R * R;
       },
 
-      _getRandomPoint3d : function() {
+      _getRandomPoint3d: function() {
         var x1 = 1 - 2 * Math.random();
         var x2 = 1 - 2 * Math.random();
         var isStop = x1 * x1 + x2 * x2;
@@ -199,7 +198,7 @@ O$.TagCloud = {
         return {x: x , y: y, z: z};
 
       },
-      _getSphericPoint : function(radius, a, b) {
+      _getSphericPoint: function(radius, a, b) {
         var teta = a * Math.PI / 180;
         var fi = b * Math.PI / 180;
 
@@ -209,7 +208,7 @@ O$.TagCloud = {
         return {x: x, y:y, z: z};
       },
 
-      _getLoxodromicPoint : function(radius, tetta) {
+      _getLoxodromicPoint: function(radius, tetta) {
         var bb = 0.306349 / 3;
 
         var aa = 0.2;
@@ -227,7 +226,7 @@ O$.TagCloud = {
 
       },
 
-      _getSpherePoints : function(n, R) {
+      _getSpherePoints: function(n, R) {
         var pointsToReturn = new Array();
         var points = new Array();
 
@@ -351,7 +350,7 @@ O$.TagCloud = {
         return points;
       },
 
-      _spherePrepareSize : function() {
+      _spherePrepareSize: function() {
        // var tagCloudClass = O$.getElementOwnStyle(tagCloud);
         var width = O$.calculateNumericCSSValue(O$.getElementStyle(tagCloud, "width"));
 
@@ -370,7 +369,7 @@ O$.TagCloud = {
         return width- (paddingLeft + paddingRight + borderLeft + borderRight);
       },
 
-      _rgbConvert : function(str) {
+      _rgbConvert: function(str) {
         if (str === "undefined") {
           return "";
         }
@@ -393,7 +392,7 @@ O$.TagCloud = {
         return ('#' + str.join(""));
       },
 
-      _renderSphere : function() {
+      _renderSphere: function() {
 
         function displayPoint(item, point) {
           var depth = Math.floor((r + point.z) / 2 / r * 1000) * 0.001;
@@ -643,9 +642,7 @@ O$.TagCloud = {
         }
 
       }
-    }
-            )
-            ;
+    });
 
 
     O$.addLoadEvent(function() {

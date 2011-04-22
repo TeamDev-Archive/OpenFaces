@@ -1,6 +1,6 @@
 /*
  * OpenFaces - JSF Component Library 2.0
- * Copyright (C) 2007-2011, TeamDev Ltd.
+ * Copyright (C) 2007-2009, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
  * the GNU Lesser General Public License Version 2.1 (the "LGPL" License).
@@ -11,28 +11,29 @@
  */
 package org.openfaces.taglib.internal.timetable;
 
-import org.openfaces.component.timetable.Timetable;
+import org.openfaces.component.timetable.TimePeriodSwitcher;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-public class TimetableTag extends TimeScaleTableTag {
+public class TimePeriodSwitcherTag extends AbstractSwitcherTag {
 
     public String getComponentType() {
-        return Timetable.COMPONENT_TYPE;
+        return TimePeriodSwitcher.COMPONENT_TYPE;
     }
 
     public String getRendererType() {
-        return "org.openfaces.TimetableRenderer";
+        return "org.openfaces.TimePeriodSwitcherRenderer";
     }
 
     @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
-        setEnumerationProperty(component, "viewType", Timetable.ViewType.class);
-        setStringProperty(component, "headerRightStyle");
-        setStringProperty(component, "headerRightClass");
-        setStringProperty(component, "onviewchange");
+        setObjectProperty(component, "monthPattern");
+        setObjectProperty(component, "fromWeekPattern");
+        setObjectProperty(component, "toWeekPattern");
+        setObjectProperty(component, "dayPattern");
+        setObjectProperty(component, "dayUpperPattern");
     }
 }

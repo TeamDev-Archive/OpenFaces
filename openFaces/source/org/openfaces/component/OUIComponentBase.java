@@ -13,6 +13,7 @@ package org.openfaces.component;
 
 import org.openfaces.util.ValueBindings;
 
+import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 
@@ -39,8 +40,12 @@ public abstract class OUIComponentBase extends UIComponentBase implements OUICom
     private String onkeypress;
     private String oncontextmenu;
 
+    protected UIComponent getDelegate() {
+        return null;
+    }
+
     public String getStyle() {
-        return ValueBindings.get(this, "style", style);
+        return ValueBindings.get(this, getDelegate(), "style", style);
     }
 
     public void setStyle(String style) {
@@ -48,7 +53,7 @@ public abstract class OUIComponentBase extends UIComponentBase implements OUICom
     }
 
     public String getRolloverStyle() {
-        return ValueBindings.get(this, "rolloverStyle", rolloverStyle);
+        return ValueBindings.get(this, getDelegate(), "rolloverStyle", rolloverStyle);
     }
 
     public void setRolloverStyle(String rolloverStyle) {
@@ -56,7 +61,7 @@ public abstract class OUIComponentBase extends UIComponentBase implements OUICom
     }
 
     public String getRolloverClass() {
-        return ValueBindings.get(this, "rolloverClass", rolloverClass);
+        return ValueBindings.get(this, getDelegate(), "rolloverClass", rolloverClass);
     }
 
     public void setRolloverClass(String rolloverClass) {
@@ -64,7 +69,7 @@ public abstract class OUIComponentBase extends UIComponentBase implements OUICom
     }
 
     public String getStyleClass() {
-        return ValueBindings.get(this, "styleClass", styleClass);
+        return ValueBindings.get(this, getDelegate(), "styleClass", styleClass);
     }
 
     public void setStyleClass(String styleClass) {
@@ -72,7 +77,7 @@ public abstract class OUIComponentBase extends UIComponentBase implements OUICom
     }
 
     public String getOnkeypress() {
-        return ValueBindings.get(this, "onkeypress", onkeypress);
+        return ValueBindings.get(this, getDelegate(), "onkeypress", onkeypress);
     }
 
     public void setOnkeypress(String onkeypress) {
@@ -80,7 +85,7 @@ public abstract class OUIComponentBase extends UIComponentBase implements OUICom
     }
 
     public String getOncontextmenu() {
-        return ValueBindings.get(this, "oncontextmenu", oncontextmenu);
+        return ValueBindings.get(this, getDelegate(), "oncontextmenu", oncontextmenu);
     }
 
     public void setOncontextmenu(String oncontextmenu) {
@@ -88,7 +93,7 @@ public abstract class OUIComponentBase extends UIComponentBase implements OUICom
     }
 
     public String getOnclick() {
-        return ValueBindings.get(this, "onclick", onclick);
+        return ValueBindings.get(this, getDelegate(), "onclick", onclick);
     }
 
     public void setOnclick(String onclick) {
@@ -96,7 +101,7 @@ public abstract class OUIComponentBase extends UIComponentBase implements OUICom
     }
 
     public String getOndblclick() {
-        return ValueBindings.get(this, "ondblclick", ondblclick);
+        return ValueBindings.get(this, getDelegate(), "ondblclick", ondblclick);
     }
 
     public void setOndblclick(String ondblclick) {
@@ -104,7 +109,7 @@ public abstract class OUIComponentBase extends UIComponentBase implements OUICom
     }
 
     public String getOnmousedown() {
-        return ValueBindings.get(this, "onmousedown", onmousedown);
+        return ValueBindings.get(this, getDelegate(), "onmousedown", onmousedown);
     }
 
     public void setOnmousedown(String onmousedown) {
@@ -112,7 +117,7 @@ public abstract class OUIComponentBase extends UIComponentBase implements OUICom
     }
 
     public String getOnmouseover() {
-        return ValueBindings.get(this, "onmouseover", onmouseover);
+        return ValueBindings.get(this, getDelegate(), "onmouseover", onmouseover);
     }
 
     public void setOnmouseover(String onmouseover) {
@@ -120,7 +125,7 @@ public abstract class OUIComponentBase extends UIComponentBase implements OUICom
     }
 
     public String getOnmousemove() {
-        return ValueBindings.get(this, "onmousemove", onmousemove);
+        return ValueBindings.get(this, getDelegate(), "onmousemove", onmousemove);
     }
 
     public void setOnmousemove(String onmousemove) {
@@ -128,7 +133,7 @@ public abstract class OUIComponentBase extends UIComponentBase implements OUICom
     }
 
     public String getOnmouseout() {
-        return ValueBindings.get(this, "onmouseout", onmouseout);
+        return ValueBindings.get(this, getDelegate(), "onmouseout", onmouseout);
     }
 
     public void setOnmouseout(String onmouseout) {
@@ -136,7 +141,7 @@ public abstract class OUIComponentBase extends UIComponentBase implements OUICom
     }
 
     public String getOnmouseup() {
-        return ValueBindings.get(this, "onmouseup", onmouseup);
+        return ValueBindings.get(this, getDelegate(), "onmouseup", onmouseup);
     }
 
     public void setOnmouseup(String onmouseup) {
@@ -144,7 +149,7 @@ public abstract class OUIComponentBase extends UIComponentBase implements OUICom
     }
 
     public String getOnfocus() {
-        return ValueBindings.get(this, "onfocus", onfocus);
+        return ValueBindings.get(this, getDelegate(), "onfocus", onfocus);
     }
 
     public void setOnfocus(String onfocus) {
@@ -152,7 +157,7 @@ public abstract class OUIComponentBase extends UIComponentBase implements OUICom
     }
 
     public String getOnblur() {
-        return ValueBindings.get(this, "onblur", onblur);
+        return ValueBindings.get(this, getDelegate(), "onblur", onblur);
     }
 
     public void setOnblur(String onblur) {
@@ -160,7 +165,7 @@ public abstract class OUIComponentBase extends UIComponentBase implements OUICom
     }
 
     public String getOnkeydown() {
-        return ValueBindings.get(this, "onkeydown", onkeydown);
+        return ValueBindings.get(this, getDelegate(), "onkeydown", onkeydown);
     }
 
     public void setOnkeydown(String onkeydown) {
@@ -168,7 +173,7 @@ public abstract class OUIComponentBase extends UIComponentBase implements OUICom
     }
 
     public String getOnkeyup() {
-        return ValueBindings.get(this, "onkeyup", onkeyup);
+        return ValueBindings.get(this, getDelegate(), "onkeyup", onkeyup);
     }
 
     public void setOnkeyup(String onkeyup) {

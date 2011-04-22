@@ -35,9 +35,9 @@ O$.LevelIndicator = {
       _colors: colors,
       _transitionLevels: transitionLevels,
       _inactiveSegmentIntensity: inactiveSegmentIntensity,
-      _displayAreaSize : 0,
-      _segment_left_margin : 0,
-      _segment_right_margin : 2,
+      _displayAreaSize: 0,
+      _segment_left_margin: 0,
+      _segment_right_margin: 2,
 
       _setupIndicator: function() {
         var clientSpecifiedWidth = O$.getStyleClassProperty(levelIndicator.className, "width");

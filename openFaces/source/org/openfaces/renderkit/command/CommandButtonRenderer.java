@@ -13,7 +13,7 @@ package org.openfaces.renderkit.command;
 
 import org.openfaces.component.OUIClientAction;
 import org.openfaces.component.command.CommandButton;
-import org.openfaces.renderkit.RendererBase;
+import org.openfaces.renderkit.OUICommandRenderer;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.Resources;
@@ -21,15 +21,13 @@ import org.openfaces.util.Resources;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.event.ActionEvent;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Dmitry Pikhulya
  */
-public class CommandButtonRenderer extends RendererBase {
+public class CommandButtonRenderer extends OUICommandRenderer {
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
@@ -51,7 +49,7 @@ public class CommandButtonRenderer extends RendererBase {
         writer.writeAttribute("type", type, "type");
         if (btn.isDisabled())
             writer.writeAttribute("disabled", "disabled", "");
-        
+
         Rendering.writeAttributes(writer, btn,
                 "accesskey",
                 "tabindex",
@@ -95,12 +93,4 @@ public class CommandButtonRenderer extends RendererBase {
         return false;
     }
 
-    @Override
-    public void decode(FacesContext context, UIComponent component) {
-        Map<String, String> requestParameters = context.getExternalContext().getRequestParameterMap();
-        String key = component.getClientId(context);
-        if (requestParameters.containsKey(key)) {
-            component.queueEvent(new ActionEvent(component));
-        }
-    }
 }

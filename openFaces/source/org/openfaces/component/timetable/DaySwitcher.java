@@ -31,9 +31,8 @@ public class DaySwitcher extends AbstractSwitcher<DayTable> {
     private String upperTextClass;
     private Boolean popupCalendarEnabled;
 
-    @Override
-    protected String getTimetableNotFoundMsg() {
-        return "DaySwitcher's \"for\" attribute must refer to a DayTable component.";
+    public DaySwitcher() {
+        setRendererType("org.openfaces.DaySwitcherRenderer");
     }
 
     public String getUpperDateFormat() {
@@ -44,8 +43,25 @@ public class DaySwitcher extends AbstractSwitcher<DayTable> {
         this.upperDateFormat = upperDateFormat;
     }
 
+    @Override
+    public String getPattern() {
+        String pattern = super.getPattern();
+        if (pattern == null) {
+            TimePeriodSwitcher timePeriodSwitcher = getTimePeriodSwitcher();
+            if (timePeriodSwitcher != null)
+                pattern = timePeriodSwitcher.getDayPattern();
+        }
+        return pattern;
+    }
+
     public String getUpperPattern() {
-        return ValueBindings.get(this, "upperPattern", upperPattern);
+        String upperPattern = ValueBindings.get(this, "upperPattern", this.upperPattern);
+        if (upperPattern == null) {
+            TimePeriodSwitcher timePeriodSwitcher = getTimePeriodSwitcher();
+            if (timePeriodSwitcher != null)
+                upperPattern = timePeriodSwitcher.getDayUpperPattern();
+        }
+        return upperPattern;
     }
 
     public void setUpperPattern(String upperPattern) {
@@ -97,6 +113,11 @@ public class DaySwitcher extends AbstractSwitcher<DayTable> {
         upperTextClass = (String) state[i++];
 
         popupCalendarEnabled = (Boolean) state[i++];
+    }
+
+    @Override
+    public Timetable.ViewType getApplicableViewType() {
+        return Timetable.ViewType.DAY;
     }
 
     public boolean isPopupCalendarEnabled() {

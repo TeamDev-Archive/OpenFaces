@@ -136,4 +136,9 @@ public class WeekTable extends TimeScaleTable {
         weekdayClass = (String) state[i++];
         weekdayPattern = (String) state[i++];
     }
+
+    @Override
+    public Timetable.ViewType getType() {
+        return Timetable.ViewType.WEEK;
+    }
 }

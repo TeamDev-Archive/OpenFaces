@@ -13,6 +13,8 @@ package org.openfaces.renderkit.timetable;
 
 import org.openfaces.component.timetable.AbstractSwitcher;
 import org.openfaces.component.timetable.TimetableView;
+import org.openfaces.component.timetable.WeekSwitcher;
+import org.openfaces.util.CalendarUtil;
 import org.openfaces.util.Styles;
 
 import javax.faces.FacesException;
@@ -22,6 +24,9 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
+import java.util.Map;
+import java.util.TimeZone;
 
 /**
  * @author Roman Gorodischer
@@ -31,8 +36,13 @@ public class WeekSwitcherRenderer extends AbstractSwitcherRenderer {
 
     @Override
     protected Object[] getAdditionalParams(FacesContext context) {
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+        String fromPattern = (String) requestMap.get(getFromPatternKey());
+        String toPattern = (String) requestMap.get(getToPatternKey());
         return new Object[]{
-                DATE_RANGE_SEPARATOR
+                DATE_RANGE_SEPARATOR,
+                fromPattern,
+                toPattern
         };
     }
 
@@ -47,8 +57,17 @@ public class WeekSwitcherRenderer extends AbstractSwitcherRenderer {
             AbstractSwitcher switcher,
             TimetableView timetableView,
             SimpleDateFormat dateFormat) throws IOException {
-        String pattern = dateFormat.toPattern();
-        if (pattern.length() == 0) throw new FacesException("WeekSwitcher's pattern is empty.");
+        WeekSwitcher weekSwitcher = (WeekSwitcher) switcher;
+        Locale locale = switcher.getLocale();
+        TimeZone timeZone = switcher.getTimeZone();
+
+        SimpleDateFormat fromDateFormat = CalendarUtil.getSimpleDateFormat(null, null,
+                weekSwitcher.getFromPattern(), "MMMM d", locale, timeZone);
+        SimpleDateFormat toDateFormat = CalendarUtil.getSimpleDateFormat(null, null,
+                weekSwitcher.getToPattern(), "MMMM d, yyyy", locale, timeZone);
+        Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
+        requestMap.put(getFromPatternKey(), fromDateFormat.toPattern());
+        requestMap.put(getToPatternKey(), toDateFormat.toPattern());
 
         ResponseWriter writer = context.getResponseWriter();
         String clientId = switcher.getClientId(context);
@@ -58,9 +77,17 @@ public class WeekSwitcherRenderer extends AbstractSwitcherRenderer {
                 switcher, switcher.getTextStyle(), "o_timeSwitcher_text", switcher.getTextClass());
         writer.writeAttribute("class", textClass, null);
 
-        writer.write(dateFormat.format(getFirstDayOfTheWeek(timetableView)) + DATE_RANGE_SEPARATOR
-                + dateFormat.format(getLastDayOfTheWeek(timetableView)));
+        writer.write(fromDateFormat.format(getFirstDayOfTheWeek(timetableView)) + DATE_RANGE_SEPARATOR
+                + toDateFormat.format(getLastDayOfTheWeek(timetableView)));
         writer.endElement("div");
+    }
+
+    private String getToPatternKey() {
+        return WeekSwitcherRenderer.class + ".toPattern";
+    }
+
+    private String getFromPatternKey() {
+        return WeekSwitcherRenderer.class + ".fromPattern";
     }
 
     private Date getFirstDayOfTheWeek(TimetableView timetableView) {

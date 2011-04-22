@@ -9,7 +9,6 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-
 package org.openfaces.component.timetable;
 
 import org.openfaces.component.OUIComponentBase;
@@ -28,9 +27,9 @@ import java.util.TimeZone;
 /**
  * @author Roman Gorodischer
  */
-public abstract class AbstractSwitcher<E extends TimetableView> extends OUIComponentBase {
+public abstract class AbstractSwitcher<V extends TimetableView> extends OUIComponentBase {
     private String _for;
-    private E timetableView;
+    private V timetableView;
 
     private String dateFormat;
     private String pattern;
@@ -72,32 +71,47 @@ public abstract class AbstractSwitcher<E extends TimetableView> extends OUICompo
         this._for = _for;
     }
 
-    @SuppressWarnings("unchecked") 
-    public E getTimetableView() {
+    @SuppressWarnings("unchecked")
+    public V getTimetableView() {
         if (timetableView == null) {
             String _for = getFor();
             if (_for != null) {
                 UIComponent referredComponent = Components.referenceIdToComponent(this, _for);
-                if (referredComponent != null && !(referredComponent.getClass().equals(getGenericParameterType())))
-                    throw new FacesException(getTimetableNotFoundMsg());
-                timetableView = (E) referredComponent;
+                if (referredComponent == null)
+                    throw new FacesException("Invalid value in the 'for' attribute " +
+                            "(the component with such id couldn't be found): " + _for);
+                if (!(referredComponent.getClass().equals(getGenericParameterType())))
+                    throw new FacesException(componentNameByClass(getClass()) + "'s \"for\" attribute must refer to a " +
+                            getTimetableViewComponentName() + " component.");
+                timetableView = (V) referredComponent;
             } else {
                 UIComponent component = getParent();
                 while (component != null && !(component instanceof TimetableView))
                     component = component.getParent();
                 String switcherComponentName = componentNameByClass(getClass());
                 if (component == null)
-                    throw new IllegalStateException(switcherComponentName + " must either be inserted into the " +
-                            "appropriate timetable component or attached to it explicitly using the 'for' attribute");
+                    return null;
 
                 if (!(component.getClass().equals(getGenericParameterType()))) {
                     String parentComponentName = componentNameByClass(component.getClass());
                     throw new FacesException(switcherComponentName + " cannot be placed into " + parentComponentName);
                 }
-                timetableView = (E) component;
+                timetableView = (V) component;
             }
         }
         return timetableView;
+    }
+
+    public TimePeriodSwitcher getTimePeriodSwitcher() {
+        UIComponent parent = getParent();
+        while (parent != null && !(parent instanceof TimePeriodSwitcher))
+            parent = parent.getParent();
+        return (TimePeriodSwitcher) parent;
+    }
+
+    @Override
+    protected UIComponent getDelegate() {
+        return getTimePeriodSwitcher();
     }
 
     private String componentNameByClass(Class cls) {
@@ -106,7 +120,9 @@ public abstract class AbstractSwitcher<E extends TimetableView> extends OUICompo
         return className.substring(ldi + 1);
     }
 
-    protected abstract String getTimetableNotFoundMsg();
+    private String getTimetableViewComponentName() {
+        return componentNameByClass(getGenericParameterType());
+    }
 
 
     public String getDateFormat() {
@@ -126,8 +142,14 @@ public abstract class AbstractSwitcher<E extends TimetableView> extends OUICompo
     }
 
     public Locale getLocale() {
-        E timetableView = getTimetableView();
-        Locale defaultLocale = timetableView != null ? timetableView.getLocale() : null;
+        TimePeriodSwitcher timePeriodSwitcher = getTimePeriodSwitcher();
+        Locale defaultLocale = timePeriodSwitcher != null ? timePeriodSwitcher.getLocale() : null;
+
+        if (defaultLocale == null) {
+            V timetableView = getTimetableView();
+            if (timetableView != null)
+            defaultLocale = timetableView.getLocale();
+        }
         return CalendarUtil.getBoundPropertyValueAsLocale(this, "locale", defaultLocale, locale);
     }
 
@@ -136,8 +158,9 @@ public abstract class AbstractSwitcher<E extends TimetableView> extends OUICompo
     }
 
     public TimeZone getTimeZone() {
-        TimeZone timeZone = getTimetableView().getTimeZone();
-        return ValueBindings.get(this, "timeZone", this.timeZone, timeZone, TimeZone.class);
+        V timetableView = getTimetableView();
+        TimeZone timeZone = timetableView != null ? timetableView.getTimeZone() : null;
+        return ValueBindings.get(this, getTimePeriodSwitcher(), "timeZone", this.timeZone, timeZone, TimeZone.class);
     }
 
     public void setTimeZone(TimeZone timeZone) {
@@ -145,7 +168,7 @@ public abstract class AbstractSwitcher<E extends TimetableView> extends OUICompo
     }
 
     public boolean isEnabled() {
-        return ValueBindings.get(this, "enabled", enabled, true);
+        return ValueBindings.get(this, getTimePeriodSwitcher(), "enabled", enabled, true);
     }
 
     public void setEnabled(boolean enabled) {
@@ -153,7 +176,7 @@ public abstract class AbstractSwitcher<E extends TimetableView> extends OUICompo
     }
 
     public String getPreviousButtonStyle() {
-        return ValueBindings.get(this, "previousButtonStyle", previousButtonStyle);
+        return ValueBindings.get(this, getTimePeriodSwitcher(), "previousButtonStyle", previousButtonStyle);
     }
 
     public void setPreviousButtonStyle(String previousButtonStyle) {
@@ -161,7 +184,7 @@ public abstract class AbstractSwitcher<E extends TimetableView> extends OUICompo
     }
 
     public String getPreviousButtonClass() {
-        return ValueBindings.get(this, "previousButtonClass", previousButtonClass);
+        return ValueBindings.get(this, getTimePeriodSwitcher(), "previousButtonClass", previousButtonClass);
     }
 
     public void setPreviousButtonClass(String previousButtonClass) {
@@ -169,7 +192,7 @@ public abstract class AbstractSwitcher<E extends TimetableView> extends OUICompo
     }
 
     public String getPreviousButtonRolloverStyle() {
-        return ValueBindings.get(this, "previousButtonRolloverStyle", previousButtonRolloverStyle);
+        return ValueBindings.get(this, getTimePeriodSwitcher(), "previousButtonRolloverStyle", previousButtonRolloverStyle);
     }
 
     public void setPreviousButtonRolloverStyle(String previousButtonRolloverStyle) {
@@ -177,7 +200,7 @@ public abstract class AbstractSwitcher<E extends TimetableView> extends OUICompo
     }
 
     public String getPreviousButtonRolloverClass() {
-        return ValueBindings.get(this, "previousButtonRolloverClass", previousButtonRolloverClass);
+        return ValueBindings.get(this, getTimePeriodSwitcher(), "previousButtonRolloverClass", previousButtonRolloverClass);
     }
 
     public void setPreviousButtonRolloverClass(String previousButtonRolloverClass) {
@@ -185,7 +208,7 @@ public abstract class AbstractSwitcher<E extends TimetableView> extends OUICompo
     }
 
     public String getPreviousButtonPressedStyle() {
-        return ValueBindings.get(this, "previousButtonPressedStyle", previousButtonPressedStyle);
+        return ValueBindings.get(this, getTimePeriodSwitcher(), "previousButtonPressedStyle", previousButtonPressedStyle);
     }
 
     public void setPreviousButtonPressedStyle(String previousButtonPressedStyle) {
@@ -193,7 +216,7 @@ public abstract class AbstractSwitcher<E extends TimetableView> extends OUICompo
     }
 
     public String getPreviousButtonPressedClass() {
-        return ValueBindings.get(this, "previousButtonPressedClass", previousButtonPressedClass);
+        return ValueBindings.get(this, getTimePeriodSwitcher(), "previousButtonPressedClass", previousButtonPressedClass);
     }
 
     public void setPreviousButtonPressedClass(String previousButtonPressedClass) {
@@ -201,7 +224,7 @@ public abstract class AbstractSwitcher<E extends TimetableView> extends OUICompo
     }
 
     public String getPreviousButtonImageUrl() {
-        return ValueBindings.get(this, "previousButtonImageUrl", previousButtonImageUrl);
+        return ValueBindings.get(this, getTimePeriodSwitcher(), "previousButtonImageUrl", previousButtonImageUrl);
     }
 
     public void setPreviousButtonImageUrl(String previousButtonImageUrl) {
@@ -209,7 +232,7 @@ public abstract class AbstractSwitcher<E extends TimetableView> extends OUICompo
     }
 
     public String getNextButtonStyle() {
-        return ValueBindings.get(this, "nextButtonStyle", nextButtonStyle);
+        return ValueBindings.get(this, getTimePeriodSwitcher(), "nextButtonStyle", nextButtonStyle);
     }
 
     public void setNextButtonStyle(String nextButtonStyle) {
@@ -217,7 +240,7 @@ public abstract class AbstractSwitcher<E extends TimetableView> extends OUICompo
     }
 
     public String getNextButtonClass() {
-        return ValueBindings.get(this, "nextButtonClass", nextButtonClass);
+        return ValueBindings.get(this, getTimePeriodSwitcher(), "nextButtonClass", nextButtonClass);
     }
 
     public void setNextButtonClass(String nextButtonClass) {
@@ -225,7 +248,7 @@ public abstract class AbstractSwitcher<E extends TimetableView> extends OUICompo
     }
 
     public String getNextButtonRolloverStyle() {
-        return ValueBindings.get(this, "nextButtonRolloverStyle", nextButtonRolloverStyle);
+        return ValueBindings.get(this, getTimePeriodSwitcher(), "nextButtonRolloverStyle", nextButtonRolloverStyle);
     }
 
     public void setNextButtonRolloverStyle(String nextButtonRolloverStyle) {
@@ -233,7 +256,7 @@ public abstract class AbstractSwitcher<E extends TimetableView> extends OUICompo
     }
 
     public String getNextButtonRolloverClass() {
-        return ValueBindings.get(this, "nextButtonRolloverClass", nextButtonRolloverClass);
+        return ValueBindings.get(this, getTimePeriodSwitcher(), "nextButtonRolloverClass", nextButtonRolloverClass);
     }
 
     public void setNextButtonRolloverClass(String nextButtonRolloverClass) {
@@ -241,7 +264,7 @@ public abstract class AbstractSwitcher<E extends TimetableView> extends OUICompo
     }
 
     public String getNextButtonPressedStyle() {
-        return ValueBindings.get(this, "nextButtonPressedStyle", nextButtonPressedStyle);
+        return ValueBindings.get(this, getTimePeriodSwitcher(), "nextButtonPressedStyle", nextButtonPressedStyle);
     }
 
     public void setNextButtonPressedStyle(String nextButtonPressedStyle) {
@@ -249,7 +272,7 @@ public abstract class AbstractSwitcher<E extends TimetableView> extends OUICompo
     }
 
     public String getNextButtonPressedClass() {
-        return ValueBindings.get(this, "nextButtonPressedClass", nextButtonPressedClass);
+        return ValueBindings.get(this, getTimePeriodSwitcher(), "nextButtonPressedClass", nextButtonPressedClass);
     }
 
     public void setNextButtonPressedClass(String nextButtonPressedClass) {
@@ -257,7 +280,7 @@ public abstract class AbstractSwitcher<E extends TimetableView> extends OUICompo
     }
 
     public String getNextButtonImageUrl() {
-        return ValueBindings.get(this, "nextButtonImageUrl", nextButtonImageUrl);
+        return ValueBindings.get(this, getTimePeriodSwitcher(), "nextButtonImageUrl", nextButtonImageUrl);
     }
 
     public void setNextButtonImageUrl(String nextButtonImageUrl) {
@@ -265,7 +288,7 @@ public abstract class AbstractSwitcher<E extends TimetableView> extends OUICompo
     }
 
     public String getTextStyle() {
-        return ValueBindings.get(this, "textStyle", textStyle);
+        return ValueBindings.get(this, getTimePeriodSwitcher(), "textStyle", textStyle);
     }
 
     public void setTextStyle(String textStyle) {
@@ -273,7 +296,7 @@ public abstract class AbstractSwitcher<E extends TimetableView> extends OUICompo
     }
 
     public String getTextClass() {
-        return ValueBindings.get(this, "textClass", textClass);
+        return ValueBindings.get(this, getTimePeriodSwitcher(), "textClass", textClass);
     }
 
     public void setTextClass(String textClass) {
@@ -281,7 +304,7 @@ public abstract class AbstractSwitcher<E extends TimetableView> extends OUICompo
     }
 
     public String getTextRolloverStyle() {
-        return ValueBindings.get(this, "textRolloverStyle", textRolloverStyle);
+        return ValueBindings.get(this, getTimePeriodSwitcher(), "textRolloverStyle", textRolloverStyle);
     }
 
     public void setTextRolloverStyle(String textRolloverStyle) {
@@ -289,7 +312,7 @@ public abstract class AbstractSwitcher<E extends TimetableView> extends OUICompo
     }
 
     public String getTextRolloverClass() {
-        return ValueBindings.get(this, "textRolloverClass", textRolloverClass);
+        return ValueBindings.get(this, getTimePeriodSwitcher(), "textRolloverClass", textRolloverClass);
     }
 
     public void setTextRolloverClass(String textRolloverClass) {
@@ -392,4 +415,5 @@ public abstract class AbstractSwitcher<E extends TimetableView> extends OUICompo
         throw new IllegalArgumentException("Class should directly extend AbstractSwitcher");
     }
 
+    public abstract Timetable.ViewType getApplicableViewType();
 }

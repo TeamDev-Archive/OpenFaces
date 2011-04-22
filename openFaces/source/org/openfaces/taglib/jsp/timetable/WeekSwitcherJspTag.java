@@ -14,6 +14,8 @@ package org.openfaces.taglib.jsp.timetable;
 
 import org.openfaces.taglib.internal.timetable.WeekSwitcherTag;
 
+import javax.el.ValueExpression;
+
 /**
  * @author Roman Gorodischer
  */
@@ -23,4 +25,11 @@ public class WeekSwitcherJspTag extends AbstractSwitcherJspTag {
         super(new WeekSwitcherTag());
     }
 
+    public void setFromPattern(ValueExpression fromPattern) {
+        getDelegate().setPropertyValue("fromPattern", fromPattern);
+    }
+
+    public void setToPattern(ValueExpression toPattern) {
+        getDelegate().setPropertyValue("toPattern", toPattern);
+    }
 }

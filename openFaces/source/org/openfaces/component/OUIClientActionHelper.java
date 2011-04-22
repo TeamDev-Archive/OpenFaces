@@ -78,20 +78,23 @@ public abstract class OUIClientActionHelper {
         if (action.isStandalone() || action.getFor() != null ||
                 parent instanceof HtmlCommandButton || parent instanceof HtmlCommandLink) {
             if (context.getResponseWriter() != null) {
-                AjaxUtil.renderJSLinks(context);
-                Styles.requestDefaultCss(context);
+                renderResources(context);
             }
             return;
         }
 
         String script = getClientActionScript(context, action);
         if (context.getResponseWriter() != null) {
-            AjaxUtil.renderJSLinks(context);
-            Styles.requestDefaultCss(context);
+            renderResources(context);
         }
 
         String event = Rendering.getEventWithOnPrefix(context, action, null);
         parent.getAttributes().put(event, script);
+    }
+
+    protected void renderResources(FacesContext context) {
+        AjaxUtil.renderJSLinks(context);
+        Styles.requestDefaultCss(context);
     }
 
     protected abstract String getClientActionScript(FacesContext context, OUIClientAction action);

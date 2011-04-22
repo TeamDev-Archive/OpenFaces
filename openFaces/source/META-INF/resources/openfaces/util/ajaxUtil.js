@@ -100,11 +100,7 @@ O$.SUBMIT_PARAMS_SUFFIX = "_of_ajax_submit_params";
 O$.PARAM_RENDER = "_of_render";
 O$.CUSTOM_JSON_PARAM = "_of_customJsonParam";
 O$.SUBMITTED_COMPONENT_IDS = "_of_execute";
-O$.ACTION_LISTENER = "_of_actionListener";
 O$.EXECUTE_RENDERED_COMPONENTS = "_of_executeRenderedComponents";
-O$.ACTION = "_of_action";
-O$.ACTION_COMPONENT = "_of_actionComponent";
-O$.IMMEDIATE = "_of_immediate";
 
 O$.TAG_AJAX_UPDATABLE = "updatable";
 O$.TAG_AJAX_SCRIPT = "script";

@@ -1233,5 +1233,21 @@
       <handler-class>org.openfaces.taglib.facelets.timetable.MonthSwitcherTagHandler</handler-class>
     </component>
   </tag>
+  <tag>
+    <tag-name>timePeriodSwitcher</tag-name>
+    <component>
+      <component-type>org.openfaces.TimePeriodSwitcher</component-type>
+      <renderer-type>org.openfaces.TimePeriodSwitcherRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.timetable.TimePeriodSwitcherTagHandler</handler-class>
+    </component>
+  </tag>
+  <tag>
+    <tag-name>action</tag-name>
+    <component>
+      <component-type>org.openfaces.Action</component-type>
+      <renderer-type>org.openfaces.ActionRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.util.ActionTagHandler</handler-class>
+    </component>
+  </tag>
 
 </facelet-taglib>

@@ -42,7 +42,19 @@ public class MonthSwitcher extends AbstractSwitcher<MonthTable> {
     }
 
     @Override
-    protected String getTimetableNotFoundMsg() {
-        return "MonthSwitcher's \"for\" attribute must refer to a MonthTable component.";
+    public Timetable.ViewType getApplicableViewType() {
+        return Timetable.ViewType.MONTH;
     }
+
+    @Override
+    public String getPattern() {
+        String pattern = super.getPattern();
+        if (pattern == null) {
+            TimePeriodSwitcher timePeriodSwitcher = getTimePeriodSwitcher();
+            if (timePeriodSwitcher != null)
+                pattern = timePeriodSwitcher.getMonthPattern();
+        }
+        return pattern;
+    }
+
 }

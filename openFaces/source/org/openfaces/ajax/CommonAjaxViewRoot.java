@@ -191,10 +191,13 @@ public abstract class CommonAjaxViewRoot {
     }
 
     public void processApplication(FacesContext context, boolean specialSessionExpirationHandling) {
-        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+        ExternalContext externalContext = context.getExternalContext();
+        Map<String, Object> requestMap = externalContext.getRequestMap();
         if (!AjaxUtil.isAjaxRequest(context)
                 || (specialSessionExpirationHandling && requestMap.containsKey(AjaxViewHandler.SESSION_EXPIRATION_PROCESSING))) {
             parentProcessApplication(context);
+            RequestFacade request = RequestFacade.getInstance(externalContext.getRequest());
+            UtilPhaseListener.processAjaxExecutePhase(context, request, viewRoot);
             return;
         }
 

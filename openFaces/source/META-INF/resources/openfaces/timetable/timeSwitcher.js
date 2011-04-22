@@ -10,14 +10,10 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-O$.TimePeriodSwitcher = {
-  _init: function(switcherId,
-                  timeTableId,
-                  day,
-                  pattern,
-                  locale,
-                  stylingParams,
-                  enabled) {
+O$.AbstractSwitcher = {
+  _init: function(switcherId, timeTableId,
+                  day, pattern, locale,
+                  stylingParams, enabled) {
     var dtf = O$.getDateTimeFormatObject(locale);
     var switcher = O$.initComponent(switcherId, {rollover: stylingParams.rolloverClass}, {
       _day: dtf.parse(day, "dd/MM/yyyy"),
@@ -122,15 +118,43 @@ O$.TimePeriodSwitcher = {
   }
 };
 
+O$.TimePeriodSwitcher = {
+  _init: function(switcherId, timetableId) {
+    var switcher = O$(switcherId);
+    var layeredPane = jQuery(switcher).find(".o_timetablePeriodSwitcher_lp")[0];
+
+    function selectPageForViewType() {
+      var viewType = timetable.getViewType();
+      var viewIndex = timetable._viewIndexByType(viewType);
+      layeredPane.setSelectedIndex(viewIndex);
+    }
+
+    var timetable = O$(timetableId);
+    function assignViewTypeChangeHandler() {
+      var prevOnviewchange = timetable.onviewtypechange;
+
+      timetable.onviewtypechange = function(e) {
+        if (prevOnviewchange)
+          prevOnviewchange.call(this, e);
+        selectPageForViewType();
+      }
+    }
+    if (timetable)
+      assignViewTypeChangeHandler();
+    else
+      O$.addLoadEvent(function() {
+        timetable = O$(timetableId);
+        assignViewTypeChangeHandler();
+        selectPageForViewType();
+      });
+  }
+};
+
 O$.MonthSwitcher = {
-  _init: function(switcherId,
-                  timeTableId,
-                  day,
-                  pattern,
-                  locale,
-                  stylingParams,
-                  enabled) {
-    O$.TimePeriodSwitcher._init.apply(null, arguments);
+  _init: function(switcherId, timeTableId,
+                  day, pattern, locale,
+                  stylingParams, enabled) {
+    O$.AbstractSwitcher._init.apply(null, arguments);
 
     var switcher = O$.initComponent(switcherId, null, {
       _updateText: function() {
@@ -158,28 +182,20 @@ O$.MonthSwitcher = {
 };
 
 O$.WeekSwitcher = {
-  _init: function(switcherId,
-                  timeTableId,
-                  day,
-                  pattern,
-                  locale,
-                  stylingParams,
-                  enabled,
-                  splitter) {
-    O$.TimePeriodSwitcher._init.apply(null, arguments);
+  _init: function(switcherId, timeTableId,
+                  day, pattern, locale,
+                  stylingParams, enabled,
+                  splitter, fromPattern, toPattern) {
+    O$.AbstractSwitcher._init.apply(null, arguments);
 
     var switcher = O$.initComponent(switcherId, null, {
-      _splitter: splitter,
-
       _updateText: function() {
-        if (this._pattern) {
-          var dtf = O$.getDateTimeFormatObject(switcher._locale);
-          var lastDay = O$.incDay(this._day, 6);
+        var dtf = O$.getDateTimeFormatObject(switcher._locale);
+        var lastDay = O$.incDay(this._day, 6);
 
-          this._text.innerHTML = dtf.format(this._day, this._pattern)
-              .concat(this._splitter)
-              .concat(dtf.format(lastDay, this._pattern));
-        }
+        this._text.innerHTML = dtf.format(this._day, fromPattern)
+            .concat(splitter)
+            .concat(dtf.format(lastDay, toPattern));
       },
 
       _getPeriodSize: function() {
@@ -192,15 +208,11 @@ O$.WeekSwitcher = {
 };
 
 O$.DaySwitcher = {
-  _init: function(switcherId,
-                  timeTableId,
-                  day,
-                  pattern,
-                  locale,
-                  stylingParams,
-                  enabled,
+  _init: function(switcherId, timeTableId,
+                  day, pattern, locale,
+                  stylingParams, enabled,
                   upperPattern) {
-    O$.TimePeriodSwitcher._init.apply(null, arguments);
+    O$.AbstractSwitcher._init.apply(null, arguments);
 
     var switcher = O$.initComponent(switcherId, null, {
       _upperPattern: upperPattern,
@@ -233,6 +245,7 @@ O$.DaySwitcher = {
       var textCell = switcher._text.parentNode;
       var popup = jQuery(textCell).find(".o_daySwitcherPopup")[0];
       if (popup) {
+        popup.onmousedown = popup.onclick = O$.stopEvent;
         O$.appendClassNames(textCell, ["o_daySwitcherClickableCell"]);
         var calendar = jQuery(popup).find(".o_calendar")[0];
         textCell.onclick = function(e) {

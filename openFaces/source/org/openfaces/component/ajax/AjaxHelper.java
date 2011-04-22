@@ -24,27 +24,26 @@ import javax.faces.context.FacesContext;
 /**
  * This class is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
  * by any application code.
- * 
+ *
  * @author Dmitry Pikhulya
  */
-public class AjaxHelper extends OUIClientActionHelper {
+class AjaxHelper extends OUIClientActionHelper {
 
     protected String getClientActionScript(FacesContext context, OUIClientAction action) {
         Ajax ajax = (Ajax) action;
 
-         if (ajax.isDisabled()){
+        if (ajax.isDisabled()) {
             return null;
         }
         ScriptBuilder buf = new ScriptBuilder();
         String onevent = ajax.getOnevent();
-        if (onevent != null){
+        if (onevent != null) {
             buf.append(onevent);
             buf.semicolon();
         }
-        
+
         final String id = ajax.getId();
         AjaxInitializer ajaxInitializer = new AjaxInitializer() {
-
             @Override
             protected Object getAjaxComponentParam(FacesContext context, OUICommand ajax) {
                 return new RawScript("O$._actionIds['" + id + "']");
@@ -58,7 +57,7 @@ public class AjaxHelper extends OUIClientActionHelper {
 
         JSONArray renderArray = ajaxInitializer.getRenderArray(context, (OUICommand) action, ajax.getRender());
         String idExpression = "O$._renderIds['" + id + "']";
-        Script render = new RawScript("(" + idExpression + " ? " + idExpression + " : " + renderArray.toString() + ")" );
+        Script render = new RawScript("(" + idExpression + " ? " + idExpression + " : " + renderArray.toString() + ")");
 
         buf.functionCall("O$._ajaxReload",
                 render,

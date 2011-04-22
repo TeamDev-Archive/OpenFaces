@@ -12,12 +12,9 @@
 
 package org.openfaces.component.timetable;
 
-import org.openfaces.util.Components;
 import org.openfaces.util.ValueBindings;
 
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import java.util.Iterator;
 
 /**
  * @author Roman Porotnikov
@@ -472,6 +469,11 @@ public class MonthTable extends TimetableView {
         moreLinkClass = (String) state[i++];
         moreLinkText = (String) state[i++];
         scrollOffset = (Integer) state[i++];
+    }
+
+    @Override
+    public Timetable.ViewType getType() {
+        return Timetable.ViewType.MONTH;
     }
 
 }

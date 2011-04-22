@@ -95,6 +95,8 @@ public class DaySwitcherRenderer extends AbstractSwitcherRenderer {
             if (daySwitcher.isPopupCalendarEnabled()) {
                 Calendar calendar = daySwitcher.getPopupCalendar();
                 calendar.setRequired(true);
+                calendar.setLocale(daySwitcher.getLocale());
+                calendar.setTimeZone(daySwitcher.getTimeZone());
 
                 SimplePopup popup = new SimplePopup("o_daySwitcherPopup", calendar);
                 try {
