@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2011, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -17,6 +17,8 @@ import org.openfaces.component.timetable.TimetableViewSwitcher;
 import org.openfaces.renderkit.select.TabSetRenderer;
 import org.openfaces.util.Components;
 import org.openfaces.util.RawScript;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
 
 import javax.faces.component.UIComponent;
@@ -35,12 +37,18 @@ public class TimetableViewSwitcherRenderer extends TabSetRenderer {
         children.add(createTabSetItem("Week"));
         children.add(createTabSetItem("Day"));
         switcher.setOnchange(
-                new ScriptBuilder().O$(timetable).dot().functionCall("setView",
+                new ScriptBuilder().O$(timetable).dot().functionCall("setViewType",
                         new RawScript("['month','week','day'][O$('" + switcher.getClientId(context) + "').getSelectedIndex()]")
                 ).toString()
         );
 
         super.encodeBegin(context, component);
+
+        Rendering.renderInitScript(context, new ScriptBuilder().initScript(context, switcher,
+                "O$.TimetableViewSwitcher._init", timetable,
+
+                Resources.getUtilJsURL(context),
+                TimetableRenderer.getTimetableJsURL(context)));
 
     }
 

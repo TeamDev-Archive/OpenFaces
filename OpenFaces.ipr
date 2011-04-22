@@ -1052,6 +1052,8 @@
         <w>onselectstart</w>
         <w>onshow</w>
         <w>onunload</w>
+        <w>onviewchange</w>
+        <w>onviewtypechange</w>
         <w>openfaces</w>
         <w>ordf</w>
         <w>paddings</w>
@@ -1106,6 +1108,8 @@
         <w>updatables</w>
         <w>valign</w>
         <w>vert</w>
+        <w>viewchange</w>
+        <w>viewtypechange</w>
         <w>webapp</w>
         <w>wikipedia</w>
         <w>xhtml</w>

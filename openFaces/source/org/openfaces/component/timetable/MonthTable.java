@@ -471,4 +471,9 @@ public class MonthTable extends TimetableView {
         scrollOffset = (Integer) state[i++];
     }
 
+    @Override
+    public Timetable.ViewType getType() {
+        return Timetable.ViewType.MONTH;
+    }
+
 }

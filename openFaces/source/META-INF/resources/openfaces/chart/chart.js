@@ -97,7 +97,7 @@ O$.Chart = {
 // -------------------------- CHART MENU SUPPORT
 O$.ChartMenu = {
   _init: function(chartMenuId, chartId) {
-    var chartMenu = O$.initComponent(chartMenuId, null, {_chart:O$(chartId)});
+    var chartMenu = O$.initComponent(chartMenuId, null, {_chart: O$(chartId)});
 
     chartMenu._chart._download = function() {
       var paramsString = "download=true";

@@ -12,8 +12,6 @@
 package org.openfaces.taglib.jsp.timetable;
 
 import org.openfaces.taglib.internal.timetable.TimetableTag;
-import org.openfaces.taglib.jsp.AbstractComponentJspTag;
-import org.openfaces.validation.core.Expressions;
 
 import javax.el.ValueExpression;
 
@@ -23,8 +21,19 @@ public class TimetableJspTag extends TimeScaleTableJspTag {
         super(new TimetableTag());
     }
 
+    public void setViewType(ValueExpression viewType) {
+        getDelegate().setPropertyValue("viewType", viewType);
+    }
 
-    public void setView(ValueExpression view) {
-        getDelegate().setPropertyValue("view", view);
+    public void setHeaderRightStyle(ValueExpression headerRightStyle) {
+        getDelegate().setPropertyValue("headerRightStyle", headerRightStyle);
+    }
+
+    public void setHeaderRightClass(ValueExpression headerRightClass) {
+        getDelegate().setPropertyValue("headerRightClass", headerRightClass);
+    }
+
+    public void setOnviewchange(ValueExpression onviewchange) {
+        getDelegate().setPropertyValue("onviewchange", onviewchange);
     }
 }

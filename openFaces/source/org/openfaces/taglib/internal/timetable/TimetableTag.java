@@ -30,6 +30,9 @@ public class TimetableTag extends TimeScaleTableTag {
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
-        setEnumerationProperty(component, "view", Timetable.View.class);
+        setEnumerationProperty(component, "viewType", Timetable.ViewType.class);
+        setStringProperty(component, "headerRightStyle");
+        setStringProperty(component, "headerRightClass");
+        setStringProperty(component, "onviewchange");
     }
 }

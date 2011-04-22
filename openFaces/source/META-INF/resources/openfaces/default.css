@@ -400,6 +400,7 @@
 .o_timetableView {
   width: 100%;
   cursor: default;
+  background: white;
 }
 
 .o_timetableView_header,
@@ -487,7 +488,7 @@
 }
 
 .o_monthTableWeekendWeekdayHeaderCell {
-  background: #ffffff;
+
 }
 
 .o_monthTableCellHeader {
@@ -508,11 +509,11 @@
 }
 
 .o_monthTableWeekendCellHeader {
-  background: #ffffff;
+
 }
 
 .o_monthTableWeekendCell {
-  background: #ffffff;
+
 }
 
 .o_monthTableInactiveMonthCellHeader {
@@ -688,9 +689,218 @@
   background: gray;
 }
 
-.o_zeroPaddings {
-  padding: 0 ! important;
+.o_timetable_headerRightCell {
+  vertical-align: bottom
 }
+
+
+/*Day Switcher*/
+.o_timeSwitcher {
+  font-size:14pt;
+  font-family:MS Shell Dlg,Arial,sans-serif;
+  padding: 0 2px;
+}
+
+.o_timeSwitcher_previous_button,
+  .o_timeSwitcher_next_button {
+  cursor: pointer;
+}
+
+.o_timeSwitcher_previous_button {
+  border-right: 1px solid #939393;
+}
+
+.o_timeSwitcher_next_button {
+  border-left: 1px solid #939393;
+}
+
+.o_timeSwitcher_previous_button img,
+  .o_timeSwitcher_next_button img {
+  padding: 0 5px;
+}
+
+.o_daySwitcher_upper_text {
+  font-size: .55em;
+  padding:0 0.5em;
+  line-height:1.5em;
+  margin: 0;
+}
+
+.o_timeSwitcher_text {
+  font-size: 1em;
+  line-height:0.8em;
+  padding-bottom:0.2em;
+  padding-left:5px;
+  padding-right:5px;
+  margin: 0;
+}
+
+.o_daySwitcherClickableCell {
+  cursor: pointer;
+}
+
+.o_daySwitcherClickableCell .o_daySwitcherPopup{
+  cursor: default;
+}
+
+/* Level Indicator */
+.o_levelIndicator{
+  display:block;
+  padding: 5px;
+}
+
+.o_levelIndicator.horizontal {
+  width: 250px;
+  height: 22px;
+}
+
+.o_levelIndicator.vertical {
+  width: 22px;
+  height: 250px;
+}
+
+.o_levelIndicator_displayArea {
+	background:black;
+	overflow:hidden;
+	height:100%;
+	float:left;
+}
+
+.o_levelIndicator_segment.h{
+	float:left;
+	height:100%;
+	margin:0 2px 0 0;
+	font-size:0;
+}
+
+.o_levelIndicator_segment.v{
+	width:100%;
+	margin:0 0 2px 0;
+	float:left;
+}
+
+.o_levelIndicator_segment.on{
+	background:#0F0;
+}
+
+.o_levelIndicator_segment.off{
+	background:#060;
+}
+
+.o_levelIndicator_label{
+  font-family: MS Shell Dlg, Arial, sans-serif;
+	float:right;
+	text-align: center;
+	width:2.6em;
+}
+/*Tag Cloud*/
+.o_tagCloud_rectangle,
+.o_tagCloud_vertical,
+.o_tagCloud_oval {
+  z-index: 0;
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+  padding: 5px;
+  border: 0 none;
+
+}
+
+.o_tagCloud_rectangle,
+.o_tagCloud_oval {
+  width: 400px;
+}
+
+.o_tagCloud_rectangle,
+.o_tagCloud_vertical {
+  text-align: center;
+}
+
+.o_tagCloud_vertical {
+  width: 250px;
+}
+
+.o_tagCloud_oval {
+  text-align: left;
+  overflow: visible;
+}
+
+.o_tagCloud_3d {
+  width:300px;
+  overflow: hidden;
+  z-index: 0;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  border: 0 none;
+
+  vertical-align: top;
+  text-align:center;
+
+}
+
+.o_tagCloud_rectangle,
+  .o_tagCloud_oval,
+  .o_tagCloud_vertical,
+  .o_tagCloud_3d {
+  visibility: hidden;
+  font-family: "Lucida Grande", Tahoma, Arial, Helvetica, sans-serif;
+  letter-spacing: 0.05em;
+}
+/*Tag Cloud Item*/
+.o_tagCloud_rectangle  a:focus,
+.o_tagCloud_oval  a:focus,
+.o_tagCloud_vertical a:focus,
+.o_tagCloud_3d a:focus {
+  outline: none;
+}
+
+.o_tagCloud_item,
+.o_tagCloud_item_3d {
+  display: inline-block;
+  z-index: 1;
+  padding: 2px;
+  margin: 0;
+  text-decoration: none;
+}
+
+.o_tagCloud_item{
+  position: relative;
+  border: 0 none;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+}
+
+.o_tagCloud_item_3d {
+  position: absolute;
+  background:transparent;
+  overflow:visible;
+  border:1px none;
+}
+
+.o_tagCloud_item_3d_rollover{
+    background: inherit;
+}
+
+.o_tagCloud_item_rollover .o_tagCloud_item_inner_text,
+.o_tagCloud_item_3d_rollover .o_tagCloud_item_inner_text{
+  text-decoration:underline;
+  color: #007ECE;
+}
+
+.o_tagCloud_item .o_tagCloud_item_inner_weight,
+.o_tagCloud_item_3d .o_tagCloud_item_inner_weight {
+  margin-left: 3px;
+  font-size: 0.8em;
+  vertical-align: top;
+}
+
+.o_tagCloud_item_rollover .o_tagCloud_item_inner_weight,
+.o_tagCloud_item_3d_rollover .o_tagCloud_item_inner_weight{
+   color: #f59c16;
+}
+
+
 
 /* Calendar styles */
 
@@ -1656,208 +1866,8 @@ table.o_filter_parameter {
   height: 100%;
 }
 
-/*Day Switcher*/
-.o_timeSwitcher {
-  font-size:14pt;
-  font-family:MS Shell Dlg,Arial,sans-serif;
-  padding: 0 2px;
+.o_zeroPaddings {
+  padding: 0 ! important;
 }
 
-.o_timeSwitcher_previous_button,
-  .o_timeSwitcher_next_button {
-  cursor: pointer;
-}
 
-.o_timeSwitcher_previous_button {
-  border-right: 1px solid #939393;
-}
-
-.o_timeSwitcher_next_button {
-  border-left: 1px solid #939393;
-}
-
-.o_timeSwitcher_previous_button img,
-  .o_timeSwitcher_next_button img {
-  padding: 0 5px;
-}
-
-.o_daySwitcher_upper_text {
-  font-size: .55em;
-  padding:0 0.5em;
-  line-height:1.5em;
-  margin: 0;
-}
-
-.o_timeSwitcher_text {
-  font-size: 1em;
-  line-height:0.8em;
-  padding-bottom:0.2em;
-  padding-left:5px;
-  padding-right:5px;
-  margin: 0;
-}
-
-.o_daySwitcherClickableCell {
-  cursor: pointer;
-}
-
-.o_daySwitcherClickableCell .o_daySwitcherPopup{
-  cursor: default;
-}
-
-/* Level Indicator */
-.o_levelIndicator{
-  display:block;
-  padding: 5px;
-}
-
-.o_levelIndicator.horizontal {
-  width: 250px;
-  height: 22px;
-}
-
-.o_levelIndicator.vertical {
-  width: 22px;
-  height: 250px;
-}
-
-.o_levelIndicator_displayArea {
-	background:black;
-	overflow:hidden;
-	height:100%;
-	float:left;
-}
-
-.o_levelIndicator_segment.h{
-	float:left;
-	height:100%;
-	margin:0 2px 0 0;
-	font-size:0;
-}
-
-.o_levelIndicator_segment.v{
-	width:100%;
-	margin:0 0 2px 0;
-	float:left;
-}
-
-.o_levelIndicator_segment.on{
-	background:#0F0;
-}
-
-.o_levelIndicator_segment.off{
-	background:#060;
-}
-
-.o_levelIndicator_label{
-  font-family: MS Shell Dlg, Arial, sans-serif;
-	float:right;
-	text-align: center;
-	width:2.6em;
-}
-/*Tag Cloud*/
-.o_tagCloud_rectangle,
-.o_tagCloud_vertical,
-.o_tagCloud_oval {
-  z-index: 0;
-  position: relative;
-  overflow: hidden;
-  margin: 0;
-  padding: 5px;
-  border: 0 none;
-
-}
-
-.o_tagCloud_rectangle,
-.o_tagCloud_oval {
-  width: 400px;
-}
-
-.o_tagCloud_rectangle,
-.o_tagCloud_vertical {
-  text-align: center;
-}
-
-.o_tagCloud_vertical {
-  width: 250px;
-}
-
-.o_tagCloud_oval {
-  text-align: left;
-  overflow: visible;
-}
-
-.o_tagCloud_3d {
-  width:300px;
-  overflow: hidden;
-  z-index: 0;
-  position: relative;
-  margin: 0;
-  padding: 0;
-  border: 0 none;
-
-  vertical-align: top;
-  text-align:center;
-
-}
-
-.o_tagCloud_rectangle,
-  .o_tagCloud_oval,
-  .o_tagCloud_vertical,
-  .o_tagCloud_3d {
-  visibility: hidden;
-  font-family: "Lucida Grande", Tahoma, Arial, Helvetica, sans-serif;
-  letter-spacing: 0.05em;
-}
-/*Tag Cloud Item*/
-.o_tagCloud_rectangle  a:focus,
-.o_tagCloud_oval  a:focus,
-.o_tagCloud_vertical a:focus,
-.o_tagCloud_3d a:focus {
-  outline: none;
-}
-
-.o_tagCloud_item,
-.o_tagCloud_item_3d {
-  display: inline-block;
-  z-index: 1;
-  padding: 2px;
-  margin: 0;
-  text-decoration: none;
-}
-
-.o_tagCloud_item{
-  position: relative;
-  border: 0 none;
-  margin-left: 0.5em;
-  margin-right: 0.5em;
-}
-
-.o_tagCloud_item_3d {
-  position: absolute;
-  background:transparent;
-  overflow:visible;
-  border:1px none;
-}
-
-.o_tagCloud_item_3d_rollover{
-    background: inherit;
-}
-
-.o_tagCloud_item_rollover .o_tagCloud_item_inner_text,
-.o_tagCloud_item_3d_rollover .o_tagCloud_item_inner_text{
-  text-decoration:underline;
-  color: #007ECE;
-}
-
-.o_tagCloud_item .o_tagCloud_item_inner_weight,
-.o_tagCloud_item_3d .o_tagCloud_item_inner_weight {
-  margin-left: 3px;
-  font-size: 0.8em;
-  vertical-align: top;
-}
-
-.o_tagCloud_item_rollover .o_tagCloud_item_inner_weight,
-.o_tagCloud_item_3d_rollover .o_tagCloud_item_inner_weight{
-   color: #f59c16;
-}

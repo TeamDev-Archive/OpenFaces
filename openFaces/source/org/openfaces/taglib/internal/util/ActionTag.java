@@ -9,27 +9,32 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.taglib.internal.timetable;
+package org.openfaces.taglib.internal.util;
 
-import org.openfaces.component.timetable.TimetableViewSwitcher;
+import org.openfaces.component.util.Action;
 import org.openfaces.taglib.internal.AbstractComponentTag;
+import org.openfaces.taglib.internal.OUICommandTag;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-public class TimetableViewSwitcherTag extends AbstractComponentTag {
+public class ActionTag extends OUICommandTag {
 
     public String getComponentType() {
-        return TimetableViewSwitcher.COMPONENT_TYPE;
+        return Action.COMPONENT_TYPE;
     }
 
     public String getRendererType() {
-        return "org.openfaces.TimetableViewSwitcherRenderer";
+        return "org.openfaces.ActionRenderer";
     }
 
     @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
+        setStringProperty(component, "event");
+        setStringProperty(component, "for");
+        setBooleanProperty(component, "standalone");
+        setBooleanProperty(component, "disabled");
     }
 }

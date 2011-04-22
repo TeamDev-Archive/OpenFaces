@@ -101,11 +101,7 @@ O$.ajax = {
 O$.AJAX_REQUEST_MARKER = "_openFaces_ajax";
 O$.UPDATE_PORTIONS_SUFFIX = "_of_ajax_portions";
 O$.CUSTOM_JSON_PARAM = "_of_customJsonParam";
-O$.ACTION_LISTENER = "_of_actionListener";
 O$.EXECUTE_RENDERED_COMPONENTS = "_of_executeRenderedComponents";
-O$.ACTION = "_of_action";
-O$.ACTION_COMPONENT = "_of_actionComponent";
-O$.IMMEDIATE = "_of_immediate";
 
 window.OpenFaces.Ajax = {
   Page: {},

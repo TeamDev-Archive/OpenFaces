@@ -26623,6 +26623,9 @@ and it is automatically triggered on any form submission. -->
 
   <!-- Ajax tag declaration -->
   <tag>
+    <description>Allows attaching Ajax event handler to any component, or declaring a stand-alone Ajax action. Besides
+    an optional event handler execution, this component allows reloading the specified component(s) with Ajax, and
+      specifying the list of components whose data should be submitted to the server.</description>
     <name>ajax</name>
     <tag-class>org.openfaces.taglib.jsp.ajax.AjaxJspTag</tag-class>
     <body-content>JSP</body-content>
@@ -26687,7 +26690,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A value of "true" indicates the Ajax component should not be rendered.
+      <description>A value of "true" indicates the Ajax component should not be active.
       </description>
       <name>disabled</name>
       <deferred-value>
@@ -28283,18 +28286,6 @@ and it is automatically triggered on any form submission. -->
       <!-- @value "full" the same as "FULL" format in the java.text.DateFormat -->
       <!-- @el true -->
     </attribute>
-    <attribute>
-      <description>The date format with the pattern similar to that in the java.text.SimpleDateFormat
-        class.
-      </description>
-      <name>pattern</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
 
     <attribute>
       <description>The locale used by DateChooser component. You can specify the "locale" attribute
@@ -28511,6 +28502,26 @@ and it is automatically triggered on any form submission. -->
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The optional pattern for specifying the &quot;from&quot; week.</description>
+      <name>fromPattern</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The optional pattern for specifying &quot;to&quot; week.</description>
+      <name>toPattern</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType String -->
+      <!-- @default  -->
       <!-- @el true -->
     </attribute>
 
@@ -41205,15 +41216,452 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>Determines the current view of this Timetable component.</description>
-      <name>view</name>
+      <name>viewType</name>
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType org.openfaces.component.timetable.Timetable.View -->
+      <!-- @bindingType org.openfaces.component.timetable.Timetable.ViewTypeType -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A style for the timetable header&apos;s right area.</description>
+      <name>headerRightStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>CSS class name(s) for the timetable header&apos;s right area.</description>
+      <name>headerRightClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>This event is triggered when the current timetable view is changed (e.g. day view is selected insead
+        of month view).
+      </description>
+      <name>onviewtypechange</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
 
+  </tag>
+  <tag>
+    <description>A component which can be used in combination with &lt;o:timetable&gt;, and which allows to navigate
+      between months/weeks/days (depending on timetable view)
+    </description>
+    <name>timePeriodSwitcher</name>
+    <tag-class>org.openfaces.taglib.jsp.timetable.TimePeriodSwitcherJspTag</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+      <description>A value-binding expression that associates the TimePeriodSwitcher with a backing bean property.
+      </description>
+      <name>binding</name>
+      <deferred-value>
+        <type>org.openfaces.component.timetable.TimePeriodSwitcher</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.timetable.TimePeriodSwitcher -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>The component identifier.</description>
+      <name>id</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el false -->
+    </attribute>
+    <attribute>
+      <description>A flag that indicates whether or not the component is visible.</description>
+      <name>rendered</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>ID of a Timetable component that should be synchronized with this component. It should be defined in
+        the same way as the "for" property of the standard HTMLOutputLabel component. If this attribute is not specified
+        then this filter component should be located inside of a Timetable component.
+      </description>
+      <name>for</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el false -->
+    </attribute>
+    <attribute>
+      <description>The locale used by DateChooser component. You can specify the "locale" attribute
+        as a value-binding expression or as a String in "ll_CC_vv" format, where:&lt;br/&gt;
+        ll stands for the language - lowercase two-letter ISO-639 code.&lt;br/&gt;
+        CC stands for the country - uppercase two-letter ISO-3166 code (optional).&lt;br/&gt;
+        vv stands for the variant - vendor and browser specific code (optional).&lt;br/&gt;
+      </description>
+      <name>locale</name>
+      <deferred-value>
+        <type>java.util.Locale</type>
+      </deferred-value>
+      <!-- @bindingType java.util.Locale -->
+      <!-- @default client's locale -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Time zone in which to interpret any time information in the date String. Value must be either a VB
+        expression that evaluates to a java.util.TimeZone instance, or a String that is a timezone ID as described in
+        the javadocs for java.util.TimeZone.getTimeZone().
+      </description>
+      <name>timeZone</name>
+      <deferred-value>
+        <type>java.util.TimeZone</type>
+      </deferred-value>
+      <!-- @bindingType java.util.TimeZone -->
+      <!-- @default The server's default time zone -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A flag that indicates whether or not the user can change selection.</description>
+      <name>enabled</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>style</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>styleClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>rolloverStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>rolloverClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>previousButtonStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>previousButtonClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>previousButtonRolloverStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>previousButtonRolloverClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>previousButtonPressedStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>previousButtonPressedClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>previousButtonImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <name>nextButtonStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>nextButtonClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>nextButtonRolloverStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>nextButtonRolloverClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>nextButtonPressedStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>nextButtonPressedClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>nextButtonImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <name>textStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>textClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>textRolloverStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>textRolloverClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Specifies a pattern for formatting the month selector text.</description>
+      <name>monthPattern</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType String -->
+      <!-- @default  -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Specifies a pattern for formatting the &quot;from&quot; week selector text.</description>
+      <name>fromWeekPattern</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType String -->
+      <!-- @default  -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Specifies a pattern for formatting the &quot;to&quot; week selector text.</description>
+      <name>toWeekPattern</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType String -->
+      <!-- @default  -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Specifies a pattern for formatting the day selector text.</description>
+      <name>dayPattern</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType String -->
+      <!-- @default  -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Specifies a pattern for formatting the day selector&apos;s upper text.</description>
+      <name>dayUpperPattern</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType String -->
+      <!-- @default  -->
+      <!-- @el true -->
+    </attribute>
+
+  </tag>
+
+  <tag>
+    <description>This component is under construction. API is subject to change. This component allows attaching the server action to an arbitrary event of another
+      component, or declaring a stand-alone server action which can be invoked with JavaScript explicitly. This tag
+      is analogous to &lt;o:ajax&gt;, but it works through form submission, similar to the "action" attribute of
+      &lt;h:commandButton&gt; component.
+    </description>
+    <name>action</name>
+    <tag-class>org.openfaces.taglib.jsp.util.ActionJspTag</tag-class>
+    <body-content>empty</body-content>
+    <attribute>
+      <description>Attaches the Action component to the specified event of the parent component.</description>
+      <name>event</name>
+      <required>false</required>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Allows attaching this Action component to an arbitrary component or HTML tag instead of
+        attaching to the parent component. This attribute specifies ID of the JSF component or of any HTML element to
+        which this component should be attached to. It should be defined in the same way as the "for" property of the
+        standard HTMLOutputLabel component.
+      </description>
+      <name>for</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Turns on the "standalone" mode where the Action component is not attached to other component
+        automatically,
+        and can be used via the public API instead. The default value is false, which means that the component is
+        attached
+        to the parent component, or a component referred to by the "for" attribute if it is specified.
+      </description>
+      <name>standalone</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A value of "true" indicates the Action component should not be active.
+      </description>
+      <name>disabled</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Similar to the "action" attribute of the HTMLCommandButton component. It can be defined as a
+        MethodBinding that should point to an action method that is called when the user clicks this button.
+      </description>
+      <name>action</name>
+      <deferred-method>
+        <method-signature>java.lang.Object action()</method-signature>
+      </deferred-method>
+      <!-- @bindingType javax.el.MethodExpression -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Similar to the "actionListener" attribute of the HTMLCommandButton component.
+        A MethodBinding that should point to an action listener that is called when the user fire an event.
+      </description>
+      <name>listener</name>
+      <deferred-method>
+        <method-signature>void actionListener(javax.faces.event.ActionEvent)</method-signature>
+      </deferred-method>
+      <!-- @bindingType javax.el.MethodExpression -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
   </tag>
 
   <!--<tag>-->

@@ -25,4 +25,9 @@ public class DayTable extends TimeScaleTable {
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
+
+    @Override
+    public Timetable.ViewType getType() {
+        return Timetable.ViewType.DAY;
+    }
 }

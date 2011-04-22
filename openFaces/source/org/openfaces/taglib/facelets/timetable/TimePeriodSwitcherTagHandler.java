@@ -9,15 +9,17 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.taglib.jsp.timetable;
+package org.openfaces.taglib.facelets.timetable;
 
-import org.openfaces.taglib.internal.timetable.MonthSwitcherTag;
+import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
+import org.openfaces.taglib.internal.timetable.TimePeriodSwitcherTag;
 
-public class MonthSwitcherJspTag extends AbstractSwitcherJspTag {
+import javax.faces.view.facelets.ComponentConfig;
 
-    public MonthSwitcherJspTag() {
-        super(new MonthSwitcherTag());
+public class TimePeriodSwitcherTagHandler extends AbstractFaceletsComponentHandler {
+
+    public TimePeriodSwitcherTagHandler(ComponentConfig componentConfig) {
+        super(componentConfig, new TimePeriodSwitcherTag());
     }
-
 
 }

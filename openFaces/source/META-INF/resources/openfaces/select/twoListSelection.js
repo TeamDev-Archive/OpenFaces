@@ -404,8 +404,8 @@ O$.TwoListSelection = {
     O$.TwoListSelection._updateButtons(tls);
     O$.TwoListSelection._hideOrderingIcon(tls);
     if (fireOnAdd) {
-      O$.TwoListSelection._fireEvent("add", tls._events.onadd);
-      O$.TwoListSelection._fireEvent("change", tls._events.onchange);
+      O$.TwoListSelection._fireEvent("add", tls.onadd);
+      O$.TwoListSelection._fireEvent("change", tls.onchange);
     }
   },
 
@@ -473,8 +473,8 @@ O$.TwoListSelection = {
     if (fireOnAdd) {
       O$.TwoListSelection._updateSelectionField(tls, "left");
       O$.TwoListSelection._updateButtons(tls);
-      O$.TwoListSelection._fireEvent("add", tls._events.onadd);
-      O$.TwoListSelection._fireEvent("change", tls._events.onchange);
+      O$.TwoListSelection._fireEvent("add", tls.onadd);
+      O$.TwoListSelection._fireEvent("change", tls.onchange);
     }
   },
 
@@ -503,8 +503,8 @@ O$.TwoListSelection = {
     O$.TwoListSelection._updateSelectionField(tls, "right");
     O$.TwoListSelection._updateButtons(tls);
     if (fireOnRemove) {
-      O$.TwoListSelection._fireEvent("remove", tls._events.onremove);
-      O$.TwoListSelection._fireEvent("change", tls._events.onchange);
+      O$.TwoListSelection._fireEvent("remove", tls.onremove);
+      O$.TwoListSelection._fireEvent("change", tls.onchange);
     }
   },
 
@@ -587,8 +587,8 @@ O$.TwoListSelection = {
     if (fireOnRemove) {
       O$.TwoListSelection._updateSelectionField(tls, "right");
       O$.TwoListSelection._updateButtons(tls);
-      O$.TwoListSelection._fireEvent("remove", tls._events.onremove);
-      O$.TwoListSelection._fireEvent("change", tls._events.onchange);
+      O$.TwoListSelection._fireEvent("remove", tls.onremove);
+      O$.TwoListSelection._fireEvent("change", tls.onchange);
     }
   },
 

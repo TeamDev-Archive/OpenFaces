@@ -751,9 +751,17 @@ public class Rendering {
      * @throws IOException if an input/output error occurs
      * @see #writeStyleAndClassAttributes(javax.faces.context.ResponseWriter, String, String)
      */
-    public static void writeStyleAndClassAttributes(ResponseWriter writer, String style, String styleClass, String defaultStyleClass) throws IOException {
+    public static void writeStyleAndClassAttributes(
+            ResponseWriter writer, String style, String styleClass, String defaultStyleClass) throws IOException {
         String resultStyleClass = Styles.mergeClassNames(styleClass, defaultStyleClass);
         writeStyleAndClassAttributes(writer, style, resultStyleClass);
+    }
+
+    public static void writeStyleAndClassAttributes(
+            ResponseWriter writer, UIComponent component, String styleName, String defaultStyleClass) throws IOException {
+        String styleValue = (String) component.getAttributes().get(styleName + "Style");
+        String classValue = (String) component.getAttributes().get(styleName + "Class");
+        writeStyleAndClassAttributes(writer, styleValue, classValue, defaultStyleClass);
     }
 
     /**

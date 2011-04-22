@@ -15,40 +15,54 @@ O$.Timetable = {
   WEEK: "week",
   MONTH: "month",
 
-  _init: function(timetableId, layeredPaneId, viewIds, currentView) {
+  _init: function(timetableId, layeredPaneId, viewIds, initialViewType, events) {
     var timetable = O$.initComponent(timetableId, null, {
       _views: viewIds.map(O$),
-      _view: currentView,
       _layeredPane: O$(layeredPaneId),
 
-      getView: function() {
-        return this._view;
+      getViewType: function() {
+        return this._viewType;
       },
-      setView: function(view) {
-        if (view != O$.Timetable.DAY &&
-                view != O$.Timetable.WEEK &&
-                view != O$.Timetable.MONTH)
-          throw "O$.Timetable.setView: illegal view parameter: \"" + view + "\"";
-        var timetableView = this._viewByType(view);
-        if (this._view == view) return;
-        this._view = view;
-        O$.setHiddenField(this, timetableId + "::view", view);
+      setViewType: function(viewType) {
+        if (viewType != O$.Timetable.DAY &&
+                viewType != O$.Timetable.WEEK &&
+                viewType != O$.Timetable.MONTH)
+          throw "O$.Timetable.setView: illegal view parameter: \"" + viewType + "\"";
+        var timetableView = this._viewByType(viewType);
+        if (this._viewType == viewType) return;
+        this._viewType = viewType;
+        O$.setHiddenField(this, timetableId + "::view", viewType);
         timetableView.refreshEvents();
         setTimeout(function() {
           timetableView.updateLayout();
         }, 1);
 
+        var viewIndex = this._viewIndexByType(viewType);
+        this._layeredPane.setSelectedIndex(viewIndex);
+        this._fireEvent("viewtypechange");
+      },
+
+      _viewIndexByType: function(viewType) {
         var viewIndex;
         for (var i = 0, count = this._views.length; i < count; i++) {
           var v = this._views[i];
-          if (v._viewType == view) {
+          if (v._viewType == viewType) {
             viewIndex = i;
             break;
           }
         }
-        if (viewIndex == undefined) throw "O$.Timetable.setView: couldn't find view for type: " + view;
-        this._layeredPane.setSelectedIndex(viewIndex);
+        if (viewIndex == undefined) throw "O$.Timetable._viewIndexByType: couldn't find view for type: " + viewType;
+        return viewIndex;
       },
+
+      _fireEvent: function(eventBaseName) {
+        var handler = this["on" + eventBaseName];
+        if (!handler)
+          return;
+        var event = O$.createEvent(eventBaseName);
+        handler.call(this, event);
+      },
+
 
       _viewByType: function(viewType) {
         for (var i = 0, count = this._views.length; i < count; i++) {
@@ -58,7 +72,9 @@ O$.Timetable = {
         }
         throw "View not found for the following type: " + viewType;
       }
-    });
+    }, events);
+
+    timetable.setViewType(initialViewType);
   }
 };
 
@@ -799,3 +815,16 @@ O$.Timetable.replaceDocumentElements = function(htmlPortion, allowElementsWithNe
   return tempDiv;
 };
 
+O$.TimetableViewSwitcher = {
+  _init: function(switcherId, timetableId) {
+    var switcher = O$(switcherId);
+    var timetable = O$(timetableId);
+    var prevOnviewtypechange = timetable.onviewtypechange;
+    timetable.onviewtypechange = function(e) {
+      if (prevOnviewtypechange) prevOnviewtypechange.call(this, e);
+      var viewType = timetable.getViewType();
+      var viewIndex = timetable._viewIndexByType(viewType);
+      switcher.setSelectedIndex(viewIndex);
+    }
+  }
+};

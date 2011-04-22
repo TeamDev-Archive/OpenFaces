@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2011, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -42,7 +42,19 @@ public class MonthSwitcher extends AbstractSwitcher<MonthTable> {
     }
 
     @Override
-    protected String getTimetableNotFoundMsg() {
-        return "MonthSwitcher's \"for\" attribute must refer to a MonthTable component.";
+    public Timetable.ViewType getApplicableViewType() {
+        return Timetable.ViewType.MONTH;
     }
+
+    @Override
+    public String getPattern() {
+        String pattern = super.getPattern();
+        if (pattern == null) {
+            TimePeriodSwitcher timePeriodSwitcher = getTimePeriodSwitcher();
+            if (timePeriodSwitcher != null)
+                pattern = timePeriodSwitcher.getMonthPattern();
+        }
+        return pattern;
+    }
+
 }

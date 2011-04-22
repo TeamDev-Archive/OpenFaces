@@ -64,5 +64,4 @@ public class AjaxHelper extends OUIClientActionHelper implements ClientBehavior 
     }
 
 
-
 }

@@ -13,7 +13,7 @@ package org.openfaces.renderkit.command;
 
 import org.openfaces.component.OUIClientAction;
 import org.openfaces.component.command.CommandLink;
-import org.openfaces.renderkit.RendererBase;
+import org.openfaces.renderkit.OUICommandRenderer;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.Resources;
@@ -21,12 +21,10 @@ import org.openfaces.util.Resources;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.event.ActionEvent;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
-public class CommandLinkRenderer extends RendererBase {
+public class CommandLinkRenderer extends OUICommandRenderer {
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
@@ -53,7 +51,7 @@ public class CommandLinkRenderer extends RendererBase {
 
         if (!link.isDisabled()) {
             boolean ajaxJsRequired = writeEventsWithAjaxSupport(context, writer, link,
-                    getClickedRequestKey(context, component));
+                    getActionRequestKey(context, component));
             if (ajaxJsRequired)
                 link.getAttributes().put("_ajaxRequired", Boolean.TRUE);
         }
@@ -90,17 +88,7 @@ public class CommandLinkRenderer extends RendererBase {
             AjaxUtil.renderJSLinks(context);
     }
 
-    @Override
-    public void decode(FacesContext context, UIComponent component) {
-        Rendering.decodeBehaviors(context, component);
-        Map<String, String> requestParameters = context.getExternalContext().getRequestParameterMap();
-        String key = getClickedRequestKey(context, component);
-        if (requestParameters.containsKey(key)) {
-            component.queueEvent(new ActionEvent(component));
-        }
-    }
-
-    private String getClickedRequestKey(FacesContext context, UIComponent component) {
+    protected String getActionRequestKey(FacesContext context, UIComponent component) {
         return component.getClientId(context) + "::clicked";
     }
 }

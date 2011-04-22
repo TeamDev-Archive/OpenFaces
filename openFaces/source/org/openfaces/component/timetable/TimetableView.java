@@ -51,7 +51,6 @@ import java.util.TimeZone;
         @ResourceDependency(name = "default.css", library = "openfaces")
 })
 public abstract class TimetableView extends OUIObjectIteratorBase {
-
     private static final String EVENT_EDITOR_FACET_NAME = "eventEditor";
     private static final String DELETE_EVENT_CONFIRMATION_FACET_NAME = "deleteEventConfirmation";
 
@@ -95,6 +94,11 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
         if (this instanceof Timetable)
             throw new IllegalStateException("Timetable cannot be nested within another timetable");
         return (Timetable) parent;
+    }
+
+    @Override
+    protected UIComponent getDelegate() {
+        return getTimetable();
     }
 
     public Date getDay() {
@@ -582,5 +586,7 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
     public void setFooterRight(UIComponent footerRight) {
         getFacets().put("footerRight", footerRight);
     }
+
+    public abstract Timetable.ViewType getType();
 
 }

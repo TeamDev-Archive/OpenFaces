@@ -11,25 +11,29 @@
  */
 package org.openfaces.taglib.internal.timetable;
 
-import org.openfaces.component.timetable.TimetableViewSwitcher;
-import org.openfaces.taglib.internal.AbstractComponentTag;
+import org.openfaces.component.timetable.TimePeriodSwitcher;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-public class TimetableViewSwitcherTag extends AbstractComponentTag {
+public class TimePeriodSwitcherTag extends AbstractSwitcherTag {
 
     public String getComponentType() {
-        return TimetableViewSwitcher.COMPONENT_TYPE;
+        return TimePeriodSwitcher.COMPONENT_TYPE;
     }
 
     public String getRendererType() {
-        return "org.openfaces.TimetableViewSwitcherRenderer";
+        return "org.openfaces.TimePeriodSwitcherRenderer";
     }
 
     @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
+        setObjectProperty(component, "monthPattern");
+        setObjectProperty(component, "fromWeekPattern");
+        setObjectProperty(component, "toWeekPattern");
+        setObjectProperty(component, "dayPattern");
+        setObjectProperty(component, "dayUpperPattern");
     }
 }

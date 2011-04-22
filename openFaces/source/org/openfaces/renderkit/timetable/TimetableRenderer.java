@@ -14,11 +14,8 @@ package org.openfaces.renderkit.timetable;
 import org.openfaces.component.LoadingMode;
 import org.openfaces.component.panel.LayeredPane;
 import org.openfaces.component.panel.SubPanel;
-import org.openfaces.component.timetable.DayTable;
-import org.openfaces.component.timetable.MonthTable;
 import org.openfaces.component.timetable.Timetable;
 import org.openfaces.component.timetable.TimetableView;
-import org.openfaces.component.timetable.WeekTable;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.Components;
 import org.openfaces.util.Faces;
@@ -81,8 +78,10 @@ public class TimetableRenderer extends TimetableRendererBase {
         Rendering.renderInitScript(context, new ScriptBuilder().initScript(context, timetable, "O$.Timetable._init",
                 layeredPane,
                 viewIds,
-                timetable.getView()
-        ), Resources.getInternalURL(context, "timetable/timetable.js"));
+                timetable.getViewType(),
+                Rendering.getEventsParam(timetable, "onviewtypechange")
+
+        ), getTimetableJsURL(context));
 
         writer.endElement("td");
         writer.endElement("tr");
@@ -93,8 +92,23 @@ public class TimetableRenderer extends TimetableRendererBase {
         writer.endElement("table");
 
         Styles.renderStyleClasses(context, timetable);
+    }
 
+    public static String getTimetableJsURL(FacesContext context) {
+        return Resources.getInternalURL(context, "timetable/timetable.js");
+    }
 
+    @Override
+    protected void writeHeaderTableAttributes(ResponseWriter writer) throws IOException {
+        writer.writeAttribute("cellspacing", "0", null);
+        writer.writeAttribute("cellpadding", "0", null);
+        writer.writeAttribute("border", "0", null);
+    }
+
+    @Override
+    protected void writeHeaderRightAreaAttributes(ResponseWriter writer, TimetableView timetableView) throws IOException {
+        Timetable timetable = (Timetable) timetableView;
+        Rendering.writeStyleAndClassAttributes(writer, timetable, "headerRight", "o_timetable_headerRightCell");
     }
 
     @Override
@@ -118,7 +132,7 @@ public class TimetableRenderer extends TimetableRendererBase {
             children.add(new SubPanel(null, timetable.getDayView()));
         }
 
-        Timetable.View currentView = timetable.getView();
+        Timetable.ViewType currentViewType = timetable.getViewType();
         List<UIComponent> children = layeredPane.getChildren();
         int viewIndex = 0;
         for (int i = 0, count = children.size(); i < count; i++) {
@@ -126,8 +140,8 @@ public class TimetableRenderer extends TimetableRendererBase {
             if (subPanel.getChildCount() != 1)
                 throw new IllegalArgumentException("One child component expected, but was " + subPanel.getChildCount() + "; panel index: " + i);
             TimetableView viewInThisPanel = (TimetableView) subPanel.getChildren().get(0);
-            Timetable.View viewType = getViewType(viewInThisPanel);
-            if (viewType == currentView) {
+            Timetable.ViewType viewTypeType = viewInThisPanel.getType();
+            if (viewTypeType == currentViewType) {
                 viewIndex = i;
                 break;
             }
@@ -137,19 +151,12 @@ public class TimetableRenderer extends TimetableRendererBase {
         return layeredPane;
     }
 
-    private Timetable.View getViewType(TimetableView timetableView) {
-        if (timetableView instanceof DayTable) return Timetable.View.DAY;
-        if (timetableView instanceof WeekTable) return Timetable.View.WEEK;
-        if (timetableView instanceof MonthTable) return Timetable.View.MONTH;
-        throw new IllegalArgumentException("Unknown view type: " + timetableView.getClass().getName());
-    }
-
     @Override
     public void decode(FacesContext context, UIComponent component) {
         super.decode(context, component);
         Timetable timetable = (Timetable) component;
         String viewStr = Faces.requestParam(timetable.getClientId(context) + Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "view");
-        Timetable.View view = Timetable.View.valueOf(viewStr.toUpperCase());
-        timetable.setView(view);
+        Timetable.ViewType viewType = Timetable.ViewType.valueOf(viewStr.toUpperCase());
+        timetable.setViewType(viewType);
     }
 }

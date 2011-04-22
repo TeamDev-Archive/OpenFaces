@@ -131,7 +131,7 @@ public class PartialViewContext extends PartialViewContextWrapper {
     @Override
     public void processPartial(PhaseId phaseId) {
         super.processPartial(phaseId);
-        if (isAjaxRequest()) {
+        /*if (isAjaxRequest()) non-ajax handling is required for the Action component*/ {
             if (phaseId == PhaseId.UPDATE_MODEL_VALUES) {
                 processAjaxExecutePhase(FacesContext.getCurrentInstance());
             }
@@ -487,57 +487,56 @@ public class PartialViewContext extends PartialViewContextWrapper {
         }
     }
 
-    public static String processAjaxExecutePhase(FacesContext context) {
+    private static void processAjaxExecutePhase(FacesContext context) {
         UIViewRoot viewRoot = context.getViewRoot();
         Map<String, String> requestParams = context.getExternalContext().getRequestParameterMap();
         String listener = requestParams.get(PARAM_ACTION_LISTENER);
         String action = requestParams.get(PARAM_ACTION);
         String actionComponentId = requestParams.get(PARAM_ACTION_COMPONENT);
-        if (listener != null || action != null) {
-            ELContext elContext = context.getELContext();
-            UIComponent component = null;
-            List<Runnable> restoreDataPointerRunnables = new ArrayList<Runnable>();
-            if (actionComponentId != null)
-                component = findComponentById(viewRoot, actionComponentId, true, false, false,
-                        restoreDataPointerRunnables);
-            if (component == null)
-                component = viewRoot;
+        if (listener == null && action == null)
+            return;
 
-            Object result = null;
-            if (action != null) {
-                MethodExpression methodBinding = context.getApplication().getExpressionFactory().createMethodExpression(
-                        elContext, "#{" + action + "}", String.class, new Class[]{});
-                /*result = */
-                methodBinding.invoke(elContext, null);
-            }
-            if (listener != null) {
-                AjaxActionEvent event = new AjaxActionEvent(component, new Behavior() {
-                    public void broadcast(BehaviorEvent event) {
-                        throw new UnsupportedOperationException("This method is not expected to be invoked.");
-                    }
-                });
-                event.setPhaseId(Boolean.valueOf(requestParams.get(PARAM_IMMEDIATE)) ? PhaseId.APPLY_REQUEST_VALUES : PhaseId.INVOKE_APPLICATION);
-                MethodExpression methodExpression = context.getApplication().getExpressionFactory().createMethodExpression(
-                        elContext, "#{" + listener + "}", void.class, new Class[]{AjaxBehaviorEvent.class});
-                try {
-                    methodExpression.getMethodInfo(elContext);
-                } catch (MethodNotFoundException e) {
-                    // both actionEvent and AjaxActionEvent parameter declarations are allowed
-                    methodExpression = context.getApplication().getExpressionFactory().createMethodExpression(
-                            elContext, "#{" + listener + "}", void.class, new Class[]{AjaxActionEvent.class});
-                }
-                methodExpression.invoke(elContext, new Object[]{event});
-                Object listenerResult = event.getAjaxResult();
-                if (listenerResult != null)
-                    result = listenerResult;
-            }
-            if (result != null)
-                AjaxRequest.getInstance().setAjaxResult(result);
-            for (Runnable restoreDataPointerRunnable : restoreDataPointerRunnables) {
-                restoreDataPointerRunnable.run();
-            }
+        ELContext elContext = context.getELContext();
+        UIComponent component = null;
+        List<Runnable> restoreDataPointerRunnables = new ArrayList<Runnable>();
+        if (actionComponentId != null)
+            component = findComponentById(viewRoot, actionComponentId, true, false, false,
+                    restoreDataPointerRunnables);
+        if (component == null)
+            component = viewRoot;
+
+        Object result = null;
+        if (action != null) {
+            MethodExpression methodBinding = context.getApplication().getExpressionFactory().createMethodExpression(
+                    elContext, "#{" + action + "}", String.class, new Class[]{});
+            methodBinding.invoke(elContext, null);
         }
-        return actionComponentId;
+        if (listener != null) {
+            AjaxActionEvent event = new AjaxActionEvent(component, new Behavior() {
+                public void broadcast(BehaviorEvent event) {
+                    throw new UnsupportedOperationException("This method is not expected to be invoked.");
+                }
+            });
+            event.setPhaseId(Boolean.valueOf(requestParams.get(PARAM_IMMEDIATE)) ? PhaseId.APPLY_REQUEST_VALUES : PhaseId.INVOKE_APPLICATION);
+            MethodExpression methodExpression = context.getApplication().getExpressionFactory().createMethodExpression(
+                    elContext, "#{" + listener + "}", void.class, new Class[]{AjaxBehaviorEvent.class});
+            try {
+                methodExpression.getMethodInfo(elContext);
+            } catch (MethodNotFoundException e) {
+                // both actionEvent and AjaxActionEvent parameter declarations are allowed
+                methodExpression = context.getApplication().getExpressionFactory().createMethodExpression(
+                        elContext, "#{" + listener + "}", void.class, new Class[]{AjaxActionEvent.class});
+            }
+            methodExpression.invoke(elContext, new Object[]{event});
+            Object listenerResult = event.getAjaxResult();
+            if (listenerResult != null)
+                result = listenerResult;
+        }
+        if (result != null)
+            AjaxRequest.getInstance().setAjaxResult(result);
+        for (Runnable restoreDataPointerRunnable : restoreDataPointerRunnables) {
+            restoreDataPointerRunnable.run();
+        }
     }
 
     public static UIComponent findComponentById(UIComponent parent,

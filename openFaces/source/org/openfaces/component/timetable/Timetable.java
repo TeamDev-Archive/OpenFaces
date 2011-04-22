@@ -20,18 +20,47 @@ import javax.faces.context.FacesContext;
 public class Timetable extends TimeScaleTable {
     public static final String COMPONENT_TYPE = "org.openfaces.Timetable";
     public static final String COMPONENT_FAMILY = "org.openfaces.Timetable";
+
     private static final String FACET_DAY_VIEW = "dayView";
     private static final String FACET_WEEK_VIEW = "weekView";
     private static final String FACET_MONTH_VIEW = "monthView";
 
-    public static enum View {
+    private String headerRightStyle;
+    private String headerRightClass;
+    private String onviewtypechange;
+
+    public String getHeaderRightStyle() {
+        return ValueBindings.get(this, "headerRightStyle", headerRightStyle);
+    }
+
+    public void setHeaderRightStyle(String headerRightStyle) {
+        this.headerRightStyle = headerRightStyle;
+    }
+
+    public String getHeaderRightClass() {
+        return ValueBindings.get(this, "headerRightClass", headerRightClass);
+    }
+
+    public void setHeaderRightClass(String headerRightClass) {
+        this.headerRightClass = headerRightClass;
+    }
+
+    public String getOnviewtypechange() {
+        return ValueBindings.get(this, "onviewtypechange", onviewtypechange);
+    }
+
+    public void setOnviewtypechange(String onviewtypechange) {
+        this.onviewtypechange = onviewtypechange;
+    }
+
+    public static enum ViewType {
         MONTH("month"),
         WEEK("week"),
         DAY("day");
 
         private String value;
 
-        View(String value) {
+        ViewType(String value) {
             this.value = value;
         }
 
@@ -42,7 +71,7 @@ public class Timetable extends TimeScaleTable {
         }
     }
 
-    private View view;
+    private ViewType viewType;
 
     public Timetable() {
         setRendererType("org.openfaces.TimetableRenderer");
@@ -57,7 +86,10 @@ public class Timetable extends TimeScaleTable {
     public Object saveState(FacesContext context) {
         return new Object[]{
                 super.saveState(context),
-                view
+                viewType,
+                headerRightClass,
+                headerRightClass,
+                onviewtypechange
         };
     }
 
@@ -66,30 +98,58 @@ public class Timetable extends TimeScaleTable {
         Object[] state = (Object[]) stateObj;
         int i = 0;
         super.restoreState(context, state[i++]);
-        view = (View) state[i++];
+        viewType = (ViewType) state[i++];
+        headerRightStyle = (String) state[i++];
+        headerRightClass = (String) state[i++];
+        onviewtypechange = (String) state[i++];
     }
 
-    public View getView() {
-        return ValueBindings.get(this, "view", view, View.MONTH, View.class);
+    public ViewType getViewType() {
+        return ValueBindings.get(this, "viewType", viewType, ViewType.MONTH, ViewType.class);
     }
 
-    public void setView(View view) {
-        this.view = view;
+    public void setViewType(ViewType viewType) {
+        this.viewType = viewType;
+    }
+
+    public TimetableView getViewByType(ViewType viewType) {
+        switch(viewType) {
+            case MONTH:
+                return getMonthView();
+            case WEEK:
+                return getWeekView();
+            case DAY:
+                return getDayView();
+            default:
+                throw new IllegalArgumentException("Unknown view type: " + viewType);
+        }
     }
 
     public DayTable getDayView() {
-        DayTable result = Components.getChildWithClass(this, DayTable.class, "dayView");
+        DayTable result = Components.getChildWithClass(this, DayTable.class, FACET_DAY_VIEW);
         return result;
+    }
+
+    public void setDayView(DayTable dayView) {
+        getFacets().put(FACET_DAY_VIEW, dayView);
     }
 
     public WeekTable getWeekView() {
-        WeekTable result = Components.getChildWithClass(this, WeekTable.class, "weekView");
+        WeekTable result = Components.getChildWithClass(this, WeekTable.class, FACET_WEEK_VIEW);
         return result;
     }
 
+    public void setWeekView(WeekTable weekView) {
+        getFacets().put(FACET_WEEK_VIEW, weekView);
+    }
+
     public MonthTable getMonthView() {
-        MonthTable result = Components.getChildWithClass(this, MonthTable.class, "monthView");
+        MonthTable result = Components.getChildWithClass(this, MonthTable.class, FACET_MONTH_VIEW);
         return result;
+    }
+
+    public void setMonthView(MonthTable monthView) {
+        getFacets().put(FACET_MONTH_VIEW, monthView);
     }
 
     @Override
@@ -99,6 +159,12 @@ public class Timetable extends TimeScaleTable {
             return getDefaultViewSwitcher();
         }
         return headerRight;
+    }
+
+    @Override
+    public ViewType getType() {
+        throw new UnsupportedOperationException("getType() is not expected to be called on Timetable, which " +
+                "embeds all view types");
     }
 
     private TimetableViewSwitcher getDefaultViewSwitcher() {

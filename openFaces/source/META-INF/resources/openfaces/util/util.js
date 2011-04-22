@@ -36,8 +36,12 @@ if (!window.O$) {
   };
 
   O$.extend(O$, {
-    DEBUG: true
+    DEBUG: true,
 
+    ACTION_LISTENER: "_of_actionListener",
+    ACTION: "_of_action",
+    ACTION_COMPONENT: "_of_actionComponent",
+    IMMEDIATE: "_of_immediate"
   });
 
 
@@ -65,7 +69,6 @@ if (!window.O$) {
       O$.extend(component, properties);
     }
     if (events) {
-      component._events = {};
       for (var eventName in events) {
         var handlerScript = events[eventName];
         if (!handlerScript)
@@ -78,7 +81,18 @@ if (!window.O$) {
         else
           throw "Type of a handler script should either be a string or a function, but it was a " +
                   (typeof handlerScript) + "; " + handlerScript;
-        component._events[eventName] = handlerFunction;
+        if (!component[eventName])
+          component[eventName] = handlerFunction;
+        else {
+          function appendHandler() {
+            var prevHandler = component[eventName];
+            component[eventName] = function() {
+              prevHandler.apply(component, arguments);
+              handlerFunction.apply(component, arguments);
+            }
+          }
+          appendHandler();
+        }
       }
     }
     return component;
@@ -1039,10 +1053,7 @@ if (!window.O$) {
         break;
       element = element.parentNode;
     }
-    if (element != null)
-      return element;
-    else
-      return null;
+    return element;
   };
 
   O$.getAnyParentNode = function(element, tagNames) {
@@ -1050,10 +1061,7 @@ if (!window.O$) {
       tagNames[i] = tagNames[i].toUpperCase();
     while (element && tagNames.indexOf(element.nodeName.toUpperCase()) == -1)
       element = element.parentNode;
-    if (element != null)
-      return element;
-    else
-      return null;
+    return element;
   };
 
   O$.isChild = function(parent, child) {
@@ -2690,7 +2698,6 @@ if (!window.O$) {
     focusControl.onkeypress = function(evt) {
       return fireEvent(this._destComponent, "onkeypress", evt);
     };
-
 
     component._focusControl = focusControl;
 
@@ -4775,6 +4782,49 @@ if (!window.O$) {
         execute: execute});
     }
   };
+
+  O$._submitAction = function(componentId, action, actionListener) {
+    var c = O$(componentId);
+    if (!c)
+      c = document.forms[0];
+    var params = [
+      [componentId, "true"],
+      [O$.ACTION_COMPONENT, componentId]
+    ];
+    if (action)
+      params.push([O$.ACTION, action]);
+    if (actionListener)
+      params.push([O$.ACTION_LISTENER, actionListener]);
+
+    O$.submitWithParams(c, params);
+  };
+
+  O$._initAction = function(id, action, actionListener) {
+    function initComponent() {
+      var component = O$(id);
+      if (!component) {
+        setTimeout(function() {
+          initComponent();
+        }, 100);
+        return;
+      }
+      component.run = function() {
+        O$._submitAction(id, action, actionListener);
+      };
+    }
+
+    if (O$(id))
+      initComponent();
+    else
+      setTimeout(function() {
+        if (O$(id))
+          initComponent();
+        else
+          O$.addLoadEvent(function() {
+            initComponent();
+          });
+      }, 1);
+  }
 
 }
 
