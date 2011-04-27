@@ -68,18 +68,18 @@ public class BodyRow extends AbstractRow {
         if (customRowsOrCells == null || customRowsOrCells.size() == 0)
             return events;
         String[] eventNames = new String[]{
-                "onclick", "ondblclick", "onmousedown", "onmouseover", "onmousemove",
-                "onmouseout", "onmouseup", "onkeydown", "onkeyup", "onkeypress"};
+                "click", "dblclick", "mousedown", "mouseover", "mousemove",
+                "mouseout", "mouseup", "keydown", "keyup", "keypress"};
 
         for (String eventName : eventNames) {
             String compoundEventHandler = null;
             for (UIComponent customRowOrCell : customRowsOrCells) {
-                String eventHandler = (String) customRowOrCell.getAttributes().get(eventName);
+                String eventHandler = Rendering.getEventHandlerScript(customRowOrCell, eventName);
                 compoundEventHandler = Rendering.joinScripts(compoundEventHandler, eventHandler);
             }
             if (compoundEventHandler != null && compoundEventHandler.length() > 0) {
                 if (events == null) events = new HashMap<String, String>();
-                events.put(eventName, compoundEventHandler);
+                events.put("on" + eventName, compoundEventHandler);
             }
         }
         return events;

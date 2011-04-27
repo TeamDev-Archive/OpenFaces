@@ -12,14 +12,23 @@
 package org.openfaces.component.util;
 
 import org.openfaces.component.OUIClientAction;
+import org.openfaces.component.OUIClientActionHelper;
 import org.openfaces.component.OUICommand;
-import org.openfaces.component.OUIComponentBase;
+import org.openfaces.renderkit.ajax.AjaxRenderer;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIComponentBase;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.ComponentSystemEvent;
+import javax.faces.event.ListenerFor;
+import javax.faces.event.ListenersFor;
+import javax.faces.event.PostAddToViewEvent;
 
+@ListenersFor({
+        @ListenerFor(systemEventClass = PostAddToViewEvent.class)
+})
 public class Action extends OUICommand implements OUIClientAction {
     public static final String COMPONENT_TYPE = "org.openfaces.Action";
     public static final String COMPONENT_FAMILY = "org.openfaces.Action";
@@ -29,8 +38,6 @@ public class Action extends OUICommand implements OUIClientAction {
     private Boolean standalone;
 
     private Boolean disabled;
-
-    private ActionHelper helper = new ActionHelper();
 
     public Action() {
         setRendererType("org.openfaces.ActionRenderer");
@@ -44,7 +51,7 @@ public class Action extends OUICommand implements OUIClientAction {
     @Override
     public Object saveState(FacesContext context) {
         return new Object[]{
-            super.saveState(context),
+                super.saveState(context),
                 event,
                 _for,
                 standalone,
@@ -97,10 +104,49 @@ public class Action extends OUICommand implements OUIClientAction {
     }
 
     @Override
-    public void setParent(UIComponent parent) {
-        super.setParent(parent);
-        if (parent != null)
-            helper.onParentChange(this, parent);
+    public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
+        super.processEvent(event);
+
+        if (event instanceof PostAddToViewEvent) {
+            if (isStandalone()) return;
+            UIComponent parent = getParent();
+            ClientBehaviorHolder cbh;
+            if (getFor() == null) {
+                if (!(parent instanceof ClientBehaviorHolder)) {
+                    throw new IllegalStateException("<o:ajax> can only be inserted into components that allow placing " +
+                            "client behaviors inside (components that implement ClientBehaviorHolder interface). " +
+                            "Component id is: " + parent.getClientId() + "; Component class: " + parent.getClass().getName());
+                }
+                cbh = (ClientBehaviorHolder) parent;
+            } else {
+                FacesContext context = FacesContext.getCurrentInstance();
+                String invokerId = OUIClientActionHelper.getClientActionInvoker(context, this);
+                UIComponent targetComponent = context.getViewRoot().findComponent(":" + invokerId);
+                if (targetComponent == null) {
+                    getAttributes().put(AjaxRenderer.ATTACH_ON_CLIENT, true);
+                    return;
+                }
+                if (!(targetComponent instanceof ClientBehaviorHolder)) {
+                    throw new IllegalStateException("<o:action> can only be attached to components that support " +
+                            "client behaviors (components that implement ClientBehaviorHolder interface). " +
+                            "Component id is: " + invokerId + "; Component class: " + parent.getClass().getName());
+                }
+                cbh = (ClientBehaviorHolder) targetComponent;
+            }
+
+            String eventName = getEvent();
+            if (eventName == null)
+                eventName = cbh.getDefaultEventName();
+            if (eventName == null) {
+                FacesContext context = getFacesContext();
+                String invokerId = ((UIComponent) cbh).getClientId(context);
+                throw new IllegalStateException("The 'event' attribute of <o:action> is not specified and no default event " +
+                        "name exists for component: " + invokerId + " (component class: " + parent.getClass().getName() + "); " +
+                        "you should specify the 'event' attribute for the appropriate <o:action> tag");
+            }
+            ActionHelper helper = new ActionHelper(this);
+            cbh.addClientBehavior(eventName, helper);
+        }
     }
 
 
