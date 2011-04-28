@@ -78,8 +78,8 @@ public class CaptionButtonRenderer extends RendererBase {
 
     protected List<String> getJsLibraries(FacesContext context) {
         List<String> jsLibraries = new ArrayList<String>();
-        jsLibraries.add(Resources.getUtilJsURL(context));
-        jsLibraries.add(Resources.getInternalURL(context, "captionButton.js"));
+        jsLibraries.add(Resources.utilJsURL(context));
+        jsLibraries.add(Resources.internalURL(context, "captionButton.js"));
         return jsLibraries;
     }
 
@@ -121,7 +121,7 @@ public class CaptionButtonRenderer extends RendererBase {
         if (imageUrl == null)
             return getDefaultImageUrl(context);
         else
-            return Resources.getApplicationURL(context, imageUrl);
+            return Resources.applicationURL(context, imageUrl);
     }
 
     protected String getRolloverImageUrl(FacesContext context, CaptionButton btn) {
@@ -129,7 +129,7 @@ public class CaptionButtonRenderer extends RendererBase {
         if (imageUrl == null)
             return getDefaultRolloverImageUrl(context);
         else
-            return Resources.getApplicationURL(context, imageUrl);
+            return Resources.applicationURL(context, imageUrl);
     }
 
     protected String getPressedImageUrl(FacesContext context, CaptionButton btn) {
@@ -137,7 +137,7 @@ public class CaptionButtonRenderer extends RendererBase {
         if (imageUrl == null)
             return getDefaultPressedImageUrl(context);
         else
-            return Resources.getApplicationURL(context, imageUrl);
+            return Resources.applicationURL(context, imageUrl);
     }
 
     protected String getDefaultImageUrl(FacesContext context) {

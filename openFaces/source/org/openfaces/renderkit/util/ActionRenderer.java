@@ -43,7 +43,7 @@ public class ActionRenderer extends OUICommandRenderer {
                         action.getId(),
                         ActionHelper.extractActionStr(action, "action"),
                         ActionHelper.extractActionStr(action, "listener")),
-                Resources.getUtilJsURL(context));
+                Resources.utilJsURL(context));
 
         writer.endElement("span");
     }

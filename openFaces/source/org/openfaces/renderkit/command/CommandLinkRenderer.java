@@ -83,7 +83,7 @@ public class CommandLinkRenderer extends OUICommandRenderer {
         ResponseWriter writer = context.getResponseWriter();
         CommandLink link = (CommandLink) component;
         writer.endElement(getTagName(link));
-        Resources.renderJSLinkIfNeeded(context, Resources.getUtilJsURL(context));
+        Resources.renderJSLinkIfNeeded(context, Resources.utilJsURL(context));
         if (link.getAttributes().remove("_ajaxRequired") != null)
             AjaxUtil.renderJSLinks(context);
     }

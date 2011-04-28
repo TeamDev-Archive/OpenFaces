@@ -152,10 +152,10 @@ public class TagCloudRenderer extends RendererBase {
         );
         Styles.renderStyleClasses(context, cloud, false, true);
         Rendering.renderInitScript(context, initScript,
-                Resources.getUtilJsURL(context),
-                Resources.getInternalURL(context, "util/jquery-1.4.2.min.js"),
-                Resources.getInternalURL(context, "tagcloud/tagcloud.js"),
-                Resources.getInternalURL(context, "tagcloud/tagclouditem.js")
+                Resources.utilJsURL(context),
+                Resources.internalURL(context, "util/jquery-1.4.2.min.js"),
+                Resources.internalURL(context, "tagcloud/tagcloud.js"),
+                Resources.internalURL(context, "tagcloud/tagclouditem.js")
         );
 
     }

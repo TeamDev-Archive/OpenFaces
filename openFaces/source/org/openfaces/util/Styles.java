@@ -346,7 +346,7 @@ public class Styles {
         if (asOnloadScript)
             Rendering.appendOnLoadScript(context, styleRegistrationScript);
         else
-            Rendering.renderInitScript(context, styleRegistrationScript, Resources.getUtilJsURL(context));
+            Rendering.renderInitScript(context, styleRegistrationScript, Resources.utilJsURL(context));
     }
 
     /**

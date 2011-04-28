@@ -156,8 +156,8 @@ public class ChartRenderer extends RendererBase {
         dynamicImage.encodeAll(facesContext);
         chart.setEntityIndex(oldEntityIndex);
         if (map != null) {
-            Resources.renderJSLinkIfNeeded(facesContext, Resources.getUtilJsURL(facesContext));
-            Resources.renderJSLinkIfNeeded(facesContext, Resources.getInternalURL(facesContext, "chart/chart.js"));
+            Resources.renderJSLinkIfNeeded(facesContext, Resources.utilJsURL(facesContext));
+            Resources.renderJSLinkIfNeeded(facesContext, Resources.internalURL(facesContext, "chart/chart.js"));
         }
         encodeScripts(facesContext, chart, dynamicImage);
         writer.endElement("div");
@@ -211,9 +211,9 @@ public class ChartRenderer extends RendererBase {
 
         encodeChartSelection(context, chart);
         encodeChartMenuSupport(context, chart, dynamicImage, buf);
-        Rendering.renderInitScript(context, buf, Resources.getUtilJsURL(context),
-                Resources.getInternalURL(context, "chart/chart.js"),
-                Resources.getAjaxUtilJsURL(context));
+        Rendering.renderInitScript(context, buf, Resources.utilJsURL(context),
+                Resources.internalURL(context, "chart/chart.js"),
+                Resources.ajaxUtilJsURL(context));
         chart.setEntityIndex(oldEntityIndex);
     }
 

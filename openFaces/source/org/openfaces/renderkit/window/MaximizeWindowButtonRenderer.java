@@ -32,12 +32,12 @@ public class MaximizeWindowButtonRenderer extends ToggleCaptionButtonRenderer {
 
     @Override
     protected String getDefaultImageUrl(FacesContext context) {
-        return Resources.getInternalURL(context, "window/maximize.gif");
+        return Resources.internalURL(context, "window/maximize.gif");
     }
 
     @Override
     protected String getDefaultToggleImageUrl(FacesContext context) {
-        return Resources.getInternalURL(context, "window/restore.gif");
+        return Resources.internalURL(context, "window/restore.gif");
     }
 
     @Override

@@ -147,9 +147,9 @@ public class DefaultProgressMessage extends ProgressMessage {
         ExternalContext externalContext = context.getExternalContext();
 
         if (imageUrl == null) {
-            imageUrl = Resources.getInternalURL(context, "loading.gif");
+            imageUrl = Resources.internalURL(context, "loading.gif");
         } else {
-            imageUrl = Resources.getApplicationURL(context, imageUrl);
+            imageUrl = Resources.applicationURL(context, imageUrl);
         }
 
         if (ajaxMessage == null) {

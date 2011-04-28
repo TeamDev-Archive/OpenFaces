@@ -239,7 +239,7 @@ public abstract class DropDownComponentRenderer extends RendererBase {
                 params.toArray());
 
         InitScript commonInitScript = new InitScript(buf, new String[]{
-                Resources.getUtilJsURL(facesContext),
+                Resources.utilJsURL(facesContext),
                 getDropDownJsURL(facesContext)
         });
 
@@ -251,7 +251,7 @@ public abstract class DropDownComponentRenderer extends RendererBase {
     }
 
     protected String getDropDownJsURL(FacesContext context) {
-        return Resources.getInternalURL(context, "input/dropdown.js");
+        return Resources.internalURL(context, "input/dropdown.js");
     }
 
     protected boolean isAutomaticStyleRenderingNeeded() {

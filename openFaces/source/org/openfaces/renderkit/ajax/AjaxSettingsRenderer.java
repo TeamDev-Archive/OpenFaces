@@ -33,8 +33,8 @@ public class AjaxSettingsRenderer extends AbstractSettingsRenderer implements Aj
         AjaxSettings ajaxSettings = (AjaxSettings) component;
         if (!AjaxUtil.isAjaxRequest(context)) {
             processOnsessionexpired(context, ajaxSettings);
-            Resources.renderJSLinkIfNeeded(context, Resources.getUtilJsURL(context));
-            Resources.renderJSLinkIfNeeded(context, Resources.getInternalURL(context, ConfirmationRenderer.JS_SCRIPT_URL));
+            Resources.renderJSLinkIfNeeded(context, Resources.utilJsURL(context));
+            Resources.renderJSLinkIfNeeded(context, Resources.internalURL(context, ConfirmationRenderer.JS_SCRIPT_URL));
         }
 
         processOnerror(context, ajaxSettings);

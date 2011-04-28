@@ -55,7 +55,7 @@ public class TableUtil {
     }
 
     public static String getTableUtilJsURL(FacesContext context) {
-        return Resources.getInternalURL(context, "tableUtil.js");
+        return Resources.internalURL(context, "tableUtil.js");
     }
 
     public static void writeColumnTags(FacesContext context, UIComponent component, List columns) throws IOException {

@@ -131,8 +131,8 @@ public class PopupLayerRenderer extends RendererBase {
             ScriptBuilder buf = new ScriptBuilder();
             buf.functionCall("O$.Popup._init", clientId).semicolon();
             Rendering.renderInitScript(context, buf,
-                    Resources.getUtilJsURL(context),
-                    Resources.getInternalURL(context, "popup.js"));
+                    Resources.utilJsURL(context),
+                    Resources.internalURL(context, "popup.js"));
         }
 
         ScriptBuilder sb = new ScriptBuilder();
@@ -186,8 +186,8 @@ public class PopupLayerRenderer extends RendererBase {
         }
 
         Rendering.renderInitScript(context, sb,
-                Resources.getUtilJsURL(context),
-                Resources.getInternalURL(context, "window/popupLayer.js"));
+                Resources.utilJsURL(context),
+                Resources.internalURL(context, "window/popupLayer.js"));
     }
 
     private static String nullOrJsString(String str) { // todo: replace using ScriptBuilder and remove this method

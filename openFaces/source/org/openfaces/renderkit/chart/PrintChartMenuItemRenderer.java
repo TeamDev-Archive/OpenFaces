@@ -33,13 +33,13 @@ public class PrintChartMenuItemRenderer extends MenuItemRenderer {
         menuItem.setOnclick(new ScriptBuilder().functionCall("O$.ChartMenu._printChart",
                 getChart("<o:printChartMenuItem>", menuItem)).getScript());
         if (menuItem.getIconUrl() == null)
-            menuItem.setIconUrl(Resources.getInternalURL(
+            menuItem.setIconUrl(Resources.internalURL(
                     context, null, "chart/print.png", false));
 
         super.encodeBegin(context, component);
         Resources.includeJQuery(context);
         Resources.renderJSLinkIfNeeded(context,
-                Resources.getInternalURL(context, "thirdparty/printelement/printElement.js"));
+                Resources.internalURL(context, "thirdparty/printelement/printElement.js"));
     }
 
     @Override

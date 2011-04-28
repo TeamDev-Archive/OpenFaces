@@ -74,7 +74,7 @@ public class DataTablePaginatorRenderer extends RendererBase {
         else
             writer.writeAttribute("class", className, null);
 
-        Resources.renderJSLinkIfNeeded(context, Resources.getUtilJsURL(context));
+        Resources.renderJSLinkIfNeeded(context, Resources.utilJsURL(context));
 
         writer.startElement("tr", component);
         writer.startElement("td", component);

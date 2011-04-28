@@ -292,7 +292,7 @@ public class MultipleNodeSelection extends TreeTableSelection {
                 selectedRowIndexes).semicolon();
 
         Rendering.renderInitScript(context, buf,
-                Resources.getUtilJsURL(context),
+                Resources.utilJsURL(context),
                 TableUtil.getTableUtilJsURL(context),
                 AbstractTableRenderer.getTableJsURL(context));
     }

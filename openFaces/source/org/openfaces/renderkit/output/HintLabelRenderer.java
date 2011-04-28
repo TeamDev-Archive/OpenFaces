@@ -74,8 +74,8 @@ public class HintLabelRenderer extends RendererBase {
                 hint != null);
 
         Rendering.renderInitScript(context, sb,
-                Resources.getUtilJsURL(context),
-                Resources.getInternalURL(context, "output/hintLabel.js"));
+                Resources.utilJsURL(context),
+                Resources.internalURL(context, "output/hintLabel.js"));
         Styles.renderStyleClasses(context, hintLabel);
         writer.endElement("div");
         writer.endElement("div");

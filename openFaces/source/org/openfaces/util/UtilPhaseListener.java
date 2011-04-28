@@ -69,7 +69,7 @@ public class UtilPhaseListener extends PhaseListenerBase {
         PhaseId phaseId = event.getPhaseId();
         if (phaseId.equals(PhaseId.RENDER_RESPONSE)) {
             List<String> renderedJsLinks = Resources.getRenderedJsLinks(context);
-            String utilJs = Resources.getUtilJsURL(context);
+            String utilJs = Resources.utilJsURL(context);
             boolean renderFocusScript = isAutoFocusTrackingEnabled(context);
             boolean renderScrollingScript = isAutoScrollPosTrackingEnabled(context);
             boolean renderContextMenuScript = isDisabledContextMenuEnabled(context);

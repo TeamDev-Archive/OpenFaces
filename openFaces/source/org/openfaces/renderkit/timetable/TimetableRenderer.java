@@ -95,7 +95,7 @@ public class TimetableRenderer extends TimetableRendererBase {
     }
 
     public static String getTimetableJsURL(FacesContext context) {
-        return Resources.getInternalURL(context, "timetable/timetable.js");
+        return Resources.internalURL(context, "timetable/timetable.js");
     }
 
     @Override

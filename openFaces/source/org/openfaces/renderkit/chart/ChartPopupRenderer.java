@@ -71,9 +71,9 @@ public class ChartPopupRenderer extends PopupLayerRenderer implements AjaxPortio
         buf.functionCall("O$.ChartPopup._init", clientId, popup.getLoadingMode().toString(), chartId).semicolon();
 
         Rendering.renderInitScript(context, buf,
-                Resources.getUtilJsURL(context),
-                Resources.getInternalURL(context, "chart/chart.js"),
-                (!clientLoadingMode ? Resources.getAjaxUtilJsURL(context) : null));
+                Resources.utilJsURL(context),
+                Resources.internalURL(context, "chart/chart.js"),
+                (!clientLoadingMode ? Resources.ajaxUtilJsURL(context) : null));
     }
 
     private void renderPopupContent(FacesContext context, UIComponent component) throws IOException {

@@ -91,8 +91,8 @@ public class Resources {
             boolean prependContextPath) {
         boolean returnDefaultResource = userSpecifiedUrl == null || userSpecifiedUrl.length() == 0;
         String result = returnDefaultResource
-                ? getInternalURL(context, defaultResourceBaseClassName, defaultResourceFileName, prependContextPath)
-                : (prependContextPath ? getApplicationURL(context, userSpecifiedUrl) : userSpecifiedUrl);
+                ? internalURL(context, defaultResourceBaseClassName, defaultResourceFileName, prependContextPath)
+                : (prependContextPath ? applicationURL(context, userSpecifiedUrl) : userSpecifiedUrl);
         return result;
     }
 
@@ -104,7 +104,7 @@ public class Resources {
      *                     or relative to the current page
      * @return full URL to resource ready for rendering as <code>src</code> or <code>href</code> attribute's value.
      */
-    public static String getApplicationURL(FacesContext context, String resourcePath) {
+    public static String applicationURL(FacesContext context, String resourcePath) {
         if (resourcePath == null || resourcePath.length() == 0)
             return "";
         ViewHandler viewHandler = context.getApplication().getViewHandler();
@@ -117,12 +117,12 @@ public class Resources {
      * A method which is a facade for JSF 1.2 and JSF 2.0 implementations of resource name generation. It has
      * different implementations in the appropriate OpenFaces branches.
      */
-    public static String getInternalURL(FacesContext context, String resourceName) {
-        return getInternalURL(context, null, resourceName, true);
+    public static String internalURL(FacesContext context, String resourceName) {
+        return internalURL(context, null, resourceName, true);
     }
 
-    public static String getInternalURL(FacesContext context, Class componentClass, String resourceName) {
-        return getInternalURL(context, componentClass, resourceName, true);
+    public static String internalURL(FacesContext context, Class componentClass, String resourceName) {
+        return internalURL(context, componentClass, resourceName, true);
     }
 
     private static String getPackagePath(Class componentClass) {
@@ -144,7 +144,7 @@ public class Resources {
      *                           expects application URL, so the component will prepend the URL with context root itself.
      * @return The requested URL
      */
-    public static String getInternalURL(
+    public static String internalURL(
             FacesContext context,
             Class componentClass,
             String resourcePath,
@@ -168,7 +168,7 @@ public class Resources {
         if (!prependContextPath)
             return urlRelativeToContextRoot;
 
-        return getApplicationURL(context, urlRelativeToContextRoot);
+        return applicationURL(context, urlRelativeToContextRoot);
     }
 
     private static String versionString;
@@ -265,15 +265,15 @@ public class Resources {
      * @param context {@link FacesContext} for the current request
      * @return requested URL of util.js file
      */
-    public static String getUtilJsURL(FacesContext context) {
+    public static String utilJsURL(FacesContext context) {
         // To be sure that default.css is included to the web page,
         // because it is also required in cases when util.js included into web page
         Styles.requestDefaultCss(context);
-        return getInternalURL(context, "util/util.js");
+        return internalURL(context, "util/util.js");
     }
 
-    public static String getFiltersJsURL(FacesContext context) {
-        return Resources.getInternalURL(context, "filter/filters.js");
+    public static String filtersJsURL(FacesContext context) {
+        return Resources.internalURL(context, "filter/filters.js");
     }
 
     /**
@@ -283,8 +283,8 @@ public class Resources {
      * @param context {@link FacesContext} for the current request
      * @return requested URL of ajaxUtil.js file
      */
-    public static String getAjaxUtilJsURL(FacesContext context) {
-        return Resources.getInternalURL(context, "util/ajaxUtil.js");
+    public static String ajaxUtilJsURL(FacesContext context) {
+        return Resources.internalURL(context, "util/ajaxUtil.js");
     }
 
     /**
@@ -293,8 +293,8 @@ public class Resources {
      * @param context {@link FacesContext} for the current request
      * @return requested URL of json javascript file
      */
-    public static String getJsonJsURL(FacesContext context) {
-        return Resources.getInternalURL(context, JSON_JS_LIB_NAME);
+    public static String jsonJsURL(FacesContext context) {
+        return Resources.internalURL(context, JSON_JS_LIB_NAME);
     }
 
     /**
@@ -303,7 +303,7 @@ public class Resources {
      * @param aClass The Class object
      * @return full package name for given Class
      */
-    public static String getPackageName(Class aClass) {
+    private static String getPackageName(Class aClass) {
         String className = aClass.getName();
         int lastIndexOfDot = className.lastIndexOf('.');
         if (lastIndexOfDot == -1) {
@@ -321,7 +321,7 @@ public class Resources {
      * @param relativeJsPath Path to the javascript file
      */
     public static void registerJavascriptLibrary(FacesContext context, Class baseClass, String relativeJsPath) {
-        String jsFileUrl = getInternalURL(context, baseClass, relativeJsPath);
+        String jsFileUrl = internalURL(context, baseClass, relativeJsPath);
         registerJavascriptLibrary(context, jsFileUrl);
     }
 
@@ -550,7 +550,7 @@ public class Resources {
             return;
         }
         if (jQueryMode.equals("embedded"))
-            registerJavascriptLibrary(context, getInternalURL(context, "util/jquery-1.4.2.min.js"));
+            registerJavascriptLibrary(context, internalURL(context, "util/jquery-1.4.2.min.js"));
             /* below are the official jQuery CDNs as referenced here: http://docs.jquery.com/Downloading_jQuery */
         else if (jQueryMode.equals("jquery"))
             renderJSLinkIfNeeded(context, "http://code.jquery.com/jquery-1.4.2.min.js");

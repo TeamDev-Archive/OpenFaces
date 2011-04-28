@@ -225,11 +225,11 @@ public class DateChooserRenderer extends DropDownComponentRenderer {
                 dc.getOnchange());
 
         return new InitScript(sb, new String[]{
-                Resources.getUtilJsURL(context),
-                Resources.getJsonJsURL(context),
+                Resources.utilJsURL(context),
+                Resources.jsonJsURL(context),
                 getDropDownJsURL(context),
-                Resources.getInternalURL(context, "validation/requestHelper.js"),
-                Resources.getInternalURL(context, "input/dateChooser.js")
+                Resources.internalURL(context, "validation/requestHelper.js"),
+                Resources.internalURL(context, "input/dateChooser.js")
         });
     }
 

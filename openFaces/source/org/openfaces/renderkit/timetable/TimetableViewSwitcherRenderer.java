@@ -47,7 +47,7 @@ public class TimetableViewSwitcherRenderer extends TabSetRenderer {
         Rendering.renderInitScript(context, new ScriptBuilder().initScript(context, switcher,
                 "O$.TimetableViewSwitcher._init", timetable,
 
-                Resources.getUtilJsURL(context),
+                Resources.utilJsURL(context),
                 TimetableRenderer.getTimetableJsURL(context)));
 
     }

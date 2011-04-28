@@ -186,8 +186,8 @@ public class SelectManyCheckboxRenderer extends SelectManyInputRenderer {
         );
 
         Rendering.renderInitScript(facesContext, initScript,
-                Resources.getUtilJsURL(facesContext),
-                Resources.getInternalURL(facesContext, "select/manycheckbox.js"));
+                Resources.utilJsURL(facesContext),
+                Resources.internalURL(facesContext, "select/manycheckbox.js"));
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

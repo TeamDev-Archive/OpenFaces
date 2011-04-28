@@ -45,7 +45,7 @@ public class ValidationJavascriptLibrary {
 
     public String getUrl(FacesContext context) {
         if (ownerClass != null)
-            return Resources.getInternalURL(context, ownerClass, name);
-        return Resources.getInternalURL(context, name.startsWith("/") ? name.substring(1) : "validation/" + name);
+            return Resources.internalURL(context, ownerClass, name);
+        return Resources.internalURL(context, name.startsWith("/") ? name.substring(1) : "validation/" + name);
     }
 }

@@ -72,10 +72,10 @@ public class EventPreviewRenderer extends RendererBase {
                         eventPreview.getVerticalAlignment(),
                         eventPreview.getHorizontalDistance(),
                         eventPreview.getVerticalDistance()),
-                Resources.getUtilJsURL(context),
-                Resources.getInternalURL(context, "timetable/rangeMap.js"),
-                Resources.getInternalURL(context, "timetable/timetable.js"),
-                Resources.getInternalURL(context, componentJs));
+                Resources.utilJsURL(context),
+                Resources.internalURL(context, "timetable/rangeMap.js"),
+                Resources.internalURL(context, "timetable/timetable.js"),
+                Resources.internalURL(context, componentJs));
 
         writer.endElement("div");
 

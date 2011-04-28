@@ -92,9 +92,9 @@ public class BorderLayoutPanelRenderer extends RendererBase {
         }
 
         Rendering.renderInitScript(context, initScript,
-                Resources.getUtilJsURL(context),
-                Resources.getInternalURL(context, "panel/borderLayoutPanel.js"),
-                Resources.getInternalURL(context, SidePanelRenderer.SIDE_PANEL_UTIL_JS));
+                Resources.utilJsURL(context),
+                Resources.internalURL(context, "panel/borderLayoutPanel.js"),
+                Resources.internalURL(context, SidePanelRenderer.SIDE_PANEL_UTIL_JS));
     }
 
     private void encodeScriptsAndStyles_content(FacesContext context, BorderLayoutPanel borderLayoutPanel, String clientId) throws IOException {

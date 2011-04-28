@@ -59,7 +59,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
     private static final String FACET_COLUMN_MENU_BUTTON = "columnMenuButton";
 
     public static String getTableJsURL(FacesContext context) {
-        return Resources.getInternalURL(context, "table/table.js");
+        return Resources.internalURL(context, "table/table.js");
     }
 
     @Override
@@ -244,8 +244,8 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         // call in O$._markPreloadedLibraries (this <script> entry is just missing in this case, which seems to be some
         // IE bug) -- the result prior to fix was that ajaxUtil waited for captionButton.js to load indefinitely and failed
         // to invoke initialization scripts. Rendering captionButton.js in a less "deep" place of DOM solves the problem.
-        Resources.renderJSLinkIfNeeded(context, Resources.getUtilJsURL(context));
-        Resources.renderJSLinkIfNeeded(context, Resources.getInternalURL(context, "captionButton.js"));
+        Resources.renderJSLinkIfNeeded(context, Resources.utilJsURL(context));
+        Resources.renderJSLinkIfNeeded(context, Resources.internalURL(context, "captionButton.js"));
 
         ResponseWriter writer = context.getResponseWriter();
         // mock table/tr enclosing tags must be rendered for IE8 to process the button's td tag properly 
@@ -281,7 +281,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
     }
 
     private String getDefaultColumnMenuBtnImage(FacesContext context) {
-        return Resources.getInternalURL(context, null, "table/columnMenuDrop.gif", false);
+        return Resources.internalURL(context, null, "table/columnMenuDrop.gif", false);
     }
 
     private void preregisterNoFilterDataRowStyleForOpera(FacesContext context, AbstractTable table) {
@@ -311,7 +311,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
 
     protected String[] getNecessaryJsLibs(FacesContext context) {
         return new String[]{
-                Resources.getUtilJsURL(context),
+                Resources.utilJsURL(context),
                 TableUtil.getTableUtilJsURL(context),
                 getTableJsURL(context)};
     }

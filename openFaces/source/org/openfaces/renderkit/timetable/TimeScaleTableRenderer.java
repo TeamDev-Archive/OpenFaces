@@ -202,15 +202,15 @@ public abstract class TimeScaleTableRenderer extends TimetableViewRenderer {
                             timetableView.getMajorTimeInterval(),
                             timetableView.getMinorTimeInterval(),
                             timetableView.getShowTimeForMinorIntervals(),
-                            calendarOptions)/*.semicolon()*/,
-                    Resources.getUtilJsURL(context),
-                    Resources.getJsonJsURL(context),
+                            calendarOptions),
+                    Resources.utilJsURL(context),
+                    Resources.jsonJsURL(context),
                     TableUtil.getTableUtilJsURL(context),
-                    Resources.getInternalURL(context, "timetable/rangeMap.js"),
-                    Resources.getInternalURL(context, "timetable/timeTableView.js"),
-                    Resources.getInternalURL(context, "timetable/timeScaleTable.js"),
-                    Resources.getInternalURL(context, "timetable/timetable.js"),
-                    Resources.getInternalURL(context, getJsLibraryName())
+                    Resources.internalURL(context, "timetable/rangeMap.js"),
+                    Resources.internalURL(context, "timetable/timeTableView.js"),
+                    Resources.internalURL(context, "timetable/timeScaleTable.js"),
+                    Resources.internalURL(context, "timetable/timetable.js"),
+                    Resources.internalURL(context, getJsLibraryName())
             );
         } catch (JSONException e) {
             throw new RuntimeException(e);

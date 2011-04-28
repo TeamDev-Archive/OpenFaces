@@ -254,9 +254,9 @@ public class CalendarRenderer extends RendererBase {
 
         Styles.renderStyleClasses(context, calendar);
         Rendering.renderInitScript(context, sb,
-                Resources.getUtilJsURL(context),
-                Resources.getInternalURL(context, "calendar/calendar.js"),
-                Resources.getInternalURL(context, "calendar/dateRange.js")
+                Resources.utilJsURL(context),
+                Resources.internalURL(context, "calendar/calendar.js"),
+                Resources.internalURL(context, "calendar/dateRange.js")
         );
     }
 

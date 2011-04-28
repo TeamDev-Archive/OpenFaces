@@ -27,7 +27,7 @@ public class CloseWindowButtonRenderer extends CaptionButtonRenderer {
 
     @Override
     protected String getDefaultImageUrl(FacesContext context) {
-        return Resources.getInternalURL(context, "window/close.gif");
+        return Resources.internalURL(context, "window/close.gif");
     }
 
     @Override

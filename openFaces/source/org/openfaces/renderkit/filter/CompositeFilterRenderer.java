@@ -138,15 +138,15 @@ public class CompositeFilterRenderer extends RendererBase implements AjaxPortion
     }
 
     public static String getFilterJsURL(FacesContext facesContext) {
-        return Resources.getInternalURL(facesContext, "filter/compositeFilter.js");
+        return Resources.internalURL(facesContext, "filter/compositeFilter.js");
     }
 
     private String[] getNecessaryJsLibs(FacesContext context) {
         return new String[]{
-                Resources.getUtilJsURL(context),
-                Resources.getJsonJsURL(context),
-                Resources.getInternalURL(context, "input/dropdown.js"),
-                Resources.getInternalURL(context, "input/dateChooser.js"),
+                Resources.utilJsURL(context),
+                Resources.jsonJsURL(context),
+                Resources.internalURL(context, "input/dropdown.js"),
+                Resources.internalURL(context, "input/dateChooser.js"),
                 getFilterJsURL(context)};
     }
 

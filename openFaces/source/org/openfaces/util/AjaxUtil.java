@@ -242,7 +242,7 @@ public class AjaxUtil {
                 if (isPortletRequest(context)) {
                     String uniqueRTLibraryName = ResourceFilter.RUNTIME_INIT_LIBRARY_PATH + generateUniqueInitLibraryName();
                     context.getExternalContext().getSessionMap().put(ATTR_PORTLET_UNIQUE_RTLIBRARY_NAME, uniqueRTLibraryName);
-                    String initLibraryUrl = Resources.getApplicationURL(context, uniqueRTLibraryName);
+                    String initLibraryUrl = Resources.applicationURL(context, uniqueRTLibraryName);
                     Resources.renderJSLinkIfNeeded(context, initLibraryUrl);
                 }
 
@@ -253,8 +253,8 @@ public class AjaxUtil {
     }
 
     public static void renderAjaxSupport(FacesContext context) throws IOException {
-        Resources.renderJSLinkIfNeeded(context, Resources.getUtilJsURL(context));
-        Resources.renderJSLinkIfNeeded(context, Resources.getAjaxUtilJsURL(context));
+        Resources.renderJSLinkIfNeeded(context, Resources.utilJsURL(context));
+        Resources.renderJSLinkIfNeeded(context, Resources.ajaxUtilJsURL(context));
         UtilPhaseListener.encodeFormSubmissionAjaxInactivityTimeout(context);
     }
 

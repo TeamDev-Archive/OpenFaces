@@ -242,7 +242,7 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
                 isKeyboardSupport());
 
         Rendering.renderInitScript(context, buf,
-                Resources.getUtilJsURL(context),
+                Resources.utilJsURL(context),
                 TableUtil.getTableUtilJsURL(context),
                 AbstractTableRenderer.getTableJsURL(context));
         if (ajaxJsRequired)

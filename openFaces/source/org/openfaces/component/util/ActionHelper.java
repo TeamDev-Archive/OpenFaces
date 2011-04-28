@@ -75,7 +75,7 @@ public class ActionHelper extends OUIClientActionHelper {
     @Override
     protected void renderResources(FacesContext context) {
         try {
-            Resources.renderJSLinkIfNeeded(context, Resources.getUtilJsURL(context));
+            Resources.renderJSLinkIfNeeded(context, Resources.utilJsURL(context));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
