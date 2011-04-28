@@ -32,7 +32,7 @@ O$.Timetable = {
         if (this._viewType == viewType) return;
         this._viewType = viewType;
         O$.setHiddenField(this, timetableId + "::view", viewType);
-        timetableView.refreshEvents();
+        timetableView._updateEventElements();
         setTimeout(function() {
           timetableView.updateLayout();
         }, 1);

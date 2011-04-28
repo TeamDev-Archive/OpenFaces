@@ -180,6 +180,8 @@ public abstract class TimeScaleTableRenderer extends TimetableViewRenderer {
                     getComponentName() + " clientId = " + timetableView.getClientId(context));
         UITimetableEvent uiEvent = uiEvents.size() > 0 ? uiEvents.get(0) : null;
 
+        Timetable timetable = timetableView.getTimetable();
+
         try {
             Rendering.renderInitScript(context,
                     new ScriptBuilder().initScript(context, timetableView, getJsInitFunctionName(),
@@ -202,7 +204,8 @@ public abstract class TimeScaleTableRenderer extends TimetableViewRenderer {
                             timetableView.getMajorTimeInterval(),
                             timetableView.getMinorTimeInterval(),
                             timetableView.getShowTimeForMinorIntervals(),
-                            calendarOptions),
+                            calendarOptions,
+                            timetable),
                     Resources.utilJsURL(context),
                     Resources.jsonJsURL(context),
                     TableUtil.getTableUtilJsURL(context),

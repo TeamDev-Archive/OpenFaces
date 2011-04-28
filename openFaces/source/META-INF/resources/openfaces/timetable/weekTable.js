@@ -29,7 +29,8 @@ O$.WeekTable._init = function(componentId,
                             majorTimeInterval,
                             minorTimeInterval,
                             showTimeForMinorIntervals,
-                            calendarOptions
+                            calendarOptions,
+                            timetableId
         ) {
 
   var weekTable = O$.initComponent(componentId, null, {
@@ -51,6 +52,7 @@ O$.WeekTable._init = function(componentId,
   weekTable.DEFAULT_EVENT_NAME_CLASS_NAME = "o_timetableEventName";
   weekTable.DEFAULT_EVENT_CONTENT = [ { type : "name"}, { type : "description" } ];
   weekTable.EVENT_ROLLOVER_STATE_UPDATE_TIMEOUT = 1;
+  weekTable._timetable = O$(timetableId);
 
   O$.TimeScaleTable._init(componentId, day, locale, dateFormat, startTimeStr, endTimeStr, scrollTimeStr,
           preloadedEventParams, resources, eventAreaSettings, editable, onchange, editingOptions, stylingParams,

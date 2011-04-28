@@ -28,10 +28,16 @@ O$.TimeTableView._init = function(componentId,
   var timeTableView = O$(componentId);
   O$.initComponent(componentId, {rollover: stylingParams.rolloverClass});
 
-  var eventProvider = new O$.Timetable._LazyLoadedTimetableEvents(
-          preloadedEventParams.events,
-          preloadedEventParams.from,
-          preloadedEventParams.to);
+  var timetable = timeTableView._timetable;
+  var eventProvider;
+  if (timetable) eventProvider = timetable._eventProvider;
+  if (!eventProvider) {
+    eventProvider = new O$.Timetable._LazyLoadedTimetableEvents(
+            preloadedEventParams.events,
+            preloadedEventParams.from,
+            preloadedEventParams.to);
+    if (timetable) timetable._eventProvider = eventProvider;
+  }
   eventProvider._timeTableView = timeTableView;
   timeTableView._eventProvider = eventProvider;
 

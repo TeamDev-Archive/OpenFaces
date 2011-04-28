@@ -29,7 +29,8 @@ O$.MonthTable._init = function(componentId,
                                editingOptions,
                                stylingParams,
                                uiEvent,
-                               calendarOptions
+                               calendarOptions,
+                               timetableId
         ) {
 
   var monthTable = O$.initComponent(componentId, null, {
@@ -51,11 +52,12 @@ O$.MonthTable._init = function(componentId,
   monthTable.DEFAULT_EVENT_CLASS_NAME = "o_monthTableEvent";
   monthTable.DEFAULT_EVENT_NAME_CLASS_NAME = "o_monthTableEventName";
   monthTable.DEFAULT_EVENT_CONTENT = [
-    { type : "time"},
-    { type : "name" },
-    { type : "resource" }
+    {type: "time"},
+    {type: "name"},
+    {type: "resource"}
   ];
   monthTable.EVENT_ROLLOVER_STATE_UPDATE_TIMEOUT = 1;
+  monthTable._timetable = O$(timetableId);
 
   O$.TimeTableView._init(componentId, day, locale, dateFormat, preloadedEventParams, resources,
           eventAreaSettings, editable, onchange, editingOptions, stylingParams, uiEvent);
