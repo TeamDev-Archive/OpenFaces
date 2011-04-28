@@ -128,8 +128,8 @@ public class EventActionBarRenderer extends RendererBase {
             params.put("id", action.getClientId(context));
         params.put("image", new JSONArray(Arrays.asList(
                 getActionImageUrl(context, action),
-                Resources.getApplicationURL(context, action.getRolloverImageUrl()),
-                Resources.getApplicationURL(context, action.getPressedImageUrl()))));
+                Resources.applicationURL(context, action.getRolloverImageUrl()),
+                Resources.applicationURL(context, action.getPressedImageUrl()))));
         params.put("style", new JSONArray(Arrays.asList(
                 Styles.getCSSClass(context, actionBar, action.getStyle(), "o_eventActionButton", action.getStyleClass()),
                 Styles.getCSSClass(context, actionBar, action.getRolloverStyle(), action.getRolloverClass()),
@@ -141,9 +141,9 @@ public class EventActionBarRenderer extends RendererBase {
 
     private String getActionImageUrl(FacesContext context, EventAction action) {
         if (action instanceof DeleteEventAction && action.getImageUrl() == null) {
-            return Resources.getInternalURL(FacesContext.getCurrentInstance(), "timetable/deleteEvent.gif");
+            return Resources.internalURL(FacesContext.getCurrentInstance(), "timetable/deleteEvent.gif");
         }
-        return Resources.getApplicationURL(context, action.getImageUrl());
+        return Resources.applicationURL(context, action.getImageUrl());
     }
 
     @Override

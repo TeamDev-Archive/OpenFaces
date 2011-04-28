@@ -116,7 +116,7 @@ public class DebugRenderer extends WindowRenderer implements CompoundComponentRe
         super.encodeScriptsAndStyles(context, component);
         Rendering.renderInitScript(context,
                 new ScriptBuilder().initScript(context, component, "O$.Debug._init"),
-                Resources.getInternalURL(context, "util/debug.js"));
+                Resources.internalURL(context, "util/debug.js"));
 
     }
 }

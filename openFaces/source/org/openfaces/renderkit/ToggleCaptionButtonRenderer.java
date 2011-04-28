@@ -73,7 +73,7 @@ public class ToggleCaptionButtonRenderer extends CaptionButtonRenderer {
         if (imageUrl == null)
             return getDefaultToggleImageUrl(context);
         else
-            return Resources.getApplicationURL(context, imageUrl);
+            return Resources.applicationURL(context, imageUrl);
     }
 
     private String getToggleImageRolloverUrl(FacesContext context, ToggleCaptionButton tbtn) {
@@ -81,7 +81,7 @@ public class ToggleCaptionButtonRenderer extends CaptionButtonRenderer {
         if (imageUrl == null)
             return getDefaultToggledImageRolloverUrl(context);
         else
-            return Resources.getApplicationURL(context, imageUrl);
+            return Resources.applicationURL(context, imageUrl);
     }
 
     private String getToggleImagePressedUrl(FacesContext context, ToggleCaptionButton tbtn) {
@@ -89,7 +89,7 @@ public class ToggleCaptionButtonRenderer extends CaptionButtonRenderer {
         if (imageUrl == null)
             return getDefaultToggledImagePressedUrl(context);
         else
-            return Resources.getApplicationURL(context, imageUrl);
+            return Resources.applicationURL(context, imageUrl);
     }
 
     protected String getDefaultToggleImageUrl(FacesContext context) {

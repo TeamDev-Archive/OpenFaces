@@ -118,7 +118,7 @@ public class LevelIndicatorRenderer extends org.openfaces.renderkit.RendererBase
                 rolloverStyleClass);
 
         InitScript commonInitScript = new InitScript(buf, new String[]{
-                Resources.getUtilJsURL(context),
+                Resources.utilJsURL(context),
                 getLevelIndicatorJsURL(context)
         });
 
@@ -232,7 +232,7 @@ public class LevelIndicatorRenderer extends org.openfaces.renderkit.RendererBase
     }
 
     protected String getLevelIndicatorJsURL(FacesContext context) {
-        return Resources.getInternalURL(context, "output/levelIndicator.js");
+        return Resources.internalURL(context, "output/levelIndicator.js");
     }
 
     protected String getDefaultLevelIndicatorClass() {

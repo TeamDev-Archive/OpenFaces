@@ -218,7 +218,7 @@ O$.DayTable._init = function(componentId,
     dayTable.updateLayout(); // update positions after layout changes that might have had place during loading
   });
 
-   O$.addEventHandler(window, "resize", function() {
+  O$.addEventHandler(window, "resize", function() {
     dayTable.updateLayout();
   });
   

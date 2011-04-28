@@ -45,7 +45,7 @@ public class CommandButtonRenderer extends OUICommandRenderer {
             String image = btn.getImage();
             if (image != null)
                 type = "image";
-            writer.writeAttribute("src", Resources.getApplicationURL(context, image), "image");
+            writer.writeAttribute("src", Resources.applicationURL(context, image), "image");
         }
         writer.writeAttribute("type", type, "type");
         if (btn.isDisabled())

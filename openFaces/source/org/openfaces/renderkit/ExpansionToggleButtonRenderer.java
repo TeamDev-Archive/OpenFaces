@@ -30,32 +30,32 @@ public class ExpansionToggleButtonRenderer extends ToggleCaptionButtonRenderer {
 
     @Override
     protected String getDefaultImageUrl(FacesContext context) {
-        return Resources.getInternalURL(context, "plus_h.gif");
+        return Resources.internalURL(context, "plus_h.gif");
     }
 
     @Override
     protected String getDefaultRolloverImageUrl(FacesContext context) {
-        return Resources.getInternalURL(context, "plus_u.gif");
+        return Resources.internalURL(context, "plus_u.gif");
     }
 
     @Override
     protected String getDefaultPressedImageUrl(FacesContext context) {
-        return Resources.getInternalURL(context, "plus_d.gif");
+        return Resources.internalURL(context, "plus_d.gif");
     }
 
     @Override
     protected String getDefaultToggleImageUrl(FacesContext context) {
-        return Resources.getInternalURL(context, "minus_h.gif");
+        return Resources.internalURL(context, "minus_h.gif");
     }
 
     @Override
     protected String getDefaultToggledImageRolloverUrl(FacesContext context) {
-        return Resources.getInternalURL(context, "minus_u.gif");
+        return Resources.internalURL(context, "minus_u.gif");
     }
 
     @Override
     protected String getDefaultToggledImagePressedUrl(FacesContext context) {
-        return Resources.getInternalURL(context, "minus_d.gif");
+        return Resources.internalURL(context, "minus_d.gif");
     }
 
     @Override

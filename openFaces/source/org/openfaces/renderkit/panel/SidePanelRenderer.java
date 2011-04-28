@@ -172,9 +172,9 @@ public class SidePanelRenderer extends RendererBase implements NamingContainer {
             initScript.append("});\n");
         }
         Rendering.renderInitScript(context, initScript,
-                Resources.getUtilJsURL(context),
-                Resources.getInternalURL(context, "panel/sidePanel.js"),
-                Resources.getInternalURL(context, SIDE_PANEL_UTIL_JS));
+                Resources.utilJsURL(context),
+                Resources.internalURL(context, "panel/sidePanel.js"),
+                Resources.internalURL(context, SIDE_PANEL_UTIL_JS));
     }
 
     private String getRolloverClass(FacesContext context, SidePanel sidePanel) {

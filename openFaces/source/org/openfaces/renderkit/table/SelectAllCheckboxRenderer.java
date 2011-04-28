@@ -73,7 +73,7 @@ public class SelectAllCheckboxRenderer extends RendererBase {
         }
 
         Rendering.renderInitScript(context, buf,
-                Resources.getUtilJsURL(context),
+                Resources.utilJsURL(context),
                 TableUtil.getTableUtilJsURL(context),
                 AbstractTableRenderer.getTableJsURL(context)
         );

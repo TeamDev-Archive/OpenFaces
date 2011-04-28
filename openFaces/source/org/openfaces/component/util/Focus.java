@@ -71,7 +71,7 @@ public class Focus extends UIComponentBase {
 
         Rendering.renderInitScript(context,
                 new ScriptBuilder().initScript(context, this, "O$.initFocus", getAutoSaveFocus()).semicolon(),
-                Resources.getUtilJsURL(context));
+                Resources.utilJsURL(context));
     }
 
     @Override

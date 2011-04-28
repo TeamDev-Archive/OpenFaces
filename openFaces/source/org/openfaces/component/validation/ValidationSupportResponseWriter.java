@@ -273,7 +273,7 @@ public class ValidationSupportResponseWriter extends ResponseWriterWrapper {
     private void processGlobalMessages(FacesContext context, ValidationProcessor processor) throws IOException {
         Iterator<FacesMessage> globalMessages = context.getMessages(null);
         if (globalMessages.hasNext()) {
-            Resources.renderJSLinkIfNeeded(context, Resources.getUtilJsURL(context));
+            Resources.renderJSLinkIfNeeded(context, Resources.utilJsURL(context));
             Resources.renderJSLinkIfNeeded(context, ValidatorUtil.getValidatorUtilJsUrl(context));
             while (globalMessages.hasNext()) {
                 FacesMessage message = globalMessages.next();

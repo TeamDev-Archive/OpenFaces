@@ -806,9 +806,9 @@ public class SliderRenderer extends RendererBase {
         );
 
         Rendering.renderInitScript(context, initScript,
-                Resources.getAjaxUtilJsURL(context),
-                Resources.getInternalURL(context, "input/slider.js"),
-                Resources.getInternalURL(context, "util/dojo.js")
+                Resources.ajaxUtilJsURL(context),
+                Resources.internalURL(context, "input/slider.js"),
+                Resources.internalURL(context, "util/dojo.js")
         );
 
         Styles.renderStyleClasses(context, slider);

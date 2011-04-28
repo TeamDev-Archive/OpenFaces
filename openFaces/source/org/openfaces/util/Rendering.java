@@ -204,8 +204,8 @@ public class Rendering {
 
         FacesContext context = FacesContext.getCurrentInstance();
         renderInitScript(context, sb,
-                Resources.getUtilJsURL(context),
-                Resources.getInternalURL(context, "input/DateTimeFormat.js"));
+                Resources.utilJsURL(context),
+                Resources.internalURL(context, "input/DateTimeFormat.js"));
     }
 
     /**
@@ -660,14 +660,14 @@ public class Rendering {
         List<String> preparedImageUrls = new ArrayList<String>();
         for (String imageUrl : imageUrls) {
             String preparedUrl = prependContextPath
-                    ? Resources.getApplicationURL(context, imageUrl)
+                    ? Resources.applicationURL(context, imageUrl)
                     : imageUrl;
             preparedImageUrls.add(preparedUrl);
         }
 
         Rendering.renderInitScript(context,
                 new ScriptBuilder().functionCall("O$.preloadImages", preparedImageUrls).semicolon(),
-                Resources.getUtilJsURL(context));
+                Resources.utilJsURL(context));
     }
 
     /**
@@ -840,7 +840,7 @@ public class Rendering {
      * @return URL to clear.gif image
      */
     private static String getClearGif(FacesContext context) {
-        return Resources.getInternalURL(context, "clear.gif");
+        return Resources.internalURL(context, "clear.gif");
     }
 
     /**
@@ -1160,7 +1160,7 @@ public class Rendering {
             }
         ScriptBuilder buf = new ScriptBuilder().initScript(context, uiComponent,
                 "O$.initComponent", styleParams).semicolon();
-        renderInitScript(context, buf, Resources.getUtilJsURL(context));
+        renderInitScript(context, buf, Resources.utilJsURL(context));
         Styles.renderStyleClasses(context, uiComponent);
     }
 

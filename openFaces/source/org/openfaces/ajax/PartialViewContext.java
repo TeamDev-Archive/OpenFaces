@@ -255,7 +255,7 @@ public class PartialViewContext extends PartialViewContextWrapper {
         FacesContext context = FacesContext.getCurrentInstance();
         List<String> result = new ArrayList<String>(resources.size());
         for (String resource : resources) {
-            result.add(Resources.getInternalURL(context, resource));
+            result.add(Resources.internalURL(context, resource));
         }
         return result;
     }

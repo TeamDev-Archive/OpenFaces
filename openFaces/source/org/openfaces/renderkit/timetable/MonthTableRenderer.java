@@ -217,13 +217,13 @@ public class MonthTableRenderer extends TimetableViewRenderer {
                             uiEvent != null ? uiEvent.toJSONObject(null) : null,
                             calendarOptions
                     ),
-                    Resources.getUtilJsURL(context),
-                    Resources.getJsonJsURL(context),
+                    Resources.utilJsURL(context),
+                    Resources.jsonJsURL(context),
                     TableUtil.getTableUtilJsURL(context),
-                    Resources.getInternalURL(context, "timetable/rangeMap.js"),
-                    Resources.getInternalURL(context, "timetable/timetable.js"),
-                    Resources.getInternalURL(context, "timetable/timeTableView.js"),
-                    Resources.getInternalURL(context, "timetable/monthTable.js")
+                    Resources.internalURL(context, "timetable/rangeMap.js"),
+                    Resources.internalURL(context, "timetable/timetable.js"),
+                    Resources.internalURL(context, "timetable/timeTableView.js"),
+                    Resources.internalURL(context, "timetable/monthTable.js")
             );
         } catch (JSONException e) {
             throw new RuntimeException(e);

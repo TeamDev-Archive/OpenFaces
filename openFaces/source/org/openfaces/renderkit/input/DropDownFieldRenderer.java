@@ -408,7 +408,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
         Styles.renderStyleClasses(context, dropDownField); // encoding styles before scripts is important for tableUtil.js to be able to compute row and column styles correctly
         return new InitScript(buf.toString(), new String[]{
                 TableUtil.getTableUtilJsURL(context),
-                Resources.getInternalURL(context, "input/dropDownField.js")
+                Resources.internalURL(context, "input/dropDownField.js")
         });
     }
 

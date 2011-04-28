@@ -131,8 +131,8 @@ public class ComboBoxFilterRenderer extends ExpressionFilterRenderer {
         Rendering.renderInitScript(context,
                 new ScriptBuilder().functionCall("O$.Filters._showFilter",
                         filteredComponent, clientId).semicolon(),
-                Resources.getUtilJsURL(context),
-                Resources.getFiltersJsURL(context),
+                Resources.utilJsURL(context),
+                Resources.filtersJsURL(context),
                 TableUtil.getTableUtilJsURL(context),
                 AbstractTableRenderer.getTableJsURL(context));
 

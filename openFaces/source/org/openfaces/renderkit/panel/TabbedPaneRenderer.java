@@ -181,9 +181,9 @@ public class TabbedPaneRenderer extends MultiPageContainerRenderer implements Co
                 onselectionchange != null ? new AnonymousFunction(onselectionchange, "event") : null);
 
         Rendering.renderInitScript(context, sb,
-                Resources.getUtilJsURL(context),
-                Resources.getInternalURL(context, "panel/multiPage.js"),
-                Resources.getInternalURL(context, "panel/tabbedPane.js"));
+                Resources.utilJsURL(context),
+                Resources.internalURL(context, "panel/multiPage.js"),
+                Resources.internalURL(context, "panel/tabbedPane.js"));
 
         Styles.renderStyleClasses(context, tabbedPane);
     }

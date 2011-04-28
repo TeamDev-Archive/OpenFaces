@@ -33,7 +33,7 @@ public class SaveChartMenuItemRenderer extends MenuItemRenderer {
         menuItem.setOnclick(new ScriptBuilder().functionCall("O$.ChartMenu._saveChart",
                 getChart("<o:saveChartMenuItem>", menuItem)).getScript());
         if (menuItem.getIconUrl() == null)
-            menuItem.setIconUrl(Resources.getInternalURL(
+            menuItem.setIconUrl(Resources.internalURL(
                     context, "chart/save.png"));
 
         super.encodeBegin(context, component);

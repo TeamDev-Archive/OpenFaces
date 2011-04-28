@@ -92,8 +92,8 @@ public class ChartSelection extends OUICommand {
         ScriptBuilder buf = new ScriptBuilder().initScript(context, chart, "O$.Chart._initSelection", onchange);
 
         Rendering.renderInitScript(context, buf,
-                Resources.getUtilJsURL(context),
-                Resources.getInternalURL(context, "chart/chart.js"));
+                Resources.utilJsURL(context),
+                Resources.internalURL(context, "chart/chart.js"));
         AjaxUtil.renderJSLinks(context);
     }
 

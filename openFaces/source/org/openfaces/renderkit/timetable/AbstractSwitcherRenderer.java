@@ -117,9 +117,9 @@ public abstract class AbstractSwitcherRenderer extends RendererBase {
         );
 
         Rendering.renderInitScript(context, script,
-                Resources.getUtilJsURL(context),
-                Resources.getJsonJsURL(context),
-                Resources.getInternalURL(context, "timetable/timeSwitcher.js"));
+                Resources.utilJsURL(context),
+                Resources.jsonJsURL(context),
+                Resources.internalURL(context, "timetable/timeSwitcher.js"));
         Resources.includeJQuery(context);
     }
 

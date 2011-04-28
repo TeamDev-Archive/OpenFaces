@@ -28,7 +28,7 @@ public class SortDescendingMenuItemRenderer extends ColumnMenuItemRenderer {
         menuItem.setOnclick(new ScriptBuilder().functionCall("O$.ColumnMenu._sortColumnDescending",
                 getTable("<o:sortDescendingMenuItem>", menuItem)).toString());
         if (menuItem.getIconUrl() == null)
-            menuItem.setIconUrl(Resources.getInternalURL(
+            menuItem.setIconUrl(Resources.internalURL(
                     context, "table/sortDescending.png"));
         super.encodeBegin(context, component);
     }

@@ -50,7 +50,7 @@ public class ColumnVisibilityMenuRenderer extends PopupMenuRenderer {
             MenuItem menuItem = new MenuItem();
             menuItem.setValue(TableUtil.getColumnHeader(column));
             boolean columnVisible = visibleColumns.contains(column);
-            menuItem.setIconUrl(Resources.getInternalURL(context,
+            menuItem.setIconUrl(Resources.internalURL(context,
                     columnVisible
                             ? SelectBooleanCheckboxImageManager.DEFAULT_SELECTED_IMAGE
                             : SelectBooleanCheckboxImageManager.DEFAULT_UNSELECTED_IMAGE

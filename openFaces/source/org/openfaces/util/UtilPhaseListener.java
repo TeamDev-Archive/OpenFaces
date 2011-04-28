@@ -57,7 +57,7 @@ public class UtilPhaseListener extends PhaseListenerBase {
 
     public static void appendHeaderContent(FacesContext context) {
         List<String> renderedJsLinks = Resources.getRenderedJsLinks(context);
-        String utilJs = Resources.getUtilJsURL(context);
+        String utilJs = Resources.utilJsURL(context);
         boolean renderFocusScript = isAutoFocusTrackingEnabled(context);
         boolean renderScrollingScript = isAutoScrollPosTrackingEnabled(context);
         boolean renderContextMenuScript = isDisabledContextMenuEnabled(context);

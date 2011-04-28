@@ -85,7 +85,7 @@ public class FloatingIconMessage extends OUIMessage {
 
     public String getImageUrl() {
         return ValueBindings.get(this, "imageUrl", imageUrl,
-                Resources.getInternalURL(getFacesContext(), "validation/error_icon.gif"));
+                Resources.internalURL(getFacesContext(), "validation/error_icon.gif"));
     }
 
     public void setImageUrl(String imageUrl) {

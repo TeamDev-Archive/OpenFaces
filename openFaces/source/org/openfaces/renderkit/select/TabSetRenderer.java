@@ -418,8 +418,8 @@ public class TabSetRenderer extends BaseTabSetRenderer {
                 onchange != null ? new AnonymousFunction(onchange, "event") : null);
 
         Rendering.renderInitScript(context, sb,
-                Resources.getUtilJsURL(context),
-                Resources.getInternalURL(context, "select/tabset.js"));
+                Resources.utilJsURL(context),
+                Resources.internalURL(context, "select/tabset.js"));
 
         Rendering.encodeClientActions(context, component);
 

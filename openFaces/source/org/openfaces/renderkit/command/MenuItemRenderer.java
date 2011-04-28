@@ -163,14 +163,14 @@ public class MenuItemRenderer extends RendererBase {
             writer.startElement("img", menuItem);
             writeAttribute(writer, "id", menuItem.getClientId(context) + IMG_SUFIX);
             if (imgSrc != null)
-                writeAttribute(writer, "src", Resources.getApplicationURL(context, imgSrc));
+                writeAttribute(writer, "src", Resources.applicationURL(context, imgSrc));
             writeAttribute(writer, "class", DEFAULT_IMG_CLASS);
             writer.endElement("img");
 
-            addMenuItemParameter(menuItem, "imgSelectedSrc", Resources.getApplicationURL(context, imgSelectedSrc));
-            addMenuItemParameter(menuItem, "imgSrc", Resources.getApplicationURL(context, imgSrc));
-            addMenuItemParameter(menuItem, "disabledImgSelectedSrc", Resources.getApplicationURL(context, disabledSelectedIconUrl));
-            addMenuItemParameter(menuItem, "disabledImgSrc", Resources.getApplicationURL(context, disabledIconUrl));
+            addMenuItemParameter(menuItem, "imgSelectedSrc", Resources.applicationURL(context, imgSelectedSrc));
+            addMenuItemParameter(menuItem, "imgSrc", Resources.applicationURL(context, imgSrc));
+            addMenuItemParameter(menuItem, "disabledImgSelectedSrc", Resources.applicationURL(context, disabledSelectedIconUrl));
+            addMenuItemParameter(menuItem, "disabledImgSrc", Resources.applicationURL(context, disabledIconUrl));
             writer.endElement("span");
         }
     }
@@ -193,7 +193,7 @@ public class MenuItemRenderer extends RendererBase {
             writer.startElement("img", menuItem);
             writeAttribute(writer, "id", menuItem.getClientId(context) + ARROW_SUFIX);
             if (submenuImageUrl != null)
-                writeAttribute(writer, "src", Resources.getApplicationURL(context, submenuImageUrl));
+                writeAttribute(writer, "src", Resources.applicationURL(context, submenuImageUrl));
             writeAttribute(writer, "class", DEFAULT_IMG_CLASS);
             writer.endElement("img");
 

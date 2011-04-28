@@ -317,8 +317,8 @@ public class SelectBooleanCheckboxRenderer extends RendererBase {
         );
 
         Rendering.renderInitScript(facesContext, initScript,
-                Resources.getUtilJsURL(facesContext),
-                Resources.getInternalURL(facesContext, "select/checkbox.js"));
+                Resources.utilJsURL(facesContext),
+                Resources.internalURL(facesContext, "select/checkbox.js"));
     }
 
 }

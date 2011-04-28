@@ -84,8 +84,8 @@ public class Resources {
             boolean prependContextPath) {
         boolean returnDefaultResource = userSpecifiedUrl == null || userSpecifiedUrl.length() == 0;
         String result = returnDefaultResource
-                ? getInternalURL(context, defaultResourceFileName)
-                : (prependContextPath ? getApplicationURL(context, userSpecifiedUrl) : userSpecifiedUrl);
+                ? internalURL(context, defaultResourceFileName)
+                : (prependContextPath ? applicationURL(context, userSpecifiedUrl) : userSpecifiedUrl);
         return result;
     }
 
@@ -97,7 +97,7 @@ public class Resources {
      *                     or relative to the current page
      * @return full URL to resource ready for rendering as <code>src</code> or <code>href</code> attribute's value.
      */
-    public static String getApplicationURL(FacesContext context, String resourcePath) {
+    public static String applicationURL(FacesContext context, String resourcePath) {
         if (resourcePath == null || resourcePath.length() == 0)
             return "";
         if (resourcePath.contains(ResourceHandler.RESOURCE_IDENTIFIER))
@@ -122,7 +122,7 @@ public class Resources {
      * @param resourcePath Path to the resource file
      * @return The requested URL
      */
-    public static String getInternalURL(FacesContext context, String resourcePath) {
+    public static String internalURL(FacesContext context, String resourcePath) {
         if (context == null) throw new NullPointerException("context");
         if (resourcePath == null) throw new NullPointerException("resourcePath");
 
@@ -228,14 +228,14 @@ public class Resources {
      * @param context {@link FacesContext} for the current request
      * @return requested URL of util.js file
      */
-    public static String getUtilJsURL(FacesContext context) {
+    public static String utilJsURL(FacesContext context) {
         // To be sure that default.css is included to the web page,
         // because it is also required in cases when util.js included into web page
-        return getInternalURL(context, UTIL_JS_PATH);
+        return internalURL(context, UTIL_JS_PATH);
     }
 
-    public static String getFiltersJsURL(FacesContext context) {
-        return Resources.getInternalURL(context, "filter/filters.js");
+    public static String filtersJsURL(FacesContext context) {
+        return Resources.internalURL(context, "filter/filters.js");
     }
 
     /**
@@ -245,8 +245,8 @@ public class Resources {
      * @param context {@link FacesContext} for the current request
      * @return requested URL of ajaxUtil.js file
      */
-    public static String getAjaxUtilJsURL(FacesContext context) {
-        return Resources.getInternalURL(context, AJAX_UTIL_JS_PATH);
+    public static String ajaxUtilJsURL(FacesContext context) {
+        return Resources.internalURL(context, AJAX_UTIL_JS_PATH);
     }
 
     /**
@@ -255,8 +255,8 @@ public class Resources {
      * @param context {@link FacesContext} for the current request
      * @return requested URL of json javascript file
      */
-    public static String getJsonJsURL(FacesContext context) {
-        return Resources.getInternalURL(context, JSON_JS_PATH);
+    public static String jsonJsURL(FacesContext context) {
+        return Resources.internalURL(context, JSON_JS_PATH);
     }
 
     /**
@@ -265,7 +265,7 @@ public class Resources {
      * @param aClass The Class object
      * @return full package name for given Class
      */
-    public static String getPackageName(Class aClass) {
+    private static String getPackageName(Class aClass) {
         String className = aClass.getName();
         int lastIndexOfDot = className.lastIndexOf('.');
         if (lastIndexOfDot == -1) {
@@ -326,7 +326,7 @@ public class Resources {
         boolean fullResourceString = jsFile.startsWith("/") || jsFile.contains("://");
         if (AjaxUtil.isAjaxRequest(context)) {
             if (!fullResourceString)
-                jsFile = Resources.getInternalURL(context, jsFile);
+                jsFile = Resources.internalURL(context, jsFile);
             registerJavascriptLibrary(context, jsFile);
         } else if (AjaxUtil.isAjax4jsfRequest()) {
             registerJavascriptLibrary(context, jsFile);
@@ -338,7 +338,7 @@ public class Resources {
                 Resources.addHeaderResource(context, jsFile, Resources.LIBRARY_NAME);
             } else {
                 if (!fullResourceString)
-                    jsFile = Resources.getInternalURL(context, jsFile);
+                    jsFile = Resources.internalURL(context, jsFile);
                 writer.startElement("script", null);
                 writer.writeAttribute("src", jsFile, null);
                 writer.writeAttribute("type", "text/javascript", null);

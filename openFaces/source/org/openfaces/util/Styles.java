@@ -339,7 +339,7 @@ public class Styles {
     public static void writeCssClassesAsScriptElement(FacesContext context, List<String> cssRules, boolean asOnloadScript) throws IOException {
         ScriptBuilder styleRegistrationScript = new ScriptBuilder().functionCall("O$.addCssRules", cssRules).semicolon();
         if (!asOnloadScript || OpenFacesApplication.isConstructingView(context)) {
-            Rendering.renderInitScript(context, styleRegistrationScript, Resources.getUtilJsURL(context));
+            Rendering.renderInitScript(context, styleRegistrationScript, Resources.utilJsURL(context));
         } else {
             Rendering.appendOnLoadScript(context, styleRegistrationScript);
         }

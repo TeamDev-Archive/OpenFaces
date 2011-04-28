@@ -48,8 +48,8 @@ public class InputTextareaRenderer extends AbstractInputTextRenderer {
             ScriptBuilder scriptBuilder = new ScriptBuilder();
             scriptBuilder.initScript(context, inputTextarea, "O$.InputTextarea._init", inputTextarea.getId());
             Rendering.renderInitScript(context, scriptBuilder,
-                    Resources.getUtilJsURL(context),
-                    Resources.getInternalURL(context, "input/inputTextarea.js")
+                    Resources.utilJsURL(context),
+                    Resources.internalURL(context, "input/inputTextarea.js")
             );
         }
     }

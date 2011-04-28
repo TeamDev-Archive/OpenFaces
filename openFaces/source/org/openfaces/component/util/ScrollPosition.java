@@ -91,7 +91,7 @@ public class ScrollPosition extends UIComponentBase {
                 getAutoSaveScrollPos(),
                 scrollableComponentId);
 
-        Rendering.renderInitScript(context, buf, Resources.getUtilJsURL(context));
+        Rendering.renderInitScript(context, buf, Resources.utilJsURL(context));
     }
 
     private String formatPoint(int scrollX, int scrollY) {

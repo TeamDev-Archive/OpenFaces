@@ -25,18 +25,18 @@ public class ValidatorUtil {
 
     public static void renderPresentationExistsForAllInputComponents(FacesContext context) throws IOException {
         Rendering.renderInitScript(context, new RawScript("O$._presentationExistsForAllComponents();"),
-                Resources.getUtilJsURL(context),
+                Resources.utilJsURL(context),
                 getValidatorUtilJsUrl(context));
     }
 
     public static void renderPresentationExistsForComponent(String componentClientId, FacesContext context) throws IOException {
         Rendering.renderInitScript(context,
                 new ScriptBuilder().functionCall("O$._presentationExistsForComponent", componentClientId).semicolon(),
-                Resources.getUtilJsURL(context),
+                Resources.utilJsURL(context),
                 getValidatorUtilJsUrl(context));
     }
 
     public static String getValidatorUtilJsUrl(FacesContext context) {
-        return Resources.getInternalURL(context, "validation/validatorUtil.js");
+        return Resources.internalURL(context, "validation/validatorUtil.js");
     }
 }

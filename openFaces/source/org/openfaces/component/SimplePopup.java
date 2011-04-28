@@ -138,8 +138,8 @@ public class SimplePopup extends UIPanel {
         Script initScript = new ScriptBuilder().initScript(context, this, "O$.Popup._init",
                 useDisplayNoneByDefault).semicolon();
         Rendering.renderInitScript(context, initScript,
-                Resources.getUtilJsURL(context),
-                Resources.getInternalURL(context, "popup.js"));
+                Resources.utilJsURL(context),
+                Resources.internalURL(context, "popup.js"));
     }
 
     protected boolean getUseDisplayNoneByDefault() {

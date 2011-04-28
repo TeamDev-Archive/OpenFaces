@@ -40,7 +40,7 @@ public class AjaxRenderer extends AbstractSettingsRenderer {
             String handlerScript = ajaxHelper.getClientActionScript(context, ajax);
             ScriptBuilder initScript = new ScriptBuilder().functionCall("O$.Ajax._attachHandler", ajax.getFor(), ajax.getEvent(),
                     new AnonymousFunction(handlerScript)).semicolon();
-            Rendering.renderInitScript(context, initScript, Resources.getAjaxUtilJsURL(context));
+            Rendering.renderInitScript(context, initScript, Resources.ajaxUtilJsURL(context));
         } else if (ajax.isStandalone())
             encodeStandaloneInvocationMode(context, ajax);
     }
