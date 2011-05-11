@@ -1297,8 +1297,8 @@
         <root url="jar://$PROJECT_DIR$/lib/apache/commons-codec-1.3.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/apache/commons-logging-1.1.1.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/apache/commons-collections-3.2.1.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/myfaces/myfaces-impl-2.0.2.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/myfaces/myfaces-api-2.0.2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/myfaces/myfaces-api-2.0.5.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/myfaces/myfaces-impl-2.0.5.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
