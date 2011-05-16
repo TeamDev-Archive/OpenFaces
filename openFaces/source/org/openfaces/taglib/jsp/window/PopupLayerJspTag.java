@@ -106,4 +106,8 @@ public class PopupLayerJspTag extends AbstractComponentJspTag {
     public void setHidingTimeout(ValueExpression hidingTimeout) {
         getDelegate().setPropertyValue("hidingTimeout", hidingTimeout);
     }
+    
+    public void setContainment(ValueExpression value) {
+        getDelegate().setPropertyValue("containment", value);
+    }
 }

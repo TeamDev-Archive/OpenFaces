@@ -145,7 +145,8 @@ public class PopupLayerRenderer extends RendererBase {
                 popup.getHidingTimeout(),
                 popup.getDraggable(),
                 popup.getHideOnEsc(),
-                Environment.isAjax4jsfRequest());
+                Environment.isAjax4jsfRequest(),
+                popup.getContainment());
 
         String onShow = popup.getOnshow();
         if (onShow != null) {
