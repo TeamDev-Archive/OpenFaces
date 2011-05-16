@@ -32,7 +32,7 @@ O$.Timetable = {
         if (this._viewType == viewType) return;
         this._viewType = viewType;
         O$.setHiddenField(this, timetableId + "::view", viewType);
-        timetableView.refreshEvents();
+        timetableView._updateEventElements();
         setTimeout(function() {
           timetableView.updateLayout();
         }, 1);
@@ -470,7 +470,7 @@ O$.Timetable._initEventActionBar = function(actionBarId, dayTableId, backgroundI
     };
     cell.onclick = function(e) {
       e = O$.getEvent(e);
-      e._timetableEvent = this._timetableEvent;
+      e.timetableEvent = this._timetableEvent;
       e._dayTable = this._dayTable;
       if (this._userClickHandler) {
         if (this._userClickHandler(e) === false || e.returnValue === false)
@@ -569,7 +569,7 @@ O$.Timetable._initEventActionBar = function(actionBarId, dayTableId, backgroundI
  */
 O$.Timetable._deleteCurrentTimetableEvent = function(event) {
   var e = O$.getEvent(event);
-  var timetableEvent = e._timetableEvent;
+  var timetableEvent = e.timetableEvent;
   e._dayTable.deleteEvent(timetableEvent);
   e.returnValue = false;
 };

@@ -196,6 +196,7 @@ public class MonthTableRenderer extends TimetableViewRenderer {
                     getComponentName() + " clientId = " + timetableView.getClientId(context));
         UITimetableEvent uiEvent = uiEvents.size() > 0 ? uiEvents.get(0) : null;
 
+        Timetable timetable = timetableView.getTimetable();
 
         try {
             Rendering.renderInitScript(context,
@@ -215,7 +216,8 @@ public class MonthTableRenderer extends TimetableViewRenderer {
                             editingOptions,
                             stylingParams,
                             uiEvent != null ? uiEvent.toJSONObject(null) : null,
-                            calendarOptions
+                            calendarOptions,
+                            timetable
                     ),
                     Resources.utilJsURL(context),
                     Resources.jsonJsURL(context),

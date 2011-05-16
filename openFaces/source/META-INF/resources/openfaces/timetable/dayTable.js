@@ -28,7 +28,9 @@ O$.DayTable._init = function(componentId,
                             timeSuffixPattern,
                             majorTimeInterval,
                             minorTimeInterval,
-                            showTimeForMinorIntervals
+                            showTimeForMinorIntervals,
+                            dummyParam,
+                            timetableId
         ) {
   var dayTable = O$.initComponent(componentId, null, {
     _viewType: "day"
@@ -49,6 +51,7 @@ O$.DayTable._init = function(componentId,
   dayTable.DEFAULT_EVENT_NAME_CLASS_NAME = "o_timetableEventName";
   dayTable.DEFAULT_EVENT_CONTENT = [ { type : "name"}, { type : "description" } ];
   dayTable.EVENT_ROLLOVER_STATE_UPDATE_TIMEOUT = 1;
+  dayTable._timetable = O$(timetableId);
 
   O$.TimeScaleTable._init(componentId, day, locale, dateFormat, startTimeStr, endTimeStr, scrollTimeStr, 
           preloadedEventParams, resources, eventAreaSettings, editable, onchange, editingOptions, stylingParams,
