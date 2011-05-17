@@ -126,7 +126,7 @@
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default "none" -->
-      <!-- @value "all" between all rows and columns-->
+      <!-- @value "all" between all rows and columns -->
       <!-- @value "cols" between columns only-->
       <!-- @value "groups" between row groups and column groups only -->
       <!-- @value "none" no grid lines -->
@@ -7924,7 +7924,7 @@ means that only root nodes and their immediate children are preloaded -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default "none" -->
-      <!-- @value "all" between all rows and columns-->
+      <!-- @value "all" between all rows and columns -->
       <!-- @value "cols" between columns only-->
       <!-- @value "groups" between row groups and column groups only -->
       <!-- @value "none" no grid lines -->
@@ -12387,8 +12387,10 @@ entering a value and returns a list of suggestions from the server -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
-      <!-- @value "window" Restricts moving the window out of window's boundaries -->
+      <!-- @value "viewport" Restricts moving the window out of window's boundaries -->
       <!-- @value "document" Restricts moving the window out of document's boundaries -->
+      <!-- @value "containingBlock" Restricts moving the window out of its containing block (document or a nearest parent with position equl to "absolute" or "relative"). -->
+      <!-- @value "#clientSideId" Restricts moving the window out of an element with the specified id. -->
       <!-- @el true -->
     </attribute>
 
@@ -12659,8 +12661,10 @@ entering a value and returns a list of suggestions from the server -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
-      <!-- @value "window" Restricts moving the window out of window's boundaries -->
+      <!-- @value "viewport" Restricts moving the window out of window's boundaries -->
       <!-- @value "document" Restricts moving the window out of document's boundaries -->
+      <!-- @value "containingBlock" Restricts moving the window out of its containing block (document or a nearest parent with position equl to "absolute" or "relative"). -->
+      <!-- @value "#clientSideId" Restricts moving the window out of an element with the specified id. -->
       <!-- @el true -->
     </attribute>
 
@@ -15141,8 +15145,10 @@ entering a value and returns a list of suggestions from the server -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
-      <!-- @value "window" Restricts moving the window out of window's boundaries -->
+      <!-- @value "viewport" Restricts moving the window out of window's boundaries -->
       <!-- @value "document" Restricts moving the window out of document's boundaries -->
+      <!-- @value "containingBlock" Restricts moving the window out of its containing block (document or a nearest parent with position equl to "absolute" or "relative"). -->
+      <!-- @value "#clientSideId" Restricts moving the window out of an element with the specified id. -->
       <!-- @el true -->
     </attribute>
 
@@ -28955,8 +28961,10 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
-      <!-- @value "window" Restricts moving the window out of window's boundaries -->
+      <!-- @value "viewport" Restricts moving the window out of window's boundaries -->
       <!-- @value "document" Restricts moving the window out of document's boundaries -->
+      <!-- @value "containingBlock" Restricts moving the window out of its containing block (document or a nearest parent with position equl to "absolute" or "relative"). -->
+      <!-- @value "#clientSideId" Restricts moving the window out of an element with the specified id. -->
       <!-- @el true -->
     </attribute>
 
