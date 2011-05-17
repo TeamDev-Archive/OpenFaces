@@ -12378,6 +12378,19 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default false -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>The containment attribute specifies the area which the draggable PopupLayer cannot be moved out from.
+      </description>
+      <name>containment</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @value "window" Restricts moving the window out of window's boundaries -->
+      <!-- @value "document" Restricts moving the window out of document's boundaries -->
+      <!-- @el true -->
+    </attribute>
 
     <attribute>
       <description>JavaScript code that should be executed when the user starts dragging the PopupLayer component.
@@ -12637,6 +12650,20 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default true -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>The containment attribute specifies the area which the draggable window cannot be moved out from.
+      </description>
+      <name>containment</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @value "window" Restricts moving the window out of window's boundaries -->
+      <!-- @value "document" Restricts moving the window out of document's boundaries -->
+      <!-- @el true -->
+    </attribute>
+
     <attribute>
       <name>resizable</name>
       <deferred-value>
@@ -15103,6 +15130,19 @@ entering a value and returns a list of suggestions from the server -->
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The containment attribute specifies the area which the draggable window cannot be moved out from.
+      </description>
+      <name>containment</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @value "window" Restricts moving the window out of window's boundaries -->
+      <!-- @value "document" Restricts moving the window out of document's boundaries -->
       <!-- @el true -->
     </attribute>
 
@@ -28904,6 +28944,19 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The containment attribute specifies the area which the draggable window cannot be moved out from.
+      </description>
+      <name>containment</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @value "window" Restricts moving the window out of window's boundaries -->
+      <!-- @value "document" Restricts moving the window out of document's boundaries -->
       <!-- @el true -->
     </attribute>
 

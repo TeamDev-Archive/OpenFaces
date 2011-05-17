@@ -15,7 +15,7 @@ O$.PopupLayer = {
   LAST_EXTERNAL_ANCHOR_SUFFIX: "::lastExternalAnchor",
 
 
-  _init: function(id, left, top, width, height, rolloverStyle, hidingTimeout, draggable, hideOnEsc, isAjaxRequest) {
+  _init: function(id, left, top, width, height, rolloverStyle, hidingTimeout, draggable, hideOnEsc, isAjaxRequest, containment) {
     var popup = O$(id);
     O$.initComponent(id, {rollover: rolloverStyle}, {
       left: left,
@@ -34,6 +34,7 @@ O$.PopupLayer = {
       },
 
       _draggable: draggable,
+      _containment: containment,
       _draggingDisabled: false,
 
       _rolloverStyleNames: rolloverStyle,

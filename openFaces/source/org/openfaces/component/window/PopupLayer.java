@@ -53,6 +53,8 @@ public class PopupLayer extends OUIPanel {
     private String ondragstart;
     private String ondragend;
 
+    private String containment;
+
     public PopupLayer() {
         setRendererType("org.openfaces.PopupLayerRenderer");
     }
@@ -225,6 +227,14 @@ public class PopupLayer extends OUIPanel {
         this.hidingTimeout = hidingTimeout;
     }
 
+    public String getContainment() {
+        return ValueBindings.get(this, "containment", containment);
+    }
+    
+    public void setContainment(String containment) {
+        this.containment = containment;
+    }
+    
     @Override
     public void processUpdates(FacesContext context) {
         super.processUpdates(context);
@@ -268,6 +278,7 @@ public class PopupLayer extends OUIPanel {
                 hideOnOuterClick,
                 hideOnEsc,
                 modal,
+                containment
         };
     }
 
@@ -299,5 +310,6 @@ public class PopupLayer extends OUIPanel {
         hideOnOuterClick = (Boolean) values[i++];
         hideOnEsc = (Boolean) values[i++];
         modal = (Boolean) values[i++];
+        containment=(String) values[i++];
     }
 }

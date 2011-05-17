@@ -2445,14 +2445,39 @@ if (!window.O$) {
       var dy = dragY - draggable._lastDragY - yChangeSinceLastDrag;
       var newLeft = left + dx;
       var newTop = top + dy;
+
+      var containmentCorrectedLeft = newLeft;
+      var containmentCorrectedTop = newTop;
+      if (draggable._containment == "document" || draggable._containment == "window") {
+        var containmentRect = draggable._containment == "window"
+                ? O$.getVisibleAreaRectangle()
+                : O$.getDocumentRectangle();
+        var parentToCalculateScrollOffset = draggable.offsetParent;
+        if (!parentToCalculateScrollOffset) {
+          parentToCalculateScrollOffset = document.body;
+        }
+        var prntPos = O$.getElementPos(parentToCalculateScrollOffset);
+        var draggableSize = O$.getElementSize(draggable);
+
+        var minLeft = containmentRect.x - prntPos.x;
+        var minTop = containmentRect.y - prntPos.y;
+        var maxLeft = minLeft + containmentRect.width - draggableSize.width - 1;
+        var maxTop = minTop + containmentRect.height - draggableSize.height - 1;
+
+        if (containmentCorrectedLeft < minLeft) containmentCorrectedLeft = minLeft;
+        if (containmentCorrectedTop < minTop) containmentCorrectedTop = minTop;
+        if (containmentCorrectedLeft > maxLeft) containmentCorrectedLeft = maxLeft;
+        if (containmentCorrectedTop > maxTop) containmentCorrectedTop = maxTop;
+      }
+
       if (draggable.setPosition) {
-        draggable.setPosition(newLeft, newTop, dx, dy);
+        draggable.setPosition(containmentCorrectedLeft, containmentCorrectedTop, dx, dy);
       } else {
-        draggable.setLeft(newLeft, dx);
-        draggable.setTop(newTop, dy);
+        draggable.setLeft(containmentCorrectedLeft, dx);
+        draggable.setTop(containmentCorrectedTop, dy);
       }
       if (draggable.ondragmove)
-        draggable.ondragmove(evt, newLeft, newTop, dx, dy);
+        draggable.ondragmove(evt, containmentCorrectedLeft, containmentCorrectedTop, dx, dy);
       var offsetLeftAfterDragging = draggable._getPositionLeft();
       var offsetTopAfterDragging = draggable._getPositionTop();
       dragX -= newLeft - offsetLeftAfterDragging;
@@ -3872,6 +3897,22 @@ if (!window.O$) {
     return {width : width, height : height};
   };
 
+  O$.getDocumentSize = function() {
+    var width = Math.max(
+            document.body.clientWidth, document.documentElement.clientWidth,
+						document.body.scrollWidth, document.documentElement.scrollWidth,
+						document.body.offsetWidth, document.documentElement.offsetWidth
+					);
+    var height = Math.max(
+						document.body.clientHeight, document.documentElement.clientHeight,
+						document.body.scrollHeight, document.documentElement.scrollHeight,
+						document.body.offsetHeight, document.documentElement.offsetHeight
+					);
+
+    return {width : width, height : height};
+  };
+
+
   O$.getVisibleAreaRectangle = function() {
     var pageScrollPos = O$.getPageScrollPos();
     var x = pageScrollPos.x;
@@ -3880,6 +3921,11 @@ if (!window.O$) {
     var width = visibleAreaSize.width;
     var height = visibleAreaSize.height;
     return new O$.Rectangle(x, y, width, height);
+  };
+
+  O$.getDocumentRectangle = function() {
+    var documentSize = O$.getDocumentSize();
+    return new O$.Rectangle(0, 0, documentSize.width, documentSize.height);
   };
 
   O$.scrollElementIntoView = function(element, cachedDataContainer) {
