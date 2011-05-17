@@ -78,8 +78,13 @@ public abstract class AbstractSwitcher<V extends TimetableView> extends OUICompo
             if (_for != null) {
                 UIComponent referredComponent = Components.referenceIdToComponent(this, _for);
                 if (referredComponent == null)
-                    throw new FacesException("Invalid value in the 'for' attribute " +
-                            "(the component with such id couldn't be found): " + _for);
+                    return null;
+                // todo: this method is invoked when processing the "locale" attribute in tag handler so it might
+                // understandably not find the referred component on this stage if the component is located below this
+                // switcher, so no exception should be thrown here. On the other part, a check for invalid id would
+                // still be good in some form, which should work after view construction.
+//                    throw new FacesException("Invalid value in the 'for' attribute " +
+//                            "(the component with such id couldn't be found): " + _for);
                 if (!(referredComponent.getClass().equals(getGenericParameterType())))
                     throw new FacesException(componentNameByClass(getClass()) + "'s \"for\" attribute must refer to a " +
                             getTimetableViewComponentName() + " component.");
