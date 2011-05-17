@@ -2443,15 +2443,21 @@ if (!window.O$) {
 
       var containmentCorrectedLeft = newLeft;
       var containmentCorrectedTop = newTop;
-      if (draggable._containment == "document" || draggable._containment == "window") {
-        var containmentRect = draggable._containment == "window"
-                ? O$.getVisibleAreaRectangle()
-                : O$.getDocumentRectangle();
-        var parentToCalculateScrollOffset = draggable.offsetParent;
-        if (!parentToCalculateScrollOffset) {
-          parentToCalculateScrollOffset = document.body;
-        }
-        var prntPos = O$.getElementPos(parentToCalculateScrollOffset);
+      var containingBlock = draggable.offsetParent;
+      if (!containingBlock) containingBlock = document.body;
+      var containmentRect = !draggable._containment ? null
+                      : draggable._containment == "viewport" ? O$.getVisibleAreaRectangle()
+                      : draggable._containment == "document" ? O$.getDocumentRectangle()
+                      : draggable._containment == "containingBlock" ? O$.getElementBorderRectangle(containingBlock)
+                      : draggable._containment.substring(0, 1) ==  "#" ? function() {
+                                var id = draggable._containment.substring(1);
+                                var c = O$(id);
+                                if (!c) throw "Couldn't find containment by id: \"" + id + "\"";
+                                return O$.getElementBorderRectangle(c);}()
+                      : function() {throw "Unsupported containment string: " + draggable._containment}();
+
+      if (containmentRect) {
+        var prntPos = O$.getElementPos(containingBlock);
         var draggableSize = O$.getElementSize(draggable);
 
         var minLeft = containmentRect.x - prntPos.x;
