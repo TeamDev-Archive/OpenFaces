@@ -147,7 +147,7 @@ public class PopupLayer extends OUIPanel {
         return null;
     }
 
-    public String getAnchorElementId() { // todo: is this attrubte needed?
+    public String getAnchorElementId() { // todo: is this attribute needed?
         return ValueBindings.get(this, "anchorElementId", anchorElementId);
     }
 

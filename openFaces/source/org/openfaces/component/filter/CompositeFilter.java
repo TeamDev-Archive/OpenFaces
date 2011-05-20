@@ -17,6 +17,7 @@ import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.BaseColumn;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.renderkit.filter.FilterRow;
+import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.ValueBindings;
 import org.openfaces.util.ValueExpressionImpl;
 
