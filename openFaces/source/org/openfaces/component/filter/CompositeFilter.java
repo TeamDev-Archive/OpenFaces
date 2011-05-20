@@ -18,7 +18,6 @@ import org.openfaces.component.table.BaseColumn;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.renderkit.filter.FilterRow;
 import org.openfaces.util.AjaxUtil;
-import org.openfaces.util.Components;
 import org.openfaces.util.ValueBindings;
 import org.openfaces.util.ValueExpressionImpl;
 
@@ -35,7 +34,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Natalia Zolochevska
@@ -213,27 +211,27 @@ public class CompositeFilter extends Filter {
     }
 
     private Map<String, FilterProperty> getFilterPropertyNamesMap() {
-           if (filterPropertyNamesMap == null) {
-               Collection<UIComponent> children = getChildren();
-               filterPropertyNamesMap = new LinkedHashMap<String, FilterProperty>(children.size());
-               for (FilterProperty filterProperty : getFilterProperties()) {
-                       filterPropertyNamesMap.put(filterProperty.getName(), filterProperty);
-               }
-           }
-           return filterPropertyNamesMap;
-       }
+        if (filterPropertyNamesMap == null) {
+            Collection<UIComponent> children = getChildren();
+            filterPropertyNamesMap = new LinkedHashMap<String, FilterProperty>(children.size());
+            for (FilterProperty filterProperty : getFilterProperties()) {
+                filterPropertyNamesMap.put(filterProperty.getName(), filterProperty);
+            }
+        }
+        return filterPropertyNamesMap;
+    }
 
-       private Map<String, FilterProperty> getFilterPropertiesMap() {
-           if (filterPropertiesMap == null) {
-               Collection<UIComponent> children = getChildren();
-               filterPropertiesMap = new LinkedHashMap<String, FilterProperty>(children.size());
-                   for (FilterProperty filterProperty : getFilterProperties()) {
-                       filterPropertiesMap.put(filterProperty.getTitle(), filterProperty);
+    private Map<String, FilterProperty> getFilterPropertiesMap() {
+        if (filterPropertiesMap == null) {
+            Collection<UIComponent> children = getChildren();
+            filterPropertiesMap = new LinkedHashMap<String, FilterProperty>(children.size());
+            for (FilterProperty filterProperty : getFilterProperties()) {
+                filterPropertiesMap.put(filterProperty.getTitle(), filterProperty);
 
-               }
-           }
-           return filterPropertiesMap;
-       }
+            }
+        }
+        return filterPropertiesMap;
+    }
 
     public List<String> getFilterPropertiesTitles() {
         List<FilterProperty> filterProperties = getFilterProperties();
@@ -262,7 +260,7 @@ public class CompositeFilter extends Filter {
 
     public FilterProperty getFilterPropertyByPropertyLocator(PropertyLocator propertyLocator) {
         String propertyName = String.valueOf(propertyLocator.getExpression());
-        return getFilterPropertyNamesMap().get(propertyName);        
+        return getFilterPropertyNamesMap().get(propertyName);
     }
 
     public FilterRow getLastRow() {
