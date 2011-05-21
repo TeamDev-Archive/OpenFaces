@@ -15,6 +15,7 @@ import com.thoughtworks.selenium.Selenium;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
+import org.seleniuminspector.ClientLoadingMode;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.ServerLoadingMode;
 import org.seleniuminspector.openfaces.*;
@@ -195,7 +196,9 @@ public class ServerFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
     public void testTabSetInside() {
         testAppFunctionalPage("/components/foldingpanel/tabSetIn.jsf");
 
-        tabSet("fn:loadingModes").setTabIndex(2, ServerLoadingMode.getInstance());
+        tabSet("fn:loadingModes").setTabIndex(2, ClientLoadingMode.getInstance());
+        sleep(5000);
+
         ElementInspector tabSet = element("fn:tabSetID");
         tabSet.assertElementExists(false);
 

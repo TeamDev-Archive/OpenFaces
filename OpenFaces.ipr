@@ -203,6 +203,7 @@
       </root>
     </artifact>
     <artifact name="TestAppCore:TestAppCore exploded">
+      <output-path>$PROJECT_DIR$/out/exploded/TestAppCore</output-path>
       <root id="root">
         <element id="javaee-facet-resources" facet="TestAppCore/web/TestAppCore" />
         <element id="directory" name="WEB-INF">
