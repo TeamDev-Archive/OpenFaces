@@ -17,6 +17,7 @@ import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.seleniuminspector.ClientLoadingMode;
 import org.seleniuminspector.ElementInspector;
+import org.seleniuminspector.LoadingMode;
 import org.seleniuminspector.ServerLoadingMode;
 import org.seleniuminspector.openfaces.*;
 
@@ -196,8 +197,12 @@ public class ServerFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
     public void testTabSetInside() {
         testAppFunctionalPage("/components/foldingpanel/tabSetIn.jsf");
 
-        tabSet("fn:loadingModes").setTabIndex(2, ClientLoadingMode.getInstance());
-        sleep(5000);
+        tabSet("fn:loadingModes").setTabIndex(2, new LoadingMode() {
+            @Override
+            public void waitForLoad() {
+                sleep(5000);
+            }
+        });
 
         ElementInspector tabSet = element("fn:tabSetID");
         tabSet.assertElementExists(false);
