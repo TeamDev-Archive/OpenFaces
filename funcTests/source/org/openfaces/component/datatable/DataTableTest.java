@@ -681,7 +681,6 @@ public class DataTableTest extends OpenFacesTestCase {
         clientPaginator.lastPage().clickAndWait(loadingMode);
         checkDataTableContents(selenium, referenceDataTableValues, 3);
         clientPaginator.firstPage().clickAndWait(loadingMode);
-        sleep(3000); // attempt to fix 3.x build where the next line doesn't find in-table text for some reason (on build server only)
         checkDataTableContents(selenium, referenceDataTableValues, 1);
         if (loadingMode instanceof ServerLoadingMode) {
             // reset tab index for possible further tests
