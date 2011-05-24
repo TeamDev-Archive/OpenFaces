@@ -230,7 +230,7 @@ public class ClientFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
 
     @Test
     public void testTabSetInside() {
-        if (!IS_FACELETS) return; // this for some odd reason fails only on the build server in the JSP version of tests
+        if (IS_FACELETS) return; // this for some odd reason fails only on the build server in the Facelets version of tests
         testAppFunctionalPage("/components/foldingpanel/tabSetIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(1, new LoadingMode() {
             @Override
