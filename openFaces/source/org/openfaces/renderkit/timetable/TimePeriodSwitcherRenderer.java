@@ -44,7 +44,6 @@ public class TimePeriodSwitcherRenderer extends RendererBase {
         Timetable timetable = switcher.getTimetableView();
         Rendering.renderInitScript(context, new ScriptBuilder().initScript(context, switcher,
                 "O$.TimePeriodSwitcher._init", timetable),
-
                 Resources.utilJsURL(context),
                 TimetableRenderer.getTimetableJsURL(context));
 
