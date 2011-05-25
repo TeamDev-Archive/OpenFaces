@@ -58,4 +58,7 @@ public class EventActionJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("hint", value);
     }
 
+    public void setScope(ValueExpression scope) {
+        getDelegate().setPropertyValue("scope", scope);
+    }
 }

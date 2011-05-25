@@ -30091,6 +30091,18 @@ and it is automatically triggered on any form submission. -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>Specifies the amount of page&apos;s area which is affected by this action, which results in different
+        scope of refresh when the action is invoked.
+      </description>
+      <name>scope</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.timetable.EventActionScope -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
 
   </tag>
 

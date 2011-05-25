@@ -22,7 +22,6 @@ import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.Rendering;
-import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.Styles;
 
@@ -31,7 +30,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class EventActionBarRenderer extends RendererBase {
@@ -113,37 +112,14 @@ public class EventActionBarRenderer extends RendererBase {
         JSONArray result = new JSONArray();
         for (EventAction action : actionComponents) {
             try {
-                JSONObject actionParams = getActionParams(context, actionBar, action);
+                JSONObject actionParams = action.toJSONObject(
+                        Collections.singletonMap(EventActionBar.class, actionBar));
                 result.put(result.length(), actionParams);
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
         }
         return result;
-    }
-
-    private JSONObject getActionParams(FacesContext context, EventActionBar actionBar, EventAction action) throws JSONException {
-        JSONObject params = new JSONObject();
-        if (action.getId() != null)
-            params.put("id", action.getClientId(context));
-        params.put("image", new JSONArray(Arrays.asList(
-                getActionImageUrl(context, action),
-                Resources.applicationURL(context, action.getRolloverImageUrl()),
-                Resources.applicationURL(context, action.getPressedImageUrl()))));
-        params.put("style", new JSONArray(Arrays.asList(
-                Styles.getCSSClass(context, actionBar, action.getStyle(), "o_eventActionButton", action.getStyleClass()),
-                Styles.getCSSClass(context, actionBar, action.getRolloverStyle(), action.getRolloverClass()),
-                Styles.getCSSClass(context, actionBar, action.getPressedStyle(), action.getPressedClass()))));
-        params.put("onclick", action.getOnclick());
-        params.put("hint", action.getHint());
-        return params;
-    }
-
-    private String getActionImageUrl(FacesContext context, EventAction action) {
-        if (action instanceof DeleteEventAction && action.getImageUrl() == null) {
-            return Resources.internalURL(FacesContext.getCurrentInstance(), "timetable/deleteEvent.gif");
-        }
-        return Resources.applicationURL(context, action.getImageUrl());
     }
 
     @Override

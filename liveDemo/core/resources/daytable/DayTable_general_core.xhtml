@@ -2,7 +2,7 @@
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:o="http://openfaces.org/">
 
-  <div id="Demo">    
+  <div id="Demo">
     <o:dayTable id="dayTable"
                 events="#{DayTableBean1.events}"
                 day="#{DayTableBean1.date}"
@@ -26,7 +26,8 @@
       <o:eventActionBar>
         <o:eventAction id="customEventAction" actionListener="#{DayTableBean1.postponeEventActionListener}"
                        imageUrl="../images/daytable/customAction1.gif"
-                       hint="Postpone for 1 day"/>
+                       hint="Postpone for 1 day"
+                       scope="timetable"/>
       </o:eventActionBar>
     </o:dayTable>
   </div>

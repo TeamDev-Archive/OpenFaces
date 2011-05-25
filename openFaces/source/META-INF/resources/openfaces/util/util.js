@@ -1978,9 +1978,43 @@ if (!window.O$) {
     var predefinedTimeout = O$.getSubmissionAjaxInactivityTimeout();
     var timeoutToUnlockAjaxRequests = (O$.isFormSubmission_A_DownloadAction()) ? 100 : predefinedTimeout;
 
-    for (var i = 0, count = document.forms.length; i < count; i++) {
-      var frm = document.forms[i];
+    if (O$.isExplorer6()) { // workaround for <button> tag submission bug in IE6, see OF-112
+      var buttons = document.getElementsByTagName("button");
+      for(var i = 0; i < buttons.length; i++) {
+        var btn = buttons[i];
+        function setClickHandler(btn) {
+          O$.addEventHandler(btn, "click", function() {
+            O$._clickedButton = btn;
+            setTimeout(function() {btn._clickedButton = null;}, 500);
+          });
+        }
+        setClickHandler(btn);
+      }
+    }
+
+    function fixIE6ButtonsSubmission() {
+      // workaround for <button> tag submission bug in IE6, see OF-112
+      if (!O$.isExplorer6()) return
+
+      var buttons = document.getElementsByTagName("button");
+      for (var i = 0; i < buttons.length; i++) {
+        var btn = buttons[i];
+        btn._o_prevDisabled = btn.disabled;
+        if (btn != O$._clickedButton)
+          btn.disabled = true;
+      }
+      setTimeout(function() {
+        for (var i = 0; i < buttons.length; i++) {
+          var btn = buttons[i];
+          btn.disabled = btn._o_prevDisabled;
+        }
+      }, 500);
+    }
+
+    for (var bi = 0, count = document.forms.length; bi < count; bi++) {
+      var frm = document.forms[bi];
       O$.addEventHandler(frm, "submit", function() {
+        fixIE6ButtonsSubmission();
         if (!this.target || this.target == "_self") {
           O$.lockAjax();
           // _formSubmissionJustStarted should be reset so as not to block further ajax actions if this is not actually
@@ -1993,6 +2027,7 @@ if (!window.O$) {
       if (frm._of_prevSubmit) continue;
       frm._of_prevSubmit = frm.submit;
       frm.submit = function() {
+        fixIE6ButtonsSubmission();
         if (!this.target || this.target == "_self") {
           O$.lockAjax();
           // _formSubmissionJustStarted should be reset so as not to block further ajax actions if this is not actually
