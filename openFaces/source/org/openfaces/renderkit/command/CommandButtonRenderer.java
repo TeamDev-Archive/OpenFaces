@@ -15,6 +15,7 @@ import org.openfaces.component.OUIClientAction;
 import org.openfaces.component.command.CommandButton;
 import org.openfaces.renderkit.OUICommandRenderer;
 import org.openfaces.util.AjaxUtil;
+import org.openfaces.util.Environment;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.Resources;
 
@@ -28,6 +29,8 @@ import java.util.List;
  * @author Dmitry Pikhulya
  */
 public class CommandButtonRenderer extends OUICommandRenderer {
+
+    private static final String ATTR_AJAX_REQUIRED = "_ajaxRequired";
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
@@ -45,6 +48,9 @@ public class CommandButtonRenderer extends OUICommandRenderer {
             if (image != null)
                 type = "image";
             writer.writeAttribute("src", Resources.applicationURL(context, image), "image");
+        }
+        if ("submit".equals(type) && Environment.isExplorer6()) {
+
         }
         writer.writeAttribute("type", type, "type");
         if (btn.isDisabled())
@@ -66,7 +72,7 @@ public class CommandButtonRenderer extends OUICommandRenderer {
         if (!btn.isDisabled()) {
             boolean ajaxJsRequired = writeEventsWithAjaxSupport(context, writer, btn);
             if (ajaxJsRequired)
-                btn.getAttributes().put("_ajaxRequired", Boolean.TRUE);
+                btn.getAttributes().put(ATTR_AJAX_REQUIRED, Boolean.TRUE);
         }
     }
 
@@ -75,7 +81,7 @@ public class CommandButtonRenderer extends OUICommandRenderer {
         ResponseWriter writer = context.getResponseWriter();
         CommandButton btn = (CommandButton) component;
         writer.endElement(getTagName(btn));
-        if (btn.getAttributes().remove("_ajaxRequired") != null)
+        if (btn.getAttributes().remove(ATTR_AJAX_REQUIRED) != null)
             AjaxUtil.renderJSLinks(context);
 
     }

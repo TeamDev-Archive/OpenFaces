@@ -11,7 +11,13 @@
  */
 package org.openfaces.component.timetable;
 
+import org.openfaces.org.json.JSONArray;
+import org.openfaces.org.json.JSONException;
+import org.openfaces.org.json.JSONObject;
+import org.openfaces.util.ConvertibleToJSON;
 import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
+import org.openfaces.util.Styles;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.component.UICommand;
@@ -19,13 +25,14 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.FacesEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 /**
  * @author Dmitry Pikhulya
  */
-public class EventAction extends UICommand {
+public class EventAction extends UICommand implements ConvertibleToJSON {
     public static final String COMPONENT_TYPE = "org.openfaces.EventAction";
     public static final String COMPONENT_FAMILY = "org.openfaces.EventAction";
 
@@ -40,6 +47,7 @@ public class EventAction extends UICommand {
     private String pressedImageUrl;
     private String onclick;
     private String hint;
+    private EventActionScope scope;
 
     @Override
     public String getFamily() {
@@ -51,7 +59,7 @@ public class EventAction extends UICommand {
         return new Object[]{
                 super.saveState(context),
                 style, styleClass, rolloverStyle, rolloverClass, pressedStyle, pressedClass,
-                imageUrl, rolloverImageUrl, pressedImageUrl, onclick, hint
+                imageUrl, rolloverImageUrl, pressedImageUrl, onclick, hint, scope
         };
     }
 
@@ -71,6 +79,7 @@ public class EventAction extends UICommand {
         pressedImageUrl = (String) state[i++];
         onclick = (String) state[i++];
         hint = (String) state[i++];
+        scope = (EventActionScope) state[i++];
     }
 
     public String getStyle() {
@@ -198,4 +207,42 @@ public class EventAction extends UICommand {
     protected String getDefaultHint() {
         return null;
     }
+
+    public EventActionScope getScope() {
+        return ValueBindings.get(this, "scope", scope, EventActionScope.PAGE, EventActionScope.class);
+    }
+
+    public void setScope(EventActionScope scope) {
+        this.scope = scope;
+    }
+
+    public JSONObject toJSONObject(Map params_) throws JSONException {
+        FacesContext context = FacesContext.getCurrentInstance();
+        EventActionBar actionBar = (EventActionBar) params_.get(EventActionBar.class);
+
+        JSONObject result = new JSONObject();
+        if (getId() != null)
+            result.put("id", getClientId(context));
+        result.put("image", new JSONArray(Arrays.asList(
+                getActionImageUrl(context, this),
+                Resources.applicationURL(context, getRolloverImageUrl()),
+                Resources.applicationURL(context, getPressedImageUrl()))));
+        result.put("style", new JSONArray(Arrays.asList(
+                Styles.getCSSClass(context, actionBar, getStyle(), "o_eventActionButton", getStyleClass()),
+                Styles.getCSSClass(context, actionBar, getRolloverStyle(), getRolloverClass()),
+                Styles.getCSSClass(context, actionBar, getPressedStyle(), getPressedClass()))));
+        result.put("onclick", getOnclick());
+        result.put("hint", getHint());
+        result.put("scope", getScope());
+        return result;
+    }
+
+    private String getActionImageUrl(FacesContext context, EventAction action) {
+        if (action instanceof DeleteEventAction && action.getImageUrl() == null) {
+            return Resources.internalURL(FacesContext.getCurrentInstance(), "timetable/deleteEvent.gif");
+        }
+        return Resources.applicationURL(context, action.getImageUrl());
+    }
+
+
 }

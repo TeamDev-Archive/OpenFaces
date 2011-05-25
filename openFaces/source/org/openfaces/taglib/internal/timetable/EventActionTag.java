@@ -44,6 +44,7 @@ public class EventActionTag extends AbstractComponentTag {
         setActionListener(facesContext, (EventAction) component, new Class[]{EventActionEvent.class});
 
         setStringProperty(component, "hint");
+        setEnumerationProperty(component, "scope", org.openfaces.component.timetable.EventActionScope.class);
     }
 
 }

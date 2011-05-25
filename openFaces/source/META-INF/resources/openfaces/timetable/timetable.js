@@ -471,15 +471,26 @@ O$.Timetable._initEventActionBar = function(actionBarId, dayTableId, backgroundI
     cell.onclick = function(e) {
       e = O$.getEvent(e);
       e.timetableEvent = this._timetableEvent;
-      e._dayTable = this._dayTable;
+      var timetableView = this._dayTable;
+      e._dayTable = timetableView;
       if (this._userClickHandler) {
         if (this._userClickHandler(e) === false || e.returnValue === false)
           return;
       }
 
       var eventId = this._timetableEvent.id;
-      O$.setHiddenField(this._dayTable, actionBarId + "::" + this._index, eventId);
-      O$.submitEnclosingForm(this._dayTable);
+      var action = this._action;
+      if (action.scope == "page") {
+        O$.setHiddenField(this._dayTable, actionBarId + "::" + this._index, eventId);
+        O$.submitEnclosingForm(this._dayTable);
+      } else if (action.scope == "timetable") {
+        var timetable = timetableView._timetable || timetableView;
+        O$._ajaxReload([timetable.id], {
+                  additionalParams: [
+                    [actionBarId + "::" + this._index, eventId]
+                  ]
+                });
+      }
     };
     function setupStateHighlighting(cell) {
       cell._mouseState = O$.setupHoverAndPressStateFunction(cell, function(mouseInside, pressed) {
