@@ -77,11 +77,11 @@ O$.Timetable = {
     timetable.setViewType(initialViewType);
   },
 
-  _initEventEditorDialog: function(dayTableId, dialogId, createEventCaption, editEventCaption, centered) {
-    var dayTable = O$(dayTableId);
+  _initEventEditorDialog: function(timetableViewId, dialogId, createEventCaption, editEventCaption, centered) {
+    var timetableView = O$(timetableViewId);
     var dialog = O$(dialogId);
-    dayTable._eventEditor = dialog;
-    dialog._dayTable = dayTable;
+    timetableView._eventEditor = dialog;
+    dialog._timetableView = timetableView;
 
     dialog._nameField = O$.byIdOrName(dialog.id + "--nameField");
     dialog._resourceField = O$.byIdOrName(dialog.id + "--resourceField");
@@ -139,7 +139,7 @@ O$.Timetable = {
     dialog.run = function(event, mode) {
       this._event = event;
       setFieldText(this._nameField, event.name);
-      var resource = dayTable._getResourceForEvent(event);
+      var resource = timetableView._getResourceForEvent(event);
       if (dialog._resourceField)
         dialog._resourceField.setValue(resource ? resource.name : "");
       this._startDateField.setSelectedDate(event.start);
@@ -192,34 +192,34 @@ O$.Timetable = {
         }
         event.setEnd(endDate);
         if (dialog._resourceField)
-          event.resourceId = dayTable._idsByResourceNames[dialog._resourceField.getValue()];
+          event.resourceId = timetableView._idsByResourceNames[dialog._resourceField.getValue()];
         event.color = dialog._color ? dialog._color : "";
         event.description = getFieldText(dialog._descriptionArea);
         dialog.hide();
         if (mode == "create")
-          dayTable.addEvent(event);
+          timetableView.addEvent(event);
         else
-          dayTable.updateEvent(event);
+          timetableView.updateEvent(event);
       };
 
       this._cancelButton.onclick = function(e) {
         O$.breakEvent(e);
         dialog.hide();
         if (mode == "create")
-          dayTable.cancelEventCreation(event);
+          timetableView.cancelEventCreation(event);
       };
 
       this._deleteButton.onclick = function(e) {
         O$.breakEvent(e);
         dialog.hide();
         if (mode == "update")
-          dayTable.deleteEvent(event);
+          timetableView.deleteEvent(event);
       };
 
       var previousHide = this.onhide;
       this.onhide = function() {
         if (!this._okProcessed && mode == "create")
-          dayTable.cancelEventCreation(event);
+          timetableView.cancelEventCreation(event);
         if (dialog._textareaHeightUpdateInterval)
           clearInterval(dialog._textareaHeightUpdateInterval);
         if (previousHide) {
@@ -259,10 +259,10 @@ O$.Timetable = {
 
   },
 
-  _initEventEditorPage: function(dayTableId, thisComponentId, actionDeclared, url, modeParamName, eventIdParamName, eventStartParamName, eventEndParamName, resourceIdParamName) {
-    var dayTable = O$(dayTableId);
+  _initEventEditorPage: function(timetableViewId, thisComponentId, actionDeclared, url, modeParamName, eventIdParamName, eventStartParamName, eventEndParamName, resourceIdParamName) {
+    var timetableView = O$(timetableViewId);
     var thisComponent = O$(thisComponentId);
-    dayTable._eventEditor = thisComponent;
+    timetableView._eventEditor = thisComponent;
     thisComponent.run = function(event, mode) {
       if (actionDeclared) {
         var params = (mode == "create") ?
@@ -278,7 +278,7 @@ O$.Timetable = {
                   [modeParamName, mode],
                   [eventIdParamName, event.id]
                 ];
-        O$.submitWithParams(dayTable, params);
+        O$.submitWithParams(timetableView, params);
         return;
       }
       var newPageUrl = url + "?" + modeParamName + "=" + mode + "&";
@@ -293,15 +293,15 @@ O$.Timetable = {
     };
   },
 
-  _initCustomEventEditor: function(dayTableId, thisComponentId, oncreate, onedit) {
-    var dayTable = O$(dayTableId);
+  _initCustomEventEditor: function(timetableViewId, thisComponentId, oncreate, onedit) {
+    var timetableView = O$(timetableViewId);
     var thisComponent = O$(thisComponentId);
-    dayTable._eventEditor = thisComponent;
+    timetableView._eventEditor = thisComponent;
     thisComponent.run = function(event, mode) {
       if (mode == "create")
-        oncreate(dayTable, event);
+        oncreate(timetableView, event);
       else
-        onedit(dayTable, event);
+        onedit(timetableView, event);
     };
 
   },
@@ -347,10 +347,10 @@ O$.Timetable = {
 
     event._scrollIntoView = function() {
       /*    return; //todo: finish auto-scrolling functionality
-       var dayTable = event.mainElement._dayTable;
-       var scrollingOccurred = O$.scrollElementIntoView(event.mainElement, dayTable._getScrollingCache());
+       var timetableView = event.mainElement._timetableView;
+       var scrollingOccurred = O$.scrollElementIntoView(event.mainElement, timetableView._getScrollingCache());
        if (scrollingOccurred)
-       dayTable._resetScrollingCache();*/
+       timetableView._resetScrollingCache();*/
     };
     if (event.start || event.startStr)
       event.setStart(event.start, event.startStr);
@@ -358,7 +358,7 @@ O$.Timetable = {
       event.setEnd(event.end, event.endStr);
   },
 
-  _initEventPreview: function(eventPreviewId, dayTableId, showingDelay, popupClass, eventNameClass, eventDescriptionClass, horizontalAlignment, verticalAlignment, horizontalDistance, verticalDistance) {
+  _initEventPreview: function(eventPreviewId, timetableViewId, showingDelay, popupClass, eventNameClass, eventDescriptionClass, horizontalAlignment, verticalAlignment, horizontalDistance, verticalDistance) {
     var eventPreview = O$(eventPreviewId);
     var popupLayer = O$(eventPreviewId + "--popupLayer");
     O$.appendClassNames(popupLayer, [popupClass]);
@@ -369,12 +369,12 @@ O$.Timetable = {
     eventPreview._showingDelay = showingDelay;
 
     eventPreview.showForEvent = function(event) {
-      var dayTable = O$(dayTableId);
+      var timetableView = O$(timetableViewId);
       var popupParent = O$.getDefaultAbsolutePositionParent();
       if (popupLayer.parentNode != popupParent) {
         popupParent.appendChild(popupLayer);
       }
-      O$.correctElementZIndex(popupLayer, dayTable);
+      O$.correctElementZIndex(popupLayer, timetableView);
 
       var oldSpans;
       while ((oldSpans = popupLayer.getElementsByTagName("span")).length > 0) {
@@ -390,8 +390,8 @@ O$.Timetable = {
       descriptionElement.className = eventDescriptionClass;
       popupLayer.appendChild(descriptionElement);
 
-      O$.setInnerText(nameElement, event.name, dayTable._escapeEventNames);
-      O$.setInnerText(descriptionElement, event.description, dayTable._escapeEventDescriptions);
+      O$.setInnerText(nameElement, event.name, timetableView._escapeEventNames);
+      O$.setInnerText(descriptionElement, event.description, timetableView._escapeEventDescriptions);
 
       var mainElement = event.parts[0].mainElement;
       if (!mainElement)
@@ -407,7 +407,7 @@ O$.Timetable = {
   },
 
 
-  _initEventActionBar: function(actionBarId, dayTableId, backgroundIntensity, userSpecifiedClass, actions, actionRolloverIntensity, actionPressedIntensity) {
+  _initEventActionBar: function(actionBarId, timetableViewId, backgroundIntensity, userSpecifiedClass, actions, actionRolloverIntensity, actionPressedIntensity) {
     var actionBar = O$(actionBarId);
     if (!actionBar) {
       var initArgs = arguments;
@@ -457,7 +457,7 @@ O$.Timetable = {
       cell.onmousedown = function() {
         this._timetableEvent = actionBar._event ? actionBar._event : actionBar._lastEditedEvent;
         this._timetableEventPart = actionBar._part ? actionBar._part : actionBar._lastEditedPart;
-        this._dayTable = O$(dayTableId);
+        this._timetableView = O$(timetableViewId);
         if (this._timetableEventPart.mainElement._bringToFront) {
           this._timetableEventPart.mainElement._bringToFront();
         }
@@ -465,8 +465,8 @@ O$.Timetable = {
       cell.onclick = function(e) {
         e = O$.getEvent(e);
         e.timetableEvent = this._timetableEvent;
-        var timetableView = this._dayTable;
-        e._dayTable = timetableView;
+        var timetableView = this._timetableView;
+        e._timetableView = timetableView;
         if (this._userClickHandler) {
           if (this._userClickHandler(e) === false || e.returnValue === false)
             return;
@@ -475,8 +475,8 @@ O$.Timetable = {
         var eventId = this._timetableEvent.id;
         var action = this._action;
         if (action.scope == "page") {
-          O$.setHiddenField(this._dayTable, actionBarId + "::" + this._index, eventId);
-          O$.submitEnclosingForm(this._dayTable);
+          O$.setHiddenField(this._timetableView, actionBarId + "::" + this._index, eventId);
+          O$.submitEnclosingForm(this._timetableView);
         } else if (action.scope == "timetable") {
           var timetable = timetableView._timetable || timetableView;
           O$._ajaxReload([timetable.id], {
@@ -558,14 +558,14 @@ O$.Timetable = {
 
 
     actionBar._actionsArea._updatePos = function() {
-      var dayTable = O$(dayTableId);
+      var timetableView = O$(timetableViewId);
       var actionBarSize = O$.getElementSize(actionBar);
       var actionsAreaSize = O$.getElementSize(this);
       this.style.top = "0px";
       this.style.left = actionBarSize.width - actionsAreaSize.width + "px";
       this.style.height = actionBarSize.height + "px";
 
-      O$.correctElementZIndex(this, dayTable);
+      O$.correctElementZIndex(this, timetableView);
     };
   },
 
@@ -575,7 +575,7 @@ O$.Timetable = {
   _deleteCurrentTimetableEvent: function(event) {
     var e = O$.getEvent(event);
     var timetableEvent = e.timetableEvent;
-    e._dayTable.deleteEvent(timetableEvent);
+    e._timetableView.deleteEvent(timetableEvent);
     e.returnValue = false;
   },
 
