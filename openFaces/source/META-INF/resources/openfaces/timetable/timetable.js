@@ -23,6 +23,7 @@ O$.Timetable = {
       getViewType: function() {
         return this._viewType;
       },
+
       setViewType: function(viewType) {
         if (viewType != O$.Timetable.DAY &&
                 viewType != O$.Timetable.WEEK &&
@@ -63,7 +64,6 @@ O$.Timetable = {
         handler.call(this, event);
       },
 
-
       _viewByType: function(viewType) {
         for (var i = 0, count = this._views.length; i < count; i++) {
           var view = this._views[i];
@@ -79,24 +79,159 @@ O$.Timetable = {
 
   _initEventEditorDialog: function(timetableViewId, dialogId, createEventCaption, editEventCaption, centered) {
     var timetableView = O$(timetableViewId);
-    var dialog = O$(dialogId);
-    timetableView._eventEditor = dialog;
-    dialog._timetableView = timetableView;
 
-    dialog._nameField = O$.byIdOrName(dialog.id + "--nameField");
-    dialog._resourceField = O$.byIdOrName(dialog.id + "--resourceField");
-    dialog._startDateField = O$.byIdOrName(dialog.id + "--startDateField");
-    dialog._endDateField = O$.byIdOrName(dialog.id + "--endDateField");
-    dialog._startTimeField = O$.byIdOrName(dialog.id + "--startTimeField");
-    dialog._endTimeField = O$.byIdOrName(dialog.id + "--endTimeField");
-    dialog._colorField = O$.byIdOrName(dialog.id + "--colorField");
-    dialog._color = "";
-    dialog._descriptionArea = O$.byIdOrName(dialog.id + "--descriptionArea");
-    dialog._okButton = O$.byIdOrName(dialog.id + "--okButton");
-    dialog._cancelButton = O$.byIdOrName(dialog.id + "--cancelButton");
-    dialog._deleteButton = O$.byIdOrName(dialog.id + "--deleteButton");
+    function getFieldText(field) {
+      if (field.getValue)
+        return field.getValue();
+      return field.value;
+    }
+
+    function setFieldText(field, text) {
+      if (field.setValue)
+        field.setValue(text);
+      else
+        field.value = text;
+    }
+
+    var dialog = O$.initComponent(dialogId, null, {
+              _timetableView: timetableView,
+              _nameField: O$.byIdOrName(dialog.id + "--nameField"),
+              _resourceField: O$.byIdOrName(dialog.id + "--resourceField"),
+              _startDateField: O$.byIdOrName(dialog.id + "--startDateField"),
+              _endDateField: O$.byIdOrName(dialog.id + "--endDateField"),
+              _startTimeField: O$.byIdOrName(dialog.id + "--startTimeField"),
+              _endTimeField: O$.byIdOrName(dialog.id + "--endTimeField"),
+              _colorField: O$.byIdOrName(dialog.id + "--colorField"),
+              _color: "",
+              _descriptionArea: O$.byIdOrName(dialog.id + "--descriptionArea"),
+              _okButton: O$.byIdOrName(dialog.id + "--okButton"),
+              _cancelButton: O$.byIdOrName(dialog.id + "--cancelButton"),
+              _deleteButton: O$.byIdOrName(dialog.id + "--deleteButton"),
+
+              run: function(event, mode) {
+                this._event = event;
+                setFieldText(this._nameField, event.name);
+                var resource = timetableView._getResourceForEvent(event);
+                if (dialog._resourceField)
+                  dialog._resourceField.setValue(resource ? resource.name : "");
+                this._startDateField.setSelectedDate(event.start);
+                if (this._endDateField)
+                  this._endDateField.setSelectedDate(event.end);
+                var duration = event.end.getTime() - event.start.getTime();
+                setFieldText(this._startTimeField, O$.formatTime(event.start));
+                if (this._endTimeField)
+                  setFieldText(this._endTimeField, O$.formatTime(event.end));
+                this._color = event.color;
+                setFieldText(this._descriptionArea, event.description);
+                this._deleteButton.style.visibility = mode == "update" ? "visible" : "hidden";
+                O$.removeAllChildNodes(this._captionContent);
+                this._captionContent.appendChild(document.createTextNode(mode == "update"
+                        ? editEventCaption
+                        : createEventCaption));
+
+                this._okPressed = false;
+                this._okButton.onclick = function(e) {
+                  this._okProcessed = true;
+                  O$.breakEvent(e);
+                  event.name = getFieldText(dialog._nameField);
+                  var startDate = dialog._startDateField.getSelectedDate();
+                  if (!startDate) {
+                    dialog._startDateField.focus();
+                    return;
+                  }
+                  O$.parseTime(getFieldText(dialog._startTimeField), startDate);
+                  var endDate = dialog._endDateField ? dialog._endDateField.getSelectedDate() : null;
+                  if (dialog._endTimeField) {
+                    if (!endDate) {
+                      dialog._endDateField.focus();
+                      return;
+                    }
+                    O$.parseTime(getFieldText(dialog._endTimeField), endDate);
+                  }
+                  if (!startDate || isNaN(startDate)) {
+                    dialog._startTimeField.focus();
+                    return;
+                  }
+                  if (!fixedDurationMode && (!endDate || isNaN(endDate))) {
+                    dialog._endTimeField.focus();
+                    return;
+                  }
+                  event.setStart(startDate);
+                  if (fixedDurationMode) {
+                    // fixed duration mode
+                    endDate = new Date();
+                    endDate.setTime(startDate.getTime() + duration);
+                  }
+                  event.setEnd(endDate);
+                  if (dialog._resourceField)
+                    event.resourceId = timetableView._idsByResourceNames[dialog._resourceField.getValue()];
+                  event.color = dialog._color ? dialog._color : "";
+                  event.description = getFieldText(dialog._descriptionArea);
+                  dialog.hide();
+                  if (mode == "create")
+                    timetableView.addEvent(event);
+                  else
+                    timetableView.updateEvent(event);
+                };
+
+                this._cancelButton.onclick = function(e) {
+                  O$.breakEvent(e);
+                  dialog.hide();
+                  if (mode == "create")
+                    timetableView.cancelEventCreation(event);
+                };
+
+                this._deleteButton.onclick = function(e) {
+                  O$.breakEvent(e);
+                  dialog.hide();
+                  if (mode == "update")
+                    timetableView.deleteEvent(event);
+                };
+
+                var previousHide = this.onhide;
+                this.onhide = function() {
+                  if (!this._okProcessed && mode == "create")
+                    timetableView.cancelEventCreation(event);
+                  if (dialog._textareaHeightUpdateInterval)
+                    clearInterval(dialog._textareaHeightUpdateInterval);
+                  if (previousHide) {
+                    previousHide.apply(this);
+                  }
+                };
+
+                if (event.parts) {
+                  for (var i = 0; i < event.parts.length; i++) {
+                    if (event.parts[i].mainElement)
+                      O$.correctElementZIndex(this, event.parts[i].mainElement, 5);
+                  }
+                }
+                if (centered)
+                  this.showCentered();
+                else
+                  this.show();
+
+                function adjustTextareaHeight() {
+                  var size = O$.getElementSize(dialog._descriptionArea.parentNode);
+                  O$.setElementSize(dialog._descriptionArea, size);
+                }
+
+                if (O$.isExplorer() || O$.isOpera()) {
+                  if (dialog._descriptionArea.style.position != "absolute") {
+                    dialog._descriptionArea.style.position = "absolute";
+                    var div = document.createElement("div");
+                    div.style.height = "100%";
+                    dialog._descriptionArea.parentNode.appendChild(div);
+                  }
+                  adjustTextareaHeight();
+                  dialog._textareaHeightUpdateInterval = setInterval(adjustTextareaHeight, 50);
+                } else
+                  dialog._textareaHeightUpdateInterval = null;
+
+              }
+            });
 
     var fixedDurationMode = !dialog._endDateField;
+    timetableView._eventEditor = dialog;
 
     function okByEnter(fld) {
       if (!fld)
@@ -122,141 +257,6 @@ O$.Timetable = {
 
     okByEnter([dialog._nameField, dialog._resourceField, dialog._startDateField, dialog._endDateField,
       dialog._startTimeField, dialog._endTimeField, dialog._colorField, dialog._descriptionArea]);
-
-    function getFieldText(field) {
-      if (field.getValue)
-        return field.getValue();
-      return field.value;
-    }
-
-    function setFieldText(field, text) {
-      if (field.setValue)
-        field.setValue(text);
-      else
-        field.value = text;
-    }
-
-    dialog.run = function(event, mode) {
-      this._event = event;
-      setFieldText(this._nameField, event.name);
-      var resource = timetableView._getResourceForEvent(event);
-      if (dialog._resourceField)
-        dialog._resourceField.setValue(resource ? resource.name : "");
-      this._startDateField.setSelectedDate(event.start);
-      if (this._endDateField)
-        this._endDateField.setSelectedDate(event.end);
-      var duration = event.end.getTime() - event.start.getTime();
-      setFieldText(this._startTimeField, O$.formatTime(event.start));
-      if (this._endTimeField)
-        setFieldText(this._endTimeField, O$.formatTime(event.end));
-      this._color = event.color;
-      setFieldText(this._descriptionArea, event.description);
-      this._deleteButton.style.visibility = mode == "update" ? "visible" : "hidden";
-      O$.removeAllChildNodes(this._captionContent);
-      this._captionContent.appendChild(document.createTextNode(mode == "update"
-              ? editEventCaption
-              : createEventCaption));
-
-      this._okPressed = false;
-      this._okButton.onclick = function(e) {
-        this._okProcessed = true;
-        O$.breakEvent(e);
-        event.name = getFieldText(dialog._nameField);
-        var startDate = dialog._startDateField.getSelectedDate();
-        if (!startDate) {
-          dialog._startDateField.focus();
-          return;
-        }
-        O$.parseTime(getFieldText(dialog._startTimeField), startDate);
-        var endDate = dialog._endDateField ? dialog._endDateField.getSelectedDate() : null;
-        if (dialog._endTimeField) {
-          if (!endDate) {
-            dialog._endDateField.focus();
-            return;
-          }
-          O$.parseTime(getFieldText(dialog._endTimeField), endDate);
-        }
-        if (!startDate || isNaN(startDate)) {
-          dialog._startTimeField.focus();
-          return;
-        }
-        if (!fixedDurationMode && (!endDate || isNaN(endDate))) {
-          dialog._endTimeField.focus();
-          return;
-        }
-        event.setStart(startDate);
-        if (fixedDurationMode) {
-          // fixed duration mode
-          endDate = new Date();
-          endDate.setTime(startDate.getTime() + duration);
-        }
-        event.setEnd(endDate);
-        if (dialog._resourceField)
-          event.resourceId = timetableView._idsByResourceNames[dialog._resourceField.getValue()];
-        event.color = dialog._color ? dialog._color : "";
-        event.description = getFieldText(dialog._descriptionArea);
-        dialog.hide();
-        if (mode == "create")
-          timetableView.addEvent(event);
-        else
-          timetableView.updateEvent(event);
-      };
-
-      this._cancelButton.onclick = function(e) {
-        O$.breakEvent(e);
-        dialog.hide();
-        if (mode == "create")
-          timetableView.cancelEventCreation(event);
-      };
-
-      this._deleteButton.onclick = function(e) {
-        O$.breakEvent(e);
-        dialog.hide();
-        if (mode == "update")
-          timetableView.deleteEvent(event);
-      };
-
-      var previousHide = this.onhide;
-      this.onhide = function() {
-        if (!this._okProcessed && mode == "create")
-          timetableView.cancelEventCreation(event);
-        if (dialog._textareaHeightUpdateInterval)
-          clearInterval(dialog._textareaHeightUpdateInterval);
-        if (previousHide) {
-          previousHide.apply(this);
-        }
-      };
-
-      if (event.parts) {
-        for (var i = 0; i < event.parts.length; i++) {
-          if (event.parts[i].mainElement)
-            O$.correctElementZIndex(this, event.parts[i].mainElement, 5);
-        }
-      }
-      if (centered)
-        this.showCentered();
-      else
-        this.show();
-
-      function adjustTextareaHeight() {
-        var size = O$.getElementSize(dialog._descriptionArea.parentNode);
-        O$.setElementSize(dialog._descriptionArea, size);
-      }
-
-      if (O$.isExplorer() || O$.isOpera()) {
-        if (dialog._descriptionArea.style.position != "absolute") {
-          dialog._descriptionArea.style.position = "absolute";
-          var div = document.createElement("div");
-          div.style.height = "100%";
-          dialog._descriptionArea.parentNode.appendChild(div);
-        }
-        adjustTextareaHeight();
-        dialog._textareaHeightUpdateInterval = setInterval(adjustTextareaHeight, 50);
-      } else
-        dialog._textareaHeightUpdateInterval = null;
-
-    };
-
   },
 
   _initEventEditorPage: function(timetableViewId, thisComponentId, actionDeclared, url, modeParamName, eventIdParamName,
@@ -445,16 +445,81 @@ O$.Timetable = {
     for (var i = 0, count = actions.length; i < count; i++) {
       var action = actions[i];
       var cell = document.createElement("td");
-      action._cell = cell;
-      cell._index = i;
-      cell._action = action;
-      cell._image = image;
+      O$.extend(cell, {
+                vAlign: "middle",
+                align: "center",
+                id: action.id,
+                className: action.style[0],
 
+                _index: i,
+                _action: action,
+                _image: image,
+                _userClickHandler: cell.onclick,
+
+                onmousedown: function() {
+                  this._timetableEvent = actionBar._event ? actionBar._event : actionBar._lastEditedEvent;
+                  this._timetableEventPart = actionBar._part ? actionBar._part : actionBar._lastEditedPart;
+                  this._timetableView = O$(timetableViewId);
+                  if (this._timetableEventPart.mainElement._bringToFront) {
+                    this._timetableEventPart.mainElement._bringToFront();
+                  }
+                },
+
+                onclick: function(e) {
+                  e = O$.getEvent(e);
+                  e.timetableEvent = this._timetableEvent;
+                  var timetableView = this._timetableView;
+                  e._timetableView = timetableView;
+                  if (this._userClickHandler) {
+                    if (this._userClickHandler(e) === false || e.returnValue === false)
+                      return;
+                  }
+
+                  var eventId = this._timetableEvent.id;
+                  var action = this._action;
+                  if (action.scope == "page") {
+                    O$.setHiddenField(this._timetableView, actionBarId + "::" + this._index, eventId);
+                    O$.submitEnclosingForm(this._timetableView);
+                  } else if (action.scope == "timetable") {
+                    var timetable = timetableView._timetable || timetableView;
+                    O$._ajaxReload([timetable.id], {
+                              additionalParams: [
+                                [actionBarId + "::" + this._index, eventId]
+                              ]
+                            });
+                  } else throw "Unknown action scope: " + action.scope;
+                },
+
+                _update: function() {
+                  var mouseInside = this._mouseInside;
+                  var pressed = this._pressed;
+                  O$.setStyleMappings(this, {
+                    _rolloverStyle: mouseInside ? this._action.style[1] : null,
+                    _pressedStyle: pressed ? this._action.style[2] : null});
+                  var userSpecifiedBackground = O$.getStyleClassProperty(this.className, "background-color");
+                  if (!userSpecifiedBackground) {
+                    var event = actionBar._event ? actionBar._event : actionBar._lastEditedEvent;
+                    var part = actionBar._part ? actionBar._part : actionBar._lastEditedPart;
+                    var intensity = pressed ? actionPressedIntensity : mouseInside ? actionRolloverIntensity : backgroundIntensity;
+                    this.style.backgroundColor = O$.blendColors(part.mainElement._color, "#ffffff", 1 - intensity);
+                  } else
+                    this.style.backgroundColor = "";
+
+                  var imageUrl = action.image[0];
+                  if (pressed) {
+                    if (action.image[2])
+                      imageUrl = action.image[2];
+                  } else if (mouseInside) {
+                    if (action.image[1])
+                      imageUrl = action.image[1];
+                  }
+                  this._image = imageUrl;
+                }
+
+              });
+
+      action._cell = cell;
       tr.appendChild(cell);
-      cell.vAlign = "middle";
-      cell.align = "center";
-      cell.id = action.id;
-      cell.className = action.style[0];
       var image = document.createElement("img");
       image.src = action.image[0];
       if (action.hint)
@@ -464,39 +529,8 @@ O$.Timetable = {
       O$.preloadImage(action.image[0]);
       O$.preloadImage(action.image[1]);
       O$.preloadImage(action.image[2]);
-      cell._userClickHandler = cell.onclick;
-      cell.onmousedown = function() {
-        this._timetableEvent = actionBar._event ? actionBar._event : actionBar._lastEditedEvent;
-        this._timetableEventPart = actionBar._part ? actionBar._part : actionBar._lastEditedPart;
-        this._timetableView = O$(timetableViewId);
-        if (this._timetableEventPart.mainElement._bringToFront) {
-          this._timetableEventPart.mainElement._bringToFront();
-        }
-      };
-      cell.onclick = function(e) {
-        e = O$.getEvent(e);
-        e.timetableEvent = this._timetableEvent;
-        var timetableView = this._timetableView;
-        e._timetableView = timetableView;
-        if (this._userClickHandler) {
-          if (this._userClickHandler(e) === false || e.returnValue === false)
-            return;
-        }
 
-        var eventId = this._timetableEvent.id;
-        var action = this._action;
-        if (action.scope == "page") {
-          O$.setHiddenField(this._timetableView, actionBarId + "::" + this._index, eventId);
-          O$.submitEnclosingForm(this._timetableView);
-        } else if (action.scope == "timetable") {
-          var timetable = timetableView._timetable || timetableView;
-          O$._ajaxReload([timetable.id], {
-                    additionalParams: [
-                      [actionBarId + "::" + this._index, eventId]
-                    ]
-                  });
-        } else throw "Unknown action scope: " + action.scope;
-      };
+
       function setupStateHighlighting(cell) {
         cell._mouseState = O$.setupHoverAndPressStateFunction(cell, function(mouseInside, pressed) {
           cell._mouseInside = mouseInside;
@@ -506,50 +540,29 @@ O$.Timetable = {
       }
 
       setupStateHighlighting(cell);
-      cell._update = function() {
-        var mouseInside = this._mouseInside;
-        var pressed = this._pressed;
-        O$.setStyleMappings(this, {
-          _rolloverStyle: mouseInside ? this._action.style[1] : null,
-          _pressedStyle: pressed ? this._action.style[2] : null});
-        var userSpecifiedBackground = O$.getStyleClassProperty(this.className, "background-color");
-        if (!userSpecifiedBackground) {
-          var event = actionBar._event ? actionBar._event : actionBar._lastEditedEvent;
-          var part = actionBar._part ? actionBar._part : actionBar._lastEditedPart;
-          var intensity = pressed ? actionPressedIntensity : mouseInside ? actionRolloverIntensity : backgroundIntensity;
-          this.style.backgroundColor = O$.blendColors(part.mainElement._color, "#ffffff", 1 - intensity);
-        } else
-          this.style.backgroundColor = "";
-
-        var imageUrl = action.image[0];
-        if (pressed) {
-          if (action.image[2])
-            imageUrl = action.image[2];
-        } else if (mouseInside) {
-          if (action.image[1])
-            imageUrl = action.image[1];
-        }
-        this._image = imageUrl;
-      };
     }
-    actionsTable.onclick = function(e) {
-      O$.breakEvent(e); // avoid passing event to the absoluteElementsParentNode
-    };
+    O$.extend(actionsTable, {
+              onclick: function(e) {
+                O$.breakEvent(e); // avoid passing event to the absoluteElementsParentNode
+              },
+              _getHeight: function() {
+                if (!this._height) {
+                  this._height = O$.getElementSize(this).height;
+                }
+                return this._height;
+              },
+              _getWidth: function() {
+                if (!this._width) {
+                  this._width = O$.getElementSize(this).width;
+                }
+                return this._width;
+              }
+
+            });
     actionBar._actionsArea = actionsTable;
     actionBar._actionsArea.style.position = "absolute";
     actionBar._actionsArea.style.visibility = "hidden";
-    actionsTable._getHeight = function() {
-      if (!this._height) {
-        this._height = O$.getElementSize(this).height;
-      }
-      return this._height;
-    };
-    actionsTable._getWidth = function() {
-      if (!this._width) {
-        this._width = O$.getElementSize(this).width;
-      }
-      return this._width;
-    };
+
     actionBar.appendChild(actionsTable);
 
     actionBar._update = function() {
@@ -648,108 +661,116 @@ O$.Timetable = {
     O$.Timetable._PreloadedTimetableEvents.call(this, []);
 
     this._setEvents = this.setEvents;
-    this.setEvents = function(events, preloadedStartTime, preloadedEndTime) {
-      this._setEvents(events);
-      this._loadedTimeRangeMap = new O$._RangeMap();
-      this._loadingTimeRangeMap = new O$._RangeMap();
-      if (!(preloadedStartTime instanceof Date))
-        preloadedStartTime = preloadedStartTime ? O$.parseDateTime(preloadedStartTime).getTime() : null;
-      if (!(preloadedEndTime instanceof Date))
-        preloadedEndTime = preloadedEndTime ? O$.parseDateTime(preloadedEndTime).getTime() : null;
-      this._loadedTimeRangeMap.addRange(preloadedStartTime, preloadedEndTime);
-      this._loadingTimeRangeMap.addRange(preloadedStartTime, preloadedEndTime);
-    };
-    this.setEvents(preloadedEvents, preloadedStartTime, preloadedEndTime);
-
     this._getEventsForPeriod_raw = this._getEventsForPeriod;
-    this._getEventsForPeriod = function(start, end, eventsLoadedCallback) {
-      if (this._loadedTimeRangeMap.isRangeFullyInMap(start.getTime(), end.getTime()) ||
-              this._loadingTimeRangeMap.isRangeFullyInMap(start.getTime(), end.getTime()))
-        return this._getEventsForPeriod_raw(start, end);
+    O$.extend(this, {
+              setEvents: function(events, preloadedStartTime, preloadedEndTime) {
+                this._setEvents(events);
+                this._loadedTimeRangeMap = new O$._RangeMap();
+                this._loadingTimeRangeMap = new O$._RangeMap();
+                if (!(preloadedStartTime instanceof Date))
+                  preloadedStartTime = preloadedStartTime ? O$.parseDateTime(preloadedStartTime).getTime() : null;
+                if (!(preloadedEndTime instanceof Date))
+                  preloadedEndTime = preloadedEndTime ? O$.parseDateTime(preloadedEndTime).getTime() : null;
+                this._loadedTimeRangeMap.addRange(preloadedStartTime, preloadedEndTime);
+                this._loadingTimeRangeMap.addRange(preloadedStartTime, preloadedEndTime);
+              },
 
-      this._loadingTimeRangeMap.addRange(start.getTime(), end.getTime());
-      var thisProvider = this;
-      O$.requestComponentPortions(this._timeTableView.id, ["loadEvents"],
-              JSON.stringify(
-              {startTime: O$.formatDateTime(start), endTime: O$.formatDateTime(end)},
-                      ["startTime", "endTime"]),
-              function(component, portionName, portionHTML, portionScripts, portionData) {
-                var remainingElements = O$.replaceDocumentElements(portionHTML, true);
-                if (remainingElements.hasChildNodes())
-                  thisProvider._timeTableView._hiddenArea.appendChild(remainingElements);
-                O$.executeScripts(portionScripts);
+              _getEventsForPeriod: function(start, end, eventsLoadedCallback) {
+                if (this._loadedTimeRangeMap.isRangeFullyInMap(start.getTime(), end.getTime()) ||
+                        this._loadingTimeRangeMap.isRangeFullyInMap(start.getTime(), end.getTime()))
+                  return this._getEventsForPeriod_raw(start, end);
 
-                var newEvents = portionData.events;
-                thisProvider._loadedTimeRangeMap.addRange(start.getTime(), end.getTime());
-                thisProvider._events._cachedEventsByIds = null;
-                for (var i = 0, count = newEvents.length; i < count; i++) {
-                  var newEvent = newEvents[i];
-                  var existingEvent = O$.Timetable._findEventById(thisProvider._events, newEvent.id);
-                  if (existingEvent)
-                    existingEvent._copyFrom(newEvent);
-                  else
-                    thisProvider.addEvent(newEvent);
-                }
-                if (eventsLoadedCallback) {
-                  //        var eventsForPeriod = this._getEventsForPeriod_raw(start, end);
-                  eventsLoadedCallback();//eventsForPeriod);
-                }
-              }, function () {
-                // todo: revert addition of time range to this._loadingTimeRangeMap
-                alert('Error loading timetable events');
-              });
-      return this._getEventsForPeriod_raw(start, end);
-    };
+                this._loadingTimeRangeMap.addRange(start.getTime(), end.getTime());
+                var thisProvider = this;
+                O$.requestComponentPortions(this._timeTableView.id, ["loadEvents"],
+                        JSON.stringify(
+                                {startTime: O$.formatDateTime(start), endTime: O$.formatDateTime(end)},
+                                ["startTime", "endTime"]),
+                        function(component, portionName, portionHTML, portionScripts, portionData) {
+                          var remainingElements = O$.replaceDocumentElements(portionHTML, true);
+                          if (remainingElements.hasChildNodes())
+                            thisProvider._timeTableView._hiddenArea.appendChild(remainingElements);
+                          O$.executeScripts(portionScripts);
+
+                          var newEvents = portionData.events;
+                          thisProvider._loadedTimeRangeMap.addRange(start.getTime(), end.getTime());
+                          thisProvider._events._cachedEventsByIds = null;
+                          for (var i = 0, count = newEvents.length; i < count; i++) {
+                            var newEvent = newEvents[i];
+                            var existingEvent = O$.Timetable._findEventById(thisProvider._events, newEvent.id);
+                            if (existingEvent)
+                              existingEvent._copyFrom(newEvent);
+                            else
+                              thisProvider.addEvent(newEvent);
+                          }
+                          if (eventsLoadedCallback) {
+                            //        var eventsForPeriod = this._getEventsForPeriod_raw(start, end);
+                            eventsLoadedCallback();//eventsForPeriod);
+                          }
+                        }, function () {
+                          // todo: revert addition of time range to this._loadingTimeRangeMap
+                          alert('Error loading timetable events');
+                        });
+                return this._getEventsForPeriod_raw(start, end);
+              }
+
+            });
+
+    this.setEvents(preloadedEvents, preloadedStartTime, preloadedEndTime);
   },
 
   _PreloadedTimetableEvents: function(events) {
-    this._getEventsForPeriod = function(start, end) {
-      var result = [];
-      var startTime = start.getTime();
-      var endTime = end.getTime();
-      for (var eventIndex = 0, eventCount = this._events.length; eventIndex < eventCount; eventIndex++) {
-        var event = this._events[eventIndex];
-        if (event.end.getTime() < event.start.getTime())
-          continue;
-        if (event.end.getTime() <= startTime ||
-                event.start.getTime() >= endTime)
-          continue;
-        result.push(event);
-      }
-      return result;
-    };
+    O$.extend(this, {
+              _getEventsForPeriod: function(start, end) {
+                var result = [];
+                var startTime = start.getTime();
+                var endTime = end.getTime();
+                for (var eventIndex = 0, eventCount = this._events.length; eventIndex < eventCount; eventIndex++) {
+                  var event = this._events[eventIndex];
+                  if (event.end.getTime() < event.start.getTime())
+                    continue;
+                  if (event.end.getTime() <= startTime ||
+                          event.start.getTime() >= endTime)
+                    continue;
+                  result.push(event);
+                }
+                return result;
+              },
 
-    this.setEvents = function(newEvents) {
-      this._events = newEvents;
-      for (var eventIndex = 0, eventCount = newEvents.length; eventIndex < eventCount; eventIndex++) {
-        var event = newEvents[eventIndex];
-        O$.Timetable._initEvent(event);
-      }
-      this._events._cachedEventsByIds = null;
-    };
+              setEvents: function(newEvents) {
+                this._events = newEvents;
+                for (var eventIndex = 0, eventCount = newEvents.length; eventIndex < eventCount; eventIndex++) {
+                  var event = newEvents[eventIndex];
+                  O$.Timetable._initEvent(event);
+                }
+                this._events._cachedEventsByIds = null;
+              },
 
-    this.getEventById = function(eventId) {
-      for (var i = 0, count = this._events.length; i < count; i++) {
-        var evt = this._events[i];
-        if (evt.id == eventId)
-          return evt;
-      }
-      return null;
-    };
+              getEventById: function(eventId) {
+                for (var i = 0, count = this._events.length; i < count; i++) {
+                  var evt = this._events[i];
+                  if (evt.id == eventId)
+                    return evt;
+                }
+                return null;
+              },
 
-    this.addEvent = function(event) {
-      if (this._events._cachedEventsByIds && event.id)
-        this._events._cachedEventsByIds[event.id] = event;
-      O$.Timetable._initEvent(event);
-      this._events.push(event);
-    };
-    this.deleteEvent = function(event) {
-      if (this._events._cachedEventsByIds && event.id)
-        this._events._cachedEventsByIds[event.id] = undefined;
+              addEvent: function(event) {
+                if (this._events._cachedEventsByIds && event.id)
+                  this._events._cachedEventsByIds[event.id] = event;
+                O$.Timetable._initEvent(event);
+                this._events.push(event);
+              },
 
-      var eventIndex = O$.findValueInArray(event, this._events);
-      this._events.splice(eventIndex, 1);
-    };
+              deleteEvent: function(event) {
+                if (this._events._cachedEventsByIds && event.id)
+                  this._events._cachedEventsByIds[event.id] = undefined;
+
+                var eventIndex = O$.findValueInArray(event, this._events);
+                this._events.splice(eventIndex, 1);
+              }
+
+            });
 
     this.setEvents(events);
   },
