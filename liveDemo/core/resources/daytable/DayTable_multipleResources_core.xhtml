@@ -4,11 +4,12 @@
   <div id="Demo">
     <center>
       <o:daySwitcher for="form:dayTable" upperPattern="" pattern="EEEE, d MMMM yyyy" locale="en"
-              styleClass="CalendarDate"
-              previousButtonImageUrl="../images/daytable/customPrevButton.gif"
-              nextButtonImageUrl="../images/daytable/customNextButton.gif"
-              previousButtonClass="CalendarButton"
-              nextButtonClass="CalendarButton"/>
+                     textStyle="width: 350px; text-align: center"
+                     styleClass="CalendarDate"
+                     previousButtonImageUrl="../images/daytable/customPrevButton.gif"
+                     nextButtonImageUrl="../images/daytable/customNextButton.gif"
+                     previousButtonClass="CalendarButton"
+                     nextButtonClass="CalendarButton"/>
     </center>
     <o:dayTable id="dayTable"
                 day="#{DayTableBean2.date}"
@@ -57,10 +58,11 @@
       <o:eventArea horizontalAlignment="right"
                    onmouseover="addBorder(this, #{event.color.red}, #{event.color.green},#{event.color.blue})"
                    onmouseout="removeBorder(this)" style="padding: 5px 5px 5px 5px;" verticalAlignment="top">
-        <h:commandLink title="Remove" value=""
-                       action="#{DayTableBean2.remove}">
+        <o:commandLink title="Remove" value=""
+                       action="#{DayTableBean2.remove}"
+                       >
           <h:graphicImage url="../images/daytable/close.png"/>
-        </h:commandLink>
+        </o:commandLink>
       </o:eventArea>
       <o:eventActionBar>
         <o:deleteEventAction rendered="false"/>

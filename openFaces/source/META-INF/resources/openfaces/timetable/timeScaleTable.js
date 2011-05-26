@@ -318,7 +318,7 @@ O$.TimeScaleTable._init = function(componentId,
   var eventResizeHandleHeight = O$.calculateNumericCSSValue("6px");
 
   var dragAndDropTransitionPeriod = stylingParams.dragAndDropTransitionPeriod !== undefined ? stylingParams.dragAndDropTransitionPeriod : 70;
-  var dragAndDropCancelingPeriod = stylingParams.dragAndDropCancelingPeriod !== undefined ? stylingParams.dragAndDropCancelingPeriod : 200;
+  timeScaleTable._dragAndDropCancelingPeriod = stylingParams.dragAndDropCancelingPeriod !== undefined ? stylingParams.dragAndDropCancelingPeriod : 200;
   var undroppableStateTransitionPeriod = stylingParams.undroppableStateTransitionPeriod !== undefined ? stylingParams.undroppableStateTransitionPeriod : 250;
   var undroppableEventTransparency = stylingParams.undroppableEventTransparency !== undefined ? stylingParams.undroppableEventTransparency : 0.5;
 
@@ -327,26 +327,6 @@ O$.TimeScaleTable._init = function(componentId,
   var reservedEventsLeftOffset = O$.calculateNumericCSSValue(O$.getStyleClassProperty(timeScaleTable._reservedTimeEventClass, "marginLeft"));
   var reservedEventsRightOffset = O$.calculateNumericCSSValue(O$.getStyleClassProperty(timeScaleTable._reservedTimeEventClass, "marginRight"));
 
-  timeScaleTable._getLayoutCache = function() {
-    if (!timeScaleTable._cachedPositions)
-      timeScaleTable._cachedPositions = {};
-    return timeScaleTable._cachedPositions;
-  };
-  timeScaleTable._getScrollingCache = function() {
-    if (!timeScaleTable._cachedScrollPositions)
-      timeScaleTable._cachedScrollPositions = {};
-    return timeScaleTable._cachedScrollPositions;
-  };
-  timeScaleTable._resetScrollingCache = function() {
-    timeScaleTable._cachedScrollPositions = {};
-  };
-
-
-  timeScaleTable._getEventEditor = function() {
-    if (!editable)
-      return null;
-    return this._eventEditor;
-  };
   function adjustRolloverPaddings() {
     var tempDiv = document.createElement("div");
 
@@ -393,753 +373,800 @@ O$.TimeScaleTable._init = function(componentId,
     }, 1);
   }
 
-
   adjustRolloverPaddings();
 
-  timeScaleTable._getVertOffsetByHoursAndMinutes = function(hours, minutes) {
-    var timeOffsetInMinutes = hours * 60 + minutes - startTimeInMinutes;
-    //TODO: duplicatedRows
-    //var minutesPerRow = duplicatedRows ? minorTimeInterval / 2 : minorTimeInterval;
-    var minutesPerRow = this._minutesPerRow;
-    var rowIndex = Math.floor(timeOffsetInMinutes / minutesPerRow);
-    var relativePosInsideRow = (timeOffsetInMinutes % minutesPerRow) / minutesPerRow;
-    var rows = this._table.body._getRows();
-    var correctedRowIndex = rowIndex;
-    if (correctedRowIndex < 0)
-      correctedRowIndex = 0;
-    if (correctedRowIndex >= rows.length)
-      correctedRowIndex = rows.length - 1;
-    var row = rows[correctedRowIndex];
-    var rowRectangle = O$.getElementBorderRectangle(row, true);
-    var result = {y: rowRectangle.y + rowRectangle.height * relativePosInsideRow};
-    if (rowIndex < 0) {
-      result.y += rowRectangle.height * rowIndex;
-      result.topTruncated = true;
-    }
-    if (rowIndex >= rows.length) {
-      result.y += rowRectangle.height;
-      result.bottomTruncated = !(rowIndex == rows.length && minutes == 0);
-    }
-    return result;
-  };
-
-
-  timeScaleTable._updateEventElements = function(reacquireDayEvents, refreshAreasAfterReload) {
-    this._baseZIndex = O$.getElementZIndex(this);
-    if (this._eventElements)
-      this._eventElements.concat([]).forEach(function(eventElement) {
-        var event = eventElement._event;
-        if (event)
-          event._removeEventElements(refreshAreasAfterReload);
-      }, this);
-
-    this._eventElements = [];
-    if (reacquireDayEvents)
-      this._events = this._eventProvider._getEventsForPeriod(this._startTime, this._endTime, function() {
-        this._updateEventElements(true, true);
-      });
-
-    this._updateOverlappingPositions();
-
-    var event;
-    for (var eventIndex = 0, eventCount = this._events.length; eventIndex < eventCount; eventIndex++) {
-      event = this._events[eventIndex];
-      this._addEventElements(event);
-    }
-    this._updateEventZIndexes();
-  };
-
-
-  timeScaleTable._updateOverlappingPositions = function(callback) {
-    if (O$.TimeScaleTable.RESOLVE_OVERLAPPING) {
-      if (timeScaleTable._useResourceSeparation) {
-
-        for (var resourceId in timeScaleTable._resourcesByIds) {
-          var eventsByResources = this._events.filter(function(event) {
-            return event.resourceId !== undefined && event.resourceId == resourceId;
-          }).sort(O$.Timetable.compareEventsByStart);
-          this._updateOverlappingPositionsForEvents(eventsByResources, callback);
-        }
-        eventsByResources = this._events.filter(function(event) {
-          return event.resourceId === undefined;
-        }).sort(O$.Timetable.compareEventsByStart);
-        this._updateOverlappingPositionsForEvents(eventsByResources, callback);
-      } else {
-        var events = this._events.slice();
-        events.sort(O$.Timetable.compareEventsByStart);
-        this._updateOverlappingPositionsForEvents(events, callback);
-      }
-    }
-  };
-
-  /**
-   * @param events events for specific resource sorted by start
-   */
-  timeScaleTable._updateOverlappingPositionsForEvents = function( events, callback) {
-
-    var updatedEvents = [];
-    
-    var positions = [];
-    function reservePosition(){
-      var position = positions.length;
-      for (var i=0; i<positions.length; i++){
-        if (positions[i]!=i){
-          position = i;
-          break;
-        }
-      }
-      positions.push(position);
-      return position;
-    }
-    function releasePosition(position){
-        for (var i=0; i<positions.length; i++){
-        if (positions[i]==position){
-          positions = positions.slice(0, position).concat(positions.slice(position+1));
-          break;
-        }
-      }
-    }
-
-    var divisor = 0;
-    var pendingEvents = [];
-    var openEvents = [];
-
-    while (true) {
-
-      if (events.length == 0 && openEvents.length == 0) {
-        break;
-      }
-
-      while (events.length > 0 && (openEvents.length == 0 || events[0].start < openEvents[0].end)) {
-        var nextEvent = events.shift();
-        var positionForEvent;
-        if (nextEvent._dropAllowed === undefined || nextEvent._dropAllowed){
-          positionForEvent = reservePosition();
-        }else{
-          positionForEvent = 0;
-        }
-        if (nextEvent._position === undefined || nextEvent._position != positionForEvent) {
-          nextEvent._position = positionForEvent;
-          updatedEvents.push(nextEvent);
-        }
-
-        divisor = divisor > positions.length ? divisor : positions.length;
-        openEvents.push(nextEvent);
-        openEvents.sort(O$.Timetable.compareEventsByEnd);
-      }
-
-      while (openEvents.length > 0 && (events.length == 0 || openEvents[0].end <= events[0].start)) {
-        var closingEvent = openEvents.shift();
-        pendingEvents.push(closingEvent);
-        if (closingEvent._dropAllowed === undefined || closingEvent._dropAllowed){
-          releasePosition(closingEvent._position);
-        }
-
-        if (openEvents.length == 0) {
-          for (var i = 0; i < pendingEvents.length; i++) {
-            var pendingEvent = pendingEvents[i];
-            var divisorForEvent;
-            if (pendingEvent._dropAllowed === undefined || pendingEvent._dropAllowed){
-              divisorForEvent = divisor;
-            }else{
-              divisorForEvent = 1;
-            }
-            if (pendingEvent._divisor === undefined || pendingEvent._divisor != divisorForEvent) {
-              pendingEvents[i]._divisor = divisorForEvent;
-              updatedEvents.push(pendingEvent);
-            }
-          }
-
-          divisor = 0;
-          pendingEvents = [];
-        }
-      }
-    }
-    if (callback !== undefined) {
-      for (i = 0; i < updatedEvents.length; i++) {
-        callback(updatedEvents[i]);
-      }
-    }
-
-  };
-
-  timeScaleTable._canEventBeDroppedHere = function(event) {
-    var startTime = event.start.getTime();
-    var endTime = event.end.getTime();
-    var resourceId = event.resourceId;
-    for (var i = 0, count = this._events.length; i < count; i++) {
-      var currEvent = this._events[i];
-      if (currEvent == event)
-        continue;
-      if (currEvent.type != "reserved" && editingOptions.overlappedEventsAllowed)
-        continue;
-      if (currEvent.resourceId && resourceId && currEvent.resourceId != resourceId)
-        continue;
-      var timeSpansIntersect =
-              currEvent.end.getTime() > startTime &&
-                      currEvent.start.getTime() < endTime;
-      if (timeSpansIntersect)
-        return false;
-    }
-    return true;
-  };
-
   var addEvent = timeScaleTable._addEvent;
-  timeScaleTable._addEvent = function(startTime, resourceId) {
-    var event = addEvent(startTime, resourceId);
-    this._addEventElements(event);
-  };
-
-  timeScaleTable._updateEventsPresentation = function() {
-    this._updateOverlappingPositions();
-    for (var eventIndex = 0, eventCount = this._events.length; eventIndex < eventCount; eventIndex++) {
-      var event = this._events[eventIndex];
-      event._updatePresentation();
-    }
-  };
-
   var addEventElements = timeScaleTable._addEventElements;
-  timeScaleTable._addEventElements = function(event) {
-    addEventElements(event);
-
-    event._updatePresentation = event.updatePresentation;
-    event.updatePresentation = function(transitionPeriod) {
-      timeScaleTable._updateOverlappingPositions(function(updatedEvent) {
-        if (event !== updatedEvent){
-          updatedEvent._updatePresentation(transitionPeriod);
-        }
-      });
-      event._updatePresentation(transitionPeriod)
-
-    };
-
-    event._onresize = function(top) {
-      var draggableEventElement;
-      if (top) {
-        draggableEventElement = event.parts[0].mainElement;
-      } else {
-        draggableEventElement = event.parts[event.parts.length - 1].mainElement;
-      }
-
-      event._ondragend(draggableEventElement, top);
-    };
-
-    event._ondragend = function(draggableEventElement, top) {
-      if (draggableEventElement._topResizeHandle) {
-        draggableEventElement._topResizeHandle.style.display = "";
-      }
-      if (draggableEventElement._bottomResizeHandle) {
-        draggableEventElement._bottomResizeHandle.style.display = "";
-      }
-      setTimeout(function() {
-        if (event._draggingInProgress) {
-          var draggingCanceled = false;
-          var dropAllowed = timeScaleTable._canEventBeDroppedHere(event);
-
-          if (!(top === undefined)) {
-            if (top) {
-              draggableEventElement = event.parts[0].mainElement;
-            } else {
-              draggableEventElement = event.parts[event.parts.length - 1].mainElement;
-            }
-          }
-          if (!dropAllowed) {
-            event.setStart(event._initialStart);//event._lastValidStart);
-            event.setEnd(event._initialEnd);//event._lastValidEnd);
-            event.resourceId = event._initialResourceId;//event._lastValidResourceId;
-            draggingCanceled = true;
-          }
-
-          event._setDropAllowed(true);
-          if(!draggableEventElement){
-            return;          
-          }
-          draggableEventElement.style.cursor = draggableEventElement._originalCursor;
-
-          event._draggingInProgress = undefined;
-          timeScaleTable._draggingInProgress = undefined;
-          draggableEventElement._draggingInProgress = undefined;
-          event._topResize = undefined;
-
-          if (event.start.getTime() >= timeScaleTable._endTime.getTime() ||
-                  event.end.getTime() <= timeScaleTable._startTime.getTime()) {
-            timeScaleTable._updateEventElements(true);
-          } else {
-            event.updatePresentation(dragAndDropTransitionPeriod);
-            event._scrollIntoView();
-          }
-
-          if (!draggingCanceled) {
-            timeScaleTable._putTimetableChanges(null, [event], null);
-          } else {
-            event._setMouseInside(false);
-          }
-        }
-
-      }, 10);
-    };
-
-    event._updateRolloverState = function() {
-
-      var mouseInsideEventElements = false;
-      for (var i = 0; i < event.parts.length; i++) {
-        var eventElement = event.parts[i].mainElement;
-        if (!eventElement) {
-          // this can be the case because _updateRolloverState is invoked by time-out, so if mouseOver/mouseOut happens
-          // just before element is replaced with Ajax, this call will be made when there's no original element anymore
-          return;
-        }
-        mouseInsideEventElements |= eventElement._mouseInside ||
-                eventElement._topResizeHandle && eventElement._topResizeHandle._mouseInside ||
-                eventElement._bottomResizeHandle && eventElement._bottomResizeHandle._mouseInside;
-
-      }
-
-      var actionBar = timeScaleTable._getEventActionBar();
-      event._setMouseInside(mouseInsideEventElements ||
-              (actionBar._event == event && actionBar._actionsArea._mouseInside));
-    };
-  };
-
-
   var addEventElement = timeScaleTable._addEventElement;
-  timeScaleTable._addEventElement = function(event, part) {
-    var eventElement = addEventElement(event, part);
 
-    eventElement._updatePos = function(transitionPeriod, transitionEvents) {
-      var resourceColIndex;
-      if (event.resourceId) {
-        var resource = timeScaleTable._getResourceForEvent(event);
-        if (!resource) {
-          this.style.display = "none";
-          return;
-        }
-        resourceColIndex = resource._colIndex;
-      }
-      this.style.display = "";
-      var firstDataRow = timeScaleTable._table.body._getRows()[0];
+  O$.extend(timeScaleTable, {
+            _getLayoutCache: function() {
+              if (!timeScaleTable._cachedPositions)
+                timeScaleTable._cachedPositions = {};
+              return timeScaleTable._cachedPositions;
+            },
 
-      var leftColBoundaries = this._getLeftColBoundaries(firstDataRow, resourceColIndex);
-      var rightColBoundaries = this._getRightColBoundaries(firstDataRow, resourceColIndex);
-      var top = this._getTop();
-      var bottom = this._getBottom();
+            _getScrollingCache: function() {
+              if (!timeScaleTable._cachedScrollPositions)
+                timeScaleTable._cachedScrollPositions = {};
+              return timeScaleTable._cachedScrollPositions;
+            },
 
-      var x1 = leftColBoundaries.getMinX() + (event.type != "reserved" ? eventsLeftOffset : reservedEventsLeftOffset);
-      var x2 = rightColBoundaries.getMaxX() - (event.type != "reserved" ? eventsRightOffset : reservedEventsRightOffset);
-      if (O$.isExplorer() && O$.isStrictMode() && (resourceColIndex === undefined || resourceColIndex == timeScaleTable._table._params.columns.length - 1)) {
-        var scroller = O$(timeScaleTable.id + "::scroller");
-        var scrollerWidth = scroller.offsetWidth - scroller.clientWidth;
-        x2 -= scrollerWidth;
-      }
+            _resetScrollingCache: function() {
+              timeScaleTable._cachedScrollPositions = {};
+            },
 
-      var rect;
-      if (O$.TimeScaleTable.RESOLVE_OVERLAPPING) {
+            _getEventEditor: function() {
+              if (!editable)
+                return null;
+              return this._eventEditor;
+            },
 
-        var intersectWidth = Math.round((x2 - x1) / event._divisor);
-        var intersectX = Math.round(Math.round(x1) + event._position * intersectWidth);
-
-        rect = new O$.Rectangle(intersectX, Math.round(top.y),
-                intersectWidth, Math.round(bottom.y - top.y));
-
-      } else {
-
-        rect = new O$.Rectangle(Math.round(x1), Math.round(top.y),
-                Math.round(x2 - x1), Math.round(bottom.y - top.y));
-      }
-      this._rect = rect;
-      if (!transitionPeriod)
-        transitionPeriod = 0;
-      var backgroundElement = this._backgroundElement;
-      if (this._lastRectangleTransition && this._lastRectangleTransition.active)
-        this._lastRectangleTransition.stop(1.0);
-      var events = {
-        onupdate: function() {
-          var currentRect = this.propertyValues.rectangle;
-          if (currentRect)
-            O$.setElementBorderRectangle(backgroundElement, currentRect);
-          if (transitionEvents && transitionEvents.onupdate)
-            transitionEvents.onupdate();
-          eventElement._currentRect = currentRect;
-          if (part.first || part.last){
-            event._updateAreaPositions(false);
-          }
-        }
-      };
-      if (transitionEvents)
-        events.oncomplete = transitionEvents.oncomplete;
-      this._lastRectangleTransition = O$.runTransitionEffect(this, ["rectangle"], [rect], transitionPeriod, 20, events);
-
-      if (eventElement._updateResizersPos)
-        eventElement._updateResizersPos();
-      var eventZIndex = O$.getNumericElementStyle(this, "z-index");
-      this._backgroundElement.style.zIndex = eventZIndex - 1;
-      if (bottom.bottomTruncated)
-        O$.appendClassNames(this, ["o_truncatedTimetableEvent"]);
-      else
-        O$.excludeClassNames(this, ["o_truncatedTimetableEvent"]);
-      event._updateAreaPositions(true);
-    };
-
-    eventElement._update = function(transitionPeriod) {
-      this._updatePos(transitionPeriod);
-      this._updateShape();
-    };
-
-    eventElement.ondragend = function() {
-      event._ondragend(eventElement);
-    };
-
-    eventElement._setupDragAndDrop = function() {
-      var eventPreview = timeScaleTable._getEventPreview();
-
-      event._updateDropAllowed = function() {
-        var dropAllowed = timeScaleTable._canEventBeDroppedHere(event);
-        if (dropAllowed) {
-          event._lastValidStart = event.start;
-          event._lastValidEnd = event.end;
-          event._lastValidResourceId = event.resourceId;
-        }
-        event._setDropAllowed(dropAllowed);
-      };
-      event._setDropAllowed = function(value) {
-        if (this._dropAllowed == value)
-          return;
-        this._dropAllowed = value;
-        for (var i = 0; i < event.parts.length; i++) {
-          event.parts[i].mainElement._setDropAllowed(value);
-        }
-      };
-
-      eventElement._setDropAllowed = function(value) {
-
-        O$.runTransitionEffect(eventElement, ["opacity"], [value ? 1.0 : 1.0 - undroppableEventTransparency], undroppableStateTransitionPeriod, undefined, {
-          onupdate: function() {
-            if (this.propertyValues.opacity !== undefined)
-              O$.setOpacityLevel(eventElement._backgroundElement, this.propertyValues.opacity * (1 - timeScaleTable._eventBackgroundTransparency));
-          }
-        });
-      };
-      eventElement.onmousedown = function (e) {
-        timeScaleTable._resetScrollingCache();
-        eventElement._bringToFront();
-
-        var pos = O$.getEventPoint(e, eventElement);
-        event._dragPositionTop = pos.y;
-        event._dragPositionTime = timeScaleTable._getNearestTimeslotForPosition(eventElement._rect.x, event._dragPositionTop).time;
-
-        O$.startDragging(e, this);
-        event._initialStart = event._lastValidStart = event.start;
-        event._initialEnd = event._lastValidEnd = event.end;
-        event._initialResourceId = event._lastValidResourceId = event.resourceId;
-        eventElement._originalCursor = O$.getElementStyle(eventElement, "cursor");
-        event._dropAllowed = true;
-      };
-
-      function hideExcessiveElementsWhileDragging() {
-        if (eventPreview)
-          setTimeout(function() {
-            eventPreview.hide();
-          }, 100);
-      }
-
-      var containingBlock = O$.getContainingBlock(eventElement, true);
-      eventElement._getContainingBlock = function() {
-        return containingBlock;
-      };
-
-      event._getDraggablePartIndex = function() {
-        if (!(event._topResize === undefined)) {
-          if (event._topResize) {
-            return 0;
-          } else {
-            return event.parts.length - 1;
-          }
-        }
-        for (var i = 0; i < event.parts.length; i++) {
-          part = event.parts[i];
-          if (part.start < event._dragPositionTime && event._dragPositionTime < part.end) {
-            return i;
-          }
-        }
-      };
-
-      eventElement._getPositionTop = function() {
-        return event._dragPositionTop;
-      };
-
-      /**
-       * doesn't allows event to go beyond column bounds
-       */
-      eventElement._adjustTimeIncrement = function(timeIncrement) {
-
-        var newPartStartTime = O$.dateByTimeMillis(part.start.getTime() + timeIncrement);
-        var newPartEndTime = O$.dateByTimeMillis(part.end.getTime() + timeIncrement);
-
-        var columnStartDate;
-        var columnEndDate;
-        //to make possible dnd between days
-        var dayChangeTimeIncrement = 43200000; //12 hours
-        if (part.start.getDate() != newPartStartTime.getDate() &&
-                Math.abs(timeIncrement) > dayChangeTimeIncrement) {
-          columnStartDate = newPartStartTime;
-          columnEndDate = newPartEndTime;
-        } else {
-          columnStartDate = part.start;
-          columnEndDate = part.end;
-        }
-
-        //TODO: introduce column constants
-        var columnStartTime = new Date(columnStartDate.getFullYear(), columnStartDate.getMonth(), columnStartDate.getDate(), timeScaleTable._startTime.getHours(), timeScaleTable._startTime.getMinutes());
-        columnStartTime = (columnStartTime.getTime() > timeScaleTable._startTime.getTime()) ? columnStartTime : timeScaleTable._startTime;
-        var columnEndTime = new Date(columnEndDate.getFullYear(), columnEndDate.getMonth(), columnEndDate.getDate(), timeScaleTable._endTime.getHours(), timeScaleTable._endTime.getMinutes());
-        columnEndTime = (columnEndTime.getTime() <= columnStartTime.getTime()) ? O$.incDay(columnEndTime) : columnEndTime;
-        columnEndTime = (columnEndTime.getTime() < timeScaleTable._endTime.getTime()) ? columnEndTime : timeScaleTable._endTime;
-
-        var minIntersection = 1800000; //30 minutes
-
-        if (newPartEndTime.getTime() < columnStartTime.getTime() + minIntersection) {
-          timeIncrement += columnStartTime.getTime() - newPartEndTime.getTime() + minIntersection;
-        }
-        if (newPartStartTime.getTime() > columnEndTime.getTime() - minIntersection) {
-          timeIncrement -= newPartStartTime.getTime() - columnEndTime.getTime() + minIntersection;
-        }
-
-        return timeIncrement;
-
-      };
-
-      eventElement.setPosition = function (left, top) {
-        if (topResizeHandle)
-          topResizeHandle.style.display = "none";
-        if (bottomResizeHandle)
-          bottomResizeHandle.style.display = "none";
-
-        var rect = O$.getElementBorderRectangle(timeScaleTable._table, true);
-        var maxTop = rect.height;
-        var maxLeft = rect.width;
-        left = left < 0 ? 0 : left > maxLeft ? maxLeft : left;
-        top = top < 0 ? 0 : top > maxTop ? maxTop : top;
-
-        var nearestTimeslot = timeScaleTable._getNearestTimeslotForPosition(left, top);
-        var timeIncrement = nearestTimeslot.time.getTime() - event._dragPositionTime.getTime();
-
-        var eventUpdated = false;
-        if (timeIncrement != 0) {
-          
-          timeIncrement = this._adjustTimeIncrement(timeIncrement);
-          event._dragPositionTime = O$.dateByTimeMillis(event._dragPositionTime.getTime() + timeIncrement);
-
-          var newStartTime = O$.dateByTimeMillis(event.start.getTime() + timeIncrement);
-          var newEndTime = O$.dateByTimeMillis(event.end.getTime() + timeIncrement);
-
-          event.setStart(newStartTime);
-          event.setEnd(newEndTime);
-
-          eventUpdated = true;
-
-        }
-
-        var newResource = editingOptions.eventResourceEditable ? nearestTimeslot.resource : undefined;
-        if (event.resourceId && newResource !== undefined) {
-          if (event.resourceId != newResource.id) {
-            event.resourceId = newResource.id;
-            eventUpdated = true;
-          }
-        }
-        if (eventUpdated) {
-          event._updateDropAllowed();
-          eventElement.style.cursor = "move";//eventElement._setDropAllowed ? "move" : this._originalCursor;
-          if (!event._draggingInProgress) {
-            event._draggingInProgress = true;
-            eventElement._draggingInProgress = true;
-            timeScaleTable._draggingInProgress = true;
-            hideExcessiveElementsWhileDragging();
-          }
-
-          event._dragPositionTop -= eventElement._rect.y + eventElement._rect.height;
-
-          if (timeIncrement < 0) {
-            eventElement._elementPartIndex = part.index;
-            eventElement._elementPartIndexFromTheStart = true;
-
-          } else {
-            eventElement._elementPartIndex = event.parts.length - part.index - 1;
-            eventElement._elementPartIndexFromTheStart = false;
-          }
-          event.updatePresentation(dragAndDropTransitionPeriod);
-          event._scrollIntoView();
-          event._dragPositionTop += eventElement._rect.y + eventElement._rect.height;
-        }
-      };
-      eventElement._updateResizersPos = function() {
-        if (!event._draggingInProgress) {
-          var eventRect = eventElement._rect;
-          if (topResizeHandle)
-            O$.setElementBorderRectangle(topResizeHandle, new O$.Rectangle(eventRect.x, eventRect.y - eventResizeHandleHeight / 2, eventRect.width, eventResizeHandleHeight));
-          if (bottomResizeHandle)
-            O$.setElementBorderRectangle(bottomResizeHandle, new O$.Rectangle(eventRect.x, eventRect.getMaxY() - eventResizeHandleHeight / 2, eventRect.width, eventResizeHandleHeight));
-        }
-        this._updateZIndex();
-      };
-      eventElement._updateZIndex = function(eventZIndex) {
-        if (eventZIndex === undefined)
-          eventZIndex = O$.getNumericElementStyle(eventElement, "z-index");
-        if (topResizeHandle)
-          topResizeHandle.style.zIndex = eventZIndex + 2;
-        if (bottomResizeHandle)
-          bottomResizeHandle.style.zIndex = eventZIndex + 2;
-        if (part.first || part.last){
-          event._updateAreaZIndexes();
-        }
-      };
-
-      if (editingOptions.eventDurationEditable) {
-
-        if (part.first || part.last) {
-
-          function setResizerHoverState(mouseInside, resizer) {
-            resizer._mouseInside = mouseInside;
-            O$.invokeFunctionAfterDelay(event._updateRolloverState, timeScaleTable.EVENT_ROLLOVER_STATE_UPDATE_TIMEOUT);
-          }
-
-          /**
-           * @param topResize true for topResizeHandle, false for bottomResizeHandle
-           */
-          function setResizerPosition(left, top, topResize) {
-            var nearestTimeslot = timeScaleTable._getNearestTimeslotForPosition(left, top + eventResizeHandleHeight / 2, part);
-            var eventUpdated = false;
-            if (topResize) {
-              if (event.end.getTime() - nearestTimeslot.time < shortestEventTimeWhileResizing)
-                nearestTimeslot.time = O$.dateByTimeMillis(event.end.getTime() - shortestEventTimeWhileResizing);
-              if (event.start.getTime() != nearestTimeslot.time) {
-                event.setStart(nearestTimeslot.time);
-                eventUpdated = true;
+            _getVertOffsetByHoursAndMinutes: function(hours, minutes) {
+              var timeOffsetInMinutes = hours * 60 + minutes - startTimeInMinutes;
+              //TODO: duplicatedRows
+              //var minutesPerRow = duplicatedRows ? minorTimeInterval / 2 : minorTimeInterval;
+              var minutesPerRow = this._minutesPerRow;
+              var rowIndex = Math.floor(timeOffsetInMinutes / minutesPerRow);
+              var relativePosInsideRow = (timeOffsetInMinutes % minutesPerRow) / minutesPerRow;
+              var rows = this._table.body._getRows();
+              var correctedRowIndex = rowIndex;
+              if (correctedRowIndex < 0)
+                correctedRowIndex = 0;
+              if (correctedRowIndex >= rows.length)
+                correctedRowIndex = rows.length - 1;
+              var row = rows[correctedRowIndex];
+              var rowRectangle = O$.getElementBorderRectangle(row, true);
+              var result = {y: rowRectangle.y + rowRectangle.height * relativePosInsideRow};
+              if (rowIndex < 0) {
+                result.y += rowRectangle.height * rowIndex;
+                result.topTruncated = true;
               }
-            } else {
-              if (nearestTimeslot.time - event.start.getTime() < shortestEventTimeWhileResizing)
-                nearestTimeslot.time = O$.dateByTimeMillis(event.start.getTime() + shortestEventTimeWhileResizing);
-              if (event.end.getTime() != nearestTimeslot.time) {
-                event.setEnd(nearestTimeslot.time);
-                eventUpdated = true;
+              if (rowIndex >= rows.length) {
+                result.y += rowRectangle.height;
+                result.bottomTruncated = !(rowIndex == rows.length && minutes == 0);
               }
+              return result;
+            },
+
+
+            _updateEventElements: function(reacquireDayEvents, refreshAreasAfterReload) {
+              this._baseZIndex = O$.getElementZIndex(this);
+              if (this._eventElements)
+                this._eventElements.concat([]).forEach(function(eventElement) {
+                  var event = eventElement._event;
+                  if (event)
+                    event._removeEventElements(refreshAreasAfterReload);
+                }, this);
+
+              this._eventElements = [];
+              if (reacquireDayEvents)
+                this._events = this._eventProvider._getEventsForPeriod(this._startTime, this._endTime, function() {
+                  this._updateEventElements(true, true);
+                });
+
+              this._updateOverlappingPositions();
+
+              var event;
+              for (var eventIndex = 0, eventCount = this._events.length; eventIndex < eventCount; eventIndex++) {
+                event = this._events[eventIndex];
+                this._addEventElements(event);
+              }
+              this._updateEventZIndexes();
+            },
+
+
+            _updateOverlappingPositions: function(callback) {
+              if (O$.TimeScaleTable.RESOLVE_OVERLAPPING) {
+                if (timeScaleTable._useResourceSeparation) {
+
+                  for (var resourceId in timeScaleTable._resourcesByIds) {
+                    var eventsByResources = this._events.filter(
+                            function(event) {
+                              return event.resourceId !== undefined && event.resourceId == resourceId;
+                            }).sort(O$.Timetable.compareEventsByStart);
+                    this._updateOverlappingPositionsForEvents(eventsByResources, callback);
+                  }
+                  eventsByResources = this._events.filter(
+                          function(event) {
+                            return event.resourceId === undefined;
+                          }).sort(O$.Timetable.compareEventsByStart);
+                  this._updateOverlappingPositionsForEvents(eventsByResources, callback);
+                } else {
+                  var events = this._events.slice();
+                  events.sort(O$.Timetable.compareEventsByStart);
+                  this._updateOverlappingPositionsForEvents(events, callback);
+                }
+              }
+            },
+
+            /**
+             * @param events events for specific resource sorted by start
+             */
+            _updateOverlappingPositionsForEvents: function(events, callback) {
+
+              var updatedEvents = [];
+
+              var positions = [];
+
+              function reservePosition() {
+                var position = positions.length;
+                for (var i = 0; i < positions.length; i++) {
+                  if (positions[i] != i) {
+                    position = i;
+                    break;
+                  }
+                }
+                positions.push(position);
+                return position;
+              }
+
+              function releasePosition(position) {
+                for (var i = 0; i < positions.length; i++) {
+                  if (positions[i] == position) {
+                    positions = positions.slice(0, position).concat(positions.slice(position + 1));
+                    break;
+                  }
+                }
+              }
+
+              var divisor = 0;
+              var pendingEvents = [];
+              var openEvents = [];
+
+              while (true) {
+
+                if (events.length == 0 && openEvents.length == 0) {
+                  break;
+                }
+
+                while (events.length > 0 && (openEvents.length == 0 || events[0].start < openEvents[0].end)) {
+                  var nextEvent = events.shift();
+                  var positionForEvent;
+                  if (nextEvent._dropAllowed === undefined || nextEvent._dropAllowed) {
+                    positionForEvent = reservePosition();
+                  } else {
+                    positionForEvent = 0;
+                  }
+                  if (nextEvent._position === undefined || nextEvent._position != positionForEvent) {
+                    nextEvent._position = positionForEvent;
+                    updatedEvents.push(nextEvent);
+                  }
+
+                  divisor = divisor > positions.length ? divisor : positions.length;
+                  openEvents.push(nextEvent);
+                  openEvents.sort(O$.Timetable.compareEventsByEnd);
+                }
+
+                while (openEvents.length > 0 && (events.length == 0 || openEvents[0].end <= events[0].start)) {
+                  var closingEvent = openEvents.shift();
+                  pendingEvents.push(closingEvent);
+                  if (closingEvent._dropAllowed === undefined || closingEvent._dropAllowed) {
+                    releasePosition(closingEvent._position);
+                  }
+
+                  if (openEvents.length == 0) {
+                    for (var i = 0; i < pendingEvents.length; i++) {
+                      var pendingEvent = pendingEvents[i];
+                      var divisorForEvent;
+                      if (pendingEvent._dropAllowed === undefined || pendingEvent._dropAllowed) {
+                        divisorForEvent = divisor;
+                      } else {
+                        divisorForEvent = 1;
+                      }
+                      if (pendingEvent._divisor === undefined || pendingEvent._divisor != divisorForEvent) {
+                        pendingEvents[i]._divisor = divisorForEvent;
+                        updatedEvents.push(pendingEvent);
+                      }
+                    }
+
+                    divisor = 0;
+                    pendingEvents = [];
+                  }
+                }
+              }
+              if (callback !== undefined) {
+                for (i = 0; i < updatedEvents.length; i++) {
+                  callback(updatedEvents[i]);
+                }
+              }
+
+            },
+
+            _canEventBeDroppedHere: function(event) {
+              var startTime = event.start.getTime();
+              var endTime = event.end.getTime();
+              var resourceId = event.resourceId;
+              for (var i = 0, count = this._events.length; i < count; i++) {
+                var currEvent = this._events[i];
+                if (currEvent == event)
+                  continue;
+                if (currEvent.type != "reserved" && editingOptions.overlappedEventsAllowed)
+                  continue;
+                if (currEvent.resourceId && resourceId && currEvent.resourceId != resourceId)
+                  continue;
+                var timeSpansIntersect =
+                        currEvent.end.getTime() > startTime &&
+                                currEvent.start.getTime() < endTime;
+                if (timeSpansIntersect)
+                  return false;
+              }
+              return true;
+            },
+
+            _addEvent: function(startTime, resourceId) {
+              var event = addEvent(startTime, resourceId);
+              this._addEventElements(event);
+            },
+
+            _updateEventsPresentation: function() {
+              this._updateOverlappingPositions();
+              for (var eventIndex = 0, eventCount = this._events.length; eventIndex < eventCount; eventIndex++) {
+                var event = this._events[eventIndex];
+                event._updatePresentation();
+              }
+            },
+
+            _addEventElements: function(event) {
+              addEventElements(event);
+
+              O$.extend(event, {
+                        _updatePresentation: event.updatePresentation,
+                        updatePresentation: function(transitionPeriod) {
+                          timeScaleTable._updateOverlappingPositions(function(updatedEvent) {
+                            if (event !== updatedEvent) {
+                              updatedEvent._updatePresentation(transitionPeriod);
+                            }
+                          });
+                          event._updatePresentation(transitionPeriod)
+
+                        },
+
+                        _onresize: function(top) {
+                          var draggableEventElement;
+                          if (top) {
+                            draggableEventElement = event.parts[0].mainElement;
+                          } else {
+                            draggableEventElement = event.parts[event.parts.length - 1].mainElement;
+                          }
+
+                          event._ondragend(draggableEventElement, top);
+                        },
+
+                        _ondragend: function(draggableEventElement, top) {
+                          if (draggableEventElement._topResizeHandle) {
+                            draggableEventElement._topResizeHandle.style.display = "";
+                          }
+                          if (draggableEventElement._bottomResizeHandle) {
+                            draggableEventElement._bottomResizeHandle.style.display = "";
+                          }
+                          setTimeout(function() {
+                            if (event._draggingInProgress) {
+                              var draggingCanceled = false;
+                              var dropAllowed = timeScaleTable._canEventBeDroppedHere(event);
+
+                              if (!(top === undefined)) {
+                                if (top) {
+                                  draggableEventElement = event.parts[0].mainElement;
+                                } else {
+                                  draggableEventElement = event.parts[event.parts.length - 1].mainElement;
+                                }
+                              }
+                              if (!dropAllowed) {
+                                event.setStart(event._initialStart);//event._lastValidStart);
+                                event.setEnd(event._initialEnd);//event._lastValidEnd);
+                                event.resourceId = event._initialResourceId;//event._lastValidResourceId;
+                                draggingCanceled = true;
+                              }
+
+                              event._setDropAllowed(true);
+                              if (!draggableEventElement) {
+                                return;
+                              }
+                              draggableEventElement.style.cursor = draggableEventElement._originalCursor;
+
+                              event._draggingInProgress = undefined;
+                              timeScaleTable._draggingInProgress = undefined;
+                              draggableEventElement._draggingInProgress = undefined;
+                              event._topResize = undefined;
+
+                              if (event.start.getTime() >= timeScaleTable._endTime.getTime() ||
+                                      event.end.getTime() <= timeScaleTable._startTime.getTime()) {
+                                timeScaleTable._updateEventElements(true);
+                              } else {
+                                event.updatePresentation(dragAndDropTransitionPeriod);
+                                event._scrollIntoView();
+                              }
+
+                              if (!draggingCanceled) {
+                                timeScaleTable._putTimetableChanges(null, [event], null);
+                              } else {
+                                event._setMouseInside(false);
+                              }
+                            }
+
+                          }, 10);
+                        },
+
+                        _updateRolloverState: function() {
+                          var mouseInsideEventElements = false;
+                          for (var i = 0; i < event.parts.length; i++) {
+                            var eventElement = event.parts[i].mainElement;
+                            if (!eventElement) {
+                              // this can be the case because _updateRolloverState is invoked by time-out, so if mouseOver/mouseOut happens
+                              // just before element is replaced with Ajax, this call will be made when there's no original element anymore
+                              return;
+                            }
+                            mouseInsideEventElements |= eventElement._mouseInside ||
+                                    eventElement._topResizeHandle && eventElement._topResizeHandle._mouseInside ||
+                                    eventElement._bottomResizeHandle && eventElement._bottomResizeHandle._mouseInside;
+
+                          }
+
+                          var actionBar = timeScaleTable._getEventActionBar();
+                          event._setMouseInside(mouseInsideEventElements ||
+                                  (actionBar._event == event && actionBar._actionsArea._mouseInside));
+                        }
+
+                      });
+            },
+
+            _addEventElement: function(event, part) {
+              var eventElement = addEventElement(event, part);
+
+              O$.extend(eventElement, {
+                        _updatePos: function(transitionPeriod, transitionEvents) {
+                          var resourceColIndex;
+                          if (event.resourceId) {
+                            var resource = timeScaleTable._getResourceForEvent(event);
+                            if (!resource) {
+                              this.style.display = "none";
+                              return;
+                            }
+                            resourceColIndex = resource._colIndex;
+                          }
+                          this.style.display = "";
+                          var firstDataRow = timeScaleTable._table.body._getRows()[0];
+
+                          var leftColBoundaries = this._getLeftColBoundaries(firstDataRow, resourceColIndex);
+                          var rightColBoundaries = this._getRightColBoundaries(firstDataRow, resourceColIndex);
+                          var top = this._getTop();
+                          var bottom = this._getBottom();
+
+                          var x1 = leftColBoundaries.getMinX() + (event.type != "reserved" ? eventsLeftOffset : reservedEventsLeftOffset);
+                          var x2 = rightColBoundaries.getMaxX() - (event.type != "reserved" ? eventsRightOffset : reservedEventsRightOffset);
+                          if (O$.isExplorer() && O$.isStrictMode() && (resourceColIndex === undefined || resourceColIndex == timeScaleTable._table._params.columns.length - 1)) {
+                            var scroller = O$(timeScaleTable.id + "::scroller");
+                            var scrollerWidth = scroller.offsetWidth - scroller.clientWidth;
+                            x2 -= scrollerWidth;
+                          }
+
+                          var rect;
+                          if (O$.TimeScaleTable.RESOLVE_OVERLAPPING) {
+
+                            var intersectWidth = Math.round((x2 - x1) / event._divisor);
+                            var intersectX = Math.round(Math.round(x1) + event._position * intersectWidth);
+
+                            rect = new O$.Rectangle(intersectX, Math.round(top.y),
+                                    intersectWidth, Math.round(bottom.y - top.y));
+
+                          } else {
+
+                            rect = new O$.Rectangle(Math.round(x1), Math.round(top.y),
+                                    Math.round(x2 - x1), Math.round(bottom.y - top.y));
+                          }
+                          this._rect = rect;
+                          if (!transitionPeriod)
+                            transitionPeriod = 0;
+                          var backgroundElement = this._backgroundElement;
+                          if (this._lastRectangleTransition && this._lastRectangleTransition.active)
+                            this._lastRectangleTransition.stop(1.0);
+                          var events = {
+                            onupdate: function() {
+                              var currentRect = this.propertyValues.rectangle;
+                              if (currentRect)
+                                O$.setElementBorderRectangle(backgroundElement, currentRect);
+                              if (transitionEvents && transitionEvents.onupdate)
+                                transitionEvents.onupdate();
+                              eventElement._currentRect = currentRect;
+                              if (part.first || part.last) {
+                                event._updateAreaPositions(false);
+                              }
+                            }
+                          };
+                          if (transitionEvents)
+                            events.oncomplete = transitionEvents.oncomplete;
+                          this._lastRectangleTransition = O$.runTransitionEffect(this, ["rectangle"], [rect], transitionPeriod, 20, events);
+
+                          if (eventElement._updateResizersPos)
+                            eventElement._updateResizersPos();
+                          var eventZIndex = O$.getNumericElementStyle(this, "z-index");
+                          this._backgroundElement.style.zIndex = eventZIndex - 1;
+                          if (bottom.bottomTruncated)
+                            O$.appendClassNames(this, ["o_truncatedTimetableEvent"]);
+                          else
+                            O$.excludeClassNames(this, ["o_truncatedTimetableEvent"]);
+                          event._updateAreaPositions(true);
+                        },
+
+                        _update: function(transitionPeriod) {
+                          this._updatePos(transitionPeriod);
+                          this._updateShape();
+                        },
+
+                        ondragend: function() {
+                          event._ondragend(eventElement);
+                        },
+
+                        _setupDragAndDrop: function() {
+                          O$.extend(event, {
+                                    _updateDropAllowed: function() {
+                                      var dropAllowed = timeScaleTable._canEventBeDroppedHere(event);
+                                      if (dropAllowed) {
+                                        event._lastValidStart = event.start;
+                                        event._lastValidEnd = event.end;
+                                        event._lastValidResourceId = event.resourceId;
+                                      }
+                                      event._setDropAllowed(dropAllowed);
+                                    },
+
+                                    _setDropAllowed: function(value) {
+                                      if (this._dropAllowed == value)
+                                        return;
+                                      this._dropAllowed = value;
+                                      for (var i = 0; i < event.parts.length; i++) {
+                                        event.parts[i].mainElement._setDropAllowed(value);
+                                      }
+                                    },
+
+                                    _getDraggablePartIndex: function() {
+                                      if (!(event._topResize === undefined)) {
+                                        if (event._topResize) {
+                                          return 0;
+                                        } else {
+                                          return event.parts.length - 1;
+                                        }
+                                      }
+                                      for (var i = 0; i < event.parts.length; i++) {
+                                        part = event.parts[i];
+                                        if (part.start < event._dragPositionTime && event._dragPositionTime < part.end) {
+                                          return i;
+                                        }
+                                      }
+                                    }
+
+                                  });
+
+                          var eventPreview = timeScaleTable._getEventPreview();
+
+                          function hideExcessiveElementsWhileDragging() {
+                            if (eventPreview)
+                              setTimeout(function() {
+                                eventPreview.hide();
+                              }, 100);
+                          }
+
+                          var containingBlock = O$.getContainingBlock(eventElement, true);
+                          O$.extend(eventElement, {
+                                    _setDropAllowed: function(value) {
+                                      O$.runTransitionEffect(eventElement, ["opacity"], [value ? 1.0 : 1.0 - undroppableEventTransparency], undroppableStateTransitionPeriod, undefined, {
+                                                onupdate: function() {
+                                                  if (this.propertyValues.opacity !== undefined)
+                                                    O$.setOpacityLevel(eventElement._backgroundElement, this.propertyValues.opacity * (1 - timeScaleTable._eventBackgroundTransparency));
+                                                }
+                                              });
+                                    },
+
+                                    onmousedown: function (e) {
+                                      timeScaleTable._resetScrollingCache();
+                                      eventElement._bringToFront();
+
+                                      var pos = O$.getEventPoint(e, eventElement);
+                                      event._dragPositionTop = pos.y;
+                                      event._dragPositionTime = timeScaleTable._getNearestTimeslotForPosition(eventElement._rect.x, event._dragPositionTop).time;
+
+                                      O$.startDragging(e, this);
+                                      event._initialStart = event._lastValidStart = event.start;
+                                      event._initialEnd = event._lastValidEnd = event.end;
+                                      event._initialResourceId = event._lastValidResourceId = event.resourceId;
+                                      eventElement._originalCursor = O$.getElementStyle(eventElement, "cursor");
+                                      event._dropAllowed = true;
+                                    },
+
+                                    _getContainingBlock: function() {
+                                      return containingBlock;
+                                    },
+
+                                    _getPositionTop: function() {
+                                      return event._dragPositionTop;
+                                    },
+
+                                    /**
+                                     * doesn't allows event to go beyond column bounds
+                                     */
+                                    _adjustTimeIncrement: function(timeIncrement) {
+                                      var newPartStartTime = O$.dateByTimeMillis(part.start.getTime() + timeIncrement);
+                                      var newPartEndTime = O$.dateByTimeMillis(part.end.getTime() + timeIncrement);
+
+                                      var columnStartDate;
+                                      var columnEndDate;
+                                      //to make possible dnd between days
+                                      var dayChangeTimeIncrement = 43200000; //12 hours
+                                      if (part.start.getDate() != newPartStartTime.getDate() &&
+                                              Math.abs(timeIncrement) > dayChangeTimeIncrement) {
+                                        columnStartDate = newPartStartTime;
+                                        columnEndDate = newPartEndTime;
+                                      } else {
+                                        columnStartDate = part.start;
+                                        columnEndDate = part.end;
+                                      }
+
+                                      //TODO: introduce column constants
+                                      var columnStartTime = new Date(columnStartDate.getFullYear(), columnStartDate.getMonth(), columnStartDate.getDate(), timeScaleTable._startTime.getHours(), timeScaleTable._startTime.getMinutes());
+                                      columnStartTime = (columnStartTime.getTime() > timeScaleTable._startTime.getTime()) ? columnStartTime : timeScaleTable._startTime;
+                                      var columnEndTime = new Date(columnEndDate.getFullYear(), columnEndDate.getMonth(), columnEndDate.getDate(), timeScaleTable._endTime.getHours(), timeScaleTable._endTime.getMinutes());
+                                      columnEndTime = (columnEndTime.getTime() <= columnStartTime.getTime()) ? O$.incDay(columnEndTime) : columnEndTime;
+                                      columnEndTime = (columnEndTime.getTime() < timeScaleTable._endTime.getTime()) ? columnEndTime : timeScaleTable._endTime;
+
+                                      var minIntersection = 1800000; //30 minutes
+
+                                      if (newPartEndTime.getTime() < columnStartTime.getTime() + minIntersection) {
+                                        timeIncrement += columnStartTime.getTime() - newPartEndTime.getTime() + minIntersection;
+                                      }
+                                      if (newPartStartTime.getTime() > columnEndTime.getTime() - minIntersection) {
+                                        timeIncrement -= newPartStartTime.getTime() - columnEndTime.getTime() + minIntersection;
+                                      }
+
+                                      return timeIncrement;
+                                    },
+
+                                    setPosition: function (left, top) {
+                                      if (topResizeHandle)
+                                        topResizeHandle.style.display = "none";
+                                      if (bottomResizeHandle)
+                                        bottomResizeHandle.style.display = "none";
+
+                                      var rect = O$.getElementBorderRectangle(timeScaleTable._table, true);
+                                      var maxTop = rect.height;
+                                      var maxLeft = rect.width;
+                                      left = left < 0 ? 0 : left > maxLeft ? maxLeft : left;
+                                      top = top < 0 ? 0 : top > maxTop ? maxTop : top;
+
+                                      var nearestTimeslot = timeScaleTable._getNearestTimeslotForPosition(left, top);
+                                      var timeIncrement = nearestTimeslot.time.getTime() - event._dragPositionTime.getTime();
+
+                                      var eventUpdated = false;
+                                      if (timeIncrement != 0) {
+
+                                        timeIncrement = this._adjustTimeIncrement(timeIncrement);
+                                        event._dragPositionTime = O$.dateByTimeMillis(event._dragPositionTime.getTime() + timeIncrement);
+
+                                        var newStartTime = O$.dateByTimeMillis(event.start.getTime() + timeIncrement);
+                                        var newEndTime = O$.dateByTimeMillis(event.end.getTime() + timeIncrement);
+
+                                        event.setStart(newStartTime);
+                                        event.setEnd(newEndTime);
+
+                                        eventUpdated = true;
+
+                                      }
+
+                                      var newResource = editingOptions.eventResourceEditable ? nearestTimeslot.resource : undefined;
+                                      if (event.resourceId && newResource !== undefined) {
+                                        if (event.resourceId != newResource.id) {
+                                          event.resourceId = newResource.id;
+                                          eventUpdated = true;
+                                        }
+                                      }
+                                      if (eventUpdated) {
+                                        event._updateDropAllowed();
+                                        eventElement.style.cursor = "move";//eventElement._setDropAllowed ? "move" : this._originalCursor;
+                                        if (!event._draggingInProgress) {
+                                          event._draggingInProgress = true;
+                                          eventElement._draggingInProgress = true;
+                                          timeScaleTable._draggingInProgress = true;
+                                          hideExcessiveElementsWhileDragging();
+                                        }
+
+                                        event._dragPositionTop -= eventElement._rect.y + eventElement._rect.height;
+
+                                        if (timeIncrement < 0) {
+                                          eventElement._elementPartIndex = part.index;
+                                          eventElement._elementPartIndexFromTheStart = true;
+
+                                        } else {
+                                          eventElement._elementPartIndex = event.parts.length - part.index - 1;
+                                          eventElement._elementPartIndexFromTheStart = false;
+                                        }
+                                        event.updatePresentation(dragAndDropTransitionPeriod);
+                                        event._scrollIntoView();
+                                        event._dragPositionTop += eventElement._rect.y + eventElement._rect.height;
+                                      }
+                                    },
+
+                                    _updateResizersPos: function() {
+                                      if (!event._draggingInProgress) {
+                                        var eventRect = eventElement._rect;
+                                        if (topResizeHandle)
+                                          O$.setElementBorderRectangle(topResizeHandle, new O$.Rectangle(eventRect.x, eventRect.y - eventResizeHandleHeight / 2, eventRect.width, eventResizeHandleHeight));
+                                        if (bottomResizeHandle)
+                                          O$.setElementBorderRectangle(bottomResizeHandle, new O$.Rectangle(eventRect.x, eventRect.getMaxY() - eventResizeHandleHeight / 2, eventRect.width, eventResizeHandleHeight));
+                                      }
+                                      this._updateZIndex();
+                                    },
+
+                                    _updateZIndex: function(eventZIndex) {
+                                      if (eventZIndex === undefined)
+                                        eventZIndex = O$.getNumericElementStyle(eventElement, "z-index");
+                                      if (topResizeHandle)
+                                        topResizeHandle.style.zIndex = eventZIndex + 2;
+                                      if (bottomResizeHandle)
+                                        bottomResizeHandle.style.zIndex = eventZIndex + 2;
+                                      if (part.first || part.last) {
+                                        event._updateAreaZIndexes();
+                                      }
+                                    }
+                                  });
+
+                          if (editingOptions.eventDurationEditable) {
+
+                            if (part.first || part.last) {
+
+                              function setResizerHoverState(mouseInside, resizer) {
+                                resizer._mouseInside = mouseInside;
+                                O$.invokeFunctionAfterDelay(event._updateRolloverState, timeScaleTable.EVENT_ROLLOVER_STATE_UPDATE_TIMEOUT);
+                              }
+
+                              /**
+                               * @param topResize true for topResizeHandle, false for bottomResizeHandle
+                               */
+                              function setResizerPosition(left, top, topResize) {
+                                var nearestTimeslot = timeScaleTable._getNearestTimeslotForPosition(left, top + eventResizeHandleHeight / 2, part);
+                                var eventUpdated = false;
+                                if (topResize) {
+                                  if (event.end.getTime() - nearestTimeslot.time < shortestEventTimeWhileResizing)
+                                    nearestTimeslot.time = O$.dateByTimeMillis(event.end.getTime() - shortestEventTimeWhileResizing);
+                                  if (event.start.getTime() != nearestTimeslot.time) {
+                                    event.setStart(nearestTimeslot.time);
+                                    eventUpdated = true;
+                                  }
+                                } else {
+                                  if (nearestTimeslot.time - event.start.getTime() < shortestEventTimeWhileResizing)
+                                    nearestTimeslot.time = O$.dateByTimeMillis(event.start.getTime() + shortestEventTimeWhileResizing);
+                                  if (event.end.getTime() != nearestTimeslot.time) {
+                                    event.setEnd(nearestTimeslot.time);
+                                    eventUpdated = true;
+                                  }
+                                }
+                                if (eventUpdated) {
+                                  event.updatePresentation(dragAndDropTransitionPeriod);
+                                  event._scrollIntoView();
+                                  event._updateDropAllowed();
+                                }
+                                if (eventUpdated && !event._draggingInProgress) {
+                                  event._draggingInProgress = true;
+                                  timeScaleTable._draggingInProgress = true;
+                                  eventElement._draggingInProgress = true;
+                                  event._topResize = topResize;
+                                  hideExcessiveElementsWhileDragging();
+                                }
+
+                                if (part.mainElement) {
+                                  eventElement._updateResizersPos();
+                                }
+                              }
+
+                              if (part.first) {
+                                var topResizeHandle = editingOptions.eventDurationEditable ? document.createElement("div") : null;
+                                topResizeHandle.style.fontSize = "0px";
+                                topResizeHandle.style.position = "absolute";
+                                topResizeHandle.style.cursor = "n-resize";
+                                O$.fixIEEventsForTransparentLayer(topResizeHandle);
+                                topResizeHandle.onclick = function(e) {
+                                  O$.breakEvent(e);
+                                };
+                                topResizeHandle.onmousedown = eventElement.onmousedown;
+                                topResizeHandle.ondragend = function() {
+                                  event._onresize(true);
+                                };
+
+                                O$.setupHoverStateFunction(topResizeHandle, setResizerHoverState);
+                                eventElement._topResizeHandle = topResizeHandle;
+                                topResizeHandle.setPosition = function(left, top) {
+                                  setResizerPosition(left, top, true);
+                                };
+                                timeScaleTable._absoluteElementsParentNode.appendChild(topResizeHandle);
+                              }
+                              if (part.last) {
+                                var bottomResizeHandle = editingOptions.eventDurationEditable ? document.createElement("div") : null;
+                                bottomResizeHandle.style.fontSize = "0px";
+                                bottomResizeHandle.style.position = "absolute";
+                                bottomResizeHandle.style.cursor = "s-resize";
+                                O$.fixIEEventsForTransparentLayer(bottomResizeHandle);
+                                bottomResizeHandle.onclick = function(e) {
+                                  O$.breakEvent(e);
+                                };
+                                bottomResizeHandle.onmousedown = eventElement.onmousedown;
+                                bottomResizeHandle.ondragend = function() {
+                                  event._onresize(false);
+                                };
+
+                                O$.setupHoverStateFunction(bottomResizeHandle, setResizerHoverState);
+                                eventElement._bottomResizeHandle = bottomResizeHandle;
+                                bottomResizeHandle.setPosition = function(left, top) {
+                                  setResizerPosition(left, top, false);
+                                };
+                                timeScaleTable._absoluteElementsParentNode.appendChild(bottomResizeHandle);
+                              }
+
+                            }
+                          }
+
+                          eventElement._removeNodes = function() {
+                            if (topResizeHandle)
+                              timeScaleTable._absoluteElementsParentNode.removeChild(topResizeHandle);
+                            if (bottomResizeHandle)
+                              timeScaleTable._absoluteElementsParentNode.removeChild(bottomResizeHandle);
+
+                          };
+                        },
+
+                        _bringToFront: function() {
+                          var index = O$.findValueInArray(eventElement, timeScaleTable._eventElements);
+                          O$.assert(index != -1, "eventElement._bringToFront. Can't find element in _eventElements array.");
+                          timeScaleTable._eventElements.splice(index, 1);
+                          timeScaleTable._eventElements.push(this);
+                          timeScaleTable._updateEventZIndexes();
+                        }
+
+                      });
+
+              if (event.type != "reserved" && editable) {
+                eventElement._setupDragAndDrop();
+              }
+
+
+              //TODO: move upper
+              O$.extend(event, {
+                        _updateAreaPositionsAndBorder: function() {
+                          for (var i = 0; i < event.parts.length; i++) {
+                            var eventElementI = event.parts[i].mainElement;
+                            O$.setElementBorderRectangle(eventElementI, eventElementI._currentRect);
+                          }
+                          event._updateAreaPositions(true);
+                        },
+
+                        _isEventPreviewAllowed: function() {
+                          return event._mouseInside && !event._draggingInProgress;
+                        },
+
+                        _isEventUpdateNotAllowed: function() {
+                          return event.type == "reserved" || event._draggingInProgress;
+                        },
+
+                        _beforeUpdate: function() {
+                        }
+
+                      });
+
+              return eventElement;
+
+            },
+
+            _layoutActionBar: function(actionBar, barHeight, eventElement) {
+              var borderLeftWidth = O$.getNumericElementStyle(eventElement, "border-left-width");
+              var borderRightWidth = O$.getNumericElementStyle(eventElement, "border-right-width");
+              O$.setElementSize(actionBar, {width: eventElement._rect.width - borderLeftWidth - borderRightWidth,
+                        height: barHeight});
+              actionBar.style.left = "0px";
+              actionBar.style.bottom = "0px";
             }
-            if (eventUpdated) {
-              event.updatePresentation(dragAndDropTransitionPeriod);
-              event._scrollIntoView();
-              event._updateDropAllowed();
-            }
-            if (eventUpdated && !event._draggingInProgress) {
-              event._draggingInProgress = true;
-              timeScaleTable._draggingInProgress = true;
-              eventElement._draggingInProgress = true;
-              event._topResize = topResize;
-              hideExcessiveElementsWhileDragging();
-            }
 
-            if (part.mainElement) {
-              eventElement._updateResizersPos();
-            }
-          }
 
-          if (part.first) {
-            var topResizeHandle = editingOptions.eventDurationEditable ? document.createElement("div") : null;
-            topResizeHandle.style.fontSize = "0px";
-            topResizeHandle.style.position = "absolute";
-            topResizeHandle.style.cursor = "n-resize";
-            O$.fixIEEventsForTransparentLayer(topResizeHandle);
-            topResizeHandle.onclick = function(e) {
-              O$.breakEvent(e);
-            };
-            topResizeHandle.onmousedown = eventElement.onmousedown;
-            topResizeHandle.ondragend = function() {
-              event._onresize(true);
-            };
 
-            O$.setupHoverStateFunction(topResizeHandle, setResizerHoverState);
-            eventElement._topResizeHandle = topResizeHandle;
-            topResizeHandle.setPosition = function(left, top) {
-              setResizerPosition(left, top, true);
-            };
-            timeScaleTable._absoluteElementsParentNode.appendChild(topResizeHandle);
-          }
-          if (part.last) {
-            var bottomResizeHandle = editingOptions.eventDurationEditable ? document.createElement("div") : null;
-            bottomResizeHandle.style.fontSize = "0px";
-            bottomResizeHandle.style.position = "absolute";
-            bottomResizeHandle.style.cursor = "s-resize";
-            O$.fixIEEventsForTransparentLayer(bottomResizeHandle);
-            bottomResizeHandle.onclick = function(e) {
-              O$.breakEvent(e);
-            };
-            bottomResizeHandle.onmousedown = eventElement.onmousedown;
-            bottomResizeHandle.ondragend = function() {
-              event._onresize(false);
-            };
 
-            O$.setupHoverStateFunction(bottomResizeHandle, setResizerHoverState);
-            eventElement._bottomResizeHandle = bottomResizeHandle;
-            bottomResizeHandle.setPosition = function(left, top) {
-              setResizerPosition(left, top, false);
-            };
-            timeScaleTable._absoluteElementsParentNode.appendChild(bottomResizeHandle);
-          }
+          });
 
-        }
-      }
-
-      eventElement._removeNodes = function() {
-        if (topResizeHandle)
-          timeScaleTable._absoluteElementsParentNode.removeChild(topResizeHandle);
-        if (bottomResizeHandle)
-          timeScaleTable._absoluteElementsParentNode.removeChild(bottomResizeHandle);
-
-      };
-    };
-
-    if (event.type != "reserved" && editable) {
-      eventElement._setupDragAndDrop();
-    }
-
-    eventElement._bringToFront = function() {
-      var index = O$.findValueInArray(eventElement, timeScaleTable._eventElements);
-      O$.assert(index != -1, "eventElement._bringToFront. Can't find element in _eventElements array.");
-      timeScaleTable._eventElements.splice(index, 1);
-      timeScaleTable._eventElements.push(this);
-      timeScaleTable._updateEventZIndexes();
-    };
-
-    //TODO: move upper
-    event._updateAreaPositionsAndBorder = function() {
-      for (var i = 0; i< event.parts.length; i++){
-        var eventElementI = event.parts[i].mainElement;
-        O$.setElementBorderRectangle(eventElementI, eventElementI._currentRect);
-      }
-      event._updateAreaPositions(true);
-    };
-
-    event._isEventPreviewAllowed = function() {
-      return event._mouseInside && !event._draggingInProgress;
-    };
-
-    event._isEventUpdateNotAllowed = function() {
-      return event.type == "reserved" || event._draggingInProgress;
-    };
-
-    event._beforeUpdate = function() {
-    };
-
-    return eventElement;
-
-  };
-
-  timeScaleTable._layoutActionBar = function(actionBar, barHeight, eventElement) {
-    var borderLeftWidth = O$.getNumericElementStyle(eventElement, "border-left-width");
-    var borderRightWidth = O$.getNumericElementStyle(eventElement, "border-right-width");
-    O$.setElementSize(actionBar, {width: eventElement._rect.width - borderLeftWidth - borderRightWidth,
-      height: barHeight});
-    actionBar.style.left = "0px";
-    actionBar.style.bottom = "0px";
-  };
 
 };
 

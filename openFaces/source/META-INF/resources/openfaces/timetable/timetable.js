@@ -259,7 +259,8 @@ O$.Timetable = {
 
   },
 
-  _initEventEditorPage: function(timetableViewId, thisComponentId, actionDeclared, url, modeParamName, eventIdParamName, eventStartParamName, eventEndParamName, resourceIdParamName) {
+  _initEventEditorPage: function(timetableViewId, thisComponentId, actionDeclared, url, modeParamName, eventIdParamName,
+                                 eventStartParamName, eventEndParamName, resourceIdParamName) {
     var timetableView = O$(timetableViewId);
     var thisComponent = O$(thisComponentId);
     timetableView._eventEditor = thisComponent;
@@ -307,58 +308,64 @@ O$.Timetable = {
   },
 
   _initEvent: function(event) {
-    event.setStart = function(asDate, asString) {
-      if (asDate) {
-        event.start = asDate;
-        event.startStr = O$.formatDateTime(asDate);
-      } else
-      if (asString) {
-        event.startStr = asString;
-        event.start = O$.parseDateTime(asString);
-      } else
-        throw "event.setStart: either asDate parameter, or asTime parameter should be specified";
-    };
-    event.setEnd = function(asDate, asString) {
-      if (asDate) {
-        event.end = asDate;
-        event.endStr = O$.formatDateTime(asDate);
-      } else
-      if (asString) {
-        event.endStr = asString;
-        event.end = O$.parseDateTime(asString);
-      } else
-        throw "event.setEnd: either asDate parameter, or asTime parameter should be specified";
-    };
-    event._copyFrom = function(otherEvent) {
-      this.id = otherEvent.id;
-      this.setStart(otherEvent.start, otherEvent.startStr);
-      this.setEnd(otherEvent.end, otherEvent.endStr);
-      this.name = otherEvent.name;
-      this.description = otherEvent.description;
-      this.resourceId = otherEvent.resourceId;
-      this.color = otherEvent.color;
-      if (otherEvent.customProperties) {
-        this.customProperties = new Array();
-        for (var key in otherEvent.customProperties) {
-          this.customProperties[key] = otherEvent.customProperties[key];
-        }
-      }
-    };
+    O$.extend(event, {
+              setStart: function(asDate, asString) {
+                if (asDate) {
+                  event.start = asDate;
+                  event.startStr = O$.formatDateTime(asDate);
+                } else
+                if (asString) {
+                  event.startStr = asString;
+                  event.start = O$.parseDateTime(asString);
+                } else
+                  throw "event.setStart: either asDate parameter, or asTime parameter should be specified";
+              },
 
-    event._scrollIntoView = function() {
-      /*    return; //todo: finish auto-scrolling functionality
-       var timetableView = event.mainElement._timetableView;
-       var scrollingOccurred = O$.scrollElementIntoView(event.mainElement, timetableView._getScrollingCache());
-       if (scrollingOccurred)
-       timetableView._resetScrollingCache();*/
-    };
+              setEnd: function(asDate, asString) {
+                if (asDate) {
+                  event.end = asDate;
+                  event.endStr = O$.formatDateTime(asDate);
+                } else
+                if (asString) {
+                  event.endStr = asString;
+                  event.end = O$.parseDateTime(asString);
+                } else
+                  throw "event.setEnd: either asDate parameter, or asTime parameter should be specified";
+              },
+
+              _copyFrom: function(otherEvent) {
+                this.id = otherEvent.id;
+                this.setStart(otherEvent.start, otherEvent.startStr);
+                this.setEnd(otherEvent.end, otherEvent.endStr);
+                this.name = otherEvent.name;
+                this.description = otherEvent.description;
+                this.resourceId = otherEvent.resourceId;
+                this.color = otherEvent.color;
+                if (otherEvent.customProperties) {
+                  this.customProperties = new Array();
+                  for (var key in otherEvent.customProperties) {
+                    this.customProperties[key] = otherEvent.customProperties[key];
+                  }
+                }
+              },
+
+              _scrollIntoView: function() {
+                /*    return; //todo: finish auto-scrolling functionality
+                 var timetableView = event.mainElement._timetableView;
+                 var scrollingOccurred = O$.scrollElementIntoView(event.mainElement, timetableView._getScrollingCache());
+                 if (scrollingOccurred)
+                 timetableView._resetScrollingCache();*/
+              }
+
+            });
     if (event.start || event.startStr)
       event.setStart(event.start, event.startStr);
     if (event.end || event.endStr)
       event.setEnd(event.end, event.endStr);
   },
 
-  _initEventPreview: function(eventPreviewId, timetableViewId, showingDelay, popupClass, eventNameClass, eventDescriptionClass, horizontalAlignment, verticalAlignment, horizontalDistance, verticalDistance) {
+  _initEventPreview: function(eventPreviewId, timetableViewId, showingDelay, popupClass, eventNameClass,
+                              eventDescriptionClass, horizontalAlignment, verticalAlignment, horizontalDistance, verticalDistance) {
     var eventPreview = O$(eventPreviewId);
     var popupLayer = O$(eventPreviewId + "--popupLayer");
     O$.appendClassNames(popupLayer, [popupClass]);
@@ -366,48 +373,52 @@ O$.Timetable = {
     eventNameClass = O$.combineClassNames(["o_timetableEventName", eventNameClass]);
     eventDescriptionClass = O$.combineClassNames(["o_timetableEventDescription", eventDescriptionClass]);
 
-    eventPreview._showingDelay = showingDelay;
+    O$.extend(eventPreview, {
+              _showingDelay: showingDelay,
 
-    eventPreview.showForEvent = function(event) {
-      var timetableView = O$(timetableViewId);
-      var popupParent = O$.getDefaultAbsolutePositionParent();
-      if (popupLayer.parentNode != popupParent) {
-        popupParent.appendChild(popupLayer);
-      }
-      O$.correctElementZIndex(popupLayer, timetableView);
+              showForEvent: function(event) {
+                var timetableView = O$(timetableViewId);
+                var popupParent = O$.getDefaultAbsolutePositionParent();
+                if (popupLayer.parentNode != popupParent) {
+                  popupParent.appendChild(popupLayer);
+                }
+                O$.correctElementZIndex(popupLayer, timetableView);
 
-      var oldSpans;
-      while ((oldSpans = popupLayer.getElementsByTagName("span")).length > 0) {
-        var span = oldSpans[0];
-        span.parentNode.removeChild(span);
-      }
+                var oldSpans;
+                while ((oldSpans = popupLayer.getElementsByTagName("span")).length > 0) {
+                  var span = oldSpans[0];
+                  span.parentNode.removeChild(span);
+                }
 
-      var nameElement = document.createElement("span");
-      nameElement.className = eventNameClass;
-      popupLayer.appendChild(nameElement);
+                var nameElement = document.createElement("span");
+                nameElement.className = eventNameClass;
+                popupLayer.appendChild(nameElement);
 
-      var descriptionElement = document.createElement("span");
-      descriptionElement.className = eventDescriptionClass;
-      popupLayer.appendChild(descriptionElement);
+                var descriptionElement = document.createElement("span");
+                descriptionElement.className = eventDescriptionClass;
+                popupLayer.appendChild(descriptionElement);
 
-      O$.setInnerText(nameElement, event.name, timetableView._escapeEventNames);
-      O$.setInnerText(descriptionElement, event.description, timetableView._escapeEventDescriptions);
+                O$.setInnerText(nameElement, event.name, timetableView._escapeEventNames);
+                O$.setInnerText(descriptionElement, event.description, timetableView._escapeEventDescriptions);
 
-      var mainElement = event.parts[0].mainElement;
-      if (!mainElement)
-        popupLayer.showCentered();
-      else
-        popupLayer.showByElement(mainElement,
-                horizontalAlignment, verticalAlignment, horizontalDistance, verticalDistance);
-    };
+                var mainElement = event.parts[0].mainElement;
+                if (!mainElement)
+                  popupLayer.showCentered();
+                else
+                  popupLayer.showByElement(mainElement,
+                          horizontalAlignment, verticalAlignment, horizontalDistance, verticalDistance);
+              },
 
-    eventPreview.hide = function() {
-      popupLayer.hide();
-    };
+              hide: function() {
+                popupLayer.hide();
+              }
+
+            });
   },
 
 
-  _initEventActionBar: function(actionBarId, timetableViewId, backgroundIntensity, userSpecifiedClass, actions, actionRolloverIntensity, actionPressedIntensity) {
+  _initEventActionBar: function(actionBarId, timetableViewId, backgroundIntensity, userSpecifiedClass, actions,
+                                actionRolloverIntensity, actionPressedIntensity) {
     var actionBar = O$(actionBarId);
     if (!actionBar) {
       var initArgs = arguments;

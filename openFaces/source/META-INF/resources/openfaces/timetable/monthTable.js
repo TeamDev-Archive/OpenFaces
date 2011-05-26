@@ -454,6 +454,12 @@ O$.MonthTable._init = function(componentId,
 
   monthTable._updateEventElements = function(reacquireDayEvents, refreshAreasAfterReload) {
     this._baseZIndex = O$.getElementZIndex(this);
+    if (this._eventElements)
+      this._eventElements.concat([]).forEach(function(eventElement) {
+        var event = eventElement._event;
+        if (event)
+          event._removeEventElements(refreshAreasAfterReload);
+      }, this);
 
     this._eventElements = [];
     if (reacquireDayEvents)
