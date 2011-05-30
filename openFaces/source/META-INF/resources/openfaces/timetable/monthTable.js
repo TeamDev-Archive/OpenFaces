@@ -15,21 +15,7 @@
 // ========== implementation
 
 O$.MonthTable = {
-  _init: function(componentId,
-                  day,
-                  locale,
-                  dateFormat,
-                  scrollOffset,
-                  preloadedEventParams,
-                  resources,
-                  eventAreaSettings,
-                  editable,
-                  onchange,
-                  editingOptions,
-                  stylingParams,
-                  uiEvent,
-                  calendarOptions,
-                  timetableId) {
+  _init: function(componentId, day, locale, dateFormat, scrollOffset, preloadedEventParams, resources, eventAreaSettings, editable, onchange, editingOptions, stylingParams, uiEvent, calendarOptions, timetableId) {
 
     var monthTable = O$.initComponent(componentId, null, {
               _viewType: "month"
@@ -128,11 +114,10 @@ O$.MonthTable = {
     if (monthTable._useResourceSeparation) {
       monthTable._resourcesByIds = {};
       monthTable._idsByResourceNames = {};
-      for (var resourceIndex = 0; resourceIndex < resources.length; resourceIndex++) {
-        var resource = resources[resourceIndex];
+      resources.forEach(function(resource) {
         monthTable._resourcesByIds[resource.id] = resource;
         monthTable._idsByResourceNames[resource.name] = resource.id;
-      }
+      });
     }
 
     var forceUsingCellStyles = true; // allow such styles as text-align to be applied to row's cells
@@ -158,9 +143,7 @@ O$.MonthTable = {
     }
 
     var rows = monthTable._table.body._getRows();
-
-    for (var rowIndex = 0; rowIndex < rows.length; rowIndex++) {
-      var row = rows[rowIndex];
+    rows.forEach(function(row) {
       var cells = row._cells;
       for (var cellIndex = 0; cellIndex < cells.length; cellIndex++) {
         var cell = cells[cellIndex];
@@ -173,7 +156,7 @@ O$.MonthTable = {
         };
       }
       cells[cells.length - 1]._last = true;
-    }
+    });
 
     // workaround to show *horizontal* gridlines
     monthTable._table.body._overrideVerticalGridline(0, columnSeparator);
@@ -197,10 +180,9 @@ O$.MonthTable = {
         for (var cellIndex = 0; cellIndex < cells.length; cellIndex++) {
           var cell = cells[cellIndex];
           if (cell._cellEvents) {
-            for (var i = 0; i < cell._cellEvents.length; i++) {
-              var oldCellEvent = cell._cellEvents[i];
-              oldCellEvent._removeEventElements();
-            }
+            cell._cellEvents.forEach(function(oldCellEvent) {
+              oldCellEvent._removeElements();
+            });
           }
           cell._cellEvents = [];
         }
@@ -215,10 +197,9 @@ O$.MonthTable = {
       }
 
       if (cell._cellEvents) {
-        for (var i = 0; i < cell._cellEvents.length; i++) {
-          var oldCellEvent = cell._cellEvents[i];
-          oldCellEvent._removeEventElements();
-        }
+        cell._cellEvents.forEach(function(oldCellEvent) {
+          oldCellEvent._removeElements();
+        });
       }
 
       cell._cellEvents = [];
@@ -234,10 +215,9 @@ O$.MonthTable = {
 
       cell._moreLinkData = null;
 
-      for (var cellEventIndex = 0; cellEventIndex < cellEvents.length; cellEventIndex++) {
-        var cellEvent = cellEvents[cellEventIndex];
-        this._addEventElements(cellEvent);
-      }
+      cellEvents.forEach(function(cellEvent) {
+        monthTable._addEventElements(cellEvent);
+      });
       cell._moreLinkElement._update();
       cell._moreLinkData = null;
 
@@ -302,8 +282,9 @@ O$.MonthTable = {
       }
     }
 
-    var addEventElement = monthTable._addEventElement;
-    var removeEventElement = monthTable._removeEventElement;
+    var super_addEventElement = monthTable._addEventElement;
+    var super_removeEventElement = monthTable._removeEventElement;
+    var super_removeEventElements = monthTable._removeEventElements;
     O$.extend(monthTable, {
               _getEventEditor: function() {
                 if (!editable)
@@ -313,7 +294,7 @@ O$.MonthTable = {
 
 
               _addEventElement: function(event, part) {
-                var eventElement = addEventElement(event, part);
+                var eventElement = super_addEventElement.call(this, event, part);
 
                 event._updateRolloverState = function() {
 
@@ -407,11 +388,10 @@ O$.MonthTable = {
               },
 
               _removeEventElement: function(event, part) {
-
                 if (!part.mainElement)
                   return;
 
-                removeEventElement(event, part);
+                super_removeEventElement.call(this, event, part);
               },
 
 
@@ -436,8 +416,8 @@ O$.MonthTable = {
                 var weekdayHeaderRow = weekdayHeadersTable.body._getRows()[0];
 
                 var weekdayHeaderCellDay = this._startTime;
-                for (var weekdayHeaderCellIndex = 0; weekdayHeaderCellIndex < weekdayHeaderRow._cells.length - 1; weekdayHeaderCellIndex++) {
-                  var weekdayHeaderCell = weekdayHeaderRow._cells[weekdayHeaderCellIndex];
+                for (var i = 0; i < weekdayHeaderRow._cells.length - 1; i++) {
+                  var weekdayHeaderCell = weekdayHeaderRow._cells[i];
                   var weekdayHeaderCellClassName = this._weekdayHeaderCellClass;
                   if (weekdayHeaderCellDay.getDay() == 0 || weekdayHeaderCellDay.getDay() == 6) {
                     weekdayHeaderCellClassName = this._weekendWeekdayHeaderCellClass;
@@ -452,25 +432,28 @@ O$.MonthTable = {
 
               },
 
-              _updateEventElements: function(reacquireDayEvents, refreshAreasAfterReload) {
-                this._baseZIndex = O$.getElementZIndex(this);
-                if (this._eventElements)
-                  this._eventElements.concat([]).forEach(function(eventElement) {
-                    var event = eventElement._event;
-                    if (event)
-                      event._removeEventElements(refreshAreasAfterReload);
-                  }, this);
+              _removeEventElements: function() {
+                super_removeEventElements.call(this);
+                clearAllCellEvents();
+              },
 
-                this._eventElements = [];
+              _updateEventElements: function(reacquireDayEvents, refreshAreasAfterReload) {
+                if (!this._isActive()) return;
+                this._baseZIndex = O$.getElementZIndex(this);
+                this._removeEventElements();
                 if (reacquireDayEvents)
                   this._events = this._eventProvider._getEventsForPeriod(this._startTime, this._endTime, function() {
                     this._updateEventElements(true, true);
                   });
 
-                clearAllCellEvents();
-
                 for (var cellDate = this._startTime; cellDate < this._endTime; cellDate = O$.MonthTable.__incDay(cellDate)) {
                   this._updateCellEventElements(cellDate);
+                }
+
+                if (refreshAreasAfterReload) {
+                  this._events.forEach(function(event) {
+                    event._attachAreas();
+                  });
                 }
 
                 this._updateEventZIndexes();
@@ -502,10 +485,9 @@ O$.MonthTable = {
                   for (var cellIndex = 0; cellIndex < cells.length; cellIndex++) {
                     var cell = cells[cellIndex];
                     cell._moreLinkData = null;
-                    for (var eventIndex = 0, eventCount = cell._cellEvents.length; eventIndex < eventCount; eventIndex++) {
-                      var event = cell._cellEvents[eventIndex];
+                    cell._cellEvents.forEach(function(event) {
                       event.updatePresentation();
-                    }
+                    });
                     if (cell._moreLinkElement) {
                       cell._moreLinkElement._update();
                     }
@@ -586,15 +568,14 @@ O$.MonthTable = {
 
   getDayEvents: function(allEvents, day) {
     var result = [];
-    for (var i = 0, count = allEvents.length; i < count; i++) {
-      var currEvent = allEvents[i];
+    allEvents.forEach(function(currEvent) {
       if (currEvent.type != "reserved") {
         var start = currEvent.start;
         if (O$._datesEqual(start, day)) {
           result.push(currEvent);
         }
       }
-    }
+    });
     result.sort(O$.Timetable.compareEventsByStart);
     return result;
   },

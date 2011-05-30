@@ -74,7 +74,7 @@ public class WeekSwitcherRenderer extends AbstractSwitcherRenderer {
         writer.startElement("div", switcher);
         writer.writeAttribute("id", clientId + "::text", null);
         String textClass = Styles.getCSSClass(context,
-                switcher, switcher.getTextStyle(), "o_timeSwitcher_text", switcher.getTextClass());
+                switcher, switcher.getTextStyle(), "o_weekSwitcher_text", switcher.getTextClass());
         writer.writeAttribute("class", textClass, null);
 
         writer.write(fromDateFormat.format(getFirstDayOfTheWeek(timetableView)) + DATE_RANGE_SEPARATOR

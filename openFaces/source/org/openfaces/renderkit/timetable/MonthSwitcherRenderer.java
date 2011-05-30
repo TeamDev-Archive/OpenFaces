@@ -47,7 +47,7 @@ public class MonthSwitcherRenderer extends AbstractSwitcherRenderer {
         writer.startElement("div", switcher);
         writer.writeAttribute("id", clientId + "::text", null);
         String textClass = Styles.getCSSClass(context,
-                switcher, switcher.getTextStyle(), "o_timeSwitcher_text", switcher.getTextClass());
+                switcher, switcher.getTextStyle(), "o_monthSwitcher_text", switcher.getTextClass());
         writer.writeAttribute("class", textClass, null);
 
         Date date = timetableView.getDay();

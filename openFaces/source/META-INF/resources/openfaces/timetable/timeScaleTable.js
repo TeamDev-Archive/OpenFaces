@@ -431,15 +431,9 @@ O$.TimeScaleTable._init = function(componentId,
 
 
             _updateEventElements: function(reacquireDayEvents, refreshAreasAfterReload) {
+              if (!this._isActive()) return;
               this._baseZIndex = O$.getElementZIndex(this);
-              if (this._eventElements)
-                this._eventElements.concat([]).forEach(function(eventElement) {
-                  var event = eventElement._event;
-                  if (event)
-                    event._removeEventElements(refreshAreasAfterReload);
-                }, this);
-
-              this._eventElements = [];
+              this._removeEventElements();
               if (reacquireDayEvents)
                 this._events = this._eventProvider._getEventsForPeriod(this._startTime, this._endTime, function() {
                   this._updateEventElements(true, true);
@@ -451,6 +445,10 @@ O$.TimeScaleTable._init = function(componentId,
               for (var eventIndex = 0, eventCount = this._events.length; eventIndex < eventCount; eventIndex++) {
                 event = this._events[eventIndex];
                 this._addEventElements(event);
+                if (refreshAreasAfterReload) {
+                  event._attachAreas();
+                }
+
               }
               this._updateEventZIndexes();
             },

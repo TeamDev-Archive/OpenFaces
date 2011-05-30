@@ -10,12 +10,6 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-// ================================== PUBLIC API FUNCTIONS
-
-//  weekTable.updateLayout();
-
-// ========== implementation
-
 O$.WeekTable = {};
 
 O$.WeekTable._init = function(componentId,

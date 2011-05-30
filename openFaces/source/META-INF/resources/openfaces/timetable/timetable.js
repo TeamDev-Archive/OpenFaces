@@ -29,10 +29,15 @@ O$.Timetable = {
                 viewType != O$.Timetable.WEEK &&
                 viewType != O$.Timetable.MONTH)
           throw "O$.Timetable.setView: illegal view parameter: \"" + viewType + "\"";
-        var timetableView = this._viewByType(viewType);
         if (this._viewType == viewType) return;
-        this._viewType = viewType;
-        O$.setHiddenField(this, timetableId + "::view", viewType);
+
+        var prevTimetableView = this._viewType ? this._viewByType(this._viewType) : null;
+        if (prevTimetableView)
+          prevTimetableView._removeEventElements();
+
+        this._setViewType(viewType);
+
+        var timetableView = this._viewByType(viewType);
         timetableView._updateEventElements();
         setTimeout(function() {
           timetableView.updateLayout();
@@ -41,6 +46,11 @@ O$.Timetable = {
         var viewIndex = this._viewIndexByType(viewType);
         this._layeredPane.setSelectedIndex(viewIndex);
         this._fireEvent("viewtypechange");
+      },
+
+      _setViewType: function(viewType) {
+        this._viewType = viewType;
+        O$.setHiddenField(this, timetableId + "::view", viewType);
       },
 
       _viewIndexByType: function(viewType) {
@@ -74,7 +84,10 @@ O$.Timetable = {
       }
     }, events);
 
-    timetable.setViewType(initialViewType);
+    O$.addInternalLoadEvent(function() {
+      timetable.setViewType(initialViewType);
+    });
+
   },
 
   _initEventEditorDialog: function(timetableViewId, dialogId, createEventCaption, editEventCaption, centered) {
@@ -95,18 +108,18 @@ O$.Timetable = {
 
     var dialog = O$.initComponent(dialogId, null, {
               _timetableView: timetableView,
-              _nameField: O$.byIdOrName(dialog.id + "--nameField"),
-              _resourceField: O$.byIdOrName(dialog.id + "--resourceField"),
-              _startDateField: O$.byIdOrName(dialog.id + "--startDateField"),
-              _endDateField: O$.byIdOrName(dialog.id + "--endDateField"),
-              _startTimeField: O$.byIdOrName(dialog.id + "--startTimeField"),
-              _endTimeField: O$.byIdOrName(dialog.id + "--endTimeField"),
-              _colorField: O$.byIdOrName(dialog.id + "--colorField"),
+              _nameField: O$.byIdOrName(dialogId + "--nameField"),
+              _resourceField: O$.byIdOrName(dialogId + "--resourceField"),
+              _startDateField: O$.byIdOrName(dialogId + "--startDateField"),
+              _endDateField: O$.byIdOrName(dialogId + "--endDateField"),
+              _startTimeField: O$.byIdOrName(dialogId + "--startTimeField"),
+              _endTimeField: O$.byIdOrName(dialogId + "--endTimeField"),
+              _colorField: O$.byIdOrName(dialogId + "--colorField"),
               _color: "",
-              _descriptionArea: O$.byIdOrName(dialog.id + "--descriptionArea"),
-              _okButton: O$.byIdOrName(dialog.id + "--okButton"),
-              _cancelButton: O$.byIdOrName(dialog.id + "--cancelButton"),
-              _deleteButton: O$.byIdOrName(dialog.id + "--deleteButton"),
+              _descriptionArea: O$.byIdOrName(dialogId + "--descriptionArea"),
+              _okButton: O$.byIdOrName(dialogId + "--okButton"),
+              _cancelButton: O$.byIdOrName(dialogId + "--cancelButton"),
+              _deleteButton: O$.byIdOrName(dialogId + "--deleteButton"),
 
               run: function(event, mode) {
                 this._event = event;
@@ -200,10 +213,10 @@ O$.Timetable = {
                 };
 
                 if (event.parts) {
-                  for (var i = 0; i < event.parts.length; i++) {
-                    if (event.parts[i].mainElement)
-                      O$.correctElementZIndex(this, event.parts[i].mainElement, 5);
-                  }
+                  event.parts.forEach(function(part) {
+                    if (part.mainElement)
+                      O$.correctElementZIndex(dialog, part.mainElement, 5);
+                  });
                 }
                 if (centered)
                   this.showCentered();
@@ -567,11 +580,10 @@ O$.Timetable = {
 
     actionBar._update = function() {
       actionBar._actionsArea._updatePos();
-      for (var i = 0, count = actions.length; i < count; i++) {
-        var action = actions[i];
+      actions.forEach(function(action) {
         var cell = action._cell;
         cell._update();
-      }
+      });
     };
 
     O$.setupHoverStateFunction(actionBar._actionsArea, function(mouseInside) {
@@ -695,14 +707,13 @@ O$.Timetable = {
                           var newEvents = portionData.events;
                           thisProvider._loadedTimeRangeMap.addRange(start.getTime(), end.getTime());
                           thisProvider._events._cachedEventsByIds = null;
-                          for (var i = 0, count = newEvents.length; i < count; i++) {
-                            var newEvent = newEvents[i];
+                          newEvents.forEach(function(newEvent) {
                             var existingEvent = O$.Timetable._findEventById(thisProvider._events, newEvent.id);
                             if (existingEvent)
                               existingEvent._copyFrom(newEvent);
                             else
                               thisProvider.addEvent(newEvent);
-                          }
+                          });
                           if (eventsLoadedCallback) {
                             //        var eventsForPeriod = this._getEventsForPeriod_raw(start, end);
                             eventsLoadedCallback();//eventsForPeriod);
@@ -725,24 +736,22 @@ O$.Timetable = {
                 var result = [];
                 var startTime = start.getTime();
                 var endTime = end.getTime();
-                for (var eventIndex = 0, eventCount = this._events.length; eventIndex < eventCount; eventIndex++) {
-                  var event = this._events[eventIndex];
+                this._events.forEach(function(event) {
                   if (event.end.getTime() < event.start.getTime())
-                    continue;
+                    return;
                   if (event.end.getTime() <= startTime ||
                           event.start.getTime() >= endTime)
-                    continue;
+                    return;
                   result.push(event);
-                }
+                });
                 return result;
               },
 
               setEvents: function(newEvents) {
                 this._events = newEvents;
-                for (var eventIndex = 0, eventCount = newEvents.length; eventIndex < eventCount; eventIndex++) {
-                  var event = newEvents[eventIndex];
+                newEvents.forEach(function(event) {
                   O$.Timetable._initEvent(event);
-                }
+                });
                 this._events._cachedEventsByIds = null;
               },
 

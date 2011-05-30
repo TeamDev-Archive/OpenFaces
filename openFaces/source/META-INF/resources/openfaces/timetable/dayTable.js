@@ -10,12 +10,6 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-// ================================== PUBLIC API FUNCTIONS
-
-//  dayTable.updateLayout();
-
-// ========== implementation
-
 O$.DayTable = {};
 
 O$.DayTable._init = function(componentId,

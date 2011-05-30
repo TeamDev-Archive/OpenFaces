@@ -726,13 +726,18 @@
   margin: 0;
 }
 
-.o_timeSwitcher_text {
+.o_daySwitcher_text, .o_weekSwitcher_text, .o_monthSwitcher_text {
   font-size: 1em;
   line-height:0.8em;
   padding-bottom:0.2em;
   padding-left:5px;
   padding-right:5px;
   margin: 0;
+}
+
+.o_monthSwitcher_text {
+  min-width: 150px;
+  text-align: center;
 }
 
 .o_daySwitcherClickableCell {
