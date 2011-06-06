@@ -5687,6 +5687,17 @@
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>A flag that indicates whether there should always be a selected item (true) or empty selection is
+        allowed (false).</description>
+      <name>required</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el false -->
+    </attribute>
+    <attribute>
       <description>Similar to the "action" attribute of the HTMLCommandButton component.
         It can either specify a string defining the static outcome
         of the selection change action, or it can be defined as a method-binding expression.
@@ -5876,6 +5887,17 @@
       <!-- @bindingType boolean -->
       <!-- @default true -->
       <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A flag that indicates whether there should always be at least one selected item (true) or empty
+        selection is allowed (false).</description>
+      <name>required</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el false -->
     </attribute>
     <attribute>
       <description>Is similar to the "action" attribute of the HTMLCommandButton component.
@@ -9649,6 +9671,17 @@ means that only root nodes and their immediate children are preloaded -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>A flag that indicates whether there should always be a selected item (true) or empty selection is
+        allowed (false).</description>
+      <name>required</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el false -->
+    </attribute>
+    <attribute>
       <description>Similar to the "action" attribute of the HTMLCommandButton component.
         It can either specify a string defining the static outcome
         of the selection change action, or it can be defined as a method-binding expression.
@@ -9842,6 +9875,17 @@ means that only root nodes and their immediate children are preloaded -->
       <!-- @bindingType boolean -->
       <!-- @default true -->
       <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A flag that indicates whether there should always be at least one selected item (true) or empty
+        selection is allowed (false).</description>
+      <name>required</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el false -->
     </attribute>
     <attribute>
       <description>Is similar to the "action" attribute of the HTMLCommandButton component.

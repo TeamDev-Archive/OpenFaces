@@ -1699,6 +1699,11 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         return totalRowCount;
     }
 
+    /**
+     * Returns the list of row data objects, which corresponds to all of the currently displayed records. That is, for
+     * the DataTable, which is currently filtered, this method will return only the objects that match the current
+     * filtering criteria, and if pagination is used, then only the current page objects are returned.
+     */
     public List<Object> getDisplayedRowDatas() {
         List<Object> rowDatas = new ArrayList<Object>();
         int oldRowIndex = getRowIndex();

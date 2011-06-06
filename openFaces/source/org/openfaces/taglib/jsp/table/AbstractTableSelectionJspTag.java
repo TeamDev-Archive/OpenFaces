@@ -35,6 +35,10 @@ public abstract class AbstractTableSelectionJspTag extends OUICommandJspTag {
         getDelegate().setPropertyValue("enabled", enabled);
     }
 
+    public void setRequired(ValueExpression required) {
+        getDelegate().setPropertyValue("required", required);
+    }
+
     public void setMouseSupport(ValueExpression mouseSupport) {
         getDelegate().setPropertyValue("mouseSupport", mouseSupport);
     }

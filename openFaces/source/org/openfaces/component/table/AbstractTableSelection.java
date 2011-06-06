@@ -43,6 +43,7 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
     private String style;
     private String styleClass;
     private Boolean enabled;
+    private Boolean required;
     private Boolean mouseSupport;
     private Boolean keyboardSupport;
     private String onchange;
@@ -73,7 +74,7 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
     @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
-        return new Object[]{superState, enabled, mouseSupport, keyboardSupport, style, styleClass, onchange};
+        return new Object[]{superState, enabled, required, mouseSupport, keyboardSupport, style, styleClass, onchange};
     }
 
     @Override
@@ -82,6 +83,7 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
         int i = 0;
         super.restoreState(context, state[i++]);
         enabled = (Boolean) state[i++];
+        required = (Boolean) state[i++];
         mouseSupport = (Boolean) state[i++];
         keyboardSupport = (Boolean) state[i++];
         style = (String) state[i++];
@@ -103,6 +105,14 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public boolean isRequired() {
+        return ValueBindings.get(this, "required", required, false);
+    }
+
+    public void setRequired(boolean required) {
+        this.required = required;
     }
 
     public boolean isMouseSupport() {
@@ -231,6 +241,7 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
 
         ScriptBuilder buf = new ScriptBuilder().initScript(context, table, "O$.Table._initSelection",
                 isEnabled(),
+                isRequired(),
                 "rows",
                 isMultipleSelectionAllowed(),
                 table.getDeferBodyLoading() ? null : encodeSelectionIntoIndexes(),

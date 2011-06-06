@@ -26,6 +26,7 @@ public abstract class AbstractTableSelectionTag extends OUICommandTag {
         setStringProperty(component, "style");
         setStringProperty(component, "styleClass");
         setBooleanProperty(component, "enabled");
+        setBooleanProperty(component, "required");
         setBooleanProperty(component, "mouseSupport");
         setBooleanProperty(component, "keyboardSupport");
         setStringProperty(component, "onchange");
