@@ -4199,6 +4199,10 @@ if (!window.O$) {
   O$.BOTTOM = "bottom";
   O$.BELOW = "below";
 
+
+  O$.alignPopupByPoint = function(popup, x, y, horizAlignment, vertAlignment) {
+    O$.alignPopupByElement(popup, new O$.Rectangle(x, y, 0, 0), horizAlignment, vertAlignment);
+  };
   /**
    *
    *
@@ -4227,6 +4231,8 @@ if (!window.O$) {
     vertDistance = O$.calculateNumericCSSValue(vertDistance);
 
     var elementRect = function() {
+      if (element instanceof O$.Rectangle)
+        return element;
       if (element != window)
         return ignoreVisibleArea
                 ? O$.getElementBorderRectangle(element)
