@@ -72,6 +72,7 @@ public class PartialViewContext extends PartialViewContextWrapper {
     private static final String PARAM_ACTION_LISTENER = "_of_actionListener";
     private static final String PARAM_ACTION = "_of_action";
     private static final String PARAM_IMMEDIATE = "_of_immediate";
+    private static final String OPENFACES_AJAX_REQUEST_MARKER = "_openFaces_ajax";
 
     public PartialViewContext(javax.faces.context.PartialViewContext wrapped) {
         this.wrapped = wrapped;
@@ -234,7 +235,9 @@ public class PartialViewContext extends PartialViewContextWrapper {
             }
         renderAjaxPortions(context);
         renderAjaxInitScripts(context);
-        renderAjaxResult(context);
+        Map<String, String> requestParameterMap = context.getExternalContext().getRequestParameterMap();
+        if (requestParameterMap.containsKey(OPENFACES_AJAX_REQUEST_MARKER))
+            renderAjaxResult(context);
     }
 
     private void prepareViewExpirationExtension(final FacesContext context) throws IOException {
