@@ -1361,6 +1361,18 @@
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>Specifies whether the menu specified in the "columnMenu" facet of this DataTable should be displayed
+        for this column.
+      </description>
+      <name>menuAllowed</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- default true -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>A style for the entire column.</description>
       <name>style</name>
       <deferred-value>
@@ -3340,6 +3352,18 @@
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Specifies whether the menu specified in the "columnMenu" facet of this DataTable should be displayed
+        for this column.
+      </description>
+      <name>menuAllowed</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- default true -->
       <!-- @el true -->
     </attribute>
 
@@ -6179,6 +6203,19 @@
       <!-- default false -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>Specifies whether the menu specified in the "columnMenu" facet of this DataTable should be displayed
+        for this column.
+      </description>
+      <name>menuAllowed</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- default false -->
+      <!-- @el true -->
+    </attribute>
+
 
     <attribute>
       <description>A style for the entire selection column.</description>
@@ -6786,6 +6823,18 @@
         scroll position.
       </description>
       <name>fixed</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Specifies whether the menu specified in the "columnMenu" facet of this DataTable should be displayed
+        for this column.
+      </description>
+      <name>menuAllowed</name>
       <deferred-value>
         <type>boolean</type>
       </deferred-value>
@@ -9061,6 +9110,18 @@ means that only root nodes and their immediate children are preloaded -->
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Specifies whether the menu specified in the "columnMenu" facet of this DataTable should be displayed
+        for this column.
+      </description>
+      <name>menuAllowed</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- default true -->
       <!-- @el true -->
     </attribute>
 

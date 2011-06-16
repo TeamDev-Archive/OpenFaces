@@ -2140,7 +2140,7 @@ O$.ColumnMenu = {
     var currentColumn = null;
     var menuOpened = false;
     table._columns.forEach(function(column) {
-      if (!column.header || !column.header._cell) return;
+      if (!column.header || !column.header._cell || !column.menuAllowed) return;
       var headerCell = column.header._cell;
       O$.setupHoverStateFunction(headerCell, function(mouseOver) {
         if (mouseOver && !menuOpened) {

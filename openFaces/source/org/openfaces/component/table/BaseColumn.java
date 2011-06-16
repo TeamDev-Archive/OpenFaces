@@ -32,6 +32,7 @@ public class BaseColumn extends UIColumn {
     private Boolean resizable;
     private String minResizingWidth;
     private Boolean fixed;
+    private Boolean menuAllowed;
 
     private String style;
     private String styleClass;
@@ -80,7 +81,7 @@ public class BaseColumn extends UIColumn {
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         return new Object[]{superState,
-                headerValue, footerValue, align, valign, width, resizable, minResizingWidth, fixed,
+                headerValue, footerValue, align, valign, width, resizable, minResizingWidth, fixed, menuAllowed,
                 style, styleClass, headerStyle, headerClass,
                 subHeaderStyle, subHeaderClass, bodyStyle, bodyClass, footerStyle, footerClass,
                 onclick, ondblclick, onmousedown, onmouseover, onmousemove,
@@ -104,6 +105,7 @@ public class BaseColumn extends UIColumn {
         resizable = (Boolean) state[i++];
         minResizingWidth = (String) state[i++];
         fixed = (Boolean) state[i++];
+        menuAllowed = (Boolean) state[i++];
         style = (String) state[i++];
         styleClass = (String) state[i++];
         headerStyle = (String) state[i++];
@@ -198,6 +200,18 @@ public class BaseColumn extends UIColumn {
 
     public void setFixed(boolean fixed) {
         this.fixed = fixed;
+    }
+
+    public boolean getMenuAllowed() {
+        return ValueBindings.get(this, "menuAllowed", menuAllowed, getDefaultMenuAllowed());
+    }
+
+    public void setMenuAllowed(boolean menuAllowed) {
+        this.menuAllowed = menuAllowed;
+    }
+
+    protected boolean getDefaultMenuAllowed() {
+        return true;
     }
 
     public String getMinResizingWidth() {

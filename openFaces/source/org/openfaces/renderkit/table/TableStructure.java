@@ -545,6 +545,8 @@ public class TableStructure extends TableElement {
                     columnOrGroup.getFooterOnmouseout(),
                     columnOrGroup.getFooterOnmouseup());
         }
+        if (!(columnOrGroup instanceof ColumnGroup))
+            columnObj.put("menuAllowed", columnOrGroup.getMenuAllowed());
         return columnObj;
     }
 

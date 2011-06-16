@@ -57,6 +57,10 @@ public abstract class BaseColumnJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("fixed", fixed);
     }
 
+    public void setMenuAllowed(ValueExpression menuAllowed) {
+        getDelegate().setPropertyValue("menuAllowed", menuAllowed);
+    }
+
     public void setHeaderStyle(ValueExpression headerStyle) {
         getDelegate().setPropertyValue("headerStyle", headerStyle);
     }
