@@ -1427,6 +1427,9 @@ O$.prepareFormParams = function(form, buf) {
     if (!elementType || elementType == "image" || elementType == "button" || elementType == "submit")
       continue;
 
+    if (element.disabled)
+      continue;
+
     if (elementType == "checkbox" || elementType == "radio") {
       if (!element.checked)
         continue;
