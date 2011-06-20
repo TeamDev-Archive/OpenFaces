@@ -28,15 +28,14 @@ import org.openfaces.component.chart.impl.generators.DynamicXYGenerator;
  */
 public class TooltipsConfigurator extends AbstractConfigurator implements RendererConfigurator {
 
-    public TooltipsConfigurator(ChartView view) {
-        super(view);
+    public TooltipsConfigurator() {
     }
 
-    public void configure(ConfigurableRenderer renderer) {
+    public void configure(ChartView view, ConfigurableRenderer renderer) {
         if (renderer instanceof AbstractCategoryItemRenderer) {
-            setupTooltips((GridChartView) getView(), ((AbstractCategoryItemRenderer) renderer));
+            setupTooltips((GridChartView) view, (AbstractCategoryItemRenderer) renderer);
         } else if (renderer instanceof XYItemRenderer) {
-            setupTooltips((GridChartView) getView(), ((XYItemRenderer) renderer));
+            setupTooltips((GridChartView) view, (XYItemRenderer) renderer);
         }
     }
 

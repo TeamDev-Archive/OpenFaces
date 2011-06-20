@@ -12,6 +12,8 @@
 
 package org.openfaces.component.chart.impl.configuration;
 
+import org.openfaces.component.chart.ChartView;
+
 import java.util.Collection;
 
 /**
@@ -19,9 +21,9 @@ import java.util.Collection;
  */
 public interface ConfigurablePlot {
 
-     void addConfigurator(PlotConfigurator configurator);
+    void addConfigurator(PlotConfigurator configurator);
 
     Collection<PlotConfigurator> getConfigurators();
 
-    public void configure();
+    public void configure(ChartView chartView);
 }

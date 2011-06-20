@@ -40,12 +40,12 @@ import java.util.List;
  */
 public abstract class GridChartConfigurator extends AbstractChartConfigurator {
 
-    protected GridChartConfigurator(Chart chart, ChartModel model) {
-        super(chart, model);
+    protected GridChartConfigurator(ChartModel model) {
+        super(model);
     }
 
-    protected void initMarkers(CategoryPlot categoryPlot) {
-        final GridChartView chartView = (GridChartView) getChartView();
+    protected void initMarkers(Chart chart, CategoryPlot categoryPlot) {
+        final GridChartView chartView = (GridChartView) chart.getChartView();
         final List<Marker> domainMarkers = collectMarkers(chartView, DomainMarkers.class);
         final List<Marker> rangeMarkers = collectMarkers(chartView, RangeMarkers.class);
 
@@ -66,8 +66,8 @@ public abstract class GridChartConfigurator extends AbstractChartConfigurator {
         }
     }
 
-    protected void initMarkers(XYPlot xyPlot) {
-        final GridChartView chartView = (GridChartView) getChartView();
+    protected void initMarkers(Chart chart, XYPlot xyPlot) {
+        final GridChartView chartView = (GridChartView) chart.getChartView();
         final List<Marker> domainMarkers = collectMarkers(chartView, DomainMarkers.class);
         final List<Marker> rangeMarkers = collectMarkers(chartView, RangeMarkers.class);
 

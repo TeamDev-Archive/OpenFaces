@@ -140,6 +140,6 @@ public class BarChartView extends GridChartView {
     @Override
     public ChartConfigurator getConfigurator() {
         final Chart chart = getChart();
-        return new BarChartConfigurator(chart, chart.getModel());
+        return new BarChartConfigurator(chart.getModel());
     }
 }

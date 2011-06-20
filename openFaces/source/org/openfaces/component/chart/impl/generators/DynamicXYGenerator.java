@@ -23,14 +23,15 @@ import org.openfaces.component.chart.impl.ModelType;
 import org.openfaces.component.chart.impl.SeriesInfoImpl;
 import org.openfaces.util.Log;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * @author Ekaterina Shliakhovetskaya
  */
-public class DynamicXYGenerator implements XYToolTipGenerator, XYURLGenerator {
-    private final GridChartView view;
-    private final ChartViewValueExpression valueExpression;
+public class DynamicXYGenerator implements XYToolTipGenerator, XYURLGenerator, Serializable {
+    private transient final GridChartView view;
+    private transient final ChartViewValueExpression valueExpression;
 
     public DynamicXYGenerator(GridChartView view, ChartViewValueExpression valueExpression) {
         this.view = view;
@@ -74,7 +75,6 @@ public class DynamicXYGenerator implements XYToolTipGenerator, XYURLGenerator {
             //!
 
             if (valueExpression != null) {
-                valueExpression.setChartView(view);
                 currentValue = valueExpression.getHint("point", point).toString();
             }
 

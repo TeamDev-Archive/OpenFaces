@@ -13,12 +13,16 @@
 package org.openfaces.component.chart;
 
 import java.awt.*;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.io.Serializable;
 
 /**
  * @author Eugene Goncharov
  */
-public class LineStyle implements Serializable {
+public class LineStyle implements Externalizable {
     private Color color;
     private Stroke stroke;
 
@@ -32,6 +36,30 @@ public class LineStyle implements Serializable {
 
     public LineStyle(Stroke stroke) {
         this.stroke = stroke;
+    }
+
+    public void writeExternal(ObjectOutput out) throws IOException {
+        out.writeObject(color);
+        if (! (stroke instanceof BasicStroke))
+            throw new IllegalStateException("Only BasicStroke Stroke implementations are expected here");
+        BasicStroke stroke = (BasicStroke) this.stroke;
+        out.writeObject(stroke.getDashArray());
+        out.writeFloat(stroke.getDashPhase());
+        out.writeInt(stroke.getEndCap());
+        out.writeInt(stroke.getLineJoin());
+        out.writeFloat(stroke.getLineWidth());
+        out.writeFloat(stroke.getMiterLimit());
+    }
+
+    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+        color = (Color) in.readObject();
+        float[] dashArray = (float[]) in.readObject();
+        float dashPhase = in.readFloat();
+        int endCap = in.readInt();
+        int lineJoin = in.readInt();
+        float lineWidth = in.readFloat();
+        float miterLimit = in.readFloat();
+        this.stroke = new BasicStroke(lineWidth, endCap, lineJoin, miterLimit, dashArray, dashPhase);
     }
 
     public Color getColor() {

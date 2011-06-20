@@ -36,12 +36,7 @@ import java.awt.*;
 public class LineAndShapePropertiesConfigurator extends AbstractConfigurator implements RendererConfigurator {
     private Dataset dataSet;
 
-    public LineAndShapePropertiesConfigurator(ChartView view) {
-        super(view);
-    }
-
-    public LineAndShapePropertiesConfigurator(ChartView view, Dataset dataSet) {
-        super(view);
+    public LineAndShapePropertiesConfigurator(Dataset dataSet) {
         this.dataSet = dataSet;
     }
 
@@ -49,12 +44,8 @@ public class LineAndShapePropertiesConfigurator extends AbstractConfigurator imp
         return dataSet;
     }
 
-    public void setDataSet(Dataset dataSet) {
-        this.dataSet = dataSet;
-    }
-
-    public void configure(ConfigurableRenderer renderer) {
-        LineChartView lineChartView = (LineChartView) getView();
+    public void configure(ChartView view, ConfigurableRenderer renderer) {
+        LineChartView lineChartView = (LineChartView) view;
 
         java.util.List<LineProperties> linePropertiesList = lineChartView.getLinePropertiesList();
         if (linePropertiesList == null)

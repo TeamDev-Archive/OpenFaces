@@ -27,17 +27,12 @@ import java.util.Iterator;
 public class FillPaintConfigurator extends AbstractConfigurator implements RendererConfigurator {
     private int seriesCount;
 
-    public FillPaintConfigurator(ChartView view) {
-        super(view);
-    }
-
-    public FillPaintConfigurator(ChartView view, int seriesCount) {
-        super(view);
+    public FillPaintConfigurator(int seriesCount) {
         this.seriesCount = seriesCount;
     }
 
-    public void configure(ConfigurableRenderer configurableRenderer) {
-        LineChartView chartView = (LineChartView) getView();
+    public void configure(ChartView view, ConfigurableRenderer configurableRenderer) {
+        LineChartView chartView = (LineChartView) view;
         final boolean fillPaintsSpecified = chartView.getFillPaints() != null && !chartView.getFillPaints().isEmpty();
         AbstractRenderer renderer = (AbstractRenderer) configurableRenderer;
 

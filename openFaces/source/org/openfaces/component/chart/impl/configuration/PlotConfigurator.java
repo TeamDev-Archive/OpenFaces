@@ -12,10 +12,14 @@
 
 package org.openfaces.component.chart.impl.configuration;
 
+import org.openfaces.component.chart.ChartView;
+
+import java.io.Serializable;
+
 /**
  * @author Eugene Goncharov
  */
-public interface PlotConfigurator {
+public interface PlotConfigurator extends Serializable {
 
-    void configure(ConfigurablePlot plot);
+    void configure(ConfigurablePlot plot, ChartView view);
 }

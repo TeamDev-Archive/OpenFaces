@@ -21,13 +21,12 @@ import org.openfaces.component.chart.impl.renderers.AreaFillRenderer;
  */
 public class AreaFillConfigurator extends AbstractConfigurator implements RendererConfigurator {
 
-    public AreaFillConfigurator(ChartView view) {
-        super(view);
+    public AreaFillConfigurator() {
     }
 
-    public void configure(ConfigurableRenderer renderer) {
+    public void configure(ChartView view, ConfigurableRenderer renderer) {
         if (renderer instanceof AreaFillRenderer) {
-            LineChartView chartView = (LineChartView) getView();
+            LineChartView chartView = (LineChartView) view;
             AreaFillRenderer areaFillRenderer = (AreaFillRenderer) renderer;
             areaFillRenderer.setBackgroundPaint(chartView.getBackgroundPaint());
             areaFillRenderer.setLineAreaFill(chartView.getLineAreaFill());

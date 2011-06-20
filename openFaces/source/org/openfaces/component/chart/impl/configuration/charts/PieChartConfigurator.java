@@ -30,17 +30,17 @@ import org.openfaces.component.chart.impl.plots.PiePlotAdapter;
  */
 public class PieChartConfigurator extends AbstractChartConfigurator {
 
-    public PieChartConfigurator(Chart chart, ChartModel model) {
-        super(chart, model);
+    public PieChartConfigurator(ChartModel model) {
+        super(model);
     }
 
     @Override
-    public Plot configurePlot(ModelInfo info) {
-        return createPlot(getChart(), getModel(), info);
+    public Plot configurePlot(Chart chart, ModelInfo info) {
+        return createPlot(chart, getModel(), info);
     }
 
     protected Plot createPlot(Chart chart, ChartModel model, ModelInfo info) {
-        final PieChartView chartView = (PieChartView) getChartView();
+        final PieChartView chartView = (PieChartView) chart.getChartView();
 
         if (info.isDataEmpty()) {
             return new PiePlotAdapter(null, chart, chartView);

@@ -23,6 +23,7 @@ import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.ui.RectangleEdge;
 import org.jfree.util.ShapeUtilities;
+import org.openfaces.component.chart.ChartView;
 import org.openfaces.component.chart.GradientLineAreaFill;
 import org.openfaces.component.chart.LineAreaFill;
 import org.openfaces.component.chart.SolidLineAreaFill;
@@ -472,8 +473,8 @@ public class LineFillRenderer extends LineAndShapeRenderer implements AreaFillRe
         return configurationDelegate.getConfigurators();
     }
 
-    public void configure() {
-        configurationDelegate.configurate(this);
+    public void configure(ChartView chartView) {
+        configurationDelegate.configure(chartView, this);
     }
 
     @Override

@@ -24,12 +24,11 @@ import org.openfaces.component.chart.impl.renderers.XYBarRendererAdapter;
  */
 public class ShadowConfigurator extends AbstractConfigurator implements RendererConfigurator, PlotConfigurator {
 
-    public ShadowConfigurator(ChartView view) {
-        super(view);
+    public ShadowConfigurator() {
     }
 
-    public void configure(ConfigurablePlot plot) {
-        PieChartView pieChartView = (PieChartView) getView();
+    public void configure(ConfigurablePlot plot, ChartView view) {
+        PieChartView pieChartView = (PieChartView) view;
         PiePlot piePlot = (PiePlot) plot;
 
         piePlot.setShadowPaint(pieChartView.getShadowColor());
@@ -37,8 +36,8 @@ public class ShadowConfigurator extends AbstractConfigurator implements Renderer
         piePlot.setShadowYOffset(pieChartView.getShadowYOffset());
     }
 
-    public void configure(ConfigurableRenderer renderer) {
-        BarChartView chartView = (BarChartView) getView();
+    public void configure(ChartView view, ConfigurableRenderer renderer) {
+        BarChartView chartView = (BarChartView) view;
         if (chartView.isShowShadow()) {
             validateShadowOffsetParameters(chartView);
         }

@@ -23,8 +23,8 @@ import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.chart.renderer.xy.XYItemRendererState;
 import org.jfree.data.general.DatasetUtilities;
 import org.jfree.data.xy.XYDataset;
-import org.openfaces.component.chart.Chart;
 import org.openfaces.component.chart.ChartDomain;
+import org.openfaces.component.chart.ChartView;
 import org.openfaces.component.chart.GridChartView;
 import org.openfaces.component.chart.impl.PropertiesConverter;
 import org.openfaces.component.chart.impl.configuration.ConfigurablePlot;
@@ -45,27 +45,23 @@ public abstract class XYPlotAdapter extends XYPlot implements ConfigurablePlot {
     private ConfigurablePlotBase configurationDelegate = new ConfigurablePlotBase();
     private boolean keyAxisVisible;
     private boolean valueAxisVisible;
-    private Chart chart;
-    private GridChartView chartView;
 
     public XYPlotAdapter(XYDataset ds, AbstractXYItemRenderer renderer,
-                         Chart chart, GridChartView view) {
+                         GridChartView view) {
         setDataset(ds);
         setRenderer(renderer);
-        this.chart = chart;
-        this.chartView = view;
 
-        ChartDomain showAxes = this.chartView.getShowAxes();
+        ChartDomain showAxes = view.getShowAxes();
         if (showAxes == null) {
             showAxes = ChartDomain.BOTH;
-            this.chartView.setShowAxes(showAxes);
+            view.setShowAxes(showAxes);
         }
 
         keyAxisVisible = showAxes.equals(ChartDomain.BOTH) || showAxes.equals(ChartDomain.KEY);
         valueAxisVisible = showAxes.equals(ChartDomain.BOTH) || showAxes.equals(ChartDomain.VALUE);
 
-        ValueAxis domainAxisAdapter = getDomainAxisAdapter();
-        ValueAxis rangeAxisAdapter = getRangeAxisAdapter();
+        ValueAxis domainAxisAdapter = getDomainAxisAdapter(view);
+        ValueAxis rangeAxisAdapter = getRangeAxisAdapter(view);
 
         setDomainAxis(domainAxisAdapter);
         setRangeAxis(rangeAxisAdapter);
@@ -75,13 +71,13 @@ public abstract class XYPlotAdapter extends XYPlot implements ConfigurablePlot {
             rangeAxisAdapter.setVisible(false);
         }
 
-        setOrientation(PropertiesConverter.toPlotOrientation(chartView.getOrientation()));
+        setOrientation(PropertiesConverter.toPlotOrientation(view.getOrientation()));
 
-        addConfigurator(new PlotGridLinesConfigurator(chartView, ds));
-        addConfigurator(new PlotColorsConfigurator(view));
-        addConfigurator(new PlotSelectionConfigurator(chartView));
+        addConfigurator(new PlotGridLinesConfigurator(ds));
+        addConfigurator(new PlotColorsConfigurator());
+        addConfigurator(new PlotSelectionConfigurator());
 
-        configure();
+        configure(view);
     }
 
     @Override
@@ -178,9 +174,9 @@ public abstract class XYPlotAdapter extends XYPlot implements ConfigurablePlot {
         return renderer;
     }
 
-    abstract ValueAxis getDomainAxisAdapter();
+    abstract ValueAxis getDomainAxisAdapter(ChartView chartView);
 
-    abstract ValueAxis getRangeAxisAdapter();
+    abstract ValueAxis getRangeAxisAdapter(ChartView chartView);
 
     public boolean isKeyAxisVisible() {
         return keyAxisVisible;
@@ -198,22 +194,6 @@ public abstract class XYPlotAdapter extends XYPlot implements ConfigurablePlot {
         this.valueAxisVisible = valueAxisVisible;
     }
 
-    public GridChartView getChartView() {
-        return chartView;
-    }
-
-    public void setChartView(GridChartView chartView) {
-        this.chartView = chartView;
-    }
-
-    public Chart getChart() {
-        return chart;
-    }
-
-    public void setChart(Chart chart) {
-        this.chart = chart;
-    }
-
     public void addConfigurator(PlotConfigurator configurator) {
         configurationDelegate.addConfigurator(configurator);
     }
@@ -222,7 +202,7 @@ public abstract class XYPlotAdapter extends XYPlot implements ConfigurablePlot {
         return configurationDelegate.getConfigurators();
     }
 
-    public void configure() {
-        configurationDelegate.configure(this);
+    public void configure(ChartView chartView) {
+        configurationDelegate.configure(this, chartView);
     }
 }

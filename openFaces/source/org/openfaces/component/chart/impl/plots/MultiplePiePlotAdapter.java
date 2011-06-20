@@ -19,6 +19,7 @@ import org.jfree.data.category.CategoryToPieDataset;
 import org.jfree.ui.RectangleEdge;
 import org.jfree.util.TableOrder;
 import org.openfaces.component.chart.Chart;
+import org.openfaces.component.chart.ChartView;
 import org.openfaces.component.chart.PieChartView;
 import org.openfaces.component.chart.impl.configuration.ConfigurablePlot;
 import org.openfaces.component.chart.impl.configuration.PlotColorsConfigurator;
@@ -51,9 +52,9 @@ public class MultiplePiePlotAdapter extends MultiplePiePlot implements Configura
             new PiePlotAdapter(piePlot, ds, order, view, chart);
         }
 
-        addConfigurator(new PlotColorsConfigurator(view));
+        addConfigurator(new PlotColorsConfigurator());
 
-        configure();
+        configure(view);
     }
 
     private TextTitle getSeriesTitle(Chart chart) {
@@ -81,7 +82,7 @@ public class MultiplePiePlotAdapter extends MultiplePiePlot implements Configura
         return configurationDelegate.getConfigurators();
     }
 
-    public void configure() {
-        configurationDelegate.configure(this);
+    public void configure(ChartView chartView) {
+        configurationDelegate.configure(this, chartView);
     }
 }

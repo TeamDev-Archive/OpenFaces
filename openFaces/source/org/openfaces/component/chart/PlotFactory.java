@@ -24,6 +24,6 @@ public class PlotFactory {
     public static Plot createPlot(Chart chart, ModelInfo info) {
         ChartConfigurator configurator = chart.getChartView().getConfigurator();
 
-        return configurator.configurePlot(info);
+        return configurator.configurePlot(chart, info);
     }
 }

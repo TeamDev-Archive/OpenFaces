@@ -21,12 +21,14 @@ import org.openfaces.component.chart.impl.GridPointInfoImpl;
 import org.openfaces.component.chart.impl.SeriesInfoImpl;
 import org.openfaces.util.Log;
 
+import java.io.Serializable;
+
 /**
  * @author Ekaterina Shliakhovetskaya
  */
-public class DynamicCategoryGenerator implements CategoryToolTipGenerator, CategoryURLGenerator {
-    private final GridChartView view;
-    private final ChartViewValueExpression dynamicProperty;
+public class DynamicCategoryGenerator implements CategoryToolTipGenerator, CategoryURLGenerator, Serializable {
+    private transient final GridChartView view;
+    private transient final ChartViewValueExpression dynamicProperty;
 
     public DynamicCategoryGenerator(GridChartView view, ChartViewValueExpression dynamicProperty) {
         this.view = view;
@@ -64,7 +66,6 @@ public class DynamicCategoryGenerator implements CategoryToolTipGenerator, Categ
 
 
             if (dynamicProperty != null) {
-                dynamicProperty.setChartView(view);
                 currentValue = dynamicProperty.getHint("point", point).toString();
             }
 

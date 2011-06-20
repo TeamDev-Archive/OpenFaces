@@ -38,16 +38,15 @@ import java.awt.*;
  */
 public class PlotSelectionConfigurator extends AbstractConfigurator implements PlotConfigurator {
 
-    public PlotSelectionConfigurator(ChartView view) {
-        super(view);
+    public PlotSelectionConfigurator() {
     }
 
-    public void configure(ConfigurablePlot configurablePlot) {
-        if (getView().getChart().getChartSelection() != null) {
-            if (getView() instanceof PieChartView) {
-                setupPieChartSelection((PiePlot) configurablePlot, getView().getChart());
+    public void configure(ConfigurablePlot configurablePlot, ChartView view) {
+        if (view.getChart().getChartSelection() != null) {
+            if (view instanceof PieChartView) {
+                setupPieChartSelection((PiePlot) configurablePlot, view.getChart());
             } else {
-                setupGridChartSelection(((Plot) configurablePlot), (GridChartView) getView());
+                setupGridChartSelection(((Plot) configurablePlot), (GridChartView) view);
             }
         }
     }

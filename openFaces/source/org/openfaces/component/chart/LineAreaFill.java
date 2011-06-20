@@ -12,8 +12,10 @@
 
 package org.openfaces.component.chart;
 
+import java.io.Serializable;
+
 /**
  * @author Eugene Goncharov
  */
-public interface LineAreaFill {
+public interface LineAreaFill extends Serializable {
 }

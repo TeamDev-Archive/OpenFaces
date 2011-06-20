@@ -12,23 +12,13 @@
 
 package org.openfaces.component.chart.impl.configuration;
 
-import org.openfaces.component.chart.ChartView;
-
 /**
  * @author Eugene Goncharov
  */
 public abstract class AbstractConfigurator {
-    private ChartView view;
 
-    protected AbstractConfigurator(ChartView view) {
-        this.view = view;
+    protected AbstractConfigurator() {
     }
 
-    public ChartView getView() {
-        return view;
-    }
 
-    public void setView(ChartView view) {
-        this.view = view;
-    }
 }

@@ -26,12 +26,11 @@ import org.openfaces.component.chart.impl.renderers.StandardXYBarPainterAdapter;
  */
 public class BarsPainterConfigurator extends AbstractConfigurator implements RendererConfigurator {
 
-    public BarsPainterConfigurator(ChartView view) {
-        super(view);
+    public BarsPainterConfigurator() {
     }
 
-    public void configure(ConfigurableRenderer renderer) {
-        BarChartView chartView = (BarChartView) getView();
+    public void configure(ChartView view, ConfigurableRenderer renderer) {
+        BarChartView chartView = (BarChartView) view;
         Boolean showGradient = chartView.isShowGradient();
 
         if (renderer instanceof XYBarRenderer) {

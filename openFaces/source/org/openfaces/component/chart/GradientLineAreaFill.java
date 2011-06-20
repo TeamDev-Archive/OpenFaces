@@ -13,9 +13,10 @@ package org.openfaces.component.chart;
 
 import org.openfaces.util.ValueBindings;
 
+import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 
-public class GradientLineAreaFill extends javax.faces.component.UIComponentBase implements LineAreaFill{
+public class GradientLineAreaFill extends UIComponentBase implements LineAreaFill {
     public static final String COMPONENT_TYPE = "org.openfaces.GradientLineAreaFill";
     public static final String COMPONENT_FAMILY = "org.openfaces.GradientLineAreaFill";
 

@@ -21,6 +21,7 @@ import org.jfree.data.xy.XYDataset;
 import org.openfaces.component.chart.BarChartView;
 import org.openfaces.component.chart.Chart;
 import org.openfaces.component.chart.ChartModel;
+import org.openfaces.component.chart.ChartView;
 import org.openfaces.component.chart.impl.ModelConverter;
 import org.openfaces.component.chart.impl.ModelInfo;
 import org.openfaces.component.chart.impl.ModelType;
@@ -44,16 +45,16 @@ import org.openfaces.component.chart.impl.renderers.XYBarRendererAdapter;
  */
 public class BarChartConfigurator extends GridChartConfigurator {
 
-    public BarChartConfigurator(Chart chart, ChartModel model) {
-        super(chart, model);
+    public BarChartConfigurator(ChartModel model) {
+        super(model);
     }
 
-    public Plot configurePlot(ModelInfo info) {
-        return createPlot(getChart(), info);
+    public Plot configurePlot(Chart chart, ModelInfo info) {
+        return createPlot(chart, info);
     }
 
     private Plot createPlot(Chart chart, ModelInfo info) {
-        final BarChartView chartView = (BarChartView) getChartView();
+        final BarChartView chartView = (BarChartView) chart.getChartView();
 
         if (info.getModelType().equals(ModelType.Number)) {
             XYDataset ds = ModelConverter.toXYSeriesCollection(info);
@@ -63,8 +64,8 @@ public class BarChartConfigurator extends GridChartConfigurator {
             int seriesCount = ds != null ? ds.getSeriesCount() : 0;
             configure(chartView, configurableRenderer, seriesCount);
 
-            final GridXYPlotAdapter xyPlotAdapter = new GridXYPlotAdapter(ds, renderer, chart, chartView);
-            initMarkers(xyPlotAdapter);
+            final GridXYPlotAdapter xyPlotAdapter = new GridXYPlotAdapter(ds, renderer, chartView);
+            initMarkers(chart, xyPlotAdapter);
 
             return xyPlotAdapter;
         }
@@ -77,8 +78,8 @@ public class BarChartConfigurator extends GridChartConfigurator {
             int seriesCount = ds != null ? ds.getSeriesCount() : 0;
             configure(chartView, configurableRenderer, seriesCount);
 
-            final GridDatePlotAdapter datePlotAdapter = new GridDatePlotAdapter(ds, renderer, chart, chartView);
-            initMarkers(datePlotAdapter);
+            final GridDatePlotAdapter datePlotAdapter = new GridDatePlotAdapter(ds, renderer, chartView);
+            initMarkers(chart, datePlotAdapter);
 
             return datePlotAdapter;
         }
@@ -97,21 +98,21 @@ public class BarChartConfigurator extends GridChartConfigurator {
             ((BarRenderer3DAdapter) renderer).setWallPaint(chartView.getWallColor());
         }
 
-        final GridCategoryPlotAdapter gridCategoryPlot = new GridCategoryPlotAdapter(ds, renderer, chart, chartView);
-        initMarkers(gridCategoryPlot);
+        final GridCategoryPlotAdapter gridCategoryPlot = new GridCategoryPlotAdapter(ds, renderer, chartView);
+        initMarkers(chart, gridCategoryPlot);
 
         return gridCategoryPlot;
     }
 
-    private void configure(BarChartView chartView, ConfigurableRenderer configurableRenderer, int seriesCount) {
-        configurableRenderer.addConfigurator(new ItemsColorConfigurator(chartView));
-        configurableRenderer.addConfigurator(new ShadowConfigurator(chartView));
-        configurableRenderer.addConfigurator(new BarsPainterConfigurator(chartView));
-        configurableRenderer.addConfigurator(new OutlineConfigurator(chartView, seriesCount));
-        configurableRenderer.addConfigurator(new GridLabelsConfigurator(chartView));
-        configurableRenderer.addConfigurator(new TooltipsConfigurator(chartView));
-        configurableRenderer.addConfigurator(new UrlsConfigurator(chartView));
+    private void configure(ChartView chartView, ConfigurableRenderer configurableRenderer, int seriesCount) {
+        configurableRenderer.addConfigurator(new ItemsColorConfigurator());
+        configurableRenderer.addConfigurator(new ShadowConfigurator());
+        configurableRenderer.addConfigurator(new BarsPainterConfigurator());
+        configurableRenderer.addConfigurator(new OutlineConfigurator(seriesCount));
+        configurableRenderer.addConfigurator(new GridLabelsConfigurator());
+        configurableRenderer.addConfigurator(new TooltipsConfigurator());
+        configurableRenderer.addConfigurator(new UrlsConfigurator());
 
-        configurableRenderer.configure();
+        configurableRenderer.configure(chartView);
     }
 }

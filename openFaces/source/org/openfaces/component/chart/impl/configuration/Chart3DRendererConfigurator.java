@@ -20,13 +20,12 @@ import org.openfaces.component.chart.impl.renderers.Chart3DRendererAdapter;
  */
 public class Chart3DRendererConfigurator extends AbstractConfigurator implements RendererConfigurator {
 
-    public Chart3DRendererConfigurator(ChartView view) {
-        super(view);
+    public Chart3DRendererConfigurator() {
     }
 
-    public void configure(ConfigurableRenderer renderer) {
-        if (getView().isEnable3D() && renderer instanceof Chart3DRendererAdapter) {
-            ((Chart3DRendererAdapter) renderer).setWallPaint(getView().getWallColor());
+    public void configure(ChartView view, ConfigurableRenderer renderer) {
+        if (view.isEnable3D() && renderer instanceof Chart3DRendererAdapter) {
+            ((Chart3DRendererAdapter) renderer).setWallPaint(view.getWallColor());
         }
     }
 }

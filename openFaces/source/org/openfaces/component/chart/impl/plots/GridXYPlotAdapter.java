@@ -14,9 +14,9 @@ package org.openfaces.component.chart.impl.plots;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.renderer.xy.AbstractXYItemRenderer;
 import org.jfree.data.xy.XYDataset;
-import org.openfaces.component.chart.Chart;
 import org.openfaces.component.chart.ChartAxis;
 import org.openfaces.component.chart.ChartNumberAxis;
+import org.openfaces.component.chart.ChartView;
 import org.openfaces.component.chart.GridChartView;
 import org.openfaces.component.chart.impl.helpers.NumberAxis3DAdapter;
 import org.openfaces.component.chart.impl.helpers.NumberAxisAdapter;
@@ -27,12 +27,12 @@ import org.openfaces.component.chart.impl.helpers.NumberAxisAdapter;
 public class GridXYPlotAdapter extends XYPlotAdapter {
 
     public GridXYPlotAdapter(XYDataset ds, AbstractXYItemRenderer renderer,
-                             Chart chart, GridChartView chartView) {
-        super(ds, renderer, chart, chartView);
+                             GridChartView chartView) {
+        super(ds, renderer, chartView);
     }
 
-    public ValueAxis getDomainAxisAdapter() {
-        final GridChartView view = getChartView();
+    public ValueAxis getDomainAxisAdapter(ChartView chartView) {
+        final GridChartView view = (GridChartView) chartView;
         ChartAxis baseAxis = view.getBaseAxis();
         ChartNumberAxis keyAxis = (view.getKeyAxis() instanceof ChartNumberAxis)
                 ? (ChartNumberAxis) view.getKeyAxis()
@@ -40,11 +40,11 @@ public class GridXYPlotAdapter extends XYPlotAdapter {
 
         return !view.isEnable3D()
                 ? new NumberAxisAdapter(view.getKeyAxisLabel(), isKeyAxisVisible(), keyAxis, baseAxis, view)
-                : new NumberAxis3DAdapter(getChartView().getKeyAxisLabel(), isKeyAxisVisible(), keyAxis, baseAxis, view);
+                : new NumberAxis3DAdapter(view.getKeyAxisLabel(), isKeyAxisVisible(), keyAxis, baseAxis, view);
     }
 
-    public ValueAxis getRangeAxisAdapter() {
-        final GridChartView view = getChartView();
+    public ValueAxis getRangeAxisAdapter(ChartView chartView) {
+        final GridChartView view = (GridChartView) chartView;
         ChartAxis baseAxis = view.getBaseAxis();
         ChartNumberAxis valueAxis = (view.getValueAxis() instanceof ChartNumberAxis)
                 ? (ChartNumberAxis) view.getValueAxis()
@@ -52,7 +52,7 @@ public class GridXYPlotAdapter extends XYPlotAdapter {
 
         return !view.isEnable3D()
                 ? new NumberAxisAdapter(view.getValueAxisLabel(), isValueAxisVisible(), valueAxis, baseAxis, view)
-                : new NumberAxis3DAdapter(getChartView().getValueAxisLabel(), isValueAxisVisible(), valueAxis, baseAxis, view);
+                : new NumberAxis3DAdapter(view.getValueAxisLabel(), isValueAxisVisible(), valueAxis, baseAxis, view);
     }
 }
 

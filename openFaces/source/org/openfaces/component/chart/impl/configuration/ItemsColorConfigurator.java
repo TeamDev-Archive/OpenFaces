@@ -26,12 +26,11 @@ import java.util.Iterator;
  */
 public class ItemsColorConfigurator extends AbstractConfigurator implements RendererConfigurator, PlotConfigurator {
 
-    public ItemsColorConfigurator(ChartView view) {
-        super(view);
+    public ItemsColorConfigurator() {
     }
 
-    public void configure(ConfigurablePlot plot) {
-        Object colorsStr = getView().getColors();
+    public void configure(ConfigurablePlot plot, ChartView view) {
+        Object colorsStr = view.getColors();
         if (colorsStr != null) {
             Collection<Paint> colors = PropertiesConverter.getColors(colorsStr);
 
@@ -39,7 +38,7 @@ public class ItemsColorConfigurator extends AbstractConfigurator implements Rend
             int colorIndex = 0;
             while (colorsIterator.hasNext()) {
                 Paint color = colorsIterator.next();
-                
+
                 ((PiePlot) plot).setSectionPaint(colorIndex, color);
 
                 colorIndex++;
@@ -47,11 +46,11 @@ public class ItemsColorConfigurator extends AbstractConfigurator implements Rend
         }
     }
 
-    public void configure(ConfigurableRenderer renderer) {
-        if (getView() == null || !(renderer instanceof AbstractRenderer))
+    public void configure(ChartView view, ConfigurableRenderer renderer) {
+        if (view == null || !(renderer instanceof AbstractRenderer))
             return;
 
-        Collection<Paint> colors = PropertiesConverter.getColors(getView().getColors());
+        Collection<Paint> colors = PropertiesConverter.getColors(view.getColors());
         Iterator<Paint> colorsIterator = colors.iterator();
         int colorIndex = 0;
         while (colorsIterator.hasNext()) {
