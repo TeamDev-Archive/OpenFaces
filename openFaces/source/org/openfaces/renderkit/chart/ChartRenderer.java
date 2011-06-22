@@ -112,45 +112,7 @@ public class ChartRenderer extends RendererBase {
             chart.getChildren().add(dynamicImage);
         }
         DynamicImage dynamicImage = Components.findChildWithClass(chart, DynamicImage.class);
-        ValueExpression ve = new ValueExpression() {
-            public Object getValue(ELContext elContext) {
-                return imageAsByteArray;
-            }
-
-            public void setValue(ELContext elContext, Object value) {
-                throw new UnsupportedOperationException("Could not change 'data' property using ValueExpression");
-            }
-
-            public boolean isReadOnly(ELContext elContext) {
-                return true;
-            }
-
-            public Class getType(ELContext elContext) {
-                if (imageAsByteArray == null)
-                    return Object.class;
-                return imageAsByteArray.getClass();
-            }
-
-            public Class getExpectedType() {
-                return Object.class;
-            }
-
-            public String getExpressionString() {
-                return null;
-            }
-
-            public boolean equals(Object o) {
-                return false;
-            }
-
-            public int hashCode() {
-                return 0;
-            }
-
-            public boolean isLiteralText() {
-                return false;
-            }
-        };
+        ValueExpression ve = new ByteArrayValueExpression(imageAsByteArray);
         dynamicImage.setValueExpression("data", ve);
         dynamicImage.setMapId(mapId);
         dynamicImage.setMap(map);
@@ -272,4 +234,49 @@ public class ChartRenderer extends RendererBase {
         }
     }
 
+    private static class ByteArrayValueExpression extends ValueExpression {
+        private byte[] imageAsByteArray;
+
+        public ByteArrayValueExpression(byte[] imageAsByteArray) {
+            this.imageAsByteArray = imageAsByteArray;
+        }
+
+        public Object getValue(ELContext elContext) {
+            return imageAsByteArray;
+        }
+
+        public void setValue(ELContext elContext, Object value) {
+            throw new UnsupportedOperationException("Could not change 'data' property using ValueExpression");
+        }
+
+        public boolean isReadOnly(ELContext elContext) {
+            return true;
+        }
+
+        public Class getType(ELContext elContext) {
+            if (imageAsByteArray == null)
+                return Object.class;
+            return imageAsByteArray.getClass();
+        }
+
+        public Class getExpectedType() {
+            return Object.class;
+        }
+
+        public String getExpressionString() {
+            return null;
+        }
+
+        public boolean equals(Object o) {
+            return false;
+        }
+
+        public int hashCode() {
+            return 0;
+        }
+
+        public boolean isLiteralText() {
+            return false;
+        }
+    }
 }
