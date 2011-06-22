@@ -23,11 +23,11 @@ import org.jfree.chart.renderer.category.CategoryItemRendererState;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.general.DatasetUtilities;
 import org.jfree.util.SortOrder;
-import org.openfaces.component.chart.Chart;
 import org.openfaces.component.chart.ChartAxis;
 import org.openfaces.component.chart.ChartCategoryAxis;
 import org.openfaces.component.chart.ChartDomain;
 import org.openfaces.component.chart.ChartNumberAxis;
+import org.openfaces.component.chart.ChartView;
 import org.openfaces.component.chart.GridChartView;
 import org.openfaces.component.chart.impl.PropertiesConverter;
 import org.openfaces.component.chart.impl.configuration.ConfigurablePlot;
@@ -52,7 +52,7 @@ public class GridCategoryPlotAdapter extends CategoryPlot implements Configurabl
     private ConfigurablePlotBase configurationDelegate = new ConfigurablePlotBase();
 
     public GridCategoryPlotAdapter(CategoryDataset ds, AbstractCategoryItemRenderer renderer,
-                                   Chart chart, GridChartView chartView) {
+                                   GridChartView chartView) {
         setDataset(ds);
         setRenderer(renderer);
 
@@ -90,11 +90,11 @@ public class GridCategoryPlotAdapter extends CategoryPlot implements Configurabl
 
         setOrientation(PropertiesConverter.toPlotOrientation(chartView.getOrientation()));
 
-        addConfigurator(new PlotColorsConfigurator(chartView));
-        addConfigurator(new PlotGridLinesConfigurator(chartView, ds));
-        addConfigurator(new PlotSelectionConfigurator(chartView));
+        addConfigurator(new PlotColorsConfigurator());
+        addConfigurator(new PlotGridLinesConfigurator(ds));
+        addConfigurator(new PlotSelectionConfigurator());
 
-        configure();
+        configure(chartView);
     }
 
     @Override
@@ -180,7 +180,7 @@ public class GridCategoryPlotAdapter extends CategoryPlot implements Configurabl
         return configurationDelegate.getConfigurators();
     }
 
-    public void configure() {
-        configurationDelegate.configure(this);
+    public void configure(ChartView chartView) {
+        configurationDelegate.configure(this, chartView);
     }
 }

@@ -30,6 +30,7 @@ import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.util.BooleanUtilities;
 import org.jfree.util.ShapeUtilities;
+import org.openfaces.component.chart.ChartView;
 import org.openfaces.component.chart.GradientLineAreaFill;
 import org.openfaces.component.chart.LineAreaFill;
 import org.openfaces.component.chart.SolidLineAreaFill;
@@ -610,8 +611,8 @@ public class XYLineFillRenderer extends AbstractXYItemRenderer
         return configurationDelegate.getConfigurators();
     }
 
-    public void configure() {
-        configurationDelegate.configurate(this);
+    public void configure(ChartView chartView) {
+        configurationDelegate.configure(chartView, this);
     }
 
     @Override

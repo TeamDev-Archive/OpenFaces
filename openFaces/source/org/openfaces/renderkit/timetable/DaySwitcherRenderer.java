@@ -85,7 +85,7 @@ public class DaySwitcherRenderer extends AbstractSwitcherRenderer {
             writer.startElement("div", switcher);
             writer.writeAttribute("id", clientId + "::text", null);
             String textClass = Styles.getCSSClass(context,
-                    switcher, switcher.getTextStyle(), "o_timeSwitcher_text", switcher.getTextClass());
+                    switcher, switcher.getTextStyle(), "o_daySwitcher_text", switcher.getTextClass());
             writer.writeAttribute("class", textClass, null);
 
             writer.write(dateFormat.format(timetableView.getDay()));

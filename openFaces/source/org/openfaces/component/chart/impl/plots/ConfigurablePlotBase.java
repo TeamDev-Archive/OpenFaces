@@ -12,9 +12,11 @@
 
 package org.openfaces.component.chart.impl.plots;
 
+import org.openfaces.component.chart.ChartView;
 import org.openfaces.component.chart.impl.configuration.ConfigurablePlot;
 import org.openfaces.component.chart.impl.configuration.PlotConfigurator;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -22,7 +24,7 @@ import java.util.List;
 /**
  * @author Eugene Goncharov
  */
-public class ConfigurablePlotBase {
+public class ConfigurablePlotBase implements Serializable {
     private List<PlotConfigurator> configurators = new ArrayList<PlotConfigurator>();
 
 
@@ -34,10 +36,10 @@ public class ConfigurablePlotBase {
         return configurators;
     }
 
-    public void configure(ConfigurablePlot plot) {
+    public void configure(ConfigurablePlot plot, ChartView view) {
         if (configurators != null && !configurators.isEmpty()) {
             for (PlotConfigurator configurator : configurators) {
-                configurator.configure(plot);
+                configurator.configure(plot, view);
             }
         }
     }

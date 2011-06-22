@@ -714,177 +714,178 @@ O$.Table = {
 
   // -------------------------- TABLE SELECTION SUPPORT
 
-  _initSelection: function(tableId, enabled, selectableItems,
+  _initSelection: function(tableId, enabled, required, selectableItems,
                            multipleSelectionAllowed, selectedItems, selectionClass,
                            selectionChangeHandler, postEventOnSelectionChange, selectionColumnIndexes,
                            mouseSupport, keyboardSupport) {
     var table = O$.initComponent(tableId);
     O$.assert(!table._selectionInitialized, "O$.Table._initSelection shouldn't be called twice on the same table");
     O$.extend(table, {
-      _selectionInitialized: true,
+              _selectionInitialized: true,
 
-      _selectionEnabled: !table._params.body.noDataRows && enabled,
-      _selectableItems: selectableItems,
-      _multipleSelectionAllowed: multipleSelectionAllowed,
-      _selectionClass: selectionClass,
-      _selectionColumnIndexes: selectionColumnIndexes,
-      _selectionMouseSupport: mouseSupport,
-      _selectionKeyboardSupport: keyboardSupport,
+              _selectionEnabled: !table._params.body.noDataRows && enabled,
+              _selectionRequired: required,
+              _selectableItems: selectableItems,
+              _multipleSelectionAllowed: multipleSelectionAllowed,
+              _selectionClass: selectionClass,
+              _selectionColumnIndexes: selectionColumnIndexes,
+              _selectionMouseSupport: mouseSupport,
+              _selectionKeyboardSupport: keyboardSupport,
 
-      _selectItem: function(itemIndex) {
-        O$.assert(itemIndex, "table_selectItem: itemIndex should be specified");
-        if (this._selectableItems == "rows") {
-          if (itemIndex == -1)
-            return;
-          var rows = this.body._getRows();
-          if (itemIndex < 0 || itemIndex >= rows.length)
-            throw "Row index out of range: " + itemIndex;
-          var row = rows[itemIndex];
-          row._selected = true;
-          row._updateStyle();
-          O$.Table._setSelectionCheckboxesSelected(row, true);
-        }
-      },
+              _selectItem: function(itemIndex) {
+                O$.assert(itemIndex, "table_selectItem: itemIndex should be specified");
+                if (this._selectableItems == "rows") {
+                  if (itemIndex == -1)
+                    return;
+                  var rows = this.body._getRows();
+                  if (itemIndex < 0 || itemIndex >= rows.length)
+                    throw "Row index out of range: " + itemIndex;
+                  var row = rows[itemIndex];
+                  row._selected = true;
+                  row._updateStyle();
+                  O$.Table._setSelectionCheckboxesSelected(row, true);
+                }
+              },
 
-      _unselectItem: function(itemIndex) {
-        O$.assert(itemIndex, "table._unselectItem: itemIndex should be specified");
-        if (this._selectableItems == "rows") {
-          if (itemIndex == -1)
-            return;
-          var rows = this.body._getRows();
-          var row = rows[itemIndex];
+              _unselectItem: function(itemIndex) {
+                O$.assert(itemIndex, "table._unselectItem: itemIndex should be specified");
+                if (this._selectableItems == "rows") {
+                  if (itemIndex == -1)
+                    return;
+                  var rows = this.body._getRows();
+                  var row = rows[itemIndex];
 
-          row._selected = false;
-          row._updateStyle();
-          O$.Table._setSelectionCheckboxesSelected(row, false);
-        }
-      },
+                  row._selected = false;
+                  row._updateStyle();
+                  O$.Table._setSelectionCheckboxesSelected(row, false);
+                }
+              },
 
-      _getSelectedItems: function() {
-        if (!this._selectedItems)
-          this._selectedItems = [];
-        return this._selectedItems;
-      },
-      _setSelectionFieldValue: function (value) {
-        var selectionFieldId = this.id + "::selection";
-        var selectionField = O$(selectionFieldId);
-        O$.assert(selectionField, "Couldn't find selectionField by id: " + selectionFieldId);
-        selectionField.value = value;
-      },
-      _setSelectedItems: function(items, forceUpdate) {
-        if (items == null) items = [];
-        var changesArray = [];
-        var changesArrayIndexes = [];
-        var oldSelectedItemsStr = "";
-        var i;
-        if (this._selectedItems)
-          for (i = 0; i < this._selectedItems.length; i++) {
-            var item = this._selectedItems[i];
-            if (i > 0)
-              oldSelectedItemsStr += ",";
-            oldSelectedItemsStr += item;
-            changesArray[item] = "unselect";
-            changesArrayIndexes.push(item);
-          }
-        if (!this._multipleSelectionAllowed && items && items.length > 1)
-          items = [items[0]];
-        if (items.length == 1 && items[0] == -1)
-          items = [];
-        this._selectedItems = items;
-        var newSelectedItemsStr = "";
-        if (this._selectedItems) {
-          for (i = 0; i < this._selectedItems.length; i++) {
-            if (i > 0)
-              newSelectedItemsStr += ",";
-            var itemToSelect = this._selectedItems[i];
-            O$.assert(itemToSelect, "table._setSelectedItems: itemToSelect is undefined for index " + i);
-            newSelectedItemsStr += itemToSelect;
-            if (changesArray[itemToSelect] == "unselect" && !forceUpdate)
-              changesArray[itemToSelect] = null;
-            else
-              changesArray[itemToSelect] = "select";
-            changesArrayIndexes.push(itemToSelect);
-          }
-        }
+              _getSelectedItems: function() {
+                if (!this._selectedItems)
+                  this._selectedItems = [];
+                return this._selectedItems;
+              },
+              _setSelectionFieldValue: function (value) {
+                var selectionFieldId = this.id + "::selection";
+                var selectionField = O$(selectionFieldId);
+                O$.assert(selectionField, "Couldn't find selectionField by id: " + selectionFieldId);
+                selectionField.value = value;
+              },
+              _setSelectedItems: function(items, forceUpdate) {
+                if (items == null) items = [];
+                var changesArray = [];
+                var changesArrayIndexes = [];
+                var oldSelectedItemsStr = "";
+                var i;
+                if (this._selectedItems)
+                  for (i = 0; i < this._selectedItems.length; i++) {
+                    var item = this._selectedItems[i];
+                    if (i > 0)
+                      oldSelectedItemsStr += ",";
+                    oldSelectedItemsStr += item;
+                    changesArray[item] = "unselect";
+                    changesArrayIndexes.push(item);
+                  }
+                if (!this._multipleSelectionAllowed && items && items.length > 1)
+                  items = [items[0]];
+                if (items.length == 1 && items[0] == -1)
+                  items = [];
+                this._selectedItems = items;
+                var newSelectedItemsStr = "";
+                if (this._selectedItems) {
+                  for (i = 0; i < this._selectedItems.length; i++) {
+                    if (i > 0)
+                      newSelectedItemsStr += ",";
+                    var itemToSelect = this._selectedItems[i];
+                    O$.assert(itemToSelect, "table._setSelectedItems: itemToSelect is undefined for index " + i);
+                    newSelectedItemsStr += itemToSelect;
+                    if (changesArray[itemToSelect] == "unselect" && !forceUpdate)
+                      changesArray[itemToSelect] = null;
+                    else
+                      changesArray[itemToSelect] = "select";
+                    changesArrayIndexes.push(itemToSelect);
+                  }
+                }
 
-        var count = changesArrayIndexes.length;
-        for (i = 0; i < count; i++) {
-          var changesArrayIndex = changesArrayIndexes[i];
-          var change = changesArray[changesArrayIndex];
-          if (change) {
-            if (change == "select")
-              this._selectItem(changesArrayIndex);
-            if (change == "unselect")
-              this._unselectItem(changesArrayIndex);
-            changesArray[changesArrayIndex] = null;
-          }
-        }
+                var count = changesArrayIndexes.length;
+                for (i = 0; i < count; i++) {
+                  var changesArrayIndex = changesArrayIndexes[i];
+                  var change = changesArray[changesArrayIndex];
+                  if (change) {
+                    if (change == "select")
+                      this._selectItem(changesArrayIndex);
+                    if (change == "unselect")
+                      this._unselectItem(changesArrayIndex);
+                    changesArray[changesArrayIndex] = null;
+                  }
+                }
 
-        var selectionFieldValue = O$.Table._formatSelectedItems(this._selectableItems, this._selectedItems);
-        this._setSelectionFieldValue(selectionFieldValue);
-        if (!this._blockSelectionChangeNotifications && oldSelectedItemsStr != newSelectedItemsStr) {
-          if (this._selectionChangeHandlers) {
-            for (var handlerIdx = 0, handlerCount = this._selectionChangeHandlers.length;
-                 handlerIdx < handlerCount;
-                 handlerIdx++) {
-              var handler = this._selectionChangeHandlers[handlerIdx];
-              var obj = handler[0];
-              var methodName = handler[1];
-              obj[methodName]();
-            }
-          }
-          if (this._postEventOnSelectionChange) {
-            var eventFieldId = this.id + "::selectionEvent";
-            var eventField = O$(eventFieldId);
-            eventField.value = this._postEventOnSelectionChange;
-            window._submittingTable = this;
-            setTimeout(function() {
-              O$.submitEnclosingForm(window._submittingTable);
-            }, 1);
-          }
-        }
-      },
+                var selectionFieldValue = O$.Table._formatSelectedItems(this._selectableItems, this._selectedItems);
+                this._setSelectionFieldValue(selectionFieldValue);
+                if (!this._blockSelectionChangeNotifications && oldSelectedItemsStr != newSelectedItemsStr) {
+                  if (this._selectionChangeHandlers) {
+                    for (var handlerIdx = 0, handlerCount = this._selectionChangeHandlers.length;
+                         handlerIdx < handlerCount;
+                         handlerIdx++) {
+                      var handler = this._selectionChangeHandlers[handlerIdx];
+                      var obj = handler[0];
+                      var methodName = handler[1];
+                      obj[methodName]();
+                    }
+                  }
+                  if (this._postEventOnSelectionChange) {
+                    var eventFieldId = this.id + "::selectionEvent";
+                    var eventField = O$(eventFieldId);
+                    eventField.value = this._postEventOnSelectionChange;
+                    window._submittingTable = this;
+                    setTimeout(function() {
+                      O$.submitEnclosingForm(window._submittingTable);
+                    }, 1);
+                  }
+                }
+              },
 
-      _selectAllItems: function() {
-        O$.assert(this._multipleSelectionAllowed, "table._selectAllItems: multiple selection is not allowed for table: " + this.id);
+              _selectAllItems: function() {
+                O$.assert(this._multipleSelectionAllowed, "table._selectAllItems: multiple selection is not allowed for table: " + this.id);
 
-        if (this._params.body.noDataRows)
-          return;
-        if (this._selectableItems == "rows") {
-          var rows = this.body._getRows();
-          var allItems = [];
-          for (var i = 0, count = rows.length; i < count; i++)
-            allItems[i] = i;
-          this._setSelectedItems(allItems);
-        }
-      },
+                if (this._params.body.noDataRows)
+                  return;
+                if (this._selectableItems == "rows") {
+                  var rows = this.body._getRows();
+                  var allItems = [];
+                  for (var i = 0, count = rows.length; i < count; i++)
+                    allItems[i] = i;
+                  this._setSelectedItems(allItems);
+                }
+              },
 
-      _unselectAllItems: function() {
-        this._setSelectedItems([]);
-      },
+              _unselectAllItems: function() {
+                this._setSelectedItems([]);
+              },
 
-      _isItemSelected: function(item) {
-        var result = this._selectedItems.indexOf(item) != -1;
-        return result;
-      },
+              _isItemSelected: function(item) {
+                var result = this._selectedItems.indexOf(item) != -1;
+                return result;
+              },
 
-      _toggleItemSelected: function(itemIndex) {
-        if (itemIndex == -1) {
-          O$.logError("_toggleItemSelected: itemIndex == -1");
-          return;
-        }
-        var selectedIndexes = this._selectedItems;
-        var newArray = [];
-        for (var i = 0, count = selectedIndexes.length; i < count; i++) {
-          var idx = selectedIndexes[i];
-          if (idx != itemIndex)
-            newArray.push(idx);
-        }
-        if (newArray.length == selectedIndexes.length)
-          newArray.push(itemIndex);
-        this._setSelectedItems(newArray);
-      }
-    });
+              _toggleItemSelected: function(itemIndex) {
+                if (itemIndex == -1) {
+                  O$.logError("_toggleItemSelected: itemIndex == -1");
+                  return;
+                }
+                var selectedIndexes = this._selectedItems;
+                var newArray = [];
+                for (var i = 0, count = selectedIndexes.length; i < count; i++) {
+                  var idx = selectedIndexes[i];
+                  if (idx != itemIndex)
+                    newArray.push(idx);
+                }
+                if (newArray.length == selectedIndexes.length)
+                  newArray.push(itemIndex);
+                this._setSelectedItems(newArray);
+              }
+            });
 
     // run initialization code
     if (selectableItems == "rows") {
@@ -936,6 +937,15 @@ O$.Table = {
         table._blockSelectionChangeNotifications = false;
       }
     });
+
+    if (table._selectionRequired && table.__isSelectionEmpty()) {
+      if (!table._params.body.noDataRows) {
+        if (!table._multipleSelectionAllowed)
+          table.__setSelectedRowIndex(0);
+        else
+          table.__setSelectedRowIndexes([0]);
+      }
+    }
   },
 
   _initRowForSelection: function(row) {
@@ -2130,7 +2140,7 @@ O$.ColumnMenu = {
     var currentColumn = null;
     var menuOpened = false;
     table._columns.forEach(function(column) {
-      if (!column.header || !column.header._cell) return;
+      if (!column.header || !column.header._cell || !column.menuAllowed) return;
       var headerCell = column.header._cell;
       O$.setupHoverStateFunction(headerCell, function(mouseOver) {
         if (mouseOver && !menuOpened) {

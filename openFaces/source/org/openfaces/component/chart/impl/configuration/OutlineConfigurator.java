@@ -30,12 +30,10 @@ import java.util.Iterator;
 public class OutlineConfigurator extends AbstractConfigurator implements RendererConfigurator, PlotConfigurator {
     private int seriesCount;
 
-    public OutlineConfigurator(ChartView view) {
-        super(view);
+    public OutlineConfigurator() {
     }
 
-    public OutlineConfigurator(ChartView view, int seriesCount) {
-        super(view);
+    public OutlineConfigurator(int seriesCount) {
         this.seriesCount = seriesCount;
     }
 
@@ -47,20 +45,19 @@ public class OutlineConfigurator extends AbstractConfigurator implements Rendere
         this.seriesCount = seriesCount;
     }
 
-    public void configure(ConfigurablePlot plot) {
+    public void configure(ConfigurablePlot plot, ChartView view) {
         PiePlot piePlot = (PiePlot) plot;
-        ChartView chartView = getView();
-        boolean outlinesSpecified = chartView.getOutlines() != null && !chartView.getOutlines().isEmpty();
+        boolean outlinesSpecified = view.getOutlines() != null && !view.getOutlines().isEmpty();
 
-        if (chartView.getDefaultOutlineStyle() != null && !outlinesSpecified) {
-            piePlot.setBaseSectionOutlinePaint(chartView.getDefaultOutlineStyle().getColor());
-            piePlot.setBaseSectionOutlineStroke(chartView.getDefaultOutlineStyle().getStroke());
+        if (view.getDefaultOutlineStyle() != null && !outlinesSpecified) {
+            piePlot.setBaseSectionOutlinePaint(view.getDefaultOutlineStyle().getColor());
+            piePlot.setBaseSectionOutlineStroke(view.getDefaultOutlineStyle().getStroke());
             for (int seriesIndex = 0; seriesIndex < seriesCount; seriesIndex++) {
-                piePlot.setSectionOutlinePaint(seriesIndex, chartView.getDefaultOutlineStyle().getColor());
-                piePlot.setSectionOutlineStroke(seriesIndex, chartView.getDefaultOutlineStyle().getStroke());
+                piePlot.setSectionOutlinePaint(seriesIndex, view.getDefaultOutlineStyle().getColor());
+                piePlot.setSectionOutlineStroke(seriesIndex, view.getDefaultOutlineStyle().getStroke());
             }
         } else if (outlinesSpecified) {
-            final Iterator outlinesIterator = chartView.getOutlines().iterator();
+            final Iterator outlinesIterator = view.getOutlines().iterator();
             for (int seriesIndex = 0; seriesIndex < seriesCount; seriesIndex++) {
                 if (outlinesIterator.hasNext()) {
                     final LineStyle lineStyle = (LineStyle) outlinesIterator.next();
@@ -71,8 +68,8 @@ public class OutlineConfigurator extends AbstractConfigurator implements Rendere
         }
     }
 
-    public void configure(ConfigurableRenderer configurableRenderer) {
-        GridChartView chartView = (GridChartView) getView();
+    public void configure(ChartView view, ConfigurableRenderer configurableRenderer) {
+        GridChartView chartView = (GridChartView) view;
         boolean outlinesSpecified = chartView.getOutlines() != null && !chartView.getOutlines().isEmpty();
         AbstractRenderer renderer = (AbstractRenderer) configurableRenderer;
 

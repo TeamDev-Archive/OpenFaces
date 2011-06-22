@@ -14,10 +14,10 @@ package org.openfaces.component.chart.impl.plots;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.renderer.xy.AbstractXYItemRenderer;
 import org.jfree.data.xy.XYDataset;
-import org.openfaces.component.chart.Chart;
 import org.openfaces.component.chart.ChartAxis;
 import org.openfaces.component.chart.ChartDateAxis;
 import org.openfaces.component.chart.ChartNumberAxis;
+import org.openfaces.component.chart.ChartView;
 import org.openfaces.component.chart.GridChartView;
 import org.openfaces.component.chart.impl.helpers.DateAxisAdapter;
 import org.openfaces.component.chart.impl.helpers.NumberAxis3DAdapter;
@@ -29,12 +29,12 @@ import org.openfaces.component.chart.impl.helpers.NumberAxisAdapter;
 public class GridDatePlotAdapter extends XYPlotAdapter {
 
     public GridDatePlotAdapter(XYDataset ds, AbstractXYItemRenderer renderer,
-                               Chart chart, GridChartView chartView) {
-        super(ds, renderer, chart, chartView);
+                               GridChartView chartView) {
+        super(ds, renderer, chartView);
     }
 
-    public ValueAxis getDomainAxisAdapter() {
-        final GridChartView view = getChartView();
+    public ValueAxis getDomainAxisAdapter(ChartView chartView) {
+        final GridChartView view = (GridChartView) chartView;
         ChartDateAxis keyAxis = (view.getKeyAxis() instanceof ChartDateAxis)
                 ? (ChartDateAxis) view.getKeyAxis()
                 : null;
@@ -43,8 +43,8 @@ public class GridDatePlotAdapter extends XYPlotAdapter {
         return new DateAxisAdapter(view.getKeyAxisLabel(), isKeyAxisVisible(), keyAxis, baseAxis, view);
     }
 
-    public ValueAxis getRangeAxisAdapter() {
-        final GridChartView view = getChartView();
+    public ValueAxis getRangeAxisAdapter(ChartView chartView) {
+        final GridChartView view = (GridChartView) chartView;
         ChartNumberAxis valueAxis = (view.getValueAxis() instanceof ChartNumberAxis)
                 ? (ChartNumberAxis) view.getValueAxis()
                 : null;
@@ -52,7 +52,7 @@ public class GridDatePlotAdapter extends XYPlotAdapter {
 
         return !view.isEnable3D()
                 ? new NumberAxisAdapter(view.getValueAxisLabel(), isValueAxisVisible(), valueAxis, baseAxis, view)
-                : new NumberAxis3DAdapter(getChartView().getValueAxisLabel(), isValueAxisVisible(), valueAxis, baseAxis, view);
+                : new NumberAxis3DAdapter(view.getValueAxisLabel(), isValueAxisVisible(), valueAxis, baseAxis, view);
     }
 
 }

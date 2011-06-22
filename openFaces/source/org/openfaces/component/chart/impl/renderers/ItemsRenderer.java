@@ -13,13 +13,14 @@
 package org.openfaces.component.chart.impl.renderers;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * @author Eugene Goncharov
  */
-public class ItemsRenderer {
+public class ItemsRenderer implements Serializable {
     private Map<Integer, Map<Integer, Paint>> outlinePaints = new HashMap<Integer, Map<Integer, Paint>>();
     private Map<Integer, Map<Integer, Stroke>> outlineStrokes = new HashMap<Integer, Map<Integer, Stroke>>();
     private Map<Integer, Map<Integer, Paint>> itemPaints = new HashMap<Integer, Map<Integer, Paint>>();

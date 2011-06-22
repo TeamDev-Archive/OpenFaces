@@ -28,15 +28,14 @@ import org.openfaces.component.chart.impl.generators.DynamicXYGenerator;
  */
 public class UrlsConfigurator extends AbstractConfigurator implements RendererConfigurator {
 
-    public UrlsConfigurator(ChartView view) {
-        super(view);
+    public UrlsConfigurator() {
     }
 
-    public void configure(ConfigurableRenderer renderer) {
+    public void configure(ChartView view, ConfigurableRenderer renderer) {
         if (renderer instanceof AbstractCategoryItemRenderer) {
-            setupUrls((GridChartView) getView(), ((AbstractCategoryItemRenderer) renderer));
+            setupUrls((GridChartView) view, (AbstractCategoryItemRenderer) renderer);
         } else if (renderer instanceof XYItemRenderer) {
-            setupUrls((GridChartView) getView(), ((XYItemRenderer) renderer));
+            setupUrls((GridChartView) view, (XYItemRenderer) renderer);
         }
     }
 

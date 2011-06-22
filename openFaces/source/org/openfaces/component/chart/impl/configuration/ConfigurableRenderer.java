@@ -12,6 +12,8 @@
 
 package org.openfaces.component.chart.impl.configuration;
 
+import org.openfaces.component.chart.ChartView;
+
 import java.util.Collection;
 
 /**
@@ -23,5 +25,5 @@ public interface ConfigurableRenderer {
 
     Collection<RendererConfigurator> getConfigurators();
 
-    public void configure();
+    public void configure(ChartView chartView);
 }

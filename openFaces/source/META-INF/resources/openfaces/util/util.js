@@ -769,8 +769,10 @@ if (!window.O$) {
     };
   }
 
-  if (!Array.prototype.filter) {
-    Array.prototype.filter = function(fun /*, thisp*/) {
+  if (!Array.prototype.filter)
+  {
+    Array.prototype.filter = function(fun /*, thisp*/)
+    {
       var len = this.length;
       if (typeof fun != "function")
         throw new TypeError();
@@ -2315,6 +2317,14 @@ if (!window.O$) {
   };
 
 
+  O$._isScrollableElement = function(element) {
+    var elementOverflow = O$.getElementStyle(element, "overflow");
+    if (!(elementOverflow == "scroll" || elementOverflow == "auto")) return false;
+    var hasVerticalScrollBar = elementOverflow == "scroll" || element.scrollHeight > element.clientHeight;
+    var hasHorizontalScrollBar = elementOverflow == "scroll" || element.scrollWidth > element.clientWidth;
+    return hasHorizontalScrollBar || hasVerticalScrollBar;
+  };
+
   O$.getTargetComponentHasOwnMouseBehavior = function(evt) {
     var element = evt.target ? evt.target : evt.srcElement;
     var tagName = element ? element.tagName : null;
@@ -2322,15 +2332,16 @@ if (!window.O$) {
       tagName = tagName.toLowerCase();
     var elementHasItsOwnMouseBehavior =
             tagName == "input" ||
-                    tagName == "textarea" ||
-                    tagName == "select" ||
-                    tagName == "option" ||
-                    tagName == "button" ||
-                    tagName == "a";
+            tagName == "textarea" ||
+            tagName == "select" ||
+            tagName == "option" ||
+            tagName == "button" ||
+            tagName == "a" ||
+            O$._isScrollableElement(element);
     if (!elementHasItsOwnMouseBehavior) {
       elementHasItsOwnMouseBehavior = function(elem) {
         while (elem) {
-          if (elem._hasOwnItsOwnMouseBehavior) {
+          if (elem._hasItsOwnMouseBehavior) {
             return true;
           }
           elem = elem.parentNode;
@@ -4195,6 +4206,10 @@ if (!window.O$) {
   O$.BOTTOM = "bottom";
   O$.BELOW = "below";
 
+
+  O$.alignPopupByPoint = function(popup, x, y, horizAlignment, vertAlignment) {
+    O$.alignPopupByElement(popup, new O$.Rectangle(x, y, 0, 0), horizAlignment, vertAlignment);
+  };
   /**
    *
    *
@@ -4222,6 +4237,8 @@ if (!window.O$) {
     vertDistance = O$.calculateNumericCSSValue(vertDistance);
 
     var elementRect = function() {
+      if (element instanceof O$.Rectangle)
+        return element;
       if (element != window)
         return ignoreVisibleArea
                 ? O$.getElementBorderRectangle(element)

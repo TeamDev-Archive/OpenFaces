@@ -32,12 +32,10 @@ import java.util.List;
 public class PlotGridLinesConfigurator extends AbstractConfigurator implements PlotConfigurator {
     private Dataset dataset;
 
-    public PlotGridLinesConfigurator(ChartView view) {
-        super(view);
+    public PlotGridLinesConfigurator() {
     }
 
-    public PlotGridLinesConfigurator(ChartView view, Dataset dataset) {
-        super(view);
+    public PlotGridLinesConfigurator(Dataset dataset) {
         this.dataset = dataset;
     }
 
@@ -45,12 +43,8 @@ public class PlotGridLinesConfigurator extends AbstractConfigurator implements P
         return dataset;
     }
 
-    public void setDataset(Dataset dataset) {
-        this.dataset = dataset;
-    }
-
-    public void configure(ConfigurablePlot plot) {
-        setupGridLinesProperties((GridChartView) getView(), ((Plot) plot), getDataset());
+    public void configure(ConfigurablePlot plot, ChartView view) {
+        setupGridLinesProperties((GridChartView) view, ((Plot) plot), getDataset());
     }
 
     private void setupGridLinesProperties(GridChartView view, Plot plot, Dataset dataset) {

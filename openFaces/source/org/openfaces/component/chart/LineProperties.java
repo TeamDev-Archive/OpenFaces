@@ -20,11 +20,12 @@ import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
+import java.io.Serializable;
 
 /**
  * @author Ekaterina Shliakhovetskaya
  */
-public class LineProperties extends UIOutput implements StyledComponent {
+public class LineProperties extends UIOutput implements StyledComponent, Serializable {
     private String style;
     private Boolean shapesVisible;
     private Boolean showInLegend;

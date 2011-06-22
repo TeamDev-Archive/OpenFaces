@@ -144,6 +144,6 @@ public class LineChartView extends GridChartView {
     @Override
     public ChartConfigurator getConfigurator() {
         final Chart chart = getChart();
-        return new LineChartConfigurator(chart, chart.getModel());
+        return new LineChartConfigurator(chart.getModel());
     }
 }

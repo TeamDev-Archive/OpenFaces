@@ -73,7 +73,7 @@ O$.Calendar = {
       _noneSelector: O$(calendarId + "::none"),
       _valueHolder: O$(calendarId + "::long_date_holder"),
       _valueDateHolder: O$(calendarId + "::date_holder"),
-      _hasOwnItsOwnMouseBehavior: true,
+      _hasItsOwnMouseBehavior: true,
 
       ondragstart: O$.breakEvent,
       onselectstart: O$.breakEvent

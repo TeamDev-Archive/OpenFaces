@@ -25,6 +25,7 @@ import org.jfree.util.TableOrder;
 import org.openfaces.component.chart.Chart;
 import org.openfaces.component.chart.ChartLabels;
 import org.openfaces.component.chart.ChartLegend;
+import org.openfaces.component.chart.ChartView;
 import org.openfaces.component.chart.PieChartView;
 import org.openfaces.component.chart.PieSectorProperties;
 import org.openfaces.component.chart.impl.PropertiesConverter;
@@ -224,8 +225,8 @@ public class PiePlot3DAdapter extends PiePlot3D implements ConfigurablePlot {
     }
 
     private void init(PiePlot plot, Chart chart, PieChartView chartView, PieDataset dataset, CategoryDataset categoryDataset) {
-        addConfigurator(new PlotColorsConfigurator(chartView));
-        addConfigurator(new ShadowConfigurator(chartView));
+        addConfigurator(new PlotColorsConfigurator());
+        addConfigurator(new ShadowConfigurator());
 
         setupLegendLabels(plot, chart, chartView);
         setupPieLabelGenerator(plot, chartView);
@@ -233,11 +234,11 @@ public class PiePlot3DAdapter extends PiePlot3D implements ConfigurablePlot {
         setupTooltipsAndUrls(plot, chartView);
         sectorProcessing(plot, chartView, dataset, categoryDataset);
 
-        addConfigurator(new PlotSelectionConfigurator(chartView));
-        addConfigurator(new ItemsColorConfigurator(chartView));
-        addConfigurator(new OutlineConfigurator(chartView));
+        addConfigurator(new PlotSelectionConfigurator());
+        addConfigurator(new ItemsColorConfigurator());
+        addConfigurator(new OutlineConfigurator());
 
-        configure();
+        configure(chartView);
     }
 
     public void addConfigurator(PlotConfigurator configurator) {
@@ -248,7 +249,7 @@ public class PiePlot3DAdapter extends PiePlot3D implements ConfigurablePlot {
         return configurationDelegate.getConfigurators();
     }
 
-    public void configure() {
-        configurationDelegate.configure(this);
+    public void configure(ChartView chartView) {
+        configurationDelegate.configure(this, chartView);
     }
 }

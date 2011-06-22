@@ -20,22 +20,10 @@ import javax.el.ValueExpression;
  * @author Ekaterina Shliakhovetskaya
  */
 public class ChartViewValueExpression extends ValueExpression {
-    private ChartView chartView;
     private ValueExpression valueExpression;
-
-    public ChartViewValueExpression() {
-    }
 
     public ChartViewValueExpression(ValueExpression valueExpression) {
         this.valueExpression = valueExpression;
-    }
-
-    public ChartView getChartView() {
-        return chartView;
-    }
-
-    public void setChartView(ChartView chartView) {
-        this.chartView = chartView;
     }
 
     public Object getValue(ELContext elContext) {

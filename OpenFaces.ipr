@@ -1089,6 +1089,7 @@
         <w>onmouseover</w>
         <w>onmouseup</w>
         <w>onremove</w>
+        <w>onresize</w>
         <w>onselect</w>
         <w>onselectionchange</w>
         <w>onselectstart</w>
@@ -1142,6 +1143,7 @@
         <w>teamdev</w>
         <w>textarea</w>
         <w>thisp</w>
+        <w>timeslot</w>
         <w>tooltip</w>
         <w>treetable</w>
         <w>twolistselection</w>

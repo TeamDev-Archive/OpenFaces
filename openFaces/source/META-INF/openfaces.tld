@@ -1361,6 +1361,18 @@
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>Specifies whether the menu specified in the "columnMenu" facet of this DataTable should be displayed
+        for this column.
+      </description>
+      <name>menuAllowed</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- default true -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>A style for the entire column.</description>
       <name>style</name>
       <deferred-value>
@@ -3340,6 +3352,18 @@
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Specifies whether the menu specified in the "columnMenu" facet of this DataTable should be displayed
+        for this column.
+      </description>
+      <name>menuAllowed</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- default true -->
       <!-- @el true -->
     </attribute>
 
@@ -5687,6 +5711,17 @@
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>A flag that indicates whether there should always be a selected item (true) or empty selection is
+        allowed (false).</description>
+      <name>required</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el false -->
+    </attribute>
+    <attribute>
       <description>Similar to the "action" attribute of the HTMLCommandButton component.
         It can either specify a string defining the static outcome
         of the selection change action, or it can be defined as a method-binding expression.
@@ -5876,6 +5911,17 @@
       <!-- @bindingType boolean -->
       <!-- @default true -->
       <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A flag that indicates whether there should always be at least one selected item (true) or empty
+        selection is allowed (false).</description>
+      <name>required</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el false -->
     </attribute>
     <attribute>
       <description>Is similar to the "action" attribute of the HTMLCommandButton component.
@@ -6157,6 +6203,19 @@
       <!-- default false -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>Specifies whether the menu specified in the "columnMenu" facet of this DataTable should be displayed
+        for this column.
+      </description>
+      <name>menuAllowed</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- default false -->
+      <!-- @el true -->
+    </attribute>
+
 
     <attribute>
       <description>A style for the entire selection column.</description>
@@ -6764,6 +6823,18 @@
         scroll position.
       </description>
       <name>fixed</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Specifies whether the menu specified in the "columnMenu" facet of this DataTable should be displayed
+        for this column.
+      </description>
+      <name>menuAllowed</name>
       <deferred-value>
         <type>boolean</type>
       </deferred-value>
@@ -9041,6 +9112,18 @@ means that only root nodes and their immediate children are preloaded -->
       <!-- default false -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>Specifies whether the menu specified in the "columnMenu" facet of this DataTable should be displayed
+        for this column.
+      </description>
+      <name>menuAllowed</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- default true -->
+      <!-- @el true -->
+    </attribute>
 
     <attribute>
       <description>A style for the entire tree column.</description>
@@ -9649,6 +9732,17 @@ means that only root nodes and their immediate children are preloaded -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>A flag that indicates whether there should always be a selected item (true) or empty selection is
+        allowed (false).</description>
+      <name>required</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el false -->
+    </attribute>
+    <attribute>
       <description>Similar to the "action" attribute of the HTMLCommandButton component.
         It can either specify a string defining the static outcome
         of the selection change action, or it can be defined as a method-binding expression.
@@ -9842,6 +9936,17 @@ means that only root nodes and their immediate children are preloaded -->
       <!-- @bindingType boolean -->
       <!-- @default true -->
       <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A flag that indicates whether there should always be at least one selected item (true) or empty
+        selection is allowed (false).</description>
+      <name>required</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el false -->
     </attribute>
     <attribute>
       <description>Is similar to the "action" attribute of the HTMLCommandButton component.

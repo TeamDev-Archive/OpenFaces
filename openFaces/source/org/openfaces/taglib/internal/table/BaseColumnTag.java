@@ -34,6 +34,7 @@ public abstract class BaseColumnTag extends AbstractComponentTag {
         setBooleanProperty(component, "resizable");
         setStringProperty(component, "minResizingWidth");
         setBooleanProperty(component, "fixed");
+        setBooleanProperty(component, "menuAllowed");
 
         setStringProperty(component, "headerStyle");
         setStringProperty(component, "headerClass");

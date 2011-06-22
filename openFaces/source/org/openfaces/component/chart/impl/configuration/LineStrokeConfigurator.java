@@ -27,17 +27,12 @@ import java.util.Iterator;
 public class LineStrokeConfigurator extends AbstractConfigurator implements RendererConfigurator {
     private int seriesCount;
 
-    public LineStrokeConfigurator(ChartView view) {
-        super(view);
-    }
-
-    public LineStrokeConfigurator(ChartView view, int seriesCount) {
-        super(view);
+    public LineStrokeConfigurator(int seriesCount) {
         this.seriesCount = seriesCount;
     }
 
-    public void configure(ConfigurableRenderer configurableRenderer) {
-        LineChartView chartView = (LineChartView) getView();
+    public void configure(ChartView view, ConfigurableRenderer configurableRenderer) {
+        LineChartView chartView = (LineChartView) view;
 
         final boolean lineStylesSpecified = chartView.getLineStyles() != null && !chartView.getLineStyles().isEmpty();
         AbstractRenderer renderer = (AbstractRenderer) configurableRenderer;

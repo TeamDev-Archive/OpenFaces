@@ -92,8 +92,12 @@ O$.PopupMenu = {
 
       showForEvent: function (event) {
         finishInitialization();
-        var pos = O$.getEventPoint(event, this);
-        this.showAtXY(pos.x, pos.y);
+        var pos = O$.getEventPoint(event);
+        finishInitialization();
+        this.style.visibility = "hidden";
+        this.style.display = "block";
+        O$.alignPopupByPoint(this, pos.x, pos.y);
+        this.show();
       },
 
       closeChildMenus: function () {

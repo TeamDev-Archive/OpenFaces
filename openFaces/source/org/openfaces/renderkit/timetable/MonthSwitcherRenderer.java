@@ -12,25 +12,21 @@
 package org.openfaces.renderkit.timetable;
 
 import org.openfaces.component.timetable.AbstractSwitcher;
-import org.openfaces.component.timetable.MonthTable;
 import org.openfaces.component.timetable.TimetableView;
-import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.Styles;
 
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
-import javax.faces.component.UIComponent;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.TimeZone;
 
 public class MonthSwitcherRenderer extends AbstractSwitcherRenderer {
     @Override
     protected Object[] getAdditionalParams(FacesContext context) {
-        return new Object[0];  //To change body of implemented methods use File | Settings | File Templates.
+        return new Object[0];
     }
 
     @Override
@@ -51,7 +47,7 @@ public class MonthSwitcherRenderer extends AbstractSwitcherRenderer {
         writer.startElement("div", switcher);
         writer.writeAttribute("id", clientId + "::text", null);
         String textClass = Styles.getCSSClass(context,
-                switcher, switcher.getTextStyle(), "o_timeSwitcher_text", switcher.getTextClass());
+                switcher, switcher.getTextStyle(), "o_monthSwitcher_text", switcher.getTextClass());
         writer.writeAttribute("class", textClass, null);
 
         Date date = timetableView.getDay();

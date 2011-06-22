@@ -13,6 +13,7 @@
 package org.openfaces.component.chart.impl.configuration.charts;
 
 import org.jfree.chart.plot.Plot;
+import org.openfaces.component.chart.Chart;
 import org.openfaces.component.chart.impl.ModelInfo;
 
 /**
@@ -20,5 +21,5 @@ import org.openfaces.component.chart.impl.ModelInfo;
  */
 public interface ChartConfigurator {
 
-    Plot configurePlot(ModelInfo info);
+    Plot configurePlot(Chart chart, ModelInfo info);
 }

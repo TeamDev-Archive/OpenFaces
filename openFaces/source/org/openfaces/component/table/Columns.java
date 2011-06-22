@@ -53,6 +53,8 @@ public class Columns extends UIComponentBase implements NamingContainer {
 
     private Boolean resizable;
     private String minResizingWidth;
+    private Boolean fixed;
+    private Boolean menuAllowed;
 
     private String style;
     private String styleClass;
@@ -115,7 +117,7 @@ public class Columns extends UIComponentBase implements NamingContainer {
         return new Object[]{
                 super.saveState(context), prevValueFromBinding,
                 columnRendered, headerValue, footerValue, var, indexVar, sortingEnabled, sortingComparator,
-                align, valign, width, resizable, minResizingWidth,
+                align, valign, width, resizable, minResizingWidth, fixed, menuAllowed,
                 style, styleClass, headerStyle, headerClass,
                 subHeaderStyle, subHeaderClass, bodyStyle, bodyClass, footerStyle, footerClass,
                 onclick, ondblclick, onmousedown, onmouseover, onmousemove,
@@ -146,6 +148,8 @@ public class Columns extends UIComponentBase implements NamingContainer {
         width = (String) state[i++];
         resizable = (Boolean) state[i++];
         minResizingWidth = (String) state[i++];
+        fixed = (Boolean) state[i++];
+        menuAllowed = (Boolean) state[i++];
         style = (String) state[i++];
         styleClass = (String) state[i++];
         headerStyle = (String) state[i++];
@@ -296,6 +300,22 @@ public class Columns extends UIComponentBase implements NamingContainer {
 
     public void setMinResizingWidth(String minResizingWidth) {
         this.minResizingWidth = minResizingWidth;
+    }
+
+    public boolean getFixed() {
+        return ValueBindings.get(this, "fixed", fixed, false);
+    }
+
+    public void setFixed(boolean fixed) {
+        this.fixed = fixed;
+    }
+
+    public boolean getMenuAllowed() {
+        return ValueBindings.get(this, "menuAllowed", menuAllowed, true);
+    }
+
+    public void setMenuAllowed(boolean menuAllowed) {
+        this.menuAllowed = menuAllowed;
     }
 
     public String getStyle() {
@@ -686,6 +706,7 @@ public class Columns extends UIComponentBase implements NamingContainer {
 
                 String[] copiedAttributes = new String[]{
                         "headerValue", "footerValue", "width", "align", "valign", "resizable", "minResizingWidth",
+                        "fixed", "menuAllowed",
                         "style", "styleClass", "headerStyle", "headerClass", "subHeaderStyle", "subHeaderClass",
                         "bodyStyle", "bodyClass", "footerStyle", "footerClass",
                         "onclick", "ondblclick", "onmousedown", "onmouseover", "onmousemove", "onmouseout", "onmouseup",

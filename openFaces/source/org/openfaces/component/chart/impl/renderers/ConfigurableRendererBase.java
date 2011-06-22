@@ -12,9 +12,11 @@
 
 package org.openfaces.component.chart.impl.renderers;
 
+import org.openfaces.component.chart.ChartView;
 import org.openfaces.component.chart.impl.configuration.ConfigurableRenderer;
 import org.openfaces.component.chart.impl.configuration.RendererConfigurator;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -22,7 +24,7 @@ import java.util.List;
 /**
  * @author Eugene Goncharov
  */
-public class ConfigurableRendererBase {
+public class ConfigurableRendererBase implements Serializable {
     private List<RendererConfigurator> configurators = new ArrayList<RendererConfigurator>();
 
     public void addConfigurator(RendererConfigurator configurator) {
@@ -33,10 +35,10 @@ public class ConfigurableRendererBase {
         return configurators;
     }
 
-    public void configurate(ConfigurableRenderer renderer) {
+    public void configure(ChartView chartView, ConfigurableRenderer renderer) {
         if (configurators != null && !configurators.isEmpty()) {
             for (RendererConfigurator configurator : configurators) {
-                configurator.configure(renderer);
+                configurator.configure(chartView, renderer);
             }
         }
     }

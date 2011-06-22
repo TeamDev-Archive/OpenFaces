@@ -31,12 +31,11 @@ import org.openfaces.renderkit.cssparser.StyleObjectModel;
  */
 public class GridLabelsConfigurator extends AbstractConfigurator implements RendererConfigurator {
 
-    public GridLabelsConfigurator(ChartView view) {
-        super(view);
+    public GridLabelsConfigurator() {
     }
 
-    public void configure(ConfigurableRenderer configurableRenderer) {
-        GridChartView chartView = (GridChartView) getView();
+    public void configure(ChartView view, ConfigurableRenderer configurableRenderer) {
+        GridChartView chartView = (GridChartView) view;
         boolean isLabelsVisible = chartView.isLabelsVisible();
 
         AbstractRenderer renderer = (AbstractRenderer) configurableRenderer;

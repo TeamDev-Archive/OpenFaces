@@ -155,6 +155,6 @@ public class PieChartView extends ChartView {
     @Override
     public ChartConfigurator getConfigurator() {
         final Chart chart = getChart();
-        return new PieChartConfigurator(chart, chart.getModel());
+        return new PieChartConfigurator(chart.getModel());
     }
 }

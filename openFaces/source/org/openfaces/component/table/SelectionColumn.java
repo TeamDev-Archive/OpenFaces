@@ -55,4 +55,9 @@ public class SelectionColumn extends BaseColumn {
     public void setSortable(boolean sortable) {
         this.sortable = sortable;
     }
+
+    @Override
+    protected boolean getDefaultMenuAllowed() {
+        return false;
+    }
 }

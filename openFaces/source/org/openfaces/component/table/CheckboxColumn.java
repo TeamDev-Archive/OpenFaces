@@ -320,4 +320,9 @@ public class CheckboxColumn extends BaseColumn {
     public void setVisible(boolean visible) {
         this.visible = visible;
     }
+
+    @Override
+    protected boolean getDefaultMenuAllowed() {
+        return false;
+    }
 }

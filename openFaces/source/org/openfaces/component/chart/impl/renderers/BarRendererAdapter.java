@@ -12,6 +12,7 @@
 package org.openfaces.component.chart.impl.renderers;
 
 import org.jfree.chart.renderer.category.BarRenderer;
+import org.openfaces.component.chart.ChartView;
 import org.openfaces.component.chart.impl.configuration.ConfigurableRenderer;
 import org.openfaces.component.chart.impl.configuration.RendererConfigurator;
 
@@ -81,8 +82,8 @@ public class BarRendererAdapter extends BarRenderer
         return configurationDelegate.getConfigurators();
     }
 
-    public void configure() {
-        configurationDelegate.configurate(this);
+    public void configure(ChartView chartView) {
+        configurationDelegate.configure(chartView, this);
     }
 }
 

@@ -21,16 +21,17 @@ import org.openfaces.component.chart.PieSectorInfo;
 import org.openfaces.component.chart.PieSectorProperties;
 import org.openfaces.component.chart.impl.helpers.ChartInfoUtil;
 
+import java.io.Serializable;
 import java.text.AttributedString;
 
 /**
  * @author Ekaterina Shliakhovetskaya
  */
-public class DynamicPieGenerator implements PieToolTipGenerator, PieURLGenerator, PieSectionLabelGenerator {
+public class DynamicPieGenerator implements PieToolTipGenerator, PieURLGenerator, PieSectionLabelGenerator, Serializable {
     private static final String SECTOR = "sector";
 
-    private final PieChartView pieView;
-    private final ChartViewValueExpression valueExpression;
+    private transient final PieChartView pieView;
+    private transient final ChartViewValueExpression valueExpression;
 
     public DynamicPieGenerator(PieChartView pieView, ChartViewValueExpression valueExpression) {
         this.pieView = pieView;
@@ -79,7 +80,6 @@ public class DynamicPieGenerator implements PieToolTipGenerator, PieURLGenerator
             return null;
 
         pieView.setSector(info);
-        valueExpression.setChartView(pieView);
         String result = valueExpression.getHint(SECTOR, info).toString();
         pieView.setSector(null);
 

@@ -15,49 +15,21 @@ package org.openfaces.component.chart.impl.configuration.charts;
 import org.jfree.chart.plot.Plot;
 import org.openfaces.component.chart.Chart;
 import org.openfaces.component.chart.ChartModel;
-import org.openfaces.component.chart.ChartView;
 import org.openfaces.component.chart.impl.ModelInfo;
 
 /**
  * @author Eugene Goncharov
  */
 public abstract class AbstractChartConfigurator implements ChartConfigurator {
-    private Chart chart;
-    private ChartView chartView;
     private ChartModel model;
 
-    public AbstractChartConfigurator() {
-    }
-
-    public AbstractChartConfigurator(Chart chart, ChartModel model) {
-        this.chart = chart;
+    public AbstractChartConfigurator(ChartModel model) {
         this.model = model;
-        this.chartView = chart.getChartView();
-    }
-
-    public Chart getChart() {
-        return chart;
-    }
-
-    public void setChart(Chart chart) {
-        this.chart = chart;
     }
 
     public ChartModel getModel() {
         return model;
     }
 
-    public void setModel(ChartModel model) {
-        this.model = model;
-    }
-
-    public ChartView getChartView() {
-        return chartView;
-    }
-
-    public void setChartView(ChartView chartView) {
-        this.chartView = chartView;
-    }
-
-    public abstract Plot configurePlot(ModelInfo info);
+    public abstract Plot configurePlot(Chart chart, ModelInfo info);
 }

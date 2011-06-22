@@ -21,6 +21,7 @@ import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.XYDataset;
 import org.openfaces.component.chart.Chart;
 import org.openfaces.component.chart.ChartModel;
+import org.openfaces.component.chart.ChartView;
 import org.openfaces.component.chart.LineChartView;
 import org.openfaces.component.chart.impl.ModelConverter;
 import org.openfaces.component.chart.impl.ModelInfo;
@@ -41,24 +42,24 @@ import org.openfaces.component.chart.impl.renderers.XYLineRendererAdapter;
  */
 public class LineChartConfigurator extends GridChartConfigurator {
 
-    public LineChartConfigurator(Chart chart, ChartModel model) {
-        super(chart, model);
+    public LineChartConfigurator(ChartModel model) {
+        super(model);
     }
 
-    public Plot configurePlot(ModelInfo info) {
-        return createPlot(getChart(), info);
+    public Plot configurePlot(Chart chart, ModelInfo info) {
+        return createPlot(chart, info);
     }
 
     private Plot createPlot(Chart chart, ModelInfo info) {
-        final LineChartView chartView = (LineChartView) getChartView();
+        final LineChartView chartView = (LineChartView) chart.getChartView();
 
         if (info.getModelType().equals(ModelType.Number)) {
             XYDataset ds = ModelConverter.toXYSeriesCollection(info);
 
-            AbstractXYItemRenderer renderer = createRenderer(ds);
+            AbstractXYItemRenderer renderer = createRenderer(chart, ds);
 
-            final GridXYPlotAdapter xyPlot = new GridXYPlotAdapter(ds, renderer, chart, chartView);
-            initMarkers(xyPlot);
+            final GridXYPlotAdapter xyPlot = new GridXYPlotAdapter(ds, renderer, chartView);
+            initMarkers(chart, xyPlot);
 
             return xyPlot;
         }
@@ -66,10 +67,10 @@ public class LineChartConfigurator extends GridChartConfigurator {
         if (info.getModelType().equals(ModelType.Date)) {
             TimeSeriesCollection ds = ModelConverter.toTimeSeriesCollection(chart, info);
 
-            AbstractXYItemRenderer renderer = createRenderer(ds);
+            AbstractXYItemRenderer renderer = createRenderer(chart, ds);
 
-            final GridDatePlotAdapter xyPlot = new GridDatePlotAdapter(ds, renderer, chart, chartView);
-            initMarkers(xyPlot);
+            final GridDatePlotAdapter xyPlot = new GridDatePlotAdapter(ds, renderer, chartView);
+            initMarkers(chart, xyPlot);
 
             return xyPlot;
         }
@@ -85,7 +86,7 @@ public class LineChartConfigurator extends GridChartConfigurator {
                     : new LineRendererAdapter();
         }
 
-        if (getChart().getChartSelection() != null && !chartView.isShapesVisible()) {
+        if (chart.getChartSelection() != null && !chartView.isShapesVisible()) {
             throw new IllegalStateException("Chart selection is unsupported with disabled shapes.");
         }
 
@@ -94,14 +95,14 @@ public class LineChartConfigurator extends GridChartConfigurator {
 
         configure(chartView, configurableRenderer, ds, rowCount);
 
-        final GridCategoryPlotAdapter gridCategoryPlot = new GridCategoryPlotAdapter(ds, renderer, chart, chartView);
-        initMarkers(gridCategoryPlot);
+        final GridCategoryPlotAdapter gridCategoryPlot = new GridCategoryPlotAdapter(ds, renderer, chartView);
+        initMarkers(chart, gridCategoryPlot);
 
         return gridCategoryPlot;
     }
 
-    private AbstractXYItemRenderer createRenderer(XYDataset ds) {
-        final LineChartView chartView = (LineChartView) getChartView();
+    private AbstractXYItemRenderer createRenderer(Chart chart, XYDataset ds) {
+        final LineChartView chartView = (LineChartView) chart.getChartView();
         AbstractXYItemRenderer renderer;
 
         if (chartView.getLineAreaFill() != null) {
@@ -112,7 +113,7 @@ public class LineChartConfigurator extends GridChartConfigurator {
                     : new XYLineRendererAdapter();
         }
 
-        if (getChart().getChartSelection() != null && !chartView.isShapesVisible()) {
+        if (chart.getChartSelection() != null && !chartView.isShapesVisible()) {
             throw new IllegalStateException("Chart selection is unsupported with disabled shapes.");
         }
 
@@ -124,19 +125,19 @@ public class LineChartConfigurator extends GridChartConfigurator {
     }
 
 
-    private void configure(LineChartView chartView, ConfigurableRenderer configurableRenderer, Dataset ds, int rowCount) {
-        configurableRenderer.addConfigurator(new ItemsColorConfigurator(chartView));
-        configurableRenderer.addConfigurator(new LineAndShapePropertiesConfigurator(chartView, ds));
-        configurableRenderer.addConfigurator(new OutlineConfigurator(chartView, rowCount));
-        configurableRenderer.addConfigurator(new FillPaintConfigurator(chartView, rowCount));
-        configurableRenderer.addConfigurator(new LineStrokeConfigurator(chartView, rowCount));
-        configurableRenderer.addConfigurator(new Chart3DRendererConfigurator(chartView));
-        configurableRenderer.addConfigurator(new AreaFillConfigurator(chartView));
-        configurableRenderer.addConfigurator(new GridLabelsConfigurator(chartView));
-        configurableRenderer.addConfigurator(new TooltipsConfigurator(chartView));
-        configurableRenderer.addConfigurator(new UrlsConfigurator(chartView));
+    private void configure(ChartView chartView, ConfigurableRenderer configurableRenderer, Dataset ds, int rowCount) {
+        configurableRenderer.addConfigurator(new ItemsColorConfigurator());
+        configurableRenderer.addConfigurator(new LineAndShapePropertiesConfigurator(ds));
+        configurableRenderer.addConfigurator(new OutlineConfigurator(rowCount));
+        configurableRenderer.addConfigurator(new FillPaintConfigurator(rowCount));
+        configurableRenderer.addConfigurator(new LineStrokeConfigurator(rowCount));
+        configurableRenderer.addConfigurator(new Chart3DRendererConfigurator());
+        configurableRenderer.addConfigurator(new AreaFillConfigurator());
+        configurableRenderer.addConfigurator(new GridLabelsConfigurator());
+        configurableRenderer.addConfigurator(new TooltipsConfigurator());
+        configurableRenderer.addConfigurator(new UrlsConfigurator());
 
-        configurableRenderer.configure();
+        configurableRenderer.configure(chartView);
     }
 
 }

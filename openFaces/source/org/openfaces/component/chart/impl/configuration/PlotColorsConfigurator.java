@@ -22,16 +22,15 @@ import org.openfaces.renderkit.cssparser.StyleObjectModel;
  */
 public class PlotColorsConfigurator extends AbstractConfigurator implements PlotConfigurator {
 
-    public PlotColorsConfigurator(ChartView view) {
-        super(view);
+    public PlotColorsConfigurator() {
     }
 
-    public void configure(ConfigurablePlot configurablePlot) {
-        StyleObjectModel cssChartViewModel = getView().getStyleObjectModel();
+    public void configure(ConfigurablePlot configurablePlot, ChartView view) {
+        StyleObjectModel cssChartViewModel = view.getStyleObjectModel();
 
         Plot plot = (Plot) configurablePlot;
 
-        if (getView().getBackgroundPaint() != null) {
+        if (view.getBackgroundPaint() != null) {
             plot.setBackgroundPaint(null);
         } else {
             plot.setBackgroundPaint(cssChartViewModel.getBackground());
