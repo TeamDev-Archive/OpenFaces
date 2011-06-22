@@ -26,6 +26,7 @@ import org.openfaces.util.StringConverter;
 import org.openfaces.util.Styles;
 
 import javax.el.ValueExpression;
+import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -54,6 +55,13 @@ public abstract class ExpressionFilterRenderer extends RendererBase {
         if (!filter.changeCriterion(newCriterion))
             return;
         FilterableComponent filteredComponent = filter.getFilteredComponent();
+        if (filteredComponent == null) {
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            String filterId = filter.getClientId(facesContext);
+            throw new FacesException("A filter is not associated with a component (DataTable or TreeTable): " +
+                    filterId + ". It should either be placed into some table facet, or its \"for\" attribute should " +
+                    "be used to explicitly attach this filter to a filtered component.");
+        }
         filteredComponent.filterChanged(filter);
     }
 
