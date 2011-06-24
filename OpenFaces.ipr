@@ -236,13 +236,6 @@
       </root>
     </artifact>
   </component>
-  <component name="ClassInspector">
-    <option name="configString1" value="Test config string" />
-  </component>
-  <component name="CodeStyleProjectProfileManger">
-    <option name="PROJECT_PROFILE" />
-    <option name="USE_PROJECT_LEVEL_SETTINGS" value="false" />
-  </component>
   <component name="CodeStyleSettingsManager">
     <option name="PER_PROJECT_SETTINGS">
       <value>
@@ -437,31 +430,12 @@
       <option name="fileTypeOverride" value="1" />
     </LanguageOptions>
   </component>
-  <component name="DependenciesAnalyzeManager">
-    <option name="myForwardDirection" value="false" />
-  </component>
   <component name="DependencyValidationManager">
     <option name="SKIP_IMPORT_STATEMENTS" value="false" />
-  </component>
-  <component name="EclipseCompilerSettings">
-    <option name="GENERATE_NO_WARNINGS" value="true" />
-    <option name="DEPRECATION" value="false" />
-  </component>
-  <component name="EclipseEmbeddedCompilerSettings">
-    <option name="DEBUGGING_INFO" value="true" />
-    <option name="GENERATE_NO_WARNINGS" value="true" />
-    <option name="DEPRECATION" value="false" />
-    <option name="ADDITIONAL_OPTIONS_STRING" value="" />
-    <option name="MAXIMUM_HEAP_SIZE" value="128" />
   </component>
   <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false" defaultCharsetForPropertiesFiles="UTF-8" />
   <component name="EntryPointsManager">
     <entry_points version="2.0" />
-  </component>
-  <component name="ExportToHTMLSettings">
-    <option name="PRINT_LINE_NUMBERS" value="false" />
-    <option name="OPEN_IN_BROWSER" value="false" />
-    <option name="OUTPUT_DIRECTORY" value="" />
   </component>
   <component name="FacetAutodetectingManager">
     <autodetection-disabled>
@@ -822,12 +796,6 @@
   <component name="JsfProjectComponent">
     <option name="faceletsSupport" value="ENABLED" />
   </component>
-  <component name="LogConsolePreferences">
-    <option name="FILTER_ERRORS" value="false" />
-    <option name="FILTER_WARNINGS" value="false" />
-    <option name="FILTER_INFO" value="false" />
-    <option name="CUSTOM_FILTER" />
-  </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="org.jetbrains.annotations.Nullable" />
     <option name="myDefaultNotNull" value="org.jetbrains.annotations.NotNull" />
@@ -970,9 +938,6 @@
         <default-constraints vsize-policy="6" hsize-policy="0" anchor="0" fill="2" />
       </item>
     </group>
-  </component>
-  <component name="ProjectDetails">
-    <option name="projectName" value="OpenFaces" />
   </component>
   <component name="ProjectDictionaryState">
     <dictionary name="Dallas">
@@ -1160,9 +1125,6 @@
       </words>
     </dictionary>
   </component>
-  <component name="ProjectKey">
-    <option name="state" value="http://svn-new/TeamDev/OpenFaces/trunk/OpenFaces.ipr" />
-  </component>
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/funcTests/FuncTests.iml" filepath="$PROJECT_DIR$/funcTests/FuncTests.iml" />
@@ -1186,63 +1148,10 @@
     <default-html-doctype>http://www.w3.org/1999/xhtml</default-html-doctype>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="1.5" project-jdk-type="JavaSDK" />
-  <component name="ResourceManagerContainer">
-    <option name="myResourceBundles">
-      <value>
-        <list size="0" />
-      </value>
-    </option>
-  </component>
-  <component name="Scrappy">
-    <scrapTab name="Scrap" />
-    <imports />
-  </component>
-  <component name="SvnBranchConfigurationManager">
-    <option name="myConfigurationMap">
-      <map>
-        <entry key="$PROJECT_DIR$">
-          <value>
-            <SvnBranchConfiguration>
-              <option name="branchMap">
-                <map>
-                  <entry key="http://svn-new.teamdev.local/TeamDev/QuipuKit/branches">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                </map>
-              </option>
-              <option name="branchUrls">
-                <list>
-                  <option value="http://svn-new.teamdev.local/TeamDev/QuipuKit/branches" />
-                </list>
-              </option>
-              <option name="trunkUrl" value="http://svn-new.teamdev.local/TeamDev/QuipuKit/trunk" />
-            </SvnBranchConfiguration>
-          </value>
-        </entry>
-      </map>
-    </option>
-    <option name="myVersion" value="124" />
-    <option name="mySupportsUserInfoFilter" value="true" />
-  </component>
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
   </component>
   <component name="WebServicesPlugin" addRequiredLibraries="true" />
-  <component name="com.intellij.jsf.UserDefinedFacesConfigs">
-    <option name="USER_DEFINED_CONFIGS">
-      <value>
-        <list size="0" />
-      </value>
-    </option>
-  </component>
-  <component name="jetbrains.fabrique.ide.findUsages.FindUsagesManager">
-    <setting name="OPEN_NEW_TAB" value="false" />
-  </component>
-  <component name="jetbrains.fabrique.ide.findUsages.FindUsagesManagerImpl">
-    <setting name="OPEN_NEW_TAB" value="false" />
-  </component>
   <component name="libraryTable">
     <library name="commons-lang">
       <CLASSES>

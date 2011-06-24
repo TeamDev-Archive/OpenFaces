@@ -26,7 +26,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="OpenFaces" exported="" />
-    <orderEntry type="library" scope="TEST" name="JSF Implementation - Mojarra 2.0" level="project" />
   </component>
 </module>
 

@@ -60,7 +60,7 @@ public enum FilterType {
         if (ReflectionUtil.isNumberType(clazz)) {
             return NUMBER;
         }
-        if (clazz.isAssignableFrom(Date.class)) {
+        if (Date.class.isAssignableFrom(clazz)) {
             return DATE;
         }
         if (clazz.isEnum()) {
