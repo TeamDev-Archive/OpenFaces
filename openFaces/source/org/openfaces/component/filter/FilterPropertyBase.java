@@ -15,7 +15,7 @@ package org.openfaces.component.filter;
 import javax.faces.convert.Converter;
 import java.util.TimeZone;
 
-public abstract class FilterPropertyBase implements FilterProperty{
+public abstract class FilterPropertyBase implements FilterProperty {
 
     public abstract String getTitle();
 

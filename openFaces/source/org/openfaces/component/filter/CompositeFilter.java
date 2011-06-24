@@ -136,42 +136,17 @@ public class CompositeFilter extends Filter {
         final TableUtil.ColumnExpressionData columnExpressionData = TableUtil.getColumnExpressionData(column);
         ValueExpression expression = columnExpressionData.getValueExpression();
         if (expression == null) return null;
-        final PropertyLocatorFactory factory = new FilterableComponentPropertyLocatorFactory(filteredComponent);
-        final PropertyLocator propertyLocator = factory.create(expression);
+        PropertyLocatorFactory factory = new FilterableComponentPropertyLocatorFactory(filteredComponent);
+        PropertyLocator propertyLocator = factory.create(expression);
 
-        final String title = TableUtil.getColumnHeader(column);
+        String title = TableUtil.getColumnHeader(column);
         if (title == null) return null;
 
-        final Class expressionType = columnExpressionData.getValueType();
-        final Object dataProvider = expressionType.isEnum() ? expressionType.getEnumConstants() : null;
-        final FilterType filterType = FilterType.defineByClass(expressionType);
+        Class expressionType = columnExpressionData.getValueType();
+        Object dataProvider = expressionType.isEnum() ? expressionType.getEnumConstants() : null;
+        FilterType filterType = FilterType.defineByClass(expressionType);
 
-        return new FilterPropertyBase() {
-            @Override
-            public FilterType getType() {
-                return filterType;
-            }
-
-            @Override
-            public String getTitle() {
-                return title;
-            }
-
-            @Override
-            public Object getDataProvider() {
-                return dataProvider;
-            }
-
-            @Override
-            public PropertyLocator getPropertyLocator() {
-                return propertyLocator;
-            }
-
-            @Override
-            public Converter getConverter() {
-                return columnExpressionData.getValueConverter();
-            }
-        };
+        return new ColumnFilterProperty(filterType, title, dataProvider, propertyLocator, columnExpressionData);
     }
 
     private List<FilterProperty> getFilterProperties() {
@@ -237,7 +212,7 @@ public class CompositeFilter extends Filter {
         List<FilterProperty> filterProperties = getFilterProperties();
         List<String> result = new ArrayList<String>(filterProperties.size());
         for (FilterProperty filterProperty : filterProperties) {
-            result.add((String) filterProperty.getTitle());
+            result.add(filterProperty.getTitle());
         }
         return result;
     }
@@ -356,14 +331,6 @@ public class CompositeFilter extends Filter {
         return filterRows.isEmpty();
     }
 
-    public ValueExpression getNoFilterRowRendererExpression() {
-        return new ValueExpressionImpl() {
-            public Object getValue(ELContext elContext) {
-                return isEmpty();
-            }
-        };
-    }
-
     public Map<String, String> getLabels() {
         if (labels != null) return labels;
         ValueExpression ve = getValueExpression("labels");
@@ -412,4 +379,44 @@ public class CompositeFilter extends Filter {
         }
     }
 
+    private static class ColumnFilterProperty extends FilterPropertyBase {
+        private FilterType filterType;
+        private String title;
+        private Object dataProvider;
+        private PropertyLocator propertyLocator;
+        private TableUtil.ColumnExpressionData columnExpressionData;
+
+        public ColumnFilterProperty(FilterType filterType, String title, Object dataProvider, PropertyLocator propertyLocator, TableUtil.ColumnExpressionData columnExpressionData) {
+            this.filterType = filterType;
+            this.title = title;
+            this.dataProvider = dataProvider;
+            this.propertyLocator = propertyLocator;
+            this.columnExpressionData = columnExpressionData;
+        }
+
+        @Override
+        public FilterType getType() {
+            return filterType;
+        }
+
+        @Override
+        public String getTitle() {
+            return title;
+        }
+
+        @Override
+        public Object getDataProvider() {
+            return dataProvider;
+        }
+
+        @Override
+        public PropertyLocator getPropertyLocator() {
+            return propertyLocator;
+        }
+
+        @Override
+        public Converter getConverter() {
+            return columnExpressionData.getValueConverter();
+        }
+    }
 }

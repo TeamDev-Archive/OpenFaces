@@ -24,8 +24,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public abstract class ParametersEditor implements Serializable{
-
+public abstract class ParametersEditor implements Serializable {
     protected ExpressionFilterCriterion criterion = new ExpressionFilterCriterion();
     protected FilterProperty filterProperty;
 

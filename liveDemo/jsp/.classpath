@@ -10,6 +10,6 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/classes"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry combineaccessrules="false" kind="src" path="/OpenFaces"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/openFaces"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>
