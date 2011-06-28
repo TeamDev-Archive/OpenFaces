@@ -41,6 +41,7 @@ import javax.faces.event.ListenerFor;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PostRestoreStateEvent;
 import javax.faces.model.DataModel;
+import javax.faces.convert.Converter;
 import javax.faces.render.Renderer;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -1859,6 +1860,64 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         }
         setRowIndex(oldRowIndex);
         return rowDatas;
+    }
+
+    public void export(TableExporter exporter) {
+        export(exporter, getId() + "." + exporter.getDefaultFileExtension());
+    }
+
+    public void export(TableExporter exporter, String fileName) {
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        TableData tableData = extractTableData();
+        exporter.sendResponse(context, tableData, fileName);
+    }
+
+    /**
+     * Extracts the data displayed in the table, including row datas, the list of columns, and displayed cell texts as
+     * the TableData instance. The list and order of rows and columns reflects the current state of the table component
+     * itself.
+     */
+    public TableData extractTableData() {
+        List<BaseColumn> columns = getRenderedColumns();
+        int columnCount = columns.size();
+        TableUtil.ColumnExpressionData[] columnExpressionDatas = new TableUtil.ColumnExpressionData[columnCount];
+
+        List<TableColumnData> columnDatas = new ArrayList<TableColumnData>();
+        for (int i = 0; i < columnCount; i++) {
+            BaseColumn column = columns.get(i);
+            TableUtil.ColumnExpressionData columnExpressionData = TableUtil.getColumnExpressionData(column);
+            columnExpressionDatas[i] = columnExpressionData;
+            String columnHeader = TableUtil.getColumnHeader(column);
+            columnDatas.add(new TableColumnData(columnExpressionData.getValueType(), columnHeader));
+        }
+
+        List<Object> displayedRowDatas = getDisplayedRowDatas();
+        String var = getVar();
+        FacesContext context = FacesContext.getCurrentInstance();
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+        ELContext elContext = context.getELContext();
+        List<TableRowData> tableRowDatas = new ArrayList<TableRowData>();
+        for (int rowIndex = 0, displayedRowDatasSize = displayedRowDatas.size(); rowIndex < displayedRowDatasSize; rowIndex++) {
+            Object rowData = displayedRowDatas.get(rowIndex);
+            Object prevVarValue = requestMap.put(var, rowData);
+            List<Object> cellDatas = new ArrayList<Object>();
+            List<String> cellStrings = new ArrayList<String>();
+            for (int colIndex = 0; colIndex < columnCount; colIndex++) {
+                TableUtil.ColumnExpressionData columnExpressionData = columnExpressionDatas[colIndex];
+                ValueExpression columnExpression = columnExpressionData.getValueExpression();
+                Object cellValue = columnExpression.getValue(elContext);
+                Converter valueConverter = columnExpressionData.getValueConverter();
+                cellDatas.add(cellValue);
+                cellStrings.add(valueConverter != null
+                        ? valueConverter.getAsString(context, this, cellValue)
+                        : cellValue != null ? cellValue.toString() : "");
+            }
+            tableRowDatas.add(new TableRowData(rowData, cellDatas, cellStrings));
+            requestMap.put(var, prevVarValue);
+        }
+
+        return new TableData(columnDatas, tableRowDatas);
     }
 
 }
