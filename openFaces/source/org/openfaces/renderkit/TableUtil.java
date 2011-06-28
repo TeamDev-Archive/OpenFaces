@@ -130,23 +130,6 @@ public class TableUtil {
 
     /**
      * Matches expression of the form:
-     * #{a.b.var.d.c}
-     * #{a.b[var].d.c}
-     * #{a["b"][var].d.c}
-     * #{a['b'][var]d.c}
-     * #{a['b'][var]['d']c}
-     * #{var.a.b}
-     * #{d.c[var]}
-     *
-     * @return Pattern groups with indexes 2 and 7 of which select expression before and after var accordingly
-     */
-    /*private static Pattern getExpressionPattern(String var) {
-        String pattern = "#\\{((\\w([\\w\\.\\[\\]\\'\\'\\\"\\\"])*)*([\\.\\[])|())" + var + "(\\]\\.|\\]|\\.)((([\\w\\.\\[\\]\\'\\'\\\"\\\"])*)*)}";
-        return Pattern.compile(pattern);
-    }*/
-
-    /**
-     * Matches expression of the form:
      * #{var.a.b}
      *
      * @return Pattern group with index 2 of which selects expression after var
@@ -189,24 +172,6 @@ public class TableUtil {
         } finally {
             if (dynamicCol != null) dynamicCol.undeclareContextVariables();
         }
-
-        /*FacesContext context = FacesContext.getCurrentInstance();
-        ResponseWriter responseWriter = context.getResponseWriter();
-        StringWriter content = new StringWriter();
-        ResponseWriter contentWriter = responseWriter.cloneWithWriter(content);
-
-        context.setResponseWriter(contentWriter);
-        try {
-            component.encodeAll(context);
-        } catch (IOException e) {
-            throw new FacesException(e);
-        }
-        context.setResponseWriter(responseWriter);
-        String componentOutput = content.toString();
-        String result = componentOutput.replaceAll("\\<.*?\\>", "");
-        return result;*/
-
-
     }
 
     private static UIOutput obtainOutput(UIComponent component, String var) {

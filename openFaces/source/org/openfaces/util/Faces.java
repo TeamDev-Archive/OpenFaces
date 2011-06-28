@@ -12,6 +12,7 @@
 package org.openfaces.util;
 
 import javax.el.ELContext;
+import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import java.text.ParseException;
@@ -20,7 +21,8 @@ import java.util.Date;
 import java.util.Map;
 
 /**
- * Class intended to retrieve various parameters from request.
+ * This class contains some utilities that simplify performing operations which are commonly used in JSF application
+ * development, such as looking up variable values, components, etc.
  *
  * @author Dmitry Pikhulya
  */
@@ -28,6 +30,24 @@ public class Faces {
     private static final SimpleDateFormat DATE_PARAMS_FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
     private Faces() {
+    }
+
+    /**
+     * Locates a component with the specified client-side Id and class.
+     * @param clientId       client-side Id of the component, e.g. form:usersTable
+     * @param componentClass expected class of the component whose id is passed to the first parameter, e.g. DataTable.class
+     * @return               a component with the specified client id, or null of the component was not found.
+     */
+    public static <T> T component(String clientId, Class<T> componentClass) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        UIComponent component = context.getViewRoot().findComponent(":" + clientId);
+        if (component == null) return null;
+
+        if (!componentClass.isAssignableFrom(component.getClass()))
+            throw new IllegalArgumentException("A component with the specified client id (" + clientId + ") is of " +
+                    "different type (" + component.getClass().getName() + "), than the one that was expected (" +
+                    componentClass.getClass().getName() + ")");
+        return (T) component;
     }
 
     /**
