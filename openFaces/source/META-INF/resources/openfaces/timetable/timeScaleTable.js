@@ -314,54 +314,6 @@ O$.TimeScaleTable = {
     var reservedEventsLeftOffset = O$.calculateNumericCSSValue(O$.getStyleClassProperty(timeScaleTable._reservedTimeEventClass, "marginLeft"));
     var reservedEventsRightOffset = O$.calculateNumericCSSValue(O$.getStyleClassProperty(timeScaleTable._reservedTimeEventClass, "marginRight"));
 
-    function adjustRolloverPaddings() {
-      var tempDiv = document.createElement("div");
-
-      tempDiv.style.visibility = "hidden";
-      tempDiv.style.position = "absolute";
-      tempDiv.style.left = "0px";
-      tempDiv.style.top = "0px";
-      document.body.appendChild(tempDiv);
-
-      setTimeout(function() {
-        tempDiv.className = timeScaleTable._eventStyleClass;
-        var eventStyleProperties = O$.getElementStyle(tempDiv, ["padding-left", "padding-right", "padding-top", "padding-bottom",
-          "border-left-width", "border-top-width", "border-right-width", "border-bottom-width"]);
-        tempDiv.className = timeScaleTable._rolloverEventClass;
-        var rolloverEventStyleProperties = O$.getElementStyle(tempDiv, ["padding-left", "padding-right", "padding-top", "padding-bottom",
-          "border-left-width", "border-top-width", "border-right-width", "border-bottom-width"]);
-        document.body.removeChild(tempDiv);
-
-        var userRolloverPaddings = O$.getStyleClassProperties(
-                uiEvent.rolloverStyle, ["padding-left", "padding-right", "padding-top", "padding-bottom"]);
-
-        var adjustedStyles = "";
-
-        function adjustPaddingIfNotSpecified(paddingPropertyName, padding, border, rolloverPadding, rolloverBorder) {
-          if (userRolloverPaddings[paddingPropertyName])
-            return;
-          rolloverPadding = O$.calculateNumericCSSValue(padding) + O$.calculateNumericCSSValue(border) - O$.calculateNumericCSSValue(rolloverBorder);
-          adjustedStyles += paddingPropertyName + ": " + rolloverPadding + "px; ";
-        }
-
-        adjustPaddingIfNotSpecified("padding-left", eventStyleProperties.paddingLeft, eventStyleProperties.borderLeftWidth,
-                rolloverEventStyleProperties.paddingLeft, rolloverEventStyleProperties.borderLeftWidth);
-        adjustPaddingIfNotSpecified("padding-right", eventStyleProperties.paddingRight, eventStyleProperties.borderRightWidth,
-                rolloverEventStyleProperties.paddingRight, rolloverEventStyleProperties.borderRightWidth);
-        adjustPaddingIfNotSpecified("padding-top", eventStyleProperties.paddingTop, eventStyleProperties.borderTopWidth,
-                rolloverEventStyleProperties.paddingTop, rolloverEventStyleProperties.borderTopWidth);
-        adjustPaddingIfNotSpecified("padding-bottom", eventStyleProperties.paddingBottom, eventStyleProperties.borderBottomWidth,
-                rolloverEventStyleProperties.paddingBottom, rolloverEventStyleProperties.borderBottomWidth);
-
-        if (adjustedStyles) {
-          var newClassName = O$.createCssClass(adjustedStyles);
-          timeScaleTable._rolloverEventClass = O$.combineClassNames([timeScaleTable._rolloverEventClass, newClassName]);
-        }
-      }, 1);
-    }
-
-    adjustRolloverPaddings();
-
     var addEvent = timeScaleTable._addEvent;
     var addEventElements = timeScaleTable._addEventElements;
     var addEventElement = timeScaleTable._addEventElement;
@@ -1143,16 +1095,15 @@ O$.TimeScaleTable = {
                 var borderRightWidth = O$.getNumericElementStyle(eventElement, "border-right-width");
                 O$.setElementSize(actionBar, {width: eventElement._rect.width - borderLeftWidth - borderRightWidth,
                           height: barHeight});
+                actionBar.style.top = "";
+                actionBar.style.bottom = "";
                 actionBar.style.left = "0px";
                 actionBar.style.bottom = "0px";
               }
 
-
-
-
             });
 
-
+    timeScaleTable._adjustRolloverPaddings();
   }
 };
 

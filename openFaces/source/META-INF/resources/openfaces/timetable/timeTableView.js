@@ -17,6 +17,7 @@ O$.TimeTableView = {
                   editable, onchange, editingOptions,
                   stylingParams,
                   uiEvent) {
+
     var timeTableView = O$(componentId);
     O$.initComponent(componentId, {rollover: stylingParams.rolloverClass});
 
@@ -115,6 +116,52 @@ O$.TimeTableView = {
     timeTableView._maxZIndex = timeTableView._baseZIndex + 10;
 
     O$.extend(timeTableView, {
+              _adjustRolloverPaddings: function() {
+                var tempDiv = document.createElement("div");
+
+                tempDiv.style.visibility = "hidden";
+                tempDiv.style.position = "absolute";
+                tempDiv.style.left = "0px";
+                tempDiv.style.top = "0px";
+                document.body.appendChild(tempDiv);
+
+                setTimeout(function() {
+                  tempDiv.className = timeTableView._eventStyleClass;
+                  var eventStyleProperties = O$.getElementStyle(tempDiv, ["padding-left", "padding-right", "padding-top", "padding-bottom",
+                    "border-left-width", "border-top-width", "border-right-width", "border-bottom-width"]);
+                  tempDiv.className = timeTableView._rolloverEventClass;
+                  var rolloverEventStyleProperties = O$.getElementStyle(tempDiv, ["padding-left", "padding-right", "padding-top", "padding-bottom",
+                    "border-left-width", "border-top-width", "border-right-width", "border-bottom-width"]);
+                  document.body.removeChild(tempDiv);
+
+                  var userRolloverPaddings = O$.getStyleClassProperties(
+                          uiEvent.rolloverStyle, ["padding-left", "padding-right", "padding-top", "padding-bottom"]);
+
+                  var adjustedStyles = "";
+
+                  function adjustPaddingIfNotSpecified(paddingPropertyName, padding, border, rolloverPadding, rolloverBorder) {
+                    if (userRolloverPaddings[paddingPropertyName])
+                      return;
+                    rolloverPadding = O$.calculateNumericCSSValue(padding) + O$.calculateNumericCSSValue(border) - O$.calculateNumericCSSValue(rolloverBorder);
+                    adjustedStyles += paddingPropertyName + ": " + rolloverPadding + "px; ";
+                  }
+
+                  adjustPaddingIfNotSpecified("padding-left", eventStyleProperties.paddingLeft, eventStyleProperties.borderLeftWidth,
+                          rolloverEventStyleProperties.paddingLeft, rolloverEventStyleProperties.borderLeftWidth);
+                  adjustPaddingIfNotSpecified("padding-right", eventStyleProperties.paddingRight, eventStyleProperties.borderRightWidth,
+                          rolloverEventStyleProperties.paddingRight, rolloverEventStyleProperties.borderRightWidth);
+                  adjustPaddingIfNotSpecified("padding-top", eventStyleProperties.paddingTop, eventStyleProperties.borderTopWidth,
+                          rolloverEventStyleProperties.paddingTop, rolloverEventStyleProperties.borderTopWidth);
+                  adjustPaddingIfNotSpecified("padding-bottom", eventStyleProperties.paddingBottom, eventStyleProperties.borderBottomWidth,
+                          rolloverEventStyleProperties.paddingBottom, rolloverEventStyleProperties.borderBottomWidth);
+
+                  if (adjustedStyles) {
+                    var newClassName = O$.createCssClass(adjustedStyles);
+                    timeTableView._rolloverEventClass = O$.combineClassNames([timeTableView._rolloverEventClass, newClassName]);
+                  }
+                }, 1);
+              },
+
               // RichFaces-OpenFaces-JSON compatibility workaround
               // Since some of RichFaces components use JavaScript defining Array.prototype.toJSON method,
               // JSON.stringify([1, 2]) call will produce '"[1,2]"' string instead of expected '["1","2"]'.
@@ -156,27 +203,31 @@ O$.TimeTableView = {
                 O$.setHiddenField(this, this.id + "::timetableChanges", changesAsString);
               },
 
-              _showEventActionBar: function(event, part) {
-                var eventElement = part.mainElement;
-                var actionBar = this._getEventActionBar();
-                actionBar._event = event;
-                actionBar._part = part;
-                var userSpecifiedStyles = O$.getStyleClassProperties(actionBar._userSpecifiedClass, ["color", "background-color"]);
-                actionBar.style.backgroundColor = userSpecifiedStyles.backgroundColor
-                        ? userSpecifiedStyles.backgroundColor
-                        : O$.blendColors(eventElement._color, "#ffffff", 1 - actionBar._inactiveSegmentIntensity);
-                eventElement.appendChild(actionBar);
-                actionBar.style.height = "";
-                actionBar.style.width = "";
-                var barHeight = actionBar.offsetHeight;
-                var actionsAreaHeight = actionBar._actionsArea._getHeight();
-                if (barHeight < actionsAreaHeight)
-                  barHeight = actionsAreaHeight;
+              _getEventActionBar: function() {
+                if (!this._eventActionBar) {
+                  this._eventActionBar = O$(this.id + ":_eventActionBar");
+                  if (!this._eventActionBar && this._timetable) {
+                    if (!this._timetable._eventActionBar)
+                      this._timetable._eventActionBar = O$(this._timetable.id + ":_eventActionBar");
+                    this._eventActionBar = this._timetable._eventActionBar;
+                  }
+                  if (!this._eventActionBar)
+                    return null;
+                  this._eventActionBar.style.position = "absolute";
+                  this._eventActionBar.style.visibility = "hidden";
 
-                this._layoutActionBar(actionBar, barHeight, eventElement);
-                actionBar.style.visibility = "visible";
-                actionBar._actionsArea.style.visibility = "visible";
-                actionBar._update();
+                }
+                return this._eventActionBar;
+              },
+
+              _showEventActionBar: function(event, part) {
+                var actionBar = this._getEventActionBar();
+                actionBar._show(this, event, part);
+              },
+
+              _hideEventActionBar: function() {
+                var actionBar = this._getEventActionBar();
+                actionBar._hide();
               },
 
               getDay: function() {
@@ -287,37 +338,11 @@ O$.TimeTableView = {
                 this._scroller.style.height = scrollerHeight;
               },
 
-              _getEventActionBar: function() {
-                if (!this._eventActionBar) {
-                  this._eventActionBar = O$(this.id + ":_eventActionBar");
-                  if (!this._eventActionBar)
-                    return null;
-                  this._eventActionBar.style.position = "absolute";
-                  this._eventActionBar.style.visibility = "hidden";
-
-                }
-                return this._eventActionBar;
-              },
-
               _getEventPreview: function() {
                 if (!this._eventPreview) {
                   this._eventPreview = O$(this.id + ":_eventPreview");
                 }
                 return this._eventPreview;
-              },
-
-              _hideEventActionBar: function() {
-                var actionBar = this._getEventActionBar();
-                if (!actionBar._event)
-                  return;
-                var eventElement = actionBar._part.mainElement;
-                actionBar._lastEditedEvent = actionBar._event;
-                actionBar._lastEditedPart = actionBar._event;
-                actionBar._event = null;
-                actionBar._part = null;
-                eventElement.removeChild(actionBar);
-                actionBar.style.visibility = "hidden";
-                actionBar._actionsArea.style.visibility = "hidden";
               },
 
               _putTimetableChanges: function(addedEvents, changedEvents, removedEventIds, initialAssignment) {
@@ -795,3 +820,4 @@ O$.TimeTableView = {
 
   }
 };
+

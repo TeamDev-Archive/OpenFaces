@@ -430,7 +430,7 @@ O$.Timetable = {
   },
 
 
-  _initEventActionBar: function(actionBarId, timetableViewId, backgroundIntensity, userSpecifiedClass, actions,
+  _initEventActionBar: function(actionBarId, backgroundIntensity, userSpecifiedClass, actions,
                                 actionRolloverIntensity, actionPressedIntensity) {
     var actionBar = O$(actionBarId);
     if (!actionBar) {
@@ -442,9 +442,48 @@ O$.Timetable = {
       return;
     }
 
-    actionBar._inactiveSegmentIntensity = backgroundIntensity;
-    actionBar._userSpecifiedClass = userSpecifiedClass;
-    actionBar.className = O$.combineClassNames(["o_eventActionBar", userSpecifiedClass]);
+    O$.extend(actionBar, {
+              _inactiveSegmentIntensity: backgroundIntensity,
+              _userSpecifiedClass: userSpecifiedClass,
+              className: O$.combineClassNames(["o_eventActionBar", userSpecifiedClass]),
+
+              _show: function(timetableView, event, part) {
+                var eventElement = part.mainElement;
+                this._timetableView = timetableView;
+                this._event = event;
+                this._part = part;
+                var userSpecifiedStyles = O$.getStyleClassProperties(this._userSpecifiedClass, ["color", "background-color"]);
+                this.style.backgroundColor = userSpecifiedStyles.backgroundColor
+                        ? userSpecifiedStyles.backgroundColor
+                        : O$.blendColors(eventElement._color, "#ffffff", 1 - this._inactiveSegmentIntensity);
+                eventElement.appendChild(this);
+                this.style.height = "";
+                this.style.width = "";
+                var barHeight = this.offsetHeight;
+                var actionsAreaHeight = this._actionsArea._getHeight();
+                if (barHeight < actionsAreaHeight)
+                  barHeight = actionsAreaHeight;
+
+                timetableView._layoutActionBar(this, barHeight, eventElement);
+                this.style.visibility = "visible";
+                this._actionsArea.style.visibility = "visible";
+                this._update();
+              },
+
+              _hide: function() {
+                if (!this._event)
+                  return;
+                var eventElement = this._part.mainElement;
+                this._lastEditedEvent = this._event;
+                this._lastEditedPart = this._event;
+                this._event = null;
+                this._part = null;
+                eventElement.removeChild(this);
+                this.style.visibility = "hidden";
+                this._actionsArea.style.visibility = "hidden";
+              }
+
+            });
 
     var actionsTable = document.createElement("table");
     actionsTable.cellSpacing = "0";
@@ -472,7 +511,6 @@ O$.Timetable = {
                 onmousedown: function() {
                   this._timetableEvent = actionBar._event ? actionBar._event : actionBar._lastEditedEvent;
                   this._timetableEventPart = actionBar._part ? actionBar._part : actionBar._lastEditedPart;
-                  this._timetableView = O$(timetableViewId);
                   if (this._timetableEventPart.mainElement._bringToFront) {
                     this._timetableEventPart.mainElement._bringToFront();
                   }
@@ -481,7 +519,7 @@ O$.Timetable = {
                 onclick: function(e) {
                   e = O$.getEvent(e);
                   e.timetableEvent = this._timetableEvent;
-                  var timetableView = this._timetableView;
+                  var timetableView = actionBar._timetableView;
                   e._timetableView = timetableView;
                   if (this._userClickHandler) {
                     if (this._userClickHandler(e) === false || e.returnValue === false)
@@ -491,8 +529,8 @@ O$.Timetable = {
                   var eventId = this._timetableEvent.id;
                   var action = this._action;
                   if (action.scope == "page") {
-                    O$.setHiddenField(this._timetableView, actionBarId + "::" + this._index, eventId);
-                    O$.submitEnclosingForm(this._timetableView);
+                    O$.setHiddenField(actionBar._timetableView, actionBarId + "::" + this._index, eventId);
+                    O$.submitEnclosingForm(actionBar._timetableView);
                   } else if (action.scope == "timetable") {
                     var timetable = timetableView._timetable || timetableView;
                     O$._ajaxReload([timetable.id], {
@@ -594,14 +632,13 @@ O$.Timetable = {
 
 
     actionBar._actionsArea._updatePos = function() {
-      var timetableView = O$(timetableViewId);
       var actionBarSize = O$.getElementSize(actionBar);
       var actionsAreaSize = O$.getElementSize(this);
       this.style.top = "0px";
       this.style.left = actionBarSize.width - actionsAreaSize.width + "px";
       this.style.height = actionBarSize.height + "px";
 
-      O$.correctElementZIndex(this, timetableView);
+      O$.correctElementZIndex(this, this._timetableView);
     };
   },
 
