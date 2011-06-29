@@ -55,7 +55,6 @@ public class EventActionBarRenderer extends RendererBase {
         double actionRolloverBackgroundIntensity = actionBar.getActionRolloverBackgroundIntensity();
         double actionPressedBackgroundIntensity = actionBar.getActionPressedBackgroundIntensity();
         Rendering.renderInitScript(context, new ScriptBuilder().initScript(context, actionBar, "O$.Timetable._initEventActionBar",
-                timeTable,
                 actionBar.getBackgroundIntensity(),
                 userSpecifiedStyle,
                 eventActions,

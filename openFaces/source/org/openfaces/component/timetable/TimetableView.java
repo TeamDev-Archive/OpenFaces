@@ -532,11 +532,14 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
     }
 
     public EventActionBar getEventActionBar() {
-        EventActionBar result = Components.getChildWithClass(this, EventActionBar.class, "eventActionBar");
+        EventActionBar result = Components.findChildWithClass(this, EventActionBar.class, "eventActionBar");
         if (result == null) {
             Timetable timetable = getTimetable();
             if (timetable != null)
                 result = timetable.getEventActionBar();
+        }
+        if (result == null) {
+            result = Components.getChildWithClass(this, EventActionBar.class, "eventActionBar");
         }
         return result;
     }

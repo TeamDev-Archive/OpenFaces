@@ -398,6 +398,8 @@ O$.MonthTable = {
               _layoutActionBar: function(actionBar, barHeight, eventElement) {
                 var barWidth = actionBar._actionsArea._getWidth();
                 O$.setElementSize(actionBar, {width: barWidth, height: barHeight});
+                actionBar.style.left = "";
+                actionBar.style.bottom = "";
                 actionBar.style.right = "0px";
                 actionBar.style.top = (eventElement._rect.height - barHeight) / 2 + "px";
               },
@@ -512,6 +514,8 @@ O$.MonthTable = {
               }
 
             });
+
+    monthTable._adjustRolloverPaddings();
 
     var dtf = O$.getDateTimeFormatObject(locale);
     monthTable.setDay(dtf.parse(day, "dd/MM/yyyy"));

@@ -28,9 +28,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TimeZone;
 
 /**
@@ -44,7 +46,18 @@ public abstract class TimetableViewRenderer extends TimetableRendererBase implem
     protected void encodeActionBar(FacesContext context, TimetableView timetableView) throws IOException {
         EventActionBar bar = timetableView.getEventActionBar();
         if (bar != null) {
-            bar.encodeAll(context);
+            String barClientId = bar.getClientId(context);
+            Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+            String alreadyRenderedBarsKey = TimetableViewRenderer.class + ".encodeActionBar().alreadyRenderedBars";
+            Set<String> alreadyRenderedBars = (Set) requestMap.get(alreadyRenderedBarsKey);
+            if (alreadyRenderedBars == null) {
+                alreadyRenderedBars = new HashSet<String>();
+                requestMap.put(alreadyRenderedBarsKey, alreadyRenderedBars);
+            }
+            if (!alreadyRenderedBars.contains(barClientId)) {
+                bar.encodeAll(context);
+                alreadyRenderedBars.add(barClientId);
+            }
         }
     }
 
