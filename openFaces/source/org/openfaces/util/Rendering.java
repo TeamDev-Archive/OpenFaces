@@ -1428,4 +1428,14 @@ public class Rendering {
         }
         return result;
     }
+
+    public static boolean isExplicitIdSpecified(UIComponent component) {
+        String id = component.getId();
+        if (id == null) return false;
+
+        if (id.startsWith(UIViewRoot.UNIQUE_ID_PREFIX))
+            return false;
+
+        return true;
+    }
 }

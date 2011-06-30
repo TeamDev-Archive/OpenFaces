@@ -51,6 +51,11 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
      component was made to process all phases [JSFC-2049].
     */
 
+    public static final String FACET_HEADER = "header";
+    public static final String FACET_FOOTER = "footer";
+    public static final String FACET_ABOVE = "above";
+    public static final String FACET_BELOW = "below";
+
     private List<SortingRule> sortingRules;
 
     private String cellspacing;
@@ -309,6 +314,39 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     protected TableDataModel getModel() {
         return (TableDataModel) getUiDataValue();
     }
+
+    public UIComponent getHeader() {
+        return getFacet(FACET_HEADER);
+    }
+
+    public void setHeader(UIComponent component) {
+        getFacets().put(FACET_HEADER, component);
+    }
+
+    public UIComponent getFooter() {
+        return getFacet(FACET_FOOTER);
+    }
+
+    public void setFooter(UIComponent component) {
+        getFacets().put(FACET_FOOTER, component);
+    }
+
+    public UIComponent getAbove() {
+        return getFacet(FACET_ABOVE);
+    }
+
+    public void setAbove(UIComponent component) {
+        getFacets().put(FACET_ABOVE, component);
+    }
+
+    public UIComponent getBelow() {
+        return getFacet(FACET_BELOW);
+    }
+
+    public void setBelow(UIComponent component) {
+        getFacets().put(FACET_BELOW, component);
+    }
+
 
     @Override
     public Object getValue() { // needed for UISeamCommandBase to work with DataTable/TreeTable correctly (JSFC-2585)
