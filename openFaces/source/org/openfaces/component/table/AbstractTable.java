@@ -69,8 +69,10 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
      component was made to process all phases [JSFC-2049].
     */
 
-    private static final String ABOVE_FACET_NAME = "above";
-    private static final String BELOW_FACET_NAME = "below";
+    public static final String FACET_HEADER = "header";
+    public static final String FACET_FOOTER = "footer";
+    public static final String FACET_ABOVE = "above";
+    public static final String FACET_BELOW = "below";
 
     private List<SortingRule> sortingRules;
 
@@ -361,6 +363,42 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
             throw new IllegalStateException("table.getDataModel() != table.getModel(). It's possible that " +
                     "getDataModel() during state restoring before table's StateHelper has been restored. table id = " + getId());
         return dataModel.isRowAvailable();
+    }
+
+    public UIComponent getHeader() {
+        return getFacet(FACET_HEADER);
+    }
+
+    public void setHeader(UIComponent component) {
+        getFacets().put(FACET_HEADER, component);
+    }
+
+    public UIComponent getFooter() {
+        return getFacet(FACET_FOOTER);
+    }
+
+    public void setFooter(UIComponent component) {
+        getFacets().put(FACET_FOOTER, component);
+    }
+
+    public UIComponent getAbove() {
+        UIComponent component = getFacets().get(FACET_ABOVE);
+        ensureFacetHasOwnId(component, FACET_ABOVE);
+        return component;
+    }
+
+    public void setAbove(UIComponent component) {
+        getFacets().put(FACET_ABOVE, component);
+    }
+
+    public UIComponent getBelow() {
+        UIComponent component = getFacets().get(FACET_BELOW);
+        ensureFacetHasOwnId(component, FACET_BELOW);
+        return component;
+    }
+
+    public void setBelow(UIComponent component) {
+        getFacets().put(FACET_BELOW, component);
     }
 
     @Override
@@ -1819,26 +1857,6 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 //            getStateHelper().put(facetAutoIdCounterKey, counter);
 //            facet.setId(getId() + Rendering.SERVER_ID_SUFFIX_SEPARATOR + "facetAutoId_" + counter);
         }
-    }
-
-    public UIComponent getAbove() {
-        UIComponent component = getFacets().get(ABOVE_FACET_NAME);
-        ensureFacetHasOwnId(component, "above");
-        return component;
-    }
-
-    public void setAbove(UIComponent component) {
-        getFacets().put(ABOVE_FACET_NAME, component);
-    }
-
-    public UIComponent getBelow() {
-        UIComponent component = getFacets().get(BELOW_FACET_NAME);
-        ensureFacetHasOwnId(component, "below");
-        return component;
-    }
-
-    public void setBelow(UIComponent component) {
-        getFacets().put(BELOW_FACET_NAME, component);
     }
 
     /**
