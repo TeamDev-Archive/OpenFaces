@@ -75,7 +75,7 @@ public class ChartSelection extends OUICommand {
                     throw new RuntimeException(e);
                 }
             }
-            automaticChangeHandler = new ScriptBuilder().functionCall("O$._ajaxReload",
+            automaticChangeHandler = new ScriptBuilder().functionCall("O$.Ajax._reload",
                     initializer.getRenderArray(context, this, render),
                     ajaxParams).semicolon().append("return false;");
         } else {

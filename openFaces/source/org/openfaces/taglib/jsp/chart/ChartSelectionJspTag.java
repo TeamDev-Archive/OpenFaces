@@ -11,9 +11,11 @@
  */
 package org.openfaces.taglib.jsp.chart;
 
+import org.openfaces.taglib.jsp.OUICommandJspTag;
+
 import javax.el.ValueExpression;
 
-public class ChartSelectionJspTag extends org.openfaces.taglib.jsp.AbstractComponentJspTag {
+public class ChartSelectionJspTag extends OUICommandJspTag {
 
     public ChartSelectionJspTag() {
         super(new org.openfaces.taglib.internal.chart.ChartSelectionTag());

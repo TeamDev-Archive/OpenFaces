@@ -533,8 +533,8 @@ O$.Timetable = {
                     O$.submitEnclosingForm(actionBar._timetableView);
                   } else if (action.scope == "timetable") {
                     var timetable = timetableView._timetable || timetableView;
-                    O$._ajaxReload([timetable.id], {
-                              additionalParams: [
+                    O$.Ajax._reload([timetable.id], {
+                              params: [
                                 [actionBarId + "::" + this._index, eventId]
                               ]
                             });
