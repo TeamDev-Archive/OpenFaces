@@ -19341,6 +19341,17 @@ and it is automatically triggered on any form submission. -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+
+    <attribute>
+ 	    <description>Specifies the default style of the chart items shape outlines.</description>
+ 	    <name>defaultOutlineStyle</name>
+ 	    <deferred-value>
+ 	      <type>java.lang.Object</type>
+ 	    </deferred-value>
+ 	    <!-- @bindingType LineStyle -->
+ 	    <!-- @default null -->
+ 	    <!-- @el true -->
+ 	  </attribute>
   </tag>
 
   <tag>
