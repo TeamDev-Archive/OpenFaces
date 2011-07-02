@@ -21,7 +21,6 @@ public class ChartSelectionJspTag extends OUICommandJspTag {
         super(new org.openfaces.taglib.internal.chart.ChartSelectionTag());
     }
 
-
     public void setLineStyle(ValueExpression lineStyle) {
         getDelegate().setPropertyValue("lineStyle", lineStyle);
     }
