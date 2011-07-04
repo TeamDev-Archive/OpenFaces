@@ -17,7 +17,7 @@
              pageSize="4">
   <a4j:support event="onclick" reRender="counter" action="#{A4jSupportBean.increase}"/>
   <f:facet name="below">
-    <o:dataTablePaginator/>
+    <o:dataTablePaginator id="paginator"/>
   </f:facet>
   <o:checkboxColumn/>
 
@@ -75,7 +75,7 @@
              pageSize="4">
   <a4j:support event="onclick" reRender="counter" action="#{A4jSupportBean.increase}"/>
   <f:facet name="below">
-    <o:dataTablePaginator/>
+    <o:dataTablePaginator id="paginator"/>
   </f:facet>
   <o:checkboxColumn>
     <a4j:support event="onclick" reRender="counter" action="#{A4jSupportBean.increase}"/>
@@ -135,7 +135,7 @@
              useAjax="#{A4jParametersBean.useAjax}"
              pageSize="4">
   <f:facet name="below">
-    <o:dataTablePaginator/>
+    <o:dataTablePaginator id="paginator"/>
   </f:facet>
   <o:singleRowSelection>
     <a4j:support event="onchange" reRender="counter" action="#{A4jSupportBean.increase}"/>
