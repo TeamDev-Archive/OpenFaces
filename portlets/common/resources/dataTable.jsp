@@ -99,7 +99,7 @@
     <h:outputText value="#{person.hobby}"/>
   </o:column>
   <f:facet name="below">
-    <o:dataTablePaginator/>
+    <o:dataTablePaginator id="paginator"/>
   </f:facet>
 </o:dataTable>
 <br/>
@@ -139,7 +139,7 @@
     <h:outputText value="#{person.hobby}"/>
   </o:column>
   <f:facet name="below">
-    <o:dataTablePaginator/>
+    <o:dataTablePaginator id="paginator"/>
   </f:facet>
 </o:dataTable>
 <br/>
@@ -176,7 +176,7 @@
     <h:outputText value="#{person.hobby}"/>
   </o:column>
   <f:facet name="below">
-    <o:dataTablePaginator/>
+    <o:dataTablePaginator id="paginator"/>
   </f:facet>
 </o:dataTable>
 <br/>
@@ -250,7 +250,7 @@
     <h:outputText value="It is a common footer"/>
   </f:facet>
   <f:facet name="below">
-    <o:dataTablePaginator/>
+    <o:dataTablePaginator id="paginator"/>
   </f:facet>
 </o:dataTable>
 
@@ -304,7 +304,7 @@
     <h:outputText value="It is a common footer"/>
   </f:facet>
   <f:facet name="below">
-    <o:dataTablePaginator/>
+    <o:dataTablePaginator id="paginator"/>
   </f:facet>
 </o:dataTable>
 <h:outputText style="color:red; font-weight:bold; font-size:18px;" value="#{bundle.today}"/>

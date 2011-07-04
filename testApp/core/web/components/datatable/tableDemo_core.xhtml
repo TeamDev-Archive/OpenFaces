@@ -165,10 +165,10 @@
                 style="width: 100%; border: 1px solid white;"
                 bodyRowStyle="background: white" bodyOddRowStyle="background: #f0f0f8">
     <f:facet name="above">
-      <o:dataTablePaginator styleClass="defaultTableStyle" />
+      <o:dataTablePaginator id="p1" styleClass="defaultTableStyle" />
     </f:facet>
     <f:facet name="below">
-      <o:dataTablePaginator styleClass="defaultTableStyle"/>
+      <o:dataTablePaginator id="p2" styleClass="defaultTableStyle"/>
     </f:facet>
     <o:singleRowSelection rowData="#{UserPermissionsTableDemoBean.currentUser}" action="#{UserPermissionsTableDemoBean.userChanged}"/>
     <o:column sortingExpression="#{user.userName}">
