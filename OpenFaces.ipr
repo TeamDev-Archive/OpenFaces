@@ -1224,22 +1224,17 @@
     </library>
     <library name="JSF Implementation - Mojarra 2.0">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/mojarra/jsf-impl-2.1.1.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/mojarra/jsf-api-2.1.1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/mojarra/jsf-api-2.1.2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/mojarra/jsf-impl-2.1.2.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES>
-        <root url="jar://$PROJECT_DIR$/libsrc/mojarra-2.1.1-FCS-source.zip!/mojarra-2.1.1-FCS-source/jsf-ri/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/mojarra-2.1.1-FCS-source.zip!/mojarra-2.1.1-FCS-source/jsf-api/src/main/java" />
+        <root url="jar://$PROJECT_DIR$/libsrc/mojarra-2.1.2-FCS-source.zip!/mojarra-2.1.2-FCS-source/jsf-api/src/test/java" />
+        <root url="jar://$PROJECT_DIR$/libsrc/mojarra-2.1.2-FCS-source.zip!/mojarra-2.1.2-FCS-source/jsf-ri/build/generate" />
+        <root url="jar://$PROJECT_DIR$/libsrc/mojarra-2.1.2-FCS-source.zip!/mojarra-2.1.2-FCS-source/jsf-ri/src/main/java" />
+        <root url="jar://$PROJECT_DIR$/libsrc/mojarra-2.1.2-FCS-source.zip!/mojarra-2.1.2-FCS-source/jsf-api/src/main/java" />
+        <root url="jar://$PROJECT_DIR$/libsrc/mojarra-2.1.2-FCS-source.zip!/mojarra-2.1.2-FCS-source/jsf-api/build/generate" />
       </SOURCES>
-    </library>
-    <library name="JSF Implementation - Mojarra 2.1">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/mojarra/jsf-api-2.1.b07.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/mojarra/jsf-impl-2.1.b07.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES />
     </library>
     <library name="JSF Implementation - MyFaces 2.0">
       <CLASSES>
