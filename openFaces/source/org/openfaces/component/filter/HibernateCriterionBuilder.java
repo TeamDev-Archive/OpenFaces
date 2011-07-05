@@ -40,17 +40,17 @@ public class HibernateCriterionBuilder extends FilterCriterionProcessor {
     /**
      * You can invoke this function from the DataTable's data providing method (a method that is bound to the DataTable's
      * "value" attribute) to implement the hibernate-based custom data providing mode.
-     * <p>
+     * <p/>
      * This method creates the hibernate Criteria object with the current DataTable custom data providing parameters
      * that are automatically retrieved from the request scope by this method. That is the returned Criteria will
      * contain the current table's filtering, sorting and pagination parameters.
-     * <p>
+     * <p/>
      * NOTE: the table should have the "id" attribute specified for all sortable columns. The id value should correspond
-     * to the appropriate property name by which sorting should be performed, or more formally, the value of the "id" 
+     * to the appropriate property name by which sorting should be performed, or more formally, the value of the "id"
      * attribute will be passed to the Order.asc(String propertyName) and Order.desc(String propertyName) methods when
      * populating the Criteria object.
-     * <p>
-     * You can use any of the buidCriteria() methods or the fillCriteria() method depending on the needs of your
+     * <p/>
+     * You can use any of the buildCriteria() methods or the fillCriteria() method depending on the needs of your
      * application.
      *
      * @see @fillCriteria
@@ -64,17 +64,17 @@ public class HibernateCriterionBuilder extends FilterCriterionProcessor {
     /**
      * You can invoke this function from the DataTable's data providing method (a method that is bound to the DataTable's
      * "value" attribute) to implement the hibernate-based custom data providing mode.
-     * <p>
+     * <p/>
      * This method creates the hibernate Criteria object with the current DataTable custom data providing parameters
      * that are automatically retrieved from the request scope by this method. That is the returned Criteria will
      * contain the current table's filtering, sorting and pagination parameters.
-     * <p>
+     * <p/>
      * NOTE: the table should have the "id" attribute specified for all sortable columns. The id value should correspond
      * to the appropriate property name by which sorting should be performed, or more formally, the value of the "id"
      * attribute will be passed to the Order.asc(String propertyName) and Order.desc(String propertyName) methods when
      * populating the Criteria object.
-     * <p>
-     * You can use any of the buidCriteria() methods or the fillCriteria() method depending on the needs of your
+     * <p/>
+     * You can use any of the buildCriteria() methods or the fillCriteria() method depending on the needs of your
      * application.
      *
      * @see @fillCriteria
@@ -88,17 +88,17 @@ public class HibernateCriterionBuilder extends FilterCriterionProcessor {
     /**
      * You can invoke this function from the DataTable's data providing method (a method that is bound to the DataTable's
      * "value" attribute) to implement the hibernate-based custom data providing mode.
-     * <p>
+     * <p/>
      * This method creates the hibernate Criteria object with the current DataTable custom data providing parameters
      * that are automatically retrieved from the request scope by this method. That is the returned Criteria will
      * contain the current table's filtering, sorting and pagination parameters.
-     * <p>
+     * <p/>
      * NOTE: the table should have the "id" attribute specified for all sortable columns. The id value should correspond
      * to the appropriate property name by which sorting should be performed, or more formally, the value of the "id"
      * attribute will be passed to the Order.asc(String propertyName) and Order.desc(String propertyName) methods when
      * populating the Criteria object.
-     * <p>
-     * You can use any of the buidCriteria() methods or the fillCriteria() method depending on the needs of your
+     * <p/>
+     * You can use any of the buildCriteria() methods or the fillCriteria() method depending on the needs of your
      * application.
      *
      * @see @fillCriteria
@@ -112,17 +112,17 @@ public class HibernateCriterionBuilder extends FilterCriterionProcessor {
     /**
      * You can invoke this function from the DataTable's data providing method (a method that is bound to the DataTable's
      * "value" attribute) to implement the hibernate-based custom data providing mode.
-     * <p>
+     * <p/>
      * This method creates the hibernate Criteria object with the current DataTable custom data providing parameters
      * that are automatically retrieved from the request scope by this method. That is the returned Criteria will
      * contain the current table's filtering, sorting and pagination parameters.
-     * <p>
+     * <p/>
      * NOTE: the table should have the "id" attribute specified for all sortable columns. The id value should correspond
      * to the appropriate property name by which sorting should be performed, or more formally, the value of the "id"
      * attribute will be passed to the Order.asc(String propertyName) and Order.desc(String propertyName) methods when
      * populating the Criteria object.
-     * <p>
-     * You can use any of the buidCriteria() methods or the fillCriteria() method depending on the needs of your
+     * <p/>
+     * You can use any of the buildCriteria() methods or the fillCriteria() method depending on the needs of your
      * application.
      *
      * @see @fillCriteria
@@ -136,17 +136,17 @@ public class HibernateCriterionBuilder extends FilterCriterionProcessor {
     /**
      * You can invoke this function from the DataTable's data providing method (a method that is bound to the DataTable's
      * "value" attribute) to implement the hibernate-based custom data providing mode.
-     * <p>
+     * <p/>
      * This method fills the passed hibernate Criteria object with the current DataTable custom data providing
      * parameters that are automatically retrieved from the request scope by this method. That is the Criteria object
      * will be configured with the current table's filtering, sorting and pagination parameters.
-     * <p>
+     * <p/>
      * NOTE: the table should have the "id" attribute specified for all sortable columns. The id value should correspond
      * to the appropriate property name by which sorting should be performed, or more formally, the value of the "id"
      * attribute will be passed to the Order.asc(String propertyName) and Order.desc(String propertyName) methods when
      * populating the Criteria object.
-     * <p>
-     * You can use any of the buidCriteria() methods or the fillCriteria() method depending on the needs of your
+     * <p/>
+     * You can use any of the buildCriteria() methods or the fillCriteria() method depending on the needs of your
      * application.
      *
      * @see @buildCriteria
@@ -156,6 +156,10 @@ public class HibernateCriterionBuilder extends FilterCriterionProcessor {
     }
 
     private static void fillCriteria(Criteria criteria, boolean ignorePaginationParams) {
+        fillCriteria(criteria, ignorePaginationParams, true);
+    }
+
+    private static void fillCriteria(Criteria criteria, boolean ignorePaginationParams, boolean addOrderBy) {
         CompositeFilterCriterion filterCriteria = Faces.var("filterCriteria", CompositeFilterCriterion.class);
         boolean sortAscending = Faces.var("sortAscending", Boolean.class);
         String sortColumnId = Faces.var("sortColumnId", String.class);
@@ -170,7 +174,7 @@ public class HibernateCriterionBuilder extends FilterCriterionProcessor {
             criteria.setFirstResult(pageStart);
             criteria.setMaxResults(pageSize);
         }
-        if (sortColumnId != null)
+        if (sortColumnId != null && addOrderBy)
             criteria.addOrder(sortAscending ? Order.asc(sortColumnId) : Order.desc(sortColumnId));
     }
 
@@ -179,7 +183,7 @@ public class HibernateCriterionBuilder extends FilterCriterionProcessor {
      * hibernate-based custom data providing mode.
      *
      * @return the total number of rows without the pagination parameters (which is required by DataTable to properly
-     * calculate the number of pages).
+     *         calculate the number of pages).
      */
     public static int getRowCount(Session session, String entityName) {
         Criteria criteria = session.createCriteria(entityName);
@@ -191,7 +195,7 @@ public class HibernateCriterionBuilder extends FilterCriterionProcessor {
      * hibernate-based custom data providing mode.
      *
      * @return the total number of rows without the pagination parameters (which is required by DataTable to properly
-     * calculate the number of pages).
+     *         calculate the number of pages).
      */
     public static int getRowCount(Session session, Class persistentClass) {
         Criteria criteria = session.createCriteria(persistentClass);
@@ -203,7 +207,7 @@ public class HibernateCriterionBuilder extends FilterCriterionProcessor {
      * hibernate-based custom data providing mode.
      *
      * @return the total number of rows without the pagination parameters (which is required by DataTable to properly
-     * calculate the number of pages).
+     *         calculate the number of pages).
      */
     public static int getRowCount(Session session, String entityName, String alias) {
         Criteria criteria = session.createCriteria(entityName, alias);
@@ -215,7 +219,7 @@ public class HibernateCriterionBuilder extends FilterCriterionProcessor {
      * hibernate-based custom data providing mode.
      *
      * @return the total number of rows without the pagination parameters (which is required by DataTable to properly
-     * calculate the number of pages).
+     *         calculate the number of pages).
      */
     public static int getRowCount(Session session, Class persistentClass, String alias) {
         Criteria criteria = session.createCriteria(persistentClass, alias);
@@ -227,10 +231,10 @@ public class HibernateCriterionBuilder extends FilterCriterionProcessor {
      * hibernate-based custom data providing mode.
      *
      * @return the total number of rows without the pagination parameters (which is required by DataTable to properly
-     * calculate the number of pages).
+     *         calculate the number of pages).
      */
     public static int getRowCount(Criteria criteria) {
-        fillCriteria(criteria, true);
+        fillCriteria(criteria, true, false);
         criteria.setProjection(Projections.rowCount());
         return ((Number) criteria.list().get(0)).intValue();
     }
