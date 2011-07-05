@@ -22,8 +22,10 @@ import javax.faces.application.ResourceWrapper;
  */
 public class OpenFacesResource extends ResourceWrapper {
     private Resource wrapped;
+
     public OpenFacesResource(Resource wrapped) {
-        if (wrapped == null) throw new IllegalArgumentException("wrapped param can't be null");
+        if (wrapped == null)
+            throw new IllegalArgumentException("wrapped param can't be null");
         this.wrapped = wrapped;
     }
 
@@ -37,5 +39,35 @@ public class OpenFacesResource extends ResourceWrapper {
         String requestPath = super.getRequestPath();
         requestPath += "&ofver=" + Resources.getVersionString();
         return requestPath;
+    }
+
+    @Override
+    public String getContentType() {
+        return getWrapped().getContentType();
+    }
+
+    @Override
+    public void setContentType(String contentType) {
+        getWrapped().setContentType(contentType);
+    }
+
+    @Override
+    public String getLibraryName() {
+        return getWrapped().getLibraryName();
+    }
+
+    @Override
+    public void setLibraryName(String libraryName) {
+        getWrapped().setLibraryName(libraryName);
+    }
+
+    @Override
+    public String getResourceName() {
+        return getWrapped().getResourceName();
+    }
+
+    @Override
+    public void setResourceName(String resourceName) {
+        getWrapped().setResourceName(resourceName);
     }
 }
