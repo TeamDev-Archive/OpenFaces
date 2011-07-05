@@ -142,11 +142,17 @@ public abstract class MultiPageContainer extends OUIPanel {
     }
 
     public boolean[] getRenderedItemFlags() {
+        if (renderedItemFlags == null) {
+            List<SubPanel> subPanels = getSubPanels(true);
+            if (subPanels != null) {
+                renderedItemFlags = new boolean[subPanels.size()];
+            }
+        }
         return renderedItemFlags;
     }
 
     public void setItemRendered(int index, boolean value) {
-        renderedItemFlags[index] = value;
+        getRenderedItemFlags()[index] = value;
     }
 
     private boolean[] calculateRenderedItemFlags(List<SubPanel> items) {
