@@ -2142,6 +2142,8 @@ O$.Tables = {
 
     var delayedInitFunctions = [];
     var mainScrollingArea = table.body._centerScrollingArea;
+    var scrollingDiv = mainScrollingArea._scrollingDiv;
+    var autoVerticalScrollbar = O$.getElementStyle(scrollingDiv, "overflowY") == "auto";
 
     function useWidthAttribute() {
       // .o_scrollable_table CSS class has width: 100%
@@ -2163,7 +2165,10 @@ O$.Tables = {
           scrollingAreaColTags.push(O$.Tables._getTableColTags(area._sectionTable));
       });
       function areaWidthByColumns(section, areaName, verticalAreaForInitialization) {
-        var scrollerWidth = scrolling.vertical ? O$.Tables.getScrollerWidth(mainScrollingArea._scrollingDiv) : 0;
+        var verticallyScrollable = scrolling.vertical;
+        if (verticallyScrollable && autoVerticalScrollbar)
+          verticallyScrollable = scrollingDiv.scrollHeight > scrollingDiv.clientHeight;
+        var scrollerWidth = verticallyScrollable ? O$.Tables.getScrollerWidth(scrollingDiv) : 0;
         var area = section[areaName];
         var areaWidth = O$.Tables._alignTableColumns(
                 area._colTags, table, firstInitialization,
@@ -2254,8 +2259,13 @@ O$.Tables = {
       }
     }
 
-    alignColumnWidths();
-    if (table._relayoutRelativeWidthColumns)
+    if (!autoVerticalScrollbar)
+      alignColumnWidths();
+    else
+      delayedInitFunctions.push(function() {
+        alignColumnWidths();
+      });
+    if (table._relayoutRelativeWidthColumns || autoVerticalScrollbar)
       setTimeout(alignColumnWidths, 100);
 
     function fixBodyHeight() {

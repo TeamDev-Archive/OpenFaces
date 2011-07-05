@@ -1101,6 +1101,7 @@
         <w>richfaces</w>
         <w>rtrim</w>
         <w>screenshot</w>
+        <w>scrollbar</w>
         <w>selectbooleancheckbox</w>
         <w>selectmanycheckbox</w>
         <w>selectonemenu</w>
