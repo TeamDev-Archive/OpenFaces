@@ -1047,10 +1047,10 @@ public class Rendering {
      * @param paramsObject The json parameters
      * @param paramName    The name of parameter
      * @param paramValue   The value of parameter
-     * @param defaultValue The default value to compare
+     * @param impliedValue A value which doesn't have to be added, which means that this value will be implied on the receiving side
      */
-    public static void addJsonParam(JSONObject paramsObject, String paramName, boolean paramValue, boolean defaultValue) {
-        if (paramValue != defaultValue)
+    public static void addJsonParam(JSONObject paramsObject, String paramName, boolean paramValue, boolean impliedValue) {
+        if (paramValue != impliedValue)
             try {
                 paramsObject.put(paramName, paramValue);
             } catch (JSONException e) {

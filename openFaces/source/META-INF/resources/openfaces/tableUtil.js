@@ -2269,25 +2269,36 @@ O$.Tables = {
       setTimeout(alignColumnWidths, 100);
 
     function fixBodyHeight() {
-      var fixture = scrolling.vertical
+      var _originalBorderHeight = O$.getNumericElementStyle(table, "height"); //O$.getElementBorderRectangle(table).height;
+      var _originalPaddingHeight = _originalBorderHeight
+              - O$.getNumericElementStyle(table, "border-top-width")
+              - O$.getNumericElementStyle(table, "border-bottom-width");
+
+      function setBodyHeight(bodyHeight) {
+        [table.body._leftScrollingArea, table.body._centerScrollingArea, table.body._rightScrollingArea].forEach(function (scrollingArea) {
+          if (!scrollingArea || !scrollingArea._scrollingDiv) return;
+          O$.setElementHeight(scrollingArea._scrollingDiv, bodyHeight);
+        });
+      }
+      function getBodyHeight(tableHeight) {
+        var height = tableHeight;
+        [table.header, table.footer].forEach(function (section) {
+          if (!section) return;
+          var sectionTable = section._sectionTable;
+          var sectionHeight = sectionTable.offsetHeight;
+          height -= sectionHeight;
+        });
+        return height;
+      }
+      var fixture = scrolling.vertical && !scrolling.minimizeHeight
         ? O$.fixElement(table.body._sectionTable, {
           height: function() {
             var height = O$.getElementPaddingRectangle(table).height;
-            [table.header, table.footer].forEach(function (section) {
-              if (!section) return;
-              var sectionTable = section._sectionTable;
-              var sectionHeight = sectionTable.offsetHeight;
-              height -= sectionHeight;
-            });
-            return height;
+            var bodyHeight = getBodyHeight(height);
+            return bodyHeight;
           }
         }, null, {onchange: function() {
-          var fixture = this;
-          [table.body._leftScrollingArea, table.body._centerScrollingArea, table.body._rightScrollingArea].forEach(function (scrollingArea) {
-            if (!scrollingArea || !scrollingArea._scrollingDiv) return;
-            var height = fixture.values.height;
-            O$.setElementHeight(scrollingArea._scrollingDiv, height);
-          });
+          setBodyHeight(this.values.height);
         }})
       : O$.fixElement(table, {
           height: function() {
@@ -2300,16 +2311,27 @@ O$.Tables = {
             });
             height += O$.getNumericElementStyle(table, "border-top-width") + O$.getNumericElementStyle(table, "border-bottom-width");
             height += scrolling.horizontal ? O$.Tables.getScrollerHeight(table.body._centerScrollingArea._scrollingDiv) : 0;
+
+            if (!_originalPaddingHeight) _originalPaddingHeight = O$.getElementPaddingRectangle(table).height;
+            if (!_originalBorderHeight) _originalBorderHeight = O$.getElementBorderRectangle(table).height;
+
+            if (scrolling.minimizeHeight && height > _originalBorderHeight) {
+              height = _originalBorderHeight;
+            }
             return height;
           }
         }, null, {onchange: function() {
-          var bodyHeight = O$.getElementSize(table.body._centerScrollingArea._table).height;
-          bodyHeight += scrolling.horizontal ? O$.Tables.getScrollerHeight(table.body._centerScrollingArea._scrollingDiv) : 0;
-          O$.setElementHeight(table.body._sectionTable, bodyHeight);
-          [table.body._leftScrollingArea, table.body._centerScrollingArea, table.body._rightScrollingArea].forEach(function (scrollingArea) {
-            if (!scrollingArea || !scrollingArea._scrollingDiv) return;
-            O$.setElementHeight(scrollingArea._scrollingDiv, bodyHeight);
-          });
+          var fullHeight = this.values.height;
+          if (!scrolling.minimizeHeight || (scrolling.minimizeHeight && fullHeight < _originalPaddingHeight)) {
+            var bodyHeight = O$.getElementSize(table.body._centerScrollingArea._table).height;
+            bodyHeight += scrolling.horizontal ? O$.Tables.getScrollerHeight(table.body._centerScrollingArea._scrollingDiv) : 0;
+            O$.setElementHeight(table.body._sectionTable, bodyHeight);
+            setBodyHeight(bodyHeight);
+          } else {
+            var bodyHeight = getBodyHeight(_originalPaddingHeight);
+            O$.setElementHeight(table.body._sectionTable, bodyHeight);
+            setBodyHeight(bodyHeight);
+          }
         }});
 
       [table.body._leftScrollingArea, table.body._centerScrollingArea, table.body._rightScrollingArea].forEach(function (area) {

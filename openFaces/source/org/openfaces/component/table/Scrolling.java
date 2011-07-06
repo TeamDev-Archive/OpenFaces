@@ -32,6 +32,7 @@ public class Scrolling extends UIComponentBase implements ComponentConfigurator 
     private Boolean horizontal;
     private Point position;
     private Boolean autoScrollbars;
+    private Boolean minimizeHeight;
 
     public Scrolling() {
     }
@@ -47,7 +48,8 @@ public class Scrolling extends UIComponentBase implements ComponentConfigurator 
                 vertical,
                 horizontal,
                 position,
-                autoScrollbars
+                autoScrollbars,
+                minimizeHeight
         };
     }
 
@@ -60,6 +62,7 @@ public class Scrolling extends UIComponentBase implements ComponentConfigurator 
         horizontal = (Boolean) state[i++];
         position = (Point) state[i++];
         autoScrollbars = (Boolean) state[i++];
+        minimizeHeight = (Boolean) state[i++];
     }
 
     public boolean isVertical() {
@@ -129,5 +132,13 @@ public class Scrolling extends UIComponentBase implements ComponentConfigurator 
 
     public void setAutoScrollbars(boolean autoScrollbars) {
         this.autoScrollbars = autoScrollbars;
+    }
+
+    public boolean getMinimizeHeight() {
+        return ValueBindings.get(this, "minimizeHeight", minimizeHeight, false);
+    }
+
+    public void setMinimizeHeight(boolean minimizeHeight) {
+        this.minimizeHeight = minimizeHeight;
     }
 }
