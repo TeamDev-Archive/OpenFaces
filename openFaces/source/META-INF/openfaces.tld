@@ -4306,6 +4306,18 @@
       <!-- @default false -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>Specifies whether a vertically scrollable table will reduce its height if it displays less items than
+        can fit in the scrollable area. This attribute is not applicable when vertical scrolling is turned off.
+      </description>
+      <name>minimizeHeight</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
   </tag>
   <tag>
     <description>
