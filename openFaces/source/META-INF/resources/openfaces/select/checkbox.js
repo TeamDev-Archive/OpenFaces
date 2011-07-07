@@ -71,7 +71,7 @@ O$.Checkbox = {
         },
 
         setSelected: function(flag) {
-          if (this.isSelected() !== flag) {
+          if (!this.isDefined() || this.isSelected() !== flag) {
             this._state.value = flag ? "selected" : "unselected";
             updateImage(this);
             updateStyles(this);

@@ -43,7 +43,7 @@ import java.util.Map;
 public class SelectBooleanCheckboxRenderer extends RendererBase {
     private static final Iterable<String> DEFAULT_STATE_LIST = Arrays.asList(SELECTED_STATE, UNSELECTED_STATE);
 
-    private static final String TAG_NAME = "input";
+    private static final String INPUT_TAG_NAME = "input";
 
     private static final String STATE_SUFFIX = "::state";
 
@@ -87,7 +87,7 @@ public class SelectBooleanCheckboxRenderer extends RendererBase {
 
         ResponseWriter writer = facesContext.getResponseWriter();
 
-        writer.startElement(TAG_NAME, checkbox);
+        writer.startElement(INPUT_TAG_NAME, checkbox);
         writeAttribute(writer, "type", "checkbox");
 
         String clientId = checkbox.getClientId(facesContext);
@@ -106,7 +106,7 @@ public class SelectBooleanCheckboxRenderer extends RendererBase {
 
         writeAttribute(writer, "onchange", checkbox.getOnchange());
 
-        writer.endElement(TAG_NAME);
+        writer.endElement(INPUT_TAG_NAME);
 
         Styles.renderStyleClasses(facesContext, checkbox);
 
@@ -139,7 +139,7 @@ public class SelectBooleanCheckboxRenderer extends RendererBase {
 
         // <input type="image" ...
 
-        writer.startElement(TAG_NAME, checkbox);
+        writer.startElement(INPUT_TAG_NAME, checkbox);
 
         writeAttribute(writer, "type", "image");
 
@@ -150,11 +150,11 @@ public class SelectBooleanCheckboxRenderer extends RendererBase {
 
         writeCommonAttributes(writer, checkbox);
 
-        writer.endElement(TAG_NAME);
+        writer.endElement(INPUT_TAG_NAME);
 
         // <input type="hidden" ...
 
-        writer.startElement(TAG_NAME, checkbox);
+        writer.startElement(INPUT_TAG_NAME, checkbox);
         writeAttribute(writer, "type", "hidden");
 
         String stateClientId = clientId + STATE_SUFFIX;
@@ -162,7 +162,7 @@ public class SelectBooleanCheckboxRenderer extends RendererBase {
         writeAttribute(writer, "id", stateClientId);
         writeAttribute(writer, "value", getStateFieldValue(checkbox, triStateAllowed));
 
-        writer.endElement(TAG_NAME);
+        writer.endElement(INPUT_TAG_NAME);
 
         Styles.renderStyleClasses(facesContext, checkbox);
 

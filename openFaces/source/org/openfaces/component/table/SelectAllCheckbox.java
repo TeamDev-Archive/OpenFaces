@@ -11,20 +11,24 @@
  */
 package org.openfaces.component.table;
 
+import org.openfaces.component.select.SelectBooleanCheckbox;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
+import java.util.Arrays;
 
 /**
  * @author Dmitry Pikhulya
  */
-public class SelectAllCheckbox extends UIComponentBase {
+public class SelectAllCheckbox extends SelectBooleanCheckbox {
     public static final String COMPONENT_TYPE = "org.openfaces.SelectAllCheckbox";
     public static final String COMPONENT_FAMILY = "org.openfaces.SelectAllCheckbox";
     private Boolean disabled;
 
     public SelectAllCheckbox() {
+        setTriStateAllowed(true);
+        setStateList(Arrays.asList(SelectBooleanCheckbox.SELECTED_STATE, SelectBooleanCheckbox.UNSELECTED_STATE));
         setRendererType("org.openfaces.SelectAllCheckboxRenderer");
     }
 
