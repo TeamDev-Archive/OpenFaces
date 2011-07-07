@@ -1105,11 +1105,9 @@ O$.Table = {
 
   _initCheckboxColHeader: function(headerId, tableId, colId) {
     var header = O$(headerId);
-    var cell = header.parentNode;
     var table = O$(tableId);
     if (!table)
-      throw "SelectAllCheckbox must be placed in a header of <o:dataTable> component. clientId = " + headerId;
-    header._columnObjectId = colId;
+      throw "SelectAllCheckbox must be placed in the column's header or footer of <o:dataTable> or <o:treeTable> component. clientId = " + headerId;
     header.style.cursor = "default";
 
     if (!table._checkBoxColumnHeaders)
@@ -1119,41 +1117,44 @@ O$.Table = {
     var colHeadersArray = table._checkBoxColumnHeaders[colId];
     colHeadersArray.push(header);
 
-    header._updateFromCheckboxes = function(tableColumn) {
-      var cells = tableColumn.body ? tableColumn.body._cells : [];
-      var allChecked = true;
-      var atLeastOneCheckboxFound = false;
-      for (var i = 0, count = cells.length; i < count; i++) {
-        var cell = cells[i];
-        if (!cell)
-          continue;
-        var checkBox = cell._checkBox;
-        if (!checkBox)
-          continue;
-        atLeastOneCheckboxFound = true;
-        if (!checkBox.checked) {
-          allChecked = false;
-          break;
+    O$.extend(header, {
+      _columnObjectId: colId,
+      _updateFromCheckboxes: function(tableColumn) {
+        var cells = tableColumn.body ? tableColumn.body._cells : [];
+        var checkedCount = 0;
+        for (var i = 0, count = cells.length; i < count; i++) {
+          var cell = cells[i];
+          if (!cell) continue;
+          var checkBox = cell._checkBox;
+          if (checkBox && checkBox.checked)
+            checkedCount++;
         }
-      }
-      this.checked = atLeastOneCheckboxFound ? allChecked : false;
-    };
+        if (checkedCount == 0)
+          this.setSelected(false);
+        else if (checkedCount == cells.length)
+          this.setSelected(true);
+        else
+          this.setDefined(false);
+      },
 
-    header.onclick = function(e) {
-      var columnObj = O$(this._columnObjectId);
-      var col = columnObj._tableColumn;
-      O$.Table._setAllCheckboxes(col, this.checked);
-      columnObj._updateHeaderCheckBoxes();
-      col._updateSubmissionField();
-      var evt = O$.getEvent(e);
-      evt.cancelBubble = true;
-    };
-    header.ondblclick = function(e) {
-      if (O$.isExplorer())
-        this.click();
-      var evt = O$.getEvent(e);
-      evt.cancelBubble = true;
-    };
+      onclick: function(e) {
+        var columnObj = O$(this._columnObjectId);
+        var col = columnObj._tableColumn;
+        O$.Table._setAllCheckboxes(col, this.isSelected());
+        columnObj._updateHeaderCheckBoxes();
+        col._updateSubmissionField();
+        var evt = O$.getEvent(e);
+        evt.cancelBubble = true;
+      },
+      ondblclick: function(e) {
+        if (O$.isExplorer())
+          this.click();
+        var evt = O$.getEvent(e);
+        evt.cancelBubble = true;
+      }
+    });
+
+    setTimeout(function(){header._updateFromCheckboxes()}, 10);
   },
 
   _setAllCheckboxes: function(col, checked) {
@@ -1169,38 +1170,44 @@ O$.Table = {
     var header = O$(headerId);
     var table = O$(tableId);
     if (!table)
-      throw "SelectAllCheckbox must be placed in a header of <o:dataTable> component. clientId = " + headerId;
+      throw "SelectAllCheckbox must be placed in a header or footer of <o:dataTable> or <o:treeTable> component. clientId = " + headerId;
     header.style.cursor = "default";
-    header._updateStateFromTable = function() {
-      var selectedItems = table._getSelectedItems();
-      var bodyRows = table.body._getRows();
-      if (selectedItems.length == 0) {
-        this.checked = false;
-      } else {
-        this.checked = selectedItems.length == bodyRows.length;
-      }
-    };
-    O$.Table._addSelectionChangeHandler(table, [header, "_updateStateFromTable"]);
-    header.onclick = function(e) {
-      if (this.disabled) {
-        this.disabled = false;
-        this.checked = true;
-        table._selectAllItems();
-      } else {
-        if (this.checked)
+    O$.extend(header, {
+      _updateStateFromTable: function() {
+        var selectedItems = table._getSelectedItems();
+        var bodyRows = table.body._getRows();
+        if (selectedItems.length == 0) {
+          this.setSelected(false);
+        } else if (selectedItems.length == bodyRows.length) {
+          this.setSelected(true);
+        } else {
+          this.setDefined(false);
+        }
+      },
+
+      onclick: function(e) {
+        if (this.disabled) {
+          this.disabled = false;
+          this.checked = true;
           table._selectAllItems();
-        else
-          table._unselectAllItems();
+        } else {
+          if (this.isSelected())
+            table._selectAllItems();
+          else
+            table._unselectAllItems();
+        }
+        var evt = O$.getEvent(e);
+        evt.cancelBubble = true;
+      },
+      ondblclick: function(e) {
+        if (O$.isExplorer())
+          this.click();
+        var evt = O$.getEvent(e);
+        evt.cancelBubble = true;
       }
-      var evt = O$.getEvent(e);
-      evt.cancelBubble = true;
-    };
-    header.ondblclick = function(e) {
-      if (O$.isExplorer())
-        this.click();
-      var evt = O$.getEvent(e);
-      evt.cancelBubble = true;
-    };
+    });
+    setTimeout(function() {header._updateStateFromTable()}, 10);
+    O$.Table._addSelectionChangeHandler(table, [header, "_updateStateFromTable"]);
   },
 
   // -------------------------- CHECKBOX COLUMN SUPPORT

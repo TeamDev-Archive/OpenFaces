@@ -11,13 +11,17 @@
  */
 package org.openfaces.renderkit.table;
 
+import org.openfaces.component.select.SelectBooleanCheckbox;
 import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.AbstractTableSelection;
 import org.openfaces.component.table.BaseColumn;
 import org.openfaces.component.table.CheckboxColumn;
 import org.openfaces.component.table.SelectAllCheckbox;
+import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.renderkit.TableUtil;
+import org.openfaces.renderkit.select.SelectBooleanCheckboxRenderer;
+import org.openfaces.util.AnonymousFunction;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
@@ -31,13 +35,10 @@ import java.io.IOException;
 /**
  * @author Dmitry Pikhulya
  */
-public class SelectAllCheckboxRenderer extends RendererBase {
+public class SelectAllCheckboxRenderer extends SelectBooleanCheckboxRenderer {
 
     @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-        if (!component.isRendered())
-            return;
-        SelectAllCheckbox selectAllCheckbox = (SelectAllCheckbox) component;
+    public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         AbstractTable table = getTable(component);
         if (table == null)
             throw new IllegalStateException("SelectionColumn must be nested inside a table");
@@ -54,22 +55,36 @@ public class SelectAllCheckboxRenderer extends RendererBase {
         } else
             selection = null;
 
-        ResponseWriter writer = context.getResponseWriter();
-        writer.startElement("input", component);
-        writeIdAttribute(context, component);
-        if (selectAllCheckbox.isDisabled()){
-            writer.writeAttribute("disabled", "disabled", null);
-        }else if (!checkBoxColHeader) {
+        if (!checkBoxColHeader) {
             if (!selection.isEnabled())
-                writer.writeAttribute("disabled", "disabled", null);
+                ((SelectAllCheckbox) component).setDisabled(true);
         }
-        writer.writeAttribute("type", "checkbox", null);
 
+        super.encodeBegin(context, component);
+    }
+
+    @Override
+    protected void renderInitScript(
+            FacesContext facesContext,
+            SelectBooleanCheckbox checkbox,
+            JSONObject imagesObj,
+            JSONObject stylesObj,
+            AnonymousFunction onchangeFunction,
+            boolean triStateAllowed) throws IOException {
+        super.renderInitScript(facesContext, checkbox, imagesObj, stylesObj, onchangeFunction, triStateAllowed);
+
+        AbstractTable table = getTable(checkbox);
+        if (table == null)
+            throw new IllegalStateException("SelectionColumn must be nested inside a table");
+        BaseColumn col = getColumn(checkbox);
+        boolean checkBoxColHeader = col instanceof CheckboxColumn;
+
+        FacesContext context = FacesContext.getCurrentInstance();
         ScriptBuilder buf = new ScriptBuilder();
         if (checkBoxColHeader) {
-            buf.initScript(context, component, "O$.Table._initCheckboxColHeader", table, col).semicolon();
+            buf.initScript(context, checkbox, "O$.Table._initCheckboxColHeader", table, col).semicolon();
         } else {
-            buf.initScript(context, component, "O$.Table._initSelectionHeader", table).semicolon();
+            buf.initScript(context, checkbox, "O$.Table._initSelectionHeader", table).semicolon();
         }
 
         Rendering.renderInitScript(context, buf,
@@ -78,13 +93,6 @@ public class SelectAllCheckboxRenderer extends RendererBase {
                 AbstractTableRenderer.getTableJsURL(context)
         );
 
-        Styles.renderStyleClasses(context, component);
-        writer.endElement("input");
-    }
-
-    @Override
-    public boolean getRendersChildren() {
-        return true;
     }
 
     private static AbstractTable getTable(UIComponent header) {
