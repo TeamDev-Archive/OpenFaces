@@ -580,9 +580,9 @@ public class DataTableTest extends OpenFacesTestCase {
             selectionColumnDataTable.bodyRow(rowIndex).cell(0).assertChecked(false);
         }
         selectionColumnDataTable.evalExpression("selectAllRows();");
-        String isHeaderChecked = selectAllHeader.evalExpression("checked;");
+        String isHeaderChecked = selectAllHeader.evalExpression("isSelected();");
         assertEquals(isHeaderChecked, "true");
-        String isFooterChecked = selectAllHeader.evalExpression("checked;");
+        String isFooterChecked = selectAllHeader.evalExpression("isSelected();");
         assertEquals(isFooterChecked, "true");
     }
 
