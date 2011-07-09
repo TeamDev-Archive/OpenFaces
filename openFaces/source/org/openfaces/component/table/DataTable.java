@@ -90,7 +90,13 @@ public class DataTable extends AbstractTable {
         super.beforeProcessDecodes(context);
         TableDataModel model = getModel();
         model.prepareForRestoringRowIndexes();
-        boolean rowsDecodingRequired = isRowsDecodingRequired();
+        restoreRows(false);
+    }
+
+    @Override
+    protected void restoreRows(boolean forceDecodingRows) {
+        TableDataModel model = getModel();
+        boolean rowsDecodingRequired = forceDecodingRows || isRowsDecodingRequired();
         updateModel(false, false, rowsDecodingRequired);
         Set unavailableRowIndexes = model.restoreRows(rowsDecodingRequired);
         setUnavailableRowIndexes(unavailableRowIndexes);

@@ -12,7 +12,6 @@
 
 package org.openfaces.component.table;
 
-import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -21,55 +20,43 @@ import java.util.List;
 /**
  * @author Dmitry Pikhulya
  */
-public class CSVTableExporter extends TableExporter {
-
+public class XLSXTableExporter extends TableExporter {
     protected String getContentType() {
-        return "text/csv";
+        return "text/xlsx";
     }
 
     @Override
     protected boolean isBinaryContent() {
-        return false;
+        return true;
     }
 
     @Override
     protected void writeFileContent(TableData tableData, PrintWriter writer, OutputStream outputStream) {
-        try {
-            writeCSVLine(writer, mapList(tableData.getTableColumnDatas(), new Mapper<TableColumnData, String>() {
-                public String map(TableColumnData obj) {
-                    return obj.getColumnHeader();
-                }
-            }));
-            List<TableRowData> rowDatas = tableData.getTableRowDatas();
-            for (TableRowData rowData : rowDatas) {
-                writeCSVLine(writer, rowData.getCellStrings());
-            }
-            writer.flush();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+//        Workbook wb = new XSSFWorkbook();
+//
+//        FileOutputStream file = new FileOutputStream();
+//
+//        PrintWriter writer = new PrintWriter(stringWriter);
+//        try {
+//            writeCSVLine(writer, mapList(tableData.getTableColumnDatas(), new Mapper<TableColumnData, String>() {
+//                public String map(TableColumnData obj) {
+//                    return obj.getColumnHeader();
+//                }
+//            }));
+//            List<TableRowData> rowDatas = tableData.getTableRowDatas();
+//            for (TableRowData rowData : rowDatas) {
+//                writeCSVLine(writer, rowData.getCellStrings());
+//            }
+//            writer.flush();
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
     }
 
     @Override
     public String getDefaultFileExtension() {
-        return "csv";
+        return "xlsx";
     }
-
-    private void writeCSVLine(PrintWriter writer, List<String> strings) throws IOException {
-        boolean first = true;
-        for (String string : strings) {
-            if (!first)
-                writer.write(',');
-            else
-                first = false;
-
-            writer.print('"');
-            writer.print(string.replaceAll("\"", "\"\""));
-            writer.print('"');
-        }
-        writer.print("\n");
-    }
-
 
     private <I, O> List<O> mapList(List<I> srcList, Mapper<I, O> mapper) {
         List<O> result = new ArrayList<O>();
@@ -83,4 +70,5 @@ public class CSVTableExporter extends TableExporter {
     private interface Mapper<I, O> {
         public O map(I obj);
     }
+
 }

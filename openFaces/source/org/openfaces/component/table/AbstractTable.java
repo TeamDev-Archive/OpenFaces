@@ -1699,6 +1699,8 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         this.deferBodyLoading = deferBodyLoading;
     }
 
+    protected abstract void restoreRows(boolean forceDecoding);
+
     protected class RowComparator implements Comparator<Object> {
         private final FacesContext facesContext;
         private final ValueExpression sortingExpressionBinding;
@@ -1808,10 +1810,55 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
      * @return the total number of rows on all table's pages (if pagination if used) according to the current filtering
      *         parameters
      */
-    public int getTotalRowCount() {
-        if (totalRowCount == null)
-            totalRowCount = getModel().getTotalRowCount();
-        return totalRowCount;
+    public int getRowCount(DataScope scope) {
+        switch (scope) {
+            case DISPLAYED_ROWS:
+                return getDataModel().getRowCount();
+            case FILTERED_ROWS:
+                if (totalRowCount == null)
+                    totalRowCount = getModel().getTotalRowCount();
+                return totalRowCount;
+            default:
+                throw new IllegalStateException("Unknown scope: " + scope);
+        }
+    }
+
+    public Collection<Object> getRowDatas(DataScope scope) {
+        if (getRowCount() == 0 && !isRowsDecodingRequired()) {
+            restoreRows(true);
+        }
+
+        switch (scope) {
+            case DISPLAYED_ROWS:
+                return getDisplayedRowDatas();
+            case FILTERED_ROWS:
+                return getFilteredRowDatas();
+            default:
+                throw new IllegalStateException("Unknown scope: " + scope);
+        }
+
+    }
+
+    private Collection<Object> getFilteredRowDatas() {
+        TableDataModel model = getModel();
+        int savedPageIndex = model.getPageIndex();
+        int savedRowIndex = model.getRowIndex();
+        List<Object> allRows = new ArrayList<Object>();
+        try {
+            for (int pageIndex = 0, pageCount = model.getPageCount(); pageIndex < pageCount; pageIndex++) {
+                model.setPageIndex(pageIndex);
+                for (int rowIndex = 0, rowCount = model.getRowCount(); rowIndex < rowCount || rowCount == -1; rowIndex++) {
+                    model.setRowIndex(rowIndex);
+                    if (!model.isRowAvailable()) break;
+                    Object rowData = model.getRowData();
+                    allRows.add(rowData);
+                }
+            }
+        } finally {
+            model.setPageIndex(savedPageIndex);
+            model.setRowIndex(savedRowIndex);
+        }
+        return allRows;
     }
 
     public Collection<String> getExternalPartIds() {
@@ -1864,31 +1911,53 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
      * the DataTable, which is currently filtered, this method will return only the objects that match the current
      * filtering criteria, and if pagination is used, then only the current page objects are returned.
      */
-    public List<Object> getDisplayedRowDatas() {
+    private List<Object> getDisplayedRowDatas() {
         List<Object> rowDatas = new ArrayList<Object>();
         int oldRowIndex = getRowIndex();
-        int rowCount = getRowCount();
-        int rows = (rowCount != -1) ? rowCount : Integer.MAX_VALUE; // getRowCount can return -1, which means that iteration should be performed until isRowAvailable returns false
-        for (int rowIndex = getFirst(); rowIndex < rows; rowIndex++) {
-            setRowIndex(rowIndex);
-            if (!isRowAvailable())
-                break;
-            Object rowData = getRowData();
-            rowDatas.add(rowData);
+        try {
+            int rowCount = getRowCount();
+            int rows = (rowCount != -1) ? rowCount : Integer.MAX_VALUE; // getRowCount can return -1, which means that iteration should be performed until isRowAvailable returns false
+            for (int rowIndex = getFirst(); rowIndex < rows; rowIndex++) {
+                setRowIndex(rowIndex);
+                if (!isRowAvailable())
+                    break;
+                Object rowData = getRowData();
+                rowDatas.add(rowData);
+            }
+        } finally {
+            setRowIndex(oldRowIndex);
         }
-        setRowIndex(oldRowIndex);
+
         return rowDatas;
     }
 
-    public void export(TableExporter exporter) {
-        export(exporter, getId() + "." + exporter.getDefaultFileExtension());
+    public void export(DataScope scope, TableExporter exporter) {
+        export(scope, exporter, getId() + "." + exporter.getDefaultFileExtension());
     }
 
-    public void export(TableExporter exporter, String fileName) {
+    public void export(DataScope scope, TableExporter exporter, String fileName) {
         FacesContext context = FacesContext.getCurrentInstance();
 
-        TableData tableData = extractTableData();
+        TableData tableData = extractTableData(scope);
         exporter.sendResponse(context, tableData, fileName);
+    }
+
+    /**
+     * Defines the possible scopes of data for such operations as extracting table data programmatically, and exporting
+     * table's data.
+     */
+    public static enum DataScope {
+        /**
+         * Only the currently displayed rows in the order that they are displayed. That is, if DataTable pagination is
+         * turned on, then only the current page rows are considered.
+         */
+        DISPLAYED_ROWS,
+
+        /**
+         * All rows on all table's pages, in their current sorting order. If filters are enabled for the table, then
+         * only the filtered rows are considered.
+         */
+        FILTERED_ROWS
     }
 
     /**
@@ -1896,7 +1965,9 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
      * the TableData instance. The list and order of rows and columns reflects the current state of the table component
      * itself.
      */
-    public TableData extractTableData() {
+    public TableData extractTableData(DataScope scope) {
+        if (scope == null)
+            throw new IllegalArgumentException("The scope parameter can not be null.");
         List<BaseColumn> columns = getRenderedColumns();
         int columnCount = columns.size();
         TableUtil.ColumnExpressionData[] columnExpressionDatas = new TableUtil.ColumnExpressionData[columnCount];
@@ -1910,14 +1981,23 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
             columnDatas.add(new TableColumnData(columnExpressionData.getValueType(), columnHeader));
         }
 
-        List<Object> displayedRowDatas = getDisplayedRowDatas();
+        Iterable<Object> rowDatas;
+        switch (scope) {
+            case DISPLAYED_ROWS:
+                rowDatas = getDisplayedRowDatas();
+                break;
+            case FILTERED_ROWS:
+                rowDatas = getFilteredRowDatas();
+                break;
+            default:
+                throw new IllegalStateException("Unknown scope value: " + scope);
+        }
         String var = getVar();
         FacesContext context = FacesContext.getCurrentInstance();
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
         ELContext elContext = context.getELContext();
         List<TableRowData> tableRowDatas = new ArrayList<TableRowData>();
-        for (int rowIndex = 0, displayedRowDatasSize = displayedRowDatas.size(); rowIndex < displayedRowDatasSize; rowIndex++) {
-            Object rowData = displayedRowDatas.get(rowIndex);
+        for (Object rowData : rowDatas) {
             Object prevVarValue = requestMap.put(var, rowData);
             List<Object> cellDatas = new ArrayList<Object>();
             List<String> cellStrings = new ArrayList<String>();

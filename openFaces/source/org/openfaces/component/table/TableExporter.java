@@ -14,7 +14,9 @@ package org.openfaces.component.table;
 
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
@@ -23,28 +25,45 @@ import java.io.StringWriter;
  */
 public abstract class TableExporter {
     public void sendResponse(FacesContext context, TableData tableData, String fileName) {
-        StringWriter stringWriter = new StringWriter();
-        writeFileContent(tableData, stringWriter);
-        String csvFile = stringWriter.toString();
+        boolean binaryContent = isBinaryContent();
+        StringWriter stringWriter = !binaryContent ? new StringWriter() : null;
+        ByteArrayOutputStream byteArrayOutputStream = binaryContent ? new ByteArrayOutputStream() : null;
+        PrintWriter printWriter = new PrintWriter(stringWriter);
+        writeFileContent(tableData, printWriter, byteArrayOutputStream);
+        printWriter.flush();
 
         HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
         response.setContentType(getContentType());
         response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
 
-        PrintWriter responseWriter;
-        try {
-            responseWriter = response.getWriter();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        if (!binaryContent) {
+            String stringFileContent = stringWriter.toString();
+            PrintWriter responseWriter;
+            try {
+                responseWriter = response.getWriter();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            responseWriter.write(stringFileContent);
+            responseWriter.close();
+        } else {
+            byte[] binaryFileContent = byteArrayOutputStream.toByteArray();
+            OutputStream responseOutputStream;
+            try {
+                responseOutputStream = response.getOutputStream();
+                responseOutputStream.write(binaryFileContent);
+                responseOutputStream.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
-        responseWriter.write(csvFile);
-        responseWriter.close();
         context.responseComplete();
     }
 
     protected abstract String getContentType();
 
-    protected abstract void writeFileContent(TableData tableData, StringWriter stringWriter);
+    protected abstract boolean isBinaryContent();
+    protected abstract void writeFileContent(TableData tableData, PrintWriter writer, OutputStream outputStream);
 
     public abstract String getDefaultFileExtension();
 }
