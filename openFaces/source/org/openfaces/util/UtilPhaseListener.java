@@ -51,7 +51,7 @@ public class UtilPhaseListener extends PhaseListenerBase {
     private static final String SCROLL_POS_TRACKER_FIELD_ID = "o::defaultScrollPosition";
     private static final String AUTO_SCROLL_POS_TRACKING_CONTEXT_PARAM = "org.openfaces.autoSaveScrollPos";
     private static final String SUBMISSION_AJAX_INACTIVITY_TIMEOUT_CONTEXT_PARAM = "org.openfaces.submissionAjaxInactivityTimeout";
-    private static final long DEFAULT_SUBMISSION_AJAX_INACTIVITY_TIMEOUT = 5000;
+    private static final long DEFAULT_SUBMISSION_AJAX_INACTIVITY_TIMEOUT = 2000;
 
     public static final String PARAM_ACTION_COMPONENT = "_of_actionComponent";
     public static final String PARAM_ACTION_LISTENER = "_of_actionListener";

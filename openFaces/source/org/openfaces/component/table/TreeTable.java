@@ -113,6 +113,13 @@ public class TreeTable extends AbstractTable {
         super.beforeProcessDecodes(context);
         TableDataModel model = getModel();
         model.prepareForRestoringRowIndexes();
+        restoreRows(false);
+    }
+
+    @Override
+    protected void restoreRows(boolean forceDecoding) {
+        FacesContext context = getFacesContext();
+        TableDataModel model = getModel();
         boolean readFreshData =
                 TreeTableRenderer.isAjaxFoldingInProgress(context) ||
                         TreeTableRenderer.isAjaxRowLoadingInProgress(context) ||

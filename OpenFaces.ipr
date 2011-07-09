@@ -1420,6 +1420,8 @@
         <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/jcommon-1.0.16.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/jfreechart-1.0.13.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/commons-collections-3.2.1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/poi-3.7-20101029.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/poi-ooxml-3.7-20101029.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
@@ -1641,6 +1643,11 @@
       <SOURCES>
         <root url="jar://$PROJECT_DIR$/libsrc/trinidad-stub-scr.zip!/" />
       </SOURCES>
+    </library>
+    <library name="Unnamed">
+      <CLASSES />
+      <JAVADOC />
+      <SOURCES />
     </library>
   </component>
 </project>
