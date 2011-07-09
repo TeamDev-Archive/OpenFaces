@@ -1911,7 +1911,10 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
      * the DataTable, which is currently filtered, this method will return only the objects that match the current
      * filtering criteria, and if pagination is used, then only the current page objects are returned.
      */
-    private List<Object> getDisplayedRowDatas() {
+    public List<Object> getDisplayedRowDatas() {
+        if (getRowCount() == 0 && !isRowsDecodingRequired()) {
+            restoreRows(true);
+        }
         List<Object> rowDatas = new ArrayList<Object>();
         int oldRowIndex = getRowIndex();
         try {
