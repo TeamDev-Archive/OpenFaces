@@ -26,7 +26,7 @@
 <h:commandLink value="back" action="index"/>
 <br/>
 
-<h1>Pagination, fitlering and sorting (разбивка на страницы, фильтрация и сортировка). Use Ajax="true"</h1>
+<h1>Pagination, filtering and sorting (разбивка на страницы, фильтрация и сортировка). Use Ajax="true"</h1>
 <o:dataTable rowKey="#{person.name}" id="filter_ajax" pageSize="5" var="person" value="#{peopleList.person}"
              useAjax="true" sortAscending="false" sortColumnId="name">
   <o:column id="name"
@@ -68,7 +68,7 @@
 </o:dataTable>
 <br/>
 
-<h1>Paging, fitlering and sorting. Use Ajax="false"</h1>
+<h1>Paging, filtering and sorting. Use Ajax="false"</h1>
 <o:dataTable rowKey="#{person.name}" id="filter_server" pageSize="5" var="person" value="#{peopleList.person}"
              useAjax="false">
   <o:column id="name"

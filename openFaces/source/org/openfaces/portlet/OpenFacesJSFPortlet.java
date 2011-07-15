@@ -43,7 +43,7 @@ public class OpenFacesJSFPortlet extends GenericPortlet {
     private static Logger logger = Logger.getLogger(OpenFacesJSFPortlet.class.getPackage().getName(), "JSFPLogMessages");
 
     /**
-     * <p>The key used to store/retrive the PortletConfig object.</p>
+     * <p>The key used to store/retrieve the PortletConfig object.</p>
      */
     public static final String PORTLET_CONFIG = "javax.portlet.PortletConfig";
 

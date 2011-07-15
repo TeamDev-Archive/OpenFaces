@@ -9,7 +9,7 @@
 <h:commandButton type="submit" value="Submit"/>
 <br/>
 
-<h1>Paging, fitlering and sorting. Use Ajax="true"</h1>
+<h1>Paging, filtering and sorting. Use Ajax="true"</h1>
 <o:dataTable rowKey="#{person.name}" id="filter_ajax" pageSize="5" var="person" value="#{PeopleListBean.person}"
              useAjax="true" sortAscending="false" sortColumnId="name">
   <o:column id="name"

@@ -1002,8 +1002,9 @@ public abstract class CommonAjaxViewRoot {
             final List<UIForm> uiForms = Components.findChildrenWithClass(viewRoot, UIForm.class, false, true);
 
             for (UIForm form : uiForms) {
-                if (!ajaxResponse.getStateIdxHolder().getForms().contains(form)) {
-                    ajaxResponse.getStateIdxHolder().getForms().add(form);
+                AjaxSavedStateIdxHolder stateIdxHolder = ajaxResponse.getStateIdxHolder();
+                if (stateIdxHolder != null && !stateIdxHolder.getForms().contains(form)) {
+                    stateIdxHolder.getForms().add(form);
                 }
             }
         }
