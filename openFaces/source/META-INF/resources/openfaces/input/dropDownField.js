@@ -740,8 +740,6 @@ O$.DropDownField = {
           dropDown._setFilterCriterion(field.value, autoCompletionAllowedForThisKey);
         }, suggestionDelay);
       }, 1);
-      if (!result)
-        evt.cancelBubble = true;
       return result;
     };
 
