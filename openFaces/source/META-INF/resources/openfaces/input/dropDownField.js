@@ -326,30 +326,37 @@ O$.DropDownField = {
       _initItems: function(itemValues, fromIndex) {
         for (var i = fromIndex, count = dropDown._items.length; i < count; i++) {
           var item = dropDown._items[i];
-          item.onmouseover = function() {
-            dropDown._setHighlightedItemIndex(this._index);
-          };
-          item.onmousemove = function() {
-            dropDown._setHighlightedItemIndex(this._index);
-          };
-          item.onclick = function() {
-            O$.DropDownField._itemClicked(dropDown, this);
-          };
-          item.onmouseup = function() {
-            O$.DropDownField._itemClicked(dropDown, this);
-          };
-
           var itemData = itemValues[i];
-          item._itemValue = itemData[0];
-          item._itemLabel = itemData.length == 2 ? itemData[1] : item._itemValue;
-          item._select = function() {
-            var text = this._itemLabel;
-            var itemValue = this._itemValue;
-            dropDown._setValue(text, itemValue);
-            setTimeout(function() {
-              dropDown._setFilterCriterion(null);
-            }, 1);
-          };
+          O$.extend(item, {
+            _itemValue: itemData[0],
+            _itemLabel: itemData.length == 2 ? itemData[1] : itemData[0],
+
+            onmouseover: function() {
+              dropDown._setHighlightedItemIndex(this._index);
+            },
+            onmousemove: function() {
+              dropDown._setHighlightedItemIndex(this._index);
+            },
+            onclick: function() {
+              O$.DropDownField._itemClicked(dropDown, this);
+            },
+            onmouseup: function() {
+              O$.DropDownField._itemClicked(dropDown, this);
+            },
+
+            _select: function() {
+              var text = this._itemLabel;
+              var itemValue = this._itemValue;
+              dropDown._setValue(text, itemValue);
+              setTimeout(function() {
+                dropDown._setFilterCriterion(null);
+              }, 1);
+            }
+
+
+          });
+
+
         }
       },
 

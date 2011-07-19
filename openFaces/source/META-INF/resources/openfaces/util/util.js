@@ -3508,6 +3508,25 @@ if (!window.O$) {
     return elt;
   };
 
+    /*
+    This function fixes the use-case when components such as DropDownField, need to move their own pop-up component out
+    of their own markup into the "default absolute position parent" element. Then, when such component is reloaded with
+    Ajax, the previous "moved out" pop-up remains intact although it's "owner" component is dismissed during reloading
+    and replaced with the new one with its own new pop-up. As a result there is two pop-ups, and they usually have an
+    equal id, which causes some problems (see for example OF-66). So this method just helps such components to remove
+    the old copy before locating the new popup by id.
+     */
+  O$.removeRelocatedPopupIfExists = function(popupId) {
+    var dapp = O$.getDefaultAbsolutePositionParent();
+    var potentialPopups = dapp.childNodes;
+    for (var i = 0, count = potentialPopups.length; i < count; i++) {
+      var potentialPopup = potentialPopups[i];
+      if (potentialPopup.id == popupId) {
+        dapp.removeChild(potentialPopup);
+      }
+    }
+  };
+
   /*
    O$.calculateNumericStyleProperty doesn't work when calculating margin on a table under Mozilla 2 for some reason,
    so here's an alternative implementation that works for this case.
