@@ -3,7 +3,7 @@
      xmlns:o="http://openfaces.org/">
 
   <div id="Demo">
-    <o:dayTable id="dayTable"
+    <o:timetable id="dayTable"
                 events="#{DayTableBean1.events}"
                 day="#{DayTableBean1.date}"
                 startTime="6:00"
@@ -14,7 +14,7 @@
                 locale="en"
             >
       <f:facet name="header">
-        <o:daySwitcher locale="en"/>
+        <o:timePeriodSwitcher locale="en"/>
       </f:facet>
       <o:timetableEvent style="text-align: center;" descriptionStyle="color: #5f5f5f;" escapeDescription="false" escapeName="false"/>
       <o:eventArea horizontalAlignment="right" verticalAlignment="above">
@@ -29,7 +29,7 @@
                        hint="Postpone for 1 day"
                        scope="timetable"/>
       </o:eventActionBar>
-    </o:dayTable>
+    </o:timetable>
   </div>
 
   <div id="Description">

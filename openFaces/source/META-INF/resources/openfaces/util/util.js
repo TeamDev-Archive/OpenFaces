@@ -1730,19 +1730,27 @@ if (!window.O$) {
 
 
   O$.createHiddenFocusElement = function(tabIndex, componentId) {
-    var createTextArea = true;
-    var focusControl = document.createElement(createTextArea ? "textarea" : "input");
-    if (!createTextArea)
-      focusControl.type = "button";
-    focusControl.className = "o_hiddenFocus";
-    if (O$.isSafari()) {
-      focusControl.style.border = "1px solid transparent !important";
+    var focusElementId = componentId + ":::focus";
+    var focusElement = O$(focusElementId);
+    if (!focusElement) {
+      var createTextArea = true;
+      focusElement = document.createElement(createTextArea ? "textarea" : "input");
+      if (!createTextArea)
+        focusElement.type = "button";
+      focusElement.className = "o_hiddenFocus";
+      if (O$.isSafari()) {
+        focusElement.style.border = "1px solid transparent !important";
+      }
+      if (componentId) {
+        focusElement.id = focusElementId;
+        // assigning name is required just to overcome "Invalid chunk ignored" warning during JSF 2 Ajax calls
+        focusElement.name = focusElementId;
+      }
     }
     if (tabIndex)
-      focusControl.tabIndex = tabIndex;
-    if (componentId)
-      focusControl.id = componentId + ":::focus";
-    return focusControl;
+      focusElement.tabIndex = tabIndex;
+
+    return focusElement;
   };
 
   O$.initDefaultScrollPosition = function(trackerFieldId, scrollPos) {
