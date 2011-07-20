@@ -7,15 +7,18 @@
 
     <table style="width: 100%" cellspacing="0" cellpadding="0" border="0">
       <tr>
-        <td>
+        <td style="white-space: nowrap; padding-right: 15px">
           <h3>U.S. Banks Directory
             <small>(an extract, full list: <a href="http://www.fdic.gov" target="_blank">FDIC</a>)</small>
           </h3>
         </td>
-        <td style="padding-right: 6px; padding-top: 5px; width: 250px;">
+        <td style="padding-right: 6px; padding-top: 4px; width: 185px;" >
           <o:inputTextFilter for="banks"
                              expression="#{bank.institutionName},#{bank.certificateNumber},#{bank.city},#{bank.state},#{bank.zip},#{bank.county},#{bank.averageAssets}"
-                             promptText="Search all fields"/>
+                             promptText="Search all fields" style="width: 180px"/>
+        </td>
+        <td style="padding-top: 2px;">
+          <o:commandButton value="Export to CSV" action="#{BanksList.export}"/>
         </td>
       </tr>
 
@@ -151,6 +154,7 @@
       <li><strong>Column resizing</strong>&#8212;Drag column header separators to resize columns.</li>
       <li><strong>Column menu</strong>&#8212;Use the drop-down menu in column headers to sort, show and hide columns.
       </li>
+      <li><strong>Data export</strong>&#8212;Click the "Export to CSV" button to save the current records as a CSV file.</li>
       <li><strong>Content scrolling</strong>&#8212;it's possible to scroll through the entire TreeTable contents when the
         vertical space is limited.
       </li>

@@ -195,11 +195,15 @@ O$.DropDown = {
             promptText,
             promptTextClass);
 
-    var dropDown = O$(dropDownId);
+    var popupId = dropDownId + "--popup";
+    O$.removeRelocatedPopupIfExists(popupId);
 
-    dropDown._button = O$(dropDownId + "::button");
-    dropDown._popup = O$(dropDownId + "--popup");
-    dropDown._disabled = disabled;
+    var dropDown = O$.initComponent(dropDownId, null, {
+      _button: O$(dropDownId + "::button"),
+      _popup: O$(popupId),
+      _disabled: disabled
+    });
+
     if (pullPopupFromContainer) {
       dropDown._popup._pullFromContainer();
     }
@@ -236,51 +240,54 @@ O$.DropDown = {
         button._focusable = true;
         buttonImage._focusable = true;
 
-        button.onmousedown = function(e) {
-          if (O$.isEventFromInsideOfElement(e, popup))
-            return;
-          button.className = dropDown._pressedButtonClass;
-          dropDown._showHidePopup();
-          O$.Popup._hideAllPopupsExceptOne(popup);
-          O$.breakEvent(e);
-        };
-        button.ondblclick = function(e) {
-          if (O$.isEventFromInsideOfElement(e, popup))
-            return;
-          if (!O$.isExplorer())
-            return;
-          dropDown._showHidePopup();
-          O$.breakEvent(e);
-        };
-        button.onmousemove = function(e) {
-          if (O$.isEventFromInsideOfElement(e, popup))
-            return;
-          O$.breakEvent(e);
-        };
-        button.onmouseup = function(e) {
-          if (O$.isEventFromInsideOfElement(e, popup))
-            return;
-          button.className = dropDown._rolloverButtonClass;
-        };
-        button.onmouseover = function(e) {
-          if (O$.isEventFromInsideOfElement(e, popup))
-            return;
-          if (dropDown._buttonClass != dropDown._rolloverButtonClass)
+        O$.extend(button, {
+          onmousedown: function(e) {
+            if (O$.isEventFromInsideOfElement(e, popup))
+              return;
+            button.className = dropDown._pressedButtonClass;
+            dropDown._showHidePopup();
+            O$.Popup._hideAllPopupsExceptOne(popup);
+            O$.breakEvent(e);
+          },
+          ondblclick: function(e) {
+            if (O$.isEventFromInsideOfElement(e, popup))
+              return;
+            if (!O$.isExplorer())
+              return;
+            dropDown._showHidePopup();
+            O$.breakEvent(e);
+          },
+          onmousemove: function(e) {
+            if (O$.isEventFromInsideOfElement(e, popup))
+              return;
+            O$.breakEvent(e);
+          },
+          onmouseup: function(e) {
+            if (O$.isEventFromInsideOfElement(e, popup))
+              return;
             button.className = dropDown._rolloverButtonClass;
-        };
-        button.onmouseout = function(e) {
-          if (O$.isEventFromInsideOfElement(e, popup))
-            return;
+          },
+          onmouseover: function(e) {
+            if (O$.isEventFromInsideOfElement(e, popup))
+              return;
+            if (dropDown._buttonClass != dropDown._rolloverButtonClass)
+              button.className = dropDown._rolloverButtonClass;
+          },
+          onmouseout: function(e) {
+            if (O$.isEventFromInsideOfElement(e, popup))
+              return;
 
-          if (dropDown._buttonClass != dropDown._rolloverButtonClass)
-            button.className = dropDown._buttonClass;
-        };
-        button.ondragstart = function(e) {
-          O$.breakEvent(e);
-        };
-        button.onselectstart = function(e) {
-          O$.breakEvent(e);
-        };
+            if (dropDown._buttonClass != dropDown._rolloverButtonClass)
+              button.className = dropDown._buttonClass;
+          },
+          ondragstart: function(e) {
+            O$.breakEvent(e);
+          },
+          onselectstart: function(e) {
+            O$.breakEvent(e);
+          }
+        });
+
       }
     }
 

@@ -142,7 +142,7 @@ public class DataTable extends AbstractTable {
     }
 
     public PaginationOnSorting getPaginationOnSorting() {
-        return ValueBindings.get(this, "paginationOnSorting", paginationOnSorting, PaginationOnSorting.SAME_PAGE, PaginationOnSorting.class);
+        return ValueBindings.get(this, "paginationOnSorting", paginationOnSorting, PaginationOnSorting.FIRST_PAGE, PaginationOnSorting.class);
     }
 
     public void setPaginationOnSorting(PaginationOnSorting paginationOnSorting) {

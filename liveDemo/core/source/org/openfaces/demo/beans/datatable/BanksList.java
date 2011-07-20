@@ -12,7 +12,10 @@
 
 package org.openfaces.demo.beans.datatable;
 
+import org.openfaces.component.table.AbstractTable;
+import org.openfaces.component.table.CSVTableExporter;
 import org.openfaces.component.table.ColumnResizingState;
+import org.openfaces.component.table.DataTable;
 import org.openfaces.util.Faces;
 import org.openfaces.demo.beans.util.FacesUtils;
 
@@ -61,8 +64,6 @@ public class BanksList implements Serializable {
             BufferedReader reader = new BufferedReader(new InputStreamReader(resource));
             String currentString;
             int i = 0;
-            int c1 = 0;
-            int c2 = 0;
             while (true) {
                 currentString = reader.readLine();
                 if (currentString == null) break;
@@ -235,4 +236,11 @@ public class BanksList implements Serializable {
     public ColumnResizingState getColumnResizingState() {
         return columnResizingState;
     }
+
+    public void export() {
+        Faces.component("form:banks", DataTable.class).export(
+                AbstractTable.DataScope.DISPLAYED_ROWS,
+                new CSVTableExporter());
+    }
+
 }

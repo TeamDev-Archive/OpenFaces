@@ -1935,7 +1935,10 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     }
 
     public void export(DataScope scope, TableExporter exporter) {
-        export(scope, exporter, getId() + "." + exporter.getDefaultFileExtension());
+        String fileName = getId();
+        if (fileName == null)
+            fileName = "tableData";
+        export(scope, exporter, fileName + "." + exporter.getDefaultFileExtension());
     }
 
     public void export(DataScope scope, TableExporter exporter, String fileName) {

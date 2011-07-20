@@ -148,7 +148,7 @@ public class ValidationSupportResponseWriter extends ResponseWriterWrapper {
     }
 
     public void endElement(String name) throws IOException {
-        renderClientIdIfNecessary();
+        renderClientIdIfNecessary(true);
         wrapped.endElement(name);
         element = null;
         flushValidationScriptAfterEnd(name);
@@ -190,7 +190,7 @@ public class ValidationSupportResponseWriter extends ResponseWriterWrapper {
     }
 
     private void flushValidationScriptInElement() throws IOException {
-        renderClientIdIfNecessary();
+        renderClientIdIfNecessary(false);
         if (isAllowedToRenderAfterElementStart(element)) {
             flushValidationScriptIfNecessary();
         }
@@ -213,15 +213,18 @@ public class ValidationSupportResponseWriter extends ResponseWriterWrapper {
         }
     }
 
-    private void renderClientIdIfNecessary() throws IOException {
-        if (element != null && clientId != null &&
-                !clientIdRendered &&
+    private void renderClientIdIfNecessary(boolean endingElement) throws IOException {
+        if (element != null && clientId != null) {
+            if (!clientIdRendered &&
                 isValidationScriptNotEmpty() &&
                 !processingValidation &&
                 isElementAllowedForId(element)) {
-            writeAttribute("id", clientId, null);
-            clientId = null;
-            clientIdRendered = true;
+                writeAttribute("id", clientId, null);
+                clientId = null;
+                clientIdRendered = true;
+            } else if (endingElement) {
+                clientId = null;
+            }
         }
     }
 

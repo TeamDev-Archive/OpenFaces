@@ -909,7 +909,7 @@ if (!window.O$) {
   };
 
   O$.isMozillaFF2 = function() {
-    return O$.isMozillaFF() && !O$.userAgentContains("Firefox/3.") && !O$.userAgentContains("Firefox/4.");
+    return O$.isMozillaFF() && O$.userAgentContains("Firefox/2");
   };
 
   O$.isMozillaFF3 = function() {
@@ -1729,19 +1729,27 @@ if (!window.O$) {
 
 
   O$.createHiddenFocusElement = function(tabIndex, componentId) {
-    var createTextArea = true;
-    var focusControl = document.createElement(createTextArea ? "textarea" : "input");
-    if (!createTextArea)
-      focusControl.type = "button";
-    focusControl.className = "o_hiddenFocus";
-    if (O$.isSafari()) {
-      focusControl.style.border = "1px solid transparent !important";
+    var focusElementId = componentId + ":::focus";
+    var focusElement = O$(focusElementId);
+    if (!focusElement) {
+      var createTextArea = true;
+      focusElement = document.createElement(createTextArea ? "textarea" : "input");
+      if (!createTextArea)
+        focusElement.type = "button";
+      focusElement.className = "o_hiddenFocus";
+      if (O$.isSafari()) {
+        focusElement.style.border = "1px solid transparent !important";
+      }
+      if (componentId) {
+        focusElement.id = focusElementId;
+        // assigning name is required just to overcome "Invalid chunk ignored" warning during JSF 2 Ajax calls
+        focusElement.name = focusElementId;
+      }
     }
     if (tabIndex)
-      focusControl.tabIndex = tabIndex;
-    if (componentId)
-      focusControl.id = componentId + ":::focus";
-    return focusControl;
+      focusElement.tabIndex = tabIndex;
+
+    return focusElement;
   };
 
   O$.initDefaultScrollPosition = function(trackerFieldId, scrollPos) {
@@ -3513,6 +3521,25 @@ if (!window.O$) {
       parent = O$.getDefaultAbsolutePositionParent();
     parent.appendChild(elt);
     return elt;
+  };
+
+    /*
+    This function fixes the use-case when components such as DropDownField, need to move their own pop-up component out
+    of their own markup into the "default absolute position parent" element. Then, when such component is reloaded with
+    Ajax, the previous "moved out" pop-up remains intact although it's "owner" component is dismissed during reloading
+    and replaced with the new one with its own new pop-up. As a result there is two pop-ups, and they usually have an
+    equal id, which causes some problems (see for example OF-66). So this method just helps such components to remove
+    the old copy before locating the new popup by id.
+     */
+  O$.removeRelocatedPopupIfExists = function(popupId) {
+    var dapp = O$.getDefaultAbsolutePositionParent();
+    var potentialPopups = dapp.childNodes;
+    for (var i = 0, count = potentialPopups.length; i < count; i++) {
+      var potentialPopup = potentialPopups[i];
+      if (potentialPopup.id == popupId) {
+        dapp.removeChild(potentialPopup);
+      }
+    }
   };
 
   /*
