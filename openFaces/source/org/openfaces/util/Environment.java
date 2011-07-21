@@ -19,6 +19,9 @@ import javax.faces.application.StateManager;
 import javax.faces.application.ViewHandler;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.portlet.ActionRequest;
+import javax.portlet.PortalContext;
+import javax.portlet.RenderRequest;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -394,6 +397,29 @@ public class Environment {
         RequestFacade request = RequestFacade.getInstance(context.getExternalContext().getRequest());
         String userAgent = request.getHeader("user-agent");
         return userAgent;
+    }
+
+    public static boolean isGateInPortal(FacesContext context) {
+        ExternalContext externalContext = context.getExternalContext();
+        Map<String, Object> applicationMap = externalContext.getApplicationMap();
+        String gateInPortalKey = Environment.class.getName() + ".isGateInPortal.gateInPortal";
+        Boolean gateInPortal = (Boolean) applicationMap.get(gateInPortalKey);
+        if (gateInPortal == null)
+            try {
+                Object request = externalContext.getRequest();
+                PortalContext portalContext;
+                if (request instanceof RenderRequest)
+                    portalContext = ((RenderRequest) request).getPortalContext();
+                else if (request instanceof ActionRequest)
+                    portalContext = ((ActionRequest) request).getPortalContext();
+                else
+                    portalContext = null;
+                gateInPortal = portalContext != null && portalContext.getPortalInfo().contains("GateIn");
+            } catch (NoClassDefFoundError e) {
+                gateInPortal = false;
+            }
+        applicationMap.put(gateInPortalKey, gateInPortal);
+        return gateInPortal;
     }
 
 }

@@ -26,6 +26,7 @@ import org.openfaces.util.Rendering;
 import org.openfaces.util.ScriptBuilder;
 
 import javax.faces.component.UIForm;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -76,7 +77,8 @@ class AjaxResponse {
 
     private AjaxSavedStateIdxHolder stateIdxHolder;
 
-    private static final String CONTENT_TYPE = "text/xml;charset=UTF-8";
+    private static final String XML_CONTENT_TYPE = "text/xml;charset=UTF-8";
+    private static final String HTML_CONTENT_TYPE = "text/html;charset=UTF-8";
 
     public AjaxResponse() {
     }
@@ -103,21 +105,47 @@ class AjaxResponse {
 
     public void write(AbstractResponseFacade response) throws IOException {
         updateViewVariable();
+
         FacesContext context = FacesContext.getCurrentInstance();
-        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+        ExternalContext externalContext = context.getExternalContext();
+        if ("true".equals(externalContext.getInitParameter("of_forceXmlAjaxResponse"))) {
+            response.setContentType(XML_CONTENT_TYPE);
+            try {
+                writeAsXML(response);
+            } catch (Exception e) {
+                // some configurations might forbid setting content type here. In such cases we just ignore this fact
+                // and try to write the content sa requested by the appropriate "force..." init parameter
+            }
+        }
+        if ("true".equals(externalContext.getInitParameter("of_forceJsonAjaxResponse"))) {
+            try {
+                response.setContentType(HTML_CONTENT_TYPE);
+            } catch (Exception e) {
+                // some configurations might forbid setting content type here. In such cases we just ignore this fact
+                // and try to write the content sa requested by the appropriate "force..." init parameter
+            }
+            writeAsText(response);
+        }
+
+        if (Environment.isGateInPortal(context)) {
+            writeAsText(response);
+            return;
+        }
+
+        Map<String, Object> requestMap = externalContext.getRequestMap();
         try {
             if (!AjaxUtil.isPortletRequest(context)
                     && !requestMap.containsKey(AjaxViewHandler.ERROR_OCCURRED)) {
-                response.setContentType(CONTENT_TYPE);
+                response.setContentType(XML_CONTENT_TYPE);
             } else if (AjaxUtil.isPortletRequest(context)) {
-                response.setContentType(CONTENT_TYPE);
+                response.setContentType(XML_CONTENT_TYPE);
             }
             writeAsXML(response);
         } catch (IllegalArgumentException e) { // JBoss and JetSpeed throw IllegalArgumentException when trying to set text/xml content type
             if (!AjaxUtil.isPortletRequest(context)
                     && !requestMap.containsKey(AjaxViewHandler.ERROR_OCCURRED)
                     && !Environment.isRI()) {
-                response.setContentType("text/html;charset=UTF-8");
+                response.setContentType(HTML_CONTENT_TYPE);
             }
             writeAsText(response);
         }
@@ -318,14 +346,14 @@ class AjaxResponse {
         appendCommaIfNeeded(buf, buf.length() > 1);
         addResultValueToBuf(buf, ajaxResult);
 
-        if (sessionExpired.length() > 0) {
+        if (sessionExpired != null && sessionExpired.length() > 0) {
             appendCommaIfNeeded(buf, buf.length() > 1);
             List<String> sessionExpiredParams = new ArrayList<String>();
             sessionExpiredParams.add(sessionExpired);
             addStringsToBuf(buf, TAG_AJAX_SESSION_EXPIRED, sessionExpiredParams);
         }
 
-        if (sessionExpiredLocation.length() > 0) {
+        if (sessionExpiredLocation != null && sessionExpiredLocation.length() > 0) {
             appendCommaIfNeeded(buf, buf.length() > 1);
             List<String> sessionExpiredParams = new ArrayList<String>();
             sessionExpiredParams.add(sessionExpiredLocation);

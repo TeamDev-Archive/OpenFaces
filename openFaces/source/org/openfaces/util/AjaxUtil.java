@@ -18,7 +18,7 @@ import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.portlet.ActionRequest;
+import javax.portlet.PortletRequest;
 import javax.portlet.RenderRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.io.ByteArrayInputStream;
@@ -178,7 +178,7 @@ public class AjaxUtil {
         ExternalContext externalContext = context.getExternalContext();
         Object requestObj = externalContext.getRequest();
         try {
-            return requestObj instanceof RenderRequest || requestObj instanceof ActionRequest;
+            return requestObj instanceof PortletRequest;
         } catch (NoClassDefFoundError e) {
             considerPortlets = false;
             return false;
@@ -416,7 +416,7 @@ public class AjaxUtil {
     public static String unescapeSymbol(String str) {
         StringBuilder buf = new StringBuilder();
         char[] chars = str.toCharArray();
-        for (int i = 0; i < str.length();) {
+        for (int i = 0; i < str.length(); ) {
             char c = chars[i];
             if (c == '\\' && i < str.length() - LENGTH_UNICODE) {
                 if (chars[i + 1] == '\\') {
