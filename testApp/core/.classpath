@@ -60,17 +60,17 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="/Libs/richfaces/richfaces-api-3.3.0.GA.jar">
+	<classpathentry exported="true" kind="lib" path="/Libs/richfaces/richfaces-api-3.3.3.Final.jar">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="/Libs/richfaces/richfaces-impl-3.3.0.GA.jar">
+	<classpathentry exported="true" kind="lib" path="/Libs/richfaces/richfaces-impl-3.3.3.Final.jar">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="/Libs/richfaces/richfaces-ui-3.3.0.GA.jar">
+	<classpathentry exported="true" kind="lib" path="/Libs/richfaces/richfaces-ui-3.3.3.Final.jar">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>

@@ -15,9 +15,9 @@
 	<classpathentry kind="lib" path="/Libs/openfaces-dependencies/ss_css2-0.9.4.jar"/>
 	<classpathentry kind="lib" path="/Libs/adf-faces/adf-faces-api-10.1.3.0.4.jar"/>
 	<classpathentry kind="lib" path="/Libs/adf-faces/adf-faces-impl-10.1.3.0.4.jar"/>
-	<classpathentry kind="lib" path="/Libs/richfaces/richfaces-api-3.3.0.GA.jar"/>
-	<classpathentry kind="lib" path="/Libs/richfaces/richfaces-impl-3.3.0.GA.jar"/>
-	<classpathentry kind="lib" path="/Libs/richfaces/richfaces-ui-3.3.0.GA.jar"/>
+	<classpathentry kind="lib" path="/Libs/richfaces/richfaces-api-3.3.3.Final.jar"/>
+	<classpathentry kind="lib" path="/Libs/richfaces/richfaces-impl-3.3.3.Final.jar"/>
+	<classpathentry kind="lib" path="/Libs/richfaces/richfaces-ui-3.3.3.Final.jar"/>
 	<classpathentry kind="lib" path="/Libs/portals/Exo Portal/exo-portal.jsf.jsf-ri-1.1.4.jar"/>
 	<classpathentry kind="lib" path="/Libs/mojarra/jsf-api-1.2_12-b01.jar"/>
 	<classpathentry kind="lib" path="/Libs/trinidad/trinidad-stub.jar"/>

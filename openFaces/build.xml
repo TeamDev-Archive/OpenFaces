@@ -62,9 +62,9 @@
           <include name="jboss-el.jar"/>
         </fileset>
         <fileset dir="${richfaces.lib.dir}">
-          <include name="richfaces-api-3.3.1.GA.jar"/>
-          <include name="richfaces-impl-3.3.1.GA.jar"/>
-          <include name="richfaces-ui-3.3.1.GA.jar"/>
+          <include name="richfaces-api-3.3.3.Final.jar"/>
+          <include name="richfaces-impl-3.3.3.Final.jar"/>
+          <include name="richfaces-ui-3.3.3.Final.jar"/>
         </fileset>
         <fileset dir="${apache.lib.dir}">
           <include name="commons-collections-3.2.1.jar"/>

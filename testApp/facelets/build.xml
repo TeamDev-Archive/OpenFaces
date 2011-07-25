@@ -53,9 +53,9 @@
   </fileset>
 
   <fileset id="richfaces-libs" dir="${richfaces.lib.dir}">
-    <include name="richfaces-api-3.3.1.GA.jar"/>
-    <include name="richfaces-impl-3.3.1.GA.jar"/>
-    <include name="richfaces-ui-3.3.1.GA.jar"/>
+    <include name="richfaces-api-3.3.3.Final.jar"/>
+    <include name="richfaces-impl-3.3.3.Final.jar"/>
+    <include name="richfaces-ui-3.3.3.Final.jar"/>
   </fileset>
 
   <fileset id="mojarra-1.2" dir="${jsf.lib.dir}">
@@ -157,7 +157,7 @@
           <include name="openfaces-dependencies/cssparser-0.9.5.jar"/>
           <include name="openfaces-dependencies/sac.jar"/>
           <include name="facelets/jsf-facelets-1.1.15.jar"/>
-          <include name="richfaces/richfaces-api-3.3.1.GA.jar"/>
+          <include name="richfaces/richfaces-api-3.3.3.Final.jar"/>
           <include name="el/el-api-1.5.0.jar"/>
           <include name="el/el-ri-1.5.0.jar"/>
           <include name="jboss-seam/hibernate-all.jar"/>
