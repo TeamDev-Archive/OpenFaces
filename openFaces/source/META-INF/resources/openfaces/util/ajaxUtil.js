@@ -778,7 +778,7 @@ O$.AjaxObject = function(render) {
         this._ajaxResult = responseXML.getElementsByTagName(O$.TAG_AJAX_RESULT);
         this._cssFiles = responseXML.getElementsByTagName(O$.TAG_AJAX_CSS);
       }
-      if ((!this._updatables || this._updatables.length == 0) && !this._ajaxResult) {
+      if ((!this._updatables || this._updatables.length == 0) && (!this._ajaxResult || this._ajaxResult.length == null)) {
         var responseText = request.responseText;
         var startIndex = responseText.indexOf(O$.TEXT_RESPONSE_PREFIX);
         if (startIndex == -1) {
