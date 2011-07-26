@@ -14,6 +14,8 @@ package org.openfaces.taglib.jsp.ajax;
 import org.openfaces.taglib.internal.ajax.SilentSessionExpirationTag;
 import org.openfaces.taglib.jsp.AbstractComponentJspTag;
 
+import javax.el.ValueExpression;
+
 /**
  * @author Eugene Goncharov
  */
