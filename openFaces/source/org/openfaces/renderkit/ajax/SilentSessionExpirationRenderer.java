@@ -11,6 +11,8 @@
  */
 package org.openfaces.renderkit.ajax;
 
+import org.openfaces.component.ajax.SilentSessionExpiration;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
@@ -22,13 +24,17 @@ public class SilentSessionExpirationRenderer extends AbstractSettingsRenderer {
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
-        if (isAjaxSessionExpirationProcessing(context)) {
-            String location = getRedirectLocationOnSessionExpired(context);
+        if (!isAjaxSessionExpirationProcessing(context))
+            return;
 
-            String onsessionexpiredHandlerFunction = "O$.reloadPage(\'" + location + "\');";
-            UIComponent ajaxSettings = component.getParent();
-            processEvent(context, ajaxSettings, "onsessionexpired", onsessionexpiredHandlerFunction);
-        }
+        SilentSessionExpiration sse = (SilentSessionExpiration) component;
+        String location = sse.getRedirectLocation();
+        if (location == null)
+            location = getRedirectLocationOnSessionExpired(context);
+
+        String onsessionexpiredHandlerFunction = "O$.reloadPage(\'" + location + "\');";
+        UIComponent ajaxSettings = component.getParent();
+        processEvent(context, ajaxSettings, "onsessionexpired", onsessionexpiredHandlerFunction);
     }
 
 }

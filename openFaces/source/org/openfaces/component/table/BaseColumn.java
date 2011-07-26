@@ -22,6 +22,8 @@ import javax.faces.context.FacesContext;
  * @author Dmitry Pikhulya
  */
 public class BaseColumn extends UIColumn {
+    public static final String FACET_EDITOR = "editor";
+
     private String headerValue;
     private String footerValue;
 
@@ -144,6 +146,14 @@ public class BaseColumn extends UIColumn {
         footerOnmousemove = (String) state[i++];
         footerOnmouseout = (String) state[i++];
         footerOnmouseup = (String) state[i++];
+    }
+
+    public UIComponent getEditor() {
+        return getFacet(FACET_EDITOR);
+    }
+
+    public void setEditor(UIComponent editor) {
+        getFacets().put(FACET_EDITOR, editor);
     }
 
     public String getHeaderValue() {

@@ -15348,6 +15348,18 @@ entering a value and returns a list of suggestions from the server -->
     <name>silentSessionExpiration</name>
     <tag-class>org.openfaces.taglib.jsp.ajax.SilentSessionExpirationJspTag</tag-class>
     <body-content>JSP</body-content>
+    <attribute>
+      <description>This attribute can optionally be specified in order to redirect to the specified location instead of
+        just reloading the current page.
+      </description>
+      <name>redirectLocation</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType String -->
+      <!-- @default  -->
+      <!-- @el true -->
+    </attribute>
   </tag>
 
   <!-- FOCUSTRACKER TAG DECLARATION -->

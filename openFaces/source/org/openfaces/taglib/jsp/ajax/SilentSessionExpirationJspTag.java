@@ -21,4 +21,8 @@ public class SilentSessionExpirationJspTag extends AbstractComponentJspTag {
     public SilentSessionExpirationJspTag() {
         super(new SilentSessionExpirationTag());
     }
+
+    public void setRedirectLocation(ValueExpression redirectLocation) {
+        getDelegate().setPropertyValue("redirectLocation", redirectLocation);
+    }
 }
