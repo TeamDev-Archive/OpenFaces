@@ -22,6 +22,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
+import javax.portlet.ActionRequest;
+import javax.portlet.PortalContext;
+import javax.portlet.RenderRequest;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -381,4 +385,27 @@ public class Environment {
         }
         return null;
     }
+    public static boolean isGateInPortal(FacesContext context) {
+        ExternalContext externalContext = context.getExternalContext();
+        Map<String, Object> applicationMap = externalContext.getApplicationMap();
+        String gateInPortalKey = Environment.class.getName() + ".isGateInPortal.gateInPortal";
+        Boolean gateInPortal = (Boolean) applicationMap.get(gateInPortalKey);
+        if (gateInPortal == null)
+            try {
+                Object request = externalContext.getRequest();
+                PortalContext portalContext;
+                if (request instanceof RenderRequest)
+                    portalContext = ((RenderRequest) request).getPortalContext();
+                else if (request instanceof ActionRequest)
+                    portalContext = ((ActionRequest) request).getPortalContext();
+                else
+                    portalContext = null;
+                gateInPortal = portalContext != null && portalContext.getPortalInfo().contains("GateIn");
+            } catch (NoClassDefFoundError e) {
+                gateInPortal = false;
+            }
+        applicationMap.put(gateInPortalKey, gateInPortal);
+        return gateInPortal;
+    }
+
 }

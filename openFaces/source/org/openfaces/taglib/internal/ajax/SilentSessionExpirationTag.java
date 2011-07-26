@@ -14,6 +14,9 @@ package org.openfaces.taglib.internal.ajax;
 import org.openfaces.component.ajax.SilentSessionExpiration;
 import org.openfaces.taglib.internal.AbstractComponentTag;
 
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+
 /**
  * @author Eugene Goncharov
  */
@@ -24,5 +27,11 @@ public class SilentSessionExpirationTag extends AbstractComponentTag {
 
     public String getRendererType() {
         return null;
+    }
+
+    @Override
+    public void setComponentProperties(FacesContext facesContext, UIComponent component) {
+        super.setComponentProperties(facesContext, component);
+        setObjectProperty(component, "redirectLocation");
     }
 }

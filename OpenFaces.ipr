@@ -1188,15 +1188,13 @@
     </library>
     <library name="jboss portlet brige">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/portals/jboss/portletbridge-api-1.0.0.CR2.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/portals/jboss/portletbridge-impl-1.0.0.CR2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/portals/jboss/portletbridge-impl-2.1.0.FINAL.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/portals/jboss/portletbridge-api-2.1.0.FINAL.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES>
-        <root url="jar://$PROJECT_DIR$/libsrc/JBossPortletBridge-1.0.0.CR2-src.zip!/core/portletbridge-impl/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/JBossPortletBridge-1.0.0.CR2-src.zip!/core/portletbridge-impl/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/JBossPortletBridge-1.0.0.CR2-src.zip!/core/portletbridge-api/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/JBossPortletBridge-1.0.0.CR2-src.zip!/core/portletbridge-api/src/test/java" />
+        <root url="jar://$PROJECT_DIR$/libsrc/JBossPortletBridge-2.1.0.FINAL-src.zip!/JBossPortletBridge-2.1.0.FINAL-src/portletbridge-api/src/main/java" />
+        <root url="jar://$PROJECT_DIR$/libsrc/JBossPortletBridge-2.1.0.FINAL-src.zip!/JBossPortletBridge-2.1.0.FINAL-src/portletbridge-impl/src/main/java" />
       </SOURCES>
     </library>
     <library name="JBoss Seam 2.1">
@@ -1316,7 +1314,10 @@
         <root url="jar://$PROJECT_DIR$/lib/portals/portlet-api-lib.jar!/" />
       </CLASSES>
       <JAVADOC />
-      <SOURCES />
+      <SOURCES>
+        <root url="file://D:/0/-LIBRARIES-/JBossPortletBridge-2.1.0.FINAL-src/core/portletbridge-api/src/main/java" />
+        <root url="file://D:/0/-LIBRARIES-/JBossPortletBridge-2.1.0.FINAL-src/core/portletbridge-impl/src/main/java" />
+      </SOURCES>
     </library>
     <library name="PrimeFaces">
       <CLASSES>
