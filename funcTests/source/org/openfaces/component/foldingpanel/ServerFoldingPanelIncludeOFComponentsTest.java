@@ -39,7 +39,7 @@ public class ServerFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
     @Test
     public void testChartInside() {
         testAppFunctionalPage("/components/foldingpanel/chartIn.jsf");
-
+        sleep(10000);
         tabSet("fn:loadingModes").setTabIndex(2, ServerLoadingMode.getInstance());
         ElementInspector chart = element("fn:first_chartID");
         chart.assertElementExists(false);
