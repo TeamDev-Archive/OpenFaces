@@ -40,9 +40,9 @@ public class ClientFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
     }
 
     @Test
+    @Ignore
     public void testChartInside() {
         testAppFunctionalPage("/components/foldingpanel/chartIn.jsf");
-        sleep(10000);
         tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());
 
         ElementInspector chart = element("fn:first_chartID");
