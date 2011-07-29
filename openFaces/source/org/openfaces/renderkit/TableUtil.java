@@ -28,6 +28,7 @@ import org.openfaces.util.Resources;
 import org.openfaces.util.Styles;
 import org.openfaces.util.ValueBindings;
 
+import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -281,9 +282,10 @@ public class TableUtil {
         Converter valueConverter = null;
         FacesContext context = FacesContext.getCurrentInstance();
         int index = table.getRowIndex();
+        ELContext elContext = context.getELContext();
         try {
             table.setRowIndex(0);
-            valueType = expression.getType(context.getELContext());
+            valueType = expression.getType(elContext);
             if (columnOutput != null)
                 valueConverter = Rendering.getConverter(context, columnOutput);
             else
@@ -299,7 +301,10 @@ public class TableUtil {
                 }
                 ValueExpression rowDataBeanValueExpression = table.getValueExpression("value");
                 if (rowDataBeanValueExpression != null) {
-                    Class rowDataBeanType = rowDataBeanValueExpression.getValue(context.getELContext()).getClass();
+                    Object expressionValue = rowDataBeanValueExpression.getValue(elContext);
+                    Class rowDataBeanType = expressionValue != null
+                            ? expressionValue.getClass()
+                            : rowDataBeanValueExpression.getType(elContext);
                     Class rowDataClass = null;
                     if (rowDataBeanType.isArray()) {
                         rowDataClass = rowDataBeanType.getComponentType();

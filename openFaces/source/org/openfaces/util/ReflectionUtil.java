@@ -171,7 +171,9 @@ public class ReflectionUtil {
     }
 
     public static Class getGenericParameterClass(Class actualClass, int parameterIndex) {
-        Type type = ((ParameterizedType) actualClass.getGenericSuperclass()).getActualTypeArguments()[parameterIndex];
+        Type genericSuperclass = actualClass.getGenericSuperclass();
+        if (!(genericSuperclass instanceof ParameterizedType)) return null;
+        Type type = ((ParameterizedType) genericSuperclass).getActualTypeArguments()[parameterIndex];
         return type instanceof Class ? (Class) type : null;
     }
 
