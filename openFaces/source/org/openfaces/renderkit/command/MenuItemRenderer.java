@@ -102,9 +102,8 @@ public class MenuItemRenderer extends RendererBase {
 
         writer.endElement("span");
 
-        if (menuItem.isDisabled()) {
-            addMenuItemParameter(menuItem, "disabled", "true");
-        }
+        boolean disabled = menuItem.isDisabled();
+        addMenuItemParameter(menuItem, "disabled", disabled ? true : null);
     }
 
     private UIComponent getChildPopupMenu(MenuItem menuItem) {
@@ -229,13 +228,18 @@ public class MenuItemRenderer extends RendererBase {
         writer.endElement("span");
     }
 
-    private void addMenuItemParameter(MenuItem popupMenuItem, String paramName, String paramValue) {
-        if (paramValue == null || paramValue.equals("")) return;
-        Map<String, String> parameters = (Map<String, String>) popupMenuItem.getAttributes().get(MENU_ITEMS_PARAMETERS_KEY);
+    private void addMenuItemParameter(MenuItem popupMenuItem, String paramName, Object paramValue) {
+        Map<String, Object> attributes = popupMenuItem.getAttributes();
+        Map<String, Object> parameters = (Map<String, Object>) attributes.get(MENU_ITEMS_PARAMETERS_KEY);
         if (parameters == null) {
-            parameters = new HashMap<String, String>();
-            popupMenuItem.getAttributes().put(MENU_ITEMS_PARAMETERS_KEY, parameters);
+            parameters = new HashMap<String, Object>();
+            attributes.put(MENU_ITEMS_PARAMETERS_KEY, parameters);
         }
+        if (paramValue == null || paramValue.equals("")) {
+            parameters.remove(paramName);
+            return;
+        }
+
         parameters.put(paramName, paramValue);
     }
 
