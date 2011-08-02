@@ -142,20 +142,23 @@ O$.PopupMenu = {
 
       var anchor = O$(menuItem.id + "::commandLink");
       if (anchor) {
-        menuItem._anchor = anchor;
+        O$.extend(menuItem, {
+          _anchor: anchor,
+          _index: i,
+          _icon: O$(menuItem.id + "::image"),
+          _caption: O$(menuItem.id + "::caption"),
+          _iconspan: O$(menuItem.id + "::imagespan"),
+
+          _arrow: O$(menuItem.id + "::arrow"),
+          _arrowspan: O$(menuItem.id + "::arrowspan"),
+
+          _imagefakespan: O$(menuItem.id + "::imagefakespan"),
+          _arrowfakespan: O$(menuItem.id + "::arrowfakespan"),
+
+          _separator: null
+        });
+
         menuItem._anchor._menuItem = menuItem;
-        menuItem._index = i;
-        menuItem._icon = O$(menuItem.id + "::image");
-        menuItem._caption = O$(menuItem.id + "::caption");
-        menuItem._iconspan = O$(menuItem.id + "::imagespan");
-
-        menuItem._arrow = O$(menuItem.id + "::arrow");
-        menuItem._arrowspan = O$(menuItem.id + "::arrowspan");
-
-        menuItem._imagefakespan = O$(menuItem.id + "::imagefakespan");
-        menuItem._arrowfakespan = O$(menuItem.id + "::arrowfakespan");
-
-        menuItem._separator = null;
         anchor._defaultItemClass = defaultItemClass;
         anchor._defaultDisabledClass = defaultDisabledClass;
 

@@ -26488,6 +26488,16 @@ and it is automatically triggered on any form submission. -->
       <!-- @el only -->
     </attribute>
     <attribute>
+      <description>A flag that indicates whether or not the component is visible.</description>
+      <name>rendered</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>The string that displays as text of the MenuItem.</description>
       <name>value</name>
       <deferred-value>

@@ -188,6 +188,10 @@ public class PopupMenuRenderer extends RendererBase {
         if (!component.isRendered())
             return;
 
-        Rendering.renderChildren(context, component);
+        List<UIComponent> components = component.getChildren();
+        for (UIComponent child : components) {
+            if (child instanceof MenuItem || child instanceof MenuSeparator)
+                child.encodeAll(context);
+        }
     }
 }
