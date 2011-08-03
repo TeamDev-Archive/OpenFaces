@@ -1324,6 +1324,16 @@ O$.canonifyLibraryName = function(lib) {
   var jSessionIdIndex = lib.indexOf(";jsessionid");
   if (jSessionIdIndex != -1)
     lib = lib.substring(0, jSessionIdIndex);
+
+  var gateInPortal = lib.indexOf("portal:resourceID") != -1;
+  if (gateInPortal) {
+    var navStateStart = lib.indexOf("navigationalstate=");
+    if (navStateStart != -1) {
+      var navStateEnd = lib.indexOf("&", navStateStart);
+      if (navStateEnd == -1) navStateEnd = lib.length;
+      lib = lib.substring(0, navStateStart) + lib.substring(navStateEnd + 1, lib.length);
+    }
+  }
   return lib;
 }
 
@@ -1344,6 +1354,13 @@ O$.processJSInclude = function(jsInclude) {
     newScript.onreadystatechange = function() {
       if (this.readyState == "complete")
         O$.markLibraryLoaded(jsInclude);
+      else if (O$.isExplorer() && this.readyState == "loaded") {
+        // IE for some reason sometimes reports the "loaded" state and skips the "complete" one, so we're processing
+        // this one too (after making a spare timeout just in case)
+        setTimeout(function() {
+          O$.markLibraryLoaded(jsInclude);
+        }, 50);
+      }
     };
     var head = document.getElementsByTagName("head")[0];
     head.appendChild(newScript);
