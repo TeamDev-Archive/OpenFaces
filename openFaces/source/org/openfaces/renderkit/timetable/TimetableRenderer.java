@@ -131,9 +131,9 @@ public class TimetableRenderer extends TimetableRendererBase {
         layeredPane.setLoadingMode(LoadingMode.CLIENT);
         if (layeredPane.getChildCount() == 0) {
             List<UIComponent> children = layeredPane.getChildren();
-            children.add(new SubPanel(null, new MonthTableVirtualContainer(timetable)));
-            children.add(new SubPanel(null, new WeekTableVirtualContainer(timetable)));
-            children.add(new SubPanel(null, new DayTableVirtualContainer(timetable)));
+            children.add(new SubPanel(null, new MonthTableVirtualContainer()));
+            children.add(new SubPanel(null, new WeekTableVirtualContainer()));
+            children.add(new SubPanel(null, new DayTableVirtualContainer()));
         }
 
         Timetable.ViewType currentViewType = timetable.getViewType();
@@ -165,42 +165,35 @@ public class TimetableRenderer extends TimetableRendererBase {
         timetable.setViewType(viewType);
     }
 
-    private static class MonthTableVirtualContainer extends VirtualContainer<MonthTable> {
-        private final Timetable timetable;
+    public static abstract class TimetableViewVirtualContainer<C extends UIComponent> extends VirtualContainer<C> {
+        private Timetable timetable;
 
-        public MonthTableVirtualContainer(Timetable timetable) {
-            this.timetable = timetable;
+        protected Timetable getTimetable() {
+            if (timetable == null)
+                timetable = Components.getParentWithClass(this, Timetable.class);
+            return timetable;
         }
 
+    }
+
+    public static class MonthTableVirtualContainer extends TimetableViewVirtualContainer<MonthTable> {
         @Override
         protected MonthTable getVirtualChild() {
-            return timetable.getMonthView();
+            return getTimetable().getMonthView();
         }
     }
 
-    private static class WeekTableVirtualContainer extends VirtualContainer<WeekTable> {
-        private final Timetable timetable;
-
-        public WeekTableVirtualContainer(Timetable timetable) {
-            this.timetable = timetable;
-        }
-
+    public static class WeekTableVirtualContainer extends TimetableViewVirtualContainer<WeekTable> {
         @Override
         protected WeekTable getVirtualChild() {
-            return timetable.getWeekView();
+            return getTimetable().getWeekView();
         }
     }
 
-    private static class DayTableVirtualContainer extends VirtualContainer<DayTable> {
-        private final Timetable timetable;
-
-        public DayTableVirtualContainer(Timetable timetable) {
-            this.timetable = timetable;
-        }
-
+    public static class DayTableVirtualContainer extends TimetableViewVirtualContainer<DayTable> {
         @Override
         protected DayTable getVirtualChild() {
-            return timetable.getDayView();
+            return getTimetable().getDayView();
         }
     }
 }
