@@ -661,9 +661,10 @@ O$.TimeTableView = {
                   var background = eventElement._backgroundElement;
                   background.style.backgroundColor = userSpecifiedStyles.backgroundColor
                           ? userSpecifiedStyles.backgroundColor : eventElement._backgroundColor;
-                  background.style.borderRadius = elementStyles.borderRadius;
-                  background.style.MozBorderRadius = elementStyles.MozBorderRadiusTopleft;
-                  background.style.WebkitBorderRadius = elementStyles.WebkitBorderTopLeftRadius;
+                  var commonBorderRadius = elementStyles.borderRadius || elementStyles.MozBorderRadiusTopleft || elementStyles.WebkitBorderTopLeftRadius;
+                  background.style.borderRadius = commonBorderRadius;
+                  background.style.MozBorderRadius = commonBorderRadius;
+                  background.style.WebkitBorderRadius = commonBorderRadius;
 
                   O$.setOpacityLevel(background, 1 - eventBackgroundTransparency);
                   eventElement.style.color = userSpecifiedStyles.color ? userSpecifiedStyles.color : eventElement._color;
