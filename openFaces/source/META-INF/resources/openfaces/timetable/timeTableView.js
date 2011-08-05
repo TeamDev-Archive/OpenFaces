@@ -339,9 +339,12 @@ O$.TimeTableView = {
               },
 
               _getEventPreview: function() {
-                if (!this._eventPreview) {
+                if (this._eventPreview === undefined) {
                   this._eventPreview = O$(this.id + ":_eventPreview");
+                  if (!this._eventPreview && this._timetable)
+                    this._eventPreview = O$(this._timetable.id + ":_eventPreview");
                 }
+
                 return this._eventPreview;
               },
 
@@ -431,6 +434,8 @@ O$.TimeTableView = {
                 var eventPreview;
 
                 O$.extend(event, {
+                          _timeTableView: timeTableView,
+
                           _attachAreas: function() {
                             event._areas = [];
                             eventAreaSettings.forEach(function(areaSettings) {

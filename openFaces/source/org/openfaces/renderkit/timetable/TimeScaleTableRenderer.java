@@ -35,7 +35,6 @@ import org.openfaces.util.StyleGroup;
 import org.openfaces.util.Styles;
 
 import javax.el.ValueExpression;
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -174,11 +173,7 @@ public abstract class TimeScaleTableRenderer extends TimetableViewRenderer {
 
         JSONArray areaSettings = encodeEventAreas(context, timetableView, events);
 
-        List<UITimetableEvent> uiEvents = Components.findChildrenWithClass(timetableView, UITimetableEvent.class);
-        if (uiEvents.size() > 1)
-            throw new FacesException("There should be only one <o:timetableEvent> tag inside of " + getTagName() + " tag. " +
-                    getComponentName() + " clientId = " + timetableView.getClientId(context));
-        UITimetableEvent uiEvent = uiEvents.size() > 0 ? uiEvents.get(0) : null;
+        UITimetableEvent uiEvent = timetableView.getUITimetableEvent();
 
         Timetable timetable = timetableView.getTimetable();
 

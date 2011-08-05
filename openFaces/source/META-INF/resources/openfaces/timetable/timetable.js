@@ -390,7 +390,7 @@ O$.Timetable = {
               _showingDelay: showingDelay,
 
               showForEvent: function(event) {
-                var timetableView = O$(timetableViewId);
+                var timetableView = event._timeTableView;//O$(timetableViewId);
                 var popupParent = O$.getDefaultAbsolutePositionParent();
                 if (popupLayer.parentNode != popupParent) {
                   popupParent.appendChild(popupLayer);
