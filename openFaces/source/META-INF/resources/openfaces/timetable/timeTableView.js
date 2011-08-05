@@ -437,6 +437,10 @@ O$.TimeTableView = {
                               var areaId = areaSettings.id;
                               var areaClientId = timeTableView.id + "::" + event.id + ":" + areaId;
                               var area = O$(areaClientId);
+                              if (!area && timeTableView._timetable) {
+                                areaClientId = timeTableView._timetable.id + "::" + event.id + ":" + areaId;
+                                area = O$(areaClientId);
+                              }
                               if (!area)
                                 return;
                               O$.extend(area, {

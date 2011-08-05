@@ -337,8 +337,12 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
             setEvent(null);
             return;
         }
-        AbstractTimetableEvent event = getLoadedEvents().get(objectId);
+        AbstractTimetableEvent event = getLoadedEventByObjectId(objectId);
         setEvent(event);
+    }
+
+    protected AbstractTimetableEvent getLoadedEventByObjectId(String objectId) {
+        return getLoadedEvents().get(objectId);
     }
 
     public String getObjectId() {

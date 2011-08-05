@@ -49,7 +49,7 @@ public abstract class TimetableViewRenderer extends TimetableRendererBase implem
             String barClientId = bar.getClientId(context);
             Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
             String alreadyRenderedBarsKey = TimetableViewRenderer.class + ".encodeActionBar().alreadyRenderedBars";
-            Set<String> alreadyRenderedBars = (Set) requestMap.get(alreadyRenderedBarsKey);
+            Set<String> alreadyRenderedBars = (Set<String>) requestMap.get(alreadyRenderedBarsKey);
             if (alreadyRenderedBars == null) {
                 alreadyRenderedBars = new HashSet<String>();
                 requestMap.put(alreadyRenderedBarsKey, alreadyRenderedBars);
@@ -184,7 +184,8 @@ public abstract class TimetableViewRenderer extends TimetableRendererBase implem
             for (AbstractTimetableEvent event : events) {
                 timetableView.setEvent(event);
                 for (EventArea eventArea : eventAreas) {
-                    eventArea.encodeAll(context);
+                    if (okToRenderEventArea(context, eventArea))
+                        eventArea.encodeAll(context);
                 }
 
             }
@@ -206,6 +207,25 @@ public abstract class TimetableViewRenderer extends TimetableRendererBase implem
             throw new RuntimeException(e);
         }
         return areaSettings;
+    }
+
+    protected boolean okToRenderEventArea(FacesContext context, EventArea eventArea) {
+        String eventAreaClientId = eventArea.getClientId(context);
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+        String areaIdsKey =
+                TimetableViewRenderer.class + ".isEventAreaAlreadyRenderedForOtherView().areaIds";
+        Set<String> areaIds = (Set<String>) requestMap.get(areaIdsKey);
+        if (areaIds == null) {
+            areaIds = new HashSet<String>();
+            requestMap.put(areaIdsKey, areaIds);
+        }
+        if (areaIds.contains(eventAreaClientId)) {
+            // this view must be located in a timetable, and this area must have already been rendered for another view,
+            // so we should just avoid rendering it twice here
+            return false;
+        }
+        areaIds.add(eventAreaClientId);
+        return true;
     }
 
     protected Map<String, TimeZone> getTimeZoneParamForJSONConverter(TimetableView timetableView) {
