@@ -497,6 +497,7 @@ O$.Timetable = {
     for (var i = 0, count = actions.length; i < count; i++) {
       var action = actions[i];
       var cell = document.createElement("td");
+      O$.assignEvents(cell, action, true);
       O$.extend(cell, {
                 vAlign: "middle",
                 align: "center",
@@ -576,7 +577,6 @@ O$.Timetable = {
       if (action.hint)
         image.title = action.hint;
       cell.appendChild(image);
-      O$.assignEvents(cell, action, true);
       O$.preloadImage(action.image[0]);
       O$.preloadImage(action.image[1]);
       O$.preloadImage(action.image[2]);
