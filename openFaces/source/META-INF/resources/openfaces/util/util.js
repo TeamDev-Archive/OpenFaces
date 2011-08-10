@@ -1944,24 +1944,23 @@ if (!window.O$) {
     });
   };
 
-  O$._handleOnFocus = function(e) {
-    O$._activeElement = this;
-    O$._focusField.value = this.id;
-    if (this._of_prevOnFocusHandler)
-      this._of_prevOnFocusHandler(e);
-    if (O$.onfocuschange)
-      O$.onfocuschange(e);
-  };
-
-  O$.setupFocusOnTags = function(parent, tagName) {
+ O$.setupFocusOnTags = function(parent, tagName) {
     var elements = parent.getElementsByTagName(tagName);
     for (var i = 0; i < elements.length; i++) {
       var element = elements[i];
 
-      if (element.onfocus == O$._handleOnFocus)
+      if (element._ofUtil_focusTrackerInstalled)
         continue;
+      element._ofUtil_focusTrackerInstalled = true;
       element._of_prevOnFocusHandler = element.onfocus;
-      element.onfocus = O$._handleOnFocus;
+      element.onfocus = function(e) {
+        O$._activeElement = this;
+        O$._focusField.value = this.id;
+        if (this._of_prevOnFocusHandler)
+          this._of_prevOnFocusHandler(e);
+        if (O$.onfocuschange)
+          O$.onfocuschange(e);
+      };
       element._of_prevOnBlurHandler = element.onblur;
       element.onblur = function (e) {
         if (O$._activeElement == this) {
