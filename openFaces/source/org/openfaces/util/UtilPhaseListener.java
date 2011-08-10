@@ -265,6 +265,16 @@ public class UtilPhaseListener extends PhaseListenerBase {
                                           boolean preRenderResponseOnTables,
                                           boolean checkComponentPresence,
                                           List<Runnable> restoreDataPointerRunnables) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (Environment.isGateInPortal(context) && parent instanceof UIViewRoot) {
+            String rootId = parent.getClientId(context);
+            int idx = rootId.indexOf(parent.getId());
+            String prefix = rootId.substring(0, idx);
+            if (id.startsWith(prefix))
+                id = id.substring(prefix.length());
+        }
+
+        if (true) ;
         UIComponent componentByPath = findComponentByPath(parent, id, preProcessDecodesOnTables,
                 preRenderResponseOnTables, restoreDataPointerRunnables);
         if (checkComponentPresence && componentByPath == null)
@@ -301,13 +311,14 @@ public class UtilPhaseListener extends PhaseListenerBase {
     private static UIComponent componentById(UIComponent parent, String id, boolean isLastComponentInPath,
                                              boolean preProcessDecodesOnTables, boolean preRenderResponseOnTables,
                                              List<Runnable> restoreDataPointerRunnables) {
+        FacesContext context = FacesContext.getCurrentInstance();
         if (id.length() > 0 && (isNumberBasedId(id) || id.startsWith(":")) && parent instanceof AbstractTable) {
             final AbstractTable table = ((AbstractTable) parent);
             if (!isLastComponentInPath) {
                 if (preProcessDecodesOnTables)
-                    table.invokeBeforeProcessDecodes(FacesContext.getCurrentInstance());
+                    table.invokeBeforeProcessDecodes(context);
                 if (preRenderResponseOnTables) {
-                    table.invokeBeforeRenderResponse(FacesContext.getCurrentInstance());
+                    table.invokeBeforeRenderResponse(context);
                     table.setRowIndex(-1); // make the succeeding setRowIndex call provide the just-read actual row data through request-scope variables
                 }
 

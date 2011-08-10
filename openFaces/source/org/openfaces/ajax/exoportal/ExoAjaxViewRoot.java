@@ -164,11 +164,6 @@ public class ExoAjaxViewRoot extends UIExoViewRoot implements WrappedAjaxRoot {
 
     }
 
-    /*
-    * (non-Javadoc)
-    *
-    * @see org.ajax4jsf.framework.ajax.AjaxViewBrige#saveState(javax.faces.context.FacesContext)
-    */
     @Override
     public Object saveState(FacesContext context) {
         Object[] state = new Object[2];

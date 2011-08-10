@@ -281,8 +281,12 @@ public class AjaxViewHandler extends ViewHandlerWrapper {
 
         if (Environment.isExoPortal())
             riRoot = createExoAjaxViewRoot(root);
+        else if (richFacesAjaxViewRootClass == null)
+            riRoot = new AjaxViewRoot();
+        else if (Environment.isGateInPortal(context))
+            riRoot = createGateInAjaxViewRoot(root);
         else
-            riRoot = richFacesAjaxViewRootClass == null ? new AjaxViewRoot() : getA4jAjaxViewRoot(root);
+            riRoot = createA4jAjaxViewRoot(root);
         // fill properties from default.
         riRoot.setViewId(root.getViewId());
         riRoot.setLocale(root.getLocale());
@@ -298,23 +302,42 @@ public class AjaxViewHandler extends ViewHandlerWrapper {
     private UIViewRoot createExoAjaxViewRoot(UIViewRoot root) {
         UIViewRoot result;
         try {
-            Class<?> viewRootClass = Class.forName("org.openfaces.ajax.exoportal.ExoAjaxViewRoot");
-            Constructor<?> constructor = viewRootClass.getConstructor(UIViewRoot.class);
-            result = (UIViewRoot) constructor.newInstance(root);
+            Class<UIViewRoot> viewRootClass = (Class<UIViewRoot>) Class.forName("org.openfaces.ajax.exoportal.ExoAjaxViewRoot");
+            Constructor<UIViewRoot> constructor = viewRootClass.getConstructor(UIViewRoot.class);
+            result = constructor.newInstance(root);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
         return result;
     }
 
-    private UIViewRoot getA4jAjaxViewRoot(UIViewRoot root) {
+    private UIViewRoot createA4jAjaxViewRoot(UIViewRoot root) {
         UIViewRoot result;
         try {
-            Class<?> viewRootClass = Class.forName("org.openfaces.ajax.richfaces.A4JAjaxViewRoot");
-            Constructor<?> constructor = viewRootClass.getConstructor(UIViewRoot.class);
-            // TODO [sanders] (Apr 1, 2009, 7:03 AM): avoid cast
-            result = (UIViewRoot) constructor.newInstance(root);
-            // TODO [sanders] (Apr 1, 2009, 7:03 AM): Log exception?
+            @SuppressWarnings({"unchecked"}) Class<UIViewRoot> viewRootClass = (Class<UIViewRoot>) Class.forName("org.openfaces.ajax.richfaces.A4JAjaxViewRoot");
+            Constructor<UIViewRoot> constructor = viewRootClass.getConstructor(UIViewRoot.class);
+            result = constructor.newInstance(root);
+        } catch (ClassNotFoundException e) {
+            result = new AjaxViewRoot();
+        } catch (IllegalAccessException e) {
+            result = new AjaxViewRoot();
+        } catch (InstantiationException e) {
+            result = new AjaxViewRoot();
+        } catch (NoSuchMethodException e) {
+            result = new AjaxViewRoot();
+        } catch (InvocationTargetException e) {
+            result = new AjaxViewRoot();
+        }
+
+        return result;
+    }
+
+    private UIViewRoot createGateInAjaxViewRoot(UIViewRoot root) {
+        UIViewRoot result;
+        try {
+            Class<UIViewRoot> viewRootClass = (Class<UIViewRoot>) Class.forName("org.openfaces.ajax.gateinportal.GateInAjaxViewRoot");
+            Constructor<UIViewRoot> constructor = viewRootClass.getConstructor(UIViewRoot.class);
+            result = constructor.newInstance(root);
         } catch (ClassNotFoundException e) {
             result = new AjaxViewRoot();
         } catch (IllegalAccessException e) {
@@ -509,7 +532,7 @@ public class AjaxViewHandler extends ViewHandlerWrapper {
         boolean shouldWaitForPreviousAjaxCompletion = true;
         long timeBefore = System.currentTimeMillis();
         do {
-            // TODO [sanders] (Apr 1, 2009, 7:06 AM): Synchronization on parameter
+            //noinspection SynchronizationOnLocalVariableOrMethodParameter
             synchronized (root) {
                 long timeElapsed = System.currentTimeMillis() - timeBefore;
                 if (timeElapsed > CommonAjaxViewRoot.MAX_PORTLET_PARALLEL_REQUEST_TIMEOUT) {

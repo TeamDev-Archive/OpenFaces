@@ -15,6 +15,7 @@ import org.ajax4jsf.component.AjaxViewRoot;
 import org.openfaces.ajax.CommonAjaxViewRoot;
 import org.openfaces.ajax.WrappedAjaxRoot;
 import org.openfaces.util.AjaxUtil;
+import org.openfaces.util.Components;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
@@ -94,6 +95,7 @@ public final class A4JAjaxViewRoot extends AjaxViewRoot implements WrappedAjaxRo
 
     @Override
     public void processDecodes(FacesContext context) {
+        Components.runScheduledActions();
         commonAjaxViewRoot.processDecodes(context, false);
     }
 
@@ -110,6 +112,12 @@ public final class A4JAjaxViewRoot extends AjaxViewRoot implements WrappedAjaxRo
     @Override
     public void processApplication(FacesContext context) {
         commonAjaxViewRoot.processApplication(context, false);
+    }
+
+    @Override
+    public void encodeAll(FacesContext context) throws IOException {
+        Components.runScheduledActions();
+        super.encodeAll(context);
     }
 
     @Override
@@ -163,11 +171,6 @@ public final class A4JAjaxViewRoot extends AjaxViewRoot implements WrappedAjaxRo
 
     }
 
-    /*
-    * (non-Javadoc)
-    *
-    * @see org.ajax4jsf.framework.ajax.AjaxViewBrige#saveState(javax.faces.context.FacesContext)
-    */
     @Override
     public Object saveState(FacesContext context) {
         Object[] state = new Object[2];
