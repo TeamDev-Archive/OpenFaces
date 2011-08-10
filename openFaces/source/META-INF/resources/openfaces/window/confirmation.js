@@ -82,14 +82,6 @@ O$.Confirmation = {
         // if not left-top set, move it to the center
         O$.Confirmation._layoutConfirmation(confirmation, oldScrollPos);
 
-        confirmation._okButton.onfocus = function () {
-          confirmation._currentFocus = 0;
-        };
-
-        confirmation._cancelButton.onfocus = function () {
-          confirmation._currentFocus = 1;
-        };
-
         // Fix for FF, when caption has a border
         if (confirmation._caption) {
           confirmation._caption.style.top = "0px";
