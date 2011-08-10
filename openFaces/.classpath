@@ -10,6 +10,7 @@
 	<classpathentry kind="lib" path="/Libs/jsp-api-2.1.jar"/>
 	<classpathentry kind="lib" path="/Libs/portals/portlet-api-lib.jar"/>
 	<classpathentry kind="lib" path="/Libs/portals/jboss/portletbridge-api-2.1.0.FINAL.jar"/>
+	<classpathentry kind="lib" path="/Libs/portals/jboss/portletbridge-impl-2.1.0.FINAL.jar"/>
 	<classpathentry kind="lib" path="/Libs/openfaces-dependencies/jcommon-1.0.15.jar"/>
 	<classpathentry kind="lib" path="/Libs/openfaces-dependencies/jdom-1.0.jar"/>
 	<classpathentry kind="lib" path="/Libs/openfaces-dependencies/jfreechart-1.0.12.jar"/>
