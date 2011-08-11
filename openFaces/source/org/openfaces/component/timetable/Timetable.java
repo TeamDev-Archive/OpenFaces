@@ -16,6 +16,9 @@ import org.openfaces.util.ValueBindings;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Timetable extends TimeScaleTable {
     public static final String COMPONENT_TYPE = "org.openfaces.Timetable";
@@ -170,5 +173,38 @@ public class Timetable extends TimeScaleTable {
     private TimetableViewSwitcher getDefaultViewSwitcher() {
         return Components.getOrCreateFacet(getFacesContext(), this, TimetableViewSwitcher.COMPONENT_TYPE,
                 "_defaultViewSwitcher", TimetableViewSwitcher.class);
+    }
+
+    @Override
+    protected AbstractTimetableEvent getLoadedEventByObjectId(String objectId) {
+        AbstractTimetableEvent event = super.getLoadedEventByObjectId(objectId);
+        if (event != null) return event;
+        TimetableView currentView = getViewByType(getViewType());
+        event = currentView.getLoadedEventByObjectId(objectId);
+        if (event != null) return event;
+        List<TimetableView> views = getViews();
+        for (TimetableView view : views) {
+            if (view == currentView) continue;
+            event = view.getLoadedEventByObjectId(objectId);
+            if (event != null)
+                return event;
+        }
+        return null;
+    }
+
+    protected List<ViewType> getViewTypes() {
+        return Arrays.asList(ViewType.MONTH, ViewType.WEEK, ViewType.DAY);
+    }
+
+    protected List<TimetableView> getViews() {
+        List<ViewType> viewTypes = getViewTypes();
+        List<TimetableView> views = new ArrayList(viewTypes.size());
+        for (ViewType viewType : viewTypes) {
+            TimetableView view = getViewByType(viewType);
+            if (view == null)
+                throw new IllegalStateException("Couldn't find view by type: " + viewType);
+            views.add(view);
+        }
+        return views;
     }
 }

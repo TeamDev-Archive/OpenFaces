@@ -339,9 +339,12 @@ O$.TimeTableView = {
               },
 
               _getEventPreview: function() {
-                if (!this._eventPreview) {
+                if (this._eventPreview === undefined) {
                   this._eventPreview = O$(this.id + ":_eventPreview");
+                  if (!this._eventPreview && this._timetable)
+                    this._eventPreview = O$(this._timetable.id + ":_eventPreview");
                 }
+
                 return this._eventPreview;
               },
 
@@ -431,12 +434,18 @@ O$.TimeTableView = {
                 var eventPreview;
 
                 O$.extend(event, {
+                          _timeTableView: timeTableView,
+
                           _attachAreas: function() {
                             event._areas = [];
                             eventAreaSettings.forEach(function(areaSettings) {
                               var areaId = areaSettings.id;
                               var areaClientId = timeTableView.id + "::" + event.id + ":" + areaId;
                               var area = O$(areaClientId);
+                              if (!area && timeTableView._timetable) {
+                                areaClientId = timeTableView._timetable.id + "::" + event.id + ":" + areaId;
+                                area = O$(areaClientId);
+                              }
                               if (!area)
                                 return;
                               O$.extend(area, {
@@ -652,9 +661,10 @@ O$.TimeTableView = {
                   var background = eventElement._backgroundElement;
                   background.style.backgroundColor = userSpecifiedStyles.backgroundColor
                           ? userSpecifiedStyles.backgroundColor : eventElement._backgroundColor;
-                  background.style.borderRadius = elementStyles.borderRadius;
-                  background.style.MozBorderRadius = elementStyles.MozBorderRadiusTopleft;
-                  background.style.WebkitBorderRadius = elementStyles.WebkitBorderTopLeftRadius;
+                  var commonBorderRadius = elementStyles.borderRadius || elementStyles.MozBorderRadiusTopleft || elementStyles.WebkitBorderTopLeftRadius;
+                  background.style.borderRadius = commonBorderRadius;
+                  background.style.MozBorderRadius = commonBorderRadius;
+                  background.style.WebkitBorderRadius = commonBorderRadius;
 
                   O$.setOpacityLevel(background, 1 - eventBackgroundTransparency);
                   eventElement.style.color = userSpecifiedStyles.color ? userSpecifiedStyles.color : eventElement._color;

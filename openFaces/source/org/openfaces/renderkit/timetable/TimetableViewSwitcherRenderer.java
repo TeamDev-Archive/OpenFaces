@@ -33,6 +33,7 @@ public class TimetableViewSwitcherRenderer extends TabSetRenderer {
         TimetableViewSwitcher switcher = (TimetableViewSwitcher) component;
         Timetable timetable = switcher.getTimetable();
         List<UIComponent> children = switcher.getChildren();
+        children.clear();
         children.add(createTabSetItem("Month"));
         children.add(createTabSetItem("Week"));
         children.add(createTabSetItem("Day"));

@@ -222,12 +222,8 @@ public class AjaxInitializer {
         return renderArray;
     }
 
-    protected Object getAjaxComponentParam(FacesContext context, OUICommand ajax) {
-        return ajax.getClientId(context);
+    protected Object getAjaxComponentParam(FacesContext context, OUICommand command) {
+        return command.getClientId(context);
     }
 
-    protected Object getActionSourceIdParam(FacesContext context, Ajax ajax) {
-        String invokerId = OUIClientActionHelper.getClientActionInvoker(context, ajax);
-        return invokerId;
-    }
 }

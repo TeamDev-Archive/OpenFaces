@@ -344,8 +344,12 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
             setEvent(null);
             return;
         }
-        AbstractTimetableEvent event = getLoadedEvents().get(objectId);
+        AbstractTimetableEvent event = getLoadedEventByObjectId(objectId);
         setEvent(event);
+    }
+
+    protected AbstractTimetableEvent getLoadedEventByObjectId(String objectId) {
+        return getLoadedEvents().get(objectId);
     }
 
     public String getObjectId() {
@@ -554,6 +558,23 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
         }
         return result;
     }
+
+    public UITimetableEvent getUITimetableEvent() {
+        List<UITimetableEvent> uiEvents = Components.findChildrenWithClass(this, UITimetableEvent.class);
+        if (uiEvents.size() > 1) {
+            FacesContext currentInstance = FacesContext.getCurrentInstance();
+            throw new FacesException("There should be only one <o:timetableEvent> tag inside of the same timetable " +
+                    "(or timetable view) component. Component iclientId: " + getClientId(currentInstance));
+        }
+        UITimetableEvent result = uiEvents.size() > 0 ? uiEvents.get(0) : null;
+        if (result == null) {
+            Timetable timetable = getTimetable();
+            if (timetable != null)
+                result = timetable.getUITimetableEvent();
+        }
+        return result;
+    }
+
 
     public UIComponent getHeader() {
         UIComponent result = getFacet("header");

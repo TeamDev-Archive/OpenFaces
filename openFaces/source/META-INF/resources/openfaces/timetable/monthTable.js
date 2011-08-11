@@ -15,7 +15,14 @@
 // ========== implementation
 
 O$.MonthTable = {
-  _init: function(componentId, day, locale, dateFormat, scrollOffset, preloadedEventParams, resources, eventAreaSettings, editable, onchange, editingOptions, stylingParams, uiEvent, calendarOptions, timetableId) {
+  _init: function(componentId,
+                  day, locale, dateFormat, scrollOffset,
+                  preloadedEventParams, resources, eventAreaSettings,
+                  editable, onchange, editingOptions,
+                  stylingParams,
+                  uiEvent,
+                  calendarOptions,
+                  timetableId) {
 
     var monthTable = O$.initComponent(componentId, null, {
               _viewType: "month"

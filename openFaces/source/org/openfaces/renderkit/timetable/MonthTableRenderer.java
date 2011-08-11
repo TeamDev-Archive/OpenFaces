@@ -24,7 +24,6 @@ import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.TableRenderer;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.util.AjaxUtil;
-import org.openfaces.util.Components;
 import org.openfaces.util.DataUtil;
 import org.openfaces.util.Log;
 import org.openfaces.util.Rendering;
@@ -33,7 +32,6 @@ import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.Styles;
 
 import javax.el.ValueExpression;
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -190,11 +188,7 @@ public class MonthTableRenderer extends TimetableViewRenderer {
 
         JSONArray areaSettings = encodeEventAreas(context, timetableView, events);
 
-        List<UITimetableEvent> uiEvents = Components.findChildrenWithClass(timetableView, UITimetableEvent.class);
-        if (uiEvents.size() > 1)
-            throw new FacesException("There should be only one <o:timetableEvent> tag inside of " + getTagName() + " tag. " +
-                    getComponentName() + " clientId = " + timetableView.getClientId(context));
-        UITimetableEvent uiEvent = uiEvents.size() > 0 ? uiEvents.get(0) : null;
+        UITimetableEvent uiEvent = timetableView.getUITimetableEvent();
 
         Timetable timetable = timetableView.getTimetable();
 
@@ -232,7 +226,6 @@ public class MonthTableRenderer extends TimetableViewRenderer {
         }
 
     }
-
 
     private JSONObject getCalendarOptionsObj(MonthTable monthTable) {
         JSONObject calendarOptionsObj = new JSONObject();
