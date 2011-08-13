@@ -20,6 +20,7 @@ import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.Components;
 import org.openfaces.util.Environment;
 import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
 import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
@@ -85,8 +86,18 @@ public class TreeColumnRenderer extends RendererBase {
             writer.startElement("td", component);
         }
 
+        boolean showTreeStructure = false;
+        String treeStructureStyle = showTreeStructure
+                ? "background: url('" + Resources.internalURL(context, "table/treeStructureSolid.png") +
+                                  "') no-repeat left center;"
+                : null;
+
         if (Environment.isOpera() && indentStyle != null)
-            writer.writeAttribute("style", indentStyle, null);
+            writer.writeAttribute("style", indentStyle + (treeStructureStyle != null ? treeStructureStyle : ""), null);
+        else if (treeStructureStyle != null) {
+            writer.writeAttribute("style", treeStructureStyle, null);
+        }
+
 
         boolean nodeHasChildren = treeTable.getNodeHasChildren();
         if (nodeHasChildren) {
