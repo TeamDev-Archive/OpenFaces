@@ -30,10 +30,12 @@ public class StaticTreeStructure extends TreeStructure {
     public StaticTreeStructure() {
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
-    
+
+    @Override
     public void goToTopLevel() {
         setCurrentLevelByParent(this);
         setNodeIndex(0);
@@ -45,12 +47,14 @@ public class StaticTreeStructure extends TreeStructure {
         currentLevelNodes = currentParent.getChildren();
     }
 
+    @Override
     public void goToChildLevel() {
         setCurrentLevelByParent(currentNode);
         setNodeIndex(0);
         level++;
     }
 
+    @Override
     public void goToParentLevel() {
         if (level == 0)
             throw new IllegalArgumentException("Can't go to parent level from top-level nodes");
@@ -60,10 +64,12 @@ public class StaticTreeStructure extends TreeStructure {
         level--;
     }
 
+    @Override
     public int getNodeCount() {
         return currentParent.getChildCount();
     }
 
+    @Override
     public void setNodeIndex(int nodeIndex) {
         if (currentNodeIndex < 0)
             throw new IllegalArgumentException("nodeIndex shouldn't be less than zero: " + nodeIndex);
@@ -83,14 +89,17 @@ public class StaticTreeStructure extends TreeStructure {
         }
     }
 
+    @Override
     public int getNodeIndex() {
         return currentNodeIndex;
     }
 
+    @Override
     public boolean isNodeAvailable() {
         return currentNode != null;
     }
 
+    @Override
     public Object getNodeData() {
         if (!isNodeAvailable())
             throw new IllegalArgumentException("No node is available at the current index: " + currentNodeIndex);
@@ -98,6 +107,7 @@ public class StaticTreeStructure extends TreeStructure {
         return result;
     }
 
+    @Override
     public Object getNodeKey() {
         if (!isNodeAvailable())
             throw new IllegalArgumentException("No node is available at the current index: " + currentNodeIndex);
@@ -105,12 +115,19 @@ public class StaticTreeStructure extends TreeStructure {
         return result;
     }
 
+    @Override
     public boolean getNodeHasChildren() {
         if (!isNodeAvailable())
             throw new IllegalArgumentException("No node is available at the current index: " + currentNodeIndex);
         return currentNode.getChildren().size() > 0;
     }
 
+    @Override
+    public boolean isEnteringInfiniteRecursion() {
+        return false;
+    }
+
+    @Override
     public int getLevel() {
         return level;
     }

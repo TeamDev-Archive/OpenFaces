@@ -161,6 +161,7 @@ public class SingleNodeSelection extends TreeTableSelection {
 //        }
     }
 
+    @Override
     protected void writeSelectionToBinding() {
 //    setBoundPropertyValue(this, NODE_KEY_PROPERTY, getNodeKey());
         ValueBindings.set(this, NODE_DATA_PROPERTY, getNodeData());
@@ -168,15 +169,18 @@ public class SingleNodeSelection extends TreeTableSelection {
 //    setBoundPropertyValue(this, NODE_KEY_PATH_PROPERTY, getNodeKeyPath());
     }
 
+    @Override
     public boolean isMultipleSelectionAllowed() {
         return false;
     }
 
+    @Override
     protected List<Integer> encodeSelectionIntoIndexes() {
         int rowIndex = getRowIndexByNodeKeyPath(getNodeKeyPath());
         return Collections.singletonList(rowIndex);
     }
 
+    @Override
     protected void decodeSelectionFromIndexes(List<Integer> indexes) {
         Integer index = indexes.get(0);
         setNodeKeyPath(getNodeKeyPathByRowIndex(index));
@@ -186,6 +190,7 @@ public class SingleNodeSelection extends TreeTableSelection {
      * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
      * by any application code.
      */
+    @Override
     public List<TreePath> getSelectedNodeKeyPaths() {
         TreePath path = getNodeKeyPath();
         List<TreePath> emptyPath = Collections.emptyList();
