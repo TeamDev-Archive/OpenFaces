@@ -520,7 +520,10 @@ public class TreeTable extends AbstractTable {
             thisNodeParams.setRowAccepted(rowAccepted);
             thisNodeParams.setFilteringFlags(flagsArray);
 
-            boolean lookForFilteredSubrows = activeFilters.size() > 0 && !rowAccepted; // JSFC-1910 -- when some filters are active we shouldn't extract invisible nodes if parent node satisfies filtering criteria
+            boolean lookForFilteredSubrows =
+                    activeFilters.size() > 0 &&
+                    !rowAccepted && /* when some filters are active we shouldn't extract invisible nodes if parent node satisfies filtering criteria */
+                    !treeStructure.isEnteringInfiniteRecursion() /* avoid searching the endlessly-recurring hierarchies */;
 
             if (isRowValuesForFilteringNeeded() || lookForFilteredSubrows || preloadChildren) {
                 treeStructure.goToChildLevel();

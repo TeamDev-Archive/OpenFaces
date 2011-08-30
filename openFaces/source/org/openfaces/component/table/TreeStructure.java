@@ -57,4 +57,16 @@ public abstract class TreeStructure extends UIComponentBase {
     public abstract Object getNodeData();
 
     public abstract boolean getNodeHasChildren();
+
+    /**
+     * This method is expected to be invoked prior to invoking goToChildLevel in cases when the whole tree should be
+     * traversed. Some tree structures can have logical loops and so straightforward traversal over such structures can
+     * result in endless loops. This method will return true if descending into the hierarchy of the current node will
+     * result in entering a hierarchy that is repeating recursively over and over in the tree structure, so that the
+     * client code can skip such repeating nodes.
+     *
+     * @return true if the sub-hierarchy for this node is recursively present in the tree structure and has already been
+     * entered upper in the hierarchy, which ensures repeated (and endless) traversal over the same nodes.
+     */
+    public abstract boolean isEnteringInfiniteRecursion();
 }

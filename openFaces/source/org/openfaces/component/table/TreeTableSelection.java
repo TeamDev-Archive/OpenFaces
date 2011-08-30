@@ -117,7 +117,7 @@ public abstract class TreeTableSelection extends AbstractTableSelection {
                 outputPaths[1] = currentKeyPath;
                 return;
             }
-            if (treeStructure.getNodeHasChildren()) {
+            if (treeStructure.getNodeHasChildren() && !treeStructure.isEnteringInfiniteRecursion()) {
                 treeStructure.goToChildLevel();
                 findKeyPathByData(treeStructure, nodeData, currentNodePath, currentKeyPath, outputPaths);
                 if (outputPaths[0] != null)
@@ -177,7 +177,7 @@ public abstract class TreeTableSelection extends AbstractTableSelection {
                 outputPaths[1] = nodeKeyPath;
                 return;
             }
-            if (treeStructure.getNodeHasChildren()) {
+            if (treeStructure.getNodeHasChildren() && !treeStructure.isEnteringInfiniteRecursion()) {
                 treeStructure.goToChildLevel();
                 findNodePathByKey(treeStructure, nodeKey, nodePath, nodeKeyPath, outputPaths);
                 if (outputPaths[0] != null)

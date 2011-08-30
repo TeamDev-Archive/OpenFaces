@@ -42,7 +42,7 @@ public class DynamicTreeStructure extends TreeStructure {
     private boolean currentNodeHasChildren;
     private Object currentNodeKey;
 
-
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
@@ -131,10 +131,12 @@ public class DynamicTreeStructure extends TreeStructure {
         return result;
     }
 
+    @Override
     public int getLevel() {
         return level;
     }
 
+    @Override
     public void goToTopLevel() {
         level = 0;
         currentNodeParentPath.clear();
@@ -148,6 +150,12 @@ public class DynamicTreeStructure extends TreeStructure {
         setNodeIndex(0);
     }
 
+    @Override
+    public boolean isEnteringInfiniteRecursion() {
+        return currentNodeParentKeysPath.contains(currentNodeKey);
+    }
+
+    @Override
     public void goToChildLevel() {
         if (!isNodeAvailable())
             throw new IllegalArgumentException("No node is available at the current index: " + currentNodeIndex);
@@ -177,12 +185,14 @@ public class DynamicTreeStructure extends TreeStructure {
         level--;
     }
 
+    @Override
     public int getNodeCount() {
         if (currentLevelNodeDatas == null)
             return 0;
         return currentLevelNodeDatas.size();
     }
 
+    @Override
     public void setNodeIndex(int nodeIndex) {
         if (nodeIndex < 0)
             throw new IllegalArgumentException("nodeIndex shouldn't be less than zero: " + nodeIndex);
@@ -202,26 +212,31 @@ public class DynamicTreeStructure extends TreeStructure {
         }
     }
 
+    @Override
     public int getNodeIndex() {
         return currentNodeIndex;
     }
 
+    @Override
     public boolean isNodeAvailable() {
         return currentNodeData != null;
     }
 
+    @Override
     public Object getNodeData() {
         if (!isNodeAvailable())
             throw new IllegalArgumentException("No node is available at the current index: " + currentNodeIndex);
         return currentNodeData;
     }
 
+    @Override
     public Object getNodeKey() {
         if (!isNodeAvailable())
             throw new IllegalArgumentException("No node is available at the current index: " + currentNodeIndex);
         return currentNodeKey != null ? currentNodeKey : currentNodeData;
     }
 
+    @Override
     public boolean getNodeHasChildren() {
         if (!isNodeAvailable())
             throw new IllegalArgumentException("No node is available at the current index: " + currentNodeIndex);
