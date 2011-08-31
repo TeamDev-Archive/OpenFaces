@@ -11,6 +11,7 @@
  */
 package org.openfaces.component.table;
 
+import javax.faces.component.UIComponent;
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +24,7 @@ public interface DynamicCol {
 
     void undeclareContextVariables();
 
-    Map getFacetsForProcessing();
+    Map<String, UIComponent> getFacetsForProcessing();
 
-    List getChildrenForProcessing();
+    List<UIComponent> getChildrenForProcessing();
 }

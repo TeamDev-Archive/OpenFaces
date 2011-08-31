@@ -217,8 +217,6 @@ public class TableStructure extends TableElement {
     }
 
     private void writeStyleAndClass(FacesContext context, AbstractTable table, ResponseWriter writer) throws IOException {
-        List<BaseColumn> columns = table.getRenderedColumns();
-
         String style = table.getStyle();
         String textStyle = getTextStyle(table);
         style = Styles.mergeStyles(style, textStyle);
@@ -272,9 +270,16 @@ public class TableStructure extends TableElement {
             ResponseWriter writer,
             AbstractTable table,
             UIComponent cellComponentsContainer) throws IOException {
-        if (cellComponentsContainer instanceof Column || cellComponentsContainer instanceof Cell) {
-            List<UIComponent> children = cellComponentsContainer.getChildren();
-            boolean childrenEmpty = true;
+        if (!(cellComponentsContainer instanceof Column) && !(cellComponentsContainer instanceof Cell))
+            return;
+        boolean childrenEmpty = true;
+        DynamicCol dynamicCol = cellComponentsContainer instanceof DynamicCol ? (DynamicCol) cellComponentsContainer : null;
+        if (dynamicCol != null) dynamicCol.declareContextVariables();
+        try {
+            List<UIComponent> children = (cellComponentsContainer instanceof DynamicColumn)
+                    ? ((DynamicColumn) cellComponentsContainer).getChildrenForProcessing()
+                    : cellComponentsContainer.getChildren();
+
             for (int childIndex = 0, childCount = children.size(); childIndex < childCount; childIndex++) {
                 UIComponent child = children.get(childIndex);
                 if (!isComponentEmpty(child)) {
@@ -282,10 +287,12 @@ public class TableStructure extends TableElement {
                     break;
                 }
             }
-            TableStructure tableStructure = getCurrentInstance(table);
-            if (childrenEmpty && tableStructure.isEmptyCellsTreatmentRequired())
-                Rendering.writeNonBreakableSpace(writer);
+        } finally {
+            if (dynamicCol != null) dynamicCol.undeclareContextVariables();
         }
+        TableStructure tableStructure = getCurrentInstance(table);
+        if (childrenEmpty && tableStructure.isEmptyCellsTreatmentRequired())
+            Rendering.writeNonBreakableSpace(writer);
     }
 
 

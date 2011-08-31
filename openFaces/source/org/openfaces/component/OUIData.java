@@ -717,7 +717,7 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
                 }
 
                 // <MOD-5>
-                Map colFacets;
+                Map<String, UIComponent> colFacets;
                 if (child instanceof DynamicCol) {
                     DynamicCol dynamicCol = (DynamicCol) child;
                     dynamicCol.declareContextVariables();
@@ -726,8 +726,7 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
                     colFacets = child.getFacets();
                 // </MOD-5>
 
-                for (Object o : colFacets.values()) {// <MOD-5/> changed "child.getFacets().values()" to "colFacets.values()"
-                    UIComponent facet = (UIComponent) o;
+                for (UIComponent facet : colFacets.values()) {// <MOD-5/> changed "child.getFacets().values()" to "colFacets.values()"
                     process(context, facet, processAction);
                 }
 
