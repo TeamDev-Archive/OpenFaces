@@ -26,7 +26,7 @@ public class ChartNumberAxis extends ChartAxis {
     private Double tickInterval;
 
     public Double getLowerBound() {
-        return ValueBindings.get(this, "lowerBound", lowerBound, 0.0);
+        return ValueBindings.get(this, "lowerBound", lowerBound, null, Double.class);
     }
 
     public void setLowerBound(Double lowerBound) {
@@ -42,7 +42,7 @@ public class ChartNumberAxis extends ChartAxis {
     }
 
     public Double getUpperBound() {
-        return ValueBindings.get(this, "upperBound", upperBound, 0.0);
+        return ValueBindings.get(this, "upperBound", upperBound, null, Double.class);
     }
 
     public void setUpperBound(Double upperBound) {
