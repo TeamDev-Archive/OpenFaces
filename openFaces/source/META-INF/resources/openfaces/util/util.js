@@ -722,8 +722,8 @@ if (!window.O$) {
 
   if (!Array.prototype.some) {
     Array.prototype.some = function(fun /*, thisp*/) {
-      var i = 0,
-              len = this.length >>> 0;
+      var i = 0;
+      var len = this.length >>> 0;
 
       if (typeof fun != "function")
         throw new TypeError();

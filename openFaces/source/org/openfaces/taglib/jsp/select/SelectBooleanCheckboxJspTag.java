@@ -11,6 +11,7 @@
  */
 package org.openfaces.taglib.jsp.select;
 
+import org.openfaces.taglib.internal.AbstractComponentTag;
 import org.openfaces.taglib.internal.select.SelectBooleanCheckboxTag;
 import org.openfaces.taglib.jsp.UIInputJspTag;
 
@@ -20,6 +21,10 @@ import javax.el.ValueExpression;
  * @author Roman Porotnikov
  */
 public class SelectBooleanCheckboxJspTag extends UIInputJspTag {
+
+    protected SelectBooleanCheckboxJspTag(AbstractComponentTag delegate) {
+        super(delegate);
+    }
 
     public SelectBooleanCheckboxJspTag() {
         super(new SelectBooleanCheckboxTag());

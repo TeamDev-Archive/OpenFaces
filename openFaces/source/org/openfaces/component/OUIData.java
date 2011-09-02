@@ -848,8 +848,7 @@ public class OUIData extends UIData implements NamingContainer, UniqueIdVendor, 
                     colFacets = child.getFacets();
                 // </MOD-5>
 
-                for (UIComponent facet : colFacets.values())// <MOD-5/> changed "child.getFacets().values()" to "colFacets.values()"
-                {
+                for (UIComponent facet : colFacets.values()) {// <MOD-5/> changed "child.getFacets().values()" to "colFacets.values()"
                     process(context, facet, processAction);
                 }
 

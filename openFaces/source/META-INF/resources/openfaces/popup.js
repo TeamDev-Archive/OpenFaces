@@ -180,10 +180,11 @@ O$.addEventHandler(document, "keydown", function(e) {
 
   O$._popupsOnPage.forEach(function(popupId){
     var popup = O$(popupId) || O$(popupId + O$.Popup.PULLED_OUT_ID_SUFFIX);
+    if (!popup)
+      return; // popup can be removed from page with A4J
     if (popup.blur)
       popup.blur();
-    if (popup)
-      popup.hide();
+    popup.hide();
   });
 
 });

@@ -9,22 +9,17 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.component.table;
+package org.openfaces.taglib.facelets.table;
 
-import javax.faces.component.UIComponent;
-import java.util.List;
-import java.util.Map;
+import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
+import org.openfaces.taglib.internal.table.SelectRowCheckboxTag;
 
-/**
- * This interface is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly by any
- * application code.
- */
-public interface DynamicCol {
-    void declareContextVariables();
+import javax.faces.view.facelets.ComponentConfig;
 
-    void undeclareContextVariables();
+public class SelectRowCheckboxTagHandler extends AbstractFaceletsComponentHandler {
 
-    Map<String, UIComponent> getFacetsForProcessing();
+    public SelectRowCheckboxTagHandler(ComponentConfig componentConfig) {
+        super(componentConfig, new SelectRowCheckboxTag());
+    }
 
-    List<UIComponent> getChildrenForProcessing();
 }

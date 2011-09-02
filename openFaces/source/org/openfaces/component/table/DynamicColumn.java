@@ -138,11 +138,11 @@ public class DynamicColumn extends Column implements DynamicCol {
         undeclareContextVariables();
     }
 
-    public List getChildrenForProcessing() {
+    public List<UIComponent> getChildrenForProcessing() {
         return columns.getChildren();
     }
 
-    public Map getFacetsForProcessing() {
+    public Map<String, UIComponent> getFacetsForProcessing() {
         return columns.getFacets();
     }
 

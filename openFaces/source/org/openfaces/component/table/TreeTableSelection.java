@@ -73,17 +73,17 @@ public abstract class TreeTableSelection extends AbstractTableSelection {
 
     protected TreePath getNodePathByData(Object nodeData) {
         TreePath[] paths = new TreePath[2];
-        getKeyPathByData(nodeData, paths);
+        getNodeAndKeyPathsByData(nodeData, paths);
         return paths[0];
     }
 
     protected TreePath getKeyPathByData(Object nodeData) {
         TreePath[] paths = new TreePath[2];
-        getKeyPathByData(nodeData, paths);
+        getNodeAndKeyPathsByData(nodeData, paths);
         return paths[1];
     }
 
-    protected void getKeyPathByData(Object nodeData, TreePath[] outputPaths) {
+    protected void getNodeAndKeyPathsByData(Object nodeData, TreePath[] outputPaths) {
         TreeTable treeTable = getTreeTable();
         int rowCount = treeTable.getRowCount();
         for (int i = 0; i < rowCount; i++) {
