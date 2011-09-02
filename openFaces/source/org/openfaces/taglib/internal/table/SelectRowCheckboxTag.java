@@ -11,26 +11,25 @@
  */
 package org.openfaces.taglib.internal.table;
 
-import org.openfaces.component.table.SelectAllCheckbox;
+import org.openfaces.component.table.SelectRowCheckbox;
 import org.openfaces.taglib.internal.select.SelectBooleanCheckboxTag;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-/**
- * @author Pavel Kaplin
- */
-public class SelectAllCheckboxTag extends SelectBooleanCheckboxTag {
+public class SelectRowCheckboxTag extends SelectBooleanCheckboxTag {
+
     public String getComponentType() {
-        return SelectAllCheckbox.COMPONENT_TYPE;
+        return SelectRowCheckbox.COMPONENT_TYPE;
     }
 
     public String getRendererType() {
-        return "org.openfaces.SelectAllCheckboxRenderer";
+        return "org.openfaces.SelectRowCheckboxRenderer";
     }
 
     @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
+
     }
 }

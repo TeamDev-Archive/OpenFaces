@@ -810,6 +810,11 @@
     <component-type>org.openfaces.Action</component-type>
     <component-class>org.openfaces.component.util.Action</component-class>
   </component>
+
+  <component>
+    <component-type>org.openfaces.SelectRowCheckbox</component-type>
+    <component-class>org.openfaces.component.table.SelectRowCheckbox</component-class>
+  </component>
   <render-kit>
     <renderer>
       <component-family>org.openfaces.DataTable</component-family>
@@ -1348,6 +1353,11 @@
       <component-family>org.openfaces.Action</component-family>
       <renderer-type>org.openfaces.ActionRenderer</renderer-type>
       <renderer-class>org.openfaces.renderkit.util.ActionRenderer</renderer-class>
+    </renderer>
+    <renderer>
+      <component-family>org.openfaces.SelectRowCheckbox</component-family>
+      <renderer-type>org.openfaces.SelectRowCheckboxRenderer</renderer-type>
+      <renderer-class>org.openfaces.renderkit.table.SelectRowCheckboxRenderer</renderer-class>
     </renderer>
 
   </render-kit>

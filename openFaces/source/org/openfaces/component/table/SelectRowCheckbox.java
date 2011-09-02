@@ -12,39 +12,39 @@
 package org.openfaces.component.table;
 
 import org.openfaces.component.select.SelectBooleanCheckbox;
-import org.openfaces.util.ValueBindings;
 
+import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 import java.util.Arrays;
 
-/**
- * @author Dmitry Pikhulya
- */
-public class SelectAllCheckbox extends SelectBooleanCheckbox {
-    public static final String COMPONENT_TYPE = "org.openfaces.SelectAllCheckbox";
-    public static final String COMPONENT_FAMILY = "org.openfaces.SelectAllCheckbox";
+public class SelectRowCheckbox extends SelectBooleanCheckbox {
+    public static final String COMPONENT_TYPE = "org.openfaces.SelectRowCheckbox";
+    public static final String COMPONENT_FAMILY = "org.openfaces.SelectRowCheckbox";
 
-    public SelectAllCheckbox() {
+    public SelectRowCheckbox() {
         setTriStateAllowed(true);
         setStateList(Arrays.asList(SelectBooleanCheckbox.SELECTED_STATE, SelectBooleanCheckbox.UNSELECTED_STATE));
-        setRendererType("org.openfaces.SelectAllCheckboxRenderer");
+        setRendererType("org.openfaces.SelectRowCheckboxRenderer");
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
 
     @Override
     public Object saveState(FacesContext context) {
-        Object superState = super.saveState(context);
         return new Object[]{
-                superState};
+            super.saveState(context),
+
+        };
     }
 
     @Override
     public void restoreState(FacesContext context, Object stateObj) {
         Object[] state = (Object[]) stateObj;
-        super.restoreState(context, state[0]);
-    }
+        int i = 0;
+        super.restoreState(context, state[i++]);
 
+    }
 }

@@ -1249,5 +1249,13 @@
       <handler-class>org.openfaces.taglib.facelets.util.ActionTagHandler</handler-class>
     </component>
   </tag>
+  <tag>
+    <tag-name>selectRowCheckbox</tag-name>
+    <component>
+      <component-type>org.openfaces.SelectRowCheckbox</component-type>
+      <renderer-type>org.openfaces.SelectRowCheckboxRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.table.SelectRowCheckboxTagHandler</handler-class>
+    </component>
+  </tag>
 
 </facelet-taglib>

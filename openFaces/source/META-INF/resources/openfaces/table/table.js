@@ -968,6 +968,15 @@ O$.Table = {
         O$.Table._initSelectionCell(cell);
       colIndex += cellSpan;
     }
+    var inputs = row.getElementsByTagName("input");
+    for (var i = 0, count = inputs.length; i < count; i++) {
+      var input = inputs[i];
+      if (input.className && input.className.indexOf("o_selectRowCheckbox") != -1) {
+        if (!row._selectRowCheckboxes) row._selectRowCheckboxes = [];
+        row._selectRowCheckboxes.push(input);
+        O$.Table._initSelectRowCheckbox(input, row);
+      }
+    }
   },
 
   _addSelectionChangeHandler: function(table, handler) {
@@ -980,6 +989,32 @@ O$.Table = {
     handlers.push(handler);
   },
 
+  _initSelectRowCheckbox: function(checkBox, row) {
+    var table = row._table;
+    checkBox.setSelected(false);
+    checkBox.setDisabled(!table._selectionEnabled);
+    checkBox.onclick = function(evt) {
+      if (evt)
+        event = evt;
+      if (!table._selectionEnabled)
+        return;
+      if (table._selectableItems != "rows")
+        return;
+      if (!table._multipleSelectionAllowed) {
+        if (this.isSelected())
+          table._setSelectedItems([row._index]);
+        else
+          table._setSelectedItems([]);
+        O$.stopEvent(event);
+      } else {
+        table._toggleItemSelected(row._index);
+        O$.stopEvent(event);
+      }
+
+    };
+    checkBox.ondblclick = O$.repeatClickOnDblclick;
+  },
+
   _initSelectionCell: function(cell) {
     var checkBoxAsArray = O$.getChildNodesWithNames(cell, ["input"]);
     if (!checkBoxAsArray || checkBoxAsArray.length == 0)
@@ -987,63 +1022,69 @@ O$.Table = {
     var checkBox = checkBoxAsArray[0];
     if (!checkBox)
       return;
-    checkBox._cell = cell;
     var row = cell._row;
     var table = row._table;
-    checkBox.checked = false;
-    // fix for Mozilla's issue: reloading a page retains previous values for inputs regardless of their values received from server
-    checkBox.disabled = !table._selectionEnabled;
-    cell._selectionCheckBox = checkBox;
-    cell.onclick = function(evt) {
-      cell._handlingClick = true;
-      try {
-        var cellRow = this._row;
-        var cellTable = cellRow._table;
-        if (!cellTable._selectionEnabled)
-          return;
-        if (cellTable._multipleSelectionAllowed) {
-          this._selectionCheckBox.checked = !this._selectionCheckBox.checked;
-          this._selectionCheckBox.onclick(evt);
-        } else {
-          if (!this._selectionCheckBox.checked) {
-            this._selectionCheckBox.checked = true;
+    O$.extend(cell, {
+      _selectionCheckBox: checkBox,
+      onclick: function(evt) {
+        cell._handlingClick = true;
+        try {
+          var cellRow = this._row;
+          var cellTable = cellRow._table;
+          if (!cellTable._selectionEnabled)
+            return;
+          if (cellTable._multipleSelectionAllowed) {
+            this._selectionCheckBox.checked = !this._selectionCheckBox.checked;
+            this._selectionCheckBox.onclick(evt);
+          } else {
+            if (!this._selectionCheckBox.checked) {
+              this._selectionCheckBox.checked = true;
+            }
+            this._selectionCheckBox.onclick(evt);
           }
-          this._selectionCheckBox.onclick(evt);
+        } finally {
+          cell._handlingClick = false;
         }
-      } finally {
-        cell._handlingClick = false;
-      }
-    };
-    cell.ondblclick = O$.repeatClickOnDblclick;
+      },
+      ondblclick: O$.repeatClickOnDblclick
+    });
 
-    checkBox.onclick = function(evt) {
-      if (evt)
-        event = evt;
-      var checkBoxCell = this._cell;
-      if (!checkBoxCell._handlingClick)
-        return;
-      var checkBoxRow = checkBoxCell._row;
-      var checkBoxTable = checkBoxRow._table;
-      if (!checkBoxTable._selectionEnabled)
-        return;
-      if (checkBoxTable._selectableItems != "rows")
-        return;
-      if (!checkBoxTable._multipleSelectionAllowed) {
-        if (this.checked)
-          checkBoxTable._setSelectedItems([checkBoxRow._index]);
-        else
-          checkBoxTable._setSelectedItems([]);
-        event.cancelBubble = true;
-      } else {
-        checkBoxTable._toggleItemSelected(row._index);
+    O$.extend(checkBox, {
+      checked: false,
+      // fix for Mozilla's issue: reloading a page retains previous values for inputs regardless of their values received from server
+      disabled: !table._selectionEnabled,
+
+      _cell: cell,
+
+      onclick: function(evt) {
+        if (evt)
+          event = evt;
+        var checkBoxCell = this._cell;
+        if (!checkBoxCell._handlingClick)
+          return;
+        var checkBoxRow = checkBoxCell._row;
+        var checkBoxTable = checkBoxRow._table;
+        if (!checkBoxTable._selectionEnabled)
+          return;
+        if (checkBoxTable._selectableItems != "rows")
+          return;
+        if (!checkBoxTable._multipleSelectionAllowed) {
+          if (this.checked)
+            checkBoxTable._setSelectedItems([checkBoxRow._index]);
+          else
+            checkBoxTable._setSelectedItems([]);
+          event.cancelBubble = true;
+        } else {
+          checkBoxTable._toggleItemSelected(row._index);
+          event.cancelBubble = true;
+        }
+      },
+      ondblclick: function(evt) {
+        if (O$.isExplorer())
+          this.click(evt);
         event.cancelBubble = true;
       }
-    };
-    checkBox.ondblclick = function(evt) {
-      if (O$.isExplorer())
-        this.click(evt);
-      event.cancelBubble = true;
-    };
+    });
 
     var cellRow = cell._row;
     if (!cellRow._selectionCheckBoxes)
@@ -1095,12 +1136,15 @@ O$.Table = {
   },
 
   _setSelectionCheckboxesSelected: function(row, selected) {
-    if (row._selectionCheckBoxes) {
-      for (var i = 0, count = row._selectionCheckBoxes.length; i < count; i++) {
-        var checkbox = row._selectionCheckBoxes[i];
+    if (row._selectionCheckBoxes)
+      row._selectionCheckBoxes.forEach(function(checkbox) {
         checkbox.checked = selected;
-      }
-    }
+      });
+
+    if (row._selectRowCheckboxes)
+      row._selectRowCheckboxes.forEach(function(checkbox) {
+        checkbox.setSelected(selected);
+      });
   },
 
   _initCheckboxColHeader: function(headerId, tableId, colId) {
