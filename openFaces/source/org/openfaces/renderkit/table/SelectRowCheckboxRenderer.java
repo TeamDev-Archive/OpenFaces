@@ -59,7 +59,7 @@ public class SelectRowCheckboxRenderer extends SelectBooleanCheckboxRenderer {
                 boolean multipleRowSelection = selection.isMultipleSelectionAllowed();
                 if (!multipleRowSelection)
                     throw new IllegalStateException("<o:selectRowCheckbox> can only be inserted into a DataTable or " +
-                            "TreeTable with multiple selection. clientId = " + selectRowCheckbox.getClientId(context));
+                            "TreeTable with multiple selection, but single selection is used here. clientId = " + selectRowCheckbox.getClientId(context));
 
                 selectRowCheckbox.setTriStateAllowed(table instanceof TreeTable);
                 return;
