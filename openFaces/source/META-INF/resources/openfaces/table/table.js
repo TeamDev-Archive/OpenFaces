@@ -968,7 +968,20 @@ O$.Table = {
         O$.Table._initSelectionCell(cell);
       colIndex += cellSpan;
     }
-    var inputs = row.getElementsByTagName("input");
+    var inputs;
+    if (row.getElementsByTagName)
+      inputs = row.getElementsByTagName("input");
+    else {
+      inputs = [];
+      [row._leftRowNode, row._rowNode, row._rightRowNode].forEach(function(rowNode) {
+        if (!rowNode) return;
+        var elements = rowNode.getElementsByTagName("input");
+        for (var i = 0, count = elements.length; i < count; i++) {
+          inputs.push(elements[i]);
+        }
+      });
+    }
+
     for (var i = 0, count = inputs.length; i < count; i++) {
       var input = inputs[i];
       if (input.className && input.className.indexOf("o_selectRowCheckbox") != -1) {
