@@ -1206,7 +1206,7 @@
 
   <tag>
     <description>The Column component is used to specify a separate column. Child components
-      of the &lt;o:column&gt; tag are used to render each cell of the current row.
+      of the &amp;lt;o:column&gt; tag are used to render each cell of the current row.
       Can be specified only as a child tag for the {@link dataTable}, {@link treeTable} or
       {@link dropDownField} components. Please note that the if you use the Column component
       in the {@link dropDownField}, you cannot use attributes related to filtering, sorting, selection.
@@ -42281,8 +42281,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
   </tag>
   <tag>
-    <description>This component is an alternative to using &lt;o:selectionColumn&gt;. This component behaves in the same
-      way as check-boxes in &lt;o:selectionColumn&gt; -- it shows the selection state, and allows to switch the row&apos;s
+    <description>This component is an alternative to using the &amp;lt;o:selectionColumn&gt; tag. It behaves in the same
+      way as check-boxes in &amp;lt;o:selectionColumn&gt; - it shows the selection state, and allows to switch the row&apos;s
       selection state by clicking on the check-box. Unlike the selection column though, this check-box can be placed
       anywhere on a row, which can be used to fulfill certain design requirements, which cannot be resolved with
       selection column.
