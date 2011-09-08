@@ -41,6 +41,11 @@ public class SeveralLevelsExpanded implements ExpansionState, Serializable {
         }
     }
 
+    public void expandNodePath(TreePath keyPath) {
+        throw new UnsupportedOperationException("You cannot expand nodes on SeveralLevelsExpanded instance directly. " +
+                "Obtain a mutable instance with getMutableExpansionState() first.");
+    }
+
     public ExpansionState getMutableExpansionState() {
         return new DynamicNodeExpansionState(this);
     }
