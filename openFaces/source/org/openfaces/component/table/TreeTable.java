@@ -887,6 +887,17 @@ public class TreeTable extends AbstractTable {
         expansionState.setNodeExpanded(keyPath, expanded);
     }
 
+    /**
+     * Expands a node at the specified path, and all of its parent nodes.
+     * @param nodeKeyPath a tree path consisting of node key objects. Note that if the <o:dynamicTreeStructure> tag
+     * doesn't have a nodeKey attribute then  node key objects are considered to be the same as the appropriate node
+     * data objects.
+     */
+    public void expandNodePath(TreePath nodeKeyPath) {
+        expansionState = expansionState.getMutableExpansionState();
+        expansionState.expandNodePath(nodeKeyPath);
+    }
+
     public List getRowListForFiltering(Filter filter) {
         List<boolean[]> allRowFilteringFlags = new ArrayList<boolean[]>();
         for (NodeInfoForRow info : nodeInfoForRows_unfiltered) {

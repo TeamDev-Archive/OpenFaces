@@ -48,6 +48,19 @@ public class DynamicNodeExpansionState implements ExpansionState, Serializable {
             nonDefaultExpansionKeyPaths.remove(keyPath);
     }
 
+    /**
+     * Expands a node at the specified path, and all of its parent nodes.
+     * @param keyPath a tree path consisting of node key objects. Note that if the <o:dynamicTreeStructure> tag doesn't
+     * have a nodeKey attribute then  node key objects are considered to be the same as the appropriate node data
+     * objects.
+     */
+    public void expandNodePath(TreePath keyPath) {
+        do {
+            setNodeExpanded(keyPath, true);
+            keyPath = keyPath.getParentPath();
+        } while (keyPath != null);
+    }
+
     public ExpansionState getMutableExpansionState() {
         return this;
     }

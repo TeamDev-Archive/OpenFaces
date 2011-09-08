@@ -10071,7 +10071,7 @@ means that only root nodes and their immediate children are preloaded -->
       <!-- @el only -->
     </attribute>
     <attribute>
-      <description>The key node object that must uniquely identify the appropriate node.</description>
+      <description>The node key object that must uniquely identify the appropriate node.</description>
       <name>nodeKey</name>
       <deferred-value>
         <type>java.lang.Object</type>

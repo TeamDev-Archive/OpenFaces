@@ -26,6 +26,11 @@ public class AllNodesCollapsed implements ExpansionState, Serializable {
             throw new UnsupportedOperationException("Can't expand nodes on AllNodesCollapsed");
     }
 
+    public void expandNodePath(TreePath keyPath) {
+        throw new UnsupportedOperationException("You cannot expand nodes on AllNodesCollapsed instance directly. " +
+                "Obtain a mutable instance with getMutableExpansionState() first.");
+    }
+
     public ExpansionState getMutableExpansionState() {
         return new DynamicNodeExpansionState(this);
     }
