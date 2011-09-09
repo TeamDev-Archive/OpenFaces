@@ -227,9 +227,11 @@ public class TreeTableRenderer extends AbstractTableRenderer {
         return serveDynamicRowsRequest(context, treeTable, rowIndex + 1, addedRowCount);
     }
 
-    protected void fillDynamicRowsInitInfo(FacesContext context, AbstractTable table, int rowIndex, int addedRowCount, TableStructure tableStructure, JSONObject newNodesInitInfo) {
+    protected void fillDynamicRowsInitInfo(FacesContext context, AbstractTable table, int rowIndex, int addedRowCount,
+                                           TableStructure tableStructure, JSONObject newNodesInitInfo) {
         super.fillDynamicRowsInitInfo(context, table, rowIndex, addedRowCount, tableStructure, newNodesInitInfo);
-        Rendering.addJsonParam(newNodesInitInfo, "structureMap", formatNodeParams((TreeTable) table, context, rowIndex - 1, addedRowCount));
+        JSONObject nodesStructureObject = formatNodeParams((TreeTable) table, context, rowIndex - 1, addedRowCount);
+        Rendering.addJsonParam(newNodesInitInfo, "structureMap", nodesStructureObject);
     }
 
     private JSONObject formatNodeParams(TreeTable treeTable, FacesContext context, int fromRowIndex, int rowCount) {
