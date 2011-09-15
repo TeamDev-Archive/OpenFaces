@@ -111,7 +111,9 @@ public abstract class MultiPageContainer extends OUIPanel {
                 if (value == null)
                     continue;
                 if (!(value instanceof Collection))
-                    throw new FacesException("The 'value' attribute of SubPanels should return an object that implements java.util.Collection intface, but object of the following class was returned: " + value.getClass().getName());
+                    throw new FacesException("The 'value' attribute of SubPanels should return an object that " +
+                            "implements java.util.Collection interface, but object of the following class was " +
+                            "returned: " + value.getClass().getName());
 
                 Collection<SubPanel> items = (Collection<SubPanel>) value;
                 itemsList.addAll(items);
