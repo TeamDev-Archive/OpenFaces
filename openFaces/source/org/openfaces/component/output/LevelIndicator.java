@@ -90,9 +90,9 @@ public class LevelIndicator extends OUIOutput {
     public Double getLevel() {
         Double value = (Double) getValue();
         if (value != null) {
-            return (value);
+            return value;
         } else {
-            return (0.5);
+            return 0.5;
         }
     }
 
