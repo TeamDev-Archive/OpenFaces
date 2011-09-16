@@ -28,6 +28,12 @@
   </managed-bean>
 
   <managed-bean>
+    <managed-bean-name>LevelIndicatorBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.demo.beans.levelindicator.LevelIndicatorBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
     <managed-bean-name>AjaxSettings</managed-bean-name>
     <managed-bean-class>org.openfaces.demo.beans.ajax.AjaxSettings</managed-bean-class>
     <managed-bean-scope>session</managed-bean-scope>

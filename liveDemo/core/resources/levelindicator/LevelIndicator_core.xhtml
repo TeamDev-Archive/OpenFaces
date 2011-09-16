@@ -28,7 +28,7 @@
           if (Math.random() >= 50) {
             randomValue *= -1;
           }
-          randomValue /= 6;
+          randomValue /= 10;
           var eqValue = (equalizerLevel + randomValue/100) * koeff[i];
 
           if(eqValue > 1) {
@@ -39,7 +39,7 @@
           O$('form:eq' + i).setValue(eqValue);
         }
 
-        setTimeout("playEqualizer()", Math.random() * 300);
+        setTimeout("playEqualizer()", Math.random() * 400);
       }
     }
 
@@ -86,18 +86,13 @@
   <div id="Demo">
     <table>
       <tr>
-        <td>
-          <o:slider orientation="vertical"
-                    fillDirection="fromEnd"
-                    styleClass="verticalSlider"
-                    transitionPeriod="100"
-                    id="slider1"
-                    value="50"
-                    minValue="0"
-                    maxValue="100"
-
-                    onchange="equalizerLevel = slider.getValue()/100;"/>
+        <td colspan="13" align="center">
+          <div style="border: 1px solid #808080">
+            <h4>Equilazer</h4>
+          </div>
         </td>
+      </tr>
+      <tr>
         <td>
           <o:levelIndicator id="eq0" orientation="vertical" fillDirection="fromEnd" labelStyle="display:none;"/>
         </td>
@@ -134,11 +129,18 @@
         <td>
           <o:levelIndicator id="eq11" orientation="vertical" fillDirection="fromEnd" labelStyle="display:none;"/>
         </td>
+        <td>
+          <o:slider orientation="vertical"
+                    transitionPeriod="100"
+                    id="slider1"
+                    value="50"
+                    minValue="0"
+                    maxValue="100"
+                    style="height:260px;"
+                    onchange="equalizerLevel = slider.getValue()/100;"/>
+        </td>
       </tr>
       <tr>
-        <td align="center">
-          Hz
-        </td>
         <td align="center">
           70
         </td>
@@ -175,101 +177,139 @@
         <td align="center">
           16K
         </td>
+        <td align="center">
+          Level
+        </td>
+      </tr>
+      <tr>
+        <td colspan="12" align="center">
+          <table>
+            <tr>
+              <td>
+                <o:commandButton id="prevButton" type="button"
+                                 onclick="nextSong();"
+                                 >
+                  &#160;&#160;Prev&#160;&#160;
+                </o:commandButton>
+              </td>
+              <td>
+                <o:commandButton id="playButton" type="button"
+                                 onclick="runEqualizer();"
+                                 >
+                  &#160;&#160;Play&#160;&#160;
+                </o:commandButton>
+              </td>
+              <td>
+                <o:commandButton id="pauseButton" type="button"
+                                 onclick="pauseEqualizer();"
+                                 >
+                  &#160;&#160;Pause&#160;&#160;
+                </o:commandButton>
+              </td>
+              <td>
+                <o:commandButton id="stopButton" type="button"
+                                 onclick="stopEqualizer();"
+                                 >
+                  &#160;&#160;Stop&#160;&#160;
+                </o:commandButton>
+              </td>
+              <td>
+                <o:commandButton id="nextButton" type="button"
+                                 onclick="nextSong();"
+                                 >
+                  &#160;&#160;Next&#160;&#160;
+                </o:commandButton>
+              </td>
+              <td></td>
+            </tr>
+          </table>
+        </td>
+
       </tr>
     </table>
 
+    <br/><br/>
+
+    <table>
+      <tr>
+        <td colspan="2" align="center">
+          <div style="border: 1px solid #808080">
+            <h4>Channels Balans Adjustment</h4>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td align="right">
+          <o:levelIndicator id="leftChannel" orientation="horizontal" segmentSize="1" fillDirection="fromEnd"
+                            labelStyle="display:none;width:0px;height:0px;" value="0.5" colors="green" transitionLevels="1"
+                  />
+        </td>
+        <td align="left">
+          <o:levelIndicator id="rightChannel" orientation="horizontal" segmentSize="1" fillDirection="fromStart"
+                            labelStyle="display:none;width:0px;height:0px;" value="0.5" colors="green" transitionLevels="1"
+                  />
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" align="center">
+          <o:slider orientation="horizontal"
+                    transitionPeriod="100"
+                    id="slider2"
+                    value="50"
+                    minValue="0"
+                    maxValue="100"
+                    onchange="setBalance();"/>
+        </td>
+      </tr>
+    </table>
+
+    <br/><br/>
+
+    <table>
+      <tr>
+        <td>
+          Battery Level:
+        </td>
+        <td>
+          <o:levelIndicator id="batteryLevelIndicator" value="#{LevelIndicatorBean.batteryLevel}" segmentSize="50" style="width:600px;height:7px;"
+                  colors="#98C1EA,#76ACEF,#4D94EA,#3284E7,#1B76E4,#1B76E4,#1B76E4,#1B76E4,#1B76E4"
+                  transitionLevels="0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9" inactiveSegmentIntensity="0.2"
+                  />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Used disk space:
+        </td>
+        <td>
+          <o:levelIndicator id="hddSpaceIndicator" value="#{LevelIndicatorBean.hddSpace}" segmentSize="50" style="width:600px;height:7px;"
+                  colors="#0080FF" inactiveSegmentIntensity="0.3"
+                  />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Time to play:
+        </td>
+        <td>
+          <o:levelIndicator id="remainingTimeIndicator" value="0.7"
+                            fillDirection="fromEnd"
+                            segmentSize="50" style="width:600px;height:7px;"
+                  colors="orange" inactiveSegmentIntensity="0.3"
+                  />
+        </td>
+      </tr>
+    </table>
   </div>
 
-  <table>
-    <tr>
-      <td>
-        <o:commandButton id="prevButton" type="button"
-                         onclick="nextSong();"
-                         >
-          &#160;&#160;Prev&#160;&#160;
-        </o:commandButton>
-      </td>
-      <td>
-        <o:commandButton id="playButton" type="button"
-                         onclick="runEqualizer();"
-                         >
-          &#160;&#160;Play&#160;&#160;
-        </o:commandButton>
-      </td>
-      <td>
-        <o:commandButton id="pauseButton" type="button"
-                         onclick="pauseEqualizer();"
-                         >
-          &#160;&#160;Pause&#160;&#160;
-        </o:commandButton>
-      </td>
-      <td>
-        <o:commandButton id="stopButton" type="button"
-                         onclick="stopEqualizer();"
-                         >
-          &#160;&#160;Stop&#160;&#160;
-        </o:commandButton>
-      </td>
-      <td>
-        <o:commandButton id="nextButton" type="button"
-                         onclick="nextSong();"
-                         >
-          &#160;&#160;Next&#160;&#160;
-        </o:commandButton>
-      </td>
-    </tr>
-  </table>
-
-  <table>
-    <tr>
-      <td align="right">
-        <o:levelIndicator id="leftChannel" orientation="horizontal" fillDirection="fromEnd" labelStyle="display:none;" value="0.5"/>
-      </td>
-      <td align="left">
-        <o:levelIndicator id="rightChannel" orientation="horizontal" fillDirection="fromStart" labelStyle="display:none;" value="0.5"/>
-      </td>
-    </tr>
-    <tr>
-      <td colspan="2" align="center">
-        <o:slider orientation="horizontal"
-                  styleClass="verticalSlider"
-                  transitionPeriod="100"
-                  id="slider2"
-                  value="50"
-                  minValue="0"
-                  maxValue="100"
-
-                  onchange="setBalance();"/>
-      </td>
-    </tr>
-  </table>
-
-  <table>
-    <tr>
-      <td>
-        Battery Level:
-      </td>
-      <td>
-        <o:levelIndicator id="batteryLevelIndicator" value="#{LevelIndicatorBean.batteryLevel}" segmentSize="50" style="width:500px;height:10px;"/>
-      </td>
-    </tr>
-  </table>
-
-  <table>
-    <tr>
-      <td>
-        Space on disk:
-      </td>
-      <td>
-        <o:levelIndicator id="hddSpaceIndicator" value="#{LevelIndicatorBean.hddSpace}"/>
-      </td>
-    </tr>
-  </table>
 
   <div id="Description">
     <h4>Demonstrated Features</h4>
     <ul class="hang">
-      <li><strong>Name</strong> - Description.</li>
+      <li><strong>Client side interaction</strong> - Level Indicator provides client side API to access component's value.</li>
+      <li><strong>Different orientation and filling modes</strong> - Supports horizontal and vertical orientation and two fill direction modes available.</li>
+      <li><strong>Customizable colors and transition levels</strong> - Level Indicator may have many sections. Color and length can be customized for each section.</li>
+      <li><strong>Customizable styles</strong> - Separate styles for component and for label that shows current control's value.</li>
     </ul>
   </div>
 

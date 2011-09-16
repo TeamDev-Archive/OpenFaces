@@ -15,8 +15,8 @@ import javax.faces.event.ActionEvent;
 import java.io.Serializable;
 
 public class LevelIndicatorBean implements Serializable {
-    private double batteryLevel = 1d;
-    private double hddSpace = 1d;
+    private double batteryLevel = 0.7d;
+    private double hddSpace = 0.3d;
 
     public LevelIndicatorBean() {
     }
