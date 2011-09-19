@@ -5,22 +5,55 @@
   <script type="text/javascript">
     function initSlider() {
       O$('form:sliderSize').setValue(14);
+      O$('form:sliderRate').setValue(6);
+      O$('form:sliderMonths').setValue(24);
     }
     function changeSize(size) {
       document.getElementById('changed_size').style.fontSize = size + 'px';
     }
+    function changeRate(rate) {
+      var months = rate * 4;
+      O$('form:sliderMonths').setValue(months);
+      setTimeout(function(){O$('form:sliderMonths').redisplayHandle();},1);
+    }
+    function changeMonth(months) {
+      var rate = months / 4;
+      if (rate &lt; 3) {
+        rate = 3;
+      }
+      O$('form:sliderRate').setValue(rate);
+      setTimeout(function(){O$('form:sliderRate').redisplayHandle();},1);
+    }
+
   </script>
 
   <div id="Demo">
     <div id="demo1">
-      <div id="demoLabel">To change size of text below :</div>
+      <div class="demoLabel">To change size of text below :</div>
       <div>
         <o:slider id="sliderSize" minorTickSpacing="1" minValue="10" maxValue="24"
                   ticksAlignment="rightOrBottom" majorTickSpacing="2"
-                  onchange="changeSize(slider.getValue())"/>
+                  onchanging ="changeSize(slider.getValue())"/>
       </div>
       <div id="changed_size">
         You can change size of this text with help of slider. You can set font size from 10 to 24.
+      </div>
+    </div>
+    <div id="demo2">
+      <div>You also can determine dependencies between several sliders:<br/>
+        This example displays dependency between credit interest rate and number of months for which a client can pay all amount of money
+      </div>
+      <div>
+        <div class="demoLabel"> Interest rate:</div>
+        <o:slider id="sliderRate" minorTickSpacing="0.5" minValue="3" maxValue="6"
+                  ticksAlignment="rightOrBottom" majorTickSpacing="1"
+                  onchanging="changeRate(slider.getValue())"/>
+      </div>
+      <div>
+        <div class="demoLabel">Months to pay:</div>
+        <o:slider id="sliderMonths" minorTickSpacing="1" minValue="1" maxValue="24"
+                  ticksAlignment="rightOrBottom" majorTickSpacing="2"
+                  onchanging="changeMonth(slider.getValue())"/>
       </div>
     </div>
   </div>
