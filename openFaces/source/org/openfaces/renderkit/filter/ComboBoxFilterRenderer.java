@@ -65,8 +65,7 @@ public class ComboBoxFilterRenderer extends ExpressionFilterRenderer {
         writeNameAttribute(context, component);
         writer.writeAttribute("size", "1", null);
         Rendering.writeStyleAndClassAttributes(writer, filter.getStyle(), filter.getStyleClass(), "o_fullWidth");
-        String submitScript = getFilterSubmissionScript(filter);
-        writer.writeAttribute("onchange", submitScript, null);
+        writer.writeAttribute("onchange", getFilterSubmissionScript(filter), null);
         writer.writeAttribute("onclick", "event.cancelBubble = true;", null);
         writer.writeAttribute("onkeydown", "O$.cancelBubble(event);", null);
         writer.writeAttribute("dir", filter.getDir(), "dir");
