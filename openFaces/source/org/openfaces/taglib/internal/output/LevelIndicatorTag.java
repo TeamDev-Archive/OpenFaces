@@ -15,13 +15,14 @@ import org.openfaces.component.FillDirection;
 import org.openfaces.component.chart.Orientation;
 import org.openfaces.component.output.LevelIndicator;
 import org.openfaces.renderkit.cssparser.CSSUtil;
+import org.openfaces.taglib.internal.AbstractComponentTag;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class LevelIndicatorTag extends org.openfaces.taglib.internal.AbstractComponentTag {
+public class LevelIndicatorTag extends AbstractComponentTag {
 
     public String getComponentType() {
         return LevelIndicator.COMPONENT_TYPE;

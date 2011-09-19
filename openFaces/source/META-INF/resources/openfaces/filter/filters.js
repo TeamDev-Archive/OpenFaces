@@ -20,7 +20,21 @@ O$.Filters = {
     filteredComponent._filtersToHide.push(f);
   },
 
+  _getFilterValue: function(filterField) {
+    var value = filterField.getValue ? filterField.getValue() : filterField.value;
+    return value;
+  },
+
   _filterComponent: function(componentId, filterId, filterField) {
+    var currentValue = O$.Filters._getFilterValue(filterField);
+    if (filterField._lastSubmittedValue === currentValue) {
+      // avoid sending the second request when onchange comes after the key-press-initiated filter has already been
+      // already triggered (e.g. unloading a table in Chrome sends onchange, which results in double Ajax-filtering
+      // requests when filter-as-you-type is turned on)
+      return;
+    }
+    filterField._lastSubmittedValue = currentValue;
+
     if (filterField._checkFieldValueAgainstList) filterField._checkFieldValueAgainstList();
     O$.cancelDelayedAction(null, componentId);
     // setTimeout in the following script is needed to avoid page blinking when using combo-box filter in IE (JSFC-2263)

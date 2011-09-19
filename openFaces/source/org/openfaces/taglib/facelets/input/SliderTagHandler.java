@@ -13,7 +13,7 @@
 package org.openfaces.taglib.facelets.input;
 
 import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
-import org.openfaces.taglib.internal.input.SpinnerTag;
+import org.openfaces.taglib.internal.input.SliderTag;
 
 import javax.faces.view.facelets.ComponentConfig;
 
@@ -22,6 +22,6 @@ import javax.faces.view.facelets.ComponentConfig;
  */
 public class SliderTagHandler extends AbstractFaceletsComponentHandler {
     public SliderTagHandler(ComponentConfig componentConfig) {
-        super(componentConfig, new SpinnerTag());
+        super(componentConfig, new SliderTag());
     }
 }
