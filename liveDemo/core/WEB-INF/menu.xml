@@ -639,8 +639,8 @@
     <componentName>Slider</componentName>
     <url>/slider/Slider.jsf</url>
     <shortPath>/slider/</shortPath>
-    <image>LevelIndicator</image>
-    <selectedImage>/images/components/titles/LevelIndicator.png</selectedImage>
+    <image>Slider</image>
+    <selectedImage>/images/components/titles/Slider.png</selectedImage>
     <keyFeatures>
       <feature>Client side page switching with different loading modes</feature>
       <feature>Declaring a static list of pages right within jsp/xhtml page</feature>
