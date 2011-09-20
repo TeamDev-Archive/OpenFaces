@@ -19,6 +19,7 @@ import org.openfaces.ajax.CommonAjaxViewRoot;
 import org.openfaces.ajax.WrappedAjaxRoot;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.Components;
+import org.openfaces.util.Environment;
 
 import javax.el.MethodExpression;
 import javax.faces.component.UIComponent;
@@ -111,6 +112,9 @@ public class GateInAjaxViewRoot extends UIPortletAjaxViewRoot implements Wrapped
 
     @Override
     public String getRendererType() {
+        if(Environment.isAjax4jsfRequest()){
+            return delegate.getRendererType();
+        }
         return COMPONENT_TYPE;
     }
 
@@ -166,7 +170,7 @@ public class GateInAjaxViewRoot extends UIPortletAjaxViewRoot implements Wrapped
         FacesContext context = FacesContext.getCurrentInstance();
         // For non Ajax request, view root not render children
         if (!AjaxUtil.isAjaxRequest(context)) {
-            return false;
+            return delegate.getRendersChildren();
         }
 
         // Ajax Request. Control all output.
