@@ -13,17 +13,26 @@
     margin-left: 50px;
 }
 .demoLabel{
-    float: left;
-    padding-top: 15px;
+    padding-top: 25px;
 }
-#changed_size{
-    margin-top: 50px;
+.demoLabelDown{
+    padding-top: 25px;
+}
+#changed_text{
+    margin-top: 20px;
     margin-right: 50px;
     padding:20px;
     border: 1px solid #333;
 }
-
-#demo2{
-    margin-left: 50px;
-    margin-top: 50px;
+.colorSlider{
+    width:250px;
+}
+.sliderOnRight{
+    width:320px;
+}
+/*.sliderWidth{
+    width:380px;
+} */
+.onRight{
+    padding-left: 50px;
 }
