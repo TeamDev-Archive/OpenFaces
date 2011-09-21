@@ -5,57 +5,119 @@
   <script type="text/javascript">
     function initSlider() {
       O$('form:sliderSize').setValue(14);
-      O$('form:sliderRate').setValue(6);
-      O$('form:sliderMonths').setValue(24);
+      O$('form:sliderWidth').setValue(90);
+      O$('form:sliderOpacity').setValue(100);
     }
     function changeSize(size) {
-      document.getElementById('changed_size').style.fontSize = size + 'px';
+      document.getElementById('changed_text').style.fontSize = size + 'px';
     }
-    function changeRate(rate) {
-      var months = rate * 4;
-      O$('form:sliderMonths').setValue(months);
-      setTimeout(function(){O$('form:sliderMonths').redisplayHandle();},1);
+    function changeWidth(width) {
+      document.getElementById('changed_text').style.width = width + '%';
     }
-    function changeMonth(months) {
-      var rate = months / 4;
-      if (rate &lt; 3) {
-        rate = 3;
-      }
-      O$('form:sliderRate').setValue(rate);
-      setTimeout(function(){O$('form:sliderRate').redisplayHandle();},1);
+
+    function changeOpacity(opacity) {
+      document.getElementById('changed_text').style.opacity = opacity / 100;
+      document.getElementById('changed_text').style.filter = 'alpha(opacity=' + opacity + ')'
+    }
+    function changeColor() {
+      var red = parseInt(O$('form:sliderColorRed').getValue());
+      var green = parseInt(O$('form:sliderColorGreen').getValue());
+      var blue = parseInt(O$('form:sliderColorBlue').getValue());
+      document.getElementById("changed_text").style.color = 'RGB(' + red + ',' + green + ',' + blue + ')';
     }
 
   </script>
 
   <div id="Demo">
     <div id="demo1">
-      <div class="demoLabel">To change size of text below :</div>
-      <div>
-        <o:slider id="sliderSize" minorTickSpacing="1" minValue="10" maxValue="24"
-                  ticksAlignment="rightOrBottom" majorTickSpacing="2"
-                  onchanging ="changeSize(slider.getValue())"/>
-      </div>
-      <div id="changed_size">
+      <table>
+        <tr>
+          <td valign="top" rowspan="5" >
+            <div id="opacityLabel">Opacity</div>
+            <o:slider id="sliderOpacity" minorTickSpacing="10" majorTickSpacing="50"
+                      style="height:250px;"
+                      minValue="0" maxValue="100"
+                      snapToTicks="false" ticksAlignment="center" orientation="vertical"
+                      minorTickImageUrl="/openFacesResources/META-INF/resources/openfaces/input/slider_minorTick_vertical_bright.png"
+                      onchange="changeOpacity(slider.getValue())"
+                      onchanging="changeOpacity(slider.getValue())"/>
+          </td>
+
+          <td valign="top" class="smallTD">
+            <div id="fontLabel" class="onRight">Font size:</div>
+          </td>
+          <td valign="top" class="smallTD">
+            <o:slider id="sliderSize" minorTickSpacing="1" minValue="10" maxValue="24"
+                      ticksAlignment="rightOrBottom" majorTickSpacing="1"
+                      tooltipEnabled="false"
+                      styleClass="sliderFont"
+                      onchanging="changeSize(slider.getValue())"
+                      onchange="changeSize(slider.getValue())"/>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top" class="smallTD">
+            <div class="demoLabelDown onRight">Red:</div>
+          </td>
+          <td valign="top" class="smallTD">
+            <o:slider id="sliderColorRed" minValue="0" maxValue="255"
+                      ticksAlignment="leftOrTop" majorTickSpacing="255"
+                      ticksVisible="false" snapToTicks="false"
+                      styleClass="colorSlider"
+                      onchange="changeColor()"
+                      onchanging="changeColor()"/>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top" class="smallTD">
+           <div class="demoLabelDown onRight">Green:</div>
+          </td>
+          <td valign="top" class="smallTD">
+            <o:slider id="sliderColorGreen" minValue="0" maxValue="255"
+                      ticksAlignment="leftOrTop" majorTickSpacing="255"
+                      ticksVisible="false" snapToTicks="false"
+                      styleClass="colorSlider"
+                      onchange="changeColor()"
+                      onchanging="changeColor()"/>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top" class="smallTD">
+            <div class="demoLabelDown onRight">Blue:</div>
+          </td>
+          <td valign="top" class="smallTD">
+            <o:slider id="sliderColorBlue" minValue="0" maxValue="255"
+                      ticksAlignment="leftOrTop" majorTickSpacing="255"
+                      ticksVisible="false" snapToTicks="false"
+                      styleClass="colorSlider"
+                      onchange="changeColor()"
+                      onchanging="changeColor()"/>
+          </td>
+        </tr>
+        <tr><td></td></tr>
+        <tr>
+          <td class="smallTD">
+             <div id="widthLabel">Width:</div>
+          </td>
+          <td colspan="2" class="smallTD">
+               <o:slider id="sliderWidth" minorTickSpacing="5" minValue="20" maxValue="90"
+                      ticksAlignment="leftOrTop" majorTickSpacing="10"
+                      styleClass="widthSlider"
+                      onchange="changeWidth(slider.getValue())"
+                      onchanging="changeWidth(slider.getValue())"/>
+          </td>
+        </tr>
+
+      </table>
+
+      <div id="changed_text">
         You can change size of this text with help of slider. You can set font size from 10 to 24.
+        You can define an opacity of this text.
+        Also you can change width of block:from 20 to 90% and you can change height of block:from 50 to 150px.
+        And you can change a color of this text by setting sliders: Red, Green, Blue.
       </div>
     </div>
-    <div id="demo2">
-      <div>You also can determine dependencies between several sliders:<br/>
-        This example displays dependency between credit interest rate and number of months for which a client can pay all amount of money
-      </div>
-      <div>
-        <div class="demoLabel"> Interest rate:</div>
-        <o:slider id="sliderRate" minorTickSpacing="0.5" minValue="3" maxValue="6"
-                  ticksAlignment="rightOrBottom" majorTickSpacing="1"
-                  onchanging="changeRate(slider.getValue())"/>
-      </div>
-      <div>
-        <div class="demoLabel">Months to pay:</div>
-        <o:slider id="sliderMonths" minorTickSpacing="1" minValue="1" maxValue="24"
-                  ticksAlignment="rightOrBottom" majorTickSpacing="2"
-                  onchanging="changeMonth(slider.getValue())"/>
-      </div>
-    </div>
+
   </div>
 
 
@@ -63,16 +125,19 @@
     <h4>Demonstrated Features</h4>
     <ul class="hang">
       <li>
-        <strong>Client side interaction</strong> - Level Indicator provides client side API to access component's value.
+        <strong>Client side interaction</strong> - Slider provides client side API to manage component's value.
       </li>
       <li>
-        <strong>Different orientation and filling modes</strong> - Supports horizontal and vertical orientation and two fill direction modes available.
+        <strong>Different orientation of Slider</strong> - Supports horizontal and vertical orientation.
       </li>
       <li>
-        <strong>Customizable colors and transition levels</strong> - Level Indicator may have many sections. Color and length can be customized for each section.
+        <strong>Provides full managing of ticks</strong> - Ticks can be located on left, right or both sides of slider.
+        Slider's value might be set at specific range. Also provided settings of distance between of big and small ticks.
+        There is oportunity to not displaying ticks.
       </li>
       <li>
-        <strong>Customizable styles</strong> - Separate styles for component and for label that shows current control's value.
+        <strong>Customizable styles</strong> - Slider bar and drag handler can be replaced by another images.
+        Width and height can be customized for each slider. Separate styles for component and for label that shows current control's value.
       </li>
     </ul>
   </div>
