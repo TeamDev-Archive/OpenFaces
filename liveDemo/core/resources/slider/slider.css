@@ -10,13 +10,19 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 #demo1{
+    margin-top: 20px;
     margin-left: 50px;
 }
-.demoLabel{
-    padding-top: 25px;
+#opacityLabel{
+    padding-top: 22px;
+    padding-left: 25px;
 }
-.demoLabelDown{
-    padding-top: 25px;
+#widthLabel{
+    padding-top: 15px;
+    padding-left: 35px;
+}
+#fontLabel{
+    padding-top: 20px;
 }
 #changed_text{
     margin-top: 20px;
@@ -24,15 +30,25 @@
     padding:20px;
     border: 1px solid #333;
 }
+.demoLabelDown{
+    padding-top: 25px;
+}
+
+.widthSlider{
+    width:450px;
+    height:30px;
+}
 .colorSlider{
     width:250px;
+    height:30px;
 }
-.sliderOnRight{
-    width:320px;
+.sliderFont{
+   width:325px;
 }
-/*.sliderWidth{
-    width:380px;
-} */
+.smallTD{
+    height:30px;
+}
 .onRight{
     padding-left: 50px;
 }
+
