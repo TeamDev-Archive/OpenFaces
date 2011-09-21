@@ -9,46 +9,68 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-#demo1{
+#demo1 {
     margin-top: 20px;
     margin-left: 50px;
 }
-#opacityLabel{
+
+.demoLabelDown {
+    padding-top: 15px;
+}
+
+#opacityLabel {
     padding-top: 22px;
     padding-left: 25px;
 }
-#widthLabel{
-    padding-top: 15px;
-    padding-left: 35px;
-}
-#fontLabel{
-    padding-top: 20px;
-}
-#changed_text{
-    margin-top: 20px;
-    margin-right: 50px;
-    padding:20px;
-    border: 1px solid #333;
-}
-.demoLabelDown{
-    padding-top: 25px;
+
+#widthLabel {
+    padding-top: 30px;
+    padding-left: 80px;
+    float: left;
 }
 
-.widthSlider{
-    width:450px;
-    height:30px;
+#fontLabel {
+    padding-top: 20px;
+    padding-left: 60px;
 }
-.colorSlider{
-    width:250px;
-    height:30px;
+
+#changed_text {
+    margin-top: 20px;
+    margin-right: 50px;
+    padding: 20px;
+    width: 80%;
+    border: 1px solid #333;
 }
-.sliderFont{
-   width:325px;
+
+.widthSlider {
+    width: 435px;
+    height: 30px;
+    padding-left: 25px;
 }
-.smallTD{
-    height:30px;
+
+.colorSlider {
+    width: 250px;
+    height: 30px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
 }
-.onRight{
+
+.sliderFont {
+    padding-left: 30px;
+    width: 325px;
+}
+
+.sliderOpacity {
+    height: 180px;
+}
+
+.smallTD {
+    height: 30px;
+}
+
+.onRight {
     padding-left: 50px;
 }
 
