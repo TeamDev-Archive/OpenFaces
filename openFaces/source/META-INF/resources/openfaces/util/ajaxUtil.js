@@ -617,7 +617,7 @@ O$.setAjaxMessageHTML = function(messageHTML, horizAlignment, vertAlignment, tra
   });
 };
 
-O$._initAjax = function(ajaxRequestUrl){
+O$._initAjaxRequestUrl = function(ajaxRequestUrl){
     O$.Ajax._ajaxRequestUrl = ajaxRequestUrl;
 };
 

@@ -108,7 +108,7 @@ public class UtilPhaseListener extends PhaseListenerBase {
                     encodedAjaxRequestUrl = context.getExternalContext().encodeActionURL(ajaxRequestUrl);
                 }
 
-                Rendering.appendUniqueRTLibraryScripts(context, new ScriptBuilder().functionCall("O$._initAjax", encodedAjaxRequestUrl).semicolon());
+                Rendering.appendUniqueRTLibraryScripts(context, new ScriptBuilder().functionCall("O$._initAjaxRequestUrl", encodedAjaxRequestUrl).semicolon());
 
             }
         } else if (phaseId.equals(PhaseId.APPLY_REQUEST_VALUES)) {
