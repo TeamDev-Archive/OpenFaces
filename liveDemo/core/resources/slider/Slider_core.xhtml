@@ -7,9 +7,6 @@
       O$('form:sliderSize').setValue(14);
       O$('form:sliderWidth').setValue(90);
       O$('form:sliderOpacity').setValue(100);
-
-      O$('form:sliderRate').setValue(6);
-      O$('form:sliderMonths').setValue(24);
     }
     function changeSize(size) {
       document.getElementById('changed_text').style.fontSize = size + 'px';
@@ -23,9 +20,9 @@
       document.getElementById('changed_text').style.filter = 'alpha(opacity=' + opacity + ')'
     }
     function changeColor(){
-      var red=O$('form:sliderColorRed').getValue();
-      var green=O$('form:sliderColorGreen').getValue();
-      var blue=O$('form:sliderColorBlue').getValue();
+      var red=parseInt(O$('form:sliderColorRed').getValue());
+      var green=parseInt(O$('form:sliderColorGreen').getValue());
+      var blue=parseInt(O$('form:sliderColorBlue').getValue());
       document.getElementById("changed_text").style.color='RGB('+red+','+green+','+blue+')';
     }
 
