@@ -22,6 +22,7 @@ import javax.el.ELContext;
 import javax.el.MethodExpression;
 import javax.el.MethodNotFoundException;
 import javax.faces.FacesException;
+import javax.faces.application.ViewHandler;
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
@@ -31,6 +32,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
+import javax.portlet.faces.Bridge;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -89,6 +91,26 @@ public class UtilPhaseListener extends PhaseListenerBase {
             if (renderContextMenuScript)
                 Rendering.appendOnLoadScript(context, encodeDisabledContextMenu(context));
             encodeAjaxProgressMessage(context);
+
+            // Processing of Ajax requests as ResourceRequest is required under GateIn portal in order to
+            // comply with existing navigationalState. This is important for RichFaces Ajax functionality
+            if (Environment.isGateInPortal(context)) {
+                String viewId = context.getViewRoot().getViewId();
+                String ajaxRequestUrl = context.getApplication().getViewHandler().getActionURL(context, viewId);
+                String encodedAjaxRequestUrl;
+
+                if (null != context.getExternalContext().getRequestMap().get(Bridge.PORTLET_LIFECYCLE_PHASE)) {
+                    ajaxRequestUrl = ajaxRequestUrl
+                            + ((ajaxRequestUrl.lastIndexOf('?') > 0) ? "&" : "?")
+                            + Bridge.FACES_VIEW_ID_PARAMETER + "=" + viewId;
+                    encodedAjaxRequestUrl = context.getExternalContext().encodeResourceURL(ajaxRequestUrl);
+                } else {
+                    encodedAjaxRequestUrl = context.getExternalContext().encodeActionURL(ajaxRequestUrl);
+                }
+
+                Rendering.appendUniqueRTLibraryScripts(context, new ScriptBuilder().functionCall("O$._initAjax", encodedAjaxRequestUrl).semicolon());
+
+            }
         } else if (phaseId.equals(PhaseId.APPLY_REQUEST_VALUES)) {
             decodeFocusTracking(context);
             decodeScrollPosTracking(context);
@@ -224,7 +246,8 @@ public class UtilPhaseListener extends PhaseListenerBase {
             if (action != null) {
                 MethodExpression methodBinding = context.getApplication().getExpressionFactory().createMethodExpression(
                         elContext, "#{" + action + "}", String.class, new Class[]{});
-                /*result = */methodBinding.invoke(elContext, null);
+                /*result = */
+                methodBinding.invoke(elContext, null);
             }
             if (listener != null) {
                 AjaxActionEvent event = new AjaxActionEvent(component);
@@ -236,7 +259,7 @@ public class UtilPhaseListener extends PhaseListenerBase {
                 } catch (MethodNotFoundException e) {
                     // both actionEvent and AjaxActionEvent parameter declarations are allowed
                     methodExpression = context.getApplication().getExpressionFactory().createMethodExpression(
-                        elContext, "#{" + listener + "}", void.class, new Class[]{AjaxActionEvent.class});
+                            elContext, "#{" + listener + "}", void.class, new Class[]{AjaxActionEvent.class});
                 }
                 methodExpression.invoke(elContext, new Object[]{event});
                 Object listenerResult = event.getAjaxResult();
@@ -253,18 +276,19 @@ public class UtilPhaseListener extends PhaseListenerBase {
     }
 
     public static UIComponent findComponentById(UIComponent parent,
-                                          String id,
-                                          boolean preProcessDecodesOnTables,
-                                          boolean preRenderResponseOnTables,
-                                          boolean checkComponentPresence) {
+                                                String id,
+                                                boolean preProcessDecodesOnTables,
+                                                boolean preRenderResponseOnTables,
+                                                boolean checkComponentPresence) {
         return findComponentById(parent, id, preProcessDecodesOnTables, preRenderResponseOnTables, checkComponentPresence, null);
     }
+
     public static UIComponent findComponentById(UIComponent parent,
-                                          String id,
-                                          boolean preProcessDecodesOnTables,
-                                          boolean preRenderResponseOnTables,
-                                          boolean checkComponentPresence,
-                                          List<Runnable> restoreDataPointerRunnables) {
+                                                String id,
+                                                boolean preProcessDecodesOnTables,
+                                                boolean preRenderResponseOnTables,
+                                                boolean checkComponentPresence,
+                                                List<Runnable> restoreDataPointerRunnables) {
         FacesContext context = FacesContext.getCurrentInstance();
         if (Environment.isGateInPortal(context) && parent instanceof UIViewRoot) {
             String rootId = parent.getClientId(context);
@@ -283,10 +307,10 @@ public class UtilPhaseListener extends PhaseListenerBase {
     }
 
     private static UIComponent findComponentByPath(UIComponent parent,
-                                            String path,
-                                            boolean preProcessDecodesOnTables,
-                                            boolean preRenderResponseOnTables,
-                                            List<Runnable> restoreDataPointerRunnables) {
+                                                   String path,
+                                                   boolean preProcessDecodesOnTables,
+                                                   boolean preRenderResponseOnTables,
+                                                   List<Runnable> restoreDataPointerRunnables) {
         while (true) {
             if (path == null) {
                 return null;

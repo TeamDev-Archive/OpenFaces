@@ -15,6 +15,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.portlet.ActionResponse;
 import javax.portlet.RenderResponse;
+import javax.portlet.ResourceResponse;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -46,6 +47,8 @@ public abstract class ResponseFacade implements AbstractResponseFacade {
                     return new RenderResponseFacade((RenderResponse) response);
                 } else if (response instanceof ActionResponse) {
                     return new ActionResponseFacade((ActionResponse) response);
+                } else if (response instanceof ResourceResponse) {
+                    return new ResourceResponseFacade((ResourceResponse) response);
                 }
             } catch (NoClassDefFoundError e) {
                 considerPortlets = false;
@@ -172,4 +175,35 @@ public abstract class ResponseFacade implements AbstractResponseFacade {
         }
     }
 
+    public static final class ResourceResponseFacade extends ResponseFacade {
+
+        private ResourceResponse response;
+
+        private ResourceResponseFacade(ResourceResponse response) {
+            this.response = response;
+        }
+
+        public String getContentType() {
+            return response.getContentType();
+        }
+
+        public void setContentType(String s) {
+            response.setContentType(s);
+        }
+
+        public Writer getWriter() throws IOException {
+            return response.getWriter();
+        }
+
+        public OutputStream getOutputStream() throws IOException {
+            return response.getPortletOutputStream();
+        }
+
+        public String getCharacterEncoding() {
+            return response.getCharacterEncoding();
+        }
+
+        public void setCharacterEncoding(String s) {
+        }
+    }
 }

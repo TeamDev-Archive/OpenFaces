@@ -423,7 +423,7 @@ O$.sendAjaxRequest = function(render, args) {
   ajaxObject._completionCallback = args.onajaxend;
   ajaxObject._requestedRender = render;
 
-  var url = submittedForm.action;
+  var url = O$.Ajax._ajaxRequestUrl || submittedForm.action;
   ajaxObject._request.open("POST", url, true);
   ajaxObject._request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
   ajaxObject._request.setRequestHeader("If-Modified-Since", "Sat, 1 Jan 2000 00:00:00 GMT");
@@ -615,6 +615,10 @@ O$.setAjaxMessageHTML = function(messageHTML, horizAlignment, vertAlignment, tra
               }
             }, 1000);
   });
+};
+
+O$._initAjax = function(ajaxRequestUrl){
+    O$.Ajax._ajaxRequestUrl = ajaxRequestUrl;
 };
 
 O$.showAjaxProgressMessage = function() {
