@@ -14,6 +14,7 @@ package org.openfaces.component.filter;
 
 import org.openfaces.component.FilterableComponent;
 import org.openfaces.component.OUIData;
+import org.openfaces.util.Environment;
 
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
@@ -69,7 +70,12 @@ public class FilterableComponentPropertyLocatorFactory implements PropertyLocato
         private FilterableComponent getComponent() {
             if (component != null) return component;
             if (componentId == null) return null;
-            UIViewRoot viewRoot = FacesContext.getCurrentInstance().getViewRoot();
+            FacesContext context = FacesContext.getCurrentInstance();
+            UIViewRoot viewRoot = context.getViewRoot();
+            if (Environment.isGateInPortal(context)) {
+                String viewRootIdPart = "_viewRoot:";
+                componentId = componentId.substring(componentId.indexOf(viewRootIdPart) + viewRootIdPart.length(), componentId.length());
+            }
             component = (FilterableComponent) viewRoot.findComponent(":" + componentId);
             if (component == null)
                 throw new IllegalStateException("Couldn't find filtered component by id: " + componentId);
