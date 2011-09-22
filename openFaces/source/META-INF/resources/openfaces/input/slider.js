@@ -106,6 +106,7 @@ O$.Slider = {
         }
         if (value != slider.getValue()) {
           notifyOfInputChanges(slider);
+          notifyOfInputChanging(slider);
         }
       },
 
@@ -118,6 +119,7 @@ O$.Slider = {
         }
         if (value != slider.getValue()) {
           notifyOfInputChanges(slider);
+          notifyOfInputChanging(slider);
         }
       },
 
@@ -659,6 +661,7 @@ O$.Slider = {
           slider.setValue(sl_maxValue);
           slider.redisplayHandle();
           notifyOfInputChanges(slider);
+          notifyOfInputChanging(slider);
           break;
         }
         case 36: // home
@@ -666,6 +669,7 @@ O$.Slider = {
           slider.setValue(sl_minValue);
           slider.redisplayHandle();
           notifyOfInputChanges(slider);
+          notifyOfInputChanging(slider);
           break;
         }
       }
@@ -889,6 +893,7 @@ O$.Slider = {
 
       function mouseUp() {
         if (dragObject != null) {
+          notifyOfInputChanging(slider)
           notifyOfInputChanges(slider);
         }
         dragObject = null;
