@@ -656,17 +656,18 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
             columnResizing.processUpdates(context);
             return null;
         }
-        if (!"rows".equals(portionName))
+        if ("rows".equals(portionName)) {
+            beforeReloadingAllRows(context, table);
+            JSONObject result = serveDynamicRowsRequest(context, table, 0, Integer.MAX_VALUE);
+
+            ScriptBuilder sb = new ScriptBuilder();
+            encodeAdditionalFeaturesOnBodyReload(context, table, sb);
+            Rendering.renderInitScript(context, sb);
+
+            return result;
+        } else {
             throw new FacesException("Unknown portion name: " + portionName);
-
-        beforeReloadingAllRows(context, table);
-        JSONObject result = serveDynamicRowsRequest(context, table, 0, Integer.MAX_VALUE);
-
-        ScriptBuilder sb = new ScriptBuilder();
-        encodeAdditionalFeaturesOnBodyReload(context, table, sb);
-        Rendering.renderInitScript(context, sb);
-
-        return result;
+        }
     }
 
     protected void beforeReloadingAllRows(FacesContext context, AbstractTable table) {

@@ -64,6 +64,7 @@ O$.TreeTable = {
       _foldingMode: clientFoldingParams ? "client" : "server",
       _treeColumnExpansionDatas: treeColumnExpansionDatas,
       _toggleClassName: toggleClassName,
+
       _updateRowVisibility: function() {
         var rootNodeCount = this._rowIndexToChildCount["root"];
         var rows = table.body._getRows();
