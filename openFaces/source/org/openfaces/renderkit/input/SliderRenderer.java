@@ -785,7 +785,7 @@ public class SliderRenderer extends RendererBase {
         }
 
         Script initScript = new ScriptBuilder().initScript(context, slider, "O$.Slider._init",
-                slider.getSubmittedValue(), slider.getMinValue(), slider.getMaxValue(),
+                slider.getValue(), slider.getMinValue(), slider.getMaxValue(),
                 slider.getMinorTickSpacing(), slider.getMajorTickSpacing(),
                 slider.getOrientation(), slider.getFillDirection(),
                 slider.isDisabled(), slider.isTooltipEnabled(),
@@ -840,9 +840,9 @@ public class SliderRenderer extends RendererBase {
         return options;
     }
 
-    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue)
+    public Object getConvertedValue(FacesContext context, UIComponent component, Object value)
             throws ConverterException {
-        return Rendering.convertFromString(context, component, (String) submittedValue);
+        return Rendering.convertFromString(context, component, (String) value);
     }
 
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -880,7 +880,7 @@ public class SliderRenderer extends RendererBase {
         String fieldId = slider.getClientId(context) + DEFAULT_TEXT_FIELD_SUFFIX;
         String value = requestMap.get(fieldId);
         if (null != value) {
-            slider.setSubmittedValue(value);
+            slider.setValue(value);
         }
     }
 

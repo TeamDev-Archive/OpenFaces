@@ -3,11 +3,7 @@
      xmlns:o="http://openfaces.org/"
         >
   <script type="text/javascript">
-    function initSlider() {
-      O$('form:sliderSize').setValue(14);
-      O$('form:sliderWidth').setValue(80);
-      O$('form:sliderOpacity').setValue(100);
-    }
+
     function changeSize(size) {
       document.getElementById('changed_text').style.fontSize = size + 'px';
     }
@@ -36,7 +32,7 @@
             <div id="opacityLabel">Opacity</div>
             <o:slider id="sliderOpacity" minorTickSpacing="10" majorTickSpacing="50"
                       styleClass="sliderOpacity"
-                      minValue="0" maxValue="100"
+                      minValue="0" maxValue="100" value="100"
                       snapToTicks="false" ticksAlignment="center" orientation="vertical"
                       minorTickImageUrl="/openFacesResources/META-INF/resources/openfaces/input/slider_minorTick_vertical_bright.png"
                       onchanging="changeOpacity(slider.getValue())"/>
@@ -48,7 +44,7 @@
           <td valign="top" class="smallTD">
             <o:slider id="sliderSize" minorTickSpacing="1" minValue="10" maxValue="24"
                       ticksAlignment="rightOrBottom" majorTickSpacing="1"
-                      tooltipEnabled="false"
+                      tooltipEnabled="false"   value="14"
                       styleClass="sliderFont"
                       onchanging="changeSize(slider.getValue())"/>
           </td>
@@ -100,7 +96,7 @@
       <div id="widthLabel">Width, % :</div>
       <div><o:slider id="sliderWidth" minorTickSpacing="5" minValue="20" maxValue="80"
                      ticksAlignment="leftOrTop" majorTickSpacing="10"
-                     styleClass="widthSlider"
+                     styleClass="widthSlider"   value="80"
                      onchanging="changeWidth(slider.getValue())"/>
       </div>
 

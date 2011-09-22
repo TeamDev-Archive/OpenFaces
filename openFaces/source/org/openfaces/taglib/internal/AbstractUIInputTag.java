@@ -24,7 +24,7 @@ public abstract class AbstractUIInputTag extends AbstractComponentTag {
         super.setComponentProperties(facesContext, component);
 
         if (isAutomaticValueAttributeHandling())
-            setObjectProperty(component, "value");
+            setNumberProperty(component, "value");
 
         UIInput uiInput = (UIInput) component;
 
