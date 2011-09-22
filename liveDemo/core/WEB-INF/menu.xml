@@ -642,9 +642,10 @@
     <image>Slider</image>
     <selectedImage>/images/components/titles/Slider.png</selectedImage>
     <keyFeatures>
-      <feature>Client side page switching with different loading modes</feature>
-      <feature>Declaring a static list of pages right within jsp/xhtml page</feature>
-      <feature>Support for a dynamic list of pages constructed programmatically</feature>
+      <feature>Support for integer and floating-point numbers</feature>
+      <feature>Keyboard support</feature>
+      <feature>Customizable appearance</feature>
+      <feature>Specifying allowed number range</feature>
     </keyFeatures>
     <demos>
       <demoItem>
@@ -752,7 +753,7 @@
       </demoItem>
     </demos>
   </menuItem>
-    <menuItem>
+  <menuItem>
     <name>Tag Cloud</name>
     <componentName>Tag Cloud</componentName>
     <url>/tagcloud/TagCloud.jsf</url>
@@ -770,7 +771,7 @@
       <demoItem>
         <demoName>Tag Cloud</demoName>
         <demoUrl>/tagcloud/TagCloud.jsf</demoUrl>
-      </demoItem>        
+      </demoItem>
     </demos>
   </menuItem>
   <menuItem>

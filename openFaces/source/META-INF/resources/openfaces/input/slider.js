@@ -568,7 +568,6 @@ O$.Slider = {
     }
 
     slider.setValue(sl_value);
-    slider.s_textField.value = O$.Dojo.Number.format(sl_value, formatOptions);
 
     var s_handleSize_w = 0;
     var s_workspaceSize_w = 0;
@@ -588,7 +587,6 @@ O$.Slider = {
       }
       slider.style.visibility = "visible";
 
-      slider.s_textField.value = O$.Dojo.Number.format(sl_value, formatOptions);
       O$.repaintWindowForSafari(true);
       O$.repaintAreaForOpera(slider, true);
       if (sl_onchanging) {
@@ -733,6 +731,7 @@ O$.Slider = {
         });
 
         function mouseDownOnBar(curClickPos) {
+          var val=slider.getValue();//for testing
           var handlePos = O$.getElementPos(slider.s_handle, slider.s_workspace);
           if (sl_fillDirection == "fromStart") {
             if (((sl_orientation == "horizontal") && (curClickPos.x - handlePos.x >= 0) ) ||
@@ -749,6 +748,7 @@ O$.Slider = {
               slider.increaseValue();
             }
           }
+          val=slider.getValue();//for testing
           slider.redisplayHandle();
         }
 
