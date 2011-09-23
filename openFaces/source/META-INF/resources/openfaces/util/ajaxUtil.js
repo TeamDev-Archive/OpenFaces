@@ -1060,7 +1060,9 @@ O$.AjaxObject = function(render) {
     var componentId = this._targetIds;
     var component = O$(componentId);
     O$.assert(component, "Couldn't find component by id: " + componentId);
-    var portionData = portionDataStr ? eval("(" + portionDataStr + ")") : null;
+    var portionData = portionDataStr
+            ? (typeof portionDataStr == "string" ? eval("(" + portionDataStr + ")") : portionDataStr)
+            : null;
     this._customProcessor(component, portionName, portionHTML, portionScripts, portionData);
   };
 
