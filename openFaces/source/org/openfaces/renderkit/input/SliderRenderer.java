@@ -482,27 +482,33 @@ public class SliderRenderer extends RendererBase {
         format.setMaximumFractionDigits(converter.getMaxFractionDigits());
         format.setMinimumFractionDigits(converter.getMinFractionDigits());
         double curTick = minValue;
-        for (int counterTicks = 0; curTick <= maxValue; counterTicks++) {
-            writer.startElement("div", slider);
-            writer.writeAttribute("id", tickId + counterTicks, null);
-            writer.writeAttribute("style", "position:relative;z-index:1;border:0 none;padding:0;margin:0; float: " + floatStyle + "font-size:6pt;", null);
-            if (isHorizontal) {
-                labelValue = format.format(isFromStart ? (curTick) : (maxValue - curTick + minValue));
-            } else {
-                labelValue = format.format(!isFromStart ? (curTick) : (maxValue - curTick + minValue));
-            }
-            writer.writeAttribute("title", labelValue, null);
-            if (Math.round(curTick / maxTick * 10000) % 10000 != 0) {
-                encodeLabelTick(writer, slider, 0, "hidden;", tickId + counterTicks + DEFAULT_ELEMENT_TEXT_ID);
-                encodeTickImage(writer, slider, minorTicksImageUrl, ticksVisibility, tickId + counterTicks + DEFAULT_ELEMENT_IMAGE_ID, isHorizontal);
-            } else {
-                encodeLabelTick(writer, slider, labelValue, ticksLabelsVisibility, tickId + counterTicks + DEFAULT_ELEMENT_TEXT_ID);
-                encodeTickImage(writer, slider, majorTicksImageUrl, ticksVisibility, tickId + counterTicks + DEFAULT_ELEMENT_IMAGE_ID, isHorizontal);
-            }
-            curTick = Math.round(100000 * (curTick + minTick)) / 100000.;
-            writer.endElement("div");
-            if (!isHorizontal) {
-                encodeClearFloatDiv(writer, slider);
+        if (slider.isTicksLabelsVisible() || slider.isTicksVisible()) {
+            for (int counterTicks = 0; curTick <= maxValue; counterTicks++) {
+                writer.startElement("div", slider);
+                writer.writeAttribute("id", tickId + counterTicks, null);
+                writer.writeAttribute("style", "position:relative;z-index:1;border:0 none;padding:0;margin:0; float: " + floatStyle + "font-size:6pt;", null);
+                if (isHorizontal) {
+                    labelValue = format.format(isFromStart ? (curTick) : (maxValue - curTick + minValue));
+                } else {
+                    labelValue = format.format(!isFromStart ? (curTick) : (maxValue - curTick + minValue));
+                }
+                writer.writeAttribute("title", labelValue, null);
+                if (slider.isTicksLabelsVisible()) {
+                    if (Math.round(curTick / maxTick * 10000) % 10000 != 0) {
+                        encodeLabelTick(writer, slider, 0, "hidden;", tickId + counterTicks + DEFAULT_ELEMENT_TEXT_ID);
+                    } else {
+                        encodeLabelTick(writer, slider, labelValue, ticksLabelsVisibility, tickId + counterTicks + DEFAULT_ELEMENT_TEXT_ID);
+                    }
+                }
+
+                if (slider.isTicksVisible()) {
+                    encodeTickImage(writer, slider, minorTicksImageUrl, ticksVisibility, tickId + counterTicks + DEFAULT_ELEMENT_IMAGE_ID, isHorizontal);
+                }
+                curTick = Math.round(100000 * (curTick + minTick)) / 100000.;
+                writer.endElement("div");
+                if (!isHorizontal) {
+                    encodeClearFloatDiv(writer, slider);
+                }
             }
         }
         writer.endElement("td");
