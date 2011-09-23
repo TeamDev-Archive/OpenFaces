@@ -599,7 +599,7 @@ O$.Slider = {
 
 
     O$.setupArtificialFocus(slider, focusedClass);
-    var eventName = "onkeyup";
+    var eventName = "onkeydown";
     slider._prevKeyHandler = slider[eventName];
     slider[eventName] = function (evt) {
       var e = evt ? evt : window.event;

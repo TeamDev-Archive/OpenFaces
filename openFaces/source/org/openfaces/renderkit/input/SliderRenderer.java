@@ -300,7 +300,6 @@ public class SliderRenderer extends RendererBase {
         String textFieldId = clientId + DEFAULT_TEXT_FIELD_SUFFIX;
         boolean isHorizontal = slider.getOrientation().equals(Orientation.HORIZONTAL);
         boolean isOff = slider.getTextFieldState().equals(TextFieldState.OFF);
-
         if (isHorizontal) {
             writer.startElement("td", slider);
         } else {
@@ -343,7 +342,6 @@ public class SliderRenderer extends RendererBase {
         if (slider.getOrientation().equals(Orientation.VERTICAL)) {
             writer.endElement("tr");
         }
-
     }
 
     private void encodeWorkSpace(FacesContext context, UIComponent component) throws IOException {
@@ -483,7 +481,6 @@ public class SliderRenderer extends RendererBase {
 
         format.setMaximumFractionDigits(converter.getMaxFractionDigits());
         format.setMinimumFractionDigits(converter.getMinFractionDigits());
-
         double curTick = minValue;
         for (int counterTicks = 0; curTick <= maxValue; counterTicks++) {
             writer.startElement("div", slider);
