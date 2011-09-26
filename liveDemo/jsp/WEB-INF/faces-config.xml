@@ -293,6 +293,12 @@
     <managed-bean-scope>session</managed-bean-scope>
   </managed-bean>
 
+    <managed-bean>
+    <managed-bean-name>SliderBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.demo.beans.slider.SliderBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
   <managed-bean>
     <managed-bean-name>TrackList</managed-bean-name>
     <managed-bean-class>org.openfaces.demo.beans.selectoneradio.TrackList</managed-bean-class>

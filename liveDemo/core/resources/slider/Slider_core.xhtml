@@ -32,8 +32,7 @@
             <div id="opacityLabel">Opacity</div>
             <o:slider id="sliderOpacity" minorTickSpacing="10" majorTickSpacing="50"
                       styleClass="sliderOpacity"
-                      minValue="0" maxValue="100" value="100"
-                      ticksLabelsVisible="false" ticksVisible="false"
+                      minValue="0" maxValue="100" value="#{SliderBean.opacity}"
                       snapToTicks="false" ticksAlignment="center" orientation="vertical"
                       minorTickImageUrl="/openFacesResources/META-INF/resources/openfaces/input/slider_minorTick_vertical_bright.png"
                       onchanging="changeOpacity(slider.getValue())"/>
@@ -45,7 +44,7 @@
           <td valign="top" class="smallTD">
             <o:slider id="sliderSize" minorTickSpacing="1" minValue="10" maxValue="24"
                       ticksAlignment="rightOrBottom" majorTickSpacing="1"
-                      tooltipEnabled="false" value="14"
+                      tooltipEnabled="false" value="#{SliderBean.fontSize}"
                       styleClass="sliderFont"
                       onchanging="changeSize(slider.getValue())"/>
           </td>
@@ -60,9 +59,8 @@
                 <td valign="top" class="smallTD">
                   <o:slider id="sliderColorRed" minValue="0" maxValue="255"
                             ticksAlignment="leftOrTop" majorTickSpacing="255"
-                            minorTickSpacing="255"
                             ticksVisible="false" snapToTicks="false"
-                            styleClass="colorSlider"
+                            styleClass="colorSlider"  value="#{SliderBean.colorRed}"
                             onchanging="changeColor()"/>
                 </td>
               </tr>
@@ -74,7 +72,7 @@
                   <o:slider id="sliderColorGreen" minValue="0" maxValue="255"
                             ticksAlignment="leftOrTop" majorTickSpacing="255"
                             ticksVisible="false" snapToTicks="false"
-                            styleClass="colorSlider"
+                            styleClass="colorSlider" value="#{SliderBean.colorGreen}"
                             onchanging="changeColor()"/>
                 </td>
               </tr>
@@ -87,13 +85,14 @@
                             ticksAlignment="leftOrTop" majorTickSpacing="255"
                             ticksVisible="false" snapToTicks="false"
                             styleClass="colorSlider"
+                            value="#{SliderBean.colorBlue}"
                             onchanging="changeColor()"/>
                 </td>
               </tr>
             </table>
           </td>
         </tr>
-      </table>
+      </table>  <!--
       <o:slider id="sliderTemp" minValue="0" maxValue="1"
                             ticksAlignment="leftOrTop" majorTickSpacing="0.2"
                             minorTickSpacing="0.1"
@@ -104,12 +103,14 @@
                       ticksLabelsVisible="false"
                       ticksVisible="false"
                       snapToTicks="false" orientation="vertical"/>
-
+                    -->
       <div id="widthLabel">Width, % :</div>
       <div><o:slider id="sliderWidth" minorTickSpacing="5" minValue="20" maxValue="80"
                      ticksAlignment="leftOrTop" majorTickSpacing="10"
-                     styleClass="widthSlider" value="80"
-                     onchanging="changeWidth(slider.getValue())"/>
+                     styleClass="widthSlider" value="#{SliderBean.width}" textFieldState="readOnly"
+                     onchanging="changeWidth(slider.getValue())">
+         <f:convertNumber pattern="## %"/>
+                     </o:slider>
       </div>
 
       <div id="changed_text">

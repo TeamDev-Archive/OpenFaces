@@ -24,8 +24,9 @@
 }
 
 #widthLabel {
-    padding-top: 30px;
+    padding-top: 25px;
     padding-left: 80px;
+    padding-right: 25px;
     float: left;
 }
 
@@ -45,7 +46,6 @@
 .widthSlider {
     width: 435px;
     height: 30px;
-    padding-left: 25px;
 }
 
 .colorSlider {

@@ -30,6 +30,7 @@ import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.StyleGroup;
 import org.openfaces.util.Styles;
 
+import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -38,10 +39,12 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.convert.NumberConverter;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+//
 
 /**
  * @author : roman.nikolaienko
@@ -126,6 +129,20 @@ public class SliderRenderer extends RendererBase {
         String tooltipStyle = (String) slider.getAttributes().get("tooltipStyle");
         String tooltipClass = (String) slider.getAttributes().get("tooltipClass");
         return Styles.getCSSClass(context, slider, tooltipStyle, DEFAULT_TOOLTIP_CLASS, tooltipClass);
+    }
+
+    private boolean isIntegerTooltipType(FacesContext context, Slider slider) {
+        ValueExpression value = slider.getValueExpression("value");
+        if (value != null) {
+            Class typeOfValue = value.getType(context.getELContext());
+            if (typeOfValue.equals(Double.class) || typeOfValue.equals(Float.class)
+                    || typeOfValue.equals(BigDecimal.class)) {
+                return false;
+            }else{
+                return true;
+            }
+        }
+        return false;
     }
 
     private String getTextFieldStyleClass(FacesContext context, Slider slider) throws IOException {
@@ -795,6 +812,7 @@ public class SliderRenderer extends RendererBase {
                 slider.getOnchange(), slider.getOnchanging(),
                 getTextFieldStyleClass(context, slider),
                 getTooltipStyleClass(context, slider),
+                isIntegerTooltipType(context, slider),
                 getSliderStyleClass(context, slider),
                 getSliderFocusedStyleClass(context, slider),
                 activeElementRolloverStyleClass,

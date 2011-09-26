@@ -9,6 +9,10 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
+
+/*
+* 34 and 150 rows should be commented for better processing , when parsing or getting nmber with symbol = '%'
+* */
 O$.Dojo = {
 
   Number : {
@@ -31,7 +35,7 @@ O$.Dojo = {
       var positivePattern = patterns[0];
       pattern = patterns[(value < 0) ? 1 : 0] || ("-" + positivePattern);
       if (pattern.indexOf("%") != -1) {
-        value *= 100;
+        //value *= 100;
       } else {
         if (pattern.indexOf("‰") != -1) {
           value *= 1000;
@@ -156,7 +160,7 @@ O$.Dojo = {
       var _33 = _30.decimal;
       var _34 = 1;
       if (_31.indexOf("%") != -1) {
-        _34 /= 100;
+        //_34 /= 100;
       } else {
         if (_31.indexOf("‰") != -1) {
           _34 /= 1000;
