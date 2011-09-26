@@ -33,6 +33,7 @@
             <o:slider id="sliderOpacity" minorTickSpacing="10" majorTickSpacing="50"
                       styleClass="sliderOpacity"
                       minValue="0" maxValue="100" value="100"
+                      ticksLabelsVisible="false" ticksVisible="false"
                       snapToTicks="false" ticksAlignment="center" orientation="vertical"
                       minorTickImageUrl="/openFacesResources/META-INF/resources/openfaces/input/slider_minorTick_vertical_bright.png"
                       onchanging="changeOpacity(slider.getValue())"/>
@@ -59,6 +60,7 @@
                 <td valign="top" class="smallTD">
                   <o:slider id="sliderColorRed" minValue="0" maxValue="255"
                             ticksAlignment="leftOrTop" majorTickSpacing="255"
+                            minorTickSpacing="255"
                             ticksVisible="false" snapToTicks="false"
                             styleClass="colorSlider"
                             onchanging="changeColor()"/>

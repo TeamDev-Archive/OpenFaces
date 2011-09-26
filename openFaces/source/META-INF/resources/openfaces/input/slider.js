@@ -702,8 +702,9 @@ O$.Slider = {
       if (slider._prevKeyHandler) {
         slider._prevKeyHandler(e);
       }
-      if ((e.keyCode == 33 || e.keyCode == 34 || e.keyCode == 38 || e.keyCode == 40 || e.keyCode == 37
-              || e.keyCode == 39) && O$.isSafari()) {
+      if ((e.keyCode == 33 || e.keyCode == 34 || e.keyCode == 35 || e.keyCode == 36
+              || e.keyCode == 37|| e.keyCode == 38 || e.keyCode == 39 || e.keyCode == 40)
+              && (O$.isSafari() || O$.isChrome())) {
         return false;
       }
     };
