@@ -351,56 +351,58 @@ O$.Slider = {
           O$.setElementWidth(slider.s_bar, slider.s_pixelStep * slider.getTicksAmount());
           O$.setElementHeight(slider.s_bar, O$.getElementSize(O$(sl_sliderId + "::bar::image")).height);
           var tempMarginLeft;
-          for (counterTicks = 0; counterTicks < slider.getTicksAmount(); counterTicks++) {
-            s_aTickLT = O$(sl_sliderId + "::ticksLT::tick" + counterTicks);
-            image = O$(sl_sliderId + "::ticksLT::tick" + counterTicks + "::image");
-            text = O$(sl_sliderId + "::ticksLT::tick" + counterTicks + "::text");
-            if (slider.s_ticksLT != null && s_aTickLT!=null) {
-              O$.setElementWidth(s_aTickLT, slider.s_pixelStep);
-              O$.setElementHeight(s_aTickLT, maxTickSize);
-              if(image!=null){
-                image.style.marginTop = maxTickSize - O$.getElementSize(image).height + "px";
-                image.style.marginLeft = Math.floor((slider.s_pixelStep - O$.getElementSize(image).width) / 2) -
-                                         (slider.isCorrectionNeeded(slider.s_pixelStep, O$.getElementSize(image).width) ? 1 : 0) + "px";
-              }
-
-              if (text != null) {
-                sizeText = O$.getElementSize(text).width;
-                size = O$.getElementSize(s_aTickLT).width;
-                tempMarginLeft = Math.floor((size - sizeText) / 2);
+          if (O$(sl_sliderId + "::ticksLT::tick0")!=null ||  O$(sl_sliderId + "::ticksRB::tick0")!=null){
+            for (counterTicks = 0; counterTicks < slider.getTicksAmount(); counterTicks++) {
+              s_aTickLT = O$(sl_sliderId + "::ticksLT::tick" + counterTicks);
+              image = O$(sl_sliderId + "::ticksLT::tick" + counterTicks + "::image");
+              text = O$(sl_sliderId + "::ticksLT::tick" + counterTicks + "::text");
+              if (slider.s_ticksLT != null && s_aTickLT!=null) {
+                O$.setElementWidth(s_aTickLT, slider.s_pixelStep);
+                O$.setElementHeight(s_aTickLT, maxTickSize);
                 if(image!=null){
-                  tempMarginLeft-=slider.isCorrectionNeeded(slider.s_pixelStep, O$.getElementSize(image).width) ? 1 : 0;
-                  text.style.marginTop = Math.floor(O$.getElementSize(text).height * 3 / 2) - maxTickSize + "px";
-                }else{
-                   text.style.marginTop = Math.floor(O$.getElementSize(text).height * 3 / 2) - maxTickSize*2 + "px";
+                  image.style.marginTop = maxTickSize - O$.getElementSize(image).height + "px";
+                  image.style.marginLeft = Math.floor((slider.s_pixelStep - O$.getElementSize(image).width) / 2) -
+                                           (slider.isCorrectionNeeded(slider.s_pixelStep, O$.getElementSize(image).width) ? 1 : 0) + "px";
                 }
-                text.style.marginLeft = tempMarginLeft+"px";
-              }
-            }
 
-            s_aTickRB = O$(sl_sliderId + "::ticksRB::tick" + counterTicks);
-            image = O$(sl_sliderId + "::ticksRB::tick" + counterTicks + "::image");
-            text = O$(sl_sliderId + "::ticksRB::tick" + counterTicks + "::text");
-
-            if (slider.s_ticksRB != null && s_aTickRB!=null) {
-              O$.setElementWidth(s_aTickRB, slider.s_pixelStep);
-              O$.setElementHeight(s_aTickRB, maxTickSize);
-              if(image!=null){
-                image.style.marginBottom = maxTickSize - O$.getElementSize(image).height + "px";
-                image.style.marginLeft = Math.floor((slider.s_pixelStep - O$.getElementSize(image).width) / 2) -
-                                        (slider.isCorrectionNeeded(slider.s_pixelStep, O$.getElementSize(image).width) ? 1 : 0) + "px";
+                if (text != null) {
+                  sizeText = O$.getElementSize(text).width;
+                  size = O$.getElementSize(s_aTickLT).width;
+                  tempMarginLeft = Math.floor((size - sizeText) / 2);
+                  if(image!=null){
+                    tempMarginLeft-=slider.isCorrectionNeeded(slider.s_pixelStep, O$.getElementSize(image).width) ? 1 : 0;
+                    text.style.marginTop = Math.floor(O$.getElementSize(text).height * 3 / 2) - maxTickSize + "px";
+                  }else{
+                     text.style.marginTop = Math.floor(O$.getElementSize(text).height * 3 / 2) - maxTickSize*2 + "px";
+                  }
+                  text.style.marginLeft = tempMarginLeft+"px";
+                }
               }
-              if (text != null) {
-                sizeText = O$.getElementSize(text).width;
-                size = O$.getElementSize(s_aTickRB).width;
-                tempMarginLeft = Math.floor((size - sizeText) / 2);
+
+              s_aTickRB = O$(sl_sliderId + "::ticksRB::tick" + counterTicks);
+              image = O$(sl_sliderId + "::ticksRB::tick" + counterTicks + "::image");
+              text = O$(sl_sliderId + "::ticksRB::tick" + counterTicks + "::text");
+
+              if (slider.s_ticksRB != null && s_aTickRB!=null) {
+                O$.setElementWidth(s_aTickRB, slider.s_pixelStep);
+                O$.setElementHeight(s_aTickRB, maxTickSize);
                 if(image!=null){
-                   tempMarginLeft-=slider.isCorrectionNeeded(slider.s_pixelStep, O$.getElementSize(image).width) ? 1 : 0;
-                  text.style.marginTop = maxTickSize - Math.floor(O$.getElementSize(text).height / 2) + "px";
-                }else{
-                  text.style.marginTop = maxTickSize + "px";
+                  image.style.marginBottom = maxTickSize - O$.getElementSize(image).height + "px";
+                  image.style.marginLeft = Math.floor((slider.s_pixelStep - O$.getElementSize(image).width) / 2) -
+                                          (slider.isCorrectionNeeded(slider.s_pixelStep, O$.getElementSize(image).width) ? 1 : 0) + "px";
                 }
-                text.style.marginLeft =tempMarginLeft+"px";
+                if (text != null) {
+                  sizeText = O$.getElementSize(text).width;
+                  size = O$.getElementSize(s_aTickRB).width;
+                  tempMarginLeft = Math.floor((size - sizeText) / 2);
+                  if(image!=null){
+                     tempMarginLeft-=slider.isCorrectionNeeded(slider.s_pixelStep, O$.getElementSize(image).width) ? 1 : 0;
+                    text.style.marginTop = maxTickSize - Math.floor(O$.getElementSize(text).height / 2) + "px";
+                  }else{
+                    text.style.marginTop = maxTickSize + "px";
+                  }
+                  text.style.marginLeft =tempMarginLeft+"px";
+                }
               }
             }
           }
@@ -471,60 +473,61 @@ O$.Slider = {
           O$.setElementHeight(slider.s_bar, slider.s_pixelStep * slider.getTicksAmount() - (O$.isExplorer() && O$.isStrictMode() ? Math.round(slider.s_pixelStep / 2) + 1 : 0));
           O$.setElementWidth(slider.s_bar, O$.getElementSize(O$(sl_sliderId + "::bar::image")).width);
           O$.setElementWidth(O$.getParentNode(slider.s_bar, "td"), O$.getElementSize(O$(sl_sliderId + "::bar::image")).width);
+          if (O$(sl_sliderId + "::ticksLT::tick0")!=null ||  O$(sl_sliderId + "::ticksRB::tick0")!=null){
+            for (counterTicks = 0; counterTicks < slider.getTicksAmount(); counterTicks++) {
+              s_aTickLT = O$(sl_sliderId + "::ticksLT::tick" + counterTicks);
+              image = O$(sl_sliderId + "::ticksLT::tick" + counterTicks + "::image");
+              text = O$(sl_sliderId + "::ticksLT::tick" + counterTicks + "::text");
 
-          for (counterTicks = 0; counterTicks < slider.getTicksAmount(); counterTicks++) {
-            s_aTickLT = O$(sl_sliderId + "::ticksLT::tick" + counterTicks);
-            image = O$(sl_sliderId + "::ticksLT::tick" + counterTicks + "::image");
-            text = O$(sl_sliderId + "::ticksLT::tick" + counterTicks + "::text");
-
-            if (slider.s_ticksLT != null) {
-               if(image!=null){
-                O$.setElementHeight(s_aTickLT, slider.s_pixelStep - (Math.floor((slider.s_pixelStep - O$.getElementSize(image).height) / 2) -
-                                                                     (slider.isCorrectionNeeded(slider.s_pixelStep, O$.getElementSize(image).height) ? 1 : 0)));
-                O$.getParentNode(image, "div").style.paddingTop = Math.floor((slider.s_pixelStep - O$.getElementSize(image).height) / 2) -
-                                                                  (slider.isCorrectionNeeded(slider.s_pixelStep, O$.getElementSize(image).height) ? 1 : 0) + "px";
-                image.style.marginLeft = maxTickSize - O$.getElementSize(image).width + "px";
-              }else if(text!=null){
-                    O$.setElementHeight(s_aTickLT, slider.s_pixelStep);
-                    O$.getParentNode(text, "div").style.paddingTop = Math.floor(slider.s_pixelStep) + "px";
-               }
-              if (text != null) {
-                sizeText = O$.getElementSize(text).width;
+              if (slider.s_ticksLT != null) {
                  if(image!=null){
-                  size = O$.getElementSize(image).width;
+                  O$.setElementHeight(s_aTickLT, slider.s_pixelStep - (Math.floor((slider.s_pixelStep - O$.getElementSize(image).height) / 2) -
+                                                                       (slider.isCorrectionNeeded(slider.s_pixelStep, O$.getElementSize(image).height) ? 1 : 0)));
+                  O$.getParentNode(image, "div").style.paddingTop = Math.floor((slider.s_pixelStep - O$.getElementSize(image).height) / 2) -
+                                                                    (slider.isCorrectionNeeded(slider.s_pixelStep, O$.getElementSize(image).height) ? 1 : 0) + "px";
+                  image.style.marginLeft = maxTickSize - O$.getElementSize(image).width + "px";
+                }else if(text!=null){
+                      O$.setElementHeight(s_aTickLT, slider.s_pixelStep);
+                      O$.getParentNode(text, "div").style.paddingTop = Math.floor(slider.s_pixelStep) + "px";
                  }
-                if (O$.isExplorer6() || O$.isExplorer7() || (O$.isExplorer8() && O$.isQuirksMode()))
-                  text.style.marginLeft = -maxTickSize + "px";
-                else
-                  text.style.marginLeft = -Math.floor(sizeText / 2) + "px";
-                sizeText = O$.getElementSize(text).height;
+                if (text != null) {
+                  sizeText = O$.getElementSize(text).width;
+                   if(image!=null){
+                    size = O$.getElementSize(image).width;
+                   }
+                  if (O$.isExplorer6() || O$.isExplorer7() || (O$.isExplorer8() && O$.isQuirksMode()))
+                    text.style.marginLeft = -maxTickSize + "px";
+                  else
+                    text.style.marginLeft = -Math.floor(sizeText / 2) + "px";
+                  sizeText = O$.getElementSize(text).height;
 
-                text.style.marginTop = Math.floor(( - sizeText) / 2) + "px";
-              }
-            }
-
-            s_aTickRB = O$(sl_sliderId + "::ticksRB::tick" + counterTicks);
-            image = O$(sl_sliderId + "::ticksRB::tick" + counterTicks + "::image");
-            text = O$(sl_sliderId + "::ticksRB::tick" + counterTicks + "::text");
-
-            if (slider.s_ticksRB != null) {
-              if(image!=null){
-                O$.setElementHeight(s_aTickRB, slider.s_pixelStep - (Math.floor((slider.s_pixelStep - O$.getElementSize(image).height) / 2) -
-                                                                     (slider.isCorrectionNeeded(slider.s_pixelStep, O$.getElementSize(image).height) ? 1 : 0)));
-                O$.getParentNode(image, "div").style.paddingTop = Math.floor((slider.s_pixelStep - O$.getElementSize(image).height) / 2) -
-                                                                 (slider.isCorrectionNeeded(slider.s_pixelStep, O$.getElementSize(image).height) ? 1 : 0) + "px";
-              }else if(text!=null){
-                    O$.setElementHeight(s_aTickRB, slider.s_pixelStep);
-                    O$.getParentNode(text, "div").style.paddingTop = Math.floor(slider.s_pixelStep) + "px";
-              }
-              if (text != null) {
-                sizeText = O$.getElementSize(text).width;
-                if(image!=null){
-                  size = O$.getElementSize(image).width;
+                  text.style.marginTop = Math.floor(( - sizeText) / 2) + "px";
                 }
-                text.style.marginLeft = Math.floor(maxTickSize - sizeText / 2) + "px";
-                sizeText = O$.getElementSize(text).height;
-                text.style.marginTop = Math.floor(( - sizeText) / 2) + "px";
+              }
+
+              s_aTickRB = O$(sl_sliderId + "::ticksRB::tick" + counterTicks);
+              image = O$(sl_sliderId + "::ticksRB::tick" + counterTicks + "::image");
+              text = O$(sl_sliderId + "::ticksRB::tick" + counterTicks + "::text");
+
+              if (slider.s_ticksRB != null) {
+                if(image!=null){
+                  O$.setElementHeight(s_aTickRB, slider.s_pixelStep - (Math.floor((slider.s_pixelStep - O$.getElementSize(image).height) / 2) -
+                                                                       (slider.isCorrectionNeeded(slider.s_pixelStep, O$.getElementSize(image).height) ? 1 : 0)));
+                  O$.getParentNode(image, "div").style.paddingTop = Math.floor((slider.s_pixelStep - O$.getElementSize(image).height) / 2) -
+                                                                   (slider.isCorrectionNeeded(slider.s_pixelStep, O$.getElementSize(image).height) ? 1 : 0) + "px";
+                }else if(text!=null){
+                      O$.setElementHeight(s_aTickRB, slider.s_pixelStep);
+                      O$.getParentNode(text, "div").style.paddingTop = Math.floor(slider.s_pixelStep) + "px";
+                }
+                if (text != null) {
+                  sizeText = O$.getElementSize(text).width;
+                  if(image!=null){
+                    size = O$.getElementSize(image).width;
+                  }
+                  text.style.marginLeft = Math.floor(maxTickSize - sizeText / 2) + "px";
+                  sizeText = O$.getElementSize(text).height;
+                  text.style.marginTop = Math.floor(( - sizeText) / 2) + "px";
+                }
               }
             }
           }

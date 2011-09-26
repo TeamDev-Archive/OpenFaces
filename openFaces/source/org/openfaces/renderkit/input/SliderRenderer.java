@@ -477,10 +477,10 @@ public class SliderRenderer extends RendererBase {
         double minTick = slider.getMinorTickSpacing().doubleValue();
         double maxTick = slider.getMajorTickSpacing().doubleValue();
         NumberFormat format = NumberFormat.getInstance(context.getViewRoot().getLocale());
+        format.setMinimumFractionDigits(0);
+        format.setMaximumFractionDigits(2);
         NumberConverter converter = getNumberConverter(context, slider);
 
-        format.setMaximumFractionDigits(converter.getMaxFractionDigits());
-        format.setMinimumFractionDigits(converter.getMinFractionDigits());
         double curTick = minValue;
         if (slider.isTicksLabelsVisible() || slider.isTicksVisible()) {
             for (int counterTicks = 0; curTick <= maxValue; counterTicks++) {
@@ -494,9 +494,7 @@ public class SliderRenderer extends RendererBase {
                 }
                 writer.writeAttribute("title", labelValue, null);
                 if (slider.isTicksLabelsVisible()) {
-                    if (Math.round(curTick / maxTick * 10000) % 10000 != 0) {
-                        encodeLabelTick(writer, slider, 0, "hidden;", tickId + counterTicks + DEFAULT_ELEMENT_TEXT_ID);
-                    } else {
+                    if (Math.round(curTick / maxTick * 10000) % 10000 == 0) {
                         encodeLabelTick(writer, slider, labelValue, ticksLabelsVisibility, tickId + counterTicks + DEFAULT_ELEMENT_TEXT_ID);
                     }
                 }
