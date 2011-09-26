@@ -355,8 +355,7 @@ O$.Slider = {
             s_aTickLT = O$(sl_sliderId + "::ticksLT::tick" + counterTicks);
             image = O$(sl_sliderId + "::ticksLT::tick" + counterTicks + "::image");
             text = O$(sl_sliderId + "::ticksLT::tick" + counterTicks + "::text");
-
-            if (slider.s_ticksLT != null) {
+            if (slider.s_ticksLT != null && s_aTickLT!=null) {
               O$.setElementWidth(s_aTickLT, slider.s_pixelStep);
               O$.setElementHeight(s_aTickLT, maxTickSize);
               if(image!=null){
@@ -383,7 +382,7 @@ O$.Slider = {
             image = O$(sl_sliderId + "::ticksRB::tick" + counterTicks + "::image");
             text = O$(sl_sliderId + "::ticksRB::tick" + counterTicks + "::text");
 
-            if (slider.s_ticksRB != null) {
+            if (slider.s_ticksRB != null && s_aTickRB!=null) {
               O$.setElementWidth(s_aTickRB, slider.s_pixelStep);
               O$.setElementHeight(s_aTickRB, maxTickSize);
               if(image!=null){
@@ -485,7 +484,7 @@ O$.Slider = {
                 O$.getParentNode(image, "div").style.paddingTop = Math.floor((slider.s_pixelStep - O$.getElementSize(image).height) / 2) -
                                                                   (slider.isCorrectionNeeded(slider.s_pixelStep, O$.getElementSize(image).height) ? 1 : 0) + "px";
                 image.style.marginLeft = maxTickSize - O$.getElementSize(image).width + "px";
-              }else{
+              }else if(text!=null){
                     O$.setElementHeight(s_aTickLT, slider.s_pixelStep);
                     O$.getParentNode(text, "div").style.paddingTop = Math.floor(slider.s_pixelStep) + "px";
                }
@@ -514,6 +513,9 @@ O$.Slider = {
                                                                      (slider.isCorrectionNeeded(slider.s_pixelStep, O$.getElementSize(image).height) ? 1 : 0)));
                 O$.getParentNode(image, "div").style.paddingTop = Math.floor((slider.s_pixelStep - O$.getElementSize(image).height) / 2) -
                                                                  (slider.isCorrectionNeeded(slider.s_pixelStep, O$.getElementSize(image).height) ? 1 : 0) + "px";
+              }else if(text!=null){
+                    O$.setElementHeight(s_aTickRB, slider.s_pixelStep);
+                    O$.getParentNode(text, "div").style.paddingTop = Math.floor(slider.s_pixelStep) + "px";
               }
               if (text != null) {
                 sizeText = O$.getElementSize(text).width;
