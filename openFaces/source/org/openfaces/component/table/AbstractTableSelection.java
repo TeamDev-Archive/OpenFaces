@@ -56,7 +56,28 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
         this.model = model;
     }
 
-    public abstract boolean isMultipleSelectionAllowed();
+    public boolean isMultipleSelectionAllowed() {
+        return !"single".equals(getSelectionMode());
+    }
+
+    public enum Mode {
+        SINGLE("single"),
+        MULTIPLE("multiple"),
+        HIERARCHICAL("hierarchical");
+
+        private String value;
+
+        Mode(String value) {
+            this.value = value;
+        }
+
+        @Override
+        public String toString() {
+            return value;
+        }
+    }
+
+    public abstract Mode getSelectionMode();
 
     public abstract void rememberByKeys();
 
@@ -243,7 +264,7 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
                 isEnabled(),
                 isRequired(),
                 "rows",
-                isMultipleSelectionAllowed(),
+                getSelectionMode(),
                 table.getDeferBodyLoading() ? null : encodeSelectionIntoIndexes(),
                 getAttributes().get("_selectionCls_"),
                 onchange,

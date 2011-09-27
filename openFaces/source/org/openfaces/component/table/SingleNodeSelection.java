@@ -170,8 +170,8 @@ public class SingleNodeSelection extends TreeTableSelection {
     }
 
     @Override
-    public boolean isMultipleSelectionAllowed() {
-        return false;
+    public Mode getSelectionMode() {
+        return Mode.SINGLE;
     }
 
     @Override

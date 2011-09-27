@@ -42713,6 +42713,205 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
   </tag>
+  <tag>
+    <description>This is similar to the multiple node selection mode specified with &amp;lt;multipleNodeSelection&gt;
+      tag, but selection of parent nodes is synchronized with selection state of its child nodes: the parent node is
+      selected when all of its child nodes are selected, it&apos;s unselected when all child nodes are unselected, and
+      it&apos;s in an &quot;undefined&quot; state (as in a tri-state check-box), when only a part of its child nodes are
+      selected. Similarly, triggering selection for a parent node triggers selection for all of its child nodes. Note
+      that only the child nodes preloaded to the client are affected with such auto-selection behavior.
+    </description>
+    <name>hierarchicalNodeSelection</name>
+    <tag-class>org.openfaces.taglib.jsp.table.HierarchicalNodeSelectionJspTag</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+      <description>A flag that indicates whether or not this selection tag should be considered active. Specifying
+        rendered to false is identical to not specifying the selection tag at all. This might be useful for dynamic
+        switching between different selection modes by declaring sevaral selection tags and
+        specifying rendered to true for only one of them.
+      </description>
+      <name>rendered</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The node data objects for a currently selected node.
+        The value "null" means that no node is currently selected.
+      </description>
+      <name>nodeDatas</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType java.util.List of Object -->
+      <!-- @bindingType java.util.Set of Object -->
+      <!-- @bindingType array of Object -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>The full path to a currently selected node.
+        The value "null" means that no node is currently selected.
+      </description>
+      <name>nodePaths</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType java.util.List of org.openfaces.component.table. TreePath -->
+      <!-- @bindingType java.util.Set of org.openfaces.component.table. TreePath -->
+      <!-- @bindingType array of org.openfaces.component.table. TreePath -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>A flag that indicates whether or not the user can change selection.</description>
+      <name>enabled</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A flag that indicates whether there should always be at least one selected item (true) or empty
+        selection is allowed (false).</description>
+      <name>required</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el false -->
+    </attribute>
+    <attribute>
+      <description>Is similar to the "action" attribute of the HTMLCommandButton component.
+        It can either specify a string defining the static outcome
+        of the selection change action, or it can be defined as a method-binding expression.
+        Defining the "action" attribute causes form submission when the user changes selection.
+      </description>
+      <name>action</name>
+      <deferred-method>
+        <method-signature>java.lang.Object action()</method-signature>
+      </deferred-method>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Id's of components, which will be rerendered after successful Ajax request.
+        Evaluates to Iterable. If a literal is specified can be a single id or a comma-separated list if id's.
+      </description>
+      <name>render</name>
+      <required>false</required>
+      <deferred-value>
+        <type>java.util.List</type>
+      </deferred-value>
+      <!-- @bindingType java.util.Object -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Id's of components whose data should be submitted and processed on the server in addition to the
+        reloaded components. The difference with render is that components listed in execute will
+        just process the submitted data, but won't be rerendered. This can often be needed when the reloaded data
+        depends on some other component on a page.
+        Evaluates to Iterable. If a literal is specified can be a single id or a comma-separated list if id's.
+      </description>
+      <name>execute</name>
+      <required>false</required>
+      <deferred-value>
+        <type>java.util.List</type>
+      </deferred-value>
+      <!-- @bindingType java.util.Object -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A flag that indicates whether or not selection can be made with the mouse.</description>
+      <name>mouseSupport</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A style for selected rows.</description>
+      <name>style</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for selected rows.</description>
+      <name>styleClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed every time the user changes selection.</description>
+      <name>onchange</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Invoked when the Ajax request initiated with this component starts.</description>
+      <name>onajaxstart</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Invoked when the Ajax request initiated with this component finishes.</description>
+      <name>onajaxend</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Invoked when an error occurs during the Ajax request initiated with this component.</description>
+      <name>onerror</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Specifies whether the components listed in the &quot;render&quot; attribute undergo the &quot;execute&quot;
+        lifecycle (Restore View, Apply Request Values, Process Validations and Update Model Values) phases as if these
+        components are implicitly specified in the &quot;execute&quot; attribute as well.
+      </description>
+      <name>executeRenderedComponents</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+  </tag>
 
   <!--<tag>-->
     <!--<description>This component is under construction. Displays a box where users may read and write comments. This component works on top of the Disqus-->

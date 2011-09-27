@@ -1257,5 +1257,13 @@
       <handler-class>org.openfaces.taglib.facelets.table.SelectRowCheckboxTagHandler</handler-class>
     </component>
   </tag>
+  <tag>
+    <tag-name>hierarchicalNodeSelection</tag-name>
+    <component>
+      <component-type>org.openfaces.HierarchicalNodeSelection</component-type>
+      <renderer-type>org.openfaces.HierarchicalNodeSelectionRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.table.HierarchicalNodeSelectionTagHandler</handler-class>
+    </component>
+  </tag>
 
 </facelet-taglib>

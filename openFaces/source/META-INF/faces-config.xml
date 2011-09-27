@@ -815,6 +815,11 @@
     <component-type>org.openfaces.SelectRowCheckbox</component-type>
     <component-class>org.openfaces.component.table.SelectRowCheckbox</component-class>
   </component>
+
+  <component>
+    <component-type>org.openfaces.HierarchicalNodeSelection</component-type>
+    <component-class>org.openfaces.component.table.HierarchicalNodeSelection</component-class>
+  </component>
   <render-kit>
     <renderer>
       <component-family>org.openfaces.DataTable</component-family>

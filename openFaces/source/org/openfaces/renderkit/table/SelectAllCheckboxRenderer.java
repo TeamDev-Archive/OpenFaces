@@ -55,10 +55,14 @@ public class SelectAllCheckboxRenderer extends SelectBooleanCheckboxRenderer {
         } else
             selection = null;
 
+        SelectAllCheckbox selectAllCheckbox = (SelectAllCheckbox) component;
         if (!checkBoxColHeader) {
-            if (!selection.isEnabled())
-                ((SelectAllCheckbox) component).setDisabled(true);
+            if (!selection.isEnabled()) {
+                selectAllCheckbox.setDisabled(true);
+            }
         }
+
+        selectAllCheckbox.setSelected(false);
 
         super.encodeBegin(context, component);
     }
