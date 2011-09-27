@@ -10,9 +10,38 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 O$.Slider = {
-  _init: function(sl_sliderId, sl_value, sl_minValue, sl_maxValue, sl_minorTickSpacing, sl_majorTickSpacing, sl_orientation, sl_fillDirection, //   sl_ticksAlignment,
+  _init: function(sl_sliderId,
+                  sl_value,
+                  sl_minValue,
+                  sl_maxValue,
+                  sl_minorTickSpacing,
+                  sl_majorTickSpacing,
+                  sl_orientation,
+                  sl_fillDirection, //   sl_ticksAlignment,
                   //  sl_isDefaultStyling,
-                  sl_isDisabled, sl_tooltipEnabled, sl_barCanChange, sl_barIsVisible, sl_textFieldState, sl_snapToTicks, sl_onchange, sl_onchanging, sl_textFieldStyle, sl_toolTipStyle, sl_toolTipIsInteger, sl_styleClass, focusedClass, rolloverAEClass, sl_autoRepeatDelay, formatOptions, sl_transitionPeriod, handleImageUrl, handleRolloverImageUrl, LTButtonImageUrl, LTButtonRolloverImageUrl, RBButtonImageUrl, RBButtonRolloverImageUrl) {
+                  sl_isDisabled,
+                  sl_tooltipEnabled,
+                  sl_barCanChange,
+                  sl_barIsVisible,
+                  sl_textFieldState,
+                  sl_snapToTicks,
+                  sl_onchange,
+                  sl_onchanging,
+                  sl_textFieldStyle,
+                  sl_toolTipStyle,
+                  sl_toolTipIsInteger,
+                  sl_styleClass,
+                  focusedClass,
+                  rolloverAEClass,
+                  sl_autoRepeatDelay,
+                  formatOptions,
+                  sl_transitionPeriod,
+                  handleImageUrl,
+                  handleRolloverImageUrl,
+                  LTButtonImageUrl,
+                  LTButtonRolloverImageUrl,
+                  RBButtonImageUrl,
+                  RBButtonRolloverImageUrl) {
     var slider = O$.initComponent(sl_sliderId, {focused: focusedClass}, {
 
       s_rightBottomButton : O$.byIdOrName(sl_sliderId + "::rightBottomButton"),
@@ -559,6 +588,7 @@ O$.Slider = {
         return tooltip;
       }
     });
+    setCorrectPaddingForOnFocusSlider();
 
     formatOptions = formatOptions || {};
     if (formatOptions.type && formatOptions.type == "number") {
@@ -931,6 +961,45 @@ O$.Slider = {
       }
       if (slider._onchanging)
         slider._onchanging(O$.createEvent("changing"));
+    }
+    function setCorrectPaddingForOnFocusSlider(){
+                  var sliderOnFocusPaddings = O$.getStyleClassProperties(
+                          focusedClass, ["padding-left", "padding-right", "padding-top", "padding-bottom"]);
+
+                   var sliderOnFocusBorder = O$.getStyleClassProperties(
+                          focusedClass, ["border-left-width", "border-right-width", "border-top-width", "border-bottom-width"]);
+
+                  var sliderStyle = O$.getElementStyle(slider, ["padding-left", "padding-right", "padding-top", "padding-bottom",
+                    "border-left-width", "border-top-width", "border-right-width", "border-bottom-width"]);
+
+                  var adjustedStyles = "";
+
+                  function adjustPaddingIfNotSpecified(paddingPropertyName, padding, border,
+                                                       onFocusedBorder,borderOnFocusedName) {
+                    if (sliderOnFocusPaddings[paddingPropertyName])
+                      return;
+                    var onFocusedPadding = O$.calculateNumericCSSValue(padding) + O$.calculateNumericCSSValue(border) - O$.calculateNumericCSSValue(onFocusedBorder);
+                    adjustedStyles += paddingPropertyName + ": " + onFocusedPadding + "px; ";
+
+                    if (onFocusedPadding>O$.calculateNumericCSSValue(padding)){
+                      var borderOnFocus=O$.calculateNumericCSSValue(padding)+ O$.calculateNumericCSSValue(border) -onFocusedPadding;
+                      adjustedStyles += borderOnFocusedName + ": " + borderOnFocus + "px; ";
+                    }
+                  }
+
+                  adjustPaddingIfNotSpecified("padding-left",sliderStyle.paddingLeft, sliderStyle.borderLeftWidth,
+                              sliderOnFocusBorder["border-left-width"],"border-left-width");
+                  adjustPaddingIfNotSpecified("padding-right", sliderStyle.paddingRight, sliderStyle.borderRightWidth,
+                             sliderOnFocusBorder["border-right-width"],"border-right-width");
+                  adjustPaddingIfNotSpecified("padding-top", sliderStyle.paddingTop, sliderStyle.borderTopWidth,
+                              sliderOnFocusBorder["border-top-width"],"border-top-width");
+                  adjustPaddingIfNotSpecified("padding-bottom", sliderStyle.paddingBottom, sliderStyle.borderBottomWidth,
+                              sliderOnFocusBorder["border-bottom-width"],"border-bottom-width");
+
+                  if (adjustedStyles) {
+                    var newClassName = O$.createCssClass(adjustedStyles);
+                    focusedClass = O$.combineClassNames([focusedClass, newClassName]);
+                  }
     }
   }
 };

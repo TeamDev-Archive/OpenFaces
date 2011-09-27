@@ -326,6 +326,8 @@ public class SliderRenderer extends RendererBase {
         if (!isOff) {
             writer.writeAttribute("style", "overflow:hidden;border:0 none;margin:0;padding:5px;text-align:center;vertical-align:middle;", null);
             writer.startElement("div", slider);
+        }else{
+            writer.writeAttribute("style", "display:none;", null);
         }
         writer.startElement("input", slider);
         writer.writeAttribute("id", textFieldId, null);
