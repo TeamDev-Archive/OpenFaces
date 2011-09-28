@@ -771,14 +771,14 @@ O$.Table = {
                   var correctedItems = [];
                   items.forEach(function(rowIndex) {
                     var row = bodyRows[rowIndex];
-                    if (!row._hasChildren)
+                    if (!row._hasChildren || row._childRows.length == 0)
                       correctedItems.push(rowIndex);
                   });
                   if (!table._rootRows && !table._of_treeTableComponentMarker)
                     throw "Hierarchical selection can only be used in a TreeTable component";
 
                   function deriveHierarchicalSelectionState(row) {
-                    if (!row._hasChildren) {
+                    if (!row._hasChildren || row._childRows.length == 0) {
                       var scheduledForSelection = correctedItems.indexOf(row._index) != -1;
                       return scheduledForSelection;
                     }
@@ -795,8 +795,8 @@ O$.Table = {
                     });
                     if (rowSelected === undefined) {
                       // this means that child nodes for this node are not loaded to the client, and we imply an
-                      // undefined selection state for such parent node in this cae
-                      rowSelected = null;
+                      // unselected state for such parent node in this case
+                      rowSelected = false;
                     }
 
                     if (!row._pseudoRow) {
@@ -955,7 +955,7 @@ O$.Table = {
               },
 
               _setHierarchicalSelectionForRow: function(selectedItems, row, select) {
-                if (!row._hasChildren) {
+                if (!row._hasChildren || row._childRows.length == 0) {
                   var i = selectedItems.indexOf(row._index);
                   var selected = (i != -1);
                   if (selected && !select)

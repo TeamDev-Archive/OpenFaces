@@ -188,6 +188,13 @@ O$.TreeTable = {
       }
 
       this._updateExpandedNodesField();
+      if (table._selectionMode == "hierarchical") {
+        // _updateRowVisibility is needed to update parent/child references, but we can do it asynchronously to avoid
+        // degrading the perceived performance
+        setTimeout(function() {
+          table._updateRowVisibility();
+        }, 1);
+      }
     };
 
     var rows = table.body._getRows();
