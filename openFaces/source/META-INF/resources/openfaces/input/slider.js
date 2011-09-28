@@ -17,7 +17,8 @@ O$.Slider = {
                   sl_minorTickSpacing,
                   sl_majorTickSpacing,
                   sl_orientation,
-                  sl_fillDirection, //   sl_ticksAlignment,
+                  sl_fillDirection,
+                  //   sl_ticksAlignment,
                   //  sl_isDefaultStyling,
                   sl_isDisabled,
                   sl_tooltipEnabled,
@@ -32,14 +33,18 @@ O$.Slider = {
                   sl_toolTipIsInteger,
                   sl_styleClass,
                   focusedClass,
+
                   rolloverAEClass,
                   sl_autoRepeatDelay,
+
                   formatOptions,
                   sl_transitionPeriod,
+
                   handleImageUrl,
                   handleRolloverImageUrl,
                   LTButtonImageUrl,
                   LTButtonRolloverImageUrl,
+
                   RBButtonImageUrl,
                   RBButtonRolloverImageUrl) {
     var slider = O$.initComponent(sl_sliderId, {focused: focusedClass}, {
@@ -758,7 +763,6 @@ O$.Slider = {
         });
 
         function mouseDownOnBar(curClickPos) {
-          var val = slider.getValue();//for testing
           var handlePos = O$.getElementPos(slider.s_handle, slider.s_workspace);
           if (sl_fillDirection == "fromStart") {
             if (((sl_orientation == "horizontal") && (curClickPos.x - handlePos.x >= 0) ) ||
@@ -775,7 +779,6 @@ O$.Slider = {
               slider.increaseValue();
             }
           }
-          val = slider.getValue();//for testing
           slider.redisplayHandle();
         }
 
@@ -962,44 +965,44 @@ O$.Slider = {
       if (slider._onchanging)
         slider._onchanging(O$.createEvent("changing"));
     }
-    function setCorrectPaddingForOnFocusSlider(){
-                  var sliderOnFocusPaddings = O$.getStyleClassProperties(
-                          focusedClass, ["padding-left", "padding-right", "padding-top", "padding-bottom"]);
 
-                   var sliderOnFocusBorder = O$.getStyleClassProperties(
-                          focusedClass, ["border-left-width", "border-right-width", "border-top-width", "border-bottom-width"]);
+    function setCorrectPaddingForOnFocusSlider() {
+      var sliderOnFocusPaddings = O$.getStyleClassProperties(
+              focusedClass, ["padding-left", "padding-right", "padding-top", "padding-bottom"]);
 
-                  var sliderStyle = O$.getElementStyle(slider, ["padding-left", "padding-right", "padding-top", "padding-bottom",
-                    "border-left-width", "border-top-width", "border-right-width", "border-bottom-width"]);
+      var sliderOnFocusBorder = O$.getStyleClassProperties(
+              focusedClass, ["border-left-width", "border-right-width", "border-top-width", "border-bottom-width"]);
 
-                  var adjustedStyles = "";
+      var sliderStyle = O$.getElementStyle(slider, ["padding-left", "padding-right", "padding-top", "padding-bottom",
+        "border-left-width", "border-top-width", "border-right-width", "border-bottom-width"]);
 
-                  function adjustPaddingIfNotSpecified(paddingPropertyName, padding, border,
-                                                       onFocusedBorder,borderOnFocusedName) {
-                    if (sliderOnFocusPaddings[paddingPropertyName])
-                      return;
-                    var onFocusedPadding = O$.calculateNumericCSSValue(padding) + O$.calculateNumericCSSValue(border) - O$.calculateNumericCSSValue(onFocusedBorder);
-                    adjustedStyles += paddingPropertyName + ": " + onFocusedPadding + "px; ";
+      var adjustedStyles = "";
 
-                    if (onFocusedPadding>O$.calculateNumericCSSValue(padding)){
-                      var borderOnFocus=O$.calculateNumericCSSValue(padding)+ O$.calculateNumericCSSValue(border) -onFocusedPadding;
-                      adjustedStyles += borderOnFocusedName + ": " + borderOnFocus + "px; ";
-                    }
-                  }
+      function adjustPaddingIfNotSpecified(paddingPropertyName, padding, border, onFocusedBorder, borderOnFocusedName) {
+        if (sliderOnFocusPaddings[paddingPropertyName])
+          return;
+        var onFocusedPadding = O$.calculateNumericCSSValue(padding) + O$.calculateNumericCSSValue(border) - O$.calculateNumericCSSValue(onFocusedBorder);
+        adjustedStyles += paddingPropertyName + ": " + onFocusedPadding + "px; ";
 
-                  adjustPaddingIfNotSpecified("padding-left",sliderStyle.paddingLeft, sliderStyle.borderLeftWidth,
-                              sliderOnFocusBorder["border-left-width"],"border-left-width");
-                  adjustPaddingIfNotSpecified("padding-right", sliderStyle.paddingRight, sliderStyle.borderRightWidth,
-                             sliderOnFocusBorder["border-right-width"],"border-right-width");
-                  adjustPaddingIfNotSpecified("padding-top", sliderStyle.paddingTop, sliderStyle.borderTopWidth,
-                              sliderOnFocusBorder["border-top-width"],"border-top-width");
-                  adjustPaddingIfNotSpecified("padding-bottom", sliderStyle.paddingBottom, sliderStyle.borderBottomWidth,
-                              sliderOnFocusBorder["border-bottom-width"],"border-bottom-width");
+        if (onFocusedPadding > O$.calculateNumericCSSValue(padding)) {
+          var borderOnFocus = O$.calculateNumericCSSValue(padding) + O$.calculateNumericCSSValue(border) - onFocusedPadding;
+          adjustedStyles += borderOnFocusedName + ": " + borderOnFocus + "px; ";
+        }
+      }
 
-                  if (adjustedStyles) {
-                    var newClassName = O$.createCssClass(adjustedStyles);
-                    focusedClass = O$.combineClassNames([focusedClass, newClassName]);
-                  }
+      adjustPaddingIfNotSpecified("padding-left", sliderStyle.paddingLeft, sliderStyle.borderLeftWidth,
+              sliderOnFocusBorder["border-left-width"], "border-left-width");
+      adjustPaddingIfNotSpecified("padding-right", sliderStyle.paddingRight, sliderStyle.borderRightWidth,
+              sliderOnFocusBorder["border-right-width"], "border-right-width");
+      adjustPaddingIfNotSpecified("padding-top", sliderStyle.paddingTop, sliderStyle.borderTopWidth,
+              sliderOnFocusBorder["border-top-width"], "border-top-width");
+      adjustPaddingIfNotSpecified("padding-bottom", sliderStyle.paddingBottom, sliderStyle.borderBottomWidth,
+              sliderOnFocusBorder["border-bottom-width"], "border-bottom-width");
+
+      if (adjustedStyles) {
+        var newClassName = O$.createCssClass(adjustedStyles);
+        focusedClass = O$.combineClassNames([focusedClass, newClassName]);
+      }
     }
   }
 };

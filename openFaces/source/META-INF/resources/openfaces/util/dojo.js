@@ -11,7 +11,9 @@
  */
 
 /*
-* 34 and 150 rows should be commented for better processing , when parsing or getting nmber with symbol = '%'
+Here's a list of modifications from the original version:
+MOD-1 :  Commented row in format function, where value should be multiplied 100 if consist '%'
+MOD-2 :  Commented row, where value should be divided 100 if consist '%'
 * */
 O$.Dojo = {
 
@@ -35,7 +37,9 @@ O$.Dojo = {
       var positivePattern = patterns[0];
       pattern = patterns[(value < 0) ? 1 : 0] || ("-" + positivePattern);
       if (pattern.indexOf("%") != -1) {
+         // <MOD-1> code changed
         //value *= 100;
+        //</MOD-1>
       } else {
         if (pattern.indexOf("‰") != -1) {
           value *= 1000;
@@ -160,7 +164,9 @@ O$.Dojo = {
       var _33 = _30.decimal;
       var _34 = 1;
       if (_31.indexOf("%") != -1) {
+        // <MOD-2> code changed
         //_34 /= 100;
+        // </MOD-2>
       } else {
         if (_31.indexOf("‰") != -1) {
           _34 /= 1000;
