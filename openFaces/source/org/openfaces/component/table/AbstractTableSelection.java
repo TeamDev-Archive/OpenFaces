@@ -38,6 +38,23 @@ import java.util.Map;
 public abstract class AbstractTableSelection extends OUICommand implements ComponentConfigurator {
     private static final String SESSION_KEY_SELECTION_EVENTS_PROCESSED = "OF:tableSelectionEventsProcessed";
 
+    public enum Mode {
+        SINGLE("single"),
+        MULTIPLE("multiple"),
+        HIERARCHICAL("hierarchical");
+
+        private String value;
+
+        Mode(String value) {
+            this.value = value;
+        }
+
+        @Override
+        public String toString() {
+            return value;
+        }
+    }
+
     private TableDataModel model;
     private boolean selectionChanged;
     private String style;
@@ -58,23 +75,6 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
 
     public boolean isMultipleSelectionAllowed() {
         return !"single".equals(getSelectionMode());
-    }
-
-    public enum Mode {
-        SINGLE("single"),
-        MULTIPLE("multiple"),
-        HIERARCHICAL("hierarchical");
-
-        private String value;
-
-        Mode(String value) {
-            this.value = value;
-        }
-
-        @Override
-        public String toString() {
-            return value;
-        }
     }
 
     public abstract Mode getSelectionMode();
