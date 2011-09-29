@@ -22,7 +22,6 @@ import javax.el.ELContext;
 import javax.el.MethodExpression;
 import javax.el.MethodNotFoundException;
 import javax.faces.FacesException;
-import javax.faces.application.ViewHandler;
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
