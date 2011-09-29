@@ -717,7 +717,7 @@ O$.Table = {
   _initSelection: function(tableId, enabled, required, selectableItems,
                            selectionMode, selectedItems, selectionClass,
                            selectionChangeHandler, postEventOnSelectionChange, selectionColumnIndexes,
-                           mouseSupport, keyboardSupport) {
+                           mouseSupport, keyboardSupport, trackLeafNodesOnly) {
     var table = O$.initComponent(tableId);
     O$.assert(!table._selectionInitialized, "O$.Table._initSelection shouldn't be called twice on the same table");
     O$.extend(table, {
@@ -732,6 +732,7 @@ O$.Table = {
               _selectionColumnIndexes: selectionColumnIndexes,
               _selectionMouseSupport: mouseSupport,
               _selectionKeyboardSupport: keyboardSupport && selectionMode != "hierarchical",
+              _selectionTrackLeafNodeOnly: trackLeafNodesOnly,
 
               _setItemSelected_internal: function(itemIndex, selected) {
                 O$.assert(itemIndex, "_setItemSelected: itemIndex should be specified");
@@ -879,7 +880,7 @@ O$.Table = {
                   }
                 }
 
-                var selectionFieldValue = O$.Table._formatSelectedItems(this._selectableItems, this._selectedItems);
+                var selectionFieldValue = O$.Table._formatSelectedItems(this, this._selectableItems, this._selectedItems);
                 this._setSelectionFieldValue(selectionFieldValue);
                 if (!this._blockSelectionChangeNotifications && oldSelectedItemsStr != newSelectedItemsStr) {
                   if (this._selectionChangeHandlers) {
@@ -1236,11 +1237,17 @@ O$.Table = {
     }
   },
 
-  _formatSelectedItems: function(selectableItems, selectedItemIndexes) {
+  _formatSelectedItems: function(table, selectableItems, selectedItemIndexes) {
     if (selectableItems == "rows" || selectableItems == "columns") {
       var result = "[";
+      var bodyRows = table.body._getRows();
       for (var i = 0; i < selectedItemIndexes.length; i++) {
         var itemIndex = selectedItemIndexes[i];
+        if (table._selectionTrackLeafNodeOnly) {
+          var row = bodyRows[itemIndex];
+          if (row._hasChildren) continue;
+        }
+
         if (result.length > 1)
           result += ",";
         result += itemIndex;

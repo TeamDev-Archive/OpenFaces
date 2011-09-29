@@ -16,6 +16,9 @@ import org.openfaces.component.table.HierarchicalNodeSelection;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
+/**
+ * @author Dmitry Pikhulya
+ */
 public class HierarchicalNodeSelectionTag extends MultipleNodeSelectionTag {
 
     public String getComponentType() {
@@ -30,5 +33,6 @@ public class HierarchicalNodeSelectionTag extends MultipleNodeSelectionTag {
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
+        setBooleanProperty(component, "trackLeafNodesOnly");
     }
 }

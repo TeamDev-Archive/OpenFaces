@@ -271,7 +271,8 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
                 submitOnChange ? getSelectionEventsProcessed() + 1 : null,
                 getSelectionColumnIndexes(table),
                 isMouseSupport(),
-                isKeyboardSupport());
+                isKeyboardSupport(),
+                getTrackLeafNodesOnly());
 
         Rendering.renderInitScript(context, buf,
                 Resources.utilJsURL(context),
@@ -282,6 +283,10 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
 
         if (submitOnChange)
             Rendering.renderHiddenField(writer, getSelectionEventFieldName(context, table), null);
+    }
+
+    protected boolean getTrackLeafNodesOnly() {
+        return false;
     }
 
     private List<Integer> getSelectionColumnIndexes(AbstractTable table) {

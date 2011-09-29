@@ -11,11 +11,15 @@
  */
 package org.openfaces.component.table;
 
+import org.openfaces.util.ValueBindings;
+
 import javax.faces.context.FacesContext;
 
 public class HierarchicalNodeSelection extends MultipleNodeSelection {
     public static final String COMPONENT_TYPE = "org.openfaces.HierarchicalNodeSelection";
     public static final String COMPONENT_FAMILY = "org.openfaces.HierarchicalNodeSelection";
+
+    private Boolean trackLeafNodesOnly;
 
     public HierarchicalNodeSelection() {
     }
@@ -28,7 +32,8 @@ public class HierarchicalNodeSelection extends MultipleNodeSelection {
     @Override
     public Object saveState(FacesContext context) {
         return new Object[]{
-            super.saveState(context),
+                super.saveState(context),
+                trackLeafNodesOnly
 
         };
     }
@@ -38,11 +43,19 @@ public class HierarchicalNodeSelection extends MultipleNodeSelection {
         Object[] state = (Object[]) stateObj;
         int i = 0;
         super.restoreState(context, state[i++]);
-
+        trackLeafNodesOnly = (Boolean) state[i++];
     }
 
     @Override
     public Mode getSelectionMode() {
         return Mode.HIERARCHICAL;
+    }
+
+    public boolean getTrackLeafNodesOnly() {
+        return ValueBindings.get(this, "trackLeafNodesOnly", trackLeafNodesOnly, true);
+    }
+
+    public void setTrackLeafNodesOnly(boolean trackLeafNodesOnly) {
+        this.trackLeafNodesOnly = trackLeafNodesOnly;
     }
 }

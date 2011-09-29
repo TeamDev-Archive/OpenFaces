@@ -42911,6 +42911,23 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default true -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>Defines whether selection for parent nodes is saved into the nodeDatas and/or nodePaths attributes.
+        By default, this value is true, which means that only selection for leaf nodes (nodes without child nodes) is
+        saved to these attributes.
+        Specifying false makes the value for parent nodes to be saved as well (regardless of the fact that their value
+        actually depends on selection of leaf nodes). Records with the &quot;undefined&quot; selection state (where some
+        children are selected and some unselected), are considered as unselected and are not included into the list of
+        selected records.
+      </description>
+      <name>trackLeafNodesOnly</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
   </tag>
 
   <!--<tag>-->

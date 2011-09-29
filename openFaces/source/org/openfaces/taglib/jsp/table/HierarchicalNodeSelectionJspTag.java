@@ -13,6 +13,11 @@ package org.openfaces.taglib.jsp.table;
 
 import org.openfaces.taglib.internal.table.HierarchicalNodeSelectionTag;
 
+import javax.el.ValueExpression;
+
+/**
+ * @author Dmitry Pikhulya
+ */
 public class HierarchicalNodeSelectionJspTag extends MultipleNodeSelectionJspTag {
 
     public HierarchicalNodeSelectionJspTag() {
@@ -20,4 +25,7 @@ public class HierarchicalNodeSelectionJspTag extends MultipleNodeSelectionJspTag
     }
 
 
+    public void setTrackLeafNodesOnly(ValueExpression trackLeafNodesOnly) {
+        getDelegate().setPropertyValue("trackLeafNodesOnly", trackLeafNodesOnly);
+    }
 }
