@@ -589,7 +589,7 @@ public class Rendering {
     }
 
     public static void appendUniqueRTLibraryScripts(FacesContext context,
-                                                    ScriptBuilder setMessageScript) {
+                                                    Script setMessageScript) {
         boolean isAjax4jsfRequest = AjaxUtil.isAjax4jsfRequest();
         boolean isPortletRequest = AjaxUtil.isPortletRequest(context);
 
@@ -608,7 +608,7 @@ public class Rendering {
             if (sessionMap != null && uniqueRTLibraryName != null) {
                 String scripts = (String) context.getExternalContext().getSessionMap().get(uniqueRTLibraryName);
                 if (scripts != null) {
-                    setMessageScript.append(scripts);
+                    setMessageScript = new ScriptBuilder(setMessageScript.toString()).append(scripts);
                 }
 
                 sessionMap.put(uniqueRTLibraryName, setMessageScript.toString());

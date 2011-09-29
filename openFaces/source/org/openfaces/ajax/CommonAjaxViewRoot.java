@@ -268,7 +268,7 @@ public abstract class CommonAjaxViewRoot {
         String[] execute = extractExecute(request);
         boolean executeRenderedComponents = extractExecuteRenderedComponents(request);
 
-        if (response instanceof ResponseFacade.ActionResponseFacade) {
+        if (response instanceof ResponseFacade.ActionResponseFacade || response instanceof ResponseFacade.ResourceResponseFacade) {
             Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
 
             boolean shouldWaitForPreviousAjaxCompletion = true;

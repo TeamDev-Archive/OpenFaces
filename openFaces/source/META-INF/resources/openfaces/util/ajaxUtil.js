@@ -423,7 +423,7 @@ O$.sendAjaxRequest = function(render, args) {
   ajaxObject._completionCallback = args.onajaxend;
   ajaxObject._requestedRender = render;
 
-  var url = submittedForm.action;
+  var url = O$.Ajax._ajaxRequestUrl || submittedForm.action;
   ajaxObject._request.open("POST", url, true);
   ajaxObject._request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
   ajaxObject._request.setRequestHeader("If-Modified-Since", "Sat, 1 Jan 2000 00:00:00 GMT");
@@ -615,6 +615,10 @@ O$.setAjaxMessageHTML = function(messageHTML, horizAlignment, vertAlignment, tra
               }
             }, 1000);
   });
+};
+
+O$._initAjaxRequestUrl = function(ajaxRequestUrl){
+    O$.Ajax._ajaxRequestUrl = ajaxRequestUrl;
 };
 
 O$.showAjaxProgressMessage = function() {
@@ -1056,7 +1060,9 @@ O$.AjaxObject = function(render) {
     var componentId = this._targetIds;
     var component = O$(componentId);
     O$.assert(component, "Couldn't find component by id: " + componentId);
-    var portionData = portionDataStr ? eval("(" + portionDataStr + ")") : null;
+    var portionData = portionDataStr
+            ? (typeof portionDataStr == "string" ? eval("(" + portionDataStr + ")") : portionDataStr)
+            : null;
     this._customProcessor(component, portionName, portionHTML, portionScripts, portionData);
   };
 

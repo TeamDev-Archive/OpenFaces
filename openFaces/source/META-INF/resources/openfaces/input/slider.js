@@ -18,8 +18,8 @@ O$.Slider = {
                   sl_majorTickSpacing,
                   sl_orientation,
                   sl_fillDirection,
-    //   sl_ticksAlignment,
-    //  sl_isDefaultStyling,
+                  //   sl_ticksAlignment,
+                  //  sl_isDefaultStyling,
                   sl_isDisabled,
                   sl_tooltipEnabled,
                   sl_barCanChange,
@@ -30,6 +30,7 @@ O$.Slider = {
                   sl_onchanging,
                   sl_textFieldStyle,
                   sl_toolTipStyle,
+                  sl_toolTipIsInteger,
                   sl_styleClass,
                   focusedClass,
 
@@ -45,8 +46,7 @@ O$.Slider = {
                   LTButtonRolloverImageUrl,
 
                   RBButtonImageUrl,
-                  RBButtonRolloverImageUrl
-          ) {
+                  RBButtonRolloverImageUrl) {
     var slider = O$.initComponent(sl_sliderId, {focused: focusedClass}, {
 
       s_rightBottomButton : O$.byIdOrName(sl_sliderId + "::rightBottomButton"),
@@ -77,9 +77,9 @@ O$.Slider = {
                 ? prevValue
                 : value;
         if ((sl_minValue != null && newValue > sl_minValue) &&
-            (sl_maxValue != null && newValue < sl_maxValue)) {
+                (sl_maxValue != null && newValue < sl_maxValue)) {
           newValue = (sl_snapToTicks) ? Math.round(newValue / sl_minorTickSpacing) * sl_minorTickSpacing :
-                     newValue;
+                  newValue;
         } else if (sl_maxValue != null && newValue >= sl_maxValue) {
           newValue = sl_maxValue;
         } else if (sl_minValue != null && newValue <= sl_minValue) {
@@ -106,6 +106,7 @@ O$.Slider = {
         }
         if (value != slider.getValue()) {
           notifyOfInputChanges(slider);
+          notifyOfInputChanging(slider);
         }
       },
 
@@ -118,6 +119,7 @@ O$.Slider = {
         }
         if (value != slider.getValue()) {
           notifyOfInputChanges(slider);
+          notifyOfInputChanging(slider);
         }
       },
 
@@ -160,15 +162,15 @@ O$.Slider = {
       getElementDragDirectionSize: function(element) {
         return element == null ? 0 : (
                 sl_orientation == "horizontal" ?
-                O$.getElementSize(element).width :
-                O$.getElementSize(element).height);
+                        O$.getElementSize(element).width :
+                        O$.getElementSize(element).height);
       },
 
       getElementNonDragDirectionSize: function(element) {
         return element == null ? 0 : (
                 sl_orientation == "horizontal" ?
-                O$.getElementSize(element).height :
-                O$.getElementSize(element).width);
+                        O$.getElementSize(element).height :
+                        O$.getElementSize(element).width);
       },
 
       getElementPaddingValues : function(element) {
@@ -272,10 +274,10 @@ O$.Slider = {
           }
           if (sl_orientation == "horizontal") {
             curMax = (img == null ? 0 : O$.getElementSize(img).height) +
-                     (text == null ? 0 : O$.getElementSize(text).height);
+                    (text == null ? 0 : O$.getElementSize(text).height);
           } else {
             curMax = (img == null ? 0 : O$.getElementSize(img).width) +
-                     (text == null ? 0 : O$.getElementSize(text).width);
+                    (text == null ? 0 : O$.getElementSize(text).width);
           }
           if (curMax > maxTickSize) {
             maxTickSize = curMax;
@@ -304,16 +306,16 @@ O$.Slider = {
         if (slider.s_leftTopButton != null) {
           O$.setElementSize(slider.s_leftTopButton, O$.getElementSize(O$(sl_sliderId + "::leftTopButton::image")));
           slider.s_widthCorrection = slider.s_widthCorrection +
-                                     (O$.isExplorer6() || (O$.isExplorer() && O$.isQuirksMode()) ? 2 : 0);
+                  (O$.isExplorer6() || (O$.isExplorer() && O$.isQuirksMode()) ? 2 : 0);
         }
         if (slider.s_rightBottomButton != null) {
           O$.setElementSize(slider.s_rightBottomButton, O$.getElementSize(O$(sl_sliderId + "::rightBottomButton::image")));
           slider.s_widthCorrection = slider.s_widthCorrection +
-                                     (O$.isExplorer6() || (O$.isExplorer() && O$.isQuirksMode()) ? 2 : 0);
+                  (O$.isExplorer6() || (O$.isExplorer() && O$.isQuirksMode()) ? 2 : 0);
         }
         if (sl_textFieldState != "off") {
           slider.s_widthCorrection = slider.s_widthCorrection +
-                                     (O$.isExplorer6() || (O$.isExplorer() && O$.isQuirksMode()) ? 2 : 0);
+                  (O$.isExplorer6() || (O$.isExplorer() && O$.isQuirksMode()) ? 2 : 0);
         }
         slider.setPixelStep();
 
@@ -348,45 +350,59 @@ O$.Slider = {
           O$.setElementWidth(slider.s_workspace, slider.s_pixelStep * slider.getTicksAmount() + slider.s_widthCorrection);
           O$.setElementWidth(slider.s_bar, slider.s_pixelStep * slider.getTicksAmount());
           O$.setElementHeight(slider.s_bar, O$.getElementSize(O$(sl_sliderId + "::bar::image")).height);
+          var tempMarginLeft;
+          if (O$(sl_sliderId + "::ticksLT::tick0") != null || O$(sl_sliderId + "::ticksRB::tick0") != null) {
+            for (counterTicks = 0; counterTicks < slider.getTicksAmount(); counterTicks++) {
+              s_aTickLT = O$(sl_sliderId + "::ticksLT::tick" + counterTicks);
+              image = O$(sl_sliderId + "::ticksLT::tick" + counterTicks + "::image");
+              text = O$(sl_sliderId + "::ticksLT::tick" + counterTicks + "::text");
+              if (slider.s_ticksLT != null && s_aTickLT != null) {
+                O$.setElementWidth(s_aTickLT, slider.s_pixelStep);
+                O$.setElementHeight(s_aTickLT, maxTickSize);
+                if (image != null) {
+                  image.style.marginTop = maxTickSize - O$.getElementSize(image).height + "px";
+                  image.style.marginLeft = Math.floor((slider.s_pixelStep - O$.getElementSize(image).width) / 2) -
+                          (slider.isCorrectionNeeded(slider.s_pixelStep, O$.getElementSize(image).width) ? 1 : 0) + "px";
+                }
 
-          for (counterTicks = 0; counterTicks < slider.getTicksAmount(); counterTicks++) {
-            s_aTickLT = O$(sl_sliderId + "::ticksLT::tick" + counterTicks);
-            image = O$(sl_sliderId + "::ticksLT::tick" + counterTicks + "::image");
-            text = O$(sl_sliderId + "::ticksLT::tick" + counterTicks + "::text");
-
-            if (slider.s_ticksLT != null) {
-              O$.setElementWidth(s_aTickLT, slider.s_pixelStep);
-              O$.setElementHeight(s_aTickLT, maxTickSize);
-              image.style.marginTop = maxTickSize - O$.getElementSize(image).height + "px";
-              image.style.marginLeft = Math.floor((slider.s_pixelStep - O$.getElementSize(image).width) / 2) -
-                                       (slider.isCorrectionNeeded(slider.s_pixelStep, O$.getElementSize(image).width) ? 1 : 0) + "px";
-
-              if (text != null) {
-                sizeText = O$.getElementSize(text).width;
-                size = O$.getElementSize(s_aTickLT).width;
-                text.style.marginLeft = Math.floor((size - sizeText) / 2) -
-                                        (slider.isCorrectionNeeded(slider.s_pixelStep, O$.getElementSize(image).width) ? 1 : 0) + "px";
-                text.style.marginTop = Math.floor(O$.getElementSize(text).height * 3 / 2) - maxTickSize + "px";
+                if (text != null) {
+                  sizeText = O$.getElementSize(text).width;
+                  size = O$.getElementSize(s_aTickLT).width;
+                  tempMarginLeft = Math.floor((size - sizeText) / 2);
+                  if (image != null) {
+                    tempMarginLeft -= slider.isCorrectionNeeded(slider.s_pixelStep, O$.getElementSize(image).width) ? 1 : 0;
+                    text.style.marginTop = Math.floor(O$.getElementSize(text).height * 3 / 2) - maxTickSize + "px";
+                  } else {
+                    text.style.marginTop = Math.floor(O$.getElementSize(text).height * 3 / 2) - maxTickSize * 2 + "px";
+                  }
+                  text.style.marginLeft = tempMarginLeft + "px";
+                }
               }
-            }
 
-            s_aTickRB = O$(sl_sliderId + "::ticksRB::tick" + counterTicks);
-            image = O$(sl_sliderId + "::ticksRB::tick" + counterTicks + "::image");
-            text = O$(sl_sliderId + "::ticksRB::tick" + counterTicks + "::text");
+              s_aTickRB = O$(sl_sliderId + "::ticksRB::tick" + counterTicks);
+              image = O$(sl_sliderId + "::ticksRB::tick" + counterTicks + "::image");
+              text = O$(sl_sliderId + "::ticksRB::tick" + counterTicks + "::text");
 
-            if (slider.s_ticksRB != null) {
-              O$.setElementWidth(s_aTickRB, slider.s_pixelStep);
-              O$.setElementHeight(s_aTickRB, maxTickSize);
-              image.style.marginBottom = maxTickSize - O$.getElementSize(image).height + "px";
-              image.style.marginLeft = Math.floor((slider.s_pixelStep - O$.getElementSize(image).width) / 2) -
-                                       (slider.isCorrectionNeeded(slider.s_pixelStep, O$.getElementSize(image).width) ? 1 : 0) + "px";
-              if (text != null) {
-                sizeText = O$.getElementSize(text).width;
-                size = O$.getElementSize(s_aTickRB).width;
-
-                text.style.marginLeft = Math.floor((size - sizeText) / 2) -
-                                        (slider.isCorrectionNeeded(slider.s_pixelStep, O$.getElementSize(image).width) ? 1 : 0) + "px";
-                text.style.marginTop = maxTickSize - Math.floor(O$.getElementSize(text).height / 2) + "px";
+              if (slider.s_ticksRB != null && s_aTickRB != null) {
+                O$.setElementWidth(s_aTickRB, slider.s_pixelStep);
+                O$.setElementHeight(s_aTickRB, maxTickSize);
+                if (image != null) {
+                  image.style.marginBottom = maxTickSize - O$.getElementSize(image).height + "px";
+                  image.style.marginLeft = Math.floor((slider.s_pixelStep - O$.getElementSize(image).width) / 2) -
+                          (slider.isCorrectionNeeded(slider.s_pixelStep, O$.getElementSize(image).width) ? 1 : 0) + "px";
+                }
+                if (text != null) {
+                  sizeText = O$.getElementSize(text).width;
+                  size = O$.getElementSize(s_aTickRB).width;
+                  tempMarginLeft = Math.floor((size - sizeText) / 2);
+                  if (image != null) {
+                    tempMarginLeft -= slider.isCorrectionNeeded(slider.s_pixelStep, O$.getElementSize(image).width) ? 1 : 0;
+                    text.style.marginTop = maxTickSize - Math.floor(O$.getElementSize(text).height / 2) + "px";
+                  } else {
+                    text.style.marginTop = maxTickSize + "px";
+                  }
+                  text.style.marginLeft = tempMarginLeft + "px";
+                }
               }
             }
           }
@@ -414,7 +430,7 @@ O$.Slider = {
           }
 
           handleImg.style.marginLeft = Math.floor((slider.s_pixelStep - handleImgSizeW) / 2) -
-                                       (slider.isCorrectionNeeded(slider.s_pixelStep, handleImgSizeW) ? 1 : 0) + "px";
+                  (slider.isCorrectionNeeded(slider.s_pixelStep, handleImgSizeW) ? 1 : 0) + "px";
 
           if (O$.isMozillaFF() || O$.isSafari() || O$.isChrome()) {
             handleImg.style.marginTop = "1px";
@@ -457,47 +473,61 @@ O$.Slider = {
           O$.setElementHeight(slider.s_bar, slider.s_pixelStep * slider.getTicksAmount() - (O$.isExplorer() && O$.isStrictMode() ? Math.round(slider.s_pixelStep / 2) + 1 : 0));
           O$.setElementWidth(slider.s_bar, O$.getElementSize(O$(sl_sliderId + "::bar::image")).width);
           O$.setElementWidth(O$.getParentNode(slider.s_bar, "td"), O$.getElementSize(O$(sl_sliderId + "::bar::image")).width);
+          if (O$(sl_sliderId + "::ticksLT::tick0") != null || O$(sl_sliderId + "::ticksRB::tick0") != null) {
+            for (counterTicks = 0; counterTicks < slider.getTicksAmount(); counterTicks++) {
+              s_aTickLT = O$(sl_sliderId + "::ticksLT::tick" + counterTicks);
+              image = O$(sl_sliderId + "::ticksLT::tick" + counterTicks + "::image");
+              text = O$(sl_sliderId + "::ticksLT::tick" + counterTicks + "::text");
 
-          for (counterTicks = 0; counterTicks < slider.getTicksAmount(); counterTicks++) {
-            s_aTickLT = O$(sl_sliderId + "::ticksLT::tick" + counterTicks);
-            image = O$(sl_sliderId + "::ticksLT::tick" + counterTicks + "::image");
-            text = O$(sl_sliderId + "::ticksLT::tick" + counterTicks + "::text");
+              if (slider.s_ticksLT != null) {
+                if (image != null) {
+                  O$.setElementHeight(s_aTickLT, slider.s_pixelStep - (Math.floor((slider.s_pixelStep - O$.getElementSize(image).height) / 2) -
+                          (slider.isCorrectionNeeded(slider.s_pixelStep, O$.getElementSize(image).height) ? 1 : 0)));
+                  O$.getParentNode(image, "div").style.paddingTop = Math.floor((slider.s_pixelStep - O$.getElementSize(image).height) / 2) -
+                          (slider.isCorrectionNeeded(slider.s_pixelStep, O$.getElementSize(image).height) ? 1 : 0) + "px";
+                  image.style.marginLeft = maxTickSize - O$.getElementSize(image).width + "px";
+                } else if (text != null) {
+                  O$.setElementHeight(s_aTickLT, slider.s_pixelStep);
+                  O$.getParentNode(text, "div").style.paddingTop = Math.floor(slider.s_pixelStep) + "px";
+                }
+                if (text != null) {
+                  sizeText = O$.getElementSize(text).width;
+                  if (image != null) {
+                    size = O$.getElementSize(image).width;
+                  }
+                  if (O$.isExplorer6() || O$.isExplorer7() || (O$.isExplorer8() && O$.isQuirksMode()))
+                    text.style.marginLeft = -maxTickSize + "px";
+                  else
+                    text.style.marginLeft = -Math.floor(sizeText / 2) + "px";
+                  sizeText = O$.getElementSize(text).height;
 
-            if (slider.s_ticksLT != null) {
-              O$.setElementHeight(s_aTickLT, slider.s_pixelStep - (Math.floor((slider.s_pixelStep - O$.getElementSize(image).height) / 2) -
-                                                                   (slider.isCorrectionNeeded(slider.s_pixelStep, O$.getElementSize(image).height) ? 1 : 0)));
-              O$.getParentNode(image, "div").style.paddingTop = Math.floor((slider.s_pixelStep - O$.getElementSize(image).height) / 2) -
-                                                                (slider.isCorrectionNeeded(slider.s_pixelStep, O$.getElementSize(image).height) ? 1 : 0) + "px";
-              image.style.marginLeft = maxTickSize - O$.getElementSize(image).width + "px";
-
-              if (text != null) {
-                sizeText = O$.getElementSize(text).width;
-                size = O$.getElementSize(image).width;
-                if (O$.isExplorer6() || O$.isExplorer7() || (O$.isExplorer8() && O$.isQuirksMode()))
-                  text.style.marginLeft = -maxTickSize + "px";
-                else
-                  text.style.marginLeft = -Math.floor(sizeText / 2) + "px";
-                sizeText = O$.getElementSize(text).height;
-
-                text.style.marginTop = Math.floor(( - sizeText) / 2) + "px";
+                  text.style.marginTop = Math.floor(( - sizeText) / 2) + "px";
+                }
               }
-            }
 
-            s_aTickRB = O$(sl_sliderId + "::ticksRB::tick" + counterTicks);
-            image = O$(sl_sliderId + "::ticksRB::tick" + counterTicks + "::image");
-            text = O$(sl_sliderId + "::ticksRB::tick" + counterTicks + "::text");
+              s_aTickRB = O$(sl_sliderId + "::ticksRB::tick" + counterTicks);
+              image = O$(sl_sliderId + "::ticksRB::tick" + counterTicks + "::image");
+              text = O$(sl_sliderId + "::ticksRB::tick" + counterTicks + "::text");
 
-            if (slider.s_ticksRB != null) {
-              O$.setElementHeight(s_aTickRB, slider.s_pixelStep - (Math.floor((slider.s_pixelStep - O$.getElementSize(image).height) / 2) -
-                                                                   (slider.isCorrectionNeeded(slider.s_pixelStep, O$.getElementSize(image).height) ? 1 : 0)));
-              O$.getParentNode(image, "div").style.paddingTop = Math.floor((slider.s_pixelStep - O$.getElementSize(image).height) / 2) -
-                                                                (slider.isCorrectionNeeded(slider.s_pixelStep, O$.getElementSize(image).height) ? 1 : 0) + "px";
-              if (text != null) {
-                sizeText = O$.getElementSize(text).width;
-                size = O$.getElementSize(image).width;
-                text.style.marginLeft = Math.floor(maxTickSize - sizeText / 2) + "px";
-                sizeText = O$.getElementSize(text).height;
-                text.style.marginTop = Math.floor(( - sizeText) / 2) + "px";
+              if (slider.s_ticksRB != null) {
+                if (image != null) {
+                  O$.setElementHeight(s_aTickRB, slider.s_pixelStep - (Math.floor((slider.s_pixelStep - O$.getElementSize(image).height) / 2) -
+                          (slider.isCorrectionNeeded(slider.s_pixelStep, O$.getElementSize(image).height) ? 1 : 0)));
+                  O$.getParentNode(image, "div").style.paddingTop = Math.floor((slider.s_pixelStep - O$.getElementSize(image).height) / 2) -
+                          (slider.isCorrectionNeeded(slider.s_pixelStep, O$.getElementSize(image).height) ? 1 : 0) + "px";
+                } else if (text != null) {
+                  O$.setElementHeight(s_aTickRB, slider.s_pixelStep);
+                  O$.getParentNode(text, "div").style.paddingTop = Math.floor(slider.s_pixelStep) + "px";
+                }
+                if (text != null) {
+                  sizeText = O$.getElementSize(text).width;
+                  if (image != null) {
+                    size = O$.getElementSize(image).width;
+                  }
+                  text.style.marginLeft = Math.floor(maxTickSize - sizeText / 2) + "px";
+                  sizeText = O$.getElementSize(text).height;
+                  text.style.marginTop = Math.floor(( - sizeText) / 2) + "px";
+                }
               }
             }
           }
@@ -509,7 +539,7 @@ O$.Slider = {
             slider.s_rightBottomButton.style.marginLeft = slider.getElementNonDragOffset(sl_sliderId + "::rightBottomButton") + "px";
 
           handleImg.style.marginTop = Math.floor((slider.s_pixelStep - handleImgSizeH) / 2) -
-                                      (slider.isCorrectionNeeded(slider.s_pixelStep, handleImgSizeH) ? 1 : 0) + "px";
+                  (slider.isCorrectionNeeded(slider.s_pixelStep, handleImgSizeH) ? 1 : 0) + "px";
         }
 
         slider.style.width = O$.calculateNumericCSSValue(O$.getStyleClassProperty(sl_styleClass, "width")) + "px";
@@ -520,7 +550,7 @@ O$.Slider = {
       isCorrectionNeeded : function(a, b) {
         var rez = true;
         if ((a % 2 == 0 && b % 2 == 0) ||
-            (a % 2 != 0 && b % 2 != 0)) {
+                (a % 2 != 0 && b % 2 != 0)) {
           rez = false
         }
         return rez;
@@ -544,7 +574,11 @@ O$.Slider = {
           tooltip.style.left = - slider.getElementNonDragDirectionSize(tooltip) + "px";
           tooltip.style.top = - Math.abs(slider.getPixelStep() - slider.getElementDragDirectionSize(tooltip)) / 2 + "px";
         }
-        tooltip.innerHTML = slider.getValue();
+        if (sl_toolTipIsInteger) {
+          tooltip.innerHTML = Math.round(slider.getValue());
+        } else {
+          tooltip.innerHTML = slider.getValue();
+        }
         var height = O$.calculateNumericCSSValue(O$.getStyleClassProperty(sl_toolTipStyle, "height"));
         O$.addEventHandler(slider.s_handle, "mousedown", function(e) {
           O$.setElementEffectProperty(tooltip, "height", 1);
@@ -559,6 +593,7 @@ O$.Slider = {
         return tooltip;
       }
     });
+    setCorrectPaddingForOnFocusSlider();
 
     formatOptions = formatOptions || {};
     if (formatOptions.type && formatOptions.type == "number") {
@@ -566,7 +601,6 @@ O$.Slider = {
     }
 
     slider.setValue(sl_value);
-    slider.s_textField.value = O$.Dojo.Number.format(sl_value, formatOptions);
 
     var s_handleSize_w = 0;
     var s_workspaceSize_w = 0;
@@ -586,7 +620,6 @@ O$.Slider = {
       }
       slider.style.visibility = "visible";
 
-      slider.s_textField.value = O$.Dojo.Number.format(sl_value, formatOptions);
       O$.repaintWindowForSafari(true);
       O$.repaintAreaForOpera(slider, true);
       if (sl_onchanging) {
@@ -599,18 +632,20 @@ O$.Slider = {
 
 
     O$.setupArtificialFocus(slider, focusedClass);
-    var eventName = "onkeyup";
+    var eventName = "onkeydown";
     slider._prevKeyHandler = slider[eventName];
     slider[eventName] = function (evt) {
       var e = evt ? evt : window.event;
       switch (e.keyCode) {
-        case 107:{ //+
+        case 107:
+        { //+
           slider.increaseValue();
           slider.redisplayHandle();
           O$.breakEvent(e);
           break;
         }
-        case 109:{ //-
+        case 109:
+        { //-
           slider.decreaseValue();
           slider.redisplayHandle();
           O$.breakEvent(e);
@@ -625,24 +660,20 @@ O$.Slider = {
             break;
           }
         case 40: // down
-          if (sl_orientation == "horizontal")
-          {
+          if (sl_orientation == "horizontal") {
             slider._leftTopButtonClick(e);
             break;
           }
-          else
-          {
+          else {
             slider._rightBottomButtonClick(e);
             break;
           }
         case 39: // left
-          if (sl_orientation == "horizontal")
-          {
+          if (sl_orientation == "horizontal") {
             slider._rightBottomButtonClick(e);
             break;
           }
-          else
-          {
+          else {
             slider._leftTopButtonClick(e);
             break;
           }
@@ -659,6 +690,7 @@ O$.Slider = {
           slider.setValue(sl_maxValue);
           slider.redisplayHandle();
           notifyOfInputChanges(slider);
+          notifyOfInputChanging(slider);
           break;
         }
         case 36: // home
@@ -666,14 +698,16 @@ O$.Slider = {
           slider.setValue(sl_minValue);
           slider.redisplayHandle();
           notifyOfInputChanges(slider);
+          notifyOfInputChanging(slider);
           break;
         }
       }
       if (slider._prevKeyHandler) {
         slider._prevKeyHandler(e);
       }
-      if ((e.keyCode == 33 || e.keyCode == 34 || e.keyCode == 38 || e.keyCode == 40 || e.keyCode == 37
-              || e.keyCode == 39) && O$.isSafari()) {
+      if ((e.keyCode == 33 || e.keyCode == 34 || e.keyCode == 35 || e.keyCode == 36
+              || e.keyCode == 37 || e.keyCode == 38 || e.keyCode == 39 || e.keyCode == 40)
+              && (O$.isSafari() || O$.isChrome())) {
         return false;
       }
     };
@@ -732,14 +766,14 @@ O$.Slider = {
           var handlePos = O$.getElementPos(slider.s_handle, slider.s_workspace);
           if (sl_fillDirection == "fromStart") {
             if (((sl_orientation == "horizontal") && (curClickPos.x - handlePos.x >= 0) ) ||
-                ((sl_orientation == "vertical") && (curClickPos.y - handlePos.y <= 0) )) {
+                    ((sl_orientation == "vertical") && (curClickPos.y - handlePos.y <= 0) )) {
               slider.increaseValue();
             } else {
               slider.decreaseValue();
             }
           } else {
             if (((sl_orientation == "horizontal") && (curClickPos.x - handlePos.x >= 0) ) ||
-                ((sl_orientation == "vertical") && (curClickPos.y - handlePos.y <= 0) )) {
+                    ((sl_orientation == "vertical") && (curClickPos.y - handlePos.y <= 0) )) {
               slider.decreaseValue();
             } else {
               slider.increaseValue();
@@ -773,10 +807,10 @@ O$.Slider = {
         slider.s_textField[eventName] = function(e) {
           var evt = O$.getEvent(e);
           if (evt.keyCode != 8 && //not backspace
-              evt.keyCode != 190 && //not dot
-              evt.keyCode != 110 && // not dot (numlock)
-              evt.keyCode != 46 && //not  delete
-              (evt.keyCode < 48 || evt.keyCode > 57)) { //not numbers
+                  evt.keyCode != 190 && //not dot
+                  evt.keyCode != 110 && // not dot (numlock)
+                  evt.keyCode != 46 && //not  delete
+                  (evt.keyCode < 48 || evt.keyCode > 57)) { //not numbers
             return false;
           }
         };
@@ -785,10 +819,10 @@ O$.Slider = {
           var evt = O$.getEvent(e);
 
           if (evt.keyCode != 8 && //not backspace
-              evt.keyCode != 190 && //not dot
-              evt.keyCode != 110 && // not dot (numlock)
-              evt.keyCode != 46 && //not  delete
-              (evt.keyCode < 48 || evt.keyCode > 57)) { //not numbers
+                  evt.keyCode != 190 && //not dot
+                  evt.keyCode != 110 && // not dot (numlock)
+                  evt.keyCode != 46 && //not  delete
+                  (evt.keyCode < 48 || evt.keyCode > 57)) { //not numbers
             return false;
           }
           var parsed = O$.Dojo.Number.parse(slider.s_textField.value, formatOptions);
@@ -842,14 +876,14 @@ O$.Slider = {
 
               if (sl_snapToTicks) {
                 toSetValue = !(sl_fillDirection == "fromStart") ?
-                             sl_maxValue - Math.round(leftAlignment / slider.s_pixelStep) * sl_minorTickSpacing :
-                             Math.round(leftAlignment / slider.s_pixelStep) * sl_minorTickSpacing + sl_minValue;
+                        sl_maxValue - Math.round(leftAlignment / slider.s_pixelStep) * sl_minorTickSpacing :
+                        Math.round(leftAlignment / slider.s_pixelStep) * sl_minorTickSpacing + sl_minValue;
 
                 dragObject.style.marginLeft = Math.round(leftAlignment / slider.s_pixelStep) * slider.s_pixelStep + "px";
               } else {
                 toSetValue = !(sl_fillDirection == "fromStart") ?
-                             sl_maxValue - (leftAlignment / slider.s_pixelStep) * sl_minorTickSpacing :
-                             leftAlignment / slider.s_pixelStep * sl_minorTickSpacing + sl_minValue;
+                        sl_maxValue - (leftAlignment / slider.s_pixelStep) * sl_minorTickSpacing :
+                        leftAlignment / slider.s_pixelStep * sl_minorTickSpacing + sl_minValue;
                 dragObject.style.marginLeft = leftAlignment + "px";
               }
             }
@@ -867,21 +901,25 @@ O$.Slider = {
               topAlignment = Math.round(mousePos.y - s_handleSize_w / 2);
               if (sl_snapToTicks) {
                 toSetValue = (sl_fillDirection == "fromStart") ?
-                             sl_maxValue - Math.round(topAlignment / slider.s_pixelStep) * sl_minorTickSpacing :
-                             Math.round(topAlignment / slider.s_pixelStep) * sl_minorTickSpacing + sl_minValue;
+                        sl_maxValue - Math.round(topAlignment / slider.s_pixelStep) * sl_minorTickSpacing :
+                        Math.round(topAlignment / slider.s_pixelStep) * sl_minorTickSpacing + sl_minValue;
 
                 dragObject.style.marginTop = Math.round(topAlignment / slider.s_pixelStep) * slider.s_pixelStep + "px";
               } else {
                 toSetValue = (sl_fillDirection == "fromStart") ?
-                             sl_maxValue - (topAlignment / slider.s_pixelStep) * sl_minorTickSpacing - sl_minValue :
-                             topAlignment / slider.s_pixelStep * sl_minorTickSpacing + sl_minValue;
+                        sl_maxValue - (topAlignment / slider.s_pixelStep) * sl_minorTickSpacing - sl_minValue :
+                        topAlignment / slider.s_pixelStep * sl_minorTickSpacing + sl_minValue;
                 dragObject.style.marginTop = topAlignment + "px";
               }
             }
           }
           slider.setValue(toSetValue);
           if (tooltip && sl_tooltipEnabled) {
-            tooltip.innerHTML = slider.getValue();
+            if (sl_toolTipIsInteger) {
+              tooltip.innerHTML = Math.round(slider.getValue());
+            } else {
+              tooltip.innerHTML = slider.getValue();
+            }
           }
           notifyOfInputChanging(slider);
         }
@@ -889,6 +927,7 @@ O$.Slider = {
 
       function mouseUp() {
         if (dragObject != null) {
+          notifyOfInputChanging(slider)
           notifyOfInputChanges(slider);
         }
         dragObject = null;
@@ -905,7 +944,11 @@ O$.Slider = {
 
     function notifyOfInputChanges(slider) {
       if (tooltip && sl_tooltipEnabled) {
-        tooltip.innerHTML = slider.getValue();
+        if (sl_toolTipIsInteger) {
+          tooltip.innerHTML = Math.round(slider.getValue());
+        } else {
+          tooltip.innerHTML = slider.getValue();
+        }
       }
       if (slider._onchange)
         slider._onchange(O$.createEvent("change"));
@@ -913,10 +956,53 @@ O$.Slider = {
 
     function notifyOfInputChanging(slider) {
       if (tooltip && sl_tooltipEnabled) {
-        tooltip.innerHTML = slider.getValue();
+        if (sl_toolTipIsInteger) {
+          tooltip.innerHTML = Math.round(slider.getValue());
+        } else {
+          tooltip.innerHTML = slider.getValue();
+        }
       }
       if (slider._onchanging)
         slider._onchanging(O$.createEvent("changing"));
+    }
+
+    function setCorrectPaddingForOnFocusSlider() {
+      var sliderOnFocusPaddings = O$.getStyleClassProperties(
+              focusedClass, ["padding-left", "padding-right", "padding-top", "padding-bottom"]);
+
+      var sliderOnFocusBorder = O$.getStyleClassProperties(
+              focusedClass, ["border-left-width", "border-right-width", "border-top-width", "border-bottom-width"]);
+
+      var sliderStyle = O$.getElementStyle(slider, ["padding-left", "padding-right", "padding-top", "padding-bottom",
+        "border-left-width", "border-top-width", "border-right-width", "border-bottom-width"]);
+
+      var adjustedStyles = "";
+
+      function adjustPaddingIfNotSpecified(paddingPropertyName, padding, border, onFocusedBorder, borderOnFocusedName) {
+        if (sliderOnFocusPaddings[paddingPropertyName])
+          return;
+        var onFocusedPadding = O$.calculateNumericCSSValue(padding) + O$.calculateNumericCSSValue(border) - O$.calculateNumericCSSValue(onFocusedBorder);
+        adjustedStyles += paddingPropertyName + ": " + onFocusedPadding + "px; ";
+
+        if (onFocusedPadding > O$.calculateNumericCSSValue(padding)) {
+          var borderOnFocus = O$.calculateNumericCSSValue(padding) + O$.calculateNumericCSSValue(border) - onFocusedPadding;
+          adjustedStyles += borderOnFocusedName + ": " + borderOnFocus + "px; ";
+        }
+      }
+
+      adjustPaddingIfNotSpecified("padding-left", sliderStyle.paddingLeft, sliderStyle.borderLeftWidth,
+              sliderOnFocusBorder["border-left-width"], "border-left-width");
+      adjustPaddingIfNotSpecified("padding-right", sliderStyle.paddingRight, sliderStyle.borderRightWidth,
+              sliderOnFocusBorder["border-right-width"], "border-right-width");
+      adjustPaddingIfNotSpecified("padding-top", sliderStyle.paddingTop, sliderStyle.borderTopWidth,
+              sliderOnFocusBorder["border-top-width"], "border-top-width");
+      adjustPaddingIfNotSpecified("padding-bottom", sliderStyle.paddingBottom, sliderStyle.borderBottomWidth,
+              sliderOnFocusBorder["border-bottom-width"], "border-bottom-width");
+
+      if (adjustedStyles) {
+        var newClassName = O$.createCssClass(adjustedStyles);
+        focusedClass = O$.combineClassNames([focusedClass, newClassName]);
+      }
     }
   }
 };

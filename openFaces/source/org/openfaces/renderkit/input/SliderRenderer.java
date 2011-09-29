@@ -30,6 +30,7 @@ import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.StyleGroup;
 import org.openfaces.util.Styles;
 
+import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -38,6 +39,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.convert.NumberConverter;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -126,6 +128,20 @@ public class SliderRenderer extends RendererBase {
         String tooltipStyle = (String) slider.getAttributes().get("tooltipStyle");
         String tooltipClass = (String) slider.getAttributes().get("tooltipClass");
         return Styles.getCSSClass(context, slider, tooltipStyle, DEFAULT_TOOLTIP_CLASS, tooltipClass);
+    }
+
+    private boolean isIntegerTooltipType(FacesContext context, Slider slider) {
+        ValueExpression value = slider.getValueExpression("value");
+        if (value != null) {
+            Class typeOfValue = value.getType(context.getELContext());
+            if (typeOfValue.equals(Double.class) || typeOfValue.equals(Float.class)
+                    || typeOfValue.equals(BigDecimal.class)) {
+                return false;
+            }else{
+                return true;
+            }
+        }
+        return false;
     }
 
     private String getTextFieldStyleClass(FacesContext context, Slider slider) throws IOException {
@@ -300,7 +316,6 @@ public class SliderRenderer extends RendererBase {
         String textFieldId = clientId + DEFAULT_TEXT_FIELD_SUFFIX;
         boolean isHorizontal = slider.getOrientation().equals(Orientation.HORIZONTAL);
         boolean isOff = slider.getTextFieldState().equals(TextFieldState.OFF);
-
         if (isHorizontal) {
             writer.startElement("td", slider);
         } else {
@@ -310,6 +325,8 @@ public class SliderRenderer extends RendererBase {
         if (!isOff) {
             writer.writeAttribute("style", "overflow:hidden;border:0 none;margin:0;padding:5px;text-align:center;vertical-align:middle;", null);
             writer.startElement("div", slider);
+        } else {
+            writer.writeAttribute("style", "display:none;", null);
         }
         writer.startElement("input", slider);
         writer.writeAttribute("id", textFieldId, null);
@@ -343,7 +360,6 @@ public class SliderRenderer extends RendererBase {
         if (slider.getOrientation().equals(Orientation.VERTICAL)) {
             writer.endElement("tr");
         }
-
     }
 
     private void encodeWorkSpace(FacesContext context, UIComponent component) throws IOException {
@@ -479,33 +495,36 @@ public class SliderRenderer extends RendererBase {
         double minTick = slider.getMinorTickSpacing().doubleValue();
         double maxTick = slider.getMajorTickSpacing().doubleValue();
         NumberFormat format = NumberFormat.getInstance(context.getViewRoot().getLocale());
+        format.setMinimumFractionDigits(0);
+        format.setMaximumFractionDigits(2);
         NumberConverter converter = getNumberConverter(context, slider);
 
-        format.setMaximumFractionDigits(converter.getMaxFractionDigits());
-        format.setMinimumFractionDigits(converter.getMinFractionDigits());
-
         double curTick = minValue;
-        for (int counterTicks = 0; curTick <= maxValue; counterTicks++) {
-            writer.startElement("div", slider);
-            writer.writeAttribute("id", tickId + counterTicks, null);
-            writer.writeAttribute("style", "position:relative;z-index:1;border:0 none;padding:0;margin:0; float: " + floatStyle + "font-size:6pt;", null);
-            if (isHorizontal) {
-                labelValue = format.format(isFromStart ? (curTick) : (maxValue - curTick + minValue));
-            } else {
-                labelValue = format.format(!isFromStart ? (curTick) : (maxValue - curTick + minValue));
-            }
-            writer.writeAttribute("title", labelValue, null);
-            if (Math.round(curTick / maxTick * 10000) % 10000 != 0) {
-                encodeLabelTick(writer, slider, 0, "hidden;", tickId + counterTicks + DEFAULT_ELEMENT_TEXT_ID);
-                encodeTickImage(writer, slider, minorTicksImageUrl, ticksVisibility, tickId + counterTicks + DEFAULT_ELEMENT_IMAGE_ID, isHorizontal);
-            } else {
-                encodeLabelTick(writer, slider, labelValue, ticksLabelsVisibility, tickId + counterTicks + DEFAULT_ELEMENT_TEXT_ID);
-                encodeTickImage(writer, slider, majorTicksImageUrl, ticksVisibility, tickId + counterTicks + DEFAULT_ELEMENT_IMAGE_ID, isHorizontal);
-            }
-            curTick = Math.round(100000 * (curTick + minTick)) / 100000.;
-            writer.endElement("div");
-            if (!isHorizontal) {
-                encodeClearFloatDiv(writer, slider);
+        if (slider.isTicksLabelsVisible() || slider.isTicksVisible()) {
+            for (int counterTicks = 0; curTick <= maxValue; counterTicks++) {
+                writer.startElement("div", slider);
+                writer.writeAttribute("id", tickId + counterTicks, null);
+                writer.writeAttribute("style", "position:relative;z-index:1;border:0 none;padding:0;margin:0; float: " + floatStyle + "font-size:6pt;", null);
+                if (isHorizontal) {
+                    labelValue = format.format(isFromStart ? (curTick) : (maxValue - curTick + minValue));
+                } else {
+                    labelValue = format.format(!isFromStart ? (curTick) : (maxValue - curTick + minValue));
+                }
+                writer.writeAttribute("title", labelValue, null);
+                if (slider.isTicksLabelsVisible()) {
+                    if (Math.round(curTick / maxTick * 10000) % 10000 == 0) {
+                        encodeLabelTick(writer, slider, labelValue, ticksLabelsVisibility, tickId + counterTicks + DEFAULT_ELEMENT_TEXT_ID);
+                    }
+                }
+
+                if (slider.isTicksVisible()) {
+                    encodeTickImage(writer, slider, minorTicksImageUrl, ticksVisibility, tickId + counterTicks + DEFAULT_ELEMENT_IMAGE_ID, isHorizontal);
+                }
+                curTick = Math.round(100000 * (curTick + minTick)) / 100000.;
+                writer.endElement("div");
+                if (!isHorizontal) {
+                    encodeClearFloatDiv(writer, slider);
+                }
             }
         }
         writer.endElement("td");
@@ -785,7 +804,7 @@ public class SliderRenderer extends RendererBase {
         }
 
         Script initScript = new ScriptBuilder().initScript(context, slider, "O$.Slider._init",
-                slider.getSubmittedValue(), slider.getMinValue(), slider.getMaxValue(),
+                slider.getValue(), slider.getMinValue(), slider.getMaxValue(),
                 slider.getMinorTickSpacing(), slider.getMajorTickSpacing(),
                 slider.getOrientation(), slider.getFillDirection(),
                 slider.isDisabled(), slider.isTooltipEnabled(),
@@ -794,6 +813,7 @@ public class SliderRenderer extends RendererBase {
                 slider.getOnchange(), slider.getOnchanging(),
                 getTextFieldStyleClass(context, slider),
                 getTooltipStyleClass(context, slider),
+                isIntegerTooltipType(context, slider),
                 getSliderStyleClass(context, slider),
                 getSliderFocusedStyleClass(context, slider),
                 activeElementRolloverStyleClass,
@@ -840,9 +860,9 @@ public class SliderRenderer extends RendererBase {
         return options;
     }
 
-    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue)
+    public Object getConvertedValue(FacesContext context, UIComponent component, Object value)
             throws ConverterException {
-        return Rendering.convertFromString(context, component, (String) submittedValue);
+        return Rendering.convertFromString(context, component, (String) value);
     }
 
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -880,7 +900,7 @@ public class SliderRenderer extends RendererBase {
         String fieldId = slider.getClientId(context) + DEFAULT_TEXT_FIELD_SUFFIX;
         String value = requestMap.get(fieldId);
         if (null != value) {
-            slider.setSubmittedValue(value);
+            slider.setValue(value);
         }
     }
 

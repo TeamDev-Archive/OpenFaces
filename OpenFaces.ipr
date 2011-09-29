@@ -1443,12 +1443,11 @@
     </library>
     <library name="portlet-api-lib">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/portals/portlet-api-lib.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/portals/portlet-api-2.0.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES>
-        <root url="file://D:/0/-LIBRARIES-/JBossPortletBridge-2.1.0.FINAL-src/core/portletbridge-api/src/main/java" />
-        <root url="file://D:/0/-LIBRARIES-/JBossPortletBridge-2.1.0.FINAL-src/core/portletbridge-impl/src/main/java" />
+        <root url="jar://$PROJECT_DIR$/libsrc/portlet-api-2.0-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="PrimeFaces">

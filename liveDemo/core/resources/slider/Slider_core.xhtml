@@ -2,314 +2,135 @@
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:o="http://openfaces.org/"
         >
-
   <script type="text/javascript">
-    var equalizerLevel = 0.5;
-    var koeff = [1.3, 1.2, 1, 1, 1.2, 1.4, 1.2, 1, 1, 1, 1, 1];
-    var playing = true;
-    var stopped = false;
 
-    function initSlider() {
-      O$('form:slider1').setValue(50);
-      O$('form:slider2').setValue(50);
+    function changeSize(size) {
+      document.getElementById('changed_text').style.fontSize = size + 'px';
+    }
+    function changeWidth(width) {
+      document.getElementById('changed_text').style.width = width + '%';
     }
 
-    function runEqualizer() {
-      playing = true;
-      stopped = false;
-      setTimeout("playEqualizer()", 250);
+    function changeOpacity(opacity) {
+      document.getElementById('changed_text').style.opacity = opacity / 100;
+      document.getElementById('changed_text').style.filter = 'alpha(opacity=' + opacity + ')'
     }
-
-    function playEqualizer() {
-      if (playing) {
-        var i;
-        for (i = 0; i &lt; 12; i++) {
-          var randomValue = Math.random() * 100;
-          if (Math.random() >= 50) {
-            randomValue *= -1;
-          }
-          randomValue /= 10;
-          var eqValue = (equalizerLevel + randomValue/100) * koeff[i];
-
-          if(eqValue > 1) {
-            eqValue = 1;
-          } else if (eqValue &lt; 0) {
-            eqValue = 0;
-          }
-          O$('form:eq' + i).setValue(eqValue);
-        }
-
-        setTimeout("playEqualizer()", Math.random() * 400);
-      }
-    }
-
-    function stopEqualizer() {
-      playing = false;
-      stopped = true;
-      var i;
-      for (i = 0; i &lt; 12; i++) {
-        O$('form:eq' + i).setValue(0);
-      }
-    }
-
-    function nextSong() {
-      stopEqualizer();
-      setTimeout("runEqualizer()", 1000);
-    }
-
-    function pauseEqualizer() {
-      if (!stopped) {
-        playing = !playing;
-        if(playing) {
-          playEqualizer();
-        }
-      }
-    }
-
-    function setBalance() {
-      var currentBalance = O$('form:slider2').getValue();
-      var leftValue = 50;
-      var rightValue = 50;
-      if (currentBalance &lt; 50) {
-        leftValue += (50 - currentBalance);
-        rightValue -= (50 - currentBalance);
-      } else if (currentBalance > 50) {
-        leftValue -= (currentBalance - 50);
-        rightValue += (currentBalance - 50);
-      }
-      O$('form:leftChannel').setValue(leftValue / 100);
-      O$('form:rightChannel').setValue(rightValue / 100);
+    function changeColor() {
+      var red = parseInt(O$('form:sliderColorRed').getValue());
+      var green = parseInt(O$('form:sliderColorGreen').getValue());
+      var blue = parseInt(O$('form:sliderColorBlue').getValue());
+      document.getElementById("changed_text").style.color = 'RGB(' + red + ',' + green + ',' + blue + ')';
     }
 
   </script>
 
   <div id="Demo">
-    <table>
-      <tr>
-        <td colspan="13" align="center">
-          <div style="border: 1px solid #808080">
-            <h4>Equilazer</h4>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <o:levelIndicator id="eq0" orientation="vertical" fillDirection="fromEnd" labelStyle="display:none;"/>
-        </td>
-        <td>
-          <o:levelIndicator id="eq1" orientation="vertical" fillDirection="fromEnd" labelStyle="display:none;"/>
-        </td>
-        <td>
-          <o:levelIndicator id="eq2" orientation="vertical" fillDirection="fromEnd" labelStyle="display:none;"/>
-        </td>
-        <td>
-          <o:levelIndicator id="eq3" orientation="vertical" fillDirection="fromEnd" labelStyle="display:none;"/>
-        </td>
-        <td>
-          <o:levelIndicator id="eq4" orientation="vertical" fillDirection="fromEnd" labelStyle="display:none;"/>
-        </td>
-        <td>
-          <o:levelIndicator id="eq5" orientation="vertical" fillDirection="fromEnd" labelStyle="display:none;"/>
-        </td>
-        <td>
-          <o:levelIndicator id="eq6" orientation="vertical" fillDirection="fromEnd" labelStyle="display:none;"/>
-        </td>
-        <td>
-          <o:levelIndicator id="eq7" orientation="vertical" fillDirection="fromEnd" labelStyle="display:none;"/>
-        </td>
-        <td>
-          <o:levelIndicator id="eq8" orientation="vertical" fillDirection="fromEnd" labelStyle="display:none;"/>
-        </td>
-        <td>
-          <o:levelIndicator id="eq9" orientation="vertical" fillDirection="fromEnd" labelStyle="display:none;"/>
-        </td>
-        <td>
-          <o:levelIndicator id="eq10" orientation="vertical" fillDirection="fromEnd" labelStyle="display:none;"/>
-        </td>
-        <td>
-          <o:levelIndicator id="eq11" orientation="vertical" fillDirection="fromEnd" labelStyle="display:none;"/>
-        </td>
-        <td>
-          <o:slider orientation="vertical"
-                    transitionPeriod="100"
-                    id="slider1"
-                    value="50"
-                    minValue="0"
-                    maxValue="100"
-                    style="height:260px;"
-                    onchange="equalizerLevel = slider.getValue()/100;"/>
-        </td>
-      </tr>
-      <tr>
-        <td align="center">
-          70
-        </td>
-        <td align="center">
-          30
-        </td>
-        <td align="center">
-          70
-        </td>
-        <td align="center">
-          180
-        </td>
-        <td align="center">
-          320
-        </td>
-        <td align="center">
-          600
-        </td>
-        <td align="center">
-          1K
-        </td>
-        <td align="center">
-          3K
-        </td>
-        <td align="center">
-          6K
-        </td>
-        <td align="center">
-          12K
-        </td>
-        <td align="center">
-          14K
-        </td>
-        <td align="center">
-          16K
-        </td>
-        <td align="center">
-          Level
-        </td>
-      </tr>
-      <tr>
-        <td colspan="12" align="center">
-          <table>
-            <tr>
-              <td>
-                <o:commandButton id="prevButton" type="button"
-                                 onclick="nextSong();"
-                                 >
-                  &#160;&#160;Prev&#160;&#160;
-                </o:commandButton>
-              </td>
-              <td>
-                <o:commandButton id="playButton" type="button"
-                                 onclick="runEqualizer();"
-                                 >
-                  &#160;&#160;Play&#160;&#160;
-                </o:commandButton>
-              </td>
-              <td>
-                <o:commandButton id="pauseButton" type="button"
-                                 onclick="pauseEqualizer();"
-                                 >
-                  &#160;&#160;Pause&#160;&#160;
-                </o:commandButton>
-              </td>
-              <td>
-                <o:commandButton id="stopButton" type="button"
-                                 onclick="stopEqualizer();"
-                                 >
-                  &#160;&#160;Stop&#160;&#160;
-                </o:commandButton>
-              </td>
-              <td>
-                <o:commandButton id="nextButton" type="button"
-                                 onclick="nextSong();"
-                                 >
-                  &#160;&#160;Next&#160;&#160;
-                </o:commandButton>
-              </td>
-              <td></td>
-            </tr>
-          </table>
-        </td>
+    <div id="demo1">
+      <table>
+        <tr>
+          <td valign="top" rowspan="4">
+            <div id="opacityLabel">Opacity</div>
+            <o:slider id="sliderOpacity" minorTickSpacing="10" majorTickSpacing="50"
+                      styleClass="sliderOpacity"
+                      minValue="0" maxValue="100" value="#{SliderBean.opacity}"
+                      snapToTicks="false" ticksAlignment="center" orientation="vertical"
+                      minorTickImageUrl="/openFacesResources/META-INF/resources/openfaces/input/slider_minorTick_vertical_bright.png"
+                      onchanging="changeOpacity(slider.getValue())"/>
+          </td>
 
-      </tr>
-    </table>
+          <td valign="top" class="smallTD">
+           <div id="fontLabel">Font size:</div>
+          </td>
+          <td valign="top" class="smallTD">
+            <o:slider id="sliderSize" minorTickSpacing="1" minValue="10" maxValue="24"
+                      ticksAlignment="rightOrBottom" majorTickSpacing="1"
+                      tooltipEnabled="false" value="#{SliderBean.fontSize}"
+                      styleClass="sliderFont"
+                      onchanging="changeSize(slider.getValue())"/>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table cellspacing="10">
+              <tr>
+                <td valign="top" class="smallTD">
+                  <div class="demoLabelDown onRight">Color(red):</div>
+                </td>
+                <td valign="top" class="smallTD">
+                  <o:slider id="sliderColorRed" minValue="0" maxValue="255"
+                            ticksAlignment="leftOrTop" majorTickSpacing="255"
+                            ticksVisible="false" snapToTicks="false"
+                            styleClass="colorSlider"  value="#{SliderBean.colorRed}"
+                            onchanging="changeColor()"/>
+                </td>
+              </tr>
+              <tr>
+                <td valign="top" class="smallTD">
+                  <div class="demoLabelDown onRight">Color(green):</div>
+                </td>
+                <td valign="top" class="smallTD">
+                  <o:slider id="sliderColorGreen" minValue="0" maxValue="255"
+                            ticksAlignment="leftOrTop" majorTickSpacing="255"
+                            ticksVisible="false" snapToTicks="false"
+                            styleClass="colorSlider" value="#{SliderBean.colorGreen}"
+                            onchanging="changeColor()"/>
+                </td>
+              </tr>
+              <tr>
+                <td valign="top" class="smallTD">
+                  <div class="demoLabelDown onRight">Color(blue):</div>
+                </td>
+                <td valign="top" class="smallTD">
+                  <o:slider id="sliderColorBlue" minValue="0" maxValue="255"
+                            ticksAlignment="leftOrTop" majorTickSpacing="255"
+                            ticksVisible="false" snapToTicks="false"
+                            styleClass="colorSlider"
+                            value="#{SliderBean.colorBlue}"
+                            onchanging="changeColor()"/>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+      <div id="widthLabel">Width, % :</div>
+      <div><o:slider id="sliderWidth" minorTickSpacing="5" minValue="20" maxValue="80"
+                     ticksAlignment="leftOrTop" majorTickSpacing="10"
+                     styleClass="widthSlider" value="#{SliderBean.width}" textFieldState="readOnly"
+                     onchanging="changeWidth(slider.getValue())">
+         <f:convertNumber pattern="## %"/>
+                     </o:slider>
+      </div>
 
-    <br/><br/>
+      <div id="changed_text">
+        You can change size of this text with help of slider. You can set font size from 10 to 24.
+        You can define an opacity of this text.
+        Also you can change width of block:from 20 to 90% and you can change height of block:from 50 to 150px.
+        And you can change a color of this text by setting sliders: Red, Green, Blue.
+      </div>
+    </div>
 
-    <table>
-      <tr>
-        <td colspan="2" align="center">
-          <div style="border: 1px solid #808080">
-            <h4>Channels Balans Adjustment</h4>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td align="right">
-          <o:levelIndicator id="leftChannel" orientation="horizontal" segmentSize="1" fillDirection="fromEnd"
-                            labelStyle="display:none;width:0px;height:0px;" value="0.5" colors="green" transitionLevels="1"
-                  />
-        </td>
-        <td align="left">
-          <o:levelIndicator id="rightChannel" orientation="horizontal" segmentSize="1" fillDirection="fromStart"
-                            labelStyle="display:none;width:0px;height:0px;" value="0.5" colors="green" transitionLevels="1"
-                  />
-        </td>
-      </tr>
-      <tr>
-        <td colspan="2" align="center">
-          <o:slider orientation="horizontal"
-                    transitionPeriod="100"
-                    id="slider2"
-                    value="50"
-                    minValue="0"
-                    maxValue="100"
-                    onchange="setBalance();"/>
-        </td>
-      </tr>
-    </table>
-
-    <br/><br/>
-
-    <table>
-      <tr>
-        <td>
-          Battery Level:
-        </td>
-        <td>
-          <o:levelIndicator id="batteryLevelIndicator" value="#{LevelIndicatorBean.batteryLevel}" segmentSize="50" style="width:600px;height:7px;"
-                  colors="#98C1EA,#76ACEF,#4D94EA,#3284E7,#1B76E4,#1B76E4,#1B76E4,#1B76E4,#1B76E4"
-                  transitionLevels="0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9" inactiveSegmentIntensity="0.2"
-                  />
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Used disk space:
-        </td>
-        <td>
-          <o:levelIndicator id="hddSpaceIndicator" value="#{LevelIndicatorBean.hddSpace}" segmentSize="50" style="width:600px;height:7px;"
-                  colors="#0080FF" inactiveSegmentIntensity="0.3"
-                  />
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Time to play:
-        </td>
-        <td>
-          <o:levelIndicator id="remainingTimeIndicator" value="0.7"
-                            fillDirection="fromEnd"
-                            segmentSize="50" style="width:600px;height:7px;"
-                  colors="orange" inactiveSegmentIntensity="0.3"
-                  />
-        </td>
-      </tr>
-    </table>
   </div>
 
 
   <div id="Description">
     <h4>Demonstrated Features</h4>
     <ul class="hang">
-      <li><strong>Client side interaction</strong> - Level Indicator provides client side API to access component's value.</li>
-      <li><strong>Different orientation and filling modes</strong> - Supports horizontal and vertical orientation and two fill direction modes available.</li>
-      <li><strong>Customizable colors and transition levels</strong> - Level Indicator may have many sections. Color and length can be customized for each section.</li>
-      <li><strong>Customizable styles</strong> - Separate styles for component and for label that shows current control's value.</li>
+      <li>
+        <strong>Client side interaction</strong> - Slider provides client side API to manage component's value.
+      </li>
+      <li>
+        <strong>Different orientations of Slider</strong> - Supports horizontal and vertical orientations.
+      </li>
+      <li>
+        <strong>Provides full managing of ticks</strong> - Ticks can be located on left, right or both sides of slider.
+        Slider's value might be set at specific range. Also provided settings of distance between of big and small ticks.
+        There is oportunity to not displaying ticks.
+      </li>
+      <li>
+        <strong>Customizable styles</strong> - Slider bar and drag handler can be replaced by another images.
+        Width and height can be customized for each slider. Separate styles for component and for label that shows current control's value.
+      </li>
     </ul>
   </div>
 
