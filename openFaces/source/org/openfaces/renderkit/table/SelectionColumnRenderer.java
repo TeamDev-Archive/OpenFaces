@@ -11,15 +11,18 @@
  */
 package org.openfaces.renderkit.table;
 
+import org.openfaces.component.select.SelectBooleanCheckbox;
 import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.AbstractTableSelection;
 import org.openfaces.component.table.BaseColumn;
+import org.openfaces.component.table.HierarchicalNodeSelection;
 import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
+import java.util.Arrays;
 
 /**
  * @author Dmitry Pikhulya
@@ -44,16 +47,28 @@ public class SelectionColumnRenderer extends BaseColumnRenderer {
         if (selection == null) {
             throw new IllegalStateException("<o:selectionColumn> must be inserted into a DataTable/TreeTable with selection enabled. table id: " + table.getClientId(context));
         }
-        boolean multipleRowSelection = selection.isMultipleSelectionAllowed();
+        AbstractTableSelection.Mode selectionMode = selection.getSelectionMode();
         boolean rowSelection = true; // selection instanceof RowSelection
         /*if (!rowSelection)
             throw new IllegalStateException("<o:selectionColumn> can only be inserted into a DataTable/TreeTable with row selection. table id: " + table.getClientId(context));
         */
         ResponseWriter writer = context.getResponseWriter();
-        writer.startElement("input", component);
-        writer.writeAttribute("type", multipleRowSelection ? "checkbox" : "radio", null);
-        Styles.renderStyleClasses(context, component);
-        writer.endElement("input");
+
+        if (selectionMode == AbstractTableSelection.Mode.HIERARCHICAL) {
+            SelectBooleanCheckbox checkbox = new SelectBooleanCheckbox();
+            if (selection instanceof HierarchicalNodeSelection) {
+                checkbox.setTriStateAllowed(true);
+                checkbox.setStateList(Arrays.asList(SelectBooleanCheckbox.SELECTED_STATE, SelectBooleanCheckbox.UNSELECTED_STATE));
+            }
+            checkbox.setSelected(false);
+            checkbox.encodeAll(context);
+
+        } else {
+            writer.startElement("input", component);
+            writer.writeAttribute("type", selectionMode != AbstractTableSelection.Mode.SINGLE ? "checkbox" : "radio", null);
+            Styles.renderStyleClasses(context, component);
+            writer.endElement("input");
+        }
     }
 
 }

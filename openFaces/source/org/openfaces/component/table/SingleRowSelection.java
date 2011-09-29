@@ -162,8 +162,9 @@ public class SingleRowSelection extends DataTableSelection {
         ValueBindings.set(this, ROW_DATA_PROPERTY, getRowData());
     }
 
-    public boolean isMultipleSelectionAllowed() {
-        return false;
+    @Override
+    public Mode getSelectionMode() {
+        return Mode.SINGLE;
     }
 
     protected List<Integer> encodeSelectionIntoIndexes() {

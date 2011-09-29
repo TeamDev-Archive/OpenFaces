@@ -38,7 +38,7 @@
         </fileset>
         <fileset dir="${portlets.lib.dir}">
           <include name="exoportal-stub.jar"/>
-          <include name="portlet-api-lib.jar"/>
+          <include name="portlet-api-2.0.jar"/>
           <include name="jboss/portletbridge-api-2.1.0.FINAL.jar"/>
           <include name="jboss/portletbridge-impl-2.1.0.FINAL.jar"/>
           <include name="jsf-portlet-1.2.jar"/>

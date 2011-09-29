@@ -38,6 +38,23 @@ import java.util.Map;
 public abstract class AbstractTableSelection extends OUICommand implements ComponentConfigurator {
     private static final String SESSION_KEY_SELECTION_EVENTS_PROCESSED = "OF:tableSelectionEventsProcessed";
 
+    public enum Mode {
+        SINGLE("single"),
+        MULTIPLE("multiple"),
+        HIERARCHICAL("hierarchical");
+
+        private String value;
+
+        Mode(String value) {
+            this.value = value;
+        }
+
+        @Override
+        public String toString() {
+            return value;
+        }
+    }
+
     private TableDataModel model;
     private boolean selectionChanged;
     private String style;
@@ -56,7 +73,11 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
         this.model = model;
     }
 
-    public abstract boolean isMultipleSelectionAllowed();
+    public boolean isMultipleSelectionAllowed() {
+        return !"single".equals(getSelectionMode());
+    }
+
+    public abstract Mode getSelectionMode();
 
     public abstract void rememberByKeys();
 
@@ -243,14 +264,15 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
                 isEnabled(),
                 isRequired(),
                 "rows",
-                isMultipleSelectionAllowed(),
+                getSelectionMode(),
                 table.getDeferBodyLoading() ? null : encodeSelectionIntoIndexes(),
                 getAttributes().get("_selectionCls_"),
                 onchange,
                 submitOnChange ? getSelectionEventsProcessed() + 1 : null,
                 getSelectionColumnIndexes(table),
                 isMouseSupport(),
-                isKeyboardSupport());
+                isKeyboardSupport(),
+                getTrackLeafNodesOnly());
 
         Rendering.renderInitScript(context, buf,
                 Resources.utilJsURL(context),
@@ -261,6 +283,10 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
 
         if (submitOnChange)
             Rendering.renderHiddenField(writer, getSelectionEventFieldName(context, table), null);
+    }
+
+    protected boolean getTrackLeafNodesOnly() {
+        return false;
     }
 
     private List<Integer> getSelectionColumnIndexes(AbstractTable table) {

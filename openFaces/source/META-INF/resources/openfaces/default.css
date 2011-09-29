@@ -1001,13 +1001,12 @@
 
 .o_slider {
   margin: 5px;
-  padding: 10px;
+  padding: 5px;
   border: 0;
   text-align: left;
 }
 
 .o_slider_focused {
-  padding: 9px;
   border: 1px dotted black;
 }
 

@@ -83,8 +83,7 @@ public class MultipleNodeSelection extends TreeTableSelection {
         if (nodeDatas != null) {
             int nodeDataCount = nodeDatas.size();
             List<Object> nodeKeys = new ArrayList<Object>(nodeDataCount);
-            for (int i = 0; i < nodeDataCount; i++) {
-                Object nodeData = nodeDatas.get(i);
+            for (Object nodeData : nodeDatas) {
                 Object nodeKeyByData = getNodeKeyByData(nodeData);
                 if (nodeKeyByData != null)
                     nodeKeys.add(nodeKeyByData);
@@ -95,8 +94,7 @@ public class MultipleNodeSelection extends TreeTableSelection {
         if (nodeKeyPaths != null) {
             int keyPathCount = nodeKeyPaths.size();
             List<Object> result = new ArrayList<Object>(keyPathCount);
-            for (int i = 0; i < keyPathCount; i++) {
-                TreePath keyPath = nodeKeyPaths.get(i);
+            for (TreePath keyPath : nodeKeyPaths) {
                 result.add(keyPath.getValue());
             }
             return result;
@@ -104,8 +102,7 @@ public class MultipleNodeSelection extends TreeTableSelection {
         if (nodePaths != null) {
             int nodePathCount = nodePaths.size();
             List<Object> result = new ArrayList<Object>(nodePathCount);
-            for (int i = 0; i < nodePathCount; i++) {
-                TreePath nodePath = nodePaths.get(i);
+            for (TreePath nodePath : nodePaths) {
                 TreePath keyPath = getKeyPathByNodePath(nodePath);
                 if (keyPath != null)
                     result.add(keyPath.getValue());
@@ -121,8 +118,7 @@ public class MultipleNodeSelection extends TreeTableSelection {
         if (nodeKeys != null) {
             int nodeKeyCount = nodeKeys.size();
             List<Object> nodeDatas = new ArrayList<Object>(nodeKeyCount);
-            for (int i = 0; i < nodeKeyCount; i++) {
-                Object nodeKey = nodeKeys.get(i);
+            for (Object nodeKey : nodeKeys) {
                 Object nodeDataById = getNodeDataByKey(nodeKey);
                 if (nodeDataById != null)
                     nodeDatas.add(nodeDataById);
@@ -132,8 +128,7 @@ public class MultipleNodeSelection extends TreeTableSelection {
         if (nodePaths != null) {
             int nodePathCount = nodePaths.size();
             List<Object> result = new ArrayList<Object>(nodePathCount);
-            for (int i = 0; i < nodePathCount; i++) {
-                TreePath nodePath = nodePaths.get(i);
+            for (TreePath nodePath : nodePaths) {
                 result.add(nodePath.getValue());
             }
             return result;
@@ -141,8 +136,7 @@ public class MultipleNodeSelection extends TreeTableSelection {
         if (nodeKeyPaths != null) {
             int keyPathCount = nodeKeyPaths.size();
             List<Object> result = new ArrayList<Object>(keyPathCount);
-            for (int i = 0; i < keyPathCount; i++) {
-                TreePath keyPath = nodeKeyPaths.get(i);
+            for (TreePath keyPath : nodeKeyPaths) {
                 TreePath nodePath = getNodePathByKeyPath(keyPath);
                 if (nodePath != null)
                     result.add(nodePath.getValue());
@@ -158,8 +152,7 @@ public class MultipleNodeSelection extends TreeTableSelection {
         if (nodeKeyPaths != null) {
             int keyPathCount = nodeKeyPaths.size();
             List<TreePath> result = new ArrayList<TreePath>(keyPathCount);
-            for (int i = 0; i < keyPathCount; i++) {
-                TreePath keyPath = nodeKeyPaths.get(i);
+            for (TreePath keyPath : nodeKeyPaths) {
                 TreePath nodePath = getNodePathByKeyPath(keyPath);
                 if (nodePath != null)
                     result.add(nodePath);
@@ -169,8 +162,7 @@ public class MultipleNodeSelection extends TreeTableSelection {
         if (nodeDatas != null) {
             int nodeDataCount = nodeDatas.size();
             List<TreePath> result = new ArrayList<TreePath>(nodeDataCount);
-            for (int i = 0; i < nodeDataCount; i++) {
-                Object nodeData = nodeDatas.get(i);
+            for (Object nodeData : nodeDatas) {
                 TreePath nodePath = getNodePathByData(nodeData);
                 if (nodePath != null)
                     result.add(nodePath);
@@ -180,8 +172,7 @@ public class MultipleNodeSelection extends TreeTableSelection {
         if (nodeKeys != null) {
             int nodeKeyCount = nodeKeys.size();
             List<TreePath> result = new ArrayList<TreePath>(nodeKeyCount);
-            for (int i = 0; i < nodeKeyCount; i++) {
-                Object nodeKey = nodeKeys.get(i);
+            for (Object nodeKey : nodeKeys) {
                 TreePath nodePath = getNodePathByKey(nodeKey);
                 if (nodePath != null)
                     result.add(nodePath);
@@ -197,8 +188,7 @@ public class MultipleNodeSelection extends TreeTableSelection {
         if (nodePaths != null) {
             int nodePathCount = nodePaths.size();
             List<TreePath> result = new ArrayList<TreePath>(nodePathCount);
-            for (int i = 0; i < nodePathCount; i++) {
-                TreePath nodePath = nodePaths.get(i);
+            for (TreePath nodePath : nodePaths) {
                 TreePath keyPath = getKeyPathByNodePath(nodePath);
                 if (keyPath != null)
                     result.add(keyPath);
@@ -208,8 +198,7 @@ public class MultipleNodeSelection extends TreeTableSelection {
         if (nodeDatas != null) {
             int nodeDataCount = nodeDatas.size();
             List<TreePath> result = new ArrayList<TreePath>(nodeDataCount);
-            for (int i = 0; i < nodeDataCount; i++) {
-                Object nodeData = nodeDatas.get(i);
+            for (Object nodeData : nodeDatas) {
                 TreePath keyPath = getKeyPathByData(nodeData);
                 if (keyPath != null)
                     result.add(keyPath);
@@ -219,8 +208,7 @@ public class MultipleNodeSelection extends TreeTableSelection {
         if (nodeKeys != null) {
             int nodeKeyCount = nodeKeys.size();
             List<TreePath> result = new ArrayList<TreePath>(nodeKeyCount);
-            for (int i = 0; i < nodeKeyCount; i++) {
-                Object nodeKey = nodeKeys.get(i);
+            for (Object nodeKey : nodeKeys) {
                 TreePath keyPath = getKeyPathByKey(nodeKey);
                 if (keyPath != null)
                     result.add(keyPath);
@@ -279,8 +267,9 @@ public class MultipleNodeSelection extends TreeTableSelection {
         ValueBindings.setFromList(this, NODE_PATHS_PROPERTY, getNodePaths());
     }
 
-    public boolean isMultipleSelectionAllowed() {
-        return true;
+    @Override
+    public Mode getSelectionMode() {
+        return Mode.MULTIPLE;
     }
 
     public void encodeOnAjaxNodeFolding(FacesContext context) throws IOException {
@@ -307,8 +296,7 @@ public class MultipleNodeSelection extends TreeTableSelection {
         if (keyPaths != null) {
             int keyPathCount = keyPaths.size();
             rowIndexes = new ArrayList<Integer>(keyPathCount);
-            for (int i = 0; i < keyPathCount; i++) {
-                TreePath keyPath = keyPaths.get(i);
+            for (TreePath keyPath : keyPaths) {
                 int rowIndex = getRowIndexByNodeKeyPath(keyPath);
                 if (rowIndex != -1)
                     rowIndexes.add(rowIndex);

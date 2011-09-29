@@ -36,6 +36,11 @@ public class SliderTag extends AbstractUIInputTag {
         return "org.openfaces.SliderRenderer";
     }
 
+    @Override
+    protected boolean isAutomaticValueAttributeHandling() {
+        return false;
+    }
+
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
         setIntProperty(component, "barAutoRepeatClickDelay");
@@ -44,6 +49,7 @@ public class SliderTag extends AbstractUIInputTag {
         setStringProperty(component, "label");
         setStringProperty(component, "tabindex");
         setStringProperty(component, "onchanging");
+        setNumberProperty(component, "value");
         setNumberProperty(component, "maxValue");
         setNumberProperty(component, "minValue");
         setEnumerationProperty(component, "orientation", Orientation.class);

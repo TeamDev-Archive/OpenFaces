@@ -64,12 +64,15 @@ O$.TreeTable = {
       _foldingMode: clientFoldingParams ? "client" : "server",
       _treeColumnExpansionDatas: treeColumnExpansionDatas,
       _toggleClassName: toggleClassName,
+
       _updateRowVisibility: function() {
         var rootNodeCount = this._rowIndexToChildCount["root"];
         var rows = table.body._getRows();
         var rowIndexToChildCount = this._rowIndexToChildCount;
         this._styleRecalculationOnNodeExpansionNeeded = !!this._params.body.oddRowClassName;
-        var result = O$.TreeTable._processRowVisibility(rows, rowIndexToChildCount, 0, rootNodeCount, true);
+        var pseudoCommonRootRow = {_pseudoRow: true, _childRows: []};
+        var result = O$.TreeTable._processRowVisibility(rows, rowIndexToChildCount, 0, rootNodeCount, true, pseudoCommonRootRow);
+        table._rootRows = pseudoCommonRootRow._childRows;
         if (this._styleRecalculationOnNodeExpansionNeeded) {
           var visibleRows = 0;
           rows.forEach(function(row) {
@@ -101,7 +104,7 @@ O$.TreeTable = {
         var rows = this.body._getRows();
         for (var rowIndex = 0, rowCount = rows.length; rowIndex < rowCount; rowIndex++) {
           var row = rows[rowIndex];
-          var expanded = row._expanded;
+          var expanded = row._isExpanded();
           if (expanded) {
             if (expandedRowIndexes.length > 0)
               expandedRowIndexes += ",";
@@ -122,11 +125,11 @@ O$.TreeTable = {
         var row = bodyRows[selectedRowIndex];
         if (!row._hasChildren)
           return true;
-        if ((e.rightPressed || e.plusPressed) && !row._expanded) {
+        if ((e.rightPressed || e.plusPressed) && !row._isExpanded()) {
           row._setExpanded(true);
           return false;
         }
-        if ((e.leftPressed || e.minusPressed) && row._expanded) {
+        if ((e.leftPressed || e.minusPressed) && row._isExpanded()) {
           row._setExpanded(false);
           return false;
         }
@@ -185,6 +188,13 @@ O$.TreeTable = {
       }
 
       this._updateExpandedNodesField();
+      if (table._selectionMode == "hierarchical") {
+        // _updateRowVisibility is needed to update parent/child references, but we can do it asynchronously to avoid
+        // degrading the perceived performance
+        setTimeout(function() {
+          table._updateRowVisibility();
+        }, 1);
+      }
     };
 
     var rows = table.body._getRows();
@@ -196,7 +206,7 @@ O$.TreeTable = {
 
   },
 
-  _processRowVisibility: function(rows, rowIndexToChildCount, rowIndex, rowCount, currentLevelVisible) {
+  _processRowVisibility: function(rows, rowIndexToChildCount, rowIndex, rowCount, currentLevelVisible, parentRow) {
     for (var i = 0; i < rowCount; i++) {
       var row = rows[rowIndex];
       O$.assert(row, "processRowVisibility: rowIndex == " + rowIndex);
@@ -206,13 +216,18 @@ O$.TreeTable = {
           row._updateStyle();
         }
       }
+      row._parentRow = !parentRow._pseudoRow ? parentRow : null;
+      if (parentRow) {
+        parentRow._childRows.push(row);
+      }
       var childCount = rowIndexToChildCount[rowIndex];
       if (childCount) {
         row._hasChildren = true;
+        row._childRows = [];
         row._childrenLoaded = (childCount != "?");
-        var nextLevelVisible = currentLevelVisible && row._expanded;
+        var nextLevelVisible = currentLevelVisible && row._isExpanded();
         if (row._childrenLoaded) {
-          rowIndex = O$.TreeTable._processRowVisibility(rows, rowIndexToChildCount, rowIndex + 1, childCount, nextLevelVisible);
+          rowIndex = O$.TreeTable._processRowVisibility(rows, rowIndexToChildCount, rowIndex + 1, childCount, nextLevelVisible, row);
         } else
           rowIndex++;
       } else {
@@ -239,7 +254,7 @@ O$.TreeTable = {
 
     var hasChildren = toggles && toggles.length > 0;
     function updateExpansionStateClass() {
-      O$.setStyleMappings(row._rowNode, {expansion: row._expanded ? "o_expandedNode" : "o_collapsedNode"});
+      O$.setStyleMappings(row._rowNode, {expansion: row._isExpanded() ? "o_expandedNode" : "o_collapsedNode"});
     }
 
     O$.extend(row, {
@@ -306,7 +321,7 @@ O$.TreeTable = {
         onclick: function(e) {
           var evt = O$.getEvent(e);
           var clickedRow = this._row;
-          var newExpanded = !clickedRow._expanded;
+          var newExpanded = !clickedRow._isExpanded();
           clickedRow._setExpanded(newExpanded);
           evt.cancelBubble = true;
           if (table._focusable) {

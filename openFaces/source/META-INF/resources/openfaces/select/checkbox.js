@@ -127,7 +127,7 @@ O$.Checkbox = {
         }
       });
 
-      // spacebar also fires "click" in non-Opera browsers
+      // space-bar also fires "click" in non-Opera browsers
       if (O$.isOpera()) {
         O$.addEventHandler(checkbox, "keypress", function(e) {
           if (!checkbox._disabled) {

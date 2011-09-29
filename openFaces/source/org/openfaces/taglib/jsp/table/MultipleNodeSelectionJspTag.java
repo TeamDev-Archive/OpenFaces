@@ -11,6 +11,7 @@
  */
 package org.openfaces.taglib.jsp.table;
 
+import org.openfaces.taglib.internal.table.AbstractTableSelectionTag;
 import org.openfaces.taglib.internal.table.MultipleNodeSelectionTag;
 
 import javax.el.ValueExpression;
@@ -22,6 +23,10 @@ public class MultipleNodeSelectionJspTag extends AbstractTableSelectionJspTag {
 
     public MultipleNodeSelectionJspTag() {
         super(new MultipleNodeSelectionTag());
+    }
+
+    protected MultipleNodeSelectionJspTag(AbstractTableSelectionTag delegate) {
+        super(delegate);
     }
 
     public void setNodeDatas(ValueExpression nodeDatas) {
