@@ -196,7 +196,7 @@ public class Environment {
         Boolean isExplorer6 = (Boolean) getSessionMap().get(KEY_EXPLORER6_BROWSER);
         if (isExplorer6 == null) {
             isExplorer6 = isExplorer() && isBrowser("msie 6") && !isOpera();
-            getSessionMap().put(KEY_EXPLORER_BROWSER, isExplorer6);
+            getSessionMap().put(KEY_EXPLORER6_BROWSER, isExplorer6);
         }
         return isExplorer6;
     }
