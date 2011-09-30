@@ -1158,7 +1158,7 @@
   <component name="ProjectResources">
     <default-html-doctype>http://www.w3.org/1999/xhtml</default-html-doctype>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="1.5" project-jdk-type="JavaSDK" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="1.6" project-jdk-type="JavaSDK" />
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
   </component>
@@ -1339,12 +1339,6 @@
     </library>
     <library name="RichFaces">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/apache/commons-logging-1.1.1.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/apache/commons-digester-1.8.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/apache/commons-beanutils-1.7.0.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/slf4j-api-1.5.8.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/slf4j-log4j12-1.5.8.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/log4j-1.2.14.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/google/guava-r07.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/richfaces/richfaces-core-impl-4.0.0.Final.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/richfaces/richfaces-components-api-4.0.0.Final.jar!/" />
@@ -1399,6 +1393,7 @@
         <root url="jar://$PROJECT_DIR$/lib/tomahawk/tomahawk20-1.1.10.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/apache/commons-fileupload-1.2.1.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/apache/commons-lang-2.4.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/apache/commons-logging-1.1.1.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES>

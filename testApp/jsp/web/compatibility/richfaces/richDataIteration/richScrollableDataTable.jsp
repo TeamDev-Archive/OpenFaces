@@ -6,7 +6,7 @@
 <%@ taglib uri="http://richfaces.org/rich" prefix="rich"%> 
 <html>
 <head>
-  <title>OpenFaces components in the rich:scrollableDataTable</title>
+  <title>OpenFaces components in the rich:extendedDataTable</title>
 </head>
 
 <body>

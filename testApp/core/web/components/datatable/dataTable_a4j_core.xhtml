@@ -254,7 +254,7 @@
 <table>
   <tr>
     <td class="cells">
-      <rich:scrollableDataTable frozenColCount="1" value="#{RichTestBean.tableValue}"
+      <rich:extendedDataTable frozenColCount="1" value="#{RichTestBean.tableValue}"
                                 var="item"
                                 rows="40"
                                 id="richDataTableTest">
@@ -271,7 +271,7 @@
           <f:facet name="header"><h:outputText value="Column 3"/></f:facet>
           <h:outputText value="#{item.intField1}"/>
         </rich:column>
-      </rich:scrollableDataTable>
+      </rich:extendedDataTable>
     </td>
     <td class="cells">
       <a4j:commandButton id="refresher_a4j2" value="Refresh" style="font-weight: bold; text-decoration: underline;"

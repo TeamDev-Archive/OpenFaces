@@ -23,7 +23,12 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -39,6 +44,13 @@ import java.util.TimeZone;
 public class Calendar extends OUIInputBase {
     public static final String COMPONENT_TYPE = "org.openfaces.Calendar";
     public static final String COMPONENT_FAMILY = "org.openfaces.Calendar";
+
+    protected static final List<String> EVENT_NAMES;
+    static {
+        List<String> eventNames = new ArrayList<String>(Arrays.asList("periodchange"));
+        eventNames.addAll(OUIInputBase.EVENT_NAMES);
+        EVENT_NAMES = Collections.unmodifiableList(eventNames);
+    }
 
     private static final Converter DATE_CONVERTER = new DateConverter();
 
@@ -610,5 +622,10 @@ public class Calendar extends OUIInputBase {
                 throw new ConverterException("Cannot convert value '" + value + "'");
             }
         }
+    }
+
+    @Override
+    public Collection<String> getEventNames() {
+        return EVENT_NAMES;
     }
 }

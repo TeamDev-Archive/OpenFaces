@@ -30,7 +30,7 @@ import java.util.List;
         @ResourceDependency(name = "default.css", library = "openfaces")
 })
 public class OUIInputBase extends UIInput implements OUIInput, ClientBehaviorHolder {
-    private static final List<String> EVENT_NAMES = Collections.unmodifiableList(Arrays.asList("valueChange", "blur",
+    protected static final List<String> EVENT_NAMES = Collections.unmodifiableList(Arrays.asList("valueChange", "blur",
             "change", "click", "dblclick", "focus", "keydown", "keypress", "keyup", "mousedown", "mousemove",
             "mouseout", "mouseover", "mouseup", "select"));
 
