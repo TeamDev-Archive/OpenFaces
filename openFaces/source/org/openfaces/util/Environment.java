@@ -25,11 +25,11 @@ import java.io.LineNumberReader;
 import javax.portlet.ActionRequest;
 import javax.portlet.PortalContext;
 import javax.portlet.RenderRequest;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -306,46 +306,62 @@ public class Environment {
         String key = Environment.class.getName() + ".MOJARRA_VERSION";
         String version = (String) applicationMap.get(key);
         if (version == null) {
-            Map<String, String> manifestAttributes = Environment.findManifestFile("Mojarra");
-            if (manifestAttributes == null)
-                version = "";
-            else
-                version = manifestAttributes.get("Implementation-Version");
+            List<Map<String, String>> manifestAttributes = Environment.findManifestFiles("Mojarra");
+            List<String> versionStringsFound = new ArrayList<String>();
+            for (Map<String, String> thisFileAttributes : manifestAttributes) {
+                String v = thisFileAttributes.get("Implementation-Version");
+                versionStringsFound.add(v);
+            }
+            // It seems there are cases when several implementations might be found in the same class-path, where one
+            // version overrides the other. It doesn't seem to be possible to detect that actual precedence order, so
+            // we just take the highest version assuming that application is set up properly in this case.
+            Collections.sort(versionStringsFound);
+            int versionCount = versionStringsFound.size();
+            version = versionCount > 0 ? versionStringsFound.get(versionCount - 1) : "";
             applicationMap.put(key, version);
         }
         return version;
     }
 
-    private static Map<String, String> findManifestFile(String bundleNameSubstring) {
+    private static List<Map<String, String>> findManifestFiles(String bundleNameSubstring) {
+        List<Map<String, String>> result = new ArrayList<Map<String, String>>();
         Set<ClassLoader> classLoaders = new HashSet<ClassLoader>();
         classLoaders.add(Environment.class.getClassLoader());
 
         for (ClassLoader classLoader : classLoaders) {
-            Map<String, String> manifestFile = findManifestFile(classLoader, bundleNameSubstring);
-            if (manifestFile != null) return manifestFile;
+            List<Map<String, String>> manifestFiles = findManifestFiles(classLoader, bundleNameSubstring);
+            result.addAll(manifestFiles);
         }
-        return null;
+        return result;
     }
 
-    private static Map<String, String> findManifestFile(ClassLoader classLoader, String bundleNameSubstring) {
+    private static List<Map<String, String>> findManifestFiles(ClassLoader classLoader, String bundleNameSubstring) {
+        List<Map<String, String>> result = new ArrayList<Map<String, String>>();
+        Enumeration<URL> resources;
         try {
-            Enumeration<URL> resources = classLoader.getResources("META-INF/MANIFEST.MF");
-            while (resources.hasMoreElements()) {
-                URL url = resources.nextElement();
-                Map<String, String> attributes = new HashMap<String, String>();
-                readManifestAttributes(url, attributes);
-
-                String bundleName = attributes.get("Bundle-Name");
-                if (bundleName == null || !bundleName.contains(bundleNameSubstring)) continue;
-                return attributes;
-            }
+            resources = classLoader.getResources("META-INF/MANIFEST.MF");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return null;
+        while (resources.hasMoreElements()) {
+            URL url = resources.nextElement();
+            Map<String, String> thisFileAttributes = null;
+            try {
+                thisFileAttributes = readManifestAttributes(url);
+            } catch (IOException e) {
+                continue;
+            }
+            String bundleName = thisFileAttributes.get("Bundle-Name");
+            if (bundleName == null || !bundleName.contains(bundleNameSubstring)) continue;
+
+            result.add(thisFileAttributes);
+        }
+        return result;
     }
 
-    static void readManifestAttributes(URL url, Map<String, String> attributes) throws IOException {
+    static Map<String, String> readManifestAttributes(URL url) throws IOException {
+        Map<String, String> attributes = new HashMap<String, String>();
+
         InputStream inputStream = url.openStream();
         InputStreamReader isr = new InputStreamReader(inputStream);
         LineNumberReader reader = new LineNumberReader(isr);
@@ -363,6 +379,8 @@ public class Environment {
         } finally {
             reader.close();
         }
+
+        return attributes;
     }
 
     static String[] readManifestAttribute(List<String> lines) {
