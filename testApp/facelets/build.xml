@@ -56,10 +56,10 @@
   </fileset>
 
   <fileset id="richfaces-libs" dir="${richfaces.lib.dir}">
-    <include name="richfaces-components-api-4.0.0.20101004-M3.jar"/>
-    <include name="richfaces-components-ui-4.0.0.20101004-M3.jar"/>
-    <include name="richfaces-core-api-4.0.0.20101004-M3.jar"/>
-    <include name="richfaces-core-impl-4.0.0.20101004-M3.jar"/>
+    <include name="richfaces-components-api-4.0.0.Final.jar"/>
+    <include name="richfaces-components-ui-4.0.0.Final.jar"/>
+    <include name="richfaces-core-api-4.0.0.Final.jar"/>
+    <include name="richfaces-core-impl-4.0.0.Final.jar"/>
   </fileset>
 
   <fileset id="primefaces-libs" dir="${primefaces.lib.dir}">

@@ -1346,18 +1346,18 @@
         <root url="jar://$PROJECT_DIR$/lib/slf4j-log4j12-1.5.8.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/log4j-1.2.14.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/google/guava-r07.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/richfaces/richfaces-core-impl-4.0.0.20101004-M3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/richfaces/richfaces-components-api-4.0.0.20101004-M3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/richfaces/richfaces-components-ui-4.0.0.20101004-M3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/richfaces/richfaces-core-api-4.0.0.20101004-M3.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/richfaces/richfaces-core-impl-4.0.0.Final.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/richfaces/richfaces-components-api-4.0.0.Final.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/richfaces/richfaces-core-api-4.0.0.Final.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/richfaces/richfaces-components-ui-4.0.0.Final.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES>
         <root url="jar://$PROJECT_DIR$/libsrc/guava-src-r07.zip!/" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-components-api-4.0.0.20101004-M3-sources.jar!/" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-components-ui-4.0.0.20101004-M3-sources.jar!/" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-core-api-4.0.0.20101004-M3-sources.jar!/" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-core-impl-4.0.0.20101004-M3-sources.jar!/" />
+        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-core-impl-4.0.0.Final-sources.jar!/" />
+        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-components-api-4.0.0.Final-sources.jar!/" />
+        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-components-ui-4.0.0.Final-sources.jar!/" />
+        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-core-api-4.0.0.Final-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="selenium-java-client-driver">

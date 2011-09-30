@@ -13,12 +13,10 @@
 	<classpathentry kind="lib" path="/Libs/portals/jboss/portletbridge-api-2.1.0.FINAL.jar"/>
 	<classpathentry kind="lib" path="/Libs/portals/jboss/portletbridge-impl-2.1.0.FINAL.jar"/>
 	<classpathentry kind="lib" path="/Libs/openfaces-dependencies/ss_css2-0.9.4.jar"/>
-	<classpathentry kind="lib" path="/Libs/richfaces/richfaces-components-api-4.0.0.20101004-M3.jar"/>
-	<classpathentry kind="lib" path="/Libs/richfaces/richfaces-components-ui-4.0.0.20101004-M3.jar"/>
-	<classpathentry kind="lib" path="/Libs/richfaces/richfaces-core-api-4.0.0.20101004-M3.jar"/>
-	<classpathentry kind="lib" path="/Libs/richfaces/richfaces-core-impl-4.0.0.20101004-M3.jar"/>
-	<classpathentry kind="lib" path="/Libs/richfaces/richfaces-impl-3.3.0.GA.jar"/>
-	<classpathentry kind="lib" path="/Libs/richfaces/richfaces-ui-3.3.0.GA.jar"/>
+	<classpathentry kind="lib" path="/Libs/richfaces/richfaces-components-api-4.0.0.Final.jar"/>
+	<classpathentry kind="lib" path="/Libs/richfaces/richfaces-components-ui-4.0.0.Final.jar"/>
+	<classpathentry kind="lib" path="/Libs/richfaces/richfaces-core-api-4.0.0.Final.jar"/>
+	<classpathentry kind="lib" path="/Libs/richfaces/richfaces-core-impl-4.0.0.Final.jar"/>
 	<classpathentry kind="lib" path="/Libs/mojarra/jsf-api-2.0.2.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="output" path="classes"/>

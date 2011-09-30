@@ -60,22 +60,22 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="/Libs/richfaces/richfaces-components-api-4.0.0.20101004-M3.jar">
+	<classpathentry exported="true" kind="lib" path="/Libs/richfaces/richfaces-components-api-4.0.0.Final.jar">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="/Libs/richfaces/richfaces-components-ui-4.0.0.20101004-M3.jar">
+	<classpathentry exported="true" kind="lib" path="/Libs/richfaces/richfaces-components-ui-4.0.0.Final.jar">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="/Libs/richfaces/richfaces-core-api-4.0.0.20101004-M3.jar">
+	<classpathentry exported="true" kind="lib" path="/Libs/richfaces/richfaces-core-api-4.0.0.Final.jar">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="/Libs/richfaces/richfaces-core-impl-4.0.0.20101004-M3.jar">
+	<classpathentry exported="true" kind="lib" path="/Libs/richfaces/richfaces-core-impl-4.0.0.Final.jar">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
