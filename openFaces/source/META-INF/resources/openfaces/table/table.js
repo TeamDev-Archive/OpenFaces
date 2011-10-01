@@ -1397,7 +1397,7 @@ O$.Table = {
       O$.Table._addSelectionChangeHandler(table, [selectAllCheckbox, "_updateState"]);
     }
 
-    if (columnIndex) {
+    if (columnIndex != null) {
       initForCheckboxColumn();
     } else
       initForSelection();
@@ -1418,7 +1418,8 @@ O$.Table = {
 
   // -------------------------- CHECKBOX COLUMN SUPPORT
 
-  _setCheckboxColValues: function(table, colIndex, checkedRowIndexes) {
+  _setCheckboxColValues: function(tableId, colIndex, checkedRowIndexes) {
+    var table = O$(tableId);
     var columnObj = table._columns[colIndex];
     columnObj._setCheckedIndexes(checkedRowIndexes);
   },

@@ -298,8 +298,11 @@ public class CheckboxColumn extends BaseColumn {
     public void encodeOnAjaxNodeFolding(FacesContext context) throws IOException {
         if (selectedRows instanceof MultipleNodeSelection) {
             List<Integer> selectedRowIndexes = selectedRows.encodeSelectionIntoIndexes();
+            AbstractTable table = getTable();
+            List<BaseColumn> renderedColumns = table.getRenderedColumns();
+            int columnIndex = renderedColumns.indexOf(this);
             ScriptBuilder buf = new ScriptBuilder().functionCall("O$.Table._setCheckboxColValues",
-                    this, selectedRowIndexes).semicolon();
+                    table, columnIndex, selectedRowIndexes).semicolon();
             Rendering.renderInitScript(context, buf,
                     Resources.utilJsURL(context),
                     TableUtil.getTableUtilJsURL(context),
