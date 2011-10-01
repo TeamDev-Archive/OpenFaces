@@ -719,6 +719,7 @@ O$.Table = {
                            selectionChangeHandler, postEventOnSelectionChange, selectionColumnIndexes,
                            mouseSupport, keyboardSupport, trackLeafNodesOnly) {
     var table = O$.initComponent(tableId);
+    table._initializingSelection = true;
     O$.assert(!table._selectionInitialized, "O$.Table._initSelection shouldn't be called twice on the same table");
     O$.extend(table, {
               _selectionInitialized: true,
@@ -1030,6 +1031,7 @@ O$.Table = {
           table.__setSelectedRowIndexes([0]);
       }
     }
+    table._initializingSelection = false;
   },
 
   _initRowForSelection: function(row) {
@@ -1073,14 +1075,28 @@ O$.Table = {
       });
     }
 
-    for (var i = 0, count = inputs.length; i < count; i++) {
-      var input = inputs[i];
-      if (input.className && input.className.indexOf("o_selectRowCheckbox") != -1) {
-        if (!row._selectRowCheckboxes) row._selectRowCheckboxes = [];
-        row._selectRowCheckboxes.push(input);
-        O$.Table._initSelectRowCheckbox(input, row);
+    function locateSelectionCheckboxes(inputs, row) {
+      for (var i = 0, count = inputs.length; i < count; i++) {
+        var input = inputs[i];
+        if (input.className && input.className.indexOf("o_selectRowCheckbox") != -1) {
+          if (!row._selectRowCheckboxes) row._selectRowCheckboxes = [];
+          row._selectRowCheckboxes.push(input);
+          O$.Table._initSelectRowCheckbox(input, row);
+        }
       }
     }
+    if (table._initializingSelection)
+      locateSelectionCheckboxes(inputs, row);
+    else
+      setTimeout(function() {
+        // This timeout is required in case of expanding tree nodes with Ajax. If such nodes contain selectRowCheckbox'es
+        // then these check-boxes have not run their initialization code by the time when this method is invoked, and so
+        // are missing the "o_selectRowCheckbox", and cannot be found here yet, so we're doing this asynchronously
+        locateSelectionCheckboxes(inputs, row);
+        // update checkboxes once more because the previous time when we invoked setTimeout, these check-boxes were not
+        // registered
+        O$.Table._setRowSelectionCheckboxesSelected(row, row._selected)
+      }, 1);
   },
 
   _addSelectionChangeHandler: function(table, handler) {
@@ -1143,7 +1159,7 @@ O$.Table = {
               this._selectionCheckBox.setSelected(!this._selectionCheckBox.isSelected());
             else
               this._selectionCheckBox.checked = !this._selectionCheckBox.checked;
-            this._selectionCheckBox.onclick(evt);
+            this._selectionCheckBox._handleClick(evt);
           } else {
             if (this._selectionCheckBox.isSelected) {
               if (!this._selectionCheckBox.isSelected()) {
@@ -1171,6 +1187,10 @@ O$.Table = {
       _cell: cell,
 
       onclick: function(e) {
+        this._handleClick(e);
+      },
+
+      _handleClick: function(e) {
         var evt = O$.getEvent(e);
         var checkBoxCell = this._cell;
         if (!checkBoxCell._handlingClick)
@@ -1377,7 +1397,7 @@ O$.Table = {
       O$.Table._addSelectionChangeHandler(table, [selectAllCheckbox, "_updateState"]);
     }
 
-    if (columnIndex) {
+    if (columnIndex != null) {
       initForCheckboxColumn();
     } else
       initForSelection();
@@ -1398,7 +1418,8 @@ O$.Table = {
 
   // -------------------------- CHECKBOX COLUMN SUPPORT
 
-  _setCheckboxColValues: function(table, colIndex, checkedRowIndexes) {
+  _setCheckboxColValues: function(tableId, colIndex, checkedRowIndexes) {
+    var table = O$(tableId);
     var columnObj = table._columns[colIndex];
     columnObj._setCheckedIndexes(checkedRowIndexes);
   },

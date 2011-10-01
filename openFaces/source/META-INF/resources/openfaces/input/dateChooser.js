@@ -99,6 +99,7 @@ O$.DateChooser = {
         case 40: // down
           if (!popup.isVisible()) {
             dc._showHidePopup();
+            O$.cancelEvent(e);
           }
       }
       if (dc._prevKeyHandler_DC)

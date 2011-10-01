@@ -1333,22 +1333,36 @@ if (!window.O$) {
     }
   };
 
+  O$._getCaretPosition = function(field) {
+    var result = 0;
 
-  //{
-  //  var submitElement = null;
-  //  submitElement = O$("submit");
-  //  if (submitElement == null) {
-  //    for (var i = 0, count = document.forms.length; i < count; i++) {
-  //      submitElement = document.forms.getElementsByName("submit");
-  //      if (submitElement)
-  //        break;
-  //    }
-  //  }
-  //  if (submitElement) {
-  //    O$.logError("The document contains an element with id or name equal to \"submit\". Please use different id/name in order to avoid collision with form.submit() method");
-  //  }
-  //}
-  //
+    if (document.selection) {
+      field.focus();
+      var range = document.selection.createRange();
+      range.moveStart("character", -field.value.length);
+      result = range.text.length;
+    } else if (field.selectionStart || field.selectionStart == "0") {
+      result = field.selectionStart;
+    }
+
+    return result;
+  };
+
+  O$._setCaretPosition = function(field, caretPos) {
+    if (document.selection) {
+      field.focus();
+      var range = document.selection.createRange();
+      range.moveStart("character", -field.value.length);
+      range.moveStart("character", caretPos);
+      range.moveEnd("character", 0);
+      range.select();
+    } else if (field.selectionStart || field.selectionStart == "0") {
+      field.selectionStart = caretPos;
+      field.selectionEnd = caretPos;
+      field.focus();
+    }
+  };
+
   O$._selectTextRange = function(field, beginIdx, endIdx) {
     if (field._o_inputField) field = field._o_inputField;
     if (field.setSelectionRange) {
@@ -1481,8 +1495,14 @@ if (!window.O$) {
   };
 
   O$.repeatClickOnDblclick = function(e) {
-    if (O$.isExplorer() && this.onclick) this.onclick(e);
+    if (O$.isExplorer() && (this._stolenClickHandler || this.onclick)) {
+      if (this._stolenClickHandler)
+        this._stolenClickHandler(e);
+      else
+        this.onclick(e);
+    }
     if (O$.isExplorer() && this.onmousedown) this.onmousedown(e);
+    O$.stopEvent(e);
   };
 
   O$.initDocumentMouseClickListeners = function() {
@@ -1900,11 +1920,16 @@ if (!window.O$) {
       var focused = false;
       if (componentId) {
         var c = O$(componentId);
+        if (c && !O$.isControlFocusable(c))
+          c = O$.getFirstFocusableControl(c);
         if (c && c.focus) {
           try {
             c.focus();
             var rect = O$.getElementBorderRectangle(c);
             O$.scrollRectIntoView(rect);
+
+            if (c.nodeName.toLowerCase() == "input" && c.type == "text")
+              O$._setCaretPosition(c, c.value.length);
           } catch(ex) {
           }
           O$._activeElement = c;

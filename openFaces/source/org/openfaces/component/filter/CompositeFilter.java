@@ -15,13 +15,13 @@ package org.openfaces.component.filter;
 import org.openfaces.component.FilterableComponent;
 import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.BaseColumn;
+import org.openfaces.component.table.CheckboxColumn;
+import org.openfaces.component.table.SelectionColumn;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.renderkit.filter.FilterRow;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.ValueBindings;
-import org.openfaces.util.ValueExpressionImpl;
 
-import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -152,6 +152,7 @@ public class CompositeFilter extends Filter {
                     AbstractTable abstractTable = (AbstractTable) filteredComponent;
                     List<BaseColumn> columns = abstractTable.getAllColumns();
                     for (BaseColumn column : columns) {
+                        if (column instanceof SelectionColumn || column instanceof CheckboxColumn) continue;
                         FilterProperty filterProperty = getColumnFilterProperty(filteredComponent, column);
                         if (filterProperty != null) {
                             filterProperties.add(filterProperty);
