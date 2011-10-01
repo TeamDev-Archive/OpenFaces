@@ -131,8 +131,6 @@ O$.Spinner = {
 
     if (!disabled) {
       field.onkeypress = function(e) {
-        var evt = O$.getEvent(e);
-
         var valueBefore = spinner.getValue();
         setTimeout(function() {
           var valueAfter = spinner.getValue();
@@ -140,7 +138,7 @@ O$.Spinner = {
             return;
           notifyOfInputChanges(spinner);
         }, 1);
-        evt.cancelBubble = true;
+        O$.stopEvent(e);
       };
 
       field.onblur = function() {
@@ -148,17 +146,17 @@ O$.Spinner = {
       };
 
       increaseButton.ondragstart = function(e) {
-        O$.breakEvent(e);
+        O$.cancelEvent(e);
       };
       decreaseButton.ondragstart = function(e) {
-        O$.breakEvent(e);
+        O$.cancelEvent(e);
       };
 
       increaseButton.onselectstart = function (e) {
-        O$.breakEvent(e);
+        O$.cancelEvent(e);
       };
       decreaseButton.onselectstart = function (e) {
-        O$.breakEvent(e);
+        O$.cancelEvent(e);
       };
     }
 
@@ -184,7 +182,7 @@ O$.Spinner = {
           spinner._field.focus();
         }, 1);
         spinner.increaseValue();
-        O$.breakEvent(e);
+        O$.cancelEvent(e);
       };
       decreaseButton.onmousedown = function(e) {
         setTimeout(function() {
@@ -192,7 +190,7 @@ O$.Spinner = {
         }, 1);
 
         spinner.decreaseValue();
-        O$.breakEvent(e);
+        O$.cancelEvent(e);
       };
       field._oldInkeydown = field.onkeydown;
 

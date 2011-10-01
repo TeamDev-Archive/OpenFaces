@@ -519,7 +519,7 @@ O$.Table = {
           passEvent = this._onKeyboardNavigation(e);
       }
       if (!passEvent) {
-        O$.breakEvent(e);
+        O$.cancelEvent(e);
       }
 
       var tabPressed = e.keyCode == 9;
@@ -1338,15 +1338,7 @@ O$.Table = {
           setAllColumnCheckboxesSelected(col, this.isSelected());
           col._updateHeaderCheckBoxes();
           col._updateSubmissionField();
-          var evt = O$.getEvent(e);
-          evt.cancelBubble = true;
-        },
-
-        ondblclick: function(e) {
-          if (O$.isExplorer())
-            this.click();
-          var evt = O$.getEvent(e);
-          evt.cancelBubble = true;
+          O$.stopEvent(e);
         }
       });
 
@@ -1378,16 +1370,9 @@ O$.Table = {
             table._selectAllItems();
           else
             table._unselectAllItems();
-          var evt = O$.getEvent(e);
-          evt.cancelBubble = true;
-        },
-
-        ondblclick: function(e) {
-          if (O$.isExplorer())
-            this.click();
-          var evt = O$.getEvent(e);
-          evt.cancelBubble = true;
+          O$.stopEvent(e);
         }
+
       });
       O$.Table._addSelectionChangeHandler(table, [selectAllCheckbox, "_updateState"]);
     }
@@ -1396,6 +1381,17 @@ O$.Table = {
       initForCheckboxColumn();
     } else
       initForSelection();
+
+    O$.extend(selectAllCheckbox, {
+      _guaranteedStopEventOnClickRequested: true,
+
+      ondblclick: function(e) {
+        if (O$.isExplorer())
+          this.click();
+        var evt = O$.getEvent(e);
+        O$.stopEvent(e);
+      }
+    });
 
     setTimeout(function() {selectAllCheckbox._updateState()}, 10);
   },
@@ -1431,13 +1427,12 @@ O$.Table = {
             onclick: function(e) {
               var evt = O$.getEvent(e);
               if (evt._checkBoxClickProcessed) {
-                evt.cancelBubble = true;
+                O$.stopEvent(evt);
                 return;
               }
               this._checkBox.checked = !this._checkBox.checked;
               this._processCheckboxChange();
-              evt.cancelBubble = true;
-              return false;
+              O$.cancelEvent(evt);
             },
 
             ondblclick: O$.repeatClickOnDblclick,
@@ -1455,13 +1450,13 @@ O$.Table = {
               var checkBoxCell = this._cell;
               checkBoxCell._processCheckboxChange();
               evt._checkBoxClickProcessed = true;
-              evt.cancelBubble = true;
+              O$.stopEvent(evt);
             },
 
             ondblclick: function(e) {
               if (O$.isExplorer())
                 this.click(e);
-              event.cancelBubble = true;
+              O$.stopEvent(e);
             }
           });
         }
@@ -1747,7 +1742,7 @@ O$.Table = {
             O$.startDragging(e, this);
           },
           onclick: function(e) {
-            O$.breakEvent(e);
+            O$.cancelEvent(e);
           },
           ondragstart: function() {
             table._columnResizingInProgress = true;
@@ -2361,10 +2356,10 @@ O$.ColumnMenu = {
     });
 
     columnMenuButton.onclick = function(e) {
-      O$.breakEvent(e);
+      O$.cancelEvent(e);
     };
     O$.addEventHandler(columnMenuButton, "mousedown", function(evt) {
-      O$.breakEvent(evt);
+      O$.cancelEvent(evt);
       O$.correctElementZIndex(columnMenu, currentColumn._resizeHandle);
       table._showingMenuForColumn = currentColumn;
       columnMenu._column = currentColumn;

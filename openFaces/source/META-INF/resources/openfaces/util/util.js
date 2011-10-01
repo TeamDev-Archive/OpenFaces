@@ -1562,11 +1562,6 @@ if (!window.O$) {
   };
 
 
-  O$.cancelBubble = function(evt) {
-    var e = evt ? evt : window.event;
-    e.cancelBubble = true;
-  };
-
   O$.isAltPressed = function(event) {
     if (event == null || event.altKey == null)
       return false;
@@ -1591,7 +1586,7 @@ if (!window.O$) {
     return e ? e : event;
   };
 
-  O$.breakEvent = function(e) {
+  O$.cancelEvent = function(e) {
     O$.stopEvent(e);
     O$.preventDefaultEvent(e);
   };
@@ -2356,11 +2351,11 @@ if (!window.O$) {
     var startPos = null;
     O$.addEventHandler(element, "mousedown", function(evt) {
       startPos = O$.getEventPoint(evt);
-      O$.breakEvent(evt);
+      O$.cancelEvent(evt);
       function mouseMove(e) {
         if (!startPos) return;
         var pt = O$.getEventPoint(e);
-        O$.breakEvent(evt);
+        O$.cancelEvent(evt);
         var dist = Math.sqrt(Math.pow(startPos.x - pt.x, 2) + Math.pow(startPos.y - pt.y, 2));
         if (dist > 7) {
           startPos = null;
@@ -2437,7 +2432,7 @@ if (!window.O$) {
     if (simulateDblClickForElement && evt.type == "mousedown") {
       var thisTime = new Date().getTime();
       if (draggable._lastClickTime && thisTime - draggable._lastClickTime < 400) {
-        // allow double-click despite being disabled with O$.breakEvent by this function in specified browsers
+        // allow double-click despite being disabled with O$.cancelEvent by this function in specified browsers
         if (simulateDblClickForElement.ondblclick && (O$.isMozillaFF() || O$.isSafari() || O$.isChrome()))
           simulateDblClickForElement.ondblclick(evt);
       }
@@ -2465,7 +2460,7 @@ if (!window.O$) {
     draggable._lastDragOffsetTop = draggable._getPositionTop();
 
     O$._draggedElement = draggable;
-    O$.breakEvent(evt);
+    O$.cancelEvent(evt);
     if (document._fireDocumentClicked)
       document._fireDocumentClicked(evt);
 
@@ -2540,7 +2535,7 @@ if (!window.O$) {
       draggable._lastDragOffsetLeft = offsetLeftAfterDragging;
       draggable._lastDragOffsetTop = offsetTopAfterDragging;
 
-      O$.breakEvent(evt);
+      O$.cancelEvent(evt);
     }
 
     function handleDragEnd(e) {
@@ -2558,7 +2553,7 @@ if (!window.O$) {
       }
 
       if (!draggable._onmouseup) {
-        O$.breakEvent(evt);
+        O$.cancelEvent(evt);
       }
       draggable._draggingInProgress = false;
     }
