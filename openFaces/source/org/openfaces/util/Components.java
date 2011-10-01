@@ -422,6 +422,10 @@ public class Components {
         return component;
     }
 
+    /**
+     * Searches the component's parent chain until it finds the nearest parent with this class. Super classes and
+     * interfaces are also supported by this method.
+     */
     public static <E extends UIComponent> E getParentWithClass(UIComponent component, Class<E> parentClass) {
         for (UIComponent parent = component.getParent(); parent != null; parent = parent.getParent())
             if (parentClass.isAssignableFrom(parent.getClass()))

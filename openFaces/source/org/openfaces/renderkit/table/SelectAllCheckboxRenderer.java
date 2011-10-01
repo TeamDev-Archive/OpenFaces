@@ -18,18 +18,15 @@ import org.openfaces.component.table.BaseColumn;
 import org.openfaces.component.table.CheckboxColumn;
 import org.openfaces.component.table.SelectAllCheckbox;
 import org.openfaces.org.json.JSONObject;
-import org.openfaces.renderkit.RendererBase;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.renderkit.select.SelectBooleanCheckboxRenderer;
 import org.openfaces.util.AnonymousFunction;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
-import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 
 /**
@@ -81,15 +78,11 @@ public class SelectAllCheckboxRenderer extends SelectBooleanCheckboxRenderer {
         if (table == null)
             throw new IllegalStateException("SelectionColumn must be nested inside a table");
         BaseColumn col = getColumn(checkbox);
-        boolean checkBoxColHeader = col instanceof CheckboxColumn;
 
         FacesContext context = FacesContext.getCurrentInstance();
         ScriptBuilder buf = new ScriptBuilder();
-        if (checkBoxColHeader) {
-            buf.initScript(context, checkbox, "O$.Table._initCheckboxColHeader", table, col).semicolon();
-        } else {
-            buf.initScript(context, checkbox, "O$.Table._initSelectionHeader", table).semicolon();
-        }
+        Integer checkboxColIndex = col instanceof CheckboxColumn ? table.getRenderedColumns().indexOf(col) : null;
+        buf.initScript(context, checkbox, "O$.Table._initSelectAllCheckbox", table, checkboxColIndex).semicolon();
 
         Rendering.renderInitScript(context, buf,
                 Resources.utilJsURL(context),
