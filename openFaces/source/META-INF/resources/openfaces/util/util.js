@@ -1496,8 +1496,14 @@ if (!window.O$) {
   };
 
   O$.repeatClickOnDblclick = function(e) {
-    if (O$.isExplorer() && this.onclick) this.onclick(e);
+    if (O$.isExplorer() && (this._stolenClickHandler || this.onclick)) {
+      if (this._stolenClickHandler)
+        this._stolenClickHandler(e);
+      else
+        this.onclick(e);
+    }
     if (O$.isExplorer() && this.onmousedown) this.onmousedown(e);
+    O$.stopEvent(e);
   };
 
   O$.initDocumentMouseClickListeners = function() {

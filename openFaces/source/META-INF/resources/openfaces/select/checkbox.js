@@ -118,6 +118,7 @@ O$.Checkbox = {
           // asynchronous one on the first mouse down (not on initialization to allow other code to set up a check-box
           // after it is initialized)
           var onclickHandler = checkbox.onclick;
+          checkbox._stolenClickHandler = onclickHandler;
           checkbox.onclick = checkbox._guaranteedStopEventOnClickRequested ? function(e) {O$.stopEvent(e);} : null;
 
           O$.addEventHandler(checkbox, "click", function() {
