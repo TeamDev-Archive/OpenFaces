@@ -353,7 +353,12 @@ window.OpenFaces.Ajax = {
         var atLeastOnePortionProcessed = false;
         var xml = data.responseXML;
         if (!xml) {alert("Error while performing Ajax request: No xml response received -- check server logs."); return;}
-        var childNodes = xml.getElementsByTagName("partial-response")[0].childNodes;
+        var rootTags = xml.getElementsByTagName("partial-response");
+        if (rootTags.length == 0) {
+          alert("Malformed Ajax XML response: couldn't find the <partial-response> tag");
+          return;
+        }
+        var childNodes = rootTags[0].childNodes;
         function processExtension(extensionNode) {
           var ln = extensionNode.getAttribute("ln");
           if (ln != "openfaces") return;
