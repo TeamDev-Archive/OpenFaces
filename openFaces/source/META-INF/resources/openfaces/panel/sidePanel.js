@@ -373,7 +373,7 @@ O$._splitterMouseDown = function(event) {
     O$._sidePanelResizingBegin(sidePanel, event);
     sidePanel._isClicking = true;
   }
-  O$.breakEvent(event);
+  O$.cancelEvent(event);
 };
 
 O$._splitterMouseClick = function(event) {
@@ -593,48 +593,46 @@ O$._createSplitterButton = function(sidePanel, imgSrc, imgSrc_collapsed, imgSrc_
     O$._setAbsoluteCenterPosition(button);
     sidePanel._splitter._button = button;
 
-    button.onmouseover = function() {
-      if (sidePanel._collapsed) {
-        button.src = imgSrc_rollover_collapsed;
-      } else {
-        button.src = imgSrc_rollover;
+    O$.extend(button, {
+      onmouseover: function() {
+        if (sidePanel._collapsed) {
+          button.src = imgSrc_rollover_collapsed;
+        } else {
+          button.src = imgSrc_rollover;
+        }
+        if (IEPngBugFixEnabled)
+          O$._bugFix_IEPng(button);
+      },
+      onmouseout: function() {
+        if (sidePanel._collapsed) {
+          button.src = imgSrc_collapsed;
+        } else {
+          button.src = imgSrc;
+        }
+        if (IEPngBugFixEnabled)
+          O$._bugFix_IEPng(button);
+      },
+      onmousedown: function(e) {
+        if (sidePanel._collapsed) {
+          button.src = imgSrc_pressed_collapsed;
+        } else {
+          button.src = imgSrc_pressed;
+        }
+        if (IEPngBugFixEnabled)
+          O$._bugFix_IEPng(button);
+        O$.stopEvent(e);
+      },
+      onclick: function(event) {
+        if (sidePanel._collapsed) {
+          O$.restoreSidePanel(sidePanel.id);
+        } else {
+          O$.collapseSidePanel(sidePanel.id);
+        }
+        O$.cancelEvent(event);
       }
-      if (IEPngBugFixEnabled)
-        O$._bugFix_IEPng(button);
-    };
-    button.onmouseout = function() {
-      if (sidePanel._collapsed) {
-        button.src = imgSrc_collapsed;
-      } else {
-        button.src = imgSrc;
-      }
-      if (IEPngBugFixEnabled)
-        O$._bugFix_IEPng(button);
-    };
-    button.onmousedown = function(event) {
-      if (sidePanel._collapsed) {
-        button.src = imgSrc_pressed_collapsed;
-      } else {
-        button.src = imgSrc_pressed;
-      }
-      if (IEPngBugFixEnabled)
-        O$._bugFix_IEPng(button);
-      if (O$.isExplorer() && event)
-        event.cancelBubble = true;
-      else
-        event.stopPropagation();
-      //O$.breakEvent(event);
-    };
-    button.onmouseup = button.onmouseout;
-    button.onclick = function(event) {
-      if (sidePanel._collapsed) {
-        O$.restoreSidePanel(sidePanel.id);
-      } else {
-        O$.collapseSidePanel(sidePanel.id);
-      }
-      O$.breakEvent(event);
-    };
-  };
+  });
+  button.onmouseup = button.onmouseout;
+};
 
   var button = document.createElement("img");
   button.style.padding = "0px";

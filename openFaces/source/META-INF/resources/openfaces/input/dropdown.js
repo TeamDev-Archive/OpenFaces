@@ -247,7 +247,7 @@ O$.DropDown = {
             button.className = dropDown._pressedButtonClass;
             dropDown._showHidePopup();
             O$.Popup._hideAllPopupsExceptOne(popup);
-            O$.breakEvent(e);
+            O$.cancelEvent(e);
           },
           ondblclick: function(e) {
             if (O$.isEventFromInsideOfElement(e, popup))
@@ -255,12 +255,12 @@ O$.DropDown = {
             if (!O$.isExplorer())
               return;
             dropDown._showHidePopup();
-            O$.breakEvent(e);
+            O$.cancelEvent(e);
           },
           onmousemove: function(e) {
             if (O$.isEventFromInsideOfElement(e, popup))
               return;
-            O$.breakEvent(e);
+            O$.cancelEvent(e);
           },
           onmouseup: function(e) {
             if (O$.isEventFromInsideOfElement(e, popup))
@@ -281,10 +281,10 @@ O$.DropDown = {
               button.className = dropDown._buttonClass;
           },
           ondragstart: function(e) {
-            O$.breakEvent(e);
+            O$.cancelEvent(e);
           },
           onselectstart: function(e) {
-            O$.breakEvent(e);
+            O$.cancelEvent(e);
           }
         });
 
@@ -292,7 +292,7 @@ O$.DropDown = {
     }
 
     popup.onmousemove = function(e) {
-      O$.breakEvent(e);
+      O$.cancelEvent(e);
     };
 
     popupClass = O$.combineClassNames([popupClass, popup.className]);

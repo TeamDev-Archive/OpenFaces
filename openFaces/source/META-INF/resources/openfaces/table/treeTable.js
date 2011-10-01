@@ -323,18 +323,16 @@ O$.TreeTable = {
           var clickedRow = this._row;
           var newExpanded = !clickedRow._isExpanded();
           clickedRow._setExpanded(newExpanded);
-          evt.cancelBubble = true;
           if (table._focusable) {
             table._preventPageScrolling = true;
             table.focus();
             table._preventPageScrolling = false;
           }
-          evt.cancelBubble = true;
-          return false;
+          O$.cancelEvent(e);
         },
         ondblclick: function(e) {
           O$.repeatClickOnDblclick.apply(this, [e]);
-          O$.cancelBubble(e);
+          O$.cancelEvent(e);
         }
       });
     });

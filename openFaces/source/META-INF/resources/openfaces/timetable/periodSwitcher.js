@@ -93,10 +93,10 @@ O$.AbstractSwitcher = {
       });
 
       previousButton.ondragstart = nextButton.ondragstart =
-              previousButton.onselectstart = nextButton.onselectstart = O$.breakEvent;
+              previousButton.onselectstart = nextButton.onselectstart = O$.cancelEvent;
       previousButton.ondblclick = nextButton.ondblclick = function(e) {
         O$.repeatClickOnDblclick(e);
-        O$.breakEvent(e)
+        O$.cancelEvent(e)
       };
 
       O$.addLoadEvent(function () {

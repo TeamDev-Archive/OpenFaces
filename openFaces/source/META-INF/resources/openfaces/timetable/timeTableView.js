@@ -681,7 +681,7 @@ O$.TimeTableView = {
 
                 if (editable) {
                   eventElement.onclick = function(e) {
-                    O$.breakEvent(e);
+                    O$.cancelEvent(e);
                     if (event._isEventUpdateNotAllowed())
                       return;
                     event._beforeUpdate();

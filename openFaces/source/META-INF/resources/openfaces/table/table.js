@@ -519,7 +519,7 @@ O$.Table = {
           passEvent = this._onKeyboardNavigation(e);
       }
       if (!passEvent) {
-        O$.breakEvent(e);
+        O$.cancelEvent(e);
       }
 
       var tabPressed = e.keyCode == 9;
@@ -745,7 +745,7 @@ O$.Table = {
                   var row = rows[itemIndex];
                   row._selected = selected;
                   row._updateStyle();
-                  O$.Table._setSelectionCheckboxesSelected(row, selected);
+                  O$.Table._setRowSelectionCheckboxesSelected(row, selected);
                 }
               },
 
@@ -1097,27 +1097,27 @@ O$.Table = {
     var table = row._table;
     checkBox.setSelected(false);
     checkBox.setDisabled(!table._selectionEnabled);
-    checkBox.onclick = function(evt) {
-      if (evt)
-        event = evt;
-      if (!table._selectionEnabled)
-        return;
-      if (table._selectableItems != "rows")
-        return;
-      if (!table._multipleSelectionAllowed) {
-        if (this.isSelected())
-          table._setSelectedItems([row._index]);
-        else
-          table._setSelectedItems([]);
-      } else if (table._selectionMode != "hierarchical") {
-        table._toggleItemSelected(row._index);
-      } else {
-        table._toggleHierarchicalSelection(row._index);
-      }
-      O$.stopEvent(event);
-
-    };
-    checkBox.ondblclick = O$.repeatClickOnDblclick;
+    O$.extend(checkBox, {
+      onclick: function(e) {
+        var evt = O$.getEvent(e);
+        if (!table._selectionEnabled)
+          return;
+        if (table._selectableItems != "rows")
+          return;
+        if (!table._multipleSelectionAllowed) {
+          if (this.isSelected())
+            table._setSelectedItems([row._index]);
+          else
+            table._setSelectedItems([]);
+        } else if (table._selectionMode != "hierarchical") {
+          table._toggleItemSelected(row._index);
+        } else {
+          table._toggleHierarchicalSelection(row._index);
+        }
+        O$.stopEvent(evt);
+      },
+      ondblclick: O$.repeatClickOnDblclick
+    });
   },
 
   _initSelectionCell: function(cell) {
@@ -1170,9 +1170,8 @@ O$.Table = {
 
       _cell: cell,
 
-      onclick: function(evt) {
-        if (evt)
-          event = evt;
+      onclick: function(e) {
+        var evt = O$.getEvent(e);
         var checkBoxCell = this._cell;
         if (!checkBoxCell._handlingClick)
           return;
@@ -1258,7 +1257,7 @@ O$.Table = {
     throw "O$.Table._formatSelectedItems: unknown selectableItems: " + selectableItems;
   },
 
-  _setSelectionCheckboxesSelected: function(row, selected) {
+  _setRowSelectionCheckboxesSelected: function(row, selected) {
     if (row._selectionCheckBoxes)
       row._selectionCheckBoxes.forEach(function(checkbox) {
         if (checkbox.isSelected) {
@@ -1279,150 +1278,217 @@ O$.Table = {
       });
   },
 
-  _initCheckboxColHeader: function(headerId, tableId, colId) {
-    var header = O$(headerId);
+  _initSelectAllCheckbox: function(checkBoxId, tableId, columnIndex) {
+    var selectAllCheckbox = O$(checkBoxId);
     var table = O$(tableId);
     if (!table)
-      throw "SelectAllCheckbox must be placed in the column's header or footer of <o:dataTable> or <o:treeTable> component. clientId = " + headerId;
-    header.style.cursor = "default";
+      throw "SelectAllCheckbox must be placed in a header or footer of <o:dataTable> or <o:treeTable> component. clientId = " + checkBoxId;
+    selectAllCheckbox.style.cursor = "default";
 
-    if (!table._checkBoxColumnHeaders)
-      table._checkBoxColumnHeaders = [];
-    if (!table._checkBoxColumnHeaders[colId])
-      table._checkBoxColumnHeaders[colId] = [];
-    var colHeadersArray = table._checkBoxColumnHeaders[colId];
-    colHeadersArray.push(header);
+    function initForCheckboxColumn() {
+      if (!table._checkBoxColumnHeaders)
+        table._checkBoxColumnHeaders = [];
+      if (!table._checkBoxColumnHeaders[columnIndex])
+        table._checkBoxColumnHeaders[columnIndex] = [];
+      var colHeadersArray = table._checkBoxColumnHeaders[columnIndex];
+      colHeadersArray.push(selectAllCheckbox);
 
-    O$.extend(header, {
-      _columnObjectId: colId,
-      _updateFromCheckboxes: function(tableColumn) {
-        var cells = tableColumn.body ? tableColumn.body._cells : [];
-        var checkedCount = 0;
-        for (var i = 0, count = cells.length; i < count; i++) {
-          var cell = cells[i];
-          if (!cell) continue;
-          var checkBox = cell._checkBox;
-          if (checkBox && (checkBox.isSelected ? checkBox.isSelected() : checkBox.checked))
-            checkedCount++;
+      O$.extend(selectAllCheckbox, {
+        _getColumn: function() {
+          if (!this._column)
+            this._column = table._columns[columnIndex];
+          return this._column;
+        },
+
+        _updateState: function() {
+          var col = this._getColumn();
+          var cells = col && col.body ? col.body._cells : [];
+          var checkedCount = 0;
+          for (var i = 0, count = cells.length; i < count; i++) {
+            var cell = cells[i];
+            if (!cell) continue;
+            var checkBox = cell._checkBox;
+            if (checkBox && (checkBox.isSelected ? checkBox.isSelected() : checkBox.checked))
+              checkedCount++;
+          }
+          if (checkedCount == 0)
+            this.setSelected(false);
+          else if (checkedCount == cells.length)
+            this.setSelected(true);
+          else
+            this.setDefined(false);
+        },
+
+        onclick: function(e) {
+          var col = this._getColumn();
+
+          function setAllColumnCheckboxesSelected(col, checked) {
+            var cells = col.body ? col.body._cells : [];
+            for (var i = 0, count = cells.length; i < count; i++) {
+              var cell = cells[i];
+              if (cell && cell._checkBox) { // to account for the "no data" row
+                if (cell._checkBox.setSelected)
+                  cell._checkBox.setSelected(checked);
+                else
+                  cell._checkBox.checked = checked;
+              }
+            }
+          }
+
+          setAllColumnCheckboxesSelected(col, this.isSelected());
+          col._updateHeaderCheckBoxes();
+          col._updateSubmissionField();
+          O$.stopEvent(e);
         }
-        if (checkedCount == 0)
-          this.setSelected(false);
-        else if (checkedCount == cells.length)
-          this.setSelected(true);
-        else
-          this.setDefined(false);
-      },
+      });
 
-      onclick: function(e) {
-        var columnObj = O$(this._columnObjectId);
-        var col = columnObj._tableColumn;
-        O$.Table._setAllCheckboxes(col, this.isSelected());
-        columnObj._updateHeaderCheckBoxes();
-        col._updateSubmissionField();
-        var evt = O$.getEvent(e);
-        evt.cancelBubble = true;
-      },
-      ondblclick: function(e) {
-        if (O$.isExplorer())
-          this.click();
-        var evt = O$.getEvent(e);
-        evt.cancelBubble = true;
-      }
-    });
-
-    setTimeout(function(){header._updateFromCheckboxes()}, 10);
-  },
-
-  _setAllCheckboxes: function(col, checked) {
-    var cells = col.body ? col.body._cells : [];
-    for (var i = 0, count = cells.length; i < count; i++) {
-      var cell = cells[i];
-      if (cell && cell._checkBox) {// to account for the "no data" row
-        if (cell._checkBox.setSelected)
-          cell._checkBox.setSelected(checked);
-        else
-          cell._checkBox.checked = checked;
-      }
     }
-  },
 
-  _initSelectionHeader: function(headerId, tableId) {
-    var header = O$(headerId);
-    var table = O$(tableId);
-    if (!table)
-      throw "SelectAllCheckbox must be placed in a header or footer of <o:dataTable> or <o:treeTable> component. clientId = " + headerId;
-    header.style.cursor = "default";
-    O$.extend(header, {
-      _updateStateFromTable: function() {
-        if (!table._getSelectedItems) {
-          // wait for table selection to be initialized
-          setTimeout(function() {
-            header._updateStateFromTable();
-          }, 30);
-          return;
-        }
-        var selectedItems = table._getSelectedItems();
-        var bodyRows = table.body._getRows();
-        if (selectedItems.length == 0) {
-          this.setSelected(false);
-        } else if (selectedItems.length == bodyRows.length) {
-          this.setSelected(true);
-        } else {
-          this.setDefined(false);
-        }
-      },
+    function initForSelection() {
+      O$.extend(selectAllCheckbox, {
+        _updateState: function() {
+          if (!table._getSelectedItems) {
+            // wait for table selection to be initialized
+            setTimeout(function() {
+              selectAllCheckbox._updateState();
+            }, 30);
+            return;
+          }
+          var selectedItems = table._getSelectedItems();
+          var bodyRows = table.body._getRows();
+          if (selectedItems.length == 0) {
+            this.setSelected(false);
+          } else if (selectedItems.length == bodyRows.length) {
+            this.setSelected(true);
+          } else {
+            this.setDefined(false);
+          }
+        },
 
-      onclick: function(e) {
-        if (this.isSelected())
-          table._selectAllItems();
-        else
-          table._unselectAllItems();
-        var evt = O$.getEvent(e);
-        evt.cancelBubble = true;
-      },
+        onclick: function(e) {
+          if (this.isSelected())
+            table._selectAllItems();
+          else
+            table._unselectAllItems();
+          O$.stopEvent(e);
+        }
+
+      });
+      O$.Table._addSelectionChangeHandler(table, [selectAllCheckbox, "_updateState"]);
+    }
+
+    if (columnIndex) {
+      initForCheckboxColumn();
+    } else
+      initForSelection();
+
+    O$.extend(selectAllCheckbox, {
+      _guaranteedStopEventOnClickRequested: true,
 
       ondblclick: function(e) {
         if (O$.isExplorer())
           this.click();
         var evt = O$.getEvent(e);
-        evt.cancelBubble = true;
+        O$.stopEvent(e);
       }
     });
-    setTimeout(function() {header._updateStateFromTable()}, 10);
-    O$.Table._addSelectionChangeHandler(table, [header, "_updateStateFromTable"]);
+
+    setTimeout(function() {selectAllCheckbox._updateState()}, 10);
   },
 
   // -------------------------- CHECKBOX COLUMN SUPPORT
 
-  _setCheckboxColIndexes: function(colId, checkedRowIndexes) {
-    var columnObj = O$(colId);
+  _setCheckboxColValues: function(table, colIndex, checkedRowIndexes) {
+    var columnObj = table._columns[colIndex];
     columnObj._setCheckedIndexes(checkedRowIndexes);
   },
 
-  _initCheckboxCol: function(tableId, colIndex, colId, checkedRowIndexes) {
+  _initCheckboxColumn: function(tableId, colIndex, valueFieldName, checkedRowIndexes) {
     var table = O$(tableId);
-    var tableColumn = table._columns[colIndex];
-    var columnObj = O$(colId);
-    tableColumn._submissionField = columnObj;
-    columnObj._tableColumn = tableColumn;
+    var col = table._columns[colIndex];
 
-    columnObj._setCheckedIndexes = function(checkedIndexes) {
-      var bodyCells = tableColumn.body ? tableColumn.body._cells : [];
-      for (var i = 0, count = bodyCells.length; i < count; i++) {
-        var cell = bodyCells[i];
-        if (!cell)
-          continue;
-        cell._column = tableColumn;
-        O$.Table._initCheckboxCell(cell, columnObj);
-        if (cell._checkBox) {
-          cell._checkBox.checked = checkedIndexes.indexOf(i) != -1;
+    O$.extend(col, {
+      _valueFieldName: valueFieldName,
+      _setCheckedIndexes: function(checkedIndexes) {
+
+      function initCheckboxCell(cell, column) {
+          if (cell._checkBoxCellInitialized)
+            return;
+          cell._checkBoxCellInitialized = true;
+          var checkBoxAsArray = O$.getChildNodesWithNames(cell, ["input"]);
+          var checkBox = checkBoxAsArray[0];
+          if (!checkBox)
+            return;
+          checkBox._cell = cell;
+          O$.extend(cell, {
+            _checkBox: checkBox,
+            _column: column,
+
+            onclick: function(e) {
+              var evt = O$.getEvent(e);
+              if (evt._checkBoxClickProcessed) {
+                O$.stopEvent(evt);
+                return;
+              }
+              this._checkBox.checked = !this._checkBox.checked;
+              this._processCheckboxChange();
+              O$.cancelEvent(evt);
+            },
+
+            ondblclick: O$.repeatClickOnDblclick,
+
+            _processCheckboxChange: function() {
+              var col = this._column;
+              col._updateHeaderCheckBoxes();
+              col._updateSubmissionField();
+            }
+          });
+
+          O$.extend(checkBox, {
+            onclick: function(e) {
+              var evt = O$.getEvent(e);
+              var checkBoxCell = this._cell;
+              checkBoxCell._processCheckboxChange();
+              evt._checkBoxClickProcessed = true;
+              O$.stopEvent(evt);
+            },
+
+            ondblclick: function(e) {
+              if (O$.isExplorer())
+                this.click(e);
+              O$.stopEvent(e);
+            }
+          });
+        }
+
+        var bodyCells = col.body ? col.body._cells : [];
+        for (var i = 0, count = bodyCells.length; i < count; i++) {
+          var cell = bodyCells[i];
+          if (!cell)
+            continue;
+          cell._column = col;
+
+          initCheckboxCell(cell, col);
+          if (cell._checkBox) {
+            cell._checkBox.checked = checkedIndexes.indexOf(i) != -1;
+          }
+        }
+        col._updateSubmissionField();
+      },
+
+      _updateHeaderCheckBoxes: function() {
+        if (!this._headers)
+          return;
+        for (var i = 0, count = this._headers.length; i < count; i++) {
+          var header = this._headers[i];
+          header._updateState(col);
         }
       }
-      tableColumn._updateSubmissionField();
-    };
 
-    tableColumn._updateSubmissionField = function() {
-      var bodyCells = tableColumn.body ? tableColumn.body._cells : [];
+    });
+
+    col._updateSubmissionField = function() {
+      var bodyCells = col.body ? col.body._cells : [];
       var selectedRows = "";
       for (var i = 0, count = bodyCells.length; i < count; i++) {
         var cell = bodyCells[i];
@@ -1434,71 +1500,16 @@ O$.Table = {
           selectedRows += i;
         }
       }
-      this._submissionField.value = selectedRows;
+      O$.setHiddenField(table, this._valueFieldName, selectedRows);
     };
 
-    columnObj._setCheckedIndexes(checkedRowIndexes);
+    col._setCheckedIndexes(checkedRowIndexes);
 
     if (table._checkBoxColumnHeaders) {
-      columnObj._headers = table._checkBoxColumnHeaders[colId];
+      col._headers = table._checkBoxColumnHeaders[colIndex];
     }
-    columnObj._updateHeaderCheckBoxes = function() {
-      if (!this._headers)
-        return;
-      var tableCol = this._tableColumn;
-      for (var i = 0, count = this._headers.length; i < count; i++) {
-        var header = this._headers[i];
-        header._updateFromCheckboxes(tableCol);
-      }
-    };
 
-    columnObj._updateHeaderCheckBoxes();
-  },
-
-  _initCheckboxCell: function(cell, colField) {
-    if (cell._checkBoxCellInitialized)
-      return;
-    cell._checkBoxCellInitialized = true;
-    var checkBoxAsArray = O$.getChildNodesWithNames(cell, ["input"]);
-    var checkBox = checkBoxAsArray[0];
-    if (!checkBox)
-      return;
-    checkBox._cell = cell;
-    cell._checkBox = checkBox;
-    cell._columnObj = colField;
-    cell.onclick = function(evt) {
-      if (evt)
-        event = evt;
-      if (event._checkBoxClickProcessed) {
-        event.cancelBubble = true;
-        return;
-      }
-      this._checkBox.checked = !this._checkBox.checked;
-      this._processCheckboxChange();
-      event.cancelBubble = true;
-      return false;
-    };
-    cell.ondblclick = O$.repeatClickOnDblclick;
-
-    checkBox.onclick = function(evt) {
-      if (evt)
-        event = evt;
-      var checkBoxCell = this._cell;
-      checkBoxCell._processCheckboxChange();
-      event._checkBoxClickProcessed = true;
-      event.cancelBubble = true;
-    };
-    checkBox.ondblclick = function(e) {
-      if (O$.isExplorer())
-        this.click(e);
-      event.cancelBubble = true;
-    };
-
-    cell._processCheckboxChange = function() {
-      var columnObj = this._columnObj;
-      columnObj._updateHeaderCheckBoxes();
-      cell._column._updateSubmissionField();
-    };
+    col._updateHeaderCheckBoxes();
   },
 
   // -------------------------- TABLE SORTING SUPPORT
@@ -1731,7 +1742,7 @@ O$.Table = {
             O$.startDragging(e, this);
           },
           onclick: function(e) {
-            O$.breakEvent(e);
+            O$.cancelEvent(e);
           },
           ondragstart: function() {
             table._columnResizingInProgress = true;
@@ -2345,10 +2356,10 @@ O$.ColumnMenu = {
     });
 
     columnMenuButton.onclick = function(e) {
-      O$.breakEvent(e);
+      O$.cancelEvent(e);
     };
     O$.addEventHandler(columnMenuButton, "mousedown", function(evt) {
-      O$.breakEvent(evt);
+      O$.cancelEvent(evt);
       O$.correctElementZIndex(columnMenu, currentColumn._resizeHandle);
       table._showingMenuForColumn = currentColumn;
       columnMenu._column = currentColumn;

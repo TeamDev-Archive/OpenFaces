@@ -129,11 +129,6 @@ public class SelectBooleanCheckboxRenderer extends RendererBase {
         String styleClass = Styles.mergeClassNames(
                 Styles.getCSSClass(facesContext, checkbox, checkbox.getStyle(), StyleGroup.regularStyleGroup(), checkbox.getStyleClass(), null),
                 "o_checkbox_image");
-        String rolloverStyleClass = Styles.getCSSClass(facesContext, checkbox, checkbox.getRolloverStyle(), StyleGroup.regularStyleGroup(1), checkbox.getRolloverClass(), null);
-        String focusedStyleClass = Styles.getCSSClass(facesContext, checkbox, checkbox.getFocusedStyle(), StyleGroup.regularStyleGroup(2), checkbox.getFocusedClass(), null);
-        String selectedStyleClass = Styles.getCSSClass(facesContext, checkbox, checkbox.getSelectedStyle(), StyleGroup.regularStyleGroup(3), checkbox.getSelectedClass(), null);
-        String unselectedStyleClass = Styles.getCSSClass(facesContext, checkbox, checkbox.getUnselectedStyle(), StyleGroup.regularStyleGroup(4), checkbox.getUnselectedClass(), null);
-        String undefinedStyleClass = Styles.getCSSClass(facesContext, checkbox, checkbox.getUndefinedStyle(), StyleGroup.regularStyleGroup(5), checkbox.getUndefinedClass(), null);
 
         ResponseWriter writer = facesContext.getResponseWriter();
 
@@ -199,6 +194,12 @@ public class SelectBooleanCheckboxRenderer extends RendererBase {
 
         JSONObject stylesObj = new JSONObject();
         try {
+            String rolloverStyleClass = Styles.getCSSClass(facesContext, checkbox, checkbox.getRolloverStyle(), StyleGroup.regularStyleGroup(1), checkbox.getRolloverClass(), null);
+            String focusedStyleClass = Styles.getCSSClass(facesContext, checkbox, checkbox.getFocusedStyle(), StyleGroup.regularStyleGroup(2), checkbox.getFocusedClass(), null);
+            String selectedStyleClass = Styles.getCSSClass(facesContext, checkbox, checkbox.getSelectedStyle(), StyleGroup.regularStyleGroup(3), checkbox.getSelectedClass(), null);
+            String unselectedStyleClass = Styles.getCSSClass(facesContext, checkbox, checkbox.getUnselectedStyle(), StyleGroup.regularStyleGroup(4), checkbox.getUnselectedClass(), null);
+            String undefinedStyleClass = Styles.getCSSClass(facesContext, checkbox, checkbox.getUndefinedStyle(), StyleGroup.regularStyleGroup(5), checkbox.getUndefinedClass(), null);
+
             stylesObj.put(STYLE_CLASS_KEY, styleClass);
             stylesObj.put(ROLLOVER_CLASS_KEY, rolloverStyleClass);
             stylesObj.put(FOCUSED_CLASS_KEY, focusedStyleClass);
@@ -237,9 +238,13 @@ public class SelectBooleanCheckboxRenderer extends RendererBase {
 
         if (requestMap.containsKey(clientId)) {
             String requestValue = requestMap.get(clientId);
-            if (requestValue.equalsIgnoreCase(SELECTED_STATE) || requestValue.equalsIgnoreCase("yes") || requestValue.equalsIgnoreCase("on") || requestValue.equalsIgnoreCase("true")) {
+            if (requestValue.equalsIgnoreCase(SELECTED_STATE) ||
+                    requestValue.equalsIgnoreCase("yes") ||
+                    requestValue.equalsIgnoreCase("on") ||
+                    requestValue.equalsIgnoreCase("true")) {
                 submittedValue = BooleanObjectValue.TRUE;
-            } else if (triStateAllowed && (requestValue.equalsIgnoreCase(UNDEFINED_STATE) || requestValue.equalsIgnoreCase("null"))) {
+            } else if (triStateAllowed &&
+                    (requestValue.equalsIgnoreCase(UNDEFINED_STATE) || requestValue.equalsIgnoreCase("null"))) {
                 submittedValue = BooleanObjectValue.NULL; // normal null means no value submitted
             } else {
                 submittedValue = BooleanObjectValue.FALSE;
@@ -302,10 +307,8 @@ public class SelectBooleanCheckboxRenderer extends RendererBase {
     }
 
     protected void renderInitScript(FacesContext facesContext, SelectBooleanCheckbox checkbox,
-                                    JSONObject imagesObj, JSONObject stylesObj, AnonymousFunction onchangeFunction, boolean triStateAllowed)
-            throws IOException {
-
-
+                                    JSONObject imagesObj, JSONObject stylesObj,
+                                    AnonymousFunction onchangeFunction, boolean triStateAllowed) throws IOException {
         Iterable<String> stateList = getStateList(checkbox, triStateAllowed);
         Script initScript = new ScriptBuilder().initScript(facesContext, checkbox, "O$.Checkbox._init",
                 imagesObj,

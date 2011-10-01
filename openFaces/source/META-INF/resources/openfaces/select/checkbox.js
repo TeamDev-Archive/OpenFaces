@@ -112,10 +112,26 @@ O$.Checkbox = {
       updateImage(checkbox); // Firefox page reload keeps form values
 
       O$.addEventHandler(checkbox, "mousedown", function() {
+        if (checkbox.onclick && O$.isExplorer() && !checkbox._onclickProcessed) {
+          // Prevent the issue when JavaScript onclick handler assigned to the onclick field explicitly is invoked
+          // before the new state is actually available. We do it by substituting field-based event with an
+          // asynchronous one on the first mouse down (not on initialization to allow other code to set up a check-box
+          // after it is initialized)
+          var onclickHandler = checkbox.onclick;
+          checkbox.onclick = checkbox._guaranteedStopEventOnClickRequested ? function(e) {O$.stopEvent(e);} : null;
+
+          O$.addEventHandler(checkbox, "click", function() {
+            setTimeout(function() {
+              var e = O$.createEvent("click");
+              onclickHandler.call(checkbox, e);
+            }, 1);
+          });
+        }
         if (!checkbox._disabled) {
           checkbox._pressed = true;
           updateImage(checkbox);
         }
+        checkbox._onclickProcessed = true;
       });
 
       O$.addEventHandler(checkbox, "keydown", function(e) {

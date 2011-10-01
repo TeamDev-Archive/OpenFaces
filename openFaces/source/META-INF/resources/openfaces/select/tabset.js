@@ -182,7 +182,7 @@ O$.TabSet = {
           O$.setStyleMappings(this, {border:  this._borderClass});
         }
         this._tabbedPaneCall = null;
-        O$.cancelBubble(e);
+        O$.stopEvent(e);
       });
 
       O$.assignEventHandlerField(tab, "onmouseout", function (e) {
@@ -205,7 +205,7 @@ O$.TabSet = {
         O$.setStyleMappings(this, {mouseover:  null});
         O$.setStyleMappings(this, {mouseover_TP: null});
         this._tabbedPaneCall = null;
-        O$.cancelBubble(e);
+        O$.stopEvent(e);
       });
 
       O$.assignEventHandlerField(tab, "onclick", function () {

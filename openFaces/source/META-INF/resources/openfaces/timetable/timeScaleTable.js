@@ -1000,7 +1000,7 @@ O$.TimeScaleTable = {
                                   topResizeHandle.style.cursor = "n-resize";
                                   O$.fixIEEventsForTransparentLayer(topResizeHandle);
                                   topResizeHandle.onclick = function(e) {
-                                    O$.breakEvent(e);
+                                    O$.cancelEvent(e);
                                   };
                                   topResizeHandle.onmousedown = eventElement.onmousedown;
                                   topResizeHandle.ondragend = function() {
@@ -1021,7 +1021,7 @@ O$.TimeScaleTable = {
                                   bottomResizeHandle.style.cursor = "s-resize";
                                   O$.fixIEEventsForTransparentLayer(bottomResizeHandle);
                                   bottomResizeHandle.onclick = function(e) {
-                                    O$.breakEvent(e);
+                                    O$.cancelEvent(e);
                                   };
                                   bottomResizeHandle.onmousedown = eventElement.onmousedown;
                                   bottomResizeHandle.ondragend = function() {

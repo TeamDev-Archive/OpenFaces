@@ -188,7 +188,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         if (!table.isDataSourceEmpty())
             preregisterNoFilterDataRowStyleForOpera(context, table);
 
-        encodeCheckboxColumnSupport(context, table, buf);
+        encodeCheckboxColumnSupport(table, buf);
     }
 
     protected void encodeAdditionalFeaturesOnBodyReload(FacesContext context, AbstractTable table, ScriptBuilder sb) throws IOException {
@@ -483,7 +483,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         decodeSorting(context, table);
         decodeColumnMenu(context, table);
 
-        decodeCheckboxColumns(context, table);
+        decodeCheckboxColumnSupport(context, table);
 
         Scrolling scrolling = table.getScrolling();
         if (scrolling != null)
@@ -583,46 +583,14 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         return result;
     }
 
-    private void encodeCheckboxColumnSupport(FacesContext context, AbstractTable table, ScriptBuilder buf) throws IOException {
-        List<CheckboxColumn> checkboxColumns = new ArrayList<CheckboxColumn>(1);
-        List<Integer> checkBoxColIndexes = new ArrayList<Integer>(1);
-        List<BaseColumn> columns = table.getRenderedColumns();
-        for (int i = 0, colIndex = 0, colCount = columns.size(); i < colCount; i++) {
-            BaseColumn column = columns.get(i);
-            if (column instanceof CheckboxColumn) {
-                checkboxColumns.add((CheckboxColumn) column);
-                checkBoxColIndexes.add(colIndex);
-            }
-            colIndex++;
-        }
-        int checkBoxColCount = checkboxColumns.size();
-        if (checkBoxColCount == 0)
-            return;
-
-        ResponseWriter writer = context.getResponseWriter();
-        for (int i = 0; i < checkBoxColCount; i++) {
-            CheckboxColumn col = checkboxColumns.get(i);
-            Rendering.renderHiddenField(writer, col.getClientId(context), "");
-        }
-
-        for (int checkBoxColIndex = 0; checkBoxColIndex < checkBoxColCount; checkBoxColIndex++) {
-            CheckboxColumn col = checkboxColumns.get(checkBoxColIndex);
-            Integer colIndex = checkBoxColIndexes.get(checkBoxColIndex);
-            JSONArray checkedRowIndexes = new JSONArray();
-            List<Integer> rowIndexes = col.encodeSelectionIntoIndexes();
-            for (int j = 0, rowIndexCount = rowIndexes.size(); j < rowIndexCount; j++) {
-                int checkedRowIdx = rowIndexes.get(j);
-                checkedRowIndexes.put(checkedRowIdx);
-            }
-
-            buf.initScript(context, table, "O$.Table._initCheckboxCol",
-                    colIndex,
-                    col.getClientId(context),
-                    checkedRowIndexes);
+    private void encodeCheckboxColumnSupport(AbstractTable table, ScriptBuilder buf) throws IOException {
+        for (BaseColumn col : table.getRenderedColumns()) {
+            if (! (col instanceof CheckboxColumn)) continue;
+            ((CheckboxColumn) col).encodeInitScript(buf);
         }
     }
 
-    protected void decodeCheckboxColumns(FacesContext context, AbstractTable table) {
+    protected void decodeCheckboxColumnSupport(FacesContext context, AbstractTable table) {
         Map<String, String> requestMap = context.getExternalContext().getRequestParameterMap();
         List<BaseColumn> columns = table.getRenderedColumns();
         for (BaseColumn column : columns) {

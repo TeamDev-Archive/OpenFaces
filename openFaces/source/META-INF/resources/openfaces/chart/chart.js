@@ -24,7 +24,7 @@ O$.Chart = {
           chartMenu.showForEvent(event);
           chartMenu.focus();
 
-          O$.breakEvent(event);
+          O$.cancelEvent(event);
         }
       },
 
