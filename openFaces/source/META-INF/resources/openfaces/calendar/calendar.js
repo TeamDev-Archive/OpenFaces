@@ -86,7 +86,8 @@ O$.Calendar = {
       cal._prevKeyHandler = cal[eventName];
       cal[eventName] = function (evt) {
         var e = evt ? evt : window.event;
-        switch (e.keyCode) {
+        var keyCode = e.keyCode;
+        switch (keyCode) {
           case 33: // page up
             O$.Calendar._prevMonth(cal);
             break;
@@ -109,9 +110,9 @@ O$.Calendar = {
         if (cal._prevKeyHandler) {
           cal._prevKeyHandler(e);
         }
-        if ((e.keyCode == 33 || e.keyCode == 34 || e.keyCode == 38 || e.keyCode == 40 || e.keyCode == 37
-                || e.keyCode == 39) && O$.isSafari()) {
-          return false;
+        if (keyCode == 33 || keyCode == 34 || keyCode == 38 || keyCode == 40 || keyCode == 37 || keyCode == 39) {
+          // prevent page scrolling
+          O$.cancelEvent(e);
         }
       };
     }
