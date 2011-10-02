@@ -786,7 +786,7 @@
       <feature>Ajax sorting &amp; filtering</feature>
       <feature>Static and dynamic structure</feature>
       <feature>Configurable preloaded nodes</feature>
-      <feature>Single and multiple selection</feature>
+      <feature>Single, multiple and hierarchical selection</feature>
       <feature>Column resizing</feature>
       <feature>Showing, hiding and reordering columns</feature>
       <feature>Content scrolling with row/column freezing</feature>
@@ -809,7 +809,7 @@
         <demoUrl>/treetable/TreeTable_RowsAndCellsCustomization.jsf</demoUrl>
       </demoItem>
       <demoItem>
-        <demoName>Preloading Nodes</demoName>
+        <demoName>Preloading Nodes &amp; More</demoName>
         <demoUrl>/treetable/TreeTable_preloadingNodes.jsf</demoUrl>
       </demoItem>
     </demos>
