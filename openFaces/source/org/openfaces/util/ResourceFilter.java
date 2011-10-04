@@ -287,6 +287,14 @@ public class ResourceFilter implements Filter {
         String uri = request.getPathInfo();
         if (uri == null)
             uri = request.getRequestURI();
+        if (uri != null) {
+            // account for Tomcat 6.0.33 bug where getRequestURI doesn't remove jsessionid,
+            // see here: https://issues.apache.org/bugzilla/show_bug.cgi?id=51833
+            int sessionIdIdx = uri.indexOf(";jsessionid=");
+            if (sessionIdIdx != -1) {
+                uri = uri.substring(0, sessionIdIdx);
+            }
+        }
         return uri;
     }
 
