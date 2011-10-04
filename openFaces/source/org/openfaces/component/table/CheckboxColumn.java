@@ -11,8 +11,10 @@
  */
 package org.openfaces.component.table;
 
+import org.openfaces.org.json.JSONArray;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.renderkit.table.AbstractTableRenderer;
+import org.openfaces.util.Components;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
@@ -142,10 +144,23 @@ public class CheckboxColumn extends BaseColumn {
         }
     }
 
-    public List<Integer> encodeSelectionIntoIndexes() {
+    public void encodeInitScript(ScriptBuilder buf) {
+        JSONArray checkedRowIndexes = new JSONArray();
         if (selectedRows == null || selectedRows.getModel() == null)
             assignDataModel();
-        return selectedRows.encodeSelectionIntoIndexes();
+        List<Integer> rowIndexes = selectedRows.encodeSelectionIntoIndexes();
+        for (int j = 0, rowIndexCount = rowIndexes.size(); j < rowIndexCount; j++) {
+            int checkedRowIdx = rowIndexes.get(j);
+            checkedRowIndexes.put(checkedRowIdx);
+        }
+
+        AbstractTable table = Components.getParentWithClass(this, AbstractTable.class);
+        int colIndex = table.getRenderedColumns().indexOf(this);
+        buf.functionCall("O$.Table._initCheckboxColumn",
+                table,
+                colIndex,
+                this,
+                checkedRowIndexes).semicolon();
     }
 
     public void decodeSelectionFromIndexes(List<Integer> indexes) {
@@ -283,8 +298,11 @@ public class CheckboxColumn extends BaseColumn {
     public void encodeOnAjaxNodeFolding(FacesContext context) throws IOException {
         if (selectedRows instanceof MultipleNodeSelection) {
             List<Integer> selectedRowIndexes = selectedRows.encodeSelectionIntoIndexes();
-            ScriptBuilder buf = new ScriptBuilder().functionCall("O$.Table._setCheckboxColIndexes",
-                    this, selectedRowIndexes).semicolon();
+            AbstractTable table = getTable();
+            List<BaseColumn> renderedColumns = table.getRenderedColumns();
+            int columnIndex = renderedColumns.indexOf(this);
+            ScriptBuilder buf = new ScriptBuilder().functionCall("O$.Table._setCheckboxColValues",
+                    table, columnIndex, selectedRowIndexes).semicolon();
             Rendering.renderInitScript(context, buf,
                     Resources.utilJsURL(context),
                     TableUtil.getTableUtilJsURL(context),

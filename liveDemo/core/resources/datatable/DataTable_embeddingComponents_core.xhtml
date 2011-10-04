@@ -4,6 +4,19 @@
 
   <div id="Demo">
 
+    <script type="text/javascript">
+      function saveChanges(e, saveButtonId) {
+        var unicode = e.charCode ? e.charCode : e.keyCode;
+
+        if (unicode == 13) {
+          O$(saveButtonId).click();
+          return false;
+        }
+
+        return true;
+      }
+    </script>
+
     <table align="center" width="100%" style="vertical-align: middle;">
       <tr>
         <td align="center">
@@ -32,8 +45,8 @@
                                styleClass="editfield"/>
                   <h:outputText value="Resource Name:"/>
                   <h:inputText value="#{link.name}"
-                                onkeydown="return saveChanges(event, 'form:linkTable:#{index}:saveBookmark');"
-                                styleClass="editfield"/>
+                               onkeydown="return saveChanges(event, 'form:linkTable:#{index}:saveBookmark');"
+                               styleClass="editfield"/>
                   <h:outputText value="Category:"/>
                   <h:selectOneMenu value="#{link.linkCategory}" styleClass="editfield">
                     <f:selectItem itemValue="music.gif" itemLabel="Music"/>
@@ -41,28 +54,16 @@
                     <f:selectItem itemValue="fun.gif" itemLabel="Fun"/>
                   </h:selectOneMenu>
 
-                  <script>
-
-                    function saveChanges(e, saveButtonId) {
-                      var unicode = e.charCode ? e.charCode : e.keyCode;
-
-                      if (unicode == 13) {
-                        O$(saveButtonId).click();
-                        return false;
-                      }
-
-                      return true;
-                    }
-
-                  </script>
                 </h:panelGrid>
               </o:cell>
               <o:cell>
-                <h:commandButton id="saveBookmark" value="Save" action="#{LinkList.saveLink}"                                 
+                <o:commandButton id="saveBookmark" value="Save" action="#{LinkList.saveLink}"
                                  styleClass="edit_remove"
-                                 style="width: 60px; height: 23px;"/>
-                <h:commandButton value="Cancel" action="#{LinkList.cancelLink}"                                 
-                                 styleClass="edit_remove" style="width: 60px; height: 23px;"/>
+                                 style="width: 60px; height: 23px;"
+                                 execute="linkTable" render="linkTable"/>
+                <o:commandButton value="Cancel" action="#{LinkList.cancelLink}"
+                                 styleClass="edit_remove" style="width: 60px; height: 23px;"
+                                 execute="linkTable" render="linkTable"/>
               </o:cell>
             </o:row>
 
@@ -75,18 +76,21 @@
               </h:outputLink>
             </o:column>
             <o:column style="width: 130px; padding:5px;">
-              <h:commandButton value="Edit" action="#{LinkList.editLink}"
-                               styleClass="edit_remove" style="width: 60px; height: 23px;"/>
-              <h:commandButton value="Remove" action="#{LinkList.removeLink}"
-                               styleClass="edit_remove" style="width: 60px; height: 23px;"/>
+              <o:commandButton value="Edit" action="#{LinkList.editLink}"
+                               styleClass="edit_remove" style="width: 60px; height: 23px;"
+                               execute="linkTable" render="linkTable"/>
+              <o:commandButton value="Remove" action="#{LinkList.removeLink}"
+                               styleClass="edit_remove" style="width: 60px; height: 23px;"
+                               execute="linkTable" render="linkTable"/>
             </o:column>
           </o:dataTable>
         </td>
       </tr>
       <tr>
         <td align="center" style="text-align: center; padding-left: 435px;">
-          <h:commandButton value="Add Bookmark" action="#{LinkList.addLink}" rendered="true"
-                           styleClass="edit_remove" style="height: 23px; text-align: center;"/>
+          <o:commandButton value="Add Bookmark" action="#{LinkList.addLink}" rendered="true"
+                           styleClass="edit_remove" style="height: 23px; text-align: center;"
+                           execute="linkTable" render="linkTable"/>
         </td>
       </tr>
     </table>

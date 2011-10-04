@@ -55,7 +55,7 @@ O$._initCaptionButton = function(componentId,
   btn.onmousedown = function(e) {
     if (btn._prevOnmousedown)
       btn._prevOnmousedown(e);
-    O$.breakEvent(e);
+    O$.cancelEvent(e);
   };
   if (supportActionAttribute)
     O$.addEventHandler(btn, "click", function() {

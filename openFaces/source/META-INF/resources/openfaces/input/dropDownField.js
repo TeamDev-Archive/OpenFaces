@@ -909,6 +909,7 @@ O$.DropDownField = {
         O$.correctElementZIndex(popup, dropDown);
         dropDown._checkAdditionalPageNeeded();
         popup.show();
+        O$.cancelEvent(e);
       } else {
         // Change selected index
         newHighlightedItemIndex = O$.DropDownField._getNeighboringVisibleItem(dropDown, highlightedItemIndex, false);

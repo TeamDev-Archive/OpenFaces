@@ -6,6 +6,7 @@
 
     <o:treeTable var="pageInfo" applyDefaultStyle="false" cellpadding="0" cellspacing="0" border="0" width="100%"
                  expansionState="levelsExpanded:2" preloadedNodes="all" bodyRowStyle="text-align: left;">
+      <o:hierarchicalNodeSelection style="background: none"/>
       <o:staticTreeStructure>
         <o:treeNode value="OpenFaces Demo Home|treetable/components/Intro.png|../">
           <o:treeNode value="Component Demos|treetable/category.gif">
@@ -60,7 +61,8 @@
 
       <o:treeColumn expandedToggleImageUrl="../images/treetable/expanded4.gif"
                     collapsedToggleImageUrl="../images/treetable/collapsed4.gif">
-        <h:graphicImage url="../images/#{SiteMapTreeTableBean.imageFileFromPageInfo}" width="16" height="16"/>
+        <o:selectRowCheckbox/>
+        <h:graphicImage url="../images/#{SiteMapTreeTableBean.imageFileFromPageInfo}" width="16" height="16" style="margin-left: 4px"/>
         <h:outputLink rendered="#{SiteMapTreeTableBean.displayAsLink}"
                       value="#{SiteMapTreeTableBean.pageUrlFromPageInfo}"
                       styleClass="siteMapLink" target="_blank">
@@ -81,6 +83,9 @@
       </li>
       <li><strong>Preloading nodes</strong> - All the nodes are preloaded, which means that you can
         expand them without sending any requests to the server.
+      </li>
+      <li><strong>Hierarchical selection</strong> - You can make a bulk selection by checking or unchecking
+        parent check-boxes, and customize selection for each node individually.
       </li>
       <li><strong>Customization of the default expansion state</strong> - Only the nodes at the two
         top levels are expanded by default when the TreeTable component is loaded.

@@ -145,7 +145,7 @@ O$.Timetable = {
                 this._okPressed = false;
                 this._okButton.onclick = function(e) {
                   this._okProcessed = true;
-                  O$.breakEvent(e);
+                  O$.cancelEvent(e);
                   event.name = getFieldText(dialog._nameField);
                   var startDate = dialog._startDateField.getSelectedDate();
                   if (!startDate) {
@@ -188,14 +188,14 @@ O$.Timetable = {
                 };
 
                 this._cancelButton.onclick = function(e) {
-                  O$.breakEvent(e);
+                  O$.cancelEvent(e);
                   dialog.hide();
                   if (mode == "create")
                     timetableView.cancelEventCreation(event);
                 };
 
                 this._deleteButton.onclick = function(e) {
-                  O$.breakEvent(e);
+                  O$.cancelEvent(e);
                   dialog.hide();
                   if (mode == "update")
                     timetableView.deleteEvent(event);
@@ -594,7 +594,7 @@ O$.Timetable = {
     }
     O$.extend(actionsTable, {
               onclick: function(e) {
-                O$.breakEvent(e); // avoid passing event to the absoluteElementsParentNode
+                O$.cancelEvent(e); // avoid passing event to the absoluteElementsParentNode
               },
               _getHeight: function() {
                 if (!this._height) {

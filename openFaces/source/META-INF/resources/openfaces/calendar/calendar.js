@@ -75,8 +75,8 @@ O$.Calendar = {
       _valueDateHolder: O$(calendarId + "::date_holder"),
       _hasItsOwnMouseBehavior: true,
 
-      ondragstart: O$.breakEvent,
-      onselectstart: O$.breakEvent
+      ondragstart: O$.cancelEvent,
+      onselectstart: O$.cancelEvent
     });
 
     if (focusable) {
@@ -86,7 +86,8 @@ O$.Calendar = {
       cal._prevKeyHandler = cal[eventName];
       cal[eventName] = function (evt) {
         var e = evt ? evt : window.event;
-        switch (e.keyCode) {
+        var keyCode = e.keyCode;
+        switch (keyCode) {
           case 33: // page up
             O$.Calendar._prevMonth(cal);
             break;
@@ -109,9 +110,9 @@ O$.Calendar = {
         if (cal._prevKeyHandler) {
           cal._prevKeyHandler(e);
         }
-        if ((e.keyCode == 33 || e.keyCode == 34 || e.keyCode == 38 || e.keyCode == 40 || e.keyCode == 37
-                || e.keyCode == 39) && O$.isSafari()) {
-          return false;
+        if (keyCode == 33 || keyCode == 34 || keyCode == 38 || keyCode == 40 || keyCode == 37 || keyCode == 39) {
+          // prevent page scrolling
+          O$.cancelEvent(e);
         }
       };
     }
@@ -157,7 +158,7 @@ O$.Calendar = {
 
       cal._decMonthSelector.onclick = function(e) {
         O$.Calendar._decMonthClick(cal);
-        O$.breakEvent(e);
+        O$.cancelEvent(e);
       };
       cal._decMonthSelector.ondblclick = O$.repeatClickOnDblclick;
       cal._incMonthSelector.onclick = function() {
@@ -170,7 +171,7 @@ O$.Calendar = {
       monthSelector.onmousedown = function(e) {
         O$.Calendar._hideDrops(cal);
         O$.Calendar._showDrop(cal, this);
-        O$.breakEvent(e);
+        O$.cancelEvent(e);
       };
 
       cal._decYearSelector.onclick = function() {
@@ -187,7 +188,7 @@ O$.Calendar = {
       yearSelector.onmousedown = function(e) {
         O$.Calendar._hideDrops(cal);
         O$.Calendar._showDrop(cal, this);
-        O$.breakEvent(e);
+        O$.cancelEvent(e);
       };
       O$.Calendar._initializeDrops(cal);
       O$.Calendar._adjustMonthAndYearSelectorWidth(cal);

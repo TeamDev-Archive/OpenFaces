@@ -255,9 +255,9 @@ public class TabSetRenderer extends BaseTabSetRenderer {
         writer.startElement("td", tabSet);
         writer.writeAttribute("class", emptySpaceClasses, null);
         if (tabSet.isFocusable()) {
-            writer.writeAttribute("onmousedown", "O$.cancelBubble(event);", null);
-            writer.writeAttribute("onmouseup", "O$.cancelBubble(event);", null);
-            writer.writeAttribute("onclick", "O$.cancelBubble(event);", null);
+            writer.writeAttribute("onmousedown", "O$.stopEvent(event);", null);
+            writer.writeAttribute("onmouseup", "O$.stopEvent(event);", null);
+            writer.writeAttribute("onclick", "O$.stopEvent(event);", null);
         }
         if (Environment.isMozilla()) { // the div is actually needed only for Mozilla running on Mac, to solve the width problem (JSFC-2713)
             writer.startElement("div", tabSet);
@@ -275,9 +275,9 @@ public class TabSetRenderer extends BaseTabSetRenderer {
         writer.writeAttribute("height", "100%", null);
         writer.startElement("td", tabSet);
         if (tabSet.isFocusable()) {
-            writer.writeAttribute("onmousedown", "O$.cancelBubble(event);", null);
-            writer.writeAttribute("onmouseup", "O$.cancelBubble(event);", null);
-            writer.writeAttribute("onclick", "O$.cancelBubble(event);", null);
+            writer.writeAttribute("onmousedown", "O$.stopEvent(event);", null);
+            writer.writeAttribute("onmouseup", "O$.stopEvent(event);", null);
+            writer.writeAttribute("onclick", "O$.stopEvent(event);", null);
         }
         writer.writeAttribute("height", "100%", null);
         writer.writeAttribute("class", emptySpaceClasses, null);

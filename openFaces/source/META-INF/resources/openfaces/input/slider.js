@@ -60,8 +60,8 @@ O$.Slider = {
 
       s_pixelStep : 0,
       s_widthCorrection :0,
-      ondragstart: O$.breakEvent,
-      onselectstart: O$.breakEvent,
+      ondragstart: O$.cancelEvent,
+      onselectstart: O$.cancelEvent,
 
       getValue: function() {
         if (!slider.s_textField)
@@ -138,7 +138,7 @@ O$.Slider = {
           }
         }
         slider.redisplayHandle();
-        O$.breakEvent(e);
+        O$.cancelEvent(e);
       },
 
       _leftTopButtonClick:function(e) {
@@ -156,7 +156,7 @@ O$.Slider = {
           }
         }
         slider.redisplayHandle();
-        O$.breakEvent(e);
+        O$.cancelEvent(e);
       },
 
       getElementDragDirectionSize: function(element) {
@@ -584,11 +584,11 @@ O$.Slider = {
           O$.setElementEffectProperty(tooltip, "height", 1);
           tooltip.style.visibility = "visible";
           O$.runTransitionEffect(tooltip, "height", height, 50);
-          O$.breakEvent(e);
+          O$.cancelEvent(e);
         });
         O$.addEventHandler(document, "mouseup", function(e) {
           tooltip.style.visibility = "hidden";
-          O$.breakEvent(e);
+          O$.cancelEvent(e);
         });
         return tooltip;
       }
@@ -641,14 +641,14 @@ O$.Slider = {
         { //+
           slider.increaseValue();
           slider.redisplayHandle();
-          O$.breakEvent(e);
+          O$.cancelEvent(e);
           break;
         }
         case 109:
         { //-
           slider.decreaseValue();
           slider.redisplayHandle();
-          O$.breakEvent(e);
+          O$.cancelEvent(e);
           break;
         }
         case 38: // up

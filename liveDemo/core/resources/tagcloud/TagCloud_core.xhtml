@@ -154,14 +154,14 @@
       </o:spinner>
       <h:outputLabel id="weightFormatSelection"
                      value="weightFormat:"/>
-      <o:selectOneMenu id="weightFormat"
+      <o:dropDownField id="weightFormat"
                        value="#{TagCloudBean.itemWeightFormat}"
                        var="weightFormat"
                        style="width: 120px;">
-        <f:selectItems value="#{TagCloudBean.weightFormatList}"/>
+        <o:dropDownItems value="#{TagCloudBean.weightFormatList}"/>
         <o:ajax event="change"
                 render="contentGrid"/>
-      </o:selectOneMenu>
+      </o:dropDownField>
 
       <o:selectBooleanCheckbox value="#{TagCloudBean.itemWeightVisible}">
         <h:outputText value="weightVisible"/>
@@ -208,14 +208,13 @@
     </h:panelGroup>
 
     <h:panelGroup styleClass="content2" style="display:block;" rendered="true">
-       <h:outputText id="headerResult2"
-      styleClass="headerResult"
-      value="Selected tag: #{TagCloudBean.var.text}"
-      escape="false"/>
-      <!--<h:outputText id="currentEntities" style="display:block;"
-                    styleClass="currentEntities"
-                    value="#{TagCloudBean.currentEntities}"
-                    escape="false"/>-->
+      <h:outputText styleClass="headerResult" value="Selected tag: "/>
+      <h:outputText id="headerResult2" styleClass="headerResult" value="#{TagCloudBean.var.text}"
+                    escape="false"/>
+      <!--<h:outputText id="currentEntities" style="display:block;"-->
+                    <!--styleClass="currentEntities"-->
+                    <!--value="#{TagCloudBean.currentEntities}"-->
+                    <!--escape="false"/>-->
 
     </h:panelGroup>
   </h:panelGrid>

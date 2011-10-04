@@ -192,8 +192,9 @@ public class MultipleRowSelection extends DataTableSelection {
         ValueBindings.setFromList(this, ROW_DATAS_PROPERTY, getRowDatas());
     }
 
-    public boolean isMultipleSelectionAllowed() {
-        return true;
+    @Override
+    public Mode getSelectionMode() {
+        return Mode.MULTIPLE;
     }
 
     protected List<Integer> encodeSelectionIntoIndexes() {

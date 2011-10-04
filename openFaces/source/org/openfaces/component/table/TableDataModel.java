@@ -669,7 +669,9 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
         Object result = rowKeyExpression.getValue(facesContext.getELContext());
         requestMap.put(var, prevVarValue);
         if (result == null)
-            throw new RuntimeException("The rowKey binding \"" + rowKeyExpression.getExpressionString() + "\" of table with client id \"" + getTable().getClientId(facesContext) + "\" must return a non-null value\n");
+            throw new RuntimeException("The rowKey binding \"" + rowKeyExpression.getExpressionString() +
+                    "\" of table with client id \"" + getTable().getClientId(facesContext) +
+                    "\" must return a non-null value\n");
         if (!isValidRowKey(result))
             throw new RuntimeException("Invalid value returned from rowKey binding \"" + rowKeyExpression.getExpressionString() + "\" of table with client id \"" + getTable().getClientId(facesContext) + "\"\n" +
                     "    It must return a value that implements java.io.Serializable interface and correctly implements the equals and hashCode methods for serialized instances. \n" +

@@ -231,7 +231,7 @@ O$.PopupMenu = {
               menuItem = popupMenu._items[popupMenu._selectedIndex];
               O$.sendEvent(menuItem._anchor, "click");
               O$.PopupMenu._closeAllMenu(popupMenu);
-              O$.breakEvent(evt);
+              O$.cancelEvent(evt);
             }
             break;
           case 38: // up
@@ -256,7 +256,7 @@ O$.PopupMenu = {
             }
             break;
         }
-        O$.cancelBubble(e);
+        O$.stopEvent(e);
       };
 
       for (i = 0; i < popupMenu._items.length; i++) {
