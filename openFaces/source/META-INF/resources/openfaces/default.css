@@ -273,7 +273,7 @@
 }
 
 /* TreeTable */
-.o_treetable_folding {
+.o_treetable_expansionToggle {
   cursor: pointer;
   margin-left: 0;
   margin-right: 0;
@@ -1162,7 +1162,6 @@
 .o_folding_panel_content {
   padding-left: 2px;
   padding-right: 2px;
-  background: white;
 }
 
 .o_folding_panel_caption {

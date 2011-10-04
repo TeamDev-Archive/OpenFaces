@@ -1049,7 +1049,7 @@ O$.TimeScaleTable = {
                           },
 
                           _bringToFront: function() {
-                            var index = O$.findValueInArray(eventElement, timeScaleTable._eventElements);
+                            var index = timeScaleTable._eventElements.indexOf(eventElement);
                             O$.assert(index != -1, "eventElement._bringToFront. Can't find element in _eventElements array.");
                             timeScaleTable._eventElements.splice(index, 1);
                             timeScaleTable._eventElements.push(this);

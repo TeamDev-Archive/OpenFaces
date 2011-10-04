@@ -30,9 +30,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -42,7 +40,7 @@ import java.util.Set;
 public class TreeTableRenderer extends AbstractTableRenderer {
     private static final String DEFAULT_AUXILIARY_NODE_CLASS = "o_treetable_auxiliary_node";
     private static final String SUB_ROWS_PORTION = "subRows:";
-    private static final String DEFAULT_FOLDING_CLASS = "o_treetable_folding";
+    public static final String DEFAULT_TOGGLE_CLASS_NAME = "o_treetable_expansionToggle";
     private static final String HIDDEN_ROW_CLASS = "o_hiddenRow";
 
     @Override
@@ -103,7 +101,7 @@ public class TreeTableRenderer extends AbstractTableRenderer {
         Rendering.renderHiddenField(writer, getExpandedNodesFieldName(context, treeTable), null);
 
         buf.initScript(context, treeTable, "O$.TreeTable._initFolding",
-                DEFAULT_FOLDING_CLASS,
+                DEFAULT_TOGGLE_CLASS_NAME,
                 getClientFoldingParams(context, treeTable),
                 Resources.internalURL(context, "table/treeStructureSolid.png"));
     }
@@ -114,23 +112,18 @@ public class TreeTableRenderer extends AbstractTableRenderer {
 
     private JSONArray getClientFoldingParams(FacesContext context, TreeTable treeTable) {
         JSONArray result = new JSONArray();
-        result.put(formatNodeParams(treeTable, context, -1, -1));
-        JSONArray expansionDatasArray = new JSONArray();
-        List<Object> expansionDatas = new ArrayList<Object>();
-        List<BaseColumn> columns = treeTable.getRenderedColumns();
-        for (BaseColumn column : columns) {
+        result.put(formatTreeStructureMap(treeTable, context, -1, -1));
+
+        JSONArray treeColumnParamsArray = new JSONArray();
+        for (BaseColumn column : treeTable.getRenderedColumns()) {
             if (!(column instanceof TreeColumn))
                 continue;
             TreeColumn treeColumn = (TreeColumn) column;
-            Object columnExpansionData = treeColumn.encodeExpansionDataAsJsObject(context);
-            expansionDatas.add(columnExpansionData);
+            Object columnParams = treeColumn.encodeParamsAsJsObject(context);
+            treeColumnParamsArray.put(columnParams != null ? columnParams : JSONObject.NULL);
         }
-        for (Object expansionData : expansionDatas) {
-            if (expansionData == null)
-                expansionData = JSONObject.NULL;
-            expansionDatasArray.put(expansionData);
-        }
-        result.put(expansionDatas);
+        result.put(treeColumnParamsArray);
+
         return result;
     }
 
@@ -231,11 +224,11 @@ public class TreeTableRenderer extends AbstractTableRenderer {
     protected void fillDynamicRowsInitInfo(FacesContext context, AbstractTable table, int rowIndex, int addedRowCount,
                                            TableStructure tableStructure, JSONObject newNodesInitInfo) {
         super.fillDynamicRowsInitInfo(context, table, rowIndex, addedRowCount, tableStructure, newNodesInitInfo);
-        JSONObject nodesStructureObject = formatNodeParams((TreeTable) table, context, rowIndex - 1, addedRowCount);
-        Rendering.addJsonParam(newNodesInitInfo, "structureMap", nodesStructureObject);
+        JSONObject structureMap = formatTreeStructureMap((TreeTable) table, context, rowIndex - 1, addedRowCount);
+        Rendering.addJsonParam(newNodesInitInfo, "structureMap", structureMap);
     }
 
-    private JSONObject formatNodeParams(TreeTable treeTable, FacesContext context, int fromRowIndex, int rowCount) {
+    private JSONObject formatTreeStructureMap(TreeTable treeTable, FacesContext context, int fromRowIndex, int rowCount) {
         JSONObject result = new JSONObject();
         Map<Object, NodeInfoForRow> map = treeTable.getNodeExpansionDataMap(context);
         Set<Map.Entry<Object, NodeInfoForRow>> entries = map.entrySet();

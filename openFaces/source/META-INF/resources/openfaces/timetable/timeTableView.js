@@ -356,9 +356,9 @@ O$.TimeTableView = {
                   this._addedEvents = this._addedEvents.concat(addedEvents);
                 if (changedEvents) {
                   changedEvents.forEach(function(editedEvent) {
-                    if (O$.findValueInArray(editedEvent, timeTableView._addedEvents) != -1)
+                    if (timeTableView._addedEvents.indexOf(editedEvent) != -1)
                       return;
-                    if (O$.findValueInArray(editedEvent, timeTableView._editedEvents) == -1) {
+                    if (timeTableView._editedEvents.indexOf(editedEvent) == -1) {
                       timeTableView._editedEvents.push(editedEvent);
                     }
                   });
@@ -701,7 +701,7 @@ O$.TimeTableView = {
                 if (!part.mainElement)
                   return;
 
-                var index = O$.findValueInArray(part.mainElement, timeTableView._eventElements);
+                var index = timeTableView._eventElements.indexOf(part.mainElement);
                 timeTableView._eventElements.splice(index, 1);
                 if (timeTableView._getEventActionBar()._event == event)
                   timeTableView._hideEventActionBar();

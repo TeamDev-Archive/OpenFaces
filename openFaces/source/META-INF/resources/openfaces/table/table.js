@@ -12,6 +12,16 @@
 // -------------------------- COMMON TABLE FUNCTIONS
 
 O$.Table = {
+  SortingGroupingRule: O$.createClass(null, {
+    constructor: function(columnId, sortAscending, groupingUsed) {
+      O$.extend({
+        columnId: columnId,
+        sortAscending: sortAscending,
+        groupingUsed: groupingUsed
+      });
+    }
+  }),
+
   _initDataTableAPI: function(table) {
     O$.extend(table, {
       _of_dataTableComponentMarker: true,
@@ -94,36 +104,40 @@ O$.Table = {
     }
     O$.Table._initApiFunctions(table);
 
-    table._originalClassName = table.className;
+    O$.extend(table, {
+      _originalClassName: table.className,
+      _unloadHandlers: [],
 
-    table._unloadHandlers = [];
-    var i, count;
-    table.onComponentUnload = function() {
-      for (i = 0,count = table._unloadHandlers.length; i < count; i++) {
-        table._unloadHandlers[i]();
+      onComponentUnload: function() {
+        var i, count;
+        for (i = 0,count = table._unloadHandlers.length; i < count; i++) {
+          table._unloadHandlers[i]();
+        }
+
+        var filtersToHide = this._filtersToHide;
+        if (!O$.isExplorer6() || !filtersToHide)
+          return false;
+
+        for (i = 0,count = filtersToHide.length; i < count; i++) {
+          var filter = filtersToHide[i];
+          filter.style.visibility = "hidden";
+        }
+        return true;
+      },
+
+      _cleanUp: function() {
+        [table.header, table.body, table.footer].forEach(function (section) {
+          if (section) section._rows = [];
+        });
       }
+    });
 
-      var filtersToHide = this._filtersToHide;
-      if (!O$.isExplorer6() || !filtersToHide)
-        return false;
-
-      for (i = 0,count = filtersToHide.length; i < count; i++) {
-        var filter = filtersToHide[i];
-        filter.style.visibility = "hidden";
-      }
-      return true;
-    };
     if (apiInitializationFunctionName) {
       var initFunction = eval(apiInitializationFunctionName);
       if (initFunction)
         initFunction(table);
     }
 
-    table._cleanUp = function() {
-      [table.header, table.body, table.footer].forEach(function (section) {
-        if (section) section._rows = [];
-      });
-    };
     if (deferredBodyLoading)
       O$.addInternalLoadEvent(function() {
         var auxiliaryTags = O$(table.id + "::auxiliaryTags");
@@ -260,6 +274,35 @@ O$.Table = {
             return i;
         }
         return -1;
+      },
+
+      _sortingGroupingRules: null,
+
+      getSortingGroupingRules: function() {
+        return this._sortingGroupingRules;
+      },
+
+      setSortingGroupingRules: function(rules) {
+        this._sortingGroupingRules = rules;
+      },
+
+
+      getColumnsOrder: function() {
+        var columnIds = [];
+        this._columns.forEach(function(column) {
+          columnIds.push(column.columnId);
+        });
+        return columnIds;
+      },
+
+      setColumnsOrder: function(columnIds) {
+        var columnIdsStr = columnIds.join(",");
+        var prevColumnIdsStr = this.getColumnsOrder().join(",");
+        if (columnIdsStr == prevColumnIdsStr) return;
+
+        O$._submitInternal(table, null, [
+          [table.id + "::columnsOrder", columnIdsStr]
+        ]);
       }
     });
   },
@@ -2292,9 +2335,11 @@ O$.Table = {
     function sendColumnMoveRequest(srcColIndex, dstColIndex) {
       if (dstColIndex == srcColIndex || dstColIndex == srcColIndex + 1)
         return;
-      O$._submitInternal(table, null, [
-        [table.id + "::reorderColumns", srcColIndex + "->" + dstColIndex]
-      ]);
+
+      var columnIds = table.getColumnsOrder();
+      var columnId = columnIds.splice(srcColIndex, 1);
+      columnIds.splice(dstColIndex < srcColIndex ? dstColIndex : dstColIndex - 1, 0, columnId);
+      table.setColumnsOrder(columnIds);
     }
   },
 

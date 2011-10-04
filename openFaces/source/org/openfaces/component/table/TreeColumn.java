@@ -60,7 +60,7 @@ public class TreeColumn extends Column implements CompoundComponent {
         Components.getOrCreateFacet(context, this, ImageExpansionToggle.COMPONENT_TYPE, "expansionToggle", ImageExpansionToggle.class);
     }
 
-    public Object encodeExpansionDataAsJsObject(FacesContext context) {
+    public Object encodeParamsAsJsObject(FacesContext context) {
         ExpansionToggle expansionToggle = getExpansionToggle();
         Object result = expansionToggle.encodeExpansionDataAsJsObject(context);
         return result;

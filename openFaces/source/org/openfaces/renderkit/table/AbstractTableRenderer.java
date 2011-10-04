@@ -39,6 +39,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -187,7 +188,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         if (!table.isDataSourceEmpty())
             preregisterNoFilterDataRowStyleForOpera(context, table);
 
-        encodeCheckboxColumnSupport(table, buf);
+        encodeCheckboxColumnSupport(context, table, buf);
     }
 
     protected void encodeAdditionalFeaturesOnBodyReload(FacesContext context, AbstractTable table, ScriptBuilder sb) throws IOException {
@@ -488,9 +489,18 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         if (scrolling != null)
             scrolling.processDecodes(context);
 
-        ColumnReordering columnReordering = table.getColumnReordering();
-        if (columnReordering != null)
-            columnReordering.processDecodes(context);
+        decodeColumnsOrder(context, table);
+    }
+
+    protected void decodeColumnsOrder(FacesContext context, AbstractTable table) {
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        String paramName = table.getClientId(context) + "::columnsOrder";
+        String renderedColumns = params.get(paramName);
+        if (renderedColumns == null)
+            return;
+
+        List<String> columnIds = Arrays.asList(renderedColumns.split(","));
+        table.getAttributes().put("submittedColumnsOrder", columnIds);
     }
 
 
@@ -582,10 +592,14 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         return result;
     }
 
-    private void encodeCheckboxColumnSupport(AbstractTable table, ScriptBuilder buf) throws IOException {
+    private void encodeCheckboxColumnSupport(
+            FacesContext context,
+            AbstractTable table,
+            ScriptBuilder buf
+    ) throws IOException {
         for (BaseColumn col : table.getRenderedColumns()) {
-            if (! (col instanceof CheckboxColumn)) continue;
-            ((CheckboxColumn) col).encodeInitScript(buf);
+            if (!(col instanceof CheckboxColumn)) continue;
+            ((CheckboxColumn) col).encodeInitScript(context, buf);
         }
     }
 
@@ -702,7 +716,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         } finally {
             table.getAttributes().remove(TableStructure.TABLE_STRUCTURE_ATTR);
         }
-        
+
     }
 
     private List<BodyRow> getScrollingAreaRows(BodyCell scrollingAreaCell) {

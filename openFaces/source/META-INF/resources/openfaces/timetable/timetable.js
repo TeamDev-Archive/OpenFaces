@@ -812,7 +812,7 @@ O$.Timetable = {
                 if (this._events._cachedEventsByIds && event.id)
                   this._events._cachedEventsByIds[event.id] = undefined;
 
-                var eventIndex = O$.findValueInArray(event, this._events);
+                var eventIndex = this._events.indexOf(event);
                 this._events.splice(eventIndex, 1);
               }
 

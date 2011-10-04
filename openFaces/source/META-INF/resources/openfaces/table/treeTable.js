@@ -57,23 +57,60 @@ O$.TreeTable = {
 
   _initFolding: function(tableId, toggleClassName, clientFoldingParams, structureImageUrl) {
     var rowIndexToChildCount = clientFoldingParams ? clientFoldingParams[0] : null;
-    var treeColumnExpansionDatas = clientFoldingParams ? clientFoldingParams[1] : null;
+    var treeColumnParams = clientFoldingParams ? clientFoldingParams[1] : null;
 
     var table = O$.initComponent(tableId, null, {
       _rowIndexToChildCount: rowIndexToChildCount,
       _foldingMode: clientFoldingParams ? "client" : "server",
-      _treeColumnExpansionDatas: treeColumnExpansionDatas,
+      _treeColumnParams: treeColumnParams,
       _toggleClassName: toggleClassName,
       _structureImageUrl: structureImageUrl,
 
       _updateRowVisibility: function() {
-        var rootNodeCount = this._rowIndexToChildCount["root"];
-        var rows = table.body._getRows();
         var rowIndexToChildCount = this._rowIndexToChildCount;
+        var rootNodeCount = rowIndexToChildCount["root"];
+        var rows = table.body._getRows();
         this._styleRecalculationOnNodeExpansionNeeded = !!this._params.body.oddRowClassName;
         var pseudoCommonRootRow = {_pseudoRow: true, _childRows: []};
-        var result = O$.TreeTable._processRowVisibility(rows, rowIndexToChildCount, 0, rootNodeCount, true, 0, pseudoCommonRootRow);
+
+        function processRowVisibility(rows, rowIndexToChildCount, rowIndex, rowCount, currentLevelVisible, level, parentRow) {
+          for (var i = 0; i < rowCount; i++) {
+            var row = rows[rowIndex];
+            O$.assert(row, "processRowVisibility: rowIndex == " + rowIndex);
+            row._level = level;
+            row._setVisible(currentLevelVisible);
+            if (!row._table._styleRecalculationOnNodeExpansionNeeded) {
+              if (currentLevelVisible && O$.isExplorer()) { // workaround for IE issue: when custom row style is applied to
+                            // parent rows and a node is expanded, spacing between cells becomes white after node expansion
+                row._updateStyle();
+              }
+            }
+            row._parentRow = !parentRow._pseudoRow ? parentRow : null;
+            if (parentRow) {
+              parentRow._childRows.push(row);
+            }
+
+            var childCount = rowIndexToChildCount[rowIndex];
+            if (childCount) {
+              row._hasChildren = true;
+              row._childRows = [];
+              row._childrenLoaded = (childCount != "?");
+              var nextLevelVisible = currentLevelVisible && row._isExpanded();
+              if (row._childrenLoaded) {
+                rowIndex = processRowVisibility(rows, rowIndexToChildCount, rowIndex + 1, childCount, nextLevelVisible, level + 1, row);
+              } else
+                rowIndex++;
+            } else {
+              row._hasChildren = false;
+              rowIndex++;
+            }
+          }
+          return rowIndex;
+        }
+        processRowVisibility(rows, rowIndexToChildCount, 0, rootNodeCount, true, 0, pseudoCommonRootRow);
+
         table._rootRows = pseudoCommonRootRow._childRows;
+
         if (this._styleRecalculationOnNodeExpansionNeeded) {
           var visibleRows = 0;
           rows.forEach(function(row) {
@@ -94,23 +131,19 @@ O$.TreeTable = {
           if (table._synchronizeVerticalAreaScrolling)
             table._synchronizeVerticalAreaScrolling();
         }, 50);
-        
-        return result;
       },
 
       _updateExpandedNodesField: function() {
-        var fieldId = this.id + "::expandedNodes";
-        var field = O$(fieldId);
+        var field = O$(this.id + "::expandedNodes");
         var expandedRowIndexes = "";
         var rows = this.body._getRows();
         for (var rowIndex = 0, rowCount = rows.length; rowIndex < rowCount; rowIndex++) {
           var row = rows[rowIndex];
           var expanded = row._isExpanded();
-          if (expanded) {
-            if (expandedRowIndexes.length > 0)
-              expandedRowIndexes += ",";
-            expandedRowIndexes += rowIndex;
-          }
+          if (!expanded) continue;
+          if (expandedRowIndexes.length > 0)
+            expandedRowIndexes += ",";
+          expandedRowIndexes += rowIndex;
         }
         field.value = expandedRowIndexes;
       },
@@ -207,39 +240,6 @@ O$.TreeTable = {
 
   },
 
-  _processRowVisibility: function(rows, rowIndexToChildCount, rowIndex, rowCount, currentLevelVisible, level, parentRow) {
-    for (var i = 0; i < rowCount; i++) {
-      var row = rows[rowIndex];
-      O$.assert(row, "processRowVisibility: rowIndex == " + rowIndex);
-      row._level = level;
-      row._setVisible(currentLevelVisible);
-      if (!row._table._styleRecalculationOnNodeExpansionNeeded) {
-        if (currentLevelVisible && O$.isExplorer()) { // workaround for IE issue: when custom row style is applied to parent rows and a node is expanded, spacing between cells becomes white after node expansion
-          row._updateStyle();
-        }
-      }
-      row._parentRow = !parentRow._pseudoRow ? parentRow : null;
-      if (parentRow) {
-        parentRow._childRows.push(row);
-      }
-      var childCount = rowIndexToChildCount[rowIndex];
-      if (childCount) {
-        row._hasChildren = true;
-        row._childRows = [];
-        row._childrenLoaded = (childCount != "?");
-        var nextLevelVisible = currentLevelVisible && row._isExpanded();
-        if (row._childrenLoaded) {
-          rowIndex = O$.TreeTable._processRowVisibility(rows, rowIndexToChildCount, rowIndex + 1, childCount, nextLevelVisible, level + 1, row);
-        } else
-          rowIndex++;
-      } else {
-        row._hasChildren = false;
-        rowIndex++;
-      }
-    }
-    return rowIndex;
-  },
-
   _initRow: function(row) {
     var table = row._table;
 
@@ -321,8 +321,8 @@ O$.TreeTable = {
           var toggles = thisRow._toggles;
           for (var toggleIndex = 0, toggleCount = toggles.length; toggleIndex < toggleCount; toggleIndex++) {
             var toggle = toggles[toggleIndex];
-            var treeColExpansionData = rowTable._treeColumnExpansionDatas[toggleIndex];
-            toggle.src = showExpandedImage ? treeColExpansionData[0] : treeColExpansionData[1];
+            var treeColumnParams = rowTable._treeColumnParams[toggleIndex];
+            toggle.src = showExpandedImage ? treeColumnParams[0] : treeColumnParams[1];
           }
         }
 

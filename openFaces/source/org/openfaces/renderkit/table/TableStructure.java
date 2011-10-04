@@ -179,8 +179,8 @@ public class TableStructure extends TableElement {
             Rendering.writeAttribute(writer, "cellspacing", cellspacing);
             Rendering.writeAttribute(writer, "cellpadding", getTableCellPadding());
 
-            List<BaseColumn> columns1 = table.getRenderedColumns();
-            TableUtil.writeColumnTags(context, table, columns1);
+            List<BaseColumn> columns = table.getRenderedColumns();
+            TableUtil.writeColumnTags(context, table, columns);
         } else {
             Rendering.writeAttribute(writer, "cellspacing", "0");
             Rendering.writeAttribute(writer, "cellpadding", "0");
@@ -460,6 +460,8 @@ public class TableStructure extends TableElement {
 
     private JSONObject getColumnParams(FacesContext context, BaseColumn columnOrGroup, int level) throws JSONException {
         JSONObject columnObj = new JSONObject();
+
+        columnObj.put("columnId", columnOrGroup.getId());
 
         UIComponent styleOwnerComponent = getComponent();
         boolean noDataRows = getBody().isNoDataRows();

@@ -11,6 +11,7 @@
  */
 package org.seleniuminspector.openfaces;
 
+import org.openfaces.renderkit.table.TreeTableRenderer;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.html.TableRowInspector;
 
@@ -37,9 +38,8 @@ public class TreeTableRowInspector extends TableRowInspector {
         int imageCount = images.size();
         List<ElementInspector> toggles = new ArrayList<ElementInspector>(imageCount);
 
-        for (int i = 0; i < imageCount; i++) {
-            ElementInspector img = images.get(i);
-            if ("o_treetable_folding".equals(img.className()))
+        for (ElementInspector img : images) {
+            if (TreeTableRenderer.DEFAULT_TOGGLE_CLASS_NAME.equals(img.className()))
                 toggles.add(img);
         }
         return toggles;

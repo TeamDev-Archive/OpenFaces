@@ -22,15 +22,15 @@ if (!window.O$) {
     }
   };
 
-  O$.createClass = function(classMembers, instanceMembers) {
+  O$.createClass = function(staticClassMembers, instanceMembers) {
     var constructor = instanceMembers.constructor;
     instanceMembers.constructor = undefined;
     var classFunction = function() {
       if (constructor)
         constructor.apply(this, arguments);
     };
-    if (classMembers)
-      O$.extend(classFunction, classMembers);
+    if (staticClassMembers)
+      O$.extend(classFunction, staticClassMembers);
     O$.extend(classFunction.prototype, instanceMembers);
     return classFunction;
   };
@@ -650,10 +650,6 @@ if (!window.O$) {
       i++;
     }
     return buf;
-  };
-
-  O$.findValueInArray = function(value, arr) {
-    return arr.indexOf(value);// todo: inline and remove this method
   };
 
   O$.getArrayFromString = function(str, delimiter) {
