@@ -104,7 +104,8 @@ public class TreeTableRenderer extends AbstractTableRenderer {
 
         buf.initScript(context, treeTable, "O$.TreeTable._initFolding",
                 DEFAULT_FOLDING_CLASS,
-                getClientFoldingParams(context, treeTable));
+                getClientFoldingParams(context, treeTable),
+                Resources.internalURL(context, "table/treeStructureSolid.png"));
     }
 
     private String getExpandedNodesFieldName(FacesContext context, TreeTable treeTable) {
