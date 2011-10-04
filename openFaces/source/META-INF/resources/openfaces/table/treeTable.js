@@ -55,7 +55,7 @@ O$.TreeTable = {
 
   // -------------------------- FOLDING SUPPORT
 
-  _initFolding: function(tableId, toggleClassName, clientFoldingParams) {
+  _initFolding: function(tableId, toggleClassName, clientFoldingParams, structureImageUrl) {
     var rowIndexToChildCount = clientFoldingParams ? clientFoldingParams[0] : null;
     var treeColumnExpansionDatas = clientFoldingParams ? clientFoldingParams[1] : null;
 
@@ -64,6 +64,7 @@ O$.TreeTable = {
       _foldingMode: clientFoldingParams ? "client" : "server",
       _treeColumnExpansionDatas: treeColumnExpansionDatas,
       _toggleClassName: toggleClassName,
+      _structureImageUrl: structureImageUrl,
 
       _updateRowVisibility: function() {
         var rootNodeCount = this._rowIndexToChildCount["root"];
@@ -71,7 +72,7 @@ O$.TreeTable = {
         var rowIndexToChildCount = this._rowIndexToChildCount;
         this._styleRecalculationOnNodeExpansionNeeded = !!this._params.body.oddRowClassName;
         var pseudoCommonRootRow = {_pseudoRow: true, _childRows: []};
-        var result = O$.TreeTable._processRowVisibility(rows, rowIndexToChildCount, 0, rootNodeCount, true, pseudoCommonRootRow);
+        var result = O$.TreeTable._processRowVisibility(rows, rowIndexToChildCount, 0, rootNodeCount, true, 0, pseudoCommonRootRow);
         table._rootRows = pseudoCommonRootRow._childRows;
         if (this._styleRecalculationOnNodeExpansionNeeded) {
           var visibleRows = 0;
@@ -206,10 +207,11 @@ O$.TreeTable = {
 
   },
 
-  _processRowVisibility: function(rows, rowIndexToChildCount, rowIndex, rowCount, currentLevelVisible, parentRow) {
+  _processRowVisibility: function(rows, rowIndexToChildCount, rowIndex, rowCount, currentLevelVisible, level, parentRow) {
     for (var i = 0; i < rowCount; i++) {
       var row = rows[rowIndex];
       O$.assert(row, "processRowVisibility: rowIndex == " + rowIndex);
+      row._level = level;
       row._setVisible(currentLevelVisible);
       if (!row._table._styleRecalculationOnNodeExpansionNeeded) {
         if (currentLevelVisible && O$.isExplorer()) { // workaround for IE issue: when custom row style is applied to parent rows and a node is expanded, spacing between cells becomes white after node expansion
@@ -227,7 +229,7 @@ O$.TreeTable = {
         row._childrenLoaded = (childCount != "?");
         var nextLevelVisible = currentLevelVisible && row._isExpanded();
         if (row._childrenLoaded) {
-          rowIndex = O$.TreeTable._processRowVisibility(rows, rowIndexToChildCount, rowIndex + 1, childCount, nextLevelVisible, row);
+          rowIndex = O$.TreeTable._processRowVisibility(rows, rowIndexToChildCount, rowIndex + 1, childCount, nextLevelVisible, level + 1, row);
         } else
           rowIndex++;
       } else {
@@ -239,6 +241,8 @@ O$.TreeTable = {
   },
 
   _initRow: function(row) {
+    var table = row._table;
+
     var expandedToggles = [];
     var collapsedToggles = [];
     [row._leftRowNode, row._rowNode, row._rightRowNode].forEach(function(n) {
@@ -257,11 +261,46 @@ O$.TreeTable = {
       O$.setStyleMappings(row._rowNode, {expansion: row._isExpanded() ? "o_expandedNode" : "o_collapsedNode"});
     }
 
+    var super_updateStyle = row._updateStyle;
     O$.extend(row, {
       _toggles: toggles,
       _hasChildren: hasChildren,
       _expanded: hasChildren && expanded,
 
+      _updateStructureLine: function() {
+        if (false) { //table._structureImageUrl) {
+//          var d = document.createElement("div");
+//          d.style.position = "absolute";
+//          d.style.border = "1px solid red";
+//          d.style.left = "0px";
+//          d.style.top = "0px";
+
+          var treeCell = row._cells[0];
+//          treeCell.appendChild(d);
+          var subCells = treeCell.getElementsByTagName("td");
+
+          var level = subCells.length - 2;
+          var bkgnd = "";
+          var bkgndUrls = "";
+          var bkgndPositions = "";
+          for (var l = 0; l <= level; l++) {
+            if (bkgnd.length > 0) bkgnd += ", ";
+            if (bkgndUrls.length > 0) bkgndUrls += ", ";
+            if (bkgndPositions.length > 0) bkgndPositions += ", ";
+            var structureCell = subCells[l];
+            var leftPos = O$.getElementBorderRectangle(structureCell, treeCell).x;
+            bkgnd += "url(" + table._structureImageUrl + ") no-repeat " + leftPos + "px center"
+          }
+          treeCell.style.background = bkgnd;
+//          treeCell.style.backgroundUrl = bkgndUrls;
+//          treeCell.style.backgroundPosition = bkgndPositions;
+        }
+      },
+
+      _updateStyle: function() {
+        super_updateStyle.apply(this, arguments);
+        this._updateStructureLine();
+      },
 
       /*
        _setExpanded(expanded) may not be able to set the "expanded" state to true in some cases.
@@ -313,7 +352,6 @@ O$.TreeTable = {
 
     updateExpansionStateClass();
 
-    var table = row._table;
     toggles.forEach(function(toggle) {
       O$.extend(toggle, {
         className: table._toggleClassName,
@@ -336,6 +374,8 @@ O$.TreeTable = {
         }
       });
     });
+
+    row._updateStructureLine();
   },
 
   _setSelectedNodeIndexes: function(treeTableId, selectedNodeIndexes) {
