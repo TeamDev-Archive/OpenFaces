@@ -88,8 +88,6 @@ class HeaderCell extends TableElement {
         List<HeaderRow> rows = getParent(HeaderRow.class).getRowsForSpans();
         TableStructure tableStructure = getParent(TableStructure.class);
         UIComponent table = tableStructure.getComponent();
-        if (column instanceof DynamicCol)
-            ((DynamicCol) column).declareContextVariables();
 
         ResponseWriter writer = facesContext.getResponseWriter();
         writer.startElement(cellTag, table);
@@ -147,9 +145,6 @@ class HeaderCell extends TableElement {
             additionalContentWriter.writeAdditionalContent(facesContext);
 
         writer.endElement(cellTag);
-
-        if (column instanceof DynamicCol)
-            ((DynamicCol) column).undeclareContextVariables();
     }
 
     protected void renderColumnSortingDirection(

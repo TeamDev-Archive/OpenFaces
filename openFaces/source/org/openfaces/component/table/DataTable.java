@@ -13,6 +13,7 @@ package org.openfaces.component.table;
 
 import org.openfaces.component.filter.Filter;
 import org.openfaces.util.AjaxUtil;
+import org.openfaces.util.Components;
 import org.openfaces.util.Faces;
 import org.openfaces.util.ValueBindings;
 
@@ -46,6 +47,7 @@ public class DataTable extends AbstractTable {
     private Boolean paginationKeyboardSupport;
     private PaginationOnSorting paginationOnSorting;
     private Boolean customDataProviding;
+    private List<GroupingRule> groupingRules;
 
     public DataTable() {
         setRendererType("org.openfaces.DataTableRenderer");
@@ -66,23 +68,24 @@ public class DataTable extends AbstractTable {
     }
 
     @Override
-    public Object saveState(FacesContext facesContext) {
-        Object superState = super.saveState(facesContext);
+    public Object saveState(FacesContext context) {
+        Object superState = super.saveState(context);
         return new Object[]{superState, rowIndexVar, pageSize, pageIndex, paginationKeyboardSupport,
-                paginationOnSorting, customDataProviding};
+                paginationOnSorting, customDataProviding, saveAttachedState(context, groupingRules)};
     }
 
     @Override
-    public void restoreState(FacesContext facesContext, Object object) {
+    public void restoreState(FacesContext context, Object object) {
         Object[] state = (Object[]) object;
         int i = 0;
-        super.restoreState(facesContext, state[i++]);
+        super.restoreState(context, state[i++]);
         rowIndexVar = (String) state[i++];
         pageSize = (Integer) state[i++];
         pageIndex = (Integer) state[i++];
         paginationKeyboardSupport = (Boolean) state[i++];
         paginationOnSorting = (PaginationOnSorting) state[i++];
         customDataProviding = (Boolean) state[i++];
+        groupingRules = (List<GroupingRule>) restoreAttachedState(context, state[i++]);
     }
 
     @Override
@@ -101,6 +104,22 @@ public class DataTable extends AbstractTable {
         Set unavailableRowIndexes = model.restoreRows(rowsDecodingRequired);
         setUnavailableRowIndexes(unavailableRowIndexes);
     }
+
+    protected void validateSortingGroupingColumns() {
+        super.validateSortingGroupingColumns();
+        List<GroupingRule> sortingRules = getGroupingRules();
+        validateSortingOrGroupingRules(sortingRules);
+    }
+
+
+    public List<GroupingRule> getGroupingRules() {
+        return groupingRules;
+    }
+
+    public void setGroupingRules(List<GroupingRule> groupingRules) {
+        this.groupingRules = groupingRules;
+    }
+
 
     /**
      * @return Returns the size of a page if the table is being paged and zero if the table is not being paged.
@@ -368,4 +387,9 @@ public class DataTable extends AbstractTable {
         if (getPageIndex() > 0)
             setPageIndex(0);
     }
+
+    public RowGrouping getRowGrouping() {
+        return Components.findChildWithClass(this, RowGrouping.class, "<o:rowGrouping>");
+    }
+
 }

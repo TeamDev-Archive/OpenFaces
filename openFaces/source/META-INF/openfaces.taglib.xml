@@ -1265,5 +1265,13 @@
       <handler-class>org.openfaces.taglib.facelets.table.HierarchicalNodeSelectionTagHandler</handler-class>
     </component>
   </tag>
+  <tag>
+    <tag-name>rowGrouping</tag-name>
+    <component>
+      <component-type>org.openfaces.RowGrouping</component-type>
+      <renderer-type>org.openfaces.RowGroupingRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.table.RowGroupingTagHandler</handler-class>
+    </component>
+  </tag>
 
 </facelet-taglib>

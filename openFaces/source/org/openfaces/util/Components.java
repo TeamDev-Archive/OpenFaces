@@ -114,13 +114,17 @@ public class Components {
         return childrenWithClass.get(0);
     }
 
-    public static <T extends UIComponent> T findChildWithClass(UIComponent parent, Class<T> childClass, String childTagName) {
+    public static <T extends UIComponent> T findChildWithClass(
+            UIComponent parent,
+            Class<T> childClass,
+            String childTagName) {
         List<T> childrenWithClass = findChildrenWithClass(parent, childClass, false, false);
         int size = childrenWithClass.size();
         if (size == 0)
             return null;
         if (size > 1)
-            throw new RuntimeException("There should be only one " + childTagName + " child under this component: " + parent.getId());
+            throw new RuntimeException("There should be only one " + childTagName + " child under this component: " +
+                    parent.getId());
         return childrenWithClass.get(0);
     }
 
@@ -200,7 +204,7 @@ public class Components {
      * @param parent        Method will create child for this component
      * @param componentType The class for child creation
      * @param idSuffix      The suffix identifying the child {@link javax.faces.component.UIComponent} to be returned
-     * @param i             index at which the specified child is to be inserted to paranet's child list
+     * @param i             index at which the specified child is to be inserted to parent's child list
      * @return created child
      */
     public static UIComponent createChildComponent(
@@ -212,7 +216,7 @@ public class Components {
     }
 
     /**
-     * This method create components with given name and class and create, if needed, its subcomponents
+     * This method create components with given name and class and create, if needed, its sub-components
      *
      * @param context       {@link javax.faces.context.FacesContext} for the current request
      * @param id            The id identifying the {@link javax.faces.component.UIComponent} to be returned

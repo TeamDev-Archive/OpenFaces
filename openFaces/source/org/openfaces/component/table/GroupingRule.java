@@ -9,17 +9,20 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
+
 package org.openfaces.component.table;
+
+import java.io.Serializable;
 
 /**
  * @author Dmitry Pikhulya
  */
-public class SortingRule extends SortingOrGroupingRule {
+public class GroupingRule extends SortingOrGroupingRule {
 
-    public SortingRule() {
+    public GroupingRule() {
     }
 
-    public SortingRule(String columnId, boolean ascending) {
+    public GroupingRule(String columnId, boolean ascending) {
         super(columnId, ascending);
     }
 }

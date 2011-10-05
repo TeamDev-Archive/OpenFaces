@@ -84,7 +84,10 @@ public class TreeTableRenderer extends AbstractTableRenderer {
     }
 
     @Override
-    protected void encodeAdditionalFeaturesSupport_buf(FacesContext context, AbstractTable table, ScriptBuilder buf) throws IOException {
+    protected void encodeAdditionalFeaturesSupport_buf(
+            FacesContext context,
+            AbstractTable table,
+            ScriptBuilder buf) throws IOException {
         super.encodeAdditionalFeaturesSupport_buf(context, table, buf);
 
         TreeTable treeTable = (TreeTable) table;
@@ -209,8 +212,8 @@ public class TreeTableRenderer extends AbstractTableRenderer {
         }
         int addedRowCount = rowAvailableAfterRestoring ? treeTable.loadSubNodes(rowIndex) : 0;
 
-        Map<Integer, CustomRowRenderingInfo> customRowRenderingInfos =
-                (Map<Integer, CustomRowRenderingInfo>) treeTable.getAttributes().get(TableStructure.CUSTOM_ROW_RENDERING_INFOS_KEY);
+        Map<Integer, CustomRowRenderingInfo> customRowRenderingInfos = (Map<Integer, CustomRowRenderingInfo>)
+                treeTable.getAttributes().get(TableStructure.CUSTOM_ROW_RENDERING_INFOS_KEY);
         for (int i = treeTable.getRowCount(); i > rowIndex; i--) {
             CustomRowRenderingInfo rowInfo = customRowRenderingInfos.remove(i);
             if (rowInfo == null)
@@ -228,7 +231,11 @@ public class TreeTableRenderer extends AbstractTableRenderer {
         Rendering.addJsonParam(newNodesInitInfo, "structureMap", structureMap);
     }
 
-    private JSONObject formatTreeStructureMap(TreeTable treeTable, FacesContext context, int fromRowIndex, int rowCount) {
+    private JSONObject formatTreeStructureMap(
+            TreeTable treeTable,
+            FacesContext context,
+            int fromRowIndex,
+            int rowCount) {
         JSONObject result = new JSONObject();
         Map<Object, NodeInfoForRow> map = treeTable.getNodeExpansionDataMap(context);
         Set<Map.Entry<Object, NodeInfoForRow>> entries = map.entrySet();

@@ -9,17 +9,16 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.component.table;
+package org.openfaces.taglib.facelets.table;
 
-/**
- * @author Dmitry Pikhulya
- */
-public class SortingRule extends SortingOrGroupingRule {
+import com.sun.facelets.tag.jsf.ComponentConfig;
+import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
+import org.openfaces.taglib.internal.table.RowGroupingTag;
 
-    public SortingRule() {
+public class RowGroupingTagHandler extends AbstractFaceletsComponentHandler {
+
+    public RowGroupingTagHandler(ComponentConfig componentConfig) {
+        super(componentConfig, new RowGroupingTag());
     }
 
-    public SortingRule(String columnId, boolean ascending) {
-        super(columnId, ascending);
-    }
 }

@@ -142,8 +142,7 @@ public abstract class TableHeaderOrFooter extends TableSection {
                 allRows.add(commonHeaderRow);
         }
 
-        for (int i = 0, count = columnHeaderRows.size(); i < count; i++) {
-            HeaderRow row = columnHeaderRows.get(i);
+        for (HeaderRow row : columnHeaderRows) {
             allRows.add(row);
         }
 
@@ -293,7 +292,7 @@ public abstract class TableHeaderOrFooter extends TableSection {
         return cell;
     }
 
-    private static Object getHeaderOrFooterCellContent(BaseColumn col, boolean isHeader) {
+    public static Object getHeaderOrFooterCellContent(BaseColumn col, boolean isHeader) {
         DynamicCol dynamicCol = col instanceof DynamicCol ? (DynamicCol) col : null;
         if (dynamicCol != null) dynamicCol.declareContextVariables();
         try {

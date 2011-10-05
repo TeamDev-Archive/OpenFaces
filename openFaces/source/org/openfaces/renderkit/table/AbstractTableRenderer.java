@@ -148,12 +148,12 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         writer.startElement("span", table);
         writer.writeAttribute("id", table.getClientId(context) + "::auxiliaryTags", null);
         writer.writeAttribute("display", "none", null);
-        encodeAdditionalFeatureSupport(context, table);
+        encodeAdditionalFeaturesSupport(context, table);
         Styles.renderStyleClasses(context, table);
         writer.endElement("span");
     }
 
-    protected void encodeAdditionalFeatureSupport(FacesContext context, AbstractTable table) throws IOException {
+    protected void encodeAdditionalFeaturesSupport(FacesContext context, AbstractTable table) throws IOException {
         ScriptBuilder buf = new ScriptBuilder();
 
         encodeAdditionalFeaturesSupport_buf(context, table, buf);
@@ -369,9 +369,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         List<BaseColumn> columns = table.getRenderedColumns();
         boolean atLeastOneColumnSortable1 = false;
         JSONArray columnSortableFlags = new JSONArray();
-        int colCount = columns.size();
-        for (int i = 0; i < colCount; i++) {
-            BaseColumn column = columns.get(i);
+        for (BaseColumn column : columns) {
             boolean sortable;
             Boolean columnSortableAttr = (Boolean) column.getAttributes().get("sortable");
             if (columnSortableAttr != null)
@@ -597,16 +595,17 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
             AbstractTable table,
             ScriptBuilder buf
     ) throws IOException {
-        for (BaseColumn col : table.getRenderedColumns()) {
-            if (!(col instanceof CheckboxColumn)) continue;
-            ((CheckboxColumn) col).encodeInitScript(context, buf);
+        for (BaseColumn column : table.getRenderedColumns()) {
+            if (!(column instanceof CheckboxColumn))
+                continue;
+
+            ((CheckboxColumn) column).encodeInitScript(context, buf);
         }
     }
 
     protected void decodeCheckboxColumnSupport(FacesContext context, AbstractTable table) {
         Map<String, String> requestMap = context.getExternalContext().getRequestParameterMap();
-        List<BaseColumn> columns = table.getRenderedColumns();
-        for (BaseColumn column : columns) {
+        for (BaseColumn column : table.getRenderedColumns()) {
             if (!(column instanceof CheckboxColumn))
                 continue;
 

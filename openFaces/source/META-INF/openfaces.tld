@@ -42929,6 +42929,15 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
   </tag>
+  <tag>
+    <description>Placing this tag into the &amp;lt;o:dataTable&gt; tag turns on the interactive row grouping feature in
+      the appropriate table. This feature allows the user to group the table&apos;s records by one or more columns,
+      which will turn the flat record list into a tree-like structure which displays records in groups.
+    </description>
+    <name>rowGrouping</name>
+    <tag-class>org.openfaces.taglib.jsp.table.RowGroupingJspTag</tag-class>
+    <body-content>JSP</body-content>
+  </tag>
 
   <!--<tag>-->
     <!--<description>This component is under construction. Displays a box where users may read and write comments. This component works on top of the Disqus-->

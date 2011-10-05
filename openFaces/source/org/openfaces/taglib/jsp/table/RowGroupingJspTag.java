@@ -9,17 +9,16 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.component.table;
+package org.openfaces.taglib.jsp.table;
 
-/**
- * @author Dmitry Pikhulya
- */
-public class SortingRule extends SortingOrGroupingRule {
+import org.openfaces.taglib.internal.table.RowGroupingTag;
+import org.openfaces.taglib.jsp.AbstractComponentJspTag;
 
-    public SortingRule() {
+public class RowGroupingJspTag extends AbstractComponentJspTag {
+
+    public RowGroupingJspTag() {
+        super(new RowGroupingTag());
     }
 
-    public SortingRule(String columnId, boolean ascending) {
-        super(columnId, ascending);
-    }
+
 }

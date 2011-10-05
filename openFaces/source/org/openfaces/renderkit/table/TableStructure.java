@@ -136,6 +136,9 @@ public class TableStructure extends TableElement {
         this.rightFixedCols = rightFixedCols;
     }
 
+    /**
+     * @return a list of all rendered columns in all column groups
+     */
     public List<BaseColumn> getColumns() {
         return columns;
     }
@@ -505,7 +508,8 @@ public class TableStructure extends TableElement {
             JSONObject header = new JSONObject();
             columnObj.put("header", header);
             header.put("pos", headerCellCoordinates.asJSONObject());
-            header.put("className", Styles.getCSSClass(context, styleOwnerComponent, columnOrGroup.getHeaderStyle(), columnOrGroup.getHeaderClass()));
+            header.put("className", Styles.getCSSClass(context, styleOwnerComponent,
+                    columnOrGroup.getHeaderStyle(), columnOrGroup.getHeaderClass()));
             appendColumnEventsArray(header,
                     columnOrGroup.getHeaderOnclick(),
                     columnOrGroup.getHeaderOndblclick(),
