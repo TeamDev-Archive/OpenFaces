@@ -280,7 +280,8 @@ public abstract class TableHeaderOrFooter extends TableSection {
         }
 
         Object cellContent = getHeaderOrFooterCellContent(col, isHeader);
-        HeaderCell cell = new HeaderCell(col, cellContent, cellTag, CellKind.COL_HEADER, isHeader, isHeader);
+        HeaderCell cell = new HeaderCell(col, cellContent, cellTag, CellKind.COL_HEADER,
+                isHeader, isHeader ? HeaderCell.SortingToggleMode.AUTODETECT : HeaderCell.SortingToggleMode.OFF);
         cell.setEscapeText(true);
         if (isHeader) {
             boolean lastInThisHierarchy = thisHierarchySize - 1 == rowIndex;

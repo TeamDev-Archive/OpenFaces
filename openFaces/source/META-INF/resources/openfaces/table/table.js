@@ -1580,11 +1580,16 @@ O$.Table = {
 
   _initSorting: function(tableId, columnSortableFlags, sortedColIndex, sortableHeaderClass, sortableHeaderRolloverClass,
                          sortedColClass, sortedColHeaderClass, sortedColBodyClass, sortedColFooterClass,
-                         sortingImagesToPreload) {
-    var table = O$(tableId);
+                         sortedAscImageUrl, sortedDescImageUrl) {
+    var table = O$.initComponent(tableId, null, {
+      sorting: {
+        sortedAscendingImageUrl: sortedAscImageUrl,
+        sortedDescendingImageUrl: sortedDescImageUrl
+      }
+    });
     O$.assert(table, "Couldn't find table by id: " + tableId);
 
-    O$.preloadImages(sortingImagesToPreload);
+    O$.preloadImages([sortedAscImageUrl, sortedDescImageUrl]);
 
     table._columns.forEach(function(column) {
       column._sortable = columnSortableFlags[column._index];
@@ -2342,6 +2347,34 @@ O$.Table = {
       table.setColumnsOrder(columnIds);
     }
   },
+
+
+// -------------------------- ROW GROUPING SUPPORT
+  _initRowGrouping: function(tableId, activeColumnIds) {
+    var table = O$.initComponent(tableId, null, {
+      grouping: {
+        _columnHeaderBoxes: {},
+
+        _getColumnHeaderBox: function(columnId) {
+          return this._columnHeaderBoxes[columnId];
+        }
+      }
+    });
+
+    activeColumnIds.forEach(function(columnId) {
+      var boxId = tableId + "::groupingHeaderCell:" + columnId;
+      var columnHeaderBox = O$(boxId);
+      if (!columnHeaderBox) throw "Couldn't find column header box. columnId: " + columnId + "; box id: " + boxId;
+
+      O$.extend(columnHeaderBox, {
+        id: null, // reset ids to avoid clashes when it's pulled out of the table, and the table is reloaded with Ajax
+        sortingToggleImg: O$.getChildNodesByClass(columnHeaderBox, "o_table_sortingToggle", true)
+      });
+      columnHeaderBox.id = null;
+      table.grouping._columnHeaderBoxes[columnId] = columnHeaderBox;
+    });
+  },
+
 
   HEADER_CELL_Z_INDEX_COLUMN_MENU_BUTTON: 1,
   HEADER_CELL_Z_INDEX_COLUMN_MENU_RESIZE_HANDLE: 2

@@ -13,7 +13,9 @@ package org.openfaces.renderkit.table;
 
 import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.BaseColumn;
+import org.openfaces.component.table.DataTable;
 import org.openfaces.component.table.DynamicCol;
+import org.openfaces.component.table.SortingOrGroupingRule;
 import org.openfaces.util.Environment;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.Resources;
@@ -28,6 +30,15 @@ import java.util.List;
  * @author Dmitry Pikhulya
  */
 class HeaderCell extends TableElement {
+    private static final String DYNAMIC_SORTING_TOGGLE_CLASS = "o_table_sortingToggle";
+
+    public static enum SortingToggleMode {
+        OFF,
+        AUTODETECT,
+        FORCE_DYNAMIC
+    }
+
+    private String id;
     private BaseColumn column;
     private Object content;
     private int colSpan;
@@ -36,21 +47,22 @@ class HeaderCell extends TableElement {
 
     private String cellTag;
     private boolean renderNonBreakable;
-    private boolean renderSortingToggle;
+    private SortingToggleMode sortingToggleMode;
     private CellKind cellKind;
     private boolean escapeText;
 
     public HeaderCell(BaseColumn column, Object content, String cellTag, CellKind cellKind) {
-        this(column, content, cellTag, cellKind, false, false);
+        this(column, content, cellTag, cellKind, false, SortingToggleMode.OFF);
     }
 
-    public HeaderCell(BaseColumn column, Object content, String cellTag, CellKind cellKind, boolean renderNonBreakable, boolean renderSortingToggle) {
+    public HeaderCell(BaseColumn column, Object content, String cellTag, CellKind cellKind,
+                      boolean renderNonBreakable, SortingToggleMode sortingToggleMode) {
         this.column = column;
         this.content = content;
         this.cellTag = cellTag;
         this.cellKind = cellKind;
         this.renderNonBreakable = renderNonBreakable;
-        this.renderSortingToggle = renderSortingToggle;
+        this.sortingToggleMode = sortingToggleMode;
     }
 
     public CellKind getCellKind() {
@@ -61,6 +73,14 @@ class HeaderCell extends TableElement {
         this.colSpan = colSpan;
         rowIndexMin = Math.min(rowIndex1, rowIndex2);
         rowIndexMax = Math.max(rowIndex1, rowIndex2);
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public BaseColumn getColumn() {
@@ -91,6 +111,9 @@ class HeaderCell extends TableElement {
 
         ResponseWriter writer = facesContext.getResponseWriter();
         writer.startElement(cellTag, table);
+        if (id != null)
+            writer.writeAttribute("id", id, null);
+
         if (colSpan > 1)
             writer.writeAttribute("colspan", String.valueOf(colSpan), null);
         int rowSpan = 0;
@@ -134,7 +157,8 @@ class HeaderCell extends TableElement {
             if (dynamicCol != null) dynamicCol.undeclareContextVariables();
         }
 
-        if (renderSortingToggle && column != null && table instanceof AbstractTable)
+        if (sortingToggleMode == SortingToggleMode.FORCE_DYNAMIC ||
+                (sortingToggleMode == SortingToggleMode.AUTODETECT && column != null && table instanceof AbstractTable))
             renderColumnSortingDirection(facesContext, (AbstractTable) table, column);
         if (renderNonBreakable) {
             if (Environment.isExplorer())
@@ -149,18 +173,46 @@ class HeaderCell extends TableElement {
 
     protected void renderColumnSortingDirection(
             FacesContext facesContext, AbstractTable table, BaseColumn column) throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
-        String thisColumnId = column.getId();
-        String sortedColumnId = table.getSortColumnId();
-        if (thisColumnId != null && thisColumnId.equals(sortedColumnId)) {
-            String imageUrl = table.isSortAscending()
+
+        String imageUrl;
+        if (sortingToggleMode == SortingToggleMode.AUTODETECT) {
+            String columnId = column.getId();
+            Boolean ascending = null;
+            if (table instanceof DataTable)
+                ascending = isColumnSortedAscending(columnId, ((DataTable) table).getGroupingRules());
+            if (ascending == null)
+                ascending = isColumnSortedAscending(columnId, table.getSortingRules());
+
+            if (ascending == null) return;
+
+            imageUrl = ascending
                     ? getSortedAscendingImageUrl(facesContext, table)
                     : getSortedDescendingImageUrl(facesContext, table);
-            writer.startElement("img", table);
-            writer.writeAttribute("src", imageUrl, null);
-            writer.writeAttribute("style", "margin-left: 5px", null);
-            writer.endElement("img");
+        } else if (sortingToggleMode == SortingToggleMode.FORCE_DYNAMIC) {
+            imageUrl = null;
+        } else {
+            throw new IllegalStateException("This method should be invoked for either 'autodetect' or " +
+                    "'force_dynamic' sorting toggle mode");
         }
+
+        ResponseWriter writer = facesContext.getResponseWriter();
+        writer.startElement("img", table);
+        if (sortingToggleMode == SortingToggleMode.FORCE_DYNAMIC)
+            writer.writeAttribute("class", DYNAMIC_SORTING_TOGGLE_CLASS, null);
+        if (imageUrl != null)
+            writer.writeAttribute("src", imageUrl, null);
+        writer.writeAttribute("style", "margin-left: 5px", null);
+        writer.endElement("img");
+    }
+
+    private Boolean isColumnSortedAscending(String columnId, List<? extends SortingOrGroupingRule> rules) {
+        if (rules == null) return null;
+
+        for (SortingOrGroupingRule rule : rules) {
+            if (columnId.equals(rule.getColumnId()))
+                return rule.isAscending();
+        }
+        return null;
     }
 
     public static String getSortedAscendingImageUrl(FacesContext facesContext, AbstractTable table) {

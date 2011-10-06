@@ -1229,11 +1229,11 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     }
 
 
-    protected List<SortingRule> getSortingRules() {
+    public List<SortingRule> getSortingRules() {
         return sortingRules;
     }
 
-    protected void setSortingRules(List<SortingRule> sortingRules) {
+    public void setSortingRules(List<SortingRule> sortingRules) {
         this.sortingRules = sortingRules;
     }
 

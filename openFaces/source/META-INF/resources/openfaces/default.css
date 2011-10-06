@@ -155,6 +155,10 @@
   background: #f4f4f4;
 }
 
+.o_table_sortingToggle {
+    display: none;
+}
+
 .o_filter_row_cells {
   font-weight: normal;
 }

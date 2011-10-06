@@ -324,7 +324,7 @@ public class TableBody extends TableSection {
                 }
 
 
-                List<Object> customCells = applicableCustomCells[colIndex];
+                List<?> customCells = applicableCustomCells[colIndex];
                 SpannedTableCell spannedTableCell =
                         customCells != null && customCells.size() == 1 && customCells.get(0) instanceof SpannedTableCell
                                 ? (SpannedTableCell) customCells.get(0) : null;
@@ -399,7 +399,7 @@ public class TableBody extends TableSection {
                 else
                     cells.add(cell);
                 cell.setSpan(span);
-                cell.extractCustomEvents((List<? extends UIComponent>) customCells);
+                cell.extractCustomEvents((List<UIComponent>) customCells);
 
                 StringBuffer buf = stringWriter.getBuffer();
                 int startIdx = buf.length();

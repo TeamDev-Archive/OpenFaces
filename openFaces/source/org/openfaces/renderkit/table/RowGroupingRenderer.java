@@ -15,11 +15,15 @@ import org.openfaces.component.table.BaseColumn;
 import org.openfaces.component.table.DataTable;
 import org.openfaces.component.table.GroupingRule;
 import org.openfaces.renderkit.RendererBase;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.ScriptBuilder;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 public class RowGroupingRenderer extends RendererBase {
@@ -35,14 +39,27 @@ public class RowGroupingRenderer extends RendererBase {
         DataTable table = (DataTable) component.getParent();
 
         TableStructure tableStructure = TableStructure.getCurrentInstance(table);
-        Set<BaseColumn> columns = new LinkedHashSet<BaseColumn>(tableStructure.getColumns());
+        Set<BaseColumn> visibleAndGroupedColumns = new LinkedHashSet<BaseColumn>(tableStructure.getColumns());
         for (GroupingRule groupingRule : table.getGroupingRules()) {
             String columnId = groupingRule.getColumnId();
             BaseColumn column = table.getColumnById(columnId);
-            columns.add(column);
+            visibleAndGroupedColumns.add(column);
         }
 
+        String tableClientId = table.getClientId(context);
+        List<String> activeColumnIds = new ArrayList<String>();
+        for (BaseColumn column : visibleAndGroupedColumns) {
+            Object headerContent = TableHeader.getHeaderOrFooterCellContent(column, true);
+            HeaderCell cell = new HeaderCell(column, headerContent, "div",
+                    CellKind.COL_HEADER, true, HeaderCell.SortingToggleMode.FORCE_DYNAMIC);
+            String columnId = column.getId();
+            activeColumnIds.add(columnId);
+            cell.setId(tableClientId + "::groupingHeaderCell:" + columnId);
+            cell.render(context, null);
+        }
 
-
+        Rendering.renderInitScript(context, new ScriptBuilder().initScript(context, table, "_initRowGrouping",
+                activeColumnIds
+        ).semicolon());
     }
 }
