@@ -287,8 +287,7 @@ public class TreeTable extends AbstractTable {
     private TreeStructure findTreeStructureChild() {
         List<UIComponent> children = getChildren();
         TreeStructure treeStructure = null;
-        for (int i = 0, childCount = children.size(); i < childCount; i++) {
-            UIComponent child = children.get(i);
+        for (UIComponent child : children) {
             if (child instanceof TreeStructure) {
                 if (treeStructure != null)
                     throw new RuntimeException("There should be only one tree structure child under the TreeTable component");
@@ -553,9 +552,7 @@ public class TreeTable extends AbstractTable {
 
         List<boolean[]> thisLevelNodeFilteringFlags = new ArrayList<boolean[]>();
         List<TempNodeParams> filteredNodeParams = new ArrayList<TempNodeParams>();
-        int sortedRowCount = thisLevelNodeParams.size();
-        for (int i = 0; i < sortedRowCount; i++) {
-            TempNodeParams rowObj = thisLevelNodeParams.get(i);
+        for (TempNodeParams rowObj : thisLevelNodeParams) {
             thisLevelNodeFilteringFlags.add(rowObj.getFilteringFlags());
             if (rowObj.isRowAccepted())
                 filteredNodeParams.add(rowObj);
@@ -614,7 +611,7 @@ public class TreeTable extends AbstractTable {
 
     private void sortNodes(List<TempNodeParams> thisLevelArrays, int level) {
         List<SortingRule> sortingRules = getSortingRules();
-        Comparator<Object> sortingComparator = createRowDataComparator(sortingRules);
+        Comparator<Object> sortingComparator = createRowDataComparator(null, sortingRules);
         if (sortingComparator == null)
             return;
         String nodeLevelVar = getNodeLevelVar();

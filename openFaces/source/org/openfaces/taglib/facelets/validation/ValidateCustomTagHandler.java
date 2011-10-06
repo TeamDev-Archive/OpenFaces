@@ -147,8 +147,8 @@ public class ValidateCustomTagHandler extends MetaTagHandler {
         if (compositeFaceletHandler == null)
             return;
 
-        for (int i = 0; i < compositeFaceletHandler.getHandlers().length; i++) {
-            FaceletHandler handler = compositeFaceletHandler.getHandlers()[i];
+        FaceletHandler[] handlers = compositeFaceletHandler.getHandlers();
+        for (FaceletHandler handler : handlers) {
             if (handler instanceof MessageParameterTagHandler) {
                 addParameter(context, (MessageParameterTagHandler) handler);
             }

@@ -156,8 +156,7 @@ public class CheckboxColumn extends BaseColumn {
         if (selectedRows == null || selectedRows.getModel() == null)
             assignDataModel();
         List<Integer> rowIndexes = selectedRows.encodeSelectionIntoIndexes();
-        for (int j = 0, rowIndexCount = rowIndexes.size(); j < rowIndexCount; j++) {
-            int checkedRowIdx = rowIndexes.get(j);
+        for (Integer checkedRowIdx : rowIndexes) {
             checkedRowIndexes.put(checkedRowIdx);
         }
 

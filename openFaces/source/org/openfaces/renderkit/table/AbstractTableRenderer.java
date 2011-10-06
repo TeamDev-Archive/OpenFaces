@@ -673,8 +673,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
                     List<BaseColumn> columns = table.getRenderedColumns();
                     List<BodyRow> rows = tableStructure.getBody().createRows(context, rowIndex, rowCount, columns);
                     if (tableStructure.getScrolling() == null) {
-                        for (int i = 0, count = rows.size(); i < count; i++) {
-                            BodyRow row = rows.get(i);
+                        for (BodyRow row : rows) {
                             row.render(context, null);
                         }
                     } else {

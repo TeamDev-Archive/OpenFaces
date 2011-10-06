@@ -289,8 +289,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
             selection.setModel(model);
 
         List<BaseColumn> columns = getAllColumns();
-        for (int colIndex = 0, columnCount = columns.size(); colIndex < columnCount; colIndex++) {
-            BaseColumn column = columns.get(colIndex);
+        for (BaseColumn column : columns) {
             if (column instanceof CheckboxColumn) {
                 ((CheckboxColumn) column).assignDataModel();
             }
@@ -460,8 +459,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     private BaseColumn findColumnById(List<BaseColumn> allColumns, String columnId) {
         BaseColumn colById = null;
         int allColCount = allColumns.size();
-        for (int colIndex = 0; colIndex < allColCount; colIndex++) {
-            BaseColumn col = allColumns.get(colIndex);
+        for (BaseColumn col : allColumns) {
             if (columnId.equals(col.getId())) {
                 colById = col;
                 break;
@@ -930,8 +928,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
             selection.rememberByKeys();
 
         List<BaseColumn> columns = getAllColumns();
-        for (int i = 0, columnCount = columns.size(); i < columnCount; i++) {
-            BaseColumn column = columns.get(i);
+        for (BaseColumn column : columns) {
             if (column instanceof CheckboxColumn) {
                 ((CheckboxColumn) column).rememberByKeys();
             }

@@ -377,8 +377,7 @@ public class ValidationSupportResponseWriter extends ResponseWriterWrapper {
 
     private static boolean isStringInArray(String str, String[] array) {
         str = str.toLowerCase();
-        for (int i = 0, len = array.length; i < len; i++) {
-            String s = array[i];
+        for (String s : array) {
             if (s.equals(str))
                 return true;
         }

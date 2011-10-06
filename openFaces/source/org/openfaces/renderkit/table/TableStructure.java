@@ -283,8 +283,7 @@ public class TableStructure extends TableElement {
                     ? ((DynamicColumn) cellComponentsContainer).getChildrenForProcessing()
                     : cellComponentsContainer.getChildren();
 
-            for (int childIndex = 0, childCount = children.size(); childIndex < childCount; childIndex++) {
-                UIComponent child = children.get(childIndex);
+            for (UIComponent child : children) {
                 if (!isComponentEmpty(child)) {
                     childrenEmpty = false;
                     break;

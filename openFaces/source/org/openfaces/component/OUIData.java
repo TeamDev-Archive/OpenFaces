@@ -1134,9 +1134,8 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
 
     protected List<Row> getCustomRows() {
         List<Row> customRows = new ArrayList<Row>();
-        List children = getChildren();
-        for (int i = 0, childCount = children.size(); i < childCount; i++) {
-            UIComponent child = (UIComponent) children.get(i);
+        List<UIComponent> children = getChildren();
+        for (UIComponent child : children) {
             if (child instanceof Row)
                 customRows.add((Row) child);
         }

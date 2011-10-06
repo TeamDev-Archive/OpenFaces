@@ -577,10 +577,7 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
 
     private static List<RowInfo> filterRows(List<Filter> filters, List<RowInfo> sortedRows, List<boolean[]> filteringFlags) {
         List<RowInfo> result = new ArrayList<RowInfo>();
-        int sortedRowCount = sortedRows.size();
-        for (int i = 0; i < sortedRowCount; i++) {
-            RowInfo rowObj = sortedRows.get(i);
-
+        for (RowInfo rowObj : sortedRows) {
             boolean[] flagsArray = new boolean[filters.size()];
             boolean rowAccepted = filterRow(filters, rowObj, flagsArray);
             filteringFlags.add(flagsArray);
