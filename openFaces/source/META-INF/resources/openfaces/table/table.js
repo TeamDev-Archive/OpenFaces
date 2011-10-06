@@ -12,13 +12,17 @@
 // -------------------------- COMMON TABLE FUNCTIONS
 
 O$.Table = {
-  SortingGroupingRule: O$.createClass(null, {
-    constructor: function(columnId, sortAscending, groupingUsed) {
-      O$.extend({
-        columnId: columnId,
-        sortAscending: sortAscending,
-        groupingUsed: groupingUsed
-      });
+  SortingRule: O$.createClass(null, {
+    constructor: function(columnId, ascending) {
+      this.columnId = columnId;
+      this.ascending = ascending;
+    }
+  }),
+
+  GroupingRule: O$.createClass(null, {
+    constructor: function(columnId, ascending) {
+      this.columnId = columnId;
+      this.ascending = ascending;
     }
   }),
 
@@ -276,14 +280,23 @@ O$.Table = {
         return -1;
       },
 
-      _sortingGroupingRules: null,
+      _sortingRules: null,
+      _groupingRules: null,
 
-      getSortingGroupingRules: function() {
-        return this._sortingGroupingRules;
+      getSortingRules: function() {
+        return this._sortingRules;
       },
 
-      setSortingGroupingRules: function(rules) {
-        this._sortingGroupingRules = rules;
+      setSortingRules: function(rules) {
+        this._sortingRules = rules;
+      },
+
+      getGroupingRules: function() {
+        return this._groupingRules;
+      },
+
+      setGroupingRules: function(rules) {
+        this._groupingRules = rules;
       },
 
 
