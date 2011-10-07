@@ -35,6 +35,6 @@ public class OpenFacesAjaxLoadingMode extends org.seleniuminspector.LoadingMode 
         sleep(200); // wait a little while Ajax request starts asynchronously
         Selenium selenium = SeleniumHolder.getInstance().getSelenium();
         selenium.waitForCondition("var value = window.document._ajaxInProgressMessage ? window.document._ajaxInProgressMessage.style.display : 'none'; value == 'none';", "30000");
-        sleep(1200);
+        sleep(2000);
     }
 }
