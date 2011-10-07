@@ -173,8 +173,8 @@ O$.TimeTableView = {
                 function eventToJSON(event) {
                   var result = JSON.stringify(event, properties);
                   if (event.customProperties !== undefined) {
-                    //add custom properties
-                    //associative arrays are not supported by stringify method
+                    // add custom properties
+                    // associative arrays are not supported by the stringify method
                     var customPropertiesJSON = "{";
                     for (var key in event.customProperties) {
                       customPropertiesJSON = customPropertiesJSON + JSON.stringify(key) + ":" +

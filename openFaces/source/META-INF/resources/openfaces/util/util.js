@@ -1960,7 +1960,7 @@ if (!window.O$) {
     });
   };
 
- O$.setupFocusOnTags = function(parent, tagName) {
+  O$.setupFocusOnTags = function(parent, tagName) {
     var elements = parent.getElementsByTagName(tagName);
     for (var i = 0; i < elements.length; i++) {
       var element = elements[i];
@@ -2012,7 +2012,7 @@ if (!window.O$) {
 
     function fixIE6ButtonsSubmission() {
       // workaround for <button> tag submission bug in IE6, see OF-112
-      if (!O$.isExplorer6()) return
+      if (!O$.isExplorer6()) return;
 
       var buttons = document.getElementsByTagName("button");
       for (var i = 0; i < buttons.length; i++) {

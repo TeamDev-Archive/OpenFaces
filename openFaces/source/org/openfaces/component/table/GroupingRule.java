@@ -12,7 +12,9 @@
 
 package org.openfaces.component.table;
 
-import java.io.Serializable;
+
+import org.openfaces.org.json.JSONException;
+import org.openfaces.org.json.JSONObject;
 
 /**
  * @author Dmitry Pikhulya
@@ -24,5 +26,9 @@ public class GroupingRule extends SortingOrGroupingRule {
 
     public GroupingRule(String columnId, boolean ascending) {
         super(columnId, ascending);
+    }
+
+    public GroupingRule(JSONObject jsonObj) throws JSONException {
+        super(jsonObj);
     }
 }

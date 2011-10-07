@@ -11,6 +11,9 @@
  */
 package org.openfaces.component.table;
 
+import org.openfaces.org.json.JSONException;
+import org.openfaces.org.json.JSONObject;
+
 /**
  * @author Dmitry Pikhulya
  */
@@ -21,5 +24,9 @@ public class SortingRule extends SortingOrGroupingRule {
 
     public SortingRule(String columnId, boolean ascending) {
         super(columnId, ascending);
+    }
+
+    public SortingRule(JSONObject jsonObj) throws JSONException {
+        super(jsonObj);
     }
 }

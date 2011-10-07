@@ -15,6 +15,7 @@ import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.BaseColumn;
 import org.openfaces.component.table.DataTable;
 import org.openfaces.component.table.DynamicCol;
+import org.openfaces.component.table.RowGrouping;
 import org.openfaces.component.table.SortingOrGroupingRule;
 import org.openfaces.util.Environment;
 import org.openfaces.util.Rendering;
@@ -188,8 +189,12 @@ class HeaderCell extends TableElement {
         if (sortingToggleMode == SortingToggleMode.AUTODETECT) {
             String columnId = column.getId();
             Boolean ascending = null;
-            if (table instanceof DataTable)
-                ascending = isColumnSortedAscending(columnId, ((DataTable) table).getGroupingRules());
+            if (table instanceof DataTable) {
+                DataTable dataTable = (DataTable) table;
+                RowGrouping rowGrouping = dataTable.getRowGrouping();
+                if (rowGrouping != null)
+                    ascending = isColumnSortedAscending(columnId, rowGrouping.getGroupingRules());
+            }
             if (ascending == null)
                 ascending = isColumnSortedAscending(columnId, table.getSortingRules());
 

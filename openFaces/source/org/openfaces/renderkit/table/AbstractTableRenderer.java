@@ -17,6 +17,7 @@ import org.openfaces.component.command.MenuItem;
 import org.openfaces.component.command.PopupMenu;
 import org.openfaces.component.table.*;
 import org.openfaces.org.json.JSONArray;
+import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.AjaxPortionRenderer;
 import org.openfaces.renderkit.CaptionButtonRenderer;
@@ -314,7 +315,9 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         return new String[]{
                 Resources.utilJsURL(context),
                 TableUtil.getTableUtilJsURL(context),
-                getTableJsURL(context)};
+                getTableJsURL(context),
+                Resources.jsonJsURL(context)
+        };
     }
 
     private void encodeKeyboardSupport(FacesContext context, AbstractTable table, ScriptBuilder buf) throws IOException {
@@ -405,6 +408,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         }
 
         buf.initScript(context, table, "O$.Table._initSorting",
+                table.getSortingRules(),
                 columnSortableFlags,
                 table.getSortColumnIndex(),
                 Styles.getCSSClass(context, table, table.getSortableHeaderStyle(), StyleGroup.regularStyleGroup(), getSortableHeaderClass(table)),
@@ -511,12 +515,21 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
 
     private void decodeSorting(FacesContext context, AbstractTable table) {
         Map<String, String> requestParameterMap = context.getExternalContext().getRequestParameterMap();
-        String sortingFieldName = getSortingFieldName(context, table);
-        String sortingFieldValue = requestParameterMap.get(sortingFieldName);
-        if (sortingFieldValue != null && sortingFieldValue.length() > 0) {
-            int columnToToggle = Integer.parseInt(sortingFieldValue);
-            table.toggleSorting(columnToToggle);
+        String paramName = table.getClientId(context) + "::setSortingRules";
+        String sortingRulesStr = requestParameterMap.get(paramName);
+        if (Rendering.isNullOrEmpty(sortingRulesStr)) return;
+
+        List<SortingRule> sortingRules = new ArrayList<SortingRule>();
+        try {
+            JSONArray sortingRulesJson = new JSONArray(sortingRulesStr);
+            for (int i = 0, count = sortingRulesJson.length(); i < count; i++) {
+                JSONObject jsonObject = sortingRulesJson.getJSONObject(i);
+                sortingRules.add(new SortingRule(jsonObject));
+            }
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
         }
+        table.toggleSorting(sortingRules);
     }
 
     private void decodeColumnMenu(FacesContext context, AbstractTable table) {

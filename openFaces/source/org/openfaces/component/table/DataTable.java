@@ -47,7 +47,6 @@ public class DataTable extends AbstractTable {
     private Boolean paginationKeyboardSupport;
     private PaginationOnSorting paginationOnSorting;
     private Boolean customDataProviding;
-    private List<GroupingRule> groupingRules;
 
     public DataTable() {
         setRendererType("org.openfaces.DataTableRenderer");
@@ -71,7 +70,7 @@ public class DataTable extends AbstractTable {
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         return new Object[]{superState, rowIndexVar, pageSize, pageIndex, paginationKeyboardSupport,
-                paginationOnSorting, customDataProviding, saveAttachedState(context, groupingRules)};
+                paginationOnSorting, customDataProviding};
     }
 
     @Override
@@ -85,7 +84,6 @@ public class DataTable extends AbstractTable {
         paginationKeyboardSupport = (Boolean) state[i++];
         paginationOnSorting = (PaginationOnSorting) state[i++];
         customDataProviding = (Boolean) state[i++];
-        groupingRules = (List<GroupingRule>) restoreAttachedState(context, state[i++]);
     }
 
     @Override
@@ -107,19 +105,12 @@ public class DataTable extends AbstractTable {
 
     protected void validateSortingGroupingColumns() {
         super.validateSortingGroupingColumns();
-        List<GroupingRule> sortingRules = getGroupingRules();
-        validateSortingOrGroupingRules(sortingRules);
+        RowGrouping rowGrouping = getRowGrouping();
+        if (rowGrouping != null) {
+            List<GroupingRule> sortingRules = rowGrouping.getGroupingRules();
+            validateSortingOrGroupingRules(sortingRules);
+        }
     }
-
-
-    public List<GroupingRule> getGroupingRules() {
-        return groupingRules;
-    }
-
-    public void setGroupingRules(List<GroupingRule> groupingRules) {
-        this.groupingRules = groupingRules;
-    }
-
 
     /**
      * @return Returns the size of a page if the table is being paged and zero if the table is not being paged.
@@ -287,7 +278,11 @@ public class DataTable extends AbstractTable {
         try {
             if (updateSortingFromBindings) {
                 updateSortingFromBindings();
-                getModel().setSortingRules(getSortingRules());
+                model.setSortingRules(getSortingRules());
+
+                RowGrouping rowGrouping = getRowGrouping();
+                if (rowGrouping != null)
+                    model.setGroupingRules(rowGrouping.getGroupingRules());
             }
 
             if (readActualData)

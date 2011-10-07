@@ -14,6 +14,10 @@ package org.openfaces.renderkit.table;
 import org.openfaces.component.table.BaseColumn;
 import org.openfaces.component.table.DataTable;
 import org.openfaces.component.table.GroupingRule;
+import org.openfaces.component.table.RowGrouping;
+import org.openfaces.org.json.JSONArray;
+import org.openfaces.org.json.JSONException;
+import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.ScriptBuilder;
@@ -24,6 +28,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class RowGroupingRenderer extends RendererBase {
@@ -31,16 +36,17 @@ public class RowGroupingRenderer extends RendererBase {
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         super.encodeBegin(context, component);
 
-        UIComponent parent = component.getParent();
+        RowGrouping rowGrouping = (RowGrouping) component;
+        UIComponent parent = rowGrouping.getParent();
         if (!(parent instanceof DataTable))
             throw new IllegalStateException("<o:columnResizing> can only be placed as a child component inside of " +
                     "a <o:dataTable> component. Though the following parent component has been encountered: " +
                     parent.getClass().getName());
-        DataTable table = (DataTable) component.getParent();
+        DataTable table = (DataTable) rowGrouping.getParent();
 
         TableStructure tableStructure = TableStructure.getCurrentInstance(table);
         Set<BaseColumn> visibleAndGroupedColumns = new LinkedHashSet<BaseColumn>(tableStructure.getColumns());
-        List<GroupingRule> groupingRules = table.getGroupingRules();
+        List<GroupingRule> groupingRules = rowGrouping.getGroupingRules();
         if (groupingRules != null)
             for (GroupingRule groupingRule : groupingRules) {
                 String columnId = groupingRule.getColumnId();
@@ -62,7 +68,36 @@ public class RowGroupingRenderer extends RendererBase {
         }
 
         Rendering.renderInitScript(context, new ScriptBuilder().initScript(context, table, "O$.Table._initRowGrouping",
-                activeColumnIds
+                activeColumnIds, groupingRules
         ).semicolon());
     }
+
+    @Override
+    public void decode(FacesContext context, UIComponent component) {
+        super.decode(context, component);
+        RowGrouping rowGrouping = (RowGrouping) component;
+        decodeGroupingRules(context, rowGrouping);
+
+    }
+
+    private void decodeGroupingRules(FacesContext context, RowGrouping rowGrouping) {
+        Map<String, String> requestParameterMap = context.getExternalContext().getRequestParameterMap();
+        DataTable table = (DataTable) rowGrouping.getParent();
+        String paramName = table.getClientId(context) + "::setGroupingRules";
+        String groupingRulesStr = requestParameterMap.get(paramName);
+        if (Rendering.isNullOrEmpty(groupingRulesStr)) return;
+
+        List<GroupingRule> groupingRules = new ArrayList<GroupingRule>();
+        try {
+            JSONArray sortingRulesJson = new JSONArray(groupingRulesStr);
+            for (int i = 0, count = sortingRulesJson.length(); i < count; i++) {
+                JSONObject jsonObject = sortingRulesJson.getJSONObject(i);
+                groupingRules.add(new GroupingRule(jsonObject));
+            }
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+        rowGrouping.setGroupingRules(groupingRules);
+    }
+
 }

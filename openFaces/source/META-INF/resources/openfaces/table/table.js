@@ -280,26 +280,6 @@ O$.Table = {
         return -1;
       },
 
-      _sortingRules: null,
-      _groupingRules: null,
-
-      getSortingRules: function() {
-        return this._sortingRules;
-      },
-
-      setSortingRules: function(rules) {
-        this._sortingRules = rules;
-      },
-
-      getGroupingRules: function() {
-        return this._groupingRules;
-      },
-
-      setGroupingRules: function(rules) {
-        this._groupingRules = rules;
-      },
-
-
       getColumnsOrder: function() {
         var columnIds = [];
         this._columns.forEach(function(column) {
@@ -1591,11 +1571,25 @@ O$.Table = {
 
   // -------------------------- TABLE SORTING SUPPORT
 
-  _initSorting: function(tableId, columnSortableFlags, sortedColIndex, sortableHeaderClass, sortableHeaderRolloverClass,
+  _initSorting: function(tableId, sortingRules, columnSortableFlags, sortedColIndex, sortableHeaderClass, sortableHeaderRolloverClass,
                          sortedColClass, sortedColHeaderClass, sortedColBodyClass, sortedColFooterClass,
                          sortedAscImageUrl, sortedDescImageUrl) {
     var table = O$.initComponent(tableId, null, {
       sorting: {
+        _sortingRules: sortingRules != null ? sortingRules : [],
+
+        getSortingRules: function() {
+          return this._sortingRules;
+        },
+
+        setSortingRules: function(rules) {
+          this._sortingRules = rules;
+          var setSortingRulesStr = JSON.stringify(rules, ["columnId", "ascending"]);
+          O$._submitInternal(table, null, [
+            [table.id + "::setSortingRules", setSortingRulesStr]
+          ]);
+        },
+
         sortedAscendingImageUrl: sortedAscImageUrl,
         sortedDescendingImageUrl: sortedDescImageUrl
       }
@@ -1619,7 +1613,22 @@ O$.Table = {
         var focusField = O$(table.id + "::focused");
         if (focusField)
           focusField.value = true; // set true explicitly before it gets auto-set when the click bubbles up (JSFC-801)
-        O$.Table._toggleColumnSorting(table, column._index);
+        var columnIndex = column._index;
+
+        var sortingRules = table.sorting.getSortingRules();
+        var columnId = table._columns[columnIndex].columnId;
+        if (sortingRules.length == 0)
+          sortingRules = [new O$.Table.SortingRule(columnId, true)];
+        else {
+          var rule = sortingRules[0];
+          if (rule.columnId == columnId)
+            rule.ascending = !rule.ascending;
+          else {
+            rule.columnId = columnId;
+            rule.ascending = true;
+          }
+        }
+        table.sorting.setSortingRules(sortingRules);
       });
 
       O$.setupHoverStateFunction(colHeader, function(mouseInside) {
@@ -1651,13 +1660,6 @@ O$.Table = {
           sortedColFooterClass: sortedColFooterClass});
     }
 
-  },
-
-  _toggleColumnSorting: function(table, columnIndex) {
-    var sortingFieldId = table.id + "::sorting";
-    var sortingField = O$(sortingFieldId);
-    sortingField.value = "" + columnIndex;
-    O$._submitInternal(table);
   },
 
   _performPaginatorAction: function(tableId, field, paramName, paramValue) {
@@ -2363,14 +2365,29 @@ O$.Table = {
 
 
 // -------------------------- ROW GROUPING SUPPORT
-  _initRowGrouping: function(tableId, activeColumnIds) {
+  _initRowGrouping: function(tableId, activeColumnIds, groupingRules) {
     var table = O$.initComponent(tableId, null, {
       grouping: {
         _columnHeaderBoxes: {},
+        _groupingRules: groupingRules,
 
         _getColumnHeaderBox: function(columnId) {
           return this._columnHeaderBoxes[columnId];
+        },
+
+        getGroupingRules: function() {
+          return this._groupingRules;
+        },
+
+        setGroupingRules: function(rules) {
+          this._groupingRules = rules;
+          var setSortingRulesStr = JSON.stringify(rules, ["columnId", "ascending"]);
+          O$._submitInternal(table, null, [
+            [table.id + "::setGroupingRules", setSortingRulesStr]
+          ]);
+
         }
+
       }
     });
 

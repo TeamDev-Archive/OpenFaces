@@ -14,10 +14,14 @@ package org.openfaces.component.table;
 import org.openfaces.component.OUIComponentBase;
 
 import javax.faces.context.FacesContext;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RowGrouping extends OUIComponentBase {
     public static final String COMPONENT_TYPE = "org.openfaces.RowGrouping";
     public static final String COMPONENT_FAMILY = "org.openfaces.RowGrouping";
+
+    private List<GroupingRule> groupingRules = new ArrayList<GroupingRule>();
 
     public RowGrouping() {
         setRendererType("org.openfaces.RowGroupingRenderer");
@@ -32,6 +36,7 @@ public class RowGrouping extends OUIComponentBase {
     public Object saveState(FacesContext context) {
         return new Object[]{
                 super.saveState(context),
+                saveAttachedState(context, groupingRules)
 
         };
     }
@@ -41,6 +46,17 @@ public class RowGrouping extends OUIComponentBase {
         Object[] state = (Object[]) stateObj;
         int i = 0;
         super.restoreState(context, state[i++]);
-
+        groupingRules = (List<GroupingRule>) restoreAttachedState(context, state[i++]);
     }
+
+    public List<GroupingRule> getGroupingRules() {
+        return groupingRules;
+    }
+
+    public void setGroupingRules(List<GroupingRule> groupingRules) {
+        if (groupingRules == null)
+            throw new IllegalArgumentException("groupingRules cannot be null");
+        this.groupingRules = groupingRules;
+    }
+
 }

@@ -1084,12 +1084,21 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     }
 
     protected <E extends SortingOrGroupingRule> void validateSortingOrGroupingRules(List<E> rules) {
+        validateSortingOrGroupingRules(rules, false);
+    }
+
+    protected <E extends SortingOrGroupingRule> void validateSortingOrGroupingRules(
+            List<E> rules,
+            boolean exceptionOnInvalidColumns) {
         if (rules == null || rules.size() == 0)
             return;
         for (Iterator<? extends SortingOrGroupingRule> iterator = rules.iterator(); iterator.hasNext(); ) {
             SortingOrGroupingRule rule = iterator.next();
             String columnId = rule.getColumnId();
             if (getColumnById(columnId) == null) {
+                if (exceptionOnInvalidColumns)
+                    throw new IllegalArgumentException("Error checking incoming sorting or grouping rules. " +
+                            "There is no column with this id: \"" + columnId + "\"");
                 iterator.remove();
                 break;
             }
@@ -1235,6 +1244,11 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     public void setSortingRules(List<SortingRule> sortingRules) {
         this.sortingRules = sortingRules;
+    }
+
+    public void toggleSorting(List<SortingRule> newSortingRules) {
+        rememberSelectionByKeys();
+        setSortingRules(newSortingRules);
     }
 
     public void toggleSorting(int columnIndex) {
