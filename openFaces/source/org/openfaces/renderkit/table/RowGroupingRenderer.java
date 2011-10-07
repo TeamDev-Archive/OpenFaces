@@ -40,11 +40,13 @@ public class RowGroupingRenderer extends RendererBase {
 
         TableStructure tableStructure = TableStructure.getCurrentInstance(table);
         Set<BaseColumn> visibleAndGroupedColumns = new LinkedHashSet<BaseColumn>(tableStructure.getColumns());
-        for (GroupingRule groupingRule : table.getGroupingRules()) {
-            String columnId = groupingRule.getColumnId();
-            BaseColumn column = table.getColumnById(columnId);
-            visibleAndGroupedColumns.add(column);
-        }
+        List<GroupingRule> groupingRules = table.getGroupingRules();
+        if (groupingRules != null)
+            for (GroupingRule groupingRule : groupingRules) {
+                String columnId = groupingRule.getColumnId();
+                BaseColumn column = table.getColumnById(columnId);
+                visibleAndGroupedColumns.add(column);
+            }
 
         String tableClientId = table.getClientId(context);
         List<String> activeColumnIds = new ArrayList<String>();
@@ -55,10 +57,11 @@ public class RowGroupingRenderer extends RendererBase {
             String columnId = column.getId();
             activeColumnIds.add(columnId);
             cell.setId(tableClientId + "::groupingHeaderCell:" + columnId);
+            cell.setTableStructure(tableStructure);
             cell.render(context, null);
         }
 
-        Rendering.renderInitScript(context, new ScriptBuilder().initScript(context, table, "_initRowGrouping",
+        Rendering.renderInitScript(context, new ScriptBuilder().initScript(context, table, "O$.Table._initRowGrouping",
                 activeColumnIds
         ).semicolon());
     }

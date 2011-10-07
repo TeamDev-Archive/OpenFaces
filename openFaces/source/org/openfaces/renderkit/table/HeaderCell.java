@@ -44,6 +44,7 @@ class HeaderCell extends TableElement {
     private int colSpan;
     private int rowIndexMin;
     private int rowIndexMax;
+    private TableStructure tableStructure;
 
     private String cellTag;
     private boolean renderNonBreakable;
@@ -63,6 +64,14 @@ class HeaderCell extends TableElement {
         this.cellKind = cellKind;
         this.renderNonBreakable = renderNonBreakable;
         this.sortingToggleMode = sortingToggleMode;
+    }
+
+    public TableStructure getTableStructure() {
+        return tableStructure;
+    }
+
+    public void setTableStructure(TableStructure tableStructure) {
+        this.tableStructure = tableStructure;
     }
 
     public CellKind getCellKind() {
@@ -103,13 +112,14 @@ class HeaderCell extends TableElement {
         public void writeAdditionalContent(FacesContext context) throws IOException;
     }
 
-    public void render(FacesContext facesContext,
+    public void render(FacesContext context,
                        AdditionalContentWriter additionalContentWriter) throws IOException {
-        List<HeaderRow> rows = getParent(HeaderRow.class).getRowsForSpans();
-        TableStructure tableStructure = getParent(TableStructure.class);
+        HeaderRow parentRow = getParent(HeaderRow.class);
+        List<HeaderRow> rows = parentRow != null ? parentRow.getRowsForSpans() : null;
+        TableStructure tableStructure = this.tableStructure != null ? this.tableStructure : getParent(TableStructure.class);
         UIComponent table = tableStructure.getComponent();
 
-        ResponseWriter writer = facesContext.getResponseWriter();
+        ResponseWriter writer = context.getResponseWriter();
         writer.startElement(cellTag, table);
         if (id != null)
             writer.writeAttribute("id", id, null);
@@ -140,11 +150,11 @@ class HeaderCell extends TableElement {
             if (content != null) {
                 if (content instanceof UIComponent) {
                     UIComponent uiComponent = (UIComponent) content;
-                    uiComponent.encodeAll(facesContext);
+                    uiComponent.encodeAll(context);
                     if (TableStructure.isComponentEmpty(uiComponent) && tableStructure.isEmptyCellsTreatmentRequired())
                         Rendering.writeNonBreakableSpace(writer);
                 } else if (content instanceof TableElement)
-                    ((TableElement) content).render(facesContext, null);
+                    ((TableElement) content).render(context, null);
                 else {
                     if (escapeText)
                         writer.writeText(content.toString(), null);
@@ -159,14 +169,14 @@ class HeaderCell extends TableElement {
 
         if (sortingToggleMode == SortingToggleMode.FORCE_DYNAMIC ||
                 (sortingToggleMode == SortingToggleMode.AUTODETECT && column != null && table instanceof AbstractTable))
-            renderColumnSortingDirection(facesContext, (AbstractTable) table, column);
+            renderColumnSortingDirection(context, (AbstractTable) table, column);
         if (renderNonBreakable) {
             if (Environment.isExplorer())
                 writer.endElement("span");
         }
 
         if (additionalContentWriter != null)
-            additionalContentWriter.writeAdditionalContent(facesContext);
+            additionalContentWriter.writeAdditionalContent(context);
 
         writer.endElement(cellTag);
     }

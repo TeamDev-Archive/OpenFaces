@@ -2383,7 +2383,6 @@ O$.Table = {
         id: null, // reset ids to avoid clashes when it's pulled out of the table, and the table is reloaded with Ajax
         sortingToggleImg: O$.getChildNodesByClass(columnHeaderBox, "o_table_sortingToggle", true)
       });
-      columnHeaderBox.id = null;
       table.grouping._columnHeaderBoxes[columnId] = columnHeaderBox;
     });
   },
