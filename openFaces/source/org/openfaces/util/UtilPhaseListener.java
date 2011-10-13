@@ -403,14 +403,13 @@ public class UtilPhaseListener extends PhaseListenerBase {
                 Class clazz = Class.forName("com.sun.facelets.component.UIRepeat");
                 if (clazz.isInstance(parent)) {
                     final Object uiRepeat = parent;
-                    final Object prevIndex = ReflectionUtil.invokeMethod("com.sun.facelets.component.UIRepeat", "getIndex", null, null, uiRepeat);
                     ReflectionUtil.invokeMethod("com.sun.facelets.component.UIRepeat", "setIndex",
-                            new Class[]{Integer.TYPE}, new Object[]{Integer.parseInt(id)}, uiRepeat);
+                            new Class[]{Integer.TYPE}, new Object[]{Integer.parseInt(id)}, parent);
                     if (restoreDataPointerRunnables != null)
                         restoreDataPointerRunnables.add(new Runnable() {
                             public void run() {
-                                ReflectionUtil.invokeMethod("com.sun.facelets.component.UIRepeat", "setIndex",
-                                        new Class[]{Integer.TYPE}, new Object[]{prevIndex}, uiRepeat);
+                                // there's no getIndex method in com.sun.faces.component.UIRepeat, so we can't restore
+                                // the index in this way here
                             }
                         });
                     return parent;
