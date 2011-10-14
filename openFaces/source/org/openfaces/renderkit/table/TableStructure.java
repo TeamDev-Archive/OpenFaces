@@ -137,6 +137,9 @@ public class TableStructure extends TableElement {
         this.rightFixedCols = rightFixedCols;
     }
 
+    /**
+     * @return a list of all rendered columns in all column groups
+     */
     public List<BaseColumn> getColumns() {
         return columns;
     }
@@ -188,8 +191,8 @@ public class TableStructure extends TableElement {
             Rendering.writeAttribute(writer, "cellspacing", cellspacing);
             Rendering.writeAttribute(writer, "cellpadding", getTableCellPadding());
 
-            List<BaseColumn> columns1 = table.getRenderedColumns();
-            TableUtil.writeColumnTags(context, table, columns1);
+            List<BaseColumn> columns = table.getRenderedColumns();
+            TableUtil.writeColumnTags(context, table, columns);
         } else {
             Rendering.writeAttribute(writer, "cellspacing", "0");
             Rendering.writeAttribute(writer, "cellpadding", "0");
@@ -289,8 +292,7 @@ public class TableStructure extends TableElement {
                     ? ((DynamicColumn) cellComponentsContainer).getChildrenForProcessing()
                     : cellComponentsContainer.getChildren();
 
-            for (int childIndex = 0, childCount = children.size(); childIndex < childCount; childIndex++) {
-                UIComponent child = children.get(childIndex);
+            for (UIComponent child : children) {
                 if (!isComponentEmpty(child)) {
                     childrenEmpty = false;
                     break;
@@ -470,6 +472,8 @@ public class TableStructure extends TableElement {
     private JSONObject getColumnParams(FacesContext context, BaseColumn columnOrGroup, int level) throws JSONException {
         JSONObject columnObj = new JSONObject();
 
+        columnObj.put("columnId", columnOrGroup.getId());
+
         UIComponent styleOwnerComponent = getComponent();
         boolean noDataRows = getBody().isNoDataRows();
         boolean ordinaryColumn = !(columnOrGroup instanceof ColumnGroup);
@@ -512,7 +516,8 @@ public class TableStructure extends TableElement {
             JSONObject header = new JSONObject();
             columnObj.put("header", header);
             header.put("pos", headerCellCoordinates.asJSONObject());
-            header.put("className", Styles.getCSSClass(context, styleOwnerComponent, columnOrGroup.getHeaderStyle(), columnOrGroup.getHeaderClass()));
+            header.put("className", Styles.getCSSClass(context, styleOwnerComponent,
+                    columnOrGroup.getHeaderStyle(), columnOrGroup.getHeaderClass()));
             appendColumnEventsArray(header,
                     columnOrGroup.getHeaderOnclick(),
                     columnOrGroup.getHeaderOndblclick(),

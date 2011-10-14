@@ -12,6 +12,20 @@
 // -------------------------- COMMON TABLE FUNCTIONS
 
 O$.Table = {
+  SortingRule: O$.createClass(null, {
+    constructor: function(columnId, ascending) {
+      this.columnId = columnId;
+      this.ascending = ascending;
+    }
+  }),
+
+  GroupingRule: O$.createClass(null, {
+    constructor: function(columnId, ascending) {
+      this.columnId = columnId;
+      this.ascending = ascending;
+    }
+  }),
+
   _initDataTableAPI: function(table) {
     O$.extend(table, {
       _of_dataTableComponentMarker: true,
@@ -94,36 +108,40 @@ O$.Table = {
     }
     O$.Table._initApiFunctions(table);
 
-    table._originalClassName = table.className;
+    O$.extend(table, {
+      _originalClassName: table.className,
+      _unloadHandlers: [],
 
-    table._unloadHandlers = [];
-    var i, count;
-    table.onComponentUnload = function() {
-      for (i = 0,count = table._unloadHandlers.length; i < count; i++) {
-        table._unloadHandlers[i]();
+      onComponentUnload: function() {
+        var i, count;
+        for (i = 0,count = table._unloadHandlers.length; i < count; i++) {
+          table._unloadHandlers[i]();
+        }
+
+        var filtersToHide = this._filtersToHide;
+        if (!O$.isExplorer6() || !filtersToHide)
+          return false;
+
+        for (i = 0,count = filtersToHide.length; i < count; i++) {
+          var filter = filtersToHide[i];
+          filter.style.visibility = "hidden";
+        }
+        return true;
+      },
+
+      _cleanUp: function() {
+        [table.header, table.body, table.footer].forEach(function (section) {
+          if (section) section._rows = [];
+        });
       }
+    });
 
-      var filtersToHide = this._filtersToHide;
-      if (!O$.isExplorer6() || !filtersToHide)
-        return false;
-
-      for (i = 0,count = filtersToHide.length; i < count; i++) {
-        var filter = filtersToHide[i];
-        filter.style.visibility = "hidden";
-      }
-      return true;
-    };
     if (apiInitializationFunctionName) {
       var initFunction = eval(apiInitializationFunctionName);
       if (initFunction)
         initFunction(table);
     }
 
-    table._cleanUp = function() {
-      [table.header, table.body, table.footer].forEach(function (section) {
-        if (section) section._rows = [];
-      });
-    };
     if (deferredBodyLoading)
       O$.addInternalLoadEvent(function() {
         var auxiliaryTags = O$(table.id + "::auxiliaryTags");
@@ -260,6 +278,24 @@ O$.Table = {
             return i;
         }
         return -1;
+      },
+
+      getColumnsOrder: function() {
+        var columnIds = [];
+        this._columns.forEach(function(column) {
+          columnIds.push(column.columnId);
+        });
+        return columnIds;
+      },
+
+      setColumnsOrder: function(columnIds) {
+        var columnIdsStr = columnIds.join(",");
+        var prevColumnIdsStr = this.getColumnsOrder().join(",");
+        if (columnIdsStr == prevColumnIdsStr) return;
+
+        O$._submitInternal(table, null, [
+          [table.id + "::columnsOrder", columnIdsStr]
+        ]);
       }
     });
   },
@@ -1535,13 +1571,32 @@ O$.Table = {
 
   // -------------------------- TABLE SORTING SUPPORT
 
-  _initSorting: function(tableId, columnSortableFlags, sortedColIndex, sortableHeaderClass, sortableHeaderRolloverClass,
+  _initSorting: function(tableId, sortingRules, columnSortableFlags, sortedColIndex, sortableHeaderClass, sortableHeaderRolloverClass,
                          sortedColClass, sortedColHeaderClass, sortedColBodyClass, sortedColFooterClass,
-                         sortingImagesToPreload) {
-    var table = O$(tableId);
+                         sortedAscImageUrl, sortedDescImageUrl) {
+    var table = O$.initComponent(tableId, null, {
+      sorting: {
+        _sortingRules: sortingRules != null ? sortingRules : [],
+
+        getSortingRules: function() {
+          return this._sortingRules;
+        },
+
+        setSortingRules: function(rules) {
+          this._sortingRules = rules;
+          var setSortingRulesStr = JSON.stringify(rules, ["columnId", "ascending"]);
+          O$._submitInternal(table, null, [
+            [table.id + "::setSortingRules", setSortingRulesStr]
+          ]);
+        },
+
+        sortedAscendingImageUrl: sortedAscImageUrl,
+        sortedDescendingImageUrl: sortedDescImageUrl
+      }
+    });
     O$.assert(table, "Couldn't find table by id: " + tableId);
 
-    O$.preloadImages(sortingImagesToPreload);
+    O$.preloadImages([sortedAscImageUrl, sortedDescImageUrl]);
 
     table._columns.forEach(function(column) {
       column._sortable = columnSortableFlags[column._index];
@@ -1558,7 +1613,22 @@ O$.Table = {
         var focusField = O$(table.id + "::focused");
         if (focusField)
           focusField.value = true; // set true explicitly before it gets auto-set when the click bubbles up (JSFC-801)
-        O$.Table._toggleColumnSorting(table, column._index);
+        var columnIndex = column._index;
+
+        var sortingRules = table.sorting.getSortingRules();
+        var columnId = table._columns[columnIndex].columnId;
+        if (sortingRules.length == 0)
+          sortingRules = [new O$.Table.SortingRule(columnId, true)];
+        else {
+          var rule = sortingRules[0];
+          if (rule.columnId == columnId)
+            rule.ascending = !rule.ascending;
+          else {
+            rule.columnId = columnId;
+            rule.ascending = true;
+          }
+        }
+        table.sorting.setSortingRules(sortingRules);
       });
 
       O$.setupHoverStateFunction(colHeader, function(mouseInside) {
@@ -1590,13 +1660,6 @@ O$.Table = {
           sortedColFooterClass: sortedColFooterClass});
     }
 
-  },
-
-  _toggleColumnSorting: function(table, columnIndex) {
-    var sortingFieldId = table.id + "::sorting";
-    var sortingField = O$(sortingFieldId);
-    sortingField.value = "" + columnIndex;
-    O$._submitInternal(table);
   },
 
   _performPaginatorAction: function(tableId, field, paramName, paramValue) {
@@ -2292,11 +2355,55 @@ O$.Table = {
     function sendColumnMoveRequest(srcColIndex, dstColIndex) {
       if (dstColIndex == srcColIndex || dstColIndex == srcColIndex + 1)
         return;
-      O$._submitInternal(table, null, [
-        [table.id + "::reorderColumns", srcColIndex + "->" + dstColIndex]
-      ]);
+
+      var columnIds = table.getColumnsOrder();
+      var columnId = columnIds.splice(srcColIndex, 1);
+      columnIds.splice(dstColIndex < srcColIndex ? dstColIndex : dstColIndex - 1, 0, columnId);
+      table.setColumnsOrder(columnIds);
     }
   },
+
+
+// -------------------------- ROW GROUPING SUPPORT
+  _initRowGrouping: function(tableId, activeColumnIds, groupingRules) {
+    var table = O$.initComponent(tableId, null, {
+      grouping: {
+        _columnHeaderBoxes: {},
+        _groupingRules: groupingRules,
+
+        _getColumnHeaderBox: function(columnId) {
+          return this._columnHeaderBoxes[columnId];
+        },
+
+        getGroupingRules: function() {
+          return this._groupingRules;
+        },
+
+        setGroupingRules: function(rules) {
+          this._groupingRules = rules;
+          var setSortingRulesStr = JSON.stringify(rules, ["columnId", "ascending"]);
+          O$._submitInternal(table, null, [
+            [table.id + "::setGroupingRules", setSortingRulesStr]
+          ]);
+
+        }
+
+      }
+    });
+
+    activeColumnIds.forEach(function(columnId) {
+      var boxId = tableId + "::groupingHeaderCell:" + columnId;
+      var columnHeaderBox = O$(boxId);
+      if (!columnHeaderBox) throw "Couldn't find column header box. columnId: " + columnId + "; box id: " + boxId;
+
+      O$.extend(columnHeaderBox, {
+        id: null, // reset ids to avoid clashes when it's pulled out of the table, and the table is reloaded with Ajax
+        sortingToggleImg: O$.getChildNodesByClass(columnHeaderBox, "o_table_sortingToggle", true)
+      });
+      table.grouping._columnHeaderBoxes[columnId] = columnHeaderBox;
+    });
+  },
+
 
   HEADER_CELL_Z_INDEX_COLUMN_MENU_BUTTON: 1,
   HEADER_CELL_Z_INDEX_COLUMN_MENU_RESIZE_HANDLE: 2

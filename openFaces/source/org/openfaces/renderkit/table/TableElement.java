@@ -38,6 +38,7 @@ public abstract class TableElement {
     }
 
     public <T extends TableElement> T getParent(Class<T> c) {
+        if (parent == null) return null;
         if (c.isAssignableFrom(parent.getClass()))
             return (T) parent;
         else

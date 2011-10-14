@@ -68,6 +68,7 @@ public class TableDataModel extends DataModel implements DataModelListener, Stat
     private List<Object> extractedRowKeys;
     private List<Object> allRetrievedRowKeys;
     private int extractedRowIndex = -1;
+    private List<GroupingRule> groupingRules;
     private List<SortingRule> sortingRules;
     private List<Filter> filters;
     private int pageSize;
@@ -144,6 +145,7 @@ public class TableDataModel extends DataModel implements DataModelListener, Stat
     }
 
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+        groupingRules = (List<GroupingRule>) in.readObject();
         sortingRules = (List<SortingRule>) in.readObject();
         rowKeyExpression = ValueBindings.readValueExpression(in);
         rowDataByKeyExpression = ValueBindings.readValueExpression(in);
@@ -157,6 +159,7 @@ public class TableDataModel extends DataModel implements DataModelListener, Stat
     }
 
     public void writeExternal(ObjectOutput out) throws IOException {
+        out.writeObject(groupingRules);
         out.writeObject(sortingRules);
         ValueBindings.writeValueExpression(out, rowKeyExpression);
         ValueBindings.writeValueExpression(out, rowDataByKeyExpression);
@@ -332,6 +335,15 @@ public class TableDataModel extends DataModel implements DataModelListener, Stat
         if (pageCount != -1 && pageIndex >= pageCount)
             pageIndex = pageCount - 1;
         return pageIndex;
+    }
+
+    public List<GroupingRule> getGroupingRules() {
+        return groupingRules;
+    }
+
+    public void setGroupingRules(List<GroupingRule> groupingRules) {
+        this.groupingRules = groupingRules;
+        updateExtractedRows();
     }
 
     public List<SortingRule> getSortingRules() {
@@ -600,10 +612,7 @@ public class TableDataModel extends DataModel implements DataModelListener, Stat
 
     private static List<RowInfo> filterRows(List<Filter> filters, List<RowInfo> sortedRows, List<boolean[]> filteringFlags) {
         List<RowInfo> result = new ArrayList<RowInfo>();
-        int sortedRowCount = sortedRows.size();
-        for (int i = 0; i < sortedRowCount; i++) {
-            RowInfo rowObj = sortedRows.get(i);
-
+        for (RowInfo rowObj : sortedRows) {
             boolean[] flagsArray = new boolean[filters.size()];
             boolean rowAccepted = filterRow(filters, rowObj, flagsArray);
             filteringFlags.add(flagsArray);
@@ -673,7 +682,7 @@ public class TableDataModel extends DataModel implements DataModelListener, Stat
     private void sortRows(List<RowInfo> extractedRows) {
         if (table == null)
             return;
-        final Comparator<Object> rowDataComparator = table.createRowDataComparator(sortingRules);
+        final Comparator<Object> rowDataComparator = table.createRowDataComparator(groupingRules, sortingRules);
         Comparator<RowInfo> rowInfoComparator = new Comparator<RowInfo>() {
             public int compare(RowInfo rowInfo1, RowInfo rowInfo2) {
                 return rowDataComparator.compare(rowInfo1.getRowData(), rowInfo2.getRowData());

@@ -295,7 +295,7 @@ public class TableBody extends TableSection {
                 customRowRenderingInfo.setA4jEnabledRowDeclarationIndexes(applicableRowDeclarationIndexes);
 
             List<SpannedTableCell> alreadyProcessedSpannedCells = new ArrayList<SpannedTableCell>();
-            List[] applicableCustomCells = prepareCustomCells(table, applicableCustomRows);
+            List<Object>[] applicableCustomCells = prepareCustomCells(table, applicableCustomRows);
 
             List<BodyCell> leftCells = leftRow != null ? new ArrayList<BodyCell>() : null;
             List<BodyCell> cells = new ArrayList<BodyCell>();
@@ -324,7 +324,7 @@ public class TableBody extends TableSection {
                 }
 
 
-                List customCells = applicableCustomCells[colIndex];
+                List<?> customCells = applicableCustomCells[colIndex];
                 SpannedTableCell spannedTableCell =
                         customCells != null && customCells.size() == 1 && customCells.get(0) instanceof SpannedTableCell
                                 ? (SpannedTableCell) customCells.get(0) : null;
@@ -357,10 +357,8 @@ public class TableBody extends TableSection {
                 String customCellStyle = null;
                 String columnId = column.getId();
                 if (customCells != null) {
-                    int customCellCount = customCells.size();
-
-                    for (int i = 0; i < customCellCount; i++) {
-                        Cell cell = (Cell) customCells.get(i);
+                    for (Object customCell : customCells) {
+                        Cell cell = (Cell) customCell;
                         boolean cellWithCustomContent = cell.getChildCount() > 0;
                         if (cellWithCustomContent || Rendering.isComponentWithA4jAjax(cell)) {
                             if (customRowRenderingInfo == null)
@@ -401,7 +399,7 @@ public class TableBody extends TableSection {
                 else
                     cells.add(cell);
                 cell.setSpan(span);
-                cell.extractCustomEvents(customCells);
+                cell.extractCustomEvents((List<UIComponent>) customCells);
 
                 StringBuffer buf = stringWriter.getBuffer();
                 int startIdx = buf.length();
@@ -559,7 +557,7 @@ public class TableBody extends TableSection {
      *         (3) List containing only one SpannedTableCell instance if an appropriate cell is part of a cell span - all
      *         cells referring to the same SpannedTableCell will be rendered as one cell spanning across several columns.
      */
-    private List[] prepareCustomCells(AbstractTable table, List<Row> applicableCustomRows) {
+    private List<Object>[] prepareCustomCells(AbstractTable table, List<Row> applicableCustomRows) {
         List<BaseColumn> allColumns = table.getAllColumns();
         List<BaseColumn> columnsForRendering = table.getRenderedColumns();
         int allColCount = allColumns.size();
@@ -573,14 +571,12 @@ public class TableBody extends TableSection {
 
         boolean thereAreCellSpans = false;
         List<Cell> rowCellsByColReference = new ArrayList<Cell>();
-        for (int i = 0, icount = applicableCustomRows.size(); i < icount; i++) {
-            Row row = applicableCustomRows.get(i);
+        for (Row row : applicableCustomRows) {
             int customRowIndex = (Integer) row.getAttributes().get(CUSTOM_ROW_INDEX_ATTRIBUTE);
             List<UIComponent> children = row.getChildren();
             int freeCellIndex = 0;
             int customCellIndex = 0;
-            for (int j = 0, jcount = children.size(); j < jcount; j++) {
-                Object child = children.get(j);
+            for (UIComponent child : children) {
                 if (!(child instanceof Cell))
                     continue;
                 Cell cell = (Cell) child;
@@ -594,7 +590,6 @@ public class TableBody extends TableSection {
 
                 if (span != 1) {
                     thereAreCellSpans = true;
-
                 }
 
                 if (columnIds == null && conditionExpression == null) {
@@ -636,8 +631,8 @@ public class TableBody extends TableSection {
                 if (customCellList == null)
                     continue;
                 int cellSpan = 1;
-                for (int j = 0, jcount = customCellList.size(); j < jcount; j++) {
-                    Cell cell = (Cell) customCellList.get(j);
+                for (Object cellObj : customCellList) {
+                    Cell cell = (Cell) cellObj;
 
                     int currentCellSpan = cell.getSpan();
                     if (currentCellSpan != 1)
@@ -659,7 +654,7 @@ public class TableBody extends TableSection {
             int originalColIndex = (Integer) column.getAttributes().get(COLUMN_ATTR_ORIGINAL_INDEX);
             applicableCells[i] = rowCellsByAbsoluteIndex[originalColIndex];
         }
-        return applicableCells;
+        return (List<Object>[]) applicableCells;
     }
 
     private List<Row> getCustomRows(AbstractTable table) {

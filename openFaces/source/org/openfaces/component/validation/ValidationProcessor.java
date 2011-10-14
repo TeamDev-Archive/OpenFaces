@@ -277,8 +277,7 @@ public class ValidationProcessor extends UIComponentBase {
         PropertyDescriptor[] propertyDescriptors = presentationBeanInfo.getPropertyDescriptors();
         Map<String, PropertyDescriptor> propertyDescriptorsMap = new HashMap<String, PropertyDescriptor>();
 
-        for (int i = 0, propertyCount = propertyDescriptors.length; i < propertyCount; i++) {
-            PropertyDescriptor pd = propertyDescriptors[i];
+        for (PropertyDescriptor pd : propertyDescriptors) {
             if (pd.getReadMethod() != null) {
                 propertyDescriptorsMap.put(pd.getName(), pd);
             }

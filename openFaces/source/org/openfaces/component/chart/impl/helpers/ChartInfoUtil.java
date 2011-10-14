@@ -32,6 +32,7 @@ import org.openfaces.component.chart.impl.SeriesInfoImpl;
 
 import java.text.DecimalFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Ekaterina Shliakhovetskaya
@@ -59,8 +60,8 @@ public class ChartInfoUtil {
 
     public static PieSectorInfo getPieSectorInfo(PieDataset pieDataset, Comparable comparable, int dsIndex) {
         double total = 0;
-        for (int i = 0; i < pieDataset.getKeys().size(); i++) {
-            Object key = pieDataset.getKeys().get(i);
+        List keys = pieDataset.getKeys();
+        for (Object key : keys) {
             Object value = pieDataset.getValue((Comparable) key);
             if (value != null) {
                 double dValue = ((Number) value).doubleValue();

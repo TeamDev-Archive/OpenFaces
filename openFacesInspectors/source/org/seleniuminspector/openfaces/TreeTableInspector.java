@@ -11,6 +11,7 @@
  */
 package org.seleniuminspector.openfaces;
 
+import org.openfaces.renderkit.table.TreeTableRenderer;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.LoadingMode;
 import org.seleniuminspector.html.TableSectionInspector;
@@ -79,7 +80,7 @@ public class TreeTableInspector extends AbstractTableInspector {
             if (i >= toggles.size())
                 break;
             ElementInspector toggle = toggles.get(i);
-            if ("o_treetable_folding".equals(toggle.className())) {
+            if (TreeTableRenderer.DEFAULT_TOGGLE_CLASS_NAME.equals(toggle.className())) {
                 toggle.click();
                 loadingMode.waitForLoad();
             }

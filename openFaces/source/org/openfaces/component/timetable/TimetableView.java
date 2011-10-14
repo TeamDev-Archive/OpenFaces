@@ -331,8 +331,7 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
                 OUIData.restoreDescendantComponentStates(new ArrayList<UIComponent>(eventAreas).iterator(), stateForEvent, true);
         }
 
-        for (int areaIndex = 0, areaCount = eventAreas.size(); areaIndex < areaCount; areaIndex++) {
-            EventArea eventArea = eventAreas.get(areaIndex);
+        for (EventArea eventArea : eventAreas) {
             refreshEventSubRender(eventArea);
         }
 

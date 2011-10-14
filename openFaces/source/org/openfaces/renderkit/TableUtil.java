@@ -59,14 +59,16 @@ public class TableUtil {
         return Resources.internalURL(context, "tableUtil.js");
     }
 
-    public static void writeColumnTags(FacesContext context, UIComponent component, List columns) throws IOException {
+    public static void writeColumnTags(
+            FacesContext context,
+            UIComponent component,
+            List<BaseColumn> columns) throws IOException {
+
         ColumnResizing columnResizing = (component instanceof AbstractTable) ?
                 ((AbstractTable) component).getColumnResizing() : null;
         ColumnResizingState columnResizingState = columnResizing != null ? columnResizing.getResizingState() : null;
-        int colCount = columns.size();
         ResponseWriter writer = context.getResponseWriter();
-        for (int colIndex = 0; colIndex < colCount; colIndex++) {
-            BaseColumn column = (BaseColumn) columns.get(colIndex);
+        for (BaseColumn column : columns) {
             String colWidth = columnResizingState != null ? columnResizingState.getColumnWidth(column.getId()) : null;
             if (colWidth == null)
                 colWidth = column.getWidth();
@@ -120,7 +122,11 @@ public class TableUtil {
                 columns.add((BaseColumn) child);
             } else if (child instanceof Columns) {
                 Columns tableColumns = (Columns) child;
-                columns.addAll(tableColumns.toColumnList(context));
+                List<DynamicColumn> dynamicColumns = tableColumns.toColumnList(context);
+                for (DynamicColumn dynamicColumn : dynamicColumns) {
+                    Components.generateIdIfNotSpecified(dynamicColumn);
+                }
+                columns.addAll(dynamicColumns);
             } else if (child instanceof ColumnGroup) {
                 ColumnGroup tcg = (ColumnGroup) child;
                 columns.addAll(getColumnsFromList(context, tcg.getChildren()));

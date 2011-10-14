@@ -13,6 +13,7 @@ package org.openfaces.component.table;
 
 import org.openfaces.component.filter.Filter;
 import org.openfaces.util.AjaxUtil;
+import org.openfaces.util.Components;
 import org.openfaces.util.Faces;
 import org.openfaces.util.ValueBindings;
 
@@ -66,17 +67,17 @@ public class DataTable extends AbstractTable {
     }
 
     @Override
-    public Object saveState(FacesContext facesContext) {
-        Object superState = super.saveState(facesContext);
+    public Object saveState(FacesContext context) {
+        Object superState = super.saveState(context);
         return new Object[]{superState, rowIndexVar, pageSize, pageIndex, paginationKeyboardSupport,
                 paginationOnSorting, customDataProviding};
     }
 
     @Override
-    public void restoreState(FacesContext facesContext, Object object) {
+    public void restoreState(FacesContext context, Object object) {
         Object[] state = (Object[]) object;
         int i = 0;
-        super.restoreState(facesContext, state[i++]);
+        super.restoreState(context, state[i++]);
         rowIndexVar = (String) state[i++];
         pageSize = (Integer) state[i++];
         pageIndex = (Integer) state[i++];
@@ -100,6 +101,15 @@ public class DataTable extends AbstractTable {
         updateModel(false, false, rowsDecodingRequired);
         Set unavailableRowIndexes = model.restoreRows(rowsDecodingRequired);
         setUnavailableRowIndexes(unavailableRowIndexes);
+    }
+
+    protected void validateSortingGroupingColumns() {
+        super.validateSortingGroupingColumns();
+        RowGrouping rowGrouping = getRowGrouping();
+        if (rowGrouping != null) {
+            List<GroupingRule> sortingRules = rowGrouping.getGroupingRules();
+            validateSortingOrGroupingRules(sortingRules);
+        }
     }
 
     /**
@@ -268,7 +278,11 @@ public class DataTable extends AbstractTable {
         try {
             if (updateSortingFromBindings) {
                 updateSortingFromBindings();
-                getModel().setSortingRules(getSortingRules());
+                model.setSortingRules(getSortingRules());
+
+                RowGrouping rowGrouping = getRowGrouping();
+                if (rowGrouping != null)
+                    model.setGroupingRules(rowGrouping.getGroupingRules());
             }
 
             if (readActualData)
@@ -368,4 +382,9 @@ public class DataTable extends AbstractTable {
         if (getPageIndex() > 0)
             setPageIndex(0);
     }
+
+    public RowGrouping getRowGrouping() {
+        return Components.findChildWithClass(this, RowGrouping.class, "<o:rowGrouping>");
+    }
+
 }

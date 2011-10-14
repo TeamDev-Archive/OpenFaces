@@ -21,10 +21,8 @@ import org.openfaces.util.StyleParam;
 import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
-import java.util.Map;
 
 /**
  * @author Eugene Goncharov

@@ -104,6 +104,21 @@ O$.CUSTOM_JSON_PARAM = "_of_customJsonParam";
 O$.EXECUTE_RENDERED_COMPONENTS = "_of_executeRenderedComponents";
 
 window.OpenFaces.Ajax = {
+  _ajaxEndHandlers: [],
+  _addAjaxEndHandler: function(handler) {
+    this._ajaxEndHandlers.push(handler);
+  },
+  _removeAjaxEndHandler: function(handler) {
+    var idx = this._ajaxEndHandlers.indexOf(handler);
+    if (idx == -1) throw "O$.Ajax._removeAjaxEndHandler: this event handler is not registered";
+    this._ajaxEndHandlers.splice(idx, 1);
+  },
+
+  onajaxend: function(event) {
+    this._ajaxEndHandlers.forEach(function(handler) {
+      handler(event);
+    });
+  },
   Page: {},
   Components: [],
 

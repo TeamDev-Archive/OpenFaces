@@ -13,15 +13,30 @@ package org.openfaces.renderkit.table;
 
 import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.DataTable;
+import org.openfaces.component.table.RowGrouping;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * @author Dmitry Pikhulya
  */
 public class DataTableRenderer extends AbstractTableRenderer {
+
+    @Override
+    protected void encodeAdditionalFeaturesSupport(
+            FacesContext context,
+            AbstractTable table) throws IOException {
+        super.encodeAdditionalFeaturesSupport(context, table);
+
+        DataTable dataTable = (DataTable) table;
+
+        RowGrouping rowGrouping = dataTable.getRowGrouping();
+        if (rowGrouping != null)
+            rowGrouping.encodeAll(context);
+    }
 
     @Override
     public void decode(FacesContext context, UIComponent uiComponent) {

@@ -22,15 +22,15 @@ if (!window.O$) {
     }
   };
 
-  O$.createClass = function(classMembers, instanceMembers) {
+  O$.createClass = function(staticClassMembers, instanceMembers) {
     var constructor = instanceMembers.constructor;
     instanceMembers.constructor = undefined;
     var classFunction = function() {
       if (constructor)
         constructor.apply(this, arguments);
     };
-    if (classMembers)
-      O$.extend(classFunction, classMembers);
+    if (staticClassMembers)
+      O$.extend(classFunction, staticClassMembers);
     O$.extend(classFunction.prototype, instanceMembers);
     return classFunction;
   };
@@ -651,10 +651,6 @@ if (!window.O$) {
       i++;
     }
     return buf;
-  };
-
-  O$.findValueInArray = function(value, arr) {
-    return arr.indexOf(value);// todo: inline and remove this method
   };
 
   O$.getArrayFromString = function(str, delimiter) {
@@ -1971,7 +1967,7 @@ if (!window.O$) {
     });
   };
 
- O$.setupFocusOnTags = function(parent, tagName) {
+  O$.setupFocusOnTags = function(parent, tagName) {
     var elements = parent.getElementsByTagName(tagName);
     for (var i = 0; i < elements.length; i++) {
       var element = elements[i];
@@ -2023,7 +2019,7 @@ if (!window.O$) {
 
     function fixIE6ButtonsSubmission() {
       // workaround for <button> tag submission bug in IE6, see OF-112
-      if (!O$.isExplorer6()) return
+      if (!O$.isExplorer6()) return;
 
       var buttons = document.getElementsByTagName("button");
       for (var i = 0; i < buttons.length; i++) {

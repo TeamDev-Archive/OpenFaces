@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 3.0
+ * OpenFaces - JSF Component Library 2.0
  * Copyright (C) 2007-2011, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -9,24 +9,16 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.component.table;
+package org.openfaces.taglib.jsp.table;
 
-import org.openfaces.org.json.JSONException;
-import org.openfaces.org.json.JSONObject;
+import org.openfaces.taglib.internal.table.RowGroupingTag;
+import org.openfaces.taglib.jsp.AbstractComponentJspTag;
 
-/**
- * @author Dmitry Pikhulya
- */
-public class SortingRule extends SortingOrGroupingRule {
+public class RowGroupingJspTag extends AbstractComponentJspTag {
 
-    public SortingRule() {
+    public RowGroupingJspTag() {
+        super(new RowGroupingTag());
     }
 
-    public SortingRule(String columnId, boolean ascending) {
-        super(columnId, ascending);
-    }
 
-    public SortingRule(JSONObject jsonObj) throws JSONException {
-        super(jsonObj);
-    }
 }

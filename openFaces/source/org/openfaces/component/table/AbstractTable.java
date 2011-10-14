@@ -49,6 +49,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -322,8 +323,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
             selection.setModel(model);
 
         List<BaseColumn> columns = getAllColumns();
-        for (int colIndex = 0, columnCount = columns.size(); colIndex < columnCount; colIndex++) {
-            BaseColumn column = columns.get(colIndex);
+        for (BaseColumn column : columns) {
             if (column instanceof CheckboxColumn) {
                 ((CheckboxColumn) column).assignDataModel();
             }
@@ -511,8 +511,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     private BaseColumn findColumnById(List<BaseColumn> allColumns, String columnId) {
         BaseColumn colById = null;
         int allColCount = allColumns.size();
-        for (int colIndex = 0; colIndex < allColCount; colIndex++) {
-            BaseColumn col = allColumns.get(colIndex);
+        for (BaseColumn col : allColumns) {
             if (columnId.equals(col.getId())) {
                 colById = col;
                 break;
@@ -562,6 +561,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         this.border = border;
     }
 
+    // todo: rename columnsOrder attribute to renderedColumnIds
     public Iterable<String> getColumnsOrder() {
         return ValueBindings.get(this, "columnsOrder", columnsOrder, Iterable.class);
     }
@@ -993,8 +993,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
             selection.rememberByKeys();
 
         List<BaseColumn> columns = getAllColumns();
-        for (int i = 0, columnCount = columns.size(); i < columnCount; i++) {
-            BaseColumn column = columns.get(i);
+        for (BaseColumn column : columns) {
             if (column instanceof CheckboxColumn) {
                 ((CheckboxColumn) column).rememberByKeys();
             }
@@ -1134,10 +1133,11 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         }
         setUnavailableRowIndexes(null);
 
-        checkSortingColumnsValid();
+        validateSortingGroupingColumns();
         // ensure facets has own ids in calls to these methods
         getAbove();
         getBelow();
+
 
         updateModel();
         totalRowCount = getModel().getTotalRowCount();
@@ -1154,27 +1154,41 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         clearInitialState();
     }
 
-    private void checkSortingColumnsValid() {
+    protected void validateSortingGroupingColumns() {
         List<SortingRule> sortingRules = getSortingRules();
-        if (sortingRules == null || sortingRules.size() == 0)
+        validateSortingOrGroupingRules(sortingRules);
+    }
+
+    protected <E extends SortingOrGroupingRule> void validateSortingOrGroupingRules(List<E> rules) {
+        validateSortingOrGroupingRules(rules, false);
+    }
+
+    protected <E extends SortingOrGroupingRule> void validateSortingOrGroupingRules(
+            List<E> rules,
+            boolean exceptionOnInvalidColumns) {
+        if (rules == null || rules.size() == 0)
             return;
-        List<BaseColumn> allColumns = getAllColumns();
-        for (SortingRule sortingRule : sortingRules) {
-            String columnId = sortingRule.getSortColumnId();
-            if (!isColumnIdValid(allColumns, columnId)) {
-                setSortingRules(null);
+        for (Iterator<? extends SortingOrGroupingRule> iterator = rules.iterator(); iterator.hasNext(); ) {
+            SortingOrGroupingRule rule = iterator.next();
+            String columnId = rule.getColumnId();
+            if (getColumnById(columnId) == null) {
+                if (exceptionOnInvalidColumns)
+                    throw new IllegalArgumentException("Error checking incoming sorting or grouping rules. " +
+                            "There is no column with this id: \"" + columnId + "\"");
+                iterator.remove();
                 break;
             }
         }
     }
 
-    private boolean isColumnIdValid(List<BaseColumn> allColumns, String columnId) {
+    public BaseColumn getColumnById(String columnId) {
+        List<BaseColumn> allColumns = getAllColumns();
         for (BaseColumn column : allColumns) {
-            String colId = column.getId();
-            if (colId.equals(columnId))
-                return true;
+            String thisColId = column.getId();
+            if (thisColId.equals(columnId))
+                return column;
         }
-        return false;
+        return null;
     }
 
     public void setSortColumnId(String sortColumnId) {
@@ -1189,7 +1203,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
             } else {
                 rule = sortingRules.get(0);
             }
-            rule.setSortColumnId(sortColumnId);
+            rule.setColumnId(sortColumnId);
         } else
             sortingRules = null;
         setSortingRules(sortingRules);
@@ -1271,7 +1285,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         if (sortingRules.size() == 0)
             return null;
         SortingRule sortingRule = sortingRules.get(0);
-        return sortingRule.getSortColumnId();
+        return sortingRule.getColumnId();
     }
 
     public boolean isSortAscending() {
@@ -1281,7 +1295,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         if (sortingRules.size() == 0)
             return true;
         SortingRule sortingRule = sortingRules.get(0);
-        return sortingRule.isSortAscending();
+        return sortingRule.isAscending();
     }
 
     public void setSortAscending(boolean value) {
@@ -1295,17 +1309,22 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         } else {
             rule = sortingRules.get(0);
         }
-        rule.setSortAscending(value);
+        rule.setAscending(value);
         setSortingRules(sortingRules);
     }
 
 
-    protected List<SortingRule> getSortingRules() {
+    public List<SortingRule> getSortingRules() {
         return sortingRules;
     }
 
-    protected void setSortingRules(List<SortingRule> sortingRules) {
+    public void setSortingRules(List<SortingRule> sortingRules) {
         this.sortingRules = sortingRules;
+    }
+
+    public void toggleSorting(List<SortingRule> newSortingRules) {
+        rememberSelectionByKeys();
+        setSortingRules(newSortingRules);
     }
 
     public void toggleSorting(int columnIndex) {
@@ -1350,27 +1369,28 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         return rowKey.toString();
     }
 
-    protected Comparator<Object> createRowDataComparator(List<SortingRule> sortingRules) {
-        if (sortingRules == null)
-            return null;
-        int sortingRuleCount = sortingRules.size();
-        if (sortingRuleCount == 0)
-            return null;
+    protected Comparator<Object> createRowDataComparator(
+            List<GroupingRule> groupingRules,
+            List<SortingRule> sortingRules) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        final Comparator<Object>[] comparators = new Comparator[sortingRuleCount];
-        int readyComparatorCount = 0;
-        for (int i = 0; i < sortingRuleCount; i++) {
-            SortingRule rule = sortingRules.get(i);
+
+        List<SortingOrGroupingRule> rules = new ArrayList<SortingOrGroupingRule>();
+        if (groupingRules != null) rules.addAll(groupingRules);
+        if (sortingRules != null) rules.addAll(sortingRules);
+        if (rules.size() == 0)
+            return null;
+
+        final List<Comparator<Object>> comparators = new ArrayList<Comparator<Object>>();
+
+        for (SortingOrGroupingRule rule : rules) {
             Comparator<Object> ruleComparator = createRuleComparator(facesContext, rule);
-            if (ruleComparator == null)
-                continue;
-            comparators[readyComparatorCount++] = ruleComparator;
+            if (ruleComparator != null)
+                comparators.add(ruleComparator);
         }
-        final int readyComparatorCount1 = readyComparatorCount;
+
         return new Comparator<Object>() {
             public int compare(Object o1, Object o2) {
-                for (int i = 0; i < readyComparatorCount1; i++) {
-                    Comparator<Object> comparator = comparators[i];
+                for (Comparator<Object> comparator : comparators) {
                     int result = comparator.compare(o1, o2);
                     if (result != 0)
                         return result;
@@ -1380,12 +1400,12 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         };
     }
 
-    protected Comparator<Object> createRuleComparator(final FacesContext facesContext, SortingRule rule) {
-        String sortedColumnId = rule.getSortColumnId();
-        if (sortedColumnId == null)
+    protected Comparator<Object> createRuleComparator(final FacesContext facesContext, SortingOrGroupingRule rule) {
+        String columnId = rule.getColumnId();
+        if (columnId == null)
             return null;
         List<BaseColumn> allColumns = getAllColumns();
-        BaseColumn column = findColumnById(allColumns, sortedColumnId);
+        BaseColumn column = findColumnById(allColumns, columnId);
         boolean ordinaryColumn = column instanceof Column;
         if (column == null ||
                 !(ordinaryColumn || column instanceof CheckboxColumn || column instanceof SelectionColumn))
@@ -1406,7 +1426,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
                 : null;
 
         Map<String, Object> requestMap = facesContext.getExternalContext().getRequestMap();
-        boolean sortAscending = rule.isSortAscending();
+        boolean sortAscending = rule.isAscending();
         return createRowComparator(facesContext, sortingExpression, comparator, requestMap, sortAscending);
     }
 

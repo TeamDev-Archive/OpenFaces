@@ -30,9 +30,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -42,7 +40,7 @@ import java.util.Set;
 public class TreeTableRenderer extends AbstractTableRenderer {
     private static final String DEFAULT_AUXILIARY_NODE_CLASS = "o_treetable_auxiliary_node";
     private static final String SUB_ROWS_PORTION = "subRows:";
-    private static final String DEFAULT_FOLDING_CLASS = "o_treetable_folding";
+    public static final String DEFAULT_TOGGLE_CLASS_NAME = "o_treetable_expansionToggle";
     private static final String HIDDEN_ROW_CLASS = "o_hiddenRow";
 
     @Override
@@ -86,7 +84,10 @@ public class TreeTableRenderer extends AbstractTableRenderer {
     }
 
     @Override
-    protected void encodeAdditionalFeaturesSupport_buf(FacesContext context, AbstractTable table, ScriptBuilder buf) throws IOException {
+    protected void encodeAdditionalFeaturesSupport_buf(
+            FacesContext context,
+            AbstractTable table,
+            ScriptBuilder buf) throws IOException {
         super.encodeAdditionalFeaturesSupport_buf(context, table, buf);
 
         TreeTable treeTable = (TreeTable) table;
@@ -102,36 +103,24 @@ public class TreeTableRenderer extends AbstractTableRenderer {
         ResponseWriter writer = context.getResponseWriter();
         Rendering.renderHiddenField(writer, getExpandedNodesFieldName(context, treeTable), null);
 
+        JSONArray treeColumnParamsArray = new JSONArray();
+        for (BaseColumn column : treeTable.getRenderedColumns()) {
+            if (!(column instanceof TreeColumn))
+                continue;
+            TreeColumn treeColumn = (TreeColumn) column;
+            Object columnParams = treeColumn.encodeParamsAsJsObject(context);
+            treeColumnParamsArray.put(columnParams != null ? columnParams : JSONObject.NULL);
+        }
+
         buf.initScript(context, treeTable, "O$.TreeTable._initFolding",
-                DEFAULT_FOLDING_CLASS,
-                getClientFoldingParams(context, treeTable),
+                formatTreeStructureMap(treeTable, context, -1, -1),
+                treeColumnParamsArray,
+                DEFAULT_TOGGLE_CLASS_NAME,
                 Resources.internalURL(context, "table/treeStructureSolid.png"));
     }
 
     private String getExpandedNodesFieldName(FacesContext context, TreeTable treeTable) {
         return treeTable.getClientId(context) + "::expandedNodes";
-    }
-
-    private JSONArray getClientFoldingParams(FacesContext context, TreeTable treeTable) {
-        JSONArray result = new JSONArray();
-        result.put(formatNodeParams(treeTable, context, -1, -1));
-        JSONArray expansionDatasArray = new JSONArray();
-        List<Object> expansionDatas = new ArrayList<Object>();
-        List<BaseColumn> columns = treeTable.getRenderedColumns();
-        for (BaseColumn column : columns) {
-            if (!(column instanceof TreeColumn))
-                continue;
-            TreeColumn treeColumn = (TreeColumn) column;
-            Object columnExpansionData = treeColumn.encodeExpansionDataAsJsObject(context);
-            expansionDatas.add(columnExpansionData);
-        }
-        for (Object expansionData : expansionDatas) {
-            if (expansionData == null)
-                expansionData = JSONObject.NULL;
-            expansionDatasArray.put(expansionData);
-        }
-        result.put(expansionDatas);
-        return result;
     }
 
     @Override
@@ -216,8 +205,8 @@ public class TreeTableRenderer extends AbstractTableRenderer {
         }
         int addedRowCount = rowAvailableAfterRestoring ? treeTable.loadSubNodes(rowIndex) : 0;
 
-        Map<Integer, CustomRowRenderingInfo> customRowRenderingInfos =
-                (Map<Integer, CustomRowRenderingInfo>) treeTable.getAttributes().get(TableStructure.CUSTOM_ROW_RENDERING_INFOS_KEY);
+        Map<Integer, CustomRowRenderingInfo> customRowRenderingInfos = (Map<Integer, CustomRowRenderingInfo>)
+                treeTable.getAttributes().get(TableStructure.CUSTOM_ROW_RENDERING_INFOS_KEY);
         for (int i = treeTable.getRowCount(); i > rowIndex; i--) {
             CustomRowRenderingInfo rowInfo = customRowRenderingInfos.remove(i);
             if (rowInfo == null)
@@ -231,11 +220,15 @@ public class TreeTableRenderer extends AbstractTableRenderer {
     protected void fillDynamicRowsInitInfo(FacesContext context, AbstractTable table, int rowIndex, int addedRowCount,
                                            TableStructure tableStructure, JSONObject newNodesInitInfo) {
         super.fillDynamicRowsInitInfo(context, table, rowIndex, addedRowCount, tableStructure, newNodesInitInfo);
-        JSONObject nodesStructureObject = formatNodeParams((TreeTable) table, context, rowIndex - 1, addedRowCount);
-        Rendering.addJsonParam(newNodesInitInfo, "structureMap", nodesStructureObject);
+        JSONObject structureMap = formatTreeStructureMap((TreeTable) table, context, rowIndex - 1, addedRowCount);
+        Rendering.addJsonParam(newNodesInitInfo, "structureMap", structureMap);
     }
 
-    private JSONObject formatNodeParams(TreeTable treeTable, FacesContext context, int fromRowIndex, int rowCount) {
+    private JSONObject formatTreeStructureMap(
+            TreeTable treeTable,
+            FacesContext context,
+            int fromRowIndex,
+            int rowCount) {
         JSONObject result = new JSONObject();
         Map<Object, NodeInfoForRow> map = treeTable.getNodeExpansionDataMap(context);
         Set<Map.Entry<Object, NodeInfoForRow>> entries = map.entrySet();

@@ -55,15 +55,16 @@ public class TreeColumn extends Column {
         showAsTree = (Boolean) state[4];
     }
 
-    public Object encodeExpansionDataAsJsObject(FacesContext context) {
+    public Object encodeParamsAsJsObject(FacesContext context) {
         ExpansionToggle expansionToggle = getExpansionToggle();
         Object result = expansionToggle.encodeExpansionDataAsJsObject(context);
         return result;
     }
 
     public ExpansionToggle getExpansionToggle() {
-        ExpansionToggle expansionToggle = Components.getOrCreateFacet(getFacesContext(), this, ImageExpansionToggle.COMPONENT_TYPE, "expansionToggle", ImageExpansionToggle.class);
-        ;
+        ExpansionToggle expansionToggle = Components.getOrCreateFacet(getFacesContext(), this,
+                ImageExpansionToggle.COMPONENT_TYPE, "expansionToggle", ImageExpansionToggle.class);
+
         if (expansionToggle == null) {
             expansionToggle = new ImageExpansionToggle();
             setExpansionToggle(expansionToggle);

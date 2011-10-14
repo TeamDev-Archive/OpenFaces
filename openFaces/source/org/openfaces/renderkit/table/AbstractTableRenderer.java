@@ -17,6 +17,7 @@ import org.openfaces.component.command.MenuItem;
 import org.openfaces.component.command.PopupMenu;
 import org.openfaces.component.table.*;
 import org.openfaces.org.json.JSONArray;
+import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.AjaxPortionRenderer;
 import org.openfaces.renderkit.CaptionButtonRenderer;
@@ -40,6 +41,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -148,12 +150,12 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         writer.startElement("span", table);
         writer.writeAttribute("id", table.getClientId(context) + "::auxiliaryTags", null);
         writer.writeAttribute("display", "none", null);
-        encodeAdditionalFeatureSupport(context, table);
+        encodeAdditionalFeaturesSupport(context, table);
         Styles.renderStyleClasses(context, table);
         writer.endElement("span");
     }
 
-    protected void encodeAdditionalFeatureSupport(FacesContext context, AbstractTable table) throws IOException {
+    protected void encodeAdditionalFeaturesSupport(FacesContext context, AbstractTable table) throws IOException {
         ScriptBuilder buf = new ScriptBuilder();
 
         encodeAdditionalFeaturesSupport_buf(context, table, buf);
@@ -188,7 +190,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         if (!table.isDataSourceEmpty())
             preregisterNoFilterDataRowStyleForOpera(context, table);
 
-        encodeCheckboxColumnSupport(table, buf);
+        encodeCheckboxColumnSupport(context, table, buf);
     }
 
     protected void encodeAdditionalFeaturesOnBodyReload(FacesContext context, AbstractTable table, ScriptBuilder sb) throws IOException {
@@ -314,7 +316,9 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         return new String[]{
                 Resources.utilJsURL(context),
                 TableUtil.getTableUtilJsURL(context),
-                getTableJsURL(context)};
+                getTableJsURL(context),
+                Resources.jsonJsURL(context)
+        };
     }
 
     private void encodeKeyboardSupport(FacesContext context, AbstractTable table, ScriptBuilder buf) throws IOException {
@@ -369,9 +373,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         List<BaseColumn> columns = table.getRenderedColumns();
         boolean atLeastOneColumnSortable1 = false;
         JSONArray columnSortableFlags = new JSONArray();
-        int colCount = columns.size();
-        for (int i = 0; i < colCount; i++) {
-            BaseColumn column = columns.get(i);
+        for (BaseColumn column : columns) {
             boolean sortable;
             Boolean columnSortableAttr = (Boolean) column.getAttributes().get("sortable");
             if (columnSortableAttr != null)
@@ -407,6 +409,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         }
 
         buf.initScript(context, table, "O$.Table._initSorting",
+                table.getSortingRules(),
                 columnSortableFlags,
                 table.getSortColumnIndex(),
                 Styles.getCSSClass(context, table, table.getSortableHeaderStyle(), StyleGroup.regularStyleGroup(), getSortableHeaderClass(table)),
@@ -489,9 +492,18 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         if (scrolling != null)
             scrolling.processDecodes(context);
 
-        ColumnReordering columnReordering = table.getColumnReordering();
-        if (columnReordering != null)
-            columnReordering.processDecodes(context);
+        decodeColumnsOrder(context, table);
+    }
+
+    protected void decodeColumnsOrder(FacesContext context, AbstractTable table) {
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        String paramName = table.getClientId(context) + "::columnsOrder";
+        String renderedColumns = params.get(paramName);
+        if (renderedColumns == null)
+            return;
+
+        List<String> columnIds = Arrays.asList(renderedColumns.split(","));
+        table.getAttributes().put("submittedColumnsOrder", columnIds);
     }
 
 
@@ -504,12 +516,21 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
 
     private void decodeSorting(FacesContext context, AbstractTable table) {
         Map<String, String> requestParameterMap = context.getExternalContext().getRequestParameterMap();
-        String sortingFieldName = getSortingFieldName(context, table);
-        String sortingFieldValue = requestParameterMap.get(sortingFieldName);
-        if (sortingFieldValue != null && sortingFieldValue.length() > 0) {
-            int columnToToggle = Integer.parseInt(sortingFieldValue);
-            table.toggleSorting(columnToToggle);
+        String paramName = table.getClientId(context) + "::setSortingRules";
+        String sortingRulesStr = requestParameterMap.get(paramName);
+        if (Rendering.isNullOrEmpty(sortingRulesStr)) return;
+
+        List<SortingRule> sortingRules = new ArrayList<SortingRule>();
+        try {
+            JSONArray sortingRulesJson = new JSONArray(sortingRulesStr);
+            for (int i = 0, count = sortingRulesJson.length(); i < count; i++) {
+                JSONObject jsonObject = sortingRulesJson.getJSONObject(i);
+                sortingRules.add(new SortingRule(jsonObject));
+            }
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
         }
+        table.toggleSorting(sortingRules);
     }
 
     private void decodeColumnMenu(FacesContext context, AbstractTable table) {
@@ -583,17 +604,22 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         return result;
     }
 
-    private void encodeCheckboxColumnSupport(AbstractTable table, ScriptBuilder buf) throws IOException {
-        for (BaseColumn col : table.getRenderedColumns()) {
-            if (! (col instanceof CheckboxColumn)) continue;
-            ((CheckboxColumn) col).encodeInitScript(buf);
+    private void encodeCheckboxColumnSupport(
+            FacesContext context,
+            AbstractTable table,
+            ScriptBuilder buf
+    ) throws IOException {
+        for (BaseColumn column : table.getRenderedColumns()) {
+            if (!(column instanceof CheckboxColumn))
+                continue;
+
+            ((CheckboxColumn) column).encodeInitScript(context, buf);
         }
     }
 
     protected void decodeCheckboxColumnSupport(FacesContext context, AbstractTable table) {
         Map<String, String> requestMap = context.getExternalContext().getRequestParameterMap();
-        List<BaseColumn> columns = table.getRenderedColumns();
-        for (BaseColumn column : columns) {
+        for (BaseColumn column : table.getRenderedColumns()) {
             if (!(column instanceof CheckboxColumn))
                 continue;
 
@@ -661,8 +687,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
                     List<BaseColumn> columns = table.getRenderedColumns();
                     List<BodyRow> rows = tableStructure.getBody().createRows(context, rowIndex, rowCount, columns);
                     if (tableStructure.getScrolling() == null) {
-                        for (int i = 0, count = rows.size(); i < count; i++) {
-                            BodyRow row = rows.get(i);
+                        for (BodyRow row : rows) {
                             row.render(context, null);
                         }
                     } else {

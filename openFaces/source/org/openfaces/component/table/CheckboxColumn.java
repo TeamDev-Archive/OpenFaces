@@ -22,6 +22,7 @@ import org.openfaces.util.ValueBindings;
 
 import javax.el.ValueExpression;
 import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -144,13 +145,18 @@ public class CheckboxColumn extends BaseColumn {
         }
     }
 
-    public void encodeInitScript(ScriptBuilder buf) {
+    public void encodeInitScript(FacesContext context, ScriptBuilder buf) throws IOException {
+        // it's important to render hidden field inside of the table rather than creating it dynamically elsewhere
+        // to ensure that it gets submitted with Ajax when only table is included into the Ajax "execute" phase.
+        ResponseWriter writer = context.getResponseWriter();
+        String valueFieldName = getClientId(context);
+        Rendering.renderHiddenField(writer, valueFieldName, "");
+
         JSONArray checkedRowIndexes = new JSONArray();
         if (selectedRows == null || selectedRows.getModel() == null)
             assignDataModel();
         List<Integer> rowIndexes = selectedRows.encodeSelectionIntoIndexes();
-        for (int j = 0, rowIndexCount = rowIndexes.size(); j < rowIndexCount; j++) {
-            int checkedRowIdx = rowIndexes.get(j);
+        for (Integer checkedRowIdx : rowIndexes) {
             checkedRowIndexes.put(checkedRowIdx);
         }
 
@@ -159,7 +165,7 @@ public class CheckboxColumn extends BaseColumn {
         buf.functionCall("O$.Table._initCheckboxColumn",
                 table,
                 colIndex,
-                this,
+                valueFieldName,
                 checkedRowIndexes).semicolon();
     }
 
