@@ -103,20 +103,6 @@ public class TreeTableRenderer extends AbstractTableRenderer {
         ResponseWriter writer = context.getResponseWriter();
         Rendering.renderHiddenField(writer, getExpandedNodesFieldName(context, treeTable), null);
 
-        buf.initScript(context, treeTable, "O$.TreeTable._initFolding",
-                DEFAULT_TOGGLE_CLASS_NAME,
-                getClientFoldingParams(context, treeTable),
-                Resources.internalURL(context, "table/treeStructureSolid.png"));
-    }
-
-    private String getExpandedNodesFieldName(FacesContext context, TreeTable treeTable) {
-        return treeTable.getClientId(context) + "::expandedNodes";
-    }
-
-    private JSONArray getClientFoldingParams(FacesContext context, TreeTable treeTable) {
-        JSONArray result = new JSONArray();
-        result.put(formatTreeStructureMap(treeTable, context, -1, -1));
-
         JSONArray treeColumnParamsArray = new JSONArray();
         for (BaseColumn column : treeTable.getRenderedColumns()) {
             if (!(column instanceof TreeColumn))
@@ -125,9 +111,16 @@ public class TreeTableRenderer extends AbstractTableRenderer {
             Object columnParams = treeColumn.encodeParamsAsJsObject(context);
             treeColumnParamsArray.put(columnParams != null ? columnParams : JSONObject.NULL);
         }
-        result.put(treeColumnParamsArray);
 
-        return result;
+        buf.initScript(context, treeTable, "O$.TreeTable._initFolding",
+                formatTreeStructureMap(treeTable, context, -1, -1),
+                treeColumnParamsArray,
+                DEFAULT_TOGGLE_CLASS_NAME,
+                Resources.internalURL(context, "table/treeStructureSolid.png"));
+    }
+
+    private String getExpandedNodesFieldName(FacesContext context, TreeTable treeTable) {
+        return treeTable.getClientId(context) + "::expandedNodes";
     }
 
     @Override
