@@ -42938,6 +42938,102 @@ entering a value and returns a list of suggestions from the server -->
     <tag-class>org.openfaces.taglib.jsp.table.RowGroupingJspTag</tag-class>
     <body-content>JSP</body-content>
   </tag>
+  <tag>
+    <description>Boxes for drag and drop operations on grouping</description>
+    <name>groupingBox</name>
+    <tag-class>org.openfaces.taglib.jsp.table.GroupingBoxJspTag</tag-class>
+    <body-content>JSP</body-content>
+  </tag>
+  <tag>
+    <description>Area for perfoming drag and drop operations on grouping</description>
+    <name>groupingBox</name>
+    <tag-class>org.openfaces.taglib.jsp.table.GroupingBoxJspTag</tag-class>
+    <body-content>JSP</body-content>
+  </tag>
+  <tag>
+    <name>groupingBox</name>
+    <tag-class>org.openfaces.taglib.jsp.table.GroupingBoxJspTag</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+      <name>id</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Grouping box style.</description>
+      <name>styleClass</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Style for grouping box.</description>
+      <name>style</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Style that applies to each header.</description>
+      <name>headerStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Style that applies to each header.</description>
+      <name>headerStyleClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Tip for column grouping.</description>
+      <name>promptText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default Drag a column header here. -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Style for prompt text.</description>
+      <name>promptTextStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Css class for prompt text.</description>
+      <name>promptTextStyleClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  -->
+      <!-- @el true -->
+    </attribute>
+  </tag>
 
   <!--<tag>-->
     <!--<description>This component is under construction. Displays a box where users may read and write comments. This component works on top of the Disqus-->

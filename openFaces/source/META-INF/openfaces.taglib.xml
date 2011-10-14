@@ -1273,5 +1273,12 @@
       <handler-class>org.openfaces.taglib.facelets.table.RowGroupingTagHandler</handler-class>
     </component>
   </tag>
-
+  <tag>
+    <tag-name>groupingBox</tag-name>
+    <component>
+      <component-type>org.openfaces.GroupingBox</component-type>
+      <renderer-type>org.openfaces.GroupingBoxRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.table.GroupingBoxTagHandler</handler-class>
+    </component>
+  </tag>
 </facelet-taglib>

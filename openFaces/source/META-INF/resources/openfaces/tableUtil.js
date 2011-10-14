@@ -1781,6 +1781,23 @@ O$.Tables = {
 
   },
 
+  _assignHeaderBoxStyle: function(table, columnId, additionalClassName) {
+    var column = null;
+    table._columns.forEach(function(current){
+      if (current.columnId == columnId){
+        column = current;
+      }
+    });
+    var headerBox = table.grouping._getColumnHeaderBox(columnId);
+    O$.setStyleMappings(headerBox, {
+              headerSection: table._params.header.className,
+              headerRowStyle: table._params.header.headingsClassName,
+              compoundColumn: column._getCompoundClassName(),
+              colHeader: column.header ? column.header.className : null,
+              headerBoxStyle: additionalClassName
+            });
+  },
+
   _initSubHeaderCell: function(cell, column) {
     cell._column = column;
 

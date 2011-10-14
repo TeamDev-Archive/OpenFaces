@@ -825,6 +825,10 @@
     <component-type>org.openfaces.RowGrouping</component-type>
     <component-class>org.openfaces.component.table.RowGrouping</component-class>
   </component>
+  <component>
+    <component-type>org.openfaces.GroupingBox</component-type>
+    <component-class>org.openfaces.component.table.GroupingBox</component-class>
+  </component>
   <render-kit>
     <renderer>
       <component-family>org.openfaces.DataTable</component-family>
@@ -1373,6 +1377,21 @@
       <component-family>org.openfaces.RowGrouping</component-family>
       <renderer-type>org.openfaces.RowGroupingRenderer</renderer-type>
       <renderer-class>org.openfaces.renderkit.table.RowGroupingRenderer</renderer-class>
+    </renderer>
+    <renderer>
+      <component-family>org.openfaces.GroupingBox</component-family>
+      <renderer-type>org.openfaces.GroupingBoxRenderer</renderer-type>
+      <renderer-class>org.openfaces.renderkit.table.GroupingBoxRenderer</renderer-class>
+    </renderer>
+    <renderer>
+      <component-family>org.openfaces.GroupingBox</component-family>
+      <renderer-type>org.openfaces.GroupingBoxRenderer</renderer-type>
+      <renderer-class>org.openfaces.renderkit.table.GroupingBoxRenderer</renderer-class>
+    </renderer>
+    <renderer>
+      <component-family>org.openfaces.GroupingBox</component-family>
+      <renderer-type>org.openfaces.GroupingBoxRenderer</renderer-type>
+      <renderer-class>org.openfaces.renderkit.table.GroupingBoxRenderer</renderer-class>
     </renderer>
 
   </render-kit>
