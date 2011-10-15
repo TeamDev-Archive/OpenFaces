@@ -2441,78 +2441,90 @@ O$.Table = {
     });
     O$.Table._tableLoaded(tableId);
   },
-
-  _initRowGroupingBox: function(rowGroupingBoxId, tableId) {
-    O$.Table._onTableLoaded(tableId, function() {
-      var table = O$(tableId);
-      var rowGroupingBox = O$(rowGroupingBoxId);
-      var dropTargetMark = table._dropTargetMark;
-
-      function actualizeGroupingBoxWrappers(columnId, newColumnIndex){
+  //todo: move to util
+  _removeFromArray: function(array, index){
+    return array.slice(0, index).concat(array.slice(index + 1));
+  },
+  _GroupingBoxLayout : function(rowGroupingBoxId, tableId){
+    var table = O$(tableId);
+    var groupingBoxWrappers = [];
+    var rowGroupingBox = O$(rowGroupingBoxId);
+    var _this =  {
+      _insertByColumnId: function(index, columnId){
+        var header = table.grouping._getColumnHeaderBox(columnId);
         var item = document.createElement('div');
-        var box = table.grouping._getColumnHeaderBox(columnId);
-        item.appendChild(box);
+        item.appendChild(header);
         if ('\v' == 'v') {
           item.style.styleFloat = "left"; //for ie
         } else {
           item.style.cssFloat = "left";  //for browsers
         }
-        rowGroupingBox._groupingBoxWrappers.splice(newColumnIndex, 0, item);
+        groupingBoxWrappers.splice(index, 0, item);
         item.style.height = "100%";
-        return item;
-      }
-      if(!rowGroupingBox._groupingBoxWrappers ){
-        rowGroupingBox._groupingBoxWrappers = [];
-        var index = 0;
-        table.grouping.getGroupingRules().forEach(function(rule){
-          actualizeGroupingBoxWrappers(rule.columnId, index++);
+      },
+      insertByColumnId: function(index, columnId){
+        _this._insertByColumnId(index, columnId);
+        _this._redraw();
+      },
+      addAll: function(columnIds){
+        var index = _this.headers().length;  //todo: should start from current length
+        columnIds.forEach(function(columnId){
+          _this._insertByColumnId(index++, columnId);
+        });
+        _this._redraw();
+      },
+      headers: function(){
+        return groupingBoxWrappers;
+      },
+      removeByIndex: function(index) {
+        groupingBoxWrappers = O$.Table._removeFromArray(groupingBoxWrappers, index);
+      },
+      _redraw: function(){
+        while(rowGroupingBox.childNodes.length > 0){
+          rowGroupingBox.removeChild(rowGroupingBox.firstChild);
+        }
+        groupingBoxWrappers.forEach(function(wrapper){
+          rowGroupingBox.appendChild(wrapper);
         });
       }
-      function appendTorowGroupingBox(columnId, newColumnIndex) {
-        var groupingRules = table.grouping.getGroupingRules();
+    };
+    return _this;
+  },
+  _initRowGroupingBox: function(rowGroupingBoxId, tableId) {
+    O$.Table._onTableLoaded(tableId, function() {
+      var table = O$(tableId);
+      var rowGroupingBox = O$(rowGroupingBoxId);
+      var dropTargetMark = table._dropTargetMark;
+      var layout = O$.Table._GroupingBoxLayout(rowGroupingBoxId, tableId);
+      var rules = function() {
+        return table.grouping.getGroupingRules();
+      };
+      var groupingColumnIds = function(){
+        return table.grouping.getGroupingRules().map(function(rule){
+          return rule.columnId;
+        });
+      };
+      if(rules().length > 0){
+        layout.addAll(groupingColumnIds());
+      }
 
-        function removeIdExist(columnId) {
-          function findIndexByColumnId(id) {
-            var index = -1;
-            var i = 0;
-            groupingRules.forEach(function(rule) {
-              if (rule.columnId == id) {
-                index = i;
-              }
-              i++;
-            });
-            return index;
-          }
-
-          var index = findIndexByColumnId(columnId);
-          if (index < 0) return;
-          groupingRules = groupingRules.slice(0, index).concat(groupingRules.slice(index + 1));
-          rowGroupingBox._groupingBoxWrappers = rowGroupingBox._groupingBoxWrappers.slice(0, index).concat(rowGroupingBox._groupingBoxWrappers.splice(index + 1));
+      function appendToGroupingBox(columnId, newColumnIndex) {
+        var ruleValues = rules();
+        var currentIndexOfColumn = groupingColumnIds().indexOf(columnId);
+        if (currentIndexOfColumn >= 0) {
+          ruleValues = O$.Table._removeFromArray(ruleValues, currentIndexOfColumn);
+          layout.removeByIndex(currentIndexOfColumn);
         }
-        removeIdExist(columnId);
         var newRule = new O$.Table.GroupingRule(columnId, true);
-        groupingRules.splice(newColumnIndex, 0, newRule);
-        table.grouping.setGroupingRules(groupingRules);
-        actualizeGroupingBoxWrappers(columnId, newColumnIndex);
+        ruleValues.splice(newColumnIndex, 0, newRule);
+        layout.insertByColumnId(newColumnIndex, columnId);
         fixGroupDescriber();
+        table.grouping.setGroupingRules(ruleValues);
       }
 
       var fixGroupDescriber = function() {
-        function fillGroupingBox(children) {
-
-          while (rowGroupingBox.childNodes.length != 0) {
-            rowGroupingBox.removeChild(rowGroupingBox.firstChild);
-          }
-          if(children.forEach){
-            children.forEach(function(child) {
-              rowGroupingBox.appendChild(child)
-            });
-          } else {
-            rowGroupingBox.appendChild(children)
-          }
-        }
-        if (rowGroupingBox._groupingBoxWrappers.length != 0) {
-          fillGroupingBox(rowGroupingBox._groupingBoxWrappers);
+        if(rules().length != 0 && layout.headers().length == 0){
+          layout.addAll(groupingColumnIds());
         }
         var dropTargetsFunction = function(outerContainer, ids, itemRetriever) {
           var container = O$.getContainingBlock(outerContainer, true);
@@ -2556,9 +2568,10 @@ O$.Table = {
                   }
                 },
                 acceptDraggable: function(e) {
-                  var number = rowGroupingBox._groupingBoxWrappers.indexOf(e);
-                  var currentColumnId = table.grouping.getGroupingRules()[number].columnId;
-                  appendTorowGroupingBox(currentColumnId, newColumnIndex);
+                  var currentIndex = layout.headers().indexOf(e);
+                  var currentColumnId = table.grouping.getGroupingRules()[currentIndex].columnId;
+                  if(currentIndex < newColumnIndex) newColumnIndex--;
+                  appendToGroupingBox(currentColumnId, newColumnIndex);
                 }
               };
             }
@@ -2582,26 +2595,28 @@ O$.Table = {
           return results;
         };
 
-        rowGroupingBox._groupingBoxWrappers.forEach(function(item) {
-          if (!item.draggable) {
-            O$.makeDraggable(item, function(evt) {
-              var groupingRules = table.grouping.getGroupingRules();
-              var groupingColumnIds = groupingRules.map(function(rule) {
-                return rule.columnId;
+        var makeHeadersDraggable = function () {
+          layout.headers().forEach(function(item) {
+            if (!item.draggable) {
+              O$.makeDraggable(item, function(evt) {
+                var groupingRules = table.grouping.getGroupingRules();
+                var groupingColumnIds = groupingRules.map(function(rule) {
+                  return rule.columnId;
+                });
+                var dropTargets = dropTargetsFunction(rowGroupingBox, groupingColumnIds, function(boxId) {
+                  return layout.headers()[groupingColumnIds.indexOf(boxId)];
+                });
+                for (var i = 0, count = dropTargets.length; i < count; i++) {
+                  var dropTarget = dropTargets[i];
+                  if (dropTarget.eventInside(evt))
+                    return dropTarget;
+                }
+                return null;
               });
-              var dropTargets = dropTargetsFunction(rowGroupingBox, groupingColumnIds, function(boxId) {
-                return rowGroupingBox._groupingBoxWrappers[groupingColumnIds.indexOf(boxId)];
-              });
-              for (var i = 0, count = dropTargets.length; i < count; i++) {
-                var dropTarget = dropTargets[i];
-                if (dropTarget.eventInside(evt))
-                  return dropTarget;
-              }
-              return null;
-            });
-            item.draggable = true;
-          }
-        });
+              item.draggable = true;
+            }
+          });
+        }();
       };
       fixGroupDescriber();
       O$.Table._appendDropTargetsForHeaderCell(tableId, function(headerCell) {
@@ -2649,12 +2664,12 @@ O$.Table = {
                 }
               },
               acceptDraggable: function(cellHeader) {
-                appendTorowGroupingBox(cellHeader._column.columnId, newColumnIndex);
+                appendToGroupingBox(cellHeader._column.columnId, newColumnIndex);
               }
             };
           }
 
-          var _groupingBoxWrappers = rowGroupingBox._groupingBoxWrappers;
+          var _groupingBoxWrappers = layout.headers();
           for (var i = 0; i < _groupingBoxWrappers.length; i++) {
             var targetCell = _groupingBoxWrappers[i];
             var targetCellRect = O$.getElementClientRectangle(targetCell, true);
@@ -2697,7 +2712,7 @@ O$.Table = {
                 }
               },
               acceptDraggable: function(cellHeader) {
-                appendTorowGroupingBox(cellHeader._column.columnId, 0);
+                appendToGroupingBox(cellHeader._column.columnId, 0);
               }
             }
           ];
