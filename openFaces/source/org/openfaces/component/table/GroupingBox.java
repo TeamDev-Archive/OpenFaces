@@ -41,7 +41,7 @@ public class GroupingBox extends org.openfaces.component.OUIComponentBase {
     public Object saveState(FacesContext context) {
         return new Object[]{
             super.saveState(context),
-
+                id, styleClass, style, headerStyle, headerStyleClass, promptText, promptTextStyle, promptTextStyleClass
         };
     }
 
@@ -50,7 +50,14 @@ public class GroupingBox extends org.openfaces.component.OUIComponentBase {
         Object[] state = (Object[]) stateObj;
         int i = 0;
         super.restoreState(context, state[i++]);
-
+        id = (String) state[i++];
+        styleClass = (String) state[i++];
+        style = (String) state[i++];
+        headerStyle = (String) state[i++];
+        headerStyleClass = (String) state[i++];
+        promptText = (String) state[i++];
+        promptTextStyle = (String) state[i++];
+        promptTextStyleClass = (String) state[i++];
     }
 
     public String getId() {
