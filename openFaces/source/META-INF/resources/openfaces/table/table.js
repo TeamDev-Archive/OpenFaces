@@ -2445,57 +2445,115 @@ O$.Table = {
   _removeFromArray: function(array, index){
     return array.slice(0, index).concat(array.slice(index + 1));
   },
-  _GroupingBoxLayout : function(rowGroupingBoxId, tableId){
+  _GroupingBoxLayout : function(rowGroupingBoxId, tableId, headerHorizontalOffset, headerVerticalOffset){
     var table = O$(tableId);
-    var groupingBoxWrappers = [];
+    var dropAreas = [];
+    var headers = [];
     var rowGroupingBox = O$(rowGroupingBoxId);
-    var _this =  {
+    var self =  {
       _insertByColumnId: function(index, columnId){
-        var header = table.grouping._getColumnHeaderBox(columnId);
-        var item = document.createElement('div');
-        item.appendChild(header);
-        if ('\v' == 'v') {
-          item.style.styleFloat = "left"; //for ie
-        } else {
-          item.style.cssFloat = "left";  //for browsers
+        function newCoordinates(){
+          if(index == 0){
+            return {x:0, y:0};
+          }
+          var previous = self.draggable()[index - 1];
+          var previousPos = O$.getElementPos(previous, true);
+          var previousSize = O$.getElementSize(previous);
+          return {
+            x: Math.round(previousPos.x + previousSize.width + headerHorizontalOffset),
+            y: Math.round(previousPos.y + previousSize.height / 2 + headerVerticalOffset)
+          };
         }
-        groupingBoxWrappers.splice(index, 0, item);
-        item.style.height = "100%";
+        function draggingArea(directWrapper){
+          var result = document.createElement('div');
+          //result.appendChild(document.createTextNode("1"));
+          if ('\v' == 'v') {
+            result.style.styleFloat = "left"; //for ie
+          } else {
+            result.style.cssFloat = "left";  //for browsers
+          }
+          result.style.height = "100%";
+          result.style.width = (O$.getElementSize(directWrapper).width  + headerHorizontalOffset) + "px";
+          return result;
+        }
+        var header = table.grouping._getColumnHeaderBox(columnId);
+        var directWrapper = document.createElement('div');
+        directWrapper.appendChild(header);
+        var width = O$.getElementSize(header).width;
+        var coordinates = newCoordinates();
+        directWrapper.style.top = coordinates.y + "px";
+        directWrapper.style.left = coordinates.x+ "px";
+        //directWrapper.style.width = width+ "px";
+
+        directWrapper.style.position = "absolute";
+        rowGroupingBox.appendChild(directWrapper);
+        var area = draggingArea(header);
+        rowGroupingBox.appendChild(area);
+        dropAreas.splice(index, 0, area);
+        headers.splice(index, 0, directWrapper);
+
       },
       insertByColumnId: function(index, columnId){
-        _this._insertByColumnId(index, columnId);
-        _this._redraw();
+        self._insertByColumnId(index, columnId);
+        self._redraw();
       },
       addAll: function(columnIds){
-        var index = _this.headers().length;  //todo: should start from current length
+        var index = dropAreas.length;
         columnIds.forEach(function(columnId){
-          _this._insertByColumnId(index++, columnId);
+          self._insertByColumnId(index++, columnId);
+          self._redraw();
         });
-        _this._redraw();
+
       },
-      headers: function(){
-        return groupingBoxWrappers;
+      dropAreas: function(){
+        return dropAreas;
+      },
+      draggable: function(){
+        return headers;
+      },
+      isEmpty: function(){
+        return dropAreas.length == 0;
       },
       removeByIndex: function(index) {
-        groupingBoxWrappers = O$.Table._removeFromArray(groupingBoxWrappers, index);
+        dropAreas = O$.Table._removeFromArray(dropAreas, index);
+        headers = O$.Table._removeFromArray(headers, index);
       },
       _redraw: function(){
         while(rowGroupingBox.childNodes.length > 0){
           rowGroupingBox.removeChild(rowGroupingBox.firstChild);
         }
-        groupingBoxWrappers.forEach(function(wrapper){
+        dropAreas.forEach(function(wrapper){
+          rowGroupingBox.appendChild(wrapper);
+        });
+        headers.forEach(function(wrapper){
           rowGroupingBox.appendChild(wrapper);
         });
       }
     };
-    return _this;
+    return self;
   },
   _initRowGroupingBox: function(rowGroupingBoxId, tableId) {
     O$.Table._onTableLoaded(tableId, function() {
       var table = O$(tableId);
       var rowGroupingBox = O$(rowGroupingBoxId);
-      var dropTargetMark = table._dropTargetMark;
-      var layout = O$.Table._GroupingBoxLayout(rowGroupingBoxId, tableId);
+      var dropTargetMark = function() {
+        var delegate = table._dropTargetMark;
+        var copyOfOuterContainer = null;
+        return {
+          setPosition: function(x, y1, y2) {
+            var offset = copyOfOuterContainer ? O$.getElementPos(copyOfOuterContainer, true): {x:0, y:0};
+            delegate.setPosition(x + offset.x, y1 + offset.y, y2 + offset.y);
+          },
+          show : function(container, outerContainer) {
+            copyOfOuterContainer = outerContainer;
+            delegate.show(container);
+          },
+          hide: function() {
+            delegate.hide();
+          }
+        };
+      }();
+      var layout = O$.Table._GroupingBoxLayout(rowGroupingBoxId, tableId, 5, 0);
       var rules = function() {
         return table.grouping.getGroupingRules();
       };
@@ -2523,7 +2581,7 @@ O$.Table = {
       }
 
       var fixGroupDescriber = function() {
-        if(rules().length != 0 && layout.headers().length == 0){
+        if(rules().length != 0 && layout.isEmpty()){
           layout.addAll(groupingColumnIds());
         }
         var dropTargetsFunction = function(outerContainer, ids, itemRetriever) {
@@ -2535,7 +2593,7 @@ O$.Table = {
             var item = itemRetriever(itemId);
 
             function dropTarget(minX, maxX, minY, maxY, box, newColumnIndex, rightEdge) {
-              var pos = O$.getElementPos(container, item);
+              var pos = O$.getElementPos(item, true);
               var containerAreaMinX = parseInt(pos.x);
               var containerAreaMaxX = parseInt(containerAreaMinX) + parseInt(container.clientWidth);
               var containerAreaMinY = parseInt(pos.y);
@@ -2558,7 +2616,7 @@ O$.Table = {
                 },
                 setActive: function(active) {
                   if (active) {
-                    dropTargetMark.show(container);
+                    dropTargetMark.show(container, outerContainer);
                     var gridLineWidthCorrection = function() {
                       return O$.getNumericElementStyle(table, rightEdge ? "border-right-width" : "border-left-width");
                     }();
@@ -2568,7 +2626,7 @@ O$.Table = {
                   }
                 },
                 acceptDraggable: function(e) {
-                  var currentIndex = layout.headers().indexOf(e);
+                  var currentIndex = layout.draggable().indexOf(e);
                   var currentColumnId = table.grouping.getGroupingRules()[currentIndex].columnId;
                   if(currentIndex < newColumnIndex) newColumnIndex--;
                   appendToGroupingBox(currentColumnId, newColumnIndex);
@@ -2576,9 +2634,8 @@ O$.Table = {
               };
             }
 
-            var targetCell = item;
-            if (!targetCell) return;
-            var targetCellRect = O$.getElementBorderRectangle(targetCell, true);
+            if (!item) return;
+            var targetCellRect = O$.getElementBorderRectangle(item, true);
             var min = targetCellRect.getMinX();
             var max = targetCellRect.getMaxX();
             var mid = (min + max) / 2;
@@ -2596,7 +2653,7 @@ O$.Table = {
         };
 
         var makeHeadersDraggable = function () {
-          layout.headers().forEach(function(item) {
+          layout.draggable().forEach(function(item) {
             if (!item.draggable) {
               O$.makeDraggable(item, function(evt) {
                 var groupingRules = table.grouping.getGroupingRules();
@@ -2604,7 +2661,7 @@ O$.Table = {
                   return rule.columnId;
                 });
                 var dropTargets = dropTargetsFunction(rowGroupingBox, groupingColumnIds, function(boxId) {
-                  return layout.headers()[groupingColumnIds.indexOf(boxId)];
+                  return layout.dropAreas()[groupingColumnIds.indexOf(boxId)];
                 });
                 for (var i = 0, count = dropTargets.length; i < count; i++) {
                   var dropTarget = dropTargets[i];
@@ -2654,7 +2711,7 @@ O$.Table = {
               },
               setActive: function(active) {
                 if (active) {
-                  dropTargetMark.show(container);
+                  dropTargetMark.show(container, rowGroupingBox);
                   var gridLineWidthCorrection = function() {
                     return O$.getNumericElementStyle(table, rightEdge ? "border-right-width" : "border-left-width");
                   }();
@@ -2669,7 +2726,7 @@ O$.Table = {
             };
           }
 
-          var _groupingBoxWrappers = layout.headers();
+          var _groupingBoxWrappers = layout.dropAreas();
           for (var i = 0; i < _groupingBoxWrappers.length; i++) {
             var targetCell = _groupingBoxWrappers[i];
             var targetCellRect = O$.getElementClientRectangle(targetCell, true);
