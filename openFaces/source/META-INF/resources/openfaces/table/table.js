@@ -2446,15 +2446,46 @@ O$.Table = {
     return array.slice(0, index).concat(array.slice(index + 1));
   },
   _GroupingBoxLayout : function(rowGroupingBoxId, tableId, headerHorizontalOffset, headerVerticalOffset) {
-    var GroupingHeadersConnector = function() {
-      return {
-
-      };
-    };
     var table = O$(tableId);
     var dropAreas = [];
     var headers = [];
     var rowGroupingBox = O$(rowGroupingBoxId);
+
+    function Connector(left, right) {
+      function connectorDescription(left, right) {
+        return {
+          horizontalOffset:20,
+          height : 2
+        };
+      }
+
+      var lineStyle = "1px solid black";
+      var alignment = O$.GraphicLine.ALIGN_BY_CENTER;
+      var self = {
+        _leftRect : O$.getElementBorderRectangle(left, true),
+        _rightRect : O$.getElementBorderRectangle(right, true),
+        show : function() {
+          if (self._vertical != null) {
+            self.destroy();
+          }
+          var desc = connectorDescription(self._leftRect, self._rightRect),
+                  leftBorder = self._leftRect.x + desc.horizontalOffset,
+                  topBorder = self._leftRect.y + self._leftRect.height,
+                  lowBorder = topBorder + desc.height,
+                  rightBorder = self._rightRect.x;
+          self._vertical = new O$.GraphicLine(lineStyle, alignment, leftBorder, topBorder, leftBorder, lowBorder);
+          self._horizontal = new O$.GraphicLine(lineStyle, alignment, leftBorder, lowBorder, rightBorder, lowBorder);
+          self._vertical.show(rowGroupingBox);
+          self._horizontal.show(rowGroupingBox);
+        },
+        destroy: function() {
+          self._vertical.parentNode.removeChild(self._vertical);
+          self._horizontal.parentNode.removeChild(self._horizontal);
+        }
+      };
+      return self;
+    }
+
     var self = {
       insertByColumnId: function(index, columnId) {
         function newCoordinates() {
@@ -2483,18 +2514,24 @@ O$.Table = {
         }
 
         function directWrapper() {
-          var directWrapper = document.createElement('div');
-          directWrapper.appendChild(header);
+          var result = document.createElement('div');
+          result.appendChild(header);
           var width = O$.getElementSize(header).width;
           var coordinates = newCoordinates();
-          directWrapper.style.top = coordinates.y + "px";
-          directWrapper.style.left = coordinates.x + "px";
-          directWrapper.style.position = "absolute";
-          return directWrapper;
+          result.style.top = coordinates.y + "px";
+          result.style.left = coordinates.x + "px";
+          result.style.position = "absolute";
+          result.connect = function(nextElement) {
+            result.connector = Connector(result, nextElement);
+            result.connector.show();
+          };
+          result.loseConnection = function() {
+            result.connector.destroy();
+          };
+          return result;
         }
 
         var header = table.grouping._getColumnHeaderBox(columnId);
-
         var wrapper = directWrapper();
         rowGroupingBox.appendChild(wrapper);
         var area = draggingArea(header);
@@ -2502,6 +2539,13 @@ O$.Table = {
 
         dropAreas.splice(index, 0, area);
         headers.splice(index, 0, wrapper);
+
+        if (index != headers.length - 1) {
+          wrapper.connect(headers[index + 1]);
+        }
+        if (index != 0) {
+          headers[index - 1].connect(wrapper);
+        }
       },
       addAll: function(columnIds) {
         var index = dropAreas.length;
@@ -2520,11 +2564,21 @@ O$.Table = {
         return dropAreas.length == 0;
       },
       removeByIndex: function(index) {
+        dropAreas = O$.Table._removeFromArray(dropAreas, index);
+        headers = O$.Table._removeFromArray(headers, index);
+
+        headers[index].loseConnection();
+        if (index != 0) {  //not first
+          headers[index - 1].loseConnection();
+          if (index != headers.length - 1) {  //not last
+            headers[index - 1].connect(headers[index + 1]);
+          }
+        }
+
         dropAreas[index].parentNode.removeChild(dropAreas[index]);
         headers[index].parentNode.removeChild(headers[index]);
 
-        dropAreas = O$.Table._removeFromArray(dropAreas, index);
-        headers = O$.Table._removeFromArray(headers, index);
+
       }
     };
     return self;
@@ -2538,7 +2592,7 @@ O$.Table = {
         var copyOfOuterContainer = null;
         return {
           setPosition: function(x, y1, y2) {
-            var offset = copyOfOuterContainer ? O$.getElementPos(copyOfOuterContainer, true): {x:0, y:0};
+            var offset = copyOfOuterContainer ? O$.getElementPos(copyOfOuterContainer, true) : {x:0, y:0};
             delegate.setPosition(x + offset.x, y1 + offset.y, y2 + offset.y);
           },
           show : function(container, outerContainer) {
@@ -2554,8 +2608,8 @@ O$.Table = {
       var rules = function() {
         return table.grouping.getGroupingRules();
       };
-      var groupingColumnIds = function(){
-        return table.grouping.getGroupingRules().map(function(rule){
+      var groupingColumnIds = function() {
+        return table.grouping.getGroupingRules().map(function(rule) {
           return rule.columnId;
         });
       };
@@ -2566,7 +2620,8 @@ O$.Table = {
           child.parentNode.removeChild(child);
         }
       }
-      if(rules().length > 0){
+
+      if (rules().length > 0) {
         hidePreviousLayer();
         layout.addAll(groupingColumnIds());
       }
@@ -2587,7 +2642,7 @@ O$.Table = {
       }
 
       var fixGroupDescriber = function() {
-        if(rules().length != 0 && layout.isEmpty()){
+        if (rules().length != 0 && layout.isEmpty()) {
           layout.addAll(groupingColumnIds());
         }
         var dropTargetsFunction = function(outerContainer, ids, itemRetriever) {
@@ -2634,7 +2689,7 @@ O$.Table = {
                 acceptDraggable: function(e) {
                   var currentIndex = layout.draggable().indexOf(e);
                   var currentColumnId = table.grouping.getGroupingRules()[currentIndex].columnId;
-                  if(currentIndex < newColumnIndex) newColumnIndex--;
+                  if (currentIndex < newColumnIndex) newColumnIndex--;
                   appendToGroupingBox(currentColumnId, newColumnIndex);
                 }
               };
