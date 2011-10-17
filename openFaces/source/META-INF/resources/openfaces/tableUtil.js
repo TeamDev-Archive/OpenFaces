@@ -1781,14 +1781,13 @@ O$.Tables = {
 
   },
 
-  _assignHeaderBoxStyle: function(table, columnId, additionalClassName) {
+  _assignHeaderBoxStyle: function(headerBox, table, columnId, additionalClassName) {
     var column = null;
     table._columns.forEach(function(current){
       if (current.columnId == columnId){
         column = current;
       }
     });
-    var headerBox = table.grouping._getColumnHeaderBox(columnId);
     O$.setStyleMappings(headerBox, {
               headerSection: table._params.header.className,
               headerRowStyle: table._params.header.headingsClassName,
@@ -1796,6 +1795,12 @@ O$.Tables = {
               colHeader: column.header ? column.header.className : null,
               headerBoxStyle: additionalClassName
             });
+    var ie = '\v' == 'v';
+    if (ie && O$.isQuirksMode()) {
+      headerBox.style.width = "10px"; //for ie some random number
+    } else {
+      headerBox.style.width = ie ? "auto" : "auto!important";
+    }
   },
 
   _initSubHeaderCell: function(cell, column) {

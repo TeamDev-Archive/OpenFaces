@@ -101,7 +101,7 @@ public class GroupingBox extends org.openfaces.component.OUIComponentBase {
     }
 
     public String getPromptText() {
-        return ValueBindings.get(this, "promptText", promptText, "Drag a column header here.");
+        return ValueBindings.get(this, "promptText", promptText, "Drag a column header here to group by that column");
     }
 
     public void setPromptText(String promptText) {

@@ -2433,11 +2433,9 @@ O$.Table = {
                 sortingToggleImg: O$.getChildNodesByClass(columnHeaderBox, "o_table_sortingToggle", true)
               });
 
-
       table.grouping._columnHeaderBoxes[columnId] = columnHeaderBox;
-    });
-    table.grouping.getGroupingRules().forEach(function(rule) {
-      O$.Tables._assignHeaderBoxStyle(table, rule.columnId, "");
+
+      O$.Tables._assignHeaderBoxStyle(columnHeaderBox, table, columnId, "");
     });
     O$.Table._tableLoaded(tableId);
   },
@@ -2451,23 +2449,31 @@ O$.Table = {
     var headers = [];
     var rowGroupingBox = O$(rowGroupingBoxId);
 
+
     function Connector(left, right) {
       function connectorDescription(left, right) {
         return {
-          horizontalOffset:20,
-          height : 2
+          horizontalOffset: left.width - 10,
+          height : Math.round(Math.abs(left.y + left.height - (right.y + right.height)) / 2)
         };
       }
 
       var lineStyle = "1px solid black";
-      var alignment = O$.GraphicLine.ALIGN_BY_CENTER;
+      var alignment = O$.GraphicLine.ALIGN_BY_TOP_OR_LEFT;
       var self = {
         _leftRect : O$.getElementBorderRectangle(left, true),
         _rightRect : O$.getElementBorderRectangle(right, true),
+        _toRemove: [],
         show : function() {
           if (self._vertical != null) {
             self.destroy();
           }
+          self._toRemove.forEach(function(e){
+            e.parentNode.removeChild(e);
+          });
+          self._leftRect = O$.getElementBorderRectangle(left, true);
+          self._rightRect = O$.getElementBorderRectangle(right, true);
+          self._toRemove = [];
           var desc = connectorDescription(self._leftRect, self._rightRect),
                   leftBorder = self._leftRect.x + desc.horizontalOffset,
                   topBorder = self._leftRect.y + self._leftRect.height,
@@ -2477,16 +2483,21 @@ O$.Table = {
           self._horizontal = new O$.GraphicLine(lineStyle, alignment, leftBorder, lowBorder, rightBorder, lowBorder);
           self._vertical.show(rowGroupingBox);
           self._horizontal.show(rowGroupingBox);
+          self._vertical.updatePresentation();
+          rowGroupingBox.validate();
         },
         destroy: function() {
           self._vertical.parentNode.removeChild(self._vertical);
           self._horizontal.parentNode.removeChild(self._horizontal);
+          rowGroupingBox.validate();
         }
       };
       return self;
     }
 
     var self = {
+      _toRemove : [],
+      _toShow: [],
       insertByColumnId: function(index, columnId) {
         function newCoordinates() {
           if (index == 0) {
@@ -2503,27 +2514,32 @@ O$.Table = {
 
         function draggingArea(directWrapper) {
           var result = document.createElement('div');
-          if ('\v' == 'v') {
-            result.style.styleFloat = "left"; //for ie
-          } else {
-            result.style.cssFloat = "left";  //for browsers
-          }
-          result.style.height = "100%";
-          result.style.width = (O$.getElementSize(directWrapper).width + headerHorizontalOffset) + "px";
+          result.show = function() {
+            if ('\v' == 'v') {
+              result.style.styleFloat = "left"; //for ie
+            } else {
+              result.style.cssFloat = "left";  //for browsers
+            }
+            result.style.height = "100%";
+            result.style.width = (O$.getElementSize(directWrapper).width + headerHorizontalOffset) + "px";
+            rowGroupingBox.appendChild(result);
+          };
           return result;
         }
 
         function directWrapper() {
           var result = document.createElement('div');
           result.appendChild(header);
-          var width = O$.getElementSize(header).width;
-          var coordinates = newCoordinates();
-          result.style.top = coordinates.y + "px";
-          result.style.left = coordinates.x + "px";
-          result.style.position = "absolute";
+          result.show = function(){
+            var coordinates = newCoordinates();
+            result.style.top = coordinates.y + "px";
+            result.style.left = coordinates.x + "px";
+            result.style.position = "absolute";
+            rowGroupingBox.appendChild(result);
+          };
           result.connect = function(nextElement) {
             result.connector = Connector(result, nextElement);
-            result.connector.show();
+            self._toShow.push(result.connector);
           };
           result.loseConnection = function() {
             result.connector.destroy();
@@ -2533,9 +2549,10 @@ O$.Table = {
 
         var header = table.grouping._getColumnHeaderBox(columnId);
         var wrapper = directWrapper();
-        rowGroupingBox.appendChild(wrapper);
+
+        self._toShow.push(wrapper);
         var area = draggingArea(header);
-        rowGroupingBox.appendChild(area);
+        self._toShow.push(area);
 
         dropAreas.splice(index, 0, area);
         headers.splice(index, 0, wrapper);
@@ -2563,6 +2580,16 @@ O$.Table = {
       isEmpty: function() {
         return dropAreas.length == 0;
       },
+      redraw: function() {
+        self._toRemove.forEach(function(e) {
+          e.parentNode.removeChild(e);
+        });
+        self._toRemove = [];
+        self._toShow.forEach(function(e) {
+          e.show();
+        });
+        self._toShow = [];
+      },
       removeByIndex: function(index) {
         dropAreas = O$.Table._removeFromArray(dropAreas, index);
         headers = O$.Table._removeFromArray(headers, index);
@@ -2575,10 +2602,8 @@ O$.Table = {
           }
         }
 
-        dropAreas[index].parentNode.removeChild(dropAreas[index]);
-        headers[index].parentNode.removeChild(headers[index]);
-
-
+        self._toRemove(dropAreas[index]);
+        self._toRemove(headers[index]);
       }
     };
     return self;
@@ -2604,6 +2629,29 @@ O$.Table = {
           }
         };
       }();
+      rowGroupingBox.validate = function() {
+        var currentSize = function() {
+          return O$.getElementSize(rowGroupingBox);
+        };
+        if (!rowGroupingBox.minHeight) {
+          rowGroupingBox.minHeight = currentSize().height;
+        }
+        var headers = layout.draggable();
+        if(headers.length > 1){
+          var last = headers[headers.length - 1];
+          var previous = headers[headers.length - 2];
+          var previousLowBorder = O$.getElementPos(previous, true).y + O$.getElementSize(previous).height;
+          var lowBorder = O$.getElementPos(last, true).y + O$.getElementSize(last).height;
+          var actualLowBorder = O$.getElementSize(rowGroupingBox).height;
+          if(lowBorder > actualLowBorder){
+            rowGroupingBox.style.height = actualLowBorder + (lowBorder - previousLowBorder)+ "px";
+          }
+
+          if(lowBorder < actualLowBorder && lowBorder > rowGroupingBox.minHeight + 2){  //magic number is just an eps
+            rowGroupingBox.style.height = Math.max(rowGroupingBox.minHeight, lowBorder) + "px";
+          }
+        }
+      };
       var layout = O$.Table._GroupingBoxLayout(rowGroupingBoxId, tableId, 5, 0);
       var rules = function() {
         return table.grouping.getGroupingRules();
@@ -2636,8 +2684,8 @@ O$.Table = {
         }
         var newRule = new O$.Table.GroupingRule(columnId, true);
         ruleValues.splice(newColumnIndex, 0, newRule);
-        layout.insertByColumnId(newColumnIndex, columnId);
-        fixGroupDescriber();
+        //layout.insertByColumnId(newColumnIndex, columnId);
+        //fixGroupDescriber();
         table.grouping.setGroupingRules(ruleValues);
       }
 
@@ -2735,10 +2783,11 @@ O$.Table = {
             }
           });
         }();
+        layout.redraw();
       };
       fixGroupDescriber();
       O$.Table._appendDropTargetsForHeaderCell(tableId, function(headerCell) {
-        var pos = O$.getElementPos(rowGroupingBox, headerCell);
+        var pos = O$.getElementPos(rowGroupingBox, true);
         var rowGroupingBoxMinX = parseInt(pos.x);
         var rowGroupingBoxMaxX = parseInt(rowGroupingBoxMinX) + parseInt(rowGroupingBox.clientWidth);
         var rowGroupingBoxMinY = parseInt(pos.y);
@@ -2765,7 +2814,7 @@ O$.Table = {
               minY: minY,
               maxY: maxY,
               eventInside: function(evt) {
-                var cursorPos = O$.getEventPoint(evt, headerCell);
+                var cursorPos = O$.getEventPoint(evt, rowGroupingBox);
                 return inRowGroupingBox(cursorPos.x, cursorPos.y) &&
                         (this.minX == null || cursorPos.x >= this.minX) &&
                         (this.maxX == null || cursorPos.x < this.maxX);
@@ -2809,12 +2858,12 @@ O$.Table = {
           return [
             {
               eventInside: function(evt) {
-                var cursorPos = O$.getEventPoint(evt, headerCell);
+                var cursorPos = O$.getEventPoint(evt, rowGroupingBox);
                 return inRowGroupingBox(cursorPos.x, cursorPos.y)
               },
               setActive: function(active) {
                 if (active) {
-                  var container = O$.getContainingBlock(headerCell, true);
+                  var container = O$.getContainingBlock(rowGroupingBox, true);
                   if (!container)
                     container = O$.getDefaultAbsolutePositionParent();
                   var rightEdge = false;
@@ -2825,7 +2874,6 @@ O$.Table = {
                   var truePos = O$.getElementPos(rowGroupingBox);
                   dropTargetMark.setPosition(rowGroupingBoxMinX, rowGroupingBoxMinY, rowGroupingBoxMaxY);
                 } else {
-
                   dropTargetMark.hide();
                 }
               },

@@ -54,8 +54,7 @@
   .o_popuplayer,
   .o_popup_menu,
   .o_hintlabel_hint,
-  .o_timetableView,
-  .o_groupingBox{
+  .o_timetableView{
   border: 1px solid gray;
 }
 
