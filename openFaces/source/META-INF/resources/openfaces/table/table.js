@@ -2401,7 +2401,7 @@ O$.Table = {
 
 
 // -------------------------- ROW GROUPING SUPPORT
-  _initRowGrouping: function(tableId, activeColumnIds, groupingRules) {
+  _initRowGrouping: function(tableId, activeColumnIds, groupingRules, headerClassName) {
 
     var table = O$.initComponent(tableId, null, {
               grouping: {
@@ -2440,7 +2440,7 @@ O$.Table = {
 
       table.grouping._columnHeaderBoxes[columnId] = columnHeaderBox;
 
-      O$.Tables._assignHeaderBoxStyle(columnHeaderBox, table, columnId, "");
+      O$.Tables._assignHeaderBoxStyle(columnHeaderBox, table, columnId, headerClassName);
     });
     O$.Table._tableLoaded(tableId);
   },
@@ -2851,6 +2851,21 @@ O$.Table = {
               });
               item.draggable = true;
             }
+          });
+        }();
+        var makeHeadersSortable = function() {
+          var counter = 0;
+          var groupingRules = rules();
+          layout.draggable().forEach(function(colHeader) {
+            var rule = groupingRules[counter];
+            O$.addEventHandler(colHeader, "click", function() {
+              var focusField = O$(table.id + "::focused");
+              if (focusField)
+                focusField.value = true; // set true explicitly before it gets auto-set when the click bubbles up (JSFC-801)
+              rule.ascending = !rule.ascending;
+              table.grouping.setGroupingRules(groupingRules);
+            });
+            counter++;
           });
         }();
         layout.redraw();

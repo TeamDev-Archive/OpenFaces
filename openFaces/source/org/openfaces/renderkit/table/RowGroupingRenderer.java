@@ -59,7 +59,7 @@ public class RowGroupingRenderer extends RendererBase {
         for (BaseColumn column : visibleAndGroupedColumns) {
             Object headerContent = TableHeader.getHeaderOrFooterCellContent(column, true);
             HeaderCell cell = new HeaderCell(column, headerContent, "div",
-                    CellKind.COL_HEADER, true, HeaderCell.SortingToggleMode.FORCE_DYNAMIC);
+                    CellKind.COL_HEADER, true, HeaderCell.SortingToggleMode.AUTODETECT);
             String columnId = column.getId();
             activeColumnIds.add(columnId);
             cell.setId(tableClientId + "::groupingHeaderCell:" + columnId);
@@ -68,7 +68,7 @@ public class RowGroupingRenderer extends RendererBase {
         }
 
         Rendering.renderInitScript(context, new ScriptBuilder().initScript(context, table, "O$.Table._initRowGrouping",
-                activeColumnIds, groupingRules
+                activeColumnIds, groupingRules, AbstractTableRenderer.DEFAULT_SORTABLE_HEADER_CLASS
         ).semicolon());
     }
 

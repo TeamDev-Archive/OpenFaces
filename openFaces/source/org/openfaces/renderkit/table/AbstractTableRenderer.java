@@ -53,7 +53,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
     private static final String DEFAULT_SORTED_COLUMN_HEADER_CLASS = "o_table_sorted_column_header";
     private static final String DEFAULT_SORTED_COLUMN_BODY_CLASS = "o_table_sorted_column_body";
     private static final String DEFAULT_SORTED_COLUMN_FOOTER_CLASS = "o_table_sorted_column_footer";
-    private static final String DEFAULT_SORTABLE_HEADER_CLASS = "o_table_sortable_header";
+    public static final String DEFAULT_SORTABLE_HEADER_CLASS = "o_table_sortable_header";
     private static final String DEFAULT_SORTABLE_HEADER_ROLLOVER_CLASS = null;//"o_table_sortable_header_rollover";
     private static final String DEFAULT_FOCUSED_STYLE = "border: 1px dotted black;";
 
