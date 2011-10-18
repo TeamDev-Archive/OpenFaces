@@ -39,6 +39,12 @@ public class CategoryAxisAdapter extends CategoryAxis {
             setCategoryLabelPositions(CategoryLabelPositions.STANDARD);
         } else {
             setCategoryLabelPositions(PropertiesConverter.toCategroryLabelPosition(chartCategoryAxis.getPosition()));
+            Double categoryMargin = chartCategoryAxis.getCategoryMargin();
+            if (categoryMargin != null) setCategoryMargin(categoryMargin);
+            Double upperMargin = chartCategoryAxis.getUpperMargin();
+            if (upperMargin != null) setUpperMargin(upperMargin);
+            Double lowerMargin = chartCategoryAxis.getLowerMargin();
+            if (lowerMargin != null) setLowerMargin(lowerMargin);
         }
 
         FakeAxisStyle fakeStyle = new FakeAxisStyle(chartCategoryAxis, chartBaseAxis, view);
