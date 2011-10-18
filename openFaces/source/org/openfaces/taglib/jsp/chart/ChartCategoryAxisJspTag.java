@@ -27,4 +27,16 @@ public class ChartCategoryAxisJspTag extends ChartAxisJspTag {
     public void setPosition(ValueExpression position) {
         getDelegate().setPropertyValue("position", position);
     }
+
+    public void setLowerMargin(ValueExpression lowerMargin) {
+        getDelegate().setPropertyValue("lowerMargin", lowerMargin);
+    }
+
+    public void setUpperMargin(ValueExpression upperMargin) {
+        getDelegate().setPropertyValue("upperMargin", upperMargin);
+    }
+
+    public void setCategoryMargin(ValueExpression categoryMargin) {
+        getDelegate().setPropertyValue("categoryMargin", categoryMargin);
+    }
 }

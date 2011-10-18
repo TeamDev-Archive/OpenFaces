@@ -21029,6 +21029,38 @@ and it is automatically triggered on any form submission. -->
       <!-- @value "down_45" labels are rotated top-to-bottom by 45 degrees  -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>The margin as a percentage of the axis length (for example, 0.05 is five percent). The overall
+        category margin is distributed over N-1 gaps, where N is the number of categories on the axis.
+      </description>
+      <name>categoryMargin</name>
+      <deferred-value>
+        <type>java.lang.Double</type>
+      </deferred-value>
+      <!-- @bindingType double -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The margin as a percentage of the axis length (for example, 0.05 is five percent).</description>
+      <name>lowerMargin</name>
+      <deferred-value>
+        <type>java.lang.Double</type>
+      </deferred-value>
+      <!-- @bindingType double -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The margin as a percentage of the axis length (for example, 0.05 is five percent).</description>
+      <name>upperMargin</name>
+      <deferred-value>
+        <type>java.lang.Double</type>
+      </deferred-value>
+      <!-- @bindingType double -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
   </tag>
 
   <tag>
