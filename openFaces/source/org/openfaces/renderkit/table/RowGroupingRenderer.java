@@ -67,7 +67,11 @@ public class RowGroupingRenderer extends RendererBase {
             cell.render(context, null);
         }
 
-        Rendering.renderInitScript(context, new ScriptBuilder().initScript(context, table, "O$.Table._initRowGrouping",
+        ScriptBuilder buf = new ScriptBuilder();
+
+        AbstractTableRenderer.encodeFoldingSupport(context, buf, table);
+
+        Rendering.renderInitScript(context, buf.initScript(context, table, "O$.Table._initRowGrouping",
                 activeColumnIds, groupingRules
         ).semicolon());
     }

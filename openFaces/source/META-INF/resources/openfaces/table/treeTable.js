@@ -92,16 +92,16 @@ O$.TreeTable = {
    *   if child rows for the respective node has not been loaded yet. Absence of a key for a certain row index means
    *   that the appropriate row can be considered a "leaf" node with no child nodes.
    *
-   * - If an attempt is made to expand a node whose child nodes are not preloaded (has the "?" value in the
-   *   rowIndexToChildCount map), then this mechanism will send a server request to load the missing rows. This can be
-   *   done in two ways depending on the table's _useAjax property. If it is set to true, then it sends the Ajax partial
-   *   request for a portion named "subRows:<rowIndex>", and otherwise, it submits the whole page with the
-   *   "<table-id>::toggleExpansion" field set to "<parentRowIndex>".
-   *
    * - This mechanism requires expansion toggles to be rendered inside of each row that has child rows, and
    *   they should have "o_toggle_e"/"o_toggle_c" class to signify the expanded or collapsed state respectively.
    *
    * - The current table's expansion state is always reflected in the <table-id>::expandedNodes hidden field.
+   *
+   * - If an attempt is made to expand a node whose child nodes are not preloaded (has the "?" value in the
+   *   rowIndexToChildCount map), then this mechanism will send a server request to load the missing rows. This can be
+   *   done in two ways depending on the table's _useAjax property. If it is set to true, then it sends the Ajax partial
+   *   request for a portion named "subRows:<rowIndex>", and otherwise, it submits the whole page with the
+   *   updated <table-id>::expandedNodes field that reflects the requested expansion state.
    *
    * - The table rows API is extended with isExpanded/setExpanded methods which expand and collapse child nodes.
    *
@@ -385,7 +385,8 @@ O$.TreeTable = {
        If child nodes for this node are loaded, this method expands/collapses the node and updates the presentation
        appropriately, otherwise it sends a row expansion request to the server in one of two ways. If table's _useAjax
        property is true, then it sends the Ajax partial request for a portion named "subRows:<parentRowIndex>",
-       otherwise, it submits the whole page with the "<table-id>::toggleExpansion" field set to "<rowIndex>".
+       otherwise, it submits the whole page with the updated <table-id>::expandedNodes field that reflects the
+       requested expansion state.
 
        This method can be not able to set the "expanded" state to true in some cases.
        Invokers must check _isExpanded() to see if expansion was successful.
@@ -422,7 +423,7 @@ O$.TreeTable = {
             else
               O$.requestComponentPortions(table.id, ["subRows:" + this._index], null, O$.Table._acceptLoadedRows, ajaxFailedProcessor);
           } else
-            O$.submitWithParam(table, table.id + "::toggleExpansion", this._index);
+            O$.submitEnclosingForm(table);
         } else {
           table._updateRowTreeStructure();
         }

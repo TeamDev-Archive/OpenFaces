@@ -1224,7 +1224,7 @@ if (!window.O$) {
 
   O$.resetAjaxState = function() {
     O$._ajaxTemporaryLocked = false;
-  }
+  };
 
   // ----------------- FORM, FORM ELEMENTS MANIPULATION ---------------------------------------------------
 

@@ -40,6 +40,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Dmitry Pikhulya
@@ -1644,6 +1645,14 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     }
 
     protected abstract void restoreRows(boolean forceDecoding);
+
+    public void acceptNewExpandedRowIndexes(Set<Integer> expandedRowIndexes) {
+
+    }
+
+    public Map<Object, ? extends TreeStructureEntry> getTreeStructureMap(FacesContext context) {
+        return null;
+    }
 
     protected class RowComparator implements Comparator<Object> {
         private final FacesContext facesContext;

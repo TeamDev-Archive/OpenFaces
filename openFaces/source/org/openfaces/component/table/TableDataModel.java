@@ -397,6 +397,10 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
         } else
             allRetrievedRowFilteringFlags = null;
 
+        if (groupingRules != null && groupingRules.size() > 0) {
+            groupRows(groupingRules, rows);
+        }
+
         filteredRows = new ArrayList<RowInfo>(rows);
         currentlyAppliedFilters = filters != null
                 ? new ArrayList<Filter>(filters)
@@ -411,6 +415,26 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
         }
         extractedRows = rows;
     }
+
+    private void groupRows(List<GroupingRule> groupingRules, List<RowInfo> rows) {
+        for (GroupingRule groupingRule : groupingRules) {
+            groupRows(groupingRule, rows);
+        }
+    }
+
+    private void groupRows(GroupingRule groupingRule, List<RowInfo> rows) {
+        FacesContext currentInstance = FacesContext.getCurrentInstance();
+        Comparator<Object> ruleComparator = table.createRuleComparator(currentInstance, groupingRule);
+        for (int i = rows.size() - 1; i >= 0; i--) {
+            RowInfo rowInfo = rows.get(i);
+            RowInfo upperRowInfo = i > 0 ? rows.get(i - 1) : null;
+            Object rowData = rowInfo.getRowData();
+            Object upperRowData = upperRowInfo != null ? upperRowInfo.getRowData() : null;
+            boolean groupBoundary = upperRowData == null || ruleComparator.compare(rowData, upperRowData) != 0;
+
+        }
+    }
+
 
     private void resetPreparedParameters() {
         restoreRequestVariable(VAR_PAGE_START);
@@ -539,7 +563,8 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
     }
 
     private boolean isSortingNeeded() {
-        return sortingRules != null && sortingRules.size() > 0;
+        return (sortingRules != null && sortingRules.size() > 0) ||
+               (groupingRules != null && groupingRules.size() > 0);
     }
 
     /**

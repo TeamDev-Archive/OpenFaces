@@ -14,7 +14,7 @@ package org.openfaces.component.table;
 /**
  * @author Dmitry Pikhulya
  */
-public class NodeInfoForRow {
+public class NodeInfoForRow implements TreeStructureEntry {
     private TreePath nodePath;
     private TreePath nodeKeyPath;
     private TreePath nodeIndexPath;
@@ -27,7 +27,13 @@ public class NodeInfoForRow {
     private boolean nodeHasChildren;
     private boolean childrenPreloaded;
 
-    public NodeInfoForRow(TreePath nodePath, TreePath nodeKeyPath, TreePath nodeIndexPath, int nodeLevel, boolean expanded, boolean nodeInitiallyVisible) {
+    public NodeInfoForRow(
+            TreePath nodePath,
+            TreePath nodeKeyPath,
+            TreePath nodeIndexPath,
+            int nodeLevel,
+            boolean expanded,
+            boolean nodeInitiallyVisible) {
         this.nodeLevel = nodeLevel;
         this.nodePath = nodePath;
         this.nodeIndexPath = nodeIndexPath;
