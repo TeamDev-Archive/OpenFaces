@@ -295,6 +295,14 @@ O$.TreeTable = {
         }
 
         this._updateExpandedNodesField();
+        if (!parentRow._isExpanded) {
+            // This can be the case when the user double-clicks on the expansion toggle quickly, which first sends
+            // the node expansion request, and then collapses the node, and then the request completes and appends the
+            // nodes below the "collapsed" node, so we should ensure that the new rows are not visible until the node
+            // is reopened again in this case.
+          table._updateRowTreeStructure();
+        }
+
         if (table._selectionMode == "hierarchical") {
           // _updateRowVisibility is needed to update parent/child references, but we can do it asynchronously to avoid
           // degrading the perceived performance

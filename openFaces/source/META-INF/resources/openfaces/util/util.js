@@ -1950,9 +1950,9 @@ if (!window.O$) {
     O$.addLoadEvent(function() {
       if (O$.Ajax) {
         var prevAjaxEnd = O$.Ajax.onajaxend;
-        O$.Ajax.onajaxend = function() {
+        O$.Ajax.onajaxend = function(e) {
           if (prevAjaxEnd)
-            prevAjaxEnd();
+            prevAjaxEnd.call(this, e);
           O$._autoSavingFocusInitialized = false;
           setTimeout(setupFocus, 1);
         };
@@ -2069,7 +2069,7 @@ if (!window.O$) {
     document.onmousemove = function(e) {
       var result = undefined;
       if (prevMouseMove) {
-        result = prevMouseMove(e);
+        result = prevMouseMove.call(this, e);
       }
 
       var element;
