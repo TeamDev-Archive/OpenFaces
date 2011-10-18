@@ -67,6 +67,7 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
     private List<Object> extractedRowKeys;
     private List<Object> allRetrievedRowKeys;
     private int extractedRowIndex = -1;
+    private boolean createGroupFooters;
     private List<GroupingRule> groupingRules;
     private List<SortingRule> sortingRules;
     private List<Filter> filters;
@@ -110,6 +111,7 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
     }
 
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+        createGroupFooters = in.readBoolean();
         groupingRules = (List<GroupingRule>) in.readObject();
         sortingRules = (List<SortingRule>) in.readObject();
         rowKeyExpression = ValueBindings.readValueExpression(in);
@@ -124,6 +126,7 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
     }
 
     public void writeExternal(ObjectOutput out) throws IOException {
+        out.writeBoolean(createGroupFooters);
         out.writeObject(groupingRules);
         out.writeObject(sortingRules);
         ValueBindings.writeValueExpression(out, rowKeyExpression);
@@ -302,6 +305,15 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
         return pageIndex;
     }
 
+    public boolean isCreateGroupFooters() {
+        return createGroupFooters;
+    }
+
+    public void setCreateGroupFooters(boolean createGroupFooters) {
+        this.createGroupFooters = createGroupFooters;
+        updateExtractedRows();
+    }
+
     public List<GroupingRule> getGroupingRules() {
         return groupingRules;
     }
@@ -416,23 +428,59 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
         extractedRows = rows;
     }
 
-    private void groupRows(List<GroupingRule> groupingRules, List<RowInfo> rows) {
+    private List<RowInfo> groupRows(List<GroupingRule> groupingRules, List<RowInfo> rows) {
         for (GroupingRule groupingRule : groupingRules) {
-            groupRows(groupingRule, rows);
+            rows = groupRows(groupingRule, rows);
         }
+        return rows;
     }
 
-    private void groupRows(GroupingRule groupingRule, List<RowInfo> rows) {
-        FacesContext currentInstance = FacesContext.getCurrentInstance();
-        Comparator<Object> ruleComparator = table.createRuleComparator(currentInstance, groupingRule);
-        for (int i = rows.size() - 1; i >= 0; i--) {
-            RowInfo rowInfo = rows.get(i);
-            RowInfo upperRowInfo = i > 0 ? rows.get(i - 1) : null;
-            Object rowData = rowInfo.getRowData();
-            Object upperRowData = upperRowInfo != null ? upperRowInfo.getRowData() : null;
-            boolean groupBoundary = upperRowData == null || ruleComparator.compare(rowData, upperRowData) != 0;
+    private boolean recordsInTheSameGroup(Comparator<Object> comparator, Object record1, Object record2) {
+        if (record1 == null || record2 == null) return false;
+        if (record1 instanceof AbstractRowGroupHeader || record2 instanceof AbstractRowGroupHeader) return false;
+        return comparator.compare(record1, record2) == 0;
+    }
 
+
+    private List<RowInfo> groupRows(GroupingRule groupingRule, List<RowInfo> rows) {
+        List<RowInfo> rowsWithGroupRecords = new ArrayList<RowInfo>();
+        if (rows.size() == 0) return rowsWithGroupRecords;
+        FacesContext currentInstance = FacesContext.getCurrentInstance();
+        AbstractTable.RowComparator ruleComparator = table.createRuleComparator(currentInstance, groupingRule);
+        RowInfo upperRowInfo = null;
+        RowInfo rowInfo = rows.get(0);
+        RowInfo lowerRowInfo;
+        RowGroup currentGroup = null;
+        List<RowInfo> currentGroupRecords = null;
+        for (int i = 0, count = rows.size(); i < count; i++, upperRowInfo = rowInfo, rowInfo = lowerRowInfo) {
+            lowerRowInfo = i < count - 1 ? rows.get(i + 1) : null;
+            assert rowInfo != null;
+            Object rowData = rowInfo.getRowData();
+            boolean regularDataRow = rowData != null && !(rowData instanceof AbstractRowGroupHeader);
+            if (regularDataRow) {
+                boolean firstGroupRecord = !recordsInTheSameGroup(ruleComparator, upperRowInfo, rowInfo);
+                if (firstGroupRecord) {
+                    currentGroup = new RowGroup(groupingRule.getColumnId(), ruleComparator.getComparisonValue2());
+                    currentGroupRecords = new ArrayList<RowInfo>();
+                    rowsWithGroupRecords.add(new RowInfo(new RowGroupHeader(currentGroup), -1));
+                }
+
+                rowsWithGroupRecords.add(rowInfo);
+                if (currentGroupRecords == null) throw new IllegalStateException("Current group cannot be located. " +
+                        "The previous row was a regular one according to recordsInTheSameGroup, and the first " +
+                        "consecutive regular row in the list is supposed to always create the group");
+                currentGroupRecords.add(rowInfo);
+
+                if (createGroupFooters) {
+                    boolean lastGroupRecord = !recordsInTheSameGroup(ruleComparator, rowInfo, lowerRowInfo);
+                    if (lastGroupRecord) {
+                        rowsWithGroupRecords.add(new RowInfo(new RowGroupFooter(currentGroup), -1));
+                    }
+                }
+
+            }
         }
+        return rowsWithGroupRecords;
     }
 
 

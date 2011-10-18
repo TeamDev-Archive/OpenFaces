@@ -1325,7 +1325,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         };
     }
 
-    protected Comparator<Object> createRuleComparator(final FacesContext facesContext, SortingOrGroupingRule rule) {
+    protected RowComparator createRuleComparator(final FacesContext facesContext, SortingOrGroupingRule rule) {
         String columnId = rule.getColumnId();
         if (columnId == null)
             return null;
@@ -1660,6 +1660,8 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         private final Comparator<Object> valueComparator;
         private final Map<String, Object> requestMap;
         private final boolean sortAscending;
+        private Object comparisonValue1;
+        private Object comparisonValue2;
 
         protected final String var;
 
@@ -1680,26 +1682,48 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         public int compare(Object o1, Object o2) {
             Runnable restorePrevParams = populateSortingExpressionParams(requestMap, o1);
             ELContext elContext = facesContext.getELContext();
-            Object value1 = sortingExpressionBinding.getValue(elContext);
+            comparisonValue1 = sortingExpressionBinding.getValue(elContext);
             restorePrevParams.run();
             restorePrevParams = populateSortingExpressionParams(requestMap, o2);
-            Object value2 = sortingExpressionBinding.getValue(elContext);
+            comparisonValue2 = sortingExpressionBinding.getValue(elContext);
             restorePrevParams.run();
             int result;
-            if (value1 == null)
-                result = (value2 == null) ? 0 : -1;
-            else if (value2 == null)
+            if (comparisonValue1 == null)
+                result = (comparisonValue2 == null) ? 0 : -1;
+            else if (comparisonValue2 == null)
                 result = 1;
             else if (valueComparator != null) {
-                result = valueComparator.compare(value1, value2);
-            } else if (value1 instanceof Comparable) {
-                result = ((Comparable) value1).compareTo(value2);
+                result = valueComparator.compare(comparisonValue1, comparisonValue2);
+            } else if (comparisonValue1 instanceof Comparable) {
+                result = ((Comparable) comparisonValue1).compareTo(comparisonValue2);
             } else {
-                throw new RuntimeException("The values to be sorted must implement the Comparable interface: " + value1.getClass());
+                throw new RuntimeException("The values to be sorted must implement the Comparable interface: " + comparisonValue1.getClass());
             }
             if (!sortAscending)
                 result = -result;
             return result;
+        }
+
+        /**
+         * @return the actual value which was participating in the last comparison session (first comparison argument)
+         */
+        public Object getComparisonValue1() {
+            return comparisonValue1;
+        }
+
+        /**
+         * @return the actual value which was participating in the last comparison session (second comparison argument)
+         */
+        public Object getComparisonValue2() {
+            return comparisonValue2;
+        }
+
+        public void resetComparisonValue1() {
+            this.comparisonValue1 = null;
+        }
+
+        public void resetComparisonValue2() {
+            this.comparisonValue2 = null;
         }
 
         protected Runnable populateSortingExpressionParams(final Map<String, Object> requestMap, Object collectionObject) {
