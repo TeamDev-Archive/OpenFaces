@@ -204,6 +204,7 @@ if (!window.O$) {
       this._element = document.createElement("div");
       this._element.style.visibility = "hidden";
       this._element.style.position = "absolute";
+      this._element.style.fontSize = "0";
 
       if (x1)
         this.setLine(x1, y1, x2, y2, true);
