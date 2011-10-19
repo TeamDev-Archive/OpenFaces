@@ -682,8 +682,10 @@ public class TreeTable extends AbstractTable {
             nodeHasChildrenVar = getNodeHasChildrenVar();
         }
 
+    }
 
-        protected Runnable populateSortingExpressionParams(final Map<String, Object> requestMap, Object collectionObject) {
+    protected Runnable populateSortingExpressionParams(final String var, final Map<String, Object> requestMap, Object collectionObject) {
+//        protected Runnable populateSortingExpressionParams(final Map<String, Object> requestMap, Object collectionObject) {
             TempNodeParams nodeParams = (TempNodeParams) collectionObject;
             Object nodeData = nodeParams.getNodeData();
             NodeInfoForRow nodeInfo = nodeParams.getNodeInfoForRow();
@@ -712,8 +714,6 @@ public class TreeTable extends AbstractTable {
                 }
             };
         }
-
-    }
 
     @Override
     public void setRowIndex(int rowIndex) {
