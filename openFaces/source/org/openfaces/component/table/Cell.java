@@ -229,7 +229,9 @@ public class Cell extends UIComponentBase {
             prevColumnIdVarValue = requestMap.put(columnIdVar, columnId);
 
         Integer customCellIndex = (Integer) getAttributes().get(TableBody.CUSTOM_CELL_INDEX_ATTRIBUTE);
-        String result = Styles.getCSSClass(context, table, getStyle(), StyleGroup.regularStyleGroup(2 + customCellIndex), getStyleClass());
+        StyleGroup styleGroup = customCellIndex != null
+                ? StyleGroup.regularStyleGroup(2 + customCellIndex) : StyleGroup.regularStyleGroup();
+        String result = Styles.getCSSClass(context, table, getStyle(), styleGroup, getStyleClass());
         if (columnIndexVar != null)
             requestMap.put(columnIndexVar, prevColumnIndexVarValue);
         if (columnIdVar != null)

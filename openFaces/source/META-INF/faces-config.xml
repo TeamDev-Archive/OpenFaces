@@ -825,6 +825,16 @@
     <component-type>org.openfaces.RowGrouping</component-type>
     <component-class>org.openfaces.component.table.RowGrouping</component-class>
   </component>
+
+  <component>
+    <component-type>org.openfaces.GroupHeaderRow</component-type>
+    <component-class>org.openfaces.component.table.GroupHeaderRow</component-class>
+  </component>
+
+  <component>
+    <component-type>org.openfaces.GroupFooterRow</component-type>
+    <component-class>org.openfaces.component.table.GroupFooterRow</component-class>
+  </component>
   <render-kit>
     <renderer>
       <component-family>org.openfaces.DataTable</component-family>

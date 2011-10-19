@@ -350,6 +350,10 @@ public class DataTable extends AbstractTable {
             requestMap.put(rowIndexVar, recordNo);
         }
 
+        RowGrouping rowGrouping = getRowGrouping();
+        if (rowGrouping != null)
+            rowGrouping.setupCurrentRowVariables();
+
     }
 
     public boolean getCustomDataProviding() {
@@ -386,5 +390,7 @@ public class DataTable extends AbstractTable {
     public RowGrouping getRowGrouping() {
         return Components.findChildWithClass(this, RowGrouping.class, "<o:rowGrouping>");
     }
+
+
 
 }

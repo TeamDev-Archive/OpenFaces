@@ -15,7 +15,7 @@ package org.openfaces.component.table;
 /**
  * @author Dmitry Pikhulya
  */
-public class RowGroupFooter extends AbstractRowGroupHeader<RowGroupHeader> {
+public class RowGroupFooter extends RowGroupHeaderOrFooter<RowGroupHeader> {
     public RowGroupFooter(RowGroup rowGroup) {
         super(rowGroup);
     }

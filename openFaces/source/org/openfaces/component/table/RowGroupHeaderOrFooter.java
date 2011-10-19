@@ -17,10 +17,10 @@ import java.io.Serializable;
 /**
  * @author Dmitry Pikhulya
  */
-public class  AbstractRowGroupHeader <C extends AbstractRowGroupHeader> implements Serializable, Comparable<C> {
+public class RowGroupHeaderOrFooter<C extends RowGroupHeaderOrFooter> implements Serializable, Comparable<C> {
     private RowGroup rowGroup;
 
-    public AbstractRowGroupHeader(RowGroup rowGroup) {
+    public RowGroupHeaderOrFooter(RowGroup rowGroup) {
         this.rowGroup = rowGroup;
     }
 
@@ -28,7 +28,7 @@ public class  AbstractRowGroupHeader <C extends AbstractRowGroupHeader> implemen
         return rowGroup;
     }
 
-    public int compareTo(AbstractRowGroupHeader that) {
+    public int compareTo(RowGroupHeaderOrFooter that) {
         if (that == null) return 1;
         RowGroup thisValue = this.getRowGroup();
         RowGroup thatValue = that.getRowGroup();
@@ -45,7 +45,7 @@ public class  AbstractRowGroupHeader <C extends AbstractRowGroupHeader> implemen
 
         if (!this.getClass().equals(obj.getClass()))
             return false;
-        AbstractRowGroupHeader that = (AbstractRowGroupHeader) obj;
+        RowGroupHeaderOrFooter that = (RowGroupHeaderOrFooter) obj;
         RowGroup thisValue = this.getRowGroup();
         RowGroup thatValue = that.getRowGroup();
         if (thisValue == null)

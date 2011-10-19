@@ -1273,5 +1273,20 @@
       <handler-class>org.openfaces.taglib.facelets.table.RowGroupingTagHandler</handler-class>
     </component>
   </tag>
+  <tag>
+    <tag-name>groupHeaderRow</tag-name>
+    <component>
+      <component-type>org.openfaces.GroupHeaderRow</component-type>
+      <renderer-type>org.openfaces.GroupHeaderRowRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.table.GroupHeaderRowTagHandler</handler-class>
+    </component>
+  </tag>
+  <tag>
+    <tag-name>groupFooterRow</tag-name>
+    <component>
+      <component-type>org.openfaces.GroupFooterRow</component-type>
+      <handler-class>org.openfaces.taglib.facelets.table.GroupFooterRowTagHandler</handler-class>
+    </component>
+  </tag>
 
 </facelet-taglib>

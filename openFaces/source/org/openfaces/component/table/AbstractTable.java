@@ -459,7 +459,6 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     private BaseColumn findColumnById(List<BaseColumn> allColumns, String columnId) {
         BaseColumn colById = null;
-        int allColCount = allColumns.size();
         for (BaseColumn col : allColumns) {
             if (columnId.equals(col.getId())) {
                 colById = col;
@@ -1325,6 +1324,20 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         };
     }
 
+    protected ValueExpression getColumnGroupingValueExpression(String columnId) {
+        if (columnId == null)
+            return null;
+        List<BaseColumn> allColumns = getAllColumns();
+        BaseColumn baseColumn = findColumnById(allColumns, columnId);
+        boolean ordinaryColumn = baseColumn instanceof Column;
+        if (!ordinaryColumn) return null;
+        Column column = (Column) baseColumn;
+        ValueExpression expression = column.getGroupingExpression();
+        if (expression == null)
+            expression = column.getSortingExpression();
+        return expression;
+    }
+
     protected RowComparator createRuleComparator(final FacesContext facesContext, SortingOrGroupingRule rule) {
         String columnId = rule.getColumnId();
         if (columnId == null)
@@ -1338,7 +1351,12 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         ValueExpression sortingExpression;
         if (ordinaryColumn) {
             Column tableColumn = (Column) column;
-            sortingExpression = tableColumn.getSortingExpression();
+            if (rule instanceof GroupingRule)
+                sortingExpression = tableColumn.getGroupingExpression();
+            else
+                sortingExpression = null;
+            if (sortingExpression == null)
+                sortingExpression = tableColumn.getSortingExpression();
         } else {
             sortingExpression = itemSelectedExpressionForColumn(column);
         }
@@ -1680,11 +1698,11 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         }
 
         public int compare(Object o1, Object o2) {
-            Runnable restorePrevParams = populateSortingExpressionParams(requestMap, o1);
+            Runnable restorePrevParams = populateSortingExpressionParams(var, requestMap, o1);
             ELContext elContext = facesContext.getELContext();
             comparisonValue1 = sortingExpressionBinding.getValue(elContext);
             restorePrevParams.run();
-            restorePrevParams = populateSortingExpressionParams(requestMap, o2);
+            restorePrevParams = populateSortingExpressionParams(var, requestMap, o2);
             comparisonValue2 = sortingExpressionBinding.getValue(elContext);
             restorePrevParams.run();
             int result;
@@ -1718,22 +1736,15 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
             return comparisonValue2;
         }
 
-        public void resetComparisonValue1() {
-            this.comparisonValue1 = null;
-        }
+    }
 
-        public void resetComparisonValue2() {
-            this.comparisonValue2 = null;
-        }
-
-        protected Runnable populateSortingExpressionParams(final Map<String, Object> requestMap, Object collectionObject) {
-            final Object prevValue = requestMap.put(var, collectionObject);
-            return new Runnable() {
-                public void run() {
-                    requestMap.put(var, prevValue);
-                }
-            };
-        }
+    protected Runnable populateSortingExpressionParams(final String var, final Map<String, Object> requestMap, Object collectionObject) {
+        final Object prevValue = requestMap.put(var, collectionObject);
+        return new Runnable() {
+            public void run() {
+                requestMap.put(var, prevValue);
+            }
+        };
     }
 
     @Override

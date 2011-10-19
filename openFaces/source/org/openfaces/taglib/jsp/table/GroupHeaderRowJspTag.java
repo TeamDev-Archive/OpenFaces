@@ -11,27 +11,13 @@
  */
 package org.openfaces.taglib.jsp.table;
 
-import org.openfaces.taglib.internal.AbstractComponentTag;
-import org.openfaces.taglib.internal.table.RowTag;
-import org.openfaces.taglib.jsp.AbstractComponentJspTag;
+import org.openfaces.taglib.internal.table.GroupHeaderRowTag;
 
-import javax.el.ValueExpression;
+public class GroupHeaderRowJspTag extends RowJspTag {
 
-/**
- * @author Dmitry Pikhulya
- */
-public class RowJspTag extends AbstractComponentJspTag {
-
-    public RowJspTag() {
-        super(new RowTag());
+    public GroupHeaderRowJspTag() {
+        super(new GroupHeaderRowTag());
     }
 
-    protected RowJspTag(AbstractComponentTag delegate) {
-        super(delegate);
-    }
-
-    public void setCondition(ValueExpression condition) {
-        getDelegate().setPropertyValue("condition", condition);
-    }
 
 }
