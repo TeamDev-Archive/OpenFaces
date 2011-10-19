@@ -37,6 +37,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -63,6 +64,7 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
      * If this field is non-null then mySourceDataModel shouldn't be used and myExtractedRows should be used instead.
      */
     private List<RowInfo> extractedRows;
+    private Map<Object, ? extends NodeInfo> extractedRowHierarchy;
     private List<Object> extractedRowKeys;
     private List<Object> allRetrievedRowKeys;
     private int extractedRowIndex = -1;
@@ -409,7 +411,7 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
             allRetrievedRowFilteringFlags = null;
 
         if (groupingRules != null && groupingRules.size() > 0) {
-            rows = groupRows(groupingRules, rows);
+            extractedRowHierarchy = groupRows(groupingRules, rows);
         }
 
         filteredRows = new ArrayList<RowInfo>(rows);
@@ -427,11 +429,38 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
         extractedRows = rows;
     }
 
-    private List<RowInfo> groupRows(List<GroupingRule> groupingRules, List<RowInfo> rows) {
-        for (GroupingRule groupingRule : groupingRules) {
-            rows = groupRows(groupingRule, rows);
+    public Map<Object, ? extends NodeInfo> getExtractedRowHierarchy() {
+        return extractedRowHierarchy;
+    }
+
+    private Map<Object, ? extends NodeInfo> groupRows(List<GroupingRule> groupingRules, List<RowInfo> rows) {
+        Map<Object, NodeInfo> extractedRowHierarchy = new HashMap<Object, NodeInfo>();
+        int rootNodeCount = 0;
+        if (groupingRules.size() > 0) {
+            List<RowInfo> rootRowInfos = groupRows(0, groupingRules.get(0), rows);
+            rootNodeCount = rootRowInfos.size();
+            for (int i = 1, subListSize = groupingRules.size(); i < subListSize; i++) {
+                GroupingRule groupingRule = groupingRules.get(i);
+                groupRows(i, groupingRule, rows);
+            }
         }
-        return rows;
+        extractedRowHierarchy.put("root", createNodeInfo(-1, rootNodeCount));
+        for (int rowIndex = 0, rowCount = rows.size(); rowIndex < rowCount; rowIndex++) {
+            RowInfo rowInfo = rows.get(rowIndex);
+            Object rowData = rowInfo.getRowData();
+            if (rowData instanceof RowGroupHeader) {
+                List<RowInfo> immediateSubRows = rowInfo.getImmediateSubRows();
+                extractedRowHierarchy.put(rowIndex,
+                        immediateSubRows != null
+                                ? createNodeInfo(rowInfo.getLevel(), immediateSubRows.size())
+                                : createNodeInfo(rowInfo.getLevel(), rowInfo.getAllGroupDataRows().size()));
+            }
+        }
+        return extractedRowHierarchy;
+    }
+
+    private DataTableNodeInfo createNodeInfo(int nodeLevel, Integer childCount) {
+        return new DataTableNodeInfo(nodeLevel, childCount, true);
     }
 
     private boolean recordsInTheSameGroup(Comparator<Object> comparator, RowInfo rowInfo1, RowInfo rowInfo2) {
@@ -443,22 +472,28 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
     }
 
 
-    private List<RowInfo> groupRows(GroupingRule groupingRule, List<RowInfo> rows) {
+    /**
+     * This method implies that it will be called once for each grouping rule starting from top level grouping rules.
+     */
+    private List<RowInfo> groupRows(int groupingRuleNo, GroupingRule groupingRule, List<RowInfo> rows) {
         List<RowInfo> rowsWithGroupRecords = new ArrayList<RowInfo>();
-        if (rows.size() == 0) return rowsWithGroupRecords;
+        if (rows.size() == 0) return Collections.emptyList();
+        List<RowInfo> topLevelGroups = null;
+
         FacesContext context = FacesContext.getCurrentInstance();
         AbstractTable.RowComparator ruleComparator = table.createRuleComparator(context, groupingRule);
         ValueExpression columnGroupingValueExpression = table.getColumnGroupingValueExpression(groupingRule.getColumnId());
+        RowInfo parentGroupHeader = null;
         RowInfo upperRowInfo = null;
         RowInfo rowInfo = rows.get(0);
         RowInfo lowerRowInfo;
-        RowGroup currentGroup = null;
-        List<RowInfo> currentGroupRecords = null;
+        RowInfo currentGroupHeaderInfo = null;
         for (int i = 0, count = rows.size(); i < count; i++, upperRowInfo = rowInfo, rowInfo = lowerRowInfo) {
             lowerRowInfo = i < count - 1 ? rows.get(i + 1) : null;
             assert rowInfo != null;
             Object rowData = rowInfo.getRowData();
             boolean regularDataRow = rowData != null && !(rowData instanceof RowGroupHeaderOrFooter);
+            RowInfo immediateSubGroupHeaderInfo = null;
             if (regularDataRow) {
                 boolean firstGroupRecord = !recordsInTheSameGroup(ruleComparator, upperRowInfo, rowInfo);
                 if (firstGroupRecord) {
@@ -470,29 +505,57 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
                     } finally {
                         restoreParams.run();
                     }
-                    currentGroup = new RowGroup(groupingRule.getColumnId(), groupingValue);
-                    currentGroupRecords = new ArrayList<RowInfo>();
-                    rowsWithGroupRecords.add(new RowInfo(new RowGroupHeader(currentGroup), -1));
+                    RowGroup currentGroup = new RowGroup(groupingRule.getColumnId(), groupingValue);
+                    RowGroupHeader rowGroupHeader = new RowGroupHeader(currentGroup);
+                    currentGroupHeaderInfo = new RowInfo(rowGroupHeader, -1);
+                    currentGroupHeaderInfo.setLevel(groupingRuleNo);
+                    rowsWithGroupRecords.add(currentGroupHeaderInfo);
+                    immediateSubGroupHeaderInfo = currentGroupHeaderInfo;
+                    currentGroupHeaderInfo.setAllGroupDataRows(new ArrayList<RowInfo>());
                 }
 
                 rowsWithGroupRecords.add(rowInfo);
-                if (currentGroupRecords == null) throw new IllegalStateException("Current group cannot be located. " +
+                if (currentGroupHeaderInfo == null) throw new IllegalStateException("Current group cannot be located. " +
                         "The previous row was a regular one according to recordsInTheSameGroup, and the first " +
                         "consecutive regular row in the list is supposed to always create the group");
-                currentGroupRecords.add(rowInfo);
+                rowInfo.setLevel(groupingRuleNo + 1);
+                currentGroupHeaderInfo.getAllGroupDataRows().add(rowInfo);
 
                 if (createGroupFooters) {
                     boolean lastGroupRecord = !recordsInTheSameGroup(ruleComparator, rowInfo, lowerRowInfo);
                     if (lastGroupRecord) {
-                        rowsWithGroupRecords.add(new RowInfo(new RowGroupFooter(currentGroup), -1));
+                        // todo: group footers still have to be placed into the row hierarchy properly (registerImmediateGroupChildren?)
+                        RowGroupHeader rowGroupHeader = (RowGroupHeader) currentGroupHeaderInfo.getRowData();
+                        RowInfo footerRowInfo = new RowInfo(new RowGroupFooter(rowGroupHeader.getRowGroup()), -1);
+                        rowsWithGroupRecords.add(footerRowInfo);
                     }
                 }
 
             } else {
                 rowsWithGroupRecords.add(rowInfo);
+                if (rowData instanceof RowGroupHeader)
+                    parentGroupHeader = rowInfo;
+            }
+            if (immediateSubGroupHeaderInfo != null) {
+                List<RowInfo> subRows;
+                if (parentGroupHeader != null) {
+                    subRows = parentGroupHeader.getImmediateSubRows();
+                    if (subRows == null) {
+                        subRows = new ArrayList<RowInfo>();
+                        parentGroupHeader.setImmediateSubRows(subRows);
+                    }
+                } else {
+                    if (topLevelGroups == null)
+                        topLevelGroups = new ArrayList<RowInfo>();
+                    subRows = topLevelGroups;
+                }
+                subRows.add(immediateSubGroupHeaderInfo);
             }
         }
-        return rowsWithGroupRecords;
+        rows.clear();
+        rows.addAll(rowsWithGroupRecords);
+
+        return topLevelGroups;
     }
 
 
@@ -1071,13 +1134,14 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
     public static class RowInfo {
         private final Object rowData;
         private final int indexInOriginalList;
-
+        private int level;
+        private List<RowInfo> immediateSubRows;
+        private List<RowInfo> allGroupDataRows;
 
         public RowInfo(Object rowData, int indexInOriginalList) {
             this.rowData = rowData;
             this.indexInOriginalList = indexInOriginalList;
         }
-
 
         public Object getRowData() {
             return rowData;
@@ -1085,6 +1149,31 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
 
         public int getIndexInOriginalList() {
             return indexInOriginalList;
+        }
+
+        public int getLevel() {
+            return level;
+        }
+
+        public void setLevel(int level) {
+            this.level = level;
+        }
+
+        public List<RowInfo> getImmediateSubRows() {
+            return immediateSubRows;
+        }
+
+        public void setImmediateSubRows(List<RowInfo> immediateSubRows) {
+            this.immediateSubRows = immediateSubRows;
+        }
+
+
+        public List<RowInfo> getAllGroupDataRows() {
+            return allGroupDataRows;
+        }
+
+        public void setAllGroupDataRows(List<RowInfo> allGroupDataRows) {
+            this.allGroupDataRows = allGroupDataRows;
         }
     }
 }

@@ -16,7 +16,6 @@ import org.openfaces.component.table.TreePath;
 import org.openfaces.component.table.TreeTable;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.util.Rendering;
-import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.StyleGroup;
 import org.openfaces.util.Styles;
@@ -99,7 +98,7 @@ public class TreeTableRenderer extends AbstractTableRenderer {
     protected String[] getNecessaryJsLibs(FacesContext context) {
         String[] parentLibs = super.getNecessaryJsLibs(context);
         String[] libs = new String[]{
-                Resources.internalURL(context, "table/treeTable.js")
+                treeTableJsURL(context)
         };
         String[] resultLibs = new String[parentLibs.length + libs.length];
         System.arraycopy(parentLibs, 0, resultLibs, 0, parentLibs.length);

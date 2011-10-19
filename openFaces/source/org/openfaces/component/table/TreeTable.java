@@ -481,7 +481,7 @@ public class TreeTable extends AbstractTable {
     }
 
     @Override
-    public Map<Object, ? extends TreeStructureEntry> getTreeStructureMap(FacesContext context) {
+    public Map<Object, ? extends NodeInfo> getTreeStructureMap(FacesContext context) {
         return rowIndexToExpansionData;
     }
 

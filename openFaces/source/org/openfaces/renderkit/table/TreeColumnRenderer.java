@@ -11,11 +11,11 @@
  */
 package org.openfaces.renderkit.table;
 
-import org.openfaces.component.table.ExpansionToggle;
+import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.Cell;
 import org.openfaces.component.table.ColumnGroup;
+import org.openfaces.component.table.ExpansionToggle;
 import org.openfaces.component.table.TreeColumn;
-import org.openfaces.component.table.TreeTable;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.Components;
 import org.openfaces.util.Environment;
@@ -47,24 +47,24 @@ public class TreeColumnRenderer extends RendererBase {
         TreeColumn treeColumn = ((TreeColumn) component);
         Cell customCell = (Cell) treeColumn.getAttributes().get(ATTR_CUSTOM_CELL);
         ResponseWriter writer = context.getResponseWriter();
-        TreeTable treeTable = getTreeTable(component);
+        AbstractTable table = getTable(component);
         UIComponent cellContentsContainer = customCell != null ? customCell : component;
         if (!treeColumn.getShowAsTree()) {
             Rendering.renderChildren(context, cellContentsContainer);
-            TableStructure.writeNonBreakableSpaceForEmptyCell(writer, treeTable, cellContentsContainer);
+            TableStructure.writeNonBreakableSpaceForEmptyCell(writer, table, cellContentsContainer);
             return;
         }
 
-        if (treeTable == null)
+        if (table == null)
             throw new IllegalStateException("TreeColumn must be embedded into a TreeTable component");
-        int level = treeTable.getNodeLevel();
+        int level = table.getNodeLevel();
 
         String indentStyle = null;
         String levelIndent = treeColumn.getLevelIndent();
         if (!Rendering.isNullOrEmpty(levelIndent)) {
             indentStyle = "width: " + levelIndent;
         }
-        String indentClass = Styles.getCSSClass(context, treeTable, indentStyle, DEFAULT_INDENT_CLASS);
+        String indentClass = Styles.getCSSClass(context, table, indentStyle, DEFAULT_INDENT_CLASS);
 
         writer.startElement("table", component);
         writer.writeAttribute("cellspacing", "0", null);
@@ -89,7 +89,7 @@ public class TreeColumnRenderer extends RendererBase {
         boolean showTreeStructure = false;
         String treeStructureStyle = showTreeStructure
                 ? "background: url('" + Resources.internalURL(context, "table/treeStructureSolid.png") +
-                                  "') no-repeat left center;"
+                "') no-repeat left center;"
                 : null;
 
         if (Environment.isOpera() && indentStyle != null)
@@ -99,10 +99,10 @@ public class TreeColumnRenderer extends RendererBase {
         }
 
 
-        boolean nodeHasChildren = treeTable.getNodeHasChildren();
+        boolean nodeHasChildren = table.getNodeHasChildren();
         if (nodeHasChildren) {
             String expansionToggleCellClass = Styles.getCSSClass(
-                    context, treeTable, treeColumn.getExpansionToggleCellStyle(),
+                    context, table, treeColumn.getExpansionToggleCellStyle(),
                     DEFAULT_EXPANSION_TOGGLE_CELL_CLASS, treeColumn.getExpansionToggleCellClass());
             expansionToggleCellClass = Styles.mergeClassNames(expansionToggleCellClass, indentClass);
             writer.writeAttribute("class", Styles.mergeClassNames(expansionToggleCellClass, indentClass), null);
@@ -125,17 +125,17 @@ public class TreeColumnRenderer extends RendererBase {
         writer.startElement("td", component);
 
         Rendering.renderChildren(context, cellContentsContainer);
-        TableStructure.writeNonBreakableSpaceForEmptyCell(writer, treeTable, cellContentsContainer);
+        TableStructure.writeNonBreakableSpaceForEmptyCell(writer, table, cellContentsContainer);
         writer.endElement("td");
         writer.endElement("tr");
         writer.endElement("table");
     }
 
-    private TreeTable getTreeTable(UIComponent column) {
+    private AbstractTable getTable(UIComponent column) {
         UIComponent parent = column.getParent();
         while (parent instanceof ColumnGroup)
             parent = parent.getParent();
-        return (TreeTable) parent;
+        return (AbstractTable) parent;
     }
 
 

@@ -15,7 +15,9 @@ package org.openfaces.component.table;
 /**
  * @author Dmitry Pikhulya
  */
-public interface TreeStructureEntry {
+public interface NodeInfo {
+    public int getNodeLevel();
+
     public int getChildNodeCount();
 
     public boolean getNodeHasChildren();

@@ -1668,8 +1668,31 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     }
 
-    public Map<Object, ? extends TreeStructureEntry> getTreeStructureMap(FacesContext context) {
+    /**
+     * @return null means that no table rows are organized as a plain list and not a hierarchy currently
+     */
+    public Map<Object, ? extends NodeInfo> getTreeStructureMap(FacesContext context) {
         return null;
+    }
+
+    public int getNodeLevel() {
+        return 0;
+    }
+
+    public boolean getNodeHasChildren() {
+        return false;
+    }
+
+    public String getTextStyle() {
+        return null;
+    }
+
+    public String getTextClass() {
+        return null;
+    }
+
+    public boolean isNodeExpanded() {
+        return true;
     }
 
     protected class RowComparator implements Comparator<Object> {

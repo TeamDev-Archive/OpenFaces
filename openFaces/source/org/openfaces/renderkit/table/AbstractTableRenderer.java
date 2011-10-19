@@ -68,6 +68,10 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         return Resources.internalURL(context, "table/table.js");
     }
 
+    public static String treeTableJsURL(FacesContext context) {
+        return Resources.internalURL(context, "table/treeTable.js");
+    }
+
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         if (!component.isRendered())
@@ -775,9 +779,16 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         return false;
     }
 
-    protected static void encodeFoldingSupport(FacesContext context,
+    protected static boolean encodeFoldingSupport(FacesContext context,
                                                ScriptBuilder buf,
                                                AbstractTable table) throws IOException {
+        JSONObject treeStructure = formatTreeStructureMap(context, table, -1, -1);
+        if (treeStructure == null) {
+            // this can be the case for a grouping-enabled table which doesn't have any grouping rule configured,
+            // which means that it is displayed as a plain list and no special hierarchy handling is required
+            return false;
+        }
+
         ResponseWriter writer = context.getResponseWriter();
         Rendering.renderHiddenField(writer, getExpandedNodesFieldName(context, table), null);
 
@@ -791,10 +802,11 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         }
 
         buf.initScript(context, table, "O$.TreeTable._initFolding",
-                formatTreeStructureMap(context, table, -1, -1),
+                treeStructure,
                 treeColumnParamsArray,
                 DEFAULT_TOGGLE_CLASS_NAME,
                 Resources.internalURL(context, "table/treeStructureSolid.png"));
+        return true;
     }
 
     private static String getExpandedNodesFieldName(FacesContext context, AbstractTable treeTable) {
@@ -807,11 +819,11 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
             int fromRowIndex,
             int rowCount) {
         JSONObject result = new JSONObject();
-        Map<Object, ? extends TreeStructureEntry> structureMap = table.getTreeStructureMap(context);
+        Map<Object, ? extends NodeInfo> structureMap = table.getTreeStructureMap(context);
         if (structureMap == null)
-            throw new IllegalStateException("table.getTreeStructureMap shouldn't return null in a folding-enabled table");
-        Set<? extends Map.Entry<Object, ? extends TreeStructureEntry>> entries = structureMap.entrySet();
-        for (Map.Entry<Object, ? extends TreeStructureEntry> entry : entries) {
+            return null;
+        Set<? extends Map.Entry<Object, ? extends NodeInfo>> entries = structureMap.entrySet();
+        for (Map.Entry<Object, ? extends NodeInfo> entry : entries) {
             Object rowIndex = entry.getKey();
             if (fromRowIndex != -1) {
                 if (!(rowIndex instanceof Integer))
@@ -822,7 +834,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
                 intRowIndex -= fromRowIndex;
                 rowIndex = intRowIndex;
             }
-            TreeStructureEntry expansionData = entry.getValue();
+            NodeInfo expansionData = entry.getValue();
             boolean nodeHasChildren = expansionData.getNodeHasChildren();
             Object childCount = nodeHasChildren
                     ? (expansionData.getChildrenPreloaded() ? String.valueOf(expansionData.getChildNodeCount()) : "?")

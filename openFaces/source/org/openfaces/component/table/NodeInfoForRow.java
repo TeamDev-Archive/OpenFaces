@@ -14,7 +14,7 @@ package org.openfaces.component.table;
 /**
  * @author Dmitry Pikhulya
  */
-public class NodeInfoForRow implements TreeStructureEntry {
+public class NodeInfoForRow implements NodeInfo {
     private TreePath nodePath;
     private TreePath nodeKeyPath;
     private TreePath nodeIndexPath;
