@@ -47,7 +47,7 @@ public class GroupFooterRow extends GroupHeaderOrFooterRow {
 
     @Override
     protected Class<? extends RowGroupHeaderOrFooter> getExpectedRowDataClass() {
-        return RowGroupHeader.class;
+        return RowGroupFooter.class;
     }
 
 

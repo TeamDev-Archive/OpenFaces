@@ -67,8 +67,8 @@ public class GroupHeaderRow extends GroupHeaderOrFooterRow {
 
         Cell groupHeaderCell = new Cell();
         groupHeaderCell.getChildren().add(outputText);
-        int renderedColumnCount = dataTable.getRenderedColumns().size();
-        groupHeaderCell.setSpan(renderedColumnCount);
+        int allColumnCount = dataTable.getAllColumns().size();
+        groupHeaderCell.setSpan(allColumnCount);
         return groupHeaderCell;
     }
 
@@ -90,8 +90,7 @@ public class GroupHeaderRow extends GroupHeaderOrFooterRow {
         int explicitlySpecifiedChildren = super.getChildCount();
         if (explicitlySpecifiedChildren > 0) {
             return explicitlySpecifiedChildren;
-        }
-        else
+        } else
             return cells.size();
     }
 
