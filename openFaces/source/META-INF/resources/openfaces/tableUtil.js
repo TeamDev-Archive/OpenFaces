@@ -1791,8 +1791,8 @@ O$.Tables = {
     O$.setStyleMappings(headerBox, {
               headerSection: table._params.header.className,
               headerRowStyle: table._params.header.headingsClassName,
-              compoundColumn: column._getCompoundClassName(),
-              colHeader: column.header ? column.header.className : null,
+              compoundColumn: column ? column._getCompoundClassName() : null,
+              colHeader: column && column.header ? column.header.className : null,
               headerBoxStyle: additionalClassName
             });
     var ie = '\v' == 'v';
