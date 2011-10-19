@@ -152,7 +152,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("span", table);
         writer.writeAttribute("id", table.getClientId(context) + "::auxiliaryTags", null);
-        writer.writeAttribute("display", "none", null);
+        writer.writeAttribute("style", "display: none", null);
         encodeAdditionalFeaturesSupport(context, table);
         Styles.renderStyleClasses(context, table);
         writer.endElement("span");
