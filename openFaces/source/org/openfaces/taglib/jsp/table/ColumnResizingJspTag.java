@@ -45,38 +45,6 @@ public class ColumnResizingJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("resizingState", resizingState);
     }
 
-    public void setRolloverSeparatorStyle(ValueExpression rolloverSeparatorStyle) {
-        getDelegate().setPropertyValue("rolloverSeparatorStyle", rolloverSeparatorStyle);
-    }
-
-    public void setRolloverSeparatorClass(ValueExpression rolloverSeparatorClass) {
-        getDelegate().setPropertyValue("rolloverSeparatorClass", rolloverSeparatorClass);
-    }
-
-    public void setRolloverSeparatorHeaderStyle(ValueExpression rolloverSeparatorHeaderStyle) {
-        getDelegate().setPropertyValue("rolloverSeparatorHeaderStyle", rolloverSeparatorHeaderStyle);
-    }
-
-    public void setRolloverSeparatorHeaderClass(ValueExpression rolloverSeparatorHeaderClass) {
-        getDelegate().setPropertyValue("rolloverSeparatorHeaderClass", rolloverSeparatorHeaderClass);
-    }
-
-    public void setDraggedSeparatorStyle(ValueExpression draggedSeparatorStyle) {
-        getDelegate().setPropertyValue("draggedSeparatorStyle", draggedSeparatorStyle);
-    }
-
-    public void setDraggedSeparatorClass(ValueExpression draggedSeparatorClass) {
-        getDelegate().setPropertyValue("draggedSeparatorClass", draggedSeparatorClass);
-    }
-
-    public void setDraggedSeparatorHeaderStyle(ValueExpression draggedSeparatorHeaderStyle) {
-        getDelegate().setPropertyValue("draggedSeparatorHeaderStyle", draggedSeparatorHeaderStyle);
-    }
-
-    public void setDraggedSeparatorHeaderClass(ValueExpression draggedSeparatorHeaderClass) {
-        getDelegate().setPropertyValue("draggedSeparatorHeaderClass", draggedSeparatorHeaderClass);
-    }
-
     public void setAutoSaveState(ValueExpression autoSaveState) {
         getDelegate().setPropertyValue("autoSaveState", autoSaveState);
     }

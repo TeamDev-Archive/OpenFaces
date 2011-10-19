@@ -36,10 +36,12 @@ public class ColumnTag extends BaseColumnTag {
     }
 
     @Override
-    public void setComponentProperties(FacesContext facesContext, UIComponent component) {
-        super.setComponentProperties(facesContext, component);
+    public void setComponentProperties(FacesContext context, UIComponent component) {
+        super.setComponentProperties(context, component);
         Column column = ((Column) component);
         setPropertyBinding(component, "sortingExpression");
+        setPropertyBinding(component, "groupingExpression");
+        setConverterProperty(context, component, "groupingValueConverter");
 
         String sortingComparator = getPropertyValue("sortingComparator");
         if (sortingComparator != null) {
@@ -50,7 +52,7 @@ public class ColumnTag extends BaseColumnTag {
                 else
                     throw new IllegalArgumentException("sortingComparator attribute should either be defined as binding or as \"" + CASE_INSENSITIVE_TEXT_COMPARATOR + "\", but it is defined as follows: " + sortingComparator);
             } else {
-                comparatorExpression = createValueExpression(facesContext, "sortingComparator", sortingComparator);
+                comparatorExpression = createValueExpression(context, "sortingComparator", sortingComparator);
             }
             column.setSortingComparatorExpression(comparatorExpression);
         }

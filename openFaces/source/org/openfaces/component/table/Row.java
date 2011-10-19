@@ -96,6 +96,10 @@ public class Row extends UIComponentBase {
         this.condition = condition;
     }
 
+    protected String getDefaultStyleClass() {
+        return null;
+    }
+
     public String getStyle() {
         return ValueBindings.get(this, "style", style);
     }
@@ -195,8 +199,11 @@ public class Row extends UIComponentBase {
     public String getStyleClassForRow(FacesContext context, AbstractTable table) {
         boolean applicable = getCondition();
         Integer customRowIndex = (Integer) getAttributes().get(TableBody.CUSTOM_ROW_INDEX_ATTRIBUTE);
+        StyleGroup styleGroup = customRowIndex != null
+                ? StyleGroup.regularStyleGroup(1 + customRowIndex)
+                : StyleGroup.regularStyleGroup();
         String result = applicable
-                ? Styles.getCSSClass(context, table, getStyle(), StyleGroup.regularStyleGroup(1 + customRowIndex), getStyleClass())
+                ? Styles.getCSSClass(context, table, getStyle(), styleGroup, getStyleClass(), getDefaultStyleClass())
                 : null;
 
         return result;

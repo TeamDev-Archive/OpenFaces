@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * @author Dmitry Pikhulya
  */
-public class TempNodeParams {
+class TempNodeParams {
     private Object nodeData;
     private NodeInfoForRow nodeInfoForRow;
     private List<NodeInfoForRow> subtreeNodeInfosForRendering;

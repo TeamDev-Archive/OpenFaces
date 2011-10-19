@@ -53,34 +53,96 @@ O$.TreeTable = {
     });
   },
 
-  // -------------------------- FOLDING SUPPORT
+  _setSelectedNodeIndexes: function(treeTableId, selectedNodeIndexes) {
+    if (!treeTableId)
+      throw "O$._setSelectedNodeIndexes: treeTable's clientId must be passed as a parameter";
+    var table = O$(treeTableId);
+    if (!table)
+      throw "O$._setSelectedNodeIndexes: Invalid clientId passed - no such component was found: " + treeTableId;
+    if (!table._of_treeTableComponentMarker)
+      throw "O$._setSelectedNodeIndexes: The clientId passed refers to a component other than <o:treeTable> : " + treeTableId;
+    if (!table._multipleSelectionAllowed)
+      throw "O$._setSelectedNodeIndexes: The table is not set up for multiple selection. Table's clientId is: " + treeTableId;
+    if (!selectedNodeIndexes) {
+      throw "O$._setSelectedNodeIndexes: Invalid selectedNodeIndexes passed : " + treeTableId;
+    }
+    var selectedIndexes = [];
+    selectedNodeIndexes.forEach(function(idx) {
+      if (idx > -1) selectedIndexes.push(idx);
+    });
+    table._setSelectedItems(selectedIndexes, true);
+  },
 
-  _initFolding: function(tableId, toggleClassName, clientFoldingParams, structureImageUrl) {
-    var rowIndexToChildCount = clientFoldingParams ? clientFoldingParams[0] : null;
-    var treeColumnParams = clientFoldingParams ? clientFoldingParams[1] : null;
 
-    var table = O$.initComponent(tableId, null, {
+
+  // --------------------------------- GENERIC FOLDING SUPPORT (FOR TABLE & TREETABLE)
+
+
+
+  /**
+   * Initializes the generic folding mechanism for a table. This mechanism consists of the following main aspects:
+   *
+   * - It organizes the table's rows into the specified tree structure, and activates the folding behavior where user
+   *   can expand/collapse nodes by clicking on the (pre-rendered) expansion toggles, and complements the selection
+   *   keyboard navigation feature with support for expanding/collapsing the currently selected row via keyboard.
+   *
+   * - The tree structure is specified in the rowIndexToChildCount entry inside of clientFoldingParams, and represents
+   *   an associative array, or a map, where keys are the "root" string, or a parent row index number, and the
+   *   respective values contain the number of immediate child nodes of the respective parent node, or the "?" string
+   *   if child rows for the respective node has not been loaded yet. Absence of a key for a certain row index means
+   *   that the appropriate row can be considered a "leaf" node with no child nodes.
+   *
+   * - This mechanism requires expansion toggles to be rendered inside of each row that has child rows, and
+   *   they should have "o_toggle_e"/"o_toggle_c" class to signify the expanded or collapsed state respectively.
+   *
+   * - The current table's expansion state is always reflected in the <table-id>::expandedNodes hidden field.
+   *
+   * - If an attempt is made to expand a node whose child nodes are not preloaded (has the "?" value in the
+   *   rowIndexToChildCount map), then this mechanism will send a server request to load the missing rows. This can be
+   *   done in two ways depending on the table's _useAjax property. If it is set to true, then it sends the Ajax partial
+   *   request for a portion named "subRows:<rowIndex>", and otherwise, it submits the whole page with the
+   *   updated <table-id>::expandedNodes field that reflects the requested expansion state.
+   *
+   * - The table rows API is extended with isExpanded/setExpanded methods which expand and collapse child nodes.
+   *
+   * @param tableId - client-side id of the table to which folding support should be added
+   * @param rowIndexToChildCount - an associative array where key is "root" or parent row index, and value is
+   *                               the number of immediate child nodes if their records are already rendered, or "?"
+   *                               if child records should be loaded with a separate server request.
+   * @param treeColumnParams - an array where each entry corresponds to each tree column (a column with expansion toggle)
+   *                           rendered in the table, and stores the following sub-array:
+   *                           [expandedImageUrl, collapsedImageUrl]
+   * @param toggleClassName - CSS class name which has to be applied to the expansion toggles
+   * @param structureImageUrl - not implemented yet
+   */
+  _initFolding: function(tableId, rowIndexToChildCount, treeColumnParams, toggleClassName, structureImageUrl) {
+    var table = O$(tableId);
+    var super_addLoadedRows = table._addLoadedRows;
+    O$.extend(table, {
       _rowIndexToChildCount: rowIndexToChildCount,
-      _foldingMode: clientFoldingParams ? "client" : "server",
       _treeColumnParams: treeColumnParams,
       _toggleClassName: toggleClassName,
       _structureImageUrl: structureImageUrl,
 
-      _updateRowVisibility: function() {
+        /*
+           1. Saves the current tree hierarchy (root rows, child/parent references, level) into row objects,
+           2. Shows/hides rows according to their current expansion state (as defined by their "expanded" property).
+         */
+      _updateRowTreeStructure: function() {
         var rowIndexToChildCount = this._rowIndexToChildCount;
         var rootNodeCount = rowIndexToChildCount["root"];
         var rows = table.body._getRows();
         this._styleRecalculationOnNodeExpansionNeeded = !!this._params.body.oddRowClassName;
         var pseudoCommonRootRow = {_pseudoRow: true, _childRows: []};
 
-        function processRowVisibility(rows, rowIndexToChildCount, rowIndex, rowCount, currentLevelVisible, level, parentRow) {
-          for (var i = 0; i < rowCount; i++) {
-            var row = rows[rowIndex];
-            O$.assert(row, "processRowVisibility: rowIndex == " + rowIndex);
+        function processRecursively(firstRowIndex, level, thisLevelRowCount, thisLevelVisible, parentRow) {
+          for (var i = 0; i < thisLevelRowCount; i++) {
+            var row = rows[firstRowIndex];
+            O$.assert(row, "processRowVisibility: rowIndex == " + firstRowIndex);
             row._level = level;
-            row._setVisible(currentLevelVisible);
+            row._setVisible(thisLevelVisible);
             if (!row._table._styleRecalculationOnNodeExpansionNeeded) {
-              if (currentLevelVisible && O$.isExplorer()) { // workaround for IE issue: when custom row style is applied to
+              if (thisLevelVisible && O$.isExplorer()) { // workaround for IE issue: when custom row style is applied to
                             // parent rows and a node is expanded, spacing between cells becomes white after node expansion
                 row._updateStyle();
               }
@@ -90,24 +152,24 @@ O$.TreeTable = {
               parentRow._childRows.push(row);
             }
 
-            var childCount = rowIndexToChildCount[rowIndex];
+            var childCount = rowIndexToChildCount[firstRowIndex];
             if (childCount) {
               row._hasChildren = true;
               row._childRows = [];
               row._childrenLoaded = (childCount != "?");
-              var nextLevelVisible = currentLevelVisible && row._isExpanded();
+              var nextLevelVisible = thisLevelVisible && row._isExpanded();
               if (row._childrenLoaded) {
-                rowIndex = processRowVisibility(rows, rowIndexToChildCount, rowIndex + 1, childCount, nextLevelVisible, level + 1, row);
+                firstRowIndex = processRecursively(firstRowIndex + 1, level + 1, childCount, nextLevelVisible, row);
               } else
-                rowIndex++;
+                firstRowIndex++;
             } else {
               row._hasChildren = false;
-              rowIndex++;
+              firstRowIndex++;
             }
           }
-          return rowIndex;
+          return firstRowIndex;
         }
-        processRowVisibility(rows, rowIndexToChildCount, 0, rootNodeCount, true, 0, pseudoCommonRootRow);
+        processRecursively(0, 0, rootNodeCount, true, pseudoCommonRootRow);
 
         table._rootRows = pseudoCommonRootRow._childRows;
 
@@ -133,6 +195,9 @@ O$.TreeTable = {
         }, 50);
       },
 
+      /*
+        Saves all indexes for all expanded rows into the <table-id>::expandedNodes field
+       */
       _updateExpandedNodesField: function() {
         var field = O$(this.id + "::expandedNodes");
         var expandedRowIndexes = "";
@@ -148,6 +213,9 @@ O$.TreeTable = {
         field.value = expandedRowIndexes;
       },
 
+      /*
+        Handles key events for expanding/collapsing the selected row
+       */
       _onKeyboardNavigation: function(e) {
         var selectedItems = this._getSelectedItems();
         if (selectedItems.length != 1)
@@ -169,77 +237,96 @@ O$.TreeTable = {
         }
 
         return true;
+      },
+
+      /*
+        Initializes the new rows
+        Updates the tree structure to account for the newly inserted rows
+        Updates the expanded nodes state (to account for changed node indexes)
+       */
+      _addLoadedRows: function(subRowsData) {
+        super_addLoadedRows.apply(this, arguments);
+
+        var newRows = this.__newRows;
+        var parentRowIndex = this.__afterRowIndex;
+        var newRowIndexToChildCount = subRowsData["structureMap"];
+
+        var rows = this.body._getRows();
+        var parentRow = parentRowIndex != -1 ? rows[parentRowIndex] : null;
+
+        if (parentRow) {
+          if (newRows == null || newRows.length == 0) {
+            parentRow._childrenEmpty = true;
+            var toggles = parentRow._toggles;
+            toggles.forEach(function(toggle) {
+              toggle.style.visibility = "hidden";
+              toggle.className = "";
+            });
+          }
+          parentRow._childrenLoaded = true;
+        }
+        var addedRowCount = newRows.length;
+        var i;
+        for (i = 0; i < addedRowCount; i++) {
+          var newRow = newRows[i];
+          O$.TreeTable._initRow(newRow);
+        }
+
+        if (parentRowIndex == -1)
+          this._rowIndexToChildCount = newRowIndexToChildCount;
+        else {
+          // move existing row indexes to their new locations in the _rowIndexToChildCount map for the rows which are
+          // moved as a result of row insertion (the rows that are located after the insertion point)
+          var rowIndexToChildCount = this._rowIndexToChildCount;
+          var newRowIndex;
+          for (var rowIndex = rows.length - 1 - addedRowCount; rowIndex > parentRowIndex; rowIndex--) {
+            if (rowIndexToChildCount[rowIndex] != undefined) {
+              newRowIndex = rowIndex + addedRowCount;
+              rowIndexToChildCount[newRowIndex] = rowIndexToChildCount[rowIndex];
+              rowIndexToChildCount[rowIndex] = undefined;
+            }
+          }
+          // insert the hierarchy of the newly loaded nodes into the _rowIndexToChildCount map.
+          rowIndexToChildCount[parentRowIndex] = newRowIndexToChildCount[0];
+          for (i = 0; i < addedRowCount; i++) {
+            newRowIndex = parentRowIndex + 1 + i;
+            rowIndexToChildCount[newRowIndex] = newRowIndexToChildCount[i + 1];
+          }
+        }
+
+        this._updateExpandedNodesField();
+        if (!parentRow._isExpanded) {
+            // This can be the case when the user double-clicks on the expansion toggle quickly, which first sends
+            // the node expansion request, and then collapses the node, and then the request completes and appends the
+            // nodes below the "collapsed" node, so we should ensure that the new rows are not visible until the node
+            // is reopened again in this case.
+          table._updateRowTreeStructure();
+        }
+
+        if (table._selectionMode == "hierarchical") {
+          // _updateRowVisibility is needed to update parent/child references, but we can do it asynchronously to avoid
+          // degrading the perceived performance
+          setTimeout(function() {
+            table._updateRowTreeStructure();
+          }, 1);
+        }
       }
 
     });
 
-    var super_addLoadedRows = table._addLoadedRows;
-    table._addLoadedRows = function(subRowsData) {
-      super_addLoadedRows.apply(this, arguments);
-
-      var newRows = this.__newRows;
-      var parentRowIndex = this.__afterRowIndex;
-      var newRowIndexToChildCount = subRowsData["structureMap"];
-
-      var rows = this.body._getRows();
-      var parentRow = parentRowIndex != -1 ? rows[parentRowIndex] : null;
-
-      if (parentRow) {
-        if (newRows == null || newRows.length == 0) {
-          parentRow._childrenEmpty = true;
-          var toggles = parentRow._toggles;
-          toggles.forEach(function(toggle) {
-            toggle.style.visibility = "hidden";
-            toggle.className = "";
-          });
-        }
-        parentRow._childrenLoaded = true;
-      }
-      var addedRowCount = newRows.length;
-      var i;
-      for (i = 0; i < addedRowCount; i++) {
-        var newRow = newRows[i];
-        O$.TreeTable._initRow(newRow);
-      }
-
-      if (parentRowIndex == -1)
-        this._rowIndexToChildCount = newRowIndexToChildCount;
-      else {
-        var rowIndexToChildCount = this._rowIndexToChildCount;
-        var newRowIndex;
-        for (var rowIndex = rows.length - 1 - addedRowCount; rowIndex > parentRowIndex; rowIndex--) {
-          if (rowIndexToChildCount[rowIndex] != undefined) {
-            newRowIndex = rowIndex + addedRowCount;
-            rowIndexToChildCount[newRowIndex] = rowIndexToChildCount[rowIndex];
-            rowIndexToChildCount[rowIndex] = undefined;
-          }
-        }
-        rowIndexToChildCount[parentRowIndex] = newRowIndexToChildCount[0];
-        for (i = 0; i < addedRowCount; i++) {
-          newRowIndex = parentRowIndex + 1 + i;
-          rowIndexToChildCount[newRowIndex] = newRowIndexToChildCount[i + 1];
-        }
-      }
-
-      this._updateExpandedNodesField();
-      if (table._selectionMode == "hierarchical") {
-        // _updateRowVisibility is needed to update parent/child references, but we can do it asynchronously to avoid
-        // degrading the perceived performance
-        setTimeout(function() {
-          table._updateRowVisibility();
-        }, 1);
-      }
-    };
 
     var rows = table.body._getRows();
     rows.forEach(O$.TreeTable._initRow);
-    if (table._foldingMode == "client") {
-      table._updateRowVisibility();
-      table._updateExpandedNodesField();
-    }
 
+    table._updateRowTreeStructure();
+    table._updateExpandedNodesField();
   },
 
+  /*
+    Locates row's expansion toggles, and binds the expansion behavior to them
+    Detects row's expansion state (by the presence of appropriate expansion toggles)
+    Introduces row expansion API
+   */
   _initRow: function(row) {
     var table = row._table;
 
@@ -303,7 +390,13 @@ O$.TreeTable = {
       },
 
       /*
-       _setExpanded(expanded) may not be able to set the "expanded" state to true in some cases.
+       If child nodes for this node are loaded, this method expands/collapses the node and updates the presentation
+       appropriately, otherwise it sends a row expansion request to the server in one of two ways. If table's _useAjax
+       property is true, then it sends the Ajax partial request for a portion named "subRows:<parentRowIndex>",
+       otherwise, it submits the whole page with the updated <table-id>::expandedNodes field that reflects the
+       requested expansion state.
+
+       This method can be not able to set the "expanded" state to true in some cases.
        Invokers must check _isExpanded() to see if expansion was successful.
        */
       _setExpanded: function(expanded) {
@@ -311,38 +404,36 @@ O$.TreeTable = {
           return;
         if (this._expanded == expanded)
           return;
-        var rowTable = this._table;
         var prevExpanded = this._expanded;
         this._expanded = expanded;
-        var thisRow = this;
         updateExpansionStateClass();
 
-        function changeToggleImage(showExpandedImage) {
-          var toggles = thisRow._toggles;
+        function setToggleImage(showExpandedImage) {
+          var toggles = row._toggles;
           for (var toggleIndex = 0, toggleCount = toggles.length; toggleIndex < toggleCount; toggleIndex++) {
             var toggle = toggles[toggleIndex];
-            var treeColumnParams = rowTable._treeColumnParams[toggleIndex];
+            var treeColumnParams = table._treeColumnParams[toggleIndex];
             toggle.src = showExpandedImage ? treeColumnParams[0] : treeColumnParams[1];
           }
         }
 
-        changeToggleImage(expanded);
-        rowTable._updateExpandedNodesField();
+        setToggleImage(expanded);
+        table._updateExpandedNodesField();
         if (expanded && !this._childrenLoaded) {
-          if (rowTable._useAjax) {
+          if (table._useAjax) {
             var ajaxFailedProcessor = function() {
-              thisRow._expanded = prevExpanded;
-              changeToggleImage(prevExpanded);
-              rowTable._updateExpandedNodesField();
+              row._expanded = prevExpanded;
+              setToggleImage(prevExpanded);
+              table._updateExpandedNodesField();
             };
             if (O$._ajaxRequestScheduled || O$._ajax_request_processing)
               ajaxFailedProcessor();
             else
-              O$.requestComponentPortions(rowTable.id, ["subRows:" + this._index], null, O$.Table._acceptLoadedRows, ajaxFailedProcessor);
+              O$.requestComponentPortions(table.id, ["subRows:" + this._index], null, O$.Table._acceptLoadedRows, ajaxFailedProcessor);
           } else
-            O$.submitWithParam(rowTable, rowTable.id + "::toggleExpansion", this._index);
+            O$.submitEnclosingForm(table);
         } else {
-          rowTable._updateRowVisibility();
+          table._updateRowTreeStructure();
         }
       },
       _isExpanded: function() {
@@ -350,17 +441,13 @@ O$.TreeTable = {
       }
     });
 
-    updateExpansionStateClass();
-
     toggles.forEach(function(toggle) {
       O$.extend(toggle, {
         className: table._toggleClassName,
         _row: row,
         onclick: function(e) {
-          var evt = O$.getEvent(e);
-          var clickedRow = this._row;
-          var newExpanded = !clickedRow._isExpanded();
-          clickedRow._setExpanded(newExpanded);
+          var newExpanded = !row._isExpanded();
+          row._setExpanded(newExpanded);
           if (table._focusable) {
             table._preventPageScrolling = true;
             table.focus();
@@ -375,27 +462,9 @@ O$.TreeTable = {
       });
     });
 
+    updateExpansionStateClass();
     row._updateStructureLine();
-  },
-
-  _setSelectedNodeIndexes: function(treeTableId, selectedNodeIndexes) {
-    if (!treeTableId)
-      throw "O$._setSelectedNodeIndexes: treeTable's clientId must be passed as a parameter";
-    var table = O$(treeTableId);
-    if (!table)
-      throw "O$._setSelectedNodeIndexes: Invalid clientId passed - no such component was found: " + treeTableId;
-    if (!table._of_treeTableComponentMarker)
-      throw "O$._setSelectedNodeIndexes: The clientId passed refers to a component other than <o:treeTable> : " + treeTableId;
-    if (!table._multipleSelectionAllowed)
-      throw "O$._setSelectedNodeIndexes: The table is not set up for multiple selection. Table's clientId is: " + treeTableId;
-    if (!selectedNodeIndexes) {
-      throw "O$._setSelectedNodeIndexes: Invalid selectedNodeIndexes passed : " + treeTableId;
-    }
-    var selectedIndexes = [];
-    selectedNodeIndexes.forEach(function(idx) {
-      if (idx > -1) selectedIndexes.push(idx);
-    });
-    table._setSelectedItems(selectedIndexes, true);
   }
+
 
 };

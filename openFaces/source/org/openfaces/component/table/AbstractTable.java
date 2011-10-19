@@ -40,6 +40,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Dmitry Pikhulya
@@ -458,7 +459,6 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     private BaseColumn findColumnById(List<BaseColumn> allColumns, String columnId) {
         BaseColumn colById = null;
-        int allColCount = allColumns.size();
         for (BaseColumn col : allColumns) {
             if (columnId.equals(col.getId())) {
                 colById = col;
@@ -1324,7 +1324,21 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         };
     }
 
-    protected Comparator<Object> createRuleComparator(final FacesContext facesContext, SortingOrGroupingRule rule) {
+    protected ValueExpression getColumnGroupingValueExpression(String columnId) {
+        if (columnId == null)
+            return null;
+        List<BaseColumn> allColumns = getAllColumns();
+        BaseColumn baseColumn = findColumnById(allColumns, columnId);
+        boolean ordinaryColumn = baseColumn instanceof Column;
+        if (!ordinaryColumn) return null;
+        Column column = (Column) baseColumn;
+        ValueExpression expression = column.getGroupingExpression();
+        if (expression == null)
+            expression = column.getSortingExpression();
+        return expression;
+    }
+
+    protected RowComparator createRuleComparator(final FacesContext facesContext, SortingOrGroupingRule rule) {
         String columnId = rule.getColumnId();
         if (columnId == null)
             return null;
@@ -1337,7 +1351,12 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         ValueExpression sortingExpression;
         if (ordinaryColumn) {
             Column tableColumn = (Column) column;
-            sortingExpression = tableColumn.getSortingExpression();
+            if (rule instanceof GroupingRule)
+                sortingExpression = tableColumn.getGroupingExpression();
+            else
+                sortingExpression = null;
+            if (sortingExpression == null)
+                sortingExpression = tableColumn.getSortingExpression();
         } else {
             sortingExpression = itemSelectedExpressionForColumn(column);
         }
@@ -1645,12 +1664,22 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     protected abstract void restoreRows(boolean forceDecoding);
 
+    public void acceptNewExpandedRowIndexes(Set<Integer> expandedRowIndexes) {
+
+    }
+
+    public Map<Object, ? extends TreeStructureEntry> getTreeStructureMap(FacesContext context) {
+        return null;
+    }
+
     protected class RowComparator implements Comparator<Object> {
         private final FacesContext facesContext;
         private final ValueExpression sortingExpressionBinding;
         private final Comparator<Object> valueComparator;
         private final Map<String, Object> requestMap;
         private final boolean sortAscending;
+        private Object comparisonValue1;
+        private Object comparisonValue2;
 
         protected final String var;
 
@@ -1669,38 +1698,53 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         }
 
         public int compare(Object o1, Object o2) {
-            Runnable restorePrevParams = populateSortingExpressionParams(requestMap, o1);
+            Runnable restorePrevParams = populateSortingExpressionParams(var, requestMap, o1);
             ELContext elContext = facesContext.getELContext();
-            Object value1 = sortingExpressionBinding.getValue(elContext);
+            comparisonValue1 = sortingExpressionBinding.getValue(elContext);
             restorePrevParams.run();
-            restorePrevParams = populateSortingExpressionParams(requestMap, o2);
-            Object value2 = sortingExpressionBinding.getValue(elContext);
+            restorePrevParams = populateSortingExpressionParams(var, requestMap, o2);
+            comparisonValue2 = sortingExpressionBinding.getValue(elContext);
             restorePrevParams.run();
             int result;
-            if (value1 == null)
-                result = (value2 == null) ? 0 : -1;
-            else if (value2 == null)
+            if (comparisonValue1 == null)
+                result = (comparisonValue2 == null) ? 0 : -1;
+            else if (comparisonValue2 == null)
                 result = 1;
             else if (valueComparator != null) {
-                result = valueComparator.compare(value1, value2);
-            } else if (value1 instanceof Comparable) {
-                result = ((Comparable) value1).compareTo(value2);
+                result = valueComparator.compare(comparisonValue1, comparisonValue2);
+            } else if (comparisonValue1 instanceof Comparable) {
+                result = ((Comparable) comparisonValue1).compareTo(comparisonValue2);
             } else {
-                throw new RuntimeException("The values to be sorted must implement the Comparable interface: " + value1.getClass());
+                throw new RuntimeException("The values to be sorted must implement the Comparable interface: " + comparisonValue1.getClass());
             }
             if (!sortAscending)
                 result = -result;
             return result;
         }
 
-        protected Runnable populateSortingExpressionParams(final Map<String, Object> requestMap, Object collectionObject) {
-            final Object prevValue = requestMap.put(var, collectionObject);
-            return new Runnable() {
-                public void run() {
-                    requestMap.put(var, prevValue);
-                }
-            };
+        /**
+         * @return the actual value which was participating in the last comparison session (first comparison argument)
+         */
+        public Object getComparisonValue1() {
+            return comparisonValue1;
         }
+
+        /**
+         * @return the actual value which was participating in the last comparison session (second comparison argument)
+         */
+        public Object getComparisonValue2() {
+            return comparisonValue2;
+        }
+
+    }
+
+    protected Runnable populateSortingExpressionParams(final String var, final Map<String, Object> requestMap, Object collectionObject) {
+        final Object prevValue = requestMap.put(var, collectionObject);
+        return new Runnable() {
+            public void run() {
+                requestMap.put(var, prevValue);
+            }
+        };
     }
 
     @Override

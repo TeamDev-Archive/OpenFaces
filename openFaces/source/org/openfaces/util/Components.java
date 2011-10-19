@@ -13,6 +13,7 @@ package org.openfaces.util;
 
 import org.openfaces.component.CompoundComponent;
 
+import javax.faces.FacesException;
 import javax.faces.application.Application;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 /**
  * @author Dmitry Pikhulya
@@ -77,14 +79,6 @@ public class Components {
             focusedComponent = null;
         }
         return focusedComponent;
-    }
-
-
-    public static Object setRequestMapValue(String requestMapKey, Object value) {
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        ExternalContext externalContext = facesContext.getExternalContext();
-        Map<String, Object> requestMap = externalContext.getRequestMap();
-        return requestMap.put(requestMapKey, value);
     }
 
 
@@ -436,5 +430,57 @@ public class Components {
                 return (E) parent;
         return null;
     }
+
+    public static String tagNameByClass(Class<? extends UIComponent> componentClass) {
+        String fqClassName = componentClass.getName();
+        String shortClassName = fqClassName.substring(fqClassName.lastIndexOf(".") + 1);
+        String tagName = shortClassName.substring(0, 1).toUpperCase() + shortClassName.substring(1);
+        return "<o:" + tagName + ">";
+    }
+
+    public static <P extends UIComponent> P checkParentTag(UIComponent component, Class<P> expectedParentClass) {
+        UIComponent parent = component.getParent();
+        if (!parent.getClass().equals(expectedParentClass)) {
+            Class<? extends UIComponent> componentClass = component.getClass();
+            String tagName = Components.tagNameByClass(componentClass);
+            String parentComponentTagName = Components.tagNameByClass(expectedParentClass);
+            throw new FacesException("<o:" + tagName + "> should be placed as a child tag for <o:" + parentComponentTagName + "> tag, \b" +
+                    "but it was placed into component with a class of " + parent.getClass().getName());
+        }
+        return (P) parent;
+    }
+
+    private static Map<String, Object> getRequestMap() {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        if (facesContext == null) return null;
+        ExternalContext externalContext = facesContext.getExternalContext();
+        return externalContext.getRequestMap();
+    }
+
+    public static void setRequestVariable(String varName, Object varValue) {
+        Map<String, Object> requestMap = getRequestMap();
+        Object prevVarValue = requestMap.put(varName, varValue);
+        String backupVarName = "of:prev_" + varName;
+        Stack<Object> backupValues = (Stack<Object>) requestMap.get(backupVarName);
+        if (backupValues == null) {
+            backupValues = new Stack<Object>();
+            requestMap.put(backupVarName, backupValues);
+        }
+        backupValues.push(prevVarValue);
+    }
+
+    public static void restoreRequestVariable(String varName) {
+        Map<String, Object> requestMap = getRequestMap();
+        if (requestMap == null) {
+            return;
+        }
+        String backupVarName = "of:prev_" + varName;
+        Stack backupValues = (Stack) requestMap.get(backupVarName);
+        if (backupValues == null || backupValues.isEmpty())
+            return;
+        Object oldValue = backupValues.pop();
+        requestMap.put(varName, oldValue);
+    }
+
 
 }

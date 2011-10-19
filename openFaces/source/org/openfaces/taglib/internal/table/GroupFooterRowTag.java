@@ -11,34 +11,24 @@
  */
 package org.openfaces.taglib.internal.table;
 
-import org.openfaces.component.table.ColumnResizing;
-import org.openfaces.taglib.internal.AbstractComponentTag;
+import org.openfaces.component.table.GroupFooterRow;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-/**
- * @author Dmitry Pikhulya
- */
-public class ColumnResizingTag extends AbstractComponentTag {
+public class GroupFooterRowTag extends RowTag {
 
     public String getComponentType() {
-        return ColumnResizing.COMPONENT_TYPE;
+        return GroupFooterRow.COMPONENT_TYPE;
     }
 
     public String getRendererType() {
-        return "org.openfaces.ColumnResizingRenderer";
+        return null;
     }
 
     @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
-        setBooleanProperty(component, "enabled");
-        setBooleanProperty(component, "retainTableWidth");
-        setStringProperty(component, "minColWidth");
-        setStringProperty(component, "resizeHandleWidth");
-        setPropertyBinding(component, "resizingState");
-        setBooleanProperty(component, "autoSaveState");
     }
 }

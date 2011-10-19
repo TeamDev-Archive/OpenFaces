@@ -31,5 +31,9 @@ public class RowGroupingTag extends AbstractComponentTag {
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
+        setStringProperty(component, "columnHeaderVar");
+        setStringProperty(component, "groupingValueVar");
+        setStringProperty(component, "groupingValueStringVar");
+        setPropertyBinding(component, "groupHeaderText");
     }
 }

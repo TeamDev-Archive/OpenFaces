@@ -44,6 +44,7 @@ public class ColumnsTag extends AbstractComponentTag {
 
         setBooleanProperty(component, "sortingEnabled");
         setPropertyBinding(component, "sortingExpression");
+        setPropertyBinding(component, "groupingExpression");
         String sortingComparator = getPropertyValue("sortingComparator");
         if (sortingComparator != null) {
             ValueExpression comparatorExpression;

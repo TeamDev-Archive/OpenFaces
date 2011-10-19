@@ -1283,6 +1283,18 @@
       <!-- @el only -->
     </attribute>
     <attribute>
+      <description>Defines the row's value that is used during grouping. If not specified, then sortingExpression is
+        used by default.
+      </description>
+      <name>groupingExpression</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.Object -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
       <description>Is used to compare the values provided by the "sortingExpression" attribute.</description>
       <name>sortingComparator</name>
       <deferred-value>
@@ -1815,6 +1827,19 @@
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Specifies the optional converter that should be used to when displaying grouping values in each group
+        header row. A converter is derived from the column&apos;s output component if this attribute is not specified
+        explicitly, and if there&apos;s no output component the default type converter is used.
+      </description>
+      <name>groupingValueConverter</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType javax.faces.convert.Converter -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
@@ -21027,6 +21052,38 @@ and it is automatically triggered on any form submission. -->
       <!-- @value "up_45" labels are rotated bottom-up by 45 degrees -->
       <!-- @value "down_90" labels are rotated top-to-bottom by 90 degrees -->
       <!-- @value "down_45" labels are rotated top-to-bottom by 45 degrees  -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The margin as a percentage of the axis length (for example, 0.05 is five percent). The overall
+        category margin is distributed over N-1 gaps, where N is the number of categories on the axis.
+      </description>
+      <name>categoryMargin</name>
+      <deferred-value>
+        <type>java.lang.Double</type>
+      </deferred-value>
+      <!-- @bindingType double -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The margin as a percentage of the axis length (for example, 0.05 is five percent).</description>
+      <name>lowerMargin</name>
+      <deferred-value>
+        <type>java.lang.Double</type>
+      </deferred-value>
+      <!-- @bindingType double -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The margin as a percentage of the axis length (for example, 0.05 is five percent).</description>
+      <name>upperMargin</name>
+      <deferred-value>
+        <type>java.lang.Double</type>
+      </deferred-value>
+      <!-- @bindingType double -->
+      <!-- @default null -->
       <!-- @el true -->
     </attribute>
   </tag>
@@ -42936,6 +42993,67 @@ entering a value and returns a list of suggestions from the server -->
     </description>
     <name>rowGrouping</name>
     <tag-class>org.openfaces.taglib.jsp.table.RowGroupingJspTag</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+      <description>Name of a variable which is available when rendering group headers and footers</description>
+      <name>columnHeaderVar</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "columnHeader" -->
+      <!-- @el false -->
+    </attribute>
+    <attribute>
+      <description>Name of a variable which is available when rendering group headers and footers. This variable
+        contains the grouping value -- value of the grouping column which is common for all records in this group.
+      </description>
+      <name>groupingValueVar</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "groupingValue" -->
+      <!-- @el false -->
+    </attribute>
+    <attribute>
+      <description>Name of a variable which is available when rendering group headers and footers. This variable
+        contains the grouping value string -- the grouping value (value of the grouping column which is common for all
+      records in this group), converted to string.</description>
+      <name>groupingValueStringVar</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "groupingValueString" -->
+      <!-- @el false -->
+    </attribute>
+    <attribute>
+      <description>A value binding expression which specifies the format for the text displayed in group header rows.
+      </description>
+      <name>groupHeaderText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "#{columnHeader}: #{groupingValueString}" -->
+      <!-- @el true -->
+    </attribute>
+  </tag>
+  <tag>
+    <description>A component which can optionally be placed inside of grouping-enabled &lt;o:dataTable&gt; tag to
+      customize appearance of group header rows.
+    </description>
+    <name>groupHeaderRow</name>
+    <tag-class>org.openfaces.taglib.jsp.table.GroupHeaderRowJspTag</tag-class>
+    <body-content>JSP</body-content>
+  </tag>
+  <tag>
+    <description>A component which can optionally be placed inside of grouping-enabled &amp;lt;o:dataTable&amp;gt; tag
+      to customize appearance of group footer rows.
+    </description>
+    <name>groupFooterRow</name>
+    <tag-class>org.openfaces.taglib.jsp.table.GroupFooterRowJspTag</tag-class>
     <body-content>JSP</body-content>
   </tag>
   <tag>

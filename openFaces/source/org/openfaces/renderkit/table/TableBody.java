@@ -12,12 +12,7 @@
 package org.openfaces.renderkit.table;
 
 import org.openfaces.component.TableStyles;
-import org.openfaces.component.table.AbstractTable;
-import org.openfaces.component.table.BaseColumn;
-import org.openfaces.component.table.Cell;
-import org.openfaces.component.table.Row;
-import org.openfaces.component.table.Scrolling;
-import org.openfaces.component.table.TreeColumn;
+import org.openfaces.component.table.*;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.TableUtil;
@@ -288,6 +283,10 @@ public class TableBody extends TableSection {
                     if (customRowRenderingInfo == null)
                         customRowRenderingInfo = new CustomRowRenderingInfo(columnCount);
                     Integer rowDeclarationIndex = (Integer) tableRow.getAttributes().get(CUSTOM_ROW_INDEX_ATTRIBUTE);
+                    if (rowDeclarationIndex == null)
+                        throw new IllegalStateException("CUSTOM_ROW_INDEX_ATTRIBUTE can legally be null only for the " +
+                                "implicit grouping-related rows, which don't have any Ajax actions bound to them, so" +
+                                "they can't lead execution to this point in code");
                     applicableRowDeclarationIndexes.add(rowDeclarationIndex);
                 }
             }
@@ -572,7 +571,7 @@ public class TableBody extends TableSection {
         boolean thereAreCellSpans = false;
         List<Cell> rowCellsByColReference = new ArrayList<Cell>();
         for (Row row : applicableCustomRows) {
-            int customRowIndex = (Integer) row.getAttributes().get(CUSTOM_ROW_INDEX_ATTRIBUTE);
+            Integer customRowIndex = (Integer) row.getAttributes().get(CUSTOM_ROW_INDEX_ATTRIBUTE);
             List<UIComponent> children = row.getChildren();
             int freeCellIndex = 0;
             int customCellIndex = 0;
@@ -581,7 +580,8 @@ public class TableBody extends TableSection {
                     continue;
                 Cell cell = (Cell) child;
 
-                cell.getAttributes().put(CUSTOM_CELL_RENDERING_INFO_ATTRIBUTE, new CustomContentCellRenderingInfo(customRowIndex, customCellIndex++));
+                cell.getAttributes().put(CUSTOM_CELL_RENDERING_INFO_ATTRIBUTE, new CustomContentCellRenderingInfo(
+                        customRowIndex != null ? customRowIndex : -1, customCellIndex++));
                 int span = cell.getSpan();
                 Object columnIds = cell.getColumnIds();
                 ValueExpression conditionExpression = cell.getConditionExpression();
@@ -659,6 +659,16 @@ public class TableBody extends TableSection {
 
     private List<Row> getCustomRows(AbstractTable table) {
         List<Row> customRows = new ArrayList<Row>();
+
+        if (table instanceof DataTable) {
+            DataTable dataTable = (DataTable) table;
+            RowGrouping rowGrouping = dataTable.getRowGrouping();
+            if (rowGrouping != null) {
+                customRows.add(new GroupHeaderRow(dataTable));
+                customRows.add(new GroupFooterRow(dataTable));
+            }
+        }
+
         List<UIComponent> children = table.getChildren();
         int customRowIndex = 0;
         int customCellIndex = 0;

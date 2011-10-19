@@ -31,7 +31,7 @@ import java.util.Map;
  */
 public class DefaultProgressMessageRenderer extends AbstractSettingsRenderer {
     /**
-     * This request-scope attribute specifies whether the DefaultProgressMessge component is explicitly specified on
+     * This request-scope attribute specifies whether the DefaultProgressMessage component is explicitly specified on
      * the page and if so, it is set for UtilPhaseListener to render the specified component after  the render-response
      * phase.
      */

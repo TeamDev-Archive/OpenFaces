@@ -480,7 +480,8 @@ public class TreeTable extends AbstractTable {
         getModel().setWrappedData(rowDatas, rowKeys);
     }
 
-    public Map<Object, NodeInfoForRow> getNodeExpansionDataMap(FacesContext context) {
+    @Override
+    public Map<Object, ? extends TreeStructureEntry> getTreeStructureMap(FacesContext context) {
         return rowIndexToExpansionData;
     }
 
@@ -633,6 +634,7 @@ public class TreeTable extends AbstractTable {
         return new NodeComparator(facesContext, sortingExpression, sortingComparator, requestMap, sortAscending);
     }
 
+    @Override
     public void acceptNewExpandedRowIndexes(Set indexes) {
         FacesContext context = getFacesContext();
         boolean dontCollapseNodes = isReloadingThisComponentWithA4j() || TreeTableRenderer.isAjaxFoldingInProgress(context);

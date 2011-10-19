@@ -12,13 +12,8 @@
 package org.openfaces.renderkit.table;
 
 import org.openfaces.component.table.AbstractTable;
-import org.openfaces.component.table.BaseColumn;
-import org.openfaces.component.table.NodeInfoForRow;
-import org.openfaces.component.table.TreeColumn;
 import org.openfaces.component.table.TreePath;
 import org.openfaces.component.table.TreeTable;
-import org.openfaces.org.json.JSONArray;
-import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.Resources;
@@ -28,19 +23,14 @@ import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Dmitry Pikhulya
  */
 public class TreeTableRenderer extends AbstractTableRenderer {
     private static final String DEFAULT_AUXILIARY_NODE_CLASS = "o_treetable_auxiliary_node";
-    private static final String SUB_ROWS_PORTION = "subRows:";
-    public static final String DEFAULT_TOGGLE_CLASS_NAME = "o_treetable_expansionToggle";
     private static final String HIDDEN_ROW_CLASS = "o_hiddenRow";
 
     @Override
@@ -92,78 +82,12 @@ public class TreeTableRenderer extends AbstractTableRenderer {
 
         TreeTable treeTable = (TreeTable) table;
         boolean foldingEnabled = treeTable.isFoldingEnabled();
-        if (foldingEnabled)
-            encodeFoldingSupport(context, treeTable, buf);
+        if (foldingEnabled) {
+            encodeFoldingSupport(context, buf, treeTable);
+        }
 
         getFilterAcceptedRowClass(context, treeTable);
         getFilterSubsidiaryRowClass(context, treeTable);
-    }
-
-    private void encodeFoldingSupport(FacesContext context, TreeTable treeTable, ScriptBuilder buf) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        Rendering.renderHiddenField(writer, getExpandedNodesFieldName(context, treeTable), null);
-
-        buf.initScript(context, treeTable, "O$.TreeTable._initFolding",
-                DEFAULT_TOGGLE_CLASS_NAME,
-                getClientFoldingParams(context, treeTable),
-                Resources.internalURL(context, "table/treeStructureSolid.png"));
-    }
-
-    private String getExpandedNodesFieldName(FacesContext context, TreeTable treeTable) {
-        return treeTable.getClientId(context) + "::expandedNodes";
-    }
-
-    private JSONArray getClientFoldingParams(FacesContext context, TreeTable treeTable) {
-        JSONArray result = new JSONArray();
-        result.put(formatTreeStructureMap(treeTable, context, -1, -1));
-
-        JSONArray treeColumnParamsArray = new JSONArray();
-        for (BaseColumn column : treeTable.getRenderedColumns()) {
-            if (!(column instanceof TreeColumn))
-                continue;
-            TreeColumn treeColumn = (TreeColumn) column;
-            Object columnParams = treeColumn.encodeParamsAsJsObject(context);
-            treeColumnParamsArray.put(columnParams != null ? columnParams : JSONObject.NULL);
-        }
-        result.put(treeColumnParamsArray);
-
-        return result;
-    }
-
-    @Override
-    public void decode(FacesContext context, UIComponent component) {
-        super.decode(context, component);
-        TreeTable treeTable = (TreeTable) component;
-        decodeFoldingSupport(context, treeTable);
-    }
-
-    private void decodeFoldingSupport(FacesContext context, TreeTable treeTable) {
-        Map<String, String> requestParameterMap = context.getExternalContext().getRequestParameterMap();
-        String expandedNodes = requestParameterMap.get(getExpandedNodesFieldName(context, treeTable));
-        if (expandedNodes == null)
-            return;
-        String[] indexStrs = expandedNodes.split(",");
-        Set<Integer> expandedRowIndexes = new HashSet<Integer>(indexStrs.length);
-        for (String indexStr : indexStrs) {
-            if (indexStr.length() == 0)
-                continue;
-            int rowIndex = Integer.parseInt(indexStr);
-            expandedRowIndexes.add(rowIndex);
-        }
-        treeTable.acceptNewExpandedRowIndexes(expandedRowIndexes);
-
-//    String toggleEventParamName = treeTable.getClientId(context) + "::toggleExpansion";
-//    String rowIndexStr = (String) requestParameterMap.get(toggleEventParamName);
-//    if (rowIndexStr != null) {
-//      int rowIndex = Integer.parseInt(rowIndexStr);
-//      TreePath nodeKeyPath = treeTable.getNodeKeyPath(rowIndex);
-//      boolean wasExpanded = treeTable.isNodeExpanded(nodeKeyPath);
-//      treeTable.setNodeExpanded(nodeKeyPath, !wasExpanded);
-//    }
-    }
-
-    public static boolean isAjaxFoldingInProgress(FacesContext context) {
-        return isAjaxPortionRequestInProgress(context, SUB_ROWS_PORTION);
     }
 
     @Override
@@ -227,41 +151,8 @@ public class TreeTableRenderer extends AbstractTableRenderer {
     protected void fillDynamicRowsInitInfo(FacesContext context, AbstractTable table, int rowIndex, int addedRowCount,
                                            TableStructure tableStructure, JSONObject newNodesInitInfo) {
         super.fillDynamicRowsInitInfo(context, table, rowIndex, addedRowCount, tableStructure, newNodesInitInfo);
-        JSONObject structureMap = formatTreeStructureMap((TreeTable) table, context, rowIndex - 1, addedRowCount);
-        Rendering.addJsonParam(newNodesInitInfo, "structureMap", structureMap);
-    }
-
-    private JSONObject formatTreeStructureMap(
-            TreeTable treeTable,
-            FacesContext context,
-            int fromRowIndex,
-            int rowCount) {
-        JSONObject result = new JSONObject();
-        Map<Object, NodeInfoForRow> map = treeTable.getNodeExpansionDataMap(context);
-        Set<Map.Entry<Object, NodeInfoForRow>> entries = map.entrySet();
-        for (Map.Entry<Object, NodeInfoForRow> entry : entries) {
-            Object rowIndex = entry.getKey();
-            if (fromRowIndex != -1) {
-                if (!(rowIndex instanceof Integer))
-                    continue;
-                int intRowIndex = (Integer) rowIndex;
-                if (intRowIndex < fromRowIndex || intRowIndex >= fromRowIndex + rowCount)
-                    continue;
-                intRowIndex -= fromRowIndex;
-                rowIndex = intRowIndex;
-            }
-            NodeInfoForRow expansionData = entry.getValue();
-            boolean nodeHasChildren = expansionData.getNodeHasChildren();
-            Object childCount = nodeHasChildren
-                    ? (expansionData.getChildrenPreloaded() ? String.valueOf(expansionData.getChildNodeCount()) : "?")
-                    : 0;
-            try {
-                result.put(String.valueOf(rowIndex), childCount);
-            } catch (JSONException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        return result;
+        JSONObject structureMapObj = formatTreeStructureMap(context, table, rowIndex - 1, addedRowCount);
+        Rendering.addJsonParam(newNodesInitInfo, "structureMap", structureMapObj);
     }
 
 }
