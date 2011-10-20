@@ -4900,7 +4900,43 @@ if (!window.O$) {
     }, additionalParams, execute);
   };
 
+  O$._startCompoundSubmission = function(component) {
+    if (component._compoundSubmission) throw "O$._startCompoundSubmission has already been called for " +
+            "this component (id = " + component.id + ")";
+    component._compoundSubmission = {
+      completionCallbacks: [],
+      additionalParams: [],
+      execute: []
+    };
+  };
+
+  O$._finishCompoundSubmission = function(component) {
+    if (!component._compoundSubmission) throw "O$._finishCompoundSubmission: " +
+            "O$._startCompoundSubmission hasn't been called for this component (id = " + component.id + ")";
+    var submissionData = component._compoundSubmission;
+    component._compoundSubmission = null;
+    O$._submitInternal(component, function() {
+      submissionData.completionCallbacks.forEach(function(callback) {
+        callback();
+      })
+    }, submissionData.additionalParams, submissionData.execute);
+  };
+
   O$._submitInternal = function(component, completionCallback, additionalParams, execute) {
+    if (component._compoundSubmission) {
+      if (completionCallback) {
+        component._compoundSubmission.completionCallbacks.push(completionCallback);
+      }
+      if (additionalParams) {
+        component._compoundSubmission.additionalParams =
+                component._compoundSubmission.additionalParams.concat(additionalParams);
+      }
+      if (execute) {
+        component._compoundSubmission.execute =
+                component._compoundSubmission.execute.concat(execute);
+      }
+      return;
+    }
     var useAjax = component._useAjax;
     if (!useAjax) {
       if (additionalParams)
