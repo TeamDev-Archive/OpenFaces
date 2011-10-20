@@ -448,6 +448,8 @@ public class TableDataModel extends DataModel implements DataModelListener, Stat
 
         if (groupingRules != null && groupingRules.size() > 0) {
             extractedRowHierarchy = groupRows(groupingRules, rows);
+        } else {
+            extractedRowHierarchy = null;
         }
 
         filteredRows = new ArrayList<RowInfo>(rows);
