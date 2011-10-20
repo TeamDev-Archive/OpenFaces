@@ -115,6 +115,7 @@ O$._initSidePanel = function(sidePanelId,
   if (collapsed) {
     O$.collapseSidePanel(sidePanelId);
   }
+  O$.correctElementZIndex(sidePanel._splitter, sidePanel);
 };
 
 O$._initSidePanel_style = function(sidePanel, rolloverClass, splitterRolloverClass) {
