@@ -2310,7 +2310,85 @@ O$.Table = {
         }
         return null;
       });
-      //TODO: [s.kurilin] merge this logic with usual dragging case
+
+      var additionalAreaListener;
+
+      var activeHelperArea = null;
+      var activeScrollingInterval;
+
+      O$.extend(headerCell, {
+        ondragstart: function() {
+          if (!(table._params.scrolling && table._params.scrolling.horizontal)) return;
+          additionalAreaContainer.appendChild(leftAutoScrollArea);
+          additionalAreaContainer.appendChild(rightAutoScrollArea);
+          leftAutoScrollArea._update();
+          rightAutoScrollArea._update();
+
+          additionalAreaListener = O$.listenProperty(headerScroller, "rectangle", function(rect) {
+            var subHeaderIndex = table._subHeaderRowIndex;
+            var subHeaderHeight = subHeaderIndex != -1
+                    ? O$.getElementSize(table.header._getRows()[subHeaderIndex]._rowNode).height : 0;
+            O$.setElementHeight(leftAutoScrollArea, rect.height - subHeaderHeight);
+            O$.setElementHeight(rightAutoScrollArea, rect.height - subHeaderHeight);
+            O$.alignPopupByElement(leftAutoScrollArea, headerScroller, O$.LEFT, O$.CENTER, 0, -subHeaderHeight / 2, true, true);
+            O$.alignPopupByElement(rightAutoScrollArea, headerScroller, O$.RIGHT, O$.CENTER, 0, -subHeaderHeight / 2, true, true);
+          }, new O$.Timer(50));
+        },
+        ondragmove: function(e) {
+          e = {clientX: e.clientX, clientY: e.clientY};
+          if (!(table._params.scrolling && table._params.scrolling.horizontal)) return;
+
+          function setActiveHelperArea(area) {
+            if (activeHelperArea == area) return;
+            if (activeScrollingInterval)
+              clearInterval(activeScrollingInterval);
+            activeHelperArea = area;
+            var lastTimestamp = new Date().getTime();
+
+            function scrollingStep() {
+              var thisTimestamp = new Date().getTime();
+              var scrollingStep = autoscrollingSpeed * (thisTimestamp - lastTimestamp) / 1000;
+              lastTimestamp = thisTimestamp;
+              return scrollingStep;
+            }
+
+            if (area == leftAutoScrollArea)
+              activeScrollingInterval = setInterval(function() {
+                var scrollLeft = mainScroller.scrollLeft - scrollingStep();
+                if (scrollLeft < 0) scrollLeft = 0;
+                mainScroller.scrollLeft = scrollLeft;
+                O$._draggedElement.updateCurrentDropTarget(e);
+                leftAutoScrollArea._update();
+                rightAutoScrollArea._update();
+              }, 30);
+            if (area == rightAutoScrollArea)
+              activeScrollingInterval = setInterval(function() {
+                mainScroller.scrollLeft = mainScroller.scrollLeft + scrollingStep();
+                O$._draggedElement.updateCurrentDropTarget(e);
+                leftAutoScrollArea._update();
+                rightAutoScrollArea._update();
+              }, 30);
+          }
+
+          if (O$.isCursorOverElement(e, leftAutoScrollArea))
+            setActiveHelperArea(leftAutoScrollArea);
+          else if (O$.isCursorOverElement(e, rightAutoScrollArea))
+            setActiveHelperArea(rightAutoScrollArea);
+          else
+            setActiveHelperArea(null);
+        },
+        ondragend: function() {
+          if (activeScrollingInterval) clearInterval(activeScrollingInterval);
+          if (additionalAreaContainer) {
+            additionalAreaContainer.removeChild(leftAutoScrollArea);
+            additionalAreaContainer.removeChild(rightAutoScrollArea);
+            additionalAreaListener.release();
+          }
+          dropTargetMark.hide();
+        }
+      });
+    });
+    //TODO: [s.kurilin] merge this logic with usual dragging case
       table._dropTargets = function(columnId) {
         var dropTargets = [];
         //TODO: [s.kurilin] we shouldn't use this counter
@@ -2389,83 +2467,6 @@ O$.Table = {
         dropTargets[dropTargets.length - 1].maxX = null;
         return dropTargets;
       };
-      var additionalAreaListener;
-
-      var activeHelperArea = null;
-      var activeScrollingInterval;
-
-      O$.extend(headerCell, {
-        ondragstart: function() {
-          if (!(table._params.scrolling && table._params.scrolling.horizontal)) return;
-          additionalAreaContainer.appendChild(leftAutoScrollArea);
-          additionalAreaContainer.appendChild(rightAutoScrollArea);
-          leftAutoScrollArea._update();
-          rightAutoScrollArea._update();
-
-          additionalAreaListener = O$.listenProperty(headerScroller, "rectangle", function(rect) {
-            var subHeaderIndex = table._subHeaderRowIndex;
-            var subHeaderHeight = subHeaderIndex != -1
-                    ? O$.getElementSize(table.header._getRows()[subHeaderIndex]._rowNode).height : 0;
-            O$.setElementHeight(leftAutoScrollArea, rect.height - subHeaderHeight);
-            O$.setElementHeight(rightAutoScrollArea, rect.height - subHeaderHeight);
-            O$.alignPopupByElement(leftAutoScrollArea, headerScroller, O$.LEFT, O$.CENTER, 0, -subHeaderHeight / 2, true, true);
-            O$.alignPopupByElement(rightAutoScrollArea, headerScroller, O$.RIGHT, O$.CENTER, 0, -subHeaderHeight / 2, true, true);
-          }, new O$.Timer(50));
-        },
-        ondragmove: function(e) {
-          e = {clientX: e.clientX, clientY: e.clientY};
-          if (!(table._params.scrolling && table._params.scrolling.horizontal)) return;
-
-          function setActiveHelperArea(area) {
-            if (activeHelperArea == area) return;
-            if (activeScrollingInterval)
-              clearInterval(activeScrollingInterval);
-            activeHelperArea = area;
-            var lastTimestamp = new Date().getTime();
-
-            function scrollingStep() {
-              var thisTimestamp = new Date().getTime();
-              var scrollingStep = autoscrollingSpeed * (thisTimestamp - lastTimestamp) / 1000;
-              lastTimestamp = thisTimestamp;
-              return scrollingStep;
-            }
-
-            if (area == leftAutoScrollArea)
-              activeScrollingInterval = setInterval(function() {
-                var scrollLeft = mainScroller.scrollLeft - scrollingStep();
-                if (scrollLeft < 0) scrollLeft = 0;
-                mainScroller.scrollLeft = scrollLeft;
-                O$._draggedElement.updateCurrentDropTarget(e);
-                leftAutoScrollArea._update();
-                rightAutoScrollArea._update();
-              }, 30);
-            if (area == rightAutoScrollArea)
-              activeScrollingInterval = setInterval(function() {
-                mainScroller.scrollLeft = mainScroller.scrollLeft + scrollingStep();
-                O$._draggedElement.updateCurrentDropTarget(e);
-                leftAutoScrollArea._update();
-                rightAutoScrollArea._update();
-              }, 30);
-          }
-
-          if (O$.isCursorOverElement(e, leftAutoScrollArea))
-            setActiveHelperArea(leftAutoScrollArea);
-          else if (O$.isCursorOverElement(e, rightAutoScrollArea))
-            setActiveHelperArea(rightAutoScrollArea);
-          else
-            setActiveHelperArea(null);
-        },
-        ondragend: function() {
-          if (activeScrollingInterval) clearInterval(activeScrollingInterval);
-          if (additionalAreaContainer) {
-            additionalAreaContainer.removeChild(leftAutoScrollArea);
-            additionalAreaContainer.removeChild(rightAutoScrollArea);
-            additionalAreaListener.release();
-          }
-          dropTargetMark.hide();
-        }
-      });
-    });
 
     function sendColumnMoveRequest(srcColIndex, dstColIndex) {
       if (dstColIndex == srcColIndex || dstColIndex == srcColIndex + 1)
@@ -2526,6 +2527,7 @@ O$.Table = {
 
                 },*/
                 cancelGroupingRule: function(columnId, newIndex) {
+                  //TODO: [stas] rewrite
                   rules = this._groupingRules;
 
                   var dispolayable = table.getColumnsOrder();
@@ -2536,6 +2538,10 @@ O$.Table = {
                     }
                     index++;
                   });
+                  var currentInd = dispolayable.indexOf(columnId);
+                  if(currentInd >= 0){
+                      dispolayable = dispolayable.slice(0, currentInd).concat(dispolayable.slice(currentInd + 1));
+                  }
                   dispolayable.splice(newIndex,0,columnId);
                   var columnIdsStr = dispolayable.join(",");
                   var setSortingRulesStr = JSON.stringify(rules, ["columnId", "ascending"]);
