@@ -52,7 +52,8 @@ public class HintLabelRenderer extends RendererBase {
         writer.startElement("div", hintLabel);
         writeIdAttribute(context, hintLabel);
 
-        String defaultLabelClass = Environment.isExplorer() || Environment.isSafari() || Environment.isUndefinedBrowser()
+        String defaultLabelClass = Environment.isExplorer() || Environment.isSafari() ||
+                Environment.isChrome() || Environment.isUndefinedBrowser()
                 ? "o_hintlabel_label_ie" : "o_hintlabel_label";
         writer.writeAttribute("class", Styles.getCSSClass(context,
                 hintLabel, hintLabel.getStyle(), defaultLabelClass, hintLabel.getStyleClass()), null);

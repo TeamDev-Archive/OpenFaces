@@ -2064,7 +2064,7 @@ O$.Tables = {
         O$.setStyleMappings(column.body, {colTagClassName: colTagClassName});
       cellStyles = null;
     } else {
-      if (cellStyles._names.length == 0)
+      if (cellStyles && cellStyles._names.length == 0)
         cellStyles = null;
     }
 
