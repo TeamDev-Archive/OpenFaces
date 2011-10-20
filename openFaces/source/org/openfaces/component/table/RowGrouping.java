@@ -61,6 +61,10 @@ public class RowGrouping extends OUIComponentBase {
         int i = 0;
         super.restoreState(context, state[i++]);
         groupingRules = (List<GroupingRule>) restoreAttachedState(context, state[i++]);
+        columnHeaderVar = (String) state[i++];
+        groupingValueVar = (String) state[i++];
+        groupingValueStringVar = (String) state[i++];
+
     }
 
     public List<GroupingRule> getGroupingRules() {
