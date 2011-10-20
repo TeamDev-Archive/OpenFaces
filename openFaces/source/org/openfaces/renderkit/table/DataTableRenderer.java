@@ -45,6 +45,10 @@ public class DataTableRenderer extends AbstractTableRenderer {
             return;
         DataTable table = (DataTable) uiComponent;
         decodePagination(context, table);
+
+        RowGrouping rowGrouping = table.getRowGrouping();
+        if (rowGrouping != null)
+            rowGrouping.processDecodes(context);
     }
 
     private void decodePagination(FacesContext context, DataTable table) {

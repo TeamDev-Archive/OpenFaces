@@ -19,6 +19,7 @@ import org.openfaces.component.table.ColumnResizingState;
 import org.openfaces.component.table.Columns;
 import org.openfaces.component.table.DynamicCol;
 import org.openfaces.component.table.DynamicColumn;
+import org.openfaces.component.table.RowGroupHeaderOrFooter;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.util.Components;
@@ -295,8 +296,12 @@ public class TableUtil {
         int index = table.getRowIndex();
         ELContext elContext = context.getELContext();
         try {
-            table.setRowIndex(0);
-            valueType = expression.getType(elContext);
+            int i = 0;
+            table.setRowIndex(i);
+            while (table.isRowAvailable() && table.getRowData() instanceof RowGroupHeaderOrFooter) {
+                table.setRowIndex(++i);
+            }
+            valueType = table.isRowAvailable() ? expression.getType(elContext) : Object.class;
             if (columnOutput != null)
                 valueConverter = Rendering.getConverter(context, columnOutput);
             else

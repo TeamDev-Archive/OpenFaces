@@ -350,6 +350,10 @@ public class DataTable extends AbstractTable {
             requestMap.put(rowIndexVar, recordNo);
         }
 
+        RowGrouping rowGrouping = getRowGrouping();
+        if (rowGrouping != null)
+            rowGrouping.setupCurrentRowVariables();
+
     }
 
     public boolean getCustomDataProviding() {
@@ -387,4 +391,38 @@ public class DataTable extends AbstractTable {
         return Components.findChildWithClass(this, RowGrouping.class, "<o:rowGrouping>");
     }
 
+    public Map<Object, ? extends NodeInfo> getTreeStructureMap(FacesContext context) {
+        return getModel().getExtractedRowHierarchy();
+    }
+
+    @Override
+    public int getNodeLevel() {
+        TableDataModel model = getModel();
+        Map<Object, ? extends NodeInfo> rowHierarchy = model.getExtractedRowHierarchy();
+        if (rowHierarchy == null)
+            return 0;
+        int rowIndex = getRowIndex();
+        if (rowIndex == -1)
+            return 0;
+        NodeInfo nodeInfo = rowHierarchy.get(rowIndex);
+        if (nodeInfo == null) {
+            List<GroupingRule> groupingRules = model.getGroupingRules();
+            return groupingRules != null ? groupingRules.size() : 0;
+        }
+
+        return nodeInfo.getNodeLevel();
+    }
+
+    @Override
+    public boolean getNodeHasChildren() {
+        TableDataModel model = getModel();
+        Map<Object, ? extends NodeInfo> rowHierarchy = model.getExtractedRowHierarchy();
+        if (rowHierarchy == null) return false;
+        int rowIndex = getRowIndex();
+        if (rowIndex == -1) return false;
+        NodeInfo nodeInfo = rowHierarchy.get(rowIndex);
+        if (nodeInfo == null) return false;
+
+        return nodeInfo.getNodeHasChildren();
+     }
 }

@@ -11,29 +11,24 @@
  */
 package org.openfaces.taglib.internal.table;
 
-import org.openfaces.component.table.RowGrouping;
-import org.openfaces.taglib.internal.AbstractComponentTag;
+import org.openfaces.component.table.GroupFooterRow;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-public class RowGroupingTag extends AbstractComponentTag {
+public class GroupFooterRowTag extends RowTag {
 
     public String getComponentType() {
-        return RowGrouping.COMPONENT_TYPE;
+        return GroupFooterRow.COMPONENT_TYPE;
     }
 
     public String getRendererType() {
-        return "org.openfaces.RowGroupingRenderer";
+        return null;
     }
 
     @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
-        setStringProperty(component, "columnHeaderVar");
-        setStringProperty(component, "groupingValueVar");
-        setStringProperty(component, "groupingValueStringVar");
-        setPropertyBinding(component, "groupHeaderText");
     }
 }

@@ -14,6 +14,8 @@ package org.openfaces.taglib.jsp.table;
 import org.openfaces.taglib.internal.table.RowGroupingTag;
 import org.openfaces.taglib.jsp.AbstractComponentJspTag;
 
+import javax.el.ValueExpression;
+
 public class RowGroupingJspTag extends AbstractComponentJspTag {
 
     public RowGroupingJspTag() {
@@ -21,4 +23,19 @@ public class RowGroupingJspTag extends AbstractComponentJspTag {
     }
 
 
+    public void setColumnHeaderVar(ValueExpression columnHeaderVar) {
+        getDelegate().setPropertyValue("columnHeaderVar", columnHeaderVar);
+    }
+
+    public void setGroupingValueVar(ValueExpression groupingValueVar) {
+        getDelegate().setPropertyValue("groupingValueVar", groupingValueVar);
+    }
+
+    public void setGroupHeaderText(ValueExpression groupHeaderText) {
+        getDelegate().setPropertyValue("groupHeaderText", groupHeaderText);
+    }
+
+    public void setGroupingValueStringVar(ValueExpression groupingValueStringVar) {
+        getDelegate().setPropertyValue("groupingValueStringVar", groupingValueStringVar);
+    }
 }

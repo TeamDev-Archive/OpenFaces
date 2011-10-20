@@ -54,7 +54,7 @@
   .o_popuplayer,
   .o_popup_menu,
   .o_hintlabel_hint,
-  .o_timetableView {
+  .o_timetableView{
   border: 1px solid gray;
 }
 
@@ -187,6 +187,16 @@
   border: 1px solid gray;
 }
 
+.o_groupingBox {
+    width: 100%;
+    height: 50px;
+    position: relative;
+    padding: 5px;
+}
+.o_groupingBox_header{
+    border: 1px solid gray;
+}
+
 .o_scrollable_table {
   width: 100%;
   height: 300px;
@@ -237,6 +247,15 @@
   border-left: 1px solid silver;
   vertical-align: middle;
   background-color: silver;
+}
+
+.o_rowGroupHeader {
+  font-weight: bold;
+  background: #d8d8d8;
+}
+
+.o_rowGroupFooter {
+
 }
 
 /* Checkbox column */

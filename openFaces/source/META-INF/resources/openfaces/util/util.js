@@ -205,6 +205,7 @@ if (!window.O$) {
       this._element = document.createElement("div");
       this._element.style.visibility = "hidden";
       this._element.style.position = "absolute";
+      this._element.style.fontSize = "0";
 
       if (x1)
         this.setLine(x1, y1, x2, y2, true);
@@ -1223,7 +1224,7 @@ if (!window.O$) {
 
   O$.resetAjaxState = function() {
     O$._ajaxTemporaryLocked = false;
-  }
+  };
 
   // ----------------- FORM, FORM ELEMENTS MANIPULATION ---------------------------------------------------
 
@@ -1957,9 +1958,9 @@ if (!window.O$) {
     O$.addLoadEvent(function() {
       if (O$.Ajax) {
         var prevAjaxEnd = O$.Ajax.onajaxend;
-        O$.Ajax.onajaxend = function() {
+        O$.Ajax.onajaxend = function(e) {
           if (prevAjaxEnd)
-            prevAjaxEnd();
+            prevAjaxEnd.call(this, e);
           O$._autoSavingFocusInitialized = false;
           setTimeout(setupFocus, 1);
         };
@@ -2076,7 +2077,7 @@ if (!window.O$) {
     document.onmousemove = function(e) {
       var result = undefined;
       if (prevMouseMove) {
-        result = prevMouseMove(e);
+        result = prevMouseMove.call(this, e);
       }
 
       var element;

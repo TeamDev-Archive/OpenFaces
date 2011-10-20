@@ -11,29 +11,32 @@
  */
 package org.openfaces.taglib.internal.table;
 
-import org.openfaces.component.table.RowGrouping;
-import org.openfaces.taglib.internal.AbstractComponentTag;
+import org.openfaces.component.table.GroupingBox;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-public class RowGroupingTag extends AbstractComponentTag {
+public class GroupingBoxTag extends org.openfaces.taglib.internal.AbstractComponentTag {
 
     public String getComponentType() {
-        return RowGrouping.COMPONENT_TYPE;
+        return GroupingBox.COMPONENT_TYPE;
     }
 
     public String getRendererType() {
-        return "org.openfaces.RowGroupingRenderer";
+        return "org.openfaces.GroupingBoxRenderer";
     }
 
     @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
-        setStringProperty(component, "columnHeaderVar");
-        setStringProperty(component, "groupingValueVar");
-        setStringProperty(component, "groupingValueStringVar");
-        setPropertyBinding(component, "groupHeaderText");
+        setStringProperty(component, "id");
+        setObjectProperty(component, "styleClass");
+        setStringProperty(component, "style");
+        setStringProperty(component, "headerStyle");
+        setStringProperty(component, "headerStyleClass");
+        setStringProperty(component, "promptText");
+        setStringProperty(component, "promptTextStyle");
+        setStringProperty(component, "promptTextStyleClass");
     }
 }

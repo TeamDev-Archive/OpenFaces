@@ -605,8 +605,8 @@ public class TableStructure extends TableElement {
             UIComponent columnParent = column.getParent();
             while (columnParent instanceof ColumnGroup)
                 columnParent = columnParent.getParent();
-            TreeTable treeTable = (TreeTable) columnParent;
-            String textStyle = treeTable.getTextStyle();
+            AbstractTable table = (AbstractTable) columnParent;
+            String textStyle = table.getTextStyle();
             style = Styles.mergeStyles(style, textStyle);
         }
         return style;
@@ -618,8 +618,8 @@ public class TableStructure extends TableElement {
             UIComponent columnParent = column.getParent();
             while (columnParent instanceof ColumnGroup)
                 columnParent = columnParent.getParent();
-            TreeTable treeTable = (TreeTable) columnParent;
-            String textClass = treeTable.getTextClass();
+            AbstractTable table = (AbstractTable) columnParent;
+            String textClass = table.getTextClass();
             cls = Styles.mergeClassNames(cls, textClass);
         }
         return cls;

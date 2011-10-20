@@ -42,8 +42,10 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Dmitry Pikhulya
@@ -54,15 +56,21 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
     private static final String DEFAULT_SORTED_COLUMN_HEADER_CLASS = "o_table_sorted_column_header";
     private static final String DEFAULT_SORTED_COLUMN_BODY_CLASS = "o_table_sorted_column_body";
     private static final String DEFAULT_SORTED_COLUMN_FOOTER_CLASS = "o_table_sorted_column_footer";
-    private static final String DEFAULT_SORTABLE_HEADER_CLASS = "o_table_sortable_header";
+    public static final String DEFAULT_SORTABLE_HEADER_CLASS = "o_table_sortable_header";
     private static final String DEFAULT_SORTABLE_HEADER_ROLLOVER_CLASS = null;//"o_table_sortable_header_rollover";
     private static final String DEFAULT_FOCUSED_STYLE = "border: 1px dotted black;";
 
     private static final String FACET_COLUMN_MENU = "columnMenu";
     private static final String FACET_COLUMN_MENU_BUTTON = "columnMenuButton";
+    public static final String DEFAULT_TOGGLE_CLASS_NAME = "o_treetable_expansionToggle";
+    protected static final String SUB_ROWS_PORTION = "subRows:";
 
     public static String getTableJsURL(FacesContext context) {
         return Resources.internalURL(context, "table/table.js");
+    }
+
+    public static String treeTableJsURL(FacesContext context) {
+        return Resources.internalURL(context, "table/treeTable.js");
     }
 
     @Override
@@ -149,7 +157,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("span", table);
         writer.writeAttribute("id", table.getClientId(context) + "::auxiliaryTags", null);
-        writer.writeAttribute("display", "none", null);
+        writer.writeAttribute("style", "display: none", null);
         encodeAdditionalFeaturesSupport(context, table);
         Styles.renderStyleClasses(context, table);
         writer.endElement("span");
@@ -493,6 +501,8 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
             scrolling.processDecodes(context);
 
         decodeColumnsOrder(context, table);
+
+        decodeFoldingSupport(context, table);
     }
 
     protected void decodeColumnsOrder(FacesContext context, AbstractTable table) {
@@ -769,4 +779,95 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         }
         return false;
     }
+
+    protected static boolean encodeFoldingSupport(FacesContext context,
+                                               ScriptBuilder buf,
+                                               AbstractTable table) throws IOException {
+        JSONObject treeStructure = formatTreeStructureMap(context, table, -1, -1);
+        if (treeStructure == null) {
+            // this can be the case for a grouping-enabled table which doesn't have any grouping rule configured,
+            // which means that it is displayed as a plain list and no special hierarchy handling is required
+            return false;
+        }
+
+        ResponseWriter writer = context.getResponseWriter();
+        Rendering.renderHiddenField(writer, getExpandedNodesFieldName(context, table), null);
+
+        JSONArray treeColumnParamsArray = new JSONArray();
+        for (BaseColumn column : table.getRenderedColumns()) {
+            if (!(column instanceof TreeColumn))
+                continue;
+            TreeColumn treeColumn = (TreeColumn) column;
+            Object columnParams = treeColumn.encodeParamsAsJsObject(context);
+            treeColumnParamsArray.put(columnParams != null ? columnParams : JSONObject.NULL);
+        }
+
+        buf.initScript(context, table, "O$.TreeTable._initFolding",
+                treeStructure,
+                treeColumnParamsArray,
+                DEFAULT_TOGGLE_CLASS_NAME,
+                Resources.internalURL(context, "table/treeStructureSolid.png"));
+        return true;
+    }
+
+    private static String getExpandedNodesFieldName(FacesContext context, AbstractTable treeTable) {
+        return treeTable.getClientId(context) + "::expandedNodes";
+    }
+
+    protected static JSONObject formatTreeStructureMap(
+            FacesContext context,
+            AbstractTable table,
+            int fromRowIndex,
+            int rowCount) {
+        JSONObject result = new JSONObject();
+        Map<Object, ? extends NodeInfo> structureMap = table.getTreeStructureMap(context);
+        if (structureMap == null)
+            return null;
+        Set<? extends Map.Entry<Object, ? extends NodeInfo>> entries = structureMap.entrySet();
+        for (Map.Entry<Object, ? extends NodeInfo> entry : entries) {
+            Object rowIndex = entry.getKey();
+            if (fromRowIndex != -1) {
+                if (!(rowIndex instanceof Integer))
+                    continue;
+                int intRowIndex = (Integer) rowIndex;
+                if (intRowIndex < fromRowIndex || intRowIndex >= fromRowIndex + rowCount)
+                    continue;
+                intRowIndex -= fromRowIndex;
+                rowIndex = intRowIndex;
+            }
+            NodeInfo expansionData = entry.getValue();
+            boolean nodeHasChildren = expansionData.getNodeHasChildren();
+            Object childCount = nodeHasChildren
+                    ? (expansionData.getChildrenPreloaded() ? String.valueOf(expansionData.getChildNodeCount()) : "?")
+                    : 0;
+            try {
+                result.put(String.valueOf(rowIndex), childCount);
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return result;
+    }
+
+    private void decodeFoldingSupport(FacesContext context, AbstractTable treeTable) {
+        Map<String, String> requestParameterMap = context.getExternalContext().getRequestParameterMap();
+        String expandedNodes = requestParameterMap.get(getExpandedNodesFieldName(context, treeTable));
+        if (expandedNodes == null)
+            return;
+        String[] indexStrs = expandedNodes.split(",");
+        Set<Integer> expandedRowIndexes = new HashSet<Integer>(indexStrs.length);
+        for (String indexStr : indexStrs) {
+            if (indexStr.length() == 0)
+                continue;
+            int rowIndex = Integer.parseInt(indexStr);
+            expandedRowIndexes.add(rowIndex);
+        }
+        treeTable.acceptNewExpandedRowIndexes(expandedRowIndexes);
+    }
+
+    public static boolean isAjaxFoldingInProgress(FacesContext context) {
+        return isAjaxPortionRequestInProgress(context, SUB_ROWS_PORTION);
+    }
+
+
 }

@@ -32,6 +32,10 @@ public class CustomContentCellRenderingInfo extends CustomCellRenderingInfo impl
     }
 
     public Cell findTableCell(List customRows) {
+        if (tableRowDeclarationIndex == -1) {
+            // can be the case for synthetic group header row cells
+            return null;
+        }
         Row tableRow = (Row) customRows.get(tableRowDeclarationIndex);
         List<Cell> cells = new ArrayList<Cell>();
         List<UIComponent> children = tableRow.getChildren();

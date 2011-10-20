@@ -11,9 +11,13 @@
  */
 package org.openfaces.component.table;
 
+import org.openfaces.renderkit.TableUtil;
+import org.openfaces.util.ValueBindings;
+
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
 
 /**
  * @author Dmitry Pikhulya
@@ -21,6 +25,7 @@ import javax.faces.context.FacesContext;
 public class Column extends BaseColumn {
     public static final String COMPONENT_TYPE = "org.openfaces.Column";
     public static final String COMPONENT_FAMILY = "org.openfaces.Column";
+    private javax.faces.convert.Converter groupingValueConverter;
 
     public Column() {
     }
@@ -51,6 +56,14 @@ public class Column extends BaseColumn {
         setValueExpression("sortingExpression", sortingExpression);
     }
 
+    public ValueExpression getGroupingExpression() {
+        return getValueExpression("groupingExpression");
+    }
+
+    public void setGroupingExpression(ValueExpression groupingExpression) {
+        setValueExpression("groupingExpression", groupingExpression);
+    }
+
     public ValueExpression getSortingComparatorBinding() {
         return getValueExpression("sortingComparator");
     }
@@ -68,4 +81,23 @@ public class Column extends BaseColumn {
         getFacets().put("subHeader", component);
     }
 
+    public Converter getGroupingValueConverter() {
+        if (groupingValueConverter != null) return groupingValueConverter;
+        ValueExpression ve = getValueExpression("converter");
+        if (ve != null)
+            return (Converter) ve.getValue(getFacesContext().getELContext());
+        boolean explicitExpression = getGroupingExpression() != null;
+        if (explicitExpression) {
+            // don't derive converter from a column if an groupingExpression is specified explicitly for the column
+            // groupingValueConverter attribute should be specified explicitly as well in this case, and if not,
+            // the default type converter should be used (we just return null to signify this)
+            return null;
+        }
+        groupingValueConverter = TableUtil.getColumnValueConverter(this);
+        return groupingValueConverter;
+    }
+
+    public void setGroupingValueConverter(Converter groupingValueConverter) {
+        this.groupingValueConverter = groupingValueConverter;
+    }
 }

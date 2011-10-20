@@ -480,7 +480,8 @@ public class TreeTable extends AbstractTable {
         getModel().setWrappedData(rowDatas, rowKeys);
     }
 
-    public Map<Object, NodeInfoForRow> getNodeExpansionDataMap(FacesContext context) {
+    @Override
+    public Map<Object, ? extends NodeInfo> getTreeStructureMap(FacesContext context) {
         return rowIndexToExpansionData;
     }
 
@@ -633,6 +634,7 @@ public class TreeTable extends AbstractTable {
         return new NodeComparator(facesContext, sortingExpression, sortingComparator, requestMap, sortAscending);
     }
 
+    @Override
     public void acceptNewExpandedRowIndexes(Set indexes) {
         FacesContext context = getFacesContext();
         boolean dontCollapseNodes = isReloadingThisComponentWithA4j() || TreeTableRenderer.isAjaxFoldingInProgress(context);
@@ -680,8 +682,10 @@ public class TreeTable extends AbstractTable {
             nodeHasChildrenVar = getNodeHasChildrenVar();
         }
 
+    }
 
-        protected Runnable populateSortingExpressionParams(final Map<String, Object> requestMap, Object collectionObject) {
+    protected Runnable populateSortingExpressionParams(final String var, final Map<String, Object> requestMap, Object collectionObject) {
+//        protected Runnable populateSortingExpressionParams(final Map<String, Object> requestMap, Object collectionObject) {
             TempNodeParams nodeParams = (TempNodeParams) collectionObject;
             Object nodeData = nodeParams.getNodeData();
             NodeInfoForRow nodeInfo = nodeParams.getNodeInfoForRow();
@@ -710,8 +714,6 @@ public class TreeTable extends AbstractTable {
                 }
             };
         }
-
-    }
 
     @Override
     public void setRowIndex(int rowIndex) {
