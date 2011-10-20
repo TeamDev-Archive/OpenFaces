@@ -26,7 +26,7 @@
 
     <o:dataTable id="banks" var="bank"
                  value="#{BanksList.banks}"
-                 style="margin-top: 15px; width: 100%; height: 420px;"
+                 style="margin-top: 15px; width: 95%; height: 420px;"
 
                  sortColumnId="institutionName"
                  sortedAscendingImageUrl="../images/treetable/sort_a.gif"
@@ -39,8 +39,6 @@
                  subHeaderRowStyle="background: url('../images/datatable/filter.gif') repeat-x #f7f7f7; border-top: 1px solid #f6f7f8;"
 
                  bodySectionStyle="background: #ffffff"
-                 bodyRowStyle="background: #ffffff !important; height: 21px;"
-                 bodyOddRowStyle="background: #f5f5f5 !important; height: 21px;"
 
                  headerVertSeparator="1px solid #d0d0d0, 1px solid #a0a0a0"
                  horizontalGridLines="1px solid #f6f7f8">
@@ -50,7 +48,6 @@
       <o:rowGrouping />
       <o:singleRowSelection
               style="background: url('../images/treetable/selected.gif') repeat-x #5d8bba !important; color: white !important;"/>
-      <o:scrolling/>
       <o:columnResizing resizingState="#{BanksList.columnResizingState}" autoSaveState="true"/>
       <o:columnReordering/>
 

@@ -793,7 +793,9 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         Rendering.renderHiddenField(writer, getExpandedNodesFieldName(context, table), null);
 
         JSONArray treeColumnParamsArray = new JSONArray();
-        for (BaseColumn column : table.getRenderedColumns()) {
+        List<BaseColumn> renderedColumns = (table instanceof DataTable && ((DataTable) table).getRowGrouping() != null)
+                ? table.getAllColumns() : table.getRenderedColumns(); // todo: temporary grouping workaround until tree columns are handled properly
+        for (BaseColumn column : renderedColumns) {
             if (!(column instanceof TreeColumn))
                 continue;
             TreeColumn treeColumn = (TreeColumn) column;

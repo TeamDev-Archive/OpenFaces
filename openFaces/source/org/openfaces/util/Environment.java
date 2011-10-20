@@ -308,7 +308,7 @@ public class Environment {
     public static boolean isMozilla() {
         Boolean isMozilla = (Boolean) getSessionMap().get(KEY_MOZILLA_BROWSER);
         if (isMozilla == null) {
-            isMozilla = isBrowser("mozilla") && !isExplorer() && !isSafari() && !isOpera();
+            isMozilla = isBrowser("mozilla") && !isExplorer() && !isSafari() && !isOpera() && !isChrome();
             getSessionMap().put(KEY_MOZILLA_BROWSER, isMozilla);
         }
         return isMozilla;
