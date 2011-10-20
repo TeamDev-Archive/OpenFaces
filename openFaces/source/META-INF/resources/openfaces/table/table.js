@@ -2446,7 +2446,7 @@ O$.Table = {
                 while (col.subColumns)
                   col = !rightEdge ? col.subColumns[0] : col.subColumns[col.subColumns.length - 1];
                 var targetColIndex = !rightEdge ? col._index : col._index + 1;
-                table.grouping.cancelGroupingRule(cellHeader._columnId, targetColIndex);
+                table.grouping._cancelGroupingRule(cellHeader._columnId, targetColIndex);
               }
             };
           }
@@ -2506,57 +2506,51 @@ O$.Table = {
 
                 setGroupingRules: function(rules) {
                   this._groupingRules = rules;
-                  var setSortingRulesStr = JSON.stringify(rules, ["columnId", "ascending"]);
+                  var setGroupingRulesStr = JSON.stringify(rules, ["columnId", "ascending"]);
                   O$._submitInternal(table, null, [
-                    [table.id + "::setGroupingRules", setSortingRulesStr]
+                    [table.id + "::setGroupingRules", setGroupingRulesStr]
                   ]);
 
                 },
 
+                _applyGrouping: function(rules) {
+                  table.startCompoundSubmission();
+                  table.grouping.setGroupingRules(rules);
 
-
-
-
-                /*setGroupingRules: function(rules) {
-                  this._groupingRules = rules;
-
-                  var dispolayable = table.getColumnsOrder();
+                  var displayedColumnIds = table.getColumnsOrder();
                   rules.forEach(function(rule) {
-                    var index = dispolayable.indexOf(rule.columnId);
-                    if (index >= 0)  dispolayable = dispolayable.slice(0, index).concat(dispolayable.slice(index + 1));
+                    var index = displayedColumnIds.indexOf(rule.columnId);
+                    if (index >= 0)  displayedColumnIds = displayedColumnIds.slice(0, index).concat(displayedColumnIds.slice(index + 1));
                   });
-                  var columnIdsStr = dispolayable.join(",");
 
-                  var setSortingRulesStr = JSON.stringify(rules, ["columnId", "ascending"]);
-                  O$._submitInternal(table, null, [
-                    [table.id + "::setGroupingRules", setSortingRulesStr],
-                    [table.id + "::columnsOrder", columnIdsStr]
-                  ]);
+                  table.setColumnsOrder(displayedColumnIds);
 
-                },*/
-                cancelGroupingRule: function(columnId, newIndex) {
-                  //TODO: [stas] rewrite
-                  rules = this._groupingRules;
+                  table.finishCompoundSubmission();
+                },
 
-                  var dispolayable = table.getColumnsOrder();
+                _cancelGroupingRule: function(columnId, newIndex) {
+                  table.startCompoundSubmission();
+
+                  var groupingRules = this._groupingRules;
                   var index = 0;
-                  rules.forEach(function(eachRule) {
+                  groupingRules.forEach(function(eachRule) {
                     if(eachRule.columnId == columnId){
-                      rules = rules.slice(0, index).concat(rules.slice(index + 1));
+                      groupingRules = groupingRules.slice(0, index).concat(groupingRules.slice(index + 1));
                     }
                     index++;
                   });
-                  var currentInd = dispolayable.indexOf(columnId);
-                  if(currentInd >= 0){
-                      dispolayable = dispolayable.slice(0, currentInd).concat(dispolayable.slice(currentInd + 1));
+                  table.grouping.setGroupingRules(groupingRules);
+
+                  var displayedColumnIds = table.getColumnsOrder();
+                  var prevIndex = displayedColumnIds.indexOf(columnId);
+                  if (prevIndex >= 0) {
+                      displayedColumnIds = displayedColumnIds.slice(0, prevIndex).concat(
+                              displayedColumnIds.slice(prevIndex + 1));
                   }
-                  dispolayable.splice(newIndex,0,columnId);
-                  var columnIdsStr = dispolayable.join(",");
-                  var setSortingRulesStr = JSON.stringify(rules, ["columnId", "ascending"]);
-                  O$._submitInternal(table, null, [
-                    [table.id + "::setGroupingRules", setSortingRulesStr],
-                    [table.id + "::columnsOrder", columnIdsStr]
-                  ]);
+                  displayedColumnIds.splice(newIndex, 0, columnId);
+                  table.setColumnsOrder(displayedColumnIds);
+
+                  table.finishCompoundSubmission();
                 }
               }
             });
@@ -2888,7 +2882,7 @@ O$.Table = {
         ruleValues.splice(newColumnIndex, 0, newRule);
         //layout.insertByColumnId(newColumnIndex, columnId);
         //fixGroupDescriber();
-        table.grouping.setGroupingRules(ruleValues);
+        table.grouping._applyGrouping(ruleValues);
       }
 
       var fixGroupDescriber = function() {
@@ -2997,7 +2991,7 @@ O$.Table = {
               if (focusField)
                 focusField.value = true; // set true explicitly before it gets auto-set when the click bubbles up (JSFC-801)
               rule.ascending = !rule.ascending;
-              table.grouping.setGroupingRules(groupingRules);
+              table.grouping._applyGrouping(groupingRules);
             });
             counter++;
           });

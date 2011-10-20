@@ -44,7 +44,7 @@
 
                  headerVertSeparator="1px solid #d0d0d0, 1px solid #a0a0a0"
                  horizontalGridLines="1px solid #f6f7f8">
-      <f:facet name="above">
+      <f:facet name="header">
         <o:groupingBox id="groupingBox" />
       </f:facet>
       <o:rowGrouping />
@@ -63,22 +63,22 @@
                          pressedStyle="border-left: none; background: url('../images/treetable/columnMenuBtnPressed.gif');"/>
       </f:facet>
 
-      <o:column id="institutionName"
+      <o:treeColumn id="institutionName"
                 header="Institution Name"
                 width="30%"
                 sortingExpression="#{bank.institutionName}"
-                bodyStyle="text-align: left; white-space: nowrap; padding-left: 5px; padding-right: 5px;"
+                bodyStyle="text-align: left; white-space: nowrap;"
                 headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;">
         <f:facet name="subHeader">
           <o:inputTextFilter/>
         </f:facet>
         <h:outputText value="#{bank.institutionName}" style="white-space: nowrap;"/>
-      </o:column>
+      </o:treeColumn>
       <o:column header="Certificate Number"
                 width="10%"
                 headerStyle="white-space: normal;"
                 sortingExpression="#{bank.certificateNumber}"
-                bodyStyle="text-align: right; padding-left: 5px; padding-right: 5px;">
+                bodyStyle="text-align: right; padding-right: 5px;">
         <f:facet name="subHeader">
           <o:inputTextFilter maxlength="5" autoFilterDelay="1000"/>
         </f:facet>
@@ -88,7 +88,7 @@
         <o:column header="City"
                   width="14%"
                   sortingExpression="#{bank.city}"
-                  bodyStyle="padding-left: 5px; padding-right: 5px;"
+                  bodyStyle="padding-left: 5px; "
                   headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;">
           <f:facet name="subHeader">
             <o:inputTextFilter/>
@@ -99,7 +99,7 @@
         <o:column header="State"
                   width="7%"
                   sortingExpression="#{bank.state}"
-                  bodyStyle="padding-left: 5px; padding-right: 5px;"
+                  bodyStyle="padding-left: 5px; "
                   headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;">
           <f:facet name="subHeader">
             <o:dropDownFieldFilter maxlength="2" customValueAllowed="false"/>
@@ -108,7 +108,7 @@
         </o:column>
         <o:column header="Zip"
                   width="7%"
-                  bodyStyle="text-align: right; padding-left: 5px; padding-right: 5px;"
+                  bodyStyle="text-align: right; padding-right: 5px;"
                   headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;"
                   sortingExpression="#{bank.zip}">
           <f:facet name="subHeader">
@@ -119,7 +119,7 @@
         <o:column header="County"
                   width="13%"
                   sortingExpression="#{bank.county}"
-                  bodyStyle="padding-left: 5px; padding-right: 5px; white-space: nowrap;"
+                  bodyStyle="padding-left: 5px; white-space: nowrap;"
                   headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;">
           <f:facet name="subHeader">
             <o:inputTextFilter/>
@@ -130,9 +130,10 @@
       </o:columnGroup>
       <o:column header="Average Assets"
                 width="19%"
-                bodyStyle="text-align: right; padding-left: 5px; padding-right: 5px;"
+                bodyStyle="text-align: right; padding-right: 5px;"
                 headerStyle="text-align: center; padding-left: 5px; padding-right: 5px; white-space: normal;"
-                sortingExpression="#{bank.averageAssets}">
+                sortingExpression="#{bank.averageAssets}"
+                groupingExpression="#{BanksList.averageAssetsRange}">
         <f:facet name="subHeader">
           <o:comboBoxFilter expression="#{BanksList.averageAssetsRange}"
                             options="#{BanksList.averageAssetsFilterValues}"/>
