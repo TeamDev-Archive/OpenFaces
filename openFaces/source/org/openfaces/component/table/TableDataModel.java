@@ -21,6 +21,8 @@ import org.openfaces.util.DataUtil;
 import org.openfaces.util.ValueBindings;
 
 import javax.el.ValueExpression;
+import javax.faces.FacesException;
+import javax.faces.component.StateHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.model.DataModel;
 import javax.faces.model.DataModelEvent;
@@ -484,7 +486,10 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
 
         FacesContext context = FacesContext.getCurrentInstance();
         AbstractTable.RowComparator ruleComparator = table.createRuleComparator(context, groupingRule);
-        ValueExpression columnGroupingValueExpression = table.getColumnGroupingValueExpression(groupingRule.getColumnId());
+        String columnId = groupingRule.getColumnId();
+        ValueExpression columnGroupingValueExpression = table.getColumnGroupingValueExpression(columnId);
+        if (columnGroupingValueExpression == null)
+            throw new FacesException("The column by which grouping is performed should have its groupingExpression or sortingExpression defined. Column id: " + columnId);
         RowInfo parentGroupHeader = null;
         RowInfo upperRowInfo = null;
         RowInfo rowInfo = rows.get(0);
@@ -507,7 +512,7 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
                     } finally {
                         restoreParams.run();
                     }
-                    RowGroup currentGroup = new RowGroup(groupingRule.getColumnId(), groupingValue);
+                    RowGroup currentGroup = new RowGroup(columnId, groupingValue);
                     RowGroupHeader rowGroupHeader = new RowGroupHeader(currentGroup);
                     currentGroupHeaderInfo = new RowInfo(rowGroupHeader, -1);
                     currentGroupHeaderInfo.setLevel(groupingRuleNo);
@@ -517,9 +522,10 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
                 }
 
                 rowsWithGroupRecords.add(rowInfo);
-                if (currentGroupHeaderInfo == null) throw new IllegalStateException("Current group cannot be located. " +
-                        "The previous row was a regular one according to recordsInTheSameGroup, and the first " +
-                        "consecutive regular row in the list is supposed to always create the group");
+                if (currentGroupHeaderInfo == null)
+                    throw new IllegalStateException("Current group cannot be located. " +
+                            "The previous row was a regular one according to recordsInTheSameGroup, and the first " +
+                            "consecutive regular row in the list is supposed to always create the group");
                 rowInfo.setLevel(groupingRuleNo + 1);
                 currentGroupHeaderInfo.getAllGroupDataRows().add(rowInfo);
 
