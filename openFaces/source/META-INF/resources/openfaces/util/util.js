@@ -1027,7 +1027,7 @@ if (!window.O$) {
     return false;
   };
 
-  O$.isSafari = function() {
+  O$.isSafari = function() { // todo: returns true for Chrome as well -- fix this and update usages to account Chrome
     if (O$._safari == undefined)
       O$._safari = O$.userAgentContains("safari");
     return O$._safari;

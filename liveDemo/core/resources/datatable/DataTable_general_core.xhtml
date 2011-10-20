@@ -63,7 +63,7 @@
                          pressedStyle="border-left: none; background: url('../images/treetable/columnMenuBtnPressed.gif');"/>
       </f:facet>
 
-      <o:column id="institutionName"
+      <o:treeColumn id="institutionName"
                 header="Institution Name"
                 width="30%"
                 sortingExpression="#{bank.institutionName}"
@@ -73,7 +73,7 @@
           <o:inputTextFilter/>
         </f:facet>
         <h:outputText value="#{bank.institutionName}" style="white-space: nowrap;"/>
-      </o:column>
+      </o:treeColumn>
       <o:column header="Certificate Number"
                 width="10%"
                 headerStyle="white-space: normal;"
@@ -132,7 +132,8 @@
                 width="19%"
                 bodyStyle="text-align: right; padding-left: 5px; padding-right: 5px;"
                 headerStyle="text-align: center; padding-left: 5px; padding-right: 5px; white-space: normal;"
-                sortingExpression="#{bank.averageAssets}">
+                sortingExpression="#{bank.averageAssets}"
+                groupingExpression="#{BanksList.averageAssetsRange}">
         <f:facet name="subHeader">
           <o:comboBoxFilter expression="#{BanksList.averageAssetsRange}"
                             options="#{BanksList.averageAssetsFilterValues}"/>

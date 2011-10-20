@@ -39,6 +39,7 @@ public class Environment {
     private static final String KEY_OPERA_BROWSER = "opera_browser";
     private static final String KEY_MOZILLA_BROWSER = "mozilla_browser";
     private static final String KEY_SAFARI_BROWSER = "safari_browser";
+    private static final String KEY_CHROME_BROWSER = "chrome_browser";
 
     private static final String XHTML_CONTENT_TYPE = "application/xhtml+xml";
 
@@ -329,17 +330,18 @@ public class Environment {
     public static boolean isSafari() {
         Boolean isSafari = (Boolean) getSessionMap().get(KEY_SAFARI_BROWSER);
         if (isSafari == null) {
-            isSafari = isBrowser("safari");
+            isSafari = isBrowser("safari") && !isBrowser("chrome");
+            // chrome user agent contains both "safari" and "chrome" strings
             getSessionMap().put(KEY_SAFARI_BROWSER, isSafari);
         }
         return isSafari;
     }
 
     public static boolean isChrome() {
-        Boolean isSafari = (Boolean) getSessionMap().get(KEY_SAFARI_BROWSER);
+        Boolean isSafari = (Boolean) getSessionMap().get(KEY_CHROME_BROWSER);
         if (isSafari == null) {
             isSafari = isBrowser("chrome");
-            getSessionMap().put(KEY_SAFARI_BROWSER, isSafari);
+            getSessionMap().put(KEY_CHROME_BROWSER, isSafari);
         }
         return isSafari;
     }
@@ -369,10 +371,10 @@ public class Environment {
      *         retrieving user-agent). Note that this doesn't mean that the request comes from the unsupported browser.
      */
     public static boolean isUndefinedBrowser() {
-        Boolean isUndefined = (Boolean) getSessionMap().get(KEY_SAFARI_BROWSER);
+        Boolean isUndefined = (Boolean) getSessionMap().get(KEY_UNDEFINED_BROWSER);
         if (isUndefined == null) {
             isUndefined = isBrowser(KEY_UNDEFINED_BROWSER);
-            getSessionMap().put(KEY_SAFARI_BROWSER, isUndefined);
+            getSessionMap().put(KEY_UNDEFINED_BROWSER, isUndefined);
         }
         return isUndefined;
     }
