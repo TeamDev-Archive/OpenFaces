@@ -189,11 +189,14 @@
 
 .o_groupingBox {
     width: 100%;
-    height: 50px;
+    height: 1.9em;
+    font-weight: normal;
+    text-align: left;
+    vertical-align: middle;
     position: relative;
-    padding: 5px;
+    padding: 2px 4px 2px 4px;
 }
-.o_groupingBox_header{
+.o_groupingBox_header {
     border: 1px solid gray;
 }
 

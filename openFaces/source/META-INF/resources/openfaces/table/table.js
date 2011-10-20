@@ -288,6 +288,14 @@ O$.Table = {
         return -1;
       },
 
+      startCompoundSubmission: function() {
+        O$._startCompoundSubmission(table);
+      },
+
+      finishCompoundSubmission: function() {
+        O$._finishCompoundSubmission(table);
+      },
+
       getColumnsOrder: function() {
         var columnIds = [];
         this._columns.forEach(function(column) {
