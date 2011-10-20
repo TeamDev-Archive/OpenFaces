@@ -683,15 +683,32 @@ public class PartialViewContext extends PartialViewContextWrapper {
         Iterator<UIComponent> iterator = parent.getFacetsAndChildren();
         while (iterator.hasNext()) {
             UIComponent child = iterator.next();
+
+            // This check for NamingContainers that has prependId = false (initial case: ActionButton in Table does not fires ajax event, if it is inside <h:form prependId="false">)
+            boolean lookInsideContainer = true;
+
             if (child instanceof NamingContainer) {
-                if (id.equals(child.getId()))
-                    return child;
-            } else {
+                lookInsideContainer = false; // By default do not deep-search in NamingContainer
+                try {
+                    Map<String, Object> attributes = child.getAttributes();
+                    Object prependid = attributes.get("prependId");
+                    if (prependid != null) {
+                        lookInsideContainer = !(Boolean)prependid; // search inside if prependId = false for NamingContainer
+                    }
+                } catch (IllegalArgumentException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            if (lookInsideContainer) {
                 UIComponent component = componentById(child, id,
                         isLastComponentInPath, preProcessDecodesOnTables, preRenderResponseOnTables,
                         restoreDataPointerRunnables);
                 if (component != null)
                     return component;
+            } else {
+                if (id.equals(child.getId()))
+                    return child;
             }
         }
         return null;
