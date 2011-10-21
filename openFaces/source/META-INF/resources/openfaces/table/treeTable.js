@@ -295,7 +295,7 @@ O$.TreeTable = {
         }
 
         this._updateExpandedNodesField();
-        if (!parentRow._isExpanded) {
+        if (!parentRow._isExpanded()) {
             // This can be the case when the user double-clicks on the expansion toggle quickly, which first sends
             // the node expansion request, and then collapses the node, and then the request completes and appends the
             // nodes below the "collapsed" node, so we should ensure that the new rows are not visible until the node
@@ -419,7 +419,9 @@ O$.TreeTable = {
 
         setToggleImage(expanded);
         table._updateExpandedNodesField();
-        if (expanded && !this._childrenLoaded) {
+
+        if (expanded && !this._childrenLoaded && !this._childrenLoadRequestIssued) {
+          this._childrenLoadRequestIssued = true;
           if (table._useAjax) {
             var ajaxFailedProcessor = function() {
               row._expanded = prevExpanded;
@@ -436,6 +438,7 @@ O$.TreeTable = {
           table._updateRowTreeStructure();
         }
       },
+
       _isExpanded: function() {
         return this._expanded;
       }
