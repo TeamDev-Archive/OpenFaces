@@ -32,6 +32,7 @@ import javax.el.MethodExpression;
 import javax.el.MethodNotFoundException;
 import javax.faces.FacesException;
 import javax.faces.FactoryFinder;
+import javax.faces.application.ProjectStage;
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
@@ -164,6 +165,10 @@ public class PartialViewContext extends PartialViewContextWrapper {
             return Collections.emptyList();
         Set<String> result = new LinkedHashSet<String>(super.getRenderIds());
         result.addAll(AjaxRequest.getInstance().getReloadedComponentIds());
+        if (context.getApplication().getProjectStage() == ProjectStage.Development) {
+            checkForReloadedForms (context, result);
+        }
+
         List<String> additionalComponents = new ArrayList<String>();
         UIViewRoot viewRoot = context.getViewRoot();
         for (String id : result) {
@@ -903,4 +908,20 @@ public class PartialViewContext extends PartialViewContextWrapper {
     }
 
 
+    private void checkForReloadedForms (FacesContext context, Set<String> ids) {
+        for (String id : ids) {
+            UIComponent component = findComponentById(context.getViewRoot(), id, false, false);
+            deepCheckForForm(component);
+        }
+    }
+
+    private void deepCheckForForm (UIComponent component) {
+        if (component instanceof UIForm) {
+            System.out.println("OpenFaces ajax warning! Form " + component.getId() + " is being indirectly ajax reloaded.");
+        }
+        final List<UIComponent> children = component.getChildren();
+        for (UIComponent uiComponent : children) {
+            deepCheckForForm(uiComponent);
+        }
+    }
 }
