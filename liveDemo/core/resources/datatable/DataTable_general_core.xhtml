@@ -26,7 +26,7 @@
 
     <o:dataTable id="banks" var="bank"
                  value="#{BanksList.banks}"
-                 style="margin-top: 15px; width: 100%; height: 420px;"
+                 style="margin-top: 15px; width: 95%; height: 420px;"
 
                  sortColumnId="institutionName"
                  sortedAscendingImageUrl="../images/treetable/sort_a.gif"
@@ -39,19 +39,17 @@
                  subHeaderRowStyle="background: url('../images/datatable/filter.gif') repeat-x #f7f7f7; border-top: 1px solid #f6f7f8;"
 
                  bodySectionStyle="background: #ffffff"
-                 bodyRowStyle="background: #ffffff !important; height: 21px;"
-                 bodyOddRowStyle="background: #f5f5f5 !important; height: 21px;"
 
                  headerVertSeparator="1px solid #d0d0d0, 1px solid #a0a0a0"
                  horizontalGridLines="1px solid #f6f7f8">
-      <f:facet name="above">
+      <f:facet name="header">
         <o:groupingBox id="groupingBox" />
       </f:facet>
       <o:rowGrouping />
+      <o:scrolling/>
       <o:singleRowSelection
               style="background: url('../images/treetable/selected.gif') repeat-x #5d8bba !important; color: white !important;"/>
-      <o:scrolling/>
-      <o:columnResizing resizingState="#{BanksList.columnResizingState}" autoSaveState="true"/>
+      <!--<o:columnResizing resizingState="#{BanksList.columnResizingState}" autoSaveState="true"/>-->
       <o:columnReordering/>
 
       <f:facet name="columnMenu">
@@ -63,22 +61,22 @@
                          pressedStyle="border-left: none; background: url('../images/treetable/columnMenuBtnPressed.gif');"/>
       </f:facet>
 
-      <o:column id="institutionName"
+      <o:treeColumn id="institutionName"
                 header="Institution Name"
                 width="30%"
                 sortingExpression="#{bank.institutionName}"
-                bodyStyle="text-align: left; white-space: nowrap; padding-left: 5px; padding-right: 5px;"
+                bodyStyle="text-align: left; white-space: nowrap;"
                 headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;">
         <f:facet name="subHeader">
           <o:inputTextFilter/>
         </f:facet>
         <h:outputText value="#{bank.institutionName}" style="white-space: nowrap;"/>
-      </o:column>
+      </o:treeColumn>
       <o:column header="Certificate Number"
                 width="10%"
                 headerStyle="white-space: normal;"
                 sortingExpression="#{bank.certificateNumber}"
-                bodyStyle="text-align: right; padding-left: 5px; padding-right: 5px;">
+                bodyStyle="text-align: right; padding-right: 5px;">
         <f:facet name="subHeader">
           <o:inputTextFilter maxlength="5" autoFilterDelay="1000"/>
         </f:facet>
@@ -88,7 +86,7 @@
         <o:column header="City"
                   width="14%"
                   sortingExpression="#{bank.city}"
-                  bodyStyle="padding-left: 5px; padding-right: 5px;"
+                  bodyStyle="padding-left: 5px; "
                   headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;">
           <f:facet name="subHeader">
             <o:inputTextFilter/>
@@ -99,7 +97,7 @@
         <o:column header="State"
                   width="7%"
                   sortingExpression="#{bank.state}"
-                  bodyStyle="padding-left: 5px; padding-right: 5px;"
+                  bodyStyle="padding-left: 5px; "
                   headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;">
           <f:facet name="subHeader">
             <o:dropDownFieldFilter maxlength="2" customValueAllowed="false"/>
@@ -108,7 +106,7 @@
         </o:column>
         <o:column header="Zip"
                   width="7%"
-                  bodyStyle="text-align: right; padding-left: 5px; padding-right: 5px;"
+                  bodyStyle="text-align: right; padding-right: 5px;"
                   headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;"
                   sortingExpression="#{bank.zip}">
           <f:facet name="subHeader">
@@ -119,7 +117,7 @@
         <o:column header="County"
                   width="13%"
                   sortingExpression="#{bank.county}"
-                  bodyStyle="padding-left: 5px; padding-right: 5px; white-space: nowrap;"
+                  bodyStyle="padding-left: 5px; white-space: nowrap;"
                   headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;">
           <f:facet name="subHeader">
             <o:inputTextFilter/>
@@ -130,9 +128,10 @@
       </o:columnGroup>
       <o:column header="Average Assets"
                 width="19%"
-                bodyStyle="text-align: right; padding-left: 5px; padding-right: 5px;"
+                bodyStyle="text-align: right; padding-right: 5px;"
                 headerStyle="text-align: center; padding-left: 5px; padding-right: 5px; white-space: normal;"
-                sortingExpression="#{bank.averageAssets}">
+                sortingExpression="#{bank.averageAssets}"
+                groupingExpression="#{BanksList.averageAssetsRange}">
         <f:facet name="subHeader">
           <o:comboBoxFilter expression="#{BanksList.averageAssetsRange}"
                             options="#{BanksList.averageAssetsFilterValues}"/>

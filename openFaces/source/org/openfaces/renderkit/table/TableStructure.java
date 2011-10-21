@@ -414,6 +414,7 @@ public class TableStructure extends TableElement {
 
     private static boolean getForceUsingCellStyles(UIComponent styleOwnerComponent) {
         boolean requireCellStylesForCorrectColWidthBehavior =
+                Environment.isChrome() ||
                 Environment.isSafari() || /* doesn't handle column width in TreeTable if width is applied to <col> tags */
                         Environment.isOpera(); /* DataTable, TreeTable are jerking when reloading them with OF Ajax if width is applied to <col> tags */
         String forceUsingCellStylesAttr = (String) styleOwnerComponent.getAttributes().get("forceUsingCellStyles");

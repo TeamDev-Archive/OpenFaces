@@ -42,9 +42,12 @@ public class GroupingBoxRenderer extends org.openfaces.renderkit.RendererBase {
         writeIdAttribute(context, component);
         writer.writeAttribute("class", boxClassName, null);
         writer.startElement("div", component);
-        writer.writeAttribute("style", "width:100%;height:100%;position:relative", null);
+        writer.writeAttribute("style", "width: 100%; height: 100%; position: relative", null);
         writer.startElement("table", component);
-        writer.writeAttribute("style", "width:100%;height:100%;", null);
+        writer.writeAttribute("style", "width: 100%; height: 100%;", null);
+        writer.writeAttribute("cellspacing", "0", null);
+        writer.writeAttribute("cellpadding", "0", null);
+        writer.writeAttribute("border", "0", null);
         writer.startElement("tr", component);
         writer.startElement("td", component);
         writer.writeAttribute("class", promptClassName, null);
