@@ -910,8 +910,13 @@ public class PartialViewContext extends PartialViewContextWrapper {
 
     private void checkForReloadedForms (FacesContext context, Set<String> ids) {
         for (String id : ids) {
-            UIComponent component = findComponentById(context.getViewRoot(), id, false, false);
-            deepCheckForForm(component);
+            String key = "_check_for_inner_reloaded_form_" + id;
+            boolean alreadyTested = context.getExternalContext().getRequestMap().containsKey(key);
+            if (!alreadyTested) {
+                UIComponent component = findComponentById(context.getViewRoot(), id, false, false);
+                deepCheckForForm(component);
+                context.getExternalContext().getRequestMap().put(key, key);
+            }
         }
     }
 
