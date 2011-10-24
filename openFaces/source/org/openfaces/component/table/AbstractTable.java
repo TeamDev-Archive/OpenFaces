@@ -140,8 +140,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     private String sortedAscendingImageUrl;
     private String sortedDescendingImageUrl;
 
-    private int toggleColumnSorting = -1;
-    private Boolean toggleColumnSortingDirection;
+    private List<SortingRule> toggleColumnSorting;
     private boolean beforeUpdateValuesPhase = true;
     private List<BaseColumn> cachedAllColumns;
     private List<BaseColumn> cachedRenderedColumns;
@@ -277,8 +276,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         totalRowCount = (Integer) state[i++];
 
         beforeUpdateValuesPhase = true;
-        toggleColumnSorting = -1;
-        toggleColumnSortingDirection = null;
+        toggleColumnSorting = null;
     }
 
     protected void afterRestoreState(FacesContext context) {
@@ -1009,10 +1007,9 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     protected void processModelUpdates(FacesContext context) {
         beforeUpdateValuesPhase = false;
-        if (toggleColumnSorting != -1) {
-            doToggleSorting(toggleColumnSorting, toggleColumnSortingDirection);
-            toggleColumnSorting = -1;
-            toggleColumnSortingDirection = null;
+        if (toggleColumnSorting != null) {
+            acceptNewSortingRules(toggleColumnSorting);
+            toggleColumnSorting = null;
             context.getExternalContext().getRequestMap().put(KEY_SORTING_TOGGLED, true);
         }
     }
@@ -1246,41 +1243,20 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         this.sortingRules = sortingRules;
     }
 
-    public void toggleSorting(List<SortingRule> newSortingRules) {
-        rememberSelectionByKeys();
-        setSortingRules(newSortingRules);
-    }
-
-    public void toggleSorting(int columnIndex) {
-        doToggleSorting(columnIndex, null);
-    }
-
-    public void toggleSorting(int columnIndex, boolean ascending) {
-        doToggleSorting(columnIndex, ascending);
-    }
-
-    private void doToggleSorting(int columnIndex, Boolean ascending) {
+    public void acceptNewSortingRules(List<SortingRule> newSortingRules) {
         rememberSelectionByKeys();
         if (beforeUpdateValuesPhase) {
-            toggleColumnSorting = columnIndex;
-            toggleColumnSortingDirection = ascending;
+            toggleColumnSorting = newSortingRules;
             return;
         }
-
-        List<BaseColumn> columns = getRenderedColumns();
-        if (columnIndex < 0 || columnIndex >= columns.size())
-            throw new IllegalArgumentException("columnIndex out of range. No of columns available: " + columns.size());
-        BaseColumn column = columns.get(columnIndex);
-        if (!(column instanceof Column || column instanceof SelectionColumn || column instanceof CheckboxColumn))
-            throw new IllegalArgumentException("Column is not sortable at index (" + columnIndex + "). Column class is " + column.getClass());
-        String columnId = column.getId();
-        if (columnId != null && columnId.equals(getSortColumnId())) {
-            boolean newDirection = ascending != null ? ascending : !isSortAscending();
-            setSortAscending(newDirection);
-        } else {
-            setSortColumnId(columnId);
-            setSortAscending(ascending != null ? ascending : true);
+        for (SortingRule sortingRule : newSortingRules) {
+            String columnId = sortingRule.getColumnId();
+            BaseColumn column = getColumnById(columnId);
+            if (column == null) throw new IllegalArgumentException("Column by id not found: " + columnId);
+            if (!(column instanceof Column || column instanceof SelectionColumn || column instanceof CheckboxColumn))
+                throw new IllegalArgumentException("Column (id = " + columnId + ") is not sortable. Column class is " + column.getClass());
         }
+        setSortingRules(newSortingRules);
     }
 
     public Object getRowKey() {
