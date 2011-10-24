@@ -68,6 +68,12 @@ public class RowGrouping extends OUIComponentBase {
 
     }
 
+    public void acceptNewGroupingRules(List<GroupingRule> groupingRules) {
+        // todo: implement a behavior similar to AbstractTable.acceptNewSortingRules with a delayed setGroupingRules
+        // invocation on the process updates phase
+        setGroupingRules(groupingRules);
+    }
+
     public List<GroupingRule> getGroupingRules() {
         return groupingRules;
     }

@@ -1396,6 +1396,16 @@ O$.Tables = {
     table._deepestColumnHierarchyLevel = deepestColumnHierarchyLevel;
 
     table._columns = realColumns;
+    O$.extend(table._columns, {
+      byId: function(columnId) {
+        for (var i = 0, count = this.length; i < count; i++) {
+          var column = this[i];
+          if (column.id == columnId)
+            return column;
+        }
+        return null;
+      }
+    });
     var colCount = realColumns.length;
 
     var colTags = function() {
