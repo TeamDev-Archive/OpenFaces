@@ -13,13 +13,14 @@ package org.openfaces.taglib.facelets.table;
 
 
 import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
+import org.openfaces.taglib.internal.table.GroupingBoxTag;
 
 import javax.faces.view.facelets.ComponentConfig;
 
 public class GroupingBoxTagHandler extends AbstractFaceletsComponentHandler {
 
     public GroupingBoxTagHandler(ComponentConfig componentConfig) {
-        super(componentConfig, new org.openfaces.taglib.internal.table.GroupingBoxTag());
+        super(componentConfig, new GroupingBoxTag());
     }
 
 }

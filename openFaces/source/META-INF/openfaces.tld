@@ -35803,7 +35803,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el only -->
     </attribute>
     <attribute>
-      <description>The text that is displayed by the ??CompositeFilter?? component when no filtering criteria are 
+      <description>The text that is displayed by the CompositeFilter component when no filtering criteria are
         specified by the user.</description>
       <name>noFilterMessage</name>
       <deferred-value>
@@ -43366,18 +43366,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
   </tag>
   <tag>
-    <description>Boxes for drag and drop operations on grouping</description>
-    <name>groupingBox</name>
-    <tag-class>org.openfaces.taglib.jsp.table.GroupingBoxJspTag</tag-class>
-    <body-content>JSP</body-content>
-  </tag>
-  <tag>
-    <description>Area for perfoming drag and drop operations on grouping</description>
-    <name>groupingBox</name>
-    <tag-class>org.openfaces.taglib.jsp.table.GroupingBoxJspTag</tag-class>
-    <body-content>JSP</body-content>
-  </tag>
-  <tag>
+    <description>The area which shows and allows to modify the current table's grouping structure, for the
+    grouping-enabled DataTable component.</description>
     <name>groupingBox</name>
     <tag-class>org.openfaces.taglib.jsp.table.GroupingBoxJspTag</tag-class>
     <body-content>JSP</body-content>
