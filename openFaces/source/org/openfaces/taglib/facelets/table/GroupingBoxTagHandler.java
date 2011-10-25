@@ -12,11 +12,13 @@
 package org.openfaces.taglib.facelets.table;
 
 import com.sun.facelets.tag.jsf.ComponentConfig;
+import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
+import org.openfaces.taglib.internal.table.GroupingBoxTag;
 
-public class GroupingBoxTagHandler extends org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler {
+public class GroupingBoxTagHandler extends AbstractFaceletsComponentHandler {
 
     public GroupingBoxTagHandler(ComponentConfig componentConfig) {
-        super(componentConfig, new org.openfaces.taglib.internal.table.GroupingBoxTag());
+        super(componentConfig, new GroupingBoxTag());
     }
 
 }

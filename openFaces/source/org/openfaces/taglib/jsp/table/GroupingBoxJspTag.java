@@ -11,14 +11,15 @@
  */
 package org.openfaces.taglib.jsp.table;
 
+import org.openfaces.taglib.internal.table.GroupingBoxTag;
 import org.openfaces.taglib.jsp.AbstractComponentJspTag;
 
 import javax.el.ValueExpression;
 
-public class GroupingBoxJspTag extends org.openfaces.taglib.jsp.AbstractComponentJspTag {
+public class GroupingBoxJspTag extends AbstractComponentJspTag {
 
     public GroupingBoxJspTag() {
-        super(new org.openfaces.taglib.internal.table.GroupingBoxTag());
+        super(new GroupingBoxTag());
     }
 
 
