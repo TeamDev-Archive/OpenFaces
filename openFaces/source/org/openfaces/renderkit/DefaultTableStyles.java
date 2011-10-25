@@ -237,6 +237,10 @@ public class DefaultTableStyles implements TableStyles {
         return Collections.emptyList();
     }
 
+    public List<BaseColumn> getAllColumns() {
+        return getRenderedColumns();
+    }
+
     public UIComponent getHeader() {
         return null;
     }
