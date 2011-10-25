@@ -43054,7 +43054,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
   </tag>
   <tag>
-    <description>A component which can optionally be placed inside of grouping-enabled &lt;o:dataTable&gt; tag to
+    <description>A component which can optionally be placed inside of grouping-enabled &amp;lt;o:dataTable&gt; tag to
       customize appearance of group header rows.
     </description>
     <name>groupHeaderRow</name>
@@ -43367,7 +43367,8 @@ entering a value and returns a list of suggestions from the server -->
   </tag>
   <tag>
     <description>The area which shows and allows to modify the current table's grouping structure, for the
-    grouping-enabled DataTable component.</description>
+    grouping-enabled DataTable component. This component should be placed into the "header" or "above" facet of
+    &amp;lt;o:dataTable> tag.</description>
     <name>groupingBox</name>
     <tag-class>org.openfaces.taglib.jsp.table.GroupingBoxJspTag</tag-class>
     <body-content>JSP</body-content>
