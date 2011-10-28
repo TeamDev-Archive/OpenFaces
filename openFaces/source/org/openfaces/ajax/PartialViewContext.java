@@ -508,7 +508,7 @@ public class PartialViewContext extends PartialViewContextWrapper {
         UIComponent component = null;
         List<Runnable> restoreDataPointerRunnables = new ArrayList<Runnable>();
         if (actionComponentId != null)
-            component = findComponentById(viewRoot, actionComponentId, true, false, false,
+            component = findComponentById(viewRoot, actionComponentId, true, false, true,
                     restoreDataPointerRunnables);
         if (component == null)
             component = viewRoot;
@@ -598,13 +598,14 @@ public class PartialViewContext extends PartialViewContextWrapper {
     private static UIComponent componentById(UIComponent parent, String id, boolean isLastComponentInPath,
                                              boolean preProcessDecodesOnTables, boolean preRenderResponseOnTables,
                                              List<Runnable> restoreDataPointerRunnables) {
+        FacesContext context = FacesContext.getCurrentInstance();
         if (id.length() > 0 && (isNumberBasedId(id) || id.startsWith(":")) && parent instanceof AbstractTable) {
             final AbstractTable table = ((AbstractTable) parent);
             if (!isLastComponentInPath) {
                 if (preProcessDecodesOnTables)
-                    table.invokeBeforeProcessDecodes(FacesContext.getCurrentInstance());
+                    table.invokeBeforeProcessDecodes(context);
                 if (preRenderResponseOnTables) {
-                    table.invokeBeforeRenderResponse(FacesContext.getCurrentInstance());
+                    table.invokeBeforeRenderResponse(context);
                     table.setRowIndex(-1); // make the succeeding setRowIndex call provide the just-read actual row data through request-scope variables
                 }
 
@@ -615,6 +616,12 @@ public class PartialViewContext extends PartialViewContextWrapper {
                     table.setRowIndex(-1);
                 }
                 table.setRowIndex(rowIndex);
+                if (!table.isRowAvailable()) {
+                    table.setRowIndex(-1);
+                    String tableClientId = table.getClientId(context);
+                    table.setRowIndex(prevRowIndex);
+                    throw new IllegalStateException("Couldn't find table row for this Ajax request (row data for the requested row is missing). Table's clientId=" + tableClientId + "; rowIndex=" + rowIndex);
+                }
                 if (restoreDataPointerRunnables != null)
                     restoreDataPointerRunnables.add(new Runnable() {
                         public void run() {
@@ -629,6 +636,12 @@ public class PartialViewContext extends PartialViewContextWrapper {
                     table.setRowIndex(-1);
                 }
                 table.setRowIndex(rowIndex);
+                if (!table.isRowAvailable()) {
+                    table.setRowIndex(-1);
+                    String tableClientId = table.getClientId(context);
+                    table.setRowIndex(prevRowIndex);
+                    throw new IllegalStateException("Couldn't find table row for this Ajax request (row data for the requested row is missing). Table's clientId=" + tableClientId + "; rowIndex=" + rowIndex);
+                }
                 if (restoreDataPointerRunnables != null)
                     restoreDataPointerRunnables.add(new Runnable() {
                         public void run() {
@@ -638,17 +651,24 @@ public class PartialViewContext extends PartialViewContextWrapper {
             }
             return table;
         } else if (isNumberBasedId(id) && parent instanceof UIData) {
-            final UIData grid = ((UIData) parent);
+            final UIData uiData = ((UIData) parent);
             int rowIndex = Integer.parseInt(id);
-            final int prevRowIndex = grid.getRowIndex();
-            grid.setRowIndex(rowIndex);
+            final int prevRowIndex = uiData.getRowIndex();
+            uiData.setRowIndex(rowIndex);
+            if (!uiData.isRowAvailable()) {
+                uiData.setRowIndex(-1);
+                String tableClientId = uiData.getClientId(context);
+                uiData.setRowIndex(prevRowIndex);
+                throw new IllegalStateException("Couldn't find UIData component row for this Ajax request (row data for the requested row is missing). Table's clientId=" + tableClientId + "; rowIndex=" + rowIndex);
+            }
+
             if (restoreDataPointerRunnables != null)
                 restoreDataPointerRunnables.add(new Runnable() {
                     public void run() {
-                        grid.setRowIndex(prevRowIndex);
+                        uiData.setRowIndex(prevRowIndex);
                     }
                 });
-            return grid;
+            return uiData;
         } else if (id.charAt(0) == ':' && parent instanceof OUIObjectIterator) {
             id = id.substring(1);
             final OUIObjectIterator iterator = (OUIObjectIterator) parent;
