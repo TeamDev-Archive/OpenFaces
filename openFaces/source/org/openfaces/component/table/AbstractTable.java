@@ -2050,17 +2050,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
             columnDatas.add(new TableColumnData(columnExpressionData.getValueType(), columnHeader));
         }
 
-        Iterable<Object> rowDatas;
-        switch (scope) {
-            case DISPLAYED_ROWS:
-                rowDatas = getDisplayedRowDatas();
-                break;
-            case FILTERED_ROWS:
-                rowDatas = getFilteredRowDatas();
-                break;
-            default:
-                throw new IllegalStateException("Unknown scope value: " + scope);
-        }
+        Iterable<Object> rowDatas = getRowDatas(scope);
         String var = getVar();
         FacesContext context = FacesContext.getCurrentInstance();
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
