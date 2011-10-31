@@ -2453,27 +2453,19 @@ O$.Table = {
       var sourceSearchResults = searchColumn(sourceColumnId);
       var targetSearchResults = searchColumn(targetColumnId);
 
-      function car(arr) {
-        return arr[0];
-      }
-
-      function cdr(arr) {
-        if (arr.length == 0) {
-          return [];
-        }
-        return arr.slice(1);
-      }
-
-      function canBePlacedTogether(source, target, additionalCondition) {
-        if (source.length == 0 || target.length == 0) {
+      function canBePlacedTogether(source, target, neighborhoodPredicate) {
+        if (target.length == 0) {
           return true;
+        }
+        if (source.length == 0) {
+          return false;
         }
         if (source.length == 1 && target.length == 1) {
           return true;
         }
-        var distance = Math.abs(car(source).index - car(target).index);
-        if (distance == 0 || (distance == 1 && additionalCondition(source, target))) {
-          return canBePlacedTogether(cdr(source), cdr(target), additionalCondition);
+        var distance = Math.abs(source[0].index - target[0].index);
+        if (distance == 0 || (distance == 1 && neighborhoodPredicate(source, target))) {
+          return canBePlacedTogether(source.slice(1), target.slice(1), neighborhoodPredicate);
         }
         return false;
       }
@@ -2481,12 +2473,12 @@ O$.Table = {
       return {
         onLeftEdgePermit : function(func) {
           if (canBePlacedTogether(sourceSearchResults, targetSearchResults, function(source, target) {
-            return target.length > 1 && car(cdr(target)).isFirst;
+            return target.length > 1 && target[1].isFirst;
           }))func();
         },
         onRightEdgePermit : function(func) {
           if (canBePlacedTogether(sourceSearchResults, targetSearchResults, function(source, target) {
-            return target.length > 1 && car(cdr(target)).isLast;
+            return target.length > 1 && target[1].isLast;
           }))func();
         }
       };
