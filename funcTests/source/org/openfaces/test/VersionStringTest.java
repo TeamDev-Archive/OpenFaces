@@ -43,7 +43,7 @@ public class VersionStringTest extends ComponentTestCase {
                     versionComponent = versionComponent.substring(EA_STRING.length());
             }
             if (i == count - 1) {
-                String ORDINARY_BUILD_NO_PREFIX = "integration-";
+                String ORDINARY_BUILD_NO_PREFIX = "integration_";
                 if (versionComponent.startsWith(ORDINARY_BUILD_NO_PREFIX))
                     versionComponent = versionComponent.substring(ORDINARY_BUILD_NO_PREFIX.length());
             }
