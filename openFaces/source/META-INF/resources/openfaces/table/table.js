@@ -2398,88 +2398,117 @@ O$.Table = {
     });
     //TODO: [s.kurilin] merge this logic with usual dragging case
     function movingStrategy(sourceColumnId, targetColumnId) {
-      var logicalColumns = table._params.logicalColumns;
-      var isFirst = false;
-      var isLast = false;
-      var sameLevel = [];
-      var find = false;
+      function canBeInsertedAfter(realTarget, sourceColumnId){
+        function buildStructure(table) {
+          var currentColumnsOrder = table.getColumnsOrder();
 
-      function onlyIds(logicalDescriptionArray) {
-        return logicalDescriptionArray.map(function(description) {
-          return description.columnId;
-        });
-      }
-
-      function searchColumn(columnId) {
-        function search(candidates, elementKey, isLeaf, childRetriever, keyRetriever) {
-          var isFirst = false;
-          var isLast = false;
-          var find = false;
-          var resultPath = [];
-
-          function helper(candidates, path) {
-            if (path.length > 42) throw "Can't find column : " + elementKey;
-            var childs = childRetriever(candidates);
-            for (var i = 0; i < childs.length && !find; i++) {
-              isFirst = i == 0;
-              isLast = i == candidates.length - 1;
-              var candidateCell = candidates[i];
-              var candidateID = keyRetriever(candidateCell);
-              var searchItem = {index: i, isFirst :isFirst, isLast :isLast};
-              if (isLeaf(candidateCell)) {
-                if (candidateID == elementKey) {
-                  find = true;
-                  resultPath = path.concat([searchItem]);
-                }
-              } else {
-                helper(childRetriever(candidateCell), path.concat([searchItem]));
-              }
+          function visibilityPredicate(node) {
+            if (node.isLeaf()) {
+              return currentColumnsOrder.indexOf(node.columnId) >= 0;
             }
+            return node.visibleChildren().length > 0;
           }
 
-          helper(candidates, []);
-          return resultPath;
-        }
+          function helper(logicalDescription, parent) {
+            var self = {
+              columnId : logicalDescription.columnId,
+              parent : function() {
+                return parent;
+              },
+              root : function(){
+                var node = self;
+                while (node.parent())node = node.parent();
+                return node;
+              },
+              isLeaf : function() {
+                return !logicalDescription.subColumns;
+              },
+              children : function() {
+                var result = [];
+                if (!self.isLeaf())logicalDescription.subColumns.forEach(function(subColumn) {
+                  result.push(helper(subColumn, self));
+                });
+                return result;
+              },
+              visibleChildren : function() {
+                return self.children().filter(visibilityPredicate);
+              },
+              firstVisibleLeaf : function() {
+                var visibleChild = self;
+                while (!visibleChild.isLeaf()) visibleChild = visibleChild.visibleChildren()[0];
+                return visibleChild;
+              },
+              lastVisibleLeaf : function() {
+                var visibleChild = self;
+                while (!visibleChild.isLeaf()) {
+                  var visibleChildren = visibleChild.visibleChildren();
+                  visibleChild = visibleChildren[visibleChildren.length - 1];
+                }
+                return visibleChild;
+              },
+              isVisible : function() {
+                return visibilityPredicate(self);
+              },
+              find : function(columnId) {
+                if (self.columnId == columnId) {
+                  return self;
+                }
+                var result = null;
+                self.children().forEach(function(child) {
+                  if (!result) result = child.find (columnId);
+                });
+                return result;
+              },
+              couldHaveRightNeighborhood: function(neighborhoodId) {
+                var dropTargetColumnId = self.columnId;
+                var draggableColumnId = neighborhoodId;
 
-        return search(table._params.logicalColumns, columnId, function(describer) {
-          return !describer.subColumns
-        }, function(describer) {
-          return describer.subColumns ? describer.subColumns : describer;
-        }, function(describer) {
-          return describer.columnId
-        });
+                function findFirstVisibleParent(node) {
+                  var parent = node.parent();
+                  while (!parent.isVisible()) {
+                    parent = parent.parent();
+                  }
+                  return parent;
+                }
+
+                var sourceNode = self.root().find(draggableColumnId),
+                        firstVisibleParent = findFirstVisibleParent(sourceNode);
+
+                function canBePlacedInOrAfter() {
+                  return firstVisibleParent.visibleChildren().filter(
+                          function(child) {
+                            return child.lastVisibleLeaf().columnId == dropTargetColumnId;
+                          }).length > 0
+                }
+
+                function canBePlacedBefore() {
+                  var leftsVisibleNode = firstVisibleParent.firstVisibleLeaf();
+                  var currentIndex = currentColumnsOrder.indexOf(leftsVisibleNode.columnId);
+                  return (currentIndex == 0 && !realTarget)
+                          || (currentIndex > 0 && currentColumnsOrder[currentIndex - 1] == dropTargetColumnId);
+                }
+
+                return  canBePlacedBefore() || canBePlacedInOrAfter();
+              }
+
+            };
+            return self;
+          }
+
+          return  helper({subColumns:table._params.logicalColumns}, null);
+        }
+        var structure = buildStructure(table);
+        var targetNode = structure.find(realTarget);
+        return targetNode.couldHaveRightNeighborhood(sourceColumnId);
       }
-
-      var sourceSearchResults = searchColumn(sourceColumnId);
-      var targetSearchResults = searchColumn(targetColumnId);
-
-      function canBePlacedTogether(source, target, neighborhoodPredicate) {
-        if (target.length == 0) {
-          return true;
-        }
-        if (source.length == 0) {
-          return false;
-        }
-        if (source.length == 1 && target.length == 1) {
-          return true;
-        }
-        var distance = Math.abs(source[0].index - target[0].index);
-        if (distance == 0 || (distance == 1 && neighborhoodPredicate(source, target))) {
-          return canBePlacedTogether(source.slice(1), target.slice(1), neighborhoodPredicate);
-        }
-        return false;
-      }
-
       return {
         onLeftEdgePermit : function(func) {
-          if (canBePlacedTogether(sourceSearchResults, targetSearchResults, function(source, target) {
-            return target.length > 1 && target[1].isFirst;
-          }))func();
+          var currentOrder = table.getColumnsOrder().slice(0);
+          var realTarget = currentOrder[currentOrder.indexOf(targetColumnId) - 1];
+          if(canBeInsertedAfter(realTarget, sourceColumnId))func();
         },
         onRightEdgePermit : function(func) {
-          if (canBePlacedTogether(sourceSearchResults, targetSearchResults, function(source, target) {
-            return target.length > 1 && target[1].isLast;
-          }))func();
+          if(canBeInsertedAfter(targetColumnId, sourceColumnId))func();
         }
       };
     }
@@ -2491,8 +2520,6 @@ O$.Table = {
         var index = counter;
         var headerCell = targetColumn.header ? targetColumn.header._cell : null;
         var targetCell = headerCell;
-
-
 
         function dropTarget(minX, maxX, minY, maxY, columnOrGroup, rightEdge) {
           var container = O$.getContainingBlock(headerCell, true);
@@ -2557,6 +2584,7 @@ O$.Table = {
         var minY = targetCellRect.getMinY();
         var maxY = targetCellRect2.getMaxY();
         var moving = movingStrategy(columnId, targetColumn.columnId);
+
         moving.onLeftEdgePermit(function(){
           dropTargets.push(dropTarget(min, mid, minY, maxY, targetColumn, false));
         });
@@ -2565,8 +2593,10 @@ O$.Table = {
         });
         counter++;
       });
+
       dropTargets[0].minX = null;
       dropTargets[dropTargets.length - 1].maxX = null;
+
       return dropTargets;
     };
 
