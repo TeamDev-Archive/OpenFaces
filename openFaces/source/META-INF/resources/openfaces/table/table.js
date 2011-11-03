@@ -2211,7 +2211,7 @@ O$.Table = {
 
         var dropTargets = [];
         if(table._rowGroupingBox){
-          dropTargets = dropTargets.concat(table._rowGroupingBox._innerDropTargets(headerCell.columnId));
+          dropTargets = dropTargets.concat(table._rowGroupingBox._innerDropTargets(headerCell._column.columnId));
         }
          dropTargets = dropTargets.concat(table._innerDropTargetsByColumnId(sourceColumn.columnId, function(newIndex) {
           var columnIds = table.getColumnsOrder();
@@ -2438,7 +2438,7 @@ O$.Table = {
         var headerCell = targetColumn.header ? targetColumn.header._cell : null;
         var targetCell = headerCell;
 
-        function dropTarget(minX, maxX, minY, maxY, columnOrGroup, rightEdge) {
+        function dropTarget(minX, maxX, minY, maxY, sourceColumnId, columnOrGroup, rightEdge) {
           var container = O$.getContainingBlock(headerCell, true);
           if (!container)
             container = O$.getDefaultAbsolutePositionParent();
@@ -2469,7 +2469,23 @@ O$.Table = {
                     return O$.getNumericElementStyle(table, rightEdge ? "border-right-width" : "border-left-width");
                   }
                 }();
-                dropTargetMark.setPosition((rightEdge ? maxX : minX) - gridLineWidthCorrection / 2, minY, maxY);
+
+                function firstVisibleParent(left) {
+                  var parent = table._columnsLogicalStructure.root().find(left).parent();
+                  while (!parent.isVisible()) parent = parent.parent();
+                  return parent.columnId;
+                }
+                var parent = firstVisibleParent(sourceColumnId);
+                var markMinY;
+                if(parent == null){
+                  var anyHighLevelColumn = table._columnsLogicalStructure.root().visibleChildren()[0].columnId;
+                  var rect = O$.getElementBorderRectangle(table._getHeaderCell(anyHighLevelColumn).header._cell, true);
+                  markMinY = rect.getMinY();
+                } else {
+                  var rect = O$.getElementBorderRectangle(table._getHeaderCell(parent).header._cell, true);
+                  markMinY = rect.getMaxY();
+                }
+                dropTargetMark.setPosition((rightEdge ? maxX : minX) - gridLineWidthCorrection / 2, markMinY, maxY);
               } else {
                 dropTargetMark.hide();
               }
@@ -2502,10 +2518,10 @@ O$.Table = {
         var maxY = targetCellRect2.getMaxY();
         var moving = table._columnsReorderingSupport(columnId, targetColumn.columnId);
         moving.onLeftEdgePermit(function(){
-          dropTargets.push(dropTarget(min, mid, minY, maxY, targetColumn, false));
+          dropTargets.push(dropTarget(min, mid, minY, maxY, columnId, targetColumn, false));
         });
         moving.onRightEdgePermit(function(){
-          dropTargets.push(dropTarget(mid, max, minY, maxY, targetColumn, true));
+          dropTargets.push(dropTarget(mid, max, minY, maxY, columnId, targetColumn, true));
         });
         counter++;
       });
@@ -3254,9 +3270,21 @@ O$.ColumnMenu = {
       table._rowGroupingBox = rowGroupingBox;
     };
     table._getHeaderCell = function(columnId) {
-      table._columns.filter(function(column) {
-        column.columnId == columnId;
-      })
+      function retrieveAllCells() {
+        var candidates = table._columns.slice(0);
+        var allCells = [];
+        while(candidates.length > 0){
+          var current = candidates.pop();
+          allCells.push(current);
+          if(current._parentColumn){
+            candidates.push(current._parentColumn);
+          }
+        }
+        return allCells;
+      }
+      return retrieveAllCells().filter(function(column) {
+        return column.columnId == columnId;
+      })[0];
     };
   },
 
