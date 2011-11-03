@@ -2565,6 +2565,26 @@ O$.Table = {
       columnIds.splice(dstColIndex < srcColIndex ? dstColIndex : dstColIndex - 1, 0, columnId);
       table.setColumnsOrder(columnIds);
     }
+    table._setRowGroupingBox = function(rowGroupingBox) {
+      table._rowGroupingBox = rowGroupingBox;
+    };
+    table._getHeaderCell = function(columnId) {
+      function retrieveAllCells() {
+        var candidates = table._columns.slice(0);
+        var allCells = [];
+        while(candidates.length > 0){
+          var current = candidates.pop();
+          allCells.push(current);
+          if(current._parentColumn){
+            candidates.push(current._parentColumn);
+          }
+        }
+        return allCells;
+      }
+      return retrieveAllCells().filter(function(column) {
+        return column.columnId == columnId;
+      })[0];
+    };
   },
 
 
@@ -3290,26 +3310,6 @@ O$.ColumnMenu = {
         menuOpened = false;
       };
     });
-    table._setRowGroupingBox = function(rowGroupingBox) {
-      table._rowGroupingBox = rowGroupingBox;
-    };
-    table._getHeaderCell = function(columnId) {
-      function retrieveAllCells() {
-        var candidates = table._columns.slice(0);
-        var allCells = [];
-        while(candidates.length > 0){
-          var current = candidates.pop();
-          allCells.push(current);
-          if(current._parentColumn){
-            candidates.push(current._parentColumn);
-          }
-        }
-        return allCells;
-      }
-      return retrieveAllCells().filter(function(column) {
-        return column.columnId == columnId;
-      })[0];
-    };
   },
 
   _initColumnVisibilityMenu: function(menuId, tableId) {
