@@ -288,10 +288,20 @@ O$.Table = {
         return -1;
       },
 
+      /**
+       * Call this method to avoid any successive calls to such methods as table.sorting.setSortingRules,
+       * table.grouping.setGroupingRules, etc. to send Ajax requests right away as they are invoked, but accumulate and
+       * postpone the appropriate Ajax actions until finishCompoundSubmission method is called , so that all of them be
+       * performed at once with a single Ajax request.
+       */
       startCompoundSubmission: function() {
         O$._startCompoundSubmission(table);
       },
 
+      /**
+       * Sends an Ajax requests that accumulates the actions and data of all Ajax-initiating methods that were invoked
+       * since last startCompoundSubmission() call.
+       */
       finishCompoundSubmission: function() {
         O$._finishCompoundSubmission(table);
       },
@@ -1606,6 +1616,21 @@ O$.Table = {
           ]);
         },
 
+        _getPrimarySortingRule: function() {
+          var sortingRules = table.sorting.getSortingRules();
+
+          if (sortingRules.length == 0) return null;
+          var rule = sortingRules[0];
+          return new O$.Table.SortingRule(rule.columnId, rule.ascending);
+        },
+
+        _setPrimarySortingRule: function(rule) {
+          var sortingRules = table.sorting.getSortingRules();
+          sortingRules = [].concat(sortingRules);
+          sortingRules[0] = new O$.Table.SortingRule(rule.columnId, rule.ascending);
+          table.sorting.setSortingRules(sortingRules);
+        },
+
         sortedAscendingImageUrl: sortedAscImageUrl,
         sortedDescendingImageUrl: sortedDescImageUrl
       }
@@ -1631,12 +1656,11 @@ O$.Table = {
           focusField.value = true; // set true explicitly before it gets auto-set when the click bubbles up (JSFC-801)
         var columnIndex = column._index;
 
-        var sortingRules = table.sorting.getSortingRules();
         var columnId = table._columns[columnIndex].columnId;
-        if (sortingRules.length == 0)
-          sortingRules = [new O$.Table.SortingRule(columnId, true)];
+        var rule = table.sorting._getPrimarySortingRule();
+        if (rule == null)
+          rule = new O$.Table.SortingRule(columnId, true);
         else {
-          var rule = sortingRules[0];
           if (rule.columnId == columnId)
             rule.ascending = !rule.ascending;
           else {
@@ -1644,7 +1668,7 @@ O$.Table = {
             rule.ascending = true;
           }
         }
-        table.sorting.setSortingRules(sortingRules);
+        table.sorting._setPrimarySortingRule(rule);
       });
 
       O$.setupHoverStateFunction(colHeader, function(mouseInside) {
@@ -3305,6 +3329,7 @@ O$.ColumnMenu = {
     if (columnIndex == undefined) {
       columnIndex = table._showingMenuForColumn._index;
     }
+    // todo: make this work through the new standard setColumnsOrder client-side API
     O$._submitInternal(table, null, [
       [table.id + "::columnVisibility", columnIndex]
     ]);
@@ -3374,9 +3399,7 @@ O$.ColumnMenu = {
     }
     var column = table._columns[columnIndex];
     if (!column._sortable) return;
-    O$._submitInternal(table, null, [
-      [table.id + "::sortAscending", columnIndex]
-    ]);
+    table.sorting._setPrimarySortingRule(new O$.Table.SortingRule(column.id, true));
   },
 
   _sortColumnDescending: function(tableId, columnIndex) {
@@ -3386,9 +3409,7 @@ O$.ColumnMenu = {
     }
     var column = table._columns[columnIndex];
     if (!column._sortable) return;
-    O$._submitInternal(table, null, [
-      [table.id + "::sortDescending", columnIndex]
-    ]);
+    table.sorting._setPrimarySortingRule(new O$.Table.SortingRule(column.id, false));
   },
 
 
@@ -3397,6 +3418,7 @@ O$.ColumnMenu = {
     if (columnIndex == undefined) {
       columnIndex = table._showingMenuForColumn._index;
     }
+    // todo: make this work through the new standard setColumnsOrder client-side API
     O$._submitInternal(table, null, [
       [table.id + "::hideColumn", columnIndex]
     ]);

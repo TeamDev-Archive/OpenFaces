@@ -539,12 +539,13 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
-        table.toggleSorting(sortingRules);
+        table.acceptNewSortingRules(sortingRules);
     }
 
     private void decodeColumnMenu(FacesContext context, AbstractTable table) {
+        // todo: make these work through the new standard setColumnsOrder client-side API and remove the special
+        // decoding cases here
         decodeColumnVisibility(context, table);
-        decodeColumnSorting(context, table);
         decodeColumnHiding(context, table);
     }
 
@@ -560,16 +561,6 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
             boolean columnWasVisible = renderedColumns.contains(column);
             boolean showColumn = !columnWasVisible;
             applyColumnVisibility(table, column, showColumn);
-        }
-    }
-
-    private void decodeColumnSorting(FacesContext context, AbstractTable table) {
-        Map<String, String> requestParameterMap = context.getExternalContext().getRequestParameterMap();
-        String sortAscendingStr = requestParameterMap.get(table.getClientId(context) + "::sortAscending");
-        String sortDescendingStr = requestParameterMap.get(table.getClientId(context) + "::sortDescending");
-        if (sortAscendingStr != null || sortDescendingStr != null) {
-            int colIndex = sortAscendingStr != null ? Integer.parseInt(sortAscendingStr) : Integer.parseInt(sortDescendingStr);
-            table.toggleSorting(colIndex, sortAscendingStr != null);
         }
     }
 

@@ -103,7 +103,7 @@ public class RowGroupingRenderer extends RendererBase {
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
-        rowGrouping.setGroupingRules(groupingRules);
+        rowGrouping.acceptNewGroupingRules(groupingRules);
     }
 
 }
