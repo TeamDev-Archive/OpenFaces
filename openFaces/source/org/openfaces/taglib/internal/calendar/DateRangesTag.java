@@ -36,7 +36,7 @@ public class DateRangesTag extends AbstractComponentTag {
         setBooleanProperty(component, "disableIncludes");
         setStringProperty(component, "dayStyle");
         setStringProperty(component, "rolloverDayStyle");
-        setPropertyBinding(component, "value");
+        setValueExpressionProperty(component, "value");
         setStringProperty(component, "dayClass");
         setStringProperty(component, "rolloverDayClass");
         setStringProperty(component, "selectedDayStyle");

@@ -38,7 +38,7 @@ public class ColumnResizingTag extends AbstractComponentTag {
         setBooleanProperty(component, "retainTableWidth");
         setStringProperty(component, "minColWidth");
         setStringProperty(component, "resizeHandleWidth");
-        setPropertyBinding(component, "resizingState");
+        setValueExpressionProperty(component, "resizingState");
         setBooleanProperty(component, "autoSaveState");
     }
 }

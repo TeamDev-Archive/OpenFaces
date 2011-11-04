@@ -33,7 +33,7 @@ public class ForEachTag extends AbstractComponentTag {
     @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
-        setPropertyBinding(component, "items");
+        setValueExpressionProperty(component, "items");
         setIntProperty(component, "begin");
         setIntProperty(component, "end");
         setIntProperty(component, "step");

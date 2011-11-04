@@ -32,7 +32,7 @@ public class DynamicImageTag extends AbstractComponentTag {
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
-        setPropertyBinding(component, "data");
+        setValueExpressionProperty(component, "data");
         setStringProperty(component, "alt");
         setStringProperty(component, "map");
         setStringProperty(component, "mapId");

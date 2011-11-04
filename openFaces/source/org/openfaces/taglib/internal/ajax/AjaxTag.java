@@ -40,7 +40,7 @@ public class AjaxTag extends OUICommandTag {
         setBooleanProperty(component, "submitInvoker");
         setIntProperty(component, "delay");
         
-        setPropertyBinding(component, "listener");
+        setValueExpressionProperty(component, "listener");
 
         setStringProperty(component, "onevent");
         setStringProperty(component, "onerror");
