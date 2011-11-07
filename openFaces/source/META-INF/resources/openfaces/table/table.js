@@ -1634,6 +1634,7 @@ O$.Table = {
         sortedDescendingImageUrl: sortedDescImageUrl
       }
     });
+    table._sortableHeaderRolloverClass = sortableHeaderRolloverClass;
     table._sortableColumnsIds = sortableColumnsIds;
     O$.assert(table, "Couldn't find table by id: " + tableId);
 
@@ -3098,10 +3099,12 @@ O$.Table = {
             }
           });
         }();
+
         var makeHeadersSortable = function() {
           var counter = 0;
           var groupingRules = rules();
           layout.draggable().forEach(function(colHeader) {
+            if (table._sortableColumnsIds.indexOf(colHeader._columnId) < 0)return;
             var rule = groupingRules[counter];
             O$.addEventHandler(colHeader, "click", function() {
               var focusField = O$(table.id + "::focused");
@@ -3109,6 +3112,10 @@ O$.Table = {
                 focusField.value = true; // set true explicitly before it gets auto-set when the click bubbles up (JSFC-801)
               rule.ascending = !rule.ascending;
               table.grouping._applyGrouping(groupingRules);
+            });
+            O$.setupHoverStateFunction(colHeader, function(mouseInside) {
+              O$.setStyleMappings(colHeader.firstChild, {
+                        sortableHeaderRolloverClass: mouseInside ? table._sortableHeaderRolloverClass : null});
             });
             counter++;
           });
@@ -3258,7 +3265,7 @@ O$.ColumnMenu = {
       } else {
         var hideMenuItem = table._hideMenuItem;
         if (hideMenuItem) {
-          if (table._sortDescMenuIdx >= 0
+          if (table._hideMenuIdx >= 0
                   && columnMenu.childNodes.length > table._hideMenuIdx)
             columnMenu.insertBefore(hideMenuItem,
                     columnMenu.childNodes[table._hideMenuIdx]);
