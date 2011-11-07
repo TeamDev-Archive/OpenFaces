@@ -33,8 +33,8 @@ public class DynamicTreeStructureTag extends AbstractComponentTag {
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
-        setPropertyBinding(component, "nodeChildren");
-        setPropertyBinding(component, "nodeHasChildren");
-        setPropertyBinding(component, "nodeKey");
+        setValueExpressionProperty(component, "nodeChildren");
+        setValueExpressionProperty(component, "nodeHasChildren");
+        setValueExpressionProperty(component, "nodeKey");
     }
 }

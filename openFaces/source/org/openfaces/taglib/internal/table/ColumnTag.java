@@ -39,8 +39,8 @@ public class ColumnTag extends BaseColumnTag {
     public void setComponentProperties(FacesContext context, UIComponent component) {
         super.setComponentProperties(context, component);
         Column column = ((Column) component);
-        setPropertyBinding(component, "sortingExpression");
-        setPropertyBinding(component, "groupingExpression");
+        setValueExpressionProperty(component, "sortingExpression");
+        setValueExpressionProperty(component, "groupingExpression");
         setConverterProperty(context, component, "groupingValueConverter");
 
         String sortingComparator = getPropertyValue("sortingComparator");

@@ -35,6 +35,6 @@ public class TabSetItemTag extends AbstractComponentTag {
         super.setComponentProperties(facesContext, component);
         setObjectProperty(component, "itemValue");
         setStringProperty(component, "itemLabel");
-        setPropertyBinding(component, "itemValue", getPropertyValue("value"));
+        setValueExpressionProperty(component, "itemValue", getPropertyValue("value"));
     }
 }

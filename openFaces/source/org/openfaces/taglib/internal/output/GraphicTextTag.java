@@ -47,7 +47,7 @@ public class GraphicTextTag extends AbstractComponentTag {
         String direction = getPropertyValue("direction");
 
         if (direction != null) {
-            if (!setPropertyAsBinding(component, "direction", direction)) {
+            if (!setAsValueExpressionIfPossible(component, "direction", direction)) {
                 int directionInteger;
                 if (LEFT_TO_RIGHT.equals(direction)) {
                     directionInteger = GraphicText.LEFT_TO_RIGHT;

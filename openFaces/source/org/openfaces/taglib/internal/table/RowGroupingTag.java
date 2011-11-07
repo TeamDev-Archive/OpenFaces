@@ -34,6 +34,6 @@ public class RowGroupingTag extends AbstractComponentTag {
         setStringProperty(component, "columnHeaderVar");
         setStringProperty(component, "groupingValueVar");
         setStringProperty(component, "groupingValueStringVar");
-        setPropertyBinding(component, "groupHeaderText");
+        setValueExpressionProperty(component, "groupHeaderText");
     }
 }
