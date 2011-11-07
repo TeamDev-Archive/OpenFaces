@@ -27,6 +27,7 @@ import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ColumnVisibilityMenuRenderer extends PopupMenuRenderer {
@@ -74,8 +75,13 @@ public class ColumnVisibilityMenuRenderer extends PopupMenuRenderer {
         super.encodeEnd(context, component);
         ColumnVisibilityMenu cvm = (ColumnVisibilityMenu) component;
         AbstractTable table = getTable(cvm);
+        final List<BaseColumn> allColumns = table.getAllColumns();
+        final List<String> allColumnsIds = new ArrayList<String>(allColumns.size());
+        for (BaseColumn each : allColumns) {
+            allColumnsIds.add(each.getId());
+        }
         Rendering.renderInitScript(context, new ScriptBuilder().initScript(context,
-                component, "O$.ColumnMenu._initColumnVisibilityMenu", table),
+                component, "O$.ColumnMenu._initColumnVisibilityMenu", table, allColumnsIds),
                 AbstractTableRenderer.getTableJsURL(context));
         cvm.getChildren().clear();
     }

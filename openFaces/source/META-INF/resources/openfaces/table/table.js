@@ -81,7 +81,7 @@ O$.Table = {
       _useAjax: useAjax,
 
       getCurrentColumn: function() {
-        return this._showingMenuForColumn ? this._showingMenuForColumn : null;
+        return this._showingMenuForColumn ? table._getColumn(this._showingMenuForColumn) : null;
       },
       _loadRows: function(completionCallback) {
         O$.requestComponentPortions(this.id, ["rows"], null, function(table, portionName, portionHTML, portionScripts, portionData) {
@@ -1591,13 +1591,12 @@ O$.Table = {
     if (table._checkBoxColumnHeaders) {
       col._headers = table._checkBoxColumnHeaders[colIndex];
     }
-
     col._updateHeaderCheckBoxes();
   },
 
   // -------------------------- TABLE SORTING SUPPORT
 
-  _initSorting: function(tableId, sortingRules, columnSortableFlags, sortedColIndex, sortableHeaderClass, sortableHeaderRolloverClass,
+  _initSorting: function(tableId, sortingRules, sortableColumnsIds, sortedColIndex, sortableHeaderClass, sortableHeaderRolloverClass,
                          sortedColClass, sortedColHeaderClass, sortedColBodyClass, sortedColFooterClass,
                          sortedAscImageUrl, sortedDescImageUrl) {
     var table = O$.initComponent(tableId, null, {
@@ -1635,12 +1634,13 @@ O$.Table = {
         sortedDescendingImageUrl: sortedDescImageUrl
       }
     });
+    table._sortableColumnsIds = sortableColumnsIds;
     O$.assert(table, "Couldn't find table by id: " + tableId);
 
     O$.preloadImages([sortedAscImageUrl, sortedDescImageUrl]);
 
     table._columns.forEach(function(column) {
-      column._sortable = columnSortableFlags[column._index];
+      column._sortable = sortableColumnsIds.indexOf(column.columnId) >= 0;
       if (!column._sortable)
         return;
 
@@ -2391,6 +2391,19 @@ O$.Table = {
           isVisible : function() {
             return visibilityPredicate(self);
           },
+          allLeafs: function() {
+            var result = [];
+            var candidates = self.children().slice(0);
+            while(candidates.length > 0){
+              var current = candidates.shift();
+              if(!current.isLeaf()){
+                candidates = current.children().concat(candidates);
+              } else {
+                result.push(current);
+              }
+            }
+            return result;
+          },
           find : function(columnId) {
             if (self.columnId == columnId) {
               return self;
@@ -2568,6 +2581,13 @@ O$.Table = {
     table._setRowGroupingBox = function(rowGroupingBox) {
       table._rowGroupingBox = rowGroupingBox;
     };
+    //todo: move it out of here
+    table._getColumn = function(columnId){
+      return table._columns.filter(function(column) {
+        return column.columnId == columnId
+      })[0];
+    };
+    //todo: move it out of here
     table._getHeaderCell = function(columnId) {
       function retrieveAllCells() {
         var candidates = table._columns.slice(0);
@@ -3094,6 +3114,11 @@ O$.Table = {
           });
         }();
         layout.redraw();
+        var attachColumnMenu = function() {
+          layout.draggable().forEach(function(colHeader) {
+            O$.ColumnMenu._appendMenu(tableId, colHeader, colHeader._columnId, false);
+          });
+        }();
       };
       fixGroupDescriber();
       function innerDropTargets(draggedColumnId){
@@ -3207,8 +3232,71 @@ O$.Table = {
 // -------------------------- COLUMN MENU SUPPORT
 O$.ColumnMenu = {
 
-  _init: function(columnMenuId, tableId, columnMenuButtonId, sortAscMenuId, sortDescMenuId) {
+  _appendMenu:function(tableId, cell, columnId, hidingEnabled) {
     var table = O$(tableId);
+    var columnMenuButtonTable = table._columnMenuButtonTable;
+    var columnMenuId = table._columnMenuId;
+    var columnMenu = O$(columnMenuId);
+
+    function menuFixer() {
+      O$.ColumnMenu._checkSortMenuItems(columnMenuId, tableId, columnMenu._sortAscMenuId, columnMenu._sortDescMenuId,
+              columnId);
+      var column = table._getColumn(columnId);
+
+      if (!hidingEnabled) {
+        var hideMenuItem = O$(columnMenu._hideMenuId);
+        if (hideMenuItem) {
+          table._hideMenuItem = hideMenuItem;
+          for (i = 0; i < columnMenu.childNodes.length; i++) {
+            if (hideMenuItem == columnMenu.childNodes[i]) {
+              table._hideMenuIdx = i;
+              break;
+            }
+          }
+          columnMenu.removeChild(hideMenuItem);
+        }
+      } else {
+        var hideMenuItem = table._hideMenuItem;
+        if (hideMenuItem) {
+          if (table._sortDescMenuIdx >= 0
+                  && columnMenu.childNodes.length > table._hideMenuIdx)
+            columnMenu.insertBefore(hideMenuItem,
+                    columnMenu.childNodes[table._hideMenuIdx]);
+          else
+            columnMenu.appendChild(hideMenuItem);
+          table._hideMenuItem = null;
+          table._hideMenuIdx = -1;
+        }
+      }
+    }
+    O$.setupHoverStateFunction(cell, function(mouseOver) {
+      if (mouseOver && !O$.ColumnMenu._menuOpened) {
+        O$.ColumnMenu._currentColumnId = columnId;
+        O$.ColumnMenu._menuFixer = menuFixer;
+        columnMenuButtonTable.showForCell(cell);
+      } else {
+        if (O$.ColumnMenu._currentColumnId == columnId){
+          O$.ColumnMenu._currentColumnId = null;
+          O$.ColumnMenu._menuFixer = null;
+        }
+        columnMenuButtonTable.hideForCell(cell);
+      }
+    });
+  },
+
+  _currentColumnId : null,
+  _menuOpened : false,
+
+  _init: function(columnMenuId, tableId, columnMenuButtonId, sortAscMenuId, sortDescMenuId, hideMenuId) {
+    var table = O$(tableId);
+    table._columnMenuId = columnMenuId;
+    O$.ColumnMenu._menuOpened = false;
+    function findColumnById(columnId) {
+      return table._columns.filter(function(column) {
+        return column.columnId == columnId;
+      })[0];
+    }
+
     var menuInvokerAreaTransparency = 0;
     var newMenuParent = O$.getDefaultAbsolutePositionParent();
     var parentChildren = newMenuParent.childNodes;
@@ -3223,6 +3311,7 @@ O$.ColumnMenu = {
     var columnMenu = O$(columnMenuId);
     columnMenu._sortAscMenuId = sortAscMenuId;
     columnMenu._sortDescMenuId = sortDescMenuId;
+    columnMenu._hideMenuId = hideMenuId;
 
     table._unloadHandlers.push(function() {
       if (columnMenu.parentNode)
@@ -3237,6 +3326,8 @@ O$.ColumnMenu = {
       O$.extend(result, {
         showForCell: function(cell) {
           this.hide();
+
+
           cell.appendChild(this);
           O$.correctElementZIndex(this, cell, O$.Table.HEADER_CELL_Z_INDEX_COLUMN_MENU_BUTTON);
           var rightOffset = O$.getNumericElementStyle(cell, "border-right-width");
@@ -3258,23 +3349,12 @@ O$.ColumnMenu = {
       });
       return result;
     }();
-
-    var currentColumn = null;
-    var menuOpened = false;
+    table._columnMenuButtonTable = columnMenuButtonTable;
     table._columns.forEach(function(column) {
       if (!column.header || !column.header._cell || !column.menuAllowed) return;
       var headerCell = column.header._cell;
-      O$.setupHoverStateFunction(headerCell, function(mouseOver) {
-        if (mouseOver && !menuOpened) {
-          currentColumn = column;
-          columnMenuButtonTable.showForCell(headerCell);
-        } else {
-          if (currentColumn == column)
-            currentColumn = null;
-          columnMenuButtonTable.hideForCell(headerCell);
-        }
-      });
-
+      headerCell.columnId = column.columnId;
+      O$.ColumnMenu._appendMenu(tableId, headerCell, column.columnId, true);
     });
 
     columnMenuButton.onclick = function(e) {
@@ -3282,21 +3362,27 @@ O$.ColumnMenu = {
     };
     O$.addEventHandler(columnMenuButton, "mousedown", function(evt) {
       O$.cancelEvent(evt);
-      O$.correctElementZIndex(columnMenu, currentColumn._resizeHandle);
-      table._showingMenuForColumn = currentColumn;
-      columnMenu._column = currentColumn;
+      var columnId = O$.ColumnMenu._currentColumnId;
+      var currentColumn = findColumnById(columnId);
+      if (currentColumn) {
+        O$.correctElementZIndex(columnMenu, currentColumn._resizeHandle);
+        columnMenu._column = currentColumn;
+      }
+      table._showingMenuForColumn = columnId;
       if (columnMenu.parentNode != newMenuParent) {
         newMenuParent.appendChild(columnMenu);
         O$.correctElementZIndex(columnMenu, columnMenuButton);
       }
-      O$.ColumnMenu._checkSortMenuItems(columnMenuId, tableId, columnMenu._sortAscMenuId, columnMenu._sortDescMenuId,
-              currentColumn._index);
+
       columnMenu._showByElement(columnMenuButtonTable, O$.LEFT, O$.BELOW, 0, 0);
       var prevOnhide = columnMenu.onhide;
-      var headerCell = currentColumn.header._cell;
-      headerCell.setForceHover(true);
+      if (O$.ColumnMenu._menuFixer)O$.ColumnMenu._menuFixer();
+
+//      var headerCell = currentColumn.header._cell;
+//      headerCell.setForceHover(true);
+
       columnMenuButton.setForceHover(true);
-      menuOpened = true;
+      O$.ColumnMenu._menuOpened = true;
       columnMenu.onhide = function(e) {
         setTimeout(function() {
           table._showingMenuForColumn = null;
@@ -3306,44 +3392,79 @@ O$.ColumnMenu = {
         if (prevOnhide)
           prevOnhide.call(columnMenu, e);
         columnMenuButton.setForceHover(null);
-        headerCell.setForceHover(null);
-        menuOpened = false;
+//        headerCell.setForceHover(null);
+        O$.ColumnMenu._menuOpened = false;
       };
     });
   },
 
-  _initColumnVisibilityMenu: function(menuId, tableId) {
+  _initColumnVisibilityMenu: function(menuId, tableId, columnIds) {
     var menu = O$(menuId);
     var table = O$(tableId);
     var idx = 0;
     menu._items.forEach(function(menuItem) {
       var colIndex = idx++;
       menuItem._anchor.onclick = function() {
-        O$.ColumnMenu._toggleColumnVisibility(table, colIndex);
+        O$.ColumnMenu._toggleColumnVisibility(table, columnIds[colIndex]);
       };
     });
-
   },
 
-  _toggleColumnVisibility: function(table, columnIndex) {
-    if (columnIndex == undefined) {
-      columnIndex = table._showingMenuForColumn._index;
+  _toggleColumnVisibility: function(table, columnId) {
+    var currentColumns = table.getColumnsOrder();
+    var currentIndex = currentColumns.indexOf(columnId);
+    function visibleNow(){
+      return currentIndex >= 0;
     }
-    // todo: make this work through the new standard setColumnsOrder client-side API
-    O$._submitInternal(table, null, [
-      [table.id + "::columnVisibility", columnIndex]
-    ]);
+    function hideColumn(){
+      currentColumns.splice(currentIndex, 1);
+    }
+    function showColumn(){
+      function insertColumn(newIndex){
+        currentColumns.splice(newIndex, 0, current.columnId);
+      }
+      var allLeafs = table._columnsLogicalStructure.root().allLeafs();
+      var prevVisibleLeaf;
+      var waitingMode = false;
+      for(var key in allLeafs){
+        var current = allLeafs[key];
+        if(waitingMode && current.isVisible()){
+          var newIndex = currentColumns.indexOf(current.columnId) - 1;
+          insertColumn(newIndex);
+          waitingMode = false;
+          break;
+        }
+        if(current.columnId == columnId && prevVisibleLeaf){
+          var newIndex = currentColumns.indexOf(prevVisibleLeaf.columnId) + 1;
+          insertColumn(newIndex);
+          break;
+        }
+        if(current.columnId == columnId && !prevVisibleLeaf){
+          waitingMode = true;
+        }
+        if (current.isVisible()) prevVisibleLeaf = current;
+      }
+      if (waitingMode) {
+        throw "Couldn't insert column " + columnId;
+      }
+    }
+    function apply(){
+      table.setColumnsOrder(currentColumns);
+    }
+    if(visibleNow()){
+      hideColumn();
+    } else {
+      showColumn();
+    }
+    apply();
   },
 
-  _checkSortMenuItems : function(columnMenuId, tableId, sortAscMenuId, sortDescMenuId, columnIndex) {
+  _checkSortMenuItems : function(columnMenuId, tableId, sortAscMenuId, sortDescMenuId, columnId) {
     if (!sortAscMenuId && !sortDescMenuId) return;
     var table = O$(tableId);
     var columnMenu = O$(columnMenuId);
-    if (columnIndex == undefined) {
-      columnIndex = table._showingMenuForColumn._index;
-    }
-    var column = table._columns[columnIndex];
-    if (!column._sortable) {
+    var column = table._getColumn(columnId);
+    if (table._sortableColumnsIds.indexOf(columnId) < 0) {
       var sortAscMenuItem = O$(sortAscMenuId);
       if (sortAscMenuItem) {
         table._sortAscMenuItem = sortAscMenuItem;
@@ -3391,37 +3512,41 @@ O$.ColumnMenu = {
       }
     }
   },
-
-  _sortColumnAscending: function(tableId, columnIndex) {
+  _sortColumn: function(tableId, columnIndex, isAscending) {
     var table = O$(tableId);
-    if (columnIndex == undefined) {
-      columnIndex = table._showingMenuForColumn._index;
+    var groupingRules = table.grouping.getGroupingRules();
+
+    function associatedGroupingRule() {
+      return groupingRules.filter(function(rule) {
+        return rule.columnId == columnId;
+      })[0];
     }
-    var column = table._columns[columnIndex];
-    if (!column._sortable) return;
-    table.sorting._setPrimarySortingRule(new O$.Table.SortingRule(column.id, true));
+    var columnId = columnIndex ? table._columns[columnIndex].columnId : table._showingMenuForColumn;
+    if (table._sortableColumnsIds.indexOf(columnId) < 0) return;
+    var groupingRule = associatedGroupingRule();
+    if (groupingRule) {
+      groupingRule.ascending = isAscending;
+      table.grouping.setGroupingRules(groupingRules);
+    } else {
+      table.sorting._setPrimarySortingRule(new O$.Table.SortingRule(columnId, isAscending));
+    }
+  },
+  _sortColumnAscending: function(tableId, columnIndex) {
+    O$.ColumnMenu._sortColumn(tableId, columnIndex, true);
   },
 
   _sortColumnDescending: function(tableId, columnIndex) {
-    var table = O$(tableId);
-    if (columnIndex == undefined) {
-      columnIndex = table._showingMenuForColumn._index;
-    }
-    var column = table._columns[columnIndex];
-    if (!column._sortable) return;
-    table.sorting._setPrimarySortingRule(new O$.Table.SortingRule(column.id, false));
+    O$.ColumnMenu._sortColumn(tableId, columnIndex, false);
   },
 
 
   _hideColumn: function(tableId, columnIndex) {
     var table = O$(tableId);
-    if (columnIndex == undefined) {
-      columnIndex = table._showingMenuForColumn._index;
-    }
-    // todo: make this work through the new standard setColumnsOrder client-side API
-    O$._submitInternal(table, null, [
-      [table.id + "::hideColumn", columnIndex]
-    ]);
-
+    var columnId = columnIndex ? table._columns[columnIndex].columnId : table._showingMenuForColumn;
+    var currentOrder = table.getColumnsOrder();
+    var currentIndex = currentOrder.indexOf(columnId);
+    O$.assert(currentIndex >= 0, "Can't find columnn: " + columnId);
+    currentOrder.splice(currentIndex, 1);
+    table.setColumnsOrder(currentOrder);
   }
 };

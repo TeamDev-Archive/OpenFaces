@@ -269,15 +269,18 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         columnMenu.setStandalone(true);
         columnMenu.encodeAll(context);
 
-        MenuItem sortAscMenuItem = null, sortDescMenuItem = null;
+        MenuItem sortAscMenuItem = null, sortDescMenuItem = null, hideColumnMenuItem = null;
         for (UIComponent child : columnMenu.getChildren()) {
             if (child instanceof SortAscendingMenuItem)
                 sortAscMenuItem = (MenuItem) child;
             if (child instanceof SortDescendingMenuItem)
                 sortDescMenuItem = (MenuItem) child;
+            if (child instanceof HideColumnMenuItem)
+                hideColumnMenuItem = (MenuItem) child;
         }
 
-        buf.initScript(context, columnMenu, "O$.ColumnMenu._init", table, button, sortAscMenuItem, sortDescMenuItem);
+        buf.initScript(context, columnMenu, "O$.ColumnMenu._init", table, button,
+                sortAscMenuItem, sortDescMenuItem, hideColumnMenuItem);
 
         if (temporaryButton)
             table.getFacets().remove(FACET_COLUMN_MENU_BUTTON);
@@ -377,10 +380,9 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
     }
 
     private void encodeSortingSupport(FacesContext context, AbstractTable table, ScriptBuilder buf) throws IOException {
-        List<BaseColumn> columns = table.getRenderedColumns();
         boolean atLeastOneColumnSortable1 = false;
-        JSONArray columnSortableFlags = new JSONArray();
-        for (BaseColumn column : columns) {
+        final JSONArray sortableColumnsIds = new JSONArray();
+        for (BaseColumn column : table.getAllColumns()) {
             boolean sortable;
             Boolean columnSortableAttr = (Boolean) column.getAttributes().get("sortable");
             if (columnSortableAttr != null)
@@ -390,8 +392,8 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
                         (column instanceof Column) ? ((Column) column).getSortingExpression() : null;
                 sortable = (sortingExpression != null);
             }
+            if (sortable) sortableColumnsIds.put(column.getId());
             atLeastOneColumnSortable1 |= sortable;
-            columnSortableFlags.put(sortable);
         }
         boolean atLeastOneColumnSortable = atLeastOneColumnSortable1;
         if (!atLeastOneColumnSortable)
@@ -417,7 +419,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
 
         buf.initScript(context, table, "O$.Table._initSorting",
                 table.getSortingRules(),
-                columnSortableFlags,
+                sortableColumnsIds,
                 table.getSortColumnIndex(),
                 Styles.getCSSClass(context, table, table.getSortableHeaderStyle(), StyleGroup.regularStyleGroup(), getSortableHeaderClass(table)),
                 Styles.getCSSClass(context, table, table.getSortableHeaderRolloverStyle(), StyleGroup.regularStyleGroup(), getSortableHeaderRolloverClass(table)),
@@ -550,6 +552,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
     }
 
     private void decodeColumnVisibility(FacesContext context, AbstractTable table) {
+        //todo: [s.kurilin] We don't need it now. Remove it carefully.
         Map<String, String> requestParameterMap = context.getExternalContext().getRequestParameterMap();
         String fieldName = table.getClientId(context) + "::columnVisibility";
         String fieldValue = requestParameterMap.get(fieldName);
