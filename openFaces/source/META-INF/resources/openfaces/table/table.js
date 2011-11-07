@@ -287,23 +287,14 @@ O$.Table = {
         }
         return -1;
       },
-
       /**
        * Call this method to avoid any successive calls to such methods as table.sorting.setSortingRules,
        * table.grouping.setGroupingRules, etc. to send Ajax requests right away as they are invoked, but accumulate and
-       * postpone the appropriate Ajax actions until finishCompoundSubmission method is called , so that all of them be
+       * postpone the appropriate Ajax actions while passed function is executed, so that all of them be
        * performed at once with a single Ajax request.
        */
-      startCompoundSubmission: function() {
-        O$._startCompoundSubmission(table);
-      },
-
-      /**
-       * Sends an Ajax requests that accumulates the actions and data of all Ajax-initiating methods that were invoked
-       * since last startCompoundSubmission() call.
-       */
-      finishCompoundSubmission: function() {
-        O$._finishCompoundSubmission(table);
+      combineSubmissions: function(func) {
+        O$._combineSubmissions(table, func);
       },
 
       getColumnsOrder: function() {
@@ -2635,43 +2626,39 @@ O$.Table = {
                 },
 
                 _applyGrouping: function(rules) {
-                  table.startCompoundSubmission();
-                  table.grouping.setGroupingRules(rules);
+                  table.combineSubmissions(function(){
+                    table.grouping.setGroupingRules(rules);
+                    var displayedColumnIds = table.getColumnsOrder();
+                    rules.forEach(function(rule) {
+                      var index = displayedColumnIds.indexOf(rule.columnId);
+                      if (index >= 0)  displayedColumnIds = displayedColumnIds.slice(0, index).concat(displayedColumnIds.slice(index + 1));
+                    });
 
-                  var displayedColumnIds = table.getColumnsOrder();
-                  rules.forEach(function(rule) {
-                    var index = displayedColumnIds.indexOf(rule.columnId);
-                    if (index >= 0)  displayedColumnIds = displayedColumnIds.slice(0, index).concat(displayedColumnIds.slice(index + 1));
+                    table.setColumnsOrder(displayedColumnIds);
                   });
-
-                  table.setColumnsOrder(displayedColumnIds);
-
-                  table.finishCompoundSubmission();
                 },
 
                 _cancelGroupingRule: function(columnId, newIndex) {
-                  table.startCompoundSubmission();
+                  table.combineSubmissions(function() {
+                    var groupingRules = this._groupingRules;
+                    var index = 0;
+                    groupingRules.forEach(function(eachRule) {
+                      if (eachRule.columnId == columnId) {
+                        groupingRules = groupingRules.slice(0, index).concat(groupingRules.slice(index + 1));
+                      }
+                      index++;
+                    });
+                    table.grouping.setGroupingRules(groupingRules);
 
-                  var groupingRules = this._groupingRules;
-                  var index = 0;
-                  groupingRules.forEach(function(eachRule) {
-                    if(eachRule.columnId == columnId){
-                      groupingRules = groupingRules.slice(0, index).concat(groupingRules.slice(index + 1));
-                    }
-                    index++;
-                  });
-                  table.grouping.setGroupingRules(groupingRules);
-
-                  var displayedColumnIds = table.getColumnsOrder();
-                  var prevIndex = displayedColumnIds.indexOf(columnId);
-                  if (prevIndex >= 0) {
+                    var displayedColumnIds = table.getColumnsOrder();
+                    var prevIndex = displayedColumnIds.indexOf(columnId);
+                    if (prevIndex >= 0) {
                       displayedColumnIds = displayedColumnIds.slice(0, prevIndex).concat(
                               displayedColumnIds.slice(prevIndex + 1));
-                  }
-                  displayedColumnIds.splice(newIndex, 0, columnId);
-                  table.setColumnsOrder(displayedColumnIds);
-
-                  table.finishCompoundSubmission();
+                    }
+                    displayedColumnIds.splice(newIndex, 0, columnId);
+                    table.setColumnsOrder(displayedColumnIds);
+                  });
                 }
               }
             });

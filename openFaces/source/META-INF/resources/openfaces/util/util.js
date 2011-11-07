@@ -4899,7 +4899,14 @@ if (!window.O$) {
       setTimeout(focusFilterField, 1);
     }, additionalParams, execute);
   };
-
+  O$._combineSubmissions = function(component, func) {
+    O$._startCompoundSubmission(component);
+    try {
+      func();
+    } finally {
+      O$._finishCompoundSubmission(component);
+    }
+  };
   O$._startCompoundSubmission = function(component) {
     if (component._compoundSubmission) throw "O$._startCompoundSubmission has already been called for " +
             "this component (id = " + component.id + ")";
@@ -4995,8 +5002,5 @@ if (!window.O$) {
           });
       }, 1);
   }
-
 }
-
-
 
