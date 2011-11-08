@@ -2691,9 +2691,10 @@ O$.Table = {
 
     function Connector(left, right) {
       function connectorDescription(left, right) {
+        var rightMaxY = right.y + right.height, leftMaxY = left.y + left.height;
         return {
           horizontalOffset: left.width - 10,
-          height : Math.round(right.y + right.height / 2 - (left.y + left.height))
+          height : Math.round(leftMaxY < right.y ? right.y - leftMaxY + right.height / 2 : (rightMaxY - leftMaxY) / 2)
         };
       }
 
