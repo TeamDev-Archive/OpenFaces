@@ -38,6 +38,7 @@ public class GroupingBoxRenderer extends org.openfaces.renderkit.RendererBase {
         final String boxClassName = Styles.getCSSClass(context, component, groupingBox.getStyle(), "o_groupingBox", groupingBox.getStyleClass());
         final String headerClassName = Styles.getCSSClass(context, component, groupingBox.getHeaderStyle(), "o_groupingBox_header", groupingBox.getHeaderStyleClass());
         final String promptClassName = Styles.getCSSClass(context, component, groupingBox.getPromptTextStyle(), "o_groupingBox_promptText", groupingBox.getPromptTextStyleClass());
+        final String connectorStyle =  groupingBox.getConnectorStyle();
         writer.startElement("div", component);
         writeIdAttribute(context, component);
         writer.writeAttribute("class", boxClassName, null);
@@ -61,7 +62,9 @@ public class GroupingBoxRenderer extends org.openfaces.renderkit.RendererBase {
         writer.endElement("div");
         Rendering.renderInitScript(context, new ScriptBuilder()
                 .initScript(context, component, "O$.Table._initRowGroupingBox",
-                        table, headerClassName, groupingBox.getHeaderHorizOffset(), groupingBox.getHeaderVertOffset())
+                        table,
+                        connectorStyle, headerClassName,
+                        groupingBox.getHeaderHorizOffset(), groupingBox.getHeaderVertOffset())
                 .semicolon());
         Styles.renderStyleClasses(context, component);
     }

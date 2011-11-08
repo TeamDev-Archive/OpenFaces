@@ -43458,6 +43458,16 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default "50%" -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>Customize connector by applying custom style.</description>
+      <name>connectorStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  -->
+      <!-- @el true -->
+    </attribute>
   </tag>
 
   <!--<tag>-->

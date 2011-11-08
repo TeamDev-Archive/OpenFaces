@@ -29,6 +29,7 @@ public class GroupingBox extends org.openfaces.component.OUIComponentBase {
     private String promptTextStyleClass;
     private String headerHorizOffset;
     private String headerVertOffset;
+    private String connectorStyle;
 
     public GroupingBox() {
         setRendererType("org.openfaces.GroupingBoxRenderer");
@@ -46,7 +47,8 @@ public class GroupingBox extends org.openfaces.component.OUIComponentBase {
                 id, styleClass, style,
                 headerStyle, headerStyleClass,
                 promptText, promptTextStyle, promptTextStyleClass,
-                headerHorizOffset, headerVertOffset
+                headerHorizOffset, headerVertOffset,
+                connectorStyle
         };
     }
 
@@ -65,6 +67,7 @@ public class GroupingBox extends org.openfaces.component.OUIComponentBase {
         promptTextStyleClass = (String) state[i++];
         headerHorizOffset = (String) state[i++];
         headerVertOffset = (String) state[i++];
+        connectorStyle = (String) state[i++];
     }
 
     public String getId() {
@@ -145,5 +148,13 @@ public class GroupingBox extends org.openfaces.component.OUIComponentBase {
 
     public void setHeaderVertOffset(String headerVertOffset) {
         this.headerVertOffset = headerVertOffset;
+    }
+
+    public String getConnectorStyle() {
+        return ValueBindings.get(this, "connectorStyle", connectorStyle, "1px solid black");
+    }
+
+    public void setConnectorStyle(String connectorStyle) {
+        this.connectorStyle = connectorStyle;
     }
 }

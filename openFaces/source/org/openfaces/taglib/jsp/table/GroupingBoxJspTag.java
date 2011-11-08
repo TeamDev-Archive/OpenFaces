@@ -62,4 +62,8 @@ public class GroupingBoxJspTag extends AbstractComponentJspTag {
     public void setHeaderVertOffset(ValueExpression headerVertOffset) {
         getDelegate().setPropertyValue("headerVertOffset", headerVertOffset);
     }
+
+    public void setConnectorStyle(ValueExpression connectorStyle) {
+        getDelegate().setPropertyValue("connectorStyle", connectorStyle);
+    }
 }

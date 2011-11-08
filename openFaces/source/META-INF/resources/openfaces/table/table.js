@@ -2683,7 +2683,7 @@ O$.Table = {
   _removeFromArray: function(array, index){
     return array.slice(0, index).concat(array.slice(index + 1));
   },
-  _GroupingBoxLayout : function(rowGroupingBoxId, tableId, headerStyleClassName, headerHorizOffset, headerVertOffset) {
+  _GroupingBoxLayout : function(rowGroupingBoxId, tableId, connectorStyle, headerStyleClassName, headerHorizOffset, headerVertOffset) {
     var table = O$(tableId);
     var dropAreas = [];
     var headers = [];
@@ -2697,7 +2697,6 @@ O$.Table = {
         };
       }
 
-      var lineStyle = "1px solid black";
       var alignment = O$.GraphicLine.ALIGN_BY_TOP_OR_LEFT;
       var self = {
         _leftRect : O$.getElementBorderRectangle(left, true),
@@ -2718,8 +2717,8 @@ O$.Table = {
                   topBorder = self._leftRect.y + self._leftRect.height,
                   lowBorder = topBorder + desc.height,
                   rightBorder = self._rightRect.x;
-          self._vertical = new O$.GraphicLine(lineStyle, alignment, leftBorder, topBorder, leftBorder, lowBorder);
-          self._horizontal = new O$.GraphicLine(lineStyle, alignment, leftBorder, lowBorder, rightBorder, lowBorder);
+          self._vertical = new O$.GraphicLine(connectorStyle, alignment, leftBorder, topBorder, leftBorder, lowBorder);
+          self._horizontal = new O$.GraphicLine(connectorStyle, alignment, leftBorder, lowBorder, rightBorder, lowBorder);
           self._vertical.show(rowGroupingBox);
           self._horizontal.show(rowGroupingBox);
           self._vertical.updatePresentation();
@@ -2860,7 +2859,7 @@ O$.Table = {
     };
     return self;
   },
-  _initRowGroupingBox: function(rowGroupingBoxId, tableId, headerStyleClassName, headerHorizOffset, headerVertOffset) {
+  _initRowGroupingBox: function(rowGroupingBoxId, tableId, connectorStyle, headerStyleClassName, headerHorizOffset, headerVertOffset) {
     O$.Table._onTableLoaded(tableId, function() {
       var table = O$(tableId);
       var rowGroupingBox = O$(rowGroupingBoxId).firstChild;
@@ -2961,7 +2960,7 @@ O$.Table = {
           }
         }
       };
-      var layout = O$.Table._GroupingBoxLayout(rowGroupingBoxId, tableId, headerStyleClassName, headerHorizOffset, headerVertOffset);
+      var layout = O$.Table._GroupingBoxLayout(rowGroupingBoxId, tableId, connectorStyle, headerStyleClassName, headerHorizOffset, headerVertOffset);
 
       var groupingColumnIds = function() {
         return table.grouping.getGroupingRules().map(function(rule) {
