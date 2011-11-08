@@ -1285,7 +1285,8 @@ O$.Tables = {
               ? tableBody._getBorderBottomForCell(rowIndex, column._index, cell)
               : "0px none white";
       O$.Tables._setCellStyleProperty(cell, "borderBottom", borderBottom);
-      if (column._index != colCount - 1) {
+      var cellSpan = cell.colSpan || 1;
+      if (column._index + cellSpan - 1 != colCount - 1) {
         var rightBorder = column.body._rightBorder;
         if (table.body._overriddenVerticalGridlines) {
           var overriddenGridlineStyle = table.body._overriddenVerticalGridlines[column._index];
