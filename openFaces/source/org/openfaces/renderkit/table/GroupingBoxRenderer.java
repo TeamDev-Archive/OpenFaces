@@ -60,7 +60,9 @@ public class GroupingBoxRenderer extends org.openfaces.renderkit.RendererBase {
         writer.endElement("div");
         writer.endElement("div");
         Rendering.renderInitScript(context, new ScriptBuilder()
-                .initScript(context, component, "O$.Table._initRowGroupingBox", table, headerClassName).semicolon());
+                .initScript(context, component, "O$.Table._initRowGroupingBox",
+                        table, headerClassName, groupingBox.getHeaderHorizOffset(), groupingBox.getHeaderVertOffset())
+                .semicolon());
         Styles.renderStyleClasses(context, component);
     }
 }

@@ -27,6 +27,8 @@ public class GroupingBox extends org.openfaces.component.OUIComponentBase {
     private String promptText;
     private String promptTextStyle;
     private String promptTextStyleClass;
+    private String headerHorizOffset;
+    private String headerVertOffset;
 
     public GroupingBox() {
         setRendererType("org.openfaces.GroupingBoxRenderer");
@@ -41,7 +43,10 @@ public class GroupingBox extends org.openfaces.component.OUIComponentBase {
     public Object saveState(FacesContext context) {
         return new Object[]{
             super.saveState(context),
-                id, styleClass, style, headerStyle, headerStyleClass, promptText, promptTextStyle, promptTextStyleClass
+                id, styleClass, style,
+                headerStyle, headerStyleClass,
+                promptText, promptTextStyle, promptTextStyleClass,
+                headerHorizOffset, headerVertOffset
         };
     }
 
@@ -58,6 +63,8 @@ public class GroupingBox extends org.openfaces.component.OUIComponentBase {
         promptText = (String) state[i++];
         promptTextStyle = (String) state[i++];
         promptTextStyleClass = (String) state[i++];
+        headerHorizOffset = (String) state[i++];
+        headerVertOffset = (String) state[i++];
     }
 
     public String getId() {
@@ -122,5 +129,21 @@ public class GroupingBox extends org.openfaces.component.OUIComponentBase {
 
     public void setPromptTextStyleClass(String promptTextStyleClass) {
         this.promptTextStyleClass = promptTextStyleClass;
+    }
+
+    public String getHeaderHorizOffset() {
+        return ValueBindings.get(this, "headerHorizOffset", headerHorizOffset, "5px");
+    }
+
+    public void setHeaderHorizOffset(String headerHorizOffset) {
+        this.headerHorizOffset = headerHorizOffset;
+    }
+
+    public String getHeaderVertOffset() {
+        return ValueBindings.get(this, "headerVertOffset", headerVertOffset, "50%");
+    }
+
+    public void setHeaderVertOffset(String headerVertOffset) {
+        this.headerVertOffset = headerVertOffset;
     }
 }

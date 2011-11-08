@@ -38,5 +38,7 @@ public class GroupingBoxTag extends org.openfaces.taglib.internal.AbstractCompon
         setStringProperty(component, "promptText");
         setStringProperty(component, "promptTextStyle");
         setStringProperty(component, "promptTextStyleClass");
+        setStringProperty(component, "headerHorizOffset");
+        setStringProperty(component, "headerVertOffset");
     }
 }

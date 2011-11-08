@@ -43438,6 +43438,26 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>Horizontal distance beetween two headers.</description>
+      <name>headerHorizOffset</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "5px" -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Vertical offset on header box. Note that you can use persantage value.</description>
+      <name>headerVertOffset</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "50%" -->
+      <!-- @el true -->
+    </attribute>
   </tag>
 
   <!--<tag>-->

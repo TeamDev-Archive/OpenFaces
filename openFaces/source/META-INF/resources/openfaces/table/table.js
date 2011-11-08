@@ -2640,8 +2640,8 @@ O$.Table = {
 
                 _cancelGroupingRule: function(columnId, newIndex) {
                   table.combineSubmissions(function() {
-                    var groupingRules = this._groupingRules;
                     var index = 0;
+                    var groupingRules = table.grouping.getGroupingRules();
                     groupingRules.forEach(function(eachRule) {
                       if (eachRule.columnId == columnId) {
                         groupingRules = groupingRules.slice(0, index).concat(groupingRules.slice(index + 1));
@@ -2683,18 +2683,17 @@ O$.Table = {
   _removeFromArray: function(array, index){
     return array.slice(0, index).concat(array.slice(index + 1));
   },
-  _GroupingBoxLayout : function(rowGroupingBoxId, tableId, headerStyleClassName, headerHorizontalOffset, headerVerticalOffset) {
+  _GroupingBoxLayout : function(rowGroupingBoxId, tableId, headerStyleClassName, headerHorizOffset, headerVertOffset) {
     var table = O$(tableId);
     var dropAreas = [];
     var headers = [];
     var rowGroupingBox = O$(rowGroupingBoxId).firstChild;
 
-
     function Connector(left, right) {
       function connectorDescription(left, right) {
         return {
           horizontalOffset: left.width - 10,
-          height : Math.round(Math.abs(left.y + left.height - (right.y + right.height)) / 2)
+          height : Math.round(right.y + right.height / 2 - (left.y + left.height))
         };
       }
 
@@ -2747,12 +2746,14 @@ O$.Table = {
           if (index == 0) {
             return {x:0, y:0};
           }
-          var previous = self.draggable()[index - 1];
-          var previousPos = O$.getElementPos(previous, true);
-          var previousSize = O$.getElementSize(previous);
+          var previous = self.draggable()[index - 1],
+                  previousPos = O$.getElementPos(previous, true),
+                  previousSize = O$.getElementSize(previous),
+                  headerHorizOffsetVal = O$.calculateNumericCSSValue(headerHorizOffset, previousSize.width),
+                  headerVertOffsetVal = O$.calculateNumericCSSValue(headerVertOffset, previousSize.height);
           return {
-            x: Math.round(previousPos.x + previousSize.width + headerHorizontalOffset),
-            y: Math.round(previousPos.y + previousSize.height / 2 + headerVerticalOffset)
+            x: Math.round(previousPos.x + previousSize.width + headerHorizOffsetVal),
+            y: Math.round(previousPos.y + headerVertOffsetVal)
           };
         }
 
@@ -2766,7 +2767,9 @@ O$.Table = {
               result.style.cssFloat = "left";  //for browsers
             }
             result.style.height = "100%";
-            result.style.width = (O$.getElementSize(directWrapper).width + headerHorizontalOffset) + "px";
+            var directWrapperWidth = O$.getElementSize(directWrapper).width,
+                    headerHorizOffsetVal = O$.calculateNumericCSSValue(headerHorizOffset, directWrapperWidth);
+            result.style.width = (directWrapperWidth + headerHorizOffsetVal) + "px";
             rowGroupingBox.appendChild(result);
           };
           return result;
@@ -2857,7 +2860,7 @@ O$.Table = {
     };
     return self;
   },
-  _initRowGroupingBox: function(rowGroupingBoxId, tableId, headerStyleClassName) {
+  _initRowGroupingBox: function(rowGroupingBoxId, tableId, headerStyleClassName, headerHorizOffset, headerVertOffset) {
     O$.Table._onTableLoaded(tableId, function() {
       var table = O$(tableId);
       var rowGroupingBox = O$(rowGroupingBoxId).firstChild;
@@ -2958,7 +2961,7 @@ O$.Table = {
           }
         }
       };
-      var layout = O$.Table._GroupingBoxLayout(rowGroupingBoxId, tableId, headerStyleClassName, 5, 0);
+      var layout = O$.Table._GroupingBoxLayout(rowGroupingBoxId, tableId, headerStyleClassName, headerHorizOffset, headerVertOffset);
 
       var groupingColumnIds = function() {
         return table.grouping.getGroupingRules().map(function(rule) {
@@ -3372,7 +3375,7 @@ O$.ColumnMenu = {
       var prevOnhide = columnMenu.onhide;
       if (O$.ColumnMenu._menuFixer)O$.ColumnMenu._menuFixer();
 
-//      var headerCell = currentColumn.header._cell;
+//      var headerCell = cu  rrentColumn.header._cell;
 //      headerCell.setForceHover(true);
 
       columnMenuButton.setForceHover(true);

@@ -54,4 +54,12 @@ public class GroupingBoxJspTag extends AbstractComponentJspTag {
     public void setPromptTextStyleClass(ValueExpression promptTextStyleClass) {
         getDelegate().setPropertyValue("promptTextStyleClass", promptTextStyleClass);
     }
+
+    public void setHeaderHorizOffset(ValueExpression headerHorizOffset) {
+        getDelegate().setPropertyValue("headerHorizOffset", headerHorizOffset);
+    }
+
+    public void setHeaderVertOffset(ValueExpression headerVertOffset) {
+        getDelegate().setPropertyValue("headerVertOffset", headerVertOffset);
+    }
 }
