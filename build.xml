@@ -2,9 +2,13 @@
 
   <property name="components.dir" location="openFaces"/>
 
+  <buildnumber file="build.number"/>
+  <property file="ofversion.properties"/>
+  <property name="of-version" value="${ofversion}.${build.number}"/>
+
   <property name="target.dir" location="target"/>
   <property name="target-lib.dir" location="${target.dir}/lib"/>
-  <property name="openfaces-jar.file" location="${target-lib.dir}/openfaces.jar"/>
+  <property name="openfaces-jar.file" location="${target-lib.dir}/openfaces-${of-version}.jar"/>
 
   <property name="test-app-jsp.dir" location="testApp/jsp"/>
   <property name="test-app-facelets.dir" location="testApp/facelets"/>
@@ -16,7 +20,7 @@
   <property name="funcTests-source.dir" location="${funcTests.dir}/source"/>
   <property name="funcTests-target.dir" location="${funcTests.dir}/target"/>
   <property name="funcTests-target-reports.dir" location="${funcTests-target.dir}/test-reports"/>
-  <property name="funcTestsFramework.dir" location="OpenFacesInspectors"/>
+  <property name="funcTestsFramework.dir" location="openFacesInspectors"/>
   <property name="funcTestsFramework-source.dir" location="${funcTestsFramework.dir}/source"/>
   <property name="funcTestsFramework-target.dir" location="${funcTestsFramework.dir}/out"/>
   <property name="funcTestsFramework-distrib.dir" location="${funcTestsFramework.dir}/distribution"/>
@@ -35,36 +39,40 @@
   <target name="build" depends="clean" description="Build OpenFaces core and all the demo applications">
     <mkdir dir="${target.dir}"/>
 
-    <echo>Building Open Faces core...</echo>
+    <echo>Building OpenFaces core...</echo>
     <ant dir="${components.dir}" target="build" inheritall="false">
       <property name="target-jar.file" value="${openfaces-jar.file}"/>
       <property name="lib.dir" value="../lib"/>
       <property name="retain.classes.dir" value="true"/>
       <property file="ofversion.properties"/>
     </ant>
-    <echo>Open Faces core built successfully.</echo>
+    <echo>OpenFaces core built successfully.</echo>
 
     <echo>Building Test Application (JSP-based version)...</echo>
     <ant dir="${test-app-jsp.dir}" target="build" inheritall="false">
-      <property name="components-jar.file" value="${openfaces-jar.file}"/>
+      <property name="openfaces-jar.file" value="${openfaces-jar.file}"/>
+      <property name="ofversion" value="${ofversion}"/>
     </ant>
     <echo>Test Application (JSP-based version) built successfully.</echo>
 
     <echo>Building Test Application (Facelets-based version)...</echo>
     <ant dir="${test-app-facelets.dir}" target="build" inheritall="false">
-      <property name="components-jar.file" value="${openfaces-jar.file}"/>
+      <property name="openfaces-jar.file" value="${openfaces-jar.file}"/>
+      <property name="ofversion" value="${ofversion}"/>
     </ant>
     <echo>Test Application (Facelets-based version) built successfully.</echo>
 
     <echo>Building Live Demo (JSP-based version)...</echo>
     <ant dir="${live-demo.dir}" target="build" inheritall="false">
-      <property name="components-jar.file" value="${openfaces-jar.file}"/>
+      <property name="openfaces-jar.file" value="${openfaces-jar.file}"/>
+      <property name="ofversion" value="${ofversion}"/>
     </ant>
     <echo>Live Demo (JSP-based version) build successfully.</echo>
 
     <echo>Building Live Demo (Facelets-based version)...</echo>
     <ant dir="${live-demo-facelets.dir}" target="build" inheritall="false">
-      <property name="components-jar.file" value="${openfaces-jar.file}"/>
+      <property name="openfaces-jar.file" value="${openfaces-jar.file}"/>
+      <property name="ofversion" value="${ofversion}"/>
     </ant>
     <echo>Live Demo (Facelets-based version) build successfully.</echo>
 

@@ -33,7 +33,7 @@ public class ScrollPositionTag extends AbstractComponentTag {
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
-        setPropertyBinding(component, "value");
+        setValueExpressionProperty(component, "value");
         setStringProperty(component, "for");
         setBooleanProperty(component, "autoSaveScrollPos");
     }

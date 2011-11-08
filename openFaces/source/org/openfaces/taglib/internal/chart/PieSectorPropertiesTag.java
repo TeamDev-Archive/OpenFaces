@@ -31,6 +31,6 @@ public class PieSectorPropertiesTag extends AbstractStyledComponentTag {
         super.setComponentProperties(facesContext, component);
 
         setFloatProperty(component, "pulled");
-        setPropertyBinding(component, "condition");
+        setValueExpressionProperty(component, "condition");
     }
 }

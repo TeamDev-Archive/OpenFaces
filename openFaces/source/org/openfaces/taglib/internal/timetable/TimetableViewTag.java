@@ -29,9 +29,9 @@ public abstract class TimetableViewTag extends AbstractComponentTag {
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
         setStringProperty(component, "eventVar", false, false);
-        setPropertyBinding(component, "events");
-        setPropertyBinding(component, "resources");
-        setPropertyBinding(component, "day");
+        setValueExpressionProperty(component, "events");
+        setValueExpressionProperty(component, "resources");
+        setValueExpressionProperty(component, "day");
         setLocaleProperty(component, "locale");
         setTimeZoneProperty(component, "timeZone");
 

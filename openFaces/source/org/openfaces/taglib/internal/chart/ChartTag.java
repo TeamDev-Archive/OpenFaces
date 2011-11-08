@@ -40,7 +40,7 @@ public class ChartTag extends AbstractStyledComponentTag {
         Chart chart = (Chart) component;
 
         setStringProperty(chart, "textStyle");
-        setPropertyBinding(chart, "model");
+        setValueExpressionProperty(chart, "model");
         setEnumerationProperty(chart, "view", ChartViewType.class);
 
         String titleText = getPropertyValue("titleText");

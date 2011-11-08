@@ -381,7 +381,7 @@ public abstract class AbstractComponentTag extends AbstractTag {
             return;
         }
 
-        if (!setPropertyAsBinding(component, propertyName, value))
+        if (!setAsValueExpressionIfPossible(component, propertyName, value))
             component.getAttributes().put(propertyName, Collections.singletonList(value));
     }
 
@@ -395,7 +395,7 @@ public abstract class AbstractComponentTag extends AbstractTag {
         if (value == null) {
             return;
         }
-        if (setPropertyAsBinding(component, propertyName, value)) {
+        if (setAsValueExpressionIfPossible(component, propertyName, value)) {
             ValueExpression valueExpressionProxy = new LiteralCollectionValueExpressionProxy(component.getValueExpression(propertyName));
             component.setValueExpression(propertyName, valueExpressionProxy);
         } else {
@@ -474,11 +474,11 @@ public abstract class AbstractComponentTag extends AbstractTag {
      * @param propertyName property name
      * @return false if explicit setter invokation is required
      */
-    protected boolean setPropertyAsBinding(
+    protected boolean setAsValueExpressionIfPossible(
             UIComponent component,
             String propertyName) {
         String value = getPropertyValue(propertyName);
-        return setPropertyAsBinding(component, propertyName, value);
+        return setAsValueExpressionIfPossible(component, propertyName, value);
     }
 
     /**
@@ -487,11 +487,11 @@ public abstract class AbstractComponentTag extends AbstractTag {
      * @param valueDeclaration value declaration
      * @return false if value declaration is not a value expression, so explicit setter invokation is required
      */
-    protected boolean setPropertyAsBinding(
+    protected boolean setAsValueExpressionIfPossible(
             UIComponent component,
             String propertyName,
             String valueDeclaration) {
-        return setPropertyAsBinding(component, propertyName, valueDeclaration, propertyName);
+        return setAsValueExpressionIfPossible(component, propertyName, valueDeclaration, propertyName);
     }
 
     /**
@@ -500,7 +500,7 @@ public abstract class AbstractComponentTag extends AbstractTag {
      * @param valueDeclaration value declaration
      * @return false if value declaration is not a value expression, so explicit setter invokation is required
      */
-    protected boolean setPropertyAsBinding(
+    protected boolean setAsValueExpressionIfPossible(
             UIComponent component,
             String propertyName,
             String valueDeclaration,
@@ -515,17 +515,17 @@ public abstract class AbstractComponentTag extends AbstractTag {
             return false;
     }
 
-    protected void setPropertyBinding(UIComponent component, String propertyName) {
+    protected void setValueExpressionProperty(UIComponent component, String propertyName) {
         String value = getPropertyValue(propertyName);
-        setPropertyBinding(component, propertyName, value);
+        setValueExpressionProperty(component, propertyName, value);
     }
 
-    protected void setPropertyBinding(UIComponent component, String propertyName, String propertyValue) {
-        setPropertyBinding(component, propertyName, propertyValue, propertyName);
+    protected void setValueExpressionProperty(UIComponent component, String propertyName, String propertyValue) {
+        setValueExpressionProperty(component, propertyName, propertyValue, propertyName);
     }
 
-    protected void setPropertyBinding(UIComponent component, String propertyName, String propertyValue, String attributeName) {
-        if (!setPropertyAsBinding(component, propertyName, propertyValue, attributeName)) {
+    protected void setValueExpressionProperty(UIComponent component, String propertyName, String propertyValue, String attributeName) {
+        if (!setAsValueExpressionIfPossible(component, propertyName, propertyValue, attributeName)) {
             throw new IllegalArgumentException(propertyName + " property for " + component.getFamily() + " component " +
                     "should be declared as a value binding expression, but it is declared as follows: \"" + propertyValue + "\"");
         }
@@ -637,7 +637,7 @@ public abstract class AbstractComponentTag extends AbstractTag {
 
     protected void setLocaleProperty(UIComponent component, String propertyName) {
         String locale = getPropertyValue(propertyName);
-        if (setPropertyAsBinding(component, propertyName, locale))
+        if (setAsValueExpressionIfPossible(component, propertyName, locale))
             return;
 
         component.getAttributes().put(propertyName, CalendarUtil.getLocaleFromString(locale));
@@ -645,8 +645,8 @@ public abstract class AbstractComponentTag extends AbstractTag {
 
     protected void setTimeZoneProperty(UIComponent component, String propertyName) {
         String timeZone = getPropertyValue(propertyName);
-        if (setPropertyAsBinding(component, propertyName, timeZone)) {
-            setPropertyBinding(component, propertyName);
+        if (setAsValueExpressionIfPossible(component, propertyName, timeZone)) {
+            setValueExpressionProperty(component, propertyName);
             return;
         }
 
@@ -655,7 +655,7 @@ public abstract class AbstractComponentTag extends AbstractTag {
 
     protected void setTimeProperty(UIComponent component, String propertyName) {
         String propertyValue = getPropertyValue(propertyName);
-        if (setPropertyAsBinding(component, propertyName, propertyValue))
+        if (setAsValueExpressionIfPossible(component, propertyName, propertyValue))
             return;
 
         Date date;
@@ -669,7 +669,7 @@ public abstract class AbstractComponentTag extends AbstractTag {
 
     protected void setTimePropertyAsString(UIComponent component, String propertyName) {
         String propertyValue = getPropertyValue(propertyName);
-        if (setPropertyAsBinding(component, propertyName, propertyValue))
+        if (setAsValueExpressionIfPossible(component, propertyName, propertyValue))
             return;
 
         try {
@@ -683,7 +683,7 @@ public abstract class AbstractComponentTag extends AbstractTag {
 
     protected void setColorProperty(UIComponent component, String propertyName) {
         String value = getPropertyValue(propertyName);
-        if (setPropertyAsBinding(component, propertyName, value))
+        if (setAsValueExpressionIfPossible(component, propertyName, value))
             return;
 
         Color color = CSSUtil.parseColor(value);
@@ -692,7 +692,7 @@ public abstract class AbstractComponentTag extends AbstractTag {
 
     protected void setLineStyleObjectProperty(UIComponent component, String propertyName) {
         String value = getPropertyValue(propertyName);
-        if (setPropertyAsBinding(component, propertyName, value))
+        if (setAsValueExpressionIfPossible(component, propertyName, value))
             return;
 
         final StyleObjectModel lineStyleCSSModel = CSSUtil.getLineStyleModel(value);
@@ -703,7 +703,7 @@ public abstract class AbstractComponentTag extends AbstractTag {
     protected void setConverterProperty(FacesContext facesContext, UIComponent component, String propertyName) {
         Application application = facesContext.getApplication();
         String converterValue = getPropertyValue(propertyName);
-        if (!setPropertyAsBinding(component, propertyName)) {
+        if (!setAsValueExpressionIfPossible(component, propertyName)) {
             Converter converter = application.createConverter(converterValue);
             if (component instanceof ValueHolder)
                 ((ValueHolder) component).setConverter(converter);
@@ -714,7 +714,7 @@ public abstract class AbstractComponentTag extends AbstractTag {
 
     protected <T extends Enum> void setEnumerationProperty(UIComponent component, String propertyName, Class<T> enumerationClass) {
         String attributeValue = getPropertyValue(propertyName);
-        if (!setPropertyAsBinding(component, propertyName, attributeValue)) {
+        if (!setAsValueExpressionIfPossible(component, propertyName, attributeValue)) {
             component.getAttributes().put(
                     propertyName,
                     Enumerations.valueByString(enumerationClass, attributeValue, propertyName));

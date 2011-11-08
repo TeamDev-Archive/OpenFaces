@@ -32,8 +32,8 @@ public class SimpleDateRangeTag extends AbstractComponentTag {
     @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
-        setPropertyBinding(component, "fromDate");
-        setPropertyBinding(component, "toDate");
+        setValueExpressionProperty(component, "fromDate");
+        setValueExpressionProperty(component, "toDate");
         setStringProperty(component, "dayStyle");
         setStringProperty(component, "rolloverDayStyle");
         setStringProperty(component, "dayClass");

@@ -35,6 +35,6 @@ public class LinePropertiesTag extends AbstractStyledComponentTag {
         setBooleanProperty(component, "showInLegend");
         setBooleanProperty(component, "hideSeries");
         setBooleanProperty(component, "labelsVisible");
-        setPropertyBinding(component, "condition");
+        setValueExpressionProperty(component, "condition");
     }
 }

@@ -1,6 +1,8 @@
 <project name="OpenFaces Inspectors" default="build" basedir=".">
 
   <buildnumber file="build.number"/>
+  <property file="../ofversion.properties"/>
+  <property name="of-version" value="${ofversion}.${build.number}"/>
 
   <property name="src.dir" location="source"/>
   <property name="target.dir" location="antout"/>
@@ -12,7 +14,7 @@
   <property name="manifest.file" location="${target.dir}/manifest.mf"/>
   <property name="lib.dir" location="../lib"/>
   <property name="temp.dir" location="temp"/>
-  <property name="openfaces-jar.file" location="../openFaces/target/openfaces.jar"/>
+  <property name="openfaces-jar.file" location="../openFaces/target/openfaces-${of-version}.jar"/>
   <property name="openFacesInspectors-zip.file" location="${distrib.dir}/openfaces-inspectors.zip"/>
 
   <target name="init">

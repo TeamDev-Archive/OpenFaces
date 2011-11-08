@@ -58,6 +58,7 @@ public class TableStructure extends TableElement {
     private final UIComponent component;
     private final TableStyles tableStyles;
     private final List<BaseColumn> columns;
+    private List<BaseColumn> allColumns;
 
     private final TableHeader header;
     private final TableBody body;
@@ -74,6 +75,7 @@ public class TableStructure extends TableElement {
         this.component = component;
         this.tableStyles = tableStyles;
         columns = tableStyles.getRenderedColumns();
+        allColumns = tableStyles.getAllColumns();
         scrolling = tableStyles.getScrolling();
         leftFixedCols = 0;
         rightFixedCols = 0;
@@ -142,6 +144,10 @@ public class TableStructure extends TableElement {
      */
     public List<BaseColumn> getColumns() {
         return columns;
+    }
+
+    public List<BaseColumn> getAllColumns() {
+        return allColumns;
     }
 
     public TableHeader getHeader() {
@@ -365,7 +371,8 @@ public class TableStructure extends TableElement {
         UIComponent styleOwnerComponent = getComponent();
         boolean forceUsingCellStyles = getForceUsingCellStyles(styleOwnerComponent);
 
-        List<BaseColumn> columns = getColumns();
+        List<BaseColumn> visibleColumns = getColumns();
+        List<BaseColumn> allColumns = getAllColumns();
         TableStyles tableStyles = getTableStyles();
         Map<Object, String> rowStylesMap = getRowStylesMap();
         Map<Object, String> cellStylesMap = getCellStylesMap();
@@ -374,7 +381,8 @@ public class TableStructure extends TableElement {
         Rendering.addJsonParam(result, "header", getHeader().getInitParam(defaultStyles));
         Rendering.addJsonParam(result, "body", getBody().getInitParam(defaultStyles));
         Rendering.addJsonParam(result, "footer", getFooter().getInitParam(defaultStyles));
-        Rendering.addJsonParam(result, "columns", getColumnHierarchyParam(facesContext, columns));
+        Rendering.addJsonParam(result, "columns", getColumnHierarchyParam(facesContext, visibleColumns));
+        Rendering.addJsonParam(result, "logicalColumns", getColumnHierarchyParam(facesContext, allColumns));
         Rendering.addJsonParam(result, "gridLines", getGridLineParams(tableStyles, defaultStyles));
 
         Rendering.addJsonParam(result, "scrolling", getScrollingParam());
@@ -470,7 +478,7 @@ public class TableStructure extends TableElement {
         return columnsArray;
     }
 
-    private JSONObject getColumnParams(FacesContext context, BaseColumn columnOrGroup, int level) throws JSONException {
+    private JSONObject getColumnParams(FacesContext context, BaseColumn  columnOrGroup, int level) throws JSONException {
         JSONObject columnObj = new JSONObject();
 
         columnObj.put("columnId", columnOrGroup.getId());

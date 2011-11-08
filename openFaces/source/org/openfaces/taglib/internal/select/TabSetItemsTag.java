@@ -33,6 +33,6 @@ public class TabSetItemsTag extends AbstractComponentTag {
     @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
-        setPropertyBinding(component, "value");
+        setValueExpressionProperty(component, "value");
     }
 }

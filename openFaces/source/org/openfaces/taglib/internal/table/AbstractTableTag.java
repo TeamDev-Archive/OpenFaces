@@ -28,7 +28,7 @@ public abstract class AbstractTableTag extends AbstractComponentTag {
 
         setBooleanProperty(component, "sortAscending");
         setStringProperty(component, "sortColumnId");
-        setPropertyBinding(component, "displayedRowDatas");
+        setValueExpressionProperty(component, "displayedRowDatas");
 
         setStringProperty(component, "cellspacing");
         setStringProperty(component, "cellpadding");

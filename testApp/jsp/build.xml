@@ -19,9 +19,6 @@
   <property name="target-war.file" location="${target.dir}/test-app-jsp.war"/>
   <property name="classes.dir" location="${target.dir}/classes"/>
 
-  <property name="components-jar.file" location="../../target/lib/openfaces.jar"/>
-
-  <property file="../../ofversion.properties"/>
 
   <fileset id="basic-libraries" dir="${lib.dir}">
     <include name="jstl-1.1.0.jar"/>
@@ -72,7 +69,7 @@
 
   <!-- *** Public Targets ** -->
 
-  <target name="compile" depends="-fail-if-no-components-jar,-compile" description="compile the source">
+  <target name="compile" depends="-fail-if-no-openfaces-jar,-compile" description="compile the source">
   </target>
 
   <target name="copy-resources">
@@ -83,7 +80,7 @@
     </copy>
   </target>
 
-  <target name="build" depends="-fail-if-no-components-jar,-build-war-mojarra20"
+  <target name="build" depends="-fail-if-no-openfaces-jar,-build-war-mojarra20"
           description="generate the distribution"/>
 
   <target name="prepare-resources">
@@ -105,14 +102,14 @@
 
   <!-- *** Utility Targets *** -->
 
-  <target name="-fail-if-no-components-jar" unless="components-jar.file">
-    <fail>"components-jar.file" property must be specified</fail>
+  <target name="-fail-if-no-openfaces-jar" unless="openfaces-jar.file">
+    <fail>"openfaces-jar.file" property must be specified</fail>
   </target>
 
   <target name="-build-war-mojarra20" depends="compile,copy-resources,prepare-resources">
     <property name="webxml" value="web.xml"/>
     <war destfile="${target-war.file}" basedir="${resources.target.dir}" webxml="${web-inf.dir}/${webxml}">
-      <lib file="${components-jar.file}"/>
+      <lib file="${openfaces-jar.file}"/>
       <lib refid="basic-libraries"/>
       <lib refid="apache"/>
       <lib refid="openfaces-dependencies"/>
@@ -125,7 +122,7 @@
   </target>
 
 
-  <target name="-compile" depends="clean, init" if="components-jar.file">
+  <target name="-compile" depends="clean, init" if="openfaces-jar.file">
     <mkdir dir="${classes.dir}"/>
     <javac srcdir="${src.dir}" destdir="${classes.dir}" debug="true" source="1.5" target="1.5" encoding="UTF-8">
       <classpath>
@@ -149,7 +146,7 @@
           <include name="tomahawk/tomahawk20-1.1.10.jar"/>
           <include name="apache/commons-collections-3.2.1.jar"/>
         </fileset>
-        <fileset file="${components-jar.file}"/>
+        <fileset file="${openfaces-jar.file}"/>
       </classpath>
     </javac>
   </target>

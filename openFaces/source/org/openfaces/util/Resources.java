@@ -154,16 +154,6 @@ public class Resources {
             if (VERSION_PLACEHOLDER_STR.equals(version)) {
                 long startTime = System.currentTimeMillis() / 1000;
                 version = Long.toString(startTime, 36);
-            } else if (version.contains("EA")) {
-                int idx2 = buildInfo.indexOf(",", idx1 + 1);
-                String buildStr = buildInfo.substring(idx1 + 1, idx2).trim();
-                String buildNoPrefix1 = "build.nightly-";
-                String buildNoPrefix2 = "build.";
-                if (buildStr.startsWith(buildNoPrefix1)) {
-                    version += "." + buildStr.substring(buildNoPrefix1.length());
-                } else if (buildStr.startsWith(buildNoPrefix2)) {
-                    version += ".b" + buildStr.substring(buildNoPrefix2.length());
-                }
             }
         }
 

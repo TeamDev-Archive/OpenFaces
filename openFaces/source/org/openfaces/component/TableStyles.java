@@ -93,6 +93,8 @@ public interface TableStyles {
 
     List<BaseColumn> getRenderedColumns();
 
+    List<BaseColumn> getAllColumns();
+
     UIComponent getHeader();
 
     UIComponent getFooter();

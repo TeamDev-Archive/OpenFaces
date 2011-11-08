@@ -34,17 +34,17 @@ public class ColumnsTag extends AbstractComponentTag {
 
         Columns columns = (Columns) component;
 
-        setPropertyBinding(component, "value");
+        setValueExpressionProperty(component, "value");
         setStringProperty(component, "var", false, true);
         setStringProperty(component, "indexVar");
-        setPropertyBinding(component, "headerValue", getPropertyValue("header"), "header");
+        setValueExpressionProperty(component, "headerValue", getPropertyValue("header"), "header");
 
-        setPropertyBinding(component, "columnId");
+        setValueExpressionProperty(component, "columnId");
         setBooleanProperty(component, "columnRendered");
 
         setBooleanProperty(component, "sortingEnabled");
-        setPropertyBinding(component, "sortingExpression");
-        setPropertyBinding(component, "groupingExpression");
+        setValueExpressionProperty(component, "sortingExpression");
+        setValueExpressionProperty(component, "groupingExpression");
         String sortingComparator = getPropertyValue("sortingComparator");
         if (sortingComparator != null) {
             ValueExpression comparatorExpression;

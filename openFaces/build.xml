@@ -1,11 +1,13 @@
 <project name="OpenFaces Library" default="build" basedir=".">
 
   <buildnumber file="build.number"/>
+  <property file="ofversion.properties"/>
 
   <property name="src.dir" location="source"/>
   <property name="target.dir" location="target"/>
   <property name="classes.dir" location="${target.dir}/classes"/>
-  <property name="components-jar.file" location="${target.dir}/openfaces.jar"/>
+  <property name="of-version" value="${ofversion}.${build.number}"/>
+  <property name="openfaces-jar.file" location="${target.dir}/openfaces-${of-version}.jar"/>
   <property name="manifest.file" location="${target.dir}/manifest.mf"/>
 
   <target name="init">
@@ -97,13 +99,12 @@
     <property name="myfaces.lib.dir" location="${lib.dir}/myfaces"/>
     <property name="apache.lib.dir" location="${lib.dir}/apache"/>
     <property name="seam.lib.dir" location="${lib.dir}/jboss-seam"/>
-    <property file="ofversion.properties"/>
     <antcall target="-build" inheritall="true"/>
   </target>
 
   <target name="-build" depends="compile,-copy-resources,-prepare-manifest-and-version"
           description="generate the distribution">
-    <jar jarfile="${components-jar.file}" basedir="${classes.dir}" manifest="${manifest.file}"/>
+    <jar jarfile="${openfaces-jar.file}" basedir="${classes.dir}" manifest="${manifest.file}"/>
     <antcall target="-copy-target-jar"/>
 
     <antcall target="-delete-classes-dir"/>
@@ -114,29 +115,23 @@
     <delete dir="${target.dir}/classes"/>
   </target>
 
-  <target name="-prepare-manifest-and-version" depends="-set-cc-properties,-copy-resources">
+  <target name="-prepare-manifest-and-version" depends="-copy-resources">
+    <property name="cvstimestamp" value="${TODAY}"/>
+    <property name="version.file" location="${classes.dir}/META-INF/openFacesVersion.txt"/>
+    <copy file="source/META-INF/openFacesVersion.txt" tofile="${version.file}" overwrite="true"/>
+
     <manifest file="${manifest.file}">
       <attribute name="Implementation-Title" value="OpenFaces"/>
       <attribute name="Implementation-Vendor" value="TeamDev Ltd."/>
-      <attribute name="Implementation-Version" value="${ofversion}"/>
-      <attribute name="Build-Label" value="${label}"/>
+      <attribute name="Implementation-Version" value="${of-version}"/>
       <attribute name="Build-Timestamp" value="${cvstimestamp}"/>
     </manifest>
-    <property name="version.file" location="${classes.dir}/META-INF/openFacesVersion.txt"/>
-    <copy file="source/META-INF/openFacesVersion.txt" tofile="${version.file}" overwrite="true"/>
-    <replace file="${version.file}" token="label" value="${label}"/>
+    <replace file="${version.file}" token="version" value="${of-version}"/>
     <replace file="${version.file}" token="cvstimestamp" value="${cvstimestamp}"/>
-    <replace file="${version.file}" token="version" value="${ofversion}"/>
-  </target>
-
-  <target name="-set-cc-properties" unless="label">
-    <!--    <property name="label" value="Manual build"/>-->
-    <property name="label" value="build.${build.number}"/>
-    <property name="cvstimestamp" value="${TODAY}"/>
   </target>
 
   <target name="-copy-target-jar" if="target-jar.file">
-    <copy file="${components-jar.file}" tofile="${target-jar.file}"/>
+    <copy file="${openfaces-jar.file}" tofile="${target-jar.file}"/>
   </target>
 
   <target name="-copy-resources">

@@ -183,11 +183,21 @@ public class DropDownFieldTableStyles implements TableStyles {
     public List<BaseColumn> getRenderedColumns() {
         FacesContext context = FacesContext.getCurrentInstance();
         List<BaseColumn> columns = TableUtil.getColumnsFromList(context, dropDownField.getChildren());
-        for (Iterator iterator = columns.iterator(); iterator.hasNext();) {
+        for (Iterator iterator = columns.iterator(); iterator.hasNext(); ) {
             Column column = (Column) iterator.next();
             if (!column.isRendered())
                 iterator.remove();
         }
+        if (childComponents.size() > 0 || columns.size() == 0)
+            columns.add(new Column());
+
+        return columns;
+    }
+
+    public List<BaseColumn> getAllColumns() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        List<BaseColumn> columns = TableUtil.getColumnsFromList(context, dropDownField.getChildren());
+
         if (childComponents.size() > 0 || columns.size() == 0)
             columns.add(new Column());
 

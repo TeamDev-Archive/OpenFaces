@@ -43,7 +43,7 @@ public class CellTag extends AbstractComponentTag {
                 cell.setColumnIds(ids);
             }
         }
-        setPropertyBinding(component, "condition");
+        setValueExpressionProperty(component, "condition");
 
 //    String span = gePropertyValue("span");
 //    if ("all".equals(span))

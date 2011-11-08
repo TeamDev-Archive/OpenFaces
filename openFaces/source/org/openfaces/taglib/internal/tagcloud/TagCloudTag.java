@@ -41,13 +41,13 @@ public class TagCloudTag extends AbstractComponentTag {
 
         setStringProperty(component, "converter");
 
-        setPropertyBinding(component, "items");
+        setValueExpressionProperty(component, "items");
 
-        setPropertyBinding(component, "itemKey");
-        setPropertyBinding(component, "itemText");
-        setPropertyBinding(component, "itemUrl");
-        setPropertyBinding(component, "itemWeight");
-        setPropertyBinding(component, "itemTitle");
+        setValueExpressionProperty(component, "itemKey");
+        setValueExpressionProperty(component, "itemText");
+        setValueExpressionProperty(component, "itemUrl");
+        setValueExpressionProperty(component, "itemWeight");
+        setValueExpressionProperty(component, "itemTitle");
 
         setBooleanProperty(component, "itemWeightVisible");
         

@@ -2109,10 +2109,6 @@ O$.Table = {
 
   // -------------------------- COLUMN REORDERING SUPPORT
 
-  _appendDropTargetsForHeaderCell: function(tableId, dropTargets){
-    var table = O$(tableId);
-    table._additionalDropTargetsForCell = dropTargets;
-  },
   _initColumnReordering: function(tableId,
                                   draggedCellClass, draggedCellTransparency,
                                   autoScrollAreaClass, autoScrollAreaTransparency, autoScrollLeftImage, autoScrollRightImage,
@@ -2231,110 +2227,24 @@ O$.Table = {
       };
       O$.makeDraggable(headerCell, function(evt) {
         var inAdditionalTargets = function(evt){
-          var result = false;
-          if(table._additionalDropTargetsForCell){
-            table._additionalDropTargetsForCell(headerCell).forEach(function (target){
-              if(target.eventInside(evt)){
-                result = true;
-              }
-            });
-          }
-          return result;
+          if (!table._rowGroupingBox)return false;
+          return table._rowGroupingBox._innerDropTargets(headerCell).filter(function (target) {
+            return target.eventInside(evt);
+          }).length > 0 ;
         };
 
-
-        var dropTargets = function columns(){
-                  var dropTargets = [];
-                  table._columns.forEach(function(targetColumn) {
-                    function dropTarget(minX, maxX, minY, maxY, columnOrGroup, rightEdge) {
-                      var container = O$.getContainingBlock(headerCell, true);
-                      if (!container)
-                        container = O$.getDefaultAbsolutePositionParent();
-
-                      return {
-                        minX: minX,
-                        maxX: maxX,
-                        minY: minY,
-                        maxY: maxY,
-                        eventInside: function(evt) {
-                          var cursorPos = O$.getEventPoint(evt, headerCell);
-                          return !inAdditionalTargets(evt) &&
-                                 (this.minX == null || cursorPos.x >= this.minX) &&
-                                 (this.maxX == null || cursorPos.x < this.maxX);
-                        },
-                        setActive: function(active) {
-                          if (active) {
-                            dropTargetMark.show(container);
-                            var gridLineWidthCorrection = function() {
-                              var parentColumnList = columnOrGroup._parentColumn ? columnOrGroup._parentColumn.subColumns : table._columns;
-                              var thisIdx = parentColumnList.indexOf(columnOrGroup);
-                              var col = rightEdge
-                                      ? thisIdx < parentColumnList.length - 1 ? columnOrGroup : null
-                                      : parentColumnList[thisIdx - 1];
-                              if (col) {
-                                var cell = col.header ? col.header._cell : null;
-                                return cell ? O$.getNumericElementStyle(cell, "border-right-width") : 0;
-                              } else {
-                                return O$.getNumericElementStyle(table, rightEdge ? "border-right-width" : "border-left-width");
-                              }
-                            }();
-                            dropTargetMark.setPosition((rightEdge ? maxX : minX) - gridLineWidthCorrection / 2, minY, maxY);
-                          } else {
-                            dropTargetMark.hide();
-                          }
-                        },
-                        acceptDraggable: function(cellHeader) {
-                          var col = columnOrGroup;
-                          while (col.subColumns)
-                            col = !rightEdge ? col.subColumns[0] : col.subColumns[col.subColumns.length - 1];
-                          var targetColIndex = !rightEdge ? col._index : col._index + 1;
-                          sendColumnMoveRequest(cellHeader._column._index, targetColIndex);
-                        }
-                      };
-                    }
-
-                    if (!interGroupDraggingAllowed && targetColumn._parentColumn != sourceColumn._parentColumn) {
-                      while (targetColumn._parentColumn) {
-                        targetColumn = targetColumn._parentColumn;
-                        if (targetColumn._parentColumn == sourceColumn._parentColumn)
-                          break;
-                      }
-                      if (targetColumn._parentColumn != sourceColumn._parentColumn)
-                        return;
-                    }
-                    if (!columnFixingAllowed) {
-                      if (targetColumn._scrollingArea != sourceColumn._scrollingArea)
-                        return;
-                    }
-                    var targetCell = targetColumn.header ? targetColumn.header._cell : null;
-                    if (!targetCell) return;
-                    var targetCellRect = O$.getElementBorderRectangle(targetCell, true);
-                    var targetCellRect2 = function() {
-                      var bottomCell = targetCell;
-                      var col = targetColumn;
-                      while (col.subColumns) {
-                        col = col.subColumns[0];
-                        if (col.header && col.header._cell)
-                          bottomCell = col.header._cell;
-                      }
-                      return O$.getElementBorderRectangle(bottomCell, true);
-                    }();
-                    var min = targetCellRect.getMinX();
-                    var max = targetCellRect.getMaxX();
-                    var mid = (min + max) / 2;
-                    var minY = targetCellRect.getMinY();
-                    var maxY = targetCellRect2.getMaxY();
-                    dropTargets.push(dropTarget(min, mid, minY, maxY, targetColumn, false));
-                    dropTargets.push(dropTarget(mid, max, minY, maxY, targetColumn, true));
-                  });
-                  dropTargets[0].minX = null;
-                  dropTargets[dropTargets.length - 1].maxX = null;
-                  return dropTargets;
-                }();
-
-        if(table._additionalDropTargetsForCell){
-          dropTargets = dropTargets.concat(table._additionalDropTargetsForCell(headerCell));
+        var dropTargets = [];
+        if(table._rowGroupingBox){
+          dropTargets = dropTargets.concat(table._rowGroupingBox._innerDropTargets(headerCell._column.columnId));
         }
+         dropTargets = dropTargets.concat(table._innerDropTargetsByColumnId(sourceColumn.columnId, function(newIndex) {
+          var columnIds = table.getColumnsOrder();
+          var oldIndex = columnIds.indexOf(sourceColumn.columnId);
+          columnIds.splice(newIndex, 0, sourceColumn.columnId);
+          columnIds.splice(oldIndex < newIndex ? oldIndex : oldIndex + 1, 1);
+          table.setColumnsOrder(columnIds);
+        }));
+
         for (var i = 0, count = dropTargets.length; i < count; i++) {
           var dropTarget = dropTargets[i];
           if (dropTarget.eventInside(evt))
@@ -2420,85 +2330,231 @@ O$.Table = {
         }
       });
     });
-    //TODO: [s.kurilin] merge this logic with usual dragging case
-      table._dropTargets = function(columnId) {
-        var dropTargets = [];
-        //TODO: [s.kurilin] we shouldn't use this counter
-        var counter = 0;
-        table._columns.forEach(function(targetColumn) {
-          var index = counter;
-          var headerCell = targetColumn.header ? targetColumn.header._cell : null;
-          var targetCell = headerCell;
-          function dropTarget(minX, maxX, minY, maxY, columnOrGroup, rightEdge) {
-            var container = O$.getContainingBlock(headerCell, true);
-            if (!container)
-              container = O$.getDefaultAbsolutePositionParent();
+    table._columnsLogicalStructure = function () {
+      var currentColumnsOrder = table.getColumnsOrder();
 
-            return {
-              minX: minX,
-              maxX: maxX,
-              minY: minY,
-              maxY: maxY,
-              eventInside: function(evt) {
-                var cursorPos = O$.getEventPoint(evt, headerCell);
-                return (this.minX == null || cursorPos.x >= this.minX) &&
-                        (this.maxX == null || cursorPos.x < this.maxX);
-              },
-              setActive: function(active) {
-                if (active) {
-                  dropTargetMark.show(container);
-                  var gridLineWidthCorrection = function() {
-                    var parentColumnList = columnOrGroup._parentColumn ? columnOrGroup._parentColumn.subColumns : table._columns;
-                    var thisIdx = parentColumnList.indexOf(columnOrGroup);
-                    var col = rightEdge
-                            ? thisIdx < parentColumnList.length - 1 ? columnOrGroup : null
-                            : parentColumnList[thisIdx - 1];
-                    if (col) {
-                      var cell = col.header ? col.header._cell : null;
-                      return cell ? O$.getNumericElementStyle(cell, "border-right-width") : 0;
-                    } else {
-                      return O$.getNumericElementStyle(table, rightEdge ? "border-right-width" : "border-left-width");
-                    }
-                  }();
-                  dropTargetMark.setPosition((rightEdge ? maxX : minX) - gridLineWidthCorrection / 2, minY, maxY);
-                } else {
-                  dropTargetMark.hide();
-                }
-              },
-              acceptDraggable: function(cellHeader) {
-                var col = columnOrGroup;
-                while (col.subColumns)
-                  col = !rightEdge ? col.subColumns[0] : col.subColumns[col.subColumns.length - 1];
-                var targetColIndex = !rightEdge ? col._index : col._index + 1;
-                table.grouping._cancelGroupingRule(cellHeader._columnId, targetColIndex);
+      function visibilityPredicate(node) {
+        if (node.isLeaf()) {
+          return currentColumnsOrder.indexOf(node.columnId) >= 0;
+        }
+        return node.visibleChildren().length > 0;
+      }
+
+      function helper(logicalDescription, parent) {
+        var self = {
+          columnId : logicalDescription.columnId,
+          parent : function() {
+            return parent;
+          },
+          root : function() {
+            var node = self;
+            while (node.parent())node = node.parent();
+            return node;
+          },
+          isLeaf : function() {
+            return !logicalDescription.subColumns;
+          },
+          children : function() {
+            function indexOfAnyVisibleLeaf(node) {
+              if (node.isLeaf()) {
+                return currentColumnsOrder.indexOf(node.columnId);
               }
-            };
-          }
-
-          var targetCellRect = O$.getElementBorderRectangle(targetCell, true);
-          var targetCellRect2 = function() {
-            var bottomCell = targetCell;
-            var col = targetColumn;
-            while (col.subColumns) {
-              col = col.subColumns[0];
-              if (col.header && col.header._cell)
-                bottomCell = col.header._cell;
+              var visibleChildren = node.visibleChildren();
+              return visibleChildren.length > 0 ? indexOfAnyVisibleLeaf(visibleChildren[0]) : -1;
             }
-            return O$.getElementBorderRectangle(bottomCell, true);
-          }();
-          var min = targetCellRect.getMinX();
-          var max = targetCellRect.getMaxX();
-          var mid = (min + max) / 2;
-          var minY = targetCellRect.getMinY();
-          var maxY = targetCellRect2.getMaxY();
-          dropTargets.push(dropTarget(min, mid, minY, maxY, targetColumn, false));
-          dropTargets.push(dropTarget(mid, max, minY, maxY, targetColumn, true));
-          counter++;
-        });
-        dropTargets[0].minX = null;
-        dropTargets[dropTargets.length - 1].maxX = null;
-        return dropTargets;
+
+            var result = [];
+            if (!self.isLeaf())logicalDescription.subColumns.forEach(function(subColumn) {
+              result.push(helper(subColumn, self));
+            });
+            result.sort(function (a, b) {
+              return indexOfAnyVisibleLeaf(a) - indexOfAnyVisibleLeaf(b);
+            });
+            return result;
+          },
+          visibleChildren : function() {
+            return self.children().filter(visibilityPredicate);
+          },
+          firstVisibleLeaf : function() {
+            var visibleChild = self;
+            while (!visibleChild.isLeaf()) visibleChild = visibleChild.visibleChildren()[0];
+            return visibleChild;
+          },
+          lastVisibleLeaf : function() {
+            var visibleChild = self;
+            while (!visibleChild.isLeaf()) {
+              var visibleChildren = visibleChild.visibleChildren();
+              visibleChild = visibleChildren[visibleChildren.length - 1];
+            }
+            return visibleChild;
+          },
+          isVisible : function() {
+            return visibilityPredicate(self);
+          },
+          find : function(columnId) {
+            if (self.columnId == columnId) {
+              return self;
+            }
+            var result = null;
+            self.children().forEach(function(child) {
+              if (!result) result = child.find(columnId);
+            });
+            return result;
+          }
+        };
+        return self;
+      }
+
+
+      return  helper({subColumns:table._params.logicalColumns}, null);
+    }();
+
+    table._columnsReorderingSupport = function (sourceColumnId, targetColumnId) {
+      function canBeInserted (where, what, atLeft) {
+        if (atLeft != false) {
+          //todo: [s.kurilin]  should be rewritten for allow colGroup reordering
+          var currentOrder = table.getColumnsOrder().slice(0);
+          where = currentOrder[currentOrder.indexOf(where) - 1];
+        }
+
+        function findFirstVisibleParent(node) {
+          var parent = node.parent();
+          while (parent && !parent.isVisible()) {
+            parent = parent.parent();
+          }
+          return parent;
+        }
+
+        var sourceNode = table._columnsLogicalStructure.root().find(what),
+                firstVisibleParent = findFirstVisibleParent(sourceNode);
+
+        function canBePlacedInOrAfter() {
+          return firstVisibleParent.visibleChildren().filter(
+                  function(child) {
+                    return child.lastVisibleLeaf().columnId == where;
+                  }).length > 0
+        }
+
+        function canBePlacedBefore() {
+          var leftsVisibleNode = firstVisibleParent.firstVisibleLeaf();
+          var currentIndex = table.getColumnsOrder().indexOf(leftsVisibleNode.columnId);
+          return (currentIndex == 0 && !where)
+                  || (currentIndex > 0 && table.getColumnsOrder()[currentIndex - 1] == where);
+        }
+
+        return  canBePlacedBefore() || canBePlacedInOrAfter();
       };
+      return {
+        onLeftEdgePermit : function(func) {
+          if(canBeInserted(targetColumnId, sourceColumnId, true))func();
+        },
+        onRightEdgePermit : function(func) {
+          if(canBeInserted(targetColumnId, sourceColumnId, false))func();
+        }
+      };
+    }
+    table._innerDropTargetsByColumnId = function(columnId, dropHandler) {
+      var dropTargets = [];
+      //TODO: [s.kurilin] we shouldn't use this counter
+      var counter = 0;
+      table._columns.forEach(function(targetColumn) {
+        var index = counter;
+        var headerCell = targetColumn.header ? targetColumn.header._cell : null;
+        var targetCell = headerCell;
+
+        function dropTarget(minX, maxX, minY, maxY, sourceColumnId, columnOrGroup, rightEdge) {
+          var container = O$.getContainingBlock(headerCell, true);
+          if (!container)
+            container = O$.getDefaultAbsolutePositionParent();
+
+          return {
+            minX: minX,
+            maxX: maxX,
+            minY: minY,
+            maxY: maxY,
+            eventInside: function(evt) {
+              var cursorPos = O$.getEventPoint(evt, headerCell);
+              return (this.minX == null || cursorPos.x >= this.minX) &&
+                      (this.maxX == null || cursorPos.x < this.maxX);
+            },
+            setActive: function(active) {
+              if (active) {
+                dropTargetMark.show(container);
+                var gridLineWidthCorrection = function() {
+                  var parentColumnList = columnOrGroup._parentColumn ? columnOrGroup._parentColumn.subColumns : table._columns;
+                  var thisIdx = parentColumnList.indexOf(columnOrGroup);
+                  var col = rightEdge
+                          ? thisIdx < parentColumnList.length - 1 ? columnOrGroup : null
+                          : parentColumnList[thisIdx - 1];
+                  if (col) {
+                    var cell = col.header ? col.header._cell : null;
+                    return cell ? O$.getNumericElementStyle(cell, "border-right-width") : 0;
+                  } else {
+                    return O$.getNumericElementStyle(table, rightEdge ? "border-right-width" : "border-left-width");
+                  }
+                }();
+
+                function firstVisibleParent(left) {
+                  var parent = table._columnsLogicalStructure.root().find(left).parent();
+                  while (!parent.isVisible()) parent = parent.parent();
+                  return parent.columnId;
+                }
+                var parent = firstVisibleParent(sourceColumnId);
+                var markMinY;
+                if(parent == null){
+                  var anyHighLevelColumn = table._columnsLogicalStructure.root().visibleChildren()[0].columnId;
+                  var rect = O$.getElementBorderRectangle(table._getHeaderCell(anyHighLevelColumn).header._cell, true);
+                  markMinY = rect.getMinY();
+                } else {
+                  var rect = O$.getElementBorderRectangle(table._getHeaderCell(parent).header._cell, true);
+                  markMinY = rect.getMaxY();
+                }
+                dropTargetMark.setPosition((rightEdge ? maxX : minX) - gridLineWidthCorrection / 2, markMinY, maxY);
+              } else {
+                dropTargetMark.hide();
+              }
+            },
+            acceptDraggable: function(cellHeader) {
+              var col = columnOrGroup;
+              while (col.subColumns)
+                col = !rightEdge ? col.subColumns[0] : col.subColumns[col.subColumns.length - 1];
+              var targetColIndex = !rightEdge ? col._index : col._index + 1;
+              dropHandler(targetColIndex);
+            }
+          };
+        }
+
+        var targetCellRect = O$.getElementBorderRectangle(targetCell, true);
+        var targetCellRect2 = function() {
+          var bottomCell = targetCell;
+          var col = targetColumn;
+          while (col.subColumns) {
+            col = col.subColumns[0];
+            if (col.header && col.header._cell)
+              bottomCell = col.header._cell;
+          }
+          return O$.getElementBorderRectangle(bottomCell, true);
+        }();
+        var min = targetCellRect.getMinX();
+        var max = targetCellRect.getMaxX();
+        var mid = (min + max) / 2;
+        var minY = targetCellRect.getMinY();
+        var maxY = targetCellRect2.getMaxY();
+        var moving = table._columnsReorderingSupport(columnId, targetColumn.columnId);
+        moving.onLeftEdgePermit(function(){
+          dropTargets.push(dropTarget(min, mid, minY, maxY, columnId, targetColumn, false));
+        });
+        moving.onRightEdgePermit(function(){
+          dropTargets.push(dropTarget(mid, max, minY, maxY, columnId, targetColumn, true));
+        });
+        counter++;
+      });
+
+      dropTargets[0].minX = null;
+      dropTargets[dropTargets.length - 1].maxX = null;
+
+      return dropTargets;
+    };
 
     function sendColumnMoveRequest(srcColIndex, dstColIndex) {
       if (dstColIndex == srcColIndex || dstColIndex == srcColIndex + 1)
@@ -2882,15 +2938,14 @@ O$.Table = {
         });
       };
 
-      function hidePreviousLayer() {
-        while (rowGroupingBox.childNodes.length > 0) {
-          var child = rowGroupingBox.firstChild;
-          child.parentNode.removeChild(child);
-        }
-      }
-
       if (rules().length > 0) {
-        hidePreviousLayer();
+        function cleanPreviousContent() {
+          while (rowGroupingBox.childNodes.length > 0) {
+            var child = rowGroupingBox.firstChild;
+            child.parentNode.removeChild(child);
+          }
+        }
+        cleanPreviousContent();
         layout.addAll(groupingColumnIds());
       }
 
@@ -2899,13 +2954,9 @@ O$.Table = {
         var currentIndexOfColumn = groupingColumnIds().indexOf(columnId);
         if (currentIndexOfColumn >= 0) {
           ruleValues = O$.Table._removeFromArray(ruleValues, currentIndexOfColumn);
-          //[s.kurilin] : Just for optimization. Should be re-thinking after introducing _for attribute
-          //layout.removeByIndex(currentIndexOfColumn);
         }
         var newRule = new O$.Table.GroupingRule(columnId, true);
         ruleValues.splice(newColumnIndex, 0, newRule);
-        //layout.insertByColumnId(newColumnIndex, columnId);
-        //fixGroupDescriber();
         table.grouping._applyGrouping(ruleValues);
       }
 
@@ -2993,7 +3044,9 @@ O$.Table = {
                 });
                 var dropTargets = dropTargetsInGroupingBox(rowGroupingBox, groupingColumnIds, function(boxId) {
                   return layout.dropAreas()[groupingColumnIds.indexOf(boxId)];
-                }).concat(table._dropTargets());
+                }).concat(table._innerDropTargetsByColumnId(item._columnId, function(newIndex){
+                  table.grouping._cancelGroupingRule(item._columnId, newIndex);
+                }));
                 for (var i = 0, count = dropTargets.length; i < count; i++) {
                   var dropTarget = dropTargets[i];
                   if (dropTarget.eventInside(evt))
@@ -3023,7 +3076,8 @@ O$.Table = {
         layout.redraw();
       };
       fixGroupDescriber();
-      O$.Table._appendDropTargetsForHeaderCell(tableId, function(headerCell) {
+      function innerDropTargets(draggedColumnId){
+        var headerCell = table._getHeaderCell(draggedColumnId);
         var pos = O$.getElementPos(rowGroupingBox, true);
         var rowGroupingBoxMinX = parseInt(pos.x);
         var rowGroupingBoxMaxX = parseInt(rowGroupingBoxMinX) + parseInt(rowGroupingBox.clientWidth);
@@ -3034,7 +3088,6 @@ O$.Table = {
             return (x >= rowGroupingBoxMinX) && (x < rowGroupingBoxMaxX) && (y >= rowGroupingBoxMinY) && (y < rowGroupingBoxMaxY);
           }
         }();
-
         var dropTargets = [].concat(function groupedDescription() {
           if (rules().length == 0) {
             return [];
@@ -3085,7 +3138,8 @@ O$.Table = {
           dropTargets[0].minX = rowGroupingBoxMinX;
           dropTargets[dropTargets.length - 1].maxX = rowGroupingBoxMaxX;
           return dropTargets;
-        }()).concat(function emptyArea(rowGroupingBox) {
+        }())
+                .concat(function emptyArea(rowGroupingBox) {
           if (rules().length != 0) {
             return [];
           }
@@ -3118,7 +3172,8 @@ O$.Table = {
           ];
         }(rowGroupingBox));
         return dropTargets;
-      });
+      }
+      table._setRowGroupingBox({_innerDropTargets : innerDropTargets});
     });
   },
 
@@ -3235,8 +3290,26 @@ O$.ColumnMenu = {
         menuOpened = false;
       };
     });
-
-
+    table._setRowGroupingBox = function(rowGroupingBox) {
+      table._rowGroupingBox = rowGroupingBox;
+    };
+    table._getHeaderCell = function(columnId) {
+      function retrieveAllCells() {
+        var candidates = table._columns.slice(0);
+        var allCells = [];
+        while(candidates.length > 0){
+          var current = candidates.pop();
+          allCells.push(current);
+          if(current._parentColumn){
+            candidates.push(current._parentColumn);
+          }
+        }
+        return allCells;
+      }
+      return retrieveAllCells().filter(function(column) {
+        return column.columnId == columnId;
+      })[0];
+    };
   },
 
   _initColumnVisibilityMenu: function(menuId, tableId) {

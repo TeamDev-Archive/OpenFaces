@@ -33,9 +33,9 @@ public class CompositeFilterTag extends FilterTag {
     @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
-        setPropertyBinding(component, "value");
-        setPropertyBinding(component, "noFilterMessage");
-        setPropertyBinding(component, "labels");
+        setValueExpressionProperty(component, "value");
+        setValueExpressionProperty(component, "noFilterMessage");
+        setValueExpressionProperty(component, "labels");
         setBooleanProperty(component, "autoDetect");
     }
 }

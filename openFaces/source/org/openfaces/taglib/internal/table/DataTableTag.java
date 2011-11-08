@@ -33,16 +33,16 @@ public class DataTableTag extends AbstractTableTag {
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
-        setPropertyBinding(component, "value");
-        setPropertyBinding(component, "rowKey");
-        setPropertyBinding(component, "rowDataByKey");
+        setValueExpressionProperty(component, "value");
+        setValueExpressionProperty(component, "rowKey");
+        setValueExpressionProperty(component, "rowDataByKey");
         setIntProperty(component, "pageSize");
         setIntProperty(component, "pageIndex");
 
         setStringProperty(component, "rowIndexVar");
         setBooleanProperty(component, "paginationKeyboardSupport");
         setEnumerationProperty(component, "paginationOnSorting", PaginationOnSorting.class);
-        setPropertyBinding(component, "totalRowCount");
+        setValueExpressionProperty(component, "totalRowCount");
         setBooleanProperty(component, "customDataProviding");
     }
 }

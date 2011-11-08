@@ -37,8 +37,8 @@ public abstract class OUICommandTag extends AbstractComponentTag {
         if (ajax) {
             // todo: action/actionListener is set as value expression for Ajax-mode functions to be able to pass action
             // todo: expression to the client. Replace with ordinary server-side action decoding during Ajax action execution.
-            setPropertyBinding(component, "action");
-            setPropertyBinding(component, "actionListener");
+            setValueExpressionProperty(component, "action");
+            setValueExpressionProperty(component, "actionListener");
         }
 
         setStringProperty(component, "onajaxstart");
