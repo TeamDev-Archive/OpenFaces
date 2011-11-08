@@ -1697,6 +1697,11 @@ O$.Tables = {
       }
       var headerCell = (column.header && column.header._cell) || (column.subHeader && column.subHeader._cell);
       var bodyCell = column.body._cells[0];
+      if (!bodyCell) {
+        for (var i = 0, count = column.body._cells.length; i < count; i++) {
+          if (bodyCell = column.body._cells[i]) break;
+        }
+      }
       var footerCell = column.footer && column.footer._cell;
 
       var widthForCol = width;
