@@ -142,8 +142,7 @@ public abstract class TableHeaderOrFooter extends TableSection {
                 allRows.add(commonHeaderRow);
         }
 
-        for (int i = 0, count = columnHeaderRows.size(); i < count; i++) {
-            HeaderRow row = columnHeaderRows.get(i);
+        for (HeaderRow row : columnHeaderRows) {
             allRows.add(row);
         }
 
@@ -281,7 +280,8 @@ public abstract class TableHeaderOrFooter extends TableSection {
         }
 
         Object cellContent = getHeaderOrFooterCellContent(col, isHeader);
-        HeaderCell cell = new HeaderCell(col, cellContent, cellTag, CellKind.COL_HEADER, isHeader, isHeader);
+        HeaderCell cell = new HeaderCell(col, cellContent, cellTag, CellKind.COL_HEADER,
+                isHeader, isHeader ? HeaderCell.SortingToggleMode.AUTODETECT : HeaderCell.SortingToggleMode.OFF);
         cell.setEscapeText(true);
         if (isHeader) {
             boolean lastInThisHierarchy = thisHierarchySize - 1 == rowIndex;
@@ -293,7 +293,7 @@ public abstract class TableHeaderOrFooter extends TableSection {
         return cell;
     }
 
-    private static Object getHeaderOrFooterCellContent(BaseColumn col, boolean isHeader) {
+    public static Object getHeaderOrFooterCellContent(BaseColumn col, boolean isHeader) {
         DynamicCol dynamicCol = col instanceof DynamicCol ? (DynamicCol) col : null;
         if (dynamicCol != null) dynamicCol.declareContextVariables();
         try {

@@ -16,11 +16,13 @@ import org.openfaces.component.filter.AndFilterCriterion;
 import org.openfaces.component.filter.Filter;
 import org.openfaces.component.filter.FilterCriterion;
 import org.openfaces.component.filter.PredicateBuilder;
+import org.openfaces.util.Components;
 import org.openfaces.util.DataUtil;
 import org.openfaces.util.ValueBindings;
 
 import javax.el.ValueExpression;
-import javax.faces.context.ExternalContext;
+import javax.faces.FacesException;
+import javax.faces.component.StateHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.model.DataModel;
 import javax.faces.model.DataModelEvent;
@@ -37,11 +39,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Stack;
 
 /**
  * @author Dmitry Pikhulya
@@ -64,9 +66,12 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
      * If this field is non-null then mySourceDataModel shouldn't be used and myExtractedRows should be used instead.
      */
     private List<RowInfo> extractedRows;
+    private Map<Object, ? extends NodeInfo> extractedRowHierarchy;
     private List<Object> extractedRowKeys;
     private List<Object> allRetrievedRowKeys;
     private int extractedRowIndex = -1;
+    private boolean createGroupFooters;
+    private List<GroupingRule> groupingRules;
     private List<SortingRule> sortingRules;
     private List<Filter> filters;
     private int pageSize;
@@ -109,6 +114,8 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
     }
 
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+        createGroupFooters = in.readBoolean();
+        groupingRules = (List<GroupingRule>) in.readObject();
         sortingRules = (List<SortingRule>) in.readObject();
         rowKeyExpression = ValueBindings.readValueExpression(in);
         rowDataByKeyExpression = ValueBindings.readValueExpression(in);
@@ -122,6 +129,8 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
     }
 
     public void writeExternal(ObjectOutput out) throws IOException {
+        out.writeBoolean(createGroupFooters);
+        out.writeObject(groupingRules);
         out.writeObject(sortingRules);
         ValueBindings.writeValueExpression(out, rowKeyExpression);
         ValueBindings.writeValueExpression(out, rowDataByKeyExpression);
@@ -299,6 +308,24 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
         return pageIndex;
     }
 
+    public boolean isCreateGroupFooters() {
+        return createGroupFooters;
+    }
+
+    public void setCreateGroupFooters(boolean createGroupFooters) {
+        this.createGroupFooters = createGroupFooters;
+        updateExtractedRows();
+    }
+
+    public List<GroupingRule> getGroupingRules() {
+        return groupingRules;
+    }
+
+    public void setGroupingRules(List<GroupingRule> groupingRules) {
+        this.groupingRules = groupingRules;
+        updateExtractedRows();
+    }
+
     public List<SortingRule> getSortingRules() {
         return sortingRules;
     }
@@ -385,6 +412,12 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
         } else
             allRetrievedRowFilteringFlags = null;
 
+        if (groupingRules != null && groupingRules.size() > 0) {
+            extractedRowHierarchy = groupRows(groupingRules, rows);
+        } else {
+            extractedRowHierarchy = null;
+        }
+
         filteredRows = new ArrayList<RowInfo>(rows);
         currentlyAppliedFilters = filters != null
                 ? new ArrayList<Filter>(filters)
@@ -400,13 +433,147 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
         extractedRows = rows;
     }
 
+    public Map<Object, ? extends NodeInfo> getExtractedRowHierarchy() {
+        return extractedRowHierarchy;
+    }
+
+    private Map<Object, ? extends NodeInfo> groupRows(List<GroupingRule> groupingRules, List<RowInfo> rows) {
+        Map<Object, NodeInfo> extractedRowHierarchy = new HashMap<Object, NodeInfo>();
+        int rootNodeCount = 0;
+        if (groupingRules.size() > 0) {
+            List<RowInfo> rootRowInfos = groupRows(0, groupingRules.get(0), rows);
+            rootNodeCount = rootRowInfos.size();
+            for (int i = 1, subListSize = groupingRules.size(); i < subListSize; i++) {
+                GroupingRule groupingRule = groupingRules.get(i);
+                groupRows(i, groupingRule, rows);
+            }
+        }
+        extractedRowHierarchy.put("root", createNodeInfo(-1, rootNodeCount));
+        for (int rowIndex = 0, rowCount = rows.size(); rowIndex < rowCount; rowIndex++) {
+            RowInfo rowInfo = rows.get(rowIndex);
+            Object rowData = rowInfo.getRowData();
+            if (rowData instanceof RowGroupHeader) {
+                List<RowInfo> immediateSubRows = rowInfo.getImmediateSubRows();
+                extractedRowHierarchy.put(rowIndex,
+                        immediateSubRows != null
+                                ? createNodeInfo(rowInfo.getLevel(), immediateSubRows.size())
+                                : createNodeInfo(rowInfo.getLevel(), rowInfo.getAllGroupDataRows().size()));
+            }
+        }
+        return extractedRowHierarchy;
+    }
+
+    private DataTableNodeInfo createNodeInfo(int nodeLevel, Integer childCount) {
+        return new DataTableNodeInfo(nodeLevel, childCount, true);
+    }
+
+    private boolean recordsInTheSameGroup(Comparator<Object> comparator, RowInfo rowInfo1, RowInfo rowInfo2) {
+        Object record1 = rowInfo1 != null ? rowInfo1.getRowData() : null;
+        Object record2 = rowInfo2 != null ? rowInfo2.getRowData() : null;
+        if (record1 == null || record2 == null) return false;
+        if (record1 instanceof RowGroupHeaderOrFooter || record2 instanceof RowGroupHeaderOrFooter) return false;
+        return comparator.compare(record1, record2) == 0;
+    }
+
+
+    /**
+     * This method implies that it will be called once for each grouping rule starting from top level grouping rules.
+     */
+    private List<RowInfo> groupRows(int groupingRuleNo, GroupingRule groupingRule, List<RowInfo> rows) {
+        List<RowInfo> rowsWithGroupRecords = new ArrayList<RowInfo>();
+        if (rows.size() == 0) return Collections.emptyList();
+        List<RowInfo> topLevelGroups = null;
+
+        FacesContext context = FacesContext.getCurrentInstance();
+        AbstractTable.RowComparator ruleComparator = table.createRuleComparator(context, groupingRule);
+        String columnId = groupingRule.getColumnId();
+        ValueExpression columnGroupingValueExpression = table.getColumnGroupingValueExpression(columnId);
+        if (columnGroupingValueExpression == null)
+            throw new FacesException("The column by which grouping is performed should have its groupingExpression or sortingExpression defined. Column id: " + columnId);
+        RowInfo parentGroupHeader = null;
+        RowInfo upperRowInfo = null;
+        RowInfo rowInfo = rows.get(0);
+        RowInfo lowerRowInfo;
+        RowInfo currentGroupHeaderInfo = null;
+        for (int i = 0, count = rows.size(); i < count; i++, upperRowInfo = rowInfo, rowInfo = lowerRowInfo) {
+            lowerRowInfo = i < count - 1 ? rows.get(i + 1) : null;
+            assert rowInfo != null;
+            Object rowData = rowInfo.getRowData();
+            boolean regularDataRow = rowData != null && !(rowData instanceof RowGroupHeaderOrFooter);
+            RowInfo immediateSubGroupHeaderInfo = null;
+            if (regularDataRow) {
+                boolean firstGroupRecord = !recordsInTheSameGroup(ruleComparator, upperRowInfo, rowInfo);
+                if (firstGroupRecord) {
+                    Runnable restoreParams = table.populateSortingExpressionParams(
+                            table.getVar(), context.getExternalContext().getRequestMap(), rowData);
+                    Object groupingValue;
+                    try {
+                        groupingValue = columnGroupingValueExpression.getValue(context.getELContext());
+                    } finally {
+                        restoreParams.run();
+                    }
+                    RowGroup currentGroup = new RowGroup(columnId, groupingValue);
+                    RowGroupHeader rowGroupHeader = new RowGroupHeader(currentGroup);
+                    currentGroupHeaderInfo = new RowInfo(rowGroupHeader, -1);
+                    currentGroupHeaderInfo.setLevel(groupingRuleNo);
+                    rowsWithGroupRecords.add(currentGroupHeaderInfo);
+                    immediateSubGroupHeaderInfo = currentGroupHeaderInfo;
+                    currentGroupHeaderInfo.setAllGroupDataRows(new ArrayList<RowInfo>());
+                }
+
+                rowsWithGroupRecords.add(rowInfo);
+                if (currentGroupHeaderInfo == null)
+                    throw new IllegalStateException("Current group cannot be located. " +
+                            "The previous row was a regular one according to recordsInTheSameGroup, and the first " +
+                            "consecutive regular row in the list is supposed to always create the group");
+                rowInfo.setLevel(groupingRuleNo + 1);
+                currentGroupHeaderInfo.getAllGroupDataRows().add(rowInfo);
+
+                if (createGroupFooters) {
+                    boolean lastGroupRecord = !recordsInTheSameGroup(ruleComparator, rowInfo, lowerRowInfo);
+                    if (lastGroupRecord) {
+                        // todo: group footers still have to be placed into the row hierarchy properly (registerImmediateGroupChildren?)
+                        RowGroupHeader rowGroupHeader = (RowGroupHeader) currentGroupHeaderInfo.getRowData();
+                        RowInfo footerRowInfo = new RowInfo(new RowGroupFooter(rowGroupHeader.getRowGroup()), -1);
+                        rowsWithGroupRecords.add(footerRowInfo);
+                    }
+                }
+
+            } else {
+                rowsWithGroupRecords.add(rowInfo);
+                if (rowData instanceof RowGroupHeader)
+                    parentGroupHeader = rowInfo;
+            }
+            if (immediateSubGroupHeaderInfo != null) {
+                List<RowInfo> subRows;
+                if (parentGroupHeader != null) {
+                    subRows = parentGroupHeader.getImmediateSubRows();
+                    if (subRows == null) {
+                        subRows = new ArrayList<RowInfo>();
+                        parentGroupHeader.setImmediateSubRows(subRows);
+                    }
+                } else {
+                    if (topLevelGroups == null)
+                        topLevelGroups = new ArrayList<RowInfo>();
+                    subRows = topLevelGroups;
+                }
+                subRows.add(immediateSubGroupHeaderInfo);
+            }
+        }
+        rows.clear();
+        rows.addAll(rowsWithGroupRecords);
+
+        return topLevelGroups;
+    }
+
+
     private void resetPreparedParameters() {
-        restoreRequestVariable(VAR_PAGE_START);
-        restoreRequestVariable(VAR_PAGE_SIZE);
-        restoreRequestVariable(VAR_SORT_COLUMN_ID);
-        restoreRequestVariable(VAR_SORT_COLUMN_INDEX);
-        restoreRequestVariable(VAR_SORT_ASCENDING);
-        restoreRequestVariable(VAR_FILTER_CRITERIA);
+        Components.restoreRequestVariable(VAR_PAGE_START);
+        Components.restoreRequestVariable(VAR_PAGE_SIZE);
+        Components.restoreRequestVariable(VAR_SORT_COLUMN_ID);
+        Components.restoreRequestVariable(VAR_SORT_COLUMN_INDEX);
+        Components.restoreRequestVariable(VAR_SORT_ASCENDING);
+        Components.restoreRequestVariable(VAR_FILTER_CRITERIA);
     }
 
     private boolean prepareForRetrievingSortedData(boolean sortingNeeded) {
@@ -415,9 +582,9 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
             return false;
 
         if (customDataProvidingRequested) {
-            setRequestVariable(VAR_SORT_COLUMN_ID, table.getSortColumnId());
-            setRequestVariable(VAR_SORT_COLUMN_INDEX, table.getSortColumnIndex());
-            setRequestVariable(VAR_SORT_ASCENDING, table.isSortAscending());
+            Components.setRequestVariable(VAR_SORT_COLUMN_ID, table.getSortColumnId());
+            Components.setRequestVariable(VAR_SORT_COLUMN_INDEX, table.getSortColumnIndex());
+            Components.setRequestVariable(VAR_SORT_ASCENDING, table.isSortAscending());
         }
         return true;
     }
@@ -450,7 +617,7 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
 
                 criteria.add(filterCriterion);
             }
-        setRequestVariable(VAR_FILTER_CRITERIA, andCriterion);
+        Components.setRequestVariable(VAR_FILTER_CRITERIA, andCriterion);
     }
 
     private boolean prepareForRetrievingPagedData(boolean paginationNeeded) {
@@ -470,34 +637,9 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
         int remainingRows = totalRowCount - pageStart;
         int thisRangeSize = remainingRows < pageSize ? remainingRows : pageSize;
 
-        setRequestVariable(VAR_PAGE_START, pageStart);
-        setRequestVariable(VAR_PAGE_SIZE, thisRangeSize);
+        Components.setRequestVariable(VAR_PAGE_START, pageStart);
+        Components.setRequestVariable(VAR_PAGE_SIZE, thisRangeSize);
         return true;
-    }
-
-    private void setRequestVariable(String varName, Object varValue) {
-        Map<String, Object> requestMap = getRequestMap();
-        Object prevVarValue = requestMap.put(varName, varValue);
-        String backupVarName = "of:prev_" + varName;
-        Stack<Object> backupValues = (Stack<Object>) requestMap.get(backupVarName);
-        if (backupValues == null) {
-            backupValues = new Stack<Object>();
-            requestMap.put(backupVarName, backupValues);
-        }
-        backupValues.push(prevVarValue);
-    }
-
-    private void restoreRequestVariable(String varName) {
-        Map<String, Object> requestMap = getRequestMap();
-        if (requestMap == null) {
-            return;
-        }
-        String backupVarName = "of:prev_" + varName;
-        Stack backupValues = (Stack) requestMap.get(backupVarName);
-        if (backupValues == null || backupValues.isEmpty())
-            return;
-        Object oldValue = backupValues.pop();
-        requestMap.put(varName, oldValue);
     }
 
     private int requestNonPagedRowCount() {
@@ -508,26 +650,21 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
             throw new IllegalStateException("totalRowCount must be defined for pagination with custom data providing to work. table id = " +
                     table.getClientId(FacesContext.getCurrentInstance()));
         Object value = valueExpression.getValue(FacesContext.getCurrentInstance().getELContext());
-        restoreRequestVariable(VAR_FILTER_CRITERIA);
+        Components.restoreRequestVariable(VAR_FILTER_CRITERIA);
         if (!(value instanceof Integer))
             throw new IllegalStateException("totalRowCount must return an int (or Integer) number, but returned: " +
                     (value != null ? value.getClass().getName() : "null") + "; table id = " + table.getClientId(FacesContext.getCurrentInstance()));
         return (Integer) value;
     }
 
-    private Map<String, Object> getRequestMap() {
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        if (facesContext == null) return null;
-        ExternalContext externalContext = facesContext.getExternalContext();
-        return externalContext.getRequestMap();
-    }
 
     private boolean isPaginationNeeded() {
         return getPageSize() > 0;
     }
 
     private boolean isSortingNeeded() {
-        return sortingRules != null && sortingRules.size() > 0;
+        return (sortingRules != null && sortingRules.size() > 0) ||
+                (groupingRules != null && groupingRules.size() > 0);
     }
 
     /**
@@ -565,10 +702,7 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
 
     private static List<RowInfo> filterRows(List<Filter> filters, List<RowInfo> sortedRows, List<boolean[]> filteringFlags) {
         List<RowInfo> result = new ArrayList<RowInfo>();
-        int sortedRowCount = sortedRows.size();
-        for (int i = 0; i < sortedRowCount; i++) {
-            RowInfo rowObj = sortedRows.get(i);
-
+        for (RowInfo rowObj : sortedRows) {
             boolean[] flagsArray = new boolean[filters.size()];
             boolean rowAccepted = filterRow(filters, rowObj, flagsArray);
             filteringFlags.add(flagsArray);
@@ -638,7 +772,7 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
     private void sortRows(List<RowInfo> extractedRows) {
         if (table == null)
             return;
-        final Comparator<Object> rowDataComparator = table.createRowDataComparator(sortingRules);
+        final Comparator<Object> rowDataComparator = table.createRowDataComparator(groupingRules, sortingRules);
         Comparator<RowInfo> rowInfoComparator = new Comparator<RowInfo>() {
             public int compare(RowInfo rowInfo1, RowInfo rowInfo2) {
                 return rowDataComparator.compare(rowInfo1.getRowData(), rowInfo2.getRowData());
@@ -1008,13 +1142,14 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
     public static class RowInfo {
         private final Object rowData;
         private final int indexInOriginalList;
-
+        private int level;
+        private List<RowInfo> immediateSubRows;
+        private List<RowInfo> allGroupDataRows;
 
         public RowInfo(Object rowData, int indexInOriginalList) {
             this.rowData = rowData;
             this.indexInOriginalList = indexInOriginalList;
         }
-
 
         public Object getRowData() {
             return rowData;
@@ -1022,6 +1157,31 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
 
         public int getIndexInOriginalList() {
             return indexInOriginalList;
+        }
+
+        public int getLevel() {
+            return level;
+        }
+
+        public void setLevel(int level) {
+            this.level = level;
+        }
+
+        public List<RowInfo> getImmediateSubRows() {
+            return immediateSubRows;
+        }
+
+        public void setImmediateSubRows(List<RowInfo> immediateSubRows) {
+            this.immediateSubRows = immediateSubRows;
+        }
+
+
+        public List<RowInfo> getAllGroupDataRows() {
+            return allGroupDataRows;
+        }
+
+        public void setAllGroupDataRows(List<RowInfo> allGroupDataRows) {
+            this.allGroupDataRows = allGroupDataRows;
         }
     }
 }

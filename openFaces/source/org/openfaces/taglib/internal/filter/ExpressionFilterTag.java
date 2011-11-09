@@ -40,9 +40,9 @@ public abstract class ExpressionFilterTag extends FilterTag {
         String condition = getPropertyValue("condition");
         if (condition != null)
             setCondition(filter, condition);
-        setPropertyBinding(component, "value");
+        setValueExpressionProperty(component, "value");
 
-        setPropertyBinding(component, "options");
+        setValueExpressionProperty(component, "options");
         setConverterProperty(context, component, "converter");
         setBooleanProperty(component, "caseSensitive");
 

@@ -19,6 +19,7 @@ import org.openfaces.component.table.ColumnResizingState;
 import org.openfaces.component.table.Columns;
 import org.openfaces.component.table.DynamicCol;
 import org.openfaces.component.table.DynamicColumn;
+import org.openfaces.component.table.RowGroupHeaderOrFooter;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.util.Components;
@@ -59,14 +60,16 @@ public class TableUtil {
         return Resources.internalURL(context, "tableUtil.js");
     }
 
-    public static void writeColumnTags(FacesContext context, UIComponent component, List columns) throws IOException {
+    public static void writeColumnTags(
+            FacesContext context,
+            UIComponent component,
+            List<BaseColumn> columns) throws IOException {
+
         ColumnResizing columnResizing = (component instanceof AbstractTable) ?
                 ((AbstractTable) component).getColumnResizing() : null;
         ColumnResizingState columnResizingState = columnResizing != null ? columnResizing.getResizingState() : null;
-        int colCount = columns.size();
         ResponseWriter writer = context.getResponseWriter();
-        for (int colIndex = 0; colIndex < colCount; colIndex++) {
-            BaseColumn column = (BaseColumn) columns.get(colIndex);
+        for (BaseColumn column : columns) {
             String colWidth = columnResizingState != null ? columnResizingState.getColumnWidth(column.getId()) : null;
             if (colWidth == null)
                 colWidth = column.getWidth();
@@ -120,7 +123,11 @@ public class TableUtil {
                 columns.add((BaseColumn) child);
             } else if (child instanceof Columns) {
                 Columns tableColumns = (Columns) child;
-                columns.addAll(tableColumns.toColumnList(context));
+                List<DynamicColumn> dynamicColumns = tableColumns.toColumnList(context);
+                for (DynamicColumn dynamicColumn : dynamicColumns) {
+                    Components.generateIdIfNotSpecified(dynamicColumn);
+                }
+                columns.addAll(dynamicColumns);
             } else if (child instanceof ColumnGroup) {
                 ColumnGroup tcg = (ColumnGroup) child;
                 columns.addAll(getColumnsFromList(context, tcg.getChildren()));
@@ -284,8 +291,12 @@ public class TableUtil {
         int index = table.getRowIndex();
         ELContext elContext = context.getELContext();
         try {
-            table.setRowIndex(0);
-            valueType = expression.getType(elContext);
+            int i = 0;
+            table.setRowIndex(i);
+            while (table.isRowAvailable() && table.getRowData() instanceof RowGroupHeaderOrFooter) {
+                table.setRowIndex(++i);
+            }
+            valueType = table.isRowAvailable() ? expression.getType(elContext) : Object.class;
             if (columnOutput != null)
                 valueConverter = Rendering.getConverter(context, columnOutput);
             else

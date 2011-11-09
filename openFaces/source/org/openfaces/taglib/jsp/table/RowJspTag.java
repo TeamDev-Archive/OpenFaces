@@ -11,6 +11,7 @@
  */
 package org.openfaces.taglib.jsp.table;
 
+import org.openfaces.taglib.internal.AbstractComponentTag;
 import org.openfaces.taglib.internal.table.RowTag;
 import org.openfaces.taglib.jsp.AbstractComponentJspTag;
 
@@ -23,6 +24,10 @@ public class RowJspTag extends AbstractComponentJspTag {
 
     public RowJspTag() {
         super(new RowTag());
+    }
+
+    protected RowJspTag(AbstractComponentTag delegate) {
+        super(delegate);
     }
 
     public void setCondition(ValueExpression condition) {

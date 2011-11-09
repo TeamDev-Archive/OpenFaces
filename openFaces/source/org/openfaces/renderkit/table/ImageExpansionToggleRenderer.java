@@ -11,6 +11,7 @@
  */
 package org.openfaces.renderkit.table;
 
+import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.ImageExpansionToggle;
 import org.openfaces.component.table.ColumnGroup;
 import org.openfaces.component.table.TreeColumn;
@@ -34,7 +35,7 @@ public class ImageExpansionToggleRenderer extends RendererBase {
         encodeStaticImage(context, (ImageExpansionToggle) component, nodeExpanded, nodeExpanded ? "o_toggle_e" : "o_toggle_c");
     }
 
-    private TreeTable getTreeTable(UIComponent expansionToggle) {
+    private AbstractTable getTreeTable(UIComponent expansionToggle) {
         UIComponent column = expansionToggle.getParent();
         if (!(column instanceof TreeColumn) || ((TreeColumn) column).getExpansionToggle() != expansionToggle)
             throw new IllegalStateException("ImageExpansionToggleRenderer can only be inserted as an 'expansionToggle' facet of TreeColumn");
@@ -42,7 +43,7 @@ public class ImageExpansionToggleRenderer extends RendererBase {
         UIComponent columnParent = column.getParent();
         while (columnParent instanceof ColumnGroup)
             columnParent = columnParent.getParent();
-        TreeTable treeTable = (TreeTable) columnParent;
+        AbstractTable treeTable = (AbstractTable) columnParent;
         return treeTable;
     }
 

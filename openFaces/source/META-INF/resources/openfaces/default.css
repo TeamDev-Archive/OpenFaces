@@ -54,7 +54,7 @@
   .o_popuplayer,
   .o_popup_menu,
   .o_hintlabel_hint,
-  .o_timetableView {
+  .o_timetableView{
   border: 1px solid gray;
 }
 
@@ -155,6 +155,10 @@
   background: #f4f4f4;
 }
 
+.o_table_sortingToggle {
+    display: none;
+}
+
 .o_filter_row_cells {
   font-weight: normal;
 }
@@ -181,6 +185,19 @@
 
 .o_table_draggedColumn {
   border: 1px solid gray;
+}
+
+.o_groupingBox {
+    width: 100%;
+    height: 1.9em;
+    font-weight: normal;
+    text-align: left;
+    vertical-align: middle;
+    position: relative;
+    padding: 2px 4px 2px 4px;
+}
+.o_groupingBox_header {
+    border: 1px solid gray;
 }
 
 .o_scrollable_table {
@@ -235,6 +252,15 @@
   background-color: silver;
 }
 
+.o_rowGroupHeader {
+  font-weight: bold;
+  background: #d8d8d8;
+}
+
+.o_rowGroupFooter {
+
+}
+
 /* Checkbox column */
 .o_checkbox_column {
   width: 35px;
@@ -273,7 +299,7 @@
 }
 
 /* TreeTable */
-.o_treetable_folding {
+.o_treetable_expansionToggle {
   cursor: pointer;
   margin-left: 0;
   margin-right: 0;
@@ -1162,7 +1188,6 @@
 .o_folding_panel_content {
   padding-left: 2px;
   padding-right: 2px;
-  background: white;
 }
 
 .o_folding_panel_caption {

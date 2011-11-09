@@ -11,30 +11,22 @@
  */
 package org.openfaces.component.table;
 
-import java.io.Serializable;
+import org.openfaces.org.json.JSONException;
+import org.openfaces.org.json.JSONObject;
 
 /**
  * @author Dmitry Pikhulya
  */
+public class SortingRule extends SortingOrGroupingRule {
 
-public class SortingRule implements Serializable {
-    private boolean sortAscending = true;
-    private String sortColumnId;
-
-    public boolean isSortAscending() {
-        return sortAscending;
+    public SortingRule() {
     }
 
-    public void setSortAscending(boolean sortAscending) {
-        this.sortAscending = sortAscending;
+    public SortingRule(String columnId, boolean ascending) {
+        super(columnId, ascending);
     }
 
-    public String getSortColumnId() {
-        return sortColumnId;
+    public SortingRule(JSONObject jsonObj) throws JSONException {
+        super(jsonObj);
     }
-
-    public void setSortColumnId(String sortColumnId) {
-        this.sortColumnId = sortColumnId;
-    }
-
 }

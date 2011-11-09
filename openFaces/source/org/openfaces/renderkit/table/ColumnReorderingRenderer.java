@@ -59,26 +59,4 @@ public class ColumnReorderingRenderer extends RendererBase {
         );
     }
 
-    @Override
-    public void decode(FacesContext context, UIComponent component) {
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        AbstractTable table = ((AbstractTable) component.getParent());
-        String reorderingStr = params.get(table.getClientId(context) + "::reorderColumns");
-        if (reorderingStr == null) return;
-        String separator = "->";
-        int separatorIdx = reorderingStr.indexOf(separator);
-        int srcColIndex = Integer.parseInt(reorderingStr.substring(0, separatorIdx));
-        int dstColIndex = Integer.parseInt(reorderingStr.substring(separatorIdx + separator.length()));
-        if (srcColIndex == dstColIndex)
-            return;
-        List<BaseColumn> columns = new ArrayList<BaseColumn>(table.getRenderedColumns());
-        BaseColumn column = columns.remove(srcColIndex);
-        columns.add(dstColIndex < srcColIndex ? dstColIndex : dstColIndex - 1, column);
-
-        List<String> columnsOrder = new ArrayList<String>(columns.size());
-        for (BaseColumn col : columns) {
-            columnsOrder.add(col.getId());
-        }
-        table.getAttributes().put("submittedColumnsOrder", columnsOrder);
-    }
 }

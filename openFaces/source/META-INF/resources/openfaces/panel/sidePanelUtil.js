@@ -305,9 +305,7 @@ O$._bugFix_divNegativeSizeBug = function(element, useDoubleBuffering) {
 //------------------  resizableElement methods  -------------------
 
 O$._subscribeToOnresizeEvent = function(element, func) {
-  var widthIsNotFixed = true;
-  var heightIsNotFixed = true;
-  for(var targetElement = element; widthIsNotFixed || heightIsNotFixed; targetElement = targetElement.parentNode) {
+  for(var targetElement = element; ; targetElement = targetElement.parentNode) {
     if (targetElement._isNotResizableElement) {
       break;
     } else if (targetElement._isResizableElement) {
@@ -316,23 +314,6 @@ O$._subscribeToOnresizeEvent = function(element, func) {
     } else if (targetElement == document) {
       O$._subscribeToTargetOnresizeEvent(element, window, func);
       return;
-    }
-    var nodeName = targetElement.nodeName.toLowerCase();
-    if (nodeName == "form" || nodeName == "body" || nodeName == "html")
-      continue;
-    var width, height;
-    if (targetElement._isBorderLayoutPanel) {
-      width = O$.getStyleClassProperty(targetElement.className, "width");
-      height = O$.getStyleClassProperty(targetElement.className, "height");
-    } else {
-      width = O$.getElementStyle(targetElement, "width", false);
-      height = O$.getElementStyle(targetElement, "height", false);
-    }
-    if (O$._isPixelValue(width)) {
-      widthIsNotFixed = false;
-    }
-    if (O$._isPixelValue(height)) {
-      heightIsNotFixed = false;
     }
   }
   element._isNotResizableElement = true;

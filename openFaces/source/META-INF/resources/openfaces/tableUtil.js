@@ -1294,7 +1294,8 @@ O$.Tables = {
               ? tableBody._getBorderBottomForCell(rowIndex, column._index, cell)
               : "0px none white";
       O$.Tables._setCellStyleProperty(cell, "borderBottom", borderBottom);
-      if (column._index != colCount - 1) {
+      var cellSpan = cell.colSpan || 1;
+      if (column._index + cellSpan - 1 != colCount - 1) {
         var rightBorder = column.body._rightBorder;
         if (table.body._overriddenVerticalGridlines) {
           var overriddenGridlineStyle = table.body._overriddenVerticalGridlines[column._index];
@@ -1405,6 +1406,16 @@ O$.Tables = {
     table._deepestColumnHierarchyLevel = deepestColumnHierarchyLevel;
 
     table._columns = realColumns;
+    O$.extend(table._columns, {
+      byId: function(columnId) {
+        for (var i = 0, count = this.length; i < count; i++) {
+          var column = this[i];
+          if (column.id == columnId)
+            return column;
+        }
+        return null;
+      }
+    });
     var colCount = realColumns.length;
 
     var colTags = function() {
@@ -1701,6 +1712,11 @@ O$.Tables = {
       }
       var headerCell = (column.header && column.header._cell) || (column.subHeader && column.subHeader._cell);
       var bodyCell = column.body._cells[0];
+      if (!bodyCell) {
+        for (var i = 0, count = column.body._cells.length; i < count; i++) {
+          if (bodyCell = column.body._cells[i]) break;
+        }
+      }
       var footerCell = column.footer && column.footer._cell;
 
       var widthForCol = width;
@@ -1794,6 +1810,28 @@ O$.Tables = {
         colHeaderStyle: column.header ? column.header.className : null});
     };
 
+  },
+
+  _assignHeaderBoxStyle: function(headerBox, table, columnId, additionalClassName) {
+    var column = null;
+    table._columns.forEach(function(current){
+      if (current.columnId == columnId){
+        column = current;
+      }
+    });
+    O$.setStyleMappings(headerBox, {
+              headerSection: table._params.header.className,
+              headerRowStyle: table._params.header.headingsClassName,
+              compoundColumn: column ? column._getCompoundClassName() : null,
+              colHeader: column && column.header ? column.header.className : null,
+              headerBoxStyle: additionalClassName
+            });
+    var ie = '\v' == 'v';
+    if (ie && O$.isQuirksMode()) {
+      headerBox.style.width = "10px"; //for ie some random number
+    } else {
+      headerBox.style.width = ie ? "auto" : "auto!important";
+    }
   },
 
   _initSubHeaderCell: function(cell, column) {
@@ -2057,7 +2095,7 @@ O$.Tables = {
         O$.setStyleMappings(column.body, {colTagClassName: colTagClassName});
       cellStyles = null;
     } else {
-      if (cellStyles._names.length == 0)
+      if (cellStyles && cellStyles._names.length == 0)
         cellStyles = null;
     }
 

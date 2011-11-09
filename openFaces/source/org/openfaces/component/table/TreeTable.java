@@ -287,8 +287,7 @@ public class TreeTable extends AbstractTable {
     private TreeStructure findTreeStructureChild() {
         List<UIComponent> children = getChildren();
         TreeStructure treeStructure = null;
-        for (int i = 0, childCount = children.size(); i < childCount; i++) {
-            UIComponent child = children.get(i);
+        for (UIComponent child : children) {
             if (child instanceof TreeStructure) {
                 if (treeStructure != null)
                     throw new RuntimeException("There should be only one tree structure child under the TreeTable component");
@@ -481,7 +480,8 @@ public class TreeTable extends AbstractTable {
         getModel().setWrappedData(rowDatas, rowKeys);
     }
 
-    public Map<Object, NodeInfoForRow> getNodeExpansionDataMap(FacesContext context) {
+    @Override
+    public Map<Object, ? extends NodeInfo> getTreeStructureMap(FacesContext context) {
         return rowIndexToExpansionData;
     }
 
@@ -553,9 +553,7 @@ public class TreeTable extends AbstractTable {
 
         List<boolean[]> thisLevelNodeFilteringFlags = new ArrayList<boolean[]>();
         List<TempNodeParams> filteredNodeParams = new ArrayList<TempNodeParams>();
-        int sortedRowCount = thisLevelNodeParams.size();
-        for (int i = 0; i < sortedRowCount; i++) {
-            TempNodeParams rowObj = thisLevelNodeParams.get(i);
+        for (TempNodeParams rowObj : thisLevelNodeParams) {
             thisLevelNodeFilteringFlags.add(rowObj.getFilteringFlags());
             if (rowObj.isRowAccepted())
                 filteredNodeParams.add(rowObj);
@@ -614,7 +612,7 @@ public class TreeTable extends AbstractTable {
 
     private void sortNodes(List<TempNodeParams> thisLevelArrays, int level) {
         List<SortingRule> sortingRules = getSortingRules();
-        Comparator<Object> sortingComparator = createRowDataComparator(sortingRules);
+        Comparator<Object> sortingComparator = createRowDataComparator(null, sortingRules);
         if (sortingComparator == null)
             return;
         String nodeLevelVar = getNodeLevelVar();
@@ -636,6 +634,7 @@ public class TreeTable extends AbstractTable {
         return new NodeComparator(facesContext, sortingExpression, sortingComparator, requestMap, sortAscending);
     }
 
+    @Override
     public void acceptNewExpandedRowIndexes(Set indexes) {
         FacesContext context = getFacesContext();
         boolean dontCollapseNodes = isReloadingThisComponentWithA4j() || TreeTableRenderer.isAjaxFoldingInProgress(context);
@@ -683,8 +682,10 @@ public class TreeTable extends AbstractTable {
             nodeHasChildrenVar = getNodeHasChildrenVar();
         }
 
+    }
 
-        protected Runnable populateSortingExpressionParams(final Map<String, Object> requestMap, Object collectionObject) {
+    protected Runnable populateSortingExpressionParams(final String var, final Map<String, Object> requestMap, Object collectionObject) {
+//        protected Runnable populateSortingExpressionParams(final Map<String, Object> requestMap, Object collectionObject) {
             TempNodeParams nodeParams = (TempNodeParams) collectionObject;
             Object nodeData = nodeParams.getNodeData();
             NodeInfoForRow nodeInfo = nodeParams.getNodeInfoForRow();
@@ -713,8 +714,6 @@ public class TreeTable extends AbstractTable {
                 }
             };
         }
-
-    }
 
     @Override
     public void setRowIndex(int rowIndex) {

@@ -37,8 +37,8 @@ public abstract class AbstractChartViewTag extends AbstractStyledComponentTag {
         setBooleanProperty(component, "enable3D");
         setColorProperty(component, "wallColor");
 
-        setPropertyBinding(view, "tooltip");
-        setPropertyAsBinding(view, "url");
+        setValueExpressionProperty(view, "tooltip");
+        setAsValueExpressionIfPossible(view, "url");
 
         setObjectProperty(component, "colors");
 

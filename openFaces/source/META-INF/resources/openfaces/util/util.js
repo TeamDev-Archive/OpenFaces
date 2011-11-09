@@ -35,15 +35,15 @@ if (!window.O$) {
     }
   };
 
-  O$.createClass = function(classMembers, instanceMembers) {
+  O$.createClass = function(staticClassMembers, instanceMembers) {
     var constructor = instanceMembers.constructor;
     instanceMembers.constructor = undefined;
     var classFunction = function() {
       if (constructor)
         constructor.apply(this, arguments);
     };
-    if (classMembers)
-      O$.extend(classFunction, classMembers);
+    if (staticClassMembers)
+      O$.extend(classFunction, staticClassMembers);
     O$.extend(classFunction.prototype, instanceMembers);
     return classFunction;
   };
@@ -217,6 +217,7 @@ if (!window.O$) {
       this._element = document.createElement("div");
       this._element.style.visibility = "hidden";
       this._element.style.position = "absolute";
+      this._element.style.fontSize = "0";
 
       if (x1)
         this.setLine(x1, y1, x2, y2, true);
@@ -665,10 +666,6 @@ if (!window.O$) {
     return buf;
   };
 
-  O$.findValueInArray = function(value, arr) {
-    return arr.indexOf(value);// todo: inline and remove this method
-  };
-
   O$.getArrayFromString = function(str, delimiter) {
     var idx = str.indexOf(delimiter);
     var arr = [];
@@ -1043,7 +1040,7 @@ if (!window.O$) {
     return false;
   };
 
-  O$.isSafari = function() {
+  O$.isSafari = function() { // todo: returns true for Chrome as well -- fix this and update usages to account Chrome
     if (O$._safari == undefined)
       O$._safari = O$.userAgentContains("safari");
     return O$._safari;
@@ -1241,7 +1238,7 @@ if (!window.O$) {
 
   O$.resetAjaxState = function() {
     O$._ajaxTemporaryLocked = false;
-  }
+  };
 
   // ----------------- FORM, FORM ELEMENTS MANIPULATION ---------------------------------------------------
 
@@ -1984,9 +1981,9 @@ if (!window.O$) {
     O$.addLoadEvent(function() {
       if (O$.Ajax) {
         var prevAjaxEnd = O$.Ajax.onajaxend;
-        O$.Ajax.onajaxend = function() {
+        O$.Ajax.onajaxend = function(e) {
           if (prevAjaxEnd)
-            prevAjaxEnd();
+            prevAjaxEnd.call(this, e);
           O$._autoSavingFocusInitialized = false;
           setTimeout(setupFocus, 1);
         };
@@ -1994,7 +1991,7 @@ if (!window.O$) {
     });
   };
 
- O$.setupFocusOnTags = function(parent, tagName) {
+  O$.setupFocusOnTags = function(parent, tagName) {
     var elements = parent.getElementsByTagName(tagName);
     for (var i = 0; i < elements.length; i++) {
       var element = elements[i];
@@ -2050,7 +2047,7 @@ if (!window.O$) {
 
     function fixIE6ButtonsSubmission() {
       // workaround for <button> tag submission bug in IE6, see OF-112
-      if (!O$.isExplorer6()) return
+      if (!O$.isExplorer6()) return;
 
       var buttons = document.getElementsByTagName("button");
       for (var i = 0; i < buttons.length; i++) {
@@ -2107,7 +2104,7 @@ if (!window.O$) {
     document.onmousemove = function(e) {
       var result = undefined;
       if (prevMouseMove) {
-        result = prevMouseMove(e);
+        result = prevMouseMove.call(this, e);
       }
 
       var element;
@@ -4997,8 +4994,51 @@ if (!window.O$) {
       setTimeout(focusFilterField, 1);
     }, additionalParams, execute);
   };
+  O$._combineSubmissions = function(component, func) {
+    O$._startCompoundSubmission(component);
+    try {
+      func();
+    } finally {
+      O$._finishCompoundSubmission(component);
+    }
+  };
+  O$._startCompoundSubmission = function(component) {
+    if (component._compoundSubmission) throw "O$._startCompoundSubmission has already been called for " +
+            "this component (id = " + component.id + ")";
+    component._compoundSubmission = {
+      completionCallbacks: [],
+      additionalParams: [],
+      execute: []
+    };
+  };
+
+  O$._finishCompoundSubmission = function(component) {
+    if (!component._compoundSubmission) throw "O$._finishCompoundSubmission: " +
+            "O$._startCompoundSubmission hasn't been called for this component (id = " + component.id + ")";
+    var submissionData = component._compoundSubmission;
+    component._compoundSubmission = null;
+    O$._submitInternal(component, function() {
+      submissionData.completionCallbacks.forEach(function(callback) {
+        callback();
+      })
+    }, submissionData.additionalParams, submissionData.execute);
+  };
 
   O$._submitInternal = function(component, completionCallback, additionalParams, execute) {
+    if (component._compoundSubmission) {
+      if (completionCallback) {
+        component._compoundSubmission.completionCallbacks.push(completionCallback);
+      }
+      if (additionalParams) {
+        component._compoundSubmission.additionalParams =
+                component._compoundSubmission.additionalParams.concat(additionalParams);
+      }
+      if (execute) {
+        component._compoundSubmission.execute =
+                component._compoundSubmission.execute.concat(execute);
+      }
+      return;
+    }
     var useAjax = component._useAjax;
     if (!useAjax) {
       if (additionalParams)
@@ -5057,7 +5097,7 @@ if (!window.O$) {
           });
       }, 1);
   };
-
+  
   O$.initUnloadableComponent = function(component) {
     if (!component.onComponentUnload) {
       O$.addThisComponentToAllParents(component);

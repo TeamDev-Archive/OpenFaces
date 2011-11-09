@@ -12,7 +12,6 @@
 
 package org.openfaces.taglib.internal.filter;
 
-import org.openfaces.component.filter.FilterProperty;
 import org.openfaces.component.filter.FilterType;
 import org.openfaces.component.filter.UIFilterProperty;
 import org.openfaces.taglib.internal.AbstractComponentTag;
@@ -41,7 +40,7 @@ public class FilterPropertyTag extends AbstractComponentTag {
         setObjectProperty(component, "value");
         setEnumerationProperty(component, "type", FilterType.class);
 
-        setPropertyBinding(component, "dataProvider");
+        setValueExpressionProperty(component, "dataProvider");
         setConverterProperty(facesContext, component, "converter");
         setNumberProperty(component, "maxValue");
         setNumberProperty(component, "minValue");

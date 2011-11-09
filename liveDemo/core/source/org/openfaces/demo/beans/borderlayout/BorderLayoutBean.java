@@ -31,7 +31,7 @@ public class BorderLayoutBean implements Serializable {
     }
 
     private static final String TREE_NODE_VAR = "treeNode";
-    private static final String COMPONENTS_ROOT = "Open Faces Components";
+    private static final String COMPONENTS_ROOT = "OpenFaces Components";
 
     private final Map<String, List<String>> componentsByCategories;
 

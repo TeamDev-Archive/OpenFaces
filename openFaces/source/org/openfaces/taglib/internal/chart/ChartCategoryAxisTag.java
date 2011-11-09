@@ -35,5 +35,8 @@ public class ChartCategoryAxisTag extends ChartAxisTag {
         super.setComponentProperties(facesContext, component);
 
         setEnumerationProperty(component, "position", CategoryAxisLabelPosition.class);
+        setDoubleProperty(component, "lowerMargin");
+        setDoubleProperty(component, "upperMargin");
+        setDoubleProperty(component, "categoryMargin");
     }
 }

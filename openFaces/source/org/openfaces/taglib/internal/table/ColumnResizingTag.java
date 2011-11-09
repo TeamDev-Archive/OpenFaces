@@ -38,16 +38,7 @@ public class ColumnResizingTag extends AbstractComponentTag {
         setBooleanProperty(component, "retainTableWidth");
         setStringProperty(component, "minColWidth");
         setStringProperty(component, "resizeHandleWidth");
-        setPropertyBinding(component, "resizingState");
-
-        setStringProperty(component, "rolloverSeparatorStyle");
-        setStringProperty(component, "rolloverSeparatorClass");
-        setStringProperty(component, "rolloverSeparatorHeaderStyle");
-        setStringProperty(component, "rolloverSeparatorHeaderClass");
-        setStringProperty(component, "draggedSeparatorStyle");
-        setStringProperty(component, "draggedSeparatorClass");
-        setStringProperty(component, "draggedSeparatorHeaderStyle");
-        setStringProperty(component, "draggedSeparatorHeaderClass");
+        setValueExpressionProperty(component, "resizingState");
         setBooleanProperty(component, "autoSaveState");
     }
 }

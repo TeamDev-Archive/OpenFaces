@@ -13,6 +13,7 @@ package org.openfaces.util;
 
 import org.openfaces.org.json.JSONArray;
 import org.openfaces.org.json.JSONObject;
+import org.openfaces.org.json.JSONString;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -45,13 +46,15 @@ public class FunctionCallScript extends Script {
             sb.append(param);
         } else if (param instanceof String) {
             sb.append(escapeStringForJSAndQuote((String) param));
+        } else if (param instanceof Script) {
+            sb.append(((Script) param).getScript());
         } else if (param instanceof JSONObject || param instanceof JSONArray) {
             sb.append(param);
+        } else if (param instanceof JSONString) {
+            sb.append(((JSONString) param).toJSONString());
         } else if (param instanceof UIComponent) {
             String componentId = ((UIComponent) param).getClientId(FacesContext.getCurrentInstance());
             sb.append(escapeStringForJSAndQuote(componentId));
-        } else if (param instanceof Script) {
-            sb.append(((Script) param).getScript());
         } else if (param instanceof Iterable || param.getClass().isArray()) {
             if (param.getClass().isArray())
                 param = Arrays.asList((Object[]) param);

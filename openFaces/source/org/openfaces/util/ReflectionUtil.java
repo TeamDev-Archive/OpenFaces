@@ -56,7 +56,7 @@ public class ReflectionUtil {
             reflectionMethod.setAccessible(true);
             result = reflectionMethod.invoke(invokeOnObject, methodParameterObjects);
         } catch (NoSuchMethodException e) {
-            externalContext.log("Method " + methodName + "was not found in class " + className + " .");
+            externalContext.log("Method " + methodName + " was not found in class " + className + " .");
         } catch (IllegalAccessException e) {
             externalContext.log("IllegalAccessException during access to " + methodName + " in class " + className + " .");
         } catch (InvocationTargetException e) {

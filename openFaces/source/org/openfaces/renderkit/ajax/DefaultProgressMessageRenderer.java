@@ -16,8 +16,6 @@ import org.openfaces.org.json.JSONObject;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.RawScript;
 import org.openfaces.util.Rendering;
-import org.openfaces.util.ResourceFilter;
-import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.StyleParam;
 import org.openfaces.util.Styles;
@@ -33,7 +31,7 @@ import java.util.Map;
  */
 public class DefaultProgressMessageRenderer extends AbstractSettingsRenderer {
     /**
-     * This request-scope attribute specifies whether the DefaultProgressMessge component is explicitly specified on
+     * This request-scope attribute specifies whether the DefaultProgressMessage component is explicitly specified on
      * the page and if so, it is set for UtilPhaseListener to render the specified component after  the render-response
      * phase.
      */
@@ -95,7 +93,7 @@ public class DefaultProgressMessageRenderer extends AbstractSettingsRenderer {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext externalContext = context.getExternalContext();
         String paramStr = externalContext.getInitParameter("org.openfaces.ajaxCleanupRequired");
-        Boolean ajaxCleanupRequired = paramStr != null ? Boolean.valueOf(paramStr) : Boolean.FALSE;
+        boolean ajaxCleanupRequired = paramStr != null ? Boolean.valueOf(paramStr) : false;
         return ajaxCleanupRequired;
     }
 

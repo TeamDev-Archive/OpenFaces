@@ -57,6 +57,7 @@ public class TableStructure extends TableElement {
     private final UIComponent component;
     private final TableStyles tableStyles;
     private final List<BaseColumn> columns;
+    private List<BaseColumn> allColumns;
 
     private final TableHeader header;
     private final TableBody body;
@@ -73,6 +74,7 @@ public class TableStructure extends TableElement {
         this.component = component;
         this.tableStyles = tableStyles;
         columns = tableStyles.getRenderedColumns();
+        allColumns = tableStyles.getAllColumns();
         scrolling = tableStyles.getScrolling();
         leftFixedCols = 0;
         rightFixedCols = 0;
@@ -136,8 +138,15 @@ public class TableStructure extends TableElement {
         this.rightFixedCols = rightFixedCols;
     }
 
+    /**
+     * @return a list of all rendered columns in all column groups
+     */
     public List<BaseColumn> getColumns() {
         return columns;
+    }
+
+    public List<BaseColumn> getAllColumns() {
+        return allColumns;
     }
 
     public TableHeader getHeader() {
@@ -179,8 +188,8 @@ public class TableStructure extends TableElement {
             Rendering.writeAttribute(writer, "cellspacing", cellspacing);
             Rendering.writeAttribute(writer, "cellpadding", getTableCellPadding());
 
-            List<BaseColumn> columns1 = table.getRenderedColumns();
-            TableUtil.writeColumnTags(context, table, columns1);
+            List<BaseColumn> columns = table.getRenderedColumns();
+            TableUtil.writeColumnTags(context, table, columns);
         } else {
             Rendering.writeAttribute(writer, "cellspacing", "0");
             Rendering.writeAttribute(writer, "cellpadding", "0");
@@ -280,8 +289,7 @@ public class TableStructure extends TableElement {
                     ? ((DynamicColumn) cellComponentsContainer).getChildrenForProcessing()
                     : cellComponentsContainer.getChildren();
 
-            for (int childIndex = 0, childCount = children.size(); childIndex < childCount; childIndex++) {
-                UIComponent child = children.get(childIndex);
+            for (UIComponent child : children) {
                 if (!isComponentEmpty(child)) {
                     childrenEmpty = false;
                     break;
@@ -354,7 +362,8 @@ public class TableStructure extends TableElement {
         UIComponent styleOwnerComponent = getComponent();
         boolean forceUsingCellStyles = getForceUsingCellStyles(styleOwnerComponent);
 
-        List<BaseColumn> columns = getColumns();
+        List<BaseColumn> visibleColumns = getColumns();
+        List<BaseColumn> allColumns = getAllColumns();
         TableStyles tableStyles = getTableStyles();
         Map<Object, String> rowStylesMap = getRowStylesMap();
         Map<Object, String> cellStylesMap = getCellStylesMap();
@@ -363,7 +372,8 @@ public class TableStructure extends TableElement {
         Rendering.addJsonParam(result, "header", getHeader().getInitParam(defaultStyles));
         Rendering.addJsonParam(result, "body", getBody().getInitParam(defaultStyles));
         Rendering.addJsonParam(result, "footer", getFooter().getInitParam(defaultStyles));
-        Rendering.addJsonParam(result, "columns", getColumnHierarchyParam(facesContext, columns));
+        Rendering.addJsonParam(result, "columns", getColumnHierarchyParam(facesContext, visibleColumns));
+        Rendering.addJsonParam(result, "logicalColumns", getColumnHierarchyParam(facesContext, allColumns));
         Rendering.addJsonParam(result, "gridLines", getGridLineParams(tableStyles, defaultStyles));
 
         Rendering.addJsonParam(result, "scrolling", getScrollingParam());
@@ -403,6 +413,7 @@ public class TableStructure extends TableElement {
 
     private static boolean getForceUsingCellStyles(UIComponent styleOwnerComponent) {
         boolean requireCellStylesForCorrectColWidthBehavior =
+                Environment.isChrome() ||
                 Environment.isSafari() || /* doesn't handle column width in TreeTable if width is applied to <col> tags */
                         Environment.isOpera(); /* DataTable, TreeTable are jerking when reloading them with OF Ajax if width is applied to <col> tags */
         String forceUsingCellStylesAttr = (String) styleOwnerComponent.getAttributes().get("forceUsingCellStyles");
@@ -458,8 +469,10 @@ public class TableStructure extends TableElement {
         return columnsArray;
     }
 
-    private JSONObject getColumnParams(FacesContext context, BaseColumn columnOrGroup, int level) throws JSONException {
+    private JSONObject getColumnParams(FacesContext context, BaseColumn  columnOrGroup, int level) throws JSONException {
         JSONObject columnObj = new JSONObject();
+
+        columnObj.put("columnId", columnOrGroup.getId());
 
         UIComponent styleOwnerComponent = getComponent();
         boolean noDataRows = getBody().isNoDataRows();
@@ -503,7 +516,8 @@ public class TableStructure extends TableElement {
             JSONObject header = new JSONObject();
             columnObj.put("header", header);
             header.put("pos", headerCellCoordinates.asJSONObject());
-            header.put("className", Styles.getCSSClass(context, styleOwnerComponent, columnOrGroup.getHeaderStyle(), columnOrGroup.getHeaderClass()));
+            header.put("className", Styles.getCSSClass(context, styleOwnerComponent,
+                    columnOrGroup.getHeaderStyle(), columnOrGroup.getHeaderClass()));
             appendColumnEventsArray(header,
                     columnOrGroup.getHeaderOnclick(),
                     columnOrGroup.getHeaderOndblclick(),
@@ -591,8 +605,8 @@ public class TableStructure extends TableElement {
             UIComponent columnParent = column.getParent();
             while (columnParent instanceof ColumnGroup)
                 columnParent = columnParent.getParent();
-            TreeTable treeTable = (TreeTable) columnParent;
-            String textStyle = treeTable.getTextStyle();
+            AbstractTable table = (AbstractTable) columnParent;
+            String textStyle = table.getTextStyle();
             style = Styles.mergeStyles(style, textStyle);
         }
         return style;
@@ -604,8 +618,8 @@ public class TableStructure extends TableElement {
             UIComponent columnParent = column.getParent();
             while (columnParent instanceof ColumnGroup)
                 columnParent = columnParent.getParent();
-            TreeTable treeTable = (TreeTable) columnParent;
-            String textClass = treeTable.getTextClass();
+            AbstractTable table = (AbstractTable) columnParent;
+            String textClass = table.getTextClass();
             cls = Styles.mergeClassNames(cls, textClass);
         }
         return cls;

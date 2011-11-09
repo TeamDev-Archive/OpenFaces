@@ -825,7 +825,8 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
                     if (customCellRenderingInfo == null || (!(customCellRenderingInfo instanceof CustomContentCellRenderingInfo)))
                         continue;
                     Cell customCell = ((CustomContentCellRenderingInfo) customCellRenderingInfo).findTableCell(customRows);
-                    process(context, customCell, processAction);
+                    if (customCell != null)
+                        process(context, customCell, processAction);
                 }
             }
             // </MOD-4>
@@ -1134,9 +1135,8 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
 
     protected List<Row> getCustomRows() {
         List<Row> customRows = new ArrayList<Row>();
-        List children = getChildren();
-        for (int i = 0, childCount = children.size(); i < childCount; i++) {
-            UIComponent child = (UIComponent) children.get(i);
+        List<UIComponent> children = getChildren();
+        for (UIComponent child : children) {
             if (child instanceof Row)
                 customRows.add((Row) child);
         }

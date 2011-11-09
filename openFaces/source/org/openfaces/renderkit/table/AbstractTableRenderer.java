@@ -17,6 +17,7 @@ import org.openfaces.component.command.MenuItem;
 import org.openfaces.component.command.PopupMenu;
 import org.openfaces.component.table.*;
 import org.openfaces.org.json.JSONArray;
+import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.AjaxPortionRenderer;
 import org.openfaces.renderkit.CaptionButtonRenderer;
@@ -39,8 +40,11 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Dmitry Pikhulya
@@ -51,15 +55,21 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
     private static final String DEFAULT_SORTED_COLUMN_HEADER_CLASS = "o_table_sorted_column_header";
     private static final String DEFAULT_SORTED_COLUMN_BODY_CLASS = "o_table_sorted_column_body";
     private static final String DEFAULT_SORTED_COLUMN_FOOTER_CLASS = "o_table_sorted_column_footer";
-    private static final String DEFAULT_SORTABLE_HEADER_CLASS = "o_table_sortable_header";
+    public static final String DEFAULT_SORTABLE_HEADER_CLASS = "o_table_sortable_header";
     private static final String DEFAULT_SORTABLE_HEADER_ROLLOVER_CLASS = null;//"o_table_sortable_header_rollover";
     private static final String DEFAULT_FOCUSED_STYLE = "border: 1px dotted black;";
 
     private static final String FACET_COLUMN_MENU = "columnMenu";
     private static final String FACET_COLUMN_MENU_BUTTON = "columnMenuButton";
+    public static final String DEFAULT_TOGGLE_CLASS_NAME = "o_treetable_expansionToggle";
+    protected static final String SUB_ROWS_PORTION = "subRows:";
 
     public static String getTableJsURL(FacesContext context) {
         return Resources.internalURL(context, "table/table.js");
+    }
+
+    public static String treeTableJsURL(FacesContext context) {
+        return Resources.internalURL(context, "table/treeTable.js");
     }
 
     @Override
@@ -146,13 +156,13 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("span", table);
         writer.writeAttribute("id", table.getClientId(context) + "::auxiliaryTags", null);
-        writer.writeAttribute("display", "none", null);
-        encodeAdditionalFeatureSupport(context, table);
+        writer.writeAttribute("style", "display: none", null);
+        encodeAdditionalFeaturesSupport(context, table);
         Styles.renderStyleClasses(context, table);
         writer.endElement("span");
     }
 
-    protected void encodeAdditionalFeatureSupport(FacesContext context, AbstractTable table) throws IOException {
+    protected void encodeAdditionalFeaturesSupport(FacesContext context, AbstractTable table) throws IOException {
         ScriptBuilder buf = new ScriptBuilder();
 
         encodeAdditionalFeaturesSupport_buf(context, table, buf);
@@ -187,7 +197,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         if (!table.isDataSourceEmpty())
             preregisterNoFilterDataRowStyleForOpera(context, table);
 
-        encodeCheckboxColumnSupport(table, buf);
+        encodeCheckboxColumnSupport(context, table, buf);
     }
 
     protected void encodeAdditionalFeaturesOnBodyReload(FacesContext context, AbstractTable table, ScriptBuilder sb) throws IOException {
@@ -259,15 +269,18 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         columnMenu.setStandalone(true);
         columnMenu.encodeAll(context);
 
-        MenuItem sortAscMenuItem = null, sortDescMenuItem = null;
+        MenuItem sortAscMenuItem = null, sortDescMenuItem = null, hideColumnMenuItem = null;
         for (UIComponent child : columnMenu.getChildren()) {
             if (child instanceof SortAscendingMenuItem)
                 sortAscMenuItem = (MenuItem) child;
             if (child instanceof SortDescendingMenuItem)
                 sortDescMenuItem = (MenuItem) child;
+            if (child instanceof HideColumnMenuItem)
+                hideColumnMenuItem = (MenuItem) child;
         }
 
-        buf.initScript(context, columnMenu, "O$.ColumnMenu._init", table, button, sortAscMenuItem, sortDescMenuItem);
+        buf.initScript(context, columnMenu, "O$.ColumnMenu._init", table, button,
+                sortAscMenuItem, sortDescMenuItem, hideColumnMenuItem);
 
         if (temporaryButton)
             table.getFacets().remove(FACET_COLUMN_MENU_BUTTON);
@@ -313,7 +326,9 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         return new String[]{
                 Resources.utilJsURL(context),
                 TableUtil.getTableUtilJsURL(context),
-                getTableJsURL(context)};
+                getTableJsURL(context),
+                Resources.jsonJsURL(context)
+        };
     }
 
     private void encodeKeyboardSupport(FacesContext context, AbstractTable table, ScriptBuilder buf) throws IOException {
@@ -365,12 +380,9 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
     }
 
     private void encodeSortingSupport(FacesContext context, AbstractTable table, ScriptBuilder buf) throws IOException {
-        List<BaseColumn> columns = table.getRenderedColumns();
         boolean atLeastOneColumnSortable1 = false;
-        JSONArray columnSortableFlags = new JSONArray();
-        int colCount = columns.size();
-        for (int i = 0; i < colCount; i++) {
-            BaseColumn column = columns.get(i);
+        final JSONArray sortableColumnsIds = new JSONArray();
+        for (BaseColumn column : table.getAllColumns()) {
             boolean sortable;
             Boolean columnSortableAttr = (Boolean) column.getAttributes().get("sortable");
             if (columnSortableAttr != null)
@@ -380,8 +392,8 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
                         (column instanceof Column) ? ((Column) column).getSortingExpression() : null;
                 sortable = (sortingExpression != null);
             }
+            if (sortable) sortableColumnsIds.put(column.getId());
             atLeastOneColumnSortable1 |= sortable;
-            columnSortableFlags.put(sortable);
         }
         boolean atLeastOneColumnSortable = atLeastOneColumnSortable1;
         if (!atLeastOneColumnSortable)
@@ -406,7 +418,8 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         }
 
         buf.initScript(context, table, "O$.Table._initSorting",
-                columnSortableFlags,
+                table.getSortingRules(),
+                sortableColumnsIds,
                 table.getSortColumnIndex(),
                 Styles.getCSSClass(context, table, table.getSortableHeaderStyle(), StyleGroup.regularStyleGroup(), getSortableHeaderClass(table)),
                 Styles.getCSSClass(context, table, table.getSortableHeaderRolloverStyle(), StyleGroup.regularStyleGroup(), getSortableHeaderRolloverClass(table)),
@@ -488,9 +501,20 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         if (scrolling != null)
             scrolling.processDecodes(context);
 
-        ColumnReordering columnReordering = table.getColumnReordering();
-        if (columnReordering != null)
-            columnReordering.processDecodes(context);
+        decodeColumnsOrder(context, table);
+
+        decodeFoldingSupport(context, table);
+    }
+
+    protected void decodeColumnsOrder(FacesContext context, AbstractTable table) {
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        String paramName = table.getClientId(context) + "::columnsOrder";
+        String renderedColumns = params.get(paramName);
+        if (renderedColumns == null)
+            return;
+
+        List<String> columnIds = Arrays.asList(renderedColumns.split(","));
+        table.getAttributes().put("submittedColumnsOrder", columnIds);
     }
 
 
@@ -503,21 +527,32 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
 
     private void decodeSorting(FacesContext context, AbstractTable table) {
         Map<String, String> requestParameterMap = context.getExternalContext().getRequestParameterMap();
-        String sortingFieldName = getSortingFieldName(context, table);
-        String sortingFieldValue = requestParameterMap.get(sortingFieldName);
-        if (sortingFieldValue != null && sortingFieldValue.length() > 0) {
-            int columnToToggle = Integer.parseInt(sortingFieldValue);
-            table.toggleSorting(columnToToggle);
+        String paramName = table.getClientId(context) + "::setSortingRules";
+        String sortingRulesStr = requestParameterMap.get(paramName);
+        if (Rendering.isNullOrEmpty(sortingRulesStr)) return;
+
+        List<SortingRule> sortingRules = new ArrayList<SortingRule>();
+        try {
+            JSONArray sortingRulesJson = new JSONArray(sortingRulesStr);
+            for (int i = 0, count = sortingRulesJson.length(); i < count; i++) {
+                JSONObject jsonObject = sortingRulesJson.getJSONObject(i);
+                sortingRules.add(new SortingRule(jsonObject));
+            }
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
         }
+        table.acceptNewSortingRules(sortingRules);
     }
 
     private void decodeColumnMenu(FacesContext context, AbstractTable table) {
+        // todo: make these work through the new standard setColumnsOrder client-side API and remove the special
+        // decoding cases here
         decodeColumnVisibility(context, table);
-        decodeColumnSorting(context, table);
         decodeColumnHiding(context, table);
     }
 
     private void decodeColumnVisibility(FacesContext context, AbstractTable table) {
+        //todo: [s.kurilin] We don't need it now. Remove it carefully.
         Map<String, String> requestParameterMap = context.getExternalContext().getRequestParameterMap();
         String fieldName = table.getClientId(context) + "::columnVisibility";
         String fieldValue = requestParameterMap.get(fieldName);
@@ -529,16 +564,6 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
             boolean columnWasVisible = renderedColumns.contains(column);
             boolean showColumn = !columnWasVisible;
             applyColumnVisibility(table, column, showColumn);
-        }
-    }
-
-    private void decodeColumnSorting(FacesContext context, AbstractTable table) {
-        Map<String, String> requestParameterMap = context.getExternalContext().getRequestParameterMap();
-        String sortAscendingStr = requestParameterMap.get(table.getClientId(context) + "::sortAscending");
-        String sortDescendingStr = requestParameterMap.get(table.getClientId(context) + "::sortDescending");
-        if (sortAscendingStr != null || sortDescendingStr != null) {
-            int colIndex = sortAscendingStr != null ? Integer.parseInt(sortAscendingStr) : Integer.parseInt(sortDescendingStr);
-            table.toggleSorting(colIndex, sortAscendingStr != null);
         }
     }
 
@@ -582,17 +607,22 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         return result;
     }
 
-    private void encodeCheckboxColumnSupport(AbstractTable table, ScriptBuilder buf) throws IOException {
-        for (BaseColumn col : table.getRenderedColumns()) {
-            if (! (col instanceof CheckboxColumn)) continue;
-            ((CheckboxColumn) col).encodeInitScript(buf);
+    private void encodeCheckboxColumnSupport(
+            FacesContext context,
+            AbstractTable table,
+            ScriptBuilder buf
+    ) throws IOException {
+        for (BaseColumn column : table.getRenderedColumns()) {
+            if (!(column instanceof CheckboxColumn))
+                continue;
+
+            ((CheckboxColumn) column).encodeInitScript(context, buf);
         }
     }
 
     protected void decodeCheckboxColumnSupport(FacesContext context, AbstractTable table) {
         Map<String, String> requestMap = context.getExternalContext().getRequestParameterMap();
-        List<BaseColumn> columns = table.getRenderedColumns();
-        for (BaseColumn column : columns) {
+        for (BaseColumn column : table.getRenderedColumns()) {
             if (!(column instanceof CheckboxColumn))
                 continue;
 
@@ -660,8 +690,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
                     List<BaseColumn> columns = table.getRenderedColumns();
                     List<BodyRow> rows = tableStructure.getBody().createRows(context, rowIndex, rowCount, columns);
                     if (tableStructure.getScrolling() == null) {
-                        for (int i = 0, count = rows.size(); i < count; i++) {
-                            BodyRow row = rows.get(i);
+                        for (BodyRow row : rows) {
                             row.render(context, null);
                         }
                     } else {
@@ -702,7 +731,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         } finally {
             table.getAttributes().remove(TableStructure.TABLE_STRUCTURE_ATTR);
         }
-        
+
     }
 
     private List<BodyRow> getScrollingAreaRows(BodyCell scrollingAreaCell) {
@@ -743,4 +772,97 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         }
         return false;
     }
+
+    protected static boolean encodeFoldingSupport(FacesContext context,
+                                               ScriptBuilder buf,
+                                               AbstractTable table) throws IOException {
+        JSONObject treeStructure = formatTreeStructureMap(context, table, -1, -1);
+        if (treeStructure == null) {
+            // this can be the case for a grouping-enabled table which doesn't have any grouping rule configured,
+            // which means that it is displayed as a plain list and no special hierarchy handling is required
+            return false;
+        }
+
+        ResponseWriter writer = context.getResponseWriter();
+        Rendering.renderHiddenField(writer, getExpandedNodesFieldName(context, table), null);
+
+        JSONArray treeColumnParamsArray = new JSONArray();
+        List<BaseColumn> renderedColumns = (table instanceof DataTable && ((DataTable) table).getRowGrouping() != null)
+                ? table.getAllColumns() : table.getRenderedColumns(); // todo: temporary grouping workaround until tree columns are handled properly
+        for (BaseColumn column : renderedColumns) {
+            if (!(column instanceof TreeColumn))
+                continue;
+            TreeColumn treeColumn = (TreeColumn) column;
+            Object columnParams = treeColumn.encodeParamsAsJsObject(context);
+            treeColumnParamsArray.put(columnParams != null ? columnParams : JSONObject.NULL);
+        }
+
+        buf.initScript(context, table, "O$.TreeTable._initFolding",
+                treeStructure,
+                treeColumnParamsArray,
+                DEFAULT_TOGGLE_CLASS_NAME,
+                Resources.internalURL(context, "table/treeStructureSolid.png"));
+        return true;
+    }
+
+    private static String getExpandedNodesFieldName(FacesContext context, AbstractTable treeTable) {
+        return treeTable.getClientId(context) + "::expandedNodes";
+    }
+
+    protected static JSONObject formatTreeStructureMap(
+            FacesContext context,
+            AbstractTable table,
+            int fromRowIndex,
+            int rowCount) {
+        JSONObject result = new JSONObject();
+        Map<Object, ? extends NodeInfo> structureMap = table.getTreeStructureMap(context);
+        if (structureMap == null)
+            return null;
+        Set<? extends Map.Entry<Object, ? extends NodeInfo>> entries = structureMap.entrySet();
+        for (Map.Entry<Object, ? extends NodeInfo> entry : entries) {
+            Object rowIndex = entry.getKey();
+            if (fromRowIndex != -1) {
+                if (!(rowIndex instanceof Integer))
+                    continue;
+                int intRowIndex = (Integer) rowIndex;
+                if (intRowIndex < fromRowIndex || intRowIndex >= fromRowIndex + rowCount)
+                    continue;
+                intRowIndex -= fromRowIndex;
+                rowIndex = intRowIndex;
+            }
+            NodeInfo expansionData = entry.getValue();
+            boolean nodeHasChildren = expansionData.getNodeHasChildren();
+            Object childCount = nodeHasChildren
+                    ? (expansionData.getChildrenPreloaded() ? String.valueOf(expansionData.getChildNodeCount()) : "?")
+                    : 0;
+            try {
+                result.put(String.valueOf(rowIndex), childCount);
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return result;
+    }
+
+    private void decodeFoldingSupport(FacesContext context, AbstractTable treeTable) {
+        Map<String, String> requestParameterMap = context.getExternalContext().getRequestParameterMap();
+        String expandedNodes = requestParameterMap.get(getExpandedNodesFieldName(context, treeTable));
+        if (expandedNodes == null)
+            return;
+        String[] indexStrs = expandedNodes.split(",");
+        Set<Integer> expandedRowIndexes = new HashSet<Integer>(indexStrs.length);
+        for (String indexStr : indexStrs) {
+            if (indexStr.length() == 0)
+                continue;
+            int rowIndex = Integer.parseInt(indexStr);
+            expandedRowIndexes.add(rowIndex);
+        }
+        treeTable.acceptNewExpandedRowIndexes(expandedRowIndexes);
+    }
+
+    public static boolean isAjaxFoldingInProgress(FacesContext context) {
+        return isAjaxPortionRequestInProgress(context, SUB_ROWS_PORTION);
+    }
+
+
 }
