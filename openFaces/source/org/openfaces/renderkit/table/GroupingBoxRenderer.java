@@ -39,27 +39,26 @@ public class GroupingBoxRenderer extends org.openfaces.renderkit.RendererBase {
         final String headerClassName = Styles.getCSSClass(context, component, groupingBox.getHeaderStyle(), "o_groupingBox_header", groupingBox.getHeaderStyleClass());
         final String promptClassName = Styles.getCSSClass(context, component, groupingBox.getPromptTextStyle(), "o_groupingBox_promptText", groupingBox.getPromptTextStyleClass());
         final String connectorStyle =  groupingBox.getConnectorStyle();
-        writer.startElement("div", component);
-        writeIdAttribute(context, component);
-        writer.writeAttribute("class", boxClassName, null);
-        writer.startElement("div", component);
-        writer.writeAttribute("style", "width: 100%; height: 100%; position: relative", null);
         writer.startElement("table", component);
-        writer.writeAttribute("style", "width: 100%; height: 100%;", null);
+        writer.writeAttribute("style", "width: 100%;", null);
+        writeIdAttribute(context, component);
+
         writer.writeAttribute("cellspacing", "0", null);
         writer.writeAttribute("cellpadding", "0", null);
         writer.writeAttribute("border", "0", null);
+
         writer.startElement("tr", component);
         writer.startElement("td", component);
-        writer.writeAttribute("class", promptClassName, null);
+        writer.writeAttribute("class", boxClassName, null);
         writer.startElement("span", component);
+        writer.writeAttribute("class", promptClassName, null);
         writer.append(groupingBox.getPromptText());
         writer.endElement("span");
+
         writer.endElement("td");
         writer.endElement("tr");
+
         writer.endElement("table");
-        writer.endElement("div");
-        writer.endElement("div");
         Rendering.renderInitScript(context, new ScriptBuilder()
                 .initScript(context, component, "O$.Table._initRowGroupingBox",
                         table,
