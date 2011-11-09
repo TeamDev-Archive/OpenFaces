@@ -5137,7 +5137,7 @@ if (!window.O$) {
 
     function isAlreadyInArray(component) {
       var parent = component.parentNode;
-      if (parent._unloadableComponents) {
+      if (parent != null && parent._unloadableComponents) {
         for (var i = 0; i < parent._unloadableComponents.length; i++) {
           if (parent._unloadableComponents[i] == component) {
             return true;
