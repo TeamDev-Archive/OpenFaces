@@ -2449,14 +2449,17 @@ O$.Table = {
 
         return  canBePlacedBefore() || canBePlacedInOrAfter();
       };
-      return {
+      var self = {
         onLeftEdgePermit : function(func) {
-          if(canBeInserted(targetColumnId, sourceColumnId, true))func();
+          if (canBeInserted(targetColumnId, sourceColumnId, true))func();
+          return self;
         },
         onRightEdgePermit : function(func) {
-          if(canBeInserted(targetColumnId, sourceColumnId, false))func();
+          if (canBeInserted(targetColumnId, sourceColumnId, false))func();
+          return self;
         }
       };
+      return self;
     }
     table._innerDropTargetsByColumnId = function(columnId, dropHandler) {
       var dropTargets = [];
@@ -2545,13 +2548,13 @@ O$.Table = {
         var mid = (min + max) / 2;
         var minY = targetCellRect.getMinY();
         var maxY = targetCellRect2.getMaxY();
-        var moving = table._columnsReorderingSupport(columnId, targetColumn.columnId);
-        moving.onLeftEdgePermit(function(){
-          dropTargets.push(dropTarget(min, mid, minY, maxY, columnId, targetColumn, false));
-        });
-        moving.onRightEdgePermit(function(){
-          dropTargets.push(dropTarget(mid, max, minY, maxY, columnId, targetColumn, true));
-        });
+        table._columnsReorderingSupport(columnId, targetColumn.columnId)
+                .onLeftEdgePermit(function() {
+                  dropTargets.push(dropTarget(min, mid, minY, maxY, columnId, targetColumn, false));
+                })
+                .onRightEdgePermit(function() {
+                  dropTargets.push(dropTarget(mid, max, minY, maxY, columnId, targetColumn, true));
+                });
         counter++;
       });
 
@@ -2979,7 +2982,7 @@ O$.Table = {
         }
         cleanPreviousContent();
         layout.addAll(groupingColumnIds());
-      }
+          }
 
       function appendToGroupingBox(columnId, newColumnIndex) {
         var ruleValues = rules();
@@ -3417,34 +3420,29 @@ O$.ColumnMenu = {
     function hideColumn(){
       currentColumns.splice(currentIndex, 1);
     }
-    function showColumn(){
-      function insertColumn(newIndex){
-        currentColumns.splice(newIndex, 0, current.columnId);
+
+    function showColumn() {
+      function insertColumn(newIndex) {
+        currentColumns.splice(newIndex, 0, columnId);
       }
-      var allLeafs = table._columnsLogicalStructure.root().allLeafs();
-      var prevVisibleLeaf;
-      var waitingMode = false;
-      for(var key in allLeafs){
-        var current = allLeafs[key];
-        if(waitingMode && current.isVisible()){
-          var newIndex = currentColumns.indexOf(current.columnId) - 1;
-          insertColumn(newIndex);
-          waitingMode = false;
-          break;
-        }
-        if(current.columnId == columnId && prevVisibleLeaf){
-          var newIndex = currentColumns.indexOf(prevVisibleLeaf.columnId) + 1;
-          insertColumn(newIndex);
-          break;
-        }
-        if(current.columnId == columnId && !prevVisibleLeaf){
-          waitingMode = true;
-        }
-        if (current.isVisible()) prevVisibleLeaf = current;
-      }
-      if (waitingMode) {
-        throw "Couldn't insert column " + columnId;
-      }
+
+      var index = 0;
+      var done = false;
+      currentColumns.forEach(function(current) {
+        if (done)return;
+        table._columnsReorderingSupport(columnId, current)
+                .onLeftEdgePermit(function() {
+                  if(!done)insertColumn(index);
+                  done = true;
+                })
+                .onRightEdgePermit(function() {
+                  if(!done)insertColumn(index + 1);
+                  done = true;
+
+                });
+        index++;
+      });
+      O$.assert(done, "Can't toogle column: " + columnId);
     }
     function apply(){
       table.setColumnsOrder(currentColumns);
@@ -3548,3 +3546,4 @@ O$.ColumnMenu = {
     table.setColumnsOrder(currentOrder);
   }
 };
+
