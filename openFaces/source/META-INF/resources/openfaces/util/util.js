@@ -5143,8 +5143,8 @@ if (!window.O$) {
             return true;
           }
         }
-        return false;
       }
+      return false;
     }
 
     if (!isAlreadyInArray(component)) {

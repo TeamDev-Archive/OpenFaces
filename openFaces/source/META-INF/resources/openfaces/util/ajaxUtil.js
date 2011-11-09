@@ -1056,7 +1056,11 @@ O$.AjaxObject = function(render) {
                 && replacedElement._unloadableComponents[0].onComponentUnload()) {
           delayedUpdate = true;
         }
+        var tempEl = replacedElement._unloadableComponents[0];
         if (!O$.removeThisComponentFromAllDocument(replacedElement._unloadableComponents[0])) {
+          O$.removeThisComponentFromParentsAbove(replacedElement._unloadableComponents[0], replacedElement);
+        }
+        if (tempEl == replacedElement._unloadableComponents[0]){
           O$.removeThisComponentFromParentsAbove(replacedElement._unloadableComponents[0], replacedElement);
         }
       }
