@@ -1031,6 +1031,12 @@ O$.AjaxObject = function(render) {
 
     O$.processStateUpdate(updId, updateStateHTML);
 
+    if (O$.isExplorer()) {
+      if (document._ajaxCleanupRequired)
+        O$.destroyAllFunctions(tempDiv);
+      tempDiv.innerHTML = "";
+    }
+
     if (this._mode == "Expiration-Handling") {
       O$.processSessionExpiration(this._loc, this._targetIds, this, false);
       O$.requestFinished(this);
@@ -1042,24 +1048,44 @@ O$.AjaxObject = function(render) {
 
     var replacedElement = O$(updId);
 
-    if (replacedElement.onComponentUnload) {
-      var delayedUpdate = replacedElement.onComponentUnload();
-      if (delayedUpdate) {
-        replacedElement.onComponentUnload = null;
-        var this_ = this;
-        var delayedCompletionCallback = this._completionCallback;
-        var delayedCompletionCallbackComponentId = this._requestedRender;
-        var delayedSimpleUpdate = this._processSimpleUpdate;
-        this._delayedSimpleUpdate = true;
-        setTimeout(function () {
-          delayedSimpleUpdate.apply(this_, [updId, updHTML, updScripts, updateStateHTML]);
-          if (delayedCompletionCallback)
-            delayedCompletionCallback(delayedCompletionCallbackComponentId);
-          O$.requestFinished(this_);
-        }, 1);
-        this._completionCallback = null;
-        return;
+    var delayedUpdate = false;
+    if (replacedElement._unloadableComponents) {
+      var length = replacedElement._unloadableComponents.length;
+      for (var index = 0; index < length; index++) {
+        if (replacedElement._unloadableComponents[0].onComponentUnload
+                && replacedElement._unloadableComponents[0].onComponentUnload()) {
+          delayedUpdate = true;
+        }
+        var tempEl = replacedElement._unloadableComponents[0];
+        if (!O$.removeThisComponentFromAllDocument(replacedElement._unloadableComponents[0])) {
+          O$.removeThisComponentFromParentsAbove(replacedElement._unloadableComponents[0], replacedElement);
+        }
+        if (tempEl == replacedElement._unloadableComponents[0]){
+          O$.removeThisComponentFromParentsAbove(replacedElement._unloadableComponents[0], replacedElement);
+        }
       }
+    }
+    if (replacedElement.onComponentUnload) {
+      if (replacedElement.onComponentUnload()) {
+        delayedUpdate = true;
+      }
+      O$.removeThisComponentFromAllDocument(replacedElement);
+    }
+    if (delayedUpdate) {
+      replacedElement.onComponentUnload = null;
+      var this_ = this;
+      var delayedCompletionCallback = this._completionCallback;
+      var delayedCompletionCallbackComponentId = this._requestedRender;
+      var delayedSimpleUpdate = this._processSimpleUpdate;
+      this._delayedSimpleUpdate = true;
+      setTimeout(function () {
+        delayedSimpleUpdate.apply(this_, [updId, updHTML, updScripts, updateStateHTML]);
+        if (delayedCompletionCallback)
+          delayedCompletionCallback(delayedCompletionCallbackComponentId);
+        O$.requestFinished(this_);
+      }, 1);
+      this._completionCallback = null;
+      return;
     }
 
     var tempDiv = O$.replaceDocumentElements(updHTML);
@@ -1069,6 +1095,11 @@ O$.AjaxObject = function(render) {
     O$.executeScripts(updScripts);
 
     O$.processStateUpdate(updId, updateStateHTML);
+    if (O$.isExplorer()) {
+      tempDiv.innerHTML = "";
+      if (document._ajaxCleanupRequired)
+        O$.destroyAllFunctions(replacedElement);
+    }
   };
 
   this._processPortionUpdate = function(portionName, portionHTML, portionScripts, portionDataStr) {
@@ -1121,10 +1152,11 @@ O$.replaceDocumentElements = function(htmlPortion, allowElementsWithNewIds) {
       if (typeof oldElement._cleanUp == "function") {
         oldElement._cleanUp();
       }
-      if (document._ajaxCleanupRequired)
+      if (document._ajaxCleanupRequired){
         setTimeout(function() {
-//          O$.destroyAllFunctions(oldElement);
+          O$.destroyAllFunctions(oldElement);
         }, 1);
+      }
     }
 
     parent.replaceChild(newElement, oldElement);
@@ -1586,7 +1618,13 @@ O$.destroyAllFunctions = function(elt) {
   if (!elt || elt.nodeName == "#text")
     return;
 
-  var elementId = elt.id;
+  // Clear methods added with help O$.extend() because of circular references
+  if (elt.customPropertiesForIE) {
+    for (var index = 0; index < elt.customPropertiesForIE.length; index++) {
+      elt[elt.customPropertiesForIE[index]] = null;
+    }
+    elt.customPropertiesForIE = [];
+  }
 
   // Break the potential circular references
   for (var member in elt) {
@@ -1594,25 +1632,12 @@ O$.destroyAllFunctions = function(elt) {
       continue;
     if (!elt[member])
       continue;
-    if (elementId && (typeof elt[member] === "function"))
+    if (typeof elt[member] === "function")
       (function() {
-        var e = O$(elementId);
-        e[member] = null;
+        elt[member] = null;
       })();
     else
       elt[member] = null;
-  }
-
-  var attachedEvents = O$._attachedEvents;
-  if (elementId && attachedEvents) {
-    var allAttachedEvents = attachedEvents[elementId];
-    if (allAttachedEvents) {
-      for (var eventsIndex = 0, eventCount = allAttachedEvents.length; eventsIndex < eventCount; eventsIndex++) {
-        var eventObject = allAttachedEvents[eventsIndex];
-        O$.removeEventHandler(elt, eventObject.eventName, eventObject.functionScript);
-      }
-      attachedEvents[elementId] = null;
-    }
   }
 
   var childNodes = elt.childNodes;
@@ -1622,4 +1647,4 @@ O$.destroyAllFunctions = function(elt) {
       O$.destroyAllFunctions(childNodes[index]);
     }
   }
-}
+};

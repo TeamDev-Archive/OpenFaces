@@ -500,10 +500,7 @@ O$.PopupMenu = {
       clearTimeout(popupMenu._closeAllTask);
       popupMenu._closeAllTask = null;
     }
-    if (menuItem._openSubmenuTask) {
-      clearTimeout(menuItem._openSubmenuTask);
-      menuItem._openSubmenuTask = null;
-    }
+    O$.PopupMenu._clearSubmenuTask(menuItem);
 
     if (menuItem._disabled)
       return;
@@ -554,6 +551,9 @@ O$.PopupMenu = {
   _closeAllMenu: function(popupMenu) {
     popupMenu.closeChildMenus();
     while (popupMenu) {
+      popupMenu._items.forEach(function(menuItem) {
+        O$.PopupMenu._clearSubmenuTask(menuItem);
+      });
       popupMenu.hide();
       popupMenu = popupMenu._parentPopupMenu;
     }
@@ -936,10 +936,7 @@ O$.PopupMenu = {
           O$.PopupMenu._closeAllMenu(popupMenu);
         } else {
           if (menuItem._menuId) {
-            if (menuItem._openSubmenuTask) {
-              clearTimeout(menuItem._openSubmenuTask);
-              menuItem._openSubmenuTask = null;
-            }
+            O$.PopupMenu._clearSubmenuTask(menuItem);
             if (popupMenu._parentPopupMenu && popupMenu._parentPopupMenu._closeAllTask) {
               clearTimeout(popupMenu._parentPopupMenu._closeAllTask);
               popupMenu._parentPopupMenu._closeAllTask = null;
@@ -953,6 +950,8 @@ O$.PopupMenu = {
         }
 
       };
+
+      O$.initUnloadableComponent(menuItem._anchor);
       O$.addEventHandler(menuItem._anchor, "click", function(evt) {
         menuItem._click(evt);
       });
@@ -964,6 +963,9 @@ O$.PopupMenu = {
           O$.PopupMenu._closeAllMenu(popupMenu);
           clickHandler.call(menuItem._anchor, evt);
         }
+        O$.addUnloadHandler(menuItem._anchor, function () {
+          menuItem._anchor.onclick = null;
+        });
       }
     }
   },
@@ -987,12 +989,12 @@ O$.PopupMenu = {
         clearTimeout(popupMenu._closeAllTask);
         popupMenu._closeAllTask = null;
       }
-      if (submenuShowDelay >= 0)
+      if (submenuShowDelay >= 0) {
         menuItem._openSubmenuTask = setTimeout(function() {
           if (menuItemElement._focused)
             O$.PopupMenu._showSubmenu(popupMenu, menuItemElement, submenuHorizontalOffset);
         }, submenuShowDelay);
-
+      }
     });
 
     O$.addMouseOutListener(menuItemElement, function() {
@@ -1016,6 +1018,13 @@ O$.PopupMenu = {
 
     });
 
+  },
+
+  _clearSubmenuTask:function(menuItem) {
+    if (menuItem._openSubmenuTask) {
+      clearTimeout(menuItem._openSubmenuTask);
+      menuItem._openSubmenuTask = null;
+    }
   }
 };
 
