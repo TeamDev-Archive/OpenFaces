@@ -25,6 +25,7 @@ O$.DropDownField = {
       _initListStyles: function() {
         var oldCursor = document.body.style.cursor;
         document.body.style.cursor = "progress";
+        O$.initUnloadableComponent(innerTable);
         O$.Tables._init(innerTable, popupTableStructureAndStyleParams);
         document.body.style.cursor = oldCursor;
         O$.repaintWindowForSafari(true);
@@ -589,6 +590,9 @@ O$.DropDownField = {
     popup.onscroll = function() {
       dropDown._checkAdditionalPageNeeded()
     };
+    O$.addUnloadHandler(dropDown, function () {
+      popup.onscroll = null;
+    });
 
     dropDown.value = field.value;
 
@@ -601,10 +605,16 @@ O$.DropDownField = {
         popup.onmousedown = function() {
           dropDown._reacquireFocus = true;
         };
+        O$.addUnloadHandler(dropDown, function () {
+          popup.onmousedown = null;
+        });
       } else {
         popup.onfocus = function() {
           dropDown.focus();
         };
+        O$.addUnloadHandler(dropDown, function () {
+          popup.onfocus = null;
+        });
       }
     }
 
@@ -632,6 +642,10 @@ O$.DropDownField = {
     dropDown.onLoadHandler = O$.DropDownField._onLoadHandler;
     var bodyOnLoadHandler = O$.getEventHandlerFunction("onLoadHandler", "'" + dropDownId + "'", dropDown);
     O$.addEventHandler(window, "load", bodyOnLoadHandler);
+    O$.addUnloadHandler(dropDown, function () {
+      O$.removeEventHandler(window, "load", bodyOnLoadHandler);
+    });
+    O$.initUnloadableComponent(dropDown);
 
     function clearSuggestionTimer() {
       if (dropDown._currentSuggestionTimeoutId) {
@@ -653,6 +667,12 @@ O$.DropDownField = {
         clearTimeout(dropDown._blurWaiter);
       }
     };
+    O$.addUnloadHandler(dropDown, function () {
+      field.onfocus = null;
+      field.onblur = null;
+      field.onkeypress = null;
+      field.onkeydown = null;
+    });
 
     field.onblur = function(e) {
       dropDown._ddf_focused = false;

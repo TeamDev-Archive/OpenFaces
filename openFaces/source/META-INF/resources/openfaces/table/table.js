@@ -96,12 +96,14 @@ O$.Table = {
 
     table._originalClassName = table.className;
 
-    table._unloadHandlers = [];
+    O$.addUnloadHandler(table, function () {
+      table._cellInsertionCallbacks = [];
+      table._cellMoveCallbacks = [];
+    });
+    O$.addThisComponentToAllParents(table);
     var i, count;
     table.onComponentUnload = function() {
-      for (i = 0,count = table._unloadHandlers.length; i < count; i++) {
-        table._unloadHandlers[i]();
-      }
+      O$.unloadAllHandlersAndEvents(table);
 
       var filtersToHide = this._filtersToHide;
       if (!O$.isExplorer6() || !filtersToHide)
@@ -394,11 +396,11 @@ O$.Table = {
       e.minusPressed = false;
       switch (e.keyCode) {
         case 33: // page up
-        case 63276: /* Safari for Mac */
+        case 63276: // Safari for Mac
           e.pageUpPressed = true;
           break;
         case 34: // page down
-        case 63277: /* Safari for Mac */
+        case 63277: // Safari for Mac
           e.pageDownPressed = true;
           break;
         case 35: // end
@@ -549,6 +551,9 @@ O$.Table = {
         return true;
       }
     };
+    O$.addUnloadHandler(table, function () {
+      table[eventName] = null;
+    });
 
     table._prevOnfocus_kn = table.onfocus;
     table.onfocus = function(e) {
@@ -559,6 +564,9 @@ O$.Table = {
       var focusFld = O$(this.id + "::focused");
       focusFld.value = "true";
     };
+    O$.addUnloadHandler(table, function () {
+      table.onfocus = null;
+    });
 
     table._prevOnblur_kn = table.onblur;
     table.onblur = function(e) {
@@ -569,6 +577,9 @@ O$.Table = {
       var focusFld = O$(this.id + "::focused");
       focusFld.value = "false";
     };
+    O$.addUnloadHandler(table, function () {
+      table.onblur = null;
+    });
 
     var focusFld = O$(table.id + "::focused");
     if (focusFld.value == "true") {
@@ -577,7 +588,7 @@ O$.Table = {
       }, 1);
     }
 
-    table._unloadHandlers.push(function() {
+    O$.addUnloadHandler(table,function () {
       O$.Table._deinitializeKeyboardNavigation(table);
     });
   },
@@ -585,7 +596,7 @@ O$.Table = {
   _deinitializeKeyboardNavigation: function(table) {
     table.onfocus = null;
     table.onblur = null;
-    if (table._focusControl) {
+    if (table._focusControl && table._focusControl.parentNode) {
       table._focusControl.parentNode.removeChild(table._focusControl);
     }
   },
@@ -1050,6 +1061,9 @@ O$.Table = {
           O$.logError("O$.Table._initSelection: row click handler already initialized");
         rowNode._originalClickHandler = rowNode.onclick;
         rowNode.onclick = O$.Table._row_handleSelectionOnClick;
+        O$.addUnloadHandler(table, function () {
+          rowNode.onclick = null;
+        });
       });
     }
     var cells = row._cells;
@@ -1134,6 +1148,10 @@ O$.Table = {
       },
       ondblclick: O$.repeatClickOnDblclick
     });
+    O$.addUnloadHandler(table, function () {
+      checkBox.onclick = null;
+      checkBox.ondblclick = null;
+    });
   },
 
   _initSelectionCell: function(cell) {
@@ -1178,6 +1196,10 @@ O$.Table = {
       },
       ondblclick: O$.repeatClickOnDblclick
     });
+    O$.addUnloadHandler(table, function () {
+      cell.onclick = null;
+      cell.ondblclick = null;
+    });
 
     O$.extend(checkBox, {
       checked: false,
@@ -1218,6 +1240,10 @@ O$.Table = {
           this.click(evt);
         O$.stopEvent(evt);
       }
+    });
+    O$.addUnloadHandler(table, function () {
+      checkBox.onclick = null;
+      checkBox.ondblclick = null;
     });
 
     var cellRow = cell._row;
@@ -1361,6 +1387,9 @@ O$.Table = {
           O$.stopEvent(e);
         }
       });
+      O$.addUnloadHandler(table, function () {
+        selectAllCheckbox.onclick = null;
+      });
 
     }
 
@@ -1394,6 +1423,9 @@ O$.Table = {
         }
 
       });
+      O$.addUnloadHandler(table, function () {
+        selectAllCheckbox.onclick = null;
+      });
       O$.Table._addSelectionChangeHandler(table, [selectAllCheckbox, "_updateState"]);
     }
 
@@ -1411,6 +1443,9 @@ O$.Table = {
         var evt = O$.getEvent(e);
         O$.stopEvent(e);
       }
+    });
+    O$.addUnloadHandler(table, function () {
+      selectAllCheckbox.ondblclick = null;
     });
 
     setTimeout(function() {selectAllCheckbox._updateState()}, 10);
@@ -1464,6 +1499,10 @@ O$.Table = {
               col._updateSubmissionField();
             }
           });
+        O$.addUnloadHandler(table, function () {
+          cell.onclick = null;
+          cell.ondblclick = null;
+        });
 
           O$.extend(checkBox, {
             onclick: function(e) {
@@ -1480,6 +1519,10 @@ O$.Table = {
               O$.stopEvent(e);
             }
           });
+        O$.addUnloadHandler(table, function () {
+          checkBox.onclick = null;
+          checkBox.ondblclick = null;
+        });
         }
 
         var bodyCells = col.body ? col.body._cells : [];
@@ -1554,6 +1597,7 @@ O$.Table = {
 
       O$.setStyleMappings(colHeader, {sortableHeaderClass: sortableHeaderClass});
 
+      O$.initUnloadableComponent(colHeader);
       O$.addEventHandler(colHeader, "click", function() {
         var focusField = O$(table.id + "::focused");
         if (focusField)
@@ -1923,6 +1967,14 @@ O$.Table = {
           }
         });
 
+        O$.addUnloadHandler(table, function () {
+          resizeHandle.ondragend = null;
+          resizeHandle.ondragstart = null;
+          resizeHandle.onclick = null;
+          resizeHandle.onmousedown = null;
+          resizeHandle.onmouseout = null;
+          resizeHandle.onmouseover = null;
+        });
         column._resizeHandle._updatePos();
       });
 
@@ -1956,13 +2008,14 @@ O$.Table = {
       fixWidths();
 
       function updateResizeHandlePositions() {
-        for (var i = 0, count = table._columns.length; i < count; i++) {
-          var column = table._columns[i];
-          if (column._resizeHandle && column._resizeHandle.parentNode)
-            column._resizeHandle._updatePos();
+        if (table._columns) {
+          for (var i = 0, count = table._columns.length; i < count; i++) {
+            var column = table._columns[i];
+            if (column._resizeHandle && column._resizeHandle.parentNode)
+              column._resizeHandle._updatePos();
+          }
         }
       }
-
       O$.addEventHandler(window, "resize", updateResizeHandlePositions);
       O$.addEventHandler(table, "mouseover", function() {
         if (!table._columnResizingInProgress)
@@ -1985,8 +2038,9 @@ O$.Table = {
         setTimeout(updateResizeHandlePositions, 10);
       };
 
-      table._unloadHandlers.push(function() {
+      O$.addUnloadHandler(table, function () {
         O$.removeEventHandler(window, "resize", updateResizeHandlePositions);
+        table.onscroll = null;
       });
 
       table._fixFF3ColResizingIssue = function() { // See JSFC-3720
@@ -2323,10 +2377,6 @@ O$.ColumnMenu = {
     columnMenu._sortAscMenuId = sortAscMenuId;
     columnMenu._sortDescMenuId = sortDescMenuId;
 
-    table._unloadHandlers.push(function() {
-      if (columnMenu.parentNode)
-        columnMenu.parentNode.removeChild(columnMenu);
-    });
     var columnMenuButton = O$(columnMenuButtonId);
     var columnMenuButtonTable = function() {
       var result = O$.Table._createTableWithoutTd();
@@ -2379,6 +2429,11 @@ O$.ColumnMenu = {
     columnMenuButton.onclick = function(e) {
       O$.cancelEvent(e);
     };
+
+    O$.initUnloadableComponent(columnMenuButton);
+    O$.addUnloadHandler(columnMenuButton, function() {
+      columnMenuButton.onclick = null;
+    });
     O$.addEventHandler(columnMenuButton, "mousedown", function(evt) {
       O$.cancelEvent(evt);
       O$.correctElementZIndex(columnMenu, currentColumn._resizeHandle);
@@ -2408,6 +2463,9 @@ O$.ColumnMenu = {
         headerCell.setForceHover(null);
         menuOpened = false;
       };
+      O$.addUnloadHandler(table,function () {
+         columnMenu.onhide = null;
+      });
     });
 
 
@@ -2422,6 +2480,9 @@ O$.ColumnMenu = {
       menuItem._anchor.onclick = function() {
         O$.ColumnMenu._toggleColumnVisibility(table, colIndex);
       };
+      O$.addUnloadHandler(menuItem._anchor, function () {
+        menuItem._anchor.onclick = null;
+      });
     });
 
   },
