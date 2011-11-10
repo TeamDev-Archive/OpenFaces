@@ -2758,7 +2758,7 @@ O$.Table = {
   _removeFromArray: function(array, index){
     return array.slice(0, index).concat(array.slice(index + 1));
   },
-  _GroupingBoxLayout : function(rowGroupingBox, tableId, connectorStyle, headerStyleClassName, headerHorizOffset, headerVertOffset) {
+  _GroupingBoxLayout : function(rowGroupingBox, tableId, connectorStyle, headerStyleClassName, headerHorizOffset, headerVertOffset, padding) {
     var table = O$(tableId);
     var dropAreas = [];
     var headers = [];
@@ -2787,13 +2787,11 @@ O$.Table = {
           self._leftRect = O$.getElementBorderRectangle(left, true);
           self._rightRect = O$.getElementBorderRectangle(right, true);
           self._toRemove = [];
-          var paddingTop = O$.getNumericElementStyle(rowGroupingBox, "padding-top"),
-                  paddingLeft = O$.getNumericElementStyle(rowGroupingBox, "padding-left"),
-                  desc = connectorDescription(self._leftRect, self._rightRect),
-                  leftBorder = self._leftRect.x + desc.horizontalOffset + paddingLeft,
-                  topBorder = self._leftRect.y + self._leftRect.height + paddingTop,
-                  lowBorder = topBorder + desc.height + paddingTop,
-                  rightBorder = self._rightRect.x + paddingLeft;
+          var desc = connectorDescription(self._leftRect, self._rightRect),
+                  leftBorder = self._leftRect.x + desc.horizontalOffset,
+                  topBorder = self._leftRect.y + self._leftRect.height,
+                  lowBorder = topBorder + desc.height,
+                  rightBorder = self._rightRect.x;
           self._vertical = new O$.GraphicLine(connectorStyle, alignment, leftBorder, topBorder, leftBorder, lowBorder);
           self._horizontal = new O$.GraphicLine(connectorStyle, alignment, leftBorder, lowBorder, rightBorder, lowBorder);
           self._vertical.show(rowGroupingBox);
@@ -2820,8 +2818,8 @@ O$.Table = {
       insertByColumnId: function(index, columnId) {
         function newCoordinates() {
           var zero = {
-            x : O$.getNumericElementStyle(rowGroupingBox, "padding-left"),
-            y: O$.getNumericElementStyle(rowGroupingBox, "padding-top")
+            x : padding.left,
+            y : padding.top
           };
           if (index == 0) {
             return zero ;
@@ -2948,19 +2946,6 @@ O$.Table = {
       var rules = function() {
         return table.grouping.getGroupingRules();
       };
-      var applyCssProperties = function() {
-        function moveProperty(jsName, cssName) {
-          rowGroupingBox.style[jsName] = O$.getElementStyle(rowGroupingBoxTable, cssName);
-          rowGroupingBoxTable.style[jsName] = "";
-        }
-        moveProperty("paddingLeft", "padding-left");
-        moveProperty("paddingRight", "padding-right");
-        moveProperty("paddingTop", "padding-top");
-        moveProperty("paddingBottom", "padding-bottom");
-
-        moveProperty("verticalAlign", "vertical-align");
-        moveProperty("textAlign", "text-align");
-      }();
 
       var dropTargetMark = function() {
         var delegate = table._dropTargetMark(false);
@@ -3044,10 +3029,10 @@ O$.Table = {
           rowGroupingBox.style.height = val + "px";
         }
         var headers = layout.draggable();
-        if (headers.length > 1) {
+        if (headers.length > 0) {
           var last = headers[headers.length - 1],
-                  lowBorder = O$.getElementPos(last, true).y + O$.getElementSize(last).height
-                          + O$.getNumericElementStyle(rowGroupingBox, "padding-bottom"),
+                  lowBorder = O$.getElementPos(last, true).y
+                          + O$.getElementSize(last).height + groupingBoxPaddings.bottom,
                   actualLowBorder = O$.getElementSize(rowGroupingBox).height;
           if (lowBorder > actualLowBorder) {
             setHeight(lowBorder);
@@ -3058,7 +3043,27 @@ O$.Table = {
           }
         }
       };
-      var layout = O$.Table._GroupingBoxLayout(rowGroupingBox, tableId, connectorStyle, headerStyleClassName, headerHorizOffset, headerVertOffset);
+      var groupingBoxPaddings = function() {
+        var size = O$.getElementSize(rowGroupingBoxTable),
+                HORIZONTAL = 1,
+                VERTICAL = 0;
+
+        function val(cssName, horizontalOrVertical) {
+          return O$.calculateNumericCSSValue(
+                  O$.getElementStyle(rowGroupingBoxTable, cssName),
+                  horizontalOrVertical == HORIZONTAL ? size.width : size.height);
+        }
+
+        return {left:val("padding-left", HORIZONTAL),
+          top:val("padding-top", VERTICAL),
+          right:val("padding-right", HORIZONTAL),
+          bottom:val("padding-bottom", VERTICAL)};
+      }();
+      var layout = O$.Table._GroupingBoxLayout(
+              rowGroupingBox, tableId,
+              connectorStyle, headerStyleClassName,
+              headerHorizOffset, headerVertOffset,
+              groupingBoxPaddings);
 
       var groupingColumnIds = function() {
         return table.grouping.getGroupingRules().map(function(rule) {
@@ -3075,8 +3080,27 @@ O$.Table = {
         }
         cleanPreviousContent();
         layout.addAll(groupingColumnIds());
-      }
+      } else {
+        var applyCssProperties = function() {
+          function copyProperty(jsName, cssName) {
+            rowGroupingBox.style[jsName] = O$.getElementStyle(rowGroupingBoxTable, cssName);
 
+          }
+
+          copyProperty("paddingLeft", "padding-left");
+          copyProperty("paddingRight", "padding-right");
+          copyProperty("paddingTop", "padding-top");
+          copyProperty("paddingBottom", "padding-bottom");
+
+          copyProperty("verticalAlign", "vertical-align");
+          copyProperty("textAlign", "text-align");
+        }();
+      }
+      var cleanPadding = function(){
+        ["paddingLeft", "paddingRight", "paddingTop", "paddingBottom"].forEach(function(property){
+          rowGroupingBoxTable.style[property] = "0px";
+        });
+      }();
       function appendToGroupingBox(columnId, newColumnIndex) {
         var ruleValues = rules();
         var currentIndexOfColumn = groupingColumnIds().indexOf(columnId);
