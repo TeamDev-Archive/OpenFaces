@@ -2617,10 +2617,22 @@ O$.Table = {
                 });
         counter++;
       });
-
-      dropTargets[0].minX = null;
-      dropTargets[dropTargets.length - 1].maxX = null;
-
+      var fillEmptySpace = function() {
+        for (var i = 0; i < dropTargets.length; i++) {
+          var current = dropTargets[i];
+          if (i == 0) {
+            current.minX = null;
+          }
+          if (i == dropTargets.length - 1) {
+            current.maxX = null;
+          } else {
+            var next = dropTargets[i + 1];
+            var avg = (current.maxX + next.minX) / 2;
+            current.maxX = Math.floor(avg);
+            next.minX = Math.ceil(avg);
+          }
+        }
+      }();
       return dropTargets;
     };
 
