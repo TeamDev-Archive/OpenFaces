@@ -3022,6 +3022,10 @@ O$.Table = {
         if (!rowGroupingBox.minHeight) {
           rowGroupingBox.minHeight = currentSize().height;
         }
+        function setHeight(val) {
+          rowGroupingBox.style.height = val + "px";
+        }
+
         var headers = layout.draggable();
         if (headers.length > 1) {
           var last = headers[headers.length - 1],
@@ -3029,11 +3033,11 @@ O$.Table = {
                           + O$.getNumericElementStyle(rowGroupingBox, "padding-bottom"),
                   actualLowBorder = O$.getElementSize(rowGroupingBox).height;
           if (lowBorder > actualLowBorder) {
-            rowGroupingBox.parentNode.style.height = lowBorder + "px";
+            setHeight(lowBorder);
           }
 
-          if (lowBorder < actualLowBorder && lowBorder > rowGroupingBox.minHeight ) {  //magic number is just an eps
-            rowGroupingBox.parentNode.style.height = Math.max(rowGroupingBox.minHeight, lowBorder) + "px";
+          if (lowBorder < actualLowBorder && lowBorder > rowGroupingBox.minHeight) {  //magic number is just an eps
+            setHeight(Math.max(rowGroupingBox.minHeight, lowBorder));
           }
         }
       };
@@ -3054,7 +3058,7 @@ O$.Table = {
         }
         cleanPreviousContent();
         layout.addAll(groupingColumnIds());
-          }
+      }
 
       function appendToGroupingBox(columnId, newColumnIndex) {
         var ruleValues = rules();
