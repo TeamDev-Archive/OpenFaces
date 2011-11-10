@@ -3388,6 +3388,14 @@ O$.ColumnMenu = {
 
     var columnMenuButton = O$(columnMenuButtonId);
     var columnMenuButtonTable = function() {
+      function safeAppend(parent, child){
+        child.style.position = "";
+        child.style.width = "";
+        parent.appendChild(child);
+        var width = O$.getElementSize(child).width;
+        child.style.position = "absolute";
+        child.style.width = width + "px";
+      }
       var result = O$.Table._createTableWithoutTd();
       result.style.position = "absolute";
       result._tr.appendChild(columnMenuButton);
@@ -3395,9 +3403,7 @@ O$.ColumnMenu = {
       O$.extend(result, {
         showForCell: function(cell) {
           this.hide();
-
-
-          cell.appendChild(this);
+          safeAppend(cell, this);
           O$.correctElementZIndex(this, cell, O$.Table.HEADER_CELL_Z_INDEX_COLUMN_MENU_BUTTON);
           var rightOffset = O$.getNumericElementStyle(cell, "border-right-width");
           var bottomOffset = O$.getNumericElementStyle(cell, "border-bottom-width");
@@ -3452,7 +3458,7 @@ O$.ColumnMenu = {
       var prevOnhide = columnMenu.onhide;
       if (O$.ColumnMenu._menuFixer)O$.ColumnMenu._menuFixer();
 
-//      var headerCell = cu  rrentColumn.header._cell;
+//      var headerCell = currentColumn.header._cell;
 //      headerCell.setForceHover(true);
 
       columnMenuButton.setForceHover(true);
