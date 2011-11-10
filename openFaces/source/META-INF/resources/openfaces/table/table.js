@@ -2270,34 +2270,41 @@ O$.Table = {
         O$.correctElementZIndex(tbl, table, 2);
         return tbl;
       };
-      O$.makeDraggable(headerCell, function(evt) {
-        var inAdditionalTargets = function(evt){
+      var makeDraggable = function() {
+        var inAdditionalTargets = function(evt) {
           if (!table._rowGroupingBox)return false;
-          return table._rowGroupingBox._innerDropTargets(headerCell).filter(function (target) {
-            return target.eventInside(evt);
-          }).length > 0 ;
+          return table._rowGroupingBox._innerDropTargets(headerCell).filter(
+                  function (target) {
+                    return target.eventInside(evt);
+                  }).length > 0;
         };
+        var dropTargets = null;
 
-        var dropTargets = [];
-        if(table._rowGroupingBox){
-          dropTargets = dropTargets.concat(table._rowGroupingBox._innerDropTargets(headerCell._column.columnId));
+        function allDropTargets() {
+          if (dropTargets) return dropTargets;
+          dropTargets = [];
+          if (table._rowGroupingBox) {
+            dropTargets = dropTargets.concat(table._rowGroupingBox._innerDropTargets(headerCell._column.columnId));
+          }
+          dropTargets = dropTargets.concat(table._innerDropTargetsByColumnId(sourceColumn.columnId, function(newIndex) {
+            var columnIds = table.getColumnsOrder();
+            var oldIndex = columnIds.indexOf(sourceColumn.columnId);
+            columnIds.splice(newIndex, 0, sourceColumn.columnId);
+            columnIds.splice(oldIndex < newIndex ? oldIndex : oldIndex + 1, 1);
+            table.setColumnsOrder(columnIds);
+          }));
+          return dropTargets;
         }
-         dropTargets = dropTargets.concat(table._innerDropTargetsByColumnId(sourceColumn.columnId, function(newIndex) {
-          var columnIds = table.getColumnsOrder();
-          var oldIndex = columnIds.indexOf(sourceColumn.columnId);
-          columnIds.splice(newIndex, 0, sourceColumn.columnId);
-          columnIds.splice(oldIndex < newIndex ? oldIndex : oldIndex + 1, 1);
-          table.setColumnsOrder(columnIds);
-        }));
 
-        for (var i = 0, count = dropTargets.length; i < count; i++) {
-          var dropTarget = dropTargets[i];
-          if (dropTarget.eventInside(evt))
-            return dropTarget;
-        }
-        return null;
-      });
-
+        O$.makeDraggable(headerCell, function(evt) {
+          for (var i = 0, count = allDropTargets().length; i < count; i++) {
+            var dropTarget = allDropTargets()[i];
+            if (dropTarget.eventInside(evt))
+              return dropTarget;
+          }
+          return null;
+        });
+      }();
       var additionalAreaListener;
 
       var activeHelperArea = null;
@@ -2501,7 +2508,7 @@ O$.Table = {
         }
 
         return  canBePlacedBefore() || canBePlacedInOrAfter();
-      };
+      }
       var self = {
         onLeftEdgePermit : function(func) {
           if (canBeInserted(targetColumnId, sourceColumnId, true))func();
@@ -2513,7 +2520,7 @@ O$.Table = {
         }
       };
       return self;
-    }
+    };
     table._innerDropTargetsByColumnId = function(columnId, dropHandler) {
       var dropTargets = [];
       //TODO: [s.kurilin] we shouldn't use this counter
