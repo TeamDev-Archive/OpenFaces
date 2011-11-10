@@ -40,7 +40,7 @@ public class GroupingBoxRenderer extends org.openfaces.renderkit.RendererBase {
         final String promptClassName = Styles.getCSSClass(context, component, groupingBox.getPromptTextStyle(), "o_groupingBox_promptText", groupingBox.getPromptTextStyleClass());
         final String connectorStyle =  groupingBox.getConnectorStyle();
         writer.startElement("table", component);
-        writer.writeAttribute("style", "width: 100%;", null);
+        writer.writeAttribute("class", boxClassName, null);
         writeIdAttribute(context, component);
 
         writer.writeAttribute("cellspacing", "0", null);
@@ -49,7 +49,7 @@ public class GroupingBoxRenderer extends org.openfaces.renderkit.RendererBase {
 
         writer.startElement("tr", component);
         writer.startElement("td", component);
-        writer.writeAttribute("class", boxClassName, null);
+        writer.writeAttribute("style", "position: relative", null);
         writer.startElement("span", component);
         writer.writeAttribute("class", promptClassName, null);
         writer.append(groupingBox.getPromptText());

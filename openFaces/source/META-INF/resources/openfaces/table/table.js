@@ -2765,7 +2765,7 @@ O$.Table = {
 
     function Connector(left, right) {
       function connectorDescription(left, right) {
-        var rightMaxY = right.y + right.height, leftMaxY = left.y + left.height;
+        var rightMaxY = right.y + right.height ,leftMaxY = left.y + left.height;
         return {
           horizontalOffset: left.width - 10,
           height : Math.round(leftMaxY < right.y ? right.y - leftMaxY + right.height / 2 : (rightMaxY - leftMaxY) / 2)
@@ -2781,17 +2781,19 @@ O$.Table = {
           if (self._vertical != null) {
             self.destroy();
           }
-          self._toRemove.forEach(function(e){
+          self._toRemove.forEach(function(e) {
             e.parentNode.removeChild(e);
           });
           self._leftRect = O$.getElementBorderRectangle(left, true);
           self._rightRect = O$.getElementBorderRectangle(right, true);
           self._toRemove = [];
-          var desc = connectorDescription(self._leftRect, self._rightRect),
-                  leftBorder = self._leftRect.x + desc.horizontalOffset,
-                  topBorder = self._leftRect.y + self._leftRect.height,
-                  lowBorder = topBorder + desc.height,
-                  rightBorder = self._rightRect.x;
+          var paddingTop = O$.getNumericElementStyle(rowGroupingBox, "padding-top"),
+                  paddingLeft = O$.getNumericElementStyle(rowGroupingBox, "padding-left"),
+                  desc = connectorDescription(self._leftRect, self._rightRect),
+                  leftBorder = self._leftRect.x + desc.horizontalOffset + paddingLeft,
+                  topBorder = self._leftRect.y + self._leftRect.height + paddingTop,
+                  lowBorder = topBorder + desc.height + paddingTop,
+                  rightBorder = self._rightRect.x + paddingLeft;
           self._vertical = new O$.GraphicLine(connectorStyle, alignment, leftBorder, topBorder, leftBorder, lowBorder);
           self._horizontal = new O$.GraphicLine(connectorStyle, alignment, leftBorder, lowBorder, rightBorder, lowBorder);
           self._vertical.show(rowGroupingBox);
@@ -2817,11 +2819,12 @@ O$.Table = {
       },
       insertByColumnId: function(index, columnId) {
         function newCoordinates() {
+          var zero = {
+            x : O$.getNumericElementStyle(rowGroupingBox, "padding-left"),
+            y: O$.getNumericElementStyle(rowGroupingBox, "padding-top")
+          };
           if (index == 0) {
-            return {
-              x : O$.getNumericElementStyle(rowGroupingBox, "padding-left"),
-              y: O$.getNumericElementStyle(rowGroupingBox, "padding-top")
-            }
+            return zero ;
           }
           var previous = self.draggable()[index - 1],
                   previousPos = O$.getElementPos(previous, true),
@@ -2829,8 +2832,8 @@ O$.Table = {
                   headerHorizOffsetVal = O$.calculateNumericCSSValue(headerHorizOffset, previousSize.width),
                   headerVertOffsetVal = O$.calculateNumericCSSValue(headerVertOffset, previousSize.height);
           return {
-            x: Math.round(previousPos.x + previousSize.width + headerHorizOffsetVal),
-            y: Math.round(previousPos.y + headerVertOffsetVal)
+            x: Math.round(zero.x + previousPos.x + previousSize.width + headerHorizOffsetVal),
+            y: Math.round(zero.y + previousPos.y + headerVertOffsetVal)
           };
         }
 
@@ -2940,10 +2943,25 @@ O$.Table = {
   _initRowGroupingBox: function(rowGroupingBoxId, tableId, connectorStyle, headerStyleClassName, headerHorizOffset, headerVertOffset) {
     O$.Table._onTableLoaded(tableId, function() {
       var table = O$(tableId);
-      var rowGroupingBox = O$(rowGroupingBoxId).firstChild.firstChild.firstChild;
+      var rowGroupingBoxTable = O$(rowGroupingBoxId);
+      var rowGroupingBox = rowGroupingBoxTable.firstChild.firstChild.firstChild;
       var rules = function() {
         return table.grouping.getGroupingRules();
       };
+      var applyCssProperties = function() {
+        function moveProperty(jsName, cssName) {
+          rowGroupingBox.style[jsName] = O$.getElementStyle(rowGroupingBoxTable, cssName);
+          rowGroupingBoxTable.style[jsName] = "";
+        }
+        moveProperty("paddingLeft", "padding-left");
+        moveProperty("paddingRight", "padding-right");
+        moveProperty("paddingTop", "padding-top");
+        moveProperty("paddingBottom", "padding-bottom");
+
+        moveProperty("verticalAlign", "vertical-align");
+        moveProperty("textAlign", "text-align");
+      }();
+
       var dropTargetMark = function() {
         var delegate = table._dropTargetMark(false);
         var copyOfOuterContainer = null;
@@ -3025,7 +3043,6 @@ O$.Table = {
         function setHeight(val) {
           rowGroupingBox.style.height = val + "px";
         }
-
         var headers = layout.draggable();
         if (headers.length > 1) {
           var last = headers[headers.length - 1],
