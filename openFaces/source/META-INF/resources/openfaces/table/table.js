@@ -2882,10 +2882,31 @@ O$.Table = {
 
         function directWrapper() {
           var result = document.createElement('div');
+          result.className =  headerStyleClassName;
           result.appendChild(header);
+          (function movePaddings() {
+            var HORIZONTAL = 1,VERTICAL = 0,
+                    size = O$.getElementSize(result)
+
+            function val(cssName, horizontalOrVertical) {
+              return O$.calculateNumericCSSValue(
+                      O$.getElementStyle(result, cssName),
+                      horizontalOrVertical == HORIZONTAL ? size.width : size.height);
+            }
+
+            [
+              ["padding-left", "paddingLeft", HORIZONTAL],
+              ["padding-right", "paddingRight", HORIZONTAL],
+              ["padding-top", "paddingTop", VERTICAL],
+              ["padding-bottom", "paddingBottom", VERTICAL]
+            ].forEach(function(d) {
+
+              header.style[d[1]] = val(d[0], d[2]) + "px";
+              result.style[d[1]] = "0px";
+            });
+          }());
           result.show = function(){
             var coordinates = newCoordinates();
-            result.className =  headerStyleClassName;
             result.style.top = coordinates.y + "px";
             result.style.left = coordinates.x + "px";
             result.style.position = "absolute";
