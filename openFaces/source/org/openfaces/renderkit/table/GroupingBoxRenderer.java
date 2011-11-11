@@ -22,6 +22,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 
+import static org.openfaces.util.Rendering.writeStandardEvents;
+
 public class GroupingBoxRenderer extends org.openfaces.renderkit.RendererBase {
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
@@ -40,6 +42,7 @@ public class GroupingBoxRenderer extends org.openfaces.renderkit.RendererBase {
         final String promptClassName = Styles.getCSSClass(context, component, groupingBox.getPromptTextStyle(), "o_groupingBox_promptText", groupingBox.getPromptTextStyleClass());
         final String connectorStyle =  groupingBox.getConnectorStyle();
         writer.startElement("table", component);
+        writeStandardEvents(writer, groupingBox);
         writer.writeAttribute("class", boxClassName, null);
         writeIdAttribute(context, component);
 
