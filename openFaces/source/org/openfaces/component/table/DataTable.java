@@ -12,6 +12,7 @@
 package org.openfaces.component.table;
 
 import org.openfaces.component.filter.Filter;
+import org.openfaces.renderkit.TableUtil;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.Components;
 import org.openfaces.util.Faces;
@@ -21,6 +22,7 @@ import javax.el.ValueExpression;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +41,7 @@ public class DataTable extends AbstractTable {
     public static final String COMPONENT_TYPE = "org.openfaces.DataTable";
     public static final String COMPONENT_FAMILY = "org.openfaces.DataTable";
     private static final String RENDERED_PAGE_COUNT_ATTR = "_renderedPageCount";
+    private static final String GROUPED_DATA_TABLE_ATTR = "_groupedDataTable";
 
     private Integer pageSize;
     private Integer pageIndex;
@@ -424,5 +427,46 @@ public class DataTable extends AbstractTable {
         if (nodeInfo == null) return false;
 
         return nodeInfo.getNodeHasChildren();
-     }
+    }
+
+    /**
+     * Returns the same list as getRenderedColumns(), but after adaptations to some of its entries that might be
+     * required for such features as the Row Grouping feature, where the first column is implicitly converted to
+     * TreeColumn. This cannot be done in getRenderedColumns() safely because this would require replacing the first
+     * column in the original list with a tree column in the component parent/child hierarchy, and this adaptation
+     * (replacing column with tree column) should be done only within the scope of a single request because the set and
+     * order of rendered columns can be different on each request.
+     */
+    @Override
+    public List<BaseColumn> getAdaptedRenderedColumns() {
+        List<BaseColumn> renderedColumns = getRenderedColumns();
+
+        RowGrouping rowGrouping = getRowGrouping();
+        if (rowGrouping == null) return renderedColumns;
+
+        List<GroupingRule> groupingRules = rowGrouping.getGroupingRules();
+        if (groupingRules == null || groupingRules.size() == 0) return renderedColumns;
+
+        // todo deal with the case when selection/checkbox columns are the first ones, where they should probably be
+        // skipped in favor of the first ordinary column
+        BaseColumn firstColumn = renderedColumns.get(0);
+        TreeColumn treeColumn = convertToTreeColumn(firstColumn);
+        renderedColumns = new ArrayList<BaseColumn>(renderedColumns);
+        renderedColumns.set(0, treeColumn);
+
+        return renderedColumns;
+    }
+
+    private TreeColumn convertToTreeColumn(BaseColumn column) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        TreeColumn treeColumn = (TreeColumn) context.getApplication().createComponent(TreeColumn.COMPONENT_TYPE);
+        treeColumn.getAttributes().put(GROUPED_DATA_TABLE_ATTR, this);
+        TableUtil.copyColumnAttributes(column, treeColumn);
+        treeColumn.setDelegate(column);
+        return treeColumn;
+    }
+
+    public static DataTable getGroupedDataTable(TreeColumn treeColumn) {
+        return (DataTable) treeColumn.getAttributes().get(GROUPED_DATA_TABLE_ATTR);
+    }
 }

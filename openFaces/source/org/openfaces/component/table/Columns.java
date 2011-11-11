@@ -13,6 +13,7 @@
 package org.openfaces.component.table;
 
 import org.openfaces.component.OUIData;
+import org.openfaces.renderkit.TableUtil;
 import org.openfaces.util.ValueBindings;
 
 import javax.el.ELContext;
@@ -704,27 +705,8 @@ public class Columns extends UIComponentBase implements NamingContainer {
                 }
                 column.setRendered(getColumnRendered());
 
-                String[] copiedAttributes = new String[]{
-                        "headerValue", "footerValue", "width", "align", "valign", "resizable", "minResizingWidth",
-                        "fixed", "menuAllowed",
-                        "style", "styleClass", "headerStyle", "headerClass", "subHeaderStyle", "subHeaderClass",
-                        "bodyStyle", "bodyClass", "footerStyle", "footerClass",
-                        "onclick", "ondblclick", "onmousedown", "onmouseover", "onmousemove", "onmouseout", "onmouseup",
-                        "headerOnclick", "headerOndblclick", "headerOnmousedown", "headerOnmouseover",
-                        "headerOnmousemove", "headerOnmouseout", "headerOnmouseup", "bodyOnclick", "bodyOndblclick",
-                        "bodyOnmousedown", "bodyOnmouseover", "bodyOnmousemove", "bodyOnmouseout", "bodyOnmouseup",
-                        "footerOnclick", "footerOndblclick", "footerOnmousedown", "footerOnmouseover", "footerOnmousemove",
-                        "footerOnmouseout", "footerOnmouseup"};
-                for (String attrName : copiedAttributes) {
-                    ValueExpression expression = getValueExpression(attrName);
-                    if (expression != null)
-                        column.setValueExpression(attrName, expression);
-                    else {
-                        Object attributeValue = getAttributes().get(attrName);
-                        if (attributeValue != null)
-                            column.getAttributes().put(attrName, attributeValue);
-                    }
-                }
+                UIComponent srcComponent = this;
+                TableUtil.copyColumnAttributes(srcComponent, column);
             }
             applySortingParameters(column);
             applyFilteringParameters(context, column);

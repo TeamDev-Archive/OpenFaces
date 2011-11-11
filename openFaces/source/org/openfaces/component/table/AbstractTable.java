@@ -420,7 +420,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     public List<BaseColumn> getRenderedColumns() {
         if (cachedRenderedColumns == null) {
-            cachedRenderedColumns = calculateRenderedColumns();
+            cachedRenderedColumns = Collections.unmodifiableList(calculateRenderedColumns());
         }
         return cachedRenderedColumns;
     }
@@ -1669,6 +1669,10 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     public boolean isNodeExpanded() {
         return true;
+    }
+
+    public List<BaseColumn> getAdaptedRenderedColumns() {
+        return getRenderedColumns();
     }
 
     protected class RowComparator implements Comparator<Object> {

@@ -1874,11 +1874,12 @@ O$.Tables = {
         var cellKey = rowIndex + "x" + colIndex;
         cellStyleMappings.individualCellStyle = table._params.cellStylesMap[cellKey];
 
+        var regularColumnCell = !cell.colSpan || cell.colSpan == 1;
         var columnClassName = column._useCellStyles ? column._getCompoundClassName() : null;
-        if (columnClassName)
+        if (columnClassName && regularColumnCell)
           cellStyleMappings.columnClass = columnClassName;
         var compoundBodyClassName = column.body._getCompoundClassName();
-        if (compoundBodyClassName) {
+        if (compoundBodyClassName && regularColumnCell) {
           cellStyleMappings.rowInitialClass = row.initialClass;
           cellStyleMappings.columnBodyClass = compoundBodyClassName;
         }
