@@ -3090,37 +3090,20 @@ O$.Table = {
           right:val("padding-right", HORIZONTAL),
           bottom:val("padding-bottom", VERTICAL)};
       }();
-      var layout = O$.Table._GroupingBoxLayout(
-              rowGroupingBox, tableId,
-              connectorStyle, headerStyleClassName,
-              {horizontal: headerHorizOffset, vertical: headerVertOffset},
-              groupingBoxPaddings);
-      rowGroupingBox.validate = function() {
-        var currentSize = function() {
-          return O$.getElementSize(rowGroupingBox);
-        };
-        if (!rowGroupingBox.minHeight) {
-          rowGroupingBox.minHeight = currentSize().height;
-        }
-        function setHeight(val) {
-          rowGroupingBox.style.height = val + "px";
-        }
-
-        var headers = layout.draggable();
-        if (headers.length > 0) {
-          var last = headers[headers.length - 1],
-                  lowBorder = O$.getElementPos(last, true).y
-                          + O$.getElementSize(last).height + groupingBoxPaddings.bottom,
-                  actualLowBorder = O$.getElementSize(rowGroupingBox).height;
-          if (lowBorder > actualLowBorder) {
-            setHeight(lowBorder);
+      var groupingBoxLayout = function() {
+        var result;
+        return function() {
+          if (!result) {
+            result = O$.Table._GroupingBoxLayout(
+                    rowGroupingBox, tableId,
+                    connectorStyle, headerStyleClassName,
+                    {horizontal: headerHorizOffset, vertical: headerVertOffset},
+                    groupingBoxPaddings);
           }
-
-          if (lowBorder < actualLowBorder && lowBorder > rowGroupingBox.minHeight) {  //magic number is just an eps
-            setHeight(Math.max(rowGroupingBox.minHeight, lowBorder));
-          }
+          return result;
         }
-      };
+      }();
+
       var layoutStrategy = function(justNameAsComment) {
         var isOnlyPromptText = rules().length == 0;
         var self = {
@@ -3221,9 +3204,9 @@ O$.Table = {
                             }
                           },
                           acceptDraggable: function(cellHeader) {
-                            if (layout.draggable().indexOf(cellHeader) >= 0) {
+                            if (groupingBoxLayout().draggable().indexOf(cellHeader) >= 0) {
                               //moving inside grouping box
-                              var currentIndex = layout.draggable().indexOf(cellHeader);
+                              var currentIndex = groupingBoxLayout().draggable().indexOf(cellHeader);
                               var currentColumnId = table.grouping.getGroupingRules()[currentIndex].columnId;
                               if (currentIndex < newColumnIndex) newColumnIndex--;
                               appendToGroupingBox(currentColumnId, newColumnIndex);
@@ -3235,7 +3218,7 @@ O$.Table = {
                         };
                       }
 
-                      var _groupingBoxWrappers = layout.dropAreas();
+                      var _groupingBoxWrappers = groupingBoxLayout().dropAreas();
                       for (var i = 0; i < _groupingBoxWrappers.length; i++) {
                         var targetCell = _groupingBoxWrappers[i];
                         var targetCellRect = O$.getElementClientRectangle(targetCell, true);
@@ -3256,7 +3239,7 @@ O$.Table = {
           return result;
         };
       }();
-      layoutStrategy("deal with paddings")
+      layoutStrategy("Boxes: position offsets instead of padding; PromptText: move paddings to corresponding container")
               .promptText(function() {
                 function copyProperty(jsName, cssName) {
                   rowGroupingBox.style[jsName] = O$.getElementStyle(rowGroupingBoxTable, cssName);
@@ -3275,15 +3258,43 @@ O$.Table = {
                   rowGroupingBoxTable.style[property] = "0px";
                 });
               });
-      layoutStrategy("deal with content")
+      layoutStrategy("Feel container with boxes according to grouping rules")
               .groupingBoxes(function() {
+                (function initGroupingBoxSizeValidationFunction() {
+                  rowGroupingBox.validate = function() {
+                    var currentSize = function() {
+                      return O$.getElementSize(rowGroupingBox);
+                    };
+                    if (!rowGroupingBox.minHeight) {
+                      rowGroupingBox.minHeight = currentSize().height;
+                    }
+                    function setHeight(val) {
+                      rowGroupingBox.style.height = val + "px";
+                    }
+
+                    var headers = groupingBoxLayout().draggable();
+                    if (headers.length > 0) {
+                      var last = headers[headers.length - 1],
+                              lowBorder = O$.getElementPos(last, true).y
+                                      + O$.getElementSize(last).height + groupingBoxPaddings.bottom,
+                              actualLowBorder = O$.getElementSize(rowGroupingBox).height;
+                      if (lowBorder > actualLowBorder) {
+                        setHeight(lowBorder);
+                      }
+
+                      if (lowBorder < actualLowBorder && lowBorder > rowGroupingBox.minHeight) {  //magic number is just an eps
+                        setHeight(Math.max(rowGroupingBox.minHeight, lowBorder));
+                      }
+                    }
+                  };
+                }());
                 (function cleanPreviousContent() {
                   while (rowGroupingBox.childNodes.length > 0) {
                     var child = rowGroupingBox.firstChild;
                     child.parentNode.removeChild(child);
                   }
                 }());
-                (function drawNewContent(){
+                (function drawNewContent() {
                   layout.addAll(groupingColumnIds());
                   layout.redraw();
                 }());
@@ -3330,7 +3341,7 @@ O$.Table = {
                   });
                 }());
                 (function attachColumnMenu() {
-                  layout.draggable().forEach(function(colHeader) {
+                  groupingBoxLayout().draggable().forEach(function(colHeader) {
                     O$.ColumnMenu._appendMenu(tableId, colHeader, colHeader._columnId, false);
                   });
                 }());
