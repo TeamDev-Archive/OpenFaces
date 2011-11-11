@@ -2785,10 +2785,6 @@ O$.Table = {
     });
     O$.Table._tableLoaded(tableId);
   },
-  //todo: move to util
-  _removeFromArray: function(array, index){
-    return array.slice(0, index).concat(array.slice(index + 1));
-  },
   _GroupingBoxLayout : function(rowGroupingBox, tableId, connectorStyle, headerStyleClassName, headerOffset, padding) {
     var table = O$(tableId);
     var dropAreas = [];
@@ -2952,8 +2948,8 @@ O$.Table = {
         rowGroupingBox.validate();
       },
       removeByIndex: function(index) {
-        dropAreas = O$.Table._removeFromArray(dropAreas, index);
-        headers = O$.Table._removeFromArray(headers, index);
+        dropAreas.splice(index, 0);
+        headers.splice(index, 0);
 
         headers[index].loseConnection();
         if (index != 0) {  //not first
