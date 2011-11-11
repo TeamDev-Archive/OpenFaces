@@ -2700,39 +2700,70 @@ O$.Table = {
 
                 },
 
-                _applyGrouping: function(rules) {
-                  table.combineSubmissions(function(){
-                    table.grouping.setGroupingRules(rules);
-                    var displayedColumnIds = table.getColumnsOrder();
-                    rules.forEach(function(rule) {
-                      var index = displayedColumnIds.indexOf(rule.columnId);
-                      if (index >= 0)  displayedColumnIds = displayedColumnIds.slice(0, index).concat(displayedColumnIds.slice(index + 1));
-                    });
+                _toogleSortingTypeInGroupingRule: function(columnId, ruleIndex) {
+                  var rules = table.grouping.getGroupingRules();
+                  rules.forEach(function(rule){
+                    if (rule.columnId == columnId)rule.ascending = !rule.ascending;
+                  });
+                  table.grouping.setGroupingRules(rules);
+                },
 
-                    table.setColumnsOrder(displayedColumnIds);
+                _applyGroupingRule: function(rule, ruleIndex) {
+                  table.combineSubmissions(function(){
+                    (function removePreviousRuleIfItWasExistAndAddNew() {
+                      function onlyIds(rules) {
+                        return rules.map(function(r) {
+                          return r.columnId
+                        });
+                      }
+                      function removeIt(oldArray) {
+                        var prevIndex = onlyIds(oldArray).indexOf(rule.columnId);
+                        if (prevIndex < 0) return oldArray;
+                        return oldArray.slice(0, prevIndex).concat(oldArray.slice(prevIndex + 1));
+                      }
+
+                      var rules = table.grouping.getGroupingRules(),
+                              before = rules.slice(0, ruleIndex),
+                              after = rules.slice(ruleIndex, rules.length);
+                      table.grouping.setGroupingRules(removeIt(before).concat([rule]).concat(removeIt(after)));
+                    }());
+                    if (table.HideColumnOnGrouping)(function hideColumn() {
+                      var displayedColumnIds = table.getColumnsOrder();
+                      var index = displayedColumnIds.indexOf(rule.columnId);
+                      if (index >= 0) {
+                        displayedColumnIds.splice(index, 1);
+                      }
+                      table.setColumnsOrder(displayedColumnIds);
+
+                    }());
                   });
                 },
 
                 _cancelGroupingRule: function(columnId, newIndex) {
                   table.combineSubmissions(function() {
-                    var index = 0;
-                    var groupingRules = table.grouping.getGroupingRules();
-                    groupingRules.forEach(function(eachRule) {
-                      if (eachRule.columnId == columnId) {
-                        groupingRules = groupingRules.slice(0, index).concat(groupingRules.slice(index + 1));
+                    (function removeFromGrouping() {
+                      var index = 0;
+                      var groupingRules = table.grouping.getGroupingRules();
+                      groupingRules.forEach(function(eachRule) {
+                        if (eachRule.columnId == columnId) {
+                          groupingRules = groupingRules.slice(0, index).concat(groupingRules.slice(index + 1));
+                        }
+                        index++;
+                      });
+                      table.grouping.setGroupingRules(groupingRules);
+                    }());
+                    (function removePreviousColumnIfItWasExistAndAddNew() {
+                      function removeIt(oldArray) {
+                        var prevIndex = oldArray.indexOf(columnId);
+                        if (prevIndex < 0) return oldArray;
+                        return oldArray.slice(0, prevIndex).concat(oldArray.slice(prevIndex + 1));
                       }
-                      index++;
-                    });
-                    table.grouping.setGroupingRules(groupingRules);
 
-                    var displayedColumnIds = table.getColumnsOrder();
-                    var prevIndex = displayedColumnIds.indexOf(columnId);
-                    if (prevIndex >= 0) {
-                      displayedColumnIds = displayedColumnIds.slice(0, prevIndex).concat(
-                              displayedColumnIds.slice(prevIndex + 1));
-                    }
-                    displayedColumnIds.splice(newIndex, 0, columnId);
-                    table.setColumnsOrder(displayedColumnIds);
+                      var displayedColumnIds = table.getColumnsOrder(),
+                              before = displayedColumnIds.slice(0, newIndex),
+                              after = displayedColumnIds.slice(newIndex, displayedColumnIds.length);
+                      table.setColumnsOrder(removeIt(before).concat([columnId]).concat(removeIt(after)));
+                    }());
                   });
                 }
               }
@@ -2941,6 +2972,7 @@ O$.Table = {
   _initRowGroupingBox: function(rowGroupingBoxId, tableId, connectorStyle, headerStyleClassName, headerHorizOffset, headerVertOffset) {
     O$.Table._onTableLoaded(tableId, function() {
       var table = O$(tableId);
+      table.HideColumnOnGrouping = true;
       var rowGroupingBoxTable = O$(rowGroupingBoxId);
       var rowGroupingBox = rowGroupingBoxTable.firstChild.firstChild.firstChild;
       var rules = function() {
@@ -3095,14 +3127,8 @@ O$.Table = {
         return function() {
           if (result == null) {
             function appendToGroupingBox(columnId, newColumnIndex) {
-              var ruleValues = rules();
-              var currentIndexOfColumn = groupingColumnIds().indexOf(columnId);
-              if (currentIndexOfColumn >= 0) {
-                ruleValues = O$.Table._removeFromArray(ruleValues, currentIndexOfColumn);
-              }
               var newRule = new O$.Table.GroupingRule(columnId, true);
-              ruleValues.splice(newColumnIndex, 0, newRule);
-              table.grouping._applyGrouping(ruleValues);
+              table.grouping._applyGroupingRule(newRule, newColumnIndex);
             }
 
             var pos = O$.getElementPos(rowGroupingBox, true);
@@ -3268,13 +3294,11 @@ O$.Table = {
                   var groupingRules = rules();
                   layout.draggable().forEach(function(colHeader) {
                     if (table._sortableColumnsIds.indexOf(colHeader._columnId) < 0)return;
-                    var rule = groupingRules[counter];
                     O$.addEventHandler(colHeader, "click", function() {
                       var focusField = O$(table.id + "::focused");
                       if (focusField)
                         focusField.value = true; // set true explicitly before it gets auto-set when the click bubbles up (JSFC-801)
-                      rule.ascending = !rule.ascending;
-                      table.grouping._applyGrouping(groupingRules);
+                      table.grouping._toogleSortingTypeInGroupingRule(colHeader._columnId);
                     });
                     O$.setupHoverStateFunction(colHeader, function(mouseInside) {
                       O$.setStyleMappings(colHeader.firstChild, {
@@ -3291,7 +3315,7 @@ O$.Table = {
               });
       (function attacheRowGroupingBoxToTable() {
         table._setRowGroupingBox({_innerDropTargets : innerDropTargets});
-      });
+      }());
     });
   },
 
