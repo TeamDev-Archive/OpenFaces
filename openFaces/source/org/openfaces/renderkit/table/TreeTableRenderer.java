@@ -108,12 +108,12 @@ public class TreeTableRenderer extends AbstractTableRenderer {
 
     @Override
     protected String getTextStyle(AbstractTable table) {
-        return ((TreeTable) table).getTextStyle();
+        return table.getTextStyle();
     }
 
     @Override
     protected String getTextClass(AbstractTable table) {
-        return ((TreeTable) table).getTextClass();
+        return table.getTextClass();
     }
 
     public JSONObject encodeAjaxPortion(

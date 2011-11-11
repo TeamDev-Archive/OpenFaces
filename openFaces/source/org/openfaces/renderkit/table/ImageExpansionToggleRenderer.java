@@ -12,10 +12,10 @@
 package org.openfaces.renderkit.table;
 
 import org.openfaces.component.table.AbstractTable;
-import org.openfaces.component.table.ImageExpansionToggle;
 import org.openfaces.component.table.ColumnGroup;
+import org.openfaces.component.table.DataTable;
+import org.openfaces.component.table.ImageExpansionToggle;
 import org.openfaces.component.table.TreeColumn;
-import org.openfaces.component.table.TreeTable;
 import org.openfaces.renderkit.RendererBase;
 
 import javax.faces.component.UIComponent;
@@ -40,6 +40,12 @@ public class ImageExpansionToggleRenderer extends RendererBase {
         if (!(column instanceof TreeColumn) || ((TreeColumn) column).getExpansionToggle() != expansionToggle)
             throw new IllegalStateException("ImageExpansionToggleRenderer can only be inserted as an 'expansionToggle' facet of TreeColumn");
 
+        TreeColumn treeColumn = (TreeColumn) column;
+        DataTable groupedDataTable = DataTable.getGroupedDataTable(treeColumn);
+        if (groupedDataTable != null) {
+            // implicitly generated TreeColumn for a grouped DataTable
+            return groupedDataTable;
+        }
         UIComponent columnParent = column.getParent();
         while (columnParent instanceof ColumnGroup)
             columnParent = columnParent.getParent();

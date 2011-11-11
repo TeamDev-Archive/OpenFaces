@@ -20,6 +20,7 @@ import java.util.List;
 public class GroupHeaderRow extends GroupHeaderOrFooterRow {
     public static final String COMPONENT_TYPE = "org.openfaces.GroupHeaderRow";
     public static final String COMPONENT_FAMILY = "org.openfaces.GroupHeaderRow";
+    private static final String SYNTHETIC_GROUP_HEADER_CELL_MARKER = "_syntheticGroupHeaderCell";
 
     private List<UIComponent> cells;
 
@@ -66,10 +67,15 @@ public class GroupHeaderRow extends GroupHeaderOrFooterRow {
         outputText.setValueExpression("value", rowGrouping.getGroupHeaderTextExpression());
 
         Cell groupHeaderCell = new Cell();
+        groupHeaderCell.getAttributes().put(SYNTHETIC_GROUP_HEADER_CELL_MARKER, true);
         groupHeaderCell.getChildren().add(outputText);
         int allColumnCount = dataTable.getAllColumns().size();
         groupHeaderCell.setSpan(allColumnCount);
         return groupHeaderCell;
+    }
+
+    public static boolean isSyntheticGroupHeaderCell(Cell cell) {
+        return cell.getAttributes().containsKey(SYNTHETIC_GROUP_HEADER_CELL_MARKER);
     }
 
     @Override

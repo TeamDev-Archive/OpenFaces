@@ -9,20 +9,15 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
+
 package org.openfaces.component.table;
 
 import javax.faces.component.UIComponent;
 import java.util.List;
-import java.util.Map;
 
 /**
- * This interface is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly by any
- * application code.
+ * @author Dmitry Pikhulya
  */
-public interface DynamicCol extends SyntheticColumn {
-    void declareContextVariables();
-
-    void undeclareContextVariables();
-
-    Map<String, UIComponent> getFacetsForProcessing();
+public interface SyntheticColumn {
+    List<UIComponent> getChildrenForProcessing();
 }
