@@ -2758,7 +2758,7 @@ O$.Table = {
   _removeFromArray: function(array, index){
     return array.slice(0, index).concat(array.slice(index + 1));
   },
-  _GroupingBoxLayout : function(rowGroupingBox, tableId, connectorStyle, headerStyleClassName, headerHorizOffset, headerVertOffset, padding) {
+  _GroupingBoxLayout : function(rowGroupingBox, tableId, connectorStyle, headerStyleClassName, headerOffset, padding) {
     var table = O$(tableId);
     var dropAreas = [];
     var headers = [];
@@ -2827,8 +2827,8 @@ O$.Table = {
           var previous = self.draggable()[index - 1],
                   previousPos = O$.getElementPos(previous, true),
                   previousSize = O$.getElementSize(previous),
-                  headerHorizOffsetVal = O$.calculateNumericCSSValue(headerHorizOffset, previousSize.width),
-                  headerVertOffsetVal = O$.calculateNumericCSSValue(headerVertOffset, previousSize.height);
+                  headerHorizOffsetVal = O$.calculateNumericCSSValue(headerOffset.horizontal, previousSize.width),
+                  headerVertOffsetVal = O$.calculateNumericCSSValue(headerOffset.vertical, previousSize.height);
           return {
             x: Math.round(zero.x + previousPos.x + previousSize.width + headerHorizOffsetVal),
             y: Math.round(zero.y + previousPos.y + headerVertOffsetVal)
@@ -2846,7 +2846,7 @@ O$.Table = {
             }
             result.style.height = "100%";
             var directWrapperWidth = O$.getElementSize(directWrapper).width,
-                    headerHorizOffsetVal = O$.calculateNumericCSSValue(headerHorizOffset, directWrapperWidth);
+                    headerHorizOffsetVal = O$.calculateNumericCSSValue(headerOffset.horizontal, directWrapperWidth);
             result.style.width = (directWrapperWidth + headerHorizOffsetVal) + "px";
             rowGroupingBox.appendChild(result);
           };
@@ -2962,6 +2962,7 @@ O$.Table = {
           });
           return index;
         }
+
         function beforeFirst() {
           var headerRect = O$.getElementBorderRectangle(layout.draggable()[0], true);
           dropTargetMark.setPosition(headerRect.x, headerRect.y, headerRect.y + headerRect.height);
@@ -2976,6 +2977,7 @@ O$.Table = {
           function avr(a, b) {
             return Math.round((a + b) / 2);
           }
+
           var leftRect = O$.getElementBorderRectangle(layout._dragByColumnId(left), true);
           var rightRect = O$.getElementBorderRectangle(layout._dragByColumnId(right), true);
           dropTargetMark.setPosition(avr(leftRect.getMaxX(), rightRect.getMinX()), leftRect.getMinY(), rightRect.getMaxY());
@@ -3005,7 +3007,7 @@ O$.Table = {
             if (index == rules().length - 1) {
               afterLast()
             } else {
-              between(columnId, rules()[index+1].columnId);
+              between(columnId, rules()[index + 1].columnId);
             }
           },
           displayBefore: function(columnId) {
@@ -3013,36 +3015,11 @@ O$.Table = {
             if (index == 0) {
               beforeFirst();
             } else {
-              between(rules()[index-1].columnId, columnId);
+              between(rules()[index - 1].columnId, columnId);
             }
           }
         };
       }();
-      rowGroupingBox.validate = function() {
-        var currentSize = function() {
-          return O$.getElementSize(rowGroupingBox);
-        };
-        if (!rowGroupingBox.minHeight) {
-          rowGroupingBox.minHeight = currentSize().height;
-        }
-        function setHeight(val) {
-          rowGroupingBox.style.height = val + "px";
-        }
-        var headers = layout.draggable();
-        if (headers.length > 0) {
-          var last = headers[headers.length - 1],
-                  lowBorder = O$.getElementPos(last, true).y
-                          + O$.getElementSize(last).height + groupingBoxPaddings.bottom,
-                  actualLowBorder = O$.getElementSize(rowGroupingBox).height;
-          if (lowBorder > actualLowBorder) {
-            setHeight(lowBorder);
-          }
-
-          if (lowBorder < actualLowBorder && lowBorder > rowGroupingBox.minHeight) {  //magic number is just an eps
-            setHeight(Math.max(rowGroupingBox.minHeight, lowBorder));
-          }
-        }
-      };
       var groupingBoxPaddings = function() {
         var size = O$.getElementSize(rowGroupingBoxTable),
                 HORIZONTAL = 1,
@@ -3062,281 +3039,259 @@ O$.Table = {
       var layout = O$.Table._GroupingBoxLayout(
               rowGroupingBox, tableId,
               connectorStyle, headerStyleClassName,
-              headerHorizOffset, headerVertOffset,
+              {horizontal: headerHorizOffset, vertical: headerVertOffset},
               groupingBoxPaddings);
+      rowGroupingBox.validate = function() {
+        var currentSize = function() {
+          return O$.getElementSize(rowGroupingBox);
+        };
+        if (!rowGroupingBox.minHeight) {
+          rowGroupingBox.minHeight = currentSize().height;
+        }
+        function setHeight(val) {
+          rowGroupingBox.style.height = val + "px";
+        }
 
+        var headers = layout.draggable();
+        if (headers.length > 0) {
+          var last = headers[headers.length - 1],
+                  lowBorder = O$.getElementPos(last, true).y
+                          + O$.getElementSize(last).height + groupingBoxPaddings.bottom,
+                  actualLowBorder = O$.getElementSize(rowGroupingBox).height;
+          if (lowBorder > actualLowBorder) {
+            setHeight(lowBorder);
+          }
+
+          if (lowBorder < actualLowBorder && lowBorder > rowGroupingBox.minHeight) {  //magic number is just an eps
+            setHeight(Math.max(rowGroupingBox.minHeight, lowBorder));
+          }
+        }
+      };
+      var layoutStrategy = function(justNameAsComment) {
+        var isOnlyPromptText = rules().length == 0;
+        var self = {
+          promptText:function(func) {
+            if (isOnlyPromptText)func();
+            return self;
+          },
+          groupingBoxes:function(func) {
+            if (!isOnlyPromptText)func();
+            return self;
+          },
+          any:function(func) {
+            func();
+            return self;
+          }
+        };
+        return self;
+      };
       var groupingColumnIds = function() {
         return table.grouping.getGroupingRules().map(function(rule) {
           return rule.columnId;
         });
       };
-
-      if (rules().length > 0) {
-        function cleanPreviousContent() {
-          while (rowGroupingBox.childNodes.length > 0) {
-            var child = rowGroupingBox.firstChild;
-            child.parentNode.removeChild(child);
-          }
-        }
-        cleanPreviousContent();
-        layout.addAll(groupingColumnIds());
-      } else {
-        var applyCssProperties = function() {
-          function copyProperty(jsName, cssName) {
-            rowGroupingBox.style[jsName] = O$.getElementStyle(rowGroupingBoxTable, cssName);
-
-          }
-
-          copyProperty("paddingLeft", "padding-left");
-          copyProperty("paddingRight", "padding-right");
-          copyProperty("paddingTop", "padding-top");
-          copyProperty("paddingBottom", "padding-bottom");
-
-          copyProperty("verticalAlign", "vertical-align");
-          copyProperty("textAlign", "text-align");
-        }();
-      }
-      var cleanPadding = function(){
-        ["paddingLeft", "paddingRight", "paddingTop", "paddingBottom"].forEach(function(property){
-          rowGroupingBoxTable.style[property] = "0px";
-        });
-      }();
-      function appendToGroupingBox(columnId, newColumnIndex) {
-        var ruleValues = rules();
-        var currentIndexOfColumn = groupingColumnIds().indexOf(columnId);
-        if (currentIndexOfColumn >= 0) {
-          ruleValues = O$.Table._removeFromArray(ruleValues, currentIndexOfColumn);
-        }
-        var newRule = new O$.Table.GroupingRule(columnId, true);
-        ruleValues.splice(newColumnIndex, 0, newRule);
-        table.grouping._applyGrouping(ruleValues);
-      }
-
-      var fixGroupDescriber = function() {
-        if (rules().length != 0 && layout.isEmpty()) {
-          layout.addAll(groupingColumnIds());
-        }
-        var dropTargetsInGroupingBox = function(outerContainer, ids, itemRetriever) {
-          var container = O$.getContainingBlock(outerContainer, false);
-          if (!container) container = O$.getDefaultAbsolutePositionParent();
-          var results = [];
-          var i = 0;
-          ids.forEach(function(itemId) {
-            var item = itemRetriever(itemId);
-
-            function dropTarget(minX, maxX, minY, maxY, box, newColumnIndex, rightEdge) {
-              var pos = O$.getElementPos(item, true);
-              var containerAreaMinX = parseInt(pos.x);
-              var containerAreaMaxX = parseInt(containerAreaMinX) + parseInt(container.clientWidth);
-              var containerAreaMinY = parseInt(pos.y);
-              var containerAreaMaxY = parseInt(containerAreaMinY) + parseInt(container.clientHeight);
-              var inContainer = function() {
-                return function(x, y) {
-                  return (x >= containerAreaMinX) && (x < containerAreaMaxX) && (y >= containerAreaMinY) && (y < containerAreaMaxY);
-                }
-              }();
-              return {
-                minX: minX,
-                maxX: maxX,
-                minY: minY,
-                maxY: maxY,
-                eventInside: function(evt) {
-                  var cursorPos = O$.getEventPoint(evt, box);
-                  return inContainer(cursorPos.x, cursorPos.y) &&
-                          (this.minX == null || cursorPos.x >= this.minX) &&
-                          (this.maxX == null || cursorPos.x < this.maxX);
-                },
-                setActive: function(active) {
-                  if (active) {
-                    dropTargetMark.show(container, outerContainer);
-                    var gridLineWidthCorrection = function() {
-                      return O$.getNumericElementStyle(table, rightEdge ? "border-right-width" : "border-left-width");
-                    }();
-//                    var headerRect = O$.getElementBorderRectangle(layout._dragByColumnId(itemId), true);
-//                    dropTargetMark.setPosition((rightEdge ? maxX : minX) - gridLineWidthCorrection / 2, headerRect.y, headerRect.y + headerRect.height);
-                    dropTargetMark.highline(itemId, rightEdge);
-                  } else {
-                    dropTargetMark.hide();
-                  }
-                },
-                acceptDraggable: function(e) {
-                  var currentIndex = layout.draggable().indexOf(e);
-                  var currentColumnId = table.grouping.getGroupingRules()[currentIndex].columnId;
-                  if (currentIndex < newColumnIndex) newColumnIndex--;
-                  appendToGroupingBox(currentColumnId, newColumnIndex);
-                }
-              };
+      var innerDropTargets = function() {
+        var result = null;
+        return function() {
+          if (result == null) {
+            function appendToGroupingBox(columnId, newColumnIndex) {
+              var ruleValues = rules();
+              var currentIndexOfColumn = groupingColumnIds().indexOf(columnId);
+              if (currentIndexOfColumn >= 0) {
+                ruleValues = O$.Table._removeFromArray(ruleValues, currentIndexOfColumn);
+              }
+              var newRule = new O$.Table.GroupingRule(columnId, true);
+              ruleValues.splice(newColumnIndex, 0, newRule);
+              table.grouping._applyGrouping(ruleValues);
             }
 
-            if (!item) return;
-            var targetCellRect = O$.getElementBorderRectangle(item, true);
-            var min = targetCellRect.getMinX();
-            var max = targetCellRect.getMaxX();
-            var mid = (min + max) / 2;
-            var minY = targetCellRect.getMinY();
-            var maxY = targetCellRect.getMaxY();
-            results.push(dropTarget(min, mid, minY, maxY, item, i, false));
-            results.push(dropTarget(mid, max, minY, maxY, item, i + 1, true));
-            i++;
-          });
-          if (results.length > 0) {
-            results[0].minX = null;
-            results[results.length - 1].maxX = null;
+            var pos = O$.getElementPos(rowGroupingBox, true);
+            var rowGroupingBoxMinX = parseInt(pos.x);
+            var rowGroupingBoxMaxX = parseInt(rowGroupingBoxMinX) + parseInt(rowGroupingBox.clientWidth);
+            var rowGroupingBoxMinY = parseInt(pos.y);
+            var rowGroupingBoxMaxY = parseInt(rowGroupingBoxMinY) + parseInt(rowGroupingBox.clientHeight);
+            var inRowGroupingBox = function() {
+              return function(x, y) {
+                return (x >= rowGroupingBoxMinX) && (x < rowGroupingBoxMaxX) && (y >= rowGroupingBoxMinY) && (y < rowGroupingBoxMaxY);
+              }
+            }();
+
+            layoutStrategy("init inner drop targets")
+                    .promptText(function() {
+                      result = [
+                        {
+                          eventInside: function(evt) {
+                            var cursorPos = O$.getEventPoint(evt, rowGroupingBox);
+                            return inRowGroupingBox(cursorPos.x, cursorPos.y)
+                          },
+                          setActive: function(active) {
+                            if (active) {
+                              var container = O$.getContainingBlock(rowGroupingBox, true);
+                              if (!container)
+                                container = O$.getDefaultAbsolutePositionParent();
+                              var rightEdge = false;
+                              dropTargetMark.show(container);
+                              var gridLineWidthCorrection = function() {
+                                return O$.getNumericElementStyle(table, rightEdge ? "border-right-width" : "border-left-width");
+                              }();
+                              var truePos = O$.getElementPos(rowGroupingBox);
+                              dropTargetMark.setPosition(rowGroupingBoxMinX, rowGroupingBoxMinY, rowGroupingBoxMaxY);
+                            } else {
+                              dropTargetMark.hide();
+                            }
+                          },
+                          acceptDraggable: function(cellHeader) {
+                            appendToGroupingBox(cellHeader._column.columnId, 0);
+                          }
+                        }
+                      ];
+                    })
+                    .groupingBoxes(function() {
+                      var dropTargets = [];
+
+                      function dropTarget(minX, maxX, minY, maxY, targetColumn, newColumnIndex, rightEdge, columnId) {
+                        var container = O$.getContainingBlock(rowGroupingBox, true);
+                        if (!container)
+                          container = O$.getDefaultAbsolutePositionParent();
+                        return {
+                          minX: minX,
+                          maxX: maxX,
+                          minY: minY,
+                          maxY: maxY,
+                          eventInside: function(evt) {
+                            var cursorPos = O$.getEventPoint(evt, rowGroupingBox);
+                            return inRowGroupingBox(cursorPos.x, cursorPos.y) &&
+                                    (this.minX == null || cursorPos.x >= this.minX) &&
+                                    (this.maxX == null || cursorPos.x < this.maxX);
+                          },
+                          setActive: function(active) {
+                            if (active) {
+                              dropTargetMark.show(container, rowGroupingBox);
+                              dropTargetMark.highline(columnId, rightEdge);
+                            } else {
+                              dropTargetMark.hide();
+                            }
+                          },
+                          acceptDraggable: function(cellHeader) {
+                            if (layout.draggable().indexOf(cellHeader) >= 0) {
+                              //moving inside grouping box
+                              var currentIndex = layout.draggable().indexOf(cellHeader);
+                              var currentColumnId = table.grouping.getGroupingRules()[currentIndex].columnId;
+                              if (currentIndex < newColumnIndex) newColumnIndex--;
+                              appendToGroupingBox(currentColumnId, newColumnIndex);
+                            } else {
+                              //move from table
+                              appendToGroupingBox(cellHeader._column.columnId, newColumnIndex);
+                            }
+                          }
+                        };
+                      }
+
+                      var _groupingBoxWrappers = layout.dropAreas();
+                      for (var i = 0; i < _groupingBoxWrappers.length; i++) {
+                        var targetCell = _groupingBoxWrappers[i];
+                        var targetCellRect = O$.getElementClientRectangle(targetCell, true);
+                        var min = targetCellRect.getMinX() ? targetCellRect.getMinX() : 0;
+                        var max = targetCellRect.getMaxX() ? targetCellRect.getMaxX() : 0;
+                        var mid = (min + max) / 2;
+                        var minY = targetCellRect.getMinY() ? targetCellRect.getMinY() : 0;
+                        var maxY = targetCellRect.getMaxY() ? targetCellRect.getMaxY() : 0;
+                        dropTargets.push(dropTarget(min, mid, minY, maxY, targetCell, i, false, targetCell.columnId));
+                        dropTargets.push(dropTarget(mid, max, minY, maxY, targetCell, i + 1, true, targetCell.columnId));
+                      }
+                      dropTargets[0].minX = rowGroupingBoxMinX;
+                      dropTargets[dropTargets.length - 1].maxX = rowGroupingBoxMaxX;
+                      result = dropTargets;
+                    });
+
           }
-          return results;
+          return result;
         };
+      }();
+      layoutStrategy("deal with paddings")
+              .promptText(function() {
+                function copyProperty(jsName, cssName) {
+                  rowGroupingBox.style[jsName] = O$.getElementStyle(rowGroupingBoxTable, cssName);
+                }
 
-        var makeHeadersDraggable = function () {
-          layout.draggable().forEach(function(item) {
-            if (!item.draggable) {
-              O$.makeDraggable(item, function(evt) {
-                var groupingRules = rules();
-                var groupingColumnIds = groupingRules.map(function(rule) {
-                  return rule.columnId;
+                copyProperty("paddingLeft", "padding-left");
+                copyProperty("paddingRight", "padding-right");
+                copyProperty("paddingTop", "padding-top");
+                copyProperty("paddingBottom", "padding-bottom");
+
+                copyProperty("verticalAlign", "vertical-align");
+                copyProperty("textAlign", "text-align");
+              })
+              .any(function() {
+                ["paddingLeft", "paddingRight", "paddingTop", "paddingBottom"].forEach(function(property) {
+                  rowGroupingBoxTable.style[property] = "0px";
                 });
-                var dropTargets = dropTargetsInGroupingBox(rowGroupingBox, groupingColumnIds, function(boxId) {
-                  return layout.dropAreas()[groupingColumnIds.indexOf(boxId)];
-                }).concat(table._innerDropTargetsByColumnId(item._columnId, function(newIndex){
-                  table.grouping._cancelGroupingRule(item._columnId, newIndex);
-                }));
-                for (var i = 0, count = dropTargets.length; i < count; i++) {
-                  var dropTarget = dropTargets[i];
-                  if (dropTarget.eventInside(evt))
-                    return dropTarget;
-                }
-                return null;
               });
-              item.draggable = true;
-            }
-          });
-        }();
-
-        var makeHeadersSortable = function() {
-          var counter = 0;
-          var groupingRules = rules();
-          layout.draggable().forEach(function(colHeader) {
-            if (table._sortableColumnsIds.indexOf(colHeader._columnId) < 0)return;
-            var rule = groupingRules[counter];
-            O$.addEventHandler(colHeader, "click", function() {
-              var focusField = O$(table.id + "::focused");
-              if (focusField)
-                focusField.value = true; // set true explicitly before it gets auto-set when the click bubbles up (JSFC-801)
-              rule.ascending = !rule.ascending;
-              table.grouping._applyGrouping(groupingRules);
-            });
-            O$.setupHoverStateFunction(colHeader, function(mouseInside) {
-              O$.setStyleMappings(colHeader.firstChild, {
-                        sortableHeaderRolloverClass: mouseInside ? table._sortableHeaderRolloverClass : null});
-            });
-            counter++;
-          });
-        }();
-        layout.redraw();
-        var attachColumnMenu = function() {
-          layout.draggable().forEach(function(colHeader) {
-            O$.ColumnMenu._appendMenu(tableId, colHeader, colHeader._columnId, false);
-          });
-        }();
-      };
-      fixGroupDescriber();
-      function innerDropTargets(draggedColumnId){
-        var headerCell = table._getHeaderCell(draggedColumnId);
-        var pos = O$.getElementPos(rowGroupingBox, true);
-        var rowGroupingBoxMinX = parseInt(pos.x);
-        var rowGroupingBoxMaxX = parseInt(rowGroupingBoxMinX) + parseInt(rowGroupingBox.clientWidth);
-        var rowGroupingBoxMinY = parseInt(pos.y);
-        var rowGroupingBoxMaxY = parseInt(rowGroupingBoxMinY) + parseInt(rowGroupingBox.clientHeight);
-        var inRowGroupingBox = function() {
-          return function(x, y) {
-            return (x >= rowGroupingBoxMinX) && (x < rowGroupingBoxMaxX) && (y >= rowGroupingBoxMinY) && (y < rowGroupingBoxMaxY);
-          }
-        }();
-        var dropTargets = [].concat(function groupedDescription() {
-          if (rules().length == 0) {
-            return [];
-          }
-          var dropTargets = [];
-
-          function dropTarget(minX, maxX, minY, maxY, targetColumn, newColumnIndex, rightEdge, columnId) {
-            var container = O$.getContainingBlock(rowGroupingBox, true);
-            if (!container)
-              container = O$.getDefaultAbsolutePositionParent();
-            return {
-              minX: minX,
-              maxX: maxX,
-              minY: minY,
-              maxY: maxY,
-              eventInside: function(evt) {
-                var cursorPos = O$.getEventPoint(evt, rowGroupingBox);
-                return inRowGroupingBox(cursorPos.x, cursorPos.y) &&
-                        (this.minX == null || cursorPos.x >= this.minX) &&
-                        (this.maxX == null || cursorPos.x < this.maxX);
-              },
-              setActive: function(active) {
-                if (active) {
-                  dropTargetMark.show(container, rowGroupingBox);
-                  dropTargetMark.highline(columnId, rightEdge);
-                } else {
-                  dropTargetMark.hide();
-                }
-              },
-              acceptDraggable: function(cellHeader) {
-                appendToGroupingBox(cellHeader._column.columnId, newColumnIndex);
-              }
-            };
-          }
-
-          var _groupingBoxWrappers = layout.dropAreas();
-          for (var i = 0; i < _groupingBoxWrappers.length; i++) {
-            var targetCell = _groupingBoxWrappers[i];
-            var targetCellRect = O$.getElementClientRectangle(targetCell, true);
-            var min = targetCellRect.getMinX() ? targetCellRect.getMinX() : 0;
-            var max = targetCellRect.getMaxX() ? targetCellRect.getMaxX() : 0;
-            var mid = (min + max) / 2;
-            var minY = targetCellRect.getMinY() ? targetCellRect.getMinY() : 0;
-            var maxY = targetCellRect.getMaxY() ? targetCellRect.getMaxY() : 0;
-            dropTargets.push(dropTarget(min, mid, minY, maxY, targetCell, i, false, targetCell.columnId));
-            dropTargets.push(dropTarget(mid, max, minY, maxY, targetCell, i + 1, true, targetCell.columnId));
-          }
-          dropTargets[0].minX = rowGroupingBoxMinX;
-          dropTargets[dropTargets.length - 1].maxX = rowGroupingBoxMaxX;
-          return dropTargets;
-        }())
-                .concat(function emptyArea(rowGroupingBox) {
-          if (rules().length != 0) {
-            return [];
-          }
-          return [
-            {
-              eventInside: function(evt) {
-                var cursorPos = O$.getEventPoint(evt, rowGroupingBox);
-                return inRowGroupingBox(cursorPos.x, cursorPos.y)
-              },
-              setActive: function(active) {
-                if (active) {
-                  var container = O$.getContainingBlock(rowGroupingBox, true);
-                  if (!container)
-                    container = O$.getDefaultAbsolutePositionParent();
-                  var rightEdge = false;
-                  dropTargetMark.show(container);
-                  var gridLineWidthCorrection = function() {
-                    return O$.getNumericElementStyle(table, rightEdge ? "border-right-width" : "border-left-width");
-                  }();
-                  var truePos = O$.getElementPos(rowGroupingBox);
-                  dropTargetMark.setPosition(rowGroupingBoxMinX, rowGroupingBoxMinY, rowGroupingBoxMaxY);
-                } else {
-                  dropTargetMark.hide();
-                }
-              },
-              acceptDraggable: function(cellHeader) {
-                appendToGroupingBox(cellHeader._column.columnId, 0);
-              }
-            }
-          ];
-        }(rowGroupingBox));
-        return dropTargets;
-      }
-      table._setRowGroupingBox({_innerDropTargets : innerDropTargets});
+      layoutStrategy("deal with content")
+              .groupingBoxes(function() {
+                (function cleanPreviousContent() {
+                  while (rowGroupingBox.childNodes.length > 0) {
+                    var child = rowGroupingBox.firstChild;
+                    child.parentNode.removeChild(child);
+                  }
+                }());
+                (function drawNewContent(){
+                  layout.addAll(groupingColumnIds());
+                  layout.redraw();
+                }());
+                (function makeHeadersDraggable() {
+                  var innerDropTargetsVal = innerDropTargets();
+                  layout.draggable().forEach(function(item) {
+                    if (!item.draggable) {
+                      O$.makeDraggable(item, function(evt) {
+                        var groupingRules = rules();
+                        var groupingColumnIds = groupingRules.map(function(rule) {
+                          return rule.columnId;
+                        });
+                        var dropTargets = innerDropTargetsVal.concat(table._innerDropTargetsByColumnId(item._columnId,
+                                function(newIndex) {
+                                  table.grouping._cancelGroupingRule(item._columnId, newIndex);
+                                }));
+                        for (var i = 0, count = dropTargets.length; i < count; i++) {
+                          var dropTarget = dropTargets[i];
+                          if (dropTarget.eventInside(evt))
+                            return dropTarget;
+                        }
+                        return null;
+                      });
+                      item.draggable = true;
+                    }
+                  });
+                }());
+                (function makeHeadersSortable() {
+                  var counter = 0;
+                  var groupingRules = rules();
+                  layout.draggable().forEach(function(colHeader) {
+                    if (table._sortableColumnsIds.indexOf(colHeader._columnId) < 0)return;
+                    var rule = groupingRules[counter];
+                    O$.addEventHandler(colHeader, "click", function() {
+                      var focusField = O$(table.id + "::focused");
+                      if (focusField)
+                        focusField.value = true; // set true explicitly before it gets auto-set when the click bubbles up (JSFC-801)
+                      rule.ascending = !rule.ascending;
+                      table.grouping._applyGrouping(groupingRules);
+                    });
+                    O$.setupHoverStateFunction(colHeader, function(mouseInside) {
+                      O$.setStyleMappings(colHeader.firstChild, {
+                                sortableHeaderRolloverClass: mouseInside ? table._sortableHeaderRolloverClass : null});
+                    });
+                    counter++;
+                  });
+                }());
+                (function attachColumnMenu() {
+                  layout.draggable().forEach(function(colHeader) {
+                    O$.ColumnMenu._appendMenu(tableId, colHeader, colHeader._columnId, false);
+                  });
+                }());
+              });
+      (function attacheRowGroupingBoxToTable() {
+        table._setRowGroupingBox({_innerDropTargets : innerDropTargets});
+      });
     });
   },
 
