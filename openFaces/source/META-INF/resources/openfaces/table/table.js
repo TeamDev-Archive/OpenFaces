@@ -3464,7 +3464,9 @@ O$.ColumnMenu = {
           O$.correctElementZIndex(this, cell, O$.Table.HEADER_CELL_Z_INDEX_COLUMN_MENU_BUTTON);
           var rightOffset = O$.getNumericElementStyle(cell, "border-right-width");
           var bottomOffset = O$.getNumericElementStyle(cell, "border-bottom-width");
-          O$.setElementHeight(this, O$.getElementSize(cell).height - bottomOffset);
+          var leftOffset = O$.getNumericElementStyle(cell, "border-left-width");
+          var topOffset = O$.getNumericElementStyle(cell, "border-top-width");
+          O$.setElementHeight(this, O$.getElementSize(cell).height - (bottomOffset + topOffset));
           O$.alignPopupByElement(this, cell, O$.RIGHT, O$.BOTTOM, rightOffset, bottomOffset, false, true);
           this._showForCell = cell;
         },
