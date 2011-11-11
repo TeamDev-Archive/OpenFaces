@@ -12,11 +12,12 @@
 package org.openfaces.taglib.internal.table;
 
 import org.openfaces.component.table.GroupingBox;
+import org.openfaces.taglib.internal.AbstractComponentTag;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-public class GroupingBoxTag extends org.openfaces.taglib.internal.AbstractComponentTag {
+public class GroupingBoxTag extends AbstractComponentTag {
 
     public String getComponentType() {
         return GroupingBox.COMPONENT_TYPE;
@@ -31,8 +32,6 @@ public class GroupingBoxTag extends org.openfaces.taglib.internal.AbstractCompon
         super.setComponentProperties(facesContext, component);
 
         setStringProperty(component, "id");
-        setObjectProperty(component, "styleClass");
-        setStringProperty(component, "style");
         setStringProperty(component, "headerStyle");
         setStringProperty(component, "headerStyleClass");
         setStringProperty(component, "promptText");

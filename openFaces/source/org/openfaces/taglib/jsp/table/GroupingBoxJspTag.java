@@ -27,14 +27,6 @@ public class GroupingBoxJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("id", id);
     }
 
-    public void setStyleClass(ValueExpression styleClass) {
-        getDelegate().setPropertyValue("styleClass", styleClass);
-    }
-
-    public void setStyle(ValueExpression style) {
-        getDelegate().setPropertyValue("style", style);
-    }
-
     public void setHeaderStyle(ValueExpression headerStyle) {
         getDelegate().setPropertyValue("headerStyle", headerStyle);
     }
