@@ -729,6 +729,15 @@ O$.Tables = {
       }
       O$.setStyleMappings(row._rowNode, styleMappings);
       O$.Tables._handleUnsupportedRowStyleProperties(row._rowNode);
+      O$.addUnloadHandler(table, function() {
+        var classes = row._rowNode.className.split(" ");
+        var name = "." + classes[0];
+        for (var index = 1; index < classes.length; index++) {
+          name += " ." + classes[index];
+        }
+        if (O$._cssRulesBySelectors[name])
+          delete O$._cssRulesBySelectors[name];
+      });
       if (row._rightRowNode) {
         O$.setStyleMappings(row._rightRowNode, styleMappings);
         O$.Tables._handleUnsupportedRowStyleProperties(row._rightRowNode);
@@ -1511,18 +1520,24 @@ O$.Tables = {
       var cls = O$.findCssRule("." + className);
       return {className: className, classObj: cls};
     }
+
     function newClass(declaration) {
-      if (O$.isExplorer())
-        return newClass_IE(declaration);
-      else
-        return newClass_raw(declaration);
+      return newClass_raw(declaration);
     }
     column._headerCellsClass = newClass("overflow: hidden");
     column._bodyCellsClass = newClass("overflow: hidden");
-    if (column.footer)
-      column._footerCellsClass = newClass("overflow: hidden");
     column._colClass = newClass("overflow: hidden");
-
+    if (column.footer) {
+      column._footerCellsClass = newClass("overflow: hidden");
+      O$.addUnloadHandler(table, function () {
+        O$.removeCssRule(column._footerCellsClass.classObj.selectorText);
+      });
+    }
+    O$.addUnloadHandler(table, function () {
+      O$.removeCssRule(column._headerCellsClass.classObj.selectorText);
+      O$.removeCssRule(column._bodyCellsClass.classObj.selectorText);
+      O$.removeCssRule(column._colClass.classObj.selectorText);
+    });
     column._table = table;
 
     if (column.header && column.header.pos) {
@@ -2408,6 +2423,9 @@ O$.Tables = {
         if (table.onscroll)
           table.onscroll(e);
       };
+      O$.addUnloadHandler(table, function () {
+        mainScrollingArea._scrollingDiv.onscroll = null;
+      });
       var synchronizationCorrectionInterval = setInterval(function() {
         if (!O$.isElementPresentInDocument(table)) {
           clearInterval(synchronizationCorrectionInterval);
@@ -2548,6 +2566,8 @@ O$.Tables = {
 
     markColumns();
 
+    var resizeEventListener = new O$.EventListener(window, "resize");
+
     function fixTopLevelScrollingDivWidth() {
       O$.listenProperty(table, "width", function(width) {
         width -= O$.getNumericElementStyle(table, "border-left-width", true);
@@ -2561,12 +2581,16 @@ O$.Tables = {
         });
       }, [
         new O$.Timer("200"),
-        new O$.EventListener(window, "resize")
+        resizeEventListener
       ]);
       table._topLevelScrollingDiv.style.visibility = "visible";
     }
 
     fixTopLevelScrollingDivWidth();
+
+    O$.addUnloadHandler(table, function () {
+      resizeEventListener.release();
+    });
 
     if (delayedInitFunctions.length)
       O$.addLoadEvent(function() {
