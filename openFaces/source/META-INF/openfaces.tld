@@ -43039,6 +43039,18 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default "#{columnHeader}: #{groupingValueString}" -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>Specifies whether clicking on column&apos;s sorting header should group the table by that column
+        automatically.
+      </description>
+      <name>groupOnHeaderClick</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
   </tag>
   <tag>
     <description>A component which can optionally be placed inside of grouping-enabled &amp;lt;o:dataTable&gt; tag to

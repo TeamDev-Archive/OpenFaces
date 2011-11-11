@@ -72,7 +72,10 @@ public class RowGroupingRenderer extends RendererBase {
         boolean foldingRequired = AbstractTableRenderer.encodeFoldingSupport(context, buf, table);
 
         Rendering.renderInitScript(context, buf.initScript(context, table, "O$.Table._initRowGrouping",
-                activeColumnIds, groupingRules, AbstractTableRenderer.DEFAULT_SORTABLE_HEADER_CLASS
+                activeColumnIds,
+                groupingRules,
+                AbstractTableRenderer.DEFAULT_SORTABLE_HEADER_CLASS,
+                rowGrouping.getGroupOnHeaderClick()
         ).semicolon(), foldingRequired
                 ? new String[]{AbstractTableRenderer.treeTableJsURL(context)}
                 : new String[0]);

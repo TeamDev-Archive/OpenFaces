@@ -207,6 +207,14 @@ public class DataTable extends AbstractTable {
             pageIndex = null;
     }
 
+    @Override
+    public void processUpdates(FacesContext context) {
+        super.processUpdates(context);
+        RowGrouping rowGrouping = getRowGrouping();
+        if (rowGrouping != null)
+            rowGrouping.processUpdates(context);
+    }
+
     /**
      * @param rowKey row key object for a row whose page index should be detected.
      * @return index of a page where a row with the specified rowKey is displayed, or -1 of no such row is being
