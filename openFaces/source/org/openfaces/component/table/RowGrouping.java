@@ -15,6 +15,7 @@ import org.openfaces.component.OUIComponentBase;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.util.Components;
 import org.openfaces.util.Rendering;
+import org.openfaces.util.ValueBindings;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
@@ -33,6 +34,8 @@ public class RowGrouping extends OUIComponentBase {
     private String columnHeaderVar = "columnHeader";
     private String groupingValueVar = "groupingValue";
     private String groupingValueStringVar = "groupingValueString";
+    private Boolean groupOnHeaderClick;
+
     private DataTable dataTable;
 
     public RowGrouping() {
@@ -51,7 +54,8 @@ public class RowGrouping extends OUIComponentBase {
                 saveAttachedState(context, groupingRules),
                 columnHeaderVar,
                 groupingValueVar,
-                groupingValueStringVar
+                groupingValueStringVar,
+                groupOnHeaderClick
         };
     }
 
@@ -64,6 +68,7 @@ public class RowGrouping extends OUIComponentBase {
         columnHeaderVar = (String) state[i++];
         groupingValueVar = (String) state[i++];
         groupingValueStringVar = (String) state[i++];
+        groupOnHeaderClick = (Boolean) state[i++];
 
     }
 
@@ -181,4 +186,11 @@ public class RowGrouping extends OUIComponentBase {
         Components.setRequestVariable(getGroupingValueStringVar(), groupingValueStr);
     }
 
+    public boolean getGroupOnHeaderClick() {
+        return ValueBindings.get(this, "groupOnHeaderClick", groupOnHeaderClick, true);
+    }
+
+    public void setGroupOnHeaderClick(boolean groupOnHeaderClick) {
+        this.groupOnHeaderClick = groupOnHeaderClick;
+    }
 }

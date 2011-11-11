@@ -38,4 +38,8 @@ public class RowGroupingJspTag extends AbstractComponentJspTag {
     public void setGroupingValueStringVar(ValueExpression groupingValueStringVar) {
         getDelegate().setPropertyValue("groupingValueStringVar", groupingValueStringVar);
     }
+
+    public void setGroupOnHeaderClick(ValueExpression groupOnHeaderClick) {
+        getDelegate().setPropertyValue("groupOnHeaderClick", groupOnHeaderClick);
+    }
 }

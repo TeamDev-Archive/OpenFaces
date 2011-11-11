@@ -1703,7 +1703,12 @@ O$.Table = {
             rule.ascending = true;
           }
         }
-        table.sorting._setPrimarySortingRule(rule);
+        table.combineSubmissions(function() {
+          table.sorting._setPrimarySortingRule(rule);
+          if (table.grouping && table.grouping._groupOnHeaderClick) {
+            table.grouping.setGroupingRules([new O$.Table.GroupingRule(rule.columnId, rule.ascending)]);
+          }
+        });
       });
 
       O$.setupHoverStateFunction(colHeader, function(mouseInside) {
@@ -2676,12 +2681,13 @@ O$.Table = {
 
 
 // -------------------------- ROW GROUPING SUPPORT
-  _initRowGrouping: function(tableId, activeColumnIds, groupingRules, headerClassName) {
+  _initRowGrouping: function(tableId, activeColumnIds, groupingRules, headerClassName, groupOnHeaderClick) {
 
     var table = O$.initComponent(tableId, null, {
               grouping: {
                 _columnHeaderBoxes: {},
                 _groupingRules: groupingRules,
+                _groupOnHeaderClick: groupOnHeaderClick,
 
                 _getColumnHeaderBox: function(columnId) {
                   return this._columnHeaderBoxes[columnId];
