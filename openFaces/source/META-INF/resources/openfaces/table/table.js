@@ -3457,7 +3457,7 @@ O$.ColumnMenu = {
           var leftOffset = O$.getNumericElementStyle(cell, "border-left-width");
           var topOffset = O$.getNumericElementStyle(cell, "border-top-width");
           O$.setElementHeight(this, O$.getElementSize(cell).height - (bottomOffset + topOffset));
-          O$.alignPopupByElement(this, cell, O$.RIGHT, O$.BOTTOM, rightOffset, bottomOffset, false, true);
+          O$.alignPopupByElement(this, cell, O$.RIGHT, O$.BOTTOM, rightOffset + leftOffset, bottomOffset, false, true);
           this._showForCell = cell;
         },
         hideForCell: function(cell) {
