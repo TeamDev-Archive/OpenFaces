@@ -2722,16 +2722,12 @@ O$.Table = {
                           return r.columnId
                         });
                       }
-                      function removeIt(oldArray) {
-                        var prevIndex = onlyIds(oldArray).indexOf(rule.columnId);
-                        if (prevIndex < 0) return oldArray;
-                        return oldArray.slice(0, prevIndex).concat(oldArray.slice(prevIndex + 1));
-                      }
 
                       var rules = table.grouping.getGroupingRules(),
-                              before = rules.slice(0, ruleIndex),
-                              after = rules.slice(ruleIndex, rules.length);
-                      table.grouping.setGroupingRules(removeIt(before).concat([rule]).concat(removeIt(after)));
+                              toDelete = onlyIds(rules).indexOf(rule.columnId);
+                      if (toDelete >= 0)rules.splice(toDelete, 1);
+                      rules.splice(ruleIndex, 0, rule);
+                      table.grouping.setGroupingRules(rules);
                     }());
                     if (table.HideColumnOnGrouping)(function hideColumn() {
                       var displayedColumnIds = table.getColumnsOrder();
@@ -2740,7 +2736,6 @@ O$.Table = {
                         displayedColumnIds.splice(index, 1);
                       }
                       table.setColumnsOrder(displayedColumnIds);
-
                     }());
                   });
                 },
@@ -2759,16 +2754,11 @@ O$.Table = {
                       table.grouping.setGroupingRules(groupingRules);
                     }());
                     (function removePreviousColumnIfItWasExistAndAddNew() {
-                      function removeIt(oldArray) {
-                        var prevIndex = oldArray.indexOf(columnId);
-                        if (prevIndex < 0) return oldArray;
-                        return oldArray.slice(0, prevIndex).concat(oldArray.slice(prevIndex + 1));
-                      }
-
                       var displayedColumnIds = table.getColumnsOrder(),
-                              before = displayedColumnIds.slice(0, newIndex),
-                              after = displayedColumnIds.slice(newIndex, displayedColumnIds.length);
-                      table.setColumnsOrder(removeIt(before).concat([columnId]).concat(removeIt(after)));
+                              toDelete = displayedColumnIds.indexOf(columnId);
+                      if (toDelete >= 0)displayedColumnIds.splice(toDelete, 1);
+                      displayedColumnIds.splice(newIndex, 0, columnId);
+                      table.setColumnsOrder(displayedColumnIds);
                     }());
                   });
                 }
