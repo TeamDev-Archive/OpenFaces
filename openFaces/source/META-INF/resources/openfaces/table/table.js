@@ -3018,12 +3018,12 @@ O$.Table = {
         }
 
         function beforeFirst() {
-          var headerRect = O$.getElementBorderRectangle(layout.draggable()[0], true);
+          var headerRect = O$.getElementBorderRectangle(groupingBoxLayout().draggable()[0], true);
           dropTargetMark.setPosition(headerRect.x, headerRect.y, headerRect.y + headerRect.height);
         }
 
         function afterLast() {
-          var headerRect = O$.getElementBorderRectangle(layout.draggable()[layout.draggable().length - 1], true);
+          var headerRect = O$.getElementBorderRectangle(groupingBoxLayout().draggable()[groupingBoxLayout().draggable().length - 1], true);
           dropTargetMark.setPosition(headerRect.getMaxX(), headerRect.y, headerRect.y + headerRect.height);
         }
 
@@ -3032,8 +3032,8 @@ O$.Table = {
             return Math.round((a + b) / 2);
           }
 
-          var leftRect = O$.getElementBorderRectangle(layout._dragByColumnId(left), true);
-          var rightRect = O$.getElementBorderRectangle(layout._dragByColumnId(right), true);
+          var leftRect = O$.getElementBorderRectangle(groupingBoxLayout()._dragByColumnId(left), true);
+          var rightRect = O$.getElementBorderRectangle(groupingBoxLayout()._dragByColumnId(right), true);
           dropTargetMark.setPosition(avr(leftRect.getMaxX(), rightRect.getMinX()), leftRect.getMinY(), rightRect.getMaxY());
         }
 
@@ -3295,12 +3295,12 @@ O$.Table = {
                   }
                 }());
                 (function drawNewContent() {
-                  layout.addAll(groupingColumnIds());
-                  layout.redraw();
+                  groupingBoxLayout().addAll(groupingColumnIds());
+                  groupingBoxLayout().redraw();
                 }());
                 (function makeHeadersDraggable() {
                   var innerDropTargetsVal = innerDropTargets();
-                  layout.draggable().forEach(function(item) {
+                  groupingBoxLayout().draggable().forEach(function(item) {
                     if (!item.draggable) {
                       O$.makeDraggable(item, function(evt) {
                         var groupingRules = rules();
@@ -3325,7 +3325,7 @@ O$.Table = {
                 (function makeHeadersSortable() {
                   var counter = 0;
                   var groupingRules = rules();
-                  layout.draggable().forEach(function(colHeader) {
+                  groupingBoxLayout().draggable().forEach(function(colHeader) {
                     if (table._sortableColumnsIds.indexOf(colHeader._columnId) < 0)return;
                     O$.addEventHandler(colHeader, "click", function() {
                       var focusField = O$(table.id + "::focused");
