@@ -22,6 +22,9 @@ public class RowGroupingJspTag extends AbstractComponentJspTag {
         super(new RowGroupingTag());
     }
 
+    public void setGroupingRules(ValueExpression groupingRules) {
+        getDelegate().setPropertyValue("groupingRules", groupingRules);
+    }
 
     public void setColumnHeaderVar(ValueExpression columnHeaderVar) {
         getDelegate().setPropertyValue("columnHeaderVar", columnHeaderVar);

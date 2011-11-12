@@ -43048,7 +43048,7 @@ entering a value and returns a list of suggestions from the server -->
         <type>boolean</type>
       </deferred-value>
       <!-- @bindingType boolean -->
-      <!-- @default true -->
+      <!-- @default false -->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -43062,6 +43062,19 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @bindingType boolean -->
       <!-- @default true -->
       <!-- @el true -->
+    </attribute>
+  <attribute>
+      <description>Defines the table's grouping state. This attribute can be used for saving grouping state between
+        different visits of an appropriate page. This attribute should be declared as a value binding expression of type
+        java.util.Object, or java.util.List&amp;lt;org.openfaces.component.table.GroupingRule>.
+      </description>
+      <name>groupingRules</name>
+      <deferred-value>
+        <type>java.util.List</type>
+      </deferred-value>
+      <!-- @bindingType java.util.List -->
+      <!-- @default null -->
+      <!-- @el only -->
     </attribute>
   </tag>
   <tag>

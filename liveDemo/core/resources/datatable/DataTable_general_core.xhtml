@@ -41,11 +41,12 @@
                  bodySectionStyle="background: #ffffff"
 
                  headerVertSeparator="1px solid #d0d0d0, 1px solid #a0a0a0"
-                 horizontalGridLines="1px solid #f6f7f8">
+                 horizontalGridLines="1px solid #f6f7f8"
+                 columnsOrder="#{sessionScope.banks_savedColumnsOrder}">
       <f:facet name="header">
         <o:groupingBox id="groupingBox"/>
       </f:facet>
-      <o:rowGrouping/>
+      <o:rowGrouping groupingRules="#{sessionScope.banks_savedGroupingRules}"/>
       <o:scrolling/>
       <o:singleRowSelection
               style="background: url('../images/treetable/selected.gif') repeat-x #5d8bba !important; color: white !important;"/>
