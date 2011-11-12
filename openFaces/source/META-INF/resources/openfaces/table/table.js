@@ -314,6 +314,54 @@ O$.Table = {
         O$._submitInternal(table, null, [
           [table.id + "::columnsOrder", columnIdsStr]
         ]);
+      },
+
+      isColumnVisible: function(columnId) {
+        var columnIds = table.getColumnsOrder();
+        var idx = columnIds.indexOf(columnId);
+        return idx >= 0;
+      },
+
+      setColumnVisible: function(columnId, visible) {
+        if (visible)
+          this.showColumn(columnId);
+        else
+          this.hideColumn(columnId);
+      },
+
+      hideColumn: function(columnId){
+        if (!this.isColumnVisible(columnId)) return;
+        var currentColumns = table.getColumnsOrder();
+        var currentIndex = currentColumns.indexOf(columnId);
+        currentColumns.splice(currentIndex, 1);
+        table.setColumnsOrder(currentColumns);
+      },
+
+      showColumn: function(columnId) {
+        if (this.isColumnVisible(columnId)) return;
+        var currentColumns = table.getColumnsOrder();
+        function insertColumn(newIndex) {
+          currentColumns.splice(newIndex, 0, columnId);
+        }
+
+        var index = 0;
+        var done = false;
+        currentColumns.forEach(function(current) {
+          if (done)return;
+          table._columnsReorderingSupport(columnId, current)
+                  .onLeftEdgePermit(function() {
+                    if(!done)insertColumn(index);
+                    done = true;
+                  })
+                  .onRightEdgePermit(function() {
+                    if(!done)insertColumn(index + 1);
+                    done = true;
+
+                  });
+          index++;
+        });
+        O$.assert(done, "Can't toggle column: " + columnId);
+        table.setColumnsOrder(currentColumns);
       }
     });
   },
@@ -2532,7 +2580,145 @@ O$.Table = {
         }
       });
     });
+    table._columnsLogicalStructure = function () {
+      var currentColumnsOrder = table.getColumnsOrder();
 
+      function visibilityPredicate(node) {
+        if (node.isLeaf()) {
+          return currentColumnsOrder.indexOf(node.columnId) >= 0;
+        }
+        return node.visibleChildren().length > 0;
+      }
+
+      function helper(logicalDescription, parent) {
+        var self = {
+          columnId : logicalDescription.columnId,
+          parent : function() {
+            return parent;
+          },
+          root : function() {
+            var node = self;
+            while (node.parent())node = node.parent();
+            return node;
+          },
+          isLeaf : function() {
+            return !logicalDescription.subColumns;
+          },
+          children : function() {
+            function indexOfAnyVisibleLeaf(node) {
+              if (node.isLeaf()) {
+                return currentColumnsOrder.indexOf(node.columnId);
+              }
+              var visibleChildren = node.visibleChildren();
+              return visibleChildren.length > 0 ? indexOfAnyVisibleLeaf(visibleChildren[0]) : -1;
+            }
+
+            var result = [];
+            if (!self.isLeaf())logicalDescription.subColumns.forEach(function(subColumn) {
+              result.push(helper(subColumn, self));
+            });
+            result.sort(function (a, b) {
+              return indexOfAnyVisibleLeaf(a) - indexOfAnyVisibleLeaf(b);
+            });
+            return result;
+          },
+          visibleChildren : function() {
+            return self.children().filter(visibilityPredicate);
+          },
+          firstVisibleLeaf : function() {
+            var visibleChild = self;
+            while (!visibleChild.isLeaf()) visibleChild = visibleChild.visibleChildren()[0];
+            return visibleChild;
+          },
+          lastVisibleLeaf : function() {
+            var visibleChild = self;
+            while (!visibleChild.isLeaf()) {
+              var visibleChildren = visibleChild.visibleChildren();
+              visibleChild = visibleChildren[visibleChildren.length - 1];
+            }
+            return visibleChild;
+          },
+          isVisible : function() {
+            return visibilityPredicate(self);
+          },
+          allLeafs: function() {
+            var result = [];
+            var candidates = self.children().slice(0);
+            while(candidates.length > 0){
+              var current = candidates.shift();
+              if(!current.isLeaf()){
+                candidates = current.children().concat(candidates);
+              } else {
+                result.push(current);
+              }
+            }
+            return result;
+          },
+          find : function(columnId) {
+            if (self.columnId == columnId) {
+              return self;
+            }
+            var result = null;
+            self.children().forEach(function(child) {
+              if (!result) result = child.find(columnId);
+            });
+            return result;
+          }
+        };
+        return self;
+      }
+
+
+      return  helper({subColumns:table._params.logicalColumns}, null);
+    }();
+
+    table._columnsReorderingSupport = function (sourceColumnId, targetColumnId) {
+      function canBeInserted (where, what, atLeft) {
+        if (atLeft != false) {
+          //todo: [s.kurilin]  should be rewritten for allow colGroup reordering
+          var currentOrder = table.getColumnsOrder().slice(0);
+          where = currentOrder[currentOrder.indexOf(where) - 1];
+        }
+
+        function findFirstVisibleParent(node) {
+          var parent = node.parent();
+          while (parent && !parent.isVisible()) {
+            parent = parent.parent();
+          }
+          return parent;
+        }
+
+        var sourceNode = table._columnsLogicalStructure.root().find(what),
+                firstVisibleParent = findFirstVisibleParent(sourceNode);
+
+        function canBePlacedInOrAfter() {
+          return firstVisibleParent.visibleChildren().filter(
+                  function(child) {
+                    return child.lastVisibleLeaf().columnId == where;
+                  }).length > 0
+        }
+
+        function canBePlacedBefore() {
+          var leftsVisibleNode = firstVisibleParent.firstVisibleLeaf();
+          var currentIndex = table.getColumnsOrder().indexOf(leftsVisibleNode.columnId);
+          return (currentIndex == 0 && !where)
+                  || (currentIndex > 0 && table.getColumnsOrder()[currentIndex - 1] == where);
+        }
+
+        return  canBePlacedBefore() || canBePlacedInOrAfter();
+      }
+      var self = {
+        onLeftEdgePermit : function(func) {
+          if (canBeInserted(targetColumnId, sourceColumnId, true))func();
+          return self;
+        },
+        onRightEdgePermit : function(func) {
+          if (canBeInserted(targetColumnId, sourceColumnId, false))func();
+          return self;
+        }
+      };
+      return self;
+    };
     table._innerDropTargetsByColumnId = function(columnId, dropHandler) {
       var dropTargets = [];
       //TODO: [s.kurilin] we shouldn't use this counter
@@ -2688,13 +2874,15 @@ O$.Table = {
 
 
 // -------------------------- ROW GROUPING SUPPORT
-  _initRowGrouping: function(tableId, activeColumnIds, groupingRules, headerClassName, groupOnHeaderClick) {
+  _initRowGrouping: function(tableId, activeColumnIds, groupingRules, headerClassName, groupOnHeaderClick,
+                             hideGroupingColumns) {
 
     var table = O$.initComponent(tableId, null, {
               grouping: {
                 _columnHeaderBoxes: {},
                 _groupingRules: groupingRules,
                 _groupOnHeaderClick: groupOnHeaderClick,
+                _hideGroupingColumns: hideGroupingColumns,
 
                 _getColumnHeaderBox: function(columnId) {
                   return this._columnHeaderBoxes[columnId];
@@ -2713,7 +2901,45 @@ O$.Table = {
 
                 },
 
-                _toogleSortingTypeInGroupingRule: function(columnId, ruleIndex) {
+                isGroupedByColumn: function(columnId) {
+                  var groupingRules = table.grouping.getGroupingRules();
+                  var columnInGroupingRules = groupingRules.some(function(groupingRule) {
+                    return groupingRule.columnId == columnId;
+                  });
+                  return columnInGroupingRules;
+                },
+
+                groupByColumn: function(columnId) {
+                  if (this.isGroupedByColumn(columnId)) return;
+
+                  var groupingRules = [].concat(this.getGroupingRules());
+                  groupingRules.push(new O$.Table.GroupingRule(columnId, true));
+                  table.combineSubmissions(function() {
+                    table.grouping.setGroupingRules(groupingRules);
+                    if (table.grouping._hideGroupingColumns)
+                      table.hideColumn(columnId);
+                  });
+
+                },
+
+                removeFromGrouping: function(columnId) {
+                  var groupingRules = [].concat(this.getGroupingRules());
+                  for (var i = 0, count = groupingRules.length; i < count; i++) {
+                    var groupingRule = groupingRules[i];
+                    if (groupingRule.columnId == columnId) {
+                      groupingRules.splice(i, 1);
+                      table.combineSubmissions(function() {
+                        table.grouping.setGroupingRules(groupingRules);
+                        if (table.grouping._hideGroupingColumns)
+                          table.showColumn(columnId);
+                      });
+
+                      return;
+                    }
+                  }
+                },
+
+                _toggleSortingTypeInGroupingRule: function(columnId, ruleIndex) {
                   var rules = table.grouping.getGroupingRules();
                   rules.forEach(function(rule){
                     if (rule.columnId == columnId)rule.ascending = !rule.ascending;
@@ -2736,7 +2962,7 @@ O$.Table = {
                       rules.splice(ruleIndex, 0, rule);
                       table.grouping.setGroupingRules(rules);
                     }());
-                    if (table.HideColumnOnGrouping)(function hideColumn() {
+                    if (table.grouping._hideGroupingColumns)(function hideColumn() {
                       var displayedColumnIds = table.getColumnsOrder();
                       var index = displayedColumnIds.indexOf(rule.columnId);
                       if (index >= 0) {
@@ -2991,7 +3217,6 @@ O$.Table = {
   _initRowGroupingBox: function(rowGroupingBoxId, tableId, connectorStyle, headerStyleClassName, headerHorizOffset, headerVertOffset) {
     O$.Table._onTableLoaded(tableId, function() {
       var table = O$(tableId);
-      table.HideColumnOnGrouping = true;
       var rowGroupingBoxTable = O$(rowGroupingBoxId);
       var rowGroupingBox = rowGroupingBoxTable.firstChild.firstChild.firstChild;
       var rules = function() {
@@ -3328,7 +3553,7 @@ O$.Table = {
                       var focusField = O$(table.id + "::focused");
                       if (focusField)
                         focusField.value = true; // set true explicitly before it gets auto-set when the click bubbles up (JSFC-801)
-                      table.grouping._toogleSortingTypeInGroupingRule(colHeader._columnId);
+                      table.grouping._toggleSortingTypeInGroupingRule(colHeader._columnId);
                     });
                     O$.setupHoverStateFunction(colHeader, function(mouseInside) {
                       O$.setStyleMappings(colHeader.firstChild, {
@@ -3553,78 +3778,8 @@ O$.ColumnMenu = {
   },
 
   _toggleColumnVisibility: function(table, columnId) {
-    var currentColumns = table.getColumnsOrder();
-    var currentIndex = currentColumns.indexOf(columnId);
-    function visibleNow(){
-      return currentIndex >= 0;
-    }
-    function hideColumn(){
-      currentColumns.splice(currentIndex, 1);
-    }
-
-    function showColumn() {
-      function insertColumn(newIndex) {
-        currentColumns.splice(newIndex, 0, columnId);
-      }
-
-      var done = false;
-      (function tryDoItFine() {
-        var structure = table._columnsLogicalStructure.root();
-        var leafs = structure.allLeafs(true);
-        var visible = leafs.filter(function(l) {
-          return l.isVisible();
-        });
-
-        function onlyIds(inPut) {
-          return inPut.map(function(l) {
-            return l.columnId;
-          });
-        }
-
-        var originalIndex = onlyIds(leafs).indexOf(columnId),
-                leftVisibleNeighborhood = function() {
-                  for (var i = originalIndex - 1; i >= 0; i--)if (leafs[i].isVisible())return leafs[i];
-                }(),
-                rightVisibleNeighborhood = function() {
-                  for (var i = originalIndex + 1; i < leafs.length; i--)if (leafs[i].isVisible())return leafs[i];
-                }();
-        if (leftVisibleNeighborhood || rightVisibleNeighborhood) {
-          if (leftVisibleNeighborhood) {
-            insertColumn(currentColumns.indexOf(leftVisibleNeighborhood.columnId) + 1);
-          } else {
-            insertColumn(currentColumns.indexOf(rightVisibleNeighborhood.columnId));
-          }
-          done = true;
-        }
-      }());
-      if (!done)(function doItSomehow() {
-        var index = 0;
-        currentColumns.forEach(function(current) {
-          if (done)return;
-          table._columnsReorderingSupport(columnId, current)
-                  .onLeftEdgePermit(function() {
-                    if (!done)insertColumn(index);
-                    done = true;
-                  })
-                  .onRightEdgePermit(function() {
-                    if (!done)insertColumn(index + 1);
-                    done = true;
-
-                  });
-          index++;
-        });
-      }());
-      O$.assert(done, "Can't toogle column: " + columnId);
-    }
-    function apply(){
-      table.setColumnsOrder(currentColumns);
-    }
-    if(visibleNow()){
-      hideColumn();
-    } else {
-      showColumn();
-    }
-    apply();
+    var currentlyVisible = table.isColumnVisible(columnId);
+    table.setColumnVisible(columnId, !currentlyVisible);
   },
 
   _checkSortMenuItems : function(columnMenuId, tableId, sortAscMenuId, sortDescMenuId, columnId) {
@@ -3707,15 +3862,26 @@ O$.ColumnMenu = {
     O$.ColumnMenu._sortColumn(tableId, columnIndex, false);
   },
 
+  _groupByColumn: function(tableId, columnIndex) {
+    var table = O$(tableId);
+    O$.assert(table.grouping, "Cannot change grouping for a table that doesn't have row grouping capability turned on");
+
+    var columnId = columnIndex ? table._columns[columnIndex].columnId : table._showingMenuForColumn;
+    table.grouping.groupByColumn(columnId);
+  },
+
+  _removeFromGrouping: function(tableId, columnIndex) {
+    var table = O$(tableId);
+    O$.assert(table.grouping, "Cannot change grouping for a table that doesn't have row grouping capability turned on");
+
+    var columnId = columnIndex ? table._columns[columnIndex].columnId : table._showingMenuForColumn;
+    table.grouping.removeFromGrouping(columnId);
+  },
 
   _hideColumn: function(tableId, columnIndex) {
     var table = O$(tableId);
     var columnId = columnIndex ? table._columns[columnIndex].columnId : table._showingMenuForColumn;
-    var currentOrder = table.getColumnsOrder();
-    var currentIndex = currentOrder.indexOf(columnId);
-    O$.assert(currentIndex >= 0, "Can't find columnn: " + columnId);
-    currentOrder.splice(currentIndex, 1);
-    table.setColumnsOrder(currentOrder);
+    table.hideColumn(columnId);
   }
 };
 

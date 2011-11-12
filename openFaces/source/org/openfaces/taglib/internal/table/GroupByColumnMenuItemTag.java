@@ -11,31 +11,25 @@
  */
 package org.openfaces.taglib.internal.table;
 
-import org.openfaces.component.table.RowGrouping;
-import org.openfaces.taglib.internal.AbstractComponentTag;
+import org.openfaces.component.table.GroupByColumnMenuItem;
+import org.openfaces.taglib.internal.command.MenuItemTag;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-public class RowGroupingTag extends AbstractComponentTag {
+public class GroupByColumnMenuItemTag extends MenuItemTag {
 
     public String getComponentType() {
-        return RowGrouping.COMPONENT_TYPE;
+        return GroupByColumnMenuItem.COMPONENT_TYPE;
     }
 
     public String getRendererType() {
-        return "org.openfaces.RowGroupingRenderer";
+        return "org.openfaces.GroupByColumnMenuItemRenderer";
     }
 
     @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
-        setStringProperty(component, "columnHeaderVar");
-        setStringProperty(component, "groupingValueVar");
-        setStringProperty(component, "groupingValueStringVar");
-        setValueExpressionProperty(component, "groupHeaderText");
-        setBooleanProperty(component, "groupOnHeaderClick");
-        setBooleanProperty(component, "hideGroupingColumns");
     }
 }

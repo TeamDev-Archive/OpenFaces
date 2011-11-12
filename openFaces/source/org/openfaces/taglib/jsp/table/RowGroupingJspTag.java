@@ -42,4 +42,8 @@ public class RowGroupingJspTag extends AbstractComponentJspTag {
     public void setGroupOnHeaderClick(ValueExpression groupOnHeaderClick) {
         getDelegate().setPropertyValue("groupOnHeaderClick", groupOnHeaderClick);
     }
+
+    public void setHideGroupingColumns(ValueExpression hideGroupingColumns) {
+        getDelegate().setPropertyValue("hideGroupingColumns", hideGroupingColumns);
+    }
 }
