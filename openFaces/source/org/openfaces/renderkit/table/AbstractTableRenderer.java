@@ -269,18 +269,24 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         columnMenu.setStandalone(true);
         columnMenu.encodeAll(context);
 
-        MenuItem sortAscMenuItem = null, sortDescMenuItem = null, hideColumnMenuItem = null;
+        // todo: move item identification responsibility to the items themselves
+        MenuItem sortAscMenuItem = null, sortDescMenuItem = null, hideColumnMenuItem = null,
+                groupByColumnMenuItem = null, removeFromGroupingMenuItem = null;
         for (UIComponent child : columnMenu.getChildren()) {
             if (child instanceof SortAscendingMenuItem)
                 sortAscMenuItem = (MenuItem) child;
-            if (child instanceof SortDescendingMenuItem)
+            else if (child instanceof SortDescendingMenuItem)
                 sortDescMenuItem = (MenuItem) child;
-            if (child instanceof HideColumnMenuItem)
+            else if (child instanceof HideColumnMenuItem)
                 hideColumnMenuItem = (MenuItem) child;
+            else if (child instanceof GroupByColumnMenuItem)
+                groupByColumnMenuItem = (MenuItem) child;
+            else if (child instanceof RemoveFromGroupingMenuItem)
+                removeFromGroupingMenuItem = (MenuItem) child;
         }
 
         buf.initScript(context, columnMenu, "O$.ColumnMenu._init", table, button,
-                sortAscMenuItem, sortDescMenuItem, hideColumnMenuItem);
+                sortAscMenuItem, sortDescMenuItem, hideColumnMenuItem, groupByColumnMenuItem, removeFromGroupingMenuItem);
 
         if (temporaryButton)
             table.getFacets().remove(FACET_COLUMN_MENU_BUTTON);

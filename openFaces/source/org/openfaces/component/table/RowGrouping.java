@@ -35,9 +35,9 @@ public class RowGrouping extends OUIComponentBase {
     private String groupingValueVar = "groupingValue";
     private String groupingValueStringVar = "groupingValueString";
     private Boolean groupOnHeaderClick;
+    private Boolean hideGroupingColumns;
 
     private DataTable dataTable;
-    private Boolean hideGroupingColumns;
 
     public RowGrouping() {
         setRendererType("org.openfaces.RowGroupingRenderer");
@@ -56,7 +56,8 @@ public class RowGrouping extends OUIComponentBase {
                 columnHeaderVar,
                 groupingValueVar,
                 groupingValueStringVar,
-                groupOnHeaderClick
+                groupOnHeaderClick,
+                hideGroupingColumns
         };
     }
 
@@ -70,7 +71,7 @@ public class RowGrouping extends OUIComponentBase {
         groupingValueVar = (String) state[i++];
         groupingValueStringVar = (String) state[i++];
         groupOnHeaderClick = (Boolean) state[i++];
-
+        hideGroupingColumns = (Boolean) state[i++];
     }
 
     public void acceptNewGroupingRules(List<GroupingRule> groupingRules) {
