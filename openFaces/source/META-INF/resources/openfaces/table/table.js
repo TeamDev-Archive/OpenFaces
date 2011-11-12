@@ -344,23 +344,54 @@ O$.Table = {
           currentColumns.splice(newIndex, 0, columnId);
         }
 
-        var index = 0;
         var done = false;
-        currentColumns.forEach(function(current) {
-          if (done)return;
-          table._columnsReorderingSupport(columnId, current)
-                  .onLeftEdgePermit(function() {
-                    if(!done)insertColumn(index);
-                    done = true;
-                  })
-                  .onRightEdgePermit(function() {
-                    if(!done)insertColumn(index + 1);
-                    done = true;
+        (function tryDoItFine() {
+          var structure = table._columnsLogicalStructure.root();
+          var leafs = structure.allLeafs(true);
+          var visible = leafs.filter(function(l) {
+            return l.isVisible();
+          });
 
-                  });
-          index++;
-        });
-        O$.assert(done, "Can't toggle column: " + columnId);
+          function onlyIds(inPut) {
+            return inPut.map(function(l) {
+              return l.columnId;
+            });
+          }
+
+          var originalIndex = onlyIds(leafs).indexOf(columnId),
+                  leftVisibleNeighborhood = function() {
+                    for (var i = originalIndex - 1; i >= 0; i--)if (leafs[i].isVisible())return leafs[i];
+                  }(),
+                  rightVisibleNeighborhood = function() {
+                    for (var i = originalIndex + 1; i < leafs.length; i++)if (leafs[i].isVisible())return leafs[i];
+                  }();
+          if (leftVisibleNeighborhood || rightVisibleNeighborhood) {
+            if (leftVisibleNeighborhood) {
+              insertColumn(currentColumns.indexOf(leftVisibleNeighborhood.columnId) + 1);
+            } else {
+              insertColumn(currentColumns.indexOf(rightVisibleNeighborhood.columnId));
+            }
+            done = true;
+          }
+        }());
+        if (!done)(function doItSomehow() {
+          var index = 0;
+          currentColumns.forEach(function(current) {
+            if (done)return;
+            table._columnsReorderingSupport(columnId, current)
+                    .onLeftEdgePermit(function() {
+                      if (!done)insertColumn(index);
+                      done = true;
+                    })
+                    .onRightEdgePermit(function() {
+                      if (!done)insertColumn(index + 1);
+                      done = true;
+
+                    });
+            index++;
+          });
+        }());
+        if(!done)O$.assert(done, "Can't show column: " + columnId);
         table.setColumnsOrder(currentColumns);
       }
     });
@@ -2604,7 +2635,7 @@ O$.Table = {
           isLeaf : function() {
             return !logicalDescription.subColumns;
           },
-          children : function() {
+          children : function(dontApplySorting) {
             function indexOfAnyVisibleLeaf(node) {
               if (node.isLeaf()) {
                 return currentColumnsOrder.indexOf(node.columnId);
@@ -2617,7 +2648,7 @@ O$.Table = {
             if (!self.isLeaf())logicalDescription.subColumns.forEach(function(subColumn) {
               result.push(helper(subColumn, self));
             });
-            result.sort(function (a, b) {
+            if(!dontApplySorting)result.sort(function (a, b) {
               return indexOfAnyVisibleLeaf(a) - indexOfAnyVisibleLeaf(b);
             });
             return result;
@@ -2641,13 +2672,13 @@ O$.Table = {
           isVisible : function() {
             return visibilityPredicate(self);
           },
-          allLeafs: function() {
+          allLeafs: function(dontApplySorting) {
             var result = [];
-            var candidates = self.children().slice(0);
+            var candidates = self.children(dontApplySorting).slice(0);
             while(candidates.length > 0){
               var current = candidates.shift();
               if(!current.isLeaf()){
-                candidates = current.children().concat(candidates);
+                candidates = current.children(dontApplySorting).concat(candidates);
               } else {
                 result.push(current);
               }
