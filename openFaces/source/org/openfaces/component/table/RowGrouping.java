@@ -37,6 +37,7 @@ public class RowGrouping extends OUIComponentBase {
     private Boolean groupOnHeaderClick;
 
     private DataTable dataTable;
+    private Boolean hideGroupingColumns;
 
     public RowGrouping() {
         setRendererType("org.openfaces.RowGroupingRenderer");
@@ -192,5 +193,13 @@ public class RowGrouping extends OUIComponentBase {
 
     public void setGroupOnHeaderClick(boolean groupOnHeaderClick) {
         this.groupOnHeaderClick = groupOnHeaderClick;
+    }
+
+    public boolean getHideGroupingColumns() {
+        return ValueBindings.get(this, "hideGroupingColumns", hideGroupingColumns, true);
+    }
+
+    public void setHideGroupingColumns(boolean hideGroupingColumns) {
+        this.hideGroupingColumns = hideGroupingColumns;
     }
 }

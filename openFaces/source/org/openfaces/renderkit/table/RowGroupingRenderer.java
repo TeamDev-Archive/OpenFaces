@@ -75,7 +75,8 @@ public class RowGroupingRenderer extends RendererBase {
                 activeColumnIds,
                 groupingRules,
                 AbstractTableRenderer.DEFAULT_SORTABLE_HEADER_CLASS,
-                rowGrouping.getGroupOnHeaderClick()
+                rowGrouping.getGroupOnHeaderClick(),
+                rowGrouping.getHideGroupingColumns()
         ).semicolon(), foldingRequired
                 ? new String[]{AbstractTableRenderer.treeTableJsURL(context)}
                 : new String[0]);

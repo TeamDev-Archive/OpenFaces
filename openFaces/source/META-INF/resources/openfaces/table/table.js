@@ -314,6 +314,54 @@ O$.Table = {
         O$._submitInternal(table, null, [
           [table.id + "::columnsOrder", columnIdsStr]
         ]);
+      },
+
+      isColumnVisible: function(columnId) {
+        var columnIds = table.getColumnsOrder();
+        var idx = columnIds.indexOf(columnId);
+        return idx >= 0;
+      },
+
+      setColumnVisible: function(columnId, visible) {
+        if (visible)
+          this.showColumn(columnId);
+        else
+          this.hideColumn(columnId);
+      },
+
+      hideColumn: function(columnId){
+        if (!this.isColumnVisible(columnId)) return;
+        var currentColumns = table.getColumnsOrder();
+        var currentIndex = currentColumns.indexOf(columnId);
+        currentColumns.splice(currentIndex, 1);
+        table.setColumnsOrder(currentColumns);
+      },
+
+      showColumn: function(columnId) {
+        if (this.isColumnVisible(columnId)) return;
+        var currentColumns = table.getColumnsOrder();
+        function insertColumn(newIndex) {
+          currentColumns.splice(newIndex, 0, columnId);
+        }
+
+        var index = 0;
+        var done = false;
+        currentColumns.forEach(function(current) {
+          if (done)return;
+          table._columnsReorderingSupport(columnId, current)
+                  .onLeftEdgePermit(function() {
+                    if(!done)insertColumn(index);
+                    done = true;
+                  })
+                  .onRightEdgePermit(function() {
+                    if(!done)insertColumn(index + 1);
+                    done = true;
+
+                  });
+          index++;
+        });
+        O$.assert(done, "Can't toggle column: " + columnId);
+        table.setColumnsOrder(currentColumns);
       }
     });
   },
@@ -2681,13 +2729,15 @@ O$.Table = {
 
 
 // -------------------------- ROW GROUPING SUPPORT
-  _initRowGrouping: function(tableId, activeColumnIds, groupingRules, headerClassName, groupOnHeaderClick) {
+  _initRowGrouping: function(tableId, activeColumnIds, groupingRules, headerClassName, groupOnHeaderClick,
+                             hideGroupingColumns) {
 
     var table = O$.initComponent(tableId, null, {
               grouping: {
                 _columnHeaderBoxes: {},
                 _groupingRules: groupingRules,
                 _groupOnHeaderClick: groupOnHeaderClick,
+                _hideGroupingColumns: hideGroupingColumns,
 
                 _getColumnHeaderBox: function(columnId) {
                   return this._columnHeaderBoxes[columnId];
@@ -2706,7 +2756,45 @@ O$.Table = {
 
                 },
 
-                _toogleSortingTypeInGroupingRule: function(columnId, ruleIndex) {
+                isGroupedByColumn: function(columnId) {
+                  var groupingRules = table.grouping.getGroupingRules();
+                  var columnInGroupingRules = groupingRules.some(function(groupingRule) {
+                    return groupingRule.columnId == columnId;
+                  });
+                  return columnInGroupingRules;
+                },
+
+                groupByColumn: function(columnId) {
+                  if (this.isGroupedByColumn(columnId)) return;
+
+                  var groupingRules = [].concat(this.getGroupingRules());
+                  groupingRules.push(new O$.Table.GroupingRule(columnId, true));
+                  table.combineSubmissions(function() {
+                    table.grouping.setGroupingRules(groupingRules);
+                    if (table.grouping._hideGroupingColumns)
+                      table.hideColumn(columnId);
+                  });
+
+                },
+
+                removeFromGrouping: function(columnId) {
+                  var groupingRules = [].concat(this.getGroupingRules());
+                  for (var i = 0, count = groupingRules.length; i < count; i++) {
+                    var groupingRule = groupingRules[i];
+                    if (groupingRule.columnId == columnId) {
+                      groupingRules.splice(i, 1);
+                      table.combineSubmissions(function() {
+                        table.grouping.setGroupingRules(groupingRules);
+                        if (table.grouping._hideGroupingColumns)
+                          table.showColumn(columnId);
+                      });
+
+                      return;
+                    }
+                  }
+                },
+
+                _toggleSortingTypeInGroupingRule: function(columnId, ruleIndex) {
                   var rules = table.grouping.getGroupingRules();
                   rules.forEach(function(rule){
                     if (rule.columnId == columnId)rule.ascending = !rule.ascending;
@@ -2733,7 +2821,7 @@ O$.Table = {
                               after = rules.slice(ruleIndex, rules.length);
                       table.grouping.setGroupingRules(removeIt(before).concat([rule]).concat(removeIt(after)));
                     }());
-                    if (table.HideColumnOnGrouping)(function hideColumn() {
+                    if (table.grouping._hideGroupingColumns)(function hideColumn() {
                       var displayedColumnIds = table.getColumnsOrder();
                       var index = displayedColumnIds.indexOf(rule.columnId);
                       if (index >= 0) {
@@ -2974,7 +3062,6 @@ O$.Table = {
   _initRowGroupingBox: function(rowGroupingBoxId, tableId, connectorStyle, headerStyleClassName, headerHorizOffset, headerVertOffset) {
     O$.Table._onTableLoaded(tableId, function() {
       var table = O$(tableId);
-      table.HideColumnOnGrouping = true;
       var rowGroupingBoxTable = O$(rowGroupingBoxId);
       var rowGroupingBox = rowGroupingBoxTable.firstChild.firstChild.firstChild;
       var rules = function() {
@@ -3300,7 +3387,7 @@ O$.Table = {
                       var focusField = O$(table.id + "::focused");
                       if (focusField)
                         focusField.value = true; // set true explicitly before it gets auto-set when the click bubbles up (JSFC-801)
-                      table.grouping._toogleSortingTypeInGroupingRule(colHeader._columnId);
+                      table.grouping._toggleSortingTypeInGroupingRule(colHeader._columnId);
                     });
                     O$.setupHoverStateFunction(colHeader, function(mouseInside) {
                       O$.setStyleMappings(colHeader.firstChild, {
@@ -3523,47 +3610,8 @@ O$.ColumnMenu = {
   },
 
   _toggleColumnVisibility: function(table, columnId) {
-    var currentColumns = table.getColumnsOrder();
-    var currentIndex = currentColumns.indexOf(columnId);
-    function visibleNow(){
-      return currentIndex >= 0;
-    }
-    function hideColumn(){
-      currentColumns.splice(currentIndex, 1);
-    }
-
-    function showColumn() {
-      function insertColumn(newIndex) {
-        currentColumns.splice(newIndex, 0, columnId);
-      }
-
-      var index = 0;
-      var done = false;
-      currentColumns.forEach(function(current) {
-        if (done)return;
-        table._columnsReorderingSupport(columnId, current)
-                .onLeftEdgePermit(function() {
-                  if(!done)insertColumn(index);
-                  done = true;
-                })
-                .onRightEdgePermit(function() {
-                  if(!done)insertColumn(index + 1);
-                  done = true;
-
-                });
-        index++;
-      });
-      O$.assert(done, "Can't toogle column: " + columnId);
-    }
-    function apply(){
-      table.setColumnsOrder(currentColumns);
-    }
-    if(visibleNow()){
-      hideColumn();
-    } else {
-      showColumn();
-    }
-    apply();
+    var currentlyVisible = table.isColumnVisible(columnId);
+    table.setColumnVisible(columnId, !currentlyVisible);
   },
 
   _checkSortMenuItems : function(columnMenuId, tableId, sortAscMenuId, sortDescMenuId, columnId) {
@@ -3646,15 +3694,26 @@ O$.ColumnMenu = {
     O$.ColumnMenu._sortColumn(tableId, columnIndex, false);
   },
 
+  _groupByColumn: function(tableId, columnIndex) {
+    var table = O$(tableId);
+    O$.assert(table.grouping, "Cannot change grouping for a table that doesn't have row grouping capability turned on");
+
+    var columnId = columnIndex ? table._columns[columnIndex].columnId : table._showingMenuForColumn;
+    table.grouping.groupByColumn(columnId);
+  },
+
+  _removeFromGrouping: function(tableId, columnIndex) {
+    var table = O$(tableId);
+    O$.assert(table.grouping, "Cannot change grouping for a table that doesn't have row grouping capability turned on");
+
+    var columnId = columnIndex ? table._columns[columnIndex].columnId : table._showingMenuForColumn;
+    table.grouping.removeFromGrouping(columnId);
+  },
 
   _hideColumn: function(tableId, columnIndex) {
     var table = O$(tableId);
     var columnId = columnIndex ? table._columns[columnIndex].columnId : table._showingMenuForColumn;
-    var currentOrder = table.getColumnsOrder();
-    var currentIndex = currentOrder.indexOf(columnId);
-    O$.assert(currentIndex >= 0, "Can't find columnn: " + columnId);
-    currentOrder.splice(currentIndex, 1);
-    table.setColumnsOrder(currentOrder);
+    table.hideColumn(columnId);
   }
 };
 

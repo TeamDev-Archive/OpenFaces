@@ -15,7 +15,9 @@ import org.openfaces.component.command.MenuItem;
 import org.openfaces.component.command.MenuSeparator;
 import org.openfaces.component.table.ColumnMenu;
 import org.openfaces.component.table.ColumnVisibilityMenu;
+import org.openfaces.component.table.GroupByColumnMenuItem;
 import org.openfaces.component.table.HideColumnMenuItem;
+import org.openfaces.component.table.RemoveFromGroupingMenuItem;
 import org.openfaces.component.table.SortAscendingMenuItem;
 import org.openfaces.component.table.SortDescendingMenuItem;
 import org.openfaces.renderkit.command.PopupMenuRenderer;
@@ -33,6 +35,8 @@ public class ColumnMenuRenderer extends PopupMenuRenderer {
             List<UIComponent> menuItems = menu.getChildren();
             menuItems.add(new SortAscendingMenuItem());
             menuItems.add(new SortDescendingMenuItem());
+            menuItems.add(new GroupByColumnMenuItem());
+            menuItems.add(new RemoveFromGroupingMenuItem());
             menuItems.add(new HideColumnMenuItem());
             menuItems.add(new MenuSeparator());
             menuItems.add(new MenuItem("Columns", new ColumnVisibilityMenu()));

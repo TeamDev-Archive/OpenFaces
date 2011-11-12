@@ -43051,6 +43051,18 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default true -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>Specifies whether a column should automatically be hidden when the user groups the table by that
+        column (not applicable to grouping behavior defined by groupOnHeaderClick attribute).
+      </description>
+      <name>hideGroupingColumns</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
   </tag>
   <tag>
     <description>A component which can optionally be placed inside of grouping-enabled &amp;lt;o:dataTable&gt; tag to
@@ -43603,6 +43615,22 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+  </tag>
+  <tag>
+    <description>A menu item that can be inserted into the column menu for DataTable component to provide to control row
+      grouping feature.
+    </description>
+    <name>groupByColumnMenuItem</name>
+    <tag-class>org.openfaces.taglib.jsp.table.GroupByColumnMenuItemJspTag</tag-class>
+    <body-content>JSP</body-content>
+  </tag>
+  <tag>
+    <description>A menu item that can be inserted into the column menu for DataTable component to provide to control row
+      grouping feature.
+    </description>
+    <name>removeFromGroupingMenuItem</name>
+    <tag-class>org.openfaces.taglib.jsp.table.RemoveFromGroupingMenuItemJspTag</tag-class>
+    <body-content>JSP</body-content>
   </tag>
 
   <!--<tag>-->
