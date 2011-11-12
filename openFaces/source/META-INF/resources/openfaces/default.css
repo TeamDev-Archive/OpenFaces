@@ -197,6 +197,7 @@
 }
 .o_groupingBox_header {
     border: 1px solid gray;
+    padding: 2px;
 }
 
 .o_scrollable_table {
