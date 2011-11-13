@@ -1410,7 +1410,7 @@ O$.Tables = {
       byId: function(columnId) {
         for (var i = 0, count = this.length; i < count; i++) {
           var column = this[i];
-          if (column.id == columnId)
+          if (column.columnId == columnId)
             return column;
         }
         return null;

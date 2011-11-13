@@ -2512,8 +2512,9 @@ O$.Table = {
         function allDropTargets() {
           if (dropTargets) return dropTargets;
           dropTargets = [];
-          if (table._rowGroupingBox) {
-            dropTargets = dropTargets.concat(table._rowGroupingBox._innerDropTargets(headerCell._column.columnId));
+          var column = headerCell._column;
+          if (table._rowGroupingBox && column._groupable) {
+            dropTargets = dropTargets.concat(table._rowGroupingBox._innerDropTargets(column.columnId));
           }
           dropTargets = dropTargets.concat(table._innerDropTargetsByColumnId(sourceColumn.columnId, function(newIndex) {
             var columnIds = table.getColumnsOrder();
@@ -2905,7 +2906,7 @@ O$.Table = {
 
 
 // -------------------------- ROW GROUPING SUPPORT
-  _initRowGrouping: function(tableId, activeColumnIds, groupingRules, headerClassName, groupOnHeaderClick,
+  _initRowGrouping: function(tableId, activeColumnIds, groupableColumnIds, groupingRules, headerClassName, groupOnHeaderClick,
                              hideGroupingColumns) {
 
     var table = O$.initComponent(tableId, null, {
@@ -3056,6 +3057,13 @@ O$.Table = {
 
       O$.Tables._assignHeaderBoxStyle(columnHeaderBox, table, columnId, headerClassName);
     });
+
+    groupableColumnIds.forEach(function(columnId) {
+      var col = table._columns.byId(columnId);
+      if (col)
+        col._groupable = true;
+    });
+
     O$.Table._tableLoaded(tableId);
   },
   _GroupingBoxLayout : function(rowGroupingBox, tableId, connectorStyle, headerStyleClassName, headerOffset, padding) {
@@ -3677,8 +3685,7 @@ O$.ColumnMenu = {
     var columnMenu = O$(columnMenuId);
 
     function menuFixer() {
-      O$.ColumnMenu._checkSortMenuItems(columnMenuId, tableId,
-              columnMenu._sortAscMenuItem, columnMenu._sortDescMenuItem, columnId);
+      O$.ColumnMenu._checkSortMenuItems(columnMenuId, tableId, columnId);
       O$.ColumnMenu._checkGroupingMenuItems(columnMenuId, tableId, columnId);
       var column = table._getColumn(columnId);
 
@@ -3686,7 +3693,7 @@ O$.ColumnMenu = {
         var hideMenuItem = columnMenu._hideMenuItem;
         if (hideMenuItem) {
           table._hideMenuItem = hideMenuItem;
-          for (i = 0; i < columnMenu.childNodes.length; i++) {
+          for (var i = 0; i < columnMenu.childNodes.length; i++) {
             if (hideMenuItem == columnMenu.childNodes[i]) {
               table._hideMenuIdx = i;
               break;
@@ -3881,60 +3888,24 @@ O$.ColumnMenu = {
       if (!menuItem) return;
       menuItem.style.display = visible ? "" : "none";
     }
-    setMenuItemVisible(columnMenu._groupByColumnMenuItem, table.grouping && !table.grouping.isGroupedByColumn(columnId));
+    var column = table._columns.byId(columnId);
+    if (!column) throw "_checkGroupingMenuItems: cannot find column by id: " + columnId;
+    setMenuItemVisible(columnMenu._groupByColumnMenuItem, table.grouping && !table.grouping.isGroupedByColumn(columnId) && column._groupable);
     setMenuItemVisible(columnMenu._removeFromGroupingMenuItem, table.grouping && table.grouping.isGroupedByColumn(columnId));
     setMenuItemVisible(columnMenu._cancelGroupingMenuItem, table.grouping && table.grouping.getGroupingRules().length > 0);
   },
 
-  _checkSortMenuItems: function(columnMenuId, tableId, sortAscMenuItem, sortDescMenuItem, columnId) {
-    if (!sortAscMenuItem && !sortDescMenuItem) return;
+  _checkSortMenuItems: function(columnMenuId, tableId, columnId) {
     var table = O$(tableId);
     var columnMenu = O$(columnMenuId);
-    if (table._sortableColumnsIds.indexOf(columnId) < 0) {
-      if (sortAscMenuItem) {
-        table._sortAscMenuItem = sortAscMenuItem;
-        for (var i = 0; i < columnMenu.childNodes.length; i++) {
-          if (sortAscMenuItem == columnMenu.childNodes[i]) {
-            table._sortAscMenuIdx = i;
-            break;
-          }
-        }
-        columnMenu.removeChild(sortAscMenuItem);
-      }
-      if (sortDescMenuItem) {
-        table._sortDescMenuItem = sortDescMenuItem;
-        for (i = 0; i < columnMenu.childNodes.length; i++) {
-          if (sortDescMenuItem == columnMenu.childNodes[i]) {
-            table._sortDescMenuIdx = i;
-            break;
-          }
-        }
-        columnMenu.removeChild(sortDescMenuItem);
-      }
-    } else {
-      var sortDescMenuItem = table._sortDescMenuItem;
-      if (sortDescMenuItem) {
-        if (table._sortDescMenuIdx >= 0
-            && columnMenu.childNodes.length > table._sortDescMenuIdx)
-          columnMenu.insertBefore(sortDescMenuItem,
-              columnMenu.childNodes[table._sortDescMenuIdx]);
-        else
-          columnMenu.appendChild(sortDescMenuItem);
-        table._sortDescMenuItem = null;
-        table._sortDescMenuIdx = -1;
-      }
-      var sortAscMenuItem = table._sortAscMenuItem;
-      if (sortAscMenuItem) {
-        if (table._sortAscMenuIdx >= 0
-            && columnMenu.childNodes.length > table._sortAscMenuIdx)
-          columnMenu.insertBefore(sortAscMenuItem,
-              columnMenu.childNodes[table._sortAscMenuIdx]);
-        else
-          columnMenu.appendChild(sortAscMenuItem);
-        table._sortAscMenuItem = null;
-        table._sortAscMenuIdx = -1;
-      }
+    function setMenuItemVisible(menuItem, visible) {
+      if (!menuItem) return;
+      menuItem.style.display = visible ? "" : "none";
     }
+    var column = table._columns.byId(columnId);
+    if (!column) throw "_checkGroupingMenuItems: cannot find column by id: " + columnId;
+    setMenuItemVisible(columnMenu._sortAscMenuItem, column._sortable);
+    setMenuItemVisible(columnMenu._sortDescMenuItem, column._sortable);
   },
   _sortColumn: function(tableId, columnIndex, isAscending) {
     var table = O$(tableId);

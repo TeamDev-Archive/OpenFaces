@@ -1307,6 +1307,10 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
             return null;
         List<BaseColumn> allColumns = getAllColumns();
         BaseColumn baseColumn = findColumnById(allColumns, columnId);
+        return getColumnGroupingExpression(baseColumn);
+    }
+
+    protected static ValueExpression getColumnGroupingExpression(BaseColumn baseColumn) {
         boolean ordinaryColumn = baseColumn instanceof Column;
         if (!ordinaryColumn) return null;
         Column column = (Column) baseColumn;
