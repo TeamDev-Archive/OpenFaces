@@ -496,10 +496,22 @@ public class DataTable extends AbstractTable {
 
         // todo deal with the case when selection/checkbox columns are the first ones, where they should probably be
         // skipped in favor of the first ordinary column
-        BaseColumn firstColumn = renderedColumns.get(0);
-        TreeColumn treeColumn = convertToTreeColumn(firstColumn);
+
+        BaseColumn originalColumn = null;
+        int originalColumnIndex = -1;
+        for (int i = 0, count = renderedColumns.size(); i < count; i++) {
+            BaseColumn renderedColumn = renderedColumns.get(i);
+            if (renderedColumn instanceof Column) {
+                originalColumnIndex = i;
+                originalColumn = renderedColumn;
+                break;
+            }
+        }
+        if (originalColumn == null)
+            return renderedColumns;
+        TreeColumn treeColumn = convertToTreeColumn(originalColumn);
         renderedColumns = new ArrayList<BaseColumn>(renderedColumns);
-        renderedColumns.set(0, treeColumn);
+        renderedColumns.set(originalColumnIndex, treeColumn);
 
         return renderedColumns;
     }

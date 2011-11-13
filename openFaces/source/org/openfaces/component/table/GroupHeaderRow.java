@@ -69,8 +69,25 @@ public class GroupHeaderRow extends GroupHeaderOrFooterRow {
         Cell groupHeaderCell = new Cell();
         groupHeaderCell.getAttributes().put(SYNTHETIC_GROUP_HEADER_CELL_MARKER, true);
         groupHeaderCell.getChildren().add(outputText);
-        int allColumnCount = dataTable.getAllColumns().size();
-        groupHeaderCell.setSpan(allColumnCount);
+
+        // skip selection/check-box columns for them to be displayed on the left side untouched by tree structure
+        List<BaseColumn> allColumns = dataTable.getAllColumns();
+        String firstOrdinaryColumnId = null;
+        int firstOrdinaryColumnIndex = -1;
+        {
+            for (int i = 0, allColumnsSize = allColumns.size(); i < allColumnsSize; i++) {
+                BaseColumn column = allColumns.get(i);
+                if (column instanceof Column) {
+                    firstOrdinaryColumnId = column.getId();
+                    firstOrdinaryColumnIndex = i;
+                    break;
+                }
+            }
+        }
+        if (firstOrdinaryColumnId != null)
+            groupHeaderCell.setColumnIds(Collections.singletonList(firstOrdinaryColumnId));
+        int allColumnCount = allColumns.size();
+        groupHeaderCell.setSpan(allColumnCount - firstOrdinaryColumnIndex);
         return groupHeaderCell;
     }
 
