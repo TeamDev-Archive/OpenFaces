@@ -3247,6 +3247,11 @@ O$.Table = {
   },
   _initRowGroupingBox: function(rowGroupingBoxId, tableId, connectorStyle, headerStyleClassName, headerHorizOffset, headerVertOffset) {
     O$.Table._onTableLoaded(tableId, function() {
+      O$.addLoadEvent(function(){
+        doActualInitialization();
+      });
+    });
+    function doActualInitialization(){
       var table = O$(tableId);
       var rowGroupingBoxTable = O$(rowGroupingBoxId);
       var rowGroupingBox = rowGroupingBoxTable.firstChild.firstChild.firstChild;
@@ -3639,7 +3644,7 @@ O$.Table = {
       (function attacheRowGroupingBoxToTable() {
         table._setRowGroupingBox({_innerDropTargets : innerDropTargets});
       }());
-    });
+    }
   },
 
   HEADER_CELL_Z_INDEX_COLUMN_MENU_BUTTON: 1,
