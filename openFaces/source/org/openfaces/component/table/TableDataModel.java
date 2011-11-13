@@ -793,6 +793,10 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
             else
                 return (indexInOriginalList != -1) ? new DefaultRowKey(rowIndex, indexInOriginalList) : new DefaultRowKey(rowIndex);
         }
+        if (rowData instanceof RowGroupHeaderOrFooter) {
+            return rowData;
+        }
+
         if (requestMap == null) {
             requestMap = facesContext.getExternalContext().getRequestMap();
         }

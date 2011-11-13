@@ -31,14 +31,14 @@ public class ImageExpansionToggleRenderer extends RendererBase {
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         super.encodeBegin(context, component);
 
-        boolean nodeExpanded = getTreeTable(component).isNodeExpanded();
+        boolean nodeExpanded = getTable(component).isNodeExpanded();
         encodeStaticImage(context, (ImageExpansionToggle) component, nodeExpanded, nodeExpanded ? "o_toggle_e" : "o_toggle_c");
     }
 
-    private AbstractTable getTreeTable(UIComponent expansionToggle) {
+    private AbstractTable getTable(UIComponent expansionToggle) {
         UIComponent column = expansionToggle.getParent();
         if (!(column instanceof TreeColumn) || ((TreeColumn) column).getExpansionToggle() != expansionToggle)
-            throw new IllegalStateException("ImageExpansionToggleRenderer can only be inserted as an 'expansionToggle' facet of TreeColumn");
+            throw new IllegalStateException("ImageExpansionToggleRenderer can only be inserted as an \"expansionToggle\" facet of TreeColumn");
 
         TreeColumn treeColumn = (TreeColumn) column;
         DataTable groupedDataTable = DataTable.getGroupedDataTable(treeColumn);
@@ -49,8 +49,7 @@ public class ImageExpansionToggleRenderer extends RendererBase {
         UIComponent columnParent = column.getParent();
         while (columnParent instanceof ColumnGroup)
             columnParent = columnParent.getParent();
-        AbstractTable treeTable = (AbstractTable) columnParent;
-        return treeTable;
+        return (AbstractTable) columnParent;
     }
 
 

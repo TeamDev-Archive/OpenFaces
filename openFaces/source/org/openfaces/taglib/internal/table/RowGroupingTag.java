@@ -28,8 +28,8 @@ public class RowGroupingTag extends AbstractComponentTag {
     }
 
     @Override
-    public void setComponentProperties(FacesContext facesContext, UIComponent component) {
-        super.setComponentProperties(facesContext, component);
+    public void setComponentProperties(FacesContext context, UIComponent component) {
+        super.setComponentProperties(context, component);
 
         setValueExpressionProperty(component, "groupingRules");
         setStringProperty(component, "columnHeaderVar");
@@ -38,5 +38,6 @@ public class RowGroupingTag extends AbstractComponentTag {
         setValueExpressionProperty(component, "groupHeaderText");
         setBooleanProperty(component, "groupOnHeaderClick");
         setBooleanProperty(component, "hideGroupingColumns");
+        setExpansionStateProperty(component, "expansionState");
     }
 }

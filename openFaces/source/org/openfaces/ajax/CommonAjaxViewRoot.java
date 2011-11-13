@@ -553,6 +553,10 @@ public abstract class CommonAjaxViewRoot {
         // TODO [sanders] (Apr 1, 2009, 5:09 AM): Can't we synchronize on something shorter?.. :)
         // TODO [sanders] (Apr 1, 2009, 5:09 AM): Won't java.util.concurrent help?
         RequestsSyncObject syncObject = (RequestsSyncObject) sessionMap.get(AjaxViewHandler.SESSION_SYNCHRONIZATION);
+        if (syncObject == null) {
+            // can be the case during debugging when session expires during a long debugging session
+            return;
+        }
         //noinspection SynchronizationOnLocalVariableOrMethodParameter
         synchronized (syncObject) {
             syncObject.setAjaxRequestProcessing(false);
