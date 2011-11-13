@@ -3582,6 +3582,8 @@ O$.Table = {
                         });
                         res.style.borderWidth = "0px";
                       }
+                      O$.setOpacityLevel(res, 1 - table._draggedCellTransparency || 0.5);
+                      O$.correctElementZIndex(res, table, 2);
                       return res;
                     };
                   });
