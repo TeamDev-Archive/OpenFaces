@@ -3551,6 +3551,41 @@ O$.Table = {
                   groupingBoxLayout().addAll(groupingColumnIds());
                   groupingBoxLayout().redraw();
                 }());
+                (function prepareHeadersForDragging() {
+                  groupingBoxLayout().draggable().forEach(function(item) {
+                    if (item._clone) return;
+                    function processAbsoluteChildren(children) {
+                      var childArray = [];
+                      for (var i = 0, count = children.length; i < count; i++)
+                        childArray[i] = children[i];
+                      childArray.forEach(function (el) {
+                        if (O$.stringStartsWith(el.nodeName, "#")) return;
+                        if (el.style.position == "absolute" || O$.getElementStyle(el, "position") == "absolute")
+                          el.parentNode.removeChild(el);
+                        else
+                          processAbsoluteChildren(el.childNodes);
+                      });
+                    }
+                    item._clone = function() {
+                      var res = item.cloneNode(true);
+                      processAbsoluteChildren(res.childNodes);
+                      //[stanislav.kurilin] : for FF and IE in quirks mode it's works fine without it,
+                      //[stanislav.kurilin] : but in other browsers child styles doesn't apply fully
+                      //[stanislav.kurilin] : so that there is a gap after near child
+                      //[stanislav.kurilin] : tip to reproduce: set some big value to border-width
+                      if (!(O$.isMozillaFF() || O$.isExplorer() && O$.isStrictMode())) {
+                        ["borderWidth", "borderLeftWidth", "borderRightWidth", "borderTopWidth", "borderBottomWidth",
+                          "borderColor", "borderLeftColor", "borderRightColor", "borderTopColor", "borderBottomColor",
+                          "borderStyle", "borderLeftStyle", "borderRightStyle", "borderTopStyle", "borderBottomStyle"]
+                                .forEach(function(prop) {
+                          res.firstChild.style[prop] = O$.getStyleClassProperty(res.className, prop);
+                        });
+                        res.style.borderWidth = "0px";
+                      }
+                      return res;
+                    };
+                  });
+                }());
                 (function makeHeadersDraggable() {
                   var innerDropTargetsVal = innerDropTargets();
                   groupingBoxLayout().draggable().forEach(function(item) {
