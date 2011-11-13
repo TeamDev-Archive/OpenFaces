@@ -53,4 +53,8 @@ public class RowGroupingJspTag extends AbstractComponentJspTag {
     public void setExpansionState(ValueExpression expansionState) {
         getDelegate().setPropertyValue("expansionState", expansionState);
     }
+
+    public void setSelectionMode(ValueExpression selectionMode) {
+        getDelegate().setPropertyValue("selectionMode", selectionMode);
+    }
 }

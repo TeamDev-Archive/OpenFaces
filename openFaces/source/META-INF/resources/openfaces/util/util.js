@@ -5030,8 +5030,24 @@ if (!window.O$) {
         component._compoundSubmission.completionCallbacks.push(completionCallback);
       }
       if (additionalParams) {
+        var existingParams = component._compoundSubmission.additionalParams;
+        var newParams = [];
+        additionalParams.forEach(function(param) {
+          var paramName = param[0];
+          var paramValue = param[1];
+          var existingParamUpdated = false;
+          existingParams.forEach(function(existingParam) {
+            var existingParamName = existingParam[0];
+            if (paramName == existingParamName) {
+              existingParam[1] = paramValue;
+              existingParamUpdated = true;
+            }
+          });
+          if (!existingParamUpdated)
+            newParams.push(param);
+        });
         component._compoundSubmission.additionalParams =
-                component._compoundSubmission.additionalParams.concat(additionalParams);
+                component._compoundSubmission.additionalParams.concat(newParams);
       }
       if (execute) {
         component._compoundSubmission.execute =

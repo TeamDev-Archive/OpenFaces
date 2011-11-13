@@ -37,6 +37,7 @@ public class RowGrouping extends OUIComponentBase {
     private Boolean groupOnHeaderClick;
     private Boolean hideGroupingColumns;
     private ExpansionState expansionState = new AllNodesExpanded();
+    private RowGroupingSelectionMode selectionMode;
 
     private DataTable dataTable;
 
@@ -59,7 +60,8 @@ public class RowGrouping extends OUIComponentBase {
                 groupingValueStringVar,
                 groupOnHeaderClick,
                 hideGroupingColumns,
-                expansionState
+                expansionState,
+                selectionMode
         };
     }
 
@@ -75,6 +77,7 @@ public class RowGrouping extends OUIComponentBase {
         groupOnHeaderClick = (Boolean) state[i++];
         hideGroupingColumns = (Boolean) state[i++];
         expansionState = (ExpansionState) state[i++];
+        selectionMode = (RowGroupingSelectionMode) state[i++];
     }
 
     @Override
@@ -86,7 +89,6 @@ public class RowGrouping extends OUIComponentBase {
         ValueExpression expansionStateExpression = getValueExpression("expansionState");
         if (expansionStateExpression != null)
             expansionStateExpression.setValue(context.getELContext(), expansionState);
-
     }
 
     public void acceptNewGroupingRules(List<GroupingRule> groupingRules) {
@@ -249,5 +251,13 @@ public class RowGrouping extends OUIComponentBase {
 
     public void setExpansionState(ExpansionState expansionState) {
         this.expansionState = expansionState;
+    }
+
+    public RowGroupingSelectionMode getSelectionMode() {
+        return ValueBindings.get(this, "selectionMode", selectionMode, RowGroupingSelectionMode.DATA_ROWS, RowGroupingSelectionMode.class);
+    }
+
+    public void setSelectionMode(RowGroupingSelectionMode selectionMode) {
+        this.selectionMode = selectionMode;
     }
 }

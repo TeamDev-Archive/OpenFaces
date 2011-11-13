@@ -43094,6 +43094,25 @@ entering a value and returns a list of suggestions from the server -->
     are expanded -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>This attribute is applicable only if a table has selection feature turned on (with one of the
+        selection tags). It defines whether DataTable should provide only row datas through the selection API, or group
+        header rows as well (if they are selected).
+      </description>
+      <name>selectionMode</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.table. RowGroupingSelectionMode -->
+      <!-- @default "dataRows" -->
+      <!-- @value "dataRows" only the row data objects are saved through the selection API -->
+      <!-- @value "allRows" both the row data objects and group header row objects are saved through the selection API.
+        In case of group header rows, objects of type org.openfaces.component.table will be passed, so you should
+        prepare the methods which receive selection objects to accept both types of objects. So for example in case of
+        single row selection you should declare the getter/setter methods that are bound to the rowData atribute to
+        have the type of java.lang.oObject for this purpose. -->
+      <!-- @el true -->
+    </attribute>
   </tag>
   <tag>
     <description>A component which can optionally be placed inside of grouping-enabled &amp;lt;o:dataTable&gt; tag to
@@ -43661,6 +43680,14 @@ entering a value and returns a list of suggestions from the server -->
     </description>
     <name>removeFromGroupingMenuItem</name>
     <tag-class>org.openfaces.taglib.jsp.table.RemoveFromGroupingMenuItemJspTag</tag-class>
+    <body-content>JSP</body-content>
+  </tag>
+  <tag>
+    <description>A menu item that can be inserted into the column menu for DataTable component to provide to control row
+      grouping feature.
+    </description>
+    <name>cancelGroupingMenuItem</name>
+    <tag-class>org.openfaces.taglib.jsp.table.CancelGroupingMenuItemJspTag</tag-class>
     <body-content>JSP</body-content>
   </tag>
 

@@ -19,6 +19,8 @@ import org.openfaces.util.Faces;
 import org.openfaces.util.ValueBindings;
 
 import javax.el.ValueExpression;
+import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
@@ -513,5 +515,28 @@ public class DataTable extends AbstractTable {
 
     public static DataTable getGroupedDataTable(TreeColumn treeColumn) {
         return (DataTable) treeColumn.getAttributes().get(GROUPED_DATA_TABLE_ATTR);
+    }
+
+    @Override
+    public ColumnReordering getColumnReordering() {
+        ColumnReordering columnReordering = super.getColumnReordering();
+        if (columnReordering == null && getRowGrouping() != null) {
+            if (getGroupingBox() != null) {
+                // row grouping box requires column reordering so we're implicitly creating it if it is not specified explicitly
+                columnReordering = new ColumnReordering();
+                columnReordering.setTable(this);
+            }
+        }
+        return columnReordering;
+    }
+
+    private GroupingBox getGroupingBox() {
+        List<GroupingBox> groupingBoxList = Components.findFacetsWithClass(this, GroupingBox.class);
+        if (groupingBoxList.size() > 1)
+            throw new FacesException("No more than one <o:groupingBox> can be specified for a table, but there are " +
+                    groupingBoxList.size() + "; table clientId: " + getClientId(FacesContext.getCurrentInstance()));
+        if (groupingBoxList.size() == 1)
+            return groupingBoxList.get(0);
+        return null;
     }
 }

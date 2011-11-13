@@ -13,6 +13,7 @@ package org.openfaces.renderkit.table;
 
 import org.openfaces.component.command.MenuItem;
 import org.openfaces.component.command.MenuSeparator;
+import org.openfaces.component.table.CancelGroupingMenuItem;
 import org.openfaces.component.table.ColumnMenu;
 import org.openfaces.component.table.ColumnVisibilityMenu;
 import org.openfaces.component.table.GroupByColumnMenuItem;
@@ -37,9 +38,9 @@ public class ColumnMenuRenderer extends PopupMenuRenderer {
             menuItems.add(new SortDescendingMenuItem());
             menuItems.add(new GroupByColumnMenuItem());
             menuItems.add(new RemoveFromGroupingMenuItem());
+//            menuItems.add(new CancelGroupingMenuItem());
             menuItems.add(new HideColumnMenuItem());
-            menuItems.add(new MenuSeparator());
-            menuItems.add(new MenuItem("Columns", new ColumnVisibilityMenu()));
+            menuItems.add(new MenuSeparator()); menuItems.add(new MenuItem("Columns", new ColumnVisibilityMenu()));
         }
 
         super.encodeBegin(context, component);

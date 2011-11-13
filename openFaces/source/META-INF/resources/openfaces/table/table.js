@@ -2970,6 +2970,19 @@ O$.Table = {
                   }
                 },
 
+                cancelGrouping: function() {
+                  var groupingRules = table.grouping.getGroupingRules();
+                  if (groupingRules.length == 0) return;
+
+                  table.combineSubmissions(function() {
+                    table.grouping.setGroupingRules([]);
+                    if (table.grouping._hideGroupingColumns)
+                      groupingRules.forEach(function(groupingRule) {
+                        table.showColumn(groupingRule.columnId);
+                      });
+                  });
+                },
+
                 _toggleSortingTypeInGroupingRule: function(columnId, ruleIndex) {
                   var rules = table.grouping.getGroupingRules();
                   rules.forEach(function(rule){
@@ -3714,7 +3727,7 @@ O$.ColumnMenu = {
   _menuOpened : false,
 
   _init: function(columnMenuId, tableId, columnMenuButtonId, sortAscMenuId, sortDescMenuId, hideMenuId,
-                  groupByColumnMenuId, removeFromGroupingMenuId) {
+                  groupByColumnMenuId, removeFromGroupingMenuId, cancelGroupingMenuId) {
     var table = O$(tableId);
     table._columnMenuId = columnMenuId;
     O$.ColumnMenu._menuOpened = false;
@@ -3740,7 +3753,8 @@ O$.ColumnMenu = {
       _sortDescMenuItem: O$(sortDescMenuId),
       _hideMenuItem: O$(hideMenuId),
       _groupByColumnMenuItem: O$(groupByColumnMenuId),
-      _removeFromGroupingMenuItem: O$(removeFromGroupingMenuId)
+      _removeFromGroupingMenuItem: O$(removeFromGroupingMenuId),
+      _cancelGroupingMenuItem: O$(cancelGroupingMenuId)
     });
 
     var columnMenuButton = O$(columnMenuButtonId);
@@ -3863,14 +3877,13 @@ O$.ColumnMenu = {
   _checkGroupingMenuItems: function(columnMenuId, tableId, columnId) {
     var table = O$(tableId);
     var columnMenu = O$(columnMenuId);
-    var groupByColumnMenuItem = columnMenu._groupByColumnMenuItem;
-    var removeFromGroupingMenuItem = columnMenu._removeFromGroupingMenuItem;
     function setMenuItemVisible(menuItem, visible) {
       if (!menuItem) return;
       menuItem.style.display = visible ? "" : "none";
     }
-    setMenuItemVisible(groupByColumnMenuItem, table.grouping && !table.grouping.isGroupedByColumn(columnId));
-    setMenuItemVisible(removeFromGroupingMenuItem, table.grouping && table.grouping.isGroupedByColumn(columnId));
+    setMenuItemVisible(columnMenu._groupByColumnMenuItem, table.grouping && !table.grouping.isGroupedByColumn(columnId));
+    setMenuItemVisible(columnMenu._removeFromGroupingMenuItem, table.grouping && table.grouping.isGroupedByColumn(columnId));
+    setMenuItemVisible(columnMenu._cancelGroupingMenuItem, table.grouping && table.grouping.getGroupingRules().length > 0);
   },
 
   _checkSortMenuItems: function(columnMenuId, tableId, sortAscMenuItem, sortDescMenuItem, columnId) {
@@ -3964,6 +3977,13 @@ O$.ColumnMenu = {
 
     var columnId = columnIndex ? table._columns[columnIndex].columnId : table._showingMenuForColumn;
     table.grouping.removeFromGrouping(columnId);
+  },
+
+  _cancelGrouping: function(tableId) {
+    var table = O$(tableId);
+    O$.assert(table.grouping, "Cannot change grouping for a table that doesn't have row grouping capability turned on");
+
+    table.grouping.cancelGrouping();
   },
 
   _hideColumn: function(tableId, columnIndex) {

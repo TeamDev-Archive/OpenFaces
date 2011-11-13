@@ -12,6 +12,7 @@
 package org.openfaces.taglib.internal.table;
 
 import org.openfaces.component.table.RowGrouping;
+import org.openfaces.component.table.RowGroupingSelectionMode;
 import org.openfaces.taglib.internal.AbstractComponentTag;
 
 import javax.faces.component.UIComponent;
@@ -39,5 +40,6 @@ public class RowGroupingTag extends AbstractComponentTag {
         setBooleanProperty(component, "groupOnHeaderClick");
         setBooleanProperty(component, "hideGroupingColumns");
         setExpansionStateProperty(component, "expansionState");
+        setEnumerationProperty(component, "selectionMode", RowGroupingSelectionMode.class);
     }
 }

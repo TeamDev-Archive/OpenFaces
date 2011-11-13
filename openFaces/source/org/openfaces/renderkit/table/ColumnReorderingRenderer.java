@@ -35,7 +35,7 @@ public class ColumnReorderingRenderer extends RendererBase {
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ColumnReordering cr = (ColumnReordering) component;
-        AbstractTable table = (AbstractTable) component.getParent();
+        AbstractTable table = cr.getTable();
         StyleParam draggedCellStyle = new StyleParam(cr, "draggedCell", "o_table_draggedColumn");
         StyleParam autoScrollAreaStyle = new StyleParam(cr, "autoScrollArea", "o_headerAutoScrollArea");
         StyleParam dropTargetStyle = new StyleParam(cr, "dropTarget", "o_table_columnDropTarget");

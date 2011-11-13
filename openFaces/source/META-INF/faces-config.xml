@@ -852,6 +852,10 @@
     <component-class>org.openfaces.component.table.RemoveFromGroupingMenuItem</component-class>
   </component>
 
+  <component>
+    <component-type>org.openfaces.CancelGroupingMenuItem</component-type>
+    <component-class>org.openfaces.component.table.CancelGroupingMenuItem</component-class>
+  </component>
   <render-kit>
     <renderer>
       <component-family>org.openfaces.DataTable</component-family>
@@ -1425,6 +1429,11 @@
       <component-family>org.openfaces.RemoveFromGroupingMenuItem</component-family>
       <renderer-type>org.openfaces.RemoveFromGroupingMenuItemRenderer</renderer-type>
       <renderer-class>org.openfaces.renderkit.table.RemoveFromGroupingMenuItemRenderer</renderer-class>
+    </renderer>
+    <renderer>
+      <component-family>org.openfaces.CancelGroupingMenuItem</component-family>
+      <renderer-type>org.openfaces.CancelGroupingMenuItemRenderer</renderer-type>
+      <renderer-class>org.openfaces.renderkit.table.CancelGroupingMenuItemRenderer</renderer-class>
     </renderer>
 
   </render-kit>

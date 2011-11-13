@@ -1312,4 +1312,12 @@
       <handler-class>org.openfaces.taglib.facelets.table.RemoveFromGroupingMenuItemTagHandler</handler-class>
     </component>
   </tag>
+  <tag>
+    <tag-name>cancelGroupingMenuItem</tag-name>
+    <component>
+      <component-type>org.openfaces.CancelGroupingMenuItem</component-type>
+      <renderer-type>org.openfaces.CancelGroupingMenuItemRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.table.CancelGroupingMenuItemTagHandler</handler-class>
+    </component>
+  </tag>
 </facelet-taglib>
