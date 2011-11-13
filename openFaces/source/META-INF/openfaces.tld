@@ -43076,6 +43076,24 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default null -->
       <!-- @el only -->
     </attribute>
+    <attribute>
+      <description>Defines the expansion state of all grouping sections in a grouped DataTable component.</description>
+      <name>expansionState</name>
+      <deferred-value>
+        <type>org.openfaces.component.table.ExpansionState</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.table. ExpansionState -->
+      <!-- @default "allExpanded" -->
+      <!-- @value "allExpanded" all nodes are displayed in the expanded state -->
+      <!-- @value "allCollapsed" all nodes are displayed in the collapsed state -->
+      <!-- @value "levelsExpanded:NUMBER" where NUMBER is an integer
+    number greater than or equal to zero. It specifies the hierarchy level
+    at which the nodes are displayed in the expanded state, while all nodes
+    below this level are collapsed. For example, expansionState="levelsExpanded:1"
+    means that only the root nodes are expanded. The value of "0" means that no nodes
+    are expanded -->
+      <!-- @el true -->
+    </attribute>
   </tag>
   <tag>
     <description>A component which can optionally be placed inside of grouping-enabled &amp;lt;o:dataTable&gt; tag to

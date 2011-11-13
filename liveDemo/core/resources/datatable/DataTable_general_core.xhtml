@@ -46,11 +46,11 @@
       <f:facet name="header">
         <o:groupingBox id="groupingBox"/>
       </f:facet>
-      <o:rowGrouping groupingRules="#{sessionScope.banks_savedGroupingRules}"/>
+      <o:rowGrouping groupingRules="#{sessionScope.banks_savedGroupingRules}" expansionState="#{BanksList.expansionState}"/>
       <o:scrolling/>
-      <o:singleRowSelection
+      <o:singleRowSelection rowData="#{sessionScope.selectedBank}"
               style="background: url('../images/treetable/selected.gif') repeat-x #5d8bba !important; color: white !important;"/>
-      <o:columnResizing resizingState="#{BanksList.columnResizingState}" autoSaveState="true"/>
+      <o:columnResizing resizingState="#{sessionScope.banks_columnResizingState}" autoSaveState="true"/>
       <o:columnReordering/>
 
       <f:facet name="columnMenu">

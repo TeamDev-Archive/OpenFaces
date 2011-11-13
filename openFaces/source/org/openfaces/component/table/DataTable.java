@@ -248,6 +248,14 @@ public class DataTable extends AbstractTable {
     }
 
     @Override
+    protected void beforeRenderResponse(FacesContext context) {
+        super.beforeRenderResponse(context);
+        RowGrouping rowGrouping = getRowGrouping();
+        if (rowGrouping != null)
+            rowGrouping.beforeEncode();
+    }
+
+    @Override
     public void encodeBegin(FacesContext facesContext) throws IOException {
         if (AjaxUtil.getSkipExtraRenderingOnPortletsAjax(facesContext))
             return;
@@ -426,15 +434,44 @@ public class DataTable extends AbstractTable {
 
     @Override
     public boolean getNodeHasChildren() {
+        int rowIndex = getRowIndex();
+        return getNodeHasChildren(rowIndex);
+    }
+
+    @Override
+    protected boolean getNodeHasChildren(int rowIndex) {
         TableDataModel model = getModel();
         Map<Object, ? extends NodeInfo> rowHierarchy = model.getExtractedRowHierarchy();
         if (rowHierarchy == null) return false;
-        int rowIndex = getRowIndex();
+
         if (rowIndex == -1) return false;
         NodeInfo nodeInfo = rowHierarchy.get(rowIndex);
         if (nodeInfo == null) return false;
 
         return nodeInfo.getNodeHasChildren();
+    }
+
+    @Override
+    public boolean isNodeExpanded() {
+        Object rowKey = getRowKey();
+        TreePath keyPath = new TreePath(rowKey, null);
+        return isNodeExpanded(keyPath);
+    }
+
+    @Override
+    protected boolean isNodeExpanded(TreePath keyPath) {
+        RowGrouping rowGrouping = getRowGrouping();
+        if (rowGrouping == null) throw
+                new IllegalStateException("isNodeExpanded can only be called from a table with row grouping capability");
+        return rowGrouping.isNodeExpanded(keyPath);
+    }
+
+    @Override
+    protected void setNodeExpanded(TreePath keyPath, boolean expanded) {
+        RowGrouping rowGrouping = getRowGrouping();
+        if (rowGrouping == null) throw
+                new IllegalStateException("setNodeExpanded can only be called from a table with row grouping capability");
+        rowGrouping.setNodeExpanded(keyPath, expanded);
     }
 
     /**

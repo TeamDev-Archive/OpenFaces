@@ -49,4 +49,8 @@ public class RowGroupingJspTag extends AbstractComponentJspTag {
     public void setHideGroupingColumns(ValueExpression hideGroupingColumns) {
         getDelegate().setPropertyValue("hideGroupingColumns", hideGroupingColumns);
     }
+
+    public void setExpansionState(ValueExpression expansionState) {
+        getDelegate().setPropertyValue("expansionState", expansionState);
+    }
 }

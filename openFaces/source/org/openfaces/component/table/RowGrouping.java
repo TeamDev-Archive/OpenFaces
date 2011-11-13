@@ -36,6 +36,7 @@ public class RowGrouping extends OUIComponentBase {
     private String groupingValueStringVar = "groupingValueString";
     private Boolean groupOnHeaderClick;
     private Boolean hideGroupingColumns;
+    private ExpansionState expansionState = new AllNodesExpanded();
 
     private DataTable dataTable;
 
@@ -57,7 +58,8 @@ public class RowGrouping extends OUIComponentBase {
                 groupingValueVar,
                 groupingValueStringVar,
                 groupOnHeaderClick,
-                hideGroupingColumns
+                hideGroupingColumns,
+                expansionState
         };
     }
 
@@ -72,6 +74,7 @@ public class RowGrouping extends OUIComponentBase {
         groupingValueStringVar = (String) state[i++];
         groupOnHeaderClick = (Boolean) state[i++];
         hideGroupingColumns = (Boolean) state[i++];
+        expansionState = (ExpansionState) state[i++];
     }
 
     @Override
@@ -79,6 +82,11 @@ public class RowGrouping extends OUIComponentBase {
         super.processUpdates(context);
         if (groupingRules != null && ValueBindings.set(this, "groupingRules", groupingRules))
             groupingRules = null;
+
+        ValueExpression expansionStateExpression = getValueExpression("expansionState");
+        if (expansionStateExpression != null)
+            expansionStateExpression.setValue(context.getELContext(), expansionState);
+
     }
 
     public void acceptNewGroupingRules(List<GroupingRule> groupingRules) {
@@ -209,5 +217,37 @@ public class RowGrouping extends OUIComponentBase {
 
     public void setHideGroupingColumns(boolean hideGroupingColumns) {
         this.hideGroupingColumns = hideGroupingColumns;
+    }
+
+    protected boolean isNodeExpanded(TreePath keyPath) {
+        if (keyPath == null)
+            return false;
+        return expansionState.isNodeExpanded(keyPath);
+    }
+
+    protected void setNodeExpanded(TreePath keyPath, boolean expanded) {
+        boolean oldExpansion = isNodeExpanded(keyPath);
+        if (expanded == oldExpansion)
+            return;
+        expansionState = expansionState.getMutableExpansionState();
+        expansionState.setNodeExpanded(keyPath, expanded);
+    }
+
+    protected void beforeEncode() {
+        ValueExpression expansionStateExpression = getValueExpression("expansionState");
+        if (expansionStateExpression != null) {
+            FacesContext context = getFacesContext();
+            ExpansionState newExpansionState = (ExpansionState) expansionStateExpression.getValue(context.getELContext());
+            if (newExpansionState != null)
+                setExpansionState(newExpansionState);
+        }
+    }
+
+    public ExpansionState getExpansionState() {
+        return expansionState;
+    }
+
+    public void setExpansionState(ExpansionState expansionState) {
+        this.expansionState = expansionState;
     }
 }

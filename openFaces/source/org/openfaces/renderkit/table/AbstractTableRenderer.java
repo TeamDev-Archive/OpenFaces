@@ -849,9 +849,9 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         return result;
     }
 
-    private void decodeFoldingSupport(FacesContext context, AbstractTable treeTable) {
+    private void decodeFoldingSupport(FacesContext context, AbstractTable table) {
         Map<String, String> requestParameterMap = context.getExternalContext().getRequestParameterMap();
-        String expandedNodes = requestParameterMap.get(getExpandedNodesFieldName(context, treeTable));
+        String expandedNodes = requestParameterMap.get(getExpandedNodesFieldName(context, table));
         if (expandedNodes == null)
             return;
         String[] indexStrs = expandedNodes.split(",");
@@ -862,7 +862,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
             int rowIndex = Integer.parseInt(indexStr);
             expandedRowIndexes.add(rowIndex);
         }
-        treeTable.acceptNewExpandedRowIndexes(expandedRowIndexes);
+        table.acceptNewExpandedRowIndexes(expandedRowIndexes);
     }
 
     public static boolean isAjaxFoldingInProgress(FacesContext context) {
