@@ -3117,8 +3117,8 @@ O$.Table = {
                   headerHorizOffsetVal = O$.calculateNumericCSSValue(headerOffset.horizontal, previousSize.width),
                   headerVertOffsetVal = O$.calculateNumericCSSValue(headerOffset.vertical, previousSize.height);
           return {
-            x: Math.round(zero.x + previousPos.x + previousSize.width + headerHorizOffsetVal),
-            y: Math.round(zero.y + previousPos.y + headerVertOffsetVal)
+            x: Math.round(previousPos.x + previousSize.width + headerHorizOffsetVal),
+            y: Math.round(previousPos.y + headerVertOffsetVal)
           };
         }
 
