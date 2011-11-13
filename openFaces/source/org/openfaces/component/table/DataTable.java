@@ -110,8 +110,8 @@ public class DataTable extends AbstractTable {
         super.validateSortingGroupingColumns();
         RowGrouping rowGrouping = getRowGrouping();
         if (rowGrouping != null) {
-            List<GroupingRule> sortingRules = rowGrouping.getGroupingRules();
-            validateSortingOrGroupingRules(sortingRules);
+            List<GroupingRule> rules = rowGrouping.getGroupingRules();
+            validateSortingOrGroupingRules(rules);
         }
     }
 

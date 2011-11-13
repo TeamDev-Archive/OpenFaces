@@ -131,7 +131,7 @@ public class GroupingBox extends org.openfaces.component.OUIComponentBase {
     }
 
     public String getConnectorStyle() {
-        return ValueBindings.get(this, "connectorStyle", connectorStyle, "1px solid black");
+        return ValueBindings.get(this, "connectorStyle", connectorStyle, "1px solid #404040");
     }
 
     public void setConnectorStyle(String connectorStyle) {

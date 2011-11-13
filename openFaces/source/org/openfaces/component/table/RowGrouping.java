@@ -21,7 +21,7 @@ import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class RowGrouping extends OUIComponentBase {
@@ -30,14 +30,14 @@ public class RowGrouping extends OUIComponentBase {
     private static final String DEFAULT_GROUP_HEADER_TEXT_EXPRESSION = "#{columnHeader}: #{groupingValueString}";
     private static final String GROUP_HEADER_TEXT_ATTRIBUTE = "groupHeaderText";
 
-    private List<GroupingRule> groupingRules = new ArrayList<GroupingRule>();
+    private List<GroupingRule> groupingRules;
     private String columnHeaderVar = "columnHeader";
     private String groupingValueVar = "groupingValue";
     private String groupingValueStringVar = "groupingValueString";
     private Boolean groupOnHeaderClick;
+    private Boolean hideGroupingColumns;
 
     private DataTable dataTable;
-    private Boolean hideGroupingColumns;
 
     public RowGrouping() {
         setRendererType("org.openfaces.RowGroupingRenderer");
@@ -56,7 +56,8 @@ public class RowGrouping extends OUIComponentBase {
                 columnHeaderVar,
                 groupingValueVar,
                 groupingValueStringVar,
-                groupOnHeaderClick
+                groupOnHeaderClick,
+                hideGroupingColumns
         };
     }
 
@@ -70,7 +71,14 @@ public class RowGrouping extends OUIComponentBase {
         groupingValueVar = (String) state[i++];
         groupingValueStringVar = (String) state[i++];
         groupOnHeaderClick = (Boolean) state[i++];
+        hideGroupingColumns = (Boolean) state[i++];
+    }
 
+    @Override
+    public void processUpdates(FacesContext context) {
+        super.processUpdates(context);
+        if (groupingRules != null && ValueBindings.set(this, "groupingRules", groupingRules))
+            groupingRules = null;
     }
 
     public void acceptNewGroupingRules(List<GroupingRule> groupingRules) {
@@ -80,7 +88,7 @@ public class RowGrouping extends OUIComponentBase {
     }
 
     public List<GroupingRule> getGroupingRules() {
-        return groupingRules;
+        return ValueBindings.get(this, "groupingRules", groupingRules, Collections.emptyList(), List.class);
     }
 
     public void setGroupingRules(List<GroupingRule> groupingRules) {
@@ -188,7 +196,7 @@ public class RowGrouping extends OUIComponentBase {
     }
 
     public boolean getGroupOnHeaderClick() {
-        return ValueBindings.get(this, "groupOnHeaderClick", groupOnHeaderClick, true);
+        return ValueBindings.get(this, "groupOnHeaderClick", groupOnHeaderClick, false);
     }
 
     public void setGroupOnHeaderClick(boolean groupOnHeaderClick) {
