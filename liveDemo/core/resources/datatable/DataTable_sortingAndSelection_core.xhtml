@@ -17,11 +17,8 @@
                  style="width: 700px; margin-left: 20px; line-height: 17px;"
                  styleClass="datatable"
                  rolloverRowStyle="background: #f1f1f1;">
-      <f:facet name="header">
-        <o:groupingBox/>
-      </f:facet>
-      <o:rowGrouping/>
       <o:singleRowSelection rowData="#{BookList.selectedBook}" style="background: #a4aec5; color: white"/>
+      <o:columnReordering/>
       <f:facet name="columnMenu">
         <o:columnMenu/>
       </f:facet>
@@ -56,10 +53,6 @@
                  style="width: 700px; margin-left: 20px; line-height: 17px;"
                  styleClass="datatable"
                  rolloverRowStyle="background: #f1f1f1;">
-      <f:facet name="header">
-        <o:groupingBox/>
-      </f:facet>
-      <o:rowGrouping/>
       <o:multipleRowSelection rowDatas="#{BookList.list}" style="background: #a4aec5; color: white;"/>
       <o:columnReordering/>
       <f:facet name="columnMenu">
@@ -77,11 +70,11 @@
       <o:column header="ISBN" sortingExpression="#{book.isbn}" style="width: 13%; text-align: center;">
         <h:outputText value="#{book.isbn}"/>
       </o:column>
-      <o:column header="Publication Date" groupingExpression="#{book.publicationDate}"
+      <o:column header="Publication Date" sortingExpression="#{book.publicationDate}"
                 style="width: 13%;" bodyStyle="text-align: right;">
         <h:outputText value="#{book.publicationDate}"/>
       </o:column>
-      <o:column header="Publisher"
+      <o:column header="Publisher" sortingExpression="#{book.publisher}"
                 style="width: 39%;" bodyStyle="padding-left: 20px;">
         <h:outputText value="#{book.publisher}"/>
       </o:column>
