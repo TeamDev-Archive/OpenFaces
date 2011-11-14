@@ -25,6 +25,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -551,4 +552,14 @@ public class DataTable extends AbstractTable {
             return groupingBoxList.get(0);
         return null;
     }
+
+    @Override
+    protected List<UIComponent> getExtensionComponents() {
+        ArrayList<UIComponent> result = new ArrayList<UIComponent>(super.getExtensionComponents());
+        result.addAll(Arrays.asList(
+                getRowGrouping()
+        ));
+        return result;
+    }
+
 }
