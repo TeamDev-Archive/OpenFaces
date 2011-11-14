@@ -321,7 +321,7 @@ public class Styles {
                 //
                 // OF-28: IE limits the number of <style> tags (and stylesheets in general) to 31! So we're using
                 // programmatic script addition which uses the single stylesheet created dynamically to address this limitation
-                writeCssClassesAsScriptElement(context, cssClasses, forceStyleAsOnloadScript);
+                writeCssClassesAsScriptElement(context, component, cssClasses, forceStyleAsOnloadScript);
             } else {
                 writeCssClassesAsStyleElement(context, component, stylesId, cssClasses);
             }
@@ -336,9 +336,9 @@ public class Styles {
      * @param cssRules The list of css rules for rendering
      * @throws IOException if an input/output error occurs while rendering
      */
-    public static void writeCssClassesAsScriptElement(FacesContext context, List<String> cssRules, boolean asOnloadScript) throws IOException {
-        ScriptBuilder styleRegistrationScript = new ScriptBuilder().functionCall("O$.addCssRules", cssRules).semicolon();
-        if (!asOnloadScript || OpenFacesApplication.isConstructingView(context)) {
+    public static void writeCssClassesAsScriptElement(FacesContext context, UIComponent component, List<String> cssRules, boolean asOnloadScript) throws IOException {
+        ScriptBuilder styleRegistrationScript = new ScriptBuilder().functionCall("O$.addUnloadableCssRules", component, cssRules).semicolon();
+        if (asOnloadScript || OpenFacesApplication.isConstructingView(context)) {
             Rendering.renderInitScript(context, styleRegistrationScript, Resources.utilJsURL(context));
         } else {
             Rendering.appendOnLoadScript(context, styleRegistrationScript);

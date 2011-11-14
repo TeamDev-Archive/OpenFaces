@@ -86,4 +86,22 @@ public abstract class DataTableSelection extends AbstractTableSelection {
         return getModel().getRowIndex();
     }
 
+    protected RowGroupingSelectionMode getRowGroupingSelectionMode() {
+        DataTable table = (DataTable) getTable();
+        RowGrouping rowGrouping = table.getRowGrouping();
+        return rowGrouping != null ? rowGrouping.getSelectionMode() : null;
+    }
+
+    protected Object validateRowData(RowGroupingSelectionMode rowGroupingSelectionMode, Object rowData) {
+        if (rowGroupingSelectionMode == null) return rowData;
+        switch (rowGroupingSelectionMode) {
+            case ALL_ROWS:
+                return rowData;
+            case DATA_ROWS:
+                return rowData instanceof RowGroupHeaderOrFooter ? null : rowData;
+            default:
+                throw new IllegalStateException(
+                        "Unknown value of RowGroupingSelectionMode property: " + rowGroupingSelectionMode);
+        }
+    }
 }

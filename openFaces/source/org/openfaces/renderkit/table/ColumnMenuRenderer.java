@@ -13,9 +13,12 @@ package org.openfaces.renderkit.table;
 
 import org.openfaces.component.command.MenuItem;
 import org.openfaces.component.command.MenuSeparator;
+import org.openfaces.component.table.CancelGroupingMenuItem;
 import org.openfaces.component.table.ColumnMenu;
 import org.openfaces.component.table.ColumnVisibilityMenu;
+import org.openfaces.component.table.GroupByColumnMenuItem;
 import org.openfaces.component.table.HideColumnMenuItem;
+import org.openfaces.component.table.RemoveFromGroupingMenuItem;
 import org.openfaces.component.table.SortAscendingMenuItem;
 import org.openfaces.component.table.SortDescendingMenuItem;
 import org.openfaces.renderkit.command.PopupMenuRenderer;
@@ -35,6 +38,9 @@ public class ColumnMenuRenderer extends PopupMenuRenderer {
             Application application = FacesContext.getCurrentInstance().getApplication();
             menuItems.add(application.createComponent(SortAscendingMenuItem.COMPONENT_TYPE));
             menuItems.add(application.createComponent(SortDescendingMenuItem.COMPONENT_TYPE));
+            menuItems.add(application.createComponent(GroupByColumnMenuItem.COMPONENT_TYPE));
+            menuItems.add(application.createComponent(RemoveFromGroupingMenuItem.COMPONENT_TYPE));
+//            menuItems.add(application.createComponent(CancelGroupingMenuItem.COMPONENT_TYPE));
             menuItems.add(application.createComponent(HideColumnMenuItem.COMPONENT_TYPE));
             menuItems.add(application.createComponent(MenuSeparator.COMPONENT_TYPE));
             ColumnVisibilityMenu columnVisibilityMenu = (ColumnVisibilityMenu) application.createComponent(ColumnVisibilityMenu.COMPONENT_TYPE);

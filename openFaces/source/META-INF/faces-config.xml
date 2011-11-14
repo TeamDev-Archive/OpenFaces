@@ -837,7 +837,22 @@
     <component-type>org.openfaces.GroupFooterRow</component-type>
     <component-class>org.openfaces.component.table.GroupFooterRow</component-class>
   </component>
-  
+
+
+  <component>
+    <component-type>org.openfaces.GroupByColumnMenuItem</component-type>
+    <component-class>org.openfaces.component.table.GroupByColumnMenuItem</component-class>
+  </component>
+
+  <component>
+    <component-type>org.openfaces.RemoveFromGroupingMenuItem</component-type>
+    <component-class>org.openfaces.component.table.RemoveFromGroupingMenuItem</component-class>
+  </component>
+
+  <component>
+    <component-type>org.openfaces.CancelGroupingMenuItem</component-type>
+    <component-class>org.openfaces.component.table.CancelGroupingMenuItem</component-class>
+  </component>
   <render-kit>
     <renderer>
       <component-family>org.openfaces.DataTable</component-family>
@@ -1401,6 +1416,21 @@
       <component-family>org.openfaces.GroupingBox</component-family>
       <renderer-type>org.openfaces.GroupingBoxRenderer</renderer-type>
       <renderer-class>org.openfaces.renderkit.table.GroupingBoxRenderer</renderer-class>
+    </renderer>
+    <renderer>
+      <component-family>org.openfaces.GroupByColumnMenuItem</component-family>
+      <renderer-type>org.openfaces.GroupByColumnMenuItemRenderer</renderer-type>
+      <renderer-class>org.openfaces.renderkit.table.GroupByColumnMenuItemRenderer</renderer-class>
+    </renderer>
+    <renderer>
+      <component-family>org.openfaces.RemoveFromGroupingMenuItem</component-family>
+      <renderer-type>org.openfaces.RemoveFromGroupingMenuItemRenderer</renderer-type>
+      <renderer-class>org.openfaces.renderkit.table.RemoveFromGroupingMenuItemRenderer</renderer-class>
+    </renderer>
+    <renderer>
+      <component-family>org.openfaces.CancelGroupingMenuItem</component-family>
+      <renderer-type>org.openfaces.CancelGroupingMenuItemRenderer</renderer-type>
+      <renderer-class>org.openfaces.renderkit.table.CancelGroupingMenuItemRenderer</renderer-class>
     </renderer>
 
   </render-kit>

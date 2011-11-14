@@ -54,5 +54,8 @@ public class RowGroupHeaderOrFooter<C extends RowGroupHeaderOrFooter> implements
         return thisValue.equals(thatValue);
     }
 
-
+    @Override
+    public int hashCode() {
+        return rowGroup != null ? rowGroup.hashCode() : 0;
+    }
 }

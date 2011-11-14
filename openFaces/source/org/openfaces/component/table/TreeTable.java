@@ -634,34 +634,6 @@ public class TreeTable extends AbstractTable {
         return new NodeComparator(facesContext, sortingExpression, sortingComparator, requestMap, sortAscending);
     }
 
-    @Override
-    public void acceptNewExpandedRowIndexes(Set indexes) {
-        FacesContext context = getFacesContext();
-        boolean dontCollapseNodes = isReloadingThisComponentWithA4j() || TreeTableRenderer.isAjaxFoldingInProgress(context);
-        List storedRowKeys = getModel().getStoredRowKeys();
-        int rowCount = storedRowKeys.size();
-        for (int i = 0; i < rowCount; i++) {
-            TreePath keyPath = (TreePath) storedRowKeys.get(i);
-            boolean expanded = isNodeExpanded(keyPath);
-            boolean shouldBeExpanded = indexes.contains(Integer.valueOf(i));
-            if (expanded == shouldBeExpanded)
-                continue;
-            if (!shouldBeExpanded && dontCollapseNodes)
-                continue;
-            if (!getNodeHasChildren(i)) { // rows without children should have expanded state by default
-                setNodeExpanded(keyPath, true);
-            } else {
-                setNodeExpanded(keyPath, shouldBeExpanded);
-            }
-        }
-    }
-
-    private boolean isReloadingThisComponentWithA4j() {
-        // needed for JSFC-2526. It doesn't seem possible to know the a4j rerendered components on the decoding stage,
-        // so we suppose that this component is rerendered if it is an A4j request.
-        return Environment.isAjax4jsfRequest();
-    }
-
     public int getMaxLevel() {
         return deepestLevel;
     }
@@ -805,7 +777,8 @@ public class TreeTable extends AbstractTable {
         return getNodeHasChildren(rowIndex);
     }
 
-    private boolean getNodeHasChildren(int rowIndex) {
+    @Override
+    protected boolean getNodeHasChildren(int rowIndex) {
         if (rowIndex == -1)
             return false;
         if (!isRowAvailableAfterRestoring(rowIndex))
@@ -872,12 +845,14 @@ public class TreeTable extends AbstractTable {
         return false;
     }
 
+    @Override
     public boolean isNodeExpanded(TreePath keyPath) {
         if (keyPath == null)
             return false;
         return expansionState.isNodeExpanded(keyPath);
     }
 
+    @Override
     public void setNodeExpanded(TreePath keyPath, boolean expanded) {
         boolean oldExpansion = isNodeExpanded(keyPath);
         if (expanded == oldExpansion)

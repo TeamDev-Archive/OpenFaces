@@ -90,6 +90,7 @@ O$.InputText = {
         }
       });
 
+    O$.initUnloadableComponent(inputText);
   }
 
 };

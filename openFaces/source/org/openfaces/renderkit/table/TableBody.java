@@ -96,7 +96,7 @@ public class TableBody extends TableSection {
 
     protected void renderRows(FacesContext context, HeaderCell.AdditionalContentWriter additionalContentWriter) throws IOException {
         AbstractTable table = (AbstractTable) tableStructure.getComponent();
-        List<BaseColumn> columns = table.getRenderedColumns();
+        List<BaseColumn> columns = table.getAdaptedRenderedColumns();
         int first = table.getFirst();
         if (table.getRows() != 0)
             throw new IllegalStateException("table.getRows() should always be null in OpenFaces tables, but it is: " + table.getRows());
@@ -314,7 +314,7 @@ public class TableBody extends TableSection {
                 String columnIdVar = table.getColumnIdVar();
                 Object prevColumnIndexVarValue = null;
                 Object prevColumnIdVarValue = null;
-                int originalColIndex = (Integer) column.getAttributes().get(COLUMN_ATTR_ORIGINAL_INDEX);
+                int originalColIndex = getOriginalColumnIndex(column);
                 if (columnIndexVar != null)
                     prevColumnIndexVarValue = requestMap.put(columnIndexVar, originalColIndex);
                 if (columnIdVar != null) {
@@ -441,6 +441,15 @@ public class TableBody extends TableSection {
         return new List[]{leftRows, rows, rightRows};
     }
 
+    private int getOriginalColumnIndex(BaseColumn column) {
+        if (column instanceof TreeColumn) {
+            BaseColumn delegate = ((TreeColumn) column).getDelegate();
+            if (delegate != null)
+                return getOriginalColumnIndex(delegate);
+        }
+        return (Integer) column.getAttributes().get(COLUMN_ATTR_ORIGINAL_INDEX);
+    }
+
     private boolean isColumnApplicable(
             FacesContext context,
             Cell cell,
@@ -558,7 +567,7 @@ public class TableBody extends TableSection {
      */
     private List<Object>[] prepareCustomCells(AbstractTable table, List<Row> applicableCustomRows) {
         List<BaseColumn> allColumns = table.getAllColumns();
-        List<BaseColumn> columnsForRendering = table.getRenderedColumns();
+        List<BaseColumn> columnsForRendering = table.getAdaptedRenderedColumns();
         int allColCount = allColumns.size();
         for (int i = 0; i < allColCount; i++) {
             UIComponent col = allColumns.get(i);
@@ -631,8 +640,10 @@ public class TableBody extends TableSection {
                 if (customCellList == null)
                     continue;
                 int cellSpan = 1;
+                boolean groupHeaderCell = false;
                 for (Object cellObj : customCellList) {
                     Cell cell = (Cell) cellObj;
+                    groupHeaderCell |= GroupHeaderRow.isSyntheticGroupHeaderCell(cell);
 
                     int currentCellSpan = cell.getSpan();
                     if (currentCellSpan != 1)
@@ -640,7 +651,26 @@ public class TableBody extends TableSection {
                 }
                 if (cellSpan == 1)
                     continue;
-                SpannedTableCell spannedTableCell = new SpannedTableCell(allColumns.get(i), customCellList);
+                BaseColumn column = allColumns.get(i);
+                if (groupHeaderCell) {
+                    // when table row grouping is turned on, the automatically generated implicit tree column is
+                    // always generated to be the first rendered column, and spannedTableCell.getColumn() refers
+                    // the first column in the allColumns list, and so it always refers to the first column declared
+                    // in the table's markup, which might actually be different than the first column in the
+                    // renderedColumns list. Hence we're fixing this so that tree column was properly rendered on
+                    // group header cells
+                    TreeColumn treeColumn = null;
+                    for (BaseColumn c : columnsForRendering) {
+                        if (c instanceof TreeColumn) {
+                            treeColumn = (TreeColumn) c;
+                            break;
+                        }
+                    }
+                    if (treeColumn == null)
+                        throw new IllegalStateException("There must be an implicitly generated tree column in the grouped table");
+                    column = treeColumn;
+                }
+                SpannedTableCell spannedTableCell = new SpannedTableCell(column, customCellList);
                 for (int cellIndex = i; cellIndex < i + cellSpan; cellIndex++) {
                     rowCellsByAbsoluteIndex[cellIndex] = Collections.singletonList(spannedTableCell);
                 }
@@ -651,7 +681,7 @@ public class TableBody extends TableSection {
         List[] applicableCells = new List[visibleColCount];
         for (int i = 0; i < visibleColCount; i++) {
             BaseColumn column = columnsForRendering.get(i);
-            int originalColIndex = (Integer) column.getAttributes().get(COLUMN_ATTR_ORIGINAL_INDEX);
+            int originalColIndex = getOriginalColumnIndex(column);
             applicableCells[i] = rowCellsByAbsoluteIndex[originalColIndex];
         }
         return (List<Object>[]) applicableCells;

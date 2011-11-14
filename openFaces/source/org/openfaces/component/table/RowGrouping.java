@@ -15,6 +15,7 @@ import org.openfaces.component.OUIComponentBase;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.util.Components;
 import org.openfaces.util.Rendering;
+import org.openfaces.util.ValueBindings;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
@@ -22,6 +23,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.event.PhaseId;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class RowGrouping extends OUIComponentBase {
@@ -30,10 +32,15 @@ public class RowGrouping extends OUIComponentBase {
     private static final String DEFAULT_GROUP_HEADER_TEXT_EXPRESSION = "#{columnHeader}: #{groupingValueString}";
     private static final String GROUP_HEADER_TEXT_ATTRIBUTE = "groupHeaderText";
 
-    private List<GroupingRule> groupingRules = new ArrayList<GroupingRule>();
+    private List<GroupingRule> groupingRules;
     private String columnHeaderVar = "columnHeader";
     private String groupingValueVar = "groupingValue";
     private String groupingValueStringVar = "groupingValueString";
+    private Boolean groupOnHeaderClick;
+    private Boolean hideGroupingColumns;
+    private ExpansionState expansionState = new AllNodesExpanded();
+    private RowGroupingSelectionMode selectionMode;
+
     private DataTable dataTable;
 
     public RowGrouping() {
@@ -52,7 +59,11 @@ public class RowGrouping extends OUIComponentBase {
                 saveAttachedState(context, groupingRules),
                 columnHeaderVar,
                 groupingValueVar,
-                groupingValueStringVar
+                groupingValueStringVar,
+                groupOnHeaderClick,
+                hideGroupingColumns,
+                expansionState,
+                selectionMode
         };
     }
 
@@ -65,7 +76,21 @@ public class RowGrouping extends OUIComponentBase {
         columnHeaderVar = (String) state[i++];
         groupingValueVar = (String) state[i++];
         groupingValueStringVar = (String) state[i++];
+        groupOnHeaderClick = (Boolean) state[i++];
+        hideGroupingColumns = (Boolean) state[i++];
+        expansionState = (ExpansionState) state[i++];
+        selectionMode = (RowGroupingSelectionMode) state[i++];
+    }
 
+    @Override
+    public void processUpdates(FacesContext context) {
+        super.processUpdates(context);
+        if (groupingRules != null && ValueBindings.set(this, "groupingRules", groupingRules))
+            groupingRules = null;
+
+        ValueExpression expansionStateExpression = getValueExpression("expansionState");
+        if (expansionStateExpression != null)
+            expansionStateExpression.setValue(context.getELContext(), expansionState);
     }
 
     public void acceptNewGroupingRules(List<GroupingRule> groupingRules) {
@@ -75,7 +100,7 @@ public class RowGrouping extends OUIComponentBase {
     }
 
     public List<GroupingRule> getGroupingRules() {
-        return groupingRules;
+        return ValueBindings.get(this, "groupingRules", groupingRules, Collections.emptyList(), List.class);
     }
 
     public void setGroupingRules(List<GroupingRule> groupingRules) {
@@ -188,4 +213,59 @@ public class RowGrouping extends OUIComponentBase {
         Components.setRequestVariable(getGroupingValueStringVar(), groupingValueStr);
     }
 
+    public boolean getGroupOnHeaderClick() {
+        return ValueBindings.get(this, "groupOnHeaderClick", groupOnHeaderClick, false);
+    }
+
+    public void setGroupOnHeaderClick(boolean groupOnHeaderClick) {
+        this.groupOnHeaderClick = groupOnHeaderClick;
+    }
+
+    public boolean getHideGroupingColumns() {
+        return ValueBindings.get(this, "hideGroupingColumns", hideGroupingColumns, true);
+    }
+
+    public void setHideGroupingColumns(boolean hideGroupingColumns) {
+        this.hideGroupingColumns = hideGroupingColumns;
+    }
+
+    protected boolean isNodeExpanded(TreePath keyPath) {
+        if (keyPath == null)
+            return false;
+        return expansionState.isNodeExpanded(keyPath);
+    }
+
+    protected void setNodeExpanded(TreePath keyPath, boolean expanded) {
+        boolean oldExpansion = isNodeExpanded(keyPath);
+        if (expanded == oldExpansion)
+            return;
+        expansionState = expansionState.getMutableExpansionState();
+        expansionState.setNodeExpanded(keyPath, expanded);
+    }
+
+    protected void beforeEncode() {
+        ValueExpression expansionStateExpression = getValueExpression("expansionState");
+        if (expansionStateExpression != null) {
+            FacesContext context = getFacesContext();
+            ExpansionState newExpansionState = (ExpansionState) expansionStateExpression.getValue(context.getELContext());
+            if (newExpansionState != null)
+                setExpansionState(newExpansionState);
+        }
+    }
+
+    public ExpansionState getExpansionState() {
+        return expansionState;
+    }
+
+    public void setExpansionState(ExpansionState expansionState) {
+        this.expansionState = expansionState;
+    }
+
+    public RowGroupingSelectionMode getSelectionMode() {
+        return ValueBindings.get(this, "selectionMode", selectionMode, RowGroupingSelectionMode.DATA_ROWS, RowGroupingSelectionMode.class);
+    }
+
+    public void setSelectionMode(RowGroupingSelectionMode selectionMode) {
+        this.selectionMode = selectionMode;
+    }
 }

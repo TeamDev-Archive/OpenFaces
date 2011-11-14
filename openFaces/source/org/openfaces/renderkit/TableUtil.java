@@ -22,6 +22,7 @@ import org.openfaces.component.table.DynamicColumn;
 import org.openfaces.component.table.RowGroupHeaderOrFooter;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
+import org.openfaces.renderkit.table.TableBody;
 import org.openfaces.util.Components;
 import org.openfaces.util.ReflectionUtil;
 import org.openfaces.util.Rendering;
@@ -134,6 +135,30 @@ public class TableUtil {
             }
         }
         return columns;
+    }
+
+    public static void copyColumnAttributes(UIComponent srcColumn, BaseColumn destColumn) {
+        String[] copiedAttributes = new String[]{
+                "headerValue", "footerValue", "width", "align", "valign", "resizable", "minResizingWidth",
+                "fixed", "menuAllowed",
+                "style", "styleClass", "headerStyle", "headerClass", "subHeaderStyle", "subHeaderClass",
+                "bodyStyle", "bodyClass", "footerStyle", "footerClass",
+                "onclick", "ondblclick", "onmousedown", "onmouseover", "onmousemove", "onmouseout", "onmouseup",
+                "headerOnclick", "headerOndblclick", "headerOnmousedown", "headerOnmouseover",
+                "headerOnmousemove", "headerOnmouseout", "headerOnmouseup", "bodyOnclick", "bodyOndblclick",
+                "bodyOnmousedown", "bodyOnmouseover", "bodyOnmousemove", "bodyOnmouseout", "bodyOnmouseup",
+                "footerOnclick", "footerOndblclick", "footerOnmousedown", "footerOnmouseover", "footerOnmousemove",
+                "footerOnmouseout", "footerOnmouseup"};
+        for (String attrName : copiedAttributes) {
+            ValueExpression expression = srcColumn.getValueExpression(attrName);
+            if (expression != null)
+                destColumn.setValueExpression(attrName, expression);
+            else {
+                Object attributeValue = srcColumn.getAttributes().get(attrName);
+                if (attributeValue != null)
+                    destColumn.getAttributes().put(attrName, attributeValue);
+            }
+        }
     }
 
     /**

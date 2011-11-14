@@ -16,9 +16,22 @@ if (!window.O$) {
   };
 
   O$.extend = function(obj, withObj) {
+    /*Added explorer memory leak fix because of circular references - IE itself doesn't resolve them,
+    * so we call destroyAllFunctions where all functions added with extend method will be cleared */
+    var ie;
+    if (O$.isExplorer) {
+      ie = O$.isExplorer();
+      if (ie && !obj.customPropertiesForIE) {
+        obj.customPropertiesForIE = [];
+      }
+    }
     for (var propertyName in withObj) {
-      if (propertyName != "prototype")
+      if (propertyName != "prototype") {
         obj[propertyName] = withObj[propertyName];
+        if (ie) {
+          obj.customPropertiesForIE.push(propertyName);
+        }
+      }
     }
   };
 
@@ -1401,43 +1414,55 @@ if (!window.O$) {
   };
 
   O$.addEvent = function(componentClientId, eventName, functionScript) {
-    if (!O$._attachedEvents) {
-      O$._attachedEvents = [];
-    }
-
     var element = O$.byIdOrName(componentClientId);
     if (element) {
       O$.addEventHandler(element, eventName, functionScript);
     }
-
-    var eventToDetach = {
-      componentClientId: componentClientId,
-      eventName: eventName,
-      functionScript: functionScript
-    };
-
-    if (!O$._attachedEvents[componentClientId]) {
-      O$._attachedEvents[componentClientId] = [];
-    }
-
-    var componentAttachedEvents = O$._attachedEvents[componentClientId];
-    componentAttachedEvents.push(eventToDetach);
-    O$._attachedEvents[componentClientId] = componentAttachedEvents;
   };
 
   O$.addEventHandler = function(elt, evtName, evtScript, useCapture) {
+
+    if (!elt._attachedEvents)
+      elt._attachedEvents = [];
+
+    var eventToAttach = {
+      functionScript: evtScript
+    };
+
     if (elt.addEventListener) {
       elt.addEventListener(evtName, evtScript, !!useCapture);
+      eventToAttach.eventName = evtName;
     } else if (elt.attachEvent) {
       elt.attachEvent("on" + evtName, evtScript);
+      eventToAttach.eventName = "on" + evtName;
     }
+    elt._attachedEvents.push(eventToAttach);
   };
 
   O$.removeEventHandler = function(elt, evtName, evtScript, useCapture) {
+    var eventToDetach = {
+      eventName: "",
+      functionScript: evtScript
+    };
+
     if (elt.addEventListener) {
       elt.removeEventListener(evtName, evtScript, !!useCapture);
+      eventToDetach.eventName = evtName;
     } else if (elt.attachEvent) {
-      elt.detachEvent("on" + evtName, evtScript);
+      if (evtName.indexOf("on") != 0) {
+        evtName = "on" + evtName;
+      }
+      elt.detachEvent(evtName, evtScript);
+      eventToDetach.eventName = evtName;
+    }
+    if (elt._attachedEvents) {
+      for (var index = 0; index < elt._attachedEvents.length; index++) {
+        if (elt._attachedEvents[index] != null && elt._attachedEvents[index].eventName == eventToDetach.eventName
+                && elt._attachedEvents[index].functionScript == eventToDetach.functionScript) {
+          elt._attachedEvents.splice(index, 1);
+          break;
+        }
+      }
     }
   };
 
@@ -1668,19 +1693,24 @@ if (!window.O$) {
     }
   };
 
-  O$.addEventHandler(window, "load", function() {
+  O$.addEventHandler(window, "load", function loadDocumentHandler() {
     O$._documentLoaded = true;
     var i, count;
-    if (O$._internalLoadHandlers)
+    if (O$._internalLoadHandlers) {
       for (i = 0,count = O$._internalLoadHandlers.length; i < count; i++) {
         var internalLoadHandler = O$._internalLoadHandlers[i];
         internalLoadHandler();
       }
-    if (O$._loadHandlers)
+      O$._internalLoadHandlers = [];
+    }
+    if (O$._loadHandlers) {
       for (i = 0,count = O$._loadHandlers.length; i < count; i++) {
         var loadHandler = O$._loadHandlers[i];
         loadHandler();
       }
+      O$._loadHandlers = [];
+    }
+    O$.removeEventHandler(window, "load", loadDocumentHandler);
   });
 
   O$.addUnloadEvent = function(func) {
@@ -1985,6 +2015,10 @@ if (!window.O$) {
         if (O$.onfocuschange)
           O$.onfocuschange(e);
       };
+      O$.addUnloadHandler(element,function () {
+         element.onfocus = null;
+         element.onblur = null;
+      });
       element._of_prevOnBlurHandler = element.onblur;
       element.onblur = function (e) {
         if (O$._activeElement == this) {
@@ -2283,6 +2317,7 @@ if (!window.O$) {
     O$.addEventHandler(element, "mouseup", function() {
       fn.call(element, false, element);
     });
+    O$.initUnloadableComponent(element);
   };
 
   O$.addMouseOverListener = function(element, listener) {
@@ -2378,6 +2413,7 @@ if (!window.O$) {
 
   O$.makeDraggable = function(element, dropTargetLocator) {
     var startPos = null;
+    O$.initUnloadableComponent(element);
     O$.addEventHandler(element, "mousedown", function(evt) {
       startPos = O$.getEventPoint(evt);
       O$.cancelEvent(evt);
@@ -2878,11 +2914,16 @@ if (!window.O$) {
     component.parentNode.insertBefore(focusControl, component);
 
     var oldUnloadHandler = component.onComponentUnload;
+    if (!oldUnloadHandler) {
+      O$.addThisComponentToAllParents(component);
+    }
     component.onComponentUnload = function() {
       if (oldUnloadHandler)
         oldUnloadHandler();
       if (component._focusOutline)
         component._focusOutline.remove();
+
+      O$.unloadAllHandlersAndEvents(component);
     };
   };
 
@@ -2892,6 +2933,26 @@ if (!window.O$) {
     for (var i = 0, count = ruleArray.length; i < count; i++) {
       var rule = ruleArray[i];
       O$.addCssRule(rule);
+    }
+  };
+
+  O$.addUnloadableCssRules = function(componentId, ruleArray) {
+    var element = O$(componentId);
+    if (element != null) {
+      function getNameOfCssClass(fullRule) {
+        return fullRule.substring(0, fullRule.indexOf("{"));
+      }
+      O$.initUnloadableComponent(element);
+      for (var i = 0, count = ruleArray.length; i < count; i++) {
+        O$.addCssRule(ruleArray[i]);
+      }
+      O$.addUnloadHandler(element, function () {
+        for (var i = 0, count = ruleArray.length; i < count; i++) {
+          O$.removeCssRule(getNameOfCssClass(ruleArray[i]));
+        }
+      });
+    } else {
+      O$.addCssRules(ruleArray);
     }
   };
 
@@ -2935,6 +2996,40 @@ if (!window.O$) {
     } catch (e) {
       O$.logError("O$.addCssRule threw an exception " + (e ? e.message : e) +
               "; tried to add the following rule: " + strRule);
+      throw e;
+    }
+
+  };
+
+  O$.removeCssRule = function(nameOfCssClass) {
+    var styleSheet = O$.getLocalStyleSheet();
+    if (!styleSheet)
+      return;
+
+    try {
+      if (styleSheet.removeRule) { // IE only
+        var rules = styleSheet.rules;
+        for (var i = 0; i < rules.length; i++) {
+          if (rules[i].selectorText == nameOfCssClass) {
+            delete  O$._cssRulesBySelectors[nameOfCssClass];
+            styleSheet.removeRule(i);
+            break;
+          }
+        }
+      } else { // all others
+        var rules = styleSheet.cssRules;
+        for (var i = 0; i < rules.length; i++) {
+          if (rules[i].selectorText == nameOfCssClass) {
+            delete  O$._cssRulesBySelectors[nameOfCssClass];
+            styleSheet.deleteRule(i);
+            break;
+          }
+        }
+      }
+      return styleSheet;
+    } catch (e) {
+      O$.logError("O$.removeCssRule threw an exception " + (e ? e.message : e) +
+              "; tried to remove rule:" + nameOfCssClass);
       throw e;
     }
 
@@ -4800,7 +4895,7 @@ if (!window.O$) {
       if (listener) this.addListener(listener);
 
       var eventListener = this;
-      O$.addEventHandler(this._element, eventName, function(evt) {
+      O$.addEventHandler(this._element, this._eventName, this.handlerOfEvent = function (evt) {
         eventListener._dispatchNotifications(evt);
       });
     },
@@ -4820,7 +4915,7 @@ if (!window.O$) {
       this._listeners = this._listeners.slice(idx, 1);
     },
     release: function() {
-      O$.removeEventHandler(this._element, this._event, this._dispatchNotifications);
+      O$.removeEventHandler(this._element, this._eventName, this.handlerOfEvent);
     }
 
   });
@@ -4912,7 +5007,14 @@ if (!window.O$) {
       setTimeout(focusFilterField, 1);
     }, additionalParams, execute);
   };
-
+  O$._combineSubmissions = function(component, func) {
+    O$._startCompoundSubmission(component);
+    try {
+      func();
+    } finally {
+      O$._finishCompoundSubmission(component);
+    }
+  };
   O$._startCompoundSubmission = function(component) {
     if (component._compoundSubmission) throw "O$._startCompoundSubmission has already been called for " +
             "this component (id = " + component.id + ")";
@@ -4941,8 +5043,24 @@ if (!window.O$) {
         component._compoundSubmission.completionCallbacks.push(completionCallback);
       }
       if (additionalParams) {
+        var existingParams = component._compoundSubmission.additionalParams;
+        var newParams = [];
+        additionalParams.forEach(function(param) {
+          var paramName = param[0];
+          var paramValue = param[1];
+          var existingParamUpdated = false;
+          existingParams.forEach(function(existingParam) {
+            var existingParamName = existingParam[0];
+            if (paramName == existingParamName) {
+              existingParam[1] = paramValue;
+              existingParamUpdated = true;
+            }
+          });
+          if (!existingParamUpdated)
+            newParams.push(param);
+        });
         component._compoundSubmission.additionalParams =
-                component._compoundSubmission.additionalParams.concat(additionalParams);
+                component._compoundSubmission.additionalParams.concat(newParams);
       }
       if (execute) {
         component._compoundSubmission.execute =
@@ -5007,7 +5125,92 @@ if (!window.O$) {
             initComponent();
           });
       }, 1);
-  }
+  };
+  
+  O$.initUnloadableComponent = function(component) {
+    if (!component.onComponentUnload) {
+      O$.addThisComponentToAllParents(component);
+      component.onComponentUnload = function() {
+        O$.unloadAllHandlersAndEvents(component);
+      }
+    }
+  };
+
+  O$.addUnloadHandler = function(component, func) {
+    if (!component._unloadHandlers) {
+      component._unloadHandlers = [];
+    }
+    component._unloadHandlers.push(func);
+  };
+
+  O$.unloadAllHandlersAndEvents = function(component) {
+    var attachedEvents = component._attachedEvents;
+    if (attachedEvents) {
+      var length = attachedEvents.length;
+      for (var eventsIndex = 0; eventsIndex < length; eventsIndex++) {
+        if (attachedEvents[0] != null)
+          O$.removeEventHandler(component, attachedEvents[0].eventName, attachedEvents[0].functionScript);
+      }
+      component._attachedEvents = [];
+    }
+    if (component._unloadHandlers && component._unloadHandlers != null) {
+      for (var i = 0, count = component._unloadHandlers.length; i < count; i++) {
+        component._unloadHandlers[i]();
+      }
+      component._unloadHandlers = [];
+    }
+  };
+
+  O$.addThisComponentToAllParents = function(component) {
+    var parent = component.parentNode;
+
+    function isAlreadyInArray(component) {
+      var parent = component.parentNode;
+      if (parent != null && parent._unloadableComponents) {
+        for (var i = 0; i < parent._unloadableComponents.length; i++) {
+          if (parent._unloadableComponents[i] == component) {
+            return true;
+          }
+        }
+      }
+      return false;
+    }
+
+    if (!isAlreadyInArray(component)) {
+      while (parent != document && parent != null) {
+        if (!parent._unloadableComponents) {
+          parent._unloadableComponents = [];
+        }
+        parent._unloadableComponents.push(component);
+        parent = parent.parentNode;
+      }
+    }
+  };
+
+  O$.removeThisComponentFromAllDocument = function(component) {
+    var parent = O$.removeThisComponentFromParentsAbove(component, component.parentNode);
+    if (parent != document) {
+      return false;
+    } else {
+      return true;
+    }
+  };
+
+  O$.removeThisComponentFromParentsAbove = function(component, parent) {
+    while (parent != document && parent != null) {
+      if (parent._unloadableComponents) {
+        for (var index = 0; index < parent._unloadableComponents.length; index++) {
+          if (parent._unloadableComponents[index] == component) {
+            parent._unloadableComponents.splice(index, 1);
+            break;
+          }
+        }
+      }
+      parent = parent.parentNode;
+    }
+    return parent;
+  };
+
 
 }
 

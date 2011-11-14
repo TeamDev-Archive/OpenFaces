@@ -43052,6 +43052,80 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default "#{columnHeader}: #{groupingValueString}" -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>Specifies whether clicking on column&apos;s sorting header should group the table by that column
+        automatically.
+      </description>
+      <name>groupOnHeaderClick</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Specifies whether a column should automatically be hidden when the user groups the table by that
+        column (not applicable to grouping behavior defined by groupOnHeaderClick attribute).
+      </description>
+      <name>hideGroupingColumns</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+  <attribute>
+      <description>Defines the table's grouping state. This attribute can be used for saving grouping state between
+        different visits of an appropriate page. This attribute should be declared as a value binding expression of type
+        java.util.Object, or java.util.List&amp;lt;org.openfaces.component.table.GroupingRule>.
+      </description>
+      <name>groupingRules</name>
+      <deferred-value>
+        <type>java.util.List</type>
+      </deferred-value>
+      <!-- @bindingType java.util.List -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>Defines the expansion state of all grouping sections in a grouped DataTable component.</description>
+      <name>expansionState</name>
+      <deferred-value>
+        <type>org.openfaces.component.table.ExpansionState</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.table. ExpansionState -->
+      <!-- @default "allExpanded" -->
+      <!-- @value "allExpanded" all nodes are displayed in the expanded state -->
+      <!-- @value "allCollapsed" all nodes are displayed in the collapsed state -->
+      <!-- @value "levelsExpanded:NUMBER" where NUMBER is an integer
+    number greater than or equal to zero. It specifies the hierarchy level
+    at which the nodes are displayed in the expanded state, while all nodes
+    below this level are collapsed. For example, expansionState="levelsExpanded:1"
+    means that only the root nodes are expanded. The value of "0" means that no nodes
+    are expanded -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>This attribute is applicable only if a table has selection feature turned on (with one of the
+        selection tags). It defines whether DataTable should provide only row datas through the selection API, or group
+        header rows as well (if they are selected).
+      </description>
+      <name>selectionMode</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.table. RowGroupingSelectionMode -->
+      <!-- @default "dataRows" -->
+      <!-- @value "dataRows" only the row data objects are saved through the selection API -->
+      <!-- @value "allRows" both the row data objects and group header row objects are saved through the selection API.
+        In case of group header rows, objects of type org.openfaces.component.table will be passed, so you should
+        prepare the methods which receive selection objects to accept both types of objects. So for example in case of
+        single row selection you should declare the getter/setter methods that are bound to the rowData atribute to
+        have the type of java.lang.oObject for this purpose. -->
+      <!-- @el true -->
+    </attribute>
   </tag>
   <tag>
     <description>A component which can optionally be placed inside of grouping-enabled &amp;lt;o:dataTable&gt; tag to
@@ -43451,6 +43525,183 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>Horizontal distance beetween two headers.</description>
+      <name>headerHorizOffset</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "5px" -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Vertical offset on header box. Note that you can use persantage value.</description>
+      <name>headerVertOffset</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "50%" -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Customize connector by applying custom style.</description>
+      <name>connectorStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user clicks the left mouse
+        button over the row.
+      </description>
+      <name>onclick</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user double-clicks the left
+        mouse button over the row.
+      </description>
+      <name>ondblclick</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses any mouse button over the row.
+      </description>
+      <name>onmousedown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer onto the row.
+      </description>
+      <name>onmouseover</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer over the row.
+      </description>
+      <name>onmousemove</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer away from the row.
+      </description>
+      <name>onmouseout</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user releases a mouse button over the row.
+      </description>
+      <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses a key over the row.</description>
+      <name>onkeydown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user releases a key over the row.</description>
+      <name>onkeyup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user presses and releases a key
+        over the row.
+      </description>
+      <name>onkeypress</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+  </tag>
+  <tag>
+    <description>A menu item that can be inserted into the column menu for DataTable component to provide to control row
+      grouping feature.
+    </description>
+    <name>groupByColumnMenuItem</name>
+    <tag-class>org.openfaces.taglib.jsp.table.GroupByColumnMenuItemJspTag</tag-class>
+    <body-content>JSP</body-content>
+  </tag>
+  <tag>
+    <description>A menu item that can be inserted into the column menu for DataTable component to provide to control row
+      grouping feature.
+    </description>
+    <name>removeFromGroupingMenuItem</name>
+    <tag-class>org.openfaces.taglib.jsp.table.RemoveFromGroupingMenuItemJspTag</tag-class>
+    <body-content>JSP</body-content>
+  </tag>
+  <tag>
+    <description>A menu item that can be inserted into the column menu for DataTable component to provide to control row
+      grouping feature.
+    </description>
+    <name>cancelGroupingMenuItem</name>
+    <tag-class>org.openfaces.taglib.jsp.table.CancelGroupingMenuItemJspTag</tag-class>
+    <body-content>JSP</body-content>
   </tag>
 
   <!--<tag>-->

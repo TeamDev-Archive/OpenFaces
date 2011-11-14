@@ -19,7 +19,7 @@ import java.util.List;
  * @author Dmitry Pikhulya
  */
 public class SpannedTableCell {
-    private final BaseColumn column;
+    private BaseColumn column;
     private final List applicableTableCells;
 
     public SpannedTableCell(BaseColumn column, List applicableTableCells) {
@@ -29,6 +29,10 @@ public class SpannedTableCell {
 
     public BaseColumn getColumn() {
         return column;
+    }
+
+    public void setColumn(BaseColumn column) {
+        this.column = column;
     }
 
     public List getApplicableTableCells() {

@@ -15,12 +15,14 @@ import org.openfaces.util.Components;
 import org.openfaces.util.ValueBindings;
 
 import javax.el.ValueExpression;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import java.util.List;
 
 /**
  * @author Dmitry Pikhulya
  */
-public class TreeColumn extends Column {
+public class TreeColumn extends Column implements SyntheticColumn {
     public static final String COMPONENT_TYPE = "org.openfaces.TreeColumn";
     public static final String COMPONENT_FAMILY = "org.openfaces.TreeColumn";
 
@@ -28,6 +30,11 @@ public class TreeColumn extends Column {
     private String expansionToggleCellStyle;
     private String expansionToggleCellClass;
     private Boolean showAsTree;
+
+    // delegate is not stored in state and is used only temporarily for a functionality that
+    // "converts" an ordinary column to a TreeColumn implicitly, during the rendering phase without affecting
+    // components' state
+    private BaseColumn delegate;
 
     public TreeColumn() {
         setRendererType("org.openfaces.TreeColumnRenderer");
@@ -141,5 +148,20 @@ public class TreeColumn extends Column {
 
     public void setShowAsTree(boolean showAsTree) {
         this.showAsTree = showAsTree;
+    }
+
+    public BaseColumn getDelegate() {
+        return delegate;
+    }
+
+    public void setDelegate(BaseColumn delegate) {
+        this.delegate = delegate;
+    }
+
+    public List<UIComponent> getChildrenForProcessing() {
+        if (delegate != null)
+            return delegate.getChildren();
+        else
+            return getChildren();
     }
 }

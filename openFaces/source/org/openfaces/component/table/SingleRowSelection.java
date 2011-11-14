@@ -157,9 +157,11 @@ public class SingleRowSelection extends DataTableSelection {
     }
 
     protected void writeSelectionToBinding() {
+        RowGroupingSelectionMode selectionMode = getRowGroupingSelectionMode();
+
 //    setBoundPropertyValue(this, ROW_KEY_PROPERTY, getRowKey());
         ValueBindings.set(this, ROW_INDEX_PROPERTY, getRowIndex());
-        ValueBindings.set(this, ROW_DATA_PROPERTY, getRowData());
+        ValueBindings.set(this, ROW_DATA_PROPERTY, validateRowData(selectionMode, getRowData()));
     }
 
     @Override

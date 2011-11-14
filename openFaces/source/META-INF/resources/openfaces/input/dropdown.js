@@ -98,6 +98,7 @@ O$.DropDown = {
       }
     };
     O$.addEventHandler(field, "focus", dropDown._focusHandler);
+    O$.initUnloadableComponent(field);
 
     dropDown._onblur = dropDown.onblur;
     O$.addEventHandler(field, "blur", function() {
@@ -132,7 +133,7 @@ O$.DropDown = {
       }, 1);
     });
 
-    if (O$.isMozillaFF() || O$.isSafari3AndLate() /*todo:check whether O$.isSafari3AndLate check is really needed (it was added by mistake)*/)
+    if (O$.isMozillaFF() || O$.isSafari3AndLate() /*todo:check whether O$.isSafari3AndLate check is really needed (it was added by mistake)*/) {
       O$.addEventHandler(dropDown, "keyup", function(evt) {
         if (evt.keyCode == 27) {//ESC key
           if (dropDown._field.value == dropDown._promptText) {
@@ -140,6 +141,8 @@ O$.DropDown = {
           }
         }
       });
+      O$.initUnloadableComponent(dropDown);
+    }
 
     setTimeout(function() {
       if (initialText.length > 0) {
@@ -222,6 +225,7 @@ O$.DropDown = {
     O$.addEventHandler(popup, "mousedown", function(e) {
       O$.stopEvent(e);
     });
+    O$.initUnloadableComponent(popup);
 
     dropDown._buttonClass = O$.DropDown._getClassName(buttonClass);
     if (button)
@@ -294,6 +298,9 @@ O$.DropDown = {
     popup.onmousemove = function(e) {
       O$.cancelEvent(e);
     };
+    O$.addUnloadHandler(popup, function () {
+      popup.onmousemove = null;
+    });
 
     popupClass = O$.combineClassNames([popupClass, popup.className]);
     dropDown._popupClass = O$.DropDown._getClassName(popupClass);
@@ -329,16 +336,19 @@ O$.DropDown = {
       O$.addMouseOutListener(dropDown, dropDown._dropDownMouseOut);
       O$.addMouseOutListener(popup, dropDown._dropDownMouseOut);
     }
-
-    //add function to change popup position if window is resized and layout is changed
-    O$.addEventHandler(window, "resize", function () {
+    function resizeHandlerOnWindow() {
       var dropDownPopup = dropDown._popup;
       // drop-down can be removed from the page using Ajax, so we need to check its presence
       if (dropDownPopup && dropDownPopup.isVisible()) {
         O$.DropDown._alignPopup(dropDown);
       }
-    });
+    }
 
+    //add function to change popup position if window is resized and layout is changed
+    O$.addEventHandler(window, "resize", resizeHandlerOnWindow);
+    O$.addUnloadHandler(popup, function () {
+      O$.removeEventHandler(window, "resize", resizeHandlerOnWindow);
+    });
   },
 
   /*

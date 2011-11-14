@@ -16,6 +16,7 @@ import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.CSVTableExporter;
 import org.openfaces.component.table.ColumnResizingState;
 import org.openfaces.component.table.DataTable;
+import org.openfaces.component.table.ExpansionState;
 import org.openfaces.util.Faces;
 import org.openfaces.demo.beans.util.FacesUtils;
 
@@ -43,7 +44,7 @@ public class BanksList implements Serializable {
     private List<PaginatorStyleItem> paginatorStyles = new ArrayList<PaginatorStyleItem>();
     private Collection<State> bankStates;
     private State selectedState;
-    private ColumnResizingState columnResizingState;
+    private ExpansionState expansionState;
 
     public BanksList() {
         paginatorStyleSelectedIndex = 0;
@@ -228,13 +229,12 @@ public class BanksList implements Serializable {
         return currentStyleItem.getPageNumberFieldStyle();
     }
 
-
-    public void setColumnResizingState(ColumnResizingState columnResizingState) {
-        this.columnResizingState = columnResizingState;
+    public ExpansionState getExpansionState() {
+        return expansionState;
     }
 
-    public ColumnResizingState getColumnResizingState() {
-        return columnResizingState;
+    public void setExpansionState(ExpansionState expansionState) {
+        this.expansionState = expansionState;
     }
 
     public void export() {

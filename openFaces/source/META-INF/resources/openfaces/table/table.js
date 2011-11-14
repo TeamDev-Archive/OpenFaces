@@ -81,7 +81,7 @@ O$.Table = {
       _useAjax: useAjax,
 
       getCurrentColumn: function() {
-        return this._showingMenuForColumn ? this._showingMenuForColumn : null;
+        return this._showingMenuForColumn ? table._getColumn(this._showingMenuForColumn) : null;
       },
       _loadRows: function(completionCallback) {
         O$.Ajax.requestComponentPortions(this.id, ["rows"], null, function(table, portionName, portionHTML, portionScripts, portionData) {
@@ -114,16 +114,18 @@ O$.Table = {
       // can't just exclude the "o_initially_invisible" from table.className because of IE issue (JSFC-2337)
     }
     O$.Table._initApiFunctions(table);
-
+    O$.Table._initInnerFunctions(table);
+    O$.addUnloadHandler(table, function () {
+      table._cellInsertionCallbacks = [];
+      table._cellMoveCallbacks = [];
+    });
+    O$.addThisComponentToAllParents(table);
     O$.extend(table, {
       _originalClassName: table.className,
-      _unloadHandlers: [],
 
       onComponentUnload: function() {
         var i, count;
-        for (i = 0,count = table._unloadHandlers.length; i < count; i++) {
-          table._unloadHandlers[i]();
-        }
+        O$.unloadAllHandlersAndEvents(table);
 
         var filtersToHide = this._filtersToHide;
         if (!O$.isExplorer6() || !filtersToHide)
@@ -166,7 +168,6 @@ O$.Table = {
             table.appendChild(auxiliaryTags);
         });
       });
-
   },
 
   _initApiFunctions: function(table) {
@@ -287,23 +288,14 @@ O$.Table = {
         }
         return -1;
       },
-
       /**
        * Call this method to avoid any successive calls to such methods as table.sorting.setSortingRules,
        * table.grouping.setGroupingRules, etc. to send Ajax requests right away as they are invoked, but accumulate and
-       * postpone the appropriate Ajax actions until finishCompoundSubmission method is called , so that all of them be
+       * postpone the appropriate Ajax actions while passed function is executed, so that all of them be
        * performed at once with a single Ajax request.
        */
-      startCompoundSubmission: function() {
-        O$._startCompoundSubmission(table);
-      },
-
-      /**
-       * Sends an Ajax requests that accumulates the actions and data of all Ajax-initiating methods that were invoked
-       * since last startCompoundSubmission() call.
-       */
-      finishCompoundSubmission: function() {
-        O$._finishCompoundSubmission(table);
+      combineSubmissions: function(func) {
+        O$._combineSubmissions(table, func);
       },
 
       getColumnsOrder: function() {
@@ -322,8 +314,232 @@ O$.Table = {
         O$._submitInternal(table, null, [
           [table.id + "::columnsOrder", columnIdsStr]
         ]);
+      },
+
+      isColumnVisible: function(columnId) {
+        var columnIds = table.getColumnsOrder();
+        var idx = columnIds.indexOf(columnId);
+        return idx >= 0;
+      },
+
+      setColumnVisible: function(columnId, visible) {
+        if (visible)
+          this.showColumn(columnId);
+        else
+          this.hideColumn(columnId);
+      },
+
+      hideColumn: function(columnId) {
+        if (!this.isColumnVisible(columnId)) return;
+        var currentColumns = table.getColumnsOrder();
+        var currentIndex = currentColumns.indexOf(columnId);
+        currentColumns.splice(currentIndex, 1);
+        table.setColumnsOrder(currentColumns);
+      },
+
+      showColumn: function(columnId) {
+        if (this.isColumnVisible(columnId)) return;
+        var currentColumns = table.getColumnsOrder();
+        function insertColumn(newIndex) {
+          currentColumns.splice(newIndex, 0, columnId);
+        }
+
+        var done = false;
+        (function tryDoItFine() {
+          var structure = table._columnsLogicalStructure.root();
+          var leafs = structure.allLeafs(true);
+          var visible = leafs.filter(function(l) {
+            return l.isVisible();
+          });
+
+          function onlyIds(inPut) {
+            return inPut.map(function(l) {
+              return l.columnId;
+            });
+          }
+
+          var originalIndex = onlyIds(leafs).indexOf(columnId),
+                  leftVisibleNeighborhood = function() {
+                    for (var i = originalIndex - 1; i >= 0; i--)if (leafs[i].isVisible())return leafs[i];
+                  }(),
+                  rightVisibleNeighborhood = function() {
+                    for (var i = originalIndex + 1; i < leafs.length; i++)if (leafs[i].isVisible())return leafs[i];
+                  }();
+          if (leftVisibleNeighborhood || rightVisibleNeighborhood) {
+            if (leftVisibleNeighborhood) {
+              insertColumn(currentColumns.indexOf(leftVisibleNeighborhood.columnId) + 1);
+            } else {
+              insertColumn(currentColumns.indexOf(rightVisibleNeighborhood.columnId));
+            }
+            done = true;
+          }
+        }());
+        if (!done)(function doItSomehow() {
+          var index = 0;
+          currentColumns.forEach(function(current) {
+            if (done)return;
+            table._columnsReorderingSupport(columnId, current)
+                    .onLeftEdgePermit(function() {
+                      if (!done)insertColumn(index);
+                      done = true;
+                    })
+                    .onRightEdgePermit(function() {
+                      if (!done)insertColumn(index + 1);
+                      done = true;
+
+                    });
+            index++;
+          });
+        }());
+        if(!done)O$.assert(done, "Can't show column: " + columnId);
+        table.setColumnsOrder(currentColumns);
       }
     });
+  },
+
+  _initInnerFunctions: function(table) {
+    table._columnsLogicalStructure = function() {
+      var result;
+      if (!result) result = function() {
+        var currentColumnsOrder = table.getColumnsOrder();
+
+        function visibilityPredicate(node) {
+          if (node.isLeaf()) {
+            return currentColumnsOrder.indexOf(node.columnId) >= 0;
+          }
+          return node.visibleChildren().length > 0;
+        }
+
+        function helper(logicalDescription, parent) {
+          var self = {
+            columnId : logicalDescription.columnId,
+            parent : function() {
+              return parent;
+            },
+            root : function() {
+              var node = self;
+              while (node.parent())node = node.parent();
+              return node;
+            },
+            isLeaf : function() {
+              return !logicalDescription.subColumns;
+            },
+            children : function(dontApplySorting) {
+              function indexOfAnyVisibleLeaf(node) {
+                if (node.isLeaf()) {
+                  return currentColumnsOrder.indexOf(node.columnId);
+                }
+                var visibleChildren = node.visibleChildren();
+                return visibleChildren.length > 0 ? indexOfAnyVisibleLeaf(visibleChildren[0]) : -1;
+              }
+
+              var result = [];
+              if (!self.isLeaf())logicalDescription.subColumns.forEach(function(subColumn) {
+                result.push(helper(subColumn, self));
+              });
+              if (!dontApplySorting)result.sort(function (a, b) {
+                return indexOfAnyVisibleLeaf(a) - indexOfAnyVisibleLeaf(b);
+              });
+              return result;
+            },
+            visibleChildren : function() {
+              return self.children().filter(visibilityPredicate);
+            },
+            firstVisibleLeaf : function() {
+              var visibleChild = self;
+              while (!visibleChild.isLeaf()) visibleChild = visibleChild.visibleChildren()[0];
+              return visibleChild;
+            },
+            lastVisibleLeaf : function() {
+              var visibleChild = self;
+              while (!visibleChild.isLeaf()) {
+                var visibleChildren = visibleChild.visibleChildren();
+                visibleChild = visibleChildren[visibleChildren.length - 1];
+              }
+              return visibleChild;
+            },
+            isVisible : function() {
+              return visibilityPredicate(self);
+            },
+            allLeafs: function(dontApplySorting) {
+              var result = [];
+              var candidates = self.children(dontApplySorting).slice(0);
+              while (candidates.length > 0) {
+                var current = candidates.shift();
+                if (!current.isLeaf()) {
+                  candidates = current.children(dontApplySorting).concat(candidates);
+                } else {
+                  result.push(current);
+                }
+              }
+              return result;
+            },
+            find : function(columnId) {
+              if (self.columnId == columnId) {
+                return self;
+              }
+              var result = null;
+              self.children().forEach(function(child) {
+                if (!result) result = child.find(columnId);
+              });
+              return result;
+            }
+          };
+          return self;
+        }
+
+        return  helper({subColumns:table._params.logicalColumns}, null);
+      }();
+      return result;
+    }();
+    table._columnsReorderingSupport = function (sourceColumnId, targetColumnId) {
+      function canBeInserted(where, what, atLeft) {
+        if (atLeft != false) {
+          //todo: [s.kurilin]  should be rewritten for allow colGroup reordering
+          var currentOrder = table.getColumnsOrder().slice(0);
+          where = currentOrder[currentOrder.indexOf(where) - 1];
+        }
+
+        function findFirstVisibleParent(node) {
+          var parent = node.parent();
+          while (parent && !parent.isVisible()) {
+            parent = parent.parent();
+          }
+          return parent;
+        }
+
+        var sourceNode = table._columnsLogicalStructure.root().find(what),
+                firstVisibleParent = findFirstVisibleParent(sourceNode);
+
+        function canBePlacedInOrAfter() {
+          return firstVisibleParent.visibleChildren().filter(
+                  function(child) {
+                    return child.lastVisibleLeaf().columnId == where;
+                  }).length > 0
+        }
+
+        function canBePlacedBefore() {
+          var leftsVisibleNode = firstVisibleParent.firstVisibleLeaf();
+          var currentIndex = table.getColumnsOrder().indexOf(leftsVisibleNode.columnId);
+          return (currentIndex == 0 && !where)
+                  || (currentIndex > 0 && table.getColumnsOrder()[currentIndex - 1] == where);
+        }
+
+        return  canBePlacedBefore() || canBePlacedInOrAfter();
+      }
+
+      var self = {
+        onLeftEdgePermit : function(func) {
+          if (canBeInserted(targetColumnId, sourceColumnId, true))func();
+          return self;
+        },
+        onRightEdgePermit : function(func) {
+          if (canBeInserted(targetColumnId, sourceColumnId, false))func();
+          return self;
+        }
+      };
+      return self;
+    };
   },
 
   _createTableWithoutTd: function () {
@@ -456,11 +672,11 @@ O$.Table = {
       e.minusPressed = false;
       switch (e.keyCode) {
         case 33: // page up
-        case 63276: /* Safari for Mac */
+        case 63276: // Safari for Mac
           e.pageUpPressed = true;
           break;
         case 34: // page down
-        case 63277: /* Safari for Mac */
+        case 63277: // Safari for Mac
           e.pageDownPressed = true;
           break;
         case 35: // end
@@ -611,6 +827,9 @@ O$.Table = {
         return true;
       }
     };
+    O$.addUnloadHandler(table, function () {
+      table[eventName] = null;
+    });
 
     table._prevOnfocus_kn = table.onfocus;
     table.onfocus = function(e) {
@@ -621,6 +840,9 @@ O$.Table = {
       var focusFld = O$(this.id + "::focused");
       focusFld.value = "true";
     };
+    O$.addUnloadHandler(table, function () {
+      table.onfocus = null;
+    });
 
     table._prevOnblur_kn = table.onblur;
     table.onblur = function(e) {
@@ -631,6 +853,9 @@ O$.Table = {
       var focusFld = O$(this.id + "::focused");
       focusFld.value = "false";
     };
+    O$.addUnloadHandler(table, function () {
+      table.onblur = null;
+    });
 
     var focusFld = O$(table.id + "::focused");
     if (focusFld.value == "true") {
@@ -639,7 +864,7 @@ O$.Table = {
       }, 1);
     }
 
-    table._unloadHandlers.push(function() {
+    O$.addUnloadHandler(table,function () {
       O$.Table._deinitializeKeyboardNavigation(table);
     });
   },
@@ -647,7 +872,7 @@ O$.Table = {
   _deinitializeKeyboardNavigation: function(table) {
     table.onfocus = null;
     table.onblur = null;
-    if (table._focusControl) {
+    if (table._focusControl && table._focusControl.parentNode) {
       table._focusControl.parentNode.removeChild(table._focusControl);
     }
   },
@@ -1112,6 +1337,9 @@ O$.Table = {
           O$.logError("O$.Table._initSelection: row click handler already initialized");
         rowNode._originalClickHandler = rowNode.onclick;
         rowNode.onclick = O$.Table._row_handleSelectionOnClick;
+        O$.addUnloadHandler(table, function () {
+          rowNode.onclick = null;
+        });
       });
     }
     var cells = row._cells;
@@ -1196,6 +1424,10 @@ O$.Table = {
       },
       ondblclick: O$.repeatClickOnDblclick
     });
+    O$.addUnloadHandler(table, function () {
+      checkBox.onclick = null;
+      checkBox.ondblclick = null;
+    });
   },
 
   _initSelectionCell: function(cell) {
@@ -1240,6 +1472,10 @@ O$.Table = {
       },
       ondblclick: O$.repeatClickOnDblclick
     });
+    O$.addUnloadHandler(table, function () {
+      cell.onclick = null;
+      cell.ondblclick = null;
+    });
 
     O$.extend(checkBox, {
       checked: false,
@@ -1280,6 +1516,10 @@ O$.Table = {
           this.click(evt);
         O$.stopEvent(evt);
       }
+    });
+    O$.addUnloadHandler(table, function () {
+      checkBox.onclick = null;
+      checkBox.ondblclick = null;
     });
 
     var cellRow = cell._row;
@@ -1423,6 +1663,9 @@ O$.Table = {
           O$.stopEvent(e);
         }
       });
+      O$.addUnloadHandler(table, function () {
+        selectAllCheckbox.onclick = null;
+      });
 
     }
 
@@ -1456,6 +1699,9 @@ O$.Table = {
         }
 
       });
+      O$.addUnloadHandler(table, function () {
+        selectAllCheckbox.onclick = null;
+      });
       O$.Table._addSelectionChangeHandler(table, [selectAllCheckbox, "_updateState"]);
     }
 
@@ -1473,6 +1719,9 @@ O$.Table = {
         var evt = O$.getEvent(e);
         O$.stopEvent(e);
       }
+    });
+    O$.addUnloadHandler(table, function () {
+      selectAllCheckbox.ondblclick = null;
     });
 
     setTimeout(function() {selectAllCheckbox._updateState()}, 10);
@@ -1526,6 +1775,10 @@ O$.Table = {
               col._updateSubmissionField();
             }
           });
+        O$.addUnloadHandler(table, function () {
+          cell.onclick = null;
+          cell.ondblclick = null;
+        });
 
           O$.extend(checkBox, {
             onclick: function(e) {
@@ -1542,6 +1795,10 @@ O$.Table = {
               O$.stopEvent(e);
             }
           });
+        O$.addUnloadHandler(table, function () {
+          checkBox.onclick = null;
+          checkBox.ondblclick = null;
+        });
         }
 
         var bodyCells = col.body ? col.body._cells : [];
@@ -1591,13 +1848,12 @@ O$.Table = {
     if (table._checkBoxColumnHeaders) {
       col._headers = table._checkBoxColumnHeaders[colIndex];
     }
-
     col._updateHeaderCheckBoxes();
   },
 
   // -------------------------- TABLE SORTING SUPPORT
 
-  _initSorting: function(tableId, sortingRules, columnSortableFlags, sortedColIndex, sortableHeaderClass, sortableHeaderRolloverClass,
+  _initSorting: function(tableId, sortingRules, sortableColumnsIds, sortedColIndex, sortableHeaderClass, sortableHeaderRolloverClass,
                          sortedColClass, sortedColHeaderClass, sortedColBodyClass, sortedColFooterClass,
                          sortedAscImageUrl, sortedDescImageUrl) {
     var table = O$.initComponent(tableId, null, {
@@ -1635,12 +1891,14 @@ O$.Table = {
         sortedDescendingImageUrl: sortedDescImageUrl
       }
     });
+    table._sortableHeaderRolloverClass = sortableHeaderRolloverClass;
+    table._sortableColumnsIds = sortableColumnsIds;
     O$.assert(table, "Couldn't find table by id: " + tableId);
 
     O$.preloadImages([sortedAscImageUrl, sortedDescImageUrl]);
 
     table._columns.forEach(function(column) {
-      column._sortable = columnSortableFlags[column._index];
+      column._sortable = sortableColumnsIds.indexOf(column.columnId) >= 0;
       if (!column._sortable)
         return;
 
@@ -1650,6 +1908,7 @@ O$.Table = {
 
       O$.setStyleMappings(colHeader, {sortableHeaderClass: sortableHeaderClass});
 
+      O$.initUnloadableComponent(colHeader);
       O$.addEventHandler(colHeader, "click", function() {
         var focusField = O$(table.id + "::focused");
         if (focusField)
@@ -1668,7 +1927,12 @@ O$.Table = {
             rule.ascending = true;
           }
         }
-        table.sorting._setPrimarySortingRule(rule);
+        table.combineSubmissions(function() {
+          table.sorting._setPrimarySortingRule(rule);
+          if (table.grouping && table.grouping._groupOnHeaderClick) {
+            table.grouping.setGroupingRules([new O$.Table.GroupingRule(rule.columnId, rule.ascending)]);
+          }
+        });
       });
 
       O$.setupHoverStateFunction(colHeader, function(mouseInside) {
@@ -2026,6 +2290,14 @@ O$.Table = {
           }
         });
 
+        O$.addUnloadHandler(table, function () {
+          resizeHandle.ondragend = null;
+          resizeHandle.ondragstart = null;
+          resizeHandle.onclick = null;
+          resizeHandle.onmousedown = null;
+          resizeHandle.onmouseout = null;
+          resizeHandle.onmouseover = null;
+        });
         column._resizeHandle._updatePos();
       });
 
@@ -2059,13 +2331,14 @@ O$.Table = {
       fixWidths();
 
       function updateResizeHandlePositions() {
-        for (var i = 0, count = table._columns.length; i < count; i++) {
-          var column = table._columns[i];
-          if (column._resizeHandle && column._resizeHandle.parentNode)
-            column._resizeHandle._updatePos();
+        if (table._columns) {
+          for (var i = 0, count = table._columns.length; i < count; i++) {
+            var column = table._columns[i];
+            if (column._resizeHandle && column._resizeHandle.parentNode)
+              column._resizeHandle._updatePos();
+          }
         }
       }
-
       O$.addEventHandler(window, "resize", updateResizeHandlePositions);
       O$.addEventHandler(table, "mouseover", function() {
         if (!table._columnResizingInProgress)
@@ -2088,8 +2361,9 @@ O$.Table = {
         setTimeout(updateResizeHandlePositions, 10);
       };
 
-      table._unloadHandlers.push(function() {
+      O$.addUnloadHandler(table, function () {
         O$.removeEventHandler(window, "resize", updateResizeHandlePositions);
+        table.onscroll = null;
       });
 
       table._fixFF3ColResizingIssue = function() { // See JSFC-3720
@@ -2225,34 +2499,42 @@ O$.Table = {
         O$.correctElementZIndex(tbl, table, 2);
         return tbl;
       };
-      O$.makeDraggable(headerCell, function(evt) {
-        var inAdditionalTargets = function(evt){
+      var makeDraggable = function() {
+        var inAdditionalTargets = function(evt) {
           if (!table._rowGroupingBox)return false;
-          return table._rowGroupingBox._innerDropTargets(headerCell).filter(function (target) {
-            return target.eventInside(evt);
-          }).length > 0 ;
+          return table._rowGroupingBox._innerDropTargets(headerCell).filter(
+                  function (target) {
+                    return target.eventInside(evt);
+                  }).length > 0;
         };
+        var dropTargets = null;
 
-        var dropTargets = [];
-        if(table._rowGroupingBox){
-          dropTargets = dropTargets.concat(table._rowGroupingBox._innerDropTargets(headerCell._column.columnId));
+        function allDropTargets() {
+          if (dropTargets) return dropTargets;
+          dropTargets = [];
+          var column = headerCell._column;
+          if (table._rowGroupingBox && column._groupable) {
+            dropTargets = dropTargets.concat(table._rowGroupingBox._innerDropTargets(column.columnId));
+          }
+          dropTargets = dropTargets.concat(table._innerDropTargetsByColumnId(sourceColumn.columnId, function(newIndex) {
+            var columnIds = table.getColumnsOrder();
+            var oldIndex = columnIds.indexOf(sourceColumn.columnId);
+            columnIds.splice(newIndex, 0, sourceColumn.columnId);
+            columnIds.splice(oldIndex < newIndex ? oldIndex : oldIndex + 1, 1);
+            table.setColumnsOrder(columnIds);
+          }));
+          return dropTargets;
         }
-         dropTargets = dropTargets.concat(table._innerDropTargetsByColumnId(sourceColumn.columnId, function(newIndex) {
-          var columnIds = table.getColumnsOrder();
-          var oldIndex = columnIds.indexOf(sourceColumn.columnId);
-          columnIds.splice(newIndex, 0, sourceColumn.columnId);
-          columnIds.splice(oldIndex < newIndex ? oldIndex : oldIndex + 1, 1);
-          table.setColumnsOrder(columnIds);
-        }));
 
-        for (var i = 0, count = dropTargets.length; i < count; i++) {
-          var dropTarget = dropTargets[i];
-          if (dropTarget.eventInside(evt))
-            return dropTarget;
-        }
-        return null;
-      });
-
+        O$.makeDraggable(headerCell, function(evt) {
+          for (var i = 0, count = allDropTargets().length; i < count; i++) {
+            var dropTarget = allDropTargets()[i];
+            if (dropTarget.eventInside(evt))
+              return dropTarget;
+          }
+          return null;
+        });
+      }();
       var additionalAreaListener;
 
       var activeHelperArea = null;
@@ -2354,7 +2636,7 @@ O$.Table = {
           isLeaf : function() {
             return !logicalDescription.subColumns;
           },
-          children : function() {
+          children : function(dontApplySorting) {
             function indexOfAnyVisibleLeaf(node) {
               if (node.isLeaf()) {
                 return currentColumnsOrder.indexOf(node.columnId);
@@ -2367,7 +2649,7 @@ O$.Table = {
             if (!self.isLeaf())logicalDescription.subColumns.forEach(function(subColumn) {
               result.push(helper(subColumn, self));
             });
-            result.sort(function (a, b) {
+            if(!dontApplySorting)result.sort(function (a, b) {
               return indexOfAnyVisibleLeaf(a) - indexOfAnyVisibleLeaf(b);
             });
             return result;
@@ -2390,6 +2672,19 @@ O$.Table = {
           },
           isVisible : function() {
             return visibilityPredicate(self);
+          },
+          allLeafs: function(dontApplySorting) {
+            var result = [];
+            var candidates = self.children(dontApplySorting).slice(0);
+            while(candidates.length > 0){
+              var current = candidates.shift();
+              if(!current.isLeaf()){
+                candidates = current.children(dontApplySorting).concat(candidates);
+              } else {
+                result.push(current);
+              }
+            }
+            return result;
           },
           find : function(columnId) {
             if (self.columnId == columnId) {
@@ -2443,16 +2738,19 @@ O$.Table = {
         }
 
         return  canBePlacedBefore() || canBePlacedInOrAfter();
-      };
-      return {
+      }
+      var self = {
         onLeftEdgePermit : function(func) {
-          if(canBeInserted(targetColumnId, sourceColumnId, true))func();
+          if (canBeInserted(targetColumnId, sourceColumnId, true))func();
+          return self;
         },
         onRightEdgePermit : function(func) {
-          if(canBeInserted(targetColumnId, sourceColumnId, false))func();
+          if (canBeInserted(targetColumnId, sourceColumnId, false))func();
+          return self;
         }
       };
-    }
+      return self;
+    };
     table._innerDropTargetsByColumnId = function(columnId, dropHandler) {
       var dropTargets = [];
       //TODO: [s.kurilin] we shouldn't use this counter
@@ -2540,19 +2838,31 @@ O$.Table = {
         var mid = (min + max) / 2;
         var minY = targetCellRect.getMinY();
         var maxY = targetCellRect2.getMaxY();
-        var moving = table._columnsReorderingSupport(columnId, targetColumn.columnId);
-        moving.onLeftEdgePermit(function(){
-          dropTargets.push(dropTarget(min, mid, minY, maxY, columnId, targetColumn, false));
-        });
-        moving.onRightEdgePermit(function(){
-          dropTargets.push(dropTarget(mid, max, minY, maxY, columnId, targetColumn, true));
-        });
+        table._columnsReorderingSupport(columnId, targetColumn.columnId)
+                .onLeftEdgePermit(function() {
+                  dropTargets.push(dropTarget(min, mid, minY, maxY, columnId, targetColumn, false));
+                })
+                .onRightEdgePermit(function() {
+                  dropTargets.push(dropTarget(mid, max, minY, maxY, columnId, targetColumn, true));
+                });
         counter++;
       });
-
-      dropTargets[0].minX = null;
-      dropTargets[dropTargets.length - 1].maxX = null;
-
+      var fillEmptySpace = function() {
+        for (var i = 0; i < dropTargets.length; i++) {
+          var current = dropTargets[i];
+          if (i == 0) {
+            current.minX = null;
+          }
+          if (i == dropTargets.length - 1) {
+            current.maxX = null;
+          } else {
+            var next = dropTargets[i + 1];
+            var avg = (current.maxX + next.minX) / 2;
+            current.maxX = Math.floor(avg);
+            next.minX = Math.ceil(avg);
+          }
+        }
+      }();
       return dropTargets;
     };
 
@@ -2565,16 +2875,46 @@ O$.Table = {
       columnIds.splice(dstColIndex < srcColIndex ? dstColIndex : dstColIndex - 1, 0, columnId);
       table.setColumnsOrder(columnIds);
     }
+    table._setRowGroupingBox = function(rowGroupingBox) {
+      table._rowGroupingBox = rowGroupingBox;
+    };
+    //todo: move it out of here
+    table._getColumn = function(columnId){
+      return table._columns.filter(function(column) {
+        return column.columnId == columnId
+      })[0];
+    };
+    //todo: move it out of here
+    table._getHeaderCell = function(columnId) {
+      function retrieveAllCells() {
+        var candidates = table._columns.slice(0);
+        var allCells = [];
+        while(candidates.length > 0){
+          var current = candidates.pop();
+          allCells.push(current);
+          if(current._parentColumn){
+            candidates.push(current._parentColumn);
+          }
+        }
+        return allCells;
+      }
+      return retrieveAllCells().filter(function(column) {
+        return column.columnId == columnId;
+      })[0];
+    };
   },
 
 
 // -------------------------- ROW GROUPING SUPPORT
-  _initRowGrouping: function(tableId, activeColumnIds, groupingRules, headerClassName) {
+  _initRowGrouping: function(tableId, activeColumnIds, groupableColumnIds, groupingRules, headerClassName, groupOnHeaderClick,
+                             hideGroupingColumns) {
 
     var table = O$.initComponent(tableId, null, {
               grouping: {
                 _columnHeaderBoxes: {},
                 _groupingRules: groupingRules,
+                _groupOnHeaderClick: groupOnHeaderClick,
+                _hideGroupingColumns: hideGroupingColumns,
 
                 _getColumnHeaderBox: function(columnId) {
                   return this._columnHeaderBoxes[columnId];
@@ -2593,44 +2933,112 @@ O$.Table = {
 
                 },
 
-                _applyGrouping: function(rules) {
-                  table.startCompoundSubmission();
-                  table.grouping.setGroupingRules(rules);
+                isGroupedByColumn: function(columnId) {
+                  var groupingRules = table.grouping.getGroupingRules();
+                  var columnInGroupingRules = groupingRules.some(function(groupingRule) {
+                    return groupingRule.columnId == columnId;
+                  });
+                  return columnInGroupingRules;
+                },
 
-                  var displayedColumnIds = table.getColumnsOrder();
-                  rules.forEach(function(rule) {
-                    var index = displayedColumnIds.indexOf(rule.columnId);
-                    if (index >= 0)  displayedColumnIds = displayedColumnIds.slice(0, index).concat(displayedColumnIds.slice(index + 1));
+                groupByColumn: function(columnId) {
+                  if (this.isGroupedByColumn(columnId)) return;
+
+                  var groupingRules = [].concat(this.getGroupingRules());
+                  groupingRules.push(new O$.Table.GroupingRule(columnId, true));
+                  table.combineSubmissions(function() {
+                    table.grouping.setGroupingRules(groupingRules);
+                    if (table.grouping._hideGroupingColumns)
+                      table.hideColumn(columnId);
                   });
 
-                  table.setColumnsOrder(displayedColumnIds);
+                },
 
-                  table.finishCompoundSubmission();
+                removeFromGrouping: function(columnId) {
+                  var groupingRules = [].concat(this.getGroupingRules());
+                  for (var i = 0, count = groupingRules.length; i < count; i++) {
+                    var groupingRule = groupingRules[i];
+                    if (groupingRule.columnId == columnId) {
+                      groupingRules.splice(i, 1);
+                      table.combineSubmissions(function() {
+                        table.grouping.setGroupingRules(groupingRules);
+                        if (table.grouping._hideGroupingColumns)
+                          table.showColumn(columnId);
+                      });
+
+                      return;
+                    }
+                  }
+                },
+
+                cancelGrouping: function() {
+                  var groupingRules = table.grouping.getGroupingRules();
+                  if (groupingRules.length == 0) return;
+
+                  table.combineSubmissions(function() {
+                    table.grouping.setGroupingRules([]);
+                    if (table.grouping._hideGroupingColumns)
+                      groupingRules.forEach(function(groupingRule) {
+                        table.showColumn(groupingRule.columnId);
+                      });
+                  });
+                },
+
+                _toggleSortingTypeInGroupingRule: function(columnId, ruleIndex) {
+                  var rules = table.grouping.getGroupingRules();
+                  rules.forEach(function(rule){
+                    if (rule.columnId == columnId)rule.ascending = !rule.ascending;
+                  });
+                  table.grouping.setGroupingRules(rules);
+                },
+
+                _applyGroupingRule: function(rule, ruleIndex) {
+                  table.combineSubmissions(function(){
+                    (function removePreviousRuleIfItWasExistAndAddNew() {
+                      function onlyIds(rules) {
+                        return rules.map(function(r) {
+                          return r.columnId
+                        });
+                      }
+
+                      var rules = table.grouping.getGroupingRules(),
+                              toDelete = onlyIds(rules).indexOf(rule.columnId);
+                      if (toDelete >= 0)rules.splice(toDelete, 1);
+                      rules.splice(ruleIndex, 0, rule);
+                      table.grouping.setGroupingRules(rules);
+                    }());
+                    if (table.grouping._hideGroupingColumns)(function hideColumn() {
+                      var displayedColumnIds = table.getColumnsOrder();
+                      var index = displayedColumnIds.indexOf(rule.columnId);
+                      if (index >= 0) {
+                        displayedColumnIds.splice(index, 1);
+                      }
+                      table.setColumnsOrder(displayedColumnIds);
+                    }());
+                  });
                 },
 
                 _cancelGroupingRule: function(columnId, newIndex) {
-                  table.startCompoundSubmission();
-
-                  var groupingRules = this._groupingRules;
-                  var index = 0;
-                  groupingRules.forEach(function(eachRule) {
-                    if(eachRule.columnId == columnId){
-                      groupingRules = groupingRules.slice(0, index).concat(groupingRules.slice(index + 1));
-                    }
-                    index++;
+                  table.combineSubmissions(function() {
+                    (function removeFromGrouping() {
+                      var index = 0;
+                      var groupingRules = table.grouping.getGroupingRules();
+                      groupingRules.forEach(function(eachRule) {
+                        if (eachRule.columnId == columnId) {
+                          groupingRules = groupingRules.slice(0, index).concat(groupingRules.slice(index + 1));
+                        }
+                        index++;
+                      });
+                      table.grouping.setGroupingRules(groupingRules);
+                    }());
+                    (function removePreviousColumnIfItWasExistAndAddNew() {
+                      var displayedColumnIds = table.getColumnsOrder(),
+                              toDelete = displayedColumnIds.indexOf(columnId);
+                      if (toDelete >= 0)displayedColumnIds.splice(toDelete, 1);
+                      displayedColumnIds.splice(newIndex, 0, columnId);
+                      table.setColumnsOrder(displayedColumnIds);
+                    }());
                   });
-                  table.grouping.setGroupingRules(groupingRules);
-
-                  var displayedColumnIds = table.getColumnsOrder();
-                  var prevIndex = displayedColumnIds.indexOf(columnId);
-                  if (prevIndex >= 0) {
-                      displayedColumnIds = displayedColumnIds.slice(0, prevIndex).concat(
-                              displayedColumnIds.slice(prevIndex + 1));
-                  }
-                  displayedColumnIds.splice(newIndex, 0, columnId);
-                  table.setColumnsOrder(displayedColumnIds);
-
-                  table.finishCompoundSubmission();
                 }
               }
             });
@@ -2649,28 +3057,29 @@ O$.Table = {
 
       O$.Tables._assignHeaderBoxStyle(columnHeaderBox, table, columnId, headerClassName);
     });
+
+    groupableColumnIds.forEach(function(columnId) {
+      var col = table._columns.byId(columnId);
+      if (col)
+        col._groupable = true;
+    });
+
     O$.Table._tableLoaded(tableId);
   },
-  //todo: move to util
-  _removeFromArray: function(array, index){
-    return array.slice(0, index).concat(array.slice(index + 1));
-  },
-  _GroupingBoxLayout : function(rowGroupingBoxId, tableId, headerStyleClassName, headerHorizontalOffset, headerVerticalOffset) {
+  _GroupingBoxLayout : function(rowGroupingBox, tableId, connectorStyle, headerStyleClassName, headerOffset, padding) {
     var table = O$(tableId);
     var dropAreas = [];
     var headers = [];
-    var rowGroupingBox = O$(rowGroupingBoxId).firstChild;
-
 
     function Connector(left, right) {
       function connectorDescription(left, right) {
+        var rightMaxY = right.y + right.height ,leftMaxY = left.y + left.height;
         return {
           horizontalOffset: left.width - 10,
-          height : Math.round(Math.abs(left.y + left.height - (right.y + right.height)) / 2)
+          height : Math.round(leftMaxY < right.y ? right.y - leftMaxY + right.height / 2 : (rightMaxY - leftMaxY) / 2)
         };
       }
 
-      var lineStyle = "1px solid black";
       var alignment = O$.GraphicLine.ALIGN_BY_TOP_OR_LEFT;
       var self = {
         _leftRect : O$.getElementBorderRectangle(left, true),
@@ -2680,7 +3089,7 @@ O$.Table = {
           if (self._vertical != null) {
             self.destroy();
           }
-          self._toRemove.forEach(function(e){
+          self._toRemove.forEach(function(e) {
             e.parentNode.removeChild(e);
           });
           self._leftRect = O$.getElementBorderRectangle(left, true);
@@ -2691,8 +3100,8 @@ O$.Table = {
                   topBorder = self._leftRect.y + self._leftRect.height,
                   lowBorder = topBorder + desc.height,
                   rightBorder = self._rightRect.x;
-          self._vertical = new O$.GraphicLine(lineStyle, alignment, leftBorder, topBorder, leftBorder, lowBorder);
-          self._horizontal = new O$.GraphicLine(lineStyle, alignment, leftBorder, lowBorder, rightBorder, lowBorder);
+          self._vertical = new O$.GraphicLine(connectorStyle, alignment, leftBorder, topBorder, leftBorder, lowBorder);
+          self._horizontal = new O$.GraphicLine(connectorStyle, alignment, leftBorder, lowBorder, rightBorder, lowBorder);
           self._vertical.show(rowGroupingBox);
           self._horizontal.show(rowGroupingBox);
           self._vertical.updatePresentation();
@@ -2716,15 +3125,21 @@ O$.Table = {
       },
       insertByColumnId: function(index, columnId) {
         function newCoordinates() {
+          var zero = {
+            x : padding.left,
+            y : padding.top
+          };
           if (index == 0) {
-            return {x:0, y:0};
+            return zero ;
           }
-          var previous = self.draggable()[index - 1];
-          var previousPos = O$.getElementPos(previous, true);
-          var previousSize = O$.getElementSize(previous);
+          var previous = self.draggable()[index - 1],
+                  previousPos = O$.getElementPos(previous, true),
+                  previousSize = O$.getElementSize(previous),
+                  headerHorizOffsetVal = O$.calculateNumericCSSValue(headerOffset.horizontal, previousSize.width),
+                  headerVertOffsetVal = O$.calculateNumericCSSValue(headerOffset.vertical, previousSize.height);
           return {
-            x: Math.round(previousPos.x + previousSize.width + headerHorizontalOffset),
-            y: Math.round(previousPos.y + previousSize.height / 2 + headerVerticalOffset)
+            x: Math.round(previousPos.x + previousSize.width + headerHorizOffsetVal),
+            y: Math.round(previousPos.y + headerVertOffsetVal)
           };
         }
 
@@ -2738,7 +3153,9 @@ O$.Table = {
               result.style.cssFloat = "left";  //for browsers
             }
             result.style.height = "100%";
-            result.style.width = (O$.getElementSize(directWrapper).width + headerHorizontalOffset) + "px";
+            var directWrapperWidth = O$.getElementSize(directWrapper).width,
+                    headerHorizOffsetVal = O$.calculateNumericCSSValue(headerOffset.horizontal, directWrapperWidth);
+            result.style.width = (directWrapperWidth + headerHorizOffsetVal) + "px";
             rowGroupingBox.appendChild(result);
           };
           return result;
@@ -2746,14 +3163,34 @@ O$.Table = {
 
         function directWrapper() {
           var result = document.createElement('div');
+          result.className = headerStyleClassName;
           result.appendChild(header);
-          result.show = function(){
+          result.show = function() {
             var coordinates = newCoordinates();
-            result.className =  headerStyleClassName;
             result.style.top = coordinates.y + "px";
             result.style.left = coordinates.x + "px";
             result.style.position = "absolute";
             rowGroupingBox.appendChild(result);
+            (function movePaddings() {
+              var HORIZONTAL = 1,VERTICAL = 0,
+                      size = O$.getElementSize(result);
+
+              function val(cssName, horizontalOrVertical) {
+                return O$.calculateNumericCSSValue(
+                        O$.getElementStyle(result, cssName),
+                        horizontalOrVertical == HORIZONTAL ? size.width : size.height);
+              }
+
+              [
+                ["padding-left", "paddingLeft", HORIZONTAL],
+                ["padding-right", "paddingRight", HORIZONTAL],
+                ["padding-top", "paddingTop", VERTICAL],
+                ["padding-bottom", "paddingBottom", VERTICAL]
+              ].forEach(function(d) {
+                header.style[d[1]] = val(d[0], d[2]) + "px";
+                result.style[d[1 ]] = "0px";
+              });
+            }());
           };
           result.connect = function(nextElement) {
             result.connector = Connector(result, nextElement);
@@ -2812,8 +3249,8 @@ O$.Table = {
         rowGroupingBox.validate();
       },
       removeByIndex: function(index) {
-        dropAreas = O$.Table._removeFromArray(dropAreas, index);
-        headers = O$.Table._removeFromArray(headers, index);
+        dropAreas.splice(index, 0);
+        headers.splice(index, 0);
 
         headers[index].loseConnection();
         if (index != 0) {  //not first
@@ -2829,13 +3266,20 @@ O$.Table = {
     };
     return self;
   },
-  _initRowGroupingBox: function(rowGroupingBoxId, tableId, headerStyleClassName) {
+  _initRowGroupingBox: function(rowGroupingBoxId, tableId, connectorStyle, headerStyleClassName, headerHorizOffset, headerVertOffset) {
     O$.Table._onTableLoaded(tableId, function() {
+      O$.addLoadEvent(function(){
+        doActualInitialization();
+      });
+    });
+    function doActualInitialization(){
       var table = O$(tableId);
-      var rowGroupingBox = O$(rowGroupingBoxId).firstChild;
+      var rowGroupingBoxTable = O$(rowGroupingBoxId);
+      var rowGroupingBox = rowGroupingBoxTable.firstChild.firstChild.firstChild;
       var rules = function() {
         return table.grouping.getGroupingRules();
       };
+
       var dropTargetMark = function() {
         var delegate = table._dropTargetMark(false);
         var copyOfOuterContainer = null;
@@ -2851,13 +3295,14 @@ O$.Table = {
           });
           return index;
         }
+
         function beforeFirst() {
-          var headerRect = O$.getElementBorderRectangle(layout.draggable()[0], true);
+          var headerRect = O$.getElementBorderRectangle(groupingBoxLayout().draggable()[0], true);
           dropTargetMark.setPosition(headerRect.x, headerRect.y, headerRect.y + headerRect.height);
         }
 
         function afterLast() {
-          var headerRect = O$.getElementBorderRectangle(layout.draggable()[layout.draggable().length - 1], true);
+          var headerRect = O$.getElementBorderRectangle(groupingBoxLayout().draggable()[groupingBoxLayout().draggable().length - 1], true);
           dropTargetMark.setPosition(headerRect.getMaxX(), headerRect.y, headerRect.y + headerRect.height);
         }
 
@@ -2865,8 +3310,9 @@ O$.Table = {
           function avr(a, b) {
             return Math.round((a + b) / 2);
           }
-          var leftRect = O$.getElementBorderRectangle(layout._dragByColumnId(left), true);
-          var rightRect = O$.getElementBorderRectangle(layout._dragByColumnId(right), true);
+
+          var leftRect = O$.getElementBorderRectangle(groupingBoxLayout()._dragByColumnId(left), true);
+          var rightRect = O$.getElementBorderRectangle(groupingBoxLayout()._dragByColumnId(right), true);
           dropTargetMark.setPosition(avr(leftRect.getMaxX(), rightRect.getMinX()), leftRect.getMinY(), rightRect.getMaxY());
         }
 
@@ -2894,7 +3340,7 @@ O$.Table = {
             if (index == rules().length - 1) {
               afterLast()
             } else {
-              between(columnId, rules()[index+1].columnId);
+              between(columnId, rules()[index + 1].columnId);
             }
           },
           displayBefore: function(columnId) {
@@ -2902,279 +3348,324 @@ O$.Table = {
             if (index == 0) {
               beforeFirst();
             } else {
-              between(rules()[index-1].columnId, columnId);
+              between(rules()[index - 1].columnId, columnId);
             }
           }
         };
       }();
-      rowGroupingBox.validate = function() {
-        var currentSize = function() {
-          return O$.getElementSize(rowGroupingBox);
+      var groupingBoxPaddings = function() {
+        var size = O$.getElementSize(rowGroupingBoxTable),
+                HORIZONTAL = 1,
+                VERTICAL = 0;
+
+        function val(cssName, horizontalOrVertical) {
+          return O$.calculateNumericCSSValue(
+                  O$.getElementStyle(rowGroupingBoxTable, cssName),
+                  horizontalOrVertical == HORIZONTAL ? size.width : size.height);
+        }
+
+        return {left:val("padding-left", HORIZONTAL),
+          top:val("padding-top", VERTICAL),
+          right:val("padding-right", HORIZONTAL),
+          bottom:val("padding-bottom", VERTICAL)};
+      }();
+      var groupingBoxLayout = function() {
+        var result;
+        return function() {
+          if (!result) {
+            result = O$.Table._GroupingBoxLayout(
+                    rowGroupingBox, tableId,
+                    connectorStyle, headerStyleClassName,
+                    {horizontal: headerHorizOffset, vertical: headerVertOffset},
+                    groupingBoxPaddings);
+          }
+          return result;
+        }
+      }();
+
+      var layoutStrategy = function(justNameAsComment) {
+        var isOnlyPromptText = rules().length == 0;
+        var self = {
+          promptText:function(func) {
+            if (isOnlyPromptText)func();
+            return self;
+          },
+          groupingBoxes:function(func) {
+            if (!isOnlyPromptText)func();
+            return self;
+          },
+          any:function(func) {
+            func();
+            return self;
+          }
         };
-        if (!rowGroupingBox.minHeight) {
-          rowGroupingBox.minHeight = currentSize().height;
-        }
-        var headers = layout.draggable();
-        if (headers.length > 1) {
-          var last = headers[headers.length - 1];
-          var previous = headers[headers.length - 2];
-          var previousLowBorder = O$.getElementPos(previous, true).y + O$.getElementSize(previous).height;
-          var lowBorder = O$.getElementPos(last, true).y + O$.getElementSize(last).height;
-          var actualLowBorder = O$.getElementSize(rowGroupingBox).height;
-          if (lowBorder > actualLowBorder) {
-            rowGroupingBox.parentNode.style.height = lowBorder + "px";
-          }
-
-          if (lowBorder < actualLowBorder && lowBorder > rowGroupingBox.minHeight + 2) {  //magic number is just an eps
-            rowGroupingBox.parentNode.style.height = Math.max(rowGroupingBox.minHeight, lowBorder) + "px";
-          }
-        }
+        return self;
       };
-      var layout = O$.Table._GroupingBoxLayout(rowGroupingBoxId, tableId, headerStyleClassName, 5, 0);
-
       var groupingColumnIds = function() {
         return table.grouping.getGroupingRules().map(function(rule) {
           return rule.columnId;
         });
       };
-
-      if (rules().length > 0) {
-        function cleanPreviousContent() {
-          while (rowGroupingBox.childNodes.length > 0) {
-            var child = rowGroupingBox.firstChild;
-            child.parentNode.removeChild(child);
-          }
-        }
-        cleanPreviousContent();
-        layout.addAll(groupingColumnIds());
-      }
-
-      function appendToGroupingBox(columnId, newColumnIndex) {
-        var ruleValues = rules();
-        var currentIndexOfColumn = groupingColumnIds().indexOf(columnId);
-        if (currentIndexOfColumn >= 0) {
-          ruleValues = O$.Table._removeFromArray(ruleValues, currentIndexOfColumn);
-        }
-        var newRule = new O$.Table.GroupingRule(columnId, true);
-        ruleValues.splice(newColumnIndex, 0, newRule);
-        table.grouping._applyGrouping(ruleValues);
-      }
-
-      var fixGroupDescriber = function() {
-        if (rules().length != 0 && layout.isEmpty()) {
-          layout.addAll(groupingColumnIds());
-        }
-        var dropTargetsInGroupingBox = function(outerContainer, ids, itemRetriever) {
-          var container = O$.getContainingBlock(outerContainer, true);
-          if (!container) container = O$.getDefaultAbsolutePositionParent();
-          var results = [];
-          var i = 0;
-          ids.forEach(function(itemId) {
-            var item = itemRetriever(itemId);
-
-            function dropTarget(minX, maxX, minY, maxY, box, newColumnIndex, rightEdge) {
-              var pos = O$.getElementPos(item, true);
-              var containerAreaMinX = parseInt(pos.x);
-              var containerAreaMaxX = parseInt(containerAreaMinX) + parseInt(container.clientWidth);
-              var containerAreaMinY = parseInt(pos.y);
-              var containerAreaMaxY = parseInt(containerAreaMinY) + parseInt(container.clientHeight);
-              var inContainer = function() {
-                return function(x, y) {
-                  return (x >= containerAreaMinX) && (x < containerAreaMaxX) && (y >= containerAreaMinY) && (y < containerAreaMaxY);
-                }
-              }();
-              return {
-                minX: minX,
-                maxX: maxX,
-                minY: minY,
-                maxY: maxY,
-                eventInside: function(evt) {
-                  var cursorPos = O$.getEventPoint(evt, box);
-                  return inContainer(cursorPos.x, cursorPos.y) &&
-                          (this.minX == null || cursorPos.x >= this.minX) &&
-                          (this.maxX == null || cursorPos.x < this.maxX);
-                },
-                setActive: function(active) {
-                  if (active) {
-                    dropTargetMark.show(container, outerContainer);
-                    var gridLineWidthCorrection = function() {
-                      return O$.getNumericElementStyle(table, rightEdge ? "border-right-width" : "border-left-width");
-                    }();
-//                    var headerRect = O$.getElementBorderRectangle(layout._dragByColumnId(itemId), true);
-//                    dropTargetMark.setPosition((rightEdge ? maxX : minX) - gridLineWidthCorrection / 2, headerRect.y, headerRect.y + headerRect.height);
-                    dropTargetMark.highline(itemId, rightEdge);
-                  } else {
-                    dropTargetMark.hide();
-                  }
-                },
-                acceptDraggable: function(e) {
-                  var currentIndex = layout.draggable().indexOf(e);
-                  var currentColumnId = table.grouping.getGroupingRules()[currentIndex].columnId;
-                  if (currentIndex < newColumnIndex) newColumnIndex--;
-                  appendToGroupingBox(currentColumnId, newColumnIndex);
-                }
-              };
+      var innerDropTargets = function() {
+        var result = null;
+        return function() {
+          if (result == null) {
+            function appendToGroupingBox(columnId, newColumnIndex) {
+              var newRule = new O$.Table.GroupingRule(columnId, true);
+              table.grouping._applyGroupingRule(newRule, newColumnIndex);
             }
 
-            if (!item) return;
-            var targetCellRect = O$.getElementBorderRectangle(item, true);
-            var min = targetCellRect.getMinX();
-            var max = targetCellRect.getMaxX();
-            var mid = (min + max) / 2;
-            var minY = targetCellRect.getMinY();
-            var maxY = targetCellRect.getMaxY();
-            results.push(dropTarget(min, mid, minY, maxY, item, i, false));
-            results.push(dropTarget(mid, max, minY, maxY, item, i + 1, true));
-            i++;
-          });
-          if (results.length > 0) {
-            results[0].minX = null;
-            results[results.length - 1].maxX = null;
+            var pos = O$.getElementPos(rowGroupingBox, true);
+            var rowGroupingBoxMinX = parseInt(pos.x);
+            var rowGroupingBoxMaxX = parseInt(rowGroupingBoxMinX) + parseInt(rowGroupingBox.clientWidth);
+            var rowGroupingBoxMinY = parseInt(pos.y);
+            var rowGroupingBoxMaxY = parseInt(rowGroupingBoxMinY) + parseInt(rowGroupingBox.clientHeight);
+            var inRowGroupingBox = function() {
+              return function(x, y) {
+                return (x >= rowGroupingBoxMinX) && (x < rowGroupingBoxMaxX) && (y >= rowGroupingBoxMinY) && (y < rowGroupingBoxMaxY);
+              }
+            }();
+
+            layoutStrategy("init inner drop targets")
+                    .promptText(function() {
+                      result = [
+                        {
+                          eventInside: function(evt) {
+                            var cursorPos = O$.getEventPoint(evt, rowGroupingBox);
+                            return inRowGroupingBox(cursorPos.x, cursorPos.y)
+                          },
+                          setActive: function(active) {
+                            if (active) {
+                              var container = O$.getContainingBlock(rowGroupingBox, true);
+                              if (!container)
+                                container = O$.getDefaultAbsolutePositionParent();
+                              var rightEdge = false;
+                              dropTargetMark.show(container);
+                              var gridLineWidthCorrection = function() {
+                                return O$.getNumericElementStyle(table, rightEdge ? "border-right-width" : "border-left-width");
+                              }();
+                              var truePos = O$.getElementPos(rowGroupingBox);
+                              dropTargetMark.setPosition(rowGroupingBoxMinX, rowGroupingBoxMinY, rowGroupingBoxMaxY);
+                            } else {
+                              dropTargetMark.hide();
+                            }
+                          },
+                          acceptDraggable: function(cellHeader) {
+                            appendToGroupingBox(cellHeader._column.columnId, 0);
+                          }
+                        }
+                      ];
+                    })
+                    .groupingBoxes(function() {
+                      var dropTargets = [];
+
+                      function dropTarget(minX, maxX, minY, maxY, targetColumn, newColumnIndex, rightEdge, columnId) {
+                        var container = O$.getContainingBlock(rowGroupingBox, true);
+                        if (!container)
+                          container = O$.getDefaultAbsolutePositionParent();
+                        return {
+                          minX: minX,
+                          maxX: maxX,
+                          minY: minY,
+                          maxY: maxY,
+                          eventInside: function(evt) {
+                            var cursorPos = O$.getEventPoint(evt, rowGroupingBox);
+                            return inRowGroupingBox(cursorPos.x, cursorPos.y) &&
+                                    (this.minX == null || cursorPos.x >= this.minX) &&
+                                    (this.maxX == null || cursorPos.x < this.maxX);
+                          },
+                          setActive: function(active) {
+                            if (active) {
+                              dropTargetMark.show(container, rowGroupingBox);
+                              dropTargetMark.highline(columnId, rightEdge);
+                            } else {
+                              dropTargetMark.hide();
+                            }
+                          },
+                          acceptDraggable: function(cellHeader) {
+                            if (groupingBoxLayout().draggable().indexOf(cellHeader) >= 0) {
+                              //moving inside grouping box
+                              var currentIndex = groupingBoxLayout().draggable().indexOf(cellHeader);
+                              var currentColumnId = table.grouping.getGroupingRules()[currentIndex].columnId;
+                              if (currentIndex < newColumnIndex) newColumnIndex--;
+                              appendToGroupingBox(currentColumnId, newColumnIndex);
+                            } else {
+                              //move from table
+                              appendToGroupingBox(cellHeader._column.columnId, newColumnIndex);
+                            }
+                          }
+                        };
+                      }
+
+                      var _groupingBoxWrappers = groupingBoxLayout().dropAreas();
+                      for (var i = 0; i < _groupingBoxWrappers.length; i++) {
+                        var targetCell = _groupingBoxWrappers[i];
+                        var targetCellRect = O$.getElementClientRectangle(targetCell, true);
+                        var min = targetCellRect.getMinX() ? targetCellRect.getMinX() : 0;
+                        var max = targetCellRect.getMaxX() ? targetCellRect.getMaxX() : 0;
+                        var mid = (min + max) / 2;
+                        var minY = targetCellRect.getMinY() ? targetCellRect.getMinY() : 0;
+                        var maxY = targetCellRect.getMaxY() ? targetCellRect.getMaxY() : 0;
+                        dropTargets.push(dropTarget(min, mid, minY, maxY, targetCell, i, false, targetCell.columnId));
+                        dropTargets.push(dropTarget(mid, max, minY, maxY, targetCell, i + 1, true, targetCell.columnId));
+                      }
+                      dropTargets[0].minX = rowGroupingBoxMinX;
+                      dropTargets[dropTargets.length - 1].maxX = rowGroupingBoxMaxX;
+                      result = dropTargets;
+                    });
+
           }
-          return results;
+          return result;
         };
+      }();
+      layoutStrategy("Boxes: position offsets instead of padding; PromptText: move paddings to corresponding container")
+              .promptText(function() {
+                function copyProperty(jsName, cssName) {
+                  rowGroupingBox.style[jsName] = O$.getElementStyle(rowGroupingBoxTable, cssName);
+                }
 
-        var makeHeadersDraggable = function () {
-          layout.draggable().forEach(function(item) {
-            if (!item.draggable) {
-              O$.makeDraggable(item, function(evt) {
-                var groupingRules = rules();
-                var groupingColumnIds = groupingRules.map(function(rule) {
-                  return rule.columnId;
+                copyProperty("paddingLeft", "padding-left");
+                copyProperty("paddingRight", "padding-right");
+                copyProperty("paddingTop", "padding-top");
+                copyProperty("paddingBottom", "padding-bottom");
+
+                copyProperty("verticalAlign", "vertical-align");
+                copyProperty("textAlign", "text-align");
+              })
+              .any(function() {
+                ["paddingLeft", "paddingRight", "paddingTop", "paddingBottom"].forEach(function(property) {
+                  rowGroupingBoxTable.style[property] = "0px";
                 });
-                var dropTargets = dropTargetsInGroupingBox(rowGroupingBox, groupingColumnIds, function(boxId) {
-                  return layout.dropAreas()[groupingColumnIds.indexOf(boxId)];
-                }).concat(table._innerDropTargetsByColumnId(item._columnId, function(newIndex){
-                  table.grouping._cancelGroupingRule(item._columnId, newIndex);
-                }));
-                for (var i = 0, count = dropTargets.length; i < count; i++) {
-                  var dropTarget = dropTargets[i];
-                  if (dropTarget.eventInside(evt))
-                    return dropTarget;
-                }
-                return null;
               });
-              item.draggable = true;
-            }
-          });
-        }();
-        var makeHeadersSortable = function() {
-          var counter = 0;
-          var groupingRules = rules();
-          layout.draggable().forEach(function(colHeader) {
-            var rule = groupingRules[counter];
-            O$.addEventHandler(colHeader, "click", function() {
-              var focusField = O$(table.id + "::focused");
-              if (focusField)
-                focusField.value = true; // set true explicitly before it gets auto-set when the click bubbles up (JSFC-801)
-              rule.ascending = !rule.ascending;
-              table.grouping._applyGrouping(groupingRules);
-            });
-            counter++;
-          });
-        }();
-        layout.redraw();
-      };
-      fixGroupDescriber();
-      function innerDropTargets(draggedColumnId){
-        var headerCell = table._getHeaderCell(draggedColumnId);
-        var pos = O$.getElementPos(rowGroupingBox, true);
-        var rowGroupingBoxMinX = parseInt(pos.x);
-        var rowGroupingBoxMaxX = parseInt(rowGroupingBoxMinX) + parseInt(rowGroupingBox.clientWidth);
-        var rowGroupingBoxMinY = parseInt(pos.y);
-        var rowGroupingBoxMaxY = parseInt(rowGroupingBoxMinY) + parseInt(rowGroupingBox.clientHeight);
-        var inRowGroupingBox = function() {
-          return function(x, y) {
-            return (x >= rowGroupingBoxMinX) && (x < rowGroupingBoxMaxX) && (y >= rowGroupingBoxMinY) && (y < rowGroupingBoxMaxY);
-          }
-        }();
-        var dropTargets = [].concat(function groupedDescription() {
-          if (rules().length == 0) {
-            return [];
-          }
-          var dropTargets = [];
+      layoutStrategy("Feel container with boxes according to grouping rules")
+              .groupingBoxes(function() {
+                (function initGroupingBoxSizeValidationFunction() {
+                  rowGroupingBox.validate = function() {
+                    var currentSize = function() {
+                      return O$.getElementSize(rowGroupingBox);
+                    };
+                    if (!rowGroupingBox.minHeight) {
+                      rowGroupingBox.minHeight = currentSize().height;
+                    }
+                    function setHeight(val) {
+                      rowGroupingBox.style.height = val + "px";
+                    }
 
-          function dropTarget(minX, maxX, minY, maxY, targetColumn, newColumnIndex, rightEdge, columnId) {
-            var container = O$.getContainingBlock(rowGroupingBox, true);
-            if (!container)
-              container = O$.getDefaultAbsolutePositionParent();
-            return {
-              minX: minX,
-              maxX: maxX,
-              minY: minY,
-              maxY: maxY,
-              eventInside: function(evt) {
-                var cursorPos = O$.getEventPoint(evt, rowGroupingBox);
-                return inRowGroupingBox(cursorPos.x, cursorPos.y) &&
-                        (this.minX == null || cursorPos.x >= this.minX) &&
-                        (this.maxX == null || cursorPos.x < this.maxX);
-              },
-              setActive: function(active) {
-                if (active) {
-                  dropTargetMark.show(container, rowGroupingBox);
-                  dropTargetMark.highline(columnId, rightEdge);
-                } else {
-                  dropTargetMark.hide();
-                }
-              },
-              acceptDraggable: function(cellHeader) {
-                appendToGroupingBox(cellHeader._column.columnId, newColumnIndex);
-              }
-            };
-          }
+                    var headers = groupingBoxLayout().draggable();
+                    if (headers.length > 0) {
+                      var last = headers[headers.length - 1],
+                              lowBorder = O$.getElementPos(last, true).y
+                                      + O$.getElementSize(last).height + groupingBoxPaddings.bottom,
+                              actualLowBorder = O$.getElementSize(rowGroupingBox).height;
+                      if (lowBorder > actualLowBorder) {
+                        setHeight(lowBorder);
+                      }
 
-          var _groupingBoxWrappers = layout.dropAreas();
-          for (var i = 0; i < _groupingBoxWrappers.length; i++) {
-            var targetCell = _groupingBoxWrappers[i];
-            var targetCellRect = O$.getElementClientRectangle(targetCell, true);
-            var min = targetCellRect.getMinX() ? targetCellRect.getMinX() : 0;
-            var max = targetCellRect.getMaxX() ? targetCellRect.getMaxX() : 0;
-            var mid = (min + max) / 2;
-            var minY = targetCellRect.getMinY() ? targetCellRect.getMinY() : 0;
-            var maxY = targetCellRect.getMaxY() ? targetCellRect.getMaxY() : 0;
-            dropTargets.push(dropTarget(min, mid, minY, maxY, targetCell, i, false, targetCell.columnId));
-            dropTargets.push(dropTarget(mid, max, minY, maxY, targetCell, i + 1, true, targetCell.columnId));
-          }
-          dropTargets[0].minX = rowGroupingBoxMinX;
-          dropTargets[dropTargets.length - 1].maxX = rowGroupingBoxMaxX;
-          return dropTargets;
-        }())
-                .concat(function emptyArea(rowGroupingBox) {
-          if (rules().length != 0) {
-            return [];
-          }
-          return [
-            {
-              eventInside: function(evt) {
-                var cursorPos = O$.getEventPoint(evt, rowGroupingBox);
-                return inRowGroupingBox(cursorPos.x, cursorPos.y)
-              },
-              setActive: function(active) {
-                if (active) {
-                  var container = O$.getContainingBlock(rowGroupingBox, true);
-                  if (!container)
-                    container = O$.getDefaultAbsolutePositionParent();
-                  var rightEdge = false;
-                  dropTargetMark.show(container);
-                  var gridLineWidthCorrection = function() {
-                    return O$.getNumericElementStyle(table, rightEdge ? "border-right-width" : "border-left-width");
-                  }();
-                  var truePos = O$.getElementPos(rowGroupingBox);
-                  dropTargetMark.setPosition(rowGroupingBoxMinX, rowGroupingBoxMinY, rowGroupingBoxMaxY);
-                } else {
-                  dropTargetMark.hide();
-                }
-              },
-              acceptDraggable: function(cellHeader) {
-                appendToGroupingBox(cellHeader._column.columnId, 0);
-              }
-            }
-          ];
-        }(rowGroupingBox));
-        return dropTargets;
-      }
-      table._setRowGroupingBox({_innerDropTargets : innerDropTargets});
-    });
+                      if (lowBorder < actualLowBorder && lowBorder > rowGroupingBox.minHeight) {  //magic number is just an eps
+                        setHeight(Math.max(rowGroupingBox.minHeight, lowBorder));
+                      }
+                    }
+                  };
+                }());
+                (function cleanPreviousContent() {
+                  while (rowGroupingBox.childNodes.length > 0) {
+                    var child = rowGroupingBox.firstChild;
+                    child.parentNode.removeChild(child);
+                  }
+                }());
+                (function drawNewContent() {
+                  groupingBoxLayout().addAll(groupingColumnIds());
+                  groupingBoxLayout().redraw();
+                }());
+                (function prepareHeadersForDragging() {
+                  groupingBoxLayout().draggable().forEach(function(item) {
+                    if (item._clone) return;
+                    function processAbsoluteChildren(children) {
+                      var childArray = [];
+                      for (var i = 0, count = children.length; i < count; i++)
+                        childArray[i] = children[i];
+                      childArray.forEach(function (el) {
+                        if (O$.stringStartsWith(el.nodeName, "#")) return;
+                        if (el.style.position == "absolute" || O$.getElementStyle(el, "position") == "absolute")
+                          el.parentNode.removeChild(el);
+                        else
+                          processAbsoluteChildren(el.childNodes);
+                      });
+                    }
+                    item._clone = function() {
+                      var res = item.cloneNode(true);
+                      processAbsoluteChildren(res.childNodes);
+                      //[stanislav.kurilin] : for FF and IE in quirks mode it's works fine without it,
+                      //[stanislav.kurilin] : but in other browsers child styles doesn't apply fully
+                      //[stanislav.kurilin] : so that there is a gap after near child
+                      //[stanislav.kurilin] : tip to reproduce: set some big value to border-width
+                      if (!(O$.isMozillaFF() || O$.isExplorer() && O$.isStrictMode())) {
+                        ["borderWidth", "borderLeftWidth", "borderRightWidth", "borderTopWidth", "borderBottomWidth",
+                          "borderColor", "borderLeftColor", "borderRightColor", "borderTopColor", "borderBottomColor",
+                          "borderStyle", "borderLeftStyle", "borderRightStyle", "borderTopStyle", "borderBottomStyle"]
+                                .forEach(function(prop) {
+                          res.firstChild.style[prop] = O$.getStyleClassProperty(res.className, prop);
+                        });
+                        res.style.borderWidth = "0px";
+                      }
+                      O$.setOpacityLevel(res, 1 - table._draggedCellTransparency || 0.5);
+                      O$.correctElementZIndex(res, table, 2);
+                      return res;
+                    };
+                  });
+                }());
+                (function makeHeadersDraggable() {
+                  var innerDropTargetsVal = innerDropTargets();
+                  groupingBoxLayout().draggable().forEach(function(item) {
+                    if (!item.draggable) {
+                      O$.makeDraggable(item, function(evt) {
+                        var groupingRules = rules();
+                        var groupingColumnIds = groupingRules.map(function(rule) {
+                          return rule.columnId;
+                        });
+                        var dropTargets = innerDropTargetsVal.concat(table._innerDropTargetsByColumnId(item._columnId,
+                                function(newIndex) {
+                                  table.grouping._cancelGroupingRule(item._columnId, newIndex);
+                                }));
+                        for (var i = 0, count = dropTargets.length; i < count; i++) {
+                          var dropTarget = dropTargets[i];
+                          if (dropTarget.eventInside(evt))
+                            return dropTarget;
+                        }
+                        return null;
+                      });
+                      item.draggable = true;
+                    }
+                  });
+                }());
+                (function makeHeadersSortable() {
+                  var counter = 0;
+                  var groupingRules = rules();
+                  groupingBoxLayout().draggable().forEach(function(colHeader) {
+                    if (table._sortableColumnsIds.indexOf(colHeader._columnId) < 0)return;
+                    O$.addEventHandler(colHeader, "click", function() {
+                      var focusField = O$(table.id + "::focused");
+                      if (focusField)
+                        focusField.value = true; // set true explicitly before it gets auto-set when the click bubbles up (JSFC-801)
+                      table.grouping._toggleSortingTypeInGroupingRule(colHeader._columnId);
+                    });
+                    O$.setupHoverStateFunction(colHeader, function(mouseInside) {
+                      O$.setStyleMappings(colHeader.firstChild, {
+                                sortableHeaderRolloverClass: mouseInside ? table._sortableHeaderRolloverClass : null});
+                    });
+                    counter++;
+                  });
+                }());
+                (function attachColumnMenu() {
+                  groupingBoxLayout().draggable().forEach(function(colHeader) {
+                    O$.ColumnMenu._appendMenu(tableId, colHeader, colHeader._columnId, false);
+                  });
+                }());
+              });
+      (function attacheRowGroupingBoxToTable() {
+        table._setRowGroupingBox({_innerDropTargets : innerDropTargets});
+      }());
+    }
   },
 
   HEADER_CELL_Z_INDEX_COLUMN_MENU_BUTTON: 1,
@@ -3187,8 +3678,72 @@ O$.Table = {
 // -------------------------- COLUMN MENU SUPPORT
 O$.ColumnMenu = {
 
-  _init: function(columnMenuId, tableId, columnMenuButtonId, sortAscMenuId, sortDescMenuId) {
+  _appendMenu:function(tableId, cell, columnId, hidingEnabled) {
     var table = O$(tableId);
+    var columnMenuButtonTable = table._columnMenuButtonTable;
+    var columnMenuId = table._columnMenuId;
+    var columnMenu = O$(columnMenuId);
+
+    function menuFixer() {
+      O$.ColumnMenu._checkSortMenuItems(columnMenuId, tableId, columnId);
+      O$.ColumnMenu._checkGroupingMenuItems(columnMenuId, tableId, columnId);
+      var column = table._getColumn(columnId);
+
+      if (!hidingEnabled) {
+        var hideMenuItem = columnMenu._hideMenuItem;
+        if (hideMenuItem) {
+          table._hideMenuItem = hideMenuItem;
+          for (var i = 0; i < columnMenu.childNodes.length; i++) {
+            if (hideMenuItem == columnMenu.childNodes[i]) {
+              table._hideMenuIdx = i;
+              break;
+            }
+          }
+          columnMenu.removeChild(hideMenuItem);
+        }
+      } else {
+        var hideMenuItem = table._hideMenuItem;
+        if (hideMenuItem) {
+          if (table._hideMenuIdx >= 0
+                  && columnMenu.childNodes.length > table._hideMenuIdx)
+            columnMenu.insertBefore(hideMenuItem,
+                    columnMenu.childNodes[table._hideMenuIdx]);
+          else
+            columnMenu.appendChild(hideMenuItem);
+          table._hideMenuItem = null;
+          table._hideMenuIdx = -1;
+        }
+      }
+    }
+    O$.setupHoverStateFunction(cell, function(mouseOver) {
+      if (mouseOver && !O$.ColumnMenu._menuOpened) {
+        O$.ColumnMenu._currentColumnId = columnId;
+        O$.ColumnMenu._menuFixer = menuFixer;
+        columnMenuButtonTable.showForCell(cell);
+      } else {
+        if (O$.ColumnMenu._currentColumnId == columnId){
+          O$.ColumnMenu._currentColumnId = null;
+          O$.ColumnMenu._menuFixer = null;
+        }
+        columnMenuButtonTable.hideForCell(cell);
+      }
+    });
+  },
+
+  _currentColumnId : null,
+  _menuOpened : false,
+
+  _init: function(columnMenuId, tableId, columnMenuButtonId, sortAscMenuId, sortDescMenuId, hideMenuId,
+                  groupByColumnMenuId, removeFromGroupingMenuId, cancelGroupingMenuId) {
+    var table = O$(tableId);
+    table._columnMenuId = columnMenuId;
+    O$.ColumnMenu._menuOpened = false;
+    function findColumnById(columnId) {
+      return table._columns.filter(function(column) {
+        return column.columnId == columnId;
+      })[0];
+    }
+
     var menuInvokerAreaTransparency = 0;
     var newMenuParent = O$.getDefaultAbsolutePositionParent();
     var parentChildren = newMenuParent.childNodes;
@@ -3200,16 +3755,25 @@ O$.ColumnMenu = {
         break;
       }
     }
-    var columnMenu = O$(columnMenuId);
-    columnMenu._sortAscMenuId = sortAscMenuId;
-    columnMenu._sortDescMenuId = sortDescMenuId;
-
-    table._unloadHandlers.push(function() {
-      if (columnMenu.parentNode)
-        columnMenu.parentNode.removeChild(columnMenu);
+    var columnMenu = O$.initComponent(columnMenuId, null, {
+      _sortAscMenuItem: O$(sortAscMenuId),
+      _sortDescMenuItem: O$(sortDescMenuId),
+      _hideMenuItem: O$(hideMenuId),
+      _groupByColumnMenuItem: O$(groupByColumnMenuId),
+      _removeFromGroupingMenuItem: O$(removeFromGroupingMenuId),
+      _cancelGroupingMenuItem: O$(cancelGroupingMenuId)
     });
+
     var columnMenuButton = O$(columnMenuButtonId);
     var columnMenuButtonTable = function() {
+      function safeAppend(parent, child){
+        child.style.position = "";
+        child.style.width = "";
+        parent.appendChild(child);
+        var width = O$.getElementSize(child).width;
+        child.style.position = "absolute";
+        child.style.width = width + "px";
+      }
       var result = O$.Table._createTableWithoutTd();
       result.style.position = "absolute";
       result._tr.appendChild(columnMenuButton);
@@ -3217,12 +3781,14 @@ O$.ColumnMenu = {
       O$.extend(result, {
         showForCell: function(cell) {
           this.hide();
-          cell.appendChild(this);
+          safeAppend(cell, this);
           O$.correctElementZIndex(this, cell, O$.Table.HEADER_CELL_Z_INDEX_COLUMN_MENU_BUTTON);
           var rightOffset = O$.getNumericElementStyle(cell, "border-right-width");
           var bottomOffset = O$.getNumericElementStyle(cell, "border-bottom-width");
-          O$.setElementHeight(this, O$.getElementSize(cell).height - bottomOffset);
-          O$.alignPopupByElement(this, cell, O$.RIGHT, O$.BOTTOM, rightOffset, bottomOffset, false, true);
+          var leftOffset = O$.getNumericElementStyle(cell, "border-left-width");
+          var topOffset = O$.getNumericElementStyle(cell, "border-top-width");
+          O$.setElementHeight(this, O$.getElementSize(cell).height - (bottomOffset + topOffset));
+          O$.alignPopupByElement(this, cell, O$.RIGHT, O$.BOTTOM, rightOffset + leftOffset, bottomOffset, false, true);
           this._showForCell = cell;
         },
         hideForCell: function(cell) {
@@ -3238,45 +3804,45 @@ O$.ColumnMenu = {
       });
       return result;
     }();
-
-    var currentColumn = null;
-    var menuOpened = false;
+    table._columnMenuButtonTable = columnMenuButtonTable;
     table._columns.forEach(function(column) {
       if (!column.header || !column.header._cell || !column.menuAllowed) return;
       var headerCell = column.header._cell;
-      O$.setupHoverStateFunction(headerCell, function(mouseOver) {
-        if (mouseOver && !menuOpened) {
-          currentColumn = column;
-          columnMenuButtonTable.showForCell(headerCell);
-        } else {
-          if (currentColumn == column)
-            currentColumn = null;
-          columnMenuButtonTable.hideForCell(headerCell);
-        }
-      });
-
+      headerCell.columnId = column.columnId;
+      O$.ColumnMenu._appendMenu(tableId, headerCell, column.columnId, true);
     });
 
     columnMenuButton.onclick = function(e) {
       O$.cancelEvent(e);
     };
+
+    O$.initUnloadableComponent(columnMenuButton);
+    O$.addUnloadHandler(columnMenuButton, function() {
+      columnMenuButton.onclick = null;
+    });
     O$.addEventHandler(columnMenuButton, "mousedown", function(evt) {
       O$.cancelEvent(evt);
-      O$.correctElementZIndex(columnMenu, currentColumn._resizeHandle);
-      table._showingMenuForColumn = currentColumn;
-      columnMenu._column = currentColumn;
+      var columnId = O$.ColumnMenu._currentColumnId;
+      var currentColumn = findColumnById(columnId);
+      if (currentColumn) {
+        O$.correctElementZIndex(columnMenu, currentColumn._resizeHandle);
+        columnMenu._column = currentColumn;
+      }
+      table._showingMenuForColumn = columnId;
       if (columnMenu.parentNode != newMenuParent) {
         newMenuParent.appendChild(columnMenu);
         O$.correctElementZIndex(columnMenu, columnMenuButton);
       }
-      O$.ColumnMenu._checkSortMenuItems(columnMenuId, tableId, columnMenu._sortAscMenuId, columnMenu._sortDescMenuId,
-              currentColumn._index);
+
       columnMenu._showByElement(columnMenuButtonTable, O$.LEFT, O$.BELOW, 0, 0);
       var prevOnhide = columnMenu.onhide;
-      var headerCell = currentColumn.header._cell;
-      headerCell.setForceHover(true);
+      if (O$.ColumnMenu._menuFixer)O$.ColumnMenu._menuFixer();
+
+//      var headerCell = currentColumn.header._cell;
+//      headerCell.setForceHover(true);
+
       columnMenuButton.setForceHover(true);
-      menuOpened = true;
+      O$.ColumnMenu._menuOpened = true;
       columnMenu.onhide = function(e) {
         setTimeout(function() {
           table._showingMenuForColumn = null;
@@ -3286,142 +3852,114 @@ O$.ColumnMenu = {
         if (prevOnhide)
           prevOnhide.call(columnMenu, e);
         columnMenuButton.setForceHover(null);
-        headerCell.setForceHover(null);
-        menuOpened = false;
+//        headerCell.setForceHover(null);
+        O$.ColumnMenu._menuOpened = false;
       };
+      O$.addUnloadHandler(table,function () {
+         columnMenu.onhide = null;
+      });
     });
-    table._setRowGroupingBox = function(rowGroupingBox) {
-      table._rowGroupingBox = rowGroupingBox;
-    };
-    table._getHeaderCell = function(columnId) {
-      function retrieveAllCells() {
-        var candidates = table._columns.slice(0);
-        var allCells = [];
-        while(candidates.length > 0){
-          var current = candidates.pop();
-          allCells.push(current);
-          if(current._parentColumn){
-            candidates.push(current._parentColumn);
-          }
-        }
-        return allCells;
-      }
-      return retrieveAllCells().filter(function(column) {
-        return column.columnId == columnId;
-      })[0];
-    };
   },
 
-  _initColumnVisibilityMenu: function(menuId, tableId) {
+  _initColumnVisibilityMenu: function(menuId, tableId, columnIds) {
     var menu = O$(menuId);
     var table = O$(tableId);
     var idx = 0;
     menu._items.forEach(function(menuItem) {
       var colIndex = idx++;
       menuItem._anchor.onclick = function() {
-        O$.ColumnMenu._toggleColumnVisibility(table, colIndex);
+        O$.ColumnMenu._toggleColumnVisibility(table, columnIds[colIndex]);
       };
+      O$.addUnloadHandler(menuItem._anchor, function () {
+        menuItem._anchor.onclick = null;
+      });
     });
-
   },
 
-  _toggleColumnVisibility: function(table, columnIndex) {
-    if (columnIndex == undefined) {
-      columnIndex = table._showingMenuForColumn._index;
-    }
-    // todo: make this work through the new standard setColumnsOrder client-side API
-    O$._submitInternal(table, null, [
-      [table.id + "::columnVisibility", columnIndex]
-    ]);
+  _toggleColumnVisibility: function(table, columnId) {
+    var currentlyVisible = table.isColumnVisible(columnId);
+    table.setColumnVisible(columnId, !currentlyVisible);
   },
 
-  _checkSortMenuItems : function(columnMenuId, tableId, sortAscMenuId, sortDescMenuId, columnIndex) {
-    if (!sortAscMenuId && !sortDescMenuId) return;
+  _checkGroupingMenuItems: function(columnMenuId, tableId, columnId) {
     var table = O$(tableId);
     var columnMenu = O$(columnMenuId);
-    if (columnIndex == undefined) {
-      columnIndex = table._showingMenuForColumn._index;
+    function setMenuItemVisible(menuItem, visible) {
+      if (!menuItem) return;
+      menuItem.style.display = visible ? "" : "none";
     }
-    var column = table._columns[columnIndex];
-    if (!column._sortable) {
-      var sortAscMenuItem = O$(sortAscMenuId);
-      if (sortAscMenuItem) {
-        table._sortAscMenuItem = sortAscMenuItem;
-        for (var i = 0; i < columnMenu.childNodes.length; i++) {
-          if (sortAscMenuItem == columnMenu.childNodes[i]) {
-            table._sortAscMenuIdx = i;
-            break;
-          }
-        }
-        columnMenu.removeChild(sortAscMenuItem);
-      }
-      var sortDescMenuItem = O$(sortDescMenuId);
-      if (sortDescMenuItem) {
-        table._sortDescMenuItem = sortDescMenuItem;
-        for (i = 0; i < columnMenu.childNodes.length; i++) {
-          if (sortDescMenuItem == columnMenu.childNodes[i]) {
-            table._sortDescMenuIdx = i;
-            break;
-          }
-        }
-        columnMenu.removeChild(sortDescMenuItem);
-      }
-    } else {
-      var sortDescMenuItem = table._sortDescMenuItem;
-      if (sortDescMenuItem) {
-        if (table._sortDescMenuIdx >= 0
-            && columnMenu.childNodes.length > table._sortDescMenuIdx)
-          columnMenu.insertBefore(sortDescMenuItem,
-              columnMenu.childNodes[table._sortDescMenuIdx]);
-        else
-          columnMenu.appendChild(sortDescMenuItem);
-        table._sortDescMenuItem = null;
-        table._sortDescMenuIdx = -1;
-      }
-      var sortAscMenuItem = table._sortAscMenuItem;
-      if (sortAscMenuItem) {
-        if (table._sortAscMenuIdx >= 0
-            && columnMenu.childNodes.length > table._sortAscMenuIdx)
-          columnMenu.insertBefore(sortAscMenuItem,
-              columnMenu.childNodes[table._sortAscMenuIdx]);
-        else
-          columnMenu.appendChild(sortAscMenuItem);
-        table._sortAscMenuItem = null;
-        table._sortAscMenuIdx = -1;
-      }
-    }
+    var column = table._columns.byId(columnId);
+    var columnGroupable = column != null && column._groupable;
+    setMenuItemVisible(columnMenu._groupByColumnMenuItem, table.grouping && !table.grouping.isGroupedByColumn(columnId) && columnGroupable);
+    setMenuItemVisible(columnMenu._removeFromGroupingMenuItem, table.grouping && table.grouping.isGroupedByColumn(columnId));
+    setMenuItemVisible(columnMenu._cancelGroupingMenuItem, table.grouping && table.grouping.getGroupingRules().length > 0);
   },
 
-  _sortColumnAscending: function(tableId, columnIndex) {
+  _checkSortMenuItems: function(columnMenuId, tableId, columnId) {
     var table = O$(tableId);
-    if (columnIndex == undefined) {
-      columnIndex = table._showingMenuForColumn._index;
+    var columnMenu = O$(columnMenuId);
+    function setMenuItemVisible(menuItem, visible) {
+      if (!menuItem) return;
+      menuItem.style.display = visible ? "" : "none";
     }
-    var column = table._columns[columnIndex];
-    if (!column._sortable) return;
-    table.sorting._setPrimarySortingRule(new O$.Table.SortingRule(column.id, true));
+    var column = table._columns.byId(columnId);
+    setMenuItemVisible(columnMenu._sortAscMenuItem, column == null || column._sortable);
+    setMenuItemVisible(columnMenu._sortDescMenuItem, column == null || column._sortable);
+  },
+  _sortColumn: function(tableId, columnIndex, isAscending) {
+    var table = O$(tableId);
+    var groupingRules = table.grouping ? table.grouping.getGroupingRules() : null;
+
+    function associatedGroupingRule() {
+      return groupingRules ? groupingRules.filter(function(rule) {
+        return rule.columnId == columnId;
+      })[0] : null;
+    }
+    var columnId = columnIndex ? table._columns[columnIndex].columnId : table._showingMenuForColumn;
+    if (table._sortableColumnsIds.indexOf(columnId) < 0) return;
+    var groupingRule = associatedGroupingRule();
+    if (groupingRule) {
+      groupingRule.ascending = isAscending;
+      table.grouping.setGroupingRules(groupingRules);
+    } else {
+      table.sorting._setPrimarySortingRule(new O$.Table.SortingRule(columnId, isAscending));
+    }
+  },
+  _sortColumnAscending: function(tableId, columnIndex) {
+    O$.ColumnMenu._sortColumn(tableId, columnIndex, true);
   },
 
   _sortColumnDescending: function(tableId, columnIndex) {
-    var table = O$(tableId);
-    if (columnIndex == undefined) {
-      columnIndex = table._showingMenuForColumn._index;
-    }
-    var column = table._columns[columnIndex];
-    if (!column._sortable) return;
-    table.sorting._setPrimarySortingRule(new O$.Table.SortingRule(column.id, false));
+    O$.ColumnMenu._sortColumn(tableId, columnIndex, false);
   },
 
+  _groupByColumn: function(tableId, columnIndex) {
+    var table = O$(tableId);
+    O$.assert(table.grouping, "Cannot change grouping for a table that doesn't have row grouping capability turned on");
+
+    var columnId = columnIndex ? table._columns[columnIndex].columnId : table._showingMenuForColumn;
+    table.grouping.groupByColumn(columnId);
+  },
+
+  _removeFromGrouping: function(tableId, columnIndex) {
+    var table = O$(tableId);
+    O$.assert(table.grouping, "Cannot change grouping for a table that doesn't have row grouping capability turned on");
+
+    var columnId = columnIndex ? table._columns[columnIndex].columnId : table._showingMenuForColumn;
+    table.grouping.removeFromGrouping(columnId);
+  },
+
+  _cancelGrouping: function(tableId) {
+    var table = O$(tableId);
+    O$.assert(table.grouping, "Cannot change grouping for a table that doesn't have row grouping capability turned on");
+
+    table.grouping.cancelGrouping();
+  },
 
   _hideColumn: function(tableId, columnIndex) {
     var table = O$(tableId);
-    if (columnIndex == undefined) {
-      columnIndex = table._showingMenuForColumn._index;
-    }
-    // todo: make this work through the new standard setColumnsOrder client-side API
-    O$._submitInternal(table, null, [
-      [table.id + "::hideColumn", columnIndex]
-    ]);
-
+    var columnId = columnIndex ? table._columns[columnIndex].columnId : table._showingMenuForColumn;
+    table.hideColumn(columnId);
   }
 };
+

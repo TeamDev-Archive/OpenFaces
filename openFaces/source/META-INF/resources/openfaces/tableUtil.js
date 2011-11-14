@@ -729,6 +729,15 @@ O$.Tables = {
       }
       O$.setStyleMappings(row._rowNode, styleMappings);
       O$.Tables._handleUnsupportedRowStyleProperties(row._rowNode);
+      O$.addUnloadHandler(table, function() {
+        var classes = row._rowNode.className.split(" ");
+        var name = "." + classes[0];
+        for (var index = 1; index < classes.length; index++) {
+          name += " ." + classes[index];
+        }
+        if (O$._cssRulesBySelectors[name])
+          delete O$._cssRulesBySelectors[name];
+      });
       if (row._rightRowNode) {
         O$.setStyleMappings(row._rightRowNode, styleMappings);
         O$.Tables._handleUnsupportedRowStyleProperties(row._rightRowNode);
@@ -1285,7 +1294,8 @@ O$.Tables = {
               ? tableBody._getBorderBottomForCell(rowIndex, column._index, cell)
               : "0px none white";
       O$.Tables._setCellStyleProperty(cell, "borderBottom", borderBottom);
-      if (column._index != colCount - 1) {
+      var cellSpan = cell.colSpan || 1;
+      if (column._index + cellSpan - 1 != colCount - 1) {
         var rightBorder = column.body._rightBorder;
         if (table.body._overriddenVerticalGridlines) {
           var overriddenGridlineStyle = table.body._overriddenVerticalGridlines[column._index];
@@ -1400,7 +1410,7 @@ O$.Tables = {
       byId: function(columnId) {
         for (var i = 0, count = this.length; i < count; i++) {
           var column = this[i];
-          if (column.id == columnId)
+          if (column.columnId == columnId)
             return column;
         }
         return null;
@@ -1510,18 +1520,24 @@ O$.Tables = {
       var cls = O$.findCssRule("." + className);
       return {className: className, classObj: cls};
     }
+
     function newClass(declaration) {
-      if (O$.isExplorer())
-        return newClass_IE(declaration);
-      else
-        return newClass_raw(declaration);
+      return newClass_raw(declaration);
     }
     column._headerCellsClass = newClass("overflow: hidden");
     column._bodyCellsClass = newClass("overflow: hidden");
-    if (column.footer)
-      column._footerCellsClass = newClass("overflow: hidden");
     column._colClass = newClass("overflow: hidden");
-
+    if (column.footer) {
+      column._footerCellsClass = newClass("overflow: hidden");
+      O$.addUnloadHandler(table, function () {
+        O$.removeCssRule(column._footerCellsClass.classObj.selectorText);
+      });
+    }
+    O$.addUnloadHandler(table, function () {
+      O$.removeCssRule(column._headerCellsClass.classObj.selectorText);
+      O$.removeCssRule(column._bodyCellsClass.classObj.selectorText);
+      O$.removeCssRule(column._colClass.classObj.selectorText);
+    });
     column._table = table;
 
     if (column.header && column.header.pos) {
@@ -1696,6 +1712,11 @@ O$.Tables = {
       }
       var headerCell = (column.header && column.header._cell) || (column.subHeader && column.subHeader._cell);
       var bodyCell = column.body._cells[0];
+      if (!bodyCell) {
+        for (var i = 0, count = column.body._cells.length; i < count; i++) {
+          if (bodyCell = column.body._cells[i]) break;
+        }
+      }
       var footerCell = column.footer && column.footer._cell;
 
       var widthForCol = width;
@@ -1868,11 +1889,12 @@ O$.Tables = {
         var cellKey = rowIndex + "x" + colIndex;
         cellStyleMappings.individualCellStyle = table._params.cellStylesMap[cellKey];
 
+        var regularColumnCell = !cell.colSpan || cell.colSpan == 1;
         var columnClassName = column._useCellStyles ? column._getCompoundClassName() : null;
-        if (columnClassName)
+        if (columnClassName && regularColumnCell)
           cellStyleMappings.columnClass = columnClassName;
         var compoundBodyClassName = column.body._getCompoundClassName();
-        if (compoundBodyClassName) {
+        if (compoundBodyClassName && regularColumnCell) {
           cellStyleMappings.rowInitialClass = row.initialClass;
           cellStyleMappings.columnBodyClass = compoundBodyClassName;
         }
@@ -2401,6 +2423,9 @@ O$.Tables = {
         if (table.onscroll)
           table.onscroll(e);
       };
+      O$.addUnloadHandler(table, function () {
+        mainScrollingArea._scrollingDiv.onscroll = null;
+      });
       var synchronizationCorrectionInterval = setInterval(function() {
         if (!O$.isElementPresentInDocument(table)) {
           clearInterval(synchronizationCorrectionInterval);
@@ -2541,6 +2566,8 @@ O$.Tables = {
 
     markColumns();
 
+    var resizeEventListener = new O$.EventListener(window, "resize");
+
     function fixTopLevelScrollingDivWidth() {
       O$.listenProperty(table, "width", function(width) {
         width -= O$.getNumericElementStyle(table, "border-left-width", true);
@@ -2554,12 +2581,16 @@ O$.Tables = {
         });
       }, [
         new O$.Timer("200"),
-        new O$.EventListener(window, "resize")
+        resizeEventListener
       ]);
       table._topLevelScrollingDiv.style.visibility = "visible";
     }
 
     fixTopLevelScrollingDivWidth();
+
+    O$.addUnloadHandler(table, function () {
+      resizeEventListener.release();
+    });
 
     if (delayedInitFunctions.length)
       O$.addLoadEvent(function() {

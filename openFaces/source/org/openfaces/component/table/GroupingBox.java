@@ -20,13 +20,14 @@ public class GroupingBox extends org.openfaces.component.OUIComponentBase {
     public static final String COMPONENT_TYPE = "org.openfaces.GroupingBox";
     public static final String COMPONENT_FAMILY = "org.openfaces.GroupingBox";
     private String id;
-    private String styleClass;
-    private String style;
     private String headerStyle;
     private String headerStyleClass;
     private String promptText;
     private String promptTextStyle;
     private String promptTextStyleClass;
+    private String headerHorizOffset;
+    private String headerVertOffset;
+    private String connectorStyle;
 
     public GroupingBox() {
         setRendererType("org.openfaces.GroupingBoxRenderer");
@@ -41,7 +42,11 @@ public class GroupingBox extends org.openfaces.component.OUIComponentBase {
     public Object saveState(FacesContext context) {
         return new Object[]{
             super.saveState(context),
-                id, styleClass, style, headerStyle, headerStyleClass, promptText, promptTextStyle, promptTextStyleClass
+                id,
+                headerStyle, headerStyleClass,
+                promptText, promptTextStyle, promptTextStyleClass,
+                headerHorizOffset, headerVertOffset,
+                connectorStyle
         };
     }
 
@@ -51,13 +56,14 @@ public class GroupingBox extends org.openfaces.component.OUIComponentBase {
         int i = 0;
         super.restoreState(context, state[i++]);
         id = (String) state[i++];
-        styleClass = (String) state[i++];
-        style = (String) state[i++];
         headerStyle = (String) state[i++];
         headerStyleClass = (String) state[i++];
         promptText = (String) state[i++];
         promptTextStyle = (String) state[i++];
         promptTextStyleClass = (String) state[i++];
+        headerHorizOffset = (String) state[i++];
+        headerVertOffset = (String) state[i++];
+        connectorStyle = (String) state[i++];
     }
 
     public String getId() {
@@ -66,22 +72,6 @@ public class GroupingBox extends org.openfaces.component.OUIComponentBase {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getStyleClass() {
-        return ValueBindings.get(this, "styleClass", styleClass);
-    }
-
-    public void setStyleClass(String styleClass) {
-        this.styleClass = styleClass;
-    }
-
-    public String getStyle() {
-        return ValueBindings.get(this, "style", style);
-    }
-
-    public void setStyle(String style) {
-        this.style = style;
     }
 
     public String getHeaderStyle() {
@@ -122,5 +112,29 @@ public class GroupingBox extends org.openfaces.component.OUIComponentBase {
 
     public void setPromptTextStyleClass(String promptTextStyleClass) {
         this.promptTextStyleClass = promptTextStyleClass;
+    }
+
+    public String getHeaderHorizOffset() {
+        return ValueBindings.get(this, "headerHorizOffset", headerHorizOffset, "5px");
+    }
+
+    public void setHeaderHorizOffset(String headerHorizOffset) {
+        this.headerHorizOffset = headerHorizOffset;
+    }
+
+    public String getHeaderVertOffset() {
+        return ValueBindings.get(this, "headerVertOffset", headerVertOffset, "50%");
+    }
+
+    public void setHeaderVertOffset(String headerVertOffset) {
+        this.headerVertOffset = headerVertOffset;
+    }
+
+    public String getConnectorStyle() {
+        return ValueBindings.get(this, "connectorStyle", connectorStyle, "1px solid #404040");
+    }
+
+    public void setConnectorStyle(String connectorStyle) {
+        this.connectorStyle = connectorStyle;
     }
 }

@@ -13,6 +13,10 @@ package org.openfaces.taglib.internal;
 
 import org.openfaces.component.chart.LineStyle;
 import org.openfaces.component.chart.impl.PropertiesConverter;
+import org.openfaces.component.table.AllNodesCollapsed;
+import org.openfaces.component.table.AllNodesExpanded;
+import org.openfaces.component.table.ExpansionState;
+import org.openfaces.component.table.SeveralLevelsExpanded;
 import org.openfaces.renderkit.cssparser.CSSUtil;
 import org.openfaces.renderkit.cssparser.StyleObjectModel;
 import org.openfaces.util.CalendarUtil;
@@ -52,6 +56,9 @@ import java.util.TimeZone;
 public abstract class AbstractComponentTag extends AbstractTag {
     private static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm");
     private static int jsfVersion;
+    private static final String LEVELS_EXPANDED_MODE = "levelsExpanded:";
+    private static final String ALL_COLLAPSED_MODE = "allCollapsed";
+    private static final String ALL_EXPANDED_MODE = "allExpanded";
 
     private FacesContext facesContext;
 
@@ -406,6 +413,44 @@ public abstract class AbstractComponentTag extends AbstractTag {
 
     private static Collection<String> parseLiteralCollection(String value) {
         return new ArrayList<String>(Arrays.asList(value.trim().split(" +")));
+    }
+
+    protected void setExpansionStateProperty(UIComponent component, String propertyName) {
+        String expansionState = getPropertyValue(propertyName);
+        if (expansionState == null) return;
+        expansionState = expansionState.trim();
+
+        if (expansionState.length() == 0)
+            throw new IllegalArgumentException("Invalid value specified for expansionState attribute: the value should not be empty");
+
+        if (isValueReference(expansionState)) {
+            FacesContext context = getFacesContext();
+            ValueExpression ve = createValueExpression(context, "expansionState", expansionState);
+            component.setValueExpression("expansionState", ve);
+            return;
+        }
+
+        ExpansionState expansionStateObj;
+        if (AbstractComponentTag.ALL_EXPANDED_MODE.equals(expansionState))
+            expansionStateObj = new AllNodesExpanded();
+        else if (ALL_COLLAPSED_MODE.equals(expansionState))
+            expansionStateObj = new AllNodesCollapsed();
+        else if (expansionState.startsWith(LEVELS_EXPANDED_MODE)) {
+            String remainder = expansionState.substring(LEVELS_EXPANDED_MODE.length());
+            remainder = remainder.trim();
+            int level;
+            try {
+                level = Integer.parseInt(remainder);
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException("Invalid level specified in expansionState attribute. Integer number expected, but was: " + remainder);
+            }
+            if (level < 0)
+                throw new IllegalArgumentException("Invalid level specified in expansionState attribute. The number should be zero or a positive number: " + level);
+            expansionStateObj = new SeveralLevelsExpanded(level);
+        } else {
+            throw new IllegalArgumentException("Invalid value specified for expansionState attribute: " + expansionState + " . It should be one of the following: " + ALL_EXPANDED_MODE + ", " + ALL_COLLAPSED_MODE + " or " + LEVELS_EXPANDED_MODE + "NUMBER");
+        }
+        component.getAttributes().put(propertyName, expansionStateObj);
     }
 
     private static final class LiteralCollectionValueExpressionProxy extends ValueExpression {

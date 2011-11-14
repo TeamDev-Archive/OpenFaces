@@ -14,8 +14,11 @@ package org.openfaces.renderkit.table;
 import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.Cell;
 import org.openfaces.component.table.ColumnGroup;
+import org.openfaces.component.table.DataTable;
 import org.openfaces.component.table.ExpansionToggle;
+import org.openfaces.component.table.SyntheticColumn;
 import org.openfaces.component.table.TreeColumn;
+import org.openfaces.component.table.TreeTable;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.Components;
 import org.openfaces.util.Environment;
@@ -27,6 +30,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @author Dmitry Pikhulya
@@ -47,16 +51,14 @@ public class TreeColumnRenderer extends RendererBase {
         TreeColumn treeColumn = ((TreeColumn) component);
         Cell customCell = (Cell) treeColumn.getAttributes().get(ATTR_CUSTOM_CELL);
         ResponseWriter writer = context.getResponseWriter();
-        AbstractTable table = getTable(component);
-        UIComponent cellContentsContainer = customCell != null ? customCell : component;
+        AbstractTable table = getTable(treeColumn);
+        UIComponent cellContentsContainer = customCell != null ? customCell : treeColumn;
         if (!treeColumn.getShowAsTree()) {
             Rendering.renderChildren(context, cellContentsContainer);
             TableStructure.writeNonBreakableSpaceForEmptyCell(writer, table, cellContentsContainer);
             return;
         }
 
-        if (table == null)
-            throw new IllegalStateException("TreeColumn must be embedded into a TreeTable component");
         int level = table.getNodeLevel();
 
         String indentStyle = null;
@@ -66,24 +68,24 @@ public class TreeColumnRenderer extends RendererBase {
         }
         String indentClass = Styles.getCSSClass(context, table, indentStyle, DEFAULT_INDENT_CLASS);
 
-        writer.startElement("table", component);
+        writer.startElement("table", treeColumn);
         writer.writeAttribute("cellspacing", "0", null);
         writer.writeAttribute("cellpadding", "0", null);
         writer.writeAttribute("class", "o_cellWrapper", null);
-        writer.startElement("tr", component);
-        writer.startElement("td", component);
+        writer.startElement("tr", treeColumn);
+        writer.startElement("td", treeColumn);
         for (int i = 0; i < level; i++) {
             writer.writeAttribute("class", indentClass, null);
             if (Environment.isOpera() && indentStyle != null)
                 writer.writeAttribute("style", indentStyle, null);
-            writer.startElement("div", component);
+            writer.startElement("div", treeColumn);
             writer.writeAttribute("class", indentClass, null);
             if ((Environment.isOpera() || Environment.isMozilla()) && indentStyle != null)
                 writer.writeAttribute("style", indentStyle, null);
             writer.endElement("div");
 
             writer.endElement("td");
-            writer.startElement("td", component);
+            writer.startElement("td", treeColumn);
         }
 
         boolean showTreeStructure = false;
@@ -109,12 +111,12 @@ public class TreeColumnRenderer extends RendererBase {
         } else
             writer.writeAttribute("class", indentClass, null);
 
-        writer.startElement("div", component);
+        writer.startElement("div", treeColumn);
         if ((Environment.isOpera() || Environment.isMozilla()) && indentStyle != null)
             writer.writeAttribute("style", indentStyle, null);
 
         if (nodeHasChildren) {
-            Components.generateIdIfNotSpecified(component);
+            Components.generateIdIfNotSpecified(treeColumn);
             ExpansionToggle expansionToggle = treeColumn.getExpansionToggle();
             expansionToggle.encodeAll(context);
         } else
@@ -122,19 +124,31 @@ public class TreeColumnRenderer extends RendererBase {
 
         writer.endElement("div");
         writer.endElement("td");
-        writer.startElement("td", component);
+        writer.startElement("td", treeColumn);
 
-        Rendering.renderChildren(context, cellContentsContainer);
+        List<UIComponent> components = cellContentsContainer instanceof SyntheticColumn
+                ? ((SyntheticColumn) cellContentsContainer).getChildrenForProcessing()
+                : cellContentsContainer.getChildren();
+        Rendering.renderComponents(context, components);
+
         TableStructure.writeNonBreakableSpaceForEmptyCell(writer, table, cellContentsContainer);
         writer.endElement("td");
         writer.endElement("tr");
         writer.endElement("table");
     }
 
-    private AbstractTable getTable(UIComponent column) {
+    private AbstractTable getTable(TreeColumn column) {
+        DataTable groupedDataTable = DataTable.getGroupedDataTable(column);
+        if (groupedDataTable != null) {
+            // implicitly generated TreeColumn for a grouped DataTable
+            return groupedDataTable;
+        }
+
         UIComponent parent = column.getParent();
         while (parent instanceof ColumnGroup)
             parent = parent.getParent();
+        if (! (parent instanceof TreeTable))
+            throw new IllegalStateException("<o:treeColumn> must be embedded into <o:treeTable> component, but it was placed into a component with class: " + parent.getClass().getName());
         return (AbstractTable) parent;
     }
 

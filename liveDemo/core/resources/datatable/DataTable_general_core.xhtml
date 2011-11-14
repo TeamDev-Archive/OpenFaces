@@ -41,15 +41,16 @@
                  bodySectionStyle="background: #ffffff"
 
                  headerVertSeparator="1px solid #d0d0d0, 1px solid #a0a0a0"
-                 horizontalGridLines="1px solid #f6f7f8">
+                 horizontalGridLines="1px solid #f6f7f8"
+                 columnsOrder="#{sessionScope.banks_savedColumnsOrder}">
       <f:facet name="header">
-        <o:groupingBox id="groupingBox" />
+        <o:groupingBox id="groupingBox"/>
       </f:facet>
-      <o:rowGrouping />
+      <o:rowGrouping groupingRules="#{sessionScope.banks_savedGroupingRules}" expansionState="#{BanksList.expansionState}"/>
       <o:scrolling/>
-      <o:singleRowSelection
+      <o:singleRowSelection rowData="#{sessionScope.selectedBank}"
               style="background: url('../images/treetable/selected.gif') repeat-x #5d8bba !important; color: white !important;"/>
-      <!--<o:columnResizing resizingState="#{BanksList.columnResizingState}" autoSaveState="true"/>-->
+      <o:columnResizing resizingState="#{sessionScope.banks_columnResizingState}" autoSaveState="true"/>
       <o:columnReordering/>
 
       <f:facet name="columnMenu">
@@ -61,7 +62,7 @@
                          pressedStyle="border-left: none; background: url('../images/treetable/columnMenuBtnPressed.gif');"/>
       </f:facet>
 
-      <o:treeColumn id="institutionName"
+      <o:column id="institutionName"
                 header="Institution Name"
                 width="30%"
                 sortingExpression="#{bank.institutionName}"
@@ -71,7 +72,7 @@
           <o:inputTextFilter/>
         </f:facet>
         <h:outputText value="#{bank.institutionName}" style="white-space: nowrap;"/>
-      </o:treeColumn>
+      </o:column>
       <o:column header="Certificate Number"
                 width="10%"
                 headerStyle="white-space: normal;"

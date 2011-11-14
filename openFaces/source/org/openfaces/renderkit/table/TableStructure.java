@@ -294,8 +294,8 @@ public class TableStructure extends TableElement {
         DynamicCol dynamicCol = cellComponentsContainer instanceof DynamicCol ? (DynamicCol) cellComponentsContainer : null;
         if (dynamicCol != null) dynamicCol.declareContextVariables();
         try {
-            List<UIComponent> children = (cellComponentsContainer instanceof DynamicColumn)
-                    ? ((DynamicColumn) cellComponentsContainer).getChildrenForProcessing()
+            List<UIComponent> children = (cellComponentsContainer instanceof SyntheticColumn)
+                    ? ((SyntheticColumn) cellComponentsContainer).getChildrenForProcessing()
                     : cellComponentsContainer.getChildren();
 
             for (UIComponent child : children) {

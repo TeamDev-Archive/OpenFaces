@@ -193,11 +193,11 @@
     font-weight: normal;
     text-align: left;
     vertical-align: middle;
-    position: relative;
     padding: 2px 4px 2px 4px;
 }
 .o_groupingBox_header {
     border: 1px solid gray;
+    padding: 2px;
 }
 
 .o_scrollable_table {
@@ -254,7 +254,7 @@
 
 .o_rowGroupHeader {
   font-weight: bold;
-  background: #d8d8d8;
+  background: #e6e7e8;
 }
 
 .o_rowGroupFooter {

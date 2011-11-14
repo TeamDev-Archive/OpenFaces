@@ -20,6 +20,10 @@ import org.openfaces.renderkit.TableUtil;
 import org.openfaces.renderkit.table.TableStructure;
 import org.openfaces.util.Components;
 import org.openfaces.util.Log;
+import org.openfaces.renderkit.table.TreeTableRenderer;
+import org.openfaces.util.AjaxUtil;
+import org.openfaces.util.Components;
+import org.openfaces.util.Environment;
 import org.openfaces.util.ReflectionUtil;
 import org.openfaces.util.ValueBindings;
 
@@ -472,7 +476,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     public List<BaseColumn> getRenderedColumns() {
         if (cachedRenderedColumns == null) {
-            cachedRenderedColumns = calculateRenderedColumns();
+            cachedRenderedColumns = Collections.unmodifiableList(calculateRenderedColumns());
         }
         return cachedRenderedColumns;
     }
@@ -1381,6 +1385,10 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
             return null;
         List<BaseColumn> allColumns = getAllColumns();
         BaseColumn baseColumn = findColumnById(allColumns, columnId);
+        return getColumnGroupingExpression(baseColumn);
+    }
+
+    protected static ValueExpression getColumnGroupingExpression(BaseColumn baseColumn) {
         boolean ordinaryColumn = baseColumn instanceof Column;
         if (!ordinaryColumn) return null;
         Column column = (Column) baseColumn;
@@ -1716,10 +1724,6 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     protected abstract void restoreRows(boolean forceDecoding);
 
-    public void acceptNewExpandedRowIndexes(Set<Integer> expandedRowIndexes) {
-
-    }
-
     /**
      * @return null means that no table rows are organized as a plain list and not a hierarchy currently
      */
@@ -1746,6 +1750,51 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     public boolean isNodeExpanded() {
         return true;
     }
+
+    public List<BaseColumn> getAdaptedRenderedColumns() {
+        return getRenderedColumns();
+    }
+
+    public void acceptNewExpandedRowIndexes(Set indexes) {
+        FacesContext context = getFacesContext();
+        boolean dontCollapseNodes = isReloadingThisComponentWithA4j() || TreeTableRenderer.isAjaxFoldingInProgress(context);
+        List storedRowKeys = getModel().getStoredRowKeys();
+        int rowCount = storedRowKeys.size();
+        for (int i = 0; i < rowCount; i++) {
+            Object storedRowKey = storedRowKeys.get(i);
+            TreePath keyPath;
+            if (storedRowKey instanceof TreePath) {
+                // the case for TreeTable
+                keyPath = (TreePath) storedRowKey;
+            } else {
+                // the case for DataTable where row keys are plain row data objects, or row header/row footer objects
+                keyPath = new TreePath(storedRowKey, null);
+            }
+            boolean expanded = isNodeExpanded(keyPath);
+            boolean shouldBeExpanded = indexes.contains(Integer.valueOf(i));
+            if (expanded == shouldBeExpanded)
+                continue;
+            if (!shouldBeExpanded && dontCollapseNodes)
+                continue;
+            if (!getNodeHasChildren(i)) { // rows without children should have expanded state by default
+                setNodeExpanded(keyPath, true);
+            } else {
+                setNodeExpanded(keyPath, shouldBeExpanded);
+            }
+        }
+    }
+
+    private boolean isReloadingThisComponentWithA4j() {
+        // needed for JSFC-2526. It doesn't seem possible to know the a4j rerendered components on the decoding stage,
+        // so we suppose that this component is rerendered if it is an A4j request.
+        return Environment.isAjax4jsfRequest();
+    }
+
+    protected abstract boolean getNodeHasChildren(int rowIndex);
+
+    protected abstract boolean isNodeExpanded(TreePath keyPath);
+
+    protected abstract void setNodeExpanded(TreePath keyPath, boolean expanded);
 
     protected class RowComparator implements Comparator<Object> {
         private final FacesContext facesContext;
