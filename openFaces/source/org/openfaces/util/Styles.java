@@ -339,9 +339,9 @@ public class Styles {
     public static void writeCssClassesAsScriptElement(FacesContext context, UIComponent component, List<String> cssRules, boolean asOnloadScript) throws IOException {
         ScriptBuilder styleRegistrationScript = new ScriptBuilder().functionCall("O$.addUnloadableCssRules", component, cssRules).semicolon();
         if (asOnloadScript || OpenFacesApplication.isConstructingView(context)) {
-            Rendering.renderInitScript(context, styleRegistrationScript, Resources.utilJsURL(context));
-        } else {
             Rendering.appendOnLoadScript(context, styleRegistrationScript);
+        } else {
+            Rendering.renderInitScript(context, styleRegistrationScript, Resources.utilJsURL(context));
         }
     }
 
