@@ -43086,12 +43086,6 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default "allExpanded" -->
       <!-- @value "allExpanded" all nodes are displayed in the expanded state -->
       <!-- @value "allCollapsed" all nodes are displayed in the collapsed state -->
-      <!-- @value "levelsExpanded:NUMBER" where NUMBER is an integer
-    number greater than or equal to zero. It specifies the hierarchy level
-    at which the nodes are displayed in the expanded state, while all nodes
-    below this level are collapsed. For example, expansionState="levelsExpanded:1"
-    means that only the root nodes are expanded. The value of "0" means that no nodes
-    are expanded -->
       <!-- @el true -->
     </attribute>
     <attribute>

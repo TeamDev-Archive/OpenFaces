@@ -14,11 +14,10 @@ package org.openfaces.demo.beans.datatable;
 
 import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.CSVTableExporter;
-import org.openfaces.component.table.ColumnResizingState;
 import org.openfaces.component.table.DataTable;
 import org.openfaces.component.table.ExpansionState;
-import org.openfaces.util.Faces;
 import org.openfaces.demo.beans.util.FacesUtils;
+import org.openfaces.util.Faces;
 
 import javax.faces.event.ActionEvent;
 import java.io.BufferedReader;
