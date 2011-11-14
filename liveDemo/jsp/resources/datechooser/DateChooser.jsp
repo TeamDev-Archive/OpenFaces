@@ -15,7 +15,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta name="AUTHOR" content="TeamDev Ltd."/>
   <meta name="CONTENT-LANGUAGE" content="en-US,ru"/>
-  <meta name="COPYRIGHT" content=" 2010 TeamDev Ltd."/>
+  <meta name="COPYRIGHT" content=" 2011 TeamDev Ltd."/>
   <meta name="CACHE-CONTROL" content="Public"/>
 
   <%@ include file="../template/keywords.xhtml" %>

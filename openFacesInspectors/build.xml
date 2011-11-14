@@ -115,7 +115,7 @@
             <fileset dir="${src.dir}" includes="**/*.java"/>
 
             <doctitle><![CDATA[<h1>OpenFaces Inspectors API Documentation</h1>]]></doctitle>
-            <bottom><![CDATA[<i>Copyright &#169; 1998-2010 TeamDev Ltd. All Rights Reserved.</i>]]></bottom>
+            <bottom><![CDATA[<i>Copyright &#169; 1998-2011 TeamDev Ltd. All Rights Reserved.</i>]]></bottom>
             <tag name="todo" scope="all" description="To do:"/>
         </javadoc>
     </target>

@@ -212,17 +212,17 @@
     <image>DataTable</image>
     <selectedImage>/images/components/titles/DataTable.png</selectedImage>
     <keyFeatures>
-      <feature>Ajax sorting</feature>
-      <feature>Ajax pagination</feature>
-      <feature>Ajax filtering</feature>
-      <feature>Single and multiple row selection</feature>
-      <feature>Column resizing</feature>
+      <feature>Interactive row grouping</feature>
+      <feature>Interactive filtering</feature>
       <feature>Showing, hiding and reordering columns</feature>
+      <feature>Column resizing</feature>
       <feature>Content scrolling with row/column freezing</feature>
       <feature>Dynamic columns</feature>
       <feature>Multiple headers and footers</feature>
-      <feature>Handling large data sets</feature>
       <feature>Individual rows and cells customization</feature>
+      <feature>Ajax sorting and pagination</feature>
+      <feature>Single and multiple row selection</feature>
+      <feature>Handling large data sets</feature>
       <feature>Keyboard navigation</feature>
     </keyFeatures>
     <demos>
