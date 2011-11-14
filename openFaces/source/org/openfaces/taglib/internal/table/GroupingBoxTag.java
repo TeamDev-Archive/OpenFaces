@@ -33,10 +33,10 @@ public class GroupingBoxTag extends AbstractComponentTag {
 
         setStringProperty(component, "id");
         setStringProperty(component, "headerStyle");
-        setStringProperty(component, "headerStyleClass");
+        setStringProperty(component, "headerClass");
         setStringProperty(component, "promptText");
         setStringProperty(component, "promptTextStyle");
-        setStringProperty(component, "promptTextStyleClass");
+        setStringProperty(component, "promptTextClass");
         setStringProperty(component, "headerHorizOffset");
         setStringProperty(component, "headerVertOffset");
         setStringProperty(component, "connectorStyle");

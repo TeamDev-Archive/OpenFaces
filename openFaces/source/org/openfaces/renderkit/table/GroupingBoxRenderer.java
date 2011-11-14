@@ -13,6 +13,7 @@ package org.openfaces.renderkit.table;
 
 import org.openfaces.component.table.DataTable;
 import org.openfaces.component.table.GroupingBox;
+import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.Styles;
@@ -24,7 +25,7 @@ import java.io.IOException;
 
 import static org.openfaces.util.Rendering.writeStandardEvents;
 
-public class GroupingBoxRenderer extends org.openfaces.renderkit.RendererBase {
+public class GroupingBoxRenderer extends RendererBase {
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         super.encodeBegin(context, component);
@@ -38,8 +39,8 @@ public class GroupingBoxRenderer extends org.openfaces.renderkit.RendererBase {
 
         final DataTable table = (DataTable) groupingBox.getParent();
         final String boxClassName = Styles.getCSSClass(context, component, groupingBox.getStyle(), "o_groupingBox", groupingBox.getStyleClass());
-        final String headerClassName = Styles.getCSSClass(context, component, groupingBox.getHeaderStyle(), "o_groupingBox_header", groupingBox.getHeaderStyleClass());
-        final String promptClassName = Styles.getCSSClass(context, component, groupingBox.getPromptTextStyle(), "o_groupingBox_promptText", groupingBox.getPromptTextStyleClass());
+        final String headerClassName = Styles.getCSSClass(context, component, groupingBox.getHeaderStyle(), "o_groupingBox_header", groupingBox.getHeaderClass());
+        final String promptClassName = Styles.getCSSClass(context, component, groupingBox.getPromptTextStyle(), "o_groupingBox_promptText", groupingBox.getPromptTextClass());
         final String connectorStyle =  groupingBox.getConnectorStyle();
         writer.startElement("table", component);
         writeStandardEvents(writer, groupingBox);

@@ -43428,26 +43428,7 @@ entering a value and returns a list of suggestions from the server -->
     <tag-class>org.openfaces.taglib.jsp.table.GroupingBoxJspTag</tag-class>
     <body-content>JSP</body-content>
     <attribute>
-      <name>id</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>Grouping box style.</description>
-      <name>styleClass</name>
-      <deferred-value>
-        <type>java.lang.Object</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>Style for grouping box.</description>
+      <description>CSS style declaration for the entire component.</description>
       <name>style</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -43457,7 +43438,17 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Style that applies to each header.</description>
+      <description>CSS class name for the entire component.</description>
+      <name>styleClass</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Style that is applied to each column header displayed in a grouping box.</description>
       <name>headerStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -43467,8 +43458,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Style that applies to each header.</description>
-      <name>headerStyleClass</name>
+      <description>CSS class which is applied to each column header displayed in a grouping box.</description>
+      <name>headerClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -43477,7 +43468,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Tip for column grouping.</description>
+      <description>A prompt text which gives a brief information on how to use thre grouping box while the table is not
+        grouped.</description>
       <name>promptText</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -43497,8 +43489,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Css class for prompt text.</description>
-      <name>promptTextStyleClass</name>
+      <description>CSS class for prompt text.</description>
+      <name>promptTextClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -43507,7 +43499,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Horizontal distance beetween two headers.</description>
+      <description>Horizontal distance beetween column headers in the grouping box.</description>
       <name>headerHorizOffset</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -43517,7 +43509,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Vertical offset on header box. Note that you can use persantage value.</description>
+      <description>The distance by which each column header is vertically offset relative to the previous one, when
+        the table is grouped by more than one column.</description>
       <name>headerVertOffset</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -43527,7 +43520,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Customize connector by applying custom style.</description>
+      <description>Specifies style for the line that connects column headers inside of the grouping box. It should be
+      specified in a truncated CSS form, like "1px solid black".</description>
       <name>connectorStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -43538,7 +43532,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>JavaScript code that should be executed on the client when the user clicks the left mouse
-        button over the row.
+        button over the grouping box.
       </description>
       <name>onclick</name>
       <deferred-value>
@@ -43550,7 +43544,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>JavaScript code that should be executed on the client when the user double-clicks the left
-        mouse button over the row.
+        mouse button over the grouping box.
       </description>
       <name>ondblclick</name>
       <deferred-value>
@@ -43561,7 +43555,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user presses any mouse button over the row.
+      <description>JavaScript code that should be executed when the user presses any mouse button over the grouping box.
       </description>
       <name>onmousedown</name>
       <deferred-value>
@@ -43583,7 +43577,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user moves the mouse pointer over the row.
+      <description>JavaScript code that should be executed when the user moves the mouse pointer over the grouping box.
       </description>
       <name>onmousemove</name>
       <deferred-value>
@@ -43605,7 +43599,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user releases a mouse button over the row.
+      <description>JavaScript code that should be executed when the user releases a mouse button over the grouping box.
       </description>
       <name>onmouseup</name>
       <deferred-value>
@@ -43620,38 +43614,6 @@ entering a value and returns a list of suggestions from the server -->
         (or performs the other context menu invocation action depending on the platform).
       </description>
       <name>oncontextmenu</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>JavaScript code that should be executed when the user presses a key over the row.</description>
-      <name>onkeydown</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>JavaScript code that should be executed when the user releases a key over the row.</description>
-      <name>onkeyup</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>JavaScript code that should be executed on the client when the user presses and releases a key
-        over the row.
-      </description>
-      <name>onkeypress</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
