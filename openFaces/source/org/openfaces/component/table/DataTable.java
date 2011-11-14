@@ -20,6 +20,7 @@ import org.openfaces.util.ValueBindings;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
