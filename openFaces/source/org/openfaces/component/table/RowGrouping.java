@@ -41,7 +41,9 @@ public class RowGrouping extends OUIComponentBase {
     private ExpansionState expansionState = new AllNodesExpanded();
     private RowGroupingSelectionMode selectionMode;
 
+    private boolean beforeUpdateValuesPhase = true;
     private DataTable dataTable;
+    private List<GroupingRule> incomingGroupingRules;
 
     public RowGrouping() {
         setRendererType("org.openfaces.RowGroupingRenderer");
@@ -80,11 +82,20 @@ public class RowGrouping extends OUIComponentBase {
         hideGroupingColumns = (Boolean) state[i++];
         expansionState = (ExpansionState) state[i++];
         selectionMode = (RowGroupingSelectionMode) state[i++];
+
+        beforeUpdateValuesPhase = true;
+        incomingGroupingRules = null;
     }
 
     @Override
     public void processUpdates(FacesContext context) {
+        beforeUpdateValuesPhase = false;
         super.processUpdates(context);
+
+        if (incomingGroupingRules != null) {
+            acceptNewGroupingRules(incomingGroupingRules);
+            incomingGroupingRules = null;
+        }
         if (groupingRules != null && ValueBindings.set(this, "groupingRules", groupingRules))
             groupingRules = null;
 
@@ -94,8 +105,21 @@ public class RowGrouping extends OUIComponentBase {
     }
 
     public void acceptNewGroupingRules(List<GroupingRule> groupingRules) {
-        // todo: implement a behavior similar to AbstractTable.acceptNewSortingRules with a delayed setGroupingRules
-        // invocation on the process updates phase
+        if (beforeUpdateValuesPhase) {
+            incomingGroupingRules = groupingRules;
+            return;
+        }
+        DataTable dataTable = getDataTable();
+        for (GroupingRule sortingRule : groupingRules) {
+            String columnId = sortingRule.getColumnId();
+            BaseColumn column = dataTable.getColumnById(columnId);
+            if (column == null) throw new IllegalArgumentException("Column by id not found: " + columnId);
+            if (!TableUtil.isColumnGroupable(column))
+                throw new IllegalArgumentException("Column (id = " + columnId + ") is not groupable. Column class is " +
+                        column.getClass() + " ; specify sortingExpression or groupingExpression for <o:column> to " +
+                        "make it groupable");
+        }
+
         setGroupingRules(groupingRules);
     }
 

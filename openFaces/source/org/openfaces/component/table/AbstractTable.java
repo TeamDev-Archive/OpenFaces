@@ -161,7 +161,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     private String sortedAscendingImageUrl;
     private String sortedDescendingImageUrl;
 
-    private List<SortingRule> toggleColumnSorting;
+    private List<SortingRule> incomingSortingRules;
     private boolean beforeUpdateValuesPhase = true;
     private List<BaseColumn> cachedAllColumns;
     private List<BaseColumn> cachedRenderedColumns;
@@ -306,7 +306,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         totalRowCount = (Integer) state[i++];
 
         beforeUpdateValuesPhase = true;
-        toggleColumnSorting = null;
+        incomingSortingRules = null;
     }
 
     @Override
@@ -1076,15 +1076,11 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     protected void processModelUpdates(FacesContext context) {
         beforeUpdateValuesPhase = false;
-        if (toggleColumnSorting != null) {
-            acceptNewSortingRules(toggleColumnSorting);
-            toggleColumnSorting = null;
-            context.getExternalContext().getRequestMap().put(KEY_SORTING_TOGGLED, true);
+        if (incomingSortingRules != null) {
+            acceptNewSortingRules(incomingSortingRules);
+            incomingSortingRules = null;
+            TableUtil.markSortingToggledInThisRequest(context);
         }
-    }
-
-    protected boolean isSortingToggledInThisRequest(FacesContext context) {
-        return context.getExternalContext().getRequestMap().containsKey(KEY_SORTING_TOGGLED);
     }
 
     protected void processModelDependentUpdates(FacesContext context) {
@@ -1323,20 +1319,20 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         this.sortingRules = sortingRules;
     }
 
-    public void acceptNewSortingRules(List<SortingRule> newSortingRules) {
+    public void acceptNewSortingRules(List<SortingRule> sortingRules) {
         rememberSelectionByKeys();
         if (beforeUpdateValuesPhase) {
-            toggleColumnSorting = newSortingRules;
+            incomingSortingRules = sortingRules;
             return;
         }
-        for (SortingRule sortingRule : newSortingRules) {
+        for (SortingRule sortingRule : sortingRules) {
             String columnId = sortingRule.getColumnId();
             BaseColumn column = getColumnById(columnId);
             if (column == null) throw new IllegalArgumentException("Column by id not found: " + columnId);
             if (!(column instanceof Column || column instanceof SelectionColumn || column instanceof CheckboxColumn))
                 throw new IllegalArgumentException("Column (id = " + columnId + ") is not sortable. Column class is " + column.getClass());
         }
-        setSortingRules(newSortingRules);
+        setSortingRules(sortingRules);
     }
 
     public Object getRowKey() {
@@ -1385,17 +1381,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
             return null;
         List<BaseColumn> allColumns = getAllColumns();
         BaseColumn baseColumn = findColumnById(allColumns, columnId);
-        return getColumnGroupingExpression(baseColumn);
-    }
-
-    protected static ValueExpression getColumnGroupingExpression(BaseColumn baseColumn) {
-        boolean ordinaryColumn = baseColumn instanceof Column;
-        if (!ordinaryColumn) return null;
-        Column column = (Column) baseColumn;
-        ValueExpression expression = column.getGroupingExpression();
-        if (expression == null)
-            expression = column.getSortingExpression();
-        return expression;
+        return TableUtil.getColumnGroupingExpression(baseColumn);
     }
 
     protected RowComparator createRuleComparator(final FacesContext facesContext, SortingOrGroupingRule rule) {
