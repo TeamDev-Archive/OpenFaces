@@ -11,18 +11,9 @@
  */
 package org.openfaces.renderkit;
 
-import org.openfaces.component.table.AbstractTable;
-import org.openfaces.component.table.BaseColumn;
-import org.openfaces.component.table.ColumnGroup;
-import org.openfaces.component.table.ColumnResizing;
-import org.openfaces.component.table.ColumnResizingState;
-import org.openfaces.component.table.Columns;
-import org.openfaces.component.table.DynamicCol;
-import org.openfaces.component.table.DynamicColumn;
-import org.openfaces.component.table.RowGroupHeaderOrFooter;
+import org.openfaces.component.table.*;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
-import org.openfaces.renderkit.table.TableBody;
 import org.openfaces.util.Components;
 import org.openfaces.util.ReflectionUtil;
 import org.openfaces.util.Rendering;
@@ -53,6 +44,8 @@ import java.util.regex.Pattern;
 public class TableUtil {
     public static final String DEFAULT_HEADER_SECTION_CLASS = "o_table_header_section";
     public static final String DEFAULT_FOOTER_SECTION_CLASS = "o_table_footer_section";
+
+    private static final String KEY_SORTING_TOGGLED = TableUtil.class + ".sortingToggled";
 
     private TableUtil() {
     }
@@ -160,6 +153,30 @@ public class TableUtil {
             }
         }
     }
+
+    public static boolean isColumnGroupable(BaseColumn column) {
+        return getColumnGroupingExpression(column) != null;
+    }
+
+    public static void markSortingToggledInThisRequest(FacesContext context) {
+        context.getExternalContext().getRequestMap().put(KEY_SORTING_TOGGLED, true);
+    }
+
+    public static boolean isSortingToggledInThisRequest(FacesContext context) {
+        return context.getExternalContext().getRequestMap().containsKey(KEY_SORTING_TOGGLED);
+    }
+
+
+    public static ValueExpression getColumnGroupingExpression(BaseColumn baseColumn) {
+        boolean ordinaryColumn = baseColumn instanceof Column;
+        if (!ordinaryColumn) return null;
+        Column column = (Column) baseColumn;
+        ValueExpression expression = column.getGroupingExpression();
+        if (expression == null)
+            expression = column.getSortingExpression();
+        return expression;
+    }
+
 
     /**
      * Matches expression of the form:

@@ -20,7 +20,6 @@ import org.openfaces.util.ValueBindings;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
@@ -189,7 +188,7 @@ public class DataTable extends AbstractTable {
     protected void processModelUpdates(FacesContext context) {
         super.processModelUpdates(context);
 
-        if (isSortingToggledInThisRequest(context) && getPageSize() > 0) {
+        if (TableUtil.isSortingToggledInThisRequest(context) && getPageSize() > 0) {
             PaginationOnSorting paginationOnSorting = getPaginationOnSorting();
             switch (paginationOnSorting) {
                 case SAME_PAGE:

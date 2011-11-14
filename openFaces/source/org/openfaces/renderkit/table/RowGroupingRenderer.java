@@ -12,7 +12,6 @@
 package org.openfaces.renderkit.table;
 
 import org.openfaces.component.table.BaseColumn;
-import org.openfaces.component.table.Column;
 import org.openfaces.component.table.DataTable;
 import org.openfaces.component.table.GroupingRule;
 import org.openfaces.component.table.RowGrouping;
@@ -20,6 +19,7 @@ import org.openfaces.org.json.JSONArray;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.RendererBase;
+import org.openfaces.renderkit.TableUtil;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.ScriptBuilder;
 
@@ -68,7 +68,7 @@ public class RowGroupingRenderer extends RendererBase {
             cell.setTableStructure(tableStructure);
             cell.render(context, null);
 
-            if (isColumnGroupable(column))
+            if (TableUtil.isColumnGroupable(column))
                 groupableColumnIds.add(columnId);
         }
 
@@ -86,12 +86,6 @@ public class RowGroupingRenderer extends RendererBase {
         ).semicolon(), foldingRequired
                 ? new String[]{AbstractTableRenderer.treeTableJsURL(context)}
                 : new String[0]);
-    }
-
-    private boolean isColumnGroupable(BaseColumn bc) {
-        if (!(bc instanceof Column)) return false;
-        Column column = (Column) bc;
-        return column.getGroupingExpression() != null || column.getSortingExpression() != null;
     }
 
     @Override
