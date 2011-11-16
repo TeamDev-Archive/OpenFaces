@@ -255,10 +255,18 @@ public class UtilPhaseListener extends PhaseListenerBase {
                         elContext, "#{" + listener + "}", void.class, new Class[]{ActionEvent.class});
                 try {
                     methodExpression.getMethodInfo(elContext);
-                } catch (MethodNotFoundException e) {
+                } catch (MethodNotFoundException e1) {
                     // both actionEvent and AjaxActionEvent parameter declarations are allowed
                     methodExpression = context.getApplication().getExpressionFactory().createMethodExpression(
                             elContext, "#{" + listener + "}", void.class, new Class[]{AjaxActionEvent.class});
+                    try {
+                        methodExpression.getMethodInfo(elContext);
+                    } catch (MethodNotFoundException e2) {
+                        Log.log("Couldn't find Ajax action handler method. Method expression: #{" + listener + "} . " +
+                                "Note, the appropriate method should receive one parameter of either javax.faces.event.ActionEvent or " +
+                                "org.openfaces.event.AjaxActionEvent type.", e2);
+                        throw e2;
+                    }
                 }
                 methodExpression.invoke(elContext, new Object[]{event});
                 Object listenerResult = event.getAjaxResult();

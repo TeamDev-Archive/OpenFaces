@@ -22,7 +22,7 @@ public class Log {
     }
 
     public static void log(FacesContext context, String message, Throwable exception) {
-        System.err.println("message");
+        System.err.println(message);
         exception.printStackTrace();
         context.getExternalContext().log(message, exception);
     }
