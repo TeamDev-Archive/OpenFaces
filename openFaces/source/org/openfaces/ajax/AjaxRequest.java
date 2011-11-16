@@ -36,6 +36,10 @@ public class AjaxRequest {
         return getInstance(FacesContext.getCurrentInstance());
     }
 
+    /**
+     * @return an instance of the AjaxRequest class corresponding to the current Ajax request or null,
+     *         if the current request is not an Ajax request
+     */
     public static AjaxRequest getInstance(FacesContext context) {
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
         String key = AjaxRequest.class.getName();
@@ -50,7 +54,9 @@ public class AjaxRequest {
     }
 
     /**
-     * Makes a component with the specified id to be reloaded during this Ajax request.
+     * Makes a component with the specified id to be reloaded during this Ajax request. This method should be invoked
+     * before the "render response" phase, usually during the "invoke application" phase.
+     *
      * @param clientId client id of a component which should be reloaded
      */
     public void addReloadedComponent(String clientId) {
@@ -58,7 +64,9 @@ public class AjaxRequest {
     }
 
     /**
-     * Makes the specified component to be reloaded during this Ajax request.
+     * Makes the specified component to be reloaded during this Ajax request. This method should be invoked
+     * before the "render response" phase, usually during the "invoke application" phase.
+     *
      * @param component a component which should be reloaded
      */
     public void addReloadedComponent(UIComponent component) {

@@ -14,7 +14,7 @@ package org.openfaces.demo.beans.ajax;
 
 import org.openfaces.util.Faces;
 
-import javax.faces.event.ActionEvent;
+import javax.faces.event.AjaxBehaviorEvent;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,13 +53,13 @@ public class TaskBean implements Serializable {
         this.newTaskName = newTaskName;
     }
 
-    public void addTask(ActionEvent event) {
+    public void addTask(AjaxBehaviorEvent event) {
         Task newTask = Task.createUncompletedTask(newTaskName);
         tasks.add(newTask);
         newTaskName = "";
     }
 
-    public void deleteTask(ActionEvent event) {
+    public void deleteTask(AjaxBehaviorEvent event) {
         Task task = Faces.var("task", Task.class);
         tasks.remove(task);
     }
