@@ -106,14 +106,14 @@ public abstract class AbstractInputTextRenderer extends RendererBase {
 
     protected void encodeInitScript(FacesContext facesContext, OUIInputText inputText) throws IOException {
         String promptText = inputText.getPromptText();
-        String promptTextStyleClass = Styles.getCSSClass(facesContext, inputText, inputText.getPromptTextStyle(), StyleGroup.regularStyleGroup(1), inputText.getPromptTextClass(), DEFAULT_PROMPT_CLASS);
-        String rolloverStyleClass = Styles.getCSSClass(facesContext, inputText, inputText.getRolloverStyle(), StyleGroup.regularStyleGroup(2), inputText.getRolloverClass(), null);
-        String focusedStyleClass = Styles.getCSSClass(facesContext, inputText, inputText.getFocusedStyle(), StyleGroup.regularStyleGroup(3), inputText.getFocusedClass(), null);
+        String promptTextClass = Styles.getCSSClass(facesContext, inputText, inputText.getPromptTextStyle(), StyleGroup.regularStyleGroup(1), inputText.getPromptTextClass(), DEFAULT_PROMPT_CLASS);
+        String rolloverClass = Styles.getCSSClass(facesContext, inputText, inputText.getRolloverStyle(), StyleGroup.regularStyleGroup(2), inputText.getRolloverClass(), null);
+        String focusedClass = Styles.getCSSClass(facesContext, inputText, inputText.getFocusedStyle(), StyleGroup.regularStyleGroup(3), inputText.getFocusedClass(), null);
         Script initScript = new ScriptBuilder().initScript(facesContext, inputText, "O$.InputText._init",
                 promptText,
-                promptTextStyleClass,
-                rolloverStyleClass,
-                focusedStyleClass,
+                promptTextClass,
+                rolloverClass,
+                focusedClass,
                 inputText.isDisabled());
 
         Styles.renderStyleClasses(facesContext, inputText);

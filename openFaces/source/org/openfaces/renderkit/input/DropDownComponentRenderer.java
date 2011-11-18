@@ -217,7 +217,7 @@ public abstract class DropDownComponentRenderer extends RendererBase {
 
         renderEndTags(facesContext, dropDown);
 
-        String promptTextStyleClass = Styles.getCSSClass(facesContext,
+        String promptTextClass = Styles.getCSSClass(facesContext,
                 dropDown, dropDown.getPromptTextStyle(), StyleGroup.regularStyleGroup(1), dropDown.getPromptTextClass(),
                 DEFAULT_PROMPT_CLASS);
 
@@ -229,7 +229,7 @@ public abstract class DropDownComponentRenderer extends RendererBase {
         params.addAll(getButtonAndListStyles(facesContext, dropDown));
         params.add(dropDown.isDisabled() || dropDown.isReadonly());
         params.add(promptText);
-        params.add(promptTextStyleClass);
+        params.add(promptTextClass);
 
         Object pullPopupFromContainerObj = dropDown.getAttributes().get("pullPopupFromContainer");
         boolean pullPopupFromContainer = pullPopupFromContainerObj != null &&
