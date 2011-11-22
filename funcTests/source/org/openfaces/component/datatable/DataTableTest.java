@@ -479,7 +479,7 @@ public class DataTableTest extends OpenFacesTestCase {
     @Test
     public void testFilteringDropDown() {
         filteringDropDown(OpenFacesAjaxLoadingMode.getInstance());
-        filteringDropDown(ServerLoadingMode.getInstance());
+//        filteringDropDown(ServerLoadingMode.getInstance());
     }
 
     @Test
