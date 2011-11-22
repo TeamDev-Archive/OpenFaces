@@ -21,6 +21,7 @@ import org.openfaces.util.StyleParam;
 import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
 
@@ -55,8 +56,20 @@ public class DefaultProgressMessageRenderer extends AbstractSettingsRenderer {
                 backgroundLayerParams,
                 dpm.getMode() == ProgressMessageMode.ALL).semicolon();
 
+        if (isAjaxCleanupRequired()) {
+            setMessageScript.functionCall("O$.setAjaxCleanupRequired", true).semicolon();
+        }
+
         Rendering.renderInitScript(context, setMessageScript);
 
+    }
+
+    private static boolean isAjaxCleanupRequired() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        ExternalContext externalContext = context.getExternalContext();
+        String paramStr = externalContext.getInitParameter("org.openfaces.ajaxCleanupRequired");
+        boolean ajaxCleanupRequired = paramStr != null ? Boolean.valueOf(paramStr) : false;
+        return ajaxCleanupRequired;
     }
 
 }

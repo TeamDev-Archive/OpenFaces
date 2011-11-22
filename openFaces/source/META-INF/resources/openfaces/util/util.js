@@ -2920,10 +2920,11 @@ if (!window.O$) {
     component.onComponentUnload = function() {
       if (oldUnloadHandler)
         oldUnloadHandler();
+      else
+        O$.unloadAllHandlersAndEvents(component);
+
       if (component._focusOutline)
         component._focusOutline.remove();
-
-      O$.unloadAllHandlersAndEvents(component);
     };
   };
 
@@ -5211,6 +5212,18 @@ if (!window.O$) {
     return parent;
   };
 
+
+  O$.isComponentInDOM = function(component) {
+    var parent = component.parentNode;
+    while (parent != document && parent != null) {
+      parent = parent.parentNode;
+    }
+    if (parent == document) {
+      return true;
+    } else {
+      return false;
+    }
+  };
 
 }
 

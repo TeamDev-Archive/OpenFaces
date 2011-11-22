@@ -872,9 +872,9 @@ O$.Table = {
   _deinitializeKeyboardNavigation: function(table) {
     table.onfocus = null;
     table.onblur = null;
-    if (table._focusControl && table._focusControl.parentNode) {
+    /*if (table._focusControl && table._focusControl.parentNode) {
       table._focusControl.parentNode.removeChild(table._focusControl);
-    }
+    } */
   },
 
   _scrollToRowIndexes: function(table, rowIndexes) {
