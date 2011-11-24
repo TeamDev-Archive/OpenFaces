@@ -364,7 +364,7 @@ window.OpenFaces.Ajax = {
         OpenFaces.Ajax.Page.onajaxend(ajaxendEvent);
       }
       function destroyMemoryLeaks() {
-        if (!options._of_skipExecute) {
+        if (!(options._of_skipExecute || options._of_ajax_portions)) {
           if (reloadedComponent._unloadableComponents) {
             var componentNotInDOM = (reloadedComponent.parentNode != parentOfReloadedComponent);
             var length = reloadedComponent._unloadableComponents.length;
