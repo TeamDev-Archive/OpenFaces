@@ -33,8 +33,10 @@ public class InputTextRenderer extends AbstractInputTextRenderer {
         ResponseWriter writer = context.getResponseWriter();
         InputText inputText = (InputText) input;
         String value = getConvertedValue(context, inputText);
-        writeAttribute(writer, "value", value);
-        Rendering.writeAttributes(writer, inputText, "type", "dir", "lang", "alt", "onselect");
+        if (!"".equals(value))
+            writeAttribute(writer, "value", value);
+        writeAttribute(writer, "type", "text");
+        Rendering.writeAttributes(writer, inputText, "dir", "lang", "alt", "onselect");
         writeAttribute(writer, "maxlength", inputText.getMaxlength(), Integer.MIN_VALUE);
         writeAttribute(writer, "size", inputText.getSize(), Integer.MIN_VALUE);
         if (inputText.isReadonly())

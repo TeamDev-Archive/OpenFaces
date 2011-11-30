@@ -13,6 +13,7 @@ package org.openfaces.test;
 
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.html.InputInspector;
@@ -29,6 +30,7 @@ import java.util.List;
 public class ValidationTest extends OpenFacesTestCase {
 
     @Test
+    @Ignore
     public void testServerDefaultPresentation() {
         testAppFunctionalPage("/components/validation/serverDefaultPresentation.jsf");
         isNotDefaultPresentation();
@@ -60,6 +62,7 @@ public class ValidationTest extends OpenFacesTestCase {
     }
 
     @Test
+    @Ignore
     public void testClientDefaultPresentation() {
         testAppFunctionalPage("/components/validation/clientDefaultPresentation.jsf");
         isNotDefaultPresentation();

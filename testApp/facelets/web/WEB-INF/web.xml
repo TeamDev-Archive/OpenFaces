@@ -37,8 +37,12 @@ and for destroying session and application contexts.-->
   </context-param>
 
   <context-param>
-    <param-name>org.richfaces.SKIN</param-name>
-    <param-value>NULL</param-value>
+      <param-name>org.richfaces.skin</param-name>
+      <param-value>plain</param-value>
+  </context-param>
+  <context-param>
+      <param-name>org.richfaces.enableControlSkinning</param-name>
+      <param-value>false</param-value>
   </context-param>
 
   <context-param>

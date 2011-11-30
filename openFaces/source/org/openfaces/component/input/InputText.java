@@ -22,7 +22,6 @@ import javax.faces.context.FacesContext;
 public class InputText extends OUIInputText {
     public static final String COMPONENT_TYPE = "org.openfaces.InputText";
     public static final String COMPONENT_FAMILY = "org.openfaces.InputText";
-    public static final String INPUT_TEXT_TYPE = "text";
 
     private String dir;
     private String lang;
@@ -96,12 +95,6 @@ public class InputText extends OUIInputText {
     public void setMaxlength(int maxlength) {
         this.maxlength = maxlength;
     }
-
-    // OFCS-42 o:inputText missing type="text" when generating <input>
-    public String getType () {
-        return INPUT_TEXT_TYPE;
-    }
-
 
     @Override
     public Object saveState(FacesContext context) {
