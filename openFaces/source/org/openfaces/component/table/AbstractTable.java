@@ -1104,6 +1104,8 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     }
 
     protected void beforeRenderResponse(FacesContext context) {
+        Components.fixImplicitPanelIdsForMojarra_2_0_3(this, true);
+
         cachedAllColumns = null;
         cachedRenderedColumns = null;
         List<Columns> columnsComponents = Components.findChildrenWithClass(this, Columns.class);

@@ -15,11 +15,13 @@ import org.openfaces.component.OUIObjectIterator;
 
 import javax.faces.FacesException;
 import javax.faces.application.Application;
+import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
 import javax.faces.component.UIForm;
 import javax.faces.component.UIPanel;
 import javax.faces.component.UIViewRoot;
+import javax.faces.component.UniqueIdVendor;
 import javax.faces.component.html.HtmlCommandButton;
 import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.ExternalContext;
@@ -487,6 +489,45 @@ public class Components {
             facet = facet.getChildren().get(0);
         }
         return facet;
+    }
+
+    /**
+     * @param component
+     */
+    public static void fixImplicitPanelIdsForMojarra_2_0_3(UIComponent component, boolean fixDeeply) {
+        UniqueIdVendor uniqueIdVendor = null;
+        for (UIComponent c = component; c != null; c = c.getParent()) {
+            if (c instanceof NamingContainer && c instanceof UniqueIdVendor) {
+                uniqueIdVendor = (UniqueIdVendor) c;
+                break;
+            }
+        }
+        if (uniqueIdVendor == null) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            uniqueIdVendor = context.getViewRoot();
+        }
+        fixImplicitPanelIdsForMojarra_2_0_3(component, uniqueIdVendor, fixDeeply);
+    }
+
+    private static void fixImplicitPanelIdsForMojarra_2_0_3(UIComponent component, UniqueIdVendor uniqueIdVendor, boolean fixDeeply) {
+        Map<String, UIComponent> facets = component.getFacets();
+        Collection<UIComponent> facetComponents = facets.values();
+        for (UIComponent facetComponent : facetComponents) {
+            if (isImplicitPanel(facetComponent) && !isComponentIdSpecified(facetComponent)) {
+                FacesContext context = FacesContext.getCurrentInstance();
+                facetComponent.setId("_of_fix_implicitPanel_" + uniqueIdVendor.createUniqueId(context, null));
+            }
+            if (fixDeeply && !(facetComponent instanceof NamingContainer))
+                fixImplicitPanelIdsForMojarra_2_0_3(facetComponent, uniqueIdVendor, true);
+        }
+
+        if (fixDeeply) {
+            List<UIComponent> children = component.getChildren();
+            for (UIComponent child : children) {
+                if (!(child instanceof NamingContainer))
+                    fixImplicitPanelIdsForMojarra_2_0_3(child, uniqueIdVendor, true);
+            }
+        }
     }
 
     /**
