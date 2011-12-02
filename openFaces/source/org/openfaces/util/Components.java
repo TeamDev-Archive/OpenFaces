@@ -489,6 +489,14 @@ public class Components {
         return facet;
     }
 
+    /**
+     * This method addresses the Mojarra 2.0.3 issue (already fixed in 2.1.3) where a component placed into a facet
+     * was implicitly wrapped into an intermediate UIPanel component, which was registered as an immediate facet
+     * content instead of the component placed into the facet via xhtml, so component.getParent() didn't return the
+     * facet owner component, and returned UIPanel instead.
+     * @param facet a facet content component
+     * @return true if it is an excessive implicitly added UIPanel, which should be ignored
+     */
     public static boolean isImplicitPanel(UIComponent facet) {
         return facet instanceof UIPanel && facet.getAttributes().containsKey("com.sun.faces.facelets.IMPLICIT_PANEL");
     }

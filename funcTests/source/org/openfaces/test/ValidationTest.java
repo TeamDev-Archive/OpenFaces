@@ -13,7 +13,6 @@ package org.openfaces.test;
 
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.html.InputInspector;
@@ -30,7 +29,6 @@ import java.util.List;
 public class ValidationTest extends OpenFacesTestCase {
 
     @Test
-    @Ignore
     public void testServerDefaultPresentation() {
         testAppFunctionalPage("/components/validation/serverDefaultPresentation.jsf");
         isNotDefaultPresentation();
@@ -62,7 +60,6 @@ public class ValidationTest extends OpenFacesTestCase {
     }
 
     @Test
-    @Ignore
     public void testClientDefaultPresentation() {
         testAppFunctionalPage("/components/validation/clientDefaultPresentation.jsf");
         isNotDefaultPresentation();
@@ -548,19 +545,18 @@ public class ValidationTest extends OpenFacesTestCase {
         isDefaultPresentation(0);
     }
     private void isDefaultPresentation(int startIdx) {
-        String failedBackground = "background-color: #FFFFFF";
-        String failedBackground2 = "background-color: #F8D3D4";
+        String failedBackground = "background-color: #F8D3D4";
         int i = startIdx;
         element("dfm" + i++).assertVisible(true);
         element("testForm:required").assertStyle(failedBackground);
         element("dfm" + i++).assertVisible(true);
-        element("testForm:c").assertStyle(failedBackground2);
+        element("testForm:c").assertStyle(failedBackground);
         element("dfm" + i++).assertVisible(true);
-        element("testForm:dch").assertStyle(failedBackground2);
+        element("testForm:dch").assertStyle(failedBackground);
         element("dfm" + i++).assertVisible(true);
-        element("testForm:tls").assertStyle(failedBackground2);
+        element("testForm:tls").assertStyle(failedBackground);
         element("dfm" + i++).assertVisible(true);
-        element("testForm:ddf").assertStyle(failedBackground2);
+        element("testForm:ddf").assertStyle(failedBackground);
         element("dfm" + i++).assertVisible(true);
         element("testForm:validDR").assertStyle(failedBackground);
         element("dfm" + i++).assertVisible(true);

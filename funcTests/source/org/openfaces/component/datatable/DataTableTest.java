@@ -471,7 +471,6 @@ public class DataTableTest extends OpenFacesTestCase {
     }
 
     @Test
-    @Ignore
     public void testFilteringComboBox() {
         filteringComboBox(OpenFacesAjaxLoadingMode.getInstance());
         filteringComboBox(ServerLoadingMode.getInstance());

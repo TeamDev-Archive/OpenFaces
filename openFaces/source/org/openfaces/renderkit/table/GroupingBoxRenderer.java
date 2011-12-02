@@ -14,6 +14,7 @@ package org.openfaces.renderkit.table;
 import org.openfaces.component.table.DataTable;
 import org.openfaces.component.table.GroupingBox;
 import org.openfaces.renderkit.RendererBase;
+import org.openfaces.util.Components;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.Styles;
@@ -31,13 +32,13 @@ public class GroupingBoxRenderer extends RendererBase {
         super.encodeBegin(context, component);
         final ResponseWriter writer = context.getResponseWriter();
         final GroupingBox groupingBox = (GroupingBox) component;
-        final UIComponent parent = groupingBox.getParent();
+        final UIComponent parent = Components.getFacetOwner(groupingBox);
         if (!(parent instanceof DataTable))
-            throw new IllegalStateException("<o:groupingBox> can only be placed as a child component inside of " +
-                    "a <o:dataTable> component. Though the following parent component has been encountered: " +
+            throw new IllegalStateException("<o:groupingBox> can only be placed into a facet of <o:dataTable> " +
+                    "component. Though the following parent component has been encountered: " +
                     parent.getClass().getName());
 
-        final DataTable table = (DataTable) groupingBox.getParent();
+        final DataTable table = (DataTable) parent;
         final String boxClassName = Styles.getCSSClass(context, component, groupingBox.getStyle(), "o_groupingBox", groupingBox.getStyleClass());
         final String headerClassName = Styles.getCSSClass(context, component, groupingBox.getHeaderStyle(), "o_groupingBox_header", groupingBox.getHeaderClass());
         final String promptClassName = Styles.getCSSClass(context, component, groupingBox.getPromptTextStyle(), "o_groupingBox_promptText", groupingBox.getPromptTextClass());
