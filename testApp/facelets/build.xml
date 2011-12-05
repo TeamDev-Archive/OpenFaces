@@ -67,8 +67,8 @@
   </fileset>
 
   <fileset id="mojarra-2.0" dir="${jsf.lib.dir}">
-    <include name="jsf-api-2.0.3.jar"/>
-    <include name="jsf-impl-2.0.3.jar"/>
+    <include name="jsf-api-2.0.4.jar"/>
+    <include name="jsf-impl-2.0.4.jar"/>
   </fileset>
 
   <fileset id="hibernate-libs" dir="${hibernate.lib.dir}">
