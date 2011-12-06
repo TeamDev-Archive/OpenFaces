@@ -13,6 +13,7 @@ package org.openfaces.component.panel;
 
 import org.openfaces.component.ComponentWithCaption;
 import org.openfaces.component.OUIPanel;
+import org.openfaces.util.Components;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.component.UIComponent;
@@ -63,7 +64,7 @@ public abstract class AbstractPanelWithCaption extends OUIPanel implements Compo
     }
 
     public UIComponent getCaptionFacet() {
-        return getFacet(CAPTION_FACET_NAME);
+        return Components.getFacet(this, CAPTION_FACET_NAME);
     }
 
     public void setCaptionFacet(UIComponent component) {

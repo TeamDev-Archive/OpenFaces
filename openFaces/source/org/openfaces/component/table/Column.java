@@ -12,6 +12,7 @@
 package org.openfaces.component.table;
 
 import org.openfaces.renderkit.TableUtil;
+import org.openfaces.util.Components;
 import org.openfaces.util.ValueBindings;
 
 import javax.el.ValueExpression;
@@ -74,7 +75,7 @@ public class Column extends BaseColumn {
 
 
     public UIComponent getSubHeader() {
-        return getFacet("subHeader");
+        return Components.getFacet(this, "subHeader");
     }
 
     public void setSubHeader(UIComponent component) {
