@@ -504,7 +504,7 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
     }
 
     public UIComponent getEventEditor() {
-        UIComponent result = getFacet(EVENT_EDITOR_FACET_NAME);
+        UIComponent result = Components.getFacet(this, EVENT_EDITOR_FACET_NAME);
         if (result == null) {
             Timetable timetable = getTimetable();
             if (timetable != null)
@@ -576,7 +576,7 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
 
 
     public UIComponent getHeader() {
-        UIComponent result = getFacet("header");
+        UIComponent result = Components.getFacet(this, "header");
         return result;
     }
 
@@ -585,7 +585,7 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
     }
 
     public UIComponent getHeaderRight() {
-        UIComponent result = getFacet("headerRight");
+        UIComponent result = Components.getFacet(this, "headerRight");
         return result;
     }
 
@@ -594,7 +594,7 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
     }
 
     public UIComponent getFooter() {
-        UIComponent result = getFacet("footer");
+        UIComponent result = Components.getFacet(this, "footer");
         return result;
     }
 
@@ -602,7 +602,7 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
         getFacets().put("footer", footer);
     }
     public UIComponent getFooterRight() {
-        UIComponent result = getFacet("footerRight");
+        UIComponent result = Components.getFacet(this, "footerRight");
         return result;
     }
 

@@ -369,7 +369,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     }
 
     public UIComponent getHeader() {
-        return getFacet(FACET_HEADER);
+        return Components.getFacet(this, FACET_HEADER);
     }
 
     public void setHeader(UIComponent component) {
@@ -377,7 +377,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     }
 
     public UIComponent getFooter() {
-        return getFacet(FACET_FOOTER);
+        return Components.getFacet(this, FACET_FOOTER);
     }
 
     public void setFooter(UIComponent component) {
@@ -385,7 +385,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     }
 
     public UIComponent getAbove() {
-        UIComponent component = getFacets().get(FACET_ABOVE);
+        UIComponent component = Components.getFacet(this, FACET_ABOVE);
         ensureFacetHasOwnId(component, FACET_ABOVE);
         return component;
     }
@@ -395,7 +395,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     }
 
     public UIComponent getBelow() {
-        UIComponent component = getFacets().get(FACET_BELOW);
+        UIComponent component = Components.getFacet(this, FACET_BELOW);
         ensureFacetHasOwnId(component, FACET_BELOW);
         return component;
     }
@@ -1566,11 +1566,11 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     }
 
     public UIComponent getNoDataMessage() {
-        return getFacet("noDataMessage");
+        return Components.getFacet(this, "noDataMessage");
     }
 
     public UIComponent getNoFilterDataMessage() {
-        return getFacet("noFilterDataMessage");
+        return Components.getFacet(this, "noFilterDataMessage");
     }
 
     public String getNoDataRowStyle() {

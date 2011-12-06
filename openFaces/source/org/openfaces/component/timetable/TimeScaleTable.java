@@ -12,6 +12,7 @@
 
 package org.openfaces.component.timetable;
 
+import org.openfaces.util.Components;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.component.UIComponent;
@@ -151,7 +152,7 @@ public abstract class TimeScaleTable extends TimetableView {
     }
 
     public UIComponent getResourceHeader() {
-        UIComponent result = getFacet(RESOURCE_HEADER_FACET_NAME);
+        UIComponent result = Components.getFacet(this, RESOURCE_HEADER_FACET_NAME);
         if (result == null) {
             Timetable timetable = getTimetable();
             if (timetable != null)

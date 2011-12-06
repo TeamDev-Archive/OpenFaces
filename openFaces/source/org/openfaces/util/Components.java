@@ -470,6 +470,12 @@ public class Components {
         return component;
     }
 
+    public static UIComponent getFacet(UIComponent component, String facetName) {
+        // this method is changed in the 3.x branch to address Mojarra 2.0.3 issue, and is included in the main
+        // branch here just in order to make its usage uniform across both versions
+        return component.getFacets().get(facetName);
+    }
+
     /**
      * Searches the component's parent chain until it finds the nearest parent with this class. Super classes and
      * interfaces are also supported by this method.
