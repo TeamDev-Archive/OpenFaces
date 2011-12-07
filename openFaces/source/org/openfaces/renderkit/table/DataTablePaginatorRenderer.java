@@ -186,7 +186,7 @@ public class DataTablePaginatorRenderer extends RendererBase {
         String fieldClass = Styles.getCSSClass(
                 context, component, null, DEFAULT_FIELD_CLASS, paginator.getPageNumberFieldClass());
         inputText.setStyleClass(fieldClass);
-        inputText.setOnkeypress("if (event.keyCode == 13) {this.onchange(); event.cancelBubble = true; return false;}");
+        inputText.setOnkeypress("if (event.keyCode == 13) {this.onchange(); O$.stopEvent();}");
         Script selectPageNoScript = getSubmitComponentWithParamScript(
                 useAjax, table, actionFieldName, new RawScript("'selectPageNo:' + this.value"), false);
         inputText.setOnchange(selectPageNoScript.toString());
