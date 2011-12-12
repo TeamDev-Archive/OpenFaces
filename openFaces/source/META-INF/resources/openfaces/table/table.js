@@ -1980,7 +1980,17 @@ O$.Table = {
   // -------------------------- COLUMN RESIZING SUPPORT
 
   _initColumnResizing: function(tableId, retainTableWidth, minColWidth, resizeHandleWidth, columnParams, autoSaveState) {
+    var thisRef = this;
+    var args = arguments;
     O$.addLoadEvent(function() {
+      var table = O$(tableId);
+      if (!O$.isVisibleRecursive(table)) {
+        setTimeout(function() {
+          O$.Table._initColumnResizing.apply(thisRef, args);
+        }, 100);
+        return;
+      }
+
       if (minColWidth == null)
         minColWidth = 10;
 
@@ -1994,7 +2004,6 @@ O$.Table = {
       // menu invoker and resize handle
       var resizeHandleOffset = 1;
 
-      var table = O$(tableId);
       var tableBordersCollapsed = O$.getElementStyle(table, "border-collapse") == "collapse";
       var colWidthsFieldId = table.id + "::colWidths";
       var colWidthsField = O$.setHiddenField(table, colWidthsFieldId);
