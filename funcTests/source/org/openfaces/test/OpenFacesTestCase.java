@@ -103,7 +103,7 @@ public abstract class OpenFacesTestCase extends SeleniumTestCase {
     }
 
     private String getUtilJsUrlSubstring() {
-        return "META-INF/resources/openfaces/util/util-"; // OpenFaces 2.x resource sub-string for util.js
+        return "javax.faces.resource/util/util.js.jsf?ln=openfaces"; // OpenFaces 3.x resource sub-string for util.js
     }
 
     protected void testAppFunctionalPage(String testAppPageUrl, String htmlSubstringOfAValidPage) {
