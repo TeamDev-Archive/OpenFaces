@@ -11,6 +11,7 @@
  */
 package org.openfaces.test;
 
+import com.thoughtworks.selenium.Selenium;
 import org.seleniuminspector.SeleniumTestCase;
 import org.seleniuminspector.SeleniumFactory;
 import org.seleniuminspector.SeleniumWithServerAutostartFactory;
@@ -81,16 +82,41 @@ public abstract class OpenFacesTestCase extends SeleniumTestCase {
         }
     }
 
-    private void testAppPage(String testAppPageUrl) {
+    private void testAppPage(String testAppPageUrl, String htmlSubstringOfAValidPage) {
         openAndWait(TEST_APP_URL_PREFIX, testAppPageUrl);
+
+        assertPageContentValid(testAppPageUrl, htmlSubstringOfAValidPage);
+    }
+
+    protected void assertPageContentValid(String pageUrl, String htmlSubstringOfAValidPage) {
+        if (htmlSubstringOfAValidPage != null) {
+            Selenium selenium = getSelenium();
+            String htmlSource = selenium.getHtmlSource();
+            assertTrue("Unexpected page content. Page url: " + pageUrl + " ; expected (but missing) HTML " +
+                    "source substring: " + htmlSubstringOfAValidPage + "; Current page title: " +
+                    selenium.getTitle(), htmlSource.contains(htmlSubstringOfAValidPage));
+        }
     }
 
     protected void testAppFunctionalPage(String testAppPageUrl) {
-        testAppPage(testAppPageUrl);
+        testAppFunctionalPage(testAppPageUrl, getUtilJsUrlSubstring());
+    }
+
+    private String getUtilJsUrlSubstring() {
+        return "META-INF/resources/openfaces/util/util-"; // OpenFaces 2.x resource sub-string for util.js
+    }
+
+    protected void testAppFunctionalPage(String testAppPageUrl, String htmlSubstringOfAValidPage) {
+        testAppPage(testAppPageUrl, htmlSubstringOfAValidPage);
     }
 
     protected void liveDemoPage(String testAppPageUrl) {
+        liveDemoPage(testAppPageUrl, getUtilJsUrlSubstring());
+    }
+
+    protected void liveDemoPage(String testAppPageUrl, String htmlSubstringOfValidPage) {
         openAndWait(LIVE_DEMO_URL_PREFIX, testAppPageUrl);
+        assertPageContentValid(testAppPageUrl, htmlSubstringOfValidPage);
     }
 
 
