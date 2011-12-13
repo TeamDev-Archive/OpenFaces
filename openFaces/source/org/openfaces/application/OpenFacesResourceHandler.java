@@ -99,7 +99,12 @@ public class OpenFacesResourceHandler extends ResourceHandlerWrapper {
     public Resource createResource(String resourceName, String libraryName, String contentType) {
         if (resourceName.startsWith(DYNAMIC_RESOURCE_IDENTIFIER))
             return new DynamicResource(resourceName);
-        return super.createResource(resourceName, libraryName, contentType);
+        Resource resource = super.createResource(resourceName, libraryName, contentType);
+        if (resource == null) return null;
+
+        return libraryName != null && libraryName.contains("openfaces")
+                ? new OpenFacesResource(resource)
+                : resource;
     }
 
     @Override
