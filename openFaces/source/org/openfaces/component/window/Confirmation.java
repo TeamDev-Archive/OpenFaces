@@ -91,11 +91,6 @@ public class Confirmation extends AbstractWindow implements OUIClientAction {
         return true; // always modal
     }
 
-    @Override
-    public String getWidth() {
-        return ValueBindings.get(this, "width", super.getWidth(), "275px");
-    }
-
     public boolean getAlignToInvoker() {
         return ValueBindings.get(this, "alignToInvoker", alignToInvoker, false);
     }

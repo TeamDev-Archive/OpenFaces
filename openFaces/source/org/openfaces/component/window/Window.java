@@ -40,17 +40,6 @@ public class Window extends AbstractWindow {
     }
 
     @Override
-    protected String getDefaultWidth() {
-        return "300px";
-    }
-
-    @Override
-    protected String getDefaultHeight() {
-        return "200px";
-    }
-
-
-    @Override
     public Object saveState(FacesContext context) {
         return new Object[]{
                 super.saveState(context),

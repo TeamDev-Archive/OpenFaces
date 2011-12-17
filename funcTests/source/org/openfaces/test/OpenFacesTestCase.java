@@ -12,6 +12,7 @@
 package org.openfaces.test;
 
 import com.thoughtworks.selenium.Selenium;
+import com.thoughtworks.selenium.SeleniumException;
 import org.seleniuminspector.SeleniumTestCase;
 import org.seleniuminspector.SeleniumFactory;
 import org.seleniuminspector.SeleniumWithServerAutostartFactory;
@@ -91,7 +92,12 @@ public abstract class OpenFacesTestCase extends SeleniumTestCase {
     protected void assertPageContentValid(String pageUrl, String htmlSubstringOfAValidPage) {
         if (htmlSubstringOfAValidPage != null) {
             Selenium selenium = getSelenium();
-            String htmlSource = selenium.getHtmlSource();
+            String htmlSource;
+            try {
+                htmlSource = selenium.getHtmlSource();
+            } catch (SeleniumException e) {
+                throw new RuntimeException("Couldn't get HTML source of a page: " + pageUrl, e);
+            }
             assertTrue("Unexpected page content. Page url: " + pageUrl + " ; expected (but missing) HTML " +
                     "source substring: " + htmlSubstringOfAValidPage + "; Current page title: " +
                     selenium.getTitle(), htmlSource.contains(htmlSubstringOfAValidPage));

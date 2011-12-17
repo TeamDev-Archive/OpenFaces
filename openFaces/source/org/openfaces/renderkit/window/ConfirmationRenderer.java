@@ -82,10 +82,7 @@ public class ConfirmationRenderer extends AbstractWindowRenderer {
         writer.writeAttribute("border", "0", null);
         writer.writeAttribute("cellspacing", "0", null);
         writer.writeAttribute("cellpadding", "0", null);
-
-        if (abstractWindow.getWidth() != null && abstractWindow.getWidth().length() != 0) {
-            writer.writeAttribute("width", "100%", null);
-        }
+        writer.writeAttribute("width", "100%", null);
         writer.writeAttribute("style", "height: 100%;", null);
 
         writer.startElement("tr", abstractWindow);
@@ -211,6 +208,11 @@ public class ConfirmationRenderer extends AbstractWindowRenderer {
     @Override
     protected String getDefaultClassName() {
         return Styles.mergeClassNames(super.getDefaultClassName(), "o_confirmation");
+    }
+
+    @Override
+    protected String getDefaultWidth() {
+        return "275px";
     }
 
     @Override

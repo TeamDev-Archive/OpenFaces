@@ -69,15 +69,6 @@ public class EventEditorDialog extends Window {
     }
 
 
-    @Override
-    protected String getDefaultWidth() {
-        return "450px";
-    }
-
-    @Override
-    protected String getDefaultHeight() {
-        return "350px";
-    }
 
     @Override
     protected String getDefaultMinWidth() {
@@ -86,7 +77,7 @@ public class EventEditorDialog extends Window {
 
     @Override
     protected String getDefaultMinHeight() {
-        return "300px";
+        return "350px";
     }
 
     @Override

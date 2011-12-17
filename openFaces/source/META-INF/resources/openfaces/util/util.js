@@ -2492,6 +2492,21 @@ if (!window.O$) {
       return element.cloneNode(true);
   };
 
+  O$.getContainmentRectangle = function(containment, containingBlock) {
+    var containmentRect = !containment ? null
+            : containment == "viewport" ? O$.getVisibleAreaRectangle()
+            : containment == "document" ? O$.getDocumentRectangle()
+            : containment == "containingBlock" ? O$.getElementBorderRectangle(containingBlock)
+            : containment.substring(0, 1) ==  "#" ? function() {
+                  var id = containment.substring(1);
+                  var c = O$(id);
+                  if (!c) throw "Couldn't find containment by id: \"" + id + "\"";
+                  return O$.getElementBorderRectangle(c);}()
+                        : function() {throw "Unsupported containment string: " + containment}();
+    return containmentRect;
+
+  };
+
   O$.startDragging = function(e, draggable, simulateDblClickForElement) {
     var evt = O$.getEvent(e);
     if (simulateDblClickForElement && evt.type == "mousedown") {
@@ -2556,16 +2571,8 @@ if (!window.O$) {
       var containmentCorrectedTop = newTop;
       var containingBlock = draggable.offsetParent;
       if (!containingBlock) containingBlock = document.body;
-      var containmentRect = !draggable._containment ? null
-                      : draggable._containment == "viewport" ? O$.getVisibleAreaRectangle()
-                      : draggable._containment == "document" ? O$.getDocumentRectangle()
-                      : draggable._containment == "containingBlock" ? O$.getElementBorderRectangle(containingBlock)
-                      : draggable._containment.substring(0, 1) ==  "#" ? function() {
-                                var id = draggable._containment.substring(1);
-                                var c = O$(id);
-                                if (!c) throw "Couldn't find containment by id: \"" + id + "\"";
-                                return O$.getElementBorderRectangle(c);}()
-                      : function() {throw "Unsupported containment string: " + draggable._containment}();
+
+      var containmentRect = O$.getContainmentRectangle(draggable._containment, containingBlock);
 
       if (containmentRect) {
         var prntPos = O$.getElementPos(containingBlock);

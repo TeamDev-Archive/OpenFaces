@@ -11,6 +11,7 @@
  */
 package org.openfaces.renderkit.window;
 
+import org.openfaces.component.window.Autosizing;
 import org.openfaces.component.window.PopupLayer;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.AjaxUtil;
@@ -110,6 +111,26 @@ public class PopupLayerRenderer extends RendererBase {
         writer.endElement("div");
     }
 
+    /*
+    The getDefaultWidth() and getDefaultHeight() methods are not checked on the stage of getWidth()/getHeight()
+    invocations in order to be able to distinguish between default and explicitly-specified values here in the renderer
+    and in the client-side scripts, to be able to properly implement the auto-sizing feature which should calculate the
+    width automatically if it is not specified by the user explicitly.
+     */
+    protected String getDefaultWidth() {
+        return null;
+    }
+
+    /*
+    The getDefaultWidth() and getDefaultHeight() methods are not checked on the stage of getWidth()/getHeight()
+    invocations in order to be able to distinguish between default and explicitly-specified values here in the renderer
+    and in the client-side scripts, to be able to properly implement the auto-sizing feature which should calculate the
+    width automatically if it is not specified by the user explicitly.
+     */
+    protected String getDefaultHeight() {
+        return null;
+    }
+
     protected void encodeScriptsAndStyles(FacesContext context, PopupLayer popup) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
@@ -136,14 +157,21 @@ public class PopupLayerRenderer extends RendererBase {
         }
 
         ScriptBuilder sb = new ScriptBuilder();
+        String width = popup.getWidth();
+        if (width == null && popup.getAutosizing() != Autosizing.ON)
+            width = getDefaultWidth();
+        String height = popup.getHeight();
+        if (height == null && popup.getAutosizing() != Autosizing.ON)
+            height = getDefaultHeight();
         sb.initScript(context, popup, "O$.PopupLayer._init",
                 popup.getLeft(),
                 popup.getTop(),
-                popup.getWidth(),
-                popup.getHeight(),
+                width,
+                height,
                 Rendering.getRolloverClass(context, popup),
                 popup.getHidingTimeout(),
                 popup.getDraggable(),
+                popup.getAutosizing(),
                 popup.getHideOnEsc(),
                 Environment.isAjax4jsfRequest(),
                 popup.getContainment());
