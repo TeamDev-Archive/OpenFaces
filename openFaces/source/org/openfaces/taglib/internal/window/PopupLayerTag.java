@@ -61,5 +61,6 @@ public class PopupLayerTag extends AbstractComponentTag {
         setBooleanProperty(component, "hideOnEsc");
         setBooleanProperty(component, "modal");
         setStringProperty(component, "containment");
+        setEnumerationProperty(component, "autosizing", org.openfaces.component.window.Autosizing.class);
     }
 }

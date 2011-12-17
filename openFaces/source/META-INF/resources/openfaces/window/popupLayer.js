@@ -15,7 +15,8 @@ O$.PopupLayer = {
   LAST_EXTERNAL_ANCHOR_SUFFIX: "::lastExternalAnchor",
 
 
-  _init: function(id, left, top, width, height, rolloverStyle, hidingTimeout, draggable, hideOnEsc, isAjaxRequest, containment) {
+  _init: function(id, left, top, width, height, rolloverStyle, hidingTimeout,
+                  draggable, autosizing, hideOnEsc, isAjaxRequest, containment) {
     var popup = O$(id);
     O$.initComponent(id, {rollover: rolloverStyle}, {
       left: left,
@@ -34,6 +35,7 @@ O$.PopupLayer = {
       },
 
       _draggable: draggable,
+      _autosizing: autosizing,
       _containment: containment,
       _draggingDisabled: false,
 
@@ -89,9 +91,95 @@ O$.PopupLayer = {
         }, 1);
       },
 
+      _setSize: function(width, height) {
+        O$.setElementSize(this, {width: width, height: height});
+      },
+
+      _getAutosizingArea: function() {
+        return this;
+      },
+
+      _getAutosizingMargins: function() {
+        return {width: 0, height: 0};
+      },
+
+      _getMinSize: function() {
+        return {width: 0, height: 0};
+      },
+
+      _beforeAutosizing: function() {
+
+      },
+
+      _afterAutosizing: function() {
+
+      },
+
+      /*
+        Resizes the popup layer automatically to fit its content. If the "width" attribute (_init parameter) of
+        PopupLayer is specified then width is set to the specified value, and only height is detected automatically.
+
+        Otherwise, width is detected automatically to match content width, but not greater than the width of
+        PopupLayer's containing block (containing block defines a rectangle relative to which absolutely positioned
+        elements such as PopupLayer are positioned. This is the nearest container which has a CSS "position" property
+        value of "absolute", "relative" or "fixed", or the document when there are no such elements, see here:
+        http://www.w3.org/TR/CSS2/visudet.html#containing-block-details).
+
+        If the PopupLayer's "containment" attribute (_init parameter) is specified, then the automatically detected size
+        is not greater than the size of the containment area specified with the "containment" attribute.
+       */
+      _resizeToContent: function() {
+        if (!this._autosizingAllowed())
+          return;
+
+        var area = this._getAutosizingArea();
+        var autosizingMargins = this._getAutosizingMargins();
+
+        this._beforeAutosizing();
+        var prevLeft = area.style.left;
+        var prevTop = area.style.top;
+        try {
+          area.style.left = "0px";
+          area.style.top = "0px";
+
+          var maxWidth = width ? O$.calculateNumericCSSValue(width) - autosizingMargins.width : null;
+          area.style.width = maxWidth != null ? maxWidth + "px" : "auto";
+          area.style.height = "auto";
+          var size = O$.getElementSize(area);
+
+          var containingBlock = this.offsetParent;
+          if (!containingBlock) containingBlock = document.body;
+          var containmentRect = O$.getContainmentRectangle(this._containment || "document", containingBlock);
+          containmentRect.width -= autosizingMargins.width;
+          containmentRect.height -= autosizingMargins.height;
+          if (size.width > containmentRect.width)
+            size.width = containmentRect.width;
+          if (size.height > containmentRect.height)
+            size.height = containmentRect.height;
+        } finally {
+          area.style.left = prevLeft;
+          area.style.top = prevTop;
+          this._afterAutosizing();
+        }
+
+        var newWidth = size.width + autosizingMargins.width;
+        var newHeight = size.height + autosizingMargins.height;
+        var minSize = this._getMinSize();
+        if (newWidth < minSize.width) newWidth = minSize.width;
+        if (newHeight < minSize.height) newHeight = minSize.height;
+        this._setSize(newWidth, newHeight);
+      },
+
+      _autosizingAllowed: function() {
+        return true;
+      },
+
       show: function () { // todo: this partially duplicates popup.show declared in popup.js, merge as much functionality in popupLayer.js and popup.js as possible
         if (popup.isVisible()) return;
         popup.style.display = "block";
+        if (autosizing == "on") {
+          popup._resizeToContent();
+        }
         O$.addIETransparencyControl(popup);
         if (popup.blockingLayer) {
           var body = document.getElementsByTagName("body")[0];
@@ -339,7 +427,7 @@ O$.PopupLayer = {
       try {
         popup.setLeft(left);
       } catch (e) {
-        O$.logError("Invalid value of the 'left' attribute of PopupLayer: \"" + left + "\" ; it must be an integer value ; original error: " + e.message);
+        O$.logError("Invalid value of the 'left' attribute of window or popup layer (id=" + id + "): \"" + left + "\" ; it must be an integer value ; original error: " + e.message);
         throw e;
       }
 
@@ -347,7 +435,7 @@ O$.PopupLayer = {
       try {
         popup.setTop(top);
       } catch (e) {
-        O$.logError("Invalid value of the 'top' attribute of PopupLayer: \"" + top + "\" ; it must be an integer value ; original error: " + e.message);
+        O$.logError("Invalid value of the 'top' attribute of window or popup layer (id=" + id + "): \"" + top + "\" ; it must be an integer value ; original error: " + e.message);
         throw e;
       }
 
@@ -355,7 +443,7 @@ O$.PopupLayer = {
       try {
         popup.style.width = width;
       } catch (e) {
-        O$.logError("Invalid value of the 'width' attribute of PopupLayer: \"" + width + "\" ; it must be a valid CSS declaration like \"100px\" ; original error: " + e.message);
+        O$.logError("Invalid value of the 'width' attribute of window or popup layer (id=" + id + "): \"" + width + "\" ; it must be a valid CSS declaration like \"100px\" ; original error: " + e.message);
         throw e;
       }
 
@@ -363,9 +451,16 @@ O$.PopupLayer = {
       try {
         popup.style.height = height;
       } catch (e) {
-        O$.logError("Invalid value of the 'height' attribute of PopupLayer: \"" + height + "\" ; it must be a valid CSS declaration like \"100px\" ; original error: " + e.message);
+        O$.logError("Invalid value of the 'height' attribute of window or popup layer (id=" + id + "): \"" + height + "\" ; it must be a valid CSS declaration like \"100px\" ; original error: " + e.message);
         throw e;
       }
+
+    if (autosizing == "on") {
+      setInterval(function() {
+        if (popup.isVisible())
+          popup._resizeToContent();
+      }, 200);
+    }
 
     O$.initIETransparencyWorkaround(popup);
     if (popup.blockingLayer)

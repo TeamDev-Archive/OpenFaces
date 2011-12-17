@@ -13124,6 +13124,18 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>Specifies whether the PopupLayer&amp;#39;s size will be automatically detected to match the content
+        placed into the PopupLayer.
+      </description>
+      <name>autosizing</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.window.Autosizing -->
+      <!-- @default "off" -->
+      <!-- @el true -->
+    </attribute>
   </tag>
 
   <!-- WINDOW TAG DECLARATOIN -->
@@ -13166,6 +13178,19 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el only -->
     </attribute>
 
+    <attribute>
+      <description>Specifies whether the Window&amp;#39;s size will be automatically detected to match the content
+        placed into the Window. By default, this functionality is turned off and size of Window does not depend
+        on its content.
+      </description>
+      <name>autosizing</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.window.Autosizing -->
+      <!-- @default "off" -->
+      <!-- @el true -->
+    </attribute>
     <attribute>
       <description>A flag that indicates whether or not the user can move the window by dragging its title.
       </description>

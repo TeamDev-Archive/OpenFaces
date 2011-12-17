@@ -83,7 +83,8 @@
          title="Calculator"/>
 
     <o:window id="unresizable_win"
-              resizable="false"
+              autosizing="on"
+              width="218px"
               styleClass="window"
               style="position: absolute;
                    right: 130px;
@@ -98,8 +99,6 @@
                           top: -4px;
                           color: white;"
               contentStyle="overflow: visible"
-              height="320px"
-              width="218px"
               draggableByContent="true">
       <o:captionArea style="padding: 0 2px 15px 0">
         <o:closeWindowButton imageUrl="./images/win_close_single.jpg" rolloverClass="buttonRollover"/>
@@ -378,7 +377,7 @@
   <!-- Web browser    -->
   <div class="application">
     <img src="./images/customizable.png"
-         onclick="loadGoogleSite(); return false;"
+         onclick="showBrowserWindow(); return false;"
          style="cursor: pointer;"
          title="Web Browser"/>
 
@@ -410,15 +409,14 @@
       </o:captionArea>
       <table style="height: 100%; width: 100%;" cellspacing="0" cellpadding="0">
         <tr>
-          <td style="border-bottom: 1px solid #bbbbbb;">
+          <td style="border-bottom: 1px solid #bbbbbb; background: #e8e8e8; white-space: nowrap">
             <h:panelGroup style="width: 100%;">
-              <h:outputText value="Site:" style="color: #9c9c9c;font-weight: bold; padding: 0 2px 0 10px"/>
               <o:inputText id="browserUrlInput"
                            onkeydown="return submitBrowserUrl(event);"
                            focusedStyle="border-color: #7f9db9;"
                            style="width:85%; border: 1px #ffffff solid; color: #525252;"/>
               <h:outputLink styleClass="refresh" value="" onclick="loadUrl(); return false;"><h:outputText
-                      style="font-weight: bold; color: #9c9c9c" value="Go"/></h:outputLink>
+                      style="font-weight: bold; color: #707070; padding: 0 20px 0 20px" value="Go"/></h:outputLink>
             </h:panelGroup>
           </td>
         </tr>
@@ -451,7 +449,7 @@
   <td align="center"><h:outputLink styleClass="commandLink"
                                    onclick="loadDocumentationSite(); return false;">Shadeable</h:outputLink></td>
   <td align="center"><h:outputLink styleClass="commandLink"
-                                   onclick="loadGoogleSite(); return false;">Customizable</h:outputLink></td>
+                                   onclick="showBrowserWindow(); return false;">Customizable</h:outputLink></td>
 </tr>
 </table>
 

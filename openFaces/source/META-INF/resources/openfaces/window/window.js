@@ -16,7 +16,12 @@ O$.Window = {
   STATE_MINIMIZED: "minimized",
 
   _init: function(windowId, resizable, draggableByContent, minWidth, minHeight, desktopElementId) {
-    var win = O$.initComponent(windowId, null, {
+    var win = O$(windowId);
+    if (win._autosizing == "on" && resizable) {
+      resizable = false;
+    }
+    var super_setSize = win._setSize;
+    O$.initComponent(windowId, null, {
       _form: O$.getParentNode(win, "form"),
       _draggableByContent: draggableByContent,
       _minWidth: O$.calculateNumericCSSValue(minWidth),
@@ -48,15 +53,78 @@ O$.Window = {
         win.setTop(top);
       },
 
+      _getMinSize: function() {
+        return {width: this._minWidth, height: this._minHeight};
+      },
+
+      _getAutosizingArea: function() {
+        return this._content;
+      },
+
+
+      _beforeAutosizing: function() {
+        var autosizingMargins = this._getAutosizingMargins();
+
+        this._autosizing = {
+          prevWidth: this.style.width,
+          prevLeft: this.style.left,
+          prevTop: this.style.top
+        };
+
+        this.style.width = "0";
+
+        var containingBlock = this.offsetParent;
+        if (!containingBlock) containingBlock = document.body;
+        if (!this._containmentRect)
+          this._containmentRect = O$.getContainmentRectangle(this._containment || "document", containingBlock);
+
+        this.style.width = this._containmentRect.width - autosizingMargins.width + "px";
+
+        if (containingBlock != document.body) {
+          var containingBlockRect = O$.getElementPaddingRectangle(containingBlock);
+          this._containmentRect.x -= containingBlockRect.x;
+          this._containmentRect.y -= containingBlockRect.y;
+        }
+        O$.setElementPos(this, {x: this._containmentRect.x, y: this._containmentRect.y});
+      },
+
+      _afterAutosizing: function() {
+        this.style.width = this._autosizing.prevWidth;
+        this.style.left = this._autosizing.prevLeft;
+        this.style.top = this._autosizing.prevTop;
+        this._autosizing = null;
+      },
+
+      _getAutosizingMargins: function() {
+        var captionHeight = O$.getElementSize(this._caption).height;
+        var borderLeft = O$.getNumericElementStyle(this, "border-left-width", true);
+        var borderRight = O$.getNumericElementStyle(this, "border-right-width", true);
+        var borderTop = O$.getNumericElementStyle(this, "border-top-width", true);
+        var borderBottom = O$.getNumericElementStyle(this, "border-bottom-width", true);
+
+        return {width: borderLeft + borderRight, height: borderTop + captionHeight + borderBottom};
+      },
+
+      _autosizingAllowed: function() {
+        return this.isNormal();
+      },
+
       _setSize: function(width, height) {
+        super_setSize.call(this, width, height);
+
         O$.setElementSize(win, {width: width, height: height});
         O$.setHiddenField(win, windowId + "::size", width + "," + height);
         if (!win._table._widthInitialized) {
           win._table.style.width = "100%";
           win._table._widthInitialized = true;
         }
-        if (this._sizeChanged)
+        if (this._sizeChanged) {
+          if (this._rect) {
+            if (this._rect.width != width || this._rect.height != height)
+              this._rect = null;
+          }
           this._sizeChanged();
+        }
       },
 
       _setRect: function(rect) {
@@ -112,6 +180,19 @@ O$.Window = {
 
       _sizeChanged: function() {
         this._updateContentPos();
+      },
+
+      _checkScrollersVisibility: function() {
+        // Remove scrollers that might have appeared when the content actually fits without scroll-bars.
+        // Simply removing scroll-bars might reveal more space and the content might fit, which we're addressing here.
+        // This is for example the case for autosizable windows in Chrome when minimizing and then restoring them.
+        if (this._content._originalOverflow == undefined)
+          this._content._originalOverflow = this._content.style.overflow;
+        this._content.style.overflow = "hidden";
+        var win = this;
+        setTimeout(function() {
+          win._content.style.overflow = win._content._originalOverflow;
+        }, 1000);
       },
 
       isMinimized: function() {
@@ -190,8 +271,9 @@ O$.Window = {
           this._normalRectangle = null;
         }
         this._setState(O$.Window.STATE_NORMAL);
-        win._setResizable(win._declaredResizable);
+        this._setResizable(win._declaredResizable);
         this._draggingDisabled = false;
+        this._checkScrollersVisibility();
       },
 
       _setState: function(state) {

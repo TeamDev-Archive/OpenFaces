@@ -355,6 +355,14 @@
   width: 100%;
 }
 
+.o_windowContentContainer {
+  position: absolute;
+  overflow: visible;
+  vertical-align: top;
+  text-align: left;
+  padding: 0;
+}
+
 .o_window_content {
   position: absolute;
   visibility: hidden;

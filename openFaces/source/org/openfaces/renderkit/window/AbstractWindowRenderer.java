@@ -47,8 +47,7 @@ public abstract class AbstractWindowRenderer extends PopupLayerRenderer {
     private ComponentWithCaptionRenderer componentWithCaptionRenderer = new ComponentWithCaptionRenderer() {
         @Override
         protected String getDefaultCaptionClass(ComponentWithCaption component) {
-            return ((AbstractWindow) component).getWidth() == null
-                    ? DEFAULT_CAPTION_CLASS : DEFAULT_CAPTION_CLASS + ' ' + DEFAULT_CAPTION_WIDTH_CLASS;
+            return DEFAULT_CAPTION_CLASS + ' ' + DEFAULT_CAPTION_WIDTH_CLASS;
         }
 
         @Override
@@ -88,9 +87,7 @@ public abstract class AbstractWindowRenderer extends PopupLayerRenderer {
         writer.writeAttribute("cellpadding", "0", null);
         writeAttribute(writer, "class", getDefaultTableClass());
         writer.writeAttribute("height", "100%", null);
-        if (win.getWidth() != null && win.getWidth().length() != 0) {
-            writer.writeAttribute("width", "100%", null);
-        }
+        writer.writeAttribute("width", "100%", null);
 
         writer.startElement("tr", win);
         writer.writeAttribute("style", "height: 1px;", null);
@@ -139,6 +136,11 @@ public abstract class AbstractWindowRenderer extends PopupLayerRenderer {
 
     protected String getDefaultTableClass() {
         return null;
+    }
+
+    @Override
+    protected String getDefaultWidth() {
+        return "300px";
     }
 
     @Override
