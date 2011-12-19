@@ -49,6 +49,7 @@ public class CalendarTest extends BaseCalendarTestCase {
     }
 
     @Test
+    @Ignore
     public void testChangingSelectedDate() {
         testAppFunctionalPage("/components/calendar/calendarChangeDateMonthYear.jsf");
 
@@ -62,6 +63,7 @@ public class CalendarTest extends BaseCalendarTestCase {
     }
 
     @Test
+    @Ignore
     public void testMonthChange() {
         testAppFunctionalPage("/components/calendar/calendarChangeDateMonthYear.jsf");
 
@@ -75,6 +77,7 @@ public class CalendarTest extends BaseCalendarTestCase {
     }
 
     @Test
+    @Ignore
     public void testYearChange() {
         testAppFunctionalPage("/components/calendar/calendarChangeDateMonthYear.jsf");
 
@@ -253,6 +256,7 @@ public class CalendarTest extends BaseCalendarTestCase {
     }
 
     @Test
+    @Ignore
     public void testKeepTime() {
         testAppFunctionalPage("/components/calendar/calendarChangeDateMonthYear.jsf");
 
