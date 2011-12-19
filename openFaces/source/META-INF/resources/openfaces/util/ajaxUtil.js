@@ -499,7 +499,11 @@ window.OpenFaces.Ajax = {
     function errorHandler(data) {
       if (args.onerror)
         args.onerror.call(null, data);
-      ajaxEnd();
+      if (data.status != "serverError") {
+        // jsf.js handles "serverError" specially -- it will send onevent with "success" status after the onerror event,
+        // so ajaxEnd will be invoked then and there's no need to repeat it here in this case
+        ajaxEnd();
+      }
     }
     var options = {
       execute: execute,
