@@ -169,6 +169,7 @@ window.OpenFaces.Ajax = {
    *    onajaxend - (optional) the function that should be invoked when ajax request is fully processed
    *    execute - (optional) array of clientIds for components whose processDecodes->...->processUpdates phases should be invoked in addition to the component being reloaded
    *    onerror - (optional) the function that should be invoked when ajax request fails to complete successfully for some reason
+   *    onsuccess - (optional) the function that should be invoked when Ajax request completes without errors
    *    onajaxstart - (optional) the function that should be invoked before ajax request is started
    *    immediate - (optional) true means that the action should be executed during Apply Request Values phase, rather than waiting until the Invoke Application phase
    */
@@ -493,6 +494,8 @@ window.OpenFaces.Ajax = {
         }
       }
       if (data.status == "success") {
+        if (args.onsuccess)
+          args.onsuccess.call(null, data);
         ajaxEnd();
       }
     }
