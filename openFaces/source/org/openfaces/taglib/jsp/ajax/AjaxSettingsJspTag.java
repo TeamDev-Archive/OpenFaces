@@ -25,19 +25,23 @@ public class AjaxSettingsJspTag extends AbstractComponentJspTag {
     }
 
 
-    public void setOnerror(ValueExpression onError) {
-        getDelegate().setPropertyValue("onerror", onError);
+    public void setOnerror(ValueExpression onerror) {
+        getDelegate().setPropertyValue("onerror", onerror);
     }
 
-    public void setOnsessionexpired(ValueExpression onSessionExpired) {
-        getDelegate().setPropertyValue("onsessionexpired", onSessionExpired);
+    public void setSuccess(ValueExpression onsuccess) {
+        getDelegate().setPropertyValue("onsuccess", onsuccess);
     }
 
-    public void setOnajaxstart(ValueExpression onAjaxStart) {
-        getDelegate().setPropertyValue("onajaxstart", onAjaxStart);
+    public void setOnsessionexpired(ValueExpression onsessionexpired) {
+        getDelegate().setPropertyValue("onsessionexpired", onsessionexpired);
     }
 
-    public void setOnajaxend(ValueExpression onAjaxEnd) {
-        getDelegate().setPropertyValue("onajaxend", onAjaxEnd);
+    public void setOnajaxstart(ValueExpression onajaxstart) {
+        getDelegate().setPropertyValue("onajaxstart", onajaxstart);
+    }
+
+    public void setOnajaxend(ValueExpression onajaxend) {
+        getDelegate().setPropertyValue("onajaxend", onajaxend);
     }
 }
