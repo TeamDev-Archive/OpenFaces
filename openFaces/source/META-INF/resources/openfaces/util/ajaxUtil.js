@@ -65,6 +65,7 @@ O$.ajax = {
    *    - execute - (optional) a space separated list of component client id(s) for components whose processDecodes->...->processUpdates phases should be invoked in addition to the component(s) being reloaded
    *    - onajaxstart - (optional) the function that should be invoked before ajax request is started
    *    - onajaxend - (optional) the function that should be invoked when ajax request is fully processed
+   *    - onsuccess - (optional) the function that should be invoked when ajax request finishes without errors
    *    - onerror - (optional) the function that should be invoked when ajax request fails to complete successfully for some reason
    *    - listener - (optional) server action listener in the form of EL, which should be executed during this Ajax request. It is written in a convention BeanName.functionName, similar to the listener attribute of <o:ajax> tag, though without the # { and } parts.
    *    - immediate - (optional) true means that the action should be executed during Apply Request Values phase, rather than waiting until the Invoke Application phase
@@ -81,6 +82,7 @@ O$.ajax = {
     args.onajaxstart = options.onajaxstart;
     args.onajaxend = options.onajaxend;
     args.onerror = options.onerror;
+    args.onsuccess = options.onsuccess;
     args.onevent = options.onevent;
     args.listener = options.listener;
     args.immediate = options.immediate;
@@ -349,21 +351,24 @@ window.OpenFaces.Ajax = {
       if (!params) params = {};
       params[O$.EXECUTE_RENDERED_COMPONENTS] = args.executeRenderedComponents;
     }
+
+    function fireEvent(eventName, event) {
+      if (args[eventName])
+        args[eventName].call(null, event);
+      if (OpenFaces.Ajax.Page[eventName])
+        OpenFaces.Ajax.Page[eventName](event);
+    }
     var ajaxResult;
-    function ajaxEnd() {
+    function ajaxEnd(data) {
       setTimeout(destroyMemoryLeaks, 1);
       if (O$.Ajax._currentlyScheduledScript) {
-        O$.Ajax._currentlyScheduledScript.postExecuteHandler = ajaxEnd;
+        O$.Ajax._currentlyScheduledScript.postExecuteHandler = function() {ajaxEnd(data)};
         return;
       }
       var ajaxendEvent = O$.createEvent("ajaxend");
       ajaxendEvent.ajaxResult = ajaxResult;
-      if (args.onajaxend) {
-        args.onajaxend(ajaxendEvent);
-      }
-      if (OpenFaces.Ajax.Page.onajaxend) {
-        OpenFaces.Ajax.Page.onajaxend(ajaxendEvent);
-      }
+      ajaxendEvent.data = data;
+      fireEvent("onajaxend", ajaxendEvent);
       function destroyMemoryLeaks() {
         if (!(options._of_skipExecute || options._of_ajax_portions)) {
           for (var render in parentOfReloadedComponents){
@@ -494,18 +499,29 @@ window.OpenFaces.Ajax = {
         }
       }
       if (data.status == "success") {
-        if (args.onsuccess)
-          args.onsuccess.call(null, data);
-        ajaxEnd();
+        // checking onerrorTriggered here because "success" notification can be made for "serverError" kind of error
+        // (see also the note in errorHandler function below)
+        if (!onerrorTriggered) {
+          var successEvent = O$.createEvent("success");
+          successEvent.data = data;
+          fireEvent("onsuccess", successEvent);
+        }
+
+        ajaxEnd(data);
       }
     }
+    var onerrorTriggered = false;
     function errorHandler(data) {
-      if (args.onerror)
-        args.onerror.call(null, data);
+      var errorEvent = O$.createEvent("error");
+      errorEvent.data = data;
+      onerrorTriggered = true;
+
+      fireEvent("onerror", errorEvent);
+
       if (data.status != "serverError") {
         // jsf.js handles "serverError" specially -- it will send onevent with "success" status after the onerror event,
         // so ajaxEnd will be invoked then and there's no need to repeat it here in this case
-        ajaxEnd();
+        ajaxEnd(data);
       }
     }
     var options = {
@@ -555,14 +571,8 @@ window.OpenFaces.Ajax = {
       jsf.ajax.request(source, evt, options);
     }
 
-    if (args.onajaxstart) {
-      var ajaxstartEvent = O$.createEvent("ajaxstart");
-      args.onajaxstart(ajaxstartEvent);
-    }
-    if (OpenFaces.Ajax.Page.onajaxstart) {
-      ajaxstartEvent = O$.createEvent("ajaxstart");
-      OpenFaces.Ajax.Page.onajaxstart(ajaxstartEvent);
-    }
+    var ajaxstartEvent = O$.createEvent("ajaxstart");
+    fireEvent("onajaxstart", ajaxstartEvent);
 
     O$.saveScrollPositionIfNeeded();
   },

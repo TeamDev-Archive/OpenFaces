@@ -136,7 +136,7 @@ public class AjaxInitializer {
             }
             String onsuccess = command.getOnsuccess();
             if (onsuccess != null && onsuccess.length() != 0) {
-                result.put("onerror", new AnonymousFunction(onerror, "event"));
+                result.put("onsuccess", new AnonymousFunction(onsuccess, "event"));
             }
             String onevent = (command instanceof Ajax) ? ((Ajax) command).getOnevent() : null;
             if (onevent != null && onevent.length() != 0) {
