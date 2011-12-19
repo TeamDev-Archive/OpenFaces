@@ -5880,6 +5880,16 @@
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>Invoked when an Ajax request initiated by this component finishes without errors.</description>
+      <name>onsuccess</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>Specifies whether the components listed in the &quot;render&quot; attribute undergo the &quot;execute&quot;
         lifecycle (Restore View, Apply Request Values, Process Validations and Update Model Values) phases as if these
         components are implicitly specified in the &quot;execute&quot; attribute as well.
@@ -6074,6 +6084,16 @@
     <attribute>
       <description>Invoked when an error occurs during the Ajax request initiated with this component.</description>
       <name>onerror</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Invoked when an Ajax request initiated by this component finishes without errors.</description>
+      <name>onsuccess</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -10296,6 +10316,16 @@ means that only root nodes and their immediate children are preloaded -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>Invoked when an Ajax request initiated by this component finishes without errors.</description>
+      <name>onsuccess</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>Specifies whether the components listed in the &quot;render&quot; attribute undergo the &quot;execute&quot;
         lifecycle (Restore View, Apply Request Values, Process Validations and Update Model Values) phases as if these
         components are implicitly specified in the &quot;execute&quot; attribute as well.
@@ -10494,6 +10524,16 @@ means that only root nodes and their immediate children are preloaded -->
     <attribute>
       <description>Invoked when an error occurs during the Ajax request initiated with this component.</description>
       <name>onerror</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Invoked when an Ajax request initiated by this component finishes without errors.</description>
+      <name>onsuccess</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -14106,6 +14146,16 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>Invoked when an Ajax request initiated by this component finishes without errors.</description>
+      <name>onsuccess</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>Specifies whether the components listed in the &quot;render&quot; attribute undergo the &quot;execute&quot;
         lifecycle (Restore View, Apply Request Values, Process Validations and Update Model Values) phases as if these
         components are implicitly specified in the &quot;execute&quot; attribute as well.
@@ -15161,6 +15211,16 @@ entering a value and returns a list of suggestions from the server -->
         while performing an Ajax request.
       </description>
       <name>onerror</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Invoked when an Ajax request finishes without errors.</description>
+      <name>onsuccess</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -24214,6 +24274,16 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>Invoked when an Ajax request initiated by this component finishes without errors.</description>
+      <name>onsuccess</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>Specifies whether the components listed in the &quot;render&quot; attribute undergo the &quot;execute&quot;
         lifecycle (Restore View, Apply Request Values, Process Validations and Update Model Values) phases as if these
         components are implicitly specified in the &quot;execute&quot; attribute as well.
@@ -24718,6 +24788,16 @@ and it is automatically triggered on any form submission. -->
     <attribute>
       <description>Invoked when an error occurs during the Ajax request initiated with this component.</description>
       <name>onerror</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Invoked when an Ajax request initiated by this component finishes without errors.</description>
+      <name>onsuccess</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -26987,6 +27067,16 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>Invoked when an Ajax request initiated by this component finishes without errors.</description>
+      <name>onsuccess</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>Specifies whether the components listed in the &quot;render&quot; attribute undergo the &quot;execute&quot;
         lifecycle (Restore View, Apply Request Values, Process Validations and Update Model Values) phases as if these
         components are implicitly specified in the &quot;execute&quot; attribute as well.
@@ -27445,6 +27535,16 @@ and it is automatically triggered on any form submission. -->
         while performing an Ajax request.
       </description>
       <name>onerror</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Invoked when an Ajax request initiated by this component finishes without errors.</description>
+      <name>onsuccess</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -42974,6 +43074,16 @@ entering a value and returns a list of suggestions from the server -->
     <attribute>
       <description>Invoked when an error occurs during the Ajax request initiated with this component.</description>
       <name>onerror</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Invoked when an Ajax request initiated by this component finishes without errors.</description>
+      <name>onsuccess</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>

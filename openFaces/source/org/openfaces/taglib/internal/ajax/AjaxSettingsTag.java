@@ -34,6 +34,7 @@ public class AjaxSettingsTag extends AbstractComponentTag {
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
         setStringProperty(component, "onerror");
+        setStringProperty(component, "onsuccess");
         setStringProperty(component, "onsessionexpired");
         setStringProperty(component, "onajaxstart");
         setStringProperty(component, "onajaxend");
