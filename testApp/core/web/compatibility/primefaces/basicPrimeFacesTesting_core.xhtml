@@ -63,10 +63,10 @@
                      pageSize="7"
                      bodyRowStyle="background: white" bodyOddRowStyle="background: #f0f0f8">
           <f:facet name="above">
-            <o:dataTablePaginator styleClass="defaultTableStyle"/>
+            <o:dataTablePaginator id="paginator1" styleClass="defaultTableStyle"/>
           </f:facet>
           <f:facet name="below">
-            <o:dataTablePaginator styleClass="defaultTableStyle"/>
+            <o:dataTablePaginator id="paginator2" styleClass="defaultTableStyle"/>
           </f:facet>
           <o:singleRowSelection/>
           <o:column sortingExpression="#{user.userName}">

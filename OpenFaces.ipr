@@ -1395,11 +1395,11 @@
     </library>
     <library name="PrimeFaces">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/primefaces/primefaces-2.2.RC2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/primefaces/primefaces-2.2.1.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES>
-        <root url="jar://$PROJECT_DIR$/libsrc/primefaces-2.2.RC2-sources.jar!/" />
+        <root url="jar://$PROJECT_DIR$/libsrc/primefaces-2.2.1-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="RichFaces">
@@ -1460,11 +1460,6 @@
       <SOURCES>
         <root url="jar://$PROJECT_DIR$/libsrc/tomahawk20-1.1.10-src.zip!/tomahawk20-1.1.10/src" />
       </SOURCES>
-    </library>
-    <library name="Unnamed">
-      <CLASSES />
-      <JAVADOC />
-      <SOURCES />
     </library>
   </component>
 </project>
