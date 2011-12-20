@@ -1014,6 +1014,8 @@
 }
 
 .o_popuplayer_modal_layer {
+  position: absolute;
+  display: none;
   z-index: 300;
   left: 0;
   top: 0;

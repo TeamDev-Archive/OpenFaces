@@ -16,7 +16,7 @@ O$.PopupLayer = {
 
 
   _init: function(id, left, top, width, height, rolloverStyle, hidingTimeout,
-                  draggable, autosizing, hideOnEsc, isAjaxRequest, containment) {
+                  draggable, autosizing, modalLayerClass, hideOnEsc, isAjaxRequest, containment) {
     var popup = O$(id);
     O$.initComponent(id, {rollover: rolloverStyle}, {
       left: left,
@@ -27,8 +27,7 @@ O$.PopupLayer = {
       _leftField: O$(id + "::left"),
       _topField: O$(id + "::top"),
       _hideOnEsc: hideOnEsc,
-
-      blockingLayer: O$(id + "::blockingLayer"),
+      _modal: !!modalLayerClass,
 
       _getDefaultFocusComponent: function() {
         return O$.getFirstFocusableControl(popup);
@@ -116,17 +115,17 @@ O$.PopupLayer = {
       },
 
       /*
-        Resizes the popup layer automatically to fit its content. If the "width" attribute (_init parameter) of
-        PopupLayer is specified then width is set to the specified value, and only height is detected automatically.
+       Resizes the popup layer automatically to fit its content. If the "width" attribute (_init parameter) of
+       PopupLayer is specified then width is set to the specified value, and only height is detected automatically.
 
-        Otherwise, width is detected automatically to match content width, but not greater than the width of
-        PopupLayer's containing block (containing block defines a rectangle relative to which absolutely positioned
-        elements such as PopupLayer are positioned. This is the nearest container which has a CSS "position" property
-        value of "absolute", "relative" or "fixed", or the document when there are no such elements, see here:
-        http://www.w3.org/TR/CSS2/visudet.html#containing-block-details).
+       Otherwise, width is detected automatically to match content width, but not greater than the width of
+       PopupLayer's containing block (containing block defines a rectangle relative to which absolutely positioned
+       elements such as PopupLayer are positioned. This is the nearest container which has a CSS "position" property
+       value of "absolute", "relative" or "fixed", or the document when there are no such elements, see here:
+       http://www.w3.org/TR/CSS2/visudet.html#containing-block-details).
 
-        If the PopupLayer's "containment" attribute (_init parameter) is specified, then the automatically detected size
-        is not greater than the size of the containment area specified with the "containment" attribute.
+       If the PopupLayer's "containment" attribute (_init parameter) is specified, then the automatically detected size
+       is not greater than the size of the containment area specified with the "containment" attribute.
        */
       _resizeToContent: function() {
         if (!this._autosizingAllowed())
@@ -181,7 +180,7 @@ O$.PopupLayer = {
           popup._resizeToContent();
         }
         O$.addIETransparencyControl(popup);
-        if (popup.blockingLayer) {
+        if (popup._blockingLayer) {
           var body = document.getElementsByTagName("body")[0];
           var firstExternalAnchor = null;
           var firstExternalAnchorOld = O$(popup.id + O$.PopupLayer.FIRST_EXTERNAL_ANCHOR_SUFFIX);
@@ -261,22 +260,22 @@ O$.PopupLayer = {
           };
           popup.appendChild(popup._lastInternalAnchor);
 
-          O$.initIETransparencyWorkaround(popup.blockingLayer);
-          popup.blockingLayer.style.display = "";
+          O$.initIETransparencyWorkaround(popup._blockingLayer);
+          popup._blockingLayer.style.display = "block";
 
-          document._of_activeModalLayer = popup.blockingLayer;
+          document._of_activeModalLayer = popup._blockingLayer;
           O$.PopupLayer._resizeModalLayer();
           if (O$._simulateFixedPosForBlockingLayer()) {
             O$.addEventHandler(window, "resize", O$.PopupLayer._resizeModalLayer);
             O$.addEventHandler(window, "scroll", O$.PopupLayer._alignModalLayer);
             O$.PopupLayer._alignModalLayer();
           } else {
-            popup.blockingLayer.style.left = "0px";
-            popup.blockingLayer.style.top = "0px";
-            popup.blockingLayer.style.position = "fixed";
+            popup._blockingLayer.style.left = "0px";
+            popup._blockingLayer.style.top = "0px";
+            popup._blockingLayer.style.position = "fixed";
             window.addEventListener("resize", O$.PopupLayer._resizeModalLayer, true);
           }
-          O$.addIETransparencyControl(popup.blockingLayer);
+          O$.addIETransparencyControl(popup._blockingLayer);
 
           setTimeout(function() {
             var focusable = popup._getDefaultFocusComponent();
@@ -324,7 +323,7 @@ O$.PopupLayer = {
       hide: function () {
         if (!popup.isVisible()) return;
         O$.removeIETransparencyControl(popup);
-        if (popup.blockingLayer) {
+        if (popup._blockingLayer) {
           var body = document.getElementsByTagName("body")[0];
           var firstExtAnc = O$(popup.id + O$.PopupLayer.FIRST_EXTERNAL_ANCHOR_SUFFIX);
           if (firstExtAnc) {
@@ -351,9 +350,9 @@ O$.PopupLayer = {
         }
         popup._visibleField.value = "false";
 
-        if (popup.blockingLayer) {
-          O$.removeIETransparencyControl(popup.blockingLayer);
-          popup.blockingLayer.style.display = "none";
+        if (popup._blockingLayer) {
+          O$.removeIETransparencyControl(popup._blockingLayer);
+          popup._blockingLayer.style.display = "none";
           if (O$._simulateFixedPosForBlockingLayer()) {
             O$.removeEventHandler(window, "scroll", O$.PopupLayer._alignModalLayer);
             O$.removeEventHandler(window, "resize", O$.PopupLayer._resizeModalLayer);
@@ -421,6 +420,19 @@ O$.PopupLayer = {
       }
     });
 
+    if (popup._modal) {
+      var blockingLayerId = id + "::blockingLayer";
+      var blockingLayer = O$(blockingLayerId);
+      if (blockingLayer != null)
+        blockingLayer.parentNode.removeChild(blockingLayer);
+      blockingLayer = document.createElement("div");
+      blockingLayer.id = blockingLayerId;
+      blockingLayer.className = modalLayerClass;
+      popup.parentNode.insertBefore(blockingLayer, popup);
+
+      popup._blockingLayer = blockingLayer;
+    }
+
     popup.style.display = O$.getElementStyle(popup, "display");
 
     if (left != null)
@@ -463,8 +475,8 @@ O$.PopupLayer = {
     }
 
     O$.initIETransparencyWorkaround(popup);
-    if (popup.blockingLayer)
-      popup.blockingLayer.onclick = function() {
+    if (popup._blockingLayer)
+      popup._blockingLayer.onclick = function() {
         var focusable = popup._getDefaultFocusComponent();
         if (focusable) {
           try {
