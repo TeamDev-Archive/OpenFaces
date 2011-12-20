@@ -26,7 +26,6 @@ import java.util.List;
  */
 public class TwoListSelectionTest extends OpenFacesTestCase {
     @Test
-    @Ignore // revive this test when RichFaces 4 is fully functional
     public void testReRenderThroughA4J() {
         testAppFunctionalPage("/components/twolistselection/twoListSelection_a4j.jsf");
         String[] oldTLSValues = new String[7];

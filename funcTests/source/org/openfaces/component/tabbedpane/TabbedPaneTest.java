@@ -30,7 +30,6 @@ import org.seleniuminspector.openfaces.TabbedPaneInspector;
  */
 public class TabbedPaneTest extends OpenFacesTestCase {
     @Test
-    @Ignore // revive this test when RichFaces 4 is fully functional
     public void testReRenderThroughA4J() {
         testAppFunctionalPage("/components/tabbedpane/tabbedPane_a4j.jsf");
 
@@ -62,7 +61,6 @@ public class TabbedPaneTest extends OpenFacesTestCase {
     }
 
     @Test
-    @Ignore // revive this test when RichFaces 4 is fully functional
     public void testWithA4JControlsInside() {
         testAppFunctionalPage("/components/tabbedpane/tabbedPane_a4j.jsf");
 

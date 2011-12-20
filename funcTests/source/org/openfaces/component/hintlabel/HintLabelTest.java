@@ -25,7 +25,6 @@ import org.seleniuminspector.ElementInspector;
 public class HintLabelTest extends OpenFacesTestCase {
 
     @Test
-    @Ignore // revive this test when RichFaces 4 is fully functional
     public void testReRenderThroughA4J() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/hintlabel/hintLabel_a4j.jsf");

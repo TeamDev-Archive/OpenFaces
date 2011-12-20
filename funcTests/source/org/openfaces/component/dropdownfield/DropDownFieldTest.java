@@ -19,7 +19,6 @@ import org.junit.Test;
  */
 public class DropDownFieldTest extends BaseDropDownTestCase {
     @Test
-    @Ignore // revive this test when RichFaces 4 is fully functional
     public void testReRenderThroughA4J() {
         checkReRenderingThroughA4J("/components/dropdown/dropDown_a4j.jsf");
     }

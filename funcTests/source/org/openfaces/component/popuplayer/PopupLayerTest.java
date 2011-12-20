@@ -26,7 +26,6 @@ import java.awt.*;
  */
 public class PopupLayerTest extends OpenFacesTestCase {
     @Test
-    @Ignore // revive this test when RichFaces 4 is fully functional
     public void testReRenderThroughA4J() {
         testAppFunctionalPage("/components/popuplayer/popupLayer_a4j.jsf");
         PopupLayerInspector popupLayer = popupLayer("formID:popupLayerID");
@@ -49,7 +48,6 @@ public class PopupLayerTest extends OpenFacesTestCase {
     }
 
     @Test
-    @Ignore // revive this test when RichFaces 4 is fully functional
     public void testWithA4JControls() {
         testAppFunctionalPage("/components/popuplayer/popupLayer_a4j.jsf");
         PopupLayerInspector popupLayer = popupLayer("formID:popupLayer_a4j_ID");

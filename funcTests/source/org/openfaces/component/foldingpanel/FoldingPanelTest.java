@@ -47,7 +47,6 @@ public class FoldingPanelTest extends OpenFacesTestCase {
     }
 
     @Test
-    @Ignore // revive this test when RichFaces 4 is fully functional
     public void testWithA4JControlsInside() {
         testAppFunctionalPage("/components/foldingpanel/foldingPanel_a4j.jsf");
         foldingPanel("formID:foldingPanel_a4j_ID").toggle().clickAndWait(OpenFacesAjaxLoadingMode.getInstance());

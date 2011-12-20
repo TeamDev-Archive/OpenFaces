@@ -22,7 +22,6 @@ import org.openfaces.test.RichFacesAjaxLoadingMode;
  */
 public class DynamicImageTest extends OpenFacesTestCase {
     @Test
-    @Ignore // revive this test when RichFaces 4 is fully functional
     public void testReRenderThroughA4J() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/dynamicimage/dynamicImage_a4j.jsf");

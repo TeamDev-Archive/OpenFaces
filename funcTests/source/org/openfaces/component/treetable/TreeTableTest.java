@@ -31,7 +31,6 @@ import java.util.List;
  */
 public class TreeTableTest extends OpenFacesTestCase {
     @Test
-    @Ignore // revive this test when RichFaces 4 is fully functional
     public void testReRenderThroughA4J() {
         testAppFunctionalPage("/components/treetable/treeTable_a4j.jsf");
 

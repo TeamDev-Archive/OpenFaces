@@ -23,7 +23,6 @@ import org.openfaces.test.RichFacesAjaxLoadingMode;
  */
 public class CalendarTest extends BaseCalendarTestCase {
     @Test
-    @Ignore // revive this test when RichFaces 4 is fully functional
     public void testReRenderThroughA4J() {
         testAppFunctionalPage("/components/calendar/calendar_a4j.jsf");
 
@@ -49,7 +48,6 @@ public class CalendarTest extends BaseCalendarTestCase {
     }
 
     @Test
-    @Ignore
     public void testChangingSelectedDate() {
         testAppFunctionalPage("/components/calendar/calendarChangeDateMonthYear.jsf");
 
@@ -63,7 +61,6 @@ public class CalendarTest extends BaseCalendarTestCase {
     }
 
     @Test
-    @Ignore
     public void testMonthChange() {
         testAppFunctionalPage("/components/calendar/calendarChangeDateMonthYear.jsf");
 
@@ -77,7 +74,6 @@ public class CalendarTest extends BaseCalendarTestCase {
     }
 
     @Test
-    @Ignore
     public void testYearChange() {
         testAppFunctionalPage("/components/calendar/calendarChangeDateMonthYear.jsf");
 
@@ -256,7 +252,6 @@ public class CalendarTest extends BaseCalendarTestCase {
     }
 
     @Test
-    @Ignore
     public void testKeepTime() {
         testAppFunctionalPage("/components/calendar/calendarChangeDateMonthYear.jsf");
 
