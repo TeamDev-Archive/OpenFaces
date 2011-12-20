@@ -138,7 +138,7 @@
     <o:dataTablePaginator id="paginator"/>
   </f:facet>
   <o:singleRowSelection>
-    <a4j:support event="onchange" reRender="counter" action="#{A4jSupportBean.increase}"/>
+    <a4j:ajax event="onchange" render="counter" action="#{A4jSupportBean.increase}"/>
   </o:singleRowSelection>
   <o:column id="col1"
             sortingExpression="#{row.stringField1}">

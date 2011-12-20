@@ -10,7 +10,7 @@
   <h:commandButton value="Stop Polling" action="#{A4jParametersBean.stopPolling}" rendered="#{A4jParametersBean.pollEnabled}"/>
 
   <a4j:poll id="poll" interval="500" enabled="#{A4jParametersBean.pollEnabled}"
-            reRender="dropdownfield1"/>
+            render="dropdownfield1"/>
   
   <o:dropDownField id="dropdownfield1"
                    value="#{RichTestBean.dropDownFieldValue1}"

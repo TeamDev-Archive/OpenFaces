@@ -10,7 +10,7 @@
   <h:commandButton value="Stop Polling" action="#{A4jParametersBean.stopPolling}" rendered="#{A4jParametersBean.pollEnabled}"/>
 
   <a4j:poll id="poll" interval="500" enabled="#{A4jParametersBean.pollEnabled}"
-            reRender="foldingPanel1"/>
+            render="foldingPanel1"/>
   
   <o:foldingPanel id="foldingPanel1" expanded="false" loadingMode="#{A4jParametersBean.loadingMode}">
     <f:facet name="caption">

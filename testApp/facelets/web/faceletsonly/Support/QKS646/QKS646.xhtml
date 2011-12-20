@@ -4,7 +4,7 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:c="http://java.sun.com/jstl/core"
       xmlns:o="http://openfaces.org/"
-      xmlns:a4j="https://ajax4jsf.dev.java.net/ajax"
+      xmlns:a4j="http://richfaces.org/a4j"
       xmlns:ui="http://java.sun.com/jsf/facelets">
 
 <ui:composition template="template.xhtml">
@@ -20,7 +20,7 @@
         <a4j:commandLink id="link"
                          value="#{node.name}"
                          actionListener="#{QKS646.viewDetails}"
-                         reRender="details_wrapper">
+                         render="details_wrapper">
           <a4j:actionparam assignTo="#{QKS646.selectedNodeId}" name="selectedNode" value="#{node.name}"/>
           <a4j:actionparam assignTo="#{QKS646.level}" name="level" value="#{level}"/>
           <a4j:ajaxListener type="org.ajax4jsf.ajax.ForceRender"/>

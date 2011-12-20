@@ -5,7 +5,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:a4j="https://ajax4jsf.dev.java.net/ajax"
+      xmlns:a4j="http://richfaces.org/a4j"
       xmlns:o="http://openfaces.org/"
       xmlns:c="http://java.sun.com/jstl/core">
 
@@ -13,7 +13,7 @@
 <f:view>
   <h:form id="mainForm">
 
-    <a4j:commandLink reRender="testPanel"
+    <a4j:commandLink render="testPanel"
                      oncomplete="O$('mainForm:testEditPopUp').showCentered()">
       Open pop-up
     </a4j:commandLink>

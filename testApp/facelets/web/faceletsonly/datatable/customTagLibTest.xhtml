@@ -4,7 +4,7 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:o="http://openfaces.org/"
       xmlns:tst="http://openfaces.org/tst/jsf"
-      xmlns:a4j="https://ajax4jsf.dev.java.net/ajax">
+      xmlns:a4j="http://richfaces.org/a4j">
 <h:head>
   <title></title>
 </h:head>
@@ -12,7 +12,7 @@
 <h:body>
 <f:view>
   <h:form id="form1">
-    <a4j:commandButton reRender="tbl1" value="ReRender table below using Ajax4jsf"/>
+    <a4j:commandButton render="tbl1" value="ReRender table below using Ajax4jsf"/>
 
     <o:dataTable id="tbl1" value="#{TableTestBean.collection1}" var="item">
       <f:facet name="header"><h:outputText value="#{TableTestBean.requestId}"/></f:facet>
