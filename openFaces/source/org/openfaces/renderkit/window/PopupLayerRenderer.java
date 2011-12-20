@@ -45,22 +45,8 @@ public class PopupLayerRenderer extends RendererBase {
         ResponseWriter writer = context.getResponseWriter();
         PopupLayer popup = (PopupLayer) component;
 
-        String clientId = popup.getClientId(context);
-        if (popup.isModal()) {
-            writer.startElement("div", popup);
-            writer.writeAttribute("id", clientId + BLOCKING_LAYER_SUFFIX, null);
-            writer.writeAttribute("name", clientId + BLOCKING_LAYER_SUFFIX, null);
-            String modalDivClass = Styles.getCSSClass(context,
-                    component, popup.getModalLayerStyle(),
-                    popup.getModalLayerClass());
-            modalDivClass = Styles.mergeClassNames(getDefaultModalLayerClass(), modalDivClass);
-            writer.writeAttribute("class", modalDivClass, null);
-            writer.writeAttribute("style", "position: absolute; display: none;", null);
-            writer.endElement("div");
-        }
-
         writer.startElement("div", component);
-        writer.writeAttribute("id", clientId, "id");
+        writeIdAttribute(context, component);
 
         String defaultClass = getDefaultClassName() +
                 " " + DefaultStyles.getBackgroundColorClass();
@@ -163,6 +149,11 @@ public class PopupLayerRenderer extends RendererBase {
         String height = popup.getHeight();
         if (height == null && popup.getAutosizing() != Autosizing.ON)
             height = getDefaultHeight();
+        String modalLayerClass = popup.isModal() ? Styles.getCSSClass(context,
+                popup, popup.getModalLayerStyle(),
+                getDefaultModalLayerClass(),
+                popup.getModalLayerClass()) : null;
+
         sb.initScript(context, popup, "O$.PopupLayer._init",
                 popup.getLeft(),
                 popup.getTop(),
@@ -172,6 +163,7 @@ public class PopupLayerRenderer extends RendererBase {
                 popup.getHidingTimeout(),
                 popup.getDraggable(),
                 popup.getAutosizing(),
+                modalLayerClass,
                 popup.getHideOnEsc(),
                 Environment.isAjax4jsfRequest(),
                 popup.getContainment());

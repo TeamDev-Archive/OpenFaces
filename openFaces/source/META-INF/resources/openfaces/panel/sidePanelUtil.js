@@ -490,6 +490,10 @@ O$._mouseSatteliteOnmousemove = function(mouseSattelite) {
   return function(event) {
     if (!mouseSattelite._fixedX) {
       mouseSattelite.style.left = (event.layerX + mouseSattelite._shiftX) + "px";           //todo something wrong
+      // todo: chrome gives a warning: event.layerX and event.layerY are broken and deprecated in WebKit. They will be removed from the engine in the near future.
+      // layerX/layerY: layerX takes scrolling of the page into account, and returns a value relative to the whole of
+      // the document, unless the event occurs inside a positioned element, where the returned value is relative to the top left of the positioned element.
+      // consider using O$.getEventPoint and passing it a containing block as a second parameter as a replacement
     } else {
       mouseSattelite.style.left = (mouseSattelite._posX + mouseSattelite._shiftX) + "px";
     }
