@@ -39,7 +39,9 @@
       <f:facet name="footer">
         <h:outputText value="Footer #{col}"/>
       </f:facet>
-      <h:outputText value="#{row.customFields[col]}"/>
+      <h:inputText value="#{row.customFields[col]}"/>
+      <h:inputText value="#{row.customObjectFields[col].stringField3}"/>
+      <h:selectBooleanCheckbox value="#{row.customObjectFields[col].booleanField}"/>
     </o:columns>
   </o:dataTable>
   <h:commandButton value="Change the set of columns" action="#{TableTestBean.changeColumns}"/>

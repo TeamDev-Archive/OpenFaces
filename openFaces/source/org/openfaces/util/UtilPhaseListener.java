@@ -305,7 +305,6 @@ public class UtilPhaseListener extends PhaseListenerBase {
                 id = id.substring(prefix.length());
         }
 
-        if (true) ;
         UIComponent componentByPath = findComponentByPath(parent, id, preProcessDecodesOnTables,
                 preRenderResponseOnTables, restoreDataPointerRunnables);
         if (checkComponentPresence && componentByPath == null)
@@ -452,7 +451,8 @@ public class UtilPhaseListener extends PhaseListenerBase {
         Iterator<UIComponent> iterator = parent.getFacetsAndChildren();
         while (iterator.hasNext()) {
             UIComponent child = iterator.next();
-            if (child instanceof NamingContainer) {
+            Object prependId = child.getAttributes().get("prependId");
+            if (child instanceof NamingContainer && !Boolean.FALSE.equals(prependId)) {
                 if (id.equals(child.getId()))
                     return child;
             } else {
