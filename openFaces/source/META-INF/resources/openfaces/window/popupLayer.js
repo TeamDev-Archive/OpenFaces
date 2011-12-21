@@ -468,7 +468,12 @@ O$.PopupLayer = {
       }
 
     if (autosizing == "on") {
-      setInterval(function() {
+      var intervalId = setInterval(function() {
+        if (!O$.isElementPresentInDocument(popup)) {
+          clearInterval(intervalId);
+          return;
+        }
+
         if (popup.isVisible())
           popup._resizeToContent();
       }, 200);

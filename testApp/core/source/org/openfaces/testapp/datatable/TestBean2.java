@@ -32,6 +32,17 @@ public class TestBean2 {
 
     private static Map<String, TestBean2> idToBeanMap = new HashMap<String, TestBean2>();
 
+    public static TestBean2 createRandom() {
+        Random r = new Random();
+        return new TestBean2(randomString(), "_" + randomString(), "-" + randomString() + "-",
+                r.nextInt(), r.nextInt(), r.nextInt(), r.nextBoolean());
+    }
+
+    private static String randomString() {
+        Random r = new Random();
+        return Long.toString(r.nextLong(), 36);
+    }
+
     public TestBean2(String stringField1, String stringField2, String stringField3, int intField1, int intField2, int intField3, boolean booleanField) {
         this.stringField1 = stringField1;
         this.stringField2 = stringField2;

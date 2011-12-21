@@ -1661,7 +1661,8 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         for (BaseColumn column : columns) {
             if (column instanceof CheckboxColumn)
                 return true;
-            List<UIComponent> columnChildren = column.getChildren();
+            List<UIComponent> columnChildren = !(column instanceof SyntheticColumn)
+                    ? column.getChildren() : ((SyntheticColumn) column).getChildrenForProcessing();
             for (UIComponent columnChild : columnChildren) {
                 if (decodingRequiringComponent(columnChild) != null)
                     return true;
@@ -1895,7 +1896,12 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         while (namingContainer != null && !(namingContainer instanceof NamingContainer))
             namingContainer = namingContainer.getParent();
 
-        String parentId = namingContainer != null ? namingContainer.getClientId(context) + NamingContainer.SEPARATOR_CHAR : "";
+        String parentId = "";
+        if (namingContainer != null) {
+            String containerClientId = namingContainer.getContainerClientId(context);
+            if (containerClientId != null)
+                parentId = containerClientId + NamingContainer.SEPARATOR_CHAR;
+        }
         String clientId = parentId + id;
 
         Renderer renderer = getRenderer(context);

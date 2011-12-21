@@ -25,6 +25,7 @@ public class TestBean {
     private int field2;
     private boolean booleanField;
     private Map<String, String> customFields = new HashMap<String, String>();
+    private Map<String, TestBean2> customObjectFields = new HashMap<String, TestBean2>();
 
     private static Map<String, TestBean> idToBeanMap = new HashMap<String, TestBean>();
 
@@ -43,11 +44,16 @@ public class TestBean {
             String customFieldName = String.valueOf(i);
             String customFieldValue = String.valueOf(Math.abs(random.nextInt()) % 1000);
             customFields.put(customFieldName, customFieldValue);
+            customObjectFields.put(customFieldName, TestBean2.createRandom());
         }
     }
 
     public Map<String, String> getCustomFields() {
         return customFields;
+    }
+
+    public Map<String, TestBean2> getCustomObjectFields() {
+        return customObjectFields;
     }
 
     public String getField1() {
