@@ -86,19 +86,26 @@ public abstract class OpenFacesTestCase extends SeleniumTestCase {
     private void testAppPage(String testAppPageUrl, String htmlSubstringOfAValidPage) {
         openAndWait(TEST_APP_URL_PREFIX, testAppPageUrl);
 
-        assertPageContentValid(testAppPageUrl, htmlSubstringOfAValidPage);
+        assertPageContentValid(TEST_APP_URL_PREFIX, testAppPageUrl, htmlSubstringOfAValidPage);
     }
 
-    protected void assertPageContentValid(String pageUrl, String htmlSubstringOfAValidPage) {
+    private void assertPageContentValid(String testAppPageUrl, String pageUrl, String htmlSubstringOfAValidPage) {
+        String fullPageUrl = testAppPageUrl + pageUrl;
         if (htmlSubstringOfAValidPage != null) {
             Selenium selenium = getSelenium();
             String htmlSource;
             try {
                 htmlSource = selenium.getHtmlSource();
             } catch (SeleniumException e) {
-                throw new RuntimeException("Couldn't get HTML source of a page: " + pageUrl, e);
+                String pageTitle;
+                try {
+                    pageTitle = selenium.getTitle();
+                } catch (Throwable t) {
+                    pageTitle = "<exception on selenium.getTitle(): " + t.getMessage() + ">";
+                }
+                throw new RuntimeException("Couldn't get HTML source of a page: " + fullPageUrl + "; page title: " + pageTitle, e);
             }
-            assertTrue("Unexpected page content. Page url: " + pageUrl + " ; expected (but missing) HTML " +
+            assertTrue("Unexpected page content. Page url: " + fullPageUrl + " ; expected (but missing) HTML " +
                     "source substring: " + htmlSubstringOfAValidPage + "; Current page title: " +
                     selenium.getTitle(), htmlSource.contains(htmlSubstringOfAValidPage));
         }
@@ -122,7 +129,7 @@ public abstract class OpenFacesTestCase extends SeleniumTestCase {
 
     protected void liveDemoPage(String testAppPageUrl, String htmlSubstringOfValidPage) {
         openAndWait(LIVE_DEMO_URL_PREFIX, testAppPageUrl);
-        assertPageContentValid(testAppPageUrl, htmlSubstringOfValidPage);
+        assertPageContentValid(LIVE_DEMO_URL_PREFIX, testAppPageUrl, htmlSubstringOfValidPage);
     }
 
 
