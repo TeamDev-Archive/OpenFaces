@@ -26,6 +26,7 @@ import org.openfaces.util.ValueBindings;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
+import javax.faces.FacesException;
 import javax.faces.component.ActionSource;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.NamingContainer;
@@ -1963,6 +1964,13 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         for (int i = 0; i < columnCount; i++) {
             BaseColumn column = columns.get(i);
             TableUtil.ColumnExpressionData columnExpressionData = TableUtil.getColumnExpressionData(column);
+            if (columnExpressionData == null) {
+                String var = getVar();
+                throw new FacesException(
+                        "Can't find column output component (UIOutput component with a value expression containing variable \"" +
+                                var + "\") for column with id: \"" + column.getId() + "\"; table id: \"" + this.getId() +
+                                "\"");
+            }
             columnExpressionDatas[i] = columnExpressionData;
             String columnHeader = TableUtil.getColumnHeader(column);
             columnDatas.add(new TableColumnData(columnExpressionData.getValueType(), columnHeader));

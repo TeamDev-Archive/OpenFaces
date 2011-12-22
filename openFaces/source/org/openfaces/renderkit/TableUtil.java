@@ -23,7 +23,6 @@ import org.openfaces.util.ValueBindings;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
 import javax.faces.component.UIOutput;
@@ -204,7 +203,10 @@ public class TableUtil {
     }
 
     public static Converter getColumnValueConverter(BaseColumn column) {
-        return getColumnExpressionData(column).getValueConverter();
+        ColumnExpressionData columnExpressionData = getColumnExpressionData(column);
+        if (columnExpressionData == null)
+            return null;
+        return columnExpressionData.getValueConverter();
     }
 
     public static String getColumnHeader(BaseColumn column) {
@@ -319,10 +321,8 @@ public class TableUtil {
         AbstractTable table = column.getTable();
         String var = column.getTable().getVar();
         UIOutput columnOutput = explicitColumnFilterExpression != null ? null : obtainOutput(column, var);
-        if (columnOutput == null && explicitColumnFilterExpression == null) throw new FacesException(
-                "Can't find column output component (UIOutput component with a value expression containing variable \"" +
-                        var + "\") for column with id: \"" + column.getId() + "\"; table id: \"" + table.getId() +
-                        "\" ; consider declaring the filter expression explicitly if you're using a filter component in this column.");
+        if (columnOutput == null && explicitColumnFilterExpression == null)
+            return null;
 
         ValueExpression expression = explicitColumnFilterExpression != null
                 ? explicitColumnFilterExpression : columnOutput.getValueExpression("value");
