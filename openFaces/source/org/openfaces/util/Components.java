@@ -508,5 +508,8 @@ public class Components {
         requestMap.put(varName, oldValue);
     }
 
+    public static UIComponent findComponent(UIComponent baseComponent, String idPath) {
+        return UtilPhaseListener.findComponentById(baseComponent, idPath, false, false, false);
+    }
 
 }
