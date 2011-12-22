@@ -26,6 +26,7 @@
 
     <o:dataTable id="banks" var="bank"
                  value="#{BanksList.banks}"
+                 rowKey="#{bank.id}"
                  style="margin-top: 15px; width: 95%; height: 420px;"
 
                  sortColumnId="institutionName"
