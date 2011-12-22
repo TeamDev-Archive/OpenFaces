@@ -18,17 +18,16 @@ import org.openfaces.component.TableStyles;
 import org.openfaces.component.filter.Filter;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.renderkit.table.TableStructure;
-import org.openfaces.util.Components;
-import org.openfaces.util.Log;
 import org.openfaces.renderkit.table.TreeTableRenderer;
-import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.Components;
 import org.openfaces.util.Environment;
+import org.openfaces.util.Log;
 import org.openfaces.util.ReflectionUtil;
 import org.openfaces.util.ValueBindings;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
+import javax.faces.FacesException;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.ActionSource;
@@ -40,24 +39,15 @@ import javax.faces.component.UIViewRoot;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ComponentSystemEvent;
 import javax.faces.event.ListenerFor;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PostRestoreStateEvent;
 import javax.faces.model.DataModel;
-import javax.faces.convert.Converter;
 import javax.faces.render.Renderer;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Dmitry Pikhulya
@@ -2089,6 +2079,13 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         for (int i = 0; i < columnCount; i++) {
             BaseColumn column = columns.get(i);
             TableUtil.ColumnExpressionData columnExpressionData = TableUtil.getColumnExpressionData(column);
+            if (columnExpressionData == null) {
+                String var = getVar();
+                throw new FacesException(
+                        "Can't find column output component (UIOutput component with a value expression containing variable \"" +
+                                var + "\") for column with id: \"" + column.getId() + "\"; table id: \"" + this.getId() +
+                                "\"");
+            }
             columnExpressionDatas[i] = columnExpressionData;
             String columnHeader = TableUtil.getColumnHeader(column);
             columnDatas.add(new TableColumnData(columnExpressionData.getValueType(), columnHeader));

@@ -109,7 +109,7 @@ public abstract class ExpressionFilter extends Filter implements ValueHolder {
         if (ve != null)
             return (Converter) ve.getValue(getFacesContext().getELContext());
         if (explicitExpression) {
-            // don't derive converter from a column if an expression is specified explicitly for the filter
+            // don't derive converter from a column if an expression is specified explicitly for the filter;
             // explicitly specified expression requires an explicitly specified converter (for the appropriate
             // expression's type) so the absence of explicit converter specification should be interpreted as intentional.
             return null;

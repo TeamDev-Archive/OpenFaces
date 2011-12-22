@@ -23,6 +23,7 @@ import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.ValueBindings;
 
 import javax.el.ValueExpression;
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -128,6 +129,14 @@ public class CompositeFilter extends Filter {
 
     private FilterProperty getColumnFilterProperty(FilterableComponent filteredComponent, BaseColumn column) {
         final TableUtil.ColumnExpressionData columnExpressionData = TableUtil.getColumnExpressionData(column);
+        if (columnExpressionData == null) {
+            AbstractTable table = column.getTable();
+            String var = table.getVar();
+            throw new FacesException(
+                    "Can't find column output component (UIOutput component with a value expression containing variable \"" +
+                            var + "\") for column with id: \"" + column.getId() + "\"; table id: \"" + table.getId() +
+                            "\" ; consider declaring the filter expression explicitly if you're using a filter component in this column.");
+        }
         ValueExpression expression = columnExpressionData.getValueExpression();
         if (expression == null) return null;
         PropertyLocatorFactory factory = new FilterableComponentPropertyLocatorFactory(filteredComponent);

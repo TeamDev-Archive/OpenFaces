@@ -13,7 +13,6 @@ package org.openfaces.component.table;
 
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.util.Components;
-import org.openfaces.util.ValueBindings;
 
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
