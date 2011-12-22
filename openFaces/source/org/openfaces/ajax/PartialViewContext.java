@@ -37,6 +37,7 @@ import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
 import javax.faces.component.UIForm;
+import javax.faces.component.UINamingContainer;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.behavior.Behavior;
 import javax.faces.context.ExternalContext;
@@ -584,12 +585,14 @@ public class PartialViewContext extends PartialViewContextWrapper {
                                                    boolean preProcessDecodesOnTables,
                                                    boolean preRenderResponseOnTables,
                                                    List<Runnable> restoreDataPointerRunnables) {
+        char separatorChar = UINamingContainer.getSeparatorChar(FacesContext.getCurrentInstance());
+
         while (true) {
             if (path == null) {
                 return null;
             }
 
-            int separator = path.indexOf(NamingContainer.SEPARATOR_CHAR, 1);
+            int separator = path.indexOf(separatorChar, 1);
             if (separator == -1)
                 return componentById(parent, path, true, preProcessDecodesOnTables, preRenderResponseOnTables, restoreDataPointerRunnables);
 

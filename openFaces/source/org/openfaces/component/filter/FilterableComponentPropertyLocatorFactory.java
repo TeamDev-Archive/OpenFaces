@@ -75,7 +75,8 @@ public class FilterableComponentPropertyLocatorFactory implements PropertyLocato
             if (Environment.isGateInPortal(context)) {
                 String viewRootIdPart = "_viewRoot:";
                 componentId = componentId.substring(componentId.indexOf(viewRootIdPart) + viewRootIdPart.length(), componentId.length());
-            }            component = (FilterableComponent) viewRoot.findComponent(":" + componentId);
+            }
+            component = (FilterableComponent) viewRoot.findComponent(":" + componentId);
             if (component == null)
                 throw new IllegalStateException("Couldn't find filtered component by id: " + componentId);
             return component;

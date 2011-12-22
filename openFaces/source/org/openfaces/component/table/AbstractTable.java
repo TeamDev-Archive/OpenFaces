@@ -35,6 +35,7 @@ import javax.faces.component.ActionSource;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
@@ -1868,7 +1869,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         if (suffix == null)
             return clientId;
         else
-            return clientId + NamingContainer.SEPARATOR_CHAR + suffix;
+            return clientId + UINamingContainer.getSeparatorChar(context) + suffix;
     }
 
     protected String getRowClientSuffixByIndex(int index) {
@@ -1900,7 +1901,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         if (namingContainer != null) {
             String containerClientId = namingContainer.getContainerClientId(context);
             if (containerClientId != null)
-                parentId = containerClientId + NamingContainer.SEPARATOR_CHAR;
+                parentId = containerClientId + UINamingContainer.getSeparatorChar(context);
         }
         String clientId = parentId + id;
 

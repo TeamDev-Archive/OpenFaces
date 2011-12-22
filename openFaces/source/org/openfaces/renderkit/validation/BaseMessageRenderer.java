@@ -57,13 +57,14 @@ public class BaseMessageRenderer extends Renderer {
         if (forComponent != null) {
             return forComponent.getClientId(context);
         }
-        if (forAttr.length() > 0 && forAttr.charAt(0) == UINamingContainer.SEPARATOR_CHAR) {
+        char separatorChar = UINamingContainer.getSeparatorChar(context);
+        if (forAttr.length() > 0 && forAttr.charAt(0) == separatorChar) {
             //absolute id path
             return forAttr.substring(1);
         } else {
             //relative id path, we assume a component on the same level as the label component
             String labelClientId = uiComponent.getClientId(context);
-            int colon = labelClientId.lastIndexOf(UINamingContainer.SEPARATOR_CHAR);
+            int colon = labelClientId.lastIndexOf(separatorChar);
             if (colon == -1) {
                 return forAttr;
             } else {

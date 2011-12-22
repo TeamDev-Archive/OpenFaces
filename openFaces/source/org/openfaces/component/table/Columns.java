@@ -21,6 +21,7 @@ import javax.el.ValueExpression;
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
+import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
 import java.lang.reflect.Array;
@@ -1011,7 +1012,7 @@ public class Columns extends UIComponentBase implements NamingContainer {
         if (columnIndex == -1) {
             return clientId;
         }
-        return clientId + NamingContainer.SEPARATOR_CHAR + columnIndex;
+        return clientId + UINamingContainer.getSeparatorChar(context) + columnIndex;
     }
 
 }
