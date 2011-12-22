@@ -855,16 +855,16 @@ public class TableDataModel extends DataModel implements DataModelListener, Stat
         return result;
     }
 
-    private static Set<Class> approvedRowKeyClasses = new HashSet<Class>();
+    private static Map<Class, Boolean> rowKeyClassesValidFlags = new HashMap<Class, Boolean>();
 
     public static boolean isValidRowKey(Object rowKey) {
         Class rowKeyClass = rowKey.getClass();
-        if (approvedRowKeyClasses.contains(rowKeyClass))
-            return true;
-        boolean result = rowKey instanceof Serializable && checkSerializableEqualsAndHashcode(rowKey);
-        if (result)
-            approvedRowKeyClasses.add(rowKeyClass);
-        return result;
+        Boolean rowKeyValid = rowKeyClassesValidFlags.get(rowKeyClass);
+        if (rowKeyValid == null) {
+            rowKeyValid = checkSerializableEqualsAndHashcode(rowKey);
+            rowKeyClassesValidFlags.put(rowKeyClass, rowKeyValid);
+        }
+        return rowKeyValid;
     }
 
     private Object requestRowDataByRowKey(FacesContext facesContext, Object rowKey) {
@@ -1157,6 +1157,8 @@ public class TableDataModel extends DataModel implements DataModelListener, Stat
     }
 
     private static boolean checkSerializableEqualsAndHashcode(Object rowKey) {
+        if (!(rowKey instanceof Serializable))
+            return false;
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         Object deserializedRowKey;
         try {
@@ -1169,7 +1171,7 @@ public class TableDataModel extends DataModel implements DataModelListener, Stat
             deserializedRowKey = ois.readObject();
             bais.close();
         } catch (IOException e) {
-            throw new RuntimeException("The rowData or rowKey object is marked as Serializable but can't be serialized: " +
+            throw new RuntimeException("The rowData or rowKey object is marked as Serializable, but can't be serialized: " +
                     rowKey.getClass().getName() + " ; check that all object's fields are also Serializable", e);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
