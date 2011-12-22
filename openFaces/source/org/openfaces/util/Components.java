@@ -11,6 +11,7 @@
  */
 package org.openfaces.util;
 
+import org.openfaces.ajax.PartialViewContext;
 import org.openfaces.component.OUIObjectIterator;
 
 import javax.faces.FacesException;
@@ -597,6 +598,10 @@ public class Components {
             return;
         Object oldValue = backupValues.pop();
         requestMap.put(varName, oldValue);
+    }
+    
+    public static UIComponent findComponent(UIComponent baseComponent, String idPath) {
+        return PartialViewContext.findComponentById(baseComponent, idPath, false, false, false);
     }
 
 

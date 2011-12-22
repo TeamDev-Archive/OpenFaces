@@ -399,7 +399,7 @@ public class PartialViewContext extends PartialViewContextWrapper {
         return result;
     }
 
-    static UIComponent findComponentById(UIComponent parent,
+    public static UIComponent findComponentById(UIComponent parent,
                                          String id,
                                          boolean preProcessDecodesOnTables,
                                          boolean preRenderResponseOnTables) {
