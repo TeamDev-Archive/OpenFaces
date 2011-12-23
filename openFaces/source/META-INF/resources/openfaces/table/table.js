@@ -1002,7 +1002,7 @@ O$.Table = {
   // -------------------------- TABLE SELECTION SUPPORT
 
   _initSelection: function(tableId, enabled, required, selectableItems,
-                           selectionMode, selectedItems, selectionClass,
+                           selectionMode, selectedItems, selectionClass, rawSelectionClass,
                            selectionChangeHandler, postEventOnSelectionChange, selectionColumnIndexes,
                            mouseSupport, keyboardSupport, trackLeafNodesOnly) {
     var table = O$.initComponent(tableId);
@@ -1017,6 +1017,7 @@ O$.Table = {
               _multipleSelectionAllowed: selectionMode != "single",
               _selectionMode: selectionMode,
               _selectionClass: selectionClass,
+              _rawSelectionClass: rawSelectionClass,
               _selectionColumnIndexes: selectionColumnIndexes,
               _selectionMouseSupport: mouseSupport,
               _selectionKeyboardSupport: keyboardSupport && selectionMode != "hierarchical",

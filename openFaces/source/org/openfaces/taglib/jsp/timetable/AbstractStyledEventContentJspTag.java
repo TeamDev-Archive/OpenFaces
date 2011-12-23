@@ -14,8 +14,6 @@ package org.openfaces.taglib.jsp.timetable;
 import org.openfaces.taglib.internal.AbstractComponentTag;
 import org.openfaces.taglib.jsp.AbstractComponentJspTag;
 
-import javax.el.ValueExpression;
-
 /**
  * @author Roman Porotnikov
  */
@@ -25,12 +23,5 @@ public abstract class AbstractStyledEventContentJspTag extends AbstractComponent
         super(delegate);
     }
 
-    public void setStyle(ValueExpression style) {
-        getDelegate().setPropertyValue("style", style);
-    }
-
-    public void setStyleClass(ValueExpression styleClass) {
-        getDelegate().setPropertyValue("styleClass", styleClass);
-    }
 
 }

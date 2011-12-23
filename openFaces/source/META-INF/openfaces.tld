@@ -5840,6 +5840,22 @@
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>A CSS class name that is applied directly to the selected row. Unlike the styleClass attribute, which
+      changes the visual style, but does not specify which HTML tags will be affected to achieve , this attribute
+        provides an ability to specify CSS class name(s) which will be applied to the respective row tags themselves.
+        It is recommended to use styleClass (or style) attribute if your intention is to customize visual representation
+        of table's rows, and to use the rawStyleClass if your intention is to provide some style class to the row tags
+        that will be utilized by some other CSS constructs which depend on this class to be applied to the row tags.
+      </description>
+      <name>rawStyleClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>JavaScript code that should be executed every time the user changes selection.</description>
       <name>onchange</name>
       <deferred-value>
@@ -6044,6 +6060,22 @@
     <attribute>
       <description>A CSS class name for selected rows.</description>
       <name>styleClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name that is applied directly to each selected row. Unlike the styleClass attribute, which
+        changes the visual style, but does not specify which HTML tags will be affected to achieve , this attribute
+        provides an ability to specify CSS class name(s) which will be applied to the respective row tags themselves.
+        It is recommended to use styleClass (or style) attribute if your intention is to customize visual representation
+        of table's rows, and to use the rawStyleClass if your intention is to provide some style class to the row tags
+        that will be utilized by some other CSS constructs which depend on this class to be applied to the row tags.
+      </description>
+      <name>rawStyleClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -10276,6 +10308,22 @@ means that only root nodes and their immediate children are preloaded -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>A CSS class name that is applied directly to the selected row. Unlike the styleClass attribute, which
+        changes the visual style, but does not specify which HTML tags will be affected to achieve , this attribute
+        provides an ability to specify CSS class name(s) which will be applied to the respective row tags themselves.
+        It is recommended to use styleClass (or style) attribute if your intention is to customize visual representation
+        of table's rows, and to use the rawStyleClass if your intention is to provide some style class to the row tags
+        that will be utilized by some other CSS constructs which depend on this class to be applied to the row tags.
+      </description>
+      <name>rawStyleClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>JavaScript code that should be executed every time the user changes selection.</description>
       <name>onchange</name>
       <deferred-value>
@@ -10484,6 +10532,22 @@ means that only root nodes and their immediate children are preloaded -->
     <attribute>
       <description>A CSS class name for selected rows.</description>
       <name>styleClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name that is applied directly to each selected row. Unlike the styleClass attribute, which
+        changes the visual style, but does not specify which HTML tags will be affected to achieve , this attribute
+        provides an ability to specify CSS class name(s) which will be applied to the respective row tags themselves.
+        It is recommended to use styleClass (or style) attribute if your intention is to customize visual representation
+        of table's rows, and to use the rawStyleClass if your intention is to provide some style class to the row tags
+        that will be utilized by some other CSS constructs which depend on this class to be applied to the row tags.
+      </description>
+      <name>rawStyleClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
