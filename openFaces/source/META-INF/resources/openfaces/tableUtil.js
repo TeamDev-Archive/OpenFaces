@@ -882,13 +882,27 @@ O$.Tables = {
 
     row._updateStyle = function() {
       var rowTable = this._table;
+      var addedRawClassName = O$.combineClassNames([
+        this._selected ? rowTable._rawSelectionClass : null
+      ]);
+      if (row._addedRawClassName != addedRawClassName) {
+        row._addedRawClassName = addedRawClassName;
+
+        if (row._leftRowNode) O$.setStyleMappings(row._leftRowNode, {addedRawStyle: addedRawClassName});
+        O$.setStyleMappings(row._rowNode, {addedRawStyle: addedRawClassName});
+        if (row._rightRowNode) O$.setStyleMappings(row._rightRowNode, {addedRawStyle: addedRawClassName});
+      }
+
       var addedClassName = O$.combineClassNames([
         this._selected ? rowTable._selectionClass : null,
-        this._mouseIsOver ? rowTable._params.body.rolloverRowClassName : null]);
+        this._mouseIsOver ? rowTable._params.body.rolloverRowClassName : null
+      ]);
+
       if (row._addedClassName == addedClassName)
         return;
       row._addedClassName = addedClassName;
       var opera = O$.isOpera();
+
 
       if (!rowTable._params.forceUsingCellStyles) {
         if (row._leftRowNode) O$.setStyleMappings(row._leftRowNode, {rolloverAndSelectionStyle: addedClassName});

@@ -37,6 +37,7 @@ import java.util.Map;
  */
 public abstract class AbstractTableSelection extends OUICommand implements ComponentConfigurator {
     private static final String SESSION_KEY_SELECTION_EVENTS_PROCESSED = "OF:tableSelectionEventsProcessed";
+    private static final String ATTR_SELECTION_CLS = "_selectionCls_";
 
     public enum Mode {
         SINGLE("single"),
@@ -59,6 +60,7 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
     private boolean selectionChanged;
     private String style;
     private String styleClass;
+    private String rawStyleClass;
     private Boolean enabled;
     private Boolean required;
     private Boolean mouseSupport;
@@ -95,7 +97,8 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
     @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
-        return new Object[]{superState, enabled, required, mouseSupport, keyboardSupport, style, styleClass, onchange};
+        return new Object[]{superState, enabled, required, mouseSupport, keyboardSupport, style, styleClass, 
+                rawStyleClass, onchange};
     }
 
     @Override
@@ -109,6 +112,7 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
         keyboardSupport = (Boolean) state[i++];
         style = (String) state[i++];
         styleClass = (String) state[i++];
+        rawStyleClass = (String) state[i++];
         onchange = (String) state[i++];
     }
 
@@ -166,6 +170,14 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
 
     public void setStyleClass(String styleClass) {
         this.styleClass = styleClass;
+    }
+
+    public String getRawStyleClass() {
+        return ValueBindings.get(this, "rawStyleClass", rawStyleClass);
+    }
+
+    public void setRawStyleClass(String rawStyleClass) {
+        this.rawStyleClass = rawStyleClass;
     }
 
     public void beforeInvokeApplication() {
@@ -228,7 +240,7 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
         AbstractTable table = getTable();
         String selectionCls = Styles.getCSSClass_dontCascade(
                 context, table, getStyle(), StyleGroup.selectedStyleGroup(), getStyleClass(), DefaultStyles.getDefaultSelectionStyle());
-        getAttributes().put("_selectionCls_", selectionCls);
+        getAttributes().put(ATTR_SELECTION_CLS, selectionCls);
     }
 
     @Override
@@ -266,7 +278,8 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
                 "rows",
                 getSelectionMode(),
                 table.getDeferBodyLoading() ? null : encodeSelectionIntoIndexes(),
-                getAttributes().get("_selectionCls_"),
+                getAttributes().get(ATTR_SELECTION_CLS),
+                getRawStyleClass(),
                 onchange,
                 submitOnChange ? getSelectionEventsProcessed() + 1 : null,
                 getSelectionColumnIndexes(table),
