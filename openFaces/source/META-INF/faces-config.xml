@@ -840,6 +840,16 @@
     <component-type>org.openfaces.GroupFooterRow</component-type>
     <component-class>org.openfaces.component.table.GroupFooterRow</component-class>
   </component>
+
+  <component>
+    <component-type>org.openfaces.FileUpload</component-type>
+    <component-class>org.openfaces.component.input.FileUpload</component-class>
+  </component>
+
+  <component>
+    <component-type>org.openfaces.ProgressBar</component-type>
+    <component-class>org.openfaces.component.output.ProgressBar</component-class>
+  </component>
   
   <render-kit>
     <renderer>
@@ -1404,6 +1414,16 @@
       <component-family>org.openfaces.GroupingBox</component-family>
       <renderer-type>org.openfaces.GroupingBoxRenderer</renderer-type>
       <renderer-class>org.openfaces.renderkit.table.GroupingBoxRenderer</renderer-class>
+    </renderer>
+    <renderer>
+      <component-family>org.openfaces.FileUpload</component-family>
+      <renderer-type>org.openfaces.FileUploadRenderer</renderer-type>
+      <renderer-class>org.openfaces.renderkit.input.FileUploadRenderer</renderer-class>
+    </renderer>
+    <renderer>
+      <component-family>org.openfaces.ProgressBar</component-family>
+      <renderer-type>org.openfaces.ProgressBarRenderer</renderer-type>
+      <renderer-class>org.openfaces.renderkit.output.ProgressBarRenderer</renderer-class>
     </renderer>
 
   </render-kit>

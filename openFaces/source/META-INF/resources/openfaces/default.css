@@ -54,7 +54,8 @@
   .o_popuplayer,
   .o_popup_menu,
   .o_hintlabel_hint,
-  .o_timetableView{
+  .o_timetableView,
+  .o_file_upload{
   border: 1px solid gray;
 }
 
@@ -65,7 +66,8 @@
   .o_tabset_top, .o_tabset_right, .o_tabset_bottom, .o_tabset_left,
   .o_folding_panel_caption, .o_window_caption,
   .o_tls_caption,
-  .o_sidepanel_caption {
+  .o_sidepanel_caption,
+  .o_file_upload_header {
   background: #dfdfdf;
 }
 
@@ -1196,6 +1198,87 @@
   padding-left: 2px;
   padding-right: 2px;
   text-align: left;
+}
+
+/*ProgressBar component*/
+.o_progress_bar{
+    width:100px;
+    height: 15px;
+    position: relative;
+    border: 1px solid #CCCCCC;
+}
+.o_progress_bar_uploaded,
+ .o_progress_bar_n_uploaded{
+    height: 100%;
+    float:left;
+}
+
+.o_progress_bar_uploaded {
+    background-color: #00bb00;
+}
+
+.o_progress_bar_n_uploaded {
+
+}
+.o_progress_bar_label{
+    position: absolute;
+    cursor: default;
+    font-size: 8pt;
+    font-weight: bold;
+}
+
+/*FileUpload component*/
+.o_file_upload {
+    width: 440px;
+}
+
+.o_file_upload_header {
+    margin: 0;
+    width:100%;
+}
+
+.o_file_upload_btn {
+    margin-left: 265px;
+    margin-top: 2px;
+}
+
+.o_file_clear_all_btn {
+    margin-top: 10px;
+    margin-left: 355px;
+    font-size: 8pt;
+    margin-bottom: 10px;
+}
+
+.o_file_upload_infos {
+    width:100%;
+}
+
+.o_file_upload_info {
+    width:100%;
+}
+
+.o_file_upload_info_title {
+    font-size: 10pt;
+    padding-top:10px;
+    padding-left: 10px;
+}
+
+.o_file_upload_info_status {
+    width: 65px;
+    font-size: 8pt;
+    color: gray;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.o_file_upload_info_progress {
+    width: 1px;
+}
+
+.o_file_clear_btn {
+    width: 50px;
+    font-size: 8pt;
+    margin-right: 25px;
 }
 
 /* TwoListSelection */
