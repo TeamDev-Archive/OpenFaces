@@ -74,6 +74,8 @@ public class UploadMultipartRequestWrapper extends HttpServletRequestWrapper {
     }
 
     private File getAndChangeFileNameIfNeeded(String tempDirPath, String fileName) {
+        int indexOfSlash = fileName.lastIndexOf("\\");
+        fileName = (indexOfSlash == -1) ? fileName : fileName.substring(indexOfSlash + 1);
         File f = new File(tempDirPath + "\\" + fileName);
         int i = 0;
         while (f.isFile()) {

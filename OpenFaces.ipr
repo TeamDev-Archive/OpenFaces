@@ -82,6 +82,7 @@
             <element id="library" level="project" name="OpenFaces Dependencies" />
             <element id="library" level="project" name="commons-lang" />
             <element id="library" level="project" name="JSF Implementation - Mojarra 1.2" />
+            <element id="library" level="project" name="fileUpload" />
           </element>
         </element>
       </root>
@@ -220,10 +221,14 @@
             <element id="library" level="project" name="hibernate" />
             <element id="library" level="project" name="JSF Implementation - Mojarra 1.2" />
             <element id="library" level="project" name="PrimeFaces" />
+            <element id="library" level="project" name="fileUpload" />
           </element>
         </element>
       </root>
     </artifact>
+  </component>
+  <component name="ClearCaseSharedConfig">
+    <option name="myUseUcmModel" value="true" />
   </component>
   <component name="CodeStyleProjectProfileManger">
     <option name="PROJECT_PROFILE" />
@@ -1274,6 +1279,14 @@
         <root url="jar://$PROJECT_DIR$/libsrc/facelets-1.1.14-src.zip!/facelets-1.1.14-src/java" />
         <root url="jar://$PROJECT_DIR$/libsrc/facelets-1.1.14-src.zip!/facelets-1.1.14-src/test" />
       </SOURCES>
+    </library>
+    <library name="fileUpload">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/lib/apache/commons-fileupload-1.2.2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/apache/commons-io-2.1.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
     </library>
     <library name="hibernate">
       <CLASSES>

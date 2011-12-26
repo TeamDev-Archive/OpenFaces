@@ -364,6 +364,7 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
 
         Rendering.renderInitScript(context, initScript,
                 Resources.utilJsURL(context),
+                Resources.jsonJsURL(context),
                 Resources.internalURL(context, "input/fileUpload.js")
         );
     }
@@ -379,7 +380,7 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
                 return;
 
             fileUpload.getFileUploadedListener().invoke(context.getELContext(), new Object[]{new FileUploadedEvent(fileUpload,uploadedFile)});
-            List<File> userFiles = fileUpload.getUploadedFiles();
+            /*List<File> userFiles = fileUpload.getUploadedFiles();
 
             if (userFiles == null || userFiles.size() == 0) {
                 List<File> uploadedFiles = new LinkedList<File>();
@@ -415,7 +416,7 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
                         }
                     }
                 }
-            }
+            }*/
         } catch (Exception e) {
             throw new RuntimeException("Could not handle file upload - please ensure that you have correctly configured the filter.", e);
         }
