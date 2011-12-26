@@ -131,6 +131,10 @@ public class AjaxInitializer {
             if (onerror != null && onerror.length() != 0) {
                 result.put("onerror", new AnonymousFunction(onerror, "event"));
             }
+            String onsuccess = command.getOnerror();
+            if (onsuccess != null && onsuccess.length() != 0) {
+                result.put("onsuccess", new AnonymousFunction(onsuccess, "event"));
+            }
             Integer delayObj = (Integer) command.getAttributes().get("delay");
             int delay = delayObj != null ? delayObj : 0;
             if (delay > 0) {

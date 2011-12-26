@@ -11,22 +11,20 @@
  */
 package org.openfaces.component.table;
 
+import org.openfaces.component.OUIComponentBase;
 import org.openfaces.util.ValueBindings;
 
-import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 
-public class GroupingBox extends org.openfaces.component.OUIComponentBase {
+public class GroupingBox extends OUIComponentBase {
     public static final String COMPONENT_TYPE = "org.openfaces.GroupingBox";
     public static final String COMPONENT_FAMILY = "org.openfaces.GroupingBox";
     private String id;
-    private String styleClass;
-    private String style;
     private String headerStyle;
-    private String headerStyleClass;
+    private String headerClass;
     private String promptText;
     private String promptTextStyle;
-    private String promptTextStyleClass;
+    private String promptTextClass;
     private String headerHorizOffset;
     private String headerVertOffset;
     private String connectorStyle;
@@ -44,9 +42,9 @@ public class GroupingBox extends org.openfaces.component.OUIComponentBase {
     public Object saveState(FacesContext context) {
         return new Object[]{
             super.saveState(context),
-                id, styleClass, style,
-                headerStyle, headerStyleClass,
-                promptText, promptTextStyle, promptTextStyleClass,
+                id,
+                headerStyle, headerClass,
+                promptText, promptTextStyle, promptTextClass,
                 headerHorizOffset, headerVertOffset,
                 connectorStyle
         };
@@ -58,13 +56,11 @@ public class GroupingBox extends org.openfaces.component.OUIComponentBase {
         int i = 0;
         super.restoreState(context, state[i++]);
         id = (String) state[i++];
-        styleClass = (String) state[i++];
-        style = (String) state[i++];
         headerStyle = (String) state[i++];
-        headerStyleClass = (String) state[i++];
+        headerClass = (String) state[i++];
         promptText = (String) state[i++];
         promptTextStyle = (String) state[i++];
-        promptTextStyleClass = (String) state[i++];
+        promptTextClass = (String) state[i++];
         headerHorizOffset = (String) state[i++];
         headerVertOffset = (String) state[i++];
         connectorStyle = (String) state[i++];
@@ -78,22 +74,6 @@ public class GroupingBox extends org.openfaces.component.OUIComponentBase {
         this.id = id;
     }
 
-    public String getStyleClass() {
-        return ValueBindings.get(this, "styleClass", styleClass);
-    }
-
-    public void setStyleClass(String styleClass) {
-        this.styleClass = styleClass;
-    }
-
-    public String getStyle() {
-        return ValueBindings.get(this, "style", style);
-    }
-
-    public void setStyle(String style) {
-        this.style = style;
-    }
-
     public String getHeaderStyle() {
         return ValueBindings.get(this, "headerStyle", headerStyle);
     }
@@ -102,12 +82,12 @@ public class GroupingBox extends org.openfaces.component.OUIComponentBase {
         this.headerStyle = headerStyle;
     }
 
-    public String getHeaderStyleClass() {
-        return ValueBindings.get(this, "headerStyleClass", headerStyleClass);
+    public String getHeaderClass() {
+        return ValueBindings.get(this, "headerClass", headerClass);
     }
 
-    public void setHeaderStyleClass(String headerStyleClass) {
-        this.headerStyleClass = headerStyleClass;
+    public void setHeaderClass(String headerClass) {
+        this.headerClass = headerClass;
     }
 
     public String getPromptText() {
@@ -126,12 +106,12 @@ public class GroupingBox extends org.openfaces.component.OUIComponentBase {
         this.promptTextStyle = promptTextStyle;
     }
 
-    public String getPromptTextStyleClass() {
-        return ValueBindings.get(this, "promptTextStyleClass", promptTextStyleClass);
+    public String getPromptTextClass() {
+        return ValueBindings.get(this, "promptTextClass", promptTextClass);
     }
 
-    public void setPromptTextStyleClass(String promptTextStyleClass) {
-        this.promptTextStyleClass = promptTextStyleClass;
+    public void setPromptTextClass(String promptTextClass) {
+        this.promptTextClass = promptTextClass;
     }
 
     public String getHeaderHorizOffset() {
@@ -151,7 +131,7 @@ public class GroupingBox extends org.openfaces.component.OUIComponentBase {
     }
 
     public String getConnectorStyle() {
-        return ValueBindings.get(this, "connectorStyle", connectorStyle, "1px solid black");
+        return ValueBindings.get(this, "connectorStyle", connectorStyle, "1px solid #404040");
     }
 
     public void setConnectorStyle(String connectorStyle) {

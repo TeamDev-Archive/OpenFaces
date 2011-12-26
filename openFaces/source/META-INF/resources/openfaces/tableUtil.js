@@ -882,13 +882,27 @@ O$.Tables = {
 
     row._updateStyle = function() {
       var rowTable = this._table;
+      var addedRawClassName = O$.combineClassNames([
+        this._selected ? rowTable._rawSelectionClass : null
+      ]);
+      if (row._addedRawClassName != addedRawClassName) {
+        row._addedRawClassName = addedRawClassName;
+
+        if (row._leftRowNode) O$.setStyleMappings(row._leftRowNode, {addedRawStyle: addedRawClassName});
+        O$.setStyleMappings(row._rowNode, {addedRawStyle: addedRawClassName});
+        if (row._rightRowNode) O$.setStyleMappings(row._rightRowNode, {addedRawStyle: addedRawClassName});
+      }
+
       var addedClassName = O$.combineClassNames([
         this._selected ? rowTable._selectionClass : null,
-        this._mouseIsOver ? rowTable._params.body.rolloverRowClassName : null]);
+        this._mouseIsOver ? rowTable._params.body.rolloverRowClassName : null
+      ]);
+
       if (row._addedClassName == addedClassName)
         return;
       row._addedClassName = addedClassName;
       var opera = O$.isOpera();
+
 
       if (!rowTable._params.forceUsingCellStyles) {
         if (row._leftRowNode) O$.setStyleMappings(row._leftRowNode, {rolloverAndSelectionStyle: addedClassName});
@@ -1410,7 +1424,7 @@ O$.Tables = {
       byId: function(columnId) {
         for (var i = 0, count = this.length; i < count; i++) {
           var column = this[i];
-          if (column.id == columnId)
+          if (column.columnId == columnId)
             return column;
         }
         return null;
@@ -1486,13 +1500,15 @@ O$.Tables = {
       function createPredefinedColClasses(prefix, preallocateCount) {
         var styleElement = document.createElement("style");
         styleElement.setAttribute("type", "text/css");
-        var headTags = document.getElementsByTagName("head");
-        var styleParent = headTags.length > 0 ? headTags[0] : document.getElementsByTagName("body")[0];
-        styleParent.appendChild(styleElement);
         var buf = new O$.StringBuffer();
         for (var i = 0; i < 4 * preallocateCount; i++)
           buf.append("." + prefix).append(i).append("{overflow:hidden} ");
         styleElement.styleSheet.cssText = buf.toString();
+
+        var headTags = document.getElementsByTagName("head");
+        var styleParent = headTags.length > 0 ? headTags[0] : document.getElementsByTagName("body")[0];
+        styleParent.appendChild(styleElement);
+
         var predefinedColClasses = styleElement.styleSheet.rules;
         predefinedColClasses._obtained = 0;
         predefinedColClasses._prefix = prefix;
@@ -1889,11 +1905,12 @@ O$.Tables = {
         var cellKey = rowIndex + "x" + colIndex;
         cellStyleMappings.individualCellStyle = table._params.cellStylesMap[cellKey];
 
+        var regularColumnCell = !cell.colSpan || cell.colSpan == 1;
         var columnClassName = column._useCellStyles ? column._getCompoundClassName() : null;
-        if (columnClassName)
+        if (columnClassName && regularColumnCell)
           cellStyleMappings.columnClass = columnClassName;
         var compoundBodyClassName = column.body._getCompoundClassName();
-        if (compoundBodyClassName) {
+        if (compoundBodyClassName && regularColumnCell) {
           cellStyleMappings.rowInitialClass = row.initialClass;
           cellStyleMappings.columnBodyClass = compoundBodyClassName;
         }

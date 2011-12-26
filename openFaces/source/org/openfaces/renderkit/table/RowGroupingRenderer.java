@@ -19,6 +19,7 @@ import org.openfaces.org.json.JSONArray;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.RendererBase;
+import org.openfaces.renderkit.TableUtil;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.ScriptBuilder;
 
@@ -56,6 +57,7 @@ public class RowGroupingRenderer extends RendererBase {
 
         String tableClientId = table.getClientId(context);
         List<String> activeColumnIds = new ArrayList<String>();
+        List<String> groupableColumnIds = new ArrayList<String>();
         for (BaseColumn column : visibleAndGroupedColumns) {
             Object headerContent = TableHeader.getHeaderOrFooterCellContent(column, true);
             HeaderCell cell = new HeaderCell(column, headerContent, "div",
@@ -65,6 +67,9 @@ public class RowGroupingRenderer extends RendererBase {
             cell.setId(tableClientId + "::groupingHeaderCell:" + columnId);
             cell.setTableStructure(tableStructure);
             cell.render(context, null);
+
+            if (TableUtil.isColumnGroupable(column))
+                groupableColumnIds.add(columnId);
         }
 
         ScriptBuilder buf = new ScriptBuilder();
@@ -72,7 +77,12 @@ public class RowGroupingRenderer extends RendererBase {
         boolean foldingRequired = AbstractTableRenderer.encodeFoldingSupport(context, buf, table);
 
         Rendering.renderInitScript(context, buf.initScript(context, table, "O$.Table._initRowGrouping",
-                activeColumnIds, groupingRules, AbstractTableRenderer.DEFAULT_SORTABLE_HEADER_CLASS
+                activeColumnIds,
+                groupableColumnIds,
+                groupingRules,
+                AbstractTableRenderer.DEFAULT_SORTABLE_HEADER_CLASS,
+                rowGrouping.getGroupOnHeaderClick(),
+                rowGrouping.getHideGroupingColumns()
         ).semicolon(), foldingRequired
                 ? new String[]{AbstractTableRenderer.treeTableJsURL(context)}
                 : new String[0]);

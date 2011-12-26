@@ -19,12 +19,10 @@ import java.util.Map;
  * This interface is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly by any
  * application code.
  */
-public interface DynamicCol {
+public interface DynamicCol extends SyntheticColumn {
     void declareContextVariables();
 
     void undeclareContextVariables();
 
     Map<String, UIComponent> getFacetsForProcessing();
-
-    List<UIComponent> getChildrenForProcessing();
 }

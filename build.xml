@@ -28,7 +28,7 @@
   <property name="funcTestsFramework-temp.dir" location="${funcTestsFramework.dir}/temp"/>
   <property name="openfaces-inspectors-jar.file" location="${funcTestsFramework-distrib.dir}/openfaces-inspectors.jar"/>
   <property name="patched-selenium-server.file"
-            location="${funcTestsFramework-distrib.dir}/patched-selenium-server.jar"/>
+            location="lib/seleniuminspector/selenium-server-standalone-2.14.0.jar"/>
   <property name="funcTestsFrameworkManifest.file" location="${funcTestsFramework-target.dir}/manifest.mf"/>
 
   <target name="init">
@@ -89,8 +89,8 @@
     <javac srcdir="${funcTestsFramework-source.dir}" destdir="${funcTestsFramework-target.dir}" debug="true"
            source="1.5" target="1.5">
       <classpath>
-        <pathelement path="lib/seleniuminspector/selenium-java-client-driver.jar"/>
-        <pathelement path="lib/seleniuminspector/selenium-server.jar"/>
+        <pathelement path="lib/seleniuminspector/selenium-java-2.14.0.jar"/>
+        <pathelement path="lib/seleniuminspector/selenium-server-standalone-2.14.0.jar"/>
         <pathelement path="lib/seleniuminspector/seleniuminspector.jar"/>
         <pathelement path="testLib/junit.jar"/>
         <fileset file="${openfaces-jar.file}"/>
@@ -102,8 +102,8 @@
     </manifest>
     <mkdir dir="${funcTestsFramework-distrib.dir}"/>
     <jar jarfile="${openfaces-inspectors-jar.file}" basedir="${funcTestsFramework-target.dir}"/>
-    <copy file="lib/seleniuminspector/patched-selenium-server.jar" todir="${funcTestsFramework-distrib.dir}"/>
-    <copy file="lib/seleniuminspector/selenium-java-client-driver.jar" todir="${funcTestsFramework-distrib.dir}"/>
+    <copy file="lib/seleniuminspector/selenium-server-standalone-2.14.0.jar" todir="${funcTestsFramework-distrib.dir}"/>
+    <copy file="lib/seleniuminspector/selenium-java-2.14.0.jar" todir="${funcTestsFramework-distrib.dir}"/>
   </target>
 
   <target name="compile-func-tests" depends="compile-func-test-framework" description="Compile functional tests">
@@ -117,8 +117,8 @@
         <pathelement path="testLib/jai/mlibwrapper_jai.jar"/>
         <pathelement path="testLib/jai/jai_core.jar"/>
         <pathelement path="testLib/jai/jai_codec.jar"/>
-        <pathelement path="lib/seleniuminspector/selenium-java-client-driver.jar"/>
-        <pathelement path="lib/seleniuminspector/selenium-server.jar"/>
+        <pathelement path="lib/seleniuminspector/selenium-java-2.14.0.jar"/>
+        <pathelement path="lib/seleniuminspector/selenium-server-standalone-2.14.0.jar"/>
         <pathelement path="lib/seleniuminspector/seleniuminspector.jar"/>
       </classpath>
     </javac>
@@ -157,8 +157,8 @@
     <junit fork="yes" forkmode="once" failureproperty="junit_test_failed" dir="${funcTests-target.dir}">
       <classpath>
         <pathelement path="${openfaces-jar.file}"/>
-        <pathelement path="lib/seleniuminspector/patched-selenium-server.jar"/>
-        <pathelement path="lib/seleniuminspector/selenium-java-client-driver.jar"/>
+        <pathelement path="lib/seleniuminspector/selenium-server-standalone-2.14.0.jar"/>
+        <pathelement path="lib/seleniuminspector/selenium-java-2.14.0.jar"/>
         <pathelement path="lib/seleniuminspector/seleniuminspector.jar"/>
         <pathelement path="lib/mojarra/jsf-api-1.2_12-b01.jar"/>
         <pathelement location="${funcTests-target.dir}/classes"/>

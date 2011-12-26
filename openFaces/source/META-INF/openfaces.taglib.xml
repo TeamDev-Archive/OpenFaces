@@ -1311,5 +1311,29 @@
       <renderer-type>org.openfaces.ProgressBarRenderer</renderer-type>
       <handler-class>org.openfaces.taglib.facelets.output.ProgressBarTagHandler</handler-class>
     </component>
+  </tag>  
+  <tag>
+    <tag-name>groupByColumnMenuItem</tag-name>
+    <component>
+      <component-type>org.openfaces.GroupByColumnMenuItem</component-type>
+      <renderer-type>org.openfaces.GroupByColumnMenuItemRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.table.GroupByColumnMenuItemTagHandler</handler-class>
+    </component>
   </tag>
+  <tag>
+    <tag-name>removeFromGroupingMenuItem</tag-name>
+    <component>
+      <component-type>org.openfaces.RemoveFromGroupingMenuItem</component-type>
+      <renderer-type>org.openfaces.RemoveFromGroupingMenuItemRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.table.RemoveFromGroupingMenuItemTagHandler</handler-class>
+    </component>
+  </tag>
+  <tag>
+    <tag-name>cancelGroupingMenuItem</tag-name>
+    <component>
+      <component-type>org.openfaces.CancelGroupingMenuItem</component-type>
+      <renderer-type>org.openfaces.CancelGroupingMenuItemRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.table.CancelGroupingMenuItemTagHandler</handler-class>
+    </component>
+  </tag>  
 </facelet-taglib>

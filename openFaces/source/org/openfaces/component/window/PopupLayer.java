@@ -54,6 +54,7 @@ public class PopupLayer extends OUIPanel {
     private String ondragend;
 
     private String containment;
+    private Autosizing autosizing;
 
     public PopupLayer() {
         setRendererType("org.openfaces.PopupLayerRenderer");
@@ -139,14 +140,6 @@ public class PopupLayer extends OUIPanel {
         return false;
     }
 
-    protected String getDefaultWidth() {
-        return null;
-    }
-
-    protected String getDefaultHeight() {
-        return null;
-    }
-
     public String getAnchorElementId() { // todo: is this attribute needed?
         return ValueBindings.get(this, "anchorElementId", anchorElementId);
     }
@@ -188,7 +181,7 @@ public class PopupLayer extends OUIPanel {
     }
 
     public String getWidth() {
-        return ValueBindings.get(this, "width", width, getDefaultWidth());
+        return ValueBindings.get(this, "width", width);
     }
 
     public void setWidth(String width) {
@@ -196,7 +189,7 @@ public class PopupLayer extends OUIPanel {
     }
 
     public String getHeight() {
-        return ValueBindings.get(this, "height", height, getDefaultHeight());
+        return ValueBindings.get(this, "height", height);
     }
 
     public void setHeight(String height) {
@@ -270,6 +263,7 @@ public class PopupLayer extends OUIPanel {
                 anchorY,
 
                 draggable,
+                autosizing,
 
                 ondragstart,
                 ondragend,
@@ -302,6 +296,7 @@ public class PopupLayer extends OUIPanel {
         anchorY = (String) values[i++];
 
         draggable = (Boolean) values[i++];
+        autosizing = (Autosizing) values[i++];
 
         ondragstart = (String) values[i++];
         ondragend = (String) values[i++];
@@ -311,5 +306,13 @@ public class PopupLayer extends OUIPanel {
         hideOnEsc = (Boolean) values[i++];
         modal = (Boolean) values[i++];
         containment=(String) values[i++];
+    }
+
+    public Autosizing getAutosizing() {
+        return ValueBindings.get(this, "autosizing", autosizing, Autosizing.OFF, Autosizing.class);
+    }
+
+    public void setAutosizing(Autosizing autosizing) {
+        this.autosizing = autosizing;
     }
 }

@@ -83,4 +83,12 @@ public class RowGroup implements Serializable, Comparable<RowGroup> {
 
         return thisValue.equals(thatValue);
     }
+
+    @Override
+    public int hashCode() {
+        int result = columnId != null ? columnId.hashCode() : 0;
+        result = 31 * result + (groupingValue != null ? groupingValue.hashCode() : 0);
+        result = 31 * result + (parentGroup != null ? parentGroup.hashCode() : 0);
+        return result;
+    }
 }

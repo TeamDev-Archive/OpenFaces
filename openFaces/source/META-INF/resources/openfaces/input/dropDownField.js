@@ -11,7 +11,9 @@
  */
 
 O$.DropDownField = {
-  _init: function(dropDownId, popupTimeout, listAlignment, rolloverPopupItemClass, itemValues, customValueAllowed, required, suggestionMode, suggestionDelay, suggestionMinChars, manualListOpeningAllowed, autoCompleteOn, totalItemCount, pageSize, popupTableStructureAndStyleParams, cachingAllowed) {
+  _init: function(dropDownId, popupTimeout, listAlignment, rolloverPopupItemClass, itemValues, customValueAllowed,
+                  required, suggestionMode, suggestionDelay, suggestionMinChars, manualListOpeningAllowed,
+                  autoCompleteOn, totalItemCount, pageSize, popupTableStructureAndStyleParams, cachingAllowed) {
     var dropDown = O$.initComponent(dropDownId, null, {
       _listAlignment: listAlignment,
       _customValueAllowed: customValueAllowed,

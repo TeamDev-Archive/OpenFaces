@@ -41,6 +41,8 @@ public class Styles {
     private static final String RENDERED_STYLE_ELEMENTS_IDS = Styles.class.getName() + ".renderedStyleElementsIds";
     private static final String STYLES_ID_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "styles";
 
+    private static final String FORCE_STYLES_AS_SCRIPT_ELEMENTS = "org.openfaces.forceStylesAsScriptElements";
+
     private static long styleIndexCounter = 0;
 
     private Styles() {
@@ -317,7 +319,8 @@ public class Styles {
             }
             elementsIds.add(stylesId);
             if (Environment.isExplorer() || Environment.isMozillaXhtmlPlusXmlContentType(context)
-                    || forcedStyleAsScript) {
+                    || forcedStyleAsScript
+                    || isForceStylesAsScriptElements()) {
                 // Case for fixing JSFC-2341. Style tags added to DOM using JavaScript are ignored by Mozilla with
                 // "application/xhtml+xml" content-type. So to fix this, the styles are added using stylesheet API.
                 // This way of adding styles works on all browsers except Safari 2, however adding styles in this way
@@ -522,4 +525,20 @@ public class Styles {
         }
     }
 
+    private static boolean isForceStylesAsScriptElements() {
+
+        boolean forceStylesAsScriptElements;
+
+        FacesContext context = FacesContext.getCurrentInstance();
+        Map<String, Object> applicationMap = context.getExternalContext().getApplicationMap();
+        if (!applicationMap.containsKey(FORCE_STYLES_AS_SCRIPT_ELEMENTS)) {
+            ExternalContext externalContext = context.getExternalContext();
+            String paramStr = externalContext.getInitParameter(FORCE_STYLES_AS_SCRIPT_ELEMENTS);
+            forceStylesAsScriptElements = paramStr != null ? Boolean.valueOf(paramStr) : false;
+            applicationMap.put(FORCE_STYLES_AS_SCRIPT_ELEMENTS, forceStylesAsScriptElements);
+        } else {
+            forceStylesAsScriptElements = (Boolean) applicationMap.get(FORCE_STYLES_AS_SCRIPT_ELEMENTS);
+        }
+        return forceStylesAsScriptElements;
+    }
 }

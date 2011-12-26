@@ -42,6 +42,7 @@ public class AjaxSettingsRenderer extends AbstractSettingsRenderer implements Aj
         if (!AjaxUtil.isAjaxRequest(context)) {
             processOnajaxstart(context, ajaxSettings);
             processOnajaxend(context, ajaxSettings);
+            processOnsuccess(context, ajaxSettings);
         }
     }
 
@@ -95,6 +96,12 @@ public class AjaxSettingsRenderer extends AbstractSettingsRenderer implements Aj
         processEvent(context, component, "onerror", component.getOnerror());
     }
 
+    private void processOnsuccess(FacesContext context, AjaxSettings component) throws IOException {
+        if (component.getOnsuccess() == null)
+            return;
+
+        processEvent(context, component, "onsuccess", component.getOnsuccess());
+    }
 
     private void processOnajaxstart(FacesContext context, AjaxSettings component) throws IOException {
         if (component.getOnajaxstart() == null)

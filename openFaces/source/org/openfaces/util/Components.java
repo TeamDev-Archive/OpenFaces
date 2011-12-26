@@ -24,6 +24,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -126,7 +127,7 @@ public class Components {
         return findChildrenWithClass(parent, childClass, false, false);
     }
 
-    public static <T> List<T> findChildrenWithClass(UIComponent parent, Class<? extends T> childClass,
+    public static <T extends UIComponent> List<T> findChildrenWithClass(UIComponent parent, Class<? extends T> childClass,
                                                     boolean onlyRendered, boolean recursive) {
         List<T> result = new ArrayList<T>();
         List<UIComponent> children = parent.getChildren();
@@ -141,6 +142,25 @@ public class Components {
         }
         return result;
     }
+
+    public static <T extends UIComponent> T findFacetWithClass(UIComponent parent, Class<? extends T> facetClass) {
+        List<T> facetsWithClass = findFacetsWithClass(parent, facetClass);
+        if (facetsWithClass.size() == 0)
+            return null;
+        return facetsWithClass.get(0);
+    }
+
+    public static <T extends UIComponent> List<T> findFacetsWithClass(UIComponent parent, Class<? extends T> facetClass) {
+        List<T> result = new ArrayList<T>();
+        Collection<UIComponent> facets = parent.getFacets().values();
+        for (UIComponent child : facets) {
+            if (facetClass.isAssignableFrom(child.getClass())) {
+                result.add((T) child);
+            }
+        }
+        return result;
+    }
+
 
     public static boolean isComponentIdSpecified(UIComponent component) {
         String id = component.getId();
@@ -420,6 +440,12 @@ public class Components {
         return component;
     }
 
+    public static UIComponent getFacet(UIComponent component, String facetName) {
+        // this method is changed in the 3.x branch to address Mojarra 2.0.3 issue, and is included in the main
+        // branch here just in order to make its usage uniform across both versions
+        return component.getFacets().get(facetName);
+    }
+
     /**
      * Searches the component's parent chain until it finds the nearest parent with this class. Super classes and
      * interfaces are also supported by this method.
@@ -482,5 +508,8 @@ public class Components {
         requestMap.put(varName, oldValue);
     }
 
+    public static UIComponent findComponent(UIComponent baseComponent, String idPath) {
+        return UtilPhaseListener.findComponentById(baseComponent, idPath, false, false, false);
+    }
 
 }

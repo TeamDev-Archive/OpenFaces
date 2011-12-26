@@ -229,7 +229,7 @@ public class SpinnerRenderer extends DropDownComponentRenderer {
 
         renderEndTags(context, dropDown);
 
-        String promptTextStyleClass = Styles.getCSSClass(context,
+        String promptTextClass = Styles.getCSSClass(context,
                 dropDown, dropDown.getPromptTextStyle(), StyleGroup.regularStyleGroup(1), dropDown.getPromptTextClass(),
                 DEFAULT_PROMPT_CLASS);
 
@@ -239,7 +239,7 @@ public class SpinnerRenderer extends DropDownComponentRenderer {
         params.add(fieldText);
         params.addAll(rendererInputStyles(context, dropDown));
         params.add(promptText);
-        params.add(promptTextStyleClass);
+        params.add(promptTextClass);
         ScriptBuilder buf = new ScriptBuilder().initScript(context, dropDown, "O$.DropDown._initInput", params.toArray());
 
         InitScript commonInitScript = new InitScript(buf, new String[]{

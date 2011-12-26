@@ -12,15 +12,18 @@
 package org.openfaces.component.table;
 
 import org.openfaces.component.filter.Filter;
+import org.openfaces.renderkit.TableUtil;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.Components;
 import org.openfaces.util.Faces;
 import org.openfaces.util.ValueBindings;
 
 import javax.el.ValueExpression;
+import javax.faces.FacesException;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +42,7 @@ public class DataTable extends AbstractTable {
     public static final String COMPONENT_TYPE = "org.openfaces.DataTable";
     public static final String COMPONENT_FAMILY = "org.openfaces.DataTable";
     private static final String RENDERED_PAGE_COUNT_ATTR = "_renderedPageCount";
+    private static final String GROUPED_DATA_TABLE_ATTR = "_groupedDataTable";
 
     private Integer pageSize;
     private Integer pageIndex;
@@ -107,8 +111,8 @@ public class DataTable extends AbstractTable {
         super.validateSortingGroupingColumns();
         RowGrouping rowGrouping = getRowGrouping();
         if (rowGrouping != null) {
-            List<GroupingRule> sortingRules = rowGrouping.getGroupingRules();
-            validateSortingOrGroupingRules(sortingRules);
+            List<GroupingRule> rules = rowGrouping.getGroupingRules();
+            validateSortingOrGroupingRules(rules);
         }
     }
 
@@ -184,7 +188,7 @@ public class DataTable extends AbstractTable {
     protected void processModelUpdates(FacesContext context) {
         super.processModelUpdates(context);
 
-        if (isSortingToggledInThisRequest(context) && getPageSize() > 0) {
+        if (TableUtil.isSortingToggledInThisRequest(context) && getPageSize() > 0) {
             PaginationOnSorting paginationOnSorting = getPaginationOnSorting();
             switch (paginationOnSorting) {
                 case SAME_PAGE:
@@ -202,6 +206,14 @@ public class DataTable extends AbstractTable {
         validatePageIndex();
         if (pageIndex != null && ValueBindings.set(this, "pageIndex", pageIndex))
             pageIndex = null;
+    }
+
+    @Override
+    public void processUpdates(FacesContext context) {
+        super.processUpdates(context);
+        RowGrouping rowGrouping = getRowGrouping();
+        if (rowGrouping != null)
+            rowGrouping.processUpdates(context);
     }
 
     /**
@@ -234,6 +246,14 @@ public class DataTable extends AbstractTable {
 
     private void setRenderedPageCount(int renderedPageCount) {
         getAttributes().put(RENDERED_PAGE_COUNT_ATTR, renderedPageCount);
+    }
+
+    @Override
+    protected void beforeRenderResponse(FacesContext context) {
+        super.beforeRenderResponse(context);
+        RowGrouping rowGrouping = getRowGrouping();
+        if (rowGrouping != null)
+            rowGrouping.beforeEncode();
     }
 
     @Override
@@ -415,14 +435,119 @@ public class DataTable extends AbstractTable {
 
     @Override
     public boolean getNodeHasChildren() {
+        int rowIndex = getRowIndex();
+        return getNodeHasChildren(rowIndex);
+    }
+
+    @Override
+    protected boolean getNodeHasChildren(int rowIndex) {
         TableDataModel model = getModel();
         Map<Object, ? extends NodeInfo> rowHierarchy = model.getExtractedRowHierarchy();
         if (rowHierarchy == null) return false;
-        int rowIndex = getRowIndex();
+
         if (rowIndex == -1) return false;
         NodeInfo nodeInfo = rowHierarchy.get(rowIndex);
         if (nodeInfo == null) return false;
 
         return nodeInfo.getNodeHasChildren();
-     }
+    }
+
+    @Override
+    public boolean isNodeExpanded() {
+        Object rowKey = getRowKey();
+        TreePath keyPath = new TreePath(rowKey, null);
+        return isNodeExpanded(keyPath);
+    }
+
+    @Override
+    protected boolean isNodeExpanded(TreePath keyPath) {
+        RowGrouping rowGrouping = getRowGrouping();
+        if (rowGrouping == null) throw
+                new IllegalStateException("isNodeExpanded can only be called from a table with row grouping capability");
+        return rowGrouping.isNodeExpanded(keyPath);
+    }
+
+    @Override
+    protected void setNodeExpanded(TreePath keyPath, boolean expanded) {
+        RowGrouping rowGrouping = getRowGrouping();
+        if (rowGrouping == null) throw
+                new IllegalStateException("setNodeExpanded can only be called from a table with row grouping capability");
+        rowGrouping.setNodeExpanded(keyPath, expanded);
+    }
+
+    /**
+     * Returns the same list as getRenderedColumns(), but after adaptations to some of its entries that might be
+     * required for such features as the Row Grouping feature, where the first column is implicitly converted to
+     * TreeColumn. This cannot be done in getRenderedColumns() safely because this would require replacing the first
+     * column in the original list with a tree column in the component parent/child hierarchy, and this adaptation
+     * (replacing column with tree column) should be done only within the scope of a single request because the set and
+     * order of rendered columns can be different on each request.
+     */
+    @Override
+    public List<BaseColumn> getAdaptedRenderedColumns() {
+        List<BaseColumn> renderedColumns = getRenderedColumns();
+
+        RowGrouping rowGrouping = getRowGrouping();
+        if (rowGrouping == null) return renderedColumns;
+
+        List<GroupingRule> groupingRules = rowGrouping.getGroupingRules();
+        if (groupingRules == null || groupingRules.size() == 0) return renderedColumns;
+
+        // todo deal with the case when selection/checkbox columns are the first ones, where they should probably be
+        // skipped in favor of the first ordinary column
+
+        BaseColumn originalColumn = null;
+        int originalColumnIndex = -1;
+        for (int i = 0, count = renderedColumns.size(); i < count; i++) {
+            BaseColumn renderedColumn = renderedColumns.get(i);
+            if (renderedColumn instanceof Column) {
+                originalColumnIndex = i;
+                originalColumn = renderedColumn;
+                break;
+            }
+        }
+        if (originalColumn == null)
+            return renderedColumns;
+        TreeColumn treeColumn = convertToTreeColumn(originalColumn);
+        renderedColumns = new ArrayList<BaseColumn>(renderedColumns);
+        renderedColumns.set(originalColumnIndex, treeColumn);
+
+        return renderedColumns;
+    }
+
+    private TreeColumn convertToTreeColumn(BaseColumn column) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        TreeColumn treeColumn = (TreeColumn) context.getApplication().createComponent(TreeColumn.COMPONENT_TYPE);
+        treeColumn.getAttributes().put(GROUPED_DATA_TABLE_ATTR, this);
+        TableUtil.copyColumnAttributes(column, treeColumn);
+        treeColumn.setDelegate(column);
+        return treeColumn;
+    }
+
+    public static DataTable getGroupedDataTable(TreeColumn treeColumn) {
+        return (DataTable) treeColumn.getAttributes().get(GROUPED_DATA_TABLE_ATTR);
+    }
+
+    @Override
+    public ColumnReordering getColumnReordering() {
+        ColumnReordering columnReordering = super.getColumnReordering();
+        if (columnReordering == null && getRowGrouping() != null) {
+            if (getGroupingBox() != null) {
+                // row grouping box requires column reordering so we're implicitly creating it if it is not specified explicitly
+                columnReordering = new ColumnReordering();
+                columnReordering.setTable(this);
+            }
+        }
+        return columnReordering;
+    }
+
+    private GroupingBox getGroupingBox() {
+        List<GroupingBox> groupingBoxList = Components.findFacetsWithClass(this, GroupingBox.class);
+        if (groupingBoxList.size() > 1)
+            throw new FacesException("No more than one <o:groupingBox> can be specified for a table, but there are " +
+                    groupingBoxList.size() + "; table clientId: " + getClientId(FacesContext.getCurrentInstance()));
+        if (groupingBoxList.size() == 1)
+            return groupingBoxList.get(0);
+        return null;
+    }
 }

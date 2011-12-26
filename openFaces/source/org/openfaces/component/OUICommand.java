@@ -46,6 +46,7 @@ public abstract class OUICommand extends UICommand implements OUIComponent {
     private String onajaxstart;
     private String onajaxend;
     private String onerror;
+    private String onsuccess;
 
     @Override
     public Object saveState(FacesContext context) {
@@ -56,7 +57,7 @@ public abstract class OUICommand extends UICommand implements OUIComponent {
                 executeRenderedComponents,
                 style, styleClass, rolloverStyle, rolloverClass, onclick, ondblclick, onmousedown, onmouseover,
                 onmousemove, onmouseout, onmouseup, onfocus, onblur, onkeydown, onkeyup, onkeypress, oncontextmenu,
-                onajaxstart, onajaxend, onerror};
+                onajaxstart, onajaxend, onerror, onsuccess};
     }
 
     public abstract String getFamily();
@@ -89,6 +90,7 @@ public abstract class OUICommand extends UICommand implements OUIComponent {
         onajaxstart = (String) state[i++];
         onajaxend = (String) state[i++];
         onerror = (String) state[i++];
+        onsuccess = (String) state[i++];
     }
 
     public Iterable<String> getExecute() {
@@ -265,6 +267,14 @@ public abstract class OUICommand extends UICommand implements OUIComponent {
 
     public void setOnerror(String onerror) {
         this.onerror = onerror;
+    }
+
+    public String getOnsuccess() {
+        return ValueBindings.get(this, "onsuccess", onsuccess);
+    }
+
+    public void setOnsuccess(String onsuccess) {
+        this.onsuccess = onsuccess;
     }
 
     public boolean getExecuteRenderedComponents() {

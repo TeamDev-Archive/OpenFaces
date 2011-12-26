@@ -11,15 +11,7 @@
  */
 package org.openfaces.renderkit;
 
-import org.openfaces.component.table.AbstractTable;
-import org.openfaces.component.table.BaseColumn;
-import org.openfaces.component.table.ColumnGroup;
-import org.openfaces.component.table.ColumnResizing;
-import org.openfaces.component.table.ColumnResizingState;
-import org.openfaces.component.table.Columns;
-import org.openfaces.component.table.DynamicCol;
-import org.openfaces.component.table.DynamicColumn;
-import org.openfaces.component.table.RowGroupHeaderOrFooter;
+import org.openfaces.component.table.*;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.util.Components;
@@ -31,7 +23,6 @@ import org.openfaces.util.ValueBindings;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
 import javax.faces.component.UIOutput;
@@ -52,6 +43,8 @@ import java.util.regex.Pattern;
 public class TableUtil {
     public static final String DEFAULT_HEADER_SECTION_CLASS = "o_table_header_section";
     public static final String DEFAULT_FOOTER_SECTION_CLASS = "o_table_footer_section";
+
+    private static final String KEY_SORTING_TOGGLED = TableUtil.class + ".sortingToggled";
 
     private TableUtil() {
     }
@@ -136,6 +129,54 @@ public class TableUtil {
         return columns;
     }
 
+    public static void copyColumnAttributes(UIComponent srcColumn, BaseColumn destColumn) {
+        String[] copiedAttributes = new String[]{
+                "headerValue", "footerValue", "width", "align", "valign", "resizable", "minResizingWidth",
+                "fixed", "menuAllowed",
+                "style", "styleClass", "headerStyle", "headerClass", "subHeaderStyle", "subHeaderClass",
+                "bodyStyle", "bodyClass", "footerStyle", "footerClass",
+                "onclick", "ondblclick", "onmousedown", "onmouseover", "onmousemove", "onmouseout", "onmouseup",
+                "headerOnclick", "headerOndblclick", "headerOnmousedown", "headerOnmouseover",
+                "headerOnmousemove", "headerOnmouseout", "headerOnmouseup", "bodyOnclick", "bodyOndblclick",
+                "bodyOnmousedown", "bodyOnmouseover", "bodyOnmousemove", "bodyOnmouseout", "bodyOnmouseup",
+                "footerOnclick", "footerOndblclick", "footerOnmousedown", "footerOnmouseover", "footerOnmousemove",
+                "footerOnmouseout", "footerOnmouseup"};
+        for (String attrName : copiedAttributes) {
+            ValueExpression expression = srcColumn.getValueExpression(attrName);
+            if (expression != null)
+                destColumn.setValueExpression(attrName, expression);
+            else {
+                Object attributeValue = srcColumn.getAttributes().get(attrName);
+                if (attributeValue != null)
+                    destColumn.getAttributes().put(attrName, attributeValue);
+            }
+        }
+    }
+
+    public static boolean isColumnGroupable(BaseColumn column) {
+        return getColumnGroupingExpression(column) != null;
+    }
+
+    public static void markSortingToggledInThisRequest(FacesContext context) {
+        context.getExternalContext().getRequestMap().put(KEY_SORTING_TOGGLED, true);
+    }
+
+    public static boolean isSortingToggledInThisRequest(FacesContext context) {
+        return context.getExternalContext().getRequestMap().containsKey(KEY_SORTING_TOGGLED);
+    }
+
+
+    public static ValueExpression getColumnGroupingExpression(BaseColumn baseColumn) {
+        boolean ordinaryColumn = baseColumn instanceof Column;
+        if (!ordinaryColumn) return null;
+        Column column = (Column) baseColumn;
+        ValueExpression expression = column.getGroupingExpression();
+        if (expression == null)
+            expression = column.getSortingExpression();
+        return expression;
+    }
+
+
     /**
      * Matches expression of the form:
      * #{var.a.b}
@@ -162,7 +203,10 @@ public class TableUtil {
     }
 
     public static Converter getColumnValueConverter(BaseColumn column) {
-        return getColumnExpressionData(column).getValueConverter();
+        ColumnExpressionData columnExpressionData = getColumnExpressionData(column);
+        if (columnExpressionData == null)
+            return null;
+        return columnExpressionData.getValueConverter();
     }
 
     public static String getColumnHeader(BaseColumn column) {
@@ -277,10 +321,8 @@ public class TableUtil {
         AbstractTable table = column.getTable();
         String var = column.getTable().getVar();
         UIOutput columnOutput = explicitColumnFilterExpression != null ? null : obtainOutput(column, var);
-        if (columnOutput == null && explicitColumnFilterExpression == null) throw new FacesException(
-                "Can't find column output component (UIOutput component with a value expression containing variable \"" +
-                        var + "\") for column with id: \"" + column.getId() + "\"; table id: \"" + table.getId() +
-                        "\" ; consider declaring the filter expression explicitly if you're using a filter component in this column.");
+        if (columnOutput == null && explicitColumnFilterExpression == null)
+            return null;
 
         ValueExpression expression = explicitColumnFilterExpression != null
                 ? explicitColumnFilterExpression : columnOutput.getValueExpression("value");

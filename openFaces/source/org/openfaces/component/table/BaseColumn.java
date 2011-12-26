@@ -11,6 +11,7 @@
  */
 package org.openfaces.component.table;
 
+import org.openfaces.util.Components;
 import org.openfaces.util.ValueBindings;
 
 import javax.el.ValueExpression;
@@ -149,7 +150,7 @@ public class BaseColumn extends UIColumn {
     }
 
     public UIComponent getEditor() {
-        return getFacet(FACET_EDITOR);
+        return Components.getFacet(this, FACET_EDITOR);
     }
 
     public void setEditor(UIComponent editor) {

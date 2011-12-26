@@ -44,5 +44,6 @@ public abstract class OUICommandTag extends AbstractComponentTag {
         setStringProperty(component, "onajaxstart");
         setStringProperty(component, "onajaxend");
         setStringProperty(component, "onerror");
+        setStringProperty(component, "onsuccess");
     }
 }

@@ -64,6 +64,16 @@ public class EventEditorDialogRenderer extends WindowRenderer implements Compoun
     }
 
     @Override
+    protected String getDefaultWidth() {
+        return "450px";
+    }
+
+    @Override
+    protected String getDefaultHeight() {
+        return "350px";
+    }
+
+    @Override
     protected void encodeCustomContent(FacesContext context, PopupLayer popupLayer) throws IOException {
         final EventEditorDialog dialog = (EventEditorDialog) popupLayer;
         final TimetableView timetableView = (TimetableView) dialog.getParent();

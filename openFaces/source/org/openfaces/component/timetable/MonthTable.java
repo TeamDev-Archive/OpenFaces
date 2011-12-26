@@ -19,7 +19,7 @@ import javax.faces.context.FacesContext;
 /**
  * @author Roman Porotnikov
  */
-public class MonthTable extends TimetableView {
+public class MonthTable extends TimetableView { // todo: extract some common type for <o:weekTable> and <o:monthTable> to reflect their ability to display week calendar(s)
     public static final String COMPONENT_TYPE = "org.openfaces.MonthTable";
     public static final String COMPONENT_FAMILY = "org.openfaces.MonthTable";
 

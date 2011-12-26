@@ -61,6 +61,7 @@ O$.ajax = {
    *    - execute - (optional) a space separated list of component client id(s) for components whose processDecodes->...->processUpdates phases should be invoked in addition to the component(s) being reloaded
    *    - onajaxstart - (optional) the function that should be invoked before ajax request is started
    *    - onajaxend - (optional) the function that should be invoked when ajax request is fully processed
+   *    - onsuccess - (optional) the function that should be invoked when ajax request completes without errors
    *    - onerror - (optional) the function that should be invoked when ajax request fails to complete successfully for some reason
    *    - listener - (optional) server action listener in the form of EL, which should be executed during this Ajax request. It is written in a convention BeanName.functionName, similar to the listener attribute of <o:ajax> tag, though without the #{ and } parts.
    *    - immediate - (optional) true means that the action should be executed during Apply Request Values phase, rather than waiting until the Invoke Application phase
@@ -74,6 +75,7 @@ O$.ajax = {
     args.execute = options.execute ? options.execute.split(" ") : undefined;
     args.onajaxstart = options.onajaxstart;
     args.onajaxend = options.onajaxend;
+    args.onsuccess = options.onsuccess;
     args.onerror = options.onerror;
     args.listener = options.listener;
     args.immediate = options.immediate;
@@ -215,6 +217,7 @@ O$.reloadPage = function(loc) {
  * agrs - (optional) is an object, which consist of:
  *    onajaxend - (optional) the function that should be invoked when ajax request is fully processed
  *    execute - (optional) array of clientIds for components whose processDecodes->...->processUpdates phases should be invoked in addition to the component being reloaded
+ *    onsuccess - (optional) the function that should be invoked when ajax request completes without errors
  *    onerror - (optional) the function that should be invoked when ajax request fails to complete successfully for some reason
  *    onajaxstart - (optional) the function that should be invoked before ajax request is started
  *    immediate - (optional) true means that the action should be executed during Apply Request Values phase, rather than waiting until the Invoke Application phase

@@ -17,13 +17,16 @@ import org.openfaces.component.TableStyles;
 import org.openfaces.component.filter.Filter;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.renderkit.table.TableStructure;
+import org.openfaces.renderkit.table.TreeTableRenderer;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.Components;
+import org.openfaces.util.Environment;
 import org.openfaces.util.ReflectionUtil;
 import org.openfaces.util.ValueBindings;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
+import javax.faces.FacesException;
 import javax.faces.component.ActionSource;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.NamingContainer;
@@ -140,7 +143,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     private String sortedAscendingImageUrl;
     private String sortedDescendingImageUrl;
 
-    private List<SortingRule> toggleColumnSorting;
+    private List<SortingRule> incomingSortingRules;
     private boolean beforeUpdateValuesPhase = true;
     private List<BaseColumn> cachedAllColumns;
     private List<BaseColumn> cachedRenderedColumns;
@@ -276,7 +279,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         totalRowCount = (Integer) state[i++];
 
         beforeUpdateValuesPhase = true;
-        toggleColumnSorting = null;
+        incomingSortingRules = null;
     }
 
     protected void afterRestoreState(FacesContext context) {
@@ -316,7 +319,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     }
 
     public UIComponent getHeader() {
-        return getFacet(FACET_HEADER);
+        return Components.getFacet(this, FACET_HEADER);
     }
 
     public void setHeader(UIComponent component) {
@@ -324,7 +327,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     }
 
     public UIComponent getFooter() {
-        return getFacet(FACET_FOOTER);
+        return Components.getFacet(this, FACET_FOOTER);
     }
 
     public void setFooter(UIComponent component) {
@@ -332,7 +335,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     }
 
     public UIComponent getAbove() {
-        return getFacet(FACET_ABOVE);
+        return Components.getFacet(this, FACET_ABOVE);
     }
 
     public void setAbove(UIComponent component) {
@@ -340,7 +343,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     }
 
     public UIComponent getBelow() {
-        return getFacet(FACET_BELOW);
+        return Components.getFacet(this, FACET_BELOW);
     }
 
     public void setBelow(UIComponent component) {
@@ -420,7 +423,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     public List<BaseColumn> getRenderedColumns() {
         if (cachedRenderedColumns == null) {
-            cachedRenderedColumns = calculateRenderedColumns();
+            cachedRenderedColumns = Collections.unmodifiableList(calculateRenderedColumns());
         }
         return cachedRenderedColumns;
     }
@@ -1007,15 +1010,11 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     protected void processModelUpdates(FacesContext context) {
         beforeUpdateValuesPhase = false;
-        if (toggleColumnSorting != null) {
-            acceptNewSortingRules(toggleColumnSorting);
-            toggleColumnSorting = null;
-            context.getExternalContext().getRequestMap().put(KEY_SORTING_TOGGLED, true);
+        if (incomingSortingRules != null) {
+            acceptNewSortingRules(incomingSortingRules);
+            incomingSortingRules = null;
+            TableUtil.markSortingToggledInThisRequest(context);
         }
-    }
-
-    protected boolean isSortingToggledInThisRequest(FacesContext context) {
-        return context.getExternalContext().getRequestMap().containsKey(KEY_SORTING_TOGGLED);
     }
 
     protected void processModelDependentUpdates(FacesContext context) {
@@ -1243,20 +1242,20 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         this.sortingRules = sortingRules;
     }
 
-    public void acceptNewSortingRules(List<SortingRule> newSortingRules) {
+    public void acceptNewSortingRules(List<SortingRule> sortingRules) {
         rememberSelectionByKeys();
         if (beforeUpdateValuesPhase) {
-            toggleColumnSorting = newSortingRules;
+            incomingSortingRules = sortingRules;
             return;
         }
-        for (SortingRule sortingRule : newSortingRules) {
+        for (SortingRule sortingRule : sortingRules) {
             String columnId = sortingRule.getColumnId();
             BaseColumn column = getColumnById(columnId);
             if (column == null) throw new IllegalArgumentException("Column by id not found: " + columnId);
             if (!(column instanceof Column || column instanceof SelectionColumn || column instanceof CheckboxColumn))
                 throw new IllegalArgumentException("Column (id = " + columnId + ") is not sortable. Column class is " + column.getClass());
         }
-        setSortingRules(newSortingRules);
+        setSortingRules(sortingRules);
     }
 
     public Object getRowKey() {
@@ -1305,13 +1304,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
             return null;
         List<BaseColumn> allColumns = getAllColumns();
         BaseColumn baseColumn = findColumnById(allColumns, columnId);
-        boolean ordinaryColumn = baseColumn instanceof Column;
-        if (!ordinaryColumn) return null;
-        Column column = (Column) baseColumn;
-        ValueExpression expression = column.getGroupingExpression();
-        if (expression == null)
-            expression = column.getSortingExpression();
-        return expression;
+        return TableUtil.getColumnGroupingExpression(baseColumn);
     }
 
     protected RowComparator createRuleComparator(final FacesContext facesContext, SortingOrGroupingRule rule) {
@@ -1494,11 +1487,11 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     }
 
     public UIComponent getNoDataMessage() {
-        return getFacet("noDataMessage");
+        return Components.getFacet(this, "noDataMessage");
     }
 
     public UIComponent getNoFilterDataMessage() {
-        return getFacet("noFilterDataMessage");
+        return Components.getFacet(this, "noFilterDataMessage");
     }
 
     public String getNoDataRowStyle() {
@@ -1589,7 +1582,8 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         for (BaseColumn column : columns) {
             if (column instanceof CheckboxColumn)
                 return true;
-            List<UIComponent> columnChildren = column.getChildren();
+            List<UIComponent> columnChildren = !(column instanceof SyntheticColumn)
+                    ? column.getChildren() : ((SyntheticColumn) column).getChildrenForProcessing();
             for (UIComponent columnChild : columnChildren) {
                 if (decodingRequiringComponent(columnChild) != null)
                     return true;
@@ -1640,10 +1634,6 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     protected abstract void restoreRows(boolean forceDecoding);
 
-    public void acceptNewExpandedRowIndexes(Set<Integer> expandedRowIndexes) {
-
-    }
-
     /**
      * @return null means that no table rows are organized as a plain list and not a hierarchy currently
      */
@@ -1670,6 +1660,51 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     public boolean isNodeExpanded() {
         return true;
     }
+
+    public List<BaseColumn> getAdaptedRenderedColumns() {
+        return getRenderedColumns();
+    }
+
+    public void acceptNewExpandedRowIndexes(Set indexes) {
+        FacesContext context = getFacesContext();
+        boolean dontCollapseNodes = isReloadingThisComponentWithA4j() || TreeTableRenderer.isAjaxFoldingInProgress(context);
+        List storedRowKeys = getModel().getStoredRowKeys();
+        int rowCount = storedRowKeys.size();
+        for (int i = 0; i < rowCount; i++) {
+            Object storedRowKey = storedRowKeys.get(i);
+            TreePath keyPath;
+            if (storedRowKey instanceof TreePath) {
+                // the case for TreeTable
+                keyPath = (TreePath) storedRowKey;
+            } else {
+                // the case for DataTable where row keys are plain row data objects, or row header/row footer objects
+                keyPath = new TreePath(storedRowKey, null);
+            }
+            boolean expanded = isNodeExpanded(keyPath);
+            boolean shouldBeExpanded = indexes.contains(Integer.valueOf(i));
+            if (expanded == shouldBeExpanded)
+                continue;
+            if (!shouldBeExpanded && dontCollapseNodes)
+                continue;
+            if (!getNodeHasChildren(i)) { // rows without children should have expanded state by default
+                setNodeExpanded(keyPath, true);
+            } else {
+                setNodeExpanded(keyPath, shouldBeExpanded);
+            }
+        }
+    }
+
+    private boolean isReloadingThisComponentWithA4j() {
+        // needed for JSFC-2526. It doesn't seem possible to know the a4j rerendered components on the decoding stage,
+        // so we suppose that this component is rerendered if it is an A4j request.
+        return Environment.isAjax4jsfRequest();
+    }
+
+    protected abstract boolean getNodeHasChildren(int rowIndex);
+
+    protected abstract boolean isNodeExpanded(TreePath keyPath);
+
+    protected abstract void setNodeExpanded(TreePath keyPath, boolean expanded);
 
     protected class RowComparator implements Comparator<Object> {
         private final FacesContext facesContext;
@@ -1782,7 +1817,12 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         while (namingContainer != null && !(namingContainer instanceof NamingContainer))
             namingContainer = namingContainer.getParent();
 
-        String parentId = namingContainer != null ? namingContainer.getClientId(context) + NamingContainer.SEPARATOR_CHAR : "";
+        String parentId = "";
+        if (namingContainer != null) {
+            String containerClientId = namingContainer.getContainerClientId(context);
+            if (containerClientId != null)
+                parentId = containerClientId + NamingContainer.SEPARATOR_CHAR;
+        }
         String clientId = parentId + id;
 
         Renderer renderer = getRenderer(context);
@@ -1924,6 +1964,13 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         for (int i = 0; i < columnCount; i++) {
             BaseColumn column = columns.get(i);
             TableUtil.ColumnExpressionData columnExpressionData = TableUtil.getColumnExpressionData(column);
+            if (columnExpressionData == null) {
+                String var = getVar();
+                throw new FacesException(
+                        "Can't find column output component (UIOutput component with a value expression containing variable \"" +
+                                var + "\") for column with id: \"" + column.getId() + "\"; table id: \"" + this.getId() +
+                                "\"");
+            }
             columnExpressionDatas[i] = columnExpressionData;
             String columnHeader = TableUtil.getColumnHeader(column);
             columnDatas.add(new TableColumnData(columnExpressionData.getValueType(), columnHeader));

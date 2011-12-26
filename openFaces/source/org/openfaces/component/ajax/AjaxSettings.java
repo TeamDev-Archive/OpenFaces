@@ -30,6 +30,7 @@ public class AjaxSettings extends UIComponentBase {
     private String onajaxstart;
     private String onajaxend;
     private String onerror;
+    private String onsuccess;
     private String onsessionexpired;
 
     public AjaxSettings() {
@@ -43,7 +44,7 @@ public class AjaxSettings extends UIComponentBase {
     @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
-        return new Object[]{superState, onerror, onsessionexpired, onajaxstart, onajaxend};
+        return new Object[]{superState, onerror, onsuccess, onsessionexpired, onajaxstart, onajaxend};
     }
 
     @Override
@@ -52,6 +53,7 @@ public class AjaxSettings extends UIComponentBase {
         int i = 0;
         super.restoreState(context, stateArray[i++]);
         onerror = (String) stateArray[i++];
+        onsuccess = (String) stateArray[i++];
         onsessionexpired = (String) stateArray[i++];
         onajaxstart = (String) stateArray[i++];
         onajaxend = (String) stateArray[i++];
@@ -113,6 +115,14 @@ public class AjaxSettings extends UIComponentBase {
 
     public void setOnerror(String onerror) {
         this.onerror = onerror;
+    }
+
+    public String getOnsuccess() {
+        return ValueBindings.get(this, "onsuccess", onsuccess);
+    }
+
+    public void setOnsuccess(String onsuccess) {
+        this.onsuccess = onsuccess;
     }
 
     public String getOnsessionexpired() {

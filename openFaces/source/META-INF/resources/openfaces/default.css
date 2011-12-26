@@ -195,11 +195,11 @@
     font-weight: normal;
     text-align: left;
     vertical-align: middle;
-    position: relative;
     padding: 2px 4px 2px 4px;
 }
 .o_groupingBox_header {
     border: 1px solid gray;
+    padding: 2px;
 }
 
 .o_scrollable_table {
@@ -256,7 +256,7 @@
 
 .o_rowGroupHeader {
   font-weight: bold;
-  background: #d8d8d8;
+  background: #e6e7e8;
 }
 
 .o_rowGroupFooter {
@@ -355,6 +355,14 @@
 
 .o_default_caption_width {
   width: 100%;
+}
+
+.o_windowContentContainer {
+  position: absolute;
+  overflow: visible;
+  vertical-align: top;
+  text-align: left;
+  padding: 0;
 }
 
 .o_window_content {
@@ -1008,6 +1016,8 @@
 }
 
 .o_popuplayer_modal_layer {
+  position: absolute;
+  display: none;
   z-index: 300;
   left: 0;
   top: 0;

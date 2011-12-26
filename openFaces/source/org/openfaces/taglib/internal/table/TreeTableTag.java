@@ -11,11 +11,8 @@
  */
 package org.openfaces.taglib.internal.table;
 
-import org.openfaces.component.table.AllNodesCollapsed;
-import org.openfaces.component.table.AllNodesExpanded;
 import org.openfaces.component.table.AllNodesPreloaded;
 import org.openfaces.component.table.NoNodesPreloaded;
-import org.openfaces.component.table.SeveralLevelsExpanded;
 import org.openfaces.component.table.SeveralLevelsPreloaded;
 import org.openfaces.component.table.TreeTable;
 
@@ -27,9 +24,6 @@ import javax.faces.context.FacesContext;
  * @author Pavel Kaplin
  */
 public class TreeTableTag extends AbstractTableTag {
-    private static final String LEVELS_EXPANDED_MODE = "levelsExpanded:";
-    private static final String ALL_COLLAPSED_MODE = "allCollapsed";
-    private static final String ALL_EXPANDED_MODE = "allExpanded";
     private static final String ALL_NODES_PRELOADED = "all";
     private static final String NO_NODES_PRELOADED = "none";
     private static final String LEVELS_PRELOADED = "levelsPreloaded:";
@@ -60,9 +54,7 @@ public class TreeTableTag extends AbstractTableTag {
         if (preloadedNodes != null)
             setPreloadedNodesProperty(facesContext, treeTable, preloadedNodes.trim());
 
-        String expansionState = getPropertyValue("expansionState");
-        if (expansionState != null)
-            setExpansionStateProperty(facesContext, treeTable, expansionState.trim());
+        setExpansionStateProperty(treeTable, "expansionState");
 
         setStringProperty(component, "textStyle");
         setStringProperty(component, "textClass");
@@ -100,34 +92,4 @@ public class TreeTableTag extends AbstractTableTag {
 
     }
 
-    private void setExpansionStateProperty(FacesContext facesContext, TreeTable treeTable, String expansionState) {
-        if (expansionState.length() == 0)
-            throw new IllegalArgumentException("Invalid value specified for expansionState attribute: the value should not be empty");
-
-        if (isValueReference(expansionState)) {
-            ValueExpression ve = createValueExpression(facesContext, "expansionState", expansionState);
-            treeTable.setValueExpression("expansionState", ve);
-            return;
-        }
-
-        if (ALL_EXPANDED_MODE.equals(expansionState))
-            treeTable.setExpansionState(new AllNodesExpanded());
-        else if (ALL_COLLAPSED_MODE.equals(expansionState))
-            treeTable.setExpansionState(new AllNodesCollapsed());
-        else if (expansionState.startsWith(LEVELS_EXPANDED_MODE)) {
-            String remainder = expansionState.substring(LEVELS_EXPANDED_MODE.length());
-            remainder = remainder.trim();
-            int level;
-            try {
-                level = Integer.parseInt(remainder);
-            } catch (NumberFormatException e) {
-                throw new IllegalArgumentException("Invalid level specified in expansionState attribute. Integer number expected, but was: " + remainder);
-            }
-            if (level < 0)
-                throw new IllegalArgumentException("Invalid level specified in expansionState attribute. The number should be zero or a positive number: " + level);
-            treeTable.setExpansionState(new SeveralLevelsExpanded(level));
-        } else {
-            throw new IllegalArgumentException("Invalid value specified for expansionState attribute: " + expansionState + " . It should be one of the following: " + ALL_EXPANDED_MODE + ", " + ALL_COLLAPSED_MODE + " or " + LEVELS_EXPANDED_MODE + "NUMBER");
-        }
-    }
 }

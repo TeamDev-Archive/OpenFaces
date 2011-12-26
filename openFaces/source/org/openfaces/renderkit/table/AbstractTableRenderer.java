@@ -25,6 +25,7 @@ import org.openfaces.renderkit.RendererBase;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.Environment;
+import org.openfaces.util.Log;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
@@ -269,18 +270,27 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         columnMenu.setStandalone(true);
         columnMenu.encodeAll(context);
 
-        MenuItem sortAscMenuItem = null, sortDescMenuItem = null, hideColumnMenuItem = null;
+        // todo: move item identification responsibility to the items themselves
+        MenuItem sortAscMenuItem = null, sortDescMenuItem = null, hideColumnMenuItem = null,
+                groupByColumnMenuItem = null, removeFromGroupingMenuItem = null, cancelGroupingMenuItem = null;
         for (UIComponent child : columnMenu.getChildren()) {
             if (child instanceof SortAscendingMenuItem)
                 sortAscMenuItem = (MenuItem) child;
-            if (child instanceof SortDescendingMenuItem)
+            else if (child instanceof SortDescendingMenuItem)
                 sortDescMenuItem = (MenuItem) child;
-            if (child instanceof HideColumnMenuItem)
+            else if (child instanceof HideColumnMenuItem)
                 hideColumnMenuItem = (MenuItem) child;
+            else if (child instanceof GroupByColumnMenuItem)
+                groupByColumnMenuItem = (MenuItem) child;
+            else if (child instanceof RemoveFromGroupingMenuItem)
+                removeFromGroupingMenuItem = (MenuItem) child;
+            else if (child instanceof CancelGroupingMenuItem)
+                cancelGroupingMenuItem = (MenuItem) child;
         }
 
         buf.initScript(context, columnMenu, "O$.ColumnMenu._init", table, button,
-                sortAscMenuItem, sortDescMenuItem, hideColumnMenuItem);
+                sortAscMenuItem, sortDescMenuItem, hideColumnMenuItem, groupByColumnMenuItem,
+                removeFromGroupingMenuItem, cancelGroupingMenuItem);
 
         if (temporaryButton)
             table.getFacets().remove(FACET_COLUMN_MENU_BUTTON);
@@ -513,6 +523,10 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         if (renderedColumns == null)
             return;
 
+        if (renderedColumns.length() == 0) {
+            Log.log("columnsOrder list should contain at least one column");
+            return;
+        }
         List<String> columnIds = Arrays.asList(renderedColumns.split(","));
         table.getAttributes().put("submittedColumnsOrder", columnIds);
     }
@@ -787,8 +801,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         Rendering.renderHiddenField(writer, getExpandedNodesFieldName(context, table), null);
 
         JSONArray treeColumnParamsArray = new JSONArray();
-        List<BaseColumn> renderedColumns = (table instanceof DataTable && ((DataTable) table).getRowGrouping() != null)
-                ? table.getAllColumns() : table.getRenderedColumns(); // todo: temporary grouping workaround until tree columns are handled properly
+        List<BaseColumn> renderedColumns = table.getAdaptedRenderedColumns();
         for (BaseColumn column : renderedColumns) {
             if (!(column instanceof TreeColumn))
                 continue;
@@ -844,9 +857,9 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         return result;
     }
 
-    private void decodeFoldingSupport(FacesContext context, AbstractTable treeTable) {
+    private void decodeFoldingSupport(FacesContext context, AbstractTable table) {
         Map<String, String> requestParameterMap = context.getExternalContext().getRequestParameterMap();
-        String expandedNodes = requestParameterMap.get(getExpandedNodesFieldName(context, treeTable));
+        String expandedNodes = requestParameterMap.get(getExpandedNodesFieldName(context, table));
         if (expandedNodes == null)
             return;
         String[] indexStrs = expandedNodes.split(",");
@@ -857,7 +870,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
             int rowIndex = Integer.parseInt(indexStr);
             expandedRowIndexes.add(rowIndex);
         }
-        treeTable.acceptNewExpandedRowIndexes(expandedRowIndexes);
+        table.acceptNewExpandedRowIndexes(expandedRowIndexes);
     }
 
     public static boolean isAjaxFoldingInProgress(FacesContext context) {

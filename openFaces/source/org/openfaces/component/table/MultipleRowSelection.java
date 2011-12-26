@@ -189,7 +189,19 @@ public class MultipleRowSelection extends DataTableSelection {
 
     protected void writeSelectionToBinding() {
         ValueBindings.setFromList(this, ROW_INDEXES_PROPERTY, getRowIndexes());
-        ValueBindings.setFromList(this, ROW_DATAS_PROPERTY, getRowDatas());
+        ValueBindings.setFromList(this, ROW_DATAS_PROPERTY, validateRowDatas(getRowDatas()));
+    }
+
+    private List<Object> validateRowDatas(List<Object> rowDatas) {
+        RowGroupingSelectionMode rowGroupingSelectionMode = getRowGroupingSelectionMode();
+        if (rowGroupingSelectionMode == RowGroupingSelectionMode.ALL_ROWS) return rowDatas;
+        List<Object> filteredList = new ArrayList<Object>(rowDatas.size());
+        for (Object rowData : rowDatas) {
+            Object validatedRowData = validateRowData(rowGroupingSelectionMode, rowData);
+            if (validatedRowData != null)
+                filteredList.add(validatedRowData);
+        }
+        return filteredList;
     }
 
     @Override

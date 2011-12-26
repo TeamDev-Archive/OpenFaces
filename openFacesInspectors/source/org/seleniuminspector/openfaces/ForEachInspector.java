@@ -38,11 +38,12 @@ public class ForEachInspector extends ElementByReferenceInspector {
     public <T extends ElementInspector> T item(int index, String embeddedItemId, Class<T> itemClass) {
         T item;
 
+        String id = id() + Rendering.CLIENT_ID_SUFFIX_SEPARATOR + index + ":" + embeddedItemId;
         try {
             Constructor<T> elementConstructor = itemClass.getConstructor(String.class);
-            item = elementConstructor.newInstance(id() + Rendering.CLIENT_ID_SUFFIX_SEPARATOR + index + ":" + embeddedItemId);
+            item = elementConstructor.newInstance(id);
         } catch (Exception ex) {
-            throw new RuntimeException("Creating element failure", ex);
+            throw new RuntimeException("ForEach item inspection failure: id=" + id, ex);
         }
 
         return item;

@@ -61,11 +61,11 @@ function loadDocumentationSite() {
   O$('documentationSiteContent').src = "http://www.openfaces.org/documentation/";
 }
 
-function loadGoogleSite() {
+function showBrowserWindow() {
   O$('form:webBrowser_win').show();
   O$('form:webBrowser_win::content').style.overflow = "visible";
-  O$('browserContent').src = "http://www.google.com";
-  O$('form:browserUrlInput').value = "http://www.google.com";
+  O$('browserContent').src = "http://www.youtube.com/embed/TJh1c_eFRBs";
+  O$('form:browserUrlInput').value = "http://www.youtube.com/embed/TJh1c_eFRBs";
 }
 
 function submitBrowserUrl(event) {

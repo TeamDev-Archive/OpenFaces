@@ -29,12 +29,15 @@ public class WindowRenderer extends AbstractWindowRenderer {
         Window win = (Window) abstractWindow;
         String clientId = win.getClientId(context);
         ResponseWriter writer = context.getResponseWriter();
+//        writer.startElement("div", win);
+//        writer.writeAttribute("class", "o_windowContentContainer", null);
         writer.startElement("div", win);
         writer.writeAttribute("id", clientId + MIDDLE_AREA_SUFFIX, null);
         Rendering.writeStyleAndClassAttributes(writer, win.getContentStyle(), win.getContentClass(), getDefaultContentClass());
         ComponentWithCaptionRenderer.renderChildren(context, abstractWindow);
         encodeCustomContent(context, abstractWindow);
         writer.endElement("div");
+//        writer.endElement("div");
     }
 
     @Override
@@ -46,6 +49,11 @@ public class WindowRenderer extends AbstractWindowRenderer {
     @Override
     protected String getDefaultTableClass() {
         return "o_window_table";
+    }
+
+    @Override
+    protected String getDefaultHeight() {
+        return "200px";
     }
 
 }

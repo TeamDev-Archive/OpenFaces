@@ -27,20 +27,12 @@ public class GroupingBoxJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("id", id);
     }
 
-    public void setStyleClass(ValueExpression styleClass) {
-        getDelegate().setPropertyValue("styleClass", styleClass);
-    }
-
-    public void setStyle(ValueExpression style) {
-        getDelegate().setPropertyValue("style", style);
-    }
-
     public void setHeaderStyle(ValueExpression headerStyle) {
         getDelegate().setPropertyValue("headerStyle", headerStyle);
     }
 
-    public void setHeaderStyleClass(ValueExpression headerStyleClass) {
-        getDelegate().setPropertyValue("headerStyleClass", headerStyleClass);
+    public void setHeaderClass(ValueExpression headerClass) {
+        getDelegate().setPropertyValue("headerClass", headerClass);
     }
 
     public void setPromptText(ValueExpression promptText) {
@@ -51,8 +43,8 @@ public class GroupingBoxJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("promptTextStyle", promptTextStyle);
     }
 
-    public void setPromptTextStyleClass(ValueExpression promptTextStyleClass) {
-        getDelegate().setPropertyValue("promptTextStyleClass", promptTextStyleClass);
+    public void setPromptTextClass(ValueExpression promptTextClass) {
+        getDelegate().setPropertyValue("promptTextClass", promptTextClass);
     }
 
     public void setHeaderHorizOffset(ValueExpression headerHorizOffset) {

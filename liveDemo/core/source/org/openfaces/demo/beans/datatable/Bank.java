@@ -17,7 +17,10 @@ import java.io.Serializable;
 /**
  * @author Darya Shumilina
  */
-public class Bank implements Serializable {
+public class Bank {
+    private static int idCounter = 0;
+    
+    private int id;
     private String institutionName;
     private int certificateNumber;
     private String city;
@@ -34,6 +37,7 @@ public class Bank implements Serializable {
             int zip,
             String county,
             int averageAssets) {
+        this.id = idCounter++;
         this.institutionName = institutionName;
         this.certificateNumber = certificateNumber;
         this.city = city;
@@ -41,6 +45,10 @@ public class Bank implements Serializable {
         this.zip = zip;
         this.county = county;
         this.averageAssets = averageAssets;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getInstitutionName() {
