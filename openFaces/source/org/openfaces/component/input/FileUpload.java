@@ -74,7 +74,7 @@ public class FileUpload extends OUIInputBase {
 
     private int tabindex;
 
-    //private MethodExpression uploadListener;
+    private String statusStoppedText;
     private MethodExpression fileUploadedListener;
 
     private List<File> uploadedFiles;
@@ -124,8 +124,8 @@ public class FileUpload extends OUIInputBase {
                 progressBarStyle,
                 progressBarClass,
                 tabindex,
-                //saveAttachedState(context, uploadListener),
-                saveAttachedState(context, fileUploadedListener)
+                saveAttachedState(context, fileUploadedListener),
+                statusStoppedText
         };
     }
 
@@ -166,8 +166,8 @@ public class FileUpload extends OUIInputBase {
         progressBarStyle = (String) values[i++];
         progressBarClass = (String) values[i++];
         tabindex = (Integer) values[i++];
-        //uploadListener = (MethodExpression) restoreAttachedState(context, values[i++]);
         fileUploadedListener = (MethodExpression) restoreAttachedState(context, values[i++]);
+        statusStoppedText = (String)values[i++];
     }
 
 
@@ -462,5 +462,13 @@ public class FileUpload extends OUIInputBase {
 
     public void removeFileUploadedListener(FileUploadedListener fileUploadedListener) {
         removeFacesListener(fileUploadedListener);
+    }
+
+    public String getStatusStoppedText() {
+        return ValueBindings.get(this, "statusStoppedText", statusStoppedText,"Stopped");
+    }
+
+    public void setStatusStoppedText(String statusStoppedText) {
+        this.statusStoppedText = statusStoppedText;
     }
 }

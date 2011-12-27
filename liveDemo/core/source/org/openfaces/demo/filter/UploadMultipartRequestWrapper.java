@@ -15,6 +15,7 @@ package org.openfaces.demo.filter;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.openfaces.util.Log;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
@@ -49,11 +50,9 @@ public class UploadMultipartRequestWrapper extends HttpServletRequestWrapper {
             }
 
         } catch (FileUploadException fe) {
-            //Request Timed out.
-            //Do some logging
-            throw new RuntimeException(fe);
+            //Log.log("The file uploading has been terminated or request is time out.");
         } catch (Exception ne) {
-            throw new RuntimeException(ne);
+            //Log.log(ne.getMessage(), ne);
         }
     }
 

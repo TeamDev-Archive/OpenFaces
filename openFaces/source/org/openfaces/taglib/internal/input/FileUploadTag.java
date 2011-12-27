@@ -81,5 +81,6 @@ public class FileUploadTag extends AbstractComponentTag {
         setIntProperty(component, "tabindex");
         setMethodExpressionProperty(facesContext, component, "fileUploadedListener",
                 new Class[]{FileUploadedEvent.class}, void.class);
+        setStringProperty(component, "statusStoppedText");
     }
 }
