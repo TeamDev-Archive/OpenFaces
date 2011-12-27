@@ -348,6 +348,26 @@
     </demos>
   </menuItem>
   <menuItem>
+    <name>FileUpload</name>
+    <componentName>FileUpload</componentName>
+    <url>/fileupload/FileUpload.jsf</url>
+    <shortPath>/fileupload/</shortPath>
+    <image>Slider</image>
+    <selectedImage>/images/components/titles/Slider.png</selectedImage>
+    <keyFeatures>
+      <feature>Support for integer and floating-point numbers</feature>
+      <feature>Keyboard support</feature>
+      <feature>Customizable appearance</feature>
+      <feature>Specifying allowed number range</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>General</demoName>
+        <demoUrl>/fileupload/FileUpload.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
     <name>Folding Panel</name>
     <componentName>Folding Panel</componentName>
     <url>/foldingpanel/FoldingPanel_basicFeatures.jsf</url>
