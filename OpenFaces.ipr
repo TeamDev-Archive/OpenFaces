@@ -1373,6 +1373,8 @@
         <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/commons-collections-3.2.1.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/poi-3.7-20101029.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/poi-ooxml-3.7-20101029.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/commons-fileupload-1.2.2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/commons-io-2.1.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
