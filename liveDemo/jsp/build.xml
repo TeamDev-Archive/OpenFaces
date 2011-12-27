@@ -112,8 +112,8 @@
           <include name="servlet-api.jar"/>
           <include name="apache/commons-digester-1.8.jar"/>
           <include name="apache/commons-lang-2.4.jar"/>
-          <include name="apache/commons-fileupload-1.2.2.jar"/>
-          <include name="apache/commons-io-2.1.jar"/>
+          <include name="openfaces-dependencies/commons-fileupload-1.2.2.jar"/>
+          <include name="openfaces-dependencies/commons-io-2.1.jar"/>
           <include name="openfaces-dependencies/jfreechart-1.0.13.jar"/>
           <include name="openfaces-dependencies/jcommon-1.0.16.jar"/>
           <include name="jstl-1.1.0.jar"/>

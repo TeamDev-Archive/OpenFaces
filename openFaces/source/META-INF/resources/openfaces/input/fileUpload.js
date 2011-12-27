@@ -61,8 +61,13 @@ O$.FileUpload = {
     //clearAllButton.style.float = "right";
 
     var allInfos = O$(componentId + "::infoDiv");
-    if(O$.isExplorer7() || (O$.isExplorer() && O$.isQuirksMode()))
-      allInfos = allInfos.firstChild;
+    if(O$.isExplorer()){
+      if (O$.isQuirksMode() ||
+              ((O$.isExplorer6() ||O$.isExplorer7() || O$.isExplorer8() || O$.isExplorer9()) &&
+                      (document.documentMode == 7 || document.documentMode == 6)))
+        allInfos = allInfos.firstChild;
+    }
+
 
     var inputsStorage = createStructureForInputs();
     var inputsStorageId = inputsStorage.id;
@@ -342,7 +347,10 @@ O$.FileUpload = {
       var formForInput = document.createElement("form");
       formForInput.setAttribute("id", divForFileInput.id + "::form");
       formForInput.setAttribute("method", "POST");
-      if (O$.isExplorer7() || (O$.isExplorer() && O$.isQuirksMode())) {
+      if (O$.isExplorer() &&
+              (O$.isQuirksMode()
+                      || ((O$.isExplorer6() ||O$.isExplorer7() || O$.isExplorer8() || O$.isExplorer9()) &&
+                      (document.documentMode == 7 || document.documentMode == 6)))){
         formForInput.setAttribute("encoding", "multipart/form-data");
       } else {
         formForInput.setAttribute("enctype", "multipart/form-data");
@@ -353,13 +361,17 @@ O$.FileUpload = {
       formForInput.appendChild(inputField);
 
       var iframe;
-      if (O$.isExplorer7() || (O$.isExplorer() && O$.isQuirksMode())){
-        iframe = document.createElement('<iframe name="'+formForInput.id + "::iframe"+'">');
+      if (O$.isExplorer() &&
+              (O$.isQuirksMode()
+                      ||  ((O$.isExplorer6() ||O$.isExplorer7() || O$.isExplorer8() || O$.isExplorer9()) &&
+                      (document.documentMode == 7 || document.documentMode == 6)))) {
+        iframe = document.createElement('<iframe name="' + formForInput.id + "::iframe" + '">');
         iframe.width = 0;
         iframe.height = 0;
         iframe.marginHeight = 0;
         iframe.marginWidth = 0;
-      }else{
+      }
+      else {
         iframe = document.createElement("iframe");
         iframe.name = formForInput.id + "::iframe";
       }
@@ -596,7 +608,7 @@ O$.FileUpload = {
 
       function progressRequest(inputForFile) {
         O$.requestComponentPortions(fileUpload.id, ["nothing"],
-                JSON.stringify({progressRequest: "true",fileName:getFileName(inputForFile.value)}),
+                JSON.stringify({progressRequest: "true", fileName : getFileName(inputForFile.value)}),
                 function(fileUpload, portionName, portionHTML, portionScripts, portionData) {
                   var infoDiv = O$(allInfos.id + inputForFile._idInputAndDiv);
                   if (portionData['status'] == "error") {//todo:description add what kind of error
@@ -620,12 +632,31 @@ O$.FileUpload = {
                         infoDiv.childNodes[3].appendChild(stopFileDiv);   //todo with button event handler
                         O$.addEventHandler(stopFileDiv, "focus", focusHandler);
                         O$.addEventHandler(stopFileDiv, "blur", blurHandler);
+                        O$.addEventHandler(stopFileDiv, "click", function(){
+                          var iframe = inputForFile.nextSibling;
+                          iframe.src = "";
+/*                          O$.requestComponentPortions(fileUpload.id, ["nothing"],
+                                  JSON.stringify({interruptedRequest: "true", fileName : getFileName(inputForFile.value)}),
+                                  function(fileUpload, portionName, portionHTML, portionScripts, portionData) {
+                                    if (infoDiv.childNodes[1].firstChild.getValue() == portionData['progress']) {
+                                      inputForFile._isInterrupted = true;
+                                      infoDiv._status = O$.statusEnum.ERROR;
+                                      inputsStorage.removeChild(inputForFile.parentNode.parentNode);
+                                      infoDiv.childNodes[2].innerHTML = "Stopped";
+                                      setClearBtnAndEventHandler(infoDiv);
+                                      prepareUIWhenAllRequestsFinished();
+                                      console.log("was interrupted..");
+                                    }
+                                  });  */
+                        });
                       }
-                      setTimeout(function() {
-                        progressRequest(inputForFile);
-                      }, 200);
+                      //if (!inputForFile._isInterrupted) {
+                        setTimeout(function() {
+                          progressRequest(inputForFile);
+                        }, 200);
+                      //}
                     } else { // when file already uploaded
-
+                      console.log("file uploaded");
                       fileUpload._lengthUploadedFiles++;
                       /*removing input*/
                       inputsStorage.removeChild(inputForFile.parentNode.parentNode); // delete divForFileInput

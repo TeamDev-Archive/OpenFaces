@@ -34,8 +34,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 public class FileUploadRenderer extends RendererBase implements AjaxPortionRenderer {
@@ -87,6 +85,9 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
     private static final String AJAX_PARAM_PROGRESS_REQUEST = "progressRequest";
     private static final String AJAX_PARAM_FILE_NAME = "fileName";
     private static final String PROGRESS_ID = "progress_";
+    /*interrupted progress*/
+    private static final String AJAX_PARAM_INTERRUPTED_REQUEST = "interruptedRequest";
+    private static final String AJAX_PARAM_PROGRESS = "progress";
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
@@ -379,7 +380,7 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
             if (uploadedFile == null)
                 return;
 
-            fileUpload.getFileUploadedListener().invoke(context.getELContext(), new Object[]{new FileUploadedEvent(fileUpload,uploadedFile)});
+            fileUpload.getFileUploadedListener().invoke(context.getELContext(), new Object[]{new FileUploadedEvent(fileUpload, uploadedFile)});
             /*List<File> userFiles = fileUpload.getUploadedFiles();
 
             if (userFiles == null || userFiles.size() == 0) {
@@ -433,18 +434,24 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
 
     public JSONObject encodeAjaxPortion(FacesContext context, UIComponent component, String portionName, JSONObject jsonParam) throws IOException, JSONException {
         if (jsonParam.has(AJAX_PARAM_PROGRESS_REQUEST)) {
-            String progressRequest = (String) jsonParam.get(AJAX_PARAM_PROGRESS_REQUEST);
             JSONObject jsonObj = new JSONObject();
-            if ("true".equals(progressRequest)) {
-                String nameOfFile = (String) jsonParam.get(AJAX_PARAM_FILE_NAME);
-                Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
-                if (sessionMap.containsKey(PROGRESS_ID + nameOfFile)) {
-                    Integer progress = (Integer) sessionMap.get(PROGRESS_ID + nameOfFile);
-                    Rendering.addJsonParam(jsonObj, "progressInPercent", progress);
-                    Rendering.addJsonParam(jsonObj, "status", "inProgress");
-                } else {
-                    Rendering.addJsonParam(jsonObj, "status", "error");
-                }
+            String nameOfFile = (String) jsonParam.get(AJAX_PARAM_FILE_NAME);
+            Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
+            if (sessionMap.containsKey(PROGRESS_ID + nameOfFile)) {
+                Integer progress = (Integer) sessionMap.get(PROGRESS_ID + nameOfFile);
+                Rendering.addJsonParam(jsonObj, "progressInPercent", progress);
+                Rendering.addJsonParam(jsonObj, "status", "inProgress");
+            } else {
+                Rendering.addJsonParam(jsonObj, "status", "error");
+            }
+            return jsonObj;
+        } else if (jsonParam.has(AJAX_PARAM_INTERRUPTED_REQUEST)) {
+            JSONObject jsonObj = new JSONObject();
+            String nameOfFile = (String) jsonParam.get(AJAX_PARAM_FILE_NAME);
+            Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
+            if (sessionMap.containsKey(PROGRESS_ID + nameOfFile)) {
+                Integer progress = (Integer) sessionMap.get(PROGRESS_ID + nameOfFile);
+                Rendering.addJsonParam(jsonObj, "progress", progress);
             }
             return jsonObj;
         }

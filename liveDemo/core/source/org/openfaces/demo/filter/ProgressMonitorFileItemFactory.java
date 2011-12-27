@@ -47,7 +47,6 @@ public class ProgressMonitorFileItemFactory extends DiskFileItemFactory {
             observer.setProgress(0);
 
         }
-        //FileItem fileItem = new DiskFileItem("terminateRequest",contentType,true,null,0,null); // do for maxFileSize
 
         ProgressMonitorFileItem item = new ProgressMonitorFileItem(fieldName, contentType,
                 isFormField, fileName,
@@ -71,7 +70,6 @@ public class ProgressMonitorFileItemFactory extends DiskFileItemFactory {
         public void setProgress(int progress) {
             HttpServletRequest request = requestRef.get();
             if (request != null) {
-                System.out.println("setProgress : " + progress);
                 request.getSession().setAttribute(PROGRESS_ID + fileName, progress);
             }
         }

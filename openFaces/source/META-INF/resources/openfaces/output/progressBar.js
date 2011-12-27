@@ -29,12 +29,20 @@ O$.ProgressBar = {
         if (progressValue != null &&
                 progressValue <= 100 && progressValue >= 0) {
           progressBar._progressValue = progressValue;
-
-          progressBar._labelDiv.innerHTML = progressBar._labelFormat.replace("{value}", progressValue);;
+          if (O$.isExplorer6() || O$.isExplorer7() || (O$.isExplorer() && O$.isQuirksMode())) {
+              progressBar._labelDiv.style.display = "none";
+          }
+          progressBar._labelDiv.innerHTML = progressBar._labelFormat.replace("{value}", progressValue);
 
           var val = progressValue / 100;//between 0 and 1
           progressBar._uploadedDiv.style.width = progressBar.clientWidth * val + "px";
           progressBar._notUploadedDiv.style.width = progressBar.clientWidth * (1 - val) + "px";
+
+          if (O$.isExplorer6() || O$.isExplorer7() || (O$.isExplorer() && O$.isQuirksMode())) {
+            // weird bug from IE - without this row of code, label will be displayed not inside progressBar
+            progressBar._labelDiv.style.marginLeft =  progressBar._labelDiv.style.marginLeft;
+            progressBar._labelDiv.style.display = "inline";
+          }
         }
       },
       getUploadedProgressImgUrl: function () {
@@ -51,9 +59,9 @@ O$.ProgressBar = {
       }
     });
     progressBar.setValue(value);
-    if (labelAlignment == "center")
-      progressBar._labelDiv.style.marginLeft = progressBar.clientWidth / 2 - O$.getElementSize(progressBar._labelDiv).width / 2 + "px";
-
+    if (labelAlignment == "center"){
+        progressBar._labelDiv.style.marginLeft = progressBar.clientWidth / 2 - O$.getElementSize(progressBar._labelDiv).width / 2 + "px";
+    }
     progressBar._uploadedDiv.style.backgroundImage = "url('" + progressBar._uploadedProgressImgUrl + "')";
     if (progressBar._notUploadedProgressImgUrl != null && progressBar._notUploadedProgressImgUrl != "") {
       progressBar._notUploadedDiv.style.backgroundImage = "url('" + progressBar._notUploadedProgressImgUrl + "')";
