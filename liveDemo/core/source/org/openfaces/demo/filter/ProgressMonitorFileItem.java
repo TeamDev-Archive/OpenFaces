@@ -20,6 +20,7 @@ import java.io.OutputStream;
 
 public class ProgressMonitorFileItem extends DiskFileItem {
 
+    private static final int MAX_REQUEST_LENGTH = 1000; //withoout files
     private ProgressObserver observer;
     private long passedInFileSize; // sizeOfAllFile
     private long bytesRead; // how many bytes already read
@@ -29,7 +30,7 @@ public class ProgressMonitorFileItem extends DiskFileItem {
                                    int sizeThreshold, File repository,
                                    ProgressObserver observer,
                                    long passedInFileSize
-                                   ) {
+    ) {
         super(fieldName, contentType, isFormField, fileName, sizeThreshold, repository);
         this.observer = observer;
         this.passedInFileSize = passedInFileSize;
@@ -56,7 +57,7 @@ public class ProgressMonitorFileItem extends DiskFileItem {
 
         public void close() throws IOException {
             base.close();
-            fireFileUploadedEvent();
+            //fireFileUploadedEvent();
         }
 
         public boolean equals(Object arg0) {
@@ -90,18 +91,18 @@ public class ProgressMonitorFileItem extends DiskFileItem {
             fireProgressEvent(1);
         }
 
-        //this method calls observer.setProgress which in turn save progress number in session
+        //this method calls observer.setProgress which in its turn save progress number in session
         private void fireProgressEvent(int b) {
             bytesRead += b;
             if (bytesRead - previousProgressUpdate > (passedInFileSize / 100.0)) {//enough for refreshing results or not
-                double rateOfLoad = ((double)bytesRead) / passedInFileSize;
-                observer.setProgress( (int)(rateOfLoad* 100.0));
+                double rateOfLoad = ((double) bytesRead) / passedInFileSize;
+                observer.setProgress((int) (rateOfLoad * 100.0));
                 previousProgressUpdate = bytesRead;
+            }
+            if (passedInFileSize - bytesRead <= MAX_REQUEST_LENGTH) {
+                observer.setProgress(100);
             }
         }
 
-        private void fireFileUploadedEvent() {
-            observer.setProgress(100);
-        }
     }
 }
