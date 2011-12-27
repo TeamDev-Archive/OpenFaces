@@ -1216,6 +1216,7 @@
     height: 15px;
     position: relative;
     border: 1px solid #CCCCCC;
+    margin-top:10px;
 }
 .o_progress_bar_uploaded,
  .o_progress_bar_n_uploaded{
@@ -1235,6 +1236,7 @@
     cursor: default;
     font-size: 8pt;
     font-weight: bold;
+    left:0;
 }
 
 /*FileUpload component*/
@@ -1248,13 +1250,13 @@
 }
 
 .o_file_upload_btn {
-    margin-left: 265px;
+    margin-left: 275px;
     margin-top: 2px;
 }
 
 .o_file_clear_all_btn {
     margin-top: 10px;
-    margin-left: 355px;
+    margin-left: 362px;
     font-size: 8pt;
     margin-bottom: 10px;
 }
@@ -1279,6 +1281,7 @@
     color: gray;
     padding-left: 10px;
     padding-right: 10px;
+    padding-top: 10px;
 }
 
 .o_file_upload_info_progress {
@@ -1289,6 +1292,7 @@
     width: 50px;
     font-size: 8pt;
     margin-right: 25px;
+    margin-top:10px;
 }
 
 /* TwoListSelection */

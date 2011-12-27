@@ -82,6 +82,7 @@
             <element id="library" level="project" name="OpenFaces Dependencies" />
             <element id="library" level="project" name="commons-lang" />
             <element id="library" level="project" name="JSF Implementation - Mojarra 1.2" />
+            <element id="library" level="project" name="fileUpload" />
           </element>
         </element>
       </root>
@@ -220,10 +221,14 @@
             <element id="library" level="project" name="hibernate" />
             <element id="library" level="project" name="JSF Implementation - Mojarra 1.2" />
             <element id="library" level="project" name="PrimeFaces" />
+            <element id="library" level="project" name="fileUpload" />
           </element>
         </element>
       </root>
     </artifact>
+  </component>
+  <component name="ClearCaseSharedConfig">
+    <option name="myUseUcmModel" value="true" />
   </component>
   <component name="CodeStyleProjectProfileManger">
     <option name="PROJECT_PROFILE" />
@@ -973,64 +978,6 @@
       </item>
     </group>
   </component>
-  <component name="ProjectCodeStyleSettingsManager">
-    <option name="PER_PROJECT_SETTINGS">
-      <value>
-        <option name="OTHER_INDENT_OPTIONS">
-          <value>
-            <option name="INDENT_SIZE" value="2" />
-            <option name="CONTINUATION_INDENT_SIZE" value="8" />
-            <option name="TAB_SIZE" value="2" />
-            <option name="USE_TAB_CHARACTER" value="false" />
-            <option name="SMART_TABS" value="false" />
-            <option name="LABEL_INDENT_SIZE" value="0" />
-            <option name="LABEL_INDENT_ABSOLUTE" value="false" />
-            <option name="USE_RELATIVE_INDENTS" value="false" />
-          </value>
-        </option>
-        <option name="CLASS_COUNT_TO_USE_IMPORT_ON_DEMAND" value="10" />
-        <option name="NAMES_COUNT_TO_USE_IMPORT_ON_DEMAND" value="5" />
-        <XML>
-          <option name="XML_LEGACY_SETTINGS_IMPORTED" value="true" />
-        </XML>
-        <ADDITIONAL_INDENT_OPTIONS fileType="gsp">
-          <option name="INDENT_SIZE" value="2" />
-        </ADDITIONAL_INDENT_OPTIONS>
-        <ADDITIONAL_INDENT_OPTIONS fileType="haml">
-          <option name="INDENT_SIZE" value="2" />
-        </ADDITIONAL_INDENT_OPTIONS>
-        <ADDITIONAL_INDENT_OPTIONS fileType="jsp">
-          <option name="INDENT_SIZE" value="2" />
-          <option name="TAB_SIZE" value="2" />
-        </ADDITIONAL_INDENT_OPTIONS>
-        <ADDITIONAL_INDENT_OPTIONS fileType="sass">
-          <option name="INDENT_SIZE" value="2" />
-        </ADDITIONAL_INDENT_OPTIONS>
-        <ADDITIONAL_INDENT_OPTIONS fileType="yml">
-          <option name="INDENT_SIZE" value="2" />
-        </ADDITIONAL_INDENT_OPTIONS>
-        <codeStyleSettings language="Groovy">
-          <indentOptions>
-            <option name="INDENT_SIZE" value="2" />
-          </indentOptions>
-        </codeStyleSettings>
-        <codeStyleSettings language="JavaScript">
-          <indentOptions>
-            <option name="INDENT_SIZE" value="2" />
-            <option name="CONTINUATION_INDENT_SIZE" value="8" />
-            <option name="TAB_SIZE" value="2" />
-          </indentOptions>
-        </codeStyleSettings>
-        <codeStyleSettings language="XML">
-          <indentOptions>
-            <option name="INDENT_SIZE" value="2" />
-            <option name="TAB_SIZE" value="2" />
-          </indentOptions>
-        </codeStyleSettings>
-      </value>
-    </option>
-    <option name="USE_PER_PROJECT_SETTINGS" value="true" />
-  </component>
   <component name="ProjectDetails">
     <option name="projectName" value="OpenFaces" />
   </component>
@@ -1333,6 +1280,14 @@
         <root url="jar://$PROJECT_DIR$/libsrc/facelets-1.1.14-src.zip!/facelets-1.1.14-src/test" />
       </SOURCES>
     </library>
+    <library name="fileUpload">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/lib/apache/commons-fileupload-1.2.2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/apache/commons-io-2.1.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
     <library name="hibernate">
       <CLASSES>
         <root url="jar://$PROJECT_DIR$/lib/hibernate/hibernate3.jar!/" />
@@ -1601,18 +1556,20 @@
     </library>
     <library name="selenium-java-client-driver">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/seleniuminspector/selenium-java-2.14.0.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES />
-    </library>
-    <library name="selenium-server">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/seleniuminspector/selenium-server-standalone-2.14.0.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/seleniuminspector/selenium-java-client-driver.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES>
-        <root url="jar://$PROJECT_DIR$/lib/seleniuminspector/selenium-server-standalone-2.14.0.jar!/" />
+        <root url="jar://$PROJECT_DIR$/libsrc/selenium-java-client-driver-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="selenium-server">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/lib/seleniuminspector/patched-selenium-server.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/libsrc/selenium-server-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="SeleniumInspector">
@@ -1648,6 +1605,11 @@
       <SOURCES>
         <root url="jar://$PROJECT_DIR$/libsrc/trinidad-stub-scr.zip!/" />
       </SOURCES>
+    </library>
+    <library name="Unnamed">
+      <CLASSES />
+      <JAVADOC />
+      <SOURCES />
     </library>
   </component>
 </project>

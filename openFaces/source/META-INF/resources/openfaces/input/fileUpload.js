@@ -10,9 +10,7 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 var _TEMP = null;
-//todo progress bar as a component
 //todo facet addbutton
-//todo clearbutton change only once call
 //todo change version
 //todo check statuses
 
@@ -52,7 +50,8 @@ O$.FileUpload = {
     stopFacet.disabled = false;
 
     var progressBar= O$(progressBarId);
-    elements.removeChild(progressBar);
+    if (!O$.isExplorer())
+      elements.removeChild(progressBar);
 
     var idOfInfoAndInputDiv = 1;
 
@@ -62,6 +61,8 @@ O$.FileUpload = {
     //clearAllButton.style.float = "right";
 
     var allInfos = O$(componentId + "::infoDiv");
+    if(O$.isExplorer7() || (O$.isExplorer() && O$.isQuirksMode()))
+      allInfos = allInfos.firstChild;
 
     var inputsStorage = createStructureForInputs();
     var inputsStorageId = inputsStorage.id;
@@ -71,7 +72,8 @@ O$.FileUpload = {
     var inputForChange = O$(componentId + "::elements::helpfulInput");
     var onChangeFunc = inputForChange.onchange;
     elements.removeChild(inputForChange);
-    fileUpload.removeChild(elements);
+    if (!O$.isExplorer())
+      fileUpload.removeChild(elements);
     var couldCallChangeEvent = true;
 
     //processing onfocus/onblur event
@@ -87,6 +89,9 @@ O$.FileUpload = {
     setStylesForAddButton(addButton);
     var divForInputInAddBtn = O$(addButtonId+"::forInput");
     var inputInAddBtn = createInputInAddBtn(idOfInfoAndInputDiv);
+    if (O$.isExplorer() && O$.isQuirksMode()){
+      divForInputInAddBtn.style.height = O$.getElementSize(O$(addButtonId + "::title")).height;
+    }
     divForInputInAddBtn.appendChild(inputInAddBtn);//create first input
 
     //variables for focus/blur
@@ -178,29 +183,29 @@ O$.FileUpload = {
       }
 
       function addFileToInfoWindow(inputForFile) {
-        //var infoWindow = document.createElement("div");
         var infoWindow = document.createElement("tr");
         infoWindow._status = O$.statusEnum.NEW_ONE;
 
         var fileNameTD = document.createElement("td");
-        fileNameTD.setAttribute("class",infoTitleClass);
+        fileNameTD.className = infoTitleClass;
         fileNameTD.innerHTML = getFileName(inputForFile.value);
         infoWindow.appendChild(fileNameTD);
 
         var progressTD = document.createElement("td");
-        progressTD.setAttribute("class", progressBarClass);
+        progressTD.className = progressBarClass;
         var progressFacet = progressBar.cloneNode(true);
         progressFacet.setAttribute("id", progressBarId + inputForFile._idInputAndDiv);
         progressTD.appendChild(progressFacet);
         infoWindow.appendChild(progressTD);
 
         var statusTD = document.createElement("td");
-        statusTD.setAttribute("class", infoStatusClass);
-        statusTD.innerHTML = statusLabelNotUploaded;
+        statusTD.className = infoStatusClass;
+        if (statusLabelNotUploaded != null)
+          statusTD.innerHTML = statusLabelNotUploaded;
         infoWindow.appendChild(statusTD);
 
         var cancelFileTD = document.createElement("td");
-        cancelFileTD.setAttribute("style", "width:1px");
+        cancelFileTD.style.width = "1px";
         var cancelFileDiv = cancelFacet.cloneNode(true);
         cancelFileDiv.setAttribute("id",cancelFacet.id + inputForFile._idInputAndDiv);
         cancelFileDiv.deleteFileInputFunction = function () {
@@ -239,7 +244,8 @@ O$.FileUpload = {
         infoWindow.appendChild(cancelFileTD);
 
         infoWindow.setAttribute("id", allInfos.id + inputForFile._idInputAndDiv);
-        infoWindow.setAttribute("class", fileInfoClass);
+        //infoWindow.setAttribute("class", fileInfoClass);
+        infoWindow.className = fileInfoClass;
         allInfos.appendChild(infoWindow);
         O$.ProgressBar.initCopyOf(progressBar, progressFacet);
       }
@@ -336,14 +342,28 @@ O$.FileUpload = {
       var formForInput = document.createElement("form");
       formForInput.setAttribute("id", divForFileInput.id + "::form");
       formForInput.setAttribute("method", "POST");
-      formForInput.setAttribute("enctype", "multipart/form-data");
+      if (O$.isExplorer7() || (O$.isExplorer() && O$.isQuirksMode())) {
+        formForInput.setAttribute("encoding", "multipart/form-data");
+      } else {
+        formForInput.setAttribute("enctype", "multipart/form-data");
+      }
 
       inputField.setAttribute("id", formForInput.id + "::fileInput");
       inputField.removeAttribute("tabindex");
       formForInput.appendChild(inputField);
 
-      var iframe = document.createElement("iframe");
-      iframe.setAttribute("name", formForInput.id + "::iframe");
+      var iframe;
+      if (O$.isExplorer7() || (O$.isExplorer() && O$.isQuirksMode())){
+        iframe = document.createElement('<iframe name="'+formForInput.id + "::iframe"+'">');
+        iframe.width = 0;
+        iframe.height = 0;
+        iframe.marginHeight = 0;
+        iframe.marginWidth = 0;
+      }else{
+        iframe = document.createElement("iframe");
+        iframe.name = formForInput.id + "::iframe";
+      }
+
       formForInput.appendChild(iframe);
 
       divForFileInput.appendChild(formForInput);
@@ -355,8 +375,17 @@ O$.FileUpload = {
     function createInputInAddBtn(id){
       var input = document.createElement("input");
       input.setAttribute("type", "file");
-      input.setAttribute("style", "overflow: hidden; position: absolute; top: 0pt; right: 0pt; font-size:100px; opacity:0");
+      //input.setAttribute("style", "overflow: hidden; position: absolute; top: 0pt; right: 0pt; font-size:100px; opacity:0; filter: alpha(opacity=0);  -ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=0)'");
       //todo move somewhere else these styles
+      input.style.overflow = "hidden";
+      input.style.position = "absolute";
+      input.style.top = "0";
+      input.style.right = "0";
+      input.style.fontSize = "100px";
+      input.style.opacity = "0";
+      input.style.filter = "alpha(opacity=0)";
+      input.style.sFilter = "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+
       if (tabIndex!=-1){
         input.setAttribute("tabindex", tabIndex);
       }
@@ -578,7 +607,7 @@ O$.FileUpload = {
                     prepareUIWhenAllRequestsFinished();
                   } else {
                     var percents = portionData['progressInPercent'];
-                    console.log(percents + "--" + infoDiv.childNodes[0].innerHTML);
+                    //console.log(percents + "--" + infoDiv.childNodes[0].innerHTML);
                     infoDiv.childNodes[1].firstChild.setValue(percents);
                     if (percents != 100) {
                       if (infoDiv._status != O$.statusEnum.IN_PROGRESS) {
