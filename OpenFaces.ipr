@@ -973,6 +973,64 @@
       </item>
     </group>
   </component>
+  <component name="ProjectCodeStyleSettingsManager">
+    <option name="PER_PROJECT_SETTINGS">
+      <value>
+        <option name="OTHER_INDENT_OPTIONS">
+          <value>
+            <option name="INDENT_SIZE" value="2" />
+            <option name="CONTINUATION_INDENT_SIZE" value="8" />
+            <option name="TAB_SIZE" value="2" />
+            <option name="USE_TAB_CHARACTER" value="false" />
+            <option name="SMART_TABS" value="false" />
+            <option name="LABEL_INDENT_SIZE" value="0" />
+            <option name="LABEL_INDENT_ABSOLUTE" value="false" />
+            <option name="USE_RELATIVE_INDENTS" value="false" />
+          </value>
+        </option>
+        <option name="CLASS_COUNT_TO_USE_IMPORT_ON_DEMAND" value="10" />
+        <option name="NAMES_COUNT_TO_USE_IMPORT_ON_DEMAND" value="5" />
+        <XML>
+          <option name="XML_LEGACY_SETTINGS_IMPORTED" value="true" />
+        </XML>
+        <ADDITIONAL_INDENT_OPTIONS fileType="gsp">
+          <option name="INDENT_SIZE" value="2" />
+        </ADDITIONAL_INDENT_OPTIONS>
+        <ADDITIONAL_INDENT_OPTIONS fileType="haml">
+          <option name="INDENT_SIZE" value="2" />
+        </ADDITIONAL_INDENT_OPTIONS>
+        <ADDITIONAL_INDENT_OPTIONS fileType="jsp">
+          <option name="INDENT_SIZE" value="2" />
+          <option name="TAB_SIZE" value="2" />
+        </ADDITIONAL_INDENT_OPTIONS>
+        <ADDITIONAL_INDENT_OPTIONS fileType="sass">
+          <option name="INDENT_SIZE" value="2" />
+        </ADDITIONAL_INDENT_OPTIONS>
+        <ADDITIONAL_INDENT_OPTIONS fileType="yml">
+          <option name="INDENT_SIZE" value="2" />
+        </ADDITIONAL_INDENT_OPTIONS>
+        <codeStyleSettings language="Groovy">
+          <indentOptions>
+            <option name="INDENT_SIZE" value="2" />
+          </indentOptions>
+        </codeStyleSettings>
+        <codeStyleSettings language="JavaScript">
+          <indentOptions>
+            <option name="INDENT_SIZE" value="2" />
+            <option name="CONTINUATION_INDENT_SIZE" value="8" />
+            <option name="TAB_SIZE" value="2" />
+          </indentOptions>
+        </codeStyleSettings>
+        <codeStyleSettings language="XML">
+          <indentOptions>
+            <option name="INDENT_SIZE" value="2" />
+            <option name="TAB_SIZE" value="2" />
+          </indentOptions>
+        </codeStyleSettings>
+      </value>
+    </option>
+    <option name="USE_PER_PROJECT_SETTINGS" value="true" />
+  </component>
   <component name="ProjectDetails">
     <option name="projectName" value="OpenFaces" />
   </component>
@@ -1543,20 +1601,18 @@
     </library>
     <library name="selenium-java-client-driver">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/seleniuminspector/selenium-java-client-driver.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/seleniuminspector/selenium-java-2.14.0.jar!/" />
       </CLASSES>
       <JAVADOC />
-      <SOURCES>
-        <root url="jar://$PROJECT_DIR$/libsrc/selenium-java-client-driver-sources.jar!/" />
-      </SOURCES>
+      <SOURCES />
     </library>
     <library name="selenium-server">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/seleniuminspector/patched-selenium-server.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/seleniuminspector/selenium-server-standalone-2.14.0.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES>
-        <root url="jar://$PROJECT_DIR$/libsrc/selenium-server-sources.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/seleniuminspector/selenium-server-standalone-2.14.0.jar!/" />
       </SOURCES>
     </library>
     <library name="SeleniumInspector">
@@ -1592,11 +1648,6 @@
       <SOURCES>
         <root url="jar://$PROJECT_DIR$/libsrc/trinidad-stub-scr.zip!/" />
       </SOURCES>
-    </library>
-    <library name="Unnamed">
-      <CLASSES />
-      <JAVADOC />
-      <SOURCES />
     </library>
   </component>
 </project>
