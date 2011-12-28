@@ -9,9 +9,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-var _TEMP = null;
+
 //todo facet addbutton
-//todo change version
 //todo check statuses
 
 O$.FileUpload = {
@@ -22,7 +21,7 @@ O$.FileUpload = {
                   addButtonId, addButtonClass, addButtonOnMouseOverClass, addButtonOnMouseDownClass,addButtonOnFocusClass,
                   addButtonDisabledClass,
                   uploadButtonId, clearAllButtonId, isDisabled,
-                  isAutoUpload, tabIndex, progressBarId) {
+                  isAutoUpload, tabIndex, progressBarId, statusStoppedText) {
     var fileUpload = O$.initComponent(componentId, null, {
       _minQuantity : minQuantity,
       _maxQuantity : maxQuantity,
@@ -590,8 +589,8 @@ O$.FileUpload = {
           progressRequest(fileInput);
         }, 200);
       }
-
-      clearAllButton.disabled = true;    // to prevent changing of file list when uploading in progress
+      uploadButton.style.visibility = "hidden";
+      clearAllButton.style.visibility = "hidden";    // to prevent changing of file list when uploading in progress
 
       for (var inputsIndex = 0; inputsIndex < inputsStorage.childNodes.length; inputsIndex++) {
         var inputDiv = inputsStorage.childNodes[inputsIndex];
@@ -599,7 +598,7 @@ O$.FileUpload = {
         var iframe = form.childNodes[1];
         var fileInput = form.childNodes[0];
 
-        O$(allInfos.id + fileInput._idInputAndDiv).childNodes[3].firstChild.disabled = true;
+        O$(allInfos.id + fileInput._idInputAndDiv).childNodes[3].firstChild.style.visibility = "hidden";
         form.target = iframe.name;
         form.submit();
         form.target = "_self";
@@ -619,13 +618,10 @@ O$.FileUpload = {
                     prepareUIWhenAllRequestsFinished();
                   } else {
                     var percents = portionData['progressInPercent'];
-                    //console.log(percents + "--" + infoDiv.childNodes[0].innerHTML);
-                    infoDiv.childNodes[1].firstChild.setValue(percents);
                     if (percents != 100) {
                       if (infoDiv._status != O$.statusEnum.IN_PROGRESS) {
                         infoDiv._status = O$.statusEnum.IN_PROGRESS; //temporary
                         infoDiv.childNodes[2].innerHTML = statusLabelInProgress;
-
                         infoDiv.childNodes[3].removeChild(infoDiv.childNodes[3].firstChild);
                         var stopFileDiv = stopFacet.cloneNode(true);
                         stopFileDiv.setAttribute("id", stopFacet.id + inputForFile._idInputAndDiv);
@@ -635,28 +631,27 @@ O$.FileUpload = {
                         O$.addEventHandler(stopFileDiv, "click", function(){
                           var iframe = inputForFile.nextSibling;
                           iframe.src = "";
-/*                          O$.requestComponentPortions(fileUpload.id, ["nothing"],
-                                  JSON.stringify({interruptedRequest: "true", fileName : getFileName(inputForFile.value)}),
-                                  function(fileUpload, portionName, portionHTML, portionScripts, portionData) {
-                                    if (infoDiv.childNodes[1].firstChild.getValue() == portionData['progress']) {
-                                      inputForFile._isInterrupted = true;
-                                      infoDiv._status = O$.statusEnum.ERROR;
-                                      inputsStorage.removeChild(inputForFile.parentNode.parentNode);
-                                      infoDiv.childNodes[2].innerHTML = "Stopped";
-                                      setClearBtnAndEventHandler(infoDiv);
-                                      prepareUIWhenAllRequestsFinished();
-                                      console.log("was interrupted..");
-                                    }
-                                  });  */
+                          inputForFile._wantToInterrupt = true;
                         });
                       }
-                      //if (!inputForFile._isInterrupted) {
+                      if (inputForFile._wantToInterrupt) {
+                        if (infoDiv.childNodes[1].firstChild.getValue() == percents) {
+                          inputForFile._isInterrupted = true;
+                          infoDiv._status = O$.statusEnum.ERROR;
+                          inputsStorage.removeChild(inputForFile.parentNode.parentNode);
+                          infoDiv.childNodes[2].innerHTML = statusStoppedText;
+                          setClearBtnAndEventHandler(infoDiv);
+                          prepareUIWhenAllRequestsFinished();
+                        }
+                      }
+                      if (!inputForFile._isInterrupted){
+                        infoDiv.childNodes[1].firstChild.setValue(percents);
                         setTimeout(function() {
                           progressRequest(inputForFile);
                         }, 200);
-                      //}
-                    } else { // when file already uploaded
-                      console.log("file uploaded");
+                      }
+                    } else {// when file already uploaded
+                      infoDiv.childNodes[1].firstChild.setValue(percents);
                       fileUpload._lengthUploadedFiles++;
                       /*removing input*/
                       inputsStorage.removeChild(inputForFile.parentNode.parentNode); // delete divForFileInput
@@ -664,9 +659,7 @@ O$.FileUpload = {
                       infoDiv._status = O$.statusEnum.UPLOADED;
                       infoDiv.childNodes[2].innerHTML = statusLabelUploaded;
                       setClearBtnAndEventHandler(infoDiv);
-
                       prepareUIWhenAllRequestsFinished();
-
                     }
                   }
 
@@ -692,7 +685,8 @@ O$.FileUpload = {
                   function prepareUIWhenAllRequestsFinished() {
                     if (inputsStorage.childNodes.length == 0) { // if all files are  already uploaded
                       fileUpload._numberOfFilesToUpload = 0;
-                      clearAllButton.disabled = false;
+                      clearAllButton.style.visibility = "visible";
+                      uploadButton.style.visibility = "visible";
                       initHeaderButtons();
                       //set focus on addButton
                       shouldInvokeFocusEvHandler = false;

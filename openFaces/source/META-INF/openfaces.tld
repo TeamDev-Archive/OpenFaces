@@ -44914,6 +44914,18 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @bindingType javax.el.MethodExpression -->
       <!-- @default null -->
       <!-- @el only -->
+    </attribute>  statusStoppedText
+
+    <attribute>
+      <description>This attribute sets status that will be displayed in case of terminate uploading of file.
+      </description>
+      <name>statusStoppedText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default Stopped -->
+      <!-- @el true -->
     </attribute>
       <!--  <attribute>
       <description>Enables handling of tab selection change on the server side. This attribute is a MethodBinding that

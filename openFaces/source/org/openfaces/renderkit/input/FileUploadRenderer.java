@@ -209,24 +209,6 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
         stopButton = fileUpload.getFacet(F_STOP_BUTTON);
         clearButton = fileUpload.getFacet(F_CLEAR_BUTTON);
         progressBar = (ProgressBar) fileUpload.getFacet(F_PROGRESS_BAR);
-        //StringBuilder builder = new StringBuilder();
-        /*if (addButtonTitle == null) {
-            builder.append(F_ADD_BUTTON_TITLE);
-            builder.append(",");
-        }*/
-        /*if (uploadButton == null) {
-            //uploadButton = new HtmlOutcomeTargetButton();
-            builder.append(F_UPLOAD_BUTTON);
-            builder.append(",");
-        }
-        if (clearAllButton == null) {
-            builder.append(F_CLEAR_ALL_BUTTON);
-        }
-        if (clearButton == null) {
-            builder.append(F_CLEAR_BUTTON);
-        }
-        if (builder.length() != 0)
-            throw new IllegalArgumentException("facets with names ['" + builder.toString() + "'] are required in fileUpload component");*/
     }
 
     private void writeMainDivForInfos(FacesContext context, ResponseWriter writer, FileUpload fileUpload, String elementId) throws IOException {
@@ -360,7 +342,8 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
                 fileUpload.isDisabled(),
                 fileUpload.isAutoUpload(),
                 fileUpload.getTabindex(),
-                progressBar.getClientId(context)
+                progressBar.getClientId(context),
+                fileUpload.getStatusStoppedText()
         );
 
         Rendering.renderInitScript(context, initScript,

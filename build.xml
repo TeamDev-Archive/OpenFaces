@@ -6,6 +6,8 @@
   <property file="ofversion.properties"/>
   <property name="of-version" value="${ofversion}.${build.number}"/>
 
+  <property name="build.compiler" value="javac1.5"/>
+
   <property name="target.dir" location="target"/>
   <property name="target-lib.dir" location="${target.dir}/lib"/>
   <property name="openfaces-jar.file" location="${target-lib.dir}/openfaces-${of-version}.jar"/>
@@ -41,6 +43,7 @@
 
     <echo>Building OpenFaces core...</echo>
     <ant dir="${components.dir}" target="build" inheritall="false">
+      <property name="build.compiler" value="javac1.5"/>
       <property name="target-jar.file" value="${openfaces-jar.file}"/>
       <property name="lib.dir" value="../lib"/>
       <property name="retain.classes.dir" value="true"/>

@@ -428,4 +428,40 @@ public class Environment {
         return gateInPortal;
     }
 
+    public static <T> T getApplicationInitParameter(String paramName, Class<T> expectedType) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        ExternalContext externalContext = context.getExternalContext();
+        Map<String, Object> applicationMap = externalContext.getApplicationMap();
+
+        String paramStorageKey = Environment.class.getName() + ".getApplicationInitParameter.param:" + paramName;
+        Object paramValue;
+        if (applicationMap.containsKey(paramStorageKey)) {
+            paramValue = applicationMap.get(paramStorageKey);
+        } else {
+            String paramAsString = externalContext.getInitParameter(paramName);
+            if (paramAsString == null)
+                paramValue = null;
+            else if (expectedType.equals(String.class))
+                paramValue = paramAsString;
+            else if (expectedType.equals(Boolean.class))
+                paramValue = Boolean.parseBoolean(paramAsString);
+            else if (expectedType.equals(Integer.class))
+                paramValue = Integer.parseInt(paramAsString);
+            else if (expectedType.equals(Long.class))
+                paramValue = Long.parseLong(paramAsString);
+            else if (expectedType.equals(Double.class))
+                paramValue = Double.parseDouble(paramAsString);
+            else if (expectedType.equals(Float.class))
+                paramValue = Float.parseFloat(paramAsString);
+            else
+                throw new IllegalArgumentException("Unsupported expectedType value: " + expectedType.getName());
+
+            applicationMap.put(paramStorageKey, paramValue);
+        }
+
+        return (T) paramValue;
+
+
+    }
+
 }
