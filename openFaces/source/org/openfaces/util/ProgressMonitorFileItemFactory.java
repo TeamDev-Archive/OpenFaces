@@ -10,7 +10,7 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-package org.openfaces.demo.filter;
+package org.openfaces.util;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -45,7 +45,7 @@ public class ProgressMonitorFileItemFactory extends DiskFileItemFactory {
         if (!isFormField && !fileName.equals("")) { //This must be a file upload and has a name
             observer = new SessionUpdatingProgressObserver(fileName);
             observer.setProgress(0);
-
+            //fileName = fileName.replaceAll("[#$%^&* ]+","_"); //doesn't work unfortunately
         }
 
         ProgressMonitorFileItem item = new ProgressMonitorFileItem(fieldName, contentType,

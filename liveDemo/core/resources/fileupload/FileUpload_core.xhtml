@@ -3,32 +3,7 @@
      xmlns:o="http://openfaces.org/"
         >
   <div id="Demo">
-    <o:fileUpload id="fileUpload"
-                  uploadedFiles="#{FileUploadBean.files}"
-                  tabindex="1"
-                  fileUploadedListener="#{FileUploadBean.fileUploaded}"
-                  statusStoppedText="Terminated"
-            />
+    <o:fileUpload id="fileUpload" multiUpload="false" addButtonLabel="Upload"
+            uploadCompletionListener="#{FileUploadBean.allFilesUploaded}"/>
   </div>
-  <div id="Description">
-    <h4>Demonstrated Features</h4>
-    <ul class="hang">
-      <li>
-        <strong>Client side interaction</strong> - Slider provides client side API to manage component's value.
-      </li>
-      <li>
-        <strong>Different orientations of Slider</strong> - Supports horizontal and vertical orientations.
-      </li>
-      <li>
-        <strong>Provides full managing of ticks</strong> - Ticks can be located on left, right or both sides of slider.
-        Slider's value might be set at specific range. Also provided settings of distance between of big and small ticks.
-        There is oportunity to not displaying ticks.
-      </li>
-      <li>
-        <strong>Customizable styles</strong> - Slider bar and drag handler can be replaced by another images.
-        Width and height can be customized for each slider. Separate styles for component and for label that shows current control's value.
-      </li>
-    </ul>
-  </div>
-
 </div>

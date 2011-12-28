@@ -10,7 +10,7 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-package org.openfaces.demo.filter;
+package org.openfaces.util;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -22,7 +22,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-public class UploadMultipartFilter implements Filter {
+public class FileUploadFilter implements Filter {
 
     private ServletContext servletContext;
 
@@ -47,7 +47,7 @@ public class UploadMultipartFilter implements Filter {
             String maxSizeString = servletContext.getInitParameter("org.openfaces.fileUpload.maxFileSize");
             long maxSizeOfFile = (maxSizeString != null) ? Long.parseLong(maxSizeString) * 1024 : Long.MAX_VALUE;
 
-            UploadMultipartRequestWrapper wrapper = new UploadMultipartRequestWrapper(hRequest, tempDir, maxSizeOfFile);
+            FileUploadRequestWrapper wrapper = new FileUploadRequestWrapper(hRequest, tempDir, maxSizeOfFile);
             request.setAttribute("fileUploadRequest", true);
             chain.doFilter(wrapper, response);
         }

@@ -13,6 +13,7 @@ package org.openfaces.taglib.internal.input;
 
 import org.openfaces.component.input.FileUpload;
 import org.openfaces.event.FileUploadedEvent;
+import org.openfaces.event.UploadCompletionEvent;
 import org.openfaces.taglib.internal.AbstractComponentTag;
 
 import javax.faces.component.UIComponent;
@@ -33,8 +34,6 @@ public class FileUploadTag extends AbstractComponentTag {
         super.setComponentProperties(facesContext, component);
         setIntProperty(component, "minQuantity");
         setIntProperty(component, "maxQuantity");
-        setObjectProperty(component, "uploadedFiles");
-
 
         setStringProperty(component, "headerStyle");
         setStringProperty(component, "headerClass");
@@ -82,5 +81,8 @@ public class FileUploadTag extends AbstractComponentTag {
         setMethodExpressionProperty(facesContext, component, "fileUploadedListener",
                 new Class[]{FileUploadedEvent.class}, void.class);
         setStringProperty(component, "statusStoppedText");
+        setBooleanProperty(component, "multiUpload");
+        setMethodExpressionProperty(facesContext, component, "uploadCompletionListener",
+                new Class[]{UploadCompletionEvent.class}, void.class);
     }
 }

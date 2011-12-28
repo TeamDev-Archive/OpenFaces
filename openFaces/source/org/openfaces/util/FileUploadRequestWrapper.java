@@ -10,24 +10,26 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-package org.openfaces.demo.filter;
+package org.openfaces.util;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.openfaces.util.Log;
+import org.openfaces.event.FileUploadItem;
+import org.openfaces.event.Status;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 
-public class UploadMultipartRequestWrapper extends HttpServletRequestWrapper {
+public class FileUploadRequestWrapper extends HttpServletRequestWrapper {
 
-    public UploadMultipartRequestWrapper(HttpServletRequest request, String tempDirPath, final long maxSizeOfFile) {
+    public FileUploadRequestWrapper(HttpServletRequest request, String tempDirPath, final long maxSizeOfFile) {
         super(request);
         final String contentLength = request.getHeader("content-length");
         if (contentLength == null)
@@ -44,19 +46,23 @@ public class UploadMultipartRequestWrapper extends HttpServletRequestWrapper {
             for (FileItem fileItem : fileItems) {
                 if (!fileItem.isFormField()) {
                     File f = writeFile(fileItem, tempDirPath);
-                    request.setAttribute(fileItem.getFieldName(), f);
-                    break;
+                    request.setAttribute(fileItem.getFieldName(), new FileUploadItem(fileItem.getName(), f, Status.SUCCESSFUL));
+                } else {
+                    if (fileItem.getFieldName().equals("FILE_ID")) {
+                        request.setAttribute("FILE_ID", fileItem.getString());
+                    }
+
                 }
             }
 
         } catch (FileUploadException fe) {
-            //Log.log("The file uploading has been terminated or request is time out.");
-        } catch (Exception ne) {
-            //Log.log(ne.getMessage(), ne);
+           System.out.println("The file uploading has been terminated or request is time out.");
+        } catch (IOException ne) {
+            throw new RuntimeException(ne);
         }
     }
 
-    private File writeFile(FileItem fileItem, String tempDirPath) throws Exception {
+    private File writeFile(FileItem fileItem, String tempDirPath) throws IOException {
         File f = getAndChangeFileNameIfNeeded(tempDirPath, fileItem.getName());
 
         OutputStream out = new FileOutputStream(f);

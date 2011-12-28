@@ -21,16 +21,22 @@ O$.FileUpload = {
                   addButtonId, addButtonClass, addButtonOnMouseOverClass, addButtonOnMouseDownClass,addButtonOnFocusClass,
                   addButtonDisabledClass,
                   uploadButtonId, clearAllButtonId, isDisabled,
-                  isAutoUpload, tabIndex, progressBarId, statusStoppedText) {
+                  isAutoUpload, tabIndex, progressBarId, statusStoppedText, multiUpload,ID) {
     var fileUpload = O$.initComponent(componentId, null, {
       _minQuantity : minQuantity,
       _maxQuantity : maxQuantity,
-      _numberOfFilesToUpload:0,
-      _lengthUploadedFiles:lengthAlreadyUploadedFiles,
+      _numberOfFilesToUpload : 0,
+      _lengthUploadedFiles : lengthAlreadyUploadedFiles,
       _typesOfFile: (acceptedTypesOfFile != null) ? acceptedTypesOfFile.split(" ") : null,
-      _isDisabled:isDisabled,
-      _isAutoUpload:isAutoUpload
+      _isDisabled : isDisabled,
+      _multiUpload : multiUpload,
+      _isAutoUpload : isAutoUpload,
+      _ID : ID
     });
+    if (!fileUpload._multiUpload){
+      fileUpload._isAutoUpload = true;
+      //fileUpload._maxQuantity = 1;
+    }
     //getting clear,stop,cancel, progressBar facet for each info window
     var elements = O$(componentId + "::elements");
     var divForClearFacet = O$(componentId + "::elements::clearFacet");
@@ -250,6 +256,9 @@ O$.FileUpload = {
         infoWindow.setAttribute("id", allInfos.id + inputForFile._idInputAndDiv);
         //infoWindow.setAttribute("class", fileInfoClass);
         infoWindow.className = fileInfoClass;
+        if (!fileUpload._multiUpload){
+          allInfos.innerHTML="";
+        }
         allInfos.appendChild(infoWindow);
         O$.ProgressBar.initCopyOf(progressBar, progressFacet);
       }
@@ -306,7 +315,14 @@ O$.FileUpload = {
         clearAllButton.style.display = "none";
         clearAllButton.disabled = true;
       } else {
-        inputInAddBtn.disabled = (maxQuantity != 0 && fileUpload._lengthUploadedFiles == maxQuantity);
+
+        if (fileUpload._maxQuantity != 0 && fileUpload._lengthUploadedFiles == fileUpload._maxQuantity){
+          inputInAddBtn.disabled = true;
+          addButton.className = addButtonDisabledClass;
+        }else{
+          inputInAddBtn.disabled = false;
+        }
+
         if (allInfos.childNodes.length == 0) {
           clearAllButton.style.display = "none";
           clearAllButton.disabled = true;
@@ -359,6 +375,12 @@ O$.FileUpload = {
       inputField.removeAttribute("tabindex");
       formForInput.appendChild(inputField);
 
+      var inputId = document.createElement("input");
+      inputId.setAttribute("type", "text");
+      inputId.setAttribute("name", "FILE_ID");
+      inputId.setAttribute("value", fileUpload._ID + inputField._idInputAndDiv);
+      formForInput.appendChild(inputId);
+
       var iframe;
       if (O$.isExplorer() &&
               (O$.isQuirksMode()
@@ -386,7 +408,6 @@ O$.FileUpload = {
     function createInputInAddBtn(id){
       var input = document.createElement("input");
       input.setAttribute("type", "file");
-      //input.setAttribute("style", "overflow: hidden; position: absolute; top: 0pt; right: 0pt; font-size:100px; opacity:0; filter: alpha(opacity=0);  -ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=0)'");
       //todo move somewhere else these styles
       input.style.overflow = "hidden";
       input.style.position = "absolute";
@@ -587,15 +608,24 @@ O$.FileUpload = {
       function callProgressRequest(fileInput) {
         setTimeout(function() {
           progressRequest(fileInput);
-        }, 200);
+        }, 500);
       }
-      uploadButton.style.visibility = "hidden";
-      clearAllButton.style.visibility = "hidden";    // to prevent changing of file list when uploading in progress
-
+      inputInAddBtn.disabled = true;
+      addButton.className = addButtonDisabledClass;
+      if (fileUpload._multiUpload){
+        uploadButton.style.visibility = "hidden";
+        clearAllButton.style.visibility = "hidden";    // to prevent changing of file list when uploading in progress
+      }else{
+        clearAllButton.style.display = "none";
+      }
+      fileUpload._listOfids = [];
+      for (var inputsIndex = 0; inputsIndex < inputsStorage.childNodes.length; inputsIndex++) {
+        fileUpload._listOfids.push(inputsStorage.childNodes[inputsIndex].firstChild.childNodes[1].value);
+      }
       for (var inputsIndex = 0; inputsIndex < inputsStorage.childNodes.length; inputsIndex++) {
         var inputDiv = inputsStorage.childNodes[inputsIndex];
         var form = inputDiv.childNodes[0];
-        var iframe = form.childNodes[1];
+        var iframe = form.childNodes[2];
         var fileInput = form.childNodes[0];
 
         O$(allInfos.id + fileInput._idInputAndDiv).childNodes[3].firstChild.style.visibility = "hidden";
@@ -604,7 +634,6 @@ O$.FileUpload = {
         form.target = "_self";
         callProgressRequest(fileInput);
       }
-
       function progressRequest(inputForFile) {
         O$.requestComponentPortions(fileUpload.id, ["nothing"],
                 JSON.stringify({progressRequest: "true", fileName : getFileName(inputForFile.value)}),
@@ -615,7 +644,7 @@ O$.FileUpload = {
                     inputsStorage.removeChild(inputForFile.parentNode.parentNode);
                     infoDiv.childNodes[2].innerHTML = statusLabelErrorSize;
                     setClearBtnAndEventHandler(infoDiv);
-                    prepareUIWhenAllRequestsFinished();
+                    prepareUIWhenAllRequestsFinished(false);
                   } else {
                     var percents = portionData['progressInPercent'];
                     if (percents != 100) {
@@ -640,6 +669,12 @@ O$.FileUpload = {
                           infoDiv._status = O$.statusEnum.ERROR;
                           inputsStorage.removeChild(inputForFile.parentNode.parentNode);
                           infoDiv.childNodes[2].innerHTML = statusStoppedText;
+                          for (var k = 0; k < fileUpload._listOfids.length; k++) {
+                            if (inputForFile.nextSibling.value == fileUpload._listOfids[k]){
+                              fileUpload._listOfids.splice(k, 1);
+                              break;
+                            }
+                          }
                           setClearBtnAndEventHandler(infoDiv);
                           prepareUIWhenAllRequestsFinished();
                         }
@@ -648,7 +683,7 @@ O$.FileUpload = {
                         infoDiv.childNodes[1].firstChild.setValue(percents);
                         setTimeout(function() {
                           progressRequest(inputForFile);
-                        }, 200);
+                        }, 500);
                       }
                     } else {// when file already uploaded
                       infoDiv.childNodes[1].firstChild.setValue(percents);
@@ -659,7 +694,7 @@ O$.FileUpload = {
                       infoDiv._status = O$.statusEnum.UPLOADED;
                       infoDiv.childNodes[2].innerHTML = statusLabelUploaded;
                       setClearBtnAndEventHandler(infoDiv);
-                      prepareUIWhenAllRequestsFinished();
+                      prepareUIWhenAllRequestsFinished(true);
                     }
                   }
 
@@ -682,11 +717,29 @@ O$.FileUpload = {
                     });
                   }
 
-                  function prepareUIWhenAllRequestsFinished() {
+                  function sendCheckRequest() {
+                    O$.requestComponentPortions(fileUpload.id, ["nothing"],
+                            JSON.stringify({listOfFilesRequest: "true", idOfFiles : fileUpload._listOfids}),
+                            function(fileUpload, portionName, portionHTML, portionScripts, portionData) {
+                              if (portionData['allUploaded'] == "true") {
+                                fileUpload._listOfids = [];
+                              }else{
+                                setTimeout(sendCheckRequest, 500);
+                              }
+                            }, null, true);
+                  }
+                  function prepareUIWhenAllRequestsFinished(shouldCheckRequest) {
                     if (inputsStorage.childNodes.length == 0) { // if all files are  already uploaded
+                      if (shouldCheckRequest)
+                        setTimeout(sendCheckRequest, 500);
+
                       fileUpload._numberOfFilesToUpload = 0;
-                      clearAllButton.style.visibility = "visible";
-                      uploadButton.style.visibility = "visible";
+                      if (fileUpload._multiUpload){
+                        clearAllButton.style.visibility = "visible";
+                        uploadButton.style.visibility = "visible";
+                      }
+                      inputInAddBtn.disabled = false;
+                      addButton.className = addButtonClass;
                       initHeaderButtons();
                       //set focus on addButton
                       shouldInvokeFocusEvHandler = false;

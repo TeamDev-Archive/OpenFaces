@@ -1216,7 +1216,8 @@
     height: 15px;
     position: relative;
     border: 1px solid #CCCCCC;
-    margin-top:10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 .o_progress_bar_uploaded,
  .o_progress_bar_n_uploaded{
@@ -1248,6 +1249,10 @@
     margin: 0;
     width:100%;
 }
+.o_file_upload_addBtn_dis{
+    opacity: 0.4;
+    filter: alpha(opacity = 40);
+}
 
 .o_file_upload_btn {
     margin-left: 275px;
@@ -1262,7 +1267,7 @@
 }
 
 .o_file_upload_infos {
-    width:100%;
+    width: 100%;
 }
 
 .o_file_upload_info {
@@ -1271,8 +1276,9 @@
 
 .o_file_upload_info_title {
     font-size: 10pt;
-    padding-top:10px;
+    padding-top: 5px;
     padding-left: 10px;
+    padding-bottom: 5px;
 }
 
 .o_file_upload_info_status {
@@ -1281,7 +1287,8 @@
     color: gray;
     padding-left: 10px;
     padding-right: 10px;
-    padding-top: 10px;
+    padding-top: 5px;
+    padding-bottom:5px;
 }
 
 .o_file_upload_info_progress {
@@ -1292,7 +1299,8 @@
     width: 50px;
     font-size: 8pt;
     margin-right: 25px;
-    margin-top:10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 /* TwoListSelection */

@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 3.0
+ * OpenFaces - JSF Component Library 2.0
  * Copyright (C) 2007-2011, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -10,7 +10,7 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-package org.openfaces.demo.filter;
+package org.openfaces.util;
 
 import org.apache.commons.fileupload.disk.DiskFileItem;
 
@@ -29,8 +29,7 @@ public class ProgressMonitorFileItem extends DiskFileItem {
                                    boolean isFormField, String fileName,
                                    int sizeThreshold, File repository,
                                    ProgressObserver observer,
-                                   long passedInFileSize
-    ) {
+                                   long passedInFileSize) {
         super(fieldName, contentType, isFormField, fileName, sizeThreshold, repository);
         this.observer = observer;
         this.passedInFileSize = passedInFileSize;
