@@ -167,8 +167,7 @@ public class FileUploadJspTag extends AbstractComponentJspTag {
     public void setFileUploadedListener(MethodExpression fileUploadedListener) {
         getDelegate().setPropertyValue("fileUploadedListener", fileUploadedListener);
     }
-/*    public void setUploadListener(MethodExpression uploadListener) {
-        getDelegate().setPropertyValue("uploadListener", uploadListener);
-    }*/
-
+    public void setStatusStoppedText(MethodExpression statusStoppedText) {
+        getDelegate().setPropertyValue("statusStoppedText", statusStoppedText);
+    }
 }
