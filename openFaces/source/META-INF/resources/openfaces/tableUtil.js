@@ -1540,20 +1540,31 @@ O$.Tables = {
     function newClass(declaration) {
       return newClass_raw(declaration);
     }
-    column._headerCellsClass = newClass("overflow: hidden");
-    column._bodyCellsClass = newClass("overflow: hidden");
-    column._colClass = newClass("overflow: hidden");
+    var defaultSharedColumnStyle = "o_tableColumn";
+    column._getEditableIndividualClass = function(propertyName) {
+      if (this[propertyName] == defaultSharedColumnStyle) {
+        throw "column._getEditableIndividualClass: the need for column width control is not expected in the current " +
+                "configuration, but is being requested";
+      }
+      return this[propertyName];
+    };
+    column._headerCellsClass = table._params.columnWidthControlRequired ? newClass("overflow: hidden") : defaultSharedColumnStyle;
+    column._bodyCellsClass = table._params.columnWidthControlRequired ? newClass("overflow: hidden") : defaultSharedColumnStyle;
+    column._colClass = defaultSharedColumnStyle; //newClass("overflow: hidden"); -- dynamic individual col class doesn't seem to
+                                        // be required, see the commented usage in column.setWidth
     if (column.footer) {
-      column._footerCellsClass = newClass("overflow: hidden");
-      O$.addUnloadHandler(table, function () {
-        O$.removeCssRule(column._footerCellsClass.classObj.selectorText);
-      });
+      column._footerCellsClass = table._params.columnWidthControlRequired ? newClass("overflow: hidden") : defaultSharedColumnStyle;
+      if (table._params.columnWidthControlRequired)
+        O$.addUnloadHandler(table, function () {
+          O$.removeCssRule(column._footerCellsClass.classObj.selectorText);
+        });
     }
-    O$.addUnloadHandler(table, function () {
-      O$.removeCssRule(column._headerCellsClass.classObj.selectorText);
-      O$.removeCssRule(column._bodyCellsClass.classObj.selectorText);
-      O$.removeCssRule(column._colClass.classObj.selectorText);
-    });
+    if (table._params.columnWidthControlRequired)
+      O$.addUnloadHandler(table, function () {
+        O$.removeCssRule(column._headerCellsClass.classObj.selectorText);
+        O$.removeCssRule(column._bodyCellsClass.classObj.selectorText);
+//        O$.removeCssRule(column._colClass.classObj.selectorText);
+      });
     column._table = table;
 
     if (column.header && column.header.pos) {
@@ -1761,10 +1772,10 @@ O$.Tables = {
           O$.setElementWidth(colTag, widthForCol, getTableWidth);
         }
       }
-      setWidth(this._headerCellsClass.classObj, headerCell, table.header, table._gridLines.headerVert);
-      setWidth(this._bodyCellsClass.classObj, bodyCell, table.body);
+      setWidth(this._getEditableIndividualClass("_headerCellsClass").classObj, headerCell, table.header, table._gridLines.headerVert);
+      setWidth(this._getEditableIndividualClass("_bodyCellsClass").classObj, bodyCell, table.body);
       if (footerCell)
-        setWidth(this._footerCellsClass.classObj, footerCell, table.footer, table._gridLines.footerVert);
+        setWidth(this._getEditableIndividualClass("_footerCellsClass").classObj, footerCell, table.footer, table._gridLines.footerVert);
 
 //  this doesn't seem to be required according to the current testing, but it causes performance loss (see also a note in calculateWidthCorrection)
 //      var colClass = this._colClass.classObj;
