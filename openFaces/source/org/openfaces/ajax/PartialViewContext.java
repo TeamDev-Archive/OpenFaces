@@ -939,25 +939,27 @@ public class PartialViewContext extends PartialViewContextWrapper {
     }
 
 
-    private void checkForReloadedForms (FacesContext context, Set<String> ids) {
-        for (String id : ids) {
-            String key = "_check_for_inner_reloaded_form_" + id;
+    private void checkForReloadedForms (FacesContext context, Set<String> renderIds) {
+        for (String renderId : renderIds) {
+            String key = "_check_for_inner_reloaded_form_" + renderId;
             boolean alreadyTested = context.getExternalContext().getRequestMap().containsKey(key);
             if (!alreadyTested) {
-                UIComponent component = findComponentById(context.getViewRoot(), id, false, false);
-                deepCheckForForm(component);
+                UIComponent component = findComponentById(context.getViewRoot(), renderId, false, false);
+                deepCheckForForm(component, renderId);
                 context.getExternalContext().getRequestMap().put(key, key);
             }
         }
     }
 
-    private void deepCheckForForm (UIComponent component) {
+    private void deepCheckForForm(UIComponent component, String renderId) {
         if (component instanceof UIForm) {
-            System.out.println("OpenFaces ajax warning! Form " + component.getId() + " is being indirectly ajax reloaded.");
+            System.out.println("OpenFaces Ajax warning! Parents components of forms cannot be reloaded " +
+                    "(see http://java.net/jira/browse/JAVASERVERFACES_SPEC_PUBLIC-1024); An attempt to reload form \"" +
+                    component.getId() + "\" as part of the following reloaded component: \"" + renderId);
         }
         final List<UIComponent> children = component.getChildren();
         for (UIComponent uiComponent : children) {
-            deepCheckForForm(uiComponent);
+            deepCheckForForm(uiComponent, renderId);
         }
     }
 }
