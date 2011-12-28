@@ -157,6 +157,10 @@
   background: #f4f4f4;
 }
 
+.o_tableColumn {
+  overflow: hidden;
+}
+
 .o_table_sortingToggle {
     display: none;
 }
