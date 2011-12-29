@@ -355,15 +355,17 @@
     <image>Slider</image>
     <selectedImage>/images/components/titles/Slider.png</selectedImage>
     <keyFeatures>
-      <feature>Support for integer and floating-point numbers</feature>
-      <feature>Keyboard support</feature>
+      <feature>Multiple files upload support</feature>
       <feature>Customizable appearance</feature>
-      <feature>Specifying allowed number range</feature>
     </keyFeatures>
     <demos>
       <demoItem>
-        <demoName>General</demoName>
+        <demoName>Multiple File Upload</demoName>
         <demoUrl>/fileupload/FileUpload.jsf</demoUrl>
+      </demoItem>
+      <demoItem>
+        <demoName>File Upload in DataTable</demoName>
+        <demoUrl>/fileupload/FileUpload_table.jsf</demoUrl>
       </demoItem>
     </demos>
   </menuItem>
