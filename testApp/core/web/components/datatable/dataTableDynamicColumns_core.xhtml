@@ -42,8 +42,11 @@
       <h:inputText value="#{row.customFields[col]}"/>
       <h:inputText value="#{row.customObjectFields[col].stringField3}"/>
       <h:selectBooleanCheckbox value="#{row.customObjectFields[col].booleanField}"/>
+      <h:commandButton value="Submit action (col data not available yet)" action="#{TableTestBean.dynamicColumnActionTest}"/>
+      <o:commandButton value="Ajax action" action="#{TableTestBean.dynamicColumnActionTest}" render="hiddenInput"/>
     </o:columns>
   </o:dataTable>
+  <h:inputHidden id="hiddenInput"/>
   <h:commandButton value="Change the set of columns" action="#{TableTestBean.changeColumns}"/>
 
 </div>

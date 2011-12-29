@@ -14,10 +14,13 @@ package org.openfaces.component.table;
 
 import org.openfaces.component.OUIData;
 import org.openfaces.renderkit.TableUtil;
+import org.openfaces.util.Components;
 import org.openfaces.util.ValueBindings;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
+import javax.faces.FacesException;
+import javax.faces.component.ContextCallback;
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
@@ -664,8 +667,13 @@ public class Columns extends UIComponentBase implements NamingContainer {
     }
 
     public List<DynamicColumn> toColumnList(FacesContext context) {
-        if (columnList == null)
+        if (columnList == null) {
             columnList = createColumnList(context);
+
+            for (DynamicColumn dynamicColumn : columnList) {
+                Components.generateIdIfNotSpecified(dynamicColumn);
+            }
+        }
         return columnList;
     }
 
@@ -786,6 +794,19 @@ public class Columns extends UIComponentBase implements NamingContainer {
             if (sortingExpressionBinding != null)
                 column.setSortingExpression(new SortingExpressionExpression(column, sortingExpressionBinding));
         }
+    }
+
+    @Override
+    public boolean invokeOnComponent(FacesContext context, String clientId, ContextCallback callback) throws FacesException {
+        if (clientId.equals(this.getClientId(context)))
+            return super.invokeOnComponent(context, clientId, callback);
+
+        for (DynamicColumn dynamicColumn : toColumnList(context)) {
+            if (dynamicColumn.invokeOnComponent(context, clientId, callback))
+                return true;
+        }
+
+        return false;
     }
 
     @Override

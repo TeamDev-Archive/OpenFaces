@@ -494,4 +494,12 @@ public class TableTestBean {
     public void setCounter(int counter) {
         this.counter = counter;
     }
+
+    public void dynamicColumnActionTest() {
+        TestBean row = Faces.var("row", TestBean.class);
+        String col = Faces.var("col", String.class);
+
+        System.out.println("dynamicColumnActionTest: row[field1='" + row.getField1() + "']; col['" + col + "']");
+
+    }
 }
