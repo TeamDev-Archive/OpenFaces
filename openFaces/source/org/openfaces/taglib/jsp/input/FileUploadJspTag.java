@@ -32,10 +32,6 @@ public class FileUploadJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("minQuantity", minQuantity);
     }
 
-    public void setUploadedFiles(ValueExpression uploadedFiles) {
-        getDelegate().setPropertyValue("uploadedFiles", uploadedFiles);
-    }
-
     public void setHeaderStyle(ValueExpression headerStyle) {
         getDelegate().setPropertyValue("headerStyle", headerStyle);
     }
@@ -169,5 +165,12 @@ public class FileUploadJspTag extends AbstractComponentJspTag {
     }
     public void setStatusStoppedText(MethodExpression statusStoppedText) {
         getDelegate().setPropertyValue("statusStoppedText", statusStoppedText);
+    }
+        public void setMultiUpload(MethodExpression multiUpload) {
+        getDelegate().setPropertyValue("multiUpload", multiUpload);
+    }
+
+    public void setUploadCompletionListener(MethodExpression uploadCompletionListener) {
+        getDelegate().setPropertyValue("uploadCompletionListener", uploadCompletionListener);
     }
 }

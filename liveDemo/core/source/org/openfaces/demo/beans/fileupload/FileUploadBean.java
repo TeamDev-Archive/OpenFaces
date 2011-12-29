@@ -13,6 +13,7 @@
 package org.openfaces.demo.beans.fileupload;
 
 import org.openfaces.event.FileUploadedEvent;
+import org.openfaces.event.UploadCompletionEvent;
 
 import java.io.File;
 import java.io.IOException;
@@ -47,20 +48,17 @@ public class FileUploadBean implements Serializable {
         this.uploadButtonLabel = uploadButtonLabel;
     }
 
-    public List<File> getFiles() {
-        return files;
-    }
-
-    public void setFiles(List<File> files) throws IOException {
-        this.files = files;
-    }
-
-
-    public void fileUploaded(FileUploadedEvent e) {
+    /*public void fileUploaded(FileUploadedEvent e) {
         if (files == null || files.isEmpty()) {
             files = new ArrayList<File>();
         }
         files.add(e.getUploadedFile());
+        return;
+    }*/
+
+    public void allFilesUploaded(UploadCompletionEvent e) {
+        //files.add(e.getUploadedFile());
+        System.out.println("Uploaded files : " + e.getFiles().size());
         return;
     }
 }

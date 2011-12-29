@@ -13,18 +13,16 @@ package org.openfaces.component.input;
 
 import org.openfaces.component.OUIInputBase;
 import org.openfaces.event.FileUploadedListener;
+import org.openfaces.event.UploadCompletionListener;
 import org.openfaces.util.ValueBindings;
 
 import javax.el.MethodExpression;
 import javax.faces.context.FacesContext;
-import java.io.File;
-import java.util.List;
 
 
 public class FileUpload extends OUIInputBase {
     public static final String COMPONENT_TYPE = "org.openfaces.FileUpload";
     public static final String COMPONENT_FAMILY = "org.openfaces.FileUpload";
-    public static final String DEF_CANCEL_LABEL = "Cancel";
 
     private int minQuantity;
     private int maxQuantity;
@@ -76,8 +74,9 @@ public class FileUpload extends OUIInputBase {
 
     private String statusStoppedText;
     private MethodExpression fileUploadedListener;
+    private boolean multiUpload;
 
-    private List<File> uploadedFiles;
+    private MethodExpression uploadCompletionListener;
 
     public FileUpload() {
         setRendererType("org.openfaces.FileUploadRenderer");
@@ -125,7 +124,9 @@ public class FileUpload extends OUIInputBase {
                 progressBarClass,
                 tabindex,
                 saveAttachedState(context, fileUploadedListener),
-                statusStoppedText
+                statusStoppedText,
+                multiUpload,
+                saveAttachedState(context, uploadCompletionListener),
         };
     }
 
@@ -167,7 +168,9 @@ public class FileUpload extends OUIInputBase {
         progressBarClass = (String) values[i++];
         tabindex = (Integer) values[i++];
         fileUploadedListener = (MethodExpression) restoreAttachedState(context, values[i++]);
-        statusStoppedText = (String)values[i++];
+        statusStoppedText = (String) values[i++];
+        multiUpload = (Boolean) values[i++];
+        uploadCompletionListener = (MethodExpression) restoreAttachedState(context, values[i++]);
     }
 
 
@@ -299,14 +302,6 @@ public class FileUpload extends OUIInputBase {
         this.maxQuantity = maxQuantity;
     }
 
-    public List<File> getUploadedFiles() {
-        return ValueBindings.get(this, "uploadedFiles", uploadedFiles, List.class);
-    }
-
-    public void setUploadedFiles(List<File> uploadedFiles) {
-        ValueBindings.set(this, "uploadedFiles", uploadedFiles);
-    }
-
     public String getAcceptedFileTypes() {
         return ValueBindings.get(this, "acceptedTypesOfFile", acceptedFileTypes);
     }
@@ -316,7 +311,7 @@ public class FileUpload extends OUIInputBase {
     }
 
     public boolean isDuplicateAllowed() {
-        return ValueBindings.get(this, "duplicateAllowed", duplicateAllowed, false);
+        return ValueBindings.get(this, "duplicateAllowed", duplicateAllowed, true);
     }
 
     public void setDuplicateAllowed(boolean duplicateAllowed) {
@@ -465,10 +460,38 @@ public class FileUpload extends OUIInputBase {
     }
 
     public String getStatusStoppedText() {
-        return ValueBindings.get(this, "statusStoppedText", statusStoppedText,"Stopped");
+        return ValueBindings.get(this, "statusStoppedText", statusStoppedText, "Stopped");
     }
 
     public void setStatusStoppedText(String statusStoppedText) {
         this.statusStoppedText = statusStoppedText;
+    }
+
+    public boolean isMultiUpload() {
+        return ValueBindings.get(this, "multiUpload", multiUpload, false);
+    }
+
+    public void setMultiUpload(boolean multiUpload) {
+        this.multiUpload = multiUpload;
+    }
+
+    public MethodExpression getUploadCompletionListener() {
+        return uploadCompletionListener;
+    }
+
+    public void setUploadCompletionListener(MethodExpression uploadCompletionListener) {
+        this.uploadCompletionListener = uploadCompletionListener;
+    }
+
+    public void addUploadCompletionListener(UploadCompletionListener uploadCompletionListener) {
+        addFacesListener(uploadCompletionListener);
+    }
+
+    public UploadCompletionListener[] getUploadCompletionListeners() {
+        return (UploadCompletionListener[]) getFacesListeners(FileUploadedListener.class);
+    }
+
+    public void removeUploadCompletionListener(UploadCompletionListener uploadCompletionListener) {
+        removeFacesListener(uploadCompletionListener);
     }
 }

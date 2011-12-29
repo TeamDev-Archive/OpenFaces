@@ -1,0 +1,28 @@
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+        >
+  <div id="Demo">
+           <o:dataTable id="bookSingleSelection"
+                 var="book"
+                 value="#{BookList.books}"
+                 sortColumnId="title"
+                 sortAscending="true"
+                 sortableHeaderRolloverStyle="background: #d4d4d4"
+                 style="width: 700px; margin-left: 20px; line-height: 17px;"
+                 styleClass="datatable"
+                 rolloverRowStyle="background: #f1f1f1;">
+      <o:columnReordering/>
+
+      <o:column id="title" header="Title" sortingExpression="#{book.bookTitle}"
+                style="width: 25%; padding-left: 5%;">
+        <h:outputText value="#{book.bookTitle}"/>
+      </o:column>
+      <o:column header="Upload image for book"
+                style="width: 40%;" bodyStyle="padding-left: 20px;">
+        <o:fileUpload addButtonLabel="Upload"
+            uploadCompletionListener="#{book.allFilesUploaded}" />
+      </o:column>
+    </o:dataTable>
+  </div>
+</div>

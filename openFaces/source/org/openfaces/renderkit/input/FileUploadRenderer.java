@@ -13,7 +13,9 @@ package org.openfaces.renderkit.input;
 
 import org.openfaces.component.input.FileUpload;
 import org.openfaces.component.output.ProgressBar;
-import org.openfaces.event.FileUploadedEvent;
+import org.openfaces.event.FileUploadItem;
+import org.openfaces.event.UploadCompletionEvent;
+import org.openfaces.org.json.JSONArray;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.AjaxPortionRenderer;
@@ -26,14 +28,16 @@ import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.StyleGroup;
 import org.openfaces.util.Styles;
 
+import javax.el.ELContext;
+import javax.el.MethodExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 public class FileUploadRenderer extends RendererBase implements AjaxPortionRenderer {
@@ -85,9 +89,10 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
     private static final String AJAX_PARAM_PROGRESS_REQUEST = "progressRequest";
     private static final String AJAX_PARAM_FILE_NAME = "fileName";
     private static final String PROGRESS_ID = "progress_";
-    /*interrupted progress*/
-    private static final String AJAX_PARAM_INTERRUPTED_REQUEST = "interruptedRequest";
-    private static final String AJAX_PARAM_PROGRESS = "progress";
+
+    /*listOfFiles*/
+    private static final String AJAX_FILES_REQUEST = "listOfFilesRequest";
+    private static final String AJAX_PARAM_FILES_ID = "idOfFiles";
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
@@ -99,7 +104,6 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
             uploadIfExistFiles(context, component);
             return;
         }
-        fileUpload.setUploadedFiles(Collections.EMPTY_LIST);
 
         setAllFacets(fileUpload);
         String clientId = component.getClientId(context);
@@ -145,7 +149,6 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
     private void writeProgressBar(FacesContext context) throws IOException {
         if (progressBar == null) {
             progressBar = new ProgressBar();
-            progressBar.setId(DEF_PROGRESS_ID);
         }
         progressBar.encodeAll(context);
 
@@ -311,11 +314,12 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
         String addButtonOnMouseOverClass = Styles.getCSSClass(context, fileUpload, fileUpload.getAddButtonOnMouseOverStyle(), StyleGroup.regularStyleGroup(), fileUpload.getAddButtonOnMouseOverClass(), null);
         String addButtonOnMouseDownClass = Styles.getCSSClass(context, fileUpload, fileUpload.getAddButtonOnMouseDownStyle(), StyleGroup.regularStyleGroup(), fileUpload.getAddButtonOnMouseDownClass(), null);
         String addButtonOnFocusClass = Styles.getCSSClass(context, fileUpload, fileUpload.getAddButtonOnFocusStyle(), StyleGroup.regularStyleGroup(), fileUpload.getAddButtonOnFocusClass(), null);
-        String addButtonDisabledClass = Styles.getCSSClass(context, fileUpload, fileUpload.getAddButtonDisabledStyle(), StyleGroup.regularStyleGroup(), fileUpload.getAddButtonDisabledClass(), null);
+        String addButtonDisabledClass = Styles.getCSSClass(context, fileUpload, fileUpload.getAddButtonDisabledStyle(), StyleGroup.regularStyleGroup(), fileUpload.getAddButtonDisabledClass(), "o_file_upload_addBtn_dis");
         Styles.renderStyleClasses(context, fileUpload);
 
-        int uploadedSize = fileUpload.getUploadedFiles() == null ? 0 : fileUpload.getUploadedFiles().size();
+        int uploadedSize = 0;
         String headerId = clientId + DIV_HEADER_ID;
+        boolean duplicateAllowed = true;//fileUpload.isDuplicateAllowed();
 
         Script initScript = new ScriptBuilder().initScript(context, fileUpload, "O$.FileUpload._init",
                 fileUpload.getMinQuantity(),
@@ -330,7 +334,7 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
                 fileUpload.getStatusUploadedText(),
                 fileUpload.getMaxFileSizeErrorText(),
                 fileUpload.getAcceptedFileTypes(),
-                fileUpload.isDuplicateAllowed(),
+                duplicateAllowed,
                 headerId + ADD_BTN_ID,
                 addButtonClass,
                 addButtonOnMouseOverClass,
@@ -343,7 +347,9 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
                 fileUpload.isAutoUpload(),
                 fileUpload.getTabindex(),
                 progressBar.getClientId(context),
-                fileUpload.getStatusStoppedText()
+                fileUpload.getStatusStoppedText(),
+                fileUpload.isMultiUpload(),
+                generateUniqueId(clientId)
         );
 
         Rendering.renderInitScript(context, initScript,
@@ -353,54 +359,24 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
         );
     }
 
+    private String generateUniqueId(String clientId) {
+        return clientId + System.currentTimeMillis();
+    }
+
     private void uploadIfExistFiles(FacesContext context, UIComponent component) {
         FileUpload fileUpload = (FileUpload) component;
         ExternalContext extContext = context.getExternalContext();
         String clientId = fileUpload.getClientId(context);
         try {
             HttpServletRequest request = (HttpServletRequest) extContext.getRequest();
-            File uploadedFile = (File) request.getAttribute(clientId + DIV_FOR_INPUTS_ID + INPUT_OF_FILE_ID);
+            FileUploadItem uploadedFile = (FileUploadItem) request.getAttribute(clientId + DIV_FOR_INPUTS_ID + INPUT_OF_FILE_ID);
             if (uploadedFile == null)
                 return;
+            String id = (String) request.getAttribute("FILE_ID");
+            request.getSession().setAttribute(id, uploadedFile);
 
-            fileUpload.getFileUploadedListener().invoke(context.getELContext(), new Object[]{new FileUploadedEvent(fileUpload, uploadedFile)});
-            /*List<File> userFiles = fileUpload.getUploadedFiles();
-
-            if (userFiles == null || userFiles.size() == 0) {
-                List<File> uploadedFiles = new LinkedList<File>();
-                uploadedFiles.add(uploadedFile);
-                fileUpload.setUploadedFiles(uploadedFiles);
-            } else {
-                if (fileUpload.isDuplicateAllowed()) {
-                    userFiles.add(uploadedFile);
-                } else {
-                    String fileName = uploadedFile.getName();
-                    if (!fileName.startsWith("copy_")) {
-                        userFiles.add(uploadedFile);
-                    } else {
-                        boolean isDuplicate = false;
-                        for (File f : userFiles) {
-                            String nameOfUserFile = f.getName();
-                            int index = nameOfUserFile.lastIndexOf("_");
-                            String nameAfterPrefix;
-                            if (index != -1) {
-                                nameAfterPrefix = nameOfUserFile.substring(index);
-                            } else {
-                                nameAfterPrefix = nameOfUserFile;
-                            }
-                            if (fileName.contains(nameAfterPrefix)) {
-                                isDuplicate = true;
-                                break;
-                            }
-                        }
-                        if (!isDuplicate) {
-                            userFiles.add(uploadedFile);
-                        } else {
-                            uploadedFile.delete();
-                        }
-                    }
-                }
-            }*/
+            //file uploaded.
+            //fileUpload.getFileUploadedListener().invoke(context.getELContext(), new Object[]{new FileUploadedEvent(fileUpload, uploadedFile)});
         } catch (Exception e) {
             throw new RuntimeException("Could not handle file upload - please ensure that you have correctly configured the filter.", e);
         }
@@ -428,17 +404,37 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
                 Rendering.addJsonParam(jsonObj, "status", "error");
             }
             return jsonObj;
-        } else if (jsonParam.has(AJAX_PARAM_INTERRUPTED_REQUEST)) {
+        } else if (jsonParam.has(AJAX_FILES_REQUEST)) {
             JSONObject jsonObj = new JSONObject();
-            String nameOfFile = (String) jsonParam.get(AJAX_PARAM_FILE_NAME);
+            JSONArray ids = (JSONArray) jsonParam.get(AJAX_PARAM_FILES_ID);
+            boolean allUploaded = true;
             Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
-            if (sessionMap.containsKey(PROGRESS_ID + nameOfFile)) {
-                Integer progress = (Integer) sessionMap.get(PROGRESS_ID + nameOfFile);
-                Rendering.addJsonParam(jsonObj, "progress", progress);
+            for (int i = 0; i < ids.length(); i++) {
+                if (!sessionMap.containsKey(ids.getString(i))) {
+                    allUploaded = false;
+                    break;
+                }
             }
+            if (allUploaded) {
+                if (ids.length() != 0) {//call listener
+                    List<FileUploadItem> files = new LinkedList<FileUploadItem>();
+                    for (int i = 0; i < ids.length(); i++) {
+                        String id = ids.getString(i);
+                        files.add((FileUploadItem) sessionMap.get(id));
+                        sessionMap.remove(id);
+                    }
+                    FileUpload fileUpload = (FileUpload) component;
+                    MethodExpression uploadCompletionListener = fileUpload.getUploadCompletionListener();
+                    if (uploadCompletionListener != null) {
+                        uploadCompletionListener.invoke(
+                                context.getELContext(), new Object[]{
+                                new UploadCompletionEvent(fileUpload, files)});
+                    }
+                }
+            }
+            Rendering.addJsonParam(jsonObj, "allUploaded", allUploaded);
             return jsonObj;
         }
         return null;
     }
-
 }

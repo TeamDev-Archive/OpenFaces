@@ -44466,20 +44466,6 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>JavaScript code that should be executed when the user moves the mouse pointer
-        onto the FileUpload div.
-      </description>
-      <name>onmouseover</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-
-
-    <attribute>
       <description>JavaScript code that should be executed on the client when the FileUpload's value has changed.
       </description>
       <name>onchange</name>
@@ -44502,27 +44488,6 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
 
-    <attribute>
-      <description>Minimal quantity of uploaded files </description>
-      <name>minQuantity</name>
-      <deferred-value>
-        <type>int</type>
-      </deferred-value>
-      <!-- @bindingType int -->
-      <!-- @default 0 -->
-      <!-- @el true -->
-    </attribute>
-
-    <attribute>
-      <description>Max quantity of uploaded files</description>
-      <name>maxQuantity</name>
-      <deferred-value>
-        <type>int</type>
-      </deferred-value>
-      <!-- @bindingType int -->
-      <!-- @default 0 -->
-      <!-- @el true -->
-    </attribute>
     <attribute>
       <description>Style for header where Add and Upload button are located</description>
       <name>headerStyle</name>
@@ -44586,24 +44551,15 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>This attribute limits  uploading files only with needed extension.
-        Extensions should be splitted by space , i.e.: jgp png</description>
+      <description>This attribute limits uploading files only with needed extension.
+        Extensions should be splitted by space , i.e.: jgp png
+      </description>
       <name>acceptedFileTypes</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default unknown -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>This attribute define - user might upload file with same names or not.</description>
-      <name>duplicateAllowed</name>
-      <deferred-value>
-        <type>boolean</type>
-      </deferred-value>
-      <!-- @bindingType boolean -->
-      <!-- @default false -->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -44692,7 +44648,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This label appears in status div when file is  uploading at the moment.
+      <description>This label appears in status div when file is uploading at the moment.
       </description>
       <name>statusInProgressText</name>
       <deferred-value>
@@ -44703,7 +44659,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This label appears in status div when file size is more than acceptable (this param should be  setted in web.xml).
+      <description>This label appears in status div when file size is more than acceptable (this param should be setted
+        in web.xml).
       </description>
       <name>maxFileSizeErrorText</name>
       <deferred-value>
@@ -44750,7 +44707,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
 
-        <attribute>
+    <attribute>
       <description>This attribute sets css style when mouse over add button
       </description>
       <name>addButtonOnMouseOverStyle</name>
@@ -44773,7 +44730,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default uknown -->
       <!-- @el true -->
     </attribute>
-            <attribute>
+    <attribute>
       <description>This attribute sets css style when mouse down on add button
       </description>
       <name>addButtonOnMouseDownStyle</name>
@@ -44867,8 +44824,135 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default unknown -->
       <!-- @el true -->
     </attribute>
-
-        <attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user clicks
+        the left mouse button over the FileUpload.
+      </description>
+      <name>onclick</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user double-clicks
+        the left mouse button over the FileUpload.
+      </description>
+      <name>ondblclick</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user clicks over the FileUpload with either
+        mouse button.
+      </description>
+      <name>onmousedown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer onto the FileUpload.
+      </description>
+      <name>onmouseover</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer over the FileUpload.
+      </description>
+      <name>onmousemove</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer
+        away from the FileUpload.
+      </description>
+      <name>onmouseout</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user releases a mouse button
+        over the FileUpload.
+      </description>
+      <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses a key over the FileUpload.
+      </description>
+      <name>onkeydown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user releases a key over the FileUpload.
+      </description>
+      <name>onkeyup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user presses and releases a
+        key over the FileUpload.
+      </description>
+      <name>onkeypress</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>This attribute sets css style for progress bar
       </description>
       <name>progressBarStyle</name>
@@ -44904,19 +44988,6 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>Enables handling of tab selection change on the server side. This attribute is a MethodBinding that
-        must point to the method that accepts a org.openfaces.event.SelectionChangeEvent.
-      </description>
-      <name>fileUploadedListener</name>
-      <deferred-method>
-        <method-signature>void fileUploaded(org.openfaces.event.FileUploadedEvent)</method-signature>
-      </deferred-method>
-      <!-- @bindingType javax.el.MethodExpression -->
-      <!-- @default null -->
-      <!-- @el only -->
-    </attribute>  statusStoppedText
-
-    <attribute>
       <description>This attribute sets status that will be displayed in case of terminate uploading of file.
       </description>
       <name>statusStoppedText</name>
@@ -44927,18 +44998,31 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default Stopped -->
       <!-- @el true -->
     </attribute>
-      <!--  <attribute>
-      <description>Enables handling of tab selection change on the server side. This attribute is a MethodBinding that
-        must point to the method that accepts a org.openfaces.event.SelectionChangeEvent.
+    <attribute>
+      <description>This attribute give ability to upload several files.
+        If multiUpload sets to false then autoUpload attribute will be assigned to true.
       </description>
-      <name>selectionChangeListener</name>
+      <name>multiUpload</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+
+     <attribute>
+      <description>Enables handling uploaded files on the server side. This attribute is a MethodBinding that
+        must point to the method that accepts a org.openfaces.event.UploadCompletionEvent.
+      </description>
+      <name>uploadCompletionListener</name>
       <deferred-method>
-        <method-signature>void selectionChange(org.openfaces.event.SelectionChangeEvent)</method-signature>
+        <method-signature>void uploadCompletionListener(org.openfaces.event.UploadCompletionEvent)</method-signature>
       </deferred-method>
-      &lt;!&ndash; @bindingType javax.el.MethodExpression &ndash;&gt;
-      &lt;!&ndash; @default null &ndash;&gt;
-      &lt;!&ndash; @el only &ndash;&gt;
-    </attribute>-->
+      <!-- @bindingType javax.el.MethodExpression -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>  statusStoppedText
 
   </tag>
   <tag>

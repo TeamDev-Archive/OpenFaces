@@ -197,7 +197,7 @@
 
   <filter>
     <filter-name>UploadMultipartFilter</filter-name>
-    <filter-class>org.openfaces.demo.filter.UploadMultipartFilter</filter-class>
+    <filter-class>org.openfaces.util.FileUploadFilter</filter-class>
   </filter>
 
   <filter-mapping>
