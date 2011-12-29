@@ -14,6 +14,7 @@ package org.openfaces.renderkit.input;
 import org.openfaces.component.input.FileUpload;
 import org.openfaces.component.output.ProgressBar;
 import org.openfaces.event.FileUploadItem;
+import org.openfaces.event.Status;
 import org.openfaces.event.UploadCompletionEvent;
 import org.openfaces.org.json.JSONArray;
 import org.openfaces.org.json.JSONException;
@@ -408,30 +409,37 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
             return jsonObj;
         } else if (jsonParam.has(AJAX_FILES_REQUEST)) {
             JSONObject jsonObj = new JSONObject();
-            JSONArray ids = (JSONArray) jsonParam.get(AJAX_PARAM_FILES_ID);
+            JSONArray files = (JSONArray) jsonParam.get(AJAX_PARAM_FILES_ID);
             boolean allUploaded = true;
             Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
-            for (int i = 0; i < ids.length(); i++) {
-                if (!sessionMap.containsKey(ids.getString(i))) {
-                    allUploaded = false;
-                    break;
+            for (int i = 0; i < files.length(); i++) {
+                JSONArray file = files.getJSONArray(i);
+                if (file.getString(2).equals("UPLOADED")) {
+                    if (!sessionMap.containsKey(file.getString(0))) {
+                        allUploaded = false;
+                        break;
+                    }
                 }
             }
             if (allUploaded) {
-                if (ids.length() != 0) {//call listener
-                    List<FileUploadItem> files = new LinkedList<FileUploadItem>();
-                    for (int i = 0; i < ids.length(); i++) {
-                        String id = ids.getString(i);
-                        files.add((FileUploadItem) sessionMap.get(id));
-                        sessionMap.remove(id);
+                List<FileUploadItem> filesItems = new LinkedList<FileUploadItem>();
+                for (int i = 0; i < files.length(); i++) {
+                    JSONArray file = files.getJSONArray(i);
+                    if (file.getString(2).equals("UPLOADED")) {
+                        filesItems.add((FileUploadItem) sessionMap.get(file.getString(0)));
+                        sessionMap.remove(file.getString(0));
+                    } else if (file.getString(2).equals("STOPPED")) {
+                        filesItems.add(new FileUploadItem(file.getString(1), null, Status.CANCELED));
+                    } else if (file.getString(2).equals("ERROR")) {
+                        filesItems.add(new FileUploadItem(file.getString(1), null, Status.FAILED));
                     }
-                    FileUpload fileUpload = (FileUpload) component;
-                    MethodExpression uploadCompletionListener = fileUpload.getUploadCompletionListener();
-                    if (uploadCompletionListener != null) {
-                        uploadCompletionListener.invoke(
-                                context.getELContext(), new Object[]{
-                                new UploadCompletionEvent(fileUpload, files)});
-                    }
+                }
+                FileUpload fileUpload = (FileUpload) component;
+                MethodExpression uploadCompletionListener = fileUpload.getUploadCompletionListener();
+                if (uploadCompletionListener != null) {
+                    uploadCompletionListener.invoke(
+                            context.getELContext(), new Object[]{
+                            new UploadCompletionEvent(fileUpload, filesItems)});
                 }
             }
             Rendering.addJsonParam(jsonObj, "allUploaded", allUploaded);
