@@ -17,9 +17,14 @@ import org.openfaces.event.UploadCompletionListener;
 import org.openfaces.util.ValueBindings;
 
 import javax.el.MethodExpression;
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 
-
+@ResourceDependencies({
+        @ResourceDependency(name = "default.css", library = "openfaces"),
+        @ResourceDependency(name = "jsf.js", library = "javax.faces")
+})
 public class FileUpload extends OUIInputBase {
     public static final String COMPONENT_TYPE = "org.openfaces.FileUpload";
     public static final String COMPONENT_FAMILY = "org.openfaces.FileUpload";

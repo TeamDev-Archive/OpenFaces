@@ -641,8 +641,8 @@ O$.FileUpload = {
         callProgressRequest(fileInput);
       }
       function progressRequest(inputForFile) {
-        O$.requestComponentPortions(fileUpload.id, ["nothing"],
-                JSON.stringify({progressRequest: "true", fileName : encodeURI(getFileName(inputForFile.value))}),
+        O$.Ajax.requestComponentPortions(fileUpload.id, ["nothing"],
+                JSON.stringify({progressRequest: "true", fileName : getFileName(inputForFile.value)}),
                 function(fileUpload, portionName, portionHTML, portionScripts, portionData) {
                   var infoDiv = O$(allInfos.id + inputForFile._idInputAndDiv);
                   if (portionData['status'] == "error") {//todo:description add what kind of error
@@ -724,7 +724,7 @@ O$.FileUpload = {
                   }
 
                   function sendCheckRequest() {
-                    O$.requestComponentPortions(fileUpload.id, ["nothing"],
+                    O$.Ajax.requestComponentPortions(fileUpload.id, ["nothing"],
                             JSON.stringify({listOfFilesRequest: "true", idOfFiles : fileUpload._listOfids}),
                             function(fileUpload, portionName, portionHTML, portionScripts, portionData) {
                               if (portionData['allUploaded'] == "true") {
