@@ -78,7 +78,7 @@ public class Book implements Serializable {
     }
 
     public void allFilesUploaded(UploadCompletionEvent e) {
-
+        System.out.println("For book '" + this.getBookTitle() + "' uploaded " + e.getFiles().get(0).getFile().getName());
         return;
     }
 

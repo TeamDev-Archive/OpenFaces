@@ -56,6 +56,7 @@ public class FileUploadRequestWrapper extends HttpServletRequestWrapper {
             }
 
         } catch (FileUploadException fe) {
+            //throw new RuntimeException(fe);
            System.out.println("The file uploading has been terminated or request is time out.");
         } catch (IOException ne) {
             throw new RuntimeException(ne);

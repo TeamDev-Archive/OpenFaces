@@ -57,8 +57,8 @@ public class FileUploadBean implements Serializable {
     }*/
 
     public void allFilesUploaded(UploadCompletionEvent e) {
-
         //files.add(e.getUploadedFile());
+        System.out.println("Uploaded files : " + e.getFiles().size());
         return;
     }
 }

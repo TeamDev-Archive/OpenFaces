@@ -41,7 +41,7 @@ public class FileUploadFilter implements Filter {
             //We're dealing with a multipart request - we have to wrap the request.
             String tempDir = servletContext.getInitParameter("org.openfaces.fileUpload.tempDir");
             if (tempDir == null) {
-                tempDir = "C:\\temp";
+                throw new IllegalStateException("Parameter org.openfaces.fileUpload.tempDir in web.xml is not specified.");
             }
 
             String maxSizeString = servletContext.getInitParameter("org.openfaces.fileUpload.maxFileSize");
