@@ -44453,7 +44453,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>JavaScript code that should be executed on the client when the FileUpload's value has changed.
+      <description>JavaScript code that should be executed on the client when the list of files for uploading has changed.
       </description>
       <name>onchange</name>
       <deferred-value>
@@ -44476,64 +44476,64 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>Style for header where Add and Upload button are located</description>
+      <description>Style for header where Browse and Upload button are located</description>
       <name>headerStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default unknown -->
+      <!-- @default null -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>CSS class for header where Add and Upload button are located</description>
+      <description>CSS class for header where Browse and Upload button are located</description>
       <name>headerClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default unknown -->
+      <!-- @default o_file_upload_header -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Style for all information windows which shows list of files and state of them</description>
+      <description>Style for  window which shows list of files, its status, progressBar.</description>
       <name>allInfosStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default unknown -->
+      <!-- @default null -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>CSS class for all information windows which shows list of files and state of them</description>
+      <description>CSS class for window which shows list of files, its status, progressBar</description>
       <name>allInfosClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default unknown -->
+      <!-- @default o_file_upload_infos -->
       <!-- @el true -->
     </attribute>
 
     <attribute>
-      <description>Style for each file which should be uploaded</description>
+      <description>Style for each row that contains fileName, progressBar, status, Remove/Stop/Cancel button</description>
       <name>fileInfoStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default unknown -->
+      <!-- @default null -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>CSS class for each file which should be uploaded</description>
+      <description>CSS class for each row that contains fileName, progressBar, status, Remove/Stop/Cancel button </description>
       <name>fileInfoClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default unknown -->
+      <!-- @default o_file_upload_info -->
       <!-- @el true -->
     </attribute>
 
@@ -44546,11 +44546,11 @@ entering a value and returns a list of suggestions from the server -->
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default unknown -->
+      <!-- @default null -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>If this attribute will be set true, the file need to be uploaded right after user selects a file from
+      <description>If this attribute will be set true, the file needed to be uploaded right after user selects a file from
         the file chooser.
       </description>
       <name>autoUpload</name>
@@ -44659,9 +44659,9 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>the text that will be shown on add button
+      <description>the text that will be shown on browse button
       </description>
-      <name>addButtonLabel</name>
+      <name>browseButtonLabel</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -44671,9 +44671,9 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>This attribute sets css style for add button
+      <description>This attribute sets css style for browse button
       </description>
-      <name>addButtonStyle</name>
+      <name>browseButtonStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -44683,9 +44683,9 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>This attribute sets css class for add button
+      <description>This attribute sets css class for browse button
       </description>
-      <name>addButtonClass</name>
+      <name>browseButtonClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -44695,9 +44695,9 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>This attribute sets css style when mouse over add button
+      <description>This attribute sets css style when mouse over browse button
       </description>
-      <name>addButtonOnMouseOverStyle</name>
+      <name>browseButtonOnMouseOverStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -44707,9 +44707,9 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>This attribute sets css class when mouse over on add button
+      <description>This attribute sets css class when mouse over on browse button
       </description>
-      <name>addButtonOnMouseOverClass</name>
+      <name>browseButtonOnMouseOverClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -44718,21 +44718,9 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This attribute sets css style when mouse down on add button
+      <description>This attribute sets css style when mouse down on browse button
       </description>
-      <name>addButtonOnMouseDownStyle</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default uknown -->
-      <!-- @el true -->
-    </attribute>
-
-    <attribute>
-      <description>This attribute sets css class when mouse down on add button
-      </description>
-      <name>addButtonOnMouseDownClass</name>
+      <name>browseButtonOnMouseDownStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -44742,9 +44730,9 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>This attribute sets css style for disabled Add button
+      <description>This attribute sets css class when mouse down on browse button
       </description>
-      <name>addButtonDisabledStyle</name>
+      <name>browseButtonOnMouseDownClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -44754,9 +44742,9 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>This attribute sets css class for disabled Add button
+      <description>This attribute sets css style for disabled Browse button
       </description>
-      <name>addButtonDisabledClass</name>
+      <name>browseButtonDisabledStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -44766,9 +44754,9 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>This attribute sets css style for focused Add button
+      <description>This attribute sets css class for disabled Browse button
       </description>
-      <name>addButtonOnFocusStyle</name>
+      <name>browseButtonDisabledClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -44778,9 +44766,21 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>This attribute sets css class for focused Add button
+      <description>This attribute sets css style for focused Browse button
       </description>
-      <name>addButtonOnFocusClass</name>
+      <name>browseButtonOnFocusStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default uknown -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>This attribute sets css class for focused Browse button
+      </description>
+      <name>browseButtonOnFocusClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -44998,7 +44998,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
 
-     <attribute>
+    <attribute>
       <description>Enables handling uploaded files on the server side. This attribute is a MethodBinding that
         must point to the method that accepts a org.openfaces.event.UploadCompletionEvent.
       </description>
@@ -45081,7 +45081,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
-        <attribute>
+    <attribute>
       <description>A style for element which displays progress that already achieved.</description>
       <name>processedStyle</name>
       <deferred-value>

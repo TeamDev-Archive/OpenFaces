@@ -38,21 +38,21 @@ public class FileUploadTag extends AbstractComponentTag {
         setStringProperty(component, "headerStyle");
         setStringProperty(component, "headerClass");
 
-        setStringProperty(component, "addButtonStyle");
-        setStringProperty(component, "addButtonClass");
-        setStringProperty(component, "addButtonLabel");
+        setStringProperty(component, "browseButtonStyle");
+        setStringProperty(component, "browseButtonClass");
+        setStringProperty(component, "browseButtonLabel");
 
-        setStringProperty(component, "addButtonOnMouseOverStyle");
-        setStringProperty(component, "addButtonOnMouseOverClass");
+        setStringProperty(component, "browseButtonOnMouseOverStyle");
+        setStringProperty(component, "browseButtonOnMouseOverClass");
 
-        setStringProperty(component, "addButtonOnMouseDownStyle");
-        setStringProperty(component, "addButtonOnMouseDownClass");
+        setStringProperty(component, "browseButtonOnMouseDownStyle");
+        setStringProperty(component, "browseButtonOnMouseDownClass");
 
-        setStringProperty(component, "addButtonOnFocusStyle");
-        setStringProperty(component, "addButtonOnFocusClass");
+        setStringProperty(component, "browseButtonOnFocusStyle");
+        setStringProperty(component, "browseButtonOnFocusClass");
 
-        setStringProperty(component, "addButtonDisabledStyle");
-        setStringProperty(component, "addButtonDisabledClass");
+        setStringProperty(component, "browseButtonDisabledStyle");
+        setStringProperty(component, "browseButtonDisabledClass");
 
         setStringProperty(component, "allInfosStyle");
         setStringProperty(component, "allInfosClass");

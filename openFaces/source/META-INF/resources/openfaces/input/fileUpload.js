@@ -44,7 +44,7 @@ O$.FileUpload = {
     elements.removeChild(divForClearFacet);
     clearFacet.disabled = false;
 
-    var divForCancelFacet = O$(componentId + "::elements::cancelFacet");
+    var divForCancelFacet = O$(componentId + "::elements::removeFacet");
     var cancelFacet = divForCancelFacet.firstChild;
     elements.removeChild(divForCancelFacet);
     cancelFacet.disabled = false;
