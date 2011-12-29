@@ -28,7 +28,6 @@ import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.StyleGroup;
 import org.openfaces.util.Styles;
 
-import javax.el.ELContext;
 import javax.el.MethodExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
@@ -111,6 +110,9 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
         Rendering.writeIdAttribute(context, fileUpload);
         Rendering.writeStyleAndClassAttributes(writer, fileUpload.getStyle(), fileUpload.getStyleClass(), "o_file_upload");
         Rendering.writeStandardEvents(writer, fileUpload);
+
+        writer.writeAttribute("onuploadstart", fileUpload.getOnuploadstart(), null);
+        writer.writeAttribute("onuploadend", fileUpload.getOnuploadend(), null);
 
         writeHeader(context, fileUpload, writer, clientId + DIV_HEADER_ID);
 

@@ -160,17 +160,26 @@ public class FileUploadJspTag extends AbstractComponentJspTag {
     public void setTabindex(ValueExpression tabindex) {
         getDelegate().setPropertyValue("tabindex", tabindex);
     }
+
     public void setFileUploadedListener(MethodExpression fileUploadedListener) {
         getDelegate().setPropertyValue("fileUploadedListener", fileUploadedListener);
     }
+
     public void setStatusStoppedText(MethodExpression statusStoppedText) {
         getDelegate().setPropertyValue("statusStoppedText", statusStoppedText);
     }
-        public void setMultiUpload(MethodExpression multiUpload) {
+
+    public void setMultiUpload(MethodExpression multiUpload) {
         getDelegate().setPropertyValue("multiUpload", multiUpload);
     }
 
     public void setUploadCompletionListener(MethodExpression uploadCompletionListener) {
         getDelegate().setPropertyValue("uploadCompletionListener", uploadCompletionListener);
+    }
+    public void setOnuploadstart(MethodExpression onuploadstart) {
+        getDelegate().setPropertyValue("onuploadstart", onuploadstart);
+    }
+    public void setOnuploadend(MethodExpression onuploadend) {
+        getDelegate().setPropertyValue("onuploadend", onuploadend);
     }
 }

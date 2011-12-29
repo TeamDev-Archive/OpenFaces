@@ -82,6 +82,9 @@ public class FileUpload extends OUIInputBase {
     private boolean multiUpload;
 
     private MethodExpression uploadCompletionListener;
+    
+    private String onuploadstart;
+    private String onuploadend;
 
     public FileUpload() {
         setRendererType("org.openfaces.FileUploadRenderer");
@@ -498,5 +501,21 @@ public class FileUpload extends OUIInputBase {
 
     public void removeUploadCompletionListener(UploadCompletionListener uploadCompletionListener) {
         removeFacesListener(uploadCompletionListener);
+    }
+
+    public String getOnuploadstart() {
+        return ValueBindings.get(this, "onuploadstart", onuploadstart);
+    }
+
+    public void setOnuploadstart(String onuploadstart) {
+        this.onuploadstart = onuploadstart;
+    }
+
+    public String getOnuploadend() {
+        return ValueBindings.get(this, "onuploadend", onuploadend);
+    }
+
+    public void setOnuploadend(String onuploadend) {
+        this.onuploadend = onuploadend;
     }
 }

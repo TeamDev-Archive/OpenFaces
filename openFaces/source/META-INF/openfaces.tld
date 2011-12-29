@@ -45022,8 +45022,30 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @bindingType javax.el.MethodExpression -->
       <!-- @default null -->
       <!-- @el only -->
-    </attribute>  statusStoppedText
-
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when started uploading for all files.
+      </description>
+      <name>onuploadstart</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default none -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when all files finished uploading ,
+        no matter successfully, with errors or stopped.
+      </description>
+      <name>onuploadend</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default none -->
+      <!-- @el true -->
+    </attribute>
   </tag>
   <tag>
     <name>progressBar</name>

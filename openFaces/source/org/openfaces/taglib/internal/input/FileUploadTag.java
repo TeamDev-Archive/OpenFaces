@@ -84,5 +84,7 @@ public class FileUploadTag extends AbstractComponentTag {
         setBooleanProperty(component, "multiUpload");
         setMethodExpressionProperty(facesContext, component, "uploadCompletionListener",
                 new Class[]{UploadCompletionEvent.class}, void.class);
+        setStringProperty(component, "onuploadstart");
+        setStringProperty(component, "onuploadend");
     }
 }
