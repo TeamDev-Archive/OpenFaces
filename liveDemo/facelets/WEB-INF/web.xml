@@ -138,11 +138,11 @@
   </context-param>
   -->
 
-  <!-- Temporary directory where files would be uploaded. For example:'D:\!files' -->
-  <context-param>
-    <param-name>org.openfaces.fileUpload.tempDir</param-name>
-    <param-value>D:\!files</param-value>
-  </context-param>
+  <!-- Temporary directory where files are be uploaded. For example:'c:/tempUploadDir' -->
+  <!--<context-param>-->
+    <!--<param-name>org.openfaces.fileUpload.tempDir</param-name>-->
+    <!--<param-value>c:/tempUploadDir</param-value>-->
+  <!--</context-param>-->
   <!-- Set the maximum size of each file in KB -->
   <context-param>
     <param-name>org.openfaces.fileUpload.maxFileSize</param-name>

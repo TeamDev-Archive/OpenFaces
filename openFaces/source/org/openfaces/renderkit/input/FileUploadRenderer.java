@@ -390,7 +390,6 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
-        System.out.println("decode");
     }
 
     public JSONObject encodeAjaxPortion(FacesContext context, UIComponent component, String portionName, JSONObject jsonParam) throws IOException, JSONException {

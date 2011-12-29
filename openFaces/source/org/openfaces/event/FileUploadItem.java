@@ -13,17 +13,18 @@
 package org.openfaces.event;
 
 import java.io.File;
+import java.io.Serializable;
 
 /**
  * @author: Andrey Loboda
  * @date : 28.12.11
  */
-public class FileUploadItem {
+public class FileUploadItem implements Serializable {
     private final String fileName;
     private final File file;
-    private final Status status;
+    private final FileUploadStatus status;
 
-    public FileUploadItem(String fileName, File file, Status status) {
+    public FileUploadItem(String fileName, File file, FileUploadStatus status) {
         this.file = file;
         this.fileName = fileName;
         this.status = status;
@@ -37,7 +38,7 @@ public class FileUploadItem {
         return file;
     }
 
-    public Status getStatus() {
+    public FileUploadStatus getStatus() {
         return status;
     }
 }

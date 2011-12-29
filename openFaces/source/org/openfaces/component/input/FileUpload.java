@@ -266,7 +266,7 @@ public class FileUpload extends OUIInputBase {
     }
 
     public String getMaxFileSizeErrorText() {
-        return ValueBindings.get(this, "maxFileSizeErrorText", maxFileSizeErrorText, "Error: size of file is too big");
+        return ValueBindings.get(this, "maxFileSizeErrorText", maxFileSizeErrorText, "File size limit exceeded");
     }
 
     public void setMaxFileSizeErrorText(String maxFileSizeErrorText) {

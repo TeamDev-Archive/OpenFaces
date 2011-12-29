@@ -4,8 +4,31 @@
         >
   <div id="Demo">
     <o:fileUpload id="fileUpload" multiUpload="true"
-            uploadCompletionListener="#{FileUploadBean.allFilesUploaded}" style="margin-left: 20px; margin-bottom:40px"
-            onuploadstart = "console.log('onuploadstart ')" onuploadend="console.log('onuploadend')"/>
+            uploadCompletionListener="#{FileUploadBean.uploadComplete}"
+            onuploadstart = "console.log('onuploadstart')" onuploadend="console.log('onuploadend')">
+      <o:ajax event="uploadend" render="uploadedFilesTable"/>
+    </o:fileUpload>
+
+    <br/>
+    <br/>
+
+    Uploaded files:
+    <o:dataTable id="uploadedFilesTable" value="#{FileUploadBean.uploadedFiles}" var="fileUploadItem"
+                 style="border: none"
+            headerRowStyle="background: #f0f0f0">
+      <f:facet name="noDataMessage">
+        <h:outputText value="No files uploaded yet"/>
+      </f:facet>
+      <o:column header="File name" width="300px" style="text-align: left">
+        <h:outputText value="#{fileUploadItem.fileName}"/>
+      </o:column>
+      <o:column header="File size" width="100px" style="text-align: right; padding-right: 20px">
+        <h:outputText value="#{FileUploadBean.fileSize}" />
+      </o:column>
+      <o:column header="Upload status" width="100px" style="text-align: center">
+        <h:outputText value="#{fileUploadItem.status}"/>
+      </o:column>
+    </o:dataTable>
 
   </div>
 </div>
