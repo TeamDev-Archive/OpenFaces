@@ -40,48 +40,48 @@ public class FileUploadJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("headerClass", headerClass);
     }
 
-    public void setAddButtonStyle(ValueExpression addButtonStyle) {
-        getDelegate().setPropertyValue("addButtonStyle", addButtonStyle);
+    public void setBrowseButtonStyle(ValueExpression browseButtonStyle) {
+        getDelegate().setPropertyValue("browseButtonStyle", browseButtonStyle);
     }
 
-    public void setAddButtonClass(ValueExpression addButtonClass) {
-        getDelegate().setPropertyValue("addButtonClass", addButtonClass);
+    public void setBrowseButtonClass(ValueExpression browseButtonClass) {
+        getDelegate().setPropertyValue("browseButtonClass", browseButtonClass);
     }
 
-    public void setAddButtonLabel(ValueExpression addButtonLabel) {
-        getDelegate().setPropertyValue("addButtonLabel", addButtonLabel);
+    public void setBrowseButtonLabel(ValueExpression browseButtonLabel) {
+        getDelegate().setPropertyValue("browseButtonLabel", browseButtonLabel);
     }
 
-    public void setAddButtonOnMouseOverStyle(ValueExpression addButtonOnMouseOverStyle) {
-        getDelegate().setPropertyValue("addButtonOnMouseOverStyle", addButtonOnMouseOverStyle);
+    public void setBrowseButtonOnMouseOverStyle(ValueExpression browseButtonOnMouseOverStyle) {
+        getDelegate().setPropertyValue("browseButtonOnMouseOverStyle", browseButtonOnMouseOverStyle);
     }
 
-    public void setAddButtonOnMouseOverClass(ValueExpression addButtonOnMouseOverClass) {
-        getDelegate().setPropertyValue("addButtonOnMouseOverClass", addButtonOnMouseOverClass);
+    public void setBrowseButtonOnMouseOverClass(ValueExpression browseButtonOnMouseOverClass) {
+        getDelegate().setPropertyValue("browseButtonOnMouseOverClass", browseButtonOnMouseOverClass);
     }
 
-    public void setAddButtonOnMouseDownStyle(ValueExpression addButtonOnMouseDownStyle) {
-        getDelegate().setPropertyValue("addButtonOnMouseDownStyle", addButtonOnMouseDownStyle);
+    public void setBrowseButtonOnMouseDownStyle(ValueExpression browseButtonOnMouseDownStyle) {
+        getDelegate().setPropertyValue("browseButtonOnMouseDownStyle", browseButtonOnMouseDownStyle);
     }
 
-    public void setAddButtonOnMouseDownClass(ValueExpression addButtonOnMouseDownClass) {
-        getDelegate().setPropertyValue("addButtonOnMouseDownClass", addButtonOnMouseDownClass);
+    public void setAddButtonOnMouseDownClass(ValueExpression browseButtonOnMouseDownClass) {
+        getDelegate().setPropertyValue("browseButtonOnMouseDownClass", browseButtonOnMouseDownClass);
     }
 
-    public void setAddButtonOnFocusStyle(ValueExpression addButtonOnFocusStyle) {
-        getDelegate().setPropertyValue("addButtonOnFocusStyle", addButtonOnFocusStyle);
+    public void setBrowseButtonOnFocusStyle(ValueExpression browseButtonOnFocusStyle) {
+        getDelegate().setPropertyValue("browseButtonOnFocusStyle", browseButtonOnFocusStyle);
     }
 
-    public void setAddButtonOnFocusClass(ValueExpression addButtonOnFocusClass) {
-        getDelegate().setPropertyValue("addButtonOnFocusClass", addButtonOnFocusClass);
+    public void setBrowseButtonOnFocusClass(ValueExpression browseButtonOnFocusClass) {
+        getDelegate().setPropertyValue("browseButtonOnFocusClass", browseButtonOnFocusClass);
     }
 
-    public void setAddButtonDisabledStyle(ValueExpression addButtonDisabledStyle) {
-        getDelegate().setPropertyValue("addButtonDisabledStyle", addButtonDisabledStyle);
+    public void setBrowseButtonDisabledStyle(ValueExpression browseButtonDisabledStyle) {
+        getDelegate().setPropertyValue("browseButtonDisabledStyle", browseButtonDisabledStyle);
     }
 
-    public void setAddButtonDisabledClass(ValueExpression addButtonDisabledClass) {
-        getDelegate().setPropertyValue("addButtonDisabledClass", addButtonDisabledClass);
+    public void setBrowseButtonDisabledClass(ValueExpression browseButtonDisabledClass) {
+        getDelegate().setPropertyValue("browseButtonDisabledClass", browseButtonDisabledClass);
     }
 
     public void setAllInfosStyle(ValueExpression allInfosStyle) {
