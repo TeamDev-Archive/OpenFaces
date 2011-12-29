@@ -12,6 +12,8 @@
 
 package org.openfaces.demo.beans.datatable;
 
+import org.openfaces.event.UploadCompletionEvent;
+
 import java.io.Serializable;
 
 public class Book implements Serializable {
@@ -73,6 +75,11 @@ public class Book implements Serializable {
         result = 29 * result + (publisher != null ? publisher.hashCode() : 0);
         result = 29 * result + (bookCategory != null ? bookCategory.hashCode() : 0);
         return result;
+    }
+
+    public void allFilesUploaded(UploadCompletionEvent e) {
+
+        return;
     }
 
 }

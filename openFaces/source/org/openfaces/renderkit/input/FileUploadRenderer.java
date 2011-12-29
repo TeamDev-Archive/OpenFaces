@@ -149,7 +149,6 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
     private void writeProgressBar(FacesContext context) throws IOException {
         if (progressBar == null) {
             progressBar = new ProgressBar();
-            progressBar.setId(DEF_PROGRESS_ID);
         }
         progressBar.encodeAll(context);
 

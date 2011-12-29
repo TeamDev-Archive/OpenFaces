@@ -99,9 +99,11 @@ O$.FileUpload = {
     setStylesForAddButton(addButton);
     var divForInputInAddBtn = O$(addButtonId+"::forInput");
     var inputInAddBtn = createInputInAddBtn(idOfInfoAndInputDiv);
+    var addButtonTitle = O$(addButtonId + "::title");
     if (O$.isExplorer() && O$.isQuirksMode()){
-      divForInputInAddBtn.style.height = O$.getElementSize(O$(addButtonId + "::title")).height;
+      divForInputInAddBtn.style.height = O$.getElementSize(addButtonTitle).height;
     }
+    addButtonTitle.firstChild.disabled = false;
     divForInputInAddBtn.appendChild(inputInAddBtn);//create first input
 
     //variables for focus/blur
@@ -330,7 +332,11 @@ O$.FileUpload = {
       }
 
       uploadButton.disabled = true;
-      uploadButton.style.visibility = "hidden";
+      if (!fileUpload._multiUpload){
+        uploadButton.style.display = "none";
+      } else {
+        uploadButton.style.visibility = "hidden";
+      }
     }
 
     function setUploadButtonBehaviour() {
