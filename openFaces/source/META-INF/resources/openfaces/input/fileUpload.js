@@ -86,6 +86,12 @@ O$.FileUpload = {
       fileUpload.removeChild(elements);
     var couldCallChangeEvent = true;
 
+    //processing event onuploadstart,onuploadend
+    var onUploadStartEventHandler = fileUpload.getAttribute('onuploadstart');
+    fileUpload.removeAttribute("onuploadstart");
+    var onUploadEndEventHandler = fileUpload.getAttribute('onuploadend');
+    fileUpload.removeAttribute("onuploadend");
+
     //processing onfocus/onblur event
     var onBlur = fileUpload.onblur;
     fileUpload.removeAttribute("onblur");
@@ -640,6 +646,7 @@ O$.FileUpload = {
         form.target = "_self";
         callProgressRequest(fileInput);
       }
+      eval(onUploadStartEventHandler);
       function progressRequest(inputForFile) {
         O$.requestComponentPortions(fileUpload.id, ["nothing"],
                 JSON.stringify({progressRequest: "true", fileName : encodeURI(getFileName(inputForFile.value))}),
@@ -729,6 +736,7 @@ O$.FileUpload = {
                             function(fileUpload, portionName, portionHTML, portionScripts, portionData) {
                               if (portionData['allUploaded'] == "true") {
                                 fileUpload._listOfids = [];
+                                eval(onUploadEndEventHandler);
                               }else{
                                 setTimeout(sendCheckRequest, 500);
                               }
