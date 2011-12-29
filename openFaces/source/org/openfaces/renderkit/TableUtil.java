@@ -117,9 +117,6 @@ public class TableUtil {
             } else if (child instanceof Columns) {
                 Columns tableColumns = (Columns) child;
                 List<DynamicColumn> dynamicColumns = tableColumns.toColumnList(context);
-                for (DynamicColumn dynamicColumn : dynamicColumns) {
-                    Components.generateIdIfNotSpecified(dynamicColumn);
-                }
                 columns.addAll(dynamicColumns);
             } else if (child instanceof ColumnGroup) {
                 ColumnGroup tcg = (ColumnGroup) child;
