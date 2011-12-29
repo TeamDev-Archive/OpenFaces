@@ -138,6 +138,18 @@
   </context-param>
   -->
 
+  <!-- Temporary directory where files would be uploaded. For example:'D:\!files' -->
+  <context-param>
+    <param-name>org.openfaces.fileUpload.tempDir</param-name>
+    <param-value>D:\!files</param-value>
+  </context-param>
+  <!-- Set the maximum size of each file in KB -->
+  <context-param>
+    <param-name>org.openfaces.fileUpload.maxFileSize</param-name>
+    <param-value>530000</param-value>
+  </context-param>
+
+
   <context-param>
     <description>This flag indicates whether the focus is saved between form submissions
       for all application pages. The default is "false".
@@ -161,11 +173,16 @@
   </filter>
 
   <filter>
+    <filter-name>OpenFacesUploadFilter</filter-name>
+    <filter-class>org.openfaces.util.FileUploadFilter</filter-class>
+  </filter>
+
+  <filter>
     <filter-name>LiveDemoFilter</filter-name>
     <filter-class>org.openfaces.demo.filter.LiveDemoFilter</filter-class>
   </filter>
 
-  <!-- MAPPING FOR OPOENFACES RESOURCE FILTER -->
+  <!-- MAPPING FOR OPENFACES RESOURCE FILTER -->
   <filter-mapping>
     <filter-name>ResourceFilter</filter-name>
     <servlet-name>Faces Servlet</servlet-name>
@@ -178,6 +195,11 @@
     <url-pattern>/openFacesResources/*</url-pattern>
     <dispatcher>REQUEST</dispatcher>
     <dispatcher>FORWARD</dispatcher>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>OpenFacesUploadFilter</filter-name>
+    <url-pattern>*.jsf</url-pattern>
   </filter-mapping>
 
   <filter-mapping>
@@ -210,24 +232,4 @@
     <param-value>true</param-value>
   </context-param>
 
-  <filter>
-    <filter-name>UploadMultipartFilter</filter-name>
-    <filter-class>org.openfaces.util.FileUploadFilter</filter-class>
-  </filter>
-
-  <filter-mapping>
-    <filter-name>UploadMultipartFilter</filter-name>
-    <url-pattern>*.jsf</url-pattern>
-  </filter-mapping>
-
-  <!--Temporary directory where files would be uploaded. For example:'D:\!files'-->
-  <context-param>
-    <param-name>org.openfaces.fileUpload.tempDir</param-name>
-    <param-value>D:\!files</param-value>
-  </context-param>
-  <!--Set the maximum size of each file in KB-->
-  <context-param>
-    <param-name>org.openfaces.fileUpload.maxFileSize</param-name>
-    <param-value>530000</param-value>
-  </context-param>
 </web-app>

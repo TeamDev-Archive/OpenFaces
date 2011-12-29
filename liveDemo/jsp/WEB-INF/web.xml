@@ -104,6 +104,17 @@
   </context-param>
   -->
 
+  <!-- Temporary directory where files would be uploaded. For example:'D:\!files' -->
+  <context-param>
+    <param-name>org.openfaces.fileUpload.tempDir</param-name>
+    <param-value>D:\!files</param-value>
+  </context-param>
+  <!-- Set the maximum size of each file in KB -->
+  <context-param>
+    <param-name>org.openfaces.fileUpload.maxFileSize</param-name>
+    <param-value>530000</param-value>
+  </context-param>
+
   <context-param>
     <description>This flag indicates whether the focus is saved between form submissions
       for all application pages. The default is "false".
@@ -127,6 +138,11 @@
   </filter>
 
   <filter>
+    <filter-name>OpenFacesUploadFilter</filter-name>
+    <filter-class>org.openfaces.util.FileUploadFilter</filter-class>
+  </filter>
+
+  <filter>
     <filter-name>LiveDemoFilter</filter-name>
     <filter-class>org.openfaces.demo.filter.LiveDemoFilter</filter-class>
   </filter>
@@ -144,6 +160,11 @@
     <url-pattern>/openFacesResources/*</url-pattern>
     <dispatcher>REQUEST</dispatcher>
     <dispatcher>FORWARD</dispatcher>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>OpenFacesUploadFilter</filter-name>
+    <url-pattern>*.jsf</url-pattern>
   </filter-mapping>
 
   <filter-mapping>
