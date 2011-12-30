@@ -44492,7 +44492,7 @@ entering a value and returns a list of suggestions from the server -->
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default o_file_upload_header -->
+      <!-- @default null -->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -44512,7 +44512,7 @@ entering a value and returns a list of suggestions from the server -->
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default o_file_upload_info -->
+      <!-- @default null -->
       <!-- @el true -->
     </attribute>
 
@@ -44530,7 +44530,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>If this attribute will be set true, the file needed to be uploaded right after user selects a file from
-        the file chooser.
+        the file chooser. Note that if attribute multiple defined as true, this attribure will be assigned to true automatically.
       </description>
       <name>autoUpload</name>
       <deferred-value>
@@ -44541,44 +44541,44 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This css class will be assigned to div which output name of file.</description>
+      <description>This css class will be assigned to div which displays name of file.</description>
       <name>fileNameClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default unknown -->
+      <!-- @default null -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This css style will be assigned to div which output name of file.</description>
+      <description>This css style will be assigned to div which displays name of file.</description>
       <name>fileNameStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default unknown -->
+      <!-- @default null -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This css style will be assigned to div which output status of file.
+      <description>This css style will be assigned to div which displays status of file.
       </description>
       <name>uploadStatusStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default unknown -->
+      <!-- @default null -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This css class will be assigned to div which output status of file.</description>
+      <description>This css class will be assigned to div which displays status of file.</description>
       <name>uploadStatusClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default unknown -->
+      <!-- @default null -->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -44589,11 +44589,11 @@ entering a value and returns a list of suggestions from the server -->
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default unknown -->
+      <!-- @default null -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This label appears in status div when file is already uploaded.
+      <description>This text appears in status div when file is already uploaded.
       </description>
       <name>uploadedStatusText</name>
       <deferred-value>
@@ -44611,11 +44611,11 @@ entering a value and returns a list of suggestions from the server -->
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default unknown -->
+      <!-- @default Uploading... -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This label appears in status div when file size is more than acceptable (this param should be setted
+      <description>This text appears as status of file when its size is more than acceptable (this param should be setted
         in web.xml).
       </description>
       <name>fileSizeLimitErrorText</name>
@@ -44635,78 +44635,78 @@ entering a value and returns a list of suggestions from the server -->
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default Add file -->
+      <!-- @default "Add file..." or "Upload"  - depends on multiple attribute's value  -->
       <!-- @el true -->
     </attribute>
 
     <attribute>
-      <description>This attribute sets css style for browse button
+      <description>This attribute sets css style for Browse button
       </description>
       <name>browseButtonStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default uknown -->
+      <!-- @default null -->
       <!-- @el true -->
     </attribute>
 
     <attribute>
-      <description>This attribute sets css class for browse button
+      <description>This attribute sets css class for Browse button
       </description>
       <name>browseButtonClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default uknown -->
+      <!-- @default null -->
       <!-- @el true -->
     </attribute>
 
     <attribute>
-      <description>This attribute sets css style when mouse over browse button
+      <description>This attribute sets css style when mouse over Browse button
       </description>
       <name>browseButtonRolloverStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default uknown -->
+      <!-- @default null -->
       <!-- @el true -->
     </attribute>
 
     <attribute>
-      <description>This attribute sets css class when mouse over  browse button
+      <description>This attribute sets css class when mouse over  Browse button
       </description>
       <name>browseButtonRolloverClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default uknown -->
+      <!-- @default null -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This attribute sets css style when mouse pressed on browse button
+      <description>This attribute sets css style when mouse pressed on Browse button
       </description>
       <name>browseButtonPressedStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default uknown -->
+      <!-- @default null -->
       <!-- @el true -->
     </attribute>
 
     <attribute>
-      <description>This attribute sets css class when mouse down on browse button
+      <description>This attribute sets css class when mouse down on Browse button
       </description>
       <name>browseButtonPressedClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default uknown -->
+      <!-- @default null -->
       <!-- @el true -->
     </attribute>
 
@@ -44718,7 +44718,7 @@ entering a value and returns a list of suggestions from the server -->
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default uknown -->
+      <!-- @default null -->
       <!-- @el true -->
     </attribute>
 
@@ -44730,7 +44730,7 @@ entering a value and returns a list of suggestions from the server -->
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default uknown -->
+      <!-- @default null -->
       <!-- @el true -->
     </attribute>
 
@@ -44742,7 +44742,7 @@ entering a value and returns a list of suggestions from the server -->
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default uknown -->
+      <!-- @default null -->
       <!-- @el true -->
     </attribute>
 
@@ -44754,7 +44754,7 @@ entering a value and returns a list of suggestions from the server -->
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default uknown -->
+      <!-- @default null -->
       <!-- @el true -->
     </attribute>
 
@@ -44766,7 +44766,7 @@ entering a value and returns a list of suggestions from the server -->
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default uknown -->
+      <!-- @default null -->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -44777,7 +44777,7 @@ entering a value and returns a list of suggestions from the server -->
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default unknown -->
+      <!-- @default null -->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -44917,7 +44917,7 @@ entering a value and returns a list of suggestions from the server -->
         <type>int</type>
       </deferred-value>
       <!-- @bindingType int -->
-      <!-- @default none -->
+      <!-- @default null -->
       <!-- @el true -->
     </attribute>
 
@@ -44965,7 +44965,7 @@ entering a value and returns a list of suggestions from the server -->
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default none -->
+      <!-- @default null -->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -44977,7 +44977,7 @@ entering a value and returns a list of suggestions from the server -->
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default none -->
+      <!-- @default null -->
       <!-- @el true -->
     </attribute>
   </tag>
@@ -45115,7 +45115,7 @@ entering a value and returns a list of suggestions from the server -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @value "center" -->
-      <!-- @value "none" -->
+      <!-- @value "null" -->
       <!-- @el true -->
     </attribute>
     <attribute>
