@@ -104,16 +104,19 @@
   </context-param>
   -->
 
-  <!-- Temporary directory where files are be uploaded. For example:'c:/tempUploadDir' -->
+  <!--
   <context-param>
+    <description>Temporary directory where files are be uploaded. For example:'c:/tempUploadDir'</description>
     <param-name>org.openfaces.fileUpload.tempDir</param-name>
     <param-value>c:/tempUploadDir</param-value>
   </context-param>
-  <!-- Set the maximum size of each file in KB -->
+
   <context-param>
+    <description>Specifies the maximum size of each file in kilobytes.</description>
     <param-name>org.openfaces.fileUpload.fileSizeLimit</param-name>
     <param-value>530000</param-value>
   </context-param>
+  -->
 
   <context-param>
     <description>This flag indicates whether the focus is saved between form submissions
