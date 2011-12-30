@@ -40,16 +40,16 @@ public class FileUploadTag extends AbstractComponentTag {
 
         setStringProperty(component, "browseButtonStyle");
         setStringProperty(component, "browseButtonClass");
-        setStringProperty(component, "browseButtonLabel");
+        setStringProperty(component, "browseButtonText");
 
-        setStringProperty(component, "browseButtonOnMouseOverStyle");
-        setStringProperty(component, "browseButtonOnMouseOverClass");
+        setStringProperty(component, "browseButtonRolloverStyle");
+        setStringProperty(component, "browseButtonRolloverClass");
 
-        setStringProperty(component, "browseButtonOnMouseDownStyle");
-        setStringProperty(component, "browseButtonOnMouseDownClass");
+        setStringProperty(component, "browseButtonPressedStyle");
+        setStringProperty(component, "browseButtonPressedClass");
 
-        setStringProperty(component, "browseButtonOnFocusStyle");
-        setStringProperty(component, "browseButtonOnFocusClass");
+        setStringProperty(component, "browseButtonFocusedStyle");
+        setStringProperty(component, "browseButtonFocusedClass");
 
         setStringProperty(component, "browseButtonDisabledStyle");
         setStringProperty(component, "browseButtonDisabledClass");
@@ -57,18 +57,18 @@ public class FileUploadTag extends AbstractComponentTag {
         setStringProperty(component, "allInfosStyle");
         setStringProperty(component, "allInfosClass");
 
-        setStringProperty(component, "fileInfoStyle");
-        setStringProperty(component, "fileInfoClass");
+        setStringProperty(component, "rowStyle");
+        setStringProperty(component, "rowClass");
 
-        setStringProperty(component, "infoTitleClass");
-        setStringProperty(component, "infoTitleStyle");
+        setStringProperty(component, "fileNameStyle");
+        setStringProperty(component, "fileNameClass");
 
-        setStringProperty(component, "infoStatusClass");
-        setStringProperty(component, "infoStatusStyle");
-        setStringProperty(component, "statusNotUploadedText");
-        setStringProperty(component, "statusUploadedText");
-        setStringProperty(component, "statusInProgressText");
-        setStringProperty(component, "maxFileSizeErrorText");
+        setStringProperty(component, "uploadStatusClass");
+        setStringProperty(component, "uploadStatusStyle");
+        setStringProperty(component, "notUploadedStatusText");
+        setStringProperty(component, "uploadedStatusText");
+        setStringProperty(component, "inProgressStatusText");
+        setStringProperty(component, "fileSizeLimitErrorText");
 
         setStringProperty(component, "acceptedFileTypes");
         setBooleanProperty(component, "duplicateAllowed");
@@ -80,8 +80,8 @@ public class FileUploadTag extends AbstractComponentTag {
         setIntProperty(component, "tabindex");
         setMethodExpressionProperty(facesContext, component, "fileUploadedListener",
                 new Class[]{FileUploadedEvent.class}, void.class);
-        setStringProperty(component, "statusStoppedText");
-        setBooleanProperty(component, "multiUpload");
+        setStringProperty(component, "stoppedStatusText");
+        setBooleanProperty(component, "multiple");
         setMethodExpressionProperty(facesContext, component, "uploadCompletionListener",
                 new Class[]{UploadCompletionEvent.class}, void.class);
         setStringProperty(component, "onuploadstart");

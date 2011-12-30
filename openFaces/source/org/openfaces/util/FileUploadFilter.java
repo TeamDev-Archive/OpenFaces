@@ -25,7 +25,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class FileUploadFilter implements Filter {
-    public static final String INIT_PARAM_MAX_FILE_SIZE = "org.openfaces.fileUpload.maxFileSize";
+    public static final String INIT_PARAM_MAX_FILE_SIZE = "org.openfaces.fileUpload.fileSizeLimit";
     private static final String INIT_PARAM_TEMP_DIR = "org.openfaces.fileUpload.tempDir";
 
     private ServletContext servletContext;

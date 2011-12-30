@@ -15,6 +15,6 @@ package org.openfaces.event;
 
 public enum FileUploadStatus {
     FAILED,
-    CANCELED,
+    STOPPED,
     SUCCESSFUL
 }

@@ -3,9 +3,8 @@
      xmlns:o="http://openfaces.org/"
         >
   <div id="Demo">
-    <o:fileUpload id="fileUpload" multiUpload="true"
-            uploadCompletionListener="#{FileUploadBean.uploadComplete}"
-            onuploadstart = "console.log('onuploadstart')" onuploadend="console.log('onuploadend')">
+    <o:fileUpload id="fileUpload" multiple="true"
+            uploadCompletionListener="#{FileUploadBean.uploadComplete}">
       <o:ajax event="uploadend" render="uploadedFilesTable"/>
     </o:fileUpload>
 

@@ -26,10 +26,10 @@
                 style="width: 40%;">
         <h:outputText value="File: "/> <h:outputText styleClass="#{FileUploadBean.fileInfoClass}" value="#{FileUploadBean.bookImageFileName}"/>
         <h:outputText value=" ; size: "/> <h:outputText styleClass="#{FileUploadBean.fileInfoClass}" value="#{FileUploadBean.bookImageFileSize}"/>
-        <o:fileUpload addButtonStyle="Upload cover image..."
+        <o:fileUpload browseButtonText="Upload cover image..."
                       style="border: none; width: 100%"
                       uploadCompletionListener="#{FileUploadBean.bookImageUploaded}"
-                      onuploadend="O$.ajax.request(this, event, {render:'form:booksTable'})"/>
+                      onuploadend="O$.ajax.request(this, null, {render:'form:booksTable'})"/>
       </o:column>
     </o:dataTable>
   </div>

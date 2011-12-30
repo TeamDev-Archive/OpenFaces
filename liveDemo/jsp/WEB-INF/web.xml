@@ -111,7 +111,7 @@
   </context-param>
   <!-- Set the maximum size of each file in KB -->
   <context-param>
-    <param-name>org.openfaces.fileUpload.maxFileSize</param-name>
+    <param-name>org.openfaces.fileUpload.fileSizeLimit</param-name>
     <param-value>530000</param-value>
   </context-param>
 

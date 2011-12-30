@@ -14,7 +14,7 @@ package org.openfaces.renderkit.input;
 import org.openfaces.component.input.FileUpload;
 import org.openfaces.component.output.ProgressBar;
 import org.openfaces.event.FileUploadItem;
-import org.openfaces.event.Status;
+import org.openfaces.event.FileUploadStatus;
 import org.openfaces.event.UploadCompletionEvent;
 import org.openfaces.org.json.JSONArray;
 import org.openfaces.org.json.JSONException;
@@ -285,11 +285,11 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
         writer.startElement("input", fileUpload);
         writer.writeAttribute("type", "button", null);
         String value;
-        if (!fileUpload.isMultiUpload()) {
-            if (fileUpload.getBrowseButtonLabel() == null) {
+        if (!fileUpload.isMultiple()) {
+            if (fileUpload.getBrowseButtonText() == null) {
                 value = DEF_BROWSE_BTN_LABEL_SINGLE;
             } else {
-                value = fileUpload.getBrowseButtonLabel();
+                value = fileUpload.getBrowseButtonText();
             }
         } else {
             value = DEF_BROWSE_LABEL_MULTIPLE;
@@ -321,15 +321,15 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
     }
 
     private void encodeScriptAndStyles(FacesContext context, FileUpload fileUpload, String clientId) throws IOException {
-        String fileInfoClass = Styles.getCSSClass(context, fileUpload, fileUpload.getFileInfoStyle(), StyleGroup.regularStyleGroup(), fileUpload.getFileInfoClass(), "o_file_upload_info");
-        String infoTitleClass = Styles.getCSSClass(context, fileUpload, fileUpload.getInfoTitleStyle(), StyleGroup.regularStyleGroup(), fileUpload.getInfoTitleClass(), "o_file_upload_info_title");
-        String infoStatusClass = Styles.getCSSClass(context, fileUpload, fileUpload.getInfoStatusStyle(), StyleGroup.regularStyleGroup(), fileUpload.getInfoStatusClass(), "o_file_upload_info_status");
+        String fileInfoClass = Styles.getCSSClass(context, fileUpload, fileUpload.getRowStyle(), StyleGroup.regularStyleGroup(), fileUpload.getRowClass(), "o_file_upload_info");
+        String infoTitleClass = Styles.getCSSClass(context, fileUpload, fileUpload.getFileNameStyle(), StyleGroup.regularStyleGroup(), fileUpload.getFileNameClass(), "o_file_upload_info_title");
+        String infoStatusClass = Styles.getCSSClass(context, fileUpload, fileUpload.getUploadStatusStyle(), StyleGroup.regularStyleGroup(), fileUpload.getUploadStatusClass(), "o_file_upload_info_status");
         String progressBarClass = Styles.getCSSClass(context, fileUpload, fileUpload.getProgressBarStyle(), StyleGroup.regularStyleGroup(), fileUpload.getProgressBarClass(), "o_file_upload_info_progress");
 
         String addButtonClass = Styles.getCSSClass(context, fileUpload, fileUpload.getBrowseButtonStyle(), StyleGroup.regularStyleGroup(), fileUpload.getBrowseButtonClass(), null);
-        String addButtonOnMouseOverClass = Styles.getCSSClass(context, fileUpload, fileUpload.getBrowseButtonOnMouseOverStyle(), StyleGroup.regularStyleGroup(), fileUpload.getBrowseButtonOnMouseOverClass(), null);
-        String addButtonOnMouseDownClass = Styles.getCSSClass(context, fileUpload, fileUpload.getBrowseButtonOnMouseDownStyle(), StyleGroup.regularStyleGroup(), fileUpload.getBrowseButtonOnMouseDownClass(), null);
-        String addButtonOnFocusClass = Styles.getCSSClass(context, fileUpload, fileUpload.getBrowseButtonOnFocusStyle(), StyleGroup.regularStyleGroup(), fileUpload.getBrowseButtonOnFocusClass(), null);
+        String addButtonOnMouseOverClass = Styles.getCSSClass(context, fileUpload, fileUpload.getBrowseButtonRolloverStyle(), StyleGroup.regularStyleGroup(), fileUpload.getBrowseButtonRolloverClass(), null);
+        String addButtonOnMouseDownClass = Styles.getCSSClass(context, fileUpload, fileUpload.getBrowseButtonPressedStyle(), StyleGroup.regularStyleGroup(), fileUpload.getBrowseButtonPressedClass(), null);
+        String addButtonOnFocusClass = Styles.getCSSClass(context, fileUpload, fileUpload.getBrowseButtonFocusedStyle(), StyleGroup.regularStyleGroup(), fileUpload.getBrowseButtonFocusedClass(), null);
         String addButtonDisabledClass = Styles.getCSSClass(context, fileUpload, fileUpload.getBrowseButtonDisabledStyle(), StyleGroup.regularStyleGroup(), fileUpload.getBrowseButtonDisabledClass(), "o_file_upload_addBtn_dis");
         Styles.renderStyleClasses(context, fileUpload);
 
@@ -345,10 +345,10 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
                 infoTitleClass,
                 progressBarClass,
                 infoStatusClass,
-                fileUpload.getStatusNotUploadedText(),
-                fileUpload.getStatusInProgressText(),
-                fileUpload.getStatusUploadedText(),
-                fileUpload.getMaxFileSizeErrorText(),
+                fileUpload.getNotUploadedStatusText(),
+                fileUpload.getInProgressStatusText(),
+                fileUpload.getUploadedStatusText(),
+                fileUpload.getFileSizeLimitErrorText(),
                 fileUpload.getAcceptedFileTypes(),
                 duplicateAllowed,
                 headerId + BROWSE_BTN_ID,
@@ -363,8 +363,8 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
                 fileUpload.isAutoUpload(),
                 fileUpload.getTabindex(),
                 progressBar.getClientId(context),
-                fileUpload.getStatusStoppedText(),
-                fileUpload.isMultiUpload(),
+                fileUpload.getStoppedStatusText(),
+                fileUpload.isMultiple(),
                 generateUniqueId(clientId)
         );
 
@@ -441,9 +441,9 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
                         filesItems.add((FileUploadItem) sessionMap.get(file.getString(0)));
                         sessionMap.remove(file.getString(0));
                     } else if (file.getString(2).equals("STOPPED")) {
-                        filesItems.add(new FileUploadItem(file.getString(1), null, Status.CANCELED));
+                        filesItems.add(new FileUploadItem(file.getString(1), null, FileUploadStatus.STOPPED));
                     } else if (file.getString(2).equals("ERROR")) {
-                        filesItems.add(new FileUploadItem(file.getString(1), null, Status.FAILED));
+                        filesItems.add(new FileUploadItem(file.getString(1), null, FileUploadStatus.FAILED));
                     }
                 }
                 FileUpload fileUpload = (FileUpload) component;

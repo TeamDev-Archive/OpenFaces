@@ -69,8 +69,8 @@ public class FileUploadBean implements Serializable {
         switch (status) {
             case SUCCESSFUL:
                 return getFileSizeStr(uploadedCoverImage);
-            case CANCELED:
-                return "<Upload canceled>";
+            case STOPPED:
+                return "<Upload stopped>";
             case FAILED:
                 return "<Upload failed>";
             default:
