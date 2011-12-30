@@ -8,12 +8,15 @@
   <display-name>OpenFaces Demo Application</display-name>
   <description>OpenFaces Demo Application</description>
 
+<<<<<<< HEAD
   <!-- Change to "Production" when you are ready to deploy -->
   <context-param>
       <param-name>javax.faces.PROJECT_STAGE</param-name>
       <param-value>Production</param-value>
   </context-param>
 
+=======
+>>>>>>> master
   <context-param>
     <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
     <param-value>server</param-value>
@@ -110,6 +113,20 @@
   </context-param>
   -->
 
+  <!--
+  <context-param>
+    <description>Temporary directory where files are be uploaded. For example:'c:/tempUploadDir'</description>
+    <param-name>org.openfaces.fileUpload.tempDir</param-name>
+    <param-value>c:/tempUploadDir</param-value>
+  </context-param>
+
+  <context-param>
+    <description>Specifies the maximum size of each file in kilobytes.</description>
+    <param-name>org.openfaces.fileUpload.fileSizeLimit</param-name>
+    <param-value>530000</param-value>
+  </context-param>
+  -->
+
   <context-param>
     <description>This flag indicates whether the focus is saved between form submissions
       for all application pages. The default is "false".
@@ -126,10 +143,22 @@
     <param-value>true</param-value>
   </context-param>
 
+
+  <filter>
+    <filter-name>OpenFacesUploadFilter</filter-name>
+    <filter-class>org.openfaces.util.FileUploadFilter</filter-class>
+  </filter>
+
   <filter>
     <filter-name>LiveDemoFilter</filter-name>
     <filter-class>org.openfaces.demo.filter.LiveDemoFilter</filter-class>
   </filter>
+
+  <!-- MAPPING FOR OPENFACES RESOURCE FILTER -->
+  <filter-mapping>
+    <filter-name>OpenFacesUploadFilter</filter-name>
+    <url-pattern>*.jsf</url-pattern>
+  </filter-mapping>
 
   <filter-mapping>
     <filter-name>LiveDemoFilter</filter-name>

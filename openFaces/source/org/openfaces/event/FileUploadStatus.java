@@ -13,8 +13,8 @@
 package org.openfaces.event;
 
 
-public enum Status {
+public enum FileUploadStatus {
     FAILED,
-    CANCELED,
+    STOPPED,
     SUCCESSFUL
 }

@@ -23,7 +23,7 @@ public class UploadCompletionEvent extends FacesEvent {
 
     public UploadCompletionEvent(UIComponent component, List<FileUploadItem> files) {
         super(component);
-        if (component == null) throw new IllegalArgumentException("component " + component + " is null");
+        if (component == null) throw new IllegalArgumentException("Component " + component + " is null");
         this.files = files;
 
     }

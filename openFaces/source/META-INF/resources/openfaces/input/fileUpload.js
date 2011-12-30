@@ -44,7 +44,7 @@ O$.FileUpload = {
     elements.removeChild(divForClearFacet);
     clearFacet.disabled = false;
 
-    var divForCancelFacet = O$(componentId + "::elements::cancelFacet");
+    var divForCancelFacet = O$(componentId + "::elements::removeFacet");
     var cancelFacet = divForCancelFacet.firstChild;
     elements.removeChild(divForCancelFacet);
     cancelFacet.disabled = false;
@@ -632,7 +632,12 @@ O$.FileUpload = {
       }
       fileUpload._listOfids = [];
       for (var inputsIndex = 0; inputsIndex < inputsStorage.childNodes.length; inputsIndex++) {
-        fileUpload._listOfids.push(inputsStorage.childNodes[inputsIndex].firstChild.childNodes[1].value);
+        var file = [];
+        var form = inputsStorage.childNodes[inputsIndex].firstChild;
+        file.push(form.childNodes[1].value);//id
+        file.push(encodeURI(getFileName(form.childNodes[0].value)));//filename
+        file.push("STARTED_UPLOAD");//status
+        fileUpload._listOfids.push(file);
       }
       for (var inputsIndex = 0; inputsIndex < inputsStorage.childNodes.length; inputsIndex++) {
         var inputDiv = inputsStorage.childNodes[inputsIndex];
@@ -656,8 +661,15 @@ O$.FileUpload = {
                     infoDiv._status = O$.statusEnum.ERROR;
                     inputsStorage.removeChild(inputForFile.parentNode.parentNode);
                     infoDiv.childNodes[2].innerHTML = statusLabelErrorSize;
+                    var id = inputForFile.nextSibling.value;
+                    for (var k = 0; k < fileUpload._listOfids.length; k++) {
+                      if (id == fileUpload._listOfids[k][0]) {
+                        fileUpload._listOfids[k][2] = "ERROR";
+                        break;
+                      }
+                    }
                     setClearBtnAndEventHandler(infoDiv);
-                    prepareUIWhenAllRequestsFinished(false);
+                    prepareUIWhenAllRequestsFinished(true);
                   } else {
                     var percents = portionData['progressInPercent'];
                     if (percents != 100) {
@@ -682,14 +694,15 @@ O$.FileUpload = {
                           infoDiv._status = O$.statusEnum.ERROR;
                           inputsStorage.removeChild(inputForFile.parentNode.parentNode);
                           infoDiv.childNodes[2].innerHTML = statusStoppedText;
+                          var id = inputForFile.nextSibling.value;
                           for (var k = 0; k < fileUpload._listOfids.length; k++) {
-                            if (inputForFile.nextSibling.value == fileUpload._listOfids[k]){
-                              fileUpload._listOfids.splice(k, 1);
+                            if (id == fileUpload._listOfids[k][0]) {
+                              fileUpload._listOfids[k][2] = "STOPPED";
                               break;
                             }
                           }
                           setClearBtnAndEventHandler(infoDiv);
-                          prepareUIWhenAllRequestsFinished();
+                          prepareUIWhenAllRequestsFinished(true);
                         }
                       }
                       if (!inputForFile._isInterrupted){
@@ -706,6 +719,13 @@ O$.FileUpload = {
                       // infoDiv updating
                       infoDiv._status = O$.statusEnum.UPLOADED;
                       infoDiv.childNodes[2].innerHTML = statusLabelUploaded;
+                      var id = inputForFile.nextSibling.value;
+                      for (var k = 0; k < fileUpload._listOfids.length; k++) {
+                        if (id == fileUpload._listOfids[k][0]) {
+                          fileUpload._listOfids[k][2] = "UPLOADED";
+                          break;
+                        }
+                      }
                       setClearBtnAndEventHandler(infoDiv);
                       prepareUIWhenAllRequestsFinished(true);
                     }
