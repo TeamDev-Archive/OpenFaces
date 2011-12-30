@@ -177,7 +177,7 @@ public class FileUpload extends OUIInputBase {
         multiple = (Boolean) values[i++];
         uploadCompletionListener = (MethodExpression) restoreAttachedState(context, values[i++]);
         onuploadstart = (String) values[i++];
-        onuploadstart = (String) values[i++];
+        onuploadend = (String) values[i++];
     }
 
 

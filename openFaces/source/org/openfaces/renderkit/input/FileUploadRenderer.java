@@ -75,7 +75,7 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
     private static final String HELP_ELEMENTS_ID = "::elements";
     private static final String HELPFUL_INPUT = "::helpfulInput";
     private static final String DEF_PROGRESS_ID = "progressBar";
-    private static final String DEF_BROWSE_BTN_LABEL_SINGLE = "Upload";
+    private static final String DEF_BROWSE_BTN_LABEL_SINGLE = "Upload...";
     private static final String DEF_BROWSE_LABEL_MULTIPLE = "Add file...";
 
 
