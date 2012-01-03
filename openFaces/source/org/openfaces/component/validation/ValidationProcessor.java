@@ -314,8 +314,10 @@ public class ValidationProcessor extends UIComponentBase {
         }
 
         String componentId = component.getClientId(getFacesContext());
-        ClientValidationSupport cvs = renderToClientValidationSupport.get(componentId);
-        if (cvs == null) {
+        ClientValidationSupport cvs;
+        if (renderToClientValidationSupport.containsKey(componentId)) {
+            cvs = renderToClientValidationSupport.get(componentId);
+        } else {
             Finder finder = new Finder(component) {
                 public boolean test(UIComponent component) {
                     return component instanceof ClientValidationSupport;
