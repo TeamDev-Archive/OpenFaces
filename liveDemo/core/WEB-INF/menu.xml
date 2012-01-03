@@ -348,6 +348,28 @@
     </demos>
   </menuItem>
   <menuItem>
+    <name>FileUpload</name>
+    <componentName>FileUpload</componentName>
+    <url>/fileupload/FileUpload.jsf</url>
+    <shortPath>/fileupload/</shortPath>
+    <image>Slider</image>
+    <selectedImage>/images/components/titles/Slider.png</selectedImage>
+    <keyFeatures>
+      <feature>Multiple files upload support</feature>
+      <feature>Customizable appearance</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>Multiple File Upload</demoName>
+        <demoUrl>/fileupload/FileUpload.jsf</demoUrl>
+      </demoItem>
+      <demoItem>
+        <demoName>File Upload in DataTable</demoName>
+        <demoUrl>/fileupload/FileUpload_table.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
     <name>Folding Panel</name>
     <componentName>Folding Panel</componentName>
     <url>/foldingpanel/FoldingPanel_basicFeatures.jsf</url>

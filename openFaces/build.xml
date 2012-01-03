@@ -64,6 +64,8 @@
           <include name="hibernate-commons-annotations.jar"/>
           <include name="hibernate-validator.jar"/>
           <include name="jboss-el.jar"/>
+          <include name="commons-fileupload-1.2.2.jar"/>
+          <include name="commons-io-2.1.jar"/>
         </fileset>
         <fileset dir="${richfaces.lib.dir}">
           <include name="richfaces-api-3.3.3.Final.jar"/>

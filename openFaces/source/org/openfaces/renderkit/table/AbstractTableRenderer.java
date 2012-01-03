@@ -415,18 +415,6 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         ResponseWriter writer = context.getResponseWriter();
         Rendering.renderHiddenField(writer, getSortingFieldName(context, table), null);
 
-        String oppositeSortingDirectionImageUrl = table.isSortAscending()
-                ? HeaderCell.getSortedDescendingImageUrl(context, table)
-                : HeaderCell.getSortedAscendingImageUrl(context, table);
-        JSONArray preloadedImageUrls = new JSONArray();
-        preloadedImageUrls.put(oppositeSortingDirectionImageUrl);
-        if (table.getSortColumnIndex() == -1) {
-            String anotherSortingDirectionImageUrl = table.isSortAscending()
-                    ? HeaderCell.getSortedAscendingImageUrl(context, table)
-                    : HeaderCell.getSortedDescendingImageUrl(context, table);
-            preloadedImageUrls.put(anotherSortingDirectionImageUrl);
-        }
-
         buf.initScript(context, table, "O$.Table._initSorting",
                 table.getSortingRules(),
                 sortableColumnsIds,
@@ -437,7 +425,8 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
                 Styles.getCSSClass(context, table, table.getSortedColumnHeaderStyle(), StyleGroup.regularStyleGroup(), getSortedColumnHeaderClass(table)),
                 Styles.getCSSClass(context, table, table.getSortedColumnBodyStyle(), StyleGroup.regularStyleGroup(), getSortedColumnBodyClass(table)),
                 Styles.getCSSClass(context, table, table.getSortedColumnFooterStyle(), StyleGroup.regularStyleGroup(), getSortedColumnFooterClass(table)),
-                preloadedImageUrls);
+                HeaderCell.getSortedAscendingImageUrl(context, table),
+                HeaderCell.getSortedDescendingImageUrl(context, table));
     }
 
     private String getSortingFieldName(FacesContext context, UIComponent table) {

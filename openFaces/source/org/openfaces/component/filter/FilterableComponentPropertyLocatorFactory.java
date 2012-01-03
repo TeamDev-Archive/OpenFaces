@@ -14,6 +14,7 @@ package org.openfaces.component.filter;
 
 import org.openfaces.component.FilterableComponent;
 import org.openfaces.component.OUIData;
+import org.openfaces.util.Components;
 import org.openfaces.util.Environment;
 
 import javax.el.ValueExpression;
@@ -76,7 +77,7 @@ public class FilterableComponentPropertyLocatorFactory implements PropertyLocato
                 String viewRootIdPart = "_viewRoot:";
                 componentId = componentId.substring(componentId.indexOf(viewRootIdPart) + viewRootIdPart.length(), componentId.length());
             }
-            component = (FilterableComponent) viewRoot.findComponent(":" + componentId);
+            component = (FilterableComponent) Components.findComponent(viewRoot, componentId);
             if (component == null)
                 throw new IllegalStateException("Couldn't find filtered component by id: " + componentId);
             return component;

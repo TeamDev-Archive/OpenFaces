@@ -16,6 +16,7 @@ import org.openfaces.component.filter.ExpressionFilter;
 import org.openfaces.component.filter.ExpressionFilterCriterion;
 import org.openfaces.component.filter.FilterCondition;
 import org.openfaces.component.filter.PropertyLocator;
+import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.BaseColumn;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.renderkit.TableUtil;
@@ -124,6 +125,14 @@ public abstract class ExpressionFilterRenderer extends RendererBase {
                     BaseColumn column = (BaseColumn) parent;
                     if (expression instanceof ValueExpression) {
                         TableUtil.ColumnExpressionData data = TableUtil.getColumnExpressionData(column, (ValueExpression) expression);
+                        if (data == null) {
+                            AbstractTable table = column.getTable();
+                            String var = table.getVar();
+                            throw new FacesException(
+                                    "Can't find column output component (UIOutput component with a value expression containing variable \"" +
+                                            var + "\") for column with id: \"" + column.getId() + "\"; table id: \"" + table.getId() +
+                                            "\" ; consider declaring the filter expression explicitly if you're using a filter component in this column.");
+                        }
                         Class type = data.getValueType();
                         if (String.class.equals(type))
                             condition = FilterCondition.CONTAINS;

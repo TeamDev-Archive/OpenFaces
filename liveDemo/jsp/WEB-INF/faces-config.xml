@@ -353,4 +353,10 @@
     <managed-bean-scope>session</managed-bean-scope>
   </managed-bean>
 
+  <managed-bean>
+    <managed-bean-name>FileUploadBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.demo.beans.fileupload.FileUploadBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
 </faces-config>

@@ -1297,6 +1297,22 @@
     </component>
   </tag>
   <tag>
+    <tag-name>fileUpload</tag-name>
+    <component>
+      <component-type>org.openfaces.FileUpload</component-type>
+      <renderer-type>org.openfaces.FileUploadRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.input.FileUploadTagHandler</handler-class>
+    </component>
+  </tag>
+  <tag>
+    <tag-name>progressBar</tag-name>
+    <component>
+      <component-type>org.openfaces.ProgressBar</component-type>
+      <renderer-type>org.openfaces.ProgressBarRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.output.ProgressBarTagHandler</handler-class>
+    </component>
+  </tag>  
+  <tag>
     <tag-name>groupByColumnMenuItem</tag-name>
     <component>
       <component-type>org.openfaces.GroupByColumnMenuItem</component-type>
@@ -1319,5 +1335,5 @@
       <renderer-type>org.openfaces.CancelGroupingMenuItemRenderer</renderer-type>
       <handler-class>org.openfaces.taglib.facelets.table.CancelGroupingMenuItemTagHandler</handler-class>
     </component>
-  </tag>
+  </tag>  
 </facelet-taglib>

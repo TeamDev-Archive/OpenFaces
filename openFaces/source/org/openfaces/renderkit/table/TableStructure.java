@@ -386,6 +386,31 @@ public class TableStructure extends TableElement {
                     StyleGroup.disabledStyleGroup(10), null));
         Rendering.addJsonParam(result, "invisibleRowsAllowed", tableStyles instanceof TreeTable, false);
 
+        if (component instanceof AbstractTable) {
+            AbstractTable table = (AbstractTable) component;
+
+            // Column initialization code in tableUtil.js needs to know whether there are any features in the table,
+            // which will require column width control (setting width for columns on client-side, which might be
+            // required not only for interactive column resizing). This information is needed for performance
+            // optimization purposes to allow column initialization script to avoid unnecessary preparations (creating
+            // individual CSS classes for each column).
+            //
+            // These features are initialized after columns so this script cannot know if there are these features by
+            // itself.
+            //
+            // Lazy initialization of this (creating individual CSS classes) would require additional performance hit
+            // when column resizing is turned on, due to the need to refresh column style after lazy CSS style creation,
+            // so detecting the presence of these features beforehand, like this, seems to be the best approach.
+
+            String forceColumnWidthControlRequiredStr =
+                    (String) table.getAttributes().get("forceColumnWidthControlRequired");
+            boolean columnWidthControlRequired = forceColumnWidthControlRequiredStr != null
+                    ? Boolean.parseBoolean(forceColumnWidthControlRequiredStr)
+                    : table.getColumnResizing() != null || table.getScrolling() != null;
+            if (columnWidthControlRequired)
+                Rendering.addJsonParam(result, "columnWidthControlRequired", true);
+        }
+
         return result;
     }
 
@@ -414,7 +439,7 @@ public class TableStructure extends TableElement {
     private static boolean getForceUsingCellStyles(UIComponent styleOwnerComponent) {
         boolean requireCellStylesForCorrectColWidthBehavior =
                 Environment.isChrome() ||
-                Environment.isSafari() || /* doesn't handle column width in TreeTable if width is applied to <col> tags */
+                        Environment.isSafari() || /* doesn't handle column width in TreeTable if width is applied to <col> tags */
                         Environment.isOpera(); /* DataTable, TreeTable are jerking when reloading them with OF Ajax if width is applied to <col> tags */
         String forceUsingCellStylesAttr = (String) styleOwnerComponent.getAttributes().get("forceUsingCellStyles");
         boolean forceUsingCellStyles = requireCellStylesForCorrectColWidthBehavior ||
@@ -469,7 +494,7 @@ public class TableStructure extends TableElement {
         return columnsArray;
     }
 
-    private JSONObject getColumnParams(FacesContext context, BaseColumn  columnOrGroup, int level) throws JSONException {
+    private JSONObject getColumnParams(FacesContext context, BaseColumn columnOrGroup, int level) throws JSONException {
         JSONObject columnObj = new JSONObject();
 
         columnObj.put("columnId", columnOrGroup.getId());

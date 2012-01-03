@@ -1,0 +1,36 @@
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+        >
+  <style>
+    .notUploadedInfoText {}
+    .uploadedInfoText {font-weight: bold}
+  </style>
+  <div id="Demo">
+    <o:dataTable id="booksTable"
+                 var="book"
+                 value="#{BookList.books}"
+                 sortColumnId="title"
+                 sortAscending="true"
+                 sortableHeaderRolloverStyle="background: #d4d4d4"
+                 style="width: 100%; "
+                 styleClass="datatable"
+                 rolloverRowStyle="background: #f1f1f1;">
+      <o:columnReordering/>
+
+      <o:column id="title" header="Title" sortingExpression="#{book.bookTitle}"
+                style="width: 25%; padding-left: 5%;">
+        <h:outputText value="#{book.bookTitle}"/>
+      </o:column>
+      <o:column header="Cover image"
+                style="width: 40%;">
+        <h:outputText value="File: "/> <h:outputText styleClass="#{FileUploadBean.fileInfoClass}" value="#{FileUploadBean.bookImageFileName}"/>
+        <h:outputText value=" ; size: "/> <h:outputText styleClass="#{FileUploadBean.fileInfoClass}" value="#{FileUploadBean.bookImageFileSize}"/>
+        <o:fileUpload browseButtonText="Upload cover image..."
+                      style="border: none; width: 100%"
+                      uploadCompletionListener="#{FileUploadBean.bookImageUploaded}"
+                      onuploadend="O$.ajax.request(this, null, {render:'form:booksTable'})"/>
+      </o:column>
+    </o:dataTable>
+  </div>
+</div>

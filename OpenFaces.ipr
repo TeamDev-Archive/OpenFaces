@@ -225,6 +225,9 @@
       </root>
     </artifact>
   </component>
+  <component name="ClearCaseSharedConfig">
+    <option name="myUseUcmModel" value="true" />
+  </component>
   <component name="CodeStyleProjectProfileManger">
     <option name="PROJECT_PROFILE" />
     <option name="USE_PROJECT_LEVEL_SETTINGS" value="false" />
@@ -1495,6 +1498,8 @@
         <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/commons-collections-3.2.1.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/poi-3.7-20101029.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/poi-ooxml-3.7-20101029.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/commons-io-2.1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/commons-fileupload-1.2.2.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
@@ -1618,7 +1623,9 @@
         <root url="jar://$PROJECT_DIR$/lib/seleniuminspector/selenium-server-standalone-2.14.0.jar!/" />
       </CLASSES>
       <JAVADOC />
-      <SOURCES />
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/lib/seleniuminspector/selenium-server-standalone-2.14.0.jar!/" />
+      </SOURCES>
     </library>
     <library name="SeleniumInspector">
       <CLASSES>
@@ -1653,6 +1660,11 @@
       <SOURCES>
         <root url="jar://$PROJECT_DIR$/libsrc/trinidad-stub-scr.zip!/" />
       </SOURCES>
+    </library>
+    <library name="Unnamed">
+      <CLASSES />
+      <JAVADOC />
+      <SOURCES />
     </library>
   </component>
 </project>

@@ -5840,6 +5840,22 @@
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>A CSS class name that is applied directly to the selected row. Unlike the styleClass attribute, which
+      changes the visual style, but does not specify which HTML tags will be affected to achieve , this attribute
+        provides an ability to specify CSS class name(s) which will be applied to the respective row tags themselves.
+        It is recommended to use styleClass (or style) attribute if your intention is to customize visual representation
+        of table's rows, and to use the rawStyleClass if your intention is to provide some style class to the row tags
+        that will be utilized by some other CSS constructs which depend on this class to be applied to the row tags.
+      </description>
+      <name>rawStyleClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>JavaScript code that should be executed every time the user changes selection.</description>
       <name>onchange</name>
       <deferred-value>
@@ -6044,6 +6060,22 @@
     <attribute>
       <description>A CSS class name for selected rows.</description>
       <name>styleClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name that is applied directly to each selected row. Unlike the styleClass attribute, which
+        changes the visual style, but does not specify which HTML tags will be affected to achieve , this attribute
+        provides an ability to specify CSS class name(s) which will be applied to the respective row tags themselves.
+        It is recommended to use styleClass (or style) attribute if your intention is to customize visual representation
+        of table's rows, and to use the rawStyleClass if your intention is to provide some style class to the row tags
+        that will be utilized by some other CSS constructs which depend on this class to be applied to the row tags.
+      </description>
+      <name>rawStyleClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -10276,6 +10308,22 @@ means that only root nodes and their immediate children are preloaded -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>A CSS class name that is applied directly to the selected row. Unlike the styleClass attribute, which
+        changes the visual style, but does not specify which HTML tags will be affected to achieve , this attribute
+        provides an ability to specify CSS class name(s) which will be applied to the respective row tags themselves.
+        It is recommended to use styleClass (or style) attribute if your intention is to customize visual representation
+        of table's rows, and to use the rawStyleClass if your intention is to provide some style class to the row tags
+        that will be utilized by some other CSS constructs which depend on this class to be applied to the row tags.
+      </description>
+      <name>rawStyleClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>JavaScript code that should be executed every time the user changes selection.</description>
       <name>onchange</name>
       <deferred-value>
@@ -10484,6 +10532,22 @@ means that only root nodes and their immediate children are preloaded -->
     <attribute>
       <description>A CSS class name for selected rows.</description>
       <name>styleClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name that is applied directly to each selected row. Unlike the styleClass attribute, which
+        changes the visual style, but does not specify which HTML tags will be affected to achieve , this attribute
+        provides an ability to specify CSS class name(s) which will be applied to the respective row tags themselves.
+        It is recommended to use styleClass (or style) attribute if your intention is to customize visual representation
+        of table's rows, and to use the rawStyleClass if your intention is to provide some style class to the row tags
+        that will be utilized by some other CSS constructs which depend on this class to be applied to the row tags.
+      </description>
+      <name>rawStyleClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -44338,6 +44402,759 @@ entering a value and returns a list of suggestions from the server -->
     <name>cancelGroupingMenuItem</name>
     <tag-class>org.openfaces.taglib.jsp.table.CancelGroupingMenuItemJspTag</tag-class>
     <body-content>JSP</body-content>
+  </tag>
+  <tag>
+    <name>fileUpload</name>
+    <tag-class>org.openfaces.taglib.jsp.input.FileUploadJspTag</tag-class>
+    <body-content>JSP</body-content>
+
+    <attribute>
+      <description>A flag that indicates whether or not the component is visible.</description>
+      <name>rendered</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>The component identifier.</description>
+      <name>id</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el false -->
+    </attribute>
+
+    <attribute>
+      <description>A style for the FileUpload component.</description>
+      <name>style</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A CSS class name for the FileUpload component.</description>
+      <name>styleClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the list of files for uploading has changed.
+      </description>
+      <name>onchange</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A flag that enables or disables the component.</description>
+      <name>disabled</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>Style for header where Browse and Upload button are located</description>
+      <name>headerStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>CSS class for header where Browse and Upload button are located</description>
+      <name>headerClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Style for each row that contains fileName, progressBar, status, Remove/Stop/Cancel button</description>
+      <name>rowStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>CSS class for each row that contains fileName, progressBar, status, Remove/Stop/Cancel button </description>
+      <name>rowClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>This attribute limits uploading files only with needed extension.
+        Extensions should be splitted by space , i.e.: jgp png
+      </description>
+      <name>acceptedFileTypes</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>If this attribute will be set true, the file needed to be uploaded right after user selects a file from
+        the file chooser. Note that if attribute multiple defined as true, this attribure will be assigned to true automatically.
+      </description>
+      <name>autoUpload</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>This css class will be assigned to div which displays name of file.</description>
+      <name>fileNameClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>This css style will be assigned to div which displays name of file.</description>
+      <name>fileNameStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>This css style will be assigned to div which displays status of file.
+      </description>
+      <name>uploadStatusStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>This css class will be assigned to div which displays status of file.</description>
+      <name>uploadStatusClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>This text appears as status when file is not started uploading yet.
+      </description>
+      <name>notUploadedStatusText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>This text appears in status div when file is already uploaded.
+      </description>
+      <name>uploadedStatusText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default Uploaded -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>This text appears as status of file when it is uploading at the moment.
+      </description>
+      <name>inProgressStatusText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default Uploading... -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>This text appears as status of file when its size is more than acceptable (this param should be setted
+        in web.xml).
+      </description>
+      <name>fileSizeLimitErrorText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "File size limit exceeded" -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>the text that will be shown on browse button
+      </description>
+      <name>browseButtonText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "Add file..." or "Upload"  - depends on multiple attribute's value  -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>This attribute sets css style for Browse button
+      </description>
+      <name>browseButtonStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>This attribute sets css class for Browse button
+      </description>
+      <name>browseButtonClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>This attribute sets css style when mouse over Browse button
+      </description>
+      <name>browseButtonRolloverStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>This attribute sets css class when mouse over  Browse button
+      </description>
+      <name>browseButtonRolloverClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>This attribute sets css style when mouse pressed on Browse button
+      </description>
+      <name>browseButtonPressedStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>This attribute sets css class when mouse down on Browse button
+      </description>
+      <name>browseButtonPressedClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>This attribute sets css style for disabled Browse button
+      </description>
+      <name>browseButtonDisabledStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>This attribute sets css class for disabled Browse button
+      </description>
+      <name>browseButtonDisabledClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>This attribute sets css style for focused Browse button
+      </description>
+      <name>browseButtonFocusedStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>This attribute sets css class for focused Browse button
+      </description>
+      <name>browseButtonFocusedClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>This attribute sets javascript function which will be executed when element gets focus
+      </description>
+      <name>onfocus</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>This attribute sets javascript function which will be executed when element lost focus
+      </description>
+      <name>onblur</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user clicks
+        the left mouse button over the FileUpload.
+      </description>
+      <name>onclick</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user double-clicks
+        the left mouse button over the FileUpload.
+      </description>
+      <name>ondblclick</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user clicks over the FileUpload with either
+        mouse button.
+      </description>
+      <name>onmousedown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer onto the FileUpload.
+      </description>
+      <name>onmouseover</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer over the FileUpload.
+      </description>
+      <name>onmousemove</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer
+        away from the FileUpload.
+      </description>
+      <name>onmouseout</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user releases a mouse button
+        over the FileUpload.
+      </description>
+      <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses a key over the FileUpload.
+      </description>
+      <name>onkeydown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user releases a key over the FileUpload.
+      </description>
+      <name>onkeyup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user presses and releases a
+        key over the FileUpload.
+      </description>
+      <name>onkeypress</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>This attribute sets tabIndex for fileUpload component
+      </description>
+      <name>tabindex</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>This attribute sets status that will be displayed in case of terminate uploading of file.
+      </description>
+      <name>stoppedStatusText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default Stopped -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>This attribute gives ability to upload several files.
+        If multiple sets to false then autoUpload attribute will be assigned to true.
+      </description>
+      <name>multiple</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>Enables handling uploaded files on the server side. This attribute is a MethodBinding that
+        must point to the method that accepts a org.openfaces.event.UploadCompletionEvent.
+      </description>
+      <name>uploadCompletionListener</name>
+      <deferred-method>
+        <method-signature>void uploadCompletionListener(org.openfaces.event.UploadCompletionEvent)</method-signature>
+      </deferred-method>
+      <!-- @bindingType javax.el.MethodExpression -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when started uploading for all files.
+      </description>
+      <name>onuploadstart</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when all files finished uploading ,
+        no matter successfully, with errors or stopped.
+      </description>
+      <name>onuploadend</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+  </tag>
+  <tag>
+    <name>progressBar</name>
+    <tag-class>org.openfaces.taglib.jsp.output.ProgressBarJspTag</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+      <description>A flag that indicates whether or not the component is visible.</description>
+      <name>rendered</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>The component identifier.</description>
+      <name>id</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el false -->
+    </attribute>
+
+    <attribute>
+      <description>A style for the ProgressBar component.</description>
+      <name>style</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A CSS class name for the ProgressBar component.</description>
+      <name>styleClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A style for element which displays progress that already achieved.</description>
+      <name>processedStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A CSS class for element which displays progress that already achieved.</description>
+      <name>processedClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A style for element which displays progress that not achieved yet</description>
+      <name>notProcessedStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A CSS class for element which displays progress that not achieved yet</description>
+      <name>notProcessedClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A CSS style for element which displays progress that not achieved yet</description>
+      <name>labelStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class for element which displays value of progress</description>
+      <name>labelClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>This attribute sets format how will be displayed progress value. Should consist '{value}' string.
+        For example: '{value} percents'
+      </description>
+      <name>labelFormat</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default '{value} %' -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>
+        Defines label position which displays value in given format.
+        Value "center" means that label will be displayed at center of progressBar.
+      </description>
+      <name>labelAlignment</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @value "center" -->
+      <!-- @value "null" -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>
+        Set image that will be displayed how many percents are already processed.
+      </description>
+      <name>processedImg</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>
+        Set image that will be displayed how many percents are not processed.
+      </description>
+      <name>notProcessedImg</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>
+        Set progress value for component.
+      </description>
+      <name>value</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
   </tag>
 
   <!--<tag>-->

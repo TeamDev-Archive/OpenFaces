@@ -27,6 +27,11 @@ public abstract class AbstractTableSelectionJspTag extends OUICommandJspTag {
         super(delegate);
     }
 
+    public void setRawStyleClass(ValueExpression rawStyleClass) {
+        getDelegate().setPropertyValue("rawStyleClass", rawStyleClass);
+    }
+
+
     public void setAction(MethodExpression action) {
         getDelegate().setPropertyValue("action", action);
     }

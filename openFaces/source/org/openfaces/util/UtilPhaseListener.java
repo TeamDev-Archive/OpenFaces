@@ -15,6 +15,8 @@ import org.openfaces.ajax.AjaxRequest;
 import org.openfaces.component.OUIObjectIterator;
 import org.openfaces.component.ajax.DefaultProgressMessage;
 import org.openfaces.component.table.AbstractTable;
+import org.openfaces.component.table.Columns;
+import org.openfaces.component.table.DynamicColumn;
 import org.openfaces.event.AjaxActionEvent;
 import org.openfaces.renderkit.ajax.DefaultProgressMessageRenderer;
 
@@ -425,25 +427,37 @@ public class UtilPhaseListener extends PhaseListenerBase {
                 });
             return (UIComponent) iterator;
         } else if (isNumberBasedId(id)) {
+            Class clazz;
             try {
-                Class clazz = Class.forName("com.sun.facelets.component.UIRepeat");
-                if (clazz.isInstance(parent)) {
-                    final Object uiRepeat = parent;
-                    ReflectionUtil.invokeMethod("com.sun.facelets.component.UIRepeat", "setIndex",
-                            new Class[]{Integer.TYPE}, new Object[]{Integer.parseInt(id)}, parent);
-                    if (restoreDataPointerRunnables != null)
-                        restoreDataPointerRunnables.add(new Runnable() {
-                            public void run() {
-                                // there's no getIndex method in com.sun.faces.component.UIRepeat, so we can't restore
-                                // the index in this way here
-                            }
-                        });
-                    return parent;
-                }
+                clazz = Class.forName("com.sun.facelets.component.UIRepeat");
             } catch (ClassNotFoundException e) {
-                //do nothing - it's ok - not facelets environment
+                clazz = null;
             }
-
+            if (clazz != null && clazz.isInstance(parent)) {
+                final Object uiRepeat = parent;
+                ReflectionUtil.invokeMethod("com.sun.faces.facelets.component.UIRepeat", "setIndex",
+                        new Class[]{Integer.TYPE}, new Object[]{Integer.parseInt(id)}, parent);
+                if (restoreDataPointerRunnables != null)
+                    restoreDataPointerRunnables.add(new Runnable() {
+                        public void run() {
+                            // there's no getIndex method in com.sun.faces.component.UIRepeat, so we can't restore
+                            // the index in this way here
+                        }
+                    });
+                return parent;
+            } else if (parent instanceof Columns) {
+                List<DynamicColumn> dynamicColumns = ((Columns) parent).toColumnList(context);
+                int columnIndex = Integer.parseInt(id);
+                final DynamicColumn dynamicColumn = dynamicColumns.get(columnIndex);
+                dynamicColumn.declareContextVariables();
+                if (restoreDataPointerRunnables != null)
+                    restoreDataPointerRunnables.add(new Runnable() {
+                        public void run() {
+                            dynamicColumn.undeclareContextVariables();
+                        }
+                    });
+                return parent;
+            }
         }
         if (id.equals(parent.getId()))
             return parent;

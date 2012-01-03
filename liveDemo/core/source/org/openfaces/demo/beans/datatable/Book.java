@@ -12,6 +12,8 @@
 
 package org.openfaces.demo.beans.datatable;
 
+import org.openfaces.event.FileUploadItem;
+
 import java.io.Serializable;
 
 public class Book implements Serializable {
@@ -20,6 +22,7 @@ public class Book implements Serializable {
     private int publicationDate;
     private String publisher;
     private BookCategory bookCategory;
+    private FileUploadItem uploadedCoverImage;
 
     public Book(String bookTitle, long isbn, int publicationDate, String publisher, BookCategory bookCategory) {
         this.bookTitle = bookTitle;
@@ -75,4 +78,11 @@ public class Book implements Serializable {
         return result;
     }
 
+    public FileUploadItem getUploadedCoverImage() {
+        return uploadedCoverImage;
+    }
+
+    public void setUploadedCoverImage(FileUploadItem uploadedCoverImage) {
+        this.uploadedCoverImage = uploadedCoverImage;
+    }
 }

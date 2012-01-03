@@ -3700,6 +3700,8 @@ if (!window.O$) {
       var containingBlock;
       if (relativeToContainingBlock) {
         containingBlock = relativeToContainingBlock === true ? O$.getContainingBlock(element, true) : relativeToContainingBlock.offsetParent;
+        if (containingBlock && containingBlock.nodeName.toUpperCase() == "BODY")
+          containingBlock = null;
         if (containingBlock) {
           var containingRect = containingBlock.getBoundingClientRect();
           left += containingBlock.scrollLeft - containingRect.left - containingBlock.clientLeft;
@@ -4211,15 +4213,12 @@ if (!window.O$) {
     var x = 0;
     var y = 0;
     if (typeof( window.pageYOffset ) == "number") {
-      // Netscape compliant
       y = window.pageYOffset;
       x = window.pageXOffset;
     } else if (document.body && ( document.body.scrollLeft || document.body.scrollTop )) {
-      // DOM compliant
       y = document.body.scrollTop;
       x = document.body.scrollLeft;
     } else if (document.documentElement && ( document.documentElement.scrollLeft || document.documentElement.scrollTop )) {
-      // IE6 standards compliant mode
       y = document.documentElement.scrollTop;
       x = document.documentElement.scrollLeft;
     }

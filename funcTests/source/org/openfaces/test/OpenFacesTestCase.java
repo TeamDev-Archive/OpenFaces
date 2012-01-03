@@ -100,12 +100,21 @@ public abstract class OpenFacesTestCase extends SeleniumTestCase {
                 String pageTitle;
                 try {
                     pageTitle = selenium.getTitle();
-                } catch (Throwable t) {
-                    pageTitle = "<exception on selenium.getTitle(): " + t.getMessage() + ">";
+                } catch (Exception ex) {
+                    pageTitle = "<exception on selenium.getTitle(): " + ex.getMessage() + ">";
                 }
-                throw new RuntimeException("Couldn't get HTML source of a page: " + fullPageUrl + "; page title: " + pageTitle, e);
+                try {
+                    String alert = selenium.getAlert();
+                    throw new RuntimeException("Couldn't open the page (failed getting HTML source of a page). " +
+                            "Alert dialog has popped up: " + alert + "; page URL: " + fullPageUrl +
+                            "; Page title: " + pageTitle, e);
+                } catch (Exception ex) {
+                    // an absence of alert is a normal case
+                }
+                
+                throw new RuntimeException("Couldn't open the page (failed getting HTML source of a page): " + fullPageUrl + "; Page title: " + pageTitle, e);
             }
-            assertTrue("Unexpected page content. Page url: " + fullPageUrl + " ; expected (but missing) HTML " +
+            assertTrue("Unexpected page content. Page url: " + fullPageUrl + " ; Expected (but missing) HTML " +
                     "source substring: " + htmlSubstringOfAValidPage + "; Current page title: " +
                     selenium.getTitle(), htmlSource.contains(htmlSubstringOfAValidPage));
         }
