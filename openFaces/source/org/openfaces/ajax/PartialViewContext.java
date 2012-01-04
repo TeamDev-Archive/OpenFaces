@@ -168,9 +168,10 @@ public class PartialViewContext extends PartialViewContextWrapper {
             return Collections.emptyList();
         Set<String> result = new LinkedHashSet<String>(super.getRenderIds());
         result.addAll(AjaxRequest.getInstance().getReloadedComponentIds());
-        if (context.getApplication().getProjectStage() == ProjectStage.Development) {
-            checkForReloadedForms (context, result);
-        }
+        // todo return later carefully OFCS-65
+//        if (context.getApplication().getProjectStage() == ProjectStage.Development) {
+//            checkForReloadedForms (context, result);
+//        }
 
         List<String> additionalComponents = new ArrayList<String>();
         UIViewRoot viewRoot = context.getViewRoot();
