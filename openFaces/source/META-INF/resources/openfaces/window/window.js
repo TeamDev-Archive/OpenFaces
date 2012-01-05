@@ -147,6 +147,7 @@ O$.Window = {
         if (resizable)
           win._updateResizersPos();
         win._updateContentPos();
+        O$.correctElementZIndex(win, win._form, 100);
       },
 
       _afterHide: function() {
