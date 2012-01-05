@@ -68,7 +68,10 @@ public class FileUploadTag extends AbstractComponentTag {
         setStringProperty(component, "notUploadedStatusText");
         setStringProperty(component, "uploadedStatusText");
         setStringProperty(component, "inProgressStatusText");
+        setStringProperty(component, "stoppedStatusText");
+        setStringProperty(component, "stoppingStatusText");
         setStringProperty(component, "fileSizeLimitErrorText");
+        setStringProperty(component, "unexpectedErrorText");
 
         setStringProperty(component, "acceptedFileTypes");
         setBooleanProperty(component, "duplicateAllowed");
@@ -80,7 +83,6 @@ public class FileUploadTag extends AbstractComponentTag {
         setIntProperty(component, "tabindex");
         setMethodExpressionProperty(facesContext, component, "fileUploadedListener",
                 new Class[]{FileUploadedEvent.class}, void.class);
-        setStringProperty(component, "stoppedStatusText");
         setBooleanProperty(component, "multiple");
         setMethodExpressionProperty(facesContext, component, "uploadCompletionListener",
                 new Class[]{UploadCompletionEvent.class}, void.class);

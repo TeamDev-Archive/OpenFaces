@@ -356,7 +356,11 @@
     <selectedImage>/images/components/titles/Slider.png</selectedImage>
     <keyFeatures>
       <feature>Multiple files upload support</feature>
-      <feature>Customizable appearance</feature>
+      <feature>Filtering names of files</feature>
+      <feature>File size limit support</feature>
+      <feature>Stopping uploading</feature>
+      <feature>Style customization</feature>
+      <feature>AutoUpload support</feature>
     </keyFeatures>
     <demos>
       <demoItem>

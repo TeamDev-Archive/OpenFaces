@@ -16,5 +16,6 @@ package org.openfaces.event;
 public enum FileUploadStatus {
     FAILED,
     STOPPED,
-    SUCCESSFUL
+    SUCCESSFUL,
+    SIZE_LIMIT_EXCEEDED
 }

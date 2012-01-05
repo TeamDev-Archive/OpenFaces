@@ -16,12 +16,12 @@
 O$.FileUpload = {
   _init: function(componentId, minQuantity, maxQuantity, lengthAlreadyUploadedFiles,
                   fileInfoClass, infoTitleClass, progressBarClass, infoStatusClass,
-                  statusLabelNotUploaded, statusLabelInProgress, statusLabelUploaded, statusLabelErrorSize,
+                  statusLabelNotUploaded, statusLabelInProgress, statusLabelUploaded, statusLabelErrorSize, statusLabelUnexpectedError,
                   acceptedTypesOfFile,  isDuplicateAllowed,
                   addButtonId, addButtonClass, addButtonOnMouseOverClass, addButtonOnMouseDownClass,addButtonOnFocusClass,
                   addButtonDisabledClass,
                   uploadButtonId, clearAllButtonId, isDisabled,
-                  isAutoUpload, tabIndex, progressBarId, statusStoppedText, multiUpload,ID) {
+                  isAutoUpload, tabIndex, progressBarId, statusStoppedText, statusStoppingText, multiUpload,ID) {
     var fileUpload = O$.initComponent(componentId, null, {
       _minQuantity : minQuantity,
       _maxQuantity : maxQuantity,
@@ -660,14 +660,26 @@ O$.FileUpload = {
                   if (portionData['status'] == "error") {//todo:description add what kind of error
                     infoDiv._status = O$.statusEnum.ERROR;
                     inputsStorage.removeChild(inputForFile.parentNode.parentNode);
-                    infoDiv.childNodes[2].innerHTML = statusLabelErrorSize;
-                    var id = inputForFile.nextSibling.value;
-                    for (var k = 0; k < fileUpload._listOfids.length; k++) {
-                      if (id == fileUpload._listOfids[k][0]) {
-                        fileUpload._listOfids[k][2] = "ERROR";
-                        break;
+                    if (portionData['isFileSizeExceed'] == "true"){
+                      infoDiv.childNodes[2].innerHTML = statusLabelErrorSize;
+                      var id = inputForFile.nextSibling.value;                  //todo : remove repeated code
+                      for (var k = 0; k < fileUpload._listOfids.length; k++) {
+                        if (id == fileUpload._listOfids[k][0]) {
+                          fileUpload._listOfids[k][2] = "SIZE_LIMIT_EXCEEDED";
+                          break;
+                        }
+                      }
+                    }else{
+                      infoDiv.childNodes[2].innerHTML = statusLabelUnexpectedError;
+                      var id = inputForFile.nextSibling.value;
+                      for (var k = 0; k < fileUpload._listOfids.length; k++) {
+                        if (id == fileUpload._listOfids[k][0]) {
+                          fileUpload._listOfids[k][2] = "ERROR";
+                          break;
+                        }
                       }
                     }
+
                     setClearBtnAndEventHandler(infoDiv);
                     prepareUIWhenAllRequestsFinished(true);
                   } else {
@@ -683,6 +695,8 @@ O$.FileUpload = {
                         O$.addEventHandler(stopFileDiv, "focus", focusHandler);
                         O$.addEventHandler(stopFileDiv, "blur", blurHandler);
                         O$.addEventHandler(stopFileDiv, "click", function(){
+                          stopFileDiv.disabled = true;
+                          infoDiv.childNodes[2].innerHTML = statusStoppingText;
                           var iframe = inputForFile.nextSibling;
                           iframe.src = "";
                           inputForFile._wantToInterrupt = true;

@@ -29,8 +29,33 @@
         <o:fileUpload browseButtonText="Upload cover image..."
                       style="border: none; width: 100%"
                       uploadCompletionListener="#{FileUploadBean.bookImageUploaded}"
+                      acceptedFileTypes="jpg png bmp jpeg gif"
                       onuploadend="O$.ajax.request(this, null, {render:'form:booksTable'})"/>
       </o:column>
     </o:dataTable>
+  </div>
+  <div id="Description">
+    <h4>Demonstrated Features</h4>
+    <ul class="hang">
+      <li>
+        <strong>Single File Upload mode</strong> - user can upload only one file at the moment.
+        For single mode appearance has changed: there is no unneccessary 'Upload' button,
+        label for chooser button  changed default value, component doesn't accumulate list of uploaded files.
+      </li>
+      <li>
+        <strong>AutoUpload mode support</strong> - as soon as user choose the file , uploading will start.
+      </li>
+      <li>
+        <strong>Filtering names of files</strong> - you can set up what types of files you want to be uploaded.
+        User won't be able add files with not appropriate extensions. Try to add file which is not image.
+      </li>
+      <li>
+        <strong>Customizeable appearance</strong> - you can customize every elements (buttons, labels) styles.
+      </li>
+      <li>
+        <strong>Provides an ability to stop uploading</strong> - while file is uploading, click on  'Stop'  button.
+        If it's not yet uploaded on server, file uploading will be stopped.
+      </li>
+    </ul>
   </div>
 </div>
