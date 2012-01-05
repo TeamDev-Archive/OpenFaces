@@ -136,9 +136,14 @@ public class PartialViewContext extends PartialViewContextWrapper {
     @Override
     public void processPartial(PhaseId phaseId) {
         super.processPartial(phaseId);
+        FacesContext context = FacesContext.getCurrentInstance();
         /*if (isAjaxRequest()) non-ajax handling is required for the Action component*/ {
+            if (phaseId == PhaseId.PROCESS_VALIDATIONS) {
+                AjaxRequest.getInstance(context).resetValidationError();
+            }
             if (phaseId == PhaseId.UPDATE_MODEL_VALUES) {
-                processAjaxExecutePhase(FacesContext.getCurrentInstance());
+                AjaxRequest.getInstance(context).setValidationError(false);
+                processAjaxExecutePhase(context);
             }
         }
 
@@ -908,9 +913,17 @@ public class PartialViewContext extends PartialViewContextWrapper {
         Map<String, String> extensionAttributes = new HashMap<String, String>();
         extensionAttributes.put("ln", "openfaces");
         extensionAttributes.put("type", "ajaxResult");
-        Object ajaxResult = AjaxRequest.getInstance(context).getAjaxResult();
+        AjaxRequest ajaxRequest = AjaxRequest.getInstance(context);
+        Object ajaxResult = ajaxRequest.getAjaxResult();
         extensionAttributes.put("ajaxResult", resultValueToJsValue(ajaxResult));
 
+        partialWriter.startExtension(extensionAttributes);
+        partialWriter.endExtension();
+
+        extensionAttributes = new HashMap<String, String>();
+        extensionAttributes.put("ln", "openfaces");
+        extensionAttributes.put("type", "validationError");
+        extensionAttributes.put("validationError", String.valueOf(ajaxRequest.isValidationError()));
         partialWriter.startExtension(extensionAttributes);
         partialWriter.endExtension();
     }

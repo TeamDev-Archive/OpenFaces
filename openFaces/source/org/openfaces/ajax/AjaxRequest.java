@@ -27,6 +27,7 @@ public class AjaxRequest {
     private Set<String> reloadedComponentIds = new HashSet<String>();
     private FacesContext context;
     private Object ajaxResult;
+    private boolean validationError;
 
     private AjaxRequest(FacesContext context) {
         this.context = context;
@@ -96,4 +97,17 @@ public class AjaxRequest {
     public void setAjaxResult(Object ajaxResult) {
         this.ajaxResult = ajaxResult;
     }
+
+    public boolean isValidationError() {
+        return validationError;
+    }
+
+    public void setValidationError(boolean validationError) {
+        this.validationError = validationError;
+    }
+
+    public void resetValidationError() {
+       this.validationError = true;
+    }
 }
+
