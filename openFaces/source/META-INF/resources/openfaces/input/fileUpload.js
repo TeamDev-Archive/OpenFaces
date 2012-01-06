@@ -316,6 +316,7 @@ O$.FileUpload = {
     function initHeaderButtons() {
       if (fileUpload._isDisabled) {
         inputInAddBtn.disabled = true;
+        addButtonTitleInput.className = addButtonDisabledClass;
         clearAllButton.style.display = "none";
       } else {
         if (fileUpload._maxQuantity != 0 && fileUpload._lengthUploadedFiles == fileUpload._maxQuantity){

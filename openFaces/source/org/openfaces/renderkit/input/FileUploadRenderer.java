@@ -135,7 +135,7 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("id", elementId, null);
         writer.writeAttribute("style", "display:none", null);
-        writer.writeAttribute("onchange", Rendering.getEventsParam(fileUpload, "onchange"), null);
+        writer.writeAttribute("onchange", fileUpload.getOnchange(), null);
 
         writer.endElement("input");
     }
