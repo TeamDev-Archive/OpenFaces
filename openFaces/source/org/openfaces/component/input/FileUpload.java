@@ -33,7 +33,7 @@ import java.util.List;
 public class FileUpload extends OUIInputBase {
     protected static final List<String> EVENT_NAMES;
     static {
-        List<String> eventNames = new ArrayList<String>(Arrays.asList("uploadstart", "uploadEnd"));
+        List<String> eventNames = new ArrayList<String>(Arrays.asList("uploadstart", "uploadend"));
         eventNames.addAll(OUIInputBase.EVENT_NAMES);
         EVENT_NAMES = Collections.unmodifiableList(eventNames);
     }
@@ -537,7 +537,7 @@ public class FileUpload extends OUIInputBase {
 
     @Override
     public String getDefaultEventName() {
-        return "uploadEnd";
+        return "uploadend";
     }
 
     @Override

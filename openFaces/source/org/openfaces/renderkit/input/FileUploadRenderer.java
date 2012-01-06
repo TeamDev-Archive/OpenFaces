@@ -114,9 +114,8 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
         Rendering.writeStyleAndClassAttributes(writer, fileUpload.getStyle(), fileUpload.getStyleClass(), "o_file_upload");
         Rendering.writeStandardEvents(writer, fileUpload);
 
-        writer.writeAttribute("onuploadstart", fileUpload.getOnuploadstart(), null);
-        writer.writeAttribute("onuploadend", fileUpload.getOnuploadend(), null);
-
+        writeAttribute(writer, "onuploadstart", Rendering.getEventHandlerScript(fileUpload, "uploadstart"));
+        writeAttribute(writer, "onuploadend", Rendering.getEventHandlerScript(fileUpload, "uploadend"));
         writeHeader(context, fileUpload, writer, clientId + DIV_HEADER_ID);
 
         writeMainDivForInfos(context, writer, fileUpload, clientId + DIV_FOR_INFO_ID);
@@ -134,7 +133,7 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("id", elementId, null);
         writer.writeAttribute("style", "display:none", null);
-        writer.writeAttribute("onchange", Rendering.getEventsParam(fileUpload, "onchange"), null);
+        writer.writeAttribute("onchange", Rendering.getEventHandlerScript(fileUpload, "change"), null);
 
         writer.endElement("input");
     }
