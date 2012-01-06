@@ -561,7 +561,8 @@ window.OpenFaces.Ajax = {
     source._openFaces_ajax_inProgress = true;
     var parentOfReloadedComponents = {};
     render.split(" ").forEach(function (render) {
-      parentOfReloadedComponents[render] = O$(render).parentNode;
+      if (render != "")
+        parentOfReloadedComponents[render] = O$(render).parentNode;
     });
 
     if (window.RichFaces && RichFaces.ajax && RichFaces.ajax.jsfRequest) {
