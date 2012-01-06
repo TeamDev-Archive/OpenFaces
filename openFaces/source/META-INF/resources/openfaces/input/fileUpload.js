@@ -102,14 +102,16 @@ O$.FileUpload = {
     fileUpload.onfocus = null;
 
     var  addButton = O$(addButtonId);
-    setStylesForAddButton(addButton);
+
     var divForInputInAddBtn = O$(addButtonId+"::forInput");
     var inputInAddBtn = createInputInAddBtn(idOfInfoAndInputDiv);
     var addButtonTitle = O$(addButtonId + "::title");
+    var addButtonTitleInput = addButtonTitle.firstChild;
+    setStylesForAddButton(addButton);
     if (O$.isExplorer() && O$.isQuirksMode()){
       divForInputInAddBtn.style.height = O$.getElementSize(addButtonTitle).height;
     }
-    addButtonTitle.firstChild.disabled = false;
+    addButtonTitleInput.disabled = false;
     divForInputInAddBtn.appendChild(inputInAddBtn);//create first input
 
     //variables for focus/blur
@@ -150,12 +152,8 @@ O$.FileUpload = {
           onChangeFunc();
       }
 
-
-      if (!clearAllButton.disabled) {
-        clearAllButton.disabled = true;
-        clearAllButton.style.display = "none";
+      clearAllButton.style.display = "none";
         //setFocusOnComponent();
-      }
       shouldInvokeFocusNonModifiable = true;
     });
 
@@ -167,7 +165,7 @@ O$.FileUpload = {
         shouldInvokeFocusEvHandler = true;
         return false;
       }
-      addButton.className = addButtonClass;
+      addButtonTitleInput.className = addButtonClass;
       addButton._inFocus = false;
       createAndAppendComplexInputWithId(idOfInfoAndInputDiv,inputForFile);
       fileUpload._numberOfFilesToUpload++;
@@ -185,14 +183,12 @@ O$.FileUpload = {
       if (fileUpload._maxQuantity != 0
               && fileUpload._maxQuantity <= (fileUpload._numberOfFilesToUpload + fileUpload._lengthUploadedFiles)) {
         inputInAddBtn.disabled = true;
-        addButton.className = addButtonDisabledClass;
+        addButtonTitleInput.className = addButtonDisabledClass;
       }
-      clearAllButton.disabled = false;
       clearAllButton.style.display = "block";
 
 
       if (fileUpload._minQuantity <= (fileUpload._numberOfFilesToUpload + fileUpload._lengthUploadedFiles)) {
-        uploadButton.disabled = false;
         if (fileUpload._isAutoUpload){
           uploadButtonClickHandler();
         }else{
@@ -232,7 +228,6 @@ O$.FileUpload = {
             onChangeFunc();
           if (allInfos.childNodes.length == 0) {
             clearAllButton.style.display = "none";
-            clearAllButton.disabled = true;
           }
           shouldInvokeFocusEvHandler = false;
           setFocusOnComponent();
@@ -308,12 +303,13 @@ O$.FileUpload = {
       if (inputInAddBtn.disabled
               && fileUpload._maxQuantity > (fileUpload._numberOfFilesToUpload + fileUpload._lengthUploadedFiles)) {
         inputInAddBtn.disabled = false;
-        addButton.className = addButtonClass;
+        addButtonTitleInput.className = addButtonClass;
       }
-      if (!uploadButton.disabled
-              && ((fileUpload._minQuantity > (fileUpload._numberOfFilesToUpload + fileUpload._lengthUploadedFiles))
-              || fileUpload._numberOfFilesToUpload == 0)) {
-        uploadButton.disabled = true;
+      if ((fileUpload._minQuantity > (fileUpload._numberOfFilesToUpload + fileUpload._lengthUploadedFiles))
+              || fileUpload._numberOfFilesToUpload == 0) {
+        if (fileUpload._multiUpload){
+          uploadButton.style.visibility = "hidden";
+        }
       }
     }
 
@@ -321,23 +317,19 @@ O$.FileUpload = {
       if (fileUpload._isDisabled) {
         inputInAddBtn.disabled = true;
         clearAllButton.style.display = "none";
-        clearAllButton.disabled = true;
       } else {
-
         if (fileUpload._maxQuantity != 0 && fileUpload._lengthUploadedFiles == fileUpload._maxQuantity){
           inputInAddBtn.disabled = true;
-          addButton.className = addButtonDisabledClass;
+          addButtonTitleInput.className = addButtonDisabledClass;
         }else{
           inputInAddBtn.disabled = false;
         }
 
         if (allInfos.childNodes.length == 0) {
           clearAllButton.style.display = "none";
-          clearAllButton.disabled = true;
         }
       }
 
-      uploadButton.disabled = true;
       if (!fileUpload._multiUpload){
         uploadButton.style.display = "none";
       } else {
@@ -435,13 +427,13 @@ O$.FileUpload = {
       }
       O$.addEventHandler(input,"focus",function(){
         if (!inputInAddBtn.disabled && !addButton._afterMouseDown){
-          addButton.className = addButtonOnFocusClass;
+          addButtonTitleInput.className = addButtonOnFocusClass;
         }
         addButton._inFocus = true;
       });
       O$.addEventHandler(input,"blur",function(){
         if (!inputInAddBtn.disabled){
-          addButton.className = addButtonClass;
+          addButtonTitleInput.className = addButtonClass;
           addButton._inFocus = false;
         }
       });
@@ -476,25 +468,25 @@ O$.FileUpload = {
     }
 
     function setStylesForAddButton(addButton){
-      addButton.className = addButtonClass;
+      addButtonTitleInput.className = addButtonClass;
       O$.addEventHandler(addButton,"mouseover",function(){
         if (!inputInAddBtn.disabled) {
-          addButton.className = addButtonOnMouseOverClass;
+          addButtonTitleInput.className = addButtonOnMouseOverClass;
         }
       });
       O$.addEventHandler(addButton, "mouseout", function() {
         if (!inputInAddBtn.disabled) {
           if (addButton._inFocus) {
-            addButton.className = addButtonOnFocusClass;
+            addButtonTitleInput.className = addButtonOnFocusClass;
           } else {
-            addButton.className = addButtonClass;
+            addButtonTitleInput.className = addButtonClass;
           }
         }
       });
 
       O$.addEventHandler(addButton,"mousedown",function(){
         if (!inputInAddBtn.disabled){
-          addButton.className = addButtonOnMouseDownClass;
+          addButtonTitleInput.className = addButtonOnMouseDownClass;
         }
         addButton._afterMouseDown = true;
       });
@@ -502,9 +494,9 @@ O$.FileUpload = {
         if (!inputInAddBtn.disabled){
 
           if (addButton._inFocus){
-            addButton.className = addButtonOnFocusClass;
+            addButtonTitleInput.className = addButtonOnFocusClass;
           }else{
-            addButton.className = addButtonClass;
+            addButtonTitleInput.className = addButtonClass;
           }
         }
         addButton._afterMouseDown = false;
@@ -623,7 +615,7 @@ O$.FileUpload = {
         }, 500);
       }
       inputInAddBtn.disabled = true;
-      addButton.className = addButtonDisabledClass;
+      addButtonTitleInput.className = addButtonDisabledClass;
       if (fileUpload._multiUpload){
         uploadButton.style.visibility = "hidden";
         clearAllButton.style.visibility = "hidden";    // to prevent changing of file list when uploading in progress
@@ -695,7 +687,7 @@ O$.FileUpload = {
                         O$.addEventHandler(stopFileDiv, "focus", focusHandler);
                         O$.addEventHandler(stopFileDiv, "blur", blurHandler);
                         O$.addEventHandler(stopFileDiv, "click", function(){
-                          stopFileDiv.disabled = true;
+                          stopFileDiv.style.visibility = "hidden";
                           infoDiv.childNodes[2].innerHTML = statusStoppingText;
                           var iframe = inputForFile.nextSibling;
                           iframe.src = "";
@@ -756,7 +748,6 @@ O$.FileUpload = {
                       allInfos.removeChild(infoDiv);
                       if (allInfos.childNodes.length == 0) {
                         clearAllButton.style.display = "none";
-                        clearAllButton.disabled = true;
                       }
                       shouldInvokeFocusNonModifiable = false;
                       setFocusOnComponent();
@@ -787,7 +778,7 @@ O$.FileUpload = {
                         uploadButton.style.visibility = "visible";
                       }
                       inputInAddBtn.disabled = false;
-                      addButton.className = addButtonClass;
+                      addButtonTitleInput.className = addButtonClass;
                       initHeaderButtons();
                       //set focus on addButton
                       shouldInvokeFocusEvHandler = false;
