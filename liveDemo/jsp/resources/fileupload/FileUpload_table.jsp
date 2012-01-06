@@ -1,11 +1,13 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:o="http://openfaces.org/">
-<h:head>
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+ "http://www.w3.org/TR/html4/strict.dtd">
+ <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
+<%@ taglib uri="http://java.sun.com/jsf/core" prefix="f" %>
+<%@ taglib uri="http://openfaces.org/" prefix="o" %>
+
+<html>
+<head>
   <!--<link rel="STYLESHEET" type="text/css" href="datatable.css"/>-->
   <link rel="SHORTCUT ICON" href="../images/icons/favicon.ico"/>
 
@@ -15,9 +17,9 @@
   <meta name="COPYRIGHT" content=" 2011 TeamDev Ltd."/>
   <meta name="CACHE-CONTROL" content="Public"/>
 
-  <ui:include src="../template/keywords.xhtml"/>
+  <%@ include file="../template/keywords.xhtml"%>
 
-  <title>FileUpload &#8212; OpenFaces Demo</title>
+  <title>FileUpload&#8212; OpenFaces Demo</title>
   <link rel="stylesheet" href="../design/css/style.css" type="text/css" media="screen,projection"/>
   <link rel="stylesheet" href="../design/css/menu.css" type="text/css" media="screen,projection"/>
   <link rel="stylesheet" href="../design/css/print.css" type="text/css" media="print"/>
@@ -32,46 +34,46 @@
   <!--[if !IE ]>
       <script src="../design/js/style.js" type="text/javascript"></script>
   <![endif]-->
-</h:head>
+</head>
 
-<h:body>
+<body>
 
-<ui:include src="../template/pageBackground.xhtml"/>
+<%@ include file="../template/pageBackground.xhtml"%>
 
 <div id="Page" class="clearfix">
   <f:view>
     <h:form id="form">
 
-      <ui:include src="../template/logo.xhtml"/>
+      <%@ include file="../template/logo.xhtml"%>
 
       <!--start site menu-->
-      <ui:include src="../template/siteMenu.xhtml"/>
+      <%@ include file="../template/siteMenu.xhtml"%>
       <!--end start menu-->
 
       <!--- start tabs -->
-      <ui:include src="../template/tabs.xhtml"/>
+      <%@ include file="../template/tabs.xhtml"%>
       <!--- end tabs -->
 
       <div id="LeftPannel">
         <!--- start key features -->
-        <ui:include src="../template/sidePart.xhtml"/>
+        <%@ include file="../template/sidePart.xhtml"%>
         <!--- end key features -->
 
         <!--- start menu -->
-        <ui:include src="../template/menu.xhtml"/>
+        <%@ include file="../template/menu.xhtml"%>
         <!--- end menu -->
       </div>
 
       <div id="Content">
         <!-- start content -->
-        <ui:include src="FileUpload_core.xhtml"/>
+        <%@ include file="FileUpload_table_core.xhtml"%>
         <!-- end content -->
       </div>
     </h:form>
   </f:view>
 </div>
 
-<ui:include src="../template/footer.xhtml"/>
+<%@ include file="../template/footer.xhtml"%>
 
-</h:body>
+</body>
 </html>

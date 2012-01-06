@@ -20,12 +20,24 @@ import javax.el.MethodExpression;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 @ResourceDependencies({
         @ResourceDependency(name = "default.css", library = "openfaces"),
         @ResourceDependency(name = "jsf.js", library = "javax.faces")
 })
 public class FileUpload extends OUIInputBase {
+    protected static final List<String> EVENT_NAMES;
+    static {
+        List<String> eventNames = new ArrayList<String>(Arrays.asList("uploadstart", "uploadEnd"));
+        eventNames.addAll(OUIInputBase.EVENT_NAMES);
+        EVENT_NAMES = Collections.unmodifiableList(eventNames);
+    }
+
     public static final String COMPONENT_TYPE = "org.openfaces.FileUpload";
     public static final String COMPONENT_FAMILY = "org.openfaces.FileUpload";
 
@@ -35,37 +47,37 @@ public class FileUpload extends OUIInputBase {
     private String headerStyle;
     private String headerClass;
 
-    private String addButtonStyle;
-    private String addButtonClass;
-    private String addButtonLabel;
+    private String browseButtonStyle;
+    private String browseButtonClass;
+    private String browseButtonText;
 
-    private String addButtonOnMouseOverStyle;
-    private String addButtonOnMouseOverClass;
+    private String browseButtonRolloverStyle;
+    private String browseButtonRolloverClass;
 
-    private String addButtonOnMouseDownStyle;
-    private String addButtonOnMouseDownClass;
+    private String browseButtonPressedStyle;
+    private String browseButtonPressedClass;
 
-    private String addButtonOnFocusStyle;
-    private String addButtonOnFocusClass;
+    private String browseButtonFocusedStyle;
+    private String browseButtonFocusedClass;
 
-    private String addButtonDisabledStyle;
-    private String addButtonDisabledClass;
+    private String browseButtonDisabledStyle;
+    private String browseButtonDisabledClass;
 
     private String allInfosStyle;
     private String allInfosClass;
 
-    private String fileInfoStyle;
-    private String fileInfoClass;
+    private String rowStyle;
+    private String rowClass;
 
-    private String infoTitleClass;
-    private String infoTitleStyle;
+    private String fileNameClass;
+    private String fileNameStyle;
 
-    private String infoStatusClass;
-    private String infoStatusStyle;
-    private String statusNotUploadedText;
-    private String statusUploadedText;
-    private String statusInProgressText;
-    private String maxFileSizeErrorText;
+    private String uploadStatusClass;
+    private String uploadStatusStyle;
+    private String notUploadedStatusText;
+    private String uploadedStatusText;
+    private String inProgressStatusText;
+    private String fileSizeLimitErrorText;
 
     private String acceptedFileTypes;
 
@@ -77,11 +89,14 @@ public class FileUpload extends OUIInputBase {
 
     private int tabindex;
 
-    private String statusStoppedText;
+    private String stoppedStatusText;
     private MethodExpression fileUploadedListener;
-    private boolean multiUpload;
+    private boolean multiple;
 
     private MethodExpression uploadCompletionListener;
+
+    private String onuploadstart;
+    private String onuploadend;
 
     public FileUpload() {
         setRendererType("org.openfaces.FileUploadRenderer");
@@ -100,38 +115,40 @@ public class FileUpload extends OUIInputBase {
                 maxQuantity,
                 headerStyle,
                 headerClass,
-                addButtonStyle,
-                addButtonClass,
-                addButtonLabel,
-                addButtonOnMouseOverStyle,
-                addButtonOnMouseOverClass,
-                addButtonOnMouseDownStyle,
-                addButtonOnMouseDownClass,
-                addButtonOnFocusStyle,
-                addButtonOnFocusClass,
-                addButtonDisabledStyle,
-                addButtonDisabledClass,
+                browseButtonStyle,
+                browseButtonClass,
+                browseButtonText,
+                browseButtonRolloverStyle,
+                browseButtonRolloverClass,
+                browseButtonPressedStyle,
+                browseButtonPressedClass,
+                browseButtonFocusedStyle,
+                browseButtonFocusedClass,
+                browseButtonDisabledStyle,
+                browseButtonDisabledClass,
                 allInfosStyle,
                 allInfosClass,
-                fileInfoStyle,
-                fileInfoClass,
+                rowStyle,
+                rowClass,
                 acceptedFileTypes,
                 duplicateAllowed,
-                infoTitleClass,
-                infoTitleStyle,
-                infoStatusClass,
-                infoStatusStyle,
-                statusNotUploadedText,
-                statusUploadedText,
-                statusInProgressText,
-                maxFileSizeErrorText,
+                fileNameClass,
+                fileNameStyle,
+                uploadStatusClass,
+                uploadStatusStyle,
+                notUploadedStatusText,
+                uploadedStatusText,
+                inProgressStatusText,
+                fileSizeLimitErrorText,
                 progressBarStyle,
                 progressBarClass,
                 tabindex,
                 saveAttachedState(context, fileUploadedListener),
-                statusStoppedText,
-                multiUpload,
+                stoppedStatusText,
+                multiple,
                 saveAttachedState(context, uploadCompletionListener),
+                onuploadstart,
+                onuploadend
         };
     }
 
@@ -144,38 +161,40 @@ public class FileUpload extends OUIInputBase {
         maxQuantity = (Integer) values[i++];
         headerStyle = (String) values[i++];
         headerClass = (String) values[i++];
-        addButtonStyle = (String) values[i++];
-        addButtonClass = (String) values[i++];
-        addButtonLabel = (String) values[i++];
-        addButtonOnMouseOverStyle = (String) values[i++];
-        addButtonOnMouseOverClass = (String) values[i++];
-        addButtonOnMouseDownStyle = (String) values[i++];
-        addButtonOnMouseDownClass = (String) values[i++];
-        addButtonOnFocusStyle = (String) values[i++];
-        addButtonOnFocusClass = (String) values[i++];
-        addButtonDisabledStyle = (String) values[i++];
-        addButtonDisabledClass = (String) values[i++];
+        browseButtonStyle = (String) values[i++];
+        browseButtonClass = (String) values[i++];
+        browseButtonText = (String) values[i++];
+        browseButtonRolloverStyle = (String) values[i++];
+        browseButtonRolloverClass = (String) values[i++];
+        browseButtonPressedStyle = (String) values[i++];
+        browseButtonPressedClass = (String) values[i++];
+        browseButtonFocusedStyle = (String) values[i++];
+        browseButtonFocusedClass = (String) values[i++];
+        browseButtonDisabledStyle = (String) values[i++];
+        browseButtonDisabledClass = (String) values[i++];
         allInfosStyle = (String) values[i++];
         allInfosClass = (String) values[i++];
-        fileInfoStyle = (String) values[i++];
-        fileInfoClass = (String) values[i++];
+        rowStyle = (String) values[i++];
+        rowClass = (String) values[i++];
         acceptedFileTypes = (String) values[i++];
         duplicateAllowed = (Boolean) values[i++];
-        infoTitleClass = (String) values[i++];
-        infoTitleStyle = (String) values[i++];
-        infoStatusClass = (String) values[i++];
-        infoStatusStyle = (String) values[i++];
-        statusNotUploadedText = (String) values[i++];
-        statusUploadedText = (String) values[i++];
-        statusInProgressText = (String) values[i++];
-        maxFileSizeErrorText = (String) values[i++];
+        fileNameClass = (String) values[i++];
+        fileNameStyle = (String) values[i++];
+        uploadStatusClass = (String) values[i++];
+        uploadStatusStyle = (String) values[i++];
+        notUploadedStatusText = (String) values[i++];
+        uploadedStatusText = (String) values[i++];
+        inProgressStatusText = (String) values[i++];
+        fileSizeLimitErrorText = (String) values[i++];
         progressBarStyle = (String) values[i++];
         progressBarClass = (String) values[i++];
         tabindex = (Integer) values[i++];
         fileUploadedListener = (MethodExpression) restoreAttachedState(context, values[i++]);
-        statusStoppedText = (String) values[i++];
-        multiUpload = (Boolean) values[i++];
+        stoppedStatusText = (String) values[i++];
+        multiple = (Boolean) values[i++];
         uploadCompletionListener = (MethodExpression) restoreAttachedState(context, values[i++]);
+        onuploadstart = (String) values[i++];
+        onuploadend = (String) values[i++];
     }
 
 
@@ -211,84 +230,84 @@ public class FileUpload extends OUIInputBase {
         this.allInfosClass = allInfosClass;
     }
 
-    public String getFileInfoStyle() {
-        return ValueBindings.get(this, "fileInfoStyle", fileInfoStyle);
+    public String getRowStyle() {
+        return ValueBindings.get(this, "rowStyle", rowStyle);
     }
 
-    public void setFileInfoStyle(String fileInfoStyle) {
-        this.fileInfoStyle = fileInfoStyle;
+    public void setRowStyle(String rowStyle) {
+        this.rowStyle = rowStyle;
     }
 
-    public String getFileInfoClass() {
-        return ValueBindings.get(this, "fileInfoClass", fileInfoClass);
+    public String getRowClass() {
+        return ValueBindings.get(this, "rowClass", rowClass);
     }
 
-    public void setFileInfoClass(String fileInfoClass) {
-        this.fileInfoClass = fileInfoClass;
+    public void setRowClass(String rowClass) {
+        this.rowClass = rowClass;
     }
 
-    public String getInfoTitleClass() {
-        return ValueBindings.get(this, "infoTitleClass", infoTitleClass);
+    public String getFileNameClass() {
+        return ValueBindings.get(this, "fileNameClass", fileNameClass);
     }
 
-    public void setInfoTitleClass(String infoTitleClass) {
-        this.infoTitleClass = infoTitleClass;
+    public void setFileNameClass(String fileNameClass) {
+        this.fileNameClass = fileNameClass;
     }
 
-    public String getInfoTitleStyle() {
-        return ValueBindings.get(this, "infoTitleStyle", infoTitleStyle);
+    public String getFileNameStyle() {
+        return ValueBindings.get(this, "fileNameStyle", fileNameStyle);
     }
 
-    public void setInfoTitleStyle(String infoTitleStyle) {
-        this.infoTitleStyle = infoTitleStyle;
+    public void setFileNameStyle(String fileNameStyle) {
+        this.fileNameStyle = fileNameStyle;
     }
 
-    public String getStatusNotUploadedText() {
-        return ValueBindings.get(this, "statusNotUploadedText", statusNotUploadedText);
+    public String getNotUploadedStatusText() {
+        return ValueBindings.get(this, "notUploadedStatusText", notUploadedStatusText);
     }
 
-    public void setStatusNotUploadedText(String statusNotUploadedText) {
-        this.statusNotUploadedText = statusNotUploadedText;
+    public void setNotUploadedStatusText(String notUploadedStatusText) {
+        this.notUploadedStatusText = notUploadedStatusText;
     }
 
-    public String getStatusUploadedText() {
-        return ValueBindings.get(this, "infoStatusLabelUploaded", statusUploadedText, "Uploaded");
+    public String getUploadedStatusText() {
+        return ValueBindings.get(this, "uploadedStatusText", uploadedStatusText, "Uploaded");
     }
 
-    public void setStatusUploadedText(String statusUploadedText) {
-        this.statusUploadedText = statusUploadedText;
+    public void setUploadedStatusText(String uploadedStatusText) {
+        this.uploadedStatusText = uploadedStatusText;
     }
 
-    public String getStatusInProgressText() {
-        return ValueBindings.get(this, "statusInProgressText", statusInProgressText, "Uploading...");
+    public String getInProgressStatusText() {
+        return ValueBindings.get(this, "inProgressStatusText", inProgressStatusText, "Uploading...");
     }
 
-    public void setStatusInProgressText(String statusInProgressText) {
-        this.statusInProgressText = statusInProgressText;
+    public void setInProgressStatusText(String inProgressStatusText) {
+        this.inProgressStatusText = inProgressStatusText;
     }
 
-    public String getMaxFileSizeErrorText() {
-        return ValueBindings.get(this, "maxFileSizeErrorText", maxFileSizeErrorText, "Error: size of file is too big");
+    public String getFileSizeLimitErrorText() {
+        return ValueBindings.get(this, "fileSizeLimitErrorText", fileSizeLimitErrorText, "File size limit exceeded");
     }
 
-    public void setMaxFileSizeErrorText(String maxFileSizeErrorText) {
-        this.maxFileSizeErrorText = maxFileSizeErrorText;
+    public void setFileSizeLimitErrorText(String fileSizeLimitErrorText) {
+        this.fileSizeLimitErrorText = fileSizeLimitErrorText;
     }
 
-    public String getInfoStatusClass() {
-        return infoStatusClass;
+    public String getUploadStatusClass() {
+        return ValueBindings.get(this, "uploadStatusClass", uploadStatusClass);
     }
 
-    public void setInfoStatusClass(String infoStatusClass) {
-        this.infoStatusClass = infoStatusClass;
+    public void setUploadStatusClass(String uploadStatusClass) {
+        this.uploadStatusClass = uploadStatusClass;
     }
 
-    public String getInfoStatusStyle() {
-        return ValueBindings.get(this, "infoStatusStyle", infoStatusStyle);
+    public String getUploadStatusStyle() {
+        return ValueBindings.get(this, "uploadStatusStyle", uploadStatusStyle);
     }
 
-    public void setInfoStatusStyle(String infoStatusStyle) {
-        this.infoStatusStyle = infoStatusStyle;
+    public void setUploadStatusStyle(String uploadStatusStyle) {
+        this.uploadStatusStyle = uploadStatusStyle;
     }
 
     public int getMinQuantity() {
@@ -331,92 +350,92 @@ public class FileUpload extends OUIInputBase {
         this.autoUpload = autoUpload;
     }
 
-    public String getAddButtonStyle() {
-        return ValueBindings.get(this, "addButtonStyle", addButtonStyle);
+    public String getBrowseButtonStyle() {
+        return ValueBindings.get(this, "browseButtonStyle", browseButtonStyle);
     }
 
-    public void setAddButtonStyle(String addButtonStyle) {
-        this.addButtonStyle = addButtonStyle;
+    public void setBrowseButtonStyle(String browseButtonStyle) {
+        this.browseButtonStyle = browseButtonStyle;
     }
 
-    public String getAddButtonClass() {
-        return ValueBindings.get(this, "addButtonClass", addButtonClass);
+    public String getBrowseButtonClass() {
+        return ValueBindings.get(this, "browseButtonClass", browseButtonClass);
     }
 
-    public void setAddButtonClass(String addButtonClass) {
-        this.addButtonClass = addButtonClass;
+    public void setBrowseButtonClass(String browseButtonClass) {
+        this.browseButtonClass = browseButtonClass;
     }
 
-    public String getAddButtonLabel() {
-        return ValueBindings.get(this, "addButtonLabel", addButtonLabel, "Add file...");
+    public String getBrowseButtonText() {
+        return ValueBindings.get(this, "browseButtonText", browseButtonText);
     }
 
-    public void setAddButtonLabel(String addButtonLabel) {
-        this.addButtonLabel = addButtonLabel;
+    public void setBrowseButtonText(String browseButtonText) {
+        this.browseButtonText = browseButtonText;
     }
 
-    public String getAddButtonOnMouseOverStyle() {
-        return ValueBindings.get(this, "addButtonOnMouseOverStyle", addButtonOnMouseOverStyle);
+    public String getBrowseButtonRolloverStyle() {
+        return ValueBindings.get(this, "browseButtonRolloverStyle", browseButtonRolloverStyle);
     }
 
-    public void setAddButtonOnMouseOverStyle(String addButtonOnMouseOverStyle) {
-        this.addButtonOnMouseOverStyle = addButtonOnMouseOverStyle;
+    public void setBrowseButtonRolloverStyle(String browseButtonRolloverStyle) {
+        this.browseButtonRolloverStyle = browseButtonRolloverStyle;
     }
 
-    public String getAddButtonOnMouseOverClass() {
-        return ValueBindings.get(this, "addButtonOnMouseOverClass", addButtonOnMouseOverClass);
+    public String getBrowseButtonRolloverClass() {
+        return ValueBindings.get(this, "browseButtonRolloverClass", browseButtonRolloverClass);
     }
 
-    public void setAddButtonOnMouseOverClass(String addButtonOnMouseOverClass) {
-        this.addButtonOnMouseOverClass = addButtonOnMouseOverClass;
+    public void setBrowseButtonRolloverClass(String browseButtonRolloverClass) {
+        this.browseButtonRolloverClass = browseButtonRolloverClass;
     }
 
-    public String getAddButtonOnMouseDownStyle() {
-        return ValueBindings.get(this, "addButtonOnMouseDownStyle", addButtonOnMouseDownStyle);
+    public String getBrowseButtonPressedStyle() {
+        return ValueBindings.get(this, "browseButtonPressedStyle", browseButtonPressedStyle);
     }
 
-    public void setAddButtonOnMouseDownStyle(String addButtonOnMouseDownStyle) {
-        this.addButtonOnMouseDownStyle = addButtonOnMouseDownStyle;
+    public void setBrowseButtonPressedStyle(String browseButtonPressedStyle) {
+        this.browseButtonPressedStyle = browseButtonPressedStyle;
     }
 
-    public String getAddButtonOnMouseDownClass() {
-        return ValueBindings.get(this, "addButtonOnMouseDownClass", addButtonOnMouseDownClass);
+    public String getBrowseButtonPressedClass() {
+        return ValueBindings.get(this, "browseButtonPressedClass", browseButtonPressedClass);
     }
 
-    public void setAddButtonOnMouseDownClass(String addButtonOnMouseDownClass) {
-        this.addButtonOnMouseDownClass = addButtonOnMouseDownClass;
+    public void setBrowseButtonPressedClass(String browseButtonPressedClass) {
+        this.browseButtonPressedClass = browseButtonPressedClass;
     }
 
-    public String getAddButtonDisabledStyle() {
-        return ValueBindings.get(this, "addButtonDisabledStyle", addButtonDisabledStyle);
+    public String getBrowseButtonDisabledStyle() {
+        return ValueBindings.get(this, "browseButtonDisabledStyle", browseButtonDisabledStyle);
     }
 
-    public void setAddButtonDisabledStyle(String addButtonDisabledStyle) {
-        this.addButtonDisabledStyle = addButtonDisabledStyle;
+    public void setBrowseButtonDisabledStyle(String browseButtonDisabledStyle) {
+        this.browseButtonDisabledStyle = browseButtonDisabledStyle;
     }
 
-    public String getAddButtonDisabledClass() {
-        return ValueBindings.get(this, "addButtonDisabledClass", addButtonDisabledClass);
+    public String getBrowseButtonDisabledClass() {
+        return ValueBindings.get(this, "browseButtonDisabledClass", browseButtonDisabledClass);
     }
 
-    public void setAddButtonDisabledClass(String addButtonDisabledClass) {
-        this.addButtonDisabledClass = addButtonDisabledClass;
+    public void setBrowseButtonDisabledClass(String browseButtonDisabledClass) {
+        this.browseButtonDisabledClass = browseButtonDisabledClass;
     }
 
-    public String getAddButtonOnFocusStyle() {
-        return ValueBindings.get(this, "addButtonOnFocusStyle", addButtonOnFocusStyle);
+    public String getBrowseButtonFocusedStyle() {
+        return ValueBindings.get(this, "browseButtonFocusedStyle", browseButtonFocusedStyle);
     }
 
-    public void setAddButtonOnFocusStyle(String addButtonOnFocusStyle) {
-        this.addButtonOnFocusStyle = addButtonOnFocusStyle;
+    public void setBrowseButtonFocusedStyle(String browseButtonFocusedStyle) {
+        this.browseButtonFocusedStyle = browseButtonFocusedStyle;
     }
 
-    public String getAddButtonOnFocusClass() {
-        return ValueBindings.get(this, "addButtonOnFocusClass", addButtonOnFocusClass);
+    public String getBrowseButtonFocusedClass() {
+        return ValueBindings.get(this, "browseButtonFocusedClass", browseButtonFocusedClass);
     }
 
-    public void setAddButtonOnFocusClass(String addButtonOnFocusClass) {
-        this.addButtonOnFocusClass = addButtonOnFocusClass;
+    public void setBrowseButtonFocusedClass(String browseButtonFocusedClass) {
+        this.browseButtonFocusedClass = browseButtonFocusedClass;
     }
 
     public String getProgressBarStyle() {
@@ -464,20 +483,20 @@ public class FileUpload extends OUIInputBase {
         removeFacesListener(fileUploadedListener);
     }
 
-    public String getStatusStoppedText() {
-        return ValueBindings.get(this, "statusStoppedText", statusStoppedText, "Stopped");
+    public String getStoppedStatusText() {
+        return ValueBindings.get(this, "stoppedStatusText", stoppedStatusText, "Stopped");
     }
 
-    public void setStatusStoppedText(String statusStoppedText) {
-        this.statusStoppedText = statusStoppedText;
+    public void setStoppedStatusText(String stoppedStatusText) {
+        this.stoppedStatusText = stoppedStatusText;
     }
 
-    public boolean isMultiUpload() {
-        return ValueBindings.get(this, "multiUpload", multiUpload, false);
+    public boolean isMultiple() {
+        return ValueBindings.get(this, "multiple", multiple, false);
     }
 
-    public void setMultiUpload(boolean multiUpload) {
-        this.multiUpload = multiUpload;
+    public void setMultiple(boolean multiple) {
+        this.multiple = multiple;
     }
 
     public MethodExpression getUploadCompletionListener() {
@@ -499,4 +518,31 @@ public class FileUpload extends OUIInputBase {
     public void removeUploadCompletionListener(UploadCompletionListener uploadCompletionListener) {
         removeFacesListener(uploadCompletionListener);
     }
+
+    public String getOnuploadstart() {
+        return ValueBindings.get(this, "onuploadstart", onuploadstart);
+    }
+
+    public void setOnuploadstart(String onuploadstart) {
+        this.onuploadstart = onuploadstart;
+    }
+
+    public String getOnuploadend() {
+        return ValueBindings.get(this, "onuploadend", onuploadend);
+    }
+
+    public void setOnuploadend(String onuploadend) {
+        this.onuploadend = onuploadend;
+    }
+
+    @Override
+    public String getDefaultEventName() {
+        return "uploadEnd";
+    }
+
+    @Override
+    public Collection<String> getEventNames() {
+        return EVENT_NAMES;
+    }
+
 }

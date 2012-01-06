@@ -19,6 +19,8 @@ import org.openfaces.component.ajax.AjaxSettings;
 import org.openfaces.component.ajax.DefaultSessionExpiration;
 import org.openfaces.component.ajax.SilentSessionExpiration;
 import org.openfaces.component.table.AbstractTable;
+import org.openfaces.component.table.Columns;
+import org.openfaces.component.table.DynamicColumn;
 import org.openfaces.event.AjaxActionEvent;
 import org.openfaces.org.json.JSONArray;
 import org.openfaces.org.json.JSONException;
@@ -134,9 +136,14 @@ public class PartialViewContext extends PartialViewContextWrapper {
     @Override
     public void processPartial(PhaseId phaseId) {
         super.processPartial(phaseId);
+        FacesContext context = FacesContext.getCurrentInstance();
         /*if (isAjaxRequest()) non-ajax handling is required for the Action component*/ {
+            if (phaseId == PhaseId.PROCESS_VALIDATIONS) {
+                AjaxRequest.getInstance(context).resetValidationError();
+            }
             if (phaseId == PhaseId.UPDATE_MODEL_VALUES) {
-                processAjaxExecutePhase(FacesContext.getCurrentInstance());
+                AjaxRequest.getInstance(context).setValidationError(false);
+                processAjaxExecutePhase(context);
             }
         }
 
@@ -166,9 +173,10 @@ public class PartialViewContext extends PartialViewContextWrapper {
             return Collections.emptyList();
         Set<String> result = new LinkedHashSet<String>(super.getRenderIds());
         result.addAll(AjaxRequest.getInstance().getReloadedComponentIds());
-        if (context.getApplication().getProjectStage() == ProjectStage.Development) {
-            checkForReloadedForms (context, result);
-        }
+        // todo return later carefully OFCS-65
+//        if (context.getApplication().getProjectStage() == ProjectStage.Development) {
+//            checkForReloadedForms (context, result);
+//        }
 
         List<String> additionalComponents = new ArrayList<String>();
         UIViewRoot viewRoot = context.getViewRoot();
@@ -693,25 +701,36 @@ public class PartialViewContext extends PartialViewContextWrapper {
                 });
             return (UIComponent) iterator;
         } else if (isNumberBasedId(id)) {
+            Class clazz;
             try {
-                Class clazz = Class.forName("com.sun.facelets.component.UIRepeat");
-                if (clazz.isInstance(parent)) {
-                    final Object uiRepeat = parent;
-                    ReflectionUtil.invokeMethod("com.sun.facelets.component.UIRepeat", "setIndex",
-                            new Class[]{Integer.TYPE}, new Object[]{Integer.parseInt(id)}, parent);
-                    if (restoreDataPointerRunnables != null)
-                        restoreDataPointerRunnables.add(new Runnable() {
-                            public void run() {
-                                // there's no getIndex method in com.sun.faces.component.UIRepeat, so we can't restore
-                                // the index in this way here
-                            }
-                        });
-                    return parent;
-                }
+                clazz = Class.forName("com.sun.faces.facelets.component.UIRepeat");
             } catch (ClassNotFoundException e) {
-                //do nothing - it's ok - not facelets environment
+                clazz = null;
             }
-
+            if (clazz != null && clazz.isInstance(parent)) {
+                ReflectionUtil.invokeMethod("com.sun.faces.facelets.component.UIRepeat", "setIndex",
+                        new Class[]{Integer.TYPE}, new Object[]{Integer.parseInt(id)}, parent);
+                if (restoreDataPointerRunnables != null)
+                    restoreDataPointerRunnables.add(new Runnable() {
+                        public void run() {
+                            // there's no getIndex method in com.sun.faces.component.UIRepeat, so we can't restore
+                            // the index in this way here
+                        }
+                    });
+                return parent;
+            } else if (parent instanceof Columns) {
+                List<DynamicColumn> dynamicColumns = ((Columns) parent).toColumnList(context);
+                int columnIndex = Integer.parseInt(id);
+                final DynamicColumn dynamicColumn = dynamicColumns.get(columnIndex);
+                dynamicColumn.declareContextVariables();
+                if (restoreDataPointerRunnables != null)
+                    restoreDataPointerRunnables.add(new Runnable() {
+                        public void run() {
+                            dynamicColumn.undeclareContextVariables();
+                        }
+                    });
+                return parent;
+            }
         }
         if (id.equals(parent.getId()))
             return parent;
@@ -894,9 +913,17 @@ public class PartialViewContext extends PartialViewContextWrapper {
         Map<String, String> extensionAttributes = new HashMap<String, String>();
         extensionAttributes.put("ln", "openfaces");
         extensionAttributes.put("type", "ajaxResult");
-        Object ajaxResult = AjaxRequest.getInstance(context).getAjaxResult();
+        AjaxRequest ajaxRequest = AjaxRequest.getInstance(context);
+        Object ajaxResult = ajaxRequest.getAjaxResult();
         extensionAttributes.put("ajaxResult", resultValueToJsValue(ajaxResult));
 
+        partialWriter.startExtension(extensionAttributes);
+        partialWriter.endExtension();
+
+        extensionAttributes = new HashMap<String, String>();
+        extensionAttributes.put("ln", "openfaces");
+        extensionAttributes.put("type", "validationError");
+        extensionAttributes.put("validationError", String.valueOf(ajaxRequest.isValidationError()));
         partialWriter.startExtension(extensionAttributes);
         partialWriter.endExtension();
     }

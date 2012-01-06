@@ -12,53 +12,81 @@
 
 package org.openfaces.demo.beans.fileupload;
 
-import org.openfaces.event.FileUploadedEvent;
+import org.openfaces.demo.beans.datatable.Book;
+import org.openfaces.event.FileUploadItem;
+import org.openfaces.event.FileUploadStatus;
 import org.openfaces.event.UploadCompletionEvent;
+import org.openfaces.util.Faces;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FileUploadBean implements Serializable {
-    private String addButtonLabel;
-    private String uploadButtonLabel;
-    private List<File> files;
+    private List<FileUploadItem> uploadedFiles = new ArrayList<FileUploadItem>();
 
     public FileUploadBean() {
-        addButtonLabel = "Choose me!";
-        uploadButtonLabel = "Upload files";
     }
 
 
-    public String getAddButtonLabel() {
-        return addButtonLabel;
+    public void uploadComplete(UploadCompletionEvent e) {
+        uploadedFiles.addAll(e.getFiles());
     }
 
-    public void setAddButtonLabel(String addButtonLabel) {
-        this.addButtonLabel = addButtonLabel;
+    public List<FileUploadItem> getUploadedFiles() {
+        return uploadedFiles;
     }
 
-    public String getUploadButtonLabel() {
-        return uploadButtonLabel;
+    public String getFileSize() {
+        FileUploadItem fileUploadItem = Faces.var("fileUploadItem", FileUploadItem.class);
+        String result = getFileSizeStr(fileUploadItem);
+        return result;
     }
 
-    public void setUploadButtonLabel(String uploadButtonLabel) {
-        this.uploadButtonLabel = uploadButtonLabel;
-    }
-
-    /*public void fileUploaded(FileUploadedEvent e) {
-        if (files == null || files.isEmpty()) {
-            files = new ArrayList<File>();
+    private String getFileSizeStr(FileUploadItem fileUploadItem) {
+        File file = fileUploadItem.getFile();
+        String result;
+        if (file == null)
+            result = "N/A";
+        else {
+            result = (file.length() / 1024) + "Kb";
         }
-        files.add(e.getUploadedFile());
-        return;
-    }*/
+        return result;
+    }
 
-    public void allFilesUploaded(UploadCompletionEvent e) {
-        //files.add(e.getUploadedFile());
-        System.out.println("Uploaded files : " + e.getFiles().size());
-        return;
+    public void bookImageUploaded(UploadCompletionEvent uploadCompletionEvent) {
+        Book book = Faces.var("book", Book.class);
+        FileUploadItem fileUploadItem = uploadCompletionEvent.getFiles().get(0);
+        book.setUploadedCoverImage(fileUploadItem);
+    }
+    
+    public String getBookImageFileSize() {
+        Book book = Faces.var("book", Book.class);
+        FileUploadItem uploadedCoverImage = book.getUploadedCoverImage();
+        if (uploadedCoverImage == null) return "N/A";
+        FileUploadStatus status = uploadedCoverImage.getStatus();
+        switch (status) {
+            case SUCCESSFUL:
+                return getFileSizeStr(uploadedCoverImage);
+            case STOPPED:
+                return "<Upload stopped>";
+            case FAILED:
+                return "<Upload failed>";
+            default:
+                throw new IllegalStateException("Unknown FileUploadStatus enumeration value: " + status);
+        }
+    }
+    
+    public String getBookImageFileName() {
+        Book book = Faces.var("book", Book.class);
+        FileUploadItem uploadedCoverImage = book.getUploadedCoverImage();
+        if (uploadedCoverImage == null) return "N/A";
+        return uploadedCoverImage.getFileName();
+    }
+
+    public String getFileInfoClass() {
+        Book book = Faces.var("book", Book.class);
+        return book.getUploadedCoverImage() == null ? "notUploadedInfoText" : "uploadedInfoText";
     }
 }

@@ -16,7 +16,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.openfaces.event.FileUploadItem;
-import org.openfaces.event.Status;
+import org.openfaces.event.FileUploadStatus;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
@@ -46,7 +46,7 @@ public class FileUploadRequestWrapper extends HttpServletRequestWrapper {
             for (FileItem fileItem : fileItems) {
                 if (!fileItem.isFormField()) {
                     File f = writeFile(fileItem, tempDirPath);
-                    request.setAttribute(fileItem.getFieldName(), new FileUploadItem(fileItem.getName(), f, Status.SUCCESSFUL));
+                    request.setAttribute(fileItem.getFieldName(), new FileUploadItem(fileItem.getName(), f, FileUploadStatus.SUCCESSFUL));
                 } else {
                     if (fileItem.getFieldName().equals("FILE_ID")) {
                         request.setAttribute("FILE_ID", fileItem.getString());
@@ -57,7 +57,7 @@ public class FileUploadRequestWrapper extends HttpServletRequestWrapper {
 
         } catch (FileUploadException fe) {
             //throw new RuntimeException(fe);
-           System.out.println("The file uploading has been terminated or request is time out.");
+           System.out.println("File upload has been terminated or request has timed out.");
         } catch (IOException ne) {
             throw new RuntimeException(ne);
         }

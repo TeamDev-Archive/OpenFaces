@@ -360,6 +360,7 @@ window.OpenFaces.Ajax = {
         OpenFaces.Ajax.Page[eventName](event);
     }
     var ajaxResult;
+    var validationErrorvalidationError;
     function ajaxEnd(data) {
       setTimeout(destroyMemoryLeaks, 1);
       if (O$.Ajax._currentlyScheduledScript) {
@@ -368,6 +369,7 @@ window.OpenFaces.Ajax = {
       }
       var ajaxendEvent = O$.createEvent("ajaxend");
       ajaxendEvent.ajaxResult = ajaxResult;
+      ajaxendEvent.validationError = validationError;
       ajaxendEvent.data = data;
       fireEvent("onajaxend", ajaxendEvent);
       function destroyMemoryLeaks() {
@@ -431,7 +433,7 @@ window.OpenFaces.Ajax = {
         args.onevent.call(null, data);
       if (data.status == "complete") {
         setTimeout(function() {source._openFaces_ajax_inProgress = false;}, 1);
-
+        validationError = undefined;
         var atLeastOnePortionProcessed = false;
         var xml = data.responseXML;
         if (!xml) {alert("Error while performing Ajax request: No xml response received -- check server logs."); return;}
@@ -480,6 +482,9 @@ window.OpenFaces.Ajax = {
             } catch (e) {
               ajaxResult = ajaxResultStr;
             }
+          } else if (extensionType == "validationError") {
+              var validationErrorStr = extensionNode.getAttribute("validationError");
+              validationError = (validationErrorStr == "true");
           } else
             throw "Unknown OpenFaces Ajax extension node type: " + extensionType;
         }
@@ -505,6 +510,7 @@ window.OpenFaces.Ajax = {
         if (!onerrorTriggered) {
           var successEvent = O$.createEvent("success");
           successEvent.data = data;
+          successEvent.validationError = validationError;
           fireEvent("onsuccess", successEvent);
         }
 

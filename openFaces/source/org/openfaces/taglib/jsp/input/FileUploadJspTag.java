@@ -40,48 +40,48 @@ public class FileUploadJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("headerClass", headerClass);
     }
 
-    public void setAddButtonStyle(ValueExpression addButtonStyle) {
-        getDelegate().setPropertyValue("addButtonStyle", addButtonStyle);
+    public void setBrowseButtonStyle(ValueExpression browseButtonStyle) {
+        getDelegate().setPropertyValue("browseButtonStyle", browseButtonStyle);
     }
 
-    public void setAddButtonClass(ValueExpression addButtonClass) {
-        getDelegate().setPropertyValue("addButtonClass", addButtonClass);
+    public void setBrowseButtonClass(ValueExpression browseButtonClass) {
+        getDelegate().setPropertyValue("browseButtonClass", browseButtonClass);
     }
 
-    public void setAddButtonLabel(ValueExpression addButtonLabel) {
-        getDelegate().setPropertyValue("addButtonLabel", addButtonLabel);
+    public void setBrowseButtonText(ValueExpression browseButtonText) {
+        getDelegate().setPropertyValue("browseButtonText", browseButtonText);
     }
 
-    public void setAddButtonOnMouseOverStyle(ValueExpression addButtonOnMouseOverStyle) {
-        getDelegate().setPropertyValue("addButtonOnMouseOverStyle", addButtonOnMouseOverStyle);
+    public void setBrowseButtonRolloverStyle(ValueExpression browseButtonRolloverStyle) {
+        getDelegate().setPropertyValue("browseButtonRolloverStyle", browseButtonRolloverStyle);
     }
 
-    public void setAddButtonOnMouseOverClass(ValueExpression addButtonOnMouseOverClass) {
-        getDelegate().setPropertyValue("addButtonOnMouseOverClass", addButtonOnMouseOverClass);
+    public void setBrowseButtonRolloverClass(ValueExpression browseButtonRolloverClass) {
+        getDelegate().setPropertyValue("browseButtonRolloverClass", browseButtonRolloverClass);
     }
 
-    public void setAddButtonOnMouseDownStyle(ValueExpression addButtonOnMouseDownStyle) {
-        getDelegate().setPropertyValue("addButtonOnMouseDownStyle", addButtonOnMouseDownStyle);
+    public void setBrowseButtonPressedStyle(ValueExpression browseButtonPressedStyle) {
+        getDelegate().setPropertyValue("browseButtonPressedStyle", browseButtonPressedStyle);
     }
 
-    public void setAddButtonOnMouseDownClass(ValueExpression addButtonOnMouseDownClass) {
-        getDelegate().setPropertyValue("addButtonOnMouseDownClass", addButtonOnMouseDownClass);
+    public void setBrowseButtonPressedClass(ValueExpression browseButtonPressedClass) {
+        getDelegate().setPropertyValue("browseButtonPressedClass", browseButtonPressedClass);
     }
 
-    public void setAddButtonOnFocusStyle(ValueExpression addButtonOnFocusStyle) {
-        getDelegate().setPropertyValue("addButtonOnFocusStyle", addButtonOnFocusStyle);
+    public void setBrowseButtonFocusedStyle(ValueExpression browseButtonFocusedStyle) {
+        getDelegate().setPropertyValue("browseButtonFocusedStyle", browseButtonFocusedStyle);
     }
 
-    public void setAddButtonOnFocusClass(ValueExpression addButtonOnFocusClass) {
-        getDelegate().setPropertyValue("addButtonOnFocusClass", addButtonOnFocusClass);
+    public void setBrowseButtonFocusedClass(ValueExpression browseButtonFocusedClass) {
+        getDelegate().setPropertyValue("browseButtonFocusedClass", browseButtonFocusedClass);
     }
 
-    public void setAddButtonDisabledStyle(ValueExpression addButtonDisabledStyle) {
-        getDelegate().setPropertyValue("addButtonDisabledStyle", addButtonDisabledStyle);
+    public void setBrowseButtonDisabledStyle(ValueExpression browseButtonDisabledStyle) {
+        getDelegate().setPropertyValue("browseButtonDisabledStyle", browseButtonDisabledStyle);
     }
 
-    public void setAddButtonDisabledClass(ValueExpression addButtonDisabledClass) {
-        getDelegate().setPropertyValue("addButtonDisabledClass", addButtonDisabledClass);
+    public void setBrowseButtonDisabledClass(ValueExpression browseButtonDisabledClass) {
+        getDelegate().setPropertyValue("browseButtonDisabledClass", browseButtonDisabledClass);
     }
 
     public void setAllInfosStyle(ValueExpression allInfosStyle) {
@@ -93,12 +93,12 @@ public class FileUploadJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("allInfosClass", allInfosClass);
     }
 
-    public void setFileInfoStyle(ValueExpression fileInfoStyle) {
-        getDelegate().setPropertyValue("fileInfoStyle", fileInfoStyle);
+    public void setRowStyle(ValueExpression rowStyle) {
+        getDelegate().setPropertyValue("rowStyle", rowStyle);
     }
 
-    public void setFileInfoClass(ValueExpression fileInfoClass) {
-        getDelegate().setPropertyValue("fileInfoClass", fileInfoClass);
+    public void setRowClass(ValueExpression rowClass) {
+        getDelegate().setPropertyValue("rowClass", rowClass);
     }
 
     public void setAcceptedFileTypes(ValueExpression acceptedFileTypes) {
@@ -113,36 +113,36 @@ public class FileUploadJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("autoUpload", autoUpload);
     }
 
-    public void setInfoTitleClass(ValueExpression infoTitleClass) {
-        getDelegate().setPropertyValue("infoTitleClass", infoTitleClass);
+    public void setFileNameStyle(ValueExpression fileNameStyle) {
+        getDelegate().setPropertyValue("fileNameStyle", fileNameStyle);
     }
 
-    public void setInfoTitleStyle(ValueExpression infoTitleStyle) {
-        getDelegate().setPropertyValue("infoTitleStyle", infoTitleStyle);
+    public void setFileNameClass(ValueExpression fileNameClass) {
+        getDelegate().setPropertyValue("fileNameClass", fileNameClass);
     }
 
-    public void setInfoStatusClass(ValueExpression infoStatusClass) {
-        getDelegate().setPropertyValue("infoStatusClass", infoStatusClass);
+    public void setUploadStatusClass(ValueExpression uploadStatusClass) {
+        getDelegate().setPropertyValue("uploadStatusClass", uploadStatusClass);
     }
 
-    public void setInfoStatusStyle(ValueExpression infoStatusStyle) {
-        getDelegate().setPropertyValue("infoStatusStyle", infoStatusStyle);
+    public void setUploadStatusStyle(ValueExpression uploadStatusStyle) {
+        getDelegate().setPropertyValue("uploadStatusStyle", uploadStatusStyle);
     }
 
-    public void setStatusNotUploadedText(ValueExpression statusNotUploadedText) {
-        getDelegate().setPropertyValue("statusNotUploadedText", statusNotUploadedText);
+    public void setNotUploadedStatusText(ValueExpression notUploadedStatusText) {
+        getDelegate().setPropertyValue("notUploadedStatusText", notUploadedStatusText);
     }
 
-    public void setStatusUploadedText(ValueExpression statusUploadedText) {
-        getDelegate().setPropertyValue("statusUploadedText", statusUploadedText);
+    public void setUploadedStatusText(ValueExpression uploadedStatusText) {
+        getDelegate().setPropertyValue("uploadedStatusText", uploadedStatusText);
     }
 
-    public void setStatusInProgressText(ValueExpression statusInProgressText) {
-        getDelegate().setPropertyValue("statusInProgressText", statusInProgressText);
+    public void setInProgressStatusText(ValueExpression inProgressStatusText) {
+        getDelegate().setPropertyValue("inProgressStatusText", inProgressStatusText);
     }
 
-    public void setMaxFileSizeErrorText(ValueExpression maxFileSizeErrorText) {
-        getDelegate().setPropertyValue("maxFileSizeErrorText", maxFileSizeErrorText);
+    public void setFileSizeLimitErrorText(ValueExpression fileSizeLimitErrorText) {
+        getDelegate().setPropertyValue("fileSizeLimitErrorText", fileSizeLimitErrorText);
     }
 
     public void setDisabled(ValueExpression disabled) {
@@ -160,17 +160,26 @@ public class FileUploadJspTag extends AbstractComponentJspTag {
     public void setTabindex(ValueExpression tabindex) {
         getDelegate().setPropertyValue("tabindex", tabindex);
     }
+
     public void setFileUploadedListener(MethodExpression fileUploadedListener) {
         getDelegate().setPropertyValue("fileUploadedListener", fileUploadedListener);
     }
-    public void setStatusStoppedText(MethodExpression statusStoppedText) {
-        getDelegate().setPropertyValue("statusStoppedText", statusStoppedText);
+
+    public void setStoppedStatusText(MethodExpression stoppedStatusText) {
+        getDelegate().setPropertyValue("stoppedStatusText", stoppedStatusText);
     }
-        public void setMultiUpload(MethodExpression multiUpload) {
-        getDelegate().setPropertyValue("multiUpload", multiUpload);
+
+    public void setMultiple(MethodExpression multiple) {
+        getDelegate().setPropertyValue("multiple", multiple);
     }
 
     public void setUploadCompletionListener(MethodExpression uploadCompletionListener) {
         getDelegate().setPropertyValue("uploadCompletionListener", uploadCompletionListener);
+    }
+    public void setOnuploadstart(MethodExpression onuploadstart) {
+        getDelegate().setPropertyValue("onuploadstart", onuploadstart);
+    }
+    public void setOnuploadend(MethodExpression onuploadend) {
+        getDelegate().setPropertyValue("onuploadend", onuploadend);
     }
 }
