@@ -502,14 +502,17 @@ O$._truncateMode_untruncateSidePanel = function(sidePanel, freeSpace, useDoubleB
 O$._refreshLaterIfInvisible = function(borderLayoutPanel) {
 
   var hasHiddenParent = false;
-
   var currentElement = borderLayoutPanel;
-  while (currentElement) {
-    if (O$.getElementStyle(currentElement, "visibility") == 'hidden' || O$.getElementStyle(currentElement, "display") == 'none') {
-      hasHiddenParent = true;
-      break;
+  var hasDocumentParent = O$.isElementPresentInDocument(currentElement);
+
+  if (hasDocumentParent) {
+    while (currentElement) {
+      if (O$.getElementStyle(currentElement, "visibility") == 'hidden' || O$.getElementStyle(currentElement, "display") == 'none') {
+        hasHiddenParent = true;
+        break;
+      }
+      currentElement = currentElement.parentElement;
     }
-    currentElement = currentElement.parentElement;
   }
 
   if (hasHiddenParent == true) {
