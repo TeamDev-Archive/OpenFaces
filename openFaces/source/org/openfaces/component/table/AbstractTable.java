@@ -1099,9 +1099,12 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
         cachedAllColumns = null;
         cachedRenderedColumns = null;
-        List<Columns> columnsComponents = Components.findChildrenWithClass(this, Columns.class);
-        for (Columns columns : columnsComponents) {
-            columns.resetCachedColumnList();
+        resetColumns(this);
+
+        // Check for columns inside columnGroup OFCS-74
+        List<ColumnGroup> columnGroupComponents = Components.findChildrenWithClass(this, ColumnGroup.class);
+        for (ColumnGroup group : columnGroupComponents) {
+            resetColumns(group);
         }
 
         getAttributes().put(TableStructure.CUSTOM_ROW_RENDERING_INFOS_KEY, new HashMap());
@@ -1131,6 +1134,13 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
         updateModel();
         totalRowCount = getModel().getTotalRowCount();
+    }
+
+    private void resetColumns(UIComponent component) {
+        List<Columns> columnsComponents = Components.findChildrenWithClass(component, Columns.class);
+        for (Columns columns : columnsComponents) {
+            columns.resetCachedColumnList();
+        }
     }
 
     protected void updateModel() {
