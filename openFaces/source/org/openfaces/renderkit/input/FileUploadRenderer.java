@@ -42,7 +42,7 @@ import java.util.Map;
 
 public class FileUploadRenderer extends RendererBase implements AjaxPortionRenderer {
     private static final String DIV_FOR_INPUTS_ID = "::inputs";
-    private static final String INPUT_OF_FILE_ID = "::fileInput";
+    private static final String INPUT_OF_FILE_ID = "::input";
     private static final String DIV_FOR_INFO_ID = "::infoDiv";
     public static final String DIV_HEADER_ID = "::header";
 
@@ -90,7 +90,7 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
 
     /*progress*/
     private static final String AJAX_PARAM_PROGRESS_REQUEST = "progressRequest";
-    private static final String AJAX_PARAM_FILE_NAME = "fileName";
+    private static final String AJAX_PARAM_FIELD_NAME = "fieldName";
     private static final String PROGRESS_ID = "progress_";
 
     /*listOfFiles*/
@@ -412,21 +412,21 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
     public JSONObject encodeAjaxPortion(FacesContext context, UIComponent component, String portionName, JSONObject jsonParam) throws IOException, JSONException {
         if (jsonParam.has(AJAX_PARAM_PROGRESS_REQUEST)) {
             JSONObject jsonObj = new JSONObject();
-            String nameOfFile = (String) jsonParam.get(AJAX_PARAM_FILE_NAME);
+            String fieldName = (String) jsonParam.get(AJAX_PARAM_FIELD_NAME);
             Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
-            if (sessionMap.containsKey(PROGRESS_ID + nameOfFile)) {
-                Integer progress = (Integer) sessionMap.get(PROGRESS_ID + nameOfFile);
+            if (sessionMap.containsKey(PROGRESS_ID + fieldName)) {
+                Integer progress = (Integer) sessionMap.get(PROGRESS_ID + fieldName);
                 Rendering.addJsonParam(jsonObj, "progressInPercent", progress);
                 Rendering.addJsonParam(jsonObj, "status", "inProgress");
                 if (progress.equals(100)){
-                    sessionMap.remove(PROGRESS_ID + nameOfFile);
+                    sessionMap.remove(PROGRESS_ID + fieldName);
                 }
             } else {//in case if any error
                 Rendering.addJsonParam(jsonObj, "status", "error");
-                if (sessionMap.containsKey(EXCEED_MAX_SIZE_ID + nameOfFile)){
-                    boolean maxFileExceeded = (Boolean) sessionMap.get(EXCEED_MAX_SIZE_ID + nameOfFile);
+                if (sessionMap.containsKey(EXCEED_MAX_SIZE_ID + fieldName)){
+                    boolean maxFileExceeded = (Boolean) sessionMap.get(EXCEED_MAX_SIZE_ID + fieldName);
                     Rendering.addJsonParam(jsonObj, "isFileSizeExceed", maxFileExceeded);
-                    sessionMap.remove(EXCEED_MAX_SIZE_ID + nameOfFile);
+                    sessionMap.remove(EXCEED_MAX_SIZE_ID + fieldName);
                 }
             }
             return jsonObj;
@@ -437,7 +437,7 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
             Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
             for (int i = 0; i < files.length(); i++) {
                 JSONArray file = files.getJSONArray(i);
-                if (file.getString(2).equals("UPLOADED")) {
+                if (file.getString(3).equals("UPLOADED")) {
                     if (!sessionMap.containsKey(file.getString(0))) {
                         allUploaded = false;
                         break;
@@ -448,15 +448,16 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
                 List<FileUploadItem> filesItems = new LinkedList<FileUploadItem>();
                 for (int i = 0; i < files.length(); i++) {
                     JSONArray file = files.getJSONArray(i);
-                    if (file.getString(2).equals("UPLOADED")) {
+                    if (file.getString(3).equals("UPLOADED")) {
                         filesItems.add((FileUploadItem) sessionMap.get(file.getString(0)));
                         sessionMap.remove(file.getString(0));
-                    } else if (file.getString(2).equals("STOPPED")) {
-                        filesItems.add(new FileUploadItem(file.getString(1), null, FileUploadStatus.STOPPED));
-                    } else if (file.getString(2).equals("ERROR")) {
-                        filesItems.add(new FileUploadItem(file.getString(1), null, FileUploadStatus.FAILED));
-                    } else if (file.getString(2).equals("SIZE_LIMIT_EXCEEDED")) {
-                        filesItems.add(new FileUploadItem(file.getString(1), null, FileUploadStatus.SIZE_LIMIT_EXCEEDED));
+                    } else if (file.getString(3).equals("STOPPED")) {
+                        filesItems.add(new FileUploadItem(file.getString(2), null, FileUploadStatus.STOPPED));
+                        sessionMap.remove(PROGRESS_ID + file.getString(1));
+                    } else if (file.getString(3).equals("ERROR")) {
+                        filesItems.add(new FileUploadItem(file.getString(2), null, FileUploadStatus.FAILED));
+                    } else if (file.getString(3).equals("SIZE_LIMIT_EXCEEDED")) {
+                        filesItems.add(new FileUploadItem(file.getString(2), null, FileUploadStatus.SIZE_LIMIT_EXCEEDED));
                     }
                 }
                 FileUpload fileUpload = (FileUpload) component;

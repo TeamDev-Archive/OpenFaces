@@ -76,7 +76,6 @@ O$.FileUpload = {
 
     var inputsStorage = createStructureForInputs();
     var inputsStorageId = inputsStorage.id;
-    var inputFieldName = inputsStorageId + "::fileInput";
 
     //processing onChange event
     var inputForChange = O$(componentId + "::elements::helpfulInput");
@@ -377,6 +376,8 @@ O$.FileUpload = {
       }
 
       inputField.setAttribute("id", formForInput.id + "::fileInput");
+      inputField.setAttribute("name", inputField.id);
+
       inputField.removeAttribute("tabindex");
       formForInput.appendChild(inputField);
 
@@ -438,7 +439,6 @@ O$.FileUpload = {
           addButton._inFocus = false;
         }
       });
-      input.setAttribute("name", inputFieldName);
       input._idInputAndDiv = id;
       O$.addEventHandler(input, "change", function() {
         shouldInvokeFocusEvHandler = false;
@@ -628,6 +628,7 @@ O$.FileUpload = {
         var file = [];
         var form = inputsStorage.childNodes[inputsIndex].firstChild;
         file.push(form.childNodes[1].value);//id
+        file.push(form.childNodes[0].name);//name of file input
         file.push(encodeURI(getFileName(form.childNodes[0].value)));//filename
         file.push("STARTED_UPLOAD");//status
         fileUpload._listOfids.push(file);
@@ -647,7 +648,7 @@ O$.FileUpload = {
       eval(onUploadStartEventHandler);
       function progressRequest(inputForFile) {
         O$.requestComponentPortions(fileUpload.id, ["nothing"],
-                JSON.stringify({progressRequest: "true", fileName : encodeURI(getFileName(inputForFile.value))}),
+                JSON.stringify({progressRequest: "true", fieldName : inputForFile.name}),
                 function(fileUpload, portionName, portionHTML, portionScripts, portionData) {
                   var infoDiv = O$(allInfos.id + inputForFile._idInputAndDiv);
                   if (portionData['status'] == "error") {//todo:description add what kind of error
@@ -658,7 +659,7 @@ O$.FileUpload = {
                       var id = inputForFile.nextSibling.value;                  //todo : remove repeated code
                       for (var k = 0; k < fileUpload._listOfids.length; k++) {
                         if (id == fileUpload._listOfids[k][0]) {
-                          fileUpload._listOfids[k][2] = "SIZE_LIMIT_EXCEEDED";
+                          fileUpload._listOfids[k][3] = "SIZE_LIMIT_EXCEEDED";
                           break;
                         }
                       }
@@ -667,7 +668,7 @@ O$.FileUpload = {
                       var id = inputForFile.nextSibling.value;
                       for (var k = 0; k < fileUpload._listOfids.length; k++) {
                         if (id == fileUpload._listOfids[k][0]) {
-                          fileUpload._listOfids[k][2] = "ERROR";
+                          fileUpload._listOfids[k][3] = "ERROR";
                           break;
                         }
                       }
@@ -704,7 +705,7 @@ O$.FileUpload = {
                           var id = inputForFile.nextSibling.value;
                           for (var k = 0; k < fileUpload._listOfids.length; k++) {
                             if (id == fileUpload._listOfids[k][0]) {
-                              fileUpload._listOfids[k][2] = "STOPPED";
+                              fileUpload._listOfids[k][3] = "STOPPED";
                               break;
                             }
                           }
@@ -729,7 +730,7 @@ O$.FileUpload = {
                       var id = inputForFile.nextSibling.value;
                       for (var k = 0; k < fileUpload._listOfids.length; k++) {
                         if (id == fileUpload._listOfids[k][0]) {
-                          fileUpload._listOfids[k][2] = "UPLOADED";
+                          fileUpload._listOfids[k][3] = "UPLOADED";
                           break;
                         }
                       }
