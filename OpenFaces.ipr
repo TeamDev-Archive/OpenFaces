@@ -533,7 +533,6 @@
           <option name="REPORT_NOT_ANNOTATED_GETTER" value="true" />
           <option name="REPORT_NOT_ANNOTATED_SETTER_PARAMETER" value="true" />
           <option name="REPORT_ANNOTATION_NOT_PROPAGATED_TO_OVERRIDERS" value="true" />
-          <option name="REPORT_NULLS_PASSED_TO_NON_ANNOTATED_METHOD" value="true" />
         </inspection_tool>
       </profile>
       <profile version="1.0" is_locked="false">
@@ -595,12 +594,7 @@
           <option name="MIN_STRING_LENGTH" value="5" />
           <option name="IGNORE_PROPERTY_KEYS" value="false" />
         </inspection_tool>
-        <inspection_tool class="EmptyClass" enabled="true" level="WARNING" enabled_by_default="true">
-          <option name="ignorableAnnotations">
-            <value />
-          </option>
-          <option name="ignoreClassWithParameterization" value="false" />
-        </inspection_tool>
+        <inspection_tool class="EmptyClass" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="EnumSwitchStatementWhichMissesCases" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="ignoreSwitchStatementsWithDefault" value="false" />
         </inspection_tool>
@@ -649,7 +643,6 @@
         <inspection_tool class="MissingDeprecatedAnnotation" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="MissingOverrideAnnotation" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="ignoreObjectMethods" value="true" />
-          <option name="ignoreAnonymousClassMethods" value="false" />
         </inspection_tool>
         <inspection_tool class="MissortedModifiers" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="m_requireAnnotationsFirst" value="true" />
@@ -698,9 +691,6 @@
         </inspection_tool>
         <inspection_tool class="PublicField" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="ignoreEnums" value="false" />
-          <option name="ignorableAnnotations">
-            <value />
-          </option>
         </inspection_tool>
         <inspection_tool class="PublicStaticArrayField" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="PublicStaticCollectionField" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -725,7 +715,9 @@
         <inspection_tool class="SamePackageImport" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="SetReplaceableByEnumSet" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="SimplifiableIfStatement" enabled="false" level="WARNING" enabled_by_default="false" />
-        <inspection_tool class="SizeReplaceableByIsEmpty" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="SizeReplaceableByIsEmpty" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="ignoreNegations" value="false" />
+        </inspection_tool>
         <inspection_tool class="StaticCollection" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="m_ignoreWeakCollections" value="false" />
         </inspection_tool>

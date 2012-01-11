@@ -24,15 +24,20 @@ public class ProgressMonitorFileItem extends DiskFileItem {
     private ProgressObserver observer;
     private long passedInFileSize; // sizeOfAllFile
     private long bytesRead; // how many bytes already read
+    private boolean shouldProcess;
 
     public ProgressMonitorFileItem(String fieldName, String contentType,
                                    boolean isFormField, String fileName,
                                    int sizeThreshold, File repository,
                                    ProgressObserver observer,
-                                   long passedInFileSize) {
+                                   long passedInFileSize, boolean shouldProcess) {
         super(fieldName, contentType, isFormField, fileName, sizeThreshold, repository);
         this.observer = observer;
         this.passedInFileSize = passedInFileSize;
+        this.shouldProcess = shouldProcess;
+        if(shouldProcess && observer!=null){
+            observer.setProgress(0);
+        }
     }
 
     @Override
@@ -56,7 +61,6 @@ public class ProgressMonitorFileItem extends DiskFileItem {
 
         public void close() throws IOException {
             base.close();
-            //fireFileUploadedEvent();
         }
 
         public boolean equals(Object arg0) {
@@ -76,18 +80,24 @@ public class ProgressMonitorFileItem extends DiskFileItem {
         }
 
         public void write(byte[] bytes, int offset, int len) throws IOException {
-            base.write(bytes, offset, len);
-            fireProgressEvent(len);
+            if (shouldProcess) {
+                base.write(bytes, offset, len);
+                fireProgressEvent(len);
+            }
         }
 
         public void write(byte[] bytes) throws IOException {
-            base.write(bytes);
-            fireProgressEvent(bytes.length);
+            if (shouldProcess) {
+                base.write(bytes);
+                fireProgressEvent(bytes.length);
+            }
         }
 
         public void write(int b) throws IOException {
-            base.write(b);
-            fireProgressEvent(1);
+            if (shouldProcess) {
+                base.write(b);
+                fireProgressEvent(1);
+            }
         }
 
         //this method calls observer.setProgress which in its turn save progress number in session

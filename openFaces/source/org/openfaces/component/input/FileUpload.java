@@ -77,7 +77,9 @@ public class FileUpload extends OUIInputBase {
     private String notUploadedStatusText;
     private String uploadedStatusText;
     private String inProgressStatusText;
+    private String stoppingStatusText;
     private String fileSizeLimitErrorText;
+    private String unexpectedErrorText;
 
     private String acceptedFileTypes;
 
@@ -148,7 +150,9 @@ public class FileUpload extends OUIInputBase {
                 multiple,
                 saveAttachedState(context, uploadCompletionListener),
                 onuploadstart,
-                onuploadend
+                onuploadend,
+                stoppingStatusText,
+                unexpectedErrorText
         };
     }
 
@@ -195,6 +199,8 @@ public class FileUpload extends OUIInputBase {
         uploadCompletionListener = (MethodExpression) restoreAttachedState(context, values[i++]);
         onuploadstart = (String) values[i++];
         onuploadend = (String) values[i++];
+        stoppingStatusText = (String) values[i++];
+        unexpectedErrorText = (String) values[i++];
     }
 
 
@@ -545,4 +551,20 @@ public class FileUpload extends OUIInputBase {
         return EVENT_NAMES;
     }
 
+
+    public String getStoppingStatusText() {
+        return ValueBindings.get(this, "stoppingStatusText", stoppingStatusText, "Stopping...");
+    }
+
+    public void setStoppingStatusText(String stoppingStatusText) {
+        this.stoppingStatusText = stoppingStatusText;
+    }
+
+    public String getUnexpectedErrorText() {
+        return ValueBindings.get(this, "unexpectedErrorText", unexpectedErrorText, "Error");
+    }
+
+    public void setUnexpectedErrorText(String unexpectedErrorText) {
+        this.unexpectedErrorText = unexpectedErrorText;
+    }
 }

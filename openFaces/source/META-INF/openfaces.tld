@@ -44639,6 +44639,17 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default "File size limit exceeded" -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>This text appears as status of file when something unusual has happened on server.
+      </description>
+      <name>unexpectedErrorText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "Error" -->
+      <!-- @el true -->
+    </attribute>
 
     <attribute>
       <description>the text that will be shown on browse button
@@ -44943,6 +44954,18 @@ entering a value and returns a list of suggestions from the server -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default Stopped -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>This attribute sets status that will be displayed between click on 'Stop' button and
+        until file uploading will be terminated or uploaded.
+      </description>
+      <name>stoppingStatusText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default Stopping... -->
       <!-- @el true -->
     </attribute>
     <attribute>

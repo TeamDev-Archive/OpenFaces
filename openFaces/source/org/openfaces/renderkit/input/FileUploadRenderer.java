@@ -77,6 +77,7 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
     private static final String DEF_PROGRESS_ID = "progressBar";
     private static final String DEF_BROWSE_BTN_LABEL_SINGLE = "Upload...";
     private static final String DEF_BROWSE_LABEL_MULTIPLE = "Add file...";
+    private static final String EXCEED_MAX_SIZE_ID = "exceedMaxSize_";
 
 
     //private UIComponent addButtonTitle;
@@ -348,6 +349,7 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
                 fileUpload.getInProgressStatusText(),
                 fileUpload.getUploadedStatusText(),
                 fileUpload.getFileSizeLimitErrorText(),
+                fileUpload.getUnexpectedErrorText(),
                 fileUpload.getAcceptedFileTypes(),
                 duplicateAllowed,
                 headerId + BROWSE_BTN_ID,
@@ -363,6 +365,7 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
                 fileUpload.getTabindex(),
                 progressBar.getClientId(context),
                 fileUpload.getStoppedStatusText(),
+                fileUpload.getStoppingStatusText(),
                 fileUpload.isMultiple(),
                 generateUniqueId(clientId)
         );
@@ -414,8 +417,16 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
                 Integer progress = (Integer) sessionMap.get(PROGRESS_ID + nameOfFile);
                 Rendering.addJsonParam(jsonObj, "progressInPercent", progress);
                 Rendering.addJsonParam(jsonObj, "status", "inProgress");
-            } else {
+                if (progress.equals(100)){
+                    sessionMap.remove(PROGRESS_ID + nameOfFile);
+                }
+            } else {//in case if any error
                 Rendering.addJsonParam(jsonObj, "status", "error");
+                if (sessionMap.containsKey(EXCEED_MAX_SIZE_ID + nameOfFile)){
+                    boolean maxFileExceeded = (Boolean) sessionMap.get(EXCEED_MAX_SIZE_ID + nameOfFile);
+                    Rendering.addJsonParam(jsonObj, "isFileSizeExceed", maxFileExceeded);
+                    sessionMap.remove(EXCEED_MAX_SIZE_ID + nameOfFile);
+                }
             }
             return jsonObj;
         } else if (jsonParam.has(AJAX_FILES_REQUEST)) {
@@ -443,6 +454,8 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
                         filesItems.add(new FileUploadItem(file.getString(1), null, FileUploadStatus.STOPPED));
                     } else if (file.getString(2).equals("ERROR")) {
                         filesItems.add(new FileUploadItem(file.getString(1), null, FileUploadStatus.FAILED));
+                    } else if (file.getString(2).equals("SIZE_LIMIT_EXCEEDED")) {
+                        filesItems.add(new FileUploadItem(file.getString(1), null, FileUploadStatus.SIZE_LIMIT_EXCEEDED));
                     }
                 }
                 FileUpload fileUpload = (FileUpload) component;

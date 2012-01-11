@@ -153,15 +153,26 @@ public abstract class BaseHtmlMessageRenderer extends BaseMessageRenderer {
         boolean showSummary = isShowSummary(messageComponent) && (summary != null);
         boolean showDetail = isShowDetail(messageComponent) && (detail != null);
 
+        String escapeStr = (String) messageComponent.getAttributes().get("escape");
+        boolean escape = escapeStr != null && !Boolean.valueOf(escapeStr);
+
         if (showSummary && !(title == null && tooltip)) {
-            writer.writeText(summary, null);
+            if (escape) {
+                writer.write(summary);
+            } else {
+                writer.writeText(summary, null);
+            }
             if (showDetail) {
                 writer.writeText(" ", null);
             }
         }
 
         if (showDetail) {
-            writer.writeText(detail, null);
+             if (escape) {
+                writer.write(detail);
+            } else {
+                writer.writeText(detail, null);
+            }
         }
     }
 

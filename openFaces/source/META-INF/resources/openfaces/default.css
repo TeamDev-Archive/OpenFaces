@@ -1254,8 +1254,7 @@
     width:100%;
 }
 .o_file_upload_addBtn_dis{
-    opacity: 0.4;
-    filter: alpha(opacity = 40);
+    color: gray;
 }
 
 .o_file_upload_btn {
