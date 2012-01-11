@@ -29,24 +29,28 @@ import java.util.List;
 
 public class FileUploadRequestWrapper extends HttpServletRequestWrapper {
 
+    private static final String FIELD_NAME = "::inputs::input";
+
     public FileUploadRequestWrapper(HttpServletRequest request, String tempDirPath, final long maxSizeOfFile) {
         super(request);
         final String contentLength = request.getHeader("content-length");
         if (contentLength == null)
             return;
 
-        final long requestLength = Long.parseLong(contentLength.trim());
-        if (requestLength > maxSizeOfFile)
-            return;
-
         try {
             ServletFileUpload upload = new ServletFileUpload();
-            upload.setFileItemFactory(new ProgressMonitorFileItemFactory(request));
+            upload.setFileItemFactory(new ProgressMonitorFileItemFactory(request, maxSizeOfFile));
             List<FileItem> fileItems = upload.parseRequest(request);
             for (FileItem fileItem : fileItems) {
                 if (!fileItem.isFormField()) {
-                    File f = writeFile(fileItem, tempDirPath);
-                    request.setAttribute(fileItem.getFieldName(), new FileUploadItem(fileItem.getName(), f, FileUploadStatus.SUCCESSFUL));
+                    if (fileItem.getSize() != 0) {
+                        File f = writeFile(fileItem, tempDirPath);
+                        int index = fileItem.getFieldName().indexOf(FIELD_NAME);
+                        String genericNameForFile = fileItem.getFieldName().substring(0, index + FIELD_NAME.length());
+                        request.setAttribute(genericNameForFile, new FileUploadItem(fileItem.getName(), f, FileUploadStatus.SUCCESSFUL));
+                    }/*else {//we are not using file in this case
+                        request.setAttribute(fileItem.getFieldName(), new FileUploadItem(fileItem.getName(), null, FileUploadStatus.SIZE_LIMIT_EXCEEDED));
+                    }*/
                 } else {
                     if (fileItem.getFieldName().equals("FILE_ID")) {
                         request.setAttribute("FILE_ID", fileItem.getString());
@@ -57,7 +61,7 @@ public class FileUploadRequestWrapper extends HttpServletRequestWrapper {
 
         } catch (FileUploadException fe) {
             //throw new RuntimeException(fe);
-           System.out.println("File upload has been terminated or request has timed out.");
+            System.out.println("File upload has been terminated or request has timed out.");
         } catch (IOException ne) {
             throw new RuntimeException(ne);
         }

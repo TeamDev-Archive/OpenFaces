@@ -141,8 +141,20 @@ public class FileUploadJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("inProgressStatusText", inProgressStatusText);
     }
 
+    public void setStoppedStatusText(MethodExpression stoppedStatusText) {
+        getDelegate().setPropertyValue("stoppedStatusText", stoppedStatusText);
+    }
+
+    public void setStoppingStatusText(MethodExpression stoppingStatusText) {
+        getDelegate().setPropertyValue("stoppingStatusText", stoppingStatusText);
+    }
+
     public void setFileSizeLimitErrorText(ValueExpression fileSizeLimitErrorText) {
         getDelegate().setPropertyValue("fileSizeLimitErrorText", fileSizeLimitErrorText);
+    }
+
+    public void setUnexpectedErrorText(MethodExpression unexpectedErrorText) {
+        getDelegate().setPropertyValue("unexpectedErrorText", unexpectedErrorText);
     }
 
     public void setDisabled(ValueExpression disabled) {
@@ -165,9 +177,6 @@ public class FileUploadJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("fileUploadedListener", fileUploadedListener);
     }
 
-    public void setStoppedStatusText(MethodExpression stoppedStatusText) {
-        getDelegate().setPropertyValue("stoppedStatusText", stoppedStatusText);
-    }
 
     public void setMultiple(MethodExpression multiple) {
         getDelegate().setPropertyValue("multiple", multiple);
@@ -176,9 +185,11 @@ public class FileUploadJspTag extends AbstractComponentJspTag {
     public void setUploadCompletionListener(MethodExpression uploadCompletionListener) {
         getDelegate().setPropertyValue("uploadCompletionListener", uploadCompletionListener);
     }
+
     public void setOnuploadstart(MethodExpression onuploadstart) {
         getDelegate().setPropertyValue("onuploadstart", onuploadstart);
     }
+
     public void setOnuploadend(MethodExpression onuploadend) {
         getDelegate().setPropertyValue("onuploadend", onuploadend);
     }

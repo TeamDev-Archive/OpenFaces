@@ -143,6 +143,7 @@ public abstract class CommonAjaxViewRoot {
             // The handling of errors and exceptions is done on each phase of JSF request life-cycle
             // If the exception is caught here, the appropriate message is sent back to the client
             // in ajax response
+            AjaxRequest.getInstance().resetValidationError();
             doProcessValidators(context);
             broadcastEvents(context, PhaseId.PROCESS_VALIDATIONS);
         } catch (RuntimeException e) {
@@ -174,6 +175,7 @@ public abstract class CommonAjaxViewRoot {
             // The handling of errors and exceptions is done on each phase of JSF request life-cycle
             // If the exception is caught here, the appropriate message is sent back to the client
             // in ajax response
+            AjaxRequest.getInstance().setValidationError(false);
             doProcessUpdates(context);
             broadcastEvents(context, PhaseId.UPDATE_MODEL_VALUES);
         } catch (RuntimeException e) {
@@ -984,6 +986,7 @@ public abstract class CommonAjaxViewRoot {
         }
         Object ajaxResult = ajaxRequest.getAjaxResult();
         ajaxResponse.setAjaxResult(ajaxResult);
+        ajaxResponse.setValidationError(ajaxRequest.isValidationError());
 
         AjaxPluginIncludes availableIncludes = PluginsLoader.getAvailableIncludes(context);
         List<String> foreignHeadScripts = availableIncludes.getScripts();
