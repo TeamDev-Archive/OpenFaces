@@ -113,6 +113,7 @@ O$.TAG_AJAX_EXCEPTION = "ajax_exception";
 O$.TAG_AJAX_EXCEPTION_MESSAGE = "ajax_exception_message";
 O$.TAG_AJAX_STYLE = "style";
 O$.TAG_AJAX_RESULT = "ajaxResult";
+O$.TAG_VALIDATION_ERROR = "validationError";
 
 O$.UPDATE_TYPE_SIMPLE = "simple";
 O$.UPDATE_TYPE_PORTION = "portion";
@@ -508,6 +509,7 @@ O$.requestFinished = function(ajaxObject) {
     if (ajaxSettingsForComponent && ajaxSettingsForComponent.onajaxend) {
       var ajaxendEvent = O$.createEvent("ajaxend");
       ajaxendEvent.ajaxResult = ajaxObject._ajaxResult;
+      ajaxendEvent.validationError = ajaxObject._validationError;
       try {
         ajaxSettingsForComponent.onajaxend(ajaxendEvent);
       } catch(ex) {
@@ -523,6 +525,7 @@ O$.requestFinished = function(ajaxObject) {
   if (OpenFaces.Ajax.Page.onajaxend) {
     var ajaxendEvent = O$.createEvent("ajaxend");
     ajaxendEvent.ajaxResult = ajaxObject._ajaxResult;
+    ajaxendEvent.validationError = ajaxObject._validationError;
 
     try {
       OpenFaces.Ajax.Page.onajaxend(ajaxendEvent);
@@ -798,6 +801,7 @@ O$.AjaxObject = function(render) {
         this._updatables = responseXML.getElementsByTagName(O$.TAG_AJAX_UPDATABLE);
         this._styles = responseXML.getElementsByTagName(O$.TAG_AJAX_STYLE);
         this._ajaxResult = responseXML.getElementsByTagName(O$.TAG_AJAX_RESULT);
+        this._validationError = responseXML.getElementsByTagName(O$.TAG_VALIDATION_ERROR);
         this._cssFiles = responseXML.getElementsByTagName(O$.TAG_AJAX_CSS);
       }
       if ((!this._updatables || this._updatables.length == 0) && (!this._ajaxResult || this._ajaxResult.length == 0)) {
@@ -825,6 +829,7 @@ O$.AjaxObject = function(render) {
         this._updatables = responseObj[O$.TAG_AJAX_UPDATABLE];
         this._styles = responseObj[O$.TAG_AJAX_STYLE];
         this._ajaxResult = responseObj[O$.TAG_AJAX_RESULT];
+        this._validationError = responseObj[O$.TAG_VALIDATION_ERROR];
         this._cssFiles = responseObj[O$.TAG_AJAX_CSS];
         this._sessionExpired = responseObj[O$.TAG_AJAX_SESSION_EXPIRED];
         this._sessionExpiredLocation = responseObj[O$.TAG_AJAX_SESSION_EXPIRED_LOCATION];
@@ -841,6 +846,9 @@ O$.AjaxObject = function(render) {
         this._ajaxResult = ajaxResultStr;
       }
 
+      this._validationError = this._validationError[0];
+      var validationErrorStr = this._validationError.tagName ? this._validationError.getAttribute("value") : this._validationError.value;
+      this._validationError = (validationErrorStr == "true");
 
       var serverException = this._exception ? this._exception[0].value : undefined;
       if (serverException) {
@@ -994,6 +1002,8 @@ O$.AjaxObject = function(render) {
 
     var ajaxendEvent = O$.createEvent("ajaxend");
     ajaxendEvent.ajaxResult = this._ajaxResult;
+    ajaxendEvent.validationError = this._validationError;
+
     if (this._completionCallback)
       this._completionCallback(ajaxendEvent);
     if (O$.Ajax.onajaxend)

@@ -52,6 +52,7 @@ class AjaxResponse {
     private static final String TAG_AJAX_SCRIPT = "script";
     private static final String TAG_AJAX_STYLE = "style";
     private static final String TAG_AJAX_RESULT = "ajaxResult";
+    private static final String TAG_VALIDATION_ERROR= "validationError";
     private static final String TAG_AJAX_CSS = "css";
     private static final String TAG_AJAX_SESSION_EXPIRED = "session_expired";
     private static final String TAG_AJAX_SESSION_EXPIRED_LOCATION = "session_expired_location";
@@ -74,6 +75,7 @@ class AjaxResponse {
     private String sessionExpiredLocation;
     private Throwable exception;
     private Object ajaxResult;
+    private boolean validationError;
 
     private AjaxSavedStateIdxHolder stateIdxHolder;
 
@@ -271,6 +273,7 @@ class AjaxResponse {
 
         //noinspection RedundantCast
         root.addContent(/*don't remove the cast - needed for jdk1.5 compatibility*/(Content) Elements.createAjaxResult(ajaxResult));
+        root.addContent(/*don't remove the cast - needed for jdk1.5 compatibility*/(Content) Elements.createValidationError(validationError));
 
         if (componentStates != null) {
             for (AjaxPortionData stateData : componentStates) {
@@ -345,6 +348,7 @@ class AjaxResponse {
 
         appendCommaIfNeeded(buf, buf.length() > 1);
         addResultValueToBuf(buf, ajaxResult);
+        addValidationErrorToBuf(buf, validationError);
 
         if (sessionExpired != null && sessionExpired.length() > 0) {
             appendCommaIfNeeded(buf, buf.length() > 1);
@@ -382,6 +386,11 @@ class AjaxResponse {
         String value = resultValueToJsValue(resultValue);
         String escapedStr = Rendering.wrapTextIntoJsString(value);
         buf.append(TAG_AJAX_RESULT).append(" : [{value:").append(escapedStr).append("}]");
+    }
+
+
+    private static void addValidationErrorToBuf(StringBuilder buf, boolean validationError) {
+        buf.append(TAG_VALIDATION_ERROR).append(" : [{value:").append(validationError).append("}]");
     }
 
     private void addStringsToBuf(StringBuilder buf, String collectionName, List<String> strings) {
@@ -436,6 +445,15 @@ class AjaxResponse {
 
     public void setAjaxResult(Object ajaxResult) {
         this.ajaxResult = ajaxResult;
+    }
+
+
+    public boolean isValidationError() {
+        return validationError;
+    }
+
+    public void setValidationError(boolean validationError) {
+        this.validationError = validationError;
     }
 
     public void addComponentState(String clientId, String stateString) {
@@ -549,6 +567,12 @@ class AjaxResponse {
             Element elem = new Element(TAG_AJAX_RESULT);
             String value = resultValueToJsValue(ajaxResult);
             elem.setAttribute("value", value);
+            return elem;
+        }
+
+         private static Element createValidationError(boolean validationError) {
+            Element elem = new Element(TAG_VALIDATION_ERROR);
+            elem.setAttribute("value", String.valueOf(validationError));
             return elem;
         }
 
