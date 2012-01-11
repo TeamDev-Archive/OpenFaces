@@ -42,8 +42,6 @@ public class AjaxInitializer {
     private static final String EXPRESSION_PREFIX = "#{";
     private static final String EXPRESSION_SUFFIX = "}";
     
-    public static ThreadLocal<Boolean> BUILDING_VIEW = new ThreadLocal<Boolean>();
-
     public JSONArray getRenderArray(FacesContext context, OUICommand command, Iterable<String> render) {
         JSONArray idsArray = new JSONArray();
         if (render != null)
@@ -78,11 +76,6 @@ public class AjaxInitializer {
     }
 
     private UIComponent findComponent_cached(FacesContext context, UIComponent base, String componentId) {
-        if (Boolean.TRUE.equals(BUILDING_VIEW.get())) {
-            // avoid caching the value on this stage because the tree is not fully constructed yet and we might cache
-            // the wrong value here
-            return findComponent(context, base, componentId);
-        }
         Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
         String componentsByIdsKey = AjaxInitializer.class.getName() + ".componentsByIds";
         Map<String, UIComponent> componentsByIds = (Map<String, UIComponent>) requestMap.get(componentsByIdsKey);
