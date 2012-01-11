@@ -28,7 +28,9 @@ import javax.faces.component.UIData;
 import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.context.FacesContext;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This class is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
@@ -39,6 +41,8 @@ import java.util.List;
 public class AjaxInitializer {
     private static final String EXPRESSION_PREFIX = "#{";
     private static final String EXPRESSION_SUFFIX = "}";
+    
+    public static ThreadLocal<Boolean> BUILDING_VIEW = new ThreadLocal<Boolean>();
 
     public JSONArray getRenderArray(FacesContext context, OUICommand command, Iterable<String> render) {
         JSONArray idsArray = new JSONArray();
@@ -48,7 +52,7 @@ public class AjaxInitializer {
                     idsArray.put(componentId.substring(1));
                     continue;
                 }
-                UIComponent component = findComponent(command, componentId);
+                UIComponent component = findComponent_cached(context, command, componentId);
                 if (component == null) {
                     idsArray.put(componentId);
                     continue;
@@ -73,10 +77,33 @@ public class AjaxInitializer {
         return idsArray;
     }
 
-    private UIComponent findComponent(UIComponent base, String componentId) {
+    private UIComponent findComponent_cached(FacesContext context, UIComponent base, String componentId) {
+        if (Boolean.TRUE.equals(BUILDING_VIEW.get())) {
+            // avoid caching the value on this stage because the tree is not fully constructed yet and we might cache
+            // the wrong value here
+            return findComponent(context, base, componentId);
+        }
+        Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
+        String componentsByIdsKey = AjaxInitializer.class.getName() + ".componentsByIds";
+        Map<String, UIComponent> componentsByIds = (Map<String, UIComponent>) requestMap.get(componentsByIdsKey);
+        if (componentsByIds == null) {
+            componentsByIds = new HashMap<String, UIComponent>();
+            requestMap.put(componentsByIdsKey, componentsByIds);
+        }
+        
+        if (componentsByIds.containsKey(componentId))
+            return componentsByIds.get(componentId);
+
+        UIComponent componentById = findComponent(context, base, componentId);
+        componentsByIds.put(componentId, componentById);
+
+        return componentById;
+    }
+
+    private UIComponent findComponent(FacesContext context, UIComponent base, String componentId) {
         if (componentId == null || componentId.equals(""))
             if (base == null)
-                base = FacesContext.getCurrentInstance().getViewRoot();
+                base = context.getViewRoot();
         if (base == null)
             return null;
         UIComponent locationBase = base;
