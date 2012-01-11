@@ -109,5 +109,6 @@ public class AjaxRequest {
     public void resetValidationError() {
        this.validationError = true;
     }
+
 }
 
