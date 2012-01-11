@@ -55,8 +55,14 @@ public class Ajax extends OUICommand implements OUIClientAction {
     @Override
     public void setParent(UIComponent parent) {
         super.setParent(parent);
-        if (parent != null)
-            helper.onParentChange(this, parent);
+        if (parent != null) {
+            AjaxInitializer.BUILDING_VIEW.set(true);
+            try {
+                helper.onParentChange(this, parent);
+            } finally {
+                AjaxInitializer.BUILDING_VIEW.set(false);
+            }
+        }
     }
 
 
