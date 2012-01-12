@@ -41,6 +41,8 @@
     <include name="jdom-1.0.jar"/>
     <include name="cssparser-0.9.5.jar"/>
     <include name="sac.jar"/>
+    <include name="commons-fileupload-1.2.2.jar"/>
+    <include name="commons-io-2.1.jar"/>
   </fileset>
 
   <fileset id="tomahawk-libs" dir="${tomahawk.lib.dir}">
@@ -148,6 +150,8 @@
           <include name="jboss-seam/jboss-seam-2.1.1.GA.jar"/>
           <include name="tomahawk/tomahawk12-1.1.8.jar"/>
           <include name="apache/commons-collections-3.2.1.jar"/>
+          <include name="openfaces-dependencies/commons-fileupload-1.2.2.jar"/>
+          <include name="openfaces-dependencies/commons-io-2.1.jar"/>
         </fileset>
         <fileset file="${openfaces-jar.file}"/>
       </classpath>

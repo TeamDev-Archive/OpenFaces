@@ -178,7 +178,7 @@ public class FileUploadJspTag extends AbstractComponentJspTag {
     }
 
 
-    public void setMultiple(MethodExpression multiple) {
+    public void setMultiple(ValueExpression multiple) {
         getDelegate().setPropertyValue("multiple", multiple);
     }
 
@@ -186,11 +186,11 @@ public class FileUploadJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("uploadCompletionListener", uploadCompletionListener);
     }
 
-    public void setOnuploadstart(MethodExpression onuploadstart) {
+    public void setOnuploadstart(ValueExpression onuploadstart) {
         getDelegate().setPropertyValue("onuploadstart", onuploadstart);
     }
 
-    public void setOnuploadend(MethodExpression onuploadend) {
+    public void setOnuploadend(ValueExpression onuploadend) {
         getDelegate().setPropertyValue("onuploadend", onuploadend);
     }
 }
