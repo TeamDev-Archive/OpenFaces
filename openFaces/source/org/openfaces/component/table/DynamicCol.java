@@ -12,7 +12,6 @@
 package org.openfaces.component.table;
 
 import javax.faces.component.UIComponent;
-import java.util.List;
 import java.util.Map;
 
 /**
