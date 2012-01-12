@@ -648,7 +648,7 @@ O$.FileUpload = {
       eval(onUploadStartEventHandler);
       function progressRequest(inputForFile) {
         O$.Ajax.requestComponentPortions(fileUpload.id, ["nothing"],
-                JSON.stringify({progressRequest: "true", fileName : getFileName(inputForFile.value)}),
+                JSON.stringify({progressRequest: "true", fieldName : inputForFile.name}),
                 function(fileUpload, portionName, portionHTML, portionScripts, portionData) {
                   var infoDiv = O$(allInfos.id + inputForFile._idInputAndDiv);
                   if (portionData['status'] == "error") {//todo:description add what kind of error
