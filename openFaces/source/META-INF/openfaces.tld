@@ -44991,7 +44991,7 @@ entering a value and returns a list of suggestions from the server -->
       </deferred-method>
       <!-- @bindingType javax.el.MethodExpression -->
       <!-- @default null -->
-      <!-- @el only -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>JavaScript code that should be executed when started uploading for all files.

@@ -283,14 +283,14 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
             writer.startElement("input", fileUpload);
             writer.writeAttribute("type", "button", null);
             String value;
-            if (!fileUpload.isMultiple()) {
-                if (fileUpload.getBrowseButtonText() == null) {
+            if (fileUpload.getBrowseButtonText() == null) {
+                if (!fileUpload.isMultiple()) {
                     value = DEF_BROWSE_BTN_LABEL_SINGLE;
                 } else {
-                    value = fileUpload.getBrowseButtonText();
+                    value = DEF_BROWSE_LABEL_MULTIPLE;
                 }
             } else {
-                value = DEF_BROWSE_LABEL_MULTIPLE;
+                value = fileUpload.getBrowseButtonText();
             }
 
             writer.writeAttribute("value", value, null);
