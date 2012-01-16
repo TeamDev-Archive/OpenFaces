@@ -102,6 +102,14 @@ O$.PopupLayer = {
         return {width: 0, height: 0};
       },
 
+      _getAutosizingContentPaddings: function() {
+        return {width: 0, height: 0};
+      },
+
+      _getAutosizingContentBorders: function() {
+        return {width: 0, height: 0};
+      },
+
       _getMinSize: function() {
         return {width: 0, height: 0};
       },
@@ -141,7 +149,16 @@ O$.PopupLayer = {
           area.style.left = "0px";
           area.style.top = "0px";
 
-          var maxWidth = width ? O$.calculateNumericCSSValue(width) - autosizingMargins.width : null;
+          var maxWidth = null;
+          if (O$.isExplorer() && O$.isQuirksMode()){
+            // Workaround for "Internet Explorer box model bug"
+            maxWidth = width ? O$.calculateNumericCSSValue(width) - autosizingMargins.width : null;
+          } else {
+            var autosizingContentPaddings = this._getAutosizingContentPaddings();
+            var autosizingContentBorders = this._getAutosizingContentBorders();
+            maxWidth = width ? O$.calculateNumericCSSValue(width) - autosizingMargins.width
+                    - autosizingContentPaddings.width - autosizingContentBorders.width: null;
+          }
           area.style.width = maxWidth != null ? maxWidth + "px" : "auto";
           area.style.height = "auto";
           var size = O$.getElementSize(area);

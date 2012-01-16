@@ -77,12 +77,13 @@ O$.FileUpload = {
     var inputsStorageId = inputsStorage.id;
 
     //processing onChange event
-    var inputForChange = O$(componentId + "::elements::helpfulInput");
-    var onChangeFunc = inputForChange.onchange;
-    elements.removeChild(inputForChange);
+    var onChangeHandler = fileUpload.getAttribute('onchangefiles');
+    fileUpload.removeAttribute("onchangefiles");
+
+    var couldCallChangeEvent = true;
+
     if (!O$.isExplorer())
       fileUpload.removeChild(elements);
-    var couldCallChangeEvent = true;
 
     //processing event onuploadstart,onuploadend
     var onUploadStartEventHandler = fileUpload.getAttribute('onuploadstart');
@@ -125,11 +126,11 @@ O$.FileUpload = {
     setFocusBlurBehaviour();
     setUploadButtonBehaviour();
 
-    if (O$.isChrome()){
-      O$.addEventHandler(clearAllButton,"mousedown",function(){
+    if (O$.isChrome() || O$.isSafari()){
+      O$.addEventHandler(clearAllButton, "mousedown", function () {
         shouldInvokeFocusNonModifiable = false;
       });
-      O$.addEventHandler(clearAllButton,"mouseup",function(){
+      O$.addEventHandler(clearAllButton, "mouseup", function () {
         shouldInvokeFocusNonModifiable = true;
       });
     }
@@ -146,8 +147,7 @@ O$.FileUpload = {
       }
       couldCallChangeEvent = true;
       if (isCallingChangeEventNeeded){
-        if (onChangeFunc != null) // onchangeHandler
-          onChangeFunc();
+        eval(onChangeHandler);// onchangeHandler
       }
 
       clearAllButton.style.display = "none";
@@ -174,8 +174,7 @@ O$.FileUpload = {
       O$.addEventHandler(inputInAddBtn,"focus",focusHandler);
       O$.addEventHandler(inputInAddBtn,"blur",blurHandler);
 
-      if (onChangeFunc != null) // onchangeHandler
-        onChangeFunc();
+      eval(onChangeHandler);  //onChangeHandler
       addFileToInfoWindow(inputForFile);
 
       if (fileUpload._maxQuantity != 0
@@ -222,8 +221,8 @@ O$.FileUpload = {
         cancelFileDiv.setAttribute("id",cancelFacet.id + inputForFile._idInputAndDiv);
         cancelFileDiv.deleteFileInputFunction = function () {
           deleteFileInput(inputForFile, infoWindow);
-          if (onChangeFunc != null && couldCallChangeEvent) // onchangeHandler
-            onChangeFunc();
+          if (couldCallChangeEvent)
+            eval(onChangeHandler);
           if (allInfos.childNodes.length == 0) {
             clearAllButton.style.display = "none";
           }
@@ -241,12 +240,15 @@ O$.FileUpload = {
         O$.addEventHandler(cancelFileDiv, "focus", focusHandler);
         O$.addEventHandler(cancelFileDiv, "blur", blurHandler);
 
-        if (O$.isChrome()) {
+        if (O$.isChrome() || O$.isSafari()) {
           O$.addEventHandler(cancelFileDiv, "mousedown", function() {
             shouldInvokeFocusNonModifiable = false;
           });
           O$.addEventHandler(cancelFileDiv, "mouseup", function() {
             shouldInvokeFocusNonModifiable = true;
+          });
+          O$.addEventHandler(cancelFileDiv, "keyup", function() {
+            shouldInvokeFocusEvHandler = false;
           });
         }
 
@@ -338,12 +340,15 @@ O$.FileUpload = {
     }
 
     function setUploadButtonBehaviour() {
-      if (O$.isChrome()) {
+      if (O$.isChrome() || O$.isSafari()) {
         O$.addEventHandler(uploadButton, "mousedown", function() {
           shouldInvokeFocusNonModifiable = false;
         });
         O$.addEventHandler(uploadButton, "mouseup", function() {
           shouldInvokeFocusNonModifiable = true;
+        });
+        O$.addEventHandler(uploadButton, "keyup", function() {
+          shouldInvokeFocusEvHandler = false;
         });
       }
       O$.addEventHandler(uploadButton, "click",uploadButtonClickHandler);
@@ -445,7 +450,7 @@ O$.FileUpload = {
         var isAdded = addFileInputAfter(input);
         if (isAdded){
           setTimeout(function () {
-            if (O$.isChrome())
+            if (O$.isChrome() || O$.isSafari())
               shouldInvokeFocusEvHandler = true;
             setFocusOnComponent();
             if (O$.isExplorer()) {
@@ -454,13 +459,13 @@ O$.FileUpload = {
             }
           }, 1);
         }else{
-          if (O$.isChrome()) {
+          if (O$.isChrome() || O$.isSafari()) {
             shouldInvokeFocusEvHandler = true;
             setFocusOnComponent();
           }
         }
       });
-      if (O$.isChrome()) { //chrome calls blur when file dialog popup
+      if (O$.isChrome() || O$.isSafari()) { //chrome calls blur when file dialog popup
         O$.addEventHandler(input, "mousedown", function() {
           input.focus();
         });
@@ -546,11 +551,11 @@ O$.FileUpload = {
         shouldInvokeFocusEvHandler = true;
         return;
       }
-      if (O$.isChrome() && !ignoreBlurForChrome){
+      if ((O$.isChrome() || O$.isSafari()) && !ignoreBlurForChrome){
         ignoreBlurForChrome = true;
         return;
       }
-      if (O$.isChrome() && !shouldInvokeFocusNonModifiable){
+      if ((O$.isChrome() || O$.isSafari()) && !shouldInvokeFocusNonModifiable){
         return;
       }
 
@@ -696,6 +701,17 @@ O$.FileUpload = {
                           inputForFile._wantToInterrupt = true;
                         };
                         O$.addEventHandler(stopFileDiv, "click", stopFileDiv._clickHandler);
+                        if (O$.isChrome() || O$.isSafari()) {
+                          O$.addEventHandler(stopFileDiv, "mousedown", function() {
+                            shouldInvokeFocusNonModifiable = false;
+                          });
+                          O$.addEventHandler(stopFileDiv, "mouseup", function() {
+                            shouldInvokeFocusNonModifiable = true;
+                          });
+                          O$.addEventHandler(stopFileDiv, "keyup", function() {
+                            shouldInvokeFocusEvHandler = false;
+                          });
+                        }
                       }
                       if (inputForFile._wantToInterrupt) {
                         if (infoDiv.childNodes[1].firstChild.getValue() == percents) {
@@ -757,6 +773,17 @@ O$.FileUpload = {
                       shouldInvokeFocusNonModifiable = true;
                     };
                     O$.addEventHandler(clearFileDiv, "click", clearFileDiv._clickHandler);
+                    if (O$.isChrome() || O$.isSafari()) {
+                      O$.addEventHandler(clearFileDiv, "mousedown", function() {
+                        shouldInvokeFocusNonModifiable = false;
+                      });
+                      O$.addEventHandler(clearFileDiv, "mouseup", function() {
+                        shouldInvokeFocusNonModifiable = true;
+                      });
+                      O$.addEventHandler(clearFileDiv, "keyup", function() {
+                        shouldInvokeFocusEvHandler = false;
+                      });
+                    }
                   }
 
                   function sendCheckRequest() {

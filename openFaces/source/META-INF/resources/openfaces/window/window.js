@@ -95,14 +95,34 @@ O$.Window = {
         this._autosizing = null;
       },
 
+      _getAutosizingBorders: function(area) {
+        var borderLeft = O$.getNumericElementStyle(area, "border-left-width", true);
+        var borderRight = O$.getNumericElementStyle(area, "border-right-width", true);
+        var borderTop = O$.getNumericElementStyle(area, "border-top-width", true);
+        var borderBottom = O$.getNumericElementStyle(area, "border-bottom-width", true);
+
+        return {width: borderLeft + borderRight, height: borderTop + borderBottom};
+      },
+
       _getAutosizingMargins: function() {
         var captionHeight = O$.getElementSize(this._caption).height;
-        var borderLeft = O$.getNumericElementStyle(this, "border-left-width", true);
-        var borderRight = O$.getNumericElementStyle(this, "border-right-width", true);
-        var borderTop = O$.getNumericElementStyle(this, "border-top-width", true);
-        var borderBottom = O$.getNumericElementStyle(this, "border-bottom-width", true);
+        var autosizingBorders = this._getAutosizingBorders(this);
+        return {width: autosizingBorders.width, height: autosizingBorders.height + captionHeight};
+      },
 
-        return {width: borderLeft + borderRight, height: borderTop + captionHeight + borderBottom};
+      _getAutosizingContentBorders: function() {
+        var autosizingBorders = this._getAutosizingBorders(this._content);
+        return {width: autosizingBorders.width, height: autosizingBorders.height};
+      },
+
+      _getAutosizingContentPaddings: function() {
+        var area = this._content;
+        var paddingRight = O$.getNumericElementStyle(area, "padding-right", true);
+        var paddingLeft = O$.getNumericElementStyle(area, "padding-left", true);
+        var paddingTop = O$.getNumericElementStyle(area, "padding-top", true);
+        var paddingBottom = O$.getNumericElementStyle(area, "padding-bottom", true);
+
+        return {width: paddingLeft + paddingRight, height: paddingTop + paddingBottom};
       },
 
       _autosizingAllowed: function() {
