@@ -70,7 +70,6 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
 
     private static final String FOOTER_DIV_ID = "::footer";
     private static final String HELP_ELEMENTS_ID = "::elements";
-    private static final String HELPFUL_INPUT = "::helpfulInput";
     private static final String DEF_PROGRESS_ID = "progressBar";
     private static final String DEF_BROWSE_BTN_LABEL_SINGLE = "Upload...";
     private static final String DEF_BROWSE_LABEL_MULTIPLE = "Add file...";
@@ -99,21 +98,23 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
         AjaxUtil.prepareComponentForAjax(context, component);
 
         FileUpload fileUpload = (FileUpload) component;
-        ResponseWriter writer = context.getResponseWriter();
+
         if (((HttpServletRequest) context.getExternalContext().getRequest()).getAttribute("fileUploadRequest") != null) {
             uploadIfExistFiles(context, component);
             return;
         }
 
         setAllFacets(fileUpload);
+        renderComponent(context, component, fileUpload);
+    }
+
+    private void renderComponent(FacesContext context, UIComponent component, FileUpload fileUpload) throws IOException {
         String clientId = component.getClientId(context);
+        ResponseWriter writer = context.getResponseWriter();
         writer.startElement("div", component);
         Rendering.writeIdAttribute(context, fileUpload);
         Rendering.writeStyleAndClassAttributes(writer, fileUpload.getStyle(), fileUpload.getStyleClass(), "o_file_upload");
-        Rendering.writeStandardEvents(writer, fileUpload);
-
-        writer.writeAttribute("onuploadstart", fileUpload.getOnuploadstart(), null);
-        writer.writeAttribute("onuploadend", fileUpload.getOnuploadend(), null);
+        writeEvents(fileUpload, writer);
 
         writeHeader(context, fileUpload, writer, clientId + DIV_HEADER_ID);
 
@@ -123,8 +124,13 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
 
         encodeScriptAndStyles(context, fileUpload, clientId);
         writer.endElement("div");
+    }
 
-
+    private void writeEvents(FileUpload fileUpload, ResponseWriter writer) throws IOException {
+        Rendering.writeStandardEvents(writer, fileUpload);
+        writer.writeAttribute("onuploadstart", fileUpload.getOnuploadstart(), null);
+        writer.writeAttribute("onuploadend", fileUpload.getOnuploadend(), null);
+        writer.writeAttribute("onchangefiles", fileUpload.getOnchange(), null);
     }
 
     private void writeHelpfulInput(FacesContext context, FileUpload fileUpload, ResponseWriter writer, String elementId) throws IOException {
@@ -133,7 +139,6 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
         writer.writeAttribute("id", elementId, null);
         writer.writeAttribute("style", "display:none", null);
         writer.writeAttribute("onchange", fileUpload.getOnchange(), null);
-
         writer.endElement("input");
     }
 
@@ -141,7 +146,6 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
         writer.startElement("div", fileUpload);
         writer.writeAttribute("id", elementId, null);
         writer.writeAttribute("style", "display:none", null);
-        writeHelpfulInput(context, fileUpload, writer, elementId + HELPFUL_INPUT);
         writeRemoveButton(context, fileUpload, writer, elementId + REMOVE_BTN_CONTAINER);
         writeClearButton(context, fileUpload, writer, elementId + CLEAR_BTN_CONTAINER);
         writeStopButton(context, fileUpload, writer, elementId + STOP_BTN_CONTAINER);
@@ -154,7 +158,6 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
             progressBar = new ProgressBar();
         }
         progressBar.encodeAll(context);
-
     }
 
     private void writeClearButton(FacesContext context, FileUpload fileUpload, ResponseWriter writer, String elementId) throws IOException {
