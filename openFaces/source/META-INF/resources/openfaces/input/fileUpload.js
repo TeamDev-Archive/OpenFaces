@@ -379,18 +379,17 @@ O$.FileUpload = {
       } else {
         formForInput.setAttribute("enctype", "multipart/form-data");
       }
+      var inputId = document.createElement("input");
+      inputId.setAttribute("type", "text");
+      inputId.setAttribute("name", "FILE_ID");
+      inputId.setAttribute("value", fileUpload._ID + inputField._idInputAndDiv);
+      formForInput.appendChild(inputId);
 
       inputField.setAttribute("id", formForInput.id + "::fileInput");
       inputField.setAttribute("name", inputField.id);
 
       inputField.removeAttribute("tabindex");
       formForInput.appendChild(inputField);
-
-      var inputId = document.createElement("input");
-      inputId.setAttribute("type", "text");
-      inputId.setAttribute("name", "FILE_ID");
-      inputId.setAttribute("value", fileUpload._ID + inputField._idInputAndDiv);
-      formForInput.appendChild(inputId);
 
       var iframe;
       if (O$.isExplorer() &&
@@ -632,9 +631,9 @@ O$.FileUpload = {
       for (var inputsIndex = 0; inputsIndex < inputsStorage.childNodes.length; inputsIndex++) {
         var file = [];
         var form = inputsStorage.childNodes[inputsIndex].firstChild;
-        file.push(form.childNodes[1].value);//id
-        file.push(form.childNodes[0].name);//name of file input
-        file.push(encodeURI(getFileName(form.childNodes[0].value)));//filename
+        file.push(form.childNodes[0].value);//id
+        file.push(form.childNodes[1].name);//name of file input
+        file.push(encodeURI(getFileName(form.childNodes[1].value)));//filename
         file.push("STARTED_UPLOAD");//status
         fileUpload._listOfids.push(file);
       }
@@ -642,7 +641,7 @@ O$.FileUpload = {
         var inputDiv = inputsStorage.childNodes[inputsIndex];
         var form = inputDiv.childNodes[0];
         var iframe = form.childNodes[2];
-        var fileInput = form.childNodes[0];
+        var fileInput = form.childNodes[1];
 
         O$(allInfos.id + fileInput._idInputAndDiv).childNodes[3].firstChild.style.visibility = "hidden";
         form.target = iframe.name;
@@ -661,7 +660,7 @@ O$.FileUpload = {
                     inputsStorage.removeChild(inputForFile.parentNode.parentNode);
                     if (portionData['isFileSizeExceed'] == "true"){
                       infoDiv.childNodes[2].innerHTML = statusLabelErrorSize;
-                      var id = inputForFile.nextSibling.value;                  //todo : remove repeated code
+                      var id = inputForFile.previousSibling.value;                  //todo : remove repeated code
                       for (var k = 0; k < fileUpload._listOfids.length; k++) {
                         if (id == fileUpload._listOfids[k][0]) {
                           fileUpload._listOfids[k][3] = "SIZE_LIMIT_EXCEEDED";
@@ -670,7 +669,7 @@ O$.FileUpload = {
                       }
                     }else{
                       infoDiv.childNodes[2].innerHTML = statusLabelUnexpectedError;
-                      var id = inputForFile.nextSibling.value;
+                      var id = inputForFile.previousSibling.value;
                       for (var k = 0; k < fileUpload._listOfids.length; k++) {
                         if (id == fileUpload._listOfids[k][0]) {
                           fileUpload._listOfids[k][3] = "ERROR";
@@ -719,7 +718,7 @@ O$.FileUpload = {
                           infoDiv._status = O$.statusEnum.ERROR;
                           inputsStorage.removeChild(inputForFile.parentNode.parentNode);
                           infoDiv.childNodes[2].innerHTML = statusStoppedText;
-                          var id = inputForFile.nextSibling.value;
+                          var id = inputForFile.previousSibling.value;
                           for (var k = 0; k < fileUpload._listOfids.length; k++) {
                             if (id == fileUpload._listOfids[k][0]) {
                               fileUpload._listOfids[k][3] = "STOPPED";
@@ -744,7 +743,7 @@ O$.FileUpload = {
                       // infoDiv updating
                       infoDiv._status = O$.statusEnum.UPLOADED;
                       infoDiv.childNodes[2].innerHTML = statusLabelUploaded;
-                      var id = inputForFile.nextSibling.value;
+                      var id = inputForFile.previousSibling.value;
                       for (var k = 0; k < fileUpload._listOfids.length; k++) {
                         if (id == fileUpload._listOfids[k][0]) {
                           fileUpload._listOfids[k][3] = "UPLOADED";

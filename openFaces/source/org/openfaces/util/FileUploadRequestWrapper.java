@@ -43,7 +43,7 @@ public class FileUploadRequestWrapper extends HttpServletRequestWrapper {
             List<FileItem> fileItems = upload.parseRequest(request);
             for (FileItem fileItem : fileItems) {
                 if (!fileItem.isFormField()) {
-                    if (fileItem.getSize() != 0) {
+                    if (request.getAttribute("FILE_ID") != null && fileItem.getSize() != 0) {
                         File f = writeFile(fileItem, tempDirPath);
                         int index = fileItem.getFieldName().indexOf(FIELD_NAME);
                         String genericNameForFile = fileItem.getFieldName().substring(0, index + FIELD_NAME.length());
