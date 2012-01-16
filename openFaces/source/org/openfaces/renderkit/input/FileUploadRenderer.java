@@ -42,7 +42,7 @@ import java.util.Map;
 
 public class FileUploadRenderer extends RendererBase implements AjaxPortionRenderer {
     private static final String DIV_FOR_INPUTS_ID = "::inputs";
-    private static final String INPUT_OF_FILE_ID = "::fileInput";
+    private static final String INPUT_OF_FILE_ID = "::input";
     private static final String DIV_FOR_INFO_ID = "::infoDiv";
     public static final String DIV_HEADER_ID = "::header";
 
@@ -51,36 +51,32 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
     private static final String INPUT_DIV_OF_ADD_BTN_ID = "::forInput";
 
     /*facet names and components which is used in this component*/
-    //private static final String F_ADD_BUTTON_TITLE = "addButtonTitle";
+    private static final String F_BROWSE_BUTTON = "browseButton";
     private static final String F_UPLOAD_BUTTON = "uploadButton";
     private static final String F_CLEAR_ALL_BUTTON = "clearAllButton";
 
+    private static final String F_REMOVE_BUTTON = "removeButton";
+    private static final String F_STOP_BUTTON = "stopButton";
     private static final String F_CLEAR_BUTTON = "clearButton";
-    private static final String F_STOP_BUTTON = "stopLoadButton";
-    private static final String F_REMOVE_BUTTON = "cancelButton";
+
     private static final String F_PROGRESS_BAR = "progressBar";
     /*id of elements*/
-    private static final String REMOVE_BTN_ID = "::removeFacet";
-    private static final String CLEAR_BTN_ID = "::clearFacet";
-    private static final String STOP_BTN_ID = "::stopFacet";
+    private static final String REMOVE_BTN_CONTAINER = "::removeFacet";
+    private static final String CLEAR_BTN_CONTAINER = "::clearFacet";
+    private static final String STOP_BTN_CONTAINER = "::stopFacet";
 
-    private static final String UPLOAD_BTN_ID = "::uploadBtn";
-    private static final String CLEAR_ALL_BTN_ID = "::clearAllBtn";
-
-    private static final String CLEAR_BUTTON_ID = "::clearButton";//if facet is using
-    private static final String STOP_BUTTON_ID = "::stopButton";//if facet is using
-    private static final String REMOVE_BUTTON_ID = "::cancelButton";//if facet is using
+    private static final String UPLOAD_BTN_CONTAINER = "::uploadFacet";
+    private static final String CLEAR_ALL_BTN_CONTAINER = "::clearAllFacet";
 
     private static final String FOOTER_DIV_ID = "::footer";
     private static final String HELP_ELEMENTS_ID = "::elements";
-    private static final String HELPFUL_INPUT = "::helpfulInput";
     private static final String DEF_PROGRESS_ID = "progressBar";
     private static final String DEF_BROWSE_BTN_LABEL_SINGLE = "Upload...";
     private static final String DEF_BROWSE_LABEL_MULTIPLE = "Add file...";
     private static final String EXCEED_MAX_SIZE_ID = "exceedMaxSize_";
 
 
-    //private UIComponent addButtonTitle;
+    private UIComponent browseButton;
     private UIComponent uploadButton;
     private UIComponent clearAllButton;
     private UIComponent removeButton;
@@ -90,7 +86,7 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
 
     /*progress*/
     private static final String AJAX_PARAM_PROGRESS_REQUEST = "progressRequest";
-    private static final String AJAX_PARAM_FILE_NAME = "fileName";
+    private static final String AJAX_PARAM_FIELD_NAME = "fieldName";
     private static final String PROGRESS_ID = "progress_";
 
     /*listOfFiles*/
@@ -102,21 +98,23 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
         AjaxUtil.prepareComponentForAjax(context, component);
 
         FileUpload fileUpload = (FileUpload) component;
-        ResponseWriter writer = context.getResponseWriter();
+
         if (((HttpServletRequest) context.getExternalContext().getRequest()).getAttribute("fileUploadRequest") != null) {
             uploadIfExistFiles(context, component);
             return;
         }
 
         setAllFacets(fileUpload);
+        renderComponent(context, component, fileUpload);
+    }
+
+    private void renderComponent(FacesContext context, UIComponent component, FileUpload fileUpload) throws IOException {
         String clientId = component.getClientId(context);
+        ResponseWriter writer = context.getResponseWriter();
         writer.startElement("div", component);
         Rendering.writeIdAttribute(context, fileUpload);
         Rendering.writeStyleAndClassAttributes(writer, fileUpload.getStyle(), fileUpload.getStyleClass(), "o_file_upload");
-        Rendering.writeStandardEvents(writer, fileUpload);
-
-        writer.writeAttribute("onuploadstart", fileUpload.getOnuploadstart(), null);
-        writer.writeAttribute("onuploadend", fileUpload.getOnuploadend(), null);
+        writeEvents(fileUpload, writer);
 
         writeHeader(context, fileUpload, writer, clientId + DIV_HEADER_ID);
 
@@ -126,8 +124,13 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
 
         encodeScriptAndStyles(context, fileUpload, clientId);
         writer.endElement("div");
+    }
 
-
+    private void writeEvents(FileUpload fileUpload, ResponseWriter writer) throws IOException {
+        Rendering.writeStandardEvents(writer, fileUpload);
+        writer.writeAttribute("onuploadstart", fileUpload.getOnuploadstart(), null);
+        writer.writeAttribute("onuploadend", fileUpload.getOnuploadend(), null);
+        writer.writeAttribute("onchangefiles", fileUpload.getOnchange(), null);
     }
 
     private void writeHelpfulInput(FacesContext context, FileUpload fileUpload, ResponseWriter writer, String elementId) throws IOException {
@@ -135,8 +138,7 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("id", elementId, null);
         writer.writeAttribute("style", "display:none", null);
-        writer.writeAttribute("onchange", Rendering.getEventsParam(fileUpload, "onchange"), null);
-
+        writer.writeAttribute("onchange", fileUpload.getOnchange(), null);
         writer.endElement("input");
     }
 
@@ -144,10 +146,9 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
         writer.startElement("div", fileUpload);
         writer.writeAttribute("id", elementId, null);
         writer.writeAttribute("style", "display:none", null);
-        writeHelpfulInput(context, fileUpload, writer, elementId + HELPFUL_INPUT);
-        writeRemoveButton(context, fileUpload, writer, elementId + REMOVE_BTN_ID);
-        writeClearButton(context, fileUpload, writer, elementId + CLEAR_BTN_ID);
-        writeStopButton(context, fileUpload, writer, elementId + STOP_BTN_ID);
+        writeRemoveButton(context, fileUpload, writer, elementId + REMOVE_BTN_CONTAINER);
+        writeClearButton(context, fileUpload, writer, elementId + CLEAR_BTN_CONTAINER);
+        writeStopButton(context, fileUpload, writer, elementId + STOP_BTN_CONTAINER);
         writeProgressBar(context);
         writer.endElement("div");
     }
@@ -157,7 +158,6 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
             progressBar = new ProgressBar();
         }
         progressBar.encodeAll(context);
-
     }
 
     private void writeClearButton(FacesContext context, FileUpload fileUpload, ResponseWriter writer, String elementId) throws IOException {
@@ -166,7 +166,6 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
         if (clearButton == null) {
             writer.startElement("input", fileUpload);
             writer.writeAttribute("type", "button", null);
-            writer.writeAttribute("id", elementId + CLEAR_BUTTON_ID, null);
             writer.writeAttribute("class", "o_file_clear_btn", null);
             writer.writeAttribute("value", "Clear", null);
             writer.endElement("input");
@@ -182,7 +181,6 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
         if (stopButton == null) {
             writer.startElement("input", fileUpload);
             writer.writeAttribute("type", "button", null);
-            writer.writeAttribute("id", elementId + STOP_BUTTON_ID, null);
             writer.writeAttribute("class", "o_file_clear_btn", null);
             writer.writeAttribute("value", "Stop", null);
             writer.endElement("input");
@@ -198,7 +196,6 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
         if (removeButton == null) {
             writer.startElement("input", fileUpload);
             writer.writeAttribute("type", "button", null);
-            writer.writeAttribute("id", elementId + REMOVE_BUTTON_ID, null);
             writer.writeAttribute("class", "o_file_clear_btn", null);
             writer.writeAttribute("value", "Remove", null);
             writer.endElement("input");
@@ -210,7 +207,7 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
 
     private void setAllFacets(FileUpload fileUpload) {
 
-        //addButtonTitle = fileUpload.getFacet(F_ADD_BUTTON_TITLE);
+        browseButton = fileUpload.getFacet(F_BROWSE_BUTTON);
         uploadButton = fileUpload.getFacet(F_UPLOAD_BUTTON);
         clearAllButton = fileUpload.getFacet(F_CLEAR_ALL_BUTTON);
 
@@ -238,36 +235,40 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
         writer.startElement("td", fileUpload);
 
         writeBrowseButtonTable(context, fileUpload, writer, elementId + BROWSE_BTN_ID);
-        writeUploadButton(context, fileUpload, writer, elementId + UPLOAD_BTN_ID);
+        writeUploadButton(context, fileUpload, writer, elementId + UPLOAD_BTN_CONTAINER);
         writer.endElement("td");
         writer.endElement("tr");
         writer.endElement("table");
     }
 
     private void writeUploadButton(FacesContext context, FileUpload fileUpload, ResponseWriter writer, String elementId) throws IOException {
+        writer.startElement("div", fileUpload);
+        writer.writeAttribute("id", elementId, null);
         if (uploadButton == null) {
             writer.startElement("input", fileUpload);
             writer.writeAttribute("type", "button", null);
-            writer.writeAttribute("id", elementId, null);
             writer.writeAttribute("class", "o_file_upload_btn", null);
             writer.writeAttribute("value", "Upload", null);
             writer.endElement("input");
         } else {
             uploadButton.encodeAll(context);
         }
+        writer.endElement("div");
     }
 
     private void writeClearAllButton(FacesContext context, FileUpload fileUpload, ResponseWriter writer, String elementId) throws IOException {
+        writer.startElement("div", fileUpload);
+        writer.writeAttribute("id", elementId, null);
         if (clearAllButton == null) {
             writer.startElement("input", fileUpload);
             writer.writeAttribute("type", "button", null);
-            writer.writeAttribute("id", elementId, null);
             writer.writeAttribute("value", "Clear all", null);
             writer.writeAttribute("class", "o_file_clear_all_btn", null);
             writer.endElement("input");
         } else {
             clearAllButton.encodeAll(context);
         }
+        writer.endElement("div");
     }
 
     private void writeBrowseButtonTable(FacesContext context, FileUpload fileUpload, ResponseWriter writer, String elementId) throws IOException {
@@ -282,25 +283,27 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
 
         writer.startElement("div", fileUpload);
         writer.writeAttribute("id", elementId + TITLE_ADD_BTN_DIV_ID, null);
-
-        writer.startElement("input", fileUpload);
-        writer.writeAttribute("type", "button", null);
-        String value;
-        if (!fileUpload.isMultiple()) {
+        if (browseButton == null) {
+            writer.startElement("input", fileUpload);
+            writer.writeAttribute("type", "button", null);
+            String value;
             if (fileUpload.getBrowseButtonText() == null) {
-                value = DEF_BROWSE_BTN_LABEL_SINGLE;
+                if (!fileUpload.isMultiple()) {
+                    value = DEF_BROWSE_BTN_LABEL_SINGLE;
+                } else {
+                    value = DEF_BROWSE_LABEL_MULTIPLE;
+                }
             } else {
                 value = fileUpload.getBrowseButtonText();
             }
+
+            writer.writeAttribute("value", value, null);
+            writer.endElement("input");
         } else {
-            value = DEF_BROWSE_LABEL_MULTIPLE;
+            browseButton.encodeAll(context);
         }
 
-        writer.writeAttribute("value", value, null);
-        writer.endElement("input");
-
         writer.endElement("div");
-
         writer.startElement("div", fileUpload);
         writer.writeAttribute("id", elementId + INPUT_DIV_OF_ADD_BTN_ID, null);
         writer.writeAttribute("style", "overflow:hidden;position:absolute;top:0;width:100%;height:100%", null); //todo temporary
@@ -317,7 +320,7 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
     private void writeFooter(FacesContext context, FileUpload fileUpload, ResponseWriter writer, String elementId) throws IOException {
         writer.startElement("div", fileUpload);
         writer.writeAttribute("id", elementId, null);
-        writeClearAllButton(context, fileUpload, writer, elementId + CLEAR_ALL_BTN_ID);
+        writeClearAllButton(context, fileUpload, writer, elementId + CLEAR_ALL_BTN_CONTAINER);
         writer.endElement("div");
     }
 
@@ -359,8 +362,6 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
                 addButtonOnMouseDownClass,
                 addButtonOnFocusClass,
                 addButtonDisabledClass,
-                (uploadButton == null) ? headerId + UPLOAD_BTN_ID : uploadButton.getClientId(context),
-                (clearAllButton == null) ? clientId + FOOTER_DIV_ID + CLEAR_ALL_BTN_ID : clearAllButton.getClientId(context),
                 fileUpload.isDisabled(),
                 fileUpload.isAutoUpload(),
                 fileUpload.getTabindex(),
@@ -412,21 +413,21 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
     public JSONObject encodeAjaxPortion(FacesContext context, UIComponent component, String portionName, JSONObject jsonParam) throws IOException, JSONException {
         if (jsonParam.has(AJAX_PARAM_PROGRESS_REQUEST)) {
             JSONObject jsonObj = new JSONObject();
-            String nameOfFile = (String) jsonParam.get(AJAX_PARAM_FILE_NAME);
+            String fieldName = (String) jsonParam.get(AJAX_PARAM_FIELD_NAME);
             Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
-            if (sessionMap.containsKey(PROGRESS_ID + nameOfFile)) {
-                Integer progress = (Integer) sessionMap.get(PROGRESS_ID + nameOfFile);
+            if (sessionMap.containsKey(PROGRESS_ID + fieldName)) {
+                Integer progress = (Integer) sessionMap.get(PROGRESS_ID + fieldName);
                 Rendering.addJsonParam(jsonObj, "progressInPercent", progress);
                 Rendering.addJsonParam(jsonObj, "status", "inProgress");
-                if (progress.equals(100)){
-                    sessionMap.remove(PROGRESS_ID + nameOfFile);
+                if (progress.equals(100)) {
+                    sessionMap.remove(PROGRESS_ID + fieldName);
                 }
             } else {//in case if any error
                 Rendering.addJsonParam(jsonObj, "status", "error");
-                if (sessionMap.containsKey(EXCEED_MAX_SIZE_ID + nameOfFile)){
-                    boolean maxFileExceeded = (Boolean) sessionMap.get(EXCEED_MAX_SIZE_ID + nameOfFile);
+                if (sessionMap.containsKey(EXCEED_MAX_SIZE_ID + fieldName)) {
+                    boolean maxFileExceeded = (Boolean) sessionMap.get(EXCEED_MAX_SIZE_ID + fieldName);
                     Rendering.addJsonParam(jsonObj, "isFileSizeExceed", maxFileExceeded);
-                    sessionMap.remove(EXCEED_MAX_SIZE_ID + nameOfFile);
+                    sessionMap.remove(EXCEED_MAX_SIZE_ID + fieldName);
                 }
             }
             return jsonObj;
@@ -437,7 +438,7 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
             Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
             for (int i = 0; i < files.length(); i++) {
                 JSONArray file = files.getJSONArray(i);
-                if (file.getString(2).equals("UPLOADED")) {
+                if (file.getString(3).equals("UPLOADED")) {
                     if (!sessionMap.containsKey(file.getString(0))) {
                         allUploaded = false;
                         break;
@@ -448,15 +449,16 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
                 List<FileUploadItem> filesItems = new LinkedList<FileUploadItem>();
                 for (int i = 0; i < files.length(); i++) {
                     JSONArray file = files.getJSONArray(i);
-                    if (file.getString(2).equals("UPLOADED")) {
+                    if (file.getString(3).equals("UPLOADED")) {
                         filesItems.add((FileUploadItem) sessionMap.get(file.getString(0)));
                         sessionMap.remove(file.getString(0));
-                    } else if (file.getString(2).equals("STOPPED")) {
-                        filesItems.add(new FileUploadItem(file.getString(1), null, FileUploadStatus.STOPPED));
-                    } else if (file.getString(2).equals("ERROR")) {
-                        filesItems.add(new FileUploadItem(file.getString(1), null, FileUploadStatus.FAILED));
-                    } else if (file.getString(2).equals("SIZE_LIMIT_EXCEEDED")) {
-                        filesItems.add(new FileUploadItem(file.getString(1), null, FileUploadStatus.SIZE_LIMIT_EXCEEDED));
+                    } else if (file.getString(3).equals("STOPPED")) {
+                        filesItems.add(new FileUploadItem(file.getString(2), null, FileUploadStatus.STOPPED));
+                        sessionMap.remove(PROGRESS_ID + file.getString(1));
+                    } else if (file.getString(3).equals("ERROR")) {
+                        filesItems.add(new FileUploadItem(file.getString(2), null, FileUploadStatus.FAILED));
+                    } else if (file.getString(3).equals("SIZE_LIMIT_EXCEEDED")) {
+                        filesItems.add(new FileUploadItem(file.getString(2), null, FileUploadStatus.SIZE_LIMIT_EXCEEDED));
                     }
                 }
                 FileUpload fileUpload = (FileUpload) component;

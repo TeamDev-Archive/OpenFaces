@@ -45,11 +45,11 @@ public class ProgressMonitorFileItemFactory extends DiskFileItemFactory {
         SessionUpdatingProgressObserver observer = null;
         boolean shouldProcess = true;
         if (!isFormField && !fileName.equals("")) { //This must be a file upload and has a name
-            observer = new SessionUpdatingProgressObserver(fileName);
+            observer = new SessionUpdatingProgressObserver(fieldName);
             if (requestLength > maxSizeOfFile) {
                 shouldProcess = false;
                 HttpServletRequest request = requestRef.get();
-                request.getSession().setAttribute(EXCEED_MAX_SIZE_ID + fileName, true);
+                request.getSession().setAttribute(EXCEED_MAX_SIZE_ID + fieldName, true);
             }
             //fileName = fileName.replaceAll("[#$%^&* ]+","_"); //doesn't work unfortunately
         }
@@ -65,18 +65,16 @@ public class ProgressMonitorFileItemFactory extends DiskFileItemFactory {
 
     public class SessionUpdatingProgressObserver implements ProgressObserver {
 
-        private final String fileName;
+        private final String fieldName;
 
-
-        public SessionUpdatingProgressObserver(String fileName) {
-
-            this.fileName = fileName.substring(fileName.lastIndexOf("\\") + 1);
+        public SessionUpdatingProgressObserver(String fieldName) {
+            this.fieldName = fieldName;
         }
 
         public void setProgress(int progress) {
             HttpServletRequest request = requestRef.get();
             if (request != null) {
-                request.getSession().setAttribute(PROGRESS_ID + fileName, progress);
+                request.getSession().setAttribute(PROGRESS_ID + fieldName, progress);
             }
         }
     }
