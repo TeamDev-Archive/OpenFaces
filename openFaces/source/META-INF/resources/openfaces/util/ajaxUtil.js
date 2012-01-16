@@ -21,7 +21,7 @@ O$.extend(O$, {
     },
 
     run: function() {
-      O$.Ajax._reload(this.render, this);
+      O$.Ajax._reload(this.render, this, this);
     }
   }),
 
