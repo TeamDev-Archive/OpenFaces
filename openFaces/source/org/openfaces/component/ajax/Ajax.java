@@ -102,8 +102,11 @@ public class Ajax extends OUICommand implements OUIClientAction {
                         "name exists for component: " + invokerId + " (component class: " + parent.getClass().getName() + "); " +
                         "you should specify the 'event' attribute for the appropriate <o:ajax> tag");
             }
-            AjaxHelper ajaxHelper = new AjaxHelper(this);
-            cbh.addClientBehavior(eventName, ajaxHelper);
+            if (!cbh.getClientBehaviors().containsKey(eventName)) {
+                //OFCS-57: PostAddToViewEvent could be fired multiple time under certain conditions
+                AjaxHelper ajaxHelper = new AjaxHelper(this);
+                cbh.addClientBehavior(eventName, ajaxHelper);
+            }
         }
     }
 
