@@ -10,9 +10,6 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-//todo facet addbutton
-//todo check statuses
-
 O$.FileUpload = {
   _init: function(componentId, minQuantity, maxQuantity, lengthAlreadyUploadedFiles,
                   fileInfoClass, infoTitleClass, progressBarClass, infoStatusClass,
@@ -31,7 +28,8 @@ O$.FileUpload = {
       _isDisabled : isDisabled,
       _multiUpload : multiUpload,
       _isAutoUpload : isAutoUpload,
-      _ID : ID
+      _ID : ID,
+      _filesHTML5:[]
     });
     if (!fileUpload._multiUpload){
       fileUpload._isAutoUpload = true;
@@ -61,7 +59,8 @@ O$.FileUpload = {
     var idOfInfoAndInputDiv = 1;
 
     var uploadButton = O$(componentId + "::header::uploadFacet").lastChild;
-    var clearAllButton = O$(componentId + "::footer::clearAllFacet").lastChild;
+    var clearAllButtonFacet = O$(componentId + "::footer::clearAllFacet");
+    var clearAllButton = clearAllButtonFacet.lastChild;
     setTabIndexForAllButtons(tabIndex);
 
     var allInfos = O$(componentId + "::infoDiv");
@@ -126,6 +125,93 @@ O$.FileUpload = {
     setFocusBlurBehaviour();
     setUploadButtonBehaviour();
 
+    setBehaviorForDragAndDropArea();
+    function setBehaviorForDragAndDropArea(){
+      var area = O$(componentId + "::footer::dragArea");
+      var body = document.getElementsByTagName('body')[0];
+      setDragEventsForBody(body, area);
+      setDragEventsForFileUpload(area);
+
+      function isFilesDragged(evt) {
+        if (isBrowserSupportHTML5FileUpload()){
+          if (evt.dataTransfer.files)
+            return true;
+          if (evt.dataTransfer.types)
+            return evt.dataTransfer.types[2] == "Files" || evt.dataTransfer.types[0] == "Files";
+        }
+        return false;
+      }
+
+      function setDragEventsForBody(body, area) {
+        O$.addEventHandler(body, "dragover", function (evt) {
+          if (isFilesDragged(evt) && !inputInAddBtn.disabled)
+            area.style.display = "block";
+          evt.stopPropagation();
+          evt.preventDefault();
+        });
+        O$.addEventHandler(body, "drop", function (evt) {
+          if (isFilesDragged(evt))
+            area.style.display = "none";
+          evt.stopPropagation();
+          evt.preventDefault();
+        });
+        O$.addEventHandler(body, "dragexit", function (evt) {
+          evt.stopPropagation();
+          evt.preventDefault();
+        });
+
+        var wasInmouseoutHandler;
+        O$.addEventHandler(window, "mouseout", function (evt) {
+          setTimeout(function () {
+            wasInmouseoutHandler = true;
+          }, 1);
+        });
+
+        O$.addEventHandler(window, "mouseover", function (evt) {
+          wasInmouseoutHandler = false;
+          setTimeout(function () {
+            if (!wasInmouseoutHandler) {
+              area.style.display = "none";
+            }
+          }, 1);
+        });
+      }
+
+      function setDragEventsForFileUpload(area) {
+        O$.addEventHandler(area, "dragenter", cancelEvent);
+        O$.addEventHandler(area, "dragexit", cancelEvent);
+        O$.addEventHandler(area, "dragover", cancelEvent);
+        O$.addEventHandler(area, "drop", dropEventHandler);
+
+        function cancelEvent(evt) {
+          evt.stopPropagation();
+          evt.preventDefault();
+        }
+
+        function dropEventHandler(evt) {
+          evt.stopPropagation();
+          evt.preventDefault();
+          if (isFilesDragged(evt)) {
+            area.style.display = "none";
+            var files = evt.dataTransfer.files;
+            var shouldCallOnChange = false;
+            for (var i = 0; i < files.length; i++) {
+              if (processFileAddingHTML5(files[i])){
+                shouldCallOnChange = true;
+                if (!fileUpload._multiUpload){
+                  break;
+                }
+              }
+            }
+            if (shouldCallOnChange){
+              eval(onChangeHandler);  //onchangeHandler
+              setUploadButtonAfterFileHaveBeenAdded();
+            }
+          }
+        }
+      }
+    }
+
     if (O$.isChrome() || O$.isSafari()){
       O$.addEventHandler(clearAllButton, "mousedown", function () {
         shouldInvokeFocusNonModifiable = false;
@@ -134,7 +220,7 @@ O$.FileUpload = {
         shouldInvokeFocusNonModifiable = true;
       });
     }
-    O$.addEventHandler(clearAllButton,"click",function(){
+    O$.addEventHandler(clearAllButton, "click", function () {
       shouldInvokeFocusNonModifiable = false;
       var infosLength = allInfos.childNodes.length;
       couldCallChangeEvent = false;
@@ -155,17 +241,16 @@ O$.FileUpload = {
       shouldInvokeFocusNonModifiable = true;
     });
 
-
-    function addFileInputAfter(inputForFile) {
-      if (inputForFile.value == "" || !isAcceptedTypeOfFile(inputForFile.value)
-              || (!isDuplicateAllowed && isFileNameAlreadyExist(inputForFile))) {
+    function processFileAdding(inputForFile) {
+      if (isFileNameNotApplied(inputForFile.value)) {
         inputForFile.value = "";
         shouldInvokeFocusEvHandler = true;
         return false;
       }
       addButtonTitleInput.className = addButtonClass;
       addButton._inFocus = false;
-      createAndAppendComplexInputWithId(idOfInfoAndInputDiv,inputForFile);
+      inputForFile._idInputAndDiv = idOfInfoAndInputDiv;
+      createAndAppendComplexInputWithId(inputForFile);
       fileUpload._numberOfFilesToUpload++;
       idOfInfoAndInputDiv++;
       inputInAddBtn = createInputInAddBtn(idOfInfoAndInputDiv);
@@ -175,52 +260,14 @@ O$.FileUpload = {
       O$.addEventHandler(inputInAddBtn,"blur",blurHandler);
 
       eval(onChangeHandler);  //onChangeHandler
-      addFileToInfoWindow(inputForFile);
 
-      if (fileUpload._maxQuantity != 0
-              && fileUpload._maxQuantity <= (fileUpload._numberOfFilesToUpload + fileUpload._lengthUploadedFiles)) {
-        inputInAddBtn.disabled = true;
-        addButtonTitleInput.className = addButtonDisabledClass;
-      }
-      clearAllButton.style.display = "block";
+      var fileInfo = createInfoWindowForFile(inputForFile._idInputAndDiv, inputForFile.value);
+      var cancelFileDiv = fileInfo.childNodes[3].firstChild;
+      setClickHandlerOnCancelButton(cancelFileDiv, inputForFile, fileInfo);
 
-
-      if (fileUpload._minQuantity <= (fileUpload._numberOfFilesToUpload + fileUpload._lengthUploadedFiles)) {
-        if (fileUpload._isAutoUpload){
-          uploadButtonClickHandler();
-        }else{
-            uploadButton.style.visibility = "visible";
-        }
-      }
-
-      function addFileToInfoWindow(inputForFile) {
-        var infoWindow = document.createElement("tr");
-        infoWindow._status = O$.statusEnum.NEW_ONE;
-
-        var fileNameTD = document.createElement("td");
-        fileNameTD.className = infoTitleClass;
-        fileNameTD.innerHTML = getFileName(inputForFile.value);
-        infoWindow.appendChild(fileNameTD);
-
-        var progressTD = document.createElement("td");
-        progressTD.className = progressBarClass;
-        var progressFacet = progressBar.cloneNode(true);
-        progressFacet.setAttribute("id", progressBarId + inputForFile._idInputAndDiv);
-        progressTD.appendChild(progressFacet);
-        infoWindow.appendChild(progressTD);
-
-        var statusTD = document.createElement("td");
-        statusTD.className = infoStatusClass;
-        if (statusLabelNotUploaded != null)
-          statusTD.innerHTML = statusLabelNotUploaded;
-        infoWindow.appendChild(statusTD);
-
-        var cancelFileTD = document.createElement("td");
-        cancelFileTD.style.width = "1px";
-        var cancelFileDiv = cancelFacet.cloneNode(true);
-        cancelFileDiv.setAttribute("id",cancelFacet.id + inputForFile._idInputAndDiv);
+      function setClickHandlerOnCancelButton(cancelFileDiv, inputForFile, fileInfo) {
         cancelFileDiv.deleteFileInputFunction = function () {
-          deleteFileInput(inputForFile, infoWindow);
+          deleteFileInput(inputForFile, fileInfo);
           if (couldCallChangeEvent)
             eval(onChangeHandler);
           if (allInfos.childNodes.length == 0) {
@@ -232,47 +279,43 @@ O$.FileUpload = {
             shouldInvokeFocusEvHandler = true;
         };
         cancelFileDiv._clickHandler = cancelFileDiv.deleteFileInputFunction;
-        if (O$.isExplorer()) {
-          O$.addEventHandler(cancelFileDiv, "mouseup", function() {
-            shouldInvokeFocusNonModifiable = true;
-          });
-        }
-        O$.addEventHandler(cancelFileDiv, "focus", focusHandler);
-        O$.addEventHandler(cancelFileDiv, "blur", blurHandler);
-
-        if (O$.isChrome() || O$.isSafari()) {
-          O$.addEventHandler(cancelFileDiv, "mousedown", function() {
-            shouldInvokeFocusNonModifiable = false;
-          });
-          O$.addEventHandler(cancelFileDiv, "mouseup", function() {
-            shouldInvokeFocusNonModifiable = true;
-          });
-          O$.addEventHandler(cancelFileDiv, "keyup", function() {
-            shouldInvokeFocusEvHandler = false;
-          });
-        }
-
         O$.addEventHandler(cancelFileDiv, "click", cancelFileDiv._clickHandler);
-
-        cancelFileTD.appendChild(cancelFileDiv);
-        infoWindow.appendChild(cancelFileTD);
-
-        infoWindow.setAttribute("id", allInfos.id + inputForFile._idInputAndDiv);
-        //infoWindow.setAttribute("class", fileInfoClass);
-        infoWindow.className = fileInfoClass;
-        if (!fileUpload._multiUpload){
-          allInfos.innerHTML="";
-        }
-        allInfos.appendChild(infoWindow);
-        O$.ProgressBar.initCopyOf(progressBar, progressFacet);
       }
 
-      function isFileNameAlreadyExist(inputForFile) {
+      if (fileUpload._maxQuantity != 0
+              && fileUpload._maxQuantity <= (fileUpload._numberOfFilesToUpload + fileUpload._lengthUploadedFiles)) {
+        inputInAddBtn.disabled = true;
+        addButtonTitleInput.className = addButtonDisabledClass;
+      }
+      clearAllButton.style.display = "block";
+      setUploadButtonAfterFileHaveBeenAdded();
+      return true;
+    }
+
+    function deleteFileInput(inputForFile, infoWindow) {
+      inputsStorage.removeChild(inputForFile.parentNode.parentNode);
+      allInfos.removeChild(infoWindow);
+      fileUpload._numberOfFilesToUpload--;
+      if (inputInAddBtn.disabled
+              && fileUpload._maxQuantity > (fileUpload._numberOfFilesToUpload + fileUpload._lengthUploadedFiles)) {
+        inputInAddBtn.disabled = false;
+        addButtonTitleInput.className = addButtonClass;
+      }
+      if ((fileUpload._minQuantity > (fileUpload._numberOfFilesToUpload + fileUpload._lengthUploadedFiles))
+              || fileUpload._numberOfFilesToUpload == 0) {
+        if (fileUpload._multiUpload){
+          uploadButton.style.visibility = "hidden";
+        }
+      }
+    }
+
+    function isFileNameNotApplied(filename){
+      function isFileNameAlreadyExist(filename) {
         var infos = allInfos.childNodes;
         for (var k = 0; k < infos.length; k++) {
           if (infos[k]._status != O$.statusEnum.ERROR) {
             var value = infos[k].childNodes[0].innerHTML;
-            if (value == getFileName(inputForFile.value)) {
+            if (value == getFileName(filename)) {
               return true;
             }
           }
@@ -294,24 +337,122 @@ O$.FileUpload = {
         return isAccepted;
       }
 
-      return true;
+      return (filename == "" || !isAcceptedTypeOfFile(filename)
+              || (!isDuplicateAllowed && isFileNameAlreadyExist(filename)))
+    }
+    function createInfoWindowForFile(fileId, filename) {
+
+      var infoWindow = document.createElement("tr");
+      infoWindow._status = O$.statusEnum.NEW_ONE;
+
+      var fileNameTD = document.createElement("td");
+      fileNameTD.className = infoTitleClass;
+      fileNameTD.innerHTML = getFileName(filename);
+      infoWindow.appendChild(fileNameTD);
+
+      var progressTD = document.createElement("td");
+      progressTD.className = progressBarClass;
+      var progressFacet = progressBar.cloneNode(true);
+      progressFacet.setAttribute("id", progressBarId + fileId);
+      progressTD.appendChild(progressFacet);
+      infoWindow.appendChild(progressTD);
+
+      var statusTD = document.createElement("td");
+      statusTD.className = infoStatusClass;
+      if (statusLabelNotUploaded != null)
+        statusTD.innerHTML = statusLabelNotUploaded;
+      infoWindow.appendChild(statusTD);
+
+      var cancelFileTD = document.createElement("td");
+      cancelFileTD.style.width = "1px";
+      var cancelFileDiv = cancelFacet.cloneNode(true);
+      cancelFileDiv.setAttribute("id", cancelFacet.id + fileId);
+      if (O$.isExplorer()) {
+        O$.addEventHandler(cancelFileDiv, "mouseup", function () {
+          shouldInvokeFocusNonModifiable = true;
+        });
+      }
+      O$.addEventHandler(cancelFileDiv, "focus", focusHandler);
+      O$.addEventHandler(cancelFileDiv, "blur", blurHandler);
+
+      if (O$.isChrome() || O$.isSafari()) {
+        O$.addEventHandler(cancelFileDiv, "mousedown", function () {
+          shouldInvokeFocusNonModifiable = false;
+        });
+        O$.addEventHandler(cancelFileDiv, "mouseup", function () {
+          shouldInvokeFocusNonModifiable = true;
+        });
+        O$.addEventHandler(cancelFileDiv, "keyup", function () {
+          shouldInvokeFocusEvHandler = false;
+        });
+      }
+
+      cancelFileTD.appendChild(cancelFileDiv);
+      infoWindow.appendChild(cancelFileTD);
+
+      infoWindow.setAttribute("id", allInfos.id + fileId);
+      infoWindow.className = fileInfoClass;
+      if (!fileUpload._multiUpload) {
+        allInfos.innerHTML = "";
+      }
+      allInfos.appendChild(infoWindow);
+      O$.ProgressBar.initCopyOf(progressBar, progressFacet);
+      return infoWindow;
     }
 
-    function deleteFileInput(inputForFile, infoWindow) {
-      inputsStorage.removeChild(inputForFile.parentNode.parentNode);
-      allInfos.removeChild(infoWindow);
-      fileUpload._numberOfFilesToUpload--;
-      if (inputInAddBtn.disabled
-              && fileUpload._maxQuantity > (fileUpload._numberOfFilesToUpload + fileUpload._lengthUploadedFiles)) {
-        inputInAddBtn.disabled = false;
-        addButtonTitleInput.className = addButtonClass;
+    function processFileAddingHTML5(file) {
+      if (isFileNameNotApplied(file.name) || inputInAddBtn.disabled) {
+        return false;
       }
-      if ((fileUpload._minQuantity > (fileUpload._numberOfFilesToUpload + fileUpload._lengthUploadedFiles))
-              || fileUpload._numberOfFilesToUpload == 0) {
-        if (fileUpload._multiUpload){
-          uploadButton.style.visibility = "hidden";
-        }
+      file._uniqueId = fileUpload._ID + idOfInfoAndInputDiv;
+      file._fakeInput = componentId + "::inputs::input" + idOfInfoAndInputDiv + "::form::fileInput";
+      file._infoId = idOfInfoAndInputDiv;
+      fileUpload._filesHTML5.push(file);
+      var fileInfo = createInfoWindowForFile(idOfInfoAndInputDiv, file.name);
+      var cancelFileDiv = fileInfo.childNodes[3].firstChild;
+      setSpecificClickHandlerForCancelBtn(cancelFileDiv, fileInfo);
+
+      function setSpecificClickHandlerForCancelBtn(cancelFileDiv, fileInfo) {
+        cancelFileDiv.deleteFileInputFunction = function () {
+          allInfos.removeChild(fileInfo);
+          removeHTML5File(file);
+          fileUpload._numberOfFilesToUpload--;
+          if (inputInAddBtn.disabled
+                  && fileUpload._maxQuantity > (fileUpload._numberOfFilesToUpload + fileUpload._lengthUploadedFiles)) {
+            inputInAddBtn.disabled = false;
+            addButtonTitleInput.className = addButtonClass;
+          }
+          if ((fileUpload._minQuantity > (fileUpload._numberOfFilesToUpload + fileUpload._lengthUploadedFiles))
+                  || fileUpload._numberOfFilesToUpload == 0) {
+            if (fileUpload._multiUpload) {
+              uploadButton.style.visibility = "hidden";
+            }
+          }
+
+          if (allInfos.childNodes.length == 0) {
+            clearAllButton.style.display = "none";
+          }
+          shouldInvokeFocusNonModifiable = false;
+          setFocusOnComponent();
+          shouldInvokeFocusNonModifiable = true;
+
+          if (couldCallChangeEvent)
+            eval(onChangeHandler);
+        };
+        cancelFileDiv._clickHandler = cancelFileDiv.deleteFileInputFunction;
+        O$.addEventHandler(cancelFileDiv, "click", cancelFileDiv._clickHandler);
       }
+
+      fileUpload._numberOfFilesToUpload++;
+      idOfInfoAndInputDiv++;
+
+      if (fileUpload._maxQuantity != 0
+              && fileUpload._maxQuantity <= (fileUpload._numberOfFilesToUpload + fileUpload._lengthUploadedFiles)) {
+        inputInAddBtn.disabled = true;
+        addButtonTitleInput.className = addButtonDisabledClass;
+      }
+      clearAllButton.style.display = "block";
+      return true;
     }
 
     function initHeaderButtons() {
@@ -357,16 +498,16 @@ O$.FileUpload = {
 
     function createStructureForInputs(){
       var allInputsForFiles = document.createElement("div");
-      allInputsForFiles.setAttribute("id", componentId+"::inputs");
+      allInputsForFiles.setAttribute("id", componentId + "::inputs");
       allInputsForFiles.style.display = "none";
       var body = document.getElementsByTagName('body')[0];
       body.appendChild(allInputsForFiles);
       return allInputsForFiles;
     }
 
-    function createAndAppendComplexInputWithId(id, inputField) {
+    function createAndAppendComplexInputWithId(inputField) {
       var divForFileInput = document.createElement("div");
-      divForFileInput.setAttribute("id", inputsStorage.id + "::input" + id);
+      divForFileInput.setAttribute("id", inputsStorage.id + "::input" + inputField._idInputAndDiv);
 
       var formForInput = document.createElement("form");
       formForInput.setAttribute("id", divForFileInput.id + "::form");
@@ -418,6 +559,9 @@ O$.FileUpload = {
     function createInputInAddBtn(id){
       var input = document.createElement("input");
       input.setAttribute("type", "file");
+      if (fileUpload._multiUpload && isBrowserSupportHTML5FileUpload())
+        input.setAttribute("multiple", "");
+
       //todo move somewhere else these styles
       input.style.overflow = "hidden";
       input.style.position = "absolute";
@@ -443,10 +587,26 @@ O$.FileUpload = {
           addButton._inFocus = false;
         }
       });
-      input._idInputAndDiv = id;
-      O$.addEventHandler(input, "change", function() {
+      O$.addEventHandler(input, "change", function(evt) {
         shouldInvokeFocusEvHandler = false;
-        var isAdded = addFileInputAfter(input);
+        if (isMultipleFileSelectSupported(evt)){
+          var files = evt.target.files;
+          var shouldCallOnChange = false;
+          for (var fileIndex = 0; fileIndex < files.length; fileIndex++) {
+            if (processFileAddingHTML5(files[fileIndex])){
+              shouldCallOnChange = true;
+              if (!fileUpload._multiUpload){
+                break;
+              }
+            }
+          }
+          if (shouldCallOnChange) {
+            eval(onChangeHandler);  //onchangeHandler
+            setUploadButtonAfterFileHaveBeenAdded();
+          }
+        }else{
+          var isAdded = processFileAdding(input);
+        }
         if (isAdded){
           setTimeout(function () {
             if (O$.isChrome() || O$.isSafari())
@@ -619,6 +779,11 @@ O$.FileUpload = {
           progressRequest(fileInput);
         }, 500);
       }
+      function callFileProgressForHTML5Request(file,request) {
+        setTimeout(function() {
+          progressHTMl5Request(file, request);
+        }, 500);
+      }
       inputInAddBtn.disabled = true;
       addButtonTitleInput.className = addButtonDisabledClass;
       if (fileUpload._multiUpload){
@@ -637,6 +802,17 @@ O$.FileUpload = {
         file.push("STARTED_UPLOAD");//status
         fileUpload._listOfids.push(file);
       }
+      /*specific behavior for uploading files with drag and drop*/
+      for (var html5FilesIndex = 0; html5FilesIndex < fileUpload._filesHTML5.length; html5FilesIndex++) {
+        var html5File = fileUpload._filesHTML5[html5FilesIndex];
+        var file = [];
+        file.push(html5File._uniqueId);//id
+        file.push(html5File._fakeInput);//name of file input
+        file.push(encodeURI(getFileName(html5File.name)));//filename
+        file.push("STARTED_UPLOAD");//status
+        fileUpload._listOfids.push(file);
+      }
+
       for (var inputsIndex = 0; inputsIndex < inputsStorage.childNodes.length; inputsIndex++) {
         var inputDiv = inputsStorage.childNodes[inputsIndex];
         var form = inputDiv.childNodes[0];
@@ -649,6 +825,23 @@ O$.FileUpload = {
         form.target = "_self";
         callProgressRequest(fileInput);
       }
+      function sendFileRequest(file){
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', document.URL, true);
+        var data = new FormData();
+        data.append("FILE_ID", file._uniqueId);
+        data.append(file._fakeInput, file);
+        xhr.send(data);
+        return xhr;
+      }
+      for (var html5FilesIndex = 0; html5FilesIndex < fileUpload._filesHTML5.length; html5FilesIndex++) {
+        var html5File = fileUpload._filesHTML5[html5FilesIndex];
+
+        O$(allInfos.id + html5File._infoId).childNodes[3].firstChild.style.visibility = "hidden";
+
+        var request = sendFileRequest(html5File);
+        callFileProgressForHTML5Request(html5File, request);
+      }
       eval(onUploadStartEventHandler);
       function progressRequest(inputForFile) {
         O$.requestComponentPortions(fileUpload.id, ["nothing"],
@@ -660,36 +853,26 @@ O$.FileUpload = {
                     inputsStorage.removeChild(inputForFile.parentNode.parentNode);
                     if (portionData['isFileSizeExceed'] == "true"){
                       infoDiv.childNodes[2].innerHTML = statusLabelErrorSize;
-                      var id = inputForFile.previousSibling.value;                  //todo : remove repeated code
-                      for (var k = 0; k < fileUpload._listOfids.length; k++) {
-                        if (id == fileUpload._listOfids[k][0]) {
-                          fileUpload._listOfids[k][3] = "SIZE_LIMIT_EXCEEDED";
-                          break;
-                        }
-                      }
+                      var id = inputForFile.previousSibling.value;
+                      setStatusforFileWithId(id, "SIZE_LIMIT_EXCEEDED");
                     }else{
                       infoDiv.childNodes[2].innerHTML = statusLabelUnexpectedError;
                       var id = inputForFile.previousSibling.value;
-                      for (var k = 0; k < fileUpload._listOfids.length; k++) {
-                        if (id == fileUpload._listOfids[k][0]) {
-                          fileUpload._listOfids[k][3] = "ERROR";
-                          break;
-                        }
-                      }
+                      setStatusforFileWithId(id, "ERROR");
                     }
 
-                    setClearBtnAndEventHandler(infoDiv);
+                    setClearBtnAndEventHandler(infoDiv, inputForFile._idInputAndDiv);
                     prepareUIWhenAllRequestsFinished(true);
                   } else {
                     var percents = portionData['progressInPercent'];
                     if (percents != 100) {
                       if (infoDiv._status != O$.statusEnum.IN_PROGRESS) {
-                        infoDiv._status = O$.statusEnum.IN_PROGRESS; //temporary
+                        infoDiv._status = O$.statusEnum.IN_PROGRESS;
                         infoDiv.childNodes[2].innerHTML = statusLabelInProgress;
                         infoDiv.childNodes[3].removeChild(infoDiv.childNodes[3].firstChild);
                         var stopFileDiv = stopFacet.cloneNode(true);
                         stopFileDiv.setAttribute("id", stopFacet.id + inputForFile._idInputAndDiv);
-                        infoDiv.childNodes[3].appendChild(stopFileDiv);   //todo with button event handler
+                        infoDiv.childNodes[3].appendChild(stopFileDiv);
                         O$.addEventHandler(stopFileDiv, "focus", focusHandler);
                         O$.addEventHandler(stopFileDiv, "blur", blurHandler);
                         stopFileDiv._clickHandler = function(){
@@ -719,13 +902,8 @@ O$.FileUpload = {
                           inputsStorage.removeChild(inputForFile.parentNode.parentNode);
                           infoDiv.childNodes[2].innerHTML = statusStoppedText;
                           var id = inputForFile.previousSibling.value;
-                          for (var k = 0; k < fileUpload._listOfids.length; k++) {
-                            if (id == fileUpload._listOfids[k][0]) {
-                              fileUpload._listOfids[k][3] = "STOPPED";
-                              break;
-                            }
-                          }
-                          setClearBtnAndEventHandler(infoDiv);
+                          setStatusforFileWithId(id, "STOPPED");
+                          setClearBtnAndEventHandler(infoDiv, inputForFile._idInputAndDiv);
                           prepareUIWhenAllRequestsFinished(true);
                         }
                       }
@@ -744,82 +922,205 @@ O$.FileUpload = {
                       infoDiv._status = O$.statusEnum.UPLOADED;
                       infoDiv.childNodes[2].innerHTML = statusLabelUploaded;
                       var id = inputForFile.previousSibling.value;
-                      for (var k = 0; k < fileUpload._listOfids.length; k++) {
-                        if (id == fileUpload._listOfids[k][0]) {
-                          fileUpload._listOfids[k][3] = "UPLOADED";
-                          break;
-                        }
-                      }
-                      setClearBtnAndEventHandler(infoDiv);
+                      setStatusforFileWithId(id, "UPLOADED");
+                      setClearBtnAndEventHandler(infoDiv, inputForFile._idInputAndDiv);
                       prepareUIWhenAllRequestsFinished(true);
                     }
                   }
 
-                  function setClearBtnAndEventHandler(infoDiv) {
-                    infoDiv.childNodes[3].removeChild(infoDiv.childNodes[3].firstChild);
-                    var clearFileDiv = clearFacet.cloneNode(true);
-                    clearFileDiv.setAttribute("id", clearFacet.id + inputForFile._idInputAndDiv);
-                    infoDiv.childNodes[3].appendChild(clearFileDiv);
-                    O$.addEventHandler(clearFileDiv, "focus", focusHandler);
-                    O$.addEventHandler(clearFileDiv, "blur", blurHandler);
-                    clearFileDiv._clickHandler = function() {
-                      allInfos.removeChild(infoDiv);
-                      if (allInfos.childNodes.length == 0) {
-                        clearAllButton.style.display = "none";
-                      }
-                      shouldInvokeFocusNonModifiable = false;
-                      setFocusOnComponent();
-                      shouldInvokeFocusNonModifiable = true;
-                    };
-                    O$.addEventHandler(clearFileDiv, "click", clearFileDiv._clickHandler);
-                    if (O$.isChrome() || O$.isSafari()) {
-                      O$.addEventHandler(clearFileDiv, "mousedown", function() {
-                        shouldInvokeFocusNonModifiable = false;
-                      });
-                      O$.addEventHandler(clearFileDiv, "mouseup", function() {
-                        shouldInvokeFocusNonModifiable = true;
-                      });
-                      O$.addEventHandler(clearFileDiv, "keyup", function() {
-                        shouldInvokeFocusEvHandler = false;
-                      });
-                    }
-                  }
-
-                  function sendCheckRequest() {
-                    O$.requestComponentPortions(fileUpload.id, ["nothing"],
-                            JSON.stringify({listOfFilesRequest: "true", idOfFiles : fileUpload._listOfids}),
-                            function(fileUpload, portionName, portionHTML, portionScripts, portionData) {
-                              if (portionData['allUploaded'] == "true") {
-                                fileUpload._listOfids = [];
-                                eval(onUploadEndEventHandler);
-                              }else{
-                                setTimeout(sendCheckRequest, 500);
-                              }
-                            }, null, true);
-                  }
-                  function prepareUIWhenAllRequestsFinished(shouldCheckRequest) {
-                    if (inputsStorage.childNodes.length == 0) { // if all files are  already uploaded
-                      if (shouldCheckRequest)
-                        setTimeout(sendCheckRequest, 500);
-
-                      fileUpload._numberOfFilesToUpload = 0;
-                      if (fileUpload._multiUpload){
-                        clearAllButton.style.visibility = "visible";
-                        uploadButton.style.visibility = "visible";
-                      }
-                      inputInAddBtn.disabled = false;
-                      addButtonTitleInput.className = addButtonClass;
-                      initHeaderButtons();
-                      //set focus on addButton
-                      shouldInvokeFocusEvHandler = false;
-                      setFocusOnComponent();
-                      shouldInvokeFocusEvHandler = true;
-                    }
-                  }
                 },
                 null,
                 true
         );
+      }
+      function progressHTMl5Request(file, request){
+        O$.requestComponentPortions(fileUpload.id, ["nothing"],
+                JSON.stringify({progressRequest: "true", fieldName : file._fakeInput}),
+                function(fileUpload, portionName, portionHTML, portionScripts, portionData) {
+                  var infoDiv = O$(allInfos.id + file._infoId);
+                  if (portionData['status'] == "error") {//todo:description add what kind of error
+                    infoDiv._status = O$.statusEnum.ERROR;
+                    removeHTML5File(file);
+                    if (portionData['isFileSizeExceed'] == "true"){
+                      infoDiv.childNodes[2].innerHTML = statusLabelErrorSize;
+                      setStatusforFileWithId(file._uniqueId, "SIZE_LIMIT_EXCEEDED");
+                    }else{
+                      infoDiv.childNodes[2].innerHTML = statusLabelUnexpectedError;
+                      setStatusforFileWithId(file._uniqueId, "ERROR");
+                    }
+
+                    setClearBtnAndEventHandler(infoDiv, file._infoId);
+                    prepareUIWhenAllRequestsFinished(true);
+                  } else {
+                    var percents = portionData['progressInPercent'];
+                    if (percents != 100) {
+                      if (infoDiv._status != O$.statusEnum.IN_PROGRESS) {
+                        infoDiv._status = O$.statusEnum.IN_PROGRESS;
+                        infoDiv.childNodes[2].innerHTML = statusLabelInProgress;
+                        infoDiv.childNodes[3].removeChild(infoDiv.childNodes[3].firstChild);
+                        var stopFileDiv = stopFacet.cloneNode(true);
+                        stopFileDiv.setAttribute("id", stopFacet.id + file._infoId);
+                        infoDiv.childNodes[3].appendChild(stopFileDiv);
+                        O$.addEventHandler(stopFileDiv, "focus", focusHandler);
+                        O$.addEventHandler(stopFileDiv, "blur", blurHandler);
+                        stopFileDiv._clickHandler = function(){
+                          stopFileDiv.style.visibility = "hidden";
+                          infoDiv.childNodes[2].innerHTML = statusStoppingText;
+                          request.abort();
+                          file._wantToInterrupt = true;
+                        };
+                        O$.addEventHandler(stopFileDiv, "click", stopFileDiv._clickHandler);
+                        if (O$.isChrome() || O$.isSafari()) {
+                          O$.addEventHandler(stopFileDiv, "mousedown", function() {
+                            shouldInvokeFocusNonModifiable = false;
+                          });
+                          O$.addEventHandler(stopFileDiv, "mouseup", function() {
+                            shouldInvokeFocusNonModifiable = true;
+                          });
+                          O$.addEventHandler(stopFileDiv, "keyup", function() {
+                            shouldInvokeFocusEvHandler = false;
+                          });
+                        }
+                      }
+                      if (file._wantToInterrupt) {
+                        if (infoDiv.childNodes[1].firstChild.getValue() == percents) {
+                          file._isInterrupted = true;
+                          infoDiv._status = O$.statusEnum.ERROR;
+                          removeHTML5File(file);
+                          infoDiv.childNodes[2].innerHTML = statusStoppedText;
+                          setStatusforFileWithId(file._uniqueId, "STOPPED");
+                          setClearBtnAndEventHandler(infoDiv, file._infoId);
+                          prepareUIWhenAllRequestsFinished(true);
+                        }
+                      }
+                      if (!file._isInterrupted){
+                        infoDiv.childNodes[1].firstChild.setValue(percents);
+                        setTimeout(function() {
+                          progressHTMl5Request(file,request);
+                        }, 500);
+                      }
+                    } else {// when file already uploaded
+                      infoDiv.childNodes[1].firstChild.setValue(percents);
+                      fileUpload._lengthUploadedFiles++;
+                      /*removing file*/
+                      removeHTML5File(file);
+                      // infoDiv updating
+                      infoDiv._status = O$.statusEnum.UPLOADED;
+                      infoDiv.childNodes[2].innerHTML = statusLabelUploaded;
+                      setStatusforFileWithId(file._uniqueId, "UPLOADED");
+                      setClearBtnAndEventHandler(infoDiv, file._infoId);
+                      prepareUIWhenAllRequestsFinished(true);
+                    }
+                  }
+
+                },
+                null,
+                true
+        );
+      }
+
+      function setStatusforFileWithId(id, status) {
+        for (var k = 0; k < fileUpload._listOfids.length; k++) {
+          if (id == fileUpload._listOfids[k][0]) {
+            fileUpload._listOfids[k][3] = status;
+            break;
+          }
+        }
+      }
+
+      function prepareUIWhenAllRequestsFinished(shouldCheckRequest) {
+        function sendCheckRequest() {
+          O$.requestComponentPortions(fileUpload.id, ["nothing"],
+                  JSON.stringify({listOfFilesRequest: "true", idOfFiles : fileUpload._listOfids}),
+                  function(fileUpload, portionName, portionHTML, portionScripts, portionData) {
+                    if (portionData['allUploaded'] == "true") {
+                      fileUpload._listOfids = [];
+                      eval(onUploadEndEventHandler);
+                    }else{
+                      setTimeout(sendCheckRequest, 500);
+                    }
+                  }, null, true);
+        }
+        if (inputsStorage.childNodes.length == 0 && fileUpload._filesHTML5.length ==0) { // if all files are  already uploaded
+          if (shouldCheckRequest)
+            setTimeout(sendCheckRequest, 500);
+
+          fileUpload._numberOfFilesToUpload = 0;
+          if (fileUpload._multiUpload){
+            clearAllButton.style.visibility = "visible";
+            uploadButton.style.visibility = "visible";
+          }
+          inputInAddBtn.disabled = false;
+          addButtonTitleInput.className = addButtonClass;
+          initHeaderButtons();
+          //set focus on addButton
+          shouldInvokeFocusEvHandler = false;
+          setFocusOnComponent();
+          shouldInvokeFocusEvHandler = true;
+        }
+      }
+      function setClearBtnAndEventHandler(infoDiv, infoId) {
+        infoDiv.childNodes[3].removeChild(infoDiv.childNodes[3].firstChild);
+        var clearFileDiv = clearFacet.cloneNode(true);
+        clearFileDiv.setAttribute("id", clearFacet.id + infoId);
+        infoDiv.childNodes[3].appendChild(clearFileDiv);
+        O$.addEventHandler(clearFileDiv, "focus", focusHandler);
+        O$.addEventHandler(clearFileDiv, "blur", blurHandler);
+        clearFileDiv._clickHandler = function() {
+          allInfos.removeChild(infoDiv);
+          if (allInfos.childNodes.length == 0) {
+            clearAllButton.style.display = "none";
+          }
+          shouldInvokeFocusNonModifiable = false;
+          setFocusOnComponent();
+          shouldInvokeFocusNonModifiable = true;
+        };
+        O$.addEventHandler(clearFileDiv, "click", clearFileDiv._clickHandler);
+        if (O$.isChrome() || O$.isSafari()) {
+          O$.addEventHandler(clearFileDiv, "mousedown", function() {
+            shouldInvokeFocusNonModifiable = false;
+          });
+          O$.addEventHandler(clearFileDiv, "mouseup", function() {
+            shouldInvokeFocusNonModifiable = true;
+          });
+          O$.addEventHandler(clearFileDiv, "keyup", function() {
+            shouldInvokeFocusEvHandler = false;
+          });
+        }
+      }
+    }
+    function removeHTML5File(file){
+      for (var index = 0; index < fileUpload._filesHTML5.length; index++) {
+        if (fileUpload._filesHTML5[index] == file) {
+          fileUpload._filesHTML5.splice(index, 1);
+          break;
+        }
+      }
+    }
+
+    function isMultipleFileSelectSupported(evt){
+      if (isBrowserSupportHTML5FileUpload()){
+        if (evt.target.files)
+          return true;
+      }
+      return false;
+    }
+
+    function isBrowserSupportHTML5FileUpload(){
+      //Opera doesn't support file upload API , although it support multiupload
+      //IE doesn't support at all
+      //Safari has File Upload API, but with bugs. No solution for the moment. Look here: http://stackoverflow.com/questions/7231054/file-input-size-issue-in-safari-for-multiple-file-selection
+      //Safari anytime can get not correct fileNames , so this feature is turned of, if Safari is  used.
+      return !((!O$.isChrome() && O$.isSafari()) || typeof(window.FormData) == "undefined");
+    }
+
+    function setUploadButtonAfterFileHaveBeenAdded(){
+      if (fileUpload._minQuantity <= (fileUpload._numberOfFilesToUpload + fileUpload._lengthUploadedFiles)) {
+        if (fileUpload._isAutoUpload) {
+          uploadButtonClickHandler();
+        } else {
+          uploadButton.style.visibility = "visible";
+        }
       }
     }
   }

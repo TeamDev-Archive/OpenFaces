@@ -49,6 +49,10 @@ public class FileUpload extends OUIInputBase {
     private String allInfosStyle;
     private String allInfosClass;
 
+    private String dragAndDropAreaStyle;
+    private String dragAndDropAreaClass;
+    private String dragAndDropAreaText;
+
     private String rowStyle;
     private String rowClass;
 
@@ -113,6 +117,9 @@ public class FileUpload extends OUIInputBase {
                 browseButtonDisabledClass,
                 allInfosStyle,
                 allInfosClass,
+                dragAndDropAreaStyle,
+                dragAndDropAreaClass,
+                dragAndDropAreaText,
                 rowStyle,
                 rowClass,
                 acceptedFileTypes,
@@ -161,6 +168,9 @@ public class FileUpload extends OUIInputBase {
         browseButtonDisabledClass = (String) values[i++];
         allInfosStyle = (String) values[i++];
         allInfosClass = (String) values[i++];
+        dragAndDropAreaStyle = (String) values[i++];
+        dragAndDropAreaClass = (String) values[i++];
+        dragAndDropAreaText = (String) values[i++];
         rowStyle = (String) values[i++];
         rowClass = (String) values[i++];
         acceptedFileTypes = (String) values[i++];
@@ -217,6 +227,30 @@ public class FileUpload extends OUIInputBase {
 
     public void setAllInfosClass(String allInfosClass) {
         this.allInfosClass = allInfosClass;
+    }
+
+    public String getDragAndDropAreaStyle() {
+        return ValueBindings.get(this, "dragAndDropAreaStyle", dragAndDropAreaStyle);
+    }
+
+    public void setDragAndDropAreaStyle(String dragAndDropAreaStyle) {
+        this.dragAndDropAreaStyle = dragAndDropAreaStyle;
+    }
+
+    public String getDragAndDropAreaClass() {
+        return ValueBindings.get(this, "dragAndDropAreaClass", dragAndDropAreaClass);
+    }
+
+    public void setDragAndDropAreaClass(String dragAndDropAreaClass) {
+        this.dragAndDropAreaClass = dragAndDropAreaClass;
+    }
+
+    public String getDragAndDropAreaText() {
+        return ValueBindings.get(this, "dragAndDropAreaText", dragAndDropAreaText, "Drop files here");
+    }
+
+    public void setDragAndDropAreaText(String dragAndDropAreaText) {
+        this.dragAndDropAreaText = dragAndDropAreaText;
     }
 
     public String getRowStyle() {

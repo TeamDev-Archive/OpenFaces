@@ -74,6 +74,7 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
     private static final String DEF_BROWSE_BTN_LABEL_SINGLE = "Upload...";
     private static final String DEF_BROWSE_LABEL_MULTIPLE = "Add file...";
     private static final String EXCEED_MAX_SIZE_ID = "exceedMaxSize_";
+    private static final String DRAG_AREA = "::dragArea";
 
 
     private UIComponent browseButton;
@@ -256,6 +257,16 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
         writer.endElement("div");
     }
 
+    private void writeDragAndDropArea(FacesContext context, FileUpload fileUpload, ResponseWriter writer, String elementId) throws IOException{
+        writer.startElement("div", fileUpload);
+        writer.writeAttribute("id", elementId, null);
+        String dragDropClass = Styles.getCSSClass(context, fileUpload, fileUpload.getDragAndDropAreaStyle(), StyleGroup.regularStyleGroup(), fileUpload.getDragAndDropAreaClass(), "o_file_drag_drop_area");
+        writer.writeAttribute("class", dragDropClass, null);
+        writer.writeAttribute("style", "display:none", null);
+        writer.write(fileUpload.getDragAndDropAreaText());
+        writer.endElement("div");
+    }
+
     private void writeClearAllButton(FacesContext context, FileUpload fileUpload, ResponseWriter writer, String elementId) throws IOException {
         writer.startElement("div", fileUpload);
         writer.writeAttribute("id", elementId, null);
@@ -320,6 +331,7 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
     private void writeFooter(FacesContext context, FileUpload fileUpload, ResponseWriter writer, String elementId) throws IOException {
         writer.startElement("div", fileUpload);
         writer.writeAttribute("id", elementId, null);
+        writeDragAndDropArea(context, fileUpload, writer, elementId + DRAG_AREA);
         writeClearAllButton(context, fileUpload, writer, elementId + CLEAR_ALL_BTN_CONTAINER);
         writer.endElement("div");
     }

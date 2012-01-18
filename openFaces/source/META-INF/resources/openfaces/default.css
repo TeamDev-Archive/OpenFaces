@@ -1268,6 +1268,15 @@
     font-size: 8pt;
     margin-bottom: 10px;
 }
+.o_file_drag_drop_area{
+    border: 2px dashed #CCCCCC;
+    margin: 5px;
+    padding: 20px 0;
+    color: #999999;
+    font-size: 14pt;
+    font-weight: bold;
+    text-align: center;
+}
 
 .o_file_upload_infos {
     width: 100%;

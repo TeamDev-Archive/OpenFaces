@@ -30,6 +30,7 @@
                       style="border: none; width: 100%"
                       uploadCompletionListener="#{FileUploadBean.bookImageUploaded}"
                       acceptedFileTypes="jpg png bmp jpeg gif"
+                      dragAndDropAreaText="Drop file here"
                       onuploadend="O$.ajax.request(this, null, {render:'form:booksTable'})"/>
       </o:column>
     </o:dataTable>
