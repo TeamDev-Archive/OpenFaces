@@ -249,7 +249,10 @@ window.OpenFaces.Ajax = {
 
   _runScript: function(script, libs) {
     var runScriptState = {
-      postExecuteHandler: null
+      _postExecuteHandlers: []
+    };
+    runScriptState.postExecuteHandler = function(handler){
+        runScriptState._postExecuteHandlers.push(handler);
     };
     O$.Ajax._currentlyScheduledScript = runScriptState;
     libs.forEach(O$.Ajax.loadLibrary);
@@ -258,8 +261,8 @@ window.OpenFaces.Ajax = {
         script();
         if (O$.Ajax._currentlyScheduledScript == runScriptState) {
           O$.Ajax._currentlyScheduledScript = null;
-          if (runScriptState.postExecuteHandler) {
-            runScriptState.postExecuteHandler();
+          for (var i =0; i < runScriptState._postExecuteHandlers.length; i++){
+            runScriptState._postExecuteHandlers[i]();
           }
         }
       } else
@@ -360,11 +363,22 @@ window.OpenFaces.Ajax = {
         OpenFaces.Ajax.Page[eventName](event);
     }
     var ajaxResult;
-    var validationErrorvalidationError;
+    var validationError;
+
+    function success(data) {
+      if (O$.Ajax._currentlyScheduledScript) {
+        O$.Ajax._currentlyScheduledScript.postExecuteHandler(function() {success(data)});
+        return;
+      }
+      var successEvent = O$.createEvent("success");
+      successEvent.data = data;
+      successEvent.validationError = validationError;
+      fireEvent("onsuccess", successEvent);
+    }
     function ajaxEnd(data) {
       setTimeout(destroyMemoryLeaks, 1);
       if (O$.Ajax._currentlyScheduledScript) {
-        O$.Ajax._currentlyScheduledScript.postExecuteHandler = function() {ajaxEnd(data)};
+        O$.Ajax._currentlyScheduledScript.postExecuteHandler(function() {ajaxEnd(data)});
         return;
       }
       var ajaxendEvent = O$.createEvent("ajaxend");
@@ -508,10 +522,7 @@ window.OpenFaces.Ajax = {
         // checking onerrorTriggered here because "success" notification can be made for "serverError" kind of error
         // (see also the note in errorHandler function below)
         if (!onerrorTriggered) {
-          var successEvent = O$.createEvent("success");
-          successEvent.data = data;
-          successEvent.validationError = validationError;
-          fireEvent("onsuccess", successEvent);
+          success(data);
         }
 
         ajaxEnd(data);
