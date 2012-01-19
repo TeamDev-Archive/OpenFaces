@@ -129,12 +129,13 @@ O$.FileUpload = {
     function setBehaviorForDragAndDropArea(){
       var area = O$(componentId + "::footer::dragArea");
       var body = document.getElementsByTagName('body')[0];
+      area._isVisible = false;
       setDragEventsForBody(body, area);
       setDragEventsForFileUpload(area);
 
       function isFilesDragged(evt) {
         if (isBrowserSupportHTML5FileUpload()){
-          if (evt.dataTransfer.files)
+          if (evt.dataTransfer.files && evt.dataTransfer.files.length > 0)
             return true;
           if (evt.dataTransfer.types)
             return evt.dataTransfer.types[2] == "Files" || evt.dataTransfer.types[0] == "Files";
@@ -144,14 +145,18 @@ O$.FileUpload = {
 
       function setDragEventsForBody(body, area) {
         O$.addEventHandler(body, "dragover", function (evt) {
-          if (isFilesDragged(evt) && !inputInAddBtn.disabled)
+          if (isFilesDragged(evt) && !inputInAddBtn.disabled){
             area.style.display = "block";
+            area._isVisible = true;
+          }
           evt.stopPropagation();
           evt.preventDefault();
         });
         O$.addEventHandler(body, "drop", function (evt) {
-          if (isFilesDragged(evt))
+          if (isFilesDragged(evt)){
             area.style.display = "none";
+            area._isVisible = false;
+          }
           evt.stopPropagation();
           evt.preventDefault();
         });
@@ -160,20 +165,10 @@ O$.FileUpload = {
           evt.preventDefault();
         });
 
-        var wasInmouseoutHandler;
-        O$.addEventHandler(window, "mouseout", function (evt) {
-          setTimeout(function () {
-            wasInmouseoutHandler = true;
-          }, 1);
-        });
-
-        O$.addEventHandler(window, "mouseover", function (evt) {
-          wasInmouseoutHandler = false;
-          setTimeout(function () {
-            if (!wasInmouseoutHandler) {
-              area.style.display = "none";
-            }
-          }, 1);
+        O$.addEventHandler(window, "mousemove", function () {
+          if (area._isVisible){
+            area.style.display = "none";
+          }
         });
       }
 
@@ -193,6 +188,7 @@ O$.FileUpload = {
           evt.preventDefault();
           if (isFilesDragged(evt)) {
             area.style.display = "none";
+            area._isVisible = false;
             var files = evt.dataTransfer.files;
             var shouldCallOnChange = false;
             for (var i = 0; i < files.length; i++) {
