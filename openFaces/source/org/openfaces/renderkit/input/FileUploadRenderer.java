@@ -22,6 +22,7 @@ import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.AjaxPortionRenderer;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.AjaxUtil;
+import org.openfaces.util.AnonymousFunction;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.Resources;
 import org.openfaces.util.Script;
@@ -70,11 +71,16 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
 
     private static final String FOOTER_DIV_ID = "::footer";
     private static final String HELP_ELEMENTS_ID = "::elements";
-    private static final String DEF_PROGRESS_ID = "progressBar";
-    private static final String DEF_BROWSE_BTN_LABEL_SINGLE = "Upload...";
-    private static final String DEF_BROWSE_LABEL_MULTIPLE = "Add file...";
     private static final String EXCEED_MAX_SIZE_ID = "exceedMaxSize_";
     private static final String DRAG_AREA = "::dragArea";
+    /*default text for buttons*/
+    private static final String DEF_BROWSE_BTN_LABEL_SINGLE = "Upload...";
+    private static final String DEF_BROWSE_LABEL_MULTIPLE = "Add file...";
+    private static final String DEF_UPLOAD_BTN_TEXT = "Upload";
+    private static final String DEF_REMOVE_BTN_TEXT = "Remove";
+    private static final String DEF_CLEAR_BTN_TEXT = "Clear";
+    private static final String DEF_STOP_BTN_TEXT = "Stop";
+    private static final String DEF_CLEAR_ALL_BTN_TEXT = "Remove all";
 
 
     private UIComponent browseButton;
@@ -115,7 +121,7 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
         writer.startElement("div", component);
         Rendering.writeIdAttribute(context, fileUpload);
         Rendering.writeStyleAndClassAttributes(writer, fileUpload.getStyle(), fileUpload.getStyleClass(), "o_file_upload");
-        writeEvents(fileUpload, writer);
+        Rendering.writeStandardEvents(writer, fileUpload);
 
         writeHeader(context, fileUpload, writer, clientId + DIV_HEADER_ID);
 
@@ -125,22 +131,6 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
 
         encodeScriptAndStyles(context, fileUpload, clientId);
         writer.endElement("div");
-    }
-
-    private void writeEvents(FileUpload fileUpload, ResponseWriter writer) throws IOException {
-        Rendering.writeStandardEvents(writer, fileUpload);
-        writer.writeAttribute("onuploadstart", fileUpload.getOnuploadstart(), null);
-        writer.writeAttribute("onuploadend", fileUpload.getOnuploadend(), null);
-        writer.writeAttribute("onchangefiles", fileUpload.getOnchange(), null);
-    }
-
-    private void writeHelpfulInput(FacesContext context, FileUpload fileUpload, ResponseWriter writer, String elementId) throws IOException {
-        writer.startElement("input", fileUpload);
-        writer.writeAttribute("type", "text", null);
-        writer.writeAttribute("id", elementId, null);
-        writer.writeAttribute("style", "display:none", null);
-        writer.writeAttribute("onchange", fileUpload.getOnchange(), null);
-        writer.endElement("input");
     }
 
     private void writeHelpfulElements(FacesContext context, FileUpload fileUpload, ResponseWriter writer, String elementId) throws IOException {
@@ -168,7 +158,7 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
             writer.startElement("input", fileUpload);
             writer.writeAttribute("type", "button", null);
             writer.writeAttribute("class", "o_file_clear_btn", null);
-            writer.writeAttribute("value", "Clear", null);
+            writer.writeAttribute("value", DEF_CLEAR_BTN_TEXT, null);
             writer.endElement("input");
         } else {
             clearButton.encodeAll(context);
@@ -183,7 +173,7 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
             writer.startElement("input", fileUpload);
             writer.writeAttribute("type", "button", null);
             writer.writeAttribute("class", "o_file_clear_btn", null);
-            writer.writeAttribute("value", "Stop", null);
+            writer.writeAttribute("value", DEF_STOP_BTN_TEXT, null);
             writer.endElement("input");
         } else {
             stopButton.encodeAll(context);
@@ -198,7 +188,7 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
             writer.startElement("input", fileUpload);
             writer.writeAttribute("type", "button", null);
             writer.writeAttribute("class", "o_file_clear_btn", null);
-            writer.writeAttribute("value", "Remove", null);
+            writer.writeAttribute("value", DEF_REMOVE_BTN_TEXT, null);
             writer.endElement("input");
         } else {
             removeButton.encodeAll(context);
@@ -249,7 +239,7 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
             writer.startElement("input", fileUpload);
             writer.writeAttribute("type", "button", null);
             writer.writeAttribute("class", "o_file_upload_btn", null);
-            writer.writeAttribute("value", "Upload", null);
+            writer.writeAttribute("value", DEF_UPLOAD_BTN_TEXT, null);
             writer.endElement("input");
         } else {
             uploadButton.encodeAll(context);
@@ -273,7 +263,7 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
         if (clearAllButton == null) {
             writer.startElement("input", fileUpload);
             writer.writeAttribute("type", "button", null);
-            writer.writeAttribute("value", "Clear all", null);
+            writer.writeAttribute("value", DEF_CLEAR_ALL_BTN_TEXT, null);
             writer.writeAttribute("class", "o_file_clear_all_btn", null);
             writer.endElement("input");
         } else {
@@ -336,6 +326,15 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
         writer.endElement("div");
     }
 
+    private AnonymousFunction getFunctionOfEvent(String eventHandler){
+        AnonymousFunction eventFunction = null;
+
+        if (eventHandler != null) {
+            eventFunction = new AnonymousFunction(eventHandler, "event");
+        }
+        return eventFunction;
+    }
+
     private void encodeScriptAndStyles(FacesContext context, FileUpload fileUpload, String clientId) throws IOException {
         String fileInfoClass = Styles.getCSSClass(context, fileUpload, fileUpload.getRowStyle(), StyleGroup.regularStyleGroup(), fileUpload.getRowClass(), "o_file_upload_info");
         String infoTitleClass = Styles.getCSSClass(context, fileUpload, fileUpload.getFileNameStyle(), StyleGroup.regularStyleGroup(), fileUpload.getFileNameClass(), "o_file_upload_info_title");
@@ -381,7 +380,15 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
                 fileUpload.getStoppedStatusText(),
                 fileUpload.getStoppingStatusText(),
                 fileUpload.isMultiple(),
-                generateUniqueId(clientId)
+                generateUniqueId(clientId),
+                getFunctionOfEvent(fileUpload.getOnchange()),
+                getFunctionOfEvent(fileUpload.getOnuploadstart()),
+                getFunctionOfEvent(fileUpload.getOnuploadend()),
+                getFunctionOfEvent(fileUpload.getOnfileuploadstart()),
+                getFunctionOfEvent(fileUpload.getOnfileuploadsuccessful()),
+                getFunctionOfEvent(fileUpload.getOnfileuploadinprogress()),
+                getFunctionOfEvent(fileUpload.getOnfileuploadstopped()),
+                getFunctionOfEvent(fileUpload.getOnfileuploadfailed())
         );
 
         Rendering.renderInitScript(context, initScript,

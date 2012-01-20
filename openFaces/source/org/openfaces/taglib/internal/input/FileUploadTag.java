@@ -92,5 +92,10 @@ public class FileUploadTag extends AbstractComponentTag {
                 new Class[]{UploadCompletionEvent.class}, void.class);
         setStringProperty(component, "onuploadstart");
         setStringProperty(component, "onuploadend");
+        setStringProperty(component, "onfileuploadstart");
+        setStringProperty(component, "onfileuploadsuccessful");
+        setStringProperty(component, "onfileuploadinprogress");
+        setStringProperty(component, "onfileuploadstopped");
+        setStringProperty(component, "onfileuploadfailed");
     }
 }

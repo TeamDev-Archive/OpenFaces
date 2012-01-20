@@ -18,7 +18,11 @@ O$.FileUpload = {
                   addButtonId, addButtonClass, addButtonOnMouseOverClass, addButtonOnMouseDownClass,addButtonOnFocusClass,
                   addButtonDisabledClass,
                   isDisabled,
-                  isAutoUpload, tabIndex, progressBarId, statusStoppedText, statusStoppingText, multiUpload,ID) {
+                  isAutoUpload, tabIndex, progressBarId, statusStoppedText, statusStoppingText, multiUpload,ID,
+                  onchangeHandler, onuploadstartHandler, onuploadendHandler,
+                  onfileuploadstartHandler, onfileuploadsuccessfulHandler, onfileuploadinprogressHandler,
+                  onfileuploadstoppedHandler, onfileuploadfailedHandler) {
+
     var fileUpload = O$.initComponent(componentId, null, {
       _minQuantity : minQuantity,
       _maxQuantity : maxQuantity,
@@ -29,8 +33,10 @@ O$.FileUpload = {
       _multiUpload : multiUpload,
       _isAutoUpload : isAutoUpload,
       _ID : ID,
-      _filesHTML5:[]
+      _filesHTML5:[],
+      _events:{}
     });
+    setAllEvents();
     if (!fileUpload._multiUpload){
       fileUpload._isAutoUpload = true;
       //fileUpload._maxQuantity = 1;
@@ -75,31 +81,13 @@ O$.FileUpload = {
     var inputsStorage = createStructureForInputs();
     var inputsStorageId = inputsStorage.id;
 
-    //processing onChange event
-    var onChangeHandler = fileUpload.getAttribute('onchangefiles');
-    fileUpload.removeAttribute("onchangefiles");
 
     var couldCallChangeEvent = true;
 
     if (!O$.isExplorer())
       fileUpload.removeChild(elements);
 
-    //processing event onuploadstart,onuploadend
-    var onUploadStartEventHandler = fileUpload.getAttribute('onuploadstart');
-    fileUpload.removeAttribute("onuploadstart");
-    var onUploadEndEventHandler = fileUpload.getAttribute('onuploadend');
-    fileUpload.removeAttribute("onuploadend");
-
-    //processing onfocus/onblur event
-    var onBlur = fileUpload.onblur;
-    fileUpload.removeAttribute("onblur");
-    fileUpload.onblur = null;
-
-    var onFocus = fileUpload.onfocus;
-    fileUpload.removeAttribute("onfocus");
-    fileUpload.onfocus = null;
-
-    var  addButton = O$(addButtonId);
+    var addButton = O$(addButtonId);
 
     var divForInputInAddBtn = O$(addButtonId+"::forInput");
     var inputInAddBtn = createInputInAddBtn(idOfInfoAndInputDiv);
@@ -200,7 +188,7 @@ O$.FileUpload = {
               }
             }
             if (shouldCallOnChange){
-              eval(onChangeHandler);  //onchangeHandler
+              fileUpload._events._fireChangeEvent();
               setUploadButtonAfterFileHaveBeenAdded();
             }
           }
@@ -229,7 +217,7 @@ O$.FileUpload = {
       }
       couldCallChangeEvent = true;
       if (isCallingChangeEventNeeded){
-        eval(onChangeHandler);// onchangeHandler
+        fileUpload._events._fireChangeEvent();
       }
 
       clearAllButton.style.display = "none";
@@ -255,7 +243,7 @@ O$.FileUpload = {
       O$.addEventHandler(inputInAddBtn,"focus",focusHandler);
       O$.addEventHandler(inputInAddBtn,"blur",blurHandler);
 
-      eval(onChangeHandler);  //onChangeHandler
+      fileUpload._events._fireChangeEvent();
 
       var fileInfo = createInfoWindowForFile(inputForFile._idInputAndDiv, inputForFile.value);
       var cancelFileDiv = fileInfo.childNodes[3].firstChild;
@@ -264,8 +252,9 @@ O$.FileUpload = {
       function setClickHandlerOnCancelButton(cancelFileDiv, inputForFile, fileInfo) {
         cancelFileDiv.deleteFileInputFunction = function () {
           deleteFileInput(inputForFile, fileInfo);
-          if (couldCallChangeEvent)
-            eval(onChangeHandler);
+          if (couldCallChangeEvent){
+            fileUpload._events._fireChangeEvent();
+          }
           if (allInfos.childNodes.length == 0) {
             clearAllButton.style.display = "none";
           }
@@ -432,8 +421,9 @@ O$.FileUpload = {
           setFocusOnComponent();
           shouldInvokeFocusNonModifiable = true;
 
-          if (couldCallChangeEvent)
-            eval(onChangeHandler);
+          if (couldCallChangeEvent){
+            fileUpload._events._fireChangeEvent();
+          }
         };
         cancelFileDiv._clickHandler = cancelFileDiv.deleteFileInputFunction;
         O$.addEventHandler(cancelFileDiv, "click", cancelFileDiv._clickHandler);
@@ -597,7 +587,7 @@ O$.FileUpload = {
             }
           }
           if (shouldCallOnChange) {
-            eval(onChangeHandler);  //onchangeHandler
+            fileUpload._events._fireChangeEvent();
             setUploadButtonAfterFileHaveBeenAdded();
           }
         }else{
@@ -691,9 +681,7 @@ O$.FileUpload = {
       if (wasFocused != null) {
         //previously was focused our element
       } else {
-         if (onFocus != null){ // onFocus  handler
-            onFocus();
-         }
+        fileUpload._events._fireFocusEvent();
       }               //2
 
       setTimeout(function() {
@@ -729,8 +717,7 @@ O$.FileUpload = {
               ignoreBlurForIE = false;
               return;
             }
-            if (onBlur != null) //  onBlur handler
-              onBlur();
+            fileUpload._events._fireBlurEvent();
           }
 
         }, 1);
@@ -751,8 +738,7 @@ O$.FileUpload = {
         clearAllButton.focus();
         return;
       }
-      if (onBlur != null) //  onBlur handler
-        onBlur();
+      fileUpload._events._fireBlurEvent();
     }
 
     function getFileName(fullRoorOfFile) {
@@ -808,7 +794,7 @@ O$.FileUpload = {
         file.push("STARTED_UPLOAD");//status
         fileUpload._listOfids.push(file);
       }
-
+      fileUpload._events._fireUploadStartEvent();
       for (var inputsIndex = 0; inputsIndex < inputsStorage.childNodes.length; inputsIndex++) {
         var inputDiv = inputsStorage.childNodes[inputsIndex];
         var form = inputDiv.childNodes[0];
@@ -820,6 +806,7 @@ O$.FileUpload = {
         form.submit();
         form.target = "_self";
         callProgressRequest(fileInput);
+        fileUpload._events._fireFileUploadStartEvent();
       }
       function sendFileRequest(file){
         var xhr = new XMLHttpRequest();
@@ -837,8 +824,8 @@ O$.FileUpload = {
 
         var request = sendFileRequest(html5File);
         callFileProgressForHTML5Request(html5File, request);
+        fileUpload._events._fireFileUploadStartEvent();
       }
-      eval(onUploadStartEventHandler);
       function progressRequest(inputForFile) {
         O$.requestComponentPortions(fileUpload.id, ["nothing"],
                 JSON.stringify({progressRequest: "true", fieldName : inputForFile.name}),
@@ -856,7 +843,7 @@ O$.FileUpload = {
                       var id = inputForFile.previousSibling.value;
                       setStatusforFileWithId(id, "ERROR");
                     }
-
+                    fileUpload._events._fireFileUploadFailedEvent();
                     setClearBtnAndEventHandler(infoDiv, inputForFile._idInputAndDiv);
                     prepareUIWhenAllRequestsFinished(true);
                   } else {
@@ -899,12 +886,14 @@ O$.FileUpload = {
                           infoDiv.childNodes[2].innerHTML = statusStoppedText;
                           var id = inputForFile.previousSibling.value;
                           setStatusforFileWithId(id, "STOPPED");
+                          fileUpload._events._fireFileUploadStoppedEvent();
                           setClearBtnAndEventHandler(infoDiv, inputForFile._idInputAndDiv);
                           prepareUIWhenAllRequestsFinished(true);
                         }
                       }
                       if (!inputForFile._isInterrupted){
                         infoDiv.childNodes[1].firstChild.setValue(percents);
+                        fileUpload._events._fireFileUploadInProgressEvent();
                         setTimeout(function() {
                           progressRequest(inputForFile);
                         }, 500);
@@ -919,6 +908,7 @@ O$.FileUpload = {
                       infoDiv.childNodes[2].innerHTML = statusLabelUploaded;
                       var id = inputForFile.previousSibling.value;
                       setStatusforFileWithId(id, "UPLOADED");
+                      fileUpload._events._fireFileUploadSuccessfulEvent();
                       setClearBtnAndEventHandler(infoDiv, inputForFile._idInputAndDiv);
                       prepareUIWhenAllRequestsFinished(true);
                     }
@@ -944,7 +934,7 @@ O$.FileUpload = {
                       infoDiv.childNodes[2].innerHTML = statusLabelUnexpectedError;
                       setStatusforFileWithId(file._uniqueId, "ERROR");
                     }
-
+                    fileUpload._events._fireFileUploadFailedEvent();
                     setClearBtnAndEventHandler(infoDiv, file._infoId);
                     prepareUIWhenAllRequestsFinished(true);
                   } else {
@@ -985,12 +975,14 @@ O$.FileUpload = {
                           removeHTML5File(file);
                           infoDiv.childNodes[2].innerHTML = statusStoppedText;
                           setStatusforFileWithId(file._uniqueId, "STOPPED");
+                          fileUpload._events._fireFileUploadStoppedEvent();
                           setClearBtnAndEventHandler(infoDiv, file._infoId);
                           prepareUIWhenAllRequestsFinished(true);
                         }
                       }
                       if (!file._isInterrupted){
                         infoDiv.childNodes[1].firstChild.setValue(percents);
+                        fileUpload._events._fireFileUploadInProgressEvent();
                         setTimeout(function() {
                           progressHTMl5Request(file,request);
                         }, 500);
@@ -1004,6 +996,7 @@ O$.FileUpload = {
                       infoDiv._status = O$.statusEnum.UPLOADED;
                       infoDiv.childNodes[2].innerHTML = statusLabelUploaded;
                       setStatusforFileWithId(file._uniqueId, "UPLOADED");
+                      fileUpload._events._fireFileUploadSuccessfulEvent();
                       setClearBtnAndEventHandler(infoDiv, file._infoId);
                       prepareUIWhenAllRequestsFinished(true);
                     }
@@ -1031,7 +1024,7 @@ O$.FileUpload = {
                   function(fileUpload, portionName, portionHTML, portionScripts, portionData) {
                     if (portionData['allUploaded'] == "true") {
                       fileUpload._listOfids = [];
-                      eval(onUploadEndEventHandler);
+                      fileUpload._events._fireUploadEndEvent();
                     }else{
                       setTimeout(sendCheckRequest, 500);
                     }
@@ -1118,6 +1111,35 @@ O$.FileUpload = {
           uploadButton.style.visibility = "visible";
         }
       }
+    }
+    function setAllEvents(){
+      function createEventHandler(userHandler, eventName){
+        return function(){
+          if (userHandler) {
+            var event = O$.createEvent(eventName);
+            userHandler(event);
+          }
+        }
+      }
+
+      fileUpload._events._fireChangeEvent = createEventHandler(onchangeHandler, "change");
+      fileUpload._events._fireUploadStartEvent = createEventHandler(onuploadstartHandler, "onuploadstart");
+      fileUpload._events._fireUploadEndEvent = createEventHandler(onuploadendHandler, "onuploadend");
+      fileUpload._events._fireFileUploadStartEvent = createEventHandler(onfileuploadstartHandler, "onfileuploadstart");
+      fileUpload._events._fireFileUploadSuccessfulEvent = createEventHandler(onfileuploadsuccessfulHandler, "onfileuploadsuccessful");
+      fileUpload._events._fireFileUploadInProgressEvent = createEventHandler(onfileuploadinprogressHandler, "onfileuploadinprogress");
+      fileUpload._events._fireFileUploadStoppedEvent = createEventHandler(onfileuploadstoppedHandler, "onfileuploadstopped");
+      fileUpload._events._fireFileUploadFailedEvent = createEventHandler(onfileuploadfailedHandler, "onfileuploadfailed");
+
+      //processing onfocus/onblur event
+      fileUpload._events._fireBlurEvent = createEventHandler(fileUpload.onblur, "onblur");
+      fileUpload.removeAttribute("onblur");
+      fileUpload.onblur = null;
+
+      fileUpload._events._fireFocusEvent = createEventHandler(fileUpload.onfocus, "onfocus");
+      fileUpload.removeAttribute("onfocus");
+      fileUpload.onfocus = null;
+
     }
   }
 
