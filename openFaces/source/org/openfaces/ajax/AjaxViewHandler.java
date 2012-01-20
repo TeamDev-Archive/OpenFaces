@@ -24,6 +24,7 @@ import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.portlet.PortletSession;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -434,6 +435,12 @@ public class AjaxViewHandler extends ViewHandlerWrapper {
             } else {
 
                 super.renderView(context, root);
+                Object response = context.getExternalContext().getResponse();
+                if (response instanceof ServletResponse) {
+                    ServletResponse httpResponse = (ServletResponse) response;
+                    if (httpResponse.isCommitted())
+                        return;
+                }
                 Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
                 if (sessionMap != null && !sessionMap.containsKey(SESSION_SCOPED_PARAMETER)) {
                     sessionMap.put(SESSION_SCOPED_PARAMETER, Boolean.TRUE.toString());
@@ -444,7 +451,6 @@ public class AjaxViewHandler extends ViewHandlerWrapper {
                 }
 
             }
-
         }
     }
 
