@@ -59,6 +59,9 @@ public class FileUploadTag extends AbstractComponentTag {
 
         setStringProperty(component, "dropTargetStyle");
         setStringProperty(component, "dropTargetClass");
+        setStringProperty(component, "dropTargetDragoverStyle");
+        setStringProperty(component, "dropTargetDragoverClass");
+
         setStringProperty(component, "dropTargetText");
 
         setStringProperty(component, "rowStyle");

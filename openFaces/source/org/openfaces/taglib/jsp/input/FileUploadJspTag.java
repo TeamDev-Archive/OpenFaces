@@ -100,6 +100,13 @@ public class FileUploadJspTag extends AbstractComponentJspTag {
     public void setDropTargetClass(ValueExpression dropTargetClass) {
         getDelegate().setPropertyValue("dropTargetClass", dropTargetClass);
     }
+    public void setDropTargetDragoverStyle(ValueExpression dropTargetDragoverStyle) {
+        getDelegate().setPropertyValue("dropTargetDragoverStyle", dropTargetDragoverStyle);
+    }
+
+    public void setDropTargetDragoverClass(ValueExpression dropTargetDragoverClass) {
+        getDelegate().setPropertyValue("dropTargetDragoverClass", dropTargetDragoverClass);
+    }
 
     public void setDropTargetText(ValueExpression dropTargetText) {
         getDelegate().setPropertyValue("dropTargetText", dropTargetText);

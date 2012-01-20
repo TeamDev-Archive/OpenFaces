@@ -1268,7 +1268,7 @@
     font-size: 8pt;
     margin-bottom: 10px;
 }
-.o_file_drag_drop_area{
+.o_file_drop_target{
     border: 2px dashed #CCCCCC;
     margin: 5px;
     padding: 20px 0;
@@ -1276,6 +1276,11 @@
     font-size: 14pt;
     font-weight: bold;
     text-align: center;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+.o_file_drop_target_dragover{
+    background-color: #ddd;
 }
 
 .o_file_upload_infos {

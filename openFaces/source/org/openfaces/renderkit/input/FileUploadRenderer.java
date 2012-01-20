@@ -250,7 +250,7 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
     private void writeDragAndDropArea(FacesContext context, FileUpload fileUpload, ResponseWriter writer, String elementId) throws IOException{
         writer.startElement("div", fileUpload);
         writer.writeAttribute("id", elementId, null);
-        String dragDropClass = Styles.getCSSClass(context, fileUpload, fileUpload.getDropTargetStyle(), StyleGroup.regularStyleGroup(), fileUpload.getDropTargetClass(), "o_file_drag_drop_area");
+        String dragDropClass = Styles.getCSSClass(context, fileUpload, fileUpload.getDropTargetStyle(), StyleGroup.regularStyleGroup(), fileUpload.getDropTargetClass(), "o_file_drop_target");
         writer.writeAttribute("class", dragDropClass, null);
         writer.writeAttribute("style", "display:none", null);
         String value = fileUpload.getDropTargetText();
@@ -351,6 +351,7 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
         String addButtonOnMouseDownClass = Styles.getCSSClass(context, fileUpload, fileUpload.getBrowseButtonPressedStyle(), StyleGroup.regularStyleGroup(), fileUpload.getBrowseButtonPressedClass(), null);
         String addButtonOnFocusClass = Styles.getCSSClass(context, fileUpload, fileUpload.getBrowseButtonFocusedStyle(), StyleGroup.regularStyleGroup(), fileUpload.getBrowseButtonFocusedClass(), null);
         String addButtonDisabledClass = Styles.getCSSClass(context, fileUpload, fileUpload.getBrowseButtonDisabledStyle(), StyleGroup.regularStyleGroup(), fileUpload.getBrowseButtonDisabledClass(), "o_file_upload_addBtn_dis");
+        String dropTargetDragoverClass = Styles.getCSSClass(context, fileUpload, fileUpload.getDropTargetDragoverStyle(), StyleGroup.regularStyleGroup(), fileUpload.getDropTargetDragoverClass(), "o_file_drop_target_dragover");
         Styles.renderStyleClasses(context, fileUpload);
 
         int uploadedSize = 0;
@@ -393,7 +394,8 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
                 getFunctionOfEvent(fileUpload.getOnfileuploadsuccessful()),
                 getFunctionOfEvent(fileUpload.getOnfileuploadinprogress()),
                 getFunctionOfEvent(fileUpload.getOnfileuploadstopped()),
-                getFunctionOfEvent(fileUpload.getOnfileuploadfailed())
+                getFunctionOfEvent(fileUpload.getOnfileuploadfailed()),
+                dropTargetDragoverClass
         );
 
         Rendering.renderInitScript(context, initScript,

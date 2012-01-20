@@ -51,6 +51,8 @@ public class FileUpload extends OUIInputBase {
 
     private String dropTargetStyle;
     private String dropTargetClass;
+    private String dropTargetDragoverStyle;
+    private String dropTargetDragoverClass;
     private String dropTargetText;
 
     private String rowStyle;
@@ -124,6 +126,8 @@ public class FileUpload extends OUIInputBase {
                 allInfosClass,
                 dropTargetStyle,
                 dropTargetClass,
+                dropTargetDragoverStyle,
+                dropTargetDragoverClass,
                 dropTargetText,
                 rowStyle,
                 rowClass,
@@ -180,6 +184,8 @@ public class FileUpload extends OUIInputBase {
         allInfosClass = (String) values[i++];
         dropTargetStyle = (String) values[i++];
         dropTargetClass = (String) values[i++];
+        dropTargetDragoverStyle = (String) values[i++];
+        dropTargetDragoverClass = (String) values[i++];
         dropTargetText = (String) values[i++];
         rowStyle = (String) values[i++];
         rowClass = (String) values[i++];
@@ -204,7 +210,7 @@ public class FileUpload extends OUIInputBase {
         onuploadend = (String) values[i++];
         onfileuploadstart = (String) values[i++];
         onfileuploadsuccessful = (String) values[i++];
-        onfileuploadinprogress  = (String) values[i++];
+        onfileuploadinprogress = (String) values[i++];
         onfileuploadstopped = (String) values[i++];
         onfileuploadfailed = (String) values[i++];
         stoppingStatusText = (String) values[i++];
@@ -258,6 +264,22 @@ public class FileUpload extends OUIInputBase {
 
     public void setDropTargetClass(String dropTargetClass) {
         this.dropTargetClass = dropTargetClass;
+    }
+
+    public String getDropTargetDragoverStyle() {
+        return ValueBindings.get(this, "dropTargetDragoverStyle", dropTargetDragoverStyle);
+    }
+
+    public void setDropTargetDragoverStyle(String dropTargetDragoverStyle) {
+        this.dropTargetDragoverStyle = dropTargetDragoverStyle;
+    }
+
+    public String getDropTargetDragoverClass() {
+        return ValueBindings.get(this, "dropTargetDragoverClass", dropTargetDragoverClass);
+    }
+
+    public void setDropTargetDragoverClass(String dropTargetDragoverClass) {
+        this.dropTargetDragoverClass = dropTargetDragoverClass;
     }
 
     public String getDropTargetText() {

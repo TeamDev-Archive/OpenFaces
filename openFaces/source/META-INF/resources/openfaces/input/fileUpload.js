@@ -21,7 +21,8 @@ O$.FileUpload = {
                   isAutoUpload, tabIndex, progressBarId, statusStoppedText, statusStoppingText, multiUpload,ID,
                   onchangeHandler, onuploadstartHandler, onuploadendHandler,
                   onfileuploadstartHandler, onfileuploadsuccessfulHandler, onfileuploadinprogressHandler,
-                  onfileuploadstoppedHandler, onfileuploadfailedHandler) {
+                  onfileuploadstoppedHandler, onfileuploadfailedHandler,
+                  dropTargetCrossoverClass) {
 
     var fileUpload = O$.initComponent(componentId, null, {
       _minQuantity : minQuantity,
@@ -131,27 +132,27 @@ O$.FileUpload = {
         return false;
       }
 
+      function cancelDragEvent(evt) {
+        evt.stopPropagation();
+        evt.preventDefault();
+      }
+
       function setDragEventsForBody(body, area) {
         O$.addEventHandler(body, "dragover", function (evt) {
           if (isFilesDragged(evt) && !inputInAddBtn.disabled){
             area.style.display = "block";
             area._isVisible = true;
           }
-          evt.stopPropagation();
-          evt.preventDefault();
+          cancelDragEvent(evt);
         });
         O$.addEventHandler(body, "drop", function (evt) {
           if (isFilesDragged(evt)){
             area.style.display = "none";
             area._isVisible = false;
           }
-          evt.stopPropagation();
-          evt.preventDefault();
+          cancelDragEvent(evt);
         });
-        O$.addEventHandler(body, "dragexit", function (evt) {
-          evt.stopPropagation();
-          evt.preventDefault();
-        });
+        O$.addEventHandler(body, "dragexit", cancelDragEvent);
 
         O$.addEventHandler(window, "mousemove", function () {
           if (area._isVisible){
@@ -161,19 +162,26 @@ O$.FileUpload = {
       }
 
       function setDragEventsForFileUpload(area) {
-        O$.addEventHandler(area, "dragenter", cancelEvent);
-        O$.addEventHandler(area, "dragexit", cancelEvent);
-        O$.addEventHandler(area, "dragover", cancelEvent);
+        O$.addEventHandler(area, "dragenter", cancelDragEvent);
+        O$.addEventHandler(area, "dragleave", dragleaveEventHandler);
+        O$.addEventHandler(area, "dragexit", cancelDragEvent);
+        O$.addEventHandler(area, "dragover", dragoverEventHandler);
         O$.addEventHandler(area, "drop", dropEventHandler);
 
-        function cancelEvent(evt) {
-          evt.stopPropagation();
-          evt.preventDefault();
+        function dragoverEventHandler(evt){
+          cancelDragEvent(evt);
+          if (isFilesDragged(evt)) {
+            O$.setStyleMappings(area, {dragover : dropTargetCrossoverClass});
+          }
+        }
+
+        function dragleaveEventHandler(evt) {
+          cancelDragEvent(evt);
+          O$.setStyleMappings(area, {dragover : null});
         }
 
         function dropEventHandler(evt) {
-          evt.stopPropagation();
-          evt.preventDefault();
+          cancelDragEvent(evt);
           if (isFilesDragged(evt)) {
             area.style.display = "none";
             area._isVisible = false;
