@@ -45033,7 +45033,7 @@ entering a value and returns a list of suggestions from the server -->
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
+      <!-- @default "Drop file here" or "Drop file(s) here" if multiple -->
       <!-- @el true -->
     </attribute>
   </tag>

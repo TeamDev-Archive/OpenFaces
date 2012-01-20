@@ -261,7 +261,7 @@ public class FileUpload extends OUIInputBase {
     }
 
     public String getDropTargetText() {
-        return ValueBindings.get(this, "dropTargetText", dropTargetText, "Drop files here");
+        return ValueBindings.get(this, "dropTargetText", dropTargetText);
     }
 
     public void setDropTargetText(String dropTargetText) {

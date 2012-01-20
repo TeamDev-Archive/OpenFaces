@@ -253,7 +253,15 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
         String dragDropClass = Styles.getCSSClass(context, fileUpload, fileUpload.getDropTargetStyle(), StyleGroup.regularStyleGroup(), fileUpload.getDropTargetClass(), "o_file_drag_drop_area");
         writer.writeAttribute("class", dragDropClass, null);
         writer.writeAttribute("style", "display:none", null);
-        writer.write(fileUpload.getDropTargetText());
+        String value = fileUpload.getDropTargetText();
+        if (value == null) {
+            if (!fileUpload.isMultiple()) {
+                value = "Drop file here";
+            } else {
+                value = "Drop file(s) here";
+            }
+        }
+        writer.write(value);
         writer.endElement("div");
     }
 
@@ -287,17 +295,14 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
         if (browseButton == null) {
             writer.startElement("input", fileUpload);
             writer.writeAttribute("type", "button", null);
-            String value;
-            if (fileUpload.getBrowseButtonText() == null) {
+            String value = fileUpload.getBrowseButtonText();
+            if (value == null) {
                 if (!fileUpload.isMultiple()) {
                     value = DEF_BROWSE_BTN_LABEL_SINGLE;
                 } else {
                     value = DEF_BROWSE_LABEL_MULTIPLE;
                 }
-            } else {
-                value = fileUpload.getBrowseButtonText();
             }
-
             writer.writeAttribute("value", value, null);
             writer.endElement("input");
         } else {
