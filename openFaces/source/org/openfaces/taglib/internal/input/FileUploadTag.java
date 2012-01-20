@@ -57,9 +57,9 @@ public class FileUploadTag extends AbstractComponentTag {
         setStringProperty(component, "allInfosStyle");
         setStringProperty(component, "allInfosClass");
 
-        setStringProperty(component, "dragAndDropAreaStyle");
-        setStringProperty(component, "dragAndDropAreaClass");
-        setStringProperty(component, "dragAndDropAreaText");
+        setStringProperty(component, "dropTargetStyle");
+        setStringProperty(component, "dropTargetClass");
+        setStringProperty(component, "dropTargetText");
 
         setStringProperty(component, "rowStyle");
         setStringProperty(component, "rowClass");

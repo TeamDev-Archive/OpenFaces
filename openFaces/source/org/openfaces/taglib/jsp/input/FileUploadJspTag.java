@@ -93,16 +93,16 @@ public class FileUploadJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("allInfosClass", allInfosClass);
     }
 
-    public void setDragAndDropAreaStyle(ValueExpression dragAndDropAreaStyle) {
-        getDelegate().setPropertyValue("dragAndDropAreaStyle", dragAndDropAreaStyle);
+    public void setDropTargetStyle(ValueExpression dropTargetStyle) {
+        getDelegate().setPropertyValue("dropTargetStyle", dropTargetStyle);
     }
 
-    public void setDragAndDropAreaClass(ValueExpression dragAndDropAreaClass) {
-        getDelegate().setPropertyValue("dragAndDropAreaClass", dragAndDropAreaClass);
+    public void setDropTargetClass(ValueExpression dropTargetClass) {
+        getDelegate().setPropertyValue("dropTargetClass", dropTargetClass);
     }
 
-    public void setDragAndDropAreaText(ValueExpression dragAndDropAreaText) {
-        getDelegate().setPropertyValue("dragAndDropAreaText", dragAndDropAreaText);
+    public void setDropTargetText(ValueExpression dropTargetText) {
+        getDelegate().setPropertyValue("dropTargetText", dropTargetText);
     }
 
     public void setRowStyle(ValueExpression rowStyle) {

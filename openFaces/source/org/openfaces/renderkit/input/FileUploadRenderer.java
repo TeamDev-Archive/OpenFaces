@@ -250,10 +250,10 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
     private void writeDragAndDropArea(FacesContext context, FileUpload fileUpload, ResponseWriter writer, String elementId) throws IOException{
         writer.startElement("div", fileUpload);
         writer.writeAttribute("id", elementId, null);
-        String dragDropClass = Styles.getCSSClass(context, fileUpload, fileUpload.getDragAndDropAreaStyle(), StyleGroup.regularStyleGroup(), fileUpload.getDragAndDropAreaClass(), "o_file_drag_drop_area");
+        String dragDropClass = Styles.getCSSClass(context, fileUpload, fileUpload.getDropTargetStyle(), StyleGroup.regularStyleGroup(), fileUpload.getDropTargetClass(), "o_file_drag_drop_area");
         writer.writeAttribute("class", dragDropClass, null);
         writer.writeAttribute("style", "display:none", null);
-        writer.write(fileUpload.getDragAndDropAreaText());
+        writer.write(fileUpload.getDropTargetText());
         writer.endElement("div");
     }
 
