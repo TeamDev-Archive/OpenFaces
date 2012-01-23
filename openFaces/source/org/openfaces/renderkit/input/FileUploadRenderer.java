@@ -398,6 +398,7 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
                 getFunctionOfEvent(fileUpload.getOnfileuploadinprogress()),
                 getFunctionOfEvent(fileUpload.getOnfileuploadstopped()),
                 getFunctionOfEvent(fileUpload.getOnfileuploadfailed()),
+                getFunctionOfEvent(fileUpload.getOnfileuploadend()),
                 dropTargetDragoverClass
         );
 

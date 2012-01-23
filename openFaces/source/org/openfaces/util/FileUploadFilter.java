@@ -118,11 +118,15 @@ public class FileUploadFilter implements Filter {
             String compID = request.getParameter(COMPONENT_ID);
             if (compID != null) {//if our component is using
                 String tempDirStr = getTempDir();
-                long maxSizeOfFile = (Long) ((HttpServletRequest) request).getSession().getAttribute(compID);
-                FileUploadRequestWrapper wrapper = new FileUploadRequestWrapper(hRequest, tempDirStr, maxSizeOfFile);
-                request.setAttribute("fileUploadRequest", true);
-                chain.doFilter(wrapper, response);
-            }else{
+                Long maxSizeOfFile = (Long) ((HttpServletRequest) request).getSession().getAttribute(compID);
+                if (maxSizeOfFile != null) {
+                    FileUploadRequestWrapper wrapper = new FileUploadRequestWrapper(hRequest, tempDirStr, maxSizeOfFile);
+                    request.setAttribute("fileUploadRequest", true);
+                    chain.doFilter(wrapper, response);
+                } else {
+                    chain.doFilter(request, response);//session expired
+                }
+            } else {
                 chain.doFilter(request, response);
             }
         }

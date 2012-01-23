@@ -93,7 +93,8 @@ public class FileUpload extends OUIInputBase {
     private String onfileuploadinprogress;
     private String onfileuploadstopped;
     private String onfileuploadfailed;
-    
+    private String onfileuploadend;
+
     private int fileSizeLimit;
 
     public FileUpload() {
@@ -157,6 +158,7 @@ public class FileUpload extends OUIInputBase {
                 onfileuploadinprogress,
                 onfileuploadstopped,
                 onfileuploadfailed,
+                onfileuploadend,
                 stoppingStatusText,
                 unexpectedErrorText,
                 fileSizeLimit
@@ -216,9 +218,10 @@ public class FileUpload extends OUIInputBase {
         onfileuploadinprogress = (String) values[i++];
         onfileuploadstopped = (String) values[i++];
         onfileuploadfailed = (String) values[i++];
+        onfileuploadend = (String) values[i++];
         stoppingStatusText = (String) values[i++];
         unexpectedErrorText = (String) values[i++];
-        fileSizeLimit= (Integer) values[i++];
+        fileSizeLimit = (Integer) values[i++];
     }
 
 
@@ -637,6 +640,14 @@ public class FileUpload extends OUIInputBase {
 
     public void setOnfileuploadfailed(String onfileuploadfailed) {
         this.onfileuploadfailed = onfileuploadfailed;
+    }
+
+    public String getOnfileuploadend() {
+        return ValueBindings.get(this, "onfileuploadend", onfileuploadend);
+    }
+
+    public void setOnfileuploadend(String onfileuploadend) {
+        this.onfileuploadend = onfileuploadend;
     }
 
     public String getStoppingStatusText() {

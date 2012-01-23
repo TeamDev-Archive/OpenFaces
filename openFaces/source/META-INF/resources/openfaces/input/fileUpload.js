@@ -21,7 +21,7 @@ O$.FileUpload = {
                   isAutoUpload, tabIndex, progressBarId, statusStoppedText, statusStoppingText, multiUpload,ID,
                   onchangeHandler, onuploadstartHandler, onuploadendHandler,
                   onfileuploadstartHandler, onfileuploadsuccessfulHandler, onfileuploadinprogressHandler,
-                  onfileuploadstoppedHandler, onfileuploadfailedHandler,
+                  onfileuploadstoppedHandler, onfileuploadfailedHandler, onfileuploadendHandler,
                   dropTargetCrossoverClass) {
 
     var fileUpload = O$.initComponent(componentId, null, {
@@ -886,6 +886,7 @@ O$.FileUpload = {
                       setStatusforFileWithId(id, "ERROR");
                     }
                     fileUpload._events._fireFileUploadFailedEvent();
+                    fileUpload._events._fireFileUploadEndEvent();
                     setClearBtnAndEventHandler(infoDiv, inputForFile._idInputAndDiv);
                     prepareUIWhenAllRequestsFinished(true);
                   } else {
@@ -929,6 +930,7 @@ O$.FileUpload = {
                           var id = inputForFile.previousSibling.value;
                           setStatusforFileWithId(id, "STOPPED");
                           fileUpload._events._fireFileUploadStoppedEvent();
+                          fileUpload._events._fireFileUploadEndEvent();
                           setClearBtnAndEventHandler(infoDiv, inputForFile._idInputAndDiv);
                           prepareUIWhenAllRequestsFinished(true);
                         }
@@ -951,6 +953,7 @@ O$.FileUpload = {
                       var id = inputForFile.previousSibling.value;
                       setStatusforFileWithId(id, "UPLOADED");
                       fileUpload._events._fireFileUploadSuccessfulEvent();
+                      fileUpload._events._fireFileUploadEndEvent();
                       setClearBtnAndEventHandler(infoDiv, inputForFile._idInputAndDiv);
                       prepareUIWhenAllRequestsFinished(true);
                     }
@@ -977,6 +980,7 @@ O$.FileUpload = {
                       setStatusforFileWithId(file._uniqueId, "ERROR");
                     }
                     fileUpload._events._fireFileUploadFailedEvent();
+                    fileUpload._events._fireFileUploadEndEvent();
                     setClearBtnAndEventHandler(infoDiv, file._infoId);
                     prepareUIWhenAllRequestsFinished(true);
                   } else {
@@ -1018,6 +1022,7 @@ O$.FileUpload = {
                           infoDiv.childNodes[2].innerHTML = statusStoppedText;
                           setStatusforFileWithId(file._uniqueId, "STOPPED");
                           fileUpload._events._fireFileUploadStoppedEvent();
+                          fileUpload._events._fireFileUploadEndEvent();
                           setClearBtnAndEventHandler(infoDiv, file._infoId);
                           prepareUIWhenAllRequestsFinished(true);
                         }
@@ -1039,6 +1044,7 @@ O$.FileUpload = {
                       infoDiv.childNodes[2].innerHTML = statusLabelUploaded;
                       setStatusforFileWithId(file._uniqueId, "UPLOADED");
                       fileUpload._events._fireFileUploadSuccessfulEvent();
+                      fileUpload._events._fireFileUploadEndEvent();
                       setClearBtnAndEventHandler(infoDiv, file._infoId);
                       prepareUIWhenAllRequestsFinished(true);
                     }
@@ -1172,6 +1178,8 @@ O$.FileUpload = {
       fileUpload._events._fireFileUploadInProgressEvent = createEventHandler(onfileuploadinprogressHandler, "onfileuploadinprogress");
       fileUpload._events._fireFileUploadStoppedEvent = createEventHandler(onfileuploadstoppedHandler, "onfileuploadstopped");
       fileUpload._events._fireFileUploadFailedEvent = createEventHandler(onfileuploadfailedHandler, "onfileuploadfailed");
+      fileUpload._events._fireFileUploadEndEvent = createEventHandler(onfileuploadendHandler, "onfileuploadend");
+
 
       //processing onfocus/onblur event
       fileUpload._events._fireBlurEvent = createEventHandler(fileUpload.onblur, "onblur");
