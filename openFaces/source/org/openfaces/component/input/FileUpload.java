@@ -93,6 +93,8 @@ public class FileUpload extends OUIInputBase {
     private String onfileuploadinprogress;
     private String onfileuploadstopped;
     private String onfileuploadfailed;
+    
+    private int fileSizeLimit;
 
     public FileUpload() {
         setRendererType("org.openfaces.FileUploadRenderer");
@@ -156,7 +158,8 @@ public class FileUpload extends OUIInputBase {
                 onfileuploadstopped,
                 onfileuploadfailed,
                 stoppingStatusText,
-                unexpectedErrorText
+                unexpectedErrorText,
+                fileSizeLimit
         };
     }
 
@@ -215,6 +218,7 @@ public class FileUpload extends OUIInputBase {
         onfileuploadfailed = (String) values[i++];
         stoppingStatusText = (String) values[i++];
         unexpectedErrorText = (String) values[i++];
+        fileSizeLimit= (Integer) values[i++];
     }
 
 
@@ -649,5 +653,13 @@ public class FileUpload extends OUIInputBase {
 
     public void setUnexpectedErrorText(String unexpectedErrorText) {
         this.unexpectedErrorText = unexpectedErrorText;
+    }
+
+    public int getFileSizeLimit() {
+        return ValueBindings.get(this, "fileSizeLimit", fileSizeLimit, 0);
+    }
+
+    public void setFileSizeLimit(int fileSizeLimit) {
+        this.fileSizeLimit = fileSizeLimit;
     }
 }

@@ -797,6 +797,15 @@ O$.FileUpload = {
           progressHTMl5Request(file, request);
         }, 500);
       }
+      function getDocumentURI(){
+        var docURL = document.URL;
+        if (docURL.indexOf("&") == -1){
+          return docURL + "?uniqueID=" + fileUpload._ID;
+        }else{
+          return docURL + "&uniqueID=" + fileUpload._ID;
+        }
+
+      }
       inputInAddBtn.disabled = true;
       addButtonTitleInput.className = addButtonDisabledClass;
       if (fileUpload._multiUpload){
@@ -826,6 +835,7 @@ O$.FileUpload = {
         fileUpload._listOfids.push(file);
       }
       fileUpload._events._fireUploadStartEvent();
+      var uri = getDocumentURI();
       for (var inputsIndex = 0; inputsIndex < inputsStorage.childNodes.length; inputsIndex++) {
         var inputDiv = inputsStorage.childNodes[inputsIndex];
         var form = inputDiv.childNodes[0];
@@ -834,6 +844,7 @@ O$.FileUpload = {
 
         O$(allInfos.id + fileInput._idInputAndDiv).childNodes[3].firstChild.style.visibility = "hidden";
         form.target = iframe.name;
+        form.action = uri;
         form.submit();
         form.target = "_self";
         callProgressRequest(fileInput);
@@ -841,7 +852,7 @@ O$.FileUpload = {
       }
       function sendFileRequest(file){
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', document.URL, true);
+        xhr.open('POST', uri, true);
         var data = new FormData();
         data.append("FILE_ID", file._uniqueId);
         data.append(file._fakeInput, file);

@@ -42,6 +42,7 @@ import java.util.List;
 import java.util.Map;
 
 public class FileUploadRenderer extends RendererBase implements AjaxPortionRenderer {
+    public static final String INIT_PARAM_MAX_FILE_SIZE = "org.openfaces.fileUpload.fileSizeLimit";
     private static final String DIV_FOR_INPUTS_ID = "::inputs";
     private static final String INPUT_OF_FILE_ID = "::input";
     private static final String DIV_FOR_INFO_ID = "::infoDiv";
@@ -107,18 +108,20 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
         FileUpload fileUpload = (FileUpload) component;
 
         if (((HttpServletRequest) context.getExternalContext().getRequest()).getAttribute("fileUploadRequest") != null) {
-            uploadIfExistFiles(context, component);
+            uploadIfExistFiles(context, fileUpload);
             return;
         }
 
         setAllFacets(fileUpload);
-        renderComponent(context, component, fileUpload);
+        renderComponent(context, fileUpload);
     }
 
-    private void renderComponent(FacesContext context, UIComponent component, FileUpload fileUpload) throws IOException {
-        String clientId = component.getClientId(context);
+    private void renderComponent(FacesContext context, FileUpload fileUpload) throws IOException {
+        String clientId = fileUpload.getClientId(context);
+        String uniqueID = generateUniqueId(clientId);
+        setFileSizeLimitInSession(context, fileUpload, uniqueID);
         ResponseWriter writer = context.getResponseWriter();
-        writer.startElement("div", component);
+        writer.startElement("div", fileUpload);
         Rendering.writeIdAttribute(context, fileUpload);
         Rendering.writeStyleAndClassAttributes(writer, fileUpload.getStyle(), fileUpload.getStyleClass(), "o_file_upload");
         Rendering.writeStandardEvents(writer, fileUpload);
@@ -129,7 +132,7 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
         writeFooter(context, fileUpload, writer, clientId + FOOTER_DIV_ID);
         writeHelpfulElements(context, fileUpload, writer, clientId + HELP_ELEMENTS_ID);
 
-        encodeScriptAndStyles(context, fileUpload, clientId);
+        encodeScriptAndStyles(context, fileUpload, clientId, uniqueID);
         writer.endElement("div");
     }
 
@@ -340,7 +343,7 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
         return eventFunction;
     }
 
-    private void encodeScriptAndStyles(FacesContext context, FileUpload fileUpload, String clientId) throws IOException {
+    private void encodeScriptAndStyles(FacesContext context, FileUpload fileUpload, String clientId, String uniqueId) throws IOException {
         String fileInfoClass = Styles.getCSSClass(context, fileUpload, fileUpload.getRowStyle(), StyleGroup.regularStyleGroup(), fileUpload.getRowClass(), "o_file_upload_info");
         String infoTitleClass = Styles.getCSSClass(context, fileUpload, fileUpload.getFileNameStyle(), StyleGroup.regularStyleGroup(), fileUpload.getFileNameClass(), "o_file_upload_info_title");
         String infoStatusClass = Styles.getCSSClass(context, fileUpload, fileUpload.getUploadStatusStyle(), StyleGroup.regularStyleGroup(), fileUpload.getUploadStatusClass(), "o_file_upload_info_status");
@@ -386,7 +389,7 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
                 fileUpload.getStoppedStatusText(),
                 fileUpload.getStoppingStatusText(),
                 fileUpload.isMultiple(),
-                generateUniqueId(clientId),
+                uniqueId,
                 getFunctionOfEvent(fileUpload.getOnchange()),
                 getFunctionOfEvent(fileUpload.getOnuploadstart()),
                 getFunctionOfEvent(fileUpload.getOnuploadend()),
@@ -409,8 +412,18 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
         return clientId + System.currentTimeMillis();
     }
 
-    private void uploadIfExistFiles(FacesContext context, UIComponent component) {
-        FileUpload fileUpload = (FileUpload) component;
+    private void setFileSizeLimitInSession(FacesContext context, FileUpload fileUpload, String uniqueId){
+        long sizeLimit = fileUpload.getFileSizeLimit();
+        if (sizeLimit == 0){
+            String maxSizeString = context.getExternalContext().getInitParameter(INIT_PARAM_MAX_FILE_SIZE);
+            sizeLimit = (maxSizeString != null) ? Long.parseLong(maxSizeString) * 1024 : Long.MAX_VALUE;
+        }else{
+            sizeLimit *= 1024;
+        }
+        context.getExternalContext().getSessionMap().put(uniqueId, sizeLimit);
+    }
+
+    private void uploadIfExistFiles(FacesContext context, FileUpload fileUpload) {
         ExternalContext extContext = context.getExternalContext();
         String clientId = fileUpload.getClientId(context);
         try {

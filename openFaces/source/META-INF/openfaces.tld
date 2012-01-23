@@ -45058,6 +45058,18 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default "Drop file here" or "Drop file(s) here" if multiple -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>Specifies max size of each file in kilobytes.
+        If this attribute isn't specified , max file size would be what is set at org.openfaces.fileUpload.fileSizeLimit param in web.xml.
+      </description>
+      <name>fileSizeLimit</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default  org.openfaces.fileUpload.fileSizeLimit param in web.xml-->
+      <!-- @el true -->
+    </attribute>
   </tag>
   <tag>
     <name>progressBar</name>
