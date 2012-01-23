@@ -117,6 +117,62 @@ O$.FileUpload = {
     setBehaviorForDragAndDropArea();
     function setBehaviorForDragAndDropArea(){
       var area = O$(componentId + "::footer::dragArea");
+      O$.extend(area.parentNode,{
+        _findPosition: function () {
+          var curtop = 0;
+          var curleft = 0;
+          var obj = this;
+          if (obj.offsetParent) {
+            curleft = obj.offsetLeft;
+            curtop = obj.offsetTop;
+            while (obj = obj.offsetParent) {
+              curleft += obj.offsetLeft;
+              curtop += obj.offsetTop;
+            }
+          }
+          return [curleft, curtop];
+        }
+      });
+      O$.extend(area, {
+        _isNearest:function (clientX, clientY) {
+
+          var ourDistance = this._getDistanceTo(clientX, clientY);
+          var alienDistance;
+          for (var i = 0; i < O$._dropAreas.length; i++) {
+            if (O$._dropAreas[i] != this) {
+              alienDistance = O$._dropAreas[i]._getDistanceTo(clientX, clientY);
+              if (alienDistance < ourDistance) {
+                return false;
+              }
+            }
+          }
+          return true;
+        },
+        _getDistanceTo: function(x, y){
+          var areasXY = this.parentNode._findPosition();
+          if (areasXY[0] < x && areasXY[1] < y) {
+            return x - areasXY[0] + y - areasXY[1];
+          } else if (areasXY[0] >= x && areasXY[1] >= y) {
+            return areasXY[0] - x + areasXY[1] - y;
+          } else if (areasXY[0] >= x && areasXY[1] < y) {
+            return areasXY[0] - x + y - areasXY[1];
+          } else if (areasXY[0] < x && areasXY[1] >= y){
+            return x - areasXY[0] + areasXY[1] - y;
+          }
+        },
+        _hideAllExceptThis:function () {
+          for (var i = 0; i < O$._dropAreas.length; i++) {
+            if (O$._dropAreas[i] != this) {
+              O$._dropAreas[i].style.display = "none";
+              O$._dropAreas[i]._isVisible = false;
+            }
+          }
+        }
+      });
+      if (!O$._dropAreas){
+        O$._dropAreas = [];
+      }
+      O$._dropAreas.push(area);
       var body = document.getElementsByTagName('body')[0];
       area._isVisible = false;
       setDragEventsForBody(body, area);
@@ -140,8 +196,11 @@ O$.FileUpload = {
       function setDragEventsForBody(body, area) {
         O$.addEventHandler(body, "dragover", function (evt) {
           if (isFilesDragged(evt) && !inputInAddBtn.disabled){
-            area.style.display = "block";
-            area._isVisible = true;
+            if (area._isNearest(evt.clientX, evt.clientY)){
+              area._hideAllExceptThis();
+              area.style.display = "block";
+              area._isVisible = true;
+            }
           }
           cancelDragEvent(evt);
         });
