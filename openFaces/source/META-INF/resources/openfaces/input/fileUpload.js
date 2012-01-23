@@ -394,7 +394,30 @@ O$.FileUpload = {
     }
 
     function processFileAddingHTML5(file) {
-      if (isFileNameNotApplied(file.name) || inputInAddBtn.disabled) {
+      /*Because of imperfect value of file's size when directory is chosen (I got values 4096*x where x is between 1 - 8)
+      this method doesn't fully guarantee that file is directory.
+      * */
+      function isDirectory(file) {
+        if (file.size == 0){
+          return true;
+        }
+        if (file.size % 4096 == 0) {
+          var koef = file.size / 4096;
+          if (koef > 0 && koef < 10) {
+            var index = file.name.lastIndexOf(".");
+            if (index == -1) {
+              return true;
+            }
+            var extension = file.name.substr(index+1);
+            if (!(extension.length >=3 &&  extension.match(/^[a-zA-Z]+$/))){
+              return true;
+            }
+
+          }
+        }
+        return false;
+      }
+      if (isFileNameNotApplied(file.name) || inputInAddBtn.disabled || isDirectory(file)) {
         return false;
       }
       file._uniqueId = fileUpload._ID + idOfInfoAndInputDiv;
