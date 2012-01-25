@@ -37,6 +37,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -394,10 +395,7 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
                 getFunctionOfEvent(fileUpload.getOnuploadstart()),
                 getFunctionOfEvent(fileUpload.getOnuploadend()),
                 getFunctionOfEvent(fileUpload.getOnfileuploadstart()),
-                getFunctionOfEvent(fileUpload.getOnfileuploadsuccessful()),
                 getFunctionOfEvent(fileUpload.getOnfileuploadinprogress()),
-                getFunctionOfEvent(fileUpload.getOnfileuploadstopped()),
-                getFunctionOfEvent(fileUpload.getOnfileuploadfailed()),
                 getFunctionOfEvent(fileUpload.getOnfileuploadend()),
                 dropTargetDragoverClass
         );
@@ -478,24 +476,32 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
             Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
             for (int i = 0; i < files.length(); i++) {
                 JSONArray file = files.getJSONArray(i);
-                if (file.getString(3).equals("UPLOADED")) {
+                if (file.getString(3).equals("SUCCESSFUL")) {
                     if (!sessionMap.containsKey(file.getString(0))) {
                         allUploaded = false;
                         break;
                     }
                 }
             }
+            JSONArray fileSizes = new JSONArray();
             if (allUploaded) {
                 List<FileUploadItem> filesItems = new LinkedList<FileUploadItem>();
                 for (int i = 0; i < files.length(); i++) {
                     JSONArray file = files.getJSONArray(i);
-                    if (file.getString(3).equals("UPLOADED")) {
-                        filesItems.add((FileUploadItem) sessionMap.get(file.getString(0)));
+                    if (file.getString(3).equals("SUCCESSFUL")) {
+                        FileUploadItem fileUploadItem = (FileUploadItem) sessionMap.get(file.getString(0));
+                        filesItems.add(fileUploadItem);
                         sessionMap.remove(file.getString(0));
+
+                        JSONArray jsonArray = new JSONArray();
+                        jsonArray.put(file.getString(4));
+                        jsonArray.put(fileUploadItem.getFile().length());
+                        fileSizes.put(jsonArray);
+
                     } else if (file.getString(3).equals("STOPPED")) {
                         filesItems.add(new FileUploadItem(file.getString(2), null, FileUploadStatus.STOPPED));
                         sessionMap.remove(PROGRESS_ID + file.getString(1));
-                    } else if (file.getString(3).equals("ERROR")) {
+                    } else if (file.getString(3).equals("FAILED")) {
                         filesItems.add(new FileUploadItem(file.getString(2), null, FileUploadStatus.FAILED));
                     } else if (file.getString(3).equals("SIZE_LIMIT_EXCEEDED")) {
                         filesItems.add(new FileUploadItem(file.getString(2), null, FileUploadStatus.SIZE_LIMIT_EXCEEDED));
@@ -510,6 +516,7 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
                 }
             }
             Rendering.addJsonParam(jsonObj, "allUploaded", allUploaded);
+            Rendering.addJsonParam(jsonObj, "fileSizes", fileSizes);
             return jsonObj;
         }
         return null;

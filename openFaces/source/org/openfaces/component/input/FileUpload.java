@@ -89,10 +89,7 @@ public class FileUpload extends OUIInputBase {
     private String onuploadstart;
     private String onuploadend;
     private String onfileuploadstart;
-    private String onfileuploadsuccessful;
     private String onfileuploadinprogress;
-    private String onfileuploadstopped;
-    private String onfileuploadfailed;
     private String onfileuploadend;
 
     private int fileSizeLimit;
@@ -154,10 +151,7 @@ public class FileUpload extends OUIInputBase {
                 onuploadstart,
                 onuploadend,
                 onfileuploadstart,
-                onfileuploadsuccessful,
                 onfileuploadinprogress,
-                onfileuploadstopped,
-                onfileuploadfailed,
                 onfileuploadend,
                 stoppingStatusText,
                 unexpectedErrorText,
@@ -214,10 +208,7 @@ public class FileUpload extends OUIInputBase {
         onuploadstart = (String) values[i++];
         onuploadend = (String) values[i++];
         onfileuploadstart = (String) values[i++];
-        onfileuploadsuccessful = (String) values[i++];
         onfileuploadinprogress = (String) values[i++];
-        onfileuploadstopped = (String) values[i++];
-        onfileuploadfailed = (String) values[i++];
         onfileuploadend = (String) values[i++];
         stoppingStatusText = (String) values[i++];
         unexpectedErrorText = (String) values[i++];
@@ -610,36 +601,12 @@ public class FileUpload extends OUIInputBase {
         this.onfileuploadstart = onfileuploadstart;
     }
 
-    public String getOnfileuploadsuccessful() {
-        return ValueBindings.get(this, "onfileuploadsuccessful", onfileuploadsuccessful);
-    }
-
-    public void setOnfileuploadsuccessful(String onfileuploadsuccessful) {
-        this.onfileuploadsuccessful = onfileuploadsuccessful;
-    }
-
     public String getOnfileuploadinprogress() {
         return ValueBindings.get(this, "onfileuploadinprogress", onfileuploadinprogress);
     }
 
     public void setOnfileuploadinprogress(String onfileuploadinprogress) {
         this.onfileuploadinprogress = onfileuploadinprogress;
-    }
-
-    public String getOnfileuploadstopped() {
-        return ValueBindings.get(this, "onfileuploadstopped", onfileuploadstopped);
-    }
-
-    public void setOnfileuploadstopped(String onfileuploadstopped) {
-        this.onfileuploadstopped = onfileuploadstopped;
-    }
-
-    public String getOnfileuploadfailed() {
-        return ValueBindings.get(this, "onfileuploadfailed", onfileuploadfailed);
-    }
-
-    public void setOnfileuploadfailed(String onfileuploadfailed) {
-        this.onfileuploadfailed = onfileuploadfailed;
     }
 
     public String getOnfileuploadend() {

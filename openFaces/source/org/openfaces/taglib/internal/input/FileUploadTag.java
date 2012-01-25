@@ -96,10 +96,7 @@ public class FileUploadTag extends AbstractComponentTag {
         setStringProperty(component, "onuploadstart");
         setStringProperty(component, "onuploadend");
         setStringProperty(component, "onfileuploadstart");
-        setStringProperty(component, "onfileuploadsuccessful");
         setStringProperty(component, "onfileuploadinprogress");
-        setStringProperty(component, "onfileuploadstopped");
-        setStringProperty(component, "onfileuploadfailed");
         setStringProperty(component, "onfileuploadend");
 
         setIntProperty(component, "fileSizeLimit");

@@ -216,18 +216,8 @@ public class FileUploadJspTag extends AbstractComponentJspTag {
     public void setOnfileuploadstart(ValueExpression onfileuploadstart) {
         getDelegate().setPropertyValue("onfileuploadstart", onfileuploadstart);
     }
-
-    public void setOnfileuploadsuccessful(ValueExpression onfileuploadsuccessful) {
-        getDelegate().setPropertyValue("onfileuploadsuccessful", onfileuploadsuccessful);
-    }
     public void setOnfileuploadinprogress(ValueExpression onfileuploadinprogress) {
         getDelegate().setPropertyValue("onfileuploadinprogress", onfileuploadinprogress);
-    }
-    public void setOnfileuploadstopped(ValueExpression onfileuploadstopped) {
-        getDelegate().setPropertyValue("onfileuploadstopped", onfileuploadstopped);
-    }
-    public void setOnfileuploadfailed(ValueExpression onfileuploadfailed) {
-        getDelegate().setPropertyValue("onfileuploadfailed", onfileuploadfailed);
     }
     public void setOnfileuploadend(ValueExpression onfileuploadend) {
         getDelegate().setPropertyValue("onfileuploadend", onfileuploadend);

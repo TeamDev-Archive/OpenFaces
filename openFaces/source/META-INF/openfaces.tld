@@ -44981,7 +44981,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when started uploading for all files.
+      <description>JavaScript code that should be executed when uploading for all files have been started.
       </description>
       <name>onuploadstart</name>
       <deferred-value>
@@ -44992,10 +44992,44 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when all files finished uploading ,
-        no matter successfully, with errors or stopped.
+      <description>JavaScript code that should be executed when uploading for  all files have been finished,
+        despite their upload status(successfully, with errors or stopped).
       </description>
       <name>onuploadend</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when uploading for  file has been started.
+      </description>
+      <name>onfileuploadstart</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when uploading progress for file has been changed.
+      </description>
+      <name>onfileuploadinprogress</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when uploading for file has been finished,
+        despite its upload status(successfully, with errors or stopped).
+      </description>
+      <name>onfileuploadend</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
