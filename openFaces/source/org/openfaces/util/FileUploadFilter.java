@@ -26,6 +26,7 @@ import java.io.IOException;
 public class FileUploadFilter implements Filter {
     private static final String INIT_PARAM_TEMP_DIR = "org.openfaces.fileUpload.tempDir";
     private static final String COMPONENT_ID = "uniqueID";
+    private static final String ID_OF_FILE = "idOfFile";
 
     private ServletContext servletContext;
 
@@ -120,7 +121,8 @@ public class FileUploadFilter implements Filter {
                 String tempDirStr = getTempDir();
                 Long maxSizeOfFile = (Long) ((HttpServletRequest) request).getSession().getAttribute(compID);
                 if (maxSizeOfFile != null) {
-                    FileUploadRequestWrapper wrapper = new FileUploadRequestWrapper(hRequest, tempDirStr, maxSizeOfFile);
+                    String idOfFile = request.getParameter(ID_OF_FILE);
+                    FileUploadRequestWrapper wrapper = new FileUploadRequestWrapper(hRequest, tempDirStr, maxSizeOfFile, compID + idOfFile);
                     request.setAttribute("fileUploadRequest", true);
                     chain.doFilter(wrapper, response);
                 } else {

@@ -44,6 +44,10 @@ import java.util.Map;
 
 public class FileUploadRenderer extends RendererBase implements AjaxPortionRenderer {
     public static final String INIT_PARAM_MAX_FILE_SIZE = "org.openfaces.fileUpload.fileSizeLimit";
+    public static final String TERMINATED_TEXT = "_TERMINATED";
+    public static final String PROGRESS_ID = "progress_";
+    public  static final String EXCEED_MAX_SIZE_ID = "exceedMaxSize_";
+
     private static final String DIV_FOR_INPUTS_ID = "::inputs";
     private static final String INPUT_OF_FILE_ID = "::input";
     private static final String DIV_FOR_INFO_ID = "::infoDiv";
@@ -73,7 +77,6 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
 
     private static final String FOOTER_DIV_ID = "::footer";
     private static final String HELP_ELEMENTS_ID = "::elements";
-    private static final String EXCEED_MAX_SIZE_ID = "exceedMaxSize_";
     private static final String DRAG_AREA = "::dragArea";
     /*default text for buttons*/
     private static final String DEF_BROWSE_BTN_LABEL_SINGLE = "Upload...";
@@ -96,11 +99,13 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
     /*progress*/
     private static final String AJAX_PARAM_PROGRESS_REQUEST = "progressRequest";
     private static final String AJAX_PARAM_FIELD_NAME = "fieldName";
-    private static final String PROGRESS_ID = "progress_";
 
     /*listOfFiles*/
     private static final String AJAX_FILES_REQUEST = "listOfFilesRequest";
     private static final String AJAX_PARAM_FILES_ID = "idOfFiles";
+    /*iStopRequest*/
+    private static final String AJAX_IS_STOP_REQUEST = "stoppedRequest";
+    private static final String AJAX_PARAM_UNIQUE_ID = "uniqueIdOfFile";
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
@@ -428,8 +433,9 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
         try {
             HttpServletRequest request = (HttpServletRequest) extContext.getRequest();
             FileUploadItem uploadedFile = (FileUploadItem) request.getAttribute(clientId + DIV_FOR_INPUTS_ID + INPUT_OF_FILE_ID);
-            if (uploadedFile == null)
+            if (uploadedFile == null){
                 return;
+            }
             String id = (String) request.getAttribute("FILE_ID");
             request.getSession().setAttribute(id, uploadedFile);
 
@@ -517,6 +523,17 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
             }
             Rendering.addJsonParam(jsonObj, "allUploaded", allUploaded);
             Rendering.addJsonParam(jsonObj, "fileSizes", fileSizes);
+            return jsonObj;
+        }else if (jsonParam.has(AJAX_IS_STOP_REQUEST)){
+            String uniqueId = (String) jsonParam.get(AJAX_PARAM_UNIQUE_ID);
+            Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
+            JSONObject jsonObj = new JSONObject();
+            if (sessionMap.containsKey(uniqueId + TERMINATED_TEXT)){
+                Rendering.addJsonParam(jsonObj, "isStopped", true);
+                sessionMap.remove(uniqueId + TERMINATED_TEXT);
+            }else{
+                Rendering.addJsonParam(jsonObj, "isStopped", false);
+            }
             return jsonObj;
         }
         return null;

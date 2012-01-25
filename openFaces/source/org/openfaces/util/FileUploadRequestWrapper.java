@@ -15,8 +15,10 @@ package org.openfaces.util;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.openfaces.component.input.FileUpload;
 import org.openfaces.event.FileUploadItem;
 import org.openfaces.event.FileUploadStatus;
+import org.openfaces.renderkit.input.FileUploadRenderer;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
@@ -31,7 +33,7 @@ public class FileUploadRequestWrapper extends HttpServletRequestWrapper {
 
     private static final String FIELD_NAME = "::inputs::input";
 
-    public FileUploadRequestWrapper(HttpServletRequest request, String tempDirPath, final long maxSizeOfFile) {
+    public FileUploadRequestWrapper(HttpServletRequest request, String tempDirPath, final long maxSizeOfFile, String uniqueFileId) {
         super(request);
         final String contentLength = request.getHeader("content-length");
         if (contentLength == null)
@@ -62,7 +64,9 @@ public class FileUploadRequestWrapper extends HttpServletRequestWrapper {
         } catch (FileUploadException fe) {
             //throw new RuntimeException(fe);
             System.out.println("File upload has been terminated or request has timed out.");
+            request.getSession().setAttribute(uniqueFileId + FileUploadRenderer.TERMINATED_TEXT, true);
         } catch (IOException ne) {
+            request.getSession().setAttribute(uniqueFileId + FileUploadRenderer.TERMINATED_TEXT, true);
             throw new RuntimeException(ne);
         }
     }
