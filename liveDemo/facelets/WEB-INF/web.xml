@@ -13,9 +13,6 @@
         <param-value>-1</param-value>
     </context-param>
 -->
-  <session-config>
-    <session-timeout>1</session-timeout>
-  </session-config>
   <context-param>
     <param-name>org.jboss.jbossfaces.WAR_BUNDLES_JSF_IMPL</param-name>
     <param-value>true</param-value>
@@ -150,7 +147,7 @@
   <context-param>
     <description>Specifies the maximum size of each file in kilobytes.</description>
     <param-name>org.openfaces.fileUpload.fileSizeLimit</param-name>
-    <param-value>2000000</param-value>
+    <param-value>200000</param-value>
   </context-param>
 
 
