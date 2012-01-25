@@ -525,6 +525,7 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
             Rendering.addJsonParam(jsonObj, "fileSizes", fileSizes);
             return jsonObj;
         }else if (jsonParam.has(AJAX_IS_STOP_REQUEST)){
+            /*This is request can be sent by two reasons : if we want to find out if file is stopped or it is terminated by another reasons*/
             String uniqueId = (String) jsonParam.get(AJAX_PARAM_UNIQUE_ID);
             Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
             JSONObject jsonObj = new JSONObject();

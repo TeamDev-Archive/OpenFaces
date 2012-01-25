@@ -228,7 +228,8 @@ O$.FileUpload = {
                             } else {
                               var percents = portionData['progressInPercent'];
                               if (percents != 100) {
-                                if (infoDiv._status != O$.statusEnum.IN_PROGRESS && infoDiv._status!= O$.statusEnum.STOPPED) {
+                                if (infoDiv._status != O$.statusEnum.IN_PROGRESS && infoDiv._status!= O$.statusEnum.STOPPED
+                                        && infoDiv._status!= O$.statusEnum.FAILED) {
                                   infoDiv._status = O$.statusEnum.IN_PROGRESS;
                                   fileForAPI.status = O$.statusEnum.IN_PROGRESS;
                                   infoDiv.childNodes[2].innerHTML = statusLabelInProgress;
@@ -262,6 +263,17 @@ O$.FileUpload = {
                                   if (inputForFile._wantToInterrupt) {
                                     sendIsStoppedRequest(inputForFile, infoDiv, fileForAPI);
                                   }
+                                  if (infoDiv.childNodes[1].firstChild.getValue() == percents) {
+                                    if (!file._percentsEqualsTimes) {
+                                      file._percentsEqualsTimes = 0;
+                                    }
+                                    file._percentsEqualsTimes++;
+                                    if (file._percentsEqualsTimes > 3) {
+                                      sendIsErrorRequest(inputForFile, infoDiv, fileForAPI);
+                                    }
+                                  }else{
+                                    file._percentsEqualsTimes = 0;
+                                  }
                                   infoDiv.childNodes[1].firstChild.setValue(percents);
                                   fileForAPI.progress = percents/100;
                                   fileUpload._events._fireFileUploadInProgressEvent(fileForAPI);
@@ -292,6 +304,7 @@ O$.FileUpload = {
                           true
                   );
                 }
+
                 function sendIsStoppedRequest(inputForFile, infoDiv, fileForAPI){
                   O$.requestComponentPortions(fileUpload.id, ["nothing"],
                           JSON.stringify({stoppedRequest:true, uniqueIdOfFile:inputForFile.previousSibling.value}),
@@ -306,6 +319,25 @@ O$.FileUpload = {
                             fileForAPI.status = O$.statusEnum.STOPPED;
                             fileUpload._events._fireFileUploadEndEvent(fileForAPI);
                             prepareUIWhenAllRequestsFinished(true);
+                          }, null, true);
+                }
+
+                function sendIsErrorRequest(inputForFile, infoDiv, fileForAPI){
+                  O$.requestComponentPortions(fileUpload.id, ["nothing"],
+                          JSON.stringify({stoppedRequest:true, uniqueIdOfFile:inputForFile.previousSibling.value}),
+                          function (fileUpload, portionName, portionHTML, portionScripts, portionData) {
+                            if (portionData['isStopped'] == "true") {
+                              inputForFile._isInterrupted = true;
+                              infoDiv._status = O$.statusEnum.FAILED;
+                              fileForAPI.status = O$.statusEnum.FAILED;
+                              inputsStorage.removeChild(inputForFile.parentNode.parentNode);
+                              infoDiv.childNodes[2].innerHTML = statusLabelUnexpectedError;
+                              var id = inputForFile.previousSibling.value;
+                              setStatusforFileWithId(id, "FAILED");
+                              fileUpload._events._fireFileUploadEndEvent(fileForAPI);
+                              setClearBtnAndEventHandler(infoDiv, inputForFile._idInputAndDiv);
+                              prepareUIWhenAllRequestsFinished(true);
+                            }
                           }, null, true);
                 }
 
@@ -332,7 +364,8 @@ O$.FileUpload = {
                             } else {
                               var percents = portionData['progressInPercent'];
                               if (percents != 100) {
-                                if (infoDiv._status != O$.statusEnum.IN_PROGRESS && infoDiv._status!= O$.statusEnum.STOPPED) {
+                                if (infoDiv._status != O$.statusEnum.IN_PROGRESS && infoDiv._status!= O$.statusEnum.STOPPED
+                                        && infoDiv._status!= O$.statusEnum.FAILED) {
                                   infoDiv._status = O$.statusEnum.IN_PROGRESS;
                                   fileForAPI.status = O$.statusEnum.IN_PROGRESS;
                                   infoDiv.childNodes[2].innerHTML = statusLabelInProgress;
@@ -364,6 +397,17 @@ O$.FileUpload = {
                                 if (!file._isInterrupted) {
                                   if (file._wantToInterrupt) {
                                     sendIsStoppedRequestHTML5(file, infoDiv, fileForAPI);
+                                  }
+                                  if (infoDiv.childNodes[1].firstChild.getValue() == percents) {
+                                    if (!file._percentsEqualsTimes) {
+                                      file._percentsEqualsTimes = 0;
+                                    }
+                                    file._percentsEqualsTimes++;
+                                    if (file._percentsEqualsTimes > 3) {
+                                      sendIsErrorRequestHTML5(file, infoDiv, fileForAPI);
+                                    }
+                                  } else {
+                                    file._percentsEqualsTimes = 0;
                                   }
                                   infoDiv.childNodes[1].firstChild.setValue(percents);
                                   fileForAPI.progress = percents/100;
@@ -408,6 +452,24 @@ O$.FileUpload = {
                               setClearBtnAndEventHandler(infoDiv, file._infoId);
                               fileForAPI.status = O$.statusEnum.STOPPED;
                               fileUpload._events._fireFileUploadEndEvent(fileForAPI);
+                              prepareUIWhenAllRequestsFinished(true);
+                            }
+                          }, null, true);
+                }
+
+                function sendIsErrorRequestHTML5(file, infoDiv, fileForAPI){
+                  O$.requestComponentPortions(fileUpload.id, ["nothing"],
+                          JSON.stringify({stoppedRequest:true, uniqueIdOfFile:file._uniqueId}),
+                          function (fileUpload, portionName, portionHTML, portionScripts, portionData) {
+                            if (portionData['isStopped'] == "true") {
+                              file._isInterrupted = true;
+                              infoDiv._status = O$.statusEnum.FAILED;
+                              fileForAPI.status = O$.statusEnum.FAILED;
+                              removeHTML5File(file);
+                              infoDiv.childNodes[2].innerHTML = statusLabelUnexpectedError;
+                              setStatusforFileWithId(file._uniqueId, "FAILED");
+                              fileUpload._events._fireFileUploadEndEvent(fileForAPI);
+                              setClearBtnAndEventHandler(infoDiv, file._infoId);
                               prepareUIWhenAllRequestsFinished(true);
                             }
                           }, null, true);

@@ -35,7 +35,7 @@ public class ProgressMonitorFileItem extends DiskFileItem {
         this.observer = observer;
         this.passedInFileSize = passedInFileSize;
         this.shouldProcess = shouldProcess;
-        if(shouldProcess && observer!=null){
+        if (shouldProcess && observer != null) {
             observer.setProgress(0);
         }
     }
