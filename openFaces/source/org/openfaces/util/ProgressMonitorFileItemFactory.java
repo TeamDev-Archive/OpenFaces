@@ -26,12 +26,14 @@ public class ProgressMonitorFileItemFactory extends DiskFileItemFactory {
     private WeakReference<HttpServletRequest> requestRef;
     private long requestLength;
     private long maxSizeOfFile;
+    private String uniqueFileId;
 
-    public ProgressMonitorFileItemFactory(HttpServletRequest request, long maxSizeOfFile) {
+    public ProgressMonitorFileItemFactory(HttpServletRequest request, long maxSizeOfFile, String uniqueFileId) {
         super();
         temporaryDirectory = (File) request.getSession().getServletContext().getAttribute("javax.servlet.context.tempdir");
         requestRef = new WeakReference<HttpServletRequest>(request);
         this.maxSizeOfFile = maxSizeOfFile;
+        this.uniqueFileId = uniqueFileId;
 
         String contentLength = request.getHeader("content-length");
         if (contentLength != null) {
@@ -40,15 +42,15 @@ public class ProgressMonitorFileItemFactory extends DiskFileItemFactory {
     }
 
     public FileItem createItem(String fieldName, String contentType,
-                               boolean isFormField, String fileName) {
+                               boolean isFormField, String fileName){
         SessionUpdatingProgressObserver observer = null;
         boolean shouldProcess = true;
         if (!isFormField && !fileName.equals("")) { //This must be a file upload and has a name
-            observer = new SessionUpdatingProgressObserver(fieldName);
+            observer = new SessionUpdatingProgressObserver(uniqueFileId);
             if (requestLength > maxSizeOfFile) {
                 shouldProcess = false;
                 HttpServletRequest request = requestRef.get();
-                request.getSession().setAttribute(FileUploadRenderer.EXCEED_MAX_SIZE_ID + fieldName, true);
+                request.getSession().setAttribute(FileUploadRenderer.EXCEED_MAX_SIZE_ID + uniqueFileId, true);
             }
             //fileName = fileName.replaceAll("[#$%^&* ]+","_"); //doesn't work unfortunately
         }
@@ -64,16 +66,16 @@ public class ProgressMonitorFileItemFactory extends DiskFileItemFactory {
 
     public class SessionUpdatingProgressObserver implements ProgressObserver {
 
-        private final String fieldName;
+        private final String fileId;
 
-        public SessionUpdatingProgressObserver(String fieldName) {
-            this.fieldName = fieldName;
+        public SessionUpdatingProgressObserver(String fileId) {
+            this.fileId = fileId;
         }
 
         public void setProgress(int progress) {
             HttpServletRequest request = requestRef.get();
             if (request != null) {
-                request.getSession().setAttribute(FileUploadRenderer.PROGRESS_ID + fieldName, progress);
+                request.getSession().setAttribute(FileUploadRenderer.PROGRESS_ID + fileId, progress);
             }
         }
     }

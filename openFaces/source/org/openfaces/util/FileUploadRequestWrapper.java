@@ -41,15 +41,19 @@ public class FileUploadRequestWrapper extends HttpServletRequestWrapper {
 
         try {
             ServletFileUpload upload = new ServletFileUpload();
-            upload.setFileItemFactory(new ProgressMonitorFileItemFactory(request, maxSizeOfFile));
+            upload.setFileItemFactory(new ProgressMonitorFileItemFactory(request, maxSizeOfFile, uniqueFileId));
             List<FileItem> fileItems = upload.parseRequest(request);
             for (FileItem fileItem : fileItems) {
                 if (!fileItem.isFormField()) {
                     if (request.getAttribute("FILE_ID") != null && fileItem.getSize() != 0) {
-                        File f = writeFile(fileItem, tempDirPath);
-                        int index = fileItem.getFieldName().indexOf(FIELD_NAME);
-                        String genericNameForFile = fileItem.getFieldName().substring(0, index + FIELD_NAME.length());
-                        request.setAttribute(genericNameForFile, new FileUploadItem(fileItem.getName(), f, FileUploadStatus.SUCCESSFUL));
+                        if (request.getSession().getAttribute(uniqueFileId + FileUploadRenderer.TERMINATED_TEXT) == null) {
+                            File f = writeFile(fileItem, tempDirPath);
+                            int index = fileItem.getFieldName().indexOf(FIELD_NAME);
+                            String genericNameForFile = fileItem.getFieldName().substring(0, index + FIELD_NAME.length());
+                            request.setAttribute(genericNameForFile, new FileUploadItem(fileItem.getName(), f, FileUploadStatus.SUCCESSFUL));
+                        }else{
+                            request.getSession().removeAttribute(uniqueFileId + FileUploadRenderer.TERMINATED_TEXT);
+                        }
                     }/*else {//we are not using file in this case
                         request.setAttribute(fileItem.getFieldName(), new FileUploadItem(fileItem.getName(), null, FileUploadStatus.SIZE_LIMIT_EXCEEDED));
                     }*/
@@ -62,12 +66,14 @@ public class FileUploadRequestWrapper extends HttpServletRequestWrapper {
             }
 
         } catch (FileUploadException fe) {
-            //throw new RuntimeException(fe);
-            System.out.println("File upload has been terminated or request has timed out.");
+            /*this exception can happened in case if something wrong with file or we stopped manually*/
             request.getSession().setAttribute(uniqueFileId + FileUploadRenderer.TERMINATED_TEXT, true);
         } catch (IOException ne) {
+            /*this exception can happened in case if problem in writing file*/
             request.getSession().setAttribute(uniqueFileId + FileUploadRenderer.TERMINATED_TEXT, true);
-            throw new RuntimeException(ne);
+        }catch(Exception e){
+            /*this exception can happened if on server some problem*/
+            request.getSession().setAttribute(uniqueFileId + FileUploadRenderer.TERMINATED_TEXT, true);
         }
     }
 

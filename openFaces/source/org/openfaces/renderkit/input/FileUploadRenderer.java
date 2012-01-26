@@ -37,7 +37,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -98,7 +97,7 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
 
     /*progress*/
     private static final String AJAX_PARAM_PROGRESS_REQUEST = "progressRequest";
-    private static final String AJAX_PARAM_FIELD_NAME = "fieldName";
+    private static final String AJAX_PARAM_FILE_ID = "fileId";
 
     /*listOfFiles*/
     private static final String AJAX_FILES_REQUEST = "listOfFilesRequest";
@@ -106,6 +105,9 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
     /*iStopRequest*/
     private static final String AJAX_IS_STOP_REQUEST = "stoppedRequest";
     private static final String AJAX_PARAM_UNIQUE_ID = "uniqueIdOfFile";
+    /*information request that file is stopped because of timeout*/
+    private static final String AJAX_IS_INFORM_FAILED_REQUEST="informFailedRequest";
+    private static final String AJAX_PARAM_ID_FAILED_FILE="uniqueIdOfFile";
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
@@ -457,21 +459,25 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
     public JSONObject encodeAjaxPortion(FacesContext context, UIComponent component, String portionName, JSONObject jsonParam) throws IOException, JSONException {
         if (jsonParam.has(AJAX_PARAM_PROGRESS_REQUEST)) {
             JSONObject jsonObj = new JSONObject();
-            String fieldName = (String) jsonParam.get(AJAX_PARAM_FIELD_NAME);
+            String fileId = (String) jsonParam.get(AJAX_PARAM_FILE_ID);
             Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
-            if (sessionMap.containsKey(PROGRESS_ID + fieldName)) {
-                Integer progress = (Integer) sessionMap.get(PROGRESS_ID + fieldName);
+            if (sessionMap.containsKey(PROGRESS_ID + fileId)) {
+                Integer progress = (Integer) sessionMap.get(PROGRESS_ID + fileId);
                 Rendering.addJsonParam(jsonObj, "progressInPercent", progress);
                 Rendering.addJsonParam(jsonObj, "status", "inProgress");
                 if (progress.equals(100)) {
-                    sessionMap.remove(PROGRESS_ID + fieldName);
+                    sessionMap.remove(PROGRESS_ID + fileId);
                 }
-            } else {//in case if any error
-                Rendering.addJsonParam(jsonObj, "status", "error");
-                if (sessionMap.containsKey(EXCEED_MAX_SIZE_ID + fieldName)) {
-                    boolean maxFileExceeded = (Boolean) sessionMap.get(EXCEED_MAX_SIZE_ID + fieldName);
+            } else {
+                /*if FileSize Exceed*/
+                if (sessionMap.containsKey(EXCEED_MAX_SIZE_ID + fileId)) {
+                    boolean maxFileExceeded = (Boolean) sessionMap.get(EXCEED_MAX_SIZE_ID + fileId);
                     Rendering.addJsonParam(jsonObj, "isFileSizeExceed", maxFileExceeded);
-                    sessionMap.remove(EXCEED_MAX_SIZE_ID + fieldName);
+                    sessionMap.remove(EXCEED_MAX_SIZE_ID + fileId);
+                }else{
+                /*if there is no fileUpload request*/
+                    Rendering.addJsonParam(jsonObj, "progressInPercent", 0);
+                    Rendering.addJsonParam(jsonObj, "status", "inProgress");
                 }
             }
             return jsonObj;
@@ -535,6 +541,13 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
             }else{
                 Rendering.addJsonParam(jsonObj, "isStopped", false);
             }
+            return jsonObj;
+        }else if (jsonParam.has(AJAX_IS_INFORM_FAILED_REQUEST)){
+            /*This is request can be sent to inform that request is failed because of timeout*/
+            String uniqueId = (String) jsonParam.get(AJAX_PARAM_ID_FAILED_FILE);
+            Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
+            JSONObject jsonObj = new JSONObject();
+            sessionMap.put(uniqueId + TERMINATED_TEXT, true);
             return jsonObj;
         }
         return null;

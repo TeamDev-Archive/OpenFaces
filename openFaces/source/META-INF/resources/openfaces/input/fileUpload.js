@@ -35,7 +35,10 @@ O$.FileUpload = {
       _ID : ID,
       _filesHTML5:[],
       _events:{},
-      _allFiles:[]
+      _allFiles:[],
+      _numberOfFailedRequest:15,   /*this number defines how many requests should have gone to presume that request is timedout if progress doesn't changed*/
+      _numberOfErrorRequest: 3 /*this number defines how many requests should have gone to check that request throwed an Exception if progress doesn't changed*/
+
     });
     setAllEvents();
     if (!fileUpload._multiUpload){
@@ -205,23 +208,17 @@ O$.FileUpload = {
                 }
                 function progressRequest(inputForFile) {
                   O$.requestComponentPortions(fileUpload.id, ["nothing"],
-                          JSON.stringify({progressRequest:"true", fieldName:inputForFile.name}),
+                          JSON.stringify({progressRequest:"true", fileId:inputForFile.previousSibling.value}),
                           function (fileUpload, portionName, portionHTML, portionScripts, portionData) {
                             var infoDiv = O$(allInfos.id + inputForFile._idInputAndDiv);
                             var fileForAPI = fileUpload._getFile(inputForFile._idInputAndDiv);
-                            if (portionData['status'] == "error") {//todo:description add what kind of error
-                              infoDiv._status = O$.statusEnum.FAILED;
-                              fileForAPI.status = O$.statusEnum.FAILED;
+                            if (portionData['isFileSizeExceed'] == "true") {
+                              infoDiv._status = O$.statusEnum.SIZE_LIMIT_EXCEEDED;
+                              fileForAPI.status = O$.statusEnum.SIZE_LIMIT_EXCEEDED;
                               inputsStorage.removeChild(inputForFile.parentNode.parentNode);
-                              if (portionData['isFileSizeExceed'] == "true") {
-                                infoDiv.childNodes[2].innerHTML = statusLabelErrorSize;
-                                var id = inputForFile.previousSibling.value;
-                                setStatusforFileWithId(id, "SIZE_LIMIT_EXCEEDED");
-                              } else {
-                                infoDiv.childNodes[2].innerHTML = statusLabelUnexpectedError;
-                                var id = inputForFile.previousSibling.value;
-                                setStatusforFileWithId(id, "FAILED");
-                              }
+                              infoDiv.childNodes[2].innerHTML = statusLabelErrorSize;
+                              var id = inputForFile.previousSibling.value;
+                              setStatusforFileWithId(id, "SIZE_LIMIT_EXCEEDED");
                               fileUpload._events._fireFileUploadEndEvent(fileForAPI);
                               setClearBtnAndEventHandler(infoDiv, inputForFile._idInputAndDiv);
                               prepareUIWhenAllRequestsFinished(true);
@@ -264,15 +261,28 @@ O$.FileUpload = {
                                     sendIsStoppedRequest(inputForFile, infoDiv, fileForAPI);
                                   }
                                   if (infoDiv.childNodes[1].firstChild.getValue() == percents) {
-                                    if (!file._percentsEqualsTimes) {
-                                      file._percentsEqualsTimes = 0;
+                                    if (!inputForFile._percentsEqualsTimes) {
+                                      inputForFile._percentsEqualsTimes = 0;
                                     }
-                                    file._percentsEqualsTimes++;
-                                    if (file._percentsEqualsTimes > 3) {
+                                    inputForFile._percentsEqualsTimes++;
+                                    if (inputForFile._percentsEqualsTimes > fileUpload._numberOfErrorRequest) {
                                       sendIsErrorRequest(inputForFile, infoDiv, fileForAPI);
                                     }
+                                    if (inputForFile._percentsEqualsTimes > fileUpload._numberOfFailedRequest) {
+                                      inputForFile._isInterrupted = true;
+                                      var id = inputForFile.previousSibling.value;
+                                      sendInformThatRequestFailed(id);
+                                      infoDiv._status = O$.statusEnum.FAILED;
+                                      fileForAPI.status = O$.statusEnum.FAILED;
+                                      inputsStorage.removeChild(inputForFile.parentNode.parentNode);
+                                      infoDiv.childNodes[2].innerHTML = statusLabelUnexpectedError;
+                                      setStatusforFileWithId(id, "FAILED");
+                                      fileUpload._events._fireFileUploadEndEvent(fileForAPI);
+                                      setClearBtnAndEventHandler(infoDiv, inputForFile._idInputAndDiv);
+                                      prepareUIWhenAllRequestsFinished(true);
+                                    }
                                   }else{
-                                    file._percentsEqualsTimes = 0;
+                                    inputForFile._percentsEqualsTimes = 0;
                                   }
                                   infoDiv.childNodes[1].firstChild.setValue(percents);
                                   fileForAPI.progress = percents/100;
@@ -343,21 +353,16 @@ O$.FileUpload = {
 
                 function progressHTMl5Request(file, request) {
                   O$.requestComponentPortions(fileUpload.id, ["nothing"],
-                          JSON.stringify({progressRequest:"true", fieldName:file._fakeInput}),
+                          JSON.stringify({progressRequest:"true", fileId:file._uniqueId}),
                           function (fileUpload, portionName, portionHTML, portionScripts, portionData) {
                             var infoDiv = O$(allInfos.id + file._infoId);
                             var fileForAPI = fileUpload._getFile(file._infoId);
-                            if (portionData['status'] == "error") {//todo:description add what kind of error
-                              infoDiv._status = O$.statusEnum.FAILED;
-                              fileForAPI.status = O$.statusEnum.FAILED;
+                            if (portionData['isFileSizeExceed'] == "true") {
+                              infoDiv._status = O$.statusEnum.SIZE_LIMIT_EXCEEDED;
+                              fileForAPI.status = O$.statusEnum.SIZE_LIMIT_EXCEEDED;
                               removeHTML5File(file);
-                              if (portionData['isFileSizeExceed'] == "true") {
-                                infoDiv.childNodes[2].innerHTML = statusLabelErrorSize;
-                                setStatusforFileWithId(file._uniqueId, "SIZE_LIMIT_EXCEEDED");
-                              } else {
-                                infoDiv.childNodes[2].innerHTML = statusLabelUnexpectedError;
-                                setStatusforFileWithId(file._uniqueId, "FAILED");
-                              }
+                              infoDiv.childNodes[2].innerHTML = statusLabelErrorSize;
+                              setStatusforFileWithId(file._uniqueId, "SIZE_LIMIT_EXCEEDED");
                               fileUpload._events._fireFileUploadEndEvent(fileForAPI);
                               setClearBtnAndEventHandler(infoDiv, file._infoId);
                               prepareUIWhenAllRequestsFinished(true);
@@ -403,8 +408,20 @@ O$.FileUpload = {
                                       file._percentsEqualsTimes = 0;
                                     }
                                     file._percentsEqualsTimes++;
-                                    if (file._percentsEqualsTimes > 3) {
+                                    if (file._percentsEqualsTimes > fileUpload._numberOfErrorRequest) {
                                       sendIsErrorRequestHTML5(file, infoDiv, fileForAPI);
+                                    }
+                                    if (file._percentsEqualsTimes > fileUpload._numberOfFailedRequest) {
+                                      file._isInterrupted = true;
+                                      sendInformThatRequestFailed(file._uniqueId);
+                                      infoDiv._status = O$.statusEnum.FAILED;
+                                      fileForAPI.status = O$.statusEnum.FAILED;
+                                      removeHTML5File(file);
+                                      infoDiv.childNodes[2].innerHTML = statusLabelUnexpectedError;
+                                      setStatusforFileWithId(file._uniqueId, "FAILED");
+                                      fileUpload._events._fireFileUploadEndEvent(fileForAPI);
+                                      setClearBtnAndEventHandler(infoDiv, file._infoId);
+                                      prepareUIWhenAllRequestsFinished(true);
                                     }
                                   } else {
                                     file._percentsEqualsTimes = 0;
@@ -473,6 +490,12 @@ O$.FileUpload = {
                               prepareUIWhenAllRequestsFinished(true);
                             }
                           }, null, true);
+                }
+
+                function sendInformThatRequestFailed(fileId){
+                  O$.requestComponentPortions(fileUpload.id, ["nothing"],
+                          JSON.stringify({informFailedRequest:true, uniqueIdOfFile:fileId}),
+                          function (fileUpload, portionName, portionHTML, portionScripts, portionData) {}, null, true);
                 }
 
                 function setStatusforFileWithId(id, status) {
@@ -817,7 +840,8 @@ O$.FileUpload = {
       function isFileNameAlreadyExist(filename) {
         var infos = allInfos.childNodes;
         for (var k = 0; k < infos.length; k++) {
-          if (infos[k]._status != O$.statusEnum.FAILED || infos[k]._status!=O$.statusEnum.STOPPED) {
+          if (infos[k]._status != O$.statusEnum.FAILED || infos[k]._status != O$.statusEnum.STOPPED
+                  || infos[k]._status != O$.statusEnum.SIZE_LIMIT_EXCEEDED) {
             var value = infos[k].childNodes[0].innerHTML;
             if (value == getFileName(filename)) {
               return true;
@@ -1476,6 +1500,7 @@ O$.statusEnum = {
   IN_PROGRESS : {value: "In progress"},
   SUCCESSFUL : {value:"Successful"},
   FAILED : {value:"Failed"},
-  STOPPED : {value:"Stopped"}
+  STOPPED : {value:"Stopped"},
+  SIZE_LIMIT_EXCEEDED : {value:"Size limit exceed"}
 };
 
