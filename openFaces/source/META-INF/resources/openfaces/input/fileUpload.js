@@ -146,14 +146,15 @@ O$.FileUpload = {
                   clearAllButton.style.display = "none";
                 }
                 fileUpload._listOfids = [];
+                /*prepare a list of files that would be uploaded*/
                 for (var inputsIndex = 0; inputsIndex < inputsStorage.childNodes.length; inputsIndex++) {
                   var file = [];
                   var form = inputsStorage.childNodes[inputsIndex].firstChild;
-                  file.push(form.childNodes[0].value);//id
-                  file.push(form.childNodes[1].name);//name of file input
-                  file.push(encodeURI(getFileName(form.childNodes[1].value)));//filename
+                  file.push(form.childNodes[0]._uniqueId);//id
+                  file.push(form.childNodes[0].name);//name of file input
+                  file.push(encodeURI(getFileName(form.childNodes[0].value)));//filename
                   file.push("IN_PROGRESS");//status
-                  file.push(form.childNodes[1]._idInputAndDiv);//client id of div
+                  file.push(form.childNodes[0]._idInputAndDiv);//client id of div
                   fileUpload._listOfids.push(file);
                 }
                 /*specific behavior for uploading files with drag and drop*/
@@ -172,8 +173,8 @@ O$.FileUpload = {
                 for (var inputsIndex = 0; inputsIndex < inputsStorage.childNodes.length; inputsIndex++) {
                   var inputDiv = inputsStorage.childNodes[inputsIndex];
                   var form = inputDiv.childNodes[0];
-                  var iframe = form.childNodes[2];
-                  var fileInput = form.childNodes[1];
+                  var iframe = form.childNodes[1];
+                  var fileInput = form.childNodes[0];
                   var fileOfAPI = fileUpload._getFile(fileInput._idInputAndDiv);
                   var fileInfo = O$(allInfos.id + fileInput._idInputAndDiv);
                   fileInfo.childNodes[3].firstChild.style.visibility = "hidden";
@@ -190,7 +191,6 @@ O$.FileUpload = {
                   var xhr = new XMLHttpRequest();
                   xhr.open('POST', uri + "&idOfFile=" + file._infoId, true);
                   var data = new FormData();
-                  data.append("FILE_ID", file._uniqueId);
                   data.append(file._fakeInput, file);
                   xhr.send(data);
                   return xhr;
@@ -210,7 +210,7 @@ O$.FileUpload = {
                 }
                 function progressRequest(inputForFile) {
                   O$.requestComponentPortions(fileUpload.id, ["nothing"],
-                          JSON.stringify({progressRequest:"true", fileId:inputForFile.previousSibling.value}),
+                          JSON.stringify({progressRequest:"true", fileId:inputForFile._uniqueId}),
                           function (fileUpload, portionName, portionHTML, portionScripts, portionData) {
                             var infoDiv = O$(allInfos.id + inputForFile._idInputAndDiv);
                             var fileForAPI = fileUpload._getFile(inputForFile._idInputAndDiv);
@@ -219,8 +219,7 @@ O$.FileUpload = {
                               fileForAPI.status = O$.statusEnum.SIZE_LIMIT_EXCEEDED;
                               inputsStorage.removeChild(inputForFile.parentNode.parentNode);
                               infoDiv.childNodes[2].innerHTML = statusLabelErrorSize;
-                              var id = inputForFile.previousSibling.value;
-                              setStatusforFileWithId(id, "SIZE_LIMIT_EXCEEDED");
+                              setStatusforFileWithId(inputForFile._uniqueId, "SIZE_LIMIT_EXCEEDED");
                               fileUpload._events._fireFileUploadEndEvent(fileForAPI);
                               setClearBtnAndEventHandler(infoDiv, inputForFile._idInputAndDiv);
                               prepareUIWhenAllRequestsFinished(true);
@@ -241,8 +240,7 @@ O$.FileUpload = {
                                     }
                                     if (inputForFile._percentsEqualsTimes > fileUpload._numberOfFailedRequest) {
                                       inputForFile._isInterrupted = true;
-                                      var id = inputForFile.previousSibling.value;
-                                      sendInformThatRequestFailed(id);
+                                      sendInformThatRequestFailed(inputForFile._uniqueId);
                                       infoDiv._status = O$.statusEnum.FAILED;
                                       fileForAPI.status = O$.statusEnum.FAILED;
                                       inputsStorage.removeChild(inputForFile.parentNode.parentNode);
@@ -271,8 +269,7 @@ O$.FileUpload = {
                                 // infoDiv updating
                                 infoDiv._status = O$.statusEnum.SUCCESSFUL;
                                 infoDiv.childNodes[2].innerHTML = statusLabelUploaded;
-                                var id = inputForFile.previousSibling.value;
-                                setStatusforFileWithId(id, "SUCCESSFUL");
+                                setStatusforFileWithId(inputForFile._uniqueId, "SUCCESSFUL");
                                 setClearBtnAndEventHandler(infoDiv, inputForFile._idInputAndDiv);
                                 fileForAPI.status = O$.statusEnum.SUCCESSFUL;
                                 fileUpload._events._fireFileUploadEndEvent(fileForAPI);
@@ -288,14 +285,13 @@ O$.FileUpload = {
 
                 function sendIsStoppedRequest(inputForFile, infoDiv, fileForAPI){
                   O$.requestComponentPortions(fileUpload.id, ["nothing"],
-                          JSON.stringify({stoppedRequest:true, uniqueIdOfFile:inputForFile.previousSibling.value}),
+                          JSON.stringify({stoppedRequest:true, uniqueIdOfFile:inputForFile._uniqueId}),
                           function (fileUpload, portionName, portionHTML, portionScripts, portionData) {
                             inputForFile._isInterrupted = true;
                             infoDiv._status = O$.statusEnum.STOPPED;
                             inputsStorage.removeChild(inputForFile.parentNode.parentNode);
                             infoDiv.childNodes[2].innerHTML = statusStoppedText;
-                            var id = inputForFile.previousSibling.value;
-                            setStatusforFileWithId(id, "STOPPED");
+                            setStatusforFileWithId(inputForFile._uniqueId, "STOPPED");
                             setClearBtnAndEventHandler(infoDiv, inputForFile._idInputAndDiv);
                             fileForAPI.status = O$.statusEnum.STOPPED;
                             fileUpload._events._fireFileUploadEndEvent(fileForAPI);
@@ -305,7 +301,7 @@ O$.FileUpload = {
 
                 function sendIsErrorRequest(inputForFile, infoDiv, fileForAPI){
                   O$.requestComponentPortions(fileUpload.id, ["nothing"],
-                          JSON.stringify({stoppedRequest:true, uniqueIdOfFile:inputForFile.previousSibling.value}),
+                          JSON.stringify({stoppedRequest:true, uniqueIdOfFile:inputForFile._uniqueId}),
                           function (fileUpload, portionName, portionHTML, portionScripts, portionData) {
                             if (portionData['isStopped'] == "true") {
                               inputForFile._isInterrupted = true;
@@ -313,8 +309,7 @@ O$.FileUpload = {
                               fileForAPI.status = O$.statusEnum.FAILED;
                               inputsStorage.removeChild(inputForFile.parentNode.parentNode);
                               infoDiv.childNodes[2].innerHTML = statusLabelUnexpectedError;
-                              var id = inputForFile.previousSibling.value;
-                              setStatusforFileWithId(id, "FAILED");
+                              setStatusforFileWithId(inputForFile._uniqueId, "FAILED");
                               fileUpload._events._fireFileUploadEndEvent(fileForAPI);
                               setClearBtnAndEventHandler(infoDiv, inputForFile._idInputAndDiv);
                               prepareUIWhenAllRequestsFinished(true);
@@ -1082,11 +1077,7 @@ O$.FileUpload = {
       } else {
         formForInput.setAttribute("enctype", "multipart/form-data");
       }
-      var inputId = document.createElement("input");
-      inputId.setAttribute("type", "text");
-      inputId.setAttribute("name", "FILE_ID");
-      inputId.setAttribute("value", fileUpload._ID + inputField._idInputAndDiv);
-      formForInput.appendChild(inputId);
+      inputField._uniqueId = fileUpload._ID + inputField._idInputAndDiv;
 
       inputField.setAttribute("id", formForInput.id + "::fileInput");
       inputField.setAttribute("name", inputField.id);
