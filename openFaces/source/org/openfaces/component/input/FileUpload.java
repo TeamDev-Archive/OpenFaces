@@ -33,7 +33,8 @@ import java.util.List;
 public class FileUpload extends OUIInputBase {
     protected static final List<String> EVENT_NAMES;
     static {
-        List<String> eventNames = new ArrayList<String>(Arrays.asList("uploadstart", "uploadend"));
+        List<String> eventNames = new ArrayList<String>(Arrays.asList("uploadstart", "uploadend",
+                "fileuploadstart","fileuploadinprogress","fileuploadend"));
         eventNames.addAll(OUIInputBase.EVENT_NAMES);
         EVENT_NAMES = Collections.unmodifiableList(eventNames);
     }
@@ -65,6 +66,12 @@ public class FileUpload extends OUIInputBase {
 
     private String allInfosStyle;
     private String allInfosClass;
+
+    private String dropTargetStyle;
+    private String dropTargetClass;
+    private String dropTargetDragoverStyle;
+    private String dropTargetDragoverClass;
+    private String dropTargetText;
 
     private String rowStyle;
     private String rowClass;
@@ -99,6 +106,11 @@ public class FileUpload extends OUIInputBase {
 
     private String onuploadstart;
     private String onuploadend;
+    private String onfileuploadstart;
+    private String onfileuploadinprogress;
+    private String onfileuploadend;
+
+    private int fileSizeLimit;
 
     public FileUpload() {
         setRendererType("org.openfaces.FileUploadRenderer");
@@ -130,6 +142,11 @@ public class FileUpload extends OUIInputBase {
                 browseButtonDisabledClass,
                 allInfosStyle,
                 allInfosClass,
+                dropTargetStyle,
+                dropTargetClass,
+                dropTargetDragoverStyle,
+                dropTargetDragoverClass,
+                dropTargetText,
                 rowStyle,
                 rowClass,
                 acceptedFileTypes,
@@ -151,8 +168,12 @@ public class FileUpload extends OUIInputBase {
                 saveAttachedState(context, uploadCompletionListener),
                 onuploadstart,
                 onuploadend,
+                onfileuploadstart,
+                onfileuploadinprogress,
+                onfileuploadend,
                 stoppingStatusText,
-                unexpectedErrorText
+                unexpectedErrorText,
+                fileSizeLimit
         };
     }
 
@@ -178,6 +199,11 @@ public class FileUpload extends OUIInputBase {
         browseButtonDisabledClass = (String) values[i++];
         allInfosStyle = (String) values[i++];
         allInfosClass = (String) values[i++];
+        dropTargetStyle = (String) values[i++];
+        dropTargetClass = (String) values[i++];
+        dropTargetDragoverStyle = (String) values[i++];
+        dropTargetDragoverClass = (String) values[i++];
+        dropTargetText = (String) values[i++];
         rowStyle = (String) values[i++];
         rowClass = (String) values[i++];
         acceptedFileTypes = (String) values[i++];
@@ -199,8 +225,12 @@ public class FileUpload extends OUIInputBase {
         uploadCompletionListener = (MethodExpression) restoreAttachedState(context, values[i++]);
         onuploadstart = (String) values[i++];
         onuploadend = (String) values[i++];
+        onfileuploadstart = (String) values[i++];
+        onfileuploadinprogress = (String) values[i++];
+        onfileuploadend = (String) values[i++];
         stoppingStatusText = (String) values[i++];
         unexpectedErrorText = (String) values[i++];
+        fileSizeLimit = (Integer) values[i++];
     }
 
 
@@ -234,6 +264,46 @@ public class FileUpload extends OUIInputBase {
 
     public void setAllInfosClass(String allInfosClass) {
         this.allInfosClass = allInfosClass;
+    }
+
+    public String getDropTargetStyle() {
+        return ValueBindings.get(this, "dropTargetStyle", dropTargetStyle);
+    }
+
+    public void setDropTargetStyle(String dropTargetStyle) {
+        this.dropTargetStyle = dropTargetStyle;
+    }
+
+    public String getDropTargetClass() {
+        return ValueBindings.get(this, "dropTargetClass", dropTargetClass);
+    }
+
+    public void setDropTargetClass(String dropTargetClass) {
+        this.dropTargetClass = dropTargetClass;
+    }
+
+    public String getDropTargetDragoverStyle() {
+        return ValueBindings.get(this, "dropTargetDragoverStyle", dropTargetDragoverStyle);
+    }
+
+    public void setDropTargetDragoverStyle(String dropTargetDragoverStyle) {
+        this.dropTargetDragoverStyle = dropTargetDragoverStyle;
+    }
+
+    public String getDropTargetDragoverClass() {
+        return ValueBindings.get(this, "dropTargetDragoverClass", dropTargetDragoverClass);
+    }
+
+    public void setDropTargetDragoverClass(String dropTargetDragoverClass) {
+        this.dropTargetDragoverClass = dropTargetDragoverClass;
+    }
+
+    public String getDropTargetText() {
+        return ValueBindings.get(this, "dropTargetText", dropTargetText);
+    }
+
+    public void setDropTargetText(String dropTargetText) {
+        this.dropTargetText = dropTargetText;
     }
 
     public String getRowStyle() {
@@ -541,17 +611,6 @@ public class FileUpload extends OUIInputBase {
         this.onuploadend = onuploadend;
     }
 
-    @Override
-    public String getDefaultEventName() {
-        return "uploadend";
-    }
-
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
-    }
-
-
     public String getStoppingStatusText() {
         return ValueBindings.get(this, "stoppingStatusText", stoppingStatusText, "Stopping...");
     }
@@ -567,4 +626,46 @@ public class FileUpload extends OUIInputBase {
     public void setUnexpectedErrorText(String unexpectedErrorText) {
         this.unexpectedErrorText = unexpectedErrorText;
     }
+
+    public int getFileSizeLimit() {
+        return ValueBindings.get(this, "fileSizeLimit", fileSizeLimit, 0);
+    }
+
+    public void setFileSizeLimit(int fileSizeLimit) {
+        this.fileSizeLimit = fileSizeLimit;
+    }
+    public String getOnfileuploadstart() {
+        return ValueBindings.get(this, "onfileuploadstart", onfileuploadstart);
+    }
+
+    public void setOnfileuploadstart(String onfileuploadstart) {
+        this.onfileuploadstart = onfileuploadstart;
+    }
+
+    public String getOnfileuploadinprogress() {
+        return ValueBindings.get(this, "onfileuploadinprogress", onfileuploadinprogress);
+    }
+
+    public void setOnfileuploadinprogress(String onfileuploadinprogress) {
+        this.onfileuploadinprogress = onfileuploadinprogress;
+    }
+
+    public String getOnfileuploadend() {
+        return ValueBindings.get(this, "onfileuploadend", onfileuploadend);
+    }
+
+    public void setOnfileuploadend(String onfileuploadend) {
+        this.onfileuploadend = onfileuploadend;
+    }
+    
+    @Override
+    public String getDefaultEventName() {
+        return "uploadend";
+    }
+
+    @Override
+    public Collection<String> getEventNames() {
+        return EVENT_NAMES;
+    }
+
 }
