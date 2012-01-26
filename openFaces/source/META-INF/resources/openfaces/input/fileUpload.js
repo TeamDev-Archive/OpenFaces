@@ -775,6 +775,7 @@ O$.FileUpload = {
         shouldInvokeFocusEvHandler = true;
         return false;
       }
+      clearAllInfosForUploadedFiles();
       addButtonTitleInput.className = addButtonClass;
       addButton._inFocus = false;
       inputForFile._idInputAndDiv = idOfInfoAndInputDiv;
@@ -962,6 +963,7 @@ O$.FileUpload = {
       if (isFileNameNotApplied(file.name) || inputInAddBtn.disabled || (file._fromDnD && isDirectory(file))) {
         return false;
       }
+      clearAllInfosForUploadedFiles();
       file._uniqueId = fileUpload._ID + idOfInfoAndInputDiv;
       file._fakeInput = componentId + "::inputs::input" + idOfInfoAndInputDiv + "::form::fileInput";
       file._infoId = idOfInfoAndInputDiv;
@@ -1364,6 +1366,7 @@ O$.FileUpload = {
         }
       }
     }
+
     function setAllEvents(){
       function createEventHandler(userHandler, eventName){
         return function(files){
@@ -1398,6 +1401,20 @@ O$.FileUpload = {
       fileUpload.removeAttribute("onfocus");
       fileUpload.onfocus = null;
 
+    }
+
+    function clearAllInfosForUploadedFiles(){
+      for (var index = 0; index < fileUpload._allFiles.length; index++) {
+        var file = fileUpload._allFiles[index];
+        if (file.status == O$.FileUpload.Status.SUCCESSFUL
+                || file.status == O$.FileUpload.Status.STOPPED
+                || file.status == O$.FileUpload.Status.FAILED
+                || file.status == O$.FileUpload.Status.SIZE_LIMIT_EXCEEDED) {
+          var fileInfo = O$(fileUpload.id + "::infoDiv" + file._id);
+          fileInfo.childNodes[3].firstChild._clickHandler();
+          index--;
+        }
+      }
     }
   },
   _initFileUploadAPI:function (fileUpload) {
@@ -1436,6 +1453,7 @@ O$.FileUpload = {
         }
         throw "Uploading is already started.";
       },
+      /*This method is removing all information windows. Make sure, that there is no files which in upload process*/
       removeAllFiles:function(){
         if (!fileUpload._inUploading) {
           fileUpload.__clearAllButtonClickHandler();
