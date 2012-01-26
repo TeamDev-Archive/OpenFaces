@@ -1443,8 +1443,14 @@ O$.FileUpload = {
         }
         throw "Cannot remove files while they are uploading.";
       },
+      /*This method is trying to stop all current files that in upload process. It is not guarantee that file will be stopped */
       stopAllUploads: function(){
-
+        for (var index = 0; index < fileUpload._allFiles.length; index++) {
+            if (fileUpload._allFiles[index].status == O$.FileUpload.Status.IN_PROGRESS) {
+              var fileInfo = O$(fileUpload.id + "::infoDiv" + fileUpload._allFiles[index]._id);
+              fileInfo.childNodes[3].firstChild._clickHandler();
+            }
+        }
       }
     });
   },
