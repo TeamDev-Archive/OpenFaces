@@ -59,7 +59,8 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
     /*facet names and components which is used in this component*/
     private static final String F_BROWSE_BUTTON = "browseButton";
     private static final String F_UPLOAD_BUTTON = "uploadButton";
-    private static final String F_CLEAR_ALL_BUTTON = "clearAllButton";
+    private static final String F_REMOVE_ALL_BUTTON = "removeAllButton";
+    private static final String F_STOP_ALL_BUTTON = "stopAllButton";
 
     private static final String F_REMOVE_BUTTON = "removeButton";
     private static final String F_STOP_BUTTON = "stopButton";
@@ -72,7 +73,8 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
     private static final String STOP_BTN_CONTAINER = "::stopFacet";
 
     private static final String UPLOAD_BTN_CONTAINER = "::uploadFacet";
-    private static final String CLEAR_ALL_BTN_CONTAINER = "::clearAllFacet";
+    private static final String REMOVE_ALL_BTN_CONTAINER = "::removeAllFacet";
+    private static final String STOP_ALL_BTN_CONTAINER = "::stopAllFacet";
 
     private static final String FOOTER_DIV_ID = "::footer";
     private static final String HELP_ELEMENTS_ID = "::elements";
@@ -83,7 +85,9 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
 
     private UIComponent browseButton;
     private UIComponent uploadButton;
-    private UIComponent clearAllButton;
+    private UIComponent removeAllButton;
+    private UIComponent stopAllButton;
+
     private UIComponent removeButton;
     private UIComponent stopButton;
     private UIComponent clearButton;
@@ -205,7 +209,8 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
 
         browseButton = fileUpload.getFacet(F_BROWSE_BUTTON);
         uploadButton = fileUpload.getFacet(F_UPLOAD_BUTTON);
-        clearAllButton = fileUpload.getFacet(F_CLEAR_ALL_BUTTON);
+        removeAllButton = fileUpload.getFacet(F_REMOVE_ALL_BUTTON);
+        stopAllButton = fileUpload.getFacet(F_STOP_ALL_BUTTON);
 
         removeButton = fileUpload.getFacet(F_REMOVE_BUTTON);
         stopButton = fileUpload.getFacet(F_STOP_BUTTON);
@@ -270,17 +275,32 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
         writer.endElement("div");
     }
 
-    private void writeClearAllButton(FacesContext context, FileUpload fileUpload, ResponseWriter writer, String elementId) throws IOException {
+    private void writeRemoveAllButton(FacesContext context, FileUpload fileUpload, ResponseWriter writer, String elementId) throws IOException {
         writer.startElement("div", fileUpload);
         writer.writeAttribute("id", elementId, null);
-        if (clearAllButton == null) {
+        if (removeAllButton == null) {
             writer.startElement("input", fileUpload);
             writer.writeAttribute("type", "button", null);
             writer.writeAttribute("value", fileUpload.getRemoveAllButtonText(), null);
-            writer.writeAttribute("class", "o_file_clear_all_btn", null);
+            writer.writeAttribute("class", "o_file_remove_all_btn", null);
             writer.endElement("input");
         } else {
-            clearAllButton.encodeAll(context);
+            removeAllButton.encodeAll(context);
+        }
+        writer.endElement("div");
+    }
+
+    private void writeStopAllButton(FacesContext context, FileUpload fileUpload, ResponseWriter writer, String elementId) throws IOException{
+        writer.startElement("div", fileUpload);
+        writer.writeAttribute("id", elementId, null);
+        if (stopAllButton == null) {
+            writer.startElement("input", fileUpload);
+            writer.writeAttribute("type", "button", null);
+            writer.writeAttribute("value", fileUpload.getStopAllButtonText(), null);
+            writer.writeAttribute("class", "o_file_stop_all_btn", null);
+            writer.endElement("input");
+        } else {
+            stopAllButton.encodeAll(context);
         }
         writer.endElement("div");
     }
@@ -332,7 +352,8 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
         writer.startElement("div", fileUpload);
         writer.writeAttribute("id", elementId, null);
         writeDragAndDropArea(context, fileUpload, writer, elementId + DRAG_AREA);
-        writeClearAllButton(context, fileUpload, writer, elementId + CLEAR_ALL_BTN_CONTAINER);
+        writeRemoveAllButton(context, fileUpload, writer, elementId + REMOVE_ALL_BTN_CONTAINER);
+        writeStopAllButton(context, fileUpload, writer, elementId + STOP_ALL_BTN_CONTAINER);
         writer.endElement("div");
     }
 

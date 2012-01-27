@@ -37,8 +37,8 @@ O$.FileUpload = {
       _events:{},
       _allFiles:[],
       _numberOfFailedRequest:15,   /*this number defines how many requests should have gone to presume that request is timedout if progress doesn't changed*/
-      _numberOfErrorRequest: 3 /*this number defines how many requests should have gone to check that request throwed an Exception if progress doesn't changed*/
-
+      _numberOfErrorRequest: 3, /*this number defines how many requests should have gone to check that request throwed an Exception if progress doesn't changed*/
+      _buttons:{}
     });
     setAllEvents();
     if (!fileUpload._multiUpload){
@@ -69,8 +69,11 @@ O$.FileUpload = {
     var idOfInfoAndInputDiv = 1;
 
     var uploadButton = O$(componentId + "::header::uploadFacet").lastChild;
-    var clearAllButtonFacet = O$(componentId + "::footer::clearAllFacet");
-    var clearAllButton = clearAllButtonFacet.lastChild;
+    var removeAllButtonFacet = O$(componentId + "::footer::removeAllFacet");
+    var removeAllButton = removeAllButtonFacet.lastChild;
+
+    var stopAllButtonFacet = O$(componentId + "::footer::stopAllFacet");
+    fileUpload._buttons.stopAll = stopAllButtonFacet.lastChild;
     setTabIndexForAllButtons(tabIndex);
 
     var allInfos = O$(componentId + "::infoDiv");
@@ -141,9 +144,10 @@ O$.FileUpload = {
                 O$.setStyleMappings(addButtonTitleInput, {disabled : addButtonDisabledClass});
                 if (fileUpload._multiUpload) {
                   uploadButton.style.visibility = "hidden";
-                  clearAllButton.style.visibility = "hidden";    // to prevent changing of file list when uploading in progress
+                  removeAllButton.style.display = "none";    // to prevent changing of file list when uploading in progress
+                  fileUpload._buttons.stopAll.style.display = "block";
                 } else {
-                  clearAllButton.style.display = "none";
+                  removeAllButton.style.display = "none";
                 }
                 fileUpload._listOfids = [];
                 /*prepare a list of files that would be uploaded*/
@@ -537,7 +541,9 @@ O$.FileUpload = {
 
                     fileUpload._numberOfFilesToUpload = 0;
                     if (fileUpload._multiUpload) {
-                      clearAllButton.style.visibility = "visible";
+                      fileUpload._buttons.stopAll.style.display = "none";
+                      fileUpload._buttons.stopAll.style.visibility = "visible";
+                      removeAllButton.style.display = "block";
                       uploadButton.style.visibility = "visible";
                     }
                     inputInAddBtn.disabled = false;
@@ -562,7 +568,7 @@ O$.FileUpload = {
                     fileUpload._removeFileFromAllFiles(infoId);
                     allInfos.removeChild(infoDiv);
                     if (allInfos.childNodes.length == 0) {
-                      clearAllButton.style.display = "none";
+                      removeAllButton.style.display = "none";
                     }
                     shouldInvokeFocusNonModifiable = false;
                     setFocusOnComponent();
@@ -598,13 +604,13 @@ O$.FileUpload = {
                   fileUpload._events._fireChangeEvent();
                 }
 
-                clearAllButton.style.display = "none";
+                removeAllButton.style.display = "none";
                 //setFocusOnComponent();
                 shouldInvokeFocusNonModifiable = true;
               }
             }
     );
-    initHeaderButtons();
+    initHeaderButtons(true);
     setFocusBlurBehaviour();
     setUploadButtonBehaviour();
 
@@ -760,14 +766,24 @@ O$.FileUpload = {
     }
 
     if (O$.isChrome() || O$.isSafari()){
-      O$.addEventHandler(clearAllButton, "mousedown", function () {
+      O$.addEventHandler(removeAllButton, "mousedown", function () {
         shouldInvokeFocusNonModifiable = false;
       });
-      O$.addEventHandler(clearAllButton, "mouseup", function () {
+      O$.addEventHandler(removeAllButton, "mouseup", function () {
         shouldInvokeFocusNonModifiable = true;
       });
     }
-    O$.addEventHandler(clearAllButton, "click", fileUpload.__clearAllButtonClickHandler);
+    O$.addEventHandler(removeAllButton, "click", fileUpload.__clearAllButtonClickHandler);
+
+    if (O$.isChrome() || O$.isSafari()){
+      O$.addEventHandler(fileUpload._buttons.stopAll, "mousedown", function () {
+        shouldInvokeFocusNonModifiable = false;
+      });
+      O$.addEventHandler(fileUpload._buttons.stopAll, "mouseup", function () {
+        shouldInvokeFocusNonModifiable = true;
+      });
+    }
+    O$.addEventHandler(fileUpload._buttons.stopAll, "click", fileUpload.stopAllUploads);
 
     function processFileAdding(inputForFile) {
       if (isFileNameNotApplied(inputForFile.value)) {
@@ -802,7 +818,7 @@ O$.FileUpload = {
             fileUpload._events._fireChangeEvent();
           }
           if (allInfos.childNodes.length == 0) {
-            clearAllButton.style.display = "none";
+            removeAllButton.style.display = "none";
           }
           shouldInvokeFocusEvHandler = false;
           setFocusOnComponent();
@@ -818,7 +834,7 @@ O$.FileUpload = {
         inputInAddBtn.disabled = true;
         O$.setStyleMappings(addButtonTitleInput, {disabled : addButtonDisabledClass});
       }
-      clearAllButton.style.display = "block";
+      removeAllButton.style.display = "block";
       setUploadButtonAfterFileHaveBeenAdded();
       return true;
     }
@@ -991,7 +1007,7 @@ O$.FileUpload = {
           }
 
           if (allInfos.childNodes.length == 0) {
-            clearAllButton.style.display = "none";
+            removeAllButton.style.display = "none";
           }
           shouldInvokeFocusNonModifiable = false;
           setFocusOnComponent();
@@ -1013,15 +1029,18 @@ O$.FileUpload = {
         inputInAddBtn.disabled = true;
         O$.setStyleMappings(addButtonTitleInput, {disabled : addButtonDisabledClass});
       }
-      clearAllButton.style.display = "block";
+      removeAllButton.style.display = "block";
       return true;
     }
 
-    function initHeaderButtons() {
+    function initHeaderButtons(firstTime) {
+      if (firstTime){
+        fileUpload._buttons.stopAll.style.display = "none";
+      }
       if (fileUpload._isDisabled) {
         inputInAddBtn.disabled = true;
         O$.setStyleMappings(addButtonTitleInput, {disabled : addButtonDisabledClass});
-        clearAllButton.style.display = "none";
+        removeAllButton.style.display = "none";
       } else {
         if (fileUpload._maxQuantity != 0 && fileUpload._lengthUploadedFiles == fileUpload._maxQuantity){
           inputInAddBtn.disabled = true;
@@ -1031,7 +1050,7 @@ O$.FileUpload = {
         }
 
         if (allInfos.childNodes.length == 0) {
-          clearAllButton.style.display = "none";
+          removeAllButton.style.display = "none";
         }
       }
 
@@ -1220,11 +1239,13 @@ O$.FileUpload = {
     function setFocusBlurBehaviour(){
       O$.addEventHandler(inputInAddBtn, "focus", focusHandler);
       O$.addEventHandler(uploadButton, "focus", focusHandler);
-      O$.addEventHandler(clearAllButton, "focus", focusHandler);
+      O$.addEventHandler(removeAllButton, "focus", focusHandler);
+      O$.addEventHandler(fileUpload._buttons.stopAll, "focus", focusHandler);
 
       O$.addEventHandler(inputInAddBtn, "blur", blurHandler);
       O$.addEventHandler(uploadButton, "blur", blurHandler);
-      O$.addEventHandler(clearAllButton, "blur", blurHandler);
+      O$.addEventHandler(removeAllButton, "blur", blurHandler);
+      O$.addEventHandler(fileUpload._buttons.stopAll, "blur", blurHandler);
       if (addButtonTitleInput.focus){
         O$.addEventHandler(addButtonTitleInput, "focus", focusHandler);
         O$.addEventHandler(addButtonTitleInput, "blur", blurHandler);
@@ -1301,8 +1322,12 @@ O$.FileUpload = {
         uploadButton.focus();
         return;
       }
-      if (!clearAllButton.disabled){
-        clearAllButton.focus();
+      if (!removeAllButton.disabled){
+        removeAllButton.focus();
+        return;
+      }
+      if (!fileUpload._buttons.stopAll.disabled){
+        fileUpload._buttons.stopAll.focus();
         return;
       }
       fileUpload._events._fireBlurEvent();
@@ -1315,7 +1340,7 @@ O$.FileUpload = {
 
     function setTabIndexForAllButtons(tabIndex) {
       if (tabIndex != -1) {
-        var buttons = [uploadButton,clearAllButton,clearFacet,stopFacet,cancelFacet];
+        var buttons = [uploadButton,removeAllButton,fileUpload._buttons.stopAll,clearFacet,stopFacet,cancelFacet];
         buttons.forEach(function(button) {
           button.setAttribute("tabindex", tabIndex);
         });
@@ -1453,6 +1478,7 @@ O$.FileUpload = {
       },
       /*This method is trying to stop all current files that in upload process. It is not guarantee that file will be stopped */
       stopAllUploads: function(){
+        fileUpload._buttons.stopAll.style.visibility = "hidden";
         for (var index = 0; index < fileUpload._allFiles.length; index++) {
             if (fileUpload._allFiles[index].status == O$.FileUpload.Status.IN_PROGRESS) {
               var fileInfo = O$(fileUpload.id + "::infoDiv" + fileUpload._allFiles[index]._id);

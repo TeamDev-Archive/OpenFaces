@@ -90,6 +90,9 @@ public class FileUploadJspTag extends AbstractComponentJspTag {
     public void setRemoveAllButtonText(ValueExpression removeAllButtonText) {
         getDelegate().setPropertyValue("removeAllButtonText", removeAllButtonText);
     }
+    public void setStopAllButtonText(ValueExpression stopAllButtonText) {
+        getDelegate().setPropertyValue("stopAllButtonText", stopAllButtonText);
+    }
     public void setRemoveButtonText(ValueExpression removeButtonText) {
         getDelegate().setPropertyValue("removeButtonText", removeButtonText);
     }

@@ -48,6 +48,7 @@ public class FileUpload extends OUIInputBase {
     
     private String uploadButtonText;
     private String removeAllButtonText;
+    private String stopAllButtonText;
     private String removeButtonText;
     private String stopButtonText;
     private String clearButtonText;
@@ -130,6 +131,7 @@ public class FileUpload extends OUIInputBase {
                 browseButtonDisabledClass,
                 uploadButtonText,
                 removeAllButtonText,
+                stopAllButtonText,
                 removeButtonText,
                 stopButtonText,
                 clearButtonText,
@@ -192,6 +194,7 @@ public class FileUpload extends OUIInputBase {
         browseButtonDisabledClass = (String) values[i++];
         uploadButtonText  = (String) values[i++];
         removeAllButtonText = (String) values[i++];
+        stopAllButtonText = (String)values[i++];
         removeButtonText = (String) values[i++];
         stopButtonText = (String) values[i++];
         clearButtonText = (String) values[i++];
@@ -526,6 +529,14 @@ public class FileUpload extends OUIInputBase {
 
     public void setRemoveAllButtonText(String removeAllButtonText) {
         this.removeAllButtonText = removeAllButtonText;
+    }
+
+    public String getStopAllButtonText() {
+        return ValueBindings.get(this, "stopAllButtonText", stopAllButtonText, "Stop all");
+    }
+
+    public void setStopAllButtonText(String stopAllButtonText) {
+        this.stopAllButtonText = stopAllButtonText;
     }
 
     public String getRemoveButtonText() {
