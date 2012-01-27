@@ -138,7 +138,7 @@ O$.FileUpload = {
 
                 inputInAddBtn.disabled = true;
                 fileUpload._inUploading = true;
-                addButtonTitleInput.className = addButtonDisabledClass;
+                O$.setStyleMappings(addButtonTitleInput, {disabled : addButtonDisabledClass});
                 if (fileUpload._multiUpload) {
                   uploadButton.style.visibility = "hidden";
                   clearAllButton.style.visibility = "hidden";    // to prevent changing of file list when uploading in progress
@@ -542,7 +542,7 @@ O$.FileUpload = {
                     }
                     inputInAddBtn.disabled = false;
                     fileUpload._inUploading = false;
-                    addButtonTitleInput.className = addButtonClass;
+                    O$.setStyleMappings(addButtonTitleInput, {disabled : null});
                     initHeaderButtons();
                     //set focus on addButton
                     shouldInvokeFocusEvHandler = false;
@@ -776,7 +776,6 @@ O$.FileUpload = {
         return false;
       }
       clearAllInfosForUploadedFiles();
-      addButtonTitleInput.className = addButtonClass;
       addButton._inFocus = false;
       inputForFile._idInputAndDiv = idOfInfoAndInputDiv;
       createAndAppendComplexInputWithId(inputForFile);
@@ -817,7 +816,7 @@ O$.FileUpload = {
       if (fileUpload._maxQuantity != 0
               && fileUpload._maxQuantity <= (fileUpload._numberOfFilesToUpload + fileUpload._lengthUploadedFiles)) {
         inputInAddBtn.disabled = true;
-        addButtonTitleInput.className = addButtonDisabledClass;
+        O$.setStyleMappings(addButtonTitleInput, {disabled : addButtonDisabledClass});
       }
       clearAllButton.style.display = "block";
       setUploadButtonAfterFileHaveBeenAdded();
@@ -831,7 +830,7 @@ O$.FileUpload = {
       if (inputInAddBtn.disabled
               && fileUpload._maxQuantity > (fileUpload._numberOfFilesToUpload + fileUpload._lengthUploadedFiles)) {
         inputInAddBtn.disabled = false;
-        addButtonTitleInput.className = addButtonClass;
+        O$.setStyleMappings(addButtonTitleInput, {disabled : null});
       }
       if ((fileUpload._minQuantity > (fileUpload._numberOfFilesToUpload + fileUpload._lengthUploadedFiles))
               || fileUpload._numberOfFilesToUpload == 0) {
@@ -879,19 +878,19 @@ O$.FileUpload = {
       infoWindow._status = O$.FileUpload.Status.NEW;
 
       var fileNameTD = document.createElement("td");
-      fileNameTD.className = infoTitleClass;
+      O$.setStyleMappings(fileNameTD, {fileName : infoTitleClass});
       fileNameTD.innerHTML = getFileName(filename);
       infoWindow.appendChild(fileNameTD);
 
       var progressTD = document.createElement("td");
-      progressTD.className = progressBarClass;
+      O$.setStyleMappings(progressTD, {progress : progressBarClass});
       var progressFacet = progressBar.cloneNode(true);
       progressFacet.setAttribute("id", progressBarId + fileId);
       progressTD.appendChild(progressFacet);
       infoWindow.appendChild(progressTD);
 
       var statusTD = document.createElement("td");
-      statusTD.className = infoStatusClass;
+      O$.setStyleMappings(statusTD, {status : infoStatusClass});
       if (statusLabelNotUploaded != null)
         statusTD.innerHTML = statusLabelNotUploaded;
       infoWindow.appendChild(statusTD);
@@ -924,7 +923,7 @@ O$.FileUpload = {
       infoWindow.appendChild(cancelFileTD);
 
       infoWindow.setAttribute("id", allInfos.id + fileId);
-      infoWindow.className = fileInfoClass;
+      O$.setStyleMappings(infoWindow, {row : fileInfoClass});
       if (!fileUpload._multiUpload) {
         allInfos.innerHTML = "";
       }
@@ -982,7 +981,7 @@ O$.FileUpload = {
           if (inputInAddBtn.disabled
                   && fileUpload._maxQuantity > (fileUpload._numberOfFilesToUpload + fileUpload._lengthUploadedFiles)) {
             inputInAddBtn.disabled = false;
-            addButtonTitleInput.className = addButtonClass;
+            O$.setStyleMappings(addButtonTitleInput, {disabled : null});
           }
           if ((fileUpload._minQuantity > (fileUpload._numberOfFilesToUpload + fileUpload._lengthUploadedFiles))
                   || fileUpload._numberOfFilesToUpload == 0) {
@@ -1012,7 +1011,7 @@ O$.FileUpload = {
       if (fileUpload._maxQuantity != 0
               && fileUpload._maxQuantity <= (fileUpload._numberOfFilesToUpload + fileUpload._lengthUploadedFiles)) {
         inputInAddBtn.disabled = true;
-        addButtonTitleInput.className = addButtonDisabledClass;
+        O$.setStyleMappings(addButtonTitleInput, {disabled : addButtonDisabledClass});
       }
       clearAllButton.style.display = "block";
       return true;
@@ -1021,12 +1020,12 @@ O$.FileUpload = {
     function initHeaderButtons() {
       if (fileUpload._isDisabled) {
         inputInAddBtn.disabled = true;
-        addButtonTitleInput.className = addButtonDisabledClass;
+        O$.setStyleMappings(addButtonTitleInput, {disabled : addButtonDisabledClass});
         clearAllButton.style.display = "none";
       } else {
         if (fileUpload._maxQuantity != 0 && fileUpload._lengthUploadedFiles == fileUpload._maxQuantity){
           inputInAddBtn.disabled = true;
-          addButtonTitleInput.className = addButtonDisabledClass;
+          O$.setStyleMappings(addButtonTitleInput, {disabled : addButtonDisabledClass});
         }else{
           inputInAddBtn.disabled = false;
         }
@@ -1136,13 +1135,13 @@ O$.FileUpload = {
       }
       O$.addEventHandler(input,"focus",function(){
         if (!inputInAddBtn.disabled && !addButton._afterMouseDown){
-          addButtonTitleInput.className = addButtonOnFocusClass;
+          O$.setStyleMappings(addButtonTitleInput, {focused : addButtonOnFocusClass});
         }
         addButton._inFocus = true;
       });
       O$.addEventHandler(input,"blur",function(){
         if (!inputInAddBtn.disabled){
-          addButtonTitleInput.className = addButtonClass;
+          O$.setStyleMappings(addButtonTitleInput, {focused : null});
           addButton._inFocus = false;
         }
       });
@@ -1192,36 +1191,27 @@ O$.FileUpload = {
     }
 
     function setStylesForAddButton(addButton){
-      addButtonTitleInput.className = addButtonClass;
+      O$.setStyleMappings(addButtonTitleInput, {std : addButtonClass});
       O$.addEventHandler(addButton,"mouseover",function(){
         if (!inputInAddBtn.disabled) {
-          addButtonTitleInput.className = addButtonOnMouseOverClass;
+          O$.setStyleMappings(addButtonTitleInput, {mouseover : addButtonOnMouseOverClass});
         }
       });
       O$.addEventHandler(addButton, "mouseout", function() {
         if (!inputInAddBtn.disabled) {
-          if (addButton._inFocus) {
-            addButtonTitleInput.className = addButtonOnFocusClass;
-          } else {
-            addButtonTitleInput.className = addButtonClass;
-          }
+          O$.setStyleMappings(addButtonTitleInput, {mouseover : null});
         }
       });
 
       O$.addEventHandler(addButton,"mousedown",function(){
         if (!inputInAddBtn.disabled){
-          addButtonTitleInput.className = addButtonOnMouseDownClass;
+          O$.setStyleMappings(addButtonTitleInput, {mousedown : addButtonOnMouseDownClass});
         }
         addButton._afterMouseDown = true;
       });
       O$.addEventHandler(window,"mouseup",function(){
         if (!inputInAddBtn.disabled){
-
-          if (addButton._inFocus){
-            addButtonTitleInput.className = addButtonOnFocusClass;
-          }else{
-            addButtonTitleInput.className = addButtonClass;
-          }
+          O$.setStyleMappings(addButtonTitleInput, {mousedown : null});
         }
         addButton._afterMouseDown = false;
       });
