@@ -47,20 +47,17 @@ O$.FileUpload = {
     }
     //getting clear,stop,cancel, progressBar facet for each info window
     var elements = O$(componentId + "::elements");
-    var divForClearFacet = O$(componentId + "::elements::clearFacet");
-    var clearFacet = divForClearFacet.lastChild;
-    elements.removeChild(divForClearFacet);
-    clearFacet.disabled = false;
+    function getFacet(id){
+      var divForFacet = O$(elements.id + id);
+      elements.removeChild(divForFacet);
+      var facet = divForFacet.lastChild;
+      facet.disabled = false;
+      return facet;
+    }
 
-    var divForCancelFacet = O$(componentId + "::elements::removeFacet");
-    var cancelFacet = divForCancelFacet.lastChild;
-    elements.removeChild(divForCancelFacet);
-    cancelFacet.disabled = false;
-
-    var divForStopFacet = O$(componentId + "::elements::stopFacet");
-    var stopFacet = divForStopFacet.lastChild;
-    elements.removeChild(divForStopFacet);
-    stopFacet.disabled = false;
+    fileUpload._buttons.clear = getFacet("::clearFacet");
+    fileUpload._buttons.cancel = getFacet("::removeFacet");
+    fileUpload._buttons.stop = getFacet("::stopFacet");
 
     var progressBar= O$(progressBarId);
     if (!O$.isExplorer())
@@ -68,12 +65,9 @@ O$.FileUpload = {
 
     var idOfInfoAndInputDiv = 1;
 
-    var uploadButton = O$(componentId + "::header::uploadFacet").lastChild;
-    var removeAllButtonFacet = O$(componentId + "::footer::removeAllFacet");
-    var removeAllButton = removeAllButtonFacet.lastChild;
-
-    var stopAllButtonFacet = O$(componentId + "::footer::stopAllFacet");
-    fileUpload._buttons.stopAll = stopAllButtonFacet.lastChild;
+    fileUpload._buttons.upload = O$(componentId + "::header::uploadFacet").lastChild;
+    fileUpload._buttons.removeAll = O$(componentId + "::footer::removeAllFacet").lastChild;
+    fileUpload._buttons.stopAll = O$(componentId + "::footer::stopAllFacet").lastChild;
     setTabIndexForAllButtons(tabIndex);
 
     var allInfos = O$(componentId + "::infoDiv");
@@ -143,11 +137,11 @@ O$.FileUpload = {
                 fileUpload._inUploading = true;
                 O$.setStyleMappings(addButtonTitleInput, {disabled : addButtonDisabledClass});
                 if (fileUpload._multiUpload) {
-                  uploadButton.style.visibility = "hidden";
-                  removeAllButton.style.display = "none";    // to prevent changing of file list when uploading in progress
+                  fileUpload._buttons.upload.style.visibility = "hidden";
+                  fileUpload._buttons.removeAll.style.display = "none";    // to prevent changing of file list when uploading in progress
                   fileUpload._buttons.stopAll.style.display = "block";
                 } else {
-                  removeAllButton.style.display = "none";
+                  fileUpload._buttons.removeAll.style.display = "none";
                 }
                 fileUpload._listOfids = [];
                 /*prepare a list of files that would be uploaded*/
@@ -324,8 +318,8 @@ O$.FileUpload = {
                 function setupUIForUpload(inputForFile, infoDiv, fileForAPI) {
                   function setStopButtonBehavior(inputForFile, infoDiv){
                     infoDiv.childNodes[3].removeChild(infoDiv.childNodes[3].firstChild);
-                    var stopFileDiv = stopFacet.cloneNode(true);
-                    stopFileDiv.setAttribute("id", stopFacet.id + inputForFile._idInputAndDiv);
+                    var stopFileDiv = fileUpload._buttons.stop.cloneNode(true);
+                    stopFileDiv.setAttribute("id", fileUpload._buttons.stop.id + inputForFile._idInputAndDiv);
                     infoDiv.childNodes[3].appendChild(stopFileDiv);
                     O$.addEventHandler(stopFileDiv, "focus", focusHandler);
                     O$.addEventHandler(stopFileDiv, "blur", blurHandler);
@@ -469,8 +463,8 @@ O$.FileUpload = {
                 function setupUIForUploadHTML5(file, infoDiv, request, fileForAPI) {
                   function setStopButtonBehaviorHTML5(file, infoDiv, request) {
                     infoDiv.childNodes[3].removeChild(infoDiv.childNodes[3].firstChild);
-                    var stopFileDiv = stopFacet.cloneNode(true);
-                    stopFileDiv.setAttribute("id", stopFacet.id + file._infoId);
+                    var stopFileDiv = fileUpload._buttons.stop.cloneNode(true);
+                    stopFileDiv.setAttribute("id", fileUpload._buttons.stop.id + file._infoId);
                     infoDiv.childNodes[3].appendChild(stopFileDiv);
                     O$.addEventHandler(stopFileDiv, "focus", focusHandler);
                     O$.addEventHandler(stopFileDiv, "blur", blurHandler);
@@ -543,8 +537,8 @@ O$.FileUpload = {
                     if (fileUpload._multiUpload) {
                       fileUpload._buttons.stopAll.style.display = "none";
                       fileUpload._buttons.stopAll.style.visibility = "visible";
-                      removeAllButton.style.display = "block";
-                      uploadButton.style.visibility = "visible";
+                      fileUpload._buttons.removeAll.style.display = "block";
+                      fileUpload._buttons.upload.style.visibility = "visible";
                     }
                     inputInAddBtn.disabled = false;
                     fileUpload._inUploading = false;
@@ -559,8 +553,8 @@ O$.FileUpload = {
 
                 function setClearBtnAndEventHandler(infoDiv, infoId) {
                   infoDiv.childNodes[3].removeChild(infoDiv.childNodes[3].firstChild);
-                  var clearFileDiv = clearFacet.cloneNode(true);
-                  clearFileDiv.setAttribute("id", clearFacet.id + infoId);
+                  var clearFileDiv = fileUpload._buttons.clear.cloneNode(true);
+                  clearFileDiv.setAttribute("id", fileUpload._buttons.clear.id + infoId);
                   infoDiv.childNodes[3].appendChild(clearFileDiv);
                   O$.addEventHandler(clearFileDiv, "focus", focusHandler);
                   O$.addEventHandler(clearFileDiv, "blur", blurHandler);
@@ -568,7 +562,7 @@ O$.FileUpload = {
                     fileUpload._removeFileFromAllFiles(infoId);
                     allInfos.removeChild(infoDiv);
                     if (allInfos.childNodes.length == 0) {
-                      removeAllButton.style.display = "none";
+                      fileUpload._buttons.removeAll.style.display = "none";
                     }
                     shouldInvokeFocusNonModifiable = false;
                     setFocusOnComponent();
@@ -604,7 +598,7 @@ O$.FileUpload = {
                   fileUpload._events._fireChangeEvent();
                 }
 
-                removeAllButton.style.display = "none";
+                fileUpload._buttons.removeAll.style.display = "none";
                 //setFocusOnComponent();
                 shouldInvokeFocusNonModifiable = true;
               }
@@ -766,14 +760,14 @@ O$.FileUpload = {
     }
 
     if (O$.isChrome() || O$.isSafari()){
-      O$.addEventHandler(removeAllButton, "mousedown", function () {
+      O$.addEventHandler(fileUpload._buttons.removeAll, "mousedown", function () {
         shouldInvokeFocusNonModifiable = false;
       });
-      O$.addEventHandler(removeAllButton, "mouseup", function () {
+      O$.addEventHandler(fileUpload._buttons.removeAll, "mouseup", function () {
         shouldInvokeFocusNonModifiable = true;
       });
     }
-    O$.addEventHandler(removeAllButton, "click", fileUpload.__clearAllButtonClickHandler);
+    O$.addEventHandler(fileUpload._buttons.removeAll, "click", fileUpload.__clearAllButtonClickHandler);
 
     if (O$.isChrome() || O$.isSafari()){
       O$.addEventHandler(fileUpload._buttons.stopAll, "mousedown", function () {
@@ -818,7 +812,7 @@ O$.FileUpload = {
             fileUpload._events._fireChangeEvent();
           }
           if (allInfos.childNodes.length == 0) {
-            removeAllButton.style.display = "none";
+            fileUpload._buttons.removeAll.style.display = "none";
           }
           shouldInvokeFocusEvHandler = false;
           setFocusOnComponent();
@@ -834,7 +828,7 @@ O$.FileUpload = {
         inputInAddBtn.disabled = true;
         O$.setStyleMappings(addButtonTitleInput, {disabled : addButtonDisabledClass});
       }
-      removeAllButton.style.display = "block";
+      fileUpload._buttons.removeAll.style.display = "block";
       setUploadButtonAfterFileHaveBeenAdded();
       return true;
     }
@@ -851,7 +845,7 @@ O$.FileUpload = {
       if ((fileUpload._minQuantity > (fileUpload._numberOfFilesToUpload + fileUpload._lengthUploadedFiles))
               || fileUpload._numberOfFilesToUpload == 0) {
         if (fileUpload._multiUpload){
-          uploadButton.style.visibility = "hidden";
+          fileUpload._buttons.upload.style.visibility = "hidden";
         }
       }
     }
@@ -913,8 +907,8 @@ O$.FileUpload = {
 
       var cancelFileTD = document.createElement("td");
       cancelFileTD.style.width = "1px";
-      var cancelFileDiv = cancelFacet.cloneNode(true);
-      cancelFileDiv.setAttribute("id", cancelFacet.id + fileId);
+      var cancelFileDiv = fileUpload._buttons.cancel.cloneNode(true);
+      cancelFileDiv.setAttribute("id", fileUpload._buttons.cancel.id + fileId);
       if (O$.isExplorer()) {
         O$.addEventHandler(cancelFileDiv, "mouseup", function () {
           shouldInvokeFocusNonModifiable = true;
@@ -1002,12 +996,12 @@ O$.FileUpload = {
           if ((fileUpload._minQuantity > (fileUpload._numberOfFilesToUpload + fileUpload._lengthUploadedFiles))
                   || fileUpload._numberOfFilesToUpload == 0) {
             if (fileUpload._multiUpload) {
-              uploadButton.style.visibility = "hidden";
+              fileUpload._buttons.upload.style.visibility = "hidden";
             }
           }
 
           if (allInfos.childNodes.length == 0) {
-            removeAllButton.style.display = "none";
+            fileUpload._buttons.removeAll.style.display = "none";
           }
           shouldInvokeFocusNonModifiable = false;
           setFocusOnComponent();
@@ -1029,7 +1023,7 @@ O$.FileUpload = {
         inputInAddBtn.disabled = true;
         O$.setStyleMappings(addButtonTitleInput, {disabled : addButtonDisabledClass});
       }
-      removeAllButton.style.display = "block";
+      fileUpload._buttons.removeAll.style.display = "block";
       return true;
     }
 
@@ -1040,7 +1034,7 @@ O$.FileUpload = {
       if (fileUpload._isDisabled) {
         inputInAddBtn.disabled = true;
         O$.setStyleMappings(addButtonTitleInput, {disabled : addButtonDisabledClass});
-        removeAllButton.style.display = "none";
+        fileUpload._buttons.removeAll.style.display = "none";
       } else {
         if (fileUpload._maxQuantity != 0 && fileUpload._lengthUploadedFiles == fileUpload._maxQuantity){
           inputInAddBtn.disabled = true;
@@ -1050,30 +1044,30 @@ O$.FileUpload = {
         }
 
         if (allInfos.childNodes.length == 0) {
-          removeAllButton.style.display = "none";
+          fileUpload._buttons.removeAll.style.display = "none";
         }
       }
 
       if (!fileUpload._multiUpload){
-        uploadButton.style.display = "none";
+        fileUpload._buttons.upload.style.display = "none";
       } else {
-        uploadButton.style.visibility = "hidden";
+        fileUpload._buttons.upload.style.visibility = "hidden";
       }
     }
 
     function setUploadButtonBehaviour() {
       if (O$.isChrome() || O$.isSafari()) {
-        O$.addEventHandler(uploadButton, "mousedown", function() {
+        O$.addEventHandler(fileUpload._buttons.upload, "mousedown", function() {
           shouldInvokeFocusNonModifiable = false;
         });
-        O$.addEventHandler(uploadButton, "mouseup", function() {
+        O$.addEventHandler(fileUpload._buttons.upload, "mouseup", function() {
           shouldInvokeFocusNonModifiable = true;
         });
-        O$.addEventHandler(uploadButton, "keyup", function() {
+        O$.addEventHandler(fileUpload._buttons.upload, "keyup", function() {
           shouldInvokeFocusEvHandler = false;
         });
       }
-      O$.addEventHandler(uploadButton, "click", fileUpload.__uploadButtonClickHandler);
+      O$.addEventHandler(fileUpload._buttons.upload, "click", fileUpload.__uploadButtonClickHandler);
 
     }
 
@@ -1238,13 +1232,13 @@ O$.FileUpload = {
 
     function setFocusBlurBehaviour(){
       O$.addEventHandler(inputInAddBtn, "focus", focusHandler);
-      O$.addEventHandler(uploadButton, "focus", focusHandler);
-      O$.addEventHandler(removeAllButton, "focus", focusHandler);
+      O$.addEventHandler(fileUpload._buttons.upload, "focus", focusHandler);
+      O$.addEventHandler(fileUpload._buttons.removeAll, "focus", focusHandler);
       O$.addEventHandler(fileUpload._buttons.stopAll, "focus", focusHandler);
 
       O$.addEventHandler(inputInAddBtn, "blur", blurHandler);
-      O$.addEventHandler(uploadButton, "blur", blurHandler);
-      O$.addEventHandler(removeAllButton, "blur", blurHandler);
+      O$.addEventHandler(fileUpload._buttons.upload, "blur", blurHandler);
+      O$.addEventHandler(fileUpload._buttons.removeAll, "blur", blurHandler);
       O$.addEventHandler(fileUpload._buttons.stopAll, "blur", blurHandler);
       if (addButtonTitleInput.focus){
         O$.addEventHandler(addButtonTitleInput, "focus", focusHandler);
@@ -1318,12 +1312,12 @@ O$.FileUpload = {
         inputInAddBtn.focus();
         return;
       }
-      if (!uploadButton.disabled){
-        uploadButton.focus();
+      if (!fileUpload._buttons.upload.disabled){
+        fileUpload._buttons.upload.focus();
         return;
       }
-      if (!removeAllButton.disabled){
-        removeAllButton.focus();
+      if (!fileUpload._buttons.removeAll.disabled){
+        fileUpload._buttons.removeAll.focus();
         return;
       }
       if (!fileUpload._buttons.stopAll.disabled){
@@ -1340,7 +1334,7 @@ O$.FileUpload = {
 
     function setTabIndexForAllButtons(tabIndex) {
       if (tabIndex != -1) {
-        var buttons = [uploadButton,removeAllButton,fileUpload._buttons.stopAll,clearFacet,stopFacet,cancelFacet];
+        var buttons = [fileUpload._buttons.upload,fileUpload._buttons.removeAll,fileUpload._buttons.stopAll,fileUpload._buttons.clear,fileUpload._buttons.stop,fileUpload._buttons.cancel];
         buttons.forEach(function(button) {
           button.setAttribute("tabindex", tabIndex);
         });
@@ -1377,7 +1371,7 @@ O$.FileUpload = {
         if (fileUpload._isAutoUpload) {
           fileUpload.__uploadButtonClickHandler();
         } else {
-          uploadButton.style.visibility = "visible";
+          fileUpload._buttons.upload.style.visibility = "visible";
         }
       }
     }

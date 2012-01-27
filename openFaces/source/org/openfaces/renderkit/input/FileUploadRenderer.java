@@ -93,6 +93,8 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
     private UIComponent clearButton;
     private ProgressBar progressBar;
 
+    private SimpleButton simpleButton;
+
     /*progress*/
     private static final String AJAX_PARAM_PROGRESS_REQUEST = "progressRequest";
     private static final String AJAX_PARAM_FILE_ID = "fileId";
@@ -124,9 +126,10 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
 
     private void renderComponent(FacesContext context, FileUpload fileUpload) throws IOException {
         String clientId = fileUpload.getClientId(context);
-        String uniqueID = generateUniqueId(clientId);
+        String uniqueID = Utilities.generateUniqueId(clientId);
         setFileSizeLimitInSession(context, fileUpload, uniqueID);
         ResponseWriter writer = context.getResponseWriter();
+        this.simpleButton = new SimpleButton(context,fileUpload,writer);
         writer.startElement("div", fileUpload);
         Rendering.writeIdAttribute(context, fileUpload);
         Rendering.writeStyleAndClassAttributes(writer, fileUpload.getStyle(), fileUpload.getStyleClass(), "o_file_upload");
@@ -146,9 +149,9 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
         writer.startElement("div", fileUpload);
         writer.writeAttribute("id", elementId, null);
         writer.writeAttribute("style", "display:none", null);
-        writeRemoveButton(context, fileUpload, writer, elementId + REMOVE_BTN_CONTAINER);
-        writeClearButton(context, fileUpload, writer, elementId + CLEAR_BTN_CONTAINER);
-        writeStopButton(context, fileUpload, writer, elementId + STOP_BTN_CONTAINER);
+        simpleButton.write(removeButton, elementId + REMOVE_BTN_CONTAINER, fileUpload.getRemoveButtonText(),"o_file_clear_btn");
+        simpleButton.write(clearButton, elementId + CLEAR_BTN_CONTAINER, fileUpload.getClearButtonText(),"o_file_clear_btn");
+        simpleButton.write(stopButton, elementId + STOP_BTN_CONTAINER, fileUpload.getStopButtonText(),"o_file_clear_btn");
         writeProgressBar(context);
         writer.endElement("div");
     }
@@ -158,51 +161,6 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
             progressBar = new ProgressBar();
         }
         progressBar.encodeAll(context);
-    }
-
-    private void writeClearButton(FacesContext context, FileUpload fileUpload, ResponseWriter writer, String elementId) throws IOException {
-        writer.startElement("div", fileUpload);
-        writer.writeAttribute("id", elementId, null);
-        if (clearButton == null) {
-            writer.startElement("input", fileUpload);
-            writer.writeAttribute("type", "button", null);
-            writer.writeAttribute("class", "o_file_clear_btn", null);
-            writer.writeAttribute("value", fileUpload.getClearButtonText(), null);
-            writer.endElement("input");
-        } else {
-            clearButton.encodeAll(context);
-        }
-        writer.endElement("div");
-    }
-
-    private void writeStopButton(FacesContext context, FileUpload fileUpload, ResponseWriter writer, String elementId) throws IOException {
-        writer.startElement("div", fileUpload);
-        writer.writeAttribute("id", elementId, null);
-        if (stopButton == null) {
-            writer.startElement("input", fileUpload);
-            writer.writeAttribute("type", "button", null);
-            writer.writeAttribute("class", "o_file_clear_btn", null);
-            writer.writeAttribute("value", fileUpload.getStopButtonText(), null);
-            writer.endElement("input");
-        } else {
-            stopButton.encodeAll(context);
-        }
-        writer.endElement("div");
-    }
-
-    private void writeRemoveButton(FacesContext context, FileUpload fileUpload, ResponseWriter writer, String elementId) throws IOException {
-        writer.startElement("div", fileUpload);
-        writer.writeAttribute("id", elementId, null);
-        if (removeButton == null) {
-            writer.startElement("input", fileUpload);
-            writer.writeAttribute("type", "button", null);
-            writer.writeAttribute("class", "o_file_clear_btn", null);
-            writer.writeAttribute("value", fileUpload.getRemoveButtonText(), null);
-            writer.endElement("input");
-        } else {
-            removeButton.encodeAll(context);
-        }
-        writer.endElement("div");
     }
 
     private void setAllFacets(FileUpload fileUpload) {
@@ -236,25 +194,10 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
         writer.startElement("td", fileUpload);
 
         writeBrowseButtonTable(context, fileUpload, writer, elementId + BROWSE_BTN_ID);
-        writeUploadButton(context, fileUpload, writer, elementId + UPLOAD_BTN_CONTAINER);
+        simpleButton.write(uploadButton, elementId + UPLOAD_BTN_CONTAINER, fileUpload.getUploadButtonText(),"o_file_upload_btn");
         writer.endElement("td");
         writer.endElement("tr");
         writer.endElement("table");
-    }
-
-    private void writeUploadButton(FacesContext context, FileUpload fileUpload, ResponseWriter writer, String elementId) throws IOException {
-        writer.startElement("div", fileUpload);
-        writer.writeAttribute("id", elementId, null);
-        if (uploadButton == null) {
-            writer.startElement("input", fileUpload);
-            writer.writeAttribute("type", "button", null);
-            writer.writeAttribute("class", "o_file_upload_btn", null);
-            writer.writeAttribute("value", fileUpload.getUploadButtonText(), null);
-            writer.endElement("input");
-        } else {
-            uploadButton.encodeAll(context);
-        }
-        writer.endElement("div");
     }
 
     private void writeDragAndDropArea(FacesContext context, FileUpload fileUpload, ResponseWriter writer, String elementId) throws IOException{
@@ -272,36 +215,6 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
             }
         }
         writer.write(value);
-        writer.endElement("div");
-    }
-
-    private void writeRemoveAllButton(FacesContext context, FileUpload fileUpload, ResponseWriter writer, String elementId) throws IOException {
-        writer.startElement("div", fileUpload);
-        writer.writeAttribute("id", elementId, null);
-        if (removeAllButton == null) {
-            writer.startElement("input", fileUpload);
-            writer.writeAttribute("type", "button", null);
-            writer.writeAttribute("value", fileUpload.getRemoveAllButtonText(), null);
-            writer.writeAttribute("class", "o_file_remove_all_btn", null);
-            writer.endElement("input");
-        } else {
-            removeAllButton.encodeAll(context);
-        }
-        writer.endElement("div");
-    }
-
-    private void writeStopAllButton(FacesContext context, FileUpload fileUpload, ResponseWriter writer, String elementId) throws IOException{
-        writer.startElement("div", fileUpload);
-        writer.writeAttribute("id", elementId, null);
-        if (stopAllButton == null) {
-            writer.startElement("input", fileUpload);
-            writer.writeAttribute("type", "button", null);
-            writer.writeAttribute("value", fileUpload.getStopAllButtonText(), null);
-            writer.writeAttribute("class", "o_file_stop_all_btn", null);
-            writer.endElement("input");
-        } else {
-            stopAllButton.encodeAll(context);
-        }
         writer.endElement("div");
     }
 
@@ -352,18 +265,9 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
         writer.startElement("div", fileUpload);
         writer.writeAttribute("id", elementId, null);
         writeDragAndDropArea(context, fileUpload, writer, elementId + DRAG_AREA);
-        writeRemoveAllButton(context, fileUpload, writer, elementId + REMOVE_ALL_BTN_CONTAINER);
-        writeStopAllButton(context, fileUpload, writer, elementId + STOP_ALL_BTN_CONTAINER);
+        simpleButton.write(removeAllButton, elementId + REMOVE_ALL_BTN_CONTAINER, fileUpload.getRemoveAllButtonText(),"o_file_remove_all_btn");
+        simpleButton.write(stopAllButton, elementId + STOP_ALL_BTN_CONTAINER, fileUpload.getStopAllButtonText(),"o_file_stop_all_btn");
         writer.endElement("div");
-    }
-
-    private AnonymousFunction getFunctionOfEvent(String eventHandler){
-        AnonymousFunction eventFunction = null;
-
-        if (eventHandler != null) {
-            eventFunction = new AnonymousFunction(eventHandler, "event");
-        }
-        return eventFunction;
     }
 
     private void encodeScriptAndStyles(FacesContext context, FileUpload fileUpload, String clientId, String uniqueId) throws IOException {
@@ -413,12 +317,12 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
                 fileUpload.getStoppingStatusText(),
                 fileUpload.isMultiple(),
                 uniqueId,
-                getFunctionOfEvent(fileUpload.getOnchange()),
-                getFunctionOfEvent(fileUpload.getOnuploadstart()),
-                getFunctionOfEvent(fileUpload.getOnuploadend()),
-                getFunctionOfEvent(fileUpload.getOnfileuploadstart()),
-                getFunctionOfEvent(fileUpload.getOnfileuploadinprogress()),
-                getFunctionOfEvent(fileUpload.getOnfileuploadend()),
+                Utilities.getFunctionOfEvent(fileUpload.getOnchange()),
+                Utilities.getFunctionOfEvent(fileUpload.getOnuploadstart()),
+                Utilities.getFunctionOfEvent(fileUpload.getOnuploadend()),
+                Utilities.getFunctionOfEvent(fileUpload.getOnfileuploadstart()),
+                Utilities.getFunctionOfEvent(fileUpload.getOnfileuploadinprogress()),
+                Utilities.getFunctionOfEvent(fileUpload.getOnfileuploadend()),
                 dropTargetDragoverClass
         );
 
@@ -427,10 +331,6 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
                 Resources.jsonJsURL(context),
                 Resources.internalURL(context, "input/fileUpload.js")
         );
-    }
-
-    private String generateUniqueId(String clientId) {
-        return clientId + System.currentTimeMillis();
     }
 
     private void setFileSizeLimitInSession(FacesContext context, FileUpload fileUpload, String uniqueId){
@@ -566,5 +466,45 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
             return jsonObj;
         }
         return null;
+    }
+
+    private class SimpleButton{
+        private final FacesContext context;
+        private final FileUpload fileUpload;
+        private final ResponseWriter writer;
+
+        public SimpleButton(FacesContext context, FileUpload fileUpload, ResponseWriter writer){
+            this.context = context;
+            this.fileUpload = fileUpload;
+            this.writer = writer;
+        }
+        public void write(UIComponent facet,String elementId, String defText, String defClass) throws IOException{
+            writer.startElement("div", fileUpload);
+            writer.writeAttribute("id", elementId, null);
+            if (facet == null) {
+                writer.startElement("input", fileUpload);
+                writer.writeAttribute("type", "button", null);
+                writer.writeAttribute("value", defText, null);
+                writer.writeAttribute("class", defClass, null);
+                writer.endElement("input");
+            } else {
+                facet.encodeAll(context);
+            }
+            writer.endElement("div");
+        }
+    }
+
+    private static class Utilities{
+        private static String generateUniqueId(String clientId) {
+            return clientId + System.currentTimeMillis();
+        }
+        private static AnonymousFunction getFunctionOfEvent(String eventHandler){
+            AnonymousFunction eventFunction = null;
+
+            if (eventHandler != null) {
+                eventFunction = new AnonymousFunction(eventHandler, "event");
+            }
+            return eventFunction;
+        }
     }
 }
