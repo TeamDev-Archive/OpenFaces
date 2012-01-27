@@ -77,15 +77,9 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
     private static final String FOOTER_DIV_ID = "::footer";
     private static final String HELP_ELEMENTS_ID = "::elements";
     private static final String DRAG_AREA = "::dragArea";
-    /*default text for buttons*/
+    /*default text for browse button*/
     private static final String DEF_BROWSE_BTN_LABEL_SINGLE = "Upload...";
     private static final String DEF_BROWSE_LABEL_MULTIPLE = "Add file...";
-    private static final String DEF_UPLOAD_BTN_TEXT = "Upload";
-    private static final String DEF_REMOVE_BTN_TEXT = "Remove";
-    private static final String DEF_CLEAR_BTN_TEXT = "Clear";
-    private static final String DEF_STOP_BTN_TEXT = "Stop";
-    private static final String DEF_CLEAR_ALL_BTN_TEXT = "Remove all";
-
 
     private UIComponent browseButton;
     private UIComponent uploadButton;
@@ -169,7 +163,7 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
             writer.startElement("input", fileUpload);
             writer.writeAttribute("type", "button", null);
             writer.writeAttribute("class", "o_file_clear_btn", null);
-            writer.writeAttribute("value", DEF_CLEAR_BTN_TEXT, null);
+            writer.writeAttribute("value", fileUpload.getClearButtonText(), null);
             writer.endElement("input");
         } else {
             clearButton.encodeAll(context);
@@ -184,7 +178,7 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
             writer.startElement("input", fileUpload);
             writer.writeAttribute("type", "button", null);
             writer.writeAttribute("class", "o_file_clear_btn", null);
-            writer.writeAttribute("value", DEF_STOP_BTN_TEXT, null);
+            writer.writeAttribute("value", fileUpload.getStopButtonText(), null);
             writer.endElement("input");
         } else {
             stopButton.encodeAll(context);
@@ -199,7 +193,7 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
             writer.startElement("input", fileUpload);
             writer.writeAttribute("type", "button", null);
             writer.writeAttribute("class", "o_file_clear_btn", null);
-            writer.writeAttribute("value", DEF_REMOVE_BTN_TEXT, null);
+            writer.writeAttribute("value", fileUpload.getRemoveButtonText(), null);
             writer.endElement("input");
         } else {
             removeButton.encodeAll(context);
@@ -250,7 +244,7 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
             writer.startElement("input", fileUpload);
             writer.writeAttribute("type", "button", null);
             writer.writeAttribute("class", "o_file_upload_btn", null);
-            writer.writeAttribute("value", DEF_UPLOAD_BTN_TEXT, null);
+            writer.writeAttribute("value", fileUpload.getUploadButtonText(), null);
             writer.endElement("input");
         } else {
             uploadButton.encodeAll(context);
@@ -282,7 +276,7 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
         if (clearAllButton == null) {
             writer.startElement("input", fileUpload);
             writer.writeAttribute("type", "button", null);
-            writer.writeAttribute("value", DEF_CLEAR_ALL_BTN_TEXT, null);
+            writer.writeAttribute("value", fileUpload.getRemoveAllButtonText(), null);
             writer.writeAttribute("class", "o_file_clear_all_btn", null);
             writer.endElement("input");
         } else {

@@ -44639,7 +44639,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>the text that will be shown on browse button
+      <description>This attribute specifies the text that will be shown on browse button
       </description>
       <name>browseButtonText</name>
       <deferred-value>
@@ -44981,7 +44981,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when uploading for all files have been started.
+      <description>JavaScript code that should be executed when uploading session have been started.
       </description>
       <name>onuploadstart</name>
       <deferred-value>
@@ -45098,10 +45098,65 @@ entering a value and returns a list of suggestions from the server -->
       </description>
       <name>fileSizeLimit</name>
       <deferred-value>
-        <type>java.lang.String</type>
+        <type>int</type>
       </deferred-value>
       <!-- @bindingType int -->
       <!-- @default  org.openfaces.fileUpload.fileSizeLimit param in web.xml-->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>This attribute specifies the text that will be shown on upload button
+      </description>
+      <name>uploadButtonText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  'Upload'-->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>This attribute specifies the text that will be shown on remove all button
+      </description>
+      <name>removeAllButtonText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  'Remove all'-->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>This attribute specifies the text that will be shown on remove button for each file.
+      </description>
+      <name>removeButtonText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  'Remove'-->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>This attribute specifies the text that will be shown on stop button for each file.
+      </description>
+      <name>stopButtonText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  'Stop'-->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>This attribute specifies the text that will be shown on cleare button for each file.
+      </description>
+      <name>clearButtonText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  'Clear'-->
       <!-- @el true -->
     </attribute>
   </tag>

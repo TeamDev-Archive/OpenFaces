@@ -45,6 +45,12 @@ public class FileUpload extends OUIInputBase {
 
     private String browseButtonDisabledStyle;
     private String browseButtonDisabledClass;
+    
+    private String uploadButtonText;
+    private String removeAllButtonText;
+    private String removeButtonText;
+    private String stopButtonText;
+    private String clearButtonText;
 
     private String allInfosStyle;
     private String allInfosClass;
@@ -122,6 +128,11 @@ public class FileUpload extends OUIInputBase {
                 browseButtonFocusedClass,
                 browseButtonDisabledStyle,
                 browseButtonDisabledClass,
+                uploadButtonText,
+                removeAllButtonText,
+                removeButtonText,
+                stopButtonText,
+                clearButtonText,
                 allInfosStyle,
                 allInfosClass,
                 dropTargetStyle,
@@ -179,6 +190,11 @@ public class FileUpload extends OUIInputBase {
         browseButtonFocusedClass = (String) values[i++];
         browseButtonDisabledStyle = (String) values[i++];
         browseButtonDisabledClass = (String) values[i++];
+        uploadButtonText  = (String) values[i++];
+        removeAllButtonText = (String) values[i++];
+        removeButtonText = (String) values[i++];
+        stopButtonText = (String) values[i++];
+        clearButtonText = (String) values[i++];
         allInfosStyle = (String) values[i++];
         allInfosClass = (String) values[i++];
         dropTargetStyle = (String) values[i++];
@@ -494,6 +510,46 @@ public class FileUpload extends OUIInputBase {
 
     public void setBrowseButtonFocusedClass(String browseButtonFocusedClass) {
         this.browseButtonFocusedClass = browseButtonFocusedClass;
+    }
+
+    public String getUploadButtonText() {
+        return ValueBindings.get(this, "uploadButtonText", uploadButtonText,"Upload");
+    }
+
+    public void setUploadButtonText(String uploadButtonText) {
+        this.uploadButtonText = uploadButtonText;
+    }
+
+    public String getRemoveAllButtonText() {
+        return ValueBindings.get(this, "removeAllButtonText", removeAllButtonText, "Remove all");
+    }
+
+    public void setRemoveAllButtonText(String removeAllButtonText) {
+        this.removeAllButtonText = removeAllButtonText;
+    }
+
+    public String getRemoveButtonText() {
+        return ValueBindings.get(this, "removeButtonText", removeButtonText, "Remove");
+    }
+
+    public void setRemoveButtonText(String removeButtonText) {
+        this.removeButtonText = removeButtonText;
+    }
+
+    public String getStopButtonText() {
+        return ValueBindings.get(this, "stopButtonText", stopButtonText,"Stop");
+    }
+
+    public void setStopButtonText(String stopButtonText) {
+        this.stopButtonText = stopButtonText;
+    }
+
+    public String getClearButtonText() {
+        return ValueBindings.get(this, "clearButtonText", clearButtonText,"Clear");
+    }
+
+    public void setClearButtonText(String clearButtonText) {
+        this.clearButtonText = clearButtonText;
     }
 
     public String getProgressBarStyle() {
