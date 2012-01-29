@@ -93,6 +93,25 @@ public class FileUploadJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("allInfosClass", allInfosClass);
     }
 
+    public void setDropTargetStyle(ValueExpression dropTargetStyle) {
+        getDelegate().setPropertyValue("dropTargetStyle", dropTargetStyle);
+    }
+
+    public void setDropTargetClass(ValueExpression dropTargetClass) {
+        getDelegate().setPropertyValue("dropTargetClass", dropTargetClass);
+    }
+    public void setDropTargetDragoverStyle(ValueExpression dropTargetDragoverStyle) {
+        getDelegate().setPropertyValue("dropTargetDragoverStyle", dropTargetDragoverStyle);
+    }
+
+    public void setDropTargetDragoverClass(ValueExpression dropTargetDragoverClass) {
+        getDelegate().setPropertyValue("dropTargetDragoverClass", dropTargetDragoverClass);
+    }
+
+    public void setDropTargetText(ValueExpression dropTargetText) {
+        getDelegate().setPropertyValue("dropTargetText", dropTargetText);
+    }
+
     public void setRowStyle(ValueExpression rowStyle) {
         getDelegate().setPropertyValue("rowStyle", rowStyle);
     }
@@ -192,5 +211,19 @@ public class FileUploadJspTag extends AbstractComponentJspTag {
 
     public void setOnuploadend(ValueExpression onuploadend) {
         getDelegate().setPropertyValue("onuploadend", onuploadend);
+    }
+
+    public void setOnfileuploadstart(ValueExpression onfileuploadstart) {
+        getDelegate().setPropertyValue("onfileuploadstart", onfileuploadstart);
+    }
+    public void setOnfileuploadinprogress(ValueExpression onfileuploadinprogress) {
+        getDelegate().setPropertyValue("onfileuploadinprogress", onfileuploadinprogress);
+    }
+    public void setOnfileuploadend(ValueExpression onfileuploadend) {
+        getDelegate().setPropertyValue("onfileuploadend", onfileuploadend);
+    }
+
+    public void setFileSizeLimit(ValueExpression fileSizeLimit) {
+        getDelegate().setPropertyValue("fileSizeLimit", fileSizeLimit);
     }
 }

@@ -361,6 +361,7 @@
       <feature>Stopping uploading</feature>
       <feature>Style customization</feature>
       <feature>AutoUpload support</feature>
+      <feature>Drag and Drop support</feature>
     </keyFeatures>
     <demos>
       <demoItem>

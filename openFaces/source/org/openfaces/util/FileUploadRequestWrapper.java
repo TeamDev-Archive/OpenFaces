@@ -15,8 +15,10 @@ package org.openfaces.util;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.openfaces.component.input.FileUpload;
 import org.openfaces.event.FileUploadItem;
 import org.openfaces.event.FileUploadStatus;
+import org.openfaces.renderkit.input.FileUploadRenderer;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
@@ -31,7 +33,7 @@ public class FileUploadRequestWrapper extends HttpServletRequestWrapper {
 
     private static final String FIELD_NAME = "::inputs::input";
 
-    public FileUploadRequestWrapper(HttpServletRequest request, String tempDirPath, final long maxSizeOfFile) {
+    public FileUploadRequestWrapper(HttpServletRequest request, String tempDirPath, final long maxSizeOfFile, String uniqueFileId) {
         super(request);
         final String contentLength = request.getHeader("content-length");
         if (contentLength == null)
@@ -39,31 +41,35 @@ public class FileUploadRequestWrapper extends HttpServletRequestWrapper {
 
         try {
             ServletFileUpload upload = new ServletFileUpload();
-            upload.setFileItemFactory(new ProgressMonitorFileItemFactory(request, maxSizeOfFile));
+            upload.setFileItemFactory(new ProgressMonitorFileItemFactory(request, maxSizeOfFile, uniqueFileId));
             List<FileItem> fileItems = upload.parseRequest(request);
             for (FileItem fileItem : fileItems) {
                 if (!fileItem.isFormField()) {
                     if (fileItem.getSize() != 0) {
-                        File f = writeFile(fileItem, tempDirPath);
-                        int index = fileItem.getFieldName().indexOf(FIELD_NAME);
-                        String genericNameForFile = fileItem.getFieldName().substring(0, index + FIELD_NAME.length());
-                        request.setAttribute(genericNameForFile, new FileUploadItem(fileItem.getName(), f, FileUploadStatus.SUCCESSFUL));
-                    }/*else {//we are not using file in this case
-                        request.setAttribute(fileItem.getFieldName(), new FileUploadItem(fileItem.getName(), null, FileUploadStatus.SIZE_LIMIT_EXCEEDED));
-                    }*/
-                } else {
-                    if (fileItem.getFieldName().equals("FILE_ID")) {
-                        request.setAttribute("FILE_ID", fileItem.getString());
+                        if (request.getSession().getAttribute(uniqueFileId + FileUploadRenderer.TERMINATED_TEXT) == null) {
+                            File f = writeFile(fileItem, tempDirPath);
+                            int index = fileItem.getFieldName().indexOf(FIELD_NAME);
+                            String genericNameForFile = fileItem.getFieldName().substring(0, index + FIELD_NAME.length());
+                            request.setAttribute(genericNameForFile, new FileUploadItem(fileItem.getName(), f, FileUploadStatus.SUCCESSFUL));
+                            request.setAttribute("FILE_ID", uniqueFileId);
+                        }else{
+                            request.getSession().removeAttribute(uniqueFileId + FileUploadRenderer.TERMINATED_TEXT);
+                        }
+                    }else{
+                        throw new RuntimeException("File size is equal 0 bytes");
                     }
-
                 }
             }
 
         } catch (FileUploadException fe) {
-            //throw new RuntimeException(fe);
-            System.out.println("File upload has been terminated or request has timed out.");
+            /*this exception can happened in case if something wrong with file or we stopped manually*/
+            request.getSession().setAttribute(uniqueFileId + FileUploadRenderer.TERMINATED_TEXT, true);
         } catch (IOException ne) {
-            throw new RuntimeException(ne);
+            /*this exception can happened in case if problem in writing file*/
+            request.getSession().setAttribute(uniqueFileId + FileUploadRenderer.TERMINATED_TEXT, true);
+        }catch(Exception e){
+            /*this exception can happened if on server some problem*/
+            request.getSession().setAttribute(uniqueFileId + FileUploadRenderer.TERMINATED_TEXT, true);
         }
     }
 
