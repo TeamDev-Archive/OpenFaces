@@ -5905,19 +5905,6 @@
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
-    <attribute>
-      <description>Specifies whether the components listed in the &quot;render&quot; attribute undergo the &quot;execute&quot;
-        lifecycle (Restore View, Apply Request Values, Process Validations and Update Model Values) phases as if these
-        components are implicitly specified in the &quot;execute&quot; attribute as well.
-      </description>
-      <name>executeRenderedComponents</name>
-      <deferred-value>
-        <type>boolean</type>
-      </deferred-value>
-      <!-- @bindingType boolean -->
-      <!-- @default true -->
-      <!-- @el true -->
-    </attribute>
   </tag>
 
   <tag>
@@ -6131,19 +6118,6 @@
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>Specifies whether the components listed in the &quot;render&quot; attribute undergo the &quot;execute&quot;
-        lifecycle (Restore View, Apply Request Values, Process Validations and Update Model Values) phases as if these
-        components are implicitly specified in the &quot;execute&quot; attribute as well.
-      </description>
-      <name>executeRenderedComponents</name>
-      <deferred-value>
-        <type>boolean</type>
-      </deferred-value>
-      <!-- @bindingType boolean -->
-      <!-- @default true -->
       <!-- @el true -->
     </attribute>
   </tag>
@@ -10373,19 +10347,6 @@ means that only root nodes and their immediate children are preloaded -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
-    <attribute>
-      <description>Specifies whether the components listed in the &quot;render&quot; attribute undergo the &quot;execute&quot;
-        lifecycle (Restore View, Apply Request Values, Process Validations and Update Model Values) phases as if these
-        components are implicitly specified in the &quot;execute&quot; attribute as well.
-      </description>
-      <name>executeRenderedComponents</name>
-      <deferred-value>
-        <type>boolean</type>
-      </deferred-value>
-      <!-- @bindingType boolean -->
-      <!-- @default true -->
-      <!-- @el true -->
-    </attribute>
   </tag>
 
   <tag>
@@ -10603,19 +10564,6 @@ means that only root nodes and their immediate children are preloaded -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>Specifies whether the components listed in the &quot;render&quot; attribute undergo the &quot;execute&quot;
-        lifecycle (Restore View, Apply Request Values, Process Validations and Update Model Values) phases as if these
-        components are implicitly specified in the &quot;execute&quot; attribute as well.
-      </description>
-      <name>executeRenderedComponents</name>
-      <deferred-value>
-        <type>boolean</type>
-      </deferred-value>
-      <!-- @bindingType boolean -->
-      <!-- @default true -->
       <!-- @el true -->
     </attribute>
   </tag>
@@ -14217,19 +14165,6 @@ entering a value and returns a list of suggestions from the server -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>Specifies whether the components listed in the &quot;render&quot; attribute undergo the &quot;execute&quot;
-        lifecycle (Restore View, Apply Request Values, Process Validations and Update Model Values) phases as if these
-        components are implicitly specified in the &quot;execute&quot; attribute as well.
-      </description>
-      <name>executeRenderedComponents</name>
-      <deferred-value>
-        <type>boolean</type>
-      </deferred-value>
-      <!-- @bindingType boolean -->
-      <!-- @default true -->
       <!-- @el true -->
     </attribute>
   </tag>
@@ -24347,19 +24282,6 @@ and it is automatically triggered on any form submission. -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
-    <attribute>
-      <description>Specifies whether the components listed in the &quot;render&quot; attribute undergo the &quot;execute&quot;
-        lifecycle (Restore View, Apply Request Values, Process Validations and Update Model Values) phases as if these
-        components are implicitly specified in the &quot;execute&quot; attribute as well.
-      </description>
-      <name>executeRenderedComponents</name>
-      <deferred-value>
-        <type>boolean</type>
-      </deferred-value>
-      <!-- @bindingType boolean -->
-      <!-- @default true -->
-      <!-- @el true -->
-    </attribute>
   </tag>
 
   <!-- CommandLink tag declaration -->
@@ -24867,19 +24789,6 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>Specifies whether the components listed in the &quot;render&quot; attribute undergo the &quot;execute&quot;
-        lifecycle (Restore View, Apply Request Values, Process Validations and Update Model Values) phases as if these
-        components are implicitly specified in the &quot;execute&quot; attribute as well.
-      </description>
-      <name>executeRenderedComponents</name>
-      <deferred-value>
-        <type>boolean</type>
-      </deferred-value>
-      <!-- @bindingType boolean -->
-      <!-- @default true -->
       <!-- @el true -->
     </attribute>
   </tag>
@@ -27140,19 +27049,6 @@ and it is automatically triggered on any form submission. -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
-    <attribute>
-      <description>Specifies whether the components listed in the &quot;render&quot; attribute undergo the &quot;execute&quot;
-        lifecycle (Restore View, Apply Request Values, Process Validations and Update Model Values) phases as if these
-        components are implicitly specified in the &quot;execute&quot; attribute as well.
-      </description>
-      <name>executeRenderedComponents</name>
-      <deferred-value>
-        <type>boolean</type>
-      </deferred-value>
-      <!-- @bindingType boolean -->
-      <!-- @default true -->
-      <!-- @el true -->
-    </attribute>
   </tag>
 
   <tag>
@@ -27646,19 +27542,6 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>Specifies whether the components listed in the &quot;render&quot; attribute undergo the &quot;execute&quot;
-        lifecycle (Restore View, Apply Request Values, Process Validations and Update Model Values) phases as if these
-        components are implicitly specified in the &quot;execute&quot; attribute as well.
-      </description>
-      <name>executeRenderedComponents</name>
-      <deferred-value>
-        <type>boolean</type>
-      </deferred-value>
-      <!-- @bindingType boolean -->
-      <!-- @default true -->
       <!-- @el true -->
     </attribute>
   </tag>
@@ -43153,19 +43036,6 @@ entering a value and returns a list of suggestions from the server -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>Specifies whether the components listed in the &quot;render&quot; attribute undergo the &quot;execute&quot;
-        lifecycle (Restore View, Apply Request Values, Process Validations and Update Model Values) phases as if these
-        components are implicitly specified in the &quot;execute&quot; attribute as well.
-      </description>
-      <name>executeRenderedComponents</name>
-      <deferred-value>
-        <type>boolean</type>
-      </deferred-value>
-      <!-- @bindingType boolean -->
-      <!-- @default true -->
       <!-- @el true -->
     </attribute>
     <attribute>
