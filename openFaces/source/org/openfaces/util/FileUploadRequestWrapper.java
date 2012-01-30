@@ -47,10 +47,11 @@ public class FileUploadRequestWrapper extends HttpServletRequestWrapper {
                 if (!fileItem.isFormField()) {
                     if (fileItem.getSize() != 0) {
                         if (request.getSession().getAttribute(uniqueFileId + FileUploadRenderer.TERMINATED_TEXT) == null) {
-                            File f = writeFile(fileItem, tempDirPath);
+                            String correctFileName = new String(fileItem.getName().getBytes(), "UTF-8"); // for cyrillic symbols in fileName
+                            File f = writeFile(fileItem, tempDirPath, correctFileName);
                             int index = fileItem.getFieldName().indexOf(FIELD_NAME);
                             String genericNameForFile = fileItem.getFieldName().substring(0, index + FIELD_NAME.length());
-                            request.setAttribute(genericNameForFile, new FileUploadItem(fileItem.getName(), f, FileUploadStatus.SUCCESSFUL));
+                            request.setAttribute(genericNameForFile, new FileUploadItem(correctFileName, f, FileUploadStatus.SUCCESSFUL));
                             request.setAttribute("FILE_ID", uniqueFileId);
                         }else{
                             request.getSession().removeAttribute(uniqueFileId + FileUploadRenderer.TERMINATED_TEXT);
@@ -73,8 +74,8 @@ public class FileUploadRequestWrapper extends HttpServletRequestWrapper {
         }
     }
 
-    private File writeFile(FileItem fileItem, String tempDirPath) throws IOException {
-        File f = getAndChangeFileNameIfNeeded(tempDirPath, fileItem.getName());
+    private File writeFile(FileItem fileItem, String tempDirPath, String correctFileName) throws IOException {
+        File f = getAndChangeFileNameIfNeeded(tempDirPath, correctFileName);
 
         OutputStream out = new FileOutputStream(f);
         int read = 0;

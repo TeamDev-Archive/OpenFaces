@@ -150,7 +150,7 @@ O$.FileUpload = {
                   var form = inputsStorage.childNodes[inputsIndex].firstChild;
                   file.push(form.childNodes[0]._uniqueId);//id
                   file.push(form.childNodes[0].name);//name of file input
-                  file.push(encodeURI(getFileName(form.childNodes[0].value)));//filename
+                  file.push(encodeURIComponent(getFileName(form.childNodes[0].value)));//filename
                   file.push("IN_PROGRESS");//status
                   file.push(form.childNodes[0]._idInputAndDiv);//client id of div
                   fileUpload._listOfids.push(file);
@@ -161,7 +161,7 @@ O$.FileUpload = {
                   var file = [];
                   file.push(html5File._uniqueId);//id
                   file.push(html5File._fakeInput);//name of file input
-                  file.push(encodeURI(getFileName(html5File.name)));//filename
+                  file.push(encodeURIComponent(getFileName(html5File.name)));//filename
                   file.push("IN_PROGRESS");//status
                   file.push(html5File._infoId);//client id of div
                   fileUpload._listOfids.push(file);
@@ -947,9 +947,6 @@ O$.FileUpload = {
       this method doesn't fully guarantee that file is directory.
       * */
       function isDirectory(file) {
-        if (file.size == 0){
-          return true;
-        }
         if (file.type != ""){
           return false;
         }
@@ -969,7 +966,8 @@ O$.FileUpload = {
         }
         return false;
       }
-      if (isFileNameNotApplied(file.name) || inputInAddBtn.disabled || (file._fromDnD && isDirectory(file))) {
+      if (isFileNameNotApplied(file.name) || inputInAddBtn.disabled ||
+              (file.size == 0) ||(file._fromDnD && isDirectory(file))) {
         return false;
       }
       clearAllInfosForUploadedFiles();
