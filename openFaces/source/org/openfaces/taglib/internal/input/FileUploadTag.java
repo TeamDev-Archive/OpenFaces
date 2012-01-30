@@ -54,6 +54,13 @@ public class FileUploadTag extends AbstractComponentTag {
         setStringProperty(component, "browseButtonDisabledStyle");
         setStringProperty(component, "browseButtonDisabledClass");
 
+        setStringProperty(component, "uploadButtonText");
+        setStringProperty(component, "removeAllButtonText");
+        setStringProperty(component, "stopAllButtonText");
+        setStringProperty(component, "removeButtonText");
+        setStringProperty(component, "stopButtonText");
+        setStringProperty(component, "clearButtonText");
+
         setStringProperty(component, "allInfosStyle");
         setStringProperty(component, "allInfosClass");
 
