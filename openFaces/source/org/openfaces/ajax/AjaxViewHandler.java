@@ -423,11 +423,7 @@ public class AjaxViewHandler extends ViewHandlerWrapper {
                         }
                         root.encodeEnd(context);
                     }
-                } catch (RuntimeException e) {
-                    CommonAjaxViewRoot.processExceptionDuringAjax(context, e);
-                    externalContext.log(e.getMessage(), e);
-                }
-                catch (Error e) {
+                } catch (Throwable e) {
                     CommonAjaxViewRoot.processExceptionDuringAjax(context, e);
                     externalContext.log(e.getMessage(), e);
                 }
