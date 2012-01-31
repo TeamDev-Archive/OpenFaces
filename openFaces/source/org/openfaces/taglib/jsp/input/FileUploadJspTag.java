@@ -84,6 +84,25 @@ public class FileUploadJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("browseButtonDisabledClass", browseButtonDisabledClass);
     }
 
+    public void setUploadButtonText(ValueExpression uploadButtonText) {
+        getDelegate().setPropertyValue("uploadButtonText", uploadButtonText);
+    }
+    public void setRemoveAllButtonText(ValueExpression removeAllButtonText) {
+        getDelegate().setPropertyValue("removeAllButtonText", removeAllButtonText);
+    }
+    public void setStopAllButtonText(ValueExpression stopAllButtonText) {
+        getDelegate().setPropertyValue("stopAllButtonText", stopAllButtonText);
+    }
+    public void setRemoveButtonText(ValueExpression removeButtonText) {
+        getDelegate().setPropertyValue("removeButtonText", removeButtonText);
+    }
+    public void setStopButtonText(ValueExpression stopButtonText) {
+        getDelegate().setPropertyValue("stopButtonText", stopButtonText);
+    }
+    public void setClearButtonText(ValueExpression clearButtonText) {
+        getDelegate().setPropertyValue("clearButtonText", clearButtonText);
+    }
+
     public void setAllInfosStyle(ValueExpression allInfosStyle) {
         getDelegate().setPropertyValue("allInfosStyle", allInfosStyle);
     }
@@ -91,6 +110,25 @@ public class FileUploadJspTag extends AbstractComponentJspTag {
 
     public void setAllInfosClass(ValueExpression allInfosClass) {
         getDelegate().setPropertyValue("allInfosClass", allInfosClass);
+    }
+
+    public void setDropTargetStyle(ValueExpression dropTargetStyle) {
+        getDelegate().setPropertyValue("dropTargetStyle", dropTargetStyle);
+    }
+
+    public void setDropTargetClass(ValueExpression dropTargetClass) {
+        getDelegate().setPropertyValue("dropTargetClass", dropTargetClass);
+    }
+    public void setDropTargetDragoverStyle(ValueExpression dropTargetDragoverStyle) {
+        getDelegate().setPropertyValue("dropTargetDragoverStyle", dropTargetDragoverStyle);
+    }
+
+    public void setDropTargetDragoverClass(ValueExpression dropTargetDragoverClass) {
+        getDelegate().setPropertyValue("dropTargetDragoverClass", dropTargetDragoverClass);
+    }
+
+    public void setDropTargetText(ValueExpression dropTargetText) {
+        getDelegate().setPropertyValue("dropTargetText", dropTargetText);
     }
 
     public void setRowStyle(ValueExpression rowStyle) {
@@ -192,5 +230,19 @@ public class FileUploadJspTag extends AbstractComponentJspTag {
 
     public void setOnuploadend(ValueExpression onuploadend) {
         getDelegate().setPropertyValue("onuploadend", onuploadend);
+    }
+
+    public void setOnfileuploadstart(ValueExpression onfileuploadstart) {
+        getDelegate().setPropertyValue("onfileuploadstart", onfileuploadstart);
+    }
+    public void setOnfileuploadinprogress(ValueExpression onfileuploadinprogress) {
+        getDelegate().setPropertyValue("onfileuploadinprogress", onfileuploadinprogress);
+    }
+    public void setOnfileuploadend(ValueExpression onfileuploadend) {
+        getDelegate().setPropertyValue("onfileuploadend", onfileuploadend);
+    }
+
+    public void setFileSizeLimit(ValueExpression fileSizeLimit) {
+        getDelegate().setPropertyValue("fileSizeLimit", fileSizeLimit);
     }
 }

@@ -20,7 +20,7 @@ import java.io.OutputStream;
 
 public class ProgressMonitorFileItem extends DiskFileItem {
 
-    private static final int MAX_REQUEST_LENGTH = 1000; //withoout files
+    private static final int MAX_REQUEST_LENGTH = 1000; //without files
     private ProgressObserver observer;
     private long passedInFileSize; // sizeOfAllFile
     private long bytesRead; // how many bytes already read
@@ -35,7 +35,7 @@ public class ProgressMonitorFileItem extends DiskFileItem {
         this.observer = observer;
         this.passedInFileSize = passedInFileSize;
         this.shouldProcess = shouldProcess;
-        if(shouldProcess && observer!=null){
+        if (shouldProcess && observer != null) {
             observer.setProgress(0);
         }
     }

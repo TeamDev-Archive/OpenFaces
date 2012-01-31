@@ -12,7 +12,6 @@
 
 package org.openfaces.util;
 
-import javax.faces.FacesException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -25,11 +24,12 @@ import java.io.File;
 import java.io.IOException;
 
 public class FileUploadFilter implements Filter {
-    public static final String INIT_PARAM_MAX_FILE_SIZE = "org.openfaces.fileUpload.fileSizeLimit";
     private static final String INIT_PARAM_TEMP_DIR = "org.openfaces.fileUpload.tempDir";
+    private static final String COMPONENT_ID = "uniqueID";
+    private static final String ID_OF_FILE = "idOfFile";
 
     private ServletContext servletContext;
-    
+
     private String getTempDir() {
         String tempDirAttr = FileUploadFilter.class.getName() + "." + INIT_PARAM_TEMP_DIR;
         String tempDir = (String) servletContext.getAttribute(tempDirAttr);
@@ -115,16 +115,22 @@ public class FileUploadFilter implements Filter {
 
         if (!isMultipart) {
             chain.doFilter(request, response);
-        } else {
-            //We're dealing with a multipart request - we have to wrap the request.
-            String tempDirStr = getTempDir();
-
-            String maxSizeString = servletContext.getInitParameter(INIT_PARAM_MAX_FILE_SIZE);
-            long maxSizeOfFile = (maxSizeString != null) ? Long.parseLong(maxSizeString) * 1024 : Long.MAX_VALUE;
-
-            FileUploadRequestWrapper wrapper = new FileUploadRequestWrapper(hRequest, tempDirStr, maxSizeOfFile);
-            request.setAttribute("fileUploadRequest", true);
-            chain.doFilter(wrapper, response);
+        } else {//if multipart request
+            String compID = request.getParameter(COMPONENT_ID);
+            if (compID != null) {//if our component is using
+                String tempDirStr = getTempDir();
+                Long maxSizeOfFile = (Long) ((HttpServletRequest) request).getSession().getAttribute(compID);
+                if (maxSizeOfFile != null) {
+                    String idOfFile = request.getParameter(ID_OF_FILE);
+                    FileUploadRequestWrapper wrapper = new FileUploadRequestWrapper(hRequest, tempDirStr, maxSizeOfFile, compID + idOfFile);
+                    request.setAttribute("fileUploadRequest", true);
+                    chain.doFilter(wrapper, response);
+                } else {
+                    chain.doFilter(request, response);//session expired
+                }
+            } else {
+                chain.doFilter(request, response);
+            }
         }
     }
 

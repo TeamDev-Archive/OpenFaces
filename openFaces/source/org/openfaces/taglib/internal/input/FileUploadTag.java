@@ -54,8 +54,22 @@ public class FileUploadTag extends AbstractComponentTag {
         setStringProperty(component, "browseButtonDisabledStyle");
         setStringProperty(component, "browseButtonDisabledClass");
 
+        setStringProperty(component, "uploadButtonText");
+        setStringProperty(component, "removeAllButtonText");
+        setStringProperty(component, "stopAllButtonText");
+        setStringProperty(component, "removeButtonText");
+        setStringProperty(component, "stopButtonText");
+        setStringProperty(component, "clearButtonText");
+
         setStringProperty(component, "allInfosStyle");
         setStringProperty(component, "allInfosClass");
+
+        setStringProperty(component, "dropTargetStyle");
+        setStringProperty(component, "dropTargetClass");
+        setStringProperty(component, "dropTargetDragoverStyle");
+        setStringProperty(component, "dropTargetDragoverClass");
+
+        setStringProperty(component, "dropTargetText");
 
         setStringProperty(component, "rowStyle");
         setStringProperty(component, "rowClass");
@@ -88,5 +102,10 @@ public class FileUploadTag extends AbstractComponentTag {
                 new Class[]{UploadCompletionEvent.class}, void.class);
         setStringProperty(component, "onuploadstart");
         setStringProperty(component, "onuploadend");
+        setStringProperty(component, "onfileuploadstart");
+        setStringProperty(component, "onfileuploadinprogress");
+        setStringProperty(component, "onfileuploadend");
+
+        setIntProperty(component, "fileSizeLimit");
     }
 }

@@ -1262,11 +1262,27 @@
     margin-top: 2px;
 }
 
-.o_file_clear_all_btn {
+.o_file_remove_all_btn, .o_file_stop_all_btn {
     margin-top: 10px;
-    margin-left: 362px;
+    margin-left: 338px;
     font-size: 8pt;
     margin-bottom: 10px;
+    display: none;
+}
+
+.o_file_drop_target{
+    border: 2px dashed #CCCCCC;
+    margin: 5px;
+    padding: 20px 0;
+    color: #999999;
+    font-size: 14pt;
+    font-weight: bold;
+    text-align: center;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+.o_file_drop_target_dragover{
+    background-color: #ddd;
 }
 
 .o_file_upload_infos {

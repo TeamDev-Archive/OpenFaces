@@ -44639,7 +44639,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>the text that will be shown on browse button
+      <description>This attribute specifies the text that will be shown on browse button
       </description>
       <name>browseButtonText</name>
       <deferred-value>
@@ -44981,7 +44981,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when started uploading for all files.
+      <description>JavaScript code that should be executed when uploading session have been started.
       </description>
       <name>onuploadstart</name>
       <deferred-value>
@@ -44992,8 +44992,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when all files finished uploading ,
-        no matter successfully, with errors or stopped.
+      <description>JavaScript code that should be executed when uploading for  all files have been finished,
+        despite their upload status(successfully, with errors or stopped).
       </description>
       <name>onuploadend</name>
       <deferred-value>
@@ -45001,6 +45001,173 @@ entering a value and returns a list of suggestions from the server -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when uploading for  file has been started.
+      </description>
+      <name>onfileuploadstart</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when uploading progress for file has been changed.
+      </description>
+      <name>onfileuploadinprogress</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when uploading for file has been finished,
+        despite its upload status(successfully, with errors or stopped).
+      </description>
+      <name>onfileuploadend</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A css style for drop target for files in case of using drag and drop.
+      </description>
+      <name>dropTargetStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A css class for drop target for files in case of using drag and drop.
+      </description>
+      <name>dropTargetClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A css style for drop target for files in dragover state.
+      </description>
+      <name>dropTargetDragoverStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A css class for drop target for files in dragover state.
+      </description>
+      <name>dropTargetDragoverClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A text which will be displayed in the drop target.
+      </description>
+      <name>dropTargetText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "Drop file here" or "Drop file(s) here" if multiple -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Specifies max size of each file in kilobytes.
+        If this attribute isn't specified , max file size would be what is set at org.openfaces.fileUpload.fileSizeLimit param in web.xml.
+      </description>
+      <name>fileSizeLimit</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default  org.openfaces.fileUpload.fileSizeLimit param in web.xml-->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>This attribute specifies the text that will be shown on upload button
+      </description>
+      <name>uploadButtonText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  'Upload'-->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>This attribute specifies the text that will be shown on remove all button
+      </description>
+      <name>removeAllButtonText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  'Remove all'-->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>This attribute specifies the text that will be shown on stop all button
+      </description>
+      <name>stopAllButtonText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  'Stop all'-->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>This attribute specifies the text that will be shown on remove button for each file.
+      </description>
+      <name>removeButtonText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  'Remove'-->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>This attribute specifies the text that will be shown on stop button for each file.
+      </description>
+      <name>stopButtonText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  'Stop'-->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>This attribute specifies the text that will be shown on cleare button for each file.
+      </description>
+      <name>clearButtonText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  'Clear'-->
       <!-- @el true -->
     </attribute>
   </tag>
