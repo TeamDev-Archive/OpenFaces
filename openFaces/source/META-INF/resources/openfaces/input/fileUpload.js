@@ -38,7 +38,40 @@ O$.FileUpload = {
       _allFiles:[],
       _numberOfFailedRequest:15,   /*this number defines how many requests should have gone to presume that request is timedout if progress doesn't changed*/
       _numberOfErrorRequest: 3, /*this number defines how many requests should have gone to check that request throwed an Exception if progress doesn't changed*/
-      _buttons:{}
+      _buttons:{},
+      _transformToFormatStatus:function(statusText){
+        function updateStatus(uploaded, size) {
+          var text;
+          if (size != "unknown") {
+            text = this.text.replace("{size}", (size / Math.pow(2, this.pow)).toFixed(2));
+          } else {
+            text = this.text.replace("{size}", size);
+          }
+          text = text.replace("{uploaded}", (uploaded / Math.pow(2, this.pow)).toFixed(2));
+          return text;
+        }
+        var sizeDimensions = [
+          {title:"{KB}",
+            pow:10},
+          {title:"{MB}",
+            pow:20},
+          {title:"{B}",
+            pow:1}
+        ];
+        for (var dimIndex = 0; dimIndex < sizeDimensions.length; dimIndex++) {
+          var index = statusText.indexOf(sizeDimensions[dimIndex].title);
+          if (index != -1) {
+            var modified = statusText.replace(sizeDimensions[dimIndex].title, "");
+            return {text:modified, pow:sizeDimensions[dimIndex].pow, _update:updateStatus};
+          }
+        }
+        return {text:statusText, pow:1, _update:updateStatus};
+      }
+    });
+    O$.extend(fileUpload,{
+      _statuses:{
+        inProgress :fileUpload._transformToFormatStatus(statusLabelInProgress)
+      }
     });
     setAllEvents();
     if (!fileUpload._multiUpload){
@@ -93,7 +126,7 @@ O$.FileUpload = {
     var divForInputInAddBtn = O$(addButtonId+"::forInput");
     var inputInAddBtn = createInputInAddBtn(idOfInfoAndInputDiv);
     var addButtonTitle = O$(addButtonId + "::title");
-    var addButtonTitleInput = addButtonTitle.firstChild;
+    var addButtonTitleInput = addButtonTitle.lastChild;
     setStylesForAddButton(addButton);
     if (O$.isExplorer() && O$.isQuirksMode()){
       divForInputInAddBtn.style.height = O$.getElementSize(addButtonTitle).height;
@@ -225,6 +258,9 @@ O$.FileUpload = {
                               var percents = portionData['progressInPercent'];
                               if (percents != 100) {
                                 if (!inputForFile._isInterrupted) {
+                                  if (portionData['size']){
+                                    infoDiv.childNodes[2].innerHTML = fileUpload._statuses.inProgress._update(portionData['size'] * (percents / 100), portionData['size']);
+                                  }
                                   if (inputForFile._wantToInterrupt) {
                                     sendIsStoppedRequest(inputForFile, infoDiv, fileForAPI);
                                   }
@@ -347,7 +383,7 @@ O$.FileUpload = {
                   }
                   infoDiv._status = O$.FileUpload.Status.IN_PROGRESS;
                   fileForAPI.status = O$.FileUpload.Status.IN_PROGRESS;
-                  infoDiv.childNodes[2].innerHTML = statusLabelInProgress;
+                  infoDiv.childNodes[2].innerHTML = fileUpload._statuses.inProgress._update(0, "unknown");
                   setStopButtonBehavior(inputForFile, infoDiv);
                 }
 
@@ -370,6 +406,9 @@ O$.FileUpload = {
                               var percents = portionData['progressInPercent'];
                               if (percents != 100) {
                                 if (!file._isInterrupted) {
+                                  if (portionData['size']){
+                                    infoDiv.childNodes[2].innerHTML = fileUpload._statuses.inProgress._update(portionData['size'] * (percents / 100), portionData['size']);
+                                  }
                                   if (file._wantToInterrupt) {
                                     sendIsStoppedRequestHTML5(file, infoDiv, fileForAPI);
                                   }
@@ -493,7 +532,7 @@ O$.FileUpload = {
                   }
                   infoDiv._status = O$.FileUpload.Status.IN_PROGRESS;
                   fileForAPI.status = O$.FileUpload.Status.IN_PROGRESS;
-                  infoDiv.childNodes[2].innerHTML = statusLabelInProgress;
+                  infoDiv.childNodes[2].innerHTML = fileUpload._statuses.inProgress._update(0, file.size);
                   setStopButtonBehaviorHTML5(file, infoDiv, request);
                 }
 
@@ -1337,19 +1376,19 @@ O$.FileUpload = {
     }
 
     function setFocusOnComponent() {
-      if (!inputInAddBtn.disabled){
+      if (!inputInAddBtn.disabled && inputInAddBtn.focus){
         inputInAddBtn.focus();
         return;
       }
-      if (!fileUpload._buttons.upload.disabled){
+      if (!fileUpload._buttons.upload.disabled && fileUpload._buttons.upload.focus){
         fileUpload._buttons.upload.focus();
         return;
       }
-      if (!fileUpload._buttons.removeAll.disabled){
+      if (!fileUpload._buttons.removeAll.disabled && fileUpload._buttons.removeAll.focus){
         fileUpload._buttons.removeAll.focus();
         return;
       }
-      if (!fileUpload._buttons.stopAll.disabled){
+      if (!fileUpload._buttons.stopAll.disabled && fileUpload._buttons.stopAll.focus){
         fileUpload._buttons.stopAll.focus();
         return;
       }

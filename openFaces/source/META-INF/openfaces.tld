@@ -44605,6 +44605,9 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>This text appears as status of file when it is uploading at the moment.
+        You can display useful information about uploading process such as how many already uploaded{uploaded} and size of file{size}.
+        For example: {uploaded} / {size} MB{MB},
+        Also you can set how it will display - in bytes{B}, kylobytes{KB} or megabytes{MB}
       </description>
       <name>inProgressStatusText</name>
       <deferred-value>

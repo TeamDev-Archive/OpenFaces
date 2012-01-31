@@ -45,6 +45,7 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
     public static final String INIT_PARAM_MAX_FILE_SIZE = "org.openfaces.fileUpload.fileSizeLimit";
     public static final String TERMINATED_TEXT = "_TERMINATED";
     public static final String PROGRESS_ID = "progress_";
+    public static final String FILE_SIZE_ID = "size_";
     public  static final String EXCEED_MAX_SIZE_ID = "exceedMaxSize_";
 
     private static final String DIV_FOR_INPUTS_ID = "::inputs";
@@ -378,10 +379,13 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
             Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
             if (sessionMap.containsKey(PROGRESS_ID + fileId)) {
                 Integer progress = (Integer) sessionMap.get(PROGRESS_ID + fileId);
+                Long size = (Long) sessionMap.get(FILE_SIZE_ID + fileId);
                 Rendering.addJsonParam(jsonObj, "progressInPercent", progress);
                 Rendering.addJsonParam(jsonObj, "status", "inProgress");
+                Rendering.addJsonParam(jsonObj, "size", size);
                 if (progress.equals(100)) {
                     sessionMap.remove(PROGRESS_ID + fileId);
+                    sessionMap.remove(FILE_SIZE_ID + fileId);
                 }
             } else {
                 /*if FileSize Exceed*/
@@ -428,8 +432,11 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
                     } else if (file.getString(3).equals("STOPPED")) {
                         filesItems.add(new FileUploadItem(file.getString(2), null, FileUploadStatus.STOPPED));
                         sessionMap.remove(PROGRESS_ID + file.getString(1));
+                        sessionMap.remove(FILE_SIZE_ID + file.getString(1));
                     } else if (file.getString(3).equals("FAILED")) {
                         filesItems.add(new FileUploadItem(file.getString(2), null, FileUploadStatus.FAILED));
+                        sessionMap.remove(PROGRESS_ID + file.getString(1));
+                        sessionMap.remove(FILE_SIZE_ID + file.getString(1));
                     } else if (file.getString(3).equals("SIZE_LIMIT_EXCEEDED")) {
                         filesItems.add(new FileUploadItem(file.getString(2), null, FileUploadStatus.SIZE_LIMIT_EXCEEDED));
                     }
