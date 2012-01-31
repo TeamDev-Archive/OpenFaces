@@ -44594,6 +44594,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>This text appears in status div when file is already uploaded.
+        Also you can display size of uploaded file in useful form - in bytes{B}, kylobytes{KB} or megabytes{MB}.
+        For example: {size} MB{MB}
       </description>
       <name>uploadedStatusText</name>
       <deferred-value>
@@ -44618,8 +44620,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This text appears as status of file when its size is more than acceptable (this param should be setted
-        in web.xml).
+      <description>This text appears as status of file when its size is more than acceptable (this param should be setted  in web.xml or as fileSizeLimit attribute).
+        Also you can display size of uploaded file in useful form - in bytes{B}, kylobytes{KB} or megabytes{MB}. For example: '{size}{MB}MB is bigger than allowed'
       </description>
       <name>fileSizeLimitErrorText</name>
       <deferred-value>

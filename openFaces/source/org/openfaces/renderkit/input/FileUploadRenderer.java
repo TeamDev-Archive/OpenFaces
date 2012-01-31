@@ -391,7 +391,9 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
                 /*if FileSize Exceed*/
                 if (sessionMap.containsKey(EXCEED_MAX_SIZE_ID + fileId)) {
                     boolean maxFileExceeded = (Boolean) sessionMap.get(EXCEED_MAX_SIZE_ID + fileId);
+                    Long size = (Long) sessionMap.get(FILE_SIZE_ID + fileId);
                     Rendering.addJsonParam(jsonObj, "isFileSizeExceed", maxFileExceeded);
+                    Rendering.addJsonParam(jsonObj, "size", size);
                     sessionMap.remove(EXCEED_MAX_SIZE_ID + fileId);
                 }else{
                 /*if there is no fileUpload request*/
@@ -439,6 +441,7 @@ public class FileUploadRenderer extends RendererBase implements AjaxPortionRende
                         sessionMap.remove(FILE_SIZE_ID + file.getString(1));
                     } else if (file.getString(3).equals("SIZE_LIMIT_EXCEEDED")) {
                         filesItems.add(new FileUploadItem(file.getString(2), null, FileUploadStatus.SIZE_LIMIT_EXCEEDED));
+                        sessionMap.remove(FILE_SIZE_ID + file.getString(1));
                     }
                 }
                 FileUpload fileUpload = (FileUpload) component;

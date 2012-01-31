@@ -39,15 +39,17 @@ O$.FileUpload = {
       _numberOfFailedRequest:15,   /*this number defines how many requests should have gone to presume that request is timedout if progress doesn't changed*/
       _numberOfErrorRequest: 3, /*this number defines how many requests should have gone to check that request throwed an Exception if progress doesn't changed*/
       _buttons:{},
-      _transformToFormatStatus:function(statusText){
+      _transformStatusToFormatted:function(statusText){
         function updateStatus(uploaded, size) {
-          var text;
+          var text = this.text;
           if (size != "unknown") {
-            text = this.text.replace("{size}", (size / Math.pow(2, this.pow)).toFixed(2));
+            text = text.replace("{size}", (size / Math.pow(2, this.pow)).toFixed(2));
           } else {
-            text = this.text.replace("{size}", size);
+            text = text.replace("{size}", size);
           }
-          text = text.replace("{uploaded}", (uploaded / Math.pow(2, this.pow)).toFixed(2));
+          if (uploaded != null) {
+            text = text.replace("{uploaded}", (uploaded / Math.pow(2, this.pow)).toFixed(2));
+          }
           return text;
         }
         var sizeDimensions = [
@@ -70,7 +72,12 @@ O$.FileUpload = {
     });
     O$.extend(fileUpload,{
       _statuses:{
-        inProgress :fileUpload._transformToFormatStatus(statusLabelInProgress)
+        inProgress:fileUpload._transformStatusToFormatted(statusLabelInProgress),
+        uploaded:fileUpload._transformStatusToFormatted(statusLabelUploaded),
+        sizeLimit:fileUpload._transformStatusToFormatted(statusLabelErrorSize),
+        newOne:statusLabelNotUploaded,
+        stopped:statusStoppedText,
+        failed:statusLabelUnexpectedError
       }
     });
     setAllEvents();
@@ -249,7 +256,7 @@ O$.FileUpload = {
                               infoDiv._status = O$.FileUpload.Status.SIZE_LIMIT_EXCEEDED;
                               fileForAPI.status = O$.FileUpload.Status.SIZE_LIMIT_EXCEEDED;
                               inputsStorage.removeChild(inputForFile.parentNode.parentNode);
-                              infoDiv.childNodes[2].innerHTML = statusLabelErrorSize;
+                              infoDiv.childNodes[2].innerHTML = fileUpload._statuses.sizeLimit._update(null, portionData['size']);
                               setStatusforFileWithId(inputForFile._uniqueId, "SIZE_LIMIT_EXCEEDED");
                               fileUpload._events._fireFileUploadEndEvent(fileForAPI);
                               setClearBtnAndEventHandler(infoDiv, inputForFile._idInputAndDiv);
@@ -278,7 +285,7 @@ O$.FileUpload = {
                                       infoDiv._status = O$.FileUpload.Status.FAILED;
                                       fileForAPI.status = O$.FileUpload.Status.FAILED;
                                       inputsStorage.removeChild(inputForFile.parentNode.parentNode);
-                                      infoDiv.childNodes[2].innerHTML = statusLabelUnexpectedError;
+                                      infoDiv.childNodes[2].innerHTML = fileUpload._statuses.failed;
                                       setStatusforFileWithId(id, "FAILED");
                                       fileUpload._events._fireFileUploadEndEvent(fileForAPI);
                                       setClearBtnAndEventHandler(infoDiv, inputForFile._idInputAndDiv);
@@ -302,7 +309,7 @@ O$.FileUpload = {
                                 inputsStorage.removeChild(inputForFile.parentNode.parentNode); // delete divForFileInput
                                 // infoDiv updating
                                 infoDiv._status = O$.FileUpload.Status.SUCCESSFUL;
-                                infoDiv.childNodes[2].innerHTML = statusLabelUploaded;
+                                infoDiv.childNodes[2].innerHTML = fileUpload._statuses.uploaded._update(null, portionData['size']);
                                 setStatusforFileWithId(inputForFile._uniqueId, "SUCCESSFUL");
                                 setClearBtnAndEventHandler(infoDiv, inputForFile._idInputAndDiv);
                                 fileForAPI.status = O$.FileUpload.Status.SUCCESSFUL;
@@ -324,7 +331,7 @@ O$.FileUpload = {
                             inputForFile._isInterrupted = true;
                             infoDiv._status = O$.FileUpload.Status.STOPPED;
                             inputsStorage.removeChild(inputForFile.parentNode.parentNode);
-                            infoDiv.childNodes[2].innerHTML = statusStoppedText;
+                            infoDiv.childNodes[2].innerHTML = fileUpload._statuses.stopped;
                             setStatusforFileWithId(inputForFile._uniqueId, "STOPPED");
                             setClearBtnAndEventHandler(infoDiv, inputForFile._idInputAndDiv);
                             fileForAPI.status = O$.FileUpload.Status.STOPPED;
@@ -342,7 +349,7 @@ O$.FileUpload = {
                               infoDiv._status = O$.FileUpload.Status.FAILED;
                               fileForAPI.status = O$.FileUpload.Status.FAILED;
                               inputsStorage.removeChild(inputForFile.parentNode.parentNode);
-                              infoDiv.childNodes[2].innerHTML = statusLabelUnexpectedError;
+                              infoDiv.childNodes[2].innerHTML = fileUpload._statuses.failed;
                               setStatusforFileWithId(inputForFile._uniqueId, "FAILED");
                               fileUpload._events._fireFileUploadEndEvent(fileForAPI);
                               setClearBtnAndEventHandler(infoDiv, inputForFile._idInputAndDiv);
@@ -397,7 +404,7 @@ O$.FileUpload = {
                               infoDiv._status = O$.FileUpload.Status.SIZE_LIMIT_EXCEEDED;
                               fileForAPI.status = O$.FileUpload.Status.SIZE_LIMIT_EXCEEDED;
                               removeHTML5File(file);
-                              infoDiv.childNodes[2].innerHTML = statusLabelErrorSize;
+                              infoDiv.childNodes[2].innerHTML = fileUpload._statuses.sizeLimit._update(null, portionData['size']);
                               setStatusforFileWithId(file._uniqueId, "SIZE_LIMIT_EXCEEDED");
                               fileUpload._events._fireFileUploadEndEvent(fileForAPI);
                               setClearBtnAndEventHandler(infoDiv, file._infoId);
@@ -426,7 +433,7 @@ O$.FileUpload = {
                                       infoDiv._status = O$.FileUpload.Status.FAILED;
                                       fileForAPI.status = O$.FileUpload.Status.FAILED;
                                       removeHTML5File(file);
-                                      infoDiv.childNodes[2].innerHTML = statusLabelUnexpectedError;
+                                      infoDiv.childNodes[2].innerHTML = fileUpload._statuses.failed;
                                       setStatusforFileWithId(file._uniqueId, "FAILED");
                                       fileUpload._events._fireFileUploadEndEvent(fileForAPI);
                                       setClearBtnAndEventHandler(infoDiv, file._infoId);
@@ -450,7 +457,7 @@ O$.FileUpload = {
                                 removeHTML5File(file);
                                 // infoDiv updating
                                 infoDiv._status = O$.FileUpload.Status.SUCCESSFUL;
-                                infoDiv.childNodes[2].innerHTML = statusLabelUploaded;
+                                infoDiv.childNodes[2].innerHTML = fileUpload._statuses.uploaded._update(null, portionData['size']);
                                 setStatusforFileWithId(file._uniqueId, "SUCCESSFUL");
                                 setClearBtnAndEventHandler(infoDiv, file._infoId);
                                 fileForAPI.status = O$.FileUpload.Status.SUCCESSFUL;
@@ -473,7 +480,7 @@ O$.FileUpload = {
                               file._isInterrupted = true;
                               infoDiv._status = O$.FileUpload.Status.STOPPED;
                               removeHTML5File(file);
-                              infoDiv.childNodes[2].innerHTML = statusStoppedText;
+                              infoDiv.childNodes[2].innerHTML = fileUpload._statuses.stopped;
                               setStatusforFileWithId(file._uniqueId, "STOPPED");
                               setClearBtnAndEventHandler(infoDiv, file._infoId);
                               fileForAPI.status = O$.FileUpload.Status.STOPPED;
@@ -492,7 +499,7 @@ O$.FileUpload = {
                               infoDiv._status = O$.FileUpload.Status.FAILED;
                               fileForAPI.status = O$.FileUpload.Status.FAILED;
                               removeHTML5File(file);
-                              infoDiv.childNodes[2].innerHTML = statusLabelUnexpectedError;
+                              infoDiv.childNodes[2].innerHTML = fileUpload._statuses.failed;
                               setStatusforFileWithId(file._uniqueId, "FAILED");
                               fileUpload._events._fireFileUploadEndEvent(fileForAPI);
                               setClearBtnAndEventHandler(infoDiv, file._infoId);
@@ -829,7 +836,7 @@ O$.FileUpload = {
           var infoDiv = O$(allInfos.id + f._id);
           infoDiv._status = O$.FileUpload.Status.FAILED;
           f.status = O$.FileUpload.Status.FAILED;
-          infoDiv.childNodes[2].innerHTML = statusLabelUnexpectedError;
+          infoDiv.childNodes[2].innerHTML = fileUpload._statuses.failed;
           infoDiv.childNodes[3].firstChild._clickHandler = infoDiv.childNodes[3].firstChild.deleteFileInputFunction;
         }
       }
@@ -971,8 +978,8 @@ O$.FileUpload = {
 
       var statusTD = document.createElement("td");
       O$.setStyleMappings(statusTD, {status : infoStatusClass});
-      if (statusLabelNotUploaded != null)
-        statusTD.innerHTML = statusLabelNotUploaded;
+      if (fileUpload._statuses.newOne != null)
+        statusTD.innerHTML = fileUpload._statuses.newOne;
       infoWindow.appendChild(statusTD);
 
       var cancelFileTD = document.createElement("td");

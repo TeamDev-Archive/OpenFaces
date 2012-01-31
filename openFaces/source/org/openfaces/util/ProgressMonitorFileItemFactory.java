@@ -51,11 +51,10 @@ public class ProgressMonitorFileItemFactory extends DiskFileItemFactory {
             HttpServletRequest req = requestRef.get();
             if (req != null) {
                 HttpSession session = req.getSession();
+                session.setAttribute(FileUploadRenderer.FILE_SIZE_ID + uniqueFileId, requestLength);
                 if (requestLength > maxSizeOfFile) {
                     shouldProcess = false;
                     session.setAttribute(FileUploadRenderer.EXCEED_MAX_SIZE_ID + uniqueFileId, true);
-                } else {
-                    session.setAttribute(FileUploadRenderer.FILE_SIZE_ID + uniqueFileId, requestLength);
                 }
             }
             //fileName = fileName.replaceAll("[#$%^&* ]+","_"); //doesn't work unfortunately
