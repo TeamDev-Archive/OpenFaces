@@ -119,6 +119,9 @@ public class FileUpload extends OUIInputBase {
 
     private int fileSizeLimit;
 
+    private FileUploadMode uploadMode;
+    private String renderAfterUpload;
+
     public FileUpload() {
         setRendererType("org.openfaces.FileUploadRenderer");
     }
@@ -186,7 +189,9 @@ public class FileUpload extends OUIInputBase {
                 onfileuploadend,
                 stoppingStatusText,
                 unexpectedErrorText,
-                fileSizeLimit
+                fileSizeLimit,
+                uploadMode,
+                renderAfterUpload
         };
     }
 
@@ -250,6 +255,8 @@ public class FileUpload extends OUIInputBase {
         stoppingStatusText = (String) values[i++];
         unexpectedErrorText = (String) values[i++];
         fileSizeLimit = (Integer) values[i++];
+        uploadMode = (FileUploadMode)values[i++];
+        renderAfterUpload = (String)values[i++];
     }
 
 
@@ -678,29 +685,6 @@ public class FileUpload extends OUIInputBase {
         this.onuploadend = onuploadend;
     }
 
-    public String getStoppingStatusText() {
-        return ValueBindings.get(this, "stoppingStatusText", stoppingStatusText, "Stopping...");
-    }
-
-    public void setStoppingStatusText(String stoppingStatusText) {
-        this.stoppingStatusText = stoppingStatusText;
-    }
-
-    public String getUnexpectedErrorText() {
-        return ValueBindings.get(this, "unexpectedErrorText", unexpectedErrorText, "Error");
-    }
-
-    public void setUnexpectedErrorText(String unexpectedErrorText) {
-        this.unexpectedErrorText = unexpectedErrorText;
-    }
-
-    public int getFileSizeLimit() {
-        return ValueBindings.get(this, "fileSizeLimit", fileSizeLimit, 0);
-    }
-
-    public void setFileSizeLimit(int fileSizeLimit) {
-        this.fileSizeLimit = fileSizeLimit;
-    }
     public String getOnfileuploadstart() {
         return ValueBindings.get(this, "onfileuploadstart", onfileuploadstart);
     }
@@ -724,7 +708,47 @@ public class FileUpload extends OUIInputBase {
     public void setOnfileuploadend(String onfileuploadend) {
         this.onfileuploadend = onfileuploadend;
     }
+
+    public String getStoppingStatusText() {
+        return ValueBindings.get(this, "stoppingStatusText", stoppingStatusText, "Stopping...");
+    }
+
+    public void setStoppingStatusText(String stoppingStatusText) {
+        this.stoppingStatusText = stoppingStatusText;
+    }
     
+    public String getUnexpectedErrorText() {
+        return ValueBindings.get(this, "unexpectedErrorText", unexpectedErrorText, "Error");
+    }
+
+    public void setUnexpectedErrorText(String unexpectedErrorText) {
+        this.unexpectedErrorText = unexpectedErrorText;
+    }
+
+    public int getFileSizeLimit() {
+        return ValueBindings.get(this, "fileSizeLimit", fileSizeLimit, 0);
+    }
+
+    public void setFileSizeLimit(int fileSizeLimit) {
+        this.fileSizeLimit = fileSizeLimit;
+    }
+
+    public FileUploadMode getUploadMode() {
+        return ValueBindings.get(this, "uploadMode", uploadMode, FileUploadMode.PARALLEL, FileUploadMode.class);
+    }
+
+    public void setUploadMode(FileUploadMode uploadMode) {
+        this.uploadMode = uploadMode;
+    }
+
+    public String getRenderAfterUpload() {
+        return ValueBindings.get(this, "renderAfterUpload", renderAfterUpload);
+    }
+
+    public void setRenderAfterUpload(String renderAfterUpload) {
+        this.renderAfterUpload = renderAfterUpload;
+    }
+
     @Override
     public String getDefaultEventName() {
         return "uploadend";
@@ -734,5 +758,4 @@ public class FileUpload extends OUIInputBase {
     public Collection<String> getEventNames() {
         return EVENT_NAMES;
     }
-
 }

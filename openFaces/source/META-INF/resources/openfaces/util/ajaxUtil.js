@@ -933,3 +933,14 @@ O$.destroyAllFunctions = function(elt) {
     }
   }
 };
+
+O$._fireSessionExpiredEvent = function () {
+  if (document._attachedEvents) {
+    for (var i = 0; i < document._attachedEvents.length; i++) {
+      var event = document._attachedEvents[i];
+      if (event.eventName == "sessionexpired" || event.eventName == "onsessionexpired") {
+        event.functionScript();
+      }
+    }
+  }
+}

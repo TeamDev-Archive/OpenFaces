@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 3.0
+ * OpenFaces - JSF Component Library 2.0
  * Copyright (C) 2007-2011, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -21,7 +21,7 @@ O$.FileUpload = {
                   isAutoUpload, tabIndex, progressBarId, statusStoppedText, statusStoppingText, multiUpload,ID,
                   onchangeHandler, onuploadstartHandler, onuploadendHandler,
                   onfileuploadstartHandler, onfileuploadinprogressHandler, onfileuploadendHandler,
-                  dropTargetCrossoverClass) {
+                  dropTargetCrossoverClass, uploadMode, renderAfterUpload) {
 
     var fileUpload = O$.initComponent(componentId, null, {
       _minQuantity : minQuantity,
@@ -38,7 +38,52 @@ O$.FileUpload = {
       _allFiles:[],
       _numberOfFailedRequest:15,   /*this number defines how many requests should have gone to presume that request is timedout if progress doesn't changed*/
       _numberOfErrorRequest: 3, /*this number defines how many requests should have gone to check that request throwed an Exception if progress doesn't changed*/
-      _buttons:{}
+      _buttons:{},
+      _transformStatusToFormatted:function(statusText){
+        function updateStatus(uploaded, size) {
+          var text = this.text;
+          if (size != "unknown") {
+            text = text.replace("{size}", (size / Math.pow(2, this.pow)).toFixed(2));
+          } else {
+            text = text.replace("{size}", size);
+          }
+          if (uploaded != null) {
+            text = text.replace("{uploaded}", (uploaded / Math.pow(2, this.pow)).toFixed(2));
+          }
+          return text;
+        }
+        var sizeDimensions = [
+          {title:"{KB}",
+            pow:10},
+          {title:"{MB}",
+            pow:20},
+          {title:"{B}",
+            pow:1}
+        ];
+        for (var dimIndex = 0; dimIndex < sizeDimensions.length; dimIndex++) {
+          var index = statusText.indexOf(sizeDimensions[dimIndex].title);
+          if (index != -1) {
+            var modified = statusText.replace(sizeDimensions[dimIndex].title, "");
+            return {text:modified, pow:sizeDimensions[dimIndex].pow, _update:updateStatus};
+          }
+        }
+        return {text:statusText, pow:1, _update:updateStatus};
+      }
+    });
+    O$.extend(fileUpload,{
+      _renderAfterUploadEnd : function(){
+        if (renderAfterUpload){
+          O$.Ajax._reload([renderAfterUpload], {"immediate":false,"_sourceId":fileUpload.id});
+        }
+      },
+      _statuses:{
+        inProgress:fileUpload._transformStatusToFormatted(statusLabelInProgress),
+        uploaded:fileUpload._transformStatusToFormatted(statusLabelUploaded),
+        sizeLimit:fileUpload._transformStatusToFormatted(statusLabelErrorSize),
+        newOne:statusLabelNotUploaded,
+        stopped:statusStoppedText,
+        failed:statusLabelUnexpectedError
+      }
     });
     setAllEvents();
     if (!fileUpload._multiUpload){
@@ -93,7 +138,7 @@ O$.FileUpload = {
     var divForInputInAddBtn = O$(addButtonId+"::forInput");
     var inputInAddBtn = createInputInAddBtn(idOfInfoAndInputDiv);
     var addButtonTitle = O$(addButtonId + "::title");
-    var addButtonTitleInput = addButtonTitle.firstChild;
+    var addButtonTitleInput = addButtonTitle.lastChild;
     setStylesForAddButton(addButton);
     if (O$.isExplorer() && O$.isQuirksMode()){
       divForInputInAddBtn.style.height = O$.getElementSize(addButtonTitle).height;
@@ -111,15 +156,15 @@ O$.FileUpload = {
     var ignoreBlurForIE = false;
     O$.extend(fileUpload, {
               __uploadButtonClickHandler:function () {
-                function callProgressRequest(fileInput) {
+                function callProgressRequest(fileInput, endHandler) {
                   setTimeout(function () {
-                    progressRequest(fileInput);
+                    progressRequest(fileInput, endHandler);
                   }, 500);
                 }
 
-                function callFileProgressForHTML5Request(file, request) {
+                function callFileProgressForHTML5Request(file, request, endHandler) {
                   setTimeout(function () {
-                    progressHTMl5Request(file, request);
+                    progressHTMl5Request(file, request, endHandler);
                   }, 500);
                 }
 
@@ -168,45 +213,7 @@ O$.FileUpload = {
                 }
                 fileUpload._events._fireUploadStartEvent(fileUpload._allFiles);
                 var uri = getDocumentURI();
-                for (var inputsIndex = 0; inputsIndex < inputsStorage.childNodes.length; inputsIndex++) {
-                  var inputDiv = inputsStorage.childNodes[inputsIndex];
-                  var form = inputDiv.childNodes[0];
-                  var iframe = form.childNodes[1];
-                  var fileInput = form.childNodes[0];
-                  var fileOfAPI = fileUpload._getFile(fileInput._idInputAndDiv);
-                  var fileInfo = O$(allInfos.id + fileInput._idInputAndDiv);
-                  fileInfo.childNodes[3].firstChild.style.visibility = "hidden";
-                  form.target = iframe.name;
-                  form.action = uri + "&idOfFile=" + fileInput._idInputAndDiv;
-                  form.submit();
-                  form.target = "_self";
-                  callProgressRequest(fileInput);
-                  fileOfAPI.status = O$.FileUpload.Status.IN_PROGRESS;
-                  setupUIForUpload(fileInput, fileInfo, fileOfAPI);
-                  fileUpload._events._fireFileUploadStartEvent(fileOfAPI);
-                }
-                function sendFileRequest(file) {
-                  var xhr = new XMLHttpRequest();
-                  xhr.open('POST', uri + "&idOfFile=" + file._infoId, true);
-                  var data = new FormData();
-                  data.append(file._fakeInput, file);
-                  xhr.send(data);
-                  return xhr;
-                }
-
-                for (var html5FilesIndex = 0; html5FilesIndex < fileUpload._filesHTML5.length; html5FilesIndex++) {
-                  var html5File = fileUpload._filesHTML5[html5FilesIndex];
-                  var fileInfo = O$(allInfos.id + html5File._infoId);
-                  var fileOfAPI = fileUpload._getFile(html5File._infoId);
-                  fileInfo.childNodes[3].firstChild.style.visibility = "hidden";
-
-                  var request = sendFileRequest(html5File);
-                  callFileProgressForHTML5Request(html5File, request);
-                  fileOfAPI.status = O$.FileUpload.Status.IN_PROGRESS;
-                  setupUIForUploadHTML5(html5File, fileInfo, request,fileOfAPI);
-                  fileUpload._events._fireFileUploadStartEvent(fileOfAPI);
-                }
-                function progressRequest(inputForFile) {
+                function progressRequest(inputForFile, endHandler) {
                   O$.Ajax.requestComponentPortions(fileUpload.id, ["nothing"],
                           JSON.stringify({progressRequest:"true", fileId:inputForFile._uniqueId}),
                           function (fileUpload, portionName, portionHTML, portionScripts, portionData) {
@@ -216,17 +223,23 @@ O$.FileUpload = {
                               infoDiv._status = O$.FileUpload.Status.SIZE_LIMIT_EXCEEDED;
                               fileForAPI.status = O$.FileUpload.Status.SIZE_LIMIT_EXCEEDED;
                               inputsStorage.removeChild(inputForFile.parentNode.parentNode);
-                              infoDiv.childNodes[2].innerHTML = statusLabelErrorSize;
+                              infoDiv.childNodes[2].innerHTML = fileUpload._statuses.sizeLimit._update(null, portionData['size']);
                               setStatusforFileWithId(inputForFile._uniqueId, "SIZE_LIMIT_EXCEEDED");
                               fileUpload._events._fireFileUploadEndEvent(fileForAPI);
                               setClearBtnAndEventHandler(infoDiv, inputForFile._idInputAndDiv);
+                              if (endHandler){
+                                endHandler();
+                              }
                               prepareUIWhenAllRequestsFinished(true);
                             } else {
                               var percents = portionData['progressInPercent'];
                               if (percents != 100) {
                                 if (!inputForFile._isInterrupted) {
+                                  if (portionData['size']){
+                                    infoDiv.childNodes[2].innerHTML = fileUpload._statuses.inProgress._update(portionData['size'] * (percents / 100), portionData['size']);
+                                  }
                                   if (inputForFile._wantToInterrupt) {
-                                    sendIsStoppedRequest(inputForFile, infoDiv, fileForAPI);
+                                    sendIsStoppedRequest(inputForFile, infoDiv, fileForAPI,endHandler);
                                   }
                                   if (infoDiv.childNodes[1].firstChild.getValue() == percents) {
                                     if (!inputForFile._percentsEqualsTimes) {
@@ -234,7 +247,7 @@ O$.FileUpload = {
                                     }
                                     inputForFile._percentsEqualsTimes++;
                                     if (inputForFile._percentsEqualsTimes > fileUpload._numberOfErrorRequest) {
-                                      sendIsErrorRequest(inputForFile, infoDiv, fileForAPI);
+                                      sendIsErrorRequest(inputForFile, infoDiv, fileForAPI,endHandler);
                                     }
                                     if (inputForFile._percentsEqualsTimes > fileUpload._numberOfFailedRequest) {
                                       inputForFile._isInterrupted = true;
@@ -242,10 +255,13 @@ O$.FileUpload = {
                                       infoDiv._status = O$.FileUpload.Status.FAILED;
                                       fileForAPI.status = O$.FileUpload.Status.FAILED;
                                       inputsStorage.removeChild(inputForFile.parentNode.parentNode);
-                                      infoDiv.childNodes[2].innerHTML = statusLabelUnexpectedError;
+                                      infoDiv.childNodes[2].innerHTML = fileUpload._statuses.failed;
                                       setStatusforFileWithId(id, "FAILED");
                                       fileUpload._events._fireFileUploadEndEvent(fileForAPI);
                                       setClearBtnAndEventHandler(infoDiv, inputForFile._idInputAndDiv);
+                                      if (endHandler){
+                                        endHandler();
+                                      }
                                       prepareUIWhenAllRequestsFinished(true);
                                     }
                                   }else{
@@ -254,9 +270,7 @@ O$.FileUpload = {
                                   infoDiv.childNodes[1].firstChild.setValue(percents);
                                   fileForAPI.progress = percents/100;
                                   fileUpload._events._fireFileUploadInProgressEvent(fileForAPI);
-                                  setTimeout(function () {
-                                    progressRequest(inputForFile);
-                                  }, 500);
+                                  callProgressRequest(inputForFile, endHandler);
                                 }
                               } else {// when file already uploaded
                                 infoDiv.childNodes[1].firstChild.setValue(percents);
@@ -266,9 +280,12 @@ O$.FileUpload = {
                                 inputsStorage.removeChild(inputForFile.parentNode.parentNode); // delete divForFileInput
                                 // infoDiv updating
                                 infoDiv._status = O$.FileUpload.Status.SUCCESSFUL;
-                                infoDiv.childNodes[2].innerHTML = statusLabelUploaded;
+                                infoDiv.childNodes[2].innerHTML = fileUpload._statuses.uploaded._update(null, portionData['size']);
                                 setStatusforFileWithId(inputForFile._uniqueId, "SUCCESSFUL");
                                 setClearBtnAndEventHandler(infoDiv, inputForFile._idInputAndDiv);
+                                if (endHandler){
+                                  endHandler();
+                                }
                                 fileForAPI.status = O$.FileUpload.Status.SUCCESSFUL;
                                 fileUpload._events._fireFileUploadEndEvent(fileForAPI);
                                 prepareUIWhenAllRequestsFinished(true);
@@ -281,23 +298,26 @@ O$.FileUpload = {
                   );
                 }
 
-                function sendIsStoppedRequest(inputForFile, infoDiv, fileForAPI){
+                function sendIsStoppedRequest(inputForFile, infoDiv, fileForAPI,endHandler){
                   O$.Ajax.requestComponentPortions(fileUpload.id, ["nothing"],
                           JSON.stringify({stoppedRequest:true, uniqueIdOfFile:inputForFile._uniqueId}),
                           function (fileUpload, portionName, portionHTML, portionScripts, portionData) {
                             inputForFile._isInterrupted = true;
                             infoDiv._status = O$.FileUpload.Status.STOPPED;
                             inputsStorage.removeChild(inputForFile.parentNode.parentNode);
-                            infoDiv.childNodes[2].innerHTML = statusStoppedText;
+                            infoDiv.childNodes[2].innerHTML = fileUpload._statuses.stopped;
                             setStatusforFileWithId(inputForFile._uniqueId, "STOPPED");
                             setClearBtnAndEventHandler(infoDiv, inputForFile._idInputAndDiv);
+                            if (endHandler){
+                              endHandler();
+                            }
                             fileForAPI.status = O$.FileUpload.Status.STOPPED;
                             fileUpload._events._fireFileUploadEndEvent(fileForAPI);
                             prepareUIWhenAllRequestsFinished(true);
                           }, null, true);
                 }
 
-                function sendIsErrorRequest(inputForFile, infoDiv, fileForAPI){
+                function sendIsErrorRequest(inputForFile, infoDiv, fileForAPI, endHandler){
                   O$.Ajax.requestComponentPortions(fileUpload.id, ["nothing"],
                           JSON.stringify({stoppedRequest:true, uniqueIdOfFile:inputForFile._uniqueId}),
                           function (fileUpload, portionName, portionHTML, portionScripts, portionData) {
@@ -306,10 +326,13 @@ O$.FileUpload = {
                               infoDiv._status = O$.FileUpload.Status.FAILED;
                               fileForAPI.status = O$.FileUpload.Status.FAILED;
                               inputsStorage.removeChild(inputForFile.parentNode.parentNode);
-                              infoDiv.childNodes[2].innerHTML = statusLabelUnexpectedError;
+                              infoDiv.childNodes[2].innerHTML = fileUpload._statuses.failed;
                               setStatusforFileWithId(inputForFile._uniqueId, "FAILED");
                               fileUpload._events._fireFileUploadEndEvent(fileForAPI);
                               setClearBtnAndEventHandler(infoDiv, inputForFile._idInputAndDiv);
+                              if (endHandler){
+                                endHandler();
+                              }
                               prepareUIWhenAllRequestsFinished(true);
                             }
                           }, null, true);
@@ -317,8 +340,10 @@ O$.FileUpload = {
 
                 function setupUIForUpload(inputForFile, infoDiv, fileForAPI) {
                   function setStopButtonBehavior(inputForFile, infoDiv){
+                    var deleteFunc = infoDiv.childNodes[3].firstChild.deleteFileInputFunction;
                     infoDiv.childNodes[3].removeChild(infoDiv.childNodes[3].firstChild);
                     var stopFileDiv = fileUpload._buttons.stop.cloneNode(true);
+                    stopFileDiv.deleteFileInputFunction = deleteFunc;
                     stopFileDiv.setAttribute("id", fileUpload._buttons.stop.id + inputForFile._idInputAndDiv);
                     infoDiv.childNodes[3].appendChild(stopFileDiv);
                     O$.addEventHandler(stopFileDiv, "focus", focusHandler);
@@ -331,25 +356,15 @@ O$.FileUpload = {
                       inputForFile._wantToInterrupt = true;
                     };
                     O$.addEventHandler(stopFileDiv, "click", stopFileDiv._clickHandler);
-                    if (O$.isChrome() || O$.isSafari()) {
-                      O$.addEventHandler(stopFileDiv, "mousedown", function () {
-                        shouldInvokeFocusNonModifiable = false;
-                      });
-                      O$.addEventHandler(stopFileDiv, "mouseup", function () {
-                        shouldInvokeFocusNonModifiable = true;
-                      });
-                      O$.addEventHandler(stopFileDiv, "keyup", function () {
-                        shouldInvokeFocusEvHandler = false;
-                      });
-                    }
+                    chromeAndSafariFocusFix(stopFileDiv);
                   }
                   infoDiv._status = O$.FileUpload.Status.IN_PROGRESS;
                   fileForAPI.status = O$.FileUpload.Status.IN_PROGRESS;
-                  infoDiv.childNodes[2].innerHTML = statusLabelInProgress;
+                  infoDiv.childNodes[2].innerHTML = fileUpload._statuses.inProgress._update(0, "unknown");
                   setStopButtonBehavior(inputForFile, infoDiv);
                 }
 
-                function progressHTMl5Request(file, request) {
+                function progressHTMl5Request(file, request, endHandler) {
                   O$.Ajax.requestComponentPortions(fileUpload.id, ["nothing"],
                           JSON.stringify({progressRequest:"true", fileId:file._uniqueId}),
                           function (fileUpload, portionName, portionHTML, portionScripts, portionData) {
@@ -359,17 +374,23 @@ O$.FileUpload = {
                               infoDiv._status = O$.FileUpload.Status.SIZE_LIMIT_EXCEEDED;
                               fileForAPI.status = O$.FileUpload.Status.SIZE_LIMIT_EXCEEDED;
                               removeHTML5File(file);
-                              infoDiv.childNodes[2].innerHTML = statusLabelErrorSize;
+                              infoDiv.childNodes[2].innerHTML = fileUpload._statuses.sizeLimit._update(null, portionData['size']);
                               setStatusforFileWithId(file._uniqueId, "SIZE_LIMIT_EXCEEDED");
                               fileUpload._events._fireFileUploadEndEvent(fileForAPI);
                               setClearBtnAndEventHandler(infoDiv, file._infoId);
+                              if (endHandler){
+                                endHandler();
+                              }
                               prepareUIWhenAllRequestsFinished(true);
                             } else {
                               var percents = portionData['progressInPercent'];
                               if (percents != 100) {
                                 if (!file._isInterrupted) {
+                                  if (portionData['size']){
+                                    infoDiv.childNodes[2].innerHTML = fileUpload._statuses.inProgress._update(portionData['size'] * (percents / 100), portionData['size']);
+                                  }
                                   if (file._wantToInterrupt) {
-                                    sendIsStoppedRequestHTML5(file, infoDiv, fileForAPI);
+                                    sendIsStoppedRequestHTML5(file, infoDiv, fileForAPI, endHandler);
                                   }
                                   if (infoDiv.childNodes[1].firstChild.getValue() == percents) {
                                     if (!file._percentsEqualsTimes) {
@@ -377,7 +398,7 @@ O$.FileUpload = {
                                     }
                                     file._percentsEqualsTimes++;
                                     if (file._percentsEqualsTimes > fileUpload._numberOfErrorRequest) {
-                                      sendIsErrorRequestHTML5(file, infoDiv, fileForAPI);
+                                      sendIsErrorRequestHTML5(file, infoDiv, fileForAPI, endHandler);
                                     }
                                     if (file._percentsEqualsTimes > fileUpload._numberOfFailedRequest) {
                                       file._isInterrupted = true;
@@ -385,10 +406,13 @@ O$.FileUpload = {
                                       infoDiv._status = O$.FileUpload.Status.FAILED;
                                       fileForAPI.status = O$.FileUpload.Status.FAILED;
                                       removeHTML5File(file);
-                                      infoDiv.childNodes[2].innerHTML = statusLabelUnexpectedError;
+                                      infoDiv.childNodes[2].innerHTML = fileUpload._statuses.failed;
                                       setStatusforFileWithId(file._uniqueId, "FAILED");
                                       fileUpload._events._fireFileUploadEndEvent(fileForAPI);
                                       setClearBtnAndEventHandler(infoDiv, file._infoId);
+                                      if (endHandler){
+                                        endHandler();
+                                      }
                                       prepareUIWhenAllRequestsFinished(true);
                                     }
                                   } else {
@@ -398,7 +422,7 @@ O$.FileUpload = {
                                   fileForAPI.progress = percents/100;
                                   fileUpload._events._fireFileUploadInProgressEvent(fileForAPI);
                                   setTimeout(function () {
-                                    progressHTMl5Request(file, request);
+                                    progressHTMl5Request(file, request, endHandler);
                                   }, 500);
                                 }
                               } else {// when file already uploaded
@@ -409,11 +433,14 @@ O$.FileUpload = {
                                 removeHTML5File(file);
                                 // infoDiv updating
                                 infoDiv._status = O$.FileUpload.Status.SUCCESSFUL;
-                                infoDiv.childNodes[2].innerHTML = statusLabelUploaded;
+                                infoDiv.childNodes[2].innerHTML = fileUpload._statuses.uploaded._update(null, portionData['size']);
                                 setStatusforFileWithId(file._uniqueId, "SUCCESSFUL");
                                 setClearBtnAndEventHandler(infoDiv, file._infoId);
                                 fileForAPI.status = O$.FileUpload.Status.SUCCESSFUL;
                                 fileUpload._events._fireFileUploadEndEvent(fileForAPI);
+                                if (endHandler){
+                                  endHandler();
+                                }
                                 prepareUIWhenAllRequestsFinished(true);
                               }
                             }
@@ -424,7 +451,7 @@ O$.FileUpload = {
                   );
                 }
 
-                function sendIsStoppedRequestHTML5(file, infoDiv, fileForAPI){
+                function sendIsStoppedRequestHTML5(file, infoDiv, fileForAPI, endHandler){
                   O$.Ajax.requestComponentPortions(fileUpload.id, ["nothing"],
                           JSON.stringify({stoppedRequest:true, uniqueIdOfFile:file._uniqueId}),
                           function (fileUpload, portionName, portionHTML, portionScripts, portionData) {
@@ -432,17 +459,20 @@ O$.FileUpload = {
                               file._isInterrupted = true;
                               infoDiv._status = O$.FileUpload.Status.STOPPED;
                               removeHTML5File(file);
-                              infoDiv.childNodes[2].innerHTML = statusStoppedText;
+                              infoDiv.childNodes[2].innerHTML = fileUpload._statuses.stopped;
                               setStatusforFileWithId(file._uniqueId, "STOPPED");
                               setClearBtnAndEventHandler(infoDiv, file._infoId);
                               fileForAPI.status = O$.FileUpload.Status.STOPPED;
                               fileUpload._events._fireFileUploadEndEvent(fileForAPI);
+                              if (endHandler){
+                                endHandler();
+                              }
                               prepareUIWhenAllRequestsFinished(true);
                             }
                           }, null, true);
                 }
 
-                function sendIsErrorRequestHTML5(file, infoDiv, fileForAPI){
+                function sendIsErrorRequestHTML5(file, infoDiv, fileForAPI, endHandler){
                   O$.Ajax.requestComponentPortions(fileUpload.id, ["nothing"],
                           JSON.stringify({stoppedRequest:true, uniqueIdOfFile:file._uniqueId}),
                           function (fileUpload, portionName, portionHTML, portionScripts, portionData) {
@@ -451,10 +481,13 @@ O$.FileUpload = {
                               infoDiv._status = O$.FileUpload.Status.FAILED;
                               fileForAPI.status = O$.FileUpload.Status.FAILED;
                               removeHTML5File(file);
-                              infoDiv.childNodes[2].innerHTML = statusLabelUnexpectedError;
+                              infoDiv.childNodes[2].innerHTML = fileUpload._statuses.failed;
                               setStatusforFileWithId(file._uniqueId, "FAILED");
                               fileUpload._events._fireFileUploadEndEvent(fileForAPI);
                               setClearBtnAndEventHandler(infoDiv, file._infoId);
+                              if (endHandler){
+                                endHandler();
+                              }
                               prepareUIWhenAllRequestsFinished(true);
                             }
                           }, null, true);
@@ -462,8 +495,10 @@ O$.FileUpload = {
 
                 function setupUIForUploadHTML5(file, infoDiv, request, fileForAPI) {
                   function setStopButtonBehaviorHTML5(file, infoDiv, request) {
+                    var deleteFunc = infoDiv.childNodes[3].firstChild.deleteFileInputFunction;
                     infoDiv.childNodes[3].removeChild(infoDiv.childNodes[3].firstChild);
                     var stopFileDiv = fileUpload._buttons.stop.cloneNode(true);
+                    stopFileDiv.deleteFileInputFunction = deleteFunc;
                     stopFileDiv.setAttribute("id", fileUpload._buttons.stop.id + file._infoId);
                     infoDiv.childNodes[3].appendChild(stopFileDiv);
                     O$.addEventHandler(stopFileDiv, "focus", focusHandler);
@@ -475,21 +510,11 @@ O$.FileUpload = {
                       file._wantToInterrupt = true;
                     };
                     O$.addEventHandler(stopFileDiv, "click", stopFileDiv._clickHandler);
-                    if (O$.isChrome() || O$.isSafari()) {
-                      O$.addEventHandler(stopFileDiv, "mousedown", function () {
-                        shouldInvokeFocusNonModifiable = false;
-                      });
-                      O$.addEventHandler(stopFileDiv, "mouseup", function () {
-                        shouldInvokeFocusNonModifiable = true;
-                      });
-                      O$.addEventHandler(stopFileDiv, "keyup", function () {
-                        shouldInvokeFocusEvHandler = false;
-                      });
-                    }
+                    chromeAndSafariFocusFix(stopFileDiv);
                   }
                   infoDiv._status = O$.FileUpload.Status.IN_PROGRESS;
                   fileForAPI.status = O$.FileUpload.Status.IN_PROGRESS;
-                  infoDiv.childNodes[2].innerHTML = statusLabelInProgress;
+                  infoDiv.childNodes[2].innerHTML = fileUpload._statuses.inProgress._update(0, file.size);
                   setStopButtonBehaviorHTML5(file, infoDiv, request);
                 }
 
@@ -523,6 +548,7 @@ O$.FileUpload = {
                                 }
                                 fileUpload._listOfids = [];
                                 fileUpload._events._fireUploadEndEvent(fileUpload._allFiles);
+                                fileUpload._renderAfterUploadEnd();
                               } else {
                                 setTimeout(sendCheckRequest, 500);
                               }
@@ -539,6 +565,7 @@ O$.FileUpload = {
                       fileUpload._buttons.stopAll.style.visibility = "visible";
                       fileUpload._buttons.removeAll.style.display = "block";
                       fileUpload._buttons.upload.style.visibility = "visible";
+                      fileUpload._buttons.stopAll._clicked = false;
                     }
                     inputInAddBtn.disabled = false;
                     fileUpload._inUploading = false;
@@ -569,17 +596,107 @@ O$.FileUpload = {
                     shouldInvokeFocusNonModifiable = true;
                   };
                   O$.addEventHandler(clearFileDiv, "click", clearFileDiv._clickHandler);
-                  if (O$.isChrome() || O$.isSafari()) {
-                    O$.addEventHandler(clearFileDiv, "mousedown", function () {
-                      shouldInvokeFocusNonModifiable = false;
-                    });
-                    O$.addEventHandler(clearFileDiv, "mouseup", function () {
-                      shouldInvokeFocusNonModifiable = true;
-                    });
-                    O$.addEventHandler(clearFileDiv, "keyup", function () {
-                      shouldInvokeFocusEvHandler = false;
-                    });
-                  }
+                  chromeAndSafariFocusFix(clearFileDiv);
+                }
+                if (uploadMode == "parallel"){
+                  return new function(){
+
+                    for (var inputsIndex = 0; inputsIndex < inputsStorage.childNodes.length; inputsIndex++) {
+                      var inputDiv = inputsStorage.childNodes[inputsIndex];
+                      var form = inputDiv.childNodes[0];
+                      var iframe = form.childNodes[1];
+                      var fileInput = form.childNodes[0];
+                      var fileOfAPI = fileUpload._getFile(fileInput._idInputAndDiv);
+                      var fileInfo = O$(allInfos.id + fileInput._idInputAndDiv);
+                      fileInfo.childNodes[3].firstChild.style.visibility = "hidden";
+                      form.target = iframe.name;
+                      form.action = uri + "&idOfFile=" + fileInput._idInputAndDiv;
+                      form.submit();
+                      form.target = "_self";
+                      callProgressRequest(fileInput);
+                      fileOfAPI.status = O$.FileUpload.Status.IN_PROGRESS;
+                      setupUIForUpload(fileInput, fileInfo, fileOfAPI);
+                      fileUpload._events._fireFileUploadStartEvent(fileOfAPI);
+                    }
+                    function sendFileRequest(file) {
+                      var xhr = new XMLHttpRequest();
+                      xhr.open('POST', uri + "&idOfFile=" + file._infoId, true);
+                      var data = new FormData();
+                      data.append(file._fakeInput, file);
+                      xhr.send(data);
+                      return xhr;
+                    }
+
+                    for (var html5FilesIndex = 0; html5FilesIndex < fileUpload._filesHTML5.length; html5FilesIndex++) {
+                      var html5File = fileUpload._filesHTML5[html5FilesIndex];
+                      var fileInfo = O$(allInfos.id + html5File._infoId);
+                      var fileOfAPI = fileUpload._getFile(html5File._infoId);
+                      fileInfo.childNodes[3].firstChild.style.visibility = "hidden";
+
+                      var request = sendFileRequest(html5File);
+                      callFileProgressForHTML5Request(html5File, request);
+                      fileOfAPI.status = O$.FileUpload.Status.IN_PROGRESS;
+                      setupUIForUploadHTML5(html5File, fileInfo, request,fileOfAPI);
+                      fileUpload._events._fireFileUploadStartEvent(fileOfAPI);
+                    }
+                  }();
+                }else{
+                  return new function(){
+                    function sendFileRequest(file) {
+                      var xhr = new XMLHttpRequest();
+                      xhr.open('POST', uri + "&idOfFile=" + file._infoId, true);
+                      var data = new FormData();
+                      data.append(file._fakeInput, file);
+                      xhr.send(data);
+                      return xhr;
+                    }
+
+                    function onEndHandler(){
+                      for (var inputsIndex = 0; inputsIndex < inputsStorage.childNodes.length; inputsIndex++) {
+                        var inputDiv = inputsStorage.childNodes[inputsIndex];
+                        var form = inputDiv.childNodes[0];
+                        var iframe = form.childNodes[1];
+                        var fileInput = form.childNodes[0];
+                        var fileOfAPI = fileUpload._getFile(fileInput._idInputAndDiv);
+                        var fileInfo = O$(allInfos.id + fileInput._idInputAndDiv);
+                        if (fileOfAPI.status == O$.FileUpload.Status.NEW) {
+                          fileInfo.childNodes[3].firstChild.style.visibility = "hidden";
+                          form.target = iframe.name;
+                          form.action = uri + "&idOfFile=" + fileInput._idInputAndDiv;
+                          form.submit();
+                          form.target = "_self";
+                          callProgressRequest(fileInput, onEndHandler);
+                          fileOfAPI.status = O$.FileUpload.Status.IN_PROGRESS;
+                          setupUIForUpload(fileInput, fileInfo, fileOfAPI);
+                          fileUpload._events._fireFileUploadStartEvent(fileOfAPI);
+                          if (fileUpload._buttons.stopAll._clicked){
+                            fileOfAPI.stopUpload();
+                          }
+                          return;
+                        }
+                      }
+
+                      for (var html5FilesIndex = 0; html5FilesIndex < fileUpload._filesHTML5.length; html5FilesIndex++) {
+                        var html5File = fileUpload._filesHTML5[html5FilesIndex];
+                        var fileInfo = O$(allInfos.id + html5File._infoId);
+                        var fileOfAPI = fileUpload._getFile(html5File._infoId);
+                        if (fileOfAPI.status  == O$.FileUpload.Status.NEW){
+                          fileInfo.childNodes[3].firstChild.style.visibility = "hidden";
+                          var request = sendFileRequest(html5File);
+                          callFileProgressForHTML5Request(html5File, request, onEndHandler);
+                          fileOfAPI.status = O$.FileUpload.Status.IN_PROGRESS;
+                          setupUIForUploadHTML5(html5File, fileInfo, request, fileOfAPI);
+                          fileUpload._events._fireFileUploadStartEvent(fileOfAPI);
+                          if (fileUpload._buttons.stopAll._clicked){
+                            fileOfAPI.stopUpload();
+                          }
+                          return;
+                        }
+                      }
+                      //all uploaded
+                    }
+                    onEndHandler();
+                  }();
                 }
               },
               __clearAllButtonClickHandler:function () {
@@ -779,6 +896,33 @@ O$.FileUpload = {
     }
     O$.addEventHandler(fileUpload._buttons.stopAll, "click", fileUpload.stopAllUploads);
 
+    O$.addEventHandler(document, "sessionexpired", function (){
+      for (var i = 0; i < fileUpload._allFiles.length; i++) {
+        var f = fileUpload._allFiles[i];
+        if (f.getStatus() == O$.FileUpload.Status.IN_PROGRESS) {
+          var infoDiv = O$(allInfos.id + f._id);
+          infoDiv._status = O$.FileUpload.Status.FAILED;
+          f.status = O$.FileUpload.Status.FAILED;
+          infoDiv.childNodes[2].innerHTML = fileUpload._statuses.failed;
+          infoDiv.childNodes[3].firstChild._clickHandler = infoDiv.childNodes[3].firstChild.deleteFileInputFunction;
+        }
+      }
+      fileUpload._numberOfFilesToUpload = 0;
+      inputInAddBtn.disabled = false;
+      fileUpload._inUploading = false;
+      fileUpload.removeAllFiles();
+
+      if (fileUpload._multiUpload) {
+        fileUpload._buttons.stopAll.style.display = "none";
+        fileUpload._buttons.stopAll.style.visibility = "visible";
+        fileUpload._buttons.removeAll.style.display = "block";
+        fileUpload._buttons.upload.style.visibility = "visible";
+      }
+
+      O$.setStyleMappings(addButtonTitleInput, {disabled:null});
+      initHeaderButtons();
+    });
+
     function processFileAdding(inputForFile) {
       if (isFileNameNotApplied(inputForFile.value)) {
         inputForFile.value = "";
@@ -901,8 +1045,8 @@ O$.FileUpload = {
 
       var statusTD = document.createElement("td");
       O$.setStyleMappings(statusTD, {status : infoStatusClass});
-      if (statusLabelNotUploaded != null)
-        statusTD.innerHTML = statusLabelNotUploaded;
+      if (fileUpload._statuses.newOne != null)
+        statusTD.innerHTML = fileUpload._statuses.newOne;
       infoWindow.appendChild(statusTD);
 
       var cancelFileTD = document.createElement("td");
@@ -917,17 +1061,7 @@ O$.FileUpload = {
       O$.addEventHandler(cancelFileDiv, "focus", focusHandler);
       O$.addEventHandler(cancelFileDiv, "blur", blurHandler);
 
-      if (O$.isChrome() || O$.isSafari()) {
-        O$.addEventHandler(cancelFileDiv, "mousedown", function () {
-          shouldInvokeFocusNonModifiable = false;
-        });
-        O$.addEventHandler(cancelFileDiv, "mouseup", function () {
-          shouldInvokeFocusNonModifiable = true;
-        });
-        O$.addEventHandler(cancelFileDiv, "keyup", function () {
-          shouldInvokeFocusEvHandler = false;
-        });
-      }
+      chromeAndSafariFocusFix(cancelFileDiv);
 
       cancelFileTD.appendChild(cancelFileDiv);
       infoWindow.appendChild(cancelFileTD);
@@ -1054,17 +1188,7 @@ O$.FileUpload = {
     }
 
     function setUploadButtonBehaviour() {
-      if (O$.isChrome() || O$.isSafari()) {
-        O$.addEventHandler(fileUpload._buttons.upload, "mousedown", function() {
-          shouldInvokeFocusNonModifiable = false;
-        });
-        O$.addEventHandler(fileUpload._buttons.upload, "mouseup", function() {
-          shouldInvokeFocusNonModifiable = true;
-        });
-        O$.addEventHandler(fileUpload._buttons.upload, "keyup", function() {
-          shouldInvokeFocusEvHandler = false;
-        });
-      }
+      chromeAndSafariFocusFix(fileUpload._buttons.upload);
       O$.addEventHandler(fileUpload._buttons.upload, "click", fileUpload.__uploadButtonClickHandler);
 
     }
@@ -1306,19 +1430,19 @@ O$.FileUpload = {
     }
 
     function setFocusOnComponent() {
-      if (!inputInAddBtn.disabled){
+      if (!inputInAddBtn.disabled && inputInAddBtn.focus){
         inputInAddBtn.focus();
         return;
       }
-      if (!fileUpload._buttons.upload.disabled){
+      if (!fileUpload._buttons.upload.disabled && fileUpload._buttons.upload.focus){
         fileUpload._buttons.upload.focus();
         return;
       }
-      if (!fileUpload._buttons.removeAll.disabled){
+      if (!fileUpload._buttons.removeAll.disabled && fileUpload._buttons.removeAll.focus){
         fileUpload._buttons.removeAll.focus();
         return;
       }
-      if (!fileUpload._buttons.stopAll.disabled){
+      if (!fileUpload._buttons.stopAll.disabled && fileUpload._buttons.stopAll.focus){
         fileUpload._buttons.stopAll.focus();
         return;
       }
@@ -1423,6 +1547,19 @@ O$.FileUpload = {
         }
       }
     }
+    function chromeAndSafariFocusFix(button){
+      if (O$.isChrome() || O$.isSafari()) {
+        O$.addEventHandler(button, "mousedown", function () {
+          shouldInvokeFocusNonModifiable = false;
+        });
+        O$.addEventHandler(button, "mouseup", function () {
+          shouldInvokeFocusNonModifiable = true;
+        });
+        O$.addEventHandler(button, "keyup", function () {
+          shouldInvokeFocusEvHandler = false;
+        });
+      }
+    }
   },
   _initFileUploadAPI:function (fileUpload) {
     //Helper methods for API
@@ -1471,6 +1608,7 @@ O$.FileUpload = {
       /*This method is trying to stop all current files that in upload process. It is not guarantee that file will be stopped */
       stopAllUploads: function(){
         fileUpload._buttons.stopAll.style.visibility = "hidden";
+        fileUpload._buttons.stopAll._clicked = true;
         for (var index = 0; index < fileUpload._allFiles.length; index++) {
             if (fileUpload._allFiles[index].status == O$.FileUpload.Status.IN_PROGRESS) {
               var fileInfo = O$(fileUpload.id + "::infoDiv" + fileUpload._allFiles[index]._id);
