@@ -245,4 +245,7 @@ public class FileUploadJspTag extends AbstractComponentJspTag {
     public void setFileSizeLimit(ValueExpression fileSizeLimit) {
         getDelegate().setPropertyValue("fileSizeLimit", fileSizeLimit);
     }
+    public void setUploadMode(ValueExpression uploadMode) {
+        getDelegate().setPropertyValue("uploadMode", uploadMode);
+    }
 }
