@@ -248,4 +248,8 @@ public class FileUploadJspTag extends AbstractComponentJspTag {
     public void setUploadMode(ValueExpression uploadMode) {
         getDelegate().setPropertyValue("uploadMode", uploadMode);
     }
+    public void setRenderAfterUpload(ValueExpression renderAfterUpload) {
+        getDelegate().setPropertyValue("renderAfterUpload", renderAfterUpload);
+    }
+
 }

@@ -21,7 +21,7 @@ O$.FileUpload = {
                   isAutoUpload, tabIndex, progressBarId, statusStoppedText, statusStoppingText, multiUpload,ID,
                   onchangeHandler, onuploadstartHandler, onuploadendHandler,
                   onfileuploadstartHandler, onfileuploadinprogressHandler, onfileuploadendHandler,
-                  dropTargetCrossoverClass, uploadMode) {
+                  dropTargetCrossoverClass, uploadMode, renderAfterUpload) {
 
     var fileUpload = O$.initComponent(componentId, null, {
       _minQuantity : minQuantity,
@@ -71,6 +71,11 @@ O$.FileUpload = {
       }
     });
     O$.extend(fileUpload,{
+      _renderAfterUploadEnd : function(){
+        if (renderAfterUpload){
+          O$._ajaxReload([renderAfterUpload], {"executeRenderedComponents":true,"immediate":false});
+        }
+      },
       _statuses:{
         inProgress:fileUpload._transformStatusToFormatted(statusLabelInProgress),
         uploaded:fileUpload._transformStatusToFormatted(statusLabelUploaded),
@@ -543,6 +548,7 @@ O$.FileUpload = {
                                 }
                                 fileUpload._listOfids = [];
                                 fileUpload._events._fireUploadEndEvent(fileUpload._allFiles);
+                                fileUpload._renderAfterUploadEnd();
                               } else {
                                 setTimeout(sendCheckRequest, 500);
                               }

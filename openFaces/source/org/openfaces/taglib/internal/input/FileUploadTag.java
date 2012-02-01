@@ -109,5 +109,6 @@ public class FileUploadTag extends AbstractComponentTag {
 
         setIntProperty(component, "fileSizeLimit");
         setEnumerationProperty(component, "uploadMode", FileUploadMode.class);
+        setStringProperty(component,"renderAfterUpload");
     }
 }
