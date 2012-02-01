@@ -351,17 +351,7 @@ O$.FileUpload = {
                       inputForFile._wantToInterrupt = true;
                     };
                     O$.addEventHandler(stopFileDiv, "click", stopFileDiv._clickHandler);
-                    if (O$.isChrome() || O$.isSafari()) {
-                      O$.addEventHandler(stopFileDiv, "mousedown", function () {
-                        shouldInvokeFocusNonModifiable = false;
-                      });
-                      O$.addEventHandler(stopFileDiv, "mouseup", function () {
-                        shouldInvokeFocusNonModifiable = true;
-                      });
-                      O$.addEventHandler(stopFileDiv, "keyup", function () {
-                        shouldInvokeFocusEvHandler = false;
-                      });
-                    }
+                    chromeAndSafariFocusFix(stopFileDiv);
                   }
                   infoDiv._status = O$.FileUpload.Status.IN_PROGRESS;
                   fileForAPI.status = O$.FileUpload.Status.IN_PROGRESS;
@@ -515,17 +505,7 @@ O$.FileUpload = {
                       file._wantToInterrupt = true;
                     };
                     O$.addEventHandler(stopFileDiv, "click", stopFileDiv._clickHandler);
-                    if (O$.isChrome() || O$.isSafari()) {
-                      O$.addEventHandler(stopFileDiv, "mousedown", function () {
-                        shouldInvokeFocusNonModifiable = false;
-                      });
-                      O$.addEventHandler(stopFileDiv, "mouseup", function () {
-                        shouldInvokeFocusNonModifiable = true;
-                      });
-                      O$.addEventHandler(stopFileDiv, "keyup", function () {
-                        shouldInvokeFocusEvHandler = false;
-                      });
-                    }
+                    chromeAndSafariFocusFix(stopFileDiv);
                   }
                   infoDiv._status = O$.FileUpload.Status.IN_PROGRESS;
                   fileForAPI.status = O$.FileUpload.Status.IN_PROGRESS;
@@ -610,17 +590,7 @@ O$.FileUpload = {
                     shouldInvokeFocusNonModifiable = true;
                   };
                   O$.addEventHandler(clearFileDiv, "click", clearFileDiv._clickHandler);
-                  if (O$.isChrome() || O$.isSafari()) {
-                    O$.addEventHandler(clearFileDiv, "mousedown", function () {
-                      shouldInvokeFocusNonModifiable = false;
-                    });
-                    O$.addEventHandler(clearFileDiv, "mouseup", function () {
-                      shouldInvokeFocusNonModifiable = true;
-                    });
-                    O$.addEventHandler(clearFileDiv, "keyup", function () {
-                      shouldInvokeFocusEvHandler = false;
-                    });
-                  }
+                  chromeAndSafariFocusFix(clearFileDiv);
                 }
                 if (uploadMode == "parallel"){
                   return new function(){
@@ -1085,17 +1055,7 @@ O$.FileUpload = {
       O$.addEventHandler(cancelFileDiv, "focus", focusHandler);
       O$.addEventHandler(cancelFileDiv, "blur", blurHandler);
 
-      if (O$.isChrome() || O$.isSafari()) {
-        O$.addEventHandler(cancelFileDiv, "mousedown", function () {
-          shouldInvokeFocusNonModifiable = false;
-        });
-        O$.addEventHandler(cancelFileDiv, "mouseup", function () {
-          shouldInvokeFocusNonModifiable = true;
-        });
-        O$.addEventHandler(cancelFileDiv, "keyup", function () {
-          shouldInvokeFocusEvHandler = false;
-        });
-      }
+      chromeAndSafariFocusFix(cancelFileDiv);
 
       cancelFileTD.appendChild(cancelFileDiv);
       infoWindow.appendChild(cancelFileTD);
@@ -1222,17 +1182,7 @@ O$.FileUpload = {
     }
 
     function setUploadButtonBehaviour() {
-      if (O$.isChrome() || O$.isSafari()) {
-        O$.addEventHandler(fileUpload._buttons.upload, "mousedown", function() {
-          shouldInvokeFocusNonModifiable = false;
-        });
-        O$.addEventHandler(fileUpload._buttons.upload, "mouseup", function() {
-          shouldInvokeFocusNonModifiable = true;
-        });
-        O$.addEventHandler(fileUpload._buttons.upload, "keyup", function() {
-          shouldInvokeFocusEvHandler = false;
-        });
-      }
+      chromeAndSafariFocusFix(fileUpload._buttons.upload);
       O$.addEventHandler(fileUpload._buttons.upload, "click", fileUpload.__uploadButtonClickHandler);
 
     }
@@ -1589,6 +1539,19 @@ O$.FileUpload = {
           fileInfo.childNodes[3].firstChild._clickHandler();
           index--;
         }
+      }
+    }
+    function chromeAndSafariFocusFix(button){
+      if (O$.isChrome() || O$.isSafari()) {
+        O$.addEventHandler(button, "mousedown", function () {
+          shouldInvokeFocusNonModifiable = false;
+        });
+        O$.addEventHandler(button, "mouseup", function () {
+          shouldInvokeFocusNonModifiable = true;
+        });
+        O$.addEventHandler(button, "keyup", function () {
+          shouldInvokeFocusEvHandler = false;
+        });
       }
     }
   },
