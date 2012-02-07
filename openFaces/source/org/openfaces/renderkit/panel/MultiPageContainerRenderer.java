@@ -150,6 +150,9 @@ public abstract class MultiPageContainerRenderer extends BaseTabSetRenderer impl
     protected int getSelectedIndex(MultiPageContainer container, List<SubPanel> subPanels) {
         int selectedTabIndex = container.getSelectedIndex();
         int allItemCount = subPanels.size();
+        if (allItemCount == 0) {
+            return -1;
+        }
         if (selectedTabIndex < 0 || selectedTabIndex >= allItemCount)
             selectedTabIndex = 0;
         SubPanel selectedItem = subPanels.get(selectedTabIndex);

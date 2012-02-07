@@ -49,4 +49,32 @@
   <h:inputHidden id="hiddenInput"/>
   <h:commandButton value="Change the set of columns" action="#{TableTestBean.changeColumns}"/>
 
+  <br/>
+
+  <o:dataTable id="table2" value="#{TableTestBean.collection1}" var="row" rowKey="#{row.id}"
+               columnIdVar="colId"
+               columnIndexVar="colIndex">
+    <o:column id="col1" sortingExpression="#{row.field1}" style="width: 150px">
+      <f:facet name="header">
+        <h:outputText value="Static Column"/>
+      </f:facet>
+      <h:outputText value="#{row.field1}"/>
+    </o:column>
+    <o:columnGroup>
+      <o:columns value="#{TableTestBean.testColumns}"
+                 var="col">
+        <f:facet name="header">
+          <h:outputText value="Header #{col}"/>
+        </f:facet>
+        <f:facet name="footer">
+          <h:outputText value="Footer #{col}"/>
+        </f:facet>
+        <h:inputText value="#{row.customFields[col]}"/>
+      </o:columns>
+    </o:columnGroup>
+  </o:dataTable>
+
+  <o:commandButton value="Add column" execute="table" render="table2" action="#{TableTestBean.addColumn}"/>
+  <o:commandButton value="Submit" />
+
 </div>

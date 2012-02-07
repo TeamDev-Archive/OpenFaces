@@ -1213,8 +1213,8 @@ O$.Calendar = {
 
   _adjustMonthAndYearSelectorWidth: function(calendar) {
     if (calendar._monthSelector._drop.clientWidth) {
-      calendar._monthSelector.style.width = calendar._monthSelector._drop.clientWidth - 3;
-      calendar._yearSelector.style.width = calendar._yearSelector._drop.clientWidth - 3;
+      calendar._monthSelector.style.width = calendar._monthSelector._drop.clientWidth - 3 + "px";
+      calendar._yearSelector.style.width = calendar._yearSelector._drop.clientWidth - 3 + "px";
     } else {
       setTimeout(function() {
         O$.Calendar._adjustMonthAndYearSelectorWidth(calendar);
