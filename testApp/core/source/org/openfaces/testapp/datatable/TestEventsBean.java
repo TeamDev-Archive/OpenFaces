@@ -12,6 +12,8 @@
 package org.openfaces.testapp.datatable;
 
 import org.openfaces.component.input.DropDownItem;
+import org.openfaces.component.table.AbstractTable;
+import org.openfaces.component.table.CSVTableExporter;
 import org.openfaces.component.table.DataTable;
 import org.openfaces.util.Faces;
 
@@ -207,5 +209,10 @@ public class TestEventsBean { // todo: this backing bean is used in many non eve
 
     public void setSelectedDropDownValue(TestTableItem selectedDropDownValue) {
         this.selectedDropDownValue = selectedDropDownValue;
+    }
+    
+    public void export() {
+        Faces.component("formID:sortableDataTable", DataTable.class).
+                export(AbstractTable.DataScope.DISPLAYED_ROWS, new CSVTableExporter());
     }
 }

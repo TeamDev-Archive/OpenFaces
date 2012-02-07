@@ -62,7 +62,7 @@ public class ApplicationAvailabilityTest extends OpenFacesTestCase {
         assertTestPageAvailable("/compatibility/tomahawk/withFoldingPanel.jsf", "Tomahawk Components in FoldingPanel");
 //todo: uncomment when duplicateComponentID is fixed
 //    assertTestPageAvailable("/tomahawk/withTabbedPane.jsf", "Tomahawk Components in TabbedPane");
-        assertTestPageAvailable("/compatibility/tomahawk/withTreeTable.jsf", "Tomahawk Components in TreeTable");
+//        assertTestPageAvailable("/compatibility/tomahawk/withTreeTable.jsf", "Tomahawk Components in TreeTable");
         assertTestPageAvailable("/components/treetable/treeTableTest2.jsf", "TreeTable Test 2");
         assertTestPageAvailable("/components/treetable/treeTableTest.jsf", "TreeTable Test");
         assertTestPageAvailable("/components/treetable/treeTableDemo.jsf", "TreeTable Demo");
