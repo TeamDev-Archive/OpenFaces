@@ -63,6 +63,13 @@ public class FileUpload extends OUIInputBase {
 
     private String browseButtonDisabledStyle;
     private String browseButtonDisabledClass;
+    
+    private String uploadButtonText;
+    private String removeAllButtonText;
+    private String stopAllButtonText;
+    private String removeButtonText;
+    private String stopButtonText;
+    private String clearButtonText;
 
     private String allInfosStyle;
     private String allInfosClass;
@@ -112,6 +119,9 @@ public class FileUpload extends OUIInputBase {
 
     private int fileSizeLimit;
 
+    private FileUploadMode uploadMode;
+    private String renderAfterUpload;
+
     public FileUpload() {
         setRendererType("org.openfaces.FileUploadRenderer");
     }
@@ -140,6 +150,12 @@ public class FileUpload extends OUIInputBase {
                 browseButtonFocusedClass,
                 browseButtonDisabledStyle,
                 browseButtonDisabledClass,
+                uploadButtonText,
+                removeAllButtonText,
+                stopAllButtonText,
+                removeButtonText,
+                stopButtonText,
+                clearButtonText,
                 allInfosStyle,
                 allInfosClass,
                 dropTargetStyle,
@@ -173,7 +189,9 @@ public class FileUpload extends OUIInputBase {
                 onfileuploadend,
                 stoppingStatusText,
                 unexpectedErrorText,
-                fileSizeLimit
+                fileSizeLimit,
+                uploadMode,
+                renderAfterUpload
         };
     }
 
@@ -197,6 +215,12 @@ public class FileUpload extends OUIInputBase {
         browseButtonFocusedClass = (String) values[i++];
         browseButtonDisabledStyle = (String) values[i++];
         browseButtonDisabledClass = (String) values[i++];
+        uploadButtonText  = (String) values[i++];
+        removeAllButtonText = (String) values[i++];
+        stopAllButtonText = (String)values[i++];
+        removeButtonText = (String) values[i++];
+        stopButtonText = (String) values[i++];
+        clearButtonText = (String) values[i++];
         allInfosStyle = (String) values[i++];
         allInfosClass = (String) values[i++];
         dropTargetStyle = (String) values[i++];
@@ -231,6 +255,8 @@ public class FileUpload extends OUIInputBase {
         stoppingStatusText = (String) values[i++];
         unexpectedErrorText = (String) values[i++];
         fileSizeLimit = (Integer) values[i++];
+        uploadMode = (FileUploadMode)values[i++];
+        renderAfterUpload = (String)values[i++];
     }
 
 
@@ -514,6 +540,54 @@ public class FileUpload extends OUIInputBase {
         this.browseButtonFocusedClass = browseButtonFocusedClass;
     }
 
+    public String getUploadButtonText() {
+        return ValueBindings.get(this, "uploadButtonText", uploadButtonText,"Upload");
+    }
+
+    public void setUploadButtonText(String uploadButtonText) {
+        this.uploadButtonText = uploadButtonText;
+    }
+
+    public String getRemoveAllButtonText() {
+        return ValueBindings.get(this, "removeAllButtonText", removeAllButtonText, "Remove all");
+    }
+
+    public void setRemoveAllButtonText(String removeAllButtonText) {
+        this.removeAllButtonText = removeAllButtonText;
+    }
+
+    public String getStopAllButtonText() {
+        return ValueBindings.get(this, "stopAllButtonText", stopAllButtonText, "Stop all");
+    }
+
+    public void setStopAllButtonText(String stopAllButtonText) {
+        this.stopAllButtonText = stopAllButtonText;
+    }
+
+    public String getRemoveButtonText() {
+        return ValueBindings.get(this, "removeButtonText", removeButtonText, "Remove");
+    }
+
+    public void setRemoveButtonText(String removeButtonText) {
+        this.removeButtonText = removeButtonText;
+    }
+
+    public String getStopButtonText() {
+        return ValueBindings.get(this, "stopButtonText", stopButtonText,"Stop");
+    }
+
+    public void setStopButtonText(String stopButtonText) {
+        this.stopButtonText = stopButtonText;
+    }
+
+    public String getClearButtonText() {
+        return ValueBindings.get(this, "clearButtonText", clearButtonText,"Clear");
+    }
+
+    public void setClearButtonText(String clearButtonText) {
+        this.clearButtonText = clearButtonText;
+    }
+
     public String getProgressBarStyle() {
         return ValueBindings.get(this, "progressBarStyle", progressBarStyle);
     }
@@ -611,29 +685,6 @@ public class FileUpload extends OUIInputBase {
         this.onuploadend = onuploadend;
     }
 
-    public String getStoppingStatusText() {
-        return ValueBindings.get(this, "stoppingStatusText", stoppingStatusText, "Stopping...");
-    }
-
-    public void setStoppingStatusText(String stoppingStatusText) {
-        this.stoppingStatusText = stoppingStatusText;
-    }
-
-    public String getUnexpectedErrorText() {
-        return ValueBindings.get(this, "unexpectedErrorText", unexpectedErrorText, "Error");
-    }
-
-    public void setUnexpectedErrorText(String unexpectedErrorText) {
-        this.unexpectedErrorText = unexpectedErrorText;
-    }
-
-    public int getFileSizeLimit() {
-        return ValueBindings.get(this, "fileSizeLimit", fileSizeLimit, 0);
-    }
-
-    public void setFileSizeLimit(int fileSizeLimit) {
-        this.fileSizeLimit = fileSizeLimit;
-    }
     public String getOnfileuploadstart() {
         return ValueBindings.get(this, "onfileuploadstart", onfileuploadstart);
     }
@@ -657,7 +708,47 @@ public class FileUpload extends OUIInputBase {
     public void setOnfileuploadend(String onfileuploadend) {
         this.onfileuploadend = onfileuploadend;
     }
+
+    public String getStoppingStatusText() {
+        return ValueBindings.get(this, "stoppingStatusText", stoppingStatusText, "Stopping...");
+    }
+
+    public void setStoppingStatusText(String stoppingStatusText) {
+        this.stoppingStatusText = stoppingStatusText;
+    }
     
+    public String getUnexpectedErrorText() {
+        return ValueBindings.get(this, "unexpectedErrorText", unexpectedErrorText, "Error");
+    }
+
+    public void setUnexpectedErrorText(String unexpectedErrorText) {
+        this.unexpectedErrorText = unexpectedErrorText;
+    }
+
+    public int getFileSizeLimit() {
+        return ValueBindings.get(this, "fileSizeLimit", fileSizeLimit, 0);
+    }
+
+    public void setFileSizeLimit(int fileSizeLimit) {
+        this.fileSizeLimit = fileSizeLimit;
+    }
+
+    public FileUploadMode getUploadMode() {
+        return ValueBindings.get(this, "uploadMode", uploadMode, FileUploadMode.PARALLEL, FileUploadMode.class);
+    }
+
+    public void setUploadMode(FileUploadMode uploadMode) {
+        this.uploadMode = uploadMode;
+    }
+
+    public String getRenderAfterUpload() {
+        return ValueBindings.get(this, "renderAfterUpload", renderAfterUpload);
+    }
+
+    public void setRenderAfterUpload(String renderAfterUpload) {
+        this.renderAfterUpload = renderAfterUpload;
+    }
+
     @Override
     public String getDefaultEventName() {
         return "uploadend";
@@ -667,5 +758,4 @@ public class FileUpload extends OUIInputBase {
     public Collection<String> getEventNames() {
         return EVENT_NAMES;
     }
-
 }

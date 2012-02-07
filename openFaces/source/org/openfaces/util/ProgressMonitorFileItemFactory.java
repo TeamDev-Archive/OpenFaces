@@ -17,6 +17,7 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.openfaces.renderkit.input.FileUploadRenderer;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.lang.ref.WeakReference;
 
@@ -47,10 +48,14 @@ public class ProgressMonitorFileItemFactory extends DiskFileItemFactory {
         boolean shouldProcess = true;
         if (!isFormField && !fileName.equals("")) { //This must be a file upload and has a name
             observer = new SessionUpdatingProgressObserver(uniqueFileId);
-            if (requestLength > maxSizeOfFile) {
-                shouldProcess = false;
-                HttpServletRequest request = requestRef.get();
-                request.getSession().setAttribute(FileUploadRenderer.EXCEED_MAX_SIZE_ID + uniqueFileId, true);
+            HttpServletRequest req = requestRef.get();
+            if (req != null) {
+                HttpSession session = req.getSession();
+                session.setAttribute(FileUploadRenderer.FILE_SIZE_ID + uniqueFileId, requestLength);
+                if (requestLength > maxSizeOfFile) {
+                    shouldProcess = false;
+                    session.setAttribute(FileUploadRenderer.EXCEED_MAX_SIZE_ID + uniqueFileId, true);
+                }
             }
             //fileName = fileName.replaceAll("[#$%^&* ]+","_"); //doesn't work unfortunately
         }

@@ -16,8 +16,7 @@ import java.io.File;
 import java.io.Serializable;
 
 /**
- * @author: Andrey Loboda
- * @date : 28.12.11
+ * @author Andrey Loboda
  */
 public class FileUploadItem implements Serializable {
     private final String fileName;

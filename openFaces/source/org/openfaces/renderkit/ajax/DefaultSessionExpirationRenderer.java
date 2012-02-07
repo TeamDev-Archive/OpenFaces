@@ -62,7 +62,8 @@ public class DefaultSessionExpirationRenderer extends AbstractSettingsRenderer {
                     : confirmation.getId();
 
             String location = getRedirectLocationOnSessionExpired(context);
-            String onExpiredEventFunction = "O$.Ajax._pageReloadConfirmation('" + confirmationId + "', '" + location + "');";
+            String onExpiredEventFunction = "O$.Ajax._pageReloadConfirmation('" + confirmationId + "', '" + location + "');" +
+                    "O$._fireSessionExpiredEvent();";
             processEvent(context, Components.getFacetOwner(component), "onsessionexpired", onExpiredEventFunction);
         }
     }

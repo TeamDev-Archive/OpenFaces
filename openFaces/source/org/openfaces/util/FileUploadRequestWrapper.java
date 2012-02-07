@@ -27,6 +27,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 public class FileUploadRequestWrapper extends HttpServletRequestWrapper {
@@ -47,10 +48,11 @@ public class FileUploadRequestWrapper extends HttpServletRequestWrapper {
                 if (!fileItem.isFormField()) {
                     if (fileItem.getSize() != 0) {
                         if (request.getSession().getAttribute(uniqueFileId + FileUploadRenderer.TERMINATED_TEXT) == null) {
-                            File f = writeFile(fileItem, tempDirPath);
+                            String correctFileName = getCorrectFileName(fileItem.getName());
+                            File f = writeFile(fileItem, tempDirPath, correctFileName);
                             int index = fileItem.getFieldName().indexOf(FIELD_NAME);
                             String genericNameForFile = fileItem.getFieldName().substring(0, index + FIELD_NAME.length());
-                            request.setAttribute(genericNameForFile, new FileUploadItem(fileItem.getName(), f, FileUploadStatus.SUCCESSFUL));
+                            request.setAttribute(genericNameForFile, new FileUploadItem(correctFileName, f, FileUploadStatus.SUCCESSFUL));
                             request.setAttribute("FILE_ID", uniqueFileId);
                         }else{
                             request.getSession().removeAttribute(uniqueFileId + FileUploadRenderer.TERMINATED_TEXT);
@@ -73,8 +75,8 @@ public class FileUploadRequestWrapper extends HttpServletRequestWrapper {
         }
     }
 
-    private File writeFile(FileItem fileItem, String tempDirPath) throws IOException {
-        File f = getAndChangeFileNameIfNeeded(tempDirPath, fileItem.getName());
+    private File writeFile(FileItem fileItem, String tempDirPath, String correctFileName) throws IOException {
+        File f = getAndChangeFileNameIfNeeded(tempDirPath, correctFileName);
 
         OutputStream out = new FileOutputStream(f);
         int read = 0;
@@ -90,8 +92,6 @@ public class FileUploadRequestWrapper extends HttpServletRequestWrapper {
     }
 
     private File getAndChangeFileNameIfNeeded(String tempDirPath, String fileName) {
-        int indexOfSlash = fileName.lastIndexOf("\\");
-        fileName = (indexOfSlash == -1) ? fileName : fileName.substring(indexOfSlash + 1);
         File f = new File(tempDirPath + "\\" + fileName);
         int i = 0;
         while (f.isFile()) {
@@ -99,6 +99,11 @@ public class FileUploadRequestWrapper extends HttpServletRequestWrapper {
             i++;
         }
         return f;
+    }
+    private String getCorrectFileName(String notCorrectName) throws UnsupportedEncodingException{
+        String correctFileName = new String(notCorrectName.getBytes(), "UTF-8"); // for cyrillic symbols in fileName
+        int indexOfSlash = correctFileName.lastIndexOf("\\");
+        return (indexOfSlash == -1) ? correctFileName : correctFileName.substring(indexOfSlash + 1);
     }
 
 }

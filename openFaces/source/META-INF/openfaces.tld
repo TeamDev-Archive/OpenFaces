@@ -44477,6 +44477,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>This text appears in status div when file is already uploaded.
+        Also you can display size of uploaded file in useful form - in bytes{B}, kylobytes{KB} or megabytes{MB}.
+        For example: {size} MB{MB}
       </description>
       <name>uploadedStatusText</name>
       <deferred-value>
@@ -44488,6 +44490,9 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>This text appears as status of file when it is uploading at the moment.
+        You can display useful information about uploading process such as how many already uploaded{uploaded} and size of file{size}.
+        For example: {uploaded} / {size} MB{MB},
+        Also you can set how it will display - in bytes{B}, kylobytes{KB} or megabytes{MB}
       </description>
       <name>inProgressStatusText</name>
       <deferred-value>
@@ -44498,8 +44503,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This text appears as status of file when its size is more than acceptable (this param should be setted
-        in web.xml).
+      <description>This text appears as status of file when its size is more than acceptable (this param should be setted  in web.xml or as fileSizeLimit attribute).
+        Also you can display size of uploaded file in useful form - in bytes{B}, kylobytes{KB} or megabytes{MB}. For example: '{size}{MB}MB is bigger than allowed'
       </description>
       <name>fileSizeLimitErrorText</name>
       <deferred-value>
@@ -44522,7 +44527,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>the text that will be shown on browse button
+      <description>This attribute specifies the text that will be shown on browse button
       </description>
       <name>browseButtonText</name>
       <deferred-value>
@@ -44864,7 +44869,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when uploading for all files have been started.
+      <description>JavaScript code that should be executed when uploading session have been started.
       </description>
       <name>onuploadstart</name>
       <deferred-value>
@@ -44981,10 +44986,100 @@ entering a value and returns a list of suggestions from the server -->
       </description>
       <name>fileSizeLimit</name>
       <deferred-value>
-        <type>java.lang.String</type>
+        <type>int</type>
       </deferred-value>
       <!-- @bindingType int -->
       <!-- @default  org.openfaces.fileUpload.fileSizeLimit param in web.xml-->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>This attribute specifies the text that will be shown on upload button
+      </description>
+      <name>uploadButtonText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  'Upload'-->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>This attribute specifies the text that will be shown on remove all button
+      </description>
+      <name>removeAllButtonText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  'Remove all'-->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>This attribute specifies the text that will be shown on stop all button
+      </description>
+      <name>stopAllButtonText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  'Stop all'-->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>This attribute specifies the text that will be shown on remove button for each file.
+      </description>
+      <name>removeButtonText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  'Remove'-->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>This attribute specifies the text that will be shown on stop button for each file.
+      </description>
+      <name>stopButtonText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  'Stop'-->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>This attribute specifies the text that will be shown on clear button for each file.
+      </description>
+      <name>clearButtonText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  'Clear'-->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>This attribute specifies in what mode files will be uploaded - parallel or one by one the.
+      </description>
+      <name>uploadMode</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.input.FileUploadMode  -->
+      <!-- @default "parallel" -->
+      <!-- @value "parallel" -->
+      <!-- @value "series" -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>This attribute specifies what components  will be re-rendered when uploading of all files has been finished.
+      </description>
+      <name>renderAfterUpload</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  null-->
       <!-- @el true -->
     </attribute>
   </tag>
