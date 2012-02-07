@@ -40,7 +40,7 @@ public class TestBean {
         id = String.valueOf(idCounter++);
         idToBeanMap.put(id, this);
         Random random = new Random();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 20; i++) {
             String customFieldName = String.valueOf(i);
             String customFieldValue = String.valueOf(Math.abs(random.nextInt()) % 1000);
             customFields.put(customFieldName, customFieldValue);

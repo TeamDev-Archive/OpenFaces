@@ -12,6 +12,7 @@
 package org.openfaces.testapp.datatable;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author Darya Shumilina
@@ -22,6 +23,7 @@ public class TestTableItem implements Serializable {
     private String secondColumn;
     private String thirdColumn;
     private String fourthColumn;
+    private Date dateColumn = new Date();
 
     public TestTableItem(String firstColumn, String secondColumn, String thirdColumn, String fourthColumn) {
         this.firstColumn = firstColumn;
@@ -30,6 +32,14 @@ public class TestTableItem implements Serializable {
         this.fourthColumn = fourthColumn;
     }
 
+
+    public Date getDateColumn() {
+        return dateColumn;
+    }
+
+    public void setDateColumn(Date dateColumn) {
+        this.dateColumn = dateColumn;
+    }
 
     public String getFirstColumn() {
         return firstColumn;
