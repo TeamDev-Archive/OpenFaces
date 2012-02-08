@@ -3001,8 +3001,9 @@ if (!window.O$) {
 
   };
 
-  O$.removeCssRule = function(nameOfCssClass) {
-    var styleSheet = O$.getLocalStyleSheet();
+  O$.removeCssRule = function (nameOfCssClass, _styleSheet) {
+    var styleSheet = (_styleSheet) ? _styleSheet : O$.getLocalStyleSheet();
+
     if (!styleSheet)
       return;
 

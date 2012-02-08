@@ -1512,6 +1512,7 @@ O$.Tables = {
         var predefinedColClasses = styleElement.styleSheet.rules;
         predefinedColClasses._obtained = 0;
         predefinedColClasses._prefix = prefix;
+        predefinedColClasses._styleSheet = styleElement.styleSheet;
         return predefinedColClasses;
       }
       var colClasses = null;
@@ -1526,7 +1527,9 @@ O$.Tables = {
           colClasses = O$.Tables._predefinedColClassesLonger;
       }
       if (colClasses) {
-        return {className: colClasses._prefix + colClasses._obtained, classObj: colClasses[colClasses._obtained++]};
+        return {className:colClasses._prefix + colClasses._obtained,
+          classObj:colClasses[colClasses._obtained++],
+          styleSheet:colClasses._styleSheet};
       } else {
         return newClass_raw(declaration);
       }
@@ -1538,7 +1541,10 @@ O$.Tables = {
     }
 
     function newClass(declaration) {
-      return newClass_raw(declaration);
+      if (O$.isExplorer())
+        return newClass_IE(declaration);
+      else
+        return newClass_raw(declaration);
     }
     var defaultSharedColumnStyle = "o_tableColumn";
     column._getEditableIndividualClass = function(propertyName) {
@@ -1554,17 +1560,19 @@ O$.Tables = {
                                         // be required, see the commented usage in column.setWidth
     if (column.footer) {
       column._footerCellsClass = table._params.columnWidthControlRequired ? newClass("overflow: hidden") : defaultSharedColumnStyle;
-      if (table._params.columnWidthControlRequired)
+      if (table._params.columnWidthControlRequired){
         O$.addUnloadHandler(table, function () {
-          O$.removeCssRule(column._footerCellsClass.classObj.selectorText);
+          O$.removeCssRule(column._footerCellsClass.classObj.selectorText, column._footerCellsClass.styleSheet);
+        });
+      }
+    }
+    if (table._params.columnWidthControlRequired){
+        O$.addUnloadHandler(table, function () {
+          O$.removeCssRule(column._headerCellsClass.classObj.selectorText,column._headerCellsClass.styleSheet);
+          O$.removeCssRule(column._bodyCellsClass.classObj.selectorText, column._bodyCellsClass.styleSheet);
+          //        O$.removeCssRule(column._colClass.classObj.selectorText);
         });
     }
-    if (table._params.columnWidthControlRequired)
-      O$.addUnloadHandler(table, function () {
-        O$.removeCssRule(column._headerCellsClass.classObj.selectorText);
-        O$.removeCssRule(column._bodyCellsClass.classObj.selectorText);
-//        O$.removeCssRule(column._colClass.classObj.selectorText);
-      });
     column._table = table;
 
     if (column.header && column.header.pos) {
