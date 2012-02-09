@@ -366,8 +366,8 @@ public class TableTestBean {
         logger.info("  New Value: " + event.getNewValue());
     }
 
-    private static final List<String> COLUMN_LIST_1 = Arrays.asList("1", "2", "3", "4", "5");
-    private static final List<String> COLUMN_LIST_2 = Arrays.asList("5", "9");
+    private static final List<String> COLUMN_LIST_1 = new ArrayList<String>(Arrays.asList("1", "2", "3", "4", "5"));
+    private static final List<String> COLUMN_LIST_2 = new ArrayList<String>(Arrays.asList("5", "9"));
 
     private List<String> columns = COLUMN_LIST_1;
 
@@ -381,6 +381,12 @@ public class TableTestBean {
             columns = COLUMN_LIST_2;
         else
             columns = COLUMN_LIST_1;
+    }
+
+    private int columnsCreated = 10;
+
+    public void addColumn() {
+        columns.add(String.valueOf(columnsCreated++));
     }
 
     private Object filterValue1;

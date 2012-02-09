@@ -130,27 +130,34 @@
               <td><h:outputLink onmousedown="stopEvent(event)" onclick="Calculator.typeNumber('7'); return false;">
                 <h:graphicImage url="./images/calc/7.png"/>
               </h:outputLink></td>
-              <td><h:outputLink styleClass="calculatorBtn" onmousedown="stopEvent(event)" onclick="Calculator.typeNumber('8'); return false;">
+              <td><h:outputLink styleClass="calculatorBtn" onmousedown="stopEvent(event)"
+                                onclick="Calculator.typeNumber('8'); return false;">
                 <h:graphicImage url="./images/calc/8.png"/>
               </h:outputLink></td>
-              <td><h:outputLink styleClass="calculatorBtn" onmousedown="stopEvent(event)" onclick="Calculator.typeNumber('9'); return false;">
+              <td><h:outputLink styleClass="calculatorBtn" onmousedown="stopEvent(event)"
+                                onclick="Calculator.typeNumber('9'); return false;">
                 <h:graphicImage url="./images/calc/9.png"/>
               </h:outputLink></td>
-              <td><h:outputLink styleClass="calculatorBtn" onmousedown="stopEvent(event)" onclick="Calculator.typeOperation('/'); return false;">
+              <td><h:outputLink styleClass="calculatorBtn" onmousedown="stopEvent(event)"
+                                onclick="Calculator.typeOperation('/'); return false;">
                 <h:graphicImage url="./images/calc/div.png"/>
               </h:outputLink></td>
             </tr>
             <tr>
-              <td><h:outputLink styleClass="calculatorBtn" onmousedown="stopEvent(event)" onclick="Calculator.typeNumber('4'); return false;">
+              <td><h:outputLink styleClass="calculatorBtn" onmousedown="stopEvent(event)"
+                                onclick="Calculator.typeNumber('4'); return false;">
                 <h:graphicImage url="./images/calc/4.png"/>
               </h:outputLink></td>
-              <td><h:outputLink styleClass="calculatorBtn" onmousedown="stopEvent(event)" onclick="Calculator.typeNumber('5'); return false;">
+              <td><h:outputLink styleClass="calculatorBtn" onmousedown="stopEvent(event)"
+                                onclick="Calculator.typeNumber('5'); return false;">
                 <h:graphicImage url="./images/calc/5.png"/>
               </h:outputLink></td>
-              <td><h:outputLink styleClass="calculatorBtn" onmousedown="stopEvent(event)" onclick="Calculator.typeNumber('6'); return false;">
+              <td><h:outputLink styleClass="calculatorBtn" onmousedown="stopEvent(event)"
+                                onclick="Calculator.typeNumber('6'); return false;">
                 <h:graphicImage url="./images/calc/6.png"/>
               </h:outputLink></td>
-              <td><h:outputLink styleClass="calculatorBtn" onmousedown="stopEvent(event)" onclick="Calculator.typeOperation('*'); return false;">
+              <td><h:outputLink styleClass="calculatorBtn" onmousedown="stopEvent(event)"
+                                onclick="Calculator.typeOperation('*'); return false;">
                 <h:graphicImage url="./images/calc/mult.png"/>
               </h:outputLink></td>
             </tr>
@@ -313,8 +320,8 @@
               modal="true"
               styleClass="window"
               style="position: absolute; right: 150px; top: 160px; border: 2px solid #aaaaaa"
-              width="236px"
-              height="228px"
+              width="336px"
+              height="342px"
               contentStyle="overflow: visible; background: #ececec;"
               caption="Calendar"
               captionStyle="color: white; background: #aaaaaa;
@@ -325,7 +332,12 @@
                              rolloverClass="buttonRollover"/>
       </o:captionArea>
 
-      <div align="center" style="padding: 20px"><o:calendar/></div>
+      <div align="center" style="padding: 20px">
+        <o:calendar
+                dayStyle="font-size: 17pt; width: 40px; height: 33px;"
+                todayStyle="border: 1px solid gray"
+                selectedDayStyle="background-color: orange"/>
+      </div>
     </o:window>
   </div>
 </td>
