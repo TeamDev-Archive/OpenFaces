@@ -1529,7 +1529,7 @@ O$.Tables = {
       if (colClasses) {
         return {className:colClasses._prefix + colClasses._obtained,
           classObj:colClasses[colClasses._obtained++],
-          styleSheet:colClasses._styleSheet};
+          _iePredefClasses:colClasses};
       } else {
         return newClass_raw(declaration);
       }
@@ -1562,14 +1562,14 @@ O$.Tables = {
       column._footerCellsClass = table._params.columnWidthControlRequired ? newClass("overflow: hidden") : defaultSharedColumnStyle;
       if (table._params.columnWidthControlRequired){
         O$.addUnloadHandler(table, function () {
-          O$.removeCssRule(column._footerCellsClass.classObj.selectorText, column._footerCellsClass.styleSheet);
+          O$.removeCssRule(column._footerCellsClass.classObj.selectorText,column._footerCellsClass._iePredefClasses);
         });
       }
     }
     if (table._params.columnWidthControlRequired){
         O$.addUnloadHandler(table, function () {
-          O$.removeCssRule(column._headerCellsClass.classObj.selectorText,column._headerCellsClass.styleSheet);
-          O$.removeCssRule(column._bodyCellsClass.classObj.selectorText, column._bodyCellsClass.styleSheet);
+          O$.removeCssRule(column._headerCellsClass.classObj.selectorText,column._headerCellsClass._iePredefClasses);
+          O$.removeCssRule(column._bodyCellsClass.classObj.selectorText, column._bodyCellsClass._iePredefClasses);
           //        O$.removeCssRule(column._colClass.classObj.selectorText);
         });
     }
