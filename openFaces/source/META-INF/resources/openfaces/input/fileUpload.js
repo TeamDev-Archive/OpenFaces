@@ -514,8 +514,15 @@ O$.FileUpload = {
     if(O$.isExplorer()){
       if (O$.isQuirksMode() ||
               ((O$.isExplorer6() ||O$.isExplorer7() || O$.isExplorer8() || O$.isExplorer9()) &&
-                      (document.documentMode == 7 || document.documentMode == 6)))
-        allInfos = allInfos.firstChild;
+                      (document.documentMode == 7 || document.documentMode == 6))){
+        /*In IE6-7 because of extra tag <tbody>*/
+        var parentOfAllInfos = allInfos;
+        allInfos = parentOfAllInfos.firstChild;
+        var tempId = parentOfAllInfos.id;
+        parentOfAllInfos.id = "";
+        allInfos.id = tempId;
+      }
+
     }
 
     fileUpload._inputsStorage = fileUpload._createStructureForInputs();
@@ -842,6 +849,7 @@ O$.FileUpload = {
 
       var cancelFileTD = document.createElement("td");
       cancelFileTD.style.width = "1px";
+      cancelFileTD.style.verticalAlign = "middle";
       var cancelFileDiv = fileUpload._buttons.cancel.cloneNode(true);
       cancelFileDiv.setAttribute("id", fileUpload._buttons.cancel.id + fileId);
       if (O$.isExplorer()) {
