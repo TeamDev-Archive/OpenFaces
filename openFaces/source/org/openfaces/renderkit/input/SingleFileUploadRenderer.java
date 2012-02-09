@@ -66,7 +66,7 @@ public class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
     }
 
     private void writeProgressArea(FacesContext context, SingleFileUpload fileUpload, ResponseWriter writer) throws IOException {
-        String progressBarClass = Styles.getCSSClass(context, fileUpload, fileUpload.getProgressBarStyle(), StyleGroup.regularStyleGroup(), fileUpload.getProgressBarClass(), "o_file_upload_info_progress");
+        String progressBarClass = Styles.getCSSClass(context, fileUpload, fileUpload.getProgressBarStyle(), StyleGroup.regularStyleGroup(), fileUpload.getProgressBarClass(), "o_s_file_upload_info_progress");
         writer.writeAttribute("class", progressBarClass, null);
         writer.writeAttribute("colspan", 2, null);
         writeProgressBar(context);

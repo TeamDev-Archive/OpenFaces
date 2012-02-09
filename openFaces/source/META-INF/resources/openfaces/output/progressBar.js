@@ -61,6 +61,15 @@ O$.ProgressBar = {
         return progressBar._labelAlignment;
       }
     });
+    new function setHeightAndWidthForProgressEls(){
+      /*IE 8 doesn't see if we assign height to some percents %*/
+      if (O$.isExplorer8() || document.documentMode == 8){
+        progressBar._uploadedDiv.style.height  = O$.getElementClientRectangle(progressBar).height + "px";
+        progressBar._notUploadedDiv.style.height = O$.getElementClientRectangle(progressBar).height + "px";
+      }
+
+    }();
+
     progressBar.setValue(value);
     if (labelAlignment == "center"){
         progressBar._labelDiv.style.marginLeft = progressBar.clientWidth / 2 - O$.getElementSize(progressBar._labelDiv).width / 2 + "px";
