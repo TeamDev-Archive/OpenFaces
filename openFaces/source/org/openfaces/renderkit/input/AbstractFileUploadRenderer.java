@@ -248,10 +248,11 @@ public abstract class AbstractFileUploadRenderer extends RendererBase implements
 
     protected void writeBrowseButtonTable(FacesContext context, AbstractFileUpload fileUpload, ResponseWriter writer, String elementId, String textOfButton) throws IOException {
         writer.startElement("table", fileUpload);
-        writer.writeAttribute("style", "float:left;", null); //todo temporary
+        writer.writeAttribute("style", "float:left;padding:0px", null); //todo temporary
         writer.writeAttribute("id", elementId, null);
         writer.startElement("tr", fileUpload);
         writer.startElement("td", fileUpload);
+        writer.writeAttribute("style", "padding:0px", null);
 
         writer.startElement("div", fileUpload);
         writer.writeAttribute("style", "position:relative", null);

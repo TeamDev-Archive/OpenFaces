@@ -400,6 +400,14 @@ O$.SingleFileUpload = {
       fileUpload.removeChild(fileUpload._elementsCont);
     fileUpload._setUpBrowseButton(addButtonId);
     fileUpload._addButtonParent = fileUpload._buttons.browse.parentNode;
+    new function setStopBtnWidthAsInBrowse() {
+      var widthOfBrowseContainer = O$.getElementSize(fileUpload._buttons.browse).width;
+      var widthOfTitleInput= O$.getElementSize(fileUpload._buttons.browseTitleInput).width;
+      fileUpload._buttons.stop.style.width =  widthOfTitleInput + "px";
+      var margin = (widthOfBrowseContainer-widthOfTitleInput)/2;
+      fileUpload._buttons.stop.style.marginLeft = margin+ "px";
+      fileUpload._buttons.stop.style.marginRight = margin+ "px";
+    }();
 
     O$.extend(fileUpload, {
               __uploadButtonClickHandler:function () {
@@ -517,8 +525,7 @@ O$.SingleFileUpload = {
         show:function(){
           if (area._firstShow){
             function getCorrectWidthForArea(area) {
-              var className = area.classList[0];
-              var diffForWidth = O$.getStyleClassProperty(className, "borderWidth").replace("px", "");
+              var diffForWidth = O$.getElementStyle(area,"borderWidth").replace("px", "");
               return O$.getElementSize(fileUpload._els.infoTable).width - diffForWidth * 2;
             }
 
@@ -532,10 +539,9 @@ O$.SingleFileUpload = {
               }
 
               function getDiff(area) {
-                var className = area.classList[0];
-                var diff = O$.getStyleClassProperty(className, "borderWidth").replace("px", "");
+                var diff = O$.getElementStyle(area, "borderWidth").replace("px", "");
                 diff *= 2;
-                diff += O$.getStyleClassProperty(className, "paddingTop").replace("px", "") * 1;
+                diff += O$.getElementStyle(area, "paddingTop").replace("px", "") * 1;
                 return diff;
               }
 
@@ -636,12 +642,12 @@ O$.SingleFileUpload = {
 
     function setInfoWindow(filename){
       fileUpload._currentFile = null;
-
       fileUpload._els.fileName.innerHTML = fileUpload._getFileName(filename); //filename
       fileUpload._els.status.innerHTML = fileUpload._statuses.newOne;//status
-
+      fileUpload._els.fileName._widthShouldBe = O$.getElementSize(fileUpload._els.fileName).width + "px";
       fileUpload._els.progressBar.style.display = "block";
       fileUpload._els.progressBar.setValue(0);
+      fileUpload._els.fileName.style.width = fileUpload._els.fileName._widthShouldBe;
     }
   },
   _initFileUploadAPI:function (fileUpload) {
