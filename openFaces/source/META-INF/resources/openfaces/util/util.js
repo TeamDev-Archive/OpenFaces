@@ -3009,7 +3009,13 @@ if (!window.O$) {
 
   };
 
-  O$.removeCssRule = function(nameOfCssClass) {
+  O$.removeCssRule = function (nameOfCssClass, _iePredefClasses) {
+
+    if (_iePredefClasses){
+      _iePredefClasses._obtained--;
+      return;
+    }
+
     var styleSheet = O$.getLocalStyleSheet();
     if (!styleSheet)
       return;

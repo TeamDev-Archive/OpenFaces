@@ -29,6 +29,7 @@ O$.ProgressBar = {
         if (progressValue != null &&
                 progressValue <= 100 && progressValue >= 0) {
           progressBar._progressValue = progressValue;
+          var labelShouldDisplay = !(O$.getElementStyle(progressBar._labelDiv,"display") == "none");
           if (O$.isExplorer6() || O$.isExplorer7() || (O$.isExplorer() && O$.isQuirksMode())) {
               progressBar._labelDiv.style.display = "none";
           }
@@ -40,8 +41,10 @@ O$.ProgressBar = {
 
           if (O$.isExplorer6() || O$.isExplorer7() || (O$.isExplorer() && O$.isQuirksMode())) {
             // weird bug from IE - without this row of code, label will be displayed not inside progressBar
-            progressBar._labelDiv.style.marginLeft =  progressBar._labelDiv.style.marginLeft;
-            progressBar._labelDiv.style.display = "inline";
+            if (labelShouldDisplay) {
+              progressBar._labelDiv.style.marginLeft = progressBar._labelDiv.style.marginLeft;
+              progressBar._labelDiv.style.display = "inline";
+            }
           }
         }
       },
@@ -58,6 +61,15 @@ O$.ProgressBar = {
         return progressBar._labelAlignment;
       }
     });
+    new function setHeightAndWidthForProgressEls(){
+      /*IE 8 doesn't see if we assign height to some percents %*/
+      if (O$.isExplorer8() || document.documentMode == 8){
+        progressBar._uploadedDiv.style.height  = O$.getElementClientRectangle(progressBar).height + "px";
+        progressBar._notUploadedDiv.style.height = O$.getElementClientRectangle(progressBar).height + "px";
+      }
+
+    }();
+
     progressBar.setValue(value);
     if (labelAlignment == "center"){
         progressBar._labelDiv.style.marginLeft = progressBar.clientWidth / 2 - O$.getElementSize(progressBar._labelDiv).width / 2 + "px";

@@ -26,12 +26,17 @@
                 style="width: 40%;">
         <h:outputText value="File: "/> <h:outputText styleClass="#{FileUploadBean.fileInfoClass}" value="#{FileUploadBean.bookImageFileName}"/>
         <h:outputText value=" ; size: "/> <h:outputText styleClass="#{FileUploadBean.fileInfoClass}" value="#{FileUploadBean.bookImageFileSize}"/>
-        <o:fileUpload browseButtonText="Upload cover image..."
-                      style="border: none; width: 100%"
-                      uploadCompletionListener="#{FileUploadBean.bookImageUploaded}"
-                      acceptedFileTypes="jpg png bmp jpeg gif"
-                      onuploadend="O$.ajax.request(this, null, {render:'form:booksTable'})"/>
+        <o:singleFileUpload browseButtonText="Upload cover image..." renderAfterUpload="booksTable"
+                            acceptedFileTypes="jpg png bmp jpeg gif"
+                            uploadCompletionListener="#{FileUploadBean.bookImageUploaded}"
+                            style="border: none; width:350px">
+          <f:facet name="stopButton">
+            <o:commandButton value="Stop cover uploading" onclick="return false" style="width:162px"/>
+          </f:facet>
+
+        </o:singleFileUpload>
       </o:column>
+
     </o:dataTable>
   </div>
   <div id="Description">

@@ -13,14 +13,11 @@ package org.openfaces.taglib.internal.input;
 
 import org.openfaces.component.input.FileUpload;
 import org.openfaces.component.input.FileUploadMode;
-import org.openfaces.event.FileUploadedEvent;
-import org.openfaces.event.UploadCompletionEvent;
-import org.openfaces.taglib.internal.AbstractComponentTag;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-public class FileUploadTag extends AbstractComponentTag {
+public class FileUploadTag extends AbstractFileUploadTag {
 
     public String getComponentType() {
         return FileUpload.COMPONENT_TYPE;
@@ -39,76 +36,19 @@ public class FileUploadTag extends AbstractComponentTag {
         setStringProperty(component, "headerStyle");
         setStringProperty(component, "headerClass");
 
-        setStringProperty(component, "browseButtonStyle");
-        setStringProperty(component, "browseButtonClass");
-        setStringProperty(component, "browseButtonText");
-
-        setStringProperty(component, "browseButtonRolloverStyle");
-        setStringProperty(component, "browseButtonRolloverClass");
-
-        setStringProperty(component, "browseButtonPressedStyle");
-        setStringProperty(component, "browseButtonPressedClass");
-
-        setStringProperty(component, "browseButtonFocusedStyle");
-        setStringProperty(component, "browseButtonFocusedClass");
-
-        setStringProperty(component, "browseButtonDisabledStyle");
-        setStringProperty(component, "browseButtonDisabledClass");
-
         setStringProperty(component, "uploadButtonText");
         setStringProperty(component, "removeAllButtonText");
         setStringProperty(component, "stopAllButtonText");
         setStringProperty(component, "removeButtonText");
-        setStringProperty(component, "stopButtonText");
         setStringProperty(component, "clearButtonText");
 
         setStringProperty(component, "allInfosStyle");
         setStringProperty(component, "allInfosClass");
 
-        setStringProperty(component, "dropTargetStyle");
-        setStringProperty(component, "dropTargetClass");
-        setStringProperty(component, "dropTargetDragoverStyle");
-        setStringProperty(component, "dropTargetDragoverClass");
-
-        setStringProperty(component, "dropTargetText");
-
-        setStringProperty(component, "rowStyle");
-        setStringProperty(component, "rowClass");
-
-        setStringProperty(component, "fileNameStyle");
-        setStringProperty(component, "fileNameClass");
-
-        setStringProperty(component, "uploadStatusClass");
-        setStringProperty(component, "uploadStatusStyle");
-        setStringProperty(component, "notUploadedStatusText");
-        setStringProperty(component, "uploadedStatusText");
-        setStringProperty(component, "inProgressStatusText");
-        setStringProperty(component, "stoppedStatusText");
-        setStringProperty(component, "stoppingStatusText");
-        setStringProperty(component, "fileSizeLimitErrorText");
-        setStringProperty(component, "unexpectedErrorText");
-
-        setStringProperty(component, "acceptedFileTypes");
         setBooleanProperty(component, "duplicateAllowed");
+
         setBooleanProperty(component, "autoUpload");
-        setBooleanProperty(component, "disabled");
-
-        setStringProperty(component, "progressBarStyle");
-        setStringProperty(component, "progressBarClass");
-        setIntProperty(component, "tabindex");
-        setMethodExpressionProperty(facesContext, component, "fileUploadedListener",
-                new Class[]{FileUploadedEvent.class}, void.class);
         setBooleanProperty(component, "multiple");
-        setMethodExpressionProperty(facesContext, component, "uploadCompletionListener",
-                new Class[]{UploadCompletionEvent.class}, void.class);
-        setStringProperty(component, "onuploadstart");
-        setStringProperty(component, "onuploadend");
-        setStringProperty(component, "onfileuploadstart");
-        setStringProperty(component, "onfileuploadinprogress");
-        setStringProperty(component, "onfileuploadend");
-
-        setIntProperty(component, "fileSizeLimit");
         setEnumerationProperty(component, "uploadMode", FileUploadMode.class);
-        setStringProperty(component,"renderAfterUpload");
     }
 }

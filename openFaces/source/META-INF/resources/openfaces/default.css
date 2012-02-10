@@ -55,7 +55,8 @@
   .o_popup_menu,
   .o_hintlabel_hint,
   .o_timetableView,
-  .o_file_upload{
+  .o_file_upload,
+  .o_s_file_upload{
   border: 1px solid gray;
 }
 
@@ -1258,7 +1259,7 @@
 }
 
 .o_file_upload_btn {
-    margin-left: 275px;
+    margin-left: 260px;
     margin-top: 2px;
 }
 
@@ -1278,6 +1279,7 @@
     font-size: 14pt;
     font-weight: bold;
     text-align: center;
+    -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
 }
@@ -1308,10 +1310,20 @@
     padding-right: 10px;
     padding-top: 5px;
     padding-bottom:5px;
+    vertical-align:middle;
 }
 
 .o_file_upload_info_progress {
     width: 1px;
+    vertical-align:middle;
+}
+.o_fileup_pro_bar{
+    width:100px;
+    height: 15px;
+    position: relative;
+    border: 1px solid #CCCCCC;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 .o_file_clear_btn {
@@ -1319,6 +1331,57 @@
     margin-right: 25px;
     margin-top: 5px;
     margin-bottom: 5px;
+    width:64px;
+}
+
+/*Single FileUpload*/
+.o_s_file_upload{
+    width:300px;
+}
+.o_s_file_upload_info_progress{
+
+}
+.o_s_fileup_pro_bar{
+    width:95%;
+    margin-left: 5px;
+    margin-right: 8px;
+    margin-bottom: 2px;
+    margin-top: 0;
+    height: 5px;
+}
+.o_s_file_upload_info_status{
+    color: gray;
+    font-size: 8pt;
+    margin-right: 2px;
+    width: 65px;
+}
+.o_s_file_clear_btn{
+
+}
+.o_s_file_drop_target,
+.o_file_ext_drop_target{
+    color: #999999;
+    font-size: 10pt;
+    font-weight: bold;
+    text-align: center;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    border: 2px dashed #CCCCCC;
+}
+.o_s_file_drop_target{
+    padding-top: 5px;
+}
+.o_s_file_ext_drop_target,
+.o_file_ext_drop_target{
+    margin:5px;
+    position: absolute;
+    padding-top:50px;
+    top:0;
+    left:0;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=40)";
+    filter: alpha(opacity=40);
+    opacity: 0.4
 }
 
 /* TwoListSelection */

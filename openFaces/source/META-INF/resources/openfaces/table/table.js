@@ -26,10 +26,10 @@ O$.Table = {
     }
   }),
   _tableLoadingHandlers: [],
-  _onTableLoaded: function(tableId, func){
+  _onTableLoaded: function(tableId, func) {
     this._tableLoadingHandlers[tableId] = func; //todo: make multimap
   },
-  _tableLoaded: function(tableId){
+  _tableLoaded: function(tableId) {
     var listener = this._tableLoadingHandlers[tableId];
     if(listener) listener();
   },
@@ -2686,9 +2686,9 @@ O$.Table = {
           allLeafs: function(dontApplySorting) {
             var result = [];
             var candidates = self.children(dontApplySorting).slice(0);
-            while(candidates.length > 0){
+            while(candidates.length > 0) {
               var current = candidates.shift();
-              if(!current.isLeaf()){
+              if(!current.isLeaf()) {
                 candidates = current.children(dontApplySorting).concat(candidates);
               } else {
                 result.push(current);
@@ -2809,7 +2809,7 @@ O$.Table = {
                 }
                 var parent = firstVisibleParent(sourceColumnId);
                 var markMinY;
-                if(parent == null){
+                if(parent == null) {
                   var anyHighLevelColumn = table._columnsLogicalStructure.root().visibleChildren()[0].columnId;
                   var rect = O$.getElementBorderRectangle(table._getHeaderCell(anyHighLevelColumn).header._cell, true);
                   markMinY = rect.getMinY();
@@ -2889,7 +2889,7 @@ O$.Table = {
       table._rowGroupingBox = rowGroupingBox;
     };
     //todo: move it out of here
-    table._getColumn = function(columnId){
+    table._getColumn = function(columnId) {
       return table._columns.filter(function(column) {
         return column.columnId == columnId
       })[0];
@@ -2899,10 +2899,10 @@ O$.Table = {
       function retrieveAllCells() {
         var candidates = table._columns.slice(0);
         var allCells = [];
-        while(candidates.length > 0){
+        while(candidates.length > 0) {
           var current = candidates.pop();
           allCells.push(current);
-          if(current._parentColumn){
+          if(current._parentColumn) {
             candidates.push(current._parentColumn);
           }
         }
@@ -2996,14 +2996,14 @@ O$.Table = {
 
                 _toggleSortingTypeInGroupingRule: function(columnId, ruleIndex) {
                   var rules = table.grouping.getGroupingRules();
-                  rules.forEach(function(rule){
+                  rules.forEach(function(rule) {
                     if (rule.columnId == columnId)rule.ascending = !rule.ascending;
                   });
                   table.grouping.setGroupingRules(rules);
                 },
 
                 _applyGroupingRule: function(rule, ruleIndex) {
-                  table.combineSubmissions(function(){
+                  table.combineSubmissions(function() {
                     (function removePreviousRuleIfItWasExistAndAddNew() {
                       function onlyIds(rules) {
                         return rules.map(function(r) {
@@ -3278,11 +3278,26 @@ O$.Table = {
   },
   _initRowGroupingBox: function(rowGroupingBoxId, tableId, connectorStyle, headerStyleClassName, headerHorizOffset, headerVertOffset) {
     O$.Table._onTableLoaded(tableId, function() {
-      O$.addLoadEvent(function(){
-        doActualInitialization();
+      var table = O$(tableId);
+      O$.addLoadEvent(function() {
+        function initWhenReady() {
+          if (!O$.isElementPresentInDocument(table)) {
+            // cancel the deferred grouping box initialization if the table has been removed with Ajax (or with other
+            // means) without being shown
+            return;
+          }
+          var ready = O$.isVisibleRecursive(table);
+          if (!ready) {
+            setTimeout(initWhenReady, 100);
+            return;
+          }
+
+          doActualInitialization();
+        }
+        initWhenReady();
       });
     });
-    function doActualInitialization(){
+    function doActualInitialization() {
       var table = O$(tableId);
       var rowGroupingBoxTable = O$(rowGroupingBoxId);
       var rowGroupingBox = rowGroupingBoxTable.firstChild.firstChild.firstChild;
@@ -3547,7 +3562,7 @@ O$.Table = {
                   rowGroupingBoxTable.style[property] = "0px";
                 });
               });
-      layoutStrategy("Feel container with boxes according to grouping rules")
+      layoutStrategy("Fill container with boxes according to grouping rules")
               .groupingBoxes(function() {
                 (function initGroupingBoxSizeValidationFunction() {
                   rowGroupingBox.validate = function() {
@@ -3731,7 +3746,7 @@ O$.ColumnMenu = {
         O$.ColumnMenu._menuFixer = menuFixer;
         columnMenuButtonTable.showForCell(cell);
       } else {
-        if (O$.ColumnMenu._currentColumnId == columnId){
+        if (O$.ColumnMenu._currentColumnId == columnId) {
           O$.ColumnMenu._currentColumnId = null;
           O$.ColumnMenu._menuFixer = null;
         }
@@ -3776,7 +3791,7 @@ O$.ColumnMenu = {
 
     var columnMenuButton = O$(columnMenuButtonId);
     var columnMenuButtonTable = function() {
-      function safeAppend(parent, child){
+      function safeAppend(parent, child) {
         child.style.position = "";
         child.style.width = "";
         parent.appendChild(child);
