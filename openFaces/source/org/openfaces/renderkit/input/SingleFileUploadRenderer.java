@@ -48,10 +48,13 @@ public class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
         writeFileInfo(context, fileUpload, writer, clientId + DIV_FOR_FILE_INFO_ID);
 
         String dropTargetText = fileUpload.getDropTargetText();
-        if (dropTargetText == null){
-            dropTargetText ="Drop file here";
+        if (dropTargetText == null) {
+            dropTargetText = "Drop file here";
         }
-        writeDragAndDropArea(context, abstractFileUpload, writer, clientId + DRAG_AREA, "o_s_file_drop_target", dropTargetText);
+        writeDragAndDropArea(context, abstractFileUpload, writer, clientId + DRAG_AREA,
+                (fileUpload.getExternalDropTarget() == null) ? "o_s_file_drop_target" : "o_s_file_ext_drop_target",
+                dropTargetText);
+
         writer.endElement("td");
         writer.endElement("tr");
 
@@ -147,7 +150,8 @@ public class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
                 Utilities.getFunctionOfEvent(fileUpload.getOnfileuploadinprogress()),
                 Utilities.getFunctionOfEvent(fileUpload.getOnfileuploadend()),
                 dropTargetDragoverClass,
-                (fileUpload.getRenderAfterUpload() == null) ? null : Utilities.getForm(fileUpload).getClientId(context) + ":" + fileUpload.getRenderAfterUpload()
+                (fileUpload.getRenderAfterUpload() == null) ? null : Utilities.getForm(fileUpload).getClientId(context) + ":" + fileUpload.getRenderAfterUpload(),
+                fileUpload.getExternalDropTarget()
         );
 
         Rendering.renderInitScript(context, initScript,

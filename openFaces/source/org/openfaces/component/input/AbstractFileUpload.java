@@ -89,6 +89,8 @@ public abstract class AbstractFileUpload extends OUIInputBase {
 
 
     private String renderAfterUpload;
+    
+    private String externalDropTarget;
 
     public AbstractFileUpload() {
         setRendererType("org.openfaces.FileUploadRenderer");
@@ -145,7 +147,8 @@ public abstract class AbstractFileUpload extends OUIInputBase {
                 stoppingStatusText,
                 unexpectedErrorText,
                 fileSizeLimit,
-                renderAfterUpload
+                renderAfterUpload,
+                externalDropTarget
         };
     }
 
@@ -197,6 +200,7 @@ public abstract class AbstractFileUpload extends OUIInputBase {
         unexpectedErrorText = (String) values[i++];
         fileSizeLimit = (Integer) values[i++];
         renderAfterUpload = (String) values[i++];
+        externalDropTarget = (String) values[i++];
     }
 
 
@@ -569,5 +573,13 @@ public abstract class AbstractFileUpload extends OUIInputBase {
 
     public void setRenderAfterUpload(String renderAfterUpload) {
         this.renderAfterUpload = renderAfterUpload;
+    }
+
+    public String getExternalDropTarget() {
+        return ValueBindings.get(this, "externalDropTarget", externalDropTarget);
+    }
+
+    public void setExternalDropTarget(String externalDropTarget) {
+        this.externalDropTarget = externalDropTarget;
     }
 }

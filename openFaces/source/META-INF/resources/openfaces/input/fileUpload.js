@@ -21,7 +21,7 @@ O$.FileUpload = {
                   isAutoUpload, tabIndex, progressBarId, statusStoppedText, statusStoppingText, multiUpload,ID,
                   onchangeHandler, onuploadstartHandler, onuploadendHandler,
                   onfileuploadstartHandler, onfileuploadinprogressHandler, onfileuploadendHandler,
-                  dropTargetCrossoverClass, uploadMode, renderAfterUpload) {
+                  dropTargetCrossoverClass, uploadMode, renderAfterUpload, externalDropTarget) {
 
     var fileUpload = O$.initComponent(componentId, null, {
       _minQuantity : minQuantity,
@@ -484,7 +484,7 @@ O$.FileUpload = {
             addButtonClass, addButtonOnMouseOverClass, addButtonOnMouseDownClass,addButtonOnFocusClass,
             statusLabelInProgress,statusLabelUploaded,statusLabelErrorSize,
             statusLabelNotUploaded,statusStoppedText,statusLabelUnexpectedError,
-            renderAfterUpload,tabIndex,dropTargetCrossoverClass);
+            renderAfterUpload,tabIndex,dropTargetCrossoverClass, externalDropTarget);
 
     fileUpload._setAllEvents(onchangeHandler,onuploadstartHandler,onuploadendHandler,
             onfileuploadstartHandler,onfileuploadinprogressHandler,onfileuploadendHandler);
@@ -722,7 +722,7 @@ O$.FileUpload = {
     setBehaviorForDragAndDropArea();
     O$.FileUpload._initFileUploadAPI(fileUpload);
     function setBehaviorForDragAndDropArea(){
-      var area = O$(componentId + "::footer::dragArea");
+      var area = fileUpload._getDropTargetArea(componentId + "::footer::dragArea");
       O$.FileUploadUtil._initDragArea(area);
       O$.extend(area, {
         hide:function(){

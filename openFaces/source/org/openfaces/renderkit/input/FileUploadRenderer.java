@@ -137,7 +137,8 @@ public class FileUploadRenderer extends AbstractFileUploadRenderer {
                 Utilities.getFunctionOfEvent(fileUpload.getOnfileuploadend()),
                 dropTargetDragoverClass,
                 fileUpload.getUploadMode(),
-                (fileUpload.getRenderAfterUpload() == null) ? null : Utilities.getForm(fileUpload).getClientId(context) + ":" + fileUpload.getRenderAfterUpload()
+                (fileUpload.getRenderAfterUpload() == null) ? null : Utilities.getForm(fileUpload).getClientId(context) + ":" + fileUpload.getRenderAfterUpload(),
+                fileUpload.getExternalDropTarget()
         );
 
         Rendering.renderInitScript(context, initScript,
@@ -159,7 +160,9 @@ public class FileUploadRenderer extends AbstractFileUploadRenderer {
                 dropText = "Drop file here";
             }
         }
-        writeDragAndDropArea(context, fileUpload, writer, elementId + DRAG_AREA, "o_file_drop_target", dropText);
+        writeDragAndDropArea(context, fileUpload, writer, elementId + DRAG_AREA,
+                (fileUpload.getExternalDropTarget() == null) ? "o_file_drop_target" : "o_file_ext_drop_target",
+                dropText);
         simpleButton.write(removeAllButton, elementId + REMOVE_ALL_BTN_CONTAINER, fileUpload.getRemoveAllButtonText(), "o_file_remove_all_btn");
         simpleButton.write(stopAllButton, elementId + STOP_ALL_BTN_CONTAINER, fileUpload.getStopAllButtonText(), "o_file_stop_all_btn");
         writer.endElement("div");

@@ -45199,6 +45199,17 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default  null-->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>This attribute specifies id of element which will be used as dropTarget for this component.
+      </description>
+      <name>externalDropTarget</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  null-->
+      <!-- @el true -->
+    </attribute>
   </tag>
   <tag>
     <name>singleFileUpload</name>
@@ -45876,6 +45887,17 @@ entering a value and returns a list of suggestions from the server -->
       <description>This attribute specifies what components  will be re-rendered when uploading of all files has been finished.
       </description>
       <name>renderAfterUpload</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  null-->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>This attribute specifies id of element which will be used as dropTarget for this component.
+      </description>
+      <name>externalDropTarget</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>

@@ -16,21 +16,21 @@ O$.FileUploadUtil = {
                         addButtonClass, addButtonOnMouseOverClass, addButtonOnMouseDownClass,addButtonOnFocusClass,
                         statusLabelInProgress,statusLabelUploaded,statusLabelErrorSize,
                         statusLabelNotUploaded,statusStoppedText,statusLabelUnexpectedError,
-                        renderAfterUpload,tabIndex,dropTargetCrossoverClass){
+                        renderAfterUpload,tabIndex,dropTargetCrossoverClass,externalDropTarget){
     O$.FileUploadUtil._initGeneralFunctions(fileUpload);
     O$.FileUploadUtil._initGeneralFields(fileUpload,
             lengthAlreadyUploadedFiles, acceptedTypesOfFile, isDisabled, ID,
             addButtonClass, addButtonOnMouseOverClass, addButtonOnMouseDownClass,addButtonOnFocusClass,
             statusLabelInProgress,statusLabelUploaded,statusLabelErrorSize,
             statusLabelNotUploaded,statusStoppedText,statusLabelUnexpectedError,
-            renderAfterUpload,tabIndex,dropTargetCrossoverClass);
+            renderAfterUpload,tabIndex,dropTargetCrossoverClass,externalDropTarget);
   },
   _initGeneralFields:function (fileUpload,
                                lengthAlreadyUploadedFiles, acceptedTypesOfFile, isDisabled, ID,
                                addButtonClass, addButtonOnMouseOverClass, addButtonOnMouseDownClass,addButtonOnFocusClass,
                                statusLabelInProgress,statusLabelUploaded,statusLabelErrorSize,
                                statusLabelNotUploaded,statusStoppedText,statusLabelUnexpectedError,
-                               renderAfterUpload,tabIndex,dropTargetCrossoverClass) {
+                               renderAfterUpload, tabIndex, dropTargetCrossoverClass, externalDropTarget) {
     O$.extend(fileUpload, {
       _numberOfFilesToUpload:0,
       _lengthUploadedFiles:lengthAlreadyUploadedFiles,
@@ -65,11 +65,52 @@ O$.FileUploadUtil = {
       _ignoreBlurForIE:false,
       _renderAfterUpload:renderAfterUpload,
       _tabIndex:tabIndex,
-      _dropTargetCrossoverClass:dropTargetCrossoverClass
+      _dropTargetCrossoverClass:dropTargetCrossoverClass,
+      _externalElForDropTarget: function(){
+        if (externalDropTarget) {
+          var el = O$(externalDropTarget);
+          if (el == null){
+            throw "externalDropTarget id is not correct";
+          }
+          return el;
+        }
+        return undefined;
+      }()
     });
   },
   _initGeneralFunctions: function(fileUpload){
     O$.extend(fileUpload,{
+      _getNumProperty:function (el, prop) {
+        return O$.getElementStyle(el, prop).replace("px", "") * 1;
+      },
+      _getDropTargetArea:function(id){
+        var dropTarget = O$(id);
+        if (fileUpload._externalElForDropTarget) {
+          dropTarget._isExternal = true;
+          new function correctExternalDropArea(externalDiv, area) {
+            var padTop = fileUpload._getNumProperty(area, "padding-top");
+            var padLeft = fileUpload._getNumProperty(area, "padding-left");
+            var borderTopWidth = fileUpload._getNumProperty(area, "border-top-width");
+            var borderLeftWidth = fileUpload._getNumProperty(area, "border-left-width");
+            var marginLeft = fileUpload._getNumProperty(area, "margin-left");
+            var marginRight = fileUpload._getNumProperty(area, "margin-right");
+            var marginTop = fileUpload._getNumProperty(area, "margin-top");
+            var marginBottom = fileUpload._getNumProperty(area, "margin-bottom");
+
+            var extBorderTopWidth = fileUpload._getNumProperty(externalDiv, "border-top-width");
+            var extBorderLeftWidth = fileUpload._getNumProperty(externalDiv, "border-left-width");
+            var size = O$.getElementSize(externalDiv);
+
+            area.style.width = (size.width - padLeft - borderTopWidth*2 - extBorderTopWidth*2 - marginLeft-marginRight) + "px";
+            area.style.height = (size.height - padTop - borderLeftWidth*2- extBorderLeftWidth*2 - marginTop - marginBottom) + "px";
+
+            externalDiv.style.position = "relative";
+            area.parentNode.removeChild(area);
+            externalDiv.appendChild(area);
+          }(fileUpload._externalElForDropTarget, dropTarget);
+        }
+        return dropTarget;
+      },
       _setDragEventsForBody:function (body, area) {
         O$.addEventHandler(body, "dragover", function (evt) {
           if (fileUpload._isFilesDragged(evt) && !fileUpload._buttons.browseInput.disabled) {

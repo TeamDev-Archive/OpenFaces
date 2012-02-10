@@ -204,4 +204,8 @@ public abstract class AbstractFileUploadJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("renderAfterUpload", renderAfterUpload);
     }
 
+    public void setExternalDropTarget(ValueExpression externalDropTarget) {
+        getDelegate().setPropertyValue("externalDropTarget", externalDropTarget);
+    }
+
 }

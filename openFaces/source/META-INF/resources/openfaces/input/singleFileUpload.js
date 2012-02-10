@@ -20,7 +20,7 @@ O$.SingleFileUpload = {
                   tabIndex, progressBarId, statusStoppedText, statusStoppingText, ID,
                   onchangeHandler, onuploadstartHandler, onuploadendHandler,
                   onfileuploadstartHandler, onfileuploadinprogressHandler, onfileuploadendHandler,
-                  dropTargetCrossoverClass, renderAfterUpload) {
+                  dropTargetCrossoverClass, renderAfterUpload,externalDropTarget) {
 
     var fileUpload = O$.initComponent(componentId, null, {
       _isAutoUpload:true,
@@ -369,7 +369,7 @@ O$.SingleFileUpload = {
             addButtonClass, addButtonOnMouseOverClass, addButtonOnMouseDownClass,addButtonOnFocusClass,
             statusLabelInProgress,statusLabelUploaded,statusLabelErrorSize,
             statusLabelNotUploaded,statusStoppedText,statusLabelUnexpectedError,
-            renderAfterUpload,tabIndex,dropTargetCrossoverClass);
+            renderAfterUpload,tabIndex,dropTargetCrossoverClass, externalDropTarget);
 
     fileUpload._setAllEvents(onchangeHandler,onuploadstartHandler,onuploadendHandler,
             onfileuploadstartHandler,onfileuploadinprogressHandler,onfileuploadendHandler);
@@ -513,20 +513,22 @@ O$.SingleFileUpload = {
     setBehaviorForDragAndDropArea();
     O$.SingleFileUpload._initFileUploadAPI(fileUpload);
     function setBehaviorForDragAndDropArea(){
-      var area = O$(fileUpload.id + "::dragArea");
+      var area = fileUpload._getDropTargetArea(fileUpload.id + "::dragArea");
       area._firstShow = true;
+
       O$.FileUploadUtil._initDragArea(area);
       O$.extend(area, {
         hide:function(){
-          fileUpload._els.infoTable.style.display = "";
+          if (!area._isExternal){
+            fileUpload._els.infoTable.style.display = "";
+          }
           area.style.display = "none";
           area._firstShow = true;
         },
         show:function(){
-          if (area._firstShow){
+          if (!area._isExternal && area._firstShow){
             function getCorrectWidthForArea(area) {
-              var diffForWidth = O$.getElementStyle(area,"borderWidth").replace("px", "");
-              return O$.getElementSize(fileUpload._els.infoTable).width - diffForWidth * 2;
+              return O$.getElementSize(fileUpload._els.infoTable).width - fileUpload._getNumProperty(area, "border-top-width")* 2;
             }
 
             function getCorrectHeightForArea(area) {
@@ -539,9 +541,9 @@ O$.SingleFileUpload = {
               }
 
               function getDiff(area) {
-                var diff = O$.getElementStyle(area, "borderWidth").replace("px", "");
+                var diff = fileUpload._getNumProperty(area, "border-top-width");
                 diff *= 2;
-                diff += O$.getElementStyle(area, "paddingTop").replace("px", "") * 1;
+                diff += fileUpload._getNumProperty(area, "padding-top");
                 return diff;
               }
 
@@ -552,7 +554,9 @@ O$.SingleFileUpload = {
             area.style.width = getCorrectWidthForArea(area) + "px";
             area._firstShow = false;
           }
-          fileUpload._els.infoTable.style.display = "none";
+          if (!area._isExternal){
+            fileUpload._els.infoTable.style.display = "none";
+          }
           area.style.display = "block";
         }
       });
