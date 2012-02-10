@@ -362,6 +362,7 @@
       <feature>Style customization</feature>
       <feature>AutoUpload support</feature>
       <feature>Drag and Drop support</feature>
+      <feature>Parallel or series uploading mode</feature>
     </keyFeatures>
     <demos>
       <demoItem>

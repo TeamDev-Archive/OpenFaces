@@ -1305,6 +1305,14 @@
     </component>
   </tag>
   <tag>
+    <tag-name>singleFileUpload</tag-name>
+    <component>
+      <component-type>org.openfaces.SingleFileUpload</component-type>
+      <renderer-type>org.openfaces.SingleFileUploadRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.input.SingleFileUploadTagHandler</handler-class>
+    </component>
+  </tag>
+  <tag>
     <tag-name>progressBar</tag-name>
     <component>
       <component-type>org.openfaces.ProgressBar</component-type>

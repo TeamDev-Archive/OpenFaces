@@ -845,6 +845,10 @@
     <component-type>org.openfaces.FileUpload</component-type>
     <component-class>org.openfaces.component.input.FileUpload</component-class>
   </component>
+  <component>
+    <component-type>org.openfaces.SingleFileUpload</component-type>
+    <component-class>org.openfaces.component.input.SingleFileUpload</component-class>
+  </component>
 
   <component>
     <component-type>org.openfaces.ProgressBar</component-type>
@@ -1433,6 +1437,11 @@
       <component-family>org.openfaces.FileUpload</component-family>
       <renderer-type>org.openfaces.FileUploadRenderer</renderer-type>
       <renderer-class>org.openfaces.renderkit.input.FileUploadRenderer</renderer-class>
+    </renderer>
+    <renderer>
+      <component-family>org.openfaces.SingleFileUpload</component-family>
+      <renderer-type>org.openfaces.SingleFileUploadRenderer</renderer-type>
+      <renderer-class>org.openfaces.renderkit.input.SingleFileUploadRenderer</renderer-class>
     </renderer>
     <renderer>
       <component-family>org.openfaces.ProgressBar</component-family>
