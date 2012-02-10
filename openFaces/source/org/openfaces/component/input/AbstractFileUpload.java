@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -18,12 +18,30 @@ import org.openfaces.event.UploadCompletionListener;
 import org.openfaces.util.ValueBindings;
 
 import javax.el.MethodExpression;
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author andrii.loboda
  */
+@ResourceDependencies({
+        @ResourceDependency(name = "default.css", library = "openfaces"),
+        @ResourceDependency(name = "jsf.js", library = "javax.faces")
+})
 public abstract class AbstractFileUpload extends OUIInputBase {
+    protected static final List<String> EVENT_NAMES;
+    static {
+        List<String> eventNames = new ArrayList<String>(Arrays.asList("uploadstart", "uploadend",
+                "fileuploadstart", "fileuploadinprogress", "fileuploadend"));
+        eventNames.addAll(OUIInputBase.EVENT_NAMES);
+        EVENT_NAMES = Collections.unmodifiableList(eventNames);
+    }
     private String browseButtonStyle;
     private String browseButtonClass;
     protected String browseButtonText;
@@ -89,7 +107,7 @@ public abstract class AbstractFileUpload extends OUIInputBase {
 
 
     private String renderAfterUpload;
-    
+
     private String externalDropTarget;
 
     public AbstractFileUpload() {
@@ -581,5 +599,15 @@ public abstract class AbstractFileUpload extends OUIInputBase {
 
     public void setExternalDropTarget(String externalDropTarget) {
         this.externalDropTarget = externalDropTarget;
+    }
+
+    @Override
+    public String getDefaultEventName() {
+        return "uploadend";
+    }
+
+    @Override
+    public Collection<String> getEventNames() {
+        return EVENT_NAMES;
     }
 }

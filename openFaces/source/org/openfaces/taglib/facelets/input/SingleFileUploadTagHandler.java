@@ -11,9 +11,10 @@
  */
 package org.openfaces.taglib.facelets.input;
 
-import com.sun.facelets.tag.jsf.ComponentConfig;
 import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
 import org.openfaces.taglib.internal.input.SingleFileUploadTag;
+
+import javax.faces.view.facelets.ComponentConfig;
 
 public class SingleFileUploadTagHandler extends AbstractFaceletsComponentHandler {
 
