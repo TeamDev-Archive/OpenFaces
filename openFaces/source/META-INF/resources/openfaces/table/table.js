@@ -3682,6 +3682,7 @@ O$.Table = {
                   });
                 }());
                 (function attachColumnMenu() {
+                  if (!table._columnMenu) return;
                   groupingBoxLayout().draggable().forEach(function(colHeader) {
                     O$.ColumnMenu._appendMenu(tableId, colHeader, colHeader._columnId, false);
                   });
@@ -3761,6 +3762,9 @@ O$.ColumnMenu = {
   _init: function(columnMenuId, tableId, columnMenuButtonId, sortAscMenuId, sortDescMenuId, hideMenuId,
                   groupByColumnMenuId, removeFromGroupingMenuId, cancelGroupingMenuId) {
     var table = O$(tableId);
+    table._columnMenu = {
+      // todo: move columnMenu related members out from table instance right here, similar to table.sorting approach
+    };
     table._columnMenuId = columnMenuId;
     O$.ColumnMenu._menuOpened = false;
     function findColumnById(columnId) {
