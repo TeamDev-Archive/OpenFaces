@@ -441,7 +441,7 @@ O$.TreeTable = {
                 ajaxFailedProcessor();
               else {
                 table._subRowsRequestInProgress = true;
-                O$.requestComponentPortions(table.id, ["subRows:" + row._index], null, function () {
+                O$.Ajax.requestComponentPortions(table.id, ["subRows:" + row._index], null, function () {
                           table._subRowsRequestInProgress = false;
                           O$.Table._acceptLoadedRows.apply(null, arguments);
                           if (table._deferredSubRowsRequests && table._deferredSubRowsRequests.length > 0) {
