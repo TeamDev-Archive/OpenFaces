@@ -400,20 +400,25 @@ O$.SingleFileUpload = {
       fileUpload.removeChild(fileUpload._elementsCont);
     fileUpload._setUpBrowseButton(addButtonId);
     fileUpload._addButtonParent = fileUpload._buttons.browse.parentNode;
-    new function setStopBtnWidthAsInBrowse() {
-      var widthOfBrowseContainer = O$.getElementSize(fileUpload._buttons.browse).width;
-      var widthOfTitleInput= O$.getElementSize(fileUpload._buttons.browseTitleInput).width;
-      fileUpload._buttons.stop.style.width =  widthOfTitleInput + "px";
-      var margin = (widthOfBrowseContainer-widthOfTitleInput)/2;
-      fileUpload._buttons.stop.style.marginLeft = margin+ "px";
-      fileUpload._buttons.stop.style.marginRight = margin+ "px";
-    }();
 
     O$.extend(fileUpload, {
               __uploadButtonClickHandler:function () {
                 fileUpload._buttons.browseInput.disabled = true;
                 fileUpload._inUploading = true;
                 O$.setStyleMappings(fileUpload._buttons.browseTitleInput, {disabled : addButtonDisabledClass});
+                /* IE 7 cannot define what width in browse button because it's not rendered yet*/
+                if (!fileUpload._buttons.stop._defined){
+                  new function setStopBtnWidthAsInBrowse() {
+                    var widthOfBrowseContainer = O$.getElementSize(fileUpload._buttons.browse).width;
+                    var widthOfTitleInput = O$.getElementSize(fileUpload._buttons.browseTitleInput).width;
+                    fileUpload._buttons.stop.style.width = widthOfTitleInput + "px";
+                    var margin = (widthOfBrowseContainer - widthOfTitleInput) / 2;
+                    fileUpload._buttons.stop.style.marginLeft = margin + "px";
+                    fileUpload._buttons.stop.style.marginRight = margin + "px";
+                    fileUpload._buttons.stop._defined = true;
+                  }();
+                }
+
                 fileUpload._listOfids = [];
                 /*prepare a list of files that would be uploaded*/
                 if (fileUpload._inputsStorage.childNodes[0]){
