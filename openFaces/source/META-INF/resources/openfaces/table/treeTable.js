@@ -204,7 +204,7 @@ O$.TreeTable = {
         var rows = this.body._getRows();
         for (var rowIndex = 0, rowCount = rows.length; rowIndex < rowCount; rowIndex++) {
           var row = rows[rowIndex];
-          var expanded = row._isExpanded();
+          var expanded = row._expandedForStateField !== undefined ? row._expandedForStateField : row._isExpanded();
           if (!expanded) continue;
           if (expandedRowIndexes.length > 0)
             expandedRowIndexes += ",";
@@ -423,15 +423,48 @@ O$.TreeTable = {
         if (expanded && !this._childrenLoaded && !this._childrenLoadRequestIssued) {
           this._childrenLoadRequestIssued = true;
           if (table._useAjax) {
-            var ajaxFailedProcessor = function() {
-              row._expanded = prevExpanded;
-              setToggleImage(prevExpanded);
+            // Actual for the multiple simultaneous expansion requests for different rows. It is important not to report
+            // the node as expanded in prior Ajax requests for expanding the other nodes, until a turn for expanding
+            // this node comes in a queue of deferred expansion requests.
+            row._expandedForStateField = prevExpanded;
+            table._updateExpandedNodesField();
+
+            function loadSubRowsWithAjax() {
+              row._expandedForStateField = undefined;
               table._updateExpandedNodesField();
-            };
-            if (O$._ajaxRequestScheduled || O$._ajax_request_processing)
-              ajaxFailedProcessor();
-            else
-              O$.requestComponentPortions(table.id, ["subRows:" + this._index], null, O$.Table._acceptLoadedRows, ajaxFailedProcessor);
+              var ajaxFailedProcessor = function () {
+                row._expanded = prevExpanded;
+                setToggleImage(prevExpanded);
+                table._updateExpandedNodesField();
+              };
+              if (O$._ajaxRequestScheduled || O$._ajax_request_processing)
+                ajaxFailedProcessor();
+              else {
+                table._subRowsRequestInProgress = true;
+                O$.requestComponentPortions(table.id, ["subRows:" + row._index], null, function () {
+                          table._subRowsRequestInProgress = false;
+                          O$.Table._acceptLoadedRows.apply(null, arguments);
+                          if (table._deferredSubRowsRequests && table._deferredSubRowsRequests.length > 0) {
+                            var nextDeferredRequest = table._deferredSubRowsRequests.shift();
+                            nextDeferredRequest();
+                          }
+                        }, function () {
+                          table._subRowsRequestInProgress = false;
+                          ajaxFailedProcessor();
+                        }
+                );
+              }
+            }
+
+            if (!table._subRowsRequestInProgress) {
+              loadSubRowsWithAjax();
+            } else {
+              // postpone sub-rows load request till the previous one finishes to avoid row index misuse (see OF-146)
+              if (!table._deferredSubRowsRequests) table._deferredSubRowsRequests = [];
+              table._deferredSubRowsRequests.push(function () {
+                loadSubRowsWithAjax();
+              });
+            }
           } else
             O$.submitEnclosingForm(table);
         } else {
