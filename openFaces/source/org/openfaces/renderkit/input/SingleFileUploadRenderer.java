@@ -102,9 +102,9 @@ public class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
     protected void writeProgressBar(FacesContext context) throws IOException {
         if (progressBar == null) {
             progressBar = new ProgressBar();
-            progressBar.setStyleClass("o_s_fileup_pro_bar");
-            progressBar.setLabelStyle("display:none");
         }
+        progressBar.setStyleClass(Styles.getCSSClass(context, progressBar, progressBar.getStyle(), StyleGroup.regularStyleGroup(), progressBar.getStyleClass(), "o_s_fileup_pro_bar"));
+        progressBar.setLabelClass(Styles.getCSSClass(context, progressBar, progressBar.getLabelStyle(), StyleGroup.regularStyleGroup(), progressBar.getLabelClass(), "o_s_file_upload_progress_label"));
         progressBar.encodeAll(context);
     }
 
@@ -151,7 +151,8 @@ public class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
                 Utilities.getFunctionOfEvent(fileUpload.getOnfileuploadend()),
                 dropTargetDragoverClass,
                 (fileUpload.getRenderAfterUpload() == null) ? null : Utilities.getForm(fileUpload).getClientId(context) + ":" + fileUpload.getRenderAfterUpload(),
-                fileUpload.getExternalDropTarget()
+                fileUpload.getExternalDropTarget(),
+                fileUpload.getAcceptDialogFormats()
         );
 
         Rendering.renderInitScript(context, initScript,
