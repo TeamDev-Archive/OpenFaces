@@ -37,5 +37,6 @@ public class CheckboxColumnTag extends BaseColumnTag {
         setCollectionProperty(component, "nodePaths");
         setBooleanProperty(component, "disabled");
         setBooleanProperty(component, "visible");
+        setStringProperty(component, "onchange");
     }
 }
