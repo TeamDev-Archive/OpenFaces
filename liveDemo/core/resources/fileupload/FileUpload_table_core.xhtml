@@ -27,7 +27,7 @@
         <h:outputText value="File: "/> <h:outputText styleClass="#{FileUploadBean.fileInfoClass}" value="#{FileUploadBean.bookImageFileName}"/>
         <h:outputText value=" ; size: "/> <h:outputText styleClass="#{FileUploadBean.fileInfoClass}" value="#{FileUploadBean.bookImageFileSize}"/>
         <o:singleFileUpload browseButtonText="Upload cover image..." renderAfterUpload="booksTable"
-                            acceptedFileTypes="jpg png bmp jpeg gif"
+                            acceptedFileTypes="jpg png bmp jpeg gif" acceptDialogFormats="image/*"
                             uploadCompletionListener="#{FileUploadBean.bookImageUploaded}"
                             style="border: none; width:350px">
           <f:facet name="stopButton">

@@ -86,5 +86,6 @@ public abstract class AbstractFileUploadTag extends AbstractComponentTag {
         setIntProperty(component, "fileSizeLimit");
         setStringProperty(component, "renderAfterUpload");
         setStringProperty(component, "externalDropTarget");
+        setStringProperty(component, "acceptDialogFormats");
     }
 }

@@ -16,21 +16,21 @@ O$.FileUploadUtil = {
                         addButtonClass, addButtonOnMouseOverClass, addButtonOnMouseDownClass,addButtonOnFocusClass,
                         statusLabelInProgress,statusLabelUploaded,statusLabelErrorSize,
                         statusLabelNotUploaded,statusStoppedText,statusLabelUnexpectedError,
-                        renderAfterUpload,tabIndex,dropTargetCrossoverClass,externalDropTarget){
+                        renderAfterUpload,tabIndex,dropTargetCrossoverClass,externalDropTarget,acceptDialogFormats){
     O$.FileUploadUtil._initGeneralFunctions(fileUpload);
     O$.FileUploadUtil._initGeneralFields(fileUpload,
             lengthAlreadyUploadedFiles, acceptedTypesOfFile, isDisabled, ID,
             addButtonClass, addButtonOnMouseOverClass, addButtonOnMouseDownClass,addButtonOnFocusClass,
             statusLabelInProgress,statusLabelUploaded,statusLabelErrorSize,
             statusLabelNotUploaded,statusStoppedText,statusLabelUnexpectedError,
-            renderAfterUpload,tabIndex,dropTargetCrossoverClass,externalDropTarget);
+            renderAfterUpload,tabIndex,dropTargetCrossoverClass,externalDropTarget, acceptDialogFormats);
   },
   _initGeneralFields:function (fileUpload,
                                lengthAlreadyUploadedFiles, acceptedTypesOfFile, isDisabled, ID,
                                addButtonClass, addButtonOnMouseOverClass, addButtonOnMouseDownClass,addButtonOnFocusClass,
                                statusLabelInProgress,statusLabelUploaded,statusLabelErrorSize,
                                statusLabelNotUploaded,statusStoppedText,statusLabelUnexpectedError,
-                               renderAfterUpload, tabIndex, dropTargetCrossoverClass, externalDropTarget) {
+                               renderAfterUpload, tabIndex, dropTargetCrossoverClass, externalDropTarget, acceptDialogFormats) {
     O$.extend(fileUpload, {
       _numberOfFilesToUpload:0,
       _lengthUploadedFiles:lengthAlreadyUploadedFiles,
@@ -75,7 +75,8 @@ O$.FileUploadUtil = {
           return el;
         }
         return undefined;
-      }()
+      }(),
+      _acceptDialogFormats:acceptDialogFormats
     });
   },
   _initGeneralFunctions: function(fileUpload){
@@ -354,9 +355,12 @@ O$.FileUploadUtil = {
       _createInputInAddBtn:function () {
         var input = document.createElement("input");
         input.setAttribute("type", "file");
-        if (fileUpload._multiUpload && fileUpload._isBrowserSupportHTML5FileUpload())
+        if (fileUpload._multiUpload && fileUpload._isBrowserSupportHTML5FileUpload()){
           input.setAttribute("multiple", "");
-
+        }
+        if (fileUpload._acceptDialogFormats){
+          input.setAttribute("accept", fileUpload._acceptDialogFormats);
+        }
         //todo move somewhere else these styles
         input.style.overflow = "hidden";
         input.style.position = "absolute";
