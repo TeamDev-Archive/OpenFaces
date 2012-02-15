@@ -20,12 +20,13 @@ O$.SingleFileUpload = {
                   tabIndex, progressBarId, statusStoppedText, statusStoppingText, ID,
                   onchangeHandler, onuploadstartHandler, onuploadendHandler,
                   onfileuploadstartHandler, onfileuploadinprogressHandler, onfileuploadendHandler,
-                  dropTargetCrossoverClass, renderAfterUpload,externalDropTarget, acceptDialogFormats) {
+                  dropTargetCrossoverClass, renderAfterUpload,externalDropTarget, acceptDialogFormats,layoutMode) {
 
     var fileUpload = O$.initComponent(componentId, null, {
       _isAutoUpload:true,
       _fileHTML5:null,
       _currentFile:null,
+      _layoutMode:layoutMode,
       _processFileAddingHTML5:function (file) {
         if (isFileNameNotApplied(file.name) || fileUpload._buttons.browseInput.disabled ||
                 (file.size == 0) || (file._fromDnD && fileUpload._isDirectory(file))) {
@@ -104,6 +105,9 @@ O$.SingleFileUpload = {
 
           O$.removeAllChildNodes(fileUpload._addButtonParent);
           fileUpload._addButtonParent.appendChild(fileUpload._buttons.browse);
+          if (fileUpload._layoutMode == "compact" && !fileUpload._els.dropTarget._isExternal){
+            fileUpload._addButtonParent.appendChild(fileUpload._els.dropTarget);
+          }
 
           O$.setStyleMappings(fileUpload._buttons.browseTitleInput, {disabled:null});
           initHeaderButtons();
@@ -122,7 +126,9 @@ O$.SingleFileUpload = {
                     fileUpload._els.info._status = O$.FileUploadUtil.Status.SIZE_LIMIT_EXCEEDED;
                     fileForAPI.status = O$.FileUploadUtil.Status.SIZE_LIMIT_EXCEEDED;
                     fileUpload._inputsStorage.removeChild(inputForFile.parentNode.parentNode);
-                    fileUpload._els.status.innerHTML = fileUpload._statuses.sizeLimit._update(null, portionData['size']);
+                    if (fileUpload._els.status){
+                      fileUpload._els.status.innerHTML = fileUpload._statuses.sizeLimit._update(null, portionData['size']);
+                    }
                     fileUpload._setStatusforFileWithId(inputForFile._uniqueId, "SIZE_LIMIT_EXCEEDED");
                     fileUpload._events._fireFileUploadEndEvent(fileForAPI);
                     if (endHandler) {
@@ -137,7 +143,9 @@ O$.SingleFileUpload = {
                           fileUpload._sendIsStoppedRequest(inputForFile, fileUpload._els.info, fileForAPI, endHandler);
                         }else{
                           if (portionData['size']) {
-                            fileUpload._els.status.innerHTML = fileUpload._statuses.inProgress._update(portionData['size'] * (percents / 100), portionData['size']);
+                            if (fileUpload._els.status){
+                              fileUpload._els.status.innerHTML = fileUpload._statuses.inProgress._update(portionData['size'] * (percents / 100), portionData['size']);
+                            }
                           }
                         }
                         if (fileUpload._els.progressBar.getValue() == percents) {
@@ -154,7 +162,9 @@ O$.SingleFileUpload = {
                             fileUpload._els.info._status = O$.FileUploadUtil.Status.FAILED;
                             fileForAPI.status = O$.FileUploadUtil.Status.FAILED;
                             fileUpload._inputsStorage.removeChild(inputForFile.parentNode.parentNode);
-                            fileUpload._els.status.innerHTML = fileUpload._statuses.failed;
+                            if (fileUpload._els.status){
+                              fileUpload._els.status.innerHTML = fileUpload._statuses.failed;
+                            }
                             fileUpload._setStatusforFileWithId(inputForFile._uniqueId, "FAILED");
                             fileUpload._els.progressBar.setValue(0);
                             fileForAPI.progress = 0;
@@ -180,7 +190,9 @@ O$.SingleFileUpload = {
                       fileUpload._inputsStorage.removeChild(inputForFile.parentNode.parentNode); // delete divForFileInput
                       // infoDiv updating
                       fileUpload._els.info._status = O$.FileUploadUtil.Status.SUCCESSFUL;
-                      fileUpload._els.status.innerHTML = fileUpload._statuses.uploaded._update(null, portionData['size']);
+                      if (fileUpload._els.status){
+                        fileUpload._els.status.innerHTML = fileUpload._statuses.uploaded._update(null, portionData['size']);
+                      }
                       fileUpload._setStatusforFileWithId(inputForFile._uniqueId, "SUCCESSFUL");
                       if (endHandler) {
                         endHandler();
@@ -205,7 +217,9 @@ O$.SingleFileUpload = {
                     fileUpload._els.info._status = O$.FileUploadUtil.Status.SIZE_LIMIT_EXCEEDED;
                     fileForAPI.status = O$.FileUploadUtil.Status.SIZE_LIMIT_EXCEEDED;
                     removeHTML5File(file);
-                    fileUpload._els.status.innerHTML = fileUpload._statuses.sizeLimit._update(null, portionData['size']);
+                    if (fileUpload._els.status){
+                      fileUpload._els.status.innerHTML = fileUpload._statuses.sizeLimit._update(null, portionData['size']);
+                    }
                     fileUpload._setStatusforFileWithId(file._uniqueId, "SIZE_LIMIT_EXCEEDED");
                     fileUpload._events._fireFileUploadEndEvent(fileForAPI);
                     if (endHandler) {
@@ -220,7 +234,9 @@ O$.SingleFileUpload = {
                           fileUpload._sendIsStoppedRequestHTML5(file, fileUpload._els.info, fileForAPI, endHandler);
                         }else{
                           if (portionData['size']) {
-                            fileUpload._els.status.innerHTML = fileUpload._statuses.inProgress._update(portionData['size'] * (percents / 100), portionData['size']);
+                            if (fileUpload._els.status){
+                              fileUpload._els.status.innerHTML = fileUpload._statuses.inProgress._update(portionData['size'] * (percents / 100), portionData['size']);
+                            }
                           }
                         }
                         if (fileUpload._els.progressBar.getValue() == percents) {
@@ -237,7 +253,9 @@ O$.SingleFileUpload = {
                             fileUpload._els.info._status = O$.FileUploadUtil.Status.FAILED;
                             fileForAPI.status = O$.FileUploadUtil.Status.FAILED;
                             removeHTML5File(file);
-                            fileUpload._els.status.innerHTML = fileUpload._statuses.failed;
+                            if (fileUpload._els.status){
+                              fileUpload._els.status.innerHTML = fileUpload._statuses.failed;
+                            }
                             fileUpload._setStatusforFileWithId(file._uniqueId, "FAILED");
                             fileUpload._els.progressBar.setValue(0);
                             fileForAPI.progress = 0;
@@ -265,7 +283,9 @@ O$.SingleFileUpload = {
                       removeHTML5File(file);
                       // infoDiv updating
                       fileUpload._els.info._status = O$.FileUploadUtil.Status.SUCCESSFUL;
-                      fileUpload._els.status.innerHTML = fileUpload._statuses.uploaded._update(null, portionData['size']);
+                      if (fileUpload._els.status){
+                        fileUpload._els.status.innerHTML = fileUpload._statuses.uploaded._update(null, portionData['size']);
+                      }
                       fileUpload._setStatusforFileWithId(file._uniqueId, "SUCCESSFUL");
                       fileForAPI.status = O$.FileUploadUtil.Status.SUCCESSFUL;
                       fileUpload._events._fireFileUploadEndEvent(fileForAPI);
@@ -290,7 +310,9 @@ O$.SingleFileUpload = {
                     fileUpload._els.info._status = O$.FileUploadUtil.Status.FAILED;
                     fileForAPI.status = O$.FileUploadUtil.Status.FAILED;
                     fileUpload._inputsStorage.removeChild(inputForFile.parentNode.parentNode);
-                    fileUpload._els.status.innerHTML = fileUpload._statuses.failed;
+                    if (fileUpload._els.status){
+                      fileUpload._els.status.innerHTML = fileUpload._statuses.failed;
+                    }
                     fileUpload._setStatusforFileWithId(inputForFile._uniqueId, "FAILED");
                     fileUpload._els.progressBar.setValue(0);
                     fileForAPI.progress = 0;
@@ -311,7 +333,9 @@ O$.SingleFileUpload = {
                     fileUpload._els.info._status = O$.FileUploadUtil.Status.FAILED;
                     fileForAPI.status = O$.FileUploadUtil.Status.FAILED;
                     removeHTML5File(file);
-                    fileUpload._els.status.innerHTML = fileUpload._statuses.failed;
+                    if (fileUpload._els.status){
+                      fileUpload._els.status.innerHTML = fileUpload._statuses.failed;
+                    }
                     fileUpload._setStatusforFileWithId(file._uniqueId, "FAILED");
                     fileUpload._els.progressBar.setValue(0);
                     fileForAPI.progress = 0;
@@ -330,7 +354,9 @@ O$.SingleFileUpload = {
                   inputForFile._isInterrupted = true;
                   fileUpload._els.info._status = O$.FileUploadUtil.Status.STOPPED;
                   fileUpload._inputsStorage.removeChild(inputForFile.parentNode.parentNode);
-                  fileUpload._els.status.innerHTML = fileUpload._statuses.stopped;
+                  if (fileUpload._els.status){
+                    fileUpload._els.status.innerHTML = fileUpload._statuses.stopped;
+                  }
                   fileUpload._setStatusforFileWithId(inputForFile._uniqueId, "STOPPED");
                   if (endHandler){
                     endHandler();
@@ -350,7 +376,9 @@ O$.SingleFileUpload = {
                     file._isInterrupted = true;
                     fileUpload._els.info._status = O$.FileUploadUtil.Status.STOPPED;
                     removeHTML5File(file);
-                    fileUpload._els.status.innerHTML = fileUpload._statuses.stopped;
+                    if (fileUpload._els.status){
+                      fileUpload._els.status.innerHTML = fileUpload._statuses.stopped;
+                    }
                     fileUpload._setStatusforFileWithId(file._uniqueId, "STOPPED");
                     fileForAPI.status = O$.FileUploadUtil.Status.STOPPED;
                     fileUpload._els.progressBar.setValue(0);
@@ -381,10 +409,14 @@ O$.SingleFileUpload = {
     fileUpload._buttons.stop = fileUpload._getFacet("::stopFacet");
 
     fileUpload._els = [];
-    fileUpload._els.infoTable = O$(componentId + "::fileInfo");
-    fileUpload._els.info =  fileUpload._els.infoTable.firstChild.firstChild;
-    fileUpload._els.fileName = fileUpload._els.info.childNodes[0];
-    fileUpload._els.status = fileUpload._els.info.childNodes[1];
+    if (fileUpload._layoutMode == "full"){
+      fileUpload._els.infoTable = O$(componentId + "::fileInfo");
+      fileUpload._els.info =  fileUpload._els.infoTable.firstChild.firstChild;
+      fileUpload._els.fileName = fileUpload._els.info.childNodes[0];
+      fileUpload._els.status = fileUpload._els.info.childNodes[1];
+    }else{
+      fileUpload._els.info = {};
+    }
     fileUpload._els.progressBar = O$(progressBarId);
 
     var idOfInfoAndInputDiv = 1;
@@ -417,6 +449,14 @@ O$.SingleFileUpload = {
                     fileUpload._buttons.stop.style.marginRight = margin + "px";
                     fileUpload._buttons.stop._defined = true;
                   }();
+                  if (fileUpload._layoutMode == "compact"){
+                    var titleInputHeight = O$.getElementSize(fileUpload._buttons.browseTitleInput).height;
+                    var container = O$.getElementSize(fileUpload._buttons.browse).height;
+                    fileUpload._buttons.stop.style.height = titleInputHeight + "px";
+                    var margin = (container - titleInputHeight) / 2;
+                    fileUpload._buttons.stop.style.marginTop = margin + "px";
+                    fileUpload._buttons.stop.style.marginBottom = margin + "px";
+                  }
                 }
 
                 fileUpload._listOfids = [];
@@ -442,7 +482,9 @@ O$.SingleFileUpload = {
                     O$.addEventHandler(stopFileDiv, "blur", fileUpload._blurHandler);
                     stopFileDiv._clickHandler = function () {
                       stopFileDiv.style.visibility = "hidden";
-                      fileUpload._els.status.innerHTML = statusStoppingText;
+                      if (fileUpload._els.status){
+                        fileUpload._els.status.innerHTML = statusStoppingText;
+                      }
                       var iframe = inputForFile.nextSibling;
                       iframe.src = "";
                       inputForFile._wantToInterrupt = true;
@@ -452,7 +494,9 @@ O$.SingleFileUpload = {
                   }
                   fileUpload._els.info._status = O$.FileUploadUtil.Status.IN_PROGRESS;
                   fileForAPI.status = O$.FileUploadUtil.Status.IN_PROGRESS;
-                  fileUpload._els.status.innerHTML = fileUpload._statuses.inProgress._update(0, "unknown");
+                  if (fileUpload._els.status){
+                    fileUpload._els.status.innerHTML = fileUpload._statuses.inProgress._update(0, "unknown");
+                  }
                   setStopButtonBehavior(inputForFile, infoDiv);
                 }
 
@@ -466,7 +510,9 @@ O$.SingleFileUpload = {
                     O$.addEventHandler(stopFileDiv, "blur", fileUpload._blurHandler);
                     stopFileDiv._clickHandler = function () {
                       stopFileDiv.style.visibility = "hidden";
-                      fileUpload._els.status.innerHTML = statusStoppingText;
+                      if (fileUpload._els.status){
+                        fileUpload._els.status.innerHTML = statusStoppingText;
+                      }
                       request.abort();
                       file._wantToInterrupt = true;
                     };
@@ -475,7 +521,9 @@ O$.SingleFileUpload = {
                   }
                   fileUpload._els.info._status = O$.FileUploadUtil.Status.IN_PROGRESS;
                   fileForAPI.status = O$.FileUploadUtil.Status.IN_PROGRESS;
-                  fileUpload._els.status.innerHTML = fileUpload._statuses.inProgress._update(0, file.size);
+                  if (fileUpload._els.status){
+                    fileUpload._els.status.innerHTML = fileUpload._statuses.inProgress._update(0, file.size);
+                  }
                   setStopButtonBehaviorHTML5(file, infoDiv, request);
                 }
 
@@ -515,7 +563,7 @@ O$.SingleFileUpload = {
     initHeaderButtons(true);
     setFocusBlurBehaviour();
 
-    setBehaviorForDragAndDropArea();
+    fileUpload._els.dropTarget = setBehaviorForDragAndDropArea();
     O$.SingleFileUpload._initFileUploadAPI(fileUpload);
     function setBehaviorForDragAndDropArea(){
       var area = fileUpload._getDropTargetArea(fileUpload.id + "::dragArea");
@@ -524,43 +572,73 @@ O$.SingleFileUpload = {
       O$.FileUploadUtil._initDragArea(area);
       O$.extend(area, {
         hide:function(){
-          if (!area._isExternal){
+          if (!area._isExternal && fileUpload._els.infoTable){
             fileUpload._els.infoTable.style.display = "";
+          }else if(fileUpload._layoutMode =="compact") {
+            fileUpload._buttons.browse.style.display = "";
+            if (fileUpload._currentFile!=null){
+              fileUpload._els.progressBar.style.display = "";
+            }
           }
           area.style.display = "none";
           area._firstShow = true;
         },
         show:function(){
-          if (!area._isExternal && area._firstShow){
-            function getCorrectWidthForArea(area) {
-              return O$.getElementSize(fileUpload._els.infoTable).width - fileUpload._getNumProperty(area, "border-top-width")* 2;
-            }
+          if (fileUpload._els.infoTable) {
+            if (!area._isExternal && area._firstShow) {
+              function getCorrectWidthForArea(area) {
+                return O$.getElementSize(fileUpload._els.infoTable).width - fileUpload._getNumProperty(area, "border-top-width") * 2;
+              }
 
-            function getCorrectHeightForArea(area) {
-              function getGreaterHeight() {
-                if (O$.getElementSize(fileUpload._els.infoTable).height > O$.getElementSize(fileUpload._buttons.browse).height) {
-                  return O$.getElementSize(fileUpload._els.infoTable).height;
-                } else {
-                  return O$.getElementSize(fileUpload._buttons.browse).height;
+              function getCorrectHeightForArea(area) {
+                function getGreaterHeight() {
+                  if (O$.getElementSize(fileUpload._els.infoTable).height > O$.getElementSize(fileUpload._buttons.browse).height) {
+                    return O$.getElementSize(fileUpload._els.infoTable).height;
+                  } else {
+                    return O$.getElementSize(fileUpload._buttons.browse).height;
+                  }
                 }
+
+                function getDiff(area) {
+                  var diff = fileUpload._getNumProperty(area, "border-top-width");
+                  diff *= 2;
+                  diff += fileUpload._getNumProperty(area, "padding-top");
+                  return diff;
+                }
+
+                return getGreaterHeight() - getDiff(area);
               }
 
-              function getDiff(area) {
-                var diff = fileUpload._getNumProperty(area, "border-top-width");
-                diff *= 2;
-                diff += fileUpload._getNumProperty(area, "padding-top");
-                return diff;
-              }
-
-              return getGreaterHeight() - getDiff(area);
+              area.style.height = getCorrectHeightForArea(area) + "px";
+              area.style.width = getCorrectWidthForArea(area) + "px";
+              area._firstShow = false;
             }
+            if (!area._isExternal) {
+              fileUpload._els.infoTable.style.display = "none";
+            }
+          }else if (fileUpload._layoutMode == "compact"){
+            if (!area._isExternal && area._firstShow) {
 
-            area.style.height = getCorrectHeightForArea(area) + "px";
-            area.style.width = getCorrectWidthForArea(area) + "px";
-            area._firstShow = false;
-          }
-          if (!area._isExternal){
-            fileUpload._els.infoTable.style.display = "none";
+              area.style.height = function getHeightForAreaCompact(area){
+                return function getHeight(){
+                  return O$.getElementSize(fileUpload._buttons.browse).height
+                          + O$.getElementSize(fileUpload._els.progressBar.parentNode).height ;
+                }()- function getDiffForArea(area){
+                  var diff = fileUpload._getNumProperty(area, "border-top-width");
+                  diff *= 2;
+                  diff += fileUpload._getNumProperty(area, "padding-top");
+                  return diff;
+                }(area);
+              }(area) + "px";
+              area.style.width = function getWidthForAreaCompact(area){
+                return O$.getElementSize(fileUpload._buttons.browse).width - fileUpload._getNumProperty(area, "border-top-width") * 2;
+              }(area) + "px";
+              area._firstShow = false;
+            }
+            if (!area._isExternal) {
+              fileUpload._buttons.browse.style.display = "none";
+              fileUpload._els.progressBar.style.display  = "none";
+            }
           }
           area.style.display = "block";
         }
@@ -573,6 +651,7 @@ O$.SingleFileUpload = {
       area._isVisible = false;
       fileUpload._setDragEventsForBody(body, area);
       fileUpload._setDragEventsForFileUpload(area);
+      return area;
     }
 
     O$.addEventHandler(document, "sessionexpired", function (){
@@ -580,7 +659,9 @@ O$.SingleFileUpload = {
       if (f.getStatus() == O$.FileUploadUtil.Status.IN_PROGRESS) {
         fileUpload._els.info._status = O$.FileUploadUtil.Status.FAILED;
         f.status = O$.FileUploadUtil.Status.FAILED;
-        fileUpload._els.status.innerHTML = fileUpload._statuses.failed;
+        if (fileUpload._els.status){
+          fileUpload._els.status.innerHTML = fileUpload._statuses.failed;
+        }
       }
       f.remove();
       fileUpload._numberOfFilesToUpload = 0;
@@ -607,7 +688,7 @@ O$.SingleFileUpload = {
       }
 
       return (filename == "" || !fileUpload._isAcceptedTypeOfFile(filename)
-              || (!isDuplicateAllowed && isFileNameAlreadyExist(filename)))
+              /*|| (!isDuplicateAllowed && isFileNameAlreadyExist(filename))*/)
     }
 
     function initHeaderButtons(firstTime) {
@@ -651,12 +732,16 @@ O$.SingleFileUpload = {
 
     function setInfoWindow(filename){
       fileUpload._currentFile = null;
-      fileUpload._els.fileName.innerHTML = fileUpload._getFileName(filename); //filename
-      fileUpload._els.status.innerHTML = fileUpload._statuses.newOne;//status
-      fileUpload._els.fileName._widthShouldBe = O$.getElementSize(fileUpload._els.fileName).width + "px";
+      if (fileUpload._layoutMode == "full") {
+        fileUpload._els.fileName.innerHTML = fileUpload._getFileName(filename); //filename
+        fileUpload._els.status.innerHTML = fileUpload._statuses.newOne;//status
+        fileUpload._els.fileName._widthShouldBe = O$.getElementSize(fileUpload._els.fileName).width + "px";
+      }
       fileUpload._els.progressBar.style.display = "block";
       fileUpload._els.progressBar.setValue(0);
-      fileUpload._els.fileName.style.width = fileUpload._els.fileName._widthShouldBe;
+      if (fileUpload._els.fileName) {
+        fileUpload._els.fileName.style.width = fileUpload._els.fileName._widthShouldBe;
+      }
     }
   },
   _initFileUploadAPI:function (fileUpload) {
@@ -682,8 +767,10 @@ O$.SingleFileUpload = {
         if (file != null) {
           if (file.status != O$.FileUploadUtil.Status.IN_PROGRESS) {
             var fileUpload = file._component;
-            fileUpload._els.fileName.innerHTML = "";
-            fileUpload._els.status.innerHTML = "";
+            if (fileUpload._layoutMode == "full"){
+              fileUpload._els.fileName.innerHTML = "";
+              fileUpload._els.status.innerHTML = "";
+            }
             fileUpload._els.progressBar.style.display = "none";
             if (file.status == O$.FileUploadUtil.Status.NEW) {
               fileUpload._inputsStorage.childNodes = [];

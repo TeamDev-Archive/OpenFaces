@@ -25,6 +25,13 @@ O$.ProgressBar = {
       _previousValue:0,
       _isBusy:false,
       _queue:[],
+      _widthOfProgress:(progressBar.clientWidth > 0) ? progressBar.clientWidth : 0,
+      _getWidthOfProgress:function(){
+        if (progressBar._widthOfProgress != 0) {
+          return progressBar._widthOfProgress;
+        }
+        return progressBar.clientWidth;
+      },
       getValue : function() {
         return progressBar._progressValue;
       },
@@ -34,7 +41,7 @@ O$.ProgressBar = {
           progressBar._progressValue = progressValue;
           var labelShouldDisplay = !(O$.getElementStyle(progressBar._labelDiv,"display") == "none");
           if (O$.isExplorer6() || O$.isExplorer7() || (O$.isExplorer() && O$.isQuirksMode())) {
-              progressBar._labelDiv.style.display = "none";
+            progressBar._labelDiv.style.display = "none";
           }
           progressBar._setLabelValue(progressValue);
 
@@ -65,6 +72,11 @@ O$.ProgressBar = {
       _setWidthForProgress:function (uploadedWidth, notUploadedWidth){
         progressBar._uploadedDiv.style.width = uploadedWidth + "px";
         progressBar._notUploadedDiv.style.width = notUploadedWidth + "px";
+        if (O$.isExplorer() && (O$.isQuirksMode() ||(O$.isExplorer7() || O$.isExplorer6()))){
+          return;
+        }
+        progressBar.style.width = progressBar._getWidthOfProgress() + "px";
+
       },
       _setLabelValue:function (value) {
         progressBar._labelDiv.innerHTML = progressBar._labelFormat.replace("{value}", value);
@@ -85,7 +97,7 @@ O$.ProgressBar = {
             var INTERVAL = 20;
             var TIMES_TO_CHANGE_PROGRESS = TIME_TAKES / INTERVAL;
 
-            var goalUploadedWidth = progressBar.clientWidth * val;
+            var goalUploadedWidth = progressBar._getWidthOfProgress() * val;
             var nowUploadedWidth = progressBar._uploadedDiv.clientWidth;
 
             var addByTime = (goalUploadedWidth - nowUploadedWidth) / TIMES_TO_CHANGE_PROGRESS;
@@ -94,13 +106,13 @@ O$.ProgressBar = {
             }
             function changeProgress() {
               if (progressBar._uploadedDiv.clientWidth + addByTime >= goalUploadedWidth) {
-                progressBar._setWidthForProgress(progressBar.clientWidth * val, progressBar.clientWidth * (1 - val));
+                progressBar._setWidthForProgress(progressBar._getWidthOfProgress()  * val, progressBar._getWidthOfProgress()  * (1 - val));
                 progressBar._setLabelValue(Math.round(val * 100));
                 progressBar._isBusy = false;
                 resolveQueue();
               } else {
                 var uploadedWidth = progressBar._uploadedDiv.clientWidth + addByTime;
-                var percentsNow = (uploadedWidth ) / progressBar.clientWidth;
+                var percentsNow = (uploadedWidth ) / progressBar._getWidthOfProgress() ;
                 progressBar._setWidthForProgress(uploadedWidth,
                         (progressBar._notUploadedDiv.clientWidth - addByTime < 0) ? 0
                                 : progressBar._notUploadedDiv.clientWidth - addByTime);
@@ -111,7 +123,7 @@ O$.ProgressBar = {
 
             changeProgress();
           } else {
-            progressBar._setWidthForProgress(progressBar.clientWidth * val, progressBar.clientWidth * (1 - val));
+            progressBar._setWidthForProgress(progressBar._getWidthOfProgress()  * val, progressBar._getWidthOfProgress()  * (1 - val));
             progressBar._setLabelValue(Math.round(val * 100));
             progressBar._isBusy = false;
             resolveQueue();
@@ -131,7 +143,7 @@ O$.ProgressBar = {
 
     progressBar.setValue(value);
     if (labelAlignment == "center"){
-        progressBar._labelDiv.style.marginLeft = progressBar.clientWidth / 2 - O$.getElementSize(progressBar._labelDiv).width / 2 + "px";
+      progressBar._labelDiv.style.marginLeft = progressBar._getWidthOfProgress()  / 2 - O$.getElementSize(progressBar._labelDiv).width / 2 + "px";
     }
     progressBar._uploadedDiv.style.backgroundImage = "url('" + progressBar._uploadedProgressImgUrl + "')";
     if (progressBar._notUploadedProgressImgUrl != null && progressBar._notUploadedProgressImgUrl != "") {

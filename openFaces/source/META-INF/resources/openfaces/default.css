@@ -1338,19 +1338,29 @@
 .o_s_file_upload{
     width:300px;
 }
+.o_s_file_upload_compact{
+    width:90px;
+}
 .o_s_file_upload_info_progress{
 
 }
 .o_s_file_upload_progress_label{
     display: none;
 }
-.o_s_fileup_pro_bar{
-    width:95%;
-    margin-left: 5px;
-    margin-right: 8px;
+.o_s_fileup_pro_bar,
+.o_s_fileup_pro_bar_compact{
     margin-bottom: 2px;
     margin-top: 0;
     height: 5px;
+}
+.o_s_fileup_pro_bar_compact{
+    width:90%;
+    margin-left: 3px;
+}
+.o_s_fileup_pro_bar{
+   width:95%;
+   margin-left: 5px;
+   margin-right: 8px;
 }
 .o_s_file_upload_info_status{
     color: gray;
