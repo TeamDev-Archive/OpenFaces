@@ -13,10 +13,10 @@ package org.openfaces.test;
 
 import com.thoughtworks.selenium.Selenium;
 import com.thoughtworks.selenium.SeleniumException;
-import org.seleniuminspector.SeleniumTestCase;
 import org.seleniuminspector.SeleniumFactory;
-import org.seleniuminspector.SeleniumWithServerAutostartFactory;
 import org.seleniuminspector.SeleniumHolder;
+import org.seleniuminspector.SeleniumTestCase;
+import org.seleniuminspector.SeleniumWithServerAutostartFactory;
 import org.seleniuminspector.openfaces.*;
 
 import java.io.IOException;
@@ -84,44 +84,73 @@ public abstract class OpenFacesTestCase extends SeleniumTestCase {
     }
 
     private void testAppPage(String testAppPageUrl, String htmlSubstringOfAValidPage) {
-        openAndWait(TEST_APP_URL_PREFIX, testAppPageUrl);
-
-        assertPageContentValid(TEST_APP_URL_PREFIX, testAppPageUrl, htmlSubstringOfAValidPage);
+        open(TEST_APP_URL_PREFIX, testAppPageUrl, htmlSubstringOfAValidPage, 5);
     }
 
-    private void assertPageContentValid(String testAppPageUrl, String pageUrl, String htmlSubstringOfAValidPage) {
-        String fullPageUrl = testAppPageUrl + pageUrl;
-        if (htmlSubstringOfAValidPage != null) {
-            Selenium selenium = getSelenium();
-            String htmlSource;
-            try {
-                htmlSource = selenium.getHtmlSource();
-            } catch (SeleniumException e) {
-                String pageTitle;
-                try {
-                    pageTitle = selenium.getTitle();
-                } catch (Exception ex) {
-                    pageTitle = "<exception on selenium.getTitle(): " + ex.getMessage() + ">";
-                }
-                try {
-                    String alert = selenium.getAlert();
-                    throw new RuntimeException("Couldn't open the page (failed getting HTML source of a page). " +
-                            "Alert dialog has popped up: " + alert + "; page URL: " + fullPageUrl +
-                            "; Page title: " + pageTitle, e);
-                } catch (Exception ex) {
-                    // an absence of alert is a normal case
-                }
-                
-                throw new RuntimeException("Couldn't open the page (failed getting HTML source of a page): " + fullPageUrl + "; Page title: " + pageTitle, e);
-            }
-            assertTrue("Unexpected page content. Page url: " + fullPageUrl + " ; Expected (but missing) HTML " +
-                    "source substring: " + htmlSubstringOfAValidPage + "; Current page title: " +
-                    selenium.getTitle(), htmlSource.contains(htmlSubstringOfAValidPage));
+    private void open(String applicationUrl, String pageUrl, String htmlSubstringOfAValidPage, int attemptCount) {
+        for (int i = 1; i <= attemptCount; i++) {
+            openAndWait(applicationUrl, pageUrl);
+
+            boolean lastAttempt = (i == attemptCount);
+            if (assertPageContentValid(applicationUrl, pageUrl, htmlSubstringOfAValidPage, lastAttempt))
+                break;
+            sleep(10 * 1000);
         }
     }
 
+    private boolean assertPageContentValid(
+            String applicationUrl,
+            String pageUrl,
+            String htmlSubstringOfAValidPage,
+            boolean failIfNotLoaded) {
+        String fullPageUrl = applicationUrl + pageUrl;
+        if (htmlSubstringOfAValidPage == null)
+            return true;
+
+        Selenium selenium = getSelenium();
+        String htmlSource;
+        try {
+            htmlSource = selenium.getHtmlSource();
+        } catch (SeleniumException e) {
+            String pageTitle;
+            try {
+                pageTitle = selenium.getTitle();
+            } catch (Exception ex) {
+                pageTitle = "<exception on selenium.getTitle(): " + ex.getMessage() + ">";
+            }
+            try {
+                String alert = selenium.getAlert();
+                if (failIfNotLoaded)
+                    throw new RuntimeException("Couldn't open the page (failed getting HTML source of a page). " +
+                            "Alert dialog has popped up: " + alert + "; page URL: " + fullPageUrl +
+                            "; Page title: " + pageTitle, e);
+                else
+                    return false;
+            } catch (Exception ex) {
+                // an absence of alert is a normal case
+            }
+
+            if (failIfNotLoaded)
+                throw new RuntimeException("Couldn't open the page (failed getting HTML source of a page): " + fullPageUrl + "; Page title: " + pageTitle, e);
+            else
+                return false;
+        }
+
+        boolean htmlSourceValid = htmlSource.contains(htmlSubstringOfAValidPage);
+        if (!htmlSourceValid) {
+            if (failIfNotLoaded)
+                fail("Unexpected page content. Page url: " + fullPageUrl + " ; Expected (but missing) HTML " +
+                        "source substring: " + htmlSubstringOfAValidPage + "; Current page title: " +
+                        selenium.getTitle());
+            else
+                return false;
+        }
+
+        return true;
+    }
+
     protected void testAppFunctionalPage(String testAppPageUrl) {
-        testAppFunctionalPage(testAppPageUrl, getUtilJsUrlSubstring());
+        testAppPage(testAppPageUrl, getUtilJsUrlSubstring());
     }
 
     private String getUtilJsUrlSubstring() {
@@ -137,8 +166,7 @@ public abstract class OpenFacesTestCase extends SeleniumTestCase {
     }
 
     protected void liveDemoPage(String testAppPageUrl, String htmlSubstringOfValidPage) {
-        openAndWait(LIVE_DEMO_URL_PREFIX, testAppPageUrl);
-        assertPageContentValid(LIVE_DEMO_URL_PREFIX, testAppPageUrl, htmlSubstringOfValidPage);
+        open(LIVE_DEMO_URL_PREFIX, testAppPageUrl, htmlSubstringOfValidPage, 5);
     }
 
 

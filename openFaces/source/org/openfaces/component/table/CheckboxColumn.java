@@ -45,6 +45,7 @@ public class CheckboxColumn extends BaseColumn {
     private Map<String, ValueExpression> deferredValueExpressions;
     private Boolean disabled;
     private Boolean visible;
+    private String onchange;
 
     public CheckboxColumn() {
         setRendererType("org.openfaces.CheckboxColumnRenderer");
@@ -65,7 +66,9 @@ public class CheckboxColumn extends BaseColumn {
                 saveExpressionMap(context, deferredValueExpressions),
                 sortable,
                 disabled,
-                visible};
+                visible,
+                onchange
+        };
     }
 
     @Override
@@ -77,7 +80,8 @@ public class CheckboxColumn extends BaseColumn {
         deferredValueExpressions = restoreExpressionMap(context, state[i++]);
         sortable = (Boolean) state[i++];
         disabled = (Boolean) state[i++];
-        visible =(Boolean) state[i++];
+        visible = (Boolean) state[i++];
+        onchange = (String) state[i++];
         assignDataModel();
     }
 
@@ -166,7 +170,9 @@ public class CheckboxColumn extends BaseColumn {
                 table,
                 colIndex,
                 valueFieldName,
-                checkedRowIndexes).semicolon();
+                checkedRowIndexes,
+                getOnchange()
+        ).semicolon();
     }
 
     public void decodeSelectionFromIndexes(List<Integer> indexes) {
@@ -308,7 +314,10 @@ public class CheckboxColumn extends BaseColumn {
             List<BaseColumn> renderedColumns = table.getRenderedColumns();
             int columnIndex = renderedColumns.indexOf(this);
             ScriptBuilder buf = new ScriptBuilder().functionCall("O$.Table._setCheckboxColValues",
-                    table, columnIndex, selectedRowIndexes).semicolon();
+                    table,
+                    columnIndex,
+                    selectedRowIndexes
+            ).semicolon();
             Rendering.renderInitScript(context, buf,
                     Resources.utilJsURL(context),
                     TableUtil.getTableUtilJsURL(context),
@@ -348,5 +357,13 @@ public class CheckboxColumn extends BaseColumn {
     @Override
     protected boolean getDefaultMenuAllowed() {
         return false;
+    }
+
+    public String getOnchange() {
+        return ValueBindings.get(this, "onchange", onchange);
+    }
+
+    public void setOnchange(String onchange) {
+        this.onchange = onchange;
     }
 }

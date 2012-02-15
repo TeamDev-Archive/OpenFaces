@@ -1661,6 +1661,7 @@ O$.Table = {
           setAllColumnCheckboxesSelected(col, this.isSelected());
           col._updateHeaderCheckBoxes();
           col._updateSubmissionField();
+          col._fireOnChange();
           O$.stopEvent(e);
         }
       });
@@ -1736,7 +1737,7 @@ O$.Table = {
     columnObj._setCheckedIndexes(checkedRowIndexes);
   },
 
-  _initCheckboxColumn: function(tableId, colIndex, valueFieldName, checkedRowIndexes) {
+  _initCheckboxColumn: function(tableId, colIndex, valueFieldName, checkedRowIndexes, changeHandler) {
     var table = O$(tableId);
     var col = table._columns[colIndex];
 
@@ -1744,7 +1745,7 @@ O$.Table = {
       _valueFieldName: valueFieldName,
       _setCheckedIndexes: function(checkedIndexes) {
 
-      function initCheckboxCell(cell, column) {
+        function initCheckboxCell(cell, column) {
           if (cell._checkBoxCellInitialized)
             return;
           cell._checkBoxCellInitialized = true;
@@ -1774,12 +1775,13 @@ O$.Table = {
               var col = this._column;
               col._updateHeaderCheckBoxes();
               col._updateSubmissionField();
+              col._fireOnChange();
             }
           });
-        O$.addUnloadHandler(table, function () {
-          cell.onclick = null;
-          cell.ondblclick = null;
-        });
+          O$.addUnloadHandler(table, function () {
+            cell.onclick = null;
+            cell.ondblclick = null;
+          });
 
           O$.extend(checkBox, {
             onclick: function(e) {
@@ -1796,10 +1798,10 @@ O$.Table = {
               O$.stopEvent(e);
             }
           });
-        O$.addUnloadHandler(table, function () {
-          checkBox.onclick = null;
-          checkBox.ondblclick = null;
-        });
+          O$.addUnloadHandler(table, function () {
+            checkBox.onclick = null;
+            checkBox.ondblclick = null;
+          });
         }
 
         var bodyCells = col.body ? col.body._cells : [];
@@ -1850,6 +1852,15 @@ O$.Table = {
       col._headers = table._checkBoxColumnHeaders[colIndex];
     }
     col._updateHeaderCheckBoxes();
+
+    if (changeHandler) {
+      eval("col.onchange = function(event) {if (!event._of_event)return;" + changeHandler + "}");
+      // checking _of_event is needed if this is a bubbled event from some child
+      col._fireOnChange = function() {
+        O$.sendEvent(col, "change");
+      };
+    }
+
   },
 
   // -------------------------- TABLE SORTING SUPPORT
