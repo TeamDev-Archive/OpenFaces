@@ -208,4 +208,8 @@ public abstract class AbstractFileUploadJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("externalDropTarget", externalDropTarget);
     }
 
+    public void setAcceptDialogFormats(ValueExpression acceptDialogFormats) {
+        getDelegate().setPropertyValue("acceptDialogFormats", acceptDialogFormats);
+    }
+
 }

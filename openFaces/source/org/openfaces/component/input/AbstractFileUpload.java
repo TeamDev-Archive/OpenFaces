@@ -107,8 +107,10 @@ public abstract class AbstractFileUpload extends OUIInputBase {
 
 
     private String renderAfterUpload;
-
+    
     private String externalDropTarget;
+    
+    private String acceptDialogFormats;
 
     public AbstractFileUpload() {
         setRendererType("org.openfaces.FileUploadRenderer");
@@ -166,7 +168,8 @@ public abstract class AbstractFileUpload extends OUIInputBase {
                 unexpectedErrorText,
                 fileSizeLimit,
                 renderAfterUpload,
-                externalDropTarget
+                externalDropTarget,
+                acceptDialogFormats
         };
     }
 
@@ -219,6 +222,7 @@ public abstract class AbstractFileUpload extends OUIInputBase {
         fileSizeLimit = (Integer) values[i++];
         renderAfterUpload = (String) values[i++];
         externalDropTarget = (String) values[i++];
+        acceptDialogFormats = (String) values[i++];
     }
 
 
@@ -600,7 +604,6 @@ public abstract class AbstractFileUpload extends OUIInputBase {
     public void setExternalDropTarget(String externalDropTarget) {
         this.externalDropTarget = externalDropTarget;
     }
-
     @Override
     public String getDefaultEventName() {
         return "uploadend";
@@ -609,5 +612,13 @@ public abstract class AbstractFileUpload extends OUIInputBase {
     @Override
     public Collection<String> getEventNames() {
         return EVENT_NAMES;
+    }
+
+    public String getAcceptDialogFormats() {
+        return ValueBindings.get(this, "acceptDialogFormats", acceptDialogFormats);
+    }
+
+    public void setAcceptDialogFormats(String acceptDialogFormats) {
+        this.acceptDialogFormats = acceptDialogFormats;
     }
 }

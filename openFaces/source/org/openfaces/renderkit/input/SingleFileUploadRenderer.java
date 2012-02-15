@@ -151,7 +151,8 @@ public class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
                 Utilities.getFunctionOfEvent(Rendering.getEventHandlerScript(fileUpload, "fileuploadend")),
                 dropTargetDragoverClass,
                 (fileUpload.getRenderAfterUpload() == null) ? null : Utilities.getForm(fileUpload).getClientId(context) + ":" + fileUpload.getRenderAfterUpload(),
-                fileUpload.getExternalDropTarget()
+                fileUpload.getExternalDropTarget(),
+                fileUpload.getAcceptDialogFormats()
         );
 
         Rendering.renderInitScript(context, initScript,

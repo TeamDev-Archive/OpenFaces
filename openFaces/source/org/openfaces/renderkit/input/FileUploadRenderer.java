@@ -138,7 +138,8 @@ public class FileUploadRenderer extends AbstractFileUploadRenderer {
                 dropTargetDragoverClass,
                 fileUpload.getUploadMode(),
                 (fileUpload.getRenderAfterUpload() == null) ? null : Utilities.getForm(fileUpload).getClientId(context) + ":" + fileUpload.getRenderAfterUpload(),
-                fileUpload.getExternalDropTarget()
+                fileUpload.getExternalDropTarget(),
+                fileUpload.getAcceptDialogFormats()
         );
 
         Rendering.renderInitScript(context, initScript,
