@@ -57,7 +57,6 @@ O$.SingleFileUpload = {
           return false;
         }
         setInfoWindow(inputForFile.value);
-        //todo it : clear input when the next one goes
         fileUpload._buttons.browse._inFocus = false;
         inputForFile._idInputAndDiv = idOfInfoAndInputDiv;
         fileUpload._createAndAppendComplexInputWithId(inputForFile);
@@ -216,7 +215,7 @@ O$.SingleFileUpload = {
                   if (portionData['isFileSizeExceed'] == "true") {
                     fileUpload._els.info._status = O$.FileUploadUtil.Status.SIZE_LIMIT_EXCEEDED;
                     fileForAPI.status = O$.FileUploadUtil.Status.SIZE_LIMIT_EXCEEDED;
-                    removeHTML5File(file);
+                    removeHTML5File();
                     if (fileUpload._els.status){
                       fileUpload._els.status.innerHTML = fileUpload._statuses.sizeLimit._update(null, portionData['size']);
                     }
@@ -252,7 +251,7 @@ O$.SingleFileUpload = {
                             fileUpload._sendInformThatRequestFailed(file._uniqueId);
                             fileUpload._els.info._status = O$.FileUploadUtil.Status.FAILED;
                             fileForAPI.status = O$.FileUploadUtil.Status.FAILED;
-                            removeHTML5File(file);
+                            removeHTML5File();
                             if (fileUpload._els.status){
                               fileUpload._els.status.innerHTML = fileUpload._statuses.failed;
                             }
@@ -280,7 +279,7 @@ O$.SingleFileUpload = {
                       fileForAPI.progress = percents / 100;
                       fileUpload._lengthUploadedFiles++;
                       /*removing file*/
-                      removeHTML5File(file);
+                      removeHTML5File();
                       // infoDiv updating
                       fileUpload._els.info._status = O$.FileUploadUtil.Status.SUCCESSFUL;
                       if (fileUpload._els.status){
@@ -332,7 +331,7 @@ O$.SingleFileUpload = {
                     file._isInterrupted = true;
                     fileUpload._els.info._status = O$.FileUploadUtil.Status.FAILED;
                     fileForAPI.status = O$.FileUploadUtil.Status.FAILED;
-                    removeHTML5File(file);
+                    removeHTML5File();
                     if (fileUpload._els.status){
                       fileUpload._els.status.innerHTML = fileUpload._statuses.failed;
                     }
@@ -350,7 +349,7 @@ O$.SingleFileUpload = {
       _sendIsStoppedRequest:function (inputForFile, infoDiv, fileForAPI,endHandler){
         O$.requestComponentPortions(fileUpload.id, ["nothing"],
                 JSON.stringify({stoppedRequest:true, uniqueIdOfFile:inputForFile._uniqueId}),
-                function (fileUpload, portionName, portionHTML, portionScripts, portionData) {
+                function (fileUpload) {
                   inputForFile._isInterrupted = true;
                   fileUpload._els.info._status = O$.FileUploadUtil.Status.STOPPED;
                   fileUpload._inputsStorage.removeChild(inputForFile.parentNode.parentNode);
@@ -375,7 +374,7 @@ O$.SingleFileUpload = {
                   if (portionData['isStopped'] == "true") {
                     file._isInterrupted = true;
                     fileUpload._els.info._status = O$.FileUploadUtil.Status.STOPPED;
-                    removeHTML5File(file);
+                    removeHTML5File();
                     if (fileUpload._els.status){
                       fileUpload._els.status.innerHTML = fileUpload._statuses.stopped;
                     }
@@ -424,10 +423,7 @@ O$.SingleFileUpload = {
     setTabIndexForAllButtons(tabIndex);
 
     fileUpload._inputsStorage = fileUpload._createStructureForInputs();
-    var couldCallChangeEvent = true;
 
-    /*var dragAndDropArea = O$(elements.id + "::dragArea");
-    elements.removeChild(dragAndDropArea);*/
     if (!O$.isExplorer())
       fileUpload.removeChild(fileUpload._elementsCont);
     fileUpload._setUpBrowseButton(addButtonId);
@@ -462,7 +458,6 @@ O$.SingleFileUpload = {
                 fileUpload._listOfids = [];
                 /*prepare a list of files that would be uploaded*/
                 if (fileUpload._inputsStorage.childNodes[0]){
-                  var file = [];
                   var form = fileUpload._inputsStorage.childNodes[0].firstChild;
                   fileUpload._addFileToInfoFileList(form);
                 }else if (fileUpload._fileHTML5 != null){/*specific behavior for uploading files with drag and drop*/
@@ -545,15 +540,15 @@ O$.SingleFileUpload = {
                       fileUpload._events._fireFileUploadStartEvent(fileOfAPI);
                     }
 
-                    if (fileUpload._fileHTML5!=null) {
+                    if (fileUpload._fileHTML5 != null) {
                       var html5File = fileUpload._fileHTML5;
-                      var fileOfAPI = fileUpload._getFile(html5File._infoId);
+                      var fileAPI = fileUpload._getFile(html5File._infoId);
 
                       var request = fileUpload._sendFileRequest(html5File,uri);
                       fileUpload._callFileProgressForHTML5Request(html5File, request);
-                      fileOfAPI.status = O$.FileUploadUtil.Status.IN_PROGRESS;
-                      setupUIForUploadHTML5(html5File, fileUpload._els.info, request, fileOfAPI);
-                      fileUpload._events._fireFileUploadStartEvent(fileOfAPI);
+                      fileAPI.status = O$.FileUploadUtil.Status.IN_PROGRESS;
+                      setupUIForUploadHTML5(html5File, fileUpload._els.info, request, fileAPI);
+                      fileUpload._events._fireFileUploadStartEvent(fileAPI);
                     }
                   }();
 
@@ -673,7 +668,7 @@ O$.SingleFileUpload = {
     });
 
     function isFileNameNotApplied(filename){
-      function isFileNameAlreadyExist(filename) {
+      /*function isFileNameAlreadyExist(filename) {
         var infos = allInfos.childNodes;
         for (var k = 0; k < infos.length; k++) {
           if (infos[k]._status != O$.FileUploadUtil.Status.FAILED || infos[k]._status != O$.FileUploadUtil.Status.STOPPED
@@ -685,7 +680,7 @@ O$.SingleFileUpload = {
           }
         }
         return false;
-      }
+      }*/
 
       return (filename == "" || !fileUpload._isAcceptedTypeOfFile(filename)
               /*|| (!isDuplicateAllowed && isFileNameAlreadyExist(filename))*/)
@@ -726,7 +721,7 @@ O$.SingleFileUpload = {
       }
     }
 
-    function removeHTML5File(file){
+    function removeHTML5File(){
       fileUpload._fileHTML5 = null;
     }
 
