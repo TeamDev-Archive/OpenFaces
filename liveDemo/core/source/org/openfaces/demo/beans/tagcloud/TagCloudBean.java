@@ -24,6 +24,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.model.SelectItem;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -382,7 +383,7 @@ public class TagCloudBean implements ActionListener, Serializable {
         return layoutConverter;
     }
 
-    public void setRectangleTheme(ActionEvent event) {
+    public void setRectangleTheme(AjaxBehaviorEvent event) {
         setSkin("rectangle");
         setLayout(Layout.RECTANGLE);
         setOrder(TagsOrder.ALPHABETICALLY);
@@ -398,7 +399,7 @@ public class TagCloudBean implements ActionListener, Serializable {
 //        setMinColor(colors.getColorByText("PaleTurquoise") );
     }
 
-    public void setVerticalTheme(ActionEvent event) {
+    public void setVerticalTheme(AjaxBehaviorEvent event) {
         setSkin("vertical");
         setLayout(Layout.VERTICAL);
         setOrder(TagsOrder.WEIGHT_REVERS);
@@ -412,7 +413,7 @@ public class TagCloudBean implements ActionListener, Serializable {
         setItemWeightFormat("-#0-");
     }
 
-    public void setOvalTheme(ActionEvent event) {
+    public void setOvalTheme(AjaxBehaviorEvent event) {
         setSkin("oval");
         setLayout(Layout.OVAL);
         setOrder(TagsOrder.WEIGHT);
@@ -426,7 +427,7 @@ public class TagCloudBean implements ActionListener, Serializable {
         setItemWeightFormat("<#0>");
     }
 
-    public void setSphereTheme(ActionEvent event) {
+    public void setSphereTheme(AjaxBehaviorEvent event) {
         setSkin("sphere");
         setLayout(Layout.SPHERE);
         setMinFontSize(15);
