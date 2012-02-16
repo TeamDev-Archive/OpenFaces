@@ -2478,9 +2478,31 @@ O$.Tables = {
 
     synchronizeAreaScrolling();
 
+    // Workaround for Chrome bug 111332, OpenFaces Jira issue OF-167.
+    table._fixChromeCrashWithEmptyTR = function() {
+      if (O$.isChrome()) {
+        [table.header, table.body, table.footer].forEach(function (section) {
+          if (!section) return;
+          section._scrollingAreas.forEach(function (a) {
+            if (!a) return;
+            var areaTable = a._table;
+            if (areaTable.style.tableLayout == "auto") return;
+            if (areaTable.rows.length > 0 && areaTable.rows[0]._cells.length == 0) {
+              var oldTableLayout = areaTable.style.tableLayout;
+              areaTable.style.tableLayout = "auto";
+              setTimeout(function () {
+                areaTable.style.tableLayout = oldTableLayout;
+              }, 1);
+            }
+          });
+        });
+      }
+    };
+
     table._alignRowHeights = function() {
       if (!table._leftArea && !table._rightArea)
         return;
+      table._fixChromeCrashWithEmptyTR();
       [table.header, table.body, table.footer].forEach(function(section) {
         if (!section) return;
         var assignCellHeights = O$.isChrome() || O$.isSafari() || (O$.isExplorer() && O$.isStrictMode() && !O$.isExplorer8());
