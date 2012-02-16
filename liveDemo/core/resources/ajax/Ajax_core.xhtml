@@ -111,7 +111,7 @@
     </h:panelGroup>
   </div>
 
-  <o:ajax id="updateTasks" standalone="true" render="taskList doneList doneListCaption" immediate="true"/>
+  <o:ajax id="updateTasks" standalone="true" execute="taskList doneList" render="taskList doneList doneListCaption" immediate="true"/>
 
   <o:ajaxSettings>
     <f:facet name="progressMessage">
