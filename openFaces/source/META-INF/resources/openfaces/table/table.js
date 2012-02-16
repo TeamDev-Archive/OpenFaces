@@ -1035,6 +1035,8 @@ O$.Table = {
                   row._selected = selected;
                   row._updateStyle();
                   O$.Table._setRowSelectionCheckboxesSelected(row, selected);
+                } else {
+                  throw "Not supported selectable item type: " + table._selectableItems;
                 }
               },
 
@@ -1205,6 +1207,8 @@ O$.Table = {
                   for (var i = 0, count = rows.length; i < count; i++)
                     allItems[i] = i;
                   this._setSelectedItems(allItems);
+                } else {
+                  throw "Not supported selectable item type: " + table._selectableItems;
                 }
               },
 
@@ -1312,11 +1316,15 @@ O$.Table = {
     });
 
     if (table._selectionRequired && table.__isSelectionEmpty()) {
-      if (!table._params.body.noDataRows) {
-        if (!table._multipleSelectionAllowed)
-          table.__setSelectedRowIndex(0);
-        else
-          table.__setSelectedRowIndexes([0]);
+      if (table._selectableItems == "rows") {
+        if (!table._params.body.noDataRows) {
+          if (!table._multipleSelectionAllowed)
+            table.__setSelectedRowIndex(0);
+          else
+            table.__setSelectedRowIndexes([0]);
+        }
+      } else {
+        throw "Not supported selectable item type: " + table._selectableItems;
       }
     }
     table._initializingSelection = false;
