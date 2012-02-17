@@ -99,7 +99,7 @@ O$.Tables = {
 
   // Workaround for Chrome bug 111332, OpenFaces Jira issue OF-167.
   _fixChromeCrashWithEmptyTR : function(table) {
-    if (O$.isChrome() && table != undefined) {
+    if (O$.isChrome()) {
       [table.header, table.body, table.footer].forEach(function (section) {
         if (section && section._scrollingAreas){
           section._scrollingAreas.forEach(function (a) {
