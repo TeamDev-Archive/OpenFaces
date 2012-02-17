@@ -173,6 +173,7 @@ public final class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
     protected void writeProgressBar(FacesContext context) throws IOException {
         if (progressBar == null) {
             progressBar = new ProgressBar();
+            progressBar.setSmallProgressByDefault(true);
         }
         progressBar.setStyleClass(Styles.getCSSClass(context, progressBar, progressBar.getStyle(), StyleGroup.regularStyleGroup(), progressBar.getStyleClass(), getProgressBarStyle()));
         progressBar.setLabelClass(Styles.getCSSClass(context, progressBar, progressBar.getLabelStyle(), StyleGroup.regularStyleGroup(), progressBar.getLabelClass(), "o_s_file_upload_progress_label"));

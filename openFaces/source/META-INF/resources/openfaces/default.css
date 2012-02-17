@@ -1223,6 +1223,7 @@
     border: 1px solid #CCCCCC;
     margin-top: 5px;
     margin-bottom: 5px;
+    font-size: 0;
 }
 .o_progress_bar_uploaded,
  .o_progress_bar_n_uploaded{
@@ -1232,6 +1233,7 @@
 
 .o_progress_bar_uploaded {
     background-color: #00bb00;
+    background-repeat: repeat-x;
 }
 
 .o_progress_bar_n_uploaded {
@@ -1259,7 +1261,7 @@
 }
 
 .o_file_upload_btn {
-    margin-left: 260px;
+    margin-left: 280px;
     margin-top: 2px;
 }
 
@@ -1336,7 +1338,7 @@
 
 /*Single FileUpload*/
 .o_s_file_upload{
-    width:300px;
+    width:330px;
 }
 .o_s_file_upload_compact{
     width:90px;
@@ -1352,6 +1354,7 @@
     margin-bottom: 2px;
     margin-top: 0;
     height: 5px;
+    font-size: 0;
 }
 .o_s_fileup_pro_bar_compact{
     width:90%;
@@ -1371,7 +1374,7 @@
     color: gray;
     font-size: 8pt;
     margin-right: 2px;
-    width: 65px;
+    width: 100px;
 }
 .o_s_file_clear_btn{
 

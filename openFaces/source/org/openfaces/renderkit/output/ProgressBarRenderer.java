@@ -29,6 +29,7 @@ import java.util.List;
 
 public class ProgressBarRenderer extends RendererBase {
     private final static String DEFAULT_UPLOADED_URL = "output/uploadedProgressBar.png";
+    public static final String DEFAULT_UPLOADED_MIN_URL = "output/uploadedProgressBarMin.png";
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
@@ -78,7 +79,8 @@ public class ProgressBarRenderer extends RendererBase {
 
         List<String> listOfImages = new LinkedList<String>();
 
-        String uploadedProgressImgUrl = Resources.getURL(context, progressBar.getProcessedImg(), null, DEFAULT_UPLOADED_URL);
+        String uploadedProgressImgUrl = Resources.getURL(context, progressBar.getProcessedImg(), null,
+                progressBar.isSmallProgressByDefault() ? DEFAULT_UPLOADED_MIN_URL : DEFAULT_UPLOADED_URL);
         listOfImages.add(uploadedProgressImgUrl);
 
         String notUploadedProgressImgUrl = progressBar.getNotProcessedImg();
