@@ -44614,7 +44614,7 @@ entering a value and returns a list of suggestions from the server -->
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default Uploaded -->
+      <!-- @default {size} MB{MB} -->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -44628,7 +44628,7 @@ entering a value and returns a list of suggestions from the server -->
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default Uploading... -->
+      <!-- @default {uploaded} of {size} MB{MB} -->
       <!-- @el true -->
     </attribute>
     <attribute>

@@ -461,7 +461,7 @@ O$.FileUploadUtil = {
       _transformStatusToFormatted:function(statusText){
         function updateStatus(uploaded, size) {
           var text = this.text;
-          if (size != "unknown") {
+          if (size != "") {
             text = text.replace("{size}", (size / Math.pow(2, this.pow)).toFixed(2));
           } else {
             text = text.replace("{size}", size);

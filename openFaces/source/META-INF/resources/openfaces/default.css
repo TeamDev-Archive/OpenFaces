@@ -1247,7 +1247,7 @@
 
 /*FileUpload component*/
 .o_file_upload {
-    width: 440px;
+    width: 470px;
 }
 
 .o_file_upload_header {
@@ -1265,7 +1265,7 @@
 
 .o_file_remove_all_btn, .o_file_stop_all_btn {
     margin-top: 10px;
-    margin-left: 338px;
+    margin-left: 368px;
     font-size: 8pt;
     margin-bottom: 10px;
     display: none;
@@ -1303,7 +1303,7 @@
 }
 
 .o_file_upload_info_status {
-    width: 65px;
+    width: 95px;
     font-size: 8pt;
     color: gray;
     padding-left: 10px;

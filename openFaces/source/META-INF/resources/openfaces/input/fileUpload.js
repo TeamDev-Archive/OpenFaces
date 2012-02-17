@@ -580,7 +580,7 @@ O$.FileUpload = {
                   }
                   infoDiv._status = O$.FileUploadUtil.Status.IN_PROGRESS;
                   fileForAPI.status = O$.FileUploadUtil.Status.IN_PROGRESS;
-                  infoDiv.childNodes[2].innerHTML = fileUpload._statuses.inProgress._update(0, "unknown");
+                  infoDiv.childNodes[2].innerHTML = fileUpload._statuses.inProgress._update(0, "");
                   setStopButtonBehavior(inputForFile, infoDiv);
                 }
 

@@ -583,7 +583,7 @@ O$.SingleFileUpload = {
                   fileUpload._els.info._status = O$.FileUploadUtil.Status.IN_PROGRESS;
                   fileForAPI.status = O$.FileUploadUtil.Status.IN_PROGRESS;
                   if (fileUpload._els.status){
-                    fileUpload._els.status.innerHTML = fileUpload._statuses.inProgress._update(0, "unknown");
+                    fileUpload._els.status.innerHTML = fileUpload._statuses.inProgress._update(0, "");
                   }
                   setStopButtonBehavior(inputForFile, infoDiv);
                 }
