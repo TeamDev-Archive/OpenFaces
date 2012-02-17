@@ -25,7 +25,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 
-public class FileUploadRenderer extends AbstractFileUploadRenderer {
+public final class FileUploadRenderer extends AbstractFileUploadRenderer {
     private static final String F_REMOVE_BUTTON = "removeButton";
     private static final String F_CLEAR_BUTTON = "clearButton";
 
@@ -63,9 +63,9 @@ public class FileUploadRenderer extends AbstractFileUploadRenderer {
     @Override
     protected void writeHelpfulButtons(FacesContext context, AbstractFileUpload abstractFileUpload, ResponseWriter writer, String elementId) throws IOException {
         FileUpload fileUpload = (FileUpload) abstractFileUpload;
-        simpleButton.write(removeButton, elementId + REMOVE_BTN_CONTAINER, fileUpload.getRemoveButtonText(), "o_file_clear_btn");
-        simpleButton.write(clearButton, elementId + CLEAR_BTN_CONTAINER, fileUpload.getClearButtonText(), "o_file_clear_btn");
-        simpleButton.write(stopButton, elementId + STOP_BTN_CONTAINER, fileUpload.getStopButtonText(), "o_file_clear_btn");
+        facetRenderer.writeButtonByDefault(removeButton, elementId + REMOVE_BTN_CONTAINER, fileUpload.getRemoveButtonText(), "o_file_clear_btn");
+        facetRenderer.writeButtonByDefault(clearButton, elementId + CLEAR_BTN_CONTAINER, fileUpload.getClearButtonText(), "o_file_clear_btn");
+        facetRenderer.writeButtonByDefault(stopButton, elementId + STOP_BTN_CONTAINER, fileUpload.getStopButtonText(), "o_file_clear_btn");
         writeProgressBar(context);
     }
 
@@ -164,8 +164,8 @@ public class FileUploadRenderer extends AbstractFileUploadRenderer {
         writeDragAndDropArea(context, fileUpload, writer, elementId + DRAG_AREA,
                 (fileUpload.getExternalDropTarget() == null) ? "o_file_drop_target" : "o_file_ext_drop_target",
                 dropText);
-        simpleButton.write(removeAllButton, elementId + REMOVE_ALL_BTN_CONTAINER, fileUpload.getRemoveAllButtonText(), "o_file_remove_all_btn");
-        simpleButton.write(stopAllButton, elementId + STOP_ALL_BTN_CONTAINER, fileUpload.getStopAllButtonText(), "o_file_stop_all_btn");
+        facetRenderer.writeButtonByDefault(removeAllButton, elementId + REMOVE_ALL_BTN_CONTAINER, fileUpload.getRemoveAllButtonText(), "o_file_remove_all_btn");
+        facetRenderer.writeButtonByDefault(stopAllButton, elementId + STOP_ALL_BTN_CONTAINER, fileUpload.getStopAllButtonText(), "o_file_stop_all_btn");
         writer.endElement("div");
     }
 
@@ -197,7 +197,7 @@ public class FileUploadRenderer extends AbstractFileUploadRenderer {
         }
 
         writeBrowseButtonTable(context, fileUpload, writer, elementId + BROWSE_BTN_ID, browseButtonText);
-        simpleButton.write(uploadButton, elementId + UPLOAD_BTN_CONTAINER, fileUpload.getUploadButtonText(), "o_file_upload_btn");
+        facetRenderer.writeButtonByDefault(uploadButton, elementId + UPLOAD_BTN_CONTAINER, fileUpload.getUploadButtonText(), "o_file_upload_btn");
         writer.endElement("td");
         writer.endElement("tr");
         writer.endElement("table");

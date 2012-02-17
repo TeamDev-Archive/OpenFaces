@@ -30,12 +30,30 @@ O$.ProgressBar = {
         if (progressBar._widthOfProgress != 0) {
           return progressBar._widthOfProgress;
         }
-        return progressBar.clientWidth;
+        if (progressBar.clientWidth>0){
+          return progressBar.clientWidth;
+        }
+        if ((O$.getElementStyle(progressBar,"width").replace("px", "") * 1) > 0 ){
+          return O$.getElementStyle(progressBar,"width").replace("px", "") * 1;
+        }
+        return progressBar.style.width.replace("px", "") * 1;
+      },
+      _getHeightOfProgress: function(){
+        if (O$.getElementClientRectangle(progressBar).height != 0) {
+          return O$.getElementClientRectangle(progressBar).height;
+        }
+        if (progressBar.clientHeight>0){
+          return progressBar.clientHeight;
+        }
+        if ((O$.getElementStyle(progressBar,"height").replace("px", "") * 1) > 0 ){
+          return O$.getElementStyle(progressBar,"height").replace("px", "") * 1;
+        }
+        return progressBar.style.height.replace("px", "") * 1;
       },
       getValue : function() {
         return progressBar._progressValue;
       },
-      setValue : function(progressValue) {
+      setValue : function(progressValue, endHandler) {
         if (progressValue != null &&
                 progressValue <= 100 && progressValue >= 0) {
           progressBar._progressValue = progressValue;
@@ -46,7 +64,7 @@ O$.ProgressBar = {
           progressBar._setLabelValue(progressValue);
 
           var val = progressValue / 100;//between 0 and 1
-          progressBar._smoothChangeValueTo(val);
+          progressBar._smoothChangeValueTo(val, endHandler);
 
           if (O$.isExplorer6() || O$.isExplorer7() || (O$.isExplorer() && O$.isQuirksMode())) {
             // weird bug from IE - without this row of code, label will be displayed not inside progressBar
@@ -81,15 +99,19 @@ O$.ProgressBar = {
       _setLabelValue:function (value) {
         progressBar._labelDiv.innerHTML = progressBar._labelFormat.replace("{value}", value);
       },
-      _smoothChangeValueTo:function (val) {
+      _smoothChangeValueTo:function (val, endHandler) {
         function resolveQueue(){
           var valInQueue = progressBar._queue.shift();
           if (valInQueue != null) {
-            progressBar._smoothChangeValueTo(valInQueue);
+            progressBar._smoothChangeValueTo(valInQueue.value, valInQueue.endHandler);
+          }else{
+            if (endHandler){
+              endHandler();
+            }
           }
         }
         if (progressBar._isBusy){
-          progressBar._queue.push(val);
+          progressBar._queue.push({value:val, endHandler:endHandler});
         }else{
           progressBar._isBusy = true;
           if (progressBar._previousValue < val) { //smooth part
@@ -135,8 +157,8 @@ O$.ProgressBar = {
     new function setHeightAndWidthForProgressEls(){
       /*IE 8 doesn't see if we assign height to some percents %*/
       if (O$.isExplorer8() || document.documentMode == 8){
-        progressBar._uploadedDiv.style.height  = O$.getElementClientRectangle(progressBar).height + "px";
-        progressBar._notUploadedDiv.style.height = O$.getElementClientRectangle(progressBar).height + "px";
+        progressBar._uploadedDiv.style.height  = progressBar._getHeightOfProgress() + "px";
+        progressBar._notUploadedDiv.style.height = progressBar._getHeightOfProgress() + "px";
       }
 
     }();

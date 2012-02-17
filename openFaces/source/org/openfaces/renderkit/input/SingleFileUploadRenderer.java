@@ -25,9 +25,13 @@ import org.openfaces.util.Styles;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 
-public class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
+public final class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
     private static final String DIV_FOR_FILE_INFO_ID = "::fileInfo";
+    public static final String DEFAULT_STOP_URL = "input/fileUpload-stop.png";
+    public static final String STOP_ICO_STYLE_MIN = "o_s_file_clear_btn_min";
     private SingleFileUploadLayoutMode layoutMode;
 
     @Override
@@ -87,6 +91,22 @@ public class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
 
                 writeHelpfulElements(context, fileUpload, writer, clientId + HELP_ELEMENTS_ID);
                 break;
+            case MINIMALISTIC:
+                Rendering.writeStyleAndClassAttributes(writer, fileUpload.getStyle(), fileUpload.getStyleClass(), "o_s_file_upload_compact");
+
+                writer.startElement("table", fileUpload);
+                writer.startElement("tr", fileUpload);
+                writer.startElement("td", fileUpload);
+                writer.writeAttribute("style", "padding:0", null);
+                writeBrowseButton(context, writer, clientId, fileUpload);
+                writeDragAndDrop(context, abstractFileUpload, writer, clientId, fileUpload);
+                writer.endElement("td");
+                writer.endElement("tr");
+
+                writer.endElement("table");
+
+                writeHelpfulElements(context, fileUpload, writer, clientId + HELP_ELEMENTS_ID);
+                break;
         }
 
     }
@@ -109,6 +129,9 @@ public class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
                 case COMPACT:
                     dropTargetText = "Drop file";
                     break;
+                case MINIMALISTIC:
+                    dropTargetText = "Drop file";
+                    break;
             }
         }
         writeDragAndDropArea(context, abstractFileUpload, writer, clientId + DRAG_AREA,
@@ -116,7 +139,7 @@ public class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
                 dropTargetText);
     }
 
-    private void writeProgressArea(FacesContext context, SingleFileUpload fileUpload, ResponseWriter writer) throws IOException {
+    private void writeProgressArea(FacesContext context, AbstractFileUpload fileUpload, ResponseWriter writer) throws IOException {
         String progressBarClass = Styles.getCSSClass(context, fileUpload, fileUpload.getProgressBarStyle(), StyleGroup.regularStyleGroup(), fileUpload.getProgressBarClass(), "o_s_file_upload_info_progress");
         writer.writeAttribute("class", progressBarClass, null);
         writer.writeAttribute("colspan", 2, null);
@@ -151,9 +174,21 @@ public class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
         if (progressBar == null) {
             progressBar = new ProgressBar();
         }
-        progressBar.setStyleClass(Styles.getCSSClass(context, progressBar, progressBar.getStyle(), StyleGroup.regularStyleGroup(), progressBar.getStyleClass(), (layoutMode == SingleFileUploadLayoutMode.FULL) ? "o_s_fileup_pro_bar" : "o_s_fileup_pro_bar_compact"));
+        progressBar.setStyleClass(Styles.getCSSClass(context, progressBar, progressBar.getStyle(), StyleGroup.regularStyleGroup(), progressBar.getStyleClass(), getProgressBarStyle()));
         progressBar.setLabelClass(Styles.getCSSClass(context, progressBar, progressBar.getLabelStyle(), StyleGroup.regularStyleGroup(), progressBar.getLabelClass(), "o_s_file_upload_progress_label"));
         progressBar.encodeAll(context);
+    }
+    
+    private String getProgressBarStyle(){
+        switch (layoutMode){
+            case COMPACT:
+                return "o_s_fileup_pro_bar_compact";
+            case MINIMALISTIC:
+                return "o_s_fileup_pro_bar_min";
+            case FULL:
+                return "o_s_fileup_pro_bar";
+        }
+        return null;
     }
 
     @Override
@@ -169,6 +204,14 @@ public class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
 
         int uploadedSize = 0;
         boolean duplicateAllowed = true;//fileUpload.isDuplicateAllowed();
+
+        List<String> listOfImages = new LinkedList<String>();
+        String defStopUrl = null;
+        if (layoutMode == SingleFileUploadLayoutMode.MINIMALISTIC && stopButton == null){
+            defStopUrl = Resources.getURL(context, null, null, DEFAULT_STOP_URL);
+            listOfImages.add(defStopUrl);
+        }
+        Rendering.renderPreloadImagesScript(context, listOfImages, false);
 
         Script initScript = new ScriptBuilder().initScript(context, fileUpload, "O$.SingleFileUpload._init",
                 uploadedSize,
@@ -201,7 +244,9 @@ public class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
                 (fileUpload.getRenderAfterUpload() == null) ? null : Utilities.getForm(fileUpload).getClientId(context) + ":" + fileUpload.getRenderAfterUpload(),
                 fileUpload.getExternalDropTarget(),
                 fileUpload.getAcceptDialogFormats(),
-                fileUpload.getLayoutMode()
+                fileUpload.getLayoutMode(),
+                defStopUrl,
+                STOP_ICO_STYLE_MIN
         );
 
         Rendering.renderInitScript(context, initScript,
@@ -214,7 +259,13 @@ public class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
 
     @Override
     protected void writeHelpfulButtons(FacesContext context, AbstractFileUpload abstractFileUpload, ResponseWriter writer, String elementId) throws IOException {
-        simpleButton.write(stopButton, elementId + STOP_BTN_CONTAINER, abstractFileUpload.getStopButtonText(), "o_s_file_clear_btn");
+        if (layoutMode == SingleFileUploadLayoutMode.MINIMALISTIC){
+            writeProgressArea(context, abstractFileUpload, writer);
+            facetRenderer.writeDivByDefault(stopButton, elementId + STOP_BTN_CONTAINER, "", STOP_ICO_STYLE_MIN);
+        }else{
+            facetRenderer.writeButtonByDefault(stopButton, elementId + STOP_BTN_CONTAINER, abstractFileUpload.getStopButtonText(), "o_s_file_clear_btn");
+        }
+
     }
 
 }

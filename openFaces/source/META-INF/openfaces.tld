@@ -45931,6 +45931,22 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>
+        Set layout of fileUploadwhat files will be displayed when file dialog chooser is appeared.
+        The values for this attribute should be the same as for HTML5 attribute accept.
+      </description>
+      <name>layoutMode</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.input.SingleFileUploadLayoutMode  -->
+      <!-- @default "full" -->
+      <!-- @value "full" -->
+      <!-- @value "compact" -->
+      <!-- @value "minimalistic" -->
+      <!-- @el true -->
+    </attribute>
   </tag>
   <tag>
     <name>progressBar</name>
