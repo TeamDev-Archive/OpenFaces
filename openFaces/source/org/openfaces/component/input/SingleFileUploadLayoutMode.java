@@ -9,18 +9,28 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.taglib.jsp.input;
 
-import org.openfaces.taglib.internal.input.SingleFileUploadTag;
+package org.openfaces.component.input;
 
-import javax.el.ValueExpression;
+public enum SingleFileUploadLayoutMode {
+    FULL("full"),
+    COMPACT("compact"),
+    MINIMALISTIC("minimalistic");
+    private String value;
 
-public class SingleFileUploadJspTag extends AbstractFileUploadJspTag{
-
-    public SingleFileUploadJspTag() {
-        super(new SingleFileUploadTag());
+    SingleFileUploadLayoutMode(String value) {
+        this.value = value;
     }
-    public void setLayoutMode(ValueExpression layoutMode) {
-        getDelegate().setPropertyValue("layoutMode", layoutMode);
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public String toString() {
+        return value;
     }
 }

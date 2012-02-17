@@ -113,73 +113,75 @@ O$.FileUploadUtil = {
         return dropTarget;
       },
       _setDragEventsForBody:function (body, area) {
-        O$.addEventHandler(body, "dragover", function (evt) {
-          if (fileUpload._isFilesDragged(evt) && !fileUpload._buttons.browseInput.disabled) {
-            if (area._isNearest(evt.clientX, evt.clientY)) {
-              area._hideAllExceptThis();
-              area.show();
-              area._isVisible = true;
+        if (fileUpload._isBrowserSupportHTML5FileUpload()) {
+          O$.addEventHandler(body, "dragover", function (evt) {
+            if (fileUpload._isFilesDragged(evt) && !fileUpload._buttons.browseInput.disabled) {
+              if (area._isNearest(evt.clientX, evt.clientY)) {
+                area._hideAllExceptThis();
+                area.show();
+                area._isVisible = true;
+              }
             }
-          }
-          fileUpload._cancelDragEvent(evt);
-        });
-        O$.addEventHandler(body, "drop", function (evt) {
-          if (fileUpload._isFilesDragged(evt)) {
-            area.hide();
-            area._isVisible = false;
-          }
-          fileUpload._cancelDragEvent(evt);
-        });
-        O$.addEventHandler(body, "dragexit", fileUpload._cancelDragEvent);
+            fileUpload._cancelDragEvent(evt);
+          });
+          O$.addEventHandler(body, "drop", function (evt) {
+            if (fileUpload._isFilesDragged(evt)) {
+              area.hide();
+              area._isVisible = false;
+            }
+            fileUpload._cancelDragEvent(evt);
+          });
+          O$.addEventHandler(body, "dragexit", fileUpload._cancelDragEvent);
 
-        O$.addEventHandler(window, "mousemove", function () {
-          if (area._isVisible) {
-            area.hide();
-          }
-        });
+          O$.addEventHandler(window, "mousemove", function () {
+            if (area._isVisible) {
+              area.hide();
+            }
+          });
+        }
       },
 
       _setDragEventsForFileUpload:function (area) {
-        O$.addEventHandler(area, "dragenter", fileUpload._cancelDragEvent);
-        O$.addEventHandler(area, "dragleave", dragleaveEventHandler);
-        O$.addEventHandler(area, "dragexit", fileUpload._cancelDragEvent);
-        O$.addEventHandler(area, "dragover", dragoverEventHandler);
-        O$.addEventHandler(area, "drop", dropEventHandler);
-
-        function dragoverEventHandler(evt) {
-          fileUpload._cancelDragEvent(evt);
-          if (fileUpload._isFilesDragged(evt)) {
-            O$.setStyleMappings(area, {dragover:fileUpload._dropTargetCrossoverClass});
+        if (fileUpload._isBrowserSupportHTML5FileUpload()) {
+          function dragoverEventHandler(evt) {
+            fileUpload._cancelDragEvent(evt);
+            if (fileUpload._isFilesDragged(evt)) {
+              O$.setStyleMappings(area, {dragover:fileUpload._dropTargetCrossoverClass});
+            }
           }
-        }
-
-        function dragleaveEventHandler(evt) {
-          fileUpload._cancelDragEvent(evt);
-          O$.setStyleMappings(area, {dragover:null});
-        }
-
-        function dropEventHandler(evt) {
-          fileUpload._cancelDragEvent(evt);
-          O$.setStyleMappings(area, {dragover:null});
-          if (fileUpload._isFilesDragged(evt)) {
-            area.hide();
-            area._isVisible = false;
-            var files = evt.dataTransfer.files;
-            var shouldCallOnChange = false;
-            for (var i = 0; i < files.length; i++) {
-              files[i]._fromDnD = true;
-              if (fileUpload._processFileAddingHTML5(files[i])) {
-                shouldCallOnChange = true;
-                if (!fileUpload._multiUpload) {
-                  break;
+          function dragleaveEventHandler(evt) {
+            fileUpload._cancelDragEvent(evt);
+            O$.setStyleMappings(area, {dragover:null});
+          }
+          function dropEventHandler(evt) {
+            fileUpload._cancelDragEvent(evt);
+            O$.setStyleMappings(area, {dragover:null});
+            if (fileUpload._isFilesDragged(evt)) {
+              area.hide();
+              area._isVisible = false;
+              var files = evt.dataTransfer.files;
+              var shouldCallOnChange = false;
+              for (var i = 0; i < files.length; i++) {
+                files[i]._fromDnD = true;
+                if (fileUpload._processFileAddingHTML5(files[i])) {
+                  shouldCallOnChange = true;
+                  if (!fileUpload._multiUpload) {
+                    break;
+                  }
                 }
               }
-            }
-            if (shouldCallOnChange) {
-              fileUpload._events._fireChangeEvent();
-              fileUpload._setUploadButtonAfterFileHaveBeenAdded();
+              if (shouldCallOnChange) {
+                fileUpload._events._fireChangeEvent();
+                fileUpload._setUploadButtonAfterFileHaveBeenAdded();
+              }
             }
           }
+
+          O$.addEventHandler(area, "dragenter", fileUpload._cancelDragEvent);
+          O$.addEventHandler(area, "dragleave", dragleaveEventHandler);
+          O$.addEventHandler(area, "dragexit", fileUpload._cancelDragEvent);
+          O$.addEventHandler(area, "dragover", dragoverEventHandler);
+          O$.addEventHandler(area, "drop", dropEventHandler);
         }
       },
       _isFilesDragged:function (evt) {

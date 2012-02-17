@@ -16,7 +16,7 @@ import org.openfaces.util.ValueBindings;
 import javax.faces.context.FacesContext;
 
 
-public class FileUpload extends AbstractFileUpload {
+public final class FileUpload extends AbstractFileUpload {
     public static final String COMPONENT_TYPE = "org.openfaces.FileUpload";
     public static final String COMPONENT_FAMILY = "org.openfaces.FileUpload";
 

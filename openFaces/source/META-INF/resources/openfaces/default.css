@@ -1338,19 +1338,34 @@
 .o_s_file_upload{
     width:300px;
 }
+.o_s_file_upload_compact{
+    width:90px;
+}
 .o_s_file_upload_info_progress{
 
 }
 .o_s_file_upload_progress_label{
     display: none;
 }
-.o_s_fileup_pro_bar{
-    width:95%;
-    margin-left: 5px;
-    margin-right: 8px;
+.o_s_fileup_pro_bar,
+.o_s_fileup_pro_bar_compact{
     margin-bottom: 2px;
     margin-top: 0;
     height: 5px;
+}
+.o_s_fileup_pro_bar_compact{
+    width:90%;
+    margin-left: 3px;
+}
+.o_s_fileup_pro_bar_min{
+    float:left;
+    height: 5px;
+    width:50px;
+}
+.o_s_fileup_pro_bar{
+   width:95%;
+   margin-left: 5px;
+   margin-right: 8px;
 }
 .o_s_file_upload_info_status{
     color: gray;
@@ -1360,6 +1375,14 @@
 }
 .o_s_file_clear_btn{
 
+}
+.o_s_file_clear_btn_min{
+    float: left;
+    height: 7px;
+    margin-left: 8px;
+    margin-top: 11px;
+    width: 10px;
+    background-repeat: no-repeat;
 }
 .o_s_file_drop_target,
 .o_file_ext_drop_target{

@@ -25,21 +25,46 @@ O$.ProgressBar = {
       _previousValue:0,
       _isBusy:false,
       _queue:[],
+      _widthOfProgress:(progressBar.clientWidth > 0) ? progressBar.clientWidth : 0,
+      _getWidthOfProgress:function(){
+        if (progressBar._widthOfProgress != 0) {
+          return progressBar._widthOfProgress;
+        }
+        if (progressBar.clientWidth>0){
+          return progressBar.clientWidth;
+        }
+        if ((O$.getElementStyle(progressBar,"width").replace("px", "") * 1) > 0 ){
+          return O$.getElementStyle(progressBar,"width").replace("px", "") * 1;
+        }
+        return progressBar.style.width.replace("px", "") * 1;
+      },
+      _getHeightOfProgress: function(){
+        if (O$.getElementClientRectangle(progressBar).height != 0) {
+          return O$.getElementClientRectangle(progressBar).height;
+        }
+        if (progressBar.clientHeight>0){
+          return progressBar.clientHeight;
+        }
+        if ((O$.getElementStyle(progressBar,"height").replace("px", "") * 1) > 0 ){
+          return O$.getElementStyle(progressBar,"height").replace("px", "") * 1;
+        }
+        return progressBar.style.height.replace("px", "") * 1;
+      },
       getValue : function() {
         return progressBar._progressValue;
       },
-      setValue : function(progressValue) {
+      setValue : function(progressValue, endHandler) {
         if (progressValue != null &&
                 progressValue <= 100 && progressValue >= 0) {
           progressBar._progressValue = progressValue;
           var labelShouldDisplay = !(O$.getElementStyle(progressBar._labelDiv,"display") == "none");
           if (O$.isExplorer6() || O$.isExplorer7() || (O$.isExplorer() && O$.isQuirksMode())) {
-              progressBar._labelDiv.style.display = "none";
+            progressBar._labelDiv.style.display = "none";
           }
           progressBar._setLabelValue(progressValue);
 
           var val = progressValue / 100;//between 0 and 1
-          progressBar._smoothChangeValueTo(val);
+          progressBar._smoothChangeValueTo(val, endHandler);
 
           if (O$.isExplorer6() || O$.isExplorer7() || (O$.isExplorer() && O$.isQuirksMode())) {
             // weird bug from IE - without this row of code, label will be displayed not inside progressBar
@@ -65,19 +90,28 @@ O$.ProgressBar = {
       _setWidthForProgress:function (uploadedWidth, notUploadedWidth){
         progressBar._uploadedDiv.style.width = uploadedWidth + "px";
         progressBar._notUploadedDiv.style.width = notUploadedWidth + "px";
+        if (O$.isExplorer() && (O$.isQuirksMode() ||(O$.isExplorer7() || O$.isExplorer6()))){
+          return;
+        }
+        progressBar.style.width = progressBar._getWidthOfProgress() + "px";
+
       },
       _setLabelValue:function (value) {
         progressBar._labelDiv.innerHTML = progressBar._labelFormat.replace("{value}", value);
       },
-      _smoothChangeValueTo:function (val) {
+      _smoothChangeValueTo:function (val, endHandler) {
         function resolveQueue(){
           var valInQueue = progressBar._queue.shift();
           if (valInQueue != null) {
-            progressBar._smoothChangeValueTo(valInQueue);
+            progressBar._smoothChangeValueTo(valInQueue.value, valInQueue.endHandler);
+          }else{
+            if (endHandler){
+              endHandler();
+            }
           }
         }
         if (progressBar._isBusy){
-          progressBar._queue.push(val);
+          progressBar._queue.push({value:val, endHandler:endHandler});
         }else{
           progressBar._isBusy = true;
           if (progressBar._previousValue < val) { //smooth part
@@ -85,7 +119,7 @@ O$.ProgressBar = {
             var INTERVAL = 20;
             var TIMES_TO_CHANGE_PROGRESS = TIME_TAKES / INTERVAL;
 
-            var goalUploadedWidth = progressBar.clientWidth * val;
+            var goalUploadedWidth = progressBar._getWidthOfProgress() * val;
             var nowUploadedWidth = progressBar._uploadedDiv.clientWidth;
 
             var addByTime = (goalUploadedWidth - nowUploadedWidth) / TIMES_TO_CHANGE_PROGRESS;
@@ -94,13 +128,13 @@ O$.ProgressBar = {
             }
             function changeProgress() {
               if (progressBar._uploadedDiv.clientWidth + addByTime >= goalUploadedWidth) {
-                progressBar._setWidthForProgress(progressBar.clientWidth * val, progressBar.clientWidth * (1 - val));
+                progressBar._setWidthForProgress(progressBar._getWidthOfProgress()  * val, progressBar._getWidthOfProgress()  * (1 - val));
                 progressBar._setLabelValue(Math.round(val * 100));
                 progressBar._isBusy = false;
                 resolveQueue();
               } else {
                 var uploadedWidth = progressBar._uploadedDiv.clientWidth + addByTime;
-                var percentsNow = (uploadedWidth ) / progressBar.clientWidth;
+                var percentsNow = (uploadedWidth ) / progressBar._getWidthOfProgress() ;
                 progressBar._setWidthForProgress(uploadedWidth,
                         (progressBar._notUploadedDiv.clientWidth - addByTime < 0) ? 0
                                 : progressBar._notUploadedDiv.clientWidth - addByTime);
@@ -111,7 +145,7 @@ O$.ProgressBar = {
 
             changeProgress();
           } else {
-            progressBar._setWidthForProgress(progressBar.clientWidth * val, progressBar.clientWidth * (1 - val));
+            progressBar._setWidthForProgress(progressBar._getWidthOfProgress()  * val, progressBar._getWidthOfProgress()  * (1 - val));
             progressBar._setLabelValue(Math.round(val * 100));
             progressBar._isBusy = false;
             resolveQueue();
@@ -123,15 +157,15 @@ O$.ProgressBar = {
     new function setHeightAndWidthForProgressEls(){
       /*IE 8 doesn't see if we assign height to some percents %*/
       if (O$.isExplorer8() || document.documentMode == 8){
-        progressBar._uploadedDiv.style.height  = O$.getElementClientRectangle(progressBar).height + "px";
-        progressBar._notUploadedDiv.style.height = O$.getElementClientRectangle(progressBar).height + "px";
+        progressBar._uploadedDiv.style.height  = progressBar._getHeightOfProgress() + "px";
+        progressBar._notUploadedDiv.style.height = progressBar._getHeightOfProgress() + "px";
       }
 
     }();
 
     progressBar.setValue(value);
     if (labelAlignment == "center"){
-        progressBar._labelDiv.style.marginLeft = progressBar.clientWidth / 2 - O$.getElementSize(progressBar._labelDiv).width / 2 + "px";
+      progressBar._labelDiv.style.marginLeft = progressBar._getWidthOfProgress()  / 2 - O$.getElementSize(progressBar._labelDiv).width / 2 + "px";
     }
     progressBar._uploadedDiv.style.backgroundImage = "url('" + progressBar._uploadedProgressImgUrl + "')";
     if (progressBar._notUploadedProgressImgUrl != null && progressBar._notUploadedProgressImgUrl != "") {

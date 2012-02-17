@@ -66,7 +66,7 @@ public abstract class AbstractFileUploadRenderer extends RendererBase implements
     /*default text for browse button*/
     protected UIComponent stopButton;
     protected ProgressBar progressBar;
-    protected SimpleButton simpleButton;
+    protected FacetRenderer facetRenderer;
     private UIComponent browseButton;
 
 
@@ -296,7 +296,7 @@ public abstract class AbstractFileUploadRenderer extends RendererBase implements
         String uniqueID = Utilities.generateUniqueId(clientId);
         setFileSizeLimitInSession(context, fileUpload, uniqueID);
         ResponseWriter writer = context.getResponseWriter();
-        this.simpleButton = new SimpleButton(context, fileUpload, writer);
+        this.facetRenderer = new FacetRenderer(context, fileUpload, writer);
         writer.startElement("div", fileUpload);
         Rendering.writeIdAttribute(context, fileUpload);
         Rendering.writeStandardEvents(writer, fileUpload);
@@ -337,18 +337,18 @@ public abstract class AbstractFileUploadRenderer extends RendererBase implements
         }
     }
 
-    protected class SimpleButton {
+    protected class FacetRenderer {
         private final FacesContext context;
         private final AbstractFileUpload fileUpload;
         private final ResponseWriter writer;
 
-        public SimpleButton(FacesContext context, AbstractFileUpload fileUpload, ResponseWriter writer) {
+        public FacetRenderer(FacesContext context, AbstractFileUpload fileUpload, ResponseWriter writer) {
             this.context = context;
             this.fileUpload = fileUpload;
             this.writer = writer;
         }
 
-        public void write(UIComponent facet, String elementId, String defText, String defClass) throws IOException {
+        public void writeButtonByDefault(UIComponent facet, String elementId, String defText, String defClass) throws IOException {
             writer.startElement("div", fileUpload);
             writer.writeAttribute("id", elementId, null);
             if (facet == null) {
@@ -357,6 +357,20 @@ public abstract class AbstractFileUploadRenderer extends RendererBase implements
                 writer.writeAttribute("value", defText, null);
                 writer.writeAttribute("class", defClass, null);
                 writer.endElement("input");
+            } else {
+                facet.encodeAll(context);
+            }
+            writer.endElement("div");
+        }
+
+        public void writeDivByDefault(UIComponent facet, String elementId, String defText, String defClass) throws IOException{
+            writer.startElement("div", fileUpload);
+            writer.writeAttribute("id", elementId, null);
+            if (facet == null) {
+                writer.startElement("div", fileUpload);
+                writer.writeAttribute("class", defClass, null);
+                writer.write(defText);
+                writer.endElement("div");
             } else {
                 facet.encodeAll(context);
             }
