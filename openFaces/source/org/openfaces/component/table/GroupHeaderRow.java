@@ -102,7 +102,7 @@ public class GroupHeaderRow extends GroupHeaderOrFooterRow {
 
     @Override
     public List<UIComponent> getChildren() {
-        if (cells == null)
+        if (cells == null || super.getChildCount() > 0)
             return super.getChildren();
         else
             return cells;
@@ -110,10 +110,7 @@ public class GroupHeaderRow extends GroupHeaderOrFooterRow {
 
     @Override
     public int getChildCount() {
-        if (cells == null) {
-            return super.getChildCount();
-        } else
-            return cells.size();
+        return getChildren().size();
     }
 
 }
