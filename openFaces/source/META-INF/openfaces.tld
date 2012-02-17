@@ -7432,6 +7432,18 @@
       <!-- @default true -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user checks or unchecks any check-box
+        in this column.
+      </description>
+      <name>onchange</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
 
   </tag>
 

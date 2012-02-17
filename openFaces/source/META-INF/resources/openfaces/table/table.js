@@ -1035,6 +1035,8 @@ O$.Table = {
                   row._selected = selected;
                   row._updateStyle();
                   O$.Table._setRowSelectionCheckboxesSelected(row, selected);
+                } else {
+                  throw "Not supported selectable item type: " + table._selectableItems;
                 }
               },
 
@@ -1205,6 +1207,8 @@ O$.Table = {
                   for (var i = 0, count = rows.length; i < count; i++)
                     allItems[i] = i;
                   this._setSelectedItems(allItems);
+                } else {
+                  throw "Not supported selectable item type: " + table._selectableItems;
                 }
               },
 
@@ -1312,11 +1316,15 @@ O$.Table = {
     });
 
     if (table._selectionRequired && table.__isSelectionEmpty()) {
-      if (!table._params.body.noDataRows) {
-        if (!table._multipleSelectionAllowed)
-          table.__setSelectedRowIndex(0);
-        else
-          table.__setSelectedRowIndexes([0]);
+      if (table._selectableItems == "rows") {
+        if (!table._params.body.noDataRows) {
+          if (!table._multipleSelectionAllowed)
+            table.__setSelectedRowIndex(0);
+          else
+            table.__setSelectedRowIndexes([0]);
+        }
+      } else {
+        throw "Not supported selectable item type: " + table._selectableItems;
       }
     }
     table._initializingSelection = false;
@@ -1661,6 +1669,7 @@ O$.Table = {
           setAllColumnCheckboxesSelected(col, this.isSelected());
           col._updateHeaderCheckBoxes();
           col._updateSubmissionField();
+          col._fireOnChange();
           O$.stopEvent(e);
         }
       });
@@ -1736,7 +1745,7 @@ O$.Table = {
     columnObj._setCheckedIndexes(checkedRowIndexes);
   },
 
-  _initCheckboxColumn: function(tableId, colIndex, valueFieldName, checkedRowIndexes) {
+  _initCheckboxColumn: function(tableId, colIndex, valueFieldName, checkedRowIndexes, changeHandler) {
     var table = O$(tableId);
     var col = table._columns[colIndex];
 
@@ -1744,7 +1753,7 @@ O$.Table = {
       _valueFieldName: valueFieldName,
       _setCheckedIndexes: function(checkedIndexes) {
 
-      function initCheckboxCell(cell, column) {
+        function initCheckboxCell(cell, column) {
           if (cell._checkBoxCellInitialized)
             return;
           cell._checkBoxCellInitialized = true;
@@ -1774,12 +1783,13 @@ O$.Table = {
               var col = this._column;
               col._updateHeaderCheckBoxes();
               col._updateSubmissionField();
+              col._fireOnChange();
             }
           });
-        O$.addUnloadHandler(table, function () {
-          cell.onclick = null;
-          cell.ondblclick = null;
-        });
+          O$.addUnloadHandler(table, function () {
+            cell.onclick = null;
+            cell.ondblclick = null;
+          });
 
           O$.extend(checkBox, {
             onclick: function(e) {
@@ -1796,10 +1806,10 @@ O$.Table = {
               O$.stopEvent(e);
             }
           });
-        O$.addUnloadHandler(table, function () {
-          checkBox.onclick = null;
-          checkBox.ondblclick = null;
-        });
+          O$.addUnloadHandler(table, function () {
+            checkBox.onclick = null;
+            checkBox.ondblclick = null;
+          });
         }
 
         var bodyCells = col.body ? col.body._cells : [];
@@ -1850,6 +1860,15 @@ O$.Table = {
       col._headers = table._checkBoxColumnHeaders[colIndex];
     }
     col._updateHeaderCheckBoxes();
+
+    if (changeHandler) {
+      eval("col.onchange = function(event) {if (!event._of_event)return;" + changeHandler + "}");
+      // checking _of_event is needed if this is a bubbled event from some child
+      col._fireOnChange = function() {
+        O$.sendEvent(col, "change");
+      };
+    }
+
   },
 
   // -------------------------- TABLE SORTING SUPPORT

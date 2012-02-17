@@ -134,6 +134,7 @@ O$.TreeTable = {
         var rows = table.body._getRows();
         this._styleRecalculationOnNodeExpansionNeeded = !!this._params.body.oddRowClassName;
         var pseudoCommonRootRow = {_pseudoRow: true, _childRows: []};
+        O$.Tables._fixChromeCrashWithEmptyTR(table);
 
         function processRecursively(firstRowIndex, level, thisLevelRowCount, thisLevelVisible, parentRow) {
           for (var i = 0; i < thisLevelRowCount; i++) {

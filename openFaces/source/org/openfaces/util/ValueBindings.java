@@ -178,7 +178,7 @@ public class ValueBindings {
             adaptedValue = null;
         else {
             Class expressionType = valueExpression.getType(elContext);
-            if (List.class.isAssignableFrom(expressionType))
+            if (expressionType == null || List.class.isAssignableFrom(expressionType))
                 adaptedValue = propertyValueAsList;
             else if (Set.class.isAssignableFrom(expressionType))
                 adaptedValue = new HashSet(propertyValueAsList);
