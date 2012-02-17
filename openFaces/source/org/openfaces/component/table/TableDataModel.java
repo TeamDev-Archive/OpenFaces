@@ -818,16 +818,19 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
         return result;
     }
 
-    private static Map<Class, Boolean> rowKeyClassesValidFlags = new HashMap<Class, Boolean>();
+    private static final Map<Class, Boolean> rowKeyClassesValidFlags = new HashMap<Class, Boolean>();
 
     public static boolean isValidRowKey(Object rowKey) {
         Class rowKeyClass = rowKey.getClass();
-        Boolean rowKeyValid = rowKeyClassesValidFlags.get(rowKeyClass);
-        if (rowKeyValid == null) {
-            rowKeyValid = checkSerializableEqualsAndHashcode(rowKey);
-            rowKeyClassesValidFlags.put(rowKeyClass, rowKeyValid);
+
+        synchronized (rowKeyClassesValidFlags) {
+            Boolean rowKeyValid = rowKeyClassesValidFlags.get(rowKeyClass);
+            if (rowKeyValid == null) {
+                rowKeyValid = checkSerializableEqualsAndHashcode(rowKey);
+                rowKeyClassesValidFlags.put(rowKeyClass, rowKeyValid);
+            }
+            return rowKeyValid;
         }
-        return rowKeyValid;
     }
 
     private Object requestRowDataByRowKey(FacesContext facesContext, Object rowKey) {
