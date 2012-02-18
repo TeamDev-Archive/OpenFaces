@@ -89,9 +89,15 @@ public abstract class OpenFacesTestCase extends SeleniumTestCase {
 
     private void open(String applicationUrl, String pageUrl, String htmlSubstringOfAValidPage, int attemptCount) {
         for (int i = 1; i <= attemptCount; i++) {
-            openAndWait(applicationUrl, pageUrl);
-
             boolean lastAttempt = (i == attemptCount);
+            try {
+                openAndWait(applicationUrl, pageUrl);
+            } catch (Exception e) {
+                if (!lastAttempt) continue;
+                throw new RuntimeException(e);
+            }
+
+
             if (assertPageContentValid(applicationUrl, pageUrl, htmlSubstringOfAValidPage, lastAttempt))
                 break;
             sleep(10 * 1000);
