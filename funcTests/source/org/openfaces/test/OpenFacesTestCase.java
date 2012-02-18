@@ -93,7 +93,11 @@ public abstract class OpenFacesTestCase extends SeleniumTestCase {
             try {
                 openAndWait(applicationUrl, pageUrl);
             } catch (Exception e) {
-                if (!lastAttempt) continue;
+                if (!lastAttempt) {
+                    sleep(10 * 1000);
+                    continue;
+                }
+
                 throw new RuntimeException(e);
             }
 
