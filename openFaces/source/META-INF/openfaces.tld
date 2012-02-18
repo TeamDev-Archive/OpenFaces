@@ -32450,7 +32450,7 @@ and it is automatically triggered on any form submission. -->
 
     <attribute>
       <description>
-        A style atribute for the slider text field.
+        A style attribute for the slider text field.
       </description>
       <name>textFieldStyle</name>
       <deferred-value>
@@ -32476,7 +32476,7 @@ and it is automatically triggered on any form submission. -->
 
     <attribute>
       <description>
-        A style atribute for the disabled slider text field.
+        A style attribute for the disabled slider text field.
       </description>
       <name>textFieldDisabledStyle</name>
       <deferred-value>
@@ -32489,7 +32489,7 @@ and it is automatically triggered on any form submission. -->
 
     <attribute>
       <description>
-        This atribute enables tooltip
+        This attribute enables tooltip
       </description>
       <name>tooltipEnabled</name>
       <deferred-value>
@@ -40837,7 +40837,7 @@ entering a value and returns a list of suggestions from the server -->
 
     <attribute>
       <description>A value-binding expression that should reference an url for each item which will be
-        rendered as href atribute of tag.
+        rendered as href attribute of tag.
         You can use a column data variable specified in the "var" in the expression for this attribute.
       </description>
       <name>itemUrl</name>
@@ -43185,7 +43185,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @value "allRows" both the row data objects and group header row objects are saved through the selection API.
         In case of group header rows, objects of type org.openfaces.component.table will be passed, so you should
         prepare the methods which receive selection objects to accept both types of objects. So for example in case of
-        single row selection you should declare the getter/setter methods that are bound to the rowData atribute to
+        single row selection you should declare the getter/setter methods that are bound to the rowData attribute to
         have the type of java.lang.Object for this purpose. -->
       <!-- @el true -->
     </attribute>

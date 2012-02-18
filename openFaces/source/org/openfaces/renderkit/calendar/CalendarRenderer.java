@@ -405,10 +405,10 @@ public class CalendarRenderer extends RendererBase {
     private void writeHeaderStyleAndClassAttributes(FacesContext context, Calendar calendar) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         writeAttribute(writer, "style", calendar.getHeaderStyle());
-        writeHeaderClassAtribute(context, calendar);
+        writeHeaderClassAttribute(context, calendar);
     }
 
-    private void writeHeaderClassAtribute(FacesContext context, Calendar calendar) throws IOException {
+    private void writeHeaderClassAttribute(FacesContext context, Calendar calendar) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String cls = getStyleClassesWithFont(context, null, calendar.getHeaderClass(), DEFAULT_HEADER_CLASS, calendar);
         writeAttribute(writer, "class", cls);
