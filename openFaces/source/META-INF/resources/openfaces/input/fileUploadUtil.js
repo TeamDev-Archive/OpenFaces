@@ -235,11 +235,13 @@ O$.FileUploadUtil = {
         var isAccepted = false;
         fileUpload._typesOfFile.forEach(function (type) {
           if (filename.indexOf(type, filename.length - type.length) !== -1) {
-            return true;
+            isAccepted = true;
           }
         });
-        fileUpload._events._fireWrongFileAddedEvent();
-        return false;
+        if (!isAccepted){
+          fileUpload._events._fireWrongFileAddedEvent();
+        }
+        return isAccepted;
       },
       _setAllEvents:function (onchangeHandler,onuploadstartHandler,onuploadendHandler,
                               onfileuploadstartHandler,onfileuploadinprogressHandler, onfileuploadendHandler,
