@@ -20,7 +20,7 @@ O$.FileUpload = {
                   isDisabled,
                   isAutoUpload, tabIndex, progressBarId, statusStoppedText, statusStoppingText, multiUpload,ID,
                   onchangeHandler, onuploadstartHandler, onuploadendHandler,
-                  onfileuploadstartHandler, onfileuploadinprogressHandler, onfileuploadendHandler,
+                  onfileuploadstartHandler, onfileuploadinprogressHandler, onfileuploadendHandler, onwrongfileaddedHandler,
                   dropTargetCrossoverClass, uploadMode, renderAfterUpload, externalDropTarget, acceptDialogFormats) {
 
     var fileUpload = O$.initComponent(componentId, null, {
@@ -487,7 +487,7 @@ O$.FileUpload = {
             renderAfterUpload,tabIndex,dropTargetCrossoverClass, externalDropTarget, acceptDialogFormats);
 
     fileUpload._setAllEvents(onchangeHandler,onuploadstartHandler,onuploadendHandler,
-            onfileuploadstartHandler,onfileuploadinprogressHandler,onfileuploadendHandler);
+            onfileuploadstartHandler,onfileuploadinprogressHandler,onfileuploadendHandler,onwrongfileaddedHandler);
     if (!fileUpload._multiUpload){
       fileUpload._isAutoUpload = true;
       //fileUpload._maxQuantity = 1;
@@ -580,7 +580,7 @@ O$.FileUpload = {
                   }
                   infoDiv._status = O$.FileUploadUtil.Status.IN_PROGRESS;
                   fileForAPI.status = O$.FileUploadUtil.Status.IN_PROGRESS;
-                  infoDiv.childNodes[2].innerHTML = fileUpload._statuses.inProgress._update(0, "unknown");
+                  infoDiv.childNodes[2].innerHTML = fileUpload._statuses.inProgress._update(0, "");
                   setStopButtonBehavior(inputForFile, infoDiv);
                 }
 

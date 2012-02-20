@@ -195,6 +195,10 @@ public abstract class AbstractFileUploadJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("onfileuploadend", onfileuploadend);
     }
 
+    public void setOnwrongfileadded(ValueExpression onwrongfileadded) {
+        getDelegate().setPropertyValue("onwrongfileadded", onwrongfileadded);
+    }
+
     public void setFileSizeLimit(ValueExpression fileSizeLimit) {
         getDelegate().setPropertyValue("fileSizeLimit", fileSizeLimit);
     }

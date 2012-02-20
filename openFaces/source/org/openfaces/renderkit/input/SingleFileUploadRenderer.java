@@ -113,8 +113,8 @@ public final class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
 
     private void writeBrowseButton(FacesContext context, ResponseWriter writer, String clientId, SingleFileUpload fileUpload) throws IOException {
         String browseBtnText = fileUpload.getBrowseButtonText();
-        if (browseBtnText == null){
-            browseBtnText = "Upload..."; 
+        if (browseBtnText == null) {
+            browseBtnText = "Upload...";
         }
         writeBrowseButtonTable(context, fileUpload, writer, clientId + BROWSE_BTN_ID, browseBtnText);
     }
@@ -173,6 +173,7 @@ public final class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
     protected void writeProgressBar(FacesContext context) throws IOException {
         if (progressBar == null) {
             progressBar = new ProgressBar();
+            progressBar.setSmallProgressByDefault(true);
         }
         progressBar.setStyleClass(Styles.getCSSClass(context, progressBar, progressBar.getStyle(), StyleGroup.regularStyleGroup(), progressBar.getStyleClass(), getProgressBarStyle()));
         progressBar.setLabelClass(Styles.getCSSClass(context, progressBar, progressBar.getLabelStyle(), StyleGroup.regularStyleGroup(), progressBar.getLabelClass(), "o_s_file_upload_progress_label"));
@@ -240,6 +241,7 @@ public final class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
                 Utilities.getFunctionOfEvent(Rendering.getEventHandlerScript(fileUpload, "fileuploadstart")),
                 Utilities.getFunctionOfEvent(Rendering.getEventHandlerScript(fileUpload, "fileuploadinprogress")),
                 Utilities.getFunctionOfEvent(Rendering.getEventHandlerScript(fileUpload, "fileuploadend")),
+                Utilities.getFunctionOfEvent(Rendering.getEventHandlerScript(fileUpload, "wrongfileadded")),
                 dropTargetDragoverClass,
                 (fileUpload.getRenderAfterUpload() == null) ? null : Utilities.getForm(fileUpload).getClientId(context) + ":" + fileUpload.getRenderAfterUpload(),
                 fileUpload.getExternalDropTarget(),

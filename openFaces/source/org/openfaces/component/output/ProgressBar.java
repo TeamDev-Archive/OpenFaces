@@ -32,6 +32,7 @@ public class ProgressBar extends OUIOutput {
     private LabelAlignment labelAlignment;
     private String processedImg;
     private String notProcessedImg;
+    private boolean isSmallProgressByDefault;
 
     public ProgressBar() {
         setRendererType("org.openfaces.ProgressBarRenderer");
@@ -54,7 +55,8 @@ public class ProgressBar extends OUIOutput {
                 labelClass,
                 labelFormat,
                 processedImg,
-                notProcessedImg
+                notProcessedImg,
+                isSmallProgressByDefault
         };
     }
 
@@ -72,6 +74,7 @@ public class ProgressBar extends OUIOutput {
         labelFormat = (String) state[i++];
         processedImg = (String) state[i++];
         notProcessedImg = (String) state[i++];
+        isSmallProgressByDefault = (Boolean)state[i++];
     }
 
     public String getProcessedStyle() {
@@ -152,5 +155,13 @@ public class ProgressBar extends OUIOutput {
 
     public void setNotProcessedImg(String notProcessedImg) {
         this.notProcessedImg = notProcessedImg;
+    }
+
+    public boolean isSmallProgressByDefault() {
+        return isSmallProgressByDefault;
+    }
+
+    public void setSmallProgressByDefault(boolean smallProgressByDefault) {
+        isSmallProgressByDefault = smallProgressByDefault;
     }
 }

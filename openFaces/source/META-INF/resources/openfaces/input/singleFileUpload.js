@@ -19,7 +19,7 @@ O$.SingleFileUpload = {
                   isDisabled,
                   tabIndex, progressBarId, statusStoppedText, statusStoppingText, ID,
                   onchangeHandler, onuploadstartHandler, onuploadendHandler,
-                  onfileuploadstartHandler, onfileuploadinprogressHandler, onfileuploadendHandler,
+                  onfileuploadstartHandler, onfileuploadinprogressHandler, onfileuploadendHandler, onwrongfileaddedHandler,
                   dropTargetCrossoverClass, renderAfterUpload, externalDropTarget, acceptDialogFormats,
                   layoutMode, defStopUrl, stopIcoClassMin) {
 
@@ -427,7 +427,7 @@ O$.SingleFileUpload = {
             renderAfterUpload,tabIndex,dropTargetCrossoverClass, externalDropTarget, acceptDialogFormats);
 
     fileUpload._setAllEvents(onchangeHandler,onuploadstartHandler,onuploadendHandler,
-            onfileuploadstartHandler,onfileuploadinprogressHandler,onfileuploadendHandler);
+            onfileuploadstartHandler,onfileuploadinprogressHandler,onfileuploadendHandler,onwrongfileaddedHandler);
 
     //getting clear,stop,cancel, progressBar facet for each info window
     fileUpload._elementsCont = O$(componentId + "::elements");
@@ -585,7 +585,7 @@ O$.SingleFileUpload = {
                   fileUpload._els.info._status = O$.FileUploadUtil.Status.IN_PROGRESS;
                   fileForAPI.status = O$.FileUploadUtil.Status.IN_PROGRESS;
                   if (fileUpload._els.status){
-                    fileUpload._els.status.innerHTML = fileUpload._statuses.inProgress._update(0, "unknown");
+                    fileUpload._els.status.innerHTML = fileUpload._statuses.inProgress._update(0, "");
                   }
                   setStopButtonBehavior(inputForFile, infoDiv);
                 }
