@@ -16,6 +16,7 @@ import org.openfaces.component.table.*;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.TableUtil;
+import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.StyleGroup;
 import org.openfaces.util.Styles;
@@ -132,13 +133,19 @@ public class TableBody extends TableSection {
         ResponseWriter writer = context.getResponseWriter();
         StringWriter stringWriter = new StringWriter();
         List<BodyRow> rows = new ArrayList<BodyRow>();
-        context.setResponseWriter(writer.cloneWithWriter(stringWriter));
+        ResponseWriter responseWriter = writer.cloneWithWriter(stringWriter);
+        if (AjaxUtil.isAjaxRequest(context))
+            responseWriter.startCDATA();
+        stringWriter.getBuffer().setLength(0);
+        context.setResponseWriter(responseWriter);
         try {
             if (tableStructure.getScrolling() == null)
                 rows = createNonScrollableRows(context, stringWriter, firstRowIndex, rowCount, columns);
             else
                 rows = createScrollableRows(context, stringWriter, firstRowIndex, rowCount, columns);
         } finally {
+            if (AjaxUtil.isAjaxRequest(context))
+                responseWriter.endCDATA();
             context.setResponseWriter(writer);
         }
         return rows;
