@@ -235,13 +235,15 @@ O$.FileUploadUtil = {
         var isAccepted = false;
         fileUpload._typesOfFile.forEach(function (type) {
           if (filename.indexOf(type, filename.length - type.length) !== -1) {
-            isAccepted = true;
+            return true;
           }
         });
-        return isAccepted;
+        fileUpload._events._fireWrongFileAddedEvent();
+        return false;
       },
       _setAllEvents:function (onchangeHandler,onuploadstartHandler,onuploadendHandler,
-                              onfileuploadstartHandler,onfileuploadinprogressHandler,onfileuploadendHandler) {
+                              onfileuploadstartHandler,onfileuploadinprogressHandler, onfileuploadendHandler,
+                              onwrongfileaddedHandler) {
         function createEventHandler(userHandler, eventName) {
           return function (files) {
             if (userHandler) {
@@ -264,6 +266,15 @@ O$.FileUploadUtil = {
         fileUpload._events._fireFileUploadStartEvent = createEventHandler(onfileuploadstartHandler, "onfileuploadstart");
         fileUpload._events._fireFileUploadInProgressEvent = createEventHandler(onfileuploadinprogressHandler, "onfileuploadinprogress");
         fileUpload._events._fireFileUploadEndEvent = createEventHandler(onfileuploadendHandler, "onfileuploadend");
+        fileUpload._events._fireWrongFileAddedEvent = function () {
+          if (onwrongfileaddedHandler) {
+            var event = O$.createEvent("onwrongfileadded");
+            event.allowedTypes = (fileUpload._typesOfFile != null) ? fileUpload._typesOfFile : "*";
+            onwrongfileaddedHandler(event);
+          } else {
+            alert("Wrong type of file");
+          }
+        };
 
 
         //processing onfocus/onblur event

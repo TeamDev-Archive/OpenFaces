@@ -135,6 +135,7 @@ public final class FileUploadRenderer extends AbstractFileUploadRenderer {
                 Utilities.getFunctionOfEvent(fileUpload.getOnfileuploadstart()),
                 Utilities.getFunctionOfEvent(fileUpload.getOnfileuploadinprogress()),
                 Utilities.getFunctionOfEvent(fileUpload.getOnfileuploadend()),
+                Utilities.getFunctionOfEvent(fileUpload.getOnwrongfileadded()),
                 dropTargetDragoverClass,
                 fileUpload.getUploadMode(),
                 (fileUpload.getRenderAfterUpload() == null) ? null : Utilities.getForm(fileUpload).getClientId(context) + ":" + fileUpload.getRenderAfterUpload(),

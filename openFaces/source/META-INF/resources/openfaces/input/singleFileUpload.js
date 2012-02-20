@@ -19,7 +19,7 @@ O$.SingleFileUpload = {
                   isDisabled,
                   tabIndex, progressBarId, statusStoppedText, statusStoppingText, ID,
                   onchangeHandler, onuploadstartHandler, onuploadendHandler,
-                  onfileuploadstartHandler, onfileuploadinprogressHandler, onfileuploadendHandler,
+                  onfileuploadstartHandler, onfileuploadinprogressHandler, onfileuploadendHandler, onwrongfileaddedHandler,
                   dropTargetCrossoverClass, renderAfterUpload, externalDropTarget, acceptDialogFormats,
                   layoutMode, defStopUrl, stopIcoClassMin) {
 
@@ -427,7 +427,7 @@ O$.SingleFileUpload = {
             renderAfterUpload,tabIndex,dropTargetCrossoverClass, externalDropTarget, acceptDialogFormats);
 
     fileUpload._setAllEvents(onchangeHandler,onuploadstartHandler,onuploadendHandler,
-            onfileuploadstartHandler,onfileuploadinprogressHandler,onfileuploadendHandler);
+            onfileuploadstartHandler,onfileuploadinprogressHandler,onfileuploadendHandler,onwrongfileaddedHandler);
 
     //getting clear,stop,cancel, progressBar facet for each info window
     fileUpload._elementsCont = O$(componentId + "::elements");

@@ -84,6 +84,7 @@ public abstract class AbstractFileUpload extends OUIInputBase {
     private String onfileuploadstart;
     private String onfileuploadinprogress;
     private String onfileuploadend;
+    private String onwrongfileadded;
 
     private int fileSizeLimit;
 
@@ -146,6 +147,7 @@ public abstract class AbstractFileUpload extends OUIInputBase {
                 onfileuploadstart,
                 onfileuploadinprogress,
                 onfileuploadend,
+                onwrongfileadded,
                 stoppingStatusText,
                 unexpectedErrorText,
                 fileSizeLimit,
@@ -199,6 +201,7 @@ public abstract class AbstractFileUpload extends OUIInputBase {
         onfileuploadstart = (String) values[i++];
         onfileuploadinprogress = (String) values[i++];
         onfileuploadend = (String) values[i++];
+        onwrongfileadded = (String) values[i++];
         stoppingStatusText = (String) values[i++];
         unexpectedErrorText = (String) values[i++];
         fileSizeLimit = (Integer) values[i++];
@@ -544,6 +547,14 @@ public abstract class AbstractFileUpload extends OUIInputBase {
 
     public void setOnfileuploadend(String onfileuploadend) {
         this.onfileuploadend = onfileuploadend;
+    }
+
+    public String getOnwrongfileadded() {
+        return ValueBindings.get(this, "onwrongfileadded", onwrongfileadded);
+    }
+
+    public void setOnwrongfileadded(String onwrongfileadded) {
+        this.onwrongfileadded = onwrongfileadded;
     }
 
     public String getStoppingStatusText() {

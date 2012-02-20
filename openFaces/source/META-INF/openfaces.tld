@@ -45055,6 +45055,18 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>JavaScript code that should be executed when user tried to add file with not allowed extension.
+        By default, alert message will be shown.
+      </description>
+      <name>onwrongfileadded</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>A css style for drop target for files in case of using drag and drop.
       </description>
       <name>dropTargetStyle</name>
@@ -45823,6 +45835,18 @@ entering a value and returns a list of suggestions from the server -->
         despite its upload status(successfully, with errors or stopped).
       </description>
       <name>onfileuploadend</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when user tried to add file with not allowed extension.
+        By default, alert message will be shown.
+      </description>
+      <name>onwrongfileadded</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
