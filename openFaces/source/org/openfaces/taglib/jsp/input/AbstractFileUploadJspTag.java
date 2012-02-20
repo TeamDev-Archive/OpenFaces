@@ -175,24 +175,28 @@ public abstract class AbstractFileUploadJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("uploadCompletionListener", uploadCompletionListener);
     }
 
+    public void setOnstart(ValueExpression onstart) {
+        getDelegate().setPropertyValue("onstart", onstart);
+    }
+
+    public void setOnend(ValueExpression onend) {
+        getDelegate().setPropertyValue("onend", onend);
+    }
+
     public void setOnuploadstart(ValueExpression onuploadstart) {
         getDelegate().setPropertyValue("onuploadstart", onuploadstart);
+    }
+
+    public void setOnuploadinprogress(ValueExpression onuploadinprogress) {
+        getDelegate().setPropertyValue("onuploadinprogress", onuploadinprogress);
     }
 
     public void setOnuploadend(ValueExpression onuploadend) {
         getDelegate().setPropertyValue("onuploadend", onuploadend);
     }
 
-    public void setOnfileuploadstart(ValueExpression onfileuploadstart) {
-        getDelegate().setPropertyValue("onfileuploadstart", onfileuploadstart);
-    }
-
-    public void setOnfileuploadinprogress(ValueExpression onfileuploadinprogress) {
-        getDelegate().setPropertyValue("onfileuploadinprogress", onfileuploadinprogress);
-    }
-
-    public void setOnfileuploadend(ValueExpression onfileuploadend) {
-        getDelegate().setPropertyValue("onfileuploadend", onfileuploadend);
+    public void setOnwrongfileadded(ValueExpression onwrongfileadded) {
+        getDelegate().setPropertyValue("onwrongfileadded", onwrongfileadded);
     }
 
     public void setFileSizeLimit(ValueExpression fileSizeLimit) {

@@ -5,7 +5,7 @@
   <div id="Demo">
     <o:fileUpload id="fileUpload" multiple="true"
             uploadCompletionListener="#{FileUploadBean.uploadComplete}">
-      <o:ajax event="uploadend" render="uploadedFilesTable"/>
+      <o:ajax event="end" render="uploadedFilesTable"/>
     </o:fileUpload>
 
     <br/>

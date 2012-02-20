@@ -44497,7 +44497,7 @@ entering a value and returns a list of suggestions from the server -->
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default Uploaded -->
+      <!-- @default {size} MB{MB} -->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -44511,7 +44511,7 @@ entering a value and returns a list of suggestions from the server -->
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default Uploading... -->
+      <!-- @default {uploaded} of {size} MB{MB} -->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -44930,6 +44930,18 @@ entering a value and returns a list of suggestions from the server -->
         despite its upload status(successfully, with errors or stopped).
       </description>
       <name>onfileuploadend</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when user tried to add file with not allowed extension.
+        By default, alert message will be shown.
+      </description>
+      <name>onwrongfileadded</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -45706,6 +45718,18 @@ entering a value and returns a list of suggestions from the server -->
         despite its upload status(successfully, with errors or stopped).
       </description>
       <name>onfileuploadend</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when user tried to add file with not allowed extension.
+        By default, alert message will be shown.
+      </description>
+      <name>onwrongfileadded</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>

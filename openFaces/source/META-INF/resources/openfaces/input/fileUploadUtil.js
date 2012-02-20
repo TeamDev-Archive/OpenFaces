@@ -210,7 +210,7 @@ O$.FileUploadUtil = {
                       }
                     }
                     fileUpload._listOfids = [];
-                    fileUpload._events._fireUploadEndEvent(sendDataToEvent);
+                    fileUpload._events._fireEndEvent(sendDataToEvent);
                     fileUpload._renderAfterUploadEnd();
                   } else {
                     setTimeout(function(){
@@ -238,10 +238,14 @@ O$.FileUploadUtil = {
             isAccepted = true;
           }
         });
+        if (!isAccepted){
+          fileUpload._events._fireWrongFileAddedEvent();
+        }
         return isAccepted;
       },
-      _setAllEvents:function (onchangeHandler,onuploadstartHandler,onuploadendHandler,
-                              onfileuploadstartHandler,onfileuploadinprogressHandler,onfileuploadendHandler) {
+      _setAllEvents:function (onchangeHandler,onstartHandler,onendHandler,
+                              onuploadstartHandler,onuploadinprogressHandler, onuploadendHandler,
+                              onwrongfileaddedHandler) {
         function createEventHandler(userHandler, eventName) {
           return function (files) {
             if (userHandler) {
@@ -258,12 +262,21 @@ O$.FileUploadUtil = {
           }
         }
 
-        fileUpload._events._fireChangeEvent = createEventHandler(onchangeHandler, "change");
+        fileUpload._events._fireChangeEvent = createEventHandler(onchangeHandler, "onchange");
+        fileUpload._events._fireStartEvent = createEventHandler(onstartHandler, "onstart");
+        fileUpload._events._fireEndEvent = createEventHandler(onendHandler, "onend");
         fileUpload._events._fireUploadStartEvent = createEventHandler(onuploadstartHandler, "onuploadstart");
+        fileUpload._events._fireUploadInProgressEvent = createEventHandler(onuploadinprogressHandler, "onuploadinprogress");
         fileUpload._events._fireUploadEndEvent = createEventHandler(onuploadendHandler, "onuploadend");
-        fileUpload._events._fireFileUploadStartEvent = createEventHandler(onfileuploadstartHandler, "onfileuploadstart");
-        fileUpload._events._fireFileUploadInProgressEvent = createEventHandler(onfileuploadinprogressHandler, "onfileuploadinprogress");
-        fileUpload._events._fireFileUploadEndEvent = createEventHandler(onfileuploadendHandler, "onfileuploadend");
+        fileUpload._events._fireWrongFileAddedEvent = function () {
+          if (onwrongfileaddedHandler) {
+            var event = O$.createEvent("onwrongfileadded");
+            event.allowedTypes = (fileUpload._typesOfFile != null) ? fileUpload._typesOfFile : "*";
+            onwrongfileaddedHandler(event);
+          } else {
+            alert("Wrong type of file");
+          }
+        };
 
 
         //processing onfocus/onblur event
@@ -461,7 +474,7 @@ O$.FileUploadUtil = {
       _transformStatusToFormatted:function(statusText){
         function updateStatus(uploaded, size) {
           var text = this.text;
-          if (size != "unknown") {
+          if (size != "") {
             text = text.replace("{size}", (size / Math.pow(2, this.pow)).toFixed(2));
           } else {
             text = text.replace("{size}", size);
