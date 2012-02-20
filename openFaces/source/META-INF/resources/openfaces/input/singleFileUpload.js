@@ -18,8 +18,8 @@ O$.SingleFileUpload = {
                   addButtonDisabledClass,
                   isDisabled,
                   tabIndex, progressBarId, statusStoppedText, statusStoppingText, ID,
-                  onchangeHandler, onuploadstartHandler, onuploadendHandler,
-                  onfileuploadstartHandler, onfileuploadinprogressHandler, onfileuploadendHandler, onwrongfileaddedHandler,
+                  onchangeHandler, onstartHandler, onendHandler,
+                  onuploadstartHandler, onuploadinprogressHandler, onuploadendHandler, onwrongfileaddedHandler,
                   dropTargetCrossoverClass, renderAfterUpload, externalDropTarget, acceptDialogFormats,
                   layoutMode, defStopUrl, stopIcoClassMin) {
 
@@ -141,7 +141,7 @@ O$.SingleFileUpload = {
                       fileUpload._els.status.innerHTML = fileUpload._statuses.sizeLimit._update(null, portionData['size']);
                     }
                     fileUpload._setStatusforFileWithId(inputForFile._uniqueId, "SIZE_LIMIT_EXCEEDED");
-                    fileUpload._events._fireFileUploadEndEvent(fileForAPI);
+                    fileUpload._events._fireUploadEndEvent(fileForAPI);
                     if (endHandler) {
                       endHandler();
                     }
@@ -179,7 +179,7 @@ O$.SingleFileUpload = {
                             fileUpload._setStatusforFileWithId(inputForFile._uniqueId, "FAILED");
                             fileUpload._els.progressBar.setValue(0);
                             fileForAPI.progress = 0;
-                            fileUpload._events._fireFileUploadEndEvent(fileForAPI);
+                            fileUpload._events._fireUploadEndEvent(fileForAPI);
                             if (endHandler) {
                               endHandler();
                             }
@@ -190,7 +190,7 @@ O$.SingleFileUpload = {
                         }
                         fileUpload._els.progressBar.setValue(percents);
                         fileForAPI.progress = percents / 100;
-                        fileUpload._events._fireFileUploadInProgressEvent(fileForAPI);
+                        fileUpload._events._fireUploadInProgressEvent(fileForAPI);
                         fileUpload._callProgressRequest(inputForFile, endHandler);
                       }
                     } else {// when file already uploaded
@@ -210,7 +210,7 @@ O$.SingleFileUpload = {
                             endHandler();
                           }
                           fileForAPI.status = O$.FileUploadUtil.Status.SUCCESSFUL;
-                          fileUpload._events._fireFileUploadEndEvent(fileForAPI);
+                          fileUpload._events._fireUploadEndEvent(fileForAPI);
                           fileUpload._prepareUIWhenAllRequestsFinished(true);
                         }
                         if (fileUpload._layoutMode == O$.SingleFileUpload._LayoutMode.MINIMALISTIC){
@@ -240,7 +240,7 @@ O$.SingleFileUpload = {
                       fileUpload._els.status.innerHTML = fileUpload._statuses.sizeLimit._update(null, portionData['size']);
                     }
                     fileUpload._setStatusforFileWithId(file._uniqueId, "SIZE_LIMIT_EXCEEDED");
-                    fileUpload._events._fireFileUploadEndEvent(fileForAPI);
+                    fileUpload._events._fireUploadEndEvent(fileForAPI);
                     if (endHandler) {
                       endHandler();
                     }
@@ -278,7 +278,7 @@ O$.SingleFileUpload = {
                             fileUpload._setStatusforFileWithId(file._uniqueId, "FAILED");
                             fileUpload._els.progressBar.setValue(0);
                             fileForAPI.progress = 0;
-                            fileUpload._events._fireFileUploadEndEvent(fileForAPI);
+                            fileUpload._events._fireUploadEndEvent(fileForAPI);
                             if (endHandler) {
                               endHandler();
                             }
@@ -289,7 +289,7 @@ O$.SingleFileUpload = {
                         }
                         fileUpload._els.progressBar.setValue(percents);
                         fileForAPI.progress = percents / 100;
-                        fileUpload._events._fireFileUploadInProgressEvent(fileForAPI);
+                        fileUpload._events._fireUploadInProgressEvent(fileForAPI);
                         setTimeout(function () {
                           fileUpload._progressHTMl5Request(file, request, endHandler);
                         }, 500);
@@ -308,7 +308,7 @@ O$.SingleFileUpload = {
                           }
                           fileUpload._setStatusforFileWithId(file._uniqueId, "SUCCESSFUL");
                           fileForAPI.status = O$.FileUploadUtil.Status.SUCCESSFUL;
-                          fileUpload._events._fireFileUploadEndEvent(fileForAPI);
+                          fileUpload._events._fireUploadEndEvent(fileForAPI);
                           if (endHandler) {
                             endHandler();
                           }
@@ -343,7 +343,7 @@ O$.SingleFileUpload = {
                     fileUpload._setStatusforFileWithId(inputForFile._uniqueId, "FAILED");
                     fileUpload._els.progressBar.setValue(0);
                     fileForAPI.progress = 0;
-                    fileUpload._events._fireFileUploadEndEvent(fileForAPI);
+                    fileUpload._events._fireUploadEndEvent(fileForAPI);
                     if (endHandler) {
                       endHandler();
                     }
@@ -366,7 +366,7 @@ O$.SingleFileUpload = {
                     fileUpload._setStatusforFileWithId(file._uniqueId, "FAILED");
                     fileUpload._els.progressBar.setValue(0);
                     fileForAPI.progress = 0;
-                    fileUpload._events._fireFileUploadEndEvent(fileForAPI);
+                    fileUpload._events._fireUploadEndEvent(fileForAPI);
                     if (endHandler){
                       endHandler();
                     }
@@ -391,7 +391,7 @@ O$.SingleFileUpload = {
                   fileForAPI.status = O$.FileUploadUtil.Status.STOPPED;
                   fileUpload._els.progressBar.setValue(0);
                   fileForAPI.progress = 0;
-                  fileUpload._events._fireFileUploadEndEvent(fileForAPI);
+                  fileUpload._events._fireUploadEndEvent(fileForAPI);
                   fileUpload._prepareUIWhenAllRequestsFinished(true);
                 }, null, true);
       },
@@ -410,7 +410,7 @@ O$.SingleFileUpload = {
                     fileForAPI.status = O$.FileUploadUtil.Status.STOPPED;
                     fileUpload._els.progressBar.setValue(0);
                     fileForAPI.progress = 0;
-                    fileUpload._events._fireFileUploadEndEvent(fileForAPI);
+                    fileUpload._events._fireUploadEndEvent(fileForAPI);
                     if (endHandler){
                       endHandler();
                     }
@@ -426,8 +426,8 @@ O$.SingleFileUpload = {
             statusLabelNotUploaded,statusStoppedText,statusLabelUnexpectedError,
             renderAfterUpload,tabIndex,dropTargetCrossoverClass, externalDropTarget, acceptDialogFormats);
 
-    fileUpload._setAllEvents(onchangeHandler,onuploadstartHandler,onuploadendHandler,
-            onfileuploadstartHandler,onfileuploadinprogressHandler,onfileuploadendHandler,onwrongfileaddedHandler);
+    fileUpload._setAllEvents(onchangeHandler,onstartHandler,onendHandler,
+            onuploadstartHandler,onuploadinprogressHandler,onuploadendHandler,onwrongfileaddedHandler);
 
     //getting clear,stop,cancel, progressBar facet for each info window
     fileUpload._elementsCont = O$(componentId + "::elements");
@@ -549,7 +549,7 @@ O$.SingleFileUpload = {
                   var html5File = fileUpload._fileHTML5;
                   fileUpload._addFileToInfoFileListHTML5(html5File);
                 }
-                fileUpload._events._fireUploadStartEvent(fileUpload._currentFile);
+                fileUpload._events._fireStartEvent(fileUpload._currentFile);
                 var uri = fileUpload._getDocumentURI();
 
                 function setupUIForUpload(inputForFile, infoDiv, fileForAPI) {
@@ -635,7 +635,7 @@ O$.SingleFileUpload = {
                       fileUpload._callProgressRequest(fileInput);
                       fileOfAPI.status = O$.FileUploadUtil.Status.IN_PROGRESS;
                       setupUIForUpload(fileInput, fileUpload._els.info, fileOfAPI);
-                      fileUpload._events._fireFileUploadStartEvent(fileOfAPI);
+                      fileUpload._events._fireUploadStartEvent(fileOfAPI);
                     }
 
                     if (fileUpload._fileHTML5 != null) {
@@ -646,7 +646,7 @@ O$.SingleFileUpload = {
                       fileUpload._callFileProgressForHTML5Request(html5File, request);
                       fileAPI.status = O$.FileUploadUtil.Status.IN_PROGRESS;
                       setupUIForUploadHTML5(html5File, fileUpload._els.info, request, fileAPI);
-                      fileUpload._events._fireFileUploadStartEvent(fileAPI);
+                      fileUpload._events._fireUploadStartEvent(fileAPI);
                     }
                   }();
 

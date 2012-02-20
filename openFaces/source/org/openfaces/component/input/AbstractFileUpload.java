@@ -79,11 +79,11 @@ public abstract class AbstractFileUpload extends OUIInputBase {
 
     private MethodExpression uploadCompletionListener;
 
+    private String onstart;
+    private String onend;
     private String onuploadstart;
+    private String onuploadinprogress;
     private String onuploadend;
-    private String onfileuploadstart;
-    private String onfileuploadinprogress;
-    private String onfileuploadend;
     private String onwrongfileadded;
 
     private int fileSizeLimit;
@@ -142,11 +142,11 @@ public abstract class AbstractFileUpload extends OUIInputBase {
                 saveAttachedState(context, fileUploadedListener),
                 stoppedStatusText,
                 saveAttachedState(context, uploadCompletionListener),
+                onstart,
+                onend,
                 onuploadstart,
+                onuploadinprogress,
                 onuploadend,
-                onfileuploadstart,
-                onfileuploadinprogress,
-                onfileuploadend,
                 onwrongfileadded,
                 stoppingStatusText,
                 unexpectedErrorText,
@@ -196,11 +196,11 @@ public abstract class AbstractFileUpload extends OUIInputBase {
         fileUploadedListener = (MethodExpression) restoreAttachedState(context, values[i++]);
         stoppedStatusText = (String) values[i++];
         uploadCompletionListener = (MethodExpression) restoreAttachedState(context, values[i++]);
+        onstart = (String) values[i++];
+        onend = (String) values[i++];
         onuploadstart = (String) values[i++];
+        onuploadinprogress = (String) values[i++];
         onuploadend = (String) values[i++];
-        onfileuploadstart = (String) values[i++];
-        onfileuploadinprogress = (String) values[i++];
-        onfileuploadend = (String) values[i++];
         onwrongfileadded = (String) values[i++];
         stoppingStatusText = (String) values[i++];
         unexpectedErrorText = (String) values[i++];
@@ -509,6 +509,22 @@ public abstract class AbstractFileUpload extends OUIInputBase {
         removeFacesListener(uploadCompletionListener);
     }
 
+    public String getOnstart() {
+        return ValueBindings.get(this, "onstart", onstart);
+    }
+
+    public void setOnstart(String onstart) {
+        this.onstart = onstart;
+    }
+
+    public String getOnend() {
+        return ValueBindings.get(this, "onend", onend);
+    }
+
+    public void setOnend(String onend) {
+        this.onend = onend;
+    }
+
     public String getOnuploadstart() {
         return ValueBindings.get(this, "onuploadstart", onuploadstart);
     }
@@ -517,36 +533,20 @@ public abstract class AbstractFileUpload extends OUIInputBase {
         this.onuploadstart = onuploadstart;
     }
 
+    public String getOnuploadinprogress() {
+        return ValueBindings.get(this, "onuploadinprogress", onuploadinprogress);
+    }
+
+    public void setOnuploadinprogress(String onuploadinprogress) {
+        this.onuploadinprogress = onuploadinprogress;
+    }
+
     public String getOnuploadend() {
         return ValueBindings.get(this, "onuploadend", onuploadend);
     }
 
     public void setOnuploadend(String onuploadend) {
         this.onuploadend = onuploadend;
-    }
-
-    public String getOnfileuploadstart() {
-        return ValueBindings.get(this, "onfileuploadstart", onfileuploadstart);
-    }
-
-    public void setOnfileuploadstart(String onfileuploadstart) {
-        this.onfileuploadstart = onfileuploadstart;
-    }
-
-    public String getOnfileuploadinprogress() {
-        return ValueBindings.get(this, "onfileuploadinprogress", onfileuploadinprogress);
-    }
-
-    public void setOnfileuploadinprogress(String onfileuploadinprogress) {
-        this.onfileuploadinprogress = onfileuploadinprogress;
-    }
-
-    public String getOnfileuploadend() {
-        return ValueBindings.get(this, "onfileuploadend", onfileuploadend);
-    }
-
-    public void setOnfileuploadend(String onfileuploadend) {
-        this.onfileuploadend = onfileuploadend;
     }
 
     public String getOnwrongfileadded() {
