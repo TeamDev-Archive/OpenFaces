@@ -1350,20 +1350,21 @@
     display: none;
 }
 .o_s_fileup_pro_bar,
-.o_s_fileup_pro_bar_compact{
+.o_s_fileup_pro_bar_compact,
+.o_s_fileup_pro_bar_min{
     margin-bottom: 2px;
     margin-top: 0;
     height: 5px;
     font-size: 0;
 }
-.o_s_fileup_pro_bar_compact{
-    width:90%;
+.o_s_fileup_pro_bar_compact,
+.o_s_fileup_pro_bar_min{
+    width:92%;
     margin-left: 3px;
 }
 .o_s_fileup_pro_bar_min{
-    float:left;
-    height: 5px;
-    width:50px;
+    margin-top:13px;
+    margin-bottom:12px;
 }
 .o_s_fileup_pro_bar{
    width:95%;
@@ -1379,15 +1380,19 @@
 .o_s_file_clear_btn{
 
 }
-.o_s_file_clear_btn_min{
+.o_s_file_clear_icon_min,
+.o_s_file_clear_icon_full{
     float: left;
     height: 7px;
     margin-left: 8px;
-    margin-top: 11px;
     width: 10px;
     background-repeat: no-repeat;
 }
-.o_s_file_drop_target,
+.o_s_file_clear_icon_min{
+    margin-top:13px;
+}
+.o_s_file_drop_target_min,
+.o_s_file_drop_target_full,
 .o_file_ext_drop_target{
     color: #999999;
     font-size: 10pt;
@@ -1398,8 +1403,11 @@
     border-radius: 5px;
     border: 2px dashed #CCCCCC;
 }
-.o_s_file_drop_target{
+.o_s_file_drop_target_min{
     padding-top: 5px;
+}
+.o_s_file_drop_target_full{
+    margin: 5px 15px;
 }
 .o_s_file_ext_drop_target,
 .o_file_ext_drop_target{
