@@ -66,7 +66,7 @@ public final class FileUploadRenderer extends AbstractFileUploadRenderer {
         facetRenderer.writeButtonByDefault(removeButton, elementId + REMOVE_BTN_CONTAINER, fileUpload.getRemoveButtonText(), "o_file_clear_btn");
         facetRenderer.writeButtonByDefault(clearButton, elementId + CLEAR_BTN_CONTAINER, fileUpload.getClearButtonText(), "o_file_clear_btn");
         facetRenderer.writeButtonByDefault(stopButton, elementId + STOP_BTN_CONTAINER, fileUpload.getStopButtonText(), "o_file_clear_btn");
-        writeProgressBar(context);
+        writeProgressBar(context, abstractFileUpload);
     }
 
     @Override

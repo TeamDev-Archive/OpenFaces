@@ -82,7 +82,11 @@ O$.FileUploadUtil = {
   _initGeneralFunctions: function(fileUpload){
     O$.extend(fileUpload,{
       _getNumProperty:function (el, prop) {
-        return O$.getElementStyle(el, prop).replace("px", "") * 1;
+        var res = O$.getElementStyle(el, prop).replace("px", "") * 1;
+        if (isNaN(res)) {
+          return 0;
+        }
+        return  res;
       },
       _getDropTargetArea:function(id){
         var dropTarget = O$(id);

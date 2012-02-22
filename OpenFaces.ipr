@@ -1447,6 +1447,7 @@
     <library name="servlet-api">
       <CLASSES>
         <root url="jar://$PROJECT_DIR$/lib/servlet-api.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/javax.servlet-3.0.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
