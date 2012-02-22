@@ -27,6 +27,7 @@
           <include name="jsp-api-2.1.jar"/>
           <include name="servlet-api.jar"/>
           <include name="jstl-1.1.0.jar"/>
+          <include name="javax.servlet-3.0.jar"/>
         </fileset>
         <fileset dir="${facelets.lib.dir}">
           <include name="jsf-facelets-1.1.15.jar"/>

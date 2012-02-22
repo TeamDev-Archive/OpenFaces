@@ -19,10 +19,13 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 
+@WebFilter(filterName = "OpenFacesUploadFilter",
+        urlPatterns = "/*")
 public class FileUploadFilter implements Filter {
     private static final String INIT_PARAM_TEMP_DIR = "org.openfaces.fileUpload.tempDir";
     private static final String COMPONENT_ID = "uniqueID";
