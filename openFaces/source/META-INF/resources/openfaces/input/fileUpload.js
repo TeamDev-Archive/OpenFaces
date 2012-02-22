@@ -830,8 +830,10 @@ O$.FileUpload = {
       infoWindow._status = O$.FileUploadUtil.Status.NEW;
 
       var fileNameTD = document.createElement("td");
-      O$.setStyleMappings(fileNameTD, {fileName : infoTitleClass});
-      fileNameTD.innerHTML = fileUpload._getFileName(filename);
+      var fileNameEl = document.createElement("div");
+      O$.setStyleMappings(fileNameEl, {fileName : infoTitleClass});
+      fileNameEl.innerHTML = fileUpload._getFileName(filename);
+      fileNameTD.appendChild(fileNameEl);
       infoWindow.appendChild(fileNameTD);
 
       var progressTD = document.createElement("td");

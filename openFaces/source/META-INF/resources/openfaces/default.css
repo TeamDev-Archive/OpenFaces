@@ -1302,6 +1302,9 @@
     padding-top: 5px;
     padding-left: 10px;
     padding-bottom: 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width:190px;
 }
 
 .o_file_upload_info_status {
@@ -1345,6 +1348,15 @@
 }
 .o_s_file_upload_info_progress{
 
+}
+.o_s_file_upload_info_title{
+    font-size: 10pt;
+    padding-top: 5px;
+    padding-left: 10px;
+    padding-bottom: 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width:150px;
 }
 .o_s_file_upload_progress_label{
     display: none;

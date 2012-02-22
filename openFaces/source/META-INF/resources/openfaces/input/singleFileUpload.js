@@ -459,7 +459,7 @@ O$.SingleFileUpload = {
         }
       }
       fileUpload._els.info =  fileUpload._els.infoTable.firstChild.firstChild;
-      fileUpload._els.fileName = fileUpload._els.info.childNodes[0];
+      fileUpload._els.fileName = fileUpload._els.info.childNodes[0].firstChild;
       fileUpload._els.status = fileUpload._els.info.childNodes[1];
     }else if (fileUpload._layoutMode == O$.SingleFileUpload._LayoutMode.MINIMALISTIC){
       var elToRemove = O$(componentId + "::fileInfo").parentNode;

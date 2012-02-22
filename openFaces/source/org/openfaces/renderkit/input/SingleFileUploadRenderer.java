@@ -132,7 +132,7 @@ public final class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
 
     private void writeFileInfo(FacesContext context, SingleFileUpload fileUpload, ResponseWriter writer, String clientId) throws IOException {
         String fileInfoClass = Styles.getCSSClass(context, fileUpload, fileUpload.getRowStyle(), StyleGroup.regularStyleGroup(), fileUpload.getRowClass(), "o_file_upload_info");
-        String infoTitleClass = Styles.getCSSClass(context, fileUpload, fileUpload.getFileNameStyle(), StyleGroup.regularStyleGroup(), fileUpload.getFileNameClass(), "o_file_upload_info_title");
+        String infoTitleClass = Styles.getCSSClass(context, fileUpload, fileUpload.getFileNameStyle(), StyleGroup.regularStyleGroup(), fileUpload.getFileNameClass(), "o_s_file_upload_info_title");
         String infoStatusClass = Styles.getCSSClass(context, fileUpload, fileUpload.getUploadStatusStyle(), StyleGroup.regularStyleGroup(), fileUpload.getUploadStatusClass(), "o_s_file_upload_info_status");
 
         writer.startElement("table", fileUpload);
@@ -141,7 +141,9 @@ public final class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
         writer.startElement("tr", fileUpload);
 
         writer.startElement("td", fileUpload);
+        writer.startElement("div",fileUpload);
         writer.writeAttribute("class", infoTitleClass, null);
+        writer.endElement("div");
         writer.endElement("td");
 
         writer.startElement("td", fileUpload);
