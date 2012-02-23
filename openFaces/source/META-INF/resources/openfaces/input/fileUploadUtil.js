@@ -497,22 +497,22 @@ O$.FileUploadUtil = {
         function updateStatus(uploaded, size) {
           var text = this.text;
           if (size != "") {
-            text = text.replace("{size}", (size / Math.pow(2, this.pow)).toFixed(2));
+            text = text.replace("{size}", Math.ceil((size / Math.pow(2, this.pow))));
           } else {
             text = text.replace("{size}", size);
           }
           if (uploaded != null) {
-            text = text.replace("{uploaded}", (uploaded / Math.pow(2, this.pow)).toFixed(2));
+            text = text.replace("{uploaded}", Math.ceil(uploaded / Math.pow(2, this.pow)));
           }
           return text;
         }
         var sizeDimensions = [
-          {title:"{KB}",
+          {title:"[KB]",
             pow:10},
-          {title:"{MB}",
+          {title:"[MB]",
             pow:20},
-          {title:"{B}",
-            pow:1}
+          {title:"[B]",
+            pow:0}
         ];
         for (var dimIndex = 0; dimIndex < sizeDimensions.length; dimIndex++) {
           var index = statusText.indexOf(sizeDimensions[dimIndex].title);
@@ -521,7 +521,7 @@ O$.FileUploadUtil = {
             return {text:modified, pow:sizeDimensions[dimIndex].pow, _update:updateStatus};
           }
         }
-        return {text:statusText, pow:1, _update:updateStatus};
+        return {text:statusText, pow:10, _update:updateStatus};
       },
       _createStructureForInputs:    function (){
         var allInputsForFiles = document.createElement("div");

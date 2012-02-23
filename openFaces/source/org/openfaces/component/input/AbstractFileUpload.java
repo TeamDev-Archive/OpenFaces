@@ -297,7 +297,7 @@ public abstract class AbstractFileUpload extends OUIInputBase {
     }
 
     public String getUploadedStatusText() {
-        return ValueBindings.get(this, "uploadedStatusText", uploadedStatusText, "{size} MB{MB}");
+        return ValueBindings.get(this, "uploadedStatusText", uploadedStatusText, "{size} KB[KB]");
     }
 
     public void setUploadedStatusText(String uploadedStatusText) {
@@ -305,7 +305,7 @@ public abstract class AbstractFileUpload extends OUIInputBase {
     }
 
     public String getInProgressStatusText() {
-        return ValueBindings.get(this, "inProgressStatusText", inProgressStatusText, "{uploaded} of {size} MB{MB}");
+        return ValueBindings.get(this, "inProgressStatusText", inProgressStatusText, "{uploaded} of {size} KB[KB]");
     }
 
     public void setInProgressStatusText(String inProgressStatusText) {

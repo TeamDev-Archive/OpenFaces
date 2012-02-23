@@ -801,7 +801,6 @@ O$.SingleFileUpload = {
       if (fileUpload._layoutMode == O$.SingleFileUpload._LayoutMode.FULL) {
         fileUpload._els.fileName.innerHTML = fileUpload._getFileName(filename); //filename
         fileUpload._els.status.innerHTML = fileUpload._statuses.newOne;//status
-        fileUpload._els.fileName._widthShouldBe = O$.getElementSize(fileUpload._els.fileName).width + "px";
       }
       if (fileUpload._showStopNearProgress){
         fileUpload._els.progressBar.style.visibility = "hidden";
@@ -840,9 +839,6 @@ O$.SingleFileUpload = {
       }else{
         fileUpload._els.progressBar.style.display = "block";
         fileUpload._els.progressBar.setValue(0);
-      }
-      if (fileUpload._els.fileName) {
-        fileUpload._els.fileName.style.width = fileUpload._els.fileName._widthShouldBe;
       }
     }
   },
