@@ -232,6 +232,7 @@ public final class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
                 Utilities.getFunctionOfEvent(fileUpload.getOnuploadinprogress()),
                 Utilities.getFunctionOfEvent(fileUpload.getOnuploadend()),
                 Utilities.getFunctionOfEvent(fileUpload.getOnwrongfileadded()),
+                Utilities.getFunctionOfEvent(fileUpload.getOndirectorydropped()),
                 dropTargetDragoverClass,
                 (fileUpload.getRenderAfterUpload() == null) ? null : Utilities.getForm(fileUpload).getClientId(context) + ":" + fileUpload.getRenderAfterUpload(),
                 fileUpload.getExternalDropTarget(),
@@ -241,7 +242,8 @@ public final class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
                 getIconStyle(fileUpload, layoutMode),
                 fileUpload.getBackToFirstScreen(),
                 fileUpload.getWhatToDoWithUploadOnUploading(),
-                fileUpload.getShowStopButtonNearProgress()
+                fileUpload.getShowStopButtonNearProgress(),
+                fileUpload.getDirectoryDroppedText()
         );
 
         Rendering.renderInitScript(context, initScript,

@@ -16,21 +16,24 @@ O$.FileUploadUtil = {
                         addButtonClass, addButtonOnMouseOverClass, addButtonOnMouseDownClass,addButtonOnFocusClass,
                         statusLabelInProgress,statusLabelUploaded,statusLabelErrorSize,
                         statusLabelNotUploaded,statusStoppedText,statusLabelUnexpectedError,
-                        renderAfterUpload,tabIndex,dropTargetCrossoverClass,externalDropTarget,acceptDialogFormats){
+                        renderAfterUpload,tabIndex,dropTargetCrossoverClass,externalDropTarget,acceptDialogFormats,
+                        directoryDroppedText){
     O$.FileUploadUtil._initGeneralFunctions(fileUpload);
     O$.FileUploadUtil._initGeneralFields(fileUpload,
             lengthAlreadyUploadedFiles, acceptedTypesOfFile, isDisabled, ID,
             addButtonClass, addButtonOnMouseOverClass, addButtonOnMouseDownClass,addButtonOnFocusClass,
             statusLabelInProgress,statusLabelUploaded,statusLabelErrorSize,
             statusLabelNotUploaded,statusStoppedText,statusLabelUnexpectedError,
-            renderAfterUpload,tabIndex,dropTargetCrossoverClass,externalDropTarget, acceptDialogFormats);
+            renderAfterUpload,tabIndex,dropTargetCrossoverClass,externalDropTarget, acceptDialogFormats,
+            directoryDroppedText);
   },
   _initGeneralFields:function (fileUpload,
                                lengthAlreadyUploadedFiles, acceptedTypesOfFile, isDisabled, ID,
                                addButtonClass, addButtonOnMouseOverClass, addButtonOnMouseDownClass,addButtonOnFocusClass,
                                statusLabelInProgress,statusLabelUploaded,statusLabelErrorSize,
                                statusLabelNotUploaded,statusStoppedText,statusLabelUnexpectedError,
-                               renderAfterUpload, tabIndex, dropTargetCrossoverClass, externalDropTarget, acceptDialogFormats) {
+                               renderAfterUpload, tabIndex, dropTargetCrossoverClass, externalDropTarget, acceptDialogFormats,
+                               directoryDroppedText) {
     O$.extend(fileUpload, {
       _numberOfFilesToUpload:0,
       _lengthUploadedFiles:lengthAlreadyUploadedFiles,
@@ -76,7 +79,8 @@ O$.FileUploadUtil = {
         }
         return undefined;
       }(),
-      _acceptDialogFormats:acceptDialogFormats
+      _acceptDialogFormats:acceptDialogFormats,
+      _directoryDroppedText:directoryDroppedText
     });
   },
   _initGeneralFunctions: function(fileUpload){
@@ -249,7 +253,7 @@ O$.FileUploadUtil = {
       },
       _setAllEvents:function (onchangeHandler,onstartHandler,onendHandler,
                               onuploadstartHandler,onuploadinprogressHandler, onuploadendHandler,
-                              onwrongfileaddedHandler) {
+                              onwrongfileaddedHandler, ondirectorydroppedHandler) {
         function createEventHandler(userHandler, eventName) {
           return function (files) {
             if (userHandler) {
@@ -279,6 +283,14 @@ O$.FileUploadUtil = {
             onwrongfileaddedHandler(event);
           } else {
             alert("Wrong type of file");
+          }
+        };
+        fileUpload._events._fireDirectoryDroppedEvent = function(){
+          if (ondirectorydroppedHandler) {
+            var event = O$.createEvent("ondirectorydropped");
+            ondirectorydroppedHandler(event);
+          } else {
+            alert(fileUpload._directoryDroppedText);
           }
         };
 
@@ -352,6 +364,10 @@ O$.FileUploadUtil = {
      this method doesn't fully guarantee that file is directory.
      * */
        _isDirectory:function (file) {
+         if (file.size == 0){
+           fileUpload._events._fireDirectoryDroppedEvent();
+           return true;
+         }
         if (file.type != "") {
           return false;
         }
@@ -360,10 +376,12 @@ O$.FileUploadUtil = {
           if (koef > 0 && koef < 10) {
             var index = file.name.lastIndexOf(".");
             if (index == -1) {
+              fileUpload._events._fireDirectoryDroppedEvent();
               return true;
             }
             var extension = file.name.substr(index + 1);
             if (!(extension.length >= 3 && extension.match(/^[a-zA-Z]+$/))) {
+              fileUpload._events._fireDirectoryDroppedEvent();
               return true;
             }
 

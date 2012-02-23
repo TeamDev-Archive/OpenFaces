@@ -19,10 +19,10 @@ O$.SingleFileUpload = {
                   isDisabled,
                   tabIndex, progressBarId, statusStoppedText, statusStoppingText, ID,
                   onchangeHandler, onstartHandler, onendHandler,
-                  onuploadstartHandler, onuploadinprogressHandler, onuploadendHandler, onwrongfileaddedHandler,
+                  onuploadstartHandler, onuploadinprogressHandler, onuploadendHandler, onwrongfileaddedHandler, ondirectorydroppedHandler,
                   dropTargetCrossoverClass, renderAfterUpload, externalDropTarget, acceptDialogFormats,
                   layoutMode, defStopUrl, stopIcoClassMin,
-                  backTofirstScreen, uploadBtnBehavior, showStopNearProgress) {
+                  backTofirstScreen, uploadBtnBehavior, showStopNearProgress, directoryDroppedText) {
 
     var fileUpload = O$.initComponent(componentId, null, {
       _backToFirstScreen : backTofirstScreen,
@@ -41,7 +41,7 @@ O$.SingleFileUpload = {
       }(),
       _processFileAddingHTML5:function (file) {
         if (isFileNameNotApplied(file.name) || fileUpload._buttons.browseInput.disabled ||
-                (file.size == 0) || (file._fromDnD && fileUpload._isDirectory(file))) {
+                (!file._fromDnD && file.size == 0) || (file._fromDnD && fileUpload._isDirectory(file))) {
           return false;
         }
         setInfoWindow(file.name);
@@ -440,10 +440,12 @@ O$.SingleFileUpload = {
             addButtonClass, addButtonOnMouseOverClass, addButtonOnMouseDownClass,addButtonOnFocusClass,
             statusLabelInProgress,statusLabelUploaded,statusLabelErrorSize,
             statusLabelNotUploaded,statusStoppedText,statusLabelUnexpectedError,
-            renderAfterUpload,tabIndex,dropTargetCrossoverClass, externalDropTarget, acceptDialogFormats);
+            renderAfterUpload,tabIndex,dropTargetCrossoverClass, externalDropTarget, acceptDialogFormats,
+            directoryDroppedText);
 
     fileUpload._setAllEvents(onchangeHandler,onstartHandler,onendHandler,
-            onuploadstartHandler,onuploadinprogressHandler,onuploadendHandler,onwrongfileaddedHandler);
+            onuploadstartHandler,onuploadinprogressHandler,onuploadendHandler,
+            onwrongfileaddedHandler,ondirectorydroppedHandler);
 
     //getting clear,stop,cancel, progressBar facet for each info window
     fileUpload._elementsCont = O$(componentId + "::elements");

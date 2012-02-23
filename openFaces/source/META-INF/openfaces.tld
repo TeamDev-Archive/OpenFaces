@@ -45055,10 +45055,23 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when user tried to add file with not allowed extension.
+      <description>JavaScript code that should be executed when user choose file with not allowed extension.
         By default, alert message will be shown.
       </description>
       <name>onwrongfileadded</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>
+        JavaScript code that should be executed when user drops folder to dropTarget.
+        By default, alert message will be shown.
+      </description>
+      <name>ondirectorydropped</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -45245,6 +45258,17 @@ entering a value and returns a list of suggestions from the server -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>This attribute specifies text for default ondirectorydropped eventHandler.
+      </description>
+      <name>directoryDroppedText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  "Can't upload folder"-->
       <!-- @el true -->
     </attribute>
   </tag>
@@ -45843,10 +45867,23 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when user tried to add file with not allowed extension.
+      <description>JavaScript code that should be executed when user choose file with not allowed extension.
         By default, alert message will be shown.
       </description>
       <name>onwrongfileadded</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>
+        JavaScript code that should be executed when user drops folder to dropTarget.
+        By default, alert message will be shown.
+      </description>
+      <name>ondirectorydropped</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -46026,7 +46063,17 @@ entering a value and returns a list of suggestions from the server -->
       If it is assigned to "full" then false; If "minimalistic" then true"-->
       <!-- @el true -->
     </attribute>
-
+    <attribute>
+      <description>This attribute specifies text for default ondirectorydropped eventHandler.
+      </description>
+      <name>directoryDroppedText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  "Can't upload folder"-->
+      <!-- @el true -->
+    </attribute>
   </tag>
   <tag>
     <name>progressBar</name>
