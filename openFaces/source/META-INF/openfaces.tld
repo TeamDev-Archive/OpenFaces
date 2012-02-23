@@ -44490,33 +44490,36 @@ entering a value and returns a list of suggestions from the server -->
     <attribute>
       <description>This text appears in status div when file is already uploaded.
         Also you can display size of uploaded file in useful form - in bytes{B}, kylobytes{KB} or megabytes{MB}.
-        For example: {size} MB{MB}
+        For example: {size} MB{MB}.
+        By default, fileSize is presented in kilobytes.
       </description>
       <name>uploadedStatusText</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default {size} MB{MB} -->
+      <!-- @default {size} KB{KB} -->
       <!-- @el true -->
     </attribute>
     <attribute>
       <description>This text appears as status of file when it is uploading at the moment.
         You can display useful information about uploading process such as how many already uploaded{uploaded} and size of file{size}.
         For example: {uploaded} / {size} MB{MB},
-        Also you can set how it will display - in bytes{B}, kylobytes{KB} or megabytes{MB}
+        Also you can set how it will display - in bytes{B}, kilobytes{KB} or megabytes{MB}.
+        By default, fileSize is presented in kilobytes.
       </description>
       <name>inProgressStatusText</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default {uploaded} of {size} MB{MB} -->
+      <!-- @default "{uploaded} of {size} KB{KB}" -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This text appears as status of file when its size is more than acceptable (this param should be setted  in web.xml or as fileSizeLimit attribute).
+      <description>This text appears as status of file when its size is more than acceptable (this param should be specified  in web.xml or as fileSizeLimit attribute).
         Also you can display size of uploaded file in useful form - in bytes{B}, kylobytes{KB} or megabytes{MB}. For example: '{size}{MB}MB is bigger than allowed'
+        By default, fileSize is presented in kilobytes.
       </description>
       <name>fileSizeLimitErrorText</name>
       <deferred-value>
@@ -44938,10 +44941,23 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when user tried to add file with not allowed extension.
+      <description>JavaScript code that should be executed when user choose file with not allowed extension.
         By default, alert message will be shown.
       </description>
       <name>onwrongfileadded</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>
+        JavaScript code that should be executed when user drops folder to dropTarget.
+        By default, alert message will be shown.
+      </description>
+      <name>ondirectorydropped</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -45130,6 +45146,17 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>This attribute specifies text for default ondirectorydropped eventHandler.
+      </description>
+      <name>directoryDroppedText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  "Can't upload folder"-->
+      <!-- @el true -->
+    </attribute>
   </tag>
   <tag>
     <name>singleFileUpload</name>
@@ -45291,33 +45318,36 @@ entering a value and returns a list of suggestions from the server -->
     <attribute>
       <description>This text appears in status div when file is already uploaded.
         Also you can display size of uploaded file in useful form - in bytes{B}, kylobytes{KB} or megabytes{MB}.
-        For example: {size} MB{MB}
+        For example: {size} MB{MB}.
+        By default, fileSize is presented in kilobytes.
       </description>
       <name>uploadedStatusText</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default Uploaded -->
+      <!-- @default {size} KB{KB} -->
       <!-- @el true -->
     </attribute>
     <attribute>
       <description>This text appears as status of file when it is uploading at the moment.
         You can display useful information about uploading process such as how many already uploaded{uploaded} and size of file{size}.
         For example: {uploaded} / {size} MB{MB},
-        Also you can set how it will display - in bytes{B}, kylobytes{KB} or megabytes{MB}
+        Also you can set how it will display - in bytes{B}, kilobytes{KB} or megabytes{MB}.
+        By default, fileSize is presented in kilobytes.
       </description>
       <name>inProgressStatusText</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default Uploading... -->
+      <!-- @default "{uploaded} of {size} KB{KB}" -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This text appears as status of file when its size is more than acceptable (this param should be setted  in web.xml or as fileSizeLimit attribute).
+      <description>This text appears as status of file when its size is more than acceptable (this param should be specified  in web.xml or as fileSizeLimit attribute).
         Also you can display size of uploaded file in useful form - in bytes{B}, kylobytes{KB} or megabytes{MB}. For example: '{size}{MB}MB is bigger than allowed'
+        By default, fileSize is presented in kilobytes.
       </description>
       <name>fileSizeLimitErrorText</name>
       <deferred-value>
@@ -45726,10 +45756,23 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when user tried to add file with not allowed extension.
+      <description>JavaScript code that should be executed when user choose file with not allowed extension.
         By default, alert message will be shown.
       </description>
       <name>onwrongfileadded</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>
+        JavaScript code that should be executed when user drops folder to dropTarget.
+        By default, alert message will be shown.
+      </description>
+      <name>ondirectorydropped</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -45909,7 +45952,17 @@ entering a value and returns a list of suggestions from the server -->
       If it is assigned to "full" then false; If "minimalistic" then true"-->
       <!-- @el true -->
     </attribute>
-
+    <attribute>
+      <description>This attribute specifies text for default ondirectorydropped eventHandler.
+      </description>
+      <name>directoryDroppedText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  "Can't upload folder"-->
+      <!-- @el true -->
+    </attribute>
   </tag>
   <tag>
     <name>progressBar</name>

@@ -103,15 +103,18 @@ public abstract class AbstractFileUpload extends OUIInputBase {
     private String onuploadinprogress;
     private String onuploadend;
     private String onwrongfileadded;
+    private String ondirectorydropped;
 
     private int fileSizeLimit;
 
 
     private String renderAfterUpload;
-    
+
     private String externalDropTarget;
-    
+
     private String acceptDialogFormats;
+
+    private String directoryDroppedText;
 
     public AbstractFileUpload() {
         setRendererType("org.openfaces.FileUploadRenderer");
@@ -166,12 +169,14 @@ public abstract class AbstractFileUpload extends OUIInputBase {
                 onuploadinprogress,
                 onuploadend,
                 onwrongfileadded,
+                ondirectorydropped,
                 stoppingStatusText,
                 unexpectedErrorText,
                 fileSizeLimit,
                 renderAfterUpload,
                 externalDropTarget,
-                acceptDialogFormats
+                acceptDialogFormats,
+                directoryDroppedText
         };
     }
 
@@ -220,12 +225,14 @@ public abstract class AbstractFileUpload extends OUIInputBase {
         onuploadinprogress = (String) values[i++];
         onuploadend = (String) values[i++];
         onwrongfileadded = (String) values[i++];
+        ondirectorydropped = (String) values[i++];
         stoppingStatusText = (String) values[i++];
         unexpectedErrorText = (String) values[i++];
         fileSizeLimit = (Integer) values[i++];
         renderAfterUpload = (String) values[i++];
         externalDropTarget = (String) values[i++];
         acceptDialogFormats = (String) values[i++];
+        directoryDroppedText = (String) values[i++];
     }
 
 
@@ -308,7 +315,7 @@ public abstract class AbstractFileUpload extends OUIInputBase {
     }
 
     public String getUploadedStatusText() {
-        return ValueBindings.get(this, "uploadedStatusText", uploadedStatusText, "{size} MB{MB}");
+        return ValueBindings.get(this, "uploadedStatusText", uploadedStatusText, "{size} KB[KB]");
     }
 
     public void setUploadedStatusText(String uploadedStatusText) {
@@ -316,7 +323,7 @@ public abstract class AbstractFileUpload extends OUIInputBase {
     }
 
     public String getInProgressStatusText() {
-        return ValueBindings.get(this, "inProgressStatusText", inProgressStatusText, "{uploaded} of {size} MB{MB}");
+        return ValueBindings.get(this, "inProgressStatusText", inProgressStatusText, "{uploaded} of {size} KB[KB]");
     }
 
     public void setInProgressStatusText(String inProgressStatusText) {
@@ -575,6 +582,14 @@ public abstract class AbstractFileUpload extends OUIInputBase {
         this.onwrongfileadded = onwrongfileadded;
     }
 
+    public String getOndirectorydropped() {
+        return ValueBindings.get(this, "ondirectorydropped", ondirectorydropped);
+    }
+
+    public void setOndirectorydropped(String ondirectorydropped) {
+        this.ondirectorydropped = ondirectorydropped;
+    }
+
     public String getStoppingStatusText() {
         return ValueBindings.get(this, "stoppingStatusText", stoppingStatusText, "Stopping...");
     }
@@ -631,5 +646,13 @@ public abstract class AbstractFileUpload extends OUIInputBase {
 
     public void setAcceptDialogFormats(String acceptDialogFormats) {
         this.acceptDialogFormats = acceptDialogFormats;
+    }
+
+    public String getDirectoryDroppedText() {
+        return ValueBindings.get(this, "directoryDroppedText", directoryDroppedText, "Can't upload folder");
+    }
+
+    public void setDirectoryDroppedText(String directoryDroppedText) {
+        this.directoryDroppedText = directoryDroppedText;
     }
 }

@@ -16,21 +16,24 @@ O$.FileUploadUtil = {
                         addButtonClass, addButtonOnMouseOverClass, addButtonOnMouseDownClass,addButtonOnFocusClass,
                         statusLabelInProgress,statusLabelUploaded,statusLabelErrorSize,
                         statusLabelNotUploaded,statusStoppedText,statusLabelUnexpectedError,
-                        renderAfterUpload,tabIndex,dropTargetCrossoverClass,externalDropTarget,acceptDialogFormats){
+                        renderAfterUpload,tabIndex,dropTargetCrossoverClass,externalDropTarget,acceptDialogFormats,
+                        directoryDroppedText){
     O$.FileUploadUtil._initGeneralFunctions(fileUpload);
     O$.FileUploadUtil._initGeneralFields(fileUpload,
             lengthAlreadyUploadedFiles, acceptedTypesOfFile, isDisabled, ID,
             addButtonClass, addButtonOnMouseOverClass, addButtonOnMouseDownClass,addButtonOnFocusClass,
             statusLabelInProgress,statusLabelUploaded,statusLabelErrorSize,
             statusLabelNotUploaded,statusStoppedText,statusLabelUnexpectedError,
-            renderAfterUpload,tabIndex,dropTargetCrossoverClass,externalDropTarget, acceptDialogFormats);
+            renderAfterUpload,tabIndex,dropTargetCrossoverClass,externalDropTarget, acceptDialogFormats,
+            directoryDroppedText);
   },
   _initGeneralFields:function (fileUpload,
                                lengthAlreadyUploadedFiles, acceptedTypesOfFile, isDisabled, ID,
                                addButtonClass, addButtonOnMouseOverClass, addButtonOnMouseDownClass,addButtonOnFocusClass,
                                statusLabelInProgress,statusLabelUploaded,statusLabelErrorSize,
                                statusLabelNotUploaded,statusStoppedText,statusLabelUnexpectedError,
-                               renderAfterUpload, tabIndex, dropTargetCrossoverClass, externalDropTarget, acceptDialogFormats) {
+                               renderAfterUpload, tabIndex, dropTargetCrossoverClass, externalDropTarget, acceptDialogFormats,
+                               directoryDroppedText) {
     O$.extend(fileUpload, {
       _numberOfFilesToUpload:0,
       _lengthUploadedFiles:lengthAlreadyUploadedFiles,
@@ -76,7 +79,8 @@ O$.FileUploadUtil = {
         }
         return undefined;
       }(),
-      _acceptDialogFormats:acceptDialogFormats
+      _acceptDialogFormats:acceptDialogFormats,
+      _directoryDroppedText:directoryDroppedText
     });
   },
   _initGeneralFunctions: function(fileUpload){
@@ -249,7 +253,7 @@ O$.FileUploadUtil = {
       },
       _setAllEvents:function (onchangeHandler,onstartHandler,onendHandler,
                               onuploadstartHandler,onuploadinprogressHandler, onuploadendHandler,
-                              onwrongfileaddedHandler) {
+                              onwrongfileaddedHandler, ondirectorydroppedHandler) {
         function createEventHandler(userHandler, eventName) {
           return function (files) {
             if (userHandler) {
@@ -279,6 +283,14 @@ O$.FileUploadUtil = {
             onwrongfileaddedHandler(event);
           } else {
             alert("Wrong type of file");
+          }
+        };
+        fileUpload._events._fireDirectoryDroppedEvent = function(){
+          if (ondirectorydroppedHandler) {
+            var event = O$.createEvent("ondirectorydropped");
+            ondirectorydroppedHandler(event);
+          } else {
+            alert(fileUpload._directoryDroppedText);
           }
         };
 
@@ -348,10 +360,14 @@ O$.FileUploadUtil = {
         }
 
       },
-      /*Because of imperfect value of file's size when directory is chosen (I got values 4096*x where x is between 1 - 8)
-       this method doesn't fully guarantee that file is directory.
-       * */
-      _isDirectory:function (file) {
+    /*Because of imperfect value of file's size when directory is chosen (I got values 4096*x where x is between 1 - 8)
+     this method doesn't fully guarantee that file is directory.
+     * */
+       _isDirectory:function (file) {
+         if (file.size == 0){
+           fileUpload._events._fireDirectoryDroppedEvent();
+           return true;
+         }
         if (file.type != "") {
           return false;
         }
@@ -360,10 +376,12 @@ O$.FileUploadUtil = {
           if (koef > 0 && koef < 10) {
             var index = file.name.lastIndexOf(".");
             if (index == -1) {
+              fileUpload._events._fireDirectoryDroppedEvent();
               return true;
             }
             var extension = file.name.substr(index + 1);
             if (!(extension.length >= 3 && extension.match(/^[a-zA-Z]+$/))) {
+              fileUpload._events._fireDirectoryDroppedEvent();
               return true;
             }
 
@@ -479,22 +497,22 @@ O$.FileUploadUtil = {
         function updateStatus(uploaded, size) {
           var text = this.text;
           if (size != "") {
-            text = text.replace("{size}", (size / Math.pow(2, this.pow)).toFixed(2));
+            text = text.replace("{size}", Math.ceil((size / Math.pow(2, this.pow))));
           } else {
             text = text.replace("{size}", size);
           }
           if (uploaded != null) {
-            text = text.replace("{uploaded}", (uploaded / Math.pow(2, this.pow)).toFixed(2));
+            text = text.replace("{uploaded}", Math.ceil(uploaded / Math.pow(2, this.pow)));
           }
           return text;
         }
         var sizeDimensions = [
-          {title:"{KB}",
+          {title:"[KB]",
             pow:10},
-          {title:"{MB}",
+          {title:"[MB]",
             pow:20},
-          {title:"{B}",
-            pow:1}
+          {title:"[B]",
+            pow:0}
         ];
         for (var dimIndex = 0; dimIndex < sizeDimensions.length; dimIndex++) {
           var index = statusText.indexOf(sizeDimensions[dimIndex].title);
@@ -503,7 +521,7 @@ O$.FileUploadUtil = {
             return {text:modified, pow:sizeDimensions[dimIndex].pow, _update:updateStatus};
           }
         }
-        return {text:statusText, pow:1, _update:updateStatus};
+        return {text:statusText, pow:10, _update:updateStatus};
       },
       _createStructureForInputs:    function (){
         var allInputsForFiles = document.createElement("div");

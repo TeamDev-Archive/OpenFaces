@@ -1302,6 +1302,9 @@
     padding-top: 5px;
     padding-left: 10px;
     padding-bottom: 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width:145px;
 }
 
 .o_file_upload_info_status {
@@ -1313,6 +1316,7 @@
     padding-top: 5px;
     padding-bottom:5px;
     vertical-align:middle;
+    text-align: center;
 }
 
 .o_file_upload_info_progress {
@@ -1346,6 +1350,15 @@
 .o_s_file_upload_info_progress{
 
 }
+.o_s_file_upload_info_title{
+    font-size: 10pt;
+    padding-top: 5px;
+    padding-left: 10px;
+    padding-bottom: 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width:140px;
+}
 .o_s_file_upload_progress_label{
     display: none;
 }
@@ -1376,6 +1389,7 @@
     font-size: 8pt;
     margin-right: 2px;
     width: 100px;
+    text-align: center;
 }
 .o_s_file_clear_btn{
 
