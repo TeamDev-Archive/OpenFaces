@@ -440,7 +440,7 @@ O$.SingleFileUpload = {
             addButtonClass, addButtonOnMouseOverClass, addButtonOnMouseDownClass,addButtonOnFocusClass,
             statusLabelInProgress,statusLabelUploaded,statusLabelErrorSize,
             statusLabelNotUploaded,statusStoppedText,statusLabelUnexpectedError,
-            renderAfterUpload,tabIndex,dropTargetCrossoverClass, externalDropTarget, acceptDialogFormats,
+            renderAfterUpload,tabIndex,dropTargetCrossoverClass, acceptDialogFormats,
             directoryDroppedText);
 
     fileUpload._setAllEvents(onchangeHandler,onstartHandler,onendHandler,
@@ -656,65 +656,68 @@ O$.SingleFileUpload = {
     );
     initHeaderButtons(true);
     setFocusBlurBehaviour();
+    O$.addEventHandler(window, "load", function setupDropTarget(){
+      O$.removeEventHandler(window, "load", setupDropTarget);
+      fileUpload._setupExternalDropTarget(externalDropTarget);
+      fileUpload._els.dropTarget = function setBehaviorForDragAndDropArea(){
+        var area = fileUpload._getDropTargetArea(fileUpload.id + "::dragArea");
+        area._firstShow = true;
 
-    fileUpload._els.dropTarget = setBehaviorForDragAndDropArea();
-    O$.SingleFileUpload._initFileUploadAPI(fileUpload);
-    function setBehaviorForDragAndDropArea(){
-      var area = fileUpload._getDropTargetArea(fileUpload.id + "::dragArea");
-      area._firstShow = true;
-
-      O$.FileUploadUtil._initDragArea(area);
-      O$.extend(area, {
-        hide:function(){
-          if (!area._isExternal){
-            fileUpload.firstChild.style.display = "";
-          }
-          area.style.display = "none";
-          area._firstShow = true;
-        },
-        show:function(){
-          if (!area._isExternal && area._firstShow) {
-            function getCorrectWidthForArea(area) {
-              return O$.getElementSize(fileUpload).width - fileUpload._getNumProperty(area, "border-top-width") * 2
-                      - fileUpload._getNumProperty(area,"margin-left") - fileUpload._getNumProperty(area,"margin-right");
+        O$.FileUploadUtil._initDragArea(area);
+        O$.extend(area, {
+          hide:function(){
+            if (!area._isExternal){
+              fileUpload.firstChild.style.display = "";
             }
-
-            function getCorrectHeightForArea(area) {
-              function getGreaterHeight() {
-                return O$.getElementSize(fileUpload).height - fileUpload._getNumProperty(fileUpload,"border-top-width")*2
-                        - fileUpload._getNumProperty(area,"margin-top") - fileUpload._getNumProperty(area,"margin-bottom") ;
+            area.style.display = "none";
+            area._firstShow = true;
+          },
+          show:function(){
+            if (!area._isExternal && area._firstShow) {
+              function getCorrectWidthForArea(area) {
+                return O$.getElementSize(fileUpload).width - fileUpload._getNumProperty(area, "border-top-width") * 2
+                        - fileUpload._getNumProperty(area,"margin-left") - fileUpload._getNumProperty(area,"margin-right");
               }
 
-              function getDiff(area) {
-                var diff = fileUpload._getNumProperty(area, "border-top-width");
-                diff *= 2;
-                diff += fileUpload._getNumProperty(area, "padding-top");
-                return diff;
+              function getCorrectHeightForArea(area) {
+                function getGreaterHeight() {
+                  return O$.getElementSize(fileUpload).height - fileUpload._getNumProperty(fileUpload,"border-top-width")*2
+                          - fileUpload._getNumProperty(area,"margin-top") - fileUpload._getNumProperty(area,"margin-bottom") ;
+                }
+
+                function getDiff(area) {
+                  var diff = fileUpload._getNumProperty(area, "border-top-width");
+                  diff *= 2;
+                  diff += fileUpload._getNumProperty(area, "padding-top");
+                  return diff;
+                }
+
+                return getGreaterHeight() - getDiff(area);
               }
 
-              return getGreaterHeight() - getDiff(area);
+              area.style.height = getCorrectHeightForArea(area) + "px";
+              area.style.width = getCorrectWidthForArea(area) + "px";
+              area._firstShow = false;
             }
-
-            area.style.height = getCorrectHeightForArea(area) + "px";
-            area.style.width = getCorrectWidthForArea(area) + "px";
-            area._firstShow = false;
+            if (!area._isExternal) {
+              fileUpload.firstChild.style.display = "none";
+            }
+            area.style.display = "block";
           }
-          if (!area._isExternal) {
-            fileUpload.firstChild.style.display = "none";
-          }
-          area.style.display = "block";
+        });
+        if (!O$._dropAreas){
+          O$._dropAreas = [];
         }
-      });
-      if (!O$._dropAreas){
-        O$._dropAreas = [];
-      }
-      O$._dropAreas.push(area);
-      var body = document.getElementsByTagName('body')[0];
-      area._isVisible = false;
-      fileUpload._setDragEventsForBody(body, area);
-      fileUpload._setDragEventsForFileUpload(area);
-      return area;
-    }
+        O$._dropAreas.push(area);
+        var body = document.getElementsByTagName('body')[0];
+        area._isVisible = false;
+        fileUpload._setDragEventsForBody(body, area);
+        fileUpload._setDragEventsForFileUpload(area);
+        return area;
+      }();
+    });
+
+    O$.SingleFileUpload._initFileUploadAPI(fileUpload);
 
     O$.addEventHandler(document, "sessionexpired", function (){
       var f = fileUpload._currentFile;

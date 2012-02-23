@@ -485,7 +485,7 @@ O$.FileUpload = {
             addButtonClass, addButtonOnMouseOverClass, addButtonOnMouseDownClass,addButtonOnFocusClass,
             statusLabelInProgress,statusLabelUploaded,statusLabelErrorSize,
             statusLabelNotUploaded,statusStoppedText,statusLabelUnexpectedError,
-            renderAfterUpload,tabIndex,dropTargetCrossoverClass, externalDropTarget, acceptDialogFormats,
+            renderAfterUpload,tabIndex,dropTargetCrossoverClass, acceptDialogFormats,
             directoryDroppedText);
 
     fileUpload._setAllEvents(onchangeHandler,onstartHandler,onendHandler,
@@ -721,29 +721,31 @@ O$.FileUpload = {
     initHeaderButtons(true);
     setFocusBlurBehaviour();
     setUploadButtonBehaviour();
-
-    setBehaviorForDragAndDropArea();
-    O$.FileUpload._initFileUploadAPI(fileUpload);
-    function setBehaviorForDragAndDropArea(){
-      var area = fileUpload._getDropTargetArea(componentId + "::footer::dragArea");
-      O$.FileUploadUtil._initDragArea(area);
-      O$.extend(area, {
-        hide:function(){
-          area.style.display = "none";
-        },
-        show:function(){
-          area.style.display = "block";
+    O$.addEventHandler(window, "load", function setupDropTarget(){
+      O$.removeEventHandler(window, "load", setupDropTarget);
+      fileUpload._setupExternalDropTarget(externalDropTarget);
+      new function setBehaviorForDragAndDropArea(){
+        var area = fileUpload._getDropTargetArea(componentId + "::footer::dragArea");
+        O$.FileUploadUtil._initDragArea(area);
+        O$.extend(area, {
+          hide:function () {
+            area.style.display = "none";
+          },
+          show:function () {
+            area.style.display = "block";
+          }
+        });
+        if (!O$._dropAreas) {
+          O$._dropAreas = [];
         }
-      });
-      if (!O$._dropAreas){
-        O$._dropAreas = [];
-      }
-      O$._dropAreas.push(area);
-      var body = document.getElementsByTagName('body')[0];
-      area._isVisible = false;
-      fileUpload._setDragEventsForBody(body, area);
-      fileUpload._setDragEventsForFileUpload(area);
-    }
+        O$._dropAreas.push(area);
+        var body = document.getElementsByTagName('body')[0];
+        area._isVisible = false;
+        fileUpload._setDragEventsForBody(body, area);
+        fileUpload._setDragEventsForFileUpload(area);
+      }();
+    });
+    O$.FileUpload._initFileUploadAPI(fileUpload);
 
     if (O$.isChrome() || O$.isSafari()){
       O$.addEventHandler(fileUpload._buttons.removeAll, "mousedown", function () {

@@ -16,7 +16,7 @@ O$.FileUploadUtil = {
                         addButtonClass, addButtonOnMouseOverClass, addButtonOnMouseDownClass,addButtonOnFocusClass,
                         statusLabelInProgress,statusLabelUploaded,statusLabelErrorSize,
                         statusLabelNotUploaded,statusStoppedText,statusLabelUnexpectedError,
-                        renderAfterUpload,tabIndex,dropTargetCrossoverClass,externalDropTarget,acceptDialogFormats,
+                        renderAfterUpload,tabIndex,dropTargetCrossoverClass,acceptDialogFormats,
                         directoryDroppedText){
     O$.FileUploadUtil._initGeneralFunctions(fileUpload);
     O$.FileUploadUtil._initGeneralFields(fileUpload,
@@ -24,7 +24,7 @@ O$.FileUploadUtil = {
             addButtonClass, addButtonOnMouseOverClass, addButtonOnMouseDownClass,addButtonOnFocusClass,
             statusLabelInProgress,statusLabelUploaded,statusLabelErrorSize,
             statusLabelNotUploaded,statusStoppedText,statusLabelUnexpectedError,
-            renderAfterUpload,tabIndex,dropTargetCrossoverClass,externalDropTarget, acceptDialogFormats,
+            renderAfterUpload,tabIndex,dropTargetCrossoverClass, acceptDialogFormats,
             directoryDroppedText);
   },
   _initGeneralFields:function (fileUpload,
@@ -32,7 +32,7 @@ O$.FileUploadUtil = {
                                addButtonClass, addButtonOnMouseOverClass, addButtonOnMouseDownClass,addButtonOnFocusClass,
                                statusLabelInProgress,statusLabelUploaded,statusLabelErrorSize,
                                statusLabelNotUploaded,statusStoppedText,statusLabelUnexpectedError,
-                               renderAfterUpload, tabIndex, dropTargetCrossoverClass, externalDropTarget, acceptDialogFormats,
+                               renderAfterUpload, tabIndex, dropTargetCrossoverClass, acceptDialogFormats,
                                directoryDroppedText) {
     O$.extend(fileUpload, {
       _numberOfFilesToUpload:0,
@@ -69,22 +69,23 @@ O$.FileUploadUtil = {
       _renderAfterUpload:renderAfterUpload,
       _tabIndex:tabIndex,
       _dropTargetCrossoverClass:dropTargetCrossoverClass,
-      _externalElForDropTarget: function(){
-        if (externalDropTarget) {
-          var el = O$(externalDropTarget);
-          if (el == null){
-            throw "externalDropTarget id is not correct";
-          }
-          return el;
-        }
-        return undefined;
-      }(),
       _acceptDialogFormats:acceptDialogFormats,
       _directoryDroppedText:directoryDroppedText
     });
   },
   _initGeneralFunctions: function(fileUpload){
     O$.extend(fileUpload,{
+      _setupExternalDropTarget: function(externalDropTargetId){
+        if (externalDropTargetId) {
+          var el = O$(externalDropTargetId);
+          if (el == null) {
+            throw "externalDropTarget id '" +externalDropTargetId + "' is not correct";
+          }
+          fileUpload._externalElForDropTarget = el;
+          return;
+        }
+        fileUpload._externalElForDropTarget = undefined;
+      },
       _getNumProperty:function (el, prop) {
         var res = O$.getElementStyle(el, prop).replace("px", "") * 1;
         if (isNaN(res)) {
