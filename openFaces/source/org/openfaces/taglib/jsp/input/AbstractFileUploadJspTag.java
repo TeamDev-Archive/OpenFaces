@@ -224,4 +224,7 @@ public abstract class AbstractFileUploadJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("directoryDroppedText", directoryDroppedText);
     }
 
+    public void setWrongFileTypeText(ValueExpression wrongFileTypeText) {
+        getDelegate().setPropertyValue("wrongFileTypeText", wrongFileTypeText);
+    }
 }

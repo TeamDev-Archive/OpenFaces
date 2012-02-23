@@ -90,5 +90,6 @@ public abstract class AbstractFileUploadTag extends AbstractComponentTag {
         setStringProperty(component, "externalDropTarget");
         setStringProperty(component, "acceptDialogFormats");
         setStringProperty(component, "directoryDroppedText");
+        setStringProperty(component, "wrongFileTypeText");
     }
 }

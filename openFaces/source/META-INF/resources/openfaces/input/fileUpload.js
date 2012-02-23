@@ -22,7 +22,7 @@ O$.FileUpload = {
                   onchangeHandler, onstartHandler, onendHandler,
                   onuploadstartHandler, onuploadinprogressHandler, onuploadendHandler, onwrongfileaddedHandler, ondirectorydroppedHandler,
                   dropTargetCrossoverClass, uploadMode, renderAfterUpload, externalDropTarget, acceptDialogFormats,
-                  directoryDroppedText) {
+                  directoryDroppedText, wrongFileTypeText) {
 
     var fileUpload = O$.initComponent(componentId, null, {
       _minQuantity : minQuantity,
@@ -486,7 +486,7 @@ O$.FileUpload = {
             statusLabelInProgress,statusLabelUploaded,statusLabelErrorSize,
             statusLabelNotUploaded,statusStoppedText,statusLabelUnexpectedError,
             renderAfterUpload,tabIndex,dropTargetCrossoverClass, acceptDialogFormats,
-            directoryDroppedText);
+            directoryDroppedText, wrongFileTypeText);
 
     fileUpload._setAllEvents(onchangeHandler,onstartHandler,onendHandler,
             onuploadstartHandler,onuploadinprogressHandler,onuploadendHandler,

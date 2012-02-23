@@ -45274,6 +45274,17 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default  "Can't upload folder"-->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>This attribute specifies text for default onwrongfileadded eventHandler.
+      </description>
+      <name>wrongFileTypeText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  "Wrong type of file"-->
+      <!-- @el true -->
+    </attribute>
   </tag>
   <tag>
     <name>singleFileUpload</name>
@@ -46078,6 +46089,17 @@ entering a value and returns a list of suggestions from the server -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default  "Can't upload folder"-->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>This attribute specifies text for default onwrongfileadded eventHandler.
+      </description>
+      <name>wrongFileTypeText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  "Wrong type of file"-->
       <!-- @el true -->
     </attribute>
   </tag>

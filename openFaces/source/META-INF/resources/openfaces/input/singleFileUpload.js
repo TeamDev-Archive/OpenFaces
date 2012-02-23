@@ -22,7 +22,7 @@ O$.SingleFileUpload = {
                   onuploadstartHandler, onuploadinprogressHandler, onuploadendHandler, onwrongfileaddedHandler, ondirectorydroppedHandler,
                   dropTargetCrossoverClass, renderAfterUpload, externalDropTarget, acceptDialogFormats,
                   layoutMode, defStopUrl, stopIcoClassMin,
-                  backTofirstScreen, uploadBtnBehavior, showStopNearProgress, directoryDroppedText) {
+                  backTofirstScreen, uploadBtnBehavior, showStopNearProgress, directoryDroppedText, wrongFileTypeText) {
 
     var fileUpload = O$.initComponent(componentId, null, {
       _backToFirstScreen : backTofirstScreen,
@@ -441,7 +441,7 @@ O$.SingleFileUpload = {
             statusLabelInProgress,statusLabelUploaded,statusLabelErrorSize,
             statusLabelNotUploaded,statusStoppedText,statusLabelUnexpectedError,
             renderAfterUpload,tabIndex,dropTargetCrossoverClass, acceptDialogFormats,
-            directoryDroppedText);
+            directoryDroppedText, wrongFileTypeText);
 
     fileUpload._setAllEvents(onchangeHandler,onstartHandler,onendHandler,
             onuploadstartHandler,onuploadinprogressHandler,onuploadendHandler,

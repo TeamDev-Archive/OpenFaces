@@ -17,7 +17,7 @@ O$.FileUploadUtil = {
                         statusLabelInProgress,statusLabelUploaded,statusLabelErrorSize,
                         statusLabelNotUploaded,statusStoppedText,statusLabelUnexpectedError,
                         renderAfterUpload,tabIndex,dropTargetCrossoverClass,acceptDialogFormats,
-                        directoryDroppedText){
+                        directoryDroppedText, wrongFileTypeText){
     O$.FileUploadUtil._initGeneralFunctions(fileUpload);
     O$.FileUploadUtil._initGeneralFields(fileUpload,
             lengthAlreadyUploadedFiles, acceptedTypesOfFile, isDisabled, ID,
@@ -25,7 +25,7 @@ O$.FileUploadUtil = {
             statusLabelInProgress,statusLabelUploaded,statusLabelErrorSize,
             statusLabelNotUploaded,statusStoppedText,statusLabelUnexpectedError,
             renderAfterUpload,tabIndex,dropTargetCrossoverClass, acceptDialogFormats,
-            directoryDroppedText);
+            directoryDroppedText, wrongFileTypeText);
   },
   _initGeneralFields:function (fileUpload,
                                lengthAlreadyUploadedFiles, acceptedTypesOfFile, isDisabled, ID,
@@ -33,7 +33,7 @@ O$.FileUploadUtil = {
                                statusLabelInProgress,statusLabelUploaded,statusLabelErrorSize,
                                statusLabelNotUploaded,statusStoppedText,statusLabelUnexpectedError,
                                renderAfterUpload, tabIndex, dropTargetCrossoverClass, acceptDialogFormats,
-                               directoryDroppedText) {
+                               directoryDroppedText, wrongFileTypeText) {
     O$.extend(fileUpload, {
       _numberOfFilesToUpload:0,
       _lengthUploadedFiles:lengthAlreadyUploadedFiles,
@@ -70,7 +70,8 @@ O$.FileUploadUtil = {
       _tabIndex:tabIndex,
       _dropTargetCrossoverClass:dropTargetCrossoverClass,
       _acceptDialogFormats:acceptDialogFormats,
-      _directoryDroppedText:directoryDroppedText
+      _directoryDroppedText:directoryDroppedText,
+      _wrongFileTypeText:wrongFileTypeText
     });
   },
   _initGeneralFunctions: function(fileUpload){
@@ -278,19 +279,23 @@ O$.FileUploadUtil = {
         fileUpload._events._fireUploadInProgressEvent = createEventHandler(onuploadinprogressHandler, "onuploadinprogress");
         fileUpload._events._fireUploadEndEvent = createEventHandler(onuploadendHandler, "onuploadend");
         fileUpload._events._fireWrongFileAddedEvent = function () {
+          var event = O$.createEvent("onwrongfileadded");
+          event.allowedTypes = (fileUpload._typesOfFile != null) ? fileUpload._typesOfFile : "*";
+          var callDefault = true;
           if (onwrongfileaddedHandler) {
-            var event = O$.createEvent("onwrongfileadded");
-            event.allowedTypes = (fileUpload._typesOfFile != null) ? fileUpload._typesOfFile : "*";
-            onwrongfileaddedHandler(event);
-          } else {
-            alert("Wrong type of file");
+            callDefault  = !(onwrongfileaddedHandler(event) == false);
+          }
+          if (callDefault){
+            alert(fileUpload._wrongFileTypeText);
           }
         };
         fileUpload._events._fireDirectoryDroppedEvent = function(){
+          var event = O$.createEvent("ondirectorydropped");
+          var callDefault = true;
           if (ondirectorydroppedHandler) {
-            var event = O$.createEvent("ondirectorydropped");
-            ondirectorydroppedHandler(event);
-          } else {
+            callDefault =!(ondirectorydroppedHandler(event) == false);
+          }
+          if (callDefault){
             alert(fileUpload._directoryDroppedText);
           }
         };

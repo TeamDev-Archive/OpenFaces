@@ -76,7 +76,6 @@ public abstract class AbstractFileUpload extends OUIInputBase {
     private String stoppedStatusText;
     private MethodExpression fileUploadedListener;
 
-
     private MethodExpression uploadCompletionListener;
 
     private String onstart;
@@ -89,14 +88,12 @@ public abstract class AbstractFileUpload extends OUIInputBase {
 
     private int fileSizeLimit;
 
-
     private String renderAfterUpload;
-
     private String externalDropTarget;
-
     private String acceptDialogFormats;
 
     private String directoryDroppedText;
+    private String wrongFileTypeText;
 
     public AbstractFileUpload() {
         setRendererType("org.openfaces.FileUploadRenderer");
@@ -158,7 +155,8 @@ public abstract class AbstractFileUpload extends OUIInputBase {
                 renderAfterUpload,
                 externalDropTarget,
                 acceptDialogFormats,
-                directoryDroppedText
+                directoryDroppedText,
+                wrongFileTypeText
         };
     }
 
@@ -215,6 +213,7 @@ public abstract class AbstractFileUpload extends OUIInputBase {
         externalDropTarget = (String) values[i++];
         acceptDialogFormats = (String) values[i++];
         directoryDroppedText = (String) values[i++];
+        wrongFileTypeText = (String)values[i++];
     }
 
 
@@ -627,5 +626,13 @@ public abstract class AbstractFileUpload extends OUIInputBase {
 
     public void setDirectoryDroppedText(String directoryDroppedText) {
         this.directoryDroppedText = directoryDroppedText;
+    }
+
+    public String getWrongFileTypeText() {
+        return ValueBindings.get(this, "wrongFileTypeText", wrongFileTypeText, "Wrong type of file");
+    }
+
+    public void setWrongFileTypeText(String wrongFileTypeText) {
+        this.wrongFileTypeText = wrongFileTypeText;
     }
 }
