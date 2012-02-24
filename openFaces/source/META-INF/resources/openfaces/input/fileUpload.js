@@ -20,8 +20,9 @@ O$.FileUpload = {
                   isDisabled,
                   isAutoUpload, tabIndex, progressBarId, statusStoppedText, statusStoppingText, multiUpload,ID,
                   onchangeHandler, onstartHandler, onendHandler,
-                  onuploadstartHandler, onuploadinprogressHandler, onuploadendHandler, onwrongfileaddedHandler,
-                  dropTargetCrossoverClass, uploadMode, renderAfterUpload, externalDropTarget, acceptDialogFormats) {
+                  onuploadstartHandler, onuploadinprogressHandler, onuploadendHandler, onwrongfileaddedHandler, ondirectorydroppedHandler,
+                  dropTargetCrossoverClass, uploadMode, renderAfterUpload, externalDropTarget, acceptDialogFormats,
+                  directoryDroppedText) {
 
     var fileUpload = O$.initComponent(componentId, null, {
       _minQuantity : minQuantity,
@@ -33,7 +34,7 @@ O$.FileUpload = {
       _processFileAddingHTML5:function (file) {
 
       if (isFileNameNotApplied(file.name) || fileUpload._buttons.browseInput.disabled ||
-              (file.size == 0) ||(file._fromDnD && fileUpload._isDirectory(file))) {
+              (!file._fromDnD && file.size == 0) || (file._fromDnD && fileUpload._isDirectory(file))) {
         return false;
       }
       clearAllInfosForUploadedFiles();
@@ -484,10 +485,12 @@ O$.FileUpload = {
             addButtonClass, addButtonOnMouseOverClass, addButtonOnMouseDownClass,addButtonOnFocusClass,
             statusLabelInProgress,statusLabelUploaded,statusLabelErrorSize,
             statusLabelNotUploaded,statusStoppedText,statusLabelUnexpectedError,
-            renderAfterUpload,tabIndex,dropTargetCrossoverClass, externalDropTarget, acceptDialogFormats);
+            renderAfterUpload,tabIndex,dropTargetCrossoverClass, externalDropTarget, acceptDialogFormats,
+            directoryDroppedText);
 
     fileUpload._setAllEvents(onchangeHandler,onstartHandler,onendHandler,
-            onuploadstartHandler,onuploadinprogressHandler,onuploadendHandler,onwrongfileaddedHandler);
+            onuploadstartHandler,onuploadinprogressHandler,onuploadendHandler,
+            onwrongfileaddedHandler, ondirectorydroppedHandler);
     if (!fileUpload._multiUpload){
       fileUpload._isAutoUpload = true;
       //fileUpload._maxQuantity = 1;
@@ -830,8 +833,10 @@ O$.FileUpload = {
       infoWindow._status = O$.FileUploadUtil.Status.NEW;
 
       var fileNameTD = document.createElement("td");
-      O$.setStyleMappings(fileNameTD, {fileName : infoTitleClass});
-      fileNameTD.innerHTML = fileUpload._getFileName(filename);
+      var fileNameEl = document.createElement("div");
+      O$.setStyleMappings(fileNameEl, {fileName : infoTitleClass});
+      fileNameEl.innerHTML = fileUpload._getFileName(filename);
+      fileNameTD.appendChild(fileNameEl);
       infoWindow.appendChild(fileNameTD);
 
       var progressTD = document.createElement("td");

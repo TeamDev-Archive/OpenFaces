@@ -199,6 +199,10 @@ public abstract class AbstractFileUploadJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("onwrongfileadded", onwrongfileadded);
     }
 
+    public void setOndirectorydropped(ValueExpression ondirectorydropped) {
+        getDelegate().setPropertyValue("ondirectorydropped", ondirectorydropped);
+    }
+
     public void setFileSizeLimit(ValueExpression fileSizeLimit) {
         getDelegate().setPropertyValue("fileSizeLimit", fileSizeLimit);
     }
@@ -214,6 +218,10 @@ public abstract class AbstractFileUploadJspTag extends AbstractComponentJspTag {
 
     public void setAcceptDialogFormats(ValueExpression acceptDialogFormats) {
         getDelegate().setPropertyValue("acceptDialogFormats", acceptDialogFormats);
+    }
+
+    public void setDirectoryDroppedText(ValueExpression directoryDroppedText) {
+        getDelegate().setPropertyValue("directoryDroppedText", directoryDroppedText);
     }
 
 }
