@@ -79,16 +79,16 @@ public abstract class AbstractFileUploadTag extends AbstractComponentTag {
                 new Class[]{UploadCompletionEvent.class}, void.class);
         setStringProperty(component, "onstart");
         setStringProperty(component, "onend");
-        setStringProperty(component, "onuploadstart");
-        setStringProperty(component, "onuploadinprogress");
-        setStringProperty(component, "onuploadend");
+        setStringProperty(component, "onfilestart");
+        setStringProperty(component, "onfileinprogress");
+        setStringProperty(component, "onfileend");
         setStringProperty(component, "onwrongfileadded");
         setStringProperty(component, "ondirectorydropped");
 
         setIntProperty(component, "fileSizeLimit");
-        setStringProperty(component, "renderAfterUpload");
+        setStringProperty(component, "render");
         setStringProperty(component, "externalDropTarget");
-        setStringProperty(component, "acceptDialogFormats");
+        setStringProperty(component, "acceptedMimeTypes");
         setStringProperty(component, "directoryDroppedText");
         setStringProperty(component, "wrongFileTypeText");
     }

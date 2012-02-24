@@ -45003,7 +45003,7 @@ entering a value and returns a list of suggestions from the server -->
     <attribute>
       <description>JavaScript code that should be executed when uploading session have been started.
       </description>
-      <name>onuploadstart</name>
+      <name>onstart</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -45015,7 +45015,7 @@ entering a value and returns a list of suggestions from the server -->
       <description>JavaScript code that should be executed when uploading for  all files have been finished,
         despite their upload status(successfully, with errors or stopped).
       </description>
-      <name>onuploadend</name>
+      <name>onend</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -45026,7 +45026,7 @@ entering a value and returns a list of suggestions from the server -->
     <attribute>
       <description>JavaScript code that should be executed when uploading for  file has been started.
       </description>
-      <name>onfileuploadstart</name>
+      <name>onfilestart</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -45037,7 +45037,7 @@ entering a value and returns a list of suggestions from the server -->
     <attribute>
       <description>JavaScript code that should be executed when uploading progress for file has been changed.
       </description>
-      <name>onfileuploadinprogress</name>
+      <name>onfileinprogress</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -45049,7 +45049,7 @@ entering a value and returns a list of suggestions from the server -->
       <description>JavaScript code that should be executed when uploading for file has been finished,
         despite its upload status(successfully, with errors or stopped).
       </description>
-      <name>onfileuploadend</name>
+      <name>onfileend</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -45225,13 +45225,13 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @bindingType org.openfaces.component.input.FileUploadMode  -->
       <!-- @default "parallel" -->
       <!-- @value "parallel" -->
-      <!-- @value "series" -->
+      <!-- @value "serial" -->
       <!-- @el true -->
     </attribute>
     <attribute>
       <description>This attribute specifies what components  will be re-rendered when uploading of all files has been finished.
       </description>
-      <name>renderAfterUpload</name>
+      <name>render</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -45252,10 +45252,10 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>
-        Set what files will be displayed when file dialog chooser is appeared.
+        Specifies mime types of files which will be displayed when file's dialog chooser will appear.
         The values for this attribute should be the same as for HTML5 attribute accept.
       </description>
-      <name>acceptDialogFormats</name>
+      <name>acceptedMimeTypes</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -45829,7 +45829,7 @@ entering a value and returns a list of suggestions from the server -->
     <attribute>
       <description>JavaScript code that should be executed when uploading session have been started.
       </description>
-      <name>onuploadstart</name>
+      <name>onstart</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -45841,7 +45841,7 @@ entering a value and returns a list of suggestions from the server -->
       <description>JavaScript code that should be executed when uploading for  all files have been finished,
         despite their upload status(successfully, with errors or stopped).
       </description>
-      <name>onuploadend</name>
+      <name>onend</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -45852,7 +45852,7 @@ entering a value and returns a list of suggestions from the server -->
     <attribute>
       <description>JavaScript code that should be executed when uploading for  file has been started.
       </description>
-      <name>onfileuploadstart</name>
+      <name>onfilestart</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -45863,7 +45863,7 @@ entering a value and returns a list of suggestions from the server -->
     <attribute>
       <description>JavaScript code that should be executed when uploading progress for file has been changed.
       </description>
-      <name>onfileuploadinprogress</name>
+      <name>onfileinprogress</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -45875,7 +45875,7 @@ entering a value and returns a list of suggestions from the server -->
       <description>JavaScript code that should be executed when uploading for file has been finished,
         despite its upload status(successfully, with errors or stopped).
       </description>
-      <name>onfileuploadend</name>
+      <name>onfileend</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -45989,7 +45989,7 @@ entering a value and returns a list of suggestions from the server -->
     <attribute>
       <description>This attribute specifies what components  will be re-rendered when uploading of all files has been finished.
       </description>
-      <name>renderAfterUpload</name>
+      <name>render</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -46010,10 +46010,10 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>
-        Set what files will be displayed when file dialog chooser is appeared.
+        Specifies mime types of files which will be displayed when file's dialog chooser will appear.
         The values for this attribute should be the same as for HTML5 attribute accept.
       </description>
-      <name>acceptDialogFormats</name>
+      <name>acceptedMimeTypes</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
