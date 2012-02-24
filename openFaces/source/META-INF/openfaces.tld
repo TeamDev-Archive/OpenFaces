@@ -44992,9 +44992,9 @@ entering a value and returns a list of suggestions from the server -->
       <description>Enables handling uploaded files on the server side. This attribute is a MethodBinding that
         must point to the method that accepts a org.openfaces.event.UploadCompletionEvent.
       </description>
-      <name>uploadCompletionListener</name>
+      <name>completionListener</name>
       <deferred-method>
-        <method-signature>void uploadCompletionListener(org.openfaces.event.UploadCompletionEvent)</method-signature>
+        <method-signature>void completionListener(org.openfaces.event.UploadCompletionEvent)</method-signature>
       </deferred-method>
       <!-- @bindingType javax.el.MethodExpression -->
       <!-- @default null -->
@@ -45061,7 +45061,7 @@ entering a value and returns a list of suggestions from the server -->
       <description>JavaScript code that should be executed when user choose file with not allowed extension.
         By default, alert message will be shown.
       </description>
-      <name>onwrongfileadded</name>
+      <name>onwrongfiletype</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -45275,7 +45275,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This attribute specifies text for default onwrongfileadded eventHandler.
+      <description>This attribute specifies text for default onwrongfiletype eventHandler.
       </description>
       <name>wrongFileTypeText</name>
       <deferred-value>
@@ -45818,9 +45818,9 @@ entering a value and returns a list of suggestions from the server -->
       <description>Enables handling uploaded files on the server side. This attribute is a MethodBinding that
         must point to the method that accepts a org.openfaces.event.UploadCompletionEvent.
       </description>
-      <name>uploadCompletionListener</name>
+      <name>completionListener</name>
       <deferred-method>
-        <method-signature>void uploadCompletionListener(org.openfaces.event.UploadCompletionEvent)</method-signature>
+        <method-signature>void completionListener(org.openfaces.event.UploadCompletionEvent)</method-signature>
       </deferred-method>
       <!-- @bindingType javax.el.MethodExpression -->
       <!-- @default null -->
@@ -45887,7 +45887,7 @@ entering a value and returns a list of suggestions from the server -->
       <description>JavaScript code that should be executed when user choose file with not allowed extension.
         By default, alert message will be shown.
       </description>
-      <name>onwrongfileadded</name>
+      <name>onwrongfiletype</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -46023,9 +46023,11 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>
-        Set layout of singleFileUpload component (minimalistic or full).
-        Also, after set up thisi attribute, you can change layout with attrubutes:
+        Set layout of singleFileUpload component (compact or full).
+        Also, when you specify set up this attribute, you can change layout with attributes:
         - backToFirstScreen
+        -whatToDoWithUploadOnUploading
+        -showStopButtonNearProgress
       </description>
       <name>layoutMode</name>
       <deferred-value>
@@ -46034,7 +46036,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @bindingType org.openfaces.component.input.SingleFileUploadLayoutMode  -->
       <!-- @default "full" -->
       <!-- @value "full" -->
-      <!-- @value "minimalistic" -->
+      <!-- @value "compact" -->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -46047,7 +46049,7 @@ entering a value and returns a list of suggestions from the server -->
       </deferred-value>
       <!-- @bindingType boolean  -->
       <!-- @default depends of layoutMode attribute.
-       If it is assigned to "full" then false; If "minimalistic" then true-->
+       If it is assigned to "full" then false; If "compact" then true-->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -46060,7 +46062,7 @@ entering a value and returns a list of suggestions from the server -->
       </deferred-value>
       <!-- @bindingType org.openfaces.component.input.SingleFileUploadBtnBehavior  -->
       <!-- @default depends of layoutMode attribute.
-      If it is assigned to "full" then "show_stop"; If "minimalistic" then "hide"-->
+      If it is assigned to "full" then "show_stop"; If "compact" then "hide"-->
       <!-- @value "hide" -->
       <!-- @value "disable" -->
       <!-- @value "show_stop" -->
@@ -46077,7 +46079,7 @@ entering a value and returns a list of suggestions from the server -->
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- @default depends of layoutMode attribute.
-      If it is assigned to "full" then false; If "minimalistic" then true"-->
+      If it is assigned to "full" then false; If "compact" then true"-->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -46092,7 +46094,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This attribute specifies text for default onwrongfileadded eventHandler.
+      <description>This attribute specifies text for default onwrongfiletype eventHandler.
       </description>
       <name>wrongFileTypeText</name>
       <deferred-value>

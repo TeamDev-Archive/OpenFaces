@@ -171,8 +171,8 @@ public abstract class AbstractFileUploadJspTag extends AbstractComponentJspTag {
     }
 
 
-    public void setUploadCompletionListener(MethodExpression uploadCompletionListener) {
-        getDelegate().setPropertyValue("uploadCompletionListener", uploadCompletionListener);
+    public void setCompletionListener(MethodExpression completionListener) {
+        getDelegate().setPropertyValue("completionListener", completionListener);
     }
 
     public void setOnstart(ValueExpression onstart) {
@@ -195,8 +195,8 @@ public abstract class AbstractFileUploadJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("onfileend", onfileend);
     }
 
-    public void setOnwrongfileadded(ValueExpression onwrongfileadded) {
-        getDelegate().setPropertyValue("onwrongfileadded", onwrongfileadded);
+    public void setOnwrongfiletype(ValueExpression onwrongfiletype) {
+        getDelegate().setPropertyValue("onwrongfiletype", onwrongfiletype);
     }
 
     public void setOndirectorydropped(ValueExpression ondirectorydropped) {

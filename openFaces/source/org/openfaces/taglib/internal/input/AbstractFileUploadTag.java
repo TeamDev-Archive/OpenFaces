@@ -75,14 +75,14 @@ public abstract class AbstractFileUploadTag extends AbstractComponentTag {
         setMethodExpressionProperty(facesContext, component, "fileUploadedListener",
                 new Class[]{FileUploadedEvent.class}, void.class);
 
-        setMethodExpressionProperty(facesContext, component, "uploadCompletionListener",
+        setMethodExpressionProperty(facesContext, component, "completionListener",
                 new Class[]{UploadCompletionEvent.class}, void.class);
         setStringProperty(component, "onstart");
         setStringProperty(component, "onend");
         setStringProperty(component, "onfilestart");
         setStringProperty(component, "onfileinprogress");
         setStringProperty(component, "onfileend");
-        setStringProperty(component, "onwrongfileadded");
+        setStringProperty(component, "onwrongfiletype");
         setStringProperty(component, "ondirectorydropped");
 
         setIntProperty(component, "fileSizeLimit");

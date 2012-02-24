@@ -178,9 +178,9 @@ public abstract class AbstractFileUploadRenderer extends RendererBase implements
                     }
                 }
                 AbstractFileUpload fileUpload = (AbstractFileUpload) component;
-                MethodExpression uploadCompletionListener = fileUpload.getUploadCompletionListener();
-                if (uploadCompletionListener != null) {
-                    uploadCompletionListener.invoke(
+                MethodExpression completionListener = fileUpload.getCompletionListener();
+                if (completionListener != null) {
+                    completionListener.invoke(
                             context.getELContext(), new Object[]{
                             new UploadCompletionEvent(fileUpload, filesItems)});
                 }

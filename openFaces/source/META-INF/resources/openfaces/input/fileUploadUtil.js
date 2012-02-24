@@ -289,13 +289,13 @@ O$.FileUploadUtil = {
           }
         });
         if (!isAccepted){
-          fileUpload._events._fireWrongFileAddedEvent();
+          fileUpload._events._fireWrongFileTypeEvent();
         }
         return isAccepted;
       },
       _setAllEvents:function (onchangeHandler,onstartHandler,onendHandler,
                               onfilestartHandler,onfileinprogressHandler, onfileendHandler,
-                              onwrongfileaddedHandler, ondirectorydroppedHandler) {
+                              onwrongfiletypeHandler, ondirectorydroppedHandler) {
         function createEventHandler(userHandler, eventName) {
           return function (files) {
             if (userHandler) {
@@ -318,12 +318,12 @@ O$.FileUploadUtil = {
         fileUpload._events._fireFileStartEvent = createEventHandler(onfilestartHandler, "onfilestart");
         fileUpload._events._fireFileInProgressEvent = createEventHandler(onfileinprogressHandler, "onfileinprogress");
         fileUpload._events._fireFileEndEvent = createEventHandler(onfileendHandler, "onfileend");
-        fileUpload._events._fireWrongFileAddedEvent = function () {
-          var event = O$.createEvent("onwrongfileadded");
+        fileUpload._events._fireWrongFileTypeEvent = function () {
+          var event = O$.createEvent("onwrongfiletype");
           event.allowedTypes = (fileUpload._typesOfFile != null) ? fileUpload._typesOfFile : "*";
           var callDefault = true;
-          if (onwrongfileaddedHandler) {
-            callDefault  = !(onwrongfileaddedHandler(event) == false);
+          if (onwrongfiletypeHandler) {
+            callDefault  = !(onwrongfiletypeHandler(event) == false);
           }
           if (callDefault){
             alert(fileUpload._wrongFileTypeText);

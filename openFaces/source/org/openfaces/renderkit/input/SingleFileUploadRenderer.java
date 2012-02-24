@@ -109,7 +109,7 @@ public final class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
         String dropTargetText = fileUpload.getDropTargetText();
         if (dropTargetText == null) {
             switch (layoutMode) {
-                case MINIMALISTIC:
+                case COMPACT:
                     dropTargetText = "Drop file";
                     break;
                 case FULL:
@@ -168,7 +168,7 @@ public final class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
 
     private String getProgressBarStyle(SingleFileUpload fileUpload) {
         switch (layoutMode) {
-            case MINIMALISTIC:
+            case COMPACT:
                 if (fileUpload.getWhatToDoWithUploadOnUploading() == SingleFileUploadBtnBehavior.HIDE) {
                     return "o_s_fileup_pro_bar_min";
                 } else {
@@ -231,7 +231,7 @@ public final class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
                 Utilities.getFunctionOfEvent(fileUpload.getOnfilestart()),
                 Utilities.getFunctionOfEvent(fileUpload.getOnfileinprogress()),
                 Utilities.getFunctionOfEvent(fileUpload.getOnfileend()),
-                Utilities.getFunctionOfEvent(fileUpload.getOnwrongfileadded()),
+                Utilities.getFunctionOfEvent(fileUpload.getOnwrongfiletype()),
                 Utilities.getFunctionOfEvent(fileUpload.getOndirectorydropped()),
                 dropTargetDragoverClass,
                 (fileUpload.getRender() == null) ? null : Utilities.getForm(fileUpload).getClientId(context) + ":" + fileUpload.getRender(),

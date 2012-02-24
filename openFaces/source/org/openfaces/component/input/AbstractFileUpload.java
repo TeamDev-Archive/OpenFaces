@@ -76,14 +76,14 @@ public abstract class AbstractFileUpload extends OUIInputBase {
     private String stoppedStatusText;
     private MethodExpression fileUploadedListener;
 
-    private MethodExpression uploadCompletionListener;
+    private MethodExpression completionListener;
 
     private String onstart;
     private String onend;
     private String onfilestart;
     private String onfileinprogress;
     private String onfileend;
-    private String onwrongfileadded;
+    private String onwrongfiletype;
     private String ondirectorydropped;
 
     private int fileSizeLimit;
@@ -141,13 +141,13 @@ public abstract class AbstractFileUpload extends OUIInputBase {
                 tabindex,
                 saveAttachedState(context, fileUploadedListener),
                 stoppedStatusText,
-                saveAttachedState(context, uploadCompletionListener),
+                saveAttachedState(context, completionListener),
                 onstart,
                 onend,
                 onfilestart,
                 onfileinprogress,
                 onfileend,
-                onwrongfileadded,
+                onwrongfiletype,
                 ondirectorydropped,
                 stoppingStatusText,
                 unexpectedErrorText,
@@ -198,13 +198,13 @@ public abstract class AbstractFileUpload extends OUIInputBase {
         tabindex = (Integer) values[i++];
         fileUploadedListener = (MethodExpression) restoreAttachedState(context, values[i++]);
         stoppedStatusText = (String) values[i++];
-        uploadCompletionListener = (MethodExpression) restoreAttachedState(context, values[i++]);
+        completionListener = (MethodExpression) restoreAttachedState(context, values[i++]);
         onstart = (String) values[i++];
         onend = (String) values[i++];
         onfilestart = (String) values[i++];
         onfileinprogress = (String) values[i++];
         onfileend = (String) values[i++];
-        onwrongfileadded = (String) values[i++];
+        onwrongfiletype = (String) values[i++];
         ondirectorydropped = (String) values[i++];
         stoppingStatusText = (String) values[i++];
         unexpectedErrorText = (String) values[i++];
@@ -495,24 +495,24 @@ public abstract class AbstractFileUpload extends OUIInputBase {
     }
 
 
-    public MethodExpression getUploadCompletionListener() {
-        return uploadCompletionListener;
+    public MethodExpression getCompletionListener() {
+        return completionListener;
     }
 
-    public void setUploadCompletionListener(MethodExpression uploadCompletionListener) {
-        this.uploadCompletionListener = uploadCompletionListener;
+    public void setCompletionListener(MethodExpression completionListener) {
+        this.completionListener = completionListener;
     }
 
-    public void addUploadCompletionListener(UploadCompletionListener uploadCompletionListener) {
-        addFacesListener(uploadCompletionListener);
+    public void addCompletionListener(UploadCompletionListener completionListener) {
+        addFacesListener(completionListener);
     }
 
-    public UploadCompletionListener[] getUploadCompletionListeners() {
+    public UploadCompletionListener[] getCompletionListeners() {
         return (UploadCompletionListener[]) getFacesListeners(FileUploadedListener.class);
     }
 
-    public void removeUploadCompletionListener(UploadCompletionListener uploadCompletionListener) {
-        removeFacesListener(uploadCompletionListener);
+    public void removeCompletionListener(UploadCompletionListener completionListener) {
+        removeFacesListener(completionListener);
     }
 
     public String getOnstart() {
@@ -555,12 +555,12 @@ public abstract class AbstractFileUpload extends OUIInputBase {
         this.onfileend = onfileend;
     }
 
-    public String getOnwrongfileadded() {
-        return ValueBindings.get(this, "onwrongfileadded", onwrongfileadded);
+    public String getOnwrongfiletype() {
+        return ValueBindings.get(this, "onwrongfiletype", onwrongfiletype);
     }
 
-    public void setOnwrongfileadded(String onwrongfileadded) {
-        this.onwrongfileadded = onwrongfileadded;
+    public void setOnwrongfiletype(String onwrongfiletype) {
+        this.onwrongfiletype = onwrongfiletype;
     }
 
     public String getOndirectorydropped() {

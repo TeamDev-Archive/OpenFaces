@@ -20,7 +20,7 @@ O$.FileUpload = {
                   isDisabled,
                   isAutoUpload, tabIndex, progressBarId, statusStoppedText, statusStoppingText, multiUpload,ID,
                   onchangeHandler, onstartHandler, onendHandler,
-                  onfilestartHandler, onfileinprogressHandler, onfileendHandler, onwrongfileaddedHandler, ondirectorydroppedHandler,
+                  onfilestartHandler, onfileinprogressHandler, onfileendHandler, onwrongfiletypeHandler, ondirectorydroppedHandler,
                   dropTargetCrossoverClass, uploadMode, render, externalDropTargetId, acceptedMimeTypes,
                   directoryDroppedText, wrongFileTypeText) {
 
@@ -519,7 +519,7 @@ O$.FileUpload = {
 
     fileUpload._setAllEvents(onchangeHandler,onstartHandler,onendHandler,
             onfilestartHandler,onfileinprogressHandler,onfileendHandler,
-            onwrongfileaddedHandler, ondirectorydroppedHandler);
+            onwrongfiletypeHandler, ondirectorydroppedHandler);
     if (!fileUpload._multiUpload){
       fileUpload._isAutoUpload = true;
       //fileUpload._maxQuantity = 1;
@@ -751,10 +751,15 @@ O$.FileUpload = {
     initHeaderButtons(true);
     setFocusBlurBehaviour();
     setUploadButtonBehaviour();
-    O$.addEventHandler(window, "load", function setupDropTarget(){
-      O$.removeEventHandler(window, "load", setupDropTarget);
+    if (window._loaded){
       fileUpload._initializeDropTarget();
-    });
+    }else{
+      O$.addEventHandler(window, "load", function setupDropTarget(){
+        O$.removeEventHandler(window, "load", setupDropTarget);
+        fileUpload._initializeDropTarget();
+        window._loaded = true;
+      });
+    }
     O$.FileUpload._initFileUploadAPI(fileUpload);
 
     if (O$.isChrome() || O$.isSafari()){
