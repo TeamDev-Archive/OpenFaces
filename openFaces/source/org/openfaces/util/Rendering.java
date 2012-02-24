@@ -495,12 +495,10 @@ public class Rendering {
         }
     }
 
-    public static Converter getConverter(FacesContext context, UIComponent component) {
-        Converter converter = null;
-        if (component instanceof ValueHolder)
-            converter = ((ValueHolder) component).getConverter();
+    public static Converter getConverter(FacesContext context, ValueHolder component) {
+        Converter converter = component.getConverter();
         if (converter == null) {
-            ValueExpression ve = component.getValueExpression("value");
+            ValueExpression ve = ((UIComponent) component).getValueExpression("value");
             if (ve == null)
                 return null;
             Class valueType = ve.getType(context.getELContext());
@@ -524,11 +522,11 @@ public class Rendering {
      * @param str       The string to convert
      * @return converted object or string if converter was not found
      */
-    public static Object convertFromString(FacesContext context, UIComponent component, String str) {
+    public static Object convertFromString(FacesContext context, ValueHolder component, String str) {
         Converter converter = getConverter(context, component);
         if (converter == null)
             return str;
-        Object result = converter.getAsObject(context, component, str);
+        Object result = converter.getAsObject(context, (UIComponent) component, str);
         return result;
     }
 
@@ -539,13 +537,13 @@ public class Rendering {
      * @param component The component, which value will be converted
      * @return converted value on this component
      */
-    public static String getStringValue(FacesContext context, UIComponent component) {
+    public static String getStringValue(FacesContext context, ValueHolder component) {
         if (component instanceof EditableValueHolder) {
             Object submittedValue = ((EditableValueHolder) component).getSubmittedValue();
             if (submittedValue != null)
                 return (String) submittedValue;
         }
-        return convertToString(context, component, ((ValueHolder) component).getValue());
+        return convertToString(context, component, component.getValue());
     }
 
     /**
@@ -556,14 +554,14 @@ public class Rendering {
      * @param value     The object to convert
      * @return converted string
      */
-    public static String convertToString(FacesContext context, UIComponent component, Object value) {
+    public static String convertToString(FacesContext context, ValueHolder component, Object value) {
         Converter converter = getConverter(context, component);
 
         if (converter == null)
             return (value != null) ? value.toString() : "";
 
         if (value != null)
-            return converter.getAsString(context, component, value);
+            return converter.getAsString(context, (UIComponent) component, value);
         else
             return "";
     }
