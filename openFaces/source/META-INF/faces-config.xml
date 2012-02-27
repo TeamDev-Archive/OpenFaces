@@ -842,8 +842,8 @@
   </component>
 
   <component>
-    <component-type>org.openfaces.FileUpload</component-type>
-    <component-class>org.openfaces.component.input.FileUpload</component-class>
+    <component-type>org.openfaces.MultipleFileUpload</component-type>
+    <component-class>org.openfaces.component.input.MultipleFileUpload</component-class>
   </component>
   <component>
     <component-type>org.openfaces.SingleFileUpload</component-type>
@@ -1434,9 +1434,9 @@
       <renderer-class>org.openfaces.renderkit.table.GroupingBoxRenderer</renderer-class>
     </renderer>
     <renderer>
-      <component-family>org.openfaces.FileUpload</component-family>
-      <renderer-type>org.openfaces.FileUploadRenderer</renderer-type>
-      <renderer-class>org.openfaces.renderkit.input.FileUploadRenderer</renderer-class>
+      <component-family>org.openfaces.MultipleFileUpload</component-family>
+      <renderer-type>org.openfaces.MultipleFileUploadRenderer</renderer-type>
+      <renderer-class>org.openfaces.renderkit.input.MultipleFileUploadRenderer</renderer-class>
     </renderer>
     <renderer>
       <component-family>org.openfaces.SingleFileUpload</component-family>

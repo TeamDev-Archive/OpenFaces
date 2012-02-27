@@ -18,7 +18,7 @@ package org.openfaces.component.input;
 public enum SingleFileUploadBtnBehavior {
     HIDE("hide"),
     DISABLE("disable"),
-    SHOW_STOP("show_stop");
+    SHOW_STOP("showStop");
     private String value;
 
     SingleFileUploadBtnBehavior(String value) {

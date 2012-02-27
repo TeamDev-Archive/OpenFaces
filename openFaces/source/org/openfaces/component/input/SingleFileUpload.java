@@ -21,9 +21,12 @@ public final class SingleFileUpload extends AbstractFileUpload {
     public static final String COMPONENT_FAMILY = "org.openfaces.SingleFileUpload";
 
     private SingleFileUploadLayoutMode layoutMode;
-    private Boolean backToFirstScreen;
-    private SingleFileUploadBtnBehavior whatToDoWithUploadOnUploading;
-    private Boolean showStopButtonNearProgress;
+    private Boolean showInfoAfterUpload;
+    private SingleFileUploadBtnBehavior browseButtonDuringUpload;
+    private Boolean stopButtonNearProgress;
+    
+    private String fileInfoAreaStyle;
+    private String fileInfoAreaClass;
 
     public SingleFileUpload() {
         setRendererType("org.openfaces.SingleFileUploadRenderer");
@@ -39,9 +42,11 @@ public final class SingleFileUpload extends AbstractFileUpload {
         return new Object[]{
                 super.saveState(context),
                 layoutMode,
-                backToFirstScreen,
-                whatToDoWithUploadOnUploading,
-                showStopButtonNearProgress
+                showInfoAfterUpload,
+                browseButtonDuringUpload,
+                stopButtonNearProgress,
+                fileInfoAreaStyle,
+                fileInfoAreaClass
         };
     }
 
@@ -51,9 +56,11 @@ public final class SingleFileUpload extends AbstractFileUpload {
         int i = 0;
         super.restoreState(context, values[i++]);
         layoutMode = (SingleFileUploadLayoutMode) values[i++];
-        backToFirstScreen = (Boolean) values[i++];
-        whatToDoWithUploadOnUploading = (SingleFileUploadBtnBehavior) values[i++];
-        showStopButtonNearProgress = (Boolean) values[i++];
+        showInfoAfterUpload = (Boolean) values[i++];
+        browseButtonDuringUpload = (SingleFileUploadBtnBehavior) values[i++];
+        stopButtonNearProgress = (Boolean) values[i++];
+        fileInfoAreaStyle = (String) values[i++];
+        fileInfoAreaClass = (String) values[i++];
     }
 
     @Override
@@ -74,27 +81,43 @@ public final class SingleFileUpload extends AbstractFileUpload {
         this.layoutMode = layoutMode;
     }
 
-    public Boolean getBackToFirstScreen() {
-        return ValueBindings.get(this, "backToFirstScreen", backToFirstScreen, Boolean.class);
+    public Boolean getShowInfoAfterUpload() {
+        return ValueBindings.get(this, "showInfoAfterUpload", showInfoAfterUpload, Boolean.class);
     }
 
-    public void setBackToFirstScreen(Boolean backToFirstScreen) {
-        this.backToFirstScreen = backToFirstScreen;
+    public void setShowInfoAfterUpload(Boolean showInfoAfterUpload) {
+        this.showInfoAfterUpload = showInfoAfterUpload;
     }
 
-    public SingleFileUploadBtnBehavior getWhatToDoWithUploadOnUploading() {
-        return ValueBindings.get(this, "whatToDoWithUploadOnUploading", whatToDoWithUploadOnUploading, SingleFileUploadBtnBehavior.class);
+    public SingleFileUploadBtnBehavior getBrowseButtonDuringUpload() {
+        return ValueBindings.get(this, "browseButtonDuringUpload", browseButtonDuringUpload, SingleFileUploadBtnBehavior.class);
     }
 
-    public void setWhatToDoWithUploadOnUploading(SingleFileUploadBtnBehavior whatToDoWithUploadOnUploading) {
-        this.whatToDoWithUploadOnUploading = whatToDoWithUploadOnUploading;
+    public void setBrowseButtonDuringUpload(SingleFileUploadBtnBehavior browseButtonDuringUpload) {
+        this.browseButtonDuringUpload = browseButtonDuringUpload;
     }
 
-    public Boolean getShowStopButtonNearProgress() {
-        return ValueBindings.get(this, "showStopButtonNearProgress", showStopButtonNearProgress,Boolean.class);
+    public Boolean getStopButtonNearProgress() {
+        return ValueBindings.get(this, "stopButtonNearProgress", stopButtonNearProgress,Boolean.class);
     }
 
-    public void setShowStopButtonNearProgress(Boolean showStopButtonNearProgress) {
-        this.showStopButtonNearProgress = showStopButtonNearProgress;
+    public void setStopButtonNearProgress(Boolean stopButtonNearProgress) {
+        this.stopButtonNearProgress = stopButtonNearProgress;
+    }
+
+    public String getFileInfoAreaStyle() {
+        return ValueBindings.get(this, "fileInfoAreaStyle", fileInfoAreaStyle);
+    }
+
+    public void setFileInfoAreaStyle(String fileInfoAreaStyle) {
+        this.fileInfoAreaStyle = fileInfoAreaStyle;
+    }
+
+    public String getFileInfoAreaClass() {
+        return ValueBindings.get(this, "fileInfoAreaClass", fileInfoAreaClass);
+    }
+
+    public void setFileInfoAreaClass(String fileInfoAreaClass) {
+        this.fileInfoAreaClass = fileInfoAreaClass;
     }
 }

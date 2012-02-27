@@ -50,14 +50,11 @@ public abstract class AbstractFileUpload extends OUIInputBase {
     private String dropTargetDragoverClass;
     protected String dropTargetText;
 
-    private String rowStyle;
-    private String rowClass;
-
     private String fileNameClass;
     private String fileNameStyle;
 
-    private String uploadStatusClass;
-    private String uploadStatusStyle;
+    private String statusClass;
+    private String statusStyle;
     private String notUploadedStatusText;
     private String uploadedStatusText;
     private String inProgressStatusText;
@@ -96,7 +93,7 @@ public abstract class AbstractFileUpload extends OUIInputBase {
     private String wrongFileTypeText;
 
     public AbstractFileUpload() {
-        setRendererType("org.openfaces.FileUploadRenderer");
+        setRendererType("org.openfaces.MultipleFileUploadRenderer");
     }
 
     @Override
@@ -125,13 +122,11 @@ public abstract class AbstractFileUpload extends OUIInputBase {
                 dropTargetDragoverStyle,
                 dropTargetDragoverClass,
                 dropTargetText,
-                rowStyle,
-                rowClass,
                 acceptedFileTypes,
                 fileNameClass,
                 fileNameStyle,
-                uploadStatusClass,
-                uploadStatusStyle,
+                statusClass,
+                statusStyle,
                 notUploadedStatusText,
                 uploadedStatusText,
                 inProgressStatusText,
@@ -182,13 +177,11 @@ public abstract class AbstractFileUpload extends OUIInputBase {
         dropTargetDragoverStyle = (String) values[i++];
         dropTargetDragoverClass = (String) values[i++];
         dropTargetText = (String) values[i++];
-        rowStyle = (String) values[i++];
-        rowClass = (String) values[i++];
         acceptedFileTypes = (String) values[i++];
         fileNameClass = (String) values[i++];
         fileNameStyle = (String) values[i++];
-        uploadStatusClass = (String) values[i++];
-        uploadStatusStyle = (String) values[i++];
+        statusClass = (String) values[i++];
+        statusStyle = (String) values[i++];
         notUploadedStatusText = (String) values[i++];
         uploadedStatusText = (String) values[i++];
         inProgressStatusText = (String) values[i++];
@@ -255,22 +248,6 @@ public abstract class AbstractFileUpload extends OUIInputBase {
         this.dropTargetText = dropTargetText;
     }
 
-    public String getRowStyle() {
-        return ValueBindings.get(this, "rowStyle", rowStyle);
-    }
-
-    public void setRowStyle(String rowStyle) {
-        this.rowStyle = rowStyle;
-    }
-
-    public String getRowClass() {
-        return ValueBindings.get(this, "rowClass", rowClass);
-    }
-
-    public void setRowClass(String rowClass) {
-        this.rowClass = rowClass;
-    }
-
     public String getFileNameClass() {
         return ValueBindings.get(this, "fileNameClass", fileNameClass);
     }
@@ -319,20 +296,20 @@ public abstract class AbstractFileUpload extends OUIInputBase {
         this.fileSizeLimitErrorText = fileSizeLimitErrorText;
     }
 
-    public String getUploadStatusClass() {
-        return ValueBindings.get(this, "uploadStatusClass", uploadStatusClass);
+    public String getStatusClass() {
+        return ValueBindings.get(this, "statusClass", statusClass);
     }
 
-    public void setUploadStatusClass(String uploadStatusClass) {
-        this.uploadStatusClass = uploadStatusClass;
+    public void setStatusClass(String statusClass) {
+        this.statusClass = statusClass;
     }
 
-    public String getUploadStatusStyle() {
-        return ValueBindings.get(this, "uploadStatusStyle", uploadStatusStyle);
+    public String getStatusStyle() {
+        return ValueBindings.get(this, "statusStyle", statusStyle);
     }
 
-    public void setUploadStatusStyle(String uploadStatusStyle) {
-        this.uploadStatusStyle = uploadStatusStyle;
+    public void setStatusStyle(String statusStyle) {
+        this.statusStyle = statusStyle;
     }
 
 

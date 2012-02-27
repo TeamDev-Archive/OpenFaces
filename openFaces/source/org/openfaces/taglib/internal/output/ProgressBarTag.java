@@ -33,8 +33,8 @@ public class ProgressBarTag extends AbstractComponentTag {
         super.setComponentProperties(facesContext, component);
         setNumberProperty(component, "value");
 
-        setStringProperty(component,"processedStyle");
-        setStringProperty(component,"processedClass");
+        setStringProperty(component,"progressStyle");
+        setStringProperty(component,"progressClass");
         setStringProperty(component,"notProcessedStyle");
         setStringProperty(component,"notProcessedClass");
         setStringProperty(component,"labelStyle");

@@ -284,12 +284,7 @@ public abstract class AbstractFileUploadRenderer extends RendererBase implements
         writer.endElement("table");
     }
 
-    protected void writeProgressBar(FacesContext context, AbstractFileUpload fileUpload) throws IOException {
-        if (progressBar == null) {
-            progressBar = new ProgressBar();
-        }
-        progressBar.encodeAll(context);
-    }
+    protected abstract void writeProgressBar(FacesContext context, AbstractFileUpload fileUpload) throws IOException;
 
     private void renderComponent(FacesContext context, AbstractFileUpload fileUpload) throws IOException {
         String clientId = fileUpload.getClientId(context);

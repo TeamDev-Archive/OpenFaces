@@ -93,14 +93,6 @@ public abstract class AbstractFileUploadJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("dropTargetText", dropTargetText);
     }
 
-    public void setRowStyle(ValueExpression rowStyle) {
-        getDelegate().setPropertyValue("rowStyle", rowStyle);
-    }
-
-    public void setRowClass(ValueExpression rowClass) {
-        getDelegate().setPropertyValue("rowClass", rowClass);
-    }
-
     public void setAcceptedFileTypes(ValueExpression acceptedFileTypes) {
         getDelegate().setPropertyValue("acceptedFileTypes", acceptedFileTypes);
     }
@@ -114,12 +106,12 @@ public abstract class AbstractFileUploadJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("fileNameClass", fileNameClass);
     }
 
-    public void setUploadStatusClass(ValueExpression uploadStatusClass) {
-        getDelegate().setPropertyValue("uploadStatusClass", uploadStatusClass);
+    public void setStatusClass(ValueExpression statusClass) {
+        getDelegate().setPropertyValue("statusClass", statusClass);
     }
 
-    public void setUploadStatusStyle(ValueExpression uploadStatusStyle) {
-        getDelegate().setPropertyValue("uploadStatusStyle", uploadStatusStyle);
+    public void setStatusStyle(ValueExpression statusStyle) {
+        getDelegate().setPropertyValue("statusStyle", statusStyle);
     }
 
     public void setNotUploadedStatusText(ValueExpression notUploadedStatusText) {

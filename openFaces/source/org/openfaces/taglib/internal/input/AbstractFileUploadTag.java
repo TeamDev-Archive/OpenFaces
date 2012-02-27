@@ -49,14 +49,11 @@ public abstract class AbstractFileUploadTag extends AbstractComponentTag {
 
         setStringProperty(component, "dropTargetText");
 
-        setStringProperty(component, "rowStyle");
-        setStringProperty(component, "rowClass");
-
         setStringProperty(component, "fileNameStyle");
         setStringProperty(component, "fileNameClass");
 
-        setStringProperty(component, "uploadStatusClass");
-        setStringProperty(component, "uploadStatusStyle");
+        setStringProperty(component, "statusClass");
+        setStringProperty(component, "statusStyle");
         setStringProperty(component, "notUploadedStatusText");
         setStringProperty(component, "uploadedStatusText");
         setStringProperty(component, "inProgressStatusText");
