@@ -22,8 +22,8 @@ public class ProgressBar extends OUIOutput {
 
     private static final String DEF_LABEL_FORMAT = "{value} %";
 
-    private String processedStyle;
-    private String processedClass;
+    private String progressStyle;
+    private String progressClass;
     private String notProcessedStyle;
     private String notProcessedClass;
     private String labelStyle;
@@ -32,7 +32,7 @@ public class ProgressBar extends OUIOutput {
     private LabelAlignment labelAlignment;
     private String processedImg;
     private String notProcessedImg;
-    private boolean isSmallProgressByDefault;
+    private String defaultProgressImgUrl;
 
     public ProgressBar() {
         setRendererType("org.openfaces.ProgressBarRenderer");
@@ -47,8 +47,8 @@ public class ProgressBar extends OUIOutput {
     public Object saveState(FacesContext context) {
         return new Object[]{
                 super.saveState(context),
-                processedStyle,
-                processedClass,
+                progressStyle,
+                progressClass,
                 notProcessedStyle,
                 notProcessedClass,
                 labelStyle,
@@ -56,7 +56,7 @@ public class ProgressBar extends OUIOutput {
                 labelFormat,
                 processedImg,
                 notProcessedImg,
-                isSmallProgressByDefault
+                defaultProgressImgUrl
         };
     }
 
@@ -65,8 +65,8 @@ public class ProgressBar extends OUIOutput {
         Object[] state = (Object[]) stateObj;
         int i = 0;
         super.restoreState(context, state[i++]);
-        processedStyle = (String) state[i++];
-        processedClass = (String) state[i++];
+        progressStyle = (String) state[i++];
+        progressClass = (String) state[i++];
         notProcessedStyle = (String) state[i++];
         notProcessedClass = (String) state[i++];
         labelStyle = (String) state[i++];
@@ -74,23 +74,23 @@ public class ProgressBar extends OUIOutput {
         labelFormat = (String) state[i++];
         processedImg = (String) state[i++];
         notProcessedImg = (String) state[i++];
-        isSmallProgressByDefault = (Boolean)state[i++];
+        defaultProgressImgUrl = (String)state[i++];
     }
 
-    public String getProcessedStyle() {
-        return ValueBindings.get(this, "uploadedStyle", processedStyle);
+    public String getProgressStyle() {
+        return ValueBindings.get(this, "uploadedStyle", progressStyle);
     }
 
-    public void setProcessedStyle(String processedStyle) {
-        this.processedStyle = processedStyle;
+    public void setProgressStyle(String progressStyle) {
+        this.progressStyle = progressStyle;
     }
 
-    public String getProcessedClass() {
-        return ValueBindings.get(this, "uploadedClass", processedClass);
+    public String getProgressClass() {
+        return ValueBindings.get(this, "uploadedClass", progressClass);
     }
 
-    public void setProcessedClass(String processedClass) {
-        this.processedClass = processedClass;
+    public void setProgressClass(String progressClass) {
+        this.progressClass = progressClass;
     }
 
     public String getNotProcessedStyle() {
@@ -157,11 +157,11 @@ public class ProgressBar extends OUIOutput {
         this.notProcessedImg = notProcessedImg;
     }
 
-    public boolean isSmallProgressByDefault() {
-        return isSmallProgressByDefault;
+    public String getDefaultProgressImgUrl() {
+        return defaultProgressImgUrl;
     }
 
-    public void setSmallProgressByDefault(boolean smallProgressByDefault) {
-        isSmallProgressByDefault = smallProgressByDefault;
+    public void setDefaultProgressImgUrl(String defaultProgressImgUrl) {
+        this.defaultProgressImgUrl = defaultProgressImgUrl;
     }
 }

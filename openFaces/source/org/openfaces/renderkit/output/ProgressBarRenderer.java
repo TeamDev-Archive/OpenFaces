@@ -28,8 +28,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ProgressBarRenderer extends RendererBase {
-    private final static String DEFAULT_UPLOADED_URL = "output/uploadedProgressBar.png";
-    public static final String DEFAULT_UPLOADED_MIN_URL = "output/uploadedProgressBarMin.png";
+    public static final String DEF_PROGRESS_CLASS = "o_progress_bar_uploaded";
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
@@ -42,7 +41,7 @@ public class ProgressBarRenderer extends RendererBase {
         Rendering.writeStyleAndClassAttributes(writer, progressBar.getStyle(), progressBar.getStyleClass(), "o_progress_bar");
 
         //Rendering.writeStandardEvents(writer, progressBar);
-        writeNotUploaded(context, progressBar, writer);
+        writeUploadedDiv(context, progressBar, writer);
 
         writeNotUploadedDiv(context, progressBar, writer);
 
@@ -53,9 +52,9 @@ public class ProgressBarRenderer extends RendererBase {
 
     }
 
-    private void writeNotUploaded(FacesContext context, ProgressBar progressBar, ResponseWriter writer) throws IOException {
+    private void writeUploadedDiv(FacesContext context, ProgressBar progressBar, ResponseWriter writer) throws IOException {
         writer.startElement("div", progressBar);
-        String uploadedClass = Styles.getCSSClass(context, progressBar, progressBar.getProcessedStyle(), StyleGroup.regularStyleGroup(), progressBar.getProcessedClass(), "o_progress_bar_uploaded");
+        String uploadedClass = Styles.getCSSClass(context, progressBar, progressBar.getProgressStyle(), StyleGroup.regularStyleGroup(), progressBar.getProgressClass(), DEF_PROGRESS_CLASS);
         writer.writeAttribute("class", uploadedClass, null);
         writer.endElement("div");
     }
@@ -79,15 +78,8 @@ public class ProgressBarRenderer extends RendererBase {
 
         List<String> listOfImages = new LinkedList<String>();
 
-        String uploadedProgressImgUrl = Resources.getURL(context, progressBar.getProcessedImg(),
-                progressBar.isSmallProgressByDefault() ? DEFAULT_UPLOADED_MIN_URL : DEFAULT_UPLOADED_URL);
-        listOfImages.add(uploadedProgressImgUrl);
-
-        String notUploadedProgressImgUrl = progressBar.getNotProcessedImg();
-        if (notUploadedProgressImgUrl != null && !notUploadedProgressImgUrl.equals("")) {
-            notUploadedProgressImgUrl = Resources.getURL(context, notUploadedProgressImgUrl, null);
-            listOfImages.add(notUploadedProgressImgUrl);
-        }
+        String defaultProgressImgUrl = Resources.getURL(context, null, progressBar.getDefaultProgressImgUrl());
+        listOfImages.add(defaultProgressImgUrl);
 
         Rendering.renderPreloadImagesScript(context, listOfImages, false);
 
@@ -95,8 +87,8 @@ public class ProgressBarRenderer extends RendererBase {
                 progressBar.getValue(),
                 progressBar.getLabelAlignment(),
                 progressBar.getLabelFormat(),
-                uploadedProgressImgUrl,
-                notUploadedProgressImgUrl
+                defaultProgressImgUrl,
+                DEF_PROGRESS_CLASS
         );
 
         Rendering.renderInitScript(context, initScript,

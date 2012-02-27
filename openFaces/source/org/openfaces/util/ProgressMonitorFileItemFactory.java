@@ -14,7 +14,7 @@ package org.openfaces.util;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.openfaces.renderkit.input.FileUploadRenderer;
+import org.openfaces.renderkit.input.AbstractFileUploadRenderer;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -51,10 +51,10 @@ public class ProgressMonitorFileItemFactory extends DiskFileItemFactory {
             HttpServletRequest req = requestRef.get();
             if (req != null) {
                 HttpSession session = req.getSession();
-                session.setAttribute(FileUploadRenderer.FILE_SIZE_ID + uniqueFileId, requestLength);
+                session.setAttribute(AbstractFileUploadRenderer.FILE_SIZE_ID + uniqueFileId, requestLength);
                 if (requestLength > maxSizeOfFile) {
                     shouldProcess = false;
-                    session.setAttribute(FileUploadRenderer.EXCEED_MAX_SIZE_ID + uniqueFileId, true);
+                    session.setAttribute(AbstractFileUploadRenderer.EXCEED_MAX_SIZE_ID + uniqueFileId, true);
                 }
             }
             //fileName = fileName.replaceAll("[#$%^&* ]+","_"); //doesn't work unfortunately
@@ -80,7 +80,7 @@ public class ProgressMonitorFileItemFactory extends DiskFileItemFactory {
         public void setProgress(int progress) {
             HttpServletRequest request = requestRef.get();
             if (request != null) {
-                request.getSession().setAttribute(FileUploadRenderer.PROGRESS_ID + fileId, progress);
+                request.getSession().setAttribute(AbstractFileUploadRenderer.PROGRESS_ID + fileId, progress);
             }
         }
     }

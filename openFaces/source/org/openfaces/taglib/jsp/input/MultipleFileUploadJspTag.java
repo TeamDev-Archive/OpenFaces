@@ -11,14 +11,14 @@
  */
 package org.openfaces.taglib.jsp.input;
 
-import org.openfaces.taglib.internal.input.FileUploadTag;
+import org.openfaces.taglib.internal.input.MultipleFileUploadTag;
 
 import javax.el.ValueExpression;
 
-public class FileUploadJspTag extends AbstractFileUploadJspTag {
+public class MultipleFileUploadJspTag extends AbstractFileUploadJspTag {
 
-    public FileUploadJspTag() {
-        super(new FileUploadTag());
+    public MultipleFileUploadJspTag() {
+        super(new MultipleFileUploadTag());
     }
 
     public void setMaxQuantity(ValueExpression maxQuantity) {
@@ -82,5 +82,11 @@ public class FileUploadJspTag extends AbstractFileUploadJspTag {
 
     public void setUploadMode(ValueExpression uploadMode) {
         getDelegate().setPropertyValue("uploadMode", uploadMode);
+    }
+    public void setFileInfoRowStyle(ValueExpression fileInfoRowStyle) {
+        getDelegate().setPropertyValue("fileInfoRowStyle", fileInfoRowStyle);
+    }
+    public void setFileInfoRowClass(ValueExpression fileInfoRowClass) {
+        getDelegate().setPropertyValue("fileInfoRowClass", fileInfoRowClass);
     }
 }

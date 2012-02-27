@@ -16,24 +16,24 @@ O$.FileUploadUtil = {
                         addButtonClass, addButtonOnMouseOverClass, addButtonOnMouseDownClass,addButtonOnFocusClass,
                         statusLabelInProgress,statusLabelUploaded,statusLabelErrorSize,
                         statusLabelNotUploaded,statusStoppedText,statusLabelUnexpectedError,
-                        renderAfterUpload,tabIndex,dropTargetCrossoverClass,externalDropTarget,acceptDialogFormats,
-                        directoryDroppedText){
+                        render,tabIndex,dropTargetCrossoverClass,acceptedMimeTypes,
+                        directoryDroppedText, wrongFileTypeText, externalDropTargetId){
     O$.FileUploadUtil._initGeneralFunctions(fileUpload);
     O$.FileUploadUtil._initGeneralFields(fileUpload,
             lengthAlreadyUploadedFiles, acceptedTypesOfFile, isDisabled, ID,
             addButtonClass, addButtonOnMouseOverClass, addButtonOnMouseDownClass,addButtonOnFocusClass,
             statusLabelInProgress,statusLabelUploaded,statusLabelErrorSize,
             statusLabelNotUploaded,statusStoppedText,statusLabelUnexpectedError,
-            renderAfterUpload,tabIndex,dropTargetCrossoverClass,externalDropTarget, acceptDialogFormats,
-            directoryDroppedText);
+            render,tabIndex,dropTargetCrossoverClass, acceptedMimeTypes,
+            directoryDroppedText, wrongFileTypeText, externalDropTargetId);
   },
   _initGeneralFields:function (fileUpload,
                                lengthAlreadyUploadedFiles, acceptedTypesOfFile, isDisabled, ID,
                                addButtonClass, addButtonOnMouseOverClass, addButtonOnMouseDownClass,addButtonOnFocusClass,
                                statusLabelInProgress,statusLabelUploaded,statusLabelErrorSize,
                                statusLabelNotUploaded,statusStoppedText,statusLabelUnexpectedError,
-                               renderAfterUpload, tabIndex, dropTargetCrossoverClass, externalDropTarget, acceptDialogFormats,
-                               directoryDroppedText) {
+                               render, tabIndex, dropTargetCrossoverClass, acceptedMimeTypes,
+                               directoryDroppedText, wrongFileTypeText, externalDropTargetId) {
     O$.extend(fileUpload, {
       _numberOfFilesToUpload:0,
       _lengthUploadedFiles:lengthAlreadyUploadedFiles,
@@ -66,25 +66,28 @@ O$.FileUploadUtil = {
       _ignoreBlurForChrome:true, // this variable only needed for specific behaviour of focus at Chrome browser
       _activeElementNow:null,
       _ignoreBlurForIE:false,
-      _renderAfterUpload:renderAfterUpload,
+      _render:render,
       _tabIndex:tabIndex,
       _dropTargetCrossoverClass:dropTargetCrossoverClass,
-      _externalElForDropTarget: function(){
-        if (externalDropTarget) {
-          var el = O$(externalDropTarget);
-          if (el == null){
-            throw "externalDropTarget id is not correct";
-          }
-          return el;
-        }
-        return undefined;
-      }(),
-      _acceptDialogFormats:acceptDialogFormats,
-      _directoryDroppedText:directoryDroppedText
+      _acceptedMimeTypes:acceptedMimeTypes,
+      _directoryDroppedText:directoryDroppedText,
+      _wrongFileTypeText:wrongFileTypeText,
+      _externalDropTargetId:externalDropTargetId
     });
   },
   _initGeneralFunctions: function(fileUpload){
     O$.extend(fileUpload,{
+      _setupExternalDropTarget: function(){
+        if (fileUpload._externalDropTargetId) {
+          var el = O$(fileUpload._externalDropTargetId);
+          if (el == null) {
+            throw "externalDropTarget id '" +fileUpload._externalDropTargetId + "' is not correct";
+          }
+          fileUpload._externalElForDropTarget = el;
+          return;
+        }
+        fileUpload._externalElForDropTarget = undefined;
+      },
       _getNumProperty:function (el, prop) {
         var res = O$.getElementStyle(el, prop).replace("px", "") * 1;
         if (isNaN(res)) {
@@ -95,8 +98,10 @@ O$.FileUploadUtil = {
       _getDropTargetArea:function(id){
         var dropTarget = O$(id);
         if (fileUpload._externalElForDropTarget) {
-          dropTarget._isExternal = true;
-          new function correctExternalDropArea(externalDiv, area) {
+          if (dropTarget == null){
+            dropTarget = O$(fileUpload.id + "::externalDropTargetSkeleton");
+          }
+          dropTarget = new function correctExternalDropArea(externalDiv, area) {
             var padTop = fileUpload._getNumProperty(area, "padding-top");
             var padLeft = fileUpload._getNumProperty(area, "padding-left");
             var borderTopWidth = fileUpload._getNumProperty(area, "border-top-width");
@@ -110,86 +115,123 @@ O$.FileUploadUtil = {
             var extBorderLeftWidth = fileUpload._getNumProperty(externalDiv, "border-left-width");
             var size = O$.getElementSize(externalDiv);
 
-            area.style.width = (size.width - padLeft - borderTopWidth*2 - extBorderTopWidth*2 - marginLeft-marginRight) + "px";
-            area.style.height = (size.height - padTop - borderLeftWidth*2- extBorderLeftWidth*2 - marginTop - marginBottom) + "px";
+            area.style.width = (size.width - padLeft - borderTopWidth * 2 - extBorderTopWidth * 2 - marginLeft - marginRight) + "px";
+            area.style.height = (size.height - padTop - borderLeftWidth * 2 - extBorderLeftWidth * 2 - marginTop - marginBottom) + "px";
 
             externalDiv.style.position = "relative";
-            area.parentNode.removeChild(area);
-            externalDiv.appendChild(area);
+
+            var remoteDropTarget = area.cloneNode(true);
+            if (!fileUpload._externalDropTargetskeleton) {
+              fileUpload._externalDropTargetskeleton = area;
+              area.id = fileUpload.id + "::externalDropTargetSkeleton";
+            }
+            remoteDropTarget._isExternal = true;
+            externalDiv.appendChild(remoteDropTarget);
+            return remoteDropTarget;
           }(fileUpload._externalElForDropTarget, dropTarget);
         }
         return dropTarget;
       },
       _setDragEventsForBody:function (body, area) {
         if (fileUpload._isBrowserSupportHTML5FileUpload()) {
-          O$.addEventHandler(body, "dragover", function (evt) {
+          O$.addEventHandler(body, "dragover", function dragOverHandler(evt) {
             if (fileUpload._isFilesDragged(evt) && !fileUpload._buttons.browseInput.disabled) {
-              if (area._isNearest(evt.clientX, evt.clientY)) {
-                area._hideAllExceptThis();
-                area.show();
-                area._isVisible = true;
+              if (fileUpload._removeOddDragHandler(body, "dragover", dragOverHandler, area)){
+                fileUpload._initializeDropTarget();
+              }else{
+                if (area._isNearest(evt.clientX, evt.clientY) ) {
+                  area._hideAllExceptThis();
+                  area.show();
+                  area._isVisible = true;
+                }
               }
             }
             fileUpload._cancelDragEvent(evt);
           });
-          O$.addEventHandler(body, "drop", function (evt) {
-            if (fileUpload._isFilesDragged(evt)) {
-              area.hide();
-              area._isVisible = false;
+          O$.addEventHandler(body, "drop", function dropEvHandler(evt) {
+            if (!fileUpload._removeOddDragHandler(body, "drop", dropEvHandler, area)) {
+              if (fileUpload._isFilesDragged(evt)) {
+                area.hide();
+                area._isVisible = false;
+              }
             }
             fileUpload._cancelDragEvent(evt);
           });
-          O$.addEventHandler(body, "dragexit", fileUpload._cancelDragEvent);
+          O$.addEventHandler(body, "dragexit", function dragExitHandler(evt){
+            fileUpload._removeOddDragHandler(body, "dragexit", dragExitHandler, area);
+            fileUpload._cancelDragEvent(evt);
+          });
 
-          O$.addEventHandler(window, "mousemove", function () {
-            if (area._isVisible) {
-              area.hide();
+          O$.addEventHandler(window, "mousemove", function mouseMoveHandler() {
+            if (!fileUpload._removeOddDragHandler(window, "mousemove", mouseMoveHandler, area)) {
+              if (area._isVisible) {
+                area.hide();
+              }
             }
           });
         }
       },
-
+      _removeOddDragHandler: function(el, eventName, dragHandler, area){
+        if (!area){
+          area = el;
+        }
+        if (area._isExternal && !O$.FileUploadUtil._inTheDOM(area)) {
+          area._remove();
+          O$.removeEventHandler(el, eventName, dragHandler);
+          return true;
+        }
+        return false;
+      },
       _setDragEventsForFileUpload:function (area) {
         if (fileUpload._isBrowserSupportHTML5FileUpload()) {
-          function dragoverEventHandler(evt) {
+
+          O$.addEventHandler(area, "dragenter", function dragEnterHandler(evt){
+            fileUpload._removeOddDragHandler(area, "dragenter", dragEnterHandler);
             fileUpload._cancelDragEvent(evt);
-            if (fileUpload._isFilesDragged(evt)) {
-              O$.setStyleMappings(area, {dragover:fileUpload._dropTargetCrossoverClass});
+          });
+          O$.addEventHandler(area, "dragleave", function dragleaveEventHandler(evt) {
+            if (!fileUpload._removeOddDragHandler(area, "dragleave", dragleaveEventHandler)) {
+              O$.setStyleMappings(area, {dragover:null});
             }
-          }
-          function dragleaveEventHandler(evt) {
             fileUpload._cancelDragEvent(evt);
-            O$.setStyleMappings(area, {dragover:null});
-          }
-          function dropEventHandler(evt) {
+          });
+          O$.addEventHandler(area, "dragexit", function dragExitHandler(evt){
+            fileUpload._removeOddDragHandler(area, "dragexit", dragExitHandler);
             fileUpload._cancelDragEvent(evt);
-            O$.setStyleMappings(area, {dragover:null});
-            if (fileUpload._isFilesDragged(evt)) {
-              area.hide();
-              area._isVisible = false;
-              var files = evt.dataTransfer.files;
-              var shouldCallOnChange = false;
-              for (var i = 0; i < files.length; i++) {
-                files[i]._fromDnD = true;
-                if (fileUpload._processFileAddingHTML5(files[i])) {
-                  shouldCallOnChange = true;
-                  if (!fileUpload._multiUpload) {
-                    break;
+          });
+          O$.addEventHandler(area, "dragover", function dragoverEventHandler(evt) {
+            if (!fileUpload._removeOddDragHandler(area, "dragover", dragoverEventHandler)) {
+              if (fileUpload._isFilesDragged(evt)) {
+                O$.setStyleMappings(area, {dragover:fileUpload._dropTargetCrossoverClass});
+              }
+            }
+            fileUpload._cancelDragEvent(evt);
+          });
+          O$.addEventHandler(area, "drop",function dropEventHandler(evt) {
+            if (!fileUpload._removeOddDragHandler(area, "drop", dropEventHandler)) {
+              O$.setStyleMappings(area, {dragover:null});
+              if (fileUpload._isFilesDragged(evt)) {
+                area.hide();
+                area._isVisible = false;
+                var files = evt.dataTransfer.files;
+                var shouldCallOnChange = false;
+                for (var i = 0; i < files.length; i++) {
+                  files[i]._fromDnD = true;
+                  if (fileUpload._processFileAddingHTML5(files[i])) {
+                    shouldCallOnChange = true;
+                    if (!fileUpload._multiUpload) {
+                      break;
+                    }
                   }
                 }
+                if (shouldCallOnChange) {
+                  fileUpload._events._fireChangeEvent();
+                  fileUpload._setUploadButtonAfterFileHaveBeenAdded();
+                }
               }
-              if (shouldCallOnChange) {
-                fileUpload._events._fireChangeEvent();
-                fileUpload._setUploadButtonAfterFileHaveBeenAdded();
-              }
+              fileUpload._cancelDragEvent(evt);
             }
-          }
-
-          O$.addEventHandler(area, "dragenter", fileUpload._cancelDragEvent);
-          O$.addEventHandler(area, "dragleave", dragleaveEventHandler);
-          O$.addEventHandler(area, "dragexit", fileUpload._cancelDragEvent);
-          O$.addEventHandler(area, "dragover", dragoverEventHandler);
-          O$.addEventHandler(area, "drop", dropEventHandler);
+          });
         }
       },
       _isFilesDragged:function (evt) {
@@ -247,13 +289,13 @@ O$.FileUploadUtil = {
           }
         });
         if (!isAccepted){
-          fileUpload._events._fireWrongFileAddedEvent();
+          fileUpload._events._fireWrongFileTypeEvent();
         }
         return isAccepted;
       },
       _setAllEvents:function (onchangeHandler,onstartHandler,onendHandler,
-                              onuploadstartHandler,onuploadinprogressHandler, onuploadendHandler,
-                              onwrongfileaddedHandler, ondirectorydroppedHandler) {
+                              onfilestartHandler,onfileinprogressHandler, onfileendHandler,
+                              onwrongfiletypeHandler, ondirectorydroppedHandler) {
         function createEventHandler(userHandler, eventName) {
           return function (files) {
             if (userHandler) {
@@ -273,23 +315,27 @@ O$.FileUploadUtil = {
         fileUpload._events._fireChangeEvent = createEventHandler(onchangeHandler, "onchange");
         fileUpload._events._fireStartEvent = createEventHandler(onstartHandler, "onstart");
         fileUpload._events._fireEndEvent = createEventHandler(onendHandler, "onend");
-        fileUpload._events._fireUploadStartEvent = createEventHandler(onuploadstartHandler, "onuploadstart");
-        fileUpload._events._fireUploadInProgressEvent = createEventHandler(onuploadinprogressHandler, "onuploadinprogress");
-        fileUpload._events._fireUploadEndEvent = createEventHandler(onuploadendHandler, "onuploadend");
-        fileUpload._events._fireWrongFileAddedEvent = function () {
-          if (onwrongfileaddedHandler) {
-            var event = O$.createEvent("onwrongfileadded");
-            event.allowedTypes = (fileUpload._typesOfFile != null) ? fileUpload._typesOfFile : "*";
-            onwrongfileaddedHandler(event);
-          } else {
-            alert("Wrong type of file");
+        fileUpload._events._fireFileStartEvent = createEventHandler(onfilestartHandler, "onfilestart");
+        fileUpload._events._fireFileInProgressEvent = createEventHandler(onfileinprogressHandler, "onfileinprogress");
+        fileUpload._events._fireFileEndEvent = createEventHandler(onfileendHandler, "onfileend");
+        fileUpload._events._fireWrongFileTypeEvent = function () {
+          var event = O$.createEvent("onwrongfiletype");
+          event.allowedTypes = (fileUpload._typesOfFile != null) ? fileUpload._typesOfFile : "*";
+          var callDefault = true;
+          if (onwrongfiletypeHandler) {
+            callDefault  = !(onwrongfiletypeHandler(event) == false);
+          }
+          if (callDefault){
+            alert(fileUpload._wrongFileTypeText);
           }
         };
         fileUpload._events._fireDirectoryDroppedEvent = function(){
+          var event = O$.createEvent("ondirectorydropped");
+          var callDefault = true;
           if (ondirectorydroppedHandler) {
-            var event = O$.createEvent("ondirectorydropped");
-            ondirectorydroppedHandler(event);
-          } else {
+            callDefault =!(ondirectorydroppedHandler(event) == false);
+          }
+          if (callDefault){
             alert(fileUpload._directoryDroppedText);
           }
         };
@@ -311,14 +357,14 @@ O$.FileUploadUtil = {
                 function (fileUpload, portionName, portionHTML, portionScripts, portionData) {
                 }, null, true);
       },
-      _setStatusforFileWithId:function (id, status) {
-        for (var k = 0; k < fileUpload._listOfids.length; k++) {
-          if (id == fileUpload._listOfids[k][0]) {
-            fileUpload._listOfids[k][3] = status;
-            break;
-          }
+    _setStatusforFileWithId:function (id, status) {
+      for (var k = 0; k < fileUpload._listOfids.length; k++) {
+        if (id == fileUpload._listOfids[k][0]) {
+          fileUpload._listOfids[k][3] = status;
+          break;
         }
-      },
+      }
+    },
       _getFileName:function (fullRoorOfFile) {
         var index = fullRoorOfFile.lastIndexOf('\\');
         return fullRoorOfFile.substring(index + 1);
@@ -395,8 +441,8 @@ O$.FileUploadUtil = {
         if (fileUpload._multiUpload && fileUpload._isBrowserSupportHTML5FileUpload()){
           input.setAttribute("multiple", "");
         }
-        if (fileUpload._acceptDialogFormats){
-          input.setAttribute("accept", fileUpload._acceptDialogFormats);
+        if (fileUpload._acceptedMimeTypes){
+          input.setAttribute("accept", fileUpload._acceptedMimeTypes);
         }
         //todo move somewhere else these styles
         input.style.overflow = "hidden";
@@ -489,8 +535,8 @@ O$.FileUploadUtil = {
         return facet;
       },
       _renderAfterUploadEnd : function(){
-        if (fileUpload._renderAfterUpload){
-          O$.Ajax._reload([fileUpload._renderAfterUpload], {"immediate":false,"_sourceId":fileUpload.id});
+        if (fileUpload._render){
+          O$.Ajax._reload([fileUpload._render], {"immediate":false,"_sourceId":fileUpload.id});
         }
       },
       _transformStatusToFormatted:function(statusText){
@@ -597,15 +643,8 @@ O$.FileUploadUtil = {
           addButton._afterMouseDown = true;
         });
         O$.addEventHandler(window,"mouseup",function mouseUpHandler(){
-          function inTheDOM(element) {
-            var parent = element.parentNode;
-            while (parent != null && parent != document) {
-              parent = parent.parentNode;
-            }
-            return (parent == document);
-          }
 
-          if (inTheDOM(fileUpload)) {
+          if (O$.FileUploadUtil._inTheDOM(fileUpload)) {
             if (!fileUpload._buttons.browseInput.disabled) {
               O$.setStyleMappings(fileUpload._buttons.browseTitleInput, {mousedown:null});
             }
@@ -704,27 +743,25 @@ O$.FileUploadUtil = {
       }
     });
   },
+  _inTheDOM:function (element) {
+    var parent = element.parentNode;
+    while (parent != null && parent != document) {
+      parent = parent.parentNode;
+    }
+    return (parent == document);
+  },
   _initDragArea:function(area){
     O$.extend(area.parentNode, {
       _findPosition:function () {
-        var curtop = 0;
-        var curleft = 0;
-        var obj = this;
-        if (obj.offsetParent) {
-          curleft = obj.offsetLeft;
-          curtop = obj.offsetTop;
-          while (obj = obj.offsetParent) {
-            curleft += obj.offsetLeft;
-            curtop += obj.offsetTop;
-          }
-        }
-        return [curleft, curtop];
+        var size = O$.getElementSize(area.parentNode);
+        var pos = O$.getElementPos(area.parentNode);
+        return [pos.x + size.width/2, pos.y + size.height/2];
       }
     });
     O$.extend(area, {
       _hideAllExceptThis:function () {
         for (var i = 0; i < O$._dropAreas.length; i++) {
-          if (O$._dropAreas[i] != this) {
+          if (O$._dropAreas[i] != area) {
             O$._dropAreas[i].hide();
             O$._dropAreas[i]._isVisible = false;
           }
@@ -732,7 +769,7 @@ O$.FileUploadUtil = {
       },
       _isNearest:function (clientX, clientY) {
 
-        var ourDistance = this._getDistanceTo(clientX, clientY);
+        var ourDistance = area._getDistanceTo(clientX, clientY);
         var alienDistance;
         for (var i = 0; i < O$._dropAreas.length; i++) {
           if (O$._dropAreas[i] != this) {
@@ -745,7 +782,7 @@ O$.FileUploadUtil = {
         return true;
       },
       _getDistanceTo:function (x, y) {
-        var areasXY = this.parentNode._findPosition();
+        var areasXY = area.parentNode._findPosition();
         if (areasXY[0] < x && areasXY[1] < y) {
           return x - areasXY[0] + y - areasXY[1];
         } else if (areasXY[0] >= x && areasXY[1] >= y) {
@@ -754,6 +791,14 @@ O$.FileUploadUtil = {
           return areasXY[0] - x + y - areasXY[1];
         } else if (areasXY[0] < x && areasXY[1] >= y) {
           return x - areasXY[0] + areasXY[1] - y;
+        }
+      },
+      _remove:function(){
+        for (var i = 0; i < O$._dropAreas.length; i++) {
+          if (O$._dropAreas[i] == area) {
+            O$._dropAreas.splice(i, 1);
+            return;
+          }
         }
       }});
   },

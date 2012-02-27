@@ -14,7 +14,7 @@ package org.openfaces.component.input;
 
 public enum SingleFileUploadLayoutMode {
     FULL("full"),
-    MINIMALISTIC("minimalistic");
+    COMPACT("compact");
     private String value;
 
     SingleFileUploadLayoutMode(String value) {

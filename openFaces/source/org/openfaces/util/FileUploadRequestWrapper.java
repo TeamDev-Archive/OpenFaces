@@ -15,10 +15,9 @@ package org.openfaces.util;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.openfaces.component.input.FileUpload;
 import org.openfaces.event.FileUploadItem;
 import org.openfaces.event.FileUploadStatus;
-import org.openfaces.renderkit.input.FileUploadRenderer;
+import org.openfaces.renderkit.input.AbstractFileUploadRenderer;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
@@ -47,7 +46,7 @@ public class FileUploadRequestWrapper extends HttpServletRequestWrapper {
             for (FileItem fileItem : fileItems) {
                 if (!fileItem.isFormField()) {
                     if (fileItem.getSize() != 0) {
-                        if (request.getSession().getAttribute(uniqueFileId + FileUploadRenderer.TERMINATED_TEXT) == null) {
+                        if (request.getSession().getAttribute(uniqueFileId + AbstractFileUploadRenderer.TERMINATED_TEXT) == null) {
                             String correctFileName = getCorrectFileName(fileItem.getName());
                             File f = writeFile(fileItem, tempDirPath, correctFileName);
                             int index = fileItem.getFieldName().indexOf(FIELD_NAME);
@@ -55,7 +54,7 @@ public class FileUploadRequestWrapper extends HttpServletRequestWrapper {
                             request.setAttribute(genericNameForFile, new FileUploadItem(correctFileName, f, FileUploadStatus.SUCCESSFUL));
                             request.setAttribute("FILE_ID", uniqueFileId);
                         }else{
-                            request.getSession().removeAttribute(uniqueFileId + FileUploadRenderer.TERMINATED_TEXT);
+                            request.getSession().removeAttribute(uniqueFileId + AbstractFileUploadRenderer.TERMINATED_TEXT);
                         }
                     }else{
                         throw new RuntimeException("File size is equal 0 bytes");
@@ -65,13 +64,13 @@ public class FileUploadRequestWrapper extends HttpServletRequestWrapper {
 
         } catch (FileUploadException fe) {
             /*this exception can happened in case if something wrong with file or we stopped manually*/
-            request.getSession().setAttribute(uniqueFileId + FileUploadRenderer.TERMINATED_TEXT, true);
+            request.getSession().setAttribute(uniqueFileId + AbstractFileUploadRenderer.TERMINATED_TEXT, true);
         } catch (IOException ne) {
             /*this exception can happened in case if problem in writing file*/
-            request.getSession().setAttribute(uniqueFileId + FileUploadRenderer.TERMINATED_TEXT, true);
+            request.getSession().setAttribute(uniqueFileId + AbstractFileUploadRenderer.TERMINATED_TEXT, true);
         }catch(Exception e){
             /*this exception can happened if on server some problem*/
-            request.getSession().setAttribute(uniqueFileId + FileUploadRenderer.TERMINATED_TEXT, true);
+            request.getSession().setAttribute(uniqueFileId + AbstractFileUploadRenderer.TERMINATED_TEXT, true);
         }
     }
 

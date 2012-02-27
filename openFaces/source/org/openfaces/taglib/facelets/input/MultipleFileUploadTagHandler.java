@@ -11,15 +11,14 @@
  */
 package org.openfaces.taglib.facelets.input;
 
-import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
-import org.openfaces.taglib.internal.input.FileUploadTag;
-
 import javax.faces.view.facelets.ComponentConfig;
+import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
+import org.openfaces.taglib.internal.input.MultipleFileUploadTag;
 
-public class FileUploadTagHandler extends AbstractFaceletsComponentHandler {
+public class MultipleFileUploadTagHandler extends AbstractFaceletsComponentHandler {
 
-    public FileUploadTagHandler(ComponentConfig componentConfig) {
-        super(componentConfig, new FileUploadTag());
+    public MultipleFileUploadTagHandler(ComponentConfig componentConfig) {
+        super(componentConfig, new MultipleFileUploadTag());
     }
 
 }

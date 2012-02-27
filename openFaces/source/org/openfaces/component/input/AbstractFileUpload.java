@@ -38,7 +38,7 @@ public abstract class AbstractFileUpload extends OUIInputBase {
     protected static final List<String> EVENT_NAMES;
     static {
         List<String> eventNames = new ArrayList<String>(Arrays.asList("start", "end",
-                "uploadstart", "uploadinprogress", "uploadend","wrongfileadded"));
+                "filestart", "fileinprogress", "fileend","wrongfiletype","directorydropped"));
         eventNames.addAll(OUIInputBase.EVENT_NAMES);
         EVENT_NAMES = Collections.unmodifiableList(eventNames);
     }
@@ -68,14 +68,11 @@ public abstract class AbstractFileUpload extends OUIInputBase {
     private String dropTargetDragoverClass;
     protected String dropTargetText;
 
-    private String rowStyle;
-    private String rowClass;
-
     private String fileNameClass;
     private String fileNameStyle;
 
-    private String uploadStatusClass;
-    private String uploadStatusStyle;
+    private String statusClass;
+    private String statusStyle;
     private String notUploadedStatusText;
     private String uploadedStatusText;
     private String inProgressStatusText;
@@ -94,30 +91,27 @@ public abstract class AbstractFileUpload extends OUIInputBase {
     private String stoppedStatusText;
     private MethodExpression fileUploadedListener;
 
-
-    private MethodExpression uploadCompletionListener;
+    private MethodExpression completionListener;
 
     private String onstart;
     private String onend;
-    private String onuploadstart;
-    private String onuploadinprogress;
-    private String onuploadend;
-    private String onwrongfileadded;
+    private String onfilestart;
+    private String onfileinprogress;
+    private String onfileend;
+    private String onwrongfiletype;
     private String ondirectorydropped;
 
     private int fileSizeLimit;
 
-
-    private String renderAfterUpload;
-
+    private String render;
     private String externalDropTarget;
-
-    private String acceptDialogFormats;
+    private String acceptedMimeTypes;
 
     private String directoryDroppedText;
+    private String wrongFileTypeText;
 
     public AbstractFileUpload() {
-        setRendererType("org.openfaces.FileUploadRenderer");
+        setRendererType("org.openfaces.MultipleFileUploadRenderer");
     }
 
     @Override
@@ -146,13 +140,11 @@ public abstract class AbstractFileUpload extends OUIInputBase {
                 dropTargetDragoverStyle,
                 dropTargetDragoverClass,
                 dropTargetText,
-                rowStyle,
-                rowClass,
                 acceptedFileTypes,
                 fileNameClass,
                 fileNameStyle,
-                uploadStatusClass,
-                uploadStatusStyle,
+                statusClass,
+                statusStyle,
                 notUploadedStatusText,
                 uploadedStatusText,
                 inProgressStatusText,
@@ -162,21 +154,22 @@ public abstract class AbstractFileUpload extends OUIInputBase {
                 tabindex,
                 saveAttachedState(context, fileUploadedListener),
                 stoppedStatusText,
-                saveAttachedState(context, uploadCompletionListener),
+                saveAttachedState(context, completionListener),
                 onstart,
                 onend,
-                onuploadstart,
-                onuploadinprogress,
-                onuploadend,
-                onwrongfileadded,
+                onfilestart,
+                onfileinprogress,
+                onfileend,
+                onwrongfiletype,
                 ondirectorydropped,
                 stoppingStatusText,
                 unexpectedErrorText,
                 fileSizeLimit,
-                renderAfterUpload,
+                render,
                 externalDropTarget,
-                acceptDialogFormats,
-                directoryDroppedText
+                acceptedMimeTypes,
+                directoryDroppedText,
+                wrongFileTypeText
         };
     }
 
@@ -202,13 +195,11 @@ public abstract class AbstractFileUpload extends OUIInputBase {
         dropTargetDragoverStyle = (String) values[i++];
         dropTargetDragoverClass = (String) values[i++];
         dropTargetText = (String) values[i++];
-        rowStyle = (String) values[i++];
-        rowClass = (String) values[i++];
         acceptedFileTypes = (String) values[i++];
         fileNameClass = (String) values[i++];
         fileNameStyle = (String) values[i++];
-        uploadStatusClass = (String) values[i++];
-        uploadStatusStyle = (String) values[i++];
+        statusClass = (String) values[i++];
+        statusStyle = (String) values[i++];
         notUploadedStatusText = (String) values[i++];
         uploadedStatusText = (String) values[i++];
         inProgressStatusText = (String) values[i++];
@@ -218,21 +209,22 @@ public abstract class AbstractFileUpload extends OUIInputBase {
         tabindex = (Integer) values[i++];
         fileUploadedListener = (MethodExpression) restoreAttachedState(context, values[i++]);
         stoppedStatusText = (String) values[i++];
-        uploadCompletionListener = (MethodExpression) restoreAttachedState(context, values[i++]);
+        completionListener = (MethodExpression) restoreAttachedState(context, values[i++]);
         onstart = (String) values[i++];
         onend = (String) values[i++];
-        onuploadstart = (String) values[i++];
-        onuploadinprogress = (String) values[i++];
-        onuploadend = (String) values[i++];
-        onwrongfileadded = (String) values[i++];
+        onfilestart = (String) values[i++];
+        onfileinprogress = (String) values[i++];
+        onfileend = (String) values[i++];
+        onwrongfiletype = (String) values[i++];
         ondirectorydropped = (String) values[i++];
         stoppingStatusText = (String) values[i++];
         unexpectedErrorText = (String) values[i++];
         fileSizeLimit = (Integer) values[i++];
-        renderAfterUpload = (String) values[i++];
+        render = (String) values[i++];
         externalDropTarget = (String) values[i++];
-        acceptDialogFormats = (String) values[i++];
+        acceptedMimeTypes = (String) values[i++];
         directoryDroppedText = (String) values[i++];
+        wrongFileTypeText = (String)values[i++];
     }
 
 
@@ -272,22 +264,6 @@ public abstract class AbstractFileUpload extends OUIInputBase {
 
     public void setDropTargetText(String dropTargetText) {
         this.dropTargetText = dropTargetText;
-    }
-
-    public String getRowStyle() {
-        return ValueBindings.get(this, "rowStyle", rowStyle);
-    }
-
-    public void setRowStyle(String rowStyle) {
-        this.rowStyle = rowStyle;
-    }
-
-    public String getRowClass() {
-        return ValueBindings.get(this, "rowClass", rowClass);
-    }
-
-    public void setRowClass(String rowClass) {
-        this.rowClass = rowClass;
     }
 
     public String getFileNameClass() {
@@ -338,20 +314,20 @@ public abstract class AbstractFileUpload extends OUIInputBase {
         this.fileSizeLimitErrorText = fileSizeLimitErrorText;
     }
 
-    public String getUploadStatusClass() {
-        return ValueBindings.get(this, "uploadStatusClass", uploadStatusClass);
+    public String getStatusClass() {
+        return ValueBindings.get(this, "statusClass", statusClass);
     }
 
-    public void setUploadStatusClass(String uploadStatusClass) {
-        this.uploadStatusClass = uploadStatusClass;
+    public void setStatusClass(String statusClass) {
+        this.statusClass = statusClass;
     }
 
-    public String getUploadStatusStyle() {
-        return ValueBindings.get(this, "uploadStatusStyle", uploadStatusStyle);
+    public String getStatusStyle() {
+        return ValueBindings.get(this, "statusStyle", statusStyle);
     }
 
-    public void setUploadStatusStyle(String uploadStatusStyle) {
-        this.uploadStatusStyle = uploadStatusStyle;
+    public void setStatusStyle(String statusStyle) {
+        this.statusStyle = statusStyle;
     }
 
 
@@ -514,24 +490,24 @@ public abstract class AbstractFileUpload extends OUIInputBase {
     }
 
 
-    public MethodExpression getUploadCompletionListener() {
-        return uploadCompletionListener;
+    public MethodExpression getCompletionListener() {
+        return completionListener;
     }
 
-    public void setUploadCompletionListener(MethodExpression uploadCompletionListener) {
-        this.uploadCompletionListener = uploadCompletionListener;
+    public void setCompletionListener(MethodExpression completionListener) {
+        this.completionListener = completionListener;
     }
 
-    public void addUploadCompletionListener(UploadCompletionListener uploadCompletionListener) {
-        addFacesListener(uploadCompletionListener);
+    public void addCompletionListener(UploadCompletionListener completionListener) {
+        addFacesListener(completionListener);
     }
 
-    public UploadCompletionListener[] getUploadCompletionListeners() {
+    public UploadCompletionListener[] getCompletionListeners() {
         return (UploadCompletionListener[]) getFacesListeners(FileUploadedListener.class);
     }
 
-    public void removeUploadCompletionListener(UploadCompletionListener uploadCompletionListener) {
-        removeFacesListener(uploadCompletionListener);
+    public void removeCompletionListener(UploadCompletionListener completionListener) {
+        removeFacesListener(completionListener);
     }
 
     public String getOnstart() {
@@ -550,36 +526,36 @@ public abstract class AbstractFileUpload extends OUIInputBase {
         this.onend = onend;
     }
 
-    public String getOnuploadstart() {
-        return ValueBindings.get(this, "onuploadstart", onuploadstart);
+    public String getOnfilestart() {
+        return ValueBindings.get(this, "onfilestart", onfilestart);
     }
 
-    public void setOnuploadstart(String onuploadstart) {
-        this.onuploadstart = onuploadstart;
+    public void setOnfilestart(String onfilestart) {
+        this.onfilestart = onfilestart;
     }
 
-    public String getOnuploadinprogress() {
-        return ValueBindings.get(this, "onuploadinprogress", onuploadinprogress);
+    public String getOnfileinprogress() {
+        return ValueBindings.get(this, "onfileinprogress", onfileinprogress);
     }
 
-    public void setOnuploadinprogress(String onuploadinprogress) {
-        this.onuploadinprogress = onuploadinprogress;
+    public void setOnfileinprogress(String onfileinprogress) {
+        this.onfileinprogress = onfileinprogress;
     }
 
-    public String getOnuploadend() {
-        return ValueBindings.get(this, "onuploadend", onuploadend);
+    public String getOnfileend() {
+        return ValueBindings.get(this, "onfileend", onfileend);
     }
 
-    public void setOnuploadend(String onuploadend) {
-        this.onuploadend = onuploadend;
+    public void setOnfileend(String onfileend) {
+        this.onfileend = onfileend;
     }
 
-    public String getOnwrongfileadded() {
-        return ValueBindings.get(this, "onwrongfileadded", onwrongfileadded);
+    public String getOnwrongfiletype() {
+        return ValueBindings.get(this, "onwrongfiletype", onwrongfiletype);
     }
 
-    public void setOnwrongfileadded(String onwrongfileadded) {
-        this.onwrongfileadded = onwrongfileadded;
+    public void setOnwrongfiletype(String onwrongfiletype) {
+        this.onwrongfiletype = onwrongfiletype;
     }
 
     public String getOndirectorydropped() {
@@ -615,12 +591,12 @@ public abstract class AbstractFileUpload extends OUIInputBase {
     }
 
 
-    public String getRenderAfterUpload() {
-        return ValueBindings.get(this, "renderAfterUpload", renderAfterUpload);
+    public String getRender() {
+        return ValueBindings.get(this, "render", render);
     }
 
-    public void setRenderAfterUpload(String renderAfterUpload) {
-        this.renderAfterUpload = renderAfterUpload;
+    public void setRender(String render) {
+        this.render = render;
     }
 
     public String getExternalDropTarget() {
@@ -640,12 +616,12 @@ public abstract class AbstractFileUpload extends OUIInputBase {
         return EVENT_NAMES;
     }
 
-    public String getAcceptDialogFormats() {
-        return ValueBindings.get(this, "acceptDialogFormats", acceptDialogFormats);
+    public String getAcceptedMimeTypes() {
+        return ValueBindings.get(this, "acceptedMimeTypes", acceptedMimeTypes);
     }
 
-    public void setAcceptDialogFormats(String acceptDialogFormats) {
-        this.acceptDialogFormats = acceptDialogFormats;
+    public void setAcceptedMimeTypes(String acceptedMimeTypes) {
+        this.acceptedMimeTypes = acceptedMimeTypes;
     }
 
     public String getDirectoryDroppedText() {
@@ -654,5 +630,13 @@ public abstract class AbstractFileUpload extends OUIInputBase {
 
     public void setDirectoryDroppedText(String directoryDroppedText) {
         this.directoryDroppedText = directoryDroppedText;
+    }
+
+    public String getWrongFileTypeText() {
+        return ValueBindings.get(this, "wrongFileTypeText", wrongFileTypeText, "Wrong type of file");
+    }
+
+    public void setWrongFileTypeText(String wrongFileTypeText) {
+        this.wrongFileTypeText = wrongFileTypeText;
     }
 }
