@@ -71,7 +71,7 @@ public class DateChooserRenderer extends DropDownComponentRenderer {
 
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) {
-        Date convertedValue = (Date) Rendering.convertFromString(context, component, (String) submittedValue);
+        Date convertedValue = (Date) Rendering.convertFromString(context, (DateChooser) component, (String) submittedValue);
         DateChooser dataChooser = (DateChooser) component;
         boolean keepTime = dataChooser.isKeepTime();
         if (!keepTime) {

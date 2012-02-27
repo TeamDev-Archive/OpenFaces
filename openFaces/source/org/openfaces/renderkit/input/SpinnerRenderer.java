@@ -151,7 +151,7 @@ public class SpinnerRenderer extends DropDownComponentRenderer {
 
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) {
-        return Rendering.convertFromString(context, component, (String) submittedValue);
+        return Rendering.convertFromString(context, (Spinner) component, (String) submittedValue);
     }
 
     @Override

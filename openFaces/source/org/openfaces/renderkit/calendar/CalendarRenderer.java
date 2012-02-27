@@ -666,7 +666,7 @@ public class CalendarRenderer extends RendererBase {
 
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
-        Date convertedValue = (Date) Rendering.convertFromString(context, component, (String) submittedValue);
+        Date convertedValue = (Date) Rendering.convertFromString(context, (Calendar) component, (String) submittedValue);
         Calendar calendar = (Calendar) component;
         boolean keepTime = calendar.isKeepTime();
         if (!keepTime) {
