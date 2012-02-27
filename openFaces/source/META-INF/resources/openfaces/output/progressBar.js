@@ -165,10 +165,10 @@ O$.ProgressBar = {
       },
       _setDefBackgroundImage:function () {
         for (var i = 0; i < document.styleSheets.length; i++) {
-          var rules = document.styleSheets[i].cssRules;
+          var rules = O$.isExplorer() ? document.styleSheets[i].rules : document.styleSheets[i].cssRules;
           for (var k = 0; k < rules.length; k++) {
             if (rules[k].selectorText == "." + defProgressClassName) {
-              rules[k].style.backgroundImage = "url('" + progressBar._defaultProgressImgUrl + "')";
+              rules[k].style.backgroundImage = "url(" + progressBar._defaultProgressImgUrl + ")";
               return;
             }
           }

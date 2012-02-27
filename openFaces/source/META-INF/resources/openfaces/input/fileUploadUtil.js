@@ -753,24 +753,15 @@ O$.FileUploadUtil = {
   _initDragArea:function(area){
     O$.extend(area.parentNode, {
       _findPosition:function () {
-        var curtop = 0;
-        var curleft = 0;
-        var obj = this;
-        if (obj.offsetParent) {
-          curleft = obj.offsetLeft;
-          curtop = obj.offsetTop;
-          while (obj = obj.offsetParent) {
-            curleft += obj.offsetLeft;
-            curtop += obj.offsetTop;
-          }
-        }
-        return [curleft, curtop];
+        var size = O$.getElementSize(area.parentNode);
+        var pos = O$.getElementPos(area.parentNode);
+        return [pos.x + size.width/2, pos.y + size.height/2];
       }
     });
     O$.extend(area, {
       _hideAllExceptThis:function () {
         for (var i = 0; i < O$._dropAreas.length; i++) {
-          if (O$._dropAreas[i] != this) {
+          if (O$._dropAreas[i] != area) {
             O$._dropAreas[i].hide();
             O$._dropAreas[i]._isVisible = false;
           }
@@ -778,7 +769,7 @@ O$.FileUploadUtil = {
       },
       _isNearest:function (clientX, clientY) {
 
-        var ourDistance = this._getDistanceTo(clientX, clientY);
+        var ourDistance = area._getDistanceTo(clientX, clientY);
         var alienDistance;
         for (var i = 0; i < O$._dropAreas.length; i++) {
           if (O$._dropAreas[i] != this) {
@@ -791,7 +782,7 @@ O$.FileUploadUtil = {
         return true;
       },
       _getDistanceTo:function (x, y) {
-        var areasXY = this.parentNode._findPosition();
+        var areasXY = area.parentNode._findPosition();
         if (areasXY[0] < x && areasXY[1] < y) {
           return x - areasXY[0] + y - areasXY[1];
         } else if (areasXY[0] >= x && areasXY[1] >= y) {
