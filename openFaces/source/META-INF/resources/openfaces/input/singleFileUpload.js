@@ -118,7 +118,12 @@ O$.SingleFileUpload = {
           fileUpload._addButtonParent.appendChild(fileUpload._buttons.browse);
           if (fileUpload._showStopNearProgress){
             var elToDel = O$(fileUpload.id + "::stopIcon");
+            var stopSize = fileUpload._getNumProperty(elToDel, "margin-left")
+                    + O$.getElementSize(elToDel).width;
             elToDel.parentNode.removeChild(elToDel);
+            var progressSize = O$.getElementSize(fileUpload._els.progressBar);
+            fileUpload._els.progressBar._setWidthForAllComponent(progressSize.width + stopSize);
+            fileUpload._els.progressBar.setValue(fileUpload._els.progressBar.getValue());
           }
           if (!fileUpload._showInfoAfterUpload){
             fileUpload._els.progressBar.style.display = "none";
@@ -816,6 +821,7 @@ O$.SingleFileUpload = {
         fileUpload._els.status.innerHTML = fileUpload._statuses.newOne;//status
       }
       if (fileUpload._showStopNearProgress){
+        fileUpload._els.progressBar._setWidthForAllComponent(0);
         fileUpload._els.progressBar.style.visibility = "hidden";
         fileUpload._els.progressBar.style.display = "block";
         if (O$.isExplorer() &&

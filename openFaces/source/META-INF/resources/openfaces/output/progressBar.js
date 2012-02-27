@@ -27,6 +27,9 @@ O$.ProgressBar = {
       _widthOfProgress: 0,
       _isEnabledQuirksMode:false,
       _defProgressClassName: defProgressClassName,
+      _setWidthForAllComponent:function(width){
+        progressBar._widthOfProgress = width;
+      },
       _enableQuirksMode: function(){
         progressBar._isEnabledQuirksMode = true;
       },
