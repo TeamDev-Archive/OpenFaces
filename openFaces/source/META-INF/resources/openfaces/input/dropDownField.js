@@ -146,7 +146,7 @@ O$.DropDownField = {
         var rowCount = totalItemCount - itemsLoaded;
         if (pageSize != -1 && rowCount > pageSize)
           rowCount = pageSize;
-        O$.requestComponentPortions(dropDownId,
+        O$.Ajax.requestComponentPortions(dropDownId,
                 ["filterCriterion:" + ((text != null) ? "[" + text + "]" : "null")],
                 "{pageStart: " + itemsLoaded + ", pageSize: " + rowCount + ", forceReload:" + (forceReload === true) + "}",
                 O$.DropDownField._filteredItemsLoaded);

@@ -212,7 +212,7 @@ window.OpenFaces.Ajax = {
     var args = arguments;
     if (!O$.isLoadedFullPage()) {
       O$.addLoadEvent(function() {
-        O$.requestComponentPortions.apply(null, args);
+        O$.Ajax.requestComponentPortions.apply(null, args);
       });
       return;
     }
