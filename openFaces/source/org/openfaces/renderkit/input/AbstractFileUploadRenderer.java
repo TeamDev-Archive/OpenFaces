@@ -178,9 +178,9 @@ public abstract class AbstractFileUploadRenderer extends RendererBase implements
                     }
                 }
                 AbstractFileUpload fileUpload = (AbstractFileUpload) component;
-                MethodExpression uploadCompletionListener = fileUpload.getUploadCompletionListener();
-                if (uploadCompletionListener != null) {
-                    uploadCompletionListener.invoke(
+                MethodExpression completionListener = fileUpload.getCompletionListener();
+                if (completionListener != null) {
+                    completionListener.invoke(
                             context.getELContext(), new Object[]{
                             new UploadCompletionEvent(fileUpload, filesItems)});
                 }
@@ -284,12 +284,7 @@ public abstract class AbstractFileUploadRenderer extends RendererBase implements
         writer.endElement("table");
     }
 
-    protected void writeProgressBar(FacesContext context, AbstractFileUpload fileUpload) throws IOException {
-        if (progressBar == null) {
-            progressBar = new ProgressBar();
-        }
-        progressBar.encodeAll(context);
-    }
+    protected abstract void writeProgressBar(FacesContext context, AbstractFileUpload fileUpload) throws IOException;
 
     private void renderComponent(FacesContext context, AbstractFileUpload fileUpload) throws IOException {
         String clientId = fileUpload.getClientId(context);

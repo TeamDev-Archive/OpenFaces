@@ -1285,9 +1285,6 @@
     -moz-border-radius: 5px;
     border-radius: 5px;
 }
-.o_file_drop_target_dragover{
-    background-color: #ddd;
-}
 
 .o_file_upload_infos {
     width: 100%;
@@ -1407,7 +1404,8 @@
 }
 .o_s_file_drop_target_min,
 .o_s_file_drop_target_full,
-.o_file_ext_drop_target{
+.o_file_ext_drop_target,
+.o_s_file_ext_drop_target{
     color: #999999;
     font-size: 10pt;
     font-weight: bold;
@@ -1427,12 +1425,16 @@
 .o_file_ext_drop_target{
     margin:5px;
     position: absolute;
-    padding-top:50px;
+    padding-top:10px;
+    background-color: white;
     top:0;
     left:0;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=40)";
-    filter: alpha(opacity=40);
-    opacity: 0.4
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+    filter: alpha(opacity=80);
+    opacity: 0.8;
+}
+.o_file_drop_target_dragover{
+    background-color: #ddd;
 }
 
 /* TwoListSelection */

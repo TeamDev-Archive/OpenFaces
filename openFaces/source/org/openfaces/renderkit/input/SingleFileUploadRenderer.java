@@ -34,6 +34,7 @@ public final class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
     private static final String DEFAULT_STOP_URL = "input/fileUpload-stop.png";
     private static final String STOP_ICO_STYLE_MIN = "o_s_file_clear_icon_min";
     private static final String STOP_ICO_STYLE_FULL = "o_s_file_clear_icon_full";
+    private static final String DEFAULT_UPLOADED_MIN_URL = "output/uploadedProgressBarMin.png";
     private SingleFileUploadLayoutMode layoutMode;
 
     @Override
@@ -74,25 +75,25 @@ public final class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
     }
 
     private void setLayoutSettings(SingleFileUpload fileUpload, SingleFileUploadLayoutMode mode) {
-        if (fileUpload.getBackToFirstScreen() == null) {
+        if (fileUpload.getShowInfoAfterUpload() == null) {
             if (mode == SingleFileUploadLayoutMode.FULL) {
-                fileUpload.setBackToFirstScreen(false);
+                fileUpload.setShowInfoAfterUpload(true);
             } else {
-                fileUpload.setBackToFirstScreen(true);
+                fileUpload.setShowInfoAfterUpload(false);
             }
         }
-        if (fileUpload.getWhatToDoWithUploadOnUploading() == null) {
+        if (fileUpload.getBrowseButtonDuringUpload() == null) {
             if (mode == SingleFileUploadLayoutMode.FULL) {
-                fileUpload.setWhatToDoWithUploadOnUploading(SingleFileUploadBtnBehavior.SHOW_STOP);
+                fileUpload.setBrowseButtonDuringUpload(SingleFileUploadBtnBehavior.SHOW_STOP);
             } else {
-                fileUpload.setWhatToDoWithUploadOnUploading(SingleFileUploadBtnBehavior.HIDE);
+                fileUpload.setBrowseButtonDuringUpload(SingleFileUploadBtnBehavior.HIDE);
             }
         }
-        if (fileUpload.getShowStopButtonNearProgress() == null) {
+        if (fileUpload.getStopButtonNearProgress() == null) {
             if (mode == SingleFileUploadLayoutMode.FULL) {
-                fileUpload.setShowStopButtonNearProgress(false);
+                fileUpload.setStopButtonNearProgress(false);
             } else {
-                fileUpload.setShowStopButtonNearProgress(true);
+                fileUpload.setStopButtonNearProgress(true);
             }
         }
     }
@@ -109,7 +110,7 @@ public final class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
         String dropTargetText = fileUpload.getDropTargetText();
         if (dropTargetText == null) {
             switch (layoutMode) {
-                case MINIMALISTIC:
+                case COMPACT:
                     dropTargetText = "Drop file";
                     break;
                 case FULL:
@@ -131,9 +132,9 @@ public final class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
     }
 
     private void writeFileInfo(FacesContext context, SingleFileUpload fileUpload, ResponseWriter writer, String clientId) throws IOException {
-        String fileInfoClass = Styles.getCSSClass(context, fileUpload, fileUpload.getRowStyle(), StyleGroup.regularStyleGroup(), fileUpload.getRowClass(), "o_file_upload_info");
+        String fileInfoClass = Styles.getCSSClass(context, fileUpload, fileUpload.getFileInfoAreaStyle(), StyleGroup.regularStyleGroup(), fileUpload.getFileInfoAreaClass(), "o_file_upload_info");
         String infoTitleClass = Styles.getCSSClass(context, fileUpload, fileUpload.getFileNameStyle(), StyleGroup.regularStyleGroup(), fileUpload.getFileNameClass(), "o_s_file_upload_info_title");
-        String infoStatusClass = Styles.getCSSClass(context, fileUpload, fileUpload.getUploadStatusStyle(), StyleGroup.regularStyleGroup(), fileUpload.getUploadStatusClass(), "o_s_file_upload_info_status");
+        String infoStatusClass = Styles.getCSSClass(context, fileUpload, fileUpload.getStatusStyle(), StyleGroup.regularStyleGroup(), fileUpload.getStatusClass(), "o_s_file_upload_info_status");
 
         writer.startElement("table", fileUpload);
         writer.writeAttribute("id", clientId, null);
@@ -141,7 +142,7 @@ public final class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
         writer.startElement("tr", fileUpload);
 
         writer.startElement("td", fileUpload);
-        writer.startElement("div",fileUpload);
+        writer.startElement("div", fileUpload);
         writer.writeAttribute("class", infoTitleClass, null);
         writer.endElement("div");
         writer.endElement("td");
@@ -159,7 +160,7 @@ public final class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
     protected void writeProgressBar(FacesContext context, AbstractFileUpload fileUpload) throws IOException {
         if (progressBar == null) {
             progressBar = new ProgressBar();
-            progressBar.setSmallProgressByDefault(true);
+            progressBar.setDefaultProgressImgUrl(DEFAULT_UPLOADED_MIN_URL);
         }
         progressBar.setStyleClass(Styles.getCSSClass(context, progressBar, progressBar.getStyle(), StyleGroup.regularStyleGroup(), progressBar.getStyleClass(), getProgressBarStyle(((SingleFileUpload) fileUpload))));
         progressBar.setLabelClass(Styles.getCSSClass(context, progressBar, progressBar.getLabelStyle(), StyleGroup.regularStyleGroup(), progressBar.getLabelClass(), "o_s_file_upload_progress_label"));
@@ -168,8 +169,8 @@ public final class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
 
     private String getProgressBarStyle(SingleFileUpload fileUpload) {
         switch (layoutMode) {
-            case MINIMALISTIC:
-                if (fileUpload.getWhatToDoWithUploadOnUploading() == SingleFileUploadBtnBehavior.HIDE) {
+            case COMPACT:
+                if (fileUpload.getBrowseButtonDuringUpload() == SingleFileUploadBtnBehavior.HIDE) {
                     return "o_s_fileup_pro_bar_min";
                 } else {
                     return "o_s_fileup_pro_bar_compact";
@@ -197,7 +198,7 @@ public final class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
 
         List<String> listOfImages = new LinkedList<String>();
         String defStopUrl = null;
-        if (fileUpload.getShowStopButtonNearProgress()) {
+        if (fileUpload.getStopButtonNearProgress()) {
             if (stopButton == null) {
                 defStopUrl = Resources.getURL(context, null, null, DEFAULT_STOP_URL);
                 listOfImages.add(defStopUrl);
@@ -228,22 +229,23 @@ public final class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
                 Utilities.getFunctionOfEvent(fileUpload.getOnchange()),
                 Utilities.getFunctionOfEvent(fileUpload.getOnstart()),
                 Utilities.getFunctionOfEvent(fileUpload.getOnend()),
-                Utilities.getFunctionOfEvent(fileUpload.getOnuploadstart()),
-                Utilities.getFunctionOfEvent(fileUpload.getOnuploadinprogress()),
-                Utilities.getFunctionOfEvent(fileUpload.getOnuploadend()),
-                Utilities.getFunctionOfEvent(fileUpload.getOnwrongfileadded()),
+                Utilities.getFunctionOfEvent(fileUpload.getOnfilestart()),
+                Utilities.getFunctionOfEvent(fileUpload.getOnfileinprogress()),
+                Utilities.getFunctionOfEvent(fileUpload.getOnfileend()),
+                Utilities.getFunctionOfEvent(fileUpload.getOnwrongfiletype()),
                 Utilities.getFunctionOfEvent(fileUpload.getOndirectorydropped()),
                 dropTargetDragoverClass,
-                (fileUpload.getRenderAfterUpload() == null) ? null : Utilities.getForm(fileUpload).getClientId(context) + ":" + fileUpload.getRenderAfterUpload(),
+                (fileUpload.getRender() == null) ? null : Utilities.getForm(fileUpload).getClientId(context) + ":" + fileUpload.getRender(),
                 fileUpload.getExternalDropTarget(),
-                fileUpload.getAcceptDialogFormats(),
+                fileUpload.getAcceptedMimeTypes(),
                 fileUpload.getLayoutMode(),
                 defStopUrl,
                 getIconStyle(fileUpload, layoutMode),
-                fileUpload.getBackToFirstScreen(),
-                fileUpload.getWhatToDoWithUploadOnUploading(),
-                fileUpload.getShowStopButtonNearProgress(),
-                fileUpload.getDirectoryDroppedText()
+                fileUpload.getShowInfoAfterUpload(),
+                fileUpload.getBrowseButtonDuringUpload(),
+                fileUpload.getStopButtonNearProgress(),
+                fileUpload.getDirectoryDroppedText(),
+                fileUpload.getWrongFileTypeText()
         );
 
         Rendering.renderInitScript(context, initScript,
@@ -258,15 +260,16 @@ public final class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
     protected void writeHelpfulButtons(FacesContext context, AbstractFileUpload abstractFileUpload, ResponseWriter
             writer, String elementId) throws IOException {
         SingleFileUpload fileUpload = (SingleFileUpload) abstractFileUpload;
-        if (fileUpload.getShowStopButtonNearProgress()) {
-            facetRenderer.writeDivByDefault(stopButton, elementId + STOP_BTN_CONTAINER, "", getIconStyle(fileUpload,layoutMode));
+        if (fileUpload.getStopButtonNearProgress() && fileUpload.getBrowseButtonDuringUpload() != SingleFileUploadBtnBehavior.SHOW_STOP) {
+            facetRenderer.writeDivByDefault(stopButton, elementId + STOP_BTN_CONTAINER, "", getIconStyle(fileUpload, layoutMode));
         } else {
             facetRenderer.writeButtonByDefault(stopButton, elementId + STOP_BTN_CONTAINER, abstractFileUpload.getStopButtonText(), "o_s_file_clear_btn");
         }
     }
-    private String getIconStyle(SingleFileUpload fileUpload, SingleFileUploadLayoutMode layoutMode ){
+
+    private String getIconStyle(SingleFileUpload fileUpload, SingleFileUploadLayoutMode layoutMode) {
         return (layoutMode == SingleFileUploadLayoutMode.FULL) ? STOP_ICO_STYLE_FULL
-                : (fileUpload.getWhatToDoWithUploadOnUploading() == SingleFileUploadBtnBehavior.HIDE
+                : (fileUpload.getBrowseButtonDuringUpload() == SingleFileUploadBtnBehavior.HIDE
                 ? STOP_ICO_STYLE_MIN : STOP_ICO_STYLE_FULL);
     }
 }

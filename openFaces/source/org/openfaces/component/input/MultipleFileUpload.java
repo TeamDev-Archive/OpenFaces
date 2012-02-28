@@ -16,9 +16,9 @@ import org.openfaces.util.ValueBindings;
 import javax.faces.context.FacesContext;
 
 
-public final class FileUpload extends AbstractFileUpload {
-    public static final String COMPONENT_TYPE = "org.openfaces.FileUpload";
-    public static final String COMPONENT_FAMILY = "org.openfaces.FileUpload";
+public final class MultipleFileUpload extends AbstractFileUpload {
+    public static final String COMPONENT_TYPE = "org.openfaces.MultipleFileUpload";
+    public static final String COMPONENT_FAMILY = "org.openfaces.MultipleFileUpload";
 
     private int minQuantity;
     private int maxQuantity;
@@ -43,8 +43,11 @@ public final class FileUpload extends AbstractFileUpload {
 
     private FileUploadMode uploadMode;
 
-    public FileUpload() {
-        setRendererType("org.openfaces.FileUploadRenderer");
+    private String fileInfoRowStyle;
+    private String fileInfoRowClass;
+
+    public MultipleFileUpload() {
+        setRendererType("org.openfaces.MultipleFileUploadRenderer");
     }
 
     @Override
@@ -69,7 +72,9 @@ public final class FileUpload extends AbstractFileUpload {
                 allInfosClass,
                 duplicateAllowed,
                 multiple,
-                uploadMode
+                uploadMode,
+                fileInfoRowStyle,
+                fileInfoRowClass
         };
     }
 
@@ -92,6 +97,8 @@ public final class FileUpload extends AbstractFileUpload {
         duplicateAllowed = (Boolean) values[i++];
         multiple = (Boolean) values[i++];
         uploadMode = (FileUploadMode) values[i++];
+        fileInfoRowStyle = (String) values[i++];
+        fileInfoRowClass = (String) values[i++];
     }
 
     public String getHeaderStyle() {
@@ -222,5 +229,21 @@ public final class FileUpload extends AbstractFileUpload {
     @Override
     public String getBrowseButtonText() {
         return ValueBindings.get(this, "browseButtonText", browseButtonText);
+    }
+
+    public String getFileInfoRowStyle() {
+        return ValueBindings.get(this, "fileInfoRowStyle", fileInfoRowStyle);
+    }
+
+    public void setFileInfoRowStyle(String fileInfoRowStyle) {
+        this.fileInfoRowStyle = fileInfoRowStyle;
+    }
+
+    public String getFileInfoRowClass() {
+        return ValueBindings.get(this, "fileInfoRowClass", fileInfoRowClass);
+    }
+
+    public void setFileInfoRowClass(String fileInfoRowClass) {
+        this.fileInfoRowClass = fileInfoRowClass;
     }
 }

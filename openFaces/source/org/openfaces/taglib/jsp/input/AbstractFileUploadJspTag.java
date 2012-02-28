@@ -93,14 +93,6 @@ public abstract class AbstractFileUploadJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("dropTargetText", dropTargetText);
     }
 
-    public void setRowStyle(ValueExpression rowStyle) {
-        getDelegate().setPropertyValue("rowStyle", rowStyle);
-    }
-
-    public void setRowClass(ValueExpression rowClass) {
-        getDelegate().setPropertyValue("rowClass", rowClass);
-    }
-
     public void setAcceptedFileTypes(ValueExpression acceptedFileTypes) {
         getDelegate().setPropertyValue("acceptedFileTypes", acceptedFileTypes);
     }
@@ -114,12 +106,12 @@ public abstract class AbstractFileUploadJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("fileNameClass", fileNameClass);
     }
 
-    public void setUploadStatusClass(ValueExpression uploadStatusClass) {
-        getDelegate().setPropertyValue("uploadStatusClass", uploadStatusClass);
+    public void setStatusClass(ValueExpression statusClass) {
+        getDelegate().setPropertyValue("statusClass", statusClass);
     }
 
-    public void setUploadStatusStyle(ValueExpression uploadStatusStyle) {
-        getDelegate().setPropertyValue("uploadStatusStyle", uploadStatusStyle);
+    public void setStatusStyle(ValueExpression statusStyle) {
+        getDelegate().setPropertyValue("statusStyle", statusStyle);
     }
 
     public void setNotUploadedStatusText(ValueExpression notUploadedStatusText) {
@@ -171,8 +163,8 @@ public abstract class AbstractFileUploadJspTag extends AbstractComponentJspTag {
     }
 
 
-    public void setUploadCompletionListener(MethodExpression uploadCompletionListener) {
-        getDelegate().setPropertyValue("uploadCompletionListener", uploadCompletionListener);
+    public void setCompletionListener(MethodExpression completionListener) {
+        getDelegate().setPropertyValue("completionListener", completionListener);
     }
 
     public void setOnstart(ValueExpression onstart) {
@@ -183,20 +175,20 @@ public abstract class AbstractFileUploadJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("onend", onend);
     }
 
-    public void setOnuploadstart(ValueExpression onuploadstart) {
-        getDelegate().setPropertyValue("onuploadstart", onuploadstart);
+    public void setOnfilestart(ValueExpression onfilestart) {
+        getDelegate().setPropertyValue("onfilestart", onfilestart);
     }
 
-    public void setOnuploadinprogress(ValueExpression onuploadinprogress) {
-        getDelegate().setPropertyValue("onuploadinprogress", onuploadinprogress);
+    public void setOnfileinprogress(ValueExpression onfileinprogress) {
+        getDelegate().setPropertyValue("onfileinprogress", onfileinprogress);
     }
 
-    public void setOnuploadend(ValueExpression onuploadend) {
-        getDelegate().setPropertyValue("onuploadend", onuploadend);
+    public void setOnfileend(ValueExpression onfileend) {
+        getDelegate().setPropertyValue("onfileend", onfileend);
     }
 
-    public void setOnwrongfileadded(ValueExpression onwrongfileadded) {
-        getDelegate().setPropertyValue("onwrongfileadded", onwrongfileadded);
+    public void setOnwrongfiletype(ValueExpression onwrongfiletype) {
+        getDelegate().setPropertyValue("onwrongfiletype", onwrongfiletype);
     }
 
     public void setOndirectorydropped(ValueExpression ondirectorydropped) {
@@ -208,20 +200,23 @@ public abstract class AbstractFileUploadJspTag extends AbstractComponentJspTag {
     }
 
 
-    public void setRenderAfterUpload(ValueExpression renderAfterUpload) {
-        getDelegate().setPropertyValue("renderAfterUpload", renderAfterUpload);
+    public void setRender(ValueExpression render) {
+        getDelegate().setPropertyValue("render", render);
     }
 
     public void setExternalDropTarget(ValueExpression externalDropTarget) {
         getDelegate().setPropertyValue("externalDropTarget", externalDropTarget);
     }
 
-    public void setAcceptDialogFormats(ValueExpression acceptDialogFormats) {
-        getDelegate().setPropertyValue("acceptDialogFormats", acceptDialogFormats);
+    public void setAcceptedMimeTypes(ValueExpression acceptedMimeTypes) {
+        getDelegate().setPropertyValue("acceptedMimeTypes", acceptedMimeTypes);
     }
 
     public void setDirectoryDroppedText(ValueExpression directoryDroppedText) {
         getDelegate().setPropertyValue("directoryDroppedText", directoryDroppedText);
     }
 
+    public void setWrongFileTypeText(ValueExpression wrongFileTypeText) {
+        getDelegate().setPropertyValue("wrongFileTypeText", wrongFileTypeText);
+    }
 }

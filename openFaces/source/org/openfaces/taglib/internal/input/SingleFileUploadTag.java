@@ -32,8 +32,11 @@ public class SingleFileUploadTag extends AbstractFileUploadTag {
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
         setEnumerationProperty(component, "layoutMode", SingleFileUploadLayoutMode.class);
-        setBooleanProperty(component, "backToFirstScreen");
-        setEnumerationProperty(component, "whatToDoWithUploadOnUploading", SingleFileUploadBtnBehavior.class);
-        setBooleanProperty(component, "showStopButtonNearProgress");
+        setBooleanProperty(component, "showInfoAfterUpload");
+        setEnumerationProperty(component, "browseButtonDuringUpload", SingleFileUploadBtnBehavior.class);
+        setBooleanProperty(component, "stopButtonNearProgress");
+
+        setStringProperty(component, "fileInfoAreaStyle");
+        setStringProperty(component, "fileInfoAreaClass");
     }
 }

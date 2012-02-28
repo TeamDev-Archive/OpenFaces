@@ -44416,8 +44416,8 @@ entering a value and returns a list of suggestions from the server -->
     <body-content>JSP</body-content>
   </tag>
   <tag>
-    <name>fileUpload</name>
-    <tag-class>org.openfaces.taglib.jsp.input.FileUploadJspTag</tag-class>
+    <name>multipleFileUpload</name>
+    <tag-class>org.openfaces.taglib.jsp.input.MultipleFileUploadJspTag</tag-class>
     <body-content>JSP</body-content>
 
     <attribute>
@@ -44443,7 +44443,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>A style for the FileUpload component.</description>
+      <description>A style for the multipleFileUpload component.</description>
       <name>style</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -44454,7 +44454,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>A CSS class name for the FileUpload component.</description>
+      <description>A CSS class name for the multipleFileUpload component.</description>
       <name>styleClass</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -44465,7 +44465,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>JavaScript code that should be executed on the client when the list of files for uploading has changed.
+      <description>JavaScript code that should be executed on the client when the list of files for upload has changed.
       </description>
       <name>onchange</name>
       <deferred-value>
@@ -44488,7 +44488,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>Style for header where Browse and Upload button are located</description>
+      <description>A style for header where Browse and Upload button are located</description>
       <name>headerStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -44498,7 +44498,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>CSS class for header where Browse and Upload button are located</description>
+      <description>A CSS class for header where Browse and Upload button are located</description>
       <name>headerClass</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -44508,8 +44508,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Style for each row that contains fileName, progressBar, status, Remove/Stop/Cancel button</description>
-      <name>rowStyle</name>
+      <description>A style for each row of information about file: it contains fileName, progressBar, status, Remove/Stop/Cancel button.</description>
+      <name>fileInfoRowStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -44518,8 +44518,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>CSS class for each row that contains fileName, progressBar, status, Remove/Stop/Cancel button </description>
-      <name>rowClass</name>
+      <description>A CSS class for each row of information about file: it contains fileName, progressBar, status, Remove/Stop/Cancel button.</description>
+      <name>fileInfoRowClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -44530,7 +44530,7 @@ entering a value and returns a list of suggestions from the server -->
 
     <attribute>
       <description>This attribute limits uploading files only with needed extension.
-        Extensions should be splitted by space , i.e.: jgp png
+        File types should be splitted by space , i.e.: jgp png
       </description>
       <name>acceptedFileTypes</name>
       <deferred-value>
@@ -44541,8 +44541,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>If this attribute will be set true, the file needed to be uploaded right after user selects a file from
-        the file chooser. Note that if attribute multiple defined as true, this attribure will be assigned to true automatically.
+      <description>A flag that indicates whether or not file(or files) will start upload right after file chooser selection.
+        Note that if the attribute multiple specified assigned as false, this attribute will be assigned to true automatically.
       </description>
       <name>autoUpload</name>
       <deferred-value>
@@ -44553,7 +44553,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This css class will be assigned to div which displays name of file.</description>
+      <description>A CSS class for fileName.</description>
       <name>fileNameClass</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -44563,7 +44563,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This css style will be assigned to div which displays name of file.</description>
+      <description>A style for fileName.</description>
       <name>fileNameStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -44573,9 +44573,9 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This css style will be assigned to div which displays status of file.
+      <description>A style for upload status of file.
       </description>
-      <name>uploadStatusStyle</name>
+      <name>statusStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -44584,8 +44584,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This css class will be assigned to div which displays status of file.</description>
-      <name>uploadStatusClass</name>
+      <description>A CSS class for upload status of file.</description>
+      <name>statusClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -44594,7 +44594,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This text appears as status when file is not started uploading yet.
+      <description>The text which appears as status when file has been added.
       </description>
       <name>notUploadedStatusText</name>
       <deferred-value>
@@ -44605,9 +44605,9 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This text appears in status div when file is already uploaded.
-        Also you can display size of uploaded file in useful form - in bytes{B}, kylobytes{KB} or megabytes{MB}.
-        For example: {size} MB{MB}.
+      <description>The text which appears as status when file has been uploaded.
+        Also you can display size of uploaded file in useful form - in bytes[B], kilobytes[KB] or megabytes[MB].
+        For example: {size} MB[MB].
         By default, fileSize is presented in kilobytes.
       </description>
       <name>uploadedStatusText</name>
@@ -44615,27 +44615,28 @@ entering a value and returns a list of suggestions from the server -->
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default {size} KB{KB} -->
+      <!-- @default {size} KB[KB] -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This text appears as status of file when it is uploading at the moment.
+      <description>The text which appears as status when it uploading is in progress.
         You can display useful information about uploading process such as how many already uploaded{uploaded} and size of file{size}.
-        For example: {uploaded} / {size} MB{MB},
-        Also you can set how it will display - in bytes{B}, kilobytes{KB} or megabytes{MB}.
-        By default, fileSize is presented in kilobytes.
+        For example: {uploaded} / {size} MB[MB],
+        Also you can set how it will display - in bytes[B], kilobytes[KB] or megabytes[MB].
+        By default, {uploaded} and {size} is presented in kilobytes.
       </description>
       <name>inProgressStatusText</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default "{uploaded} of {size} KB{KB}" -->
+      <!-- @default "{uploaded} of {size} KB[KB]" -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This text appears as status of file when its size is more than acceptable (this param should be specified  in web.xml or as fileSizeLimit attribute).
-        Also you can display size of uploaded file in useful form - in bytes{B}, kylobytes{KB} or megabytes{MB}. For example: '{size}{MB}MB is bigger than allowed'
+      <description>The text which appears as status when file size is more than acceptable (this param should be specified  in web.xml or as fileSizeLimit attribute).
+        Also you can display size of uploaded file in useful form - in bytes[B], kilobytes[KB] or megabytes[MB].
+        For example: '{size} [MB] MB is bigger than allowed'
         By default, fileSize is presented in kilobytes.
       </description>
       <name>fileSizeLimitErrorText</name>
@@ -44647,7 +44648,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This text appears as status of file when something unusual has happened on server.
+      <description>The text which appears as status when error occurred on server.
       </description>
       <name>unexpectedErrorText</name>
       <deferred-value>
@@ -44659,19 +44660,20 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>This attribute specifies the text that will be shown on browse button
+      <description>The text for Browse button.
+        The default value depends on 'multiple' attribute's value - if it is assigned 'true' -> "Add file..." else -> "Upload"
       </description>
       <name>browseButtonText</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default "Add file..." or "Upload"  - depends on multiple attribute's value  -->
+      <!-- @default see description-->
       <!-- @el true -->
     </attribute>
 
     <attribute>
-      <description>This attribute sets css style for Browse button
+      <description>A style for Browse button.
       </description>
       <name>browseButtonStyle</name>
       <deferred-value>
@@ -44683,7 +44685,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>This attribute sets css class for Browse button
+      <description>A CSS class for Browse button.
       </description>
       <name>browseButtonClass</name>
       <deferred-value>
@@ -44695,7 +44697,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>This attribute sets css style when mouse over Browse button
+      <description>A rollover style for Browse button.
       </description>
       <name>browseButtonRolloverStyle</name>
       <deferred-value>
@@ -44707,7 +44709,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>This attribute sets css class when mouse over  Browse button
+      <description>A rollover CSS class for Browse button.
       </description>
       <name>browseButtonRolloverClass</name>
       <deferred-value>
@@ -44718,7 +44720,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This attribute sets css style when mouse pressed on Browse button
+      <description>A style for Browse button when mouse is pressed on it.
       </description>
       <name>browseButtonPressedStyle</name>
       <deferred-value>
@@ -44730,7 +44732,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>This attribute sets css class when mouse down on Browse button
+      <description>A CSS class for Browse button when mouse is pressed on it.
       </description>
       <name>browseButtonPressedClass</name>
       <deferred-value>
@@ -44742,7 +44744,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>This attribute sets css style for disabled Browse button
+      <description>A style for disabled Browse button.
       </description>
       <name>browseButtonDisabledStyle</name>
       <deferred-value>
@@ -44754,7 +44756,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>This attribute sets css class for disabled Browse button
+      <description>A CSS class for disabled Browse button.
       </description>
       <name>browseButtonDisabledClass</name>
       <deferred-value>
@@ -44766,7 +44768,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>This attribute sets css style for focused Browse button
+      <description>A style for focused Browse button.
       </description>
       <name>browseButtonFocusedStyle</name>
       <deferred-value>
@@ -44778,7 +44780,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>This attribute sets css class for focused Browse button
+      <description>A CSS class for focused Browse button.
       </description>
       <name>browseButtonFocusedClass</name>
       <deferred-value>
@@ -44790,7 +44792,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>This attribute sets javascript function which will be executed when element gets focus
+      <description>JavaScript code that should be executed element gets focus.
       </description>
       <name>onfocus</name>
       <deferred-value>
@@ -44801,7 +44803,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This attribute sets javascript function which will be executed when element lost focus
+      <description>JavaScript code that should be executed element lost focus
       </description>
       <name>onblur</name>
       <deferred-value>
@@ -44813,7 +44815,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>JavaScript code that should be executed on the client when the user clicks
-        the left mouse button over the FileUpload.
+        the left mouse button over the component.
       </description>
       <name>onclick</name>
       <deferred-value>
@@ -44825,7 +44827,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>JavaScript code that should be executed on the client when the user double-clicks
-        the left mouse button over the FileUpload.
+        the left mouse button over the component.
       </description>
       <name>ondblclick</name>
       <deferred-value>
@@ -44836,7 +44838,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user clicks over the FileUpload with either
+      <description>JavaScript code that should be executed when the user clicks over the component with either
         mouse button.
       </description>
       <name>onmousedown</name>
@@ -44848,7 +44850,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user moves the mouse pointer onto the FileUpload.
+      <description>JavaScript code that should be executed when the user moves the mouse pointer onto the component.
       </description>
       <name>onmouseover</name>
       <deferred-value>
@@ -44859,7 +44861,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user moves the mouse pointer over the FileUpload.
+      <description>JavaScript code that should be executed when the user moves the mouse pointer over the component.
       </description>
       <name>onmousemove</name>
       <deferred-value>
@@ -44871,7 +44873,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>JavaScript code that should be executed when the user moves the mouse pointer
-        away from the FileUpload.
+        away from the component.
       </description>
       <name>onmouseout</name>
       <deferred-value>
@@ -44883,7 +44885,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>JavaScript code that should be executed when the user releases a mouse button
-        over the FileUpload.
+        over the component.
       </description>
       <name>onmouseup</name>
       <deferred-value>
@@ -44906,7 +44908,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user presses a key over the FileUpload.
+      <description>JavaScript code that should be executed when the user presses a key over the component.
       </description>
       <name>onkeydown</name>
       <deferred-value>
@@ -44917,7 +44919,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user releases a key over the FileUpload.
+      <description>JavaScript code that should be executed when the user releases a key over the component.
       </description>
       <name>onkeyup</name>
       <deferred-value>
@@ -44929,7 +44931,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>JavaScript code that should be executed on the client when the user presses and releases a
-        key over the FileUpload.
+        key over the component.
       </description>
       <name>onkeypress</name>
       <deferred-value>
@@ -44941,7 +44943,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>This attribute sets tabIndex for fileUpload component
+      <description>TabIndex for MultipleFileUpload component.
       </description>
       <name>tabindex</name>
       <deferred-value>
@@ -44953,7 +44955,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>This attribute sets status that will be displayed in case of terminate uploading of file.
+      <description>The text which appears as status when uploading of file has been stopped.
       </description>
       <name>stoppedStatusText</name>
       <deferred-value>
@@ -44963,9 +44965,9 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default Stopped -->
       <!-- @el true -->
     </attribute>
+
     <attribute>
-      <description>This attribute sets status that will be displayed between click on 'Stop' button and
-        until file uploading will be terminated or uploaded.
+      <description>The text which appears as status when between attempt to stop upload and until file uploading will be terminated or uploaded.
       </description>
       <name>stoppingStatusText</name>
       <deferred-value>
@@ -44976,8 +44978,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This attribute gives ability to upload several files.
-        If multiple sets to false then autoUpload attribute will be assigned to true.
+      <description>Flag which enables upload several files.
+        Note that if multiple is assigned to false then autoUpload attribute will be assigned to true.
       </description>
       <name>multiple</name>
       <deferred-value>
@@ -44992,18 +44994,18 @@ entering a value and returns a list of suggestions from the server -->
       <description>Enables handling uploaded files on the server side. This attribute is a MethodBinding that
         must point to the method that accepts a org.openfaces.event.UploadCompletionEvent.
       </description>
-      <name>uploadCompletionListener</name>
+      <name>completionListener</name>
       <deferred-method>
-        <method-signature>void uploadCompletionListener(org.openfaces.event.UploadCompletionEvent)</method-signature>
+        <method-signature>void completionListener(org.openfaces.event.UploadCompletionEvent)</method-signature>
       </deferred-method>
       <!-- @bindingType javax.el.MethodExpression -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when uploading session have been started.
+      <description>JavaScript code that should be executed when uploading session has been started.
       </description>
-      <name>onuploadstart</name>
+      <name>onstart</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -45012,10 +45014,10 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when uploading for  all files have been finished,
+      <description>JavaScript code that should be executed when uploading for  all files has been finished,
         despite their upload status(successfully, with errors or stopped).
       </description>
-      <name>onuploadend</name>
+      <name>onend</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -45026,7 +45028,7 @@ entering a value and returns a list of suggestions from the server -->
     <attribute>
       <description>JavaScript code that should be executed when uploading for  file has been started.
       </description>
-      <name>onfileuploadstart</name>
+      <name>onfilestart</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -45037,7 +45039,7 @@ entering a value and returns a list of suggestions from the server -->
     <attribute>
       <description>JavaScript code that should be executed when uploading progress for file has been changed.
       </description>
-      <name>onfileuploadinprogress</name>
+      <name>onfileinprogress</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -45049,7 +45051,7 @@ entering a value and returns a list of suggestions from the server -->
       <description>JavaScript code that should be executed when uploading for file has been finished,
         despite its upload status(successfully, with errors or stopped).
       </description>
-      <name>onfileuploadend</name>
+      <name>onfileend</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -45061,7 +45063,7 @@ entering a value and returns a list of suggestions from the server -->
       <description>JavaScript code that should be executed when user choose file with not allowed extension.
         By default, alert message will be shown.
       </description>
-      <name>onwrongfileadded</name>
+      <name>onwrongfiletype</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -45071,7 +45073,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>
-        JavaScript code that should be executed when user drops folder to dropTarget.
+        JavaScript code that should be executed when user folder is dropped to dropTarget.
         By default, alert message will be shown.
       </description>
       <name>ondirectorydropped</name>
@@ -45083,7 +45085,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A css style for drop target for files in case of using drag and drop.
+      <description>A style for dropTarget.
       </description>
       <name>dropTargetStyle</name>
       <deferred-value>
@@ -45094,7 +45096,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A css class for drop target for files in case of using drag and drop.
+      <description>A CSS class for drop target.
       </description>
       <name>dropTargetClass</name>
       <deferred-value>
@@ -45105,7 +45107,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A css style for drop target for files in dragover state.
+      <description>A dragover style for drop target.
       </description>
       <name>dropTargetDragoverStyle</name>
       <deferred-value>
@@ -45116,7 +45118,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A css class for drop target for files in dragover state.
+      <description>A dragover CSS class for drop target.
       </description>
       <name>dropTargetDragoverClass</name>
       <deferred-value>
@@ -45127,7 +45129,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A text which will be displayed in the drop target.
+      <description>Text for dropTarget.
       </description>
       <name>dropTargetText</name>
       <deferred-value>
@@ -45139,18 +45141,18 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>Specifies max size of each file in kilobytes.
-        If this attribute isn't specified , max file size would be what is set at org.openfaces.fileUpload.fileSizeLimit param in web.xml.
+        If this attribute isn't specified , max file size would be what is specified at org.openfaces.fileUpload.fileSizeLimit param in web.xml.
       </description>
       <name>fileSizeLimit</name>
       <deferred-value>
         <type>int</type>
       </deferred-value>
       <!-- @bindingType int -->
-      <!-- @default  org.openfaces.fileUpload.fileSizeLimit param in web.xml-->
+      <!-- @default  see description-->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This attribute specifies the text that will be shown on upload button
+      <description>Text for Upload button.
       </description>
       <name>uploadButtonText</name>
       <deferred-value>
@@ -45161,7 +45163,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This attribute specifies the text that will be shown on remove all button
+      <description>Text for RemoveAll button.
       </description>
       <name>removeAllButtonText</name>
       <deferred-value>
@@ -45172,7 +45174,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This attribute specifies the text that will be shown on stop all button
+      <description>Text for StopAll button.
       </description>
       <name>stopAllButtonText</name>
       <deferred-value>
@@ -45183,7 +45185,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This attribute specifies the text that will be shown on remove button for each file.
+      <description>Text for Remove button.
       </description>
       <name>removeButtonText</name>
       <deferred-value>
@@ -45194,7 +45196,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This attribute specifies the text that will be shown on stop button for each file.
+      <description>Text for Stop button.
       </description>
       <name>stopButtonText</name>
       <deferred-value>
@@ -45205,7 +45207,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This attribute specifies the text that will be shown on clear button for each file.
+      <description>Text for Clear button.
       </description>
       <name>clearButtonText</name>
       <deferred-value>
@@ -45225,13 +45227,13 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @bindingType org.openfaces.component.input.FileUploadMode  -->
       <!-- @default "parallel" -->
       <!-- @value "parallel" -->
-      <!-- @value "series" -->
+      <!-- @value "serial" -->
       <!-- @el true -->
     </attribute>
     <attribute>
       <description>This attribute specifies what components  will be re-rendered when uploading of all files has been finished.
       </description>
-      <name>renderAfterUpload</name>
+      <name>render</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -45241,6 +45243,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>This attribute specifies id of element which will be used as dropTarget for this component.
+        If this attribute is not specified than dropTarget inside this component will be used.
       </description>
       <name>externalDropTarget</name>
       <deferred-value>
@@ -45252,10 +45255,10 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>
-        Set what files will be displayed when file dialog chooser is appeared.
+        Specifies mime types of files which will be displayed when file's dialog chooser will appear.
         The values for this attribute should be the same as for HTML5 attribute accept.
       </description>
-      <name>acceptDialogFormats</name>
+      <name>acceptedMimeTypes</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -45272,6 +45275,17 @@ entering a value and returns a list of suggestions from the server -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default  "Can't upload folder"-->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>This attribute specifies text for default onwrongfiletype eventHandler.
+      </description>
+      <name>wrongFileTypeText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  "Wrong type of file"-->
       <!-- @el true -->
     </attribute>
   </tag>
@@ -45348,8 +45362,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>Style for each row that contains fileName, progressBar, status, Remove/Stop/Cancel button</description>
-      <name>rowStyle</name>
+      <description>A style for information about file: its fileName and  status.</description>
+      <name>fileInfoAreaStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -45358,8 +45372,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>CSS class for each row that contains fileName, progressBar, status, Remove/Stop/Cancel button </description>
-      <name>rowClass</name>
+      <description>A CSS class for information about file: its fileName and  status.</description>
+      <name>fileInfoAreaClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -45370,7 +45384,7 @@ entering a value and returns a list of suggestions from the server -->
 
     <attribute>
       <description>This attribute limits uploading files only with needed extension.
-        Extensions should be splitted by space , i.e.: jgp png
+        File types should be splitted by space , i.e.: jgp png
       </description>
       <name>acceptedFileTypes</name>
       <deferred-value>
@@ -45381,7 +45395,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This css class will be assigned to div which displays name of file.</description>
+      <description>A CSS class for fileName.</description>
       <name>fileNameClass</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -45391,7 +45405,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This css style will be assigned to div which displays name of file.</description>
+      <description>A style for fileName.</description>
       <name>fileNameStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -45401,9 +45415,9 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This css style will be assigned to div which displays status of file.
+      <description>A style for upload status of file.
       </description>
-      <name>uploadStatusStyle</name>
+      <name>statusStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -45412,8 +45426,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This css class will be assigned to div which displays status of file.</description>
-      <name>uploadStatusClass</name>
+      <description>A CSS class for upload status of file.</description>
+      <name>statusClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -45422,7 +45436,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This text appears as status when file is not started uploading yet.
+      <description>The text which appears as status when file has been added.
       </description>
       <name>notUploadedStatusText</name>
       <deferred-value>
@@ -45433,9 +45447,9 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This text appears in status div when file is already uploaded.
-        Also you can display size of uploaded file in useful form - in bytes{B}, kylobytes{KB} or megabytes{MB}.
-        For example: {size} MB{MB}.
+      <description>The text which appears as status when file has been uploaded.
+        Also you can display size of uploaded file in useful form - in bytes[B], kilobytes[KB] or megabytes[MB].
+        For example: {size} MB[MB].
         By default, fileSize is presented in kilobytes.
       </description>
       <name>uploadedStatusText</name>
@@ -45443,27 +45457,28 @@ entering a value and returns a list of suggestions from the server -->
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default {size} KB{KB} -->
+      <!-- @default {size} KB[KB] -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This text appears as status of file when it is uploading at the moment.
+      <description>The text which appears as status when it uploading is in progress.
         You can display useful information about uploading process such as how many already uploaded{uploaded} and size of file{size}.
-        For example: {uploaded} / {size} MB{MB},
-        Also you can set how it will display - in bytes{B}, kilobytes{KB} or megabytes{MB}.
-        By default, fileSize is presented in kilobytes.
+        For example: {uploaded} / {size} MB[MB],
+        Also you can set how it will display - in bytes[B], kilobytes[KB] or megabytes[MB].
+        By default, {uploaded} and {size} is presented in kilobytes.
       </description>
       <name>inProgressStatusText</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default "{uploaded} of {size} KB{KB}" -->
+      <!-- @default "{uploaded} of {size} KB[KB]" -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This text appears as status of file when its size is more than acceptable (this param should be specified  in web.xml or as fileSizeLimit attribute).
-        Also you can display size of uploaded file in useful form - in bytes{B}, kylobytes{KB} or megabytes{MB}. For example: '{size}{MB}MB is bigger than allowed'
+      <description>The text which appears as status when file size is more than acceptable (this param should be specified  in web.xml or as fileSizeLimit attribute).
+        Also you can display size of uploaded file in useful form - in bytes[B], kilobytes[KB] or megabytes[MB].
+        For example: '{size} [MB] MB is bigger than allowed'
         By default, fileSize is presented in kilobytes.
       </description>
       <name>fileSizeLimitErrorText</name>
@@ -45475,7 +45490,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This text appears as status of file when something unusual has happened on server.
+      <description>The text which appears as status when error occurred on server.
       </description>
       <name>unexpectedErrorText</name>
       <deferred-value>
@@ -45487,19 +45502,20 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>This attribute specifies the text that will be shown on browse button
+      <description>The text for Browse button.
+        The default value depends on 'multiple' attribute's value - if it is assigned 'true' -> "Add file..." else -> "Upload"
       </description>
       <name>browseButtonText</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default "Add file..." or "Upload"  - depends on multiple attribute's value  -->
+      <!-- @default see description-->
       <!-- @el true -->
     </attribute>
 
     <attribute>
-      <description>This attribute sets css style for Browse button
+      <description>A style for Browse button.
       </description>
       <name>browseButtonStyle</name>
       <deferred-value>
@@ -45511,7 +45527,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>This attribute sets css class for Browse button
+      <description>A CSS class for Browse button.
       </description>
       <name>browseButtonClass</name>
       <deferred-value>
@@ -45523,7 +45539,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>This attribute sets css style when mouse over Browse button
+      <description>A rollover style for Browse button.
       </description>
       <name>browseButtonRolloverStyle</name>
       <deferred-value>
@@ -45535,7 +45551,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>This attribute sets css class when mouse over  Browse button
+      <description>A rollover CSS class for Browse button.
       </description>
       <name>browseButtonRolloverClass</name>
       <deferred-value>
@@ -45546,7 +45562,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This attribute sets css style when mouse pressed on Browse button
+      <description>A style for Browse button when mouse is pressed on it.
       </description>
       <name>browseButtonPressedStyle</name>
       <deferred-value>
@@ -45558,7 +45574,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>This attribute sets css class when mouse down on Browse button
+      <description>A CSS class for Browse button when mouse is pressed on it.
       </description>
       <name>browseButtonPressedClass</name>
       <deferred-value>
@@ -45570,7 +45586,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>This attribute sets css style for disabled Browse button
+      <description>A style for disabled Browse button.
       </description>
       <name>browseButtonDisabledStyle</name>
       <deferred-value>
@@ -45582,7 +45598,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>This attribute sets css class for disabled Browse button
+      <description>A CSS class for disabled Browse button.
       </description>
       <name>browseButtonDisabledClass</name>
       <deferred-value>
@@ -45594,7 +45610,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>This attribute sets css style for focused Browse button
+      <description>A style for focused Browse button.
       </description>
       <name>browseButtonFocusedStyle</name>
       <deferred-value>
@@ -45606,7 +45622,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>This attribute sets css class for focused Browse button
+      <description>A CSS class for focused Browse button.
       </description>
       <name>browseButtonFocusedClass</name>
       <deferred-value>
@@ -45618,7 +45634,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>This attribute sets javascript function which will be executed when element gets focus
+      <description>JavaScript code that should be executed element gets focus.
       </description>
       <name>onfocus</name>
       <deferred-value>
@@ -45629,7 +45645,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This attribute sets javascript function which will be executed when element lost focus
+      <description>JavaScript code that should be executed element lost focus
       </description>
       <name>onblur</name>
       <deferred-value>
@@ -45641,7 +45657,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>JavaScript code that should be executed on the client when the user clicks
-        the left mouse button over the FileUpload.
+        the left mouse button over the component.
       </description>
       <name>onclick</name>
       <deferred-value>
@@ -45653,7 +45669,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>JavaScript code that should be executed on the client when the user double-clicks
-        the left mouse button over the FileUpload.
+        the left mouse button over the component.
       </description>
       <name>ondblclick</name>
       <deferred-value>
@@ -45664,7 +45680,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user clicks over the FileUpload with either
+      <description>JavaScript code that should be executed when the user clicks over the component with either
         mouse button.
       </description>
       <name>onmousedown</name>
@@ -45676,7 +45692,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user moves the mouse pointer onto the FileUpload.
+      <description>JavaScript code that should be executed when the user moves the mouse pointer onto the component.
       </description>
       <name>onmouseover</name>
       <deferred-value>
@@ -45687,7 +45703,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user moves the mouse pointer over the FileUpload.
+      <description>JavaScript code that should be executed when the user moves the mouse pointer over the component.
       </description>
       <name>onmousemove</name>
       <deferred-value>
@@ -45699,7 +45715,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>JavaScript code that should be executed when the user moves the mouse pointer
-        away from the FileUpload.
+        away from the component.
       </description>
       <name>onmouseout</name>
       <deferred-value>
@@ -45711,7 +45727,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>JavaScript code that should be executed when the user releases a mouse button
-        over the FileUpload.
+        over the component.
       </description>
       <name>onmouseup</name>
       <deferred-value>
@@ -45734,7 +45750,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user presses a key over the FileUpload.
+      <description>JavaScript code that should be executed when the user presses a key over the component.
       </description>
       <name>onkeydown</name>
       <deferred-value>
@@ -45745,7 +45761,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user releases a key over the FileUpload.
+      <description>JavaScript code that should be executed when the user releases a key over the component.
       </description>
       <name>onkeyup</name>
       <deferred-value>
@@ -45757,7 +45773,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>JavaScript code that should be executed on the client when the user presses and releases a
-        key over the FileUpload.
+        key over the component.
       </description>
       <name>onkeypress</name>
       <deferred-value>
@@ -45769,7 +45785,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>This attribute sets tabIndex for fileUpload component
+      <description>TabIndex for SingleFileUpload component.
       </description>
       <name>tabindex</name>
       <deferred-value>
@@ -45781,7 +45797,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>This attribute sets status that will be displayed in case of terminate uploading of file.
+      <description>The text which appears as status when uploading of file has been stopped.
       </description>
       <name>stoppedStatusText</name>
       <deferred-value>
@@ -45791,9 +45807,9 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default Stopped -->
       <!-- @el true -->
     </attribute>
+
     <attribute>
-      <description>This attribute sets status that will be displayed between click on 'Stop' button and
-        until file uploading will be terminated or uploaded.
+      <description>The text which appears as status when between attempt to stop upload and until file uploading will be terminated or uploaded.
       </description>
       <name>stoppingStatusText</name>
       <deferred-value>
@@ -45807,18 +45823,18 @@ entering a value and returns a list of suggestions from the server -->
       <description>Enables handling uploaded files on the server side. This attribute is a MethodBinding that
         must point to the method that accepts a org.openfaces.event.UploadCompletionEvent.
       </description>
-      <name>uploadCompletionListener</name>
+      <name>completionListener</name>
       <deferred-method>
-        <method-signature>void uploadCompletionListener(org.openfaces.event.UploadCompletionEvent)</method-signature>
+        <method-signature>void completionListener(org.openfaces.event.UploadCompletionEvent)</method-signature>
       </deferred-method>
       <!-- @bindingType javax.el.MethodExpression -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when uploading session have been started.
+      <description>JavaScript code that should be executed when uploading session has been started.
       </description>
-      <name>onuploadstart</name>
+      <name>onstart</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -45827,10 +45843,10 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when uploading for  all files have been finished,
-        despite their upload status(successfully, with errors or stopped).
+      <description>JavaScript code that should be executed when uploading for  file has been finished,
+        despite its upload status(successfully, with errors or stopped).
       </description>
-      <name>onuploadend</name>
+      <name>onend</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -45841,7 +45857,7 @@ entering a value and returns a list of suggestions from the server -->
     <attribute>
       <description>JavaScript code that should be executed when uploading for  file has been started.
       </description>
-      <name>onfileuploadstart</name>
+      <name>onfilestart</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -45852,7 +45868,7 @@ entering a value and returns a list of suggestions from the server -->
     <attribute>
       <description>JavaScript code that should be executed when uploading progress for file has been changed.
       </description>
-      <name>onfileuploadinprogress</name>
+      <name>onfileinprogress</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -45864,7 +45880,7 @@ entering a value and returns a list of suggestions from the server -->
       <description>JavaScript code that should be executed when uploading for file has been finished,
         despite its upload status(successfully, with errors or stopped).
       </description>
-      <name>onfileuploadend</name>
+      <name>onfileend</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -45876,7 +45892,7 @@ entering a value and returns a list of suggestions from the server -->
       <description>JavaScript code that should be executed when user choose file with not allowed extension.
         By default, alert message will be shown.
       </description>
-      <name>onwrongfileadded</name>
+      <name>onwrongfiletype</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -45898,7 +45914,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A css style for drop target for files in case of using drag and drop.
+      <description>A style for dropTarget.
       </description>
       <name>dropTargetStyle</name>
       <deferred-value>
@@ -45909,7 +45925,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A css class for drop target for files in case of using drag and drop.
+      <description>A CSS class for drop target.
       </description>
       <name>dropTargetClass</name>
       <deferred-value>
@@ -45920,7 +45936,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A css style for drop target for files in dragover state.
+      <description>A dragover style for drop target.
       </description>
       <name>dropTargetDragoverStyle</name>
       <deferred-value>
@@ -45931,7 +45947,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A css class for drop target for files in dragover state.
+      <description>A dragover CSS class for drop target.
       </description>
       <name>dropTargetDragoverClass</name>
       <deferred-value>
@@ -45942,30 +45958,31 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A text which will be displayed in the drop target.
+      <description>Text for dropTarget.
+        Default value depends on layoutMode attribute:  if it is assigned to compact -> "Drop file"  else  "Drop file here"
       </description>
       <name>dropTargetText</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default "Drop file here" or "Drop file(s) here" if multiple -->
+      <!-- @default see description -->
       <!-- @el true -->
     </attribute>
     <attribute>
       <description>Specifies max size of each file in kilobytes.
-        If this attribute isn't specified , max file size would be what is set at org.openfaces.fileUpload.fileSizeLimit param in web.xml.
+        If this attribute isn't specified , max file size would be what is specified at org.openfaces.fileUpload.fileSizeLimit param in web.xml.
       </description>
       <name>fileSizeLimit</name>
       <deferred-value>
         <type>int</type>
       </deferred-value>
       <!-- @bindingType int -->
-      <!-- @default  org.openfaces.fileUpload.fileSizeLimit param in web.xml-->
+      <!-- @default  see description-->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This attribute specifies the text that will be shown on stop button for each file.
+      <description>Text for Stop button.
       </description>
       <name>stopButtonText</name>
       <deferred-value>
@@ -45978,7 +45995,7 @@ entering a value and returns a list of suggestions from the server -->
     <attribute>
       <description>This attribute specifies what components  will be re-rendered when uploading of all files has been finished.
       </description>
-      <name>renderAfterUpload</name>
+      <name>render</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -45988,6 +46005,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>This attribute specifies id of element which will be used as dropTarget for this component.
+        If this attribute is not specified than dropTarget inside this component will be used.
       </description>
       <name>externalDropTarget</name>
       <deferred-value>
@@ -45999,10 +46017,10 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>
-        Set what files will be displayed when file dialog chooser is appeared.
+        Specifies mime types of files which will be displayed when file's dialog chooser will appear.
         The values for this attribute should be the same as for HTML5 attribute accept.
       </description>
-      <name>acceptDialogFormats</name>
+      <name>acceptedMimeTypes</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -46012,9 +46030,11 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>
-        Set layout of singleFileUpload component (minimalistic or full).
-        Also, after set up thisi attribute, you can change layout with attrubutes:
-        - backToFirstScreen
+        Set layout of singleFileUpload component (compact or full).
+        Also, when you specify set up this attribute, you can change layout with attributes:
+        - showInfoAfterUpload
+        - browseButtonDuringUpload
+        - stopButtonNearProgress
       </description>
       <name>layoutMode</name>
       <deferred-value>
@@ -46023,50 +46043,53 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @bindingType org.openfaces.component.input.SingleFileUploadLayoutMode  -->
       <!-- @default "full" -->
       <!-- @value "full" -->
-      <!-- @value "minimalistic" -->
+      <!-- @value "compact" -->
       <!-- @el true -->
     </attribute>
     <attribute>
       <description>
-        This attribute defines what appearance component will has after upload complete - should it back to first state or not
+        This flag defines what appearance component will has after upload complete - should it show information about file upload
+        or it should return to the first state.
+        depends of layoutMode attribute.
+        Default value is depends on layoutMode attribute If it is assigned to "full" -> 'true' else 'false'
       </description>
-      <name>backToFirstScreen</name>
+      <name>showInfoAfterUpload</name>
       <deferred-value>
         <type>boolean</type>
       </deferred-value>
       <!-- @bindingType boolean  -->
-      <!-- @default depends of layoutMode attribute.
-       If it is assigned to "full" then false; If "minimalistic" then true-->
+      <!-- @default see description-->
       <!-- @el true -->
     </attribute>
     <attribute>
       <description>
-        This attribute defines what will happen to browseButton while file is uploading.
+        This attribute defines what is happenning to browseButton while file is uploading.
+        Default value is depends on layoutMode attribute If it is assigned to "full" -> 'showStop' else 'hide'.
       </description>
-      <name>whatToDoWithUploadOnUploading</name>
+      <name>browseButtonDuringUpload</name>
       <deferred-value>
         <type>org.openfaces.component.input.SingleFileUploadBtnBehavior</type>
       </deferred-value>
       <!-- @bindingType org.openfaces.component.input.SingleFileUploadBtnBehavior  -->
-      <!-- @default depends of layoutMode attribute.
-      If it is assigned to "full" then "show_stop"; If "minimalistic" then "hide"-->
+      <!-- @default see description-->
       <!-- @value "hide" -->
       <!-- @value "disable" -->
-      <!-- @value "show_stop" -->
+      <!-- @value "showStop" -->
       <!-- @el true -->
     </attribute>
     <attribute>
       <description>
-        This attribute defines if stop icon will be displayed while file is uploading.
+        This attribute defines if stop icon will be displayed near progress while file is uploading.
         Note that  singleFileUpload component couldn't has two stop buttons - one instead browseButton, and another one is near progressBar.
+        In this case, attribute is assigned  to 'false'
+        Default value is depends on layoutMode attribute If it is assigned to "full" -> 'false' else 'true'.
       </description>
-      <name>showStopButtonNearProgress</name>
+      <name>stopButtonNearProgress</name>
       <deferred-value>
         <type>boolean</type>
       </deferred-value>
       <!-- @bindingType boolean -->
-      <!-- @default depends of layoutMode attribute.
-      If it is assigned to "full" then false; If "minimalistic" then true"-->
+      <!-- @default see description-->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -46080,21 +46103,22 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default  "Can't upload folder"-->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>This attribute specifies text for default onwrongfiletype eventHandler.
+      </description>
+      <name>wrongFileTypeText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  "Wrong type of file"-->
+      <!-- @el true -->
+    </attribute>
   </tag>
   <tag>
     <name>progressBar</name>
     <tag-class>org.openfaces.taglib.jsp.output.ProgressBarJspTag</tag-class>
     <body-content>JSP</body-content>
-    <attribute>
-      <description>A flag that indicates whether or not the component is visible.</description>
-      <name>rendered</name>
-      <deferred-value>
-        <type>boolean</type>
-      </deferred-value>
-      <!-- @bindingType boolean -->
-      <!-- @default true -->
-      <!-- @el true -->
-    </attribute>
 
     <attribute>
       <description>The component identifier.</description>
@@ -46130,7 +46154,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>A style for element which displays progress that already achieved.</description>
-      <name>processedStyle</name>
+      <name>progressStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -46141,7 +46165,7 @@ entering a value and returns a list of suggestions from the server -->
 
     <attribute>
       <description>A CSS class for element which displays progress that already achieved.</description>
-      <name>processedClass</name>
+      <name>progressClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -46150,29 +46174,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A style for element which displays progress that not achieved yet</description>
-      <name>notProcessedStyle</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-
-    <attribute>
-      <description>A CSS class for element which displays progress that not achieved yet</description>
-      <name>notProcessedClass</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-
-    <attribute>
-      <description>A CSS style for element which displays progress that not achieved yet</description>
+      <description>A style for label</description>
       <name>labelStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -46182,7 +46184,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A CSS class for element which displays value of progress</description>
+      <description>A CSS class for label</description>
       <name>labelClass</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -46203,58 +46205,6 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default '{value} %' -->
       <!-- @el true -->
     </attribute>
-
-    <attribute>
-      <description>
-        Defines label position which displays value in given format.
-        Value "center" means that label will be displayed at center of progressBar.
-      </description>
-      <name>labelAlignment</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @value "center" -->
-      <!-- @value "null" -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>
-        Set image that will be displayed how many percents are already processed.
-      </description>
-      <name>processedImg</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>
-        Set image that will be displayed how many percents are not processed.
-      </description>
-      <name>notProcessedImg</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>
-        Set progress value for component.
-      </description>
-      <name>value</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-
   </tag>
 
   <!--<tag>-->

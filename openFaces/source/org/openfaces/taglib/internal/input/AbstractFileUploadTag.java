@@ -49,14 +49,11 @@ public abstract class AbstractFileUploadTag extends AbstractComponentTag {
 
         setStringProperty(component, "dropTargetText");
 
-        setStringProperty(component, "rowStyle");
-        setStringProperty(component, "rowClass");
-
         setStringProperty(component, "fileNameStyle");
         setStringProperty(component, "fileNameClass");
 
-        setStringProperty(component, "uploadStatusClass");
-        setStringProperty(component, "uploadStatusStyle");
+        setStringProperty(component, "statusClass");
+        setStringProperty(component, "statusStyle");
         setStringProperty(component, "notUploadedStatusText");
         setStringProperty(component, "uploadedStatusText");
         setStringProperty(component, "inProgressStatusText");
@@ -75,20 +72,21 @@ public abstract class AbstractFileUploadTag extends AbstractComponentTag {
         setMethodExpressionProperty(facesContext, component, "fileUploadedListener",
                 new Class[]{FileUploadedEvent.class}, void.class);
 
-        setMethodExpressionProperty(facesContext, component, "uploadCompletionListener",
+        setMethodExpressionProperty(facesContext, component, "completionListener",
                 new Class[]{UploadCompletionEvent.class}, void.class);
         setStringProperty(component, "onstart");
         setStringProperty(component, "onend");
-        setStringProperty(component, "onuploadstart");
-        setStringProperty(component, "onuploadinprogress");
-        setStringProperty(component, "onuploadend");
-        setStringProperty(component, "onwrongfileadded");
+        setStringProperty(component, "onfilestart");
+        setStringProperty(component, "onfileinprogress");
+        setStringProperty(component, "onfileend");
+        setStringProperty(component, "onwrongfiletype");
         setStringProperty(component, "ondirectorydropped");
 
         setIntProperty(component, "fileSizeLimit");
-        setStringProperty(component, "renderAfterUpload");
+        setStringProperty(component, "render");
         setStringProperty(component, "externalDropTarget");
-        setStringProperty(component, "acceptDialogFormats");
+        setStringProperty(component, "acceptedMimeTypes");
         setStringProperty(component, "directoryDroppedText");
+        setStringProperty(component, "wrongFileTypeText");
     }
 }
