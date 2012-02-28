@@ -862,7 +862,7 @@ public class SliderRenderer extends RendererBase {
 
     public Object getConvertedValue(FacesContext context, UIComponent component, Object value)
             throws ConverterException {
-        return Rendering.convertFromString(context, component, (String) value);
+        return Rendering.convertFromString(context, (Slider) component, (String) value);
     }
 
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {

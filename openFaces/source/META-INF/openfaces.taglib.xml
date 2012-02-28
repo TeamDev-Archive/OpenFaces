@@ -1305,11 +1305,11 @@
     </component>
   </tag>
   <tag>
-    <tag-name>fileUpload</tag-name>
+    <tag-name>multipleFileUpload</tag-name>
     <component>
-      <component-type>org.openfaces.FileUpload</component-type>
-      <renderer-type>org.openfaces.FileUploadRenderer</renderer-type>
-      <handler-class>org.openfaces.taglib.facelets.input.FileUploadTagHandler</handler-class>
+      <component-type>org.openfaces.MultipleFileUpload</component-type>
+      <renderer-type>org.openfaces.MultipleFileUploadRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.input.MultipleFileUploadTagHandler</handler-class>
     </component>
   </tag>
   <tag>

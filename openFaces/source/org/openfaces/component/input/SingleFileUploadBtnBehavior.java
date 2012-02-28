@@ -12,12 +12,16 @@
 
 package org.openfaces.component.input;
 
-public enum SingleFileUploadLayoutMode {
-    FULL("full"),
-    COMPACT("compact");
+/**
+ * @author andrii.loboda
+ */
+public enum SingleFileUploadBtnBehavior {
+    HIDE("hide"),
+    DISABLE("disable"),
+    SHOW_STOP("showStop");
     private String value;
 
-    SingleFileUploadLayoutMode(String value) {
+    SingleFileUploadBtnBehavior(String value) {
         this.value = value;
     }
 

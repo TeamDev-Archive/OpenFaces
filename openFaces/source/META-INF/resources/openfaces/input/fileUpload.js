@@ -20,8 +20,9 @@ O$.FileUpload = {
                   isDisabled,
                   isAutoUpload, tabIndex, progressBarId, statusStoppedText, statusStoppingText, multiUpload,ID,
                   onchangeHandler, onstartHandler, onendHandler,
-                  onuploadstartHandler, onuploadinprogressHandler, onuploadendHandler, onwrongfileaddedHandler,
-                  dropTargetCrossoverClass, uploadMode, renderAfterUpload, externalDropTarget, acceptDialogFormats) {
+                  onfilestartHandler, onfileinprogressHandler, onfileendHandler, onwrongfiletypeHandler, ondirectorydroppedHandler,
+                  dropTargetCrossoverClass, uploadMode, render, externalDropTargetId, acceptedMimeTypes,
+                  directoryDroppedText, wrongFileTypeText) {
 
     var fileUpload = O$.initComponent(componentId, null, {
       _minQuantity : minQuantity,
@@ -33,10 +34,11 @@ O$.FileUpload = {
       _processFileAddingHTML5:function (file) {
 
       if (isFileNameNotApplied(file.name) || fileUpload._buttons.browseInput.disabled ||
-              (file.size == 0) ||(file._fromDnD && fileUpload._isDirectory(file))) {
+              (!file._fromDnD && file.size == 0) || (file._fromDnD && fileUpload._isDirectory(file))) {
         return false;
       }
       clearAllInfosForUploadedFiles();
+      allInfos.style.display = "";
       file._uniqueId = fileUpload._ID + idOfInfoAndInputDiv;
       file._fakeInput = componentId + "::inputs::input" + idOfInfoAndInputDiv + "::form::fileInput";
       file._infoId = idOfInfoAndInputDiv;
@@ -66,6 +68,7 @@ O$.FileUpload = {
 
           if (allInfos.childNodes.length == 0) {
             fileUpload._buttons.removeAll.style.display = "none";
+            allInfos.style.display = "none";
           }
           fileUpload._shouldInvokeFocusNonModifiable = false;
           fileUpload._setFocusOnComponent();
@@ -97,6 +100,7 @@ O$.FileUpload = {
           return false;
         }
         clearAllInfosForUploadedFiles();
+        allInfos.style.display = "";
         fileUpload._buttons.browse._inFocus = false;
         inputForFile._idInputAndDiv = idOfInfoAndInputDiv;
         fileUpload._createAndAppendComplexInputWithId(inputForFile);
@@ -124,11 +128,13 @@ O$.FileUpload = {
             }
             if (allInfos.childNodes.length == 0) {
               fileUpload._buttons.removeAll.style.display = "none";
+              allInfos.style.display = "none";
             }
             fileUpload._shouldInvokeFocusEvHandler = false;
             fileUpload._setFocusOnComponent();
-            if (!O$.isExplorer())
+            if (!O$.isExplorer()){
               fileUpload._shouldInvokeFocusEvHandler = true;
+            }
           };
           cancelFileDiv._clickHandler = cancelFileDiv.deleteFileInputFunction;
           O$.addEventHandler(cancelFileDiv, "click", cancelFileDiv._clickHandler);
@@ -183,6 +189,7 @@ O$.FileUpload = {
           allInfos.removeChild(infoDiv);
           if (allInfos.childNodes.length == 0) {
             fileUpload._buttons.removeAll.style.display = "none";
+            allInfos.style.display = "none";
           }
           fileUpload._shouldInvokeFocusNonModifiable = false;
           fileUpload._setFocusOnComponent();
@@ -228,7 +235,7 @@ O$.FileUpload = {
                   fileUpload._inputsStorage.removeChild(inputForFile.parentNode.parentNode);
                   infoDiv.childNodes[2].innerHTML = fileUpload._statuses.sizeLimit._update(null, portionData['size']);
                   fileUpload._setStatusforFileWithId(inputForFile._uniqueId, "SIZE_LIMIT_EXCEEDED");
-                  fileUpload._events._fireUploadEndEvent(fileForAPI);
+                  fileUpload._events._fireFileEndEvent(fileForAPI);
                   fileUpload._setClearBtnAndEventHandler(infoDiv, inputForFile._idInputAndDiv);
                   if (endHandler){
                     endHandler();
@@ -263,7 +270,7 @@ O$.FileUpload = {
                           fileUpload._setStatusforFileWithId(inputForFile._uniqueId, "FAILED");
                           infoDiv.childNodes[1].firstChild.setValue(0);
                           fileForAPI.progress = 0;
-                          fileUpload._events._fireUploadEndEvent(fileForAPI);
+                          fileUpload._events._fireFileEndEvent(fileForAPI);
                           fileUpload._setClearBtnAndEventHandler(infoDiv, inputForFile._idInputAndDiv);
                           if (endHandler){
                             endHandler();
@@ -275,7 +282,7 @@ O$.FileUpload = {
                       }
                       infoDiv.childNodes[1].firstChild.setValue(percents);
                       fileForAPI.progress = percents/100;
-                      fileUpload._events._fireUploadInProgressEvent(fileForAPI);
+                      fileUpload._events._fireFileInProgressEvent(fileForAPI);
                       fileUpload._callProgressRequest(inputForFile, endHandler);
                     }
                   } else {// when file already uploaded
@@ -293,7 +300,7 @@ O$.FileUpload = {
                       endHandler();
                     }
                     fileForAPI.status = O$.FileUploadUtil.Status.SUCCESSFUL;
-                    fileUpload._events._fireUploadEndEvent(fileForAPI);
+                    fileUpload._events._fireFileEndEvent(fileForAPI);
                     fileUpload._prepareUIWhenAllRequestsFinished(true);
                   }
                 }
@@ -315,7 +322,7 @@ O$.FileUpload = {
                     removeHTML5File(file);
                     infoDiv.childNodes[2].innerHTML = fileUpload._statuses.sizeLimit._update(null, portionData['size']);
                     fileUpload._setStatusforFileWithId(file._uniqueId, "SIZE_LIMIT_EXCEEDED");
-                    fileUpload._events._fireUploadEndEvent(fileForAPI);
+                    fileUpload._events._fireFileEndEvent(fileForAPI);
                     fileUpload._setClearBtnAndEventHandler(infoDiv, file._infoId);
                     if (endHandler) {
                       endHandler();
@@ -350,7 +357,7 @@ O$.FileUpload = {
                             fileUpload._setStatusforFileWithId(file._uniqueId, "FAILED");
                             infoDiv.childNodes[1].firstChild.setValue(0);
                             fileForAPI.progress = 0;
-                            fileUpload._events._fireUploadEndEvent(fileForAPI);
+                            fileUpload._events._fireFileEndEvent(fileForAPI);
                             fileUpload._setClearBtnAndEventHandler(infoDiv, file._infoId);
                             if (endHandler) {
                               endHandler();
@@ -362,7 +369,7 @@ O$.FileUpload = {
                         }
                         infoDiv.childNodes[1].firstChild.setValue(percents);
                         fileForAPI.progress = percents / 100;
-                        fileUpload._events._fireUploadInProgressEvent(fileForAPI);
+                        fileUpload._events._fireFileInProgressEvent(fileForAPI);
                         setTimeout(function () {
                           fileUpload._progressHTMl5Request(file, request, endHandler);
                         }, 500);
@@ -379,7 +386,7 @@ O$.FileUpload = {
                       fileUpload._setStatusforFileWithId(file._uniqueId, "SUCCESSFUL");
                       fileUpload._setClearBtnAndEventHandler(infoDiv, file._infoId);
                       fileForAPI.status = O$.FileUploadUtil.Status.SUCCESSFUL;
-                      fileUpload._events._fireUploadEndEvent(fileForAPI);
+                      fileUpload._events._fireFileEndEvent(fileForAPI);
                       if (endHandler) {
                         endHandler();
                       }
@@ -405,7 +412,7 @@ O$.FileUpload = {
                     fileUpload._setStatusforFileWithId(inputForFile._uniqueId, "FAILED");
                     infoDiv.childNodes[1].firstChild.setValue(0);
                     fileForAPI.progress = 0;
-                    fileUpload._events._fireUploadEndEvent(fileForAPI);
+                    fileUpload._events._fireFileEndEvent(fileForAPI);
                     fileUpload._setClearBtnAndEventHandler(infoDiv, inputForFile._idInputAndDiv);
                     if (endHandler) {
                       endHandler();
@@ -427,7 +434,7 @@ O$.FileUpload = {
                     fileUpload._setStatusforFileWithId(file._uniqueId, "FAILED");
                     infoDiv.childNodes[1].firstChild.setValue(0);
                     fileForAPI.progress = 0;
-                    fileUpload._events._fireUploadEndEvent(fileForAPI);
+                    fileUpload._events._fireFileEndEvent(fileForAPI);
                     fileUpload._setClearBtnAndEventHandler(infoDiv, file._infoId);
                     if (endHandler){
                       endHandler();
@@ -452,7 +459,7 @@ O$.FileUpload = {
                   fileForAPI.status = O$.FileUploadUtil.Status.STOPPED;
                   infoDiv.childNodes[1].firstChild.setValue(0);
                   fileForAPI.progress = 0;
-                  fileUpload._events._fireUploadEndEvent(fileForAPI);
+                  fileUpload._events._fireFileEndEvent(fileForAPI);
                   fileUpload._prepareUIWhenAllRequestsFinished(true);
                 }, null, true);
       },
@@ -470,13 +477,36 @@ O$.FileUpload = {
                     fileForAPI.status = O$.FileUploadUtil.Status.STOPPED;
                     infoDiv.childNodes[1].firstChild.setValue(0);
                     fileForAPI.progress = 0;
-                    fileUpload._events._fireUploadEndEvent(fileForAPI);
+                    fileUpload._events._fireFileEndEvent(fileForAPI);
                     if (endHandler){
                       endHandler();
                     }
                     fileUpload._prepareUIWhenAllRequestsFinished(true);
                   }
                 }, null, true);
+      },
+      _initializeDropTarget : function(){
+        fileUpload._setupExternalDropTarget();
+        new function setBehaviorForDragAndDropArea(){
+          var area = fileUpload._getDropTargetArea(componentId + "::footer::dragArea");
+          O$.FileUploadUtil._initDragArea(area);
+          O$.extend(area, {
+            hide:function () {
+              area.style.display = "none";
+            },
+            show:function () {
+              area.style.display = "block";
+            }
+          });
+          if (!O$._dropAreas) {
+            O$._dropAreas = [];
+          }
+          O$._dropAreas.push(area);
+          var body = document.getElementsByTagName('body')[0];
+          area._isVisible = false;
+          fileUpload._setDragEventsForBody(body, area);
+          fileUpload._setDragEventsForFileUpload(area);
+        }();
       }
     });
     O$.FileUploadUtil._initGeneral(fileUpload,
@@ -484,10 +514,12 @@ O$.FileUpload = {
             addButtonClass, addButtonOnMouseOverClass, addButtonOnMouseDownClass,addButtonOnFocusClass,
             statusLabelInProgress,statusLabelUploaded,statusLabelErrorSize,
             statusLabelNotUploaded,statusStoppedText,statusLabelUnexpectedError,
-            renderAfterUpload,tabIndex,dropTargetCrossoverClass, externalDropTarget, acceptDialogFormats);
+            render,tabIndex,dropTargetCrossoverClass, acceptedMimeTypes,
+            directoryDroppedText, wrongFileTypeText, externalDropTargetId);
 
     fileUpload._setAllEvents(onchangeHandler,onstartHandler,onendHandler,
-            onuploadstartHandler,onuploadinprogressHandler,onuploadendHandler,onwrongfileaddedHandler);
+            onfilestartHandler,onfileinprogressHandler,onfileendHandler,
+            onwrongfiletypeHandler, ondirectorydroppedHandler);
     if (!fileUpload._multiUpload){
       fileUpload._isAutoUpload = true;
       //fileUpload._maxQuantity = 1;
@@ -627,7 +659,7 @@ O$.FileUpload = {
                       fileUpload._callProgressRequest(fileInput);
                       fileOfAPI.status = O$.FileUploadUtil.Status.IN_PROGRESS;
                       setupUIForUpload(fileInput, fileInfo, fileOfAPI);
-                      fileUpload._events._fireUploadStartEvent(fileOfAPI);
+                      fileUpload._events._fireFileStartEvent(fileOfAPI);
                     }
 
                     for (var html5FilesIndex = 0; html5FilesIndex < fileUpload._filesHTML5.length; html5FilesIndex++) {
@@ -640,7 +672,7 @@ O$.FileUpload = {
                       fileUpload._callFileProgressForHTML5Request(html5File, request);
                       fileOfAPI.status = O$.FileUploadUtil.Status.IN_PROGRESS;
                       setupUIForUploadHTML5(html5File, fileInfo, request,fileOfAPI);
-                      fileUpload._events._fireUploadStartEvent(fileOfAPI);
+                      fileUpload._events._fireFileStartEvent(fileOfAPI);
                     }
                   }();
                 }else{
@@ -662,7 +694,7 @@ O$.FileUpload = {
                           fileUpload._callProgressRequest(fileInput, onEndHandler);
                           fileOfAPI.status = O$.FileUploadUtil.Status.IN_PROGRESS;
                           setupUIForUpload(fileInput, fileInfo, fileOfAPI);
-                          fileUpload._events._fireUploadStartEvent(fileOfAPI);
+                          fileUpload._events._fireFileStartEvent(fileOfAPI);
                           if (fileUpload._buttons.stopAll._clicked){
                             fileOfAPI.stopUpload();
                           }
@@ -680,7 +712,7 @@ O$.FileUpload = {
                           fileUpload._callFileProgressForHTML5Request(html5File, request, onEndHandler);
                           fileOfAPI.status = O$.FileUploadUtil.Status.IN_PROGRESS;
                           setupUIForUploadHTML5(html5File, fileInfo, request, fileOfAPI);
-                          fileUpload._events._fireUploadStartEvent(fileOfAPI);
+                          fileUpload._events._fireFileStartEvent(fileOfAPI);
                           if (fileUpload._buttons.stopAll._clicked){
                             fileOfAPI.stopUpload();
                           }
@@ -712,35 +744,23 @@ O$.FileUpload = {
                 fileUpload._buttons.removeAll.style.display = "none";
                 //setFocusOnComponent();
                 fileUpload._shouldInvokeFocusNonModifiable = true;
+                allInfos.style.display = "none";
               }
             }
     );
     initHeaderButtons(true);
     setFocusBlurBehaviour();
     setUploadButtonBehaviour();
-
-    setBehaviorForDragAndDropArea();
-    O$.FileUpload._initFileUploadAPI(fileUpload);
-    function setBehaviorForDragAndDropArea(){
-      var area = fileUpload._getDropTargetArea(componentId + "::footer::dragArea");
-      O$.FileUploadUtil._initDragArea(area);
-      O$.extend(area, {
-        hide:function(){
-          area.style.display = "none";
-        },
-        show:function(){
-          area.style.display = "block";
-        }
+    if (window._loaded){
+      fileUpload._initializeDropTarget();
+    }else{
+      O$.addEventHandler(window, "load", function setupDropTarget(){
+        O$.removeEventHandler(window, "load", setupDropTarget);
+        fileUpload._initializeDropTarget();
+        window._loaded = true;
       });
-      if (!O$._dropAreas){
-        O$._dropAreas = [];
-      }
-      O$._dropAreas.push(area);
-      var body = document.getElementsByTagName('body')[0];
-      area._isVisible = false;
-      fileUpload._setDragEventsForBody(body, area);
-      fileUpload._setDragEventsForFileUpload(area);
     }
+    O$.FileUpload._initFileUploadAPI(fileUpload);
 
     if (O$.isChrome() || O$.isSafari()){
       O$.addEventHandler(fileUpload._buttons.removeAll, "mousedown", function () {
@@ -830,8 +850,10 @@ O$.FileUpload = {
       infoWindow._status = O$.FileUploadUtil.Status.NEW;
 
       var fileNameTD = document.createElement("td");
-      O$.setStyleMappings(fileNameTD, {fileName : infoTitleClass});
-      fileNameTD.innerHTML = fileUpload._getFileName(filename);
+      var fileNameEl = document.createElement("div");
+      O$.setStyleMappings(fileNameEl, {fileName : infoTitleClass});
+      fileNameEl.innerHTML = fileUpload._getFileName(filename);
+      fileNameTD.appendChild(fileNameEl);
       infoWindow.appendChild(fileNameTD);
 
       var progressTD = document.createElement("td");

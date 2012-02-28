@@ -23,4 +23,19 @@ public class SingleFileUploadJspTag extends AbstractFileUploadJspTag{
     public void setLayoutMode(ValueExpression layoutMode) {
         getDelegate().setPropertyValue("layoutMode", layoutMode);
     }
+    public void setShowInfoAfterUpload(ValueExpression showInfoAfterUpload) {
+        getDelegate().setPropertyValue("showInfoAfterUpload", showInfoAfterUpload);
+    }
+    public void setBrowseButtonDuringUpload(ValueExpression browseButtonDuringUpload) {
+        getDelegate().setPropertyValue("browseButtonDuringUpload", browseButtonDuringUpload);
+    }
+    public void setStopButtonNearProgress(ValueExpression stopButtonNearProgress) {
+        getDelegate().setPropertyValue("stopButtonNearProgress", stopButtonNearProgress);
+    }
+    public void setFileInfoAreaStyle(ValueExpression fileInfoAreaStyle) {
+        getDelegate().setPropertyValue("fileInfoAreaStyle", fileInfoAreaStyle);
+    }
+    public void setFileInfoAreaClass(ValueExpression fileInfoAreaClass) {
+        getDelegate().setPropertyValue("fileInfoAreaClass", fileInfoAreaClass);
+    }
 }

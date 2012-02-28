@@ -16,6 +16,7 @@ import org.openfaces.util.Rendering;
 import org.openfaces.util.Script;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -34,7 +35,9 @@ public abstract class AbstractRegexValidator extends AbstractCustomValidator {
     }
 
     public boolean customServerValidate(FacesContext context, UIComponent component, Object value, Object[] args) {
-        String strValue = Rendering.convertToString(context, component, value);
+        String strValue = component instanceof ValueHolder
+                ? Rendering.convertToString(context, (ValueHolder) component, value)
+                : (value != null ? value.toString() : "");
         if (isTrimNeeded()) {
             strValue = strValue.trim();
         }

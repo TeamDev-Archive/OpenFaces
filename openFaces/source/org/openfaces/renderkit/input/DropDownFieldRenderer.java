@@ -13,6 +13,7 @@ package org.openfaces.renderkit.input;
 
 import org.openfaces.component.TableStyles;
 import org.openfaces.component.input.DropDownComponent;
+import org.openfaces.component.input.DropDownField;
 import org.openfaces.component.input.DropDownFieldBase;
 import org.openfaces.component.input.DropDownPopup;
 import org.openfaces.component.input.SuggestionMode;
@@ -77,7 +78,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
 
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) {
-        return Rendering.convertFromString(context, component, (String) submittedValue);
+        return Rendering.convertFromString(context, (DropDownField) component, (String) submittedValue);
     }
 
     @Override

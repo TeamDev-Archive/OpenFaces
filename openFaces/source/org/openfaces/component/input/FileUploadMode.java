@@ -17,7 +17,7 @@ package org.openfaces.component.input;
  */
 public enum FileUploadMode {
     PARALLEL("parallel"),
-    SERIES("series");
+    SERIAL("serial");
 
     private String value;
     private FileUploadMode(String value) {

@@ -34,11 +34,11 @@ public abstract class AbstractInputTextRenderer extends RendererBase {
     private static final String STATE_PROMPT_SUFFIX = "::statePrompt";
 
     @Override
-    public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException {
-        super.encodeBegin(facesContext, uiComponent);
-        if (!uiComponent.isRendered()) return;
+    public void encodeBegin(FacesContext facesContext, UIComponent component) throws IOException {
+        super.encodeBegin(facesContext, component);
+        if (!component.isRendered()) return;
 
-        OUIInputText inputText = (OUIInputText) uiComponent;
+        OUIInputText inputText = (OUIInputText) component;
 
         renderInputComponent(facesContext, inputText);
 
@@ -66,7 +66,7 @@ public abstract class AbstractInputTextRenderer extends RendererBase {
 
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
-        return Rendering.convertFromString(context, component, (String) submittedValue);
+        return Rendering.convertFromString(context, (OUIInputText) component, (String) submittedValue);
     }
 
     protected String getConvertedValue(FacesContext context, UIInput inputText) {

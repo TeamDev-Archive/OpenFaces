@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 3.0
+ * OpenFaces - JSF Component Library 2.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -13,6 +13,7 @@ package org.openfaces.renderkit.input;
 
 import org.openfaces.component.input.AbstractFileUpload;
 import org.openfaces.component.input.SingleFileUpload;
+import org.openfaces.component.input.SingleFileUploadBtnBehavior;
 import org.openfaces.component.input.SingleFileUploadLayoutMode;
 import org.openfaces.component.output.ProgressBar;
 import org.openfaces.util.Rendering;
@@ -30,85 +31,71 @@ import java.util.List;
 
 public final class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
     private static final String DIV_FOR_FILE_INFO_ID = "::fileInfo";
-    public static final String DEFAULT_STOP_URL = "input/fileUpload-stop.png";
-    public static final String STOP_ICO_STYLE_MIN = "o_s_file_clear_btn_min";
+    private static final String DEFAULT_STOP_URL = "input/fileUpload-stop.png";
+    private static final String STOP_ICO_STYLE_MIN = "o_s_file_clear_icon_min";
+    private static final String STOP_ICO_STYLE_FULL = "o_s_file_clear_icon_full";
+    private static final String DEFAULT_UPLOADED_MIN_URL = "output/uploadedProgressBarMin.png";
     private SingleFileUploadLayoutMode layoutMode;
 
     @Override
     protected void writeStructure(FacesContext context, AbstractFileUpload abstractFileUpload, ResponseWriter writer, String clientId) throws IOException {
         SingleFileUpload fileUpload = (SingleFileUpload) abstractFileUpload;
         layoutMode = fileUpload.getLayoutMode();
-        switch (layoutMode) {
-            case FULL:
-                Rendering.writeStyleAndClassAttributes(writer, fileUpload.getStyle(), fileUpload.getStyleClass(), "o_s_file_upload");
+        setLayoutSettings(fileUpload, layoutMode);
 
-                writer.startElement("table", fileUpload);
-                writer.startElement("tr", fileUpload);
-                writer.startElement("td", fileUpload);
+        Rendering.writeStyleAndClassAttributes(writer, fileUpload.getStyle(), fileUpload.getStyleClass(),
+                (layoutMode == SingleFileUploadLayoutMode.FULL) ? "o_s_file_upload" : "o_s_file_upload_compact");
 
-                writeBrowseButton(context, writer, clientId, fileUpload);
-                writer.endElement("td");
-                writer.startElement("td", fileUpload);
-                writer.writeAttribute("style", "width:100%", null);
-                writeFileInfo(context, fileUpload, writer, clientId + DIV_FOR_FILE_INFO_ID);
-                writeDragAndDrop(context, abstractFileUpload, writer, clientId, fileUpload);
-                writer.endElement("td");
+        writer.startElement("table", fileUpload);
 
-                writer.endElement("tr");
+        writer.startElement("tr", fileUpload);
+        writer.startElement("td", fileUpload);
+        writeBrowseButton(context, writer, clientId, fileUpload);
+        writer.endElement("td");
+        writer.startElement("td", fileUpload);
+        writer.writeAttribute("style", "width:100%", null);
+        writeFileInfo(context, fileUpload, writer, clientId + DIV_FOR_FILE_INFO_ID);
+        writer.endElement("td");
+        writer.endElement("tr");
 
-                writer.startElement("tr", fileUpload);
-                writer.startElement("td", fileUpload);
-                writeProgressArea(context, fileUpload, writer);
-                writer.endElement("td");
-                writer.endElement("tr");
-
-                writer.endElement("table");
-
-                writeHelpfulElements(context, fileUpload, writer, clientId + HELP_ELEMENTS_ID);
-                break;
-            case COMPACT:
-                Rendering.writeStyleAndClassAttributes(writer, fileUpload.getStyle(), fileUpload.getStyleClass(), "o_s_file_upload_compact");
-
-                writer.startElement("table", fileUpload);
-                writer.startElement("tr", fileUpload);
-                writer.startElement("td", fileUpload);
-                writer.writeAttribute("style", "padding:0", null);
-
-                writeBrowseButton(context, writer, clientId, fileUpload);
-                writeDragAndDrop(context, abstractFileUpload, writer, clientId, fileUpload);
-                writer.endElement("td");
-
-                writer.endElement("tr");
-
-                writer.startElement("tr", fileUpload);
-                writer.startElement("td", fileUpload);
-                writer.writeAttribute("style", "padding:0", null);
-                writeProgressArea(context, fileUpload, writer);
-                writer.endElement("td");
-                writer.endElement("tr");
-
-                writer.endElement("table");
-
-                writeHelpfulElements(context, fileUpload, writer, clientId + HELP_ELEMENTS_ID);
-                break;
-            case MINIMALISTIC:
-                Rendering.writeStyleAndClassAttributes(writer, fileUpload.getStyle(), fileUpload.getStyleClass(), "o_s_file_upload_compact");
-
-                writer.startElement("table", fileUpload);
-                writer.startElement("tr", fileUpload);
-                writer.startElement("td", fileUpload);
-                writer.writeAttribute("style", "padding:0", null);
-                writeBrowseButton(context, writer, clientId, fileUpload);
-                writeDragAndDrop(context, abstractFileUpload, writer, clientId, fileUpload);
-                writer.endElement("td");
-                writer.endElement("tr");
-
-                writer.endElement("table");
-
-                writeHelpfulElements(context, fileUpload, writer, clientId + HELP_ELEMENTS_ID);
-                break;
+        writer.startElement("tr", fileUpload);
+        writer.startElement("td", fileUpload);
+        if (layoutMode == SingleFileUploadLayoutMode.FULL) {
+            writer.writeAttribute("colspan", 2, null);
         }
+        writeProgressArea(context, fileUpload, writer);
+        writer.endElement("td");
+        writer.endElement("tr");
 
+        writer.endElement("table");
+
+        writeDragAndDrop(context, abstractFileUpload, writer, clientId, fileUpload);
+        writeHelpfulElements(context, fileUpload, writer, clientId + HELP_ELEMENTS_ID);
+
+    }
+
+    private void setLayoutSettings(SingleFileUpload fileUpload, SingleFileUploadLayoutMode mode) {
+        if (fileUpload.getShowInfoAfterUpload() == null) {
+            if (mode == SingleFileUploadLayoutMode.FULL) {
+                fileUpload.setShowInfoAfterUpload(true);
+            } else {
+                fileUpload.setShowInfoAfterUpload(false);
+            }
+        }
+        if (fileUpload.getBrowseButtonDuringUpload() == null) {
+            if (mode == SingleFileUploadLayoutMode.FULL) {
+                fileUpload.setBrowseButtonDuringUpload(SingleFileUploadBtnBehavior.SHOW_STOP);
+            } else {
+                fileUpload.setBrowseButtonDuringUpload(SingleFileUploadBtnBehavior.HIDE);
+            }
+        }
+        if (fileUpload.getStopButtonNearProgress() == null) {
+            if (mode == SingleFileUploadLayoutMode.FULL) {
+                fileUpload.setStopButtonNearProgress(false);
+            } else {
+                fileUpload.setStopButtonNearProgress(true);
+            }
+        }
     }
 
     private void writeBrowseButton(FacesContext context, ResponseWriter writer, String clientId, SingleFileUpload fileUpload) throws IOException {
@@ -123,33 +110,31 @@ public final class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
         String dropTargetText = fileUpload.getDropTargetText();
         if (dropTargetText == null) {
             switch (layoutMode) {
-                case FULL:
-                    dropTargetText = "Drop file here";
-                    break;
                 case COMPACT:
                     dropTargetText = "Drop file";
                     break;
-                case MINIMALISTIC:
-                    dropTargetText = "Drop file";
+                case FULL:
+                    dropTargetText = "Drop file here";
                     break;
             }
         }
         writeDragAndDropArea(context, abstractFileUpload, writer, clientId + DRAG_AREA,
-                (fileUpload.getExternalDropTarget() == null) ? "o_s_file_drop_target" : "o_s_file_ext_drop_target",
+                (fileUpload.getExternalDropTarget() == null)
+                        ? ((layoutMode == SingleFileUploadLayoutMode.FULL) ? "o_s_file_drop_target_full" : "o_s_file_drop_target_min")
+                        : "o_s_file_ext_drop_target",
                 dropTargetText);
     }
 
     private void writeProgressArea(FacesContext context, AbstractFileUpload fileUpload, ResponseWriter writer) throws IOException {
         String progressBarClass = Styles.getCSSClass(context, fileUpload, fileUpload.getProgressBarStyle(), StyleGroup.regularStyleGroup(), fileUpload.getProgressBarClass(), "o_s_file_upload_info_progress");
         writer.writeAttribute("class", progressBarClass, null);
-        writer.writeAttribute("colspan", 2, null);
-        writeProgressBar(context);
+        writeProgressBar(context, fileUpload);
     }
 
     private void writeFileInfo(FacesContext context, SingleFileUpload fileUpload, ResponseWriter writer, String clientId) throws IOException {
-        String fileInfoClass = Styles.getCSSClass(context, fileUpload, fileUpload.getRowStyle(), StyleGroup.regularStyleGroup(), fileUpload.getRowClass(), "o_file_upload_info");
-        String infoTitleClass = Styles.getCSSClass(context, fileUpload, fileUpload.getFileNameStyle(), StyleGroup.regularStyleGroup(), fileUpload.getFileNameClass(), "o_file_upload_info_title");
-        String infoStatusClass = Styles.getCSSClass(context, fileUpload, fileUpload.getUploadStatusStyle(), StyleGroup.regularStyleGroup(), fileUpload.getUploadStatusClass(), "o_s_file_upload_info_status");
+        String fileInfoClass = Styles.getCSSClass(context, fileUpload, fileUpload.getFileInfoAreaStyle(), StyleGroup.regularStyleGroup(), fileUpload.getFileInfoAreaClass(), "o_file_upload_info");
+        String infoTitleClass = Styles.getCSSClass(context, fileUpload, fileUpload.getFileNameStyle(), StyleGroup.regularStyleGroup(), fileUpload.getFileNameClass(), "o_s_file_upload_info_title");
+        String infoStatusClass = Styles.getCSSClass(context, fileUpload, fileUpload.getStatusStyle(), StyleGroup.regularStyleGroup(), fileUpload.getStatusClass(), "o_s_file_upload_info_status");
 
         writer.startElement("table", fileUpload);
         writer.writeAttribute("id", clientId, null);
@@ -157,7 +142,9 @@ public final class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
         writer.startElement("tr", fileUpload);
 
         writer.startElement("td", fileUpload);
+        writer.startElement("div", fileUpload);
         writer.writeAttribute("class", infoTitleClass, null);
+        writer.endElement("div");
         writer.endElement("td");
 
         writer.startElement("td", fileUpload);
@@ -170,22 +157,24 @@ public final class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
     }
 
     @Override
-    protected void writeProgressBar(FacesContext context) throws IOException {
+    protected void writeProgressBar(FacesContext context, AbstractFileUpload fileUpload) throws IOException {
         if (progressBar == null) {
             progressBar = new ProgressBar();
-            progressBar.setSmallProgressByDefault(true);
+            progressBar.setDefaultProgressImgUrl(DEFAULT_UPLOADED_MIN_URL);
         }
-        progressBar.setStyleClass(Styles.getCSSClass(context, progressBar, progressBar.getStyle(), StyleGroup.regularStyleGroup(), progressBar.getStyleClass(), getProgressBarStyle()));
+        progressBar.setStyleClass(Styles.getCSSClass(context, progressBar, progressBar.getStyle(), StyleGroup.regularStyleGroup(), progressBar.getStyleClass(), getProgressBarStyle(((SingleFileUpload) fileUpload))));
         progressBar.setLabelClass(Styles.getCSSClass(context, progressBar, progressBar.getLabelStyle(), StyleGroup.regularStyleGroup(), progressBar.getLabelClass(), "o_s_file_upload_progress_label"));
         progressBar.encodeAll(context);
     }
-    
-    private String getProgressBarStyle(){
-        switch (layoutMode){
+
+    private String getProgressBarStyle(SingleFileUpload fileUpload) {
+        switch (layoutMode) {
             case COMPACT:
-                return "o_s_fileup_pro_bar_compact";
-            case MINIMALISTIC:
-                return "o_s_fileup_pro_bar_min";
+                if (fileUpload.getBrowseButtonDuringUpload() == SingleFileUploadBtnBehavior.HIDE) {
+                    return "o_s_fileup_pro_bar_min";
+                } else {
+                    return "o_s_fileup_pro_bar_compact";
+                }
             case FULL:
                 return "o_s_fileup_pro_bar";
         }
@@ -206,14 +195,16 @@ public final class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
         int uploadedSize = 0;
         boolean duplicateAllowed = true;//fileUpload.isDuplicateAllowed();
 
+
         List<String> listOfImages = new LinkedList<String>();
         String defStopUrl = null;
-        if (layoutMode == SingleFileUploadLayoutMode.MINIMALISTIC && stopButton == null){
-            defStopUrl = Resources.getURL(context,  null, DEFAULT_STOP_URL);
-            listOfImages.add(defStopUrl);
+        if (fileUpload.getStopButtonNearProgress()) {
+            if (stopButton == null) {
+                defStopUrl = Resources.getURL(context, null, DEFAULT_STOP_URL);
+                listOfImages.add(defStopUrl);
+                Rendering.renderPreloadImagesScript(context, listOfImages, false);
+            }
         }
-        Rendering.renderPreloadImagesScript(context, listOfImages, false);
-
         Script initScript = new ScriptBuilder().initScript(context, fileUpload, "O$.SingleFileUpload._init",
                 uploadedSize,
                 fileUpload.getNotUploadedStatusText(),
@@ -242,13 +233,19 @@ public final class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
                 Utilities.getFunctionOfEvent(Rendering.getEventHandlerScript(fileUpload, "uploadinprogress")),
                 Utilities.getFunctionOfEvent(Rendering.getEventHandlerScript(fileUpload, "uploadend")),
                 Utilities.getFunctionOfEvent(Rendering.getEventHandlerScript(fileUpload, "wrongfileadded")),
+                Utilities.getFunctionOfEvent(Rendering.getEventHandlerScript(fileUpload, "directorydropped")),
                 dropTargetDragoverClass,
-                (fileUpload.getRenderAfterUpload() == null) ? null : Utilities.getForm(fileUpload).getClientId(context) + ":" + fileUpload.getRenderAfterUpload(),
+                (fileUpload.getRender() == null) ? null : Utilities.getForm(fileUpload).getClientId(context) + ":" + fileUpload.getRender(),
                 fileUpload.getExternalDropTarget(),
-                fileUpload.getAcceptDialogFormats(),
+                fileUpload.getAcceptedMimeTypes(),
                 fileUpload.getLayoutMode(),
                 defStopUrl,
-                STOP_ICO_STYLE_MIN
+                getIconStyle(fileUpload, layoutMode),
+                fileUpload.getShowInfoAfterUpload(),
+                fileUpload.getBrowseButtonDuringUpload(),
+                fileUpload.getStopButtonNearProgress(),
+                fileUpload.getDirectoryDroppedText(),
+                fileUpload.getWrongFileTypeText()
         );
 
         Rendering.renderInitScript(context, initScript,
@@ -260,14 +257,19 @@ public final class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
     }
 
     @Override
-    protected void writeHelpfulButtons(FacesContext context, AbstractFileUpload abstractFileUpload, ResponseWriter writer, String elementId) throws IOException {
-        if (layoutMode == SingleFileUploadLayoutMode.MINIMALISTIC){
-            writeProgressArea(context, abstractFileUpload, writer);
-            facetRenderer.writeDivByDefault(stopButton, elementId + STOP_BTN_CONTAINER, "", STOP_ICO_STYLE_MIN);
-        }else{
+    protected void writeHelpfulButtons(FacesContext context, AbstractFileUpload abstractFileUpload, ResponseWriter
+            writer, String elementId) throws IOException {
+        SingleFileUpload fileUpload = (SingleFileUpload) abstractFileUpload;
+        if (fileUpload.getStopButtonNearProgress() && fileUpload.getBrowseButtonDuringUpload() != SingleFileUploadBtnBehavior.SHOW_STOP) {
+            facetRenderer.writeDivByDefault(stopButton, elementId + STOP_BTN_CONTAINER, "", getIconStyle(fileUpload, layoutMode));
+        } else {
             facetRenderer.writeButtonByDefault(stopButton, elementId + STOP_BTN_CONTAINER, abstractFileUpload.getStopButtonText(), "o_s_file_clear_btn");
         }
-
     }
 
+    private String getIconStyle(SingleFileUpload fileUpload, SingleFileUploadLayoutMode layoutMode) {
+        return (layoutMode == SingleFileUploadLayoutMode.FULL) ? STOP_ICO_STYLE_FULL
+                : (fileUpload.getBrowseButtonDuringUpload() == SingleFileUploadBtnBehavior.HIDE
+                ? STOP_ICO_STYLE_MIN : STOP_ICO_STYLE_FULL);
+    }
 }

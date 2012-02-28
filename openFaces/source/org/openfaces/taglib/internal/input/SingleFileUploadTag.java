@@ -12,6 +12,7 @@
 package org.openfaces.taglib.internal.input;
 
 import org.openfaces.component.input.SingleFileUpload;
+import org.openfaces.component.input.SingleFileUploadBtnBehavior;
 import org.openfaces.component.input.SingleFileUploadLayoutMode;
 
 import javax.faces.component.UIComponent;
@@ -31,5 +32,11 @@ public class SingleFileUploadTag extends AbstractFileUploadTag {
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
         setEnumerationProperty(component, "layoutMode", SingleFileUploadLayoutMode.class);
+        setBooleanProperty(component, "showInfoAfterUpload");
+        setEnumerationProperty(component, "browseButtonDuringUpload", SingleFileUploadBtnBehavior.class);
+        setBooleanProperty(component, "stopButtonNearProgress");
+
+        setStringProperty(component, "fileInfoAreaStyle");
+        setStringProperty(component, "fileInfoAreaClass");
     }
 }

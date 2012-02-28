@@ -23,12 +23,12 @@ public class ProgressBarJspTag extends org.openfaces.taglib.jsp.AbstractComponen
         getDelegate().setPropertyValue("value", value);
     }
 
-    public void setProcessedStyle(ValueExpression processedStyle) {
-        getDelegate().setPropertyValue("processedStyle", processedStyle);
+    public void setProgressStyle(ValueExpression progressStyle) {
+        getDelegate().setPropertyValue("progressStyle", progressStyle);
     }
 
-    public void setProcessedClass(ValueExpression processedClass) {
-        getDelegate().setPropertyValue("processedClass", processedClass);
+    public void setProgressClass(ValueExpression progressClass) {
+        getDelegate().setPropertyValue("progressClass", progressClass);
     }
 
     public void setNotProcessedStyle(ValueExpression notProcessedStyle) {

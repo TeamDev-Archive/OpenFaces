@@ -182,7 +182,7 @@ public class SelectOneRadioRenderer extends SelectManyInputRenderer {
 
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
-        return Rendering.convertFromString(context, component, (String) submittedValue);
+        return Rendering.convertFromString(context, (SelectOneRadio) component, (String) submittedValue);
     }
 
 }

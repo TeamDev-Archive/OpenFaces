@@ -11,20 +11,20 @@
  */
 package org.openfaces.taglib.internal.input;
 
-import org.openfaces.component.input.FileUpload;
 import org.openfaces.component.input.FileUploadMode;
+import org.openfaces.component.input.MultipleFileUpload;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-public class FileUploadTag extends AbstractFileUploadTag {
+public class MultipleFileUploadTag extends AbstractFileUploadTag {
 
     public String getComponentType() {
-        return FileUpload.COMPONENT_TYPE;
+        return MultipleFileUpload.COMPONENT_TYPE;
     }
 
     public String getRendererType() {
-        return "org.openfaces.FileUploadRenderer";
+        return "org.openfaces.MultipleFileUploadRenderer";
     }
 
     @Override
@@ -50,5 +50,7 @@ public class FileUploadTag extends AbstractFileUploadTag {
         setBooleanProperty(component, "autoUpload");
         setBooleanProperty(component, "multiple");
         setEnumerationProperty(component, "uploadMode", FileUploadMode.class);
+        setStringProperty(component, "fileInfoRowStyle");
+        setStringProperty(component, "fileInfoRowClass");
     }
 }

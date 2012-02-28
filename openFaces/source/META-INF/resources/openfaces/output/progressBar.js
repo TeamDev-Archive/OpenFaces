@@ -11,32 +11,33 @@
  */
 
 O$.ProgressBar = {
-  _init: function(componentId, value, labelAlignment, labelFormat, uploadedProgressImgUrl, notUploadedProgressImgUrl) {
+  _init: function(componentId, value, labelAlignment, labelFormat, defaultProgressImgUrl, defProgressClassName) {
     var progressBar = O$.initComponent(componentId, null);
     O$.extend(progressBar, {
       _progressValue : 0,
       _uploadedDiv : progressBar.childNodes[0],
       _notUploadedDiv : progressBar.childNodes[1],
       _labelDiv : progressBar.childNodes[2],
-      _uploadedProgressImgUrl : uploadedProgressImgUrl,
-      _notUploadedProgressImgUrl : notUploadedProgressImgUrl,
+      _defaultProgressImgUrl : defaultProgressImgUrl,
       _labelAlignment : labelAlignment,
-      _labelFormat: labelFormat,
-      _previousValue:0,
-      _isBusy:false,
-      _queue:[],
-      _widthOfProgress:(progressBar.clientWidth > 0) ? progressBar.clientWidth : 0,
+      _labelFormat : labelFormat,
+      _previousValue : 0,
+      _isBusy : false,
+      _queue : [],
+      _widthOfProgress: 0,
+      _isEnabledQuirksMode:false,
+      _defProgressClassName: defProgressClassName,
+      _setWidthForAllComponent:function(width){
+        progressBar._widthOfProgress = width;
+      },
+      _enableQuirksMode: function(){
+        progressBar._isEnabledQuirksMode = true;
+      },
       _getWidthOfProgress:function(){
         if (progressBar._widthOfProgress != 0) {
           return progressBar._widthOfProgress;
         }
-        if (progressBar.clientWidth>0){
-          return progressBar.clientWidth;
-        }
-        if ((O$.getElementStyle(progressBar,"width").replace("px", "") * 1) > 0 ){
-          return O$.getElementStyle(progressBar,"width").replace("px", "") * 1;
-        }
-        return progressBar.style.width.replace("px", "") * 1;
+        return O$.getElementSize(progressBar).width;
       },
       _getHeightOfProgress: function(){
         if (O$.getElementClientRectangle(progressBar).height != 0) {
@@ -57,6 +58,9 @@ O$.ProgressBar = {
         if (progressValue != null &&
                 progressValue <= 100 && progressValue >= 0) {
           progressBar._progressValue = progressValue;
+          if (progressBar._widthOfProgress == 0){
+            progressBar._widthOfProgress =  O$.getElementSize(progressBar).width;
+          }
           var labelShouldDisplay = !(O$.getElementStyle(progressBar._labelDiv,"display") == "none");
           if (O$.isExplorer6() || O$.isExplorer7() || (O$.isExplorer() && O$.isQuirksMode())) {
             progressBar._labelDiv.style.display = "none";
@@ -75,11 +79,8 @@ O$.ProgressBar = {
           }
         }
       },
-      _getUploadedProgressImgUrl: function () {
-        return progressBar._uploadedProgressImgUrl;
-      },
-      _getNotUploadedProgressImgUrl: function () {
-        return progressBar._notUploadedProgressImgUrl;
+      _getDefaultProgressImgUrl: function () {
+        return progressBar._defaultProgressImgUrl;
       },
       _getLabelFormat:function(){
         return progressBar._labelFormat;
@@ -87,11 +88,23 @@ O$.ProgressBar = {
       _getLabelAlignment:function() {
         return progressBar._labelAlignment;
       },
+      _getDefaultClassName:function() {
+        return progressBar._defProgressClassName;
+      },
       _setWidthForProgress:function (uploadedWidth, notUploadedWidth){
-        progressBar._uploadedDiv.style.width = uploadedWidth + "px";
-        progressBar._notUploadedDiv.style.width = notUploadedWidth + "px";
-        if (O$.isExplorer() && (O$.isQuirksMode() ||(O$.isExplorer7() || O$.isExplorer6()))){
-          return;
+
+        if (progressBar._isEnabledQuirksMode && O$.isExplorer() && (O$.isQuirksMode() ||(O$.isExplorer7() || O$.isExplorer6()))){
+          var tempWidth = progressBar._getWidthOfProgress();
+          if (tempWidth == uploadedWidth){
+            uploadedWidth--;
+          }else if (tempWidth == notUploadedWidth){
+            notUploadedWidth--;
+          }
+          progressBar._uploadedDiv.style.width = uploadedWidth + "px";
+          progressBar._notUploadedDiv.style.width = notUploadedWidth + "px";
+        }else{
+          progressBar._uploadedDiv.style.width = uploadedWidth + "px";
+          progressBar._notUploadedDiv.style.width = notUploadedWidth + "px";
         }
         progressBar.style.width = progressBar._getWidthOfProgress() + "px";
 
@@ -152,6 +165,17 @@ O$.ProgressBar = {
           }
           progressBar._previousValue = val;
         }
+      },
+      _setDefBackgroundImage:function () {
+        for (var i = 0; i < document.styleSheets.length; i++) {
+          var rules = O$.isExplorer() ? document.styleSheets[i].rules : document.styleSheets[i].cssRules;
+          for (var k = 0; k < rules.length; k++) {
+            if (rules[k].selectorText == "." + defProgressClassName) {
+              rules[k].style.backgroundImage = "url(" + progressBar._defaultProgressImgUrl + ")";
+              return;
+            }
+          }
+        }
       }
     });
     new function setHeightAndWidthForProgressEls(){
@@ -167,17 +191,16 @@ O$.ProgressBar = {
     if (labelAlignment == "center"){
       progressBar._labelDiv.style.marginLeft = progressBar._getWidthOfProgress()  / 2 - O$.getElementSize(progressBar._labelDiv).width / 2 + "px";
     }
-    progressBar._uploadedDiv.style.backgroundImage = "url('" + progressBar._uploadedProgressImgUrl + "')";
-    if (progressBar._notUploadedProgressImgUrl != null && progressBar._notUploadedProgressImgUrl != "") {
-      progressBar._notUploadedDiv.style.backgroundImage = "url('" + progressBar._notUploadedProgressImgUrl + "')";
-    }
+    progressBar._setDefBackgroundImage();
+
+    //progressBar._uploadedDiv.style.backgroundImage = "url('" + progressBar._defaultProgressImgUrl + "')";
   },
   initCopyOf: function (progressBar, copyOfProgressBar) {
     this._init(copyOfProgressBar.id,
             progressBar.getValue(),
             progressBar._getLabelAlignment(),
             progressBar._getLabelFormat(),
-            progressBar._getUploadedProgressImgUrl(),
-            progressBar._getNotUploadedProgressImgUrl());
+            progressBar._getDefaultProgressImgUrl(),
+            progressBar._getDefaultClassName());
   }
 };

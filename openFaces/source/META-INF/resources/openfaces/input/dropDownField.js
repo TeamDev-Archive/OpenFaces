@@ -125,7 +125,7 @@ O$.DropDownField = {
       },
 
       _checkAdditionalPageNeeded: function(forceReload) {
-        if (suggestionMode != "custom" || dropDown._filterCriterion) return;
+        if (suggestionMode != "custom" || (dropDown._cachingAllowed && dropDown._filterCriterion)) return;
         var itemsLoaded = forceReload ? 0 : dropDown._items.length;
         if (totalItemCount != -1) {
           if (itemsLoaded >= totalItemCount) return;
@@ -172,7 +172,8 @@ O$.DropDownField = {
       },
 
       _clearSuggestions: function() {
-        dropDown._showSuggestions("", null, false);
+        dropDown._filterCriterion = dropDown._field.value;
+        dropDown._showSuggestions(dropDown._field.value, null, false);
       },
 
       _showSuggestions: function(text, cachedSuggestions, autoCompletionAllowedForThisKey, itemsAppended) {
