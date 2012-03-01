@@ -1635,16 +1635,19 @@ O$.Table = {
           var col = this._getColumn();
           var cells = col && col.body ? col.body._cells : [];
           var checkedCount = 0;
+          var checkboxCount = 0;
           for (var i = 0, count = cells.length; i < count; i++) {
             var cell = cells[i];
             if (!cell) continue;
             var checkBox = cell._checkBox;
-            if (checkBox && (checkBox.isSelected ? checkBox.isSelected() : checkBox.checked))
+            if (!checkBox) continue;
+            checkboxCount++;
+            if (checkBox.isSelected ? checkBox.isSelected() : checkBox.checked)
               checkedCount++;
           }
           if (checkedCount == 0)
             this.setSelected(false);
-          else if (checkedCount == cells.length)
+          else if (checkedCount == checkboxCount)
             this.setSelected(true);
           else
             this.setDefined(false);
@@ -1864,10 +1867,12 @@ O$.Table = {
     if (changeHandler) {
       eval("col.onchange = function(event) {if (!event._of_event)return;" + changeHandler + "}");
       // checking _of_event is needed if this is a bubbled event from some child
-      col._fireOnChange = function() {
-        O$.sendEvent(col, "change");
-      };
     }
+    col._fireOnChange = function() {
+      if (changeHandler)
+        O$.sendEvent(col, "change");
+    };
+
 
   },
 
