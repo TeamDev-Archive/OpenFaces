@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * @author Dmitry Pikhulya
  */
-public class XLSXTableExporter extends TableExporter {
+public class XLSXTableDataFormatter extends TableDataFormatter {
     protected String getContentType() {
         return "text/xlsx";
     }

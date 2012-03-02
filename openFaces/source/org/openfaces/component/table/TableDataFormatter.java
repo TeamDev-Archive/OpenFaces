@@ -1,6 +1,6 @@
 /*
  * OpenFaces - JSF Component Library 3.0
- * Copyright (C) 2007-2011, TeamDev Ltd.
+ * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
  * the GNU Lesser General Public License Version 2.1 (the "LGPL" License).
@@ -25,7 +25,7 @@ import java.io.StringWriter;
  *
  * @author Dmitry Pikhulya
  */
-public abstract class TableExporter {
+public abstract class TableDataFormatter {
     /**
      * This method can be invoked on the Invoke Application phase (that is when application's actions are executed), to
      * export the specified data according to this exporter's logic, and send the appropriate response to the client
@@ -101,4 +101,28 @@ public abstract class TableExporter {
      * @return the default file extension without the dot sign: "csv", "txt", etc.
      */
     public abstract String getDefaultFileExtension();
+
+    protected static String stripHtml(String html) {
+        String result = html;
+        String replacement = result;
+        do {
+            result = replacement;
+            replacement = replacement.replaceAll("\n|\r|(  ){2,}", " ");
+        } while (replacement.length() != result.length());
+        result = replacement;
+
+        result = result.replaceAll("<br/?>", "\n");
+        result = result.replaceAll("<[^>]*>", "");
+
+        replacement = result;
+        do {
+            result = replacement;
+            replacement = replacement.replaceAll(" \n|\n ", "\n");
+            replacement = replacement.replaceAll("(  ){2,}", " ");
+        } while (replacement.length() != result.length());
+        result = replacement;
+
+        return result;
+    }
+
 }

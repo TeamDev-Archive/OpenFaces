@@ -44,6 +44,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static org.openfaces.renderkit.select.SelectUtil.collectSelectItems;
+
 /**
  * @author Kharchenko
  */
@@ -450,7 +452,7 @@ public class TwoListSelectionRenderer extends RendererBase {
     }
 
     private List getSelectedItemsFromSubmittedValue(TwoListSelection tls) {
-        List<SelectItem> allItems = getAllItems(tls);
+        List<SelectItem> allItems = collectSelectItems(tls);
         if (allItems == null) return Collections.EMPTY_LIST;
         List<SelectItem> result = new ArrayList<SelectItem>();
         String[] submittedValues = (String[]) tls.getSubmittedValue();
@@ -492,80 +494,8 @@ public class TwoListSelectionRenderer extends RendererBase {
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
     }
 
-    private List<SelectItem> getAllItems(TwoListSelection tls) {
-        List<SelectItem> result = new ArrayList<SelectItem>();
-        List<UIComponent> children = tls.getChildren();
-        if (children != null) {
-            for (UIComponent uiComponent : children) {
-                if (uiComponent instanceof UISelectItem) {
-                    UISelectItem item = (UISelectItem) uiComponent;
-                    Object itemValue = item.getValue();
-                    SelectItem si;
-                    if (itemValue != null) {
-                        if (!(itemValue instanceof SelectItem)) {
-                            String clientId = tls.getClientId(FacesContext.getCurrentInstance());
-                            throw new IllegalArgumentException(
-                                    "The 'value' attribute <f:selectItem> tag should be null or an instance of SelectItem, " +
-                                            "but the following type was encountered: " + itemValue.getClass().getName() +
-                                            "; TwoListSelection client id: " + clientId);
-                        }
-                        si = (SelectItem) itemValue;
-                    } else {
-                        si = new SelectItem(item.getItemValue(), item.getItemLabel(), item.getItemDescription(),
-                                item.isItemDisabled());
-                    }
-                    result.add(si);
-                } else if (uiComponent instanceof UISelectItems) {
-                    UISelectItems items = (UISelectItems) uiComponent;
-                    Object value = items.getValue();
-                    if (value != null) {
-                        if (value instanceof Collection) {
-                            Collection col = (Collection) value;
-                            for (Object item : col) {
-                                if (item instanceof SelectItem) {
-                                    result.add((SelectItem) item);
-                                } else {
-                                    String clientId = tls.getClientId(FacesContext.getCurrentInstance());
-                                    throw new IllegalArgumentException(
-                                            "The items specified inside the <f:selectItems> collection should be of type javax.faces.model.SelectItem, but the following type was encountered: " +
-                                                    item.getClass().getName() + "; TwoListSelection client id: " + clientId);
-                                }
-                            }
-                        } else if (value instanceof Object[]) {
-                            Object[] arrayValue = (Object[]) value;
-                            for (Object item : arrayValue) {
-                                if (item instanceof SelectItem) {
-                                    result.add((SelectItem) item);
-                                } else {
-                                    String clientId = tls.getClientId(FacesContext.getCurrentInstance());
-                                    throw new IllegalArgumentException(
-                                            "The items specified inside the <f:selectItems> array should be of type javax.faces.model.SelectItem, but the following type was encountered: " +
-                                                    item.getClass().getName() + "; TwoListSelection client id: " + clientId);
-                                }
-                            }
-                        } else if (value instanceof Map) {
-                            Map mapValue = (Map) value;
-                            Set set = mapValue.entrySet();
-                            for (Object aSet : set) {
-                                Map.Entry entry = (Map.Entry) aSet;
-                                result.add(new SelectItem(entry.getValue(), (String) entry.getKey()));
-                            }
-                        } else {
-                            String clientId = tls.getClientId(FacesContext.getCurrentInstance());
-                            throw new IllegalArgumentException(
-                                    "The 'value' attribute <f:selectItems> tag should be specified as a collection or an array " +
-                                            "of SelectItem instances, or as a Map, but the following type was encountered: " +
-                                            value.getClass().getName() + "; TwoListSelection client id: " + clientId);
-                        }
-                    }
-                }
-            }
-        }
-        return result.size() > 0 ? result : null;
-    }
-
     private List<SelectItem> getSelectedItems(TwoListSelection tls) {
-        List<SelectItem> allItems = getAllItems(tls);
+        List<SelectItem> allItems = collectSelectItems(tls);
         if (allItems == null) return null;
 
         List<SelectItem> result = new ArrayList<SelectItem>();
@@ -588,7 +518,7 @@ public class TwoListSelectionRenderer extends RendererBase {
     }
 
     private List<SelectItem> getNotSelectedItems(TwoListSelection tls) {
-        List<SelectItem> allItems = getAllItems(tls);
+        List<SelectItem> allItems = collectSelectItems(tls);
         if (allItems == null) return null;
 
         List<SelectItem> result = new ArrayList<SelectItem>();

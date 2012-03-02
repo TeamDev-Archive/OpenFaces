@@ -13,7 +13,7 @@
 package org.openfaces.demo.beans.datatable;
 
 import org.openfaces.component.table.AbstractTable;
-import org.openfaces.component.table.CSVTableExporter;
+import org.openfaces.component.table.CSVTableDataFormatter;
 import org.openfaces.component.table.DataTable;
 import org.openfaces.component.table.ExpansionState;
 import org.openfaces.demo.beans.util.FacesUtils;
@@ -238,7 +238,7 @@ public class BanksList implements Serializable {
     public void export() {
         Faces.component("form:banks", DataTable.class).export(
                 AbstractTable.DataScope.DISPLAYED_ROWS,
-                new CSVTableExporter());
+                new CSVTableDataFormatter());
     }
 
 }

@@ -1,6 +1,6 @@
 /*
  * OpenFaces - JSF Component Library 3.0
- * Copyright (C) 2007-2011, TeamDev Ltd.
+ * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
  * the GNU Lesser General Public License Version 2.1 (the "LGPL" License).
@@ -16,12 +16,13 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
  * @author Dmitry Pikhulya
  */
-public class CSVTableExporter extends TableExporter {
+public class CSVTableDataFormatter extends TableDataFormatter {
 
     protected String getContentType() {
         return "text/csv";
@@ -35,14 +36,31 @@ public class CSVTableExporter extends TableExporter {
     @Override
     protected void writeFileContent(TableData tableData, PrintWriter writer, OutputStream outputStream) {
         try {
-            writeCSVLine(writer, mapList(tableData.getTableColumnDatas(), new Mapper<TableColumnData, String>() {
-                public String map(TableColumnData obj) {
-                    return obj.getColumnHeader();
-                }
-            }));
+            writeCSVLine(writer, tableData.getTableColumnDatas());
             List<TableRowData> rowDatas = tableData.getTableRowDatas();
             for (TableRowData rowData : rowDatas) {
-                writeCSVLine(writer, rowData.getCellStrings());
+                writeCSVLine(writer, mapList(rowData.getCellDatas(), new Mapper<Object, String>() {
+                    public String map(Object obj) {
+                        if (obj == null){
+                            return "";
+                        }
+                        String text;
+                        if (obj instanceof Iterable) {
+                            StringBuilder result = new StringBuilder();
+                            Iterator<?> iter = ((Iterable<?>) obj).iterator();
+                            while (iter.hasNext()) {
+                                Object value = iter.next();
+                                if (value != null) {
+                                    result.append(String.valueOf(value));
+                                }
+                            }
+                            text = result.toString();
+                        }else{
+                            text = obj.toString();
+                        }
+                        return stripHtml(text).replaceAll("\n", " ");
+                    }
+                }));
             }
             writer.flush();
         } catch (IOException e) {
