@@ -310,7 +310,7 @@ public class Resources {
      * @param baseClass      Class, relative to which the resourcePath is specified
      * @param relativeJsPath Path to the javascript file
      */
-    public static void registerJavascriptLibrary(FacesContext context, Class baseClass, String relativeJsPath) {
+    static void registerJavascriptLibrary(FacesContext context, Class baseClass, String relativeJsPath) {
         String jsFileUrl = internalURL(context, baseClass, relativeJsPath);
         registerJavascriptLibrary(context, jsFileUrl);
     }
@@ -321,7 +321,7 @@ public class Resources {
      * @param context   {@link FacesContext} for the current request
      * @param jsFileUrl Url for the javascript file
      */
-    public static void registerJavascriptLibrary(FacesContext context, String jsFileUrl) {
+    static void registerJavascriptLibrary(FacesContext context, String jsFileUrl) {
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
         List<String> libraries = (List<String>) requestMap.get(HEADER_JS_LIBRARIES);
         if (libraries == null) {
