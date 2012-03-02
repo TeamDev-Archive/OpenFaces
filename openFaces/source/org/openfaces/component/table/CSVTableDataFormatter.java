@@ -41,7 +41,7 @@ public class CSVTableDataFormatter extends TableDataFormatter {
             for (TableRowData rowData : rowDatas) {
                 writeCSVLine(writer, mapList(rowData.getCellDatas(), new Mapper<Object, String>() {
                     public String map(Object obj) {
-                        if (obj == null){
+                        if (obj == null) {
                             return "";
                         }
                         String text;
@@ -55,7 +55,7 @@ public class CSVTableDataFormatter extends TableDataFormatter {
                                 }
                             }
                             text = result.toString();
-                        }else{
+                        } else {
                             text = obj.toString();
                         }
                         return stripHtml(text).replaceAll("\n", " ");
