@@ -22,12 +22,10 @@ import java.util.List;
 public class TableRowData {
     private Object rowData;
     private List<Object> cellDatas;
-    private List<String> cellStrings;
 
-    public TableRowData(Object rowData, List<Object> cellDatas, List<String> cellStrings) {
+    public TableRowData(Object rowData, List<Object> cellDatas) {
         this.rowData = rowData;
         this.cellDatas = Collections.unmodifiableList(cellDatas);
-        this.cellStrings = Collections.unmodifiableList(cellStrings);
     }
 
     public Object getRowData() {
@@ -38,7 +36,4 @@ public class TableRowData {
         return cellDatas;
     }
 
-    public List<String> getCellStrings() {
-        return cellStrings;
-    }
 }

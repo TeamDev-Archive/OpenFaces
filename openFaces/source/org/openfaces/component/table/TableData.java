@@ -23,15 +23,15 @@ import java.util.List;
  * @author Dmitry Pikhulya
  */
 public class TableData {
-    private List<TableColumnData> columnDatas;
+    private List<String> columnDatas;
     private List<TableRowData> rowDatas;
 
-    public TableData(List<TableColumnData> columnDatas, List<TableRowData> rowDatas) {
+    public TableData(List<String> columnDatas, List<TableRowData> rowDatas) {
         this.columnDatas = Collections.unmodifiableList(columnDatas);
         this.rowDatas = Collections.unmodifiableList(rowDatas);
     }
 
-    public List<TableColumnData> getTableColumnDatas() {
+    public List<String> getTableColumnDatas() {
         return columnDatas;
     }
 
