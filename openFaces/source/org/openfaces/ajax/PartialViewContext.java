@@ -293,8 +293,15 @@ public class PartialViewContext extends PartialViewContextWrapper {
     public static InitScript getCombinedAjaxInitScripts(FacesContext context) {
         ScriptBuilder sb = new ScriptBuilder();
         Set<String> jsFiles = new LinkedHashSet<String>();
+        // Some components do not have their own init scripts but still rely on js libraries to be loaded,
+        // which is usually the case when a components renders its own event handler script that invokes some
+        // library-dependent function(s). These scripts are registered with Resources.renderJSLinkIfNeeded instead of
+        // Rendering.renderInitScript where all init-script related libraries are registered.
+        List<String> registeredJsLibs = Resources.getRegisteredJsLibraries();
+        if (registeredJsLibs != null)
+            jsFiles.addAll(registeredJsLibs);
+
         List<InitScript> initScripts = Rendering.getAjaxInitScripts(context);
-        if (initScripts.isEmpty()) return null;
         boolean semicolonNeeded = false;
         for (InitScript initScript : initScripts) {
             Script script = initScript.getScript();
@@ -306,7 +313,7 @@ public class PartialViewContext extends PartialViewContextWrapper {
                 jsFiles.addAll(Arrays.asList(files));
         }
         initScripts.clear();
-        // remove the possible null references, which are normally allowed to present, from js library list
+        // remove the possible null references, which are normally allowed to present, from the js library list
         jsFiles.remove(null);
         InitScript script = new InitScript(new AnonymousFunction(sb), jsFiles.toArray(new String[jsFiles.size()]));
         return script;
@@ -408,9 +415,9 @@ public class PartialViewContext extends PartialViewContextWrapper {
     }
 
     public static UIComponent findComponentById(UIComponent parent,
-                                         String id,
-                                         boolean preProcessDecodesOnTables,
-                                         boolean preRenderResponseOnTables) {
+                                                String id,
+                                                boolean preProcessDecodesOnTables,
+                                                boolean preRenderResponseOnTables) {
         return findComponentById(parent, id, preProcessDecodesOnTables, preRenderResponseOnTables, true);
     }
 
