@@ -17,6 +17,7 @@ import org.openfaces.component.table.export.CellDataExtractor;
 import org.openfaces.component.table.export.ComponentDataExtractor;
 import org.openfaces.component.table.export.SelectValueExtractor;
 import org.openfaces.component.table.export.UICommandDataExtractor;
+import org.openfaces.component.table.export.UIInstructionsDataExtractor;
 import org.openfaces.component.table.export.ValueHolderDataExtractor;
 
 import javax.faces.context.FacesContext;
@@ -41,6 +42,7 @@ public class TableDataExtractor {
         defaultComponentExtractors.add(new UICommandDataExtractor());
         defaultComponentExtractors.add(new ValueHolderDataExtractor());
         defaultComponentExtractors.add(new SelectValueExtractor());
+        defaultComponentExtractors.add(new UIInstructionsDataExtractor());
     }
 
     private List<ComponentDataExtractor> componentExtractors = new LinkedList<ComponentDataExtractor>();
