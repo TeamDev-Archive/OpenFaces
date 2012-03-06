@@ -1589,7 +1589,14 @@ if (!window.O$) {
       e.initEvent(eventName, true, true);
       e._of_event = true;
       e.returnValue = true;
-      elt.dispatchEvent(e);
+      if (elt.dispatchEvent) {
+        elt.dispatchEvent(e);
+      } else {
+        var eventField = elt["on" + eventName];
+        if (!eventField)
+          return true;
+        return eventField.call(elt, e);
+      }
       return e.returnValue;
     } else {
       e.name = "on" + eventName;
