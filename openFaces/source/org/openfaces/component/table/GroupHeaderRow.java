@@ -66,9 +66,8 @@ public class GroupHeaderRow extends GroupHeaderOrFooterRow {
         HtmlOutputText outputText = (HtmlOutputText) context.getApplication().createComponent(HtmlOutputText.COMPONENT_TYPE);
         outputText.setValueExpression("value", rowGrouping.getGroupHeaderTextExpression());
 
-        Cell groupHeaderCell = new Cell();
+        Cell groupHeaderCell = new GroupHeaderCell(dataTable, outputText);
         groupHeaderCell.getAttributes().put(SYNTHETIC_GROUP_HEADER_CELL_MARKER, true);
-        groupHeaderCell.getChildren().add(outputText);
 
         // skip selection/check-box columns for them to be displayed on the left side untouched by tree structure
         List<BaseColumn> allColumns = dataTable.getAllColumns();
