@@ -80,7 +80,7 @@ public abstract class AbstractCellSelection extends AbstractTableSelection {
     }
 
     @Override
-    protected String getSelectableItems() {
+    public String getSelectableItems() {
         return "cells";
     }
 

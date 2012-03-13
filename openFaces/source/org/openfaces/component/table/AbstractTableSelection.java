@@ -314,7 +314,7 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
         return  null;
     }
 
-    protected abstract String getSelectableItems();
+    public abstract String getSelectableItems();
 
     protected boolean getTrackLeafNodesOnly() {
         return false;

@@ -57,7 +57,7 @@ public abstract class AbstractRowSelection extends AbstractTableSelection {
     }
 
     @Override
-    protected String getSelectableItems() {
+    public String getSelectableItems() {
         return "rows";
     }
 }

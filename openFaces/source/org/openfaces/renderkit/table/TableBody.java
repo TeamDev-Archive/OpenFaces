@@ -235,7 +235,8 @@ public class TableBody extends TableSection {
         Map<Integer, CustomRowRenderingInfo> customRowRenderingInfos =
                 (Map<Integer, CustomRowRenderingInfo>) table.getAttributes().get(TableStructure.CUSTOM_ROW_RENDERING_INFOS_KEY);
         final AbstractTableSelection selection = table.getSelection();
-        final AbstractCellSelection cellSelection = (selection == null) ? null : (AbstractCellSelection) selection;
+        final AbstractCellSelection cellSelection = (selection == null || selection.getSelectableItems() != "cells") ?
+                null : (AbstractCellSelection) selection;
         MethodExpression cellSelectableMethod = (cellSelection == null) ? null : cellSelection.getCellSelectable();
         MethodExpression selectableCellsMethod = (cellSelection == null) ? null : cellSelection.getSelectableCells();
         JSONArray selectableCellsInJson = new JSONArray();
