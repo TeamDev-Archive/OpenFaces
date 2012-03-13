@@ -17,6 +17,8 @@ import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.RendererBase;
 import static org.openfaces.renderkit.select.SelectManyInputImageManager.*;
+import static org.openfaces.renderkit.select.SelectUtil.collectSelectItems;
+
 import org.openfaces.util.AnonymousFunction;
 import org.openfaces.util.Components;
 import org.openfaces.util.Rendering;
@@ -197,77 +199,6 @@ public abstract class SelectManyInputRenderer extends RendererBase {
             }
         }
 
-    private List<SelectItem> collectSelectItems(OUISelectManyInputBase selectManyInputBase) {
-        List<javax.faces.model.SelectItem> result = new ArrayList<javax.faces.model.SelectItem>();
-        List<UIComponent> children = selectManyInputBase.getChildren();
-        if (children != null) {
-            for (UIComponent uiComponent : children) {
-                if (uiComponent instanceof UISelectItem) {
-                    UISelectItem item = (UISelectItem) uiComponent;
-                    Object itemValue = item.getValue();
-                    javax.faces.model.SelectItem si;
-                    if (itemValue != null) {
-                        if (!(itemValue instanceof javax.faces.model.SelectItem)) {
-                            String clientId = selectManyInputBase.getClientId(FacesContext.getCurrentInstance());
-                            throw new IllegalArgumentException(
-                                    "The 'value' attribute <f:selectItem> tag should be null or an instance of SelectItem, " +
-                                            "but the following type was encountered: " + itemValue.getClass().getName() +
-                                            "; Select component client id: " + clientId);
-                        }
-                        si = (javax.faces.model.SelectItem) itemValue;
-                    } else {
-                        si = new javax.faces.model.SelectItem(item.getItemValue(), item.getItemLabel(), item.getItemDescription(),
-                                item.isItemDisabled());
-                    }
-                    result.add(si);
-                } else if (uiComponent instanceof UISelectItems) {
-                    UISelectItems items = (UISelectItems) uiComponent;
-                    Object value = items.getValue();
-                    if (value != null) {
-                        if (value instanceof Collection) {
-                            Collection col = (Collection) value;
-                            for (Object item : col) {
-                                if (item instanceof javax.faces.model.SelectItem) {
-                                    result.add((javax.faces.model.SelectItem) item);
-                                } else {
-                                    String clientId = selectManyInputBase.getClientId(FacesContext.getCurrentInstance());
-                                    throw new IllegalArgumentException(
-                                            "The items specified inside the <f:selectItems> collection should be of type javax.faces.model.SelectItem, but the following type was encountered: " +
-                                                    item.getClass().getName() + "; Select component client id: " + clientId);
-                                }
-                            }
-                        } else if (value instanceof Object[]) {
-                            Object[] arrayValue = (Object[]) value;
-                            for (Object item : arrayValue) {
-                                if (item instanceof javax.faces.model.SelectItem) {
-                                    result.add((javax.faces.model.SelectItem) item);
-                                } else {
-                                    String clientId = selectManyInputBase.getClientId(FacesContext.getCurrentInstance());
-                                    throw new IllegalArgumentException(
-                                            "The items specified inside the <f:selectItems> array should be of type javax.faces.model.SelectItem, but the following type was encountered: " +
-                                                    item.getClass().getName() + "; Select component client id: " + clientId);
-                                }
-                            }
-                        } else if (value instanceof Map) {
-                            Map mapValue = (Map) value;
-                            Set set = mapValue.entrySet();
-                            for (Object aSet : set) {
-                                Map.Entry entry = (Map.Entry) aSet;
-                                result.add(new javax.faces.model.SelectItem(entry.getValue(), (String) entry.getKey()));
-                            }
-                        } else {
-                            String clientId = selectManyInputBase.getClientId(FacesContext.getCurrentInstance());
-                            throw new IllegalArgumentException(
-                                    "The 'value' attribute <f:selectItems> tag should be specified as a collection or an array " +
-                                            "of SelectItem instances, or as a Map, but the following type was encountered: " +
-                                            value.getClass().getName() + "; Select component client id: " + clientId);
-                        }
-                    }
-                }
-            }
-        }
-        return result.size() > 0 ? result : null;
-    }
 
     protected boolean isRenderedWithImage(OUISelectManyInputBase selectManyInputBase) {
         return hasImages(selectManyInputBase);

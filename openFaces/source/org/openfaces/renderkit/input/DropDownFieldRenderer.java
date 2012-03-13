@@ -78,7 +78,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
 
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) {
-        return Rendering.convertFromString(context, (DropDownField) component, (String) submittedValue);
+        return Rendering.convertFromString(context, (DropDownFieldBase) component, (String) submittedValue);
     }
 
     @Override

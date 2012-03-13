@@ -23,6 +23,7 @@ import org.openfaces.util.ValueBindings;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
+import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
 import javax.faces.component.UIOutput;
@@ -186,7 +187,7 @@ public class TableUtil {
     }
 
 
-    private static boolean expressionContainsVar(String expressionString, String var) {
+    public static boolean expressionContainsVar(String expressionString, String var) {
         if (expressionString.equals("#{" + var + "}")) return true;
         Matcher matcher = getExpressionPattern(var).matcher(expressionString);
         return matcher.find();
@@ -206,13 +207,15 @@ public class TableUtil {
         return columnExpressionData.getValueConverter();
     }
 
-    public static String getColumnHeader(BaseColumn column) {
+    public static String getColumnHeader(UIColumn column) {
         DynamicCol dynamicCol = (column instanceof DynamicCol) ? (DynamicCol) column : null;
         if (dynamicCol != null) dynamicCol.declareContextVariables();
         try {
-            String header = column.getHeaderValue();
-            if (header != null)
-                return header;
+            if (column instanceof BaseColumn) {
+                String header = ((BaseColumn) column).getHeaderValue();
+                if (header != null)
+                    return header;
+            }
             UIComponent component = column.getHeader();
             if (component == null)
                 return "";

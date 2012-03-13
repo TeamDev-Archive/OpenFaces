@@ -26,14 +26,12 @@ import org.openfaces.util.ValueBindings;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
-import javax.faces.FacesException;
 import javax.faces.component.ActionSource;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
 import javax.faces.render.Renderer;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -1926,18 +1924,22 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         return rowDatas;
     }
 
-    public void export(DataScope scope, TableExporter exporter) {
+    public void export(DataScope scope, TableDataFormatter formatter) {
         String fileName = getId();
         if (fileName == null)
             fileName = "tableData";
-        export(scope, exporter, fileName + "." + exporter.getDefaultFileExtension());
+        export(scope, formatter, fileName + "." + formatter.getDefaultFileExtension());
     }
 
-    public void export(DataScope scope, TableExporter exporter, String fileName) {
-        FacesContext context = FacesContext.getCurrentInstance();
+    public void export(DataScope scope, TableDataFormatter formatter, String fileName) {
+        TableDataExtractor extractor = new TableDataExtractor(scope);
+        export(scope, extractor, formatter, fileName);
+    }
 
-        TableData tableData = extractTableData(scope);
-        exporter.sendResponse(context, tableData, fileName);
+    public void export(DataScope scope, TableDataExtractor extractor, TableDataFormatter formatter, String fileName) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        TableData tableData = extractor.extract(this);
+        formatter.sendResponse(context, tableData, fileName);
     }
 
     /**
@@ -1958,59 +1960,6 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         FILTERED_ROWS
     }
 
-    /**
-     * Extracts the data displayed in the table, including row datas, the list of columns, and displayed cell texts as
-     * the TableData instance. The list and order of rows and columns reflects the current state of the table component
-     * itself.
-     */
-    public TableData extractTableData(DataScope scope) {
-        if (scope == null)
-            throw new IllegalArgumentException("The scope parameter can not be null.");
-        List<BaseColumn> columns = getRenderedColumns();
-        int columnCount = columns.size();
-        TableUtil.ColumnExpressionData[] columnExpressionDatas = new TableUtil.ColumnExpressionData[columnCount];
 
-        List<TableColumnData> columnDatas = new ArrayList<TableColumnData>();
-        for (int i = 0; i < columnCount; i++) {
-            BaseColumn column = columns.get(i);
-            TableUtil.ColumnExpressionData columnExpressionData = TableUtil.getColumnExpressionData(column);
-            if (columnExpressionData == null) {
-                String var = getVar();
-                throw new FacesException(
-                        "Can't find column output component (UIOutput component with a value expression containing variable \"" +
-                                var + "\") for column with id: \"" + column.getId() + "\"; table id: \"" + this.getId() +
-                                "\"");
-            }
-            columnExpressionDatas[i] = columnExpressionData;
-            String columnHeader = TableUtil.getColumnHeader(column);
-            columnDatas.add(new TableColumnData(columnExpressionData.getValueType(), columnHeader));
-        }
-
-        Iterable<Object> rowDatas = getRowDatas(scope);
-        String var = getVar();
-        FacesContext context = FacesContext.getCurrentInstance();
-        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-        ELContext elContext = context.getELContext();
-        List<TableRowData> tableRowDatas = new ArrayList<TableRowData>();
-        for (Object rowData : rowDatas) {
-            Object prevVarValue = requestMap.put(var, rowData);
-            List<Object> cellDatas = new ArrayList<Object>();
-            List<String> cellStrings = new ArrayList<String>();
-            for (int colIndex = 0; colIndex < columnCount; colIndex++) {
-                TableUtil.ColumnExpressionData columnExpressionData = columnExpressionDatas[colIndex];
-                ValueExpression columnExpression = columnExpressionData.getValueExpression();
-                Object cellValue = columnExpression.getValue(elContext);
-                Converter valueConverter = columnExpressionData.getValueConverter();
-                cellDatas.add(cellValue);
-                cellStrings.add(valueConverter != null
-                        ? valueConverter.getAsString(context, this, cellValue)
-                        : cellValue != null ? cellValue.toString() : "");
-            }
-            tableRowDatas.add(new TableRowData(rowData, cellDatas, cellStrings));
-            requestMap.put(var, prevVarValue);
-        }
-
-        return new TableData(columnDatas, tableRowDatas);
-    }
 
 }
