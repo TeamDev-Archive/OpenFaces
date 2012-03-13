@@ -169,12 +169,14 @@ public class SingleRowSelection extends DataTableSelection {
         return Mode.SINGLE;
     }
 
-    protected List<Integer> encodeSelectionIntoIndexes() {
+    @Override
+    protected List<?> encodeSelectionIntoIndexes() {
         return Collections.singletonList(getRowIndex());
     }
 
-    protected void decodeSelectionFromIndexes(List<Integer> indexes) {
-        Integer itemIndex = indexes.size() == 0 ? -1 : indexes.get(0);
+    @Override
+    protected void decodeSelectionFromIndexes(List<?> indexes) {
+        Integer itemIndex = indexes.size() == 0 ? -1 : (Integer) indexes.get(0);
         setRowIndex(itemIndex);
     }
 

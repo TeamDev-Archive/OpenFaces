@@ -209,17 +209,21 @@ public class MultipleRowSelection extends DataTableSelection {
         return Mode.MULTIPLE;
     }
 
-    protected List<Integer> encodeSelectionIntoIndexes() {
+    @Override
+    protected List<?> encodeSelectionIntoIndexes() {
         List<Integer> selectedRowIndexes = getRowIndexes();
         return selectedRowIndexes;
     }
 
-    protected void decodeSelectionFromIndexes(List<Integer> indexes) {
+    @Override
+    protected void decodeSelectionFromIndexes(List<?> indexes) {
         int selectedItemCount = indexes.size();
         List<Object> allSelectedRowKeys = (getRowKeys() != null)
                 ? getRowKeys() : new ArrayList<Object>();
-
-        List<Object> currentSelectedRowKeys = getSelectedRowKeys(selectedItemCount, indexes);
+        /*getSelectedRowKeys can return List of Integer if it's rowSelection or
+           JSONArray if it's cellSelection.
+        In this implementation we use getSelectedRowKeys that return List of Integer*/
+        @SuppressWarnings("unchecked") List<Object> currentSelectedRowKeys = getSelectedRowKeys(selectedItemCount, (List<Integer>) indexes);
 
         processSelectionRowsKeys(currentSelectedRowKeys, allSelectedRowKeys);
 

@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * @author Dmitry Pikhulya
  */
-public abstract class TreeTableSelection extends AbstractTableSelection {
+public abstract class TreeTableSelection extends AbstractRowSelection {
     protected TreeTable getTreeTable() {
         return (TreeTable) getTable();
     }

@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * @author Dmitry Pikhulya
  */
-public abstract class DataTableSelection extends AbstractTableSelection {
+public abstract class DataTableSelection extends AbstractRowSelection {
     protected DataTableSelection() {
     }
 
@@ -38,53 +38,6 @@ public abstract class DataTableSelection extends AbstractTableSelection {
      * by any application code.
      */
     public abstract List getSelectedRowKeys();
-
-    protected Object getRowKeyByRowIndex(int index) {
-        getModel().setRowIndex(index);
-        if (!getModel().isRowAvailable())
-            return null;
-        return getModel().getRowKey();
-    }
-
-    protected Object getRowDataByRowIndex(int index) {
-        getModel().setRowIndex(index);
-        if (!getModel().isRowAvailable())
-            return null;
-        return getModel().getRowData();
-    }
-
-    protected Object getRowKeyByRowData(Object data) {
-        TableDataModel model = getModel();
-        model.setRowData(data);
-        if (!model.isRowAvailable()) {
-            Object rowKey = model.requestRowKeyByRowData(getFacesContext(), null, null, data, -1, -1);
-            if (rowKey instanceof DefaultRowKey && ((DefaultRowKey) rowKey).getRowIndex() == -1) {
-                return null;
-            }
-            return rowKey;
-        }
-        return model.getRowKey();
-    }
-
-    protected int getRowIndexByRowKey(Object id) {
-        getModel().setRowKey(id);
-        if (!getModel().isRowAvailable())
-            return -1;
-        return getModel().getRowIndex();
-    }
-
-    protected Object getRowDataByRowKey(Object id) {
-        TableDataModel.RowInfo rowInfo = getModel().getRowInfoByRowKey(id);
-        return rowInfo.getRowData();
-    }
-
-
-    protected int getRowIndexByRowData(Object data) {
-        getModel().setRowData(data);
-        if (!getModel().isRowAvailable())
-            return -1;
-        return getModel().getRowIndex();
-    }
 
     protected RowGroupingSelectionMode getRowGroupingSelectionMode() {
         DataTable table = (DataTable) getTable();

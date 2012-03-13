@@ -14,6 +14,7 @@ package org.openfaces.component.table;
 import org.openfaces.component.ComponentConfigurator;
 import org.openfaces.component.OUICommand;
 import org.openfaces.component.ajax.AjaxInitializer;
+import org.openfaces.org.json.JSONArray;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.renderkit.table.AbstractTableRenderer;
 import org.openfaces.util.*;
@@ -29,6 +30,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -38,6 +40,7 @@ import java.util.Map;
 public abstract class AbstractTableSelection extends OUICommand implements ComponentConfigurator {
     private static final String SESSION_KEY_SELECTION_EVENTS_PROCESSED = "OF:tableSelectionEventsProcessed";
     private static final String ATTR_SELECTION_CLS = "_selectionCls_";
+    protected static final String ATTR_SELECTION_CURSOR_CLS = "_selectionCursorCls_";
 
     public enum Mode {
         SINGLE("single"),
@@ -90,14 +93,14 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
     /**
      * @return List of Index instances
      */
-    protected abstract List<Integer> encodeSelectionIntoIndexes();
+    protected abstract List<?> encodeSelectionIntoIndexes();
 
-    protected abstract void decodeSelectionFromIndexes(List<Integer> indexes);
+    protected abstract void decodeSelectionFromIndexes(List<?> indexes);
 
     @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
-        return new Object[]{superState, enabled, required, mouseSupport, keyboardSupport, style, styleClass, 
+        return new Object[]{superState, enabled, required, mouseSupport, keyboardSupport, style, styleClass,
                 rawStyleClass, onchange};
     }
 
@@ -275,7 +278,7 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
         ScriptBuilder buf = new ScriptBuilder().initScript(context, table, "O$.Table._initSelection",
                 isEnabled(),
                 isRequired(),
-                "rows",
+                getSelectableItems(),
                 getSelectionMode(),
                 table.getDeferBodyLoading() ? null : encodeSelectionIntoIndexes(),
                 getAttributes().get(ATTR_SELECTION_CLS),
@@ -285,7 +288,12 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
                 getSelectionColumnIndexes(table),
                 isMouseSupport(),
                 isKeyboardSupport(),
-                getTrackLeafNodesOnly());
+                getTrackLeafNodesOnly(),
+                getFillDirectionForSelection(),
+                getSelectablesCells(),
+                getAttributes().get(ATTR_SELECTION_CURSOR_CLS));
+
+        Styles.renderStyleClasses(context, this);
 
         Rendering.renderInitScript(context, buf,
                 Resources.utilJsURL(context),
@@ -298,21 +306,22 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
             Rendering.renderHiddenField(writer, getSelectionEventFieldName(context, table), null);
     }
 
+    protected JSONArray getSelectablesCells(){
+        return null;
+    }
+
+    protected String getFillDirectionForSelection(){
+        return  null;
+    }
+
+    public abstract String getSelectableItems();
+
     protected boolean getTrackLeafNodesOnly() {
         return false;
     }
 
-    private List<Integer> getSelectionColumnIndexes(AbstractTable table) {
-        List<Integer> result = new ArrayList<Integer>();
-        List<BaseColumn> columns = table.getRenderedColumns();
-        for (int i = 0, colIndex = 0, colCount = columns.size(); i < colCount; i++) {
-            BaseColumn column = columns.get(i);
-            if (column instanceof SelectionColumn) {
-                result.add(colIndex);
-            }
-            colIndex++;
-        }
-        return result;
+    protected List<Integer> getSelectionColumnIndexes(AbstractTable table) {
+        return null;
     }
 
     private String getSelectionEventFieldName(FacesContext facesContext, UIComponent table) {
@@ -350,17 +359,9 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
             return;
         if (!(selectionFieldValue.startsWith("[") && selectionFieldValue.endsWith("]")))
             throw new IllegalStateException("AbstractTableSelection.decodeSelection: illegal selectionField value: " + selectionFieldValue);
-        selectionFieldValue = selectionFieldValue.substring(1, selectionFieldValue.length() - 1);
-        String[] items = selectionFieldValue.split(",");
-        int itemCount = items.length;
-        if (itemCount == 1 && items[0].equals(""))
-            itemCount = 0;
-        List<Integer> indexes = new ArrayList<Integer>(itemCount);
-        for (int i = 0; i < itemCount; i++) {
-            String item = items[i];
-            indexes.add(Integer.valueOf(item));
-        }
-        decodeSelectionFromIndexes(indexes);
+        List<?> selectionValues = convertFieldValue(selectionFieldValue);
+
+        decodeSelectionFromIndexes(selectionValues);
 
         String eventNoStr = requestParameterMap.get(getSelectionEventFieldName(context, table));
         if (eventNoStr != null && eventNoStr.length() > 0) {
@@ -374,6 +375,9 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
             }
         }
     }
+
+
+    protected abstract List<?> convertFieldValue(String fieldValue);
 
     protected List objectToList(Object value, String attributeName) {
         if (value == null)
@@ -395,5 +399,51 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
 
     public void encodeOnBodyReload(FacesContext context, ScriptBuilder sb) {
         sb.O$(getTable()).dot().functionCall("_setSelectedItems", encodeSelectionIntoIndexes()).semicolon();
+    }
+
+    protected int getRowIndexByRowData(Object data) {
+        getModel().setRowData(data);
+        if (!getModel().isRowAvailable())
+            return -1;
+        return getModel().getRowIndex();
+    }
+
+    protected Object getRowDataByRowIndex(int index) {
+        getModel().setRowIndex(index);
+        if (!getModel().isRowAvailable())
+            return null;
+        return getModel().getRowData();
+    }
+
+    protected Object getRowKeyByRowData(Object data) {
+        TableDataModel model = getModel();
+        model.setRowData(data);
+        if (!model.isRowAvailable()) {
+            Object rowKey = model.requestRowKeyByRowData(getFacesContext(), null, null, data, -1, -1);
+            if (rowKey instanceof DefaultRowKey && ((DefaultRowKey) rowKey).getRowIndex() == -1) {
+                return null;
+            }
+            return rowKey;
+        }
+        return model.getRowKey();
+    }
+
+    protected Object getRowKeyByRowIndex(int index) {
+        getModel().setRowIndex(index);
+        if (!getModel().isRowAvailable())
+            return null;
+        return getModel().getRowKey();
+    }
+
+    protected int getRowIndexByRowKey(Object id) {
+        getModel().setRowKey(id);
+        if (!getModel().isRowAvailable())
+            return -1;
+        return getModel().getRowIndex();
+    }
+
+    protected Object getRowDataByRowKey(Object id) {
+        TableDataModel.RowInfo rowInfo = getModel().getRowInfoByRowKey(id);
+        return rowInfo.getRowData();
     }
 }
