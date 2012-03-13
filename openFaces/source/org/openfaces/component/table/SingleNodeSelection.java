@@ -181,8 +181,8 @@ public class SingleNodeSelection extends TreeTableSelection {
     }
 
     @Override
-    protected void decodeSelectionFromIndexes(List<Integer> indexes) {
-        Integer index = indexes.get(0);
+    protected void decodeSelectionFromIndexes(List<?> indexes) {
+        Integer index = (Integer) indexes.get(0);
         setNodeKeyPath(getNodeKeyPathByRowIndex(index));
     }
 

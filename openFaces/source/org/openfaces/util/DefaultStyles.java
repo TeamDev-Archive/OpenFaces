@@ -62,4 +62,8 @@ public class DefaultStyles {
     public static String getDefaultSelectionStyle() {
         return "color: " + getSelectionTextColor() + "; background: " + getSelectionBackgroundColor() + ";";
     }
+
+    public static String getDefaultCursorSelectionStyle() {
+        return "border:2px solid #888;color: inherit; background:inherit;";
+    }
 }

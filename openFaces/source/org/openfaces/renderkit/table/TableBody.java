@@ -13,6 +13,7 @@ package org.openfaces.renderkit.table;
 
 import org.openfaces.component.TableStyles;
 import org.openfaces.component.table.*;
+import org.openfaces.org.json.JSONArray;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.TableUtil;
@@ -20,6 +21,7 @@ import org.openfaces.util.Rendering;
 import org.openfaces.util.StyleGroup;
 import org.openfaces.util.Styles;
 
+import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -31,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -231,7 +234,25 @@ public class TableBody extends TableSection {
         int lastRowIndex = firstRowIndex + rowsToRender - 1;
         Map<Integer, CustomRowRenderingInfo> customRowRenderingInfos =
                 (Map<Integer, CustomRowRenderingInfo>) table.getAttributes().get(TableStructure.CUSTOM_ROW_RENDERING_INFOS_KEY);
-
+        final AbstractTableSelection selection = table.getSelection();
+        final AbstractCellSelection cellSelection = (selection == null) ? null : (AbstractCellSelection) selection;
+        MethodExpression cellSelectableMethod = (cellSelection == null) ? null : cellSelection.getCellSelectable();
+        MethodExpression selectableCellsMethod = (cellSelection == null) ? null : cellSelection.getSelectableCells();
+        JSONArray selectableCellsInJson = new JSONArray();
+        if (cellSelectableMethod != null && selectableCellsMethod != null) {
+            throw new IllegalStateException("Using attributes 'cellSelectable' and 'selectableCells' together is not allowed.");
+        }
+        final List<BaseColumn> renderedColumns = table.getRenderedColumns();
+        final List<BaseColumn> allColumns = table.getAllColumns();
+        final Map<Integer, Integer> connectionBetweenColumns = new LinkedHashMap<Integer, Integer>(allColumns.size());
+        for (int i = 0; i < allColumns.size(); i++) {
+            for (int k = 0; k < renderedColumns.size(); k++) {
+                if (allColumns.get(i) == renderedColumns.get(k)) {
+                    connectionBetweenColumns.put(i, k);
+                    break;
+                }
+            }
+        }
         for (int rowIndex = firstRowIndex; rowIndex <= lastRowIndex; rowIndex++) {
             table.setRowIndex(rowIndex);
             if (!table.isRowAvailable())
@@ -305,7 +326,23 @@ public class TableBody extends TableSection {
             if (rightRow != null)
                 rightRow.setCells(rightCells);
             Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-            for (int colIndex = 0; colIndex < columnCount;) {
+            if (cellSelection != null) {
+                requestMap.put("rowIndex", rowIndex);
+            }
+            if (selectableCellsMethod != null) {
+                boolean[] result = (boolean[]) selectableCellsMethod.invoke(
+                        FacesContext.getCurrentInstance().getELContext(), null);
+                boolean[] newRes = new boolean[columnCount];
+                for (int i = 0; i < result.length; i++) {
+                    final Integer numberOfCol = connectionBetweenColumns.get(i);
+                    if (numberOfCol != null) {
+                        newRes[numberOfCol] = result[i];
+                    }
+                }
+                selectableCellsInJson.put(newRes);
+            }
+            JSONArray selectableCellsInColumn = new JSONArray();
+            for (int colIndex = 0; colIndex < columnCount; ) {
                 BaseColumn column = columns.get(colIndex);
                 if (!column.isRendered())
                     throw new IllegalStateException("Only rendered columns are expected in columns list. column id: " + column.getId() + "; column index = " + colIndex);
@@ -321,7 +358,11 @@ public class TableBody extends TableSection {
                     String columnId = column.getId();
                     prevColumnIdVarValue = requestMap.put(columnIdVar, columnId);
                 }
-
+                if (cellSelectableMethod != null) {
+                    requestMap.put("columnIndex", colIndex);
+                    selectableCellsInColumn.put(cellSelectableMethod.invoke(
+                            FacesContext.getCurrentInstance().getELContext(), null));
+                }
 
                 List<?> customCells = applicableCustomCells[colIndex];
                 SpannedTableCell spannedTableCell =
@@ -423,7 +464,7 @@ public class TableBody extends TableSection {
                 int endIdx = buf.length();
                 String content = buf.substring(startIdx, endIdx);
                 cell.setContent(content);
-                
+
                 if (columnIndexVar != null)
                     requestMap.put(columnIndexVar, prevColumnIndexVarValue);
                 if (columnIdVar != null)
@@ -432,9 +473,14 @@ public class TableBody extends TableSection {
 
                 colIndex += span;
             }
-
+            if (cellSelectableMethod != null) {
+                selectableCellsInJson.put(selectableCellsInColumn);
+            }
             if (customRowRenderingInfo != null)
                 customRowRenderingInfos.put(rowIndex, customRowRenderingInfo);
+        }
+        if (cellSelection != null) {
+            cellSelection.saveSelectableCells(selectableCellsInJson);
         }
         table.setRowIndex(-1);
 

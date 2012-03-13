@@ -126,11 +126,11 @@ public abstract class AbstractFileUploadJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("inProgressStatusText", inProgressStatusText);
     }
 
-    public void setStoppedStatusText(MethodExpression stoppedStatusText) {
+    public void setStoppedStatusText(ValueExpression stoppedStatusText) {
         getDelegate().setPropertyValue("stoppedStatusText", stoppedStatusText);
     }
 
-    public void setStoppingStatusText(MethodExpression stoppingStatusText) {
+    public void setStoppingStatusText(ValueExpression stoppingStatusText) {
         getDelegate().setPropertyValue("stoppingStatusText", stoppingStatusText);
     }
 
@@ -138,7 +138,7 @@ public abstract class AbstractFileUploadJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("fileSizeLimitErrorText", fileSizeLimitErrorText);
     }
 
-    public void setUnexpectedErrorText(MethodExpression unexpectedErrorText) {
+    public void setUnexpectedErrorText(ValueExpression unexpectedErrorText) {
         getDelegate().setPropertyValue("unexpectedErrorText", unexpectedErrorText);
     }
 

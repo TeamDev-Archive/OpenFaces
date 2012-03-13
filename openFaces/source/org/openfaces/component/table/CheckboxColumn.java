@@ -159,7 +159,10 @@ public class CheckboxColumn extends BaseColumn {
         JSONArray checkedRowIndexes = new JSONArray();
         if (selectedRows == null || selectedRows.getModel() == null)
             assignDataModel();
-        List<Integer> rowIndexes = selectedRows.encodeSelectionIntoIndexes();
+        /*getSelectedRowKeys can return List of Integer if it's rowSelection or JSONArray if it's cellSelection
+        * There is check on MultipleNodeSelection so getSelectedRowKeys guarantees to return List of Integer
+        * */
+        @SuppressWarnings(value = "unchecked") List<Integer> rowIndexes = (List<Integer>) selectedRows.encodeSelectionIntoIndexes();
         for (Integer checkedRowIdx : rowIndexes) {
             checkedRowIndexes.put(checkedRowIdx);
         }
@@ -309,7 +312,10 @@ public class CheckboxColumn extends BaseColumn {
 
     public void encodeOnAjaxNodeFolding(FacesContext context) throws IOException {
         if (selectedRows instanceof MultipleNodeSelection) {
-            List<Integer> selectedRowIndexes = selectedRows.encodeSelectionIntoIndexes();
+            /*getSelectedRowKeys can return List of Integer if it's rowSelection or JSONArray if it's cellSelection
+            * There is check on MultipleNodeSelection so getSelectedRowKeys guarantees to return List of Integer
+            * */
+            @SuppressWarnings(value = "unchecked") List<Integer> selectedRowIndexes = (List<Integer>) selectedRows.encodeSelectionIntoIndexes();
             AbstractTable table = getTable();
             List<BaseColumn> renderedColumns = table.getRenderedColumns();
             int columnIndex = renderedColumns.indexOf(this);

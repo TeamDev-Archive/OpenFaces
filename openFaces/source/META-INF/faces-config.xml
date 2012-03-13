@@ -48,6 +48,16 @@
   </component>
 
   <component>
+    <component-type>org.openfaces.SingleCellSelection</component-type>
+    <component-class>org.openfaces.component.table.SingleCellSelection</component-class>
+  </component>
+
+  <component>
+    <component-type>org.openfaces.MultipleCellSelection</component-type>
+    <component-class>org.openfaces.component.table.MultipleCellSelection</component-class>
+  </component>
+
+  <component>
     <component-type>org.openfaces.SingleRowSelection</component-type>
     <component-class>org.openfaces.component.table.SingleRowSelection</component-class>
   </component>

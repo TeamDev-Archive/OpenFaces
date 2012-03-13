@@ -71,6 +71,18 @@ O$.Table = {
       },
       getRowCount: function() {
         return this.__getRowCount();
+      },
+      getSelectedCellId:function () {
+        return this.__getSelectedCellId();
+      },
+      setSelectedCellId:function (cellId) {
+        this.__setSelectedCellId(cellId);
+      },
+      getSelectedCellIds:function () {
+        return this.__getSelectedCellIds();
+      },
+      setSelectedCellIds:function (cellIds) {
+        this.__setSelectedCellIds(cellIds);
       }
 
     });
@@ -287,6 +299,74 @@ O$.Table = {
             return i;
         }
         return -1;
+      },
+      __getSelectedCellId: function(){
+        if (this._selectableItems != "cells")
+          throw "getSelectedCellId: The specified table is not set up for cell selection. Selectable items are: " + this._selectableItems + "; table's clientId is: " + this.id;
+        if (this._multipleSelectionAllowed)
+          throw "getSelectedCellId can only used on a table with single selection mode; table's clientId is: " + this.id;
+
+        var selectedItems = this._getSelectedItems();
+        if (selectedItems.length == 0)
+          return -1;
+        return selectedItems[0];
+      },
+      __setSelectedCellId: function(cellId) {
+        if (this._selectableItems != "cells")
+          throw "setSelectedCellId: The specified table is not set up for cell selection. Selectable items are: " + this._selectableItems + "; table's clientId is: " + this.id;
+        if (this._multipleSelectionAllowed)
+          throw "setSelectedCellId can only used on a table with single selection mode; table's clientId is: " + this.id;
+        var bodyRows = table.body._getRows();
+        if ((cellId[0] != -1) && (cellId[0] < 0 || cellId[0] >= bodyRows.length))
+          throw "setSelectedCellId row parameter is out of range (" + cellId[0] + "); table's clientId is: " + this.id + "; number of rows is: " + bodyRows.length;
+
+        if (table._columns.byId(cellId[1]) == null){
+          throw "setSelectedCellId column parameter is not correct (" + cellId[1] + "); table's clientId is: " + this.id;
+        }
+        this._setSelectedItems([cellId]);
+      },
+      __getSelectedCellIds: function() {
+        if (this._selectableItems != "cells")
+          throw "getSelectedCellIds: The specified table is not set up for cell selection. Selectable items are " + this._selectableItems + "; table's clientId is: " + this.id;
+        if (!this._multipleSelectionAllowed)
+          throw "getSelectedCellIds can only used on a table with multiple selection mode; table's clientId is: " + this.id;
+
+        var selectedItems = this._getSelectedItems();
+        if (!selectedItems || (selectedItems.length == 1 && (selectedItems[0][0] == -1 || selectedItems[0][1] == null)))
+          selectedItems = [];
+
+        O$.extend(selectedItems,{
+          _contains:function (anCellId){
+            var isContain = false;
+            selectedItems.forEach(function(cellId){
+              if (anCellId[0] == cellId[0] && anCellId[1] == cellId[1]){
+                isContain = true;
+              }
+            });
+            return isContain;
+          }
+        });
+        return selectedItems;
+      },
+      __setSelectedCellIds:function(cellIds){
+        if (this._selectableItems != "cells")
+          throw "setSelectedCellIds: The specified table is not set up for cells selection. Selectable items are: " + this._selectableItems + "; table's clientId is: " + this.id;
+        if (!this._multipleSelectionAllowed)
+          throw "setSelectedCellIds can only used on a table with multiple selection mode; table's clientId is: " + this.id;
+        if (!cellIds)
+          cellIds = [];
+
+        var bodyRows = table.__getRowCount();
+        for (var i = 0, count = cellIds.length; i < count; i++) {
+          var cellId = cellIds[i];
+          if ((cellId[0] != -1) && (cellId[0] < 0 || cellId[0] >= bodyRows.length))
+            throw "setSelectedCellIds row parameter is out of range (" + cellId[0] + "); table's clientId is: " + this.id + "; number of rows is: " + bodyRows.length;
+
+          if (table._columns.byId(cellId[1]) == null){
+            throw "setSelectedCellId column parameter is not correct (" + cellId[1] + "); table's clientId is: " + this.id;
+          }
+        }
+        this._setSelectedItems(cellIds);
       },
       /**
        * Call this method to avoid any successive calls to such methods as table.sorting.setSortingRules,
@@ -738,57 +818,160 @@ O$.Table = {
 
       if (this._selectionKeyboardSupport && this._selectionEnabled) {
         var rowCount = this.__getRowCount();
-        if (this._multipleSelectionAllowed && !altPressed && !ctrlPressed) {      // ------ multiple selection
-          var selectedRowIndexes = this.__getSelectedRowIndexes();
-          var idx, newIdx;
-          if (selectedRowIndexes.length == 0)
-            idx = -1;
-          else if (selectedRowIndexes.length == 1)
-            idx = selectedRowIndexes[0];
-          else {
-            idx = this._rangeEndRowIndex;
-            if (!idx)
+        if (this._selectableItems == "rows"){
+          if (this._multipleSelectionAllowed && !altPressed && !ctrlPressed) {      // ------ multiple selection
+            var selectedRowIndexes = this.__getSelectedRowIndexes();
+            var idx, newIdx;
+            if (selectedRowIndexes.length == 0)
+              idx = -1;
+            else if (selectedRowIndexes.length == 1)
               idx = selectedRowIndexes[0];
-          }
+            else {
+              idx = this._rangeEndRowIndex;
+              if (!idx)
+                idx = selectedRowIndexes[0];
+            }
 
-          if (!shiftPressed) {
-            newIdx = O$.Table._checkNavigation(this, idx, rowCount, e);
+            if (!shiftPressed) {
+              newIdx = O$.Table._checkRowNavigation(this, idx, rowCount, e);
+              if (newIdx != null) {
+                passEvent = false;
+                this.__setSelectedRowIndexes([newIdx]);
+                O$.Table._scrollToRowIndexes(this, [newIdx]);
+                this._baseRowIndex = null;
+                this._baseSelectedRowIndexes = null;
+                this._rangeEndRowIndex = null;
+              }
+            } else {
+              var baseRowIndex = this._baseRowIndex;
+              if (baseRowIndex == null) {
+                baseRowIndex = idx != -1 ? idx : 0;
+                this._baseRowIndex = baseRowIndex;
+                this._baseSelectedRowIndexes = selectedRowIndexes;
+              }
+              var rangeEndRowIndex = this._rangeEndRowIndex;
+              if (rangeEndRowIndex == null)
+                rangeEndRowIndex = baseRowIndex;
+              var newRangeEndRowIndex = O$.Table._checkRowNavigation(this, rangeEndRowIndex, rowCount, e);
+              if (newRangeEndRowIndex != null) {
+                passEvent = false;
+                var newSelectedRowIndexes = O$.Table._combineSelectedRowsWithRange(this, this._baseSelectedRowIndexes, baseRowIndex, newRangeEndRowIndex);
+                this._rangeEndRowIndex = newRangeEndRowIndex;
+                this.__setSelectedRowIndexes(newSelectedRowIndexes);
+                O$.Table._scrollToRowIndexes(this, [newRangeEndRowIndex]);
+              }
+            }
+
+          }
+          if (!this._multipleSelectionAllowed && noModifiersPressed) {              // ------ single selection
+            idx = this.__getSelectedRowIndex();
+            newIdx = O$.Table._checkRowNavigation(this, idx, rowCount, e);
             if (newIdx != null) {
               passEvent = false;
-              this.__setSelectedRowIndexes([newIdx]);
+              this.__setSelectedRowIndex(newIdx);
               O$.Table._scrollToRowIndexes(this, [newIdx]);
-              this._baseRowIndex = null;
-              this._baseSelectedRowIndexes = null;
-              this._rangeEndRowIndex = null;
-            }
-          } else {
-            var baseRowIndex = this._baseRowIndex;
-            if (baseRowIndex == null) {
-              baseRowIndex = idx != -1 ? idx : 0;
-              this._baseRowIndex = baseRowIndex;
-              this._baseSelectedRowIndexes = selectedRowIndexes;
-            }
-            var rangeEndRowIndex = this._rangeEndRowIndex;
-            if (rangeEndRowIndex == null)
-              rangeEndRowIndex = baseRowIndex;
-            var newRangeEndRowIndex = O$.Table._checkNavigation(this, rangeEndRowIndex, rowCount, e);
-            if (newRangeEndRowIndex != null) {
-              passEvent = false;
-              var newSelectedRowIndexes = O$.Table._combineSelectedRowsWithRange(this, this._baseSelectedRowIndexes, baseRowIndex, newRangeEndRowIndex);
-              this._rangeEndRowIndex = newRangeEndRowIndex;
-              this.__setSelectedRowIndexes(newSelectedRowIndexes);
-              O$.Table._scrollToRowIndexes(this, newSelectedRowIndexes);
             }
           }
+        } else if (this._selectableItems == "cells"){
+          if (!this._multipleSelectionAllowed){
+            if (noModifiersPressed){
+              var cellId = this.__getSelectedCellId();
+              var newRowId = O$.Table._checkRowNavigation(this, cellId[0], rowCount, e);
+              if (newRowId != null) {
+                passEvent = false;
+                this.__setSelectedCellId([newRowId, cellId[1]]);
+                O$.Table._scrollToRowIndexes(this, [newRowId]);
+              }
+              if (newRowId != cellId[0]){
+                var newColumnId = O$.Table._checkColumnNavigation(this, cellId[1], table._columns.length, e);
+                if (newColumnId != null && newColumnId != cellId[1]) {
+                  passEvent = false;
+                  this.__setSelectedCellId([cellId[0], newColumnId]);
+                  O$.Table._scrollToCells(this, [[cellId[0], newColumnId]]);
+                }
+              }
+            }
+          }else{
+            var selectedCellIds = this.__getSelectedCellIds();
+            var cellId, newRowId;
+            if (selectedCellIds.length == 0)
+              cellId = [-1,null];
+            else if (selectedCellIds.length == 1)
+              cellId = selectedCellIds[0];
+            else {
+               cellId = this._rangeEndCellId;
+               if (!cellId)
+                 cellId = selectedCellIds[0];
+            }
+            if (!shiftPressed){
+              newRowId = O$.Table._checkRowNavigation(this, cellId[0], rowCount, e);
+              if (newRowId != null) {
+                passEvent = false;
+                this._baseCellId = null;
+                this._baseSelectedCellIds = null;
+                this._rangeEndCellId = null;
+                this.__setSelectedCellIds([[newRowId, cellId[1]]]);
+                O$.Table._scrollToRowIndexes(this, [newRowId]);
+              }
+              if (newRowId != cellId[0]){
+                var newColumnId = O$.Table._checkColumnNavigation(this, cellId[1], table._columns.length, e);
+                if (newColumnId != null && newColumnId != cellId[1]) {
+                  passEvent = false;
+                  this._baseCellId = null;
+                  this._rangeEndCellId = null;
+                  this.__setSelectedCellIds([[cellId[0], newColumnId]]);
+                  O$.Table._scrollToCells(this, [[cellId[0], newColumnId]]);
+                }else if(table._fillDirection == "document"){
+                  var newCellId = O$.Table._checkCellNavigationInDocumentMode(this, cellId, e);
+                  if (newCellId != null) {
+                    this._baseCellId = null;
+                    this._rangeEndCellId = null;
+                    passEvent = false;
+                    this.__setSelectedCellIds([newCellId]);
+                    O$.Table._scrollToCells(this, [newCellId]);
+                  }
+                }
+              }
+            } else{
+              var baseCellId = this._baseCellId;
+              if (baseCellId == null) {
+                baseCellId = cellId != [-1, null] ? cellId : 0;
+                this._baseCellId = baseCellId;
+                this._baseSelectedCellIds = [baseCellId];
+              }
+              var rangeEndCellId = this._rangeEndCellId;
+              var newSelectedCellIdsIndexes;
+              if (rangeEndCellId == null)
+                rangeEndCellId = baseCellId;
+              var newRangeEndRowIndex = O$.Table._checkRowNavigation(this, rangeEndCellId[0], rowCount, e);
+              if (newRangeEndRowIndex != null) {
+                passEvent = false;
+                newSelectedCellIdsIndexes = O$.Table._combineSelectedCellsWithRange(this, this._baseSelectedCellIds, baseCellId, [newRangeEndRowIndex, rangeEndCellId[1]]);
+                this._rangeEndCellId = [newRangeEndRowIndex, rangeEndCellId[1]];
+                this.__setSelectedCellIds(newSelectedCellIdsIndexes);
+                O$.Table._scrollToCells(this,  [this._rangeEndCellId]);
+              }
 
-        }
-        if (!this._multipleSelectionAllowed && noModifiersPressed) {              // ------ single selection
-          idx = this.__getSelectedRowIndex();
-          newIdx = O$.Table._checkNavigation(this, idx, rowCount, e);
-          if (newIdx != null) {
-            passEvent = false;
-            this.__setSelectedRowIndex(newIdx);
-            O$.Table._scrollToRowIndexes(this, [newIdx]);
+              if (newRangeEndRowIndex != rangeEndCellId[0]){
+                var newColumnId = O$.Table._checkColumnNavigation(this, rangeEndCellId[1], table._columns.length, e);
+                if (newColumnId != null && newColumnId != rangeEndCellId[1]) {
+                  passEvent = false;
+                  newSelectedCellIdsIndexes = O$.Table._combineSelectedCellsWithRange(this, this._baseSelectedCellIds, baseCellId, [rangeEndCellId[0], newColumnId]);
+                  this._rangeEndCellId = [rangeEndCellId[0], newColumnId];
+                  this.__setSelectedCellIds(newSelectedCellIdsIndexes);
+                  O$.Table._scrollToCells(this, [this._rangeEndCellId]);
+                }else if (table._fillDirection == "document"){
+                  var cellId = O$.Table._checkCellNavigationInDocumentMode(this, rangeEndCellId, e);
+                  if (cellId != null) {
+                    passEvent = false;
+                    newSelectedCellIdsIndexes = O$.Table._combineSelectedCellsWithRange(this, this._baseSelectedCellIds, baseCellId, cellId);
+                    this._rangeEndCellId = cellId;
+                    this.__setSelectedCellIds(newSelectedCellIdsIndexes);
+                    O$.Table._scrollToCells(this, [this._rangeEndCellId]);
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -877,11 +1060,22 @@ O$.Table = {
     }
   },
 
-  _scrollToRowIndexes: function(table, rowIndexes) {
+  _scrollToRowIndexes:function (table, rowIndexes) {
     var bodyRows = table.body._getRows();
-    O$.scrollElementIntoView(rowIndexes.map(function(i) {
+    O$.scrollElementIntoView(rowIndexes.map(function (i) {
       return i != -1 && bodyRows[i]._rowNode;
-    }));
+    }), true, false);
+  },
+
+  _scrollToCells:function (table, cells) {
+    var bodyRows = table.body._getRows();
+    var columns = table._columns;
+    O$.scrollElementIntoView(cells.map(function (cell) {
+      if (cell[0] == -1 || cell[1] == null) {
+        return false;
+      }
+      return bodyRows[cell[0]]._rowNode._cells[columns.byId(cell[1])._index];
+    }), true, true);
   },
 
   _combineSelectedRowsWithRange: function(table, baseSelectedRowIndexes, baseRowIndex, rangeEndRowIndex) {
@@ -921,7 +1115,110 @@ O$.Table = {
     return result;
   },
 
-  _checkNavigation: function(table, idx, rowCount, e) {
+  _combineSelectedCellsWithRange: function(table, baseSelectedCellIds, baseCellId, rangeEndCellId) {
+
+    O$.assert(baseCellId, "O$.Table._combineSelectedCellsWithRange: baseCellId should be specified");
+    O$.assert(rangeEndCellId, "O$.Table._combineSelectedCellsWithRange: rangeEndCellId should be specified");
+
+    var result = [];
+    var alreadyIncludedCellsIds = [];
+    O$.extend(alreadyIncludedCellsIds,{
+      _contains:function (anCellId){
+        var isContain = false;
+        alreadyIncludedCellsIds.forEach(function(cellId){
+          if (anCellId[0] == cellId[0] && anCellId[1] == cellId[1]){
+            isContain = true;
+          }
+        });
+        return isContain;
+      }
+    });
+    var rangeRowStart, rangeRowEnd;
+    var rangeColumnStart, rangeColumnEnd;
+    var columns = table._columns;
+    if (baseCellId[0] < rangeEndCellId[0]) {
+      rangeRowStart = baseCellId[0];
+      rangeRowEnd = rangeEndCellId[0];
+    } else {
+      rangeRowStart = rangeEndCellId[0];
+      rangeRowEnd = baseCellId[0];
+    }
+
+    var tempBaseColumn = columns.byId(baseCellId[1])._index;
+    var tempEndColumn = columns.byId(rangeEndCellId[1])._index;
+    if (tempBaseColumn < tempEndColumn) {
+      rangeColumnStart = tempBaseColumn;
+      rangeColumnEnd = tempEndColumn;
+    } else {
+      rangeColumnStart = tempEndColumn;
+      rangeColumnEnd = tempBaseColumn;
+    }
+
+    var i;
+    var cellId;
+    if (baseSelectedCellIds) {
+      var count = baseSelectedCellIds.length;
+      for (i = 0; i < count; i++) {
+        cellId = baseSelectedCellIds[i];
+        result.push(cellId);
+        if (table._fillDirection == "document"){
+          alreadyIncludedCellsIds.push(cellId);
+        }else{
+          var colIndex = columns.byId(cellId[1])._index;
+
+          if (cellId[0] >= rangeRowStart && cellId[0] <= rangeRowEnd
+                  && colIndex >= rangeColumnStart && colIndex <= rangeColumnEnd)
+            alreadyIncludedCellsIds.push(cellId);
+        }
+      }
+    }
+    var fromUpToDown = function(firstCelllSelected, lastCellSelected){
+      return (firstCelllSelected[0]<=lastCellSelected[0]);
+    }(baseCellId,rangeEndCellId);
+
+    for (i = rangeRowStart; i <= rangeRowEnd; i++) {
+      var k;
+      if (table._fillDirection == "document") {
+        var colIndexStart;
+        var colIndexEnd;
+        if ((i == baseCellId[0] && fromUpToDown) || (i == rangeEndCellId[0] && !fromUpToDown)) {
+          colIndexStart = (fromUpToDown) ? columns.byId(baseCellId[1])._index : columns.byId(rangeEndCellId[1])._index;
+          colIndexEnd = (rangeRowStart == rangeRowEnd)
+                  ? columns.byId(rangeEndCellId[1])._index : columns[columns.length - 1]._index;
+        } else if ((i == rangeEndCellId[0] && fromUpToDown) || (i == baseCellId[0] && !fromUpToDown)) {
+          colIndexStart = 0;
+          colIndexEnd = (fromUpToDown)?columns.byId(rangeEndCellId[1])._index:columns.byId(baseCellId[1])._index;
+        } else if (i != rangeEndCellId[0] && i != baseCellId[0]) { // for rows between start and end
+          colIndexStart = columns[0]._index;
+          colIndexEnd = columns[columns.length - 1]._index;
+        }
+        if (colIndexStart>colIndexEnd){//switch them
+          colIndexEnd = colIndexStart + colIndexEnd;
+          colIndexStart = colIndexEnd - colIndexStart;
+          colIndexEnd = colIndexEnd - colIndexStart;
+        }
+        for (k = colIndexStart; k <= colIndexEnd; k++) {
+          cellId = [i, columns[k].columnId];
+          if (!alreadyIncludedCellsIds._contains(cellId)) {
+            //if (row._visible)
+            result.push(cellId);
+          }
+        }
+      }else{
+        for (k = rangeColumnStart; k <= rangeColumnEnd; k++) {
+          cellId = [i, columns[k].columnId];
+          if (!alreadyIncludedCellsIds._contains(cellId)) {
+            //if (row._visible)
+            result.push(cellId);
+          }
+        }
+      }
+    }
+
+    return result;
+  },
+
+  _checkRowNavigation: function(table, idx, rowCount, e) {
     var newIndex = null;
     if (e.upPressed) {
       if (idx == -1)
@@ -935,12 +1232,15 @@ O$.Table = {
       else
         newIndex = O$.Table._getNeighboringVisibleRowIndex(table, idx, +1);
     }
-    if (e.homePressed) {
-      newIndex = O$.Table._getNeighboringVisibleRowIndex(table, idx, -rowCount);
+    if (table._selectableItems == "rows") {
+      if (e.homePressed) {
+        newIndex = O$.Table._getNeighboringVisibleRowIndex(table, idx, -rowCount);
+      }
+      if (e.endPressed) {
+        newIndex = O$.Table._getNeighboringVisibleRowIndex(table, idx, rowCount);
+      }
     }
-    if (e.endPressed) {
-      newIndex = O$.Table._getNeighboringVisibleRowIndex(table, idx, rowCount);
-    }
+
     if (table._params.scrolling) {
       if (e.pageUpPressed || e.pageDownPressed) {
         var scrollingAreaRect = O$.getElementClientRectangle(table.body._centerScrollingArea._scrollingDiv);
@@ -977,6 +1277,63 @@ O$.Table = {
     return newIndex;
   },
 
+  _checkColumnNavigation: function(table, columnId, columnCount, e) {
+    var newIndex = null;
+    if (e.leftPressed) {
+      if (columnId == null)
+        newIndex = O$.Table._getNeighboringVisibleColumnId(table, null, +1);
+      else
+        newIndex = O$.Table._getNeighboringVisibleColumnId(table, columnId, -1);
+    }
+    if (e.rightPressed) {
+      if (columnId == null)
+        newIndex = O$.Table._getNeighboringVisibleColumnId(table, null, +1);
+      else
+        newIndex = O$.Table._getNeighboringVisibleColumnId(table, columnId, +1);
+    }
+    if (e.homePressed) {
+      newIndex = O$.Table._getNeighboringVisibleColumnId(table, columnId, -columnCount);
+    }
+    if (e.endPressed) {
+      newIndex = O$.Table._getNeighboringVisibleColumnId(table, columnId, columnCount);
+    }
+
+    return newIndex;
+  },
+
+  _checkCellNavigationInDocumentMode:function (table, cellId, e) {
+    function getBorderCellForEvent(table, cellId, goDown) {
+      var rowId, columnId;
+      if (cellId[0] == -1) {
+        rowId = O$.Table._getNeighboringVisibleRowIndex(table, -1, +1);
+      } else {
+        rowId = O$.Table._getNeighboringVisibleRowIndex(table, cellId[0], (goDown) ? +1 : -1);
+      }
+      if (rowId != null && rowId != cellId[0]) {
+        var tLength;
+        if (cellId[1] == null)
+          tLength = (goDown) ? table._columns.length - 1 : 1 - table._columns.length;
+        else
+          tLength = (goDown) ?
+                  - table._columns.length:
+                  table._columns.length;
+        columnId = O$.Table._getNeighboringVisibleColumnId(table, cellId[1], tLength);
+        if (columnId != null) {
+          return [rowId, columnId];
+        }
+      }
+      return null;
+    }
+
+    if (e.leftPressed) {
+      return getBorderCellForEvent(table, cellId, false);
+    }
+    if (e.rightPressed) {
+      return getBorderCellForEvent(table, cellId, true);
+    }
+    return null;
+  },
+
   _getNeighboringVisibleRowIndex: function(table, startRowIndex, stepCount) {
     var bodyRows = table.body._getRows();
     if (stepCount == 0)
@@ -998,13 +1355,36 @@ O$.Table = {
     return destRowIndex;
   },
 
+  _getNeighboringVisibleColumnId: function(table, columnId, stepCount) {
+    var bodyColumns = table._columns;
+    var columnStartIndex;
+    if (columnId ==null){
+      columnStartIndex = -1;
+    }else{
+      columnStartIndex = bodyColumns.byId(columnId)._index;
+    }
+    if (stepCount == 0)
+      return bodyColumns[columnStartIndex].columnId;
+    var dir = (stepCount > 0) ? +1 : -1;
+    var columnIndex = columnStartIndex;
+    var destColumnIndex = columnStartIndex;
+    var stepsRemaining = (stepCount > 0) ? stepCount : -stepCount;
+    while (stepsRemaining > 0) {
+      columnIndex += dir;
+      if (columnIndex < 0 || columnIndex >= bodyColumns.length)
+        break;
+      destColumnIndex = columnIndex;
+      stepsRemaining--;
+    }
+    return bodyColumns[destColumnIndex].columnId;
+  },
 
   // -------------------------- TABLE SELECTION SUPPORT
 
   _initSelection: function(tableId, enabled, required, selectableItems,
                            selectionMode, selectedItems, selectionClass, rawSelectionClass,
                            selectionChangeHandler, postEventOnSelectionChange, selectionColumnIndexes,
-                           mouseSupport, keyboardSupport, trackLeafNodesOnly) {
+                           mouseSupport, keyboardSupport, trackLeafNodesOnly, fillDirection, selectablesCells, cursorStyle) {
     var table = O$.initComponent(tableId);
     table._initializingSelection = true;
     O$.assert(!table._selectionInitialized, "O$.Table._initSelection shouldn't be called twice on the same table");
@@ -1022,6 +1402,9 @@ O$.Table = {
               _selectionMouseSupport: mouseSupport,
               _selectionKeyboardSupport: keyboardSupport && selectionMode != "hierarchical",
               _selectionTrackLeafNodeOnly: trackLeafNodesOnly,
+              _fillDirection: fillDirection,
+              _selectablesCells: selectablesCells,
+              _cursorStyle: cursorStyle,
 
               _setItemSelected_internal: function(itemIndex, selected) {
                 O$.assert(itemIndex, "_setItemSelected: itemIndex should be specified");
@@ -1035,6 +1418,35 @@ O$.Table = {
                   row._selected = selected;
                   row._updateStyle();
                   O$.Table._setRowSelectionCheckboxesSelected(row, selected);
+                } else if (this._selectableItems == "cells"){
+                  if (itemIndex[0] == -1)
+                    return;
+                  var rows = this.body._getRows();
+                  if (itemIndex[0] < 0 || itemIndex[0] >= rows.length)
+                    throw "Row index out of range: " + itemIndex[0];
+
+                  var row = rows[itemIndex[0]];
+                  var cells = row._cells;
+                  var selectableCells = table._selectablesCells;
+                  var columns = table._columns;
+                  function canBeSelected(item) {
+                    if (!selectableCells || selectableCells.length == 0)
+                      return true;
+                    else {
+                      return selectableCells[item[0]][columns.byId(item[1])._index];
+                    }
+                  }
+                  for (var cellIndex = 0; cellIndex < cells.length; cellIndex++){
+                    if (cells[cellIndex]._column.columnId == itemIndex[1]){
+                      if (!canBeSelected(itemIndex)) {
+                        cells[cellIndex]._isUnselectable = true;
+                      }
+                      cells[cellIndex]._selected = selected;
+                      cells[cellIndex]._updateStyle();
+                      return;
+                    }
+                  }
+                  throw "Column Id is not correct: " + itemIndex[1];
                 } else {
                   throw "Not supported selectable item type: " + table._selectableItems;
                 }
@@ -1127,37 +1539,69 @@ O$.Table = {
                 var changesArray = [];
                 var changesArrayIndexes = [];
                 var oldSelectedItemsStr = "";
-                var i;
-                if (this._selectedItems)
-                  for (i = 0; i < this._selectedItems.length; i++) {
-                    var item = this._selectedItems[i];
-                    if (i > 0)
-                      oldSelectedItemsStr += ",";
-                    oldSelectedItemsStr += item;
-                    changesArray[item] = "unselect";
-                    changesArrayIndexes.push(item);
-                  }
-                if (!this._multipleSelectionAllowed && items && items.length > 1)
-                  items = [items[0]];
-                if (items.length == 1 && items[0] == -1)
-                  items = [];
-                this._selectedItems = items;
                 var newSelectedItemsStr = "";
-                if (this._selectedItems) {
-                  for (i = 0; i < this._selectedItems.length; i++) {
-                    if (i > 0)
-                      newSelectedItemsStr += ",";
-                    var itemToSelect = this._selectedItems[i];
-                    O$.assert(itemToSelect, "table._setSelectedItems: itemToSelect is undefined for index " + i);
-                    newSelectedItemsStr += itemToSelect;
-                    if (changesArray[itemToSelect] == "unselect" && !forceUpdate)
-                      changesArray[itemToSelect] = null;
-                    else
-                      changesArray[itemToSelect] = "select";
-                    changesArrayIndexes.push(itemToSelect);
+                var i;
+                if (this._selectableItems == "rows") {
+                  if (this._selectedItems)
+                    for (i = 0; i < this._selectedItems.length; i++) {
+                      var item = this._selectedItems[i];
+                      if (i > 0)
+                        oldSelectedItemsStr += ",";
+                      oldSelectedItemsStr += item;
+                      changesArray[item] = "unselect";
+                      changesArrayIndexes.push(item);
+                    }
+                  if (!this._multipleSelectionAllowed && items && items.length > 1)
+                    items = [items[0]];
+                  if (items.length == 1 && items[0] == -1)
+                    items = [];
+                  this._selectedItems = items;
+                  if (this._selectedItems) {
+                    for (i = 0; i < this._selectedItems.length; i++) {
+                      if (i > 0)
+                        newSelectedItemsStr += ",";
+                      var itemToSelect = this._selectedItems[i];
+                      O$.assert(itemToSelect, "table._setSelectedItems: itemToSelect is undefined for index " + i);
+                      newSelectedItemsStr += itemToSelect;
+                      if (changesArray[itemToSelect] == "unselect" && !forceUpdate)
+                        changesArray[itemToSelect] = null;
+                      else
+                        changesArray[itemToSelect] = "select";
+                      changesArrayIndexes.push(itemToSelect);
+                    }
+                  }
+                }else if (this._selectableItems == "cells"){
+                  if (this._selectedItems){
+                    for (i = 0; i < this._selectedItems.length; i++) {
+                      var item = this._selectedItems[i];
+                      if (i > 0)
+                        oldSelectedItemsStr += ",";
+                      oldSelectedItemsStr += "[" + item[0] + "," + item[1] + "]";
+                      changesArray[item] = "unselect";
+                      changesArrayIndexes.push(item);
+                    }
+                  }
+                  if (!this._multipleSelectionAllowed && items && items.length > 1)
+                    items = [items[0]];
+                  if (items.length == 1 && items[0][0] == -1 && items[0][1] == null)
+                    items = [];
+                  this._selectedItems = items;
+                  if (this._selectedItems) {
+                    for (i = 0; i < this._selectedItems.length; i++) {
+                      if (i > 0)
+                        newSelectedItemsStr += ",";
+                      var itemToSelect = this._selectedItems[i];
+                      O$.assert(itemToSelect, "table._setSelectedItems: itemToSelect is undefined for index " + i);
+                      newSelectedItemsStr += "[" + itemToSelect[0] + "," + itemToSelect[1] + "]";
+                      if (changesArray[itemToSelect] == "unselect" && !forceUpdate)
+                        changesArray[itemToSelect] = null;
+                      else
+                        changesArray[itemToSelect] = "select";
+
+                      changesArrayIndexes.push(itemToSelect);
+                    }
                   }
                 }
-
                 var count = changesArrayIndexes.length;
                 for (i = 0; i < count; i++) {
                   var changesArrayIndex = changesArrayIndexes[i];
@@ -1222,17 +1666,31 @@ O$.Table = {
               },
 
               _toggleItemSelected: function(itemIndex) {
-                if (itemIndex == -1) {
-                  O$.logError("_toggleItemSelected: itemIndex == -1");
-                  return;
-                }
                 var selectedIndexes = this._getSelectedItems();
                 var newArray = [];
-                for (var i = 0, count = selectedIndexes.length; i < count; i++) {
-                  var idx = selectedIndexes[i];
-                  if (idx != itemIndex)
-                    newArray.push(idx);
+                var i, count;
+                if (table._selectableItems == "rows") {
+                  if (itemIndex == -1) {
+                    O$.logError("_toggleItemSelected: itemIndex == " + itemIndex);
+                    return;
+                  }
+                  for ( i = 0, count = selectedIndexes.length; i < count; i++) {
+                    var idx = selectedIndexes[i];
+                    if (idx != itemIndex)
+                      newArray.push(idx);
+                  }
+                }else if (table._selectableItems == "cells"){
+                  if (itemIndex == [-1, null]) {
+                    O$.logError("_toggleItemSelected: itemIndex == " + itemIndex);
+                    return;
+                  }
+                  for (i = 0, count = selectedIndexes.length; i < count; i++) {
+                    var cellId = selectedIndexes[i];
+                    if (cellId[0] != itemIndex[0] || cellId[1] != itemIndex[1])
+                      newArray.push(cellId);
+                  }
                 }
+
                 if (newArray.length == selectedIndexes.length)
                   newArray.push(itemIndex);
                 this._setSelectedItems(newArray);
@@ -1265,11 +1723,114 @@ O$.Table = {
             });
 
     // run initialization code
+    var rows = table.body._getRows();
     if (selectableItems == "rows") {
-      var rows = table.body._getRows();
       for (var i = 0, count = rows.length; i < count; i++) {
         var row = rows[i];
         O$.Table._initRowForSelection(row);
+      }
+    }else if (selectableItems == "cells"){
+      if (table._selectionEnabled) {
+        if (table._cursorStyle) {
+          table._cursor = {};
+          table._cursor._borderWidth = O$.getStyleClassProperty(table._cursorStyle, "border-top-width").replace("px", "") * 1;
+          function createPartOfCursor(){
+            var el = document.createElement("div");
+            el.style.position = "absolute";
+            return el;
+          }
+          var borderProp = O$.getStyleClassProperty(table._cursorStyle, "border-top");
+          table._cursor.left = createPartOfCursor();
+          table._cursor.left.style.borderLeft = borderProp;
+
+          table._cursor.top = createPartOfCursor();
+          table._cursor.top.style.borderTop = borderProp;
+
+          table._cursor.bottom = createPartOfCursor();
+          table._cursor.bottom.style.borderBottom = borderProp;
+
+          table._cursor.right = createPartOfCursor();
+          table._cursor.right.style.borderRight = borderProp;
+          function removeBorderProperty(styleClass){
+            if (!styleClass)
+              return {};
+            var classNames = styleClass.split(" ");
+            var classSelectors = [];
+            var i, count;
+            for (i = 0,count = classNames.length; i < count; i++) {
+              var className = classNames[i];
+              if (className)
+                classSelectors.push("." + className);
+            }
+            var cssRules = O$.findCssRules(classSelectors);
+
+            if (!cssRules)
+              return {};
+
+            for (i = 0,count = cssRules.length; i < count; i++) {
+              var style = cssRules[i].style;
+              style.border = "";
+              style.borderColor = "";
+              style.borderWidth = "";
+              style.borderStyle = "";
+            }
+          }
+          removeBorderProperty(table._cursorStyle);
+        } else {
+          table._cursor = null;
+        }
+
+        // disable text selection
+        //if (O$.isOpera || O$.isExplorer()){
+          function makeUnselectable(node) {
+            if (node.nodeType == 1) {
+              node.unselectable = "on";
+              node.onselectstart = function (evt) { O$.cancelEvent(evt);}
+            }
+            var child = node.firstChild;
+            while (child) {
+              makeUnselectable(child);
+              child = child.nextSibling;
+            }
+          }
+          makeUnselectable(table);
+        var tables = table.getElementsByTagName("table");
+        for (var k = 0; k < tables.length; k++) {
+          O$.setStyleMappings(tables[k], {unselectable : "o_table_unselectable"});
+        }
+        O$.setStyleMappings(table, {unselectable : "o_table_unselectable"});
+        for (var rowIndex = 0, countRows = rows.length; rowIndex < countRows; rowIndex++) {
+          O$.addEventHandler(rows[rowIndex]._rowNode, "mousedown", function (event) {
+            if (!table._isDragSelectionEnabled) {
+              var e = O$.getEvent(event);
+              var cell = (e.target) ? e.target : e.srcElement;
+              cell = (cell._row) ? cell: cell.parentNode;
+              var cellId = [cell._row._index, cell._column.columnId];
+              table._baseCellIdIfNotDnD = table._baseCellId;
+              table._baseCellId = cellId;
+              table._baseSelectedCellIds = [cellId];
+              table._isDragSelectionEnabled = true;
+            }
+          });
+          O$.addEventHandler(rows[rowIndex]._rowNode, "mouseup", function (event) {
+            var e = O$.getEvent(event);
+            var cell = (e.target) ? e.target : e.srcElement;
+            cell = (cell._row) ? cell: cell.parentNode;
+            var cellId = [cell._row._index, cell._column.columnId];
+            table._isDragSelectionEnabled = false;
+            if ((cellId[0] == table._baseCellId[0]) && (cellId[1] == table._baseCellId[1])) {
+              table._baseCellId = table._baseCellIdIfNotDnD;
+              table._baseSelectedCellIds = [table._baseCellIdIfNotDnD];
+              O$.Table._cell_handleSelectionOnClick(event);
+            }
+            table.focus();
+          });
+          O$.addEventHandler(rows[rowIndex]._rowNode, "mousemove", function (event) {
+            if (table._isDragSelectionEnabled){
+              O$.Table._cell_handleSelectionOnClick(event);
+            }
+          });
+        }
       }
     }
 
@@ -1567,6 +2128,55 @@ O$.Table = {
     }
   },
 
+  _cell_handleSelectionOnClick: function(evt) {
+    if (this._originalClickHandler)
+      this._originalClickHandler(evt);
+
+    var e = O$.getEvent(evt);
+    var cell = (e.target) ? e.target : e.srcElement;
+    cell = (cell._row) ? cell: cell.parentNode;
+    var table = cell._row._table;
+    if (!table._selectionMouseSupport)
+      return;
+    if (table._selectableItems == "cells") {
+        table._baseRowIndex = null;
+        table._baseSelectedRowIndexes = null;
+        table._rangeEndRowIndex = null;
+      var cellId = [cell._row._index, cell._column.columnId];
+        if (!table._multipleSelectionAllowed) {
+          table._setSelectedItems([cellId]);
+        } else {
+          var newSelectedCellIds;
+          if (e.ctrlKey) {
+            table._toggleItemSelected(cellId);
+            newSelectedCellIds = table.__getSelectedCellIds();
+            if (!table._baseCellId)
+              table._baseCellId = (newSelectedCellIds.length!=0 && newSelectedCellIds[0] != [-1, null]) ? newSelectedCellIds[0] : null;
+            table._baseSelectedCellIds  = newSelectedCellIds;
+            table._rangeEndCellId = null;
+          } else if (e.shiftKey || table._isDragSelectionEnabled) {
+            var baseCellId = table._baseCellId;
+            if (baseCellId == null) {
+              var baseCells =  table.__getSelectedCellIds();
+              baseCellId = (baseCells.length!=0 && baseCells[0] != [-1, null]) ? baseCells[0] : null;//0
+              table._baseCellId = baseCellId;
+              table._baseSelectedCellIds = [baseCellId];
+            }
+            var newSelectedCellIdsIndexes = O$.Table._combineSelectedCellsWithRange(table, table._baseSelectedCellIds, baseCellId, cellId);
+            table._rangeEndCellId = cellId;
+            table.__setSelectedCellIds(newSelectedCellIdsIndexes);
+          }  else{
+            table._baseCellId = null;
+            table._baseSelectedCellIds = null;
+            table._rangeEndCellId = null;
+            table._setSelectedItems([cellId]);
+          }
+        }
+    }else{
+      throw "This method should been called only if cellSelection is turned on";
+    }
+  },
+
   _formatSelectedItems: function(table, selectableItems, selectedItemIndexes) {
     if (selectableItems == "rows" || selectableItems == "columns") {
       var result = "[";
@@ -1581,6 +2191,21 @@ O$.Table = {
         if (result.length > 1)
           result += ",";
         result += itemIndex;
+      }
+      result += "]";
+      return result;
+    }else if (selectableItems == "cells"){
+      var result = "[";
+      for (var i = 0; i < selectedItemIndexes.length; i++) {
+        var itemIndex = selectedItemIndexes[i];
+
+        if (result.length > 1)
+          result += ",";
+        result += "[";
+        result += itemIndex[0];
+        result += ",";
+        result += itemIndex[1];
+        result += "]";
       }
       result += "]";
       return result;
