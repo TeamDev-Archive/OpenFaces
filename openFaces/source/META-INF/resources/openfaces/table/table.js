@@ -1753,7 +1753,7 @@ O$.Table = {
           table._cursor.right.style.borderRight = borderProp;
           function removeBorderProperty(styleClass){
             if (!styleClass)
-              return {};
+              return;
             var classNames = styleClass.split(" ");
             var classSelectors = [];
             var i, count;
@@ -1765,7 +1765,7 @@ O$.Table = {
             var cssRules = O$.findCssRules(classSelectors);
 
             if (!cssRules)
-              return {};
+              return;
 
             for (i = 0,count = cssRules.length; i < count; i++) {
               var style = cssRules[i].style;
@@ -1832,9 +1832,28 @@ O$.Table = {
           });
         }
       }
+      selectedItems = function removeCellsIfColumnIsHidden(cells){
+        var validatedCells = [];
+        var cols = table._columns;
+        for (var i = 0; i < cells.length; i++){
+          var cellId = cells[i];
+          if (cols.byId(cellId[1])!=null){
+            validatedCells.push(cellId);
+          }
+        }
+        return validatedCells;
+      }(selectedItems);
     }
-
-    table._setSelectedItems(selectedItems);
+    /*At Safari and Chrome this script is started before cell's size  will be correct.
+    Thus, we need to wait while table get right appearance
+     */
+    if (O$.isChrome() || O$.isSafari){
+      setTimeout(function () {
+        table._setSelectedItems(selectedItems);
+      }, 100);//todo: listen event,when table is completely rendered
+    }else{
+      table._setSelectedItems(selectedItems);
+    }
     table._setSelectionFieldValue("");
 
     if (selectionChangeHandler) {
