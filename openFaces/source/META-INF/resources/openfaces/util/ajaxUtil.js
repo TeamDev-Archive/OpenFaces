@@ -350,6 +350,7 @@ window.OpenFaces.Ajax = {
     if (args.actionComponent) {
       if (!params) params = {};
       params[O$.ACTION_COMPONENT] = args.actionComponent;
+//      params[args.actionComponent] = args.actionComponent;  //todo: partial OFCS-93 fix
     }
     if (args.executeRenderedComponents != null) {
       if (!params) params = {};

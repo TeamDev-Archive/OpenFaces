@@ -516,8 +516,12 @@ public class PartialViewContext extends PartialViewContextWrapper {
         Map<String, String> requestParams = context.getExternalContext().getRequestParameterMap();
         String listener = requestParams.get(PARAM_ACTION_LISTENER);
         String action = requestParams.get(PARAM_ACTION);
-        String actionComponentId = requestParams.get(PARAM_ACTION_COMPONENT);
         if (listener == null && action == null)
+            return;
+        String actionComponentId = requestParams.get(PARAM_ACTION_COMPONENT);
+        boolean requestIsHandledByComponentItself =
+                actionComponentId != null && requestParams.containsKey(actionComponentId);
+        if (requestIsHandledByComponentItself)
             return;
 
         ELContext elContext = context.getELContext();
