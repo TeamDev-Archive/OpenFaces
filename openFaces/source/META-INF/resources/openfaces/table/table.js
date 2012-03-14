@@ -1729,6 +1729,7 @@ O$.Table = {
         var row = rows[i];
         O$.Table._initRowForSelection(row);
       }
+      table._setSelectedItems(selectedItems);
     }else if (selectableItems == "cells"){
       if (table._selectionEnabled) {
         if (table._cursorStyle) {
@@ -1843,16 +1844,16 @@ O$.Table = {
         }
         return validatedCells;
       }(selectedItems);
-    }
-    /*At Safari and Chrome this script is started before cell's size  will be correct.
-    Thus, we need to wait while table get right appearance
-     */
-    if (O$.isChrome() || O$.isSafari){
-      setTimeout(function () {
+      /*At Safari and Chrome this script is started before cell's size  will be correct.
+       Thus, we need to wait while table get right appearance
+       */
+      if (O$.isChrome() || O$.isSafari()){
+        setTimeout(function () {
+          table._setSelectedItems(selectedItems);
+        }, 100);//todo: listen event,when table is completely rendered
+      }else{
         table._setSelectedItems(selectedItems);
-      }, 100);//todo: listen event,when table is completely rendered
-    }else{
-      table._setSelectedItems(selectedItems);
+      }
     }
     table._setSelectionFieldValue("");
 
