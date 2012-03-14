@@ -4141,7 +4141,7 @@ if (!window.O$) {
     return new O$.Rectangle(0, 0, documentSize.width, documentSize.height);
   };
 
-  O$.scrollElementIntoView = function(element, cachedDataContainer) {
+  O$.scrollElementIntoView = function (element, scrollVertical, scrollHorizontal, cachedDataContainer) {
     var scrollingOccurred = false;
     var elements = element instanceof Array ? element : [element];
     var rect;
@@ -4157,8 +4157,14 @@ if (!window.O$) {
          parent = parent.parentNode) {
       var parentScrollable;
       if (parent != document) {
-        var overflowY = O$.getElementStyle(parent, "overflow-y");
-        parentScrollable = overflowY != "visible";
+        if (scrollVertical){
+          var overflowY = O$.getElementStyle(parent, "overflow-y");
+          parentScrollable = overflowY != "visible";
+        }
+        if (!parentScrollable && scrollHorizontal){
+          var overflowX = O$.getElementStyle(parent, "overflow-x");
+          parentScrollable = overflowX != "visible";
+        }
       } else {
         parentScrollable = true;
       }
@@ -4171,19 +4177,35 @@ if (!window.O$) {
         parentRect.width = parent.clientWidth;
         parentRect.height = parent.clientHeight;
       }
-
-      var scrollTopAdjustment = 0;
-      if (parentRect.getMinY() > rect.getMinY())
-        scrollTopAdjustment = rect.getMinY() - parentRect.getMinY();
-      else if (parentRect.getMaxY() < rect.getMaxY())
-        scrollTopAdjustment = rect.getMaxY() - parentRect.getMaxY();
-      if (scrollTopAdjustment) {
-        if (parent != document)
-          parent.scrollTop += scrollTopAdjustment;
-        else
-          window.scrollBy(0, scrollTopAdjustment);
-        rect.y -= scrollTopAdjustment;
-        scrollingOccurred = true;
+      if (scrollVertical) {
+        var scrollTopAdjustment = 0;
+        if (parentRect.getMinY() > rect.getMinY())
+          scrollTopAdjustment = rect.getMinY() - parentRect.getMinY();
+        else if (parentRect.getMaxY() < rect.getMaxY())
+          scrollTopAdjustment = rect.getMaxY() - parentRect.getMaxY();
+        if (scrollTopAdjustment) {
+          if (parent != document)
+            parent.scrollTop += scrollTopAdjustment;
+          else
+            window.scrollBy(0, scrollTopAdjustment);
+          rect.y -= scrollTopAdjustment;
+          scrollingOccurred = true;
+        }
+      }
+      if (scrollHorizontal) {
+        var scrollLeftAdjustment = 0;
+        if (parentRect.getMinX() > rect.getMinX())
+          scrollLeftAdjustment = rect.getMinX() - parentRect.getMinX();
+        else if (parentRect.getMaxX() < rect.getMaxX())
+          scrollLeftAdjustment = rect.getMaxX() - parentRect.getMaxX();
+        if (scrollLeftAdjustment) {
+          if (parent != document)
+            parent.scrollLeft += scrollLeftAdjustment;
+          else
+            window.scrollBy(scrollLeftAdjustment, 0);
+          rect.x -= scrollLeftAdjustment;
+          scrollingOccurred = true;
+        }
       }
     }
     return scrollingOccurred;

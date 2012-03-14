@@ -275,7 +275,7 @@ public class MultipleNodeSelection extends TreeTableSelection {
     public void encodeOnAjaxNodeFolding(FacesContext context) throws IOException {
         AbstractTable table = getTable();
 
-        List<Integer> selectedRowIndexes = encodeSelectionIntoIndexes();
+        List<?> selectedRowIndexes = encodeSelectionIntoIndexes();
         ScriptBuilder buf = new ScriptBuilder().functionCall("O$.TreeTable._setSelectedNodeIndexes",
                 table,
                 selectedRowIndexes).semicolon();
@@ -290,7 +290,8 @@ public class MultipleNodeSelection extends TreeTableSelection {
         return getNodeKeyPaths();
     }
 
-    protected List<Integer> encodeSelectionIntoIndexes() {
+    @Override
+    protected List<?> encodeSelectionIntoIndexes() {
         List<TreePath> keyPaths = getNodeKeyPaths();
         List<Integer> rowIndexes;
         if (keyPaths != null) {
@@ -307,13 +308,14 @@ public class MultipleNodeSelection extends TreeTableSelection {
         return rowIndexes;
     }
 
-    protected void decodeSelectionFromIndexes(List<Integer> indexes) {
+    @Override
+    protected void decodeSelectionFromIndexes(List<?> indexes) {
         List<TreePath> allSelectedNodeKeys = (getNodeKeyPaths() != null)
                 ? getNodeKeyPaths() : new ArrayList<TreePath>();
 
         List<TreePath> selectedKeyPaths = new ArrayList<TreePath>();
-        for (Integer index : indexes) {
-            TreePath keyPath = getNodeKeyPathByRowIndex(index);
+        for (Object index : indexes) {
+            TreePath keyPath = getNodeKeyPathByRowIndex((Integer) index);
             if (keyPath != null)
                 selectedKeyPaths.add(keyPath);
         }

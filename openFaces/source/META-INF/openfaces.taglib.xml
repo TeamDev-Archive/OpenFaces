@@ -17,6 +17,22 @@
   </tag>
 
   <tag>
+    <tag-name>singleCellSelection</tag-name>
+    <component>
+      <component-type>org.openfaces.SingleCellSelection</component-type>
+      <handler-class>org.openfaces.taglib.facelets.table.SingleCellSelectionTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>multipleCellSelection</tag-name>
+    <component>
+      <component-type>org.openfaces.MultipleCellSelection</component-type>
+      <handler-class>org.openfaces.taglib.facelets.table.MultipleCellSelectionTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
     <tag-name>singleRowSelection</tag-name>
     <component>
       <component-type>org.openfaces.SingleRowSelection</component-type>
