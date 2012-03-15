@@ -1897,17 +1897,32 @@ O$.Table = {
       }(selectedItems);
 
       function setSelectedCells() {
+        function waitAndSetCursor(cursorCell){
+          if (O$.isExplorer){
+            var size = O$.getElementSize(cursorCell);
+            if (size.width == 0 || size.height == 0){
+              setTimeout(function () {
+                waitAndSetCursor(cursorCell);
+              }, 100);
+            }else{
+              cursorCell._setAsCursor();
+            }
+          }else{
+            cursorCell._setAsCursor();
+          }
+        }
         table._setSelectedItems(selectedItems);
         if (selectedItems.length !=0){
           var cellId = selectedItems[selectedItems.length - 1];
           var cursorCell = rows[cellId[0]]._cells[table._columns.byId(cellId[1])._index];
-          cursorCell._setAsCursor();
+          waitAndSetCursor(cursorCell);
+
         }
       }
       /*At Safari and Chrome this script is started before cell's size  will be correct.
        Thus, we need to wait while table get right appearance
        */
-      if (O$.isChrome() || O$.isSafari()) {
+      if (O$.isChrome() || O$.isSafari() || (O$.isQuirksMode() && O$.isExplorer())) {
         setTimeout(function () {
           setSelectedCells();
         }, 100);//todo: listen event,when table is completely rendered

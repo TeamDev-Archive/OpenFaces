@@ -1948,7 +1948,11 @@ O$.Tables = {
             table._cursor.right.style.left = rect.x + rect.width - table._cursor._borderWidth + "px";
 
             setPartRectangle(table._cursor.bottom, true);
-            table._cursor.bottom.style.top = rect.y + rect.height - table._cursor._borderWidth + "px";
+            if (O$.isExplorer() && O$.isQuirksMode()){
+              table._cursor.bottom.style.top = rect.y + table._cursor._borderWidth + "px";
+            }else{
+              table._cursor.bottom.style.top = rect.y + rect.height - table._cursor._borderWidth + "px";
+            }
 
             setPartRectangle(table._cursor.left, false);
 
