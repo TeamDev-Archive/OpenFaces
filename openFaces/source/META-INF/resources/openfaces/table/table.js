@@ -1282,7 +1282,7 @@ O$.Table = {
       else
         newIndex = O$.Table._getNeighboringVisibleRowIndex(table, idx, +1);
     }
-    if (table._selectableItems == "rows") {
+    if (table._selectableItems == "rows" || e.ctrlKey) {
       if (e.homePressed) {
         newIndex = O$.Table._getNeighboringVisibleRowIndex(table, idx, -rowCount);
       }
@@ -1341,11 +1341,13 @@ O$.Table = {
       else
         newIndex = O$.Table._getNeighboringVisibleColumnId(table, columnId, +1);
     }
-    if (e.homePressed) {
-      newIndex = O$.Table._getNeighboringVisibleColumnId(table, columnId, -columnCount);
-    }
-    if (e.endPressed) {
-      newIndex = O$.Table._getNeighboringVisibleColumnId(table, columnId, columnCount);
+    if (!e.ctrlKey) {
+      if (e.homePressed) {
+        newIndex = O$.Table._getNeighboringVisibleColumnId(table, columnId, -columnCount);
+      }
+      if (e.endPressed) {
+        newIndex = O$.Table._getNeighboringVisibleColumnId(table, columnId, columnCount);
+      }
     }
 
     return newIndex;
