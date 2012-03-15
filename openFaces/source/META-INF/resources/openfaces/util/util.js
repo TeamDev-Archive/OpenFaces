@@ -1421,7 +1421,6 @@ if (!window.O$) {
   };
 
   O$.addEventHandler = function(elt, evtName, evtScript, useCapture) {
-
     if (!elt._attachedEvents)
       elt._attachedEvents = [];
 
@@ -2694,8 +2693,7 @@ if (!window.O$) {
   };
 
   O$._simulateFixedPosForBlockingLayer = function() {
-    return O$.isExplorer() /* ie doesn't support fixed pos */ ||
-            O$.isMozillaFF() || O$.isSafari3AndLate() /*todo:check whether O$.isSafari3AndLate check is really needed (it was added by mistake)*/ /* mozilla's blocking layer hides cursor of text-field in fixed-pos popup-layer (JSFC-1930) */;
+    return O$.isExplorer6(); // ie6 doesn't support fixed pos
   };
 
 

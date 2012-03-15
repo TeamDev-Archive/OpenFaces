@@ -11,27 +11,15 @@
  */
 
 function showFullSizeImage(event) {
-  var target;
-  if (!event) {
-    event = window.event;
-  }
+  if (!event) event = window.event;
 
-  if (event.target) {
-    target = event.target;
-  }
-  else if (event.srcElement) {
-    target = event.srcElement;
-  }
+  var target = event.target || event.srcElement;
   if (target.nodeType == 3) { // defeat Safari bug
     target = target.parentNode;
   }
 
   O$('form:full_size_image_win').hide();
-  var parentWindow = O$("form:full_size_image_win");
   O$("full_size_img").src = target.src;
-  O$("form:full_size_image_win::content").style.overflow = "visible";
-  parentWindow.style.height = getNaturalHeight(target) + 30 + "px";
-  parentWindow.style.width = getNaturalWeight(target) + 4 + "px";
   O$('form:full_size_image_win').show();
 }
 

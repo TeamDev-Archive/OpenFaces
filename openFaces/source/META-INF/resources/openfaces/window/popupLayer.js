@@ -14,6 +14,7 @@ O$.PopupLayer = {
   FIRST_EXTERNAL_ANCHOR_SUFFIX: "::firstExternalAnchor",
   LAST_EXTERNAL_ANCHOR_SUFFIX: "::lastExternalAnchor",
 
+  _modalPopupsStack: [],
 
   _init: function(id, left, top, width, height, rolloverStyle, hidingTimeout,
                   draggable, autosizing, modalLayerClass, hideOnEsc, isAjaxRequest, containment) {
@@ -279,8 +280,12 @@ O$.PopupLayer = {
 
           O$.initIETransparencyWorkaround(popup._blockingLayer);
           popup._blockingLayer.style.display = "block";
+          if (O$.PopupLayer._modalPopupsStack.length > 0) {
+            var parentModalPopup = O$.PopupLayer._modalPopupsStack[O$.PopupLayer._modalPopupsStack.length - 1];
+            O$.correctElementZIndex(popup._blockingLayer, parentModalPopup);
+          }
+          O$.correctElementZIndex(popup, popup._blockingLayer);
 
-          document._of_activeModalLayer = popup._blockingLayer;
           O$.PopupLayer._resizeModalLayer();
           if (O$._simulateFixedPosForBlockingLayer()) {
             O$.addEventHandler(window, "resize", O$.PopupLayer._resizeModalLayer);
@@ -290,7 +295,7 @@ O$.PopupLayer = {
             popup._blockingLayer.style.left = "0px";
             popup._blockingLayer.style.top = "0px";
             popup._blockingLayer.style.position = "fixed";
-            window.addEventListener("resize", O$.PopupLayer._resizeModalLayer, true);
+            O$.addEventHandler(window, "resize", O$.PopupLayer._resizeModalLayer, true);
           }
           O$.addIETransparencyControl(popup._blockingLayer);
 
@@ -303,9 +308,7 @@ O$.PopupLayer = {
             }
           }, 50);
 
-          if (!O$.PopupLayer._modalWindows)
-            O$.PopupLayer._modalWindows = [];
-          O$.PopupLayer._modalWindows.push(popup);
+          O$.PopupLayer._modalPopupsStack.push(popup);
         }
 
         if (popup.anchorElement != undefined) {
@@ -339,6 +342,15 @@ O$.PopupLayer = {
 
       hide: function () {
         if (!popup.isVisible()) return;
+        if (popup._modal) {
+          var currentModalPopup = O$.PopupLayer._modalPopupsStack.pop();
+          if (currentModalPopup != popup) {
+            O$.PopupLayer._modalPopupsStack.push(currentModalPopup);
+            throw "Cannot fulfill the request to close a modal window (id=\"" + popup.id + "\"), " +
+                    "which has modal sub-windows still open.";
+          }
+        }
+
         O$.removeIETransparencyControl(popup);
         if (popup._blockingLayer) {
           var body = document.getElementsByTagName("body")[0];
@@ -374,16 +386,13 @@ O$.PopupLayer = {
             O$.removeEventHandler(window, "scroll", O$.PopupLayer._alignModalLayer);
             O$.removeEventHandler(window, "resize", O$.PopupLayer._resizeModalLayer);
           } else {
-            document.removeEventListener("resize", O$.PopupLayer._resizeModalLayer, true);
+            O$.removeEventHandler(window, "resize", O$.PopupLayer._resizeModalLayer);
           }
           if (O$.isOpera()) {
             document.body.style.visibility = "hidden";
             document.body.style.visibility = "visible";
           }
 
-          var p = O$.PopupLayer._modalWindows.pop();
-          if (p != popup)
-            O$.logError("popup.hide: modal window stack failure: " + p);
         }
         O$.repaintAreaForOpera(document.body, true);
         if (popup._afterHide)
@@ -548,27 +557,34 @@ O$.PopupLayer = {
   },
 
   _alignModalLayer: function() {
-    var modalLayer = document._of_activeModalLayer;
     var scrollPos = O$.getPageScrollPos();
-    var prnt = modalLayer.offsetParent;
-    var parentPos = prnt != null && prnt.nodeName != "HTML" && prnt.nodeName != "BODY"
-            ? O$.getElementPos(prnt)
-            : {x: 0, y: 0};
-    var parentLeft = parentPos.x;
-    var parentTop = parentPos.y;
+    O$.PopupLayer._modalPopupsStack.forEach(function(popup) {
+      var modalLayer = popup._blockingLayer;
 
-    modalLayer.style.left = (scrollPos.x - parentLeft) + "px";
-    modalLayer.style.top = (scrollPos.y - parentTop) + "px";
-    O$.PopupLayer._resizeModalLayer();
+      var prnt = modalLayer.offsetParent;
+      var parentPos = prnt != null && prnt.nodeName != "HTML" && prnt.nodeName != "BODY"
+              ? O$.getElementPos(prnt)
+              : {x: 0, y: 0};
+      var parentLeft = parentPos.x;
+      var parentTop = parentPos.y;
+
+      modalLayer.style.left = (scrollPos.x - parentLeft) + "px";
+      modalLayer.style.top = (scrollPos.y - parentTop) + "px";
+      O$.PopupLayer._resizeModalLayer();
+
+    });
   },
 
   _resizeModalLayer: function() {
-    var modalLayer = document._of_activeModalLayer;
-
     var visibleAreaSize = O$.getVisibleAreaRectangle();
 
-    modalLayer.style.width = visibleAreaSize.width + "px";
-    modalLayer.style.height = visibleAreaSize.height + "px";
+    O$.PopupLayer._modalPopupsStack.forEach(function(popup) {
+      var modalLayer = popup._blockingLayer;
+
+      modalLayer.style.width = visibleAreaSize.width + "px";
+      modalLayer.style.height = visibleAreaSize.height + "px";
+    });
+
   },
 
   _centerPopup: function(popup, oldScrollPos) {
@@ -589,11 +605,11 @@ O$.PopupLayer = {
 
 O$.addEventHandler(document, "keydown", function(e) {
   var evt = O$.getEvent(e);
-  if (evt.keyCode == 27) {
-    if (O$.PopupLayer._modalWindows && O$.PopupLayer._modalWindows.length > 0) {
-      var currentModalWindow = O$.PopupLayer._modalWindows[O$.PopupLayer._modalWindows.length - 1];
-      if (currentModalWindow._hideOnEsc)
-        currentModalWindow.hide();
-    }
+  if (evt.keyCode != 27) return;
+
+  if (O$.PopupLayer._modalPopupsStack.length > 0) {
+    var currentModalWindow = O$.PopupLayer._modalPopupsStack[O$.PopupLayer._modalPopupsStack.length - 1];
+    if (currentModalWindow._hideOnEsc)
+      currentModalWindow.hide();
   }
 });
