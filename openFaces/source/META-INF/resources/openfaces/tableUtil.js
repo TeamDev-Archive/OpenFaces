@@ -1923,14 +1923,13 @@ O$.Tables = {
   _initBodyCell: function(cell, column) {
     cell._column = column;
 
-    cell._setAsCursor = function(){
+    cell._setAsCursor = function(forceUpdate){
       var row = cell._row;
       var table = row._table;
-      if (table._cursor != null) {
+      if (table._cursor != null || forceUpdate) {
         function addCursorForCell(cell) {
           //if not already a cursor
-          if (table._cursorCell != cell) {
-            O$.setStyleMappings(cell, {stdCssClass:table._cursorStyle});
+          if (table._cursorCell != cell || forceUpdate) {
             var rect = O$.getElementPaddingRectangle(cell, true);
 
             function setPartRectangle(partOfCursor, isVertical) {
@@ -1963,6 +1962,7 @@ O$.Tables = {
               table._cursorCell.removeChild(table._cursor.right);
               table._cursorCell.removeChild(table._cursor.bottom);
             }
+            O$.setStyleMappings(cell, {stdCssClass:table._cursorStyle});
             cell.appendChild(table._cursor.top);
             cell.appendChild(table._cursor.left);
             cell.appendChild(table._cursor.right);
