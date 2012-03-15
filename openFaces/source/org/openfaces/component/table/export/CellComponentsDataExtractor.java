@@ -46,8 +46,9 @@ public class CellComponentsDataExtractor implements CellDataExtractor {
     }
 
     private List<Object> getData(UIComponent component) {
-        if (component.getAttributes().containsKey(EXTRACTED_DATA_ATTRIBUTE)) {
-            return asList(component.getAttributes().get(EXTRACTED_DATA_ATTRIBUTE));
+        Object extractedData = component.getAttributes().get(EXTRACTED_DATA_ATTRIBUTE);
+        if (extractedData != null) {
+            return asList(extractedData);
         }
         for (ComponentDataExtractor componentExtractor : componentExtractors) {
             if (componentExtractor.isApplicableFor(component)) {
