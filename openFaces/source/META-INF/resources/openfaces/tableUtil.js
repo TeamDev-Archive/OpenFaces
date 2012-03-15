@@ -1923,6 +1923,53 @@ O$.Tables = {
   _initBodyCell: function(cell, column) {
     cell._column = column;
 
+    cell._setAsCursor = function(){
+      var row = cell._row;
+      var table = row._table;
+      if (table._cursor != null) {
+        function addCursorForCell(cell) {
+          //if not already a cursor
+          if (table._cursorCell != cell) {
+            O$.setStyleMappings(cell, {stdCssClass:table._cursorStyle});
+            var rect = O$.getElementPaddingRectangle(cell, true);
+
+            function setPartRectangle(partOfCursor, isVertical) {
+              O$.setElementBorderRectangle(partOfCursor, rect);
+              if (isVertical) {
+                partOfCursor.style.height = 0;
+              } else {
+                partOfCursor.style.width = 0;
+              }
+            }
+
+            setPartRectangle(table._cursor.top, true);
+
+            setPartRectangle(table._cursor.right, false);
+            table._cursor.right.style.left = rect.x + rect.width - table._cursor._borderWidth + "px";
+
+            setPartRectangle(table._cursor.bottom, true);
+            table._cursor.bottom.style.top = rect.y + rect.height - table._cursor._borderWidth + "px";
+
+            setPartRectangle(table._cursor.left, false);
+
+            if (table._cursorCell != null) {
+              O$.setStyleMappings(table._cursorCell, {stdCssClass:null});
+              table._cursorCell.removeChild(table._cursor.top);
+              table._cursorCell.removeChild(table._cursor.left);
+              table._cursorCell.removeChild(table._cursor.right);
+              table._cursorCell.removeChild(table._cursor.bottom);
+            }
+            cell.appendChild(table._cursor.top);
+            cell.appendChild(table._cursor.left);
+            cell.appendChild(table._cursor.right);
+            cell.appendChild(table._cursor.bottom);
+            table._cursorCell = cell;
+          }
+        }
+        addCursorForCell(cell);
+      }
+    };
+
     cell._updateStyle = function() {
       var column = cell._column;
       var row = cell._row;
@@ -1932,77 +1979,9 @@ O$.Tables = {
 
       if (table._selectableItems == "cells") {
         var addedClassName;
-        var cursorCellId = table._rangeEndCellId;
-        if (table._cursor != null) {
-          function addCursorForCell(cell) {
-            if (cell.lastChild != table._cursor.bottom) {
-              O$.setStyleMappings(cell, {stdCssClass:table._cursorStyle});
-              var rect = O$.getElementPaddingRectangle(cell, true);
-
-              function setPartRectangle(partOfCursor, isVertical) {
-                O$.setElementBorderRectangle(partOfCursor, rect);
-                if (isVertical) {
-                  partOfCursor.style.height = 0;
-                } else {
-                  partOfCursor.style.width = 0;
-                }
-              }
-
-              setPartRectangle(table._cursor.top, true);
-
-              setPartRectangle(table._cursor.right, false);
-              table._cursor.right.style.left = rect.x + rect.width - table._cursor._borderWidth + "px";
-
-              setPartRectangle(table._cursor.bottom, true);
-              table._cursor.bottom.style.top = rect.y + rect.height - table._cursor._borderWidth + "px";
-
-              setPartRectangle(table._cursor.left, false);
-
-              var oldParent = table._cursor.bottom.parentNode;
-              if (oldParent != null) {
-                O$.setStyleMappings(oldParent, {stdCssClass:null});
-              }
-              cell.appendChild(table._cursor.top);
-              cell.appendChild(table._cursor.left);
-              cell.appendChild(table._cursor.right);
-              cell.appendChild(table._cursor.bottom);
-            }
-
-          }
-
-          if (this._selected && (!table._multipleSelectionAllowed || (cursorCellId == null ||
-                  (cursorCellId[0] == cell._row._index && cursorCellId[1] == cell._column.columnId)))) {
-            addCursorForCell(cell);
-          } else if (!this._selected) {
-            if (cell.lastChild == table._cursor.bottom) {
-              cell.removeChild(table._cursor.top);
-              cell.removeChild(table._cursor.left);
-              cell.removeChild(table._cursor.right);
-              cell.removeChild(table._cursor.bottom);
-              O$.setStyleMappings(cell, {stdCssClass:null});
-            }
-            var endCell;
-            var rows = table.body._getRows();
-            var columns = table._columns;
-            if (cursorCellId != null) {
-              endCell = rows[cursorCellId[0]]._cells[columns.byId(cursorCellId[1])._index];
-              if (endCell != cell) {
-                addCursorForCell(endCell);
-              }
-            } else {
-              var cells = table.__getSelectedCellIds();
-              if (cells.length == 1) {
-                endCell = rows[cells[0][0]]._cells[columns.byId(cells[0][1])._index];
-                addCursorForCell(endCell);
-              }
-            }
-          }
-        }
-        if (!cell._isUnselectable) {
           addedClassName = O$.combineClassNames([
             this._selected ? table._selectionClass : null
           ]);
-        }
         if (cell._addedClassName != addedClassName) {
           cell._addedClassName = addedClassName;
         }
