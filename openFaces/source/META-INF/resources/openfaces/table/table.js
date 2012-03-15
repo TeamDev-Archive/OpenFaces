@@ -308,7 +308,7 @@ O$.Table = {
 
         var selectedItems = this._getSelectedItems();
         if (selectedItems.length == 0)
-          return -1;
+          return [];
         return selectedItems[0];
       },
       __setSelectedCellId: function(cellId) {
@@ -324,6 +324,8 @@ O$.Table = {
           throw "setSelectedCellId column parameter is not correct (" + cellId[1] + "); table's clientId is: " + this.id;
         }
         this._setSelectedItems([cellId]);
+        var cursorCell = bodyRows[cellId[0]]._cells[table._columns.byId(cellId[1])._index];
+        cursorCell._setAsCursor();
       },
       __getSelectedCellIds: function() {
         if (this._selectableItems != "cells")
@@ -367,6 +369,11 @@ O$.Table = {
           }
         }
         this._setSelectedItems(cellIds);
+        if (cellIds.length != 0){
+          var cursorCellId = cellIds[cellIds.length-1];
+          var cursorCell = bodyRows[cursorCellId[0]]._cells[table._columns.byId(cursorCellId[1])._index];
+          cursorCell._setAsCursor();
+        }
       },
       /**
        * Call this method to avoid any successive calls to such methods as table.sorting.setSortingRules,
@@ -873,20 +880,34 @@ O$.Table = {
             }
           }
         } else if (this._selectableItems == "cells"){
+          var bodyRows = table.body._getRows();
+          var cursorCell;
           if (!this._multipleSelectionAllowed){
             if (noModifiersPressed){
-              var cellId = this.__getSelectedCellId();
+              var cellId = (table._cursorCell != null) ?
+                      [table._cursorCell._row._index, table._cursorCell._column.columnId] : [-1, null];
               var newRowId = O$.Table._checkRowNavigation(this, cellId[0], rowCount, e);
               if (newRowId != null) {
                 passEvent = false;
-                this.__setSelectedCellId([newRowId, cellId[1]]);
+                if (cellId[1] == null){
+                  cellId[1] = table._columns[0].columnId;
+                }
+                this._setSelectedItems([[newRowId, cellId[1]]]);
+                cursorCell = bodyRows[newRowId]._cells[table._columns.byId(cellId[1])._index];
+                cursorCell._setAsCursor();
                 O$.Table._scrollToRowIndexes(this, [newRowId]);
               }
               if (newRowId != cellId[0]){
                 var newColumnId = O$.Table._checkColumnNavigation(this, cellId[1], table._columns.length, e);
                 if (newColumnId != null && newColumnId != cellId[1]) {
                   passEvent = false;
-                  this.__setSelectedCellId([cellId[0], newColumnId]);
+                  if (cellId[0] == -1){
+                    cellId[0] = 0;
+                  }
+                  this._setSelectedItems([[cellId[0], newColumnId]]);
+
+                  cursorCell = bodyRows[cellId[0]]._cells[table._columns.byId(newColumnId)._index];
+                  cursorCell._setAsCursor();
                   O$.Table._scrollToCells(this, [[cellId[0], newColumnId]]);
                 }
               }
@@ -894,8 +915,13 @@ O$.Table = {
           }else{
             var selectedCellIds = this.__getSelectedCellIds();
             var cellId, newRowId;
-            if (selectedCellIds.length == 0)
-              cellId = [-1,null];
+            if (selectedCellIds.length == 0) {
+              if (table._cursorCell != null) {
+                cellId = [table._cursorCell._row._index, table._cursorCell._column.columnId];
+              } else {
+                cellId = [-1, null];
+              }
+            }
             else if (selectedCellIds.length == 1)
               cellId = selectedCellIds[0];
             else {
@@ -910,7 +936,13 @@ O$.Table = {
                 this._baseCellId = null;
                 this._baseSelectedCellIds = null;
                 this._rangeEndCellId = null;
-                this.__setSelectedCellIds([[newRowId, cellId[1]]]);
+                if (cellId[1] == null){
+                  cellId[1] = table._columns[0].columnId;
+                }
+                this._setSelectedItems([[newRowId, cellId[1]]]);
+
+                cursorCell = bodyRows[newRowId]._cells[table._columns.byId(cellId[1])._index];
+                cursorCell._setAsCursor();
                 O$.Table._scrollToRowIndexes(this, [newRowId]);
               }
               if (newRowId != cellId[0]){
@@ -919,7 +951,13 @@ O$.Table = {
                   passEvent = false;
                   this._baseCellId = null;
                   this._rangeEndCellId = null;
-                  this.__setSelectedCellIds([[cellId[0], newColumnId]]);
+                  if (cellId[0] == -1){
+                    cellId[0] = 0;
+                  }
+                  this._setSelectedItems([[cellId[0], newColumnId]]);
+
+                  cursorCell = bodyRows[cellId[0]]._cells[table._columns.byId(newColumnId)._index];
+                  cursorCell._setAsCursor();
                   O$.Table._scrollToCells(this, [[cellId[0], newColumnId]]);
                 }else if(table._fillDirection == "document"){
                   var newCellId = O$.Table._checkCellNavigationInDocumentMode(this, cellId, e);
@@ -927,15 +965,18 @@ O$.Table = {
                     this._baseCellId = null;
                     this._rangeEndCellId = null;
                     passEvent = false;
-                    this.__setSelectedCellIds([newCellId]);
+                    this._setSelectedItems([newCellId]);
+
+                    cursorCell = bodyRows[newCellId[0]]._cells[table._columns.byId(newCellId[1])._index];
+                    cursorCell._setAsCursor();
                     O$.Table._scrollToCells(this, [newCellId]);
                   }
                 }
               }
-            } else{
+            } else if (cellId[0] != -1 && cellId[1] != null) {
               var baseCellId = this._baseCellId;
               if (baseCellId == null) {
-                baseCellId = cellId != [-1, null] ? cellId : 0;
+                baseCellId = cellId;
                 this._baseCellId = baseCellId;
                 this._baseSelectedCellIds = [baseCellId];
               }
@@ -948,7 +989,10 @@ O$.Table = {
                 passEvent = false;
                 newSelectedCellIdsIndexes = O$.Table._combineSelectedCellsWithRange(this, this._baseSelectedCellIds, baseCellId, [newRangeEndRowIndex, rangeEndCellId[1]]);
                 this._rangeEndCellId = [newRangeEndRowIndex, rangeEndCellId[1]];
-                this.__setSelectedCellIds(newSelectedCellIdsIndexes);
+                this._setSelectedItems(newSelectedCellIdsIndexes);
+
+                cursorCell = bodyRows[this._rangeEndCellId[0]]._cells[table._columns.byId(this._rangeEndCellId[1])._index];
+                cursorCell._setAsCursor();
                 O$.Table._scrollToCells(this,  [this._rangeEndCellId]);
               }
 
@@ -958,7 +1002,10 @@ O$.Table = {
                   passEvent = false;
                   newSelectedCellIdsIndexes = O$.Table._combineSelectedCellsWithRange(this, this._baseSelectedCellIds, baseCellId, [rangeEndCellId[0], newColumnId]);
                   this._rangeEndCellId = [rangeEndCellId[0], newColumnId];
-                  this.__setSelectedCellIds(newSelectedCellIdsIndexes);
+                  this._setSelectedItems(newSelectedCellIdsIndexes);
+
+                  cursorCell = bodyRows[this._rangeEndCellId[0]]._cells[table._columns.byId(this._rangeEndCellId[1])._index];
+                  cursorCell._setAsCursor();
                   O$.Table._scrollToCells(this, [this._rangeEndCellId]);
                 }else if (table._fillDirection == "document"){
                   var cellId = O$.Table._checkCellNavigationInDocumentMode(this, rangeEndCellId, e);
@@ -966,7 +1013,10 @@ O$.Table = {
                     passEvent = false;
                     newSelectedCellIdsIndexes = O$.Table._combineSelectedCellsWithRange(this, this._baseSelectedCellIds, baseCellId, cellId);
                     this._rangeEndCellId = cellId;
-                    this.__setSelectedCellIds(newSelectedCellIdsIndexes);
+                    this._setSelectedItems(newSelectedCellIdsIndexes);
+
+                    cursorCell = bodyRows[this._rangeEndCellId[0]]._cells[table._columns.byId(this._rangeEndCellId[1])._index];
+                    cursorCell._setAsCursor();
                     O$.Table._scrollToCells(this, [this._rangeEndCellId]);
                   }
                 }
@@ -1427,20 +1477,8 @@ O$.Table = {
 
                   var row = rows[itemIndex[0]];
                   var cells = row._cells;
-                  var selectableCells = table._selectablesCells;
-                  var columns = table._columns;
-                  function canBeSelected(item) {
-                    if (!selectableCells || selectableCells.length == 0)
-                      return true;
-                    else {
-                      return selectableCells[item[0]][columns.byId(item[1])._index];
-                    }
-                  }
                   for (var cellIndex = 0; cellIndex < cells.length; cellIndex++){
                     if (cells[cellIndex]._column.columnId == itemIndex[1]){
-                      if (!canBeSelected(itemIndex)) {
-                        cells[cellIndex]._isUnselectable = true;
-                      }
                       cells[cellIndex]._selected = selected;
                       cells[cellIndex]._updateStyle();
                       return;
@@ -1583,9 +1621,22 @@ O$.Table = {
                   }
                   if (!this._multipleSelectionAllowed && items && items.length > 1)
                     items = [items[0]];
-                  if (items.length == 1 && items[0][0] == -1 && items[0][1] == null)
+                  if (items.length == 1 && (items[0][0] == -1 || items[0][1] == null))
                     items = [];
-                  this._selectedItems = items;
+                  function getOnlySelectableCellIdsFrom(cellIds){
+                    var columns = table._columns;
+                    var selectableCells = table._selectablesCells;
+                    if (!selectableCells || selectableCells.length == 0)
+                      return cellIds;
+                    var onlySelectable = [];
+                    for (var n = 0; n < cellIds.length; n++) {
+                      var cellId = cellIds[n];
+                      if (selectableCells[cellId[0]][columns.byId(cellId[1])._index])
+                      onlySelectable.push(cellId);
+                    }
+                    return onlySelectable;
+                  }
+                  this._selectedItems = getOnlySelectableCellIdsFrom(items);
                   if (this._selectedItems) {
                     for (i = 0; i < this._selectedItems.length; i++) {
                       if (i > 0)
@@ -1844,15 +1895,39 @@ O$.Table = {
         }
         return validatedCells;
       }(selectedItems);
+
+      function setSelectedCells() {
+        function waitAndSetCursor(cursorCell){
+          if (O$.isExplorer){
+            var size = O$.getElementSize(cursorCell);
+            if (size.width == 0 || size.height == 0){
+              setTimeout(function () {
+                waitAndSetCursor(cursorCell);
+              }, 100);
+            }else{
+              cursorCell._setAsCursor();
+            }
+          }else{
+            cursorCell._setAsCursor();
+          }
+        }
+        table._setSelectedItems(selectedItems);
+        if (selectedItems.length !=0){
+          var cellId = selectedItems[selectedItems.length - 1];
+          var cursorCell = rows[cellId[0]]._cells[table._columns.byId(cellId[1])._index];
+          waitAndSetCursor(cursorCell);
+
+        }
+      }
       /*At Safari and Chrome this script is started before cell's size  will be correct.
        Thus, we need to wait while table get right appearance
        */
-      if (O$.isChrome() || O$.isSafari()){
+      if (O$.isChrome() || O$.isSafari() || (O$.isQuirksMode() && O$.isExplorer())) {
         setTimeout(function () {
-          table._setSelectedItems(selectedItems);
+          setSelectedCells();
         }, 100);//todo: listen event,when table is completely rendered
-      }else{
-        table._setSelectedItems(selectedItems);
+      } else {
+        setSelectedCells();
       }
     }
     table._setSelectionFieldValue("");
@@ -2159,39 +2234,53 @@ O$.Table = {
     if (!table._selectionMouseSupport)
       return;
     if (table._selectableItems == "cells") {
-        table._baseRowIndex = null;
-        table._baseSelectedRowIndexes = null;
-        table._rangeEndRowIndex = null;
+      table._baseRowIndex = null;
+      table._baseSelectedRowIndexes = null;
+      table._rangeEndRowIndex = null;
       var cellId = [cell._row._index, cell._column.columnId];
-        if (!table._multipleSelectionAllowed) {
-          table._setSelectedItems([cellId]);
-        } else {
-          var newSelectedCellIds;
-          if (e.ctrlKey) {
-            table._toggleItemSelected(cellId);
-            newSelectedCellIds = table.__getSelectedCellIds();
-            if (!table._baseCellId)
-              table._baseCellId = (newSelectedCellIds.length!=0 && newSelectedCellIds[0] != [-1, null]) ? newSelectedCellIds[0] : null;
-            table._baseSelectedCellIds  = newSelectedCellIds;
-            table._rangeEndCellId = null;
-          } else if (e.shiftKey || table._isDragSelectionEnabled) {
-            var baseCellId = table._baseCellId;
-            if (baseCellId == null) {
-              var baseCells =  table.__getSelectedCellIds();
-              baseCellId = (baseCells.length!=0 && baseCells[0] != [-1, null]) ? baseCells[0] : null;//0
-              table._baseCellId = baseCellId;
-              table._baseSelectedCellIds = [baseCellId];
-            }
-            var newSelectedCellIdsIndexes = O$.Table._combineSelectedCellsWithRange(table, table._baseSelectedCellIds, baseCellId, cellId);
-            table._rangeEndCellId = cellId;
-            table.__setSelectedCellIds(newSelectedCellIdsIndexes);
-          }  else{
-            table._baseCellId = null;
-            table._baseSelectedCellIds = null;
-            table._rangeEndCellId = null;
-            table._setSelectedItems([cellId]);
+      var bodyRows = table.body._getRows();
+      var cursorCell;
+      if (!table._multipleSelectionAllowed) {
+        table._setSelectedItems([cellId]);
+
+        cursorCell = bodyRows[cellId[0]]._cells[table._columns.byId(cellId[1])._index];
+        cursorCell._setAsCursor();
+      } else {
+        var newSelectedCellIds;
+        if (e.ctrlKey) {
+          table._toggleItemSelected(cellId);
+
+          cursorCell = bodyRows[cellId[0]]._cells[table._columns.byId(cellId[1])._index];
+          cursorCell._setAsCursor();
+          newSelectedCellIds = table.__getSelectedCellIds();
+          if (!table._baseCellId)
+            table._baseCellId = (newSelectedCellIds.length != 0 && newSelectedCellIds[0] != [-1, null]) ? newSelectedCellIds[0] : null;
+          table._baseSelectedCellIds = newSelectedCellIds;
+          table._rangeEndCellId = null;
+        } else if (e.shiftKey || table._isDragSelectionEnabled) {
+          var baseCellId = table._baseCellId;
+          if (baseCellId == null) {
+            var baseCells = table.__getSelectedCellIds();
+            baseCellId = (baseCells.length != 0 && baseCells[0] != [-1, null]) ? baseCells[0] : null;//0
+            table._baseCellId = baseCellId;
+            table._baseSelectedCellIds = [baseCellId];
           }
+          var newSelectedCellIdsIndexes = O$.Table._combineSelectedCellsWithRange(table, table._baseSelectedCellIds, baseCellId, cellId);
+          table._rangeEndCellId = cellId;
+          table._setSelectedItems(newSelectedCellIdsIndexes);
+
+          cursorCell = bodyRows[cellId[0]]._cells[table._columns.byId(cellId[1])._index];
+          cursorCell._setAsCursor();
+        } else {
+          table._baseCellId = null;
+          table._baseSelectedCellIds = null;
+          table._rangeEndCellId = null;
+          table._setSelectedItems([cellId]);
+
+          cursorCell = bodyRows[cellId[0]]._cells[table._columns.byId(cellId[1])._index];
+          cursorCell._setAsCursor();
         }
+      }
     }else{
       throw "This method should been called only if cellSelection is turned on";
     }
