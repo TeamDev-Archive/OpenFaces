@@ -77,7 +77,11 @@ public class SingleCellSelection extends AbstractCellSelection {
 
     @Override
     protected void writeSelectionToBinding() {
-        ValueBindings.set(this, CELL_ID_PROPERTY, getCellId());
+        CellId cellId1 = getCellId();
+        if (cellId1 != null && (cellId1.getRowData() == null || cellId1.getColumnId() == null)) {
+            cellId1 = null;
+        }
+        ValueBindings.set(this, CELL_ID_PROPERTY, cellId1);
     }
 
     @Override
@@ -132,7 +136,9 @@ public class SingleCellSelection extends AbstractCellSelection {
         }
 
         if (rowKeyCellId != null) {
-            rowData = getRowDataByRowKey(rowKeyCellId.getRowData());
+            if (rowKeyCellId.getRowData() != null) {
+                rowData = getRowDataByRowKey(rowKeyCellId.getRowData());
+            }
         }
         return new CellId(rowData, columnId);
     }
