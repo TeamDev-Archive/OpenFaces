@@ -5818,6 +5818,22 @@
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>Allows reducing the number of Ajax requests by skipping the frequently-happinging events. This
+        attribute specifies the delay in milliseconds that should elapse after an event that activates this component
+        to start an actual request for reloading components (and invoking an appropriate action if specified). If
+        there will be another event during this delay, this event will postpone the request according to the specified
+        delay instead of performing an additional request. As a result there will be only one request for all events
+        that come more frequently than specified in this attribute.
+      </description>
+      <name>delay</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default 0 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>Id's of components whose data should be submitted and processed on the server in addition to the
         reloaded components. The difference with render is that components listed in execute will
         just process the submitted data, but won't be rerendered. This can often be needed when the reloaded data
@@ -5920,19 +5936,6 @@
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>Specifies whether the components listed in the &quot;render&quot; attribute undergo the &quot;execute&quot;
-        lifecycle (Restore View, Apply Request Values, Process Validations and Update Model Values) phases as if these
-        components are implicitly specified in the &quot;execute&quot; attribute as well.
-      </description>
-      <name>executeRenderedComponents</name>
-      <deferred-value>
-        <type>boolean</type>
-      </deferred-value>
-      <!-- @bindingType boolean -->
-      <!-- @default true -->
       <!-- @el true -->
     </attribute>
   </tag>
@@ -6063,6 +6066,22 @@
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>Allows reducing the number of Ajax requests by skipping the frequently-happinging events. This
+        attribute specifies the delay in milliseconds that should elapse after an event that activates this component
+        to start an actual request for reloading components (and invoking an appropriate action if specified). If
+        there will be another event during this delay, this event will postpone the request according to the specified
+        delay instead of performing an additional request. As a result there will be only one request for all events
+        that come more frequently than specified in this attribute.
+      </description>
+      <name>delay</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default 0 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>Id's of components whose data should be submitted and processed on the server in addition to the
         reloaded components. The difference with render is that components listed in execute will
         just process the submitted data, but won't be rerendered. This can often be needed when the reloaded data
@@ -6165,19 +6184,6 @@
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>Specifies whether the components listed in the &quot;render&quot; attribute undergo the &quot;execute&quot;
-        lifecycle (Restore View, Apply Request Values, Process Validations and Update Model Values) phases as if these
-        components are implicitly specified in the &quot;execute&quot; attribute as well.
-      </description>
-      <name>executeRenderedComponents</name>
-      <deferred-value>
-        <type>boolean</type>
-      </deferred-value>
-      <!-- @bindingType boolean -->
-      <!-- @default true -->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -6288,6 +6294,22 @@
         <type>java.util.List</type>
       </deferred-value>
       <!-- @bindingType java.util.Object -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Allows reducing the number of Ajax requests by skipping the frequently-happinging events. This
+        attribute specifies the delay in milliseconds that should elapse after an event that activates this component
+        to start an actual request for reloading components (and invoking an appropriate action if specified). If
+        there will be another event during this delay, this event will postpone the request according to the specified
+        delay instead of performing an additional request. As a result there will be only one request for all events
+        that come more frequently than specified in this attribute.
+      </description>
+      <name>delay</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default 0 -->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -6503,6 +6525,22 @@
         <type>java.util.List</type>
       </deferred-value>
       <!-- @bindingType java.util.Object -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Allows reducing the number of Ajax requests by skipping the frequently-happinging events. This
+        attribute specifies the delay in milliseconds that should elapse after an event that activates this component
+        to start an actual request for reloading components (and invoking an appropriate action if specified). If
+        there will be another event during this delay, this event will postpone the request according to the specified
+        delay instead of performing an additional request. As a result there will be only one request for all events
+        that come more frequently than specified in this attribute.
+      </description>
+      <name>delay</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default 0 -->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -10745,6 +10783,22 @@ means that only root nodes and their immediate children are preloaded -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>Allows reducing the number of Ajax requests by skipping the frequently-happinging events. This
+        attribute specifies the delay in milliseconds that should elapse after an event that activates this component
+        to start an actual request for reloading components (and invoking an appropriate action if specified). If
+        there will be another event during this delay, this event will postpone the request according to the specified
+        delay instead of performing an additional request. As a result there will be only one request for all events
+        that come more frequently than specified in this attribute.
+      </description>
+      <name>delay</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default 0 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>Id's of components whose data should be submitted and processed on the server in addition to the
         reloaded components. The difference with render is that components listed in execute will
         just process the submitted data, but won't be rerendered. This can often be needed when the reloaded data
@@ -10961,6 +11015,22 @@ means that only root nodes and their immediate children are preloaded -->
         <type>java.util.List</type>
       </deferred-value>
       <!-- @bindingType java.util.Object -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Allows reducing the number of Ajax requests by skipping the frequently-happinging events. This
+        attribute specifies the delay in milliseconds that should elapse after an event that activates this component
+        to start an actual request for reloading components (and invoking an appropriate action if specified). If
+        there will be another event during this delay, this event will postpone the request according to the specified
+        delay instead of performing an additional request. As a result there will be only one request for all events
+        that come more frequently than specified in this attribute.
+      </description>
+      <name>delay</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default 0 -->
       <!-- @el true -->
     </attribute>
     <attribute>

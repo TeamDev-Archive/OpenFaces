@@ -60,6 +60,7 @@ public abstract class OUICommand extends UICommand implements OUIComponent, Clie
     private String onajaxend;
     private String onerror;
     private String onsuccess;
+    private Integer delay;
 
     @Override
     public Object saveState(FacesContext context) {
@@ -69,7 +70,7 @@ public abstract class OUICommand extends UICommand implements OUIComponent, Clie
                 saveAttachedState(context, render),
                 style, styleClass, rolloverStyle, rolloverClass, onclick, ondblclick, onmousedown, onmouseover,
                 onmousemove, onmouseout, onmouseup, onfocus, onblur, onkeydown, onkeyup, onkeypress, oncontextmenu,
-                onajaxstart, onajaxend, onerror, onsuccess};
+                onajaxstart, onajaxend, onerror, onsuccess, delay};
     }
 
     public abstract String getFamily();
@@ -102,6 +103,7 @@ public abstract class OUICommand extends UICommand implements OUIComponent, Clie
         onajaxend = (String) state[i++];
         onerror = (String) state[i++];
         onsuccess = (String) state[i++];
+        delay = (Integer) state[i++];
     }
 
     @Override
@@ -297,5 +299,13 @@ public abstract class OUICommand extends UICommand implements OUIComponent, Clie
 
     public void setOnsuccess(String onsuccess) {
         this.onsuccess = onsuccess;
+    }
+
+    public Integer getDelay() {
+        return ValueBindings.get(this, "delay", delay, 0);
+    }
+
+    public void setDelay(Integer delay) {
+        this.delay = delay;
     }
 }

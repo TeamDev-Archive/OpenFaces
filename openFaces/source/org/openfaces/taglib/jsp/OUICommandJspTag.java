@@ -64,4 +64,8 @@ public class OUICommandJspTag extends AbstractComponentJspTag {
     public void setExecuteRenderedComponents(ValueExpression executeRenderedComponents) {
         getDelegate().setPropertyValue("executeRenderedComponents", executeRenderedComponents);
     }
+
+    public void setDelay(ValueExpression delay) {
+        getDelegate().setPropertyValue("delay", delay);
+    }
 }
