@@ -32,7 +32,6 @@ public class Ajax extends OUICommand implements OUIClientAction {
     private Boolean standalone;
 
     private Boolean submitInvoker;
-    private Integer delay;
 
     private String onevent;
     private String onajaxstart;
@@ -100,14 +99,6 @@ public class Ajax extends OUICommand implements OUIClientAction {
         this.standalone = standalone;
     }
 
-    public int getDelay() {
-        return ValueBindings.get(this, "delay", delay, 0);
-    }
-
-    public void setDelay(int delay) {
-        this.delay = delay;
-    }
-
     public String getOnevent() {
         return ValueBindings.get(this, "onevent", onevent);
     }
@@ -160,7 +151,6 @@ public class Ajax extends OUICommand implements OUIClientAction {
                 standalone,
                 disabled,
                 submitInvoker,
-                delay,
                 onevent,
                 onerror,
                 onajaxstart,
@@ -178,7 +168,6 @@ public class Ajax extends OUICommand implements OUIClientAction {
         standalone = (Boolean) state[i++];
         disabled = (Boolean) state[i++];
         submitInvoker = (Boolean) state[i++];
-        delay = (Integer) state[i++];
         onevent = (String) state[i++];
         onerror = (String) state[i++];
         onajaxstart = (String) state[i++];
