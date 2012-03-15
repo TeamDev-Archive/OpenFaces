@@ -87,6 +87,13 @@ public abstract class OpenFacesTestCase extends SeleniumTestCase {
         open(TEST_APP_URL_PREFIX, testAppPageUrl, htmlSubstringOfAValidPage, 5);
     }
 
+    @Override
+    protected void assertPageAvailable(String pageUrl, String expectedPageTitle) {
+        Selenium selenium = getSelenium();
+        open("", pageUrl, getUtilJsUrlSubstring(), 5);
+        assertEquals("Couldn't open page (unexpected page title): " + pageUrl, expectedPageTitle, selenium.getTitle());
+    }
+
     private void open(String applicationUrl, String pageUrl, String htmlSubstringOfAValidPage, int attemptCount) {
         for (int i = 1; i <= attemptCount; i++) {
             boolean lastAttempt = (i == attemptCount);
