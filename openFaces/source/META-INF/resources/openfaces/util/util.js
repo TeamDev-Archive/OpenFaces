@@ -2605,7 +2605,9 @@ if (!window.O$) {
       draggable._lastDragY = dragY;
       draggable._lastDragOffsetLeft = offsetLeftAfterDragging;
       draggable._lastDragOffsetTop = offsetTopAfterDragging;
-
+      if(draggable._dragEl && draggable._dragEl._onresizing){
+        draggable._dragEl._onresizing();
+      }
       O$.cancelEvent(evt);
     }
 

@@ -1282,7 +1282,7 @@ O$.Table = {
       else
         newIndex = O$.Table._getNeighboringVisibleRowIndex(table, idx, +1);
     }
-    if (table._selectableItems == "rows") {
+    if (table._selectableItems == "rows" || e.ctrlKey) {
       if (e.homePressed) {
         newIndex = O$.Table._getNeighboringVisibleRowIndex(table, idx, -rowCount);
       }
@@ -1341,11 +1341,13 @@ O$.Table = {
       else
         newIndex = O$.Table._getNeighboringVisibleColumnId(table, columnId, +1);
     }
-    if (e.homePressed) {
-      newIndex = O$.Table._getNeighboringVisibleColumnId(table, columnId, -columnCount);
-    }
-    if (e.endPressed) {
-      newIndex = O$.Table._getNeighboringVisibleColumnId(table, columnId, columnCount);
+    if (!e.ctrlKey) {
+      if (e.homePressed) {
+        newIndex = O$.Table._getNeighboringVisibleColumnId(table, columnId, -columnCount);
+      }
+      if (e.endPressed) {
+        newIndex = O$.Table._getNeighboringVisibleColumnId(table, columnId, columnCount);
+      }
     }
 
     return newIndex;
@@ -1783,6 +1785,19 @@ O$.Table = {
       table._setSelectedItems(selectedItems);
     }else if (selectableItems == "cells"){
       if (table._selectionEnabled) {
+        var columns = table._columns;
+        for (var colIndex = 0; colIndex < columns.length; colIndex++) {
+          var col = columns[colIndex];
+          col._onresizing = function (index) {
+            return function () {
+              if (table._cursorCell && (table._cursorCell._column._index == index ||
+                      table._cursorCell._column._index == index - 1 ||
+                      table._cursorCell._column._index == index + 1 )) {
+                table._cursorCell._setAsCursor(true);
+              }
+            }
+          }(col._index);
+        }
         if (table._cursorStyle) {
           table._cursor = {};
           table._cursor._borderWidth = O$.getStyleClassProperty(table._cursorStyle, "border-top-width").replace("px", "") * 1;
@@ -2861,6 +2876,7 @@ O$.Table = {
         headerCell.appendChild(resizeHandle);
         O$.correctElementZIndex(resizeHandle, headerCell, O$.Table.HEADER_CELL_Z_INDEX_COLUMN_MENU_RESIZE_HANDLE);
         column._resizeHandle = resizeHandle;
+        resizeHandle._dragEl = column;
         O$.extend(resizeHandle, {
           _column: column,
           onmouseover: function() {
