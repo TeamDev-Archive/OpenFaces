@@ -6181,9 +6181,10 @@
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Specifies how selection will work - like in standart document or like in Excel.
-        For example: in document mode if shift is held down, multiple rows will be selected but
-        in standart mode  if Shift is held down, multiple cells will be selected(not rows).
+      <description>Specifies how selection will work - in a way similar to selection in text documents ("document"), or
+        in a way similar to spreadsheet applications ("rectangular"). That is, in the "document" mode, if the Shift key
+        is held down, multiple rows will be selected, but in the "rectangular" mode, if Shift is held down, multiple
+        cells will be selected in a rectangular fashion (without selecting entire rows).
       </description>
       <name>fillDirection</name>
       <deferred-value>
