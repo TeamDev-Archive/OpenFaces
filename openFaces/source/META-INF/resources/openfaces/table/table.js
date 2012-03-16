@@ -2268,17 +2268,20 @@ O$.Table = {
           cursorCell = bodyRows[cellId[0]]._cells[table._columns.byId(cellId[1])._index];
           cursorCell._setAsCursor();
           newSelectedCellIds = table.__getSelectedCellIds();
-          if (!table._baseCellId)
-            table._baseCellId = (newSelectedCellIds.length != 0 && newSelectedCellIds[0] != [-1, null]) ? newSelectedCellIds[0] : null;
+          table._baseCellId = cellId;
           table._baseSelectedCellIds = newSelectedCellIds;
           table._rangeEndCellId = null;
+          table._ctrlForSelectionWasPressed = true;
         } else if (e.shiftKey || table._isDragSelectionEnabled) {
           var baseCellId = table._baseCellId;
+          var baseCells = table.__getSelectedCellIds();
           if (baseCellId == null) {
-            var baseCells = table.__getSelectedCellIds();
             baseCellId = (baseCells.length != 0 && baseCells[0] != [-1, null]) ? baseCells[0] : null;//0
             table._baseCellId = baseCellId;
             table._baseSelectedCellIds = [baseCellId];
+          }else if (table._ctrlForSelectionWasPressed){
+            table._baseSelectedCellIds = baseCells;
+            table._ctrlForSelectionWasPressed = false;
           }
           var newSelectedCellIdsIndexes = O$.Table._combineSelectedCellsWithRange(table, table._baseSelectedCellIds, baseCellId, cellId);
           table._rangeEndCellId = cellId;
