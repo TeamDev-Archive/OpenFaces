@@ -1282,7 +1282,8 @@ O$.Table = {
       else
         newIndex = O$.Table._getNeighboringVisibleRowIndex(table, idx, +1);
     }
-    if (table._selectableItems == "rows" || e.ctrlKey) {
+    if (table._selectableItems == "rows" ||
+            (table._selectableItems == "cells" && table._fillDirection != "document" && e.ctrlKey )) {
       if (e.homePressed) {
         newIndex = O$.Table._getNeighboringVisibleRowIndex(table, idx, -rowCount);
       }
@@ -1382,6 +1383,15 @@ O$.Table = {
     }
     if (e.rightPressed) {
       return getBorderCellForEvent(table, cellId, true);
+    }
+    if (e.ctrlKey) {
+      var columns = table._columns;
+      if (e.homePressed) {
+        return [0, columns[0].columnId];
+      }
+      if (e.endPressed) {
+        return [(table.__getRowCount() - 1), columns[columns.length - 1].columnId];
+      }
     }
     return null;
   },
