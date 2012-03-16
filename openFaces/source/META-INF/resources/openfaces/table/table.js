@@ -2283,7 +2283,7 @@ O$.Table = {
           var baseCellId = table._baseCellId;
           var baseCells = table.__getSelectedCellIds();
           if (baseCellId == null) {
-            baseCellId = (baseCells.length != 0 && baseCells[0] != [-1, null]) ? baseCells[0] : null;//0
+            baseCellId = (baseCells.length != 0 && baseCells[0] != [-1, null]) ? baseCells[0] : cellId;
             table._baseCellId = baseCellId;
             table._baseSelectedCellIds = [baseCellId];
           }else if (table._ctrlForSelectionWasPressed){

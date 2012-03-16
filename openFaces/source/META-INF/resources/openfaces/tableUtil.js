@@ -1989,7 +1989,7 @@ O$.Tables = {
         if (cell._addedClassName != addedClassName) {
           cell._addedClassName = addedClassName;
         }
-        O$.setStyleMappings(cell, {rolloverAndSelectionStyle:addedClassName});
+        O$.setStyleMappings(cell, {selectionStyle:addedClassName});
       }
       if (!table._params.body.noDataRows) {
         O$.Tables._applySimulatedColStylesToCell(cell);
