@@ -14,12 +14,12 @@ O$.CompositeFilter = {
 
   _init: function(clientId) {
     O$.initComponent(clientId, null, {
-      _init: function(){
+      _init: function() {
          var noFilterRowContainer = this._noFilterRowContainer();
           if (noFilterRowContainer) {
             var addButton = this._addButton(noFilterRowContainer);
             var _this = this;
-            addButton.onclick = function(){
+            addButton.onclick = function() {
               _this.add();
               return false;
             }

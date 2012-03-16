@@ -69,8 +69,7 @@ O$.DropDown = {
       dropDown.focus = function() {
         try {
           field.focus();
-        }
-        catch(e) {
+        } catch (e) {
         }
       };
     dropDown._onfocus = dropDown.onfocus;

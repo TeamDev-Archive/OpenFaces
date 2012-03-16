@@ -234,8 +234,8 @@ O$.Checkbox = {
 
     function nextState(checkbox) {
       var nextStateIndex = 0;
-      for (var i=0; i<checkbox._stateList.length; i++){
-         if (checkbox._stateList[i] == checkbox._state.value){
+      for (var i=0; i<checkbox._stateList.length; i++) {
+         if (checkbox._stateList[i] == checkbox._state.value) {
            nextStateIndex = i+1;
          }
       }

@@ -43,7 +43,7 @@ class TextTitleAdapter extends TextTitle {
 
             final boolean chartTitlePaintDefined = chart.getChartView().getBackgroundPaint() != null;
 
-            if(chartTitlePaintDefined){
+            if (chartTitlePaintDefined) {
                 setExpandToFitSpace(true);
                 setBackgroundPaint(chart.getChartView().getTitlePaint());
             }

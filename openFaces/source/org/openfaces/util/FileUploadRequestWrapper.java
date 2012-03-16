@@ -53,10 +53,10 @@ public class FileUploadRequestWrapper extends HttpServletRequestWrapper {
                             String genericNameForFile = fileItem.getFieldName().substring(0, index + FIELD_NAME.length());
                             request.setAttribute(genericNameForFile, new FileUploadItem(correctFileName, f, FileUploadStatus.SUCCESSFUL));
                             request.setAttribute("FILE_ID", uniqueFileId);
-                        }else{
+                        } else {
                             request.getSession().removeAttribute(uniqueFileId + AbstractFileUploadRenderer.TERMINATED_TEXT);
                         }
-                    }else{
+                    } else {
                         throw new RuntimeException("File size is equal 0 bytes");
                     }
                 }
@@ -68,7 +68,7 @@ public class FileUploadRequestWrapper extends HttpServletRequestWrapper {
         } catch (IOException ne) {
             /*this exception can happened in case if problem in writing file*/
             request.getSession().setAttribute(uniqueFileId + AbstractFileUploadRenderer.TERMINATED_TEXT, true);
-        }catch(Exception e){
+        } catch (Exception e) {
             /*this exception can happened if on server some problem*/
             request.getSession().setAttribute(uniqueFileId + AbstractFileUploadRenderer.TERMINATED_TEXT, true);
         }

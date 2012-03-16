@@ -306,11 +306,11 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
             Rendering.renderHiddenField(writer, getSelectionEventFieldName(context, table), null);
     }
 
-    protected JSONArray getSelectablesCells(){
+    protected JSONArray getSelectablesCells() {
         return null;
     }
 
-    protected String getFillDirectionForSelection(){
+    protected String getFillDirectionForSelection() {
         return  null;
     }
 

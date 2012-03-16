@@ -112,7 +112,7 @@ public class GateInAjaxViewRoot extends UIPortletAjaxViewRoot implements Wrapped
 
     @Override
     public String getRendererType() {
-        if(Environment.isAjax4jsfRequest()){
+        if (Environment.isAjax4jsfRequest()) {
             return delegate.getRendererType();
         }
         return COMPONENT_TYPE;
