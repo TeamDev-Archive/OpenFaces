@@ -60,31 +60,36 @@ O$.InputText = {
     } else
       promptVisibleField.value = false;
 
+    if (!inputText._eventsInitialized) {
+      // events might have already been initialized when _init is called in case when <o:inputText> was reloaded with
+      // Ajax, where jsf.js has a special case for reloading <input> tags which are not actually reloaded but their
+      // attributes copied instead
+      inputText._eventsInitialized = true;
+      O$.addEventHandler(inputText, "focus", function() {
+        inputText._focused = true;
 
-    O$.addEventHandler(inputText, "focus", function() {
-      inputText._focused = true;
-
-      if (promptText) {
-        if ((inputText.value == promptText) && (promptVisibleField.value == "true")) {
-          inputText.value = "";
-          O$.setStyleMappings(inputText, {prompt: null});
-          promptVisibleField.value = false;
+        if (promptText) {
+          if ((inputText.value == promptText) && (promptVisibleField.value == "true")) {
+            inputText.value = "";
+            O$.setStyleMappings(inputText, {prompt: null});
+            promptVisibleField.value = false;
+          }
         }
-      }
-    });
+      });
 
-    O$.addEventHandler(inputText, "blur", function() {
-      inputText._focused = false;
+      O$.addEventHandler(inputText, "blur", function() {
+        inputText._focused = false;
 
-      if (promptText) {
-        if (inputText.value.length == 0) {
-          inputText.value = promptText;
-          O$.setStyleMappings(inputText, {prompt: promptTextClass});
-          promptVisibleField.value = true;
-        } else
-          promptVisibleField.value = false;
-      }
-    });
+        if (promptText) {
+          if (inputText.value.length == 0) {
+            inputText.value = promptText;
+            O$.setStyleMappings(inputText, {prompt: promptTextClass});
+            promptVisibleField.value = true;
+          } else
+            promptVisibleField.value = false;
+        }
+      });
+    }
 
     if (O$.isMozillaFF())
       O$.addEventHandler(inputText, "keyup", function(evt) {
