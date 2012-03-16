@@ -1898,13 +1898,13 @@ O$.Table = {
             if ((cellId[0] == table._baseCellId[0]) && (cellId[1] == table._baseCellId[1])) {
               table._baseCellId = table._baseCellIdIfNotDnD;
               table._baseSelectedCellIds = [table._baseCellIdIfNotDnD];
-              O$.Table._cell_handleSelectionOnClick(event);
+              O$.Table._cell_handleSelectionOnClick(event, false);
             }
             table.focus();
           });
           O$.addEventHandler(rows[rowIndex]._rowNode, "mousemove", function (event) {
             if (table._isDragSelectionEnabled){
-              O$.Table._cell_handleSelectionOnClick(event);
+              O$.Table._cell_handleSelectionOnClick(event, true);
             }
           });
         }
@@ -2250,7 +2250,7 @@ O$.Table = {
     }
   },
 
-  _cell_handleSelectionOnClick: function(evt) {
+  _cell_handleSelectionOnClick: function(evt, isScrollEnabled) {
     if (this._originalClickHandler)
       this._originalClickHandler(evt);
 
@@ -2266,19 +2266,14 @@ O$.Table = {
       table._rangeEndRowIndex = null;
       var cellId = [cell._row._index, cell._column.columnId];
       var bodyRows = table.body._getRows();
+      var columns = table._columns;
       var cursorCell;
       if (!table._multipleSelectionAllowed) {
         table._setSelectedItems([cellId]);
-
-        cursorCell = bodyRows[cellId[0]]._cells[table._columns.byId(cellId[1])._index];
-        cursorCell._setAsCursor();
       } else {
         var newSelectedCellIds;
         if (e.ctrlKey) {
           table._toggleItemSelected(cellId);
-
-          cursorCell = bodyRows[cellId[0]]._cells[table._columns.byId(cellId[1])._index];
-          cursorCell._setAsCursor();
           newSelectedCellIds = table.__getSelectedCellIds();
           table._baseCellId = cellId;
           table._baseSelectedCellIds = newSelectedCellIds;
@@ -2298,18 +2293,34 @@ O$.Table = {
           var newSelectedCellIdsIndexes = O$.Table._combineSelectedCellsWithRange(table, table._baseSelectedCellIds, baseCellId, cellId);
           table._rangeEndCellId = cellId;
           table._setSelectedItems(newSelectedCellIdsIndexes);
-
-          cursorCell = bodyRows[cellId[0]]._cells[table._columns.byId(cellId[1])._index];
-          cursorCell._setAsCursor();
         } else {
           table._baseCellId = null;
           table._baseSelectedCellIds = null;
           table._rangeEndCellId = null;
           table._setSelectedItems([cellId]);
-
-          cursorCell = bodyRows[cellId[0]]._cells[table._columns.byId(cellId[1])._index];
-          cursorCell._setAsCursor();
         }
+        if(isScrollEnabled){
+          function prepareCellsRectangleToScroll(cellId){
+            var cellsToScroll = [cellId];
+            if (cellId[0] != 0) {
+              cellsToScroll.push([(cellId[0] - 1), cellId[1]]);
+            }
+            if (cellId[0] != ( bodyRows.length - 1 )) {
+              cellsToScroll.push([(cellId[0] + 1), cellId[1]]);
+            }
+            var columnIndex = columns.byId(cellId[1])._index;
+            if (cellId[1] != columns[0].columnId) {
+              cellsToScroll.push([cellId[0], columns[columnIndex - 1].columnId]);
+            }
+            if (cellId[1] != columns[columns.length - 1].columnId) {
+              cellsToScroll.push([cellId[0], columns[columnIndex + 1].columnId]);
+            }
+            return cellsToScroll;
+          }
+          O$.Table._scrollToCells(table, prepareCellsRectangleToScroll(cellId));
+        }
+        cursorCell = bodyRows[cellId[0]]._cells[columns.byId(cellId[1])._index];
+        cursorCell._setAsCursor();
       }
     }else{
       throw "This method should been called only if cellSelection is turned on";
