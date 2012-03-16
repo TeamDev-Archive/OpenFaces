@@ -1282,7 +1282,8 @@ O$.Table = {
       else
         newIndex = O$.Table._getNeighboringVisibleRowIndex(table, idx, +1);
     }
-    if (table._selectableItems == "rows" || e.ctrlKey) {
+    if (table._selectableItems == "rows" ||
+            (table._selectableItems == "cells" && table._fillDirection != "document" && e.ctrlKey )) {
       if (e.homePressed) {
         newIndex = O$.Table._getNeighboringVisibleRowIndex(table, idx, -rowCount);
       }
@@ -1382,6 +1383,15 @@ O$.Table = {
     }
     if (e.rightPressed) {
       return getBorderCellForEvent(table, cellId, true);
+    }
+    if (e.ctrlKey) {
+      var columns = table._columns;
+      if (e.homePressed) {
+        return [0, columns[0].columnId];
+      }
+      if (e.endPressed) {
+        return [(table.__getRowCount() - 1), columns[columns.length - 1].columnId];
+      }
     }
     return null;
   },
@@ -1888,13 +1898,13 @@ O$.Table = {
             if ((cellId[0] == table._baseCellId[0]) && (cellId[1] == table._baseCellId[1])) {
               table._baseCellId = table._baseCellIdIfNotDnD;
               table._baseSelectedCellIds = [table._baseCellIdIfNotDnD];
-              O$.Table._cell_handleSelectionOnClick(event);
+              O$.Table._cell_handleSelectionOnClick(event, false);
             }
             table.focus();
           });
           O$.addEventHandler(rows[rowIndex]._rowNode, "mousemove", function (event) {
             if (table._isDragSelectionEnabled) {
-              O$.Table._cell_handleSelectionOnClick(event);
+              O$.Table._cell_handleSelectionOnClick(event, true);
             }
           });
         }
@@ -1927,10 +1937,12 @@ O$.Table = {
           }
         }
         table._setSelectedItems(selectedItems);
-        if (selectedItems.length !=0) {
+        if (selectedItems.length != 0) {
           var cellId = selectedItems[selectedItems.length - 1];
           var cursorCell = rows[cellId[0]]._cells[table._columns.byId(cellId[1])._index];
           waitAndSetCursor(cursorCell);
+          table._baseCellId = selectedItems[0];
+          table._rangeEndCellId = cellId;
 
         }
       }
@@ -2238,7 +2250,7 @@ O$.Table = {
     }
   },
 
-  _cell_handleSelectionOnClick: function(evt) {
+  _cell_handleSelectionOnClick: function(evt, isScrollEnabled) {
     if (this._originalClickHandler)
       this._originalClickHandler(evt);
 
@@ -2254,47 +2266,61 @@ O$.Table = {
       table._rangeEndRowIndex = null;
       var cellId = [cell._row._index, cell._column.columnId];
       var bodyRows = table.body._getRows();
+      var columns = table._columns;
       var cursorCell;
       if (!table._multipleSelectionAllowed) {
         table._setSelectedItems([cellId]);
-
-        cursorCell = bodyRows[cellId[0]]._cells[table._columns.byId(cellId[1])._index];
-        cursorCell._setAsCursor();
       } else {
         var newSelectedCellIds;
         if (e.ctrlKey) {
           table._toggleItemSelected(cellId);
-
-          cursorCell = bodyRows[cellId[0]]._cells[table._columns.byId(cellId[1])._index];
-          cursorCell._setAsCursor();
           newSelectedCellIds = table.__getSelectedCellIds();
-          if (!table._baseCellId)
-            table._baseCellId = (newSelectedCellIds.length != 0 && newSelectedCellIds[0] != [-1, null]) ? newSelectedCellIds[0] : null;
+          table._baseCellId = cellId;
           table._baseSelectedCellIds = newSelectedCellIds;
           table._rangeEndCellId = null;
+          table._ctrlForSelectionWasPressed = true;
         } else if (e.shiftKey || table._isDragSelectionEnabled) {
           var baseCellId = table._baseCellId;
+          var baseCells = table.__getSelectedCellIds();
           if (baseCellId == null) {
-            var baseCells = table.__getSelectedCellIds();
-            baseCellId = (baseCells.length != 0 && baseCells[0] != [-1, null]) ? baseCells[0] : null;//0
+            baseCellId = (baseCells.length != 0 && baseCells[0] != [-1, null]) ? baseCells[0] : cellId;
             table._baseCellId = baseCellId;
             table._baseSelectedCellIds = [baseCellId];
+          }else if (table._ctrlForSelectionWasPressed){
+            table._baseSelectedCellIds = baseCells;
+            table._ctrlForSelectionWasPressed = false;
           }
           var newSelectedCellIdsIndexes = O$.Table._combineSelectedCellsWithRange(table, table._baseSelectedCellIds, baseCellId, cellId);
           table._rangeEndCellId = cellId;
           table._setSelectedItems(newSelectedCellIdsIndexes);
-
-          cursorCell = bodyRows[cellId[0]]._cells[table._columns.byId(cellId[1])._index];
-          cursorCell._setAsCursor();
         } else {
           table._baseCellId = null;
           table._baseSelectedCellIds = null;
           table._rangeEndCellId = null;
           table._setSelectedItems([cellId]);
-
-          cursorCell = bodyRows[cellId[0]]._cells[table._columns.byId(cellId[1])._index];
-          cursorCell._setAsCursor();
         }
+        if(isScrollEnabled){
+          function prepareCellsRectangleToScroll(cellId){
+            var cellsToScroll = [cellId];
+            if (cellId[0] != 0) {
+              cellsToScroll.push([(cellId[0] - 1), cellId[1]]);
+            }
+            if (cellId[0] != ( bodyRows.length - 1 )) {
+              cellsToScroll.push([(cellId[0] + 1), cellId[1]]);
+            }
+            var columnIndex = columns.byId(cellId[1])._index;
+            if (cellId[1] != columns[0].columnId) {
+              cellsToScroll.push([cellId[0], columns[columnIndex - 1].columnId]);
+            }
+            if (cellId[1] != columns[columns.length - 1].columnId) {
+              cellsToScroll.push([cellId[0], columns[columnIndex + 1].columnId]);
+            }
+            return cellsToScroll;
+          }
+          O$.Table._scrollToCells(table, prepareCellsRectangleToScroll(cellId));
+        }
+        cursorCell = bodyRows[cellId[0]]._cells[columns.byId(cellId[1])._index];
+        cursorCell._setAsCursor();
       }
     } else {
       throw "This method should been called only if cellSelection is turned on";
