@@ -163,7 +163,7 @@ public class SpinnerRenderer extends DropDownComponentRenderer {
         String fieldId = getFieldClientId(context, dropDownComponent);
 
         String value = requestMap.get(fieldId);
-        String state = requestMap.get(fieldId + STATE_PROMPT_SUFFIX);
+        String state = requestMap.get(fieldId + PROMPT_VISIBLE_SUFFIX);
 
         if ("false".equals(state) && value != null) {
             dropDownComponent.setSubmittedValue(value);

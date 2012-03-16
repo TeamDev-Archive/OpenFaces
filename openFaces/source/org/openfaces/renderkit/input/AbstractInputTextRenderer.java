@@ -31,7 +31,7 @@ import java.util.Map;
 
 public abstract class AbstractInputTextRenderer extends RendererBase {
     private static final String DEFAULT_PROMPT_CLASS = "o_inputtext_prompt";
-    private static final String STATE_PROMPT_SUFFIX = "::statePrompt";
+    private static final String PROMPT_VISIBLE_SUFFIX = "::promptVisible";
 
     @Override
     public void encodeBegin(FacesContext facesContext, UIComponent component) throws IOException {
@@ -54,7 +54,7 @@ public abstract class AbstractInputTextRenderer extends RendererBase {
         String clientId = inputText.getClientId(context);
 
         String value = (String) requestMap.get(clientId);
-        String promptVisibleFlag = (String) requestMap.get(clientId + STATE_PROMPT_SUFFIX);
+        String promptVisibleFlag = (String) requestMap.get(clientId + PROMPT_VISIBLE_SUFFIX);
 
         if ("false".equals(promptVisibleFlag) && value != null) {
             inputText.setSubmittedValue(value);
@@ -99,27 +99,30 @@ public abstract class AbstractInputTextRenderer extends RendererBase {
 
         writer.endElement(tagName);
 
-        encodePromptInfo(facesContext, inputText);
-
         encodeInitScript(facesContext, inputText);
     }
 
-    protected void encodeInitScript(FacesContext facesContext, OUIInputText inputText) throws IOException {
+    protected void encodeInitScript(FacesContext context, OUIInputText inputText) throws IOException {
         String promptText = inputText.getPromptText();
-        String promptTextClass = Styles.getCSSClass(facesContext, inputText, inputText.getPromptTextStyle(), StyleGroup.regularStyleGroup(1), inputText.getPromptTextClass(), DEFAULT_PROMPT_CLASS);
-        String rolloverClass = Styles.getCSSClass(facesContext, inputText, inputText.getRolloverStyle(), StyleGroup.regularStyleGroup(2), inputText.getRolloverClass(), null);
-        String focusedClass = Styles.getCSSClass(facesContext, inputText, inputText.getFocusedStyle(), StyleGroup.regularStyleGroup(3), inputText.getFocusedClass(), null);
-        Script initScript = new ScriptBuilder().initScript(facesContext, inputText, "O$.InputText._init",
+        String promptTextClass = Styles.getCSSClass(context, inputText, inputText.getPromptTextStyle(), StyleGroup.regularStyleGroup(1), inputText.getPromptTextClass(), DEFAULT_PROMPT_CLASS);
+        String rolloverClass = Styles.getCSSClass(context, inputText, inputText.getRolloverStyle(), StyleGroup.regularStyleGroup(2), inputText.getRolloverClass(), null);
+        String focusedClass = Styles.getCSSClass(context, inputText, inputText.getFocusedStyle(), StyleGroup.regularStyleGroup(3), inputText.getFocusedClass(), null);
+
+        String value = Rendering.convertToString(context, inputText, inputText.getValue());
+        boolean promptVisible = value == null || value.length() == 0;
+        
+        Script initScript = new ScriptBuilder().initScript(context, inputText, "O$.InputText._init",
                 promptText,
                 promptTextClass,
                 rolloverClass,
                 focusedClass,
-                inputText.isDisabled());
+                inputText.isDisabled(),
+                promptVisible);
 
-        Styles.renderStyleClasses(facesContext, inputText);
-        Rendering.renderInitScript(facesContext, initScript,
-                Resources.utilJsURL(facesContext),
-                Resources.internalURL(facesContext, "input/inputText.js")
+        Styles.renderStyleClasses(context, inputText);
+        Rendering.renderInitScript(context, initScript,
+                Resources.utilJsURL(context),
+                Resources.internalURL(context, "input/inputText.js")
         );
     }
 
@@ -129,18 +132,4 @@ public abstract class AbstractInputTextRenderer extends RendererBase {
 
     protected void writeTagContent(FacesContext context, OUIInputText quiInputText) throws IOException {
     }
-
-    private void encodePromptInfo(FacesContext context, OUIInputText inputText) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        String clientId = inputText.getClientId(context);
-        writer.startElement("input", inputText);
-        writeAttribute(writer, "type", "hidden");
-        writeAttribute(writer, "id", clientId + STATE_PROMPT_SUFFIX);
-        writeAttribute(writer, "name", clientId + STATE_PROMPT_SUFFIX);
-        String value = Rendering.convertToString(context, inputText, inputText.getValue());
-        boolean valueExists = value != null && value.length() > 0;
-        writeAttribute(writer, "value", String.valueOf(!valueExists));
-        writer.endElement("input");
-    }
-
 }

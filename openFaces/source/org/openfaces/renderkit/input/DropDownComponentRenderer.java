@@ -37,7 +37,7 @@ import java.util.List;
 public abstract class DropDownComponentRenderer extends RendererBase {
     public static final String POPUP_SUFFIX = Rendering.SERVER_ID_SUFFIX_SEPARATOR + "popup";
     public static final String FIELD_SUFFIX = "::field";
-    protected static final String STATE_PROMPT_SUFFIX = "::statePrompt";
+    protected static final String PROMPT_VISIBLE_SUFFIX = "::promptVisible";
 
     public static final String BUTTON_SUFFIX = "::button";
 
@@ -132,8 +132,8 @@ public abstract class DropDownComponentRenderer extends RendererBase {
 
         writer.startElement("input", fieldComponent);
         writeAttribute(writer, "type", "hidden");
-        writeAttribute(writer, "id", getFieldClientId(context, (DropDownComponent) component) + STATE_PROMPT_SUFFIX);
-        writeAttribute(writer, "name", getFieldClientId(context, (DropDownComponent) component) + STATE_PROMPT_SUFFIX);
+        writeAttribute(writer, "id", getFieldClientId(context, (DropDownComponent) component) + PROMPT_VISIBLE_SUFFIX);
+        writeAttribute(writer, "name", getFieldClientId(context, (DropDownComponent) component) + PROMPT_VISIBLE_SUFFIX);
         if (value != null && value.length() > 0)
             writeAttribute(writer, "value", "false");
         else

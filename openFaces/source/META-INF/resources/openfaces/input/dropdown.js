@@ -21,7 +21,7 @@ O$.DropDown = {
                        promptTextClass) {
     var dropDown = O$.initComponent(dropDownId, null, {
       _field: O$(dropDownId + "::field"),
-      _statePrompt: O$(dropDownId + "::field" + "::statePrompt"),
+      _promptVisible: O$(dropDownId + "::field" + "::promptVisible"),
       _initialText: initialText
     });
 
@@ -46,10 +46,10 @@ O$.DropDown = {
       if ((initialText.length = 0 && dropDown._field.value.length == 0) ||
           (initialText.length = 0 && dropDown._field.value == dropDown._promptText)) {
         //needed for FireFox, when press F5 key
-        dropDown._statePrompt.value = true;
+        dropDown._promptVisible.value = true;
       }
     } else
-      dropDown._statePrompt.value = false;
+      dropDown._promptVisible.value = false;
 
     dropDown._fieldClass = O$.DropDown._getClassName(fieldClass);
     if (dropDown != field)
@@ -88,11 +88,11 @@ O$.DropDown = {
       }
 
       if (dropDown._promptText) {
-        if ((dropDown._field.value == dropDown._promptText) && (dropDown._statePrompt.value == "true")) {
+        if ((dropDown._field.value == dropDown._promptText) && (dropDown._promptVisible.value == "true")) {
           if (promptTextClass)
             O$.excludeClassNames(dropDown._field, [promptTextClass]);
           dropDown._field.value = "";
-          dropDown._statePrompt.value = false;
+          dropDown._promptVisible.value = false;
         }
       }
     };
@@ -125,9 +125,9 @@ O$.DropDown = {
               dropDown._field.value = dropDown._promptText;
             }, 1);
 
-            dropDown._statePrompt.value = true;
+            dropDown._promptVisible.value = true;
           } else
-            dropDown._statePrompt.value = false;
+            dropDown._promptVisible.value = false;
         }
       }, 1);
     });
@@ -156,7 +156,7 @@ O$.DropDown = {
         if (promptTextClass) {
           O$.appendClassNames(dropDown._field, [dropDown._promptTextClass]);
         }
-        dropDown._statePrompt.value = true;
+        dropDown._promptVisible.value = true;
       } else {
         dropDown._initValue(initialText);
       }

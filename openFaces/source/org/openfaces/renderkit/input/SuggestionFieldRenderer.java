@@ -54,8 +54,8 @@ public class SuggestionFieldRenderer extends DropDownFieldRenderer {
 
         writer.startElement("input", dropDownComponent);
         writeAttribute(writer, "type", "hidden");
-        writeAttribute(writer, "id", getFieldClientId(context, dropDownComponent) + STATE_PROMPT_SUFFIX);
-        writeAttribute(writer, "name", getFieldClientId(context, dropDownComponent) + STATE_PROMPT_SUFFIX);
+        writeAttribute(writer, "id", getFieldClientId(context, dropDownComponent) + PROMPT_VISIBLE_SUFFIX);
+        writeAttribute(writer, "name", getFieldClientId(context, dropDownComponent) + PROMPT_VISIBLE_SUFFIX);
         if (value != null && value.length() > 0)
             writeAttribute(writer, "value", "false");
         else

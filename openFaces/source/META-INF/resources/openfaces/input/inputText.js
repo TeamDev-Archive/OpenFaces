@@ -16,7 +16,13 @@ O$.InputText = {
                   promptTextClass,
                   rolloverClass,
                   focusedClass,
-                  disabled) {
+                  disabled,
+                  promptVisible
+          ) {
+    var promptVisibleFieldName = componentId + "::promptVisible";
+    O$.setHiddenField(O$(componentId), promptVisibleFieldName, promptVisible);
+
+    var promptVisibleField = O$(promptVisibleFieldName);
     var inputText = O$.initComponent(componentId, {
       rollover: !disabled ? rolloverClass : null,
       focused: focusedClass
@@ -25,7 +31,7 @@ O$.InputText = {
         if (inputText._focused)
           return inputText.value;
 
-        if (statePrompt.value == "true")
+        if (promptVisibleField.value == "true")
           return "";
         return inputText.value;
       },
@@ -36,34 +42,33 @@ O$.InputText = {
         inputText.value = value;
         if (inputText._focused)
           return;
-        statePrompt.value = !value;
+        promptVisibleField.value = !value;
         O$.setStyleMappings(inputText, {prompt: (value ? null : promptTextClass)});
         if (!value && promptText)
             inputText.value = promptText;
       }
 
     });
-    var statePrompt = O$(componentId + "::statePrompt");
 
     if (promptText) {
       if (inputText.value.length == 0 ||
-          ((inputText.value == promptText) && statePrompt.value == "true")) {   // needed for FireFox, when press F5 key
+          ((inputText.value == promptText) && promptVisibleField.value == "true")) {   // needed for FireFox, when press F5 key
         inputText.value = promptText;
         O$.setStyleMappings(inputText, {prompt: promptTextClass});
-        statePrompt.value = true;
+        promptVisibleField.value = true;
       }
     } else
-      statePrompt.value = false;
+      promptVisibleField.value = false;
 
 
     O$.addEventHandler(inputText, "focus", function() {
       inputText._focused = true;
 
       if (promptText) {
-        if ((inputText.value == promptText) && (statePrompt.value == "true")) {
+        if ((inputText.value == promptText) && (promptVisibleField.value == "true")) {
           inputText.value = "";
           O$.setStyleMappings(inputText, {prompt: null});
-          statePrompt.value = false;
+          promptVisibleField.value = false;
         }
       }
     });
@@ -72,12 +77,12 @@ O$.InputText = {
       inputText._focused = false;
 
       if (promptText) {
-        if ((inputText.value.length == 0)) {
+        if (inputText.value.length == 0) {
           inputText.value = promptText;
           O$.setStyleMappings(inputText, {prompt: promptTextClass});
-          statePrompt.value = true;
+          promptVisibleField.value = true;
         } else
-          statePrompt.value = false;
+          promptVisibleField.value = false;
       }
     });
 
