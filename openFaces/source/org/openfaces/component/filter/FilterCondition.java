@@ -82,11 +82,11 @@ public enum FilterCondition {
 
     private static final Map<String, FilterCondition> mapByName = new HashMap<String, FilterCondition>();
     static{
-        for (FilterCondition filterCondition : values()){
+        for (FilterCondition filterCondition : values()) {
             mapByName.put(filterCondition.getName(), filterCondition);
         }
     }
-    public static FilterCondition byName(String name){
+    public static FilterCondition byName(String name) {
         return mapByName.get(name);
     }
 

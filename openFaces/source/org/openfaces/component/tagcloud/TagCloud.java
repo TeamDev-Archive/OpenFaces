@@ -395,12 +395,12 @@ public class TagCloud extends OUICommand {
         Object prevValue = requestMap.get(var);
         ValueExpression keyValueExpression = getItemKey();
         int itemHashCode;
-        for(Object item : itemsData){
+        for (Object item : itemsData) {
             requestMap.put(var, item);
             itemHashCode = keyValueExpression != null ?
                     getVarParameter(keyValueExpression).hashCode() : item.hashCode();
 
-            if(itemHashCode == Integer.parseInt(hashCode)){
+            if (itemHashCode == Integer.parseInt(hashCode)) {
                 return;
             }
             requestMap.put(getVar(), prevValue);

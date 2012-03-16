@@ -18,7 +18,7 @@ O$._RegexValidator = function(summary, detail, regexPattern, trimNeeded, type) {
   this.type = type;
   try {
     this.regExp = new RegExp(regexPattern);
-  } catch(e) {
+  } catch (e) {
     alert("Error in O$._RegexValidator. Currently defined pattern '" + this.regexPattern + "' is invalid.");
   }
 

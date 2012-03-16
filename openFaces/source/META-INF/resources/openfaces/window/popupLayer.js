@@ -151,7 +151,7 @@ O$.PopupLayer = {
           area.style.top = "0px";
 
           var maxWidth = null;
-          if (O$.isExplorer() && O$.isQuirksMode()){
+          if (O$.isExplorer() && O$.isQuirksMode()) {
             // Workaround for "Internet Explorer box model bug"
             maxWidth = width ? O$.calculateNumericCSSValue(width) - autosizingMargins.width : null;
           } else {

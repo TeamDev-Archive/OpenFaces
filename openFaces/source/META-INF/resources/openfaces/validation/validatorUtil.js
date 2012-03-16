@@ -265,7 +265,7 @@ O$.getMessages = function(input) {
   if (!input._of_messages) {
     try {
       input._of_messages = [];
-    } catch(e) {
+    } catch (e) {
     }
   }
   return input._of_messages;
@@ -304,7 +304,7 @@ O$.addMessageFromChild = function(messages, child) {
     for (var i = 0; i < im.length; i++) {
       messages.push(im[i]);
     }
-  } catch(e) {
+  } catch (e) {
     //todo: to something
   }
 

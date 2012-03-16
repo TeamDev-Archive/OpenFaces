@@ -35,7 +35,7 @@ O$._NumberConverterValidator.prototype.validate = function(input) {
       } else {
         return true;
       }
-    } catch(x) {
+    } catch (x) {
     }
     //if (!O$.isLong(value)) {
     //O$.addMessage(input, this.conversionSummary, this.conversionDetail);

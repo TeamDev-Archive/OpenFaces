@@ -24,7 +24,7 @@ import java.util.List;
 public class TagsAlphabeticallyOrdering extends AbstractTagsOrderingStrategy {
     
     public void order(List<TagCloudItem> items) {
-        Collections.sort(items, new Comparator<TagCloudItem>(){
+        Collections.sort(items, new Comparator<TagCloudItem>() {
             public int compare(TagCloudItem o1, TagCloudItem o2) {
                 return o1.getTextValue().compareTo(o2.getTextValue());
             }

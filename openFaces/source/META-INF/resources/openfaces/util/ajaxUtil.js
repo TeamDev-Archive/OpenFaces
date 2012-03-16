@@ -251,7 +251,7 @@ window.OpenFaces.Ajax = {
     var runScriptState = {
       _postExecuteHandlers: []
     };
-    runScriptState.postExecuteHandler = function(handler){
+    runScriptState.postExecuteHandler = function(handler) {
         runScriptState._postExecuteHandlers.push(handler);
     };
     O$.Ajax._currentlyScheduledScript = runScriptState;
@@ -261,7 +261,7 @@ window.OpenFaces.Ajax = {
         script();
         if (O$.Ajax._currentlyScheduledScript == runScriptState) {
           O$.Ajax._currentlyScheduledScript = null;
-          for (var i =0; i < runScriptState._postExecuteHandlers.length; i++){
+          for (var i =0; i < runScriptState._postExecuteHandlers.length; i++) {
             runScriptState._postExecuteHandlers[i]();
           }
         }
@@ -389,7 +389,7 @@ window.OpenFaces.Ajax = {
       fireEvent("onajaxend", ajaxendEvent);
       function destroyMemoryLeaks() {
         if (!(options._of_skipExecute || options._of_ajax_portions)) {
-          for (var render in parentOfReloadedComponents){
+          for (var render in parentOfReloadedComponents) {
             var parentOfReloadedComponent = parentOfReloadedComponents[render];
             var reloadedComponent = getNotDomComponentById(render, parentOfReloadedComponent);
             if (reloadedComponent != null) {
@@ -802,7 +802,7 @@ window.OpenFaces.Ajax = {
     var confirmation = O$(confirmationId);
     if (document._ajaxInProgressMessage._blockingLayer)
       O$.correctElementZIndex(confirmation, document._ajaxInProgressMessage._blockingLayer);
-    confirmation.runConfirmedFunction(function(){
+    confirmation.runConfirmedFunction(function() {
       O$.Ajax.reloadPage(location);
     });
   },

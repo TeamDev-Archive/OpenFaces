@@ -70,11 +70,11 @@ public class TagCloudItem extends OUIOutput {
                DEFAULT_ROLLOVER_CLASS_3D : DEFAULT_ROLLOVER_CLASS;
     }
 
-    private String getDefaultTextClass(){
+    private String getDefaultTextClass() {
         return getRolloverStyle() != null ? "" : DEFAULT_INNER_TEXT_CLASS;
     }
 
-    private String getDefaultWeightClass(){
+    private String getDefaultWeightClass() {
         return getRolloverStyle() != null ? "" : DEFAULT_INNER_WEIGHT_CLASS;
     }
 
@@ -96,11 +96,11 @@ public class TagCloudItem extends OUIOutput {
                 getDefaultRolloverClass());
     }
 
-    private String getTextStyleClass(FacesContext context){
+    private String getTextStyleClass(FacesContext context) {
         return Styles.mergeClassNames(getDefaultTextClass(),getTextClass());
     }
 
-    private String getWeightStyleClass(FacesContext context){
+    private String getWeightStyleClass(FacesContext context) {
         return Styles.mergeClassNames(getDefaultWeightClass(),getWeightClass());
     }
 
@@ -244,7 +244,7 @@ public class TagCloudItem extends OUIOutput {
         StringBuilder styleBuilder = new StringBuilder("");
         if (weightStyle != null)
             styleBuilder.append(weightStyle);
-        if (!cloud.isItemWeightVisible()){
+        if (!cloud.isItemWeightVisible()) {
             styleBuilder.append(";display:none;");
         } else{
             styleBuilder.append(";display:inline;");

@@ -137,7 +137,7 @@ public class SliderRenderer extends RendererBase {
             if (typeOfValue.equals(Double.class) || typeOfValue.equals(Float.class)
                     || typeOfValue.equals(BigDecimal.class)) {
                 return false;
-            }else{
+            } else {
                 return true;
             }
         }

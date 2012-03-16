@@ -40,7 +40,7 @@ public class SelectBooleanCheckboxTag extends AbstractUIInputTag {
         if (!setAsValueExpressionIfPossible(component, "value", valueDeclaration)) {
             if (valueDeclaration.equals("true"))
                 sbc.setValue(true);
-            else if(valueDeclaration.equals("false"))
+            else if (valueDeclaration.equals("false"))
                 sbc.setValue(false);
             else if (valueDeclaration.equals("undefined"))
                 sbc.setValue(null);

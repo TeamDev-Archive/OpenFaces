@@ -78,7 +78,7 @@ public class CalendarUtil {
     }
 
     public static SimpleDateFormat getSimpleDateFormat(String dateFormat, String defaultDateFormat, String pattern,
-                                                       String defaultPattern, Locale locale, TimeZone timeZone){
+                                                       String defaultPattern, Locale locale, TimeZone timeZone) {
         SimpleDateFormat sdf;
         if (pattern != null) {
             sdf = new SimpleDateFormat(pattern, locale);

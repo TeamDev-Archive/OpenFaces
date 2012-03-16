@@ -202,7 +202,7 @@ O$.extend(O$.DateTimeFormat.prototype, {
   format: function(dDate, format) {
     var portions = [];
     var currentPortion = "";
-    for(var charIndex = 0; charIndex < format.length; charIndex++) {
+    for (var charIndex = 0; charIndex < format.length; charIndex++) {
       var ch = format.charAt(charIndex);
       if (ch == "\'") {
         portions.push(currentPortion);

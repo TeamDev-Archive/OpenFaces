@@ -84,7 +84,7 @@ O$.DateChooser = {
 
       try {
         dc._field.focus();
-      } catch(e) {
+      } catch (e) {
         //IE
       }
       O$.DateChooser._updateDCField(dc, date != null ? new Date(date) : null);

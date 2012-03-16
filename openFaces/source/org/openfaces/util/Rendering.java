@@ -408,8 +408,7 @@ public class Rendering {
 
             try {
                 converter = context.getApplication().createConverter(arrayComponentType);
-            }
-            catch (FacesException e) {
+            } catch (FacesException e) {
                 return submittedValue;
             }
         }
