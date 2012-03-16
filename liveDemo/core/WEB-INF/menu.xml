@@ -348,11 +348,11 @@
     </demos>
   </menuItem>
   <menuItem>
-    <name>FileUpload</name>
-    <componentName>FileUpload</componentName>
+    <name>File Upload</name>
+    <componentName>File Upload</componentName>
     <url>/fileupload/FileUpload.jsf</url>
     <shortPath>/fileupload/</shortPath>
-    <image>Slider</image>
+    <image>FileUpload</image>
     <selectedImage>/images/components/titles/Slider.png</selectedImage>
     <keyFeatures>
       <feature>Multiple files upload support</feature>
