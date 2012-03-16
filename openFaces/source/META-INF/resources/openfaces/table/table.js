@@ -1927,10 +1927,12 @@ O$.Table = {
           }
         }
         table._setSelectedItems(selectedItems);
-        if (selectedItems.length !=0){
+        if (selectedItems.length != 0) {
           var cellId = selectedItems[selectedItems.length - 1];
           var cursorCell = rows[cellId[0]]._cells[table._columns.byId(cellId[1])._index];
           waitAndSetCursor(cursorCell);
+          table._baseCellId = selectedItems[0];
+          table._rangeEndCellId = cellId;
 
         }
       }
