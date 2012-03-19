@@ -5693,7 +5693,7 @@
 
   <tag>
     <description>The SingleCellSelection component is used for single cell selection. Can be specified only as
-      a child tag for the {@link dataTable} and  {@link treeTable} components.
+      a child tag for the {@link dataTable} and {@link treeTable} components.
     </description>
     <name>singleCellSelection</name>
     <tag-class>org.openfaces.taglib.jsp.table.SingleCellSelectionJspTag</tag-class>
@@ -5727,7 +5727,7 @@
     <attribute>
       <description>Enables possibility to specify which cells are selectable.  This attribute is a MethodBinding that
         must point to the method that return boolean value. This method is called for every cell.
-        Note that using cellSelectable and selectableCells  attributes together is not allowed.
+        Note that using cellSelectable and selectableCells attributes together is not allowed.
       </description>
       <name>cellSelectable</name>
       <deferred-method>
@@ -5739,8 +5739,8 @@
     </attribute>
     <attribute>
       <description>Enables possibility to specify which cells are selectable.  This attribute is a MethodBinding that
-        must point to the method that return array of  booleans that represent columns. This method is called for every row.
-        Note that using cellSelectable and selectableCells  attributes together is not allowed.
+        must point to the method that return array of booleans that represent columns. This method is called for every row.
+        Note that using cellSelectable and selectableCells attributes together is not allowed.
       </description>
       <name>selectableCells</name>
       <deferred-method>
@@ -5954,7 +5954,7 @@
   </tag>
   <tag>
     <description>The MultipleCellSelection component is used for single cell selection. Can be specified only as
-      a child tag for the {@link dataTable} and  {@link treeTable} components.
+      a child tag for the {@link dataTable} and {@link treeTable} components.
     </description>
     <name>multipleCellSelection</name>
     <tag-class>org.openfaces.taglib.jsp.table.MultipleCellSelectionJspTag</tag-class>
@@ -5988,7 +5988,7 @@
     <attribute>
       <description>Enables possibility to specify which cells are selectable.  This attribute is a MethodBinding that
         must point to the method that return boolean value. This method is called for every cell.
-        Note that using cellSelectable and selectableCells  attributes together is not allowed.
+        Note that using cellSelectable and selectableCells attributes together is not allowed.
       </description>
       <name>cellSelectable</name>
       <deferred-method>
@@ -6000,8 +6000,8 @@
     </attribute>
     <attribute>
       <description>Enables possibility to specify which cells are selectable.  This attribute is a MethodBinding that
-        must point to the method that return array of  booleans that represent columns. This method is called for every row.
-        Note that using cellSelectable and selectableCells  attributes together is not allowed.
+        must point to the method that return array of booleans that represent columns. This method is called for every row.
+        Note that using cellSelectable and selectableCells attributes together is not allowed.
       </description>
       <name>selectableCells</name>
       <deferred-method>
@@ -21802,7 +21802,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @value "up_90" labels are rotated bottom-up by 90 degrees -->
       <!-- @value "up_45" labels are rotated bottom-up by 45 degrees -->
       <!-- @value "down_90" labels are rotated top-to-bottom by 90 degrees -->
-      <!-- @value "down_45" labels are rotated top-to-bottom by 45 degrees  -->
+      <!-- @value "down_45" labels are rotated top-to-bottom by 45 degrees -->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -32895,7 +32895,7 @@ and it is automatically triggered on any form submission. -->
       <deferred-value>
         <type>boolean</type>
       </deferred-value>
-      <!-- @bindingType  boolean-->
+      <!-- @bindingType boolean-->
       <!-- @default true -->
       <!-- @el true -->
     </attribute>
@@ -45236,10 +45236,10 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>The text which appears as status when file size is more than acceptable (this param should be specified  in web.xml or as fileSizeLimit attribute).
-        Also you can display size of uploaded file in useful form - in bytes[B], kilobytes[KB] or megabytes[MB].
-        For example: '{size} [MB] MB is bigger than allowed'
-        By default, fileSize is presented in kilobytes.
+      <description>The text which appears as status when file size is more than acceptable (this param should be
+        specified in web.xml or as fileSizeLimit attribute). Also you can display size of uploaded file in useful form -
+        in bytes[B], kilobytes[KB] or megabytes[MB]. For example: '{size} [MB] MB is bigger than allowed'. By default,
+        fileSize is presented in kilobytes.
       </description>
       <name>fileSizeLimitErrorText</name>
       <deferred-value>
@@ -45826,14 +45826,14 @@ entering a value and returns a list of suggestions from the server -->
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType org.openfaces.component.input.FileUploadMode  -->
+      <!-- @bindingType org.openfaces.component.input.FileUploadMode -->
       <!-- @default "parallel" -->
       <!-- @value "parallel" -->
-      <!-- @value "serial" -->
+      <!-- @value "sequential" -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This attribute specifies what components  will be re-rendered when uploading of all files has been finished.
+      <description>This attribute specifies what components will be re-rendered when uploading of all files has been finished.
       </description>
       <name>render</name>
       <deferred-value>
@@ -45964,7 +45964,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>A style for information about file: its fileName and  status.</description>
+      <description>A style for information about file: its fileName and status.</description>
       <name>fileInfoAreaStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -45974,7 +45974,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A CSS class for information about file: its fileName and  status.</description>
+      <description>A CSS class for information about file: its fileName and status.</description>
       <name>fileInfoAreaClass</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -46078,7 +46078,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>The text which appears as status when file size is more than acceptable (this param should be specified  in web.xml or as fileSizeLimit attribute).
+      <description>The text which appears as status when file size is more than acceptable (this param should be
+        specified in web.xml or as fileSizeLimit attribute).
         Also you can display size of uploaded file in useful form - in bytes[B], kilobytes[KB] or megabytes[MB].
         For example: '{size} [MB] MB is bigger than allowed'
         By default, fileSize is presented in kilobytes.
@@ -46561,7 +46562,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>Text for dropTarget.
-        Default value depends on layoutMode attribute:  if it is assigned to compact -> "Drop file"  else  "Drop file here"
+        Default value depends on layoutMode attribute:  if it is assigned to compact -> "Drop file"  else "Drop file here"
       </description>
       <name>dropTargetText</name>
       <deferred-value>
@@ -46595,7 +46596,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This attribute specifies what components  will be re-rendered when uploading of all files has been finished.
+      <description>This attribute specifies what components will be re-rendered when uploading of all files has been finished.
       </description>
       <name>render</name>
       <deferred-value>
@@ -46642,7 +46643,7 @@ entering a value and returns a list of suggestions from the server -->
       <deferred-value>
         <type>org.openfaces.component.input.SingleFileUploadLayoutMode</type>
       </deferred-value>
-      <!-- @bindingType org.openfaces.component.input.SingleFileUploadLayoutMode  -->
+      <!-- @bindingType org.openfaces.component.input.SingleFileUploadLayoutMode -->
       <!-- @default "full" -->
       <!-- @value "full" -->
       <!-- @value "compact" -->
@@ -46683,7 +46684,7 @@ entering a value and returns a list of suggestions from the server -->
       <description>
         This attribute defines if stop icon will be displayed near progress while file is uploading.
         Note that  singleFileUpload component couldn't has two stop buttons - one instead browseButton, and another one is near progressBar.
-        In this case, attribute is assigned  to 'false'
+        In this case, attribute is assigned to 'false'
         Default value is depends on layoutMode attribute If it is assigned to "full" -> 'false' else 'true'.
       </description>
       <name>stopButtonNearProgress</name>

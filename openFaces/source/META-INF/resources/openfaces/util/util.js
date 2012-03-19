@@ -1210,7 +1210,7 @@ if (!window.O$) {
     if (escapeHtml === false) {
       try {
         element.innerHTML = text;
-      } catch(e) {
+      } catch (e) {
         alert("Error: " + e + "; Couldn't set innerHTML to: \"" + text + "\"");
         throw e;
       }
@@ -1956,7 +1956,7 @@ if (!window.O$) {
 
             if (c.nodeName.toLowerCase() == "input" && c.type == "text")
               O$._setCaretPosition(c, c.value.length);
-          } catch(ex) {
+          } catch (ex) {
           }
           O$._activeElement = c;
           focused = true;
@@ -2039,7 +2039,7 @@ if (!window.O$) {
 
     if (O$.isExplorer6()) { // workaround for <button> tag submission bug in IE6, see OF-112
       var buttons = document.getElementsByTagName("button");
-      for(var i = 0; i < buttons.length; i++) {
+      for (var i = 0; i < buttons.length; i++) {
         var btn = buttons[i];
         function setClickHandler(btn) {
           O$.addEventHandler(btn, "click", function() {
@@ -2605,7 +2605,7 @@ if (!window.O$) {
       draggable._lastDragY = dragY;
       draggable._lastDragOffsetLeft = offsetLeftAfterDragging;
       draggable._lastDragOffsetTop = offsetTopAfterDragging;
-      if(draggable._dragEl && draggable._dragEl._onresizing){
+      if(draggable._dragEl && draggable._dragEl._onresizing) {
         draggable._dragEl._onresizing();
       }
       O$.cancelEvent(evt);
@@ -2859,7 +2859,7 @@ if (!window.O$) {
       }
       try {
         this._focusControl.focus();
-      } catch(e) {
+      } catch (e) {
         // in IE hidden element can't receive focus
       }
     };
@@ -3010,7 +3010,7 @@ if (!window.O$) {
 
   O$.removeCssRule = function (nameOfCssClass, _iePredefClasses) {
 
-    if (_iePredefClasses){
+    if (_iePredefClasses) {
       _iePredefClasses._obtained--;
       return;
     }
@@ -4149,11 +4149,11 @@ if (!window.O$) {
          parent = parent.parentNode) {
       var parentScrollable;
       if (parent != document) {
-        if (scrollVertical){
+        if (scrollVertical) {
           var overflowY = O$.getElementStyle(parent, "overflow-y");
           parentScrollable = overflowY != "visible";
         }
-        if (!parentScrollable && scrollHorizontal){
+        if (!parentScrollable && scrollHorizontal) {
           var overflowX = O$.getElementStyle(parent, "overflow-x");
           parentScrollable = overflowX != "visible";
         }
@@ -5022,7 +5022,7 @@ if (!window.O$) {
       if (field.focus) {
         try {
           field.focus();
-        } catch(e) {
+        } catch (e) {
           // ignore failed focus attempts
         }
         var len = field.value.length;

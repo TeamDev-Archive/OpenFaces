@@ -101,7 +101,7 @@ O$.Tables = {
   _fixChromeCrashWithEmptyTR : function(table) {
     if (O$.isChrome()) {
       [table.header, table.body, table.footer].forEach(function (section) {
-        if (section && section._scrollingAreas){
+        if (section && section._scrollingAreas) {
           section._scrollingAreas.forEach(function (a) {
             if (!a) return;
             var areaTable = a._table;
@@ -1582,13 +1582,13 @@ O$.Tables = {
                                         // be required, see the commented usage in column.setWidth
     if (column.footer) {
       column._footerCellsClass = table._params.columnWidthControlRequired ? newClass("overflow: hidden") : defaultSharedColumnStyle;
-      if (table._params.columnWidthControlRequired){
+      if (table._params.columnWidthControlRequired) {
         O$.addUnloadHandler(table, function () {
           O$.removeCssRule(column._footerCellsClass.classObj.selectorText,column._footerCellsClass._iePredefClasses);
         });
       }
     }
-    if (table._params.columnWidthControlRequired){
+    if (table._params.columnWidthControlRequired) {
         O$.addUnloadHandler(table, function () {
           O$.removeCssRule(column._headerCellsClass.classObj.selectorText,column._headerCellsClass._iePredefClasses);
           O$.removeCssRule(column._bodyCellsClass.classObj.selectorText, column._bodyCellsClass._iePredefClasses);
@@ -1871,8 +1871,8 @@ O$.Tables = {
 
   _assignHeaderBoxStyle: function(headerBox, table, columnId, additionalClassName) {
     var column = null;
-    table._columns.forEach(function(current){
-      if (current.columnId == columnId){
+    table._columns.forEach(function(current) {
+      if (current.columnId == columnId) {
         column = current;
       }
     });
@@ -1923,7 +1923,7 @@ O$.Tables = {
   _initBodyCell: function(cell, column) {
     cell._column = column;
 
-    cell._setAsCursor = function(forceUpdate){
+    cell._setAsCursor = function(forceUpdate) {
       var row = cell._row;
       var table = row._table;
       if (table._cursor != null || forceUpdate) {

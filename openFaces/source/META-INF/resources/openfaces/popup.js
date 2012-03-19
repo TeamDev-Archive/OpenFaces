@@ -148,7 +148,7 @@ O$.Popup = {
   _hideAllPopupsExceptOne: function(popupToRetain) {
     if (!O$._popupsOnPage)
       return;
-    O$._popupsOnPage.forEach(function(popupId){
+    O$._popupsOnPage.forEach(function(popupId) {
       var currPopup = O$(popupId) || O$(popupId + O$.Popup.PULLED_OUT_ID_SUFFIX);
       if (!currPopup)
         return; // popup can be removed from page with A4J
@@ -172,7 +172,7 @@ document._addClickListener(function(e) {
 
   var clickedElementId = clickedElement.id;
 
-  O$._popupsOnPage.forEach(function(popupId){
+  O$._popupsOnPage.forEach(function(popupId) {
     var popup = O$(popupId) || O$(popupId + O$.Popup.PULLED_OUT_ID_SUFFIX);
     if (!popup)
       return; // popup can be removed from page with A4J
@@ -187,7 +187,7 @@ O$.addEventHandler(document, "keydown", function(e) {
   var evt = O$.getEvent(e);
   if (evt.keyCode != 27 || !O$._popupsOnPage) return;
 
-  O$._popupsOnPage.forEach(function(popupId){
+  O$._popupsOnPage.forEach(function(popupId) {
     var popup = O$(popupId) || O$(popupId + O$.Popup.PULLED_OUT_ID_SUFFIX);
     if (!popup)
       return; // popup can be removed from page with A4J

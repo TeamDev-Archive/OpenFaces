@@ -296,7 +296,7 @@ public class JSONObject {
         populateInternalMap(bean, includeSuperClass);
     }
 
-    private void populateInternalMap(Object bean, boolean includeSuperClass){
+    private void populateInternalMap(Object bean, boolean includeSuperClass) {
         Class klass = bean.getClass();
 
         /* If klass.getSuperClass is System class then force includeSuperClass to false. */

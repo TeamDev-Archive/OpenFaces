@@ -62,7 +62,7 @@ public class DateChooserRenderer extends DropDownComponentRenderer {
         String clientId = component.getClientId(context) + FIELD_SUFFIX;
         String value = (String) requestMap.get(clientId);
 
-        String state = (String) requestMap.get(clientId + STATE_PROMPT_SUFFIX);
+        String state = (String) requestMap.get(clientId + PROMPT_VISIBLE_SUFFIX);
 
         if ((state != null && state.equals("false")) && value != null) {
             ((EditableValueHolder) component).setSubmittedValue(value);
