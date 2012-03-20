@@ -28,7 +28,4 @@ public class MultipleCellSelectionJspTag extends AbstractCellSelectionJspTag {
         getDelegate().setPropertyValue("cellIds", columnId);
     }
 
-    public void setFillDirection(ValueExpression fillDirection) {
-        getDelegate().setPropertyValue("fillDirection", fillDirection);
-    }
 }

@@ -33,7 +33,6 @@ public class MultipleCellSelection extends AbstractCellSelection {
     private List<CellId> cellIds;
     private List<CellId> rowKeyCellIds;
 
-    private FillDirectionForSelection fillDirection;
 
     public MultipleCellSelection() {
     }
@@ -46,8 +45,7 @@ public class MultipleCellSelection extends AbstractCellSelection {
     public Object saveState(FacesContext context) {
         rememberByKeys();
         Object superState = super.saveState(context);
-        return new Object[]{superState, rowKeyCellIds,
-                fillDirection};
+        return new Object[]{superState, rowKeyCellIds};
     }
 
     @Override
@@ -57,7 +55,6 @@ public class MultipleCellSelection extends AbstractCellSelection {
         final List<CellId> rowKeyCellIds = (List<CellId>) stateArray[1];
         setRowKeyCellIds(rowKeyCellIds);
         setColumnsForCellsId(rowKeyCellIds);
-        fillDirection = (FillDirectionForSelection) stateArray[2];
     }
 
     private void setColumnsForCellsId(List<CellId> rowKeyCellIds) {
@@ -208,16 +205,4 @@ public class MultipleCellSelection extends AbstractCellSelection {
 
     }
 
-    public FillDirectionForSelection getFillDirection() {
-        return ValueBindings.get(this, "fillDirection", fillDirection, FillDirectionForSelection.RECTANGULAR, FillDirectionForSelection.class);
-    }
-
-    public void setFillDirection(FillDirectionForSelection fillDirection) {
-        this.fillDirection = fillDirection;
-    }
-
-    @Override
-    protected String getFillDirectionForSelection() {
-        return getFillDirection().toString();
-    }
 }

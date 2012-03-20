@@ -34,6 +34,7 @@ public abstract class AbstractCellSelection extends AbstractTableSelection {
     private JSONArray cellsSelectableInJSON;
     private String cursorStyle;
     private String cursorClass;
+    private FillDirectionForSelection fillDirection;
 
     protected AbstractCellSelection() {
     }
@@ -49,7 +50,8 @@ public abstract class AbstractCellSelection extends AbstractTableSelection {
                 cellSelectable,
                 selectableCells,
                 cursorStyle,
-                cursorClass
+                cursorClass,
+                fillDirection
         };
     }
 
@@ -62,6 +64,7 @@ public abstract class AbstractCellSelection extends AbstractTableSelection {
         selectableCells = (MethodExpression) stateArray[i++];
         cursorStyle = (String) stateArray[i++];
         cursorClass = (String) stateArray[i++];
+        fillDirection = (FillDirectionForSelection) stateArray[i++];
     }
 
     @Override
@@ -138,5 +141,18 @@ public abstract class AbstractCellSelection extends AbstractTableSelection {
         selectionCls += " " + Styles.getCSSClass_dontCascade(
                 context, table, getCursorStyle(), StyleGroup.selectedStyleGroup(), getCursorClass(), null);
         getAttributes().put(ATTR_SELECTION_CURSOR_CLS, selectionCls);
+    }
+
+    public FillDirectionForSelection getFillDirection() {
+        return ValueBindings.get(this, "fillDirection", fillDirection, FillDirectionForSelection.RECTANGULAR, FillDirectionForSelection.class);
+    }
+
+    public void setFillDirection(FillDirectionForSelection fillDirection) {
+        this.fillDirection = fillDirection;
+    }
+
+    @Override
+    protected String getFillDirectionForSelection() {
+        return getFillDirection().toString();
     }
 }

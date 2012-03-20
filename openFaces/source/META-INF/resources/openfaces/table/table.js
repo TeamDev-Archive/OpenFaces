@@ -883,7 +883,7 @@ O$.Table = {
           var bodyRows = table.body._getRows();
           var cursorCell;
           if (!this._multipleSelectionAllowed) {
-            if (noModifiersPressed) {
+            if (!shiftPressed) {
               var cellId = (table._cursorCell != null) ?
                       [table._cursorCell._row._index, table._cursorCell._column.columnId] : [-1, null];
               var newRowId = O$.Table._checkRowNavigation(this, cellId[0], rowCount, e);
@@ -909,6 +909,14 @@ O$.Table = {
                   cursorCell = bodyRows[cellId[0]]._cells[table._columns.byId(newColumnId)._index];
                   cursorCell._setAsCursor();
                   O$.Table._scrollToCells(this, [[cellId[0], newColumnId]]);
+                }else if (table._fillDirection == "document"){
+                  var newCellId = O$.Table._checkCellNavigationInDocumentMode(this, cellId, e);
+                  if (newCellId != null) {
+                    this._setSelectedItems([newCellId]);
+                    cursorCell = bodyRows[newCellId[0]]._cells[table._columns.byId(newCellId[1])._index];
+                    cursorCell._setAsCursor();
+                    O$.Table._scrollToCells(this, [newCellId]);
+                  }
                 }
               }
             }
