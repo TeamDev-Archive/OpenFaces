@@ -1800,11 +1800,7 @@ O$.Table = {
           var col = columns[colIndex];
           col._onresizing = function (index) {
             return function () {
-              if (table._cursorCell && (table._cursorCell._column._index == index ||
-                      table._cursorCell._column._index == index - 1 ||
-                      table._cursorCell._column._index == index + 1 )) {
                 table._cursorCell._setAsCursor(true);
-              }
             }
           }(col._index);
         }
@@ -1895,7 +1891,7 @@ O$.Table = {
             cell = (cell._row) ? cell: cell.parentNode;
             var cellId = [cell._row._index, cell._column.columnId];
             table._isDragSelectionEnabled = false;
-            if ((cellId[0] == table._baseCellId[0]) && (cellId[1] == table._baseCellId[1])) {
+            if (table._baseCellId && (cellId[0] == table._baseCellId[0]) && (cellId[1] == table._baseCellId[1])) {
               table._baseCellId = table._baseCellIdIfNotDnD;
               table._baseSelectedCellIds = [table._baseCellIdIfNotDnD];
               O$.Table._cell_handleSelectionOnClick(event, false);
