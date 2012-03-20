@@ -14,7 +14,6 @@ package org.openfaces.component.table;
 import org.openfaces.component.filter.Filter;
 import org.openfaces.renderkit.table.TreeTableRenderer;
 import org.openfaces.util.AjaxUtil;
-import org.openfaces.util.Environment;
 import org.openfaces.util.ValueBindings;
 
 import javax.el.ValueExpression;
@@ -449,7 +448,7 @@ public class TreeTable extends AbstractTable {
     }
 
     private void updateModelRowDatasAndExpansionData(List<NodeInfoForRow> nodeInfoForRows, int rootNodeCount) {
-        updateModel(nodeInfoForRows);
+        setModelFromNodeInfos(nodeInfoForRows);
         if (!isRendered())
             return;
 
@@ -469,7 +468,7 @@ public class TreeTable extends AbstractTable {
         this.rowIndexToExpansionData = rowIndexToExpansionData;
     }
 
-    private void updateModel(List<NodeInfoForRow> nodeInfoForRows) {
+    private void setModelFromNodeInfos(List<NodeInfoForRow> nodeInfoForRows) {
         List<Object> rowDatas = new ArrayList<Object>(nodeInfoForRows.size());
         List<TreePath> rowKeys = new ArrayList<TreePath>(nodeInfoForRows.size());
         for (NodeInfoForRow nodeInfo : nodeInfoForRows) {
