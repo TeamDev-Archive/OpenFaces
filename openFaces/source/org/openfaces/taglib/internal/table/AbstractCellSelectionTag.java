@@ -12,6 +12,8 @@
 
 package org.openfaces.taglib.internal.table;
 
+import org.openfaces.component.table.FillDirectionForSelection;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
@@ -29,5 +31,6 @@ public abstract class AbstractCellSelectionTag extends AbstractTableSelectionTag
                 null, Boolean.class);
         setStringProperty(component, "cursorStyle");
         setStringProperty(component, "cursorClass");
+        setEnumerationProperty(component, "fillDirection", FillDirectionForSelection.class);
     }
 }

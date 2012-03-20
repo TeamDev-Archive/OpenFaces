@@ -12,7 +12,6 @@
 
 package org.openfaces.taglib.internal.table;
 
-import org.openfaces.component.table.FillDirectionForSelection;
 import org.openfaces.component.table.MultipleCellSelection;
 
 import javax.faces.component.UIComponent;
@@ -34,6 +33,5 @@ public class MultipleCellSelectionTag extends AbstractCellSelectionTag {
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
         setObjectProperty(component, "cellIds");
-        setEnumerationProperty(component, "fillDirection", FillDirectionForSelection.class);
     }
 }

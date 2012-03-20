@@ -40,4 +40,8 @@ public abstract class AbstractCellSelectionJspTag extends AbstractTableSelection
     public void setCursorClass(ValueExpression cursorClass) {
         getDelegate().setPropertyValue("cursorClass", cursorClass);
     }
+
+    public void setFillDirection(ValueExpression fillDirection) {
+        getDelegate().setPropertyValue("fillDirection", fillDirection);
+    }
 }
