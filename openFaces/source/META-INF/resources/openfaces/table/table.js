@@ -1877,7 +1877,7 @@ O$.Table = {
             if (!table._isDragSelectionEnabled) {
               var e = O$.getEvent(event);
               var cell = (e.target) ? e.target : e.srcElement;
-              cell = (cell._row) ? cell: cell.parentNode;
+              cell = (cell._row) ? cell : cell.parentNode;
               var cellId = [cell._row._index, cell._column.columnId];
               table._baseCellIdIfNotDnD = table._baseCellId;
               table._baseCellId = cellId;
@@ -1888,7 +1888,7 @@ O$.Table = {
           O$.addEventHandler(rows[rowIndex]._rowNode, "mouseup", function (event) {
             var e = O$.getEvent(event);
             var cell = (e.target) ? e.target : e.srcElement;
-            cell = (cell._row) ? cell: cell.parentNode;
+            cell = (cell._row) ? cell : cell.parentNode;
             var cellId = [cell._row._index, cell._column.columnId];
             table._isDragSelectionEnabled = false;
             if (table._baseCellId && (cellId[0] == table._baseCellId[0]) && (cellId[1] == table._baseCellId[1])) {
@@ -2266,6 +2266,8 @@ O$.Table = {
       var cursorCell;
       if (!table._multipleSelectionAllowed) {
         table._setSelectedItems([cellId]);
+        cursorCell = bodyRows[cellId[0]]._cells[columns.byId(cellId[1])._index];
+        cursorCell._setAsCursor();
       } else {
         var newSelectedCellIds;
         if (e.ctrlKey) {
