@@ -13,6 +13,7 @@
 package org.openfaces.component.foreach;
 
 import com.thoughtworks.selenium.Selenium;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.seleniuminspector.ElementInspector;
@@ -327,6 +328,7 @@ public class ForEachTest extends OpenFacesTestCase {
     }
 
     @Test
+    @Ignore
     public void testAjax() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/foreach/forEach.jsf");
