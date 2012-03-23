@@ -11,7 +11,6 @@
  */
 package org.openfaces.component.popuplayer;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.openfaces.test.RichFacesAjaxLoadingMode;
