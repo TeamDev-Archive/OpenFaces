@@ -5951,6 +5951,20 @@
       <!-- @default true -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>Specifies how selection will work - in a way similar to selection in text documents ("document"), or
+        in a way similar to spreadsheet applications ("rectangular").
+      </description>
+      <name>fillDirection</name>
+      <deferred-value>
+        <type>org.openfaces.component.table.FillDirectionForSelection</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.table.FillDirectionForSelection -->
+      <!-- @default "rectangular"-->
+      <!-- @value "document" -->
+      <!-- @value "rectangular" -->
+      <!-- @el true -->
+    </attribute>
   </tag>
   <tag>
     <description>The MultipleCellSelection component is used for single cell selection. Can be specified only as
