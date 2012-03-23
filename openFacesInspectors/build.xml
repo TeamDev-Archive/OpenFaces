@@ -28,7 +28,7 @@
         <fileset dir="${lib.dir}">
           <include name="../lib/seleniuminspector/selenium-java-2.14.0.jar "/>
           <include name="../lib/seleniuminspector/selenium-server-standalone-2.14.0.jar"/>
-          <include name="seleniuminspector/seleniuminspector.jar"/>
+          <include name="seleniuminspector/selenium-inspector.jar"/>
         </fileset>
         <fileset file="../testLib/junit.jar"/>
         <fileset file="${openfaces-jar.file}"/>
