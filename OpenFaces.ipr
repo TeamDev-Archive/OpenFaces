@@ -1629,11 +1629,11 @@
     </library>
     <library name="SeleniumInspector">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/seleniuminspector/seleniuminspector.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/seleniuminspector/selenium-inspector.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES>
-        <root url="jar://$PROJECT_DIR$/libsrc/seleniuminspector-sources.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/seleniuminspector/selenium-inspector-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="servlet-api">
