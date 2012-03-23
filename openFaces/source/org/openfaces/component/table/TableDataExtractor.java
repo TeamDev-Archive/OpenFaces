@@ -40,8 +40,8 @@ public class TableDataExtractor {
 
     static {
         defaultComponentExtractors.add(new UICommandDataExtractor());
-        defaultComponentExtractors.add(new ValueHolderDataExtractor());
         defaultComponentExtractors.add(new SelectValueExtractor());
+        defaultComponentExtractors.add(new ValueHolderDataExtractor());
         defaultComponentExtractors.add(new UIInstructionsDataExtractor());
     }
 
