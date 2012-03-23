@@ -51,7 +51,7 @@ public class SelectValueExtractor implements ComponentDataExtractor {
             List<String> labels = new ArrayList<String>(selectItems.size());
             for (Object item : ((Iterable<Object>) value)) {
                 for (SelectItem selectItem : selectItems) {
-                    if (selectItem.equals(value)) {
+                    if (selectItem.getValue().equals(item)) {
                         labels.add(selectItem.getLabel());
                     }
                 }
@@ -70,7 +70,7 @@ public class SelectValueExtractor implements ComponentDataExtractor {
 
         } else {
             for (SelectItem selectItem : selectItems) {
-                if (selectItem.equals(value)) {
+                if (selectItem.getValue().equals(value)) {
                     return selectItem.getLabel();
                 }
             }
