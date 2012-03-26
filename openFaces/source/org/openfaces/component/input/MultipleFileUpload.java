@@ -206,10 +206,10 @@ public final class MultipleFileUpload extends AbstractFileUpload {
     }
 
     public boolean isMultiple() {
-        return ValueBindings.get(this, "multiple", multiple, false);
+        return true;
     }
 
-    public void setMultiple(boolean multiple) {
+    protected void setMultiple(boolean multiple) {
         this.multiple = multiple;
     }
 

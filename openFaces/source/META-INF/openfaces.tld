@@ -45450,18 +45450,6 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default Stopping... -->
       <!-- @el true -->
     </attribute>
-    <attribute>
-      <description>Flag which enables upload several files.
-        Note that if multiple is assigned to false then autoUpload attribute will be assigned to true.
-      </description>
-      <name>multiple</name>
-      <deferred-value>
-        <type>boolean</type>
-      </deferred-value>
-      <!-- @bindingType boolean -->
-      <!-- @default false -->
-      <!-- @el true -->
-    </attribute>
 
     <attribute>
       <description>Enables handling uploaded files on the server side. This attribute is a MethodBinding that
@@ -45977,14 +45965,13 @@ entering a value and returns a list of suggestions from the server -->
 
     <attribute>
       <description>The text for Browse button.
-        The default value depends on 'multiple' attribute's value - if it is assigned 'true' -> "Add file..." else -> "Upload"
       </description>
       <name>browseButtonText</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default see description-->
+      <!-- @default see Upload-->
       <!-- @el true -->
     </attribute>
 
@@ -46537,7 +46524,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>
-        This attribute defines what is happenning to browseButton while file is uploading.
+        This attribute defines what is happening to browseButton while file is uploading.
         Default value is depends on layoutMode attribute If it is assigned to "full" -> 'showStop' else 'hide'.
       </description>
       <name>browseButtonDuringUpload</name>
