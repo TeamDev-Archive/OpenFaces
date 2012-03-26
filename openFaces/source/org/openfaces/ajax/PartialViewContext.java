@@ -1,6 +1,6 @@
 /*
  * OpenFaces - JSF Component Library 3.0
- * Copyright (C) 2007-2011, TeamDev Ltd.
+ * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
  * the GNU Lesser General Public License Version 2.1 (the "LGPL" License).
@@ -183,7 +183,7 @@ public class PartialViewContext extends PartialViewContextWrapper {
         for (String id : result) {
             UIComponent component = null;
             try {
-                component = viewRoot.findComponent(id);
+                component = Components.findComponent(viewRoot, id);
             } catch (IllegalArgumentException e) {
                 // this can be the case when using <f:ajax> on <h:selectOneRadio>, which generates several
                 // <input type="radio"> tags with ids like form:radio:N, where N is a number of item, and
@@ -243,7 +243,7 @@ public class PartialViewContext extends PartialViewContextWrapper {
         UIViewRoot viewRoot = context.getViewRoot();
         if (additionalUpdateList != null)
             for (String componentId : additionalUpdateList) {
-                UIComponent component = viewRoot.findComponent(componentId);
+                UIComponent component = Components.findComponent(viewRoot, componentId);
                 if (component == null) continue;
                 writeComponentUpdate(context, component);
             }
