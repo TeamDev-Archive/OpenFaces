@@ -599,7 +599,13 @@ public class Components {
         Object oldValue = backupValues.pop();
         requestMap.put(varName, oldValue);
     }
-    
+
+    /**
+     * @deprecated this method family uses a practice of having to have a knowledge about the specific iterator
+     * components and the way that their custom client id generation logic works. This should be reimplemented to usa a
+     * generic mechanism (see the to-do below) <br/>
+     * //todo: Try to rework with viewRoot.invokeOnComponent (and/or viewRoot.visitTree if required)
+     */
     public static UIComponent findComponent(UIComponent baseComponent, String idPath) {
         return PartialViewContext.findComponentById(baseComponent, idPath, false, false, false);
     }
