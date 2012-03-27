@@ -107,6 +107,10 @@ public abstract class AbstractCellSelection extends AbstractTableSelection {
         this.selectableCells = selectableCells;
     }
 
+    /**
+     * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
+     * by any application code.
+     */
     public void saveSelectableCells(JSONArray array) {
         cellsSelectableInJSON = array;
     }

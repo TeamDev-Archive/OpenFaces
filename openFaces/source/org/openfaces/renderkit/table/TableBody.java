@@ -235,25 +235,18 @@ public class TableBody extends TableSection {
         Map<Integer, CustomRowRenderingInfo> customRowRenderingInfos =
                 (Map<Integer, CustomRowRenderingInfo>) table.getAttributes().get(TableStructure.CUSTOM_ROW_RENDERING_INFOS_KEY);
         final AbstractTableSelection selection = table.getSelection();
-        final AbstractCellSelection cellSelection = (selection == null || selection.getSelectableItems() != "cells") ?
-                null : (AbstractCellSelection) selection;
-        MethodExpression cellSelectableMethod = (cellSelection == null) ? null : cellSelection.getCellSelectable();
-        MethodExpression selectableCellsMethod = (cellSelection == null) ? null : cellSelection.getSelectableCells();
+        final AbstractCellSelection cellSelection = selection instanceof AbstractCellSelection
+                ? (AbstractCellSelection) selection : null;
+        MethodExpression cellSelectableME = (cellSelection == null) ? null : cellSelection.getCellSelectable();
+        MethodExpression selectableCellsME = (cellSelection == null) ? null : cellSelection.getSelectableCells();
         JSONArray selectableCellsInJson = new JSONArray();
-        if (cellSelectableMethod != null && selectableCellsMethod != null) {
-            throw new IllegalStateException("Using attributes 'cellSelectable' and 'selectableCells' together is not allowed.");
+        if (cellSelectableME != null && selectableCellsME != null) {
+            throw new IllegalStateException("The \"cellSelectable\" and \"selectableCells\" attributes are " +
+                    "mutually exclusive and cannot be used at the same time.");
         }
-        final List<BaseColumn> renderedColumns = table.getRenderedColumns();
-        final List<BaseColumn> allColumns = table.getAllColumns();
-        final Map<Integer, Integer> connectionBetweenColumns = new LinkedHashMap<Integer, Integer>(allColumns.size());
-        for (int i = 0; i < allColumns.size(); i++) {
-            for (int k = 0; k < renderedColumns.size(); k++) {
-                if (allColumns.get(i) == renderedColumns.get(k)) {
-                    connectionBetweenColumns.put(i, k);
-                    break;
-                }
-            }
-        }
+
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+        final Map<Integer, Integer> renderedColIndexesByOriginalIndexes = getRenderedColIndexesByOriginalIndexesMap(table);
         for (int rowIndex = firstRowIndex; rowIndex <= lastRowIndex; rowIndex++) {
             table.setRowIndex(rowIndex);
             if (!table.isRowAvailable())
@@ -326,18 +319,14 @@ public class TableBody extends TableSection {
             row.setCells(cells);
             if (rightRow != null)
                 rightRow.setCells(rightCells);
-            Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-            if (cellSelection != null) {
-                requestMap.put("rowIndex", rowIndex);
-            }
-            if (selectableCellsMethod != null) {
-                boolean[] result = (boolean[]) selectableCellsMethod.invoke(
+            if (selectableCellsME != null) {
+                boolean[] result = (boolean[]) selectableCellsME.invoke(
                         FacesContext.getCurrentInstance().getELContext(), null);
                 boolean[] newRes = new boolean[columnCount];
                 for (int i = 0; i < result.length; i++) {
-                    final Integer numberOfCol = connectionBetweenColumns.get(i);
-                    if (numberOfCol != null) {
-                        newRes[numberOfCol] = result[i];
+                    final Integer renderedColIndex = renderedColIndexesByOriginalIndexes.get(i);
+                    if (renderedColIndex != null) {
+                        newRes[renderedColIndex] = result[i];
                     }
                 }
                 selectableCellsInJson.put(newRes);
@@ -359,9 +348,8 @@ public class TableBody extends TableSection {
                     String columnId = column.getId();
                     prevColumnIdVarValue = requestMap.put(columnIdVar, columnId);
                 }
-                if (cellSelectableMethod != null) {
-                    requestMap.put("columnIndex", colIndex);
-                    selectableCellsInColumn.put(cellSelectableMethod.invoke(
+                if (cellSelectableME != null) {
+                    selectableCellsInColumn.put(cellSelectableME.invoke(
                             FacesContext.getCurrentInstance().getELContext(), null));
                 }
 
@@ -474,7 +462,7 @@ public class TableBody extends TableSection {
 
                 colIndex += span;
             }
-            if (cellSelectableMethod != null) {
+            if (cellSelectableME != null) {
                 selectableCellsInJson.put(selectableCellsInColumn);
             }
             if (customRowRenderingInfo != null)
@@ -486,6 +474,21 @@ public class TableBody extends TableSection {
         table.setRowIndex(-1);
 
         return new List[]{leftRows, rows, rightRows};
+    }
+
+    private Map<Integer, Integer> getRenderedColIndexesByOriginalIndexesMap(AbstractTable table) {
+        final List<BaseColumn> renderedColumns = table.getRenderedColumns();
+        final List<BaseColumn> allColumns = table.getAllColumns();
+        final Map<Integer, Integer> renderedColIndexesByOriginalIndexes = new LinkedHashMap<Integer, Integer>(allColumns.size());
+        for (int originalColIndex = 0; originalColIndex < allColumns.size(); originalColIndex++) {
+            for (int renderedColIndex = 0; renderedColIndex < renderedColumns.size(); renderedColIndex++) {
+                if (allColumns.get(originalColIndex) == renderedColumns.get(renderedColIndex)) {
+                    renderedColIndexesByOriginalIndexes.put(originalColIndex, renderedColIndex);
+                    break;
+                }
+            }
+        }
+        return renderedColIndexesByOriginalIndexes;
     }
 
     private int getOriginalColumnIndex(BaseColumn column) {
