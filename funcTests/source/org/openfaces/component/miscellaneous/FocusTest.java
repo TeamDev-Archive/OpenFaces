@@ -53,7 +53,8 @@ public class FocusTest extends OpenFacesTestCase {
 
         //check autoSaveFocus
         element("formID:byAfterSubmission").click();
-        element("formID:submit").clickAndWait();
+//        element("formID:submit").clickAndWait();
+        getSelenium().submit(element("formID").asSeleniumLocator());
         element("out1").assertText(FOCUSED);
     }
 
