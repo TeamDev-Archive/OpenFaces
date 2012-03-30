@@ -47,6 +47,7 @@ public abstract class OUICommand extends UICommand implements OUIComponent {
     private String onajaxend;
     private String onerror;
     private String onsuccess;
+    private Integer delay;
 
     @Override
     public Object saveState(FacesContext context) {
@@ -57,7 +58,7 @@ public abstract class OUICommand extends UICommand implements OUIComponent {
                 executeRenderedComponents,
                 style, styleClass, rolloverStyle, rolloverClass, onclick, ondblclick, onmousedown, onmouseover,
                 onmousemove, onmouseout, onmouseup, onfocus, onblur, onkeydown, onkeyup, onkeypress, oncontextmenu,
-                onajaxstart, onajaxend, onerror, onsuccess};
+                onajaxstart, onajaxend, onerror, onsuccess, delay};
     }
 
     public abstract String getFamily();
@@ -91,6 +92,7 @@ public abstract class OUICommand extends UICommand implements OUIComponent {
         onajaxend = (String) state[i++];
         onerror = (String) state[i++];
         onsuccess = (String) state[i++];
+        delay = (Integer) state[i++];
     }
 
     public Iterable<String> getExecute() {
@@ -283,5 +285,13 @@ public abstract class OUICommand extends UICommand implements OUIComponent {
 
     public void setExecuteRenderedComponents(boolean executeRenderedComponents) {
         this.executeRenderedComponents = executeRenderedComponents;
+    }
+
+    public Integer getDelay() {
+        return ValueBindings.get(this, "delay", delay, 0);
+    }
+
+    public void setDelay(Integer delay) {
+        this.delay = delay;
     }
 }

@@ -1210,7 +1210,7 @@ if (!window.O$) {
     if (escapeHtml === false) {
       try {
         element.innerHTML = text;
-      } catch(e) {
+      } catch (e) {
         alert("Error: " + e + "; Couldn't set innerHTML to: \"" + text + "\"");
         throw e;
       }
@@ -1422,7 +1422,6 @@ if (!window.O$) {
   };
 
   O$.addEventHandler = function(elt, evtName, evtScript, useCapture) {
-
     if (!elt._attachedEvents)
       elt._attachedEvents = [];
 
@@ -1957,7 +1956,7 @@ if (!window.O$) {
 
             if (c.nodeName.toLowerCase() == "input" && c.type == "text")
               O$._setCaretPosition(c, c.value.length);
-          } catch(ex) {
+          } catch (ex) {
           }
           O$._activeElement = c;
           focused = true;
@@ -2040,7 +2039,7 @@ if (!window.O$) {
 
     if (O$.isExplorer6()) { // workaround for <button> tag submission bug in IE6, see OF-112
       var buttons = document.getElementsByTagName("button");
-      for(var i = 0; i < buttons.length; i++) {
+      for (var i = 0; i < buttons.length; i++) {
         var btn = buttons[i];
         function setClickHandler(btn) {
           O$.addEventHandler(btn, "click", function() {
@@ -2606,7 +2605,9 @@ if (!window.O$) {
       draggable._lastDragY = dragY;
       draggable._lastDragOffsetLeft = offsetLeftAfterDragging;
       draggable._lastDragOffsetTop = offsetTopAfterDragging;
-
+      if(draggable._dragEl && draggable._dragEl._onresizing) {
+        draggable._dragEl._onresizing();
+      }
       O$.cancelEvent(evt);
     }
 
@@ -2685,8 +2686,7 @@ if (!window.O$) {
   };
 
   O$._simulateFixedPosForBlockingLayer = function() {
-    return O$.isExplorer() /* ie doesn't support fixed pos */ ||
-            O$.isMozillaFF() || O$.isSafari3AndLate() /*todo:check whether O$.isSafari3AndLate check is really needed (it was added by mistake)*/ /* mozilla's blocking layer hides cursor of text-field in fixed-pos popup-layer (JSFC-1930) */;
+    return O$.isExplorer6(); // ie6 doesn't support fixed pos
   };
 
 
@@ -2859,7 +2859,7 @@ if (!window.O$) {
       }
       try {
         this._focusControl.focus();
-      } catch(e) {
+      } catch (e) {
         // in IE hidden element can't receive focus
       }
     };
@@ -3010,7 +3010,7 @@ if (!window.O$) {
 
   O$.removeCssRule = function (nameOfCssClass, _iePredefClasses) {
 
-    if (_iePredefClasses){
+    if (_iePredefClasses) {
       _iePredefClasses._obtained--;
       return;
     }
@@ -4133,7 +4133,7 @@ if (!window.O$) {
     return new O$.Rectangle(0, 0, documentSize.width, documentSize.height);
   };
 
-  O$.scrollElementIntoView = function(element, cachedDataContainer) {
+  O$.scrollElementIntoView = function (element, scrollVertical, scrollHorizontal, cachedDataContainer) {
     var scrollingOccurred = false;
     var elements = element instanceof Array ? element : [element];
     var rect;
@@ -4149,8 +4149,14 @@ if (!window.O$) {
          parent = parent.parentNode) {
       var parentScrollable;
       if (parent != document) {
-        var overflowY = O$.getElementStyle(parent, "overflow-y");
-        parentScrollable = overflowY != "visible";
+        if (scrollVertical) {
+          var overflowY = O$.getElementStyle(parent, "overflow-y");
+          parentScrollable = overflowY != "visible";
+        }
+        if (!parentScrollable && scrollHorizontal) {
+          var overflowX = O$.getElementStyle(parent, "overflow-x");
+          parentScrollable = overflowX != "visible";
+        }
       } else {
         parentScrollable = true;
       }
@@ -4163,19 +4169,35 @@ if (!window.O$) {
         parentRect.width = parent.clientWidth;
         parentRect.height = parent.clientHeight;
       }
-
-      var scrollTopAdjustment = 0;
-      if (parentRect.getMinY() > rect.getMinY())
-        scrollTopAdjustment = rect.getMinY() - parentRect.getMinY();
-      else if (parentRect.getMaxY() < rect.getMaxY())
-        scrollTopAdjustment = rect.getMaxY() - parentRect.getMaxY();
-      if (scrollTopAdjustment) {
-        if (parent != document)
-          parent.scrollTop += scrollTopAdjustment;
-        else
-          window.scrollBy(0, scrollTopAdjustment);
-        rect.y -= scrollTopAdjustment;
-        scrollingOccurred = true;
+      if (scrollVertical) {
+        var scrollTopAdjustment = 0;
+        if (parentRect.getMinY() > rect.getMinY())
+          scrollTopAdjustment = rect.getMinY() - parentRect.getMinY();
+        else if (parentRect.getMaxY() < rect.getMaxY())
+          scrollTopAdjustment = rect.getMaxY() - parentRect.getMaxY();
+        if (scrollTopAdjustment) {
+          if (parent != document)
+            parent.scrollTop += scrollTopAdjustment;
+          else
+            window.scrollBy(0, scrollTopAdjustment);
+          rect.y -= scrollTopAdjustment;
+          scrollingOccurred = true;
+        }
+      }
+      if (scrollHorizontal) {
+        var scrollLeftAdjustment = 0;
+        if (parentRect.getMinX() > rect.getMinX())
+          scrollLeftAdjustment = rect.getMinX() - parentRect.getMinX();
+        else if (parentRect.getMaxX() < rect.getMaxX())
+          scrollLeftAdjustment = rect.getMaxX() - parentRect.getMaxX();
+        if (scrollLeftAdjustment) {
+          if (parent != document)
+            parent.scrollLeft += scrollLeftAdjustment;
+          else
+            window.scrollBy(scrollLeftAdjustment, 0);
+          rect.x -= scrollLeftAdjustment;
+          scrollingOccurred = true;
+        }
       }
     }
     return scrollingOccurred;
@@ -5000,7 +5022,7 @@ if (!window.O$) {
       if (field.focus) {
         try {
           field.focus();
-        } catch(e) {
+        } catch (e) {
           // ignore failed focus attempts
         }
         var len = field.value.length;

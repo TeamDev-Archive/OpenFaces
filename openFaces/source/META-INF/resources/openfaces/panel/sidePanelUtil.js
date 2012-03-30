@@ -305,7 +305,7 @@ O$._bugFix_divNegativeSizeBug = function(element, useDoubleBuffering) {
 //------------------  resizableElement methods  -------------------
 
 O$._subscribeToOnresizeEvent = function(element, func) {
-  for(var targetElement = element; ; targetElement = targetElement.parentNode) {
+  for (var targetElement = element; ; targetElement = targetElement.parentNode) {
     if (targetElement._isNotResizableElement) {
       break;
     } else if (targetElement._isResizableElement) {

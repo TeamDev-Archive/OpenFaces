@@ -13,6 +13,7 @@ package org.openfaces.component.table;
 
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.util.Components;
+import org.openfaces.util.ValueBindings;
 
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
@@ -26,6 +27,7 @@ public class Column extends BaseColumn {
     public static final String COMPONENT_TYPE = "org.openfaces.Column";
     public static final String COMPONENT_FAMILY = "org.openfaces.Column";
     private javax.faces.convert.Converter groupingValueConverter;
+    private javax.faces.convert.Converter converter;
 
     public Column() {
     }
@@ -38,7 +40,10 @@ public class Column extends BaseColumn {
     @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
-        return new Object[]{superState};
+        return new Object[]{superState,
+                saveAttachedState(context, converter),
+                saveAttachedState(context, groupingValueConverter)
+        };
     }
 
     @Override
@@ -46,6 +51,8 @@ public class Column extends BaseColumn {
         Object[] state = (Object[]) stateObj;
         int i = 0;
         super.restoreState(context, state[i++]);
+        converter = (Converter) restoreAttachedState(context, state[i++]);
+        groupingValueConverter = (Converter) restoreAttachedState(context, state[i++]);
     }
 
     public ValueExpression getSortingExpression() {
@@ -54,6 +61,22 @@ public class Column extends BaseColumn {
 
     public void setSortingExpression(ValueExpression sortingExpression) {
         setValueExpression("sortingExpression", sortingExpression);
+    }
+
+    public ValueExpression getValueExpression() {
+        return getValueExpression("value");
+    }
+
+    public void setValueExpression(ValueExpression valueExpression) {
+        setValueExpression("value", valueExpression);
+    }
+
+    public Converter getConverter() {
+        return ValueBindings.get(this, "converter", converter, Converter.class);
+    }
+
+    public void setConverter(Converter converter) {
+        this.converter = converter;
     }
 
     public ValueExpression getGroupingExpression() {
@@ -83,7 +106,7 @@ public class Column extends BaseColumn {
 
     public Converter getGroupingValueConverter() {
         if (groupingValueConverter != null) return groupingValueConverter;
-        ValueExpression ve = getValueExpression("converter");
+        ValueExpression ve = getValueExpression("groupingValueConverter");
         if (ve != null)
             return (Converter) ve.getValue(getFacesContext().getELContext());
         boolean explicitExpression = getGroupingExpression() != null;

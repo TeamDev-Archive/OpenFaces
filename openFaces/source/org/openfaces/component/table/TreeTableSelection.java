@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * @author Dmitry Pikhulya
  */
-public abstract class TreeTableSelection extends AbstractTableSelection {
+public abstract class TreeTableSelection extends AbstractRowSelection {
     protected TreeTable getTreeTable() {
         return (TreeTable) getTable();
     }
@@ -36,8 +36,8 @@ public abstract class TreeTableSelection extends AbstractTableSelection {
         TreeTable treeTable = getTreeTable();
         int rowCount = treeTable.getRowCount();
         for (int i = 0; i < rowCount; i++) {
-            Object currentKey = treeTable.getNodeKey(i);
-            if (currentKey != null && currentKey.equals(nodeKey))
+            Object nk = treeTable.getNodeKey(i);
+            if (nk != null && nk.equals(nodeKey))
                 return i;
         }
         return -1;
@@ -47,8 +47,8 @@ public abstract class TreeTableSelection extends AbstractTableSelection {
         TreeTable treeTable = getTreeTable();
         int rowCount = treeTable.getRowCount();
         for (int i = 0; i < rowCount; i++) {
-            TreePath currentKeyPath = treeTable.getNodeKeyPath(i);
-            if (currentKeyPath.equals(nodeKeyPath))
+            TreePath kp = treeTable.getNodeKeyPath(i);
+            if (kp != null && kp.equals(nodeKeyPath))
                 return i;
         }
         return -1;
@@ -59,8 +59,8 @@ public abstract class TreeTableSelection extends AbstractTableSelection {
         TreeTable treeTable = getTreeTable();
         int rowCount = treeTable.getRowCount();
         for (int i = 0; i < rowCount; i++) {
-            TreePath currentPath = treeTable.getNodePath(i);
-            if (currentPath.equals(nodePath))
+            TreePath np = treeTable.getNodePath(i);
+            if (np != null && np.equals(nodePath))
                 return i;
         }
         return -1;
@@ -191,8 +191,8 @@ public abstract class TreeTableSelection extends AbstractTableSelection {
         TreeTable treeTable = getTreeTable();
         int rowCount = treeTable.getRowCount();
         for (int i = 0; i < rowCount; i++) {
-            TreePath currentKeyPath = treeTable.getNodeKeyPath(i);
-            if (currentKeyPath.equals(keyPath))
+            TreePath kp = treeTable.getNodeKeyPath(i);
+            if (kp != null && kp.equals(keyPath))
                 return treeTable.getNodePath(i);
         }
 
@@ -239,8 +239,8 @@ public abstract class TreeTableSelection extends AbstractTableSelection {
         TreeTable treeTable = getTreeTable();
         int rowCount = treeTable.getRowCount();
         for (int i = 0; i < rowCount; i++) {
-            TreePath currentNodePath = treeTable.getNodePath(i);
-            if (currentNodePath.equals(nodePath))
+            TreePath np = treeTable.getNodePath(i);
+            if (np != null && np.equals(nodePath))
                 return treeTable.getNodeKeyPath(i);
         }
 

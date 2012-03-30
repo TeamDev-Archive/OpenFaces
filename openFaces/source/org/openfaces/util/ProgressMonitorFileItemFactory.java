@@ -43,7 +43,7 @@ public class ProgressMonitorFileItemFactory extends DiskFileItemFactory {
     }
 
     public FileItem createItem(String fieldName, String contentType,
-                               boolean isFormField, String fileName){
+                               boolean isFormField, String fileName) {
         SessionUpdatingProgressObserver observer = null;
         boolean shouldProcess = true;
         if (!isFormField && !fileName.equals("")) { //This must be a file upload and has a name

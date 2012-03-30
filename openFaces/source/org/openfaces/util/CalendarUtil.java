@@ -78,15 +78,15 @@ public class CalendarUtil {
     }
 
     public static SimpleDateFormat getSimpleDateFormat(String dateFormat, String defaultDateFormat, String pattern,
-                                                       String defaultPattern, Locale locale, TimeZone timeZone){
+                                                       String defaultPattern, Locale locale, TimeZone timeZone) {
         SimpleDateFormat sdf;
         if (pattern != null) {
             sdf = new SimpleDateFormat(pattern, locale);
         } else if (dateFormat != null) {
             sdf = (SimpleDateFormat) DateFormat.getDateInstance(convertToDateFormatStyle(dateFormat), locale);
-        } else if (defaultPattern != null){
+        } else if (defaultPattern != null) {
             sdf = new SimpleDateFormat(defaultPattern, locale);
-        }else{
+        } else {
             sdf = (SimpleDateFormat) DateFormat.getDateInstance(convertToDateFormatStyle(defaultDateFormat), locale);
         }
         sdf.setTimeZone(timeZone);

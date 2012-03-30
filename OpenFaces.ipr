@@ -621,6 +621,7 @@
             <value />
           </option>
           <option name="ignoreClassWithParameterization" value="false" />
+          <option name="ignoreThrowables" value="true" />
         </inspection_tool>
         <inspection_tool class="EnumSwitchStatementWhichMissesCases" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="ignoreSwitchStatementsWithDefault" value="false" />
@@ -758,7 +759,6 @@
           <option name="m_ignorePrimitives" value="false" />
         </inspection_tool>
         <inspection_tool class="StringBufferMustHaveInitialCapacity" enabled="true" level="WARNING" enabled_by_default="true" />
-        <inspection_tool class="StringBufferReplaceableByString" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="StringBufferToStringInConcatenation" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="StringCompareTo" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="StringEquals" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -1003,25 +1003,23 @@
         <XML>
           <option name="XML_LEGACY_SETTINGS_IMPORTED" value="true" />
         </XML>
-        <ADDITIONAL_INDENT_OPTIONS fileType="gsp">
-          <option name="INDENT_SIZE" value="2" />
-        </ADDITIONAL_INDENT_OPTIONS>
         <ADDITIONAL_INDENT_OPTIONS fileType="haml">
           <option name="INDENT_SIZE" value="2" />
         </ADDITIONAL_INDENT_OPTIONS>
-        <ADDITIONAL_INDENT_OPTIONS fileType="jsp">
-          <option name="INDENT_SIZE" value="2" />
-          <option name="TAB_SIZE" value="2" />
-        </ADDITIONAL_INDENT_OPTIONS>
-        <ADDITIONAL_INDENT_OPTIONS fileType="sass">
-          <option name="INDENT_SIZE" value="2" />
-        </ADDITIONAL_INDENT_OPTIONS>
-        <ADDITIONAL_INDENT_OPTIONS fileType="yml">
-          <option name="INDENT_SIZE" value="2" />
-        </ADDITIONAL_INDENT_OPTIONS>
+        <codeStyleSettings language="GSP">
+          <indentOptions>
+            <option name="INDENT_SIZE" value="2" />
+          </indentOptions>
+        </codeStyleSettings>
         <codeStyleSettings language="Groovy">
           <indentOptions>
             <option name="INDENT_SIZE" value="2" />
+          </indentOptions>
+        </codeStyleSettings>
+        <codeStyleSettings language="JSP">
+          <indentOptions>
+            <option name="INDENT_SIZE" value="2" />
+            <option name="TAB_SIZE" value="2" />
           </indentOptions>
         </codeStyleSettings>
         <codeStyleSettings language="JavaScript">
@@ -1629,11 +1627,11 @@
     </library>
     <library name="SeleniumInspector">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/seleniuminspector/seleniuminspector.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/seleniuminspector/selenium-inspector.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES>
-        <root url="jar://$PROJECT_DIR$/libsrc/seleniuminspector-sources.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/seleniuminspector/selenium-inspector-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="servlet-api">

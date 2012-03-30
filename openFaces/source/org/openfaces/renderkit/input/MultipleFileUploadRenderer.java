@@ -55,8 +55,8 @@ public final class MultipleFileUploadRenderer extends AbstractFileUploadRenderer
     @Override
     protected void setAllFacets(AbstractFileUpload fileUpload) {
         super.setAllFacets(fileUpload);
-        removeButton = fileUpload.getFacet(F_CLEAR_BUTTON);
-        clearButton = fileUpload.getFacet(F_REMOVE_BUTTON);
+        removeButton = fileUpload.getFacet(F_REMOVE_BUTTON);
+        clearButton = fileUpload.getFacet(F_CLEAR_BUTTON);
         uploadButton = fileUpload.getFacet(F_UPLOAD_BUTTON);
         removeAllButton = fileUpload.getFacet(F_REMOVE_ALL_BUTTON);
         stopAllButton = fileUpload.getFacet(F_STOP_ALL_BUTTON);

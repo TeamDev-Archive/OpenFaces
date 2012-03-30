@@ -94,7 +94,7 @@
       <classpath>
         <pathelement path="lib/seleniuminspector/selenium-java-2.14.0.jar"/>
         <pathelement path="lib/seleniuminspector/selenium-server-standalone-2.14.0.jar"/>
-        <pathelement path="lib/seleniuminspector/seleniuminspector.jar"/>
+        <pathelement path="lib/seleniuminspector/selenium-inspector.jar"/>
         <pathelement path="testLib/junit.jar"/>
         <fileset file="${openfaces-jar.file}"/>
       </classpath>
@@ -122,7 +122,7 @@
         <pathelement path="testLib/jai/jai_codec.jar"/>
         <pathelement path="lib/seleniuminspector/selenium-java-2.14.0.jar"/>
         <pathelement path="lib/seleniuminspector/selenium-server-standalone-2.14.0.jar"/>
-        <pathelement path="lib/seleniuminspector/seleniuminspector.jar"/>
+        <pathelement path="lib/seleniuminspector/selenium-inspector.jar"/>
       </classpath>
     </javac>
     <copy todir="${funcTests-target.dir}/classes">
@@ -162,7 +162,7 @@
         <pathelement path="${openfaces-jar.file}"/>
         <pathelement path="lib/seleniuminspector/selenium-server-standalone-2.14.0.jar"/>
         <pathelement path="lib/seleniuminspector/selenium-java-2.14.0.jar"/>
-        <pathelement path="lib/seleniuminspector/seleniuminspector.jar"/>
+        <pathelement path="lib/seleniuminspector/selenium-inspector.jar"/>
         <pathelement path="lib/mojarra/jsf-api-1.2_12-b01.jar"/>
         <pathelement location="${funcTests-target.dir}/classes"/>
         <pathelement path="${openfaces-inspectors-jar.file}"/>

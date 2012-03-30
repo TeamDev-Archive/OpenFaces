@@ -5692,6 +5692,558 @@
   </tag>
 
   <tag>
+    <description>The SingleCellSelection component is used for single cell selection. Can be specified only as
+      a child tag for the {@link dataTable} and {@link treeTable} components.
+    </description>
+    <name>singleCellSelection</name>
+    <tag-class>org.openfaces.taglib.jsp.table.SingleCellSelectionJspTag</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+      <description>A flag that indicates whether or not this selection tag should be considered active. Specifying
+        rendered to false is identical to not specifying the selection tag at all. This might be useful for dynamic
+        changing between single and multiple selection by declaring both single and multiple selection tags and
+        specifying rendered to true for only one of them.
+      </description>
+      <name>rendered</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The CellId object for a currently selected cell.
+        The value "null" means no cell is currently selected.
+      </description>
+      <name>cellId</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>Enables possibility to specify which cells are selectable.  This attribute is a MethodBinding that
+        must point to the method that return boolean value. This method is called for every cell.
+        Note that using cellSelectable and selectableCells attributes together is not allowed.
+      </description>
+      <name>cellSelectable</name>
+      <deferred-method>
+        <method-signature>boolean selectableCell()</method-signature>
+      </deferred-method>
+      <!-- @bindingType javax.el.MethodExpression -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>Enables possibility to specify which cells are selectable.  This attribute is a MethodBinding that
+        must point to the method that return array of booleans that represent columns. This method is called for every row.
+        Note that using cellSelectable and selectableCells attributes together is not allowed.
+      </description>
+      <name>selectableCells</name>
+      <deferred-method>
+        <method-signature>boolean[] selectableCells()</method-signature>
+      </deferred-method>
+      <!-- @bindingType javax.el.MethodExpression -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>A css style which specify cell's appearance when cursor over this cell.</description>
+      <name>cursorStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A css class which specify cell's appearance when cursor over this cell.</description>
+      <name>cursorClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A flag that indicates whether or not the user can change selection.</description>
+      <name>enabled</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A flag that indicates whether there should always be a selected item (true) or empty selection is
+        allowed (false).</description>
+      <name>required</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el false -->
+    </attribute>
+    <attribute>
+      <description>Similar to the "action" attribute of the HTMLCommandButton component.
+        It can either specify a string defining the static outcome
+        of the selection change action, or it can be defined as a method-binding expression.
+        Defining the "action" attribute causes form submission when the user changes selection.
+      </description>
+      <name>action</name>
+      <deferred-method>
+        <method-signature>java.lang.Object action()</method-signature>
+      </deferred-method>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Id's of components, which will be rerendered after successful Ajax request.
+        Evaluates to Iterable. If a literal is specified can be a single id or a comma-separated list if id's.
+      </description>
+      <name>render</name>
+      <required>false</required>
+      <deferred-value>
+        <type>java.util.List</type>
+      </deferred-value>
+      <!-- @bindingType java.util.Object -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Allows reducing the number of Ajax requests by skipping the frequently-happinging events. This
+        attribute specifies the delay in milliseconds that should elapse after an event that activates this component
+        to start an actual request for reloading components (and invoking an appropriate action if specified). If
+        there will be another event during this delay, this event will postpone the request according to the specified
+        delay instead of performing an additional request. As a result there will be only one request for all events
+        that come more frequently than specified in this attribute.
+      </description>
+      <name>delay</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default 0 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Id's of components whose data should be submitted and processed on the server in addition to the
+        reloaded components. The difference with render is that components listed in execute will
+        just process the submitted data, but won't be rerendered. This can often be needed when the reloaded data
+        depends on some other component on a page.
+        Evaluates to Iterable. If a literal is specified can be a single id or a comma-separated list if id's.
+      </description>
+      <name>execute</name>
+      <required>false</required>
+      <deferred-value>
+        <type>java.util.List</type>
+      </deferred-value>
+      <!-- @bindingType java.util.Object -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A flag that indicates whether or not selection can be made with the mouse.</description>
+      <name>mouseSupport</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A flag that indicates whether or not selection can be made with the keyboard.</description>
+      <name>keyboardSupport</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A style for a selected cell.</description>
+      <name>style</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for a selected cell.</description>
+      <name>styleClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed every time the user changes selection.</description>
+      <name>onchange</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Invoked when the Ajax request initiated with this component starts.</description>
+      <name>onajaxstart</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Invoked when the Ajax request initiated with this component finishes.</description>
+      <name>onajaxend</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Invoked when an error occurs during the Ajax request initiated with this component.</description>
+      <name>onerror</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Invoked when an Ajax request initiated by this component finishes without errors.</description>
+      <name>onsuccess</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Specifies whether the components listed in the &quot;render&quot; attribute undergo the &quot;execute&quot;
+        lifecycle (Restore View, Apply Request Values, Process Validations and Update Model Values) phases as if these
+        components are implicitly specified in the &quot;execute&quot; attribute as well.
+      </description>
+      <name>executeRenderedComponents</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Specifies how selection will work - in a way similar to selection in text documents ("document"), or
+        in a way similar to spreadsheet applications ("rectangular").
+      </description>
+      <name>fillDirection</name>
+      <deferred-value>
+        <type>org.openfaces.component.table.FillDirectionForSelection</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.table.FillDirectionForSelection -->
+      <!-- @default "rectangular"-->
+      <!-- @value "document" -->
+      <!-- @value "rectangular" -->
+      <!-- @el true -->
+    </attribute>
+  </tag>
+  <tag>
+    <description>The MultipleCellSelection component is used for single cell selection. Can be specified only as
+      a child tag for the {@link dataTable} and {@link treeTable} components.
+    </description>
+    <name>multipleCellSelection</name>
+    <tag-class>org.openfaces.taglib.jsp.table.MultipleCellSelectionJspTag</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+      <description>A flag that indicates whether or not this selection tag should be considered active. Specifying
+        rendered to false is identical to not specifying the selection tag at all. This might be useful for dynamic
+        changing between single and multiple selection by declaring both single and multiple selection tags and
+        specifying rendered to true for only one of them.
+      </description>
+      <name>rendered</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The CellId object for a currently selected cell.
+        The value "null" means no cell is currently selected.
+      </description>
+      <name>cellIds</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>Enables possibility to specify which cells are selectable.  This attribute is a MethodBinding that
+        must point to the method that return boolean value. This method is called for every cell.
+        Note that using cellSelectable and selectableCells attributes together is not allowed.
+      </description>
+      <name>cellSelectable</name>
+      <deferred-method>
+        <method-signature>boolean selectableCell()</method-signature>
+      </deferred-method>
+      <!-- @bindingType javax.el.MethodExpression -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>Enables possibility to specify which cells are selectable.  This attribute is a MethodBinding that
+        must point to the method that return array of booleans that represent columns. This method is called for every row.
+        Note that using cellSelectable and selectableCells attributes together is not allowed.
+      </description>
+      <name>selectableCells</name>
+      <deferred-method>
+        <method-signature>boolean[] selectableCells()</method-signature>
+      </deferred-method>
+      <!-- @bindingType javax.el.MethodExpression -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>A css style which specify cell's appearance when cursor over this cell.</description>
+      <name>cursorStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A css class which specify cell's appearance when cursor over this cell.</description>
+      <name>cursorClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A flag that indicates whether or not the user can change selection.</description>
+      <name>enabled</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A flag that indicates whether there should always be a selected item (true) or empty selection is
+        allowed (false).</description>
+      <name>required</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el false -->
+    </attribute>
+    <attribute>
+      <description>Similar to the "action" attribute of the HTMLCommandButton component.
+        It can either specify a string defining the static outcome
+        of the selection change action, or it can be defined as a method-binding expression.
+        Defining the "action" attribute causes form submission when the user changes selection.
+      </description>
+      <name>action</name>
+      <deferred-method>
+        <method-signature>java.lang.Object action()</method-signature>
+      </deferred-method>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Id's of components, which will be rerendered after successful Ajax request.
+        Evaluates to Iterable. If a literal is specified can be a single id or a comma-separated list if id's.
+      </description>
+      <name>render</name>
+      <required>false</required>
+      <deferred-value>
+        <type>java.util.List</type>
+      </deferred-value>
+      <!-- @bindingType java.util.Object -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Allows reducing the number of Ajax requests by skipping the frequently-happinging events. This
+        attribute specifies the delay in milliseconds that should elapse after an event that activates this component
+        to start an actual request for reloading components (and invoking an appropriate action if specified). If
+        there will be another event during this delay, this event will postpone the request according to the specified
+        delay instead of performing an additional request. As a result there will be only one request for all events
+        that come more frequently than specified in this attribute.
+      </description>
+      <name>delay</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default 0 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Id's of components whose data should be submitted and processed on the server in addition to the
+        reloaded components. The difference with render is that components listed in execute will
+        just process the submitted data, but won't be rerendered. This can often be needed when the reloaded data
+        depends on some other component on a page.
+        Evaluates to Iterable. If a literal is specified can be a single id or a comma-separated list if id's.
+      </description>
+      <name>execute</name>
+      <required>false</required>
+      <deferred-value>
+        <type>java.util.List</type>
+      </deferred-value>
+      <!-- @bindingType java.util.Object -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A flag that indicates whether or not selection can be made with the mouse.</description>
+      <name>mouseSupport</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A flag that indicates whether or not selection can be made with the keyboard.</description>
+      <name>keyboardSupport</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A style for a selected cell.</description>
+      <name>style</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for a selected cell.</description>
+      <name>styleClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed every time the user changes selection.</description>
+      <name>onchange</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Invoked when the Ajax request initiated with this component starts.</description>
+      <name>onajaxstart</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Invoked when the Ajax request initiated with this component finishes.</description>
+      <name>onajaxend</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Invoked when an error occurs during the Ajax request initiated with this component.</description>
+      <name>onerror</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Invoked when an Ajax request initiated by this component finishes without errors.</description>
+      <name>onsuccess</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Specifies whether the components listed in the &quot;render&quot; attribute undergo the &quot;execute&quot;
+        lifecycle (Restore View, Apply Request Values, Process Validations and Update Model Values) phases as if these
+        components are implicitly specified in the &quot;execute&quot; attribute as well.
+      </description>
+      <name>executeRenderedComponents</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Specifies how selection will work - in a way similar to selection in text documents ("document"), or
+        in a way similar to spreadsheet applications ("rectangular"). That is, in the "document" mode, if the Shift key
+        is held down, multiple rows will be selected, but in the "rectangular" mode, if Shift is held down, multiple
+        cells will be selected in a rectangular fashion (without selecting entire rows).
+      </description>
+      <name>fillDirection</name>
+      <deferred-value>
+        <type>org.openfaces.component.table.FillDirectionForSelection</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.table.FillDirectionForSelection -->
+      <!-- @default "rectangular"-->
+      <!-- @value "document" -->
+      <!-- @value "rectangular" -->
+      <!-- @el true -->
+    </attribute>
+  </tag>
+  <tag>
     <description>The SingleRowSelection component is used for single row selection. Can be specified only as
       a child tag for the {@link dataTable} component.
     </description>
@@ -5782,6 +6334,22 @@
         <type>java.util.List</type>
       </deferred-value>
       <!-- @bindingType java.util.Object -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Allows reducing the number of Ajax requests by skipping the frequently-happinging events. This
+        attribute specifies the delay in milliseconds that should elapse after an event that activates this component
+        to start an actual request for reloading components (and invoking an appropriate action if specified). If
+        there will be another event during this delay, this event will postpone the request according to the specified
+        delay instead of performing an additional request. As a result there will be only one request for all events
+        that come more frequently than specified in this attribute.
+      </description>
+      <name>delay</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default 0 -->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -6010,6 +6578,22 @@
         <type>java.util.List</type>
       </deferred-value>
       <!-- @bindingType java.util.Object -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Allows reducing the number of Ajax requests by skipping the frequently-happinging events. This
+        attribute specifies the delay in milliseconds that should elapse after an event that activates this component
+        to start an actual request for reloading components (and invoking an appropriate action if specified). If
+        there will be another event during this delay, this event will postpone the request according to the specified
+        delay instead of performing an additional request. As a result there will be only one request for all events
+        that come more frequently than specified in this attribute.
+      </description>
+      <name>delay</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default 0 -->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -10265,6 +10849,22 @@ means that only root nodes and their immediate children are preloaded -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>Allows reducing the number of Ajax requests by skipping the frequently-happinging events. This
+        attribute specifies the delay in milliseconds that should elapse after an event that activates this component
+        to start an actual request for reloading components (and invoking an appropriate action if specified). If
+        there will be another event during this delay, this event will postpone the request according to the specified
+        delay instead of performing an additional request. As a result there will be only one request for all events
+        that come more frequently than specified in this attribute.
+      </description>
+      <name>delay</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default 0 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>Id's of components whose data should be submitted and processed on the server in addition to the
         reloaded components. The difference with render is that components listed in execute will
         just process the submitted data, but won't be rerendered. This can often be needed when the reloaded data
@@ -10494,6 +11094,22 @@ means that only root nodes and their immediate children are preloaded -->
         <type>java.util.List</type>
       </deferred-value>
       <!-- @bindingType java.util.Object -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Allows reducing the number of Ajax requests by skipping the frequently-happinging events. This
+        attribute specifies the delay in milliseconds that should elapse after an event that activates this component
+        to start an actual request for reloading components (and invoking an appropriate action if specified). If
+        there will be another event during this delay, this event will postpone the request according to the specified
+        delay instead of performing an additional request. As a result there will be only one request for all events
+        that come more frequently than specified in this attribute.
+      </description>
+      <name>delay</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default 0 -->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -21200,7 +21816,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @value "up_90" labels are rotated bottom-up by 90 degrees -->
       <!-- @value "up_45" labels are rotated bottom-up by 45 degrees -->
       <!-- @value "down_90" labels are rotated top-to-bottom by 90 degrees -->
-      <!-- @value "down_45" labels are rotated top-to-bottom by 45 degrees  -->
+      <!-- @value "down_45" labels are rotated top-to-bottom by 45 degrees -->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -32293,7 +32909,7 @@ and it is automatically triggered on any form submission. -->
       <deferred-value>
         <type>boolean</type>
       </deferred-value>
-      <!-- @bindingType  boolean-->
+      <!-- @bindingType boolean-->
       <!-- @default true -->
       <!-- @el true -->
     </attribute>
@@ -44634,10 +45250,10 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>The text which appears as status when file size is more than acceptable (this param should be specified  in web.xml or as fileSizeLimit attribute).
-        Also you can display size of uploaded file in useful form - in bytes[B], kilobytes[KB] or megabytes[MB].
-        For example: '{size} [MB] MB is bigger than allowed'
-        By default, fileSize is presented in kilobytes.
+      <description>The text which appears as status when file size is more than acceptable (this param should be
+        specified in web.xml or as fileSizeLimit attribute). Also you can display size of uploaded file in useful form -
+        in bytes[B], kilobytes[KB] or megabytes[MB]. For example: '{size} [MB] MB is bigger than allowed'. By default,
+        fileSize is presented in kilobytes.
       </description>
       <name>fileSizeLimitErrorText</name>
       <deferred-value>
@@ -44977,18 +45593,6 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default Stopping... -->
       <!-- @el true -->
     </attribute>
-    <attribute>
-      <description>Flag which enables upload several files.
-        Note that if multiple is assigned to false then autoUpload attribute will be assigned to true.
-      </description>
-      <name>multiple</name>
-      <deferred-value>
-        <type>boolean</type>
-      </deferred-value>
-      <!-- @bindingType boolean -->
-      <!-- @default false -->
-      <!-- @el true -->
-    </attribute>
 
     <attribute>
       <description>Enables handling uploaded files on the server side. This attribute is a MethodBinding that
@@ -45224,14 +45828,14 @@ entering a value and returns a list of suggestions from the server -->
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType org.openfaces.component.input.FileUploadMode  -->
+      <!-- @bindingType org.openfaces.component.input.FileUploadMode -->
       <!-- @default "parallel" -->
       <!-- @value "parallel" -->
-      <!-- @value "serial" -->
+      <!-- @value "sequential" -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This attribute specifies what components  will be re-rendered when uploading of all files has been finished.
+      <description>This attribute specifies what components will be re-rendered when uploading of all files has been finished.
       </description>
       <name>render</name>
       <deferred-value>
@@ -45362,7 +45966,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>A style for information about file: its fileName and  status.</description>
+      <description>A style for information about file: its fileName and status.</description>
       <name>fileInfoAreaStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -45372,7 +45976,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A CSS class for information about file: its fileName and  status.</description>
+      <description>A CSS class for information about file: its fileName and status.</description>
       <name>fileInfoAreaClass</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -45476,7 +46080,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>The text which appears as status when file size is more than acceptable (this param should be specified  in web.xml or as fileSizeLimit attribute).
+      <description>The text which appears as status when file size is more than acceptable (this param should be
+        specified in web.xml or as fileSizeLimit attribute).
         Also you can display size of uploaded file in useful form - in bytes[B], kilobytes[KB] or megabytes[MB].
         For example: '{size} [MB] MB is bigger than allowed'
         By default, fileSize is presented in kilobytes.
@@ -45503,14 +46108,13 @@ entering a value and returns a list of suggestions from the server -->
 
     <attribute>
       <description>The text for Browse button.
-        The default value depends on 'multiple' attribute's value - if it is assigned 'true' -> "Add file..." else -> "Upload"
       </description>
       <name>browseButtonText</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default see description-->
+      <!-- @default see Upload-->
       <!-- @el true -->
     </attribute>
 
@@ -45959,7 +46563,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>Text for dropTarget.
-        Default value depends on layoutMode attribute:  if it is assigned to compact -> "Drop file"  else  "Drop file here"
+        Default value depends on layoutMode attribute:  if it is assigned to compact -> "Drop file"  else "Drop file here"
       </description>
       <name>dropTargetText</name>
       <deferred-value>
@@ -45993,7 +46597,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This attribute specifies what components  will be re-rendered when uploading of all files has been finished.
+      <description>This attribute specifies what components will be re-rendered when uploading of all files has been finished.
       </description>
       <name>render</name>
       <deferred-value>
@@ -46040,7 +46644,7 @@ entering a value and returns a list of suggestions from the server -->
       <deferred-value>
         <type>org.openfaces.component.input.SingleFileUploadLayoutMode</type>
       </deferred-value>
-      <!-- @bindingType org.openfaces.component.input.SingleFileUploadLayoutMode  -->
+      <!-- @bindingType org.openfaces.component.input.SingleFileUploadLayoutMode -->
       <!-- @default "full" -->
       <!-- @value "full" -->
       <!-- @value "compact" -->
@@ -46063,7 +46667,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>
-        This attribute defines what is happenning to browseButton while file is uploading.
+        This attribute defines what is happening to browseButton while file is uploading.
         Default value is depends on layoutMode attribute If it is assigned to "full" -> 'showStop' else 'hide'.
       </description>
       <name>browseButtonDuringUpload</name>
@@ -46081,7 +46685,7 @@ entering a value and returns a list of suggestions from the server -->
       <description>
         This attribute defines if stop icon will be displayed near progress while file is uploading.
         Note that  singleFileUpload component couldn't has two stop buttons - one instead browseButton, and another one is near progressBar.
-        In this case, attribute is assigned  to 'false'
+        In this case, attribute is assigned to 'false'
         Default value is depends on layoutMode attribute If it is assigned to "full" -> 'false' else 'true'.
       </description>
       <name>stopButtonNearProgress</name>

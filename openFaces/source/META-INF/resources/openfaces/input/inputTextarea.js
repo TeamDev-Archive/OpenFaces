@@ -15,7 +15,7 @@ O$.InputTextarea = {
   _init: function (inputTextareaId) {
     var textArea = O$.initComponent(inputTextareaId);
 
-    if (O$.isExplorer()){
+    if (O$.isExplorer()) {
       textArea.style.overflowY = "visible";
     } else {
       textArea.style.overflowY = "hidden";

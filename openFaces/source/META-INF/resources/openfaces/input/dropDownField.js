@@ -384,10 +384,10 @@ O$.DropDownField = {
           dropDown._lastOnchangeItemValue = dropDown._selectedItemValue;
 
           if (dropDown._promptText) {
-            if ((dropDown._field.value == dropDown._promptText) && (dropDown._statePrompt.value == "true")) {
+            if ((dropDown._field.value == dropDown._promptText) && (dropDown._promptVisible.value == "true")) {
               if (dropDown._promptTextClass)
                 O$.excludeClassNames(dropDown._field, [dropDown._promptTextClass]);
-              dropDown._statePrompt.value = false;
+              dropDown._promptVisible.value = false;
             }
           }
 

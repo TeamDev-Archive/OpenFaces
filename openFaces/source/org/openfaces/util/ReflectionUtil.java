@@ -104,7 +104,7 @@ public class ReflectionUtil {
                 index = Integer.valueOf(propertyName);
             if (obj.getClass().isArray()){
                 return ((Object[])obj)[index];
-            }else{
+            } else {
                 return ((List)obj).get(index);
             }
         }*/

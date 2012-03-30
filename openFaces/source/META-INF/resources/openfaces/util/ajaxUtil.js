@@ -467,7 +467,7 @@ O$.requestStarted = function(ajaxObject) {
       var ajaxstartEvent = O$.createEvent("ajaxstart");
       try {
         ajaxSettingsForComponent.onajaxstart(ajaxstartEvent);
-      } catch(ex) {
+      } catch (ex) {
         O$.requestFinished(ajaxObject);
         throw ex;
       }
@@ -480,7 +480,7 @@ O$.requestStarted = function(ajaxObject) {
 
     try {
       OpenFaces.Ajax.Page.onajaxstart(ajaxstartEvent);
-    } catch(ex) {
+    } catch (ex) {
       O$.requestFinished(ajaxObject);
       throw ex;
     }
@@ -490,7 +490,7 @@ O$.requestStarted = function(ajaxObject) {
   if (ajaxObject._onajaxstart) {
     try {
       ajaxObject._onajaxstart(ajaxstartEventLocal);
-    } catch(ex) {
+    } catch (ex) {
       O$.requestFinished(ajaxObject);
       throw ex;
     }
@@ -512,7 +512,7 @@ O$.requestFinished = function(ajaxObject) {
       ajaxendEvent.validationError = ajaxObject._validationError;
       try {
         ajaxSettingsForComponent.onajaxend(ajaxendEvent);
-      } catch(ex) {
+      } catch (ex) {
         if (!ajaxObject._clientSideException) {
           ajaxObject._clientSideExceptions = [];
         }
@@ -529,7 +529,7 @@ O$.requestFinished = function(ajaxObject) {
 
     try {
       OpenFaces.Ajax.Page.onajaxend(ajaxendEvent);
-    } catch(ex) {
+    } catch (ex) {
       if (!ajaxObject._clientSideException) {
         ajaxObject._clientSideExceptions = [];
       }
@@ -638,7 +638,7 @@ O$.setAjaxMessageHTML = function(messageHTML, horizAlignment, vertAlignment, tra
   });
 };
 
-O$._initAjaxRequestUrl = function(ajaxRequestUrl){
+O$._initAjaxRequestUrl = function(ajaxRequestUrl) {
     O$.Ajax._ajaxRequestUrl = ajaxRequestUrl;
 };
 
@@ -679,7 +679,7 @@ O$.showAjaxProgressMessage = function() {
 
 O$.hideAjaxProgressMessage = function() {
   var msg = document._ajaxInProgressMessage;
-  if(!msg) return;
+  if (!msg) return;
   var simulateFixedPos = true;//O$.isExplorer();
   if (simulateFixedPos) {
     O$.removeEventHandler(window, "scroll", O$.updateAjaxInProgressMessagePos);
@@ -709,7 +709,7 @@ O$._pageReloadConfirmation = function(confirmationId, location) {
   var confirmation = O$(confirmationId);
   if (document._ajaxInProgressMessage._blockingLayer)
     O$.correctElementZIndex(confirmation, document._ajaxInProgressMessage._blockingLayer);
-  confirmation.runConfirmedFunction(function(){
+  confirmation.runConfirmedFunction(function() {
     O$.reloadPage(location);
   });
 };
@@ -740,7 +740,7 @@ O$.AjaxObject = function(render) {
     try {
       requestStatus = request.status;
     }
-    catch(exception) {
+    catch (exception) {
       if (exception.name == "NS_ERROR_NOT_AVAILABLE") {
         alert("An attempt to connect to the server failed. Please, check your network connection.");
         O$.requestFinished(this);
@@ -1073,7 +1073,7 @@ O$.AjaxObject = function(render) {
         if (!O$.removeThisComponentFromAllDocument(replacedElement._unloadableComponents[0])) {
           O$.removeThisComponentFromParentsAbove(replacedElement._unloadableComponents[0], replacedElement);
         }
-        if (tempEl == replacedElement._unloadableComponents[0]){
+        if (tempEl == replacedElement._unloadableComponents[0]) {
           O$.removeThisComponentFromParentsAbove(replacedElement._unloadableComponents[0], replacedElement);
         }
       }
@@ -1165,7 +1165,7 @@ O$.replaceDocumentElements = function(htmlPortion, allowElementsWithNewIds) {
       if (typeof oldElement._cleanUp == "function") {
         oldElement._cleanUp();
       }
-      if (document._ajaxCleanupRequired){
+      if (document._ajaxCleanupRequired) {
         setTimeout(function() {
           O$.destroyAllFunctions(oldElement);
         }, 1);
@@ -1201,7 +1201,7 @@ O$.processSessionExpiration = function(loc, ajaxRender, ajaxObject, isHandlingWa
           var ajaxComponentId = ajaxRender[i];
           OpenFaces.Ajax.Components[ajaxComponentId].onsessionexpired(sessionexpiredEvent);
         }
-      } catch(ex) {
+      } catch (ex) {
         if (!isHandlingWasDelayed) {
           if (!ajaxObject._clientSideException) {
             ajaxObject._clientSideExceptions = [];
@@ -1223,7 +1223,7 @@ O$.processSessionExpiration = function(loc, ajaxRender, ajaxObject, isHandlingWa
 
     try {
       OpenFaces.Ajax.Page.onsessionexpired(sessionexpiredEvent);
-    } catch(ex) {
+    } catch (ex) {
       if (!isHandlingWasDelayed) {
         if (!ajaxObject._clientSideException) {
           ajaxObject._clientSideExceptions = [];
@@ -1259,7 +1259,7 @@ O$.processErrorDuringAjaxRequest = function(errorMessage, ajaxRender, ajaxObject
           var ajaxComponentId = ajaxRender[i];
           result = result & OpenFaces.Ajax.Components[ajaxComponentId].onerror(errorEvent);
         }
-      } catch(ex) {
+      } catch (ex) {
         if (!ajaxObject._clientSideException) {
           ajaxObject._clientSideExceptions = [];
         }
@@ -1280,7 +1280,7 @@ O$.processErrorDuringAjaxRequest = function(errorMessage, ajaxRender, ajaxObject
     var onerrorResult = false;
     try {
       onerrorResult = OpenFaces.Ajax.Page.onerror(errorEvent);
-    } catch(ex) {
+    } catch (ex) {
       if (!ajaxObject._clientSideException) {
         ajaxObject._clientSideExceptions = [];
       }

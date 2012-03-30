@@ -68,6 +68,10 @@ public class BodyCell extends TableElement {
         this.span = span;
     }
 
+    public int getSpan() {
+        return span;
+    }
+
     public Object getContent() {
         return content;
     }

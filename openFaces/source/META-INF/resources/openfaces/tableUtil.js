@@ -101,7 +101,7 @@ O$.Tables = {
   _fixChromeCrashWithEmptyTR : function(table) {
     if (O$.isChrome()) {
       [table.header, table.body, table.footer].forEach(function (section) {
-        if (section && section._scrollingAreas){
+        if (section && section._scrollingAreas) {
           section._scrollingAreas.forEach(function (a) {
             if (!a) return;
             var areaTable = a._table;
@@ -1582,13 +1582,13 @@ O$.Tables = {
                                         // be required, see the commented usage in column.setWidth
     if (column.footer) {
       column._footerCellsClass = table._params.columnWidthControlRequired ? newClass("overflow: hidden") : defaultSharedColumnStyle;
-      if (table._params.columnWidthControlRequired){
+      if (table._params.columnWidthControlRequired) {
         O$.addUnloadHandler(table, function () {
           O$.removeCssRule(column._footerCellsClass.classObj.selectorText,column._footerCellsClass._iePredefClasses);
         });
       }
     }
-    if (table._params.columnWidthControlRequired){
+    if (table._params.columnWidthControlRequired) {
         O$.addUnloadHandler(table, function () {
           O$.removeCssRule(column._headerCellsClass.classObj.selectorText,column._headerCellsClass._iePredefClasses);
           O$.removeCssRule(column._bodyCellsClass.classObj.selectorText, column._bodyCellsClass._iePredefClasses);
@@ -1871,8 +1871,8 @@ O$.Tables = {
 
   _assignHeaderBoxStyle: function(headerBox, table, columnId, additionalClassName) {
     var column = null;
-    table._columns.forEach(function(current){
-      if (current.columnId == columnId){
+    table._columns.forEach(function(current) {
+      if (current.columnId == columnId) {
         column = current;
       }
     });
@@ -1923,6 +1923,56 @@ O$.Tables = {
   _initBodyCell: function(cell, column) {
     cell._column = column;
 
+    cell._setAsCursor = function(forceUpdate) {
+      var row = cell._row;
+      var table = row._table;
+      if (table._cursor != null || forceUpdate) {
+        function addCursorForCell(cell) {
+          //if not already a cursor
+          if (table._cursorCell != cell || forceUpdate) {
+            var rect = O$.getElementPaddingRectangle(cell, true);
+
+            function setPartRectangle(partOfCursor, isVertical) {
+              O$.setElementBorderRectangle(partOfCursor, rect);
+              if (isVertical) {
+                partOfCursor.style.height = 0;
+              } else {
+                partOfCursor.style.width = 0;
+              }
+            }
+
+            setPartRectangle(table._cursor.top, true);
+
+            setPartRectangle(table._cursor.right, false);
+            table._cursor.right.style.left = rect.x + rect.width - table._cursor._borderWidth + "px";
+
+            setPartRectangle(table._cursor.bottom, true);
+            if (O$.isExplorer() && (O$.isExplorer6() || O$.isQuirksMode())) {
+              table._cursor.bottom.style.fontSize = 0 + "px";
+            }
+            table._cursor.bottom.style.top = rect.y + rect.height - table._cursor._borderWidth + "px";
+
+            setPartRectangle(table._cursor.left, false);
+
+            if (table._cursorCell != null) {
+              O$.setStyleMappings(table._cursorCell, {stdCssClass:null});
+              table._cursorCell.removeChild(table._cursor.top);
+              table._cursorCell.removeChild(table._cursor.left);
+              table._cursorCell.removeChild(table._cursor.right);
+              table._cursorCell.removeChild(table._cursor.bottom);
+            }
+            O$.setStyleMappings(cell, {stdCssClass:table._cursorStyle});
+            cell.appendChild(table._cursor.top);
+            cell.appendChild(table._cursor.left);
+            cell.appendChild(table._cursor.right);
+            cell.appendChild(table._cursor.bottom);
+            table._cursorCell = cell;
+          }
+        }
+        addCursorForCell(cell);
+      }
+    };
+
     cell._updateStyle = function() {
       var column = cell._column;
       var row = cell._row;
@@ -1930,6 +1980,16 @@ O$.Tables = {
       var rowIndex = row._index;
       var colIndex = column._index;
 
+      if (table._selectableItems == "cells") {
+        var addedClassName;
+          addedClassName = O$.combineClassNames([
+            this._selected ? table._selectionClass : null
+          ]);
+        if (cell._addedClassName != addedClassName) {
+          cell._addedClassName = addedClassName;
+        }
+        O$.setStyleMappings(cell, {selectionStyle:addedClassName});
+      }
       if (!table._params.body.noDataRows) {
         O$.Tables._applySimulatedColStylesToCell(cell);
       }
