@@ -500,7 +500,7 @@ public class TableStructure extends TableElement {
         columnObj.put("columnId", columnOrGroup.getId());
 
         UIComponent styleOwnerComponent = getComponent();
-        boolean noDataRows = getBody().isNoDataRows();
+        boolean noDataRows = getBody().getNoDataRows();
         boolean ordinaryColumn = !(columnOrGroup instanceof ColumnGroup);
 
         String defaultColumnStyleClass = getColumnDefaultClass(columnOrGroup);
