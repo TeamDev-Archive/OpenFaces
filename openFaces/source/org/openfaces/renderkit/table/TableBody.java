@@ -229,270 +229,8 @@ public class TableBody extends TableSection {
             int rowsToRender,
             List<BaseColumn> columns
     ) throws IOException {
-        AbstractTable table = (AbstractTable) tableStructure.getComponent();
-        Scrolling scrolling = tableStructure.getScrolling();
-        int centerAreaStart = scrolling != null ? tableStructure.getLeftFixedCols() : 0;
-        int rightAreaStart = scrolling != null ? columns.size() - tableStructure.getRightFixedCols() : 0;
-        List<BodyRow> leftRows = scrolling != null && tableStructure.getLeftFixedCols() > 0 ? new ArrayList<BodyRow>() : null;
-        List<BodyRow> rows = new ArrayList<BodyRow>();
-        List<BodyRow> rightRows = scrolling != null && tableStructure.getRightFixedCols() > 0 ? new ArrayList<BodyRow>() : null;
-        ResponseWriter writer = context.getResponseWriter();
-        List<Row> customRows = getCustomRows(table);
-        int lastRowIndex = firstRowIndex + rowsToRender - 1;
-        Map<Integer, CustomRowRenderingInfo> customRowRenderingInfos =
-                (Map<Integer, CustomRowRenderingInfo>) table.getAttributes().get(TableStructure.CUSTOM_ROW_RENDERING_INFOS_KEY);
-        final AbstractTableSelection selection = table.getSelection();
-        final AbstractCellSelection cellSelection = (selection == null || selection.getSelectableItems() != "cells") ?
-                null : (AbstractCellSelection) selection;
-        MethodExpression cellSelectableMethod = (cellSelection == null) ? null : cellSelection.getCellSelectable();
-        MethodExpression selectableCellsMethod = (cellSelection == null) ? null : cellSelection.getSelectableCells();
-        JSONArray selectableCellsInJson = new JSONArray();
-        if (cellSelectableMethod != null && selectableCellsMethod != null) {
-            throw new IllegalStateException("Using attributes 'cellSelectable' and 'selectableCells' together is not allowed.");
-        }
-        final List<BaseColumn> renderedColumns = table.getRenderedColumns();
-        final List<BaseColumn> allColumns = table.getAllColumns();
-        final Map<Integer, Integer> connectionBetweenColumns = new LinkedHashMap<Integer, Integer>(allColumns.size());
-        for (int i = 0; i < allColumns.size(); i++) {
-            for (int k = 0; k < renderedColumns.size(); k++) {
-                if (allColumns.get(i) == renderedColumns.get(k)) {
-                    connectionBetweenColumns.put(i, k);
-                    break;
-                }
-            }
-        }
-        for (int rowIndex = firstRowIndex; rowIndex <= lastRowIndex; rowIndex++) {
-            table.setRowIndex(rowIndex);
-            if (!table.isRowAvailable())
-                break;
-
-            String clientRowKey = table.getClientRowKey();
-            if (clientRowKeys == null) clientRowKeys = new ArrayList<String>();
-            clientRowKeys.add(clientRowKey);
-
-            BodyRow leftRow = leftRows != null ? new BodyRow() : null;
-            BodyRow row = new BodyRow();
-            BodyRow rightRow = rightRows != null ? new BodyRow() : null;
-            if (leftRows != null)
-                leftRows.add(leftRow);
-            rows.add(row);
-            if (rightRows != null)
-                rightRows.add(rightRow);
-            List<Row> applicableCustomRows = getApplicableCustomRows(customRows);
-            if (leftRow != null)
-                leftRow.extractCustomEvents(applicableCustomRows);
-            row.extractCustomEvents(applicableCustomRows);
-            if (rightRow != null)
-                rightRow.extractCustomEvents(applicableCustomRows);
-            String[][] attributes = tableStructure.getBodyRowAttributes(context, table);
-            if (leftRow != null)
-                leftRow.setAttributes(attributes);
-            row.setAttributes(attributes);
-            if (rightRow != null)
-                rightRow.setAttributes(attributes);
-            Object rowData = table.getRowData();
-            int bodyRowIndex = rowIndex - firstRowIndex;
-
-            List<String> rowStyles = getApplicableRowStyles(context, customRows, table);
-            String rowStyleClass = (rowStyles != null && rowStyles.size() > 0) ? classNamesToClass(rowStyles) : null;
-            String additionalClass = tableStructure.getAdditionalRowClass(context, table, rowData, bodyRowIndex);
-            if (additionalClass != null)
-                rowStyleClass = Styles.mergeClassNames(rowStyleClass, additionalClass);
-            if (!Rendering.isNullOrEmpty(rowStyleClass)) {
-                Map<Object, String> rowStylesMap = tableStructure.getRowStylesMap();
-                rowStylesMap.put(bodyRowIndex, rowStyleClass);
-            }
-
-            int columnCount = columns.size();
-
-            CustomRowRenderingInfo customRowRenderingInfo = null;
-            List<Integer> applicableRowDeclarationIndexes = new ArrayList<Integer>();
-            for (Row tableRow : applicableCustomRows) {
-                if (Rendering.isComponentWithA4jAjax(tableRow)) {
-                    if (customRowRenderingInfo == null)
-                        customRowRenderingInfo = new CustomRowRenderingInfo(columnCount);
-                    Integer rowDeclarationIndex = (Integer) tableRow.getAttributes().get(CUSTOM_ROW_INDEX_ATTRIBUTE);
-                    if (rowDeclarationIndex == null)
-                        throw new IllegalStateException("CUSTOM_ROW_INDEX_ATTRIBUTE can legally be null only for the " +
-                                "implicit grouping-related rows, which don't have any Ajax actions bound to them, so" +
-                                "they can't lead execution to this point in code");
-                    applicableRowDeclarationIndexes.add(rowDeclarationIndex);
-                }
-            }
-            if (customRowRenderingInfo != null)
-                customRowRenderingInfo.setA4jEnabledRowDeclarationIndexes(applicableRowDeclarationIndexes);
-
-            List<SpannedTableCell> alreadyProcessedSpannedCells = new ArrayList<SpannedTableCell>();
-            List<Object>[] applicableCustomCells = prepareCustomCells(table, applicableCustomRows);
-
-            List<BodyCell> leftCells = leftRow != null ? new ArrayList<BodyCell>() : null;
-            List<BodyCell> cells = new ArrayList<BodyCell>();
-            List<BodyCell> rightCells = rightRow != null ? new ArrayList<BodyCell>() : null;
-            if (leftRow != null)
-                leftRow.setCells(leftCells);
-            row.setCells(cells);
-            if (rightRow != null)
-                rightRow.setCells(rightCells);
-            Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-            if (cellSelection != null) {
-                requestMap.put("rowIndex", rowIndex);
-            }
-            if (selectableCellsMethod != null) {
-                boolean[] result = (boolean[]) selectableCellsMethod.invoke(
-                        FacesContext.getCurrentInstance().getELContext(), null);
-                boolean[] newRes = new boolean[columnCount];
-                for (int i = 0; i < result.length; i++) {
-                    final Integer numberOfCol = connectionBetweenColumns.get(i);
-                    if (numberOfCol != null) {
-                        newRes[numberOfCol] = result[i];
-                    }
-                }
-                selectableCellsInJson.put(newRes);
-            }
-            JSONArray selectableCellsInColumn = new JSONArray();
-            for (int colIndex = 0; colIndex < columnCount; ) {
-                BaseColumn column = columns.get(colIndex);
-                if (!column.isRendered())
-                    throw new IllegalStateException("Only rendered columns are expected in columns list. column id: " + column.getId() + "; column index = " + colIndex);
-
-                String columnIndexVar = table.getColumnIndexVar();
-                String columnIdVar = table.getColumnIdVar();
-                Object prevColumnIndexVarValue = null;
-                Object prevColumnIdVarValue = null;
-                int originalColIndex = getOriginalColumnIndex(column);
-                if (columnIndexVar != null)
-                    prevColumnIndexVarValue = requestMap.put(columnIndexVar, originalColIndex);
-                if (columnIdVar != null) {
-                    String columnId = column.getId();
-                    prevColumnIdVarValue = requestMap.put(columnIdVar, columnId);
-                }
-                if (cellSelectableMethod != null) {
-                    requestMap.put("columnIndex", colIndex);
-                    selectableCellsInColumn.put(cellSelectableMethod.invoke(
-                            FacesContext.getCurrentInstance().getELContext(), null));
-                }
-
-                List<?> customCells = applicableCustomCells[colIndex];
-                SpannedTableCell spannedTableCell =
-                        customCells != null && customCells.size() == 1 && customCells.get(0) instanceof SpannedTableCell
-                                ? (SpannedTableCell) customCells.get(0) : null;
-                boolean remainingPortionOfBrokenSpannedCell = false;
-                int span = 1;
-                if (spannedTableCell != null) {
-                    int testedColIndex = colIndex;
-                    while (true) {
-                        testedColIndex++;
-                        if (testedColIndex == columnCount)
-                            break;
-                        List testedCells = applicableCustomCells[testedColIndex];
-                        if (testedCells == null)
-                            break;
-                        SpannedTableCell testedSpannedCell = testedCells != null && testedCells.size() == 1 && testedCells.get(0) instanceof SpannedTableCell
-                                ? (SpannedTableCell) testedCells.get(0) : null;
-                        if (spannedTableCell != testedSpannedCell)
-                            break;
-                        span++;
-                    }
-                    column = spannedTableCell.getColumn();
-                    customCells = spannedTableCell.getApplicableTableCells();
-                    if (alreadyProcessedSpannedCells.contains(spannedTableCell))
-                        remainingPortionOfBrokenSpannedCell = true;
-                    else
-                        alreadyProcessedSpannedCells.add(spannedTableCell);
-                }
-
-                UIComponent cellContentsContainer = column;
-                String customCellStyle = null;
-                String columnId = column.getId();
-                if (customCells != null) {
-                    for (Object customCell : customCells) {
-                        Cell cell = (Cell) customCell;
-                        boolean cellWithCustomContent = cell.getChildCount() > 0;
-                        if (cellWithCustomContent || Rendering.isComponentWithA4jAjax(cell)) {
-                            if (customRowRenderingInfo == null)
-                                customRowRenderingInfo = new CustomRowRenderingInfo(columnCount);
-                            if (cellWithCustomContent)
-                                cellContentsContainer = cell;
-                            CustomContentCellRenderingInfo customCellRenderingInfo =
-                                    (CustomContentCellRenderingInfo) cell.getAttributes().get(CUSTOM_CELL_RENDERING_INFO_ATTRIBUTE);
-                            customRowRenderingInfo.setCustomCellRenderingInfo(colIndex, customCellRenderingInfo);
-                        }
-                        customCellStyle = Styles.mergeClassNames(customCellStyle, cell.getStyleClassForCell(context, table, colIndex, columnId));
-                    }
-                    for (int i = colIndex + (remainingPortionOfBrokenSpannedCell ? 0 : 1), upperBound = colIndex + span;
-                         i < upperBound; i++) {
-                        if (customRowRenderingInfo == null)
-                            customRowRenderingInfo = new CustomRowRenderingInfo(columnCount);
-                        customRowRenderingInfo.setCustomCellRenderingInfo(i, new MergedCellRenderingInfo());
-                    }
-                }
-
-                List<String> cellStyles = new ArrayList<String>();
-                if (customCellStyle != null)
-                    cellStyles.add(customCellStyle);
-
-                if (!cellStyles.isEmpty()) {
-                    String styleClass = classNamesToClass(cellStyles);
-                    if (!Rendering.isNullOrEmpty(styleClass)) {
-                        Map<Object, String> cellStylesMap = tableStructure.getCellStylesMap();
-                        cellStylesMap.put(bodyRowIndex + "x" + colIndex, styleClass);
-                    }
-                }
-
-                BodyCell cell = new BodyCell();
-                if (leftCells != null && colIndex < centerAreaStart)
-                    leftCells.add(cell);
-                else if (rightCells != null && colIndex >= rightAreaStart)
-                    rightCells.add(cell);
-                else
-                    cells.add(cell);
-                cell.setSpan(span);
-                cell.extractCustomEvents((List<UIComponent>) customCells);
-
-                StringBuffer buf = stringWriter.getBuffer();
-                int startIdx = buf.length();
-                if (!remainingPortionOfBrokenSpannedCell) {
-                    boolean renderCustomTreeCell = column instanceof TreeColumn && cellContentsContainer instanceof Cell;
-                    if (renderCustomTreeCell) {
-                        column.getAttributes().put(TreeColumnRenderer.ATTR_CUSTOM_CELL, cellContentsContainer);
-                        try {
-                            column.encodeAll(context);
-                        } finally {
-                            column.getAttributes().remove(TreeColumnRenderer.ATTR_CUSTOM_CELL);
-                        }
-                    } else {
-                        cellContentsContainer.encodeAll(context);
-                    }
-                    if (!(column instanceof TreeColumn))
-                        TableStructure.writeNonBreakableSpaceForEmptyCell(writer, table, cellContentsContainer);
-                } else {
-                    if (tableStructure.isEmptyCellsTreatmentRequired())
-                        Rendering.writeNonBreakableSpace(writer);
-                }
-                int endIdx = buf.length();
-                String content = buf.substring(startIdx, endIdx);
-                cell.setContent(content);
-
-                if (columnIndexVar != null)
-                    requestMap.put(columnIndexVar, prevColumnIndexVarValue);
-                if (columnIdVar != null)
-                    requestMap.put(columnIdVar, prevColumnIdVarValue);
-
-
-                colIndex += span;
-            }
-            if (cellSelectableMethod != null) {
-                selectableCellsInJson.put(selectableCellsInColumn);
-            }
-            if (customRowRenderingInfo != null)
-                customRowRenderingInfos.put(rowIndex, customRowRenderingInfo);
-        }
-        if (cellSelection != null) {
-            cellSelection.saveSelectableCells(selectableCellsInJson);
-        }
-        table.setRowIndex(-1);
-
-        return new List[]{leftRows, rows, rightRows};
+        TableBodyRenderer renderer = new TableBodyRenderer(context, stringWriter, firstRowIndex, columns);
+        return renderer.createDataRows(rowsToRender);
     }
 
     private int getOriginalColumnIndex(BaseColumn column) {
@@ -797,4 +535,382 @@ public class TableBody extends TableSection {
     }
 
 
+    private class TableBodyRenderer {
+        private final FacesContext context;
+        private final ResponseWriter writer;
+        private final Map<String, Object> requestMap;
+        private final StringWriter stringWriter;
+        private final int firstRowIndex;
+        private final AbstractTable table;
+        private final List<BaseColumn> columns;
+        private final int centerAreaStart;
+        private final int rightAreaStart;
+        private final List<BodyRow> leftRows;
+        private final List<BodyRow> rows;
+        private final List<BodyRow> rightRows;
+        private final List<Row> customRows;
+        private final Map<Integer, CustomRowRenderingInfo> customRowRenderingInfos;
+        private final Map<Integer, Integer> renderedColIndexesByOriginalIndexes;
+        private final MethodExpression cellSelectableME;
+        private final MethodExpression selectableCellsME;
+        private final JSONArray collectedSelectableCells;
+        private final AbstractCellSelection cellSelection;
+
+        private TableBodyRenderer(FacesContext context, StringWriter stringWriter, int firstRowIndex, List<BaseColumn> columns) {
+            writer = context.getResponseWriter();
+            requestMap = context.getExternalContext().getRequestMap();
+            table = (AbstractTable) tableStructure.getComponent();
+            customRows = TableBody.this.getCustomRows(table);
+
+            Scrolling scrolling = tableStructure.getScrolling();
+            centerAreaStart = scrolling != null ? tableStructure.getLeftFixedCols() : 0;
+            rightAreaStart = scrolling != null ? columns.size() - tableStructure.getRightFixedCols() : 0;
+            leftRows = scrolling != null && tableStructure.getLeftFixedCols() > 0 ? new ArrayList<BodyRow>() : null;
+            rows = new ArrayList<BodyRow>();
+            rightRows = scrolling != null && tableStructure.getRightFixedCols() > 0 ? new ArrayList<BodyRow>() : null;
+
+            final AbstractTableSelection selection = table.getSelection();
+            cellSelection = selection instanceof AbstractCellSelection
+                    ? (AbstractCellSelection) selection : null;
+            collectedSelectableCells = new JSONArray();
+
+            cellSelectableME = (cellSelection == null) ? null : cellSelection.getCellSelectable();
+            selectableCellsME = (cellSelection == null) ? null : cellSelection.getSelectableCells();
+            if (cellSelectableME != null && selectableCellsME != null) {
+                throw new IllegalStateException("The \"cellSelectable\" and \"selectableCells\" attributes are " +
+                        "mutually exclusive and cannot be used at the same time.");
+            }
+
+            customRowRenderingInfos = (Map<Integer, CustomRowRenderingInfo>) table.getAttributes().get(
+                    TableStructure.CUSTOM_ROW_RENDERING_INFOS_KEY);
+            renderedColIndexesByOriginalIndexes = getRenderedColIndexesByOriginalIndexesMap(table);
+
+            this.context = context;
+            this.stringWriter = stringWriter;
+            this.firstRowIndex = firstRowIndex;
+            this.columns = columns;
+        }
+
+        private Map<Integer, Integer> getRenderedColIndexesByOriginalIndexesMap(AbstractTable table) {
+            final List<BaseColumn> renderedColumns = table.getRenderedColumns();
+            final List<BaseColumn> allColumns = table.getAllColumns();
+            final Map<Integer, Integer> renderedColIndexesByOriginalIndexes = new LinkedHashMap<Integer, Integer>(allColumns.size());
+            for (int originalColIndex = 0; originalColIndex < allColumns.size(); originalColIndex++) {
+                for (int renderedColIndex = 0; renderedColIndex < renderedColumns.size(); renderedColIndex++) {
+                    if (allColumns.get(originalColIndex) == renderedColumns.get(renderedColIndex)) {
+                        renderedColIndexesByOriginalIndexes.put(originalColIndex, renderedColIndex);
+                        break;
+                    }
+                }
+            }
+            return renderedColIndexesByOriginalIndexes;
+        }
+
+        public List<BodyRow>[] createDataRows(int rowsToRender) throws IOException {
+            int lastRowIndex = firstRowIndex + rowsToRender - 1;
+            for (int rowIndex = firstRowIndex; rowIndex <= lastRowIndex; rowIndex++) {
+                table.setRowIndex(rowIndex);
+                if (!table.isRowAvailable())
+                    break;
+
+                RowRenderer rowRenderer = new RowRenderer(rowIndex);
+                rowRenderer.renderRow();
+            }
+            if (cellSelection != null){
+                cellSelection.setCollectedSelectableCells(collectedSelectableCells);
+            }
+            table.setRowIndex(-1);
+
+            return new List[]{leftRows, rows, rightRows};
+        }
+
+
+        private void collectSelectableCells(int columnCount) {
+            if (selectableCellsME != null) {
+                boolean[] selectableFlagsForAllColumns = (boolean[]) selectableCellsME.invoke(
+                        FacesContext.getCurrentInstance().getELContext(), null);
+                boolean[] selectableFlagsForRenderedColumns = new boolean[columnCount];
+                for (int i = 0, count = selectableFlagsForAllColumns.length; i < count; i++) {
+                    final Integer renderedColIndex = renderedColIndexesByOriginalIndexes.get(i);
+                    if (renderedColIndex != null) {
+                        selectableFlagsForRenderedColumns[renderedColIndex] = selectableFlagsForAllColumns[i];
+                    }
+                }
+                collectedSelectableCells.put(selectableFlagsForRenderedColumns);
+            }
+        }
+
+
+        private class RowRenderer {
+            private final List<BodyCell> leftCells;
+            private final List<BodyCell> cells;
+            private final List<BodyCell> rightCells;
+            private final int bodyRowIndex;
+            private final int columnCount;
+            private final List<SpannedTableCell> alreadyProcessedSpannedCells;
+            private final List<Object>[] applicableCustomCells;
+            private final JSONArray selectableCellsInColumn;
+
+            private CustomRowRenderingInfo customRowRenderingInfo;
+            private int rowIndex;
+
+            private RowRenderer(int rowIndex) throws IOException {
+                this.rowIndex = rowIndex;
+
+                String clientRowKey = table.getClientRowKey();
+                if (clientRowKeys == null) clientRowKeys = new ArrayList<String>();
+                clientRowKeys.add(clientRowKey);
+
+                int columnCount = columns.size();
+
+                collectSelectableCells(columnCount);
+
+                int bodyRowIndex = rowIndex - firstRowIndex;
+                List<Row> applicableCustomRows = getApplicableCustomRows(customRows);
+                List<Object>[] applicableCustomCells = getApplicableCustomCells(applicableCustomRows, bodyRowIndex, columnCount);
+
+                selectableCellsInColumn = new JSONArray();
+                BodyRow leftRow = leftRows != null ? new BodyRow() : null;
+                BodyRow row = new BodyRow();
+                BodyRow rightRow = rightRows != null ? new BodyRow() : null;
+
+                if (leftRows != null)
+                    leftRows.add(leftRow);
+                rows.add(row);
+                if (rightRows != null)
+                    rightRows.add(rightRow);
+
+                if (leftRow != null)
+                    leftRow.extractCustomEvents(applicableCustomRows);
+                row.extractCustomEvents(applicableCustomRows);
+                if (rightRow != null)
+                    rightRow.extractCustomEvents(applicableCustomRows);
+
+                String[][] attributes = tableStructure.getBodyRowAttributes(context, table);
+                if (leftRow != null)
+                    leftRow.setAttributes(attributes);
+                row.setAttributes(attributes);
+                if (rightRow != null)
+                    rightRow.setAttributes(attributes);
+
+                leftCells = leftRow != null ? new ArrayList<BodyCell>() : null;
+                cells = new ArrayList<BodyCell>();
+                rightCells = rightRow != null ? new ArrayList<BodyCell>() : null;
+
+                if (leftRow != null)
+                    leftRow.setCells(leftCells);
+                row.setCells(cells);
+                if (rightRow != null)
+                    rightRow.setCells(rightCells);
+
+                alreadyProcessedSpannedCells = new ArrayList<SpannedTableCell>();
+
+                this.bodyRowIndex = bodyRowIndex;
+                this.columnCount = columnCount;
+
+                this.applicableCustomCells = applicableCustomCells;
+            }
+
+            private List<Object>[] getApplicableCustomCells(List<Row> applicableCustomRows, int bodyRowIndex, int columnCount) {
+                Object rowData = table.getRowData();
+
+                List<String> rowStyles = getApplicableRowStyles(context, customRows, table);
+                String rowStyleClass = (rowStyles != null && rowStyles.size() > 0) ? classNamesToClass(rowStyles) : null;
+                String additionalClass = tableStructure.getAdditionalRowClass(context, table, rowData, bodyRowIndex);
+                if (additionalClass != null)
+                    rowStyleClass = Styles.mergeClassNames(rowStyleClass, additionalClass);
+                if (!Rendering.isNullOrEmpty(rowStyleClass)) {
+                    Map<Object, String> rowStylesMap = tableStructure.getRowStylesMap();
+                    rowStylesMap.put(bodyRowIndex, rowStyleClass);
+                }
+
+
+                List<Integer> applicableRowDeclarationIndexes = new ArrayList<Integer>();
+                for (Row tableRow : applicableCustomRows) {
+                    if (Rendering.isComponentWithA4jAjax(tableRow)) {
+                        if (customRowRenderingInfo == null)
+                            customRowRenderingInfo = new CustomRowRenderingInfo(columnCount);
+                        Integer rowDeclarationIndex = (Integer) tableRow.getAttributes().get(CUSTOM_ROW_INDEX_ATTRIBUTE);
+                        if (rowDeclarationIndex == null)
+                            throw new IllegalStateException("CUSTOM_ROW_INDEX_ATTRIBUTE can legally be null only for the " +
+                                    "implicit grouping-related rows, which don't have any Ajax actions bound to them, so" +
+                                    "they can't lead execution to this point in code");
+                        applicableRowDeclarationIndexes.add(rowDeclarationIndex);
+                    }
+                }
+                if (customRowRenderingInfo != null)
+                    customRowRenderingInfo.setA4jEnabledRowDeclarationIndexes(applicableRowDeclarationIndexes);
+
+                return prepareCustomCells(table, applicableCustomRows);
+            }
+
+            public void renderRow() throws IOException {
+                for (int colIndex = 0; colIndex < columnCount; ) {
+                    List<BodyCell> targetCells;
+                    if (leftCells != null && colIndex < centerAreaStart)
+                        targetCells = leftCells;
+                    else if (rightCells != null && colIndex >= rightAreaStart)
+                        targetCells = rightCells;
+                    else
+                        targetCells = cells;
+
+                    BaseColumn column = columns.get(colIndex);
+                    if (!column.isRendered())
+                        throw new IllegalStateException("Only rendered columns are expected in columns list. column id: " +
+                                column.getId() + "; column index = " + colIndex);
+
+                    String columnIndexVar = table.getColumnIndexVar();
+                    String columnIdVar = table.getColumnIdVar();
+                    Object prevColumnIndexVarValue = null;
+                    Object prevColumnIdVarValue = null;
+                    int originalColIndex = getOriginalColumnIndex(column);
+                    if (columnIndexVar != null)
+                        prevColumnIndexVarValue = requestMap.put(columnIndexVar, originalColIndex);
+                    if (columnIdVar != null) {
+                        String columnId = column.getId();
+                        prevColumnIdVarValue = requestMap.put(columnIdVar, columnId);
+                    }
+                    BodyCell cell = renderCell(column, colIndex);
+                    targetCells.add(cell);
+
+                    if (columnIndexVar != null)
+                        requestMap.put(columnIndexVar, prevColumnIndexVarValue);
+                    if (columnIdVar != null)
+                        requestMap.put(columnIdVar, prevColumnIdVarValue);
+
+                    colIndex += cell.getSpan();
+                }
+
+                if (cellSelectableME != null) {
+                    collectedSelectableCells.put(selectableCellsInColumn);
+                }
+
+                if (customRowRenderingInfo != null)
+                    customRowRenderingInfos.put(rowIndex, customRowRenderingInfo);
+            }
+
+            private BodyCell renderCell(BaseColumn column, int colIndex) throws IOException {
+                if (cellSelectableME != null) {
+                    selectableCellsInColumn.put(cellSelectableME.invoke(
+                            FacesContext.getCurrentInstance().getELContext(), null));
+                }
+
+                List<?> customCells = applicableCustomCells[colIndex];
+                SpannedTableCell spannedTableCell =
+                        customCells != null && customCells.size() == 1 && customCells.get(0) instanceof SpannedTableCell
+                                ? (SpannedTableCell) customCells.get(0) : null;
+                boolean remainingPortionOfABrokenSpannedCell = false;
+                int span = 1;
+                if (spannedTableCell != null) {
+                    int testedColIndex = colIndex;
+                    while (true) {
+                        testedColIndex++;
+                        if (testedColIndex == columnCount)
+                            break;
+                        List testedCells = applicableCustomCells[testedColIndex];
+                        if (testedCells == null) break;
+                        SpannedTableCell testedSpannedCell = testedCells.size() == 1 && testedCells.get(0) instanceof SpannedTableCell
+                                ? (SpannedTableCell) testedCells.get(0) : null;
+                        if (spannedTableCell != testedSpannedCell)
+                            break;
+                        span++;
+                    }
+                    column = spannedTableCell.getColumn();
+                    customCells = spannedTableCell.getApplicableTableCells();
+                    if (alreadyProcessedSpannedCells.contains(spannedTableCell))
+                        remainingPortionOfABrokenSpannedCell = true;
+                    else
+                        alreadyProcessedSpannedCells.add(spannedTableCell);
+                }
+
+                UIComponent cellContentsContainer = applyCustomCellDefinitions(
+                        column, colIndex, customCells, remainingPortionOfABrokenSpannedCell, span);
+
+                BodyCell cell = new BodyCell();
+                cell.setSpan(span);
+                cell.extractCustomEvents((List<UIComponent>) customCells);
+
+                String content = renderCell(column, remainingPortionOfABrokenSpannedCell, cellContentsContainer);
+
+                cell.setContent(content);
+                return cell;
+            }
+
+            private String renderCell(
+                    BaseColumn column,
+                    boolean remainingPortionOfABrokenSpannedCell,
+                    UIComponent cellContentsContainer) throws IOException {
+
+                StringBuffer buf = stringWriter.getBuffer();
+                int startIdx = buf.length();
+                if (remainingPortionOfABrokenSpannedCell) {
+                    if (tableStructure.isEmptyCellsTreatmentRequired())
+                        Rendering.writeNonBreakableSpace(writer);
+                } else {
+                    renderCellContent(column, cellContentsContainer);
+                }
+                int endIdx = buf.length();
+                return buf.substring(startIdx, endIdx);
+            }
+
+            private UIComponent applyCustomCellDefinitions(
+                    BaseColumn column, int colIndex,
+                    List<?> customCells,
+                    boolean remainingPortionOfABrokenSpannedCell, int span) {
+
+                UIComponent cellContentsContainer = column;
+                if (customCells == null) return cellContentsContainer;
+
+                String customCellStyle = null;
+                String columnId = column.getId();
+                for (Object customCell : customCells) {
+                    Cell cell = (Cell) customCell;
+                    boolean cellWithCustomContent = cell.getChildCount() > 0;
+                    if (cellWithCustomContent || Rendering.isComponentWithA4jAjax(cell)) {
+                        if (customRowRenderingInfo == null)
+                            customRowRenderingInfo = new CustomRowRenderingInfo(columnCount);
+                        if (cellWithCustomContent)
+                            cellContentsContainer = cell;
+                        CustomContentCellRenderingInfo customCellRenderingInfo =
+                                (CustomContentCellRenderingInfo) cell.getAttributes().get(CUSTOM_CELL_RENDERING_INFO_ATTRIBUTE);
+                        customRowRenderingInfo.setCustomCellRenderingInfo(colIndex, customCellRenderingInfo);
+                    }
+                    customCellStyle = Styles.mergeClassNames(customCellStyle, cell.getStyleClassForCell(context, table, colIndex, columnId));
+                }
+                for (int i = colIndex + (remainingPortionOfABrokenSpannedCell ? 0 : 1), upperBound = colIndex + span;
+                     i < upperBound; i++) {
+                    if (customRowRenderingInfo == null)
+                        customRowRenderingInfo = new CustomRowRenderingInfo(columnCount);
+                    customRowRenderingInfo.setCustomCellRenderingInfo(i, new MergedCellRenderingInfo());
+                }
+
+                if (customCellStyle != null) {
+                    customCellStyle = customCellStyle.trim();
+                    if (customCellStyle.length() != 0) {
+                        Map<Object, String> cellStylesMap = tableStructure.getCellStylesMap();
+                        cellStylesMap.put(bodyRowIndex + "x" + colIndex, customCellStyle);
+                    }
+                }
+
+                return cellContentsContainer;
+            }
+
+            private void renderCellContent(BaseColumn column, UIComponent cellContentsContainer) throws IOException {
+                boolean renderCustomTreeCell = column instanceof TreeColumn && cellContentsContainer instanceof Cell;
+                if (renderCustomTreeCell) {
+                    column.getAttributes().put(TreeColumnRenderer.ATTR_CUSTOM_CELL, cellContentsContainer);
+                    try {
+                        column.encodeAll(context);
+                    } finally {
+                        column.getAttributes().remove(TreeColumnRenderer.ATTR_CUSTOM_CELL);
+                    }
+                } else {
+                    cellContentsContainer.encodeAll(context);
+                }
+                if (!(column instanceof TreeColumn))
+                    TableStructure.writeNonBreakableSpaceForEmptyCell(writer, table, cellContentsContainer);
+            }
+
+        }
+    }
 }

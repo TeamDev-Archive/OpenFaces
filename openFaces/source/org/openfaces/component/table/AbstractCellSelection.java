@@ -31,7 +31,7 @@ public abstract class AbstractCellSelection extends AbstractTableSelection {
 
     private MethodExpression cellSelectable;
     private MethodExpression selectableCells;
-    private JSONArray cellsSelectableInJSON;
+    private JSONArray collectedSelectableCells;
     private String cursorStyle;
     private String cursorClass;
     private FillDirectionForSelection fillDirection;
@@ -107,13 +107,17 @@ public abstract class AbstractCellSelection extends AbstractTableSelection {
         this.selectableCells = selectableCells;
     }
 
-    public void saveSelectableCells(JSONArray array) {
-        cellsSelectableInJSON = array;
+    /**
+     * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
+     * by any application code.
+     */
+    public void setCollectedSelectableCells(JSONArray array) {
+        collectedSelectableCells = array;
     }
 
     @Override
-    public JSONArray getSelectablesCells() {
-        return cellsSelectableInJSON;
+    protected JSONArray getCollectedSelectableCells() {
+        return collectedSelectableCells;
     }
 
     public String getCursorStyle() {

@@ -30,7 +30,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -290,7 +289,7 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
                 isKeyboardSupport(),
                 getTrackLeafNodesOnly(),
                 getFillDirectionForSelection(),
-                getSelectablesCells(),
+                getCollectedSelectableCells(),
                 getAttributes().get(ATTR_SELECTION_CURSOR_CLS));
 
         Styles.renderStyleClasses(context, this);
@@ -306,7 +305,7 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
             Rendering.renderHiddenField(writer, getSelectionEventFieldName(context, table), null);
     }
 
-    protected JSONArray getSelectablesCells() {
+    protected JSONArray getCollectedSelectableCells() {
         return null;
     }
 

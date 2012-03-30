@@ -29,6 +29,10 @@ public class ColumnJspTag extends BaseColumnJspTag {
         super(new ColumnTag());
     }
 
+    public void setValue(ValueExpression value) {
+        getDelegate().setPropertyValue("value", value);
+    }
+
     public void setSortingExpression(ValueExpression sortingExpression) {
         getDelegate().setPropertyValue("sortingExpression", sortingExpression);
     }
@@ -41,6 +45,10 @@ public class ColumnJspTag extends BaseColumnJspTag {
         getDelegate().setPropertyValue("sortingComparator", sortingComparator);
     }
 
+
+    public void setConverter(ValueExpression converter) {
+        getDelegate().setPropertyValue("converter", converter);
+    }
 
     public void setGroupingValueConverter(ValueExpression groupingValueConverter) {
         getDelegate().setPropertyValue("groupingValueConverter", groupingValueConverter);
