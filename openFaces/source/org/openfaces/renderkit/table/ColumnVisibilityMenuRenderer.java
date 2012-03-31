@@ -16,7 +16,6 @@ import org.openfaces.component.command.PopupMenu;
 import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.BaseColumn;
 import org.openfaces.component.table.ColumnVisibilityMenu;
-import org.openfaces.renderkit.TableUtil;
 import org.openfaces.renderkit.command.PopupMenuRenderer;
 import org.openfaces.renderkit.select.SelectBooleanCheckboxImageManager;
 import org.openfaces.util.Components;
@@ -49,7 +48,7 @@ public class ColumnVisibilityMenuRenderer extends PopupMenuRenderer {
         List<BaseColumn> allColumns = table.getAllColumns();
         for (BaseColumn column : allColumns) {
             MenuItem menuItem = new MenuItem();
-            menuItem.setValue(TableUtil.getColumnHeader(column));
+            menuItem.setValue(column.getColumnHeader());
             boolean columnVisible = visibleColumns.contains(column);
             menuItem.setIconUrl(Resources.internalURL(context,
                     columnVisible

@@ -13,7 +13,6 @@ package org.openfaces.component.filter;
 
 import org.openfaces.component.FilterableComponent;
 import org.openfaces.component.table.BaseColumn;
-import org.openfaces.renderkit.TableUtil;
 import org.openfaces.util.ValueBindings;
 
 import javax.el.ValueExpression;
@@ -116,7 +115,7 @@ public abstract class ExpressionFilter extends Filter implements ValueHolder {
         }
         BaseColumn column = getColumn();
         if (column != null) {
-            converter = TableUtil.getColumnValueConverter(column);
+            converter = column.getColumnValueConverter();
             return converter;
         }
         return null;
@@ -179,7 +178,7 @@ public abstract class ExpressionFilter extends Filter implements ValueHolder {
         if (expression == null) {
             BaseColumn column = getColumn();
             if (column != null)
-                expression = TableUtil.getColumnValueExpression(column);
+                expression = column.getColumnValueExpression();
         }
         return expression;
     }

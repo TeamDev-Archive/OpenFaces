@@ -1272,6 +1272,31 @@
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>Specifies the optional column value expression that can be used when declaring the column components,
+        and can be used to simplify table declarations when a column should just display a text value. If you need to
+        display text values in a column then you can declare this attribute and avoid specifying any components inside
+        of the &amp;lt;&gt;o:column> tag, which will make the appropriate value to be displayed in this column.
+      </description>
+      <name>value</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.Object -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>A converter that is used for displaying column value column components are not specified explicitly
+      </description>
+      <name>converter</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType javax.faces.convert.Converter -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>Defines the row's value that is used during sorting. Is used to make the column sortable.
       </description>
       <name>sortingExpression</name>
@@ -10015,6 +10040,31 @@ means that only root nodes and their immediate children are preloaded -->
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Specifies the optional column value expression that can be used when declaring the column components,
+        and can be used to simplify table declarations when a column should just display a text value. If you need to
+        display text values in a column then you can declare this attribute and avoid specifying any components inside
+        of the &amp;lt;&gt;o:column> tag, which will make the appropriate value to be displayed in this column.
+      </description>
+      <name>value</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.Object -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>A converter that is used for displaying column value column components are not specified explicitly
+      </description>
+      <name>converter</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType javax.faces.convert.Converter -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
@@ -45450,18 +45500,6 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default Stopping... -->
       <!-- @el true -->
     </attribute>
-    <attribute>
-      <description>Flag which enables upload several files.
-        Note that if multiple is assigned to false then autoUpload attribute will be assigned to true.
-      </description>
-      <name>multiple</name>
-      <deferred-value>
-        <type>boolean</type>
-      </deferred-value>
-      <!-- @bindingType boolean -->
-      <!-- @default false -->
-      <!-- @el true -->
-    </attribute>
 
     <attribute>
       <description>Enables handling uploaded files on the server side. This attribute is a MethodBinding that
@@ -45977,14 +46015,13 @@ entering a value and returns a list of suggestions from the server -->
 
     <attribute>
       <description>The text for Browse button.
-        The default value depends on 'multiple' attribute's value - if it is assigned 'true' -> "Add file..." else -> "Upload"
       </description>
       <name>browseButtonText</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default see description-->
+      <!-- @default see Upload-->
       <!-- @el true -->
     </attribute>
 
@@ -46537,7 +46574,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>
-        This attribute defines what is happenning to browseButton while file is uploading.
+        This attribute defines what is happening to browseButton while file is uploading.
         Default value is depends on layoutMode attribute If it is assigned to "full" -> 'showStop' else 'hide'.
       </description>
       <name>browseButtonDuringUpload</name>
@@ -46679,6 +46716,12 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default '{value} %' -->
       <!-- @el true -->
     </attribute>
+  </tag>
+  <tag>
+    <description>This component is under development and is not supported yet. API is subject to change.</description>
+    <name>sorting</name>
+    <tag-class>org.openfaces.taglib.jsp.table.SortingJspTag</tag-class>
+    <body-content>JSP</body-content>
   </tag>
 
   <!--<tag>-->

@@ -11,18 +11,15 @@
  */
 package org.openfaces.component.table;
 
-import org.openfaces.component.ComponentConfigurator;
 import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.ValueBindings;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 
 /**
  * @author Dmitry Pikhulya
  */
-public class ColumnReordering extends UIComponentBase implements ComponentConfigurator {
+public class ColumnReordering extends AbstractTableConfigurator {
     public static final String COMPONENT_TYPE = "org.openfaces.ColumnReordering";
     public static final String COMPONENT_FAMILY = "org.openfaces.ColumnReordering";
 
@@ -85,21 +82,6 @@ public class ColumnReordering extends UIComponentBase implements ComponentConfig
         dropTargetClass = (String) state[i++];
         dropTargetTopImageUrl = (String) state[i++];
         dropTargetBottomImageUrl = (String) state[i++];
-    }
-
-    public UIComponent getConfiguredComponent() {
-        return getTable();
-    }
-
-    private AbstractTable table;
-
-    public void setTable(AbstractTable table) {
-        this.table = table;
-    }
-
-    public AbstractTable getTable() {
-        if (table != null) return table;
-        return (AbstractTable) getParent();
     }
 
     public String getDraggedCellStyle() {
@@ -200,6 +182,6 @@ public class ColumnReordering extends UIComponentBase implements ComponentConfig
     }
 
     public void encodeOnBodyReload(FacesContext context, ScriptBuilder sb) {
-        
+
     }
 }

@@ -11,20 +11,17 @@
  */
 package org.openfaces.component.table;
 
-import org.openfaces.component.ComponentConfigurator;
 import org.openfaces.org.json.JSONArray;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.util.ValueBindings;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 import java.awt.*;
 
 /**
  * @author Dmitry Pikhulya
  */
-public class Scrolling extends UIComponentBase implements ComponentConfigurator {
+public class Scrolling extends AbstractTableConfigurator {
     public static final String COMPONENT_TYPE = "org.openfaces.Scrolling";
     public static final String COMPONENT_FAMILY = "org.openfaces.Scrolling";
 
@@ -43,7 +40,7 @@ public class Scrolling extends UIComponentBase implements ComponentConfigurator 
 
     @Override
     public Object saveState(FacesContext context) {
-        return new Object[] {
+        return new Object[]{
                 super.saveState(context),
                 vertical,
                 horizontal,
@@ -87,15 +84,6 @@ public class Scrolling extends UIComponentBase implements ComponentConfigurator 
 
     public void setPosition(Point position) {
         this.position = position;
-    }
-
-
-    public UIComponent getConfiguredComponent() {
-        return getTable();
-    }
-
-    private AbstractTable getTable() {
-        return (AbstractTable) getParent();
     }
 
     @Override

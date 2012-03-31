@@ -11,23 +11,29 @@
  */
 package org.openfaces.component.table;
 
-import org.openfaces.renderkit.TableUtil;
 import org.openfaces.util.Components;
+import org.openfaces.util.ValueBindings;
 
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
+import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 
 /**
  * @author Dmitry Pikhulya
  */
-public class Column extends BaseColumn {
+public class Column extends BaseColumn implements ValueHolder {
     public static final String COMPONENT_TYPE = "org.openfaces.Column";
     public static final String COMPONENT_FAMILY = "org.openfaces.Column";
+
+    public static final String COLUMN_VALUE_VAR = "columnValue";
+
     private javax.faces.convert.Converter groupingValueConverter;
+    private javax.faces.convert.Converter converter;
 
     public Column() {
+        setRendererType("org.openfaces.ColumnRenderer");
     }
 
     @Override
@@ -38,7 +44,10 @@ public class Column extends BaseColumn {
     @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
-        return new Object[]{superState};
+        return new Object[]{superState,
+                saveAttachedState(context, converter),
+                saveAttachedState(context, groupingValueConverter)
+        };
     }
 
     @Override
@@ -46,6 +55,8 @@ public class Column extends BaseColumn {
         Object[] state = (Object[]) stateObj;
         int i = 0;
         super.restoreState(context, state[i++]);
+        converter = (Converter) restoreAttachedState(context, state[i++]);
+        groupingValueConverter = (Converter) restoreAttachedState(context, state[i++]);
     }
 
     public ValueExpression getSortingExpression() {
@@ -56,12 +67,69 @@ public class Column extends BaseColumn {
         setValueExpression("sortingExpression", sortingExpression);
     }
 
+    public ValueExpression getValueExpression() {
+        return getValueExpression("value");
+    }
+
+    /**
+     * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
+     * by any application code.
+     */
+    @Override
+    public ValueExpression getColumnValueExpression() {
+        ValueExpression ve = getValueExpression();
+        if (ve != null)
+            return ve;
+        else
+            return super.getColumnValueExpression();
+    }
+
+    public ValueExpression getColumnSortingExpression() {
+        ValueExpression ve = getSortingExpression();
+        if (ve == null) {
+        Sorting sorting = getTable().getSorting();
+        if (sorting.isExplicitMode())
+            ve = getColumnValueExpression();
+        }
+        return ve;
+    }
+
+
+    /**
+     * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
+     * by any application code.
+     */
+    @Override
+    public ValueExpression getColumnGroupingExpression() {
+        ValueExpression ve = getGroupingExpression();
+        if (ve == null)
+            ve = getValueExpression();
+        if (ve == null)
+            ve = getSortingExpression();
+        if (ve == null)
+            ve = getColumnValueExpression();
+        return ve;
+
+    }
+
+    public void setValueExpression(ValueExpression valueExpression) {
+        setValueExpression("value", valueExpression);
+    }
+
     public ValueExpression getGroupingExpression() {
         return getValueExpression("groupingExpression");
     }
 
     public void setGroupingExpression(ValueExpression groupingExpression) {
         setValueExpression("groupingExpression", groupingExpression);
+    }
+
+    public Converter getConverter() {
+        return ValueBindings.get(this, "converter", converter, Converter.class);
+    }
+
+    public void setConverter(Converter converter) {
+        this.converter = converter;
     }
 
     public ValueExpression getSortingComparatorBinding() {
@@ -83,7 +151,7 @@ public class Column extends BaseColumn {
 
     public Converter getGroupingValueConverter() {
         if (groupingValueConverter != null) return groupingValueConverter;
-        ValueExpression ve = getValueExpression("converter");
+        ValueExpression ve = getValueExpression("groupingValueConverter");
         if (ve != null)
             return (Converter) ve.getValue(getFacesContext().getELContext());
         boolean explicitExpression = getGroupingExpression() != null;
@@ -93,11 +161,38 @@ public class Column extends BaseColumn {
             // the default type converter should be used (we just return null to signify this)
             return null;
         }
-        groupingValueConverter = TableUtil.getColumnValueConverter(this);
+        groupingValueConverter = getColumnValueConverter();
         return groupingValueConverter;
     }
 
     public void setGroupingValueConverter(Converter groupingValueConverter) {
         this.groupingValueConverter = groupingValueConverter;
+    }
+
+    /**
+     * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
+     * by any application code.
+     */
+    public Object getLocalValue() {
+        // can't throw UnsupportedOperationException when a column has any converter tag because Facelts' ConvertHandler
+        // invokes this method and tries to convert it into Object if this method returns a string value, so we're just
+        // returning null here.
+        return null;
+    }
+
+    /**
+     * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
+     * by any application code.
+     */
+    public Object getValue() {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
+     * by any application code.
+     */
+    public void setValue(Object value) {
+        throw new UnsupportedOperationException();
     }
 }

@@ -399,8 +399,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
             if (columnSortableAttr != null)
                 sortable = columnSortableAttr;
             else {
-                ValueExpression sortingExpression =
-                        (column instanceof Column) ? ((Column) column).getSortingExpression() : null;
+                ValueExpression sortingExpression = column.getColumnSortingExpression();
                 sortable = (sortingExpression != null);
             }
             if (sortable) sortableColumnsIds.put(column.getId());

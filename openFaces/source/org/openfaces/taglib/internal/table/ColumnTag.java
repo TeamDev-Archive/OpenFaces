@@ -32,15 +32,17 @@ public class ColumnTag extends BaseColumnTag {
     }
 
     public String getRendererType() {
-        return null;
+        return "org.openfaces.ColumnRenderer";
     }
 
     @Override
     public void setComponentProperties(FacesContext context, UIComponent component) {
         super.setComponentProperties(context, component);
         Column column = ((Column) component);
+        setValueExpressionProperty(component, "value");
         setValueExpressionProperty(component, "sortingExpression");
         setValueExpressionProperty(component, "groupingExpression");
+        setConverterProperty(context, component, "converter");
         setConverterProperty(context, component, "groupingValueConverter");
 
         String sortingComparator = getPropertyValue("sortingComparator");

@@ -30,7 +30,7 @@ public abstract class GroupHeaderOrFooterRow extends Row {
 
     private DataTable getDataTable() {
         if (dataTable == null) {
-            dataTable = Components.checkParentTag(this, DataTable.class);
+            dataTable = (DataTable) Components.checkParentTag(this, DataTable.class);
         }
         return dataTable;
     }
