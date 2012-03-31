@@ -19,7 +19,6 @@ import org.openfaces.org.json.JSONArray;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.RendererBase;
-import org.openfaces.renderkit.TableUtil;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.ScriptBuilder;
 
@@ -68,7 +67,7 @@ public class RowGroupingRenderer extends RendererBase {
             cell.setTableStructure(tableStructure);
             cell.render(context, null);
 
-            if (TableUtil.isColumnGroupable(column))
+            if (column.isColumnGroupable())
                 groupableColumnIds.add(columnId);
         }
 

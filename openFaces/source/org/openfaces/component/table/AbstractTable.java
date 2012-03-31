@@ -47,7 +47,6 @@ import java.util.Set;
  * @author Dmitry Pikhulya
  */
 public abstract class AbstractTable extends OUIData implements TableStyles, FilterableComponent {
-    private static final String KEY_SORTING_TOGGLED = AbstractTable.class + ".processModelUpdates().sortingToggled";
     /*
    Implementation notes:
    - the full life-cycle for the selection child is intentionally ensured. Although implementation of
@@ -900,6 +899,18 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         return Components.findChildWithClass(this, Scrolling.class, "<o:scrolling>");
     }
 
+    private Sorting sorting;
+
+    public Sorting getSorting() {
+        if (sorting == null) {
+            sorting = Components.findChildWithClass(this, Sorting.class, "<o:sorting>");
+            if (sorting == null) {
+                sorting = new Sorting(false);
+            }
+        }
+        return sorting;
+    }
+
     public void setSelection(AbstractTableSelection newSelection) {
         AbstractTableSelection oldSelection = findSelectionChild();
         if (oldSelection != null) {
@@ -1312,7 +1323,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
             return null;
         List<BaseColumn> allColumns = getAllColumns();
         BaseColumn baseColumn = findColumnById(allColumns, columnId);
-        return TableUtil.getColumnGroupingExpression(baseColumn);
+        return baseColumn.getColumnGroupingExpression();
     }
 
     protected RowComparator createRuleComparator(final FacesContext facesContext, SortingOrGroupingRule rule) {
@@ -1329,11 +1340,11 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         if (ordinaryColumn) {
             Column tableColumn = (Column) column;
             if (rule instanceof GroupingRule)
-                sortingExpression = tableColumn.getGroupingExpression();
+                sortingExpression = tableColumn.getColumnGroupingExpression();
             else
                 sortingExpression = null;
             if (sortingExpression == null)
-                sortingExpression = tableColumn.getSortingExpression();
+                sortingExpression = tableColumn.getColumnSortingExpression();
         } else {
             sortingExpression = itemSelectedExpressionForColumn(column);
         }

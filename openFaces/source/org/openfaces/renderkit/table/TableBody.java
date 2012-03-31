@@ -21,6 +21,7 @@ import org.openfaces.util.Rendering;
 import org.openfaces.util.StyleGroup;
 import org.openfaces.util.Styles;
 
+import javax.el.ELContext;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -418,8 +419,10 @@ public class TableBody extends TableSection {
 
             private CustomRowRenderingInfo customRowRenderingInfo;
             private int rowIndex;
+            private ELContext elContext;
 
             private RowRenderer(int rowIndex) throws IOException {
+                this.elContext = FacesContext.getCurrentInstance().getELContext();
                 this.rowIndex = rowIndex;
 
                 String clientRowKey = table.getClientRowKey();
@@ -524,8 +527,7 @@ public class TableBody extends TableSection {
 
             private BodyCell renderCell(BaseColumn column, int colIndex) throws IOException {
                 if (cellSelectableME != null) {
-                    selectableCellsInColumn.put(cellSelectableME.invoke(
-                            FacesContext.getCurrentInstance().getELContext(), null));
+                    selectableCellsInColumn.put(cellSelectableME.invoke(elContext, null));
                 }
 
                 List<?> customCells = applicableCustomCells[colIndex];
@@ -589,24 +591,38 @@ public class TableBody extends TableSection {
 
             private void renderCellContent(BaseColumn column, UIComponent cellContentsContainer) throws IOException {
                 boolean renderCustomTreeCell = column instanceof TreeColumn && cellContentsContainer instanceof Cell;
-                if (renderCustomTreeCell) {
+                Column displayedColumn = cellContentsContainer instanceof Column
+                        ? (Column) cellContentsContainer
+                        : null;
+                Object prevColumnValue = null;
+                if (displayedColumn != null) {
+                    ValueExpression valueExpression = displayedColumn.getValueExpression();
+                    if (valueExpression != null) {
+                        Object columnValue = valueExpression.getValue(elContext);
+                        prevColumnValue = requestMap.put(Column.COLUMN_VALUE_VAR, columnValue);
+                    }
+                }
+
+                if (!renderCustomTreeCell) {
+                    cellContentsContainer.encodeAll(context);
+                    if (!(column instanceof Column)) {
+                        TableStructure.writeNonBreakableSpaceForEmptyCell(writer, table, cellContentsContainer);
+                    }
+                } else {
                     column.getAttributes().put(TreeColumnRenderer.ATTR_CUSTOM_CELL, cellContentsContainer);
                     try {
                         column.encodeAll(context);
                     } finally {
                         column.getAttributes().remove(TreeColumnRenderer.ATTR_CUSTOM_CELL);
                     }
-                } else {
-                    cellContentsContainer.encodeAll(context);
                 }
-                if (!(column instanceof TreeColumn))
-                    TableStructure.writeNonBreakableSpaceForEmptyCell(writer, table, cellContentsContainer);
+
+                requestMap.put(Column.COLUMN_VALUE_VAR, prevColumnValue);
             }
 
             private void collectSelectableCells(int columnCount) {
                 if (selectableCellsME != null) {
-                    boolean[] selectableFlagsForAllColumns = (boolean[]) selectableCellsME.invoke(
-                            FacesContext.getCurrentInstance().getELContext(), null);
+                    boolean[] selectableFlagsForAllColumns = (boolean[]) selectableCellsME.invoke(elContext, null);
                     boolean[] selectableFlagsForRenderedColumns = new boolean[columnCount];
                     for (int i = 0, count = selectableFlagsForAllColumns.length; i < count; i++) {
                         final Integer renderedColIndex = renderedColIndexesByOriginalIndexes.get(i);
@@ -759,11 +775,10 @@ public class TableBody extends TableSection {
                     }
                 }
                 if (rowCellsByColReference.size() > 0) {
-                    FacesContext context = FacesContext.getCurrentInstance();
                     for (int i = 0; i < allColCount; i++) {
                         BaseColumn col = allColumns.get(i);
                         for (Cell cell : rowCellsByColReference) {
-                            if (isColumnApplicable(context, cell, table, col, i)) {
+                            if (isColumnApplicable(cell, table, col, i)) {
                                 List<Cell> applicableCells = rowCellsByAbsoluteIndex[i];
                                 if (applicableCells == null) {
                                     applicableCells = new ArrayList<Cell>();
@@ -830,7 +845,6 @@ public class TableBody extends TableSection {
             }
 
             private boolean isColumnApplicable(
-                    FacesContext context,
                     Cell cell,
                     AbstractTable table,
                     BaseColumn column,
@@ -853,7 +867,6 @@ public class TableBody extends TableSection {
 
                 ValueExpression conditionExpression = cell.getConditionExpression();
 
-                Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
                 String columnIndexVar = table.getColumnIndexVar();
                 String columnIdVar = table.getColumnIdVar();
                 Object prevColumnIndexVarValue = null;
@@ -865,7 +878,7 @@ public class TableBody extends TableSection {
                     prevColumnIdVarValue = requestMap.put(columnIdVar, columnId);
                 }
 
-                Boolean result = (Boolean) conditionExpression.getValue(context.getELContext());
+                Boolean result = (Boolean) conditionExpression.getValue(elContext);
 
                 if (columnIndexVar != null)
                     requestMap.put(columnIndexVar, prevColumnIndexVarValue);

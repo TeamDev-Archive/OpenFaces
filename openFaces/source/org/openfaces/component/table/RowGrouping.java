@@ -11,20 +11,21 @@
  */
 package org.openfaces.component.table;
 
+import org.openfaces.component.ComponentConfigurator;
 import org.openfaces.component.OUIComponentBase;
-import org.openfaces.renderkit.TableUtil;
 import org.openfaces.util.Components;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.ValueBindings;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import java.util.Collections;
 import java.util.List;
 
-public class RowGrouping extends OUIComponentBase {
+public class RowGrouping extends OUIComponentBase implements ComponentConfigurator {
     public static final String COMPONENT_TYPE = "org.openfaces.RowGrouping";
     public static final String COMPONENT_FAMILY = "org.openfaces.RowGrouping";
     private static final String DEFAULT_GROUP_HEADER_TEXT_EXPRESSION = "#{columnHeader}: #{groupingValueString}";
@@ -112,7 +113,7 @@ public class RowGrouping extends OUIComponentBase {
             String columnId = sortingRule.getColumnId();
             BaseColumn column = dataTable.getColumnById(columnId);
             if (column == null) throw new IllegalArgumentException("Column by id not found: " + columnId);
-            if (!TableUtil.isColumnGroupable(column))
+            if (!column.isColumnGroupable())
                 throw new IllegalArgumentException("Column (id = " + columnId + ") is not groupable. Column class is " +
                         column.getClass() + " ; specify sortingExpression or groupingExpression for <o:column> to " +
                         "make it groupable");
@@ -173,7 +174,7 @@ public class RowGrouping extends OUIComponentBase {
 
     protected DataTable getDataTable() {
         if (dataTable == null) {
-            dataTable = Components.checkParentTag(this, DataTable.class);
+            dataTable = (DataTable) Components.checkParentTag(this, DataTable.class);
         }
         return dataTable;
     }
@@ -202,7 +203,7 @@ public class RowGrouping extends OUIComponentBase {
         String columnId = rowGroup.getColumnId();
         Column column = (Column) dataTable.getColumnById(columnId);
 
-        String columnHeader = TableUtil.getColumnHeader(column);
+        String columnHeader = column.getColumnHeader();
         Components.setRequestVariable(getColumnHeaderVar(), columnHeader);
 
         Object groupingValue = rowGroup.getGroupingValue();
@@ -283,5 +284,9 @@ public class RowGrouping extends OUIComponentBase {
 
     public void setSelectionMode(RowGroupingSelectionMode selectionMode) {
         this.selectionMode = selectionMode;
+    }
+
+    public UIComponent getConfiguredComponent() {
+        return getDataTable();
     }
 }

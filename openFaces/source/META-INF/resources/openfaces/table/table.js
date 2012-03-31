@@ -4473,7 +4473,7 @@ O$.Table = {
                   var counter = 0;
                   var groupingRules = rules();
                   groupingBoxLayout().draggable().forEach(function(colHeader) {
-                    if (table._sortableColumnsIds.indexOf(colHeader._columnId) < 0)return;
+                    if (!table.sorting || table._sortableColumnsIds.indexOf(colHeader._columnId) < 0)return;
                     O$.addEventHandler(colHeader, "click", function() {
                       var focusField = O$(table.id + "::focused");
                       if (focusField)
@@ -4743,6 +4743,8 @@ O$.ColumnMenu = {
   },
   _sortColumn: function(tableId, columnIndex, isAscending) {
     var table = O$(tableId);
+    if (!table.sorting) return;
+//    O$.assert(table.sorting, "O$._sortColumn: table is not sortable");
     var groupingRules = table.grouping ? table.grouping.getGroupingRules() : null;
 
     function associatedGroupingRule() {

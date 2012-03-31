@@ -12,12 +12,25 @@
 package org.openfaces.component.table;
 
 import org.openfaces.util.Components;
+import org.openfaces.util.ReflectionUtil;
+import org.openfaces.util.Rendering;
 import org.openfaces.util.ValueBindings;
 
+import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+import java.util.Collection;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Dmitry Pikhulya
@@ -547,7 +560,8 @@ public class BaseColumn extends UIColumn {
         while (parent instanceof ColumnGroup)
             parent = parent.getParent();
         if (parent != null && !(parent instanceof AbstractTable))
-            throw new RuntimeException("Columns can only be inserted inside DataTable or TreeTable. Column id: " + getId());
+            throw new RuntimeException("Columns can only be inserted inside DataTable or TreeTable. Column id: " +
+                    getId() + "; class of parent component: " + parent.getClass().getName());
 
         return (AbstractTable) parent;
     }
@@ -560,6 +574,283 @@ public class BaseColumn extends UIColumn {
                 widthExpression.setValue(context.getELContext(), width);
                 width = null;
             }
+        }
+    }
+
+
+    /**
+     * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
+     * by any application code.
+     */
+    public String getColumnHeader() {
+        DynamicCol dynamicCol = (this instanceof DynamicCol) ? (DynamicCol) this : null;
+        if (dynamicCol != null) dynamicCol.declareContextVariables();
+        try {
+            String header = getHeaderValue();
+            if (header != null)
+                return header;
+            UIComponent component = getHeader();
+            if (component == null)
+                return "";
+
+            return obtainOutputValue(component);
+        } finally {
+            if (dynamicCol != null) dynamicCol.undeclareContextVariables();
+        }
+    }
+
+
+    /**
+     * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
+     * by any application code.
+     */
+    public Converter getColumnValueConverter() {
+        ColumnExpressionData columnExpressionData = getColumnExpressionData();
+        if (columnExpressionData == null)
+            return null;
+        return columnExpressionData.getValueConverter();
+    }
+
+    /**
+     * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
+     * by any application code.
+     */
+    public ValueExpression getColumnValueExpression() {
+        String var = getTable().getVar();
+        UIOutput columnOutput = obtainOutput(this, var);
+        if (columnOutput == null) return null;
+        return columnOutput.getValueExpression("value");
+    }
+
+    /**
+     * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
+     * by any application code.
+     */
+    public ValueExpression getColumnSortingExpression() {
+        return null;
+    }
+
+    /**
+     * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
+     * by any application code.
+     */
+    public ValueExpression getColumnGroupingExpression() {
+        return null;
+    }
+
+
+    /**
+     * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
+     * by any application code.
+     */
+    public boolean isColumnGroupable() {
+        return getColumnGroupingExpression() != null;
+    }
+
+
+    /**
+     * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
+     * by any application code.
+     */
+    public ColumnExpressionData getColumnExpressionData() {
+        return getColumnExpressionData(null);
+    }
+
+    /**
+     * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
+     * by any application code.
+     */
+    public ColumnExpressionData getColumnExpressionData(ValueExpression explicitExpression) {
+        String cachedDataVar = "_OpenFaces_columnExpressionData";
+        ColumnExpressionData data = (ColumnExpressionData) this.getAttributes().get(cachedDataVar);
+        if (data != null)
+            return data;
+        AbstractTable table = getTable();
+        ValueExpression expression = explicitExpression != null
+                ? explicitExpression
+                : getColumnValueExpression();
+        if (expression == null)
+            return null;
+
+        Class valueType = Object.class;
+        Converter valueConverter = this instanceof Column ? ((Column) this).getConverter() : null;
+        FacesContext context = FacesContext.getCurrentInstance();
+        ELContext elContext = context.getELContext();
+
+        int index = table.getRowIndex();
+        try {
+            int i = 0;
+            table.setRowIndex(i);
+            while (table.isRowAvailable() && table.getRowData() instanceof RowGroupHeaderOrFooter) {
+                table.setRowIndex(++i);
+            }
+            valueType = table.isRowAvailable() ? expression.getType(elContext) : Object.class;
+            if (valueConverter == null) {
+                String var = table.getVar();
+                UIOutput columnOutput = obtainOutput(this, var);
+
+                if (columnOutput != null)
+                    valueConverter = Rendering.getConverter(context, columnOutput);
+                else
+                    valueConverter = Rendering.getConverterForType(context, valueType);
+            }
+        } catch (Exception e) {
+            // running this branch means that there's no row data and row with index == 0
+            valueType = detectValueType(elContext, table, expression, valueType);
+        } finally {
+            table.setRowIndex(index);
+        }
+
+        if (valueConverter == null)
+            valueConverter = Rendering.getConverterForType(context, valueType);
+
+        ColumnExpressionData result = new ColumnExpressionData(expression, valueType, valueConverter);
+        if (explicitExpression == null) {
+            // do not cache ColumnExpressionData if it is calculated with an explicitly specified non-default expression
+            // in order to avoid returning a wrong cached instance upon a further call to this method without an
+            // explicitly specified expression
+            this.getAttributes().put(cachedDataVar, result);
+        }
+        return result;
+    }
+
+    private static Class detectValueType(ELContext elContext, AbstractTable table, ValueExpression expression, Class valueType) {
+        String expressionString = expression.getExpressionString();
+        if (expressionString.split("#").length > 2) { // consist of more than one expression
+            valueType = String.class; // multiple expression concatenation result is a string
+        } else {
+            String var = table.getVar();
+            ValueExpression rowDataBeanValueExpression = table.getValueExpression("value");
+            if (rowDataBeanValueExpression != null) {
+                Object expressionValue = rowDataBeanValueExpression.getValue(elContext);
+                Class rowDataBeanType = expressionValue != null
+                        ? expressionValue.getClass()
+                        : rowDataBeanValueExpression.getType(elContext);
+                Class rowDataClass = null;
+                if (rowDataBeanType.isArray()) {
+                    rowDataClass = rowDataBeanType.getComponentType();
+                } else if (Collection.class.isAssignableFrom(rowDataBeanType)) {
+                    rowDataClass = ReflectionUtil.getGenericParameterClass(rowDataBeanType);
+                }
+                if (rowDataClass != null) {
+                    Matcher expressionMatcher = getExpressionPattern(var).matcher(expressionString);
+                    if (!expressionMatcher.find()) {
+                        throw new IllegalArgumentException("Unsupported expression: " + expression);
+                    }
+
+                    // String expressionBeforeVar = expressionMatcher.group(2);
+                    /*if (expressionBeforeVar != null) {
+                        Class typeOfExpressionBefore = ValueBindings.createValueExpression(context, "#{" + expressionBeforeVar + "}").getType(context.getELContext());
+                    }*/
+                    String expressionAfterVar = expressionMatcher.group(2);
+                    valueType = ReflectionUtil.definePropertyType(rowDataClass, expressionAfterVar);
+                }
+            }
+        }
+        return valueType;
+    }
+
+    private static String obtainOutputValue(UIComponent component) {
+        if (component instanceof UIOutput) {
+            Object value = ((UIOutput) component).getValue();
+            return (value != null) ? value.toString() : "";
+        }
+        for (UIComponent child : component.getChildren()) {
+            String childValue = obtainOutputValue(child);
+            if (childValue != null) {
+                return childValue;
+            }
+        }
+        return null;
+    }
+
+
+    /**
+     * Matches expression of the form:
+     * #{var.a.b}
+     *
+     * @return Pattern group with index 2 of which selects expression after var
+     */
+    private static Pattern getExpressionPattern(String var) {
+        String pattern = "#\\{" + var + "(\\.)((([\\w\\.])*)+)}";
+        return Pattern.compile(pattern);
+    }
+
+    private static boolean expressionContainsVar(String expressionString, String var) {
+        if (expressionString.equals("#{" + var + "}")) return true;
+        Matcher matcher = getExpressionPattern(var).matcher(expressionString);
+        return matcher.find();
+    }
+
+    private static UIOutput obtainOutput(UIComponent component, String var) {
+        if (component instanceof UIOutput) {
+            ValueExpression valueExpression = component.getValueExpression("value");
+            if (valueExpression != null)
+                if (expressionContainsVar(valueExpression.getExpressionString(), var)) {
+                    return (UIOutput) component;
+                }
+        }
+        List<UIComponent> children;
+        if (component instanceof DynamicColumn) {
+            children = ((DynamicColumn) component).getChildrenForProcessing();
+        } else {
+            children = component.getChildren();
+        }
+
+
+        for (UIComponent child : children) {
+            UIOutput childOutput = obtainOutput(child, var);
+            if (childOutput != null) {
+                return childOutput;
+            }
+        }
+        return null;
+
+    }
+
+
+    /**
+     * This class is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
+     * by any application code.
+     */
+    public static class ColumnExpressionData implements Externalizable {
+        private ValueExpression valueExpression;
+        private Class valueType;
+        private Converter valueConverter;
+
+        public ColumnExpressionData() {
+        }
+
+        public ColumnExpressionData(ValueExpression valueExpression, Class valueType, Converter valueConverter) {
+            this.valueExpression = valueExpression;
+            this.valueType = valueType;
+            this.valueConverter = valueConverter;
+        }
+
+        public void writeExternal(ObjectOutput out) throws IOException {
+            ValueBindings.writeValueExpression(out, valueExpression);
+            out.writeObject(valueType);
+            FacesContext context = FacesContext.getCurrentInstance();
+            out.writeObject(saveAttachedState(context, valueConverter));
+        }
+
+        public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+            valueExpression = ValueBindings.readValueExpression(in);
+            valueType = (Class) in.readObject();
+            FacesContext context = FacesContext.getCurrentInstance();
+            valueConverter = (Converter) restoreAttachedState(context, in.readObject());
+        }
+
+        public ValueExpression getValueExpression() {
+            return valueExpression;
+        }
+
+        public Class getValueType() {
+            return valueType;
+        }
+
+        public Converter getValueConverter() {
+            return valueConverter;
         }
     }
 }

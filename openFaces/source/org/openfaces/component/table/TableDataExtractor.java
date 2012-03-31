@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 
 import static org.openfaces.component.table.AbstractTable.DataScope;
-import static org.openfaces.renderkit.TableUtil.getColumnHeader;
 
 /**
  * @author Natalia.Zolochevska@Teamdev.com
@@ -77,7 +76,7 @@ public class TableDataExtractor {
 
         List<String> columnDatas = new ArrayList<String>();
         for (BaseColumn column : columns) {
-            columnDatas.add(getColumnHeader(column));
+            columnDatas.add(column.getColumnHeader());
         }
 
         Iterable<Object> rowDatas = table.getRowDatas(scope);
