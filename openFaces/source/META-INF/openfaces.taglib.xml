@@ -78,6 +78,7 @@
     <tag-name>column</tag-name>
     <component>
       <component-type>org.openfaces.Column</component-type>
+      <renderer-type>org.openfaces.ColumnRenderer</renderer-type>
       <handler-class>org.openfaces.taglib.facelets.table.ColumnTagHandler</handler-class>
     </component>
   </tag>
@@ -1359,5 +1360,13 @@
       <renderer-type>org.openfaces.CancelGroupingMenuItemRenderer</renderer-type>
       <handler-class>org.openfaces.taglib.facelets.table.CancelGroupingMenuItemTagHandler</handler-class>
     </component>
-  </tag>  
+  </tag>
+  <tag>
+    <tag-name>sorting</tag-name>
+    <component>
+      <component-type>org.openfaces.Sorting</component-type>
+      <renderer-type>org.openfaces.SortingRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.table.SortingTagHandler</handler-class>
+    </component>
+  </tag>
 </facelet-taglib>

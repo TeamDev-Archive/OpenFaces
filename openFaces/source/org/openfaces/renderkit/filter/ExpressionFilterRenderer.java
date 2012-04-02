@@ -19,7 +19,6 @@ import org.openfaces.component.filter.PropertyLocator;
 import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.BaseColumn;
 import org.openfaces.renderkit.RendererBase;
-import org.openfaces.renderkit.TableUtil;
 import org.openfaces.util.Components;
 import org.openfaces.util.RawScript;
 import org.openfaces.util.ScriptBuilder;
@@ -124,7 +123,7 @@ public abstract class ExpressionFilterRenderer extends RendererBase {
                 else {
                     BaseColumn column = (BaseColumn) parent;
                     if (expression instanceof ValueExpression) {
-                        TableUtil.ColumnExpressionData data = TableUtil.getColumnExpressionData(column, (ValueExpression) expression);
+                        BaseColumn.ColumnExpressionData data = column.getColumnExpressionData((ValueExpression) expression);
                         if (data == null) {
                             AbstractTable table = column.getTable();
                             String var = table.getVar();

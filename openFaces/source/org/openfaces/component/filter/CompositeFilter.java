@@ -17,7 +17,6 @@ import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.BaseColumn;
 import org.openfaces.component.table.CheckboxColumn;
 import org.openfaces.component.table.SelectionColumn;
-import org.openfaces.renderkit.TableUtil;
 import org.openfaces.renderkit.filter.FilterRow;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.ValueBindings;
@@ -134,7 +133,7 @@ public class CompositeFilter extends Filter {
 
 
     private FilterProperty getColumnFilterProperty(FilterableComponent filteredComponent, BaseColumn column) {
-        final TableUtil.ColumnExpressionData columnExpressionData = TableUtil.getColumnExpressionData(column);
+        final BaseColumn.ColumnExpressionData columnExpressionData = column.getColumnExpressionData();
         if (columnExpressionData == null) {
             AbstractTable table = column.getTable();
             String var = table.getVar();
@@ -148,7 +147,7 @@ public class CompositeFilter extends Filter {
         PropertyLocatorFactory factory = new FilterableComponentPropertyLocatorFactory(filteredComponent);
         PropertyLocator propertyLocator = factory.create(expression);
 
-        String title = TableUtil.getColumnHeader(column);
+        String title = column.getColumnHeader();
         if (title == null) return null;
 
         Class expressionType = columnExpressionData.getValueType();
@@ -394,9 +393,9 @@ public class CompositeFilter extends Filter {
         private String title;
         private Object dataProvider;
         private PropertyLocator propertyLocator;
-        private TableUtil.ColumnExpressionData columnExpressionData;
+        private BaseColumn.ColumnExpressionData columnExpressionData;
 
-        public ColumnFilterProperty(FilterType filterType, String title, Object dataProvider, PropertyLocator propertyLocator, TableUtil.ColumnExpressionData columnExpressionData) {
+        public ColumnFilterProperty(FilterType filterType, String title, Object dataProvider, PropertyLocator propertyLocator, BaseColumn.ColumnExpressionData columnExpressionData) {
             this.filterType = filterType;
             this.title = title;
             this.dataProvider = dataProvider;

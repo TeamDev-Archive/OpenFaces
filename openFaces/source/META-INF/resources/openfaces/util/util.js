@@ -1791,7 +1791,9 @@ if (!window.O$) {
       focusElement = document.createElement(createTextArea ? "textarea" : "input");
       if (!createTextArea)
         focusElement.type = "button";
-      focusElement.className = "o_hiddenFocus";
+      focusElement.className = (O$.isChrome() || O$.isSafari())
+              ? "o_hiddenFocusChromeSafari"
+              : "o_hiddenFocus";
       if (O$.isSafari()) {
         focusElement.style.border = "1px solid transparent !important";
       }

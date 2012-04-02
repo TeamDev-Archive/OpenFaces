@@ -21,6 +21,7 @@ import org.openfaces.util.Rendering;
 import org.openfaces.util.StyleGroup;
 import org.openfaces.util.Styles;
 
+import javax.el.ELContext;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -59,10 +60,6 @@ public class TableBody extends TableSection {
         this.tableStructure = tableStructure;
     }
 
-    public boolean isNoDataRows() {
-        return noDataRows;
-    }
-
     protected void fillInitParam(JSONObject result, TableStyles defaultStyles) throws JSONException {
         TableStyles table = tableStructure.getTableStyles();
         FacesContext context = FacesContext.getCurrentInstance();
@@ -77,12 +74,16 @@ public class TableBody extends TableSection {
                 getBodyOddRowClass(table, defaultStyles)));
         if (table instanceof AbstractTable) {
             AbstractTable at = (AbstractTable) table;
-            Rendering.addJsonParam(result, "rolloverRowClassName", Styles.getCSSClass(context, component, at.getRolloverRowStyle(),
-                    StyleGroup.rolloverStyleGroup(), at.getRolloverRowClass()));
+            Rendering.addJsonParam(result, "rolloverRowClassName", Styles.getCSSClass(context, component,
+                    at.getRolloverRowStyle(), StyleGroup.rolloverStyleGroup(), at.getRolloverRowClass()));
         }
 
-        result.put("noDataRows", isNoDataRows());
+        result.put("noDataRows", getNoDataRows());
         result.put("rowKeys", clientRowKeys);
+    }
+
+    public boolean getNoDataRows() {
+        return noDataRows;
     }
 
     public List<String> getClientRowKeys() {
@@ -186,9 +187,11 @@ public class TableBody extends TableSection {
         return Collections.singletonList(containingRow);
     }
 
-    private BodyCell scrollingAreaCell(List<BaseColumn> columns, List<BodyRow> rows, int startCol, int endCol, TableScrollingArea.ScrollingType scrolling) {
+    private BodyCell scrollingAreaCell(List<BaseColumn> columns, List<BodyRow> rows, int startCol, int endCol,
+                                       TableScrollingArea.ScrollingType scrolling) {
         BodyCell cell = new BodyCell();
-        TableScrollingArea scrollingArea = new TableScrollingArea(cell, columns.subList(startCol, endCol), rows, scrolling);
+        TableScrollingArea scrollingArea =
+                new TableScrollingArea(cell, columns.subList(startCol, endCol), rows, scrolling);
         scrollingArea.setCellpadding(tableStructure.getTableCellPadding());
         scrollingArea.setIndefiniteHeight(true);
         cell.setContent(scrollingArea);
@@ -225,69 +228,6 @@ public class TableBody extends TableSection {
         TableBodyRenderer renderer = new TableBodyRenderer(context, stringWriter, firstRowIndex, columns);
         return renderer.createDataRows(rowsToRender);
     }
-
-    private int getOriginalColumnIndex(BaseColumn column) {
-        if (column instanceof TreeColumn) {
-            BaseColumn delegate = ((TreeColumn) column).getDelegate();
-            if (delegate != null)
-                return getOriginalColumnIndex(delegate);
-        }
-        return (Integer) column.getAttributes().get(COLUMN_ATTR_ORIGINAL_INDEX);
-    }
-
-    private boolean isColumnApplicable(
-            FacesContext context,
-            Cell cell,
-            AbstractTable table,
-            BaseColumn column,
-            int originalColIndex) {
-        Object columnIds = cell.getColumnIds();
-        if (columnIds != null) {
-            Collection<Object> columnIdsCollection;
-            if (columnIds.getClass().isArray()) {
-                columnIdsCollection = Arrays.asList((Object[]) columnIds);
-            } else if (columnIds instanceof Collection)
-                columnIdsCollection = (Collection<Object>) columnIds;
-            else
-                throw new IllegalArgumentException("'columnIds' attribute of <o:cell> tag should contain either an array or a collection of column id strings, but a value of the following type encountered: " + columnIds.getClass().getName());
-            String colId = column.getId();
-            boolean result = columnIdsCollection.contains(colId);
-            return result;
-        }
-
-        ValueExpression conditionExpression = cell.getConditionExpression();
-
-        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-        String columnIndexVar = table.getColumnIndexVar();
-        String columnIdVar = table.getColumnIdVar();
-        Object prevColumnIndexVarValue = null;
-        Object prevColumnIdVarValue = null;
-        if (columnIndexVar != null)
-            prevColumnIndexVarValue = requestMap.put(columnIndexVar, originalColIndex);
-        if (columnIdVar != null) {
-            String columnId = column.getId();
-            prevColumnIdVarValue = requestMap.put(columnIdVar, columnId);
-        }
-
-        Boolean result = (Boolean) conditionExpression.getValue(context.getELContext());
-
-        if (columnIndexVar != null)
-            requestMap.put(columnIndexVar, prevColumnIndexVarValue);
-        if (columnIdVar != null)
-            requestMap.put(columnIdVar, prevColumnIdVarValue);
-
-        return (result == null) || result;
-    }
-
-    private List<Row> getApplicableCustomRows(List<Row> customRows) {
-        List<Row> applicableRows = new ArrayList<Row>(customRows.size());
-        for (Row tableRow : customRows) {
-            if (tableRow.getCondition())
-                applicableRows.add(tableRow);
-        }
-        return applicableRows;
-    }
-
 
     private BodyRow createFakeRow(int span) throws IOException {
         BodyRow row = new BodyRow();
@@ -337,195 +277,6 @@ public class TableBody extends TableSection {
         return row;
     }
 
-    /**
-     * Takes the list of custom row specifications applicable to a row of interest (this is a list of TableRow instances
-     * because several TableRow instances can be applicable to the same row), and constructs a list of custom cell
-     * specifications applicable to the cells of this row.
-     *
-     * @param table                a table whose row is being analyzed
-     * @param applicableCustomRows a list of TableRow instances applicable to the current row
-     * @return An array the size of number of rendered columns. Each array entry corresponds to each rendered cell. Each
-     *         array entry contains one of the following: (1) null - means that no custom cells are applicable for this
-     *         cell and it will be rendered as usual; (2) List of TableCell instances applicable to this cell;
-     *         (3) List containing only one SpannedTableCell instance if an appropriate cell is part of a cell span - all
-     *         cells referring to the same SpannedTableCell will be rendered as one cell spanning across several columns.
-     */
-    private List<Object>[] prepareCustomCells(AbstractTable table, List<Row> applicableCustomRows) {
-        List<BaseColumn> allColumns = table.getAllColumns();
-        List<BaseColumn> columnsForRendering = table.getAdaptedRenderedColumns();
-        int allColCount = allColumns.size();
-        for (int i = 0; i < allColCount; i++) {
-            UIComponent col = allColumns.get(i);
-            col.getAttributes().put(COLUMN_ATTR_ORIGINAL_INDEX, i);
-        }
-
-        int visibleColCount = columnsForRendering.size();
-        List[] rowCellsByAbsoluteIndex = new List[allColCount];
-
-        boolean thereAreCellSpans = false;
-        List<Cell> rowCellsByColReference = new ArrayList<Cell>();
-        for (Row row : applicableCustomRows) {
-            Integer customRowIndex = (Integer) row.getAttributes().get(CUSTOM_ROW_INDEX_ATTRIBUTE);
-            List<UIComponent> children = row.getChildren();
-            int freeCellIndex = 0;
-            int customCellIndex = 0;
-            for (UIComponent child : children) {
-                if (!(child instanceof Cell))
-                    continue;
-                Cell cell = (Cell) child;
-
-                cell.getAttributes().put(CUSTOM_CELL_RENDERING_INFO_ATTRIBUTE, new CustomContentCellRenderingInfo(
-                        customRowIndex != null ? customRowIndex : -1, customCellIndex++));
-                int span = cell.getSpan();
-                Object columnIds = cell.getColumnIds();
-                ValueExpression conditionExpression = cell.getConditionExpression();
-                if (span < 1)
-                    throw new IllegalArgumentException("The value of 'span' attribute of <o:cell> tag can't be less than 1, but encountered: " + span);
-
-                if (span != 1) {
-                    thereAreCellSpans = true;
-                }
-
-                if (columnIds == null && conditionExpression == null) {
-                    int thisColIndex = freeCellIndex;
-                    freeCellIndex += span;
-                    if (thisColIndex >= allColCount)
-                        throw new FacesException("The number of free cells (cells without 'column' attribute) inside of <o:row> tag should not be greater than the total number of columns in a table (" + allColCount + ")");
-                    List<Cell> applicableCells = rowCellsByAbsoluteIndex[thisColIndex];
-                    if (applicableCells == null) {
-                        applicableCells = new ArrayList<Cell>();
-                        rowCellsByAbsoluteIndex[thisColIndex] = applicableCells;
-                    }
-                    applicableCells.add(cell);
-                } else {
-                    rowCellsByColReference.add(cell);
-                }
-            }
-        }
-        if (rowCellsByColReference.size() > 0) {
-            FacesContext context = FacesContext.getCurrentInstance();
-            for (int i = 0; i < allColCount; i++) {
-                BaseColumn col = allColumns.get(i);
-                for (Cell cell : rowCellsByColReference) {
-                    if (isColumnApplicable(context, cell, table, col, i)) {
-                        List<Cell> applicableCells = rowCellsByAbsoluteIndex[i];
-                        if (applicableCells == null) {
-                            applicableCells = new ArrayList<Cell>();
-                            rowCellsByAbsoluteIndex[i] = applicableCells;
-                        }
-                        applicableCells.add(cell);
-                    }
-                }
-            }
-        }
-
-        if (thereAreCellSpans) {
-            for (int i = 0; i < allColCount; i++) {
-                List customCellList = rowCellsByAbsoluteIndex[i];
-                if (customCellList == null)
-                    continue;
-                int cellSpan = 1;
-                boolean groupHeaderCell = false;
-                for (Object cellObj : customCellList) {
-                    Cell cell = (Cell) cellObj;
-                    groupHeaderCell |= GroupHeaderRow.isSyntheticGroupHeaderCell(cell);
-
-                    int currentCellSpan = cell.getSpan();
-                    if (currentCellSpan != 1)
-                        cellSpan = currentCellSpan;
-                }
-                if (cellSpan == 1)
-                    continue;
-                BaseColumn column = allColumns.get(i);
-                if (groupHeaderCell) {
-                    // when table row grouping is turned on, the automatically generated implicit tree column is
-                    // always generated to be the first rendered column, and spannedTableCell.getColumn() refers
-                    // the first column in the allColumns list, and so it always refers to the first column declared
-                    // in the table's markup, which might actually be different than the first column in the
-                    // renderedColumns list. Hence we're fixing this so that tree column was properly rendered on
-                    // group header cells
-                    TreeColumn treeColumn = null;
-                    for (BaseColumn c : columnsForRendering) {
-                        if (c instanceof TreeColumn) {
-                            treeColumn = (TreeColumn) c;
-                            break;
-                        }
-                    }
-                    if (treeColumn == null)
-                        throw new IllegalStateException("There must be an implicitly generated tree column in the grouped table");
-                    column = treeColumn;
-                }
-                SpannedTableCell spannedTableCell = new SpannedTableCell(column, customCellList);
-                for (int cellIndex = i; cellIndex < i + cellSpan; cellIndex++) {
-                    rowCellsByAbsoluteIndex[cellIndex] = Collections.singletonList(spannedTableCell);
-                }
-                i += cellSpan - 1;
-            }
-        }
-
-        List[] applicableCells = new List[visibleColCount];
-        for (int i = 0; i < visibleColCount; i++) {
-            BaseColumn column = columnsForRendering.get(i);
-            int originalColIndex = getOriginalColumnIndex(column);
-            applicableCells[i] = rowCellsByAbsoluteIndex[originalColIndex];
-        }
-        return (List<Object>[]) applicableCells;
-    }
-
-    private List<Row> getCustomRows(AbstractTable table) {
-        List<Row> customRows = new ArrayList<Row>();
-
-        if (table instanceof DataTable) {
-            DataTable dataTable = (DataTable) table;
-            RowGrouping rowGrouping = dataTable.getRowGrouping();
-            if (rowGrouping != null) {
-                customRows.add(new GroupHeaderRow(dataTable));
-                customRows.add(new GroupFooterRow(dataTable));
-            }
-        }
-
-        List<UIComponent> children = table.getChildren();
-        int customRowIndex = 0;
-        int customCellIndex = 0;
-        for (UIComponent child : children) {
-            if (child instanceof Row) {
-                Row customRow = (Row) child;
-                customRows.add(customRow);
-                customRow.getAttributes().put(CUSTOM_ROW_INDEX_ATTRIBUTE, customRowIndex++);
-                List<UIComponent> customRowChildren = customRow.getChildren();
-                for (UIComponent rowChild : customRowChildren) {
-                    if (rowChild instanceof Cell) {
-                        Cell customCell = (Cell) rowChild;
-                        customCell.getAttributes().put(CUSTOM_CELL_INDEX_ATTRIBUTE, customCellIndex++);
-                    }
-                }
-            }
-        }
-        return customRows;
-    }
-
-    private List<String> getApplicableRowStyles(FacesContext context, List<Row> customRows, AbstractTable table) {
-        List<String> result = new ArrayList<String>();
-        for (Row customRow : customRows) {
-            String cls = customRow.getStyleClassForRow(context, table);
-            if (cls != null)
-                result.add(cls);
-        }
-        return result;
-    }
-
-    private String classNamesToClass(List<String> cellStyles) {
-        StringBuilder combinedClassName = new StringBuilder();
-        for (String className : cellStyles) {
-            if (className != null) {
-                int len = combinedClassName.length();
-                if (len > 0)
-                    combinedClassName.append(' ');
-                combinedClassName.append(className.trim());
-            }
-        }
-        return combinedClassName.toString();
-    }
 
 
     private class TableBodyRenderer {
@@ -549,11 +300,16 @@ public class TableBody extends TableSection {
         private final JSONArray collectedSelectableCells;
         private final AbstractCellSelection cellSelection;
 
-        private TableBodyRenderer(FacesContext context, StringWriter stringWriter, int firstRowIndex, List<BaseColumn> columns) {
+        private TableBodyRenderer(
+                FacesContext context,
+                StringWriter stringWriter,
+                int firstRowIndex,
+                List<BaseColumn> columns) {
+
             writer = context.getResponseWriter();
             requestMap = context.getExternalContext().getRequestMap();
             table = (AbstractTable) tableStructure.getComponent();
-            customRows = TableBody.this.getCustomRows(table);
+            customRows = getCustomRows(table);
 
             Scrolling scrolling = tableStructure.getScrolling();
             centerAreaStart = scrolling != null ? tableStructure.getLeftFixedCols() : 0;
@@ -584,10 +340,43 @@ public class TableBody extends TableSection {
             this.columns = columns;
         }
 
+        private List<Row> getCustomRows(AbstractTable table) {
+            List<Row> customRows = new ArrayList<Row>();
+
+            if (table instanceof DataTable) {
+                DataTable dataTable = (DataTable) table;
+                RowGrouping rowGrouping = dataTable.getRowGrouping();
+                if (rowGrouping != null) {
+                    customRows.add(new GroupHeaderRow(dataTable));
+                    customRows.add(new GroupFooterRow(dataTable));
+                }
+            }
+
+            List<UIComponent> children = table.getChildren();
+            int customRowIndex = 0;
+            int customCellIndex = 0;
+            for (UIComponent child : children) {
+                if (child instanceof Row) {
+                    Row customRow = (Row) child;
+                    customRows.add(customRow);
+                    customRow.getAttributes().put(CUSTOM_ROW_INDEX_ATTRIBUTE, customRowIndex++);
+                    List<UIComponent> customRowChildren = customRow.getChildren();
+                    for (UIComponent rowChild : customRowChildren) {
+                        if (rowChild instanceof Cell) {
+                            Cell customCell = (Cell) rowChild;
+                            customCell.getAttributes().put(CUSTOM_CELL_INDEX_ATTRIBUTE, customCellIndex++);
+                        }
+                    }
+                }
+            }
+            return customRows;
+        }
+
         private Map<Integer, Integer> getRenderedColIndexesByOriginalIndexesMap(AbstractTable table) {
             final List<BaseColumn> renderedColumns = table.getRenderedColumns();
             final List<BaseColumn> allColumns = table.getAllColumns();
-            final Map<Integer, Integer> renderedColIndexesByOriginalIndexes = new LinkedHashMap<Integer, Integer>(allColumns.size());
+            final Map<Integer, Integer> renderedColIndexesByOriginalIndexes =
+                    new LinkedHashMap<Integer, Integer>(allColumns.size());
             for (int originalColIndex = 0; originalColIndex < allColumns.size(); originalColIndex++) {
                 for (int renderedColIndex = 0; renderedColIndex < renderedColumns.size(); renderedColIndex++) {
                     if (allColumns.get(originalColIndex) == renderedColumns.get(renderedColIndex)) {
@@ -618,22 +407,6 @@ public class TableBody extends TableSection {
         }
 
 
-        private void collectSelectableCells(int columnCount) {
-            if (selectableCellsME != null) {
-                boolean[] selectableFlagsForAllColumns = (boolean[]) selectableCellsME.invoke(
-                        FacesContext.getCurrentInstance().getELContext(), null);
-                boolean[] selectableFlagsForRenderedColumns = new boolean[columnCount];
-                for (int i = 0, count = selectableFlagsForAllColumns.length; i < count; i++) {
-                    final Integer renderedColIndex = renderedColIndexesByOriginalIndexes.get(i);
-                    if (renderedColIndex != null) {
-                        selectableFlagsForRenderedColumns[renderedColIndex] = selectableFlagsForAllColumns[i];
-                    }
-                }
-                collectedSelectableCells.put(selectableFlagsForRenderedColumns);
-            }
-        }
-
-
         private class RowRenderer {
             private final List<BodyCell> leftCells;
             private final List<BodyCell> cells;
@@ -646,8 +419,10 @@ public class TableBody extends TableSection {
 
             private CustomRowRenderingInfo customRowRenderingInfo;
             private int rowIndex;
+            private ELContext elContext;
 
             private RowRenderer(int rowIndex) throws IOException {
+                this.elContext = FacesContext.getCurrentInstance().getELContext();
                 this.rowIndex = rowIndex;
 
                 String clientRowKey = table.getClientRowKey();
@@ -660,7 +435,8 @@ public class TableBody extends TableSection {
 
                 int bodyRowIndex = rowIndex - firstRowIndex;
                 List<Row> applicableCustomRows = getApplicableCustomRows(customRows);
-                List<Object>[] applicableCustomCells = getApplicableCustomCells(applicableCustomRows, bodyRowIndex, columnCount);
+                List<Object>[] applicableCustomCells =
+                        getApplicableCustomCells(applicableCustomRows, bodyRowIndex, columnCount);
 
                 selectableCellsInColumn = new JSONArray();
                 BodyRow leftRow = leftRows != null ? new BodyRow() : null;
@@ -704,39 +480,6 @@ public class TableBody extends TableSection {
                 this.applicableCustomCells = applicableCustomCells;
             }
 
-            private List<Object>[] getApplicableCustomCells(List<Row> applicableCustomRows, int bodyRowIndex, int columnCount) {
-                Object rowData = table.getRowData();
-
-                List<String> rowStyles = getApplicableRowStyles(context, customRows, table);
-                String rowStyleClass = (rowStyles != null && rowStyles.size() > 0) ? classNamesToClass(rowStyles) : null;
-                String additionalClass = tableStructure.getAdditionalRowClass(context, table, rowData, bodyRowIndex);
-                if (additionalClass != null)
-                    rowStyleClass = Styles.mergeClassNames(rowStyleClass, additionalClass);
-                if (!Rendering.isNullOrEmpty(rowStyleClass)) {
-                    Map<Object, String> rowStylesMap = tableStructure.getRowStylesMap();
-                    rowStylesMap.put(bodyRowIndex, rowStyleClass);
-                }
-
-
-                List<Integer> applicableRowDeclarationIndexes = new ArrayList<Integer>();
-                for (Row tableRow : applicableCustomRows) {
-                    if (Rendering.isComponentWithA4jSupport(tableRow)) {
-                        if (customRowRenderingInfo == null)
-                            customRowRenderingInfo = new CustomRowRenderingInfo(columnCount);
-                        Integer rowDeclarationIndex = (Integer) tableRow.getAttributes().get(CUSTOM_ROW_INDEX_ATTRIBUTE);
-                        if (rowDeclarationIndex == null)
-                            throw new IllegalStateException("CUSTOM_ROW_INDEX_ATTRIBUTE can legally be null only for the " +
-                                    "implicit grouping-related rows, which don't have any Ajax actions bound to them, so" +
-                                    "they can't lead execution to this point in code");
-                        applicableRowDeclarationIndexes.add(rowDeclarationIndex);
-                    }
-                }
-                if (customRowRenderingInfo != null)
-                    customRowRenderingInfo.setA4jEnabledRowDeclarationIndexes(applicableRowDeclarationIndexes);
-
-                return prepareCustomCells(table, applicableCustomRows);
-            }
-
             public void renderRow() throws IOException {
                 for (int colIndex = 0; colIndex < columnCount; ) {
                     List<BodyCell> targetCells;
@@ -749,8 +492,8 @@ public class TableBody extends TableSection {
 
                     BaseColumn column = columns.get(colIndex);
                     if (!column.isRendered())
-                        throw new IllegalStateException("Only rendered columns are expected in columns list. column id: " +
-                                column.getId() + "; column index = " + colIndex);
+                        throw new IllegalStateException("Only rendered columns are expected in columns list. " +
+                                "column id: " + column.getId() + "; column index = " + colIndex);
 
                     String columnIndexVar = table.getColumnIndexVar();
                     String columnIdVar = table.getColumnIdVar();
@@ -784,8 +527,7 @@ public class TableBody extends TableSection {
 
             private BodyCell renderCell(BaseColumn column, int colIndex) throws IOException {
                 if (cellSelectableME != null) {
-                    selectableCellsInColumn.put(cellSelectableME.invoke(
-                            FacesContext.getCurrentInstance().getELContext(), null));
+                    selectableCellsInColumn.put(cellSelectableME.invoke(elContext, null));
                 }
 
                 List<?> customCells = applicableCustomCells[colIndex];
@@ -802,8 +544,9 @@ public class TableBody extends TableSection {
                             break;
                         List testedCells = applicableCustomCells[testedColIndex];
                         if (testedCells == null) break;
-                        SpannedTableCell testedSpannedCell = testedCells.size() == 1 && testedCells.get(0) instanceof SpannedTableCell
-                                ? (SpannedTableCell) testedCells.get(0) : null;
+                        SpannedTableCell testedSpannedCell =
+                                testedCells.size() == 1 && testedCells.get(0) instanceof SpannedTableCell
+                                        ? (SpannedTableCell) testedCells.get(0) : null;
                         if (spannedTableCell != testedSpannedCell)
                             break;
                         span++;
@@ -846,6 +589,314 @@ public class TableBody extends TableSection {
                 return buf.substring(startIdx, endIdx);
             }
 
+            private void renderCellContent(BaseColumn column, UIComponent cellContentsContainer) throws IOException {
+                boolean renderCustomTreeCell = column instanceof TreeColumn && cellContentsContainer instanceof Cell;
+                Column displayedColumn = cellContentsContainer instanceof Column
+                        ? (Column) cellContentsContainer
+                        : null;
+                Object prevColumnValue = null;
+                if (displayedColumn != null) {
+                    ValueExpression valueExpression = displayedColumn.getValueExpression();
+                    if (valueExpression != null) {
+                        Object columnValue = valueExpression.getValue(elContext);
+                        prevColumnValue = requestMap.put(Column.COLUMN_VALUE_VAR, columnValue);
+                    }
+                }
+
+                if (!renderCustomTreeCell) {
+                    cellContentsContainer.encodeAll(context);
+                    if (!(column instanceof Column)) {
+                        TableStructure.writeNonBreakableSpaceForEmptyCell(writer, table, cellContentsContainer);
+                    }
+                } else {
+                    column.getAttributes().put(TreeColumnRenderer.ATTR_CUSTOM_CELL, cellContentsContainer);
+                    try {
+                        column.encodeAll(context);
+                    } finally {
+                        column.getAttributes().remove(TreeColumnRenderer.ATTR_CUSTOM_CELL);
+                    }
+                }
+
+                requestMap.put(Column.COLUMN_VALUE_VAR, prevColumnValue);
+            }
+
+            private void collectSelectableCells(int columnCount) {
+                if (selectableCellsME != null) {
+                    boolean[] selectableFlagsForAllColumns = (boolean[]) selectableCellsME.invoke(elContext, null);
+                    boolean[] selectableFlagsForRenderedColumns = new boolean[columnCount];
+                    for (int i = 0, count = selectableFlagsForAllColumns.length; i < count; i++) {
+                        final Integer renderedColIndex = renderedColIndexesByOriginalIndexes.get(i);
+                        if (renderedColIndex != null) {
+                            selectableFlagsForRenderedColumns[renderedColIndex] = selectableFlagsForAllColumns[i];
+                        }
+                    }
+                    collectedSelectableCells.put(selectableFlagsForRenderedColumns);
+                }
+            }
+
+            private List<Row> getApplicableCustomRows(List<Row> customRows) {
+                List<Row> applicableRows = new ArrayList<Row>(customRows.size());
+                for (Row tableRow : customRows) {
+                    if (tableRow.getCondition())
+                        applicableRows.add(tableRow);
+                }
+                return applicableRows;
+            }
+
+            private List<Object>[] getApplicableCustomCells(
+                    List<Row> applicableCustomRows, int bodyRowIndex, int columnCount) {
+                Object rowData = table.getRowData();
+
+                List<String> rowStyles = getApplicableRowStyles(context, customRows, table);
+                String rowStyleClass = (rowStyles != null && rowStyles.size() > 0)
+                        ? classNamesToClass(rowStyles)
+                        : null;
+                String additionalClass = tableStructure.getAdditionalRowClass(context, table, rowData, bodyRowIndex);
+                if (additionalClass != null)
+                    rowStyleClass = Styles.mergeClassNames(rowStyleClass, additionalClass);
+                if (!Rendering.isNullOrEmpty(rowStyleClass)) {
+                    Map<Object, String> rowStylesMap = tableStructure.getRowStylesMap();
+                    rowStylesMap.put(bodyRowIndex, rowStyleClass);
+                }
+
+
+                List<Integer> applicableRowDeclarationIndexes = new ArrayList<Integer>();
+                for (Row tableRow : applicableCustomRows) {
+                    if (Rendering.isComponentWithA4jSupport(tableRow)) {
+                        if (customRowRenderingInfo == null)
+                            customRowRenderingInfo = new CustomRowRenderingInfo(columnCount);
+                        Integer rowDeclarationIndex =
+                                (Integer) tableRow.getAttributes().get(CUSTOM_ROW_INDEX_ATTRIBUTE);
+                        if (rowDeclarationIndex == null)
+                            throw new IllegalStateException("CUSTOM_ROW_INDEX_ATTRIBUTE can legally be null only for " +
+                                    "the implicit grouping-related rows, which don't have any Ajax actions bound to " +
+                                    "them, so they can't lead execution to this point in code");
+                        applicableRowDeclarationIndexes.add(rowDeclarationIndex);
+                    }
+                }
+                if (customRowRenderingInfo != null)
+                    customRowRenderingInfo.setA4jEnabledRowDeclarationIndexes(applicableRowDeclarationIndexes);
+
+                return prepareCustomCells(table, applicableCustomRows);
+            }
+
+            private String classNamesToClass(List<String> cellStyles) {
+                StringBuilder combinedClassName = new StringBuilder();
+                for (String className : cellStyles) {
+                    if (className != null) {
+                        int len = combinedClassName.length();
+                        if (len > 0)
+                            combinedClassName.append(' ');
+                        combinedClassName.append(className.trim());
+                    }
+                }
+                return combinedClassName.toString();
+            }
+
+            private List<String> getApplicableRowStyles(FacesContext context, List<Row> customRows, AbstractTable table) {
+                List<String> result = new ArrayList<String>();
+                for (Row customRow : customRows) {
+                    String cls = customRow.getStyleClassForRow(context, table);
+                    if (cls != null)
+                        result.add(cls);
+                }
+                return result;
+            }
+
+            /**
+             * Takes the list of custom row specifications applicable to a row of interest (this is a list of TableRow
+             * instances because several TableRow instances can be applicable to the same row), and constructs a list of
+             * custom cell specifications applicable to the cells of this row.
+             *
+             * @param table                a table whose row is being analyzed
+             * @param applicableCustomRows a list of TableRow instances applicable to the current row
+             * @return An array the size of number of rendered columns. Each array entry corresponds to each rendered
+             *         cell. Each array entry contains one of the following: (1) null - means that no custom cells are
+             *         applicable for this cell and it will be rendered as usual; (2) List of TableCell instances
+             *         applicable to this cell; (3) List containing only one SpannedTableCell instance if an appropriate
+             *         cell is part of a cell span - all cells referring to the same SpannedTableCell will be rendered
+             *         as one cell spanning across several columns.
+             */
+            private List<Object>[] prepareCustomCells(AbstractTable table, List<Row> applicableCustomRows) {
+                List<BaseColumn> allColumns = table.getAllColumns();
+                List<BaseColumn> columnsForRendering = table.getAdaptedRenderedColumns();
+                int allColCount = allColumns.size();
+                for (int i = 0; i < allColCount; i++) {
+                    UIComponent col = allColumns.get(i);
+                    col.getAttributes().put(COLUMN_ATTR_ORIGINAL_INDEX, i);
+                }
+
+                int visibleColCount = columnsForRendering.size();
+                List[] rowCellsByAbsoluteIndex = new List[allColCount];
+
+                boolean thereAreCellSpans = false;
+                List<Cell> rowCellsByColReference = new ArrayList<Cell>();
+                for (Row row : applicableCustomRows) {
+                    Integer customRowIndex = (Integer) row.getAttributes().get(CUSTOM_ROW_INDEX_ATTRIBUTE);
+                    List<UIComponent> children = row.getChildren();
+                    int freeCellIndex = 0;
+                    int customCellIndex = 0;
+                    for (UIComponent child : children) {
+                        if (!(child instanceof Cell))
+                            continue;
+                        Cell cell = (Cell) child;
+
+                        cell.getAttributes().put(CUSTOM_CELL_RENDERING_INFO_ATTRIBUTE,
+                                new CustomContentCellRenderingInfo(
+                                        customRowIndex != null ? customRowIndex : -1,
+                                        customCellIndex++));
+                        int span = cell.getSpan();
+                        Object columnIds = cell.getColumnIds();
+                        ValueExpression conditionExpression = cell.getConditionExpression();
+                        if (span < 1)
+                            throw new IllegalArgumentException("The value of 'span' attribute of <o:cell> tag can't " +
+                                    "be less than 1, but encountered: " + span);
+
+                        if (span != 1) {
+                            thereAreCellSpans = true;
+                        }
+
+                        if (columnIds == null && conditionExpression == null) {
+                            int thisColIndex = freeCellIndex;
+                            freeCellIndex += span;
+                            if (thisColIndex >= allColCount)
+                                throw new FacesException("The number of free cells (cells without 'column' attribute)" +
+                                        " inside of <o:row> tag should not be greater than the total number of " +
+                                        "columns in a table (" + allColCount + ")");
+                            List<Cell> applicableCells = rowCellsByAbsoluteIndex[thisColIndex];
+                            if (applicableCells == null) {
+                                applicableCells = new ArrayList<Cell>();
+                                rowCellsByAbsoluteIndex[thisColIndex] = applicableCells;
+                            }
+                            applicableCells.add(cell);
+                        } else {
+                            rowCellsByColReference.add(cell);
+                        }
+                    }
+                }
+                if (rowCellsByColReference.size() > 0) {
+                    for (int i = 0; i < allColCount; i++) {
+                        BaseColumn col = allColumns.get(i);
+                        for (Cell cell : rowCellsByColReference) {
+                            if (isColumnApplicable(cell, table, col, i)) {
+                                List<Cell> applicableCells = rowCellsByAbsoluteIndex[i];
+                                if (applicableCells == null) {
+                                    applicableCells = new ArrayList<Cell>();
+                                    rowCellsByAbsoluteIndex[i] = applicableCells;
+                                }
+                                applicableCells.add(cell);
+                            }
+                        }
+                    }
+                }
+
+                if (thereAreCellSpans) {
+                    for (int i = 0; i < allColCount; i++) {
+                        List customCellList = rowCellsByAbsoluteIndex[i];
+                        if (customCellList == null)
+                            continue;
+                        int cellSpan = 1;
+                        boolean groupHeaderCell = false;
+                        for (Object cellObj : customCellList) {
+                            Cell cell = (Cell) cellObj;
+                            groupHeaderCell |= GroupHeaderRow.isSyntheticGroupHeaderCell(cell);
+
+                            int currentCellSpan = cell.getSpan();
+                            if (currentCellSpan != 1)
+                                cellSpan = currentCellSpan;
+                        }
+                        if (cellSpan == 1)
+                            continue;
+                        BaseColumn column = allColumns.get(i);
+                        if (groupHeaderCell) {
+                            // when table row grouping is turned on, the automatically generated implicit tree column is
+                            // always generated to be the first rendered column, and spannedTableCell.getColumn() refers
+                            // the first column in the allColumns list, and so it always refers to the first column
+                            // declared in the table's markup, which might actually be different than the first column
+                            // in the renderedColumns list. Hence we're fixing this so that tree column was properly
+                            // rendered on group header cells
+                            TreeColumn treeColumn = null;
+                            for (BaseColumn c : columnsForRendering) {
+                                if (c instanceof TreeColumn) {
+                                    treeColumn = (TreeColumn) c;
+                                    break;
+                                }
+                            }
+                            if (treeColumn == null)
+                                throw new IllegalStateException("There must be an implicitly generated tree column " +
+                                        "in the grouped table");
+                            column = treeColumn;
+                        }
+                        SpannedTableCell spannedTableCell = new SpannedTableCell(column, customCellList);
+                        for (int cellIndex = i; cellIndex < i + cellSpan; cellIndex++) {
+                            rowCellsByAbsoluteIndex[cellIndex] = Collections.singletonList(spannedTableCell);
+                        }
+                        i += cellSpan - 1;
+                    }
+                }
+
+                List[] applicableCells = new List[visibleColCount];
+                for (int i = 0; i < visibleColCount; i++) {
+                    BaseColumn column = columnsForRendering.get(i);
+                    int originalColIndex = getOriginalColumnIndex(column);
+                    applicableCells[i] = rowCellsByAbsoluteIndex[originalColIndex];
+                }
+                return (List<Object>[]) applicableCells;
+            }
+
+            private boolean isColumnApplicable(
+                    Cell cell,
+                    AbstractTable table,
+                    BaseColumn column,
+                    int originalColIndex) {
+                Object columnIds = cell.getColumnIds();
+                if (columnIds != null) {
+                    Collection<Object> columnIdsCollection;
+                    if (columnIds.getClass().isArray()) {
+                        columnIdsCollection = Arrays.asList((Object[]) columnIds);
+                    } else if (columnIds instanceof Collection)
+                        columnIdsCollection = (Collection<Object>) columnIds;
+                    else
+                        throw new IllegalArgumentException("'columnIds' attribute of <o:cell> tag should contain " +
+                                "either an array or a collection of column id strings, but a value of the following " +
+                                "type encountered: " + columnIds.getClass().getName());
+                    String colId = column.getId();
+                    boolean result = columnIdsCollection.contains(colId);
+                    return result;
+                }
+
+                ValueExpression conditionExpression = cell.getConditionExpression();
+
+                String columnIndexVar = table.getColumnIndexVar();
+                String columnIdVar = table.getColumnIdVar();
+                Object prevColumnIndexVarValue = null;
+                Object prevColumnIdVarValue = null;
+                if (columnIndexVar != null)
+                    prevColumnIndexVarValue = requestMap.put(columnIndexVar, originalColIndex);
+                if (columnIdVar != null) {
+                    String columnId = column.getId();
+                    prevColumnIdVarValue = requestMap.put(columnIdVar, columnId);
+                }
+
+                Boolean result = (Boolean) conditionExpression.getValue(elContext);
+
+                if (columnIndexVar != null)
+                    requestMap.put(columnIndexVar, prevColumnIndexVarValue);
+                if (columnIdVar != null)
+                    requestMap.put(columnIdVar, prevColumnIdVarValue);
+
+                return (result == null) || result;
+            }
+
+            private int getOriginalColumnIndex(BaseColumn column) {
+                if (column instanceof TreeColumn) {
+                    BaseColumn delegate = ((TreeColumn) column).getDelegate();
+                    if (delegate != null)
+                        return getOriginalColumnIndex(delegate);
+                }
+                return (Integer) column.getAttributes().get(COLUMN_ATTR_ORIGINAL_INDEX);
+            }
+
             private UIComponent applyCustomCellDefinitions(
                     BaseColumn column, int colIndex,
                     List<?> customCells,
@@ -864,11 +915,13 @@ public class TableBody extends TableSection {
                             customRowRenderingInfo = new CustomRowRenderingInfo(columnCount);
                         if (cellWithCustomContent)
                             cellContentsContainer = cell;
-                        CustomContentCellRenderingInfo customCellRenderingInfo =
-                                (CustomContentCellRenderingInfo) cell.getAttributes().get(CUSTOM_CELL_RENDERING_INFO_ATTRIBUTE);
+                        CustomContentCellRenderingInfo customCellRenderingInfo = (CustomContentCellRenderingInfo)
+                                cell.getAttributes().get(CUSTOM_CELL_RENDERING_INFO_ATTRIBUTE);
                         customRowRenderingInfo.setCustomCellRenderingInfo(colIndex, customCellRenderingInfo);
                     }
-                    customCellStyle = Styles.mergeClassNames(customCellStyle, cell.getStyleClassForCell(context, table, colIndex, columnId));
+                    customCellStyle = Styles.mergeClassNames(
+                            customCellStyle,
+                            cell.getStyleClassForCell(context, table, colIndex, columnId));
                 }
                 for (int i = colIndex + (remainingPortionOfABrokenSpannedCell ? 0 : 1), upperBound = colIndex + span;
                      i < upperBound; i++) {
@@ -886,22 +939,6 @@ public class TableBody extends TableSection {
                 }
 
                 return cellContentsContainer;
-            }
-
-            private void renderCellContent(BaseColumn column, UIComponent cellContentsContainer) throws IOException {
-                boolean renderCustomTreeCell = column instanceof TreeColumn && cellContentsContainer instanceof Cell;
-                if (renderCustomTreeCell) {
-                    column.getAttributes().put(TreeColumnRenderer.ATTR_CUSTOM_CELL, cellContentsContainer);
-                    try {
-                        column.encodeAll(context);
-                    } finally {
-                        column.getAttributes().remove(TreeColumnRenderer.ATTR_CUSTOM_CELL);
-                    }
-                } else {
-                    cellContentsContainer.encodeAll(context);
-                }
-                if (!(column instanceof TreeColumn))
-                    TableStructure.writeNonBreakableSpaceForEmptyCell(writer, table, cellContentsContainer);
             }
 
         }

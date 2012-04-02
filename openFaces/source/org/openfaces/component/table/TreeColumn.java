@@ -161,6 +161,11 @@ public class TreeColumn extends Column implements CompoundComponent, SyntheticCo
         this.delegate = delegate;
     }
 
+    @Override
+    public AbstractTable getTable() {
+        return delegate != null ? delegate.getTable() : super.getTable();
+    }
+
     public List<UIComponent> getChildrenForProcessing() {
         if (delegate != null)
             return delegate.getChildren();

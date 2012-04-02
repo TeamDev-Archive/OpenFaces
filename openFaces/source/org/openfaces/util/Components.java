@@ -464,16 +464,25 @@ public class Components {
         return "<o:" + tagName + ">";
     }
 
-    public static <P extends UIComponent> P checkParentTag(UIComponent component, Class<P> expectedParentClass) {
+    public static UIComponent checkParentTag(
+            UIComponent component,
+            Class... expectedParentClasses) {
         UIComponent parent = component.getParent();
-        if (!parent.getClass().equals(expectedParentClass)) {
-            Class<? extends UIComponent> componentClass = component.getClass();
-            String tagName = Components.tagNameByClass(componentClass);
-            String parentComponentTagName = Components.tagNameByClass(expectedParentClass);
-            throw new FacesException("<o:" + tagName + "> should be placed as a child tag for <o:" + parentComponentTagName + "> tag, \b" +
-                    "but it was placed into component with a class of " + parent.getClass().getName());
+        for (Class expectedParentClass : expectedParentClasses) {
+            if (parent.getClass().equals(expectedParentClass))
+                return parent;
         }
-        return (P) parent;
+        Class<? extends UIComponent> componentClass = component.getClass();
+        String tagName = Components.tagNameByClass(componentClass);
+        StringBuilder allowedParentTagNames = new StringBuilder();
+        for (Class expectedParentClass : expectedParentClasses) {
+            if (allowedParentTagNames.length() > 0) allowedParentTagNames.append(" or ");
+            String parentComponentTagName = "<o:" + Components.tagNameByClass(expectedParentClass) + ">";
+            allowedParentTagNames.append(parentComponentTagName);
+        }
+
+        throw new FacesException("<o:" + tagName + "> should be placed as a child tag for " + allowedParentTagNames +
+                " tag, \b but it was placed into component with a class of " + parent.getClass().getName());
     }
 
     private static Map<String, Object> getRequestMap() {

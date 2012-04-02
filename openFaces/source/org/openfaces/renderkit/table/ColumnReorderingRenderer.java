@@ -12,7 +12,6 @@
 package org.openfaces.renderkit.table;
 
 import org.openfaces.component.table.AbstractTable;
-import org.openfaces.component.table.BaseColumn;
 import org.openfaces.component.table.ColumnReordering;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.Rendering;
@@ -24,9 +23,6 @@ import org.openfaces.util.Styles;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Dmitry Pikhulya

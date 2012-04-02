@@ -128,8 +128,8 @@ public class PopupLayerTest extends OpenFacesTestCase {
         Dimension windowSize = window().size();
 
         Point popupLayerPos = popupLayer.position();
-        assertTrue(Math.abs(popupLayerPos.x - (windowSize.width - popupLayerWidth) / 2) <= 3);
-        assertTrue(Math.abs(popupLayerPos.y - (windowSize.height - popupLayerHeight) / 2) <= 3);
+        assertTrue(Math.abs(popupLayerPos.x - (windowSize.width - popupLayerWidth) / 2) <= 10);
+        assertTrue(Math.abs(popupLayerPos.y - (windowSize.height - popupLayerHeight) / 2) <= 10);
 
         popupLayer.assertVisible(true);
         element("formID:submit").clickAndWait();

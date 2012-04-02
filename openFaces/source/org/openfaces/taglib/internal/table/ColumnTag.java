@@ -32,7 +32,7 @@ public class ColumnTag extends BaseColumnTag {
     }
 
     public String getRendererType() {
-        return null;
+        return "org.openfaces.ColumnRenderer";
     }
 
     @Override

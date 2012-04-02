@@ -291,11 +291,7 @@ public class TwoListSelectionTest extends OpenFacesTestCase {
         }
 
         //style="width: 500px; border: 3px dotted brown;"
-        //todo: see 'JSFC-3222' issue. If it in 'fixed' state - correct 'width' property value.
-        if (IS_FACELETS)
-            tls.assertWidth(500);
-        else
-            tls.assertWidth(516);
+        tls.assertWidth(500);
 
         addAllBtn.assertExpressionEquals("title", "add all hint");
         addAllBtn.assertValue("add all");
