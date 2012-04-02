@@ -105,6 +105,22 @@ public abstract class DropDownComponentRenderer extends RendererBase {
         writer.writeAttribute("cellpadding", "0", null);
     }
 
+    protected void encodeStatePrompt(FacesContext context, UIComponent component) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        DropDownComponent fieldComponent = (DropDownComponent) component;
+        String value = Rendering.convertToString(context, fieldComponent, fieldComponent.getValue());
+
+        writer.startElement("input", fieldComponent);
+        writeAttribute(writer, "type", "hidden");
+        writeAttribute(writer, "id", getFieldClientId(context, (DropDownComponent) component) + PROMPT_VISIBLE_SUFFIX);
+        writeAttribute(writer, "name", getFieldClientId(context, (DropDownComponent) component) + PROMPT_VISIBLE_SUFFIX);
+        if (value != null && value.length() > 0)
+            writeAttribute(writer, "value", "false");
+        else
+            writeAttribute(writer, "value", "true");
+        writer.endElement("input");
+    }
+
     protected void encodeField(FacesContext context, UIComponent component) throws IOException {
         DropDownComponent fieldComponent = (DropDownComponent) component;
         ResponseWriter writer = context.getResponseWriter();
@@ -128,17 +144,7 @@ public abstract class DropDownComponentRenderer extends RendererBase {
         writeFieldAttributes(writer, fieldComponent);
         writer.endElement("input");
 
-        String value = Rendering.convertToString(context, fieldComponent, fieldComponent.getValue());
-
-        writer.startElement("input", fieldComponent);
-        writeAttribute(writer, "type", "hidden");
-        writeAttribute(writer, "id", getFieldClientId(context, (DropDownComponent) component) + PROMPT_VISIBLE_SUFFIX);
-        writeAttribute(writer, "name", getFieldClientId(context, (DropDownComponent) component) + PROMPT_VISIBLE_SUFFIX);
-        if (value != null && value.length() > 0)
-            writeAttribute(writer, "value", "false");
-        else
-            writeAttribute(writer, "value", "true");
-        writer.endElement("input");
+        encodeStatePrompt(context, component);
     }
 
     protected void writeFieldAttributes(ResponseWriter writer, DropDownComponent fieldComponent) throws IOException {
@@ -262,11 +268,15 @@ public abstract class DropDownComponentRenderer extends RendererBase {
         return Rendering.getStringValue(facesContext, dropDown);
     }
 
+    protected String getFocusedClass(FacesContext context, DropDownComponent dropDown) {
+        return Styles.getCSSClass(context, dropDown, dropDown.getFocusedStyle(), StyleGroup.selectedStyleGroup(), dropDown.getFocusedClass(), null);
+    }
+
     protected List<String> rendererInputStyles(FacesContext context, DropDownComponent dropDown) throws IOException {
         // Render main style declaration if it is exist
         String styleClass = getInitialStyleClass(context, dropDown);
         String rolloverStyleClass = Styles.getCSSClass(context, dropDown, dropDown.getRolloverStyle(), StyleGroup.rolloverStyleGroup(), dropDown.getRolloverClass());
-        String focusedStyleClass = Styles.getCSSClass(context, dropDown, dropDown.getFocusedStyle(), StyleGroup.selectedStyleGroup(), dropDown.getFocusedClass(), null);
+        String focusedStyleClass = getFocusedClass(context, dropDown);
 
 
         String fieldStyle = (String) dropDown.getAttributes().get("fieldStyle");
