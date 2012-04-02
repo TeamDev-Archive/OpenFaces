@@ -30,7 +30,7 @@ O$.DropDownField = {
 
       _showPresentationPromptText:function (promptText) {
         var td = document.createElement("td");
-        td.innerHTML = dropDown._promptText;
+        td.innerHTML = dropDown._promptText || "&nbsp;";
         while (itemPresentation.hasChildNodes()) {
           itemPresentation.removeChild(itemPresentation.childNodes[0]);
         }
