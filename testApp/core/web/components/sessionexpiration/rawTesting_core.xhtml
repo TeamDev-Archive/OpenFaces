@@ -66,13 +66,13 @@
             </f:facet>
             <h:outputText rendered="#{level == 0}" value="#{node.name}"/>
             <h:outputText rendered="#{level == 1}" value="#{node.userName}"/>
-            <o:column>
-              <f:facet name="header">
-                <h:outputText value="id"/>
-              </f:facet>
-              <h:outputText rendered="#{level == 1}" value="#{node.id}"/>
-            </o:column>
           </o:treeColumn>
+          <o:column>
+            <f:facet name="header">
+              <h:outputText value="id"/>
+            </f:facet>
+            <h:outputText rendered="#{level == 1}" value="#{node.id}"/>
+          </o:column>
           <o:checkboxColumn>
             <f:facet name="header">
               <o:selectAllCheckbox/>
