@@ -341,6 +341,10 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
         return dropDown.getClientId(context) + "::value";
     }
 
+    protected int getItemPresentationColumn(DropDownComponent dropDown) {
+        return -1;
+    }
+    
     protected InitScript renderInitScript(FacesContext context, DropDownComponent dropDown) throws IOException {
         DropDownFieldBase dropDownField = (DropDownFieldBase) dropDown;
         String clientId = dropDownField.getClientId(context);
@@ -368,7 +372,8 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
                 dropDownField.getAttributes().get(ATTR_PAGE_SIZE),
 
                 tableStructure.getInitParam(context, POPUP_TABLE_DEFAULT_STYLES),
-                dropDownField.isCachingAllowed()
+                dropDownField.isCachingAllowed(),
+                getItemPresentationColumn(dropDown)
         );
         popup.resetChildData();
         if (!dropDown.isDisabled()) {  // todo: write the event parameters more economically

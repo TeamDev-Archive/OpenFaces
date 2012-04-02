@@ -122,7 +122,11 @@ O$.DropDown = {
 
             // This timeout is required for the prompt text under IE
             setTimeout(function() {
-              dropDown._field.value = dropDown._promptText;
+              if (dropDown._itemPresentation){
+                dropDown._showPresentationPromptText(dropDown._promptText);
+              } else {
+                dropDown._field.value = dropDown._promptText;
+              }
             }, 1);
 
             dropDown._promptVisible.value = true;
@@ -150,7 +154,11 @@ O$.DropDown = {
         dropDown._initValue(initialText);
 
         setTimeout(function() {
-          dropDown._field.value = dropDown._promptText;
+          if (dropDown._itemPresentation){
+            dropDown._showPresentationPromptText(dropDown._promptText);
+          } else {
+            dropDown._field.value = dropDown._promptText;
+          }
         }, 1);
 
         if (promptTextClass) {
@@ -213,6 +221,8 @@ O$.DropDown = {
     var field = dropDown._field;
     var button = dropDown._button;
     var popup = dropDown._popup;
+
+    popup._dependedFieldId = field.id;
 
     dropDown._skipValidation = true;
 

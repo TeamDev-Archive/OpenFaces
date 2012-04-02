@@ -2151,7 +2151,31 @@ table.o_filter_parameter {
   padding: 0 ! important;
 }
 
+/* SelectOneMenu */
+.o_selectonemenu_presentation_content {
+    border: 1px solid transparent;
+}
 
+.o_selectonemenu_focused .o_selectonemenu_presentation_content {
+    border: 1px dotted black;
+}
+
+/* Classes for vertical centering in different browsers*/
+.o_selectonemenu_field_container_outer {
+    #position: relative; overflow: hidden; width: 100%;
+}
+
+.o_selectonemenu_field_container_middle {
+    #position: absolute; #top: 50%; vertical-align: middle;
+}
+
+html>/**/body .o_selectonemenu_field_container_middle {
+    display: table-cell;
+}
+
+.o_selectonemenu_field_container_inner {
+    #position: relative; #top: -50%
+}
 
 .o_hiddenFocusChromeSafari {
     /* Class is added for handling keypress event for hidden input text field in Chrome and Safari */
