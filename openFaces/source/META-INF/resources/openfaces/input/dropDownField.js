@@ -13,7 +13,7 @@
 O$.DropDownField = {
   _init: function(dropDownId, popupTimeout, listAlignment, rolloverPopupItemClass, itemValues, customValueAllowed,
                   required, suggestionMode, suggestionDelay, suggestionMinChars, manualListOpeningAllowed,
-                  autoCompleteOn, totalItemCount, pageSize, popupTableStructureAndStyleParams, cachingAllowed) {
+                  autoCompleteOn, totalItemCount, pageSize, popupTableStructureAndStyleParams, cachingAllowed, itemPresentationColumn) {
     var dropDown = O$.initComponent(dropDownId, null, {
       _listAlignment: listAlignment,
       _customValueAllowed: customValueAllowed,
@@ -23,6 +23,50 @@ O$.DropDownField = {
       _popupTimeout: popupTimeout,
       _highlightedItemIndex: -1,
       _cachingAllowed: cachingAllowed,
+      _itemPresentation: O$(dropDownId + "::itemPresentation"),
+      _itemPresentationContainer: O$(dropDownId + "::itemPresentation::container"),
+      _itemPresentationColumn: itemPresentationColumn,
+      _fieldContainer: O$(dropDownId + "::field::container"),
+
+      _showPresentationPromptText:function (promptText) {
+        var td = document.createElement("td");
+        td.innerHTML = dropDown._promptText || "&nbsp;";
+        while (itemPresentation.hasChildNodes()) {
+          itemPresentation.removeChild(itemPresentation.childNodes[0]);
+        }
+        itemPresentation.appendChild(td);
+      },
+
+      _copyClassesToItemPresentation:function () {
+
+        function removeClassFromСlassName(className, classesToRemove) {
+          var newClassName = className;
+          for (var i = 0; i < classesToRemove.length; i++) {
+            if (classesToRemove[i]) {
+              newClassName = newClassName.replace(new RegExp("\\b" + classesToRemove[i] + "\\b"), "");
+            }
+          }
+          return newClassName;
+        }
+
+        if (dropDown._items == null || dropDown._items.length == 0)
+          return;
+        var oddRowClassName = popupTableStructureAndStyleParams.body.oddRowClassName;
+        var selectedRow = dropDown._getSelectedItem() || dropDown._items[0];
+        var rowTable = selectedRow._table;
+        if (rowTable) {
+          itemPresentation.className = removeClassFromСlassName(selectedRow.className, [rowTable._selectionClass, oddRowClassName]);
+          itemPresentation.style.cssText = selectedRow.style.cssText;
+          for (var i = 0; i < itemPresentation.childNodes.length; i++) {
+            var tdElemnt = itemPresentation.childNodes[i];
+            O$.excludeClassNames(tdElemnt, [rowTable._selectionClass, oddRowClassName]);
+            tdElemnt.style.borderBottom = "";
+          }
+          if (itemPresentation.childNodes.length == 1){
+            itemPresentation.childNodes[0].style.borderRight = "";
+          }
+        }
+      },
 
       _initListStyles: function() {
         var oldCursor = document.body.style.cursor;
@@ -30,6 +74,12 @@ O$.DropDownField = {
         O$.initUnloadableComponent(innerTable);
         O$.Tables._init(innerTable, popupTableStructureAndStyleParams);
         document.body.style.cursor = oldCursor;
+        if (itemPresentation) {
+          if (dropDown._getSelectedItem())
+            dropDown._setItemPresentationValue();
+          else
+            dropDown._copyClassesToItemPresentation();
+        }
         O$.repaintWindowForSafari(true);
       },
 
@@ -425,6 +475,45 @@ O$.DropDownField = {
         dropDown._setValue(text);
       },
 
+      _setItemPresentationValue:function () {
+
+        function removeAllIDs(node) {
+          if (node.attributes && (node.getAttribute("id") != undefined))
+            node.removeAttribute("id");
+          if (node.hasChildNodes()) {
+            for (var i = 0; i < node.childNodes.length; i++) {
+              removeAllIDs(node.childNodes[i]);
+            }
+          }
+        }
+
+        var selectedItem = dropDown._getSelectedItem();
+        if (!selectedItem){
+          dropDown._showPresentationPromptText(dropDown._promptText);
+          return;
+        }
+        var newItemPresentationContentNode = selectedItem.cloneNode(true);
+        removeAllIDs(newItemPresentationContentNode);
+
+        // Remove old values from itemPresentation field
+        while (itemPresentation.hasChildNodes()) {
+          itemPresentation.removeChild(itemPresentation.childNodes[0]);
+        }
+
+        // Copy values from selected item to itemPresentation field
+        // Copy all columns for _itemPresentationColumn == -1 and copy only _itemPresentationColumn-th column for other values
+        if (dropDown._itemPresentationColumn == -1) {
+          while (newItemPresentationContentNode.hasChildNodes()) {
+            itemPresentation.appendChild(newItemPresentationContentNode.childNodes[0]);
+          }
+        } else {
+          if (dropDown._itemPresentationColumn < newItemPresentationContentNode.childNodes.length)
+            itemPresentation.appendChild(newItemPresentationContentNode.childNodes[dropDown._itemPresentationColumn]);
+        }
+
+        dropDown._copyClassesToItemPresentation();
+      },
+
       _setValue: function (text, itemValue, onChangeDisabled, initiatingEvent) {
         if (text) { // retain only the first line because user can't enter new-line anyway
           var idx = text.indexOf("\n");
@@ -466,6 +555,8 @@ O$.DropDownField = {
           dropDown._highlightSelectedItem();
           dropDown._scrollToHighlightedItem();
         }
+        if (itemPresentation)
+          dropDown._setItemPresentationValue();
         if (field.value != text)
           field.value = text;
         if (!onChangeDisabled) {
@@ -590,6 +681,85 @@ O$.DropDownField = {
 
     var field = dropDown._field;
     var popup = dropDown._popup;
+    var itemPresentation = dropDown._itemPresentation;
+
+    if (itemPresentation) {
+      O$.extend(field, {
+        _show:function () {
+          if (suggestionMode == "none" || !field._hidden)
+            return;
+          if (field._hidden) {
+            field._oldValue = dropDown._selectedItemValue;
+            O$.setElementSize(dropDown._fieldContainer, O$.getElementSize(dropDown._itemPresentationContainer));
+          }
+          field._hidden = false;
+          if (!O$.isExplorer6() && !O$.isExplorer7())
+            dropDown._fieldContainer.style.display = "table";
+          dropDown._itemPresentationContainer.style.display = "none";
+          if (O$.isSafari() || O$.isChrome()) {
+            O$.excludeClassNames(this, ["o_hiddenFocusChromeSafari"]);
+          } else {
+            O$.excludeClassNames(this, ["o_hiddenFocus"]);
+          }
+        },
+
+        _hide:function () {
+          field._hidden = true;
+          dropDown._field._oldValue = dropDown._selectedItemValue;
+          dropDown._fieldContainer.style.display = "";
+          dropDown._itemPresentationContainer.style.display = "";
+          dropDown._fieldContainer.style.height = "0";
+          dropDown._setFilterCriterion(null);
+          if (O$.isSafari() || O$.isChrome()) {
+            if (!O$.checkClassNameUsed(this, ["o_hiddenFocusChromeSafari"]))
+              O$.appendClassNames(this, ["o_hiddenFocusChromeSafari"]);
+          } else {
+            if (!O$.checkClassNameUsed(this, ["o_hiddenFocus"]))
+              O$.appendClassNames(this, ["o_hiddenFocus"]);
+          }
+        },
+
+        _cancelChanges:function () {
+          if (!field._hidden) {
+            if (dropDown._field._oldValue) {
+              dropDown._selectedItemValue = dropDown._field._oldValue;
+            } else {
+              dropDown._selectedItemValue = null;
+              dropDown._field.value = "";
+              dropDown.value = "";
+            }
+            dropDown._setFilterCriterion(null);
+            dropDown._setItemPresentationValue();
+            dropDown._field._hide();
+          }
+        }
+      });
+
+      itemPresentation.onmousedown = function (e) {
+        dropDown.dropDown();
+        if (O$.isExplorer8AndOlder()) {
+          setTimeout(function () {
+            field.focus();
+          }, 1);
+        } else {
+          field.focus();
+        }
+
+        O$.Popup._hideAllPopupsExceptOne(popup);
+        O$.cancelEvent(e);
+      };
+
+      itemPresentation.ondblclick = function () {
+        if (dropDown._getSelectedItem()) {
+          field.value = dropDown._getSelectedItem()._itemLabel;
+        }
+        field._show();
+        field.select();
+      };
+
+      field._hide();
+    }
+
     popup.onscroll = function() {
       dropDown._checkAdditionalPageNeeded()
     };
@@ -603,6 +773,21 @@ O$.DropDownField = {
     innerTable._selectionClass = rolloverPopupItemClass;
     popupTableStructureAndStyleParams.body.rolloverRowClassName = null;
 
+    // Copy "colgroup" tag from drop down table to Item Presentation table
+    if (itemPresentation) {
+      var colgroupCalls = O$.Tables._getTableColTags(innerTable);
+      if (colgroupCalls.length > 0) {
+        var itemPresentationTable = O$.getChildNodesWithNames(dropDown._itemPresentationContainer, ["table"])[0];
+        var itemPresentationColgroup = O$.getChildNodesWithNames(itemPresentationTable, ["colgroup"])[0];
+        if (dropDown._itemPresentationColumn == -1) {
+          for (var j = 0; j < colgroupCalls.length; j++)
+            itemPresentationColgroup.appendChild(colgroupCalls[j].cloneNode(true));
+        } else {
+          if (dropDown._itemPresentationColumn < colgroupCalls.length)
+            itemPresentationColgroup.appendChild(colgroupCalls[dropDown._itemPresentationColumn].cloneNode(true));
+        }
+      }
+    }
     if (!O$.isSafari()) { // safari can't scroll popup with focus reacquiring functionality
       if (O$.isMozillaFF() || O$.isExplorer()) {
         popup.onmousedown = function() {
@@ -678,6 +863,8 @@ O$.DropDownField = {
     });
 
     field.onblur = function(e) {
+      if (itemPresentation)
+        field._cancelChanges();
       dropDown._ddf_focused = false;
       if (dropDown._blurWaiter)
         clearTimeout(dropDown._blurWaiter);
@@ -706,13 +893,24 @@ O$.DropDownField = {
       var autoCompletionAllowedForThisKey = keyCode != 8 && keyCode != 46;
       // Backspace, Del
 
+      if (field._hidden)
+        field.value = "";
       var valueBefore = field.value;
+
+      // Prevent previous value returning in Firefox on ESC button if value already selected & removes cursor in old IE versions
+      if (keyCode == 27 && !dropDown.isOpened()) { // ESC
+        field.blur();
+        field.focus();
+        return;
+      }
+
       field._onchangeFlag = false;
       setTimeout(function() {
         var valueAfter = field.value;
         if (valueBefore == valueAfter)
           return;
-
+        if (dropDown._itemPresentation)
+          field._show();
         dropDown._setValue(valueAfter, undefined, true);
         if (suggestionMode == "none") {
           if (autoCompleteOn && autoCompletionAllowedForThisKey) {
@@ -872,8 +1070,20 @@ O$.DropDownField = {
       needCancelBubble = true;
       dropDown._keyNavigationStarted = false;
       popup.hide();
+      var currentItemIndex = dropDown._getHighlightedItemIndex();
+      if (dropDown._itemPresentation){
+        if (currentItemIndex == -1) {
+          dropDown._field._cancelChanges();
+        } else {
+          dropDown._field._hide();
+        }
+        // Hide text cursor for hidden field in IE
+        if (O$.isExplorer8AndOlder()) {
+          dropDown._field.blur();
+          dropDown._field.focus();
+        }
+      }
       if (keyCode == 13) {
-        var currentItemIndex = dropDown._getHighlightedItemIndex();
         if (currentItemIndex != -1) {
           var dropDownItem = dropDown._items[currentItemIndex];
           dropDownItem._select();
@@ -982,6 +1192,9 @@ O$.DropDownField = {
         if (newHighlightedItemIndex == -1)
           newHighlightedItemIndex = dropDown._getLastVisibleItemIndex();
       }
+    }
+    if (dropDown._itemPresentation && keyCode == 27) { // ESC
+      dropDown._field._cancelChanges();
     }
     if (keyCode == 9) { // Tab
       dropDown._popupOpened = false;

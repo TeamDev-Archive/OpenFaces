@@ -859,7 +859,9 @@ O$.Tables = {
       if (!table._params.body.noDataRows)
         rowClass = (visibleRowsBefore % 2 == 0)
                 ? table._params.body.rowClassName
-                : (table._params.body.oddRowClassName ? table._params.body.oddRowClassName : table._params.body.rowClassName);
+                : (table._params.body.oddRowClassName
+                  ? table._params.body.rowClassName + " " + table._params.body.oddRowClassName
+                  : table._params.body.rowClassName);
       else
         rowClass = null;
 
