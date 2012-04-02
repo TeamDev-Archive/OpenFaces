@@ -950,6 +950,12 @@ if (!window.O$) {
     return O$._explorer8;
   };
 
+  O$.isExplorer8AndOlder = function() {
+    if (O$._explorer8AndOlder == undefined)
+      O$._explorer8AndOlder = O$.isExplorer6() || O$.isExplorer7() || O$.isExplorer8() ;
+    return O$._explorer8AndOlder;
+  };
+
   O$.isExplorer9 = function() {
     if (O$._explorer9 == undefined)
       O$._explorer9 = O$.isExplorer() && O$.userAgentContains("MSIE 9");

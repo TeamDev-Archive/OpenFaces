@@ -14,12 +14,16 @@ package org.openfaces.component.select;
 import org.openfaces.component.Side;
 import org.openfaces.component.input.DropDownFieldBase;
 import org.openfaces.component.input.SuggestionMode;
+import org.openfaces.util.ValueBindings;
 
 import javax.faces.context.FacesContext;
 
 public class SelectOneMenu extends DropDownFieldBase {
     public static final String COMPONENT_TYPE = "org.openfaces.SelectOneMenu";
     public static final String COMPONENT_FAMILY = "org.openfaces.SelectOneMenu";
+    private static final int DEFAULT_ITEM_PRESENTATION_COLUMN = -1;
+
+    private Integer itemPresentationColumn;
 
     public SelectOneMenu() {
         setRendererType("org.openfaces.SelectOneMenuRenderer");
@@ -34,6 +38,7 @@ public class SelectOneMenu extends DropDownFieldBase {
     public Object saveState(FacesContext context) {
         return new Object[]{
                 super.saveState(context),
+                itemPresentationColumn
 
         };
     }
@@ -43,6 +48,7 @@ public class SelectOneMenu extends DropDownFieldBase {
         Object[] state = (Object[]) stateObj;
         int i = 0;
         super.restoreState(context, state[i++]);
+        itemPresentationColumn = (Integer) state[i++];
 
     }
 
@@ -254,6 +260,14 @@ public class SelectOneMenu extends DropDownFieldBase {
 
     protected boolean getDefaultAutoComplete() {
         return true;
+    }
+
+    public int getItemPresentationColumn() {
+        return ValueBindings.get(this, "itemPresentationColumn", itemPresentationColumn, DEFAULT_ITEM_PRESENTATION_COLUMN);
+    }
+
+    public void setItemPresentationColumn(int itemPresentationColumn) {
+        this.itemPresentationColumn = itemPresentationColumn;
     }
 
 }

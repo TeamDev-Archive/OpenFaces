@@ -38683,6 +38683,19 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
+      <description>Applicable only for the case when drop-down list is composed of several columns. This attribute
+        specifies the number of the column that is shown in presentation view (the combo-box component itself).
+        The value for showing all columns is -1, which is the default behavior. </description>
+      <name>itemPresentationColumn</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int-->
+      <!-- @default -1 -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
       <description>JavaScript code that should be executed on the client when the SelectOneMenu's value has changed.
       </description>
       <name>onchange</name>

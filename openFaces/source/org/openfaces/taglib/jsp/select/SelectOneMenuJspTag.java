@@ -96,4 +96,7 @@ public class SelectOneMenuJspTag extends DropDownFieldJspTagBase {
         super.setDisabledFieldStyle(disabledFieldStyle);
     }
 
+    public void setItemPresentationColumn(ValueExpression itemPresentationColumn) {
+        getDelegate().setPropertyValue("itemPresentationColumn", itemPresentationColumn);
+    }
 }
