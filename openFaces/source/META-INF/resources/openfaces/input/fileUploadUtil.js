@@ -518,14 +518,30 @@ O$.FileUploadUtil = {
 
         fileUpload._buttons.browseDivForInput = O$(addButtonId+"::forInput");
         fileUpload._buttons.browseInput = fileUpload._createInputInAddBtn();
-        var addButtonTitle = O$(addButtonId + "::title");
-        fileUpload._buttons.browseTitleInput = addButtonTitle.lastChild;
+        fileUpload._buttons.browseTitle = O$(addButtonId + "::title");
+        fileUpload._buttons.browseTitleInput = fileUpload._buttons.browseTitle.lastChild;
         fileUpload._setStylesForAddButton(fileUpload._buttons.browse);
         if (O$.isExplorer() && O$.isQuirksMode()) {
-          fileUpload._buttons.browseDivForInput.style.height = O$.getElementSize(addButtonTitle).height;
+          fileUpload._buttons.browseDivForInput.style.height = O$.getElementSize(fileUpload._buttons.browseTitle).height;
         }
         fileUpload._buttons.browseTitleInput.disabled = false;
         fileUpload._buttons.browseDivForInput.appendChild(fileUpload._buttons.browseInput);//create first input
+      },
+      _setUpExternalBrowseButton:function (externalBrowseButtonId) {
+        fileUpload._buttons.browse.style.display="none";
+        O$.addLoadEvent(function () {
+          var addButtonTitle = fileUpload._buttons.browseTitle;
+          var externalBrowseButton = O$(externalBrowseButtonId);
+          if (!externalBrowseButton)
+            throw "Element with ID " + externalBrowseButtonId + " cannot be found.";
+          while (addButtonTitle.hasChildNodes()) {
+            addButtonTitle.removeChild(addButtonTitle.childNodes[0]);
+          }
+          var externalBrowseButtonParent = externalBrowseButton.parentNode;
+          externalBrowseButtonParent.insertBefore(fileUpload._buttons.browse, externalBrowseButton);
+          addButtonTitle.appendChild(externalBrowseButton);
+          fileUpload._buttons.browse.style.display = "";
+        });
       },
       _getFacet:function (id) {
         var divForFacet = O$(fileUpload._elementsCont.id + id);

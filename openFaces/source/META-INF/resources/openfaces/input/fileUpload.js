@@ -22,7 +22,7 @@ O$.FileUpload = {
                   onchangeHandler, onstartHandler, onendHandler,
                   onfilestartHandler, onfileinprogressHandler, onfileendHandler, onwrongfiletypeHandler, ondirectorydroppedHandler,
                   dropTargetCrossoverClass, uploadMode, render, externalDropTargetId, acceptedMimeTypes,
-                  directoryDroppedText, wrongFileTypeText) {
+                  directoryDroppedText, wrongFileTypeText, externalBrowseButtonId) {
 
     var fileUpload = O$.initComponent(componentId, null, {
       _minQuantity : minQuantity,
@@ -563,6 +563,10 @@ O$.FileUpload = {
       fileUpload.removeChild(fileUpload._elementsCont);
 
     fileUpload._setUpBrowseButton(addButtonId);
+
+    if (externalBrowseButtonId){
+      fileUpload._setUpExternalBrowseButton(externalBrowseButtonId);
+    }
 
     O$.extend(fileUpload, {
               __uploadButtonClickHandler:function () {

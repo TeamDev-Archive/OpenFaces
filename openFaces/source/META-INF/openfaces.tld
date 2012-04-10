@@ -45812,6 +45812,18 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default  "Wrong type of file"-->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>This attribute refers to a user-defined Browse button by its id, so that when that button is
+        clicked, the appropriate file upload component's Browse dialog is shown.
+      </description>
+      <name>externalBrowseButton</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
   </tag>
   <tag>
     <name>singleFileUpload</name>
@@ -46636,6 +46648,18 @@ entering a value and returns a list of suggestions from the server -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default  "Wrong type of file"-->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>This attribute refers to a user-defined Browse button by its id, so that when that button is
+        clicked, the appropriate file upload component's Browse dialog is shown.
+      </description>
+      <name>externalBrowseButton</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
       <!-- @el true -->
     </attribute>
   </tag>

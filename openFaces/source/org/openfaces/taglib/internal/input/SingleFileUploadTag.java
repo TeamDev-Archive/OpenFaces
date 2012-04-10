@@ -38,5 +38,6 @@ public class SingleFileUploadTag extends AbstractFileUploadTag {
 
         setStringProperty(component, "fileInfoAreaStyle");
         setStringProperty(component, "fileInfoAreaClass");
+        setStringProperty(component, "externalBrowseButton");
     }
 }

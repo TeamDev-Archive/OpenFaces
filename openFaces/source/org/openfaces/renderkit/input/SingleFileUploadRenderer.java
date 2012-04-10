@@ -245,7 +245,8 @@ public final class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
                 fileUpload.getBrowseButtonDuringUpload(),
                 fileUpload.getStopButtonNearProgress(),
                 fileUpload.getDirectoryDroppedText(),
-                fileUpload.getWrongFileTypeText()
+                fileUpload.getWrongFileTypeText(),
+                fileUpload.getExternalBrowseButton()
         );
 
         Rendering.renderInitScript(context, initScript,
