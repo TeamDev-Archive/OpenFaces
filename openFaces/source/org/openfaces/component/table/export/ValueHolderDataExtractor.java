@@ -40,7 +40,7 @@ public class ValueHolderDataExtractor implements ComponentDataExtractor {
         return
                 component instanceof ValueHolder &&
                         !(component instanceof BaseColumn) /* BaseColumn implements ValueHolder to support placing
-                        converter taGS inside of it, but column's rendering is not as simple as rendering its value
+                        converter tags inside of it, but column's rendering is not as simple as rendering its value
                         generally and the usual container export procedure should be used for columns instead, so we're
                         not considering columns as applicable for export by ValueHolderDataExtractor */;
     }
