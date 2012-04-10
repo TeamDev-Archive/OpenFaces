@@ -22,7 +22,7 @@ O$.SingleFileUpload = {
                   onfilestartHandler, onfileinprogressHandler, onfileendHandler, onwrongfiletypeHandler, ondirectorydroppedHandler,
                   dropTargetCrossoverClass, render, externalDropTargetId, acceptedMimeTypes,
                   layoutMode, defStopUrl, stopIcoClassMin,
-                  showInfoAfterUpload, uploadBtnBehavior, showStopNearProgress, directoryDroppedText, wrongFileTypeText) {
+                  showInfoAfterUpload, uploadBtnBehavior, showStopNearProgress, directoryDroppedText, wrongFileTypeText, externalBrowseButtonId) {
 
     var fileUpload = O$.initComponent(componentId, null, {
       _showInfoAfterUpload : showInfoAfterUpload,
@@ -115,7 +115,8 @@ O$.SingleFileUpload = {
 
 
           O$.removeAllChildNodes(fileUpload._addButtonParent);
-          fileUpload._addButtonParent.appendChild(fileUpload._buttons.browse);
+          if (!externalBrowseButtonId)
+            fileUpload._addButtonParent.appendChild(fileUpload._buttons.browse);
           if (fileUpload._showStopNearProgress) {
             var elToDel = O$(fileUpload.id + "::stopIcon");
             var stopSize = fileUpload._getNumProperty(elToDel, "margin-left")
@@ -547,6 +548,9 @@ O$.SingleFileUpload = {
     if (!O$.isExplorer())
       fileUpload.removeChild(fileUpload._elementsCont);
     fileUpload._setUpBrowseButton(addButtonId);
+    if (externalBrowseButtonId){
+      fileUpload._setUpExternalBrowseButton(externalBrowseButtonId);
+    }
     fileUpload._addButtonParent = fileUpload._buttons.browse.parentNode;
 
     O$.extend(fileUpload, {
@@ -556,7 +560,7 @@ O$.SingleFileUpload = {
                 O$.setStyleMappings(fileUpload._buttons.browseTitleInput, {disabled : addButtonDisabledClass});
                 /* IE 7 cannot define what width in browse button because it's not rendered yet*/
                 if (fileUpload._uploadBtnBehavior == "showStop") {
-                  if (!fileUpload._buttons.stop._defined) {
+                  if (!fileUpload._buttons.stop._defined && !externalBrowseButtonId) {
                     new function setStopBtnWidthAsInBrowse() {
                       var browseContainer = O$.getElementSize(fileUpload._buttons.browse);
                       var titleInput = O$.getElementSize(fileUpload._buttons.browseTitleInput);
@@ -594,7 +598,8 @@ O$.SingleFileUpload = {
                     var stopFileDiv = fileUpload._buttons.stop.cloneNode(true);
                     stopFileDiv.setAttribute("id", fileUpload._buttons.stop.id + inputForFile._idInputAndDiv);
                     if (fileUpload._uploadBtnBehavior == "showStop") {
-                      fileUpload._addButtonParent.removeChild(fileUpload._buttons.browse);
+                      if (!externalBrowseButtonId)
+                        fileUpload._addButtonParent.removeChild(fileUpload._buttons.browse);
                       fileUpload._addButtonParent.appendChild(stopFileDiv);
                     }
                     O$.addEventHandler(stopFileDiv, "focus", fileUpload._focusHandler);
@@ -644,7 +649,8 @@ O$.SingleFileUpload = {
                     var stopFileDiv = fileUpload._buttons.stop.cloneNode(true);
                     stopFileDiv.setAttribute("id", fileUpload._buttons.stop.id + file._infoId);
                     if (fileUpload._uploadBtnBehavior == "showStop") {
-                      fileUpload._addButtonParent.removeChild(fileUpload._buttons.browse);
+                      if (!externalBrowseButtonId)
+                        fileUpload._addButtonParent.removeChild(fileUpload._buttons.browse);
                       fileUpload._addButtonParent.appendChild(stopFileDiv);
                     }
                     O$.addEventHandler(stopFileDiv, "focus", fileUpload._focusHandler);
