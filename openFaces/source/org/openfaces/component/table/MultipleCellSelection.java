@@ -83,9 +83,10 @@ public class MultipleCellSelection extends AbstractCellSelection {
 
         if (selectedCellIds != null) {
             List<CellId> cellIds = objectToList(selectedCellIds.getValue(facesContext.getELContext()), CELL_IDS_PROPERTY);
-            if (cellIds != null) {
-                setCellIds(cellIds);
+            if (cellIds == null) {
+                cellIds = Collections.emptyList();
             }
+            setCellIds(cellIds);
         } else {
             setCellIds(new ArrayList<CellId>());
         }
@@ -174,18 +175,20 @@ public class MultipleCellSelection extends AbstractCellSelection {
     private List<CellId> getRowKeyCellIds() {
         List<CellId> tempRowKeysCellIds = new ArrayList<CellId>();
         Object rowKey = null;
-        for (int i = 0; i < cellIds.size(); i++) {
-            CellId cellId = cellIds.get(i);
-            if (this.rowKeyCellIds.size() >= cellIds.size()) {
-                rowKey = rowKeyCellIds.get(i).getRowData();
-            } else {
-                if (cellId != null && cellId.getRowData() != null) {
-                    rowKey = getRowKeyByRowData(cellId.getRowData());
+        if (cellIds != null) {
+            for (int i = 0; i < cellIds.size(); i++) {
+                CellId cellId = cellIds.get(i);
+                if (this.rowKeyCellIds.size() >= cellIds.size()) {
+                    rowKey = rowKeyCellIds.get(i).getRowData();
                 } else {
-                    rowKey = null;
+                    if (cellId != null && cellId.getRowData() != null) {
+                        rowKey = getRowKeyByRowData(cellId.getRowData());
+                    } else {
+                        rowKey = null;
+                    }
                 }
+                tempRowKeysCellIds.add(new CellId(rowKey, null));
             }
-            tempRowKeysCellIds.add(new CellId(rowKey, null));
         }
         return tempRowKeysCellIds;
     }
