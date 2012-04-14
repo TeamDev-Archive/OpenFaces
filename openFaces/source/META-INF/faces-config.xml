@@ -74,7 +74,7 @@
 
   <component>
     <component-type>org.openfaces.DynamicColumn</component-type>
-    <component-class>org.openfaces.component.table.DynamicColumn</component-class>
+    <component-class>org.openfaces.component.table.impl.DynamicColumn</component-class>
   </component>
 
   <component>
@@ -843,12 +843,12 @@
   
   <component>
     <component-type>org.openfaces.GroupHeaderRow</component-type>
-    <component-class>org.openfaces.component.table.GroupHeaderRow</component-class>
+    <component-class>org.openfaces.component.table.impl.GroupHeaderRow</component-class>
   </component>
   
   <component>
     <component-type>org.openfaces.GroupFooterRow</component-type>
-    <component-class>org.openfaces.component.table.GroupFooterRow</component-class>
+    <component-class>org.openfaces.component.table.impl.GroupFooterRow</component-class>
   </component>
 
   <component>
@@ -884,6 +884,12 @@
     <component-type>org.openfaces.Sorting</component-type>
     <component-class>org.openfaces.component.table.Sorting</component-class>
   </component>
+
+  <component>
+    <component-type>org.openfaces.Summary</component-type>
+    <component-class>org.openfaces.component.table.Summary</component-class>
+  </component>
+
   <render-kit>
     <renderer>
       <component-family>org.openfaces.DataTable</component-family>
@@ -1487,6 +1493,11 @@
       <component-family>org.openfaces.Sorting</component-family>
       <renderer-type>org.openfaces.SortingRenderer</renderer-type>
       <renderer-class>org.openfaces.renderkit.table.SortingRenderer</renderer-class>
+    </renderer>
+    <renderer>
+      <component-family>org.openfaces.Summary</component-family>
+      <renderer-type>org.openfaces.SummaryRenderer</renderer-type>
+      <renderer-class>org.openfaces.renderkit.table.SummaryRenderer</renderer-class>
     </renderer>
   </render-kit>
 

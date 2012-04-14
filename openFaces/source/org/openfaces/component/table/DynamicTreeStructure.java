@@ -11,6 +11,8 @@
  */
 package org.openfaces.component.table;
 
+import org.openfaces.component.table.impl.TableDataModel;
+
 import javax.el.ValueExpression;
 import javax.faces.context.FacesContext;
 import java.util.ArrayList;

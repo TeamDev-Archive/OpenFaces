@@ -47,8 +47,9 @@
       <f:facet name="header">
         <o:groupingBox/>
       </f:facet>
-      <o:rowGrouping groupingRules="#{sessionScope.banks_savedGroupingRules}" expansionState="#{BanksList.expansionState}"/>
-      <o:groupHeaderRow style="font-size: 11pt"/>
+      <o:rowGrouping groupingRules="#{sessionScope.banks_savedGroupingRules}"
+                     expansionState="#{BanksList.expansionState}"
+                     groupHeaderRowStyle="font-size: 11pt"/>
       <o:scrolling/>
       <o:singleRowSelection rowData="#{sessionScope.selectedBank}"
               style="background: url('../images/treetable/selected.gif') repeat-x #5d8bba !important; color: white !important;"/>

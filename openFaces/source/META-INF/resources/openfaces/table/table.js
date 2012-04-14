@@ -4800,3 +4800,20 @@ O$.ColumnMenu = {
   }
 };
 
+O$.Summary = {
+  _init: function(componentId, value) {
+    if (!O$(componentId)) {
+      // Summary initialization invocation is rendered for all calculated summaries at the end of the table, and there's
+      // no direct way to detect if a particular summary component will be rendered to the client at this point (a
+      // particular summary component might be missing in the output due to the column being hidden or it might not yet
+      // be rendered at that point if it's inserted in the table's "below" facet), so as an easy solution we're just
+      // initializing the values for all of them and see if they're present on the client here.
+      return;
+    }
+    var summary = O$.initComponent(componentId, null, {
+
+    });
+    summary.innerHTML = value;
+  }
+};
+

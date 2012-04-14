@@ -11,6 +11,7 @@
  */
 package org.openfaces.component.table;
 
+import org.openfaces.component.table.impl.TableDataModel;
 import org.openfaces.org.json.JSONArray;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.renderkit.table.AbstractTableRenderer;
@@ -117,7 +118,7 @@ public class CheckboxColumn extends BaseColumn {
     }
 
 
-    void assignDataModel() {
+    public void assignDataModel() {
         AbstractTable table = getTable();
         if (table == null)
             throw new IllegalStateException("Check-box column must be inserted into a DataTable or TreeTable component");
@@ -305,7 +306,7 @@ public class CheckboxColumn extends BaseColumn {
             return super.getValueExpression(name);
     }
 
-    void rememberByKeys() {
+    public void rememberByKeys() {
         selectedRows.rememberByKeys();
     }
 

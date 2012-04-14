@@ -25,8 +25,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import static org.openfaces.component.table.AbstractTable.DataScope;
-
 /**
  * @author Natalia.Zolochevska@Teamdev.com
  */

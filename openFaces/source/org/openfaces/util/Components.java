@@ -460,7 +460,7 @@ public class Components {
     public static String tagNameByClass(Class<? extends UIComponent> componentClass) {
         String fqClassName = componentClass.getName();
         String shortClassName = fqClassName.substring(fqClassName.lastIndexOf(".") + 1);
-        String tagName = shortClassName.substring(0, 1).toUpperCase() + shortClassName.substring(1);
+        String tagName = shortClassName.substring(0, 1).toLowerCase() + shortClassName.substring(1);
         return "<o:" + tagName + ">";
     }
 
@@ -477,11 +477,11 @@ public class Components {
         StringBuilder allowedParentTagNames = new StringBuilder();
         for (Class expectedParentClass : expectedParentClasses) {
             if (allowedParentTagNames.length() > 0) allowedParentTagNames.append(" or ");
-            String parentComponentTagName = "<o:" + Components.tagNameByClass(expectedParentClass) + ">";
+            String parentComponentTagName = Components.tagNameByClass(expectedParentClass);
             allowedParentTagNames.append(parentComponentTagName);
         }
 
-        throw new FacesException("<o:" + tagName + "> should be placed as a child tag for " + allowedParentTagNames +
+        throw new FacesException(tagName + " should be placed as a child tag for " + allowedParentTagNames +
                 " tag, \b but it was placed into component with a class of " + parent.getClass().getName());
     }
 
@@ -521,4 +521,13 @@ public class Components {
         return UtilPhaseListener.findComponentById(baseComponent, idPath, false, false, false);
     }
 
+    public static List<UIComponent> getFacets(UIComponent component, String... facetNames) {
+        List<UIComponent> facets = new ArrayList<UIComponent>();
+        for (String facetName : facetNames) {
+            UIComponent facet = getFacet(component, facetName);
+            if (facet != null)
+                facets.add(facet);
+        }
+        return facets;
+    }
 }

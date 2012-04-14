@@ -11,6 +11,8 @@
  */
 package org.openfaces.component.table;
 
+import org.openfaces.component.table.impl.DynamicCol;
+import org.openfaces.component.table.impl.DynamicColumn;
 import org.openfaces.util.Components;
 import org.openfaces.util.ReflectionUtil;
 import org.openfaces.util.Rendering;
@@ -36,7 +38,13 @@ import java.util.regex.Pattern;
  * @author Dmitry Pikhulya
  */
 public class BaseColumn extends UIColumn {
-    public static final String FACET_EDITOR = "editor";
+    public static final String FACET_HEADER = "header";
+    public static final String FACET_SUB_HEADER = "subHeader";
+    public static final String FACET_FOOTER = "footer";
+    public static final String FACET_GROUP_HEADER = "groupHeader";
+    public static final String FACET_IN_GROUP_HEADER = "inGroupHeader";
+    public static final String FACET_IN_GROUP_FOOTER = "inGroupFooter";
+    public static final String FACET_GROUP_FOOTER = "groupFooter";
 
     private String headerValue;
     private String footerValue;
@@ -160,14 +168,6 @@ public class BaseColumn extends UIColumn {
         footerOnmousemove = (String) state[i++];
         footerOnmouseout = (String) state[i++];
         footerOnmouseup = (String) state[i++];
-    }
-
-    public UIComponent getEditor() {
-        return Components.getFacet(this, FACET_EDITOR);
-    }
-
-    public void setEditor(UIComponent editor) {
-        getFacets().put(FACET_EDITOR, editor);
     }
 
     public String getHeaderValue() {
@@ -681,7 +681,7 @@ public class BaseColumn extends UIColumn {
         try {
             int i = 0;
             table.setRowIndex(i);
-            while (table.isRowAvailable() && table.getRowData() instanceof RowGroupHeaderOrFooter) {
+            while (table.isRowAvailable() && table.getRowData() instanceof GroupHeaderOrFooter) {
                 table.setRowIndex(++i);
             }
             valueType = table.isRowAvailable() ? expression.getType(elContext) : Object.class;
@@ -808,6 +808,45 @@ public class BaseColumn extends UIColumn {
 
     }
 
+    public UIComponent getSubHeader() {
+        return Components.getFacet(this, FACET_SUB_HEADER);
+    }
+
+    public void setSubHeader(UIComponent component) {
+        getFacets().put(FACET_SUB_HEADER, component);
+    }
+
+    public UIComponent getGroupHeader() {
+        return Components.getFacet(this, FACET_GROUP_HEADER);
+    }
+
+    public void setGroupHeader(UIComponent component) {
+        getFacets().put(FACET_GROUP_HEADER, component);
+    }
+
+    public UIComponent getInGroupHeader() {
+        return Components.getFacet(this, FACET_IN_GROUP_HEADER);
+    }
+
+    public void setInGroupHeader(UIComponent component) {
+        getFacets().put(FACET_IN_GROUP_HEADER, component);
+    }
+
+    public UIComponent getInGroupFooter() {
+        return Components.getFacet(this, FACET_IN_GROUP_FOOTER);
+    }
+
+    public void setInGroupFooter(UIComponent component) {
+        getFacets().put(FACET_IN_GROUP_FOOTER, component);
+    }
+
+    public UIComponent getGroupFooter() {
+        return Components.getFacet(this, FACET_GROUP_FOOTER);
+    }
+
+    public void setGroupFooter(UIComponent component) {
+        getFacets().put(FACET_GROUP_FOOTER, component);
+    }
 
     /**
      * This class is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly

@@ -14,8 +14,7 @@ package org.openfaces.renderkit.table;
 import org.openfaces.component.TableStyles;
 import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.BaseColumn;
-import org.openfaces.component.table.Column;
-import org.openfaces.component.table.DynamicCol;
+import org.openfaces.component.table.impl.DynamicCol;
 import org.openfaces.component.table.Scrolling;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
@@ -208,7 +207,7 @@ public abstract class TableHeaderOrFooter extends TableSection {
         List<HeaderCell> cells = new ArrayList<HeaderCell>();
 
         for (BaseColumn column : columns) {
-            UIComponent columnHeaderOrFooter = isHeader ? getColumnSubHeader(column) : null;
+            UIComponent columnHeaderOrFooter = isHeader ? column.getSubHeader() : null;
             HeaderCell cell = new HeaderCell(column, columnHeaderOrFooter, cellTag, CellKind.COL_SUBHEADER);
             if (columnHeaderOrFooter != null)
                 atLeastOneComponent = true;
@@ -471,11 +470,4 @@ public abstract class TableHeaderOrFooter extends TableSection {
         return null;
     }
 
-    private UIComponent getColumnSubHeader(BaseColumn column) {
-        if (!(column instanceof Column))
-            return null;
-        Column tableColumn = ((Column) column);
-
-        return tableColumn.getSubHeader();
-    }
 }

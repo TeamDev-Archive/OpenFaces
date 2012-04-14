@@ -13,6 +13,7 @@ package org.openfaces.renderkit.table;
 
 import org.openfaces.component.TableStyles;
 import org.openfaces.component.table.*;
+import org.openfaces.component.table.impl.DynamicCol;
 import org.openfaces.org.json.JSONArray;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;

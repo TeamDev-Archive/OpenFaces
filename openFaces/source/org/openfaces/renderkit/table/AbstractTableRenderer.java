@@ -16,6 +16,7 @@ import org.openfaces.component.TableStyles;
 import org.openfaces.component.command.MenuItem;
 import org.openfaces.component.command.PopupMenu;
 import org.openfaces.component.table.*;
+import org.openfaces.component.table.impl.NodeInfo;
 import org.openfaces.org.json.JSONArray;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
@@ -187,6 +188,12 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         ColumnReordering columnReordering = table.getColumnReordering();
         if (columnReordering != null)
             columnReordering.encodeAll(context);
+
+        List<Summary> summaries = table.getAllRowsSummaries();
+
+        for (Summary summary : summaries) {
+            summary.encodeAfterCalculation(context);
+        }
     }
 
     protected void encodeAdditionalFeaturesSupport_buf(FacesContext context, AbstractTable table, ScriptBuilder buf) throws IOException {

@@ -5012,6 +5012,10 @@ if (!window.O$) {
 
   // ----------------- COMPONENT UTILS -------------------------------------------
 
+  /**
+   * Fixes the Prototype 1.6.0.2 conflict with the JSON2 library.
+   * See http://stackoverflow.com/questions/710586/json-stringify-bizarreness
+   */
   O$.cleanUpPrototypeJsonIncompatibility = function() {
     delete Date.prototype.toJSON;
     delete String.prototype.toJSON;

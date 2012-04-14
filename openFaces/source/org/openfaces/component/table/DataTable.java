@@ -12,6 +12,9 @@
 package org.openfaces.component.table;
 
 import org.openfaces.component.filter.Filter;
+import org.openfaces.component.table.impl.GroupingStructureColumn;
+import org.openfaces.component.table.impl.NodeInfo;
+import org.openfaces.component.table.impl.TableDataModel;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.Components;
@@ -42,7 +45,6 @@ public class DataTable extends AbstractTable {
     public static final String COMPONENT_TYPE = "org.openfaces.DataTable";
     public static final String COMPONENT_FAMILY = "org.openfaces.DataTable";
     private static final String RENDERED_PAGE_COUNT_ATTR = "_renderedPageCount";
-    private static final String GROUPED_DATA_TABLE_ATTR = "_groupedDataTable";
 
     private Integer pageSize;
     private Integer pageIndex;
@@ -407,30 +409,24 @@ public class DataTable extends AbstractTable {
             setPageIndex(0);
     }
 
+    private RowGrouping[] cachedRowGrouping;
+
     public RowGrouping getRowGrouping() {
-        return Components.findChildWithClass(this, RowGrouping.class, "<o:rowGrouping>");
+        if (cachedRowGrouping == null) {
+            RowGrouping rowGrouping = Components.findChildWithClass(this, RowGrouping.class, "<o:rowGrouping>");
+            cachedRowGrouping = new RowGrouping[]{rowGrouping};
+        }
+        return cachedRowGrouping[0];
     }
 
     public Map<Object, ? extends NodeInfo> getTreeStructureMap(FacesContext context) {
-        return getModel().getExtractedRowHierarchy();
+        return getModel().getDerivedRowHierarchy();
     }
 
     @Override
     public int getNodeLevel() {
         TableDataModel model = getModel();
-        Map<Object, ? extends NodeInfo> rowHierarchy = model.getExtractedRowHierarchy();
-        if (rowHierarchy == null)
-            return 0;
-        int rowIndex = getRowIndex();
-        if (rowIndex == -1)
-            return 0;
-        NodeInfo nodeInfo = rowHierarchy.get(rowIndex);
-        if (nodeInfo == null) {
-            List<GroupingRule> groupingRules = model.getGroupingRules();
-            return groupingRules != null ? groupingRules.size() : 0;
-        }
-
-        return nodeInfo.getNodeLevel();
+        return model.getNodeLevel();
     }
 
     @Override
@@ -442,7 +438,7 @@ public class DataTable extends AbstractTable {
     @Override
     protected boolean getNodeHasChildren(int rowIndex) {
         TableDataModel model = getModel();
-        Map<Object, ? extends NodeInfo> rowHierarchy = model.getExtractedRowHierarchy();
+        Map<Object, ? extends NodeInfo> rowHierarchy = model.getDerivedRowHierarchy();
         if (rowHierarchy == null) return false;
 
         if (rowIndex == -1) return false;
@@ -493,9 +489,6 @@ public class DataTable extends AbstractTable {
         List<GroupingRule> groupingRules = rowGrouping.getGroupingRules();
         if (groupingRules == null || groupingRules.size() == 0) return renderedColumns;
 
-        // todo deal with the case when selection/checkbox columns are the first ones, where they should probably be
-        // skipped in favor of the first ordinary column
-
         BaseColumn originalColumn = null;
         int originalColumnIndex = -1;
         for (int i = 0, count = renderedColumns.size(); i < count; i++) {
@@ -516,16 +509,13 @@ public class DataTable extends AbstractTable {
     }
 
     private TreeColumn convertToTreeColumn(BaseColumn column) {
-        FacesContext context = FacesContext.getCurrentInstance();
-        TreeColumn treeColumn = (TreeColumn) context.getApplication().createComponent(TreeColumn.COMPONENT_TYPE);
-        treeColumn.getAttributes().put(GROUPED_DATA_TABLE_ATTR, this);
-        TableUtil.copyColumnAttributes(column, treeColumn);
-        treeColumn.setDelegate(column);
-        return treeColumn;
+        return new GroupingStructureColumn(column);
     }
 
     public static DataTable getGroupedDataTable(TreeColumn treeColumn) {
-        return (DataTable) treeColumn.getAttributes().get(GROUPED_DATA_TABLE_ATTR);
+        return treeColumn instanceof GroupingStructureColumn
+                ? (DataTable) treeColumn.getTable()
+                : null;
     }
 
     @Override

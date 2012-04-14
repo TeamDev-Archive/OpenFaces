@@ -150,8 +150,7 @@
   background: #cccccc;
 }
 
-.o_table_sorted_column_body {
-  background: #f4f4f4;
+.o_table_sorted_column_body { background: #f4f4f4;
 }
 
 .o_table_sorted_column_footer {
@@ -264,8 +263,17 @@
   background: #e6e7e8;
 }
 
-.o_rowGroupFooter {
+.o_inGroupHeader {
+  font-weight: bold;
+  background: #e6e7e8;
+}
 
+.o_inGroupFooter {
+  background: #e6e7e8;
+}
+
+.o_rowGroupFooter {
+  background: #e6e7e8;
 }
 
 /* Checkbox column */

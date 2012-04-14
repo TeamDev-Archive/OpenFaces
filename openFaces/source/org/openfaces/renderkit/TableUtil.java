@@ -17,7 +17,7 @@ import org.openfaces.component.table.ColumnGroup;
 import org.openfaces.component.table.ColumnResizing;
 import org.openfaces.component.table.ColumnResizingState;
 import org.openfaces.component.table.Columns;
-import org.openfaces.component.table.DynamicColumn;
+import org.openfaces.component.table.impl.DynamicColumn;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.util.Components;
