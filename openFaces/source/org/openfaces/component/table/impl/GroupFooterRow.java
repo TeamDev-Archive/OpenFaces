@@ -11,6 +11,7 @@
  */
 package org.openfaces.component.table.impl;
 
+import org.openfaces.component.table.Cell;
 import org.openfaces.component.table.Column;
 import org.openfaces.component.table.DataTable;
 import org.openfaces.component.table.GroupFooter;
@@ -40,7 +41,7 @@ public class GroupFooterRow extends GroupHeaderOrFooterRow {
 
     @Override
     protected String getDefaultStyleClass() {
-        return "o_rowGroupFooter";
+        return "o_groupFooter";
     }
 
     @Override
@@ -57,6 +58,14 @@ public class GroupFooterRow extends GroupHeaderOrFooterRow {
     public String getStyleClass() {
         return getExplicitlyAssociatedDataTable().getRowGrouping().getGroupFooterRowClass();
     }
+
+    @Override
+    protected Cell createDefaultCell(DataTable dataTable) {
+        Cell defaultCell = super.createDefaultCell(dataTable);
+        defaultCell.getAttributes().put(SYNTHETIC_GROUP_HEADER_CELL_MARKER, true);
+        return defaultCell;
+    }
+
 
 
 }

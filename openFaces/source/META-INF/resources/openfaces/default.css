@@ -150,11 +150,12 @@
   background: #cccccc;
 }
 
-.o_table_sorted_column_body { background: #f4f4f4;
+.o_table_sorted_column_body {
+  background: #f8f8f8;
 }
 
 .o_table_sorted_column_footer {
-  background: #f4f4f4;
+  background: #f8f8f8;
 }
 
 .o_tableColumn {
@@ -258,21 +259,21 @@
   background-color: silver;
 }
 
-.o_rowGroupHeader {
+.o_groupHeader {
   font-weight: bold;
   background: #e6e7e8;
 }
 
 .o_inGroupHeader {
   font-weight: bold;
-  background: #e6e7e8;
+  background: #f0f0f0;
 }
 
 .o_inGroupFooter {
-  background: #e6e7e8;
+  background: #f0f0f0;
 }
 
-.o_rowGroupFooter {
+.o_groupFooter {
   background: #e6e7e8;
 }
 

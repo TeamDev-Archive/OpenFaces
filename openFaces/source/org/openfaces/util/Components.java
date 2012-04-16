@@ -28,6 +28,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Stack;
 
 /**
@@ -529,5 +530,62 @@ public class Components {
                 facets.add(facet);
         }
         return facets;
+    }
+
+    /**
+     * Finds the owner of this component that includes it as one of its facet (either directly or indirectly through
+     * other container components)
+     */
+    public static FacetReference getParentFacetReference(UIComponent component) {
+        UIComponent parent = component.getParent();
+        if (parent == null) return null;
+        Set<Map.Entry<String,UIComponent>> facetEntries = parent.getFacets().entrySet();
+        for (Map.Entry<String, UIComponent> facetEntry : facetEntries) {
+            UIComponent value = facetEntry.getValue();
+            if (undecorateFacetComponent(value) == component)
+                return new FacetReference(parent, facetEntry.getKey());
+        }
+        return getParentFacetReference(parent);
+    }
+
+    /**
+     * This method is redefined in OpenFaces 3.x to overcome Mojarra 2.0.3 issue of excessive internal facet wrapper
+     * components being erroneously returned by the UIComponent's facet access methods.
+     *
+     * @see #getFacet(javax.faces.component.UIComponent component, java.lang.String facetName)
+     * @param facetComponent
+     * @return
+     */
+    private static UIComponent undecorateFacetComponent(UIComponent facetComponent) {
+        return facetComponent;
+    }
+
+    public static void clearCachedClientIds(UIComponent component) {
+        // setId forces client id recalculation
+        component.setId(component.getId());
+        Iterator<UIComponent> kids = component.getFacetsAndChildren();
+        while (kids.hasNext()) {
+            UIComponent kid = kids.next();
+            clearCachedClientIds(kid);
+        }
+
+    }
+
+    public static class FacetReference {
+        private UIComponent facetOwner;
+        private String facetName;
+
+        public FacetReference(UIComponent facetOwner, String facetName) {
+            this.facetOwner = facetOwner;
+            this.facetName = facetName;
+        }
+
+        public UIComponent getFacetOwner() {
+            return facetOwner;
+        }
+
+        public String getFacetName() {
+            return facetName;
+        }
     }
 }

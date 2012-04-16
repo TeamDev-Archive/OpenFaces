@@ -30,6 +30,7 @@ import java.util.List;
  * @author Dmitry Pikhulya
  */
 public abstract class GroupHeaderOrFooterRow extends Row {
+    protected static final String SYNTHETIC_GROUP_HEADER_CELL_MARKER = "_syntheticGroupHeaderCell";
     private DataTable dataTable;
     private List<UIComponent> cells;
 
@@ -42,6 +43,10 @@ public abstract class GroupHeaderOrFooterRow extends Row {
 
         Cell groupHeaderCell = createDefaultCell(dataTable);
         cells = Collections.singletonList((UIComponent) groupHeaderCell);
+    }
+
+    public static boolean isSyntheticGroupHeaderCell(Cell cell) {
+        return cell.getAttributes().containsKey(SYNTHETIC_GROUP_HEADER_CELL_MARKER);
     }
 
     /**

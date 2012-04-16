@@ -189,8 +189,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         if (columnReordering != null)
             columnReordering.encodeAll(context);
 
-        List<Summary> summaries = table.getAllRowsSummaries();
-
+        List<Summary> summaries = table.getSummaries();
         for (Summary summary : summaries) {
             summary.encodeAfterCalculation(context);
         }

@@ -14,6 +14,7 @@ package org.openfaces.renderkit.table;
 import org.openfaces.component.TableStyles;
 import org.openfaces.component.table.*;
 import org.openfaces.component.table.impl.GroupFooterRow;
+import org.openfaces.component.table.impl.GroupHeaderOrFooterRow;
 import org.openfaces.component.table.impl.GroupHeaderRow;
 import org.openfaces.component.table.impl.InGroupFooterRow;
 import org.openfaces.component.table.impl.InGroupHeaderRow;
@@ -108,7 +109,7 @@ public class TableBody extends TableSection {
         List<BaseColumn> columns = table.getAdaptedRenderedColumns();
         int first = table.getFirst();
         if (table.getRows() != 0)
-            throw new IllegalStateException("table.getRows() should always be null in OpenFaces tables, but it is: " + table.getRows());
+            throw new IllegalStateException("table.getRows() should always be equal to 0 in OpenFaces tables, but it is equal to " + table.getRows());
 
         int rowCount = table.getRowCount();
         int rows = (rowCount != -1) ? rowCount : Integer.MAX_VALUE;
@@ -311,7 +312,7 @@ public class TableBody extends TableSection {
         private final MethodExpression selectableCellsME;
         private final JSONArray collectedSelectableCells;
         private final AbstractCellSelection cellSelection;
-        private final List<Summary> allRowsSummaries;
+        private final List<Summary> summaries;
 
         private TableBodyRenderer(
                 FacesContext context,
@@ -351,7 +352,7 @@ public class TableBody extends TableSection {
                             "mutually exclusive and cannot be used at the same time.");
             renderedColIndexesByOriginalIndexes = getRenderedColIndexesByOriginalIndexesMap(table);
 
-            allRowsSummaries = table.getAllRowsSummaries();
+            summaries = table.getSummaries();
         }
 
         private List<Row> getCustomRows(AbstractTable table) {
@@ -499,15 +500,8 @@ public class TableBody extends TableSection {
             public void renderRow() throws IOException {
                 Object rowData = table.getRowData();
                 if (!(rowData instanceof GroupHeaderOrFooter)) {
-                    for (Summary summary : allRowsSummaries) {
-                        Object byValue = summary.getByValue(elContext);
-                        Long value = (Long) summary.getAccumulatedValue();
-                        if (value == null) value = 0l;
-                        if (byValue != null) {
-                            Number currentValueAsNumber = (Number) byValue;
-                            value = value + currentValueAsNumber.longValue();
-                        }
-                        summary.setAccumulatedValue(value);
+                    for (Summary summary : summaries) {
+                        summary.addCurrentRowValue();
                     }
                 }
 
@@ -834,7 +828,7 @@ public class TableBody extends TableSection {
                         boolean groupHeaderCell = false;
                         for (Object cellObj : customCellList) {
                             Cell cell = (Cell) cellObj;
-                            groupHeaderCell |= GroupHeaderRow.isSyntheticGroupHeaderCell(cell);
+                            groupHeaderCell |= GroupHeaderOrFooterRow.isSyntheticGroupHeaderCell(cell);
 
                             int currentCellSpan = cell.getSpan();
                             if (currentCellSpan != 1)

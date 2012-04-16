@@ -315,6 +315,44 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         return (TableDataModel) getUiDataValue();
     }
 
+    @Override
+    public void setRowIndex(int rowIndex) {
+        super.setRowIndex(rowIndex);
+
+        List<UIComponent> components = getAdditionalComponentsRequiringClientIdReset();
+        for (UIComponent component : components) {
+            Components.clearCachedClientIds(component);
+        }
+    }
+
+    private List<UIComponent> additionalComponentsRequiringClientIdReset;
+
+    /**
+     * Some column facets, which are rendered several times per table, such as "inColumnHeader" might contain some
+     * components, such as <o:summary>, which are sensitive to the fact that their client id is not repeated when the
+     * same component is rendered in different rows. Hence this resets their client ids
+     * @return
+     */
+    private List<UIComponent> getAdditionalComponentsRequiringClientIdReset() {
+        if (additionalComponentsRequiringClientIdReset == null) {
+            additionalComponentsRequiringClientIdReset = new ArrayList<UIComponent>();
+            List<BaseColumn> columns = getAllColumns();
+            for (BaseColumn column : columns) {
+                Map<String, UIComponent> facets = column.getFacets();
+                for (Map.Entry<String, UIComponent> entry : facets.entrySet()) {
+                    String facetName = entry.getKey();
+                    if (! (
+                            facetName.equals(BaseColumn.FACET_HEADER) ||
+                            facetName.equals(BaseColumn.FACET_SUB_HEADER) ||
+                            facetName.equals(BaseColumn.FACET_FOOTER)
+                    ))
+                        additionalComponentsRequiringClientIdReset.add(entry.getValue());
+                }
+            }
+        }
+        return additionalComponentsRequiringClientIdReset;
+    }
+
     public UIComponent getHeader() {
         return Components.getFacet(this, FACET_HEADER);
     }
@@ -926,14 +964,17 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     private List<Summary> summaries;
 
-    public List<Summary> getAllRowsSummaries() {
+    public List<Summary> getSummaries() {
         if (summaries == null) {
             List<UIComponent> facets = new ArrayList<UIComponent>();
             facets.addAll(this.getFacets().values());
             List<BaseColumn> allColumns = getAllColumns();
             for (BaseColumn column : allColumns) {
                 List<UIComponent> applicableFacets = Components.getFacets(column,
-                        BaseColumn.FACET_HEADER, BaseColumn.FACET_SUB_HEADER, BaseColumn.FACET_FOOTER);
+                        BaseColumn.FACET_HEADER, BaseColumn.FACET_SUB_HEADER, BaseColumn.FACET_FOOTER,
+                        BaseColumn.FACET_GROUP_HEADER,
+                        BaseColumn.FACET_IN_GROUP_HEADER, BaseColumn.FACET_IN_GROUP_FOOTER,
+                        BaseColumn.FACET_GROUP_FOOTER);
                 facets.addAll(applicableFacets);
             }
 

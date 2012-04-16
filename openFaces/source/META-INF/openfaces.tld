@@ -46991,6 +46991,17 @@ entering a value and returns a list of suggestions from the server -->
     <name>summary</name>
     <tag-class>org.openfaces.taglib.jsp.table.SummaryJspTag</tag-class>
     <body-content>JSP</body-content>
+
+    <attribute>
+      <description>The component identifier.</description>
+      <name>id</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el false -->
+    </attribute>
     <attribute>
       <description>Specifies a value expression by which the summary value should be calculated. E.g. a value of
         #{product.price} would result in displaying a &quot;total&quot; price for all table&#39;s rows (a sum

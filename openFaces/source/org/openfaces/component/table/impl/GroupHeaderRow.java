@@ -26,7 +26,6 @@ import java.util.List;
 public class GroupHeaderRow extends GroupHeaderOrFooterRow {
     public static final String COMPONENT_TYPE = "org.openfaces.GroupHeaderRow";
     public static final String COMPONENT_FAMILY = "org.openfaces.GroupHeaderRow";
-    protected static final String SYNTHETIC_GROUP_HEADER_CELL_MARKER = "_syntheticGroupHeaderCell";
 
     public GroupHeaderRow() {
     }
@@ -34,10 +33,6 @@ public class GroupHeaderRow extends GroupHeaderOrFooterRow {
     public GroupHeaderRow(DataTable dataTable) {
         super(dataTable);
 
-    }
-
-    public static boolean isSyntheticGroupHeaderCell(Cell cell) {
-        return cell.getAttributes().containsKey(SYNTHETIC_GROUP_HEADER_CELL_MARKER);
     }
 
     @Override
@@ -59,7 +54,7 @@ public class GroupHeaderRow extends GroupHeaderOrFooterRow {
 
     @Override
     protected String getDefaultStyleClass() {
-        return "o_rowGroupHeader";
+        return "o_groupHeader";
     }
 
     @Override

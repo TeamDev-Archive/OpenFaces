@@ -46,9 +46,11 @@ import java.util.Map;
 import java.util.Set;
 
 /**
+ * This class is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
+ * by any application code.
+ *
  * @author Dmitry Pikhulya
  */
-
 public class TableDataModel extends DataModel implements DataModelListener, Externalizable {
     private static final String VAR_FILTER_CRITERIA = "filterCriteria";
     private static final String VAR_PAGE_START = "pageStart";
@@ -199,15 +201,20 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
     }
 
     public int getNodeLevel() {
+        RowInfo rowInfo = getRowInfo();
+        return rowInfo != null ? rowInfo.getLevel() : 0;
+    }
+
+    public RowInfo getRowInfo() {
         if (extractedRows != null) {
             boolean rowIndexInRange = extractedRowIndex >= 0 && extractedRowIndex < extractedRows.size();
             if (rowIndexInRange) {
                 RowInfo rowInfo = extractedRows.get(extractedRowIndex);
-                return rowInfo != null ? rowInfo.getLevel() : 0;
+                return rowInfo;
             } else
-                throw new IllegalArgumentException("No row data is available for the current index: " + extractedRowIndex);
+                throw new IllegalArgumentException("No row info is available for the current index: " + extractedRowIndex);
         }
-        return 0;
+        return null;
     }
 
     public int getRowIndex() {
@@ -449,7 +456,12 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
      *         grouping rules. The "leaf" RowInfos (the ones stored in the immediateSubRows field of the deepest
      *         hierarchy level represent the actual data rows and not group header rows.
      */
-    private List<RowInfo> constructGroupingTree(List<GroupingRule> groupingRules, List<RowInfo> rows, int level) {
+    private List<RowInfo> constructGroupingTree(
+            List<GroupingRule> groupingRules,
+            List<RowInfo> rows,
+            int level,
+            RowGroup parentRowGroup) {
+
         if (groupingRules.size() == 0)
             return rows;
         int rowCount = rows.size();
@@ -472,7 +484,8 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
             RowInfo rowInfo = rows.get(i);
             RowInfo nextRowInfo = i < rowCount - 1 ? rows.get(i + 1) : null;
             if (currentGroupRowInfo == null) {
-                currentGroupRowInfo = createHeaderRowInfo(context, columnGroupingInfo, rowInfo.getRowData(), level);
+                currentGroupRowInfo = createHeaderRowInfo(context, columnGroupingInfo, rowInfo.getRowData(),
+                        level, parentRowGroup);
                 currentGroupRowInfo.setAllDataRowsInThisGroup(new ArrayList<RowInfo>());
             }
 
@@ -482,12 +495,13 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
             boolean lastRowInThisGroup = nextRowInfo == null ||
                     !recordsInTheSameGroup(ruleComparator, rowInfo, nextRowInfo);
             if (lastRowInThisGroup) {
+                GroupHeader groupHeader = (GroupHeader) currentGroupRowInfo.getRowData();
+                RowGroup rowGroup = groupHeader.getRowGroup();
                 List<RowInfo> subRowInfos = constructGroupingTree(
                         groupingRules.subList(1, groupingRules.size()),
                         currentGroupRowInfo.getAllDataRowsInThisGroup(),
-                        subRowsLevel);
-                GroupHeader groupHeader = (GroupHeader) currentGroupRowInfo.getRowData();
-                RowGroup rowGroup = groupHeader.getRowGroup();
+                        subRowsLevel,
+                        rowGroup);
                 if (columnGroupingInfo.isInHeadersSpecified())
                     subRowInfos.add(0, new RowInfo(new InGroupHeader(rowGroup), -1, subRowsLevel));
                 if (columnGroupingInfo.isInGroupFootersSpecified())
@@ -515,7 +529,7 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
 
 
     private Map<Object, ? extends NodeInfo> groupRows(List<GroupingRule> groupingRules, List<RowInfo> rows) {
-        List<RowInfo> topLevelRowInfos = constructGroupingTree(groupingRules, rows, 0);
+        List<RowInfo> topLevelRowInfos = constructGroupingTree(groupingRules, rows, 0, null);
 
         rows.clear();
         linearizeGroupingTree(topLevelRowInfos, rows);
@@ -552,13 +566,19 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
             FacesContext context,
             ColumnGroupingInfo columnGroupingInfo,
             Object anyRowDataInThisGroup,
-            int level) {
-        RowGroup currentGroup = createRowGroup(context, columnGroupingInfo, anyRowDataInThisGroup);
+            int level,
+            RowGroup parentRowGroup) {
+        RowGroup currentGroup = createRowGroup(context, columnGroupingInfo, anyRowDataInThisGroup, parentRowGroup);
         GroupHeader groupHeader = new GroupHeader(currentGroup);
         return new RowInfo(groupHeader, -1, level);
     }
 
-    private RowGroup createRowGroup(FacesContext context, ColumnGroupingInfo columnGroupingInfo, Object anyRowDataInThisGroup) {
+    private RowGroup createRowGroup(
+            FacesContext context,
+            ColumnGroupingInfo columnGroupingInfo,
+            Object anyRowDataInThisGroup,
+            RowGroup parentRowGroup) {
+
         Runnable restoreParams = table.populateSortingExpressionParams(
                 table.getVar(), context.getExternalContext().getRequestMap(), anyRowDataInThisGroup);
         Object groupingValue;
@@ -567,7 +587,7 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
         } finally {
             restoreParams.run();
         }
-        return new RowGroup(columnGroupingInfo.getColumnId(), groupingValue);
+        return new RowGroup(columnGroupingInfo.getColumnId(), groupingValue, parentRowGroup);
     }
 
 
@@ -1158,6 +1178,7 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
         private int level;
         private List<RowInfo> immediateSubRows;
         private List<RowInfo> allDataRowsInThisGroup;
+        private RowInfo parentGroup;
 
         public RowInfo(Object rowData, int indexInOriginalList) {
             this(rowData, indexInOriginalList, 0);
@@ -1171,6 +1192,14 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
 
         public void setLevel(int level) {
             this.level = level;
+        }
+
+        public RowInfo getParentGroup() {
+            return parentGroup;
+        }
+
+        public void setParentGroup(RowInfo parentGroup) {
+            this.parentGroup = parentGroup;
         }
 
         public Object getRowData() {
@@ -1190,6 +1219,9 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
         }
 
         public void setImmediateSubRows(List<RowInfo> immediateSubRows) {
+            for (RowInfo subRow : immediateSubRows) {
+                subRow.setParentGroup(this);
+            }
             this.immediateSubRows = immediateSubRows;
         }
 
