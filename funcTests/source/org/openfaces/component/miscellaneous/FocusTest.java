@@ -11,6 +11,7 @@
  */
 package org.openfaces.component.miscellaneous;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.seleniuminspector.ElementInspector;
@@ -45,6 +46,7 @@ public class FocusTest extends OpenFacesTestCase {
     }
 
     @Test
+    @Ignore
     public void testFocusWithOFDataTable() {
         testAppFunctionalPage("/components/scrollfocus/focusWithDataTable.jsf");
 
