@@ -129,7 +129,8 @@ public class TableUtil {
 
     public static void copyColumnAttributes(UIComponent srcColumn, BaseColumn destColumn) {
         String[] copiedAttributes = new String[]{
-                "headerValue", "footerValue", "width", "align", "valign", "resizable", "minResizingWidth",
+                Column.COLUMN_VALUE_VAR, "headerValue", "footerValue",
+                "width", "align", "valign", "resizable", "minResizingWidth",
                 "fixed", "menuAllowed",
                 "style", "styleClass", "headerStyle", "headerClass", "subHeaderStyle", "subHeaderClass",
                 "bodyStyle", "bodyClass", "footerStyle", "footerClass",

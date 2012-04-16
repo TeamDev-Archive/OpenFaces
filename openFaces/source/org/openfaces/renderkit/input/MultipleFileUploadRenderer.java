@@ -146,7 +146,8 @@ public final class MultipleFileUploadRenderer extends AbstractFileUploadRenderer
                 multipleFileUpload.getExternalDropTarget(),
                 multipleFileUpload.getAcceptedMimeTypes(),
                 multipleFileUpload.getDirectoryDroppedText(),
-                multipleFileUpload.getWrongFileTypeText()
+                multipleFileUpload.getWrongFileTypeText(),
+                multipleFileUpload.getExternalBrowseButton()
         );
 
         Rendering.renderInitScript(context, initScript,

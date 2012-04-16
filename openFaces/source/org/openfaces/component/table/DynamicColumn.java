@@ -33,6 +33,7 @@ public class DynamicColumn extends Column implements DynamicCol {
     private int colIndex;
 
     public DynamicColumn() {
+        setRendererType("org.openfaces.DynamicColumnRenderer");
     }
 
     @Override

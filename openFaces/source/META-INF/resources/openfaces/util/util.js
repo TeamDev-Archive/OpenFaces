@@ -5029,6 +5029,17 @@ if (!window.O$) {
   };
 
   O$.addLoadEvent(function() {
+
+  O$.cleanUpPrototypeJsonIncompatibility = function() {
+    delete Date.prototype.toJSON;
+    delete String.prototype.toJSON;
+    delete Array.prototype.toJSON;
+    delete Number.prototype.toJSON;
+  };
+
+  O$.cleanUpPrototypeJsonIncompatibility();
+
+  O$.addLoadEvent(function() {
     O$._loaded = true;
   });
 
@@ -5275,6 +5286,4 @@ if (!window.O$) {
   };
 
 }
-
-
 

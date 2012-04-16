@@ -893,6 +893,11 @@
       <renderer-class>org.openfaces.renderkit.table.ColumnRenderer</renderer-class>
     </renderer>
     <renderer>
+      <component-family>org.openfaces.DynamicColumn</component-family>
+      <renderer-type>org.openfaces.DynamicColumnRenderer</renderer-type>
+      <renderer-class>org.openfaces.renderkit.table.DynamicColumnRenderer</renderer-class>
+    </renderer>
+    <renderer>
       <component-family>org.openfaces.CheckboxColumn</component-family>
       <renderer-type>org.openfaces.CheckboxColumnRenderer</renderer-type>
       <renderer-class>org.openfaces.renderkit.table.CheckboxColumnRenderer</renderer-class>
