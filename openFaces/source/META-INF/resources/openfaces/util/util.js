@@ -5028,8 +5028,6 @@ if (!window.O$) {
     });
   };
 
-  O$.addLoadEvent(function() {
-
   O$.cleanUpPrototypeJsonIncompatibility = function() {
     delete Date.prototype.toJSON;
     delete String.prototype.toJSON;
@@ -5041,6 +5039,10 @@ if (!window.O$) {
 
   O$.addLoadEvent(function() {
     O$._loaded = true;
+
+    // we're repeating the O$.cleanUpPrototypeJsonIncompatibility(); call on load event to account for prototype.js
+    // which might be included after util.js
+    O$.cleanUpPrototypeJsonIncompatibility();
   });
 
   O$._submitComponentWithField = function(componentId, focusedField, additionalParams, execute) {
