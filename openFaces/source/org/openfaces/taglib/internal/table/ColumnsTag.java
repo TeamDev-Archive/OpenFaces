@@ -38,6 +38,8 @@ public class ColumnsTag extends AbstractComponentTag {
         setStringProperty(component, "var", false, true);
         setStringProperty(component, "indexVar");
         setValueExpressionProperty(component, "headerValue", getPropertyValue("header"), "header");
+        setValueExpressionProperty(component, "footerValue", getPropertyValue("footer"), "footer");
+        setValueExpressionProperty(component, "columnValue");
 
         setValueExpressionProperty(component, "columnId");
         setBooleanProperty(component, "columnRendered");
