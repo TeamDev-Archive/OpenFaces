@@ -11,11 +11,9 @@
  */
 package org.openfaces.taglib.internal.input;
 
-import org.apache.poi.xwpf.usermodel.VerticalAlign;
 import org.openfaces.component.HorizontalAlignment;
 import org.openfaces.component.VerticalAlignment;
 import org.openfaces.component.input.Position;
-import org.openfaces.taglib.internal.AbstractComponentTag;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
