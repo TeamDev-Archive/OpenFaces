@@ -884,6 +884,11 @@
     <component-type>org.openfaces.Sorting</component-type>
     <component-class>org.openfaces.component.table.Sorting</component-class>
   </component>
+
+  <component>
+    <component-type>org.openfaces.Position</component-type>
+    <component-class>org.openfaces.component.input.Position</component-class>
+  </component>
   <render-kit>
     <renderer>
       <component-family>org.openfaces.DataTable</component-family>

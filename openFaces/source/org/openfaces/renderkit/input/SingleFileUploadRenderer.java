@@ -12,6 +12,7 @@
 package org.openfaces.renderkit.input;
 
 import org.openfaces.component.input.AbstractFileUpload;
+import org.openfaces.component.input.Position;
 import org.openfaces.component.input.SingleFileUpload;
 import org.openfaces.component.input.SingleFileUploadBtnBehavior;
 import org.openfaces.component.input.SingleFileUploadLayoutMode;
@@ -31,6 +32,7 @@ import java.util.List;
 
 public final class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
     private static final String DIV_FOR_FILE_INFO_ID = "::fileInfo";
+    private static final String ACTION_BUTTON_CONTAINER_ID = "::actionButtonContainer";
     private static final String DEFAULT_STOP_URL = "input/fileUpload-stop.png";
     private static final String STOP_ICO_STYLE_MIN = "o_s_file_clear_icon_min";
     private static final String STOP_ICO_STYLE_FULL = "o_s_file_clear_icon_full";
@@ -42,20 +44,34 @@ public final class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
         SingleFileUpload fileUpload = (SingleFileUpload) abstractFileUpload;
         layoutMode = fileUpload.getLayoutMode();
         setLayoutSettings(fileUpload, layoutMode);
+        boolean showInPopup = fileUpload.getShowInPopup();
+        boolean hasExternalBrowseButton = fileUpload.getExternalBrowseButton() != null;
 
+        String defaultStyleClass = (layoutMode == SingleFileUploadLayoutMode.FULL ? "o_s_file_upload" : "o_s_file_upload_compact")
+                + (showInPopup ? " o_file_upload_popup" : "");
         Rendering.writeStyleAndClassAttributes(writer, fileUpload.getStyle(), fileUpload.getStyleClass(),
-                (layoutMode == SingleFileUploadLayoutMode.FULL) ? "o_s_file_upload" : "o_s_file_upload_compact");
+                defaultStyleClass);
 
         writer.startElement("table", fileUpload);
+        writer.writeAttribute("style", "width:100%", null);
 
         writer.startElement("tr", fileUpload);
-        writer.startElement("td", fileUpload);
-        writeBrowseButton(context, writer, clientId, fileUpload);
-        writer.endElement("td");
+
+        if (!showInPopup && !hasExternalBrowseButton) {
+            writer.startElement("td", fileUpload);
+            writer.writeAttribute("id", clientId + ACTION_BUTTON_CONTAINER_ID, null);
+            writeBrowseButton(context, writer, clientId, fileUpload);
+            writer.endElement("td");
+        }
         writer.startElement("td", fileUpload);
         writer.writeAttribute("style", "width:100%", null);
         writeFileInfo(context, fileUpload, writer, clientId + DIV_FOR_FILE_INFO_ID);
         writer.endElement("td");
+        if (showInPopup || hasExternalBrowseButton) {
+            writer.startElement("td", fileUpload);
+            writer.writeAttribute("id", clientId + ACTION_BUTTON_CONTAINER_ID, null);
+            writer.endElement("td");
+        }
         writer.endElement("tr");
 
         writer.startElement("tr", fileUpload);
@@ -68,8 +84,16 @@ public final class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
         writer.endElement("tr");
 
         writer.endElement("table");
+        // Ignore for popup without external drop target
+        if (!showInPopup || abstractFileUpload.getExternalDropTarget() != null)
+            writeDragAndDrop(context, abstractFileUpload, writer, clientId, fileUpload);
 
-        writeDragAndDrop(context, abstractFileUpload, writer, clientId, fileUpload);
+        if (showInPopup || hasExternalBrowseButton) {
+            writer.startElement("div", fileUpload);
+            writer.writeAttribute("style", "display:none", null);
+            writeBrowseButton(context, writer, clientId, fileUpload);
+            writer.endElement("div");
+        }
         writeHelpfulElements(context, fileUpload, writer, clientId + HELP_ELEMENTS_ID);
 
     }
@@ -126,7 +150,7 @@ public final class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
     }
 
     private void writeProgressArea(FacesContext context, AbstractFileUpload fileUpload, ResponseWriter writer) throws IOException {
-        String progressBarClass = Styles.getCSSClass(context, fileUpload, fileUpload.getProgressBarStyle(), StyleGroup.regularStyleGroup(), fileUpload.getProgressBarClass(), "o_s_file_upload_info_progress");
+        String progressBarClass = Styles.getCSSClass(context, fileUpload, fileUpload.getProgressBarStyle(), StyleGroup.regularStyleGroup(), fileUpload.getProgressBarClass(), null);
         writer.writeAttribute("class", progressBarClass, null);
         writeProgressBar(context, fileUpload);
     }
@@ -170,7 +194,7 @@ public final class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
     private String getProgressBarStyle(SingleFileUpload fileUpload) {
         switch (layoutMode) {
             case COMPACT:
-                if (fileUpload.getBrowseButtonDuringUpload() == SingleFileUploadBtnBehavior.HIDE) {
+                if (fileUpload.getBrowseButtonDuringUpload() == SingleFileUploadBtnBehavior.HIDE && !fileUpload.getShowInPopup()) {
                     return "o_s_fileup_pro_bar_min";
                 } else {
                     return "o_s_fileup_pro_bar_compact";
@@ -195,6 +219,7 @@ public final class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
         int uploadedSize = 0;
         boolean duplicateAllowed = true;//fileUpload.isDuplicateAllowed();
 
+        Position popupPosition = fileUpload.getPosition();
 
         List<String> listOfImages = new LinkedList<String>();
         String defStopUrl = null;
@@ -236,7 +261,7 @@ public final class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
                 Utilities.getFunctionOfEvent(fileUpload.getOndirectorydropped()),
                 dropTargetDragoverClass,
                 (fileUpload.getRender() == null) ? null : Utilities.getForm(fileUpload).getClientId(context) + ":" + fileUpload.getRender(),
-                fileUpload.getExternalDropTarget(),
+                getExternalDropTargetId(context, fileUpload),
                 fileUpload.getAcceptedMimeTypes(),
                 fileUpload.getLayoutMode(),
                 defStopUrl,
@@ -246,7 +271,13 @@ public final class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
                 fileUpload.getStopButtonNearProgress(),
                 fileUpload.getDirectoryDroppedText(),
                 fileUpload.getWrongFileTypeText(),
-                fileUpload.getExternalBrowseButton()
+                getExternalButtonId(context, fileUpload),
+                fileUpload.getShowInPopup(),
+                getPositionedBy(context, fileUpload),
+                popupPosition.getHorizontalAlignment(),
+                popupPosition.getVerticalAlignment(),
+                popupPosition.getHorizontalDistance(),
+                popupPosition.getVerticalDistance()
         );
 
         Rendering.renderInitScript(context, initScript,
@@ -264,13 +295,17 @@ public final class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
         if (fileUpload.getStopButtonNearProgress() && fileUpload.getBrowseButtonDuringUpload() != SingleFileUploadBtnBehavior.SHOW_STOP) {
             facetRenderer.writeDivByDefault(stopButton, elementId + STOP_BTN_CONTAINER, "", getIconStyle(fileUpload, layoutMode));
         } else {
-            facetRenderer.writeButtonByDefault(stopButton, elementId + STOP_BTN_CONTAINER, abstractFileUpload.getStopButtonText(), "o_s_file_clear_btn");
+            String stopButtonClass = (fileUpload.getShowInPopup() || fileUpload.getExternalBrowseButton() != null )
+                    ? "o_s_close_popup_btn" : "o_s_file_clear_btn";
+            facetRenderer.writeButtonByDefault(stopButton, elementId + STOP_BTN_CONTAINER, abstractFileUpload.getStopButtonText(), stopButtonClass);
         }
+        if (abstractFileUpload.getShowInPopup())
+            facetRenderer.writeButtonByDefault(closeButton, elementId + CLOSE_BTN_CONTAINER, fileUpload.getCloseButtonText(), "o_s_close_popup_btn");
     }
 
     private String getIconStyle(SingleFileUpload fileUpload, SingleFileUploadLayoutMode layoutMode) {
         return (layoutMode == SingleFileUploadLayoutMode.FULL) ? STOP_ICO_STYLE_FULL
-                : (fileUpload.getBrowseButtonDuringUpload() == SingleFileUploadBtnBehavior.HIDE
+                : (fileUpload.getBrowseButtonDuringUpload() == SingleFileUploadBtnBehavior.HIDE && !fileUpload.getShowInPopup()
                 ? STOP_ICO_STYLE_MIN : STOP_ICO_STYLE_FULL);
     }
 }

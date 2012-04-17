@@ -13,6 +13,7 @@ package org.openfaces.renderkit.input;
 
 import org.openfaces.component.input.AbstractFileUpload;
 import org.openfaces.component.input.MultipleFileUpload;
+import org.openfaces.component.input.Position;
 import org.openfaces.component.output.ProgressBar;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.Resources;
@@ -74,9 +75,11 @@ public final class MultipleFileUploadRenderer extends AbstractFileUploadRenderer
 
     @Override
     protected void writeStructure(FacesContext context, AbstractFileUpload abstractFileUpload, ResponseWriter writer, String clientId) throws IOException {
-        Rendering.writeStyleAndClassAttributes(writer, abstractFileUpload.getStyle(), abstractFileUpload.getStyleClass(), "o_file_upload");
+        String defaultStyleClass = "o_file_upload" + (abstractFileUpload.getShowInPopup() ? " o_file_upload_popup" : "");
+        Rendering.writeStyleAndClassAttributes(writer, abstractFileUpload.getStyle(), abstractFileUpload.getStyleClass(), defaultStyleClass);
         MultipleFileUpload multipleFileUpload = (MultipleFileUpload) abstractFileUpload;
-        writeHeader(context, multipleFileUpload, writer, clientId + DIV_HEADER_ID);
+        if (multipleFileUpload.getExternalBrowseButton() == null)
+            writeHeader(context, multipleFileUpload, writer, clientId + DIV_HEADER_ID);
 
         writeMainDivForInfos(context, writer, multipleFileUpload, clientId + DIV_FOR_INFO_ID);
         writeFooter(context, multipleFileUpload, writer, clientId + FOOTER_DIV_ID);
@@ -100,8 +103,11 @@ public final class MultipleFileUploadRenderer extends AbstractFileUploadRenderer
         Styles.renderStyleClasses(context, multipleFileUpload);
 
         int uploadedSize = 0;
-        String headerId = clientId + DIV_HEADER_ID;
         boolean duplicateAllowed = true;//fileUpload.isDuplicateAllowed();
+
+        Position popupPosition = abstractFileUpload.getPosition();
+        String browseButtonId = clientId + (multipleFileUpload.getExternalBrowseButton() == null ?
+                DIV_HEADER_ID : FOOTER_DIV_ID) + BROWSE_BTN_ID;
 
         Script initScript = new ScriptBuilder().initScript(context, multipleFileUpload, "O$.FileUpload._init",
                 multipleFileUpload.getMinQuantity(),
@@ -118,7 +124,7 @@ public final class MultipleFileUploadRenderer extends AbstractFileUploadRenderer
                 multipleFileUpload.getUnexpectedErrorText(),
                 multipleFileUpload.getAcceptedFileTypes(),
                 duplicateAllowed,
-                headerId + BROWSE_BTN_ID,
+                browseButtonId,
                 addButtonClass,
                 addButtonOnMouseOverClass,
                 addButtonOnMouseDownClass,
@@ -143,11 +149,17 @@ public final class MultipleFileUploadRenderer extends AbstractFileUploadRenderer
                 dropTargetDragoverClass,
                 multipleFileUpload.getUploadMode(),
                 (multipleFileUpload.getRender() == null) ? null : Utilities.getForm(multipleFileUpload).getClientId(context) + ":" + multipleFileUpload.getRender(),
-                multipleFileUpload.getExternalDropTarget(),
+                getExternalDropTargetId(context, multipleFileUpload),
                 multipleFileUpload.getAcceptedMimeTypes(),
                 multipleFileUpload.getDirectoryDroppedText(),
                 multipleFileUpload.getWrongFileTypeText(),
-                multipleFileUpload.getExternalBrowseButton()
+                getExternalButtonId(context, multipleFileUpload),
+                multipleFileUpload.getShowInPopup(),
+                getPositionedBy(context, multipleFileUpload),
+                popupPosition.getHorizontalAlignment(),
+                popupPosition.getVerticalAlignment(),
+                popupPosition.getHorizontalDistance(),
+                popupPosition.getVerticalDistance()
         );
 
         Rendering.renderInitScript(context, initScript,
@@ -172,7 +184,21 @@ public final class MultipleFileUploadRenderer extends AbstractFileUploadRenderer
         writeDragAndDropArea(context, multipleFileUpload, writer, elementId + DRAG_AREA,
                 (multipleFileUpload.getExternalDropTarget() == null) ? "o_file_drop_target" : "o_file_ext_drop_target",
                 dropText);
-        facetRenderer.writeButtonByDefault(removeAllButton, elementId + REMOVE_ALL_BTN_CONTAINER, multipleFileUpload.getRemoveAllButtonText(), "o_file_remove_all_btn");
+
+        if (multipleFileUpload.getExternalBrowseButton() != null){
+            writer.startElement("div", multipleFileUpload);
+            writer.writeAttribute("style", "display:none", null);
+            writeBrowseButton(context, multipleFileUpload, writer, elementId);
+            writer.endElement("div");
+
+            facetRenderer.writeButtonByDefault(uploadButton, elementId + UPLOAD_BTN_CONTAINER, multipleFileUpload.getUploadButtonText(), "o_file_upload_btn_footer");
+        }
+        if (multipleFileUpload.getShowInPopup()){
+            // Replace "Remove All" button with "Close" button
+            facetRenderer.writeButtonByDefault(closeButton, elementId + REMOVE_ALL_BTN_CONTAINER, multipleFileUpload.getCloseButtonText(), "o_close_popup_btn");
+        } else {
+            facetRenderer.writeButtonByDefault(removeAllButton, elementId + REMOVE_ALL_BTN_CONTAINER, multipleFileUpload.getRemoveAllButtonText(), "o_file_remove_all_btn");
+        }
         facetRenderer.writeButtonByDefault(stopAllButton, elementId + STOP_ALL_BTN_CONTAINER, multipleFileUpload.getStopAllButtonText(), "o_file_stop_all_btn");
         writer.endElement("div");
     }
@@ -186,6 +212,18 @@ public final class MultipleFileUploadRenderer extends AbstractFileUploadRenderer
         writer.endElement("table");
     }
 
+    private void writeBrowseButton(FacesContext context, MultipleFileUpload multipleFileUpload, ResponseWriter writer, String elementId) throws IOException {
+        String browseButtonText = multipleFileUpload.getBrowseButtonText();
+        if (browseButtonText == null) {
+            if (multipleFileUpload.isMultiple()) {
+                browseButtonText = "Add file...";
+            } else {
+                browseButtonText = "Upload...";
+            }
+        }
+        writeBrowseButtonTable(context, multipleFileUpload, writer, elementId + BROWSE_BTN_ID, browseButtonText);
+    }
+    
     private void writeHeader(FacesContext context, AbstractFileUpload abstractFileUpload, ResponseWriter writer, String elementId) throws IOException {
         MultipleFileUpload multipleFileUpload = (MultipleFileUpload) abstractFileUpload;
         String styleClass = Styles.getCSSClass(context, multipleFileUpload, multipleFileUpload.getHeaderStyle(), StyleGroup.regularStyleGroup(), multipleFileUpload.getHeaderClass(), "o_file_upload_header");
@@ -195,16 +233,8 @@ public final class MultipleFileUploadRenderer extends AbstractFileUploadRenderer
         writer.startElement("tr", multipleFileUpload);
         writer.startElement("td", multipleFileUpload);
 
-        String browseButtonText = multipleFileUpload.getBrowseButtonText();
-        if (browseButtonText == null) {
-            if (multipleFileUpload.isMultiple()) {
-                browseButtonText = "Add file...";
-            } else {
-                browseButtonText = "Upload...";
-            }
-        }
+        writeBrowseButton(context, multipleFileUpload, writer, elementId);
 
-        writeBrowseButtonTable(context, multipleFileUpload, writer, elementId + BROWSE_BTN_ID, browseButtonText);
         facetRenderer.writeButtonByDefault(uploadButton, elementId + UPLOAD_BTN_CONTAINER, multipleFileUpload.getUploadButtonText(), "o_file_upload_btn");
         writer.endElement("td");
         writer.endElement("tr");

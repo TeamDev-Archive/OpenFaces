@@ -23,6 +23,7 @@ import org.openfaces.renderkit.AjaxPortionRenderer;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.AnonymousFunction;
+import org.openfaces.util.Components;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.StyleGroup;
 import org.openfaces.util.Styles;
@@ -56,10 +57,12 @@ public abstract class AbstractFileUploadRenderer extends RendererBase implements
     /*facet names and components which is used in this component*/
     private static final String F_BROWSE_BUTTON = "browseButton";
     private static final String F_STOP_BUTTON = "stopButton";
+    private static final String F_CLOSE_POPUP_BUTTON = "closeButton";
     private static final String F_PROGRESS_BAR = "progressBar";
 
     /*id of elements*/
     protected static final String STOP_BTN_CONTAINER = "::stopFacet";
+    protected static final String CLOSE_BTN_CONTAINER = "::closeFacet";
     protected static final String HELP_ELEMENTS_ID = "::elements";
     protected static final String DRAG_AREA = "::dragArea";
 
@@ -68,6 +71,7 @@ public abstract class AbstractFileUploadRenderer extends RendererBase implements
     protected ProgressBar progressBar;
     protected FacetRenderer facetRenderer;
     private UIComponent browseButton;
+    protected UIComponent closeButton;
 
 
     /*progress*/
@@ -232,6 +236,9 @@ public abstract class AbstractFileUploadRenderer extends RendererBase implements
         browseButton = fileUpload.getFacet(F_BROWSE_BUTTON);
         stopButton = fileUpload.getFacet(F_STOP_BUTTON);
         progressBar = (ProgressBar) fileUpload.getFacet(F_PROGRESS_BAR);
+        if (fileUpload.getShowInPopup()){
+            closeButton = fileUpload.getFacet(F_CLOSE_POPUP_BUTTON);
+        }
     }
 
     protected void writeDragAndDropArea(FacesContext context, AbstractFileUpload fileUpload, ResponseWriter writer, String elementId, String defClass, String dropText) throws IOException {
@@ -394,5 +401,17 @@ public abstract class AbstractFileUploadRenderer extends RendererBase implements
             }
             return (UIForm) parent;
         }
+    }
+    
+    protected String getPositionedBy(FacesContext context, AbstractFileUpload abstractFileUpload){
+        return Components.referenceIdToClientId(context, abstractFileUpload, abstractFileUpload.getPosition().getBy());
+    }
+
+    protected String getExternalButtonId(FacesContext context, AbstractFileUpload abstractFileUpload){
+        return Components.referenceIdToClientId(context, abstractFileUpload, abstractFileUpload.getExternalBrowseButton());
+    }
+
+    protected String getExternalDropTargetId(FacesContext context, AbstractFileUpload abstractFileUpload){
+        return Components.referenceIdToClientId(context, abstractFileUpload, abstractFileUpload.getExternalDropTarget());
     }
 }
