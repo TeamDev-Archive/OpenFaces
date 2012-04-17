@@ -5012,9 +5012,21 @@ if (!window.O$) {
 
   // ----------------- COMPONENT UTILS -------------------------------------------
 
+  O$.cleanUpPrototypeJsonIncompatibility = function() {
+    delete Date.prototype.toJSON;
+    delete String.prototype.toJSON;
+    delete Array.prototype.toJSON;
+    delete Number.prototype.toJSON;
+  };
+
+  O$.cleanUpPrototypeJsonIncompatibility();
+
   O$.addLoadEvent(function() {
     if (!O$.findCssRule(".o_default_css_marker"))
       O$.logError("default.css file is not loaded. The usual reason is application misconfiguration. See OpenFaces Installation and Configuration guide (resource filter configuration, etc).");
+    // we're repeating the O$.cleanUpPrototypeJsonIncompatibility(); call on load event to account for prototype.js
+    // which might be included after util.js
+    O$.cleanUpPrototypeJsonIncompatibility();
     O$._loaded = true;
   });
 
@@ -5249,6 +5261,4 @@ if (!window.O$) {
 
 
 }
-
-
 

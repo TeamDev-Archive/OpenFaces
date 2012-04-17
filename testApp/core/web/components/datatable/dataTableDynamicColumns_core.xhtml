@@ -45,6 +45,16 @@
       <h:commandButton value="Submit action (col data not available yet)" action="#{TableTestBean.dynamicColumnActionTest}"/>
       <o:commandButton value="Ajax action" action="#{TableTestBean.dynamicColumnActionTest}" render="hiddenInput"/>
     </o:columns>
+    <o:columns value="#{TableTestBean.testColumns}"
+               var="col"
+               columnId="cc2_#{col}"
+               header="Header #{col}"
+               footer="Footer #{col}"
+               columnValue="#{row.customFields[col]}"
+               columnRendered="#{TableTestBean.columnRendered}"
+               sortingEnabled="#{TableTestBean.sortingEnabled}"
+               sortingExpression="#{row.customFields[col]}"/>
+
   </o:dataTable>
   <h:inputHidden id="hiddenInput"/>
   <h:commandButton value="Change the set of columns" action="#{TableTestBean.changeColumns}"/>

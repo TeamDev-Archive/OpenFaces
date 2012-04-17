@@ -3134,6 +3134,18 @@
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>Specifies the optional column value expression similar to the value attribute of
+        &amp;lt;o:column&gt; tag.
+      </description>
+      <name>columnValue</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.Object -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
       <description>The value that can serve as a convenience substitution for specifying &amp;lt;h:outputText&gt; in the
         column's &quot;header&quot; facet, or serve for identifying the column name in such components as &amp;lt;o:comopsitefilter&gt;
         or &amp;lt;o:columnVisibilityMenu&gt;. You can use a column data variable specified in the "var" in the expression

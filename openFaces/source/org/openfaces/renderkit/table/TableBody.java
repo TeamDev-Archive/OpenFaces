@@ -429,16 +429,16 @@ public class TableBody extends TableSection {
                 if (clientRowKeys == null) clientRowKeys = new ArrayList<String>();
                 clientRowKeys.add(clientRowKey);
 
-                int columnCount = columns.size();
+                this.columnCount = columns.size();
 
                 collectSelectableCells(columnCount);
 
-                int bodyRowIndex = rowIndex - firstRowIndex;
+                this.bodyRowIndex = rowIndex - firstRowIndex;
                 List<Row> applicableCustomRows = getApplicableCustomRows(customRows);
-                List<Object>[] applicableCustomCells =
+                this.applicableCustomCells =
                         getApplicableCustomCells(applicableCustomRows, bodyRowIndex, columnCount);
 
-                selectableCellsInColumn = new JSONArray();
+                this.selectableCellsInColumn = new JSONArray();
                 BodyRow leftRow = leftRows != null ? new BodyRow() : null;
                 BodyRow row = new BodyRow();
                 BodyRow rightRow = rightRows != null ? new BodyRow() : null;
@@ -462,9 +462,9 @@ public class TableBody extends TableSection {
                 if (rightRow != null)
                     rightRow.setAttributes(attributes);
 
-                leftCells = leftRow != null ? new ArrayList<BodyCell>() : null;
-                cells = new ArrayList<BodyCell>();
-                rightCells = rightRow != null ? new ArrayList<BodyCell>() : null;
+                this.leftCells = leftRow != null ? new ArrayList<BodyCell>() : null;
+                this.cells = new ArrayList<BodyCell>();
+                this.rightCells = rightRow != null ? new ArrayList<BodyCell>() : null;
 
                 if (leftRow != null)
                     leftRow.setCells(leftCells);
@@ -472,12 +472,7 @@ public class TableBody extends TableSection {
                 if (rightRow != null)
                     rightRow.setCells(rightCells);
 
-                alreadyProcessedSpannedCells = new ArrayList<SpannedTableCell>();
-
-                this.bodyRowIndex = bodyRowIndex;
-                this.columnCount = columnCount;
-
-                this.applicableCustomCells = applicableCustomCells;
+                this.alreadyProcessedSpannedCells = new ArrayList<SpannedTableCell>();
             }
 
             public void renderRow() throws IOException {
@@ -559,17 +554,24 @@ public class TableBody extends TableSection {
                         alreadyProcessedSpannedCells.add(spannedTableCell);
                 }
 
-                UIComponent cellContentsContainer = applyCustomCellDefinitions(
-                        column, colIndex, customCells, remainingPortionOfABrokenSpannedCell, span);
+                DynamicCol dynamicCol = column instanceof DynamicCol ? (DynamicCol) column : null;
+                if (dynamicCol != null) dynamicCol.declareContextVariables();
+                try {
 
-                BodyCell cell = new BodyCell();
-                cell.setSpan(span);
-                cell.extractCustomEvents((List<UIComponent>) customCells);
+                    UIComponent cellContentsContainer = applyCustomCellDefinitions(
+                            column, colIndex, customCells, remainingPortionOfABrokenSpannedCell, span);
 
-                String content = renderCell(column, remainingPortionOfABrokenSpannedCell, cellContentsContainer);
+                    BodyCell cell = new BodyCell();
+                    cell.setSpan(span);
+                    cell.extractCustomEvents((List<UIComponent>) customCells);
 
-                cell.setContent(content);
-                return cell;
+                    String content = renderCell(column, remainingPortionOfABrokenSpannedCell, cellContentsContainer);
+
+                    cell.setContent(content);
+                    return cell;
+                } finally {
+                    if (dynamicCol != null) dynamicCol.undeclareContextVariables();
+                }
             }
 
             private String renderCell(
@@ -811,7 +813,7 @@ public class TableBody extends TableSection {
                         if (groupHeaderCell) {
                             // when table row grouping is turned on, the automatically generated implicit tree column is
                             // always generated to be the first rendered column, and spannedTableCell.getColumn() refers
-                            // the first column in the allColumns list, and so it always refers to the first column
+                            // to the first column in the allColumns list, and so it always refers to the first column
                             // declared in the table's markup, which might actually be different than the first column
                             // in the renderedColumns list. Hence we're fixing this so that tree column was properly
                             // rendered on group header cells
