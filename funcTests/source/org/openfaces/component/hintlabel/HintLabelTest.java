@@ -12,12 +12,11 @@
 package org.openfaces.component.hintlabel;
 
 import com.thoughtworks.selenium.Selenium;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
-import org.seleniuminspector.openfaces.HintLabelInspector;
 import org.openfaces.test.RichFacesAjaxLoadingMode;
 import org.seleniuminspector.ElementInspector;
+import org.seleniuminspector.openfaces.HintLabelInspector;
 
 /**
  * @author Darya Shumilina
