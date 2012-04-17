@@ -15,6 +15,7 @@ package org.openfaces.component.input;
 import org.openfaces.component.OUIInputBase;
 import org.openfaces.event.FileUploadedListener;
 import org.openfaces.event.UploadCompletionListener;
+import org.openfaces.util.Components;
 import org.openfaces.util.ValueBindings;
 
 import javax.el.MethodExpression;
@@ -109,6 +110,9 @@ public abstract class AbstractFileUpload extends OUIInputBase {
 
     private String directoryDroppedText;
     private String wrongFileTypeText;
+    private String externalBrowseButton;
+    private Boolean showInPopup;
+    private String closeButtonText;
 
     public AbstractFileUpload() {
         setRendererType("org.openfaces.MultipleFileUploadRenderer");
@@ -169,7 +173,10 @@ public abstract class AbstractFileUpload extends OUIInputBase {
                 externalDropTarget,
                 acceptedMimeTypes,
                 directoryDroppedText,
-                wrongFileTypeText
+                wrongFileTypeText,
+                externalBrowseButton,
+                showInPopup,
+                closeButtonText
         };
     }
 
@@ -225,6 +232,9 @@ public abstract class AbstractFileUpload extends OUIInputBase {
         acceptedMimeTypes = (String) values[i++];
         directoryDroppedText = (String) values[i++];
         wrongFileTypeText = (String)values[i++];
+        externalBrowseButton = (String) values[i++];
+        showInPopup = (Boolean) values[i++];
+        closeButtonText = (String) values[i++];
     }
 
 
@@ -638,5 +648,36 @@ public abstract class AbstractFileUpload extends OUIInputBase {
 
     public void setWrongFileTypeText(String wrongFileTypeText) {
         this.wrongFileTypeText = wrongFileTypeText;
+    }
+
+    public String getExternalBrowseButton() {
+        return ValueBindings.get(this, "externalBrowseButton", externalBrowseButton);
+    }
+
+    public void setExternalBrowseButton(String externalBrowseButton) {
+        this.externalBrowseButton = externalBrowseButton;
+    }
+
+    public boolean getShowInPopup() {
+        return ValueBindings.get(this, "showInPopup", showInPopup, false);
+    }
+
+    public void setShowInPopup(boolean showInPopup) {
+        this.showInPopup = showInPopup;
+    }
+
+    public String getCloseButtonText() {
+        return ValueBindings.get(this, "closeButtonText", closeButtonText, "Close");
+    }
+
+    public void setCloseButtonText(String closeButtonText) {
+        this.closeButtonText = closeButtonText;
+    }
+
+    public Position getPosition() {
+        Position position = Components.findChildWithClass(this, Position.class, "<o:position>");
+        if (position == null)
+            position = new Position();
+        return position;
     }
 }

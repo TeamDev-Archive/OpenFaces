@@ -89,8 +89,4 @@ public class MultipleFileUploadJspTag extends AbstractFileUploadJspTag {
     public void setFileInfoRowClass(ValueExpression fileInfoRowClass) {
         getDelegate().setPropertyValue("fileInfoRowClass", fileInfoRowClass);
     }
-
-    public void setExternalBrowseButton(ValueExpression externalBrowseButton) {
-        getDelegate().setPropertyValue("externalBrowseButton", externalBrowseButton);
-    }
 }

@@ -52,6 +52,5 @@ public class MultipleFileUploadTag extends AbstractFileUploadTag {
         setEnumerationProperty(component, "uploadMode", FileUploadMode.class);
         setStringProperty(component, "fileInfoRowStyle");
         setStringProperty(component, "fileInfoRowClass");
-        setObjectProperty(component, "externalBrowseButton");
     }
 }

@@ -38,8 +38,4 @@ public class SingleFileUploadJspTag extends AbstractFileUploadJspTag{
     public void setFileInfoAreaClass(ValueExpression fileInfoAreaClass) {
         getDelegate().setPropertyValue("fileInfoAreaClass", fileInfoAreaClass);
     }
-
-    public void setExternalBrowseButton(ValueExpression externalBrowseButton) {
-        getDelegate().setPropertyValue("externalBrowseButton", externalBrowseButton);
-    }
 }

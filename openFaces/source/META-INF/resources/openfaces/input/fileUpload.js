@@ -22,7 +22,8 @@ O$.FileUpload = {
                   onchangeHandler, onstartHandler, onendHandler,
                   onfilestartHandler, onfileinprogressHandler, onfileendHandler, onwrongfiletypeHandler, ondirectorydroppedHandler,
                   dropTargetCrossoverClass, uploadMode, render, externalDropTargetId, acceptedMimeTypes,
-                  directoryDroppedText, wrongFileTypeText, externalBrowseButtonId) {
+                  directoryDroppedText, wrongFileTypeText, externalBrowseButtonId, showInPopup, popupPositionedByID,
+                  popupHorizontalAlignment, popupVerticalAlignment, popupHorizontalDistance, popupVerticalDistance) {
 
     var fileUpload = O$.initComponent(componentId, null, {
       _minQuantity : minQuantity,
@@ -31,6 +32,14 @@ O$.FileUpload = {
       _isAutoUpload : isAutoUpload,
       _filesHTML5:[],
       _allFiles:[],
+      _showPopupIfPopupNeeded:function () {
+        if (showInPopup && !fileUpload._popupIsShown) {
+          var positionedByID = !popupPositionedByID ? externalBrowseButtonId : popupPositionedByID;
+          fileUpload._showPopup(positionedByID, popupHorizontalAlignment, popupVerticalAlignment,
+                  popupHorizontalDistance, popupVerticalDistance);
+          fileUpload._moveBrowseButtonBackToComponent();
+        }
+      },
       _processFileAddingHTML5:function (file) {
 
       if (isFileNameNotApplied(file.name) || fileUpload._buttons.browseInput.disabled ||
@@ -67,7 +76,11 @@ O$.FileUpload = {
           }
 
           if (allInfos.childNodes.length == 0) {
-            fileUpload._buttons.removeAll.style.display = "none";
+            if (externalBrowseButtonId && !showInPopup)
+              fileUpload._hideBorder();
+            if (!showInPopup) {
+              fileUpload._buttons.removeAll.style.display = "none";
+            }
             allInfos.style.display = "none";
           }
           fileUpload._shouldInvokeFocusNonModifiable = false;
@@ -188,7 +201,11 @@ O$.FileUpload = {
           fileUpload._removeFileFromAllFiles(infoId);
           allInfos.removeChild(infoDiv);
           if (allInfos.childNodes.length == 0) {
-            fileUpload._buttons.removeAll.style.display = "none";
+            if (externalBrowseButtonId && !showInPopup)
+              fileUpload._hideBorder();
+            if (!showInPopup) {
+              fileUpload._buttons.removeAll.style.display = "none";
+            }
             allInfos.style.display = "none";
           }
           fileUpload._shouldInvokeFocusNonModifiable = false;
@@ -486,6 +503,8 @@ O$.FileUpload = {
                 }, null, true);
       },
       _initializeDropTarget : function() {
+        if (showInPopup && !externalDropTargetId)
+          return;
         fileUpload._setupExternalDropTarget();
         new function setBehaviorForDragAndDropArea() {
           var area = fileUpload._getDropTargetArea(componentId + "::footer::dragArea");
@@ -515,7 +534,9 @@ O$.FileUpload = {
             statusLabelInProgress,statusLabelUploaded,statusLabelErrorSize,
             statusLabelNotUploaded,statusStoppedText,statusLabelUnexpectedError,
             render,tabIndex,dropTargetCrossoverClass, acceptedMimeTypes,
-            directoryDroppedText, wrongFileTypeText, externalDropTargetId);
+            directoryDroppedText, wrongFileTypeText, externalDropTargetId,
+            showInPopup, popupPositionedByID,popupHorizontalAlignment,
+            popupVerticalAlignment, popupHorizontalDistance, popupVerticalDistance);
 
     fileUpload._setAllEvents(onchangeHandler,onstartHandler,onendHandler,
             onfilestartHandler,onfileinprogressHandler,onfileendHandler,
@@ -537,7 +558,10 @@ O$.FileUpload = {
 
     var idOfInfoAndInputDiv = 1;
 
-    fileUpload._buttons.upload = O$(componentId + "::header::uploadFacet").lastChild;
+    if (externalBrowseButtonId)
+      fileUpload._buttons.upload = O$(componentId + "::footer::uploadFacet").lastChild;
+    else
+      fileUpload._buttons.upload = O$(componentId + "::header::uploadFacet").lastChild;
     fileUpload._buttons.removeAll = O$(componentId + "::footer::removeAllFacet").lastChild;
     fileUpload._buttons.stopAll = O$(componentId + "::footer::stopAllFacet").lastChild;
     setTabIndexForAllButtons(tabIndex);
@@ -564,9 +588,18 @@ O$.FileUpload = {
 
     fileUpload._setUpBrowseButton(addButtonId);
 
+    fileUpload._addButtonParent = fileUpload._buttons.browse.parentNode;
     if (externalBrowseButtonId){
+      if (!showInPopup)
+        fileUpload._hideBorder();
       fileUpload._setUpExternalBrowseButton(externalBrowseButtonId);
     }
+    if(showInPopup){
+      fileUpload._initPopup();
+      if (!externalBrowseButtonId)
+        fileUpload._moveBrowseButtonOutOfComponent();
+    }
+
 
     O$.extend(fileUpload, {
               __uploadButtonClickHandler:function () {
@@ -729,6 +762,10 @@ O$.FileUpload = {
                 }
               },
               __clearAllButtonClickHandler:function () {
+                if (showInPopup){
+                  fileUpload._hidePopup();
+                  fileUpload._moveBrowseButtonOutOfComponent();
+                }
                 fileUpload._shouldInvokeFocusNonModifiable = false;
                 var infosLength = allInfos.childNodes.length;
                 couldCallChangeEvent = false;

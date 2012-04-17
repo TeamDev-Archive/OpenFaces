@@ -1377,4 +1377,12 @@
       <handler-class>org.openfaces.taglib.facelets.table.SortingTagHandler</handler-class>
     </component>
   </tag>
+  <tag>
+    <tag-name>position</tag-name>
+    <component>
+      <component-type>org.openfaces.Position</component-type>
+      <renderer-type>org.openfaces.PositionRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.input.PositionTagHandler</handler-class>
+    </component>
+  </tag>
 </facelet-taglib>

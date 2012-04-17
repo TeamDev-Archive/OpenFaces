@@ -45836,6 +45836,28 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>The attribute specifies whether the upload progress with a related information is shown in-place in
+        an upload component itself, or in a separate pop-up window
+      </description>
+      <name>showInPopup</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The text for Close button.</description>
+      <name>closeButtonText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType String -->
+      <!-- @default  -->
+      <!-- @el true -->
+    </attribute>
   </tag>
   <tag>
     <name>singleFileUpload</name>
@@ -46674,6 +46696,28 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>The attribute specifies whether the upload progress with a related information is shown in-place in
+        an upload component itself, or in a separate pop-up window
+      </description>
+      <name>showInPopup</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The text for Close button.</description>
+      <name>closeButtonText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType String -->
+      <!-- @default  -->
+      <!-- @el true -->
+    </attribute>
   </tag>
   <tag>
     <name>progressBar</name>
@@ -46771,6 +46815,80 @@ entering a value and returns a list of suggestions from the server -->
     <name>sorting</name>
     <tag-class>org.openfaces.taglib.jsp.table.SortingJspTag</tag-class>
     <body-content>JSP</body-content>
+  </tag>
+  <tag>
+    <name>position</name>
+    <tag-class>org.openfaces.taglib.jsp.input.PositionJspTag</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+      <description>Defines the horizontal position in browser's window where the Ajax progress message should be
+        shown.
+      </description>
+      <name>horizontalAlignment</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component. HorizontalAlignment -->
+      <!-- @default "left" -->
+      <!-- @value "leftOutside" makes a preview to be displayed to the left of an event rectangle -->
+      <!-- @value "left" makes the left edge of a preview to be aligned with the left edge of an event rectangle -->
+      <!-- @value "center" makes a preview centered horizontally relative to an event rectangle -->
+      <!-- @value "right" makes the right edge of a preview to be aligned with the right edge of an event rectangle -->
+      <!-- @value "rightOutside" makes a preview to be displayed to the right of an event rectangle -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Defines the vertical position in browser's window where the popup should be
+        shown.
+      </description>
+      <name>verticalAlignment</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component. VerticalAlignment -->
+      <!-- @default "below" -->
+      <!-- @value "above" makes a preview to be displayed above an event rectangle -->
+      <!-- @value "top" makes the top edge of a preview to be aligned with the top edge of an event rectangle -->
+      <!-- @value "center" makes a preview centered vertically relative to an event rectangle -->
+      <!-- @value "bottom" makes the bottom edge of a preview to be aligned with the bottom edge of an event rectangle -->
+      <!-- @value "below" makes a preview to be displayed below an event rectangle -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Distance against the alignment edge that is specified with horizontalAlignment attribute. Can be
+        specified in any fixed CSS units. This attribute is applicable for all alignments except "center".
+      </description>
+      <name>horizontalDistance</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "0" -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Distance against the alignment edge that is specified with verticalAlignment attribute. Can be
+        specified in any fixed CSS units. This attribute is applicable for all alignments except "center".
+      </description>
+      <name>verticalDistance</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "0" -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Defines the base element for popup positioning using alignment and distance attributes
+      </description>
+      <name>by</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType java.Lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
   </tag>
 
   <!--<tag>-->
