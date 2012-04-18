@@ -17,6 +17,7 @@ import org.openfaces.renderkit.TableUtil;
 import org.openfaces.util.Components;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.ScriptBuilder;
+import org.openfaces.util.ValueBindings;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
@@ -35,6 +36,7 @@ public class Summary extends OUIOutput {
     public static final String COMPONENT_FAMILY = "org.openfaces.Summary";
 
     private DataTable table;
+    private SummaryFunction function;
 
     public Summary() {
         setRendererType("org.openfaces.SummaryRenderer");
@@ -49,6 +51,7 @@ public class Summary extends OUIOutput {
     public Object saveState(FacesContext context) {
         return new Object[]{
                 super.saveState(context),
+                function
 
         };
     }
@@ -58,6 +61,7 @@ public class Summary extends OUIOutput {
         Object[] state = (Object[]) stateObj;
         int i = 0;
         super.restoreState(context, state[i++]);
+        function = (SummaryFunction) state[i++];
 
     }
 
@@ -151,6 +155,21 @@ public class Summary extends OUIOutput {
     private String calculatedForGroupsWithColumnId;
     private Boolean calculatedForAllGroups;
 
+    public SummaryFunction getFunction() {
+        return ValueBindings.get(this, "function", function, null);
+    }
+
+    public void setFunction(SummaryFunction function) {
+        this.function = function;
+    }
+
+    private SummaryFunction getFunction(Object oneOfTheValues) {
+        SummaryFunction userSpecifiedFunction = getFunction();
+        if (userSpecifiedFunction != null) return userSpecifiedFunction;
+        return new SumFunction();
+    }
+
+
     /**
      * The same Summary component can be rendered in different places depending on how it is declared. If it is declared
      * in the table's "header"/"footer" facet or the column's "header"/"footer" facet then the value for this Summary
@@ -158,24 +177,25 @@ public class Summary extends OUIOutput {
      * header/footer. In this case, such Summary is called a "global" one. But it can also be placed into one of the
      * grouping-related facets of the <o:column> tag, which will make the <o:summary> component to be rendered several
      * times -- once for each group (according to the facet in which it is declared). In this case, we have to maintain
-     * several summary value accumulator objects -- one for each RowGroup (which is identical to "one per each time it
+     * several summary value calculator objects -- one for each RowGroup (which is identical to "one per each time it
      * is rendered"). This object contains all of the info for such single rendering instance.
      */
-    private static class CalculationContext {
-        private Object accumulator;
+    private class CalculationContext {
+        private SummaryFunction function;
+        private SummaryFunction.Calculator calculator;
         private String renderedSummaryClientId;
 
-        public Object getAccumulator() {
-            return accumulator;
+        public Object getCalculator() {
+            return calculator;
         }
 
         private void addValue(Object value) {
-            Long longAccumulator = accumulator != null ? (Long) accumulator : 0;
-            if (value != null) {
-                Number currentValueAsNumber = (Number) value;
-                longAccumulator = longAccumulator + currentValueAsNumber.longValue();
+            if (calculator == null) {
+                function = getFunction(value);
+                if (function == null) return;
+                calculator = function.startCalculation();
             }
-            accumulator = longAccumulator;
+            calculator.addValue(value);
         }
 
 
@@ -189,13 +209,15 @@ public class Summary extends OUIOutput {
 
         public void renderInitScript(ScriptBuilder sb) throws IOException {
             if (renderedSummaryClientId == null) {
-                // this summary component hasn't been rendered and so:
-                // - We cannot initialize it without knowing its actual client id which could only be known if it was
-                //   rendered in the place where it is specified.
-                // - There's no point in initializing it if it's not rendered.
+                // this summary component hasn't been rendered, and so...
+                // - we cannot initialize it without knowing its actual client id which could only be known if it was
+                //   rendered in the place where it is specified;
+                // - there's no point in initializing it if it's not rendered.
                 return;
             }
-            sb.functionCall("O$.Summary._init", renderedSummaryClientId, accumulator).semicolon();
+            Object summaryValue = calculator != null ? calculator.endCalculation() : "";
+            Object summaryOutput = calculator != null ? function.getName() + "=" + summaryValue : "";
+            sb.functionCall("O$.Summary._init", renderedSummaryClientId, summaryOutput).semicolon();
         }
     }
 
@@ -362,15 +384,18 @@ public class Summary extends OUIOutput {
                 // this case might take place when this <o:summary> component is inserted into the "below" facet of
                 // <o:dataTable>, in which case it didn't have a chance to be rendered up to this moment and so its
                 // client id has not been initialized yet
-                DataTable table = getTable();
-                int prevRowIndex = table.getRowIndex();
-                if (prevRowIndex != -1)
-                    table.setRowIndex(-1);
-                try {
-                    String clientId = getClientId(context);
-                    globalCalculationContext.setRenderedSummaryClientId(clientId);
-                } finally {
-                    table.setRowIndex(prevRowIndex);
+                Components.FacetReference parentFacetReference = Components.getParentFacetReference(this);
+                if (parentFacetReference != null && parentFacetReference.getFacetName().equals(AbstractTable.FACET_BELOW)) {
+                    DataTable table = getTable();
+                    int prevRowIndex = table.getRowIndex();
+                    if (prevRowIndex != -1)
+                        table.setRowIndex(-1);
+                    try {
+                        String clientId = getClientId(context);
+                        globalCalculationContext.setRenderedSummaryClientId(clientId);
+                    } finally {
+                        table.setRowIndex(prevRowIndex);
+                    }
                 }
             }
             globalCalculationContext.renderInitScript(sb);

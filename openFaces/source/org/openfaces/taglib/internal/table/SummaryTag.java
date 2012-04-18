@@ -12,10 +12,13 @@
 package org.openfaces.taglib.internal.table;
 
 import org.openfaces.component.table.Summary;
+import org.openfaces.component.table.SummaryFunction;
 import org.openfaces.taglib.internal.AbstractComponentTag;
+import org.openfaces.util.ApplicationParams;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import java.util.List;
 
 public class SummaryTag extends AbstractComponentTag {
 
@@ -32,5 +35,21 @@ public class SummaryTag extends AbstractComponentTag {
         super.setComponentProperties(facesContext, component);
 
         setValueExpressionProperty(component, "by");
+        setSummaryFunctionProperty(component, "function");
+    }
+
+    private void setSummaryFunctionProperty(UIComponent component, String propertyName) {
+        String function = getPropertyValue(propertyName);
+        if (function == null) return;
+
+        if (setAsValueExpressionIfPossible(component, propertyName, function)) return;
+
+        List<SummaryFunction> summaryFunctions = ApplicationParams.getSummaryFunctions();
+        for (SummaryFunction summaryFunction : summaryFunctions) {
+            String name = summaryFunction.getName();
+            if (name.toLowerCase().equals(propertyName)) {
+                component.getAttributes().put(propertyName, summaryFunction);
+            }
+        }
     }
 }

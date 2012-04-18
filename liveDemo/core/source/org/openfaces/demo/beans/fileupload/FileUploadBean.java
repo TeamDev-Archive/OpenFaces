@@ -73,6 +73,8 @@ public class FileUploadBean implements Serializable {
                 return "<Upload stopped>";
             case FAILED:
                 return "<Upload failed>";
+            case SIZE_LIMIT_EXCEEDED:
+                return "<Size limit exceeded>";
             default:
                 throw new IllegalStateException("Unknown FileUploadStatus enumeration value: " + status);
         }

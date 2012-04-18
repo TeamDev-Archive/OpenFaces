@@ -470,7 +470,7 @@ public class Components {
             Class... expectedParentClasses) {
         UIComponent parent = component.getParent();
         for (Class expectedParentClass : expectedParentClasses) {
-            if (parent.getClass().equals(expectedParentClass))
+            if (expectedParentClass.isAssignableFrom(parent.getClass()))
                 return parent;
         }
         Class<? extends UIComponent> componentClass = component.getClass();

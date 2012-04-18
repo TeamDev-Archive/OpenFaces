@@ -47015,6 +47015,16 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default null -->
       <!-- @el only -->
     </attribute>
+    <attribute>
+      <description>The function that this &lt;o:summary&gt; component uses for combining the values.</description>
+      <name>function</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.table.SummaryFunction -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
   </tag>
 
   <!--<tag>-->

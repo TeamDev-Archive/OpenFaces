@@ -9,25 +9,26 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.taglib.jsp.table;
 
-import org.openfaces.taglib.internal.table.SummaryTag;
-import org.openfaces.taglib.jsp.AbstractComponentJspTag;
+package org.openfaces.component.table;
 
-import javax.el.ValueExpression;
+/**
+ * @author Dmitry Pikhulya
+ */
+public class AnyFloatingPointType extends OrdinalType {
 
-public class SummaryJspTag extends AbstractComponentJspTag {
-
-    public SummaryJspTag() {
-        super(new SummaryTag());
+    @Override
+    public boolean isApplicableForClass(Class valueClass) {
+        return Double.class.isAssignableFrom(valueClass) || Float.class.isAssignableFrom(valueClass);
     }
 
-
-    public void setBy(ValueExpression by) {
-        getDelegate().setPropertyValue("by", by);
+    @Override
+    public Object add(Object value1, Object value2) {
+        return ((Number) value1).doubleValue() + ((Number) value2).doubleValue();
     }
 
-    public void setFunction(ValueExpression function) {
-        getDelegate().setPropertyValue("function", function);
+    @Override
+    public Object getZero() {
+        return 0.0d;
     }
 }
