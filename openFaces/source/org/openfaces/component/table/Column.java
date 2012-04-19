@@ -31,8 +31,8 @@ public class Column extends BaseColumn implements ValueHolder {
 
     public static final String COLUMN_VALUE_VAR = "columnValue";
 
-    private javax.faces.convert.Converter groupingValueConverter;
-    private javax.faces.convert.Converter converter;
+    private Converter groupingValueConverter;
+    private Converter converter;
 
     public Column() {
         setRendererType("org.openfaces.ColumnRenderer");

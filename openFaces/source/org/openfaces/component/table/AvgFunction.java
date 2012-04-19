@@ -15,28 +15,34 @@ package org.openfaces.component.table;
 /**
  * @author Dmitry Pikhulya
  */
-public class SumFunction extends SummaryFunction {
-    @Override
-    protected boolean isApplicableForOrdinalType(OrdinalType ordinalType) {
-        return !(ordinalType instanceof DateType);
-    }
-
+public class AvgFunction extends SummaryFunction {
     @Override
     public Calculator startCalculation() {
         return new Calculator() {
+            private int noOfValues;
+
             @Override
             public void addValue(Object value) {
                 if (value == null) return;
 
                 OrdinalType type = getOrdinalType(value);
                 accumulator = accumulator == null ? value : type.add(accumulator, value);
+
+                noOfValues++;
+            }
+
+            @Override
+            public Object endCalculation() {
+                Object finalValue = super.endCalculation();
+                OrdinalType type = getOrdinalType(finalValue);
+                if (type == null) return null;
+                return type.divide(finalValue, noOfValues);
             }
         };
     }
 
     @Override
     public String getName() {
-        return "Sum";
+        return "Avg";
     }
-
 }

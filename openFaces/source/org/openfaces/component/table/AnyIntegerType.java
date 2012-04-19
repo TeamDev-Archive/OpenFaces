@@ -12,6 +12,8 @@
 
 package org.openfaces.component.table;
 
+import java.util.Comparator;
+
 /**
  * @author Dmitry Pikhulya
  */
@@ -31,8 +33,13 @@ public class AnyIntegerType extends OrdinalType {
     }
 
     @Override
-    public Object getZero() {
-        return 0l;
+    public Object divide(Object value, double by) {
+        return ((Number) value).doubleValue() / by;
+    }
+
+    @Override
+    public Comparator getComparator() {
+        return null;
     }
 
 }

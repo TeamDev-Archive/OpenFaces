@@ -11,12 +11,12 @@
  */
 package org.openfaces.renderkit.table;
 
-import org.openfaces.component.table.DataTable;
 import org.openfaces.component.table.Summary;
 import org.openfaces.renderkit.RendererBase;
+import org.openfaces.util.Rendering;
 
-import javax.faces.context.FacesContext;
 import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 
@@ -26,8 +26,10 @@ public class SummaryRenderer extends RendererBase {
         Summary summary = (Summary) component;
         summary.getTable(); // getTable invocation validates the parent tag
         ResponseWriter writer = context.getResponseWriter();
-        writer.startElement("span", component);
-        writeIdAttribute(context, component);
+        writer.startElement("span", summary);
+        writeIdAttribute(context, summary);
+        Rendering.writeStyleAndClassAttributes(writer, summary);
+        Rendering.writeStandardEvents(writer, summary);
 
         // The actual content will be assigned on the client side since it might not be available at the moment of
         // rendering of this component yet. The reason is that the summary component can be placed in the column's

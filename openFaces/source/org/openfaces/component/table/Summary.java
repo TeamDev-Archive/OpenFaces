@@ -86,11 +86,7 @@ public class Summary extends OUIOutput {
         return table;
     }
 
-    /**
-     * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
-     * by any application code.
-     */
-    public ValueExpression getByExpression() {
+    private ValueExpression getByExpression() {
         ValueExpression ve = getBy();
         if (ve != null) return ve;
         BaseColumn parentColumn = Components.getParentWithClass(this, BaseColumn.class);
@@ -120,11 +116,7 @@ public class Summary extends OUIOutput {
         return ve;
     }
 
-    /**
-     * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
-     * by any application code.
-     */
-    public Object getByValue(ELContext elContext) {
+    private Object getByValue(ELContext elContext) {
         Object value = getByExpression().getValue(elContext);
         return value;
     }
@@ -151,10 +143,6 @@ public class Summary extends OUIOutput {
     }
 
 
-    private Boolean calculatedGlobally;
-    private String calculatedForGroupsWithColumnId;
-    private Boolean calculatedForAllGroups;
-
     public SummaryFunction getFunction() {
         return ValueBindings.get(this, "function", function, null);
     }
@@ -164,9 +152,17 @@ public class Summary extends OUIOutput {
     }
 
     private SummaryFunction getFunction(Object oneOfTheValues) {
+        if (oneOfTheValues == null)
+            return null;
+
         SummaryFunction userSpecifiedFunction = getFunction();
         if (userSpecifiedFunction != null) return userSpecifiedFunction;
-        return new SumFunction();
+
+        SumFunction sumFunction = new SumFunction();
+        if (sumFunction.isApplicableForClass(oneOfTheValues.getClass()))
+            return sumFunction;
+        else
+            return new CountFunction();
     }
 
 
@@ -220,6 +216,10 @@ public class Summary extends OUIOutput {
             sb.functionCall("O$.Summary._init", renderedSummaryClientId, summaryOutput).semicolon();
         }
     }
+
+    private Boolean calculatedGlobally;
+    private String calculatedForGroupsWithColumnId;
+    private Boolean calculatedForAllGroups;
 
     private boolean getCalculatedGlobally() {
         calculateApplicability();

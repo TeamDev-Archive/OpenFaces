@@ -14,6 +14,10 @@ package org.openfaces.util;
 
 import org.openfaces.component.table.AnyFloatingPointType;
 import org.openfaces.component.table.AnyIntegerType;
+import org.openfaces.component.table.AvgFunction;
+import org.openfaces.component.table.CountFunction;
+import org.openfaces.component.table.MaxFunction;
+import org.openfaces.component.table.MinFunction;
 import org.openfaces.component.table.OrdinalType;
 import org.openfaces.component.table.SumFunction;
 import org.openfaces.component.table.SummaryFunction;
@@ -52,9 +56,13 @@ public class ApplicationParams {
         if (summaryFunctions != null) return summaryFunctions;
 
         summaryFunctions = new ArrayList<SummaryFunction>(Arrays.asList(
-                new SumFunction()
+                new SumFunction(),
+                new AvgFunction(),
+                new MinFunction(),
+                new MaxFunction(),
+                new CountFunction()
         ));
-        summaryFunctions.addAll(0, createInstancesFromClassNamesParam(PARAM_SUMMARY_FUNCTIONS, SummaryFunction.class));
+        summaryFunctions.addAll(createInstancesFromClassNamesParam(PARAM_SUMMARY_FUNCTIONS, SummaryFunction.class));
         return summaryFunctions;
     }
 

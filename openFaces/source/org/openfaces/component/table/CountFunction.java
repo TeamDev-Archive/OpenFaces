@@ -15,10 +15,10 @@ package org.openfaces.component.table;
 /**
  * @author Dmitry Pikhulya
  */
-public class SumFunction extends SummaryFunction {
+public class CountFunction extends SummaryFunction {
     @Override
-    protected boolean isApplicableForOrdinalType(OrdinalType ordinalType) {
-        return !(ordinalType instanceof DateType);
+    public boolean isApplicableForClass(Class valueClass) {
+        return true;
     }
 
     @Override
@@ -26,17 +26,16 @@ public class SumFunction extends SummaryFunction {
         return new Calculator() {
             @Override
             public void addValue(Object value) {
-                if (value == null) return;
-
-                OrdinalType type = getOrdinalType(value);
-                accumulator = accumulator == null ? value : type.add(accumulator, value);
+                if (accumulator == null)
+                    accumulator = 1;
+                else
+                    accumulator = ((Number) accumulator).intValue() + 1;
             }
         };
     }
 
     @Override
     public String getName() {
-        return "Sum";
+        return "Count";
     }
-
 }

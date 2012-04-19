@@ -12,15 +12,12 @@
 
 package org.openfaces.component.table;
 
+import java.util.Comparator;
+
 /**
  * @author Dmitry Pikhulya
  */
-public class SumFunction extends SummaryFunction {
-    @Override
-    protected boolean isApplicableForOrdinalType(OrdinalType ordinalType) {
-        return !(ordinalType instanceof DateType);
-    }
-
+public class MinFunction extends SummaryFunction {
     @Override
     public Calculator startCalculation() {
         return new Calculator() {
@@ -28,15 +25,19 @@ public class SumFunction extends SummaryFunction {
             public void addValue(Object value) {
                 if (value == null) return;
 
-                OrdinalType type = getOrdinalType(value);
-                accumulator = accumulator == null ? value : type.add(accumulator, value);
+                if (accumulator == null) {
+                    accumulator = value;
+                } else {
+                    Comparator comparator = getComparator(value);
+                    if (comparator.compare(value, accumulator) < 0)
+                        accumulator = value;
+                }
             }
         };
     }
 
     @Override
     public String getName() {
-        return "Sum";
+        return "Min";
     }
-
 }

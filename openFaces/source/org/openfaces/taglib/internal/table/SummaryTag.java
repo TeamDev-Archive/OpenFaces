@@ -13,14 +13,15 @@ package org.openfaces.taglib.internal.table;
 
 import org.openfaces.component.table.Summary;
 import org.openfaces.component.table.SummaryFunction;
-import org.openfaces.taglib.internal.AbstractComponentTag;
+import org.openfaces.taglib.internal.OUIOutputTag;
 import org.openfaces.util.ApplicationParams;
 
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import java.util.List;
 
-public class SummaryTag extends AbstractComponentTag {
+public class SummaryTag extends OUIOutputTag {
 
     public String getComponentType() {
         return Summary.COMPONENT_TYPE;
@@ -31,25 +32,29 @@ public class SummaryTag extends AbstractComponentTag {
     }
 
     @Override
-    public void setComponentProperties(FacesContext facesContext, UIComponent component) {
-        super.setComponentProperties(facesContext, component);
+    public void setComponentProperties(FacesContext context, UIComponent component) {
+        super.setComponentProperties(context, component);
 
         setValueExpressionProperty(component, "by");
         setSummaryFunctionProperty(component, "function");
+        setConverterProperty(context, component, "converter");
     }
 
     private void setSummaryFunctionProperty(UIComponent component, String propertyName) {
-        String function = getPropertyValue(propertyName);
-        if (function == null) return;
+        String functionStr = getPropertyValue(propertyName);
+        if (functionStr == null) return;
 
-        if (setAsValueExpressionIfPossible(component, propertyName, function)) return;
+        if (setAsValueExpressionIfPossible(component, propertyName, functionStr)) return;
 
-        List<SummaryFunction> summaryFunctions = ApplicationParams.getSummaryFunctions();
-        for (SummaryFunction summaryFunction : summaryFunctions) {
-            String name = summaryFunction.getName();
-            if (name.toLowerCase().equals(propertyName)) {
-                component.getAttributes().put(propertyName, summaryFunction);
+        List<SummaryFunction> registeredFunctions = ApplicationParams.getSummaryFunctions();
+        for (SummaryFunction function : registeredFunctions) {
+            String name = function.getName();
+            if (functionStr.equals(name.toLowerCase())) {
+                component.getAttributes().put(propertyName, function);
+                return;
             }
         }
+        throw new FacesException("Invalid value of the " + propertyName + " attribute. No such standard function with " +
+                "the following name is available or registered in the application: \"" + functionStr + "\"");
     }
 }

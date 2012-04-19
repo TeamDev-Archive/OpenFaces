@@ -12,7 +12,7 @@
 package org.openfaces.taglib.internal.output;
 
 import org.openfaces.component.output.GraphicText;
-import org.openfaces.taglib.internal.AbstractComponentTag;
+import org.openfaces.taglib.internal.OUIOutputTag;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -20,7 +20,7 @@ import javax.faces.context.FacesContext;
 /**
  * @author Darya Shumilina
  */
-public class GraphicTextTag extends AbstractComponentTag {
+public class GraphicTextTag extends OUIOutputTag {
     private static final String LEFT_TO_RIGHT = "leftToRight";
     private static final String RIGHT_TO_LEFT = "rightToLeft";
     private static final String TOP_TO_BOTTOM = "topToBottom";
@@ -63,8 +63,6 @@ public class GraphicTextTag extends AbstractComponentTag {
                 setIntProperty(component, "direction", String.valueOf(directionInteger));
             }
         }
-
-        setConverterProperty(facesContext, component, "converter");
     }
 
 }

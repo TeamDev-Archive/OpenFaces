@@ -12,31 +12,25 @@
 
 package org.openfaces.component.table;
 
+import java.util.Date;
+
 /**
  * @author Dmitry Pikhulya
  */
-public class SumFunction extends SummaryFunction {
+public class DateType extends OrdinalType {
     @Override
-    protected boolean isApplicableForOrdinalType(OrdinalType ordinalType) {
-        return !(ordinalType instanceof DateType);
+    public boolean isApplicableForClass(Class valueClass) {
+        return Date.class.isAssignableFrom(valueClass);
     }
 
     @Override
-    public Calculator startCalculation() {
-        return new Calculator() {
-            @Override
-            public void addValue(Object value) {
-                if (value == null) return;
-
-                OrdinalType type = getOrdinalType(value);
-                accumulator = accumulator == null ? value : type.add(accumulator, value);
-            }
-        };
+    public Object add(Object value1, Object value2) {
+        return new Date(((Date) value1).getDate() + ((Date) value2).getDate());
     }
 
     @Override
-    public String getName() {
-        return "Sum";
+    public Object divide(Object value, double by) {
+        int dateMillis = ((Date) value).getDate();
+        return new Date(Math.round(dateMillis / by));
     }
-
 }
