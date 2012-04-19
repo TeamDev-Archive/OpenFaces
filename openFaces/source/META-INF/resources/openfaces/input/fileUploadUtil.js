@@ -532,9 +532,10 @@ O$.FileUploadUtil = {
         fileUpload._buttons.browseDivForInput.appendChild(fileUpload._buttons.browseInput);//create first input
       },
       _setUpExternalBrowseButton:function (externalBrowseButtonId) {
+        fileUpload._externalBrowseButtonId = externalBrowseButtonId;
         var browseButton = fileUpload._buttons.browseDivForInput;
         browseButton._updatePosition = function () {
-          var externalBrowseButton = O$(externalBrowseButtonId);
+          var externalBrowseButton = O$(fileUpload._externalBrowseButtonId);
           var currentPosition = O$.getElementPos(externalBrowseButton, true);
           if (browseButton._oldPosition && currentPosition.x == browseButton._oldPosition.x && currentPosition.y == browseButton._oldPosition.y) {
             return;
@@ -556,6 +557,16 @@ O$.FileUploadUtil = {
           O$.addEventHandler(externalBrowseButton, "mouseover", browseButton._updatePosition);
           O$.addEventHandler(browseButton, "mouseover", browseButton._updatePosition);
         });
+      },
+      _moveExternalBrowseButtonClickArea:function (newExternalBrowseButtonId){
+        O$(fileUpload._externalBrowseButtonId).disabled = true;
+        var newExternalBrowseButton = O$(newExternalBrowseButtonId);
+        if (!newExternalBrowseButton)
+          throw "Element with ID " + newExternalBrowseButtonId + " cannot be found.";
+        fileUpload._externalBrowseButtonId = newExternalBrowseButtonId;
+        O$.correctElementZIndex(fileUpload._buttons.browseDivForInput, newExternalBrowseButton);
+        fileUpload._buttons.browseDivForInput._updatePosition();
+        O$(newExternalBrowseButtonId).disabled = false;
       },
       _showPopup:function (popupPositionedByID, horizAlignment, vertAlignment, horizDistance, vertDistance) {
         if (fileUpload._popupPositionedByElement == undefined){

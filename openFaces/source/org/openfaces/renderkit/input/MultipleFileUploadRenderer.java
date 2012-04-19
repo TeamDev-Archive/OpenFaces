@@ -11,9 +11,9 @@
  */
 package org.openfaces.renderkit.input;
 
+import org.openfaces.component.Position;
 import org.openfaces.component.input.AbstractFileUpload;
 import org.openfaces.component.input.MultipleFileUpload;
-import org.openfaces.component.input.Position;
 import org.openfaces.component.output.ProgressBar;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.Resources;
@@ -78,7 +78,7 @@ public final class MultipleFileUploadRenderer extends AbstractFileUploadRenderer
         String defaultStyleClass = "o_file_upload" + (abstractFileUpload.getShowInPopup() ? " o_file_upload_popup" : "");
         Rendering.writeStyleAndClassAttributes(writer, abstractFileUpload.getStyle(), abstractFileUpload.getStyleClass(), defaultStyleClass);
         MultipleFileUpload multipleFileUpload = (MultipleFileUpload) abstractFileUpload;
-        if (multipleFileUpload.getExternalBrowseButton() == null)
+        if (multipleFileUpload.getExternalBrowseButton() == null || multipleFileUpload.getShowInPopup())
             writeHeader(context, multipleFileUpload, writer, clientId + DIV_HEADER_ID);
 
         writeMainDivForInfos(context, writer, multipleFileUpload, clientId + DIV_FOR_INFO_ID);
@@ -106,7 +106,7 @@ public final class MultipleFileUploadRenderer extends AbstractFileUploadRenderer
         boolean duplicateAllowed = true;//fileUpload.isDuplicateAllowed();
 
         Position popupPosition = abstractFileUpload.getPosition();
-        String browseButtonId = clientId + (multipleFileUpload.getExternalBrowseButton() == null ?
+        String browseButtonId = clientId + (multipleFileUpload.getExternalBrowseButton() == null || multipleFileUpload.getShowInPopup() ?
                 DIV_HEADER_ID : FOOTER_DIV_ID) + BROWSE_BTN_ID;
 
         Script initScript = new ScriptBuilder().initScript(context, multipleFileUpload, "O$.FileUpload._init",
@@ -185,7 +185,7 @@ public final class MultipleFileUploadRenderer extends AbstractFileUploadRenderer
                 (multipleFileUpload.getExternalDropTarget() == null) ? "o_file_drop_target" : "o_file_ext_drop_target",
                 dropText);
 
-        if (multipleFileUpload.getExternalBrowseButton() != null){
+        if (multipleFileUpload.getExternalBrowseButton() != null && !multipleFileUpload.getShowInPopup()){
             writer.startElement("div", multipleFileUpload);
             writer.writeAttribute("style", "display:none", null);
             writeBrowseButton(context, multipleFileUpload, writer, elementId);

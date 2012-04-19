@@ -37,7 +37,10 @@ O$.FileUpload = {
           var positionedByID = !popupPositionedByID ? externalBrowseButtonId : popupPositionedByID;
           fileUpload._showPopup(positionedByID, popupHorizontalAlignment, popupVerticalAlignment,
                   popupHorizontalDistance, popupVerticalDistance);
-          fileUpload._moveBrowseButtonBackToComponent();
+          if (!externalBrowseButtonId)
+            fileUpload._moveBrowseButtonBackToComponent();
+          else
+            fileUpload._moveExternalBrowseButtonClickArea(addButtonId);
         }
       },
       _processFileAddingHTML5:function (file) {
@@ -558,7 +561,7 @@ O$.FileUpload = {
 
     var idOfInfoAndInputDiv = 1;
 
-    if (externalBrowseButtonId)
+    if (externalBrowseButtonId && !showInPopup)
       fileUpload._buttons.upload = O$(componentId + "::footer::uploadFacet").lastChild;
     else
       fileUpload._buttons.upload = O$(componentId + "::header::uploadFacet").lastChild;
@@ -764,7 +767,10 @@ O$.FileUpload = {
               __clearAllButtonClickHandler:function () {
                 if (showInPopup){
                   fileUpload._hidePopup();
-                  fileUpload._moveBrowseButtonOutOfComponent();
+                  if(!externalBrowseButtonId)
+                    fileUpload._moveBrowseButtonOutOfComponent();
+                  else
+                    fileUpload._moveExternalBrowseButtonClickArea(externalBrowseButtonId);
                 }
                 fileUpload._shouldInvokeFocusNonModifiable = false;
                 var infosLength = allInfos.childNodes.length;

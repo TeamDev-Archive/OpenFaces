@@ -9,16 +9,16 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.taglib.jsp.input;
+package org.openfaces.taglib.jsp;
 
-import org.openfaces.taglib.jsp.AbstractComponentJspTag;
+import org.openfaces.taglib.internal.PositionTag;
 
 import javax.el.ValueExpression;
 
 public class PositionJspTag extends org.openfaces.taglib.jsp.AbstractComponentJspTag {
 
     public PositionJspTag() {
-        super(new org.openfaces.taglib.internal.input.PositionTag());
+        super(new PositionTag());
     }
 
 
