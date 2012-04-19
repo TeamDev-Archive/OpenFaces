@@ -9,11 +9,11 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.taglib.internal.input;
+package org.openfaces.taglib.internal;
 
 import org.openfaces.component.HorizontalAlignment;
+import org.openfaces.component.Position;
 import org.openfaces.component.VerticalAlignment;
-import org.openfaces.component.input.Position;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;

@@ -9,7 +9,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.component.input;
+package org.openfaces.component;
 
 import org.openfaces.component.HorizontalAlignment;
 import org.openfaces.component.VerticalAlignment;

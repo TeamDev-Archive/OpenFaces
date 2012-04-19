@@ -11,8 +11,8 @@
  */
 package org.openfaces.renderkit.input;
 
+import org.openfaces.component.Position;
 import org.openfaces.component.input.AbstractFileUpload;
-import org.openfaces.component.input.Position;
 import org.openfaces.component.input.SingleFileUpload;
 import org.openfaces.component.input.SingleFileUploadBtnBehavior;
 import org.openfaces.component.input.SingleFileUploadLayoutMode;

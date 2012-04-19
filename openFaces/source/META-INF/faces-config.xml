@@ -884,7 +884,7 @@
 
   <component>
     <component-type>org.openfaces.Position</component-type>
-    <component-class>org.openfaces.component.input.Position</component-class>
+    <component-class>org.openfaces.component.Position</component-class>
   </component>
   <render-kit>
     <renderer>

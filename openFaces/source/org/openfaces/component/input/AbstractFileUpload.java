@@ -13,6 +13,7 @@
 package org.openfaces.component.input;
 
 import org.openfaces.component.OUIInputBase;
+import org.openfaces.component.Position;
 import org.openfaces.event.FileUploadedListener;
 import org.openfaces.event.UploadCompletionListener;
 import org.openfaces.util.Components;
