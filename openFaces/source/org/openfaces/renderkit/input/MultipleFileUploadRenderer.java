@@ -11,9 +11,9 @@
  */
 package org.openfaces.renderkit.input;
 
+import org.openfaces.component.Position;
 import org.openfaces.component.input.AbstractFileUpload;
 import org.openfaces.component.input.MultipleFileUpload;
-import org.openfaces.component.input.Position;
 import org.openfaces.component.output.ProgressBar;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.Resources;

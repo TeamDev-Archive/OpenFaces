@@ -9,15 +9,15 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.taglib.facelets.input;
+package org.openfaces.taglib.facelets;
 
 import com.sun.facelets.tag.jsf.ComponentConfig;
-import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
+import org.openfaces.taglib.internal.PositionTag;
 
 public class PositionTagHandler extends org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler {
 
     public PositionTagHandler(ComponentConfig componentConfig) {
-        super(componentConfig, new org.openfaces.taglib.internal.input.PositionTag());
+        super(componentConfig, new PositionTag());
     }
 
 }

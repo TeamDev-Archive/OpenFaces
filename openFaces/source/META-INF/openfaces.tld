@@ -46961,7 +46961,7 @@ entering a value and returns a list of suggestions from the server -->
   </tag>
   <tag>
     <name>position</name>
-    <tag-class>org.openfaces.taglib.jsp.input.PositionJspTag</tag-class>
+    <tag-class>org.openfaces.taglib.jsp.PositionJspTag</tag-class>
     <body-content>JSP</body-content>
     <attribute>
       <description>Defines the horizontal position in browser's window where the Ajax progress message should be

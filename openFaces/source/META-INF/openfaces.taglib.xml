@@ -1374,7 +1374,7 @@
     <component>
       <component-type>org.openfaces.Position</component-type>
       <renderer-type>org.openfaces.PositionRenderer</renderer-type>
-      <handler-class>org.openfaces.taglib.facelets.input.PositionTagHandler</handler-class>
+      <handler-class>org.openfaces.taglib.facelets.PositionTagHandler</handler-class>
     </component>
   </tag>
 </facelet-taglib>
