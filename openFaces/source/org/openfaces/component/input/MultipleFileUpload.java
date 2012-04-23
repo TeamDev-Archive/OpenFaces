@@ -45,7 +45,6 @@ public final class MultipleFileUpload extends AbstractFileUpload {
 
     private String fileInfoRowStyle;
     private String fileInfoRowClass;
-    private String externalBrowseButton;
 
     public MultipleFileUpload() {
         setRendererType("org.openfaces.MultipleFileUploadRenderer");
@@ -75,8 +74,7 @@ public final class MultipleFileUpload extends AbstractFileUpload {
                 multiple,
                 uploadMode,
                 fileInfoRowStyle,
-                fileInfoRowClass,
-                externalBrowseButton
+                fileInfoRowClass
         };
     }
 
@@ -101,7 +99,6 @@ public final class MultipleFileUpload extends AbstractFileUpload {
         uploadMode = (FileUploadMode) values[i++];
         fileInfoRowStyle = (String) values[i++];
         fileInfoRowClass = (String) values[i++];
-        externalBrowseButton = (String) values[i++];
     }
 
     public String getHeaderStyle() {
@@ -250,11 +247,4 @@ public final class MultipleFileUpload extends AbstractFileUpload {
         this.fileInfoRowClass = fileInfoRowClass;
     }
 
-    public String getExternalBrowseButton() {
-        return ValueBindings.get(this, "externalBrowseButton", externalBrowseButton);
-    }
-
-    public void setExternalBrowseButton(String externalBrowseButton) {
-        this.externalBrowseButton = externalBrowseButton;
-    }
 }

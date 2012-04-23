@@ -88,5 +88,8 @@ public abstract class AbstractFileUploadTag extends AbstractComponentTag {
         setStringProperty(component, "acceptedMimeTypes");
         setStringProperty(component, "directoryDroppedText");
         setStringProperty(component, "wrongFileTypeText");
+        setObjectProperty(component, "externalBrowseButton");
+        setBooleanProperty(component, "showInPopup");
+        setObjectProperty(component, "closeButtonText");
     }
 }

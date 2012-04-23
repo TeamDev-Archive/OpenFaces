@@ -890,6 +890,11 @@
     <component-class>org.openfaces.component.table.Summary</component-class>
   </component>
 
+  <component>
+    <component-type>org.openfaces.Position</component-type>
+    <component-class>org.openfaces.component.Position</component-class>
+  </component>
+  
   <render-kit>
     <renderer>
       <component-family>org.openfaces.DataTable</component-family>
@@ -900,6 +905,11 @@
       <component-family>org.openfaces.Column</component-family>
       <renderer-type>org.openfaces.ColumnRenderer</renderer-type>
       <renderer-class>org.openfaces.renderkit.table.ColumnRenderer</renderer-class>
+    </renderer>
+    <renderer>
+      <component-family>org.openfaces.DynamicColumn</component-family>
+      <renderer-type>org.openfaces.DynamicColumnRenderer</renderer-type>
+      <renderer-class>org.openfaces.renderkit.table.DynamicColumnRenderer</renderer-class>
     </renderer>
     <renderer>
       <component-family>org.openfaces.CheckboxColumn</component-family>

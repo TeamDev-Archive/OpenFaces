@@ -3134,6 +3134,18 @@
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>Specifies the optional column value expression similar to the value attribute of
+        &amp;lt;o:column&gt; tag.
+      </description>
+      <name>columnValue</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.Object -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
       <description>The value that can serve as a convenience substitution for specifying &amp;lt;h:outputText&gt; in the
         column's &quot;header&quot; facet, or serve for identifying the column name in such components as &amp;lt;o:comopsitefilter&gt;
         or &amp;lt;o:columnVisibilityMenu&gt;. You can use a column data variable specified in the "var" in the expression
@@ -46047,6 +46059,28 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>The attribute specifies whether the upload progress with a related information is shown in-place in
+        an upload component itself, or in a separate pop-up window
+      </description>
+      <name>showInPopup</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The text for Close button.</description>
+      <name>closeButtonText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
   </tag>
   <tag>
     <name>singleFileUpload</name>
@@ -46886,6 +46920,28 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>The attribute specifies whether the upload progress with a related information is shown in-place in
+        an upload component itself, or in a separate pop-up window
+      </description>
+      <name>showInPopup</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The text for Close button.</description>
+      <name>closeButtonText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
   </tag>
   <tag>
     <name>progressBar</name>
@@ -46985,6 +47041,81 @@ entering a value and returns a list of suggestions from the server -->
     <body-content>JSP</body-content>
   </tag>
   <tag>
+    <name>position</name>
+    <tag-class>org.openfaces.taglib.jsp.PositionJspTag</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+      <description>Defines the horizontal position in browser's window where the Ajax progress message should be
+        shown.
+      </description>
+      <name>horizontalAlignment</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component. HorizontalAlignment -->
+      <!-- @default "left" -->
+      <!-- @value "leftOutside" makes a preview to be displayed to the left of an event rectangle -->
+      <!-- @value "left" makes the left edge of a preview to be aligned with the left edge of an event rectangle -->
+      <!-- @value "center" makes a preview centered horizontally relative to an event rectangle -->
+      <!-- @value "right" makes the right edge of a preview to be aligned with the right edge of an event rectangle -->
+      <!-- @value "rightOutside" makes a preview to be displayed to the right of an event rectangle -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Defines the vertical position in browser's window where the popup should be
+        shown.
+      </description>
+      <name>verticalAlignment</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component. VerticalAlignment -->
+      <!-- @default "below" -->
+      <!-- @value "above" makes a preview to be displayed above an event rectangle -->
+      <!-- @value "top" makes the top edge of a preview to be aligned with the top edge of an event rectangle -->
+      <!-- @value "center" makes a preview centered vertically relative to an event rectangle -->
+      <!-- @value "bottom" makes the bottom edge of a preview to be aligned with the bottom edge of an event rectangle -->
+      <!-- @value "below" makes a preview to be displayed below an event rectangle -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Distance against the alignment edge that is specified with horizontalAlignment attribute. Can be
+        specified in any fixed CSS units. This attribute is applicable for all alignments except "center".
+      </description>
+      <name>horizontalDistance</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "0" -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Distance against the alignment edge that is specified with verticalAlignment attribute. Can be
+        specified in any fixed CSS units. This attribute is applicable for all alignments except "center".
+      </description>
+      <name>verticalDistance</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "0" -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Defines the base element for popup positioning using alignment and distance attributes
+      </description>
+      <name>by</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType java.Lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+  </tag>
+
+  <tag>
     <description>Defines an output component which shows a summary value for a DataTable column in which it is inserted
       or a custom expression specified for this component explicitly.
     </description>
@@ -47026,18 +47157,18 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default false -->
       <!-- @el true -->
     </attribute>    <attribute>
-      <description>Specifies a value expression by which the summary value should be calculated. E.g. a value of
-        #{product.price} would result in displaying a &quot;total&quot; price for all table&#39;s rows (a sum
-        average, etc, depending on the function being used in this component).
-      </description>
-      <name>by</name>
-      <deferred-value>
-        <type>java.lang.Object</type>
-      </deferred-value>
-      <!-- @bindingType javax.el.Object -->
-      <!-- @default null -->
-      <!-- @el only -->
-    </attribute>
+    <description>Specifies a value expression by which the summary value should be calculated. E.g. a value of
+      #{product.price} would result in displaying a &quot;total&quot; price for all table&#39;s rows (a sum
+      average, etc, depending on the function being used in this component).
+    </description>
+    <name>by</name>
+    <deferred-value>
+      <type>java.lang.Object</type>
+    </deferred-value>
+    <!-- @bindingType javax.el.Object -->
+    <!-- @default null -->
+    <!-- @el only -->
+  </attribute>
     <attribute>
       <description>The function that this &lt;o:summary&gt; component uses for combining the values.</description>
       <name>function</name>
@@ -47191,8 +47322,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
 
-  </tag>
-
+  </tag>  
+  
   <!--<tag>-->
     <!--<description>This component is under construction. Displays a box where users may read and write comments. This component works on top of the Disqus-->
       <!--(http://disqus.com) service. You don&apos;t have to provide storage for the comments. You just have to create an-->

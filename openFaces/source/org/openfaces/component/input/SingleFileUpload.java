@@ -27,7 +27,6 @@ public final class SingleFileUpload extends AbstractFileUpload {
     
     private String fileInfoAreaStyle;
     private String fileInfoAreaClass;
-    private String externalBrowseButton;
 
     public SingleFileUpload() {
         setRendererType("org.openfaces.SingleFileUploadRenderer");
@@ -48,7 +47,6 @@ public final class SingleFileUpload extends AbstractFileUpload {
                 stopButtonNearProgress,
                 fileInfoAreaStyle,
                 fileInfoAreaClass,
-                externalBrowseButton
         };
     }
 
@@ -63,7 +61,6 @@ public final class SingleFileUpload extends AbstractFileUpload {
         stopButtonNearProgress = (Boolean) values[i++];
         fileInfoAreaStyle = (String) values[i++];
         fileInfoAreaClass = (String) values[i++];
-        externalBrowseButton = (String) values[i++];
     }
 
     @Override
@@ -122,13 +119,5 @@ public final class SingleFileUpload extends AbstractFileUpload {
 
     public void setFileInfoAreaClass(String fileInfoAreaClass) {
         this.fileInfoAreaClass = fileInfoAreaClass;
-    }
-
-    public String getExternalBrowseButton() {
-        return ValueBindings.get(this, "externalBrowseButton", externalBrowseButton);
-    }
-
-    public void setExternalBrowseButton(String externalBrowseButton) {
-        this.externalBrowseButton = externalBrowseButton;
     }
 }

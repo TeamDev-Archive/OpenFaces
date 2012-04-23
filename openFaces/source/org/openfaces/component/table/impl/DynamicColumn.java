@@ -17,6 +17,7 @@ import org.openfaces.component.table.Columns;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -37,6 +38,7 @@ public class DynamicColumn extends Column implements DynamicCol {
     private int colIndex;
 
     public DynamicColumn() {
+        setRendererType("org.openfaces.DynamicColumnRenderer");
     }
 
     @Override
@@ -89,6 +91,16 @@ public class DynamicColumn extends Column implements DynamicCol {
     @Override
     public UIComponent getSubHeader() {
         return columns.getSubHeader();
+    }
+
+    @Override
+    public Converter getConverter() {
+        return columns.getConverter();
+    }
+
+    @Override
+    public void setConverter(Converter converter) {
+        columns.setConverter(converter);
     }
 
     public void declareContextVariables() {
