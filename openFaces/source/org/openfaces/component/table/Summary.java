@@ -14,6 +14,7 @@ package org.openfaces.component.table;
 import org.openfaces.component.OUIOutput;
 import org.openfaces.component.table.impl.TableDataModel;
 import org.openfaces.renderkit.TableUtil;
+import org.openfaces.util.ApplicationParams;
 import org.openfaces.util.Components;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.ScriptBuilder;
@@ -24,6 +25,7 @@ import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -35,8 +37,12 @@ public class Summary extends OUIOutput {
     public static final String COMPONENT_TYPE = "org.openfaces.Summary";
     public static final String COMPONENT_FAMILY = "org.openfaces.Summary";
 
-    private DataTable table;
+    private static final String DEFAULT_PATTERN = "#{function}: #{valueString}";
+    private static final String ATTR_PATTERN = "pattern";
+
     private SummaryFunction function;
+
+    private UsageContext usageContext;
 
     public Summary() {
         setRendererType("org.openfaces.SummaryRenderer");
@@ -78,46 +84,220 @@ public class Summary extends OUIOutput {
      * by any application code.
      */
     public DataTable getTable() {
-        if (table == null) {
-            table = Components.getParentWithClass(this, DataTable.class);
-            if (table == null) throw new FacesException("The <o:summary> tag can only be used inside of " +
-                    "<o:dataTable> component");
-        }
-        return table;
+        return getUsageContext().getTable();
     }
 
-    private ValueExpression getByExpression() {
-        ValueExpression ve = getBy();
-        if (ve != null) return ve;
-        BaseColumn parentColumn = Components.getParentWithClass(this, BaseColumn.class);
-        if (parentColumn == null) {
-            DataTable table = getTable();
-            if (table.getRowIndex() != -1) {
-                // reset row index just to ensure a suffix-less table id in an exception message
-                table.setRowIndex(-1);
-            }
-            throw new FacesException("Could not detect the summary calculation expression for " +
-                    "<o:summary> component in the table " + table.getClientId(getFacesContext()) + ". " +
-                    "Either the \"by\" attribute has to be specified or <o:summary> should be placed into a column's " +
-                    "facet to derive the expression from that column automatically.");
+    public ValueExpression getPattern() {
+        return getValueExpression(ATTR_PATTERN);
+    }
+
+    private ValueExpression getPatternExpression() {
+        ValueExpression expression = getPattern();
+        if (expression == null) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            ELContext elContext = context.getELContext();
+            expression = context.getApplication().getExpressionFactory().createValueExpression(
+                    elContext, DEFAULT_PATTERN, Object.class);
+            setPattern(expression);
         }
-        ve = parentColumn.getColumnValueExpression();
-        if (ve == null) {
-            DataTable table = getTable();
-            if (table.getRowIndex() != -1) {
-                // reset row index just to ensure a suffix-less table id in an exception message
-                table.setRowIndex(-1);
+        return expression;
+    }
+
+    public void setPattern(ValueExpression valueExpression) {
+        setValueExpression(ATTR_PATTERN, valueExpression);
+    }
+
+    private static class UsageContext {
+        private Summary summary;
+        private DataTable table;
+        private BaseColumn column;
+        private String facetName;
+
+        private Boolean calculatedGlobally;
+        private String calculatedForGroupsWithColumnId;
+        private Boolean calculatedForAllGroups;
+
+        public UsageContext(Summary summary) {
+            this.summary = summary;
+
+            Components.FacetReference facetReference = Components.getParentFacetReference(summary);
+            if (facetReference == null)
+                throw new FacesException("The <o:summary> tag can only be used inside of one of the facets of the " +
+                        "<o:dataTable> component or inside of the facets of one of its <o:column> or <o:columnGroup> " +
+                        "tags.");
+            UIComponent facetOwner = facetReference.getFacetOwner();
+
+            AbstractTable abstractTable;
+            if (facetOwner instanceof DataTable) {
+                abstractTable = (AbstractTable) facetOwner;
+            } else if (facetOwner instanceof Column || facetOwner instanceof ColumnGroup) {
+                this.column = (BaseColumn) facetOwner;
+                abstractTable = column.getTable();
+                if (abstractTable == null)
+                    throw new FacesException("The <o:summary> component is placed into a misplaced column component -" +
+                            "the parent table for that column (" + facetOwner.getClientId(FacesContext.getCurrentInstance()) +
+                            ") could not be found in the components tree.");
+            } else {
+                throw new FacesException("The <o:summary> tag must be placed as a facet inside of <o:dataTable>, " +
+                        "<o:column> or <o:columnGroup> components.");
             }
-            throw new FacesException("Could not detect the summary calculation expression for " +
-                    "<o:summary> component in the table " + table.getClientId(getFacesContext()) + ". " +
-                    "Neither the \"by\" attribute is specified, nor the value for the parent column could be " +
-                    "detected (the column doesn't have the \"value\" attribute).");
+            if (!(abstractTable instanceof DataTable)) {
+                // e.g. in case of an attempt to use in inside of TreeTable
+                throw new FacesException("The <o:summary> component can only be used with <o:dataTable> component currently.");
+            }
+            this.table = (DataTable) abstractTable;
+
+            this.facetName = facetReference.getFacetName();
+            if (facetOwner == table || (equalsToOneOf(facetName,
+                    BaseColumn.FACET_HEADER,
+                    BaseColumn.FACET_SUB_HEADER,
+                    BaseColumn.FACET_FOOTER))) {
+                // it is either in a table's facet or one column's "global" facets
+                this.calculatedGlobally = true;
+                this.calculatedForGroupsWithColumnId = "";
+                this.calculatedForAllGroups = false;
+            } else {
+                // it is in one of the column's grouping facets
+                this.calculatedGlobally = false;
+
+                RowGrouping rowGrouping = table.getRowGrouping();
+                if (rowGrouping == null) {
+                    // no calculation for this summary component is required at all since it's inside of the
+                    // grouping-related facets, but grouping is turned off currently
+                    this.calculatedForGroupsWithColumnId = "";
+                    this.calculatedForAllGroups = false;
+                } else if (equalsToOneOf(facetName, BaseColumn.FACET_GROUP_HEADER, BaseColumn.FACET_GROUP_FOOTER)) {
+                    List<GroupingRule> groupingRules = rowGrouping.getGroupingRules();
+                    String summaryOwnerColumnId = column.getId();
+                    boolean groupedByThisColumn = false;
+                    for (GroupingRule groupingRule : groupingRules) {
+                        if (groupingRule.getColumnId().equals(summaryOwnerColumnId)) {
+                            groupedByThisColumn = true;
+                            break;
+                        }
+                    }
+                    this.calculatedForGroupsWithColumnId = groupedByThisColumn ? summaryOwnerColumnId : "";
+                    this.calculatedForAllGroups = false;
+                } else if (equalsToOneOf(facetName, BaseColumn.FACET_IN_GROUP_HEADER, BaseColumn.FACET_IN_GROUP_FOOTER)) {
+                    this.calculatedForGroupsWithColumnId = "";
+                    this.calculatedForAllGroups = table.getRenderedColumns().contains(column);
+                } else {
+                    throw new IllegalStateException("Unexpected placement of <o:summary> component: " +
+                            "facet owner component is " + facetOwner.getClass().getName() +
+                            "; facet name is \"" + facetName + "\"");
+                }
+            }
+
         }
-        return ve;
+
+        public boolean getCalculatedGlobally() {
+            return calculatedGlobally;
+        }
+
+        public String getCalculatedForGroupsWithColumnId() {
+            return !calculatedForGroupsWithColumnId.equals("") ? calculatedForGroupsWithColumnId : null;
+        }
+
+        public boolean getCalculatedForAllGroups() {
+            return calculatedForAllGroups;
+        }
+
+        public DataTable getTable() {
+            return table;
+        }
+
+        private ValueExpression byExpression;
+
+        public ValueExpression getByExpression() {
+            if (byExpression != null)
+                return byExpression;
+
+            byExpression = summary.getBy();
+            if (byExpression != null)
+                return byExpression;
+
+            if (column == null) {
+                DataTable table = summary.getTable();
+                if (table.getRowIndex() != -1) {
+                    // reset row index just to ensure a suffix-less table id in an exception message
+                    table.setRowIndex(-1);
+                }
+                throw new FacesException("Could not detect the summary calculation expression for <o:summary> " +
+                        "component in the table " + table.getClientId(FacesContext.getCurrentInstance()) + ". Either " +
+                        "the \"by\" attribute has to be specified or <o:summary> should be placed into a column's " +
+                        "facet to derive the expression from that column automatically.");
+            }
+            byExpression = column.getColumnValueExpression();
+            // the summary's expression is not specified explicitly and it's not inside of a column whose value
+            // expression can be detected
+            if (byExpression == null) {
+                DataTable table = summary.getTable();
+                if (table.getRowIndex() != -1) {
+                    // reset row index just to ensure a suffix-less table id in an exception message
+                    table.setRowIndex(-1);
+                }
+                throw new FacesException("Could not detect the summary calculation expression for " +
+                        "<o:summary> component in the table " + table.getClientId(FacesContext.getCurrentInstance()) +
+                        ". Neither the \"by\" attribute is specified, nor the value for the parent column could be " +
+                        "detected (the column doesn't have the \"value\" attribute).");
+            }
+            return byExpression;
+        }
+
+        private SummaryFunction function;
+
+        /**
+         * Gets the user-specified function or detects it automatically if not specified in this Summary component
+         * explicitly.
+         */
+        public SummaryFunction getFunction() {
+            if (function != null) return function;
+
+            function = summary.getFunction();
+            if (function != null) return function;
+
+            if (column == null || equalsToOneOf(facetName, BaseColumn.FACET_GROUP_HEADER, BaseColumn.FACET_GROUP_FOOTER)) {
+                function = new CountFunction();
+            } else {
+                BaseColumn.ExpressionData expressionData = column.getExpressionData(getByExpression());
+                Class valueType = expressionData.getValueType();
+                List<SummaryFunction> allFunctions = ApplicationParams.getSummaryFunctions();
+                for (SummaryFunction fn : allFunctions) {
+                    if (fn.isApplicableForClass(valueType)) {
+                        function = fn;
+                        break;
+                    }
+                }
+                if (function == null)
+                    function = new CountFunction();
+            }
+
+            return function;
+        }
+
+        private Converter getConverter() {
+            return summary.getConverter();
+        }
+
+        private boolean equalsToOneOf(String str, String... toOneOf) {
+            for (String oneOf : toOneOf) {
+                if (str.equals(oneOf))
+                    return true;
+            }
+            return false;
+        }
+    }
+
+
+
+    private UsageContext getUsageContext() {
+        if (usageContext == null)
+            usageContext = new UsageContext(this);
+        return usageContext;
     }
 
     private Object getByValue(ELContext elContext) {
-        Object value = getByExpression().getValue(elContext);
+        Object value = getUsageContext().getByExpression().getValue(elContext);
         return value;
     }
 
@@ -151,20 +331,6 @@ public class Summary extends OUIOutput {
         this.function = function;
     }
 
-    private SummaryFunction getFunction(Object oneOfTheValues) {
-        if (oneOfTheValues == null)
-            return null;
-
-        SummaryFunction userSpecifiedFunction = getFunction();
-        if (userSpecifiedFunction != null) return userSpecifiedFunction;
-
-        SumFunction sumFunction = new SumFunction();
-        if (sumFunction.isApplicableForClass(oneOfTheValues.getClass()))
-            return sumFunction;
-        else
-            return new CountFunction();
-    }
-
 
     /**
      * The same Summary component can be rendered in different places depending on how it is declared. If it is declared
@@ -177,7 +343,6 @@ public class Summary extends OUIOutput {
      * is rendered"). This object contains all of the info for such single rendering instance.
      */
     private class CalculationContext {
-        private SummaryFunction function;
         private SummaryFunction.Calculator calculator;
         private String renderedSummaryClientId;
 
@@ -187,13 +352,12 @@ public class Summary extends OUIOutput {
 
         private void addValue(Object value) {
             if (calculator == null) {
-                function = getFunction(value);
+                SummaryFunction function = getUsageContext().getFunction();
                 if (function == null) return;
                 calculator = function.startCalculation();
             }
             calculator.addValue(value);
         }
-
 
         public String getRenderedSummaryClientId() {
             return renderedSummaryClientId;
@@ -212,116 +376,46 @@ public class Summary extends OUIOutput {
                 return;
             }
             Object summaryValue = calculator != null ? calculator.endCalculation() : "";
-            Object summaryOutput = calculator != null ? function.getName() + "=" + summaryValue : "";
+            UsageContext usageContext = getUsageContext();
+            SummaryFunction function = usageContext.getFunction();
+            Converter converter = usageContext.getConverter();
+            FacesContext context = getFacesContext();
+            if (converter == null && summaryValue != null)
+                converter = Rendering.getConverterForType(context, summaryValue.getClass());
+
+            Object summaryValueStr = summaryValue != null
+                    ? (converter != null ? converter.getAsString(context, Summary.this, summaryValue) : summaryValue.toString())
+                    : null;
+
+            ValueExpression patternExpression = getPatternExpression();
+            Components.setRequestVariable("value", summaryValue);
+            Components.setRequestVariable("valueString", summaryValueStr);
+            Components.setRequestVariable("function", function);
+            String summaryOutput = calculator != null && summaryValueStr != null
+                    ? patternExpression.getValue(context.getELContext()).toString()
+                    : "";
+            Components.restoreRequestVariable("value");
+            Components.restoreRequestVariable("valueString");
+            Components.restoreRequestVariable("function");
+
             sb.functionCall("O$.Summary._init", renderedSummaryClientId, summaryOutput).semicolon();
         }
-    }
-
-    private Boolean calculatedGlobally;
-    private String calculatedForGroupsWithColumnId;
-    private Boolean calculatedForAllGroups;
-
-    private boolean getCalculatedGlobally() {
-        calculateApplicability();
-        return calculatedGlobally;
-    }
-
-    private String getCalculatedForGroupsWithColumnId() {
-        calculateApplicability();
-        return !calculatedForGroupsWithColumnId.equals("") ? calculatedForGroupsWithColumnId : null;
-    }
-
-    private boolean getCalculatedForAllGroups() {
-        calculateApplicability();
-        return calculatedForAllGroups;
-    }
-
-    private void calculateApplicability() {
-        if (calculatedGlobally != null) {
-            // applicability scope for this instance of the Summary component
-            // has already been calculated for this rendering session
-            return;
-        }
-        Components.FacetReference facetReference = Components.getParentFacetReference(this);
-        if (facetReference == null)
-            throw new FacesException("The <o:summary> tag can only be used inside of <o:dataTable> component.");
-        UIComponent facetOwner = facetReference.getFacetOwner();
-        if (!(facetOwner instanceof DataTable)
-                && !(facetOwner instanceof Column)
-                && !(facetOwner instanceof ColumnGroup))
-            throw new FacesException("The <o:summary> tag must be placed as a facet inside of <o:dataTable>, " +
-                    "<o:column> or <o:columnGroup> components.");
-        AbstractTable facetOwnerTableReference = facetOwner instanceof DataTable
-                ? (AbstractTable) facetOwner
-                : ((BaseColumn) facetOwner).getTable();
-        DataTable table = getTable();
-        if (facetOwnerTableReference != table)
-            throw new FacesException("The <o:summary> tag must be placed as a facet inside of <o:dataTable>, " +
-                    "<o:column> or <o:columnGroup> components.");
-        String facetName = facetReference.getFacetName();
-        if (facetOwner == table || (equalsToOneOf(facetName,
-                BaseColumn.FACET_HEADER,
-                BaseColumn.FACET_SUB_HEADER,
-                BaseColumn.FACET_FOOTER))) {
-            // it is either in a table's facet or one column's "global" facets
-            calculatedGlobally = true;
-            calculatedForGroupsWithColumnId = "";
-            calculatedForAllGroups = false;
-        } else {
-            // it is in one of the column grouping facets
-            BaseColumn summaryOwnerColumn = (BaseColumn) facetOwner;
-            RowGrouping rowGrouping = table.getRowGrouping();
-            if (rowGrouping == null) {
-                calculatedGlobally = false;
-                calculatedForGroupsWithColumnId = "";
-                calculatedForAllGroups = false;
-            } else if (equalsToOneOf(facetName, BaseColumn.FACET_GROUP_HEADER, BaseColumn.FACET_GROUP_FOOTER)) {
-                List<GroupingRule> groupingRules = rowGrouping.getGroupingRules();
-                String summaryOwnerColumnId = summaryOwnerColumn.getId();
-                boolean groupedByThisColumn = false;
-                for (GroupingRule groupingRule : groupingRules) {
-                    if (groupingRule.getColumnId().equals(summaryOwnerColumnId)) {
-                        groupedByThisColumn = true;
-                        break;
-                    }
-                }
-                calculatedGlobally = false;
-                calculatedForGroupsWithColumnId = groupedByThisColumn ? summaryOwnerColumnId : "";
-                calculatedForAllGroups = false;
-            } else if (equalsToOneOf(facetName, BaseColumn.FACET_IN_GROUP_HEADER, BaseColumn.FACET_IN_GROUP_FOOTER)) {
-                calculatedGlobally = false;
-                calculatedForGroupsWithColumnId = "";
-                calculatedForAllGroups = table.getRenderedColumns().contains(summaryOwnerColumn);
-            } else {
-                throw new IllegalStateException("Unexpected placement of <o:summary> component: " +
-                        "facet owner component is " + facetOwner.getClass().getName() +
-                        "; facet name is \"" + facetName + "\"");
-            }
-        }
-    }
-
-    private boolean equalsToOneOf(String str, String... toOneOf) {
-        for (String oneOf : toOneOf) {
-            if (str.equals(oneOf))
-                return true;
-        }
-        return false;
     }
 
     public void addCurrentRowValue() {
         ELContext elContext = FacesContext.getCurrentInstance().getELContext();
 
         Object value = getByValue(elContext);
-        if (getCalculatedGlobally()) {
+        if (getUsageContext().getCalculatedGlobally()) {
             getGlobalCalculationContext().addValue(value);
-        } else if (getCalculatedForAllGroups()) {
+        } else if (getUsageContext().getCalculatedForAllGroups()) {
             List<RowGroup> containingGroups = getContainingRowGroupsForThisRow();
             for (RowGroup group : containingGroups) {
                 CalculationContext calculationContext = getGroupCalculationContext(group);
                 calculationContext.addValue(value);
             }
         } else {
-            String colId = getCalculatedForGroupsWithColumnId();
+            String colId = getUsageContext().getCalculatedForGroupsWithColumnId();
             if (colId == null) {
                 // this summary instance does not require calculation in the current table's grouping state
                 return;
@@ -356,9 +450,8 @@ public class Summary extends OUIOutput {
     @Override
     public void encodeBegin(FacesContext context) throws IOException {
         super.encodeBegin(context);
-        calculateApplicability();
         String clientId = getClientId(context);
-        if (getCalculatedGlobally()) {
+        if (getUsageContext().getCalculatedGlobally()) {
             getGlobalCalculationContext().setRenderedSummaryClientId(clientId);
         } else {
             Object rowData = getTable().getRowData();
@@ -373,8 +466,6 @@ public class Summary extends OUIOutput {
                         "component.");
             }
         }
-
-
     }
 
     public void encodeAfterCalculation(FacesContext context) throws IOException {
@@ -407,7 +498,5 @@ public class Summary extends OUIOutput {
             }
         }
         Rendering.renderInitScript(context, sb, TableUtil.getTableUtilJsURL(context));
-
-
     }
 }

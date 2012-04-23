@@ -605,7 +605,7 @@ public class BaseColumn extends UIColumn {
      * by any application code.
      */
     public Converter getColumnValueConverter() {
-        ColumnExpressionData columnExpressionData = getColumnExpressionData();
+        ExpressionData columnExpressionData = getColumnExpressionData();
         if (columnExpressionData == null)
             return null;
         return columnExpressionData.getValueConverter();
@@ -652,23 +652,25 @@ public class BaseColumn extends UIColumn {
      * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
      * by any application code.
      */
-    public ColumnExpressionData getColumnExpressionData() {
-        return getColumnExpressionData(null);
+    public ExpressionData getColumnExpressionData() {
+        String cachedDataVar = "_OpenFaces_columnExpressionData";
+        ExpressionData data = (ExpressionData) this.getAttributes().get(cachedDataVar);
+        if (data != null)
+            return data;
+        ValueExpression expression = getColumnValueExpression();
+
+        ExpressionData result = getExpressionData(expression);
+        this.getAttributes().put(cachedDataVar, result);
+        return result;
     }
 
     /**
      * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
      * by any application code.
      */
-    public ColumnExpressionData getColumnExpressionData(ValueExpression explicitExpression) {
-        String cachedDataVar = "_OpenFaces_columnExpressionData";
-        ColumnExpressionData data = (ColumnExpressionData) this.getAttributes().get(cachedDataVar);
-        if (data != null)
-            return data;
-        AbstractTable table = getTable();
-        ValueExpression expression = explicitExpression != null
-                ? explicitExpression
-                : getColumnValueExpression();
+    // todo: It seems that this method serves a mixed purpose. Should this method depend on a column if invoked not for this column's value expression? Can/should it be made static?
+    // (it's possible that converter and type calculation functionality should be separated)
+    public ExpressionData getExpressionData(ValueExpression expression) {
         if (expression == null)
             return null;
 
@@ -677,6 +679,7 @@ public class BaseColumn extends UIColumn {
         FacesContext context = FacesContext.getCurrentInstance();
         ELContext elContext = context.getELContext();
 
+        AbstractTable table = getTable();
         int index = table.getRowIndex();
         try {
             int i = 0;
@@ -696,7 +699,9 @@ public class BaseColumn extends UIColumn {
             }
         } catch (Exception e) {
             // running this branch means that there's no row data and row with index == 0
-            valueType = detectValueType(elContext, table, expression, valueType);
+            Class detectedValueType = detectValueType(elContext, table, expression);
+            if (detectedValueType != null)
+                valueType = detectedValueType;
         } finally {
             table.setRowIndex(index);
         }
@@ -704,50 +709,44 @@ public class BaseColumn extends UIColumn {
         if (valueConverter == null)
             valueConverter = Rendering.getConverterForType(context, valueType);
 
-        ColumnExpressionData result = new ColumnExpressionData(expression, valueType, valueConverter);
-        if (explicitExpression == null) {
-            // do not cache ColumnExpressionData if it is calculated with an explicitly specified non-default expression
-            // in order to avoid returning a wrong cached instance upon a further call to this method without an
-            // explicitly specified expression
-            this.getAttributes().put(cachedDataVar, result);
-        }
-        return result;
+        return new ExpressionData(expression, valueType, valueConverter);
     }
 
-    private static Class detectValueType(ELContext elContext, AbstractTable table, ValueExpression expression, Class valueType) {
+    private static Class detectValueType(ELContext elContext, AbstractTable table, ValueExpression expression) {
         String expressionString = expression.getExpressionString();
         if (expressionString.split("#").length > 2) { // consist of more than one expression
-            valueType = String.class; // multiple expression concatenation result is a string
-        } else {
-            String var = table.getVar();
-            ValueExpression rowDataBeanValueExpression = table.getValueExpression("value");
-            if (rowDataBeanValueExpression != null) {
-                Object expressionValue = rowDataBeanValueExpression.getValue(elContext);
-                Class rowDataBeanType = expressionValue != null
-                        ? expressionValue.getClass()
-                        : rowDataBeanValueExpression.getType(elContext);
-                Class rowDataClass = null;
-                if (rowDataBeanType.isArray()) {
-                    rowDataClass = rowDataBeanType.getComponentType();
-                } else if (Collection.class.isAssignableFrom(rowDataBeanType)) {
-                    rowDataClass = ReflectionUtil.getGenericParameterClass(rowDataBeanType);
-                }
-                if (rowDataClass != null) {
-                    Matcher expressionMatcher = getExpressionPattern(var).matcher(expressionString);
-                    if (!expressionMatcher.find()) {
-                        throw new IllegalArgumentException("Unsupported expression: " + expression);
-                    }
-
-                    // String expressionBeforeVar = expressionMatcher.group(2);
-                    /*if (expressionBeforeVar != null) {
-                        Class typeOfExpressionBefore = ValueBindings.createValueExpression(context, "#{" + expressionBeforeVar + "}").getType(context.getELContext());
-                    }*/
-                    String expressionAfterVar = expressionMatcher.group(2);
-                    valueType = ReflectionUtil.definePropertyType(rowDataClass, expressionAfterVar);
-                }
-            }
+            return String.class; // multiple expression concatenation result is a string\
         }
+
+        // if the expression is of a form #{rowData.propertyName}, we try to inspect the type of the appropriate
+        // property through reflection
+        Class rowDataClass = detectRowDataClass(elContext, table);
+        if (rowDataClass == null) return null;
+
+        String var = table.getVar();
+        Matcher expressionMatcher = getExpressionPattern(var).matcher(expressionString);
+        if (!expressionMatcher.find()) return null;
+
+        String propertyNameFromColumnExpression = expressionMatcher.group(2);
+        Class valueType = ReflectionUtil.definePropertyType(rowDataClass, propertyNameFromColumnExpression);
         return valueType;
+    }
+
+    private static Class detectRowDataClass(ELContext elContext, AbstractTable table) {
+        ValueExpression rowDataBeanValueExpression = table.getValueExpression("value");
+        if (rowDataBeanValueExpression == null) return null;
+
+        Object expressionValue = rowDataBeanValueExpression.getValue(elContext);
+        Class rowDataBeanType = expressionValue != null
+                ? expressionValue.getClass()
+                : rowDataBeanValueExpression.getType(elContext);
+        Class rowDataClass = null;
+        if (rowDataBeanType.isArray()) {
+            rowDataClass = rowDataBeanType.getComponentType();
+        } else if (Collection.class.isAssignableFrom(rowDataBeanType)) {
+            rowDataClass = ReflectionUtil.getGenericParameterClass(rowDataBeanType);
+        }
+        return rowDataClass;
     }
 
     private static String obtainOutputValue(UIComponent component) {
@@ -852,15 +851,15 @@ public class BaseColumn extends UIColumn {
      * This class is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
      * by any application code.
      */
-    public static class ColumnExpressionData implements Externalizable {
+    public static class ExpressionData implements Externalizable {
         private ValueExpression valueExpression;
         private Class valueType;
         private Converter valueConverter;
 
-        public ColumnExpressionData() {
+        public ExpressionData() {
         }
 
-        public ColumnExpressionData(ValueExpression valueExpression, Class valueType, Converter valueConverter) {
+        public ExpressionData(ValueExpression valueExpression, Class valueType, Converter valueConverter) {
             this.valueExpression = valueExpression;
             this.valueType = valueType;
             this.valueConverter = valueConverter;

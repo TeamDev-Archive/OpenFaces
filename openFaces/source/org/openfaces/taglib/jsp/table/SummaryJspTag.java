@@ -30,4 +30,8 @@ public class SummaryJspTag extends AbstractComponentJspTag {
     public void setFunction(ValueExpression function) {
         getDelegate().setPropertyValue("function", function);
     }
+
+    public void setPattern(ValueExpression pattern) {
+        getDelegate().setPropertyValue("pattern", pattern);
+    }
 }

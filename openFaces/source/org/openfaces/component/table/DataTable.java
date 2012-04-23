@@ -158,7 +158,8 @@ public class DataTable extends AbstractTable {
     }
 
     public PaginationOnSorting getPaginationOnSorting() {
-        return ValueBindings.get(this, "paginationOnSorting", paginationOnSorting, PaginationOnSorting.FIRST_PAGE, PaginationOnSorting.class);
+        return ValueBindings.get(this, "paginationOnSorting", paginationOnSorting, PaginationOnSorting.FIRST_PAGE,
+                PaginationOnSorting.class);
     }
 
     public void setPaginationOnSorting(PaginationOnSorting paginationOnSorting) {
@@ -199,7 +200,8 @@ public class DataTable extends AbstractTable {
                     pageIndex = 0;
                     break;
                 default:
-                    throw new IllegalStateException("Unknown value of PaginationOnSorting enumeration: " + paginationOnSorting);
+                    throw new IllegalStateException("Unknown value of PaginationOnSorting enumeration: " +
+                            paginationOnSorting);
             }
         }
 
@@ -332,8 +334,9 @@ public class DataTable extends AbstractTable {
     private void validatePageIndex() {
         Integer pageCount = getRenderedPageCount();
         if (pageCount == null) {
-            // renderedPageCount is set on rendering. It's possible that there's no previous rendering, and processUpdates
-            // is invoked anyway because table's "rendered" attribute just becamse true on processDecodes phase (see JSFC-3600)
+            // renderedPageCount is set on rendering. It's possible that there's no previous rendering,
+            // and processUpdates is invoked anyway because table's "rendered" attribute just becomes true on the
+            // processDecodes phase (see JSFC-3600)
             return;
         }
 
@@ -400,7 +403,8 @@ public class DataTable extends AbstractTable {
         } else if (column instanceof CheckboxColumn) {
             return ((CheckboxColumn) column).getSelectedRowKeys();
         } else
-            throw new IllegalArgumentException("Unknown column type: " + (column != null ? column.getClass().getName() : "null"));
+            throw new IllegalArgumentException("Unknown column type: " +
+                    (column != null ? column.getClass().getName() : "null"));
     }
 
     @Override
@@ -471,6 +475,15 @@ public class DataTable extends AbstractTable {
         rowGrouping.setNodeExpanded(keyPath, expanded);
     }
 
+    @Override
+    protected void checkExportSupportedInCurrentState() {
+        RowGrouping rowGrouping = getRowGrouping();
+        if (rowGrouping == null) return;
+        if (rowGrouping.getGroupingRules().size() > 0)
+            throw new IllegalStateException("DataTable export functionality is not supported on a grouped DataTable " +
+                    "component");
+    }
+
     /**
      * Returns the same list as getRenderedColumns(), but after adaptations to some of its entries that might be
      * required for such features as the Row Grouping feature, where the first column is implicitly converted to
@@ -523,7 +536,8 @@ public class DataTable extends AbstractTable {
         ColumnReordering columnReordering = super.getColumnReordering();
         if (columnReordering == null && getRowGrouping() != null) {
             if (getGroupingBox() != null) {
-                // row grouping box requires column reordering so we're implicitly creating it if it is not specified explicitly
+                // row grouping box requires column reordering so we're implicitly creating it if it is not specified
+                // explicitly
                 columnReordering = new ColumnReordering();
                 columnReordering.setTable(this);
             }

@@ -47048,7 +47048,16 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
-
+    <attribute>
+      <description>A converter that is used for converting the calculated summary value to string.</description>
+      <name>converter</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType javax.faces.convert.Converter -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
     <attribute>
       <description>A style for the entire GraphicText component. Note that this attribute is applied to the
         component's image itself (the &amp;lt;img&gt; tag), so you shouldn't specify font and color properties in this
@@ -47166,6 +47175,19 @@ entering a value and returns a list of suggestions from the server -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Specifies the pattern that specifies how the calculated summary value and function name is combined
+        to form the displayed text. This expression can use the following two request-scope variables: &quot;function&quot;
+        and &quot;value&quot;.
+      </description>
+      <name>pattern</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "#{function}: #{value}" -->
       <!-- @el true -->
     </attribute>
 

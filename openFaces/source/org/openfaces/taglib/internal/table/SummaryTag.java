@@ -38,6 +38,7 @@ public class SummaryTag extends OUIOutputTag {
         setValueExpressionProperty(component, "by");
         setSummaryFunctionProperty(component, "function");
         setConverterProperty(context, component, "converter");
+        setValueExpressionProperty(component, "pattern");
     }
 
     private void setSummaryFunctionProperty(UIComponent component, String propertyName) {

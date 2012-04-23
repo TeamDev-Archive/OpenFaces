@@ -1986,12 +1986,17 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         export(scope, formatter, fileName + "." + formatter.getDefaultFileExtension());
     }
 
+    protected void checkExportSupportedInCurrentState() {
+        // Export is allowed in all states by default. Subclasses can define their own state checks.
+    }
+
     public void export(DataScope scope, TableDataFormatter formatter, String fileName) {
         TableDataExtractor extractor = new TableDataExtractor(scope);
         export(scope, extractor, formatter, fileName);
     }
 
     public void export(DataScope scope, TableDataExtractor extractor, TableDataFormatter formatter, String fileName) {
+        checkExportSupportedInCurrentState();
         FacesContext context = FacesContext.getCurrentInstance();
         TableData tableData = extractor.extract(this);
         formatter.sendResponse(context, tableData, fileName);

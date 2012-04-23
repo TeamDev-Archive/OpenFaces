@@ -56,6 +56,11 @@ public abstract class SummaryFunction implements Serializable {
 
     public abstract String getName();
 
+    @Override
+    public String toString() {
+        return getName();
+    }
+
     public static abstract class Calculator {
         protected Object accumulator;
 
