@@ -32,6 +32,10 @@ public abstract class OrdinalType {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * Divides the specified custom-typed value by the double value, and returns the result as the same custom-typed
+     * value.
+     */
     public Object divide(Object value, double by) {
         throw new UnsupportedOperationException();
     }

@@ -11,6 +11,8 @@
  */
 package org.openfaces.component.table;
 
+import javax.el.ValueExpression;
+
 /**
  * @author Dmitry Pikhulya
  */
@@ -21,5 +23,21 @@ public class ColumnGroup extends BaseColumn {
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
+
+    @Override
+    public ValueExpression getColumnValueExpression() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public ValueExpression getColumnSortingExpression() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public ValueExpression getColumnGroupingExpression() {
+        throw new UnsupportedOperationException();
+    }
+
 
 }
