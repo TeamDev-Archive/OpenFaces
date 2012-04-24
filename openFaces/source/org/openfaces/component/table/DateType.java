@@ -25,12 +25,12 @@ public class DateType extends OrdinalType {
 
     @Override
     public Object add(Object value1, Object value2) {
-        return new Date(((Date) value1).getDate() + ((Date) value2).getDate());
+        return new Date(((Date) value1).getTime() + ((Date) value2).getTime());
     }
 
     @Override
     public Object divide(Object value, double by) {
-        int dateMillis = ((Date) value).getDate();
+        long dateMillis = ((Date) value).getTime();
         return new Date(Math.round(dateMillis / by));
     }
 }

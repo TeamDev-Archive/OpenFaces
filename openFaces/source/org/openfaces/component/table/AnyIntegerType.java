@@ -21,10 +21,10 @@ public class AnyIntegerType extends OrdinalType {
 
     @Override
     public boolean isApplicableForClass(Class valueClass) {
-        return Byte.class.isAssignableFrom(valueClass) || byte.class.isAssignableFrom(valueClass) ||
-               Short.class.isAssignableFrom(valueClass) || short.class.isAssignableFrom(valueClass) ||
-               Integer.class.isAssignableFrom(valueClass) || int.class.isAssignableFrom(valueClass) ||
-               Long.class.isAssignableFrom(valueClass) || long.class.isAssignableFrom(valueClass);
+        return Byte.class.equals(valueClass) || byte.class.equals(valueClass) ||
+               Short.class.equals(valueClass) || short.class.equals(valueClass) ||
+               Integer.class.equals(valueClass) || int.class.equals(valueClass) ||
+               Long.class.equals(valueClass) || long.class.equals(valueClass);
     }
 
     @Override

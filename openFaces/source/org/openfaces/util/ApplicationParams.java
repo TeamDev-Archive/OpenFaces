@@ -12,15 +12,7 @@
 
 package org.openfaces.util;
 
-import org.openfaces.component.table.AnyFloatingPointType;
-import org.openfaces.component.table.AnyIntegerType;
-import org.openfaces.component.table.AvgFunction;
-import org.openfaces.component.table.CountFunction;
-import org.openfaces.component.table.MaxFunction;
-import org.openfaces.component.table.MinFunction;
-import org.openfaces.component.table.OrdinalType;
-import org.openfaces.component.table.SumFunction;
-import org.openfaces.component.table.SummaryFunction;
+import org.openfaces.component.table.*;
 
 import javax.faces.FacesException;
 import javax.faces.context.ExternalContext;
@@ -46,7 +38,8 @@ public class ApplicationParams {
 
         ordinalTypes = new ArrayList<OrdinalType>(Arrays.asList(
                 new AnyIntegerType(),
-                new AnyFloatingPointType()
+                new AnyFloatingPointType(),
+                new DateType()
         ));
         ordinalTypes.addAll(0, createInstancesFromClassNamesParam(PARAM_ORDINAL_TYPES, OrdinalType.class));
         return ordinalTypes;

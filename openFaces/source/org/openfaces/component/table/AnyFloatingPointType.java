@@ -21,8 +21,9 @@ public class AnyFloatingPointType extends OrdinalType {
 
     @Override
     public boolean isApplicableForClass(Class valueClass) {
-        return Double.class.isAssignableFrom(valueClass) || double.class.isAssignableFrom(valueClass) ||
-               Float.class.isAssignableFrom(valueClass) || float.class.isAssignableFrom(valueClass);
+        return Double.class.equals(valueClass) || double.class.equals(valueClass) ||
+               Float.class.equals(valueClass) || float.class.equals(valueClass) ||
+               Number.class.isAssignableFrom(valueClass);
     }
 
     @Override

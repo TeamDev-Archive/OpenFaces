@@ -256,7 +256,9 @@ public class Summary extends OUIOutput {
             function = summary.getFunction();
             if (function != null) return function;
 
-            if (column == null || equalsToOneOf(facetName, BaseColumn.FACET_GROUP_HEADER, BaseColumn.FACET_GROUP_FOOTER)) {
+            if (column == null ||
+                    column instanceof ColumnGroup ||
+                    equalsToOneOf(facetName, BaseColumn.FACET_GROUP_HEADER, BaseColumn.FACET_GROUP_FOOTER)) {
                 function = new CountFunction();
             } else {
                 BaseColumn.ExpressionData expressionData = column.getExpressionData(getByExpression());
@@ -297,7 +299,15 @@ public class Summary extends OUIOutput {
     }
 
     private Object getByValue(ELContext elContext) {
-        Object value = getUsageContext().getByExpression().getValue(elContext);
+        UsageContext usageContext = getUsageContext();
+        SummaryFunction function = usageContext.getFunction();
+        if (function instanceof CountFunction) {
+            // the actual value does not matter in case of the "Count" function, and we should allow the user not
+            // to specify the "by" expression for this function, so we're skipping the actual "by" value calculation
+            // attempt below.
+            return "";
+        }
+        Object value = usageContext.getByExpression().getValue(elContext);
         return value;
     }
 

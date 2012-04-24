@@ -158,12 +158,14 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
             selection.setModel(model);
         }
 
+        Object result = super.processSaveState(context);
+
         // Model instance is saved as is in the "server" state saving mode. The table reference is unnecessary in the
         // state and it contains references to the entire view state tree, so we're just cutting this reference to
         // prevent excessive memory consumption (see OF-196)
         model.setTable(null);
 
-        return super.processSaveState(context);
+        return result;
     }
 
     @Override
@@ -981,15 +983,25 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     public List<Summary> getSummaries() {
         if (summaries == null) {
+            Set<ColumnGroup> columnGroups = new HashSet<ColumnGroup>();
             List<UIComponent> facets = new ArrayList<UIComponent>();
             facets.addAll(this.getFacets().values());
             List<BaseColumn> allColumns = getAllColumns();
             for (BaseColumn column : allColumns) {
+                for(UIComponent parent = column.getParent(); parent instanceof ColumnGroup; parent = parent.getParent())
+                    columnGroups.add((ColumnGroup) parent);
                 List<UIComponent> applicableFacets = Components.getFacets(column,
                         BaseColumn.FACET_HEADER, BaseColumn.FACET_SUB_HEADER, BaseColumn.FACET_FOOTER,
                         BaseColumn.FACET_GROUP_HEADER,
                         BaseColumn.FACET_IN_GROUP_HEADER, BaseColumn.FACET_IN_GROUP_FOOTER,
                         BaseColumn.FACET_GROUP_FOOTER);
+                facets.addAll(applicableFacets);
+            }
+
+            for (ColumnGroup columnGroup : columnGroups) {
+                List<UIComponent> applicableFacets = Components.getFacets(columnGroup,
+                        BaseColumn.FACET_HEADER, BaseColumn.FACET_FOOTER
+                );
                 facets.addAll(applicableFacets);
             }
 
