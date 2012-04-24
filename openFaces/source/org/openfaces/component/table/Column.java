@@ -27,6 +27,8 @@ public class Column extends BaseColumn implements ValueHolder {
     public static final String COMPONENT_TYPE = "org.openfaces.Column";
     public static final String COMPONENT_FAMILY = "org.openfaces.Column";
 
+    public static final String FACET_EDITOR = "editor";
+
     public static final String COLUMN_VALUE_VAR = "columnValue";
 
     private Converter groupingValueConverter;
@@ -87,9 +89,9 @@ public class Column extends BaseColumn implements ValueHolder {
     public ValueExpression getColumnSortingExpression() {
         ValueExpression ve = getSortingExpression();
         if (ve == null) {
-        Sorting sorting = getTable().getSorting();
-        if (sorting.isExplicitMode())
-            ve = getColumnValueExpression();
+            Sorting sorting = getTable().getSorting();
+            if (sorting.isExplicitMode())
+                ve = getColumnValueExpression();
         }
         return ve;
     }
@@ -141,14 +143,6 @@ public class Column extends BaseColumn implements ValueHolder {
     }
 
 
-    public UIComponent getSubHeader() {
-        return Components.getFacet(this, "subHeader");
-    }
-
-    public void setSubHeader(UIComponent component) {
-        getFacets().put("subHeader", component);
-    }
-
     public Converter getGroupingValueConverter() {
         if (groupingValueConverter != null) return groupingValueConverter;
         ValueExpression ve = getValueExpression("groupingValueConverter");
@@ -195,4 +189,13 @@ public class Column extends BaseColumn implements ValueHolder {
     public void setValue(Object value) {
         throw new UnsupportedOperationException();
     }
+
+    public UIComponent getEditor() {
+        return Components.getFacet(this, FACET_EDITOR);
+    }
+
+    public void setEditor(UIComponent editor) {
+        getFacets().put(FACET_EDITOR, editor);
+    }
+
 }

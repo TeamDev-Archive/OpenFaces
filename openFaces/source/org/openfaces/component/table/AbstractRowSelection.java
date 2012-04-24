@@ -12,6 +12,8 @@
 
 package org.openfaces.component.table;
 
+import org.openfaces.component.table.impl.TableDataModel;
+
 import java.util.ArrayList;
 import java.util.List;
 

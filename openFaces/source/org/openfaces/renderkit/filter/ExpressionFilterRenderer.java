@@ -123,7 +123,7 @@ public abstract class ExpressionFilterRenderer extends RendererBase {
                 else {
                     BaseColumn column = (BaseColumn) parent;
                     if (expression instanceof ValueExpression) {
-                        BaseColumn.ColumnExpressionData data = column.getColumnExpressionData((ValueExpression) expression);
+                        BaseColumn.ExpressionData data = column.getExpressionData((ValueExpression) expression);
                         if (data == null) {
                             AbstractTable table = column.getTable();
                             String var = table.getVar();

@@ -45,6 +45,14 @@ public class RowGrouping extends OUIComponentBase implements ComponentConfigurat
     private boolean beforeUpdateValuesPhase = true;
     private DataTable dataTable;
     private List<GroupingRule> incomingGroupingRules;
+    private String groupHeaderRowStyle;
+    private String groupHeaderRowClass;
+    private String groupFooterRowStyle;
+    private String groupFooterRowClass;
+    private String inGroupHeaderRowStyle;
+    private String inGroupHeaderRowClass;
+    private String inGroupFooterRowStyle;
+    private String inGroupFooterRowClass;
 
     public RowGrouping() {
         setRendererType("org.openfaces.RowGroupingRenderer");
@@ -66,7 +74,12 @@ public class RowGrouping extends OUIComponentBase implements ComponentConfigurat
                 groupOnHeaderClick,
                 hideGroupingColumns,
                 expansionState,
-                selectionMode
+                selectionMode,
+
+                groupHeaderRowStyle,
+                groupHeaderRowClass,
+                groupFooterRowStyle,
+                groupFooterRowClass
         };
     }
 
@@ -83,6 +96,11 @@ public class RowGrouping extends OUIComponentBase implements ComponentConfigurat
         hideGroupingColumns = (Boolean) state[i++];
         expansionState = (ExpansionState) state[i++];
         selectionMode = (RowGroupingSelectionMode) state[i++];
+
+        groupHeaderRowStyle = (String) state[i++];
+        groupHeaderRowClass = (String) state[i++];
+        groupFooterRowStyle = (String) state[i++];
+        groupFooterRowClass = (String) state[i++];
 
         beforeUpdateValuesPhase = true;
         incomingGroupingRules = null;
@@ -198,14 +216,14 @@ public class RowGrouping extends OUIComponentBase implements ComponentConfigurat
         }
         DataTable dataTable = getDataTable();
         Object rowData = dataTable.isRowAvailable() ? dataTable.getRowData() : null;
-        if (!(rowData instanceof RowGroupHeaderOrFooter)) {
+        if (!(rowData instanceof GroupHeaderOrFooter)) {
             Components.setRequestVariable(getColumnHeaderVar(), null);
             Components.setRequestVariable(getGroupingValueVar(), null);
             Components.setRequestVariable(getGroupingValueStringVar(), null);
             return;
         }
 
-        RowGroupHeaderOrFooter row = (RowGroupHeaderOrFooter) rowData;
+        GroupHeaderOrFooter row = (GroupHeaderOrFooter) rowData;
         RowGroup rowGroup = row.getRowGroup();
 
         String columnId = rowGroup.getColumnId();
@@ -296,5 +314,69 @@ public class RowGrouping extends OUIComponentBase implements ComponentConfigurat
 
     public UIComponent getConfiguredComponent() {
         return getDataTable();
+    }
+
+    public String getGroupHeaderRowStyle() {
+        return ValueBindings.get(this, "groupHeaderRowStyle", groupHeaderRowStyle);
+    }
+
+    public void setGroupHeaderRowStyle(String groupHeaderRowStyle) {
+        this.groupHeaderRowStyle = groupHeaderRowStyle;
+    }
+
+    public String getGroupHeaderRowClass() {
+        return ValueBindings.get(this, "groupHeaderRowClass", groupHeaderRowClass);
+    }
+
+    public void setGroupHeaderRowClass(String groupHeaderRowClass) {
+        this.groupHeaderRowClass = groupHeaderRowClass;
+    }
+
+    public String getGroupFooterRowStyle() {
+        return ValueBindings.get(this, "groupFooterRowStyle", groupFooterRowStyle);
+    }
+
+    public void setGroupFooterRowStyle(String groupFooterRowStyle) {
+        this.groupFooterRowStyle = groupFooterRowStyle;
+    }
+
+    public String getGroupFooterRowClass() {
+        return ValueBindings.get(this, "groupFooterRowClass", groupFooterRowClass);
+    }
+
+    public void setGroupFooterRowClass(String groupFooterRowClass) {
+        this.groupFooterRowClass = groupFooterRowClass;
+    }
+
+    public String getInGroupHeaderRowStyle() {
+        return ValueBindings.get(this, "inGroupHeaderRowStyle", inGroupHeaderRowStyle);
+    }
+
+    public void setInGroupHeaderRowStyle(String inGroupHeaderRowStyle) {
+        this.inGroupHeaderRowStyle = inGroupHeaderRowStyle;
+    }
+
+    public String getInGroupHeaderRowClass() {
+        return ValueBindings.get(this, "inGroupHeaderRowClass", inGroupHeaderRowClass);
+    }
+
+    public void setInGroupHeaderRowClass(String inGroupHeaderRowClass) {
+        this.inGroupHeaderRowClass = inGroupHeaderRowClass;
+    }
+
+    public String getInGroupFooterRowStyle() {
+        return ValueBindings.get(this, "inGroupFooterRowStyle", inGroupFooterRowStyle);
+    }
+
+    public void setInGroupFooterRowStyle(String inGroupFooterRowStyle) {
+        this.inGroupFooterRowStyle = inGroupFooterRowStyle;
+    }
+
+    public String getInGroupFooterRowClass() {
+        return ValueBindings.get(this, "inGroupFooterRowClass", inGroupFooterRowClass);
+    }
+
+    public void setInGroupFooterRowClass(String inGroupFooterRowClass) {
+        this.inGroupFooterRowClass = inGroupFooterRowClass;
     }
 }

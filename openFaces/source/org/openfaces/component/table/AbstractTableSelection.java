@@ -14,6 +14,7 @@ package org.openfaces.component.table;
 import org.openfaces.component.ComponentConfigurator;
 import org.openfaces.component.OUICommand;
 import org.openfaces.component.ajax.AjaxInitializer;
+import org.openfaces.component.table.impl.TableDataModel;
 import org.openfaces.org.json.JSONArray;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.renderkit.table.AbstractTableRenderer;

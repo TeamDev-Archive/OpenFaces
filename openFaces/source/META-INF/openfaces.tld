@@ -43854,19 +43854,9 @@ entering a value and returns a list of suggestions from the server -->
         have the type of java.lang.Object for this purpose. -->
       <!-- @el true -->
     </attribute>
-  </tag>
-  <tag>
-    <description>A component which can optionally be placed inside of grouping-enabled &amp;lt;o:dataTable&gt; tag to
-      customize appearance of group header rows.
-    </description>
-    <name>groupHeaderRow</name>
-    <tag-class>org.openfaces.taglib.jsp.table.GroupHeaderRowJspTag</tag-class>
-    <body-content>JSP</body-content>
     <attribute>
-      <description>A style for rows that meet criterion specified in the condition attribute. Can be specified as
-        a value-binding expression that uses request-scope variables those refer to the current row.
-      </description>
-      <name>style</name>
+      <description>A style for the group header row.</description>
+      <name>groupHeaderRowStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -43875,23 +43865,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A CSS class name for rows that meet criterion specified in the condition attribute. Can be
-        specified as a value-binding expression that uses request-scope variables those refer to the current row.
-      </description>
-      <name>styleClass</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-
-    <attribute>
-      <description>JavaScript code that should be executed on the client when the user clicks the left mouse
-        button over the row.
-      </description>
-      <name>onclick</name>
+      <description>CSS class name(s) for the group header row.</description>
+      <name>groupHeaderRowClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -43900,10 +43875,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed on the client when the user double-clicks the left
-        mouse button over the row.
-      </description>
-      <name>ondblclick</name>
+      <description>A style for the group footer row.</description>
+      <name>groupFooterRowStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -43912,9 +43885,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user presses any mouse button over the row.
-      </description>
-      <name>onmousedown</name>
+      <description>CSS class name(s) for the group footer row.</description>
+      <name>groupFooterRowClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -43923,9 +43895,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user moves the mouse pointer onto the row.
-      </description>
-      <name>onmouseover</name>
+      <description>A style for the per-column group header row.</description>
+      <name>inGroupHeaderRowStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -43934,9 +43905,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user moves the mouse pointer over the row.
-      </description>
-      <name>onmousemove</name>
+      <description>CSS class name(s) for the per-column group header row.</description>
+      <name>inGroupHeaderRowClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -43945,9 +43915,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user moves the mouse pointer away from the row.
-      </description>
-      <name>onmouseout</name>
+      <description>A style for the per-column group footer row.</description>
+      <name>inGroupFooterRowStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -43956,53 +43925,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user releases a mouse button over the row.
-      </description>
-      <name>onmouseup</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>JavaScript code that should be executed when the user presses right mouse button over the component
-        (or performs the other context menu invocation action depending on the platform).
-      </description>
-      <name>oncontextmenu</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>JavaScript code that should be executed when the user presses a key over the row.</description>
-      <name>onkeydown</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>JavaScript code that should be executed when the user releases a key over the row.</description>
-      <name>onkeyup</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>JavaScript code that should be executed on the client when the user presses and releases a key
-        over the row.
-      </description>
-      <name>onkeypress</name>
+      <description>CSS class name(s) for the per-column group footer row.</description>
+      <name>inGroupFooterRowClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -44012,8 +43936,164 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
   </tag>
   <!--<tag>-->
-    <!--<description>This component is under construction. A component which can optionally be placed inside of grouping-enabled &amp;lt;o:dataTable&amp;gt; tag-->
-      <!--to customize appearance of group footer rows.-->
+    <!--<description>A component which can optionally be placed inside of a grouping-enabled &amp;lt;o:dataTable&gt; tag to-->
+      <!--customize appearance of group header rows.-->
+    <!--</description>-->
+    <!--<name>groupHeaderRow</name>-->
+    <!--<tag-class>org.openfaces.taglib.jsp.table.GroupHeaderRowJspTag</tag-class>-->
+    <!--<body-content>JSP</body-content>-->
+    <!--<attribute>-->
+      <!--<description>A style for rows that meet criterion specified in the condition attribute. Can be specified as-->
+        <!--a value-binding expression that uses request-scope variables those refer to the current row.-->
+      <!--</description>-->
+      <!--<name>style</name>-->
+      <!--<deferred-value>-->
+        <!--<type>java.lang.String</type>-->
+      <!--</deferred-value>-->
+      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
+      <!--&lt;!&ndash; @default null &ndash;&gt;-->
+      <!--&lt;!&ndash; @el true &ndash;&gt;-->
+    <!--</attribute>-->
+    <!--<attribute>-->
+      <!--<description>A CSS class name for rows that meet criterion specified in the condition attribute. Can be-->
+        <!--specified as a value-binding expression that uses request-scope variables those refer to the current row.-->
+      <!--</description>-->
+      <!--<name>styleClass</name>-->
+      <!--<deferred-value>-->
+        <!--<type>java.lang.String</type>-->
+      <!--</deferred-value>-->
+      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
+      <!--&lt;!&ndash; @default null &ndash;&gt;-->
+      <!--&lt;!&ndash; @el true &ndash;&gt;-->
+    <!--</attribute>-->
+
+    <!--<attribute>-->
+      <!--<description>JavaScript code that should be executed on the client when the user clicks the left mouse-->
+        <!--button over the row.-->
+      <!--</description>-->
+      <!--<name>onclick</name>-->
+      <!--<deferred-value>-->
+        <!--<type>java.lang.String</type>-->
+      <!--</deferred-value>-->
+      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
+      <!--&lt;!&ndash; @default null &ndash;&gt;-->
+      <!--&lt;!&ndash; @el true &ndash;&gt;-->
+    <!--</attribute>-->
+    <!--<attribute>-->
+      <!--<description>JavaScript code that should be executed on the client when the user double-clicks the left-->
+        <!--mouse button over the row.-->
+      <!--</description>-->
+      <!--<name>ondblclick</name>-->
+      <!--<deferred-value>-->
+        <!--<type>java.lang.String</type>-->
+      <!--</deferred-value>-->
+      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
+      <!--&lt;!&ndash; @default null &ndash;&gt;-->
+      <!--&lt;!&ndash; @el true &ndash;&gt;-->
+    <!--</attribute>-->
+    <!--<attribute>-->
+      <!--<description>JavaScript code that should be executed when the user presses any mouse button over the row.-->
+      <!--</description>-->
+      <!--<name>onmousedown</name>-->
+      <!--<deferred-value>-->
+        <!--<type>java.lang.String</type>-->
+      <!--</deferred-value>-->
+      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
+      <!--&lt;!&ndash; @default null &ndash;&gt;-->
+      <!--&lt;!&ndash; @el true &ndash;&gt;-->
+    <!--</attribute>-->
+    <!--<attribute>-->
+      <!--<description>JavaScript code that should be executed when the user moves the mouse pointer onto the row.-->
+      <!--</description>-->
+      <!--<name>onmouseover</name>-->
+      <!--<deferred-value>-->
+        <!--<type>java.lang.String</type>-->
+      <!--</deferred-value>-->
+      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
+      <!--&lt;!&ndash; @default null &ndash;&gt;-->
+      <!--&lt;!&ndash; @el true &ndash;&gt;-->
+    <!--</attribute>-->
+    <!--<attribute>-->
+      <!--<description>JavaScript code that should be executed when the user moves the mouse pointer over the row.-->
+      <!--</description>-->
+      <!--<name>onmousemove</name>-->
+      <!--<deferred-value>-->
+        <!--<type>java.lang.String</type>-->
+      <!--</deferred-value>-->
+      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
+      <!--&lt;!&ndash; @default null &ndash;&gt;-->
+      <!--&lt;!&ndash; @el true &ndash;&gt;-->
+    <!--</attribute>-->
+    <!--<attribute>-->
+      <!--<description>JavaScript code that should be executed when the user moves the mouse pointer away from the row.-->
+      <!--</description>-->
+      <!--<name>onmouseout</name>-->
+      <!--<deferred-value>-->
+        <!--<type>java.lang.String</type>-->
+      <!--</deferred-value>-->
+      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
+      <!--&lt;!&ndash; @default null &ndash;&gt;-->
+      <!--&lt;!&ndash; @el true &ndash;&gt;-->
+    <!--</attribute>-->
+    <!--<attribute>-->
+      <!--<description>JavaScript code that should be executed when the user releases a mouse button over the row.-->
+      <!--</description>-->
+      <!--<name>onmouseup</name>-->
+      <!--<deferred-value>-->
+        <!--<type>java.lang.String</type>-->
+      <!--</deferred-value>-->
+      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
+      <!--&lt;!&ndash; @default null &ndash;&gt;-->
+      <!--&lt;!&ndash; @el true &ndash;&gt;-->
+    <!--</attribute>-->
+    <!--<attribute>-->
+      <!--<description>JavaScript code that should be executed when the user presses right mouse button over the component-->
+        <!--(or performs the other context menu invocation action depending on the platform).-->
+      <!--</description>-->
+      <!--<name>oncontextmenu</name>-->
+      <!--<deferred-value>-->
+        <!--<type>java.lang.String</type>-->
+      <!--</deferred-value>-->
+      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
+      <!--&lt;!&ndash; @default null &ndash;&gt;-->
+      <!--&lt;!&ndash; @el true &ndash;&gt;-->
+    <!--</attribute>-->
+    <!--<attribute>-->
+      <!--<description>JavaScript code that should be executed when the user presses a key over the row.</description>-->
+      <!--<name>onkeydown</name>-->
+      <!--<deferred-value>-->
+        <!--<type>java.lang.String</type>-->
+      <!--</deferred-value>-->
+      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
+      <!--&lt;!&ndash; @default null &ndash;&gt;-->
+      <!--&lt;!&ndash; @el true &ndash;&gt;-->
+    <!--</attribute>-->
+    <!--<attribute>-->
+      <!--<description>JavaScript code that should be executed when the user releases a key over the row.</description>-->
+      <!--<name>onkeyup</name>-->
+      <!--<deferred-value>-->
+        <!--<type>java.lang.String</type>-->
+      <!--</deferred-value>-->
+      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
+      <!--&lt;!&ndash; @default null &ndash;&gt;-->
+      <!--&lt;!&ndash; @el true &ndash;&gt;-->
+    <!--</attribute>-->
+    <!--<attribute>-->
+      <!--<description>JavaScript code that should be executed on the client when the user presses and releases a key-->
+        <!--over the row.-->
+      <!--</description>-->
+      <!--<name>onkeypress</name>-->
+      <!--<deferred-value>-->
+        <!--<type>java.lang.String</type>-->
+      <!--</deferred-value>-->
+      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
+      <!--&lt;!&ndash; @default null &ndash;&gt;-->
+      <!--&lt;!&ndash; @el true &ndash;&gt;-->
+    <!--</attribute>-->
+  <!--</tag>-->
+  <!--<tag>-->
+    <!--<description>This component is under construction. A component which can optionally be placed inside of a-->
+      <!--grouping-enabled &amp;lt;o:dataTable&amp;gt; tag to customize appearance of group footer rows.-->
     <!--</description>-->
     <!--<name>groupFooterRow</name>-->
     <!--<tag-class>org.openfaces.taglib.jsp.table.GroupFooterRowJspTag</tag-class>-->
@@ -46618,10 +46698,10 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>
-        This flag defines what appearance component will has after upload complete - should it show information about file upload
-        or it should return to the first state.
-        depends of layoutMode attribute.
-        Default value is depends on layoutMode attribute If it is assigned to "full" -> 'true' else 'false'
+        This flag defines what appearance component will have after the upload is complete - whether it should show
+        information about file upload or it return to the initial state.
+
+        The default value is "true" if the layoutMode attribute is set to "full", and "false" otherwise.
       </description>
       <name>showInfoAfterUpload</name>
       <deferred-value>
@@ -46634,7 +46714,8 @@ entering a value and returns a list of suggestions from the server -->
     <attribute>
       <description>
         This attribute defines what is happening to browseButton while file is uploading.
-        Default value is depends on layoutMode attribute If it is assigned to "full" -> 'showStop' else 'hide'.
+        Default value is depends on layoutMode attribute. If layoutMode is "full", the default value for this attribute
+        is "showStop", otherwise, the default value is "hide".
       </description>
       <name>browseButtonDuringUpload</name>
       <deferred-value>
@@ -46891,6 +46972,215 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
   </tag>
 
+  <tag>
+    <description>Defines an output component which shows a summary value for a DataTable column in which it is inserted
+      or a custom expression specified for this component explicitly.
+    </description>
+    <name>summary</name>
+    <tag-class>org.openfaces.taglib.jsp.table.SummaryJspTag</tag-class>
+    <body-content>JSP</body-content>
+
+    <attribute>
+      <description>A value-binding expression that associates this component with a backing bean property.
+      </description>
+      <name>binding</name>
+      <deferred-value>
+        <type>org.openfaces.component.table.Summary</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.table.Summary -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>The component identifier.</description>
+      <name>id</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el false -->
+    </attribute>
+    <attribute>
+      <description>A flag indicating whether or not this component should be rendered
+        (during Render Response Phase), or processed on any subsequent form submit.
+        The default value for this property is true.
+      </description>
+      <name>rendered</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>    <attribute>
+    <description>Specifies a value expression by which the summary value should be calculated. E.g. a value of
+      #{product.price} would result in displaying a &quot;total&quot; price for all table&#39;s rows (a sum
+      average, etc, depending on the function being used in this component).
+    </description>
+    <name>by</name>
+    <deferred-value>
+      <type>java.lang.Object</type>
+    </deferred-value>
+    <!-- @bindingType javax.el.Object -->
+    <!-- @default null -->
+    <!-- @el only -->
+  </attribute>
+    <attribute>
+      <description>The function that this &lt;o:summary&gt; component uses for combining the values.</description>
+      <name>function</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.table.SummaryFunction -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A converter that is used for converting the calculated summary value to string.</description>
+      <name>converter</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType javax.faces.convert.Converter -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A style for the entire GraphicText component. Note that this attribute is applied to the
+        component's image itself (the &amp;lt;img&gt; tag), so you shouldn't specify font and color properties in this
+        attribute. Use textStyle attribute for specifying font and color properties instead.
+      </description>
+      <name>style</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the entire GraphicText component. Note that this attribute is applied to the
+        component's image itself (the &amp;lt;img&gt; tag), so you shouldn't specify font and color properties in this
+        attribute. Use textStyle attribute for specifying font and color properties instead.
+      </description>
+      <name>styleClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user clicks
+        the left mouse button over the GraphicText.
+      </description>
+      <name>onclick</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user double-clicks
+        the left mouse button over the GraphicText.
+      </description>
+      <name>ondblclick</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user clicks
+        over the GraphicText with either mouse button.
+      </description>
+      <name>onmousedown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer onto the GraphicText.
+      </description>
+      <name>onmouseover</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer over the GraphicText.
+      </description>
+      <name>onmousemove</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer
+        away from the GraphicText.
+      </description>
+      <name>onmouseout</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user releases the mouse button over the GraphicText.
+      </description>
+      <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Specifies the pattern that specifies how the calculated summary value and function name is combined
+        to form the displayed text. This expression can use the following two request-scope variables: &quot;function&quot;
+        and &quot;value&quot;.
+      </description>
+      <name>pattern</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "#{function}: #{value}" -->
+      <!-- @el true -->
+    </attribute>
+
+  </tag>  
+  
   <!--<tag>-->
     <!--<description>This component is under construction. Displays a box where users may read and write comments. This component works on top of the Disqus-->
       <!--(http://disqus.com) service. You don&apos;t have to provide storage for the comments. You just have to create an-->

@@ -13,6 +13,8 @@
 package org.openfaces.component.table;
 
 import org.openfaces.component.OUIData;
+import org.openfaces.component.table.impl.AbstractDynamicColumnExpression;
+import org.openfaces.component.table.impl.DynamicColumn;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.util.Components;
 import org.openfaces.util.ValueBindings;
@@ -654,7 +656,7 @@ public class Columns extends UIComponentBase implements ValueHolder, NamingConta
         footerOnmouseup = onmouseup;
     }
 
-    protected AbstractTable getTable() {
+    public AbstractTable getTable() {
         UIComponent parent = getParent();
         while (parent instanceof ColumnGroup)
             parent = parent.getParent();
@@ -665,27 +667,27 @@ public class Columns extends UIComponentBase implements ValueHolder, NamingConta
     }
 
     public void setHeader(UIComponent header) {
-        getFacets().put("header", header);
+        getFacets().put(BaseColumn.FACET_HEADER, header);
     }
 
     public UIComponent getHeader() {
-        return getFacets().get("header");
+        return getFacets().get(BaseColumn.FACET_HEADER);
     }
 
     public void setSubHeader(UIComponent header) {
-        getFacets().put("subHeader", header);
+        getFacets().put(BaseColumn.FACET_SUB_HEADER, header);
     }
 
     public UIComponent getSubHeader() {
-        return getFacets().get("subHeader");
+        return getFacets().get(BaseColumn.FACET_SUB_HEADER);
     }
 
     public void setFooter(UIComponent footer) {
-        getFacets().put("footer", footer);
+        getFacets().put(BaseColumn.FACET_FOOTER, footer);
     }
 
     public UIComponent getFooter() {
-        return getFacets().get("footer");
+        return getFacets().get(BaseColumn.FACET_FOOTER);
     }
 
     public List<DynamicColumn> toColumnList(FacesContext context) {

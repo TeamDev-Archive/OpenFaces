@@ -36,12 +36,12 @@ public class RendererBase extends Renderer {
         Rendering.writeAttribute(writer, name, value);
     }
 
-    protected String writeIdAttribute(FacesContext facesContext, UIComponent component) throws IOException {
-        return Rendering.writeIdAttribute(facesContext, component);
+    protected String writeIdAttribute(FacesContext context, UIComponent component) throws IOException {
+        return Rendering.writeIdAttribute(context, component);
     }
 
-    protected void writeNameAttribute(FacesContext facesContext, UIComponent component) throws IOException {
-        Rendering.writeNameAttribute(facesContext, component);
+    protected void writeNameAttribute(FacesContext context, UIComponent component) throws IOException {
+        Rendering.writeNameAttribute(context, component);
     }
 
     protected void writeAttribute(ResponseWriter writer, String name, int value, int emptyValue) throws IOException {

@@ -14,7 +14,7 @@ package org.openfaces.renderkit.table;
 import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.BaseColumn;
 import org.openfaces.component.table.DataTable;
-import org.openfaces.component.table.DynamicCol;
+import org.openfaces.component.table.impl.DynamicCol;
 import org.openfaces.component.table.RowGrouping;
 import org.openfaces.component.table.SortingOrGroupingRule;
 import org.openfaces.util.Environment;

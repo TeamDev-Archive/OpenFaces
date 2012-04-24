@@ -33,6 +33,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Stack;
 
 /**
@@ -552,7 +553,7 @@ public class Components {
     public static String tagNameByClass(Class<? extends UIComponent> componentClass) {
         String fqClassName = componentClass.getName();
         String shortClassName = fqClassName.substring(fqClassName.lastIndexOf(".") + 1);
-        String tagName = shortClassName.substring(0, 1).toUpperCase() + shortClassName.substring(1);
+        String tagName = shortClassName.substring(0, 1).toLowerCase() + shortClassName.substring(1);
         return "<o:" + tagName + ">";
     }
 
@@ -561,7 +562,7 @@ public class Components {
             Class... expectedParentClasses) {
         UIComponent parent = component.getParent();
         for (Class expectedParentClass : expectedParentClasses) {
-            if (parent.getClass().equals(expectedParentClass))
+            if (expectedParentClass.isAssignableFrom(parent.getClass()))
                 return parent;
         }
         Class<? extends UIComponent> componentClass = component.getClass();
@@ -569,11 +570,11 @@ public class Components {
         StringBuilder allowedParentTagNames = new StringBuilder();
         for (Class expectedParentClass : expectedParentClasses) {
             if (allowedParentTagNames.length() > 0) allowedParentTagNames.append(" or ");
-            String parentComponentTagName = "<o:" + Components.tagNameByClass(expectedParentClass) + ">";
+            String parentComponentTagName = Components.tagNameByClass(expectedParentClass);
             allowedParentTagNames.append(parentComponentTagName);
         }
 
-        throw new FacesException("<o:" + tagName + "> should be placed as a child tag for " + allowedParentTagNames +
+        throw new FacesException(tagName + " should be placed as a child tag for " + allowedParentTagNames +
                 " tag, \b but it was placed into component with a class of " + parent.getClass().getName());
     }
 
@@ -620,4 +621,70 @@ public class Components {
     }
 
 
+    public static List<UIComponent> getFacets(UIComponent component, String... facetNames) {
+        List<UIComponent> facets = new ArrayList<UIComponent>();
+        for (String facetName : facetNames) {
+            UIComponent facet = getFacet(component, facetName);
+            if (facet != null)
+                facets.add(facet);
+        }
+        return facets;
+    }
+
+    /**
+     * Finds the owner of this component that includes it as one of its facet (either directly or indirectly through
+     * other container components)
+     */
+    public static FacetReference getParentFacetReference(UIComponent component) {
+        UIComponent parent = component.getParent();
+        if (parent == null) return null;
+        Set<Map.Entry<String,UIComponent>> facetEntries = parent.getFacets().entrySet();
+        for (Map.Entry<String, UIComponent> facetEntry : facetEntries) {
+            UIComponent value = facetEntry.getValue();
+            if (undecorateFacetComponent(value) == component)
+                return new FacetReference(parent, facetEntry.getKey());
+        }
+        return getParentFacetReference(parent);
+    }
+
+    /**
+     * This method is redefined in OpenFaces 3.x to overcome Mojarra 2.0.3 issue of excessive internal facet wrapper
+     * components being erroneously returned by the UIComponent's facet access methods.
+     *
+     * @see #getFacet(javax.faces.component.UIComponent component, java.lang.String facetName)
+     * @param facetComponent
+     * @return
+     */
+    private static UIComponent undecorateFacetComponent(UIComponent facetComponent) {
+        return facetComponent;
+    }
+
+    public static void clearCachedClientIds(UIComponent component) {
+        // setId forces client id recalculation
+        component.setId(component.getId());
+        Iterator<UIComponent> kids = component.getFacetsAndChildren();
+        while (kids.hasNext()) {
+            UIComponent kid = kids.next();
+            clearCachedClientIds(kid);
+        }
+
+    }
+
+    public static class FacetReference {
+        private UIComponent facetOwner;
+        private String facetName;
+
+        public FacetReference(UIComponent facetOwner, String facetName) {
+            this.facetOwner = facetOwner;
+            this.facetName = facetName;
+        }
+
+        public UIComponent getFacetOwner() {
+            return facetOwner;
+        }
+
+        public String getFacetName() {
+            return facetName;
+        }
+    }
 }

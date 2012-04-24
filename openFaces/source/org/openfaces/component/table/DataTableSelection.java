@@ -11,6 +11,8 @@
  */
 package org.openfaces.component.table;
 
+import org.openfaces.component.table.impl.TableDataModel;
+
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import java.util.List;
@@ -51,7 +53,7 @@ public abstract class DataTableSelection extends AbstractRowSelection {
             case ALL_ROWS:
                 return rowData;
             case DATA_ROWS:
-                return rowData instanceof RowGroupHeaderOrFooter ? null : rowData;
+                return rowData instanceof GroupHeaderOrFooter ? null : rowData;
             default:
                 throw new IllegalStateException(
                         "Unknown value of RowGroupingSelectionMode property: " + rowGroupingSelectionMode);

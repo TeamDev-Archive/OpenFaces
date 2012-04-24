@@ -16,6 +16,9 @@ import org.openfaces.component.FilterableComponent;
 import org.openfaces.component.OUIData;
 import org.openfaces.component.TableStyles;
 import org.openfaces.component.filter.Filter;
+import org.openfaces.component.table.impl.NodeInfo;
+import org.openfaces.component.table.impl.RowComparator;
+import org.openfaces.component.table.impl.TableDataModel;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.renderkit.table.TableStructure;
 import org.openfaces.renderkit.table.TreeTableRenderer;
@@ -167,11 +170,16 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     @Override
     public Object processSaveState(FacesContext context) {
         AbstractTableSelection selection = getSelection();
+        TableDataModel model = getModel();
         if (selection != null && selection.getModel() == null) {
             // Fix for JSFC-2945 (selection's model can be null if table is not rendered and selection's rowData is declared as constant)
-            TableDataModel model = getModel();
             selection.setModel(model);
         }
+
+        // Model instance is saved as is in the "server" state saving mode. The table reference is unnecessary in the
+        // state and it contains references to the entire view state tree, so we're just cutting this reference to
+        // prevent excessive memory consumption (see OF-196)
+        model.setTable(null);
 
         return super.processSaveState(context);
     }
@@ -346,7 +354,60 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     }
 
     protected TableDataModel getModel() {
-        return (TableDataModel) getUiDataValue();
+        TableDataModel uiDataValue = (TableDataModel) getUiDataValue();
+        AbstractTable table = uiDataValue.getTable();
+        if (table == null) {
+            // The model's table reference is normally cleared before the state is saved
+            // (see AbstractTable.processSaveState), and then initialized again after restoring state
+            // (see AbstractTable.afterRestoreState). It is possible that the same instance of a table component gets
+            // through the state saving phase and then rerendered without restoring the state though. It is the case
+            // when the table component is bound to a session-scoped value, where it is created explicitly, and the same
+            // page is opened with the HTTP GET request for the second time (for an application that has a "server"
+            // state saving mode). Hence we have this check that guards against such a situation when there's an attempt
+            // to use a model without the table reference in the beginning of a lifecycle. E.g. this fix is important
+            // for DataTable.testPagination test to work properly.
+            uiDataValue.setTable(this);
+        }
+
+        return uiDataValue;
+    }
+
+    @Override
+    public void setRowIndex(int rowIndex) {
+        super.setRowIndex(rowIndex);
+
+        List<UIComponent> components = getAdditionalComponentsRequiringClientIdReset();
+        for (UIComponent component : components) {
+            Components.clearCachedClientIds(component);
+        }
+    }
+
+    private List<UIComponent> additionalComponentsRequiringClientIdReset;
+
+    /**
+     * Some column facets, which are rendered several times per table, such as "inColumnHeader" might contain some
+     * components, such as <o:summary>, which are sensitive to the fact that their client id is not repeated when the
+     * same component is rendered in different rows. Hence this resets their client ids
+     * @return
+     */
+    private List<UIComponent> getAdditionalComponentsRequiringClientIdReset() {
+        if (additionalComponentsRequiringClientIdReset == null) {
+            additionalComponentsRequiringClientIdReset = new ArrayList<UIComponent>();
+            List<BaseColumn> columns = getAllColumns();
+            for (BaseColumn column : columns) {
+                Map<String, UIComponent> facets = column.getFacets();
+                for (Map.Entry<String, UIComponent> entry : facets.entrySet()) {
+                    String facetName = entry.getKey();
+                    if (! (
+                            facetName.equals(BaseColumn.FACET_HEADER) ||
+                            facetName.equals(BaseColumn.FACET_SUB_HEADER) ||
+                            facetName.equals(BaseColumn.FACET_FOOTER)
+                    ))
+                        additionalComponentsRequiringClientIdReset.add(entry.getValue());
+                }
+            }
+        }
+        return additionalComponentsRequiringClientIdReset;
     }
 
     public boolean isRowAvailable() {
@@ -500,7 +561,11 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         return result;
     }
 
-    private BaseColumn findColumnById(List<BaseColumn> allColumns, String columnId) {
+    /**
+     * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
+     * by any application code.
+     */
+    public BaseColumn findColumnById(List<BaseColumn> allColumns, String columnId) {
         BaseColumn colById = null;
         for (BaseColumn col : allColumns) {
             if (columnId.equals(col.getId())) {
@@ -945,30 +1010,6 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         return findSelectionChild();
     }
 
-    public ColumnResizing getColumnResizing() {
-        return Components.findChildWithClass(this, ColumnResizing.class, "<o:columnResizing>");
-    }
-
-    public ColumnReordering getColumnReordering() {
-        return Components.findChildWithClass(this, ColumnReordering.class, "<o:columnReordering>");
-    }
-
-    public Scrolling getScrolling() {
-        return Components.findChildWithClass(this, Scrolling.class, "<o:scrolling>");
-    }
-
-    private Sorting sorting;
-
-    public Sorting getSorting() {
-        if (sorting == null) {
-            sorting = Components.findChildWithClass(this, Sorting.class, "<o:sorting>");
-            if (sorting == null) {
-                sorting = new Sorting(false);
-            }
-        }
-        return sorting;
-    }
-
     public void setSelection(AbstractTableSelection newSelection) {
         AbstractTableSelection oldSelection = findSelectionChild();
         if (oldSelection != null) {
@@ -988,6 +1029,58 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         if (selectionChildren.size() > 1)
             throw new RuntimeException("There should be only one selection child with its rendered attribute set to true under this component: " + getId());
         return selectionChildren.size() > 0 ? selectionChildren.get(0) : null;
+    }
+
+    public ColumnResizing getColumnResizing() {
+        return Components.findChildWithClass(this, ColumnResizing.class, "<o:columnResizing>");
+    }
+
+    public ColumnReordering getColumnReordering() {
+        return Components.findChildWithClass(this, ColumnReordering.class, "<o:columnReordering>");
+    }
+
+    public Scrolling getScrolling() {
+        return Components.findChildWithClass(this, Scrolling.class, "<o:scrolling>");
+    }
+
+    private List<Summary> summaries;
+
+    public List<Summary> getSummaries() {
+        if (summaries == null) {
+            List<UIComponent> facets = new ArrayList<UIComponent>();
+            facets.addAll(this.getFacets().values());
+            List<BaseColumn> allColumns = getAllColumns();
+            for (BaseColumn column : allColumns) {
+                List<UIComponent> applicableFacets = Components.getFacets(column,
+                        BaseColumn.FACET_HEADER, BaseColumn.FACET_SUB_HEADER, BaseColumn.FACET_FOOTER,
+                        BaseColumn.FACET_GROUP_HEADER,
+                        BaseColumn.FACET_IN_GROUP_HEADER, BaseColumn.FACET_IN_GROUP_FOOTER,
+                        BaseColumn.FACET_GROUP_FOOTER);
+                facets.addAll(applicableFacets);
+            }
+
+            List<Summary> summaries = new ArrayList<Summary>();
+            for (UIComponent facet : facets) {
+                if (facet instanceof Summary)
+                    summaries.add((Summary) facet);
+                else
+                    summaries.addAll(Components.findChildrenWithClass(facet, Summary.class, true, true));
+            }
+            this.summaries = summaries;
+        }
+        return summaries;
+    }
+
+    private Sorting sorting;
+
+    public Sorting getSorting() {
+        if (sorting == null) {
+            sorting = Components.findChildWithClass(this, Sorting.class, "<o:sorting>");
+            if (sorting == null) {
+                sorting = new Sorting(false);
+            }
+        }
+        return sorting;
     }
 
     protected void rememberSelectionByKeys() {
@@ -1324,14 +1417,26 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     }
 
 
+    /**
+     * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
+     * by any application code.
+     */
     public List<SortingRule> getSortingRules() {
         return sortingRules;
     }
 
+    /**
+     * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
+     * by any application code.
+     */
     public void setSortingRules(List<SortingRule> sortingRules) {
         this.sortingRules = sortingRules;
     }
 
+    /**
+     * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
+     * by any application code.
+     */
     public void acceptNewSortingRules(List<SortingRule> sortingRules) {
         rememberSelectionByKeys();
         if (beforeUpdateValuesPhase) {
@@ -1352,13 +1457,21 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         return getModel().getRowKey();
     }
 
+    /**
+     * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
+     * by any application code.
+     */
     public String getClientRowKey() {
         Object rowKey = getRowKey();
         if (rowKey == null) return null;
         return rowKey.toString();
     }
 
-    protected Comparator<Object> createRowDataComparator(
+    /**
+     * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
+     * by any application code.
+     */
+    public Comparator<Object> createRowDataComparator(
             List<GroupingRule> groupingRules,
             List<SortingRule> sortingRules) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -1389,15 +1502,11 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         };
     }
 
-    protected ValueExpression getColumnGroupingValueExpression(String columnId) {
-        if (columnId == null)
-            return null;
-        List<BaseColumn> allColumns = getAllColumns();
-        BaseColumn baseColumn = findColumnById(allColumns, columnId);
-        return baseColumn.getColumnGroupingExpression();
-    }
-
-    protected RowComparator createRuleComparator(final FacesContext facesContext, SortingOrGroupingRule rule) {
+    /**
+     * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
+     * by any application code.
+     */
+    public RowComparator createRuleComparator(final FacesContext facesContext, SortingOrGroupingRule rule) {
         String columnId = rule.getColumnId();
         if (columnId == null)
             return null;
@@ -1486,7 +1595,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
             Comparator<Object> valueComparator,
             Map<String, Object> requestMap,
             boolean sortAscending) {
-        return new RowComparator(facesContext, sortingExpression, valueComparator, requestMap, sortAscending);
+        return new RowComparator(this, facesContext, sortingExpression, valueComparator, requestMap, sortAscending);
     }
 
     protected List<Filter> getActiveFilters() {
@@ -1710,14 +1819,26 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         return null;
     }
 
+    /**
+     * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
+     * by any application code.
+     */
     public int getRowIndexByClientSuffix(String id) {
         return Integer.parseInt(id);
     }
 
+    /**
+     * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
+     * by any application code.
+     */
     public boolean getDeferBodyLoading() {
         return ValueBindings.get(this, "deferBodyLoading", deferBodyLoading, false);
     }
 
+    /**
+     * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
+     * by any application code.
+     */
     public void setDeferBodyLoading(boolean deferBodyLoading) {
         this.deferBodyLoading = deferBodyLoading;
     }
@@ -1751,10 +1872,18 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         return true;
     }
 
+    /**
+     * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
+     * by any application code.
+     */
     public List<BaseColumn> getAdaptedRenderedColumns() {
         return getRenderedColumns();
     }
 
+    /**
+     * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
+     * by any application code.
+     */
     public void acceptNewExpandedRowIndexes(Set indexes) {
         FacesContext context = getFacesContext();
         boolean dontCollapseNodes = isReloadingThisComponentWithA4j() || TreeTableRenderer.isAjaxFoldingInProgress(context);
@@ -1796,73 +1925,11 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     protected abstract void setNodeExpanded(TreePath keyPath, boolean expanded);
 
-    protected class RowComparator implements Comparator<Object> {
-        private final FacesContext facesContext;
-        private final ValueExpression sortingExpressionBinding;
-        private final Comparator<Object> valueComparator;
-        private final Map<String, Object> requestMap;
-        private final boolean sortAscending;
-        private Object comparisonValue1;
-        private Object comparisonValue2;
-
-        protected final String var;
-
-        public RowComparator(
-                FacesContext facesContext,
-                ValueExpression valueExpression,
-                Comparator<Object> valueComparator,
-                Map<String, Object> requestMap,
-                boolean sortAscending) {
-            this.facesContext = facesContext;
-            sortingExpressionBinding = valueExpression;
-            this.valueComparator = valueComparator;
-            this.requestMap = requestMap;
-            var = getVar();
-            this.sortAscending = sortAscending;
-        }
-
-        public int compare(Object o1, Object o2) {
-            Runnable restorePrevParams = populateSortingExpressionParams(var, requestMap, o1);
-            ELContext elContext = facesContext.getELContext();
-            comparisonValue1 = sortingExpressionBinding.getValue(elContext);
-            restorePrevParams.run();
-            restorePrevParams = populateSortingExpressionParams(var, requestMap, o2);
-            comparisonValue2 = sortingExpressionBinding.getValue(elContext);
-            restorePrevParams.run();
-            int result;
-            if (comparisonValue1 == null)
-                result = (comparisonValue2 == null) ? 0 : -1;
-            else if (comparisonValue2 == null)
-                result = 1;
-            else if (valueComparator != null) {
-                result = valueComparator.compare(comparisonValue1, comparisonValue2);
-            } else if (comparisonValue1 instanceof Comparable) {
-                result = ((Comparable) comparisonValue1).compareTo(comparisonValue2);
-            } else {
-                throw new RuntimeException("The values to be sorted must implement the Comparable interface: " + comparisonValue1.getClass());
-            }
-            if (!sortAscending)
-                result = -result;
-            return result;
-        }
-
-        /**
-         * @return the actual value which was participating in the last comparison session (first comparison argument)
-         */
-        public Object getComparisonValue1() {
-            return comparisonValue1;
-        }
-
-        /**
-         * @return the actual value which was participating in the last comparison session (second comparison argument)
-         */
-        public Object getComparisonValue2() {
-            return comparisonValue2;
-        }
-
-    }
-
-    protected Runnable populateSortingExpressionParams(final String var, final Map<String, Object> requestMap, Object collectionObject) {
+    /**
+     * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
+     * by any application code.
+     */
+    public Runnable populateSortingExpressionParams(final String var, final Map<String, Object> requestMap, Object collectionObject) {
         final Object prevValue = requestMap.put(var, collectionObject);
         return new Runnable() {
             public void run() {
@@ -2058,35 +2125,21 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         export(scope, formatter, fileName + "." + formatter.getDefaultFileExtension());
     }
 
+    protected void checkExportSupportedInCurrentState() {
+        // Export is allowed in all states by default. Subclasses can define their own state checks.
+    }
+
     public void export(DataScope scope, TableDataFormatter formatter, String fileName) {
         TableDataExtractor extractor = new TableDataExtractor(scope);
         export(scope, extractor, formatter, fileName);
     }
 
     public void export(DataScope scope, TableDataExtractor extractor, TableDataFormatter formatter, String fileName) {
+        checkExportSupportedInCurrentState();
         FacesContext context = FacesContext.getCurrentInstance();
         TableData tableData = extractor.extract(this);
         formatter.sendResponse(context, tableData, fileName);
     }
-
-    /**
-     * Defines the possible scopes of data for such operations as extracting table data programmatically, and exporting
-     * table's data.
-     */
-    public static enum DataScope {
-        /**
-         * Only the currently displayed rows in the order that they are displayed. That is, if DataTable pagination is
-         * turned on, then only the current page rows are considered.
-         */
-        DISPLAYED_ROWS,
-
-        /**
-         * All rows on all table's pages, in their current sorting order. If filters are enabled for the table, then
-         * only the filtered rows are considered.
-         */
-        FILTERED_ROWS
-    }
-
 
 
 }
