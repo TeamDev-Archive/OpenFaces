@@ -312,7 +312,22 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     }
 
     protected TableDataModel getModel() {
-        return (TableDataModel) getUiDataValue();
+        TableDataModel uiDataValue = (TableDataModel) getUiDataValue();
+        AbstractTable table = uiDataValue.getTable();
+        if (table == null) {
+            // The model's table reference is normally cleared before the state is saved
+            // (see AbstractTable.processSaveState), and then initialized again after restoring state
+            // (see AbstractTable.afterRestoreState). It is possible that the same instance of a table component gets
+            // through the state saving phase and then rerendered without restoring the state though. It is the case
+            // when the table component is bound to a session-scoped value, where it is created explicitly, and the same
+            // page is opened with the HTTP GET request for the second time (for an application that has a "server"
+            // state saving mode). Hence we have this check that guards against such a situation when there's an attempt
+            // to use a model without the table reference in the beginning of a lifecycle. E.g. this fix is important
+            // for DataTable.testPagination test to work properly.
+            uiDataValue.setTable(this);
+        }
+
+        return uiDataValue;
     }
 
     @Override
