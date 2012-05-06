@@ -22,6 +22,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -42,6 +43,7 @@ import java.util.Map;
 /**
  * @author Kharchenko
  */
+@WebFilter(filterName = "ResourceFilter", servletNames = "Faces Servlet")
 public class ResourceFilter implements Filter {
     public static final String INTERNAL_RESOURCE_PATH = "/openFacesResources/";
     public static final String RUNTIME_INIT_LIBRARY_PATH = INTERNAL_RESOURCE_PATH + "of_ajaxInitLib/";
@@ -63,6 +65,7 @@ public class ResourceFilter implements Filter {
                          ServletResponse servletResponse,
                          FilterChain filterChain)
             throws IOException, ServletException {
+        FileUploadFilter.processMultipartRequest(servletRequest, servletContext);
         if (servletRequest.getAttribute(PROCESSING_FILTER) != null) {
             filterChain.doFilter(servletRequest, servletResponse);
             return;

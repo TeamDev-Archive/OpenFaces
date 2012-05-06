@@ -174,11 +174,6 @@
   </filter>
 
   <filter>
-    <filter-name>OpenFacesUploadFilter</filter-name>
-    <filter-class>org.openfaces.util.FileUploadFilter</filter-class>
-  </filter>
-
-  <filter>
     <filter-name>LiveDemoFilter</filter-name>
     <filter-class>org.openfaces.demo.filter.LiveDemoFilter</filter-class>
   </filter>
@@ -198,10 +193,6 @@
     <dispatcher>FORWARD</dispatcher>
   </filter-mapping>
 
-  <filter-mapping>
-    <filter-name>OpenFacesUploadFilter</filter-name>
-    <url-pattern>*.jsf</url-pattern>
-  </filter-mapping>
 
   <filter-mapping>
     <filter-name>LiveDemoFilter</filter-name>

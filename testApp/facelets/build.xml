@@ -32,7 +32,6 @@
     <include name="commons-logging-1.1.1.jar"/>
     <include name="commons-el-1.0.jar"/>
     <include name="standard-1.1.2.jar"/>
-    <include name="commons-fileupload-1.0.jar"/>
     <include name="commons-lang-2.1.jar"/>
   </fileset>
 

@@ -1645,8 +1645,8 @@
     <library name="tomahawk12-1.1.8">
       <CLASSES>
         <root url="jar://$PROJECT_DIR$/lib/apache/commons-lang-2.1.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/apache/commons-fileupload-1.0.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/tomahawk/tomahawk12-1.1.8.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/commons-fileupload-1.2.2.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />

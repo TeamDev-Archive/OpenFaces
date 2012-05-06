@@ -634,6 +634,11 @@
     <managed-bean-class>org.openfaces.testapp.slider.SliderBean</managed-bean-class>
     <managed-bean-scope>session</managed-bean-scope>
   </managed-bean>
+  <managed-bean>
+    <managed-bean-name>FileAttachmentsBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.fileattachments.FileAttachmentsBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
 
   <converter>
     <converter-id>orientationConverter</converter-id>
