@@ -4800,3 +4800,23 @@ O$.ColumnMenu = {
   }
 };
 
+O$.Summary = {
+  _init: function(componentId, value, secondInitializationAttempt) {
+    if (!O$(componentId)) {
+      if (!secondInitializationAttempt) {
+        // the case for the below facet whose _init function call is rendered prior to the appropriate Summary
+        // component's placeholder, so we're invoking this asynchronously to give a chance for the tags below to get
+        // into the DOM (when the JavaScript processing thread is freed again)
+        setTimeout(function() {
+          O$.Summary._init(componentId, value, true);
+        }, 1);
+      }
+      return;
+    }
+    var summary = O$.initComponent(componentId, null, {
+
+    });
+    summary.innerHTML = value;
+  }
+};
+

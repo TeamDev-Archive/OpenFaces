@@ -13,6 +13,8 @@
 package org.openfaces.component.table;
 
 import org.openfaces.component.OUIData;
+import org.openfaces.component.table.impl.AbstractDynamicColumnExpression;
+import org.openfaces.component.table.impl.DynamicColumn;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.util.Components;
 import org.openfaces.util.ValueBindings;
@@ -24,8 +26,9 @@ import javax.faces.component.ContextCallback;
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
-import javax.faces.component.UINamingContainer;
+import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -37,7 +40,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class Columns extends UIComponentBase implements NamingContainer {
+public class Columns extends UIComponentBase implements ValueHolder, NamingContainer {
     public static final String COMPONENT_TYPE = "org.openfaces.Columns";
     public static final String COMPONENT_FAMILY = "org.openfaces.Columns";
 
@@ -51,6 +54,7 @@ public class Columns extends UIComponentBase implements NamingContainer {
     private String var;
     private Boolean sortingEnabled;
     private Comparator sortingComparator;
+    private Converter converter;
 
     private String align;
     private String valign;
@@ -130,7 +134,8 @@ public class Columns extends UIComponentBase implements NamingContainer {
                 headerOnmousemove, headerOnmouseout, headerOnmouseup, bodyOnclick, bodyOndblclick,
                 bodyOnmousedown, bodyOnmouseover, bodyOnmousemove, bodyOnmouseout, bodyOnmouseup,
                 footerOnclick, footerOndblclick, footerOnmousedown, footerOnmouseover, footerOnmousemove,
-                footerOnmouseout, footerOnmouseup
+                footerOnmouseout, footerOnmouseup,
+                saveAttachedState(context, converter)
         };
     }
 
@@ -193,6 +198,7 @@ public class Columns extends UIComponentBase implements NamingContainer {
         footerOnmousemove = (String) state[i++];
         footerOnmouseout = (String) state[i++];
         footerOnmouseup = (String) state[i++];
+        converter = (Converter) restoreAttachedState(context, state[i++]);
     }
 
     public ValueExpression getValueExpression() {
@@ -202,6 +208,15 @@ public class Columns extends UIComponentBase implements NamingContainer {
     public void setValueExpression(ValueExpression binding) {
         setValueExpression("value", binding);
     }
+
+    public Converter getConverter() {
+        return ValueBindings.get(this, "converter", converter, Converter.class);
+    }
+
+    public void setConverter(Converter converter) {
+        this.converter = converter;
+    }
+
 
     public String getVar() {
         return var;
@@ -225,6 +240,14 @@ public class Columns extends UIComponentBase implements NamingContainer {
 
     public void setColumnRendered(boolean columnRendered) {
         this.columnRendered = columnRendered;
+    }
+
+    public void setColumnValueExpression(ValueExpression ve) {
+        setValueExpression("columnValue", ve);
+    }
+
+    public ValueExpression getColumnValueExpression() {
+        return getValueExpression("columnValue");
     }
 
     public String getHeaderValue() {
@@ -632,7 +655,7 @@ public class Columns extends UIComponentBase implements NamingContainer {
         footerOnmouseup = onmouseup;
     }
 
-    protected AbstractTable getTable() {
+    public AbstractTable getTable() {
         UIComponent parent = getParent();
         while (parent instanceof ColumnGroup)
             parent = parent.getParent();
@@ -643,27 +666,27 @@ public class Columns extends UIComponentBase implements NamingContainer {
     }
 
     public void setHeader(UIComponent header) {
-        getFacets().put("header", header);
+        getFacets().put(BaseColumn.FACET_HEADER, header);
     }
 
     public UIComponent getHeader() {
-        return getFacets().get("header");
+        return getFacets().get(BaseColumn.FACET_HEADER);
     }
 
     public void setSubHeader(UIComponent header) {
-        getFacets().put("subHeader", header);
+        getFacets().put(BaseColumn.FACET_SUB_HEADER, header);
     }
 
     public UIComponent getSubHeader() {
-        return getFacets().get("subHeader");
+        return getFacets().get(BaseColumn.FACET_SUB_HEADER);
     }
 
     public void setFooter(UIComponent footer) {
-        getFacets().put("footer", footer);
+        getFacets().put(BaseColumn.FACET_FOOTER, footer);
     }
 
     public UIComponent getFooter() {
-        return getFacets().get("footer");
+        return getFacets().get(BaseColumn.FACET_FOOTER);
     }
 
     public List<DynamicColumn> toColumnList(FacesContext context) {
@@ -716,6 +739,7 @@ public class Columns extends UIComponentBase implements NamingContainer {
 
                 UIComponent srcComponent = this;
                 TableUtil.copyColumnAttributes(srcComponent, column);
+                column.setValueExpression(getColumnValueExpression());
             }
             applySortingParameters(column);
             applyFilteringParameters(context, column);
@@ -1020,7 +1044,7 @@ public class Columns extends UIComponentBase implements NamingContainer {
     }
 
     private void resetClientIdsForChildren(UIComponent parent) {
-        for (Iterator<UIComponent> iterator = parent.getFacetsAndChildren(); iterator.hasNext();) {
+        for (Iterator<UIComponent> iterator = parent.getFacetsAndChildren(); iterator.hasNext(); ) {
             UIComponent component = iterator.next();
             component.setId(component.getId()); // schedule clientId for recalculation (see spec 3.1.6)
             resetClientIdsForChildren(component);
@@ -1035,5 +1059,33 @@ public class Columns extends UIComponentBase implements NamingContainer {
         }
         return clientId + NamingContainer.SEPARATOR_CHAR + columnIndex;
     }
+
+    /**
+     * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
+     * by any application code.
+     */
+    public Object getLocalValue() {
+        // can't throw UnsupportedOperationException when a column has any converter tag because Facelts' ConvertHandler
+        // invokes this method and tries to convert it into Object if this method returns a string value, so we're just
+        // returning null here.
+        return null;
+    }
+
+    /**
+     * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
+     * by any application code.
+     */
+    public Object getValue() {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
+     * by any application code.
+     */
+    public void setValue(Object value) {
+        throw new UnsupportedOperationException();
+    }
+
 
 }

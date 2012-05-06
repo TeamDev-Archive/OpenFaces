@@ -26,6 +26,7 @@ import java.util.List;
 public class TreeColumn extends Column implements CompoundComponent, SyntheticColumn {
     public static final String COMPONENT_TYPE = "org.openfaces.TreeColumn";
     public static final String COMPONENT_FAMILY = "org.openfaces.TreeColumn";
+    private static final String FACET_EXPANSION_TOGGLE = "expansionToggle";
 
     private String levelIndent;
     private String expansionToggleCellStyle;
@@ -64,7 +65,7 @@ public class TreeColumn extends Column implements CompoundComponent, SyntheticCo
 
 
     public void createSubComponents(FacesContext context) {
-        Components.getOrCreateFacet(context, this, ImageExpansionToggle.COMPONENT_TYPE, "expansionToggle", ImageExpansionToggle.class);
+        Components.getOrCreateFacet(context, this, ImageExpansionToggle.COMPONENT_TYPE, FACET_EXPANSION_TOGGLE, ImageExpansionToggle.class);
     }
 
     public Object encodeParamsAsJsObject(FacesContext context) {
@@ -74,7 +75,7 @@ public class TreeColumn extends Column implements CompoundComponent, SyntheticCo
     }
 
     public ExpansionToggle getExpansionToggle() {
-        ExpansionToggle expansionToggle = (ExpansionToggle) getFacet("expansionToggle");
+        ExpansionToggle expansionToggle = (ExpansionToggle) getFacet(FACET_EXPANSION_TOGGLE);
         if (expansionToggle == null) {
             expansionToggle = new ImageExpansionToggle();
             setExpansionToggle(expansionToggle);
@@ -118,7 +119,7 @@ public class TreeColumn extends Column implements CompoundComponent, SyntheticCo
     }
 
     public void setExpansionToggle(ExpansionToggle toggle) {
-        getFacets().put("expansionToggle", toggle);
+        getFacets().put(FACET_EXPANSION_TOGGLE, toggle);
     }
 
     public String getLevelIndent() {

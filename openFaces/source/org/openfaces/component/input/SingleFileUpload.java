@@ -46,7 +46,7 @@ public final class SingleFileUpload extends AbstractFileUpload {
                 browseButtonDuringUpload,
                 stopButtonNearProgress,
                 fileInfoAreaStyle,
-                fileInfoAreaClass
+                fileInfoAreaClass,
         };
     }
 

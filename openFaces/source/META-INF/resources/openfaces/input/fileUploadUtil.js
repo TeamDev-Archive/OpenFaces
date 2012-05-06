@@ -227,6 +227,8 @@ O$.FileUploadUtil = {
                 if (shouldCallOnChange) {
                   fileUpload._events._fireChangeEvent();
                   fileUpload._setUploadButtonAfterFileHaveBeenAdded();
+                  fileUpload._restoreBorder();
+                  fileUpload._showPopupIfPopupNeeded();
                 }
               }
               fileUpload._cancelDragEvent(evt);
@@ -505,6 +507,8 @@ O$.FileUploadUtil = {
               fileUpload._setFocusOnComponent();
             }
           }
+          fileUpload._restoreBorder();
+          fileUpload._showPopupIfPopupNeeded();
         });
         if (O$.isChrome() || O$.isSafari()) { //chrome calls blur when file dialog popup
           O$.addEventHandler(input, "mousedown", function () {
@@ -518,14 +522,122 @@ O$.FileUploadUtil = {
 
         fileUpload._buttons.browseDivForInput = O$(addButtonId+"::forInput");
         fileUpload._buttons.browseInput = fileUpload._createInputInAddBtn();
-        var addButtonTitle = O$(addButtonId + "::title");
-        fileUpload._buttons.browseTitleInput = addButtonTitle.lastChild;
+        fileUpload._buttons.browseTitle = O$(addButtonId + "::title");
+        fileUpload._buttons.browseTitleInput = fileUpload._buttons.browseTitle.lastChild;
         fileUpload._setStylesForAddButton(fileUpload._buttons.browse);
         if (O$.isExplorer() && O$.isQuirksMode()) {
-          fileUpload._buttons.browseDivForInput.style.height = O$.getElementSize(addButtonTitle).height;
+          fileUpload._buttons.browseDivForInput.style.height = O$.getElementSize(fileUpload._buttons.browseTitle).height;
         }
         fileUpload._buttons.browseTitleInput.disabled = false;
         fileUpload._buttons.browseDivForInput.appendChild(fileUpload._buttons.browseInput);//create first input
+      },
+      _setUpExternalBrowseButton:function (externalBrowseButtonId) {
+        fileUpload._externalBrowseButtonId = externalBrowseButtonId;
+        var browseButton = fileUpload._buttons.browseDivForInput;
+        browseButton._updatePosition = function () {
+          var externalBrowseButton = O$(fileUpload._externalBrowseButtonId);
+          var currentPosition = O$.getElementPos(externalBrowseButton, true);
+          if (browseButton._oldPosition && currentPosition.x == browseButton._oldPosition.x && currentPosition.y == browseButton._oldPosition.y) {
+            return;
+          }
+          browseButton._oldPosition = O$.getElementPos(externalBrowseButton, true);
+          if (!externalBrowseButton)
+            O$.removeEventHandler(externalBrowseButton, "mouseover", browseButton._updatePosition);
+          externalBrowseButton.parentNode.insertBefore(browseButton, externalBrowseButton);
+          var size = O$.getElementSize(externalBrowseButton);
+          browseButton.style.width = size.width + "px";
+          browseButton.style.height = size.height + "px";
+          browseButton.style.position = "absolute";
+          O$.alignPopupByElement(browseButton, externalBrowseButton, "center", "center");
+        };
+        O$.addLoadEvent(function () {
+          var externalBrowseButton = O$(externalBrowseButtonId);
+          if (!externalBrowseButton)
+            throw "Element with ID " + externalBrowseButtonId + " cannot be found.";
+          O$.addEventHandler(externalBrowseButton, "mouseover", browseButton._updatePosition);
+          O$.addEventHandler(browseButton, "mouseover", browseButton._updatePosition);
+        });
+      },
+      _moveExternalBrowseButtonClickArea:function (newExternalBrowseButtonId){
+        O$(fileUpload._externalBrowseButtonId).disabled = true;
+        var newExternalBrowseButton = O$(newExternalBrowseButtonId);
+        if (!newExternalBrowseButton)
+          throw "Element with ID " + newExternalBrowseButtonId + " cannot be found.";
+        fileUpload._externalBrowseButtonId = newExternalBrowseButtonId;
+        O$.correctElementZIndex(fileUpload._buttons.browseDivForInput, newExternalBrowseButton);
+        fileUpload._buttons.browseDivForInput._updatePosition();
+        O$(newExternalBrowseButtonId).disabled = false;
+      },
+      _showPopup:function (popupPositionedByID, horizAlignment, vertAlignment, horizDistance, vertDistance) {
+        if (fileUpload._popupPositionedByElement == undefined){
+          if (!popupPositionedByID){
+            fileUpload._popupPositionedByElement = fileUpload._buttons.browse;
+          } else {
+            fileUpload._popupPositionedByElement = O$(popupPositionedByID);
+            if (!fileUpload._popupPositionedByElement){
+              throw "Position By element id '" + popupPositionedByID + "' is not found";
+            }
+          }
+        }
+        fileUpload.style.visibility = "visible";
+        O$.alignPopupByElement(fileUpload, fileUpload._popupPositionedByElement, horizAlignment, vertAlignment, horizDistance, vertDistance);
+        fileUpload._popupIsShown = true;
+      },
+      _hidePopup:function () {
+        fileUpload.style.visibility = "hidden";
+        fileUpload._popupIsShown = false;
+      },
+      _initCloseButton:function(componentId){
+        fileUpload._actionButtonContainer.appendChild(fileUpload._buttons.closePopup);
+        fileUpload._buttons.closePopup.onclick = function (e) {
+          fileUpload._hidePopup();
+        };
+      },
+      _moveBrowseButtonOutOfComponent:function () {
+        fileUpload.parentNode.insertBefore(fileUpload._buttons.browse, fileUpload);
+        if (!!fileUpload._buttons.fakeBrowseTitleInput){
+          fileUpload._buttons.fakeBrowseTitleInput.style.display = "none";
+        }
+      },
+      _moveBrowseButtonBackToComponent:function () {
+        fileUpload._addButtonParent.insertBefore(fileUpload._buttons.browse, fileUpload._addButtonParent.firstChild);
+        if (!fileUpload._buttons.fakeBrowseTitleInput) {
+          fileUpload._buttons.fakeBrowseTitleInput = fileUpload._buttons.browseTitleInput.cloneNode(true);
+          // TODO remove all IDS
+          fileUpload._buttons.fakeBrowseTitleInput.id = "";
+          fileUpload._setButtonSizeAsInBrowse(fileUpload._buttons.fakeBrowseTitleInput);
+          fileUpload.parentNode.insertBefore(fileUpload._buttons.fakeBrowseTitleInput, fileUpload);
+          fileUpload._buttons.fakeBrowseTitleInput.disabled = "disabled";
+        }
+        fileUpload._buttons.fakeBrowseTitleInput.style.display = "block";
+      },
+      _initPopup:function () {
+        fileUpload._hidePopup();
+        fileUpload.style.position = "absolute";
+      },
+      _hideBorder:function () {
+        fileUpload.style.border = "0 none transparent";
+        fileUpload._hiddenBorder = true;
+      },
+      _restoreBorder:function () {
+        // restore default style border
+        if (fileUpload._hiddenBorder)
+          fileUpload.style.border = "";
+        fileUpload._hiddenBorder = false;
+      },
+      _setButtonSizeAsInBrowse:function (button) {
+        var browseContainer = O$.getElementSize(fileUpload._buttons.browse);
+        var titleInput = O$.getElementSize(fileUpload._buttons.browseTitleInput);
+
+        button.style.width = titleInput.width + "px";
+        var margin = (browseContainer.width - titleInput.width) / 2;
+        button.style.marginLeft = margin + "px";
+        button.style.marginRight = margin + "px";
+
+        button.style.height = titleInput.height + "px";
+        var marginTopBottom = (browseContainer.height - titleInput.height) / 2;
+        button.style.marginTop = marginTopBottom + "px";
+        button.style.marginBottom = marginTopBottom + "px";
       },
       _getFacet:function (id) {
         var divForFacet = O$(fileUpload._elementsCont.id + id);
@@ -706,7 +818,9 @@ O$.FileUploadUtil = {
                 fileUpload._ignoreBlurForIE = false;
                 return;
               }
-              fileUpload._events._fireBlurEvent();
+              // temporary fix for IE caused by _ajaxCleanupRequired functionality after FileUpload reloaded with Ajax
+              if (fileUpload._events)
+                fileUpload._events._fireBlurEvent();
             }
 
           }, 1);

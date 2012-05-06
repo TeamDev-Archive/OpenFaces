@@ -25,8 +25,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import static org.openfaces.component.table.AbstractTable.DataScope;
-
 /**
  * @author Natalia.Zolochevska@Teamdev.com
  */
@@ -71,7 +69,12 @@ public class TableDataExtractor {
      * itself.
      */
     public TableData extract(AbstractTable table) {
-
+        if (table instanceof DataTable) {
+            RowGrouping rowGrouping = ((DataTable) table).getRowGrouping();
+            if (rowGrouping != null && rowGrouping.getGroupingRules().size() > 0)
+                throw new IllegalStateException("Table data extraction functionality is not supported on grouped " +
+                        "DataTable components");
+        }
         List<BaseColumn> columns = table.getRenderedColumns();
 
         List<String> columnDatas = new ArrayList<String>();

@@ -106,7 +106,7 @@ O$.ProgressBar = {
           progressBar._uploadedDiv.style.width = uploadedWidth + "px";
           progressBar._notUploadedDiv.style.width = notUploadedWidth + "px";
         }
-        progressBar.style.width = progressBar._getWidthOfProgress() + "px";
+        O$.setElementWidth(progressBar, progressBar._getWidthOfProgress());
 
       },
       _setLabelValue:function (value) {

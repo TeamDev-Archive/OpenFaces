@@ -22,7 +22,9 @@ O$.SingleFileUpload = {
                   onfilestartHandler, onfileinprogressHandler, onfileendHandler, onwrongfiletypeHandler, ondirectorydroppedHandler,
                   dropTargetCrossoverClass, render, externalDropTargetId, acceptedMimeTypes,
                   layoutMode, defStopUrl, stopIcoClassMin,
-                  showInfoAfterUpload, uploadBtnBehavior, showStopNearProgress, directoryDroppedText, wrongFileTypeText) {
+                  showInfoAfterUpload, uploadBtnBehavior, showStopNearProgress, directoryDroppedText, wrongFileTypeText,
+                  externalBrowseButtonId, showInPopup, popupPositionedByID, popupHorizontalAlignment, popupVerticalAlignment,
+                  popupHorizontalDistance, popupVerticalDistance) {
 
     var fileUpload = O$.initComponent(componentId, null, {
       _showInfoAfterUpload : showInfoAfterUpload,
@@ -39,6 +41,13 @@ O$.SingleFileUpload = {
             return O$.SingleFileUpload._LayoutMode.COMPACT;
         }
       }(),
+      _showPopupIfPopupNeeded:function () {
+        if(showInPopup){
+          var positionedByID = !popupPositionedByID ? externalBrowseButtonId : popupPositionedByID;
+          fileUpload._showPopup(positionedByID, popupHorizontalAlignment, popupVerticalAlignment,
+                  popupHorizontalDistance, popupVerticalDistance);
+        }
+      },
       _processFileAddingHTML5:function (file) {
         if (isFileNameNotApplied(file.name) || fileUpload._buttons.browseInput.disabled ||
                 (!file._fromDnD && file.size == 0) || (file._fromDnD && fileUpload._isDirectory(file))) {
@@ -113,19 +122,28 @@ O$.SingleFileUpload = {
           fileUpload._buttons.browseInput.disabled = false;
           fileUpload._inUploading = false;
 
-
-          O$.removeAllChildNodes(fileUpload._addButtonParent);
-          fileUpload._addButtonParent.appendChild(fileUpload._buttons.browse);
+          O$.removeAllChildNodes(fileUpload._actionButtonContainer);
+          if (showInPopup) {
+            if (fileUpload._layoutMode != O$.SingleFileUpload._LayoutMode.COMPACT)
+              fileUpload._actionButtonContainer.appendChild(fileUpload._buttons.closePopup);
+          } else if (!externalBrowseButtonId)
+            fileUpload._actionButtonContainer.appendChild(fileUpload._buttons.browse);
           if (fileUpload._showStopNearProgress) {
             var elToDel = O$(fileUpload.id + "::stopIcon");
             var stopSize = fileUpload._getNumProperty(elToDel, "margin-left")
                     + O$.getElementSize(elToDel).width;
             elToDel.parentNode.removeChild(elToDel);
             var progressSize = O$.getElementSize(fileUpload._els.progressBar);
-            fileUpload._els.progressBar._setWidthForAllComponent(progressSize.width + stopSize);
+            if (!fileUpload._els.progressBar._defaultSize)
+              fileUpload._els.progressBar._defaultSize = progressSize;
+            fileUpload._els.progressBar._setWidthForAllComponent(fileUpload._els.progressBar._defaultSize.width + stopSize);
             fileUpload._els.progressBar.setValue(fileUpload._els.progressBar.getValue());
           }
           if (!fileUpload._showInfoAfterUpload) {
+            if (showInPopup)
+              fileUpload._hidePopup();
+            else if (externalBrowseButtonId)
+              fileUpload._hideBorder();
             fileUpload._els.progressBar.style.display = "none";
             fileUpload._currentFile = null;
             if (fileUpload._layoutMode == O$.SingleFileUpload._LayoutMode.FULL) {
@@ -440,6 +458,8 @@ O$.SingleFileUpload = {
                 }, null, true);
       },
       _initializeDropTarget : function() {
+        if (showInPopup && !externalDropTargetId)
+          return;
         fileUpload._setupExternalDropTarget();
         fileUpload._els.dropTarget = function setBehaviorForDragAndDropArea() {
           var area = fileUpload._getDropTargetArea(fileUpload.id + "::dragArea");
@@ -505,7 +525,9 @@ O$.SingleFileUpload = {
             statusLabelInProgress,statusLabelUploaded,statusLabelErrorSize,
             statusLabelNotUploaded,statusStoppedText,statusLabelUnexpectedError,
             render,tabIndex,dropTargetCrossoverClass, acceptedMimeTypes,
-            directoryDroppedText, wrongFileTypeText, externalDropTargetId);
+            directoryDroppedText, wrongFileTypeText, externalDropTargetId,
+            showInPopup, popupPositionedByID,popupHorizontalAlignment,
+            popupVerticalAlignment, popupHorizontalDistance, popupVerticalDistance);
 
     fileUpload._setAllEvents(onchangeHandler,onstartHandler,onendHandler,
             onfilestartHandler,onfileinprogressHandler,onfileendHandler,
@@ -516,6 +538,8 @@ O$.SingleFileUpload = {
     //getting clear,stop,cancel, progressBar facet for each info window
     fileUpload._elementsCont = O$(componentId + "::elements");
     fileUpload._buttons.stop = fileUpload._getFacet("::stopFacet");
+    if (showInPopup && fileUpload._layoutMode != O$.SingleFileUpload._LayoutMode.COMPACT)
+      fileUpload._buttons.closePopup = fileUpload._getFacet("::closeFacet");
 
     fileUpload._els = [];
     if (fileUpload._layoutMode == O$.SingleFileUpload._LayoutMode.FULL) {
@@ -546,8 +570,21 @@ O$.SingleFileUpload = {
 
     if (!O$.isExplorer())
       fileUpload.removeChild(fileUpload._elementsCont);
-    fileUpload._setUpBrowseButton(addButtonId);
+    fileUpload._setUpBrowseButton(addButtonId, externalBrowseButtonId);
+    if (externalBrowseButtonId){
+      if (!showInPopup)
+        fileUpload._hideBorder();
+      fileUpload._setUpExternalBrowseButton(externalBrowseButtonId);
+    }
     fileUpload._addButtonParent = fileUpload._buttons.browse.parentNode;
+    fileUpload._actionButtonContainer = O$(componentId + "::actionButtonContainer");
+    if(showInPopup){
+      fileUpload._initPopup();
+      if (!externalBrowseButtonId)
+        fileUpload._moveBrowseButtonOutOfComponent();
+      if (fileUpload._layoutMode != O$.SingleFileUpload._LayoutMode.COMPACT)
+        fileUpload._initCloseButton(componentId);
+    }
 
     O$.extend(fileUpload, {
               __uploadButtonClickHandler:function () {
@@ -557,22 +594,16 @@ O$.SingleFileUpload = {
                 /* IE 7 cannot define what width in browse button because it's not rendered yet*/
                 if (fileUpload._uploadBtnBehavior == "showStop") {
                   if (!fileUpload._buttons.stop._defined) {
-                    new function setStopBtnWidthAsInBrowse() {
-                      var browseContainer = O$.getElementSize(fileUpload._buttons.browse);
-                      var titleInput = O$.getElementSize(fileUpload._buttons.browseTitleInput);
-
-                      fileUpload._buttons.stop.style.width = titleInput.width + "px";
-                      var margin = (browseContainer.width - titleInput.width) / 2;
-                      fileUpload._buttons.stop.style.marginLeft = margin + "px";
-                      fileUpload._buttons.stop.style.marginRight = margin + "px";
-
-                      fileUpload._buttons.stop.style.height = titleInput.height + "px";
-                      var marginTopBottom = (browseContainer.height - titleInput.height) / 2;
-                      fileUpload._buttons.stop.style.marginTop = marginTopBottom + "px";
-                      fileUpload._buttons.stop.style.marginBottom = marginTopBottom + "px";
-
+                    if (showInPopup) {
+                      new function setStopBtnWidthAsInClosePopup() {
+                        var closePopupSize = O$.getElementSize(fileUpload._buttons.closePopup);
+                        fileUpload._buttons.stop.style.width = closePopupSize.width + "px";
+                        fileUpload._buttons.stop.style.height = closePopupSize.height + "px";
+                      }();
+                    } else if (!externalBrowseButtonId) {
+                      fileUpload._setButtonSizeAsInBrowse(fileUpload._buttons.stop);
                       fileUpload._buttons.stop._defined = true;
-                    }();
+                    }
                   }
                 }
 
@@ -594,8 +625,8 @@ O$.SingleFileUpload = {
                     var stopFileDiv = fileUpload._buttons.stop.cloneNode(true);
                     stopFileDiv.setAttribute("id", fileUpload._buttons.stop.id + inputForFile._idInputAndDiv);
                     if (fileUpload._uploadBtnBehavior == "showStop") {
-                      fileUpload._addButtonParent.removeChild(fileUpload._buttons.browse);
-                      fileUpload._addButtonParent.appendChild(stopFileDiv);
+                      O$.removeAllChildNodes(fileUpload._actionButtonContainer);
+                      fileUpload._actionButtonContainer.appendChild(stopFileDiv);
                     }
                     O$.addEventHandler(stopFileDiv, "focus", fileUpload._focusHandler);
                     O$.addEventHandler(stopFileDiv, "blur", fileUpload._blurHandler);
@@ -632,7 +663,7 @@ O$.SingleFileUpload = {
                   if (fileUpload._uploadBtnBehavior == "hide") {
                     if (fileUpload._layoutMode == O$.SingleFileUpload._LayoutMode.FULL) {
                       fileUpload._addButtonParent.style.display = "none";
-                    } else if (fileUpload._layoutMode == O$.SingleFileUpload._LayoutMode.COMPACT) {
+                    } else if (fileUpload._layoutMode == O$.SingleFileUpload._LayoutMode.COMPACT && !showInPopup) {
                       fileUpload._addButtonParent.parentNode.style.display = "none";
                     }
                   }
@@ -644,8 +675,8 @@ O$.SingleFileUpload = {
                     var stopFileDiv = fileUpload._buttons.stop.cloneNode(true);
                     stopFileDiv.setAttribute("id", fileUpload._buttons.stop.id + file._infoId);
                     if (fileUpload._uploadBtnBehavior == "showStop") {
-                      fileUpload._addButtonParent.removeChild(fileUpload._buttons.browse);
-                      fileUpload._addButtonParent.appendChild(stopFileDiv);
+                      O$.removeAllChildNodes(fileUpload._actionButtonContainer);
+                      fileUpload._actionButtonContainer.appendChild(stopFileDiv);
                     }
                     O$.addEventHandler(stopFileDiv, "focus", fileUpload._focusHandler);
                     O$.addEventHandler(stopFileDiv, "blur", fileUpload._blurHandler);
@@ -680,7 +711,7 @@ O$.SingleFileUpload = {
                   if (fileUpload._uploadBtnBehavior == "hide") {
                     if (fileUpload._layoutMode == O$.SingleFileUpload._LayoutMode.FULL) {
                       fileUpload._addButtonParent.style.display = "none";
-                    } else if (fileUpload._layoutMode == O$.SingleFileUpload._LayoutMode.COMPACT) {
+                    } else if (fileUpload._layoutMode == O$.SingleFileUpload._LayoutMode.COMPACT && !showInPopup) {
                       fileUpload._addButtonParent.parentNode.style.display = "none";
                     }
                   }

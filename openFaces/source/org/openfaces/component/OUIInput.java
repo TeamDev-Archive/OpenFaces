@@ -16,18 +16,14 @@ package org.openfaces.component;
  */
 public interface OUIInput extends OUIComponent {
     boolean isDisabled();
-
     void setDisabled(boolean disabled);
 
     String getFocusedStyle();
-
     void setFocusedStyle(String focusedStyle);
 
     String getFocusedClass();
-
     void setFocusedClass(String focusedClass);
 
     String getOnchange();
-
     void setOnchange(String onchange);
 }

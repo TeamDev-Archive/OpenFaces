@@ -13,11 +13,12 @@ package org.openfaces.renderkit;
 
 import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.BaseColumn;
+import org.openfaces.component.table.Column;
 import org.openfaces.component.table.ColumnGroup;
 import org.openfaces.component.table.ColumnResizing;
 import org.openfaces.component.table.ColumnResizingState;
 import org.openfaces.component.table.Columns;
-import org.openfaces.component.table.DynamicColumn;
+import org.openfaces.component.table.impl.DynamicColumn;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.util.Components;
@@ -122,7 +123,8 @@ public class TableUtil {
 
     public static void copyColumnAttributes(UIComponent srcColumn, BaseColumn destColumn) {
         String[] copiedAttributes = new String[]{
-                "headerValue", "footerValue", "width", "align", "valign", "resizable", "minResizingWidth",
+                Column.COLUMN_VALUE_VAR, "headerValue", "footerValue",
+                "width", "align", "valign", "resizable", "minResizingWidth",
                 "fixed", "menuAllowed",
                 "style", "styleClass", "headerStyle", "headerClass", "subHeaderStyle", "subHeaderClass",
                 "bodyStyle", "bodyClass", "footerStyle", "footerClass",

@@ -12,7 +12,7 @@
 package org.openfaces.taglib.internal.output;
 
 import org.openfaces.component.output.HintLabel;
-import org.openfaces.taglib.internal.AbstractComponentTag;
+import org.openfaces.taglib.internal.OUIOutputTag;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -20,7 +20,7 @@ import javax.faces.context.FacesContext;
 /**
  * @author Pavel Kaplin
  */
-public class HintLabelTag extends AbstractComponentTag {
+public class HintLabelTag extends OUIOutputTag {
 
     public String getComponentType() {
         return HintLabel.COMPONENT_TYPE;
@@ -40,7 +40,6 @@ public class HintLabelTag extends AbstractComponentTag {
 
         setIntProperty(component, "hintTimeout");
 
-        setConverterProperty(facesContext, component, "converter");
         setStringProperty(component, "hintStyle");
         setStringProperty(component, "hintClass");
     }

@@ -13,6 +13,11 @@ package org.openfaces.renderkit.table;
 
 import org.openfaces.component.TableStyles;
 import org.openfaces.component.table.*;
+import org.openfaces.component.table.impl.GroupFooterRow;
+import org.openfaces.component.table.impl.GroupHeaderOrFooterRow;
+import org.openfaces.component.table.impl.GroupHeaderRow;
+import org.openfaces.component.table.impl.InGroupFooterRow;
+import org.openfaces.component.table.impl.InGroupHeaderRow;
 import org.openfaces.org.json.JSONArray;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
@@ -54,6 +59,7 @@ public class TableBody extends TableSection {
     private TableStructure tableStructure;
     private boolean noDataRows;
     private List<String> clientRowKeys;
+    private BaseColumn currentlyRenderedColumn;
 
     public TableBody(TableStructure tableStructure) {
         super(tableStructure);
@@ -103,7 +109,7 @@ public class TableBody extends TableSection {
         List<BaseColumn> columns = table.getAdaptedRenderedColumns();
         int first = table.getFirst();
         if (table.getRows() != 0)
-            throw new IllegalStateException("table.getRows() should always be null in OpenFaces tables, but it is: " + table.getRows());
+            throw new IllegalStateException("table.getRows() should always be equal to 0 in OpenFaces tables, but it is equal to " + table.getRows());
 
         int rowCount = table.getRowCount();
         int rows = (rowCount != -1) ? rowCount : Integer.MAX_VALUE;
@@ -278,6 +284,13 @@ public class TableBody extends TableSection {
     }
 
 
+    public BaseColumn getCurrentlyRenderedColumn() {
+        return currentlyRenderedColumn;
+    }
+
+    public void setCurrentlyRenderedColumn(BaseColumn currentlyRenderedColumn) {
+        this.currentlyRenderedColumn = currentlyRenderedColumn;
+    }
 
     private class TableBodyRenderer {
         private final FacesContext context;
@@ -287,11 +300,11 @@ public class TableBody extends TableSection {
         private final int firstRowIndex;
         private final AbstractTable table;
         private final List<BaseColumn> columns;
-        private final int centerAreaStart;
-        private final int rightAreaStart;
         private final List<BodyRow> leftRows;
         private final List<BodyRow> rows;
         private final List<BodyRow> rightRows;
+        private final int centerAreaStart;
+        private final int rightAreaStart;
         private final List<Row> customRows;
         private final Map<Integer, CustomRowRenderingInfo> customRowRenderingInfos;
         private final Map<Integer, Integer> renderedColIndexesByOriginalIndexes;
@@ -299,6 +312,7 @@ public class TableBody extends TableSection {
         private final MethodExpression selectableCellsME;
         private final JSONArray collectedSelectableCells;
         private final AbstractCellSelection cellSelection;
+        private final List<Summary> summaries;
 
         private TableBodyRenderer(
                 FacesContext context,
@@ -306,17 +320,25 @@ public class TableBody extends TableSection {
                 int firstRowIndex,
                 List<BaseColumn> columns) {
 
+            this.context = context;
+            this.stringWriter = stringWriter;
+            this.firstRowIndex = firstRowIndex;
+            this.columns = columns;
+
             writer = context.getResponseWriter();
             requestMap = context.getExternalContext().getRequestMap();
             table = (AbstractTable) tableStructure.getComponent();
-            customRows = getCustomRows(table);
 
             Scrolling scrolling = tableStructure.getScrolling();
-            centerAreaStart = scrolling != null ? tableStructure.getLeftFixedCols() : 0;
-            rightAreaStart = scrolling != null ? columns.size() - tableStructure.getRightFixedCols() : 0;
             leftRows = scrolling != null && tableStructure.getLeftFixedCols() > 0 ? new ArrayList<BodyRow>() : null;
             rows = new ArrayList<BodyRow>();
             rightRows = scrolling != null && tableStructure.getRightFixedCols() > 0 ? new ArrayList<BodyRow>() : null;
+            centerAreaStart = scrolling != null ? tableStructure.getLeftFixedCols() : 0;
+            rightAreaStart = scrolling != null ? columns.size() - tableStructure.getRightFixedCols() : 0;
+
+            customRows = getCustomRows(table);
+            customRowRenderingInfos = (Map<Integer, CustomRowRenderingInfo>) table.getAttributes().get(
+                    TableStructure.CUSTOM_ROW_RENDERING_INFOS_KEY);
 
             final AbstractTableSelection selection = table.getSelection();
             cellSelection = selection instanceof AbstractCellSelection
@@ -325,19 +347,12 @@ public class TableBody extends TableSection {
 
             cellSelectableME = (cellSelection == null) ? null : cellSelection.getCellSelectable();
             selectableCellsME = (cellSelection == null) ? null : cellSelection.getSelectableCells();
-            if (cellSelectableME != null && selectableCellsME != null) {
-                throw new IllegalStateException("The \"cellSelectable\" and \"selectableCells\" attributes are " +
-                        "mutually exclusive and cannot be used at the same time.");
-            }
-
-            customRowRenderingInfos = (Map<Integer, CustomRowRenderingInfo>) table.getAttributes().get(
-                    TableStructure.CUSTOM_ROW_RENDERING_INFOS_KEY);
+            if (cellSelectableME != null && selectableCellsME != null) throw new IllegalStateException(
+                    "The \"cellSelectable\" and \"selectableCells\" attributes are " +
+                            "mutually exclusive and cannot be used at the same time.");
             renderedColIndexesByOriginalIndexes = getRenderedColIndexesByOriginalIndexesMap(table);
 
-            this.context = context;
-            this.stringWriter = stringWriter;
-            this.firstRowIndex = firstRowIndex;
-            this.columns = columns;
+            summaries = table.getSummaries();
         }
 
         private List<Row> getCustomRows(AbstractTable table) {
@@ -348,6 +363,8 @@ public class TableBody extends TableSection {
                 RowGrouping rowGrouping = dataTable.getRowGrouping();
                 if (rowGrouping != null) {
                     customRows.add(new GroupHeaderRow(dataTable));
+                    customRows.add(new InGroupHeaderRow(dataTable));
+                    customRows.add(new InGroupFooterRow(dataTable));
                     customRows.add(new GroupFooterRow(dataTable));
                 }
             }
@@ -398,7 +415,7 @@ public class TableBody extends TableSection {
                 RowRenderer rowRenderer = new RowRenderer(rowIndex);
                 rowRenderer.renderRow();
             }
-            if (cellSelection != null){
+            if (cellSelection != null) {
                 cellSelection.setCollectedSelectableCells(collectedSelectableCells);
             }
             table.setRowIndex(-1);
@@ -429,16 +446,16 @@ public class TableBody extends TableSection {
                 if (clientRowKeys == null) clientRowKeys = new ArrayList<String>();
                 clientRowKeys.add(clientRowKey);
 
-                int columnCount = columns.size();
+                this.columnCount = columns.size();
 
                 collectSelectableCells(columnCount);
 
-                int bodyRowIndex = rowIndex - firstRowIndex;
+                this.bodyRowIndex = rowIndex - firstRowIndex;
                 List<Row> applicableCustomRows = getApplicableCustomRows(customRows);
-                List<Object>[] applicableCustomCells =
+                this.applicableCustomCells =
                         getApplicableCustomCells(applicableCustomRows, bodyRowIndex, columnCount);
 
-                selectableCellsInColumn = new JSONArray();
+                this.selectableCellsInColumn = new JSONArray();
                 BodyRow leftRow = leftRows != null ? new BodyRow() : null;
                 BodyRow row = new BodyRow();
                 BodyRow rightRow = rightRows != null ? new BodyRow() : null;
@@ -462,9 +479,9 @@ public class TableBody extends TableSection {
                 if (rightRow != null)
                     rightRow.setAttributes(attributes);
 
-                leftCells = leftRow != null ? new ArrayList<BodyCell>() : null;
-                cells = new ArrayList<BodyCell>();
-                rightCells = rightRow != null ? new ArrayList<BodyCell>() : null;
+                this.leftCells = leftRow != null ? new ArrayList<BodyCell>() : null;
+                this.cells = new ArrayList<BodyCell>();
+                this.rightCells = rightRow != null ? new ArrayList<BodyCell>() : null;
 
                 if (leftRow != null)
                     leftRow.setCells(leftCells);
@@ -472,15 +489,17 @@ public class TableBody extends TableSection {
                 if (rightRow != null)
                     rightRow.setCells(rightCells);
 
-                alreadyProcessedSpannedCells = new ArrayList<SpannedTableCell>();
-
-                this.bodyRowIndex = bodyRowIndex;
-                this.columnCount = columnCount;
-
-                this.applicableCustomCells = applicableCustomCells;
+                this.alreadyProcessedSpannedCells = new ArrayList<SpannedTableCell>();
             }
 
             public void renderRow() throws IOException {
+                Object rowData = table.getRowData();
+                if (!(rowData instanceof GroupHeaderOrFooter)) {
+                    for (Summary summary : summaries) {
+                        summary.addCurrentRowValue();
+                    }
+                }
+
                 for (int colIndex = 0; colIndex < columnCount; ) {
                     List<BodyCell> targetCells;
                     if (leftCells != null && colIndex < centerAreaStart)
@@ -559,20 +578,25 @@ public class TableBody extends TableSection {
                         alreadyProcessedSpannedCells.add(spannedTableCell);
                 }
 
-                UIComponent cellContentsContainer = applyCustomCellDefinitions(
+                setCurrentlyRenderedColumn(column);
+                try {
+                    UIComponent cellContentsContainer = applyCustomCellDefinitions(
                         column, colIndex, customCells, remainingPortionOfABrokenSpannedCell, span);
 
-                BodyCell cell = new BodyCell();
-                cell.setSpan(span);
-                cell.extractCustomEvents((List<UIComponent>) customCells);
+                    BodyCell cell = new BodyCell();
+                    cell.setSpan(span);
+                    cell.extractCustomEvents((List<UIComponent>) customCells);
 
-                String content = renderCell(column, remainingPortionOfABrokenSpannedCell, cellContentsContainer);
+                    String content = renderCellContent(column, remainingPortionOfABrokenSpannedCell, cellContentsContainer);
+                    cell.setContent(content);
+                    return cell;
+                } finally {
+                    setCurrentlyRenderedColumn(null);
+                }
 
-                cell.setContent(content);
-                return cell;
             }
 
-            private String renderCell(
+            private String renderCellContent(
                     BaseColumn column,
                     boolean remainingPortionOfABrokenSpannedCell,
                     UIComponent cellContentsContainer) throws IOException {
@@ -799,7 +823,7 @@ public class TableBody extends TableSection {
                         boolean groupHeaderCell = false;
                         for (Object cellObj : customCellList) {
                             Cell cell = (Cell) cellObj;
-                            groupHeaderCell |= GroupHeaderRow.isSyntheticGroupHeaderCell(cell);
+                            groupHeaderCell |= GroupHeaderOrFooterRow.isSyntheticGroupHeaderCell(cell);
 
                             int currentCellSpan = cell.getSpan();
                             if (currentCellSpan != 1)
@@ -811,7 +835,7 @@ public class TableBody extends TableSection {
                         if (groupHeaderCell) {
                             // when table row grouping is turned on, the automatically generated implicit tree column is
                             // always generated to be the first rendered column, and spannedTableCell.getColumn() refers
-                            // the first column in the allColumns list, and so it always refers to the first column
+                            // to the first column in the allColumns list, and so it always refers to the first column
                             // declared in the table's markup, which might actually be different than the first column
                             // in the renderedColumns list. Hence we're fixing this so that tree column was properly
                             // rendered on group header cells

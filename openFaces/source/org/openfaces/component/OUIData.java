@@ -13,7 +13,7 @@ package org.openfaces.component;
 
 // todo: resolve datatable package depencencies
 
-import org.openfaces.component.table.DynamicCol;
+import org.openfaces.component.table.impl.DynamicCol;
 import org.openfaces.component.table.Cell;
 import org.openfaces.component.table.Columns;
 import org.openfaces.component.table.Row;

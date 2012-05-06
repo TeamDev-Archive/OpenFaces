@@ -151,11 +151,11 @@
 }
 
 .o_table_sorted_column_body {
-  background: #f4f4f4;
+  background: #f8f8f8;
 }
 
 .o_table_sorted_column_footer {
-  background: #f4f4f4;
+  background: #f8f8f8;
 }
 
 .o_tableColumn {
@@ -259,13 +259,22 @@
   background-color: silver;
 }
 
-.o_rowGroupHeader {
+.o_groupHeader {
   font-weight: bold;
   background: #e6e7e8;
 }
 
-.o_rowGroupFooter {
+.o_inGroupHeader {
+  font-weight: bold;
+  background: #f0f0f0;
+}
 
+.o_inGroupFooter {
+  background: #f0f0f0;
+}
+
+.o_groupFooter {
+  background: #e6e7e8;
 }
 
 /* Checkbox column */
@@ -1265,6 +1274,12 @@
     width: 470px;
 }
 
+.o_file_upload_popup {
+    z-index: 300;
+    background: white;
+    border: 1px solid gray;
+}
+
 .o_file_upload_header {
     margin: 0;
     width:100%;
@@ -1274,16 +1289,33 @@
 }
 
 .o_file_upload_btn {
-    margin-left: 280px;
+    margin-left: 291px;
     margin-top: 2px;
 }
 
-.o_file_remove_all_btn, .o_file_stop_all_btn {
+.o_file_upload_btn_footer {
+    float: left;
+    margin-left: 250px;
+    margin-bottom: 10px;
+}
+
+.o_s_close_popup_btn {
+    margin-right: 10px;
+}
+
+.o_file_remove_all_btn, .o_file_stop_all_btn, .o_close_popup_btn {
     margin-top: 10px;
-    margin-left: 368px;
-    font-size: 8pt;
+    margin-left: 351px;
     margin-bottom: 10px;
     display: none;
+}
+
+.o_file_stop_all_btn{
+    margin-left: 375px;
+}
+
+.o_close_popup_btn{
+    margin-left: 385px;
 }
 
 .o_file_drop_target{
@@ -1343,7 +1375,6 @@
 }
 
 .o_file_clear_btn {
-    font-size: 8pt;
     margin-right: 25px;
     margin-top: 5px;
     margin-bottom: 5px;
@@ -1355,11 +1386,9 @@
     width:330px;
 }
 .o_s_file_upload_compact{
-    width:90px;
+    width:120px;
 }
-.o_s_file_upload_info_progress{
 
-}
 .o_s_file_upload_info_title{
     font-size: 10pt;
     padding-top: 5px;

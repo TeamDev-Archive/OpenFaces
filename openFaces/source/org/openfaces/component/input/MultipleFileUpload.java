@@ -246,4 +246,5 @@ public final class MultipleFileUpload extends AbstractFileUpload {
     public void setFileInfoRowClass(String fileInfoRowClass) {
         this.fileInfoRowClass = fileInfoRowClass;
     }
+
 }

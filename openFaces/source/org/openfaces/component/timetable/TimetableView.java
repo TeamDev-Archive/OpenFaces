@@ -326,7 +326,7 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
         }
 
         for (EventArea eventArea : eventAreas) {
-            refreshEventSubRender(eventArea);
+            Components.clearCachedClientIds(eventArea);
         }
 
     }
@@ -371,17 +371,6 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
 
     public Map<String, AbstractTimetableEvent> getLoadedEvents() {
         return loadedEvents;
-    }
-
-    private void refreshEventSubRender(UIComponent component) {
-        // force client id recalculation
-        component.setId(component.getId());
-        Iterator<UIComponent> kids = component.getFacetsAndChildren();
-        while (kids.hasNext()) {
-            UIComponent kid = kids.next();
-            refreshEventSubRender(kid);
-        }
-
     }
 
     @Override

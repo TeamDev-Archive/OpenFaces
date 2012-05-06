@@ -16,7 +16,7 @@ import org.openfaces.component.OUIObjectIterator;
 import org.openfaces.component.ajax.DefaultProgressMessage;
 import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.Columns;
-import org.openfaces.component.table.DynamicColumn;
+import org.openfaces.component.table.impl.DynamicColumn;
 import org.openfaces.event.AjaxActionEvent;
 import org.openfaces.renderkit.ajax.DefaultProgressMessageRenderer;
 

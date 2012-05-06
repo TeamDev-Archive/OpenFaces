@@ -1298,21 +1298,21 @@
       <handler-class>org.openfaces.taglib.facelets.table.GroupingBoxTagHandler</handler-class>
     </component>
   </tag>
-  <tag>
-    <tag-name>groupHeaderRow</tag-name>
-    <component>
-      <component-type>org.openfaces.GroupHeaderRow</component-type>
-      <renderer-type>org.openfaces.GroupHeaderRowRenderer</renderer-type>
-      <handler-class>org.openfaces.taglib.facelets.table.GroupHeaderRowTagHandler</handler-class>
-    </component>
-  </tag>
-  <tag>
-    <tag-name>groupFooterRow</tag-name>
-    <component>
-      <component-type>org.openfaces.GroupFooterRow</component-type>
-      <handler-class>org.openfaces.taglib.facelets.table.GroupFooterRowTagHandler</handler-class>
-    </component>
-  </tag>
+  <!--<tag>-->
+    <!--<tag-name>groupHeaderRow</tag-name>-->
+    <!--<component>-->
+      <!--<component-type>org.openfaces.GroupHeaderRow</component-type>-->
+      <!--<renderer-type>org.openfaces.GroupHeaderRowRenderer</renderer-type>-->
+      <!--<handler-class>org.openfaces.taglib.facelets.table.GroupHeaderRowTagHandler</handler-class>-->
+    <!--</component>-->
+  <!--</tag>-->
+  <!--<tag>-->
+    <!--<tag-name>groupFooterRow</tag-name>-->
+    <!--<component>-->
+      <!--<component-type>org.openfaces.GroupFooterRow</component-type>-->
+      <!--<handler-class>org.openfaces.taglib.facelets.table.GroupFooterRowTagHandler</handler-class>-->
+    <!--</component>-->
+  <!--</tag>-->
   <tag>
     <tag-name>multipleFileUpload</tag-name>
     <component>
@@ -1391,6 +1391,22 @@
       <component-type>org.openfaces.Sorting</component-type>
       <renderer-type>org.openfaces.SortingRenderer</renderer-type>
       <handler-class>org.openfaces.taglib.facelets.table.SortingTagHandler</handler-class>
+    </component>
+  </tag>
+  <tag>
+    <tag-name>summary</tag-name>
+    <component>
+      <component-type>org.openfaces.Summary</component-type>
+      <renderer-type>org.openfaces.SummaryRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.table.SummaryTagHandler</handler-class>
+    </component>
+  </tag>
+  <tag>
+    <tag-name>position</tag-name>
+    <component>
+      <component-type>org.openfaces.Position</component-type>
+      <renderer-type>org.openfaces.PositionRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.PositionTagHandler</handler-class>
     </component>
   </tag>
 </facelet-taglib>

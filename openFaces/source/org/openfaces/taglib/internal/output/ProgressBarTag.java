@@ -13,12 +13,12 @@ package org.openfaces.taglib.internal.output;
 
 import org.openfaces.component.output.LabelAlignment;
 import org.openfaces.component.output.ProgressBar;
-import org.openfaces.taglib.internal.AbstractComponentTag;
+import org.openfaces.taglib.internal.OUIOutputTag;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-public class ProgressBarTag extends AbstractComponentTag {
+public class ProgressBarTag extends OUIOutputTag {
 
     public String getComponentType() {
         return ProgressBar.COMPONENT_TYPE;
@@ -33,16 +33,16 @@ public class ProgressBarTag extends AbstractComponentTag {
         super.setComponentProperties(facesContext, component);
         setNumberProperty(component, "value");
 
-        setStringProperty(component,"progressStyle");
-        setStringProperty(component,"progressClass");
-        setStringProperty(component,"notProcessedStyle");
-        setStringProperty(component,"notProcessedClass");
-        setStringProperty(component,"labelStyle");
-        setStringProperty(component,"labelClass");
+        setStringProperty(component, "progressStyle");
+        setStringProperty(component, "progressClass");
+        setStringProperty(component, "notProcessedStyle");
+        setStringProperty(component, "notProcessedClass");
+        setStringProperty(component, "labelStyle");
+        setStringProperty(component, "labelClass");
 
-        setStringProperty(component,"labelFormat");
+        setStringProperty(component, "labelFormat");
         setEnumerationProperty(component, "labelAlignment", LabelAlignment.class);
-        setStringProperty(component,"processedImg");
-        setStringProperty(component,"notProcessedImg");
+        setStringProperty(component, "processedImg");
+        setStringProperty(component, "notProcessedImg");
     }
 }

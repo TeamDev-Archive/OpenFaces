@@ -219,4 +219,17 @@ public abstract class AbstractFileUploadJspTag extends AbstractComponentJspTag {
     public void setWrongFileTypeText(ValueExpression wrongFileTypeText) {
         getDelegate().setPropertyValue("wrongFileTypeText", wrongFileTypeText);
     }
+
+    public void setExternalBrowseButton(ValueExpression externalBrowseButton) {
+        getDelegate().setPropertyValue("externalBrowseButton", externalBrowseButton);
+    }
+
+    public void setShowInPopup(ValueExpression showInPopup) {
+        getDelegate().setPropertyValue("showInPopup", showInPopup);
+    }
+
+    public void setCloseButtonText(ValueExpression closeButtonText) {
+        getDelegate().setPropertyValue("closeButtonText", closeButtonText);
+    }
+
 }

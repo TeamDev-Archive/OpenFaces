@@ -12,6 +12,8 @@
 
 package org.openfaces.component.table.export;
 
+import org.openfaces.component.table.BaseColumn;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
@@ -35,6 +37,11 @@ public class ValueHolderDataExtractor implements ComponentDataExtractor {
 
 
     public boolean isApplicableFor(UIComponent component) {
-        return component instanceof ValueHolder;
+        return
+                component instanceof ValueHolder &&
+                        !(component instanceof BaseColumn) /* BaseColumn implements ValueHolder to support placing
+                        converter tags inside of it, but column's rendering is not as simple as rendering its value
+                        generally and the usual container export procedure should be used for columns instead, so we're
+                        not considering columns as applicable for export by ValueHolderDataExtractor */;
     }
 }
