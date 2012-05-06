@@ -1344,7 +1344,31 @@
       <renderer-type>org.openfaces.ProgressBarRenderer</renderer-type>
       <handler-class>org.openfaces.taglib.facelets.output.ProgressBarTagHandler</handler-class>
     </component>
-  </tag>  
+  </tag>
+  <tag>
+    <tag-name>fileAttachments</tag-name>
+    <component>
+      <component-type>org.openfaces.FileAttachments</component-type>
+      <renderer-type>org.openfaces.FileAttachmentsRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.input.fileattachments.FileAttachmentsTagHandler</handler-class>
+    </component>
+  </tag>
+  <tag>
+    <tag-name>downloadAttachmentAction</tag-name>
+    <component>
+      <component-type>org.openfaces.DownloadAttachmentAction</component-type>
+      <renderer-type>org.openfaces.DownloadAttachmentActionRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.input.fileattachments.DownloadAttachmentActionTagHandler</handler-class>
+    </component>
+  </tag>
+  <tag>
+    <tag-name>removeAttachmentAction</tag-name>
+    <component>
+      <component-type>org.openfaces.RemoveAttachmentAction</component-type>
+      <renderer-type>org.openfaces.RemoveAttachmentActionRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.input.fileattachments.RemoveAttachmentActionTagHandler</handler-class>
+    </component>
+  </tag>
   <tag>
     <tag-name>groupByColumnMenuItem</tag-name>
     <component>

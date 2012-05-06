@@ -168,6 +168,18 @@ and for destroying session and application contexts.-->
     <!--<dispatcher>FORWARD</dispatcher>-->
   <!--</filter-mapping>-->
 
+  <filter>
+    <filter-name>ResourceFilter</filter-name>
+    <filter-class>org.openfaces.util.ResourceFilter</filter-class>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>ResourceFilter</filter-name>
+    <servlet-name>Faces Servlet</servlet-name>
+    <dispatcher>REQUEST</dispatcher>
+    <dispatcher>FORWARD</dispatcher>
+  </filter-mapping>
+
   <servlet>
     <servlet-name>Faces Servlet</servlet-name>
     <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>

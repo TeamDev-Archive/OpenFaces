@@ -12,28 +12,19 @@
 
 package org.openfaces.util;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 
-@WebFilter(filterName = "OpenFacesUploadFilter",
-        urlPatterns = "/*")
-public class FileUploadFilter implements Filter {
+public class FileUploadFilter {
     private static final String INIT_PARAM_TEMP_DIR = "org.openfaces.fileUpload.tempDir";
     private static final String COMPONENT_ID = "uniqueID";
     private static final String ID_OF_FILE = "idOfFile";
 
-    private ServletContext servletContext;
-
-    private String getTempDir() {
+    private static String getTempDir(ServletContext servletContext) {
         String tempDirAttr = FileUploadFilter.class.getName() + "." + INIT_PARAM_TEMP_DIR;
         String tempDir = (String) servletContext.getAttribute(tempDirAttr);
         if (tempDir == null) {
@@ -74,7 +65,7 @@ public class FileUploadFilter implements Filter {
         return tempDir;
     }
 
-    private String getStandardTempDir() {
+    private static String getStandardTempDir() {
         String tempDir;
         File tempFile = null;
         try {
@@ -99,7 +90,7 @@ public class FileUploadFilter implements Filter {
         return tempDir;
     }
 
-    private RuntimeException createFilterRuntimeException(String message, IOException e) {
+    private static RuntimeException createFilterRuntimeException(String message, IOException e) {
         System.err.println(message);
         if (e != null)
             return new RuntimeException(message, e);
@@ -107,7 +98,7 @@ public class FileUploadFilter implements Filter {
             return new RuntimeException(message);
     }
 
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+    public static void processMultipartRequest(ServletRequest request, ServletContext servletContext)
             throws IOException, ServletException {
 
         HttpServletRequest hRequest = (HttpServletRequest) request;
@@ -116,33 +107,17 @@ public class FileUploadFilter implements Filter {
         boolean isMultipart = (hRequest.getHeader("content-type") != null &&
                 hRequest.getHeader("content-type").contains("multipart/form-data"));
 
-        if (!isMultipart) {
-            chain.doFilter(request, response);
-        } else {//if multipart request
+        if (isMultipart) {//if multipart request
             String compID = request.getParameter(COMPONENT_ID);
             if (compID != null) {//if our component is using
-                String tempDirStr = getTempDir();
+                String tempDirStr = getTempDir(servletContext);
                 Long maxSizeOfFile = (Long) ((HttpServletRequest) request).getSession().getAttribute(compID);
                 if (maxSizeOfFile != null) {
                     String idOfFile = request.getParameter(ID_OF_FILE);
-                    FileUploadRequestWrapper wrapper = new FileUploadRequestWrapper(hRequest, tempDirStr, maxSizeOfFile, compID + idOfFile);
+                    new FileUploadRequestWrapper(hRequest, tempDirStr, maxSizeOfFile, compID + idOfFile);
                     request.setAttribute("fileUploadRequest", true);
-                    chain.doFilter(wrapper, response);
-                } else {
-                    chain.doFilter(request, response);//session expired
                 }
-            } else {
-                chain.doFilter(request, response);
             }
         }
     }
-
-    public void destroy() {
-    }
-
-    public void init(FilterConfig config) throws ServletException {
-        servletContext = config.getServletContext();
-    }
-
-
 }

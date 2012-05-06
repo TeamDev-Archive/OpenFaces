@@ -2872,7 +2872,7 @@
       <!-- @el false -->
     </attribute>
     <attribute>
-      <description>A value-binding expression that associates the component with a backing bean property.</description>
+    <description>A value-binding expression that associates the component with a backing bean property.</description>
       <name>binding</name>
       <deferred-value>
         <type>org.openfaces.component.table.DataTable</type>
@@ -5755,9 +5755,9 @@
       </description>
       <name>cellId</name>
       <deferred-value>
-        <type>java.lang.String</type>
+        <type>org.openfaces.component.table.CellId</type>
       </deferred-value>
-      <!-- @bindingType java.lang.String -->
+      <!-- @bindingType org.openfaces.component.table.CellId -->
       <!-- @default null -->
       <!-- @el only -->
     </attribute>
@@ -6012,12 +6012,12 @@
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>The CellId object for a currently selected cell.
-        The value "null" means no cell is currently selected.
+      <description>The List of org.openfaces.component.table.CellId objects for a currently selected cells.
+        The empty list means no cells are currently selected.
       </description>
       <name>cellIds</name>
       <deferred-value>
-        <type>java.lang.String</type>
+        <type>java.util.List</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
@@ -46972,6 +46972,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
   </tag>
 
+  
+  
   <tag>
     <description>Defines an output component which shows a summary value for a DataTable column in which it is inserted
       or a custom expression specified for this component explicitly.
@@ -47179,8 +47181,333 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
 
-  </tag>  
-  
+  </tag>
+
+  <tag>
+    <name>fileAttachments</name>
+    <tag-class>org.openfaces.taglib.jsp.input.fileattachments.FileAttachmentsJspTag</tag-class>
+    <body-content>JSP</body-content>
+
+    <attribute>
+      <description>A flag that indicates whether or not the component is visible.</description>
+      <name>rendered</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>The component identifier.</description>
+      <name>id</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el false -->
+    </attribute>
+
+    <attribute>
+      <description>A style for the FileAttachments component.</description>
+      <name>style</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A CSS class name for the FileAttachments component.</description>
+      <name>styleClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user clicks
+        the left mouse button over the component.
+      </description>
+      <name>onclick</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user double-clicks
+        the left mouse button over the component.
+      </description>
+      <name>ondblclick</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user clicks over the component with either
+        mouse button.
+      </description>
+      <name>onmousedown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer onto the component.
+      </description>
+      <name>onmouseover</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer over the component.
+      </description>
+      <name>onmousemove</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer
+        away from the component.
+      </description>
+      <name>onmouseout</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user releases a mouse button
+        over the component.
+      </description>
+      <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses a key over the component.
+      </description>
+      <name>onkeydown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user releases a key over the component.
+      </description>
+      <name>onkeyup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user presses and releases a
+        key over the component.
+      </description>
+      <name>onkeypress</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The List of org.openfaces.component.input.fileattachments.FileAttachment which specifies currently
+        uploaded
+        attachments.
+        The empty list means no attachments uploaded.
+      </description>
+      <name>value</name>
+      <deferred-value>
+        <type>java.util.List</type>
+      </deferred-value>
+      <!-- @bindingType java.util.List -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>Enables ability to implement behavior for download file. This attribute is a MethodBinding that
+        must point to the method that accepts a org.openfaces.event.FileDownloadEvent.
+      </description>
+      <name>fileDownloadListener</name>
+      <deferred-method>
+        <method-signature>void downloadListener(org.openfaces.event.FileDownloadEvent)</method-signature>
+      </deferred-method>
+      <!-- @bindingType javax.el.MethodExpression -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Enables ability to implement behavior for removing file. This attribute is a MethodBinding that
+        must point to the method that accepts a org.openfaces.event.FileRemovedEvent.
+      </description>
+      <name>fileRemovedListener</name>
+      <deferred-method>
+        <method-signature>void removeListener(org.openfaces.event.FileRemovedEvent)</method-signature>
+      </deferred-method>
+      <!-- @bindingType javax.el.MethodExpression -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>When the FileUpload component will upload file, the method will be invoked. This attribute is a MethodBinding that
+        must point to the method that accepts a org.openfaces.event.FileAttachedEvent.
+      </description>
+      <name>fileAttachedListener</name>
+      <deferred-method>
+        <method-signature>void attachedListener(org.openfaces.event.FileAttachedEvent)</method-signature>
+      </deferred-method>
+      <!-- @bindingType javax.el.MethodExpression -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The name of a request-scope variable under which the current row data is available when
+        specifying columns.
+      </description>
+      <name>var</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el false -->
+    </attribute>
+  </tag>
+  <tag>
+    <name>downloadAttachmentAction</name>
+    <tag-class>org.openfaces.taglib.jsp.input.fileattachments.DownloadAttachmentActionJspTag</tag-class>
+    <body-content>JSP</body-content>
+
+    <attribute>
+      <description>ID of the JSF component or of any HTML element whose event is listened to. It should be defined in
+        the same way as the "for" property of the standard HTMLOutputLabel component.
+      </description>
+      <name>for</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The name of a JavaScript function or event that should be confirmed before execution.</description>
+      <name>event</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Turns on the "standalone" mode where the Confirmation is not attached to other component
+        automatically,
+        and can be used via the public API instead. The default value is false, which means that the component is
+        attached
+        to the parent component, or a component referred to by the "for" attribute if it is specified.
+      </description>
+      <name>standalone</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+  </tag>
+  <tag>
+    <name>removeAttachmentAction</name>
+    <tag-class>org.openfaces.taglib.jsp.input.fileattachments.RemoveAttachmentActionJspTag</tag-class>
+    <body-content>JSP</body-content>
+
+    <attribute>
+      <description>ID of the JSF component or of any HTML element whose event is listened to. It should be defined in
+        the same way as the "for" property of the standard HTMLOutputLabel component.
+      </description>
+      <name>for</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The name of a JavaScript function or event that should be confirmed before execution.</description>
+      <name>event</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Turns on the "standalone" mode where the Confirmation is not attached to other component
+        automatically,
+        and can be used via the public API instead. The default value is false, which means that the component is
+        attached
+        to the parent component, or a component referred to by the "for" attribute if it is specified.
+      </description>
+      <name>standalone</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+  </tag>
   <!--<tag>-->
     <!--<description>This component is under construction. Displays a box where users may read and write comments. This component works on top of the Disqus-->
       <!--(http://disqus.com) service. You don&apos;t have to provide storage for the comments. You just have to create an-->
