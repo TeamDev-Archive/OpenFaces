@@ -198,4 +198,29 @@ public class Column extends BaseColumn implements ValueHolder {
         getFacets().put(FACET_EDITOR, editor);
     }
 
+    protected UIComponent calculateImplicitFacet(String facetName) {
+        AbstractTable table = getTable();
+        if (!(table instanceof DataTable))
+            return null;
+        DataTable dataTable = (DataTable) table;
+        if (!dataTable.getShowSummaries()) return null;
+
+        if (FACET_FOOTER.equals(facetName)) {
+            Summary summary = new Summary();
+            summary.setImplicitParentFacetReference(new Components.FacetReference(this, facetName));
+            if (summary.isApplicableInThisContext()) {
+                summary.setImplicitParentFacetReference(null);
+                return summary;
+            }
+        } if (FACET_IN_GROUP_FOOTER.equals(facetName)) {
+            Summary summary = new Summary();
+            summary.setImplicitParentFacetReference(new Components.FacetReference(this, facetName));
+            if (summary.isApplicableInThisContext()) {
+                summary.setImplicitParentFacetReference(null);
+                return summary;
+            }
+        }
+        return null;
+    }
+
 }

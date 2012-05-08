@@ -30,7 +30,9 @@ import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -687,7 +689,16 @@ public class BaseColumn extends UIColumn {
             while (table.isRowAvailable() && table.getRowData() instanceof GroupHeaderOrFooter) {
                 table.setRowIndex(++i);
             }
-            valueType = table.isRowAvailable() ? expression.getType(elContext) : Object.class;
+            Runnable restoreRowVariablesRunnable = null;
+            if (!table.isRowAvailable()) {
+                restoreRowVariablesRunnable = table.populateRowVariablesWithAnyModelValue();
+            }
+            try {
+                valueType = table.isRowAvailable() ? expression.getType(elContext) : Object.class;
+            } finally {
+                if (restoreRowVariablesRunnable != null)
+                    restoreRowVariablesRunnable.run();
+            }
             if (valueConverter == null) {
                 String var = table.getVar();
                 UIOutput columnOutput = obtainOutput(this, var);
@@ -806,6 +817,32 @@ public class BaseColumn extends UIColumn {
         return null;
 
     }
+
+    public UIComponent getFacet(String name) {
+        UIComponent existingFacet = super.getFacet(name);
+        if (existingFacet != null) return existingFacet;
+        UIComponent implicitFacet = getImplicitFacet(name);
+        if (implicitFacet != null)
+            getFacets().put(name, implicitFacet);
+        return implicitFacet;
+    }
+
+    private Map<String, UIComponent> implicitFacets = new HashMap<String, UIComponent>();
+
+    protected UIComponent getImplicitFacet(String name) {
+        if (implicitFacets.containsKey(name))
+            return implicitFacets.get(name);
+        else {
+            UIComponent facet = calculateImplicitFacet(name);
+            implicitFacets.put(name, facet);
+            return facet;
+        }
+    }
+
+    protected UIComponent calculateImplicitFacet(String facetName) {
+        return null;
+    }
+
 
     public UIComponent getSubHeader() {
         return Components.getFacet(this, FACET_SUB_HEADER);

@@ -107,6 +107,29 @@ public class Summary extends OUIOutput {
         setValueExpression(ATTR_PATTERN, valueExpression);
     }
 
+    private Components.FacetReference implicitParentFacetReference;
+
+    /**
+     * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
+     * by any application code.
+     */
+    public Components.FacetReference getImplicitParentFacetReference() {
+        return implicitParentFacetReference;
+    }
+
+    /**
+     * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
+     * by any application code.
+     */
+    public void setImplicitParentFacetReference(Components.FacetReference implicitParentFacetReference) {
+        this.implicitParentFacetReference = implicitParentFacetReference;
+    }
+
+    public boolean isApplicableInThisContext() {
+        SummaryFunction function = getUsageContext().getFunction();
+        return function != null && !(function instanceof CountFunction);
+    }
+
     private static class UsageContext {
         private Summary summary;
         private DataTable table;
@@ -120,7 +143,9 @@ public class Summary extends OUIOutput {
         public UsageContext(Summary summary) {
             this.summary = summary;
 
-            Components.FacetReference facetReference = Components.getParentFacetReference(summary);
+            Components.FacetReference facetReference = summary.implicitParentFacetReference != null
+                    ? summary.implicitParentFacetReference
+                    : Components.getParentFacetReference(summary);
             if (facetReference == null)
                 throw new FacesException("The <o:summary> tag can only be used inside of one of the facets of the " +
                         "<o:dataTable> component or inside of the facets of one of its <o:column> or <o:columnGroup> " +
@@ -227,6 +252,9 @@ public class Summary extends OUIOutput {
                         "the \"by\" attribute has to be specified or <o:summary> should be placed into a column's " +
                         "facet to derive the expression from that column automatically.");
             }
+            if (!(column instanceof Column))
+                throw new FacesException("<o:summary> component can only be used inside of <o:column>, but not other " +
+                        "types of column tags (" + column.getClass().getName() + ")");
             byExpression = column.getColumnValueExpression();
             // the summary's expression is not specified explicitly and it's not inside of a column whose value
             // expression can be detected
@@ -256,32 +284,28 @@ public class Summary extends OUIOutput {
             function = summary.getFunction();
             if (function != null) return function;
 
+            function = detectFunctionByColumn(facetName, column, getByExpression());
+
+            return function;
+        }
+
+        private static SummaryFunction detectFunctionByColumn(String facetName, BaseColumn column, ValueExpression byExpression) {
             if (column == null ||
                     column instanceof ColumnGroup ||
                     equalsToOneOf(facetName, BaseColumn.FACET_GROUP_HEADER, BaseColumn.FACET_GROUP_FOOTER)) {
-                function = new CountFunction();
+                return new CountFunction();
             } else {
-                BaseColumn.ExpressionData expressionData = column.getExpressionData(getByExpression());
+                BaseColumn.ExpressionData expressionData = column.getExpressionData(byExpression);
                 Class valueType = expressionData.getValueType();
-                List<SummaryFunction> allFunctions = ApplicationParams.getSummaryFunctions();
-                for (SummaryFunction fn : allFunctions) {
-                    if (fn.isApplicableForClass(valueType)) {
-                        function = fn;
-                        break;
-                    }
-                }
-                if (function == null)
-                    function = new CountFunction();
+                return getDefaultFunctionForType(valueType);
             }
-
-            return function;
         }
 
         private Converter getConverter() {
             return summary.getConverter();
         }
 
-        private boolean equalsToOneOf(String str, String... toOneOf) {
+        private static boolean equalsToOneOf(String str, String... toOneOf) {
             for (String oneOf : toOneOf) {
                 if (str.equals(oneOf))
                     return true;
@@ -290,6 +314,15 @@ public class Summary extends OUIOutput {
         }
     }
 
+    private static SummaryFunction getDefaultFunctionForType(Class valueType) {
+        List<SummaryFunction> allFunctions = ApplicationParams.getSummaryFunctions();
+        for (SummaryFunction fn : allFunctions) {
+            if (fn.isApplicableForClass(valueType)) {
+                return fn;
+            }
+        }
+        return new CountFunction();
+    }
 
 
     private UsageContext getUsageContext() {

@@ -25,7 +25,7 @@ import java.util.List;
 public abstract class SummaryFunction implements Serializable {
 
     public boolean isApplicableForClass(Class valueClass) {
-        OrdinalType typeForClass = getTypeForClass(valueClass);
+        OrdinalType typeForClass = getTypeForClass(valueClass, false);
         if (typeForClass == null) {
             // the passed class cannot be recognized by any of the registered OrdinalTypes
             return false;
@@ -38,17 +38,24 @@ public abstract class SummaryFunction implements Serializable {
         return true;
     }
 
-    private static OrdinalType getTypeForClass(Class valueClass) {
-        if (valueClass == null)
-            throw new IllegalArgumentException("valueClass shouldn't be null");
+    private static OrdinalType getTypeForClass(Class valueClass, boolean throwExceptionOnUnsupportedClass) {
+        if (valueClass == null) {
+            if (throwExceptionOnUnsupportedClass)
+                throw new IllegalArgumentException("valueClass shouldn't be null");
+            else
+                return null;
+        }
         List<OrdinalType> ordinalTypes = ApplicationParams.getOrdinalTypes();
         for (OrdinalType type : ordinalTypes) {
             if (type.isApplicableForClass(valueClass))
                 return type;
         }
-        throw new FacesException("Unsupported object type for summary calculation: " + valueClass.getName() +
-                "; could not find an appropriate OrdinalType implementation that describes operations on " +
-                "this type of objects.");
+        if (throwExceptionOnUnsupportedClass)
+            throw new FacesException("Unsupported object type for summary calculation: " + valueClass.getName() +
+                    "; could not find an appropriate OrdinalType implementation that describes operations on " +
+                    "this type of objects.");
+        else
+            return null;
     }
 
 
@@ -92,7 +99,7 @@ public abstract class SummaryFunction implements Serializable {
             if (value == null) return null;
             if (ordinalType == null) {
                 Class valueClass = value.getClass();
-                ordinalType = getTypeForClass(valueClass);
+                ordinalType = getTypeForClass(valueClass, true);
             }
             return ordinalType;
         }

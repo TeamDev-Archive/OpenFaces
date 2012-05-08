@@ -444,7 +444,7 @@ public class Components {
     public static UIComponent getFacet(UIComponent component, String facetName) {
         // this method is changed in the 3.x branch to address Mojarra 2.0.3 issue, and is included in the main
         // branch here just in order to make its usage uniform across both versions
-        return component.getFacets().get(facetName);
+        return component.getFacet(facetName);
     }
 
     /**
@@ -507,7 +507,7 @@ public class Components {
 
     public static void restoreRequestVariable(String varName) {
         Map<String, Object> requestMap = getRequestMap();
-        if (requestMap == null) {
+        if (requestMap == null || varName == null) {
             return;
         }
         String backupVarName = "of:prev_" + varName;

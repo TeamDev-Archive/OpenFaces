@@ -440,6 +440,14 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
         extractedRows = rows;
     }
 
+    /**
+     * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
+     * by any application code.
+     */
+    public List<RowInfo> getAllRetrievedRows() {
+        return allRetrievedRows;
+    }
+
     public Map<Object, ? extends NodeInfo> getDerivedRowHierarchy() {
         return derivedRowHierarchy;
     }

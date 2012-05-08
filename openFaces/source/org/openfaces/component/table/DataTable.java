@@ -54,6 +54,8 @@ public class DataTable extends AbstractTable {
     private PaginationOnSorting paginationOnSorting;
     private Boolean customDataProviding;
 
+    private Boolean showSummaries;
+
     public DataTable() {
         setRendererType("org.openfaces.DataTableRenderer");
     }
@@ -76,7 +78,7 @@ public class DataTable extends AbstractTable {
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         return new Object[]{superState, rowIndexVar, pageSize, pageIndex, paginationKeyboardSupport,
-                paginationOnSorting, customDataProviding};
+                paginationOnSorting, customDataProviding, showSummaries};
     }
 
     @Override
@@ -90,6 +92,7 @@ public class DataTable extends AbstractTable {
         paginationKeyboardSupport = (Boolean) state[i++];
         paginationOnSorting = (PaginationOnSorting) state[i++];
         customDataProviding = (Boolean) state[i++];
+        showSummaries = (Boolean) state[i++];
     }
 
     @Override
@@ -116,6 +119,14 @@ public class DataTable extends AbstractTable {
             List<GroupingRule> rules = rowGrouping.getGroupingRules();
             validateSortingOrGroupingRules(rules);
         }
+    }
+
+    public boolean getShowSummaries() {
+        return ValueBindings.get(this, "showSummaries", showSummaries, false);
+    }
+
+    public void setShowSummaries(boolean showSummaries) {
+        this.showSummaries = showSummaries;
     }
 
     /**
@@ -553,5 +564,18 @@ public class DataTable extends AbstractTable {
         if (groupingBoxList.size() == 1)
             return groupingBoxList.get(0);
         return null;
+    }
+
+    @Override
+    public Runnable populateRowVariablesWithAnyModelValue() {
+        Runnable runnable = super.populateRowVariablesWithAnyModelValue();
+        Components.setRequestVariable(getRowIndexVar(), 0);
+        return runnable;
+    }
+
+    @Override
+    public void restoreRowVariables() {
+        super.restoreRowVariables();
+        Components.restoreRequestVariable(getRowIndexVar());
     }
 }
