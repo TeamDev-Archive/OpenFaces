@@ -400,12 +400,22 @@ O$.FileUploadUtil = {
         }, 500);
       },
       _getDocumentURI:function () {
-        var docURL = document.URL;
-        if (docURL.indexOf("&") == -1) {
-          return docURL + "?uniqueID=" + fileUpload._ID;
-        } else {
-          return docURL + "&uniqueID=" + fileUpload._ID;
+        if (!O$.FileUploadUtil._documentURL) {
+          var form = O$.getParentNode(this, "FORM");
+          if (!form) form = document.forms[0];
+
+          var encodedUrlField = form.elements["javax.faces.encodedURL"];
+          var url = encodedUrlField ? encodedUrlField.value : form.action;
+
+          if (url.indexOf("&") == -1) {
+            url = url + "?uniqueID=" + fileUpload._ID;
+          } else {
+            url = url + "&uniqueID=" + fileUpload._ID;
+          }
+
+          O$.FileUploadUtil._documentURL = url;
         }
+        return O$.FileUploadUtil._documentURL;
 
       },
     /*Because of imperfect value of file's size when directory is chosen (I got values 4096*x where x is between 1 - 8)

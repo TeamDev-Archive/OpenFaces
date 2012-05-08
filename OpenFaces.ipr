@@ -1661,11 +1661,6 @@
         <root url="jar://$PROJECT_DIR$/libsrc/trinidad-stub-scr.zip!/" />
       </SOURCES>
     </library>
-    <library name="Unnamed">
-      <CLASSES />
-      <JAVADOC />
-      <SOURCES />
-    </library>
   </component>
 </project>
 
