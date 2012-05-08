@@ -542,22 +542,10 @@ public class Components {
         Set<Map.Entry<String,UIComponent>> facetEntries = parent.getFacets().entrySet();
         for (Map.Entry<String, UIComponent> facetEntry : facetEntries) {
             UIComponent value = facetEntry.getValue();
-            if (undecorateFacetComponent(value) == component)
+            if (value == component)
                 return new FacetReference(parent, facetEntry.getKey());
         }
         return getParentFacetReference(parent);
-    }
-
-    /**
-     * This method is redefined in OpenFaces 3.x to overcome Mojarra 2.0.3 issue of excessive internal facet wrapper
-     * components being erroneously returned by the UIComponent's facet access methods.
-     *
-     * @see #getFacet(javax.faces.component.UIComponent component, java.lang.String facetName)
-     * @param facetComponent
-     * @return
-     */
-    private static UIComponent undecorateFacetComponent(UIComponent facetComponent) {
-        return facetComponent;
     }
 
     public static void clearCachedClientIds(UIComponent component) {

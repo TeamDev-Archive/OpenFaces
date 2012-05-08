@@ -30,7 +30,6 @@ import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -818,28 +817,18 @@ public class BaseColumn extends UIColumn {
 
     }
 
-    public UIComponent getFacet(String name) {
-        UIComponent existingFacet = super.getFacet(name);
-        if (existingFacet != null) return existingFacet;
-        UIComponent implicitFacet = getImplicitFacet(name);
-        if (implicitFacet != null)
-            getFacets().put(name, implicitFacet);
-        return implicitFacet;
-    }
-
-    private Map<String, UIComponent> implicitFacets = new HashMap<String, UIComponent>();
-
-    protected UIComponent getImplicitFacet(String name) {
-        if (implicitFacets.containsKey(name))
-            return implicitFacets.get(name);
-        else {
-            UIComponent facet = calculateImplicitFacet(name);
-            implicitFacets.put(name, facet);
-            return facet;
+    public void createImplicitFacets() {
+        Map<String, UIComponent> facets = getFacets();
+        for (String facetName : new String[]{FACET_HEADER, FACET_SUB_HEADER, FACET_FOOTER,
+                FACET_GROUP_HEADER, FACET_GROUP_FOOTER, FACET_IN_GROUP_HEADER, FACET_IN_GROUP_FOOTER}) {
+            UIComponent facetComponent = createImplicitFacet(facetName);
+            if (facetComponent != null) {
+                facets.put(facetName, facetComponent);
+            }
         }
     }
 
-    protected UIComponent calculateImplicitFacet(String facetName) {
+    protected UIComponent createImplicitFacet(String facetName) {
         return null;
     }
 

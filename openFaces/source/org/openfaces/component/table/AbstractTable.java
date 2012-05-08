@@ -144,6 +144,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     private Integer autoFilterDelay;
     private Boolean deferBodyLoading;
     private Integer totalRowCount;
+    private boolean implicitFacetsCreated;
 
     public AbstractTable() {
         super.setUiDataValue(new TableDataModel(this));
@@ -188,7 +189,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
                 rolloverRowStyle, rolloverRowClass, noDataRowStyle, noDataRowClass,
                 noDataMessageAllowed, columnIndexVar, columnIdVar, saveAttachedState(context, columnsOrder),
                 sortedAscendingImageUrl, sortedDescendingImageUrl, cachedClientId,
-                autoFilterDelay, deferBodyLoading, totalRowCount};
+                autoFilterDelay, deferBodyLoading, totalRowCount, implicitFacetsCreated};
     }
 
     @Override
@@ -276,6 +277,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         autoFilterDelay = (Integer) state[i++];
         deferBodyLoading = (Boolean) state[i++];
         totalRowCount = (Integer) state[i++];
+        implicitFacetsCreated = (Boolean) state[i++];
 
         beforeUpdateValuesPhase = true;
         incomingSortingRules = null;
@@ -334,6 +336,14 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     @Override
     public void setRowIndex(int rowIndex) {
+        if (!implicitFacetsCreated) {
+            // it is important implicit column facets, such as the ones implicitly created for the summary calculation
+            // feature, to be created before the first setRowIndex call because changing the set of facets afterwards
+            // might break its state saving mechanism
+            createImplicitColumnFacets();
+            implicitFacetsCreated = true;
+        }
+
         super.setRowIndex(rowIndex);
 
         List<UIComponent> components = getAdditionalComponentsRequiringClientIdReset();
@@ -523,6 +533,13 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
             }
         }
         return colById;
+    }
+
+    protected void createImplicitColumnFacets() {
+        List<BaseColumn> allColumns = getAllColumns();
+        for (BaseColumn column : allColumns) {
+            column.createImplicitFacets();
+        }
     }
 
     public List<BaseColumn> getAllColumns() {

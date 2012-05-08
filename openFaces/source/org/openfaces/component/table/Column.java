@@ -198,7 +198,7 @@ public class Column extends BaseColumn implements ValueHolder {
         getFacets().put(FACET_EDITOR, editor);
     }
 
-    protected UIComponent calculateImplicitFacet(String facetName) {
+    protected UIComponent createImplicitFacet(String facetName) {
         AbstractTable table = getTable();
         if (!(table instanceof DataTable))
             return null;
@@ -206,19 +206,11 @@ public class Column extends BaseColumn implements ValueHolder {
         if (!dataTable.getShowSummaries()) return null;
 
         if (FACET_FOOTER.equals(facetName)) {
-            Summary summary = new Summary();
-            summary.setImplicitParentFacetReference(new Components.FacetReference(this, facetName));
-            if (summary.isApplicableInThisContext()) {
-                summary.setImplicitParentFacetReference(null);
-                return summary;
-            }
+            Summary summary = new Summary(true);
+            return summary;
         } if (FACET_IN_GROUP_FOOTER.equals(facetName)) {
-            Summary summary = new Summary();
-            summary.setImplicitParentFacetReference(new Components.FacetReference(this, facetName));
-            if (summary.isApplicableInThisContext()) {
-                summary.setImplicitParentFacetReference(null);
-                return summary;
-            }
+            Summary summary = new Summary(true);
+            return summary;
         }
         return null;
     }
