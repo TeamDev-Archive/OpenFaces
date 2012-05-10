@@ -998,7 +998,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     private List<Summary> summaries;
 
-    public List<Summary> getSummaries() {
+    public List<Summary> getSummaryComponents() {
         if (summaries == null) {
             Set<ColumnGroup> columnGroups = new HashSet<ColumnGroup>();
             List<UIComponent> facets = new ArrayList<UIComponent>();

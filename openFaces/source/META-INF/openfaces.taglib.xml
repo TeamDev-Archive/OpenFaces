@@ -1409,4 +1409,11 @@
       <handler-class>org.openfaces.taglib.facelets.PositionTagHandler</handler-class>
     </component>
   </tag>
+  <tag>
+    <tag-name>summaries</tag-name>
+    <component>
+      <component-type>org.openfaces.Summaries</component-type>
+      <handler-class>org.openfaces.taglib.facelets.table.SummariesTagHandler</handler-class>
+    </component>
+  </tag>
 </facelet-taglib>

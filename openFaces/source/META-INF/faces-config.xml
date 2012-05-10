@@ -909,7 +909,12 @@
     <component-type>org.openfaces.Position</component-type>
     <component-class>org.openfaces.component.Position</component-class>
   </component>
-  
+
+  <component>
+    <component-type>org.openfaces.Summaries</component-type>
+    <component-class>org.openfaces.component.table.Summaries</component-class>
+  </component>
+
   <render-kit>
     <renderer>
       <component-family>org.openfaces.DataTable</component-family>

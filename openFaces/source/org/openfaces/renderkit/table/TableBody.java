@@ -352,7 +352,7 @@ public class TableBody extends TableSection {
                             "mutually exclusive and cannot be used at the same time.");
             renderedColIndexesByOriginalIndexes = getRenderedColIndexesByOriginalIndexesMap(table);
 
-            summaries = table.getSummaries();
+            summaries = table.getSummaryComponents();
         }
 
         private List<Row> getCustomRows(AbstractTable table) {
