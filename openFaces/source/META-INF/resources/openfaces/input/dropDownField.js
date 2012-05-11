@@ -683,6 +683,9 @@ O$.DropDownField = {
     var popup = dropDown._popup;
     var itemPresentation = dropDown._itemPresentation;
 
+    // Switch off browser input field autocomplete
+    field.setAttribute("autocomplete","off");
+
     if (itemPresentation) {
       O$.extend(field, {
         _show:function () {
@@ -736,6 +739,8 @@ O$.DropDownField = {
       });
 
       itemPresentation.onmousedown = function (e) {
+        if (dropDown._disabled)
+          return;
         dropDown.dropDown();
         if (O$.isExplorer8AndOlder()) {
           setTimeout(function () {
@@ -750,6 +755,8 @@ O$.DropDownField = {
       };
 
       itemPresentation.ondblclick = function () {
+        if (dropDown._disabled)
+          return;
         if (dropDown._getSelectedItem()) {
           field.value = dropDown._getSelectedItem()._itemLabel;
         }
