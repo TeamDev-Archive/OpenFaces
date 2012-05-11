@@ -12,6 +12,7 @@
 package org.openfaces.renderkit;
 
 import org.openfaces.component.table.*;
+import org.openfaces.component.table.impl.DynamicColumn;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.util.Components;

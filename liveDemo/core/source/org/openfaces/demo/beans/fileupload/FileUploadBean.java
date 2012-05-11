@@ -31,7 +31,17 @@ public class FileUploadBean implements Serializable {
 
 
     public void uploadComplete(UploadCompletionEvent e) {
-        uploadedFiles.addAll(e.getFiles());
+        List<FileUploadItem> files = e.getFiles();
+        uploadedFiles.addAll(files);
+        deleteFiles(files);
+    }
+
+    private void deleteFiles(List<FileUploadItem> files) {
+        for (FileUploadItem fileUploadItem : files) {
+            File file = fileUploadItem.getFile();
+            // delete the file to save disk space on the server running the demo
+            file.delete();
+        }
     }
 
     public List<FileUploadItem> getUploadedFiles() {
@@ -57,8 +67,11 @@ public class FileUploadBean implements Serializable {
 
     public void bookImageUploaded(UploadCompletionEvent uploadCompletionEvent) {
         Book book = Faces.var("book", Book.class);
-        FileUploadItem fileUploadItem = uploadCompletionEvent.getFiles().get(0);
+        List<FileUploadItem> files = uploadCompletionEvent.getFiles();
+        FileUploadItem fileUploadItem = files.get(0);
         book.setUploadedCoverImage(fileUploadItem);
+
+        deleteFiles(files);
     }
     
     public String getBookImageFileSize() {
@@ -73,6 +86,8 @@ public class FileUploadBean implements Serializable {
                 return "<Upload stopped>";
             case FAILED:
                 return "<Upload failed>";
+            case SIZE_LIMIT_EXCEEDED:
+                return "<Size limit exceeded>";
             default:
                 throw new IllegalStateException("Unknown FileUploadStatus enumeration value: " + status);
         }

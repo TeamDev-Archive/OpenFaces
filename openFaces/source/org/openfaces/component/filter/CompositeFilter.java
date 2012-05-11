@@ -127,7 +127,7 @@ public class CompositeFilter extends Filter {
 
 
     private FilterProperty getColumnFilterProperty(FilterableComponent filteredComponent, BaseColumn column) {
-        final BaseColumn.ColumnExpressionData columnExpressionData = column.getColumnExpressionData();
+        final BaseColumn.ExpressionData columnExpressionData = column.getColumnExpressionData();
         if (columnExpressionData == null) {
             AbstractTable table = column.getTable();
             String var = table.getVar();
@@ -387,9 +387,9 @@ public class CompositeFilter extends Filter {
         private String title;
         private Object dataProvider;
         private PropertyLocator propertyLocator;
-        private BaseColumn.ColumnExpressionData columnExpressionData;
+        private BaseColumn.ExpressionData columnExpressionData;
 
-        public ColumnFilterProperty(FilterType filterType, String title, Object dataProvider, PropertyLocator propertyLocator, BaseColumn.ColumnExpressionData columnExpressionData) {
+        public ColumnFilterProperty(FilterType filterType, String title, Object dataProvider, PropertyLocator propertyLocator, BaseColumn.ExpressionData columnExpressionData) {
             this.filterType = filterType;
             this.title = title;
             this.dataProvider = dataProvider;

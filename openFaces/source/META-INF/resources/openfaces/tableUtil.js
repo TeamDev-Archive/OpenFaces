@@ -105,7 +105,7 @@ O$.Tables = {
           section._scrollingAreas.forEach(function (a) {
             if (!a) return;
             var areaTable = a._table;
-            if (areaTable.style.tableLayout == "auto") return;
+            if (!areaTable || areaTable.style.tableLayout == "auto") return;
             if (areaTable.rows.length > 0 && areaTable.rows[0]._cells.length == 0) {
               var oldTableLayout = areaTable.style.tableLayout;
               areaTable.style.tableLayout = "auto";
@@ -2409,7 +2409,7 @@ O$.Tables = {
         var firstUpdate = true;
         O$.listenProperty(table, "width", function(/*width*/) {
           if (firstUpdate) {
-            // already updated during inintialization
+            // already updated during initialization
             firstUpdate = false;
             return;
           }
@@ -2423,10 +2423,12 @@ O$.Tables = {
           section._scrollingAreas.forEach(function(a) {
             if (!a) return;
             var areaTable = a._table;
-            areaTable.style.tableLayout = "auto";
-            setTimeout(function() {
-              areaTable.style.tableLayout = "fixed";
-            }, 10);
+            if (areaTable) {
+              areaTable.style.tableLayout = "auto";
+              setTimeout(function() {
+                areaTable.style.tableLayout = "fixed";
+              }, 10);
+            }
           });
         });
       }

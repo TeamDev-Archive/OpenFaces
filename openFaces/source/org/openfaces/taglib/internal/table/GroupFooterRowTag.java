@@ -11,7 +11,7 @@
  */
 package org.openfaces.taglib.internal.table;
 
-import org.openfaces.component.table.GroupFooterRow;
+import org.openfaces.component.table.impl.GroupFooterRow;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;

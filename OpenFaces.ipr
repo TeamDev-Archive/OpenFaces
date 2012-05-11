@@ -1085,6 +1085,7 @@
         <w>layeredpane</w>
         <w>lgpl</w>
         <w>liferay</w>
+        <w>linearize</w>
         <w>listbox</w>
         <w>locator</w>
         <w>ltrim</w>
@@ -1453,7 +1454,7 @@
     <library name="Tomahawk">
       <CLASSES>
         <root url="jar://$PROJECT_DIR$/lib/tomahawk/tomahawk20-1.1.10.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/apache/commons-fileupload-1.2.1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/commons-fileupload-1.2.2.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/apache/commons-lang-2.4.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/apache/commons-logging-1.1.1.jar!/" />
       </CLASSES>

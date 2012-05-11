@@ -153,7 +153,7 @@
   <context-param>
     <description>Specifies the maximum size of each file in kilobytes.</description>
     <param-name>org.openfaces.fileUpload.fileSizeLimit</param-name>
-    <param-value>200000</param-value>
+    <param-value>10000</param-value>
   </context-param>
 
 
@@ -174,8 +174,8 @@
   </context-param>
 
   <filter>
-    <filter-name>OpenFacesUploadFilter</filter-name>
-    <filter-class>org.openfaces.util.FileUploadFilter</filter-class>
+    <filter-name>ResourceFilter</filter-name>
+    <filter-class>org.openfaces.util.ResourceFilter</filter-class>
   </filter>
 
   <filter>
@@ -184,8 +184,10 @@
   </filter>
 
   <filter-mapping>
-    <filter-name>OpenFacesUploadFilter</filter-name>
-    <url-pattern>*.jsf</url-pattern>
+    <filter-name>ResourceFilter</filter-name>
+    <servlet-name>Faces Servlet</servlet-name>
+    <dispatcher>REQUEST</dispatcher>
+    <dispatcher>FORWARD</dispatcher>
   </filter-mapping>
 
   <filter-mapping>

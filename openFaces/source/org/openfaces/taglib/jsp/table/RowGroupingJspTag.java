@@ -57,4 +57,36 @@ public class RowGroupingJspTag extends AbstractComponentJspTag {
     public void setSelectionMode(ValueExpression selectionMode) {
         getDelegate().setPropertyValue("selectionMode", selectionMode);
     }
+
+    public void setGroupHeaderRowStyle(ValueExpression groupHeaderRowStyle) {
+        getDelegate().setPropertyValue("groupHeaderRowStyle", groupHeaderRowStyle);
+    }
+
+    public void setGroupHeaderRowClass(ValueExpression groupHeaderRowClass) {
+        getDelegate().setPropertyValue("groupHeaderRowClass", groupHeaderRowClass);
+    }
+
+    public void setGroupFooterRowStyle(ValueExpression groupFooterRowStyle) {
+        getDelegate().setPropertyValue("groupFooterRowStyle", groupFooterRowStyle);
+    }
+
+    public void setGroupFooterRowClass(ValueExpression groupFooterRowClass) {
+        getDelegate().setPropertyValue("groupFooterRowClass", groupFooterRowClass);
+    }
+
+    public void setInGroupHeaderRowStyle(ValueExpression inGroupHeaderRowStyle) {
+        getDelegate().setPropertyValue("inGroupHeaderRowStyle", inGroupHeaderRowStyle);
+    }
+
+    public void setInGroupHeaderRowClass(ValueExpression inGroupHeaderRowClass) {
+        getDelegate().setPropertyValue("inGroupHeaderRowClass", inGroupHeaderRowClass);
+    }
+
+    public void setInGroupFooterRowStyle(ValueExpression inGroupFooterRowStyle) {
+        getDelegate().setPropertyValue("inGroupFooterRowStyle", inGroupFooterRowStyle);
+    }
+
+    public void setInGroupFooterRowClass(ValueExpression inGroupFooterRowClass) {
+        getDelegate().setPropertyValue("inGroupFooterRowClass", inGroupFooterRowClass);
+    }
 }

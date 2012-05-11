@@ -12,6 +12,11 @@
 package org.openfaces.util;
 
 import org.openfaces.component.ajax.DefaultProgressMessage;
+import org.openfaces.component.table.AbstractTable;
+import org.openfaces.component.table.Columns;
+import org.openfaces.component.table.impl.DynamicColumn;
+import org.openfaces.event.AjaxActionEvent;
+import org.openfaces.renderkit.ajax.DefaultProgressMessageRenderer;
 
 import javax.faces.FacesException;
 import javax.faces.context.ExternalContext;

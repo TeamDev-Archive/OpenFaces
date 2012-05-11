@@ -12,6 +12,12 @@
 package org.openfaces.component.table;
 
 import org.openfaces.component.filter.Filter;
+import org.openfaces.component.table.impl.NodeComparator;
+import org.openfaces.component.table.impl.NodeInfo;
+import org.openfaces.component.table.impl.NodeInfoForRow;
+import org.openfaces.component.table.impl.RowComparator;
+import org.openfaces.component.table.impl.TableDataModel;
+import org.openfaces.component.table.impl.TempNodeParams;
 import org.openfaces.renderkit.table.TreeTableRenderer;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.ValueBindings;
@@ -630,32 +636,14 @@ public class TreeTable extends AbstractTable {
             Comparator<Object> sortingComparator,
             Map<String, Object> requestMap,
             boolean sortAscending) {
-        return new NodeComparator(facesContext, sortingExpression, sortingComparator, requestMap, sortAscending);
+        return new NodeComparator(this, facesContext, sortingExpression, sortingComparator, requestMap, sortAscending);
     }
 
-    public int getMaxLevel() {
-        return deepestLevel;
-    }
-
-
-    public class NodeComparator extends RowComparator {
-        private String nodePathVar;
-        private String nodeHasChildrenVar;
-
-        public NodeComparator(
-                FacesContext facesContext,
-                ValueExpression sortingExpression,
-                Comparator<Object> sortingComparator,
-                Map<String, Object> requestMap,
-                boolean sortAscending) {
-            super(facesContext, sortingExpression, sortingComparator, requestMap, sortAscending);
-            nodePathVar = getNodePathVar();
-            nodeHasChildrenVar = getNodeHasChildrenVar();
-        }
-
-    }
-
-    protected Runnable populateSortingExpressionParams(final String var, final Map<String, Object> requestMap, Object collectionObject) {
+    /**
+     * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
+     * by any application code.
+     */
+    public Runnable populateSortingExpressionParams(final String var, final Map<String, Object> requestMap, Object collectionObject) {
 //        protected Runnable populateSortingExpressionParams(final Map<String, Object> requestMap, Object collectionObject) {
             TempNodeParams nodeParams = (TempNodeParams) collectionObject;
             Object nodeData = nodeParams.getNodeData();

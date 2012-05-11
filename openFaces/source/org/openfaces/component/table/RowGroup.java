@@ -25,11 +25,6 @@ public class RowGroup implements Serializable, Comparable<RowGroup> {
     public RowGroup() {
     }
 
-    public RowGroup(String columnId, Object groupingValue) {
-        this.columnId = columnId;
-        this.groupingValue = groupingValue;
-    }
-
     public RowGroup(String columnId, Object groupingValue, RowGroup parentGroup) {
         this.columnId = columnId;
         this.groupingValue = groupingValue;
@@ -72,16 +67,19 @@ public class RowGroup implements Serializable, Comparable<RowGroup> {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj == null) return false;
-        if (! (obj instanceof RowGroup)) return false;
-        RowGroup that = (RowGroup) obj;
-        Object thisValue = this.getGroupingValue();
-        Object thatValue = that.getGroupingValue();
-        if (thisValue == null)
-            return thatValue == null;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-        return thisValue.equals(thatValue);
+        RowGroup rowGroup = (RowGroup) o;
+
+        if (columnId != null ? !columnId.equals(rowGroup.columnId) : rowGroup.columnId != null) return false;
+        if (groupingValue != null ? !groupingValue.equals(rowGroup.groupingValue) : rowGroup.groupingValue != null)
+            return false;
+        if (parentGroup != null ? !parentGroup.equals(rowGroup.parentGroup) : rowGroup.parentGroup != null)
+            return false;
+
+        return true;
     }
 
     @Override

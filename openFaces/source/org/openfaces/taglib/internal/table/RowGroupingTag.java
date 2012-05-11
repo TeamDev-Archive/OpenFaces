@@ -41,5 +41,13 @@ public class RowGroupingTag extends AbstractComponentTag {
         setBooleanProperty(component, "hideGroupingColumns");
         setExpansionStateProperty(component, "expansionState");
         setEnumerationProperty(component, "selectionMode", RowGroupingSelectionMode.class);
+        setStringProperty(component, "groupHeaderRowStyle");
+        setStringProperty(component, "groupHeaderRowClass");
+        setStringProperty(component, "groupFooterRowStyle");
+        setStringProperty(component, "groupFooterRowClass");
+        setStringProperty(component, "inGroupHeaderRowStyle");
+        setStringProperty(component, "inGroupHeaderRowClass");
+        setStringProperty(component, "inGroupFooterRowStyle");
+        setStringProperty(component, "inGroupFooterRowClass");
     }
 }

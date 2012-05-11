@@ -15,8 +15,8 @@ package org.openfaces.component;
 
 import org.openfaces.component.table.Cell;
 import org.openfaces.component.table.Columns;
-import org.openfaces.component.table.DynamicCol;
 import org.openfaces.component.table.Row;
+import org.openfaces.component.table.impl.DynamicCol;
 import org.openfaces.renderkit.table.CustomCellRenderingInfo;
 import org.openfaces.renderkit.table.CustomContentCellRenderingInfo;
 import org.openfaces.renderkit.table.CustomRowRenderingInfo;

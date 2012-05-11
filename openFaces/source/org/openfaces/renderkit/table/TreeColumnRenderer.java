@@ -32,7 +32,6 @@ import java.io.IOException;
  * @author Dmitry Pikhulya
  */
 public class TreeColumnRenderer extends ColumnRenderer {
-
     private static final String DEFAULT_INDENT_CLASS = "o_treetable_indent";
     private static final String DEFAULT_EXPANSION_TOGGLE_CELL_CLASS = "o_treetable_expansion_toggle_cell";
 

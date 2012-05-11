@@ -20,7 +20,7 @@ import org.openfaces.component.ajax.DefaultSessionExpiration;
 import org.openfaces.component.ajax.SilentSessionExpiration;
 import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.Columns;
-import org.openfaces.component.table.DynamicColumn;
+import org.openfaces.component.table.impl.DynamicColumn;
 import org.openfaces.event.AjaxActionEvent;
 import org.openfaces.org.json.JSONArray;
 import org.openfaces.org.json.JSONException;

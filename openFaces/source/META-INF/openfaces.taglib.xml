@@ -1306,21 +1306,21 @@
       <handler-class>org.openfaces.taglib.facelets.table.GroupingBoxTagHandler</handler-class>
     </component>
   </tag>
-  <tag>
-    <tag-name>groupHeaderRow</tag-name>
-    <component>
-      <component-type>org.openfaces.GroupHeaderRow</component-type>
-      <renderer-type>org.openfaces.GroupHeaderRowRenderer</renderer-type>
-      <handler-class>org.openfaces.taglib.facelets.table.GroupHeaderRowTagHandler</handler-class>
-    </component>
-  </tag>
-  <tag>
-    <tag-name>groupFooterRow</tag-name>
-    <component>
-      <component-type>org.openfaces.GroupFooterRow</component-type>
-      <handler-class>org.openfaces.taglib.facelets.table.GroupFooterRowTagHandler</handler-class>
-    </component>
-  </tag>
+  <!--<tag>-->
+    <!--<tag-name>groupHeaderRow</tag-name>-->
+    <!--<component>-->
+      <!--<component-type>org.openfaces.GroupHeaderRow</component-type>-->
+      <!--<renderer-type>org.openfaces.GroupHeaderRowRenderer</renderer-type>-->
+      <!--<handler-class>org.openfaces.taglib.facelets.table.GroupHeaderRowTagHandler</handler-class>-->
+    <!--</component>-->
+  <!--</tag>-->
+  <!--<tag>-->
+    <!--<tag-name>groupFooterRow</tag-name>-->
+    <!--<component>-->
+      <!--<component-type>org.openfaces.GroupFooterRow</component-type>-->
+      <!--<handler-class>org.openfaces.taglib.facelets.table.GroupFooterRowTagHandler</handler-class>-->
+    <!--</component>-->
+  <!--</tag>-->
   <tag>
     <tag-name>multipleFileUpload</tag-name>
     <component>
@@ -1344,7 +1344,31 @@
       <renderer-type>org.openfaces.ProgressBarRenderer</renderer-type>
       <handler-class>org.openfaces.taglib.facelets.output.ProgressBarTagHandler</handler-class>
     </component>
-  </tag>  
+  </tag>
+  <tag>
+    <tag-name>fileAttachments</tag-name>
+    <component>
+      <component-type>org.openfaces.FileAttachments</component-type>
+      <renderer-type>org.openfaces.FileAttachmentsRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.input.fileattachments.FileAttachmentsTagHandler</handler-class>
+    </component>
+  </tag>
+  <tag>
+    <tag-name>downloadAttachmentAction</tag-name>
+    <component>
+      <component-type>org.openfaces.DownloadAttachmentAction</component-type>
+      <renderer-type>org.openfaces.DownloadAttachmentActionRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.input.fileattachments.DownloadAttachmentActionTagHandler</handler-class>
+    </component>
+  </tag>
+  <tag>
+    <tag-name>removeAttachmentAction</tag-name>
+    <component>
+      <component-type>org.openfaces.RemoveAttachmentAction</component-type>
+      <renderer-type>org.openfaces.RemoveAttachmentActionRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.input.fileattachments.RemoveAttachmentActionTagHandler</handler-class>
+    </component>
+  </tag>
   <tag>
     <tag-name>groupByColumnMenuItem</tag-name>
     <component>
@@ -1378,11 +1402,26 @@
     </component>
   </tag>
   <tag>
+    <tag-name>summary</tag-name>
+    <component>
+      <component-type>org.openfaces.Summary</component-type>
+      <renderer-type>org.openfaces.SummaryRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.table.SummaryTagHandler</handler-class>
+    </component>
+  </tag>
+  <tag>
     <tag-name>position</tag-name>
     <component>
       <component-type>org.openfaces.Position</component-type>
       <renderer-type>org.openfaces.PositionRenderer</renderer-type>
       <handler-class>org.openfaces.taglib.facelets.PositionTagHandler</handler-class>
+    </component>
+  </tag>
+  <tag>
+    <tag-name>summaries</tag-name>
+    <component>
+      <component-type>org.openfaces.Summaries</component-type>
+      <handler-class>org.openfaces.taglib.facelets.table.SummariesTagHandler</handler-class>
     </component>
   </tag>
 </facelet-taglib>
