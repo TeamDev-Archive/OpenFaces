@@ -49,7 +49,6 @@ O$.extend(O$._FloatingIconMessageRenderer.prototype, {
           messageElement.id = this.clientId;
           messageElement.src = this.imageUrl;
           messageElement.style.position = "absolute";
-//          messageElement.style.zIndex = 700;
           O$.assignEvents(messageElement, this.iconEvents);
           document.body.appendChild(messageElement);
           O$.getClientMessageRenderersWithVisibleBubble()[this.clientId + "_" + this.forId] = this;

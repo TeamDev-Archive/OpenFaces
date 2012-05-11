@@ -2793,6 +2793,8 @@ O$.Table = {
       if (!O$.isVisibleRecursive(table)) {
         setTimeout(function() {
           O$.Table._initColumnResizing.apply(thisRef, args);
+          args = null;
+          thisRef = null;
         }, 100);
         return;
       }
