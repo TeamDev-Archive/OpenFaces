@@ -1,6 +1,6 @@
 /*
- * OpenFaces - JSF Component Library 3.0
- * Copyright (C) 2007-2011, TeamDev Ltd.
+ * OpenFaces - JSF Component Library 2.0
+ * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
  * the GNU Lesser General Public License Version 2.1 (the "LGPL" License).
