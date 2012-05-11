@@ -47508,6 +47508,46 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
   </tag>
+  <tag>
+    <description>Placing this tag inside of &amp;lt;o:dataTable&gt; tag turns on the DataTable&#39;s feature of
+      automatically calculating and displaying the summary totals for the displayed data. When this feature is turned
+      on, DataTable displays summary values for all columns whose summary values can be calculated according to the way
+      that they are defined and the type of the displayed data. The colum values that are used for calculating the
+      summary value for the columns are taken from the column&#39;s value attribute, which is specified as a value
+      binding expression, or if there&#39;s no such attribute, the column&#39;s value is dervied from the value
+      attribute of the first UIOutput component inside of the respective column. Using this tag is essentially an
+      alternative to specifying the &amp;lt;o:summary&gt; tags inside of the appropriate facets of all of the columns
+      where summary values should be displayed.
+    </description>
+    <name>summaries</name>
+    <tag-class>org.openfaces.taglib.jsp.table.SummariesJspTag</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+      <description>Specifies whether this component should display summaries in the table&#39;s footer row. This
+        attribute does not affect the &amp;lt;o:summary&gt; tags that have been placed into the table&#39;s footer
+        explicitly.
+      </description>
+      <name>footerVisible</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Specifies whether this component should display summaries in the table&#39;s in-group footer rows.
+        This attribute does not affect the &amp;lt;o:summary&gt; tags that have been placed into the table explicitly.
+      </description>
+      <name>inGroupFootersVisible</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+  </tag>
   <!--<tag>-->
     <!--<description>This component is under construction. Displays a box where users may read and write comments. This component works on top of the Disqus-->
       <!--(http://disqus.com) service. You don&apos;t have to provide storage for the comments. You just have to create an-->

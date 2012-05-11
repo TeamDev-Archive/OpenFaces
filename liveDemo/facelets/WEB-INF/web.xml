@@ -153,7 +153,7 @@
   <context-param>
     <description>Specifies the maximum size of each file in kilobytes.</description>
     <param-name>org.openfaces.fileUpload.fileSizeLimit</param-name>
-    <param-value>200000</param-value>
+    <param-value>10000</param-value>
   </context-param>
 
 

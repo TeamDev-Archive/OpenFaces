@@ -547,6 +547,15 @@ public class DataTable extends AbstractTable {
         return columnReordering;
     }
 
+    private Summaries[] summaries;
+
+    public Summaries getSummaries() {
+        if (summaries == null) {
+            summaries = new Summaries[]{Components.findChildWithClass(this, Summaries.class, "<o:summaries>")};
+        }
+        return summaries[0];
+    }
+
     private GroupingBox getGroupingBox() {
         List<GroupingBox> groupingBoxList = Components.findFacetsWithClass(this, GroupingBox.class);
         if (groupingBoxList.size() > 1)
@@ -555,6 +564,19 @@ public class DataTable extends AbstractTable {
         if (groupingBoxList.size() == 1)
             return groupingBoxList.get(0);
         return null;
+    }
+
+    @Override
+    public Runnable populateRowVariablesWithAnyModelValue() {
+        Runnable runnable = super.populateRowVariablesWithAnyModelValue();
+        Components.setRequestVariable(getRowIndexVar(), 0);
+        return runnable;
+    }
+
+    @Override
+    public void restoreRowVariables() {
+        super.restoreRowVariables();
+        Components.restoreRequestVariable(getRowIndexVar());
     }
 
     @Override

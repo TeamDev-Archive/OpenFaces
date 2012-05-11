@@ -33,6 +33,7 @@ public class DataTableTag extends AbstractTableTag {
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
+        setBooleanProperty(component, "showSummaries");
         setValueExpressionProperty(component, "value");
         setValueExpressionProperty(component, "rowKey");
         setValueExpressionProperty(component, "rowDataByKey");

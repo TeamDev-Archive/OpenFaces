@@ -41,11 +41,17 @@ public class Summary extends OUIOutput {
     private static final String ATTR_PATTERN = "pattern";
 
     private SummaryFunction function;
+    private boolean implicitMode;
 
     private UsageContext usageContext;
 
     public Summary() {
+        this(false);
+    }
+
+    public Summary(boolean implicitMode) {
         setRendererType("org.openfaces.SummaryRenderer");
+        this.implicitMode = implicitMode;
     }
 
     @Override
@@ -57,7 +63,8 @@ public class Summary extends OUIOutput {
     public Object saveState(FacesContext context) {
         return new Object[]{
                 super.saveState(context),
-                function
+                function,
+                implicitMode
 
         };
     }
@@ -68,7 +75,7 @@ public class Summary extends OUIOutput {
         int i = 0;
         super.restoreState(context, state[i++]);
         function = (SummaryFunction) state[i++];
-
+        implicitMode = (Boolean) state[i++];
     }
 
     public ValueExpression getBy() {
@@ -190,6 +197,20 @@ public class Summary extends OUIOutput {
 
         }
 
+        /**
+         * Applicable for the implicitly-created Summary instances. This method checks if this implicitly-created instance
+         * is applicable in the context where it is created. Applicable means that summary can be calculated here and
+         * should be displayed. In other words this is a mechanism that detects whether summary should be displayed in any
+         * given context (a facet inside of any given column).
+         */
+        public boolean isApplicableInThisContext() {
+            if (!summary.implicitMode) return true;
+
+            SummaryFunction function = getFunction();
+            return function != null && !(function instanceof CountFunction);
+        }
+
+
         public boolean getCalculatedGlobally() {
             return calculatedGlobally;
         }
@@ -227,6 +248,9 @@ public class Summary extends OUIOutput {
                         "the \"by\" attribute has to be specified or <o:summary> should be placed into a column's " +
                         "facet to derive the expression from that column automatically.");
             }
+            if (!(column instanceof Column))
+                throw new FacesException("<o:summary> component can only be used inside of <o:column>, but not other " +
+                        "types of column tags (" + column.getClass().getName() + ")");
             byExpression = column.getColumnValueExpression();
             // the summary's expression is not specified explicitly and it's not inside of a column whose value
             // expression can be detected
@@ -256,32 +280,28 @@ public class Summary extends OUIOutput {
             function = summary.getFunction();
             if (function != null) return function;
 
+            function = detectFunctionByColumn(facetName, column, getByExpression());
+
+            return function;
+        }
+
+        private static SummaryFunction detectFunctionByColumn(String facetName, BaseColumn column, ValueExpression byExpression) {
             if (column == null ||
                     column instanceof ColumnGroup ||
                     equalsToOneOf(facetName, BaseColumn.FACET_GROUP_HEADER, BaseColumn.FACET_GROUP_FOOTER)) {
-                function = new CountFunction();
+                return new CountFunction();
             } else {
-                BaseColumn.ExpressionData expressionData = column.getExpressionData(getByExpression());
+                BaseColumn.ExpressionData expressionData = column.getExpressionData(byExpression);
                 Class valueType = expressionData.getValueType();
-                List<SummaryFunction> allFunctions = ApplicationParams.getSummaryFunctions();
-                for (SummaryFunction fn : allFunctions) {
-                    if (fn.isApplicableForClass(valueType)) {
-                        function = fn;
-                        break;
-                    }
-                }
-                if (function == null)
-                    function = new CountFunction();
+                return getDefaultFunctionForType(valueType);
             }
-
-            return function;
         }
 
         private Converter getConverter() {
             return summary.getConverter();
         }
 
-        private boolean equalsToOneOf(String str, String... toOneOf) {
+        private static boolean equalsToOneOf(String str, String... toOneOf) {
             for (String oneOf : toOneOf) {
                 if (str.equals(oneOf))
                     return true;
@@ -290,6 +310,15 @@ public class Summary extends OUIOutput {
         }
     }
 
+    private static SummaryFunction getDefaultFunctionForType(Class valueType) {
+        List<SummaryFunction> allFunctions = ApplicationParams.getSummaryFunctions();
+        for (SummaryFunction fn : allFunctions) {
+            if (fn.isApplicableForClass(valueType)) {
+                return fn;
+            }
+        }
+        return new CountFunction();
+    }
 
 
     private UsageContext getUsageContext() {
@@ -413,6 +442,8 @@ public class Summary extends OUIOutput {
     }
 
     public void addCurrentRowValue() {
+        if (!getUsageContext().isApplicableInThisContext()) return;
+
         ELContext elContext = FacesContext.getCurrentInstance().getELContext();
 
         Object value = getByValue(elContext);
@@ -459,6 +490,8 @@ public class Summary extends OUIOutput {
 
     @Override
     public void encodeBegin(FacesContext context) throws IOException {
+        if (!getUsageContext().isApplicableInThisContext()) return;
+
         super.encodeBegin(context);
         String clientId = getClientId(context);
         if (getUsageContext().getCalculatedGlobally()) {
@@ -479,6 +512,7 @@ public class Summary extends OUIOutput {
     }
 
     public void encodeAfterCalculation(FacesContext context) throws IOException {
+        if (!getUsageContext().isApplicableInThisContext()) return;
         ScriptBuilder sb = new ScriptBuilder();
         if (globalCalculationContext != null) {
             if (globalCalculationContext.getRenderedSummaryClientId() == null) {

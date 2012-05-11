@@ -162,6 +162,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     private Integer autoFilterDelay;
     private Boolean deferBodyLoading;
     private Integer totalRowCount;
+    private boolean implicitFacetsCreated;
 
     public AbstractTable() {
         super.setUiDataValue(new TableDataModel(this));
@@ -215,7 +216,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
                 rolloverRowStyle, rolloverRowClass, noDataRowStyle, noDataRowClass,
                 noDataMessageAllowed, columnIndexVar, columnIdVar, saveAttachedState(context, columnsOrder),
                 sortedAscendingImageUrl, sortedDescendingImageUrl, cachedClientId,
-                autoFilterDelay, deferBodyLoading, totalRowCount};
+                autoFilterDelay, deferBodyLoading, totalRowCount, implicitFacetsCreated};
     }
 
     @Override
@@ -303,6 +304,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         autoFilterDelay = (Integer) state[i++];
         deferBodyLoading = (Boolean) state[i++];
         totalRowCount = (Integer) state[i++];
+        implicitFacetsCreated = (Boolean) state[i++];
 
         beforeUpdateValuesPhase = true;
         incomingSortingRules = null;
@@ -376,6 +378,14 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     @Override
     public void setRowIndex(int rowIndex) {
+        if (!implicitFacetsCreated) {
+            // it is important implicit column facets, such as the ones implicitly created for the summary calculation
+            // feature, to be created before the first setRowIndex call because changing the set of facets afterwards
+            // might break its state saving mechanism
+            createImplicitColumnFacets();
+            implicitFacetsCreated = true;
+        }
+
         super.setRowIndex(rowIndex);
 
         List<UIComponent> components = getAdditionalComponentsRequiringClientIdReset();
@@ -576,6 +586,13 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
             }
         }
         return colById;
+    }
+
+    protected void createImplicitColumnFacets() {
+        List<BaseColumn> allColumns = getAllColumns();
+        for (BaseColumn column : allColumns) {
+            column.createImplicitFacets();
+        }
     }
 
     public List<BaseColumn> getAllColumns() {
@@ -1047,7 +1064,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     private List<Summary> summaries;
 
-    public List<Summary> getSummaries() {
+    public List<Summary> getSummaryComponents() {
         if (summaries == null) {
             Set<ColumnGroup> columnGroups = new HashSet<ColumnGroup>();
             List<UIComponent> facets = new ArrayList<UIComponent>();
@@ -2154,4 +2171,46 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     }
 
 
+
+    /**
+     * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
+     * by any application code.
+     *
+     * This method is required for BaseColumn.getExpressionData to be able to detect column type during model
+     * construction, when the of displayed rows is still in progress (row data objects have been retrieved but not
+     * grouped yet). The BaseColumn.getExpressionData method relies on row variables such as row data and row index
+     * variables to be set for proper type detection, and hence we should provide arbitrary values of the proper
+     * actual user-specified type. So this method just takes the first retrieved row data (from the intermediate, yet
+     * ungrouped, list) for populating the variable(s).
+     */
+    public Runnable populateRowVariablesWithAnyModelValue() {
+        List<TableDataModel.RowInfo> allRetrievedRows = getModel().getAllRetrievedRows();
+        int retrievedRowCount = allRetrievedRows != null ? allRetrievedRows.size() : 0;
+        if (retrievedRowCount == 0) return null;
+        TableDataModel.RowInfo rowInfo;
+        int i = 0;
+        do {
+            rowInfo = allRetrievedRows.get(i++);
+        } while ((rowInfo == null || rowInfo.getRowData() == null) && i < retrievedRowCount);
+        if (rowInfo == null || rowInfo.getRowData() == null) return null;
+        Object rowData = rowInfo.getRowData();
+        Components.setRequestVariable(getVar(), rowData);
+
+        return new Runnable() {
+            public void run() {
+                restoreRowVariables();
+            }
+        };
+    }
+
+    /**
+     * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
+     * by any application code.
+     *
+     * Must be invoked after the populateRowVariablesWithAnyModelValue call. Restores original row variables as they
+     * were before the preceding populateRowVariablesWithAnyModelValue call.
+     */
+    public void restoreRowVariables() {
+        Components.restoreRequestVariable(getVar());
+    }
 }

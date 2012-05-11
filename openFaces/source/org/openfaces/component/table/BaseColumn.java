@@ -31,6 +31,7 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -687,7 +688,16 @@ public class BaseColumn extends UIColumn {
             while (table.isRowAvailable() && table.getRowData() instanceof GroupHeaderOrFooter) {
                 table.setRowIndex(++i);
             }
-            valueType = table.isRowAvailable() ? expression.getType(elContext) : Object.class;
+            Runnable restoreRowVariablesRunnable = null;
+            if (!table.isRowAvailable()) {
+                restoreRowVariablesRunnable = table.populateRowVariablesWithAnyModelValue();
+            }
+            try {
+                valueType = table.isRowAvailable() ? expression.getType(elContext) : Object.class;
+            } finally {
+                if (restoreRowVariablesRunnable != null)
+                    restoreRowVariablesRunnable.run();
+            }
             if (valueConverter == null) {
                 String var = table.getVar();
                 UIOutput columnOutput = obtainOutput(this, var);
@@ -806,6 +816,22 @@ public class BaseColumn extends UIColumn {
         return null;
 
     }
+
+    public void createImplicitFacets() {
+        Map<String, UIComponent> facets = getFacets();
+        for (String facetName : new String[]{FACET_HEADER, FACET_SUB_HEADER, FACET_FOOTER,
+                FACET_GROUP_HEADER, FACET_GROUP_FOOTER, FACET_IN_GROUP_HEADER, FACET_IN_GROUP_FOOTER}) {
+            UIComponent facetComponent = createImplicitFacet(facetName);
+            if (facetComponent != null) {
+                facets.put(facetName, facetComponent);
+            }
+        }
+    }
+
+    protected UIComponent createImplicitFacet(String facetName) {
+        return null;
+    }
+
 
     public UIComponent getSubHeader() {
         return Components.getFacet(this, FACET_SUB_HEADER);
