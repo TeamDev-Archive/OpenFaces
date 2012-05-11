@@ -403,14 +403,17 @@ O$.TagCloud = {
           var currentX = Math.floor((point.x + xCorrectionCenter) * 1000) * 0.001;
           var currentY = Math.floor((point.y + yCorrectionCenter) * 1000) * 0.001;
           if (O$.isMozillaFF() && item._element.style.MozTransform !== undefined) {
+            currentX = Math.floor(point.x * 1000) * 0.001;
             item._element.style.MozTransform = "translate(" + currentX + "px," + currentY + "px) scale(" + currentFontCoefficient + ")";
           }
 
           if ((O$.isChrome() || O$.isSafari()) && item._element.style.WebkitTransform !== undefined) {
+            if (O$.isChrome())
+              currentX = Math.floor(point.x * 1000) * 0.001;
             item._element.style.WebkitTransform = "translate(" + currentX + "px," + currentY + "px) scale(" + currentFontCoefficient + ")";
           }
 
-          if (O$.isOpera() && item._element.style.OTransform !== undefined) {
+          if  (O$.isOpera() && item._element.style.OTransform !== undefined) {
             item._element.style.OTransform = "translate(" + currentX + "px," + currentY + "px) scale(" + currentFontCoefficient + ")";
           }
 
