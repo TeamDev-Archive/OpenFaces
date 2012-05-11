@@ -336,19 +336,23 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     @Override
     public void setRowIndex(int rowIndex) {
-        if (!implicitFacetsCreated) {
-            // it is important implicit column facets, such as the ones implicitly created for the summary calculation
-            // feature, to be created before the first setRowIndex call because changing the set of facets afterwards
-            // might break its state saving mechanism
-            createImplicitColumnFacets();
-            implicitFacetsCreated = true;
-        }
+        // it is important implicit column facets, such as the ones implicitly created for the summary calculation
+        // feature, to be created before the first setRowIndex call because changing the set of facets afterwards
+        // might break its state saving mechanism
+        ensureImplicitFacetsCreated();
 
         super.setRowIndex(rowIndex);
 
         List<UIComponent> components = getAdditionalComponentsRequiringClientIdReset();
         for (UIComponent component : components) {
             Components.clearCachedClientIds(component);
+        }
+    }
+
+    private void ensureImplicitFacetsCreated() {
+        if (!implicitFacetsCreated) {
+            createImplicitColumnFacets();
+            implicitFacetsCreated = true;
         }
     }
 
@@ -1000,6 +1004,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     public List<Summary> getSummaryComponents() {
         if (summaries == null) {
+            ensureImplicitFacetsCreated();
             Set<ColumnGroup> columnGroups = new HashSet<ColumnGroup>();
             List<UIComponent> facets = new ArrayList<UIComponent>();
             facets.addAll(this.getFacets().values());
@@ -1170,6 +1175,8 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         for (ColumnGroup group : columnGroupComponents) {
             resetColumns(group);
         }
+
+        ensureImplicitFacetsCreated();
 
         getAttributes().put(TableStructure.CUSTOM_ROW_RENDERING_INFOS_KEY, new HashMap());
 
