@@ -54,6 +54,7 @@
                        value="#{TagCloudBean.order}"
                        var="orderValue"
                        converter="#{TagCloudBean.orderConverter}"
+                       suggestionMode="none"
                        style="width: 120px;">
         <f:selectItems value="#{TagCloudBean.orderList}"/>    
         <o:column>
@@ -117,6 +118,7 @@
                        value="#{TagCloudBean.layout}"
                        var="layoutValue"
                        converter="#{TagCloudBean.layoutConverter}"
+                       suggestionMode="none"
                        style="width: 120px;">
         <f:selectItems value="#{TagCloudBean.layoutList}"/>
         <o:column>

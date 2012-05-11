@@ -41610,6 +41610,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @value "rectangle" -->
       <!-- @value "vertical" -->
       <!-- @value "oval" -->
+      <!-- @value "sphere" -->
       <!-- @default "rectangle" -->
       <!-- @el true -->
     </attribute>
