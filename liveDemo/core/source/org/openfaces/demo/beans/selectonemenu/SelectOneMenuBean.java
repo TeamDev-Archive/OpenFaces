@@ -30,18 +30,7 @@ public class SelectOneMenuBean implements Serializable {
 
     private City selectedCity;
 
-    private Converter cityConverter = new Converter() {
-        public Object getAsObject(FacesContext context, UIComponent component, String value) {
-            if ("".equals(value)) return null;
-            int cityId = Integer.parseInt(value);
-            return citiesDB.getCityById(cityId);
-        }
-
-        public String getAsString(FacesContext context, UIComponent component, Object value) {
-            if (value == null) return "";
-            return String.valueOf(((City) value).getId());
-        }
-    };
+    private Converter cityConverter = new CityConverter();
 
     private List<SelectItem> cityItems;
 
@@ -67,4 +56,18 @@ public class SelectOneMenuBean implements Serializable {
     public Converter getCityConverter() {
         return cityConverter;
     }
+
+    public class CityConverter implements Converter, Serializable  {
+        public Object getAsObject(FacesContext context, UIComponent component, String value) {
+            if ("".equals(value)) return null;
+            int cityId = Integer.parseInt(value);
+            return citiesDB.getCityById(cityId);
+        }
+
+        public String getAsString(FacesContext context, UIComponent component, Object value) {
+            if (value == null) return "";
+            return String.valueOf(((City) value).getId());
+        }
+    }
+
 }
