@@ -8,15 +8,12 @@
   <display-name>OpenFaces Demo Application</display-name>
   <description>OpenFaces Demo Application</description>
 
-<<<<<<< HEAD
   <!-- Change to "Production" when you are ready to deploy -->
   <context-param>
       <param-name>javax.faces.PROJECT_STAGE</param-name>
       <param-value>Production</param-value>
   </context-param>
 
-=======
->>>>>>> master
   <context-param>
     <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
     <param-value>server</param-value>
