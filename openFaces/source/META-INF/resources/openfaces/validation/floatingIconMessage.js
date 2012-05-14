@@ -1,6 +1,6 @@
 /*
  * OpenFaces - JSF Component Library 2.0
- * Copyright (C) 2007-2011, TeamDev Ltd.
+ * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
  * the GNU Lesser General Public License Version 2.1 (the "LGPL" License).
@@ -49,7 +49,6 @@ O$.extend(O$._FloatingIconMessageRenderer.prototype, {
           messageElement.id = this.clientId;
           messageElement.src = this.imageUrl;
           messageElement.style.position = "absolute";
-//          messageElement.style.zIndex = 700;
           O$.assignEvents(messageElement, this.iconEvents);
           document.body.appendChild(messageElement);
           O$.getClientMessageRenderersWithVisibleBubble()[this.clientId + "_" + this.forId] = this;
