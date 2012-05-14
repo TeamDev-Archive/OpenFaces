@@ -1,6 +1,6 @@
 /*
  * OpenFaces - JSF Component Library 3.0
- * Copyright (C) 2007-2011, TeamDev Ltd.
+ * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
  * the GNU Lesser General Public License Version 2.1 (the "LGPL" License).
@@ -30,18 +30,7 @@ public class SelectOneMenuBean implements Serializable {
 
     private City selectedCity;
 
-    private Converter cityConverter = new Converter() {
-        public Object getAsObject(FacesContext context, UIComponent component, String value) {
-            if ("".equals(value)) return null;
-            int cityId = Integer.parseInt(value);
-            return citiesDB.getCityById(cityId);
-        }
-
-        public String getAsString(FacesContext context, UIComponent component, Object value) {
-            if (value == null) return "";
-            return String.valueOf(((City) value).getId());
-        }
-    };
+    private Converter cityConverter = new CityConverter();
 
     private List<SelectItem> cityItems;
 
@@ -67,4 +56,18 @@ public class SelectOneMenuBean implements Serializable {
     public Converter getCityConverter() {
         return cityConverter;
     }
+
+    public class CityConverter implements Converter, Serializable  {
+        public Object getAsObject(FacesContext context, UIComponent component, String value) {
+            if ("".equals(value)) return null;
+            int cityId = Integer.parseInt(value);
+            return citiesDB.getCityById(cityId);
+        }
+
+        public String getAsString(FacesContext context, UIComponent component, Object value) {
+            if (value == null) return "";
+            return String.valueOf(((City) value).getId());
+        }
+    }
+
 }

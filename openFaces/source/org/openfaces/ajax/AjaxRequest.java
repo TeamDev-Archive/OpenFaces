@@ -1,6 +1,6 @@
 /*
  * OpenFaces - JSF Component Library 3.0
- * Copyright (C) 2007-2011, TeamDev Ltd.
+ * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
  * the GNU Lesser General Public License Version 2.1 (the "LGPL" License).
@@ -13,11 +13,11 @@ package org.openfaces.ajax;
 
 import org.openfaces.util.AjaxUtil;
 
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import java.util.HashSet;
+import javax.faces.component.UIComponent;
 import java.util.Map;
 import java.util.Set;
+import java.util.HashSet;
 
 /**
  * @author Dmitry Pikhulya
@@ -37,12 +37,8 @@ public class AjaxRequest {
         return getInstance(FacesContext.getCurrentInstance());
     }
 
-    /**
-     * @return an instance of the AjaxRequest class corresponding to the current Ajax request or null,
-     *         if the current request is not an Ajax request
-     */
     public static AjaxRequest getInstance(FacesContext context) {
-        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+        Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
         String key = AjaxRequest.class.getName();
         AjaxRequest instance = (AjaxRequest) requestMap.get(key);
         if (instance != null)
@@ -55,9 +51,7 @@ public class AjaxRequest {
     }
 
     /**
-     * Makes a component with the specified id to be reloaded during this Ajax request. This method should be invoked
-     * before the "render response" phase, usually during the "invoke application" phase.
-     *
+     * Makes a component with the specified id to be reloaded during this Ajax request.
      * @param clientId client id of a component which should be reloaded
      */
     public void addReloadedComponent(String clientId) {
@@ -65,9 +59,7 @@ public class AjaxRequest {
     }
 
     /**
-     * Makes the specified component to be reloaded during this Ajax request. This method should be invoked
-     * before the "render response" phase, usually during the "invoke application" phase.
-     *
+     * Makes the specified component to be reloaded during this Ajax request.
      * @param component a component which should be reloaded
      */
     public void addReloadedComponent(UIComponent component) {
@@ -109,6 +101,4 @@ public class AjaxRequest {
     public void resetValidationError() {
        this.validationError = true;
     }
-
 }
-

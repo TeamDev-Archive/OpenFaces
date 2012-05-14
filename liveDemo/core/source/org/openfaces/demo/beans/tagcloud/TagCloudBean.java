@@ -1,6 +1,6 @@
 /*
  * OpenFaces - JSF Component Library 3.0
- * Copyright (C) 2007-2011, TeamDev Ltd.
+ * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
  * the GNU Lesser General Public License Version 2.1 (the "LGPL" License).
@@ -60,30 +60,11 @@ public class TagCloudBean implements ActionListener, Serializable {
     private Layout layout = Layout.RECTANGLE;
     private TagsOrder order = TagsOrder.ALPHABETICALLY;
 
-    private Converter layoutConverter = new Converter() {
-        public Object getAsObject(FacesContext context, UIComponent component, String value) {
-            return Layout.valueOf(value.toUpperCase());
-        }
-
-        public String getAsString(FacesContext context, UIComponent component, Object value) {
-            return value.toString();
-        }
-    };
+    private Converter layoutConverter = new LayoutConverter();
+    private Converter orderConverter = new OrderConverter();
 
     private List<SelectItem> layoutList;
 
-    private Converter orderConverter = new Converter() {
-        public Object getAsObject(FacesContext context, UIComponent component, String value) {
-            if ("weightRevers".equals(value)) {
-                return TagsOrder.WEIGHT_REVERS;
-            }
-            return TagsOrder.valueOf(value.toUpperCase());
-        }
-
-        public String getAsString(FacesContext context, UIComponent component, Object value) {
-            return value.toString();
-        }
-    };
     private List<SelectItem> orderList;
     private List<String> weightFormatList;
 
@@ -458,4 +439,28 @@ public class TagCloudBean implements ActionListener, Serializable {
     public void setOval(boolean oval) {
         this.oval = oval;
     }
+
+    public class OrderConverter implements Converter, Serializable {
+        public Object getAsObject(FacesContext context, UIComponent component, String value) {
+            if ("weightRevers".equals(value)) {
+                return TagsOrder.WEIGHT_REVERS;
+            }
+            return TagsOrder.valueOf(value.toUpperCase());
+        }
+
+        public String getAsString(FacesContext context, UIComponent component, Object value) {
+            return value.toString();
+        }
+    }
+
+    public class LayoutConverter implements Converter, Serializable {
+        public Object getAsObject(FacesContext context, UIComponent component, String value) {
+            return Layout.valueOf(value.toUpperCase());
+        }
+
+        public String getAsString(FacesContext context, UIComponent component, Object value) {
+            return value.toString();
+        }
+    }
+
 }
