@@ -31,4 +31,8 @@ public class SummariesJspTag extends AbstractComponentJspTag {
     public void setInGroupFootersVisible(ValueExpression inGroupFootersVisible) {
         getDelegate().setPropertyValue("inGroupFootersVisible", inGroupFootersVisible);
     }
+
+    public void setPattern(ValueExpression pattern) {
+        getDelegate().setPropertyValue("pattern", pattern);
+    }
 }

@@ -16,7 +16,11 @@ import org.openfaces.component.table.CSVTableDataFormatter;
 import org.openfaces.component.table.DataScope;
 import org.openfaces.component.table.DataTable;
 import org.openfaces.component.table.ExpansionState;
+import org.openfaces.component.table.SumFunction;
+import org.openfaces.component.table.Summary;
 import org.openfaces.demo.beans.util.FacesUtils;
+import org.openfaces.util.ApplicationParams;
+import org.openfaces.util.Components;
 import org.openfaces.util.Faces;
 
 import javax.faces.event.ActionEvent;
@@ -239,6 +243,31 @@ public class BanksList implements Serializable {
         Faces.component("form:banks", DataTable.class).export(
                 DataScope.DISPLAYED_ROWS,
                 new CSVTableDataFormatter());
+    }
+
+    public void switchToSum(ActionEvent actionEvent) {
+        switchToFunction(actionEvent, "sum");
+    }
+
+    public void switchToAvg(ActionEvent actionEvent) {
+        switchToFunction(actionEvent, "avg");
+    }
+
+    public void switchToMin(ActionEvent actionEvent) {
+        switchToFunction(actionEvent, "min");
+    }
+
+    public void switchToMax(ActionEvent actionEvent) {
+        switchToFunction(actionEvent, "max");
+    }
+
+    public void switchToCount(ActionEvent actionEvent) {
+        switchToFunction(actionEvent, "count");
+    }
+
+    private void switchToFunction(ActionEvent actionEvent, String function) {
+        Summary summary = Components.getParentWithClass(actionEvent.getComponent(), Summary.class);
+        summary.setFunction(ApplicationParams.getSummaryFunctionByName(function));
     }
 
 }

@@ -14,11 +14,15 @@ package org.openfaces.component.table;
 import org.openfaces.component.OUIComponentBase;
 import org.openfaces.util.ValueBindings;
 
+import javax.el.ELContext;
+import javax.el.ValueExpression;
 import javax.faces.context.FacesContext;
 
 public class Summaries extends OUIComponentBase {
     public static final String COMPONENT_TYPE = "org.openfaces.Summaries";
     public static final String COMPONENT_FAMILY = "org.openfaces.Summaries";
+
+    private static final String ATTR_PATTERN = "pattern";
 
     private Boolean footerVisible;
     private Boolean inGroupFootersVisible;
@@ -67,4 +71,13 @@ public class Summaries extends OUIComponentBase {
     public void setInGroupFootersVisible(boolean inGroupFootersVisible) {
         this.inGroupFootersVisible = inGroupFootersVisible;
     }
+
+    public ValueExpression getPattern() {
+        return getValueExpression(ATTR_PATTERN);
+    }
+
+    public void setPattern(ValueExpression valueExpression) {
+        setValueExpression(ATTR_PATTERN, valueExpression);
+    }
+
 }

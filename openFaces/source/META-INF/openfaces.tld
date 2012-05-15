@@ -26942,7 +26942,7 @@ and it is automatically triggered on any form submission. -->
         <type>boolean</type>
       </deferred-value>
       <!-- @bindingType boolean -->
-      <!-- @default true -->
+      <!-- @default false -->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -47689,6 +47689,19 @@ entering a value and returns a list of suggestions from the server -->
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Specifies the pattern that specifies how the calculated summary value and function name is combined
+        to display the text for summary values. This expression can use the following two request-scope variables:
+        &quot;function&quot; and &quot;value&quot;.
+      </description>
+      <name>pattern</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
       <!-- @el true -->
     </attribute>
   </tag>
