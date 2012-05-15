@@ -400,7 +400,7 @@ O$.FileUploadUtil = {
         }, 500);
       },
       _getDocumentURI:function () {
-        if (!O$.FileUploadUtil._documentURL) {
+        if (!this._documentURL) {
           var form = O$.getParentNode(this, "FORM");
           if (!form) form = document.forms[0];
 
@@ -413,9 +413,9 @@ O$.FileUploadUtil = {
             url = url + "&uniqueID=" + fileUpload._ID;
           }
 
-          O$.FileUploadUtil._documentURL = url;
+          this._documentURL = url;
         }
-        return O$.FileUploadUtil._documentURL;
+        return this._documentURL;
 
       },
     /*Because of imperfect value of file's size when directory is chosen (I got values 4096*x where x is between 1 - 8)
