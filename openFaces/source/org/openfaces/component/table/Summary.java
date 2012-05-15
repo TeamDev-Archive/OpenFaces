@@ -31,6 +31,7 @@ import javax.faces.application.Application;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
+import javax.faces.convert.NumberConverter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -53,6 +54,7 @@ public class Summary extends OUIOutput {
     private String originalClientId;
 
     private UsageContext usageContext;
+    private Boolean functionEditable;
 
     public Summary() {
         this(false);
@@ -73,6 +75,7 @@ public class Summary extends OUIOutput {
         return new Object[]{
                 super.saveState(context),
                 function,
+                functionEditable,
                 implicitMode,
                 contextMenuAdded,
                 originalClientId
@@ -86,6 +89,7 @@ public class Summary extends OUIOutput {
         int i = 0;
         super.restoreState(context, state[i++]);
         function = (SummaryFunction) state[i++];
+        functionEditable = (Boolean) state[i++];
         implicitMode = (Boolean) state[i++];
         contextMenuAdded = (Boolean) state[i++];
         originalClientId  = (String) state[i++];
@@ -114,7 +118,7 @@ public class Summary extends OUIOutput {
     private ValueExpression getPatternExpression() {
         ValueExpression expression = getPattern();
         if (expression == null) {
-            Summaries summaries = getUsageContext().getTable().getSummaries();
+            Summaries summaries = getSummaries();
             if (summaries != null) {
                 expression = summaries.getPattern();
             }
@@ -129,8 +133,23 @@ public class Summary extends OUIOutput {
         return expression;
     }
 
+    private Summaries getSummaries() {
+        return getUsageContext().getTable().getSummaries();
+    }
+
     public void setPattern(ValueExpression valueExpression) {
         setValueExpression(ATTR_PATTERN, valueExpression);
+    }
+
+    public boolean getFunctionEditable() {
+        DataTable table = getParent() != null ? getUsageContext().getTable() : null;
+        Summaries summaries = table != null ? table.getSummaries() : null;
+        boolean defaultValue = summaries != null ? summaries.getFunctionEditable() : true;
+        return ValueBindings.get(this, "functionEditable", functionEditable, defaultValue);
+    }
+
+    public void setFunctionEditable(boolean functionEditable) {
+        this.functionEditable = functionEditable;
     }
 
     private static class UsageContext {
@@ -461,8 +480,17 @@ public class Summary extends OUIOutput {
             SummaryFunction function = usageContext.getFunction();
             Converter converter = usageContext.getConverter();
             FacesContext context = getFacesContext();
-            if (converter == null && summaryValue != null)
-                converter = Rendering.getConverterForType(context, summaryValue.getClass());
+            if (converter == null && summaryValue != null) {
+                Class cls = summaryValue.getClass();
+                if (cls.equals(Double.class) || cls.equals(Float.class)) {
+                    NumberConverter numberConverter = new NumberConverter();
+                    numberConverter.setGroupingUsed(false);
+                    numberConverter.setMaxFractionDigits(2);
+                    converter = numberConverter;
+                } else {
+                    converter = Rendering.getConverterForType(context, cls);
+                }
+            }
 
             Object summaryValueStr = summaryValue != null
                     ? (converter != null ? converter.getAsString(context, Summary.this, summaryValue) : summaryValue.toString())
@@ -603,7 +631,8 @@ public class Summary extends OUIOutput {
             }
         }
 
-        encodePopupMenu(context);
+        if (getFunctionEditable())
+            encodePopupMenu(context);
         Rendering.renderInitScript(context, sb, TableUtil.getTableUtilJsURL(context));
     }
 

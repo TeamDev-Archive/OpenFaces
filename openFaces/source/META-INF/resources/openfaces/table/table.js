@@ -4818,26 +4818,6 @@ O$.Summary = {
 
     var table = O$(tableId);
     var popupMenu = O$(popupMenuId);
-    if (!popupMenu._repositioned) {
-      popupMenu._repositioned = true;
-
-      var newMenuParent = O$.getDefaultAbsolutePositionParent();
-      var parentChildren = newMenuParent.childNodes;
-      for (var i = parentChildren.length - 1; i >= 0; i--) {
-        var c = parentChildren[i];
-        if (c.id == popupMenuId) {
-          // remove the previous menu that may have remained before the table was reloaded with Ajax (a4j or jsf 2.0's one)
-          newMenuParent.removeChild(c);
-          break;
-        }
-      }
-
-      if (popupMenu.parentNode != newMenuParent) {
-        newMenuParent.appendChild(popupMenu);
-        O$.correctElementZIndex(popupMenu, table);
-      }
-
-    }
 
     var summary = O$.initComponent(componentId, null, {
       _setFunction: function(functionName) {
@@ -4846,11 +4826,34 @@ O$.Summary = {
         ]);
       }
     });
-    summary.oncontextmenu = function(e) {
-      O$.Summary._summaryForCurrentPopup = summary;
-      popupMenu.showForEvent(e);
-      O$.cancelEvent(e);
-    };
+    if (popupMenu) {
+      if (!popupMenu._repositioned) {
+        popupMenu._repositioned = true;
+
+        var newMenuParent = O$.getDefaultAbsolutePositionParent();
+        var parentChildren = newMenuParent.childNodes;
+        for (var i = parentChildren.length - 1; i >= 0; i--) {
+          var c = parentChildren[i];
+          if (c.id == popupMenuId) {
+            // remove the previous menu that may have remained before the table was reloaded with Ajax (a4j or jsf 2.0's one)
+            newMenuParent.removeChild(c);
+            break;
+          }
+        }
+
+        if (popupMenu.parentNode != newMenuParent) {
+          newMenuParent.appendChild(popupMenu);
+          O$.correctElementZIndex(popupMenu, table);
+        }
+
+      }
+
+      summary.oncontextmenu = function(e) {
+        O$.Summary._summaryForCurrentPopup = summary;
+        popupMenu.showForEvent(e);
+        O$.cancelEvent(e);
+      };
+    }
 
     summary.innerHTML = value;
   },

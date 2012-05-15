@@ -47324,6 +47324,16 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default "#{function}: #{value}" -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>Specifies whether the user can change the function by which the summary is calculated.</description>
+      <name>functionEditable</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
 
   </tag>
 
@@ -47702,6 +47712,16 @@ entering a value and returns a list of suggestions from the server -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Specifies whether the user can change the function by which the summary is calculated.</description>
+      <name>functionEditable</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
       <!-- @el true -->
     </attribute>
   </tag>

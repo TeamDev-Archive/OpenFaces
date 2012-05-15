@@ -34,5 +34,6 @@ public class SummariesTag extends AbstractComponentTag {
         setBooleanProperty(component, "footerVisible");
         setBooleanProperty(component, "inGroupFootersVisible");
         setValueExpressionProperty(component, "pattern");
+        setBooleanProperty(component, "functionEditable");
     }
 }
