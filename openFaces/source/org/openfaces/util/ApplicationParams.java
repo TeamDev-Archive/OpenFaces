@@ -141,4 +141,17 @@ public class ApplicationParams {
 
 
     }
+
+    public static SummaryFunction getSummaryFunctionByName(String functionStr) {
+        List<SummaryFunction> registeredFunctions = getSummaryFunctions();
+        SummaryFunction fn = null;
+        for (SummaryFunction function : registeredFunctions) {
+            String name = function.getName();
+            if (functionStr.equals(name.toLowerCase())) {
+                fn = function;
+                break;
+            }
+        }
+        return fn;
+    }
 }

@@ -1100,6 +1100,14 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
                 else
                     summaries.addAll(Components.findChildrenWithClass(facet, Summary.class, true, true));
             }
+
+            int rowIndex = getRowIndex();
+            setRowIndex(-1);
+            FacesContext facesContext = getFacesContext();
+            for (Summary summary : summaries) {
+                summary.createContextMenu(facesContext);
+            }
+            setRowIndex(rowIndex);
             this.summaries = summaries;
         }
         return summaries;

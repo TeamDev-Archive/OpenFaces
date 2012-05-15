@@ -5105,6 +5105,14 @@ if (!window.O$) {
   };
 
   O$._submitInternal = function(component, completionCallback, additionalParams, execute) {
+    if (additionalParams && typeof additionalParams == "object" && !(additionalParams instanceof Array)) {
+      var paramsAsArray = [];
+      for (var paramName in additionalParams) {
+        var paramValue = additionalParams[paramName];
+        paramsAsArray.push([paramName, paramValue]);
+      }
+      additionalParams = paramsAsArray;
+    }
     if (component._compoundSubmission) {
       if (completionCallback) {
         component._compoundSubmission.completionCallbacks.push(completionCallback);

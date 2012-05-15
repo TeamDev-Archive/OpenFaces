@@ -64,6 +64,13 @@ public abstract class SummaryFunction implements Serializable {
     public abstract String getName();
 
     @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof SummaryFunction)) return false;
+        SummaryFunction that = (SummaryFunction) obj;
+        return getName().equals(that.getName());
+    }
+
+    @Override
     public String toString() {
         return getName();
     }

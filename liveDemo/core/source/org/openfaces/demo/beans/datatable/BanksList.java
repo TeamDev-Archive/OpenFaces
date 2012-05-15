@@ -16,7 +16,11 @@ import org.openfaces.component.table.CSVTableDataFormatter;
 import org.openfaces.component.table.DataScope;
 import org.openfaces.component.table.DataTable;
 import org.openfaces.component.table.ExpansionState;
+import org.openfaces.component.table.SumFunction;
+import org.openfaces.component.table.Summary;
 import org.openfaces.demo.beans.util.FacesUtils;
+import org.openfaces.util.ApplicationParams;
+import org.openfaces.util.Components;
 import org.openfaces.util.Faces;
 
 import javax.faces.event.AjaxBehaviorEvent;

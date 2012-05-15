@@ -821,6 +821,8 @@ public class BaseColumn extends UIColumn {
         Map<String, UIComponent> facets = getFacets();
         for (String facetName : new String[]{FACET_HEADER, FACET_SUB_HEADER, FACET_FOOTER,
                 FACET_GROUP_HEADER, FACET_GROUP_FOOTER, FACET_IN_GROUP_HEADER, FACET_IN_GROUP_FOOTER}) {
+            if (facets.get(facetName) != null) continue;
+
             UIComponent facetComponent = createImplicitFacet(facetName);
             if (facetComponent != null) {
                 facets.put(facetName, facetComponent);

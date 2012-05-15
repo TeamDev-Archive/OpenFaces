@@ -478,7 +478,8 @@ public class PopupMenu extends OUIComponentBase implements OUIClientAction {
 
     public void setParent(UIComponent parent) {
         super.setParent(parent);
-        OUIClientActionHelper.ensureComponentIdSpecified(parent);
+        if (!isStandalone())
+            OUIClientActionHelper.ensureComponentIdSpecified(parent);
     }
 
     public Object saveState(FacesContext facesContext) {

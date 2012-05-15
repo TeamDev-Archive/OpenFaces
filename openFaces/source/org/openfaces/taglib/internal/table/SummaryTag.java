@@ -19,7 +19,6 @@ import org.openfaces.util.ApplicationParams;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import java.util.List;
 
 public class SummaryTag extends OUIOutputTag {
 
@@ -39,6 +38,7 @@ public class SummaryTag extends OUIOutputTag {
         setSummaryFunctionProperty(component, "function");
         setConverterProperty(context, component, "converter");
         setValueExpressionProperty(component, "pattern");
+        setBooleanProperty(component, "functionEditable");
     }
 
     private void setSummaryFunctionProperty(UIComponent component, String propertyName) {
@@ -47,15 +47,12 @@ public class SummaryTag extends OUIOutputTag {
 
         if (setAsValueExpressionIfPossible(component, propertyName, functionStr)) return;
 
-        List<SummaryFunction> registeredFunctions = ApplicationParams.getSummaryFunctions();
-        for (SummaryFunction function : registeredFunctions) {
-            String name = function.getName();
-            if (functionStr.equals(name.toLowerCase())) {
-                component.getAttributes().put(propertyName, function);
-                return;
-            }
-        }
-        throw new FacesException("Invalid value of the " + propertyName + " attribute. No such standard function with " +
+        SummaryFunction fn = ApplicationParams.getSummaryFunctionByName(functionStr);
+        if (fn != null)
+            component.getAttributes().put(propertyName, fn);
+        else
+            throw new FacesException("Invalid value of the " + propertyName + " attribute. No such standard function with " +
                 "the following name is available or registered in the application: \"" + functionStr + "\"");
     }
+
 }
