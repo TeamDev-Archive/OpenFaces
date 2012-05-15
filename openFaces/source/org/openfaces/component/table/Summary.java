@@ -645,11 +645,11 @@ public class Summary extends OUIOutput {
             if (!(child instanceof MenuItem)) continue;
             MenuItem menuItem = (MenuItem) child;
             String functionName = (String) child.getAttributes().get("_functionName");
-            menuItem.setIconUrl(Resources.internalURL(context, null,
+            menuItem.setIconUrl(Resources.internalURL(context,
                     functionName.equals(currentFunctionName)
                             ? SelectBooleanCheckboxImageManager.DEFAULT_SELECTED_IMAGE
-                            : SelectBooleanCheckboxImageManager.DEFAULT_UNSELECTED_IMAGE,
-                    false));
+                            : SelectBooleanCheckboxImageManager.DEFAULT_UNSELECTED_IMAGE
+            ));
         }
 
         popupMenu.encodeAll(context);
