@@ -245,29 +245,4 @@ public class BanksList implements Serializable {
                 new CSVTableDataFormatter());
     }
 
-    public void switchToSum(ActionEvent actionEvent) {
-        switchToFunction(actionEvent, "sum");
-    }
-
-    public void switchToAvg(ActionEvent actionEvent) {
-        switchToFunction(actionEvent, "avg");
-    }
-
-    public void switchToMin(ActionEvent actionEvent) {
-        switchToFunction(actionEvent, "min");
-    }
-
-    public void switchToMax(ActionEvent actionEvent) {
-        switchToFunction(actionEvent, "max");
-    }
-
-    public void switchToCount(ActionEvent actionEvent) {
-        switchToFunction(actionEvent, "count");
-    }
-
-    private void switchToFunction(ActionEvent actionEvent, String function) {
-        Summary summary = Components.getParentWithClass(actionEvent.getComponent(), Summary.class);
-        summary.setFunction(ApplicationParams.getSummaryFunctionByName(function));
-    }
-
 }
