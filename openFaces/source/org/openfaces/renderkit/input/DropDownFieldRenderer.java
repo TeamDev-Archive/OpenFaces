@@ -325,13 +325,29 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
         return items;
     }
 
+    protected boolean isItemValueExists(FacesContext context, DropDownFieldBase dropDownField, String itemValueConverted) {
+        Collection<UISelectItem> items = collectSelectItems(dropDownField);
+        if (items != null) {
+            for (UISelectItem item : items) {
+                String clientItemValue = getClientItemData(context, dropDownField, item)[0];
+                if (clientItemValue != null && clientItemValue.equals(itemValueConverted))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    protected String getHiddenFieldValue(FacesContext context, DropDownComponent dropDown) {
+        return dropDown.getValue() != null
+                ? "[" + Rendering.getStringValue(context, dropDown) + "]"
+                : "";
+    }
+
     @Override
     protected void renderEndTags(FacesContext context, DropDownComponent dropDown) throws IOException {
         super.renderEndTags(context, dropDown);
         ResponseWriter responseWriter = context.getResponseWriter();
-        String value = dropDown.getValue() != null
-                ? "[" + Rendering.getStringValue(context, dropDown) + "]"
-                : "";
+        String value = getHiddenFieldValue(context, dropDown);
         Rendering.renderHiddenField(responseWriter, getValueFieldId(context, dropDown), value);
     }
 
