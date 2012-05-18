@@ -158,6 +158,7 @@ public class Summary extends OUIOutput {
         private BaseColumn column;
         private String facetName;
 
+        private Boolean applicableInThisContext;
         private Boolean calculatedGlobally;
         private String calculatedForGroupsWithColumnId;
         private Boolean calculatedForAllGroups;
@@ -242,10 +243,20 @@ public class Summary extends OUIOutput {
          * displayed in any given context (a facet inside of any given column).
          */
         public boolean isApplicableInThisContext() {
-            if (!summary.implicitMode) return true;
-
-            SummaryFunction function = detectFunctionByColumn(facetName, column, getByExpression());
-            return function != null && !(function instanceof CountFunction);
+            if (applicableInThisContext == null) {
+                if (!summary.implicitMode) {
+                    applicableInThisContext = true;
+                } else {
+                    ValueExpression byExpression = getByExpression(false);
+                    if (byExpression == null) {
+                        applicableInThisContext = false;
+                    } else {
+                        SummaryFunction function = detectFunctionByColumn(facetName, column, byExpression);
+                        applicableInThisContext = function != null && !(function instanceof CountFunction);
+                    }
+                }
+            }
+            return applicableInThisContext;
         }
 
 
@@ -268,6 +279,10 @@ public class Summary extends OUIOutput {
         private ValueExpression byExpression;
 
         public ValueExpression getByExpression() {
+            return getByExpression(true);
+        }
+
+        private ValueExpression getByExpression(boolean throwExceptions) {
             if (byExpression != null)
                 return byExpression;
 
@@ -277,6 +292,7 @@ public class Summary extends OUIOutput {
 
             if (column == null) {
                 DataTable table = summary.getTable();
+                if (!throwExceptions) return null;
                 if (table.getRowIndex() != -1) {
                     // reset row index just to ensure a suffix-less table id in an exception message
                     table.setRowIndex(-1);
@@ -286,14 +302,17 @@ public class Summary extends OUIOutput {
                         "the \"by\" attribute has to be specified or <o:summary> should be placed into a column's " +
                         "facet to derive the expression from that column automatically.");
             }
-            if (!(column instanceof Column))
+            if (!(column instanceof Column)) {
+                if (!throwExceptions) return null;
                 throw new FacesException("<o:summary> component can only be used inside of <o:column>, but not other " +
                         "types of column tags (" + column.getClass().getName() + ")");
+            }
             byExpression = column.getColumnValueExpression();
             // the summary's expression is not specified explicitly and it's not inside of a column whose value
             // expression can be detected
             if (byExpression == null) {
                 DataTable table = summary.getTable();
+                if (!throwExceptions) return null;
                 if (table.getRowIndex() != -1) {
                     // reset row index just to ensure a suffix-less table id in an exception message
                     table.setRowIndex(-1);
@@ -612,13 +631,12 @@ public class Summary extends OUIOutput {
                 if (parentFacetReference != null && parentFacetReference.getFacetName().equals(AbstractTable.FACET_BELOW)) {
                     DataTable table = getTable();
                     int prevRowIndex = table.getRowIndex();
-                    if (prevRowIndex != -1)
-                        table.setRowIndex(-1);
+                    if (prevRowIndex != -1) table.setRowIndex(-1);
                     try {
                         String clientId = getClientId(context);
                         globalCalculationContext.setRenderedSummaryClientId(clientId);
                     } finally {
-                        table.setRowIndex(prevRowIndex);
+                        if (prevRowIndex != -1) table.setRowIndex(prevRowIndex);
                     }
                 }
             }
@@ -659,6 +677,7 @@ public class Summary extends OUIOutput {
     public void createContextMenu(FacesContext context) {
         if (contextMenuAdded) return;
         contextMenuAdded = true;
+        if (!getUsageContext().isApplicableInThisContext()) return;
 
         UsageContext usageContext = getUsageContext();
         if (usageContext.getTable().getRowIndex() != -1)

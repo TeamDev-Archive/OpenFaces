@@ -1036,12 +1036,12 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
             }
 
             int rowIndex = getRowIndex();
-            setRowIndex(-1);
+            if (rowIndex != -1) setRowIndex(-1);
             FacesContext facesContext = getFacesContext();
             for (Summary summary : summaries) {
                 summary.createContextMenu(facesContext);
             }
-            setRowIndex(rowIndex);
+            if (rowIndex != -1) setRowIndex(rowIndex);
             this.summaries = summaries;
         }
         return summaries;
