@@ -12,23 +12,30 @@
 package org.openfaces.component.table;
 
 import org.openfaces.component.OUIOutput;
+import org.openfaces.component.command.MenuItem;
+import org.openfaces.component.command.PopupMenu;
 import org.openfaces.component.table.impl.TableDataModel;
 import org.openfaces.renderkit.TableUtil;
+import org.openfaces.renderkit.select.SelectBooleanCheckboxImageManager;
 import org.openfaces.util.ApplicationParams;
 import org.openfaces.util.Components;
 import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.ValueBindings;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
+import javax.faces.application.Application;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
+import javax.faces.convert.NumberConverter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,11 +46,15 @@ public class Summary extends OUIOutput {
 
     private static final String DEFAULT_PATTERN = "#{function}: #{valueString}";
     private static final String ATTR_PATTERN = "pattern";
+    private static final String FACET_POPUP_MENU = "_popupMenu";
 
     private SummaryFunction function;
     private boolean implicitMode;
+    private boolean contextMenuAdded;
+    private String originalClientId;
 
     private UsageContext usageContext;
+    private Boolean functionEditable;
 
     public Summary() {
         this(false);
@@ -64,7 +75,10 @@ public class Summary extends OUIOutput {
         return new Object[]{
                 super.saveState(context),
                 function,
-                implicitMode
+                functionEditable,
+                implicitMode,
+                contextMenuAdded,
+                originalClientId
 
         };
     }
@@ -75,7 +89,10 @@ public class Summary extends OUIOutput {
         int i = 0;
         super.restoreState(context, state[i++]);
         function = (SummaryFunction) state[i++];
+        functionEditable = (Boolean) state[i++];
         implicitMode = (Boolean) state[i++];
+        contextMenuAdded = (Boolean) state[i++];
+        originalClientId  = (String) state[i++];
     }
 
     public ValueExpression getBy() {
@@ -101,17 +118,38 @@ public class Summary extends OUIOutput {
     private ValueExpression getPatternExpression() {
         ValueExpression expression = getPattern();
         if (expression == null) {
-            FacesContext context = FacesContext.getCurrentInstance();
-            ELContext elContext = context.getELContext();
-            expression = context.getApplication().getExpressionFactory().createValueExpression(
-                    elContext, DEFAULT_PATTERN, Object.class);
+            Summaries summaries = getSummaries();
+            if (summaries != null) {
+                expression = summaries.getPattern();
+            }
+            if (expression == null) {
+                FacesContext context = FacesContext.getCurrentInstance();
+                ELContext elContext = context.getELContext();
+                expression = context.getApplication().getExpressionFactory().createValueExpression(
+                        elContext, DEFAULT_PATTERN, Object.class);
+            }
             setPattern(expression);
         }
         return expression;
     }
 
+    private Summaries getSummaries() {
+        return getUsageContext().getTable().getSummaries();
+    }
+
     public void setPattern(ValueExpression valueExpression) {
         setValueExpression(ATTR_PATTERN, valueExpression);
+    }
+
+    public boolean getFunctionEditable() {
+        DataTable table = getParent() != null ? getUsageContext().getTable() : null;
+        Summaries summaries = table != null ? table.getSummaries() : null;
+        boolean defaultValue = summaries != null ? summaries.getFunctionEditable() : true;
+        return ValueBindings.get(this, "functionEditable", functionEditable, defaultValue);
+    }
+
+    public void setFunctionEditable(boolean functionEditable) {
+        this.functionEditable = functionEditable;
     }
 
     private static class UsageContext {
@@ -198,15 +236,15 @@ public class Summary extends OUIOutput {
         }
 
         /**
-         * Applicable for the implicitly-created Summary instances. This method checks if this implicitly-created instance
-         * is applicable in the context where it is created. Applicable means that summary can be calculated here and
-         * should be displayed. In other words this is a mechanism that detects whether summary should be displayed in any
-         * given context (a facet inside of any given column).
+         * Applicable for the implicitly-created Summary instances. This method checks if this implicitly-created
+         * instance is applicable in the context where it is created. Applicable means that summary can be calculated
+         * here and should be displayed. In other words this is a mechanism that detects whether summary should be
+         * displayed in any given context (a facet inside of any given column).
          */
         public boolean isApplicableInThisContext() {
             if (!summary.implicitMode) return true;
 
-            SummaryFunction function = getFunction();
+            SummaryFunction function = detectFunctionByColumn(facetName, column, getByExpression());
             return function != null && !(function instanceof CountFunction);
         }
 
@@ -297,6 +335,19 @@ public class Summary extends OUIOutput {
             }
         }
 
+        public List<SummaryFunction> getApplicableFunctions() {
+            if (column == null ||
+                    column instanceof ColumnGroup ||
+                    equalsToOneOf(facetName, BaseColumn.FACET_GROUP_HEADER, BaseColumn.FACET_GROUP_FOOTER)) {
+                return Collections.singletonList((SummaryFunction) new CountFunction());
+            } else {
+                ValueExpression byExpression = getByExpression();
+                BaseColumn.ExpressionData expressionData = column.getExpressionData(byExpression);
+                Class valueType = expressionData.getValueType();
+                return getFunctionsForType(valueType);
+            }
+        }
+
         private Converter getConverter() {
             return summary.getConverter();
         }
@@ -310,13 +361,23 @@ public class Summary extends OUIOutput {
         }
     }
 
-    private static SummaryFunction getDefaultFunctionForType(Class valueType) {
+    private static List<SummaryFunction> getFunctionsForType(Class valueType) {
+        List<SummaryFunction> functions = new ArrayList<SummaryFunction>();
+
         List<SummaryFunction> allFunctions = ApplicationParams.getSummaryFunctions();
         for (SummaryFunction fn : allFunctions) {
             if (fn.isApplicableForClass(valueType)) {
-                return fn;
+                functions.add(fn);
             }
         }
+        return functions;
+
+    }
+
+    private static SummaryFunction getDefaultFunctionForType(Class valueType) {
+        List<SummaryFunction> applicableFunctions = getFunctionsForType(valueType);
+        if (applicableFunctions.size() > 0)
+            return applicableFunctions.get(0);
         return new CountFunction();
     }
 
@@ -419,8 +480,17 @@ public class Summary extends OUIOutput {
             SummaryFunction function = usageContext.getFunction();
             Converter converter = usageContext.getConverter();
             FacesContext context = getFacesContext();
-            if (converter == null && summaryValue != null)
-                converter = Rendering.getConverterForType(context, summaryValue.getClass());
+            if (converter == null && summaryValue != null) {
+                Class cls = summaryValue.getClass();
+                if (cls.equals(Double.class) || cls.equals(Float.class)) {
+                    NumberConverter numberConverter = new NumberConverter();
+                    numberConverter.setGroupingUsed(false);
+                    numberConverter.setMaxFractionDigits(2);
+                    converter = numberConverter;
+                } else {
+                    converter = Rendering.getConverterForType(context, cls);
+                }
+            }
 
             Object summaryValueStr = summaryValue != null
                     ? (converter != null ? converter.getAsString(context, Summary.this, summaryValue) : summaryValue.toString())
@@ -437,7 +507,13 @@ public class Summary extends OUIOutput {
             Components.restoreRequestVariable("valueString");
             Components.restoreRequestVariable("function");
 
-            sb.functionCall("O$.Summary._init", renderedSummaryClientId, summaryOutput).semicolon();
+            sb.functionCall("O$.Summary._init",
+                    renderedSummaryClientId,
+                    originalClientId,
+                    summaryOutput,
+                    usageContext.getTable(),
+                    getPopupMenu()
+            ).semicolon();
         }
     }
 
@@ -469,6 +545,19 @@ public class Summary extends OUIOutput {
                     break;
                 }
             }
+        }
+    }
+
+    @Override
+    public void decode(FacesContext context) {
+        super.decode(context);
+        Map<String, String> requestParameterMap = context.getExternalContext().getRequestParameterMap();
+        String functionName = requestParameterMap.get(originalClientId + "::setFunction");
+        if (functionName != null) {
+            SummaryFunction summaryFunction = ApplicationParams.getSummaryFunctionByName(functionName);
+            if (summaryFunction == null)
+                throw new IllegalArgumentException("Invalid summary function name -- no function with this name could be found: " + summaryFunction);
+            setFunction(summaryFunction);
         }
     }
 
@@ -541,6 +630,62 @@ public class Summary extends OUIOutput {
                 groupCalculationContext.renderInitScript(sb);
             }
         }
+
+        if (getFunctionEditable())
+            encodePopupMenu(context);
         Rendering.renderInitScript(context, sb, TableUtil.getTableUtilJsURL(context));
     }
+
+    private void encodePopupMenu(FacesContext context) throws IOException {
+        PopupMenu popupMenu = getPopupMenu();
+        SummaryFunction currentFunction = usageContext.getFunction();
+        String currentFunctionName = currentFunction.getName();
+        List<UIComponent> children = popupMenu.getChildren();
+        for (UIComponent child : children) {
+            if (!(child instanceof MenuItem)) continue;
+            MenuItem menuItem = (MenuItem) child;
+            String functionName = (String) child.getAttributes().get("_functionName");
+            menuItem.setIconUrl(Resources.internalURL(context, null,
+                    functionName.equals(currentFunctionName)
+                            ? SelectBooleanCheckboxImageManager.DEFAULT_SELECTED_IMAGE
+                            : SelectBooleanCheckboxImageManager.DEFAULT_UNSELECTED_IMAGE,
+                    false));
+        }
+
+        popupMenu.encodeAll(context);
+    }
+
+
+    public void createContextMenu(FacesContext context) {
+        if (contextMenuAdded) return;
+        contextMenuAdded = true;
+
+        UsageContext usageContext = getUsageContext();
+        if (usageContext.getTable().getRowIndex() != -1)
+            throw new IllegalArgumentException("table's rowIndex is expected to be -1 when invoking the " +
+                    "createContextMenu method for it to be able to detect its 'original' client id");
+        originalClientId = getClientId(context);
+
+        Application application = context.getApplication();
+        PopupMenu popupMenu = (PopupMenu) application.createComponent(PopupMenu.COMPONENT_TYPE);
+        popupMenu.setStandalone(true);
+        List<SummaryFunction> applicableFunctions = usageContext.getApplicableFunctions();
+        for (SummaryFunction function : applicableFunctions) {
+            MenuItem menuItem = (MenuItem) application.createComponent(MenuItem.COMPONENT_TYPE);
+            String functionName = function.getName();
+            menuItem.setValue(functionName);
+            menuItem.setOnclick(new ScriptBuilder().functionCall(
+                    "O$.Summary._setFunction", functionName.toLowerCase()
+            ).toString());
+            menuItem.getAttributes().put("_functionName", functionName);
+            popupMenu.getChildren().add(menuItem);
+        }
+
+        getFacets().put(FACET_POPUP_MENU, popupMenu);
+    }
+
+    private PopupMenu getPopupMenu() {
+        return (PopupMenu) Components.getFacet(this, FACET_POPUP_MENU);
+    }
+
 }
