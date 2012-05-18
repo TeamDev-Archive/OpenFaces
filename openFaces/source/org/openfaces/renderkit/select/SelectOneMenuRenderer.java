@@ -12,6 +12,7 @@
 package org.openfaces.renderkit.select;
 
 import org.openfaces.component.input.DropDownComponent;
+import org.openfaces.component.input.DropDownFieldBase;
 import org.openfaces.component.select.SelectOneMenu;
 import org.openfaces.renderkit.input.DropDownFieldRenderer;
 import org.openfaces.util.Rendering;
@@ -59,6 +60,14 @@ public class SelectOneMenuRenderer extends DropDownFieldRenderer {
 
     protected String getItemPresentationId(FacesContext context, SelectOneMenu fieldComponent) {
         return fieldComponent.getClientId(context) + VIEW_SUFFIX;
+    }
+
+    @Override
+    protected String getHiddenFieldValue(FacesContext context, DropDownComponent dropDown){
+        String currentValueConverted = Rendering.getStringValue(context, dropDown);
+        return isItemValueExists(context, (DropDownFieldBase) dropDown, currentValueConverted)
+                ? "[" + currentValueConverted + "]"
+                : "";
     }
 
     protected void encodeField(FacesContext context, UIComponent component) throws IOException {
