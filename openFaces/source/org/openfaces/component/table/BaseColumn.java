@@ -786,7 +786,7 @@ public class BaseColumn extends UIColumn {
     }
 
     private static boolean expressionContainsVar(String expressionString, String var) {
-        if (expressionString.equals("#{" + var + "}")) return true;
+        if (expressionString.startsWith("#{" + var)) return true;
         Matcher matcher = getExpressionPattern(var).matcher(expressionString);
         return matcher.find();
     }

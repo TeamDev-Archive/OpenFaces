@@ -15,6 +15,7 @@ import org.openfaces.component.FilterableComponent;
 import org.openfaces.component.OUIData;
 import org.openfaces.component.TableStyles;
 import org.openfaces.component.filter.Filter;
+import org.openfaces.component.table.impl.DynamicColumn;
 import org.openfaces.component.table.impl.NodeInfo;
 import org.openfaces.component.table.impl.RowComparator;
 import org.openfaces.component.table.impl.TableDataModel;
@@ -351,9 +352,10 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     private void ensureImplicitFacetsCreated() {
         if (!implicitFacetsCreated) {
-            createImplicitColumnFacets();
+            createImplicitColumnFacets(false);
             implicitFacetsCreated = true;
         }
+        createImplicitColumnFacets(true);
     }
 
     private List<UIComponent> additionalComponentsRequiringClientIdReset;
@@ -539,10 +541,12 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         return colById;
     }
 
-    protected void createImplicitColumnFacets() {
+    protected void createImplicitColumnFacets(boolean forDynamicColumns) {
         List<BaseColumn> allColumns = getAllColumns();
         for (BaseColumn column : allColumns) {
-            column.createImplicitFacets();
+            boolean thisIsADynamicColumn = column instanceof DynamicColumn;
+            if (forDynamicColumns == thisIsADynamicColumn)
+                column.createImplicitFacets();
         }
     }
 
