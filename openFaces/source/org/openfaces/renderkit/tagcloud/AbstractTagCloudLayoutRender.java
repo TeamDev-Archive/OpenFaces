@@ -31,7 +31,7 @@ public abstract class AbstractTagCloudLayoutRender extends RendererBase {
     public void renderLayout(FacesContext context, UIComponent component) throws IOException {
         TagCloud cloud = (TagCloud) component;
 
-        List<TagCloudItem> items = cloud.itemsToTheList(context);
+        List<TagCloudItem> items = cloud.getTagCloudItems(context);
 
         TagsOrderingStrategy orderingStrategy;
         if (cloud.getLayout().equals(Layout.SPHERE)) {
