@@ -14,6 +14,7 @@ package org.openfaces.component.table;
 import org.openfaces.component.OUIOutput;
 import org.openfaces.component.command.MenuItem;
 import org.openfaces.component.command.PopupMenu;
+import org.openfaces.component.table.impl.DynamicColumn;
 import org.openfaces.component.table.impl.TableDataModel;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.renderkit.select.SelectBooleanCheckboxImageManager;
@@ -49,12 +50,16 @@ public class Summary extends OUIOutput {
     private static final String FACET_POPUP_MENU = "_popupMenu";
 
     private SummaryFunction function;
+    private Boolean functionEditable;
+
     private boolean implicitMode;
     private boolean contextMenuAdded;
     private String originalClientId;
 
     private UsageContext usageContext;
-    private Boolean functionEditable;
+
+    private CalculationContext globalCalculationContext;
+    private Map<RowGroup, CalculationContext> groupCalculationContexts;
 
     public Summary() {
         this(false);
@@ -159,9 +164,20 @@ public class Summary extends OUIOutput {
         private String facetName;
 
         private Boolean applicableInThisContext;
+        /**
+         * "Common location" means that the summary is not bound to any table's column, but to the whole table or
+         * column group
+         */
+        private boolean commonLocation;
+        /**
+         * "Global calculation" means that according to the summary component's declaration location it should be
+         * calculated over all displayed rows and not over the individual groups (when row grouping feature is used)
+         */
         private Boolean calculatedGlobally;
         private String calculatedForGroupsWithColumnId;
         private Boolean calculatedForAllGroups;
+
+        private SummaryFunction function;
 
         public UsageContext(Summary summary) {
             this.summary = summary;
@@ -170,7 +186,8 @@ public class Summary extends OUIOutput {
             if (facetReference == null)
                 throw new FacesException("The <o:summary> tag can only be used inside of one of the facets of the " +
                         "<o:dataTable> component or inside of the facets of one of its <o:column> or <o:columnGroup> " +
-                        "tags.");
+                        "tags, but it wasn't placed into a facet: " +
+                        summary.getClientId(FacesContext.getCurrentInstance()));
             UIComponent facetOwner = facetReference.getFacetOwner();
 
             AbstractTable abstractTable;
@@ -181,15 +198,22 @@ public class Summary extends OUIOutput {
                 abstractTable = column.getTable();
                 if (abstractTable == null)
                     throw new FacesException("The <o:summary> component is placed into a misplaced column component -" +
-                            "the parent table for that column (" + facetOwner.getClientId(FacesContext.getCurrentInstance()) +
+                            "the parent table for that column (" +
+                            facetOwner.getClientId(FacesContext.getCurrentInstance()) +
                             ") could not be found in the components tree.");
             } else {
                 throw new FacesException("The <o:summary> tag must be placed as a facet inside of <o:dataTable>, " +
-                        "<o:column> or <o:columnGroup> components.");
+                        "<o:column> or <o:columnGroup> components. This summary component (" +
+                        summary.getClientId(FacesContext.getCurrentInstance()) +
+                        ") was placed into the \"" + facetReference.getFacetName() +
+                        "\" facet of component with class " +
+                        facetOwner.getClass().getName() + " (clientId=\"" +
+                        facetOwner.getClientId(FacesContext.getCurrentInstance()) + "\"");
             }
             if (!(abstractTable instanceof DataTable)) {
                 // e.g. in case of an attempt to use in inside of TreeTable
-                throw new FacesException("The <o:summary> component can only be used with <o:dataTable> component currently.");
+                throw new FacesException("The <o:summary> component can only be used with <o:dataTable> component " +
+                        "currently: " + summary.getClientId(FacesContext.getCurrentInstance()));
             }
             this.table = (DataTable) abstractTable;
 
@@ -234,6 +258,10 @@ public class Summary extends OUIOutput {
                 }
             }
 
+            commonLocation =
+                    column == null ||
+                    column instanceof ColumnGroup ||
+                    equalsToOneOf(facetName, BaseColumn.FACET_GROUP_HEADER, BaseColumn.FACET_GROUP_FOOTER);
         }
 
         /**
@@ -251,7 +279,7 @@ public class Summary extends OUIOutput {
                     if (byExpression == null) {
                         applicableInThisContext = false;
                     } else {
-                        SummaryFunction function = detectFunctionByColumn(facetName, column, byExpression);
+                        SummaryFunction function = detectFunctionByColumn(byExpression);
                         applicableInThisContext = function != null && !(function instanceof CountFunction);
                     }
                 }
@@ -280,6 +308,14 @@ public class Summary extends OUIOutput {
 
         public ValueExpression getByExpression() {
             return getByExpression(true);
+        }
+
+        public Object getByValue(ELContext elContext) {
+            DynamicColumn dynamicColumn = column instanceof DynamicColumn ? (DynamicColumn) column : null;
+            if (dynamicColumn != null) dynamicColumn.declareContextVariables();
+            Object value = getByExpression().getValue(elContext);
+            if (dynamicColumn != null) dynamicColumn.undeclareContextVariables();
+            return value;
         }
 
         private ValueExpression getByExpression(boolean throwExceptions) {
@@ -325,8 +361,6 @@ public class Summary extends OUIOutput {
             return byExpression;
         }
 
-        private SummaryFunction function;
-
         /**
          * Gets the user-specified function or detects it automatically if not specified in this Summary component
          * explicitly.
@@ -337,15 +371,13 @@ public class Summary extends OUIOutput {
             function = summary.getFunction();
             if (function != null) return function;
 
-            function = detectFunctionByColumn(facetName, column, getByExpression());
+            function = detectFunctionByColumn(commonLocation ? null : getByExpression());
 
             return function;
         }
 
-        private static SummaryFunction detectFunctionByColumn(String facetName, BaseColumn column, ValueExpression byExpression) {
-            if (column == null ||
-                    column instanceof ColumnGroup ||
-                    equalsToOneOf(facetName, BaseColumn.FACET_GROUP_HEADER, BaseColumn.FACET_GROUP_FOOTER)) {
+        private SummaryFunction detectFunctionByColumn(ValueExpression byExpression) {
+            if (commonLocation) {
                 return new CountFunction();
             } else {
                 BaseColumn.ExpressionData expressionData = column.getExpressionData(byExpression);
@@ -355,9 +387,7 @@ public class Summary extends OUIOutput {
         }
 
         public List<SummaryFunction> getApplicableFunctions() {
-            if (column == null ||
-                    column instanceof ColumnGroup ||
-                    equalsToOneOf(facetName, BaseColumn.FACET_GROUP_HEADER, BaseColumn.FACET_GROUP_FOOTER)) {
+            if (commonLocation) {
                 return Collections.singletonList((SummaryFunction) new CountFunction());
             } else {
                 ValueExpression byExpression = getByExpression();
@@ -416,13 +446,10 @@ public class Summary extends OUIOutput {
             // attempt below.
             return "";
         }
-        Object value = usageContext.getByExpression().getValue(elContext);
+        Object value = usageContext.getByValue(elContext);
         return value;
     }
 
-
-    private CalculationContext globalCalculationContext;
-    private Map<RowGroup, CalculationContext> groupCalculationContexts;
 
     private CalculationContext getGlobalCalculationContext() {
         if (globalCalculationContext == null)

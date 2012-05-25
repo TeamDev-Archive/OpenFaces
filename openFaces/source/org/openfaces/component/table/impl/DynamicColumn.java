@@ -15,6 +15,7 @@ import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.Column;
 import org.openfaces.component.table.Columns;
 
+import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -64,33 +65,65 @@ public class DynamicColumn extends Column implements DynamicCol {
     }
 
     @Override
+    public UIComponent getFacet(String name) {
+        UIComponent component = super.getFacet(name);
+        if (component != null)
+            return component;
+        return columns.getFacet(name);
+    }
+
+    @Override
     public UIComponent getHeader() {
+        UIComponent header = super.getHeader();
+        if (header != null) return header;
         return columns.getHeader();
     }
 
     @Override
-    public void setHeader(UIComponent header) {
-        columns.setHeader(header);
-    }
-
-    @Override
     public UIComponent getFooter() {
+        UIComponent footer = super.getFooter();
+        if (footer != null) return footer;
         return columns.getFooter();
     }
 
     @Override
-    public void setFooter(UIComponent footer) {
-        columns.setFooter(footer);
-    }
-
-    @Override
-    public void setSubHeader(UIComponent component) {
-        columns.setSubHeader(component);
-    }
-
-    @Override
     public UIComponent getSubHeader() {
+        UIComponent subHeader = super.getSubHeader();
+        if (subHeader != null)
+            return subHeader;
         return columns.getSubHeader();
+    }
+
+    @Override
+    public UIComponent getGroupHeader() {
+        UIComponent component = super.getGroupHeader();
+        if (component != null)
+            return component;
+        return columns.getGroupHeader();
+    }
+
+    @Override
+    public UIComponent getGroupFooter() {
+        UIComponent component = super.getGroupFooter();
+        if (component != null)
+            return component;
+        return columns.getGroupFooter();
+    }
+
+    @Override
+    public UIComponent getInGroupHeader() {
+        UIComponent component = super.getInGroupHeader();
+        if (component != null)
+            return component;
+        return columns.getInGroupHeader();
+    }
+
+    @Override
+    public UIComponent getInGroupFooter() {
+        UIComponent component = super.getInGroupFooter();
+        if (component != null)
+            return component;
+        return columns.getInGroupFooter();
     }
 
     @Override
@@ -199,4 +232,13 @@ public class DynamicColumn extends Column implements DynamicCol {
         undeclareContextVariables();
     }
 
+    @Override
+    public ExpressionData getExpressionData(ValueExpression expression) {
+        declareContextVariables();
+        try {
+            return super.getExpressionData(expression);
+        } finally {
+            undeclareContextVariables();
+        }
+    }
 }

@@ -1868,6 +1868,19 @@
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <!--<attribute>-->
+      <!--<description>Specifies the type of values that is displayed in this column. This attribute is optional and might-->
+        <!--be required for the proper detection of columns where the summary should be displayed (when &lt;o:sumaries&gt;-->
+        <!--tag is used), and for the proper detection of applicable search criteria when using the filtering feature.-->
+      <!--</description>-->
+      <!--<name>type</name>-->
+      <!--<deferred-value>-->
+        <!--<type>java.lang.Object</type>-->
+      <!--</deferred-value>-->
+      <!--&lt;!&ndash; @bindingType java.lang.Class &ndash;&gt;-->
+      <!--&lt;!&ndash; @default null &ndash;&gt;-->
+      <!--&lt;!&ndash; @el true &ndash;&gt;-->
+    <!--</attribute>-->
   </tag>
 
   <tag>
@@ -3821,6 +3834,20 @@
       <!-- @default null -->
       <!-- @el false -->
     </attribute>
+    <!--<attribute>-->
+      <!--<description>Specifies the type of values that is displayed in the current column (according to the current column-->
+        <!--data variable). This attribute is optional and might be required for the proper detection of columns where the-->
+        <!--summary should be displayed (when &lt;o:sumaries&gt; tag is used), and for the proper detection of applicable-->
+        <!--search criteria when using the filtering feature.-->
+      <!--</description>-->
+      <!--<name>columnType</name>-->
+      <!--<deferred-value>-->
+        <!--<type>java.lang.Object</type>-->
+      <!--</deferred-value>-->
+      <!--&lt;!&ndash; @bindingType java.lang.Class &ndash;&gt;-->
+      <!--&lt;!&ndash; @default null &ndash;&gt;-->
+      <!--&lt;!&ndash; @el true &ndash;&gt;-->
+    <!--</attribute>-->
 
   </tag>
 
