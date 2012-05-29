@@ -49,7 +49,7 @@ public class RendererBase extends Renderer {
     }
 
     protected boolean writeEventsWithAjaxSupport(FacesContext context, ResponseWriter writer, OUICommand command) throws IOException {
-        return writeEventsWithAjaxSupport(context, writer, command, null);
+        return Rendering.writeEventsWithAjaxSupport(context, writer, command, null);
     }
 
     protected boolean writeEventsWithAjaxSupport(
@@ -58,33 +58,6 @@ public class RendererBase extends Renderer {
             OUICommand command,
             String submitIfNoAjax
     ) throws IOException {
-        String userClickHandler = Rendering.getEventHandlerScript(command, "click", "action");
-        Script componentClickHandler = null;
-        Iterable<String> render = command.getRender();
-        Iterable<String> execute = command.getExecute();
-        boolean ajaxJsRequired = false;
-        if (render != null || (execute != null && execute.iterator().hasNext())) {
-            if (render == null)
-                throw new FacesException("'execute' attribute can't be specified without the 'render' attribute. Component id: " + command.getId());
-
-            AjaxInitializer initializer = new AjaxInitializer();
-            componentClickHandler = new ScriptBuilder().functionCall("O$.Ajax._reload",
-                    initializer.getRenderArray(context, command, render),
-                    initializer.getAjaxParams(context, command),
-                    new RawScript("this"),
-                    new RawScript("event")).semicolon().append("return false;");
-            ajaxJsRequired = true;
-        } else {
-            if (submitIfNoAjax != null) {
-                componentClickHandler = new FunctionCallScript("O$.submitWithParam", command, submitIfNoAjax, true);
-            }
-        }
-        String clickHandler = Rendering.joinScripts(
-                userClickHandler,
-                componentClickHandler != null ? componentClickHandler.toString() : null);
-        if (!Rendering.isNullOrEmpty(clickHandler))
-            writer.writeAttribute("onclick", clickHandler, null);
-        Rendering.writeStandardEvents(writer, command, true);
-        return ajaxJsRequired;
+        return Rendering.writeEventsWithAjaxSupport(context, writer, command, submitIfNoAjax);
     }
 }

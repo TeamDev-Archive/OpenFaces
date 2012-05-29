@@ -16,8 +16,10 @@ import org.openfaces.application.OpenFacesApplication;
 import org.openfaces.application.OpenFacesResourceHandler;
 import org.openfaces.application.ViewExpiredExceptionHandler;
 import org.openfaces.component.OUIClientAction;
+import org.openfaces.component.OUICommand;
 import org.openfaces.component.OUIComponent;
 import org.openfaces.component.OUIInput;
+import org.openfaces.component.ajax.AjaxInitializer;
 import org.openfaces.component.output.GraphicText;
 import org.openfaces.org.json.JSONArray;
 import org.openfaces.org.json.JSONException;
@@ -1474,5 +1476,43 @@ public class Rendering {
             return false;
 
         return true;
+    }
+
+    public static boolean writeEventsWithAjaxSupport(FacesContext context, ResponseWriter writer, OUICommand command) throws IOException {
+        return writeEventsWithAjaxSupport(context, writer, command, null);
+    }
+
+    public static boolean writeEventsWithAjaxSupport(
+            FacesContext context,
+            ResponseWriter writer,
+            OUICommand command,
+            String submitIfNoAjax
+    ) throws IOException {
+        String userClickHandler = command.getOnclick();
+        Script componentClickHandler = null;
+        Iterable<String> render = command.getRender();
+        Iterable<String> execute = command.getExecute();
+        boolean ajaxJsRequired = false;
+        if (render != null || (execute != null && execute.iterator().hasNext())) {
+            if (render == null)
+                throw new FacesException("'execute' attribute can't be specified without the 'render' attribute. Component id: " + command.getId());
+
+            AjaxInitializer initializer = new AjaxInitializer();
+            componentClickHandler = new ScriptBuilder().functionCall("O$._ajaxReload",
+                    initializer.getRenderArray(context, command, render),
+                    initializer.getAjaxParams(context, command)).semicolon().append("return false;");
+            ajaxJsRequired = true;
+        } else {
+            if (submitIfNoAjax != null) {
+                componentClickHandler = new FunctionCallScript("O$.submitWithParam", command, submitIfNoAjax, true);
+            }
+        }
+        String clickHandler = Rendering.joinScripts(
+                userClickHandler,
+                componentClickHandler != null ? componentClickHandler.toString() : null);
+        if (!Rendering.isNullOrEmpty(clickHandler))
+            writer.writeAttribute("onclick", clickHandler, null);
+        Rendering.writeStandardEvents(writer, command, true);
+        return ajaxJsRequired;
     }
 }

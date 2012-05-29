@@ -125,4 +125,9 @@ public class TagCloudJspTag extends OUICommandJspTag {
     public void setVar(ValueExpression var) {
         getDelegate().setPropertyValue("var", var);
     }
+
+    public void setOnitemclick(ValueExpression onitemclick) {
+        getDelegate().setPropertyValue("onitemclick", onitemclick);
+    }
+
 }

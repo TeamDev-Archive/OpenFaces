@@ -16,6 +16,7 @@ import org.openfaces.component.tagcloud.Layout;
 import org.openfaces.component.tagcloud.TagCloud;
 import org.openfaces.component.tagcloud.TagsOrder;
 import org.openfaces.taglib.internal.AbstractComponentTag;
+import org.openfaces.taglib.internal.OUICommandTag;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -23,7 +24,7 @@ import javax.faces.context.FacesContext;
 /**
  * @author : roman.nikolaienko
  */
-public class TagCloudTag extends AbstractComponentTag {
+public class TagCloudTag extends OUICommandTag {
     public String getComponentType() {
         return "org.openfaces.TagCloud";
     }
@@ -74,5 +75,6 @@ public class TagCloudTag extends AbstractComponentTag {
         setDoubleProperty(component,"stopRotationPeriod3D");
 
         setStringProperty(component, "var");
+        setStringProperty(component, "onitemclick");
     }
 }

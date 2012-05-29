@@ -12,22 +12,27 @@
 
 package org.openfaces.component.tagcloud;
 
-import org.openfaces.component.OUIOutput;
+import org.openfaces.component.OUICommand;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.Script;
 import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.StyleGroup;
 import org.openfaces.util.Styles;
 
+import javax.el.ELException;
+import javax.el.ValueExpression;
+import javax.faces.FacesException;
+import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.convert.Converter;
 import java.io.IOException;
 import java.text.DecimalFormat;
 
 /**
  * @author : roman.nikolaienko
  */
-public class TagCloudItem extends OUIOutput {
+public class TagCloudItem extends OUICommand implements ValueHolder {
 
     public static final String COMPONENT_TYPE = "org.openfaces.TagCloudItem";
     public static final String COMPONENT_FAMILY = "org.openfaces.TagCloudItem";
@@ -55,6 +60,9 @@ public class TagCloudItem extends OUIOutput {
     private String weightStyle;
 
     private String gradientStyle;
+    private String onItemClick;
+    private Converter converter = null;
+    private Object value = null;
 
     public TagCloudItem() {
         setRendererType("org.openfaces.TagCloudItem");
@@ -123,7 +131,8 @@ public class TagCloudItem extends OUIOutput {
                 weightClass,
                 weightStyle,
 
-                gradientStyle
+                gradientStyle,
+                onItemClick
         };
     }
 
@@ -143,6 +152,7 @@ public class TagCloudItem extends OUIOutput {
         weightStyle = (String) values[i++];
 
         gradientStyle=(String) values[i++];
+        onItemClick = (String) values[i++];
     }
 
     public String getTitle() {
@@ -209,12 +219,21 @@ public class TagCloudItem extends OUIOutput {
         this.gradientStyle = gradientStyle;
     }
 
+    public String getOnItemClick() {
+        return onItemClick;
+    }
+
+    public void setOnItemClick(String onItemClick) {
+        this.onItemClick = onItemClick;
+    }
+
     public String getTextValue() {
         return Rendering.convertToString(getFacesContext(), this, getValue());
     }
 
 
     public void encodeBegin(FacesContext context) throws IOException {
+        TagCloud tagCloud = (TagCloud) getParent();
         ResponseWriter writer = context.getResponseWriter();
         String id = getClientId(context);
         String styleClass = getStyleClass(context);
@@ -234,6 +253,11 @@ public class TagCloudItem extends OUIOutput {
         writer.writeAttribute("href", getUrl(), null);
         writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute("style", getStyles(), null);
+
+        setOnclick(getOnItemClick());
+        boolean ajaxJsRequired = Rendering.writeEventsWithAjaxSupport(context, writer, this);
+        if (ajaxJsRequired)
+            this.getAttributes().put("_ajaxRequired", Boolean.TRUE);
 
         writer.startElement("span", this);
         writer.writeAttribute("id", id + DEFAULT_TEXT_CONTAINER, null);
@@ -261,11 +285,12 @@ public class TagCloudItem extends OUIOutput {
         Script initScript = new ScriptBuilder().initScript(context, this, "O$.TagCloudItem._init",
                 styleClass,
                 rolloverStyleClass,
-                ((TagCloud) getParent()).getClientId(context),
-                ((TagCloud) getParent()).getStyle(),
-                ((TagCloud) getParent()).getStyleClass()
+                tagCloud.getClientId(context),
+                tagCloud.getStyle(),
+                tagCloud.getStyleClass()
         );
         Rendering.renderInitScript(context, initScript);
+        super.encodeBegin(context);
     }
 
     public void encodeEnd(FacesContext context) throws IOException {
@@ -281,4 +306,27 @@ public class TagCloudItem extends OUIOutput {
         super.encodeChildren(context);
     }
 
+    public Object getLocalValue() {
+        return (this.value);
+    }
+
+    public Converter getConverter() {
+        if (this.converter != null) {
+            return (this.converter);
+        }
+        ValueExpression ve = getValueExpression("converter");
+        if (ve != null) {
+            try {
+                return ((Converter) ve.getValue(getFacesContext().getELContext()));
+            } catch (ELException e) {
+                throw new FacesException(e);
+            }
+        } else {
+            return (null);
+        }
+    }
+
+    public void setConverter(Converter converter) {
+        this.converter = converter;
+    }
 }
