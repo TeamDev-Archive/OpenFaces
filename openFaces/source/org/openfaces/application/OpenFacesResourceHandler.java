@@ -12,6 +12,8 @@
 
 package org.openfaces.application;
 
+import org.openfaces.util.Log;
+
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
 import javax.faces.application.ResourceHandlerWrapper;
@@ -115,6 +117,11 @@ public class OpenFacesResourceHandler extends ResourceHandlerWrapper {
 
     private boolean isDynamicResourceRequest(FacesContext context) {
         String path = getDecodedResourcePath(context.getExternalContext());
+        if (path == null) {
+            // todo: a temporary workaround for OF-203 (getRequestPathInfo returns null under JBoss PortletBridge)
+            Log.log(context, "isDynamicResourceRequest failed to detect request path");
+            return false;
+        }
         if ((path.indexOf(DYNAMIC_RESOURCE_IDENTIFIER) != -1))
             return true;
         return false;
