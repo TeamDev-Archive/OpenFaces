@@ -14,6 +14,7 @@ package org.openfaces.renderkit.tagcloud;
 
 import org.openfaces.component.tagcloud.Layout;
 import org.openfaces.component.tagcloud.TagCloud;
+import org.openfaces.component.tagcloud.TagCloudItem;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.Components;
@@ -30,6 +31,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -170,10 +172,21 @@ public class TagCloudRenderer extends RendererBase {
         ResponseWriter writer = context.getResponseWriter();
         writer.endElement("div");
         writer.flush();
+        TagCloud tagCloud = (TagCloud) component;
+        List<UIComponent> children = tagCloud.getChildren();
+        List<TagCloudItem> items = tagCloud.getTagCloudItems(context);
+        for (TagCloudItem tagCloudItem : items) {
+            children.remove(tagCloudItem);
+        }
     }
 
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-        Rendering.encodeClientActions(context, component);
+        // Do nothing, custom children renderer is used
+    }
+
+    @Override
+    public boolean getRendersChildren() {
+        return true;
     }
 }
