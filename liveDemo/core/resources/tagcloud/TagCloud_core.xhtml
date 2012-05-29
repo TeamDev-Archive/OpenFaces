@@ -206,6 +206,7 @@
                   maxItemStyle="#{TagCloudBean.maxItemStyle}"
                   minItemStyle="#{TagCloudBean.minItemStyle}"
 
+                  onitemclick="O$('dcForm:headerResult2').innerHTML='#{item.text}';"
                   actionListener="#{TagCloudBean.processAction}"/>
     </h:panelGroup>
 

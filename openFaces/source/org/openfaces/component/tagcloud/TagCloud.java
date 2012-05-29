@@ -70,6 +70,7 @@ public class TagCloud extends OUICommand {
 
     private Double minItemWeight;
     private Double maxItemWeight;
+    private String onitemclick;
 
     public TagCloud() {
         setRendererType("org.openfaces.TagCloudRenderer");
@@ -111,7 +112,8 @@ public class TagCloud extends OUICommand {
                 rotationSpeed3D,
                 shadowScale3D,
                 stopRotationPeriod3D,
-                saveAttachedState(context, converter)
+                saveAttachedState(context, converter),
+                onitemclick
         };
     }
 
@@ -151,6 +153,7 @@ public class TagCloud extends OUICommand {
         stopRotationPeriod3D = (Double) values[i++];
 
         converter = (Converter) restoreAttachedState(context, values[i]);
+        onitemclick = (String) values[i++];
     }
 
     public Converter getConverter() {
@@ -437,6 +440,7 @@ public class TagCloud extends OUICommand {
         ValueExpression titleExpression = getItemTitle();
         ValueExpression urlExpression = getItemUrl();
         ValueExpression weightExpression = getItemWeight();
+        ValueExpression onItemClickExpression = getOnitemclick();
 
         double curWeight;
         String cloudId = getId();
@@ -462,6 +466,9 @@ public class TagCloud extends OUICommand {
             item.setUrl(urlExpression != null ?
                     (String) getVarParameter(urlExpression) : "#");
 
+            item.setOnItemClick(onItemClickExpression != null ?
+                    (String) getVarParameter(onItemClickExpression) : "");
+            
             curWeight = weightExpression != null ?
                     (Double) getVarParameter(weightExpression) : 0;
 
@@ -519,5 +526,13 @@ public class TagCloud extends OUICommand {
                         + items.getClass().getName() + "; should be either array or collection");
         }
         return data;
+    }
+
+    public ValueExpression getOnitemclick() {
+        return getValueExpression("onitemclick");
+    }
+
+    public void setOnitemclick(ValueExpression onitemclick) {
+        setValueExpression("onitemclick", onitemclick);
     }
 }
