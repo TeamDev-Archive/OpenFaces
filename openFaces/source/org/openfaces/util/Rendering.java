@@ -1488,7 +1488,7 @@ public class Rendering {
             OUICommand command,
             String submitIfNoAjax
     ) throws IOException {
-        String userClickHandler = command.getOnclick();
+        String userClickHandler = Rendering.getEventHandlerScript(command, "click", "action");
         Script componentClickHandler = null;
         Iterable<String> render = command.getRender();
         Iterable<String> execute = command.getExecute();
@@ -1498,9 +1498,11 @@ public class Rendering {
                 throw new FacesException("'execute' attribute can't be specified without the 'render' attribute. Component id: " + command.getId());
 
             AjaxInitializer initializer = new AjaxInitializer();
-            componentClickHandler = new ScriptBuilder().functionCall("O$._ajaxReload",
+            componentClickHandler = new ScriptBuilder().functionCall("O$.Ajax._reload",
                     initializer.getRenderArray(context, command, render),
-                    initializer.getAjaxParams(context, command)).semicolon().append("return false;");
+                    initializer.getAjaxParams(context, command),
+                    new RawScript("this"),
+                    new RawScript("event")).semicolon().append("return false;");
             ajaxJsRequired = true;
         } else {
             if (submitIfNoAjax != null) {
