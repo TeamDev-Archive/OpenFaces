@@ -335,7 +335,7 @@ public class Summary extends OUIOutput {
                         int prevRowIndex = table.getRowIndex();
                         if (prevRowIndex != -1) table.setRowIndex(-1);
                         try {
-                            String clientId = getSummary().getClientId(context);
+                            String clientId = Components.getFreshClientId(getSummary(), context);
                             globalCalculationContext.setRenderedSummaryClientId(clientId);
                         } finally {
                             if (prevRowIndex != -1) table.setRowIndex(prevRowIndex);
@@ -753,9 +753,10 @@ public class Summary extends OUIOutput {
         UsageContext usageContext = stampState.getUsageContext();
         if (!usageContext.isApplicableInThisContext()) return;
 
+        String clientId = Components.getFreshClientId(this, context);
+
         DataTable table = stampState.getTable();// getTable invocation validates the parent tag
         super.encodeBegin(context);
-        String clientId = getClientId(context);
         if (usageContext.getCalculatedGlobally()) {
             stampState.getGlobalCalculationContext().setRenderedSummaryClientId(clientId);
         } else {
@@ -783,7 +784,7 @@ public class Summary extends OUIOutput {
         if (usageContext.getTable().getRowIndex() != -1)
             throw new IllegalArgumentException("table's rowIndex is expected to be -1 when invoking the " +
                     "createContextMenu method for it to be able to detect its 'original' client id");
-        stampState.originalClientId = getClientId(context);
+        stampState.originalClientId = Components.getFreshClientId(this, context);
 
         if (contextMenuAdded) return;
         contextMenuAdded = true;
