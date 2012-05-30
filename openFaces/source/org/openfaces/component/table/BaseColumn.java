@@ -697,8 +697,20 @@ public class BaseColumn extends UIColumn {
                 restoreRowVariablesRunnable = table.populateRowVariablesWithAnyModelValue();
             }
             try {
-                if (valueType == null || valueType.equals(Object.class))
-                    valueType = table.isRowAvailable() ? expression.getType(elContext) : Object.class;
+                if (valueType == null || valueType.equals(Object.class)) {
+                    if (table.isRowAvailable()) {
+                        valueType = expression.getType(elContext);
+                        if (Object.class.equals(valueType)) {
+                            Object value = expression.getValue(elContext);
+                            if(value != null)
+                                valueType = value.getClass();
+                        }
+
+                    } else {
+                        valueType = Object.class;
+                    }
+
+                }
             } finally {
                 if (restoreRowVariablesRunnable != null)
                     restoreRowVariablesRunnable.run();
