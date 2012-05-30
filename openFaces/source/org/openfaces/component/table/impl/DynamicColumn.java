@@ -15,12 +15,14 @@ import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.Column;
 import org.openfaces.component.table.Columns;
 
+import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,8 +35,6 @@ public class DynamicColumn extends Column implements DynamicCol {
 
     private Columns columns;
     private Object colData;
-    private Object prevVarValue;
-    private Object prevIndexVarValue;
     private int colIndex;
 
     public DynamicColumn() {
@@ -64,33 +64,65 @@ public class DynamicColumn extends Column implements DynamicCol {
     }
 
     @Override
+    public UIComponent getFacet(String name) {
+        UIComponent component = super.getFacet(name);
+        if (component != null)
+            return component;
+        return columns.getFacet(name);
+    }
+
+    @Override
     public UIComponent getHeader() {
+        UIComponent header = super.getHeader();
+        if (header != null) return header;
         return columns.getHeader();
     }
 
     @Override
-    public void setHeader(UIComponent header) {
-        columns.setHeader(header);
-    }
-
-    @Override
     public UIComponent getFooter() {
+        UIComponent footer = super.getFooter();
+        if (footer != null) return footer;
         return columns.getFooter();
     }
 
     @Override
-    public void setFooter(UIComponent footer) {
-        columns.setFooter(footer);
-    }
-
-    @Override
-    public void setSubHeader(UIComponent component) {
-        columns.setSubHeader(component);
-    }
-
-    @Override
     public UIComponent getSubHeader() {
+        UIComponent subHeader = super.getSubHeader();
+        if (subHeader != null)
+            return subHeader;
         return columns.getSubHeader();
+    }
+
+    @Override
+    public UIComponent getGroupHeader() {
+        UIComponent component = super.getGroupHeader();
+        if (component != null)
+            return component;
+        return columns.getGroupHeader();
+    }
+
+    @Override
+    public UIComponent getGroupFooter() {
+        UIComponent component = super.getGroupFooter();
+        if (component != null)
+            return component;
+        return columns.getGroupFooter();
+    }
+
+    @Override
+    public UIComponent getInGroupHeader() {
+        UIComponent component = super.getInGroupHeader();
+        if (component != null)
+            return component;
+        return columns.getInGroupHeader();
+    }
+
+    @Override
+    public UIComponent getInGroupFooter() {
+        UIComponent component = super.getInGroupFooter();
+        if (component != null)
+            return component;
+        return columns.getInGroupFooter();
     }
 
     @Override
@@ -103,38 +135,43 @@ public class DynamicColumn extends Column implements DynamicCol {
         columns.setConverter(converter);
     }
 
-    public void declareContextVariables() {
-        Map<String, Object> requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
+    public Runnable declareContextVariables() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
 
         String var = columns.getVar();
-        prevVarValue = requestMap.put(var, colData);
+        final Object prevVarValue = requestMap.put(var, colData);
+        Object prevIndexVarValue = null;
 
         String indexVar = columns.getIndexVar();
         if (indexVar != null)
             prevIndexVarValue = requestMap.put(indexVar, colIndex);
 
+        final int prevColIndex = columns.getColumnIndex();
         columns.setColumnIndex(colIndex);
+        final Object finalPrevIndexVarValue = prevIndexVarValue;
+        return new Runnable() {
+            public void run() {
+                Map<String, Object> requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
+
+                String var = columns.getVar();
+                requestMap.put(var, prevVarValue);
+
+                String indexVar = columns.getIndexVar();
+                if (indexVar != null) {
+                    requestMap.put(indexVar, finalPrevIndexVarValue);
+                }
+
+                columns.setColumnIndex(prevColIndex);
+            }
+        };
     }
 
-    public void undeclareContextVariables() {
-        Map<String, Object> requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
-
-        String var = columns.getVar();
-        requestMap.put(var, prevVarValue);
-        prevVarValue = null;
-
-        String indexVar = columns.getIndexVar();
-        if (indexVar != null) {
-            requestMap.put(indexVar, prevIndexVarValue);
-            prevIndexVarValue = null;
-        }
-
-        columns.setColumnIndex(-1);
-    }
+    private Runnable restoreVariablesRunnable;
 
     @Override
     public void encodeBegin(FacesContext context) throws IOException {
-        declareContextVariables();
+        restoreVariablesRunnable = declareContextVariables();
     }
 
     @Override
@@ -144,7 +181,7 @@ public class DynamicColumn extends Column implements DynamicCol {
 
     @Override
     public void encodeEnd(FacesContext context) throws IOException {
-        undeclareContextVariables();
+        restoreVariablesRunnable.run();
     }
 
     public List<UIComponent> getChildrenForProcessing() {
@@ -152,17 +189,20 @@ public class DynamicColumn extends Column implements DynamicCol {
     }
 
     public Map<String, UIComponent> getFacetsForProcessing() {
-        return columns.getFacets();
+        Map<String, UIComponent> facets = new HashMap(columns.getFacets());
+        facets.remove(Columns.FACET_COLUMN_COMPONENTS);
+        facets.putAll(getFacets());
+        return facets;
     }
 
     @Override
     public void processDecodes(FacesContext context) {
-        declareContextVariables();
+        Runnable restoreVariables = declareContextVariables();
         Collection<UIComponent> facets = getFacetCollection();
         for (UIComponent component : facets) {
             component.processDecodes(context);
         }
-        undeclareContextVariables();
+        restoreVariables.run();
     }
 
     private Collection<UIComponent> getFacetCollection() {
@@ -181,22 +221,31 @@ public class DynamicColumn extends Column implements DynamicCol {
 
     @Override
     public void processValidators(FacesContext context) {
-        declareContextVariables();
+        Runnable restoreVariables = declareContextVariables();
         Collection<UIComponent> facets = getFacetCollection();
         for (UIComponent component : facets) {
             component.processValidators(context);
         }
-        undeclareContextVariables();
+        restoreVariables.run();
     }
 
     @Override
     public void processUpdates(FacesContext context) {
-        declareContextVariables();
+        Runnable restoreVariables = declareContextVariables();
         Collection<UIComponent> facets = getFacetCollection();
         for (UIComponent component : facets) {
             component.processUpdates(context);
         }
-        undeclareContextVariables();
+        restoreVariables.run();
     }
 
+    @Override
+    public ExpressionData getExpressionData(ValueExpression expression) {
+        Runnable restoreVariables = declareContextVariables();
+        try {
+            return super.getExpressionData(expression);
+        } finally {
+            restoreVariables.run();
+        }
+    }
 }

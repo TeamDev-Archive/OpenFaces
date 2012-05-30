@@ -24,7 +24,6 @@ public class SummaryRenderer extends RendererBase {
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         Summary summary = (Summary) component;
-        summary.getTable(); // getTable invocation validates the parent tag
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("span", summary);
         writeIdAttribute(context, summary);

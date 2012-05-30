@@ -34,7 +34,6 @@ import javax.el.MethodExpression;
 import javax.el.MethodNotFoundException;
 import javax.faces.FacesException;
 import javax.faces.FactoryFinder;
-import javax.faces.application.ProjectStage;
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
@@ -137,7 +136,8 @@ public class PartialViewContext extends PartialViewContextWrapper {
     public void processPartial(PhaseId phaseId) {
         super.processPartial(phaseId);
         FacesContext context = FacesContext.getCurrentInstance();
-        /*if (isAjaxRequest()) non-ajax handling is required for the Action component*/ {
+        /*if (isAjaxRequest()) non-ajax handling is required for the Action component*/
+        {
             if (phaseId == PhaseId.PROCESS_VALIDATIONS) {
                 AjaxRequest.getInstance(context).resetValidationError();
             }
@@ -416,9 +416,9 @@ public class PartialViewContext extends PartialViewContextWrapper {
 
     /**
      * @deprecated this method family uses a practice of having to have a knowledge about the specific iterator
-     * components and the way that their custom client id generation logic works. This should be reimplemented to usa a
-     * generic mechanism (see the to-do below) <br/>
-     * //todo: Try to rework with viewRoot.invokeOnComponent (and/or viewRoot.visitTree if required)
+     *             components and the way that their custom client id generation logic works. This should be reimplemented to usa a
+     *             generic mechanism (see the to-do below) <br/>
+     *             //todo: Try to rework with viewRoot.invokeOnComponent (and/or viewRoot.visitTree if required)
      */
     public static UIComponent findComponentById(UIComponent parent,
                                                 String id,
@@ -583,9 +583,9 @@ public class PartialViewContext extends PartialViewContextWrapper {
 
     /**
      * @deprecated this method family uses a practice of having to have a knowledge about the specific iterator
-     * components and the way that their custom client id generation logic works. This should be reimplemented to usa a
-     * generic mechanism (see the to-do below) <br/>
-     * //todo: Try to rework with viewRoot.invokeOnComponent (and/or viewRoot.visitTree if required)
+     *             components and the way that their custom client id generation logic works. This should be reimplemented to usa a
+     *             generic mechanism (see the to-do below) <br/>
+     *             //todo: Try to rework with viewRoot.invokeOnComponent (and/or viewRoot.visitTree if required)
      */
     public static UIComponent findComponentById(UIComponent parent,
                                                 String id,
@@ -601,9 +601,9 @@ public class PartialViewContext extends PartialViewContextWrapper {
 
     /**
      * @deprecated this method family uses a practice of having to have a knowledge about the specific iterator
-     * components and the way that their custom client id generation logic works. This should be reimplemented to usa a
-     * generic mechanism (see the to-do below) <br/>
-     * //todo: Try to rework with viewRoot.invokeOnComponent (and/or viewRoot.visitTree if required)
+     *             components and the way that their custom client id generation logic works. This should be reimplemented to usa a
+     *             generic mechanism (see the to-do below) <br/>
+     *             //todo: Try to rework with viewRoot.invokeOnComponent (and/or viewRoot.visitTree if required)
      */
     public static UIComponent findComponentById(UIComponent parent,
                                                 String id,
@@ -752,11 +752,11 @@ public class PartialViewContext extends PartialViewContextWrapper {
                 List<DynamicColumn> dynamicColumns = ((Columns) parent).toColumnList(context);
                 int columnIndex = Integer.parseInt(id);
                 final DynamicColumn dynamicColumn = dynamicColumns.get(columnIndex);
-                dynamicColumn.declareContextVariables();
+                final Runnable restoreVariables = dynamicColumn.declareContextVariables();
                 if (restoreDataPointerRunnables != null)
                     restoreDataPointerRunnables.add(new Runnable() {
                         public void run() {
-                            dynamicColumn.undeclareContextVariables();
+                            restoreVariables.run();
                         }
                     });
                 return parent;
@@ -778,7 +778,7 @@ public class PartialViewContext extends PartialViewContextWrapper {
                     Map<String, Object> attributes = child.getAttributes();
                     Object prependid = attributes.get("prependId");
                     if (prependid != null) {
-                        lookInsideContainer = !(Boolean)prependid; // search inside if prependId = false for NamingContainer
+                        lookInsideContainer = !(Boolean) prependid; // search inside if prependId = false for NamingContainer
                     }
                 } catch (IllegalArgumentException e) {
                     throw new RuntimeException(e);
@@ -996,7 +996,7 @@ public class PartialViewContext extends PartialViewContextWrapper {
     }
 
 
-    private void checkForReloadedForms (FacesContext context, Set<String> renderIds) {
+    private void checkForReloadedForms(FacesContext context, Set<String> renderIds) {
         for (String renderId : renderIds) {
             String key = "_check_for_inner_reloaded_form_" + renderId;
             boolean alreadyTested = context.getExternalContext().getRequestMap().containsKey(key);

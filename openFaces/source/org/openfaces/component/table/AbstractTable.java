@@ -16,6 +16,7 @@ import org.openfaces.component.FilterableComponent;
 import org.openfaces.component.OUIData;
 import org.openfaces.component.TableStyles;
 import org.openfaces.component.filter.Filter;
+import org.openfaces.component.table.impl.DynamicColumn;
 import org.openfaces.component.table.impl.NodeInfo;
 import org.openfaces.component.table.impl.RowComparator;
 import org.openfaces.component.table.impl.TableDataModel;
@@ -393,9 +394,10 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     private void ensureImplicitFacetsCreated() {
         if (!implicitFacetsCreated) {
-            createImplicitColumnFacets();
+            createImplicitColumnFacets(false);
             implicitFacetsCreated = true;
         }
+        createImplicitColumnFacets(true);
     }
 
     private List<UIComponent> additionalComponentsRequiringClientIdReset;
@@ -592,10 +594,12 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         return colById;
     }
 
-    protected void createImplicitColumnFacets() {
+    protected void createImplicitColumnFacets(boolean forDynamicColumns) {
         List<BaseColumn> allColumns = getAllColumns();
         for (BaseColumn column : allColumns) {
-            column.createImplicitFacets();
+            boolean thisIsADynamicColumn = column instanceof DynamicColumn;
+            if (forDynamicColumns == thisIsADynamicColumn)
+                column.createImplicitFacets();
         }
     }
 
@@ -1066,14 +1070,24 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         return Components.findChildWithClass(this, Scrolling.class, "<o:scrolling>");
     }
 
-    private List<Summary> summaries;
+    private Iterable<Summary> summaries;
 
-    public List<Summary> getSummaryComponents() {
+    public Iterable<Summary> getSummaryComponents() {
         if (summaries == null) {
             ensureImplicitFacetsCreated();
             Set<ColumnGroup> columnGroups = new HashSet<ColumnGroup>();
             List<UIComponent> facets = new ArrayList<UIComponent>();
-            facets.addAll(this.getFacets().values());
+            // components returned as DynamicColumn's facets report the Columns component and not the DynamicColumn
+            // against which they were retrieved, and since we need the actual columns for each of the Summary component
+            // we're maintaining an auxiliary facetOwners list here
+            List<UIComponent> facetOwners = new ArrayList<UIComponent>();
+
+            Collection<UIComponent> tableFacets = this.getFacets().values();
+            for (UIComponent tableFacet : tableFacets) {
+                facets.add(tableFacet);
+                facetOwners.add(this);
+            }
+
             List<BaseColumn> allColumns = getAllColumns();
             for (BaseColumn column : allColumns) {
                 for(UIComponent parent = column.getParent(); parent instanceof ColumnGroup; parent = parent.getParent())
@@ -1083,32 +1097,87 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
                         BaseColumn.FACET_GROUP_HEADER,
                         BaseColumn.FACET_IN_GROUP_HEADER, BaseColumn.FACET_IN_GROUP_FOOTER,
                         BaseColumn.FACET_GROUP_FOOTER);
-                facets.addAll(applicableFacets);
+                for (UIComponent applicableFacet : applicableFacets) {
+                    facets.add(applicableFacet);
+                    facetOwners.add(column);
+                }
             }
 
             for (ColumnGroup columnGroup : columnGroups) {
                 List<UIComponent> applicableFacets = Components.getFacets(columnGroup,
                         BaseColumn.FACET_HEADER, BaseColumn.FACET_FOOTER
                 );
-                facets.addAll(applicableFacets);
+                for (UIComponent applicableFacet : applicableFacets) {
+                    facets.add(applicableFacet);
+                    facetOwners.add(columnGroup);
+                }
             }
 
-            List<Summary> summaries = new ArrayList<Summary>();
-            for (UIComponent facet : facets) {
-                if (facet instanceof Summary)
-                    summaries.add((Summary) facet);
-                else
-                    summaries.addAll(Components.findChildrenWithClass(facet, Summary.class, true, true));
+            final List<Summary> summaries = new ArrayList<Summary>();
+            final List<UIComponent> summaryOwners = new ArrayList<UIComponent>();
+            for (int i = 0, facetsSize = facets.size(); i < facetsSize; i++) {
+                UIComponent facet = facets.get(i);
+                UIComponent facetOwner = facetOwners.get(i);
+                List<Summary> summariesInThisComponent = (facet instanceof Summary)
+                        ? Collections.singletonList((Summary) facet)
+                        : Components.findChildrenWithClass(facet, Summary.class, true, true);
+                for (Summary summary : summariesInThisComponent) {
+                    summaries.add(summary);
+                    summaryOwners.add(facetOwner);
+                }
             }
+
+            // the custom iterable implementation is required here instead of just returning the summaries variable
+            // in order for the variables of dynamic columns, which might be the parents for any of the returned Summary
+            // components, to be set up properly during the iteration over the returned collection.
+            Iterable<Summary> result = new Iterable<Summary>() {
+                public Iterator iterator() {
+                    final ListIterator<Summary> summaryListIterator = summaries.listIterator();
+                    return new Iterator() {
+                        private Runnable restoreDynamicColumnVariables;
+                        private void undeclareLatestDynamicColumnVariables() {
+                            if (restoreDynamicColumnVariables != null) {
+                                restoreDynamicColumnVariables.run();
+                                restoreDynamicColumnVariables = null;
+                            }
+                        }
+                        public boolean hasNext() {
+                            boolean hasNext = summaryListIterator.hasNext();
+                            if (!hasNext) {
+                                undeclareLatestDynamicColumnVariables();
+                            }
+                            return hasNext;
+                        }
+
+                        public Summary next() {
+                            if (!hasNext())
+                                throw new NoSuchElementException();
+                            undeclareLatestDynamicColumnVariables();
+
+                            int nextIndex = summaryListIterator.nextIndex();
+                            UIComponent summaryOwner = summaryOwners.get(nextIndex);
+                            if (summaryOwner instanceof DynamicColumn) {
+                                DynamicColumn dynamicColumn = (DynamicColumn) summaryOwner;
+                                restoreDynamicColumnVariables = dynamicColumn.declareContextVariables();
+                            }
+                            return summaryListIterator.next();
+                        }
+
+                        public void remove() {
+                            throw new UnsupportedOperationException();
+                        }
+                    };
+                }
+            };
 
             int rowIndex = getRowIndex();
-            setRowIndex(-1);
+            if (rowIndex != -1) setRowIndex(-1);
             FacesContext facesContext = getFacesContext();
-            for (Summary summary : summaries) {
+            for (Summary summary : result) {
                 summary.createContextMenu(facesContext);
             }
-            setRowIndex(rowIndex);
-            this.summaries = summaries;
+            if (rowIndex != -1) setRowIndex(rowIndex);
+            this.summaries = result;
         }
         return summaries;
     }

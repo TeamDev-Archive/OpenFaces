@@ -319,7 +319,7 @@ public class TableBody extends TableSection {
         private final MethodExpression selectableCellsME;
         private final JSONArray collectedSelectableCells;
         private final AbstractCellSelection cellSelection;
-        private final List<Summary> summaries;
+        private final Iterable<Summary> summaries;
 
         private TableBodyRenderer(
                 FacesContext context,

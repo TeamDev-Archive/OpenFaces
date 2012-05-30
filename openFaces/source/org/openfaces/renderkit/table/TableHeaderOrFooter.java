@@ -294,7 +294,7 @@ public abstract class TableHeaderOrFooter extends TableSection {
 
     public static Object getHeaderOrFooterCellContent(BaseColumn col, boolean isHeader) {
         DynamicCol dynamicCol = col instanceof DynamicCol ? (DynamicCol) col : null;
-        if (dynamicCol != null) dynamicCol.declareContextVariables();
+        Runnable restoreVariables = (dynamicCol != null) ? dynamicCol.declareContextVariables() : null;
         try {
             Object cellContent;
             if (isHeader) {
@@ -308,7 +308,7 @@ public abstract class TableHeaderOrFooter extends TableSection {
             }
             return cellContent;
         } finally {
-            if (dynamicCol != null) dynamicCol.undeclareContextVariables();
+            if (restoreVariables != null) restoreVariables.run();
         }
     }
 

@@ -102,5 +102,6 @@ public class ColumnsTag extends AbstractComponentTag {
         setStringProperty(component, "footerOnmousemove");
         setStringProperty(component, "footerOnmouseout");
         setStringProperty(component, "footerOnmouseup");
+        setClassProperty(component, "columnType");
     }
 }

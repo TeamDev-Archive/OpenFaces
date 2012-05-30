@@ -53,4 +53,8 @@ public class ColumnJspTag extends BaseColumnJspTag {
     public void setGroupingValueConverter(ValueExpression groupingValueConverter) {
         getDelegate().setPropertyValue("groupingValueConverter", groupingValueConverter);
     }
+
+    public void setType(ValueExpression type) {
+        getDelegate().setPropertyValue("type", type);
+    }
 }
