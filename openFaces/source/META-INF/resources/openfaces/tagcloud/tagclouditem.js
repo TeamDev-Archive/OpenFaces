@@ -17,9 +17,8 @@ O$.TagCloudItem = {
           cloudId) {
 
     var tag = O$.initComponent(tagId, {rollover: itemRolloverStyleClass}, {
-      _submitVarParameters : function() {        
+      _submitVarParameters : function() {
         O$.setValue(cloudId+"::id",tagId);
-        O$.submitEnclosingForm(tag);
       }
     });
 
@@ -40,6 +39,6 @@ O$.TagCloudItem = {
 //      }
 //    });
 
-    O$.addEventHandler(tag, "mouseup", tag._submitVarParameters);
+    O$.addEventHandler(tag, "click", tag._submitVarParameters);
   }
 };

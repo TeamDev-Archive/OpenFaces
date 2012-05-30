@@ -42063,6 +42063,45 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user clicks
+        the left mouse button over the tag cloud item.
+      </description>
+      <name>onitemclick</name>
+      <required>false</required>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Id's of components whose data should be submitted and processed on the server in addition to the
+        reloaded components. The difference with render is that components listed in execute will
+        just process the submitted data, but won't be rerendered. This can often be needed when the reloaded data
+        depends on some other component on a page.
+        Evaluates to Iterable. If a literal is specified can be a single id or a comma-separated list if id's.
+      </description>
+      <name>execute</name>
+      <required>false</required>
+      <deferred-value>
+        <type>java.util.List</type>
+      </deferred-value>
+      <!-- @bindingType java.util.Object -->
+      <!-- @el true -->
+    </attribute>    <attribute>
+      <description>Id's of components, which will be rerendered after successful Ajax request.
+        Evaluates to Iterable. If a literal is specified can be a single id or a comma-separated list if id's.
+      </description>
+      <name>render</name>
+      <required>false</required>
+      <deferred-value>
+        <type>java.util.List</type>
+      </deferred-value>
+      <!-- @bindingType java.util.Object -->
+      <!-- @el true -->
+    </attribute>
 
   </tag>
   <tag>

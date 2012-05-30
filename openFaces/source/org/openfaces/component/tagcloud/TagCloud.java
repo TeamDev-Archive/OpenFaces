@@ -20,8 +20,8 @@ import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -37,7 +37,7 @@ public class TagCloud extends OUICommand {
 
     public static final String DEFAULT_ITEM_ID_PREFIX = "_item_";
 
-    private List<TagCloudItem> itemsList;
+    private List<TagCloudItem> tagCloudItems;
 
     private Boolean itemWeightVisible;
 
@@ -70,6 +70,7 @@ public class TagCloud extends OUICommand {
 
     private Double minItemWeight;
     private Double maxItemWeight;
+    private String onitemclick;
 
     public TagCloud() {
         setRendererType("org.openfaces.TagCloudRenderer");
@@ -111,7 +112,8 @@ public class TagCloud extends OUICommand {
                 rotationSpeed3D,
                 shadowScale3D,
                 stopRotationPeriod3D,
-                saveAttachedState(context, converter)
+                saveAttachedState(context, converter),
+                onitemclick
         };
     }
 
@@ -151,6 +153,7 @@ public class TagCloud extends OUICommand {
         stopRotationPeriod3D = (Double) values[i++];
 
         converter = (Converter) restoreAttachedState(context, values[i]);
+        onitemclick = (String) values[i++];
     }
 
     public Converter getConverter() {
@@ -381,16 +384,24 @@ public class TagCloud extends OUICommand {
     public void setItemWeightClass(String itemWeightClass) {
         this.itemWeightClass = itemWeightClass;
     }
-      
-    public List<TagCloudItem> itemsToTheList(FacesContext context) {
-        if (itemsList == null)
-            itemsList = createItemsList(context);
-        return itemsList;
+
+    /**
+     * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
+     * by any application code.
+     *
+     * Returns the current list of items that is converted to the list of TagCloud instances. These instances are
+     * added as children of the TagCloud component and invokers of this method must ensure that these components are
+     * removed from the list of child components after they are not needed.
+     */
+    public List<TagCloudItem> getTagCloudItems(FacesContext context) {
+        if (tagCloudItems == null)
+            tagCloudItems = createTagCloudItems(context);
+        return tagCloudItems;
     }
 
     public void selectItemObject(FacesContext context,String hashCode) {
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-        Collection itemsData = getItemsData(context);
+        Collection itemsData = getItemsCollection(context);
         String var = getVar();
         Object prevValue = requestMap.get(var);
         ValueExpression keyValueExpression = getItemKey();
@@ -417,9 +428,9 @@ public class TagCloud extends OUICommand {
         parameterExpression.setValue(getFacesContext().getELContext(), value);
     }
 
-    private List<TagCloudItem> createItemsList(FacesContext context) {
+    private List<TagCloudItem> createTagCloudItems(FacesContext context) {
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-        Collection itemsData = getItemsData(context);
+        Collection itemsData = getItemsCollection(context);
         List<TagCloudItem> items = new ArrayList<TagCloudItem>(itemsData.size());
 
         String var = getVar();
@@ -429,6 +440,7 @@ public class TagCloud extends OUICommand {
         ValueExpression titleExpression = getItemTitle();
         ValueExpression urlExpression = getItemUrl();
         ValueExpression weightExpression = getItemWeight();
+        ValueExpression onItemClickExpression = getOnitemclick();
 
         double curWeight;
         String cloudId = getId();
@@ -441,7 +453,7 @@ public class TagCloud extends OUICommand {
             TagCloudItem item = new TagCloudItem();
             itemId = keyValueExpression != null ?
                     getVarParameter(keyValueExpression).hashCode() : itemData.hashCode();
-            
+
             item.setId(cloudId + DEFAULT_ITEM_ID_PREFIX + itemId);
 
             item.setTitle(titleExpression != null ?
@@ -454,6 +466,9 @@ public class TagCloud extends OUICommand {
             item.setUrl(urlExpression != null ?
                     (String) getVarParameter(urlExpression) : "#");
 
+            item.setOnItemClick(onItemClickExpression != null ?
+                    (String) getVarParameter(onItemClickExpression) : "");
+            
             curWeight = weightExpression != null ?
                     (Double) getVarParameter(weightExpression) : 0;
 
@@ -474,17 +489,14 @@ public class TagCloud extends OUICommand {
             item.setTextClass(getItemTextClass());
             item.setTextStyle(getItemTextStyle());
 
-            item.setWeightClass(getItemWeightClass());
-            item.setWeightStyle(getItemWeightStyle());
-
             item.setConverter(getConverter());
 
-            item.setParent(this);
+            this.getChildren().add(item);
             items.add(item);
 
             requestMap.put(var, prevVarValue);
         }
-         
+
         TagCloudGradientStyleGenerator gradientStyleGenerator =
                 new TagCloudGradientStyleGenerator(getMaxItemStyle(), getMinItemStyle(),
                         getMaxItemWeight(), getMinItemWeight());
@@ -495,7 +507,7 @@ public class TagCloud extends OUICommand {
         return items;
     }
 
-    private Collection getItemsData(FacesContext context) {
+    private Collection getItemsCollection(FacesContext context) {
         ValueExpression itemsExpression = getItems();
         if (itemsExpression == null) {
             return Collections.EMPTY_LIST;
@@ -508,15 +520,19 @@ public class TagCloud extends OUICommand {
             if (items instanceof Collection) {
                 data = (Collection) items;
             } else if (items.getClass().isArray()) {
-                data = new ArrayList();
-                for (int i = 0, count = Array.getLength(items); i < count; i++) {
-                    Object element = Array.get(items, i);
-                    data.add(element);
-                }
+                data = Arrays.asList(items);
             } else
                 throw new IllegalArgumentException("Unsupported object type received from o:tagCloud items attribute: "
                         + items.getClass().getName() + "; should be either array or collection");
         }
         return data;
+    }
+
+    public ValueExpression getOnitemclick() {
+        return getValueExpression("onitemclick");
+    }
+
+    public void setOnitemclick(ValueExpression onitemclick) {
+        setValueExpression("onitemclick", onitemclick);
     }
 }
