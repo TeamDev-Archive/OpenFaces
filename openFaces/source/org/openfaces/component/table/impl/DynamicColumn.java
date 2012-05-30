@@ -191,6 +191,7 @@ public class DynamicColumn extends Column implements DynamicCol {
     public Map<String, UIComponent> getFacetsForProcessing() {
         Map<String, UIComponent> facets = new HashMap(columns.getFacets());
         facets.remove(Columns.FACET_COLUMN_COMPONENTS);
+        facets.putAll(getFacets());
         return facets;
     }
 
