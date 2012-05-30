@@ -11,7 +11,6 @@
 <f:view>
 <head>               
   <title>Data Table Summaries Test</title>
-  <p:resources/>
 </head>
 
 <body>

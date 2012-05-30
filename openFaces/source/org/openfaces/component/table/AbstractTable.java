@@ -379,6 +379,9 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     @Override
     public void setRowIndex(int rowIndex) {
+        int prevRowIndex = getRowIndex();
+        if (prevRowIndex == rowIndex)
+            return;
         // it is important implicit column facets, such as the ones implicitly created for the summary calculation
         // feature, to be created before the first setRowIndex call because changing the set of facets afterwards
         // might break its state saving mechanism
@@ -1022,15 +1025,17 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     @Override
     protected List<UIComponent> getExtensionComponents() {
-        //noinspection RedundantArrayCreation
-        return Arrays.asList(new UIComponent[]{
+
+        ArrayList<UIComponent> components = new ArrayList<UIComponent>(Arrays.asList(
                 getSelection(),
                 getColumnReordering(),
                 getColumnResizing(),
                 getScrolling(),
                 getAbove(),
-                getBelow()
-        });
+                getBelow()));
+        List<Columns> columnsComponents = Components.findChildrenWithClass(this, Columns.class);
+//        components.addAll(columnsComponents);
+        return components;
     }
 
     public AbstractTableSelection getSelection() {

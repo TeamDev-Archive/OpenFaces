@@ -583,7 +583,8 @@ public class DataTable extends AbstractTable {
     protected List<UIComponent> getExtensionComponents() {
         ArrayList<UIComponent> result = new ArrayList<UIComponent>(super.getExtensionComponents());
         result.addAll(Arrays.asList(
-                getRowGrouping()
+                getRowGrouping(),
+                getSummaries()
         ));
         return result;
     }
