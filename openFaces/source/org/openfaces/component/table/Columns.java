@@ -44,7 +44,10 @@ public class Columns extends UIComponentBase implements ValueHolder, NamingConta
     public static final String COMPONENT_TYPE = "org.openfaces.Columns";
     public static final String COMPONENT_FAMILY = "org.openfaces.Columns";
 
-    private static final String FACET_COLUMN_COMPONENTS = "_column_components_";
+    /**
+     * This constant is used in OpenFaces internally and it shouldn't be used by application code explicitly.
+     */
+    public static final String FACET_COLUMN_COMPONENTS = "_column_components_";
 
     private Object prevValueFromBinding;
 
@@ -750,29 +753,7 @@ public class Columns extends UIComponentBase implements ValueHolder, NamingConta
                     column.setId(getId() + "_" + colIndex);
                 }
 
-                for (String facetName : new String[]{
-                        BaseColumn.FACET_HEADER, BaseColumn.FACET_SUB_HEADER, BaseColumn.FACET_FOOTER,
-                        BaseColumn.FACET_GROUP_HEADER, BaseColumn.FACET_GROUP_FOOTER,
-                        BaseColumn.FACET_IN_GROUP_HEADER, BaseColumn.FACET_IN_GROUP_FOOTER}) {
-                    UIComponent facet = Components.getFacet(this, facetName);
-                    if (facet == null) continue;
-                    boolean containsSummaryComponent = doesFacetContainSpecialComponents(facet, Summary.class);
-                    if (!containsSummaryComponent) continue;
-                    if (!(facet instanceof Summary)) {
-                        // The reason for the limitation mentioned below is that we cannot clone the Summary component
-                        // along with its containers and other components in the facet because there's no standard API in
-                        // JSF that would let us detect component type by the component's reference. Some of the possible
-                        // workarounds are looking for COMPONENT_TYPE constant in the component class, and instantiating
-                        // the component class directly (none of these is a reliable way of creating a component of the same
-                        // type)
-                        throw new FacesException("<o:summary> components can only be placed as top-level facet components " +
-                                "inside of <o:columns> tag, and cannot be used with other components in the same facet");
-                    }
-                    Summary templateComponent = (Summary) facet;
-                    Summary newComponent = (Summary) getFacesContext().getApplication().createComponent(Summary.COMPONENT_TYPE);
-                    // todo: evaluate templateComponent's attributes against the current column data variable and copy them to newComponent
-                    column.getFacets().put(facetName, newComponent);
-                }
+//                copySummaryComponents(column);
             }
 
             column.setColumns(this);
@@ -796,6 +777,32 @@ public class Columns extends UIComponentBase implements ValueHolder, NamingConta
             setColumnComponents(newColumns);
 
         return newColumns;
+    }
+
+    private void copySummaryComponents(DynamicColumn column) {
+        for (String facetName : new String[]{
+                BaseColumn.FACET_HEADER, BaseColumn.FACET_SUB_HEADER, BaseColumn.FACET_FOOTER,
+                BaseColumn.FACET_GROUP_HEADER, BaseColumn.FACET_GROUP_FOOTER,
+                BaseColumn.FACET_IN_GROUP_HEADER, BaseColumn.FACET_IN_GROUP_FOOTER}) {
+            UIComponent facet = Components.getFacet(this, facetName);
+            if (facet == null) continue;
+            boolean containsSummaryComponent = doesFacetContainSpecialComponents(facet, Summary.class);
+            if (!containsSummaryComponent) continue;
+            if (!(facet instanceof Summary)) {
+                // The reason for the limitation mentioned below is that we cannot clone the Summary component
+                // along with its containers and other components in the facet because there's no standard API in
+                // JSF that would let us detect component type by the component's reference. Some of the possible
+                // workarounds are looking for COMPONENT_TYPE constant in the component class, and instantiating
+                // the component class directly (none of these is a reliable way of creating a component of the same
+                // type)
+                throw new FacesException("<o:summary> components can only be placed as top-level facet components " +
+                        "inside of <o:columns> tag, and cannot be used with other components in the same facet");
+            }
+            Summary templateComponent = (Summary) facet;
+            Summary newComponent = (Summary) getFacesContext().getApplication().createComponent(Summary.COMPONENT_TYPE);
+            // todo: evaluate templateComponent's attributes against the current column data variable and copy them to newComponent
+            column.getFacets().put(facetName, newComponent);
+        }
     }
 
     private boolean doesFacetContainSpecialComponents(UIComponent facetComponent, Class<? extends UIComponent> componentClass) {
@@ -1013,9 +1020,9 @@ public class Columns extends UIComponentBase implements ValueHolder, NamingConta
         }
 
         public Object getValue(ELContext elContext) {
-            column.declareContextVariables();
+            Runnable restoreVariables = column.declareContextVariables();
             Object result = expressionFromColumnsComponent.getValue(elContext);
-            column.undeclareContextVariables();
+            restoreVariables.run();
             return result;
         }
 
@@ -1031,16 +1038,16 @@ public class Columns extends UIComponentBase implements ValueHolder, NamingConta
         }
 
         public Object getValue(ELContext elContext) {
-            column.declareContextVariables();
+            Runnable undeclaration = column.declareContextVariables();
             Object result = expressionFromColumnsComponent.getValue(elContext);
-            column.undeclareContextVariables();
+            undeclaration.run();
             return result;
         }
 
         public void setValue(ELContext elContext, Object value) {
-            column.declareContextVariables();
+            Runnable restoreVariables = column.declareContextVariables();
             expressionFromColumnsComponent.setValue(elContext, value);
-            column.undeclareContextVariables();
+            restoreVariables.run();
         }
 
         public boolean isReadOnly(ELContext elContext) {
@@ -1058,9 +1065,9 @@ public class Columns extends UIComponentBase implements ValueHolder, NamingConta
         }
 
         public Object getValue(ELContext elContext) {
-            column.declareContextVariables();
+            Runnable restoreVariables = column.declareContextVariables();
             Object result = expressionFromColumnsComponent.getValue(elContext);
-            column.undeclareContextVariables();
+            restoreVariables.run();
             return result;
         }
 

@@ -21,9 +21,7 @@ import java.util.Map;
  * application code.
  */
 public interface DynamicCol extends SyntheticColumn {
-    void declareContextVariables();
-
-    void undeclareContextVariables();
+    Runnable declareContextVariables();
 
     Map<String, UIComponent> getFacetsForProcessing();
 }
