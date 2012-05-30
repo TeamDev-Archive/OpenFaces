@@ -1108,7 +1108,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
             if (rowIndex != -1) setRowIndex(-1);
             FacesContext facesContext = getFacesContext();
             for (Summary summary : result) {
-                summary.createContextMenu(facesContext);
+                summary.prepare(facesContext);
             }
             if (rowIndex != -1) setRowIndex(rowIndex);
             this.summaries = result;

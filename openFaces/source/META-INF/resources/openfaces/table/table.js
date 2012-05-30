@@ -4803,21 +4803,23 @@ O$.ColumnMenu = {
 };
 
 O$.Summary = {
-  _init: function(componentId, originalClientId, value, tableId, popupMenuId, secondInitializationAttempt) {
+  _init: function(componentId, originalClientId, value, tableId,
+                  popupMenuId, selectedItemId, selectedIconUrl, unselectedIconUrl,
+                  secondInitializationAttempt) {
     if (!O$(componentId)) {
       if (!secondInitializationAttempt) {
         // the case for the below facet whose _init function call is rendered prior to the appropriate Summary
         // component's placeholder, so we're invoking this asynchronously to give a chance for the tags below to get
         // into the DOM (when the JavaScript processing thread is freed again)
         setTimeout(function() {
-          O$.Summary._init(componentId, value, true);
+          O$.Summary._init(componentId, value, tableId, popupMenuId, selectedIconUrl, unselectedIconUrl, true);
         }, 1);
       }
       return;
     }
 
     var table = O$(tableId);
-    var popupMenu = O$(popupMenuId);
+    var popupMenu = popupMenuId ? O$(popupMenuId) : null;
 
     var summary = O$.initComponent(componentId, null, {
       _setFunction: function(functionName) {
@@ -4850,6 +4852,10 @@ O$.Summary = {
 
       summary.oncontextmenu = function(e) {
         O$.Summary._summaryForCurrentPopup = summary;
+        var allItems = popupMenu._items;
+        allItems.forEach(function(item) {
+          item._icon.src = item.id == selectedItemId ? selectedIconUrl : unselectedIconUrl;
+        });
         popupMenu.showForEvent(e);
         O$.cancelEvent(e);
       };
