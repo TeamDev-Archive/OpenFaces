@@ -30,6 +30,7 @@ import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.Application;
 import javax.faces.component.UIComponent;
+import javax.faces.component.html.HtmlPanelGroup;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.NumberConverter;
@@ -38,8 +39,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class Summary extends OUIOutput {
     public static final String COMPONENT_TYPE = "org.openfaces.Summary";
@@ -47,7 +50,8 @@ public class Summary extends OUIOutput {
 
     private static final String DEFAULT_PATTERN = "#{function}: #{valueString}";
     private static final String ATTR_PATTERN = "pattern";
-    private static final String FACET_POPUP_MENU = "_popupMenu";
+    private static final String FACET_POPUP_MENUS_CONTAINER = "_summariesPopupMenusContainer";
+    private static final String ATTR_FUNCTION_NAME = "_functionName";
 
     private StampStates<StampState> stampStates = new StampStates<StampState>(this, StampState.class) {
         @Override
@@ -75,7 +79,6 @@ public class Summary extends OUIOutput {
     };
 
     private boolean implicitMode;
-    private boolean contextMenuAdded;
 
     public Summary() {
         this(false);
@@ -100,8 +103,7 @@ public class Summary extends OUIOutput {
         return new Object[]{
                 super.saveState(context),
                 stampStates.saveState(context),
-                implicitMode,
-                contextMenuAdded
+                implicitMode
         };
     }
 
@@ -112,7 +114,6 @@ public class Summary extends OUIOutput {
         super.restoreState(context, state[i++]);
         stampStates.restoreState(context, state[i++]);
         implicitMode = (Boolean) state[i++];
-        contextMenuAdded = (Boolean) state[i++];
     }
 
     public static class StampState extends StampStates.State {
@@ -211,7 +212,7 @@ public class Summary extends OUIOutput {
                 this.renderedSummaryClientId = renderedSummaryClientId;
             }
 
-            public void renderInitScript(ScriptBuilder sb) throws IOException {
+            public void renderInitScript(ScriptBuilder sb, PopupMenu popupMenu, MenuItem selectedMenuItem) throws IOException {
                 if (renderedSummaryClientId == null) {
                     // this summary component hasn't been rendered, and so...
                     // - we cannot initialize it without knowing its actual client id which could only be known if it was
@@ -256,7 +257,10 @@ public class Summary extends OUIOutput {
                         originalClientId,
                         summaryOutput,
                         usageContext.getTable(),
-                        getPopupMenu()
+                        popupMenu,
+                        selectedMenuItem,
+                        popupMenu != null ? Resources.internalURL(context, SelectBooleanCheckboxImageManager.DEFAULT_SELECTED_IMAGE) : null,
+                        popupMenu != null ? Resources.internalURL(context, SelectBooleanCheckboxImageManager.DEFAULT_UNSELECTED_IMAGE) : null
                 ).semicolon();
             }
         }
@@ -321,8 +325,81 @@ public class Summary extends OUIOutput {
             addContainingRowGroupsForThisRow(rowGroups, parentGroupRowInfo);
         }
 
+        private PopupMenu getMenuWithFunctions(FacesContext context, List<SummaryFunction> applicableFunctions) {
+            PopupMenu popupMenu = null;
+            UIComponent popupMenuContainer = getPopupMenuContainer(context);
+            List<UIComponent> children = popupMenuContainer.getChildren();
+            final String summaryFunctionsAttribute = "_summaryFunctions";
+            for (UIComponent child : children) {
+                PopupMenu m = (PopupMenu) child;
+                List<SummaryFunction> summaryFunctions = (List<SummaryFunction>) m.getAttributes().get(summaryFunctionsAttribute);
+                if (applicableFunctions.equals(summaryFunctions)) {
+                    popupMenu = m;
+                }
+            }
+
+            if (popupMenu == null) {
+                Application application = context.getApplication();
+                popupMenu = (PopupMenu) application.createComponent(PopupMenu.COMPONENT_TYPE);
+                popupMenu.setStandalone(true);
+
+                popupMenu.getAttributes().put(summaryFunctionsAttribute, applicableFunctions);
+                for (SummaryFunction function : applicableFunctions) {
+                    MenuItem menuItem = (MenuItem) application.createComponent(MenuItem.COMPONENT_TYPE);
+                    String functionName = function.getName();
+                    menuItem.setValue(functionName);
+                    menuItem.setOnclick(new ScriptBuilder().functionCall(
+                            "O$.Summary._setFunction", functionName.toLowerCase()
+                    ).toString());
+                    menuItem.setIconUrl(Resources.internalURL(context,
+                            SelectBooleanCheckboxImageManager.DEFAULT_UNSELECTED_IMAGE));
+                    menuItem.getAttributes().put(ATTR_FUNCTION_NAME, functionName);
+                    popupMenu.getChildren().add(menuItem);
+                }
+
+                popupMenuContainer.getChildren().add(popupMenu);
+            }
+
+            return popupMenu;
+        }
+
+        private UIComponent getPopupMenuContainer(FacesContext context) {
+            UIComponent facetContainer = getTable().getFacet(FACET_POPUP_MENUS_CONTAINER);
+            if (facetContainer == null) {
+                facetContainer = context.getApplication().createComponent(HtmlPanelGroup.COMPONENT_TYPE);
+                getTable().getFacets().put(FACET_POPUP_MENUS_CONTAINER, facetContainer);
+            }
+            return facetContainer;
+        }
+
         public void encodeAfterCalculation(FacesContext context) throws IOException {
-            if (!getUsageContext().isApplicableInThisContext()) return;
+            UsageContext usageContext = getUsageContext();
+            if (!usageContext.isApplicableInThisContext()) return;
+
+            MenuItem selectedMenuItem = null;
+            PopupMenu popupMenu;
+            if (getSummary().getFunctionEditable()) {
+                List<SummaryFunction> applicableFunctions = usageContext.getApplicableFunctions();
+                popupMenu = getMenuWithFunctions(context, applicableFunctions);
+                encodePopupMenu(context, popupMenu);
+
+                SummaryFunction currentFunction = usageContext.getFunction();
+                String currentFunctionName = currentFunction.getName();
+                List<UIComponent> children = popupMenu.getChildren();
+                for (UIComponent child : children) {
+                    if (!(child instanceof MenuItem)) continue;
+                    MenuItem menuItem = (MenuItem) child;
+                    String functionName = (String) child.getAttributes().get(ATTR_FUNCTION_NAME);
+                    if (functionName.equals(currentFunctionName)) {
+                        selectedMenuItem = menuItem;
+                        break;
+                    }
+                }
+
+            } else {
+                popupMenu = null;
+            }
+
             ScriptBuilder sb = new ScriptBuilder();
             if (globalCalculationContext != null) {
                 if (globalCalculationContext.getRenderedSummaryClientId() == null) {
@@ -342,17 +419,15 @@ public class Summary extends OUIOutput {
                         }
                     }
                 }
-                globalCalculationContext.renderInitScript(sb);
+                globalCalculationContext.renderInitScript(sb, popupMenu, selectedMenuItem);
             }
             if (groupCalculationContexts != null) {
                 Collection<CalculationContext> groupCalculationContexts = this.groupCalculationContexts.values();
                 for (CalculationContext groupCalculationContext : groupCalculationContexts) {
-                    groupCalculationContext.renderInitScript(sb);
+                    groupCalculationContext.renderInitScript(sb, popupMenu, selectedMenuItem);
                 }
             }
 
-            if (getSummary().getFunctionEditable())
-                encodePopupMenu(context);
             Rendering.renderInitScript(context, sb, TableUtil.getTableUtilJsURL(context));
         }
 
@@ -360,29 +435,20 @@ public class Summary extends OUIOutput {
             return (Summary) getComponent();
         }
 
-        private void encodePopupMenu(FacesContext context) throws IOException {
-            PopupMenu popupMenu = getPopupMenu();
-            SummaryFunction currentFunction = usageContext.getFunction();
-            String currentFunctionName = currentFunction.getName();
-            List<UIComponent> children = popupMenu.getChildren();
-            for (UIComponent child : children) {
-                if (!(child instanceof MenuItem)) continue;
-                MenuItem menuItem = (MenuItem) child;
-                String functionName = (String) child.getAttributes().get("_functionName");
-                menuItem.setIconUrl(Resources.internalURL(context,
-                        functionName.equals(currentFunctionName)
-                                ? SelectBooleanCheckboxImageManager.DEFAULT_SELECTED_IMAGE
-                                : SelectBooleanCheckboxImageManager.DEFAULT_UNSELECTED_IMAGE
-                        ));
+        private void encodePopupMenu(FacesContext context, PopupMenu popupMenu) throws IOException {
+            Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+            final String renderedMenusParam = Summary.class.getName() + ".renderedMenus";
+            Set<PopupMenu> renderedMenus = (Set<PopupMenu>) requestMap.get(renderedMenusParam);
+            if (renderedMenus == null) {
+                renderedMenus = new HashSet<PopupMenu>();
+                requestMap.put(renderedMenusParam, renderedMenus);
             }
+
+            if (renderedMenus.contains(popupMenu)) return;
+            renderedMenus.add(popupMenu);
 
             popupMenu.encodeAll(context);
         }
-
-        private PopupMenu getPopupMenu() {
-            return (PopupMenu) Components.getFacet(getSummary(), FACET_POPUP_MENU);
-        }
-
 
         private ValueExpression getPatternExpression() {
             Summary summary = getSummary();
@@ -778,35 +844,13 @@ public class Summary extends OUIOutput {
         stampState().encodeAfterCalculation(context);
     }
 
-    public void createContextMenu(FacesContext context) {
+    public void prepare(FacesContext context) {
         StampState stampState = stampState();
         UsageContext usageContext = stampState.getUsageContext();
         if (usageContext.getTable().getRowIndex() != -1)
             throw new IllegalArgumentException("table's rowIndex is expected to be -1 when invoking the " +
-                    "createContextMenu method for it to be able to detect its 'original' client id");
+                    "prepare method for it to be able to detect its 'original' client id");
         stampState.originalClientId = Components.getFreshClientId(this, context);
-
-        if (contextMenuAdded) return;
-        contextMenuAdded = true;
-
-        if (!usageContext.isApplicableInThisContext()) return;
-
-        Application application = context.getApplication();
-        PopupMenu popupMenu = (PopupMenu) application.createComponent(PopupMenu.COMPONENT_TYPE);
-        popupMenu.setStandalone(true);
-        List<SummaryFunction> applicableFunctions = usageContext.getApplicableFunctions();
-        for (SummaryFunction function : applicableFunctions) {
-            MenuItem menuItem = (MenuItem) application.createComponent(MenuItem.COMPONENT_TYPE);
-            String functionName = function.getName();
-            menuItem.setValue(functionName);
-            menuItem.setOnclick(new ScriptBuilder().functionCall(
-                    "O$.Summary._setFunction", functionName.toLowerCase()
-            ).toString());
-            menuItem.getAttributes().put("_functionName", functionName);
-            popupMenu.getChildren().add(menuItem);
-        }
-
-        getFacets().put(FACET_POPUP_MENU, popupMenu);
     }
 
 
