@@ -1034,7 +1034,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
                 getAbove(),
                 getBelow()));
         List<Columns> columnsComponents = Components.findChildrenWithClass(this, Columns.class);
-//        components.addAll(columnsComponents);
+        components.addAll(columnsComponents);
         return components;
     }
 
