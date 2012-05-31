@@ -814,6 +814,14 @@ public class Summary extends OUIOutput {
     }
 
     @Override
+    public void processUpdates(FacesContext context) {
+        super.processUpdates(context);
+        StampState stampState = stampState();
+        if (stampState.function != null && ValueBindings.set(this, "function", stampState.function))
+            stampState.function = null;
+    }
+
+    @Override
     public void encodeBegin(FacesContext context) throws IOException {
         StampState stampState = stampState();
         UsageContext usageContext = stampState.getUsageContext();
