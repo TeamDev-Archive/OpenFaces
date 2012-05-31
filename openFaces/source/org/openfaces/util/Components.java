@@ -576,4 +576,15 @@ public class Components {
             return facetName;
         }
     }
+
+    private static void resetCachedClientId(UIComponent component) {
+        for (UIComponent c = component; c != null; c = c.getParent())
+            c.setId(c.getId());
+    }
+
+    public static String getFreshClientId(UIComponent component, FacesContext context) {
+        resetCachedClientId(component);
+        return component.getClientId(context);
+    }
+
 }
