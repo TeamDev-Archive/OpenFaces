@@ -648,7 +648,7 @@
 
   <converter>
     <converter-id>testConverter</converter-id>
-    <converter-class>org.openfaces.testapp.datatable.TestConverter</converter-class>
+    <converter-class>org.openfaces.testapp.util.TestConverter</converter-class>
   </converter>
 
   <converter>
