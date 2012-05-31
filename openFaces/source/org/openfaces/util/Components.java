@@ -686,5 +686,4 @@ public class Components {
         return component.getClientId(context);
     }
 
-
 }

@@ -128,8 +128,8 @@ public class ValueBindings {
                     "\" but was of type: \"" + valueClass.getName() + "\"");
     }
 
-    public static boolean set(UIComponent component, String property, int value) {
-        ValueExpression ve = component.getValueExpression(property);
+    public static boolean set(UIComponent component, String propertyName, int value) {
+        ValueExpression ve = component.getValueExpression(propertyName);
         FacesContext context = FacesContext.getCurrentInstance();
         ELContext elContext = context.getELContext();
         if (ve == null || ve.isReadOnly(elContext))
@@ -139,8 +139,8 @@ public class ValueBindings {
         return true;
     }
 
-    public static boolean set(UIComponent component, String property, boolean value) {
-        ValueExpression ve = component.getValueExpression(property);
+    public static boolean set(UIComponent component, String propertyName, boolean value) {
+        ValueExpression ve = component.getValueExpression(propertyName);
         FacesContext context = FacesContext.getCurrentInstance();
         ELContext elContext = context.getELContext();
         if (ve == null || ve.isReadOnly(elContext))
