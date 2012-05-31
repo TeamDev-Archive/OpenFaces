@@ -10,6 +10,8 @@
   <a href="../../main.jsf">TestApp home</a><br/>
   <a href="../../testPageIndex.jsf">Component test pages</a><br/><br/>
 
+  <o:commandButton value="Submit"/>
+
   <o:tabbedPane style="width: 100%" selectedIndex="0">
 
     <o:subPanel caption="Autodetection (using the &lt;o:summaries> tag)" >
@@ -22,62 +24,6 @@
         <o:summaries/>
 
         <o:column header="id" value="#{item.id}"/>
-
-        <o:column header="Button *">
-          <o:commandButton value="Test"/>
-        </o:column>
-        <o:column header="String as value" value="#{item.stringField}"/>
-        <o:column header="String w/ component">
-          <h:panelGroup>
-            <h:outputText value="["/>
-            <h:outputText value="#{item.stringField}"/>
-            <h:outputText value="]"/>
-          </h:panelGroup>
-        </o:column>
-        <o:column header="Enum">
-          <h:outputText value="#{item.enumField}"/>
-        </o:column>
-        <o:column header="Date">
-          <h:outputText value="#{item.dateField}"/>
-        </o:column>
-        <o:column header="boolean">
-          <h:outputText value="#{item.booleanField}"/>
-        </o:column>
-        <o:column header="byte">
-          <h:outputText value="#{item.byteField}"/>
-        </o:column>
-        <o:column header="short">
-          <h:outputText value="#{item.shortField}"/>
-        </o:column>
-        <o:column header="short">
-          <h:outputText value="#{item.shortField}"/>
-        </o:column>
-        <o:column header="int">
-          <h:outputText value="#{item.intField}"/>
-        </o:column>
-        <o:column header="long">
-          <h:outputText value="#{item.longField}"/>
-        </o:column>
-        <o:column header="float">
-          <h:outputText value="#{item.floatField}"/>
-        </o:column>
-        <o:column header="double">
-          <h:outputText value="#{item.doubleField}"/>
-        </o:column>
-
-        <o:columns value="#{MultitypeBeanSupport.customFieldNames}" var="col" style="text-align: right">
-          <f:facet name="header">
-            <h:outputText value="#{col}"/>
-          </f:facet>
-          <h:outputText value="#{item.customFields[col]}"/>
-        </o:columns>
-
-        <f:facet name="footer">
-          <h:panelGroup>
-            Total records:&#160;<o:summary function="count" pattern="#{value}"/>
-          </h:panelGroup>
-        </f:facet>
-
       </o:dataTable>
 
       <p>* The "Button" column is just to ensure the autodetection mode doesn't fail with non-output components. The button
@@ -85,82 +31,7 @@
     </o:subPanel>
 
 
-    <o:subPanel caption="Per-column customization (with &lt;o:summary> tags)">
-      <o:dataTable var="item" value="#{MultitypeBeanSupport.list1}" rowKey="#{item.id}" style="height: 700px">
-        <o:scrolling horizontal="true"/>
-        <o:rowGrouping/>
-        <f:facet name="header">
-          <o:groupingBox/>
-        </f:facet>
-        <!--<o:summaries/>-->
 
-        <o:column header="id" value="#{item.id}"/>
-
-        <o:column header="Button *">
-          <o:commandButton value="Test"/>
-        </o:column>
-        <o:column header="Enum">
-          <h:outputText value="#{item.enumField}"/>
-          <f:facet name="footer">
-            <o:summary/>
-          </f:facet>
-          <f:facet name="inGroupFooter">
-            <o:summary/>
-          </f:facet>
-        </o:column>
-        <o:column header="Date">
-          <h:outputText value="#{item.dateField}"/>
-          <f:facet name="footer">
-            <o:summary/>
-          </f:facet>
-          <f:facet name="inGroupFooter">
-            <o:summary/>
-          </f:facet>
-        </o:column>
-        <o:column header="boolean">
-          <h:outputText value="#{item.booleanField}"/>
-          <f:facet name="footer">
-            <o:summary/>
-          </f:facet>
-          <f:facet name="inGroupFooter">
-            <o:summary/>
-          </f:facet>
-        </o:column>
-        <o:column header="int">
-          <h:outputText value="#{item.intField}"/>
-          <f:facet name="footer">
-            <o:summary/>
-          </f:facet>
-          <f:facet name="inGroupFooter">
-            <o:summary/>
-          </f:facet>
-        </o:column>
-
-        <o:columns value="#{MultitypeBeanSupport.customFieldNames}" var="col" style="text-align: right">
-          <f:facet name="header">
-            <h:outputText value="#{col}"/>
-          </f:facet>
-          <f:facet name="footer">
-            <o:summary/>
-          </f:facet>
-          <f:facet name="inGroupFooter">
-            <o:summary/>
-          </f:facet>
-
-          <h:outputText value="#{item.customFields[col]}"/>
-        </o:columns>
-
-        <f:facet name="footer">
-          <h:panelGroup>
-            Total records:&#160;<o:summary function="count" pattern="#{value}"/>
-          </h:panelGroup>
-        </f:facet>
-
-      </o:dataTable>
-
-      <p>* The "Button" column is just to ensure the autodetection mode doesn't fail with non-output components. The button
-        itself does nothing.</p>
-    </o:subPanel>
 
   </o:tabbedPane>
 

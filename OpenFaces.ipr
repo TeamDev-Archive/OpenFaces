@@ -1297,17 +1297,11 @@
     </library>
     <library name="JSF Implementation - Mojarra 2.0">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/mojarra/jsf-api-2.1.2.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/mojarra/jsf-impl-2.1.2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/mojarra/jsf-impl-2.0.3.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/mojarra/jsf-api-2.0.3.jar!/" />
       </CLASSES>
       <JAVADOC />
-      <SOURCES>
-        <root url="jar://$PROJECT_DIR$/libsrc/mojarra-2.1.2-FCS-source.zip!/mojarra-2.1.2-FCS-source/jsf-api/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/mojarra-2.1.2-FCS-source.zip!/mojarra-2.1.2-FCS-source/jsf-ri/build/generate" />
-        <root url="jar://$PROJECT_DIR$/libsrc/mojarra-2.1.2-FCS-source.zip!/mojarra-2.1.2-FCS-source/jsf-ri/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/mojarra-2.1.2-FCS-source.zip!/mojarra-2.1.2-FCS-source/jsf-api/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/mojarra-2.1.2-FCS-source.zip!/mojarra-2.1.2-FCS-source/jsf-api/build/generate" />
-      </SOURCES>
+      <SOURCES />
     </library>
     <library name="JSF Implementation - MyFaces 2.0">
       <CLASSES>

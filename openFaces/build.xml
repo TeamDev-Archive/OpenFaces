@@ -36,7 +36,7 @@
           <include name="el-ri-1.5.0.jar"/>
         </fileset>
         <fileset dir="${jsf.ri.lib.dir}">
-          <include name="javax.faces-2.1.8"/>
+          <include name="javax.faces-2.1.8.jar"/>
         </fileset>
         <fileset dir="${portlets.lib.dir}">
           <include name="exoportal-stub.jar"/>

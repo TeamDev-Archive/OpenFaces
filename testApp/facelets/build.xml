@@ -68,7 +68,7 @@
   </fileset>
 
   <fileset id="mojarra-2.0" dir="${jsf.lib.dir}">
-    <include name="javax.faces-2.1.8"/>
+    <include name="javax.faces-2.1.8.jar"/>
   </fileset>
 
   <fileset id="hibernate-libs" dir="${hibernate.lib.dir}">
@@ -150,7 +150,7 @@
       <classpath>
         <fileset dir="${lib.dir}">
           <include name="jsp-api-2.1.jar"/>
-          <include name="mojarra/javax.faces-2.1.8"/>
+          <include name="mojarra/javax.faces-2.1.8.jar"/>
           <include name="servlet-api.jar"/>
           <include name="apache/commons-digester-1.8.jar"/>
           <include name="apache/commons-logging-1.1.1.jar"/>
