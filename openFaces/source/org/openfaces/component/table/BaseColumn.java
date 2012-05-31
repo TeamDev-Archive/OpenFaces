@@ -738,6 +738,8 @@ public class BaseColumn extends UIColumn {
         if (valueConverter == null)
             valueConverter = Rendering.getConverterForType(context, valueType);
 
+        if (valueType == null)
+            valueType = Object.class;
         return new ExpressionData(expression, valueType, valueConverter);
     }
 
