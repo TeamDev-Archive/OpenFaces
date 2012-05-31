@@ -647,6 +647,11 @@
   </managed-bean>
 
   <converter>
+    <converter-id>testConverter</converter-id>
+    <converter-class>org.openfaces.testapp.datatable.TestConverter</converter-class>
+  </converter>
+
+  <converter>
     <converter-id>orientationConverter</converter-id>
     <converter-class>org.openfaces.testapp.slider.OrientationConverter</converter-class>
   </converter>
