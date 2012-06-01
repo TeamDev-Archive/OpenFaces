@@ -19,13 +19,15 @@ O$.FoldingPanel = {
                   focusable,
                   focusedClass,
                   focusedContentClass,
-                  focusedCaptionClass) {
+                  focusedCaptionClass,
+                  toggleOnCaptionClick,
+                  rolloverTogglableCaptionClass) {
     var fp = O$.initComponent(controlId, {rollover: rolloverClass}, {
       _stateHolderId: controlId + "::state",
       _contentHolderId: controlId + "::content",
       _captionContentId: controlId + "::caption_content",
       _captionId: controlId + "::caption",
-
+      _toggleOnCaptionClick:  toggleOnCaptionClick,
       _contentLoaded: loadingMode == "client" || expanded,
       _expanded: expanded,
       _direction: direction,
@@ -140,8 +142,22 @@ O$.FoldingPanel = {
         }
       });
     }
-
-  },
+    if (toggleOnCaptionClick) {
+      O$.extend(captionContent, {
+        onclick:function (e) {
+          fp.setExpanded(!fp._expanded);
+        },
+        onmouseover:function () {
+          if (rolloverTogglableCaptionClass) {
+            O$.setStyleMappings(captionContent, {rollover:rolloverTogglableCaptionClass});
+          }
+        },
+        onmouseout:function () {
+          O$.setStyleMappings(captionContent, {rollover:null});
+        }
+      });
+    }
+},
 
   _ajaxResponseProcessor: function(fp, portionName, portionHTML, portionScripts) {
     var oldComponent, prnt, tempDiv, newControl, oldId;

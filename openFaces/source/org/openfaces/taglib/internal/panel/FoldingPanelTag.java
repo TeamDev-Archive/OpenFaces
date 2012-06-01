@@ -44,5 +44,8 @@ public class FoldingPanelTag extends AbstractPanelWithCaptionTag {
         setStringProperty(component, "focusedCaptionClass");
         setStringProperty(component, "focusedContentStyle");
         setStringProperty(component, "focusedContentClass");
+        setBooleanProperty(component, "toggleOnCaptionClick");
+        setStringProperty(component, "rolloverTogglableCaptionStyle");
+        setStringProperty(component, "rolloverTogglableCaptionClass");
     }
 }
