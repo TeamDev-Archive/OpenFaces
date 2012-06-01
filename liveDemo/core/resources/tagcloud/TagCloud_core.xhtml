@@ -8,36 +8,38 @@
                columns="1"
                style="vertical-align:top;height:200px; width: 710px;">
     <h:panelGrid id="themeSelection"
-                 columns="4"
-            style="height:40px; width: 710px;">
+               columns="1"
+               style="height:40px; width: 710px;">
       <f:facet name="header">
         <h:outputText value="Select Theme:"/>
       </f:facet>
 
-      <o:commandLink actionListener="#{TagCloudBean.setRectangleTheme}"
-                     render="contentGrid customizeGrid"
-                     styleClass="largeFont commandLink">
-        <h:graphicImage url="./images/rectangle-icon.png"/>
-        <span>Sunny Day</span>
-      </o:commandLink>
-      <o:commandLink actionListener="#{TagCloudBean.setVerticalTheme}"
-                     render="contentGrid customizeGrid"
-                     styleClass="largeFont commandLink">
-        <h:graphicImage url="./images/vertical-icon.png"/>
-        <span>Bronze</span>
-      </o:commandLink>
-      <o:commandLink actionListener="#{TagCloudBean.setOvalTheme}"
-                     render="contentGrid customizeGrid"
-                      styleClass="largeFont commandLink">
-        <h:graphicImage url="./images/oval-icon.png"/>
-        <span>Mixed Colors</span>
-      </o:commandLink>
-      <o:commandLink actionListener="#{TagCloudBean.setSphereTheme}"
-                     render="contentGrid customizeGrid"
-                      styleClass="largeFont commandLink">
-        <h:graphicImage url="./images/sphere-icon.png" />
-        <span>3D Ghost</span>
-      </o:commandLink>
+      <o:tabSet id="themeSelectionNavigation"
+                value="#{TagCloudBean.currentTagCloudTheme}"
+                gapWidth="2"
+                tabClass="tabButton"
+                selectedTabClass="tabButton_active"
+                frontBorderStyle="0px"
+                style="margin-left:20px;"
+                backBorderStyle="0px">
+        <o:ajax event="change" render="contentGrid propertiesGrid" listener="#{TagCloudBean.updateTagCloudTheme}"/>
+        <o:tabSetItem itemValue="SunnyDay">
+          <h:graphicImage url="./images/rectangle-icon.png"/>
+          <span>Sunny Day</span>
+        </o:tabSetItem>
+        <o:tabSetItem itemValue="Bronze">
+          <h:graphicImage url="./images/vertical-icon.png"/>
+          <span>Bronze</span>
+        </o:tabSetItem>
+        <o:tabSetItem itemValue="MixedColors">
+          <h:graphicImage url="./images/oval-icon.png"/>
+          <span>Mixed Colors</span>
+        </o:tabSetItem>
+        <o:tabSetItem itemValue="Ghost">
+          <h:graphicImage url="./images/sphere-icon.png" />
+          <span>3D Ghost</span>
+        </o:tabSetItem>
+      </o:tabSet>
 
     </h:panelGrid>
 
@@ -52,16 +54,16 @@
                      value="order:"/>
       <o:selectOneMenu id="order"
                        value="#{TagCloudBean.order}"
-                       var="orderValue"
+                       var="order"
                        converter="#{TagCloudBean.orderConverter}"
                        suggestionMode="none"
                        style="width: 120px;">
         <f:selectItems value="#{TagCloudBean.orderList}"/>    
         <o:column>
-          <h:graphicImage url="./images/order-#{orderValue}.png" style="vertical-align: middle;"/>
+          <h:graphicImage url="./images/order-#{order.value}.png" style="vertical-align: middle;"/>
         </o:column>
         <o:column>
-          <h:outputText value="#{orderValue}" style="font-family:sans-serif;font-size:0.8em;"/>
+          <h:outputText value="#{order.value}" style="font-family:sans-serif;font-size:0.8em;"/>
         </o:column>
         <o:ajax event="change"
                 render="contentGrid"/>
@@ -116,16 +118,16 @@
                      value="layout:"/>
       <o:selectOneMenu id="layout"
                        value="#{TagCloudBean.layout}"
-                       var="layoutValue"
+                       var="layout"
                        converter="#{TagCloudBean.layoutConverter}"
                        suggestionMode="none"
                        style="width: 120px;">
         <f:selectItems value="#{TagCloudBean.layoutList}"/>
         <o:column>
-          <h:graphicImage url="./images/#{layoutValue}-icon.png" style="vertical-align: middle;"/>
+          <h:graphicImage url="./images/#{layout.value}-icon.png" style="vertical-align: middle;"/>
         </o:column>
         <o:column>
-          <h:outputText value="#{layoutValue}" style="font-family:sans-serif;font-size:0.8em;"/>
+          <h:outputText value="#{layout.value}" style="font-family:sans-serif;font-size:0.8em;"/>
         </o:column>
         <o:ajax event="change"
                 render="contentGrid order"/>
@@ -187,7 +189,6 @@
                   itemKey="#{item.text}"
                   itemText="#{item.text}"
                   itemTitle="#{item.title}"
-                  itemUrl="#{item.url}"
                   itemWeight="#{item.weight}"
                   itemStyle="color:#{item.color.hex}"
                   itemWeightVisible="#{TagCloudBean.itemWeightVisible}"
@@ -205,19 +206,14 @@
                   itemWeightClass="item_inner_weight"
                   maxItemStyle="#{TagCloudBean.maxItemStyle}"
                   minItemStyle="#{TagCloudBean.minItemStyle}"
-
-                  onitemclick="O$('dcForm:headerResult2').innerHTML='#{item.text}';"
+                  render="selectedTag"
                   actionListener="#{TagCloudBean.processAction}"/>
     </h:panelGroup>
 
-    <h:panelGroup styleClass="content2" style="display:block;" rendered="true">
-      <h:outputText styleClass="headerResult" value="Selected tag: "/>
-      <h:outputText id="headerResult2" styleClass="headerResult" value="#{TagCloudBean.var.text}"
+    <h:panelGroup style="display:block;" rendered="true">
+      <h:outputText styleClass="selected_tag_label" value="Selected tag: "/>
+      <h:outputText id="selectedTag" styleClass="selected_tag" value="#{TagCloudBean.var.text}"
                     escape="false"/>
-      <!--<h:outputText id="currentEntities" style="display:block;"-->
-                    <!--styleClass="currentEntities"-->
-                    <!--value="#{TagCloudBean.currentEntities}"-->
-                    <!--escape="false"/>-->
 
     </h:panelGroup>
   </h:panelGrid>

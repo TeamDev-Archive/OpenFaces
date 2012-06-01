@@ -22,23 +22,6 @@ O$.TagCloudItem = {
       }
     });
 
-//    var itemClass = O$.getElementOwnStyle(tag);
-//    var itemColor = O$.getStyleClassProperty(itemClass, "color");
-//    var itemBackground = O$.getStyleClassProperty(itemClass, "background");
-//    if (itemBackground == null) {
-//      itemBackground = O$.getElementStyle(tag, "background");
-//    }
-//
-//    O$.setupHoverStateFunction(tag, function(mouseInside) {
-//      if (mouseInside) {
-//        tag.style.color = O$.getStyleClassProperty(itemRolloverStyleClass, "color");
-//        tag.style.background = O$.getStyleClassProperty(itemRolloverStyleClass, "background");
-//      } else {
-//        tag.style.color = itemColor;
-//        tag.style.background = itemBackground;
-//      }
-//    });
-
     O$.addEventHandler(tag, "click", tag._submitVarParameters);
   }
 };

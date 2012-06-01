@@ -12,6 +12,7 @@
 
 package org.openfaces.component.tagcloud;
 
+import org.openfaces.component.ComponentConfigurator;
 import org.openfaces.component.OUICommand;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.Script;
@@ -22,6 +23,7 @@ import org.openfaces.util.Styles;
 import javax.el.ELException;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
 import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -32,7 +34,7 @@ import java.text.DecimalFormat;
 /**
  * @author : roman.nikolaienko
  */
-public class TagCloudItem extends OUICommand implements ValueHolder {
+public class TagCloudItem extends OUICommand implements ValueHolder, ComponentConfigurator {
 
     public static final String COMPONENT_TYPE = "org.openfaces.TagCloudItem";
     public static final String COMPONENT_FAMILY = "org.openfaces.TagCloudItem";
@@ -329,4 +331,9 @@ public class TagCloudItem extends OUICommand implements ValueHolder {
     public void setConverter(Converter converter) {
         this.converter = converter;
     }
+
+    public UIComponent getConfiguredComponent() {
+        return getParent();
+    }
+
 }
