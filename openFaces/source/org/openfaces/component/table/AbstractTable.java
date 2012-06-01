@@ -342,7 +342,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     @Override
     public boolean visitTree(VisitContext context, VisitCallback callback) {
-        if (context.getFacesContext().getCurrentPhaseId() != PhaseId.RESTORE_VIEW
+        if (context.getFacesContext().getCurrentPhaseId() != PhaseId.RESTORE_VIEW && context.getFacesContext().getCurrentPhaseId() != PhaseId.RENDER_RESPONSE
                 && getRowIndex() == -1 /* beforeProcessDecodes is not expected to be invoked in the midst of iteration over its rows */)
             invokeBeforeProcessDecodes(context.getFacesContext());
         return super.visitTree(context, callback);
