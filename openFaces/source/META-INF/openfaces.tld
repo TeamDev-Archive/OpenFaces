@@ -41960,7 +41960,8 @@ entering a value and returns a list of suggestions from the server -->
       </deferred-value>
       <!-- @bindingType java.util.Object -->
       <!-- @el true -->
-    </attribute>    <attribute>
+    </attribute>
+    <attribute>
       <description>Id's of components, which will be rerendered after successful Ajax request.
         Evaluates to Iterable. If a literal is specified can be a single id or a comma-separated list if id's.
       </description>

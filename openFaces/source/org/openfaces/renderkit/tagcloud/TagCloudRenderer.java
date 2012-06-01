@@ -116,6 +116,10 @@ public class TagCloudRenderer extends RendererBase {
 
         Components.generateIdIfNotSpecified(component);
         TagCloud cloud = (TagCloud) component;
+
+        if ((cloud.getItemUrl() != null &&  cloud.getRender() != null))
+            throw new FacesException("Both attributes 'itemUrl' and 'renderer' cannot be set in the <o:tagCloud> component at the same time");
+
         String clientId = cloud.getClientId(context);
         ResponseWriter writer = context.getResponseWriter();
         Rendering.writeStandardEvents(writer, cloud);
