@@ -206,7 +206,7 @@ public class FoldingPanelRenderer extends ComponentWithCaptionRenderer implement
                 foldingPanel.getToggleOnCaptionClick(),
                 rolloverTogglableCaptionClass);
 
-        Rendering.renderInitScript(context, sb,
+        Rendering.renderInitScript(context, sb, Resources.utilJsURL(context),
                 Resources.internalURL(context, "panel/foldingPanel.js"));
     }
 
