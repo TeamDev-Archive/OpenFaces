@@ -472,6 +472,8 @@ public class TagCloud extends OUICommand {
             curWeight = weightExpression != null ?
                     (Double) getVarParameter(weightExpression) : 0;
 
+            item.setRender(getRender());
+            item.setExecute(getExecute());
             item.setWeight(curWeight);
 
             if (getMaxItemWeight() < 0 || curWeight > getMaxItemWeight())

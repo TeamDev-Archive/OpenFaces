@@ -59,6 +59,7 @@ public class ColumnTag extends BaseColumnTag {
             column.setSortingComparatorExpression(comparatorExpression);
         }
 
+        setClassProperty(component, "type");
     }
 
     static class CaseInsensitiveComparatorBinding extends ValueExpression implements Serializable {

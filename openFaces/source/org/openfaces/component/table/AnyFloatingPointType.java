@@ -36,9 +36,4 @@ public class AnyFloatingPointType extends OrdinalType {
         return ((Number) value).doubleValue() / by;
     }
 
-    @Override
-    public Comparator getComparator() {
-        return null;
-    }
-
 }

@@ -9,19 +9,22 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.component.table.impl;
 
-import org.openfaces.component.table.SyntheticColumn;
-
-import javax.faces.component.UIComponent;
-import java.util.Map;
+package org.openfaces.testapp.datatable;
 
 /**
- * This interface is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly by any
- * application code.
+ * @author Dmitry Pikhulya
  */
-public interface DynamicCol extends SyntheticColumn {
-    Runnable declareContextVariables();
+public enum EnumType1 {
+    OPTION1,
+    OPTION2,
+    OPTION3,
+    OPTION4,
+    OPTION5;
 
-    Map<String, UIComponent> getFacetsForProcessing();
+    @Override
+    public String toString() {
+        String str = super.toString();
+        return str.substring(0, 1) + str.substring(1).toLowerCase();
+    }
 }

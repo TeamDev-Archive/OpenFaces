@@ -203,4 +203,8 @@ public class ColumnsJspTag extends AbstractComponentJspTag {
     public void setIndexVar(ValueExpression indexVar) {
         getDelegate().setPropertyValue("indexVar", indexVar);
     }
+
+    public void setColumnType(ValueExpression columnType) {
+        getDelegate().setPropertyValue("columnType", columnType);
+    }
 }
