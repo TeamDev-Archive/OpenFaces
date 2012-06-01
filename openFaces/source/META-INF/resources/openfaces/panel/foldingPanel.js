@@ -144,15 +144,23 @@ O$.FoldingPanel = {
     }
     if (toggleOnCaptionClick) {
       O$.extend(captionContent, {
+        _updateToggleButtonsImages: function(isMouseInside) {
+          var toggleButtons = fp._expansionToggleButtons;
+          for (var i = 0, count = toggleButtons ? toggleButtons.length : 0; i < count; i++) {
+            toggleButtons[i]._updateImage(isMouseInside, false);
+          }
+        },
         onclick:function (e) {
           fp.setExpanded(!fp._expanded);
         },
         onmouseover:function () {
+          captionContent._updateToggleButtonsImages(true);
           if (rolloverTogglableCaptionClass) {
             O$.setStyleMappings(captionContent, {rollover:rolloverTogglableCaptionClass});
           }
         },
         onmouseout:function () {
+          captionContent._updateToggleButtonsImages(false);
           O$.setStyleMappings(captionContent, {rollover:null});
         }
       });
