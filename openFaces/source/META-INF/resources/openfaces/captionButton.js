@@ -140,7 +140,9 @@ O$._initExpansionToggleButton = function(clientId) {
     btn._container._expansionToggleButtons = [];
   btn._container._expansionToggleButtons.push(btn);
   btn._addToggleStateChangeListener(function(expanded) {
-    btn._container.setExpanded(expanded);
+    if (!btn._container._toggleOnCaptionClick) {
+      btn._container.setExpanded(expanded);
+    }
   });
 };
 

@@ -294,7 +294,56 @@ dl.article {
   margin-left: 9em;
 }
 
-.headerMain,
-.headerResult {
-  font-size: 2.5em;
+.selected_tag,
+.selected_tag_label {
+  font-size: 2em;
+}
+
+.selected_tag {
+    font-weight:bold
+}
+
+.tabButton {
+    background-color: transparent;
+}
+
+.tabButton div,
+.tabButton:hover div{
+    display:block;
+    height:22px;
+    background:#c0c1c2 url(../images/buttons/tabButton.png) repeat-x 0 0;
+    padding: 0 10px;
+    color:#434343;
+    border-top: 1px solid #fefefe;
+    border-right:1px solid #a7a7a8;
+    border-bottom:1px solid #a7a7a8;
+    border-left: 1px solid #fefefe;
+    line-height: 22px;
+    cursor:pointer;
+    text-decoration:none;
+    text-align:center;
+    outline:none;
+}
+
+.tabButton img,
+.tabButton:hover img{
+    height: 20px;
+    margin-top: -4px;
+    vertical-align: middle;
+ }
+
+.tabButton_active div,
+.tabButton_active:hover div,
+.tabButton_active:focus div,
+.tabButton_active:active div{
+    background-position: 0 -44px;
+    background-color:#bdbfbf;
+    border-top:1px solid #9d9e9e;
+    border-right:1px solid #e7e7e7;
+    border-bottom:1px solid #e7e7e7;
+    border-left:1px solid #9d9e9e;
+}
+
+.tabButton span{
+    margin-top: 1px;
 }
