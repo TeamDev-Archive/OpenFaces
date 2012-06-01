@@ -9,6 +9,7 @@
   <div id="Demo">
     <o:dataTable id="booksTable"
                  var="book"
+                 rowIndexVar="rowIndex"
                  value="#{BookList.books}"
                  sortColumnId="title"
                  sortAscending="true"
@@ -24,12 +25,13 @@
       </o:column>
       <o:column header="Cover image"
                 style="width: 40%;">
-        <h:outputText value="File: "/> <h:outputText styleClass="#{FileUploadBean.fileInfoClass}" value="#{FileUploadBean.bookImageFileName}"/>
-        <h:outputText value=" ; size: "/> <h:outputText styleClass="#{FileUploadBean.fileInfoClass}" value="#{FileUploadBean.bookImageFileSize}"/>
-        <o:singleFileUpload browseButtonText="Upload cover image..." render="booksTable"
+        <h:outputText value="File: "/> <h:outputText id="fileName" styleClass="#{FileUploadBean.fileInfoClass}" value="#{FileUploadBean.bookImageFileName}"/>
+        <h:outputText value=" ; size: "/> <h:outputText id="fileSize" styleClass="#{FileUploadBean.fileInfoClass}" value="#{FileUploadBean.bookImageFileSize}"/>
+        <o:singleFileUpload browseButtonText="Upload cover image..."
                             acceptedFileTypes="jpg png bmp jpeg gif" acceptedMimeTypes="image/*"
                             completionListener="#{FileUploadBean.bookImageUploaded}"
-                            style="border: none; width:180px" layoutMode="compact"/>
+                            style="border: none; width:180px" layoutMode="compact"
+                onend="O$.ajax.request(this, event, {render: 'form:booksTable:#{rowIndex}:fileName form:booksTable:#{rowIndex}:fileSize'})"/>
       </o:column>
 
     </o:dataTable>

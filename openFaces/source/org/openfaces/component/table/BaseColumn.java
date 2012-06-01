@@ -585,7 +585,7 @@ public class BaseColumn extends UIColumn {
      */
     public String getColumnHeader() {
         DynamicCol dynamicCol = (this instanceof DynamicCol) ? (DynamicCol) this : null;
-        if (dynamicCol != null) dynamicCol.declareContextVariables();
+        Runnable restoreVariables = dynamicCol != null ? dynamicCol.declareContextVariables() : null;
         try {
             String header = getHeaderValue();
             if (header != null)
@@ -596,7 +596,7 @@ public class BaseColumn extends UIColumn {
 
             return obtainOutputValue(component);
         } finally {
-            if (dynamicCol != null) dynamicCol.undeclareContextVariables();
+            if (restoreVariables != null) restoreVariables.run();
         }
     }
 
@@ -665,6 +665,10 @@ public class BaseColumn extends UIColumn {
         return result;
     }
 
+    protected Class getType() {
+        return Object.class;
+    }
+
     /**
      * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
      * by any application code.
@@ -675,7 +679,7 @@ public class BaseColumn extends UIColumn {
         if (expression == null)
             return null;
 
-        Class valueType = Object.class;
+        Class valueType = getType();
         Converter valueConverter = this instanceof Column ? ((Column) this).getConverter() : null;
         FacesContext context = FacesContext.getCurrentInstance();
         ELContext elContext = context.getELContext();
@@ -693,7 +697,20 @@ public class BaseColumn extends UIColumn {
                 restoreRowVariablesRunnable = table.populateRowVariablesWithAnyModelValue();
             }
             try {
-                valueType = table.isRowAvailable() ? expression.getType(elContext) : Object.class;
+                if (valueType == null || valueType.equals(Object.class)) {
+                    if (table.isRowAvailable()) {
+                        valueType = expression.getType(elContext);
+                        if (Object.class.equals(valueType)) {
+                            Object value = expression.getValue(elContext);
+                            if(value != null)
+                                valueType = value.getClass();
+                        }
+
+                    } else {
+                        valueType = Object.class;
+                    }
+
+                }
             } finally {
                 if (restoreRowVariablesRunnable != null)
                     restoreRowVariablesRunnable.run();
@@ -709,9 +726,11 @@ public class BaseColumn extends UIColumn {
             }
         } catch (Exception e) {
             // running this branch means that there's no row data and row with index == 0
-            Class detectedValueType = detectValueType(elContext, table, expression);
-            if (detectedValueType != null)
-                valueType = detectedValueType;
+            if (valueType == null || valueType.equals(Object.class)) {
+                Class detectedValueType = detectValueType(elContext, table, expression);
+                if (detectedValueType != null)
+                    valueType = detectedValueType;
+            }
         } finally {
             table.setRowIndex(index);
         }
@@ -719,6 +738,8 @@ public class BaseColumn extends UIColumn {
         if (valueConverter == null)
             valueConverter = Rendering.getConverterForType(context, valueType);
 
+        if (valueType == null)
+            valueType = Object.class;
         return new ExpressionData(expression, valueType, valueConverter);
     }
 
@@ -786,7 +807,7 @@ public class BaseColumn extends UIColumn {
     }
 
     private static boolean expressionContainsVar(String expressionString, String var) {
-        if (expressionString.equals("#{" + var + "}")) return true;
+        if (expressionString.startsWith("#{" + var)) return true;
         Matcher matcher = getExpressionPattern(var).matcher(expressionString);
         return matcher.find();
     }
@@ -818,10 +839,12 @@ public class BaseColumn extends UIColumn {
     }
 
     public void createImplicitFacets() {
-        Map<String, UIComponent> facets = getFacets();
+        Map<String, UIComponent> facets = super.getFacets();
+        // we're using super.getFacets() method intentionally to avoid invoking the overridden DynamicColumn.getFacets()
+        // method which returns an immutable Map. See comments on the DynamicColumn.getFacets() method.
         for (String facetName : new String[]{FACET_HEADER, FACET_SUB_HEADER, FACET_FOOTER,
                 FACET_GROUP_HEADER, FACET_GROUP_FOOTER, FACET_IN_GROUP_HEADER, FACET_IN_GROUP_FOOTER}) {
-            if (facets.get(facetName) != null) continue;
+            if (getFacet(facetName) != null) continue;
 
             UIComponent facetComponent = createImplicitFacet(facetName);
             if (facetComponent != null) {

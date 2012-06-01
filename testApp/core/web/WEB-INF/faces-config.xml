@@ -177,6 +177,12 @@
   </managed-bean>
 
   <managed-bean>
+    <managed-bean-name>MultitypeBeanSupport</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.datatable.MultitypeBeanSupport</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
     <managed-bean-name>CheckboxTest</managed-bean-name>
     <managed-bean-class>org.openfaces.testapp.selectbooleancheckbox.CheckboxTest</managed-bean-class>
     <managed-bean-scope>session</managed-bean-scope>
@@ -639,6 +645,11 @@
     <managed-bean-class>org.openfaces.testapp.fileattachments.FileAttachmentsBean</managed-bean-class>
     <managed-bean-scope>session</managed-bean-scope>
   </managed-bean>
+
+  <converter>
+    <converter-id>testConverter</converter-id>
+    <converter-class>org.openfaces.testapp.util.TestConverter</converter-class>
+  </converter>
 
   <converter>
     <converter-id>orientationConverter</converter-id>

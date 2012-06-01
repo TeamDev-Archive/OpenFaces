@@ -62,6 +62,11 @@ public class InGroupHeaderOrFooterCell extends GroupHeaderOrFooterCell {
                     "expected that rendering for this cell is initiated only from the TableBody cell rendering " +
                     "procedure where currentRenderedColumn is set explicitly prior to rendering the cell contents " +
                     "container (this custom cell implementation)");
+        BaseColumn actualCol = currentlyRenderedColumn instanceof GroupingStructureColumn
+                ? ((GroupingStructureColumn) currentlyRenderedColumn).getDelegate()
+                : currentlyRenderedColumn;
+        if (actualCol instanceof DynamicColumn)
+            ((DynamicColumn) actualCol).declareContextVariables();
         UIComponent headerOrFooterComponentFromFacet = currentlyRenderedColumn.getFacet(getFacetName());
         if (headerOrFooterComponentFromFacet != null)
             return Collections.singletonList(headerOrFooterComponentFromFacet);

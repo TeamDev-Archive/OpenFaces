@@ -35,7 +35,7 @@ public class AvgFunction extends SummaryFunction {
             public Object endCalculation() {
                 Object finalValue = super.endCalculation();
                 OrdinalType type = getOrdinalType(finalValue);
-                if (type == null) return null;
+                if (type == null || noOfValues == 0) return null;
                 return type.divide(finalValue, noOfValues);
             }
         };

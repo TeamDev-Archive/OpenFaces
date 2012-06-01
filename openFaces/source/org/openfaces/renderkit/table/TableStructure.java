@@ -284,7 +284,9 @@ public class TableStructure extends TableElement {
             return;
         boolean childrenEmpty = true;
         DynamicCol dynamicCol = cellComponentsContainer instanceof DynamicCol ? (DynamicCol) cellComponentsContainer : null;
-        if (dynamicCol != null) dynamicCol.declareContextVariables();
+        Runnable restoreDynamicColVariables = null;
+        if (dynamicCol != null)
+            restoreDynamicColVariables = dynamicCol.declareContextVariables();
         try {
             List<UIComponent> children = (cellComponentsContainer instanceof SyntheticColumn)
                     ? ((SyntheticColumn) cellComponentsContainer).getChildrenForProcessing()
@@ -297,7 +299,8 @@ public class TableStructure extends TableElement {
                 }
             }
         } finally {
-            if (dynamicCol != null) dynamicCol.undeclareContextVariables();
+            if (dynamicCol != null)
+                restoreDynamicColVariables.run();
         }
         TableStructure tableStructure = getCurrentInstance(table);
         if (childrenEmpty && tableStructure.isEmptyCellsTreatmentRequired())

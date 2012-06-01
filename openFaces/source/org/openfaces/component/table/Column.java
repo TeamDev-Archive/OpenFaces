@@ -33,6 +33,7 @@ public class Column extends BaseColumn implements ValueHolder {
 
     private Converter groupingValueConverter;
     private Converter converter;
+    private Class type;
 
     public Column() {
         setRendererType("org.openfaces.ColumnRenderer");
@@ -48,7 +49,8 @@ public class Column extends BaseColumn implements ValueHolder {
         Object superState = super.saveState(context);
         return new Object[]{superState,
                 saveAttachedState(context, converter),
-                saveAttachedState(context, groupingValueConverter)
+                saveAttachedState(context, groupingValueConverter),
+                type
         };
     }
 
@@ -59,6 +61,7 @@ public class Column extends BaseColumn implements ValueHolder {
         super.restoreState(context, state[i++]);
         converter = (Converter) restoreAttachedState(context, state[i++]);
         groupingValueConverter = (Converter) restoreAttachedState(context, state[i++]);
+        type = (Class) state[i++];
     }
 
     public ValueExpression getSortingExpression() {
@@ -67,6 +70,14 @@ public class Column extends BaseColumn implements ValueHolder {
 
     public void setSortingExpression(ValueExpression sortingExpression) {
         setValueExpression("sortingExpression", sortingExpression);
+    }
+
+    public Class getType() {
+        return ValueBindings.get(this, "type", type, null);
+    }
+
+    public void setType(Class type) {
+        this.type = type;
     }
 
     public ValueExpression getValueExpression() {

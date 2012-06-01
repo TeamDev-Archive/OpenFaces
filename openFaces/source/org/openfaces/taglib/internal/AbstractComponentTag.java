@@ -48,6 +48,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.TimeZone;
 
 /**
@@ -59,6 +61,17 @@ public abstract class AbstractComponentTag extends AbstractTag {
     private static final String LEVELS_EXPANDED_MODE = "levelsExpanded:";
     private static final String ALL_COLLAPSED_MODE = "allCollapsed";
     private static final String ALL_EXPANDED_MODE = "allExpanded";
+
+    private static Map<String, Class> STANDARD_TYPES = new HashMap<String, Class>();
+    static {
+        STANDARD_TYPES.put("boolean", boolean.class);
+        STANDARD_TYPES.put("byte", byte.class);
+        STANDARD_TYPES.put("short", short.class);
+        STANDARD_TYPES.put("int", int.class);
+        STANDARD_TYPES.put("long", long.class);
+        STANDARD_TYPES.put("float", float.class);
+        STANDARD_TYPES.put("double", double.class);
+    }
 
     private FacesContext facesContext;
 
@@ -451,6 +464,20 @@ public abstract class AbstractComponentTag extends AbstractTag {
             throw new IllegalArgumentException("Invalid value specified for expansionState attribute: " + expansionState + " . It should be one of the following: " + ALL_EXPANDED_MODE + ", " + ALL_COLLAPSED_MODE + " or " + LEVELS_EXPANDED_MODE + "NUMBER");
         }
         component.getAttributes().put(propertyName, expansionStateObj);
+    }
+
+    protected void setClassProperty(UIComponent component, String propertyName) {
+        String typeStr = getPropertyValue(propertyName);
+        if (setAsValueExpressionIfPossible(component, propertyName, typeStr)) return;
+
+        Class cls = STANDARD_TYPES.get(typeStr);
+        if (cls == null)
+            try {
+                cls = Class.forName(typeStr);
+            } catch (ClassNotFoundException e) {
+                throw new FacesException("Unknown type: " + typeStr);
+            }
+        component.getAttributes().put(propertyName, cls);
     }
 
     private static final class LiteralCollectionValueExpressionProxy extends ValueExpression {

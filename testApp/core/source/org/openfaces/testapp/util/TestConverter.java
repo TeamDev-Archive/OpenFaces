@@ -9,19 +9,22 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.component.table.impl;
 
-import org.openfaces.component.table.SyntheticColumn;
+package org.openfaces.testapp.util;
 
 import javax.faces.component.UIComponent;
-import java.util.Map;
+import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
 
 /**
- * This interface is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly by any
- * application code.
+ * @author Dmitry Pikhulya
  */
-public interface DynamicCol extends SyntheticColumn {
-    Runnable declareContextVariables();
+public class TestConverter implements Converter {
+    public Object getAsObject(FacesContext facesContext, UIComponent uiComponent, String s) {
+        return s;
+    }
 
-    Map<String, UIComponent> getFacetsForProcessing();
+    public String getAsString(FacesContext facesContext, UIComponent uiComponent, Object o) {
+        return o != null ? o.toString() : "";
+    }
 }
