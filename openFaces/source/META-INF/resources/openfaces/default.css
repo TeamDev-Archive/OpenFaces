@@ -2218,3 +2218,6 @@ html>/**/body .o_selectonemenu_field_container_middle {
     background: transparent !important;
     opacity: 0 !important;
 }
+.o_folding_panel_caption_togglable_rollover {
+    cursor: pointer;
+}

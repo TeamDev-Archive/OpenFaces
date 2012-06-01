@@ -59,6 +59,9 @@ public class FoldingPanel extends AbstractPanelWithCaption implements EditableSt
     private String focusedCaptionClass;
     private String focusedContentStyle;
     private String focusedContentClass;
+    private Boolean toggleOnCaptionClick;
+    private String rolloverTogglableCaptionStyle;
+    private String rolloverTogglableCaptionClass;
 
     public FoldingPanel() {
         setRendererType("org.openfaces.FoldingPanelRenderer");
@@ -174,7 +177,7 @@ public class FoldingPanel extends AbstractPanelWithCaption implements EditableSt
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         return new Object[]{superState, expanded, onstatechange, foldingDirection, loadingMode,
-                focusable, focusedStyle, focusedClass};
+                focusable, focusedStyle, focusedClass, rolloverTogglableCaptionStyle, rolloverTogglableCaptionClass};
     }
 
     @Override
@@ -189,6 +192,9 @@ public class FoldingPanel extends AbstractPanelWithCaption implements EditableSt
         focusable = (Boolean) values[i++];
         focusedStyle = (String) values[i++];
         focusedClass = (String) values[i++];
+        rolloverTogglableCaptionStyle = (String) values[i++];
+        rolloverTogglableCaptionClass = (String) values[i];
+
     }
 
     @Override
@@ -355,5 +361,29 @@ public class FoldingPanel extends AbstractPanelWithCaption implements EditableSt
         this.setSubmittedValue(null);
         this.setLocalValueSet(false);
         this.setValid(true);
+    }
+
+    public boolean getToggleOnCaptionClick() {
+        return ValueBindings.get(this, "toggleOnCaptionClick", toggleOnCaptionClick, false);
+    }
+
+    public void setToggleOnCaptionClick(boolean toggleOnCaptionClick) {
+        this.toggleOnCaptionClick = toggleOnCaptionClick;
+    }
+
+    public String getRolloverTogglableCaptionStyle() {
+        return ValueBindings.get(this, "rolloverTogglableCaptionStyle", rolloverTogglableCaptionStyle);
+    }
+
+    public void setRolloverTogglableCaptionStyle(String rolloverTogglableCaptionStyle) {
+        this.rolloverTogglableCaptionStyle = rolloverTogglableCaptionStyle;
+    }
+
+    public String getRolloverTogglableCaptionClass() {
+        return ValueBindings.get(this, "rolloverTogglableCaptionClass", rolloverTogglableCaptionClass);
+    }
+
+    public void setRolloverTogglableCaptionClass(String rolloverTogglableCaptionClass) {
+        this.rolloverTogglableCaptionClass = rolloverTogglableCaptionClass;
     }
 }

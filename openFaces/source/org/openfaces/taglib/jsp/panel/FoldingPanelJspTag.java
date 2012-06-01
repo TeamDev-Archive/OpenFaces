@@ -62,4 +62,15 @@ public class FoldingPanelJspTag extends AbstractPanelWithCaptionJspTag {
         getDelegate().setPropertyValue("focusedContentClass", focusedContentClass);
     }
 
+    public void setToggleOnCaptionClick(ValueExpression toggleOnCaptionClick) {
+        getDelegate().setPropertyValue("toggleOnCaptionClick", toggleOnCaptionClick);
+    }
+
+    public void setRolloverTogglableCaptionStyle(ValueExpression rolloverTogglableCaptionStyle) {
+        getDelegate().setPropertyValue("rolloverTogglableCaptionStyle", rolloverTogglableCaptionStyle);
+    }
+
+    public void setRolloverTogglableCaptionClass(ValueExpression rolloverTogglableCaptionClass) {
+        getDelegate().setPropertyValue("rolloverTogglableCaptionClass", rolloverTogglableCaptionClass);
+    }
 }

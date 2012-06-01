@@ -18892,6 +18892,39 @@ on every switch to the tab.-->
       <!-- @value "server"  the FoldingPanel component submits the page to re-render itself in the expanded state. -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>This flag indicates whether or not the component caption is togglable. In case the flag value is
+        'true' the component expands/collapses on mouse click at the caption.</description>
+      <name>toggleOnCaptionClick</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A style that is applied to the caption in the rollover state in case component caption is togglable.
+      </description>
+      <name>rolloverTogglableCaptionStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class that is applied to the caption in the rollover state in case component caption is togglable.
+      </description>
+      <name>rolloverTogglableCaptionClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  -->
+      <!-- @el true -->
+    </attribute>
   </tag>
 
   <!-- TWO LIST SELECTION TAG DECLARATION -->
