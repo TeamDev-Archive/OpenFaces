@@ -71,6 +71,11 @@ public class Summary extends OUIOutput {
 
         private Columns[] columnsReference;
         private Columns getColumns() {
+            if (Summary.this.getParent() == null) {
+                // invoking this method during attribute processing phase when the component is not embedded into view
+                // yet shouldn't result in caching the null columns reference, which cannot be calculated at this stage
+                return null;
+            }
             if (columnsReference == null) {
                 columnsReference = new Columns[]{Components.getParentWithClass(Summary.this, Columns.class)};
             }
@@ -788,7 +793,7 @@ public class Summary extends OUIOutput {
 
 
     public SummaryFunction getFunction() {
-        return ValueBindings.get(this, "function", stampState().function, null);
+        return ValueBindings.get(this, "function", stampState().function, SummaryFunction.class);
     }
 
     public void setFunction(SummaryFunction function) {

@@ -90,7 +90,6 @@
         <f:facet name="header">
           <o:groupingBox/>
         </f:facet>
-        <!--<o:summaries/>-->
 
         <o:column header="id" value="#{item.id}"/>
 
@@ -99,6 +98,9 @@
         </o:column>
         <o:column header="Enum">
           <h:outputText value="#{item.enumField}"/>
+          <f:facet name="inGroupFooter">
+            <o:summary/>
+          </f:facet>
           <f:facet name="footer">
             <o:summary/>
           </f:facet>
@@ -108,6 +110,9 @@
         </o:column>
         <o:column header="Date">
           <h:outputText value="#{item.dateField}"/>
+          <f:facet name="inGroupFooter">
+            <o:summary/>
+          </f:facet>
           <f:facet name="footer">
             <o:summary/>
           </f:facet>
@@ -117,6 +122,9 @@
         </o:column>
         <o:column header="boolean">
           <h:outputText value="#{item.booleanField}"/>
+          <f:facet name="inGroupFooter">
+            <o:summary/>
+          </f:facet>
           <f:facet name="footer">
             <o:summary/>
           </f:facet>
@@ -126,6 +134,9 @@
         </o:column>
         <o:column header="int">
           <h:outputText value="#{item.intField}"/>
+          <f:facet name="inGroupFooter">
+            <o:summary/>
+          </f:facet>
           <f:facet name="footer">
             <o:summary/>
           </f:facet>
@@ -138,11 +149,11 @@
           <f:facet name="header">
             <h:outputText value="#{col}"/>
           </f:facet>
-          <f:facet name="footer">
-            <o:summary/>
-          </f:facet>
           <f:facet name="inGroupFooter">
             <o:summary/>
+          </f:facet>
+          <f:facet name="footer">
+            <o:summary function="#{MultitypeBeanSupport.customFieldsToDefaultFunctions[col]}"/>
           </f:facet>
 
           <h:outputText value="#{item.customFields[col]}"/>
