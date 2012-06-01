@@ -1182,8 +1182,7 @@ public class OUIData extends UIData implements NamingContainer, UniqueIdVendor, 
                         // <MOD-11>
                         for (UIComponent child : getExtensionComponents()) {
                             if (child == null) continue;
-                            VisitResult columnResult = context.invokeVisitCallback(child, callback);
-                            if (columnResult == VisitResult.COMPLETE) {
+                            if (child.visitTree(context, callback)) {
                                 return true;
                             }
                         }
