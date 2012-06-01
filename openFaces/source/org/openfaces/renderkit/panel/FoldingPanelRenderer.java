@@ -43,6 +43,7 @@ import java.util.List;
 public class FoldingPanelRenderer extends ComponentWithCaptionRenderer implements AjaxPortionRenderer {
     public static final String CONTENT_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "content";
     private static final String STATE_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "state";
+    private static final String DEFAULT_CAPTION_TOGGLABLE_ROLLOVER_CLASS = "o_folding_panel_caption_togglable_rollover";
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
@@ -187,6 +188,11 @@ public class FoldingPanelRenderer extends ComponentWithCaptionRenderer implement
         String focusedCaptionClass = Styles.getCSSClass(context, foldingPanel,
                 foldingPanel.getFocusedCaptionStyle(), StyleGroup.selectedStyleGroup(0), foldingPanel.getFocusedCaptionClass(), null);
 
+        String rolloverTogglableCaptionClass = Styles.getCSSClass(context, foldingPanel,
+                foldingPanel.getRolloverTogglableCaptionStyle(), StyleGroup.rolloverStyleGroup(),
+                foldingPanel.getRolloverTogglableCaptionClass(),
+                DEFAULT_CAPTION_TOGGLABLE_ROLLOVER_CLASS);
+
         ScriptBuilder sb = new ScriptBuilder();
         sb.initScript(context, foldingPanel, "O$.FoldingPanel._init",
                 foldingPanel.isExpanded(),
@@ -196,9 +202,11 @@ public class FoldingPanelRenderer extends ComponentWithCaptionRenderer implement
                 foldingPanel.isFocusable(),
                 focusedClass,
                 focusedContentClass,
-                focusedCaptionClass);
+                focusedCaptionClass,
+                foldingPanel.getToggleOnCaptionClick(),
+                rolloverTogglableCaptionClass);
 
-        Rendering.renderInitScript(context, sb,
+        Rendering.renderInitScript(context, sb, Resources.utilJsURL(context),
                 Resources.internalURL(context, "panel/foldingPanel.js"));
     }
 

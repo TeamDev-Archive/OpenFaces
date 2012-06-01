@@ -51,10 +51,8 @@ public class TagCloudBean implements ActionListener, Serializable {
     private String itemWeightStyle = "";
     private Color minColor = colors.getColorByText("Gray");
     private Color maxColor = colors.getColorByText("Black");
-    private int minFontSize = 15;
-    private int maxFontSize = 30;
-    private String maxItemStyle = "";
-    private String minItemStyle = "";
+    private Integer minFontSize = 15;
+    private Integer maxFontSize = 30;
     private boolean itemWeightVisible;
     private Layout layout = Layout.RECTANGLE;
     private TagsOrder order = TagsOrder.ALPHABETICALLY;
@@ -66,6 +64,19 @@ public class TagCloudBean implements ActionListener, Serializable {
 
     private List<SelectItem> orderList;
     private List<String> weightFormatList;
+    private Theme selectedTheme = Theme.SUNNYDAY;
+
+    public static enum Theme {
+        SUNNYDAY("SunDay"), BRONZE("Bronze"), MIXEDCOLORS("MixedColor"), GHOST("Ghost");
+        String value;
+
+        Theme(String value) {
+            this.value = value;
+        }
+        public String toString (){
+            return this.value;
+        }
+    }
 
     public TagCloudBean() {
         initEntities();
@@ -73,6 +84,7 @@ public class TagCloudBean implements ActionListener, Serializable {
         setMaxFontSize(50);
         setMaxColor(colors.getColorByText("CornflowerBlue"));
         setMinColor(colors.getColorByText("YellowGreen"));
+        updateTagCloudTheme();
     }
 
     private void initEntities() {
@@ -128,6 +140,14 @@ public class TagCloudBean implements ActionListener, Serializable {
                 this.entitiesItemsList.add(new Item(tag, "", "#", counter));
             }
         }
+    }
+
+    public String getCurrentTagCloudTheme() {
+        return selectedTheme.toString();
+    }
+
+    public void setCurrentTagCloudTheme(String selectedTheme) {
+        this.selectedTheme = Theme.valueOf(selectedTheme.toUpperCase());
     }
 
     public List<Item> getColoredItemsList() {
@@ -252,10 +272,6 @@ public class TagCloudBean implements ActionListener, Serializable {
         }
         return rez.toString();
     }
-//
-//    public void setMaxItemStyle(String maxItemStyle) {
-//        this.maxItemStyle = maxItemStyle;
-//    }
 
     public String getMinItemStyle() {
         StringBuilder rez = new StringBuilder("");
@@ -264,10 +280,6 @@ public class TagCloudBean implements ActionListener, Serializable {
             rez.append("font-size:").append(getMinFontSize()).append("px;");
         }
         return rez.toString();
-    }
-
-    public void setMinItemStyle(String minItemStyle) {
-        this.minItemStyle = minItemStyle;
     }
 
     public Color getMinColor() {
@@ -286,19 +298,19 @@ public class TagCloudBean implements ActionListener, Serializable {
         this.maxColor = maxColor;
     }
 
-    public int getMinFontSize() {
+    public Integer getMinFontSize() {
         return minFontSize;
     }
 
-    public void setMinFontSize(int minFontSize) {
+    public void setMinFontSize(Integer minFontSize) {
         this.minFontSize = minFontSize;
     }
 
-    public int getMaxFontSize() {
+    public Integer getMaxFontSize() {
         return maxFontSize;
     }
 
-    public void setMaxFontSize(int maxFontSize) {
+    public void setMaxFontSize(Integer maxFontSize) {
         this.maxFontSize = maxFontSize;
     }
 
@@ -363,7 +375,7 @@ public class TagCloudBean implements ActionListener, Serializable {
         return layoutConverter;
     }
 
-    public void setRectangleTheme(ActionEvent event) {
+    public void setSunDayTheme() {
         setSkin("rectangle");
         setLayout(Layout.RECTANGLE);
         setOrder(TagsOrder.ALPHABETICALLY);
@@ -375,11 +387,9 @@ public class TagCloudBean implements ActionListener, Serializable {
         setMaxColor(colors.getColorByText("SteelBlue"));
         setMinColor(colors.getColorByText("Tan"));
         setItemWeightVisible(false);
-//        setMaxColor(colors.getColorByText("AntiqueWhite") );
-//        setMinColor(colors.getColorByText("PaleTurquoise") );
     }
 
-    public void setVerticalTheme(ActionEvent event) {
+    public void setBronzeTheme() {
         setSkin("vertical");
         setLayout(Layout.VERTICAL);
         setOrder(TagsOrder.WEIGHT_REVERS);
@@ -393,7 +403,7 @@ public class TagCloudBean implements ActionListener, Serializable {
         setItemWeightFormat("-#0-");
     }
 
-    public void setOvalTheme(ActionEvent event) {
+    public void setMixedColorTheme() {
         setSkin("oval");
         setLayout(Layout.OVAL);
         setOrder(TagsOrder.WEIGHT);
@@ -407,7 +417,7 @@ public class TagCloudBean implements ActionListener, Serializable {
         setItemWeightFormat("<#0>");
     }
 
-    public void setSphereTheme(ActionEvent event) {
+    public void set3DGhostTheme() {
         setSkin("sphere");
         setLayout(Layout.SPHERE);
         setMinFontSize(15);
@@ -418,6 +428,27 @@ public class TagCloudBean implements ActionListener, Serializable {
         setOval(false);
         setItemWeightVisible(false);
         setItemWeightFormat("[#0]");
+    }
+
+    public void updateTagCloudTheme(){
+        switch (selectedTheme) {
+            case SUNNYDAY:
+                setSunDayTheme();
+                break;
+            case BRONZE:
+                setBronzeTheme();
+                break;
+            case MIXEDCOLORS:
+                setMixedColorTheme();
+                break;
+            case GHOST:
+                set3DGhostTheme();
+                break;
+        }
+    }
+
+    public void updateTagCloudTheme(ActionEvent event) {
+        updateTagCloudTheme();
     }
 
     private boolean vertical = false;
