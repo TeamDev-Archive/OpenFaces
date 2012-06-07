@@ -21,10 +21,13 @@ import org.openfaces.util.Faces;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class FileUploadBean implements Serializable {
     private List<FileUploadItem> uploadedFiles = new ArrayList<FileUploadItem>();
+    private Map<String, Long> fileSizes = new HashMap<String, Long>();
 
     public FileUploadBean() {
     }
@@ -33,6 +36,11 @@ public class FileUploadBean implements Serializable {
     public void uploadComplete(UploadCompletionEvent e) {
         List<FileUploadItem> files = e.getFiles();
         uploadedFiles.addAll(files);
+        for (FileUploadItem item : files) {
+            if (!fileSizes.containsKey(item.getFile().getName())) {
+                fileSizes.put(item.getFile().getName(), item.getFile().length());
+            }
+        }
         deleteFiles(files);
     }
 
@@ -60,7 +68,7 @@ public class FileUploadBean implements Serializable {
         if (file == null)
             result = "N/A";
         else {
-            result = (file.length() / 1024) + "Kb";
+            result = (int) Math.ceil(fileSizes.get(file.getName()) / 1024.0) + "Kb";
         }
         return result;
     }
@@ -73,7 +81,7 @@ public class FileUploadBean implements Serializable {
 
         deleteFiles(files);
     }
-    
+
     public String getBookImageFileSize() {
         Book book = Faces.var("book", Book.class);
         FileUploadItem uploadedCoverImage = book.getUploadedCoverImage();
@@ -81,7 +89,7 @@ public class FileUploadBean implements Serializable {
         FileUploadStatus status = uploadedCoverImage.getStatus();
         switch (status) {
             case SUCCESSFUL:
-                return getFileSizeStr(uploadedCoverImage);
+                return String.valueOf(book.getBookCoverImage().getFileSize());
             case STOPPED:
                 return "<Upload stopped>";
             case FAILED:
@@ -92,7 +100,7 @@ public class FileUploadBean implements Serializable {
                 throw new IllegalStateException("Unknown FileUploadStatus enumeration value: " + status);
         }
     }
-    
+
     public String getBookImageFileName() {
         Book book = Faces.var("book", Book.class);
         FileUploadItem uploadedCoverImage = book.getUploadedCoverImage();
