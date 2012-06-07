@@ -22,7 +22,7 @@ public class Book implements Serializable {
     private int publicationDate;
     private String publisher;
     private BookCategory bookCategory;
-    private FileUploadItem uploadedCoverImage;
+    private BookCoverImage bookCoverImage = new BookCoverImage();
 
     public Book(String bookTitle, long isbn, int publicationDate, String publisher, BookCategory bookCategory) {
         this.bookTitle = bookTitle;
@@ -79,10 +79,14 @@ public class Book implements Serializable {
     }
 
     public FileUploadItem getUploadedCoverImage() {
-        return uploadedCoverImage;
+        return bookCoverImage.getUploadedCoverImage();
     }
 
     public void setUploadedCoverImage(FileUploadItem uploadedCoverImage) {
-        this.uploadedCoverImage = uploadedCoverImage;
+        bookCoverImage.setUploadedCoverImage(uploadedCoverImage);
+    }
+
+    public BookCoverImage getBookCoverImage() {
+        return this.bookCoverImage;
     }
 }
