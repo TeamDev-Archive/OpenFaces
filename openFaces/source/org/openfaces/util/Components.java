@@ -149,13 +149,6 @@ public class Components {
         return result;
     }
 
-    public static <T extends UIComponent> T findFacetWithClass(UIComponent parent, Class<? extends T> facetClass) {
-        List<T> facetsWithClass = findFacetsWithClass(parent, facetClass);
-        if (facetsWithClass.size() == 0)
-            return null;
-        return facetsWithClass.get(0);
-    }
-
     public static <T extends UIComponent> List<T> findFacetsWithClass(UIComponent parent, Class<? extends T> facetClass) {
         List<T> result = new ArrayList<T>();
         Collection<UIComponent> facets = parent.getFacets().values();
@@ -163,6 +156,7 @@ public class Components {
             if (facetClass.isAssignableFrom(child.getClass())) {
                 result.add((T) child);
             }
+            result.addAll(findChildrenWithClass(child, facetClass, false, true));
         }
         return result;
     }
