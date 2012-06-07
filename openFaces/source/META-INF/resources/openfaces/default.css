@@ -1153,6 +1153,10 @@
   text-align: right;
 }
 
+.o_dateChooser_popup {
+    position: absolute; display: none;
+}
+
 .o_dropdown_field {
   background: url(clear.gif) repeat center center !important; /*"important" overrides RichFaces default skin's border */
 

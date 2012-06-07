@@ -39,7 +39,7 @@ public class DateChooserPopup extends SimplePopup {
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("div", this);
         writer.writeAttribute("id", getClientId(context), null);
-        writer.writeAttribute("style", "position: absolute; visibility: hidden;", null);
+        writer.writeAttribute("class", "o_dateChooser_popup", null);
     }
 
     protected void encodeContent(FacesContext context) throws IOException {
