@@ -46,7 +46,8 @@ O$.Popup = {
       _prepareForRearrangementBeforeShowing: function() {
         if (this.isVisible())
           return;
-        if (this.style.display == "none")
+        var style = O$.getElementStyle(this, ["display"]);
+        if (style.display == "none")
           this.style.display = this._originalStyleDisplay;
       },
 
@@ -70,7 +71,8 @@ O$.Popup = {
           O$.addIETransparencyControl(popup);
         }, 1);
         this.style.visibility = "visible";
-        if (this.style.display == "none")
+        var style = O$.getElementStyle(this, ["display"]);
+        if (style.display == "none")
           this.style.display = this._originalStyleDisplay;
         O$.Popup._notifyVisibilityChangeListeners(this);
       },
@@ -81,8 +83,6 @@ O$.Popup = {
 
         O$.removeIETransparencyControl(popup);
         this.style.visibility = "hidden";
-        if (this._originalStyleDisplay == undefined)
-          this._originalStyleDisplay = this.style.display;
         if (O$.isMozillaFF() || O$.isSafari3AndLate() /*todo:check whether O$.isSafari3AndLate check is really needed (it was added by mistake)*/) {
           var oldOverflow = O$.getElementStyle(this, "overflow");
           this.style.overflow = "hide"; // to avoid regaining focus when tabbing out from an opened DropDownField under Mozilla
@@ -97,7 +97,8 @@ O$.Popup = {
       },
 
       isVisible: function() {
-        var visible = (this.style.visibility == "visible") && (this.style.display != "none");
+        var style = O$.getElementStyle(this, ["visibility", "display"]);
+        var visible = (style.visibility != "hidden") && (style.display != "none");
         return visible;
       },
 
@@ -113,6 +114,9 @@ O$.Popup = {
         newParent.appendChild(this);
       }
     });
+
+    // there can't be inline pop-ups so we're assuming the regular display value for popups to be the "block" one
+    popup._originalStyleDisplay = "block";//O$.getElementStyle(this, "display");//this.style.display;
 
     O$.initIETransparencyWorkaround(popup);
 
