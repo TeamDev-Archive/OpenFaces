@@ -407,7 +407,7 @@ O$.FileUploadUtil = {
           var encodedUrlField = form.elements["javax.faces.encodedURL"];
           var url = encodedUrlField ? encodedUrlField.value : form.action;
 
-          if (url.indexOf("&") == -1) {
+          if (url.indexOf("?") == -1) {
             url = url + "?uniqueID=" + fileUpload._ID;
           } else {
             url = url + "&uniqueID=" + fileUpload._ID;
