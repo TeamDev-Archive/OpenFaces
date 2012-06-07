@@ -3207,7 +3207,7 @@ O$.Table = {
                                   dropTargetClass, dropTargetTopImage, dropTargetBottomImage) {
 
     var table = O$(tableId);
-    var autoscrollingSpeed = 100;
+    var autoscrollingSpeed = 200;
     var interGroupDraggingAllowed = false;
     var columnFixingAllowed = false;
 

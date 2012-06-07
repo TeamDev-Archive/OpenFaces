@@ -12,14 +12,23 @@
 
 package org.openfaces.testapp.datatable;
 
+import org.openfaces.component.table.CountFunction;
+import org.openfaces.component.table.MaxFunction;
+import org.openfaces.component.table.MinFunction;
+import org.openfaces.component.table.SumFunction;
+import org.openfaces.component.table.SummaryFunction;
+
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Dmitry Pikhulya
  */
 public class MultitypeBeanSupport {
+    private static final String[] CUSTOM_FIELD_PREFIXES = new String[]{"int", "double", "string", "date"};
+    private static final String[] CUSTOM_FIELD_SUFFIXES = new String[]{"0", "1", "2"};
     private List<MultitypeBean> list1;
 
     public MultitypeBeanSupport() {
@@ -39,14 +48,35 @@ public class MultitypeBeanSupport {
     }
 
     public List<String> getCustomFieldNames() {
-        String[] suffixes = new String[]{"0", "1", "2"};
-        String[] prefixes = new String[]{"int", "double", "string", "date"};
         List<String> result = new ArrayList<String>();
-        for (String prefix : prefixes) {
-            for (String suffix : suffixes) {
+        for (String prefix : CUSTOM_FIELD_PREFIXES) {
+            for (String suffix : CUSTOM_FIELD_SUFFIXES) {
                 result.add(prefix + suffix);
             }
         }
         return result;
     }
+
+    private Map<String, SummaryFunction> customFieldsToDefaultFunctions;
+
+    public Map<String, SummaryFunction> getCustomFieldsToDefaultFunctions() {
+        if (customFieldsToDefaultFunctions == null) {
+            customFieldsToDefaultFunctions = new HashMap<String, SummaryFunction>();
+            for (String prefix : CUSTOM_FIELD_PREFIXES) {
+                for (String suffix : CUSTOM_FIELD_SUFFIXES) {
+                    SummaryFunction function = !prefix.equals("string")
+                            ? (
+                            suffix.equals("0") ? new SumFunction() :
+                                    suffix.equals("1") ? new MinFunction() :
+                                            suffix.equals("2") ? new MaxFunction() : null
+                    )
+                            : new CountFunction();
+                    customFieldsToDefaultFunctions.put(prefix + suffix, function);
+                }
+            }
+
+        }
+        return customFieldsToDefaultFunctions;
+    }
+
 }

@@ -286,9 +286,27 @@ O$.DateChooser = {
       clearTimeout(O$._dateChooserTimerID);
       return;
     }
+    var popup = dc._popup;
+    var popupStyle = O$.getElementStyle(popup, ["display"]);
+    if (popupStyle.display == "none") {
+      // calendar cannot be measured if its container has the display property value of "hidden", so we're replacing
+      // it with visibility="hidden" temporarily. Note that display="none" is used for hiding the calendar for the rest
+      // of the component's lifetime instead of visibility="hidden" because using visibility for this purpose reserves
+      // the space for this hidden element which might result in unwanted scrollers on the page where the DateChooser
+      // is used
+      popup.style.visibility = "hidden";
+      popup.style.display = "block";
+    }
     var cal = dc._calendar;
-    if (cal.offsetWidth != 0) {
-      dc.style.width = cal.offsetWidth + "px";
+    var calendarWidth = cal.offsetWidth;
+    if (calendarWidth != 0) {
+      if (popup.style.visibility == "hidden") {
+        // revert the visibility="hidden" declaration that was temporarily used instead of the display="none" one
+        // (see above)
+        popup.style.display = "none";
+        popup.style.visibility = "visible";
+      }
+      dc.style.width = calendarWidth + "px";
       dc.style.visibility = "visible";
       O$.repaintAreaForOpera(dc, true);
     } else {
