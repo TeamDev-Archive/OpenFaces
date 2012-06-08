@@ -19,7 +19,7 @@ import java.io.Serializable;
 /**
  * @author Vladislav Lubenskiy
  */
-public class BookCoverImage  implements Serializable {
+public class BookCoverImage implements Serializable {
 
     private FileUploadItem uploadedCoverImage;
     private long fileSize;
@@ -33,7 +33,11 @@ public class BookCoverImage  implements Serializable {
 
     public void setUploadedCoverImage(FileUploadItem uploadedCoverImage) {
         this.uploadedCoverImage = uploadedCoverImage;
-        fileSize = uploadedCoverImage.getFile().length();
+        if (uploadedCoverImage.getFile() == null) {
+            return;
+        } else {
+            fileSize = uploadedCoverImage.getFile().length();
+        }
     }
 
     public long getFileSize() {
