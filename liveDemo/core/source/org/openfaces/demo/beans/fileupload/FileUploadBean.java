@@ -36,7 +36,9 @@ public class FileUploadBean implements Serializable {
         List<FileUploadItem> files = e.getFiles();
         uploadedFiles.addAll(files);
         for (FileUploadItem item : files) {
-            if (!fileSizes.containsKey(item.getFile().getName())) {
+            if (item.getFile() == null) {
+                continue;
+            } else if (!fileSizes.containsKey(item.getFile().getName())) {
                 fileSizes.put(item.getFile().getName(), item.getFile().length());
             }
         }
@@ -47,7 +49,8 @@ public class FileUploadBean implements Serializable {
         for (FileUploadItem fileUploadItem : files) {
             File file = fileUploadItem.getFile();
             // delete the file to save disk space on the server running the demo
-            file.delete();
+            if (file != null)
+                file.delete();
         }
     }
 
@@ -77,7 +80,6 @@ public class FileUploadBean implements Serializable {
         List<FileUploadItem> files = uploadCompletionEvent.getFiles();
         FileUploadItem fileUploadItem = files.get(0);
         book.setUploadedCoverImage(fileUploadItem);
-
         deleteFiles(files);
     }
 
