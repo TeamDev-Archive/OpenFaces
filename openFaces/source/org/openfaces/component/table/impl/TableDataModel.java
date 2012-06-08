@@ -486,42 +486,48 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
 
         List<RowInfo> thisLevelGroupHeaderRowInfos = new ArrayList<RowInfo>();
 
-        RowInfo currentGroupRowInfo = null;
-        int subRowsLevel = level + 1;
-        for (int i = 0; i < rowCount; i++) {
-            RowInfo rowInfo = rows.get(i);
-            RowInfo nextRowInfo = i < rowCount - 1 ? rows.get(i + 1) : null;
-            if (currentGroupRowInfo == null) {
-                currentGroupRowInfo = createHeaderRowInfo(context, columnGroupingInfo, rowInfo.getRowData(),
-                        level, parentRowGroup);
-                currentGroupRowInfo.setAllDataRowsInThisGroup(new ArrayList<RowInfo>());
+        Runnable exitColumnContext = columnGroupingInfo.enterColumnContext();
+        try {
+
+            RowInfo currentGroupRowInfo = null;
+            int subRowsLevel = level + 1;
+            for (int i = 0; i < rowCount; i++) {
+                RowInfo rowInfo = rows.get(i);
+                RowInfo nextRowInfo = i < rowCount - 1 ? rows.get(i + 1) : null;
+                if (currentGroupRowInfo == null) {
+                    currentGroupRowInfo = createHeaderRowInfo(context, columnGroupingInfo, rowInfo.getRowData(),
+                            level, parentRowGroup);
+                    currentGroupRowInfo.setAllDataRowsInThisGroup(new ArrayList<RowInfo>());
+                }
+
+                rowInfo.setLevel(subRowsLevel);
+                currentGroupRowInfo.getAllDataRowsInThisGroup().add(rowInfo);
+
+                boolean lastRowInThisGroup = nextRowInfo == null ||
+                        !recordsInTheSameGroup(ruleComparator, rowInfo, nextRowInfo);
+                if (lastRowInThisGroup) {
+                    GroupHeader groupHeader = (GroupHeader) currentGroupRowInfo.getRowData();
+                    RowGroup rowGroup = groupHeader.getRowGroup();
+                    List<RowInfo> subRowInfos = constructGroupingTree(
+                            groupingRules.subList(1, groupingRules.size()),
+                            currentGroupRowInfo.getAllDataRowsInThisGroup(),
+                            subRowsLevel,
+                            rowGroup);
+                    if (columnGroupingInfo.isInHeadersSpecified())
+                        subRowInfos.add(0, new RowInfo(new InGroupHeader(rowGroup), -1, subRowsLevel));
+                    if (columnGroupingInfo.isInGroupFootersSpecified())
+                        subRowInfos.add(new RowInfo(new InGroupFooter(rowGroup), -1, subRowsLevel));
+                    if (columnGroupingInfo.isGroupFooterSpecified())
+                        subRowInfos.add(new RowInfo(new GroupFooter(rowGroup), -1, subRowsLevel));
+
+                    currentGroupRowInfo.setImmediateSubRows(subRowInfos);
+                    thisLevelGroupHeaderRowInfos.add(currentGroupRowInfo);
+                    currentGroupRowInfo = null;
+                }
+
             }
-
-            rowInfo.setLevel(subRowsLevel);
-            currentGroupRowInfo.getAllDataRowsInThisGroup().add(rowInfo);
-
-            boolean lastRowInThisGroup = nextRowInfo == null ||
-                    !recordsInTheSameGroup(ruleComparator, rowInfo, nextRowInfo);
-            if (lastRowInThisGroup) {
-                GroupHeader groupHeader = (GroupHeader) currentGroupRowInfo.getRowData();
-                RowGroup rowGroup = groupHeader.getRowGroup();
-                List<RowInfo> subRowInfos = constructGroupingTree(
-                        groupingRules.subList(1, groupingRules.size()),
-                        currentGroupRowInfo.getAllDataRowsInThisGroup(),
-                        subRowsLevel,
-                        rowGroup);
-                if (columnGroupingInfo.isInHeadersSpecified())
-                    subRowInfos.add(0, new RowInfo(new InGroupHeader(rowGroup), -1, subRowsLevel));
-                if (columnGroupingInfo.isInGroupFootersSpecified())
-                    subRowInfos.add(new RowInfo(new InGroupFooter(rowGroup), -1, subRowsLevel));
-                if (columnGroupingInfo.isGroupFooterSpecified())
-                    subRowInfos.add(new RowInfo(new GroupFooter(rowGroup), -1, subRowsLevel));
-
-                currentGroupRowInfo.setImmediateSubRows(subRowInfos);
-                thisLevelGroupHeaderRowInfos.add(currentGroupRowInfo);
-                currentGroupRowInfo = null;
-            }
-
+        } finally {
+            if (exitColumnContext != null) exitColumnContext.run();
         }
         return thisLevelGroupHeaderRowInfos;
     }
@@ -1263,6 +1269,7 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
      * to avoid having to retrieve this information each time it is needed.
      */
     private class ColumnGroupingInfo {
+        private BaseColumn column;
         private String columnId;
         private boolean inHeadersSpecified;
         private boolean inGroupFootersSpecified;
@@ -1270,6 +1277,7 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
         private ValueExpression columnGroupingValueExpression;
 
         public ColumnGroupingInfo(BaseColumn column) {
+            this.column = column;
             columnId = column.getId();
             columnGroupingValueExpression = getColumnGroupingValueExpression(columnId);
             if (columnGroupingValueExpression == null)
@@ -1296,6 +1304,16 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
             List<BaseColumn> allColumns = table.getAllColumns();
             BaseColumn baseColumn = table.findColumnById(allColumns, columnId);
             return baseColumn.getColumnGroupingExpression();
+        }
+
+        /**
+         * @return a Runnable instance which restores the context to the old state as it was prior to invoking this method
+         */
+        public Runnable enterColumnContext() {
+            if (column instanceof DynamicColumn) {
+                return ((DynamicColumn) column).declareContextVariables();
+            }
+            return null;
         }
 
         public String getColumnId() {
