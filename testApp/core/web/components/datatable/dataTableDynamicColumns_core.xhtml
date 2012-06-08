@@ -64,6 +64,10 @@
   <o:dataTable id="table2" value="#{TableTestBean.collection1}" var="row" rowKey="#{row.id}"
                columnIdVar="colId"
                columnIndexVar="colIndex">
+    <f:facet name="header">
+      <o:groupingBox/>
+    </f:facet>
+    <o:rowGrouping />
     <o:column id="col1" sortingExpression="#{row.field1}" style="width: 150px">
       <f:facet name="header">
         <h:outputText value="Static Column"/>
@@ -75,6 +79,13 @@
                  var="col">
         <f:facet name="header">
           <h:outputText value="Header #{col}"/>
+        </f:facet>
+        <f:facet name="groupHeader">
+          <h:panelGroup>
+          #{columnHeader} : <b>#{groupingValueString}</b>
+            [#{col}]
+          <h:commandButton value="col 2 grouping header button " rendered="#{col eq 2}"/>
+          </h:panelGroup>
         </f:facet>
         <f:facet name="footer">
           <h:outputText value="Footer #{col}"/>
