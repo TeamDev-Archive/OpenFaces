@@ -130,6 +130,11 @@ public class Columns extends UIComponentBase implements ValueHolder, NamingConta
 
     @Override
     public Object saveState(FacesContext context) {
+        if (getColumnIndex() != -1) {
+            // the index might not be reset in some circumstances (e.g. rendering in-group summaries in a grouped table)
+            // make sure the state is going to be saved under a correct client id in the JSF's state map
+            setColumnIndex(-1);
+        }
         return new Object[]{
                 super.saveState(context), prevValueFromBinding,
                 columnRendered, headerValue, footerValue, var, indexVar, sortingEnabled, sortingComparator,
