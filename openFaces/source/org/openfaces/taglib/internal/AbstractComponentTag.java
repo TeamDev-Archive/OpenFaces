@@ -772,7 +772,7 @@ public abstract class AbstractComponentTag extends AbstractTag {
         component.getAttributes().put(propertyName, lineStyle);
     }
 
-    protected void setConverterProperty(FacesContext facesContext, UIComponent component, String propertyName) {
+    protected void setConverterProperty(UIComponent component, String propertyName) {
         Application application = facesContext.getApplication();
         String converterValue = getPropertyValue(propertyName);
         if (!setAsValueExpressionIfPossible(component, propertyName)) {

@@ -36,8 +36,8 @@ public class TabSetTag extends AbstractUIInputTag {
     }
 
     @Override
-    public void setComponentProperties(FacesContext facesContext, UIComponent component) {
-        super.setComponentProperties(facesContext, component);
+    public void setComponentProperties(FacesContext context, UIComponent component) {
+        super.setComponentProperties(context, component);
 
         setIntProperty(component, "selectedIndex");
         setEnumerationProperty(component, "alignment", TabAlignment.class);
@@ -66,7 +66,7 @@ public class TabSetTag extends AbstractUIInputTag {
         setStringProperty(component, "focusAreaStyle");
         setStringProperty(component, "focusAreaClass");
 
-        setMethodExpressionProperty(facesContext, component, "selectionChangeListener",
+        setMethodExpressionProperty(context, component, "selectionChangeListener",
                 new Class[]{SelectionChangeEvent.class}, void.class);
     }
 }

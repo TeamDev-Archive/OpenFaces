@@ -42,8 +42,8 @@ public class ColumnTag extends BaseColumnTag {
         setValueExpressionProperty(component, "value");
         setValueExpressionProperty(component, "sortingExpression");
         setValueExpressionProperty(component, "groupingExpression");
-        setConverterProperty(context, component, "converter");
-        setConverterProperty(context, component, "groupingValueConverter");
+        setConverterProperty(component, "converter");
+        setConverterProperty(component, "groupingValueConverter");
 
         String sortingComparator = getPropertyValue("sortingComparator");
         if (sortingComparator != null) {

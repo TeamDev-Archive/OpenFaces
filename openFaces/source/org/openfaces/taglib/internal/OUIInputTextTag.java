@@ -19,8 +19,8 @@ import javax.faces.context.FacesContext;
  */
 public abstract class OUIInputTextTag extends AbstractUIInputTag {
     @Override
-    public void setComponentProperties(FacesContext facesContext, UIComponent component) {
-        super.setComponentProperties(facesContext, component);
+    public void setComponentProperties(FacesContext context, UIComponent component) {
+        super.setComponentProperties(context, component);
 
         setBooleanProperty(component, "readonly");
         setStringProperty(component, "promptText");

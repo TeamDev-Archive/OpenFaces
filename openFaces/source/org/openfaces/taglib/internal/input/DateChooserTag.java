@@ -27,8 +27,8 @@ public class DateChooserTag extends DropDownComponentTag {
     }
 
     @Override
-    public void setComponentProperties(FacesContext facesContext, UIComponent component) {
-        super.setComponentProperties(facesContext, component);
+    public void setComponentProperties(FacesContext context, UIComponent component) {
+        super.setComponentProperties(context, component);
         setIntProperty(component, "firstDayOfWeek");
         setValueExpressionProperty(component, "value");
         setTimeZoneProperty(component, "timeZone");

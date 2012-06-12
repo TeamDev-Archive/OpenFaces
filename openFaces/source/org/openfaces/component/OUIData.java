@@ -843,7 +843,7 @@ public class OUIData extends UIData implements NamingContainer, UniqueIdVendor, 
                 Runnable restoreVariables = null;
                 if (child instanceof DynamicCol) {
                     DynamicCol dynamicCol = (DynamicCol) child;
-                    restoreVariables = dynamicCol.declareContextVariables();
+                    restoreVariables = dynamicCol.enterComponentContext();
                     colFacets = dynamicCol.getFacetsForProcessing();
                 } else
                     colFacets = child.getFacets();
@@ -854,8 +854,7 @@ public class OUIData extends UIData implements NamingContainer, UniqueIdVendor, 
                 }
 
                 // <MOD-5>
-                if (child instanceof DynamicCol)
-                    restoreVariables.run();
+                if (restoreVariables != null) restoreVariables.run();
                 // </MOD-5>
             }
         }
@@ -918,7 +917,7 @@ public class OUIData extends UIData implements NamingContainer, UniqueIdVendor, 
                     Runnable restoreVariables = null;
                     if (child instanceof DynamicCol) {
                         DynamicCol dynamicCol = (DynamicCol) child;
-                        restoreVariables = dynamicCol.declareContextVariables();
+                        restoreVariables = dynamicCol.enterComponentContext();
                         colChildren = dynamicCol.getChildrenForProcessing();
                     } else
                         colChildren = child.getChildren();
@@ -931,7 +930,7 @@ public class OUIData extends UIData implements NamingContainer, UniqueIdVendor, 
 
                     // <MOD-5>
                     if (child instanceof DynamicCol)
-                        restoreVariables.run();
+                        if (restoreVariables != null) restoreVariables.run();
                     // </MOD-5>
                 }
             }

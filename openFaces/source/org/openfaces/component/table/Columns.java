@@ -13,7 +13,7 @@
 package org.openfaces.component.table;
 
 import org.openfaces.component.OUIData;
-import org.openfaces.component.table.impl.AbstractDynamicColumnExpression;
+import org.openfaces.component.table.impl.ContextDependentExpressionWrapper;
 import org.openfaces.component.table.impl.DynamicColumn;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.util.Components;
@@ -879,12 +879,16 @@ public class Columns extends UIComponentBase implements ValueHolder, NamingConta
 
     private void applySortingParameters(DynamicColumn column) {
         if (getSortingEnabled()) {
-            Comparator sortingComparator = getSortingComparator();
-            if (sortingComparator != null)
-                column.setSortingComparatorExpression(new ConstantValueExpression(Comparator.class, sortingComparator));
+            if (sortingComparator != null || getValueExpression("sortingComparator") != null)
+                column.setSortingComparatorExpression(new ConstantValueExpression(Comparator.class, sortingComparator) {
+                    @Override
+                    public Object getValue(ELContext elContext) {
+                        return getSortingComparator();
+                    }
+                });
             ValueExpression sortingExpressionBinding = getSortingExpression();
             if (sortingExpressionBinding != null)
-                column.setSortingExpression(new SortingExpressionExpression(column, sortingExpressionBinding));
+                column.setSortingExpression(sortingExpressionBinding);
         }
     }
 
@@ -1016,26 +1020,16 @@ public class Columns extends UIComponentBase implements ValueHolder, NamingConta
         }
     }
 
-    public static class FilterExpressionExpression extends AbstractDynamicColumnExpression {
-
+    public static class FilterExpressionExpression extends ContextDependentExpressionWrapper {
         public FilterExpressionExpression() {
         }
 
         public FilterExpressionExpression(DynamicColumn column, ValueExpression expressionFromColumnsComponent) {
             super(column, expressionFromColumnsComponent);
         }
-
-        public Object getValue(ELContext elContext) {
-            Runnable restoreVariables = column.declareContextVariables();
-            Object result = expressionFromColumnsComponent.getValue(elContext);
-            restoreVariables.run();
-            return result;
-        }
-
     }
 
-    public static class FilterValueExpression extends AbstractDynamicColumnExpression {
-
+    public static class FilterValueExpression extends ContextDependentExpressionWrapper {
         public FilterValueExpression() {
         }
 
@@ -1043,38 +1037,8 @@ public class Columns extends UIComponentBase implements ValueHolder, NamingConta
             super(column, expressionFromColumnsComponent);
         }
 
-        public Object getValue(ELContext elContext) {
-            Runnable undeclaration = column.declareContextVariables();
-            Object result = expressionFromColumnsComponent.getValue(elContext);
-            undeclaration.run();
-            return result;
-        }
-
-        public void setValue(ELContext elContext, Object value) {
-            Runnable restoreVariables = column.declareContextVariables();
-            expressionFromColumnsComponent.setValue(elContext, value);
-            restoreVariables.run();
-        }
-
         public boolean isReadOnly(ELContext elContext) {
             return false;
-        }
-
-    }
-
-    public static class SortingExpressionExpression extends AbstractDynamicColumnExpression {
-        public SortingExpressionExpression() {
-        }
-
-        public SortingExpressionExpression(DynamicColumn column, ValueExpression expressionFromColumnsComponent) {
-            super(column, expressionFromColumnsComponent);
-        }
-
-        public Object getValue(ELContext elContext) {
-            Runnable restoreVariables = column.declareContextVariables();
-            Object result = expressionFromColumnsComponent.getValue(elContext);
-            restoreVariables.run();
-            return result;
         }
 
     }

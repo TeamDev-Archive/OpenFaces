@@ -76,7 +76,7 @@
     </o:column>
     <o:columnGroup>
       <o:columns value="#{TableTestBean.testColumns}"
-                 var="col">
+                 var="col" sortingExpression="#{row.customFields[col]}">
         <f:facet name="header">
           <h:outputText value="Header #{col}"/>
         </f:facet>
@@ -84,7 +84,6 @@
           <h:panelGroup>
           #{columnHeader} : <b>#{groupingValueString}</b>
             [#{col}]
-          <h:commandButton value="col 2 grouping header button " rendered="#{col eq 2}"/>
           </h:panelGroup>
         </f:facet>
         <f:facet name="footer">

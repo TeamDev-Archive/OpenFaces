@@ -33,6 +33,8 @@ public class DynamicColumn extends Column implements DynamicCol {
     public static final String COMPONENT_TYPE = "org.openfaces.DynamicColumn";
     public static final String COMPONENT_FAMILY = "org.openfaces.DynamicColumn";
 
+    private static final String CONTEXT_ENTRANCE_STACK_KEY = DynamicColumn.class.getName() + ".contextEntranceStack";
+
     private Columns columns;
     private Object colData;
     private int colIndex;
@@ -135,9 +137,35 @@ public class DynamicColumn extends Column implements DynamicCol {
         columns.setConverter(converter);
     }
 
-    public Runnable declareContextVariables() {
+    private List<DynamicColumn> getContextEntranceStack(Map<String, Object> requestMap) {
+        List<DynamicColumn> contextEntranceStack = (List<DynamicColumn>) requestMap.get(CONTEXT_ENTRANCE_STACK_KEY);
+        if (contextEntranceStack == null) {
+            contextEntranceStack = new ArrayList<DynamicColumn>();
+            requestMap.put(CONTEXT_ENTRANCE_STACK_KEY, contextEntranceStack);
+        }
+        return contextEntranceStack;
+    }
+
+    public boolean isComponentInContext() {
         FacesContext context = FacesContext.getCurrentInstance();
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+        final List<DynamicColumn> contextStack = getContextEntranceStack(requestMap);
+        int contextStackSize = contextStack.size();
+        if (contextStackSize == 0)
+            return false;
+        return contextStack.get(contextStackSize - 1) == this;
+    }
+
+    public Runnable enterComponentContext() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+        final List<DynamicColumn> contextStack = getContextEntranceStack(requestMap);
+        int contextStackSize = contextStack.size();
+        if (contextStackSize > 0 && contextStack.get(contextStackSize - 1) == this) {
+            // already in context
+            return null;
+        }
+        contextStack.add(this);
 
         String var = columns.getVar();
         final Object prevVarValue = requestMap.put(var, colData);
@@ -152,6 +180,17 @@ public class DynamicColumn extends Column implements DynamicCol {
         final Object finalPrevIndexVarValue = prevIndexVarValue;
         return new Runnable() {
             public void run() {
+                int contextStackSize = contextStack.size();
+                if (contextStackSize == 0) throw new IllegalStateException("DynamicColumn context entrance stack " +
+                        "is empty upon an attempt to exit the context. The reason might be the unpaired " +
+                        "\"enter\" and \"exit\" executions");
+                DynamicColumn lastEntry = contextStack.remove(contextStackSize - 1);
+//                if (lastEntry != DynamicColumn.this) {
+//                    contextStack.add(lastEntry); // move the improperly-removed last entry back to its position
+//                    throw new IllegalStateException("DynamicColumn's \"exit component context\" runnable: " +
+//                            "An unpaired attempt to exit a context without exiting the other context is made");
+//                }
+
                 Map<String, Object> requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
 
                 String var = columns.getVar();
@@ -167,11 +206,11 @@ public class DynamicColumn extends Column implements DynamicCol {
         };
     }
 
-    private Runnable restoreVariablesRunnable;
+    private Runnable exitContextRunnable;
 
     @Override
     public void encodeBegin(FacesContext context) throws IOException {
-        restoreVariablesRunnable = declareContextVariables();
+        exitContextRunnable = enterComponentContext();
     }
 
     @Override
@@ -181,7 +220,7 @@ public class DynamicColumn extends Column implements DynamicCol {
 
     @Override
     public void encodeEnd(FacesContext context) throws IOException {
-        restoreVariablesRunnable.run();
+        if (exitContextRunnable != null) exitContextRunnable.run();
     }
 
     public List<UIComponent> getChildrenForProcessing() {
@@ -197,12 +236,12 @@ public class DynamicColumn extends Column implements DynamicCol {
 
     @Override
     public void processDecodes(FacesContext context) {
-        Runnable restoreVariables = declareContextVariables();
+        Runnable exitContext = enterComponentContext();
         Collection<UIComponent> facets = getFacetCollection();
         for (UIComponent component : facets) {
             component.processDecodes(context);
         }
-        restoreVariables.run();
+        if (exitContext != null) exitContext.run();
     }
 
     private Collection<UIComponent> getFacetCollection() {
@@ -221,31 +260,49 @@ public class DynamicColumn extends Column implements DynamicCol {
 
     @Override
     public void processValidators(FacesContext context) {
-        Runnable restoreVariables = declareContextVariables();
+        Runnable restoreVariables = enterComponentContext();
         Collection<UIComponent> facets = getFacetCollection();
         for (UIComponent component : facets) {
             component.processValidators(context);
         }
-        restoreVariables.run();
+        if (restoreVariables != null) restoreVariables.run();
     }
 
     @Override
     public void processUpdates(FacesContext context) {
-        Runnable restoreVariables = declareContextVariables();
+        Runnable restoreVariables = enterComponentContext();
         Collection<UIComponent> facets = getFacetCollection();
         for (UIComponent component : facets) {
             component.processUpdates(context);
         }
-        restoreVariables.run();
+        if (restoreVariables != null) restoreVariables.run();
     }
 
     @Override
     public ExpressionData getExpressionData(ValueExpression expression) {
-        Runnable restoreVariables = declareContextVariables();
+        Runnable restoreVariables = enterComponentContext();
         try {
             return super.getExpressionData(expression);
         } finally {
-            restoreVariables.run();
+            if (restoreVariables != null) restoreVariables.run();
         }
+    }
+
+    @Override
+    public ValueExpression getColumnSortingExpression() {
+        ValueExpression superExpression = super.getColumnSortingExpression();
+        return superExpression != null ? new ContextDependentExpressionWrapper(this, superExpression) : null;
+    }
+
+    @Override
+    public ValueExpression getColumnGroupingExpression() {
+        ValueExpression superExpression = super.getColumnGroupingExpression();
+        return superExpression != null ? new ContextDependentExpressionWrapper(this, superExpression) : null;
+    }
+
+    @Override
+    public ValueExpression getSortingComparatorExpression() {
+        ValueExpression superExpression = super.getSortingComparatorExpression();
+        return superExpression != null ? new ContextDependentExpressionWrapper(this, superExpression) : null;
     }
 }

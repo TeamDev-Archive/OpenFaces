@@ -43,10 +43,10 @@ public class MultitypeBean {
     public MultitypeBean() {
         Random r = new Random();
         booleanField = r.nextBoolean();
-        byteField = (byte) r.nextInt();
-        shortField = (short) r.nextInt(1000);
-        intField = r.nextInt(10000);
-        longField = r.nextInt(100000);
+        byteField = (byte) r.nextInt(10);
+        shortField = (short) r.nextInt(100);
+        intField = r.nextInt(1000);
+        longField = r.nextInt(10000);
         floatField = r.nextFloat() * 10;
         doubleField = r.nextDouble() * 100;
 
@@ -55,10 +55,11 @@ public class MultitypeBean {
         dateField = nextDate(r);
 
         for (int i = 0; i < 3; i++) {
-            customFields.put("int" + String.valueOf(i), r.nextInt(10000));
-            customFields.put("double" + String.valueOf(i), r.nextDouble() * 100.0);
-            customFields.put("string" + String.valueOf(i), nextString(r));
-            customFields.put("date" + String.valueOf(i), nextDate(r));
+            customFields.put("boolean" + i, r.nextBoolean());
+            customFields.put("int" + i, r.nextInt(10000));
+            customFields.put("double" + i, r.nextDouble() * 100.0);
+            customFields.put("string" + i, nextString(r));
+            customFields.put("date" + i, nextDate(r));
         }
     }
 
@@ -81,7 +82,7 @@ public class MultitypeBean {
     }
 
     private String nextString(Random r) {
-        return Long.toString(Math.abs(r.nextLong()), 36);
+        return Integer.toString(Math.abs(r.nextInt()), 36);
     }
 
     public boolean isBooleanField() {

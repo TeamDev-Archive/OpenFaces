@@ -17,7 +17,10 @@ import org.openfaces.component.table.MaxFunction;
 import org.openfaces.component.table.MinFunction;
 import org.openfaces.component.table.SumFunction;
 import org.openfaces.component.table.SummaryFunction;
+import org.openfaces.util.Faces;
 
+import javax.faces.convert.Converter;
+import javax.faces.convert.NumberConverter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,8 +30,15 @@ import java.util.Map;
  * @author Dmitry Pikhulya
  */
 public class MultitypeBeanSupport {
-    private static final String[] CUSTOM_FIELD_PREFIXES = new String[]{"int", "double", "string", "date"};
+    private static final String[] CUSTOM_FIELD_PREFIXES = new String[]{"int", "double", "date", "string", "boolean"};
     private static final String[] CUSTOM_FIELD_SUFFIXES = new String[]{"0", "1", "2"};
+
+    private static final NumberConverter DOUBLE_COL_CONVERTER = new NumberConverter();
+    static {
+        DOUBLE_COL_CONVERTER.setMinFractionDigits(2);
+        DOUBLE_COL_CONVERTER.setMaxFractionDigits(2);
+    }
+
     private List<MultitypeBean> list1;
 
     public MultitypeBeanSupport() {
@@ -64,7 +74,7 @@ public class MultitypeBeanSupport {
             customFieldsToDefaultFunctions = new HashMap<String, SummaryFunction>();
             for (String prefix : CUSTOM_FIELD_PREFIXES) {
                 for (String suffix : CUSTOM_FIELD_SUFFIXES) {
-                    SummaryFunction function = !prefix.equals("string")
+                    SummaryFunction function = !prefix.equals("string") && !prefix.equals("boolean")
                             ? (
                             suffix.equals("0") ? new SumFunction() :
                                     suffix.equals("1") ? new MinFunction() :
@@ -77,6 +87,15 @@ public class MultitypeBeanSupport {
 
         }
         return customFieldsToDefaultFunctions;
+    }
+
+    public Converter getColumnConverter() {
+        String col = Faces.var("col", String.class);
+        if (col != null && col.startsWith("double")) {
+            return DOUBLE_COL_CONVERTER;
+        } else {
+            return null;
+        }
     }
 
 }

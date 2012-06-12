@@ -29,8 +29,8 @@ public class SuggestionFieldTag extends DropDownFieldTag {
     }
 
     @Override
-    public void setComponentProperties(FacesContext facesContext, UIComponent component) {
-        super.setComponentProperties(facesContext, component);
+    public void setComponentProperties(FacesContext context, UIComponent component) {
+        super.setComponentProperties(context, component);
 
         setBooleanProperty(component, "manualListOpeningAllowed");
     }
