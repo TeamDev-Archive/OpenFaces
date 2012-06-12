@@ -14,6 +14,9 @@ package org.openfaces.taglib.internal.select;
 
 import org.openfaces.component.select.SelectManyCheckbox;
 
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+
 /**
  * @author Oleg Marshalenko
  */
@@ -26,5 +29,12 @@ public class SelectManyCheckboxTag extends AbstractUISelectManyInputTag {
 
     public String getRendererType() {
         return RENDERER_TYPE;
+    }
+
+    @Override
+    public void setComponentProperties(FacesContext facesContext, UIComponent uiComponent) {
+        super.setComponentProperties(facesContext, uiComponent);
+        setIntProperty(uiComponent, "rows");
+        setIntProperty(uiComponent, "columns");
     }
 }
