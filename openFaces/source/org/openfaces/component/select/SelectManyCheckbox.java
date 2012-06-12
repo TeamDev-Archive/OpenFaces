@@ -13,6 +13,7 @@
 package org.openfaces.component.select;
 
 import org.openfaces.util.MessageUtil;
+import org.openfaces.util.ValueBindings;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -25,6 +26,26 @@ import java.util.List;
 public class SelectManyCheckbox extends OUISelectManyInputBase {
     public static final String COMPONENT_TYPE = "org.openfaces.SelectManyCheckbox";
     public static final String COMPONENT_FAMILY = "org.openfaces.SelectManyCheckbox";
+    private Integer rows;
+    private Integer columns;
+
+    @Override
+    public Object saveState(FacesContext context) {
+        return new Object[]{
+                super.saveState(context),
+                rows,
+                columns
+        };
+    }
+
+    @Override
+    public void restoreState(FacesContext context, Object state) {
+        Object[] values = (Object[]) state;
+        int i = 0;
+        super.restoreState(context, values[i++]);
+        rows = (Integer) values[i++];
+        columns = (Integer) values[i];
+    }
 
     public SelectManyCheckbox() {
         setRendererType("org.openfaces.SelectManyCheckboxRenderer");
@@ -51,4 +72,19 @@ public class SelectManyCheckbox extends OUISelectManyInputBase {
         }
     }
 
+    public Integer getRows() {
+        return ValueBindings.get(this, "rows", rows, null);
+    }
+
+    public void setRows(Integer rows) {
+        this.rows = rows;
+    }
+
+    public Integer getColumns() {
+        return ValueBindings.get(this, "columns", columns, null);
+    }
+
+    public void setColumns(Integer columns) {
+        this.columns = columns;
+    }
 }

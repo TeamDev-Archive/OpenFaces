@@ -14,6 +14,8 @@ package org.openfaces.taglib.jsp.select;
 
 import org.openfaces.taglib.internal.select.SelectManyCheckboxTag;
 
+import javax.el.ValueExpression;
+
 /**
  * @author Oleg Marshalenko
  */
@@ -23,4 +25,11 @@ public class SelectManyCheckboxJspTag  extends UISelectManyInputJspTag {
         super(new SelectManyCheckboxTag());
     }
 
+    public void setRows(ValueExpression rows) {
+        getDelegate().setPropertyValue("rows", rows);
+    }
+
+    public void setColumns(ValueExpression columns) {
+        getDelegate().setPropertyValue("columns", columns);
+    }
 }

@@ -36500,6 +36500,31 @@ and it is automatically triggered on any form submission. -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>Checkboxes in the component can be distributed into several rows. This attribute specifies the number of rows in the layout.
+        Note that 'row' and 'column' attributes cannot be be set at the same time.
+      </description>
+      <name>rows</name>
+      <deferred-value>
+        <type>java.lang.Integer</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.Integer -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Checkboxes in the component can be distributed into several columns. This attribute specifies the number of columns in the layout.
+        Note that 'row' and 'column' attributes cannot be be set at the same time.
+      </description>
+      <name>columns</name>
+      <deferred-value>
+        <type>java.lang.Integer</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.Integer -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
   </tag>
 
 
