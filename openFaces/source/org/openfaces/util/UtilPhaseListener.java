@@ -449,11 +449,11 @@ public class UtilPhaseListener extends PhaseListenerBase {
                 List<DynamicColumn> dynamicColumns = ((Columns) parent).toColumnList(context);
                 int columnIndex = Integer.parseInt(id);
                 final DynamicColumn dynamicColumn = dynamicColumns.get(columnIndex);
-                final Runnable restoreVariables = dynamicColumn.declareContextVariables();
+                final Runnable restoreVariables = dynamicColumn.enterComponentContext();
                 if (restoreDataPointerRunnables != null)
                     restoreDataPointerRunnables.add(new Runnable() {
                         public void run() {
-                            restoreVariables.run();
+                            if (restoreVariables != null) restoreVariables.run();
                         }
                     });
                 return parent;

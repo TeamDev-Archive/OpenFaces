@@ -28,8 +28,8 @@ public class SelectRowCheckboxTag extends SelectBooleanCheckboxTag {
     }
 
     @Override
-    public void setComponentProperties(FacesContext facesContext, UIComponent component) {
-        super.setComponentProperties(facesContext, component);
+    public void setComponentProperties(FacesContext context, UIComponent component) {
+        super.setComponentProperties(context, component);
 
     }
 }

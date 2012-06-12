@@ -22,8 +22,8 @@ import javax.faces.component.UIComponent;
  */
 public abstract class AbstractUISelectManyInputTag extends AbstractUIInputTag {
 
-    public void setComponentProperties(FacesContext facesContext, UIComponent uiComponent) {
-        super.setComponentProperties(facesContext, uiComponent);
+    public void setComponentProperties(FacesContext context, UIComponent uiComponent) {
+        super.setComponentProperties(context, uiComponent);
         setStringProperty(uiComponent, "accesskey");
         setStringProperty(uiComponent, "tabindex");
         setStringProperty(uiComponent, "title");

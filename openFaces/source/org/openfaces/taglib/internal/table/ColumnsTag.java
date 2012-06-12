@@ -29,8 +29,8 @@ public class ColumnsTag extends AbstractComponentTag {
     }
 
     @Override
-    public void setComponentProperties(FacesContext facesContext, UIComponent component) {
-        super.setComponentProperties(facesContext, component);
+    public void setComponentProperties(FacesContext context, UIComponent component) {
+        super.setComponentProperties(context, component);
 
         Columns columns = (Columns) component;
 
@@ -40,6 +40,7 @@ public class ColumnsTag extends AbstractComponentTag {
         setValueExpressionProperty(component, "headerValue", getPropertyValue("header"), "header");
         setValueExpressionProperty(component, "footerValue", getPropertyValue("footer"), "footer");
         setValueExpressionProperty(component, "columnValue");
+        setConverterProperty(component, "converter");
 
         setValueExpressionProperty(component, "columnId");
         setBooleanProperty(component, "columnRendered");
@@ -56,7 +57,7 @@ public class ColumnsTag extends AbstractComponentTag {
                 else
                     throw new IllegalArgumentException("sortingComparator attribute should either be defined as binding or as \"" + ColumnTag.CASE_INSENSITIVE_TEXT_COMPARATOR + "\", but it is defined as follows: " + sortingComparator);
             } else {
-                comparatorExpression = createValueExpression(facesContext, "sortingComparator", sortingComparator);
+                comparatorExpression = createValueExpression(context, "sortingComparator", sortingComparator);
             }
             columns.setValueExpression("sortingComparator", comparatorExpression);
         }

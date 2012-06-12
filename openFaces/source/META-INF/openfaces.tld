@@ -1286,7 +1286,8 @@
       <!-- @el only -->
     </attribute>
     <attribute>
-      <description>A converter that is used for displaying column value column components are not specified explicitly
+      <description>A converter that is used for displaying column value if column components are not specified
+        explicitly
       </description>
       <name>converter</name>
       <deferred-value>
@@ -3157,6 +3158,18 @@
       <!-- @bindingType java.lang.Object -->
       <!-- @default null -->
       <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>A converter that is used for displaying column value if column components are not specified
+        explicitly
+      </description>
+      <name>converter</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType javax.faces.convert.Converter -->
+      <!-- @default null -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>The value that can serve as a convenience substitution for specifying &amp;lt;h:outputText&gt; in the
@@ -10149,7 +10162,8 @@ means that only root nodes and their immediate children are preloaded -->
       <!-- @el only -->
     </attribute>
     <attribute>
-      <description>A converter that is used for displaying column value column components are not specified explicitly
+      <description>A converter that is used for displaying column value if column components are not specified
+        explicitly
       </description>
       <name>converter</name>
       <deferred-value>

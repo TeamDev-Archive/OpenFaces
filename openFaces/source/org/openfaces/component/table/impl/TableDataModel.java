@@ -1311,7 +1311,7 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
          */
         public Runnable enterColumnContext() {
             if (column instanceof DynamicColumn) {
-                return ((DynamicColumn) column).declareContextVariables();
+                return ((DynamicColumn) column).enterComponentContext();
             }
             return null;
         }

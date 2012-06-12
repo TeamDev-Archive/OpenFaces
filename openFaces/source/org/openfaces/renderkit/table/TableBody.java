@@ -11,6 +11,7 @@
  */
 package org.openfaces.renderkit.table;
 
+import org.openfaces.component.ContextDependentComponent;
 import org.openfaces.component.TableStyles;
 import org.openfaces.component.table.*;
 import org.openfaces.component.table.impl.GroupFooterRow;
@@ -933,7 +934,10 @@ public class TableBody extends TableSection {
                 String columnId = column.getId();
                 for (Object customCell : customCells) {
                     Cell cell = (Cell) customCell;
+                    Runnable exitContext = cell instanceof ContextDependentComponent
+                            ? ((ContextDependentComponent) cell).enterComponentContext() : null;
                     boolean cellWithCustomContent = cell.getChildCount() > 0;
+                    if (exitContext != null) exitContext.run();
                     if (cellWithCustomContent || Rendering.isComponentWithA4jSupport(cell)) {
                         if (customRowRenderingInfo == null)
                             customRowRenderingInfo = new CustomRowRenderingInfo(columnCount);

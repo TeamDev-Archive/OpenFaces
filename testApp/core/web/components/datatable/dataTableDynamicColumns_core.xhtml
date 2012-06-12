@@ -76,7 +76,7 @@
     </o:column>
     <o:columnGroup>
       <o:columns value="#{TableTestBean.testColumns}"
-                 var="col">
+                 var="col" sortingExpression="#{row.customFields[col]}">
         <f:facet name="header">
           <h:outputText value="Header #{col}"/>
         </f:facet>

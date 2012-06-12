@@ -36,7 +36,7 @@ public class SummaryTag extends OUIOutputTag {
 
         setValueExpressionProperty(component, "by");
         setSummaryFunctionProperty(component, "function");
-        setConverterProperty(context, component, "converter");
+        setConverterProperty(component, "converter");
         setValueExpressionProperty(component, "pattern");
         setBooleanProperty(component, "functionEditable");
     }
