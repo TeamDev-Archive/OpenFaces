@@ -30,8 +30,8 @@ public class TwoListSelectionTag extends AbstractUIInputTag {
     }
 
     @Override
-    public void setComponentProperties(FacesContext facesContext, UIComponent component) {
-        super.setComponentProperties(facesContext, component);
+    public void setComponentProperties(FacesContext context, UIComponent component) {
+        super.setComponentProperties(context, component);
 
         setStringProperty(component, "leftListboxHeader");
         setStringProperty(component, "rightListboxHeader");

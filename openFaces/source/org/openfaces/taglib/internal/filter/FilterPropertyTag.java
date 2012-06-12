@@ -33,15 +33,15 @@ public class FilterPropertyTag extends AbstractComponentTag {
     }
 
     @Override
-    public void setComponentProperties(FacesContext facesContext, UIComponent component) {
-        super.setComponentProperties(facesContext, component);
+    public void setComponentProperties(FacesContext context, UIComponent component) {
+        super.setComponentProperties(context, component);
 
         setStringProperty(component, "name");
         setObjectProperty(component, "value");
         setEnumerationProperty(component, "type", FilterType.class);
 
         setValueExpressionProperty(component, "dataProvider");
-        setConverterProperty(facesContext, component, "converter");
+        setConverterProperty(component, "converter");
         setNumberProperty(component, "maxValue");
         setNumberProperty(component, "minValue");
         setNumberProperty(component, "step");

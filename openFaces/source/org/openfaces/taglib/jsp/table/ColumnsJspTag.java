@@ -36,6 +36,14 @@ public class ColumnsJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("header", header);
     }
 
+    public void setColumnValue(ValueExpression value) {
+        getDelegate().setPropertyValue("columnValue", value);
+    }
+
+    public void setConverter(ValueExpression converter) {
+        getDelegate().setPropertyValue("converter", converter);
+    }
+
     public void setColumnId(ValueExpression columnId) {
         getDelegate().setPropertyValue("columnId", columnId);
     }

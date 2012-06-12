@@ -11,7 +11,7 @@
  */
 package org.openfaces.component.table.impl;
 
-import org.openfaces.component.table.impl.DynamicColumn;
+import org.openfaces.component.ContextDependentComponent;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
@@ -20,23 +20,29 @@ import java.io.Serializable;
 /**
  * @author Dmitry Pikhulya
  */
-public abstract class AbstractDynamicColumnExpression extends ValueExpression implements Serializable {
-    protected transient DynamicColumn column;
-    protected transient ValueExpression expressionFromColumnsComponent;
+public class ContextDependentExpressionWrapper extends ValueExpression implements Serializable {
+    protected transient ContextDependentComponent component;
+    protected transient ValueExpression expression;
 
-    protected AbstractDynamicColumnExpression() {
+    protected ContextDependentExpressionWrapper() {
     }
 
-    protected AbstractDynamicColumnExpression(DynamicColumn column, ValueExpression expressionFromColumnsComponent) {
-        this.column = column;
-        this.expressionFromColumnsComponent = expressionFromColumnsComponent;
+    protected ContextDependentExpressionWrapper(ContextDependentComponent component, ValueExpression expression) {
+        this.component = component;
+        this.expression = expression;
     }
 
-    @Override
-    public abstract Object getValue(ELContext elContext);
+    public Object getValue(ELContext elContext) {
+        Runnable exitContext = component.enterComponentContext();
+        Object result = expression.getValue(elContext);
+        if (exitContext != null) exitContext.run();
+        return result;
+    }
 
     public void setValue(ELContext elContext, Object value) {
-        throw new UnsupportedOperationException("This expression is read-only");
+        Runnable exitContext = component.enterComponentContext();
+        expression.setValue(elContext, value);
+        if (exitContext != null) exitContext.run();
     }
 
     public boolean isReadOnly(ELContext elContext) {

@@ -145,7 +145,7 @@ public class Column extends BaseColumn implements ValueHolder {
         this.converter = converter;
     }
 
-    public ValueExpression getSortingComparatorBinding() {
+    public ValueExpression getSortingComparatorExpression() {
         return getValueExpression("sortingComparator");
     }
 

@@ -11,6 +11,7 @@
  */
 package org.openfaces.component.table.impl;
 
+import org.openfaces.component.ContextDependentComponent;
 import org.openfaces.component.table.SyntheticColumn;
 
 import javax.faces.component.UIComponent;
@@ -20,8 +21,6 @@ import java.util.Map;
  * This interface is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly by any
  * application code.
  */
-public interface DynamicCol extends SyntheticColumn {
-    Runnable declareContextVariables();
-
+public interface DynamicCol extends SyntheticColumn, ContextDependentComponent {
     Map<String, UIComponent> getFacetsForProcessing();
 }

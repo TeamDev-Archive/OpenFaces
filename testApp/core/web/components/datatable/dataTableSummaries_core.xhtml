@@ -57,17 +57,21 @@
           <h:outputText value="#{item.longField}"/>
         </o:column>
         <o:column header="float">
-          <h:outputText value="#{item.floatField}"/>
+          <h:outputText value="#{item.floatField}">
+            <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+          </h:outputText>
         </o:column>
         <o:column header="double">
-          <h:outputText value="#{item.doubleField}"/>
+          <h:outputText value="#{item.doubleField}">
+            <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+          </h:outputText>
         </o:column>
 
         <o:columns value="#{MultitypeBeanSupport.customFieldNames}" var="col" style="text-align: right">
           <f:facet name="header">
-            <h:outputText value="#{col}"/>
+            <h:outputText value="#{col}" />
           </f:facet>
-          <h:outputText value="#{item.customFields[col]}"/>
+          <h:outputText value="#{item.customFields[col]}" converter="#{MultitypeBeanSupport.columnConverter}"/>
         </o:columns>
 
         <f:facet name="footer">
@@ -156,7 +160,7 @@
             <o:summary function="#{MultitypeBeanSupport.customFieldsToDefaultFunctions[col]}"/>
           </f:facet>
 
-          <h:outputText value="#{item.customFields[col]}"/>
+          <h:outputText value="#{item.customFields[col]}" converter="#{MultitypeBeanSupport.columnConverter}"/>
         </o:columns>
 
         <f:facet name="footer">

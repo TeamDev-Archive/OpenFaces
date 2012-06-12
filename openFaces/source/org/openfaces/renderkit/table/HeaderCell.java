@@ -146,8 +146,7 @@ class HeaderCell extends TableElement {
             writer.writeAttribute("class", "o_noWrapHeaderCell", null);
         }
         DynamicCol dynamicCol = column instanceof DynamicCol ? (DynamicCol) column : null;
-        Runnable restoreVariables = null;
-        if (dynamicCol != null) restoreVariables = dynamicCol.declareContextVariables();
+        Runnable restoreVariables = dynamicCol != null ? dynamicCol.enterComponentContext() : null;
         try {
             if (content != null) {
                 if (content instanceof UIComponent) {
@@ -166,7 +165,7 @@ class HeaderCell extends TableElement {
             } else if (tableStructure.isEmptyCellsTreatmentRequired())
                 Rendering.writeNonBreakableSpace(writer);
         } finally {
-            if (dynamicCol != null) restoreVariables.run();
+            if (restoreVariables != null) restoreVariables.run();
         }
 
         if (sortingToggleMode == SortingToggleMode.FORCE_DYNAMIC ||

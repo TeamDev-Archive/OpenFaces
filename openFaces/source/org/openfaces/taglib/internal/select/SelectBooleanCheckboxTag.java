@@ -32,8 +32,8 @@ public class SelectBooleanCheckboxTag extends AbstractUIInputTag {
         return RENDERER_TYPE;
     }
 
-    public void setComponentProperties(FacesContext facesContext, UIComponent component) {
-        super.setComponentProperties(facesContext, component);
+    public void setComponentProperties(FacesContext context, UIComponent component) {
+        super.setComponentProperties(context, component);
 
         SelectBooleanCheckbox sbc = (SelectBooleanCheckbox) component;
         String valueDeclaration = getPropertyValue("value");

@@ -12,12 +12,15 @@
 
 package org.openfaces.component.table.impl;
 
+import org.openfaces.component.ContextDependentComponent;
 import org.openfaces.component.table.BaseColumn;
 import org.openfaces.component.table.Cell;
 import org.openfaces.component.table.DataTable;
 import org.openfaces.component.table.GroupHeaderOrFooter;
 
 import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +30,7 @@ import java.util.Map;
  * This class is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
  * by any application code.
  */
-public class GroupHeaderOrFooterCell extends Cell {
+public class GroupHeaderOrFooterCell extends Cell implements ContextDependentComponent {
     private DataTable dataTable;
     private List<UIComponent> defaultChildList;
     private String facetName;
@@ -57,10 +60,14 @@ public class GroupHeaderOrFooterCell extends Cell {
 
     @Override
     public List<UIComponent> getChildren() {
-        GroupHeaderOrFooter row = (GroupHeaderOrFooter) dataTable.getRowData();
-        String columnId = row.getRowGroup().getColumnId();
+        String columnId = getCurrentColumnId();
         List<UIComponent> facetValue = getColumnFacet(columnId);
         return facetValue != null ? facetValue : defaultChildList;
+    }
+
+    private String getCurrentColumnId() {
+        GroupHeaderOrFooter row = (GroupHeaderOrFooter) dataTable.getRowData();
+        return row.getRowGroup().getColumnId();
     }
 
     private List<UIComponent> getColumnFacet(String columnId) {
@@ -77,6 +84,35 @@ public class GroupHeaderOrFooterCell extends Cell {
     @Override
     public int getChildCount() {
         return getChildren().size();
+    }
+
+    @Override
+    public void encodeAll(FacesContext context) throws IOException {
+        Runnable exitContext = enterComponentContext();
+        try {
+            super.encodeAll(context);
+        } finally {
+            if (exitContext != null) exitContext.run();
+        }
+    }
+
+    protected BaseColumn getCurrentlyRenderedColumn() {
+        String columnId = getCurrentColumnId();
+        return dataTable.getColumnById(columnId);
+    }
+
+    public Runnable enterComponentContext() {
+        BaseColumn column = getCurrentlyRenderedColumn();
+        Runnable undeclareContextVariables = (column instanceof ContextDependentComponent)
+                ? ((ContextDependentComponent) column).enterComponentContext()
+                : null;
+        return undeclareContextVariables;
+    }
+
+    public boolean isComponentInContext() {
+        BaseColumn column = getCurrentlyRenderedColumn();
+        return !(column instanceof ContextDependentComponent) ||
+                ((ContextDependentComponent) column).isComponentInContext();
     }
 
 }

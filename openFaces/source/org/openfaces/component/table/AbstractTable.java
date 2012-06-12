@@ -158,6 +158,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     private boolean beforeUpdateValuesPhase = true;
     private List<BaseColumn> cachedAllColumns;
     private List<BaseColumn> cachedRenderedColumns;
+    private Map<String, BaseColumn> cachedColumnsByIds;
     private String cachedClientId;
     private List<Filter> myFilters = new ArrayList<Filter>();
     private Integer autoFilterDelay;
@@ -1163,7 +1164,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
                             UIComponent summaryOwner = summaryOwners.get(nextIndex);
                             if (summaryOwner instanceof DynamicColumn) {
                                 DynamicColumn dynamicColumn = (DynamicColumn) summaryOwner;
-                                restoreDynamicColumnVariables = dynamicColumn.declareContextVariables();
+                                restoreDynamicColumnVariables = dynamicColumn.enterComponentContext();
                             }
                             return summaryListIterator.next();
                         }
@@ -1317,6 +1318,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         Components.fixImplicitPanelIdsForMojarra_2_0_3(this, true);
 
         cachedAllColumns = null;
+        cachedColumnsByIds = null;
         cachedRenderedColumns = null;
         resetColumns(this);
 
@@ -1403,13 +1405,20 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     }
 
     public BaseColumn getColumnById(String columnId) {
-        List<BaseColumn> allColumns = getAllColumns();
-        for (BaseColumn column : allColumns) {
-            String thisColId = column.getId();
-            if (thisColId.equals(columnId))
-                return column;
+        if (cachedColumnsByIds == null) cachedColumnsByIds = new HashMap<String, BaseColumn>();
+
+        BaseColumn result = cachedColumnsByIds.get(columnId);
+        if (result == null) {
+            List<BaseColumn> allColumns = getAllColumns();
+            for (BaseColumn column : allColumns) {
+                String thisColId = column.getId();
+                if (thisColId.equals(columnId)) {
+                    result = column;
+                    break;
+                }
+            }
         }
-        return null;
+        return result;
     }
 
     public void setSortColumnId(String sortColumnId) {
@@ -1649,7 +1658,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         if (sortingExpression == null)
             return null;
 
-        ValueExpression sortingComparatorBinding = ordinaryColumn ? ((Column) column).getSortingComparatorBinding() : null;
+        ValueExpression sortingComparatorBinding = ordinaryColumn ? ((Column) column).getSortingComparatorExpression() : null;
         Comparator<Object> comparator = sortingComparatorBinding != null
                 ? (Comparator<Object>) sortingComparatorBinding.getValue(facesContext.getELContext())
                 : null;
