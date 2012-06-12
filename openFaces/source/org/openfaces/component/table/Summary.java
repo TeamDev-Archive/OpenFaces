@@ -674,10 +674,9 @@ public class Summary extends OUIOutput {
 
         public Object getByValue(ELContext elContext) {
             DynamicColumn dynamicColumn = column instanceof DynamicColumn ? (DynamicColumn) column : null;
-            Runnable restoreVariables = null;
-            if (dynamicColumn != null) restoreVariables = dynamicColumn.declareContextVariables();
+            Runnable restoreVariables = dynamicColumn != null ? dynamicColumn.enterComponentContext() : null;
             Object value = getByExpression().getValue(elContext);
-            if (dynamicColumn != null) restoreVariables.run();
+            if (restoreVariables != null) restoreVariables.run();
             return value;
         }
 

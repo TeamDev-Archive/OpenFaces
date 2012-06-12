@@ -21,8 +21,8 @@ import javax.faces.context.FacesContext;
 public abstract class OUIOutputTag extends AbstractComponentTag {
 
     @Override
-    public void setComponentProperties(FacesContext facesContext, UIComponent component) {
-        super.setComponentProperties(facesContext, component);
-        setConverterProperty(facesContext, component, "converter");
+    public void setComponentProperties(FacesContext context, UIComponent component) {
+        super.setComponentProperties(context, component);
+        setConverterProperty(component, "converter");
     }
 }

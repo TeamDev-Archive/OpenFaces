@@ -20,18 +20,18 @@ import javax.faces.context.FacesContext;
  */
 public abstract class AbstractUIInputTag extends AbstractComponentTag {
     @Override
-    public void setComponentProperties(FacesContext facesContext, UIComponent component) {
-        super.setComponentProperties(facesContext, component);
+    public void setComponentProperties(FacesContext context, UIComponent component) {
+        super.setComponentProperties(context, component);
 
         if (isAutomaticValueAttributeHandling())
             setObjectProperty(component, "value");
 
         UIInput uiInput = (UIInput) component;
 
-        setValidator(facesContext, uiInput);
-        setValueChangeListener(facesContext, uiInput);
+        setValidator(context, uiInput);
+        setValueChangeListener(context, uiInput);
 
-        setConverterProperty(facesContext, component, "converter");
+        setConverterProperty(component, "converter");
 
         setBooleanProperty(component, "disabled");
         setBooleanProperty(component, "required");

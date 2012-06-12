@@ -12,6 +12,7 @@
 
 package org.openfaces.component.table.impl;
 
+import org.openfaces.component.ContextDependentComponent;
 import org.openfaces.component.table.BaseColumn;
 import org.openfaces.component.table.TreeColumn;
 import org.openfaces.renderkit.TableUtil;
@@ -21,7 +22,7 @@ import javax.faces.component.UIComponent;
 /**
  * @author Dmitry Pikhulya
  */
-public class GroupingStructureColumn extends TreeColumn {
+public class GroupingStructureColumn extends TreeColumn implements ContextDependentComponent {
     public GroupingStructureColumn(BaseColumn originalColumn) {
         TableUtil.copyColumnAttributes(originalColumn, this);
         setDelegate(originalColumn);
@@ -35,5 +36,16 @@ public class GroupingStructureColumn extends TreeColumn {
         return getDelegate().getFacet(name);
     }
 
+    public Runnable enterComponentContext() {
+        BaseColumn delegate = getDelegate();
+        return delegate instanceof ContextDependentComponent
+                ? ((ContextDependentComponent) delegate).enterComponentContext()
+                : null;
+    }
 
+    public boolean isComponentInContext() {
+        BaseColumn delegate = getDelegate();
+        return !(delegate instanceof ContextDependentComponent) ||
+                ((ContextDependentComponent) delegate).isComponentInContext();
+    }
 }

@@ -12,6 +12,7 @@
 
 package org.openfaces.renderkit.table;
 
+import org.openfaces.component.ContextDependentComponent;
 import org.openfaces.component.table.Cell;
 import org.openfaces.component.table.Column;
 import org.openfaces.component.table.SyntheticColumn;
@@ -49,11 +50,16 @@ public class ColumnRenderer extends RendererBase {
         List<UIComponent> components = cellContentsContainer instanceof SyntheticColumn
                 ? ((SyntheticColumn) cellContentsContainer).getChildrenForProcessing()
                 : cellContentsContainer.getChildren();
-
-        if (components.size() > 0)
-            renderWithInplaceComponents(context, column, components);
-        else
-            renderWithColumnValue(context, column);
+        Runnable exitContext =  (cellContentsContainer instanceof ContextDependentComponent)
+                ? ((ContextDependentComponent) cellContentsContainer).enterComponentContext() : null;
+        try {
+            if (components.size() > 0)
+                renderWithInplaceComponents(context, column, components);
+            else
+                renderWithColumnValue(context, column);
+        } finally {
+            if (exitContext != null) exitContext.run();
+        }
     }
 
     private void renderWithInplaceComponents(

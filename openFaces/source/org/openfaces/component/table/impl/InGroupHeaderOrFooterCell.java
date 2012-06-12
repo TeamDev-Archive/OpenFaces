@@ -12,6 +12,7 @@
 
 package org.openfaces.component.table.impl;
 
+import org.openfaces.component.ContextDependentComponent;
 import org.openfaces.component.table.BaseColumn;
 import org.openfaces.component.table.DataTable;
 import org.openfaces.renderkit.table.TableBody;
@@ -31,6 +32,7 @@ public class InGroupHeaderOrFooterCell extends GroupHeaderOrFooterCell {
     private static final ValueExpression ANY_COLUMN_VALUE_EXPRESSION = new AnyColumnValueExpression();
 
     private static List<UIComponent> emptyTextChildList;
+
     private static List<UIComponent> getEmptyTextChildList() {
         if (emptyTextChildList == null) {
             FacesContext context = FacesContext.getCurrentInstance();
@@ -56,18 +58,18 @@ public class InGroupHeaderOrFooterCell extends GroupHeaderOrFooterCell {
 
     @Override
     public List<UIComponent> getChildren() {
-        BaseColumn currentlyRenderedColumn = tableBody.getCurrentlyRenderedColumn();
-        if (currentlyRenderedColumn == null)
-            throw new IllegalStateException("Couldn't retrieve tableBody.currentlyRenderedColumn property. It is " +
-                    "expected that rendering for this cell is initiated only from the TableBody cell rendering " +
-                    "procedure where currentRenderedColumn is set explicitly prior to rendering the cell contents " +
-                    "container (this custom cell implementation)");
-        BaseColumn actualCol = currentlyRenderedColumn instanceof GroupingStructureColumn
-                ? ((GroupingStructureColumn) currentlyRenderedColumn).getDelegate()
-                : currentlyRenderedColumn;
-        if (actualCol instanceof DynamicColumn)
-            ((DynamicColumn) actualCol).declareContextVariables();
-        UIComponent headerOrFooterComponentFromFacet = currentlyRenderedColumn.getFacet(getFacetName());
+        BaseColumn actualCol = getCurrentlyRenderedColumn();
+        if (actualCol instanceof ContextDependentComponent) {
+            if (!((ContextDependentComponent) actualCol).isComponentInContext()) {
+                // This method is expected to be called only from within the encodeAll method of this instance, and this
+                // method sets up column's context. If this check fails then it means that this method is invoked from
+                // somewhere else, and if that invocation is rightful then this cell's enterComponentContext method has
+                // to be invoked prior to this
+                throw new IllegalStateException("Dynamic column is supposed to be in context when its children are retrieved");
+            }
+        }
+
+        UIComponent headerOrFooterComponentFromFacet = actualCol.getFacet(getFacetName());
         if (headerOrFooterComponentFromFacet != null)
             return Collections.singletonList(headerOrFooterComponentFromFacet);
         else {
@@ -80,4 +82,17 @@ public class InGroupHeaderOrFooterCell extends GroupHeaderOrFooterCell {
             return getDefaultChildList();
         }
     }
+
+    protected BaseColumn getCurrentlyRenderedColumn() {
+        BaseColumn currentlyRenderedColumn = tableBody.getCurrentlyRenderedColumn();
+        if (currentlyRenderedColumn == null)
+            throw new IllegalStateException("Couldn't retrieve tableBody.currentlyRenderedColumn property. It is " +
+                    "expected that rendering for this cell is initiated only from the TableBody cell rendering " +
+                    "procedure where currentRenderedColumn is set explicitly prior to rendering the cell contents " +
+                    "container (this custom cell implementation)");
+        return currentlyRenderedColumn instanceof GroupingStructureColumn
+                ? ((GroupingStructureColumn) currentlyRenderedColumn).getDelegate()
+                : currentlyRenderedColumn;
+    }
+
 }

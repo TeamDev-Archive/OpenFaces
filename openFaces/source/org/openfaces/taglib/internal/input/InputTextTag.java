@@ -32,8 +32,8 @@ public class InputTextTag extends OUIInputTextTag {
     }
 
     @Override
-    public void setComponentProperties(FacesContext facesContext, UIComponent component) {
-        super.setComponentProperties(facesContext, component);
+    public void setComponentProperties(FacesContext context, UIComponent component) {
+        super.setComponentProperties(context, component);
         setStringProperty(component, "dir");
         setStringProperty(component, "lang");
         setStringProperty(component, "alt");

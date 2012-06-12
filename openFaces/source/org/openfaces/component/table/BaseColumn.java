@@ -585,7 +585,7 @@ public class BaseColumn extends UIColumn {
      */
     public String getColumnHeader() {
         DynamicCol dynamicCol = (this instanceof DynamicCol) ? (DynamicCol) this : null;
-        Runnable restoreVariables = dynamicCol != null ? dynamicCol.declareContextVariables() : null;
+        Runnable restoreVariables = dynamicCol != null ? dynamicCol.enterComponentContext() : null;
         try {
             String header = getHeaderValue();
             if (header != null)

@@ -43,7 +43,7 @@ public abstract class ExpressionFilterTag extends FilterTag {
         setValueExpressionProperty(component, "value");
 
         setValueExpressionProperty(component, "options");
-        setConverterProperty(context, component, "converter");
+        setConverterProperty(component, "converter");
         setBooleanProperty(component, "caseSensitive");
 
         setStringProperty(component, "allRecordsText");
