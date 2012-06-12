@@ -185,11 +185,11 @@ public class DynamicColumn extends Column implements DynamicCol {
                         "is empty upon an attempt to exit the context. The reason might be the unpaired " +
                         "\"enter\" and \"exit\" executions");
                 DynamicColumn lastEntry = contextStack.remove(contextStackSize - 1);
-//                if (lastEntry != DynamicColumn.this) {
-//                    contextStack.add(lastEntry); // move the improperly-removed last entry back to its position
-//                    throw new IllegalStateException("DynamicColumn's \"exit component context\" runnable: " +
-//                            "An unpaired attempt to exit a context without exiting the other context is made");
-//                }
+                if (lastEntry != DynamicColumn.this) {
+                    contextStack.add(lastEntry); // move the improperly-removed last entry back to its position
+                    throw new IllegalStateException("DynamicColumn's \"exit component context\" runnable: " +
+                            "An unpaired attempt to exit a context without exiting the other context is made");
+                }
 
                 Map<String, Object> requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
 
