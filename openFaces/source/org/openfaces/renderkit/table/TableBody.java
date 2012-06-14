@@ -17,6 +17,7 @@ import org.openfaces.component.table.*;
 import org.openfaces.component.table.impl.GroupFooterRow;
 import org.openfaces.component.table.impl.GroupHeaderOrFooterRow;
 import org.openfaces.component.table.impl.GroupHeaderRow;
+import org.openfaces.component.table.impl.GroupingStructureColumn;
 import org.openfaces.component.table.impl.InGroupFooterRow;
 import org.openfaces.component.table.impl.InGroupHeaderRow;
 import org.openfaces.org.json.JSONArray;
@@ -921,10 +922,9 @@ public class TableBody extends TableSection {
             }
 
             private int getOriginalColumnIndex(BaseColumn column) {
-                if (column instanceof TreeColumn) {
-                    BaseColumn delegate = ((TreeColumn) column).getDelegate();
-                    if (delegate != null)
-                        return getOriginalColumnIndex(delegate);
+                if (column instanceof GroupingStructureColumn) {
+                    BaseColumn delegate = ((GroupingStructureColumn) column).getDelegate();
+                    return getOriginalColumnIndex(delegate);
                 }
                 return (Integer) column.getAttributes().get(COLUMN_ATTR_ORIGINAL_INDEX);
             }

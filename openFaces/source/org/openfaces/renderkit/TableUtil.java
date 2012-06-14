@@ -121,7 +121,7 @@ public class TableUtil {
         return columns;
     }
 
-    public static void copyColumnAttributes(UIComponent srcColumn, BaseColumn destColumn) {
+    public static void copyColumnAttributes(UIComponent srcComponent, BaseColumn destColumn) {
         String[] copiedAttributes = new String[]{
                 Column.COLUMN_VALUE_VAR, "headerValue", "footerValue", "converter",
                 "width", "align", "valign", "resizable", "minResizingWidth",
@@ -135,15 +135,19 @@ public class TableUtil {
                 "footerOnclick", "footerOndblclick", "footerOnmousedown", "footerOnmouseover", "footerOnmousemove",
                 "footerOnmouseout", "footerOnmouseup"};
         for (String attrName : copiedAttributes) {
-            ValueExpression expression = srcColumn.getValueExpression(attrName);
+            ValueExpression expression = srcComponent.getValueExpression(attrName);
             if (expression != null)
                 destColumn.setValueExpression(attrName, expression);
             else {
-                Object attributeValue = srcColumn.getAttributes().get(attrName);
+                Object attributeValue = srcComponent.getAttributes().get(attrName);
                 if (attributeValue != null)
                     destColumn.getAttributes().put(attrName, attributeValue);
             }
         }
+        ValueExpression expression = srcComponent.getValueExpression("value");
+        if (expression != null)
+            destColumn.setValueExpression("value", expression);
+
     }
 
     public static void markSortingToggledInThisRequest(FacesContext context) {
