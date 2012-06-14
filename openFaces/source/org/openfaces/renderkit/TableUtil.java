@@ -11,36 +11,29 @@
  */
 package org.openfaces.renderkit;
 
-import org.openfaces.component.table.*;
+import org.openfaces.component.table.AbstractTable;
+import org.openfaces.component.table.BaseColumn;
+import org.openfaces.component.table.Column;
+import org.openfaces.component.table.ColumnGroup;
+import org.openfaces.component.table.ColumnResizing;
+import org.openfaces.component.table.ColumnResizingState;
+import org.openfaces.component.table.Columns;
 import org.openfaces.component.table.impl.DynamicColumn;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.util.Components;
-import org.openfaces.util.ReflectionUtil;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.Resources;
 import org.openfaces.util.Styles;
-import org.openfaces.util.ValueBindings;
 
-import javax.el.ELContext;
 import javax.el.ValueExpression;
-import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIComponentBase;
-import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.convert.Converter;
-import java.io.Externalizable;
 import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectOutput;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class TableUtil {
     public static final String DEFAULT_HEADER_SECTION_CLASS = "o_table_header_section";
