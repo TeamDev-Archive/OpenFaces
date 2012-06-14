@@ -13934,6 +13934,8 @@ entering a value and returns a list of suggestions from the server -->
       </deferred-value>
       <!-- @bindingType org.openfaces.component.window.Autosizing -->
       <!-- @default "off" -->
+      <!-- @value "on" -->
+      <!-- @value "off" -->
       <!-- @el true -->
     </attribute>
     <attribute>
