@@ -22,6 +22,7 @@ import org.openfaces.util.Rendering;
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import java.io.IOException;
 import java.util.List;
@@ -47,12 +48,12 @@ public class ColumnRenderer extends RendererBase {
 
         UIComponent cellContentsContainer = customCell != null ? customCell : column;
 
-        List<UIComponent> components = cellContentsContainer instanceof SyntheticColumn
-                ? ((SyntheticColumn) cellContentsContainer).getChildrenForProcessing()
-                : cellContentsContainer.getChildren();
         Runnable exitContext =  (cellContentsContainer instanceof ContextDependentComponent)
                 ? ((ContextDependentComponent) cellContentsContainer).enterComponentContext() : null;
         try {
+            List<UIComponent> components = cellContentsContainer instanceof SyntheticColumn
+                ? ((SyntheticColumn) cellContentsContainer).getChildrenForProcessing()
+                : cellContentsContainer.getChildren();
             if (components.size() > 0)
                 renderWithInplaceComponents(context, column, components);
             else
@@ -88,12 +89,13 @@ public class ColumnRenderer extends RendererBase {
         String columnText = converter != null
                 ? converter.getAsString(context, column, columnValue)
                 : columnValue != null ? columnValue.toString() : "";
+        ResponseWriter responseWriter = context.getResponseWriter();
         if (!Rendering.isNullOrEmpty(columnText)) {
-            context.getResponseWriter().writeText(columnText, null);
+            responseWriter.writeText(columnText, null);
         } else {
             TableStructure tableStructure = TableStructure.getCurrentInstance(column.getTable());
             if (tableStructure.isEmptyCellsTreatmentRequired())
-                Rendering.writeNonBreakableSpace(context.getResponseWriter());
+                Rendering.writeNonBreakableSpace(responseWriter);
         }
     }
 
