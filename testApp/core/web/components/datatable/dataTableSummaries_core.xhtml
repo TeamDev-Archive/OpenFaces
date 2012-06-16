@@ -37,7 +37,7 @@
         <o:column header="Button *">
           <o:commandButton value="Test"/>
         </o:column>
-        <o:column header="Enum">
+        <o:column header="Enum" sortingExpression="#{item.enumField}">
           <h:outputText value="#{item.enumField}"/>
           <f:facet name="inGroupFooter">
             <o:summary functionEditable="#{MultitypeBeanSupport.functionEditable}" pattern="#{MultitypeBeanSupport.pattern}" style="#{MultitypeBeanSupport.style}"/>
@@ -46,7 +46,7 @@
             <o:summary functionEditable="#{MultitypeBeanSupport.functionEditable}" pattern="#{MultitypeBeanSupport.pattern}" style="#{MultitypeBeanSupport.style}"/>
           </f:facet>
         </o:column>
-        <o:column header="boolean">
+        <o:column header="boolean" sortingExpression="#{item.booleanField}">
           <h:outputText value="#{item.booleanField}"/>
           <f:facet name="inGroupFooter">
             <o:summary functionEditable="#{MultitypeBeanSupport.functionEditable}" pattern="#{MultitypeBeanSupport.pattern}" style="#{MultitypeBeanSupport.style}"/>
@@ -55,7 +55,7 @@
             <o:summary functionEditable="#{MultitypeBeanSupport.functionEditable}" pattern="#{MultitypeBeanSupport.pattern}" style="#{MultitypeBeanSupport.style}"/>
           </f:facet>
         </o:column>
-        <o:column header="int">
+        <o:column header="int" sortingExpression="#{item.intField}">
           <h:outputText value="#{item.intField}"/>
           <f:facet name="inGroupFooter">
             <o:summary functionEditable="#{MultitypeBeanSupport.functionEditable}" pattern="#{MultitypeBeanSupport.pattern}" style="#{MultitypeBeanSupport.style}"/>
@@ -65,7 +65,7 @@
           </f:facet>
         </o:column>
 
-        <o:column header="double">
+        <o:column header="double" sortingExpression="#{item.doubleField}">
           <h:outputText value="#{item.doubleField}">
             <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
           </h:outputText>
@@ -77,7 +77,7 @@
           </f:facet>
         </o:column>
 
-        <o:column header="Date">
+        <o:column header="Date" sortingExpression="#{item.dateField}">
           <h:outputText value="#{item.dateField}"/>
           <f:facet name="inGroupFooter">
             <o:summary functionEditable="#{MultitypeBeanSupport.functionEditable}" pattern="#{MultitypeBeanSupport.pattern}" style="#{MultitypeBeanSupport.style}"/>
@@ -87,8 +87,8 @@
           </f:facet>
         </o:column>
 
-        <o:column header="Temperature">
-          <h:outputText value="#{item.enumField}"/>
+        <o:column header="Temperature" sortingExpression="#{item.temperatureField}">
+          <h:outputText value="#{item.temperatureField}"/>
           <f:facet name="inGroupFooter">
             <o:summary functionEditable="#{MultitypeBeanSupport.functionEditable}" pattern="#{MultitypeBeanSupport.pattern}" style="#{MultitypeBeanSupport.style}"/>
           </f:facet>
@@ -98,7 +98,8 @@
         </o:column>
 
 
-        <o:columns value="#{MultitypeBeanSupport.customFieldNames}" var="col" style="text-align: right">
+        <o:columns value="#{MultitypeBeanSupport.customFieldNames}" var="col" style="text-align: right"
+                   sortingExpression="#{item.customFields[col]}">
           <f:facet name="header">
             <h:outputText value="#{col}"/>
           </f:facet>
@@ -124,8 +125,7 @@
         itself does nothing.</p>
     </o:subPanel>
 
-    <o:subPanel caption="Autodetection (using the &lt;o:summaries> tag)" rendered="false">
-      <!-- this page is temporarily commented out as it's only applicable to the not yet fully supported Mojarra 2.1.8 -->
+    <o:subPanel caption="Autodetection (using the &lt;o:summaries> tag)">
       <o:dataTable var="item" value="#{MultitypeBeanSupport.list1}" rowKey="#{item.id}" style="height: 700px">
         <o:scrolling horizontal="true"/>
         <o:rowGrouping/>

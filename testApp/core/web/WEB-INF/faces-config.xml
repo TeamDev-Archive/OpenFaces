@@ -652,8 +652,12 @@
   </converter>
 
   <converter>
-    <converter-id>temperatureCelciusConverter</converter-id>\
     <converter-for-class>org.openfaces.testapp.datatable.Temperature</converter-for-class>
+    <converter-class>org.openfaces.testapp.datatable.TemperatureKelvinConverter</converter-class>
+  </converter>
+
+  <converter>
+    <converter-id>temperatureCelciusConverter</converter-id>
     <converter-class>org.openfaces.testapp.datatable.TemperatureCelciusConverter</converter-class>
   </converter>
 

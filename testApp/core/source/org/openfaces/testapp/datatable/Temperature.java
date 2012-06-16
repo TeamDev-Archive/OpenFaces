@@ -26,7 +26,7 @@ public class Temperature implements Comparable {
 
     public static Temperature fromCelciusValue(double celciusValue) {
         Temperature newInstance = new Temperature();
-        newInstance.kelvinValue = celciusValue - 273.15;
+        newInstance.kelvinValue = celciusValue + 273.15;
         return newInstance;
     }
 
@@ -36,21 +36,21 @@ public class Temperature implements Comparable {
         return newInstance;
     }
 
-    public double asKelvinValue() {
+    public double toKelvinValue() {
         return kelvinValue;
     }
 
-    public double asCelciusValue() {
-        return kelvinValue + 273.15;
+    public double toCelciusValue() {
+        return kelvinValue - 273.15;
     }
 
-    public double asFahrenheitValue() {
+    public double toFahrenheitValue() {
         return kelvinValue * 9 / 5 - 459.67;
     }
 
     @Override
     public String toString() {
-        return String.valueOf(asCelciusValue());
+        return String.valueOf(toCelciusValue());
     }
 
     public int compareTo(Object o) {

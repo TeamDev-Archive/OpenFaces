@@ -27,12 +27,12 @@ public class TemperatureType extends OrdinalType {
     public Object add(Object value1, Object value2) {
         Temperature t1 = (Temperature) value1;
         Temperature t2 = (Temperature) value2;
-        return Temperature.fromKelvinValue(t1.asKelvinValue() + t2.asKelvinValue());
+        return Temperature.fromKelvinValue(t1.toKelvinValue() + t2.toKelvinValue());
     }
 
     @Override
     public Object divide(Object value, double by) {
         Temperature t = (Temperature) value;
-        return Temperature.fromKelvinValue(t.asKelvinValue() / by);
+        return Temperature.fromKelvinValue(t.toKelvinValue() / by);
     }
 }

@@ -36,7 +36,7 @@ import java.util.Map;
  * @author Dmitry Pikhulya
  */
 public class MultitypeBeanSupport {
-    private static final String[] CUSTOM_FIELD_PREFIXES = new String[]{"int", "double", "date", "string", "boolean", "enum", "temperature"};
+    private static final String[] CUSTOM_FIELD_PREFIXES = new String[]{"int", "double", "date", "string", "boolean", "temperature"};
     private static final String[] CUSTOM_FIELD_SUFFIXES = new String[]{"0", "1", "2"};
 
     private static final NumberConverter DOUBLE_COL_CONVERTER = new NumberConverter();
