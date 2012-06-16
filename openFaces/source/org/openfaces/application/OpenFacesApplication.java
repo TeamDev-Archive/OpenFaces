@@ -54,7 +54,11 @@ public class OpenFacesApplication extends ApplicationWrapper {
     }
 
     @Override
-    public void publishEvent(FacesContext context, Class<? extends SystemEvent> systemEventClass, Class<?> sourceBaseType, Object source) {
+    public void publishEvent(
+            FacesContext context,
+            Class<? extends SystemEvent> systemEventClass,
+            Class<?> sourceBaseType,
+            Object source) {
         boolean postAddToViewEvent = PostAddToViewEvent.class.isAssignableFrom(systemEventClass);
 
         Map<String, Object> requestMap = null; // avoid invoking getRequestMap() here for MyFaces compatibility (see http://requests.openfaces.org/browse/OF-65) 
