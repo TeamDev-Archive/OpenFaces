@@ -22,7 +22,7 @@
 
   <br/>
 
-  <o:tabbedPane style="width: 100%" selectedIndex="0">
+  <o:tabbedPane style="width: 100%" loadingMode="client" selectedIndex="0">
 
     <o:subPanel caption="Various predefined settings (with &lt;o:summary> tags)">
       <o:dataTable var="item" value="#{MultitypeBeanSupport.list1}" rowKey="#{item.id}" style="height: 400px">
@@ -195,7 +195,7 @@
     </o:subPanel>
 
     <o:subPanel caption="Multitype test (with &lt;o:summary> tags)">
-      <o:dataTable var="item" value="#{MultitypeBeanSupport.list1}" rowKey="#{item.id}" style="height: 700px">
+      <o:dataTable var="item" value="#{MultitypeBeanSupport.list1}" rowKey="#{item.id}" style="height: 400px">
         <o:scrolling horizontal="true"/>
         <o:rowGrouping/>
         <f:facet name="header">
@@ -296,7 +296,7 @@
     </o:subPanel>
 
     <o:subPanel caption="Multitype test (with &lt;o:summaries> tag)">
-      <o:dataTable var="item" value="#{MultitypeBeanSupport.list1}" rowKey="#{item.id}" style="height: 700px">
+      <o:dataTable var="item" value="#{MultitypeBeanSupport.list1}" rowKey="#{item.id}" style="height: 400px">
         <o:scrolling horizontal="true"/>
         <o:rowGrouping/>
         <f:facet name="header">
