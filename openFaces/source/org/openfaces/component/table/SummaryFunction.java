@@ -88,7 +88,7 @@ public abstract class SummaryFunction implements Serializable {
         /**
          * The endCalculation method can be invoked only once on the same instance of Calculator.
          * <p/>
-         * This method can return null in a "no result" case, which can happen when this calculator was not provided
+         * This method can return <code>null</code> in a "no result" case, which can happen when this calculator was not provided
          * any data values for calculation.
          */
         public Object endCalculation() {

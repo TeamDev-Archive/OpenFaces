@@ -65,7 +65,7 @@ public class InGroupHeaderOrFooterCell extends GroupHeaderOrFooterCell {
                 // method sets up column's context. If this check fails then it means that this method is invoked from
                 // somewhere else, and if that invocation is rightful then this cell's enterComponentContext method has
                 // to be invoked prior to this
-                throw new IllegalStateException("Dynamic column is supposed to be in context when its children are retrieved");
+                throw new IllegalStateException("The current column is supposed to be in context when its children are retrieved");
             }
         }
 

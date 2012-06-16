@@ -5,7 +5,22 @@
   <a href="../../main.jsf">TestApp home</a><br/>
   <a href="../../testPageIndex.jsf">Component test pages</a><br/><br/>
 
-  <o:commandButton value="Submit"/>
+  <style>
+    .input {width: 400px}
+    .attributeName {font-family: Courier,serif; font-size: smaller}
+  </style>
+
+  <h:panelGrid columns="1" style="border: 1px solid #c0c0c0; width: 100%">
+    Summary components settings:
+    <h:panelGroup><o:selectBooleanCheckbox id="functionEditableCheckbox" value="#{MultitypeBeanSupport.functionEditable}"/><h:outputLabel  for="functionEditableCheckbox" value="functionEditable" styleClass="attributeName"/> </h:panelGroup>
+    <h:panelGrid columns="2">
+      <span class="attributeName">pattern:</span> <h:panelGroup> <h:inputText id="patternInputText" styleClass="input" value="#{MultitypeBeanSupport.patternText}"/> <h:message style="color: red" for="patternInputText"/> </h:panelGroup>
+      <span class="attributeName">style:</span> <h:inputText styleClass="input" value="#{MultitypeBeanSupport.style}"/>
+    </h:panelGrid>
+    <o:commandButton value="Apply Settings" action="#{MultitypeBeanSupport.applySettings}"/>
+  </h:panelGrid>
+
+  <br/>
 
   <o:tabbedPane style="width: 100%" selectedIndex="0">
 
@@ -25,49 +40,73 @@
         <o:column header="Enum">
           <h:outputText value="#{item.enumField}"/>
           <f:facet name="inGroupFooter">
-            <o:summary/>
+            <o:summary functionEditable="#{MultitypeBeanSupport.functionEditable}" pattern="#{MultitypeBeanSupport.pattern}" style="#{MultitypeBeanSupport.style}"/>
           </f:facet>
           <f:facet name="footer">
-            <o:summary/>
-          </f:facet>
-        </o:column>
-        <o:column header="Date">
-          <h:outputText value="#{item.dateField}"/>
-          <f:facet name="inGroupFooter">
-            <o:summary/>
-          </f:facet>
-          <f:facet name="footer">
-            <o:summary/>
+            <o:summary functionEditable="#{MultitypeBeanSupport.functionEditable}" pattern="#{MultitypeBeanSupport.pattern}" style="#{MultitypeBeanSupport.style}"/>
           </f:facet>
         </o:column>
         <o:column header="boolean">
           <h:outputText value="#{item.booleanField}"/>
           <f:facet name="inGroupFooter">
-            <o:summary/>
+            <o:summary functionEditable="#{MultitypeBeanSupport.functionEditable}" pattern="#{MultitypeBeanSupport.pattern}" style="#{MultitypeBeanSupport.style}"/>
           </f:facet>
           <f:facet name="footer">
-            <o:summary/>
+            <o:summary functionEditable="#{MultitypeBeanSupport.functionEditable}" pattern="#{MultitypeBeanSupport.pattern}" style="#{MultitypeBeanSupport.style}"/>
           </f:facet>
         </o:column>
         <o:column header="int">
           <h:outputText value="#{item.intField}"/>
           <f:facet name="inGroupFooter">
-            <o:summary/>
+            <o:summary functionEditable="#{MultitypeBeanSupport.functionEditable}" pattern="#{MultitypeBeanSupport.pattern}" style="#{MultitypeBeanSupport.style}"/>
           </f:facet>
           <f:facet name="footer">
-            <o:summary/>
+            <o:summary functionEditable="#{MultitypeBeanSupport.functionEditable}" pattern="#{MultitypeBeanSupport.pattern}" style="#{MultitypeBeanSupport.style}"/>
           </f:facet>
         </o:column>
+
+        <o:column header="double">
+          <h:outputText value="#{item.doubleField}">
+            <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+          </h:outputText>
+          <f:facet name="inGroupFooter">
+            <o:summary functionEditable="#{MultitypeBeanSupport.functionEditable}" pattern="#{MultitypeBeanSupport.pattern}" style="#{MultitypeBeanSupport.style}"/>
+          </f:facet>
+          <f:facet name="footer">
+            <o:summary functionEditable="#{MultitypeBeanSupport.functionEditable}" pattern="#{MultitypeBeanSupport.pattern}" style="#{MultitypeBeanSupport.style}"/>
+          </f:facet>
+        </o:column>
+
+        <o:column header="Date">
+          <h:outputText value="#{item.dateField}"/>
+          <f:facet name="inGroupFooter">
+            <o:summary functionEditable="#{MultitypeBeanSupport.functionEditable}" pattern="#{MultitypeBeanSupport.pattern}" style="#{MultitypeBeanSupport.style}"/>
+          </f:facet>
+          <f:facet name="footer">
+            <o:summary functionEditable="#{MultitypeBeanSupport.functionEditable}" pattern="#{MultitypeBeanSupport.pattern}" style="#{MultitypeBeanSupport.style}"/>
+          </f:facet>
+        </o:column>
+
+        <o:column header="Temperature">
+          <h:outputText value="#{item.enumField}"/>
+          <f:facet name="inGroupFooter">
+            <o:summary functionEditable="#{MultitypeBeanSupport.functionEditable}" pattern="#{MultitypeBeanSupport.pattern}" style="#{MultitypeBeanSupport.style}"/>
+          </f:facet>
+          <f:facet name="footer">
+            <o:summary functionEditable="#{MultitypeBeanSupport.functionEditable}" pattern="#{MultitypeBeanSupport.pattern}" style="#{MultitypeBeanSupport.style}"/>
+          </f:facet>
+        </o:column>
+
 
         <o:columns value="#{MultitypeBeanSupport.customFieldNames}" var="col" style="text-align: right">
           <f:facet name="header">
             <h:outputText value="#{col}"/>
           </f:facet>
           <f:facet name="inGroupFooter">
-            <o:summary/>
+            <o:summary functionEditable="#{MultitypeBeanSupport.functionEditable}" pattern="#{MultitypeBeanSupport.pattern}" style="#{MultitypeBeanSupport.style}"/>
           </f:facet>
           <f:facet name="footer">
-            <o:summary function="#{MultitypeBeanSupport.customFieldsToDefaultFunctions[col]}"/>
+            <o:summary functionEditable="#{MultitypeBeanSupport.functionEditable}" pattern="#{MultitypeBeanSupport.pattern}" style="#{MultitypeBeanSupport.style}" function="#{MultitypeBeanSupport.customFieldsToDefaultFunctions[col]}"/>
           </f:facet>
 
           <h:outputText value="#{item.customFields[col]}" converter="#{MultitypeBeanSupport.columnConverter}"/>
@@ -111,9 +150,6 @@
         <o:column header="Enum">
           <h:outputText value="#{item.enumField}"/>
         </o:column>
-        <o:column header="Date">
-          <h:outputText value="#{item.dateField}"/>
-        </o:column>
         <o:column header="boolean">
           <h:outputText value="#{item.booleanField}"/>
         </o:column>
@@ -142,6 +178,14 @@
             <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
           </h:outputText>
         </o:column>
+
+        <o:column header="Date">
+          <h:outputText value="#{item.dateField}"/>
+        </o:column>
+        <o:column header="Temperature">
+          <h:outputText value="#{item.enumField}"/>
+        </o:column>
+
 
         <o:columns value="#{MultitypeBeanSupport.customFieldNames}" var="col" style="text-align: right">
           <f:facet name="header">
