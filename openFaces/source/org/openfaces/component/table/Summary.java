@@ -620,10 +620,7 @@ public class Summary extends OUIOutput {
                 }
             }
 
-            commonLocation =
-                    column == null ||
-                            column instanceof ColumnGroup ||
-                            equalsToOneOf(facetName, BaseColumn.FACET_GROUP_HEADER, BaseColumn.FACET_GROUP_FOOTER);
+            commonLocation = column == null || column instanceof ColumnGroup;
         }
 
         /**
@@ -748,7 +745,16 @@ public class Summary extends OUIOutput {
 
         public List<SummaryFunction> getApplicableFunctions() {
             if (commonLocation) {
-                return Collections.singletonList((SummaryFunction) new CountFunction());
+                ValueExpression byExpression = summary.getBy();
+                List<BaseColumn> allColumns = table.getAllColumns();
+                BaseColumn anyColumn = allColumns.size() > 0 ? allColumns.get(0) : null;
+                if (byExpression != null && anyColumn != null) {
+                    BaseColumn.ExpressionData expressionData = anyColumn.getExpressionData(byExpression);
+                    Class valueType = expressionData.getValueType();
+                    return getFunctionsForType(valueType);
+                } else {
+                    return Collections.singletonList((SummaryFunction) new CountFunction());
+                }
             } else {
                 ValueExpression byExpression = getByExpression();
                 BaseColumn.ExpressionData expressionData = column.getExpressionData(byExpression);
