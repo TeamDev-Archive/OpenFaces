@@ -12,20 +12,24 @@
 
 package org.openfaces.testapp.datatable;
 
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 
 /**
  * @author Dmitry Pikhulya
  */
-public class TemperatureKelvinConverter implements Converter {
-    public Object getAsObject(FacesContext context, UIComponent component, String value) {
-        double valueAsDouble = Double.parseDouble(value.substring(0, value.length() - 2));
-        return Temperature.fromKelvinValue(valueAsDouble);
+public class TemperatureKelvinConverter extends AbstractTemperatureConverter {
+    @Override
+    protected double toNumberValue(Temperature t) {
+        return t.toKelvinValue();
     }
 
-    public String getAsString(FacesContext context, UIComponent component, Object value) {
-        return ((Temperature) value).asKelvinValue() + "°K";
+    @Override
+    protected Temperature fromNumberValue(double d) {
+        return Temperature.fromKelvinValue(d);
+    }
+
+    @Override
+    protected String getUnitSuffix() {
+        return " °K";
     }
 }

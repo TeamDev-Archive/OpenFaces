@@ -172,4 +172,12 @@ public class MultitypeBean {
     public void setDateField(Date dateField) {
         this.dateField = dateField;
     }
+
+    public Temperature getTemperatureField() {
+        return temperatureField;
+    }
+
+    public void setTemperatureField(Temperature temperatureField) {
+        this.temperatureField = temperatureField;
+    }
 }

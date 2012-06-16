@@ -12,20 +12,23 @@
 
 package org.openfaces.testapp.datatable;
 
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
-
 /**
  * @author Dmitry Pikhulya
  */
-public class TemperatureCelciusConverter implements Converter {
-    public Object getAsObject(FacesContext context, UIComponent component, String value) {
-        double valueAsDouble = Double.parseDouble(value.substring(0, value.length() - 2));
-        return Temperature.fromCelciusValue(valueAsDouble);
+public class TemperatureCelciusConverter extends AbstractTemperatureConverter {
+
+    @Override
+    protected double toNumberValue(Temperature t) {
+        return t.toCelciusValue();
     }
 
-    public String getAsString(FacesContext context, UIComponent component, Object value) {
-        return ((Temperature) value).asCelciusValue() + "°C";
+    @Override
+    protected Temperature fromNumberValue(double d) {
+        return Temperature.fromCelciusValue(d);
+    }
+
+    @Override
+    protected String getUnitSuffix() {
+        return " °C";
     }
 }
