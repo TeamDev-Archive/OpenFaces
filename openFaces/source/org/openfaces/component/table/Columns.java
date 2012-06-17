@@ -752,8 +752,6 @@ public class Columns extends UIComponentBase implements ValueHolder, NamingConta
                 else {
                     column.setId(getId() + "_" + colIndex);
                 }
-
-//                copySummaryComponents(column);
             }
 
             column.setColumns(this);
@@ -903,7 +901,7 @@ public class Columns extends UIComponentBase implements ValueHolder, NamingConta
 
     private void setColumnComponents(List<DynamicColumn> columns) {
         FacesContext context = FacesContext.getCurrentInstance();
-        UIComponent columnContainer = context.getApplication().createComponent("javax.faces.HtmlPanelGroup");
+        UIComponent columnContainer = Components.createComponent(context, "javax.faces.HtmlPanelGroup", UIComponent.class, this, "_columnsContainer_");
         getFacets().put(FACET_COLUMN_COMPONENTS, columnContainer);
         columnContainer.getChildren().addAll(columns);
     }

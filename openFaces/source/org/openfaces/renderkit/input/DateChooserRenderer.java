@@ -119,7 +119,7 @@ public class DateChooserRenderer extends DropDownComponentRenderer {
         DateChooserPopup popup
                 = (DateChooserPopup) context.getApplication().createComponent(DateChooserPopup.COMPONENT_TYPE);
         List<UIComponent> children = dateChooser.getChildren();
-        popup.setParent(dateChooser);
+        popup.setParent(dateChooser); // todo: it's not correct according to setParent's JavaDoc to use this method from applications, the proper way is to use parent.getChildren().add
 
         popup.setId(component.getId() + POPUP_SUFFIX);
         Calendar c = (Calendar) context.getApplication().createComponent(Calendar.COMPONENT_TYPE);

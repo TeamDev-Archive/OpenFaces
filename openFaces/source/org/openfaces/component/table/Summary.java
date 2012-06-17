@@ -344,13 +344,18 @@ public class Summary extends OUIOutput {
             }
 
             if (popupMenu == null) {
-                Application application = context.getApplication();
-                popupMenu = (PopupMenu) application.createComponent(PopupMenu.COMPONENT_TYPE);
+                final String idCounterAttr = "_idCounter";
+                Integer idCounter = (Integer) popupMenuContainer.getAttributes().get(idCounterAttr);
+                if (idCounter == null) idCounter = 0;
+                popupMenu = Components.createComponent(context,
+                        PopupMenu.COMPONENT_TYPE, PopupMenu.class, popupMenuContainer, "popupMenu" + idCounter++);
+                popupMenuContainer.getAttributes().put(idCounterAttr, idCounter);
                 popupMenu.setStandalone(true);
 
                 popupMenu.getAttributes().put(summaryFunctionsAttribute, applicableFunctions);
-                for (SummaryFunction function : applicableFunctions) {
-                    MenuItem menuItem = (MenuItem) application.createComponent(MenuItem.COMPONENT_TYPE);
+                for (int i = 0, count = applicableFunctions.size(); i < count; i++) {
+                    SummaryFunction function = applicableFunctions.get(i);
+                    MenuItem menuItem = Components.createComponent(context, MenuItem.COMPONENT_TYPE, MenuItem.class, popupMenu, "item" + i);
                     String functionName = function.getName();
                     menuItem.setValue(functionName);
                     menuItem.setOnclick(new ScriptBuilder().functionCall(
@@ -369,10 +374,11 @@ public class Summary extends OUIOutput {
         }
 
         private UIComponent getPopupMenuContainer(FacesContext context) {
-            UIComponent facetContainer = getTable().getFacet(FACET_POPUP_MENUS_CONTAINER);
+            DataTable table = getTable();
+            UIComponent facetContainer = table.getFacet(FACET_POPUP_MENUS_CONTAINER);
             if (facetContainer == null) {
-                facetContainer = context.getApplication().createComponent(HtmlPanelGroup.COMPONENT_TYPE);
-                getTable().getFacets().put(FACET_POPUP_MENUS_CONTAINER, facetContainer);
+                facetContainer = Components.createComponent(context, HtmlPanelGroup.COMPONENT_TYPE, UIComponent.class, table, "_popupMenuContainer_");
+                table.getFacets().put(FACET_POPUP_MENUS_CONTAINER, facetContainer);
             }
             return facetContainer;
         }
