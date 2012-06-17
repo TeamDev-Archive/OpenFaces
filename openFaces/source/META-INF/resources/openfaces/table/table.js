@@ -4812,7 +4812,9 @@ O$.Summary = {
         // component's placeholder, so we're invoking this asynchronously to give a chance for the tags below to get
         // into the DOM (when the JavaScript processing thread is freed again)
         setTimeout(function() {
-          O$.Summary._init(componentId, value, tableId, popupMenuId, selectedIconUrl, unselectedIconUrl, true);
+          O$.Summary._init(componentId, originalClientId, value, tableId,
+                           popupMenuId, selectedItemId, selectedIconUrl,unselectedIconUrl,
+                           true);
         }, 1);
       }
       return;
