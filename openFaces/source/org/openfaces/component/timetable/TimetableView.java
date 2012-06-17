@@ -459,9 +459,9 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
                 confirmation = timetable.getDeleteEventConfirmation();
         }
         if (confirmation == null) {
-            confirmation = (Confirmation) Components.createComponent(context,
-                    getId() + Rendering.SERVER_ID_SUFFIX_SEPARATOR + "deleteEventConfirmation",
-                    Confirmation.COMPONENT_TYPE);
+            confirmation = Components.createComponent(context,
+                    Confirmation.COMPONENT_TYPE, Confirmation.class, getId() + Rendering.SERVER_ID_SUFFIX_SEPARATOR + "deleteEventConfirmation"
+            );
             confirmation.setMessage("Delete the event?");
             confirmation.setDetails("Click OK to delete the event");
             confirmation.setDraggable(true);
