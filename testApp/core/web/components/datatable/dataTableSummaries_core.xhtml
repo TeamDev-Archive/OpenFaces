@@ -32,19 +32,17 @@
           <o:groupingBox/>
         </f:facet>
         <f:facet name="above">
-          <h:panelGroup>
-            <o:summary />
-          </h:panelGroup>
+            <o:summary id="summaryAbove" functionEditable="false"/>
         </f:facet>
         <f:facet name="footer">
           <h:panelGroup>
-            Total records:&#160;<o:summary function="count" pattern="#{valueString}"/> <br/>
+            Total records:&#160;<o:summary function="count" pattern="#{valueString}" functionEditable="false"/> <br/>
             Int column summary:&#160;<o:summary by="#{item.intField}" pattern="#{valueString}" function="sum"/> <br/>
             Double column summary:&#160;<o:summary by="#{item.doubleField}" pattern="#{valueString}" function="sum"/>
           </h:panelGroup>
         </f:facet>
         <f:facet name="below">
-          <o:summary/>
+          <o:summary id="summaryBelow" functionEditable="false"/>
         </f:facet>
 
         <o:column header="Enum*" sortingExpression="#{item.enumField}">
@@ -285,7 +283,7 @@
 
         <f:facet name="footer">
           <h:panelGroup>
-            Total records:&#160;<o:summary function="count" pattern="#{value}"/>
+            Total records:&#160;<o:summary function="count" pattern="#{value}" functionEditable="false"/>
           </h:panelGroup>
         </f:facet>
 
@@ -366,7 +364,7 @@
 
         <f:facet name="footer">
           <h:panelGroup>
-            Total records:&#160;<o:summary function="count" pattern="#{value}"/>
+            Total records:&#160;<o:summary function="count" pattern="#{value}" functionEditable="false"/>
           </h:panelGroup>
         </f:facet>
 
