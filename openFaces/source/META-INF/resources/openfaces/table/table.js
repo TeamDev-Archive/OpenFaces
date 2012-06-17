@@ -4805,17 +4805,18 @@ O$.ColumnMenu = {
 O$.Summary = {
   _init: function(componentId, originalClientId, value, tableId,
                   popupMenuId, selectedItemId, selectedIconUrl, unselectedIconUrl,
-                  secondInitializationAttempt) {
+                  initializationAttemptNo) {
     if (!O$(componentId)) {
-      if (!secondInitializationAttempt) {
+      if (!initializationAttemptNo) initializationAttemptNo = 0;
+      if (initializationAttemptNo < 20) {
         // the case for the below facet whose _init function call is rendered prior to the appropriate Summary
         // component's placeholder, so we're invoking this asynchronously to give a chance for the tags below to get
         // into the DOM (when the JavaScript processing thread is freed again)
         setTimeout(function() {
           O$.Summary._init(componentId, originalClientId, value, tableId,
-                           popupMenuId, selectedItemId, selectedIconUrl,unselectedIconUrl,
-                           true);
-        }, 1);
+                  popupMenuId, selectedItemId, selectedIconUrl,unselectedIconUrl,
+                  initializationAttemptNo++);
+        }, initializationAttemptNo == 0 ? 1 : initializationAttemptNo < 5 ? 100 : 1000);
       }
       return;
     }
