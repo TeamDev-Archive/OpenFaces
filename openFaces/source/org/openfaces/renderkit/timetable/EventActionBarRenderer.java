@@ -21,6 +21,7 @@ import org.openfaces.org.json.JSONArray;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.RendererBase;
+import org.openfaces.util.Components;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.Styles;
@@ -84,7 +85,8 @@ public class EventActionBarRenderer extends RendererBase {
         boolean tableEditable = timeTable.isEditable();
         if (tableEditable) {
             if (deleteEventAction == null) {
-                deleteEventAction = new DeleteEventAction();
+                deleteEventAction = Components.createComponent(context,
+                        DeleteEventAction.COMPONENT_TYPE, DeleteEventAction.class, actionBar, "deleteEventAction");
                 result.add(deleteEventAction);
                 actionBar.getChildren().add(deleteEventAction);
             }

@@ -15,6 +15,7 @@ import org.openfaces.component.chart.Chart;
 import org.openfaces.component.chart.ChartTitle;
 import org.openfaces.component.chart.ChartViewType;
 import org.openfaces.component.chart.TimePeriod;
+import org.openfaces.util.Components;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -35,8 +36,8 @@ public class ChartTag extends AbstractStyledComponentTag {
     }
 
     @Override
-    public void setComponentProperties(FacesContext facesContext, UIComponent component) {
-        super.setComponentProperties(facesContext, component);
+    public void setComponentProperties(FacesContext context, UIComponent component) {
+        super.setComponentProperties(context, component);
         Chart chart = (Chart) component;
 
         setStringProperty(chart, "textStyle");
@@ -46,6 +47,7 @@ public class ChartTag extends AbstractStyledComponentTag {
         String titleText = getPropertyValue("titleText");
         if (titleText != null) {
             ChartTitle title = new ChartTitle();
+            title.setId(Components.generateIdWithSuffix(chart, "chartTitle"));
             setStringProperty(title, "text", titleText, "titleText");
             chart.getChildren().add(title);
             title.setTextStyle("font-size: 14pt;");

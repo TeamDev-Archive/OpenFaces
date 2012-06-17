@@ -758,8 +758,6 @@ public class Columns extends UIComponentBase implements ValueHolder, NamingConta
                 else {
                     column.setId(getId() + "_" + colIndex);
                 }
-
-//                copySummaryComponents(column);
             }
 
             column.setColumns(this);
@@ -783,42 +781,6 @@ public class Columns extends UIComponentBase implements ValueHolder, NamingConta
             setColumnComponents(newColumns);
 
         return newColumns;
-    }
-
-    private void copySummaryComponents(DynamicColumn column) {
-        for (String facetName : new String[]{
-                BaseColumn.FACET_HEADER, BaseColumn.FACET_SUB_HEADER, BaseColumn.FACET_FOOTER,
-                BaseColumn.FACET_GROUP_HEADER, BaseColumn.FACET_GROUP_FOOTER,
-                BaseColumn.FACET_IN_GROUP_HEADER, BaseColumn.FACET_IN_GROUP_FOOTER}) {
-            UIComponent facet = Components.getFacet(this, facetName);
-            if (facet == null) continue;
-            boolean containsSummaryComponent = doesFacetContainSpecialComponents(facet, Summary.class);
-            if (!containsSummaryComponent) continue;
-            if (!(facet instanceof Summary)) {
-                // The reason for the limitation mentioned below is that we cannot clone the Summary component
-                // along with its containers and other components in the facet because there's no standard API in
-                // JSF that would let us detect component type by the component's reference. Some of the possible
-                // workarounds are looking for COMPONENT_TYPE constant in the component class, and instantiating
-                // the component class directly (none of these is a reliable way of creating a component of the same
-                // type)
-                throw new FacesException("<o:summary> components can only be placed as top-level facet components " +
-                        "inside of <o:columns> tag, and cannot be used with other components in the same facet");
-            }
-            Summary templateComponent = (Summary) facet;
-            Summary newComponent = (Summary) getFacesContext().getApplication().createComponent(Summary.COMPONENT_TYPE);
-            // todo: evaluate templateComponent's attributes against the current column data variable and copy them to newComponent
-            column.getFacets().put(facetName, newComponent);
-        }
-    }
-
-    private boolean doesFacetContainSpecialComponents(UIComponent facetComponent, Class<? extends UIComponent> componentClass) {
-        if (componentClass.isAssignableFrom(facetComponent.getClass())) return true;
-        Iterator<UIComponent> facetsAndChildren = facetComponent.getFacetsAndChildren();
-        while (facetsAndChildren.hasNext()) {
-            UIComponent component = facetsAndChildren.next();
-            if (doesFacetContainSpecialComponents(component, componentClass)) return true;
-        }
-        return false;
     }
 
     private void applyFilteringParameters(FacesContext context, DynamicColumn column) {
@@ -945,7 +907,7 @@ public class Columns extends UIComponentBase implements ValueHolder, NamingConta
 
     private void setColumnComponents(List<DynamicColumn> columns) {
         FacesContext context = FacesContext.getCurrentInstance();
-        UIComponent columnContainer = context.getApplication().createComponent("javax.faces.HtmlPanelGroup");
+        UIComponent columnContainer = Components.createComponent(context, "javax.faces.HtmlPanelGroup", UIComponent.class, this, "_columnsContainer_");
         getFacets().put(FACET_COLUMN_COMPONENTS, columnContainer);
         columnContainer.getChildren().addAll(columns);
     }
