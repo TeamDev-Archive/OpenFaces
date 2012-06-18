@@ -22,6 +22,7 @@ import org.openfaces.component.table.RemoveFromGroupingMenuItem;
 import org.openfaces.component.table.SortAscendingMenuItem;
 import org.openfaces.component.table.SortDescendingMenuItem;
 import org.openfaces.renderkit.command.PopupMenuRenderer;
+import org.openfaces.util.Components;
 
 import javax.faces.application.Application;
 import javax.faces.component.UIComponent;
@@ -35,16 +36,19 @@ public class ColumnMenuRenderer extends PopupMenuRenderer {
         ColumnMenu menu = (ColumnMenu) component;
         if (menu.getChildren().size() == 0) {
             List<UIComponent> menuItems = menu.getChildren();
-            Application application = FacesContext.getCurrentInstance().getApplication();
-            menuItems.add(application.createComponent(SortAscendingMenuItem.COMPONENT_TYPE));
-            menuItems.add(application.createComponent(SortDescendingMenuItem.COMPONENT_TYPE));
-            menuItems.add(application.createComponent(GroupByColumnMenuItem.COMPONENT_TYPE));
-            menuItems.add(application.createComponent(RemoveFromGroupingMenuItem.COMPONENT_TYPE));
-//            menuItems.add(application.createComponent(CancelGroupingMenuItem.COMPONENT_TYPE));
-            menuItems.add(application.createComponent(HideColumnMenuItem.COMPONENT_TYPE));
-            menuItems.add(application.createComponent(MenuSeparator.COMPONENT_TYPE));
-            ColumnVisibilityMenu columnVisibilityMenu = (ColumnVisibilityMenu) application.createComponent(ColumnVisibilityMenu.COMPONENT_TYPE);
-            menuItems.add(new MenuItem("Columns", columnVisibilityMenu));
+            menuItems.add(Components.createComponent(context, SortAscendingMenuItem.COMPONENT_TYPE, SortAscendingMenuItem.class, menu, "sortAscending"));
+            menuItems.add(Components.createComponent(context, SortDescendingMenuItem.COMPONENT_TYPE, SortDescendingMenuItem.class, menu, "sortDescend"));
+            menuItems.add(Components.createComponent(context, GroupByColumnMenuItem.COMPONENT_TYPE, GroupByColumnMenuItem.class, menu, "groupByColumn"));
+            menuItems.add(Components.createComponent(context, RemoveFromGroupingMenuItem.COMPONENT_TYPE, RemoveFromGroupingMenuItem.class, menu, "removeFromGrouping"));
+//            menuItems.add(Components.createComponent(context, CancelGroupingMenuItem.COMPONENT_TYPE, CancelGroupingMenuItem.class, menu, "cancelGrouping");
+            menuItems.add(Components.createComponent(context, HideColumnMenuItem.COMPONENT_TYPE, HideColumnMenuItem.class, menu, "hideColumn"));
+            menuItems.add(Components.createComponent(context, MenuSeparator.COMPONENT_TYPE, MenuSeparator.class, menu, "separator"));
+            ColumnVisibilityMenu columnVisibilityMenu = Components.createComponent(context,
+                    ColumnVisibilityMenu.COMPONENT_TYPE, ColumnVisibilityMenu.class, menu, "columnVisibilityMenu");
+            MenuItem columns = Components.createComponent(context, MenuItem.COMPONENT_TYPE, MenuItem.class, menu, "columnsSubmenu");
+            columns.setValue("Columns");
+            columns.getChildren().add(columnVisibilityMenu);
+            menuItems.add(columns);
         }
 
         super.encodeBegin(context, component);

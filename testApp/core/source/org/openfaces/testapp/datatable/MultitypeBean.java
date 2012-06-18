@@ -39,6 +39,7 @@ public class MultitypeBean {
 
     private EnumType1 enumField;
     private Date dateField;
+    private Temperature temperatureField;
 
     public MultitypeBean() {
         Random r = new Random();
@@ -49,6 +50,7 @@ public class MultitypeBean {
         longField = r.nextInt(10000);
         floatField = r.nextFloat() * 10;
         doubleField = r.nextDouble() * 100;
+        temperatureField = nextTemperature(r);
 
         stringField = nextString(r);
         enumField = nextEnum(r, EnumType1.class);
@@ -60,6 +62,8 @@ public class MultitypeBean {
             customFields.put("double" + i, r.nextDouble() * 100.0);
             customFields.put("string" + i, nextString(r));
             customFields.put("date" + i, nextDate(r));
+            customFields.put("enum" + i, nextEnum(r, EnumType1.class));
+            customFields.put("temperature" + i, nextTemperature(r));
         }
     }
 
@@ -83,6 +87,10 @@ public class MultitypeBean {
 
     private String nextString(Random r) {
         return Integer.toString(Math.abs(r.nextInt()), 36);
+    }
+
+    private Temperature nextTemperature(Random r) {
+        return Temperature.fromCelciusValue(r.nextDouble() * 55 - 20);
     }
 
     public boolean isBooleanField() {
@@ -163,5 +171,13 @@ public class MultitypeBean {
 
     public void setDateField(Date dateField) {
         this.dateField = dateField;
+    }
+
+    public Temperature getTemperatureField() {
+        return temperatureField;
+    }
+
+    public void setTemperatureField(Temperature temperatureField) {
+        this.temperatureField = temperatureField;
     }
 }

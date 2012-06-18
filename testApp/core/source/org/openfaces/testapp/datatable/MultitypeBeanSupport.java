@@ -19,6 +19,12 @@ import org.openfaces.component.table.SumFunction;
 import org.openfaces.component.table.SummaryFunction;
 import org.openfaces.util.Faces;
 
+import javax.el.ELContext;
+import javax.el.ELException;
+import javax.el.ExpressionFactory;
+import javax.el.ValueExpression;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.NumberConverter;
 import java.util.ArrayList;
@@ -30,7 +36,7 @@ import java.util.Map;
  * @author Dmitry Pikhulya
  */
 public class MultitypeBeanSupport {
-    private static final String[] CUSTOM_FIELD_PREFIXES = new String[]{"int", "double", "date", "string", "boolean"};
+    private static final String[] CUSTOM_FIELD_PREFIXES = new String[]{"int", "double", "date", "string", "boolean", "temperature"};
     private static final String[] CUSTOM_FIELD_SUFFIXES = new String[]{"0", "1", "2"};
 
     private static final NumberConverter DOUBLE_COL_CONVERTER = new NumberConverter();
@@ -98,4 +104,61 @@ public class MultitypeBeanSupport {
         }
     }
 
+    private boolean functionEditable = true;
+    private String patternText = "#{function}: #{valueString}";
+    private ValueExpression patternExpression;
+    private String style = "font-style: normal";
+
+    public boolean isFunctionEditable() {
+        return functionEditable;
+    }
+
+    public void setFunctionEditable(boolean functionEditable) {
+        this.functionEditable = functionEditable;
+    }
+
+    public String getPattern() {
+        if (patternExpression == null) {
+            applyPattern();
+        }
+        FacesContext context = FacesContext.getCurrentInstance();
+        ELContext elContext = context.getELContext();
+        return patternExpression.getValue(elContext).toString();
+    }
+
+    public void applySettings() {
+        applyPattern();
+    }
+
+    private void applyPattern() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        ELContext elContext = context.getELContext();
+        ExpressionFactory expressionFactory = context.getApplication().getExpressionFactory();
+        try {
+            patternExpression = expressionFactory.createValueExpression(elContext, patternText, String.class);
+        } catch (NullPointerException e) {
+            throw new RuntimeException(e);
+        } catch (ELException e) {
+            context.addMessage("form:patternInputText", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid pattern", e.getMessage()));
+        }
+    }
+
+    public String getPatternText() {
+        return patternText;
+    }
+
+    public void setPatternText(String patternText) {
+        this.patternText = patternText;
+    }
+
+    public String getStyle() {
+        return style;
+    }
+
+    public void setStyle(String style) {
+        this.style = style;
+    }
 }
+
+
+// todo: custom types, custom functions

@@ -40,7 +40,6 @@ import java.util.Stack;
  * @author Dmitry Pikhulya
  */
 public class Components {
-    private static final String AUTO_ID_PREFIX = "j_id";
     private static final String POSTPONED_ACTIONS_ATTR = "org.openfaces.postponedActions";
 
     private Components() {
@@ -166,10 +165,10 @@ public class Components {
         String id = component.getId();
         if (id == null)
             return false;
-        if (!id.startsWith(AUTO_ID_PREFIX) || id.length() <= AUTO_ID_PREFIX.length())
+        if (!id.startsWith(UIViewRoot.UNIQUE_ID_PREFIX) || id.length() <= UIViewRoot.UNIQUE_ID_PREFIX.length())
             return true;
 
-        String suffix = id.substring(AUTO_ID_PREFIX.length());
+        String suffix = id.substring(UIViewRoot.UNIQUE_ID_PREFIX.length());
         try {
             Integer.parseInt(suffix);
             return false;
@@ -179,7 +178,7 @@ public class Components {
     }
 
     /**
-     * This method create new output text component and add it as facet to parent component
+     * This method creates a new output text component and adds it as a facet to the specified parent component
      *
      * @param context  {@link javax.faces.context.FacesContext} for the current request
      * @param parent   Method will search fo facet in this component or create it, if needed
@@ -206,7 +205,7 @@ public class Components {
     public static UIComponent createChildComponent(
             FacesContext context, UIComponent parent, String componentType, String idSuffix) {
         String childId = generateIdWithSuffix(parent, idSuffix);
-        UIComponent component = createComponent(context, childId, componentType);
+        UIComponent component = createComponent(context, componentType, childId);
         parent.getChildren().add(component);
         return component;
     }
@@ -224,28 +223,46 @@ public class Components {
     public static UIComponent createChildComponent(
             FacesContext context, UIComponent parent, String componentType, String idSuffix, int i) {
         String childId = generateIdWithSuffix(parent, idSuffix);
-        UIComponent component = createComponent(context, childId, componentType);
+        UIComponent component = createComponent(context, componentType, childId);
         parent.getChildren().add(i, component);
         return component;
     }
 
-    /**
-     * This method create components with given name and class and create, if needed, its sub-components
-     *
-     * @param context       {@link javax.faces.context.FacesContext} for the current request
-     * @param id            The id identifying the {@link javax.faces.component.UIComponent} to be returned
-     * @param componentType The component type for which to create and return a new {@link javax.faces.component.UIComponent} instance
-     * @return
-     */
-    public static UIComponent createComponent(FacesContext context, String id, String componentType) {
-        Application application = context.getApplication();
-        UIComponent component = application.createComponent(componentType);
-        component.setId(id);
-        return component;
+
+    private static UIComponent createComponent(FacesContext context, String componentType, String id) {
+        return createComponent(context, componentType, UIComponent.class, id);
+    }
+
+    public static <C extends UIComponent> C createComponent(FacesContext context, String componentType,
+                                                            Class<C> componentClass,
+                                                            UIComponent idGenerationBase, String idSuffix) {
+        String componentId = generateIdWithSuffix(idGenerationBase, idSuffix);
+        return createComponent(context, componentType, componentClass, componentId);
     }
 
     /**
-     * This method create new command button component and add it as facet to parent component
+     * This method creates components with by component-type string, and creates if sub-components if needed
+     *
+     * @param context       {@link javax.faces.context.FacesContext} for the current request
+     * @param componentType The component type for which to create and return a new {@link javax.faces.component.UIComponent} instance
+     * @param id            The id identifying the {@link javax.faces.component.UIComponent} to be returned
+     */
+    public static <C extends UIComponent> C createComponent(FacesContext context,
+                                                            String componentType, Class<C> componentClass,
+                                                            String id) {
+        Application application = context.getApplication();
+        UIComponent component = application.createComponent(componentType);
+        Class<? extends UIComponent> actualClass = component.getClass();
+        if (!componentClass.isAssignableFrom(actualClass))
+            throw new IllegalArgumentException("Unexpected component class. " +
+                    "Expected: " + componentClass.getName() +
+                    "; actual: " + actualClass.getName());
+        component.setId(id);
+        return (C) component;
+    }
+
+    /**
+     * This method creates a new command button component and adds it as a facet to the specified parent component
      *
      * @param context  {@link javax.faces.context.FacesContext} for the current request
      * @param parent   Method will search fo facet in this component or create it, if needed
@@ -394,25 +411,25 @@ public class Components {
      *                              seem to be equal to enforceComponentClass, facet will be recreated
      * @return facet of parent component
      */
-    public static <E extends UIComponent> E getOrCreateFacet(
-            FacesContext context, UIComponent parent, String componentType, String identifier, Class<E> enforceComponentClass) {
+    public static <C extends UIComponent> C getOrCreateFacet(
+            FacesContext context, UIComponent parent, String componentType, String identifier, Class<C> enforceComponentClass) {
         String id = generateIdWithSuffix(parent, identifier);
         return getOrCreateFacet(context, parent, componentType, identifier, id, enforceComponentClass);
     }
 
-    public static <E extends UIComponent> E getOrCreateFacet(
-            FacesContext context, UIComponent parent, String componentType, String facetName, String id, Class<E> enforceComponentClass) {
+    public static <C extends UIComponent> C getOrCreateFacet(
+            FacesContext context, UIComponent parent, String componentType, String facetName, String id, Class<C> enforceComponentClass) {
 
         UIComponent component = parent.getFacet(facetName);
         if (component != null) {
             if (enforceComponentClass == null || enforceComponentClass.isAssignableFrom(component.getClass())) {
                 if (!id.equals(component.getId()))
                     component.setId(id);
-                return (E) component;
+                return (C) component;
             }
         }
 
-        component = createComponent(context, id, componentType);
+        component = createComponent(context, componentType, id);
         List<Object> originalParentObjectIds = new ArrayList<Object>();
         for (UIComponent p = parent; p != null; p = p.getParent()) {
             // Reset rowIndex/objectId for all parent iterator components for proper functionality fo state saving
@@ -442,7 +459,7 @@ public class Components {
                 objectIterator.setObjectId((String) originalParentObjectIds.remove(0));
             }
         }
-        return (E) component;
+        return (C) component;
     }
 
     /**
@@ -470,10 +487,10 @@ public class Components {
      * Searches the component's parent chain until it finds the nearest parent with this class. Super classes and
      * interfaces are also supported by this method.
      */
-    public static <E extends UIComponent> E getParentWithClass(UIComponent component, Class<E> parentClass) {
+    public static <C extends UIComponent> C getParentWithClass(UIComponent component, Class<C> parentClass) {
         for (UIComponent parent = component.getParent(); parent != null; parent = parent.getParent())
             if (parentClass.isAssignableFrom(parent.getClass()))
-                return (E) parent;
+                return (C) parent;
         return null;
     }
 

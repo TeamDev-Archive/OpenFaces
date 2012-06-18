@@ -1,16 +1,200 @@
-<div xmlns:h="http://java.sun.com/jsf/html"
+<div xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:o="http://openfaces.org/"
         >
   <a href="../../main.jsf">TestApp home</a><br/>
   <a href="../../testPageIndex.jsf">Component test pages</a><br/><br/>
 
-  <o:commandButton value="Submit"/>
+  <style>
+    .input {width: 400px}
+    .attributeName {font-family: Courier,serif; font-size: smaller}
+  </style>
 
-  <o:tabbedPane style="width: 100%" selectedIndex="0">
+  <h:panelGrid columns="1" style="border: 1px solid #c0c0c0; width: 100%">
+    Summary components settings (not applicable to the first page where settings are pre-defined):
+    <h:panelGroup><o:selectBooleanCheckbox id="functionEditableCheckbox" value="#{MultitypeBeanSupport.functionEditable}"/><h:outputLabel  for="functionEditableCheckbox" value="functionEditable" styleClass="attributeName"/> </h:panelGroup>
+    <h:panelGrid columns="2">
+      <span class="attributeName">pattern:</span> <h:panelGroup> <h:inputText id="patternInputText" styleClass="input" value="#{MultitypeBeanSupport.patternText}"/> <h:message style="color: red" for="patternInputText"/> </h:panelGroup>
+      <span class="attributeName">style:</span> <h:inputText styleClass="input" value="#{MultitypeBeanSupport.style}"/>
+    </h:panelGrid>
+    <o:commandButton value="Apply Settings" action="#{MultitypeBeanSupport.applySettings}"/>
+  </h:panelGrid>
 
-    <o:subPanel caption="Per-column customization (with &lt;o:summary> tags)">
-      <o:dataTable var="item" value="#{MultitypeBeanSupport.list1}" rowKey="#{item.id}" style="height: 700px">
+  <br/>
+
+  <o:tabbedPane style="width: 100%" loadingMode="client" selectedIndex="0">
+
+    <o:subPanel caption="Various predefined settings (with &lt;o:summary> tags)">
+      <o:dataTable var="item" value="#{MultitypeBeanSupport.list1}" rowKey="#{item.id}" style="height: 400px">
+        <o:scrolling horizontal="false"/>
+        <o:rowGrouping/>
+        <f:facet name="header">
+          <o:groupingBox/>
+        </f:facet>
+        <f:facet name="above">
+            <o:summary id="summaryAbove" functionEditable="false"/>
+        </f:facet>
+        <f:facet name="footer">
+          <h:panelGroup>
+            Total records:&#160;<o:summary function="count" pattern="#{valueString}" functionEditable="false"/> <br/>
+            Int column summary:&#160;<o:summary by="#{item.intField}" pattern="#{valueString}" function="sum"/> <br/>
+            Double column summary:&#160;<o:summary by="#{item.doubleField}" pattern="#{valueString}" function="sum"/>
+          </h:panelGroup>
+        </f:facet>
+        <f:facet name="below">
+          <o:summary id="summaryBelow" functionEditable="false"/>
+        </f:facet>
+
+        <o:column header="Enum*" sortingExpression="#{item.enumField}">
+          <f:facet name="groupHeader">
+            <h:panelGroup>
+              #{columnHeader}: #{groupingValueString}&#160;(<o:summary functionEditable="false"/>)
+            </h:panelGroup>
+          </f:facet>
+          <f:facet name="groupFooter">
+            <h:panelGroup style="font-style: italic">
+              Records in this group:&#160;<o:summary function="count" pattern="#{valueString}" functionEditable="false"/>
+            </h:panelGroup>
+          </f:facet>
+          <h:outputText value="#{item.enumField}"/>
+        </o:column>
+        <o:column header="boolean*" sortingExpression="#{item.booleanField}">
+          <f:facet name="groupHeader">
+            <h:panelGroup>
+              #{columnHeader}: #{groupingValueString}&#160;(<o:summary functionEditable="false"/>)
+            </h:panelGroup>
+          </f:facet>
+          <f:facet name="groupFooter">
+            <h:panelGroup style="font-style: italic">
+              Records in this group:&#160;<o:summary function="count" pattern="#{valueString}" functionEditable="false"/>
+            </h:panelGroup>
+          </f:facet>
+          <h:outputText value="#{item.booleanField}"/>
+        </o:column>
+
+        <o:column header="int" sortingExpression="#{item.intField}">
+          <h:outputText value="#{item.intField}"/>
+          <f:facet name="groupHeader">
+            <h:panelGroup>
+              #{columnHeader}: #{groupingValueString}&#160;(<o:summary/>)
+            </h:panelGroup>
+          </f:facet>
+          <f:facet name="inGroupHeader">
+            <o:summary/>
+          </f:facet>
+          <f:facet name="inGroupFooter">
+            <o:summary/>
+          </f:facet>
+          <f:facet name="groupFooter">
+            <o:summary/>
+          </f:facet>
+          <f:facet name="footer">
+            <o:summary function="median"/>
+          </f:facet>
+        </o:column>
+
+        <o:column header="double" sortingExpression="#{item.doubleField}">
+          <f:facet name="groupHeader">
+            <h:panelGroup>
+              #{columnHeader}: #{groupingValueString}&#160;(<o:summary/>)
+            </h:panelGroup>
+          </f:facet>
+          <h:outputText value="#{item.doubleField}">
+            <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+          </h:outputText>
+          <f:facet name="inGroupHeader">
+            <o:summary/>
+          </f:facet>
+          <f:facet name="inGroupFooter">
+            <o:summary/>
+          </f:facet>
+          <f:facet name="groupFooter">
+            <o:summary/>
+          </f:facet>
+          <f:facet name="footer">
+            <h:panelGroup>
+              <o:summary function="sum"/><br/>
+              <o:summary function="avg"/><br/>
+              <o:summary function="min"/><br/>
+              <o:summary function="max"/><br/>
+            </h:panelGroup>
+          </f:facet>
+        </o:column>
+
+        <o:column header="int / double" sortingExpression="#{item.intField / item.doubleField}">
+          <f:facet name="groupHeader">
+            <h:panelGroup>
+              #{columnHeader}: #{groupingValueString}&#160;(<o:summary/>)
+            </h:panelGroup>
+          </f:facet>
+          <h:outputText value="#{item.intField / item.doubleField}">
+            <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+          </h:outputText>
+          <f:facet name="inGroupHeader">
+            <o:summary/>
+          </f:facet>
+          <f:facet name="inGroupFooter">
+            <o:summary/>
+          </f:facet>
+          <f:facet name="groupFooter">
+            <o:summary/>
+          </f:facet>
+          <f:facet name="footer">
+            <h:panelGroup>
+              <o:summary by="#{item.intField / item.doubleField}"/>
+            </h:panelGroup>
+          </f:facet>
+        </o:column>
+
+        <o:column header="Date" sortingExpression="#{item.dateField}">
+          <f:facet name="groupHeader">
+            <h:panelGroup>
+              #{columnHeader}: #{groupingValueString}&#160;(<o:summary/>)
+            </h:panelGroup>
+          </f:facet>
+          <h:outputText value="#{item.dateField}"/>
+          <f:facet name="inGroupHeader">
+            <o:summary/>
+          </f:facet>
+          <f:facet name="inGroupFooter">
+            <o:summary/>
+          </f:facet>
+          <f:facet name="groupFooter">
+            <o:summary/>
+          </f:facet>
+          <f:facet name="footer">
+            <o:summary function="avg"/>
+          </f:facet>
+        </o:column>
+
+        <o:column header="Temperature" sortingExpression="#{item.temperatureField}">
+          <f:facet name="groupHeader">
+            <h:panelGroup>
+              #{columnHeader}: #{groupingValueString}&#160;(<o:summary/>)
+            </h:panelGroup>
+          </f:facet>
+          <h:outputText value="#{item.temperatureField}"/>
+          <f:facet name="inGroupHeader">
+            <o:summary/>
+          </f:facet>
+          <f:facet name="inGroupFooter">
+            <o:summary/>
+          </f:facet>
+          <f:facet name="groupFooter">
+            <o:summary/>
+          </f:facet>
+          <f:facet name="footer">
+            <o:summary function="avg"/>
+          </f:facet>
+        </o:column>
+      </o:dataTable>
+
+      <p>* Enum and boolean fields are included solely for grouping by these columns here (as all other columns contain non-repeating values).</p>
+    </o:subPanel>
+
+    <o:subPanel caption="Multitype test (with &lt;o:summary> tags)">
+      <o:dataTable var="item" value="#{MultitypeBeanSupport.list1}" rowKey="#{item.id}" style="height: 400px">
         <o:scrolling horizontal="true"/>
         <o:rowGrouping/>
         <f:facet name="header">
@@ -22,52 +206,77 @@
         <o:column header="Button *">
           <o:commandButton value="Test"/>
         </o:column>
-        <o:column header="Enum">
+        <o:column header="Enum" sortingExpression="#{item.enumField}">
           <h:outputText value="#{item.enumField}"/>
           <f:facet name="inGroupFooter">
-            <o:summary/>
+            <o:summary functionEditable="#{MultitypeBeanSupport.functionEditable}" pattern="#{MultitypeBeanSupport.pattern}" style="#{MultitypeBeanSupport.style}"/>
           </f:facet>
           <f:facet name="footer">
-            <o:summary/>
+            <o:summary functionEditable="#{MultitypeBeanSupport.functionEditable}" pattern="#{MultitypeBeanSupport.pattern}" style="#{MultitypeBeanSupport.style}"/>
           </f:facet>
         </o:column>
-        <o:column header="Date">
-          <h:outputText value="#{item.dateField}"/>
-          <f:facet name="inGroupFooter">
-            <o:summary/>
-          </f:facet>
-          <f:facet name="footer">
-            <o:summary/>
-          </f:facet>
-        </o:column>
-        <o:column header="boolean">
+        <o:column header="boolean" sortingExpression="#{item.booleanField}">
           <h:outputText value="#{item.booleanField}"/>
           <f:facet name="inGroupFooter">
-            <o:summary/>
+            <o:summary functionEditable="#{MultitypeBeanSupport.functionEditable}" pattern="#{MultitypeBeanSupport.pattern}" style="#{MultitypeBeanSupport.style}"/>
           </f:facet>
           <f:facet name="footer">
-            <o:summary/>
+            <o:summary functionEditable="#{MultitypeBeanSupport.functionEditable}" pattern="#{MultitypeBeanSupport.pattern}" style="#{MultitypeBeanSupport.style}"/>
           </f:facet>
         </o:column>
-        <o:column header="int">
+        <o:column header="int" sortingExpression="#{item.intField}">
           <h:outputText value="#{item.intField}"/>
           <f:facet name="inGroupFooter">
-            <o:summary/>
+            <o:summary functionEditable="#{MultitypeBeanSupport.functionEditable}" pattern="#{MultitypeBeanSupport.pattern}" style="#{MultitypeBeanSupport.style}"/>
           </f:facet>
           <f:facet name="footer">
-            <o:summary/>
+            <o:summary functionEditable="#{MultitypeBeanSupport.functionEditable}" pattern="#{MultitypeBeanSupport.pattern}" style="#{MultitypeBeanSupport.style}"/>
           </f:facet>
         </o:column>
 
-        <o:columns value="#{MultitypeBeanSupport.customFieldNames}" var="col" style="text-align: right">
+        <o:column header="double" sortingExpression="#{item.doubleField}">
+          <h:outputText value="#{item.doubleField}">
+            <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+          </h:outputText>
+          <f:facet name="inGroupFooter">
+            <o:summary functionEditable="#{MultitypeBeanSupport.functionEditable}" pattern="#{MultitypeBeanSupport.pattern}" style="#{MultitypeBeanSupport.style}"/>
+          </f:facet>
+          <f:facet name="footer">
+            <o:summary functionEditable="#{MultitypeBeanSupport.functionEditable}" pattern="#{MultitypeBeanSupport.pattern}" style="#{MultitypeBeanSupport.style}"/>
+          </f:facet>
+        </o:column>
+
+        <o:column header="Date" sortingExpression="#{item.dateField}">
+          <h:outputText value="#{item.dateField}"/>
+          <f:facet name="inGroupFooter">
+            <o:summary functionEditable="#{MultitypeBeanSupport.functionEditable}" pattern="#{MultitypeBeanSupport.pattern}" style="#{MultitypeBeanSupport.style}"/>
+          </f:facet>
+          <f:facet name="footer">
+            <o:summary functionEditable="#{MultitypeBeanSupport.functionEditable}" pattern="#{MultitypeBeanSupport.pattern}" style="#{MultitypeBeanSupport.style}"/>
+          </f:facet>
+        </o:column>
+
+        <o:column header="Temperature" sortingExpression="#{item.temperatureField}">
+          <h:outputText value="#{item.temperatureField}"/>
+          <f:facet name="inGroupFooter">
+            <o:summary functionEditable="#{MultitypeBeanSupport.functionEditable}" pattern="#{MultitypeBeanSupport.pattern}" style="#{MultitypeBeanSupport.style}"/>
+          </f:facet>
+          <f:facet name="footer">
+            <o:summary functionEditable="#{MultitypeBeanSupport.functionEditable}" pattern="#{MultitypeBeanSupport.pattern}" style="#{MultitypeBeanSupport.style}"/>
+          </f:facet>
+        </o:column>
+
+
+        <o:columns value="#{MultitypeBeanSupport.customFieldNames}" var="col" style="text-align: right"
+                   sortingExpression="#{item.customFields[col]}">
           <f:facet name="header">
             <h:outputText value="#{col}"/>
           </f:facet>
           <f:facet name="inGroupFooter">
-            <o:summary/>
+            <o:summary functionEditable="#{MultitypeBeanSupport.functionEditable}" pattern="#{MultitypeBeanSupport.pattern}" style="#{MultitypeBeanSupport.style}"/>
           </f:facet>
           <f:facet name="footer">
-            <o:summary function="#{MultitypeBeanSupport.customFieldsToDefaultFunctions[col]}"/>
+            <o:summary functionEditable="#{MultitypeBeanSupport.functionEditable}" pattern="#{MultitypeBeanSupport.pattern}" style="#{MultitypeBeanSupport.style}" function="#{MultitypeBeanSupport.customFieldsToDefaultFunctions[col]}"/>
           </f:facet>
 
           <h:outputText value="#{item.customFields[col]}" converter="#{MultitypeBeanSupport.columnConverter}"/>
@@ -75,7 +284,7 @@
 
         <f:facet name="footer">
           <h:panelGroup>
-            Total records:&#160;<o:summary function="count" pattern="#{value}"/>
+            Total records:&#160;<o:summary function="count" pattern="#{value}" functionEditable="false"/>
           </h:panelGroup>
         </f:facet>
 
@@ -85,9 +294,8 @@
         itself does nothing.</p>
     </o:subPanel>
 
-    <o:subPanel caption="Autodetection (using the &lt;o:summaries> tag)" rendered="false">
-      <!-- this page is temporarily commented out as it's only applicable to the not yet fully supported Mojarra 2.1.8 -->
-      <o:dataTable var="item" value="#{MultitypeBeanSupport.list1}" rowKey="#{item.id}" style="height: 700px">
+    <o:subPanel caption="Multitype test (with &lt;o:summaries> tag)" rendered="false"> <!-- disabled temporarily as it requires JSF 2.1.8 -->
+      <o:dataTable var="item" value="#{MultitypeBeanSupport.list1}" rowKey="#{item.id}" style="height: 400px">
         <o:scrolling horizontal="true"/>
         <o:rowGrouping/>
         <f:facet name="header">
@@ -110,9 +318,6 @@
         </o:column>
         <o:column header="Enum">
           <h:outputText value="#{item.enumField}"/>
-        </o:column>
-        <o:column header="Date">
-          <h:outputText value="#{item.dateField}"/>
         </o:column>
         <o:column header="boolean">
           <h:outputText value="#{item.booleanField}"/>
@@ -143,6 +348,14 @@
           </h:outputText>
         </o:column>
 
+        <o:column header="Date">
+          <h:outputText value="#{item.dateField}"/>
+        </o:column>
+        <o:column header="Temperature">
+          <h:outputText value="#{item.enumField}"/>
+        </o:column>
+
+
         <o:columns value="#{MultitypeBeanSupport.customFieldNames}" var="col" style="text-align: right">
           <f:facet name="header">
             <h:outputText value="#{col}" />
@@ -152,7 +365,7 @@
 
         <f:facet name="footer">
           <h:panelGroup>
-            Total records:&#160;<o:summary function="count" pattern="#{value}"/>
+            Total records:&#160;<o:summary function="count" pattern="#{value}" functionEditable="false"/>
           </h:panelGroup>
         </f:facet>
 
