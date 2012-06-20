@@ -37,6 +37,7 @@ import javax.faces.component.UniqueIdVendor;
 import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
+import javax.faces.component.visit.VisitHint;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -1187,16 +1188,19 @@ public class OUIData extends UIData implements NamingContainer, UniqueIdVendor, 
                         }
                         // </MOD-11>
                         // iterate over the rows
-                        int rowsToProcess = getRows();
+                        boolean visitRows = getVisitRows(context);
+                        int rowsToProcess = visitRows ? getRows() : 1;
                         // if getRows() returns 0, all rows have to be processed
                         if (rowsToProcess == 0) {
                             rowsToProcess = getRowCount();
                         }
                         int rowIndex = getFirst();
                         for (int rowsProcessed = 0; rowsProcessed < rowsToProcess; rowsProcessed++, rowIndex++) {
-                            setRowIndex(rowIndex);
-                            if (!isRowAvailable()) {
-                                return false;
+                            if (visitRows) {
+                                setRowIndex(rowIndex);
+                                if (!isRowAvailable()) {
+                                    return false;
+                                }
                             }
                             // visit the children of every child of the UIData that is an instance of UIColumn
                             for (UIComponent child : getChildren()) {
@@ -1221,6 +1225,18 @@ public class OUIData extends UIData implements NamingContainer, UniqueIdVendor, 
 
         // Return false to allow the visiting to continue
         return false;
+    }
+
+    private boolean getVisitRows(VisitContext visitContext) {
+        try {
+            VisitHint hint = VisitHint.valueOf("SKIP_ITERATION");
+            return !visitContext.getHints().contains(hint);
+        } catch (IllegalArgumentException e) {
+            // Mojarra 2.x versions earlier than 2.1.0 versions don't have such a hint,
+            // so simulate this by watching the current phase ID
+            PhaseId currentPhaseId = visitContext.getFacesContext().getCurrentPhaseId();
+            return !PhaseId.RESTORE_VIEW.equals(currentPhaseId);
+        }
     }
 
     public void setVar(String var) {

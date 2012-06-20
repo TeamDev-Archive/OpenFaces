@@ -32,6 +32,11 @@ and for destroying session and application contexts.-->
   </context-param>
 
   <context-param>
+    <param-name>javax.faces.PARTIAL_STATE_SAVING</param-name>
+    <param-value>true</param-value>
+  </context-param>
+
+  <context-param>
     <param-name>javax.faces.DEFAULT_SUFFIX</param-name>
     <param-value>.xhtml</param-value>
   </context-param>
