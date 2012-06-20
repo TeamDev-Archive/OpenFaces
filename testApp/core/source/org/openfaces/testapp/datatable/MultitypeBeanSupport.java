@@ -159,6 +159,3 @@ public class MultitypeBeanSupport {
         this.style = style;
     }
 }
-
-
-// todo: custom types, custom functions
