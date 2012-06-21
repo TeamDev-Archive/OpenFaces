@@ -40,6 +40,12 @@
     </param-value>
   </context-param>
 
+
+  <context-param>
+    <param-name>org.openfaces.summaryFunctions</param-name>
+    <param-value>org.openfaces.testapp.datatable.MedianFunction</param-value>
+  </context-param>
+
   <context-param>
     <param-name>org.openfaces.disabledContextMenu</param-name>
     <param-value>false</param-value>

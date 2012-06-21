@@ -52,10 +52,12 @@ public class ApplicationParams {
                 new SumFunction(),
                 new AvgFunction(),
                 new MinFunction(),
-                new MaxFunction(),
-                new CountFunction()
+                new MaxFunction()
         ));
         summaryFunctions.addAll(createInstancesFromClassNamesParam(PARAM_SUMMARY_FUNCTIONS, SummaryFunction.class));
+
+        // make the "Count" function to be the last one
+        summaryFunctions.add(new CountFunction());
         return summaryFunctions;
     }
 

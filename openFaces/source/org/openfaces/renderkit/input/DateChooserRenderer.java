@@ -97,6 +97,17 @@ public class DateChooserRenderer extends DropDownComponentRenderer {
     }
 
     private void setUpConverter(DateChooser dateChooser) {
+        String converterSpecifiedExplicitlyAttr = "_converterSpecifiedExplicitly";
+        Boolean converterSpecifiedExplicitly = (Boolean) dateChooser.getAttributes().get(converterSpecifiedExplicitlyAttr);
+        if (converterSpecifiedExplicitly == null) {
+            Converter explicitlySpecifiedConverter = dateChooser.getConverter();
+            converterSpecifiedExplicitly = explicitlySpecifiedConverter != null;
+            if (converterSpecifiedExplicitly && !(explicitlySpecifiedConverter instanceof DateTimeConverter))
+                throw new IllegalStateException("Improper type converter has been specified. DateTimeConverter is expected. The actual type of the specified converter is: " + explicitlySpecifiedConverter.getClass().getName());
+            dateChooser.getAttributes().put(converterSpecifiedExplicitlyAttr, converterSpecifiedExplicitly);
+        }
+        if (converterSpecifiedExplicitly) return;
+
         DateTimeConverter converter = new DateTimeConverter();
         converter.setPattern(dateChooser.getPattern());
         converter.setDateStyle(dateChooser.getDateFormat());
@@ -119,7 +130,7 @@ public class DateChooserRenderer extends DropDownComponentRenderer {
         DateChooserPopup popup
                 = (DateChooserPopup) context.getApplication().createComponent(DateChooserPopup.COMPONENT_TYPE);
         List<UIComponent> children = dateChooser.getChildren();
-        popup.setParent(dateChooser);
+        popup.setParent(dateChooser); // todo: it's not correct according to setParent's JavaDoc to use this method from applications, the proper way is to use parent.getChildren().add
 
         popup.setId(component.getId() + POPUP_SUFFIX);
         Calendar c = (Calendar) context.getApplication().createComponent(Calendar.COMPONENT_TYPE);

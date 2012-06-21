@@ -34,9 +34,9 @@ public class TimetableViewSwitcherRenderer extends TabSetRenderer {
         Timetable timetable = switcher.getTimetable();
         List<UIComponent> children = switcher.getChildren();
         children.clear();
-        children.add(createTabSetItem("Month"));
-        children.add(createTabSetItem("Week"));
-        children.add(createTabSetItem("Day"));
+        children.add(createTabSetItem("Month", switcher, "monthItem"));
+        children.add(createTabSetItem("Week", switcher, "weekItem"));
+        children.add(createTabSetItem("Day", switcher, "dayItem"));
         switcher.setOnchange(
                 new ScriptBuilder().O$(timetable).dot().functionCall("setViewType",
                         new RawScript("['month','week','day'][O$('" + switcher.getClientId(context) + "').getSelectedIndex()]")
@@ -53,9 +53,12 @@ public class TimetableViewSwitcherRenderer extends TabSetRenderer {
 
     }
 
-    private TabSetItem createTabSetItem(String text) {
-        TabSetItem tabSetItem = new TabSetItem();
-        HtmlOutputText outputText = Components.createOutputText(FacesContext.getCurrentInstance(), text);
+    private TabSetItem createTabSetItem(String text, UIComponent idGenerationBase, String idSuffix) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        TabSetItem tabSetItem = Components.createComponent(context,
+                TabSetItem.COMPONENT_TYPE, TabSetItem.class, idGenerationBase, idSuffix);
+        HtmlOutputText outputText = Components.createOutputText(context, text);
+        outputText.setId(Components.generateIdWithSuffix(tabSetItem, "text"));
         tabSetItem.getChildren().add(outputText);
         return tabSetItem;
     }

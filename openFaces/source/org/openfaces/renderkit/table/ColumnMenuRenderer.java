@@ -22,6 +22,7 @@ import org.openfaces.component.table.RemoveFromGroupingMenuItem;
 import org.openfaces.component.table.SortAscendingMenuItem;
 import org.openfaces.component.table.SortDescendingMenuItem;
 import org.openfaces.renderkit.command.PopupMenuRenderer;
+import org.openfaces.util.Components;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -34,13 +35,19 @@ public class ColumnMenuRenderer extends PopupMenuRenderer {
         ColumnMenu menu = (ColumnMenu) component;
         if (menu.getChildren().size() == 0) {
             List<UIComponent> menuItems = menu.getChildren();
-            menuItems.add(new SortAscendingMenuItem());
-            menuItems.add(new SortDescendingMenuItem());
-            menuItems.add(new GroupByColumnMenuItem());
-            menuItems.add(new RemoveFromGroupingMenuItem());
-//            menuItems.add(new CancelGroupingMenuItem());
-            menuItems.add(new HideColumnMenuItem());
-            menuItems.add(new MenuSeparator()); menuItems.add(new MenuItem("Columns", new ColumnVisibilityMenu()));
+            menuItems.add(Components.createComponent(context, SortAscendingMenuItem.COMPONENT_TYPE, SortAscendingMenuItem.class, menu, "sortAscending"));
+            menuItems.add(Components.createComponent(context, SortDescendingMenuItem.COMPONENT_TYPE, SortDescendingMenuItem.class, menu, "sortDescend"));
+            menuItems.add(Components.createComponent(context, GroupByColumnMenuItem.COMPONENT_TYPE, GroupByColumnMenuItem.class, menu, "groupByColumn"));
+            menuItems.add(Components.createComponent(context, RemoveFromGroupingMenuItem.COMPONENT_TYPE, RemoveFromGroupingMenuItem.class, menu, "removeFromGrouping"));
+//            menuItems.add(Components.createComponent(context, CancelGroupingMenuItem.COMPONENT_TYPE, CancelGroupingMenuItem.class, menu, "cancelGrouping");
+            menuItems.add(Components.createComponent(context, HideColumnMenuItem.COMPONENT_TYPE, HideColumnMenuItem.class, menu, "hideColumn"));
+            menuItems.add(Components.createComponent(context, MenuSeparator.COMPONENT_TYPE, MenuSeparator.class, menu, "separator"));
+            ColumnVisibilityMenu columnVisibilityMenu = Components.createComponent(context,
+                    ColumnVisibilityMenu.COMPONENT_TYPE, ColumnVisibilityMenu.class, menu, "columnVisibilityMenu");
+            MenuItem columns = Components.createComponent(context, MenuItem.COMPONENT_TYPE, MenuItem.class, menu, "columnsSubmenu");
+            columns.setValue("Columns");
+            columns.getChildren().add(columnVisibilityMenu);
+            menuItems.add(columns);
         }
 
         super.encodeBegin(context, component);
