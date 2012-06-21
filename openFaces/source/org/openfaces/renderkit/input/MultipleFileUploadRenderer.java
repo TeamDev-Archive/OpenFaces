@@ -148,7 +148,7 @@ public final class MultipleFileUploadRenderer extends AbstractFileUploadRenderer
                 Utilities.getFunctionOfEvent(Rendering.getEventHandlerScript(multipleFileUpload, "directorydropped")),
                 dropTargetDragoverClass,
                 multipleFileUpload.getUploadMode(),
-                (multipleFileUpload.getRender() == null) ? null : Utilities.getForm(multipleFileUpload).getClientId(context) + ":" + multipleFileUpload.getRender(),
+                getRender(context, multipleFileUpload),
                 getExternalDropTargetId(context, multipleFileUpload),
                 multipleFileUpload.getAcceptedMimeTypes(),
                 multipleFileUpload.getDirectoryDroppedText(),

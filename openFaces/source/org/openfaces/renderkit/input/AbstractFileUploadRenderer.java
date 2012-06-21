@@ -11,6 +11,7 @@
  */
 package org.openfaces.renderkit.input;
 
+import org.openfaces.component.ajax.AjaxInitializer;
 import org.openfaces.component.input.AbstractFileUpload;
 import org.openfaces.component.output.ProgressBar;
 import org.openfaces.event.FileUploadItem;
@@ -470,5 +471,10 @@ public abstract class AbstractFileUploadRenderer extends RendererBase implements
 
     protected String getExternalDropTargetId(FacesContext context, AbstractFileUpload abstractFileUpload){
         return Components.referenceIdToClientId(context, abstractFileUpload, abstractFileUpload.getExternalDropTarget());
+    }
+
+    protected JSONArray getRender(FacesContext context, AbstractFileUpload fileUpload) {
+        AjaxInitializer ajaxInitializer = new AjaxInitializer();
+        return ajaxInitializer.getRenderArray(context, fileUpload, fileUpload.getRender());
     }
 }

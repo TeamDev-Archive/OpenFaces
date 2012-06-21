@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 3.0
+ * OpenFaces - JSF Component Library 2.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -250,7 +250,7 @@ O$.FileUploadUtil = {
         evt.preventDefault();
       },
       _sendCheckRequest:function (sendDataToEvent) {
-        O$.Ajax.requestComponentPortions(fileUpload.id, ["nothing"],
+        O$.requestComponentPortions(fileUpload.id, ["nothing"],
                 JSON.stringify({listOfFilesRequest:"true", idOfFiles:fileUpload._listOfids}),
                 function (fileUpload, portionName, portionHTML, portionScripts, portionData) {
                   if (portionData['allUploaded'] == "true") {
@@ -354,7 +354,7 @@ O$.FileUploadUtil = {
 
       },
       _sendInformThatRequestFailed:function (fileId) {
-        O$.Ajax.requestComponentPortions(fileUpload.id, ["nothing"],
+        O$.requestComponentPortions(fileUpload.id, ["nothing"],
                 JSON.stringify({informFailedRequest:true, uniqueIdOfFile:fileId}),
                 function (fileUpload, portionName, portionHTML, portionScripts, portionData) {
                 }, null, true);
@@ -368,9 +368,9 @@ O$.FileUploadUtil = {
       }
     },
       _getFileName:function (fullRoorOfFile) {
-        var index = fullRoorOfFile.lastIndexOf('\\');
-        return fullRoorOfFile.substring(index + 1);
-      },
+      var index = fullRoorOfFile.lastIndexOf('\\');
+      return fullRoorOfFile.substring(index + 1);
+    },
       _addFileToInfoFileList:function(form) {
         var file = [];
         file.push(form.childNodes[0]._uniqueId);//id
@@ -658,7 +658,7 @@ O$.FileUploadUtil = {
       },
       _renderAfterUploadEnd : function() {
         if (fileUpload._render) {
-          O$.Ajax._reload([fileUpload._render], {"immediate":false,"_sourceId":fileUpload.id});
+          O$._ajaxReload(fileUpload._render, {"executeRenderedComponents":true,"immediate":false});
         }
       },
       _transformStatusToFormatted:function(statusText) {

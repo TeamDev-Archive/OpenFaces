@@ -42,7 +42,9 @@ public class AjaxInitializer {
     private static final String EXPRESSION_PREFIX = "#{";
     private static final String EXPRESSION_SUFFIX = "}";
     
-    public JSONArray getRenderArray(FacesContext context, OUICommand command, Iterable<String> render) {
+    public static ThreadLocal<Boolean> BUILDING_VIEW = new ThreadLocal<Boolean>();
+
+    public JSONArray getRenderArray(FacesContext context, UIComponent sourceComponent, Iterable<String> render) {
         JSONArray idsArray = new JSONArray();
         if (render != null)
             for (String componentId : render) {
@@ -50,7 +52,7 @@ public class AjaxInitializer {
                     idsArray.put(componentId.substring(1));
                     continue;
                 }
-                UIComponent component = findComponent_cached(context, command, componentId);
+                UIComponent component = findComponent_cached(context, sourceComponent, componentId);
                 if (component == null) {
                     idsArray.put(componentId);
                     continue;

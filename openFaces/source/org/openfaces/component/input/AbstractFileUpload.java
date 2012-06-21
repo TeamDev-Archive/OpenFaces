@@ -105,7 +105,7 @@ public abstract class AbstractFileUpload extends OUIInputBase {
 
     private int fileSizeLimit;
 
-    private String render;
+    private Iterable<String> render;
     private String externalDropTarget;
     private String acceptedMimeTypes;
 
@@ -228,7 +228,7 @@ public abstract class AbstractFileUpload extends OUIInputBase {
         stoppingStatusText = (String) values[i++];
         unexpectedErrorText = (String) values[i++];
         fileSizeLimit = (Integer) values[i++];
-        render = (String) values[i++];
+        render = (Iterable<String>) values[i++];
         externalDropTarget = (String) values[i++];
         acceptedMimeTypes = (String) values[i++];
         directoryDroppedText = (String) values[i++];
@@ -602,11 +602,11 @@ public abstract class AbstractFileUpload extends OUIInputBase {
     }
 
 
-    public String getRender() {
-        return ValueBindings.get(this, "render", render);
+    public Iterable<String> getRender() {
+        return ValueBindings.get(this, "render", render, Iterable.class);
     }
 
-    public void setRender(String render) {
+    public void setRender(Iterable<String> render) {
         this.render = render;
     }
 
