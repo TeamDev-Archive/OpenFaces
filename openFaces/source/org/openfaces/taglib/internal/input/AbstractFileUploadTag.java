@@ -83,7 +83,7 @@ public abstract class AbstractFileUploadTag extends AbstractComponentTag {
         setStringProperty(component, "ondirectorydropped");
 
         setIntProperty(component, "fileSizeLimit");
-        setStringProperty(component, "render");
+        setLiteralCollectionProperty(component, "render");
         setStringProperty(component, "externalDropTarget");
         setStringProperty(component, "acceptedMimeTypes");
         setStringProperty(component, "directoryDroppedText");

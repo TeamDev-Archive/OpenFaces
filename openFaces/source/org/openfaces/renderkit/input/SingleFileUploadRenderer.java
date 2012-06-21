@@ -260,7 +260,7 @@ public final class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
                 Utilities.getFunctionOfEvent(fileUpload.getOnwrongfiletype()),
                 Utilities.getFunctionOfEvent(fileUpload.getOndirectorydropped()),
                 dropTargetDragoverClass,
-                (fileUpload.getRender() == null) ? null : Utilities.getForm(fileUpload).getClientId(context) + ":" + fileUpload.getRender(),
+                getRender(context, fileUpload),
                 getExternalDropTargetId(context, fileUpload),
                 fileUpload.getAcceptedMimeTypes(),
                 fileUpload.getLayoutMode(),
