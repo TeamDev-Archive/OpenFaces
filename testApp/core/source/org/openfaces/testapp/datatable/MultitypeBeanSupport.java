@@ -104,10 +104,28 @@ public class MultitypeBeanSupport {
         }
     }
 
+    private boolean inGroupFootersCollapsible = true;
+    private boolean groupFootersCollapsible = true;
     private boolean functionEditable = true;
     private String patternText = "#{function}: #{valueString}";
     private ValueExpression patternExpression;
     private String style = "font-style: normal";
+
+    public boolean isInGroupFootersCollapsible() {
+        return inGroupFootersCollapsible;
+    }
+
+    public void setInGroupFootersCollapsible(boolean inGroupFootersCollapsible) {
+        this.inGroupFootersCollapsible = inGroupFootersCollapsible;
+    }
+
+    public boolean isGroupFootersCollapsible() {
+        return groupFootersCollapsible;
+    }
+
+    public void setGroupFootersCollapsible(boolean groupFootersCollapsible) {
+        this.groupFootersCollapsible = groupFootersCollapsible;
+    }
 
     public boolean isFunctionEditable() {
         return functionEditable;

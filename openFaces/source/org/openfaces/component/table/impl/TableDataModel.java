@@ -525,7 +525,6 @@ public class TableDataModel extends DataModel implements DataModelListener, Stat
 
         Runnable exitColumnContext = columnGroupingInfo.enterColumnContext();
         try {
-
             RowInfo currentGroupRowInfo = null;
             int subRowsLevel = level + 1;
             for (int i = 0; i < rowCount; i++) {
@@ -543,6 +542,7 @@ public class TableDataModel extends DataModel implements DataModelListener, Stat
                 boolean lastRowInThisGroup = nextRowInfo == null ||
                         !recordsInTheSameGroup(ruleComparator, rowInfo, nextRowInfo);
                 if (lastRowInThisGroup) {
+                    thisLevelGroupHeaderRowInfos.add(currentGroupRowInfo);
                     GroupHeader groupHeader = (GroupHeader) currentGroupRowInfo.getRowData();
                     RowGroup rowGroup = groupHeader.getRowGroup();
                     List<RowInfo> subRowInfos = constructGroupingTree(
@@ -550,15 +550,23 @@ public class TableDataModel extends DataModel implements DataModelListener, Stat
                             currentGroupRowInfo.getAllDataRowsInThisGroup(),
                             subRowsLevel,
                             rowGroup);
-                    if (columnGroupingInfo.isInHeadersSpecified())
+                    if (columnGroupingInfo.isInHeadersSpecified()) {
                         subRowInfos.add(0, new RowInfo(new InGroupHeader(rowGroup), -1, subRowsLevel));
-                    if (columnGroupingInfo.isInGroupFootersSpecified())
-                        subRowInfos.add(new RowInfo(new InGroupFooter(rowGroup), -1, subRowsLevel));
-                    if (columnGroupingInfo.isGroupFooterSpecified())
-                        subRowInfos.add(new RowInfo(new GroupFooter(rowGroup), -1, subRowsLevel));
+                    }
+                    if (columnGroupingInfo.isInGroupFootersSpecified()) {
+                        if (columnGroupingInfo.isInGroupFootersCollapsible())
+                            subRowInfos.add(new RowInfo(new InGroupFooter(rowGroup), -1, subRowsLevel));
+                        else
+                            thisLevelGroupHeaderRowInfos.add(new RowInfo(new InGroupFooter(rowGroup), -1, level));
+                    }
+                    if (columnGroupingInfo.isGroupFooterSpecified()) {
+                        if (columnGroupingInfo.isGroupFootersCollapsible())
+                            subRowInfos.add(new RowInfo(new GroupFooter(rowGroup), -1, subRowsLevel));
+                        else
+                            thisLevelGroupHeaderRowInfos.add(new RowInfo(new GroupFooter(rowGroup), -1, level));
+                    }
 
                     currentGroupRowInfo.setImmediateSubRows(subRowInfos);
-                    thisLevelGroupHeaderRowInfos.add(currentGroupRowInfo);
                     currentGroupRowInfo = null;
                 }
 
@@ -580,6 +588,7 @@ public class TableDataModel extends DataModel implements DataModelListener, Stat
 
 
     private Map<Object, ? extends NodeInfo> groupRows(List<GroupingRule> groupingRules, List<RowInfo> rows) {
+        clearCachedColumnGroupingInfos();
         List<RowInfo> topLevelRowInfos = constructGroupingTree(groupingRules, rows, 0, null);
 
         rows.clear();
@@ -1290,7 +1299,14 @@ public class TableDataModel extends DataModel implements DataModelListener, Stat
 
     private Map<String, ColumnGroupingInfo> columnGroupingInfos = new HashMap<String, ColumnGroupingInfo>();
 
-    public ColumnGroupingInfo getColumnGroupingInfo(String columnId) {
+    /**
+     * Invoking this once for data iteration is needed to stay up to date to the current RowGrouping settings cached
+     * here.
+     */
+    private void clearCachedColumnGroupingInfos() {
+        columnGroupingInfos.clear();
+    }
+    private ColumnGroupingInfo getColumnGroupingInfo(String columnId) {
         ColumnGroupingInfo columnGroupingInfo = columnGroupingInfos.get(columnId);
         if (columnGroupingInfo != null)
             return columnGroupingInfo;
@@ -1311,6 +1327,8 @@ public class TableDataModel extends DataModel implements DataModelListener, Stat
         private boolean inHeadersSpecified;
         private boolean inGroupFootersSpecified;
         private boolean groupFooterSpecified;
+        private boolean inGroupFootersCollapsible;
+        private boolean groupFootersCollapsible;
         private ValueExpression columnGroupingValueExpression;
 
         public ColumnGroupingInfo(BaseColumn column) {
@@ -1326,13 +1344,18 @@ public class TableDataModel extends DataModel implements DataModelListener, Stat
             // The presence of per-column group headers and footers for a certain group depends not on the declaration
             // of the column whose data unites the records in this group, but on the presence of per-column group
             // header/footer facets in at least of one of the rendered columns
-            List<BaseColumn> renderedColumns = column.getTable().getRenderedColumns();
+            DataTable table = (DataTable) column.getTable();
+            List<BaseColumn> renderedColumns = table.getRenderedColumns();
             for (BaseColumn renderedColumn : renderedColumns) {
                 inHeadersSpecified |= renderedColumn.getInGroupHeader() != null;
                 inGroupFootersSpecified |= renderedColumn.getInGroupFooter() != null;
                 if (inHeadersSpecified && inGroupFootersSpecified) break;
             }
             groupFooterSpecified = column.getGroupFooter() != null;
+
+            RowGrouping rowGrouping = table.getRowGrouping();
+            inGroupFootersCollapsible = rowGrouping.getInGroupFootersCollapsible();
+            groupFootersCollapsible = rowGrouping.getGroupFootersCollapsible();
         }
 
         private ValueExpression getColumnGroupingValueExpression(String columnId) {
@@ -1373,5 +1396,12 @@ public class TableDataModel extends DataModel implements DataModelListener, Stat
             return groupFooterSpecified;
         }
 
+        public boolean isInGroupFootersCollapsible() {
+            return inGroupFootersCollapsible;
+        }
+
+        public boolean isGroupFootersCollapsible() {
+            return groupFootersCollapsible;
+        }
     }
 }

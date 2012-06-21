@@ -53,6 +53,8 @@ public class RowGrouping extends OUIComponentBase implements ComponentConfigurat
     private String inGroupHeaderRowClass;
     private String inGroupFooterRowStyle;
     private String inGroupFooterRowClass;
+    private Boolean inGroupFootersCollapsible;
+    private Boolean groupFootersCollapsible;
 
     public RowGrouping() {
         setRendererType("org.openfaces.RowGroupingRenderer");
@@ -75,6 +77,8 @@ public class RowGrouping extends OUIComponentBase implements ComponentConfigurat
                 hideGroupingColumns,
                 expansionState,
                 selectionMode,
+                inGroupFootersCollapsible,
+                groupFootersCollapsible,
 
                 groupHeaderRowStyle,
                 groupHeaderRowClass,
@@ -96,6 +100,8 @@ public class RowGrouping extends OUIComponentBase implements ComponentConfigurat
         hideGroupingColumns = (Boolean) state[i++];
         expansionState = (ExpansionState) state[i++];
         selectionMode = (RowGroupingSelectionMode) state[i++];
+        inGroupFootersCollapsible = (Boolean) state[i++];
+        groupFootersCollapsible = (Boolean) state[i++];
 
         groupHeaderRowStyle = (String) state[i++];
         groupHeaderRowClass = (String) state[i++];
@@ -378,5 +384,21 @@ public class RowGrouping extends OUIComponentBase implements ComponentConfigurat
 
     public void setInGroupFooterRowClass(String inGroupFooterRowClass) {
         this.inGroupFooterRowClass = inGroupFooterRowClass;
+    }
+
+    public boolean getInGroupFootersCollapsible() {
+        return ValueBindings.get(this, "inGroupFootersCollapsible", inGroupFootersCollapsible, true);
+    }
+
+    public void setInGroupFootersCollapsible(boolean inGroupFootersCollapsible) {
+        this.inGroupFootersCollapsible = inGroupFootersCollapsible;
+    }
+
+    public boolean getGroupFootersCollapsible() {
+        return ValueBindings.get(this, "groupFootersCollapsible", groupFootersCollapsible, true);
+    }
+
+    public void setGroupFootersCollapsible(boolean groupFootersCollapsible) {
+        this.groupFootersCollapsible = groupFootersCollapsible;
     }
 }

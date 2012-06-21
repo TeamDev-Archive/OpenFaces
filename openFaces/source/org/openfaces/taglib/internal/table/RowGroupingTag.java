@@ -49,5 +49,7 @@ public class RowGroupingTag extends AbstractComponentTag {
         setStringProperty(component, "inGroupHeaderRowClass");
         setStringProperty(component, "inGroupFooterRowStyle");
         setStringProperty(component, "inGroupFooterRowClass");
+        setBooleanProperty(component, "inGroupFootersCollapsible");
+        setBooleanProperty(component, "groupFootersCollapsible");
     }
 }
