@@ -44219,6 +44219,30 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>Specifies whether the in-group footer rows (the ones that display the columns&#39; &quot;inGroupFooter&quot;
+        facets) get collapsed along with the group&#39;s rows when the user collapses the group.
+      </description>
+      <name>inGroupFootersCollapsible</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Specifies whether the group footer rows (the ones that display the columns&#39; &quot;groupFooter&quot;
+        facets) get collapsed along with the group&#39;s rows when the user collapses the group.
+      </description>
+      <name>groupFootersCollapsible</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
   </tag>
   <!--<tag>-->
     <!--<description>A component which can optionally be placed inside of a grouping-enabled &amp;lt;o:dataTable&gt; tag to-->

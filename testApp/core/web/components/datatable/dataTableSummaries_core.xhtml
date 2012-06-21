@@ -11,6 +11,9 @@
   </style>
 
   <h:panelGrid columns="1" style="border: 1px solid #c0c0c0; width: 100%">
+    RowGrouping component settings:
+    <h:panelGroup><o:selectBooleanCheckbox id="inGroupFootersCollapsibleCB" value="#{MultitypeBeanSupport.inGroupFootersCollapsible}"/><h:outputLabel  for="inGroupFootersCollapsibleCB" value="inGroupFootersCollapsible" styleClass="attributeName"/> </h:panelGroup>
+    <h:panelGroup><o:selectBooleanCheckbox id="groupFootersCollapsibleCB" value="#{MultitypeBeanSupport.groupFootersCollapsible}"/><h:outputLabel  for="groupFootersCollapsibleCB" value="groupFootersCollapsible" styleClass="attributeName"/> </h:panelGroup>
     Summary components settings (not applicable to the first page where settings are pre-defined):
     <h:panelGroup><o:selectBooleanCheckbox id="functionEditableCheckbox" value="#{MultitypeBeanSupport.functionEditable}"/><h:outputLabel  for="functionEditableCheckbox" value="functionEditable" styleClass="attributeName"/> </h:panelGroup>
     <h:panelGrid columns="2">
@@ -25,9 +28,10 @@
   <o:tabbedPane style="width: 100%" loadingMode="client" selectedIndex="0">
 
     <o:subPanel caption="Various predefined settings (with &lt;o:summary> tags)">
-      <o:dataTable var="item" value="#{MultitypeBeanSupport.list1}" rowKey="#{item.id}" style="height: 400px">
+      <o:dataTable var="item" value="#{MultitypeBeanSupport.list1}" rowKey="#{item.id}" style="height: 500px">
         <o:scrolling horizontal="false"/>
-        <o:rowGrouping/>
+        <o:rowGrouping inGroupFootersCollapsible="#{MultitypeBeanSupport.inGroupFootersCollapsible}"
+                       groupFootersCollapsible="#{MultitypeBeanSupport.groupFootersCollapsible}"/>
         <f:facet name="header">
           <o:groupingBox/>
         </f:facet>
@@ -193,9 +197,10 @@
     </o:subPanel>
 
     <o:subPanel caption="Multitype test (with &lt;o:summary> tags)">
-      <o:dataTable var="item" value="#{MultitypeBeanSupport.list1}" rowKey="#{item.id}" style="height: 400px">
+      <o:dataTable var="item" value="#{MultitypeBeanSupport.list1}" rowKey="#{item.id}" style="height: 500px">
         <o:scrolling horizontal="true"/>
-        <o:rowGrouping/>
+        <o:rowGrouping inGroupFootersCollapsible="#{MultitypeBeanSupport.inGroupFootersCollapsible}"
+                       groupFootersCollapsible="#{MultitypeBeanSupport.groupFootersCollapsible}"/>
         <f:facet name="header">
           <o:groupingBox/>
         </f:facet>
@@ -294,9 +299,10 @@
     </o:subPanel>
 
     <o:subPanel caption="Multitype test (with &lt;o:summaries> tag)">
-      <o:dataTable var="item" value="#{MultitypeBeanSupport.list1}" rowKey="#{item.id}" style="height: 400px">
+      <o:dataTable var="item" value="#{MultitypeBeanSupport.list1}" rowKey="#{item.id}" style="height: 500px">
         <o:scrolling horizontal="true"/>
-        <o:rowGrouping/>
+        <o:rowGrouping inGroupFootersCollapsible="#{MultitypeBeanSupport.inGroupFootersCollapsible}"
+                       groupFootersCollapsible="#{MultitypeBeanSupport.groupFootersCollapsible}"/>
         <f:facet name="header">
           <o:groupingBox/>
         </f:facet>

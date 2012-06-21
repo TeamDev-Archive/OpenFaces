@@ -89,4 +89,12 @@ public class RowGroupingJspTag extends AbstractComponentJspTag {
     public void setInGroupFooterRowClass(ValueExpression inGroupFooterRowClass) {
         getDelegate().setPropertyValue("inGroupFooterRowClass", inGroupFooterRowClass);
     }
+
+    public void setInGroupFootersCollapsible(ValueExpression inGroupFootersCollapsible) {
+        getDelegate().setPropertyValue("inGroupFootersCollapsible", inGroupFootersCollapsible);
+    }
+
+    public void setGroupFootersCollapsible(ValueExpression groupFootersCollapsible) {
+        getDelegate().setPropertyValue("groupFootersCollapsible", groupFootersCollapsible);
+    }
 }
