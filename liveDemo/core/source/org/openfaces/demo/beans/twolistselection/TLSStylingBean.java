@@ -19,7 +19,7 @@ import java.util.List;
 
 public class TLSStylingBean implements Serializable {
     private static final String DEFAULT_STYLE = "width: 100%;";
-    private static final String STYLE = "width: 100%; background-color: #ffffff;";
+    private static final String STYLE = "width: 100%;";
     private static final String BUTTON_STYLE = "font-family: Tahoma; color: #005ca3; width: 90px; font-size: 10px;";    
     private static final String BUTTON_TEXTS_CUSTOMIZATION_STYLE = "width:131px;";    
     private static final String CAPTION_STYLE = "font-family: Tahoma; background-color: #ffffff; color: #ff8a01; white-space: nowrap;";
