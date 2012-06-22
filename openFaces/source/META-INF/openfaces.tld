@@ -13683,7 +13683,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default null -->
       <!-- @value "viewport" Restricts moving the window out of window's boundaries -->
       <!-- @value "document" Restricts moving the window out of document's boundaries -->
-      <!-- @value "containingBlock" Restricts moving the window out of its containing block (document or a nearest parent with position equl to "absolute" or "relative"). -->
+      <!-- @value "containingBlock" Restricts moving the window out of its containing block (document or a
+                        nearest parent with position equal to "absolute" or "relative"). -->
       <!-- @value "#clientSideId" Restricts moving the window out of an element with the specified id. -->
       <!-- @el true -->
     </attribute>
@@ -13881,6 +13882,23 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>Specifies how the value of the &quot;containment&quot; attribute is used.</description>
+      <name>containmentRole</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.window.ContainmentRole -->
+      <!-- @default "restrictMovement" -->
+      <!-- @value "restrictMovement" makes it impossible to move the window out of the boundaries defined by the
+                      containment attribute -->
+      <!-- @value "restrictSize" ensures that the popup layer is not bigger than the boundaries defined by the
+                       containment attribute when it is shown  -->
+      <!-- @value "restrictMovementAndSize" Makes it impossible for the user to move the popup layer out of the
+                       boundaries defined by the containment attribute, and ensures that the window is not bigger than
+                       the containment area when it is shown -->
+      <!-- @el true -->
+    </attribute>
   </tag>
 
   <!-- WINDOW TAG DECLARATOIN -->
@@ -13972,8 +13990,26 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default null -->
       <!-- @value "viewport" Restricts moving the window out of window's boundaries -->
       <!-- @value "document" Restricts moving the window out of document's boundaries -->
-      <!-- @value "containingBlock" Restricts moving the window out of its containing block (document or a nearest parent with position equl to "absolute" or "relative"). -->
+      <!-- @value "containingBlock" Restricts moving the window out of its containing block (document or a nearest
+                        parent with position equal to "absolute" or "relative"). -->
       <!-- @value "#clientSideId" Restricts moving the window out of an element with the specified id. -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Specifies how the value of the &quot;containment&quot; attribute is used.</description>
+      <name>containmentRole</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.window.ContainmentRole -->
+      <!-- @default "restrictMovement" -->
+      <!-- @value "restrictMovement" makes it impossible to move the window out of the boundaries defined by the
+                      containment attribute -->
+      <!-- @value "restrictSize" ensures that the window is not bigger than the boundaries defined by the containment
+                       attribute when it is shown  -->
+      <!-- @value "restrictMovementAndSize" Makes it impossible for the user to move the window out of the boundaries
+                       defined by the containment attribute, and ensures that the window is not bigger than the
+                       containment area when it is shown -->
       <!-- @el true -->
     </attribute>
 
@@ -16475,8 +16511,26 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default null -->
       <!-- @value "viewport" Restricts moving the window out of window's boundaries -->
       <!-- @value "document" Restricts moving the window out of document's boundaries -->
-      <!-- @value "containingBlock" Restricts moving the window out of its containing block (document or a nearest parent with position equl to "absolute" or "relative"). -->
+      <!-- @value "containingBlock" Restricts moving the window out of its containing block (document or a nearest
+      parent with position equal to "absolute" or "relative"). -->
       <!-- @value "#clientSideId" Restricts moving the window out of an element with the specified id. -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Specifies how the value of the &quot;containment&quot; attribute is used.</description>
+      <name>containmentRole</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.window.ContainmentRole -->
+      <!-- @default "restrictMovement" -->
+      <!-- @value "restrictMovement" makes it impossible to move the window out of the boundaries defined by the
+                      containment attribute -->
+      <!-- @value "restrictSize" ensures that the window is not bigger than the boundaries defined by the containment
+                       attribute when it is shown  -->
+      <!-- @value "restrictMovementAndSize" Makes it impossible for the user to move the window out of the boundaries
+                       defined by the containment attribute, and ensures that the window is not bigger than the
+                       containment area when it is shown -->
       <!-- @el true -->
     </attribute>
 
@@ -30364,8 +30418,26 @@ and it is automatically triggered on any form submission. -->
       <!-- @default null -->
       <!-- @value "viewport" Restricts moving the window out of window's boundaries -->
       <!-- @value "document" Restricts moving the window out of document's boundaries -->
-      <!-- @value "containingBlock" Restricts moving the window out of its containing block (document or a nearest parent with position equl to "absolute" or "relative"). -->
+      <!-- @value "containingBlock" Restricts moving the window out of its containing block (document or a nearest
+                       parent with position equal to "absolute" or "relative"). -->
       <!-- @value "#clientSideId" Restricts moving the window out of an element with the specified id. -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Specifies how the value of the &quot;containment&quot; attribute is used.</description>
+      <name>containmentRole</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.window.ContainmentRole -->
+      <!-- @default "restrictMovement" -->
+      <!-- @value "restrictMovement" makes it impossible to move the window out of the boundaries defined by the
+                       containment attribute -->
+      <!-- @value "restrictSize" ensures that the window is not bigger than the boundaries defined by the containment
+                       attribute when it is shown  -->
+      <!-- @value "restrictMovementAndSize" Makes it impossible for the user to move the window out of the boundaries
+                       defined by the containment attribute, and ensures that the window is not bigger than the
+                       containment area when it is shown -->
       <!-- @el true -->
     </attribute>
 

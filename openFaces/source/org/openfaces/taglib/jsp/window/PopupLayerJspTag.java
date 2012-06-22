@@ -114,4 +114,8 @@ public class PopupLayerJspTag extends AbstractComponentJspTag {
     public void setAutosizing(ValueExpression autosizing) {
         getDelegate().setPropertyValue("autosizing", autosizing);
     }
+
+    public void setContainmentRole(ValueExpression containmentRole) {
+        getDelegate().setPropertyValue("containmentRole", containmentRole);
+    }
 }

@@ -48,11 +48,6 @@ O$.Window = {
           O$.Window._removeResizers(win);
       },
 
-      _setPos: function(left, top) {
-        win.setLeft(left);
-        win.setTop(top);
-      },
-
       _getMinSize: function() {
         return {width: this._minWidth, height: this._minHeight};
       },
@@ -73,18 +68,10 @@ O$.Window = {
 
         this.style.width = "0";
 
-        var containingBlock = this.offsetParent;
-        if (!containingBlock) containingBlock = document.body;
         if (!this._containmentRect)
-          this._containmentRect = O$.getContainmentRectangle(this._containment || "document", containingBlock);
+          this._containmentRect = this._getContainmentRect(this._containment || "document");
 
         this.style.width = this._containmentRect.width - autosizingMargins.width + "px";
-
-        if (containingBlock != document.body) {
-          var containingBlockRect = O$.getElementPaddingRectangle(containingBlock);
-          this._containmentRect.x -= containingBlockRect.x;
-          this._containmentRect.y -= containingBlockRect.y;
-        }
         O$.setElementPos(this, {x: this._containmentRect.x, y: this._containmentRect.y});
       },
 

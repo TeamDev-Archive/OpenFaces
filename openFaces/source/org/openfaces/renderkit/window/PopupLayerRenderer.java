@@ -166,7 +166,8 @@ public class PopupLayerRenderer extends RendererBase {
                 modalLayerClass,
                 popup.getHideOnEsc(),
                 Environment.isAjax4jsfRequest(),
-                popup.getContainment());
+                popup.getContainment(),
+                popup.getContainmentRole());
 
         String onShow = popup.getOnshow();
         if (onShow != null) {

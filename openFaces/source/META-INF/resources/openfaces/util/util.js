@@ -2586,7 +2586,11 @@ if (!window.O$) {
       var containingBlock = draggable.offsetParent;
       if (!containingBlock) containingBlock = document.body;
 
-      var containmentRect = O$.getContainmentRectangle(draggable._containment, containingBlock);
+      var containmentRect = draggable._containment && (!draggable._containment ||
+                                                        draggable._containmentRole == "restrictMovement" ||
+                                                        draggable._containmentRole == "restrictMovementAndSize")
+              ? O$.getContainmentRectangle(draggable._containment, containingBlock)
+              : null;
 
       if (containmentRect) {
         var prntPos = O$.getElementPos(containingBlock);
@@ -2597,10 +2601,10 @@ if (!window.O$) {
         var maxLeft = minLeft + containmentRect.width - draggableSize.width - 1;
         var maxTop = minTop + containmentRect.height - draggableSize.height - 1;
 
-        if (containmentCorrectedLeft < minLeft) containmentCorrectedLeft = minLeft;
-        if (containmentCorrectedTop < minTop) containmentCorrectedTop = minTop;
         if (containmentCorrectedLeft > maxLeft) containmentCorrectedLeft = maxLeft;
         if (containmentCorrectedTop > maxTop) containmentCorrectedTop = maxTop;
+        if (containmentCorrectedLeft < minLeft) containmentCorrectedLeft = minLeft;
+        if (containmentCorrectedTop < minTop) containmentCorrectedTop = minTop;
       }
 
       if (draggable.setPosition) {
