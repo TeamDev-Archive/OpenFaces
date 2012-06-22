@@ -53,8 +53,9 @@ public class PopupLayer extends OUIPanel {
     private String ondragstart;
     private String ondragend;
 
-    private String containment;
     private Autosizing autosizing;
+    private String containment;
+    private ContainmentRole containmentRole;
 
     public PopupLayer() {
         setRendererType("org.openfaces.PopupLayerRenderer");
@@ -272,7 +273,8 @@ public class PopupLayer extends OUIPanel {
                 hideOnOuterClick,
                 hideOnEsc,
                 modal,
-                containment
+                containment,
+                containmentRole
         };
     }
 
@@ -305,7 +307,8 @@ public class PopupLayer extends OUIPanel {
         hideOnOuterClick = (Boolean) values[i++];
         hideOnEsc = (Boolean) values[i++];
         modal = (Boolean) values[i++];
-        containment=(String) values[i++];
+        containment = (String) values[i++];
+        containmentRole = (ContainmentRole) values[i++];
     }
 
     public Autosizing getAutosizing() {
@@ -314,5 +317,14 @@ public class PopupLayer extends OUIPanel {
 
     public void setAutosizing(Autosizing autosizing) {
         this.autosizing = autosizing;
+    }
+
+    public ContainmentRole getContainmentRole() {
+        return ValueBindings.get(this, "containmentRole", containmentRole,
+                ContainmentRole.RESTRICT_MOVEMENT, ContainmentRole.class);
+    }
+
+    public void setContainmentRole(ContainmentRole containmentRole) {
+        this.containmentRole = containmentRole;
     }
 }

@@ -17,7 +17,7 @@ O$.PopupLayer = {
   _modalPopupsStack: [],
 
   _init: function(id, left, top, width, height, rolloverStyle, hidingTimeout,
-                  draggable, autosizing, modalLayerClass, hideOnEsc, isAjaxRequest, containment) {
+                  draggable, autosizing, modalLayerClass, hideOnEsc, isAjaxRequest, containment, containmentRole) {
     var popup = O$(id);
     O$.initComponent(id, {rollover: rolloverStyle}, {
       left: left,
@@ -37,6 +37,7 @@ O$.PopupLayer = {
       _draggable: draggable,
       _autosizing: autosizing,
       _containment: containment,
+      _containmentRole: containmentRole,
       _draggingDisabled: false,
 
       _rolloverStyleNames: rolloverStyle,
@@ -93,6 +94,10 @@ O$.PopupLayer = {
 
       _setSize: function(width, height) {
         O$.setElementSize(this, {width: width, height: height});
+      },
+
+      _getSize: function() {
+        return O$.getElementSize(this);
       },
 
       _getAutosizingArea: function() {
@@ -196,6 +201,9 @@ O$.PopupLayer = {
         popup.style.display = "block";
         if (autosizing == "on") {
           popup._resizeToContent();
+        }
+        if (popup._containment) {
+          popup._adjustToContainmentSize();
         }
         O$.addIETransparencyControl(popup);
         if (popup._blockingLayer) {
@@ -329,6 +337,8 @@ O$.PopupLayer = {
           }, popup._hidingTimeout);
         }
         O$.repaintAreaForOpera(popup, true);
+        if (!popup._originalSize)
+          popup._originalSize = popup._getSize();
         if (popup._afterShow)
           popup._afterShow();
         else {
@@ -437,11 +447,64 @@ O$.PopupLayer = {
       },
 
       _onmousemove: popup.onmousemove,
-      onmousemove: function (e) {
+
+      _onmousemove: function (e) {
         if (popup._onmousemove) {
           if (!popup._draggingInProgress) {
             popup._onmousemove(e);
           }
+        }
+      },
+
+      _setPos: function(left, top) {
+        this.setLeft(left);
+        this.setTop(top);
+      },
+
+
+      /**
+       * @return the containment rectangle (if the _containment field is specified) in the window's coordinate space
+       * (relative to the window's containing block), or null if the window's _containment field is not specified.
+       */
+      _getContainmentRect: function(containment) {
+        if (!containment) return null;
+
+        var containingBlock = this.offsetParent;
+        if (!containingBlock) containingBlock = document.body;
+        var containment = O$.getContainmentRectangle(containment, containingBlock);
+
+        if (containingBlock != document.body) {
+          var containingBlockRect = O$.getElementPaddingRectangle(containingBlock);
+          containment.x -= containingBlockRect.x;
+          containment.y -= containingBlockRect.y;
+        }
+
+        return containment;
+      },
+
+      _adjustToContainmentSize: function() {
+        if (!this._containment) return;
+
+        var containmentRect = this._getContainmentRect(this._containment);
+
+        if (containmentRole == "restrictSize" || containmentRole == "restrictMovementAndSize") {
+          var size = this._getSize();
+          var newSize = {width: Math.min(size.width, containmentRect.width), height: Math.min(size.height, containmentRect.height)};
+          if (size.width != newSize.width || size.height > newSize.height) {
+            this._setSize(newSize.width, newSize.height);
+          }
+        }
+
+        if (containmentRole == "restrictMovement" || containmentRole == "restrictMovementAndSize") {
+          var pos = O$.getElementPos(this, true);
+          size = this._getSize();
+          var newPos = {x: pos.x, y: pos.y};
+          if (newPos.x + size.width > containmentRect.getMaxX()) newPos.x = containmentRect.getMaxX() - size.width;
+          if (newPos.y + size.height > containmentRect.getMaxY()) newPos.y = containmentRect.getMaxY() - size.height;
+          if (newPos.x < containmentRect.x) newPos.x = containmentRect.x;
+          if (newPos.y < containmentRect.y) newPos.y = containmentRect.y;
+          if (pos.x != newPos.x || pos.y != newPos.y)
+            this._setPos(newPos.x, newPos.y);
         }
       }
     });
