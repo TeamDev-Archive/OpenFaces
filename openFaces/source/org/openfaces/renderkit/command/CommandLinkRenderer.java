@@ -15,14 +15,19 @@ import org.openfaces.component.OUIClientAction;
 import org.openfaces.component.command.CommandLink;
 import org.openfaces.renderkit.OUICommandRenderer;
 import org.openfaces.util.AjaxUtil;
+import org.openfaces.util.DefaultStyles;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.Resources;
+import org.openfaces.util.ScriptBuilder;
+import org.openfaces.util.StyleGroup;
+import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 public class CommandLinkRenderer extends OUICommandRenderer {
     @Override
@@ -49,12 +54,10 @@ public class CommandLinkRenderer extends OUICommandRenderer {
 
         Rendering.writeStyleAndClassAttributes(writer, link);
 
-        if (!link.isDisabled()) {
-            boolean ajaxJsRequired = writeEventsWithAjaxSupport(context, writer, link,
-                    getActionRequestKey(context, component));
-            if (ajaxJsRequired)
-                link.getAttributes().put("_ajaxRequired", Boolean.TRUE);
-        }
+        boolean ajaxJsRequired = writeEventsWithAjaxSupport(context, writer, link,
+                getActionRequestKey(context, component));
+        if (ajaxJsRequired)
+            link.getAttributes().put("_ajaxRequired", Boolean.TRUE);
 
         Object value = link.getValue();
         if (value != null) {
@@ -75,13 +78,32 @@ public class CommandLinkRenderer extends OUICommandRenderer {
 
 
     private String getTagName(CommandLink link) {
-        return link.isDisabled() ? "span" : "a";
+        return "a";
+    }
+
+    @Override
+    public void decode(FacesContext context, UIComponent component) {
+        super.decode(context, component);
+
+        CommandLink link = (CommandLink) component;
+        Map<String,String> requestParameterMap = context.getExternalContext().getRequestParameterMap();
+        String disabledStr = requestParameterMap.get(link.getClientId(context) + "::disabled");
+        if (disabledStr != null) {
+            boolean disabled = Boolean.valueOf(disabledStr);
+            link.setDisabled(disabled);
+        }
     }
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         CommandLink link = (CommandLink) component;
+
+        ScriptBuilder sb = new ScriptBuilder().functionCall("O$.Link._init", link, link.isDisabled(),
+                Styles.getCSSClass(context, link, link.getDisabledStyle(), StyleGroup.disabledStyleGroup(),
+                        link.getDisabledClass(), "o_link_disabled " + DefaultStyles.getTextColorClass()));
+        Rendering.renderInitScript(context, sb, Resources.utilJsURL(context));
+
         writer.endElement(getTagName(link));
         Resources.renderJSLinkIfNeeded(context, Resources.utilJsURL(context));
         if (link.getAttributes().remove("_ajaxRequired") != null)

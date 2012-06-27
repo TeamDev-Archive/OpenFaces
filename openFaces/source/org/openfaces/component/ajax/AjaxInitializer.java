@@ -21,6 +21,7 @@ import org.openfaces.org.json.JSONObject;
 import org.openfaces.util.AnonymousFunction;
 import org.openfaces.util.Rendering;
 
+import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -171,7 +172,7 @@ public class AjaxInitializer {
                 result.put("delayId", getAjaxComponentParam(context, command));
             }
 
-            ValueExpression action = !(command instanceof Ajax) ? command.getValueExpression("action") : null;
+            MethodExpression action = !(command instanceof Ajax) ? command.getActionExpression() : null;
             if (action != null) {
                 String actionExpressionString = action.getExpressionString();
                 validateExpressionString(actionExpressionString);

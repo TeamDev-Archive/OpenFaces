@@ -5290,6 +5290,43 @@ if (!window.O$) {
     return parent;
   };
 
+  O$.Link = {
+    _init: function(id, disabled, disabledStyle) {
+      var link = O$.initComponent(id, null, {
+        _disabled: false,
+
+        getDisabled: function() {
+          return this._disabled;
+        },
+
+        setDisabled: function(disabled) {
+          O$.setHiddenField(this, id + "::disabled", disabled);
+          if (this._disabled == disabled) return;
+          this._disabled = disabled;
+          O$.setStyleMappings(this, {"disabled": this._disabled ? disabledStyle : ""});
+          events.forEach(function(eventName) {
+            link[eventName] = disabled ? null : originalEventHandlers[eventName];
+          });
+          if (disabled) {
+            link.onclick = O$.preventDefaultEvent;
+          } else if (link.onclick == O$.preventDefaultEvent) {
+            link.onclick = null;
+          }
+        }
+      });
+
+      var events = ["onfocus", "onblur", "onkeydown", "onkeypress", "onkeyup",
+      "onmouseover", "onmousemove", "onmousedown", "onclick", "ondblclick", "onmouseup", "onmouseout"];
+      var originalEventHandlers = {};
+      events.forEach(function(eventName) {
+        originalEventHandlers[eventName] = link[eventName];
+
+      });
+
+      link.setDisabled(disabled);
+
+    }
+  };
 
   O$.isComponentInDOM = function(component) {
     var parent = component.parentNode;
@@ -5304,4 +5341,5 @@ if (!window.O$) {
   };
 
 }
+
 
