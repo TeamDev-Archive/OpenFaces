@@ -132,6 +132,15 @@
 
 /* == End of Shared among components styles == */
 
+/* Misc components */
+.o_link_disabled {
+    cursor: text; text-decoration: none;
+}
+
+.o_link_disabled:hover {
+    color: WindowText;
+}
+
 /* Table styles */
 .o_table_header_section {
   font-weight: bold;

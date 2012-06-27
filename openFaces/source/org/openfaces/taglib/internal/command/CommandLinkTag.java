@@ -46,5 +46,7 @@ public class CommandLinkTag extends OUICommandTag {
         setStringProperty(component, "shape");
         setStringProperty(component, "target");
         setStringProperty(component, "type");
+        setStringProperty(component, "disabledStyle");
+        setStringProperty(component, "disabledClass");
     }
 }

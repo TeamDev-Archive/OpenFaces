@@ -34,6 +34,8 @@ public class CommandLink extends OUICommand {
     private String shape;
     private String target;
     private String type;
+    private String disabledStyle;
+    private String disabledClass;
 
     public CommandLink() {
         setRendererType("org.openfaces.CommandLinkRenderer");
@@ -60,7 +62,9 @@ public class CommandLink extends OUICommand {
                 rev,
                 shape,
                 target,
-                type
+                type,
+                disabledStyle,
+                disabledClass
         };
     }
 
@@ -83,6 +87,8 @@ public class CommandLink extends OUICommand {
         shape = (String) state[i++];
         target = (String) state[i++];
         type = (String) state[i++];
+        disabledStyle = (String) state[i++];
+        disabledClass = (String) state[i++];
     }
 
     public String getAccesskey() {
@@ -195,5 +201,21 @@ public class CommandLink extends OUICommand {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getDisabledStyle() {
+        return ValueBindings.get(this, "disabledStyle", disabledStyle);
+    }
+
+    public void setDisabledStyle(String disabledStyle) {
+        this.disabledStyle = disabledStyle;
+    }
+
+    public String getDisabledClass() {
+        return ValueBindings.get(this, "disabledClass", disabledClass);
+    }
+
+    public void setDisabledClass(String disabledClass) {
+        this.disabledClass = disabledClass;
     }
 }

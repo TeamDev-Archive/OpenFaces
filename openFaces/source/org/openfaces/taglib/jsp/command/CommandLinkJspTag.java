@@ -81,4 +81,12 @@ public class CommandLinkJspTag extends OUICommandJspTag {
     public void setType(ValueExpression type) {
         getDelegate().setPropertyValue("type", type);
     }
+
+    public void setDisabledStyle(ValueExpression disabledStyle) {
+        getDelegate().setPropertyValue("disabledStyle", disabledStyle);
+    }
+
+    public void setDisabledClass(ValueExpression disabledClass) {
+        getDelegate().setPropertyValue("disabledClass", disabledClass);
+    }
 }
