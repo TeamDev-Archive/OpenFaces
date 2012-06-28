@@ -107,5 +107,5 @@ function columnsDialogShow() {
 
 function cancelColumnsDialog() {
   O$('form1:requestsTreeTable:optionsTLS').setValue(optionsArray);
-  O$('form1:requestsTreeTable:selectColumnsPopup').hide();
+  O$('form1:requestsTreeTable:selectColumnsDialog').hide();
 }
