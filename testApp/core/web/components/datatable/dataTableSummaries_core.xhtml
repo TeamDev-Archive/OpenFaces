@@ -10,7 +10,13 @@
     .input {width: 400px}
     .attributeName {font-family: Courier,serif; font-size: smaller}
   </style>
-
+<!--
+  <o:dataTable id="t1" var="row" value="#{'test'}">
+    <o:column sortingExpression="#{row}" header="Test">
+      <o:dateChooser/>
+    </o:column>
+  </o:dataTable>
+-->
   <h:panelGrid columns="1" style="border: 1px solid #c0c0c0; width: 100%">
     RowGrouping component settings:
     <h:panelGroup><o:selectBooleanCheckbox id="inGroupFootersCollapsibleCB" value="#{MultitypeBeanSupport.inGroupFootersCollapsible}"/><h:outputLabel  for="inGroupFootersCollapsibleCB" value="inGroupFootersCollapsible" styleClass="attributeName"/> </h:panelGroup>
