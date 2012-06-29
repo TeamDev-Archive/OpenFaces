@@ -15,6 +15,7 @@ import org.openfaces.component.OUICommand;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.context.FacesContext;
+import java.util.Map;
 
 /**
  * @author Vladimir Kurganov
@@ -288,6 +289,18 @@ public class MenuItem extends OUICommand {
         indentAreaClass = (String) values[i++];
         submenuIconAreaStyle = (String) values[i++];
         submenuIconAreaClass = (String) values[i++];
+    }
+
+    @Override
+    public void decode(FacesContext context) {
+        super.decode(context);
+        Map<String,String> requestParameterMap = context.getExternalContext().getRequestParameterMap();
+        String clientId = getClientId(context);
+        String disabledStr = requestParameterMap.get(clientId + "::disabled");
+        if (disabledStr != null) {
+            boolean disabled = Boolean.valueOf(disabledStr);
+            setDisabled(disabled);
+        }
     }
 
 }
