@@ -238,25 +238,32 @@ O$.DropDown = {
       _disabled: false,
 
       setDisabled: function(disabled) {
+        O$.setHiddenField(this, dropDownId + "::disabled", disabled);
         if (this._disabled == disabled) return;
 
-        if (!this._button._img) {
-          this._button._img = O$(dropDownId + "::button::img");
-        }
 
-        if (!originalEnabledButtonImageUrl) {
-          O$.assert(!this._disabled, "The drop-down field is expected to be enabled by default during initialization");
-          originalEnabledButtonImageUrl = this._button._img.src;
+        if (this._button) {
+          // if there's a button (if it's not a plain SuggestionField component)
+          if (!this._button._img) {
+            this._button._img = O$(dropDownId + "::button::img");
+          }
+          if (!originalEnabledButtonImageUrl) {
+            O$.assert(!this._disabled, "The drop-down field is expected to be enabled by default during initialization");
+            originalEnabledButtonImageUrl = this._button._img.src;
+          }
         }
 
         this._disabled = disabled;
         this._setFieldDisabled(disabled);
-        O$.setStyleMappings(this._button, {disabled: disabled ? disabledButtonClass : ""});
 
-        this._button._img.src = disabled ? disabledButtonImageUrl : originalEnabledButtonImageUrl;
+        if (this._button) {
+          O$.setStyleMappings(this._button, {disabled: disabled ? disabledButtonClass : ""});
 
-        this._button._focusable = !disabled;
-        this._button._img._focusable = !disabled;
+          this._button._img.src = disabled ? disabledButtonImageUrl : originalEnabledButtonImageUrl;
+
+          this._button._focusable = !disabled;
+          this._button._img._focusable = !disabled;
+        }
       },
 
       getDisabled: function() {

@@ -15,6 +15,7 @@ import org.openfaces.util.ValueBindings;
 
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
+import java.util.Map;
 
 /**
  * @author Dmitry Pikhulya
@@ -281,5 +282,18 @@ public class OUIInputBase extends UIInput implements OUIInput {
         onkeydown = (String) values[i++];
         onkeyup = (String) values[i++];
         oncontextmenu = (String) values[i++];
+    }
+
+    @Override
+    public void decode(FacesContext context) {
+        super.decode(context);
+        Map<String,String> requestParameterMap = context.getExternalContext().getRequestParameterMap();
+        String clientId = getClientId(context);
+        String disabledStr = requestParameterMap.get(clientId + "::disabled");
+        if (disabledStr != null) {
+            boolean disabled = Boolean.valueOf(disabledStr);
+            setDisabled(disabled);
+        }
+
     }
 }
