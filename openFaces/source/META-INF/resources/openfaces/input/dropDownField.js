@@ -14,7 +14,8 @@ O$.DropDownField = {
   _init: function(dropDownId, popupTimeout, listAlignment, rolloverPopupItemClass, itemValues, customValueAllowed,
                   required, suggestionMode, suggestionDelay, suggestionMinChars, manualListOpeningAllowed,
                   autoCompleteOn, totalItemCount, pageSize, popupTableStructureAndStyleParams, cachingAllowed, itemPresentationColumn) {
-    var dropDown = O$.initComponent(dropDownId, null, {
+    var dropDown = O$(dropDownId);
+    var super_ = O$.extend(dropDown, {
       _listAlignment: listAlignment,
       _customValueAllowed: customValueAllowed,
       _required: required,
@@ -670,6 +671,14 @@ O$.DropDownField = {
             dropDown.oncloseup();
           O$.repaintAreaForOpera(document.body, true);
         }
+      },
+
+      setDisabled: function(disabled) {
+        super_.setDisabled.call(this, disabled);
+      },
+
+      _setCustomEvents: function(events) {
+        O$.extend(this, events);
       }
 
     });
@@ -1255,27 +1264,6 @@ O$.DropDownField = {
     }
     return itemList;
   },
-
-  _setFieldOnChange: function(controlId, func) {
-    var dropDown = O$(controlId);
-    dropDown.client_onchange = func;
-  },
-
-  _setOnKeyPress: function(controlId, func) {
-    var dropDown = O$(controlId);
-    dropDown.client_onkeypress = func;
-  },
-
-  _setOnDropDown: function(controlId, func) {
-    var dropDown = O$(controlId);
-    dropDown.ondropdown = func;
-  },
-
-  _setOnCloseUp: function(controlId, func) {
-    var dropDown = O$(controlId);
-    dropDown.oncloseup = func;
-  },
-
 
   _filteredItemsLoaded: function(dropDownField, portionName, portionHTML, portionScripts) {
     var sepIdx = portionName.indexOf(":");

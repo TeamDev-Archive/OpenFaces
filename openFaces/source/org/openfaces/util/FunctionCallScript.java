@@ -19,6 +19,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.Map;
 
 /**
  * @author Dmitry Pikhulya
@@ -67,6 +68,20 @@ public class FunctionCallScript extends Script {
                     sb.append(", ");
             }
             sb.append(']');
+        } else if (param instanceof Map) {
+            sb.append('{');
+            Iterator iterator = ((Map) param).entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry entry = (Map.Entry) iterator.next();
+                Object key = entry.getKey();
+                Object value = entry.getValue();
+                writeParam(sb, key);
+                sb.append(": ");
+                writeParam(sb, value);
+                if (iterator.hasNext())
+                    sb.append(", ");
+            }
+            sb.append('}');
         } else {
             sb.append(escapeStringForJSAndQuote(param.toString()));
         }

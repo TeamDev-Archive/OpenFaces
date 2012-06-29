@@ -111,7 +111,7 @@ public class SpinnerRenderer extends DropDownComponentRenderer {
 
         return new InitScript(sb, new String[]{
                 Resources.utilJsURL(context),
-                getDropDownJsURL(context),
+                getDropdownJsURL(context),
                 Resources.internalURL(context, "input/spinner.js"),
                 Resources.internalURL(context, "util/dojo.js")
         });
@@ -244,7 +244,7 @@ public class SpinnerRenderer extends DropDownComponentRenderer {
 
         InitScript commonInitScript = new InitScript(buf, new String[]{
                 Resources.utilJsURL(context),
-                getDropDownJsURL(context)
+                getDropdownJsURL(context)
         });
 
         InitScript componentSpecificInitScript = renderInitScript(context, dropDown);
