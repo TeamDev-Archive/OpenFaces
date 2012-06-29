@@ -134,11 +134,25 @@ O$.PopupMenu = {
       var menuItem = childNodes[i];
       items.push(menuItem);
 
-      menuItem._isSeparator = function() {
-        return !!this._separator;
-      };
+      O$.extend(menuItem, {
+        _isSeparator: function() {
+          return !!this._separator;
+        },
 
-      menuItem._popupMenu = popupMenu;
+        _popupMenu: popupMenu,
+        _properties: itemsProperties[i],
+
+        getDisabled: function() {
+          return this._properties.disabled;
+        },
+
+        setDisabled: function(disabled) {
+          if (this._properties.disabled == disabled) return;
+          this._properties.disabled = disabled;
+          this._disabled = disabled;
+          O$.PopupMenu.setMenuItemEnabled(this.id, !disabled, selectDisabledItems);
+        }
+      });
 
       var anchor = O$(menuItem.id + "::commandLink");
       if (anchor) {
@@ -168,7 +182,6 @@ O$.PopupMenu = {
         menuItem._separator = O$(menuItem.id + "::separator");
       }
 
-      menuItem._properties = itemsProperties[i];
     }
 
     var initialized = false;
@@ -290,7 +303,15 @@ O$.PopupMenu = {
     if (menuItem._isSeparator())
       throw "O$.PopupMenu.setMenuItemEnabled: MenuItem must not be separator";
 
+    O$.setHiddenField(menuItem, menuItemId+ "::disabled", !enabled);
+
     menuItem._disabled = !enabled;
+
+    if (menuItem._originalClickHandler === undefined) {
+      menuItem._originalClickHandler = menuItem._anchor.onclick ? menuItem._anchor.onclick : null;
+    }
+
+    menuItem._anchor.onclick = menuItem.getDisabled() ? null : menuItem._originalClickHandler;
 
     /* Update icons and styles if enabled flag has been changed */
     if (enabled) {
@@ -929,6 +950,7 @@ O$.PopupMenu = {
     var popupMenu = menuItem._popupMenu;
     if (!menuItem._properties.disabled) {
       menuItem._click = function(evt) {
+        if (this.getDisabled()) return;
         if (menuItem._properties.action) {
           var handler;
           eval("handler = function(event){" + menuItem._properties.action + "}");

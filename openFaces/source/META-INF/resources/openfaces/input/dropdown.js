@@ -14,15 +14,30 @@ O$.DropDown = {
                        initialText,
                        containerClass,
                        rolloverContainerClass,
+                       disabledClass,
                        fieldClass,
                        rolloverFieldClass,
+                       disabledFieldClass,
                        focusedClass,
                        promptText,
                        promptTextClass) {
     var dropDown = O$.initComponent(dropDownId, null, {
       _field: O$(dropDownId + "::field"),
       _promptVisible: O$(dropDownId + "::field" + "::promptVisible"),
-      _initialText: initialText
+      _initialText: initialText,
+
+      _fieldDisabled: false,
+
+      _setFieldDisabled: function(disabled) {
+        if (this._fieldDisabled == disabled) return;
+
+        this._fieldDisabled = disabled;
+
+        O$.setStyleMappings(this, {disabled: disabled ? disabledClass : ""});
+        O$.setStyleMappings(this._field, {disabled: disabled ? disabledFieldClass : ""});
+
+        this._field.disabled = disabled ? "disabled" : "";
+      }
     });
 
     dropDown._o_inputField = dropDown._field; // for O$._selectTextRange to be able to access the text field
@@ -182,15 +197,20 @@ O$.DropDown = {
                   initialText,
                   containerClass,
                   rolloverContainerClass,
+                  disabledClass,
                   fieldClass,
                   rolloverFieldClass,
+                  disabledFieldClass,
                   focusedClass,
                   buttonClass,
                   rolloverButtonClass,
                   pressedButtonClass,
+                  disabledButtonClass,
+                  disabledButtonImageUrl,
                   popupClass,
                   rolloverPopupClass,
                   disabled,
+                  readOnly,
                   promptText,
                   promptTextClass,
                   pullPopupFromContainer) {
@@ -199,8 +219,10 @@ O$.DropDown = {
             initialText,
             containerClass,
             rolloverContainerClass,
+            disabledClass,
             fieldClass,
             rolloverFieldClass,
+            disabledFieldClass,
             focusedClass,
             promptText,
             promptTextClass);
@@ -208,10 +230,46 @@ O$.DropDown = {
     var popupId = dropDownId + "--popup";
     O$.removeRelocatedPopupIfExists(popupId);
 
+    var originalEnabledButtonImageUrl = null;
+
     var dropDown = O$.initComponent(dropDownId, null, {
       _button: O$(dropDownId + "::button"),
       _popup: O$(popupId),
-      _disabled: disabled
+      _disabled: false,
+
+      setDisabled: function(disabled) {
+        O$.setHiddenField(this, dropDownId + "::disabled", disabled);
+        if (this._disabled == disabled) return;
+
+
+        if (this._button) {
+          // if there's a button (if it's not a plain SuggestionField component)
+          if (!this._button._img) {
+            this._button._img = O$(dropDownId + "::button::img");
+          }
+          if (!originalEnabledButtonImageUrl) {
+            O$.assert(!this._disabled, "The drop-down field is expected to be enabled by default during initialization");
+            originalEnabledButtonImageUrl = this._button._img.src;
+          }
+        }
+
+        this._disabled = disabled;
+        this._setFieldDisabled(disabled);
+
+        if (this._button) {
+          O$.setStyleMappings(this._button, {disabled: disabled ? disabledButtonClass : ""});
+
+          this._button._img.src = disabled ? disabledButtonImageUrl : originalEnabledButtonImageUrl;
+
+          this._button._focusable = !disabled;
+          this._button._img._focusable = !disabled;
+        }
+      },
+
+      getDisabled: function() {
+        return this._disabled;
+      }
+
     });
 
     if (pullPopupFromContainer) {
@@ -239,22 +297,19 @@ O$.DropDown = {
     dropDown._buttonClass = O$.DropDown._getClassName(buttonClass);
     if (button)
       button.className = dropDown._buttonClass;
+
+    dropDown.setDisabled(disabled);
+
     dropDown._rolloverButtonClass = dropDown._buttonClass + O$.DropDown._getClassName(rolloverButtonClass);
     dropDown._pressedButtonClass = dropDown._rolloverButtonClass + O$.DropDown._getClassName(pressedButtonClass);
 
     var mouseOverBehaviorNeeded = rolloverContainerClass || rolloverFieldClass || rolloverButtonClass || rolloverPopupClass;
 
     if (button) {
-      var buttonImage = button.getElementsByTagName("img")[0];
-      if (disabled) {
-        button._focusable = false;
-        buttonImage._focusable = false;
-      } else {
-        button._focusable = true;
-        buttonImage._focusable = true;
-
+      if (!readOnly) {
         O$.extend(button, {
           onmousedown: function(e) {
+            if (dropDown._disabled) return;
             if (O$.isEventFromInsideOfElement(e, popup))
               return;
             button.className = dropDown._pressedButtonClass;
@@ -263,6 +318,7 @@ O$.DropDown = {
             O$.cancelEvent(e);
           },
           ondblclick: function(e) {
+            if (dropDown._disabled) return;
             if (O$.isEventFromInsideOfElement(e, popup))
               return;
             if (!O$.isExplorer())
@@ -271,22 +327,26 @@ O$.DropDown = {
             O$.cancelEvent(e);
           },
           onmousemove: function(e) {
+            if (dropDown._disabled) return;
             if (O$.isEventFromInsideOfElement(e, popup))
               return;
             O$.cancelEvent(e);
           },
           onmouseup: function(e) {
+            if (dropDown._disabled) return;
             if (O$.isEventFromInsideOfElement(e, popup))
               return;
             button.className = dropDown._rolloverButtonClass;
           },
           onmouseover: function(e) {
+            if (dropDown._disabled) return;
             if (O$.isEventFromInsideOfElement(e, popup))
               return;
             if (dropDown._buttonClass != dropDown._rolloverButtonClass)
               button.className = dropDown._rolloverButtonClass;
           },
           onmouseout: function(e) {
+            if (dropDown._disabled) return;
             if (O$.isEventFromInsideOfElement(e, popup))
               return;
 
@@ -318,6 +378,7 @@ O$.DropDown = {
 
     if (mouseOverBehaviorNeeded) {
       dropDown._dropDownMouseOver = function() {
+        if (dropDown._disabled) return;
         if (dropDown && dropDown._containerClass != dropDown._rolloverContainerClass)
           dropDown.className = dropDown._rolloverContainerClass;
         if (dropDown != field && dropDown._fieldClass != dropDown._rolloverFieldClass)
@@ -329,6 +390,7 @@ O$.DropDown = {
       };
 
       dropDown._dropDownMouseOut = function() {
+        if (dropDown._disabled) return;
         if (dropDown && dropDown._containerClass != dropDown._rolloverContainerClass)
           dropDown.className = dropDown._containerClass;
         if (dropDown != field && dropDown._fieldClass != dropDown._rolloverFieldClass)

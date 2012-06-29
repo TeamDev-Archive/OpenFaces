@@ -22,15 +22,7 @@ import org.openfaces.renderkit.AjaxPortionRenderer;
 import org.openfaces.renderkit.DefaultTableStyles;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.renderkit.table.TableStructure;
-import org.openfaces.util.AjaxUtil;
-import org.openfaces.util.DefaultStyles;
-import org.openfaces.util.InitScript;
-import org.openfaces.util.NewInstanceScript;
-import org.openfaces.util.Rendering;
-import org.openfaces.util.Resources;
-import org.openfaces.util.ScriptBuilder;
-import org.openfaces.util.StyleGroup;
-import org.openfaces.util.Styles;
+import org.openfaces.util.*;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -47,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -392,39 +385,26 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
                 getItemPresentationColumn(dropDown)
         );
         popup.resetChildData();
-        if (!dropDown.isDisabled()) {  // todo: write the event parameters more economically
-            String onValueChanged = Rendering.getChangeHandlerScript(dropDownField);
-            if (onValueChanged != null) {
-                buf.append("O$.DropDownField._setFieldOnChange('");
-                buf.append(clientId);
-                buf.append("', function(event){");
-                buf.append(onValueChanged);
-                buf.append("});");
-            }
-            String onKeyPressed = Rendering.getEventHandlerScript(dropDownField, "keypress");
-            if (onKeyPressed != null) {
-                buf.append("O$.DropDownField._setOnKeyPress('");
-                buf.append(clientId);
-                buf.append("', function(event){");
-                buf.append(onKeyPressed);
-                buf.append("});");
-            }
-            String onDropDown = Rendering.getEventHandlerScript(dropDownField, "dropdown");
-            if (onDropDown != null) {
-                buf.append("O$.DropDownField._setOnDropDown('");
-                buf.append(clientId);
-                buf.append("', function(event){");
-                buf.append(onDropDown);
-                buf.append("});");
-            }
-            String onCloseUp = Rendering.getEventHandlerScript(dropDownField, "closeup");
-            if (onCloseUp != null) {
-                buf.append("O$.DropDownField._setOnCloseUp('");
-                buf.append(clientId);
-                buf.append("', function(event){");
-                buf.append(onCloseUp);
-                buf.append("});");
-            }
+        if (!dropDown.isReadonly()) {
+            Map<String, Script> eventHandlers = new HashMap<String, Script>();
+
+            String onchange = Rendering.getChangeHandlerScript(dropDownField);
+            if (onchange != null)
+                eventHandlers.put("client_onchange", new AnonymousFunction(new RawScript(onchange), "event"));
+
+            String onkeypress = Rendering.getEventHandlerScript(dropDownField, "keypress");
+            if (onkeypress != null)
+                eventHandlers.put("client_onkeypress", new AnonymousFunction(new RawScript(onkeypress), "event"));
+
+            String ondropdown = Rendering.getEventHandlerScript(dropDownField, "dropdown");
+            if (ondropdown != null)
+                eventHandlers.put("ondropdown", new AnonymousFunction(new RawScript(ondropdown), "event"));
+
+            String oncloseup = Rendering.getEventHandlerScript(dropDownField, "closeup");
+            if (oncloseup != null)
+                eventHandlers.put("oncloseup", new AnonymousFunction(new RawScript(oncloseup), "event"));
+
+            buf.O$(dropDownField).dot().functionCall("_setCustomEvents", eventHandlers).semicolon();
         }
         Styles.renderStyleClasses(context, dropDownField); // encoding styles before scripts is important for tableUtil.js to be able to compute row and column styles correctly
         return new InitScript(buf.toString(), new String[]{

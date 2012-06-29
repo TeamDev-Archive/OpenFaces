@@ -246,14 +246,13 @@ public class MenuItemRenderer extends RendererBase {
     private void renderStartMenuItemSpan(FacesContext context, MenuItem menuItem, ResponseWriter writer) throws IOException {
         writer.startElement("span", menuItem);
         writeAttribute(writer, "id", menuItem.getClientId(context) + A_SUFIX);
-        if (!menuItem.isDisabled()) {
-            boolean ajaxJsRequired = writeEventsWithAjaxSupport(context, writer, menuItem);
-            if (ajaxJsRequired)
-                menuItem.getAttributes().put("_ajaxRequired", Boolean.TRUE);
-            else {
-                if ((menuItem.getActionExpression() != null || menuItem.getActionListeners().length > 0))
-                    addMenuItemParameter(menuItem, "action", "O$.submitWithParam(this, '" + menuItem.getClientId(context) + "::clicked', 'true');");
-            }
+
+        boolean ajaxJsRequired = writeEventsWithAjaxSupport(context, writer, menuItem);
+        if (ajaxJsRequired)
+            menuItem.getAttributes().put("_ajaxRequired", Boolean.TRUE);
+        else {
+            if ((menuItem.getActionExpression() != null || menuItem.getActionListeners().length > 0))
+                addMenuItemParameter(menuItem, "action", "O$.submitWithParam(this, '" + menuItem.getClientId(context) + "::clicked', 'true');");
         }
     }
 

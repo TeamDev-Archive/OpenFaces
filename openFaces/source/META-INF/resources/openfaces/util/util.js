@@ -16,6 +16,7 @@ if (!window.O$) {
   };
 
   O$.extend = function(obj, withObj) {
+    var previousPropertyValues = {};
     /*Added explorer memory leak fix because of circular references - IE itself doesn't resolve them,
     * so we call destroyAllFunctions where all functions added with extend method will be cleared */
     var ie;
@@ -27,12 +28,14 @@ if (!window.O$) {
     }
     for (var propertyName in withObj) {
       if (propertyName != "prototype") {
+        previousPropertyValues[propertyName] = obj[propertyName];
         obj[propertyName] = withObj[propertyName];
         if (ie) {
           obj.customPropertiesForIE.push(propertyName);
         }
       }
     }
+    return previousPropertyValues;
   };
 
   O$.createClass = function(staticClassMembers, instanceMembers) {

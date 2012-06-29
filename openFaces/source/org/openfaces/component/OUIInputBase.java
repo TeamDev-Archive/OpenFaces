@@ -22,6 +22,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Dmitry Pikhulya
@@ -295,6 +296,19 @@ public class OUIInputBase extends UIInput implements OUIInput, ClientBehaviorHol
         onkeydown = (String) values[i++];
         onkeyup = (String) values[i++];
         oncontextmenu = (String) values[i++];
+    }
+
+    @Override
+    public void decode(FacesContext context) {
+        super.decode(context);
+        Map<String, String> requestParameterMap = context.getExternalContext().getRequestParameterMap();
+        String clientId = getClientId(context);
+        String disabledStr = requestParameterMap.get(clientId + "::disabled");
+        if (disabledStr != null) {
+            boolean disabled = Boolean.valueOf(disabledStr);
+            setDisabled(disabled);
+        }
+
     }
 
     @Override

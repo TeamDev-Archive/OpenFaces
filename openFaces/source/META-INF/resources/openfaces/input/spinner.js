@@ -22,6 +22,19 @@ O$.Spinner = {
                   onchange,
                   formatOptions) {
     var spinner = O$.initComponent(spinnerId, null, {
+      _disabled: false,
+
+      setDisabled: function(disabled) {
+        if (this._disabled == disabled) return;
+
+        this._disabled = disabled;
+        this._setFieldDisabled(disabled);
+      },
+
+      isDisabled: function() {
+        return this._isDisabled;
+      },
+
       getValue: function() {
         if (!spinner._field)
           return null;
@@ -91,6 +104,8 @@ O$.Spinner = {
       }
 
     });
+
+    spinner.setDisabled(disabled);
 
     var increaseButton = O$(spinnerId + "::increase_button");
     var decreaseButton = O$(spinnerId + "::decrease_button");
