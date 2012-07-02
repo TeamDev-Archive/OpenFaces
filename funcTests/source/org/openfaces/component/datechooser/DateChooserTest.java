@@ -393,6 +393,7 @@ public class DateChooserTest extends BaseCalendarTestCase {
 
         element("formID:makeDisabled").clickAndWait();
 
+        sleep(500);
         // disabledButtonImageUrl="../dropdown/dropdown_arrow_disabled.gif"
         button.childNodes().get(0).assertAttributeStartsWith("src", "../dropdown/dropdown_arrow_disabled.gif");
 
