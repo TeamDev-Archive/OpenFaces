@@ -1416,4 +1416,11 @@
       <handler-class>org.openfaces.taglib.facelets.table.SummariesTagHandler</handler-class>
     </component>
   </tag>
+  <tag>
+    <tag-name>keepVisible</tag-name>
+    <component>
+      <component-type>org.openfaces.KeepVisible</component-type>
+      <handler-class>org.openfaces.taglib.facelets.util.KeepVisibleTagHandler</handler-class>
+    </component>
+  </tag>
 </facelet-taglib>
