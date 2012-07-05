@@ -1672,6 +1672,16 @@
   border-bottom: #dbdad5 1px solid;
 }
 
+.o_tabbedpane_border_left_right {
+    border-top: #dbdad5 1px solid;
+    border-bottom: #dbdad5 1px solid;
+}
+
+.o_tabbedpane_border_top_bottom {
+    border-left: #dbdad5 1px solid;
+    border-right: #dbdad5 1px solid;
+}
+
 .o_tabbedpane_container {
   padding: 2px 2px 2px 2px;
   vertical-align: top;

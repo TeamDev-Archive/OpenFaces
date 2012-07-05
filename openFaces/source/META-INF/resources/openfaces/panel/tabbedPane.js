@@ -13,10 +13,15 @@
 O$.TabbedPane = {
   _init: function(clientId, rolloverClass,
                   containerClass, rolloverContainerClass, borderClass, loadingMode, focusable, focusedClass,
-                  onselectionchange) {
+                  onselectionchange, mirrorTabSetSuffix) {
     var tabbedPane = O$.initComponent(clientId, null, {
-      _tabSet: O$(clientId + "--tabSet")
+      _tabSet: O$(clientId + "--tabSet"),
+      _mirrorTabSet:(mirrorTabSetSuffix) ? O$(clientId + "--tabSet" + mirrorTabSetSuffix) : null
     });
+
+    // This allow server to use only _indexField of original TabSet.
+    if (tabbedPane._mirrorTabSet)
+      tabbedPane._mirrorTabSet._indexField = O$(clientId + "--tabSet" + "::selected");
     O$.MultiPage._init(clientId, rolloverClass, containerClass, loadingMode,
             tabbedPane._tabSet.getTabCount(), tabbedPane._tabSet.getSelectedIndex());
 
@@ -30,20 +35,34 @@ O$.TabbedPane = {
 
       setSelectedIndex: function(index) {
         tabbedPane._tabSet.setSelectedIndex(index);
+        if (tabbedPane._mirrorTabSet)
+          tabbedPane._mirrorTabSet.setSelectedIndex(index);
       }
 
     });
 
-    tabbedPane._tabSet.onchange = function (evt) {
-      var tabbedPane = this._tabbedPane;
-      if (tabbedPane.onselectionchange) {
-        if (tabbedPane.onselectionchange(evt) === false || evt.returnValue === false)
-          return false;
-      }
-      tabbedPane.doSetSelectedIndex(evt._absoluteIndex);
-    };
+    function onChangeHandler(secondTabSet) {
+       return function (evt) {
+         var tabbedPane = this._tabbedPane;
+         if (tabbedPane.onselectionchange) {
+           if (tabbedPane.onselectionchange(evt) === false || evt.returnValue === false)
+             return false;
+         }
+         tabbedPane.doSetSelectedIndex(evt._absoluteIndex);
+         if (secondTabSet) {
+           secondTabSet.setSelectedIndex(evt._absoluteIndex, true);
+           secondTabSet._refreshTabs();
+         }
+       }
+    }
+
+    tabbedPane._tabSet.onchange = onChangeHandler(tabbedPane._mirrorTabSet);
+    if (tabbedPane._mirrorTabSet)
+      tabbedPane._mirrorTabSet.onchange = onChangeHandler(tabbedPane._tabSet);
 
     tabbedPane._tabSet._tabbedPane = tabbedPane;
+    if (tabbedPane._mirrorTabSet)
+      tabbedPane._mirrorTabSet._tabbedPane = tabbedPane;
 
     if (focusable) {
       tabbedPane.focus = function () {
@@ -72,17 +91,29 @@ O$.TabbedPane = {
         tabbedPane._tabSet.focus();
         tabbedPane._tabSet._preventPageScrolling = false;
       });
-      O$.addEventHandler(tabbedPane._tabSet, "focus", function () {
-        O$.setStyleMappings(tabbedPane, {
-          focused: focusedClass
-        });
-      });
 
-      O$.addEventHandler(tabbedPane._tabSet, "blur", function () {
-        O$.setStyleMappings(tabbedPane, {
-          focused: null
+      function _addFocusEventHandler(tabSet) {
+        O$.addEventHandler(tabSet, "focus", function () {
+          O$.setStyleMappings(tabbedPane, {
+            focused: focusedClass
+          });
         });
-      });
+      };
+      function _addBlurEventHandler(tabSet) {
+        O$.addEventHandler(tabSet, "blur", function () {
+          O$.setStyleMappings(tabbedPane, {
+            focused: null
+          });
+        })
+      };
+
+      _addFocusEventHandler(tabbedPane._tabSet);
+      _addBlurEventHandler(tabbedPane._tabSet);
+
+      if (tabbedPane._mirrorTabSet) {
+        _addFocusEventHandler(tabbedPane._mirrorTabSet);
+        _addBlurEventHandler(tabbedPane._mirrorTabSet);
+      }
 
     }
 
@@ -90,21 +121,29 @@ O$.TabbedPane = {
 
     // setup methods
     O$.assignEventHandlerField(tabbedPane, "onmouseover", function (evt) {
-      if (this._tabSet._tabs) {
-        var tab = this._tabSet._getTabByAbsoluteIndex(tabbedPane._tabSet._index);
-        tab._tabbedPaneCall = true;
-        tab.onmouseover(evt);
-      }
+      O$.TabbedPane._handleMouseover(this._tabSet);
+      if (this._mirrorTabSet)
+        O$.TabbedPane._handleMouseover(this._mirrorTabSet, evt);
     });
     O$.assignEventHandlerField(tabbedPane, "onmouseout", function (evt) {
-      if (this._tabSet._tabs) {
-        var tab = this._tabSet._getTabByAbsoluteIndex(tabbedPane._tabSet._index);
-        tab._tabbedPaneCall = true;
-        tab.onmouseout(evt);
-      }
+      O$.TabbedPane._handleMouseout(this._tabSet);
+      if (this._mirrorTabSet)
+        O$.TabbedPane._handleMouseout(this._mirrorTabSet, evt);
     });
+  },
+  _handleMouseout:function(tabSet, evt) {
+    if (tabSet._tabs) {
+      var tab = tabSet._getTabByAbsoluteIndex(tabSet._index);
+      tab._tabbedPaneCall = true;
+      tab.onmouseout(evt);
+    }
 
+  },
+  _handleMouseover:function(tabSet, evt) {
+    if (tabSet._tabs) {
+      var tab = tabSet._getTabByAbsoluteIndex(tabSet._index);
+      tab._tabbedPaneCall = true;
+      tab.onmouseover(evt);
+    }
   }
-
-
 };
