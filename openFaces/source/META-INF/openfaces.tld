@@ -18549,6 +18549,18 @@ on every switch to the tab.-->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>If mirrorTabSetVisible is true then second tabset will
+        be displayed symmetrically to the primary one.
+      </description>
+      <name>mirrorTabSetVisible</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
   </tag>
 
   <tag>
