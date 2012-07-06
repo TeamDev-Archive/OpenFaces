@@ -28,6 +28,9 @@ public abstract class OUICommandTag extends AbstractComponentTag {
         setActionProperty(context, quiCommand);
         setActionListener(context, quiCommand);
         setBooleanProperty(component, "immediate");
+        setBooleanProperty(component, "disabled");
+        setStringProperty(component, "disabledStyle");
+        setStringProperty(component, "disabledClass");
 
         boolean ajax = false;
         ajax |= setLiteralCollectionProperty(component, "render");

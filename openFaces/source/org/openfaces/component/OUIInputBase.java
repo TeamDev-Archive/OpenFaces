@@ -13,6 +13,7 @@ package org.openfaces.component;
 
 import org.openfaces.util.ValueBindings;
 
+import javax.faces.FacesException;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import java.util.Map;
@@ -287,13 +288,30 @@ public class OUIInputBase extends UIInput implements OUIInput {
     @Override
     public void decode(FacesContext context) {
         super.decode(context);
-        Map<String,String> requestParameterMap = context.getExternalContext().getRequestParameterMap();
-        String clientId = getClientId(context);
-        String disabledStr = requestParameterMap.get(clientId + "::disabled");
-        if (disabledStr != null) {
-            boolean disabled = Boolean.valueOf(disabledStr);
-            setDisabled(disabled);
-        }
-
+        decodeDisabledStateIfNeeded(context);
     }
+
+    private void decodeDisabledStateIfNeeded(FacesContext context) {
+        Map<String, String> requestParameterMap = context.getExternalContext().getRequestParameterMap();
+        String clientId = getClientId(context);
+        Object decodeDisabledStateObj = getAttributes().get("decodeDisabledState");
+        if (decodeDisabledStateObj != null) {
+            boolean decodeDisabledState;
+            if (decodeDisabledStateObj instanceof String)
+                decodeDisabledState = Boolean.valueOf((String) decodeDisabledStateObj);
+            else if (decodeDisabledStateObj instanceof Boolean)
+                decodeDisabledState = (Boolean) decodeDisabledStateObj;
+            else
+                throw new FacesException("decodeDisabledState should be of a boolean type, " +
+                        "but it is of the following type: " + decodeDisabledStateObj.getClass().getName());
+            if (decodeDisabledState) {
+                String disabledStr = requestParameterMap.get(clientId + "::disabled");
+                if (disabledStr != null) {
+                    boolean disabled = Boolean.valueOf(disabledStr);
+                    setDisabled(disabled);
+                }
+            }
+        }
+    }
+
 }
