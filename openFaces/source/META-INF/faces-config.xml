@@ -915,6 +915,10 @@
     <component-class>org.openfaces.component.table.Summaries</component-class>
   </component>
 
+  <component>
+    <component-type>org.openfaces.KeepVisible</component-type>
+    <component-class>org.openfaces.component.util.KeepVisible</component-class>
+  </component>
   <render-kit>
     <renderer>
       <component-family>org.openfaces.DataTable</component-family>

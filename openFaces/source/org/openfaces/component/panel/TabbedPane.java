@@ -37,6 +37,7 @@ public class TabbedPane extends MultiPageContainer implements TabSelectionHolder
     public static final String COMPONENT_TYPE = "org.openfaces.TabbedPane";
     public static final String COMPONENT_FAMILY = "org.openfaces.TabbedPane";
 
+    public static final String MIRROR_TABSET_SUFFIX = "_mirror";
     private static final String TAB_SET_SUFFIX = "tabSet";
 
     private String rolloverContainerStyle;
@@ -71,6 +72,7 @@ public class TabbedPane extends MultiPageContainer implements TabSelectionHolder
     private String focusAreaStyle;
     private String focusedClass;
     private String focusedStyle;
+    private Boolean mirrorTabSetVisible;
 
     public TabbedPane() {
         setRendererType("org.openfaces.TabbedPaneRenderer");
@@ -320,6 +322,7 @@ public class TabbedPane extends MultiPageContainer implements TabSelectionHolder
                 focusable,
                 focusAreaStyle,
                 focusAreaClass,
+                mirrorTabSetVisible
         };
     }
 
@@ -355,17 +358,35 @@ public class TabbedPane extends MultiPageContainer implements TabSelectionHolder
         focusable = (Boolean) values[i++];
         focusAreaStyle = (String) values[i++];
         focusAreaClass = (String) values[i++];
+        mirrorTabSetVisible = (Boolean) values[i];
     }
 
     public void createSubComponents(FacesContext context) {
-        UIComponent tabSet = Components.createChildComponent(context, this, TabSet.COMPONENT_TYPE, TAB_SET_SUFFIX);
+        UIComponent tabSet = Components.createChildComponent(context, this, TabSet.COMPONENT_TYPE, TAB_SET_SUFFIX, 0);
         TabSetItems items = new TabSetItems();
         items.setId(getId() + Rendering.SERVER_ID_SUFFIX_SEPARATOR + "tabSetItems");
         tabSet.getChildren().add(items);
+
+        UIComponent mirrorTabSet = Components.createChildComponent(context, this, TabSet.COMPONENT_TYPE, TAB_SET_SUFFIX, 1);
+        mirrorTabSet.setId(mirrorTabSet.getId()+ MIRROR_TABSET_SUFFIX);
+        TabSetItems mirrorItems = new TabSetItems();
+        mirrorItems.setId(getId() + Rendering.SERVER_ID_SUFFIX_SEPARATOR + "tabSetItems" + MIRROR_TABSET_SUFFIX);
+        mirrorTabSet.getChildren().add(mirrorItems);
     }
 
     public TabSet getTabSet() {
         return (TabSet) Components.getChildBySuffix(this, TAB_SET_SUFFIX);
     }
 
+    public TabSet getMirrorTabSet() {
+        return (TabSet) Components.getChildBySuffix(this, TAB_SET_SUFFIX + MIRROR_TABSET_SUFFIX);
+    }
+
+    public boolean isMirrorTabSetVisible() {
+        return ValueBindings.get(this, "mirrorTabSetVisible", mirrorTabSetVisible, false);
+    }
+
+    public void setMirrorTabSetVisible(boolean mirrorTabSetVisible) {
+        this.mirrorTabSetVisible = mirrorTabSetVisible;
+    }
 }
