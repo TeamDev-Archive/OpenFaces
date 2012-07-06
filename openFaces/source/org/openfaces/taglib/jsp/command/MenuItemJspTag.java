@@ -12,12 +12,10 @@
 package org.openfaces.taglib.jsp.command;
 
 
-import org.openfaces.taglib.internal.command.MenuItemTag;
 import org.openfaces.taglib.internal.AbstractComponentTag;
-import org.openfaces.taglib.jsp.AbstractComponentJspTag;
+import org.openfaces.taglib.internal.command.MenuItemTag;
 import org.openfaces.taglib.jsp.OUICommandJspTag;
 
-import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 
 /**
@@ -67,18 +65,6 @@ public class MenuItemJspTag extends OUICommandJspTag {
 
     public void setSelectedSubmenuImageUrl(ValueExpression selectedSubmenuImageUrl) {
         getDelegate().setPropertyValue("selectedSubmenuImageUrl", selectedSubmenuImageUrl);
-    }
-
-    public void setDisabled(ValueExpression disabled) {
-        getDelegate().setPropertyValue("disabled", disabled);
-    }
-
-    public void setDisabledStyle(ValueExpression disabledStyle) {
-        getDelegate().setPropertyValue("disabledStyle", disabledStyle);
-    }
-
-    public void setDisabledClass(ValueExpression disabledClass) {
-        getDelegate().setPropertyValue("disabledClass", disabledClass);
     }
 
     public void setSelectedStyle(ValueExpression selectedStyle) {

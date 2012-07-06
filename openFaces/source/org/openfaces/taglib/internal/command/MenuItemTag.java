@@ -48,10 +48,6 @@ public class MenuItemTag extends OUICommandTag {
         setStringProperty(uiComponent, "disabledSubmenuImageUrl");
         setStringProperty(uiComponent, "selectedSubmenuImageUrl");
 
-        setBooleanProperty(uiComponent, "disabled");
-
-        setStringProperty(uiComponent, "disabledStyle");
-        setStringProperty(uiComponent, "disabledClass");
         setStringProperty(uiComponent, "selectedStyle");
         setStringProperty(uiComponent, "selectedClass");
         setStringProperty(uiComponent, "contentAreaStyle");

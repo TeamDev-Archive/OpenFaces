@@ -34,7 +34,7 @@ O$.DropDown = {
         this._fieldDisabled = disabled;
 
         O$.setStyleMappings(this, {disabled: disabled ? disabledClass : ""});
-        O$.setStyleMappings(this._field, {disabled: disabled ? disabledFieldClass : ""});
+        O$.setStyleMappings(this._field, {fieldDisabled: disabled ? disabledFieldClass : ""});
 
         this._field.disabled = disabled ? "disabled" : "";
       }

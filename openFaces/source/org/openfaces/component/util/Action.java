@@ -14,11 +14,9 @@ package org.openfaces.component.util;
 import org.openfaces.component.OUIClientAction;
 import org.openfaces.component.OUIClientActionHelper;
 import org.openfaces.component.OUICommand;
-import org.openfaces.renderkit.ajax.AjaxRenderer;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.component.UIComponent;
-import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ComponentSystemEvent;
@@ -68,14 +66,6 @@ public class Action extends OUICommand implements OUIClientAction {
         _for = (String) state[i++];
         standalone = (Boolean) state[i++];
         disabled = (Boolean) state[i++];
-    }
-
-    public boolean isDisabled() {
-        return ValueBindings.get(this, "disabled", disabled, false);
-    }
-
-    public void setDisabled(boolean disabled) {
-        this.disabled = disabled;
     }
 
     public String getEvent() {

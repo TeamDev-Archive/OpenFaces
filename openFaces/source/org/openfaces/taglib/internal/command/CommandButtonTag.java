@@ -34,7 +34,6 @@ public class CommandButtonTag extends OUICommandTag {
         super.setComponentProperties(context, component);
 
         setStringProperty(component, "value");
-        setBooleanProperty(component, "disabled");
         setStringProperty(component, "type");
         setStringProperty(component, "accesskey");
         setStringProperty(component, "tabindex");
