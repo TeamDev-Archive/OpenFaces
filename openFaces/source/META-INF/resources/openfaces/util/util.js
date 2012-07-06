@@ -1785,7 +1785,7 @@ if (!window.O$) {
   };
 
 
-  O$.createHiddenFocusElement = function(tabIndex, componentId) {
+  O$.createHiddenFocusElement = function(componentId, tabIndex) {
     var focusElementId = componentId + ":::focus";
     var focusElement = O$(focusElementId);
     if (!focusElement) {
@@ -2833,7 +2833,7 @@ if (!window.O$) {
 
     });
 
-    var focusControl = O$.createHiddenFocusElement(tabIndex, component.id);
+    var focusControl = O$.createHiddenFocusElement(component.id, tabIndex);
 
     function fireEvent(object, eventName, param) {
       var handler = object[eventName];
