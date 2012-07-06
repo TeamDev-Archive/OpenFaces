@@ -14,9 +14,11 @@ package org.openfaces.component.util;
 import org.openfaces.component.OUIClientAction;
 import org.openfaces.component.OUIClientActionHelper;
 import org.openfaces.component.OUICommand;
+import org.openfaces.renderkit.ajax.AjaxRenderer;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ComponentSystemEvent;
