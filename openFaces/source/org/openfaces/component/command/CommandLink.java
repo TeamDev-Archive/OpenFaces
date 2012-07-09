@@ -20,7 +20,6 @@ public class CommandLink extends OUICommand {
     public static final String COMPONENT_TYPE = "org.openfaces.CommandLink";
     public static final String COMPONENT_FAMILY = "org.openfaces.CommandLink";
 
-    private Boolean disabled;
     private String accesskey;
     private String tabindex;
     private String lang;
@@ -34,8 +33,6 @@ public class CommandLink extends OUICommand {
     private String shape;
     private String target;
     private String type;
-    private String disabledStyle;
-    private String disabledClass;
 
     public CommandLink() {
         setRendererType("org.openfaces.CommandLinkRenderer");
@@ -49,7 +46,6 @@ public class CommandLink extends OUICommand {
     public Object saveState(FacesContext context) {
         return new Object[]{
                 super.saveState(context),
-                disabled,
                 accesskey,
                 tabindex,
                 lang,
@@ -62,9 +58,7 @@ public class CommandLink extends OUICommand {
                 rev,
                 shape,
                 target,
-                type,
-                disabledStyle,
-                disabledClass
+                type
         };
     }
 
@@ -73,7 +67,6 @@ public class CommandLink extends OUICommand {
         Object[] state = (Object[]) object;
         int i = 0;
         super.restoreState(context, state[i++]);
-        disabled = (Boolean) state[i++];
         accesskey = (String) state[i++];
         tabindex = (String) state[i++];
         lang = (String) state[i++];
@@ -87,8 +80,6 @@ public class CommandLink extends OUICommand {
         shape = (String) state[i++];
         target = (String) state[i++];
         type = (String) state[i++];
-        disabledStyle = (String) state[i++];
-        disabledClass = (String) state[i++];
     }
 
     public String getAccesskey() {
@@ -121,14 +112,6 @@ public class CommandLink extends OUICommand {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public boolean isDisabled() {
-        return ValueBindings.get(this, "disabled", disabled, false);
-    }
-
-    public void setDisabled(boolean disabled) {
-        this.disabled = disabled;
     }
 
     public String getDir() {
@@ -203,19 +186,4 @@ public class CommandLink extends OUICommand {
         this.type = type;
     }
 
-    public String getDisabledStyle() {
-        return ValueBindings.get(this, "disabledStyle", disabledStyle);
-    }
-
-    public void setDisabledStyle(String disabledStyle) {
-        this.disabledStyle = disabledStyle;
-    }
-
-    public String getDisabledClass() {
-        return ValueBindings.get(this, "disabledClass", disabledClass);
-    }
-
-    public void setDisabledClass(String disabledClass) {
-        this.disabledClass = disabledClass;
-    }
 }

@@ -18472,6 +18472,18 @@ on every switch to the tab.-->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>If mirrorTabSetVisible is true then second tabset will
+        be displayed symmetrically to the primary one.
+      </description>
+      <name>mirrorTabSetVisible</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
   </tag>
 
   <tag>
@@ -47849,6 +47861,45 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
   </tag>
+  <tag>
+    <description>Component that can be attached to any block-level HTML element (by its id), and will prevent the
+      attached element from being scrolled away along with the document's content.
+    </description>
+    <name>keepVisible</name>
+    <tag-class>org.openfaces.taglib.jsp.util.KeepVisibleJspTag</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+      <description>Minimal distance between top edge of viewport and top edge of the element.</description>
+      <name>topMargin</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Minimal distance between bottom edge of viewport and bottom edge of the element</description>
+      <name>bottomMargin</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Id of the element to keep it visible.</description>
+      <name>for</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+  </tag>
+
   <!--<tag>-->
     <!--<description>This component is under construction. Displays a box where users may read and write comments. This component works on top of the Disqus-->
       <!--(http://disqus.com) service. You don&apos;t have to provide storage for the comments. You just have to create an-->

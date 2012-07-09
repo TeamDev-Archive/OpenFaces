@@ -44,6 +44,17 @@ public class OUICommandJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("execute", execute);
     }
 
+    public void setDisabled(ValueExpression disabled) {
+        getDelegate().setPropertyValue("disabled", disabled);
+    }
+
+    public void setDisabledStyle(ValueExpression disabledStyle) {
+        getDelegate().setPropertyValue("disabledStyle", disabledStyle);
+    }
+
+    public void setDisabledClass(ValueExpression disabledClass) {
+        getDelegate().setPropertyValue("disabledClass", disabledClass);
+    }
 
     public void setOnajaxstart(ValueExpression onajaxstart) {
         getDelegate().setPropertyValue("onajaxstart", onajaxstart);

@@ -58,7 +58,7 @@ public class TabbedPaneRenderer extends MultiPageContainerRenderer implements Co
             TabbedPane tabbedPane = (TabbedPane) event.getComponent();
 
             List<SubPanel> subPanels = tabbedPane.getSubPanels(true);
-            initInnerTabSet(tabbedPane, tabbedPane.getTabSet(), subPanels);
+            initInnerTabSet(tabbedPane, tabbedPane.getTabSet(), subPanels, false);
         }
     }
 
@@ -88,9 +88,7 @@ public class TabbedPaneRenderer extends MultiPageContainerRenderer implements Co
 
         Rendering.writeStandardEvents(writer, tabbedPane);
 
-        TabPlacement tabPlacement = tabbedPane.getTabPlacement();
-        if (tabPlacement == null)
-            tabPlacement = TabPlacement.TOP;
+        TabPlacement tabPlacement = getTabPlacement(tabbedPane);
 
         boolean horizontalPlacement = TabPlacement.LEFT.equals(tabPlacement) || TabPlacement.RIGHT.equals(tabPlacement);
         boolean paneFirst = TabPlacement.RIGHT.equals(tabPlacement) || TabPlacement.BOTTOM.equals(tabPlacement);
@@ -113,9 +111,18 @@ public class TabbedPaneRenderer extends MultiPageContainerRenderer implements Co
                 tabbedPane, tabbedPane.getRolloverContainerStyle(), StyleGroup.regularStyleGroup(), tabbedPane.getRolloverContainerClass());
 
         if (paneFirst) {
+            if (tabbedPane.isMirrorTabSetVisible()) {
+                encodeTabSet(context, tabbedPane, allSubPanels, true);
+                writer.endElement("td");
+                if (!horizontalPlacement) {
+                    writer.endElement("tr");
+                    writer.startElement("tr", tabbedPane);
+                }
+                writer.startElement("td", tabbedPane);
+            }
             encodePane(context, tabbedPane, allSubPanels, containerClass);
         } else {
-            encodeTabSet(context, tabbedPane, allSubPanels);
+            encodeTabSet(context, tabbedPane, allSubPanels, false);
         }
         writer.endElement("td");
         if (!horizontalPlacement) {
@@ -124,9 +131,19 @@ public class TabbedPaneRenderer extends MultiPageContainerRenderer implements Co
         }
         writer.startElement("td", tabbedPane);
         if (paneFirst) {
-            encodeTabSet(context, tabbedPane, allSubPanels);
+            encodeTabSet(context, tabbedPane, allSubPanels, false);
         } else {
             encodePane(context, tabbedPane, allSubPanels, containerClass);
+            if (tabbedPane.isMirrorTabSetVisible()) {
+                writer.endElement("td");
+                if (!horizontalPlacement) {
+                    writer.endElement("tr");
+                    writer.startElement("tr", tabbedPane);
+                }
+                writer.startElement("td", tabbedPane);
+                encodeTabSet(context, tabbedPane, allSubPanels, true);
+                writer.endElement("td");
+            }
         }
         writer.endElement("td");
         writer.endElement("tr");
@@ -138,6 +155,13 @@ public class TabbedPaneRenderer extends MultiPageContainerRenderer implements Co
         writer.endElement("td");
         writer.endElement("tr");
         writer.endElement("table");
+    }
+
+    private TabPlacement getTabPlacement(TabbedPane tabbedPane) {
+        TabPlacement tabPlacement = tabbedPane.getTabPlacement();
+        if (tabPlacement == null)
+            tabPlacement = TabPlacement.TOP;
+        return tabPlacement;
     }
 
     private void encodeScriptsAndStyles(
@@ -160,7 +184,19 @@ public class TabbedPaneRenderer extends MultiPageContainerRenderer implements Co
                     "0px");
         }
 
-        String defaultBorderClass = DEFAULT_BORDER_CLASS_PREFIX + tabPlacement;
+        String defaultBorderClass;
+        if (tabbedPane.isMirrorTabSetVisible()) {
+            String classSuffix = "";
+            boolean verticalAlignment = tabPlacement.equals(TabPlacement.TOP) || tabPlacement.equals(TabPlacement.BOTTOM);
+            if (verticalAlignment) {
+                classSuffix = TabPlacement.TOP.toString() + "_" + TabPlacement.BOTTOM.toString();
+            } else {
+                classSuffix = TabPlacement.LEFT.toString() + "_" + TabPlacement.RIGHT.toString();
+            }
+            defaultBorderClass = DEFAULT_BORDER_CLASS_PREFIX + classSuffix;
+        } else {
+            defaultBorderClass = DEFAULT_BORDER_CLASS_PREFIX + tabPlacement;
+        }
         String borderClass = Styles.getCSSClass(context, tabbedPane, fullBorderStyle, defaultBorderClass);
 
         LoadingMode loadingMode = tabbedPane.getLoadingMode();
@@ -178,7 +214,8 @@ public class TabbedPaneRenderer extends MultiPageContainerRenderer implements Co
                 loadingMode,
                 tabbedPane.isFocusable(),
                 focusedClass,
-                onselectionchange != null ? new AnonymousFunction(onselectionchange, "event") : null);
+                onselectionchange != null ? new AnonymousFunction(onselectionchange, "event") : null,
+                tabbedPane.isMirrorTabSetVisible() ? TabbedPane.MIRROR_TABSET_SUFFIX : null);
 
         Rendering.renderInitScript(context, sb,
                 Resources.utilJsURL(context),
@@ -188,19 +225,27 @@ public class TabbedPaneRenderer extends MultiPageContainerRenderer implements Co
         Styles.renderStyleClasses(context, tabbedPane);
     }
 
-    private void encodeTabSet(FacesContext context, TabbedPane tabbedPane, List<SubPanel> subPanels) throws IOException {
+    private void encodeTabSet(FacesContext context, TabbedPane tabbedPane, List<SubPanel> subPanels,
+                              boolean isMirrorTabSet)
+            throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        TabPlacement tabPlacement = tabbedPane.getTabPlacement();
+        TabPlacement tabPlacement = getTabPlacement(tabbedPane);
         boolean verticalPlacement = TabPlacement.LEFT.equals(tabPlacement) || TabPlacement.RIGHT.equals(tabPlacement);
         if (verticalPlacement) {
             writeAttribute(writer, "height", "100%");
         }
-        TabSet innerTabSet = tabbedPane.getTabSet();
-        initInnerTabSet(tabbedPane, innerTabSet, subPanels);
+        TabSet innerTabSet;
+        if (isMirrorTabSet) {
+            innerTabSet = tabbedPane.getMirrorTabSet();
+        } else {
+            innerTabSet = tabbedPane.getTabSet();
+        }
+        initInnerTabSet(tabbedPane, innerTabSet, subPanels, isMirrorTabSet);
         innerTabSet.encodeAll(context);
     }
 
-    private void initInnerTabSet(TabbedPane tabbedPane, TabSet innerTabSet, List<SubPanel> subPanels) {
+    private void initInnerTabSet(TabbedPane tabbedPane, TabSet innerTabSet, List<SubPanel> subPanels,
+                                 boolean isMirrorTabSet) {
         List<UIComponent> tabs = new ArrayList<UIComponent>();
         for (SubPanel item : subPanels) {
             UIComponent captionComponent = item.getCaptionFacet();
@@ -226,12 +271,15 @@ public class TabbedPaneRenderer extends MultiPageContainerRenderer implements Co
 
         innerTabSet.setGapWidth(tabbedPane.getTabGapWidth());
 
-        TabPlacement tabPlacement = tabbedPane.getTabPlacement();
+        TabPlacement tabPlacement = getTabPlacement(tabbedPane);
         boolean verticalPlacement = TabPlacement.LEFT.equals(tabPlacement) || TabPlacement.RIGHT.equals(tabPlacement);
         innerTabSet.setStyle(verticalPlacement ? "height: 100%" : "width: 100%");
 
         innerTabSet.setSelectedIndex(getSelectedIndex(tabbedPane, subPanels));
         innerTabSet.setAlignment(tabbedPane.getTabAlignment());
+        if (isMirrorTabSet) {
+            tabPlacement = reversePlacement(tabPlacement);
+        }
         innerTabSet.setPlacement(tabPlacement);
         innerTabSet.setTabStyle(tabbedPane.getTabStyle());
         innerTabSet.setRolloverTabStyle(tabbedPane.getRolloverTabStyle());
@@ -255,4 +303,16 @@ public class TabbedPaneRenderer extends MultiPageContainerRenderer implements Co
         innerTabSet.setFocusAreaClass(tabbedPane.getFocusAreaClass());
     }
 
+    private TabPlacement reversePlacement(TabPlacement tabPlacement) {
+        if (TabPlacement.TOP.equals(tabPlacement)) {
+            tabPlacement = TabPlacement.BOTTOM;
+        } else if (TabPlacement.BOTTOM.equals(tabPlacement)) {
+            tabPlacement = TabPlacement.TOP;
+        } else if (TabPlacement.LEFT.equals(tabPlacement)) {
+            tabPlacement = TabPlacement.RIGHT;
+        } else if (TabPlacement.RIGHT.equals(tabPlacement)) {
+            tabPlacement = TabPlacement.LEFT;
+        }
+        return tabPlacement;
+    }
 }

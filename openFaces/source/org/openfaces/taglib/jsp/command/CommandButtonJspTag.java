@@ -33,10 +33,6 @@ public class CommandButtonJspTag extends OUICommandJspTag {
         getDelegate().setPropertyValue("type", type);
     }
 
-    public void setDisabled(ValueExpression disabled) {
-        getDelegate().setPropertyValue("disabled", disabled); 
-    }
-
     public void setAccesskey(ValueExpression accesskey) {
         getDelegate().setPropertyValue("accesskey", accesskey);
     }
