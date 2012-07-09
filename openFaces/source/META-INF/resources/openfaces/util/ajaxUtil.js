@@ -870,6 +870,13 @@ window.OpenFaces.Ajax = {
       newScript.onreadystatechange = function() {
         if (this.readyState == "complete")
           O$.Ajax.markLibraryLoaded(fileUrl);
+        else if (O$.isExplorer() && this.readyState == "loaded") {
+          // IE for some reason sometimes reports the "loaded" state and skips the "complete" one, so we're processing
+          // this one too (after making a spare timeout just in case)
+          setTimeout(function() {
+            O$.Ajax.markLibraryLoaded(fileUrl);
+          }, 50);
+        }
       };
       var head = document.getElementsByTagName("head")[0];
       head.appendChild(newScript);
