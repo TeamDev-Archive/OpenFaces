@@ -32,7 +32,6 @@ public class CommandLinkTag extends OUICommandTag {
         super.setComponentProperties(facesContext, component);
 
         setStringProperty(component, "value");
-        setBooleanProperty(component, "disabled");
         setStringProperty(component, "accesskey");
         setStringProperty(component, "tabindex");
         setStringProperty(component, "lang");
@@ -46,7 +45,5 @@ public class CommandLinkTag extends OUICommandTag {
         setStringProperty(component, "shape");
         setStringProperty(component, "target");
         setStringProperty(component, "type");
-        setStringProperty(component, "disabledStyle");
-        setStringProperty(component, "disabledClass");
     }
 }

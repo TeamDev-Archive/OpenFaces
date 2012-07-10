@@ -27,7 +27,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 public class CommandLinkRenderer extends OUICommandRenderer {
     @Override
@@ -79,19 +78,6 @@ public class CommandLinkRenderer extends OUICommandRenderer {
 
     private String getTagName(CommandLink link) {
         return "a";
-    }
-
-    @Override
-    public void decode(FacesContext context, UIComponent component) {
-        super.decode(context, component);
-
-        CommandLink link = (CommandLink) component;
-        Map<String,String> requestParameterMap = context.getExternalContext().getRequestParameterMap();
-        String disabledStr = requestParameterMap.get(link.getClientId(context) + "::disabled");
-        if (disabledStr != null) {
-            boolean disabled = Boolean.valueOf(disabledStr);
-            link.setDisabled(disabled);
-        }
     }
 
     @Override

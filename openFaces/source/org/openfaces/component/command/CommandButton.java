@@ -26,7 +26,6 @@ public class CommandButton extends OUICommand {
     public static final String COMPONENT_TYPE = "org.openfaces.CommandButton";
     public static final String COMPONENT_FAMILY = "org.openfaces.CommandButton";
 
-    private Boolean disabled;
     private String type;
     private String accesskey;
     private String tabindex;
@@ -48,7 +47,6 @@ public class CommandButton extends OUICommand {
     public Object saveState(FacesContext context) {
         return new Object[]{
                 super.saveState(context),
-                disabled,
                 type,
                 accesskey,
                 tabindex,
@@ -65,7 +63,6 @@ public class CommandButton extends OUICommand {
         Object[] state = (Object[]) object;
         int i = 0;
         super.restoreState(context, state[i++]);
-        disabled = (Boolean) state[i++];
         type = (String) state[i++];
         accesskey = (String) state[i++];
         tabindex = (String) state[i++];
@@ -122,14 +119,6 @@ public class CommandButton extends OUICommand {
 
     public void setAlt(String alt) {
         this.alt = alt;
-    }
-
-    public boolean isDisabled() {
-        return ValueBindings.get(this, "disabled", disabled, false);
-    }
-
-    public void setDisabled(boolean disabled) {
-        this.disabled = disabled;
     }
 
     public String getDir() {

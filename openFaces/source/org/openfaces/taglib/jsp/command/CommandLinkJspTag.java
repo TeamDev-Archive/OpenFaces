@@ -26,10 +26,6 @@ public class CommandLinkJspTag extends OUICommandJspTag {
         getDelegate().setPropertyValue("value", value);
     }
 
-    public void setDisabled(ValueExpression disabled) {
-        getDelegate().setPropertyValue("disabled", disabled);
-    }
-
     public void setAccesskey(ValueExpression accesskey) {
         getDelegate().setPropertyValue("accesskey", accesskey);
     }
@@ -80,13 +76,5 @@ public class CommandLinkJspTag extends OUICommandJspTag {
 
     public void setType(ValueExpression type) {
         getDelegate().setPropertyValue("type", type);
-    }
-
-    public void setDisabledStyle(ValueExpression disabledStyle) {
-        getDelegate().setPropertyValue("disabledStyle", disabledStyle);
-    }
-
-    public void setDisabledClass(ValueExpression disabledClass) {
-        getDelegate().setPropertyValue("disabledClass", disabledClass);
     }
 }

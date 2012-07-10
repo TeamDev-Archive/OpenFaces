@@ -13,11 +13,9 @@ package org.openfaces.component.util;
 
 import org.openfaces.component.OUIClientAction;
 import org.openfaces.component.OUICommand;
-import org.openfaces.component.OUIComponentBase;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 
 public class Action extends OUICommand implements OUIClientAction {
@@ -44,7 +42,7 @@ public class Action extends OUICommand implements OUIClientAction {
     @Override
     public Object saveState(FacesContext context) {
         return new Object[]{
-            super.saveState(context),
+                super.saveState(context),
                 event,
                 _for,
                 standalone,
@@ -61,14 +59,6 @@ public class Action extends OUICommand implements OUIClientAction {
         _for = (String) state[i++];
         standalone = (Boolean) state[i++];
         disabled = (Boolean) state[i++];
-    }
-
-    public boolean isDisabled() {
-        return ValueBindings.get(this, "disabled", disabled, false);
-    }
-
-    public void setDisabled(boolean disabled) {
-        this.disabled = disabled;
     }
 
     public String getEvent() {
