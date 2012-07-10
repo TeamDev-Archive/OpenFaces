@@ -70,14 +70,6 @@ public class Action extends OUICommand implements OUIClientAction {
         disabled = (Boolean) state[i++];
     }
 
-    public boolean isDisabled() {
-        return ValueBindings.get(this, "disabled", disabled, false);
-    }
-
-    public void setDisabled(boolean disabled) {
-        this.disabled = disabled;
-    }
-
     public String getEvent() {
         return ValueBindings.get(this, "event", this.event, "click");
     }

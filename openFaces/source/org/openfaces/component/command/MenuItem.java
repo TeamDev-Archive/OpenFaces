@@ -15,7 +15,6 @@ import org.openfaces.component.OUICommand;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.context.FacesContext;
-import java.util.Map;
 
 /**
  * @author Vladimir Kurganov
@@ -36,12 +35,8 @@ public class MenuItem extends OUICommand {
     private String selectedSubmenuImageUrl;
     private String selectedDisabledSubmenuImageUrl;
 
-    private Boolean disabled;
-
     private String selectedStyle;
     private String selectedClass;
-    private String disabledStyle;
-    private String disabledClass;
 
     private String contentAreaStyle;
     private String contentAreaClass;
@@ -143,30 +138,6 @@ public class MenuItem extends OUICommand {
         this.selectedSubmenuImageUrl = selectedSubmenuImageUrl;
     }
 
-    public boolean isDisabled() {
-        return ValueBindings.get(this, "disabled", disabled, false);
-    }
-
-    public void setDisabled(boolean disabled) {
-        this.disabled = disabled;
-    }
-
-    public String getDisabledClass() {
-        return ValueBindings.get(this, "disabledClass", disabledClass);
-    }
-
-    public void setDisabledClass(String disabledClass) {
-        this.disabledClass = disabledClass;
-    }
-
-    public String getDisabledStyle() {
-        return ValueBindings.get(this, "disabledStyle", disabledStyle);
-    }
-
-    public void setDisabledStyle(String disabledStyle) {
-        this.disabledStyle = disabledStyle;
-    }
-
     public String getIndentAreaStyle() {
         return ValueBindings.get(this, "indentAreaStyle", indentAreaStyle);
     }
@@ -243,7 +214,6 @@ public class MenuItem extends OUICommand {
                 selectedSubmenuImageUrl,
                 selectedDisabledSubmenuImageUrl,
 
-                disabled,
                 disabledIconUrl,
                 selectedIconUrl,
                 selectedDisabledIconUrl,
@@ -252,8 +222,6 @@ public class MenuItem extends OUICommand {
                 selectedClass,
                 contentAreaStyle,
                 contentAreaClass,
-                disabledStyle,
-                disabledClass,
                 indentAreaStyle,
                 indentAreaClass,
                 submenuIconAreaStyle,
@@ -274,7 +242,6 @@ public class MenuItem extends OUICommand {
         selectedSubmenuImageUrl = (String) values[i++];
         selectedDisabledSubmenuImageUrl = (String) values[i++];
 
-        disabled = (Boolean) values[i++];
         disabledIconUrl = (String) values[i++];
         selectedIconUrl = (String) values[i++];
         selectedDisabledIconUrl = (String) values[i++];
@@ -283,24 +250,10 @@ public class MenuItem extends OUICommand {
         selectedClass = (String) values[i++];
         contentAreaStyle = (String) values[i++];
         contentAreaClass = (String) values[i++];
-        disabledStyle = (String) values[i++];
-        disabledClass = (String) values[i++];
         indentAreaStyle = (String) values[i++];
         indentAreaClass = (String) values[i++];
         submenuIconAreaStyle = (String) values[i++];
         submenuIconAreaClass = (String) values[i++];
-    }
-
-    @Override
-    public void decode(FacesContext context) {
-        super.decode(context);
-        Map<String,String> requestParameterMap = context.getExternalContext().getRequestParameterMap();
-        String clientId = getClientId(context);
-        String disabledStr = requestParameterMap.get(clientId + "::disabled");
-        if (disabledStr != null) {
-            boolean disabled = Boolean.valueOf(disabledStr);
-            setDisabled(disabled);
-        }
     }
 
 }

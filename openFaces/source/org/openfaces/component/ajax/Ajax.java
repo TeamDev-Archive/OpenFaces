@@ -49,8 +49,6 @@ public class Ajax extends OUICommand implements OUIClientAction {
     private String onajaxend;
     private String onerror;
 
-    private Boolean disabled;
-
     public Ajax() {
         setRendererType("org.openfaces.AjaxRenderer");
     }
@@ -171,14 +169,6 @@ public class Ajax extends OUICommand implements OUIClientAction {
         this.onerror = onerror;
     }
 
-    public boolean isDisabled() {
-        return ValueBindings.get(this, "disabled", disabled, false);
-    }
-
-    public void setDisabled(boolean disabled) {
-        this.disabled = disabled;
-    }
-
     @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
@@ -188,7 +178,6 @@ public class Ajax extends OUICommand implements OUIClientAction {
                 event,
                 _for,
                 standalone,
-                disabled,
                 submitInvoker,
                 onevent,
                 onerror,
@@ -205,7 +194,6 @@ public class Ajax extends OUICommand implements OUIClientAction {
         event = (String) state[i++];
         _for = (String) state[i++];
         standalone = (Boolean) state[i++];
-        disabled = (Boolean) state[i++];
         submitInvoker = (Boolean) state[i++];
         onevent = (String) state[i++];
         onerror = (String) state[i++];

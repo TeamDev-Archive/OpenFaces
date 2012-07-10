@@ -13,6 +13,7 @@ package org.openfaces.component;
 
 import org.openfaces.util.ValueBindings;
 
+import javax.faces.FacesException;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UICommand;
@@ -22,6 +23,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Dmitry Pikhulya
@@ -61,6 +63,9 @@ public abstract class OUICommand extends UICommand implements OUIComponent, Clie
     private String onerror;
     private String onsuccess;
     private Integer delay;
+    private Boolean disabled;
+    private String disabledStyle;
+    private String disabledClass;
 
     @Override
     public Object saveState(FacesContext context) {
@@ -68,6 +73,9 @@ public abstract class OUICommand extends UICommand implements OUIComponent, Clie
         return new Object[]{superState,
                 saveAttachedState(context, execute),
                 saveAttachedState(context, render),
+                disabled,
+                disabledStyle,
+                disabledClass,
                 style, styleClass, rolloverStyle, rolloverClass, onclick, ondblclick, onmousedown, onmouseover,
                 onmousemove, onmouseout, onmouseup, onfocus, onblur, onkeydown, onkeyup, onkeypress, oncontextmenu,
                 onajaxstart, onajaxend, onerror, onsuccess, delay};
@@ -82,6 +90,9 @@ public abstract class OUICommand extends UICommand implements OUIComponent, Clie
         super.restoreState(context, state[i++]);
         execute = (Iterable<String>) restoreAttachedState(context, state[i++]);
         render = (Iterable<String>) restoreAttachedState(context, state[i++]);
+        disabled = (Boolean) state[i++];
+        disabledStyle = (String) state[i++];
+        disabledClass = (String) state[i++];
         style = (String) state[i++];
         styleClass = (String) state[i++];
         rolloverStyle = (String) state[i++];
@@ -308,4 +319,58 @@ public abstract class OUICommand extends UICommand implements OUIComponent, Clie
     public void setDelay(Integer delay) {
         this.delay = delay;
     }
+
+    public boolean isDisabled() {
+        return ValueBindings.get(this, "disabled", disabled, false);
+    }
+
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
+    }
+
+    public String getDisabledStyle() {
+        return ValueBindings.get(this, "disabledStyle", disabledStyle);
+    }
+
+    public void setDisabledStyle(String disabledStyle) {
+        this.disabledStyle = disabledStyle;
+    }
+
+    public String getDisabledClass() {
+        return ValueBindings.get(this, "disabledClass", disabledClass);
+    }
+
+    public void setDisabledClass(String disabledClass) {
+        this.disabledClass = disabledClass;
+    }
+
+    @Override
+    public void decode(FacesContext context) {
+        super.decode(context);
+        decodeDisabledStateIfNeeded(context);
+    }
+
+    private void decodeDisabledStateIfNeeded(FacesContext context) {
+        Map<String,String> requestParameterMap = context.getExternalContext().getRequestParameterMap();
+        String clientId = getClientId(context);
+        Object decodeDisabledStateObj = getAttributes().get("decodeDisabledState");
+        if (decodeDisabledStateObj != null) {
+            boolean decodeDisabledState;
+            if (decodeDisabledStateObj instanceof String)
+                decodeDisabledState = Boolean.valueOf((String) decodeDisabledStateObj);
+            else if (decodeDisabledStateObj instanceof Boolean)
+                decodeDisabledState = (Boolean) decodeDisabledStateObj;
+            else
+                throw new FacesException("decodeDisabledState should be of a boolean type, " +
+                        "but it is of the following type: " + decodeDisabledStateObj.getClass().getName());
+            if (decodeDisabledState) {
+                String disabledStr = requestParameterMap.get(clientId + "::disabled");
+                if (disabledStr != null) {
+                    boolean disabled = Boolean.valueOf(disabledStr);
+                    setDisabled(disabled);
+                }
+            }
+        }
+    }
+
 }
