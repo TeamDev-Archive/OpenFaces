@@ -442,9 +442,9 @@ O$.DropDownField = {
             }
           }
 
-          if (dropDown.client_onchange) {
+          if (dropDown.onchange_adapted) {
             var event = O$.createEvent("change");
-            var returnedValue = dropDown.client_onchange(event);
+            var returnedValue = dropDown.onchange_adapted(event);
             if (returnedValue == undefined)
               returnedValue = event.returnValue;
             return returnedValue;
@@ -1110,8 +1110,8 @@ O$.DropDownField = {
     } else {
       if (!dropDownOpened && keyCode == 13)
         dropDown._selectCurrentValue();
-      if (dropDown.client_onkeypress)
-        return dropDown.client_onkeypress(evt);
+      if (dropDown.onkeypress_adapted)
+        return dropDown.onkeypress_adapted(evt);
     }
 
     if (needCancelBubble) {
