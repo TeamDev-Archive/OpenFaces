@@ -176,7 +176,7 @@ public class SelectManyCheckboxRenderer extends SelectManyInputRenderer {
             }
         }
         if (rows != null && columns != null) {
-            throw new FacesException("'rows' and 'columns' attributes are set together.");
+            throw new FacesException("The 'rows' and 'columns' attributes cannot be set together.");
         }
         List<List<SelectItem>> itemsDistribution = new ArrayList<List<SelectItem>>();
         if (columns != null) {
