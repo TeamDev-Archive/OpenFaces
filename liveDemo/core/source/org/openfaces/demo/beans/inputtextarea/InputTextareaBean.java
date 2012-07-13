@@ -12,7 +12,7 @@
 
 package org.openfaces.demo.beans.inputtextarea;
 
-import javax.faces.event.ActionEvent;
+import javax.faces.event.AjaxBehaviorEvent;
 
 public class InputTextareaBean {
 
@@ -35,7 +35,7 @@ public class InputTextareaBean {
         this.feedback = feedback;
     }
 
-    public void send(ActionEvent actionEvent) {
+    public void send(AjaxBehaviorEvent actionEvent) {
         if (feedback != null && !"".equals(feedback)) {
             this.successfullySent = true;
         }
