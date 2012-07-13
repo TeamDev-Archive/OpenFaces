@@ -35,7 +35,6 @@
           Plant:
         </td>
         <td>
-          <o:commandButton value="reload" execute="@all" render="plants" />
           <o:dropDownField id="plants"
                            suggestionMode="custom"
                            autoComplete="true"
@@ -45,16 +44,6 @@
                            preloadedItemCount="50"
                            totalItemCount="#{DropDownAjaxBean.totalPlants}"
                            pageSize="100">
-            <o:dropDownItems value="#{DropDownAjaxBean.suggestedPlants}"/>
-          </o:dropDownField>
-
-          <o:dropDownField id="plants2"
-                           suggestionMode="custom"
-                           customValueAllowed="false"
-                           value="#{DropDownAjaxBean.selectedPlant}"
-                           totalItemCount="#{DropDownAjaxBean.totalPlants}"
-                           cachingAllowed="false"
-                           pageSize="-1">
             <o:dropDownItems value="#{DropDownAjaxBean.suggestedPlants}"/>
           </o:dropDownField>
         </td>

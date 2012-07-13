@@ -211,7 +211,6 @@ public class DropDownAjaxBean {
     }
 
     public void setSelectedPlant(String selectedPlant) {
-        System.out.println("selectedPlant = [" + selectedPlant + "]");
         this.selectedPlant = selectedPlant;
     }
 
