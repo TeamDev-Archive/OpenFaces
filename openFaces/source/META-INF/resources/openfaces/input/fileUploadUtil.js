@@ -250,7 +250,7 @@ O$.FileUploadUtil = {
         evt.preventDefault();
       },
       _sendCheckRequest:function (sendDataToEvent) {
-        O$.requestComponentPortions(fileUpload.id, ["nothing"],
+        O$.Ajax.requestComponentPortions(fileUpload.id, ["nothing"],
                 JSON.stringify({listOfFilesRequest:"true", idOfFiles:fileUpload._listOfids}),
                 function (fileUpload, portionName, portionHTML, portionScripts, portionData) {
                   if (portionData['allUploaded'] == "true") {
@@ -658,7 +658,7 @@ O$.FileUploadUtil = {
       },
       _renderAfterUploadEnd : function() {
         if (fileUpload._render) {
-          O$._ajaxReload(fileUpload._render, {"executeRenderedComponents":true,"immediate":false});
+          O$.Ajax._reload(fileUpload._render, {"executeRenderedComponents":true,"immediate":false});
         }
       },
       _transformStatusToFormatted:function(statusText) {
