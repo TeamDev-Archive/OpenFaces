@@ -390,11 +390,11 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
 
             String onchange = Rendering.getChangeHandlerScript(dropDownField);
             if (onchange != null)
-                eventHandlers.put("client_onchange", new AnonymousFunction(new RawScript(onchange), "event"));
+                eventHandlers.put("onchange_adapted", new AnonymousFunction(new RawScript(onchange), "event"));
 
             String onkeypress = Rendering.getEventHandlerScript(dropDownField, "keypress");
             if (onkeypress != null)
-                eventHandlers.put("client_onkeypress", new AnonymousFunction(new RawScript(onkeypress), "event"));
+                eventHandlers.put("onkeypress_adapted", new AnonymousFunction(new RawScript(onkeypress), "event"));
 
             String ondropdown = Rendering.getEventHandlerScript(dropDownField, "dropdown");
             if (ondropdown != null)
