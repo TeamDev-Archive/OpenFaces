@@ -16,7 +16,8 @@ O$.TabbedPane = {
                   onselectionchange, mirrorTabSetSuffix) {
     var tabbedPane = O$.initComponent(clientId, null, {
       _tabSet: O$(clientId + "--tabSet"),
-      _mirrorTabSet:(mirrorTabSetSuffix) ? O$(clientId + "--tabSet" + mirrorTabSetSuffix) : null
+      _mirrorTabSet:(mirrorTabSetSuffix) ? O$(clientId + "--tabSet" + mirrorTabSetSuffix) : null,
+      tabOnChangeHandlerMutex: false
     });
 
     // This allow server to use only _indexField of original TabSet.
@@ -35,30 +36,33 @@ O$.TabbedPane = {
 
       setSelectedIndex: function(index) {
         tabbedPane._tabSet.setSelectedIndex(index);
-        if (tabbedPane._mirrorTabSet)
-          tabbedPane._mirrorTabSet.setSelectedIndex(index);
       }
 
     });
 
-    function onChangeHandler(secondTabSet) {
-       return function (evt) {
-         var tabbedPane = this._tabbedPane;
-         if (tabbedPane.onselectionchange) {
-           if (tabbedPane.onselectionchange(evt) === false || evt.returnValue === false)
-             return false;
-         }
-         tabbedPane.doSetSelectedIndex(evt._absoluteIndex);
-         if (secondTabSet) {
-           secondTabSet.setSelectedIndex(evt._absoluteIndex, true);
-           secondTabSet._refreshTabs();
-         }
-       }
+    function tabOnChangeHandler(secondTabSet) {
+      return function (evt) {
+        var tabbedPane = this._tabbedPane;
+        if (tabbedPane.tabOnChangeHandlerMutex) {
+          return;
+        } else {
+          tabbedPane.tabOnChangeHandlerMutex = true;
+        }
+        if (tabbedPane.onselectionchange) {
+          if (tabbedPane.onselectionchange(evt) === false || evt.returnValue === false)
+            return false;
+        }
+        tabbedPane.doSetSelectedIndex(evt._absoluteIndex);
+        if (secondTabSet) {
+          secondTabSet.setSelectedIndex(evt._absoluteIndex, true);
+        }
+        tabbedPane.tabOnChangeHandlerMutex = false;
+      }
     }
 
-    tabbedPane._tabSet.onchange = onChangeHandler(tabbedPane._mirrorTabSet);
+    tabbedPane._tabSet.onchange = tabOnChangeHandler(tabbedPane._mirrorTabSet);
     if (tabbedPane._mirrorTabSet)
-      tabbedPane._mirrorTabSet.onchange = onChangeHandler(tabbedPane._tabSet);
+      tabbedPane._mirrorTabSet.onchange = tabOnChangeHandler(tabbedPane._tabSet);
 
     tabbedPane._tabSet._tabbedPane = tabbedPane;
     if (tabbedPane._mirrorTabSet)
