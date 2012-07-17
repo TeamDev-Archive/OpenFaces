@@ -18,7 +18,7 @@
     <commons-el-version>1.0</commons-el-version>
     <commons-lang-version>2.1</commons-lang-version>
     <commons-logging-version>1.1.1</commons-logging-version>
-    <jsf-version>2.1.10</jsf-version>
+    <jsf-version>2.1.11</jsf-version>
     <jstl-version>1.1.0</jstl-version>
     <richfaces-version>4.0.0.Final</richfaces-version>
     <standard-version>1.1.2</standard-version>
