@@ -175,7 +175,7 @@ O$.DropDownField = {
         return dropDown._filterCriterion;
       },
 
-      _checkAdditionalPageNeeded: function(forceReload) {
+      _checkAdditionalPageNeeded: function(forceReload, loadFullList) {
         if (suggestionMode != "custom" || (dropDown._cachingAllowed && dropDown._filterCriterion)) return;
         var itemsLoaded = forceReload ? 0 : dropDown._items.length;
         if (totalItemCount != -1) {
@@ -198,7 +198,7 @@ O$.DropDownField = {
         if (pageSize != -1 && rowCount > pageSize)
           rowCount = pageSize;
         O$.requestComponentPortions(dropDownId,
-                ["filterCriterion:" + ((text != null) ? "[" + text + "]" : "null")],
+                ["filterCriterion:" + ((text != null && !loadFullList) ? "[" + text + "]" : "null")],
                 "{pageStart: " + itemsLoaded + ", pageSize: " + rowCount + ", forceReload:" + (forceReload === true) + "}",
                 O$.DropDownField._filteredItemsLoaded);
       },
@@ -296,11 +296,11 @@ O$.DropDownField = {
                 break;
               }
             }
-          }
-          dropDown._setValue(text, itemValue, true);
-          if (continuationLength) {
-            textLength = text.length;
-            O$._selectTextRange(field, textLength - continuationLength, textLength);
+            dropDown._setValue(text, itemValue, true);
+            if (continuationLength) {
+              textLength = text.length;
+              O$._selectTextRange(field, textLength - continuationLength, textLength);
+            }
           }
         } else {
           textLength = field.value.length;
@@ -639,7 +639,7 @@ O$.DropDownField = {
           dropDown.dropDown();
           if (!dropDown._cachingAllowed)
             dropDown._clearSuggestions();
-          dropDown._checkAdditionalPageNeeded(!dropDown._cachingAllowed);
+          dropDown._checkAdditionalPageNeeded(!dropDown._cachingAllowed, true);
         }
 
         // reacquire focus when pressing the dropper button
@@ -1156,7 +1156,7 @@ O$.DropDownField = {
         popup._prepareForRearrangementBeforeShowing();
         O$.DropDown._initPopup(dropDown);
         O$.correctElementZIndex(popup, dropDown);
-        dropDown._checkAdditionalPageNeeded();
+        dropDown._checkAdditionalPageNeeded(null,true);
         popup.show();
         O$.cancelEvent(e);
       } else {
@@ -1276,7 +1276,7 @@ O$.DropDownField = {
       filterCriterion = filterCriterionStr.substring(1, filterCriterionStr.length - 1);
     }
 
-    var cacheOnly = dropDownField._field.value != (filterCriterion || "");
+    var cacheOnly = !(filterCriterion == null ||  dropDownField._field.value == (filterCriterion || ""));
 
     var tempDiv = document.createElement("div");
     tempDiv.style.display = "none";
@@ -1311,6 +1311,8 @@ O$.DropDownField = {
         if (prevSuggestionCount == 0)
           appendItems = false;
         dropDownField._showCachedSuggestions(filterCriterion, undefined, true, appendItems ? newRows.length : undefined);
+        dropDownField._highlightSelectedItem();
+        dropDownField._scrollToHighlightedItem();
       };
       O$.executeScripts(portionScripts);
     } finally {
