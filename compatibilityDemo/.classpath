@@ -19,7 +19,7 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/Libs/mojarra/javax.faces-2.1.11.jar">
+	<classpathentry kind="lib" path="/Libs/mojarra/javax.faces-2.1.10.jar">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
