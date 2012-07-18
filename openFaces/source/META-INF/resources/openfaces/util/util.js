@@ -1957,20 +1957,24 @@ if (!window.O$) {
       var focused = false;
       if (componentId) {
         var c = O$(componentId);
-        if (c && !O$.isControlFocusable(c))
-          c = O$.getFirstFocusableControl(c);
-        if (c && c.focus) {
-          try {
-            c.focus();
-            var rect = O$.getElementBorderRectangle(c);
-            O$.scrollRectIntoView(rect);
-
-            if (c.nodeName.toLowerCase() == "input" && c.type == "text")
-              O$._setCaretPosition(c, c.value.length);
-          } catch (ex) {
-          }
-          O$._activeElement = c;
+        if (O$._activeElement && O$._activeElement == c){
           focused = true;
+        } else {
+          if (c && !O$.isControlFocusable(c))
+            c = O$.getFirstFocusableControl(c);
+          if (c && c.focus) {
+            try {
+              c.focus();
+              var rect = O$.getElementBorderRectangle(c);
+              O$.scrollRectIntoView(rect);
+
+              if (c.nodeName.toLowerCase() == "input" && c.type == "text")
+                O$._setCaretPosition(c, c.value.length);
+            } catch (ex) {
+            }
+            O$._activeElement = c;
+            focused = true;
+          }
         }
       }
       if (!focused && O$._activeElement && O$._activeElement.blur) {
