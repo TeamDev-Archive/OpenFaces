@@ -1153,8 +1153,11 @@ O$.DropDownField = {
       if (!dropDown.isOpened()) {
         if (!dropDown._manualListOpeningAllowed || dropDown._disabled)
           return true;
-        dropDown.dropDown();
-        dropDown._checkAdditionalPageNeeded(!dropDown._cachingAllowed,true);
+        popup._prepareForRearrangementBeforeShowing();
+        O$.DropDown._initPopup(dropDown);
+        O$.correctElementZIndex(popup, dropDown);
+        dropDown._checkAdditionalPageNeeded(null,true);
+        popup.show();
         O$.cancelEvent(e);
       } else {
         // Change selected index

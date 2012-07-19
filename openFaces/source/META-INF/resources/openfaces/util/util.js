@@ -1964,24 +1964,20 @@ if (!window.O$) {
       var focused = false;
       if (componentId) {
         var c = O$(componentId);
-        if (O$._activeElement && O$._activeElement == c){
-          focused = true;
-        } else {
-          if (c && !O$.isControlFocusable(c))
-            c = O$.getFirstFocusableControl(c);
-          if (c && c.focus) {
-            try {
-              c.focus();
-              var rect = O$.getElementBorderRectangle(c);
-              O$.scrollRectIntoView(rect);
+        if (c && !O$.isControlFocusable(c))
+          c = O$.getFirstFocusableControl(c);
+        if (c && c.focus) {
+          try {
+            c.focus();
+            var rect = O$.getElementBorderRectangle(c);
+            O$.scrollRectIntoView(rect);
 
-              if (c.nodeName.toLowerCase() == "input" && c.type == "text")
-                O$._setCaretPosition(c, c.value.length);
-            } catch (ex) {
-            }
-            O$._activeElement = c;
-            focused = true;
+            if (c.nodeName.toLowerCase() == "input" && c.type == "text")
+              O$._setCaretPosition(c, c.value.length);
+          } catch (ex) {
           }
+          O$._activeElement = c;
+          focused = true;
         }
       }
       if (!focused && O$._activeElement && O$._activeElement.blur) {
@@ -2008,10 +2004,13 @@ if (!window.O$) {
     O$.addLoadEvent(setupFocus);
     O$.addLoadEvent(function() {
       if (O$.Ajax) {
-        OpenFaces.Ajax.setCommonAjaxEventHandler("onajaxend" , function(e) {
+        var prevAjaxEnd = O$.Ajax.onajaxend;
+        O$.Ajax.onajaxend = function(e) {
+          if (prevAjaxEnd)
+            prevAjaxEnd.call(this, e);
           O$._autoSavingFocusInitialized = false;
           setTimeout(setupFocus, 1);
-        });
+        };
       }
     });
   };

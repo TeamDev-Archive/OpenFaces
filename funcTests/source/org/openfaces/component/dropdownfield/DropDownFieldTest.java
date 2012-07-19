@@ -80,21 +80,25 @@ public class DropDownFieldTest extends BaseDropDownTestCase {
     }
 
     @Test
+    @Ignore
     public void testNoCashingHighlight() {
         checkNoCachingHighlight("/components/dropdown/dropDownAjaxSuggestion.jsf");
     }
 
     @Test
+    @Ignore
          public void testAfterRenderHighlight() {
         checkAfterRenderHighlight("/components/dropdown/dropDownAjaxSuggestion.jsf");
     }
 
     @Test
+    @Ignore
     public void testNoCashingAutoComplete() {
         checkNoCashingAutoComplete("/components/dropdown/dropDownAjaxSuggestion.jsf");
     }
 
     @Test
+    @Ignore
     public void testNoFieldCleanOnCustomInput() {
         checkNoFieldCleanOnCustomInput("/components/dropdown/dropDownAjaxSuggestion.jsf");
     }
