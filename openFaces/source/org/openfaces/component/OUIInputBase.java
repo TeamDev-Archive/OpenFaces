@@ -287,8 +287,8 @@ public class OUIInputBase extends UIInput implements OUIInput {
 
     @Override
     public void decode(FacesContext context) {
-        super.decode(context);
         decodeDisabledStateIfNeeded(context);
+        super.decode(context);
     }
 
     private void decodeDisabledStateIfNeeded(FacesContext context) {
