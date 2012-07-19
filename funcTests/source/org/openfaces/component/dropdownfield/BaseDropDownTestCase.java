@@ -396,4 +396,54 @@ public abstract class BaseDropDownTestCase extends OpenFacesTestCase {
         asTagOutput.assertText("true");
     }
 
+    protected void checkNoCachingHighlight(String pageUrl){
+        testAppFunctionalPage(pageUrl);
+        DropDownFieldInspector dropdown = dropDownField("formID:plantsNoCaching");
+        dropdown.field().keyDown(KeyEvent.VK_DOWN);
+        OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
+        dropdown.popup().items().get(1).click();
+        dropdown.field().keyDown(KeyEvent.VK_DOWN);
+        OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
+        dropdown.popup().items().get(1).assertStyle("background-color: black;");
+    }
+
+    protected void checkAfterRenderHighlight(String pageUrl){
+        testAppFunctionalPage(pageUrl);
+        DropDownFieldInspector dropdown = dropDownField("formID:plantsAfterRender");
+        dropdown.field().keyDown(KeyEvent.VK_DOWN);
+        OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
+        dropdown.popup().items().get(1).click();
+        element("formID:renderPlants").click();
+        OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
+        dropdown.field().keyDown(KeyEvent.VK_DOWN);
+        OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
+        dropdown.popup().items().get(1).assertStyle("background-color: black;");
+    }
+
+    protected void checkNoCashingAutoComplete(String pageUrl){
+        testAppFunctionalPage(pageUrl);
+        DropDownFieldInspector dropdown = dropDownField("formID:plantsNoCaching");
+        dropdown.field().setCursorPosition(0);
+        dropdown.field().keyPress('a');
+        OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
+        dropdown.field().keyPress('b');
+        OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
+        element("formID:selectedRangeSize").assertText("5");
+    }
+
+    protected void checkNoFieldCleanOnCustomInput(String pageUrl){
+        testAppFunctionalPage(pageUrl);
+        DropDownFieldInspector dropdown = dropDownField("formID:plantsCustomValue");
+        dropdown.field().setCursorPosition(0);
+        dropdown.field().keyPress('a');
+        OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
+        dropdown.field().keyPress('a');
+        OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
+        dropdown.field().keyPress('a');
+        OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
+        dropdown.field().keyDown(KeyEvent.VK_ESCAPE);
+        dropdown.field().keyDown(KeyEvent.VK_DOWN);
+        OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
+        dropdown.field().assertValue("aaa");
+    }
 }
