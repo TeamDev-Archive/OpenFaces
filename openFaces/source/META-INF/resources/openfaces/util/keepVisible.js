@@ -14,14 +14,15 @@ O$.KeepVisible = {
     O$.addEventHandler(window, "load", function () {
       var element = O$(elementId);
       if (!element) throw "There are no element with id '" + elementId + "'";
-      O$.KeepVisible._extractElement(element);
-      var keepVisible = O$.KeepVisible._initComponent(elementId, topMargin, bottomMargin);
+      var initialPosition = O$.KeepVisible._getInitialPosition(element);
+      O$.KeepVisible._prepareElement(element);
+      var keepVisible = O$.KeepVisible._initComponent(elementId, topMargin, bottomMargin, initialPosition);
       keepVisible._setEvents();
       keepVisible._handleScroll();
     });
   },
 
-  _initComponent:function (elementId, topMargin, bottomMargin) {
+  _initComponent:function (elementId, topMargin, bottomMargin, initialPosition) {
     var component = O$.initComponent(elementId, null, {
       _elementId:elementId,
       _topMargin:topMargin,
@@ -29,6 +30,10 @@ O$.KeepVisible = {
       _numericTopMargin:O$.calculateNumericCSSValue(topMargin),
       _numericBottomMargin:O$.calculateNumericCSSValue(bottomMargin),
 
+      _initialAbsoluteX:initialPosition.initialAbsoluteX,
+      _initialAbsoluteY:initialPosition.initialAbsoluteY,
+      _initialRelativeX:initialPosition.initialRelativeX,
+      _initialRelativeY:initialPosition.initialRelativeY,
 
       _handleScroll:function () {
         if (!component._marginsAreCorrect()) return;
@@ -67,7 +72,7 @@ O$.KeepVisible = {
           component._makeElementFixed(element, topMargin);
         } else {
           if (element.style.position == 'fixed') {
-            component._makeElementAbsolute(element, component._lastPosition);
+            component._makeElementAbsolute(element);
           }
         }
       },
@@ -84,7 +89,7 @@ O$.KeepVisible = {
           component._makeElementFixed(element, bottomLimit - elementHeight - scrollingOffset);
         } else {
           if (element.style.position == 'fixed') {
-            component._makeElementAbsolute(element, component._lastPosition);
+            component._makeElementAbsolute(element);
           }
         }
       },
@@ -92,18 +97,20 @@ O$.KeepVisible = {
         if (!element || yCoordinate == null) return;
 
         if (O$.isQuirksMode() && O$.isExplorer() || O$.isExplorer7() || O$.isExplorer6()) {
-          element.style.position = 'absolute';
-          element.style.top = (yCoordinate + O$.getPageScrollPos().y) + "px";
+          element.style.top = (component._initialRelativeY + yCoordinate +
+                  (O$.getPageScrollPos().y - component._initialAbsoluteY)) + "px";
         } else {
           element.style.position = 'fixed';
           element.style.top = yCoordinate + "px";
+          element.style.left = component._initialAbsoluteX + "px";
         }
       },
 
-      _makeElementAbsolute:function (element, yCoordinate) {
-        if (!element || yCoordinate == null) return;
+      _makeElementAbsolute:function (element) {
+        if (!element == null) return;
         element.style.position = 'absolute';
-        element.style.top = yCoordinate + "px";
+        element.style.top = component._initialRelativeY + "px";
+        element.style.left = component._initialRelativeX + "px";
       },
 
       _setEvents:function () {
@@ -119,17 +126,23 @@ O$.KeepVisible = {
     return component;
   },
 
-  _extractElement:function (element) {
-    var x = O$.getElementPos(element).x;
-    var y = O$.getElementPos(element).y;
+  _prepareElement:function (element) {
     O$.correctElementZIndex(element, element.parentNode);
     element.style.position = 'absolute';
-    element.style.top = y + "px";
-    element.style.left = x + "px";
+    element.style.top = O$.getElementPos(element, true).y + "px";
+    element.style.left = O$.getElementPos(element, true).x + "px";
     element.style.right = '';
     element.style.bottom = '';
     element.style.marginTop = '';
     element.style.marginBottom = '';
-    document.body.appendChild(element);
+  },
+
+  _getInitialPosition: function(element) {
+    return {
+      initialRelativeX: O$.getElementPos(element, true).x,
+      initialRelativeY: O$.getElementPos(element, true).y,
+      initialAbsoluteX: O$.getElementPos(element).x,
+      initialAbsoluteY: O$.getElementPos(element).y
+    };
   }
 };
