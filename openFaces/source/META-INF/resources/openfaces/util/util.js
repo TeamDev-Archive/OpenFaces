@@ -2008,13 +2008,10 @@ if (!window.O$) {
     O$.addLoadEvent(setupFocus);
     O$.addLoadEvent(function() {
       if (O$.Ajax) {
-        var prevAjaxEnd = O$.Ajax.onajaxend;
-        O$.Ajax.onajaxend = function(e) {
-          if (prevAjaxEnd)
-            prevAjaxEnd.call(this, e);
+        OpenFaces.Ajax.setCommonAjaxEventHandler("onajaxend" , function(e) {
           O$._autoSavingFocusInitialized = false;
           setTimeout(setupFocus, 1);
-        };
+        });
       }
     });
   };
