@@ -3109,6 +3109,17 @@ if (!window.O$) {
     return className;
   };
 
+  O$.findStyleSheet = function (hrefFragment) {
+    var styleSheets = document.styleSheets;
+    if (!styleSheets)
+      return undefined;
+    for (var sheetIndex = 0; sheetIndex < styleSheets.length; sheetIndex++) {
+      if (styleSheets[sheetIndex].href && styleSheets[sheetIndex].href.indexOf(hrefFragment) != -1)
+        return styleSheets[sheetIndex];
+    }
+    return null;
+  };
+
   O$.findCssRule = function(selector) {
     var rules = O$.findCssRules([selector]);
     if (rules === undefined)
@@ -5031,7 +5042,7 @@ if (!window.O$) {
     if (O$._defaultCssPresenceChecked) return;
     O$._defaultCssPresenceChecked = true;
     O$.addLoadEvent(function() {
-      if (!O$.findCssRule(".o_default_css_marker"))
+      if (!O$.findStyleSheet("default.css"))
         O$.logError("OpenFaces default.css file is not loaded. Did you use <head> tag instead of <h:head> tag?");
     });
   };
@@ -5047,11 +5058,42 @@ if (!window.O$) {
     delete Number.prototype.toJSON;
   };
 
+  /**
+   * Fixes the wrong position(priority) of default.css after updating mojara version to 2.0.5 or above.
+   * http://requests.openfaces.org/browse/OF-163
+   */
+  O$._lowerPriorityOfDefaultCss = function () {
+    var styleSheets = document.styleSheets;
+    if (!styleSheets)
+      return;
+    var firstCss = styleSheets[0];
+    var defaultCss = O$.findStyleSheet("default.css");
+    if (!defaultCss)
+      return;
+    if (document.createStyleSheet) {
+      document.createStyleSheet(defaultCss.href, 0);
+      domElements = document.getElementsByTagName("link");
+      for (var elementIndex = 0; elementIndex < domElements.length; elementIndex++) {
+        if (domElements[elementIndex].href.indexOf("default.css") > 0) {
+          firstDefaultCSSLink = domElements[elementIndex];
+          break;
+        }
+      }
+      firstDefaultCSSLink.onreadystatechange = function () {
+        if (this.readyState == "complete" || this.readyState == "loaded") {
+          defaultCss.cssText = "";
+        }
+      }
+    } else {
+      firstCss.ownerNode.parentNode.insertBefore(defaultCss.ownerNode, firstCss.ownerNode);
+    }
+  };
+
   O$.cleanUpPrototypeJsonIncompatibility();
 
   O$.addLoadEvent(function() {
     O$._loaded = true;
-
+    O$._lowerPriorityOfDefaultCss();
     // we're repeating the O$.cleanUpPrototypeJsonIncompatibility(); call on load event to account for prototype.js
     // which might be included after util.js
     O$.cleanUpPrototypeJsonIncompatibility();
