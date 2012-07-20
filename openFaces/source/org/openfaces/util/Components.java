@@ -102,9 +102,51 @@ public class Components {
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
+        Runnable restoreIterators = resetParentIterators(parent);
         parent.getChildren().add(component);
+        if (restoreIterators != null) restoreIterators.run();
 
         return component;
+    }
+
+    /**
+     * This method is required to overcome the Mojarra 2.1.9+ state saving problem, where an attempt to add child
+     * component for a component that is rendered inside of an iterator component (UIData and others, which change
+     * clientIds of their children during iteration), causes an exception
+     * javax.faces.FacesException: Cannot add the same component twice: form:dataTable:0:dateChooser--popup
+     *    at com.sun.faces.context.StateContext$AddRemoveListener.handleAddRemoveWithAutoPrune(StateContext.java:476)
+     *    at com.sun.faces.context.StateContext$AddRemoveListener.handleAdd(StateContext.java:422)
+     *    ...
+     *
+     *  Resetting the iterator position to the "initial" one for a moment of adding child component fixes the problem
+     *  (Mojarra seems to save component's state under wrong client-ids if iteration index is in component's clientId).
+     *
+     *  This workaround should be in place until this bug is fixed in Mojarra
+     *  (and older versions don't have to be supported).
+     */
+    private static Runnable resetParentIterators(UIComponent component) {
+        if (!ApplicationParams.getIterationIndexWorkaround()) return null;
+
+        final UIData uiData = getParentWithClass(component, UIData.class);
+        final int rowIndex = uiData != null ? uiData.getRowIndex() : -1;
+        if (rowIndex != -1)
+            uiData.setRowIndex(-1);
+
+        final OUIObjectIterator ouiObjectIterator = getParentWithClass(component, OUIObjectIterator.class);
+        final String objectId = ouiObjectIterator != null ? ouiObjectIterator.getObjectId() : null;
+        if (objectId != null)
+            ouiObjectIterator.setObjectId(null);
+
+        return (rowIndex == -1 && objectId == null)
+                ? null
+                : new Runnable() {
+            public void run() {
+                if (objectId != null)
+                    ouiObjectIterator.setObjectId(objectId);
+                if (rowIndex != -1)
+                    uiData.setRowIndex(rowIndex);
+            }
+        };
     }
 
     public static <T extends UIComponent> T findChildWithClass(UIComponent parent, Class<T> childClass) {
@@ -206,7 +248,9 @@ public class Components {
             FacesContext context, UIComponent parent, String componentType, String idSuffix) {
         String childId = generateIdWithSuffix(parent, idSuffix);
         UIComponent component = createComponent(context, componentType, childId);
+        Runnable restoreIterators = resetParentIterators(parent);
         parent.getChildren().add(component);
+        if (restoreIterators != null) restoreIterators.run();
         return component;
     }
 
@@ -224,7 +268,9 @@ public class Components {
             FacesContext context, UIComponent parent, String componentType, String idSuffix, int i) {
         String childId = generateIdWithSuffix(parent, idSuffix);
         UIComponent component = createComponent(context, componentType, childId);
+        Runnable restoreIterators = resetParentIterators(parent);
         parent.getChildren().add(i, component);
+        if (restoreIterators != null) restoreIterators.run();
         return component;
     }
 
@@ -487,7 +533,7 @@ public class Components {
      * Searches the component's parent chain until it finds the nearest parent with this class. Super classes and
      * interfaces are also supported by this method.
      */
-    public static <C extends UIComponent> C getParentWithClass(UIComponent component, Class<C> parentClass) {
+    public static <C> C getParentWithClass(UIComponent component, Class<C> parentClass) {
         for (UIComponent parent = component.getParent(); parent != null; parent = parent.getParent())
             if (parentClass.isAssignableFrom(parent.getClass()))
                 return (C) parent;

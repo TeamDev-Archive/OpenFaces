@@ -156,4 +156,15 @@ public class ApplicationParams {
         }
         return fn;
     }
+
+    private static Boolean iterationIndexWorkaround;
+
+    public static boolean getIterationIndexWorkaround() {
+        if (iterationIndexWorkaround == null) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            iterationIndexWorkaround = Rendering.getBooleanContextParam(context,
+                    "org.openfaces.resetIterationIndexesOnAddingComponents", true);
+        }
+        return iterationIndexWorkaround;
+    }
 }
