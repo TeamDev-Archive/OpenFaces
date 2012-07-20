@@ -1235,6 +1235,16 @@ if (!window.O$) {
     return container;
   };
 
+  O$.removeIdsFromNode = function removeIDs(rootNode) {
+    if (rootNode.attributes && (rootNode.getAttribute("id") != undefined))
+      rootNode.removeAttribute("id");
+    if (rootNode.hasChildNodes()) {
+      for (var i = 0; i < rootNode.childNodes.length; i++) {
+        removeIDs(rootNode.childNodes[i]);
+      }
+    }
+  }
+
   // ----------------- AJAX RELATED UTILITY FUNCTIONS -----------------------------------------------------
   O$.lockAjax = function() {
     O$._ajaxTemporaryLocked = true;
