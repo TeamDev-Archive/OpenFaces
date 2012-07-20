@@ -125,12 +125,12 @@ O$.TabbedPane = {
 
     // setup methods
     O$.assignEventHandlerField(tabbedPane, "onmouseover", function (evt) {
-      O$.TabbedPane._handleMouseover(this._tabSet);
+      O$.TabbedPane._handleMouseover(this._tabSet, evt);
       if (this._mirrorTabSet)
         O$.TabbedPane._handleMouseover(this._mirrorTabSet, evt);
     });
     O$.assignEventHandlerField(tabbedPane, "onmouseout", function (evt) {
-      O$.TabbedPane._handleMouseout(this._tabSet);
+      O$.TabbedPane._handleMouseout(this._tabSet, evt);
       if (this._mirrorTabSet)
         O$.TabbedPane._handleMouseout(this._mirrorTabSet, evt);
     });
