@@ -14,8 +14,6 @@
 
 /* == Miscellaneous == */
 
-.o_default_css_marker {}
-
 .clearfix {zoom: 1;}
 .clearfix: after {
 	content: ' ';
