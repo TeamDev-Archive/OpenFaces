@@ -10,6 +10,7 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 O$.KeepVisible = {
+  _stubSuffix: "_stub",
   _init:function (keepVisibleId, elementId, topMargin, bottomMargin) {
     O$.addEventHandler(window, "load", function () {
       var element = O$(elementId);
@@ -115,7 +116,14 @@ O$.KeepVisible = {
 
       _setEvents:function () {
         O$.addEventHandler(window, "scroll", component._handleScroll);
-        O$.addEventHandler(window, "resize", component._handleScroll);
+        O$.addEventHandler(window, "resize", function () {
+          var stub = O$(component._elementId + O$.KeepVisible._stubSuffix);
+          stub.style.display = 'block';
+          component._initialAbsoluteX = O$.getElementPos(stub).x;
+          component._initialAbsoluteY = O$.getElementPos(stub).y;
+          stub.style.display = 'none';
+          component._handleScroll();
+        });
       },
 
       _marginsAreCorrect:function () {
@@ -127,6 +135,7 @@ O$.KeepVisible = {
   },
 
   _prepareElement:function (element) {
+    O$.KeepVisible._createStub(element);
     O$.correctElementZIndex(element, element.parentNode);
     element.style.position = 'absolute';
     element.style.top = O$.getElementPos(element, true).y + "px";
@@ -136,7 +145,13 @@ O$.KeepVisible = {
     element.style.marginTop = '';
     element.style.marginBottom = '';
   },
-
+  _createStub: function(element) {
+    var stub = element.cloneNode(true);
+    stub.style.display = 'none';
+    O$.removeIdsFromNode(stub);
+    stub.id = element.id + O$.KeepVisible._stubSuffix;
+    element.parentNode.insertBefore(stub, element);
+  },
   _getInitialPosition: function(element) {
     return {
       initialRelativeX: O$.getElementPos(element, true).x,
