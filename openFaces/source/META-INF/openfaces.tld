@@ -18473,8 +18473,7 @@ on every switch to the tab.-->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>If mirrorTabSetVisible is true then second tabset will
-        be displayed symmetrically to the primary one.
+      <description>If mirrorTabSetVisible is true then second tabset is displayed symmetrically to the primary one.
       </description>
       <name>mirrorTabSetVisible</name>
       <deferred-value>
@@ -47862,8 +47861,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
   </tag>
   <tag>
-    <description>Component that can be attached to any block-level HTML element (by its id), and will prevent the
-      attached element from being scrolled away along with the document's content.
+    <description>The KeepVisible component can be attached to an HTML element or a JSF component to prevent it from
+      being scrolled away from the visible page's area when the user scrolls the document.
     </description>
     <name>keepVisible</name>
     <tag-class>org.openfaces.taglib.jsp.util.KeepVisibleJspTag</tag-class>

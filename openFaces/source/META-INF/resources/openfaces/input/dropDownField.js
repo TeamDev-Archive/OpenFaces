@@ -478,23 +478,13 @@ O$.DropDownField = {
 
       _setItemPresentationValue:function () {
 
-        function removeAllIDs(node) {
-          if (node.attributes && (node.getAttribute("id") != undefined))
-            node.removeAttribute("id");
-          if (node.hasChildNodes()) {
-            for (var i = 0; i < node.childNodes.length; i++) {
-              removeAllIDs(node.childNodes[i]);
-            }
-          }
-        }
-
         var selectedItem = dropDown._getSelectedItem();
         if (!selectedItem){
           dropDown._showPresentationPromptText(dropDown._promptText);
           return;
         }
         var newItemPresentationContentNode = selectedItem.cloneNode(true);
-        removeAllIDs(newItemPresentationContentNode);
+        O$.removeIdsFromNode(newItemPresentationContentNode);
 
         // Remove old values from itemPresentation field
         while (itemPresentation.hasChildNodes()) {
