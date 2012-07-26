@@ -3058,7 +3058,8 @@ if (!window.O$) {
         var rules = styleSheet.rules;
         for (var i = 0; i < rules.length; i++) {
           if (rules[i].selectorText == nameOfCssClass) {
-            delete  O$._cssRulesBySelectors[nameOfCssClass];
+            var ruleBySelector = O$._cssRulesBySelectors ? O$._cssRulesBySelectors[nameOfCssClass] : null;
+            if (ruleBySelector) delete ruleBySelector;
             styleSheet.removeRule(i);
             break;
           }
@@ -3067,7 +3068,8 @@ if (!window.O$) {
         var rules = styleSheet.cssRules;
         for (var i = 0; i < rules.length; i++) {
           if (rules[i].selectorText == nameOfCssClass) {
-            delete  O$._cssRulesBySelectors[nameOfCssClass];
+            var ruleBySelector = O$._cssRulesBySelectors ? O$._cssRulesBySelectors[nameOfCssClass] : null;
+            if (ruleBySelector) delete ruleBySelector;
             styleSheet.deleteRule(i);
             break;
           }

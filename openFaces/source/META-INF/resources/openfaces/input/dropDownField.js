@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -478,23 +478,13 @@ O$.DropDownField = {
 
       _setItemPresentationValue:function () {
 
-        function removeAllIDs(node) {
-          if (node.attributes && (node.getAttribute("id") != undefined))
-            node.removeAttribute("id");
-          if (node.hasChildNodes()) {
-            for (var i = 0; i < node.childNodes.length; i++) {
-              removeAllIDs(node.childNodes[i]);
-            }
-          }
-        }
-
         var selectedItem = dropDown._getSelectedItem();
         if (!selectedItem){
           dropDown._showPresentationPromptText(dropDown._promptText);
           return;
         }
         var newItemPresentationContentNode = selectedItem.cloneNode(true);
-        removeAllIDs(newItemPresentationContentNode);
+        O$.removeIdsFromNode(newItemPresentationContentNode);
 
         // Remove old values from itemPresentation field
         while (itemPresentation.hasChildNodes()) {
