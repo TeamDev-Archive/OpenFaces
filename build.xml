@@ -93,7 +93,7 @@
         <pathelement path="lib/seleniuminspector/selenium-java-2.14.0.jar"/>
         <pathelement path="lib/seleniuminspector/selenium-server-standalone-2.14.0.jar"/>
         <pathelement path="lib/seleniuminspector/selenium-inspector.jar"/>
-        <pathelement path="lib/mojarra/javax.faces-2.1.10.jar"/>
+        <pathelement path="lib/mojarra/javax.faces-2.1.11.jar"/>
         <pathelement path="testLib/junit.jar"/>
         <fileset file="${openfaces-jar.file}"/>
       </classpath>
@@ -162,7 +162,7 @@
         <pathelement path="lib/seleniuminspector/selenium-server-standalone-2.14.0.jar"/>
         <pathelement path="lib/seleniuminspector/selenium-java-2.14.0.jar"/>
         <pathelement path="lib/seleniuminspector/selenium-inspector.jar"/>
-        <pathelement path="lib/mojarra/javax.faces-2.1.10.jar"/>
+        <pathelement path="lib/mojarra/javax.faces-2.1.11.jar"/>
         <pathelement location="${funcTests-target.dir}/classes"/>
         <pathelement path="${openfaces-inspectors-jar.file}"/>
         <pathelement path="testLib/junit.jar"/>
