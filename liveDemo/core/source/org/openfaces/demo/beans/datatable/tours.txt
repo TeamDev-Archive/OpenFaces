@@ -1,0 +1,600 @@
+Egypt	Hurghada	7	EL TABIA HOTEL 2*	HB	Standard Room/Double	1788
+Egypt	Hurghada	8	EL TABIA HOTEL 2*	HB	Standard Room/Double	1808
+Egypt	Hadaba Um Sid	7	REGENCY & LODGE HOTEL 3*	BB	Standard Room/Double	1825
+Egypt	Hurghada	7	TRITON EMPIRE INN 2*	HB	Standard Room/Double	1831
+Egypt	Hurghada	7	TRITON EMPIRE HOTEL 3*	HB	Standard Room/Double	1865
+Egypt	Hadaba Um Sid	7	REGENCY & LODGE HOTEL 3*	HB	Standard Room/Double	1845
+Egypt	Nabq Bay	7	ZOUARA HOTEL 3*	HB	Standard Room/Double	1808
+Egypt	Hurghada	7	BEIRUT HOTEL 3*	HB	Standard Room/Double	1866
+Egypt	Hurghada	7	AL MASHRABIYA BEACH RESORT 3*+	HB	Standard Room/Double	1828
+Egypt	Hurghada	7	EL TABIA HOTEL 2*	AI	Standard Room/Double	1871
+Egypt	Hurghada	8	TRITON EMPIRE INN 2*	HB	Standard Room/Double	1875
+Egypt	Hurghada	7	SAND BEACH 3*	HB	Standard Room/Double	1919
+Egypt	Hadaba Um Sid	7	TROPICANA TIVOLI 4*	HB	Standard Room/Double	1919
+Egypt	Nabq Bay	7	ZOUARA HOTEL 3*	AI	Standard Room/Double	1918
+Egypt	Hurghada	8	TRITON EMPIRE HOTEL 3*	HB	Standard Room/Double	1849
+Egypt	Dahab	7	SEA SUN 4*	BB	Standard Room/Double	1896
+Egypt	Hurghada	7	HOR PALACE 3*	HB	Standard Room/Double	1875
+Egypt	Hurghada	7	AL MASHRABIYA BEACH RESORT 3*+	AI	Standard Room/Double	1908
+Egypt	Hadaba Um Sid	7	LUNA SHARM 3*+	HB	Standard Room/Double	1896
+Egypt	Hadaba Um Sid	7	CLEOPATRA TSOKKOS 3*+	BB	Standard Room/Double	1898
+Egypt	Hadaba Um Sid	7	LA PERLA SHARM 3*+	HB	Standard Room/Double	1863
+Egypt	Hurghada	8	BEIRUT HOTEL 3*	HB	Standard Room/Double	1876
+Egypt	Hurghada	8	AL MASHRABIYA BEACH RESORT 3*+	HB	Standard Room/Double	1930
+Egypt	Hurghada	8	EL TABIA HOTEL 2*	AI	Standard Room/Double	1874
+Egypt	Nabq Bay	7	SABENA PASADENA HOTEL 4*	HB	Standard Room/Double	1940
+Egypt	Hadaba Um Sid	7	REGENCY & LODGE HOTEL 3*	Limited AI	Standard Room/Double	1955
+Egypt	Hurghada	8	SAND BEACH 3*	HB	Standard Room/Double	1903
+Egypt	Hurghada	7	PRINCESS PALACE 3*	HB	Standard Room/Double	1887
+Egypt	Hadaba Um Sid	7	SABENA MARMARA HOTEL 4*	HB	Standard Room/Double	1954
+Egypt	Hadaba Um Sid	7	LA PERLA SHARM 3*+	AI	Standard Room/Double	1981
+Egypt	Hadaba Um Sid	7	SHARM INN AMARIEN 4*	AI	Standard Room/Double	2008
+Egypt	Taba Road	7	HELNAN TABA BAY (Ex.Salah El Deen Taba) 3*	HB	Standard Room/Double	2015
+Egypt	Ras Nasrani	7	TIRAN ISLAND HOTEL 4*	HB	Standard Room/Double	2025
+Egypt	Hadaba Um Sid	7	TOP CHOICE VIVA SHARM HOTEL ( ex.FALCON INN VIVA SHARM) 3*+	AI	Standard Room/Double	2050
+Egypt	Hadaba Um Sid	7	FALCON HILLS 3*+	AI	Standard Room/Double	2033
+Egypt	Hadaba Um Sid	7	CLEOPATRA TSOKKOS 3*+	HB	Standard Room/Double	1969
+Egypt	Hurghada	7	MINAMARK BEACH RESORT 4*	AI	Club Room/Double	2045
+Egypt	Dahab	7	TROPITEL DAHAB OASIS 4*	HB	Standard Room/Double	2028
+Egypt	Hurghada	8	HOR PALACE 3*	AI	Standard Room/Double	1990
+Egypt	Safaga	7	SAFAGA PALACE RESORT (ex. HOLIDAY INN SAFAGA PALACE) 4*	HB	Sea View/Double	2026
+Egypt	Hadaba Um Sid	7	VERGINIA HOTEL 4*	AI	Standard Room/Double	2074
+Egypt	Ras Nasrani	7	TIRAN ISLAND HOTEL 4*	AI	Standard Room/Double	2054
+Egypt	Naama Bay	7	VIKING CLUB 4*	AI	Standard Room/Double	2054
+Egypt	Hurghada	8	BEIRUT HOTEL 3*	AI	Standard Room/Double	2046
+Egypt	Hurghada	8	TRITON EMPIRE HOTEL 3*	AI	Standard Room/Double	2074
+Egypt	Hurghada	8	SAND BEACH 3*	AI	Standard Room/Double	1995
+Egypt	Naama Bay	7	FALCON NAAMA STAR 3*	AI	Standard Room/Double	2012
+Egypt	Hurghada	7	PRINCESS PALACE 3*	AI	Standard Room/Double	2015
+Egypt	Safaga	8	SAFAGA PALACE RESORT (ex. HOLIDAY INN SAFAGA PALACE) 4*	HB	Standard Room/Double	2091
+Egypt	Safaga	7	SAFAGA PALACE RESORT (ex. HOLIDAY INN SAFAGA PALACE) 4*	AI	Standard Room/Double	2001
+Egypt	Naama Bay	7	ROYAL OASIS NAAMA BAY HOTEL & RESORT 4*	AI	Standard Room/Double	2071
+Egypt	Nabq Bay	7	THE THREE CORNERS PALMYRA AMAR EL ZAMAN HOTEL 4*	SUPER AI	Standard Room/Double	2018
+Egypt	Dahab	7	HAPPY LIFE VILLAGE 4*	HB	Standard Room/Double	2099
+Egypt	Hurghada	8	PREMIUM ROMA HOTEL 4*	HB	Standard Room/Double	2086
+Egypt	Nuweiba	7	REGINA RESORT NUWEIBA 3*	AI	Standard Room/Double	2024
+Egypt	Port Ghalib	7	MARINA LODGE AT PORT GHALIB 4*	AI	Standard Room/Double	2057
+Egypt	Hadaba Um Sid	7	RESTA SHARM RESORT 3*+	AI	Standard Room/Double	2044
+Egypt	Hadaba Um Sid	7	AIDA HOTEL 3*	AI	Standard Room/Double	2095
+Egypt	Taba Road	7	HELNAN TABA BAY (Ex.Salah El Deen Taba) 3*	AI	Standard Room/Double	2062
+Egypt	Dahab	7	CORALIA CLUB DAHAB 4*	HB	Garden Room/Double	2027
+Egypt	Ras Nasrani	7	SOL CYRENE HOTEL 4*	AI	Sea View/Double	2206
+Egypt	Naama Bay	7	AMARANTE GARDEN PALMS 4*	AI	Superior Room/Double	2210
+Egypt	Hadaba Um Sid	7	RENAISSANCE GOLDEN VIEW BEACH RESORT 5*	HB	Deluxe Room/Double	2187
+Egypt	Hadaba Um Sid	7	DREAMS BEACH RESORT 5*	AI	Standard Room/Double	2195
+Egypt	Nabq Bay	7	THE THREE CORNERS PALMYRA AMAR EL ZAMAN HOTEL 4*	SUPER AI	Family Room/Double	2206
+Egypt	Hadaba Um Sid	7	SHORES GOLDEN RESORT 4*	AI	Pool View/Double	2126
+Egypt	Marsa alam	7	BEST WESTERN SOLITAIRE RESORT 4*	AI	Standard Room/Double	2220
+Egypt	Hurghada	8	MINAMARK BEACH RESORT 4*	AI	Standard Room/Double	2176
+Egypt	El Gouna	8	DAWAR EL OMDA 4*	HB	Standard Room/Double	2183
+Egypt	Hurghada	7	KING TUT RESORT 4*	AI	Family Room/Double	2143
+Egypt	Hurghada	7	KING TUT RESORT 4*	AI	Superior Sea View/Double	2129
+Egypt	Hurghada	8	KING TUT RESORT 4*	AI	Standard Room/Double	2223
+Egypt	Hadaba Um Sid	7	TURQUOISE SWISS INN PLAZA RESORT 3*+	AI	Standard Room/Double	2139
+Egypt	El Gouna	7	DAWAR EL OMDA 4*	HB	Deluxe Room/Double	2171
+Egypt	Taba Road	7	AQUAMARINE SUN FLOWER RESORT TABA 4*	AI	Standard Room/Double	2142
+Egypt	Hurghada	7	PYRAMISA BLUE LAGOON RESORT 5*	AI	Standard Room/Double	2165
+Egypt	Sharks Bay	7	SHERATON SHARM RESORT 5*	AI	Standard Room/Double	2206
+Egypt	Safaga	8	SAFAGA PALACE RESORT (ex. HOLIDAY INN SAFAGA PALACE) 4*	AI	Sea View/Double	2208
+Egypt	Hadaba Um Sid	7	XPERIENCE ST. GEORGE HOMESTAY 4*	AI	Family Room/Double	2173
+Egypt	Naama Bay	7	DESSOLE CATARACT RESORT 4*	AI	Standard Room/Double	2213
+Egypt	Nabq Bay	7	AQUA HOTEL RESORT & SPA ( Ex.Sharm Bride Resort) 4*	AI	Standard Room/Double	2199
+Egypt	Naama Bay	7	ORIENTAL RIVOLI 4*	HB	Superior Room/Double	2165
+Egypt	Naama Bay	7	ORIENTAL RIVOLI 4*	AI	Superior Room/Double	2177
+Egypt	Hurghada	7	ROYAL REGINA RESORT 4*	AI	Bungalow Room/Double	2178
+Egypt	Hurghada	7	ROYAL REGINA RESORT 4*	AI	Sea View/Double	2148
+Egypt	Makadi Bay	7	SERENITY MAKADI HEIGHTS 5*	AI	Sport Area Room/Double	2155
+Egypt	Safaga	8	SAFAGA PALACE RESORT (ex. HOLIDAY INN SAFAGA PALACE) 4*	AI	Suite/Double	2595
+Egypt	Hurghada	8	ALI BABA PALACE 4*+	AI	Standard Room/Double	2532
+Egypt	Makadi Bay	8	SERENITY MAKADI HEIGHTS 5*	AI	Family Room/Double	2529
+Egypt	Makadi Bay	8	SERENITY MAKADI HEIGHTS 5*	AI	Deluxe Sea View/Double	2545
+Egypt	Makadi Bay	8	STELLA MAKADI BEACH RESORT 5*	AI	Standard Room/Double	2502
+Egypt	El Gouna	8	SULTAN BEY EL GOUNA 4*	HB	Standard Room/Double	2599
+Egypt	Soma Bay	7	PALM ROYALE SOMA BAY (ex. INTERCONTINENTAL ABU SOMA RESORT) 5*	HB	Superior Room/Double	2531
+Egypt	Nabq Bay	7	ROYAL GRAND AZURE 5*	AI	Superior Room/Double	2520
+Egypt	Sahl Hasheesh	7	DESSOLE SAHL HASHEESH BEACH RESORT (ex. PYRAMISA SAHL HASHEESH) 5*	Royal AI	Deluxe Sea View/Double	2557
+Egypt	Dahab	7	SWISS INN RESORT 4*	HB	Standard Room/Double	2512
+Egypt	Nabq Bay	7	AA AMWAJ HOTEL & RESORT 5*	AI	Main Building Sea View/Double	2612
+Egypt	Naama Bay	7	HILTON SHARM FAYROUZ RESORT 4*	HB	Pool View/Double	2595
+Egypt	Marsa alam	8	HILTON MARSA ALAM NUBIAN RESORT 5*	AI	Sea View/Double	2583
+Egypt	Nabq Bay	7	LAGUNA VISTA 5*	AI	Standard Room/Double	2505
+Egypt	Hurghada	7	SERENITY FUN CITY 5*	AI	Deluxe Room/Double	2516
+Egypt	El Gouna	8	DAWAR EL OMDA 4*	AI	Standard Room/Double	2598
+Egypt	Hurghada	8	SERENITY FUN CITY 5*	AI	Standard Room/Double	2577
+Egypt	Hurghada	7	ARABIA AZUR RESORT 4*	AI	Standard Room/Double	2582
+Egypt	Dahab	7	CORALIA CLUB DAHAB 4*	AI	Superior Sea View/Double	2629
+Egypt	Dahab	7	HILTON DAHAB 5*	HB	Suite/Double	2622
+Egypt	Hurghada	8	MERCURE HURGHADA (ex. SOFITEL) 4*	AI	Sea View/Double	2544
+Egypt	Taba Heights	7	MARRIOTT BEACH RESORT TABA HEIGHTS 5*	HB	Sea Front/Double	2521
+Egypt	Hadaba Um Sid	7	RITZ CARLTON 5*	HB	Sea Side/Double	2591
+Egypt	Sharks Bay	7	MARITIM JOLLIE VILLE GOLF RESORT 5*	HB	Standard Room/Double	2530
+Egypt	Hadaba Um Sid	7	RITZ CARLTON 5*	BB	Sea Side/Double	2556
+Egypt	Sharks Bay	7	MARITIM JOLLIE VILLE GOLF RESORT 5*	BB	Sea View/Double	2531
+Egypt	Sharks Bay	7	SIERRA 4*	Premium AI	Connection Room/Double	2632
+Egypt	Sharks Bay	7	SIERRA 4*	Premium AI	Family Room/Double	2525
+Egypt	Sharks Bay	7	MARITIM JOLIE VILLE ROYAL PENINSULA RESORT 5*	AI	Executive Garden View/Double	2526
+Egypt	Naama Bay	7	HYATT REGENCY HOTEL 5*	BB	Royal Villa Regency Club/5 PAX	35325
+Egypt	Naama Bay	7	HYATT REGENCY HOTEL 5*	BB	Presidential Villa Regency Club/5 PAX	33925
+Egypt	Nabq Bay	7	MAGIC LIFE IMPERIAL RESORT 5*	AI	Junior Suite/Quadruple	4748
+Egypt	Hadaba Um Sid	7	REEF OASIS 5*	SA	Royal Suite/Quadruple	7008
+Egypt	Ras Nasrani	7	BARON DELUXE RESORT 5*	BB	Executive Suite/Quadruple	11481
+Egypt	Ras Nasrani	7	BARON DELUXE RESORT 5*	HB	Executive Suite/Quadruple	12470
+Egypt	Naama Bay	7	HYATT REGENCY HOTEL 5*	BB	Diplomatic Suite/Quadruple	13511
+Egypt	Ras Nasrani	7	BARON DELUXE RESORT 5*	Preferred AI	Executive Suite/Quadruple	13700
+Egypt	Sharks Bay	7	MARITIM JOLLIE VILLE GOLF RESORT 5*	BB	Villa/Quadruple	25238
+Egypt	Sharks Bay	7	MARITIM JOLLIE VILLE GOLF RESORT 5*	HB	Villa/Quadruple	25975
+Egypt	Sharks Bay	7	MARITIM JOLLIE VILLE GOLF RESORT 5*	FB	Villa/Quadruple	27087
+Egypt	Sharks Bay	7	MARITIM JOLLIE VILLE GOLF RESORT 5*	UA	Villa/Quadruple	27221
+Egypt	Naama Bay	7	HYATT REGENCY HOTEL 5*	BB	Royal Villa Regency Club/Quadruple	34489
+Egypt	Naama Bay	7	HYATT REGENCY HOTEL 5*	BB	Presidential Villa Regency Club/Quadruple	34194
+Egypt	Hurghada	7	TRITON EMPIRE HOTEL 3*	HB	Standard Room/Triple	2395
+Egypt	Hurghada	7	EL TABIA HOTEL 2*	HB	Standard Room/Triple	2406
+Egypt	Hadaba Um Sid	7	REGENCY & LODGE HOTEL 3*	BB	Standard Room/Triple	2386
+Egypt	Hurghada	7	AL MASHRABIYA BEACH RESORT 3*+	HB	Standard Room/Triple	2333
+Egypt	Nabq Bay	7	ZOUARA HOTEL 3*	HB	Standard Room/Triple	2441
+Egypt	Hurghada	7	BEIRUT HOTEL 3*	HB	Standard Room/Triple	2417
+Egypt	Hurghada	7	EL TABIA HOTEL 2*	AI	Standard Room/Triple	2417
+Egypt	Hurghada	7	SAND BEACH 3*	HB	Standard Room/Triple	2367
+Egypt	Hadaba Um Sid	7	TROPICANA TIVOLI 4*	HB	Standard Room/Triple	2381
+Egypt	Hadaba Um Sid	7	CLEOPATRA TSOKKOS 3*+	BB	Standard Room/Triple	2377
+Egypt	Hadaba Um Sid	7	REGENCY & LODGE HOTEL 3*	HB	Standard Room/Triple	2455
+Egypt	Hurghada	8	TRITON EMPIRE HOTEL 3*	HB	Standard Room/Triple	2454
+Egypt	Hurghada	8	EL TABIA HOTEL 2*	HB	Standard Room/Triple	2480
+Egypt	Dahab	7	SEA SUN 4*	BB	Standard Room/Triple	2417
+Egypt	Hurghada	7	AL MASHRABIYA BEACH RESORT 3*+	AI	Standard Room/Triple	2395
+Egypt	Nabq Bay	7	ZOUARA HOTEL 3*	AI	Standard Room/Triple	2412
+Egypt	Hadaba Um Sid	7	LUNA SHARM 3*+	HB	Standard Room/Triple	2403
+Egypt	Hurghada	8	AL MASHRABIYA BEACH RESORT 3*+	HB	Standard Room/Triple	2417
+Egypt	Hurghada	7	HOR PALACE 3*	HB	Standard Room/Triple	2409
+Egypt	Hurghada	8	BEIRUT HOTEL 3*	HB	Standard Room/Triple	2507
+Egypt	Hadaba Um Sid	7	LA PERLA SHARM 3*+	HB	Standard Room/Triple	2531
+Egypt	Hurghada	8	SAND BEACH 3*	HB	Standard Room/Triple	2492
+Egypt	Hurghada	8	EL TABIA HOTEL 2*	AI	Standard Room/Triple	2468
+Egypt	Hurghada	7	PRINCESS PALACE 3*	HB	Standard Room/Triple	2507
+Egypt	Nabq Bay	7	SABENA PASADENA HOTEL 4*	HB	Standard Room/Triple	2459
+Egypt	Hadaba Um Sid	7	CORAL HILLS RESORT 4*	HB	Standard Room/Triple	2464
+Egypt	Nuweiba	7	REGINA RESORT NUWEIBA 3*	HB	Standard Room/Triple	2544
+Egypt	Hurghada	8	AL MASHRABIYA BEACH RESORT 3*+	AI	Standard Room/Triple	2521
+Egypt	Sharks Bay	7	AL DIWAN 3*	HB	Standard Room/Triple	2466
+Egypt	Hadaba Um Sid	7	SABENA MARMARA HOTEL 4*	HB	Standard Room/Triple	2567
+Egypt	Naama Bay	7	SHARM HOLIDAY RESORT 4*	AI	Standard Room/Triple	2813
+Egypt	Safaga	8	SAFAGA PALACE RESORT (ex. HOLIDAY INN SAFAGA PALACE) 4*	AI	Standard Room/Triple	2770
+Egypt	Taba Heights	7	THREE CORNERS EL WEKALA GOLF RESORT 4*	AI	Standard Room/Triple	2788
+Egypt	Hurghada	7	PREMIUM ROMA HOTEL 4*	AI	Standard Room/Triple	2749
+Egypt	Ras Nasrani	7	SOL SHARM 4*	AI	Sea View/Triple	2791
+Egypt	Dahab	7	CORALIA CLUB DAHAB 4*	HB	Garden Room/Triple	2743
+Egypt	Port Ghalib	8	MARINA LODGE AT PORT GHALIB 4*	AI	Standard Room/Triple	2816
+Egypt	Naama Bay	7	ROYAL OASIS NAAMA BAY HOTEL & RESORT 4*	AI	Deluxe Naama Bay View/Triple	2804
+Egypt	Naama Bay	7	ROYAL OASIS NAAMA BAY HOTEL & RESORT 4*	HB	Deluxe Naama Bay View/Triple	2797
+Egypt	Naama Bay	7	ORIENTAL RIVOLI 4*	AI	Comfort Room/Triple	2828
+Egypt	Taba Road	7	SOL Y MAR SEA STAR 4*	AI	Standard Room/Triple	2749
+Egypt	Taba Road	7	SONESTA BEACH RESORT TABA 5*	AI	Standard Room/Triple	2793
+Egypt	Hadaba Um Sid	7	MEXICANA SHARM RESORT 4*	HB	Standard Room/Triple	2808
+Egypt	Naama Bay	7	SHARM REEF 3*	AI	Standard Room/Triple	2768
+Egypt	Nuweiba	7	ELARIA BEACH RESORT NUWEIBA 4*	AI	Standard Room/Triple	2774
+Egypt	Marsa alam	8	ABO NAWAS RESORT 4*	AI	Standard Room/Triple	2857
+Egypt	Naama Bay	7	NORIA RESORT HOTEL 4*	AI	Standard Room/Triple	2870
+Egypt	Ras Nasrani	7	TIRAN ISLAND HOTEL 4*	AI	Sea View/Triple	2749
+Egypt	Ras Nasrani	7	SOL CYRENE HOTEL 4*	HB	Sea View/Triple	2865
+Egypt	Ras Nasrani	7	SOL SHARM 4*	HB	Sea View/Triple	2855
+Egypt	Dahab	7	CORALIA CLUB DAHAB 4*	HB	Sea View/Triple	2765
+Egypt	Hurghada	7	ROYAL REGINA RESORT 4*	AI	Standard Room/Triple	2770
+Egypt	Naama Bay	7	AMARANTE GARDEN PALMS 4*	AI	Superior Room/Triple	2831
+Egypt	Ras Nasrani	7	SOL CYRENE HOTEL 4*	AI	Sea View/Triple	2762
+Egypt	Dahab	7	TROPITEL DAHAB OASIS 4*	AI	Standard Room/Triple	2763
+Egypt	Dahab	7	MERCURE BAY VIEW DAHAB 5*	HB	Standard Room/Triple	2799
+Egypt	Hurghada	7	PYRAMISA BLUE LAGOON RESORT 5*	AI	Standard Room/Triple	2899
+Egypt	Hadaba Um Sid	7	DREAMS BEACH RESORT 5*	AI	Standard Room/Triple	2782
+Egypt	Hadaba Um Sid	7	RENAISSANCE GOLDEN VIEW BEACH RESORT 5*	HB	Deluxe Room/Triple	2900
+Egypt	Hurghada	8	MINAMARK BEACH RESORT 4*	AI	Standard Room/Triple	2851
+Egypt	Hurghada	7	EL TABIA HOTEL 2*	HB	Standard Room/Single	1290
+Egypt	Hadaba Um Sid	7	REGENCY & LODGE HOTEL 3*	BB	Standard Room/Single	1279
+Egypt	Hurghada	8	EL TABIA HOTEL 2*	HB	Standard Room/Single	1315
+Egypt	Nabq Bay	7	ZOUARA HOTEL 3*	HB	Standard Room/Single	1312
+Egypt	Hadaba Um Sid	7	REGENCY & LODGE HOTEL 3*	HB	Standard Room/Single	1336
+Egypt	Hurghada	7	EL TABIA HOTEL 2*	AI	Standard Room/Single	1322
+Egypt	Hurghada	7	TRITON EMPIRE INN 2*	HB	Standard Room/Single	1309
+Egypt	Nabq Bay	7	ZOUARA HOTEL 3*	AI	Standard Room/Single	1339
+Egypt	Hurghada	7	BEIRUT HOTEL 3*	HB	Standard Room/Single	1363
+Egypt	Dahab	7	SEA SUN 4*	BB	Standard Room/Single	1373
+Egypt	Hurghada	7	AL MASHRABIYA BEACH RESORT 3*+	HB	Standard Room/Single	1383
+Egypt	Hadaba Um Sid	7	REGENCY & LODGE HOTEL 3*	Limited AI	Standard Room/Single	1364
+Egypt	Hadaba Um Sid	7	LUNA SHARM 3*+	HB	Standard Room/Single	1360
+Egypt	Hurghada	8	TRITON EMPIRE INN 2*	HB	Standard Room/Single	1379
+Egypt	Hurghada	8	EL TABIA HOTEL 2*	AI	Standard Room/Single	1366
+Egypt	Hurghada	7	HOR PALACE 3*	HB	Standard Room/Single	1341
+Egypt	Hurghada	7	SAND BEACH 3*	HB	Standard Room/Single	1349
+Egypt	Hurghada	7	TRITON EMPIRE HOTEL 3*	HB	Standard Room/Single	1350
+Egypt	Nuweiba	7	REGINA RESORT NUWEIBA 3*	HB	Standard Room/Single	1360
+Egypt	Hurghada	7	AL MASHRABIYA BEACH RESORT 3*+	AI	Standard Room/Single	1368
+Egypt	Hadaba Um Sid	7	TROPICANA TIVOLI 4*	HB	Standard Room/Single	1366
+Egypt	Hadaba Um Sid	7	CLEOPATRA TSOKKOS 3*+	BB	Standard Room/Single	1372
+Egypt	Hadaba Um Sid	7	LA PERLA SHARM 3*+	HB	Standard Room/Single	1355
+Egypt	Hadaba Um Sid	7	LA PERLA SHARM 3*+	AI	Standard Room/Single	1379
+Egypt	Hurghada	8	BEIRUT HOTEL 3*	HB	Standard Room/Single	1404
+Egypt	Dahab	7	SEA SUN 4*	HB	Standard Room/Single	1382
+Egypt	Hurghada	8	AL MASHRABIYA BEACH RESORT 3*+	HB	Standard Room/Single	1417
+Egypt	Nabq Bay	7	SABENA PASADENA HOTEL 4*	HB	Standard Room/Single	1412
+Egypt	Hurghada	7	HOR PALACE 3*	AI	Standard Room/Single	1416
+Egypt	Sharks Bay	7	AL DIWAN 3*	HB	Standard Room/Single	1387
+Greece	Amoudara	7	AUSTRALIA HOTEL 2*	BB	Standard Room with Aircondition/Single	1355
+Greece	Stalida	7	THISVI APARTMENTS 2*+	BB	Standard Room with Aircondition/Single	1423
+Greece	Rethymnon	7	PETRINOS APARTS 3*	BB	Studio/Single	1476
+Greece	Stalida	7	THISVI APARTMENTS 2*+	HB	Standard Room with Aircondition/Single	1552
+Greece	Agios Nikolaos	7	REA HOTEL 3*	AI	Land View/Single	1557
+Greece	Amoudara	7	AUSTRALIA HOTEL 2*	BB	Standard Room with Aircondition/Single	1570
+Greece	Rethymnon	7	PETRINOS APARTS 3*	BB	One Bedroom Apartment/Single	1624
+Greece	Hersonissos	7	DIMITRION CENTRAL HOTEL 3*	HB	Superior Room/Single	1626
+Greece	Bali	7	NOSTOS APARTS 3*	RO	Studio/Single	1610
+Greece	Bali	7	SUNSET HOTEL 3*	HB	Studio with Air Condition/Single	1650
+Greece	Amoudara	8	AUSTRALIA HOTEL 2*	BB	Standard Room with Aircondition/Single	1586
+Greece	Stalida	7	THISVI APARTMENTS 2*+	BB	Standard Room with Aircondition/Single	1633
+Greece	Bali	7	SUNSET HOTEL 3*	HB	One Bedroom Apartment with Air Condition/Single	1615
+Greece	Bali	7	NOSTOS APARTS 3*	BB	Studio/Single	1633
+Greece	Heraklion	7	PROMO HOTEL 3*	AI	Standard Room/Single	1654
+Greece	Bali	7	NOSTOS APARTS 3*	RO	One Bedroom Apartment/Single	1690
+Greece	Hersonissos	7	PELA MARIA 3*	AI	Standard Room with Aircondition/Single	1679
+Greece	Rethymnon	7	PETRINOS APARTS 3*	BB	Studio/Single	1658
+Greece	Hersonissos	7	DIMITRION CENTRAL HOTEL 3*	HB	Superior Room/Single	1671
+Greece	Agia Pelagia	7	IRIDA APARTMENTS 3*	BB	Apartment/Single	1670
+Greece	Stalida	8	THISVI APARTMENTS 2*+	BB	Standard Room with Aircondition/Single	1693
+Greece	Bali	7	NOSTOS APARTS 3*	BB	One Bedroom Apartment/Single	1718
+Greece	Hersonissos	7	PELA MARIA 3*	AI	Standard Room with Aircondition/Single	1714
+Greece	Bali	7	BALI MARE & VILLA 3*	AI	Studio/Single	1700
+Greece	Heraklion	8	PROMO HOTEL 3*	AI	Standard Room/Single	1711
+Greece	Amoudara	7	TSAGARAKIS BEACH 2*+	BB	Standard Room with Aircondition/Single	1705
+Greece	Anissaras	7	MALIEVI VILLA APARTMENTS 2*	RO	Studio Room Garden View/Single	1726
+Greece	Agios Nikolaos	7	REA HOTEL 3*	AI	Land View/Single	1752
+Greece	Stalida	7	THISVI APARTMENTS 2*+	HB	Standard Room with Aircondition/Single	1782
+Greece	Rethymnon	8	PETRINOS APARTS 3*	BB	Studio/Single	1725
+Greece	Amoudara	7	AUSTRALIA HOTEL 2*	BB	Standard Room with Aircondition/Double	1669
+Greece	Stalida	7	THISVI APARTMENTS 2*+	BB	Standard Room with Aircondition/Double	1763
+Greece	Rethymnon	7	PETRINOS APARTS 3*	BB	Studio/Double	1813
+Greece	Agios Nikolaos	7	REA HOTEL 3*	AI	Land View/Double	1865
+Greece	Rethymnon	7	PETRINOS APARTS 3*	BB	One Bedroom Apartment/Double	1873
+Greece	Hersonissos	7	DIMITRION CENTRAL HOTEL 3*	HB	Superior Room/Double	1905
+Greece	Bali	7	NOSTOS APARTS 3*	RO	Studio/Double	1922
+Greece	Bali	7	SUNSET HOTEL 3*	HB	Studio with Air Condition/Double	1902
+Greece	Bali	7	SUNSET HOTEL 3*	HB	One Bedroom Apartment with Air Condition/Double	1897
+Greece	Stalida	7	THISVI APARTMENTS 2*+	HB	Standard Room with Aircondition/Double	1968
+Greece	Hersonissos	7	PELA MARIA 3*	AI	Standard Room with Aircondition/Double	1970
+Greece	Bali	7	NOSTOS APARTS 3*	RO	One Bedroom Apartment/Double	1938
+Greece	Hersonissos	7	DIMITRION CENTRAL HOTEL 3*	HB	Superior Room/Double	2020
+Greece	Bali	7	NOSTOS APARTS 3*	BB	Studio/Double	1984
+Greece	Hersonissos	7	PELA MARIA 3*	AI	Standard Room with Aircondition/Double	2033
+Greece	Bali	7	BALI MARE & VILLA 3*	AI	Studio/Double	1977
+Greece	Bali	7	NOSTOS APARTS 3*	BB	One Bedroom Apartment/Double	2009
+Greece	Amoudara	7	AUSTRALIA HOTEL 2*	BB	Standard Room with Aircondition/Double	2065
+Greece	Amoudara	7	MARILENA HOTEL 4*	AI	Superior Room/Double	2045
+Greece	Hersonissos	7	ANNA MARIA VILLAGE 3*	BB	Studio/Double	2050
+Greece	Agios Nikolaos	7	REA HOTEL 3*	AI	Land View/Double	2084
+Greece	Amoudara	8	AUSTRALIA HOTEL 2*	BB	Standard Room with Aircondition/Double	2108
+Greece	Agios Nikolaos	7	REA HOTEL 3*	AI	Side Sea View/Double	2076
+Greece	Agios Nikolaos	7	REA HOTEL 3*	AI	Side Sea View/Double	2145
+Greece	Hersonissos	7	ANNA MARIA VILLAGE 3*	BB	Studio Room Sea View/Double	2102
+Greece	Stalida	7	THISVI APARTMENTS 2*+	BB	Standard Room with Aircondition/Double	2169
+Greece	Rethymnon	7	DIMITRIOS 3*	HB	Standard Room/Double	2090
+Greece	Agios Nikolaos	7	REA HOTEL 3*	AI	Sea View/Double	2183
+Greece	Agios Nikolaos	7	REA HOTEL 3*	AI	Sea View/Double	2095
+Greece	Hersonissos	7	PELA MARIA 3*	AI	Standard Room with Aircondition/Double	2181
+Greece	Amoudara	7	TSAGARAKIS BEACH 2*+	BB	Standard Room with Aircondition/Triple	2102
+Greece	Amoudara	7	AUSTRALIA HOTEL 2*	BB	Standard Room with Aircondition/Triple	2070
+Greece	Stalida	7	THISVI APARTMENTS 2*+	BB	Standard Room with Aircondition/Triple	2163
+Greece	Heraklion	7	PROMO HOTEL 3*	AI	Standard Room/Triple	2257
+Greece	Anissaras	7	MALIEVI VILLA APARTMENTS 2*	RO	Studio Room Garden View/Triple	2282
+Greece	Agia Pelagia	7	IRIDA APARTMENTS 3*	BB	Apartment/Triple	2266
+Greece	Stalida	7	NEON HOTEL 2*	BB	Standard Room with Aircondition/Triple	2235
+Greece	Amoudara	7	TSAGARAKIS BEACH 2*+	BB	Standard Room with Aircondition/Triple	2339
+Greece	Agios Nikolaos	7	REA HOTEL 3*	AI	Land View/Triple	2315
+Greece	Anissaras	7	MALIEVI VILLA APARTMENTS 2*	RO	One Bedroom Apartment Sea View/Triple	2341
+Greece	Rethymnon	7	PETRINOS APARTS 3*	BB	One Bedroom Apartment/Triple	2340
+Greece	Hersonissos	7	DIMITRION CENTRAL HOTEL 3*	HB	Superior Room/Triple	2440
+Greece	Bali	7	NOSTOS APARTS 3*	RO	Studio/Triple	2387
+Greece	Bali	7	SUNSET HOTEL 3*	HB	Studio with Air Condition/Triple	2480
+Greece	Anissaras	7	MALIEVI VILLA APARTMENTS 2*	BB	Studio Room Garden View/Triple	2429
+Greece	Bali	7	SUNSET HOTEL 3*	HB	One Bedroom Apartment with Air Condition/Triple	2456
+Greece	Scaleta	7	SCALETA BEACH HOTEL 3*	AI	Standard Room/Triple	2486
+Greece	Bali	7	BALI MARE & VILLA 3*	AI	Studio/Triple	2457
+Greece	Hersonissos	7	PELA MARIA 3*	AI	Standard Room with Aircondition/Triple	2533
+Greece	Bali	7	NOSTOS APARTS 3*	RO	One Bedroom Apartment/Triple	2455
+Greece	Stalida	7	THISVI APARTMENTS 2*+	HB	Standard Room with Aircondition/Triple	2492
+Greece	Hersonissos	7	DIMITRION CENTRAL HOTEL 3*	HB	Superior Room/Triple	2481
+Greece	Bali	7	NOSTOS APARTS 3*	BB	Studio/Triple	2560
+Greece	Hersonissos	7	PELA MARIA 3*	AI	Standard Room with Aircondition/Triple	2495
+Greece	Anissaras	7	MALIEVI VILLA APARTMENTS 2*	BB	One Bedroom Apartment Sea View/Triple	2604
+Greece	Bali	7	NOSTOS APARTS 3*	BB	One Bedroom Apartment/Triple	2660
+Greece	Rethymnon	7	ESPERIA BEACH APARTMENTS 3*	RO	Studio/Triple	2577
+Greece	Hersonissos	7	ANNA MARIA VILLAGE 3*	BB	Apartment/Triple	2616
+Greece	Hersonissos	7	ANNA MARIA VILLAGE 3*	BB	Studio/Triple	2657
+Greece	Amoudara	7	MARILENA HOTEL 4*	AI	Superior Room/Triple	2573
+Greece	Anissaras	7	MALIEVI VILLA APARTMENTS 2*	RO	Studio Room Garden View/Quadruple	2678
+Greece	Anissaras	7	MALIEVI VILLA APARTMENTS 2*	RO	One Bedroom Apartment Sea View/Quadruple	2825
+Greece	Bali	7	NOSTOS APARTS 3*	RO	Studio/Quadruple	2881
+Greece	Rethymnon	7	PETRINOS APARTS 3*	BB	One Bedroom Apartment/Quadruple	2926
+Greece	Hersonissos	7	ANNA MARIA VILLAGE 3*	BB	Apartment/Quadruple	2869
+Greece	Anissaras	7	MALIEVI VILLA APARTMENTS 2*	BB	Studio Room Garden View/Quadruple	2971
+Greece	Bali	7	NOSTOS APARTS 3*	RO	One Bedroom Apartment/Quadruple	2958
+Greece	Bali	7	SUNSET HOTEL 3*	HB	One Bedroom Apartment with Air Condition/Quadruple	2946
+Greece	Agios Nikolaos	7	REA HOTEL 3*	AI	Family Room Sea View/Quadruple	2950
+Greece	Agios Nikolaos	7	REA HOTEL 3*	AI	Family Room Sea View/Quadruple	2938
+Greece	Hersonissos	7	ANNA MARIA VILLAGE 3*	BB	Apartment Sea View/Quadruple	3064
+Greece	Bali	7	NOSTOS APARTS 3*	BB	Studio/Quadruple	2995
+Greece	Anissaras	7	MALIEVI VILLA APARTMENTS 2*	BB	One Bedroom Apartment Sea View/Quadruple	2976
+Greece	Bali	7	NOSTOS APARTS 3*	BB	One Bedroom Apartment/Quadruple	3123
+Greece	Hersonissos	7	ANNA MARIA VILLAGE 3*	HB	Apartment/Quadruple	3249
+Greece	Anissaras	7	MALIEVI VILLA APARTMENTS 2*	HB	Studio Room Garden View/Quadruple	3261
+Greece	Hersonissos	7	ANNA MARIA VILLAGE 3*	HB	Apartment Sea View/Quadruple	3397
+Greece	Anissaras	7	MALIEVI VILLA APARTMENTS 2*	HB	One Bedroom Apartment Sea View/Quadruple	3449
+Greece	Anissaras	7	MALIEVI VILLA APARTMENTS 2*	RO	Studio Room Garden View/Quadruple	3510
+Greece	Bali	7	NOSTOS APARTS 3*	HB	Studio/Quadruple	3510
+Greece	Bali	7	NOSTOS APARTS 3*	HB	One Bedroom Apartment/Quadruple	3475
+Greece	Rethymnon	7	THE ARTEMIS PALACE 4*	HB	Two Bedrooms Family Room/Quadruple	3621
+Greece	Anissaras	7	MALIEVI VILLA APARTMENTS 2*	RO	One Bedroom Apartment Sea View/Quadruple	3518
+Greece	Anissaras	8	MALIEVI VILLA APARTMENTS 2*	RO	Studio Room Garden View/Quadruple	3556
+Greece	Rethymnon	7	ESPERIA BEACH APARTMENTS 3*	RO	One Bedroom Maisonette/Quadruple	3527
+Greece	Agios Nikolaos	7	OLYMPUS APART HOTEL 3*+	AI	One Bedroom Apartment/Quadruple	3522
+Greece	Analipsis	7	STELLA VILLAGE 4*	AI	Family Room/Quadruple	3550
+Greece	Bali	7	NOSTOS APARTS 3*	RO	Studio/Quadruple	3686
+Greece	Anissaras	7	CRETAN GARDEN 3*	AI	Family Room Sea View/Quadruple	3640
+Greece	Elounda	7	ELOUNDA RESIDENCE 4*	AI	One Bedroom Family Room/Quadruple	3593
+Greece	Rethymnon	7	ESPERIA BEACH APARTMENTS 3*	RO	Two Bedrooms Maisonette/5 PAX	4305
+Greece	Sissi	7	CASTELLO VILLAGE RESORT APART HOTEL 4*	HB	Two Bedrooms Apartment/5 PAX	4526
+Greece	Rethymnon	7	ESPERIA BEACH APARTMENTS 3*	BB	Two Bedrooms Maisonette/5 PAX	4543
+Greece	Sissi	7	CASTELLO VILLAGE RESORT APART HOTEL 4*	FB	Two Bedrooms Apartment/5 PAX	5019
+Greece	Bali	7	BALI MARE & VILLA 3*	RO	Three Bedrooms Villa/5 PAX	5334
+Greece	Bali	7	BALI MARE & VILLA 3*	RO	Three Bedrooms Villa/5 PAX	5137
+Greece	Rethymnon	7	ESPERIA BEACH APARTMENTS 3*	RO	Two Bedrooms Maisonette/5 PAX	5330
+Greece	Elounda	7	ELOUNDA RESIDENCE 4*	AI	Villa/5 PAX	5355
+Greece	Sissi	7	CASTELLO VILLAGE RESORT APART HOTEL 4*	HB	Two Bedrooms Apartment/5 PAX	5359
+Greece	Rethymnon	7	ESPERIA BEACH APARTMENTS 3*	BB	Two Bedrooms Maisonette/5 PAX	5618
+Greece	Rethymnon	8	ESPERIA BEACH APARTMENTS 3*	RO	Two Bedrooms Maisonette/5 PAX	5440
+Greece	Sissi	8	CASTELLO VILLAGE RESORT APART HOTEL 4*	HB	Two Bedrooms Apartment/5 PAX	5881
+Greece	Rethymnon	8	ESPERIA BEACH APARTMENTS 3*	BB	Two Bedrooms Maisonette/5 PAX	6002
+Greece	Sissi	7	CASTELLO VILLAGE RESORT APART HOTEL 4*	FB	Two Bedrooms Apartment/5 PAX	6182
+Greece	Bali	7	BALI MARE & VILLA 3*	RO	Three Bedrooms Villa/5 PAX	6186
+Greece	Elounda	7	ELOUNDA RESIDENCE 4*	AI	Villa/5 PAX	6342
+Greece	Agios Nikolaos	7	MIRAMARE LUXURY SUITE & VILLAS 5*	BB	Three Bedrooms Villa Private Pool/5 PAX	6413
+Greece	Agios Nikolaos	7	CANDIA PARK VILLAGE 4*+	BB	Grand Family Suite/5 PAX	6297
+Greece	Rethymnon	11	ESPERIA BEACH APARTMENTS 3*	RO	Two Bedrooms Maisonette/5 PAX	6612
+Greece	Panormo	7	FILION SUITES RESORT & SPA 5*	HB	Private Pool Villa/5 PAX	6377
+Greece	Sissi	8	CASTELLO VILLAGE RESORT APART HOTEL 4*	FB	Two Bedrooms Apartment/5 PAX	6607
+Greece	Bali	8	BALI MARE & VILLA 3*	RO	Three Bedrooms Villa/5 PAX	6454
+Greece	Rethymnon	10	ESPERIA BEACH APARTMENTS 3*	RO	Two Bedrooms Maisonette/5 PAX	6684
+Greece	Elounda	8	ELOUNDA RESIDENCE 4*	AI	Villa/5 PAX	6689
+Greece	Sissi	11	CASTELLO VILLAGE RESORT APART HOTEL 4*	HB	Two Bedrooms Apartment/5 PAX	6729
+Greece	Rethymnon	11	ESPERIA BEACH APARTMENTS 3*	BB	Two Bedrooms Maisonette/5 PAX	7024
+Greece	Sissi	10	CASTELLO VILLAGE RESORT APART HOTEL 4*	HB	Two Bedrooms Apartment/5 PAX	6839
+Greece	Rethymnon	10	ESPERIA BEACH APARTMENTS 3*	BB	Two Bedrooms Maisonette/5 PAX	6943
+Greece	Agios Nikolaos	7	MIRAMARE LUXURY SUITE & VILLAS 5*	BB	Three Bedrooms Villa Private Pool/5 PAX	7049
+Greece	Agios Nikolaos	7	MIRAMARE LUXURY SUITE & VILLAS 5*	HB	Three Bedrooms Villa Private Pool/5 PAX	7197
+Spain	Salou	7	CALIFORNIA APARTMENTS 3*	HB	Apartment 4/6/5 PAX	4587
+Spain	Salou	7	CALIFORNIA APARTMENTS 3*	HB	Apartment 4/6/5 PAX	4628
+Spain	Salou	7	CALIFORNIA APARTMENTS 3*	FB	Apartment 4/6/5 PAX	4845
+Spain	Salou	7	CALIFORNIA APARTMENTS 3*	FB	Apartment 4/6/5 PAX	4848
+Spain	La Pineda	7	PALAS PINEDA HOTEL 4*	BB	Apartment 4/6/5 PAX	5166
+Spain	La Pineda	7	PALAS PINEDA HOTEL 4*	HB	Apartment 4/6/5 PAX	5470
+Spain	La Pineda	7	PALAS PINEDA HOTEL 4*	FB	Apartment 4/6/5 PAX	5760
+Spain	Salou	7	FESTIVAL VILLAGE 3*	HB	Two Bedrooms Apartment/5 PAX	5653
+Spain	Salou	7	FESTIVAL VILLAGE 3*	HB	Two Bedrooms Apartment/5 PAX	5650
+Spain	Salou	7	FESTIVAL VILLAGE 3*	HB	Two Suite Apartment/5 PAX	5932
+Spain	Salou	7	FESTIVAL VILLAGE 3*	HB	Two Suite Apartment/5 PAX	5784
+Spain	Salou	11	CALIFORNIA APARTMENTS 3*	HB	Apartment 4/6/5 PAX	6156
+Spain	Salou	11	CALIFORNIA APARTMENTS 3*	FB	Apartment 4/6/5 PAX	6365
+Spain	La Pineda	7	PALAS PINEDA HOTEL 4*	AI	Apartment 4/6/5 PAX	6571
+Spain	Salou	10	CALIFORNIA APARTMENTS 3*	HB	Apartment 4/6/5 PAX	6524
+Spain	Salou	10	CALIFORNIA APARTMENTS 3*	FB	Apartment 4/6/5 PAX	6658
+Spain	Salou	11	FESTIVAL VILLAGE 3*	HB	Two Bedrooms Apartment/5 PAX	7848
+Spain	Salou	11	FESTIVAL VILLAGE 3*	HB	Two Suite Apartment/5 PAX	7966
+Spain	Salou	10	FESTIVAL VILLAGE 3*	HB	Two Bedrooms Apartment/5 PAX	8027
+Spain	Salou	10	FESTIVAL VILLAGE 3*	HB	Two Suite Apartment/5 PAX	8567
+Spain	Santa Susanna	7	SERHS SANT JORDI 3*	RO	Standard Room/Quadruple	3225
+Spain	Santa Susanna	7	SERHS SANT JORDI 3*	BB	Standard Room/Quadruple	3277
+Spain	Lloret de Mar	7	DON JUAN CENTER 2*	RO	Standard Room/Quadruple	3214
+Spain	Santa Susanna	7	SERHS SANT JORDI 3*	RO	Standard Room/Quadruple	3192
+Spain	Santa Susanna	7	SERHS SANT JORDI 3*	HB	Standard Room/Quadruple	3268
+Spain	Santa Susanna	7	SERHS SANT JORDI 3*	BB	Standard Room/Quadruple	3316
+Spain	Lloret de Mar	7	DON JUAN CENTER 2*	BB	Standard Room/Quadruple	3311
+Spain	Roulette Hotels	7	ROULETTE 3* COSTA DORADA 3*	BB	Standard Room/Quadruple	3313
+Spain	Roulette Hotels	7	ROULETTE 3* COSTA DORADA 3*	BB	Standard Room/Quadruple	3253
+Spain	Santa Susanna	7	RIVIERA 3*	RO	Standard Room/Quadruple	3302
+Spain	Malgrat de Mar	7	CARTAGO NOVA 3*	RO	Standard Room/Quadruple	3266
+Spain	Santa Susanna	7	RIVIERA 3*	RO	Standard Room/Quadruple	3302
+Spain	Calella	7	SERHS OASIS PARK 3*	HB	Standard Room/Quadruple	3348
+Spain	Calella	7	SERHS OASIS PARK 3*	HB	Standard Room/Quadruple	3382
+Spain	Lloret de Mar	7	DON JUAN CENTER 2*	HB	Standard Room/Quadruple	3298
+Spain	Santa Susanna	7	RIVIERA 3*	BB	Standard Room/Quadruple	3406
+Spain	Santa Susanna	7	RIVIERA 3*	BB	Standard Room/Quadruple	3287
+Spain	Santa Susanna	7	SERHS SANT JORDI 3*	HB	Standard Room/Quadruple	3340
+Spain	Lloret de Mar	7	DON JUAN CENTER 2*	FB	Standard Room/Quadruple	3326
+Spain	Santa Susanna	7	RIVIERA 3*	HB	Standard Room/Quadruple	3297
+Spain	Santa Susanna	7	RIVIERA 3*	HB	Standard Room/Quadruple	3294
+Spain	Malgrat de Mar	7	CARTAGO NOVA 3*	BB	Standard Room/Quadruple	3439
+Spain	Lloret de Mar	7	DON JUAN LLORET 3*	RO	Standard Room/Quadruple	3317
+Spain	Lloret de Mar	7	DON JUAN CENTER 2*	RO	Standard Room/Quadruple	3450
+Spain	Malgrat de Mar	7	CARTAGO NOVA 3*	HB	Standard Room/Quadruple	3407
+Spain	Roulette Hotels	7	ROULETTE 3* COSTA DORADA 3*	HB	Standard Room/Quadruple	3423
+Spain	Roulette Hotels	7	ROULETTE 3* COSTA DORADA 3*	HB	Standard Room/Quadruple	3410
+Spain	Santa Susanna	7	SERHS SANT JORDI 3*	FB	Standard Room/Quadruple	3372
+Spain	Lloret de Mar	7	DON JUAN LLORET 3*	BB	Standard Room/Quadruple	3384
+Spain	Salou	7	LES DALIES APARTAMENTOS 3*	RO	Apartment 2/4/Quadruple	3470
+Spain	Santa Susanna	7	SERHS SANT JORDI 3*	RO	Standard Room/Triple	2615
+Spain	Salou	7	MARINADA APARTAMENTOS 2*	RO	Studio 3 Pax/Triple	2625
+Spain	Santa Susanna	7	SERHS SANT JORDI 3*	BB	Standard Room/Triple	2662
+Spain	Lloret de Mar	7	DON JUAN CENTER 2*	RO	Standard Room/Triple	2645
+Spain	Santa Susanna	7	SERHS SANT JORDI 3*	RO	Standard Room/Triple	2690
+Spain	Lloret de Mar	7	DON JUAN CENTER 2*	BB	Standard Room/Triple	2685
+Spain	Salou	7	MARINADA APARTAMENTOS 2*	RO	Studio 3 Pax/Triple	2714
+Spain	Santa Susanna	7	SERHS SANT JORDI 3*	HB	Standard Room/Triple	2749
+Spain	Santa Susanna	7	SERHS SANT JORDI 3*	BB	Standard Room/Triple	2690
+Spain	Roulette Hotels	7	ROULETTE 3* COSTA DORADA 3*	BB	Standard Room/Triple	2760
+Spain	Roulette Hotels	7	ROULETTE 3* COSTA DORADA 3*	BB	Standard Room/Triple	2688
+Spain	Lloret de Mar	7	DON JUAN CENTER 2*	HB	Standard Room/Triple	2689
+Spain	Calella	7	SERHS OASIS PARK 3*	HB	Standard Room/Triple	2747
+Spain	Calella	7	SERHS OASIS PARK 3*	HB	Standard Room/Triple	2689
+Spain	Santa Susanna	7	RIVIERA 3*	RO	Standard Room/Triple	2776
+Spain	Malgrat de Mar	7	CARTAGO NOVA 3*	RO	Standard Room/Triple	2699
+Spain	Santa Susanna	7	RIVIERA 3*	RO	Standard Room/Triple	2801
+Spain	Lloret de Mar	7	DON JUAN CENTER 2*	FB	Standard Room/Triple	2731
+Spain	Lloret de Mar	7	DON JUAN LLORET 3*	RO	Standard Room/Triple	2772
+Spain	Santa Susanna	7	SERHS SANT JORDI 3*	HB	Standard Room/Triple	2757
+Spain	Santa Susanna	7	RIVIERA 3*	BB	Standard Room/Triple	2721
+Spain	Santa Susanna	7	RIVIERA 3*	BB	Standard Room/Triple	2746
+Spain	Lloret de Mar	7	DON JUAN CENTER 2*	RO	Standard Room/Triple	2823
+Spain	Santa Susanna	7	RIVIERA 3*	HB	Standard Room/Triple	2765
+Spain	Santa Susanna	7	RIVIERA 3*	HB	Standard Room/Triple	2737
+Spain	Malgrat de Mar	7	CARTAGO NOVA 3*	BB	Standard Room/Triple	2721
+Spain	Roulette Hotels	7	ROULETTE 3* COSTA DORADA 3*	HB	Standard Room/Triple	2819
+Spain	Roulette Hotels	7	ROULETTE 3* COSTA DORADA 3*	HB	Standard Room/Triple	2717
+Spain	Lloret de Mar	7	DON JUAN LLORET 3*	BB	Standard Room/Triple	2732
+Spain	Santa Susanna	7	SERHS SANT JORDI 3*	FB	Standard Room/Triple	2734
+Tunisia	Hammamet	7	MAJESTY GOLF HOTEL 4*	BB	Standard Room/Triple	1953
+Tunisia	Hammamet	7	LE KHALIFE 3*	HB	Standard Room/Triple	1995
+Tunisia	Sousse	7	HOTEL CLEOPATRA 3*	BB	Standard Room/Triple	1966
+Tunisia	Hammamet	7	MAJESTY GOLF HOTEL 4*	HB	Standard Room/Triple	2067
+Tunisia	Sousse	7	HOTEL CLEOPATRA 3*	HB	Standard Room/Triple	2002
+Tunisia	Sousse	7	RESIDENCE KANTAOUI 3*	BB	Standard Room/Triple	2091
+Tunisia	Hammamet	7	SUN HOLIDAY BEACH CLUB 2*	HB	Standard Room/Triple	2080
+Tunisia	Hammamet	7	LE KHALIFE 3*	AI	Standard Room/Triple	2136
+Tunisia	Hammamet	7	LE KHALIFE 3*	BB	Standard Room/Triple	2127
+Tunisia	Sousse	7	HOTEL CLEOPATRA 3*	FB	Standard Room/Triple	2185
+Tunisia	Sousse	7	RESIDENCE KANTAOUI 3*	HB	Standard Room/Triple	2131
+Tunisia	Hammamet	7	HOTEL DALIA 3*	BB	Standard Room/Triple	2138
+Tunisia	Hammamet	7	LES JARDINS DE HAMMAMET 3*	HB	Standard Room/Triple	2210
+Tunisia	Hammamet	7	MAJESTY GOLF HOTEL 4*	BB	Standard Room/Triple	2258
+Tunisia	Hammamet	7	LES JARDINS DE HAMMAMET 3*	HB	Standard Room/Triple	2265
+Tunisia	Hammamet	7	HOTEL DALIA 3*	HB	Standard Room/Triple	2228
+Tunisia	Hammamet	7	SUN HOLIDAY BEACH CLUB 2*	AI	Standard Room/Triple	2250
+Tunisia	Hammamet	7	RIADH CLUB 3*	BB	Standard Room/Triple	2294
+Tunisia	Hammamet	7	LE KHALIFE 3*	FB	Standard Room/Triple	2303
+Tunisia	Hammamet	7	HAMMAMET AZUR PLAZA (Ex.DELPHIN PLAZA HAMMAMET) 4*	HB	Standard Room/Triple	2301
+Tunisia	Hammamet	7	LE KHALIFE 3*	HB	Standard Room/Triple	2314
+Tunisia	Hammamet	7	HOTEL DALIA 3*	FB	Standard Room/Triple	2352
+Tunisia	Hammamet	7	RIADH CLUB 3*	HB	Standard Room/Triple	2358
+Tunisia	Sousse	7	HOTEL CLEOPATRA 3*	BB	Standard Room/Triple	2319
+Tunisia	Hammamet	7	HOTEL VILLAMAR 4*	BB	Standard Room/Triple	2308
+Tunisia	Skanes	7	RUSPINA 4*+	HB	Standard Room/Triple	2389
+Tunisia	Hammamet	7	MAJESTY GOLF HOTEL 4*	HB	Standard Room/Triple	2336
+Tunisia	Hammamet	7	SUN HOLIDAY BEACH CLUB 2*	HB	Standard Room/Triple	2371
+Tunisia	Sousse	7	HOTEL CLEOPATRA 3*	HB	Standard Room/Triple	2388
+Tunisia	Hammamet	7	LE KHALIFE 3*	AI	Standard Room/Triple	2451
+Tunisia	Sousse	7	EL MOURADI PALACE 5*	HB	Standard Room/Triple	3480
+Tunisia	Monastir	7	DESSOLE BELLA VISTA 4*	AI	Quadruple Sea View/Triple	3460
+Tunisia	Sousse	7	EL MOURADI PORT EL KANTAOUI 4*	SILVERAI	Sea View/Triple	3387
+Tunisia	Monastir	7	ROSA BEACH 4*	AI	Sea View/Triple	3437
+Tunisia	Hammamet	7	EL MOURADI HAMMAMET 5*	HB	Standard Room/Triple	3465
+Tunisia	Sousse	7	MARHABA BEACH 4*	AI	Standard Room/Triple	3466
+Tunisia	Sousse	7	MARHABA ROYAL SALEM 4*	AI	Standard Room/Triple	3527
+Tunisia	Sousse	7	EL MOURADI PORT EL KANTAOUI 4*	SILVERAI	Standard Room/Triple	3412
+Tunisia	Sousse	7	ABOU SOFIANE HOTEL 4*	AI	Standard Room/Triple	3481
+Tunisia	Sousse	7	EL MOURADI PALACE 5*	FB	Standard Room/Triple	3471
+Tunisia	Hammamet	7	LE ROYAL HAMMAMET 5*	HB	Standard Room Sea View/Triple	3441
+Tunisia	Monastir	7	EL MOURADI SKANES 4*	SILVERAI	Sea View/Triple	3546
+Tunisia	Hammamet	7	LE ROYAL HAMMAMET 5*	FB	Standard Room Sea View/Triple	3501
+Tunisia	Sousse	7	RIU CLUB HOTEL BELLEVUE PARK 4*	AI	Garden View/Triple	3554
+Tunisia	Hammamet	7	RIU MARCO POLO 4*	AI	Garden View/Triple	3581
+Tunisia	Hammamet	7	DESSOLE LE HAMMAMET RESORT 4*	AI	Suite Three Bedrooms ROH/Triple	3589
+Tunisia	Sousse	7	RIU IMPERIAL MARHABA 5*	AI	Garden View/Triple	3502
+Tunisia	Hammamet	7	EL MOURADI HAMMAMET 5*	A La Carte AI	Standard Room/Triple	3605
+Tunisia	Sousse	7	MARHABA PALACE 4*	AI	Standard Room/Triple	3652
+Tunisia	Hammamet	7	EL MOURADI EL MENZAH 4*	A La Carte AI	Sea View/Triple	3548
+Tunisia	Hammamet	7	EL MOURADI BEACH 4*	SILVERAI	Sea View/Triple	3630
+Tunisia	Hammamet	7	EL MOURADI EL MENZAH 4*	A La Carte AI	Sea View/Triple	3681
+Tunisia	Sousse	7	EL MOURADI PALACE 5*	HB	Side Sea View/Triple	3677
+Tunisia	Hammamet	7	LE ROYAL HAMMAMET 5*	FB	Standard Room/Triple	3701
+Tunisia	Sousse	7	RIU CLUB HOTEL BELLEVUE PARK 4*	AI	Sea View/Triple	3668
+Tunisia	Hammamet	7	RIU MARCO POLO 4*	AI	Sea View/Triple	3730
+Tunisia	Monastir	7	ROSA BEACH 4*	AI	Standard Room/Triple	3668
+Tunisia	Hammamet	7	EL MOURADI HAMMAMET 5*	HB	Sea View/Triple	3740
+Tunisia	Sousse	7	EL MOURADI PORT EL KANTAOUI 4*	SILVERAI	Sea View/Triple	3635
+Tunisia	Hammamet	7	EL MOURADI BEACH 4*	SILVERAI	Junior Suite/Triple	3775
+Tunisia	Hammamet	7	DESSOLE LE HAMMAMET RESORT 4*	AI	Suite Three Bedrooms ROH/5 PAX	4968
+Turkey	Kemer	7	OLIMPOS BEACH HOTEL 3*	AI	Family Room/5 PAX	3474
+Turkey	Side (kizilot)	7	SIDE ARIA HOTEL (EX.CLUB FLIPER SIDE) 3*+	AI	Family Room/5 PAX	3417
+Turkey	Kemer	8	OLIMPOS BEACH HOTEL 3*	AI	Family Room/5 PAX	3613
+Turkey	Side (kizilot)	8	SIDE ARIA HOTEL (EX.CLUB FLIPER SIDE) 3*+	AI	Family Room/5 PAX	3502
+Turkey	Kemer	7	OLIMPOS BEACH HOTEL 3*	AI	Family Room/5 PAX	3616
+Turkey	Side (kizilot)	7	SIDE ARIA HOTEL (EX.CLUB FLIPER SIDE) 3*+	AI	Family Room/5 PAX	3561
+Turkey	Alanya (konakli)	7	SAN MARIN 3*+	AI	Family Room/5 PAX	3634
+Turkey	Kemer (beldibi)	7	SUNMERRY HOTEL 4*	AI	Large Room/5 PAX	3609
+Turkey	Kemer	8	OLIMPOS BEACH HOTEL 3*	AI	Family Room/5 PAX	3748
+Turkey	Side (kizilot)	8	SIDE ARIA HOTEL (EX.CLUB FLIPER SIDE) 3*+	AI	Family Room/5 PAX	3727
+Turkey	Alanya (konakli)	8	SAN MARIN 3*+	AI	Family Room/5 PAX	3869
+Turkey	Alanya (konakli)	7	SAN MARIN 3*+	AI	Family Room/5 PAX	3801
+Turkey	Alanya (mahmutlar)	7	SONAS ALPINO XENO HOTELS 4*	AI	Family Room/5 PAX	3798
+Turkey	Kemer (beldibi)	8	SUNMERRY HOTEL 4*	AI	Large Room/5 PAX	3773
+Turkey	Alanya (konakli)	8	SAN MARIN 3*+	AI	Family Room/5 PAX	3974
+Turkey	Alanya (mahmutlar)	7	SONAS ALPINO XENO HOTELS 4*	AI	Family Room/5 PAX	4108
+Turkey	Alanya (mahmutlar)	8	SONAS ALPINO XENO HOTELS 4*	AI	Family Room/5 PAX	3971
+Turkey	Alanya (mahmutlar)	8	SONAS ALPINO XENO HOTELS 4*	AI	Family Room/5 PAX	4231
+Turkey	Alanya (kestel)	7	ORIENT PALACE HOTELS & RESORTS 5*	AI	Two Bedrooms Family Room/5 PAX	4455
+Turkey	Kemer (beldibi)	7	SUMELA GARDEN 3*+	AI	Suite/5 PAX	4510
+Turkey	Alanya (kestel)	7	ORIENT PALACE HOTELS & RESORTS 5*	AI	Two Bedrooms Family Room/5 PAX	4499
+Turkey	Kemer (beldibi)	7	SUMELA GARDEN 3*+	AI	Suite/5 PAX	4581
+Turkey	Alanya (kestel)	8	ORIENT PALACE HOTELS & RESORTS 5*	AI	Two Bedrooms Family Room/5 PAX	4533
+Turkey	Kemer (beldibi)	8	SUMELA GARDEN 3*+	AI	Suite/5 PAX	4696
+Turkey	Alanya (kestel)	8	ORIENT PALACE HOTELS & RESORTS 5*	AI	Two Bedrooms Family Room/5 PAX	4839
+Turkey	Kemer	7	GARDEN RESORT HOTEL 4*+	AI	Family Room/5 PAX	4776
+Turkey	Kemer (beldibi)	8	SUMELA GARDEN 3*+	AI	Suite/5 PAX	4820
+Turkey	Kemer	7	GARDEN RESORT HOTEL 4*+	AI	Family Room/5 PAX	4952
+Turkey	Kemer (camyuva)	7	SIMENA HOLIDAY VILLAGE&VILLAS HV1	UA	Two Bedrooms Villa/5 PAX	5190
+Turkey	Kemer	8	GARDEN RESORT HOTEL 4*+	AI	Family Room/5 PAX	5236
+Turkey	Antalya (lara)	7	PRIMA HOTEL 3*	HB	Standard Room/Single	1323
+Turkey	Kemer	7	KALIPTUS HOTEL 2*	HB	Standard Room/Single	1358
+Turkey	MarMaris	7	KALEMCI HOTEL 3*	HB	Standard Room/Single	1355
+Turkey	Siteler	7	SERAY 3*	AI	Standard Room/Single	1345
+Turkey	Kemer (beldibi)	7	ASIA HOTEL 3*	AI	Standard Room/Single	1387
+Turkey	Kemer	7	ARES HOTEL KEMER 3*	AI	Standard Room/Single	1377
+Turkey	Antalya (lara)	7	GREEN BEYZA HOTEL 3*	HB	Standard Room/Single	1368
+Turkey	Antalya (lara)	7	PRIMA HOTEL 3*	HB	Standard Room/Single	1378
+Turkey	Kemer	7	ARIKAN INN HOTEL 3*	HB	Standard Room/Single	1359
+Turkey	Kemer	7	KALIPTUS HOTEL 2*	HB	Standard Room/Single	1361
+Turkey	Antalya (lara)	7	PRIMA HOTEL 3*	AI	Standard Room/Single	1363
+Turkey	MarMaris	7	KAREN HOTEL 3*	AI	Standard Room/Single	1348
+Turkey	Antalya (lara)	8	PRIMA HOTEL 3*	HB	Standard Room/Single	1406
+Turkey	Antalya (lara)	7	PANC HOTEL 3*+	BB	Standard Room/Single	1362
+Turkey	Alanya (konakli)	7	CLUB WEST GARDEN 3*	AI	Standard Room/Single	1375
+Turkey	Kemer	8	KALIPTUS HOTEL 2*	HB	Standard Room/Single	1352
+Turkey	Antalya	7	SUITE LAGUNA 3*+	HB	Standard Room/Single	1363
+Turkey	Kemer	7	PEYMEN HOTEL 3*	AI	Standard Room/Single	1364
+Turkey	MarMaris	7	AEGEAN PARK 3*	AI	Standard Room/Single	1381
+Turkey	Kemer	7	DERYA DENIZ 3*	AI	Standard Room/Single	1416
+Turkey	Alanya (mahmutlar)	7	GRAND BOHEMIA HOTEL 3*	AI	Standard Room/Single	1420
+Turkey	Antalya (lara)	7	LARA HADRIANUS 3*+	AI	Standard Room/Single	1389
+Turkey	Antalya (lara)	7	NEW YORK BOUTIQUE HOTEL SpecialClass	HB	Standard Room/Single	1399
+Turkey	Kemer	7	SELIMHAN HOTEL 3*	AI	Standard Room/Single	1415
+Turkey	Kemer	7	ARES HOTEL KEMER 3*	AI	Standard Room/Single	1420
+Turkey	Kemer (beldibi)	7	ASIA HOTEL 3*	AI	Standard Room/Single	1379
+Turkey	Antalya (lara)	7	PANC HOTEL 3*+	HB	Standard Room/Single	1414
+Turkey	Alanya (konakli)	7	CLUB SOLE BEACH 3*	AI	Standard Room/Single	1386
+Turkey	Antalya (lara)	7	GREEN BEYZA HOTEL 3*	HB	Standard Room/Single	1394
+Turkey	Antalya (lara)	7	PRIMA HOTEL 3*	AI	Standard Room/Single	1390
+Turkey	MarMaris	7	KALEMCI HOTEL 3*	HB	Standard Room/Triple	2054
+Turkey	Icmeler	7	VELA HOTEL 3*+	AI	Standard Room/Triple	2116
+Turkey	Siteler	7	SERAY 3*	AI	Standard Room/Triple	2143
+Turkey	Antalya (lara)	7	PRIMA HOTEL 3*	HB	Standard Room/Triple	2198
+Turkey	Kemer	7	KALIPTUS HOTEL 2*	HB	Standard Room/Triple	2274
+Turkey	MarMaris	7	AEGEAN PARK 3*	AI	Standard Room/Triple	2292
+Turkey	Kemer	7	INFINITY HOTEL 3*	AI	Standard Room/Triple	2218
+Turkey	Kemer	7	ARES HOTEL KEMER 3*	AI	Standard Room/Triple	2333
+Turkey	Alanya	7	KLEOPATRA HERMES 3*+	AI	Standard Room/Triple	2252
+Turkey	Kemer (beldibi)	7	ASIA HOTEL 3*	AI	Standard Room/Triple	2270
+Turkey	Antalya (lara)	7	GREEN BEYZA HOTEL 3*	HB	Standard Room/Triple	2280
+Turkey	Kemer	7	ARIKAN INN HOTEL 3*	HB	Standard Room/Triple	2353
+Turkey	Antalya (lara)	7	PRIMA HOTEL 3*	AI	Standard Room/Triple	2288
+Turkey	Antalya (lara)	8	PRIMA HOTEL 3*	HB	Standard Room/Triple	2290
+Turkey	Antalya (lara)	7	PANC HOTEL 3*+	BB	Standard Room/Triple	2289
+Turkey	Alanya (konakli)	7	CLUB WEST GARDEN 3*	AI	Standard Room/Triple	2343
+Turkey	Kemer	8	KALIPTUS HOTEL 2*	HB	Standard Room/Triple	2284
+Turkey	Icmeler	7	HOTEL VERDE (Ex.S HOTEL) 4*	AI	Standard Room/Triple	2322
+Turkey	Kemer	7	PEYMEN HOTEL 3*	AI	Standard Room/Triple	2379
+Turkey	Kemer	7	DERYA DENIZ 3*	AI	Standard Room/Triple	2372
+Turkey	Alanya (mahmutlar)	7	GRAND BOHEMIA HOTEL 3*	AI	Standard Room/Triple	2354
+Turkey	Antalya (lara)	7	LARA HADRIANUS 3*+	AI	Standard Room/Triple	2276
+Turkey	Kemer	7	FERONIA HILLS HOTEL 3*	AI	Standard Room/Triple	2307
+Turkey	Side (kizilot)	7	APERION BEACH HOTEL 3*+	AI	Club Room/Triple	2279
+Turkey	Kemer	7	INFINITY HOTEL 3*	AI	Family Room/Triple	2279
+Turkey	Antalya (lara)	7	PRIMA HOTEL 3*	HB	Standard Room/Triple	2282
+Turkey	Kemer (beldibi)	7	ADRESS BEACH HOTEL 3*+	AI	Standard Room/Triple	2331
+Turkey	Antalya (lara)	7	NEW YORK BOUTIQUE HOTEL SpecialClass	HB	Standard Room/Triple	2376
+Turkey	Kemer	8	INFINITY HOTEL 3*	AI	Standard Room/Triple	2377
+Turkey	Kemer	7	KALIPTUS HOTEL 2*	HB	Standard Room/Triple	2299
