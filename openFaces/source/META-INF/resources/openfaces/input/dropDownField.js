@@ -478,23 +478,13 @@ O$.DropDownField = {
 
       _setItemPresentationValue:function () {
 
-        function removeAllIDs(node) {
-          if (node.attributes && (node.getAttribute("id") != undefined))
-            node.removeAttribute("id");
-          if (node.hasChildNodes()) {
-            for (var i = 0; i < node.childNodes.length; i++) {
-              removeAllIDs(node.childNodes[i]);
-            }
-          }
-        }
-
         var selectedItem = dropDown._getSelectedItem();
         if (!selectedItem){
           dropDown._showPresentationPromptText(dropDown._promptText);
           return;
         }
         var newItemPresentationContentNode = selectedItem.cloneNode(true);
-        removeAllIDs(newItemPresentationContentNode);
+        O$.removeIdsFromNode(newItemPresentationContentNode);
 
         // Remove old values from itemPresentation field
         while (itemPresentation.hasChildNodes()) {
@@ -1046,7 +1036,7 @@ O$.DropDownField = {
 
     var field = dropDown._field;
 
-    // Workaround for IE (dropdown field expands when field width is 100% and styles are aplied by js on mouseover/mouseout)
+    // Workaround for IE (dropdown field expands when field width is 100% and styles are applied by js on mouseover/mouseout)
     if (O$.isExplorer() && (dropDown._fieldClass != dropDown._rolloverFieldClass || dropDown._containerClass != dropDown._rolloverContainerClass)) {
       setTimeout(function() {
         O$.DropDownField._fixSize(dropDown);

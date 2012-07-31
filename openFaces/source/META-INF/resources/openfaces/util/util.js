@@ -1236,6 +1236,16 @@ if (!window.O$) {
     return container;
   };
 
+  O$.removeIdsFromNode = function removeIDs(rootNode) {
+    if (rootNode.attributes && (rootNode.getAttribute("id") != undefined))
+      rootNode.removeAttribute("id");
+    if (rootNode.hasChildNodes()) {
+      for (var i = 0; i < rootNode.childNodes.length; i++) {
+        removeIDs(rootNode.childNodes[i]);
+      }
+    }
+  }
+
   // ----------------- AJAX RELATED UTILITY FUNCTIONS -----------------------------------------------------
   O$.lockAjax = function() {
     O$._ajaxTemporaryLocked = true;
@@ -3043,7 +3053,8 @@ if (!window.O$) {
         var rules = styleSheet.rules;
         for (var i = 0; i < rules.length; i++) {
           if (rules[i].selectorText == nameOfCssClass) {
-            delete  O$._cssRulesBySelectors[nameOfCssClass];
+            var ruleBySelector = O$._cssRulesBySelectors ? O$._cssRulesBySelectors[nameOfCssClass] : null;
+            if (ruleBySelector) delete ruleBySelector;
             styleSheet.removeRule(i);
             break;
           }
@@ -3052,7 +3063,8 @@ if (!window.O$) {
         var rules = styleSheet.cssRules;
         for (var i = 0; i < rules.length; i++) {
           if (rules[i].selectorText == nameOfCssClass) {
-            delete  O$._cssRulesBySelectors[nameOfCssClass];
+            var ruleBySelector = O$._cssRulesBySelectors ? O$._cssRulesBySelectors[nameOfCssClass] : null;
+            if (ruleBySelector) delete ruleBySelector;
             styleSheet.deleteRule(i);
             break;
           }

@@ -56,7 +56,10 @@
   .o_hintlabel_hint,
   .o_timetableView,
   .o_file_upload,
-  .o_s_file_upload{
+  .o_s_file_upload,
+  .o_confirmation,
+  .o_folding_panel,
+  .o_file_upload_popup {
   border: 1px solid gray;
 }
 
@@ -416,7 +419,6 @@
   z-index: 301;
   overflow: hidden;
   cursor: default;
-  border: 1px solid gray;
 }
 
 .o_confirmation_icon_backplane {
@@ -1234,7 +1236,7 @@
 
 /* Folding panel */
 .o_folding_panel {
-  border: 1px solid gray;
+
 }
 
 .o_folding_panel_content {
@@ -1290,7 +1292,6 @@
 .o_file_upload_popup {
     z-index: 300;
     background: white;
-    border: 1px solid gray;
 }
 
 .o_file_upload_header {
@@ -2103,7 +2104,7 @@
   padding-top: 5px;
   width: 100%;
   clear: both;
-  overflow:hidden;
+  overflow: hidden;
 }
 
 .o_filter_row: after {
@@ -2119,12 +2120,12 @@
 .o_filter_row_item {
   margin-right: 5px;
   float: left;
-  display:inline;
+  display: inline;
 }
 
 .o_filter_no_text{
   margin-top: 5px;
-  margin-right:10px;
+  margin-right: 10px;
   font-style: italic;
 }
 
@@ -2133,42 +2134,42 @@
 }
 
 .o_filter_row_item_checkbox {
-  height:38px;
+  height: 38px;
 }
 
 .o_filter_parameter {
   float: left;
-  padding:2px 0;
-  margin:0 5px 0 0;
-  display:inline;
-  border:1px solid #808080;
-  height:22px;
+  padding: 2px 0;
+  margin: 0 5px 0 0;
+  display: inline;
+  border: 1px solid #808080;
+  height: 22px;
 }
 table.o_filter_parameter {
-  padding:0;
+  padding: 0;
 }
 .o_dropdown.o_filter_parameter{
-  display:inline-table;
+  display: inline-table;
 }
 
 .o_filter_add_button,
 .o_filter_delete_button {
   width: 25px;
-  height:25px;
-  margin-top:1px;
-  padding:0;
+  height: 25px;
+  margin-top: 1px;
+  padding: 0;
 }
 
 .o_filter_inverse_checkbox {
   height: 16px;
-  margin:3px 4px;
+  margin: 3px 4px;
 }
 
 .o_filter_inverse_label {
-  font-size:9px;
-  display:block;
-  margin-top:-7px;
-  text-align:center;
+  font-size: 9px;
+  display: block;
+  margin-top: -7px;
+  text-align: center;
 }
 /* Checkbox */
 .o_checkbox_image {
