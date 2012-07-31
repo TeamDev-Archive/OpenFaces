@@ -212,83 +212,74 @@
         </td>
       </tr>
     </table>
-      <h:panelGroup layout="block" style="text-align: center;width:100%;margin: 15px 0px 15px 0px;">
-        <o:commandButton
-                id="submitButton"
-                value="Find tours"
-                execute="selectRoom selectRegion selectHoliday selectStars selectFood"
-                action="#{SelectOneMenuBean.findTours}"
-                render="resultTable"/>
-      </h:panelGroup>
+    <h:panelGroup layout="block" style="text-align: center;width:100%;margin: 15px 0px 15px 0px;">
+      <o:commandButton
+              id="submitButton"
+              value="Find tours"
+              execute="selectRoom selectRegion selectHoliday selectStars selectFood"
+              action="#{SelectOneMenuBean.findTours}"
+              render="resultTable"/>
+    </h:panelGroup>
 
 
-      <o:dataTable
-              value="#{SelectOneMenuBean.filteredTours}"
-              style="background-color:white;margin-top: 15px; width: 95%; height: 420px;"
-              id="resultTable"
-              headerSectionStyle="text-align: left;"
-              horizontalGridLines="1px solid #f6f7f8"
-              verticalGridLines="1px solid #f6f7f8"
-              var="tour">
-        <o:scrolling/>
-        <o:column>
-          <f:facet name="header">
-            <h:outputText value="Holiday"/>
-          </f:facet>
-          <h:outputText value="#{tour.holiday}"/>
-        </o:column>
-
-        <o:column style="width:55px">
-          <f:facet name="header">
-            <h:outputText value="Country"/>
-          </f:facet>
-          <h:outputText value="#{tour.region.country}"/>
-        </o:column>
-
-        <o:column>
-          <f:facet name="header">
-            <h:outputText value="Region"/>
-          </f:facet>
-          <h:outputText value="#{tour.region.region}"/>
-        </o:column>
-
-        <o:column style="width:45px">
-          <f:facet name="header">
-            <h:outputText value="Nights"/>
-          </f:facet>
-          <h:outputText value="#{tour.nights}"/>
-        </o:column>
-
-        <o:column style="width: 140px;">
-          <f:facet name="header">
-            <h:outputText value="Hotel"/>
-          </f:facet>
-          <h:outputText value="#{tour.hotel}"/>
-        </o:column>
-
-        <o:column>
-          <f:facet name="header">
-            <h:outputText value="Room"/>
-          </f:facet>
-          <h:outputText value="#{tour.room}"/>
-        </o:column>
-
-        <o:column style="width:35px">
-          <f:facet name="header" >
-            <h:outputText value="Food"/>
-          </f:facet>
-          <h:outputText value="#{tour.food}"/>
-        </o:column>
-
-        <o:column style="width:40px">
-          <f:facet name="header">
-            <h:outputText  value="Cost"/>
-          </f:facet>
-          <h:outputText style="font-weight: bold;" value="\$#{tour.cost}"/>
-        </o:column>
-      </o:dataTable>
-
-
+    <o:dataTable
+            value="#{SelectOneMenuBean.filteredTours}"
+            style="background-color:white;margin-top: 15px; width: 95%; height: 420px;"
+            id="resultTable"
+            headerSectionStyle="text-align: left;"
+            horizontalGridLines="1px solid #f6f7f8"
+            verticalGridLines="1px solid #f6f7f8"
+            var="tour">
+      <o:scrolling/>
+      <o:column>
+        <f:facet name="header">
+          <h:outputText value="Holiday"/>
+        </f:facet>
+        <h:outputText value="#{tour.holiday}"/>
+      </o:column>
+      <o:column style="width:55px">
+        <f:facet name="header">
+          <h:outputText value="Country"/>
+        </f:facet>
+        <h:outputText value="#{tour.region.country}"/>
+      </o:column>
+      <o:column>
+        <f:facet name="header">
+          <h:outputText value="Region"/>
+        </f:facet>
+        <h:outputText value="#{tour.region.region}"/>
+      </o:column>
+      <o:column style="width:45px">
+        <f:facet name="header">
+          <h:outputText value="Nights"/>
+        </f:facet>
+        <h:outputText value="#{tour.nights}"/>
+      </o:column>
+      <o:column style="width: 140px;">
+        <f:facet name="header">
+          <h:outputText value="Hotel"/>
+        </f:facet>
+        <h:outputText value="#{tour.hotel}"/>
+      </o:column>
+      <o:column>
+        <f:facet name="header">
+          <h:outputText value="Room"/>
+        </f:facet>
+        <h:outputText value="#{tour.room}"/>
+      </o:column>
+      <o:column style="width:35px">
+        <f:facet name="header" >
+          <h:outputText value="Food"/>
+        </f:facet>
+        <h:outputText value="#{tour.food}"/>
+      </o:column>
+      <o:column style="width:40px">
+        <f:facet name="header">
+          <h:outputText  value="Cost"/>
+        </f:facet>
+        <h:outputText style="font-weight: bold;" value="\$#{tour.cost}"/>
+      </o:column>
+    </o:dataTable>
 
     <div id="Description">
       <h4>Demonstrated Features</h4>

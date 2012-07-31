@@ -120,10 +120,10 @@ public class SelectOneMenuBean implements Serializable {
                 String room = new String(toursAtributes[5].getBytes(), "utf-8");
                 String cost = new String(toursAtributes[6].getBytes(), "utf-8");
                 tours.add(new Tour(availableHolidays.get(random.nextInt(availableHolidays.size())), new Region(country, region), Integer.parseInt(nights), hotel, food, room, Integer.parseInt(cost)));
-                if (!availableRegions.contains(new Region(country, region))){
+                if (!availableRegions.contains(new Region(country, region))) {
                     availableRegions.add(new Region(country, region));
                 }
-                if (!availableRooms.contains(room)){
+                if (!availableRooms.contains(room)) {
                     availableRooms.add(room);
                 }
             }
@@ -148,7 +148,7 @@ public class SelectOneMenuBean implements Serializable {
 
 
     public void findTours() {
-        TourSearchCriteria criteria = new TourSearchCriteria(selectedRegion, selectedFood,selectedHoliday,selectedRoom,selectedHotelStars);
+        TourSearchCriteria criteria = new TourSearchCriteria(selectedRegion, selectedFood, selectedHoliday, selectedRoom, selectedHotelStars);
         filteredTours = cachedToursSearchResults.get(criteria);
         if (filteredTours == null) {
             filteredTours = findToursByCriteria(criteria);
@@ -156,22 +156,22 @@ public class SelectOneMenuBean implements Serializable {
         }
     }
 
-    public List<Tour> findToursByCriteria(TourSearchCriteria criteria){
+    public List<Tour> findToursByCriteria(TourSearchCriteria criteria) {
         List<Tour> resultTours = new ArrayList<Tour>();
-        for (Tour tour : tours){
-            if (!criteria.getFood().equals("") && !criteria.getFood().equals(tour.getFood())){
+        for (Tour tour : tours) {
+            if (!criteria.getFood().equals("") && !criteria.getFood().equals(tour.getFood())) {
                 continue;
             }
-            if (!criteria.getHoliday().equals("") && !criteria.getHoliday().equals(tour.getHoliday())){
+            if (!criteria.getHoliday().equals("") && !criteria.getHoliday().equals(tour.getHoliday())) {
                 continue;
             }
-            if (!criteria.getRegion().equals("") && !criteria.getRegion().equals(tour.getRegion().getRegion())){
+            if (!criteria.getRegion().equals("") && !criteria.getRegion().equals(tour.getRegion().getRegion())) {
                 continue;
             }
-            if (!criteria.getRoom().equals("") && !criteria.getRoom().equals(tour.getRoom())){
+            if (!criteria.getRoom().equals("") && !criteria.getRoom().equals(tour.getRoom())) {
                 continue;
             }
-            if (criteria.getHotelStars() != 0 && criteria.getHotelStars() != tour.getHotelStars()){
+            if (criteria.getHotelStars() != 0 && criteria.getHotelStars() != tour.getHotelStars()) {
                 continue;
             }
             resultTours.add(tour);
