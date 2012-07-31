@@ -24,6 +24,9 @@ O$.InputTextarea = {
 
     O$.addEventHandler(textArea, "keyup", function() {
       textArea.scrollTop = 0;
+      if (textArea.scrollHeight > textArea.offsetHeight) {
+        textArea.style.height = "auto";
+      }
       while (textArea.scrollHeight > textArea.offsetHeight) {
         var rows = textArea.getAttribute("rows");
         if (rows == null)
