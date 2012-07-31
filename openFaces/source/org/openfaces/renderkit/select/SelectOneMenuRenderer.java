@@ -86,7 +86,7 @@ public class SelectOneMenuRenderer extends DropDownFieldRenderer {
         writer.writeAttribute("cellspacing", "0", null);
         writer.writeAttribute("cellpadding", "0", null);
         // 98% - for compatibility with IE quirk mode
-        writer.writeAttribute("style", "width: 98%;", null);
+        writer.writeAttribute("style", "width: 98%;height: 98%;", null);
         writer.startElement("colgroup", fieldComponent);
         writer.endElement("colgroup");
         writer.startElement("tbody", fieldComponent);

@@ -2,52 +2,293 @@
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:o="http://openfaces.org/"
      xmlns:c="http://java.sun.com/jsp/jstl/core">
-
+  <style>
+    .noValueSelected:not(.o_dropdown_list_item){
+      font-style: italic;
+      color: graytext;
+    }
+    .foodColumn2{
+      font-size: 7pt;
+      padding: 3px;
+    }
+    .rollOverItem {
+      background: none repeat scroll 0 0 highlight;
+      color: white;
+    }
+    .rollOverItem .noValueSelected{
+      color: white;
+    }
+  </style>
   <div id="Demo">
+    <h2>
+      Holiday Tours Navigator
+    </h2>
+    <table style="width: 100%;">
+      <tr>
+        <td>
+          <span style="font-weight: bold;">Holiday</span>
+          <o:selectOneMenu
+                  suggestionMode="all"
+                  style="height: 42px;width: 210px;"
+                  value="#{SelectOneMenuBean.selectedHoliday}"
+                  rolloverListItemClass="rollOverItem"
+                  id="selectHoliday">
+            <f:selectItem value="" itemLabel="Any holiday">
+              <h:outputText styleClass="noValueSelected" value="Any holiday"/>
+            </f:selectItem>
+            <f:selectItem value="New Year's Day">
+              <h:panelGrid columns="2">
+                <h:graphicImage url="../images/selectonemenu/newyear.png"/>
+                <h:outputText value="New Year's Day" />
+              </h:panelGrid>
+            </f:selectItem>
+            <f:selectItem value="Martin Luther King, Jr.">
+              <h:panelGrid columns="2">
+                <h:graphicImage url="../images/selectonemenu/luterday.png"/>
+                <h:outputText value="Martin Luther King, Jr." style="padding-left: 5px;"/>
+              </h:panelGrid>
+            </f:selectItem>
+            <f:selectItem value="Inauguration Day">
+              <h:panelGrid columns="2">
+                <h:graphicImage url="../images/selectonemenu/inaguration.png"/>
+                <h:outputText value="Inauguration Day" style="padding-left: 5px;"/>
+              </h:panelGrid>
+            </f:selectItem>
+            <f:selectItem value="Presidents Day">
+              <h:panelGrid columns="2">
+                <h:graphicImage url="../images/selectonemenu/president.png"/>
+                <h:outputText value="Presidents' Day" style="padding-left: 5px;"/>
+              </h:panelGrid>
+            </f:selectItem>
+            <f:selectItem value="Memorial Day">
+              <h:panelGrid columns="2">
+                <h:graphicImage url="../images/selectonemenu/memorial.png"/>
+                <h:outputText value="Memorial Day" style="padding-left: 5px;"/>
+              </h:panelGrid>
+            </f:selectItem>
+            <f:selectItem value="Independence Day">
+              <h:panelGrid columns="2">
+                <h:graphicImage url="../images/selectonemenu/independent.png"/>
+                <h:outputText value="Independence Day" style="padding-left: 5px;"/>
+              </h:panelGrid>
+            </f:selectItem>
+            <f:selectItem value="Labor Day">
+              <h:panelGrid columns="2">
+                <h:graphicImage url="../images/selectonemenu/labor.png"/>
+                <h:outputText value="Labor Day" style="padding-left: 5px;"/>
+              </h:panelGrid>
+            </f:selectItem>
+            <f:selectItem value="Columbus Day">
+              <h:panelGrid columns="2">
+                <h:graphicImage url="../images/selectonemenu/columbus.png"/>
+                <h:outputText value="Columbus Day" style="padding-left: 5px;"/>
+              </h:panelGrid>
+            </f:selectItem>
+            <f:selectItem value="Veterans Day">
+              <h:panelGrid columns="2">
+                <h:graphicImage url="../images/selectonemenu/veteran.png"/>
+                <h:outputText value="Veterans Day" style="padding-left: 5px;"/>
+              </h:panelGrid>
+            </f:selectItem>
+            <f:selectItem value="Thanksgiving Day">
+              <h:panelGrid columns="2">
+                <h:graphicImage url="../images/selectonemenu/thanksgiving.png"/>
+                <h:outputText value="Thanksgiving Day" style="padding-left: 5px;"/>
+              </h:panelGrid>
+            </f:selectItem>
+            <f:selectItem value="Christmas">
+              <h:panelGrid columns="2">
+                <h:graphicImage url="../images/selectonemenu/christmas.png"/>
+                <h:outputText value="Christmas" style="padding-left: 5px;"/>
+              </h:panelGrid>
+            </f:selectItem>
+          </o:selectOneMenu>
+        </td>
+        <td colspan="2">
+          <span style="font-weight: bold;">Room type</span>
+          <o:selectOneMenu
+                  value="#{SelectOneMenuBean.selectedRoom}"
+                  suggestionMode="substring"
+                  var="room"
+                  style="margin-bottom:15px;height: 26px;width:355px;"
+                  rolloverListItemClass="rollOverItem"
+                  id="selectRoom">
+            <f:selectItem itemValue="" itemLabel="Any room">
+              <h:outputText styleClass="noValueSelected" value="Any room"/>
+            </f:selectItem>
+            <f:selectItems value="#{SelectOneMenuBean.availableRooms}"/>
+          </o:selectOneMenu>
+        </td>
+      </tr>
+      <tr>
+        <td style="width: 275px;">
+          <span style="font-weight: bold;">Region to travel</span>
+          <o:selectOneMenu
+                  value="#{SelectOneMenuBean.selectedRegion}"
+                  itemPresentationColumn="0"
+                  suggestionMode="custom"
+                  rolloverListItemClass="rollOverItem"
+                  var="region"
+                  style="width: 210px;height: 26px;"
+                  id="selectRegion">
+            <f:selectItem itemValue="" itemLabel="Any region"  >
+              <h:outputText styleClass="noValueSelected" value="Any region"/>
+            </f:selectItem>
+            <f:selectItems value="#{SelectOneMenuBean.availableRegions}"  />
+            <o:column style="margin-left:3px;">
+              <h:outputText value="#{region.region}"/>
+            </o:column>
+            <o:column style=" width: 45px;">
+              <h:outputText value="#{region.country}"/>
+            </o:column>
+          </o:selectOneMenu>
+        </td>
+        <td style="width:175px;">
+          <span style="font-weight: bold;">Hotel category</span>
+          <o:selectOneMenu
+                  suggestionMode="none"
+                  value="#{SelectOneMenuBean.selectedHotelStars}"
+                  style="width: 141px;height: 26px;"
+                  rolloverListItemClass="rollOverItem"
+                  id="selectStars">
+            <f:selectItem itemValue="0" itemLabel="Any hotel" >
+              <h:outputText styleClass="noValueSelected" value="Any hotel"/>
+            </f:selectItem>
+            <f:selectItem itemValue="2">
+              <o:forEach var="i" begin="1" end="2" step="1">
+                <h:graphicImage style="margin: 2px;" value="../images/selectonemenu/star.png"/>
+              </o:forEach>
+            </f:selectItem>
+            <f:selectItem itemValue="3">
+              <o:forEach var="i" begin="1" end="3" step="1">
+                <h:graphicImage style="margin: 2px;" value="../images/selectonemenu/star.png"/>
+              </o:forEach>
+            </f:selectItem>
+            <f:selectItem itemValue="4">
+              <o:forEach var="i" begin="1" end="4" step="1">
+                <h:graphicImage style="margin: 2px;" value="../images/selectonemenu/star.png"/>
+              </o:forEach>
+            </f:selectItem>
+            <f:selectItem itemValue="5">
+              <o:forEach var="i" begin="1" end="5" step="1">
+                <h:graphicImage style="margin: 2px;" value="../images/selectonemenu/star.png"/>
+              </o:forEach>
+            </f:selectItem>
+          </o:selectOneMenu>
+        </td>
+        <td>
+          <span style="font-weight: bold;">Food type</span>
+          <o:selectOneMenu
+                  id="selectFood"
+                  horizontalGridLines="1px solid #dedede"
+                  value="#{SelectOneMenuBean.selectedFood}"
+                  rolloverListItemClass="rollOverItem"
+                  var="food"
+                  style="height: 26px;"
+                  itemPresentationColumn="0">
+            <f:selectItem itemValue="" itemLabel="Any food">
+              <h:outputText styleClass="noValueSelected" value="Any food"/>
+            </f:selectItem>
+            <f:selectItems value="#{SelectOneMenuBean.availableFood}"/>
+            <o:column styleClass="foodColumn1" style="width: 20px;">
+              <h:outputText value="#{food.name}"/>
+            </o:column>
+            <o:column styleClass="foodColumn2" style="width: 80px;">
+              <h:panelGrid  columns="4">
+                <h:graphicImage value="../images/selectonemenu/#{food.breakfast ? 'yes.png' : 'no.png'}"/>
+                <h:outputText value="Breakfast"/>
 
-    <h:selectOneMenu id="comboBox" value="#{SelectOneMenuBean.selectedCity}" converter="#{SelectOneMenuBean.cityConverter}">
-      <f:selectItems value="#{SelectOneMenuBean.cityItems}"/>
-      <o:ajax render="selectedItem"/>
-    </h:selectOneMenu>
+                <h:graphicImage value="../images/selectonemenu/#{food.lunch ? 'yes.png' : 'no.png'}"/>
+                <h:outputText value="Lunch"/>
 
-    <o:selectOneMenu id="comboBox2" value="#{SelectOneMenuBean.selectedCity}" converter="#{SelectOneMenuBean.cityConverter}">
-      <f:selectItems value="#{SelectOneMenuBean.cityItems}"/>
-      <o:ajax render="selectedItem"/>
-    </o:selectOneMenu>
-    <br/>
+                <h:graphicImage value="../images/selectonemenu/#{food.dinner ? 'yes.png' : 'no.png'}"/>
+                <h:outputText  value="Dinner"/>
 
-    <h:panelGroup layout="block" id="selectedItem" style="border: 1px solid #a0a0a0; background: #dfdfdf; width: 435px;">
-      <table style=" margin: 15px;">
-        <tr>
-          <td width="100px" style="white-space: nowrap; padding: 5px 5px 5px 5px;">Name:</td>
-          <td style="white-space: nowrap; padding: 5px 5px 5px 5px;">
-            <h:outputText value="#{SelectOneMenuBean.selectedCity.name}"/>
-          </td>
-        </tr>
-        <tr>
-          <td width="100px" style="white-space: nowrap; padding: 5px 5px 5px 5px;">Population:</td>
-          <td style="white-space: nowrap; padding: 5px 5px 5px 5px;">
-            <h:outputText value="#{SelectOneMenuBean.selectedCity.population}"/>
-          </td>
-        </tr>
-        <tr>
-          <td width="100px" style="white-space: nowrap; padding: 5px 5px 5px 5px;">Country:</td>
-          <td style="white-space: nowrap; padding: 5px 5px 5px 5px;">
-            <h:outputText value="#{SelectOneMenuBean.selectedCity.country}"/>
-          </td>
-        </tr>
-      </table>
+                <h:graphicImage value="../images/selectonemenu/#{food.drinks ? 'yes.png' : 'no.png'}"/>
+                <h:outputText  value="Drinks"/>
+              </h:panelGrid>
+            </o:column>
+          </o:selectOneMenu>
+        </td>
+      </tr>
+    </table>
+    <h:panelGroup layout="block" style="text-align: center;width:100%;margin: 15px 0px 15px 0px;">
+      <o:commandButton
+              id="submitButton"
+              value="Find tours"
+              execute="selectRoom selectRegion selectHoliday selectStars selectFood"
+              action="#{SelectOneMenuBean.findTours}"
+              render="resultTable"/>
     </h:panelGroup>
 
-  </div>
 
-  <div id="Description">
-    <h4>Demonstrated Features</h4>
-    <ul class="hang">
-      <li>
-        <strong>Feature</strong> - description.
-      </li>
-    </ul>
-  </div>
+    <o:dataTable
+            value="#{SelectOneMenuBean.filteredTours}"
+            style="background-color:white;margin-top: 15px; width: 95%; height: 420px;"
+            id="resultTable"
+            headerSectionStyle="text-align: left;"
+            horizontalGridLines="1px solid #f6f7f8"
+            verticalGridLines="1px solid #f6f7f8"
+            var="tour">
+      <o:scrolling/>
+      <o:column>
+        <f:facet name="header">
+          <h:outputText value="Holiday"/>
+        </f:facet>
+        <h:outputText value="#{tour.holiday}"/>
+      </o:column>
+      <o:column style="width:55px">
+        <f:facet name="header">
+          <h:outputText value="Country"/>
+        </f:facet>
+        <h:outputText value="#{tour.region.country}"/>
+      </o:column>
+      <o:column>
+        <f:facet name="header">
+          <h:outputText value="Region"/>
+        </f:facet>
+        <h:outputText value="#{tour.region.region}"/>
+      </o:column>
+      <o:column style="width:45px">
+        <f:facet name="header">
+          <h:outputText value="Nights"/>
+        </f:facet>
+        <h:outputText value="#{tour.nights}"/>
+      </o:column>
+      <o:column style="width: 140px;">
+        <f:facet name="header">
+          <h:outputText value="Hotel"/>
+        </f:facet>
+        <h:outputText value="#{tour.hotel}"/>
+      </o:column>
+      <o:column>
+        <f:facet name="header">
+          <h:outputText value="Room"/>
+        </f:facet>
+        <h:outputText value="#{tour.room}"/>
+      </o:column>
+      <o:column style="width:35px">
+        <f:facet name="header" >
+          <h:outputText value="Food"/>
+        </f:facet>
+        <h:outputText value="#{tour.food}"/>
+      </o:column>
+      <o:column style="width:40px">
+        <f:facet name="header">
+          <h:outputText  value="Cost"/>
+        </f:facet>
+        <h:outputText style="font-weight: bold;" value="\$#{tour.cost}"/>
+      </o:column>
+    </o:dataTable>
 
+    <div id="Description">
+      <h4>Demonstrated Features</h4>
+      <ul class="hang">
+        <li>
+          <strong>Feature</strong> - description.
+        </li>
+      </ul>
+    </div>
+
+  </div>
 </div>
