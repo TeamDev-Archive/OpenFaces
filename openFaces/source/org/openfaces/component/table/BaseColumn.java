@@ -654,14 +654,17 @@ public class BaseColumn extends UIColumn {
      * by any application code.
      */
     public ExpressionData getColumnExpressionData() {
-        String cachedDataVar = "_OpenFaces_columnExpressionData";
-        ExpressionData data = (ExpressionData) this.getAttributes().get(cachedDataVar);
-        if (data != null)
+        final String cachedDataVar = "_OpenFaces_columnExpressionData";
+        Object cachedDataVarAsObject = this.getAttributes().get(cachedDataVar);
+        ExpressionData data = cachedDataVarAsObject instanceof ExpressionData
+                ? (ExpressionData) cachedDataVarAsObject
+                : null;
+        if (data != null || this.getAttributes().containsKey(cachedDataVar))
             return data;
         ValueExpression expression = getColumnValueExpression();
 
         ExpressionData result = getExpressionData(expression);
-        this.getAttributes().put(cachedDataVar, result);
+        this.getAttributes().put(cachedDataVar, result != null ? result : "null");
         return result;
     }
 

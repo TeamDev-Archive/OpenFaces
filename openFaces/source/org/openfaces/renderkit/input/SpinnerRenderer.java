@@ -237,7 +237,7 @@ public class SpinnerRenderer extends DropDownComponentRenderer {
 
         List<String> params = new ArrayList<String>();
         params.add(fieldText);
-        params.addAll(rendererInputStyles(context, dropDown));
+        params.addAll(getInputStyles(context, dropDown));
         params.add(promptText);
         params.add(promptTextClass);
         ScriptBuilder buf = new ScriptBuilder().initScript(context, dropDown, "O$.DropDown._initInput", params.toArray());
