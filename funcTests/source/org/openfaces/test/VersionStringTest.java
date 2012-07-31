@@ -13,11 +13,15 @@ package org.openfaces.test;
 
 import org.openfaces.util.Resources;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * @author Dmitry Pikhulya
  */
 public class VersionStringTest extends ComponentTestCase {
     private static final String EA_STRING = "EA";
+    private static final Pattern CUSTOM_CLIENT_BRANCH_BUILD_NO_PATTERN = Pattern.compile("c\\d+_.+_(\\d+)");
 
     /**
      * This test checks the correctness of the value returned by Resources.getVersionString(). This is needed to ensure
@@ -45,6 +49,13 @@ public class VersionStringTest extends ComponentTestCase {
                 String ORDINARY_BUILD_NO_PREFIX = "integration_";
                 if (versionComponent.startsWith(ORDINARY_BUILD_NO_PREFIX))
                     versionComponent = versionComponent.substring(ORDINARY_BUILD_NO_PREFIX.length());
+                else {
+                    Matcher matcher = CUSTOM_CLIENT_BRANCH_BUILD_NO_PATTERN.matcher(versionComponent);
+                    if (matcher.matches()) {
+                        if (matcher.groupCount() != 1) throw new IllegalStateException("Only one capturing group is expected in this matcher");
+                        versionComponent = matcher.group(1);
+                    }
+                }
             }
 
             try {

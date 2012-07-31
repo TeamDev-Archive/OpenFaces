@@ -356,7 +356,6 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
     
     protected InitScript renderInitScript(FacesContext context, DropDownComponent dropDown) throws IOException {
         DropDownFieldBase dropDownField = (DropDownFieldBase) dropDown;
-        String clientId = dropDownField.getClientId(context);
 
         DropDownPopup popup = dropDownField.getPopup();
 
@@ -521,5 +520,46 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
         Rendering.renderInitScript(context, sb);
         responseWriter.write(stringWriter.toString());
         return null;
+    }
+
+    /**
+     * This method renders some of the styles in spite of the usual practice of assigning classes in JavaScript to avoid
+     * flickering when reloading with Ajax4jsf (JSF 1.2 version, applicable only for OpenFaces 2.x). Ajax4jsf doesn't
+     * seem to execute the init scripts synchronously at the same execution point where HTML is inserted, which results
+     * in the uninitialized portion of HTML being displayed in the browser until the init scripts are run
+     * (added to address OFCS-109).
+     */
+    @Override
+    protected void encodeRootElementStart(ResponseWriter writer,
+                                          DropDownComponent dropDown) throws IOException {
+        super.encodeRootElementStart(writer, dropDown);
+        FacesContext context = FacesContext.getCurrentInstance();
+        String initialStyleClass = getInitialStyleClass(context, dropDown);
+        if (initialStyleClass != null)
+            writer.writeAttribute("class", initialStyleClass, null);
+    }
+
+    @Override
+    protected void writeDefaultFieldStyle(FacesContext context, ResponseWriter writer,
+                                          DropDownComponent dropDown) throws IOException {
+        String fieldClass = getFieldClass(context, dropDown);
+        if (fieldClass != null)
+            writer.writeAttribute("class", fieldClass, null);
+    }
+
+    /**
+     * This method renders some of the styles in spite of the usual practice of assigning classes in JavaScript to avoid
+     * flickering when reloading with Ajax4jsf (JSF 1.2 version, applicable only for OpenFaces 2.x). Ajax4jsf doesn't
+     * seem to execute the init scripts synchronously at the same execution point where HTML is inserted, which results
+     * in the uninitialized portion of HTML being displayed in the browser until the init scripts are run
+     * (added to address OFCS-109).
+     */
+
+    @Override
+    protected void writeAdditionalButtonAttributes(FacesContext context, ResponseWriter writer,
+                                                   DropDownComponent dropDown) throws IOException {
+        super.writeAdditionalButtonAttributes(context, writer, dropDown);
+        String buttonClass = getButtonClass(context, dropDown);
+        writer.writeAttribute("class", buttonClass, null);
     }
 }

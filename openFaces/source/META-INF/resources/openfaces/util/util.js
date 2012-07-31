@@ -4095,7 +4095,7 @@ if (!window.O$) {
 
 
   /*
-   Changes size and position of the specified element according to the specified rectangle. The rectangle speicifies
+   Changes size and position of the specified element according to the specified rectangle. The rectangle specifies
    the element's border box.
 
    See also: O$.getElementBorderRectangle, O$.getElementPos, O$.setElementPos.

@@ -135,6 +135,7 @@ public abstract class DropDownComponentRenderer extends RendererBase {
         writer.writeAttribute("name", fieldId, null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
+        writeDefaultFieldStyle(context, writer, fieldComponent);
 
         if (fieldComponent.isDisabled())
             writer.writeAttribute("disabled", "disabled", null);
@@ -146,6 +147,9 @@ public abstract class DropDownComponentRenderer extends RendererBase {
         writer.endElement("input");
 
         encodeStatePrompt(context, component);
+    }
+
+    protected void writeDefaultFieldStyle(FacesContext context, ResponseWriter writer, DropDownComponent dropDown) throws IOException {
     }
 
     protected void writeFieldAttributes(ResponseWriter writer, DropDownComponent fieldComponent) throws IOException {
@@ -172,9 +176,10 @@ public abstract class DropDownComponentRenderer extends RendererBase {
 
         // Render drop down button
         writer.writeAttribute("id", buttonId, null);
-
         writer.writeAttribute("align", "center", null);
         writer.writeAttribute("valign", "middle", null);
+        writeAdditionalButtonAttributes(context, writer, fieldComponent);
+
         String imageUrl;
         if (fieldComponent.isReadonly()) {
             String disabledButtonImageUrl = (String) fieldComponent.getAttributes().get("disabledButtonImageUrl");
@@ -187,6 +192,10 @@ public abstract class DropDownComponentRenderer extends RendererBase {
         writer.writeAttribute("id", buttonId + "::img", null);
         writer.writeAttribute("src", imageUrl, null);
         writer.endElement("img");
+    }
+
+    protected void writeAdditionalButtonAttributes(FacesContext context, ResponseWriter writer, DropDownComponent dropDown) throws IOException {
+
     }
 
     @Override
@@ -233,7 +242,7 @@ public abstract class DropDownComponentRenderer extends RendererBase {
 
         List<Object> params = new ArrayList<Object>();
         params.add(fieldText);
-        params.addAll(rendererInputStyles(facesContext, dropDown));
+        params.addAll(getInputStyles(facesContext, dropDown));
         params.addAll(getButtonAndListStyles(facesContext, dropDown));
         params.add(dropDown.isDisabled());
         params.add(dropDown.isReadonly());
@@ -275,15 +284,13 @@ public abstract class DropDownComponentRenderer extends RendererBase {
         return Styles.getCSSClass(context, dropDown, dropDown.getFocusedStyle(), StyleGroup.selectedStyleGroup(), dropDown.getFocusedClass(), null);
     }
 
-    protected List<String> rendererInputStyles(FacesContext context, DropDownComponent dropDown) throws IOException {
+    protected List<String> getInputStyles(FacesContext context, DropDownComponent dropDown) throws IOException {
         String styleClass = getInitialStyleClass(context, dropDown);
         String rolloverClass = Styles.getCSSClass(context, dropDown, dropDown.getRolloverStyle(), StyleGroup.rolloverStyleGroup(), dropDown.getRolloverClass());
         String focusedClass = getFocusedClass(context, dropDown);
 
         Map<String,Object> attrs = dropDown.getAttributes();
-        String fieldClass = Styles.getCSSClass(context, dropDown,
-                (String) attrs.get("fieldStyle"), StyleGroup.regularStyleGroup(),
-                (String) attrs.get("fieldClass"), getDefaultFieldClass());
+        String fieldClass = getFieldClass(context, dropDown);
         String fieldRolloverClass = Styles.getCSSClass(context, dropDown,
                 (String) attrs.get("rolloverFieldStyle"), StyleGroup.rolloverStyleGroup(),
                 (String) attrs.get("rolloverFieldClass"));
@@ -305,11 +312,16 @@ public abstract class DropDownComponentRenderer extends RendererBase {
         );
     }
 
+    protected String getFieldClass(FacesContext context, DropDownComponent dropDown) {
+        Map<String, Object> attrs = dropDown.getAttributes();
+        return Styles.getCSSClass(context, dropDown,
+                (String) attrs.get("fieldStyle"), StyleGroup.regularStyleGroup(),
+                (String) attrs.get("fieldClass"), getDefaultFieldClass());
+    }
+
     private List<String> getButtonAndListStyles(FacesContext context, DropDownComponent dropDown) throws IOException {
         Map<String, Object> attrs = dropDown.getAttributes();
-        String buttonStyleClass = Styles.getCSSClass(context, dropDown,
-                (String) attrs.get("buttonStyle"), StyleGroup.regularStyleGroup(),
-                (String) attrs.get("buttonClass"), DEFAULT_BUTTON_CLASS);
+        String buttonStyleClass = getButtonClass(context, dropDown);
         String buttonRolloverStyleClass = Styles.getCSSClass(context, dropDown,
                 (String) attrs.get("rolloverButtonStyle"), StyleGroup.rolloverStyleGroup(),
                 (String) attrs.get("rolloverButtonClass"), DEFAULT_BUTTON_ROLLOVER_CLASS);
@@ -341,6 +353,13 @@ public abstract class DropDownComponentRenderer extends RendererBase {
                 buttonDisabledImageUrl,
                 listStyleClass,
                 popupRolloverStyleClass);
+    }
+
+    protected String getButtonClass(FacesContext context, DropDownComponent dropDown) {
+        Map<String, Object> attrs = dropDown.getAttributes();
+        return Styles.getCSSClass(context, dropDown,
+                (String) attrs.get("buttonStyle"), StyleGroup.regularStyleGroup(),
+                (String) attrs.get("buttonClass"), DEFAULT_BUTTON_CLASS);
     }
 
     protected String getInitialStyleClass(FacesContext context, DropDownComponent dropDown) {
