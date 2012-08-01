@@ -171,7 +171,12 @@ O$.DateChooser = {
           var dtf = O$.getDateTimeFormatObject(dc._localeStr);
           if (dtf) {
             var dcValue = O$.getValue(dc);
-            date = dtf.parse(dcValue, dc._dateFormat);
+            try {
+              date = dtf.parse(dcValue, dc._dateFormat);
+            } catch(e) {
+              // incorrect string has been entered manually -- treating as an empty date
+              date = null;
+            }
           }
         }
         O$.Calendar._setSelectedDate(dc._calendar.id, date);
