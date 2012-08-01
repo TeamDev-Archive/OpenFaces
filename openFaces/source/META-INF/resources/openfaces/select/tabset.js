@@ -46,22 +46,6 @@ O$.TabSet = {
           return;
 
         var prevTab = this._getTabByAbsoluteIndex(tabSet._index);
-        if (focusable) {
-          O$.setStyleMappings(prevTab.childNodes[0], {
-            focused:  null
-          });
-          O$.setStyleMappings(prevTab, {
-            focused: null
-          });
-          O$.setStyleMappings(tab.childNodes[0], {
-            focused:  focusAreaClass
-          });
-          O$.setStyleMappings(tab, {
-            focused: tabSet._focusedTabClass
-          });
-
-        }
-
 
         O$.setStyleMappings(prevTab, {
           mouseoverSelected: null
@@ -149,6 +133,40 @@ O$.TabSet = {
       },
       getSelectedIndex: function () {
         return tabSet._index;
+      },
+
+      _setNextIndex: function(inc) {
+        var number = tabSet._tabCount;
+        var tab = tabSet._getTabByAbsoluteIndex(tabSet._index);
+        var nextIndex = tab._index + inc;
+
+        if (nextIndex >= number) {
+          nextIndex = nextIndex - number;
+        }
+        if (nextIndex < 0) {
+          nextIndex = number + nextIndex;
+        }
+        tabSet._setTabFocused(tab._index, nextIndex);
+        tabSet.setSelectedIndex(tabSet._tabs[nextIndex]._absoluteIndex, true);
+
+      },
+
+      _setTabFocused: function(prevIndex, nextIndex) {
+        var prevTab = tabSet._getTabByAbsoluteIndex(prevIndex);
+        var tab = tabSet._getTabByAbsoluteIndex(nextIndex);
+
+        O$.setStyleMappings(prevTab.childNodes[0], {
+          focused:null
+        });
+        O$.setStyleMappings(prevTab, {
+          focused:null
+        });
+        O$.setStyleMappings(tab.childNodes[0], {
+          focused:focusAreaClass
+        });
+        O$.setStyleMappings(tab, {
+          focused:tabSet._focusedTabClass
+        });
       }
     });
     tabSet.style.emptyCells = "show"; // needed for JSFC-2713 to show cell borders on empty cells (inter-tab spacings)
@@ -225,16 +243,16 @@ O$.TabSet = {
         var e = evt ? evt : window.event;
         switch (e.keyCode) {
           case 38: // up
-            O$.TabSet._setNextIndex(tabSet, -1);
+            tabSet._setNextIndex(-1);
             break;
           case 40: // down
-            O$.TabSet._setNextIndex(tabSet, 1);
+            tabSet._setNextIndex(1);
             break;
           case 37: // left
-            O$.TabSet._setNextIndex(tabSet, -1);
+            tabSet._setNextIndex(-1);
             break;
           case 39: // right
-            O$.TabSet._setNextIndex(tabSet, 1);
+            tabSet._setNextIndex(1);
             break;
         }
         if (tabSet._prevKeyHandler) {
@@ -261,19 +279,5 @@ O$.TabSet = {
         O$.setStyleMappings(tab.childNodes[0], {focused:  null});
       };
     }
-  },
-
-  _setNextIndex: function(tabSet, inc) {
-    var number = tabSet._tabCount;
-    var tab = tabSet._getTabByAbsoluteIndex(tabSet._index);
-    var nextIndex = tab._index + inc;
-
-    if (nextIndex >= number) {
-      nextIndex = nextIndex - number;
-    }
-    if (nextIndex < 0) {
-      nextIndex = number + nextIndex;
-    }
-    tabSet.setSelectedIndex(tabSet._tabs[nextIndex]._absoluteIndex, true);
   }
 };
