@@ -164,9 +164,18 @@ O$.DateChooser = {
        */
 
       dc._isSetDateFromInput = true;
-      if (O$.trim(dc._field.value).length > 0)
+      if (O$.trim(dc._field.value).length > 0) {
+        if (!date) {
+          // this can be the case if clientValidation is set to "off", which prevents validators from being passed to
+          // client-side and thus the date assignment above will be skipped
+          var dtf = O$.getDateTimeFormatObject(dc._localeStr);
+          if (dtf) {
+            var dcValue = O$.getValue(dc);
+            date = dtf.parse(dcValue, dc._dateFormat);
+          }
+        }
         O$.Calendar._setSelectedDate(dc._calendar.id, date);
-      else
+      } else
         O$.Calendar._noneClick(dc._calendar);
       dc._isSetDateFromInput = false;
       if (dc._field._oldValueHolder != dc._field.value) {

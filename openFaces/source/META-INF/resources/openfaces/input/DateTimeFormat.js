@@ -138,8 +138,11 @@ O$.extend(O$.DateTimeFormat.prototype, {
             }
           }
         } else if (pat.charAt(0) == "d") {
-          date = sDate.substring(0, 2);
-          sDate = sDate.substring(2);
+          var secondChar = sDate.length >= 2 ? sDate.substring(1, 2) : null;
+          var secondCharIsADigit = secondChar && secondChar >= "0" && secondChar <= "9";
+          var dateCharCount = secondCharIsADigit ? 2 : 1;
+          date = sDate.substring(0, dateCharCount);
+          sDate = sDate.substring(dateCharCount);
           dateComplete = true;
         } else {
           if (pat.charAt(0) == "E") {
