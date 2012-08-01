@@ -17,6 +17,7 @@ import org.openfaces.component.input.DateChooser;
 import org.openfaces.component.input.DateChooserPopup;
 import org.openfaces.component.input.DropDownComponent;
 import org.openfaces.renderkit.calendar.CalendarRenderer;
+import org.openfaces.renderkit.validation.ValidatorUtil;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.Components;
 import org.openfaces.util.DataUtil;
@@ -235,7 +236,8 @@ public class DateChooserRenderer extends DropDownComponentRenderer {
                 Resources.jsonJsURL(context),
                 getDropdownJsURL(context),
                 Resources.internalURL(context, "validation/requestHelper.js"),
-                Resources.internalURL(context, "input/dateChooser.js")
+                Resources.internalURL(context, "input/dateChooser.js"),
+                ValidatorUtil.getValidatorUtilJsUrl(context)
         });
     }
 
