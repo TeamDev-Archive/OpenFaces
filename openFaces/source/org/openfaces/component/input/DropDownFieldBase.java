@@ -12,7 +12,6 @@
 package org.openfaces.component.input;
 
 import org.openfaces.component.Side;
-import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.Components;
 import org.openfaces.util.ValueBindings;
 

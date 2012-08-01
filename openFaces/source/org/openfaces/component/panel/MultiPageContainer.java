@@ -16,6 +16,7 @@ import org.openfaces.component.OUIClientAction;
 import org.openfaces.component.OUIPanel;
 import org.openfaces.event.SelectionChangeEvent;
 import org.openfaces.event.SelectionChangeListener;
+import org.openfaces.util.Components;
 import org.openfaces.util.ValueBindings;
 
 import javax.el.ELContext;
@@ -122,8 +123,10 @@ public abstract class MultiPageContainer extends OUIPanel {
                 Collection<SubPanel> items = (Collection<SubPanel>) value;
                 itemsList.addAll(items);
                 List<UIComponent> subPanelsChildren = subPanels.getChildren();
+                Runnable restoreIterators = Components.resetParentIterators(subPanels);
                 subPanelsChildren.clear();
                 subPanelsChildren.addAll(items);
+                if (restoreIterators != null) restoreIterators.run();
             }
         }
 

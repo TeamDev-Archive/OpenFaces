@@ -5050,11 +5050,20 @@ if (!window.O$) {
 
   // ----------------- COMPONENT UTILS -------------------------------------------
 
-  O$._checkDefaultCssPresence = function() {
+  O$._checkDefaultCssPresence = function(attempt) {
     if (O$._defaultCssPresenceChecked) return;
-    O$._defaultCssPresenceChecked = true;
     O$.addLoadEvent(function() {
-      if (!O$.findStyleSheet("default.css"))
+      var defaultCssStyleSheet = O$.findStyleSheet("default.css");
+      if (!defaultCssStyleSheet && (!attempt || attempt < 5)) {
+        setTimeout(function() {
+          if (!attempt) attempt = 0;
+          O$._checkDefaultCssPresence(attempt + 1);
+        }, 200);
+        return;
+      }
+
+      O$._defaultCssPresenceChecked = true;
+      if (!defaultCssStyleSheet)
         O$.logError("OpenFaces default.css file is not loaded. Did you use <head> tag instead of <h:head> tag?");
     });
   };

@@ -109,7 +109,7 @@ public class ChartRenderer extends RendererBase {
             DynamicImage dynamicImage = (DynamicImage) application.createComponent(DynamicImage.COMPONENT_TYPE);
             dynamicImage.setId("img");
             dynamicImage.getAttributes().put(DynamicImageRenderer.DEFAULT_STYLE_ATTR, "o_chart");
-            chart.getChildren().add(dynamicImage);
+            Components.addChild(chart, dynamicImage);
         }
         DynamicImage dynamicImage = Components.findChildWithClass(chart, DynamicImage.class);
         ValueExpression ve = new ByteArrayValueExpression(imageAsByteArray);

@@ -158,14 +158,15 @@ public class Chart extends OUIObjectIteratorBase implements StyledComponent, Nam
 
         if (view == null) {
             view = viewType.createChartView();
+            Components.addChild(this, view);
             children.add(view);
             return view;
         }
 
         if (!viewType.isViewOfThisType(view)) {
-            children.remove(view);
+            Components.removeChild(this, view);
             view = viewType.createChartView();
-            children.add(view);
+            Components.addChild(this, view);
         }
         return view;
     }

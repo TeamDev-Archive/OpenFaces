@@ -102,9 +102,7 @@ public class Components {
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
-        Runnable restoreIterators = resetParentIterators(parent);
-        parent.getChildren().add(component);
-        if (restoreIterators != null) restoreIterators.run();
+        addChild(parent, component);
 
         return component;
     }
@@ -124,7 +122,7 @@ public class Components {
      *  This workaround should be in place until this bug is fixed in Mojarra
      *  (and older versions don't have to be supported).
      */
-    private static Runnable resetParentIterators(UIComponent component) {
+    public static Runnable resetParentIterators(UIComponent component) {
         if (!ApplicationParams.getIterationIndexWorkaround()) return null;
 
         final UIData uiData = getParentWithClass(component, UIData.class);
@@ -248,10 +246,20 @@ public class Components {
             FacesContext context, UIComponent parent, String componentType, String idSuffix) {
         String childId = generateIdWithSuffix(parent, idSuffix);
         UIComponent component = createComponent(context, componentType, childId);
-        Runnable restoreIterators = resetParentIterators(parent);
-        parent.getChildren().add(component);
-        if (restoreIterators != null) restoreIterators.run();
+        addChild(parent, component);
         return component;
+    }
+
+    public static void addChild(UIComponent parent, UIComponent child) {
+        Runnable restoreIterators = resetParentIterators(parent);
+        parent.getChildren().add(child);
+        if (restoreIterators != null) restoreIterators.run();
+    }
+
+    public static void removeChild(UIComponent parent, UIComponent child) {
+        Runnable restoreIterators = resetParentIterators(parent);
+        parent.getChildren().remove(child);
+        if (restoreIterators != null) restoreIterators.run();
     }
 
     /**
@@ -482,7 +490,7 @@ public class Components {
             // mechanism, which listens for component insertions and saves new components by their ids
             // (com.sun.faces.context.SateContext.AddRemoveListener.handleAddEvent which constructs a list of
             // "dynamicAdds" at least in Mojarra 2.0.3)
-            // ...and it's important to save component ids without any suffixes that might have place if parent iterator 
+            // ...and it's important to save component ids without any suffixes that might have place if parent iterator
             // components are in the middle of iteration currently.
             if (p instanceof UIData) {
                 UIData uiData = (UIData) p;
