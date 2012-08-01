@@ -69,9 +69,7 @@ O$.extend(O$.DateTimeFormat.prototype, {
           var prefLen = prefix.length;
           var prefix_sDate = sDate.substring(0, match.index);
           if (prefix.toLowerCase() != prefix_sDate.toLowerCase()) {
-  //          alert("Incorrect format " + format + " for date " + val);
-            alert("The entered date " + val + " is incorrectly formatted. It must have the following format: " + format);
-            return null;
+            throw "The entered date (" + val + ") is incorrectly formatted. It must have the following format: " + format;
           }
           tempFormat = tempFormat.substring(prefLen);
           sDate = sDate.substring(prefLen);
@@ -93,9 +91,7 @@ O$.extend(O$.DateTimeFormat.prototype, {
                 curYearPref = currentYear.toString().substring(0, 2);
               }
             } catch (e) {
-  //            alert("Incorrect format " + format + " for date " + val);
-              alert("The entered date " + val + " is incorrectly formatted. It must have the following format: " + format);
-              return null;
+              throw "The entered date (" + val + ") is incorrectly formatted. It must have the following format: " + format;
             }
             year = curYearPref + yearPart;
             sDate = sDate.substring(2);
@@ -167,17 +163,13 @@ O$.extend(O$.DateTimeFormat.prototype, {
               }
             }
             if (!found) {
-  //            alert("Incorrect format " + format + " for date " + val);
-              alert("The entered date " + val + " is incorrectly formatted. It must have the following format: " + format);
-              return null;
+              throw "The entered date (" + val + ") is incorrectly formatted. It must have the following format: " + format;
             }
           }
         }
         tempFormat = tempFormat.substring(match[0].length);
       } else {
-  //      alert("Incorrect format " + format + " for date " + val);
-        alert("The entered date " + val + " is incorrectly formatted. It must have the following format: " + format);
-        return null;
+        throw "The entered date (" + val + ") is incorrectly formatted. It must have the following format: " + format;
       }
       matchCounter++;
     }
