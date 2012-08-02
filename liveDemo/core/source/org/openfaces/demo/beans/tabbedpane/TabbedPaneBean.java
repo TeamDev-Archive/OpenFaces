@@ -12,6 +12,7 @@
 
 package org.openfaces.demo.beans.tabbedpane;
 
+import org.openfaces.component.select.SelectBooleanCheckbox;
 import org.openfaces.component.select.TabAlignment;
 import org.openfaces.component.select.TabPlacement;
 
@@ -19,6 +20,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
+import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -34,20 +36,21 @@ public class TabbedPaneBean implements Serializable {
     private TabPlacement selectedPlacement;
     private Converter tabPositionConverter = new TabPositionConverter();
     private Converter tabAlignmentConverter = new TabAlignmentConverter();
+    private boolean mirrorTabsetVisible;
 
     public TabbedPaneBean() {
-        placements.add(new SelectItem(TabPlacement.TOP, "top"));
-        placements.add(new SelectItem(TabPlacement.RIGHT, "right"));
-        placements.add(new SelectItem(TabPlacement.BOTTOM, "bottom"));
-        placements.add(new SelectItem(TabPlacement.LEFT, "left"));
+        placements.add(new SelectItem(TabPlacement.TOP, "Top"));
+        placements.add(new SelectItem(TabPlacement.RIGHT, "Right"));
+        placements.add(new SelectItem(TabPlacement.BOTTOM, "Bottom"));
+        placements.add(new SelectItem(TabPlacement.LEFT, "Left"));
 
         selectedPlacement = TabPlacement.TOP;
 
-        topBottomAlignment.add(new SelectItem(TabAlignment.TOP_OR_LEFT, "top"));
-        topBottomAlignment.add(new SelectItem(TabAlignment.BOTTOM_OR_RIGHT, "bottom"));
+        topBottomAlignment.add(new SelectItem(TabAlignment.TOP_OR_LEFT, "Top"));
+        topBottomAlignment.add(new SelectItem(TabAlignment.BOTTOM_OR_RIGHT, "Bottom"));
 
-        rightLeftAlignment.add(new SelectItem(TabAlignment.TOP_OR_LEFT, "left"));
-        rightLeftAlignment.add(new SelectItem(TabAlignment.BOTTOM_OR_RIGHT, "right"));
+        rightLeftAlignment.add(new SelectItem(TabAlignment.TOP_OR_LEFT, "Left"));
+        rightLeftAlignment.add(new SelectItem(TabAlignment.BOTTOM_OR_RIGHT, "Right"));
 
         currentAlignments.addAll(getCurrentAlignments());
 
@@ -123,4 +126,22 @@ public class TabbedPaneBean implements Serializable {
         throw new IllegalArgumentException("str: " + str);
     }
 
+    public boolean isMirrorTabsetVisible() {
+        return mirrorTabsetVisible;
+    }
+
+    public void setMirrorTabsetVisible(boolean mirrorTabsetVisible) {
+        this.mirrorTabsetVisible = mirrorTabsetVisible;
+    }
+
+    public void mirrorTabsetSwitcher(ActionEvent event) {
+        SelectBooleanCheckbox checkbox = (SelectBooleanCheckbox) event.getComponent();
+        if (checkbox.isSelected()) {
+            checkbox.setSelected(false);
+            mirrorTabsetVisible = false;
+        } else {
+            checkbox.setSelected(true);
+            mirrorTabsetVisible = true;
+        }
+    }
 }
