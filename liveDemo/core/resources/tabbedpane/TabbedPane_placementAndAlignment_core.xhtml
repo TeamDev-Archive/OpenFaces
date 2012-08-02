@@ -13,7 +13,7 @@
       <table cellpadding="0" cellspacing="0"
              style="background:url(../images/controls_container/widget.gif) repeat-y; padding-left: 12px;">
         <tr>
-          <td width="160">
+          <td width="160" rowspan="2">
             <h:outputText value="Placement" style="font-weight: bold;"/>
             <br/>
             <h:selectOneRadio id="placementSelector" style="text-align: left;"
@@ -38,6 +38,23 @@
             </h:selectOneRadio>
           </td>
         </tr>
+        <tr>
+          <td>
+            <h:outputText value="Mirror Tab Set" style="font-weight: bold;"/>
+            <br/>
+            <table>
+              <tr>
+                <td>
+                  <o:selectBooleanCheckbox
+                          id="mirrorTabsetSwitcher"
+                          value="#{TabbedPaneBean.mirrorTabsetVisible}"
+                          onchange="O$.ajax.request(this, event, {render: 'form:tabbedPane', listener: 'TabbedPaneBean.mirrorTabsetSwitcher', actionComponent: this.id});"/>
+                  <label for="mirrorTabsetSwitcher">Visible</label>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
       </table>
     </div>
 
@@ -48,7 +65,8 @@
                   tabGapWidth="3"
                   style="width: 260px; height: 290px;"
                   containerStyle="vertical-align: middle;"
-                  tabClass="tab_name">
+                  tabClass="tab_name"
+                  mirrorTabSetVisible="#{TabbedPaneBean.mirrorTabsetVisible}">
       <o:subPanel caption="a-h">
         <h:panelGrid columns="1" rowClasses=", name, tel, name, tel, name, tel"
                      style="line-height: 30px; width: 210px; margin: 0 auto;" columnClasses="col">
