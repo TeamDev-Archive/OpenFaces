@@ -634,7 +634,14 @@
     <image>SelectOneMenu</image>
     <selectedImage>/images/components/titles/SelectOneMenu.png</selectedImage>
     <keyFeatures>
-      <feature>All features of the standard &lt;h:selectOneMenu&gt; component</feature>
+      <feature>Support of all standard JSF &lt;h:selectOneMenu&gt; features </feature>
+      <feature>Embedding JSF components available both for item list and selected value.</feature>
+      <feature>Auto-completion</feature>
+      <feature>Ajax and client-side suggestion</feature>
+      <feature>Columns within a select-one-menu list</feature>
+      <feature>Keyboard navigation</feature>
+      <feature>Style customization</feature>
+      <feature>Standard and specific client-side events</feature>
     </keyFeatures>
     <demos>
       <demoItem>

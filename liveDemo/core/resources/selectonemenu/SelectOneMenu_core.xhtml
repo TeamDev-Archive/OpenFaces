@@ -20,9 +20,9 @@
     }
   </style>
   <div id="Demo">
-    <h2>
+    <h3>
       Holiday Tours Navigator
-    </h2>
+    </h3>
     <table style="width: 100%;">
       <tr>
         <td>
@@ -224,7 +224,7 @@
 
     <o:dataTable
             value="#{SelectOneMenuBean.filteredTours}"
-            style="background-color:white;margin-top: 15px; width: 95%; height: 420px;"
+            style="background-color:white;margin-top: 15px; width: 95%; height: 190px;"
             id="resultTable"
             headerSectionStyle="text-align: left;"
             horizontalGridLines="1px solid #f6f7f8"
@@ -273,7 +273,7 @@
         </f:facet>
         <h:outputText value="#{tour.food}"/>
       </o:column>
-      <o:column style="width:40px">
+      <o:column style="width:55px">
         <f:facet name="header">
           <h:outputText  value="Cost"/>
         </f:facet>
@@ -285,7 +285,16 @@
       <h4>Demonstrated Features</h4>
       <ul class="hang">
         <li>
-          <strong>Feature</strong> - description.
+          <strong>Embedding components in list items</strong> See the first item in any of the fields.
+        </li>
+        <li>
+          <strong>Per-item style customization</strong> &#8212; See the Food, Hotel and Holiday field.
+        </li>
+        <li>
+          <strong>Multicolumn support</strong> &#8212; See the "Region to travel" field..
+        </li>
+        <li>
+          <strong> Item search and list filtering</strong> &#8212; Start typing in any field (except the "Hotel category" field), which filters the list to show the matching items and allows for quick item selection.
         </li>
       </ul>
     </div>
