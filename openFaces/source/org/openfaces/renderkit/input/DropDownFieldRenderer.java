@@ -122,7 +122,8 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
 
         String state = requestMap.get(fieldId + PROMPT_VISIBLE_SUFFIX);
         if ("false".equals(state)) {
-            dropDownField.setSubmittedValue(submittedValue);
+            if (!dropDownField.isDisabled())
+                dropDownField.setSubmittedValue(submittedValue);
         }
     }
 
