@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 3.0
+ * OpenFaces - JSF Component Library 2.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -17,12 +17,8 @@ O$.InputText = {
                   rolloverClass,
                   focusedClass,
                   disabled,
-                  promptVisible
-          ) {
+                  promptVisible) {
     var promptVisibleFieldName = componentId + "::promptVisible";
-    O$.setHiddenField(O$(componentId), promptVisibleFieldName, promptVisible);
-
-    var promptVisibleField = O$(promptVisibleFieldName);
     var inputText = O$.initComponent(componentId, {
       rollover: !disabled ? rolloverClass : null,
       focused: focusedClass
@@ -30,8 +26,7 @@ O$.InputText = {
       getValue: function() {
         if (inputText._focused)
           return inputText.value;
-
-        if (promptVisibleField.value == "true")
+        if (promptVisible.value == "true")
           return "";
         return inputText.value;
       },
@@ -42,23 +37,32 @@ O$.InputText = {
         inputText.value = value;
         if (inputText._focused)
           return;
-        promptVisibleField.value = !value;
-        O$.setStyleMappings(inputText, {prompt: (value ? null : promptTextClass)});
+        inputText.setPromptVisible(!value);
+        O$.setStyleMappings(inputText, {prompt:(value ? null : promptTextClass)});
         if (!value && promptText)
-            inputText.value = promptText;
-      }
+          inputText.value = promptText;
+      },
 
+      setPromptVisible: function(value) {
+        O$.setHiddenField(O$(componentId), promptVisibleFieldName, value);
+        promptVisible = value;
+      }
     });
 
     if (promptText) {
       if (inputText.value.length == 0 ||
-          ((inputText.value == promptText) && promptVisibleField.value == "true")) {   // needed for FireFox, when press F5 key
+              ((inputText.value == promptText) && promptVisible == true)) {   // needed for FireFox, when press F5 key
         inputText.value = promptText;
-        O$.setStyleMappings(inputText, {prompt: promptTextClass});
-        promptVisibleField.value = true;
+        O$.setStyleMappings(inputText, {prompt:promptTextClass});
+        O$.addLoadEvent(function () {
+          inputText.setPromptVisible(true)
+        });
       }
-    } else
-      promptVisibleField.value = false;
+    } else {
+      O$.addLoadEvent(function () {
+        inputText.setPromptVisible(false)
+      });
+    }
 
     if (!inputText._eventsInitialized) {
       // events might have already been initialized when _init is called in case when <o:inputText> was reloaded with
@@ -69,10 +73,10 @@ O$.InputText = {
         inputText._focused = true;
 
         if (promptText) {
-          if ((inputText.value == promptText) && (promptVisibleField.value == "true")) {
+          if ((inputText.value == promptText) && (promptVisible == true)) {
             inputText.value = "";
             O$.setStyleMappings(inputText, {prompt: null});
-            promptVisibleField.value = false;
+            inputText.setPromptVisible(false);
           }
         }
       });
@@ -84,9 +88,9 @@ O$.InputText = {
           if (inputText.value.length == 0) {
             inputText.value = promptText;
             O$.setStyleMappings(inputText, {prompt: promptTextClass});
-            promptVisibleField.value = true;
+            inputText.setPromptVisible(true);
           } else
-            promptVisibleField.value = false;
+            inputText.setPromptVisible(false);
         }
       });
     }

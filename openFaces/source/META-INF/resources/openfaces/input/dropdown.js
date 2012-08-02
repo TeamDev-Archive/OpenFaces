@@ -298,7 +298,9 @@ O$.DropDown = {
     if (button)
       button.className = dropDown._buttonClass;
 
-    dropDown.setDisabled(disabled);
+    O$.addLoadEvent(function (){
+      dropDown.setDisabled(disabled);
+    });
 
     dropDown._rolloverButtonClass = dropDown._buttonClass + O$.DropDown._getClassName(rolloverButtonClass);
     dropDown._pressedButtonClass = dropDown._rolloverButtonClass + O$.DropDown._getClassName(pressedButtonClass);

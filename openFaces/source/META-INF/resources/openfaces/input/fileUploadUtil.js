@@ -695,8 +695,13 @@ O$.FileUploadUtil = {
         var allInputsForFiles = document.createElement("div");
         allInputsForFiles.setAttribute("id", fileUpload.id + "::inputs");
         allInputsForFiles.style.display = "none";
-        var body = document.getElementsByTagName('body')[0];
-        body.appendChild(allInputsForFiles);
+        // Trick to make this code work under some versions of IE6 - 8, in witch you can't appendChilds
+        // into not completly loaded tags
+        if (document.body.firstChild) {
+          document.body.insertBefore(allInputsForFiles, document.body.firstChild);
+        } else {
+          document.getElementsByTagName('body')[0].appendChild(allInputsForFiles);
+        }
         return allInputsForFiles;
       },
       _createAndAppendComplexInputWithId:    function (inputField) {

@@ -31,8 +31,8 @@ O$.Spinner = {
         this._setFieldDisabled(disabled);
       },
 
-      isDisabled: function() {
-        return this._isDisabled;
+      getDisabled: function() {
+        return this._disabled;
       },
 
       getValue: function() {
@@ -105,6 +105,7 @@ O$.Spinner = {
 
     });
 
+    console.log("disabled = " + disabled);
     spinner.setDisabled(disabled);
 
     var increaseButton = O$(spinnerId + "::increase_button");
