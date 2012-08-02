@@ -5327,7 +5327,9 @@ if (!window.O$) {
 
       });
 
-      link.setDisabled(disabled);
+      O$.addLoadEvent(function (){
+        link.setDisabled(disabled)
+      });
 
     }
   };
