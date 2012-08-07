@@ -26,7 +26,10 @@ O$._initBorderLayoutPanel = function(borderLayoutPanelId) {
   O$._storeSizeProperties(borderLayoutPanel);
   O$._subscribeToOnresizeEvent(borderLayoutPanel, function() {
     borderLayoutPanel._newStyle.applyTo(borderLayoutPanel.style);
-    borderLayoutPanel.refresh();
+    if (!borderLayoutPanel._waitForRefresh) {
+      borderLayoutPanel._waitForRefresh = true;
+      setTimeout(O$._refreshLaterIfInvisible, 0, borderLayoutPanel);
+    }
   });
 
   borderLayoutPanel.style.width = O$._calculateNumericWidth(borderLayoutPanel, true) + "px";
@@ -505,20 +508,13 @@ O$._refreshLaterIfInvisible = function(borderLayoutPanel) {
   var currentElement = borderLayoutPanel;
   var hasDocumentParent = O$.isElementPresentInDocument(currentElement);
 
-  if (hasDocumentParent) {
-    while (currentElement) {
-      if (O$.getElementStyle(currentElement, "visibility") == 'hidden' || O$.getElementStyle(currentElement, "display") == 'none') {
-        hasHiddenParent = true;
-        break;
-      }
-      currentElement = currentElement.parentElement;
-    }
-  }
+  hasHiddenParent = !O$.isVisibleRecursive(currentElement);
 
   if (hasHiddenParent == true) {
     setTimeout(O$._refreshLaterIfInvisible, 200, borderLayoutPanel);
   } else {
     borderLayoutPanel.refresh();
+    borderLayoutPanel._waitForRefresh = false;
   }
 
 }

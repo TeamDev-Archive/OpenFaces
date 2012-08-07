@@ -4693,11 +4693,11 @@ if (!window.O$) {
   };
 
   O$.isVisibleRecursive = function(element) {
-    if (O$.isInvisible(element))
+    if (!O$.isVisible(element))
       return false;
 
     var parentNode = element.parentNode;
-    if (!parentNode)
+    if (!parentNode || parentNode == document)
       return true;
 
     return O$.isVisibleRecursive(parentNode);
