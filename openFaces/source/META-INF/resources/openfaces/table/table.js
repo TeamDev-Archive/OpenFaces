@@ -3179,7 +3179,7 @@ O$.Table = {
         setTimeout(updateResizeHandlePositions, 10);
         if (table._params.scrolling && table._params.scrolling.autoSaveState) {
           O$.invokeFunctionAfterDelay(function() {
-            O$.requestComponentPortions(table.id, ["scrollingState"], null, function() {
+            O$.Ajax.requestComponentPortions(table.id, ["scrollingState"], null, function() {
               // no client-side updates are required -- the request was just for saving data
             }, null, true);
           }, table._params.scrolling.autoSaveStateDelay)
