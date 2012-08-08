@@ -194,7 +194,7 @@ public abstract class DropDownComponent extends OUIInputText {
         this.buttonAlignment = buttonAlignment;
     }
 
-    public String getButtonStyle() {
+    protected String getButtonStyle() {
         return ValueBindings.get(this, "buttonStyle", buttonStyle);
     }
 
@@ -210,7 +210,7 @@ public abstract class DropDownComponent extends OUIInputText {
         this.rolloverButtonStyle = rolloverButtonStyle;
     }
 
-    public String getFieldStyle() {
+    protected String getFieldStyle() {
         return ValueBindings.get(this, "fieldStyle", fieldStyle);
     }
 
