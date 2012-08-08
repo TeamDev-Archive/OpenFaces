@@ -2884,8 +2884,8 @@ if (!window.O$) {
         var pageScrollPos = O$.getPageScrollPos();
         var container = O$.getContainingBlock(this._focusControl, true);
         var containerPos = container ? O$.getElementPos(container) : {x: 0, y: 0};
-        this._focusControl.style.left = pageScrollPos.x - containerPos.x + "px";
-        this._focusControl.style.top = pageScrollPos.y - containerPos.y + "px";
+        this._focusControl.style.left = pageScrollPos.x - containerPos.x + O$.getVisibleAreaSize().width / 2 + "px";
+        this._focusControl.style.top = pageScrollPos.y - containerPos.y + O$.getVisibleAreaSize().height / 2+ "px";
       } else {
         this._focusControl.style.left = "";
         this._focusControl.style.top = "";
@@ -4708,11 +4708,11 @@ if (!window.O$) {
   };
 
   O$.isVisibleRecursive = function(element) {
-    if (O$.isInvisible(element))
+    if (!O$.isVisible(element))
       return false;
 
     var parentNode = element.parentNode;
-    if (!parentNode)
+    if (!parentNode || parentNode == document)
       return true;
 
     return O$.isVisibleRecursive(parentNode);
