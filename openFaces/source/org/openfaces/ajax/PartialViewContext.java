@@ -73,6 +73,7 @@ public class PartialViewContext extends PartialViewContextWrapper {
     private static final Pattern JS_VAR_PATTERN = Pattern.compile("\\bvar\\b");
     private static final String PARAM_ACTION_COMPONENT = "_of_actionComponent";
     private static final String PARAM_ACTION_LISTENER = "_of_actionListener";
+    private static final String PARAM_SKIP_EXECUTE = "\"_of_skipExecute\"";
     private static final String PARAM_ACTION = "_of_action";
     private static final String PARAM_IMMEDIATE = "_of_immediate";
     private static final String OPENFACES_AJAX_REQUEST_MARKER = "_openFaces_ajax";
@@ -160,6 +161,9 @@ public class PartialViewContext extends PartialViewContextWrapper {
     @Override
     public Collection<String> getExecuteIds() {
         FacesContext context = FacesContext.getCurrentInstance();
+        Map<String, String> requestParams = context.getExternalContext().getRequestParameterMap();
+        boolean skipExecute = requestParams.containsKey(PARAM_SKIP_EXECUTE);
+        if (skipExecute) return Collections.emptyList();
         if (ViewExpiredExceptionHandler.isExpiredView(context))
             return Collections.emptyList();
 
