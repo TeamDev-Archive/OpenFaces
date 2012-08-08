@@ -38,5 +38,7 @@ public class ScrollingTag extends AbstractComponentTag {
         setValueExpressionProperty(component, "position");
         setBooleanProperty(component, "autoScrollbars");
         setBooleanProperty(component, "minimizeHeight");
+        setBooleanProperty(component, "autoSaveState");
+        setIntProperty(component, "autoSaveStateDelay");
     }
 }

@@ -662,6 +662,14 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
             columnResizing.processUpdates(context);
             return null;
         }
+        if ("scrollingState".equals(portionName)) {
+            Scrolling scrolling = table.getScrolling();
+            // the execute phases are skipped for the "columnResizingState" Ajax request
+            scrolling.processDecodes(context);
+            scrolling.processValidators(context);
+            scrolling.processUpdates(context);
+            return null;
+        }
         if ("rows".equals(portionName)) {
             beforeReloadingAllRows(context, table);
             JSONObject result = serveDynamicRowsRequest(context, table, 0, Integer.MAX_VALUE);
