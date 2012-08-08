@@ -44,4 +44,12 @@ public class ScrollingJspTag extends AbstractComponentJspTag {
     public void setMinimizeHeight(ValueExpression minimizeHeight) {
         getDelegate().setPropertyValue("minimizeHeight", minimizeHeight);
     }
+
+    public void setAutoSaveState(ValueExpression autoSaveState) {
+        getDelegate().setPropertyValue("autoSaveState", autoSaveState);
+    }
+
+    public void setAutoSaveStateDelay(ValueExpression autoSaveStateDelay) {
+        getDelegate().setPropertyValue("autoSaveStateDelay", autoSaveStateDelay);
+    }
 }

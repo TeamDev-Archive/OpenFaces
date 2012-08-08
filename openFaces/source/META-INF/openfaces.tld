@@ -4420,6 +4420,35 @@
       <!-- @default false -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>Specifies whether the position binding will automatically be updated with a background Ajax call
+        when the user scrolls the table. By default, the value of this attribute is false, which means that the
+        auto-saving behavior is turned off, and this state will only be saved along with the nearest form submission (or
+        upon DataTable/TreeTable component submission with Ajax). Setting the value to true will turn on the on-the-fly
+        scrolling state saving.
+      </description>
+      <name>autoSaveState</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Specifies the time in milliseconds that will identify when the background scroll position saving Ajax
+        request will be sent to the server after the scrolling stops. It is recommended to set this attribute to a value
+        greater than zero to avoid excessive frequent requests as the user scrolls the table. This attribute is
+        applicable only when autoSaveState attribute is set to true.
+      </description>
+      <name>autoSaveStateDelay</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default 500 -->
+      <!-- @el true -->
+    </attribute>
   </tag>
   <tag>
     <description>

@@ -49,7 +49,7 @@
       <o:rowGrouping groupingRules="#{sessionScope.banks_savedGroupingRules}"
                      expansionState="#{BanksList.expansionState}"
                      groupHeaderRowStyle="font-size: 11pt"/>
-      <o:scrolling/>
+      <o:scrolling position="#{sessionScope.scrolling}" autoSaveState="true"/>
       <o:singleRowSelection rowData="#{sessionScope.selectedBank}"
               style="background: url('../images/treetable/selected.gif') repeat-x #5d8bba !important; color: white !important;"/>
       <o:columnResizing resizingState="#{sessionScope.banks_columnResizingState}" autoSaveState="true"/>
