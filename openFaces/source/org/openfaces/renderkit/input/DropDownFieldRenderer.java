@@ -537,14 +537,31 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
         String initialStyleClass = getInitialStyleClass(context, dropDown);
         if (initialStyleClass != null)
             writer.writeAttribute("class", initialStyleClass, null);
+        /** Fix for issue with loading of style classes with javascript in IE. As a result "style" attributes problems
+         *  wasn't fixed by the code above, and we need to add style attribute to make loaded component look the same
+         *  as after initialization. This attribute removed on the client after complete loading.
+        */
+        if (Environment.isExplorer()){
+            if (dropDown.getStyle() != null)
+                writer.writeAttribute("style", dropDown.getStyle(), null);
+        }
     }
 
     @Override
     protected void writeDefaultFieldStyle(FacesContext context, ResponseWriter writer,
                                           DropDownComponent dropDown) throws IOException {
+        super.writeDefaultFieldStyle(context,writer,dropDown);
         String fieldClass = getFieldClass(context, dropDown);
         if (fieldClass != null)
             writer.writeAttribute("class", fieldClass, null);
+        /** Fix for issue with loading of style classes with javascript in IE. As a result "style" attributes problems
+         *  wasn't fixed by the code above, and we need to add style attribute to make loaded component look the same
+         *  as after initialization. This attribute removed on the client after complete loading.
+         */
+        if (Environment.isExplorer()){
+            if (dropDown.getFieldStyle() != null)
+                writer.writeAttribute("style", dropDown.getFieldStyle(), null);
+        }
     }
 
     /**
@@ -561,5 +578,13 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
         super.writeAdditionalButtonAttributes(context, writer, dropDown);
         String buttonClass = getButtonClass(context, dropDown);
         writer.writeAttribute("class", buttonClass, null);
+        /** Fix for issue with loading of style classes with javascript in IE. As a result "style" attributes problems
+         *  wasn't fixed by the code above, and we need to add style attribute to make loaded component look the same
+         *  as after initialization. This attribute removed on the client after complete loading.
+         */
+        if (Environment.isExplorer()){
+            if (dropDown.getButtonStyle() != null)
+                writer.writeAttribute("style", dropDown.getButtonStyle(), null);
+        }
     }
 }
