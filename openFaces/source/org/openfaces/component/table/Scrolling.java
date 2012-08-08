@@ -30,6 +30,8 @@ public class Scrolling extends AbstractTableConfigurator {
     private Point position;
     private Boolean autoScrollbars;
     private Boolean minimizeHeight;
+    private Boolean autoSaveState;
+    private Integer autoSaveStateDelay;
 
     public Scrolling() {
     }
@@ -46,7 +48,9 @@ public class Scrolling extends AbstractTableConfigurator {
                 horizontal,
                 position,
                 autoScrollbars,
-                minimizeHeight
+                minimizeHeight,
+                autoSaveState,
+                autoSaveStateDelay
         };
     }
 
@@ -60,6 +64,8 @@ public class Scrolling extends AbstractTableConfigurator {
         position = (Point) state[i++];
         autoScrollbars = (Boolean) state[i++];
         minimizeHeight = (Boolean) state[i++];
+        autoSaveState = (Boolean) state[i++];
+        autoSaveStateDelay = (Integer) state[i++];
     }
 
     public boolean isVertical() {
@@ -128,5 +134,21 @@ public class Scrolling extends AbstractTableConfigurator {
 
     public void setMinimizeHeight(boolean minimizeHeight) {
         this.minimizeHeight = minimizeHeight;
+    }
+
+    public boolean getAutoSaveState() {
+        return ValueBindings.get(this, "autoSaveState", autoSaveState, false);
+    }
+
+    public void setAutoSaveState(boolean autoSaveState) {
+        this.autoSaveState = autoSaveState;
+    }
+
+    public int getAutoSaveStateDelay() {
+        return ValueBindings.get(this, "autoSaveStateDelay", autoSaveStateDelay, 500);
+    }
+
+    public void setAutoSaveStateDelay(int autoSaveStateDelay) {
+        this.autoSaveStateDelay = autoSaveStateDelay;
     }
 }

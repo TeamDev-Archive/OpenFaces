@@ -436,10 +436,14 @@ public class TableStructure extends TableElement {
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
+        boolean autoSaveState = scrolling.getAutoSaveState();
         Rendering.addJsonParam(result, "horizontal", scrolling.isHorizontal(), false);
         Rendering.addJsonParam(result, "vertical", scrolling.isVertical(), false);
         Rendering.addJsonParam(result, "autoScrollbars", scrolling.getAutoScrollbars(), false);
         Rendering.addJsonParam(result, "minimizeHeight", scrolling.getMinimizeHeight(), false);
+        Rendering.addJsonParam(result, "autoSaveState", autoSaveState, false);
+        if (autoSaveState)
+            Rendering.addJsonParam(result, "autoSaveStateDelay", scrolling.getAutoSaveStateDelay());
         Point pos = scrolling.getPosition();
         Rendering.addJsonParam(result, "position", new Object[]{pos.x, pos.y});
 
