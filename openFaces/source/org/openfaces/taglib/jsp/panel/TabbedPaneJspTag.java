@@ -116,7 +116,7 @@ public class TabbedPaneJspTag extends MultiPageContainerJspTag {
         getDelegate().setPropertyValue("focusAreaClass", focusAreaClass);
     }
 
-    public void setSecondTabSetVisible(ValueExpression mirrorTabSetVisible) {
+    public void setMirrorTabSetVisible(ValueExpression mirrorTabSetVisible) {
         getDelegate().setPropertyValue("mirrorTabSetVisible", mirrorTabSetVisible);
     }
 }

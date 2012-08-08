@@ -298,7 +298,9 @@ O$.DropDown = {
     if (button)
       button.className = dropDown._buttonClass;
 
-    dropDown.setDisabled(disabled);
+    O$.addLoadEvent(function (){
+      dropDown.setDisabled(disabled);
+    });
 
     dropDown._rolloverButtonClass = dropDown._buttonClass + O$.DropDown._getClassName(rolloverButtonClass);
     dropDown._pressedButtonClass = dropDown._rolloverButtonClass + O$.DropDown._getClassName(pressedButtonClass);
@@ -420,6 +422,17 @@ O$.DropDown = {
     O$.addUnloadHandler(popup, function () {
       O$.removeEventHandler(window, "resize", resizeHandlerOnWindow);
     });
+    /** Fix for issue with loading of style classes with javascript in IE. As a result "style" attributes was added by
+     * server, and we need to remove them to make other custom classes work correctly (added to address OFCS-109)
+     */
+    if (O$.isExplorer()){
+      if (dropDown.style)
+        dropDown.removeAttribute('style');
+      if (dropDown._field.style)
+        dropDown._field.removeAttribute('style');
+      if (dropDown._button.style)
+        dropDown._button.removeAttribute('style');
+    }
   },
 
   /*
