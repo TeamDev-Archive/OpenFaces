@@ -3182,7 +3182,7 @@ O$.Table = {
             O$.requestComponentPortions(table.id, ["scrollingState"], null, function() {
               // no client-side updates are required -- the request was just for saving data
             }, null, true);
-          }, table._params.scrolling.autoSaveStateDelay)
+          }, table._params.scrolling.autoSaveStateDelay, table.id + "::scrollingStateSaving")
         }
       };
 
