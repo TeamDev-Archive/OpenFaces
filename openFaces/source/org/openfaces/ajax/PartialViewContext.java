@@ -73,7 +73,7 @@ public class PartialViewContext extends PartialViewContextWrapper {
     private static final Pattern JS_VAR_PATTERN = Pattern.compile("\\bvar\\b");
     private static final String PARAM_ACTION_COMPONENT = "_of_actionComponent";
     private static final String PARAM_ACTION_LISTENER = "_of_actionListener";
-    private static final String PARAM_SKIP_EXECUTE = "\"_of_skipExecute\"";
+    private static final String PARAM_SKIP_EXECUTE = "_of_skipExecute";
     private static final String PARAM_ACTION = "_of_action";
     private static final String PARAM_IMMEDIATE = "_of_immediate";
     private static final String OPENFACES_AJAX_REQUEST_MARKER = "_openFaces_ajax";
