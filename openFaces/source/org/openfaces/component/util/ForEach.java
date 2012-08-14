@@ -44,6 +44,7 @@ public class ForEach extends OUIObjectIteratorBase {
 
     // todo: add support for rolloverStyle attribute and event attributes inherited from OUIObjectIteratorBase
 
+    private Object itemsValues;
     private Object items;
     private DataModel data;
     private Integer index;
@@ -188,16 +189,22 @@ public class ForEach extends OUIObjectIteratorBase {
             requestMap.remove(varStatus);
     }
 
+    public void cleanData(){
+        itemsValues = null;
+    }
+
+
     /**
      * Wrap data collection that specified into 'items' attribute into DataModel class.
      *
      * @return wrapped data collection as DataModel.
      */
     private DataModel getData() {
-        Object items = getItems();
-        if (items == null)
+        if (itemsValues == null)
+            itemsValues = getItems();
+        if (itemsValues == null)
             return null;
-        return DataUtil.objectAsDataModel(items);
+        return DataUtil.objectAsDataModel(itemsValues);
     }
 
     /**
