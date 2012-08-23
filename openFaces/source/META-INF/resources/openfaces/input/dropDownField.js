@@ -204,6 +204,8 @@ O$.DropDownField = {
       },
 
       _setFilterCriterion: function(text, autoCompletionAllowedForThisKey) {
+        if (!text)
+          return;
         if (dropDown._filterCriterion == text)
           return;
         dropDown._filterCriterion = text;
@@ -404,7 +406,7 @@ O$.DropDownField = {
               var itemValue = this._itemValue;
               dropDown._setValue(text, itemValue);
               setTimeout(function() {
-                dropDown._setFilterCriterion(null);
+                dropDown._setFilterCriterion();
               }, 1);
             }
 
