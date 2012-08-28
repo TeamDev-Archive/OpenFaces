@@ -403,6 +403,7 @@ O$.DropDownField = {
               var text = this._itemLabel;
               var itemValue = this._itemValue;
               dropDown._setValue(text, itemValue);
+              dropDown._filterCriterion = null;
             }
           });
 
