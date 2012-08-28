@@ -2432,6 +2432,8 @@ O$.Tables = {
           });
         });
       }
+      // Removed here to fix OFP-26 issue with wrong horizontal scroll position restoring
+      scrollToPosition();
     }
 
     if (!autoVerticalScrollbar)
@@ -2672,7 +2674,6 @@ O$.Tables = {
       mainScrollingArea._scrollingDiv.scrollTop = scrollPos[1];
     }
 
-    scrollToPosition();
 
     function markColumns() {
       [table._leftArea, table._centerArea, table._rightArea].forEach(function(area) {
