@@ -61,7 +61,6 @@
                    focusedClass="spinnerFocused"
                    buttonClass="spinnerButton"
                    minValue="0"
-                   maxValue="#{product.inStock}"
                    onchange="O$.ajax.request(this, event, {
                           execute: 'form:table:#{rowIndex}:quantityField',
                           render: 'form:table:#{rowIndex}:leftInStock form:table:#{rowIndex}:cost form:table:totalCost',

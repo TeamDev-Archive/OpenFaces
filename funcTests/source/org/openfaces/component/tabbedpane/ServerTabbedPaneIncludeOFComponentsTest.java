@@ -54,17 +54,18 @@ public class ServerTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
         confirmation1.assertVisible(true);
 
         confirmation1.okButton().click();
-        assertTrue(selenium.isAlertPresent());
-        assertEquals("done", selenium.getAlert());
-        confirmation1.assertVisible(false);
+        assertTrue(window().document().isAlertPresent());
+        assertEquals("done", window().document().getAlert());
+        getDriver().switchTo().alert().accept();
 
+        confirmation1.assertVisible(false);
         element("fn:secondTabID").clickAndWait();
         element("button2").click();
         confirmation2.assertVisible(true);
 
         confirmation2.okButton().click();
-        assertTrue(selenium.isAlertPresent());
-        assertEquals("done", selenium.getAlert());
+        assertTrue(window().document().isAlertPresent());
+        assertEquals("done", window().document().getAlert());
         confirmation2.assertVisible(false);
     }
 
@@ -119,12 +120,12 @@ public class ServerTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
         firstDropDown.assertElementExists();
         DropDownFieldInspector secondDropDown = dropDownField("fn:secondDropDown");
         secondDropDown.assertElementExists(false);
-
+        firstDropDown.button().click();
         firstDropDown.popup().items().get(1).click();
         firstDropDown.field().assertValue("Yellow");
         element("fn:secondTabID").clickAndWait();
         secondDropDown.assertElementExists();
-
+        secondDropDown.button().click();
         secondDropDown.popup().items().get(1).click();
         secondDropDown.field().assertValue("Yellow");
     }

@@ -70,8 +70,9 @@ public class ClientFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
             confirmationElement.assertVisible(true);
 
             confirmationElement.okButton().click();
-            assertTrue(selenium.isAlertPresent());
-            assertEquals("done", selenium.getAlert());
+            assertTrue(window().document().isAlertPresent());
+            assertEquals("done", window().document().getAlert());
+            getDriver().switchTo().alert().accept();
 
             confirmationElement.assertVisible(false);
         }

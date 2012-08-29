@@ -16,6 +16,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.openfaces.test.RichFacesAjaxLoadingMode;
+import org.openqa.selenium.Keys;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.LoadingMode;
 import org.seleniuminspector.ServerLoadingMode;
@@ -393,7 +394,7 @@ public class DataTableTest extends OpenFacesTestCase {
         DataTableInspector singleSelectionDataTable = dataTable("formID:singleSelectionDataTable");
         singleSelectionDataTable.click();
         for (int i = 0; i < 9; i++) {
-            singleSelectionDataTable.keyPress(KeyEvent.VK_DOWN);
+            singleSelectionDataTable.keyPress(Keys.ARROW_DOWN);
             singleSelectionDataTable.checkSelectedIndex(i);
         }
 
@@ -673,7 +674,7 @@ public class DataTableTest extends OpenFacesTestCase {
             checkDataTableContents(selenium, referenceDataTableValues, i);
             element("formID:paginableDataTable").click();
             //go to the previous page using keyboard
-            selenium.getEval("var el = this.page().findElement('formID:paginableDataTable'); var evObj = document.createEvent('KeyEvents'); evObj.initKeyEvent('keypress', true, true, window, false, false, false, false, 33, 0); el.dispatchEvent(evObj);");
+            selenium.getEval("var el = Selenium.findElement('formID:paginableDataTable'); var evObj = document.createEvent('KeyEvents'); evObj.initKeyEvent('keypress', true, true, window, false, false, false, false, 33, 0); el.dispatchEvent(evObj);");
 
             loadingMode.waitForLoad();
         }

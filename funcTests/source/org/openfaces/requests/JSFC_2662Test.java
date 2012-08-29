@@ -46,7 +46,7 @@ public class JSFC_2662Test extends OpenFacesTestCase {
         suggestionField.keyPress(KeyEvent.VK_DELETE);
         //press 'end' button
         suggestionField.keyPress(KeyEvent.VK_END);
-        assertFalse(selenium.isAlertPresent());
+        assertFalse(window().document().isAlertPresent());
     }
 
 }

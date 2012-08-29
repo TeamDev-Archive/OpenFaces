@@ -26,6 +26,6 @@ public class JSFC_2282Test extends OpenFacesTestCase {
         element("fm:bt").click();
         element("fm:cn::blockingLayer").assertElementExists(true);
         element("test").click();
-        assertEquals("OK", getSelenium().getAlert());
+        assertEquals("OK", window().document().getAlert());
     }
 }

@@ -13,11 +13,17 @@ package org.openfaces.test;
 
 import com.thoughtworks.selenium.Selenium;
 import com.thoughtworks.selenium.SeleniumException;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.internal.WrapsDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.seleniuminspector.SeleniumFactory;
 import org.seleniuminspector.SeleniumHolder;
 import org.seleniuminspector.SeleniumTestCase;
-import org.seleniuminspector.SeleniumWithServerAutostartFactory;
 import org.seleniuminspector.openfaces.*;
+import org.seleniuminspector.webriver.MySeleniumFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,7 +41,8 @@ public abstract class OpenFacesTestCase extends SeleniumTestCase {
     protected static final String IMPLEMENTATION = getSystemProperty("test.app.jsf.implementation", "SUN12");
 
     protected static final String TEST_APP_URL_PREFIX = getSystemProperty("test.app.context.path", IS_FACELETS ? "/TestAppFacelets" : "/TestAppJsp");
-    protected static final String LIVE_DEMO_URL_PREFIX = getSystemProperty("demo.context.path", IS_FACELETS ? "/LiveDemoFacelets" : "/LiveDemoJsp");
+//    protected static final String LIVE_DEMO_URL_PREFIX = getSystemProperty("demo.context.path", IS_FACELETS ? "/LiveDemoFacelets" : "/LiveDemoJsp");
+    protected static final String LIVE_DEMO_URL_PREFIX = "";
 
     static {
         Properties properties = new Properties();
@@ -49,7 +56,7 @@ public abstract class OpenFacesTestCase extends SeleniumTestCase {
 
         boolean addNamespacesToXpath = OpenFacesTestCase.IMPLEMENTATION.equals("SUN12") && OpenFacesTestCase.IS_FACELETS;
         String browserPath = browserType.getBrowserPath(properties);
-        SeleniumFactory seleniumFactory = new SeleniumWithServerAutostartFactory(CUSTOM_SELENIUM_PORT, browserPath, startUrl, addNamespacesToXpath);
+        SeleniumFactory seleniumFactory = new MySeleniumFactory("localhost", CUSTOM_SELENIUM_PORT, browserPath, startUrl);
         SeleniumHolder.getInstance().setSeleniumFactory(seleniumFactory);
     }
 
@@ -99,6 +106,11 @@ public abstract class OpenFacesTestCase extends SeleniumTestCase {
             boolean lastAttempt = (i == attemptCount);
             try {
                 openAndWait(applicationUrl, pageUrl);
+                JavascriptExecutor js = (JavascriptExecutor) getDriver();
+                js.executeScript("var script = document.createElement('script'); script.setAttribute('src', '../../asd.js');script.setAttribute('type', 'text/javascript'); document.body.insertBefore(script, document.body.childNodes[0]);");
+
+//                WebDriverWait wait = new WebDriverWait(getDriver(), 5);
+//                wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("seleniumLoaderFlag")));
             } catch (Exception e) {
                 if (!lastAttempt) {
                     sleep(10 * 1000);
@@ -272,4 +284,7 @@ public abstract class OpenFacesTestCase extends SeleniumTestCase {
         assertEquals(shouldContainIcon, iconExists);
     }
 
+    protected WebDriver getDriver() {
+        return ((WrapsDriver) getSelenium()).getWrappedDriver();
+    }
 }

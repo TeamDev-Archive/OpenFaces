@@ -16,6 +16,7 @@ import junit.framework.Assert;
 import java.util.Arrays;
 
 import org.seleniuminspector.ElementInspector;
+import org.seleniuminspector.html.TableRowInspector;
 import org.seleniuminspector.html.TableSectionInspector;
 
 /**
@@ -38,8 +39,8 @@ public class DataTableInspector extends AbstractTableInspector {
         return (DataTableRowInspector) header().row(rowIndex);
     }
 
-    public DataTableRowInspector bodyRow(int rowIndex) {
-        return (DataTableRowInspector) body().row(rowIndex);
+    public TableRowInspector bodyRow(int rowIndex) {
+        return body().row(rowIndex);
     }
 
     public DataTableRowInspector footerRow(int rowIndex) {
@@ -57,11 +58,12 @@ public class DataTableInspector extends AbstractTableInspector {
 
     public int[] selectedRowIndexes() {
         String indexesAsString = evalExpression("getSelectedRowIndexes();");
+        indexesAsString = indexesAsString.substring(1, indexesAsString.length() - 1);
         String[] indexesAsStringArray = indexesAsString.split(",");
 
         int[] indexes = new int[indexesAsStringArray.length];
         for (int i = 0; i < indexesAsStringArray.length; i++) {
-            indexes[i] = Integer.parseInt(indexesAsStringArray[i]);
+            indexes[i] = Integer.parseInt(indexesAsStringArray[i].trim());
         }
 
         return indexes;

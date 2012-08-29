@@ -14,6 +14,7 @@ package org.openfaces.component.treetable;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.openfaces.test.RichFacesAjaxLoadingMode;
+import org.openqa.selenium.Keys;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.LoadingMode;
 import org.seleniuminspector.ServerLoadingMode;
@@ -96,13 +97,13 @@ public class TreeTableTest extends OpenFacesTestCase {
         for (int i = 1; i < 26; i++) {
             if (i == 1 || i == 4 || i == 16 || i == 19 || i == 21 || i == 24) {
                 //click right arrow to expand first TreeTable node
-                treeTable.keyPress(KeyEvent.VK_RIGHT);
+                treeTable.keyPress(Keys.ARROW_RIGHT);
                 OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
             }
             //get selected index value
             emptyElement.assertText(String.valueOf(i - 1));
             //click down arrow
-            treeTable.keyPress(KeyEvent.VK_DOWN);
+            treeTable.keyPress(Keys.ARROW_DOWN);
         }
         //check mouse selection for the same TreeTable
         element("formID:singleSelectionTreeTableID:1:categoryID").click();
@@ -180,23 +181,23 @@ public class TreeTableTest extends OpenFacesTestCase {
         //check root nodes
         element("formID:multipleNodePathsSelectionTreeTableID:0:categoryID").click();
         TreeTableInspector multipleNodePathsTreeTable = treeTable("formID:multipleNodePathsSelectionTreeTableID");
-        multipleNodePathsTreeTable.keyPress(KeyEvent.VK_DOWN);
+        multipleNodePathsTreeTable.keyPress(Keys.ARROW_DOWN);
         element("formID:multipleNodeDatasSelectionTreeTableID:0:categoryID").click();
         TreeTableInspector multipleNodeDataTreeTable = treeTable("formID:multipleNodeDatasSelectionTreeTableID");
-        multipleNodeDataTreeTable.keyPress(KeyEvent.VK_DOWN);
+        multipleNodeDataTreeTable.keyPress(Keys.ARROW_DOWN);
 
         //check root + expanded child nodes
         element("formID:multipleNodePathsSelectionTreeTableID:4:categoryID").click();
 
         //click right arrow
-        multipleNodePathsTreeTable.keyPress(KeyEvent.VK_RIGHT);
+        multipleNodePathsTreeTable.keyPress(Keys.ARROW_RIGHT);
         OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         for (int i = 0; i < 3; i++) {
             createEvent(multipleNodePathsTreeTable, null, EventType.KEY, "keypress", KeyEvent.VK_DOWN, true);
         }
 
         element("formID:multipleNodeDatasSelectionTreeTableID:2:categoryID").click();
-        multipleNodeDataTreeTable.keyPress(KeyEvent.VK_RIGHT);
+        multipleNodeDataTreeTable.keyPress(Keys.ARROW_RIGHT);
         OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         for (int i = 0; i < 3; i++) {
             createEvent(multipleNodeDataTreeTable, null, EventType.KEY, "keypress", KeyEvent.VK_DOWN, true);
@@ -230,32 +231,32 @@ public class TreeTableTest extends OpenFacesTestCase {
 
         ElementInspector emptyElement = element("empty");
         //down arrow
-        treeTable.keyPress(KeyEvent.VK_DOWN);
+        treeTable.keyPress(Keys.ARROW_DOWN);
         emptyElement.assertText("  0");
 
         //'End' button
-        treeTable.keyPress(KeyEvent.VK_END);
+        treeTable.keyPress(Keys.END);
         emptyElement.assertText("  6");
 
         //up arrow
-        treeTable.keyPress(KeyEvent.VK_UP);
+        treeTable.keyPress(Keys.ARROW_UP);
         emptyElement.assertText("  5");
 
         //'Home' button
-        treeTable.keyPress(KeyEvent.VK_HOME);
+        treeTable.keyPress(Keys.HOME);
         emptyElement.assertText("  0");
 
         //left arrow
-        treeTable.keyPress(KeyEvent.VK_LEFT);
+        treeTable.keyPress(Keys.ARROW_LEFT);
 
         //right arrow
-        treeTable.keyPress(KeyEvent.VK_RIGHT);
+        treeTable.keyPress(Keys.ARROW_RIGHT);
 
         //'minus' sign
-        treeTable.keyPress(KeyEvent.VK_SUBTRACT);
+        treeTable.keyPress(Keys.SUBTRACT);
 
         //'plus' sign
-        treeTable.keyPress(KeyEvent.VK_ADD);
+        treeTable.keyPress(Keys.ADD);
 
         //'Shift' + down arrow
         for (int i = 0; i < 6; i++) {

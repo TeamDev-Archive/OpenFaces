@@ -185,7 +185,12 @@
                   rolloverListItemClass="rollOverItem"
                   var="food"
                   style="height: 26px;"
-                  itemPresentationColumn="0">
+                  itemPresentationColumn="0"
+                  valueChangeListener="#{SelectOneMenuBean.valueChanged}">
+                  <o:ajax listener="#{SelectOneMenuBean.valueChanged}"
+                          event="change"  execute="selectFood"
+                          render="resultTable"
+                          ></o:ajax>
             <f:selectItem itemValue="" itemLabel="Any food">
               <h:outputText styleClass="noValueSelected" value="Any food"/>
             </f:selectItem>

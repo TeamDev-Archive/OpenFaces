@@ -1,0 +1,30 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk">
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  <br/>
+
+  <h1>SingleFileUpload </h1>
+  ******
+  <h:outputText value="#{FileUploadBean.fileName}" id="fileName" />
+  <o:commandButton id="alert" onclick = "alert(1)"/>
+  <o:singleFileUpload browseButtonText="Upload"
+                      acceptedFileTypes="jpg png bmp jpeg gif" acceptedMimeTypes="image/*"
+                      completionListener="#{FileUploadBean.singleFileUploaded}"
+                      style="border: none; width:180px" layoutMode="compact"
+                      render="fileName"
+                      id="singleFileUpload"
+          />
+  <o:multipleFileUpload
+          browseButtonText="Upload"
+          acceptedFileTypes="jpg png bmp jpeg gif" acceptedMimeTypes="image/*"
+          completionListener="#{FileUploadBean.uploadComplete}"
+          id="multiFileUpload"
+           />
+
+
+</div>

@@ -197,7 +197,7 @@ public class LiveDemoTest extends OpenFacesTestCase {
         editableConfirmation.okButton().assertValue("Confirm");
         editableConfirmation.cancelButton().assertValue("Decline");
         editableConfirmation.okButton().click();
-        assertTrue(selenium.isAlertPresent());
+        assertTrue(window().document().isAlertPresent());
 
     }
 

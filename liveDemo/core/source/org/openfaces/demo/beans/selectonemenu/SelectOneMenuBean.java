@@ -12,8 +12,10 @@
 package org.openfaces.demo.beans.selectonemenu;
 
 import org.openfaces.demo.beans.datatable.Tour;
+import org.openfaces.event.AjaxActionEvent;
 import org.openfaces.util.Faces;
 
+import javax.faces.event.ValueChangeEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -243,6 +245,11 @@ public class SelectOneMenuBean implements Serializable {
 
     public List<Tour> getFilteredTours() {
         return filteredTours;
+    }
+
+    public void valueChanged(AjaxActionEvent event) {
+        event.equals(null);
+        return;
     }
 
 }

@@ -645,6 +645,11 @@
     <managed-bean-class>org.openfaces.testapp.fileattachments.FileAttachmentsBean</managed-bean-class>
     <managed-bean-scope>session</managed-bean-scope>
   </managed-bean>
+  <managed-bean>
+    <managed-bean-name>FileUploadBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.fileupload.FileUploadBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
 
   <converter>
     <converter-id>testConverter</converter-id>

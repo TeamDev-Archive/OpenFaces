@@ -32,6 +32,6 @@ public class JSFC_1903Test extends OpenFacesTestCase {
         confirmation.cancelButton().click();
         button.click();
         confirmation.okButton().click();
-        assertEquals("!", getSelenium().getAlert());
+        assertEquals("!", window().document().getAlert());
     }
 }

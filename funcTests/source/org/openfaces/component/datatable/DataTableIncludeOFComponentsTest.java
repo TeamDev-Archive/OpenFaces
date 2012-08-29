@@ -84,7 +84,7 @@ public class DataTableIncludeOFComponentsTest extends OpenFacesTestCase {
         //click at hinlLabel placed in the header to perform sorting
 
 //    dataTableColumn(headerHintLabel1.asSeleniumLocator()).makeSorting(OpenFacesAjaxLoadingMode.getInstance());
-        hintLabelDataTable.column(0).makeSorting();
+        hintLabelDataTable.column(1).makeSorting();
 
 
         for (int pageNo = 1; pageNo <= 2; pageNo++) {
@@ -135,7 +135,7 @@ public class DataTableIncludeOFComponentsTest extends OpenFacesTestCase {
         int rowCount = 3;
         int pageCount = 3;
 
-        element("fn:popupDataTable:header_invoker").click();
+        element("fn:popupDataTable:header_invoker").clickAndWait();
         element("fn:popupDataTable:header_popup").assertVisible(true);
         OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         for (int pageNo = 1; pageNo <= pageCount; pageNo++) {
@@ -146,8 +146,8 @@ public class DataTableIncludeOFComponentsTest extends OpenFacesTestCase {
                 DataTableUtils.TestDataTableItem currentReferenceRow = currentPageValues.get(rowIndex);
 
                 // invoke popupLayers in current row
-                element("fn:popupDataTable:" + rowIndex + ":body_invoker").click();
-                element("fn:popupDataTable:" + rowIndex + ":body_invoker1").click();
+                element("fn:popupDataTable:" + rowIndex + ":body_invoker").clickAndWait();
+                element("fn:popupDataTable:" + rowIndex + ":body_invoker1").clickAndWait();
 
                 //check is single selection performed well
                 dataTable("fn:popupDataTable").checkSelectedIndex(rowIndex);

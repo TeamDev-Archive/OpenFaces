@@ -59,8 +59,8 @@ public class AjaxFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase {
         for (int i = 0; i < 2; i++) {
             element("button1").click();
             confirmation("fn:conf1").okButton().click();
-            assertTrue(selenium.isAlertPresent());
-            assertEquals("done", selenium.getAlert());
+            assertTrue(window().document().isAlertPresent());
+            assertEquals("done", window().document().getAlert());
         }
     }
 
@@ -96,6 +96,7 @@ public class AjaxFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase {
 
         DateChooserInspector dateChooser = dateChooser("fn:dropDownID");
         dateChooser.assertElementExists();
+        dateChooser.button().click();
         dateChooser.popup().items().get(1).click();
         dateChooser.field().assertValue("Yellow");
     }
