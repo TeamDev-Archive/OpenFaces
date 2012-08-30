@@ -11,6 +11,7 @@
  */
 package org.seleniuminspector.openfaces;
 
+import org.openqa.selenium.Keys;
 import org.seleniuminspector.LoadingMode;
 
 /**
@@ -24,7 +25,7 @@ public class ComboBoxFilterInspector extends AbstractFilterInspector {
 
     public void makeFiltering(String filterValue) {
         selectByLabel(filterValue);
-        keyPress(13);
+        keyPress(Keys.ENTER);
 
         getLoadingMode().waitForLoad();
     }

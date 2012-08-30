@@ -392,7 +392,7 @@ public class DataTableTest extends OpenFacesTestCase {
 
         //check keyboard navigation for single selection
         DataTableInspector singleSelectionDataTable = dataTable("formID:singleSelectionDataTable");
-        singleSelectionDataTable.click();
+        singleSelectionDataTable.bodyRow(0).click();
         for (int i = 0; i < 9; i++) {
             singleSelectionDataTable.keyPress(Keys.ARROW_DOWN);
             singleSelectionDataTable.checkSelectedIndex(i);
@@ -424,7 +424,7 @@ public class DataTableTest extends OpenFacesTestCase {
         DataTableInspector multipleSelectionDataTable = dataTable("formID:multipleSelectionDataTable");
 
         //check keyboard navigation for multiple selection
-        multipleSelectionDataTable.click();
+        multipleSelectionDataTable.bodyRow(0).click();
         for (int i = 0; i < 9; i++) {
             createEvent(multipleSelectionDataTable, null, EventType.KEY, "keypress", 40, true);
         }

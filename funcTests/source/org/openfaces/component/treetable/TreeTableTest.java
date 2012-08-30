@@ -94,6 +94,7 @@ public class TreeTableTest extends OpenFacesTestCase {
 
         ElementInspector emptyElement = element("empty");
         ElementInspector treeTable = element("formID:singleSelectionTreeTableID");
+        treeTable.focus();
         for (int i = 1; i < 26; i++) {
             if (i == 1 || i == 4 || i == 16 || i == 19 || i == 21 || i == 24) {
                 //click right arrow to expand first TreeTable node
@@ -138,6 +139,7 @@ public class TreeTableTest extends OpenFacesTestCase {
         categoryOutput.click();
 
         TreeTableInspector multipleSelectionTreeTable = treeTable("formID:multipleSelectionTreeTableID");
+        multipleSelectionTreeTable.focus();
         /*check keyboard navigation and selection*/
         //select root nodes
         for (int i = 0; i < 5; i++) {
@@ -227,7 +229,7 @@ public class TreeTableTest extends OpenFacesTestCase {
 
         ElementInspector treeTable = element("formID:treeTableKeyboardNavigation");
 
-        treeTable.click();
+        treeTable.focus();
 
         ElementInspector emptyElement = element("empty");
         //down arrow
