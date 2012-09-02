@@ -95,12 +95,16 @@ public class DataTableIncludeOFComponentsTest extends OpenFacesTestCase {
 
                 HintLabelInspector bodyHintLabel1 = hintLabel("fn:hintLabelDataTable:" + rowIndex + ":body_hinLabel_1");
                 bodyHintLabel1.click();
+                bodyHintLabel1.hint().mouseOut();
                 bodyHintLabel1.checkVisibilityAndContent(currentReferenceRow.getFirstColumn(), currentReferenceRow.getSecondColumn());
+                bodyHintLabel1.hint().mouseOut();
 
                 hintLabel("fn:hintLabelDataTable:" + rowIndex + ":body_hinLabel_2")
                         .checkVisibilityAndContent(currentReferenceRow.getSecondColumn(), currentReferenceRow.getFirstColumn());
 
                 // check is single selection performed well
+                bodyHintLabel1.clickAndWait();
+                bodyHintLabel1.hint().mouseOut();
                 hintLabelDataTable.checkSelectedIndex(rowIndex);
             }
             // check footer hintLabels

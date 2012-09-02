@@ -16,7 +16,10 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.openfaces.test.RichFacesAjaxLoadingMode;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.LoadingMode;
 import org.seleniuminspector.ServerLoadingMode;
@@ -392,10 +395,15 @@ public class DataTableTest extends OpenFacesTestCase {
 
         //check keyboard navigation for single selection
         DataTableInspector singleSelectionDataTable = dataTable("formID:singleSelectionDataTable");
-        singleSelectionDataTable.bodyRow(0).click();
-        for (int i = 0; i < 9; i++) {
-            singleSelectionDataTable.keyPress(Keys.ARROW_DOWN);
-            singleSelectionDataTable.checkSelectedIndex(i);
+        Actions click= new Actions(getDriver()).moveToElement(
+                    getDriver().findElement(By.xpath(singleSelectionDataTable.bodyRow(0).getXPath())))
+                    .click();
+        click.build().perform();
+//        singleSelectionDataTable.bodyRow(0).click();
+        for (int i = 0; i < 8; i++) {
+            Actions keyDown = new Actions(getDriver()).sendKeys(Keys.ARROW_DOWN);
+            keyDown.build().perform();
+            singleSelectionDataTable.checkSelectedIndex(i + 1);
         }
 
         //check selection with the mouse help
