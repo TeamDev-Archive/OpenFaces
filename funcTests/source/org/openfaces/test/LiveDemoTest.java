@@ -14,12 +14,16 @@ package org.openfaces.test;
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.seleniuminspector.openfaces.ConfirmationInspector;
-import org.seleniuminspector.openfaces.DateChooserInspector;
-import org.seleniuminspector.openfaces.TabSetInspector;
-import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.html.InputInspector;
+import org.seleniuminspector.openfaces.ConfirmationInspector;
+import org.seleniuminspector.openfaces.DateChooserInspector;
+import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
+import org.seleniuminspector.openfaces.TabSetInspector;
 
 /**
  * @author Darya Shumilina
@@ -169,7 +173,7 @@ public class LiveDemoTest extends OpenFacesTestCase {
         textPopup.assertVisible(true);
         textConfirmation.assertVisible(false);
 
-        element("confirmationForm:imageInvoker").doubleClick();
+        element("confirmationForm:imageInvoker").evalExpression("ondblclick.call(this, this)");
         ElementInspector imagePopup = element("confirmationForm:imagePopup");
         imagePopup.assertVisible(false);
         ConfirmationInspector imageConfirmation = confirmation("confirmationForm:imageConfirmation");
@@ -181,22 +185,35 @@ public class LiveDemoTest extends OpenFacesTestCase {
 
         new InputInspector("message_input").type("Are you sure?");
         ElementInspector changedInvoker = element("changedInvoker");
-        changedInvoker.click();
+        changedInvoker.evalExpression("onclick()");
         new InputInspector("detail_input").type("bla bla bla");
-        changedInvoker.click();
+        changedInvoker.evalExpression("onclick()");
         new InputInspector("yes_input").type("Confirm");
-        changedInvoker.click();
+        changedInvoker.evalExpression("onclick()");
         new InputInspector("no_input").type("Decline");
-        changedInvoker.click();
+        changedInvoker.evalExpression("onclick()");
+        WebElement element;
+        try {
+            element = getDriver().findElement(By.xpath("//*[@id='confirmationForm:editableConfirmation']//*[contains(text(), 'Are you sure?')]"));
+            element = getDriver().findElement(By.xpath("//*[@id='confirmationForm:editableConfirmation']//*[contains(text(), 'bla bla bla')]"));
+        } catch (NoSuchElementException e) {
+            assertTrue(false);
+        }
+        try {
+            element = getDriver().findElement(By.xpath("//*[@id='confirmationForm:editableConfirmation']//*[contains(text(), 'Are you really sure?')]"));
+            assertTrue(false);
+        } catch (NoSuchElementException e) {}
+        try {
+            element = getDriver().findElement(By.xpath("//*[@id='confirmationForm:editableConfirmation']//*[contains(text(), 'Think once again before doing it')]"));
+            assertTrue(false);
+        } catch (NoSuchElementException e) {}
 
-        element("//*[@id='confirmationForm:editableConfirmation']//*[contains(text(), 'Are you sure?')]").assertElementExists(true);
-        element("//*[@id='confirmationForm:editableConfirmation']//*[contains(text(), 'Are you really sure?')]").assertElementExists(false);
-        element("//*[@id='confirmationForm:editableConfirmation']//*[contains(text(), 'bla bla bla')]").assertElementExists(true);
-        element("//*[@id='confirmationForm:editableConfirmation']//*[contains(text(), 'Think once again before doing it')]").assertElementExists(false);
         ConfirmationInspector editableConfirmation = confirmation("confirmationForm:editableConfirmation");
         editableConfirmation.okButton().assertValue("Confirm");
         editableConfirmation.cancelButton().assertValue("Decline");
-        editableConfirmation.okButton().click();
+        WebElement okButton = getDriver().findElement(By.xpath(editableConfirmation.okButton().getXPath()));
+        Actions click = new Actions(getDriver()).moveToElement(okButton).click();
+        click.build().perform();
         assertTrue(window().document().isAlertPresent());
 
     }
