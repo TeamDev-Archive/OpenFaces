@@ -658,7 +658,9 @@ O$.FileUploadUtil = {
       },
       _renderAfterUploadEnd : function() {
         if (fileUpload._render) {
-          O$._ajaxReload(fileUpload._render, {"executeRenderedComponents":true,"immediate":false});
+          if (fileUpload._render.length > 0) {
+            O$._ajaxReload(fileUpload._render, {"executeRenderedComponents":true,"immediate":false});
+          }
         }
       },
       _transformStatusToFormatted:function(statusText) {

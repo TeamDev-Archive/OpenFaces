@@ -252,11 +252,12 @@ O$.Spinner = {
       if (value != null) {
         if (minValue != null && value < minValue) {
           spinner.setValue(minValue);
-        }
+        } else
         if (maxValue != null && value > maxValue) {
           spinner.setValue(maxValue);
+        } else {
+          spinner.setValue(value, true);
         }
-        spinner.setValue(value, true);
       } else {
         if (spinner._field.value != "") {
           spinner._field.value = "";
