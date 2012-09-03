@@ -17,6 +17,7 @@ import org.openfaces.util.NullTypeELResolver;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.context.FacesContext;
+import java.math.BigDecimal;
 
 /**
  * @author Alexander Golubev
@@ -71,7 +72,7 @@ public class Spinner extends DropDownComponent {
     }
 
     public Number getMaxValue() {
-        return ValueBindings.get(this, "maxValue", maxValue, null, Number.class);
+        return ValueBindings.get(this, "maxValue", maxValue, new BigDecimal("999999999999999999"), Number.class);
     }
 
     public void setMaxValue(Number maxValue) {
@@ -87,7 +88,7 @@ public class Spinner extends DropDownComponent {
     }
 
     public Number getMinValue() {
-        return ValueBindings.get(this, "minValue", minValue, null, Number.class);
+        return ValueBindings.get(this, "minValue", minValue, new BigDecimal("-999999999999999999"), Number.class);
     }
 
     public void setMinValue(Number minValue) {

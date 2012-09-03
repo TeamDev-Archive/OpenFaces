@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 3.0
+ * OpenFaces - JSF Component Library 2.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -250,7 +250,7 @@ O$.FileUploadUtil = {
         evt.preventDefault();
       },
       _sendCheckRequest:function (sendDataToEvent) {
-        O$.Ajax.requestComponentPortions(fileUpload.id, ["nothing"],
+        O$.requestComponentPortions(fileUpload.id, ["nothing"],
                 JSON.stringify({listOfFilesRequest:"true", idOfFiles:fileUpload._listOfids}),
                 function (fileUpload, portionName, portionHTML, portionScripts, portionData) {
                   if (portionData['allUploaded'] == "true") {
@@ -658,7 +658,9 @@ O$.FileUploadUtil = {
       },
       _renderAfterUploadEnd : function() {
         if (fileUpload._render) {
-          O$.Ajax._reload(fileUpload._render, {"executeRenderedComponents":true,"immediate":false});
+          if (fileUpload._render.length > 0) {
+            O$.Ajax._reload(fileUpload._render, {"executeRenderedComponents":true,"immediate":false});
+          }
         }
       },
       _transformStatusToFormatted:function(statusText) {
