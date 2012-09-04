@@ -32,11 +32,11 @@ public class ScrollPositionTest extends OpenFacesTestCase {
     public void testScrollPositionSaveAfterPageSubmission() {
         testAppFunctionalPage("/components/scrollfocus/scrollPosition.jsf");
         ElementInspector button = element("formID:clickIt");
-        button.focus();
+//        button.focus();
         sleep(500);
         int ordinate = window().evalIntExpression("pageYOffset");
         int abscissa = window().evalIntExpression("pageXOffset");
-        button.keyPress(13);
+        button.evalExpression("click()");
         waitForPageToLoad();
         window().assertExpressionEquals("pageYOffset", ordinate, 22);
         window().assertExpressionEquals("pageXOffset", abscissa);
