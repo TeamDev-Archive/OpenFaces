@@ -106,6 +106,7 @@ public class SpinnerRenderer extends DropDownComponentRenderer {
                 buttonRolloverStyleClass,
                 buttonPressedStyleClass,
                 spinner.isDisabled(),
+                spinner.isRequired(),
                 spinner.getOnchange(),
                 options);
 
