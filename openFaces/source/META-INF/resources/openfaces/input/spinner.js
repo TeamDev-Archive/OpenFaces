@@ -19,11 +19,13 @@ O$.Spinner = {
                   rolloverButtonClass,
                   pressedButtonClass,
                   disabled,
+                  required,
                   onchange,
                   formatOptions) {
     var spinner = O$.initComponent(spinnerId, null, {
       _disabled: false,
 
+      _prevValue: O$(spinnerId)._initialText,
       setDisabled: function(disabled) {
         if (this._disabled == disabled) return;
 
@@ -46,17 +48,16 @@ O$.Spinner = {
       },
 
       setValue: function(value, silent) {
-        var newValue = value == null || isNaN(value)
-                ? ""
-                : value;
-        var prevValue;
-        if (!silent) {
-          prevValue = spinner.getValue();
+        var newValue = value == null || isNaN(value) ? "" : value;
+        if (newValue === "") {
+          spinner._field.value = required ? spinner._prevValue : "";
+        } else {
+          spinner._field.value = O$.Dojo.Number.format(newValue, formatOptions);
         }
-        spinner._field.value = O$.Dojo.Number.format(newValue, formatOptions);
-        if (!silent && newValue != prevValue) {
+        if (!silent && newValue != spinner._prevValue) {
           notifyOfInputChanges(spinner);
         }
+        spinner._prevValue = spinner.getValue();
       },
 
       increaseValue: function() {
@@ -259,11 +260,9 @@ O$.Spinner = {
           spinner.setValue(value, true);
         }
       } else {
-        if (spinner._field.value != "") {
-          spinner._field.value = "";
-          notifyOfInputChanges(spinner);
-        }
+          spinner.setValue("", false);
       }
     }
+
   }
 };
