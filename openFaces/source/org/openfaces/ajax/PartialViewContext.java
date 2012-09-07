@@ -187,7 +187,7 @@ public class PartialViewContext extends PartialViewContextWrapper {
         for (String id : result) {
             UIComponent component = null;
             try {
-                component = Components.findComponent(viewRoot, id);
+                component = PartialViewContext.findComponentById(viewRoot, id, true, false, false);
             } catch (IllegalArgumentException e) {
                 // this can be the case when using <f:ajax> on <h:selectOneRadio>, which generates several
                 // <input type="radio"> tags with ids like form:radio:N, where N is a number of item, and

@@ -351,11 +351,11 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     public void invokeBeforeProcessDecodes(FacesContext context) {
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-        if (getRowIndex() != -1)
-            throw new IllegalArgumentException("beforeProcessDecodes is not expected to be invoked in the midst of iteration over its rows");
-        String key = AbstractTable.class.getName() + ".beforeProcessDecodesInvoked_" + getClientId(context);
+        String key = AbstractTable.class.getName() + ".beforeProcessDecodesInvoked_" + getStandardClientId(context);
         if (requestMap.containsKey(key)) return;
         requestMap.put(key, true);
+        if (getRowIndex() != -1)
+            throw new IllegalArgumentException("beforeProcessDecodes is not expected to be invoked in the midst of iteration over its rows");
         beforeProcessDecodes(context);
     }
 
