@@ -150,6 +150,14 @@
     <param-value>c:/tempUploadDir</param-value>
   </context-param>
    -->
+
+<!--  <context-param>
+    <description>Attribute which says application to submit additional column order during ajax resizing added to fix august Issue</description>
+    <param-name>org.openfaces.table.ajax.columnorder.submit</param-name>
+    <param-value>true</param-value>
+  </context-param>-->
+
+
   <context-param>
     <description>Specifies the maximum size of each file in kilobytes.</description>
     <param-name>org.openfaces.fileUpload.fileSizeLimit</param-name>

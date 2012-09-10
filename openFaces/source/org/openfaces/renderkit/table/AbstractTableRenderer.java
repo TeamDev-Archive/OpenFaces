@@ -665,7 +665,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         }
         if ("scrollingState".equals(portionName)) {
             Scrolling scrolling = table.getScrolling();
-            // the execute phases are skipped for the "columnResizingState" Ajax request
+            // the execute phases are skipped for the "scrollingState" Ajax request
             scrolling.processDecodes(context);
             scrolling.processValidators(context);
             scrolling.processUpdates(context);
