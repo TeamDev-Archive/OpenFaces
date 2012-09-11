@@ -105,14 +105,12 @@ public class ColumnResizingRenderer extends RendererBase {
 
         String columnOrderFieldName = getColumnOrderFieldName(context, table);
         String colOrder = (String) requestParams.get(columnOrderFieldName);
+        Iterable<String> submittedColumnsOrder = null;
         if (colOrder != null) {
             colOrder += ",";
-            Iterable<String> submittedColumnsOrder = Arrays.asList(colOrder.split(","));
+            submittedColumnsOrder = Arrays.asList(colOrder.split(","));
             if (submittedColumnsOrder != null) {
                 table.setColumnsOrder(submittedColumnsOrder);
-                if (table.getColumnsOrder() != null && ValueBindings.set(table, "columnsOrder", table.getColumnsOrder())) {
-                    table.setColumnsOrder(null);
-                }
             }
         }
         if (params == null || params.length() == 0)
@@ -149,6 +147,12 @@ public class ColumnResizingRenderer extends RendererBase {
             }
 
             resizingState.setColumnWidth(column.getId(), newWidth);
+        }
+
+        if (submittedColumnsOrder != null) {
+            if (table.getColumnsOrder() != null && ValueBindings.set(table, "columnsOrder", table.getColumnsOrder())) {
+                table.setColumnsOrder(null);
+            }
         }
         columnResizing.setResizingState(resizingState);
     }
