@@ -19,16 +19,11 @@ import org.openfaces.org.json.JSONArray;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.util.AnonymousFunction;
-import org.openfaces.util.Rendering;
 
-import javax.el.MethodExpression;
-import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
-import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.context.FacesContext;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +37,7 @@ import java.util.Map;
 public class AjaxInitializer {
     private static final String EXPRESSION_PREFIX = "#{";
     private static final String EXPRESSION_SUFFIX = "}";
-    
+
     public static ThreadLocal<Boolean> BUILDING_VIEW = new ThreadLocal<Boolean>();
 
     public JSONArray getRenderArray(FacesContext context, UIComponent sourceComponent, Iterable<String> render) {
@@ -86,7 +81,7 @@ public class AjaxInitializer {
             componentsByIds = new HashMap<String, UIComponent>();
             requestMap.put(componentsByIdsKey, componentsByIds);
         }
-        
+
         if (componentsByIds.containsKey(componentId))
             return componentsByIds.get(componentId);
 
@@ -144,7 +139,7 @@ public class AjaxInitializer {
             if (execute.iterator().hasNext() || submitAjaxInvoker) {
                 result.put("execute", getExecuteParam(context, command, execute));
             }
-            
+
             String onajaxstart = command.getOnajaxstart();
             if (onajaxstart != null && onajaxstart.length() != 0) {
                 result.put("onajaxstart", new AnonymousFunction(onajaxstart, "event"));
@@ -172,43 +167,7 @@ public class AjaxInitializer {
                 result.put("delayId", getAjaxComponentParam(context, command));
             }
 
-            MethodExpression action = !(command instanceof Ajax) ? command.getActionExpression() : null;
-            if (action != null) {
-                String actionExpressionString = action.getExpressionString();
-                validateExpressionString(actionExpressionString);
-                result.put("_action", actionExpressionString.substring(
-                        EXPRESSION_PREFIX.length(), actionExpressionString.length() - EXPRESSION_SUFFIX.length()));
-                result.put("actionComponent", command.getClientId(context));
-            }
-            UIComponent source = command;
-            if (source instanceof Ajax) {
-                source = source.getParent();
-                if (source instanceof ComponentConfigurator)
-                    source = ((ComponentConfigurator) source).getConfiguredComponent();
-            }
-            if (source != null) {
-                result.put("_sourceId", source.getClientId(context));
-                Collection<ClientBehaviorContext.Parameter> behaviorParams = Rendering.getBehaviorParameters(source);
-                if (behaviorParams != null && behaviorParams.size() > 0) {
-                    JSONObject params = new JSONObject();
-                    for (ClientBehaviorContext.Parameter behaviorParam : behaviorParams) {
-                        params.put(behaviorParam.getName(), behaviorParam.getValue());
-                    }
-                    result.put("params", params);
-                }
-            }
-
-
-            ValueExpression actionListener = command instanceof Ajax
-                    ? command.getValueExpression("listener")
-                    : command.getValueExpression("actionListener");
-            if (actionListener != null) {
-                String actionListenerExpressionString = actionListener.getExpressionString();
-                validateExpressionString(actionListenerExpressionString);
-                result.put("listener", actionListenerExpressionString.substring(EXPRESSION_PREFIX.length(),
-                        actionListenerExpressionString.length() - EXPRESSION_SUFFIX.length()));
-                result.put("actionComponent", getAjaxComponentParam(context, command));
-            }
+            result.put("actionTriggerParam", command.getActionTriggerParam());
 
             result.put("immediate", command.isImmediate());
             return result;

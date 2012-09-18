@@ -524,15 +524,11 @@ public class PartialViewContext extends PartialViewContextWrapper {
     private static void processAjaxExecutePhase(FacesContext context) {
         UIViewRoot viewRoot = context.getViewRoot();
         Map<String, String> requestParams = context.getExternalContext().getRequestParameterMap();
-        String listener = requestParams.get(PARAM_ACTION_LISTENER);
-        String action = requestParams.get(PARAM_ACTION);
-        if (listener == null && action == null)
+
+        if (isHandledByComponent(requestParams)) {
             return;
+        }
         String actionComponentId = requestParams.get(PARAM_ACTION_COMPONENT);
-        boolean requestIsHandledByComponentItself =
-                actionComponentId != null && requestParams.containsKey(actionComponentId);
-        if (requestIsHandledByComponentItself)
-            return;
 
         ELContext elContext = context.getELContext();
         UIComponent component = null;
@@ -543,6 +539,8 @@ public class PartialViewContext extends PartialViewContextWrapper {
         if (component == null)
             component = viewRoot;
 
+        String listener = requestParams.get(PARAM_ACTION_LISTENER);
+        String action = requestParams.get(PARAM_ACTION);
         Object result = null;
         if (action != null) {
             MethodExpression methodBinding = context.getApplication().getExpressionFactory().createMethodExpression(
@@ -585,6 +583,14 @@ public class PartialViewContext extends PartialViewContextWrapper {
         }
     }
 
+    /**
+     * This method determines whether current request is triggered by component or user.
+     * @param requestParams
+     * @return
+     */
+    private static boolean isHandledByComponent(Map<String, String> requestParams) {
+        return !(requestParams.containsKey(PARAM_ACTION_LISTENER) || requestParams.containsKey(PARAM_ACTION));
+    }
     /**
      * @deprecated this method family uses a practice of having to have a knowledge about the specific iterator
      *             components and the way that their custom client id generation logic works. This should be reimplemented to usa a

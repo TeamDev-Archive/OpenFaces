@@ -113,5 +113,9 @@ public class CaptionButton extends OUICommand {
         pressedImageUrl = (String) values[i++];
         hint = (String) values[i++];
     }
+    @Override
+    public String getActionTriggerParam() {
+        return getClientId(getFacesContext()) + "::clicked";
+    }
 
 }

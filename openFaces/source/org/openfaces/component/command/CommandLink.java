@@ -186,4 +186,8 @@ public class CommandLink extends OUICommand {
         this.type = type;
     }
 
+    @Override
+    public String getActionTriggerParam() {
+        return getClientId(getFacesContext()) + "::clicked";
+    }
 }

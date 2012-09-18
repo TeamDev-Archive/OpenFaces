@@ -12,6 +12,7 @@
 package org.openfaces.renderkit.command;
 
 import org.openfaces.component.OUIClientAction;
+import org.openfaces.component.OUICommand;
 import org.openfaces.component.command.CommandLink;
 import org.openfaces.renderkit.OUICommandRenderer;
 import org.openfaces.util.AjaxUtil;
@@ -54,7 +55,7 @@ public class CommandLinkRenderer extends OUICommandRenderer {
         Rendering.writeStyleAndClassAttributes(writer, link);
 
         boolean ajaxJsRequired = writeEventsWithAjaxSupport(context, writer, link,
-                getActionRequestKey(context, component));
+                ((OUICommand)component).getActionTriggerParam());
         if (ajaxJsRequired)
             link.getAttributes().put("_ajaxRequired", Boolean.TRUE);
 
@@ -94,9 +95,5 @@ public class CommandLinkRenderer extends OUICommandRenderer {
         Resources.renderJSLinkIfNeeded(context, Resources.utilJsURL(context));
         if (link.getAttributes().remove("_ajaxRequired") != null)
             AjaxUtil.renderJSLinks(context);
-    }
-
-    protected String getActionRequestKey(FacesContext context, UIComponent component) {
-        return component.getClientId(context) + "::clicked";
     }
 }

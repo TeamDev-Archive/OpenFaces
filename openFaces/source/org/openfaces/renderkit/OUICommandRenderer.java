@@ -12,6 +12,7 @@
 
 package org.openfaces.renderkit;
 
+import org.openfaces.component.OUICommand;
 import org.openfaces.util.Rendering;
 
 import javax.faces.component.UIComponent;
@@ -26,16 +27,12 @@ public class OUICommandRenderer extends RendererBase {
     @Override
     public void decode(FacesContext context, UIComponent component) {
         Rendering.decodeBehaviors(context, component);
-
+        OUICommand command = (OUICommand) component;
         Map<String, String> requestParameters = context.getExternalContext().getRequestParameterMap();
-        String key = getActionRequestKey(context, component);
+        String key = command.getActionTriggerParam();
         if (requestParameters.containsKey(key)) {
             component.queueEvent(new ActionEvent(component));
         }
     }
 
-
-    protected String getActionRequestKey(FacesContext context, UIComponent component) {
-        return component.getClientId(context);
-    }
 }

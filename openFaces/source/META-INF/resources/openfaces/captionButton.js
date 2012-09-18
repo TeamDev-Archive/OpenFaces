@@ -63,7 +63,7 @@ O$._initCaptionButton = function(componentId,
   O$.initUnloadableComponent(btn);
   if (supportActionAttribute)
     O$.addEventHandler(btn, "click", function() {
-      O$.submitWithParam(btn, componentId + "::clicked", "true");
+      O$.submitWithParam(btn, componentId + "::clicked", componentId + "::clicked");
     });
 };
 

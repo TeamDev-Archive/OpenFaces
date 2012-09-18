@@ -32,7 +32,7 @@ import java.util.Map;
 /**
  * @author Dmitry Pikhulya
  */
-public class CaptionButtonRenderer extends RendererBase {
+public class CaptionButtonRenderer extends OUICommandRenderer {
     public static final String ATTR_DEFAULT_STYLE_CLASS = "_defaultStyleClass";
 
     @Override
@@ -160,14 +160,4 @@ public class CaptionButtonRenderer extends RendererBase {
         return "o_captionButton_pressed";
     }
 
-    @Override
-    public void decode(FacesContext context, UIComponent component) {
-        Rendering.decodeBehaviors(context, component);
-        
-        Map<String, String> requestParameters = context.getExternalContext().getRequestParameterMap();
-        String key = component.getClientId(context) + "::clicked";
-        if (requestParameters.containsKey(key)) {
-            component.queueEvent(new ActionEvent(component));
-        }
-    }
 }

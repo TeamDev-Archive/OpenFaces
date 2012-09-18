@@ -76,7 +76,6 @@ O$.ajax = {
 
     args._source = source;
     args._event = event;
-    args.actionComponent = source && typeof source != "string" ? source.id : source;
     var render = options.render ? options.render.split(" ") : undefined;
     args.execute = options.execute ? options.execute.split(" ") : undefined;
     args.onajaxstart = options.onajaxstart;
@@ -285,7 +284,7 @@ window.OpenFaces.Ajax = {
    * immediate -
    * customJsonParam -
    * listener - (optional) server action in the form of EL, which should be executed during this ajax request
-   * actionComponent - (optional) client id of a component from which this action is initiated (e.g. actual for a button in a table which needs current row's data in the action)
+   * actionTriggerParam - (optional) client id of a component from which this action is initiated (e.g. actual for a button in a table which needs current row's data in the action)
    *
    */
   sendRequest: function(render, args) {
@@ -298,9 +297,6 @@ window.OpenFaces.Ajax = {
     }
 
     var source = args._source;
-    if (!source && args._sourceId) {
-      source = document.getElementById(args._sourceId);
-    }
     var evt = args._event;
     var params = {};
     var render = render.join(" ");
@@ -347,10 +343,10 @@ window.OpenFaces.Ajax = {
       if (!params) params = {};
       params[O$.ACTION_LISTENER] = args.listener;
     }
-    if (args.actionComponent) {
+    params[O$.ACTION_COMPONENT] = source && typeof source != "string" ? source.id : source;
+    if (args.actionTriggerParam) {
       if (!params) params = {};
-      params[O$.ACTION_COMPONENT] = args.actionComponent;
-//      params[args.actionComponent] = args.actionComponent;  //todo: partial OFCS-93 fix
+      params[args.actionTriggerParam] = args.actionTriggerParam;
     }
     if (args.executeRenderedComponents != null) {
       if (!params) params = {};
