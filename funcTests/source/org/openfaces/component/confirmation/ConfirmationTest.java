@@ -97,7 +97,7 @@ public class ConfirmationTest extends OpenFacesTestCase {
     public void testForCommandLinkInvoker() {
         testAppFunctionalPage("/components/confirmation/confirmationTestInvokers.jsf");
         element("form1:commandLink").click();
-        confirmation("form1:confirmForCommandLink").okButton().click();
+        confirmation("form1:confirmForCommandLink").okButton().clickAndWait();
 //        waitForPageToLoad();
         element("form1:actionConfirmedText").assertText("Confirmed: true");
     }

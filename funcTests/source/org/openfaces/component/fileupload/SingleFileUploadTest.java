@@ -12,6 +12,7 @@
 
 package org.openfaces.component.fileupload;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.openqa.selenium.By;
@@ -28,6 +29,7 @@ import java.util.List;
  * @author Vladislav Lubenskiy
  */
 public class SingleFileUploadTest extends OpenFacesTestCase {
+    @Ignore
     @Test
     public void testFileUpload() {
         testAppFunctionalPage("/components/fileupload/singleFileUpload_base.jsf");
