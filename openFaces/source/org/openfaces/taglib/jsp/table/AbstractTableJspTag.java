@@ -314,4 +314,8 @@ public abstract class AbstractTableJspTag extends AbstractComponentJspTag {
     public void setDeferBodyLoading(ValueExpression deferBodyLoading) {
         getDelegate().setPropertyValue("deferBodyLoading", deferBodyLoading);
     }
+
+    public void setUnsortedStateAllowed(ValueExpression unsortedStateAllowed) {
+        getDelegate().setPropertyValue("unsortedStateAllowed", unsortedStateAllowed);
+    }
 }

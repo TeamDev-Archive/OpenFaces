@@ -2661,7 +2661,7 @@ O$.Table = {
 
   _initSorting: function(tableId, sortingRules, sortableColumnsIds, sortedColIndex, sortableHeaderClass, sortableHeaderRolloverClass,
                          sortedColClass, sortedColHeaderClass, sortedColBodyClass, sortedColFooterClass,
-                         sortedAscImageUrl, sortedDescImageUrl) {
+                         sortedAscImageUrl, sortedDescImageUrl, unsortedStateAllowed) {
     var table = O$.initComponent(tableId, null, {
       sorting: {
         _sortingRules: sortingRules != null ? sortingRules : [],
@@ -2688,8 +2688,12 @@ O$.Table = {
 
         _setPrimarySortingRule: function(rule) {
           var sortingRules = table.sorting.getSortingRules();
-          sortingRules = [].concat(sortingRules);
-          sortingRules[0] = new O$.Table.SortingRule(rule.columnId, rule.ascending);
+          if (rule == null) {
+            sortingRules = [];
+          } else {
+            sortingRules = [].concat(sortingRules);
+            sortingRules[0] = new O$.Table.SortingRule(rule.columnId, rule.ascending);
+          }
           table.sorting.setSortingRules(sortingRules);
         },
 
@@ -2727,7 +2731,14 @@ O$.Table = {
           rule = new O$.Table.SortingRule(columnId, true);
         else {
           if (rule.columnId == columnId)
-            rule.ascending = !rule.ascending;
+            if (rule.ascending) {
+              rule.ascending = false;
+            } else {
+              if (unsortedStateAllowed)
+                rule = null;
+              else
+                rule.ascending = true;
+            }
           else {
             rule.columnId = columnId;
             rule.ascending = true;
@@ -4806,6 +4817,12 @@ O$.ColumnMenu = {
     var table = O$(tableId);
     var columnId = columnIndex ? table._columns[columnIndex].columnId : table._showingMenuForColumn;
     table.hideColumn(columnId);
+  },
+  _resetSorting: function(tableId, columnIndex) {
+    var table = O$(tableId);
+    if (!table.sorting) return;
+    var columnId = columnIndex ? table._columns[columnIndex].columnId : table._showingMenuForColumn;
+    table.sorting._setPrimarySortingRule(null);
   }
 };
 
