@@ -165,6 +165,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     private Boolean deferBodyLoading;
     private Integer totalRowCount;
     private boolean implicitFacetsCreated;
+    private Boolean unsortedStateAllowed;
 
     public AbstractTable() {
         super.setUiDataValue(new TableDataModel(this));
@@ -218,7 +219,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
                 rolloverRowStyle, rolloverRowClass, noDataRowStyle, noDataRowClass,
                 noDataMessageAllowed, columnIndexVar, columnIdVar, saveAttachedState(context, columnsOrder),
                 sortedAscendingImageUrl, sortedDescendingImageUrl, cachedClientId,
-                autoFilterDelay, deferBodyLoading, totalRowCount, implicitFacetsCreated};
+                autoFilterDelay, deferBodyLoading, totalRowCount, implicitFacetsCreated, unsortedStateAllowed};
     }
 
     @Override
@@ -307,6 +308,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         deferBodyLoading = (Boolean) state[i++];
         totalRowCount = (Integer) state[i++];
         implicitFacetsCreated = (Boolean) state[i++];
+        unsortedStateAllowed = (Boolean) state[i++];
 
         beforeUpdateValuesPhase = true;
         incomingSortingRules = null;
@@ -2310,5 +2312,14 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
      */
     public void restoreRowVariables() {
         Components.restoreRequestVariable(getVar());
+    }
+
+
+    public boolean getUnsortedStateAllowed() {
+        return ValueBindings.get(this, "unsortedStateAllowed", unsortedStateAllowed, false);
+    }
+
+    public void setUnsortedStateAllowed(boolean unsortedStateAllowed) {
+        this.unsortedStateAllowed = unsortedStateAllowed;
     }
 }
