@@ -16,6 +16,8 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.openfaces.test.RichFacesAjaxLoadingMode;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.seleniuminspector.openfaces.ConfirmationInspector;
 import org.seleniuminspector.openfaces.PopupLayerInspector;
 
@@ -96,8 +98,12 @@ public class ConfirmationTest extends OpenFacesTestCase {
     @Test
     public void testForCommandLinkInvoker() {
         testAppFunctionalPage("/components/confirmation/confirmationTestInvokers.jsf");
-        element("form1:commandLink").click();
-        confirmation("form1:confirmForCommandLink").okButton().clickAndWait();
+        WebElement commandLink = getDriver().findElement(By.id("form1:commandLink"));
+//        element("form1:commandLink").click();
+        commandLink.click();
+        WebElement confirmForCommanLink = getDriver().findElement(By.id("form1:confirmForCommandLink::yes_button"));
+        confirmForCommanLink.click();
+//        confirmation("form1:confirmForCommandLink").okButton().clickAndWait();
 //        waitForPageToLoad();
         element("form1:actionConfirmedText").assertText("Confirmed: true");
     }
