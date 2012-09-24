@@ -52,6 +52,10 @@ O$.Spinner = {
         if (newValue === "") {
           spinner._field.value = required ? spinner._prevValue : "";
         } else {
+          if (value > maxValue)
+            newValue = maxValue;
+          if (value < minValue)
+            newValue = minValue;
           spinner._field.value = O$.Dojo.Number.format(newValue, formatOptions);
         }
         if (!silent && newValue != spinner._prevValue) {
