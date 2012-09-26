@@ -133,7 +133,7 @@ public class OpenFacesTestCaseWebDriver extends org.junit.Assert {
             if (failIfNotLoaded)
                 fail("Unexpected page content. Page url: " + fullPageUrl + " ; Expected (but missing) HTML " +
                         "source substring: " + htmlSubstringOfAValidPage + "; Current page title: " +
-                        getDriver().getTitle());
+                        getDriver().getTitle() + " Current page source: " + getDriver().getPageSource());
             else
                 return false;
         }

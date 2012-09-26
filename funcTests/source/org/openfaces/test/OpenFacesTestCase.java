@@ -170,7 +170,7 @@ public abstract class OpenFacesTestCase extends SeleniumTestCase {
             if (failIfNotLoaded)
                 fail("Unexpected page content. Page url: " + fullPageUrl + " ; Expected (but missing) HTML " +
                         "source substring: " + htmlSubstringOfAValidPage + "; Current page title: " +
-                        selenium.getTitle());
+                        getDriver().getTitle() + " Current page source: " + getDriver().getPageSource());
             else
                 return false;
         }
