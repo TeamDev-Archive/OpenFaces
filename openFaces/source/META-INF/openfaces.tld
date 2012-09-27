@@ -1188,6 +1188,18 @@
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>If this attribute is "true" then user can switch between sorted and unsorted states by clicking on column header or
+        using the column menu.
+      </description>
+      <name>unsortedStateAllowed</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>This attribute specify if pagination must follow selection durring sorting and filtering</description>
       <name>keepSelectionVisible</name>
       <deferred-value>
@@ -10091,6 +10103,18 @@ means that only root nodes and their immediate children are preloaded -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>unsortedStateAllowed</name>
+      <description>If this attribute is "true" then user can switch between sorted and unsorted states by clicking on column header or
+        using the column menu.
+      </description>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
       <!-- @el true -->
     </attribute>
 

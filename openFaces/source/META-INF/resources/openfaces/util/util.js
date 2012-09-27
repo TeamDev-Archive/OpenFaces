@@ -2878,7 +2878,12 @@ if (!window.O$) {
     component.focus = function() {
       if (O$.getElementStyle(component, "position") == "absolute" || this._preventPageScrolling) {
         var container = O$.getContainingBlock(this._focusControl, true);
-        var containerRect = container ? O$.getElementBorderRectangle(container) : {x: 0, y: 0};
+
+        if (container) {
+          var containerRect = O$.getElementBorderRectangle(container);
+        } else {
+          var containerRect = new O$.Rectangle(0, 0, O$.getVisibleAreaSize().width, O$.getVisibleAreaSize().height);
+        }
         var pageScrollPos =  O$.getPageScrollPos();
         var pageScrollRect = new O$.Rectangle(pageScrollPos.x, pageScrollPos.y, O$.getVisibleAreaSize().width, O$.getVisibleAreaSize().height);
 
@@ -5219,7 +5224,7 @@ if (!window.O$) {
           });
       }, 1);
   };
-  
+
   O$.initUnloadableComponent = function(component) {
     if (!component.onComponentUnload) {
       O$.addThisComponentToAllParents(component);

@@ -1423,4 +1423,12 @@
       <handler-class>org.openfaces.taglib.facelets.util.KeepVisibleTagHandler</handler-class>
     </component>
   </tag>
+  <tag>
+    <tag-name>resetSortingMenuItem</tag-name>
+    <component>
+      <component-type>org.openfaces.ResetSortingMenuItem</component-type>
+      <renderer-type>org.openfaces.ResetSortingMenuItemRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.table.ResetSortingMenuItemTagHandler</handler-class>
+    </component>
+  </tag>
 </facelet-taglib>

@@ -13,12 +13,13 @@ package org.openfaces.renderkit.table;
 
 import org.openfaces.component.command.MenuItem;
 import org.openfaces.component.command.MenuSeparator;
-import org.openfaces.component.table.CancelGroupingMenuItem;
+import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.ColumnMenu;
 import org.openfaces.component.table.ColumnVisibilityMenu;
 import org.openfaces.component.table.GroupByColumnMenuItem;
 import org.openfaces.component.table.HideColumnMenuItem;
 import org.openfaces.component.table.RemoveFromGroupingMenuItem;
+import org.openfaces.component.table.ResetSortingMenuItem;
 import org.openfaces.component.table.SortAscendingMenuItem;
 import org.openfaces.component.table.SortDescendingMenuItem;
 import org.openfaces.renderkit.command.PopupMenuRenderer;
@@ -37,6 +38,9 @@ public class ColumnMenuRenderer extends PopupMenuRenderer {
             List<UIComponent> menuItems = menu.getChildren();
             menuItems.add(Components.createComponent(context, SortAscendingMenuItem.COMPONENT_TYPE, SortAscendingMenuItem.class, menu, "sortAscending"));
             menuItems.add(Components.createComponent(context, SortDescendingMenuItem.COMPONENT_TYPE, SortDescendingMenuItem.class, menu, "sortDescend"));
+            if (getTable(menu).getUnsortedStateAllowed()) {
+                menuItems.add(Components.createComponent(context, ResetSortingMenuItem.COMPONENT_TYPE, ResetSortingMenuItem.class, menu, "resetSorting"));
+            }
             menuItems.add(Components.createComponent(context, GroupByColumnMenuItem.COMPONENT_TYPE, GroupByColumnMenuItem.class, menu, "groupByColumn"));
             menuItems.add(Components.createComponent(context, RemoveFromGroupingMenuItem.COMPONENT_TYPE, RemoveFromGroupingMenuItem.class, menu, "removeFromGrouping"));
 //            menuItems.add(Components.createComponent(context, CancelGroupingMenuItem.COMPONENT_TYPE, CancelGroupingMenuItem.class, menu, "cancelGrouping");
@@ -51,5 +55,12 @@ public class ColumnMenuRenderer extends PopupMenuRenderer {
         }
 
         super.encodeBegin(context, component);
+    }
+
+    private AbstractTable getTable(ColumnMenu menu) {
+        UIComponent parent = menu.getParent();
+        while (parent != null && !(parent instanceof AbstractTable))
+            parent = parent.getParent();
+        return (AbstractTable) parent;
     }
 }

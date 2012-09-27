@@ -278,7 +278,8 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
 
         // todo: move item identification responsibility to the items themselves
         MenuItem sortAscMenuItem = null, sortDescMenuItem = null, hideColumnMenuItem = null,
-                groupByColumnMenuItem = null, removeFromGroupingMenuItem = null, cancelGroupingMenuItem = null;
+                groupByColumnMenuItem = null, removeFromGroupingMenuItem = null, cancelGroupingMenuItem = null,
+                resetSortingMenuItem = null;
         for (UIComponent child : columnMenu.getChildren()) {
             if (child instanceof SortAscendingMenuItem)
                 sortAscMenuItem = (MenuItem) child;
@@ -292,11 +293,13 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
                 removeFromGroupingMenuItem = (MenuItem) child;
             else if (child instanceof CancelGroupingMenuItem)
                 cancelGroupingMenuItem = (MenuItem) child;
+            else if (child instanceof ResetSortingMenuItem)
+                resetSortingMenuItem = (MenuItem) child;
         }
 
         buf.initScript(context, columnMenu, "O$.ColumnMenu._init", table, button,
                 sortAscMenuItem, sortDescMenuItem, hideColumnMenuItem, groupByColumnMenuItem,
-                removeFromGroupingMenuItem, cancelGroupingMenuItem);
+                removeFromGroupingMenuItem, cancelGroupingMenuItem, resetSortingMenuItem);
 
         if (temporaryButton)
             table.getFacets().remove(FACET_COLUMN_MENU_BUTTON);
@@ -431,7 +434,8 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
                 Styles.getCSSClass(context, table, table.getSortedColumnBodyStyle(), StyleGroup.regularStyleGroup(), getSortedColumnBodyClass(table)),
                 Styles.getCSSClass(context, table, table.getSortedColumnFooterStyle(), StyleGroup.regularStyleGroup(), getSortedColumnFooterClass(table)),
                 HeaderCell.getSortedAscendingImageUrl(context, table),
-                HeaderCell.getSortedDescendingImageUrl(context, table));
+                HeaderCell.getSortedDescendingImageUrl(context, table),
+                table.getUnsortedStateAllowed());
     }
 
     private String getSortingFieldName(FacesContext context, UIComponent table) {
