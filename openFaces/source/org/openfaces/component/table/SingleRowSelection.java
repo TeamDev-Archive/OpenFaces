@@ -186,5 +186,9 @@ public class SingleRowSelection extends DataTableSelection {
         return COMPONENT_FAMILY;
     }
 
+    @Override
+    public Object getFirstSelectedRowData(){
+        return getRowData();
+    }
 
 }

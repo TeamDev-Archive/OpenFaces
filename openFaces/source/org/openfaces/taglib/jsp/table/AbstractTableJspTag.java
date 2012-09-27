@@ -286,6 +286,10 @@ public abstract class AbstractTableJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("noDataMessageAllowed", noDataMessageAllowed);
     }
 
+    public void setKeepSelectionVisible(ValueExpression keepSelectionVisible) {
+        getDelegate().setPropertyValue("keepSelectionVisible", keepSelectionVisible);
+    }
+
     public void setColumnIndexVar(ValueExpression columnIndexVar) {
         getDelegate().setPropertyValue("columnIndexVar", columnIndexVar);
     }

@@ -59,4 +59,7 @@ public abstract class DataTableSelection extends AbstractRowSelection {
                         "Unknown value of RowGroupingSelectionMode property: " + rowGroupingSelectionMode);
         }
     }
+
+    public abstract Object getFirstSelectedRowData();
+
 }
