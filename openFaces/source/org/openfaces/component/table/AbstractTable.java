@@ -167,6 +167,8 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     private boolean implicitFacetsCreated;
     private Boolean unsortedStateAllowed;
 
+    private Boolean keepSelectionVisible;
+
     public AbstractTable() {
         super.setUiDataValue(new TableDataModel(this));
     }
@@ -219,7 +221,8 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
                 rolloverRowStyle, rolloverRowClass, noDataRowStyle, noDataRowClass,
                 noDataMessageAllowed, columnIndexVar, columnIdVar, saveAttachedState(context, columnsOrder),
                 sortedAscendingImageUrl, sortedDescendingImageUrl, cachedClientId,
-                autoFilterDelay, deferBodyLoading, totalRowCount, implicitFacetsCreated, unsortedStateAllowed};
+                autoFilterDelay, deferBodyLoading, totalRowCount, implicitFacetsCreated, unsortedStateAllowed,
+                keepSelectionVisible};
     }
 
     @Override
@@ -309,6 +312,8 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         totalRowCount = (Integer) state[i++];
         implicitFacetsCreated = (Boolean) state[i++];
         unsortedStateAllowed = (Boolean) state[i++];
+
+        keepSelectionVisible = (Boolean) state[i++];
 
         beforeUpdateValuesPhase = true;
         incomingSortingRules = null;
@@ -1844,6 +1849,14 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     public void setNoDataMessageAllowed(boolean noDataMessageAllowed) {
         this.noDataMessageAllowed = noDataMessageAllowed;
+    }
+
+    public Boolean getKeepSelectionVisible() {
+        return ValueBindings.get(this, "keepSelectionVisible", keepSelectionVisible, false);
+    }
+
+    public void setKeepSelectionVisible(Boolean keepSelectionVisible) {
+        this.keepSelectionVisible = keepSelectionVisible;
     }
 
     public abstract boolean isDataSourceEmpty();

@@ -272,4 +272,11 @@ public class MultipleRowSelection extends DataTableSelection {
         return currentSelectedRowKeys;
     }
 
+    @Override
+    public Object getFirstSelectedRowData(){
+        List<Object> rowDatas = getRowDatas();
+        return rowDatas != null ? rowDatas.get(0) : null;
+    }
+
+
 }

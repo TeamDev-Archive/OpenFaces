@@ -415,6 +415,7 @@ public class TableDataModel extends DataModel implements DataModelListener, Stat
         }
     }
 
+    //TODO: review this method
     private boolean areExtractedRowsNeeded() {
         return true;
 //    return (isSortingNeeded()) ||
@@ -1316,6 +1317,13 @@ public class TableDataModel extends DataModel implements DataModelListener, Stat
         return columnGroupingInfo;
     }
 
+    public Boolean isObjectInList(Object rowData){
+        for (RowInfo extractedRow : extractedRows ){
+            if (extractedRow.getRowData().equals(rowData))
+                return true;
+        }
+        return false;
+    }
 
     /**
      * This class contains the pre-extracted column's data that is repeatedly required during the row grouping process,
