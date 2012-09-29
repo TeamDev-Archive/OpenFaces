@@ -13,6 +13,7 @@ package org.openfaces.test;
 
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Test;
+import org.openqa.selenium.Keys;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.html.InputInspector;
 import org.seleniuminspector.openfaces.CalendarInspector;
@@ -508,7 +509,7 @@ public class ValidationTest extends OpenFacesTestCase {
 
         DropDownFieldInspector dropDownField = dropDownField("testForm:ddf");
         dropDownField.field().type("t");
-        dropDownField.field().keyPress(KeyEvent.VK_BACK_SPACE);
+        dropDownField.field().keyPress(Keys.BACK_SPACE);
         element("testForm:fillInvalidData").click();
     }
 
@@ -520,7 +521,7 @@ public class ValidationTest extends OpenFacesTestCase {
         element("testForm:fillValidData").click();
         DropDownFieldInspector dropDownField = dropDownField("testForm:ddf");
         dropDownField.field().type("Value");
-        dropDownField.field().keyPress(KeyEvent.VK_4);
+        dropDownField.field().keyPress(Keys.NUMPAD4);
     }
 
     private void isDefaultPresentation() {
