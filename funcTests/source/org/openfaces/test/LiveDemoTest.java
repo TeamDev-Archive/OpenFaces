@@ -142,8 +142,9 @@ public class LiveDemoTest extends OpenFacesTestCase {
     public void testConfirmation() throws Exception {
         Selenium selenium = getSelenium();
         liveDemoPage("/confirmation/ConfirmationDefault.jsf");
-
-        element("confirmationForm:buttonInvoker1").click();
+        WebElement invoker = getDriver().findElement(By.id("confirmationForm:buttonInvoker1"));
+        invoker.click();
+//        element("confirmationForm:buttonInvoker1").click();
         element("confirmationForm:buttonPopup1").assertVisible(true);
 
         element("confirmationForm:buttonInvoker").click();
@@ -211,9 +212,10 @@ public class LiveDemoTest extends OpenFacesTestCase {
         ConfirmationInspector editableConfirmation = confirmation("confirmationForm:editableConfirmation");
         editableConfirmation.okButton().assertValue("Confirm");
         editableConfirmation.cancelButton().assertValue("Decline");
-        WebElement okButton = getDriver().findElement(By.xpath(editableConfirmation.okButton().getXPath()));
-        Actions click = new Actions(getDriver()).moveToElement(okButton).click();
-        click.build().perform();
+//        WebElement okButton =
+                getDriver().findElement(By.xpath(editableConfirmation.okButton().getXPath())).click();
+//        Actions click = new Actions(getDriver()).moveToElement(okButton).click();
+//        click.build().perform();
         assertTrue(window().document().isAlertPresent());
 
     }
