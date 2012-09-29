@@ -31,7 +31,7 @@ public class ComboBoxFilterInspector extends AbstractFilterInspector {
     }
 
     public void makeFiltering(String filterValue) {
-        selectByLabel(filterValue);
+//        selectByLabel(filterValue);
         WebDriver driver = ((WrapsDriver) getSelenium()).getWrappedDriver();
         WebElement select = driver.findElement(By.xpath(getXPath()));
         List<WebElement> options =  select.findElements(By.tagName("option"));
