@@ -140,10 +140,7 @@ public class LiveDemoTest extends OpenFacesTestCase {
 
     @Test
     public void testConfirmation() throws Exception {
-        Selenium selenium = getSelenium();
         liveDemoPage("/confirmation/ConfirmationDefault.jsf");
-//        WebElement invoker = getDriver().findElement(By.id("confirmationForm:buttonInvoker1"));
-//        invoker.click();
         element("confirmationForm:buttonInvoker1").click();
         element("confirmationForm:buttonPopup1").assertVisible(true);
 
@@ -165,7 +162,6 @@ public class LiveDemoTest extends OpenFacesTestCase {
         linkPopup.assertVisible(true);
         linkConfirmation.assertVisible(false);
 
-//        element("textInvoker").click();
         getDriver().findElement(By.id("textInvoker")).click();
         ElementInspector textPopup = element("confirmationForm:textPopup");
         textPopup.assertVisible(false);
@@ -185,7 +181,6 @@ public class LiveDemoTest extends OpenFacesTestCase {
         imagePopup.assertVisible(true);
         imageConfirmation.assertVisible(false);
 
-//        new InputInspector("message_input").type("Are you sure?");
         getDriver().findElement(By.id("message_input")).clear();
         getDriver().findElement(By.id("message_input")).sendKeys("Are you sure?");
         ElementInspector changedInvoker = element("changedInvoker");
@@ -193,20 +188,15 @@ public class LiveDemoTest extends OpenFacesTestCase {
         getDriver().findElement(By.id("detail_input")).clear();
         getDriver().findElement(By.id("detail_input")).sendKeys("");
         getDriver().findElement(By.id("detail_input")).sendKeys("bla bla bla");
-//        new InputInspector("detail_input").type("bla bla bla");
         changedInvoker.evalExpression("click()");
-//        getDriver().findElement(By.id("changedInvoker")).click();
-//        new InputInspector("yes_input").type("Confirm");
         getDriver().findElement(By.id("yes_input")).clear();
         getDriver().findElement(By.id("yes_input")).sendKeys("");
         getDriver().findElement(By.id("yes_input")).sendKeys("Confirm");
         changedInvoker.evalExpression("click()");
-//        new InputInspector("no_input").type("Decline");
         getDriver().findElement(By.id("no_input")).clear();
         getDriver().findElement(By.id("no_input")).sendKeys("");
         getDriver().findElement(By.id("no_input")).sendKeys("Decline");
         changedInvoker.evalExpression("click()");
-//        changedInvoker.clickAndWait();
         try {
             getDriver().findElement(By.xpath("//*[@id='confirmationForm:editableConfirmation']//*[contains(text(), 'Are you sure?')]"));
             getDriver().findElement(By.xpath("//*[@id='confirmationForm:editableConfirmation']//*[contains(text(), 'bla bla bla')]"));

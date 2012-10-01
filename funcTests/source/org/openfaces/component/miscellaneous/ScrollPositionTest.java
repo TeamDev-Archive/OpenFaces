@@ -32,7 +32,6 @@ public class ScrollPositionTest extends OpenFacesTestCase {
     public void testScrollPositionSaveAfterPageSubmission() {
         testAppFunctionalPage("/components/scrollfocus/scrollPosition.jsf");
         ElementInspector button = element("formID:clickIt");
-//        button.focus();
         sleep(500);
         int ordinate = window().evalIntExpression("pageYOffset");
         int abscissa = window().evalIntExpression("pageXOffset");

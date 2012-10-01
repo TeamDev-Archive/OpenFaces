@@ -108,9 +108,6 @@ public abstract class OpenFacesTestCase extends SeleniumTestCase {
                 openAndWait(applicationUrl, pageUrl);
                 JavascriptExecutor js = (JavascriptExecutor) getDriver();
                 js.executeScript("var script = document.createElement('script'); script.setAttribute('src', '../asd.js');script.setAttribute('type', 'text/javascript'); document.body.insertBefore(script, document.body.childNodes[0]);");
-
-//                WebDriverWait wait = new WebDriverWait(getDriver(), 5);
-//                wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("seleniumLoaderFlag")));
             } catch (Exception e) {
                 if (!lastAttempt) {
                     sleep(10 * 1000);

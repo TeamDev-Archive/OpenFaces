@@ -83,7 +83,6 @@ public class DataTableIncludeOFComponentsTest extends OpenFacesTestCase {
 
         //click at hinlLabel placed in the header to perform sorting
 
-//    dataTableColumn(headerHintLabel1.asSeleniumLocator()).makeSorting(OpenFacesAjaxLoadingMode.getInstance());
         hintLabelDataTable.column(1).makeSorting();
 
 

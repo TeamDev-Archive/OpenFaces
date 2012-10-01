@@ -99,12 +99,9 @@ public class ConfirmationTest extends OpenFacesTestCase {
     public void testForCommandLinkInvoker() {
         testAppFunctionalPage("/components/confirmation/confirmationTestInvokers.jsf");
         WebElement commandLink = getDriver().findElement(By.id("form1:commandLink"));
-//        element("form1:commandLink").click();
         commandLink.click();
-        WebElement confirmForCommanLink = getDriver().findElement(By.id("form1:confirmForCommandLink::yes_button"));
-        confirmForCommanLink.click();
-//        confirmation("form1:confirmForCommandLink").okButton().clickAndWait();
-//        waitForPageToLoad();
+        WebElement confirmForCommandLink = getDriver().findElement(By.id("form1:confirmForCommandLink::yes_button"));
+        confirmForCommandLink.click();
         element("form1:actionConfirmedText").assertText("Confirmed: true");
     }
 

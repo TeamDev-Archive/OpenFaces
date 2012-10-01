@@ -399,7 +399,6 @@ public class DataTableTest extends OpenFacesTestCase {
                     getDriver().findElement(By.xpath(singleSelectionDataTable.bodyRow(0).getXPath())))
                     .click();
         click.build().perform();
-//        singleSelectionDataTable.bodyRow(0).click();
         for (int i = 0; i < 8; i++) {
             Actions keyDown = new Actions(getDriver()).sendKeys(Keys.ARROW_DOWN);
             keyDown.build().perform();
