@@ -165,7 +165,8 @@ public class LiveDemoTest extends OpenFacesTestCase {
         linkPopup.assertVisible(true);
         linkConfirmation.assertVisible(false);
 
-        element("textInvoker").click();
+//        element("textInvoker").click();
+        getDriver().findElement(By.id("textInvoker")).click();
         ElementInspector textPopup = element("confirmationForm:textPopup");
         textPopup.assertVisible(false);
         ConfirmationInspector textConfirmation = confirmation("confirmationForm:textConfirmation");
