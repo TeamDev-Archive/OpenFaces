@@ -13,6 +13,9 @@ package org.openfaces.requests;
 
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.html.TextAreaInspector;
 
@@ -31,7 +34,9 @@ public class JSFC_2257Test extends OpenFacesTestCase {
         ElementInspector button = element("fm:bt");
         button.clickAndWait();
         textArea.assertValue("Some text");
-        textArea.type("");
+        for (int i = 0; i < "Some text".length(); i++)
+            textArea.keyPress(Keys.BACK_SPACE);
+//        textArea.type("");
         dmf.assertElementExists(false);
         button.click();
         dmf.assertElementExists(true);

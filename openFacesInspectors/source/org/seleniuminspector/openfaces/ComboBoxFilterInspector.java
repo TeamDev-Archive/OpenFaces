@@ -38,10 +38,10 @@ public class ComboBoxFilterInspector extends AbstractFilterInspector {
         for (WebElement option : options) {
             if (option.getText().equals(filterValue)) {
                 option.click();
+                keyPress(Keys.ENTER);
                 break;
             }
         }
-        keyPress(Keys.ENTER);
 
         getLoadingMode().waitForLoad();
     }
