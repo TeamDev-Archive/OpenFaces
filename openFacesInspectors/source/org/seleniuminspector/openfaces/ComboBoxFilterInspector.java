@@ -38,7 +38,7 @@ public class ComboBoxFilterInspector extends AbstractFilterInspector {
         for (WebElement option : options) {
             if (option.getText().equals(filterValue)) {
                 option.click();
-                keyPress(Keys.ENTER);
+                driver.findElement(By.xpath(getXPath())).sendKeys(Keys.ENTER);
                 break;
             }
         }
