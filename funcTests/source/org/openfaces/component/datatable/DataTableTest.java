@@ -18,7 +18,6 @@ import org.openfaces.test.OpenFacesTestCase;
 import org.openfaces.test.RichFacesAjaxLoadingMode;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.LoadingMode;
@@ -596,7 +595,7 @@ public class DataTableTest extends OpenFacesTestCase {
 
     @Test
     public void testFeaturesCombination_ajax() {
-        featuresCombination(OpenFacesAjaxLoadingMode.getInstance());
+            featuresCombination(OpenFacesAjaxLoadingMode.getInstance());
     }
 
     @Test

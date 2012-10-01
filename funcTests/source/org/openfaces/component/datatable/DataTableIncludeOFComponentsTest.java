@@ -12,7 +12,10 @@
 package org.openfaces.component.datatable;
 
 import org.junit.Test;
+import org.openfaces.renderkit.table.DataTablePaginatorRenderer;
 import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.util.Rendering;
+import org.openqa.selenium.By;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.openfaces.DataTableInspector;
 import org.seleniuminspector.openfaces.HintLabelInspector;
@@ -124,6 +127,67 @@ public class DataTableIncludeOFComponentsTest extends OpenFacesTestCase {
         sleep(250);
         hintLabel.assertText(filterCriterion);
         hintLabel.hint().assertText("col3_row1");
+    }
+
+    @Test
+    public void testPopupLayerInside_() {
+        testAppFunctionalPage("/components/datatable/popupLayerIn.jsf");
+
+        //create and fill list of the reference popupLayer values
+        List<DataTableUtils.TestDataTableItem> popupLayerDataTableValues = new ArrayList<DataTableUtils.TestDataTableItem>(DataTableUtils.TWO_STRING_COLUMN_LIST);
+
+        /* sorting, pagination, single selection */
+        int rowCount = 3;
+        int pageCount = 3;
+        getDriver().findElement(By.id("fn:popupDataTable:header_invoker")).click();
+        assertTrue(getDriver().findElement(By.id("fn:popupDataTable:header_popup")).isDisplayed());
+        OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
+        for (int pageNo = 1; pageNo <= pageCount; pageNo++) {
+            // execute pagination from first to third page and verify data on every page
+            List<DataTableUtils.TestDataTableItem> currentPageValues = DataTableUtils.getCurrentPageFromReferenceValues(popupLayerDataTableValues, pageNo);
+
+            for (int rowIndex = 0; rowIndex < rowCount; rowIndex++) {
+                DataTableUtils.TestDataTableItem currentReferenceRow = currentPageValues.get(rowIndex);
+
+                // invoke popupLayers in current row
+                getDriver().findElement(By.id("fn:popupDataTable:" + rowIndex + ":body_invoker")).click();
+                getDriver().findElement(By.id("fn:popupDataTable:" + rowIndex + ":body_invoker1")).click();
+//                element("fn:popupDataTable:" + rowIndex + ":body_invoker").clickAndWait();
+//                element("fn:popupDataTable:" + rowIndex + ":body_invoker1").clickAndWait();
+
+                //check is single selection performed well
+                dataTable("fn:popupDataTable").checkSelectedIndex(rowIndex);
+
+                //check: is popupLayers are visible
+                assertTrue(getDriver().findElement(By.id("fn:popupDataTable:" + rowIndex + ":body_popup")).isDisplayed());
+                assertTrue(getDriver().findElement(By.id("fn:popupDataTable:" + rowIndex + ":body_popup1")).isDisplayed());
+
+                //get text from the invoked popupLayers
+                String currentFirstCellValue = getDriver().findElement(By.id("fn:popupDataTable:" + rowIndex + ":body_popup")).getText().substring(0, 9);
+                String currentSecondCellValue = getDriver().findElement(By.id("fn:popupDataTable:" + rowIndex + ":body_popup1")).getText().substring(0, 9);
+
+                // compare received values with their reference values
+                assertEquals(currentReferenceRow.getFirstColumn(), currentFirstCellValue);
+                assertEquals(currentReferenceRow.getSecondColumn(), currentSecondCellValue);
+            }
+
+            // invoke popupLayers from the footer in current page and check data in it
+            getDriver().findElement(By.id("fn:popupDataTable:footer_invoker")).click();
+            element("fn:popupDataTable:footer_popup").assertSubtext(0, 29, "this is footer popup layer 1!");
+            getDriver().findElement(By.id("fn:popupDataTable:footer_invoker1")).click();
+            element("fn:popupDataTable:footer_popup1").assertSubtext(0, 29, "this is footer popup layer 2!");
+
+            if (pageNo < pageCount)
+                getDriver().findElement(By.id("fn:popupDataTable:popupDataTablePaginator" + Rendering.SERVER_ID_SUFFIX_SEPARATOR
+                        + DataTablePaginatorRenderer.NEXT_PAGE_COMPONENT)).click();
+        }
+        // a little sleep to wait until all visible popupLayers will be hidden
+        sleep(4000);
+        /* filtering */
+        final String filterCriterion = "col4_row1";
+        dataTable("fn:popupDataTable").column(2).filter(InputTextFilterInspector.class, "fn:popupDataTable:filter1").makeFiltering(filterCriterion);
+        element("fn:popupDataTable:0:body_invoker1").click();
+        element("fn:popupDataTable:0:body_popup1").assertSubtext(0, 9, filterCriterion);
     }
 
     @Test
