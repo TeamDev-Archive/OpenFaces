@@ -151,7 +151,9 @@ public class DataTableIncludeOFComponentsTest extends OpenFacesTestCase {
 
                 // invoke popupLayers in current row
                 getDriver().findElement(By.id("fn:popupDataTable:" + rowIndex + ":body_invoker")).click();
+                assertTrue(getDriver().findElement(By.id("fn:popupDataTable:" + rowIndex + ":body_popup")).isDisplayed());
                 getDriver().findElement(By.id("fn:popupDataTable:" + rowIndex + ":body_invoker1")).click();
+                assertTrue(getDriver().findElement(By.id("fn:popupDataTable:" + rowIndex + ":body_popup1")).isDisplayed());
 //                element("fn:popupDataTable:" + rowIndex + ":body_invoker").clickAndWait();
 //                element("fn:popupDataTable:" + rowIndex + ":body_invoker1").clickAndWait();
 
@@ -159,8 +161,6 @@ public class DataTableIncludeOFComponentsTest extends OpenFacesTestCase {
                 dataTable("fn:popupDataTable").checkSelectedIndex(rowIndex);
 
                 //check: is popupLayers are visible
-                assertTrue(getDriver().findElement(By.id("fn:popupDataTable:" + rowIndex + ":body_popup")).isDisplayed());
-                assertTrue(getDriver().findElement(By.id("fn:popupDataTable:" + rowIndex + ":body_popup1")).isDisplayed());
 
                 //get text from the invoked popupLayers
                 String currentFirstCellValue = getDriver().findElement(By.id("fn:popupDataTable:" + rowIndex + ":body_popup")).getText().substring(0, 9);
