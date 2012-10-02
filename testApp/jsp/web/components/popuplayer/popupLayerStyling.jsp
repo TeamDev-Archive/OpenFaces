@@ -9,7 +9,7 @@
 <html>
 <head>
   <title>PopupLayer Styling</title>
-  <script type="text/javascript" src="../../funcTestsUtil.js"></script>
+
   <link rel="STYLESHEET" type="text/css" href="../../main.css"/>
 </head>
 

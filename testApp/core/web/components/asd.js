@@ -1,4 +1,4 @@
-/*
+  /*
  * OpenFaces - JSF Component Library 2.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org

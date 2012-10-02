@@ -9,7 +9,7 @@
 <html>
 <head>
   <title>Check formats, locales, patterns in DateChooser</title>
-  <script type="text/javascript" src="../../funcTestsUtil.js"></script>
+
   <link rel="STYLESHEET" type="text/css" href="../../main.css"/>
 </head>
 

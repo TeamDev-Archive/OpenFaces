@@ -8,7 +8,7 @@
 
 <html>
 <head>
-  <script type="text/javascript" src="../../funcTestsUtil.js"></script>
+
   <title>FoldingPanel client-side events</title>
   <link rel="STYLESHEET" type="text/css" href="../../main.css"/>
 </head>

@@ -9,7 +9,7 @@
 <html>
 <head>
   <title>SuggestionField Ajax-based Suggestion Functionality</title>
-  <script type="text/javascript" src="../../funcTestsUtil.js"></script>
+
   <link rel="STYLESHEET" type="text/css" href="../../main.css"/>
 </head>
 

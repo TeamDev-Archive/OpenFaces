@@ -9,7 +9,7 @@
 <html>
 <head>
   <title>Check functionality of 'Today' and 'None' buttons</title>
-  <script type="text/javascript" src="../../funcTestsUtil.js"></script>
+
   <script type="text/javascript">
     function printTodayStyle(dateChooserID, outputDiv) {
       var mousedownEvt = O$.createEvent('mousedown');

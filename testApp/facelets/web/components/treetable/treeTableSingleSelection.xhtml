@@ -10,7 +10,7 @@
 <head>
   <title>Single selection in the TreeTable</title>
   <link rel="STYLESHEET" type="text/css" href="../../main.css"/>
-  <script type="text/javascript" src="../../funcTestsUtil.js"></script>
+
 </head>
 
 <body onload="singleSelectionChanged('formID:singleNodeDataSelectionTreeTableID', 'selectionNodeDataID');

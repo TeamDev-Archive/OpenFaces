@@ -10,7 +10,7 @@
 <head>
   <title>Confirmation Test Invokers</title>
   <link rel="STYLESHEET" type="text/css" href="../../main.css"/>
-  <script type="text/javascript" src="../../funcTestsUtil.js"></script>
+
 </head>
 
 <body onload="O$('form1:setConfirmationTexts').setTexts('header custom text', 'details custom text', 'accept', 'decline');">
