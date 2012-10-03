@@ -87,6 +87,13 @@ O$.MonthTable = {
     var weekendCellClass = O$.combineClassNames([/*cellClass,*/ "o_monthTableWeekendCell", stylingParams.weekendCellClass]);
     var inactiveMonthCellHeaderClass = O$.combineClassNames([/*cellHeaderClass,*/ "o_monthTableInactiveMonthCellHeader", stylingParams.inactiveMonthCellHeaderClass]);
     var inactiveMonthCellClass = O$.combineClassNames([/*cellClass,*/ "o_monthTableInactiveMonthCell", stylingParams.inactiveMonthCellClass]);
+
+
+    monthTable.dayViewButtonClass = O$.combineClassNames(["o_dayViewButtonClass", stylingParams.dayViewButtonClass]);
+    monthTable.dayViewRolloverButtonClass = O$.combineClassNames(["o_dayViewRolloverButtonClass", stylingParams.dayViewRolloverButtonClass]);
+    monthTable.dayViewPressedButtonClass = O$.combineClassNames(["o_dayViewPressedButtonClass", stylingParams.dayViewPressedButtonClass]);
+
+
     monthTable._weekdayHeaderCellClass = weekdayHeaderCellClass;
     monthTable._weekendWeekdayHeaderCellClass = weekendWeekdayHeaderCellClass;
     monthTable._cellHeaderClass = cellHeaderClass;
@@ -97,6 +104,12 @@ O$.MonthTable = {
     monthTable._weekendCellClass = weekendCellClass;
     monthTable._inactiveMonthCellHeaderClass = inactiveMonthCellHeaderClass;
     monthTable._inactiveMonthCellClass = inactiveMonthCellClass;
+
+    monthTable._expandedDayView = O$(componentId + "::expandedDayView");
+    monthTable._expandedDayView.btnDown = O$(componentId + "::expandedDayView::button::down");
+    monthTable._expandedDayView.btnUp = O$(componentId + "::expandedDayView::button::up");
+    monthTable._expandedDayView.eventBlock = O$(componentId + "::expandedDayView::eventBlock");
+    monthTable._expandedDayView.opened = false;
 
     var eventElementHeight = O$.calculateNumericCSSValue(O$.getStyleClassProperty(monthTable._eventStyleClass, "height"));
     var eventsLeftOffset = O$.calculateNumericCSSValue(O$.getStyleClassProperty(monthTable._eventStyleClass, "marginLeft"));
@@ -154,11 +167,18 @@ O$.MonthTable = {
       var cells = row._cells;
       for (var cellIndex = 0; cellIndex < cells.length; cellIndex++) {
         var cell = cells[cellIndex];
+        if (!cell.reservedPlaces) {
+          cell.reservedPlaces = [];
+        }
         cell.onclick = function() {
           // onclick event can be fired on drag end under IE
-          if (editable) {
+          if (monthTable._expandedDayView.opened)
+            monthTable._contractDayView();
+          else if (editable) {
             var newEventTime = this._cellDay;
-            monthTable._addEvent(newEventTime, this._resource ? this._resource.id : null);
+            var event = monthTable._addEvent(newEventTime, this._resource ? this._resource.id : null);
+            event._cell = this;
+            monthTable._addEventElements(event);
           }
         };
       }
@@ -196,6 +216,27 @@ O$.MonthTable = {
       }
     }
 
+    monthTable._expandDayView = function (dayCell){
+      monthTable._expandedDayView.style.display = "";
+      var cellBoundaries = O$.getElementBorderRectangle(dayCell, true);
+      O$.setElementSize(monthTable._expandedDayView,{width: cellBoundaries.width, height: 200});
+      O$.setElementPos(monthTable._expandedDayView, cellBoundaries);
+      var oldExpandedDay = monthTable._expandedDayView.expandedDay;
+      monthTable._expandedDayView.expandedDay = dayCell._cellDay;
+      if (oldExpandedDay)
+        monthTable._updateCellEventElements(oldExpandedDay);
+      monthTable._updateCellEventElements(dayCell._cellDay);
+      monthTable._expandedDayView.opened = true;
+    }
+
+    monthTable._contractDayView = function (){
+      monthTable._expandedDayView.style.display = "none";
+      var oldExpandedDay = monthTable._expandedDayView.expandedDay;
+      monthTable._expandedDayView.expandedDay = null;
+      monthTable._updateCellEventElements(oldExpandedDay);
+      monthTable._expandedDayView.opened = false;
+    }
+
     monthTable._updateCellEventElements = function(day) {
       var cell = O$.MonthTable.getCellForDay(this, day);
 
@@ -205,13 +246,32 @@ O$.MonthTable = {
 
       if (cell._cellEvents) {
         cell._cellEvents.forEach(function(oldCellEvent) {
-          oldCellEvent._removeElements();
+          if (oldCellEvent._removeElements)
+            oldCellEvent._removeElements();
         });
       }
 
       cell._cellEvents = [];
 
       var cellEvents = O$.MonthTable.getDayEvents(this._events, day);
+
+      function getEventDaysDuration(event){
+
+        return O$.getDayInterval(event.end, event.start)
+      }
+
+      //sorting events by theirs day interval TODO: доделать нормально
+      for (var i = 0; i<cellEvents.length; i++){
+
+        var max = i;
+        for (var j = i+1; j<cellEvents.length; j++){
+          if (getEventDaysDuration(cellEvents[max]) < getEventDaysDuration(cellEvents[j]))
+            max = j;
+        }
+        var tmp = cellEvents[max];
+        cellEvents[max] = cellEvents[i];
+        cellEvents[i] = tmp
+      }
 
       for (var cellEventIndex = 0; cellEventIndex < cellEvents.length; cellEventIndex++) {
         var cellEvent = cellEvents[cellEventIndex];
@@ -220,11 +280,13 @@ O$.MonthTable = {
         cell._cellEvents.push(cellEvent);
       }
 
+
       cell._moreLinkData = null;
 
       cellEvents.forEach(function(cellEvent) {
         monthTable._addEventElements(cellEvent);
       });
+      //monthTable._reCalcCells();
       cell._moreLinkElement._update();
       cell._moreLinkData = null;
 
@@ -242,8 +304,11 @@ O$.MonthTable = {
       O$.setInnerText(link, moreLinkText);
       moreLinkElement.appendChild(link);
 
-      link.onmousedown = O$.stopEvent;
-      link.onclick = O$.stopEvent;
+      link.onclick = function(e) {
+        O$.stopEvent(e);
+        monthTable._expandDayView(cell);
+      }
+      link.onmousedown = link.onclick;
 
       moreLinkElement._updatePos = function() {
         if (!cell._moreLinkData) {
@@ -293,19 +358,212 @@ O$.MonthTable = {
     var super_removeEventElement = monthTable._removeEventElement;
     var super_removeEventElements = monthTable._removeEventElements;
     O$.extend(monthTable, {
+
+              //TODO: realization of splitting to parts for month table
+              _splitIntoParts: function(event) {
+                var parts = [];
+
+                var start = this._startTime < event.start ? event.start : this._startTime;
+                var end = this._endTime < event.end ? this._endTime : event.end;
+                var partStart = start;
+                var partEnd = O$.incDay(new Date(partStart.getFullYear(), partStart.getMonth(), partStart.getDate()),7 - partStart.getDay());
+                var i = 0;
+
+                do {
+                  var part = {
+                    start: partStart,
+                    end: (partEnd < end) ? partEnd : end,
+                    index: i++,
+                    event: event
+                  };
+                  parts.push(part);
+                  partStart = O$.cloneDate(partEnd);
+
+                  // adding delta to day need to end till the week end      \
+                  partEnd = O$.incDay(O$.cloneDate(partEnd), 7);
+                } while (partStart < end);
+
+                parts[0].first = true;
+                parts[parts.length - 1].last = true;
+                return parts;
+              },
+
+              _getNearestTimeslotForPosition: function(x, y) {
+                row = this._table.body._rowFromPoint(10, y, true, this._getLayoutCache());
+                var firstRow = this._table.body._rowFromPoint(1, 1, true, this._getLayoutCache());
+                var timeColumnCell = firstRow._cellFromPoint(1, 1, true, this._getLayoutCache());
+                var minX = timeColumnCell.clientWidth;
+                x = x < minX ? minX : x;
+                var cell = row._cellFromPoint(x, y, true, this._getLayoutCache());
+                if (cell == null) {
+                  //in case we are butt against cell border
+                  cell = row._cellFromPoint(x + 5, y, true, this._getLayoutCache());
+                }
+                if (cell == null) {
+                  //in case we are butt against cell border
+                  cell = row._cellFromPoint(x - 5, y, true, this._getLayoutCache());
+                }
+                if (cell._cell) {
+                  cell = cell._cell;
+                  row = cell._row;
+                }
+                //TODO: do not return JSON object just for one value
+                return { cell: cell};
+              },
+
+              _getLayoutCache: function() {
+                if (!this._cachedPositions)
+                  this._cachedPositions = {};
+                return this._cachedPositions;
+              },
+
               _getEventEditor: function() {
                 if (!editable)
                   return null;
                 return this._eventEditor;
               },
 
+              _cellsToReCalc : [],
+
+              _addCellForReCalc : function(cell){
+                if (!O$.contains(this._cellsToReCalc, cell)){
+                  this._cellsToReCalc.push(cell);
+                }
+              },
+
+              _passedEvent : [],
+
+              //TODO: maybe remove this method because it was added to avoid double event creation when parts wasn't correctly supported
+              _addPassedEvent : function(event){
+                if (!O$.contains(this._passedEvent, event)){
+                  this._passedEvent.push(event);
+                }
+              },
+
+              //TODO: maybe remove this method because it was added to avoid double event creation when parts wasn't correctly supported
+              _validateEvent : function(event){
+                return !O$.contains(this._passedEvent, event);
+              },
+
+              _reCalcCells : function(){
+                if (this._cellsToReCalc.length>0){
+                  monthTable._updateCellEventElements(this._cellsToReCalc[0]._cellDay);
+                  this._cellsToReCalc.splice (0, 1);
+                }
+              },
 
               _addEventElement: function(event, part) {
                 var eventElement = super_addEventElement.call(this, event, part);
 
+//######################################################################################################################
+                O$.extend(event, {
+                  _getDraggablePartIndex: function() {
+                    for (var i = 0; i < event.parts.length; i++) {
+                      part = event.parts[i];
+                      console.log("part.start = " + part.start + ",  event._dragPositionTime = " +  event._dragPositionTime + ", part.end = " + part.end);
+                      //TODO: rename this attribute and add some stuff
+                      var rightBorder = O$.incDay(event._dragPositionTime,0.51);
+                      //TODO: FINISH THIS
+                      if ((part.start < event._dragPositionTime && event._dragPositionTime < part.end )||
+                          (part.start < rightBorder && rightBorder < part.end ) ){
+                        return i;
+                      }
+                    }
+                  },
+
+                  _setupDragAndDrop: function() {
+                    var eventPreview = monthTable._getEventPreview();
+
+                    function hideExcessiveElementsWhileDragging() {
+                      if (eventPreview)
+                        setTimeout(function() {
+                          eventPreview.hide();
+                      }, 100);
+                    }
+                    var containingBlock = O$.getContainingBlock(eventElement, true);
+                    O$.extend(eventElement, {
+                      onmousedown: function (e) {
+                        //timeScaleTable._resetScrollingCache();
+
+                       // eventElement._bringToFront();
+
+                        var pos = O$.getEventPoint(e, eventElement);
+                        event._dragPositionTop = pos.y;
+                        event._dragPositionTime = monthTable._getNearestTimeslotForPosition(eventElement._rect.x, event._dragPositionTop).cell._cellDay;
+
+                        O$.startDragging(e, this);
+                        event._initialStart = event._lastValidStart = event.start;
+                        event._initialEnd = event._lastValidEnd = event.end;
+                        event._initialResourceId = event._lastValidResourceId = event.resourceId;
+                        eventElement._originalCursor = O$.getElementStyle(eventElement, "cursor");
+                        event._dropAllowed = true;
+                      },
+
+                      _getContainingBlock: function() {
+                        return containingBlock;
+                      },
+
+                      _getPositionTop: function() {
+                        return event._dragPositionTop;
+                      },
+
+                      setPosition: function (left, top) {
+                        var rect = O$.getElementBorderRectangle(monthTable._table, true);
+                        var maxTop = rect.height;
+                        var maxLeft = rect.width;
+                        left = left < 0 ? 0 : left > maxLeft ? maxLeft : left;
+                        top = top < 0 ? 0 : top > maxTop ? maxTop : top;
+
+                        var nearestTimeslot = monthTable._getNearestTimeslotForPosition(left, top);
+                        var timeIncrement = nearestTimeslot.cell._cellDay.getTime() - event._dragPositionTime.getTime();
+
+                        var eventUpdated = false;
+                        if (timeIncrement != 0) {
+                          // TODO: here in others tables we adjusting time so make sure that this correct without adjusting
+                          event._dragPositionTime = O$.dateByTimeMillis(event._dragPositionTime.getTime() + timeIncrement);
+
+                          var newStartTime = O$.dateByTimeMillis(event.start.getTime() + timeIncrement);
+                          var newEndTime = O$.dateByTimeMillis(event.end.getTime() + timeIncrement);
+
+
+                          event.setStart(newStartTime);
+                          event.setEnd(newEndTime);
+
+                          eventUpdated = true;
+                        }
+
+                        if (eventUpdated) {
+                          eventElement.style.cursor = "move";
+                          if (!event._draggingInProgress) {
+                            event._draggingInProgress = true;
+                            eventElement._draggingInProgress = true;
+                            monthTable._draggingInProgress = true;
+                            hideExcessiveElementsWhileDragging();
+                          }
+
+                          event._dragPositionTop -= eventElement._rect.y + eventElement._rect.height;
+                          if (timeIncrement < 0) {
+                            eventElement._elementPartIndex = part.index;
+                            eventElement._elementPartIndexFromTheStart = true;
+
+                          } else {
+                            eventElement._elementPartIndex = event.parts.length - part.index - 1;
+                            eventElement._elementPartIndexFromTheStart = false;
+                          }
+                          event.updatePresentation(70);
+                          event._scrollIntoView();
+                          event._dragPositionTop += eventElement._rect.y + eventElement._rect.height;
+                        }
+                      }
+                    });
+                  }
+                });
+//######################################################################################################################
+                event._setupDragAndDrop();
                 event._updateRolloverState = function() {
 
                   var mouseInsideEventElements = false;
+
                   for (var i = 0; i < event.parts.length; i++) {
                     var eventElement = event.parts[i].mainElement;
                     if (!eventElement) {
@@ -335,40 +593,178 @@ O$.MonthTable = {
                     }
                   }
                   this.style.display = "";
+                  if (event._cell._cellDay.getDate() != part.start.getDate){
+                    event._cell = O$.MonthTable.getCellForDay(monthTable, part.start);
+                  }
 
-                  var cell = event._cell;
+
+
+                  var cell = O$.MonthTable.getCellForDay(monthTable,part.start);
                   var cellEventIndex = event._cellEventIndex;
-                  var cellBoundaries = O$.getElementBorderRectangle(cell, true);
+                  if (cell._cellDay != monthTable._expandedDayView.expandedDay){
+                    console.log("Start = " + part.start + ", End = " + part.end + ", mainElement = " + part.mainElement);
+                    //todo: remove this all it's just to remember fields name
+                    // cell._row
+                    /* row._cells;
+                     for (var cellIndex = 0; cellIndex < cells.length; cellIndex++) {
+                    * */
+                    var endDayCell = O$.MonthTable.getCellForDay(monthTable,part.end);
 
-                  var topY = cellBoundaries.getMinY() + eventElementHeight * cellEventIndex;
-                  var bottomY = topY + eventElementHeight;
+                    var endDayCellBoundaries = O$.getElementBorderRectangle(endDayCell, true);
+                    var startDayCellBoundaries = O$.getElementBorderRectangle(cell, true);
+                    //todo: temporary for future check here if we need some hidden parts for event layout
+                    if (true) {
+                      // If we have multi cell event we need to copy event to several lines
+                      //todo: maybe put this dirrectly to if
 
-                  var lastForCell = (cellEventIndex == cell._cellEvents.length - 1);
-                  var maxY = lastForCell ? cellBoundaries.getMaxY() : cellBoundaries.getMaxY() - moreLinkElementHeight;
+                      var rightBorderOverflow =  part.index < (part.event.parts.length - 1);
+                      var leftBorderOverflow = part.index > 0;
+                      console.log("Parts:TOTAL = " + part.event.parts.length + ", Parts:CURRENT = " +  part.index + ", leftBorderOverflow = " + leftBorderOverflow + ", rightBorderOverflow = " + rightBorderOverflow );
 
-                  if (cell._moreLinkData) {
-                    this.style.display = "none";
-                    return;
+                      endDayCell =  cell._row._cells[cell._row._cells.length-1];
+
+                      //TODO: make refactoring of calculating x1,x2 right here
+                      var rightDelta = 0;
+                      var leftDelta = 0;
+                      if (rightBorderOverflow)
+                        rightDelta = 1;
+                      if (leftBorderOverflow)
+                        leftDelta = 1;
+                      var x1 = startDayCellBoundaries.getMinX() + (event.type != "reserved" ? eventsLeftOffset : reservedEventsLeftOffset);
+                      var x2 = - (event.type != "reserved" ? eventsRightOffset : reservedEventsRightOffset);
+                      var cellWidth = startDayCellBoundaries.getMaxX() - startDayCellBoundaries.getMinX();
+
+                      if (leftBorderOverflow){
+                        x1 -= cellWidth;
+                      }
+                      if (rightBorderOverflow){
+                        x2 += startDayCellBoundaries.getMaxX() + cellWidth*(7-part.start.getDay());
+                      }else{
+                        x2 += endDayCellBoundaries.getMaxX();
+                      }
+                    }
+
+                    var placeIndex = cell.reservedPlaces.length;
+                    for (i=0; i<cell.reservedPlaces.length; i++){
+                      if (!cell.reservedPlaces[i] || cell.reservedPlaces[i]==event){
+                        placeIndex = i;
+                        break;
+                      }
+                    };
+
+
+                    var topY = startDayCellBoundaries.getMinY() + eventElementHeight * placeIndex;
+                    var bottomY = topY + eventElementHeight;
+                    var lastForCell = (cellEventIndex == cell._cellEvents.length - 1);
+                    var maxY = lastForCell ? startDayCellBoundaries.getMaxY() : startDayCellBoundaries.getMaxY() - moreLinkElementHeight;
+                    if (cell._moreLinkData ) {
+                      this.style.display = "none";
+                      return;
+                    }
+                    if (bottomY > maxY ) {
+                      cell._moreLinkData = { topY: topY };
+                      this.style.display = "none";
+                      return;
+                    }
+
+                    // проверяем если ивент на 2+ дня резервируем ему место на след ячейки
+                    if (!O$._datesEqual(part.end, part.start) /* && monthTable._validateEvent(event)*/){
+                      //monthTable._addPassedEvent(event);
+                      var nextDayCell
+                      for (day = O$.incDay(part.start,1); !O$._datesEqual(day, O$.incDay(part.end,1)); day=O$.incDay(day,1)){
+                        nextDayCell = O$.MonthTable.getCellForDay(monthTable,day);
+                        monthTable._addCellForReCalc(nextDayCell);
+                        //nextDayCell.reservedHeight = (nextDayCell.reservedHeight ? nextDayCell.reservedHeight : 0) + eventElementHeight;
+                        nextDayCell.reservedPlaces[placeIndex] = event;
+                      }
+                    }
+
+
+                    if (O$.isExplorer() && O$.isStrictMode() && cell._last) {
+                      var scroller = O$(monthTable.id + "::scroller");
+                      var scrollerWidth = scroller.offsetWidth - scroller.clientWidth;
+                      x2 -= scrollerWidth;
+                    }
+                    var rect = new O$.Rectangle(Math.round(x1), Math.round(topY),
+                            Math.round(x2 - x1), Math.round(bottomY - topY));
+                    cell.reservedPlaces[placeIndex] =  event;
+                    this._rect = rect;
+                  }else{
+//###################################!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  //more link layout
+                    var changeEventParent = function(newParent){
+                      newParent.appendChild(this);
+                      newParent.appendChild(this._backgroundElement);
+                    }
+
+                    changeEventParent.call(this, monthTable._expandedDayView.eventBlock);
+
+                    var cellBoundaries = O$.getElementBorderRectangle(monthTable._expandedDayView.eventBlock, true);
+                    var topY = 6 + eventElementHeight * cellEventIndex;
+                    var bottomY = topY + eventElementHeight;
+                    var lastForCell = (cellEventIndex == cell._cellEvents.length - 1);
+                    var maxY = cellBoundaries.getMaxY();
+                    if (bottomY > maxY ) {
+                      // Need scrolling
+                      var stopScrolling = false;
+                      var delta;
+
+                      function scrollExpandedView(button) {
+                        console.log("scroll view");
+                        for (var i = 0; i<monthTable._expandedDayView.eventBlock.childNodes.length;i++){
+                          var position = O$.getNumericElementStyle(monthTable._expandedDayView.eventBlock.childNodes[i], "top");
+                          monthTable._expandedDayView.eventBlock.childNodes[i].style.top = (position-button._scrollDelta)+"px";
+                        }
+                        if (!stopScrolling)
+                          setTimeout( function() { scrollExpandedView(button) }, 10 );
+
+                      }
+
+                      //TODO: move this some where
+                      var expandedViewControl = {};
+                      O$.extend(expandedViewControl ,{
+                        className : monthTable.dayViewButtonClass,
+
+                        onmousedown: function(e) {
+                          this.className = monthTable.dayViewPressedButtonClass;
+                          O$.cancelEvent(e);
+                        },
+
+                        onmouseup: function(e) {
+                          this.className = monthTable.dayViewRolloverButtonClass;
+                        },
+                        onmouseover: function(e) {
+                          stopScrolling = false;
+                          if (!O$.isEventFromInsideOfElement(e, this))
+                            return;
+                          this.className = monthTable.dayViewRolloverButtonClass;
+                          scrollExpandedView(this);
+                        },
+                        onmouseout: function(e) {
+                          stopScrolling = true;
+                          this.className = monthTable.dayViewButtonClass;
+                        }
+                      });
+                      O$.extend(monthTable._expandedDayView.btnUp,expandedViewControl);
+                      O$.extend(monthTable._expandedDayView.btnDown,expandedViewControl);
+                      monthTable._expandedDayView.btnUp._scrollDelta = 1;
+                      monthTable._expandedDayView.btnDown._scrollDelta = -1;
+
+
+
+
+                    }
+                    var x1 = 0 + (event.type != "reserved" ? eventsLeftOffset : reservedEventsLeftOffset);
+                    var x2 = cellBoundaries.getMaxX() - cellBoundaries.getMinX() - (event.type != "reserved" ? eventsRightOffset : reservedEventsRightOffset);
+                    if (O$.isExplorer() && O$.isStrictMode() && cell._last) {
+                      var scroller = O$(monthTable.id + "::scroller");
+                      var scrollerWidth = scroller.offsetWidth - scroller.clientWidth;
+                      x2 -= scrollerWidth;
+                    }
+                    var rect = new O$.Rectangle(Math.round(x1), Math.round(topY),
+                            Math.round(x2 - x1), Math.round(bottomY - topY));
+                    this._rect = rect;
                   }
-
-                  if (bottomY > maxY) {
-                    cell._moreLinkData = { topY: topY };
-                    this.style.display = "none";
-                    return;
-                  }
-
-                  var x1 = cellBoundaries.getMinX() + (event.type != "reserved" ? eventsLeftOffset : reservedEventsLeftOffset);
-                  var x2 = cellBoundaries.getMaxX() - (event.type != "reserved" ? eventsRightOffset : reservedEventsRightOffset);
-                  if (O$.isExplorer() && O$.isStrictMode() && cell._last) {
-                    var scroller = O$(monthTable.id + "::scroller");
-                    var scrollerWidth = scroller.offsetWidth - scroller.clientWidth;
-                    x2 -= scrollerWidth;
-                  }
-                  var rect = new O$.Rectangle(Math.round(x1), Math.round(topY),
-                          Math.round(x2 - x1), Math.round(bottomY - topY));
-                  this._rect = rect;
                   var backgroundElement = this._backgroundElement;
-
                   O$.setElementBorderRectangle(eventElement, eventElement._rect);
                   O$.setElementBorderRectangle(backgroundElement, eventElement._rect);
                 };
@@ -395,6 +791,7 @@ O$.MonthTable = {
               },
 
               _removeEventElement: function(event, part) {
+                console.log("Removing element = " + part.index);
                 if (!part.mainElement)
                   return;
 
@@ -413,7 +810,6 @@ O$.MonthTable = {
 
 
               _updateStartEndTime: function() {
-
                 this._startTime = O$.MonthTable.getDay(this._day, firstDayOfWeek);
                 this._endTime = O$.MonthTable.getFirstDayOut(this._day, firstDayOfWeek);
 
@@ -637,7 +1033,15 @@ O$.MonthTable = {
         dayHeaderCell._cellDay = cellDay;
         dayContentCell._cellDay = cellDay;
         O$.removeAllChildNodes(dayHeaderCell);
-        var text = document.createTextNode(cellDay.getDate());
+        var text = document.createElement("a");
+        //TODO: LINK UNCLICKABLE
+        text.style.zIndex = monthTable._baseZIndex + 150;
+        text.innerHTML = cellDay.getDate();
+        text.onclick = function(e) {
+          O$.stopEvent(e);
+          if (monthTable._timetable)
+            monthTable._timetable.goViewDay(cellDay);
+        }
         dayHeaderCell.appendChild(text);
         cellDay = O$.MonthTable.__incDay(cellDay);
       }
@@ -653,6 +1057,7 @@ O$.MonthTable = {
         var cell = cells[cellIndex];
         var cellDay = cell._cellDay;
         if (O$._datesEqual(cellDay, day)) {
+          cell._rowIndex = rowIndex;
           return cell;
         }
       }

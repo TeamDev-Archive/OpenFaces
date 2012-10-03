@@ -1,9 +1,17 @@
-<div xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+<div xmlns="http://www.w3.org/1999/xhtml"
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:o="http://openfaces.org/">
   <div id="Demo">
+    <style>
+      .test{
+        background-color: black;
+        width: 100px;
+        color: black;
+      }
+
+    </style>
     <center>
-      <o:daySwitcher for="form:dayTable" upperPattern="" pattern="EEEE, d MMMM yyyy" locale="en"
+      <o:monthSwitcher for="form:dayTable"  pattern="EEEE, d MMMM yyyy" locale="en"
                      textStyle="width: 350px; text-align: center"
                      styleClass="CalendarDate"
                      previousButtonImageUrl="../images/daytable/customPrevButton.gif"
@@ -11,81 +19,33 @@
                      previousButtonClass="CalendarButton"
                      nextButtonClass="CalendarButton"/>
     </center>
-    <o:dayTable id="dayTable"
-                day="#{DayTableBean2.date}"
+    AAAAAAAAAAAAA
+    <o:monthTable id="dayTable"
+                 events="#{DayTableBean1.events}"
+                 day="#{DayTableBean1.date}"
+                 timetableChangeListener="#{DayTableBean1.processTimetableChanges}"
+                 headerStyle="float:center"
+                 dayViewRolloverButtonStyle="background-color: black;"
+                 dayViewButtonStyle="background-color: black;"
+                 dayViewButtonClass="test"
+                 dayViewRolloverButtonClass="test"
+                 dayViewPressedButtonClass="test"
 
-                events="#{DayTableBean2.events}"
-                resources="#{DayTableBean2.resources}"
-
-                timetableChangeListener="#{DayTableBean2.processTimetableChanges}"
-                preloadedEvents="none"
-                primaryRowSeparator="1px solid #c3c3c3"
-                secondaryRowSeparator="1px solid #eeeeee"
-                startTime="5:00"
-                endTime="23:30"
-                style="background-color: white; border: none;"
-                timePattern="HH:mm"
-                timeSuffixPattern=""
-                timeTextPosition="againstMark"
-                timeColumnStyle="color: black; background: transparent; font-size: 10px"
-                timeColumnPrimaryRowSeparator="none"
-                timeColumnSecondaryRowSeparator="none"
-                showTimeForMinorIntervals="false"
-
-                timeColumnSeparator="none"
-                resourceColumnSeparator="none"
-                resourceHeadersRowStyle="font-size: 10pt; border-top: 1px solid #7f7f7f; border-bottom: 1px solid #7f7f7f;"
-                rowStyle="height: 25px;"
-                reservedTimeEventStyle="border-left: none; border-right: none; margin: 0;"
-
-                headerStyle=""
-                locale="en">
-
-      <o:timetableEvent styleClass="eventWithBackground" descriptionStyle="font-size:10pt" style="color:white;"
-                        escapeDescription="false" escapeName="false"
-                        nameStyle="white-space: normal; width: auto; font-size: 10pt; font-weight: normal;"
-                        backgroundIntensity="1"
-                        backgroundTransparency="0"
-              />
-      <o:eventPreview style="width: 270px; background: Cornsilk" eventNameStyle="font-size: 11pt;"/>
-      <o:timetableEditingOptions autoSaveChanges="false"
-                                 eventResourceEditable="true" eventDurationEditable="true"/>
-      <f:facet name="resourceHeader">
-        <h:outputText
-                value="#{resource.object.name}"
-                style="display:block; margin-left: 6em; margin-right: 6em; background-color: #{resource.object.color};  color: white;"/>
+                 locale="en"
+            >
+      <f:facet name="header">
+        <o:monthSwitcher locale="en"/>
       </f:facet>
-      <o:eventArea horizontalAlignment="right"
-                   onmouseover="addBorder(this, #{event.color.red}, #{event.color.green},#{event.color.blue})"
-                   onmouseout="removeBorder(this)" style="padding: 5px 5px 5px 5px;" verticalAlignment="top">
-        <o:commandLink title="Remove" value=""
-                       action="#{DayTableBean2.remove}"
-                       >
-          <h:graphicImage url="../images/daytable/close.png"/>
-        </o:commandLink>
-      </o:eventArea>
+      <o:timetableEvent  style="text-align: center;height:45px;" descriptionStyle="color: #5f5f5f;" escapeDescription="false" escapeName="false"/>
+
       <o:eventActionBar>
-        <o:deleteEventAction rendered="false"/>
+        <o:eventAction id="customEventAction" actionListener="#{DayTableBean1.postponeEventActionListener}"
+                       imageUrl="../images/daytable/customAction1.gif"
+                       hint="Postpone for 1 day"
+                       scope="timetable"/>
       </o:eventActionBar>
-    </o:dayTable>
+    </o:monthTable>
   </div>
 
-  <div id="Description">
-    <h4>Demonstrated Features</h4>
-    <ul class="hang">
-      <li><strong>Multi-resource tables support</strong> - each column displays events for different
-        resources. You can drag an event between columns and drop it for reassigning to another resource.
-      </li>
-      <li><strong>Appearance customization</strong> - time column displays time for half-hour intervals and
-        time slot rows have increased height.
-      </li>
-      <li>
-        <strong>Specifying the visible time range</strong> - the timetable displays a time range of 6:00 &#8212; 23:00.
-      </li>
-      <li>
-        <strong>Handling large data sets</strong> - DayTable component may be configured to avoid preloading of events currently not visible for user.
-        In this case events are loaded on-demand with Ajax when switching the current day displayed.
-      </li>
-    </ul>
-  </div>
+
 </div>

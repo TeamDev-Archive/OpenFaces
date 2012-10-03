@@ -668,6 +668,18 @@
   height: 40px;
 }
 
+.o_dayViewButtonClass{
+    background-color: blue; height: 10px; width: 100%;position: relative;z-index:200;
+}
+
+.o_dayViewRolloverButtonClass{
+
+}
+
+.o_dayViewPressedButtonClass{
+
+}
+
 .o_timetableEventName {
   display: block;
   width: 100%;

@@ -402,7 +402,7 @@ O$.TimeTableView = {
                   this.saveChanges();
               },
 
-
+              //TODO: move this to timetableScale because we don't need day spliting for month table
               _splitIntoParts: function(event) {
                 var parts = [];
                 var start = this._startTime < event.start ? event.start : this._startTime;
@@ -432,7 +432,6 @@ O$.TimeTableView = {
                 var parts = timeTableView._splitIntoParts(event);
                 event.parts = parts;
                 var eventPreview;
-
                 O$.extend(event, {
                           _timeTableView: timeTableView,
 
@@ -499,12 +498,15 @@ O$.TimeTableView = {
                             var newParts = timeTableView._splitIntoParts(event, false);
 
                             if (newParts.length != event.parts.length) {
+                              console.log("Changed parts count:  event.parts.length =  " +  event.parts.length + ", newParts.length = " + newParts.length);
                               var eventElementsLength = timeTableView._eventElements.length;
                               var draggablePart;
                               event.parts.forEach(function(part) {
                                 if (part.mainElement._draggingInProgress) {
+                                  console.log("still exsist = " + part.index);
                                   draggablePart = part;
                                 } else {
+                                  console.log("deleted part = " + part.index);
                                   timeTableView._removeEventElement(event, part);
                                 }
                               });
@@ -523,6 +525,7 @@ O$.TimeTableView = {
                                   draggablePart.index = i;
                                   event.parts[i] = draggablePart;
                                 } else {
+                                  console.log("adding event element = " +event._getDraggablePartIndex() );
                                   timeTableView._addEventElement(event, part);
                                 }
                               }
@@ -548,6 +551,7 @@ O$.TimeTableView = {
                           },
 
                           _removeElements: function() {
+                            console.log("::removing elements::");
                             parts.forEach(function(part) {
                               timeTableView._removeEventElement(event, part);
                             });
@@ -604,6 +608,7 @@ O$.TimeTableView = {
                 event._attachAreas();
 
                 event.parts.forEach(function(part) {
+                  console.log("_addEventElement = " +  part.index);
                   timeTableView._addEventElement(event, part);
                 });
 
@@ -703,11 +708,13 @@ O$.TimeTableView = {
 
                 var index = timeTableView._eventElements.indexOf(part.mainElement);
                 timeTableView._eventElements.splice(index, 1);
+                //TODO: temporary comment to avoid some strange mistake
                 if (timeTableView._getEventActionBar()._event == event)
                   timeTableView._hideEventActionBar();
 
                 if (part.mainElement._removeNodes)
                   part.mainElement._removeNodes();
+
                 part.mainElement.parentNode.removeChild(part.mainElement);
                 var backgroundElement = part.mainElement._backgroundElement;
                 backgroundElement.parentNode.removeChild(backgroundElement);

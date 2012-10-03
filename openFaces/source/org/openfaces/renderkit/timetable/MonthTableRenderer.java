@@ -49,6 +49,9 @@ import java.util.TimeZone;
  */
 public class MonthTableRenderer extends TimetableViewRenderer {
 
+    private static String BUTTON_SUFFIX = "::button";
+    private static String EXPANDED_VIEW_SUFFIX = "::expandedDayView";
+
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         if (!component.isRendered())
@@ -86,7 +89,7 @@ public class MonthTableRenderer extends TimetableViewRenderer {
         writer.startElement("td", timetableView);
         writer.writeAttribute("style", "height: 100%", null);
 
-        renderContentTable(writer, timetableView, clientId, resources);
+        renderContentTable(context, timetableView, clientId, resources);
         encodeEventEditor(context, timetableView, resources);
         encodeActionBar(context, timetableView);
 
@@ -100,6 +103,60 @@ public class MonthTableRenderer extends TimetableViewRenderer {
 
         Styles.renderStyleClasses(context, timetableView);
 
+    }
+
+    protected void encodeButton(FacesContext context, UIComponent component, String buttonOrientation ) throws IOException {
+        FacesContext currentInstance = FacesContext.getCurrentInstance();
+        MonthTable fieldComponent = (MonthTable) component;
+        ResponseWriter writer = context.getResponseWriter();
+
+        // get all ids (main, button, popup)
+        String clientId = fieldComponent.getClientId(currentInstance);
+        String buttonId = clientId + EXPANDED_VIEW_SUFFIX + BUTTON_SUFFIX;
+
+        writer.writeAttribute("nowrap", "nowrap", null);
+
+        // Render drop down button
+        writer.writeAttribute("id", buttonId + "::" + buttonOrientation, null);
+        writer.writeAttribute("align", "center", null);
+        writer.writeAttribute("valign", "middle", null);
+
+        String imageUrl;
+        String buttonImageUrl = (String) fieldComponent.getAttributes().get("buttonImageUrl");
+        if (buttonOrientation.equals("up"))
+            imageUrl = Resources.getURL(context, buttonImageUrl, null, "input/dropButton.gif");
+        else
+            imageUrl = Resources.getURL(context, buttonImageUrl, null, "input/dropButton.gif");
+        writer.startElement("img", fieldComponent);
+        writer.writeAttribute("id", buttonId +"::" + buttonOrientation + "::img", null);
+        writer.writeAttribute("src", imageUrl, null);
+        writer.endElement("img");
+    }
+
+
+
+    private void renderExpandedDayView(FacesContext context, final MonthTable timetableView, String clientId) throws IOException {
+        String expandDayViewId = clientId + EXPANDED_VIEW_SUFFIX;
+        ResponseWriter writer = context.getResponseWriter();
+        writer.startElement("div", timetableView);
+        writer.writeAttribute("id", expandDayViewId , null);
+        writer.writeAttribute("style", "background-color: red; position: absolute;width:50px;height:50px;padding:2px;z-index:150;", null);
+
+            writer.startElement("div", timetableView);
+                encodeButton(context, timetableView, "up" );
+            writer.endElement("div");
+
+            writer.startElement("div", timetableView);
+                writer.writeAttribute("style", "background-color: green; height: 100%;margin-top: -10px; margin-bottom: -10px; overflow:hidden;position: relative;", null);
+                writer.writeAttribute("id", expandDayViewId + "::eventBlock" , null);
+            writer.endElement("div");
+
+
+            writer.startElement("div", timetableView);
+                encodeButton(context, timetableView, "down" );
+            writer.endElement("div");
+
+        writer.endElement("div");
     }
 
     private void renderWeekdayHeadersRow(FacesContext context, final MonthTable timetableView, String clientId) throws IOException {
@@ -121,14 +178,15 @@ public class MonthTableRenderer extends TimetableViewRenderer {
     }
 
     private void renderContentTable(
-            ResponseWriter writer,
+            FacesContext context,
             final MonthTable timetableView,
             final String clientId,
             final List<TimetableResource> resources) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
         writer.startElement("div", timetableView);
         writer.writeAttribute("id", clientId + "::scroller", null);
         writer.writeAttribute("class", "o_timetableView_scroller", null);
-
+        renderExpandedDayView(context, timetableView, clientId);
         int colCount = 7;
 
         new TableRenderer(clientId + Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "table", 0, 0, 0, "o_timetableView_table") {
@@ -306,6 +364,14 @@ public class MonthTableRenderer extends TimetableViewRenderer {
                 timetableView.getMoreLinkElementStyle(), timetableView.getMoreLinkElementClass());
         Styles.addStyleJsonParam(context, timetableView, stylingParams, "moreLinkClass",
                 timetableView.getMoreLinkStyle(), timetableView.getMoreLinkClass());
+
+        Styles.addStyleJsonParam(context, timetableView, stylingParams, "dayViewButtonClass",
+                timetableView.getDayViewButtonStyle(), timetableView.getDayViewButtonClass());
+        Styles.addStyleJsonParam(context, timetableView, stylingParams, "dayViewRolloverButtonClass",
+                timetableView.getDayViewRolloverButtonStyle(), timetableView.getDayViewRolloverButtonClass());
+        Styles.addStyleJsonParam(context, timetableView, stylingParams, "dayViewPressedButtonClass",
+                timetableView.getDayViewPressedButtonStyle(), timetableView.getDayViewPressedButtonClass());
+
         Rendering.addJsonParam(stylingParams, "moreLinkText", timetableView.getMoreLinkText());
 
         return stylingParams;

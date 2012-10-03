@@ -820,6 +820,11 @@ if (!window.O$) {
     return clonedDate;
   };
 
+  //TODO: сделать нормально поддержку дней из разных месяцев пока так
+  O$.getDayInterval = function(date1, date2){
+    return date1.getDate() - date2.getDate();
+  }
+
   O$.incDay = function(date, increment) {
     if (increment == undefined)
       increment = 1;
