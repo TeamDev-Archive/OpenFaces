@@ -270,7 +270,6 @@ public class ServerFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
         message.assertElementExists(true);
         message.assertVisible(false);
 
-        requiredInput.setCursorPosition(0);
         requiredInput.keyPress(13);
         message.assertVisible(true);
         assertTrue(message.text().contains("Validation Error: Value is required.") ||

@@ -29,7 +29,6 @@ public class DropDownClientSideEvents extends OpenFacesTestCase {
 
         DropDownFieldInspector keypressField = dropDownField("formID:keypressID");
         // onkeypress
-        keypressField.field().setCursorPosition(0);
         keypressField.field().keyPress(KeyEvent.VK_Z);
 
         assertTrue(selenium.isTextPresent("onkeypress works"));
@@ -74,36 +73,29 @@ public class DropDownClientSideEvents extends OpenFacesTestCase {
 
         // onchange
         DropDownFieldInspector changeField = dropDownField("formID:changeID");
-        changeField.field().setCursorPosition(0);
         changeField.field().type("Red");
-        dropDownField("formID:mousemoveID").field().setCursorPosition(0);
         sleep(100);
         assertTrue(selenium.isTextPresent("onchange works"));
         assertTrue(selenium.isTextPresent("change"));
 
         // onfocus
-        dropDownField("formID:focusID").field().setCursorPosition(0);
         sleep(100);
         assertTrue(selenium.isTextPresent("onfocus works"));
         assertTrue(selenium.isTextPresent("focus"));
 
         // onblur
-        dropDownField("formID:blurID").field().setCursorPosition(0);
         DropDownFieldInspector keyDownField = dropDownField("formID:keydownID");
-        keyDownField.field().setCursorPosition(0);
         sleep(100);
         assertTrue(selenium.isTextPresent("onblur works"));
         assertTrue(selenium.isTextPresent("blur"));
 
         // onkeydown
-        keyDownField.field().setCursorPosition(0);
         keyDownField.field().keyDown(KeyEvent.VK_Z);
         assertTrue(selenium.isTextPresent("onkeydown works"));
         assertTrue(selenium.isTextPresent("keydown"));
 
         // onkeyup
         DropDownFieldInspector keyupField = dropDownField("formID:keyupID");
-        keyupField.field().setCursorPosition(0);
         keyupField.field().keyUp(KeyEvent.VK_Z);
         assertTrue(selenium.isTextPresent("onkeyup works"));
         assertTrue(selenium.isTextPresent("keyup"));

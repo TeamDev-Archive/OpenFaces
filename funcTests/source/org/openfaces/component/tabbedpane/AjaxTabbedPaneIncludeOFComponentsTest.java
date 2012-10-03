@@ -309,14 +309,12 @@ public class AjaxTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
         ElementInspector firstMessage = element("fn:first_messageID");
         assertFalse(firstMessage.elementExists() && firstMessage.isVisible());
 
-        requiredInput.setCursorPosition(0);
         requiredInput.keyPress(13);
         firstMessage.assertVisible(true);
 
         element("fn:secondHeader").click();
         OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         ElementInspector requiredInput1 = element("fn:required_input1");
-        requiredInput1.setCursorPosition(0);
         requiredInput1.keyPress(13);
         element("fn:second_messageID").assertVisible(true);
     }

@@ -52,7 +52,6 @@ public class DataTableTest extends OpenFacesTestCase {
     public void _testDataTableReRenderThroughA4J() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/datatable/dataTable_a4j.jsf");
-        selenium.setCursorPosition("id=formID:dataTableID:dataTablePaginator_A4J--pageNo", "1");
         selenium.keyPress("formID:dataTableID:dataTablePaginator_A4J--pageNo", "\\8");
         selenium.type("formID:dataTableID:dataTablePaginator_A4J--pageNo", "1");
         selenium.keyPress("formID:dataTableID:dataTablePaginator_A4J--pageNo", "\\13");
@@ -71,7 +70,6 @@ public class DataTableTest extends OpenFacesTestCase {
             if (i == 11 || i == 23) {
                 j = 0;
                 n = 1;
-                selenium.setCursorPosition("id=formID:dataTableID:dataTablePaginator_A4J--pageNo", "1");
                 selenium.keyPress("formID:dataTableID:dataTablePaginator_A4J--pageNo", "\\8");
                 if (i == 11) selenium.type("formID:dataTableID:dataTablePaginator_A4J--pageNo", "2");
                 if (i == 23) selenium.type("formID:dataTableID:dataTablePaginator_A4J--pageNo", "3");
@@ -81,7 +79,6 @@ public class DataTableTest extends OpenFacesTestCase {
         }
         selenium.click("formID:refresher");
         RichFacesAjaxLoadingMode.getInstance().waitForLoad();
-        selenium.setCursorPosition("id=formID:dataTableID:dataTablePaginator_A4J--pageNo", "1");
         selenium.keyPress("formID:dataTableID:dataTablePaginator_A4J--pageNo", "\\8");
         selenium.type("formID:dataTableID:dataTablePaginator_A4J--pageNo", "1");
         selenium.keyPress("formID:dataTableID:dataTablePaginator_A4J--pageNo", "\\13");
@@ -100,7 +97,6 @@ public class DataTableTest extends OpenFacesTestCase {
             if (i == 11 || i == 23) {
                 k = 0;
                 m = 1;
-                selenium.setCursorPosition("id=formID:dataTableID:dataTablePaginator_A4J--pageNo", "1");
                 selenium.keyPress("formID:dataTableID:dataTablePaginator_A4J--pageNo", "\\8");
                 if (i == 11) selenium.type("formID:dataTableID:dataTablePaginator_A4J--pageNo", "2");
                 if (i == 23) selenium.type("formID:dataTableID:dataTablePaginator_A4J--pageNo", "3");
@@ -122,7 +118,6 @@ public class DataTableTest extends OpenFacesTestCase {
     public void _testDataTableWithA4JInside() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/datatable/dataTable_a4j.jsf");
-        selenium.setCursorPosition("id=formID:dataTable_a4j_ID:dataTable_a4j_IDPaginator_A4J--pageNo", "1");
         selenium.keyPress("formID:dataTable_a4j_ID:dataTable_a4j_IDPaginator_A4J--pageNo", "\\8");
         selenium.type("formID:dataTable_a4j_ID:dataTable_a4j_IDPaginator_A4J--pageNo", "1");
         selenium.keyPress("formID:dataTable_a4j_ID:dataTable_a4j_IDPaginator_A4J--pageNo", "\\13");
@@ -141,7 +136,6 @@ public class DataTableTest extends OpenFacesTestCase {
             if (i == 11 || i == 23) {
                 j = 0;
                 n = 1;
-                selenium.setCursorPosition("id=formID:dataTable_a4j_ID:dataTable_a4j_IDPaginator_A4J--pageNo", "1");
                 selenium.keyPress("formID:dataTable_a4j_ID:dataTable_a4j_IDPaginator_A4J--pageNo", "\\8");
                 if (i == 11) selenium.type("formID:dataTable_a4j_ID:dataTable_a4j_IDPaginator_A4J--pageNo", "2");
                 if (i == 23) selenium.type("formID:dataTable_a4j_ID:dataTable_a4j_IDPaginator_A4J--pageNo", "3");
@@ -151,7 +145,6 @@ public class DataTableTest extends OpenFacesTestCase {
         }
         selenium.click("formID:refresher");
         RichFacesAjaxLoadingMode.getInstance().waitForLoad();
-        selenium.setCursorPosition("id=formID:dataTable_a4j_ID:dataTable_a4j_IDPaginator_A4J--pageNo", "1");
         selenium.keyPress("formID:dataTable_a4j_ID:dataTable_a4j_IDPaginator_A4J--pageNo", "\\8");
         selenium.type("formID:dataTable_a4j_ID:dataTable_a4j_IDPaginator_A4J--pageNo", "1");
         selenium.keyPress("formID:dataTable_a4j_ID:dataTable_a4j_IDPaginator_A4J--pageNo", "\\13");
@@ -170,7 +163,6 @@ public class DataTableTest extends OpenFacesTestCase {
             if (i == 11 || i == 23) {
                 k = 0;
                 m = 1;
-                selenium.setCursorPosition("id=formID:dataTable_a4j_ID:dataTable_a4j_IDPaginator_A4J--pageNo", "1");
                 selenium.keyPress("formID:dataTable_a4j_ID:dataTable_a4j_IDPaginator_A4J--pageNo", "\\8");
                 if (i == 11) selenium.type("formID:dataTable_a4j_ID:dataTable_a4j_IDPaginator_A4J--pageNo", "2");
                 if (i == 23) selenium.type("formID:dataTable_a4j_ID:dataTable_a4j_IDPaginator_A4J--pageNo", "3");

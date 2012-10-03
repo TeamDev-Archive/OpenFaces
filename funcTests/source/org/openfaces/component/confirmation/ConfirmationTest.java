@@ -161,25 +161,21 @@ public class ConfirmationTest extends OpenFacesTestCase {
         selenium.isVisible("form:confirm_withInputTextInside");
         //try to type in caption
         assertEquals("Caption input", selenium.getText("form:captionInputID"));
-        selenium.setCursorPosition("form:captionInputID", "0");
         selenium.type("form:captionInputID", "Test ");
         assertEquals("Test Caption input", selenium.getText("form:captionInputID"));
 
         //try to type in icon
         assertEquals("Icon input", selenium.getText("form:iconInputID"));
-        selenium.setCursorPosition("form:iconInputID", "0");
         selenium.type("form:iconInputID", "Test ");
         assertEquals("Test Icon input", selenium.getText("form:iconInputID"));
 
         //try to type in message
         assertEquals("Message input", selenium.getText("form:messageInputID"));
-        selenium.setCursorPosition("form:messageInputID", "0");
         selenium.type("form:messageInputID", "Test ");
         assertEquals("Test Message input", selenium.getText("form:messageInputID"));
 
         //try to type in details
         assertEquals("Details input", selenium.getText("form:detailsInputID"));
-        selenium.setCursorPosition("form:detailsInputID", "0");
         selenium.type("form:detailsInputID", "Test ");
         assertEquals("Test Details input", selenium.getText("form:detailsInputID"));
 

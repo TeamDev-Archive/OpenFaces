@@ -311,7 +311,6 @@ public class ClientFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
         requiredInput.assertVisible(true);
         message.assertVisible(false);
 
-        requiredInput.setCursorPosition(0);
         requiredInput.keyPress(13);
 
         message.assertVisible(true);
