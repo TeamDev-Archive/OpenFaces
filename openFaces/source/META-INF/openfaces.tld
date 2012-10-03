@@ -40762,123 +40762,6 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
-    <attribute>
-      <name>moreLinkElementStyle</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <name>moreLinkElementClass</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <name>moreLinkStyle</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <name>moreLinkClass</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <name>moreLinkText</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default "More..." -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <name>dayViewButtonClass</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <name>dayViewRolloverButtonClass</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <name>dayViewPressedButtonClass</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <name>dayViewButtonStyle</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <name>dayViewRolloverButtonStyle</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <name>dayViewPressedButtonStyle</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <name>dayViewUpButtonImgURL</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <name>dayViewDownButtonImgURL</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
   </tag>
 
   <tag>
@@ -48183,6 +48066,101 @@ entering a value and returns a list of suggestions from the server -->
       </deferred-value>
       <!-- @bindingType String -->
       <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+  </tag>
+  <tag>
+    <name>dayView</name>
+    <tag-class>org.openfaces.taglib.jsp.timetable.DayViewJspTag</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+      <description>Text for more-link element inside day cell</description>
+      <name>moreLinkText</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType String -->
+      <!-- @default "More" -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A style for the more link inside day-cell of MonthTable.</description>
+      <name>moreLinkStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>CSS class name(s) for the more link inside day-cell of MonthTable.</description>
+      <name>moreLinkClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A style for the button inside DayView.</description>
+      <name>buttonStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>CSS class name(s) for the button inside DayView.</description>
+      <name>buttonClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A style for the rollover button inside DayView.</description>
+      <name>rolloverButtonStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>CSS class name(s) for the rollover button inside DayView.</description>
+      <name>rolloverButtonClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Url to down button image.</description>
+      <name>downButtonImg</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType String -->
+      <!-- @default "" -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Url to down button image.</description>
+      <name>upButtonImg</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType String -->
+      <!-- @default "" -->
       <!-- @el true -->
     </attribute>
   </tag>

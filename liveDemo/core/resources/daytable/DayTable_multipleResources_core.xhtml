@@ -25,14 +25,11 @@
                  day="#{DayTableBean1.date}"
                  timetableChangeListener="#{DayTableBean1.processTimetableChanges}"
                  headerStyle="float:center"
-                 dayViewRolloverButtonStyle="background-color: black;"
-                 dayViewButtonStyle="background-color: black;"
-                 dayViewButtonClass="test"
-                 dayViewRolloverButtonClass="test"
-                 dayViewPressedButtonClass="test"
-
-                 locale="en"
-            >
+                 locale="en">
+      <o:dayView rolloverButtonStyle="background-color: black;"
+                 buttonStyle="background-color: black;"
+                 buttonClass="test"
+                 rolloverButtonClass="test"/>
       <f:facet name="header">
         <o:monthSwitcher locale="en"/>
       </f:facet>

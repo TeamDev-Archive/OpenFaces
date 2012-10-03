@@ -1431,4 +1431,12 @@
       <handler-class>org.openfaces.taglib.facelets.table.ResetSortingMenuItemTagHandler</handler-class>
     </component>
   </tag>
+  <tag>
+    <tag-name>dayView</tag-name>
+    <component>
+      <component-type>org.openfaces.DayView</component-type>
+      <renderer-type>org.openfaces.DayViewRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.timetable.DayViewTagHandler</handler-class>
+    </component>
+  </tag>
 </facelet-taglib>

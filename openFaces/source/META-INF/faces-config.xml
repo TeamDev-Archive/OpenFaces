@@ -924,6 +924,11 @@
     <component-type>org.openfaces.ResetSortingMenuItem</component-type>
     <component-class>org.openfaces.component.table.ResetSortingMenuItem</component-class>
   </component>
+
+  <component>
+    <component-type>org.openfaces.DayView</component-type>
+    <component-class>org.openfaces.component.timetable.DayView</component-class>
+  </component>
   <render-kit>
     <renderer>
       <component-family>org.openfaces.DataTable</component-family>
@@ -1557,6 +1562,11 @@
       <component-family>org.openfaces.ResetSortingMenuItem</component-family>
       <renderer-type>org.openfaces.ResetSortingMenuItemRenderer</renderer-type>
       <renderer-class>org.openfaces.renderkit.table.ResetSortingMenuItemRenderer</renderer-class>
+    </renderer>
+    <renderer>
+      <component-family>org.openfaces.DayView</component-family>
+      <renderer-type>org.openfaces.DayViewRenderer</renderer-type>
+      <renderer-class>org.openfaces.renderkit.timetable.DayViewRenderer</renderer-class>
     </renderer>
   </render-kit>
 

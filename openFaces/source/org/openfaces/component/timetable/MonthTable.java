@@ -58,22 +58,11 @@ public class MonthTable extends TimetableView { // todo: extract some common typ
     private String inactiveMonthCellHeaderClass;
     private String inactiveMonthCellStyle;
     private String inactiveMonthCellClass;
-    private String moreLinkElementStyle;
-    private String moreLinkElementClass;
-    private String moreLinkStyle;
-    private String moreLinkClass;
-    private String moreLinkText;
+
 
     private Integer scrollOffset = 0;
 
-    private String dayViewButtonClass;
-    private String dayViewRolloverButtonClass;
-    private String dayViewPressedButtonClass;
-    private String dayViewButtonStyle;
-    private String dayViewRolloverButtonStyle;
-    private String dayViewPressedButtonStyle;
-    private String dayViewUpButtonImgURL;
-    private String dayViewDownButtonImgURL;
+
 
 
 
@@ -345,116 +334,12 @@ public class MonthTable extends TimetableView { // todo: extract some common typ
         this.inactiveMonthCellClass = inactiveMonthCellClass;
     }
 
-    public String getMoreLinkElementStyle() {
-        return ValueBindings.get(this, "moreLinkElementStyle", moreLinkElementStyle);
-    }
-
-    public void setMoreLinkElementStyle(String moreLinkElementStyle) {
-        this.moreLinkElementStyle = moreLinkElementStyle;
-    }
-
-    public String getMoreLinkElementClass() {
-        return ValueBindings.get(this, "moreLinkElementClass", moreLinkElementClass);
-    }
-
-    public void setMoreLinkElementClass(String moreLinkElementClass) {
-        this.moreLinkElementClass = moreLinkElementClass;
-    }
-
-    public String getMoreLinkStyle() {
-        return ValueBindings.get(this, "moreLinkStyle", moreLinkStyle);
-    }
-
-    public void setMoreLinkStyle(String moreLinkStyle) {
-        this.moreLinkStyle = moreLinkStyle;
-    }
-
-    public String getMoreLinkClass() {
-        return ValueBindings.get(this, "moreLinkClass", moreLinkClass);
-    }
-
-    public void setMoreLinkClass(String moreLinkClass) {
-        this.moreLinkClass = moreLinkClass;
-    }
-
-    public String getMoreLinkText() {
-        return ValueBindings.get(this, "moreLinkText", moreLinkText);
-    }
-
-    public void setMoreLinkText(String moreLinkText) {
-        this.moreLinkText = moreLinkText;
-    }
-
     public int getScrollOffset() {
         return scrollOffset;
     }
 
     public void setScrollOffset(int scrollOffset) {
         this.scrollOffset = scrollOffset;
-    }
-
-    public String getDayViewButtonClass() {
-        return ValueBindings.get(this, "dayViewButtonClass", dayViewButtonClass);
-    }
-
-    public void setDayViewButtonClass(String dayViewButtonClass) {
-        this.dayViewButtonClass = dayViewButtonClass;
-    }
-
-    public String getDayViewRolloverButtonClass() {
-        return ValueBindings.get(this, "dayViewRolloverButtonClass", dayViewRolloverButtonClass);
-    }
-
-    public void setDayViewRolloverButtonClass(String dayViewRolloverButtonClass) {
-        this.dayViewRolloverButtonClass = dayViewRolloverButtonClass;
-    }
-
-    public String getDayViewPressedButtonClass() {
-        return ValueBindings.get(this, "dayViewPressedButtonClass", dayViewPressedButtonClass);
-    }
-
-    public void setDayViewPressedButtonClass(String dayViewPressedButtonClass) {
-        this.dayViewPressedButtonClass = dayViewPressedButtonClass;
-    }
-
-    public String getDayViewButtonStyle() {
-        return ValueBindings.get(this, "dayViewButtonStyle", dayViewButtonStyle);
-    }
-
-    public void setDayViewButtonStyle(String dayViewButtonStyle) {
-        this.dayViewButtonStyle = dayViewButtonStyle;
-    }
-
-    public String getDayViewRolloverButtonStyle() {
-        return ValueBindings.get(this, "dayViewRolloverButtonStyle", dayViewRolloverButtonStyle);
-    }
-
-    public void setDayViewRolloverButtonStyle(String dayViewRolloverButtonStyle) {
-        this.dayViewRolloverButtonStyle = dayViewRolloverButtonStyle;
-    }
-
-    public String getDayViewPressedButtonStyle() {
-        return ValueBindings.get(this, "dayViewPressedButtonStyle", dayViewPressedButtonStyle);
-    }
-
-    public void setDayViewPressedButtonStyle(String dayViewPressedButtonStyle) {
-        this.dayViewPressedButtonStyle = dayViewPressedButtonStyle;
-    }
-
-    public String getDayViewUpButtonImgURL() {
-        return ValueBindings.get(this, "dayViewUpButtonImgURL", dayViewUpButtonImgURL);
-    }
-
-    public void setDayViewUpButtonImgURL(String dayViewUpButtonImgURL) {
-        this.dayViewUpButtonImgURL = dayViewUpButtonImgURL;
-    }
-
-    public String getDayViewDownButtonImgURL() {
-        return ValueBindings.get(this, "dayViewDownButtonImgURL", dayViewDownButtonImgURL);
-    }
-
-    public void setDayViewDownButtonImgURL(String dayViewDownButtonImgURL) {
-        this.dayViewDownButtonImgURL = dayViewDownButtonImgURL;
     }
 
     @Override
@@ -493,20 +378,7 @@ public class MonthTable extends TimetableView { // todo: extract some common typ
                 inactiveMonthCellHeaderClass,
                 inactiveMonthCellStyle,
                 inactiveMonthCellClass,
-                moreLinkElementStyle,
-                moreLinkElementClass,
-                moreLinkStyle,
-                moreLinkClass,
-                moreLinkText,
                 scrollOffset,
-                dayViewButtonClass,
-                dayViewRolloverButtonClass,
-                dayViewPressedButtonClass,
-                dayViewButtonStyle,
-                dayViewRolloverButtonStyle,
-                dayViewPressedButtonStyle,
-                dayViewUpButtonImgURL,
-                dayViewDownButtonImgURL
         };
     }
 
@@ -547,20 +419,7 @@ public class MonthTable extends TimetableView { // todo: extract some common typ
         inactiveMonthCellHeaderClass = (String) state[i++];
         inactiveMonthCellStyle = (String) state[i++];
         inactiveMonthCellClass = (String) state[i++];
-        moreLinkElementStyle = (String) state[i++];
-        moreLinkElementClass = (String) state[i++];
-        moreLinkStyle = (String) state[i++];
-        moreLinkClass = (String) state[i++];
-        moreLinkText = (String) state[i++];
         scrollOffset = (Integer) state[i++];
-        dayViewButtonClass = (String) state[i++];
-        dayViewRolloverButtonClass = (String) state[i++];
-        dayViewPressedButtonClass = (String) state[i++];
-        dayViewButtonStyle = (String) state[i++];
-        dayViewRolloverButtonStyle = (String) state[i++];
-        dayViewPressedButtonStyle = (String) state[i++];
-        dayViewUpButtonImgURL = (String) state[i++];
-        dayViewDownButtonImgURL = (String) state[i++];
     }
 
     @Override
