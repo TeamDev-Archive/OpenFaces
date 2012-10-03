@@ -13,17 +13,14 @@ package org.openfaces.test;
 
 import com.thoughtworks.selenium.Selenium;
 import com.thoughtworks.selenium.SeleniumException;
-import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.internal.WrapsDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.seleniuminspector.SeleniumFactory;
 import org.seleniuminspector.SeleniumHolder;
 import org.seleniuminspector.SeleniumTestCase;
 import org.seleniuminspector.openfaces.*;
-import org.seleniuminspector.webriver.MySeleniumFactory;
+import org.seleniuminspector.webriver.OpenFacesPatchedSeleniumFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -56,7 +53,7 @@ public abstract class OpenFacesTestCase extends SeleniumTestCase {
 
         boolean addNamespacesToXpath = OpenFacesTestCase.IMPLEMENTATION.equals("SUN12") && OpenFacesTestCase.IS_FACELETS;
         String browserPath = browserType.getBrowserPath(properties);
-        SeleniumFactory seleniumFactory = new MySeleniumFactory("localhost", CUSTOM_SELENIUM_PORT, browserPath, startUrl);
+        SeleniumFactory seleniumFactory = new OpenFacesPatchedSeleniumFactory("localhost", CUSTOM_SELENIUM_PORT, browserPath, startUrl);
         SeleniumHolder.getInstance().setSeleniumFactory(seleniumFactory);
     }
 
