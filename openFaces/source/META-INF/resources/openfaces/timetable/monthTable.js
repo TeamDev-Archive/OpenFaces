@@ -89,10 +89,7 @@ O$.MonthTable = {
     var inactiveMonthCellClass = O$.combineClassNames([/*cellClass,*/ "o_monthTableInactiveMonthCell", stylingParams.inactiveMonthCellClass]);
 
 
-    monthTable.dayViewButtonClass = O$.combineClassNames(["o_dayViewButtonClass", stylingParams.dayViewButtonClass]);
-    monthTable.dayViewRolloverButtonClass = O$.combineClassNames(["o_dayViewRolloverButtonClass", stylingParams.dayViewRolloverButtonClass]);
-    monthTable.dayViewPressedButtonClass = O$.combineClassNames(["o_dayViewPressedButtonClass", stylingParams.dayViewPressedButtonClass]);
-
+    //TODO: add initializing of dayView styles
 
     monthTable._weekdayHeaderCellClass = weekdayHeaderCellClass;
     monthTable._weekendWeekdayHeaderCellClass = weekendWeekdayHeaderCellClass;
@@ -105,11 +102,7 @@ O$.MonthTable = {
     monthTable._inactiveMonthCellHeaderClass = inactiveMonthCellHeaderClass;
     monthTable._inactiveMonthCellClass = inactiveMonthCellClass;
 
-    monthTable._expandedDayView = O$(componentId + "::expandedDayView");
-    monthTable._expandedDayView.btnDown = O$(componentId + "::expandedDayView::button::down");
-    monthTable._expandedDayView.btnUp = O$(componentId + "::expandedDayView::button::up");
-    monthTable._expandedDayView.eventBlock = O$(componentId + "::expandedDayView::eventBlock");
-    monthTable._expandedDayView.opened = false;
+    //TODO: add activation of ExpandedDayView
 
     var eventElementHeight = O$.calculateNumericCSSValue(O$.getStyleClassProperty(monthTable._eventStyleClass, "height"));
     var eventsLeftOffset = O$.calculateNumericCSSValue(O$.getStyleClassProperty(monthTable._eventStyleClass, "marginLeft"));
@@ -601,7 +594,8 @@ O$.MonthTable = {
 
                   var cell = O$.MonthTable.getCellForDay(monthTable,part.start);
                   var cellEventIndex = event._cellEventIndex;
-                  if (cell._cellDay != monthTable._expandedDayView.expandedDay){
+                  //TODO: temporary we don't have expanded view  if (cell._cellDay != monthTable._expandedDayView.expandedDay){
+                  if (true){
                     console.log("Start = " + part.start + ", End = " + part.end + ", mainElement = " + part.mainElement);
                     //todo: remove this all it's just to remember fields name
                     // cell._row
@@ -662,19 +656,18 @@ O$.MonthTable = {
                       return;
                     }
                     if (bottomY > maxY ) {
-                      cell._moreLinkData = { topY: topY };
+                      //TODO: temporary commented need to uncomment for showing of more link
+                      //cell._moreLinkData = { topY: topY };
                       this.style.display = "none";
                       return;
                     }
 
                     // проверяем если ивент на 2+ дня резервируем ему место на след ячейки
                     if (!O$._datesEqual(part.end, part.start) /* && monthTable._validateEvent(event)*/){
-                      //monthTable._addPassedEvent(event);
                       var nextDayCell
                       for (day = O$.incDay(part.start,1); !O$._datesEqual(day, O$.incDay(part.end,1)); day=O$.incDay(day,1)){
                         nextDayCell = O$.MonthTable.getCellForDay(monthTable,day);
                         monthTable._addCellForReCalc(nextDayCell);
-                        //nextDayCell.reservedHeight = (nextDayCell.reservedHeight ? nextDayCell.reservedHeight : 0) + eventElementHeight;
                         nextDayCell.reservedPlaces[placeIndex] = event;
                       }
                     }
