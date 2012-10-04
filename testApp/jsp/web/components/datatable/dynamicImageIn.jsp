@@ -8,7 +8,7 @@
 
 <html>
 <head>
-  <title>DynamicImage Inside DataTable</title>   <script src="../asd.js" type="text/javascript"></script>
+  <title>DynamicImage Inside DataTable</title>   <script src="../funcTestsUtil.js" type="text/javascript"></script>
 
   <style type="text/css">
     .container {

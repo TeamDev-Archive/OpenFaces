@@ -8,7 +8,7 @@
 
 <html>
 <head>
-  <script src="../asd.js" type="text/javascript"></script>
+  <script src="../funcTestsUtil.js" type="text/javascript"></script>
   <title>Component-wide validation</title>
 </head>
 

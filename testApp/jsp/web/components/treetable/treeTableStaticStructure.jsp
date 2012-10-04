@@ -9,7 +9,7 @@
 <html>
 <head>
   <title>TreeTable with the static structure</title>
-  <script src="../asd.js" type="text/javascript"></script>
+  <script src="../funcTestsUtil.js" type="text/javascript"></script>
 
   <link rel="STYLESHEET" type="text/css" href="../../main.css"/>
 </head>

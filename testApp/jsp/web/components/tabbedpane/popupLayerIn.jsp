@@ -10,7 +10,7 @@
 <head>
   <title>PopupLayer in TabbedPane</title>
   <link rel="STYLESHEET" type="text/css" href="../../main.css"/>
-  <script src="../asd.js" type="text/javascript"></script>
+  <script src="../funcTestsUtil.js" type="text/javascript"></script>
 
 </head>
 

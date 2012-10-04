@@ -8,7 +8,7 @@
 
 <html>
 <head>
-  <script src="../asd.js" type="text/javascript"></script>
+  <script src="../funcTestsUtil.js" type="text/javascript"></script>
   <title>Standard input components with OpenFaces validation</title>
 </head>
 
