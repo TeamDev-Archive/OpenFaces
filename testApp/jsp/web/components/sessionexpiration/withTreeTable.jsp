@@ -10,7 +10,7 @@
 <head>
   <title>TreeTable with session expiration</title>
   <link rel="STYLESHEET" type="text/css" href="../../main.css"/>
-  <script type="text/javascript" src="../functionalTesting/funcTestsUtil.js"></script>
+  <script type="text/javascript" src="../asd.js"></script>
 </head>
 
 <body>

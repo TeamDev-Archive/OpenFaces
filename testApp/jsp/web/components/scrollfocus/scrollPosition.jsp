@@ -8,7 +8,9 @@
 
 <html>
 <head>
-  <title>ScrollPosition component test page</title>
+  <title>ScrollPosition component test page</title>      .
+  <script src="../asd.js" type="text/javascript"></script>
+
 </head>
 
 <body>

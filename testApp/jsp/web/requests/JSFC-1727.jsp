@@ -8,6 +8,7 @@
 
 <html>
 <head><title>JSFC-1927 Non modal popup hides after submit</title></head>
+<script src="../asd.js" type="text/javascript"></script>
 
 <body>
 <f:view>

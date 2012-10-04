@@ -9,6 +9,7 @@
 <html>
 <head>
   <title>LoadBundle with TreeTable</title>
+  <script type="text/javascript" src="../asd.js"></script>
 
   <link rel="STYLESHEET" type="text/css" href="../../main.css"/>
 </head>

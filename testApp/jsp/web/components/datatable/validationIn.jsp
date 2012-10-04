@@ -9,6 +9,8 @@
 <html>
 <head>
   <title>Validation Inside DataTable</title>
+    <script src="../asd.js" type="text/javascript"></script>
+
   <link rel="STYLESHEET" type="text/css" href="../../main.css"/>
 </head>
 

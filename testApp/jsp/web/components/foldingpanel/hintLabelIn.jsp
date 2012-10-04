@@ -10,6 +10,8 @@
 <head>
   <title>HintLabel in FoldingPanel</title>
   <link rel="STYLESHEET" type="text/css" href="../../main.css"/>
+  <script src="../asd.js" type="text/javascript"></script>
+
 </head>
 
 <body>

@@ -8,7 +8,8 @@
 
 <html>
 <head>
-  <title>DynamicImage Inside DataTable</title>
+  <title>DynamicImage Inside DataTable</title>   <script src="../asd.js" type="text/javascript"></script>
+
   <style type="text/css">
     .container {
       vertical-align: top;

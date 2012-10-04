@@ -9,6 +9,8 @@
 <html>
 <head>
   <title>Tomahawk Components in TabbedPane</title>
+  <script type="text/javascript" src="../asd.js"></script>
+
   <link rel="stylesheet" type="text/css" href="basic.css" />
   <style type="text/css">
     .container{

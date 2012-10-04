@@ -9,6 +9,8 @@
 <html>
 <head>
   <title>DateChooser in FoldingPanel</title>
+  <script src="../asd.js" type="text/javascript"></script>
+
   <style type="text/css">
     .container {
       border: 1px solid gray;

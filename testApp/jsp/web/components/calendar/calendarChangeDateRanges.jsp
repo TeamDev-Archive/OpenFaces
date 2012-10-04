@@ -9,6 +9,7 @@
 <html>
 <head>
   <title>Change Calendar date range</title>
+  <script src="../asd.js" type="text/javascript"></script>
 
   <link rel="STYLESHEET" type="text/css" href="../../main.css"/>
   <style type="text/css">

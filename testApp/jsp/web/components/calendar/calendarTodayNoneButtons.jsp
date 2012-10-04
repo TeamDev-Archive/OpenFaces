@@ -9,6 +9,7 @@
 <html>
 <head>
   <title>Check functionality of 'Today' and 'None' buttons</title>
+  <script src="../asd.js" type="text/javascript"></script>
 
   <script type="text/javascript">
     function printSelectedDate(calendarId, outputDiv) {
