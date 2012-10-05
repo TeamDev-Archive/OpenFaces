@@ -168,6 +168,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     private Boolean unsortedStateAllowed;
 
     private Boolean keepSelectionVisible;
+    private Boolean rowsDecodingRequired = true;
 
     public AbstractTable() {
         super.setUiDataValue(new TableDataModel(this));
@@ -2334,5 +2335,21 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     public void setUnsortedStateAllowed(boolean unsortedStateAllowed) {
         this.unsortedStateAllowed = unsortedStateAllowed;
+    }
+
+    public Boolean getRowsDecodingRequired() {
+        return rowsDecodingRequired;
+    }
+
+    public void setRowsDecodingRequired(Boolean rowsDecodingRequired) {
+        this.rowsDecodingRequired = rowsDecodingRequired;
+    }
+
+    public Integer getTotalRowCount() {
+        return totalRowCount;
+    }
+
+    public void setTotalRowCount(Integer totalRowCount) {
+        this.totalRowCount = totalRowCount;
     }
 }

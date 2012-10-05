@@ -315,6 +315,7 @@ public class DataTable extends AbstractTable {
      * first time.
      */
     public void updateModel(boolean updateSortingFromBindings, boolean updatePageIndex, boolean readActualData) {
+        setRowsDecodingRequired(readActualData);
         TableDataModel model = getModel();
         model.startUpdate();
         int incomingPageIndex = Integer.MIN_VALUE;
@@ -328,7 +329,7 @@ public class DataTable extends AbstractTable {
                     model.setGroupingRules(rowGrouping.getGroupingRules());
             }
 
-            if (readActualData)
+            if (getRowsDecodingRequired())
                 model.setWrappedData(getValueExpression());
             else
                 model.setWrappedData(Collections.EMPTY_LIST);
