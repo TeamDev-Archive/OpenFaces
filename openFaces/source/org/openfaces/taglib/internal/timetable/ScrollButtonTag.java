@@ -11,28 +11,25 @@
  */
 package org.openfaces.taglib.internal.timetable;
 
-import org.openfaces.component.timetable.DayView;
+import org.openfaces.component.timetable.ScrollButton;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-public class DayViewTag extends org.openfaces.taglib.internal.AbstractComponentTag {
+public class ScrollButtonTag extends org.openfaces.taglib.internal.AbstractComponentTag {
 
     public String getComponentType() {
-        return DayView.COMPONENT_TYPE;
+        return ScrollButton.COMPONENT_TYPE;
     }
 
     public String getRendererType() {
-        return "org.openfaces.DayViewRenderer";
+        return "org.openfaces.ScrollButtonRenderer";
     }
 
     @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
-        setObjectProperty(component, "moreLinkText");
-        setStringProperty(component, "moreLinkStyle");
-        setStringProperty(component, "moreLinkClass");
         setStringProperty(component, "buttonStyle");
         setStringProperty(component, "buttonClass");
         setStringProperty(component, "rolloverButtonStyle");

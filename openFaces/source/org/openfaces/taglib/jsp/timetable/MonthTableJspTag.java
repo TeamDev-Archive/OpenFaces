@@ -11,13 +11,9 @@
  */
 package org.openfaces.taglib.jsp.timetable;
 
-import org.openfaces.component.timetable.PreloadedEvents;
-import org.openfaces.component.timetable.TimetableChangeEvent;
 import org.openfaces.taglib.internal.timetable.MonthTableTag;
-import org.openfaces.taglib.jsp.AbstractComponentJspTag;
 
 import javax.el.ValueExpression;
-import javax.el.MethodExpression;
 
 /**
  * @author Roman Porotnikov
@@ -154,26 +150,6 @@ public class MonthTableJspTag extends TimetableViewJspTag {
 
     public void setInactiveMonthCellClass(ValueExpression value) {
         getDelegate().setPropertyValue("inactiveMonthCellClass", value);
-    }
-
-    public void setMoreLinkElementStyle(ValueExpression value) {
-        getDelegate().setPropertyValue("moreLinkElementStyle", value);
-    }
-
-    public void setMoreLinkElementClass(ValueExpression value) {
-        getDelegate().setPropertyValue("moreLinkElementClass", value);
-    }
-
-    public void setMoreLinkStyle(ValueExpression value) {
-        getDelegate().setPropertyValue("moreLinkStyle", value);
-    }
-
-    public void setMoreLinkClass(ValueExpression value) {
-        getDelegate().setPropertyValue("moreLinkClass", value);
-    }
-
-    public void setMoreLinkText(ValueExpression value) {
-        getDelegate().setPropertyValue("moreLinkText", value);
     }
 
 }

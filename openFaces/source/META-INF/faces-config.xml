@@ -926,8 +926,8 @@
   </component>
 
   <component>
-    <component-type>org.openfaces.DayView</component-type>
-    <component-class>org.openfaces.component.timetable.DayView</component-class>
+    <component-type>org.openfaces.ScrollButton</component-type>
+    <component-class>org.openfaces.component.timetable.ScrollButton</component-class>
   </component>
   <render-kit>
     <renderer>
@@ -1564,9 +1564,9 @@
       <renderer-class>org.openfaces.renderkit.table.ResetSortingMenuItemRenderer</renderer-class>
     </renderer>
     <renderer>
-      <component-family>org.openfaces.DayView</component-family>
-      <renderer-type>org.openfaces.DayViewRenderer</renderer-type>
-      <renderer-class>org.openfaces.renderkit.timetable.DayViewRenderer</renderer-class>
+      <component-family>org.openfaces.ScrollButton</component-family>
+      <renderer-type>org.openfaces.ScrollButtonRenderer</renderer-type>
+      <renderer-class>org.openfaces.renderkit.timetable.ScrollButtonRenderer</renderer-class>
     </renderer>
   </render-kit>
 

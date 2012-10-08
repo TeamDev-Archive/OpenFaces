@@ -11,24 +11,14 @@
  */
 package org.openfaces.taglib.jsp.timetable;
 
+import org.openfaces.taglib.internal.timetable.ScrollButtonTag;
+
 import javax.el.ValueExpression;
 
-public class DayViewJspTag extends org.openfaces.taglib.jsp.AbstractComponentJspTag {
+public class ScrollButtonJspTag extends org.openfaces.taglib.jsp.AbstractComponentJspTag {
 
-    public DayViewJspTag() {
-        super(new org.openfaces.taglib.internal.timetable.DayViewTag());
-    }
-
-    public void setMoreLinkText(ValueExpression moreLinkText) {
-        getDelegate().setPropertyValue("moreLinkText", moreLinkText);
-    }
-
-    public void setMoreLinkStyle(ValueExpression moreLinkStyle) {
-        getDelegate().setPropertyValue("moreLinkStyle", moreLinkStyle);
-    }
-
-    public void setMoreLinkClass(ValueExpression moreLinkClass) {
-        getDelegate().setPropertyValue("moreLinkClass", moreLinkClass);
+    public ScrollButtonJspTag() {
+        super(new ScrollButtonTag());
     }
 
     public void setButtonStyle(ValueExpression buttonStyle) {

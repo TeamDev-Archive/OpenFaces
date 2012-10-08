@@ -15,12 +15,9 @@ import org.openfaces.util.ValueBindings;
 
 import javax.faces.context.FacesContext;
 
-public class DayView extends org.openfaces.component.OUIPanel {
-    public static final String COMPONENT_TYPE = "org.openfaces.DayView";
-    public static final String COMPONENT_FAMILY = "org.openfaces.DayView";
-    private String moreLinkText;
-    private String moreLinkStyle;
-    private String moreLinkClass;
+public class ScrollButton extends org.openfaces.component.OUICommand {
+    public static final String COMPONENT_TYPE = "org.openfaces.ScrollButton";
+    public static final String COMPONENT_FAMILY = "org.openfaces.ScrollButton";
     private String buttonStyle;
     private String buttonClass;
     private String rolloverButtonStyle;
@@ -29,8 +26,8 @@ public class DayView extends org.openfaces.component.OUIPanel {
     private String upButtonImg;
 
 
-    public DayView() {
-        setRendererType("org.openfaces.DayViewRenderer");
+    public ScrollButton() {
+        setRendererType("org.openfaces.ScrollButtonRenderer");
     }
 
     @Override
@@ -52,30 +49,6 @@ public class DayView extends org.openfaces.component.OUIPanel {
         int i = 0;
         super.restoreState(context, state[i++]);
 
-    }
-
-    public String getMoreLinkText() {
-        return ValueBindings.get(this, "moreLinkText", moreLinkText, "More");
-    }
-
-    public void setMoreLinkText(String moreLinkText) {
-        this.moreLinkText = moreLinkText;
-    }
-
-    public String getMoreLinkStyle() {
-        return ValueBindings.get(this, "moreLinkStyle", moreLinkStyle);
-    }
-
-    public void setMoreLinkStyle(String moreLinkStyle) {
-        this.moreLinkStyle = moreLinkStyle;
-    }
-
-    public String getMoreLinkClass() {
-        return ValueBindings.get(this, "moreLinkClass", moreLinkClass);
-    }
-
-    public void setMoreLinkClass(String moreLinkClass) {
-        this.moreLinkClass = moreLinkClass;
     }
 
     public String getButtonStyle() {

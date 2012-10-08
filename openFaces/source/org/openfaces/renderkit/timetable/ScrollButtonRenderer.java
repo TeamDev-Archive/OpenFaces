@@ -12,6 +12,7 @@
 package org.openfaces.renderkit.timetable;
 
 import org.openfaces.component.timetable.MonthTable;
+import org.openfaces.component.timetable.ScrollButton;
 import org.openfaces.util.Resources;
 
 import javax.faces.component.UIComponent;
@@ -19,44 +20,39 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 
-public class DayViewRenderer extends org.openfaces.renderkit.RendererBase {
+public class ScrollButtonRenderer extends org.openfaces.renderkit.RendererBase {
 
     private static String BUTTON_SUFFIX = "::button";
-    private static String EXPANDED_VIEW_SUFFIX = "::expandedDayView";
+
 
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         super.encodeBegin(context, component);
-
+        encodeButton(context, component, "up");
     }
 
-
-
     protected void encodeButton(FacesContext context, UIComponent component, String buttonOrientation ) throws IOException {
+        System.out.println("Encoding Button");
         FacesContext currentInstance = FacesContext.getCurrentInstance();
-        MonthTable fieldComponent = (MonthTable) component;
+//        MonthTable fieldComponent = (MonthTable) component;
+        ScrollButton scrollButton = (ScrollButton) component;
         ResponseWriter writer = context.getResponseWriter();
 
-        // get all ids (main, button, popup)
-        String clientId = fieldComponent.getClientId(currentInstance);
-        String buttonId = clientId + EXPANDED_VIEW_SUFFIX + BUTTON_SUFFIX;
-
+        writeIdAttribute(context,scrollButton);
         writer.writeAttribute("nowrap", "nowrap", null);
 
-        // Render drop down button
-        writer.writeAttribute("id", buttonId + "::" + buttonOrientation, null);
         writer.writeAttribute("align", "center", null);
         writer.writeAttribute("valign", "middle", null);
 
         String imageUrl;
-        String buttonImageUrl = (String) fieldComponent.getAttributes().get("buttonImageUrl");
+        String buttonImageUrl = (String) scrollButton.getAttributes().get("buttonImageUrl");
         if (buttonOrientation.equals("up"))
             imageUrl = Resources.getURL(context, buttonImageUrl, null, "input/dropButton.gif");
         else
             imageUrl = Resources.getURL(context, buttonImageUrl, null, "input/dropButton.gif");
-        writer.startElement("img", fieldComponent);
-        writer.writeAttribute("id", buttonId +"::" + buttonOrientation + "::img", null);
+        writer.startElement("img", scrollButton);
+        writeIdAttribute(context,scrollButton);
         writer.writeAttribute("src", imageUrl, null);
         writer.endElement("img");
     }
@@ -64,7 +60,7 @@ public class DayViewRenderer extends org.openfaces.renderkit.RendererBase {
 
 
     private void encodeExpandedDayView(FacesContext context, final MonthTable timetableView, String clientId) throws IOException {
-        String expandDayViewId = clientId + EXPANDED_VIEW_SUFFIX;
+        /*String expandDayViewId = clientId + EXPANDED_VIEW_SUFFIX;
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("div", timetableView);
         writer.writeAttribute("id", expandDayViewId , null);
@@ -84,7 +80,7 @@ public class DayViewRenderer extends org.openfaces.renderkit.RendererBase {
         encodeButton(context, timetableView, "down" );
         writer.endElement("div");
 
-        writer.endElement("div");
+        writer.endElement("div"); */
     }
 
     /*   Styles.addStyleJsonParam(context, timetableView, stylingParams, "moreLinkElementClass",

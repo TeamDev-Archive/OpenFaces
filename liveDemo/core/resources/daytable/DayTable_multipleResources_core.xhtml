@@ -26,10 +26,13 @@
                  timetableChangeListener="#{DayTableBean1.processTimetableChanges}"
                  headerStyle="float:center"
                  locale="en">
-      <o:dayView rolloverButtonStyle="background-color: black;"
-                 buttonStyle="background-color: black;"
-                 buttonClass="test"
-                 rolloverButtonClass="test"/>
+
+      <f:facet name="expandedDayHeader">
+        <o:scrollButton rolloverButtonStyle="background-color: black;"
+                        buttonStyle="background-color: black;"
+                        buttonClass="test"
+                        rolloverButtonClass="test"/>
+      </f:facet>
       <f:facet name="header">
         <o:monthSwitcher locale="en"/>
       </f:facet>

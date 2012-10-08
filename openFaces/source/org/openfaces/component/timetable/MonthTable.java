@@ -12,8 +12,10 @@
 
 package org.openfaces.component.timetable;
 
+import org.openfaces.util.Components;
 import org.openfaces.util.ValueBindings;
 
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 /**
@@ -63,9 +65,16 @@ public class MonthTable extends TimetableView { // todo: extract some common typ
     private Integer scrollOffset = 0;
 
 
+    public static final String EXPANDED_DAY_VIEW_HEADER_FACET = "expandedDayHeader";
+    public static final String EXPANDED_DAY_VIEW_FOOTER_FACET = "expandedDayFooter";
 
+    public UIComponent getExpandedDayViewFooter() {
+        return Components.getFacet(this, EXPANDED_DAY_VIEW_FOOTER_FACET);
+    }
 
-
+    public UIComponent getExpandedDayViewHeader() {
+        return Components.getFacet(this, EXPANDED_DAY_VIEW_HEADER_FACET);
+    }
 
     public MonthTable() {
         setRendererType("org.openfaces.MonthTableRenderer");

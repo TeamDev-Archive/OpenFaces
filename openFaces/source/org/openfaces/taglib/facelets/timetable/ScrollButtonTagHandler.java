@@ -12,11 +12,12 @@
 package org.openfaces.taglib.facelets.timetable;
 
 import com.sun.facelets.tag.jsf.ComponentConfig;
+import org.openfaces.taglib.internal.timetable.ScrollButtonTag;
 
-public class DayViewTagHandler extends org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler {
+public class ScrollButtonTagHandler extends org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler {
 
-    public DayViewTagHandler(ComponentConfig componentConfig) {
-        super(componentConfig, new org.openfaces.taglib.internal.timetable.DayViewTag());
+    public ScrollButtonTagHandler(ComponentConfig componentConfig) {
+        super(componentConfig, new ScrollButtonTag());
     }
 
 }

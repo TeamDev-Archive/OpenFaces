@@ -48070,41 +48070,11 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
   </tag>
   <tag>
-    <name>dayView</name>
-    <tag-class>org.openfaces.taglib.jsp.timetable.DayViewJspTag</tag-class>
+    <name>scrollButton</name>
+    <tag-class>org.openfaces.taglib.jsp.timetable.ScrollButtonJspTag</tag-class>
     <body-content>JSP</body-content>
     <attribute>
-      <description>Text for more-link element inside day cell</description>
-      <name>moreLinkText</name>
-      <deferred-value>
-        <type>java.lang.Object</type>
-      </deferred-value>
-      <!-- @bindingType String -->
-      <!-- @default "More" -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>A style for the more link inside day-cell of MonthTable.</description>
-      <name>moreLinkStyle</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default  -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>CSS class name(s) for the more link inside day-cell of MonthTable.</description>
-      <name>moreLinkClass</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default  -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>A style for the button inside DayView.</description>
+      <description>A style for the scrollButton.</description>
       <name>buttonStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -48114,7 +48084,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>CSS class name(s) for the button inside DayView.</description>
+      <description>CSS class name(s) for the scrollButton.</description>
       <name>buttonClass</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -48124,7 +48094,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A style for the rollover button inside DayView.</description>
+      <description>A style for the rollover scrollButton.</description>
       <name>rolloverButtonStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -48134,7 +48104,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>CSS class name(s) for the rollover button inside DayView.</description>
+      <description>CSS class name(s) for the rollover scrollButton.</description>
       <name>rolloverButtonClass</name>
       <deferred-value>
         <type>java.lang.String</type>

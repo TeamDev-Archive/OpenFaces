@@ -49,7 +49,7 @@ import java.util.TimeZone;
  */
 public class MonthTableRenderer extends TimetableViewRenderer {
 
-
+    private static String EXPANDED_VIEW_SUFFIX = "::expandedDayView";
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
@@ -89,6 +89,7 @@ public class MonthTableRenderer extends TimetableViewRenderer {
         writer.writeAttribute("style", "height: 100%", null);
 
         renderContentTable(writer, timetableView, clientId, resources);
+        renderExpandedDayView(context, timetableView);
         encodeEventEditor(context, timetableView, resources);
         encodeActionBar(context, timetableView);
 
@@ -99,9 +100,39 @@ public class MonthTableRenderer extends TimetableViewRenderer {
 
         writer.endElement("tbody");
         writer.endElement("table");
-
+        timetableView.getExpandedDayViewFooter();
         Styles.renderStyleClasses(context, timetableView);
 
+
+    }
+
+    private void renderExpandedDayView(FacesContext context, MonthTable monthTable) throws IOException{
+        UIComponent header = monthTable.getExpandedDayViewHeader();
+        System.out.println(header);
+           String expandDayViewId = monthTable.getClientId(context) + EXPANDED_VIEW_SUFFIX;
+        ResponseWriter writer = context.getResponseWriter();
+        writer.startElement("div", monthTable);
+
+        writer.writeAttribute("id", expandDayViewId , null);
+        writer.writeAttribute("style", "background-color: red; position: absolute;width:50px;height:50px;padding:2px;z-index:150;", null);
+
+        writer.startElement("div", monthTable);
+        header.encodeAll(context);
+//        header.encodeBegin(context);
+        //encodeButton(context, monthTable, "up" );
+        writer.endElement("div");
+
+        writer.startElement("div", monthTable);
+        writer.writeAttribute("style", "background-color: green; height: 100%;margin-top: -10px; margin-bottom: -10px; overflow:hidden;position: relative;", null);
+        writer.writeAttribute("id", expandDayViewId + "::eventBlock" , null);
+        writer.endElement("div");
+
+
+        writer.startElement("div", monthTable);
+       // encodeButton(context, monthTable, "down" );
+        writer.endElement("div");
+
+        writer.endElement("div");
     }
 
 

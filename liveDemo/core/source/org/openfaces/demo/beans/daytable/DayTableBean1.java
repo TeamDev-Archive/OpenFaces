@@ -162,4 +162,7 @@ public class DayTableBean1 extends DayTableBean implements Serializable {
     private TimetableEvent getEvent() {
         return Faces.var("event", TimetableEvent.class);
     }
+
+
+
 }
