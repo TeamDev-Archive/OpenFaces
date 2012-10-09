@@ -14,6 +14,7 @@ package org.openfaces.renderkit.ajax;
 import org.openfaces.component.ajax.Ajax;
 import org.openfaces.component.ajax.AjaxHelper;
 import org.openfaces.component.ajax.AjaxInitializer;
+import org.openfaces.event.AjaxActionEvent;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.AnonymousFunction;
 import org.openfaces.util.Rendering;
@@ -22,6 +23,7 @@ import org.openfaces.util.ScriptBuilder;
 
 import javax.el.ELContext;
 import javax.el.MethodExpression;
+import javax.el.MethodNotFoundException;
 import javax.el.ValueExpression;
 import javax.faces.component.ActionSource;
 import javax.faces.component.UIComponent;
@@ -83,7 +85,7 @@ public class AjaxRenderer extends AbstractSettingsRenderer {
         Map<String, String> requestParameters = context.getExternalContext().getRequestParameterMap();
         String key = component.getClientId(context);
         if (requestParameters.containsKey(key)) {
-            AjaxBehaviorEvent event = new AjaxBehaviorEvent(ajax, new Behavior() {
+            AjaxActionEvent event = new AjaxActionEvent(ajax, new Behavior() {
                 public void broadcast(BehaviorEvent event) {
                     FacesContext context = FacesContext.getCurrentInstance();
 
@@ -93,7 +95,13 @@ public class AjaxRenderer extends AbstractSettingsRenderer {
                     ELContext elContext = context.getELContext();
                     MethodExpression methodExpression = context.getApplication().getExpressionFactory().createMethodExpression(
                             elContext, valueExpression, void.class, new Class[]{AjaxBehaviorEvent.class});
-                    methodExpression.invoke(elContext, new Object[]{event});
+                    try {
+                        methodExpression.invoke(elContext, new Object[]{(AjaxBehaviorEvent) event});
+                    } catch (MethodNotFoundException e) {
+                        methodExpression = context.getApplication().getExpressionFactory().createMethodExpression(
+                                elContext, valueExpression, void.class, new Class[]{AjaxActionEvent.class});
+                        methodExpression.invoke(elContext, new Object[]{event});
+                    }
                 }
             });
             event.setPhaseId(ajax.isImmediate() ? PhaseId.APPLY_REQUEST_VALUES : PhaseId.INVOKE_APPLICATION);
