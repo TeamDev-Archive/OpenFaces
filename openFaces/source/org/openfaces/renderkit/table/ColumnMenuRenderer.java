@@ -13,11 +13,18 @@ package org.openfaces.renderkit.table;
 
 import org.openfaces.component.command.MenuItem;
 import org.openfaces.component.command.MenuSeparator;
-import org.openfaces.component.table.*;
+import org.openfaces.component.table.AbstractTable;
+import org.openfaces.component.table.ColumnMenu;
+import org.openfaces.component.table.ColumnVisibilityMenu;
+import org.openfaces.component.table.GroupByColumnMenuItem;
+import org.openfaces.component.table.HideColumnMenuItem;
+import org.openfaces.component.table.RemoveFromGroupingMenuItem;
+import org.openfaces.component.table.ResetSortingMenuItem;
+import org.openfaces.component.table.SortAscendingMenuItem;
+import org.openfaces.component.table.SortDescendingMenuItem;
 import org.openfaces.renderkit.command.PopupMenuRenderer;
 import org.openfaces.util.Components;
 
-import javax.faces.application.Application;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import java.io.IOException;

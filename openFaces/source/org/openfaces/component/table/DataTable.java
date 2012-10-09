@@ -190,31 +190,6 @@ public class DataTable extends AbstractTable {
     }
 
     @Override
-    protected void processModelUpdates(FacesContext context) {
-        super.processModelUpdates(context);
-
-        if (TableUtil.isSortingToggledInThisRequest(context) && getPageSize() > 0) {
-            PaginationOnSorting paginationOnSorting = getPaginationOnSorting();
-            switch (paginationOnSorting) {
-                case SAME_PAGE:
-                    break;
-                case FIRST_PAGE:
-                    pageIndex = 0;
-                    break;
-                default:
-                    throw new IllegalStateException("Unknown value of PaginationOnSorting enumeration: " +
-                            paginationOnSorting);
-            }
-        }
-
-        if (pageIndex != null)
-            rememberSelectionByKeys();
-        validatePageIndex();
-        if (pageIndex != null && ValueBindings.set(this, "pageIndex", pageIndex))
-            pageIndex = null;
-    }
-
-    @Override
     public void processUpdates(FacesContext context) {
         super.processUpdates(context);
         RowGrouping rowGrouping = getRowGrouping();
@@ -260,6 +235,48 @@ public class DataTable extends AbstractTable {
         RowGrouping rowGrouping = getRowGrouping();
         if (rowGrouping != null)
             rowGrouping.beforeEncode();
+        if ((TableUtil.isSortingToggledInThisRequest(context) || TableUtil.isFilteringToggledInThisRequest(context)) && getPageSize() > 0) {
+            Boolean restorePaginationPage = false;
+            if (getKeepSelectionVisible()){
+                AbstractTableSelection selection = getSelection();
+                if (selection instanceof DataTableSelection){
+                    TableDataModel model = getModel();
+                    int pageCount = model.getPageCount();
+                    Object firstRowData = ((DataTableSelection) selection).getFirstSelectedRowData();
+                    if (firstRowData != null){
+                        for (pageIndex = 0; pageIndex < pageCount; pageIndex++) {
+                            model.setPageIndex(pageIndex);
+                            if (model.isObjectInList(firstRowData)){
+                                restorePaginationPage = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+            }
+            if (!restorePaginationPage &&  TableUtil.isFilteringToggledInThisRequest(context)){
+                pageIndex = 0;
+                getModel().setPageIndex(0);
+            }
+            if (!restorePaginationPage && TableUtil.isSortingToggledInThisRequest(context) ){
+                PaginationOnSorting paginationOnSorting = getPaginationOnSorting();
+                switch (paginationOnSorting) {
+                    case SAME_PAGE:
+                        break;
+                    case FIRST_PAGE:
+                        pageIndex = 0;
+                        break;
+                    default:
+                        throw new IllegalStateException("Unknown value of PaginationOnSorting enumeration: " +
+                                paginationOnSorting);
+                }
+            }
+        }
+        if (pageIndex != null)
+            rememberSelectionByKeys();
+        if (pageIndex != null && ValueBindings.set(this, "pageIndex", pageIndex))
+            pageIndex = null;
     }
 
     @Override
@@ -298,6 +315,7 @@ public class DataTable extends AbstractTable {
      * first time.
      */
     public void updateModel(boolean updateSortingFromBindings, boolean updatePageIndex, boolean readActualData) {
+        setRowsDecodingRequired(readActualData);
         TableDataModel model = getModel();
         model.startUpdate();
         int incomingPageIndex = Integer.MIN_VALUE;
@@ -311,7 +329,7 @@ public class DataTable extends AbstractTable {
                     model.setGroupingRules(rowGrouping.getGroupingRules());
             }
 
-            if (readActualData)
+            if (getRowsDecodingRequired())
                 model.setWrappedData(getValueExpression());
             else
                 model.setWrappedData(Collections.EMPTY_LIST);

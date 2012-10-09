@@ -40,6 +40,7 @@ public class TableUtil {
     public static final String DEFAULT_FOOTER_SECTION_CLASS = "o_table_footer_section";
 
     private static final String KEY_SORTING_TOGGLED = TableUtil.class + ".sortingToggled";
+    private static final String KEY_FILTERING_TOGGLED = TableUtil.class + ".filteringToggled";
 
     private TableUtil() {
     }
@@ -156,6 +157,14 @@ public class TableUtil {
 
     public static boolean isSortingToggledInThisRequest(FacesContext context) {
         return context.getExternalContext().getRequestMap().containsKey(KEY_SORTING_TOGGLED);
+    }
+
+    public static void markFilteringToggledInThisRequest(FacesContext context) {
+        context.getExternalContext().getRequestMap().put(KEY_FILTERING_TOGGLED, true);
+    }
+
+    public static boolean isFilteringToggledInThisRequest(FacesContext context) {
+        return context.getExternalContext().getRequestMap().containsKey(KEY_FILTERING_TOGGLED);
     }
 
 }
