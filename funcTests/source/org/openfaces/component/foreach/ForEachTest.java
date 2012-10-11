@@ -226,6 +226,7 @@ public class ForEachTest extends OpenFacesTestCase {
 
     @Test
     public void testEvents() {
+        closeBrowser();
         testAppFunctionalPage("/components/foreach/forEach.jsf");
 
         ForEachInspector forEach = forEach("formID:fe7");
