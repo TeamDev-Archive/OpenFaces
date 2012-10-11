@@ -13,6 +13,7 @@ package org.openfaces.component.datechooser;
 
 import org.junit.Test;
 import org.openfaces.component.calendar.BaseCalendarTestCase;
+import org.openqa.selenium.By;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.html.InputInspector;
 import org.seleniuminspector.openfaces.CalendarInspector;
@@ -103,6 +104,7 @@ public class DateChooserTest extends BaseCalendarTestCase {
         selectedDateInfo.assertText(changedCalendarDate);
 
         //input date value into the DateChooser field part
+        getDriver().findElement(By.xpath(dateChooser.field().getXPath())).clear();
         dateChooser.field().type(typedDate);
 
         submitter.clickAndWait();

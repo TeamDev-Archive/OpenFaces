@@ -13,9 +13,9 @@ package org.openfaces.test;
 
 import com.thoughtworks.selenium.Selenium;
 import com.thoughtworks.selenium.SeleniumException;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.internal.WrapsDriver;
+import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.SeleniumFactory;
 import org.seleniuminspector.SeleniumHolder;
 import org.seleniuminspector.SeleniumTestCase;
@@ -103,8 +103,8 @@ public abstract class OpenFacesTestCase extends SeleniumTestCase {
             boolean lastAttempt = (i == attemptCount);
             try {
                 openAndWait(applicationUrl, pageUrl);
-                JavascriptExecutor js = (JavascriptExecutor) getDriver();
-                js.executeScript("var script = document.createElement('script'); script.setAttribute('src', '../asd.js');script.setAttribute('type', 'text/javascript'); document.body.insertBefore(script, document.body.childNodes[0]);");
+                sleep(1000);
+                ElementInspector.provideUtils(getDriver());
             } catch (Exception e) {
                 if (!lastAttempt) {
                     sleep(10 * 1000);

@@ -672,7 +672,7 @@ public class DataTableTest extends OpenFacesTestCase {
             checkDataTableContents(selenium, referenceDataTableValues, i);
             element("formID:paginableDataTable").click();
             //go to the previous page using keyboard
-            selenium.getEval("var el = Selenium.findElement('formID:paginableDataTable'); var evObj = document.createEvent('KeyEvents'); evObj.initKeyEvent('keypress', true, true, window, false, false, false, false, 33, 0); el.dispatchEvent(evObj);");
+            selenium.getEval("var el = O$('formID:paginableDataTable'); var evObj = document.createEvent('KeyEvents'); evObj.initKeyEvent('keypress', true, true, window, false, false, false, false, 33, 0); el.dispatchEvent(evObj);");
 
             loadingMode.waitForLoad();
         }

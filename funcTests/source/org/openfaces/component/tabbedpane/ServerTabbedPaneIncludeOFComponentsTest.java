@@ -67,6 +67,7 @@ public class ServerTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
         assertTrue(window().document().isAlertPresent());
         assertEquals("done", window().document().getAlert());
         confirmation2.assertVisible(false);
+        acceptAlert();
     }
 
     @Test
@@ -174,6 +175,7 @@ public class ServerTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
 
     @Test
     public void testHintLabelInside() throws InterruptedException {
+        closeBrowser();
         testAppFunctionalPage("/components/tabbedpane/hintLabelIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(2, ServerLoadingMode.getInstance());
 

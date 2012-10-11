@@ -50,9 +50,9 @@ public class AjaxTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
         confirmation1.assertVisible(true);
 
         confirmation1.okButton().click();
-        assertTrue(window().document().isAlertPresent());
-        assertEquals("done", window().document().getAlert());
-        getDriver().switchTo().alert().accept();
+        assertTrue(isAlertPresent());
+        assertEquals("done", getAlert());
+        acceptAlert();
         confirmation1.assertVisible(false);
 
         element("fn:secondTabID").clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
@@ -62,9 +62,10 @@ public class AjaxTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
         confirmation2.assertVisible(true);
 
         confirmation2.okButton().click();
-        assertTrue(window().document().isAlertPresent());
-        assertEquals("done", window().document().getAlert());
+        assertTrue(isAlertPresent());
+        assertEquals("done", getAlert());
         confirmation2.assertVisible(false);
+        acceptAlert();
     }
 
     //todo: uncomment this method if JSFC-2452 fixed
@@ -177,6 +178,7 @@ public class AjaxTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
 
     @Test
     public void testHintLabelInside() throws InterruptedException {
+        closeBrowser();
         testAppFunctionalPage("/components/tabbedpane/hintLabelIn.jsf");
         hintLabel("fn:firstHintLabelID").checkVisibilityAndContent("First HintLabel Value :-)", "First HintLabel Title ;-)");
 

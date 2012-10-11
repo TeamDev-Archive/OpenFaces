@@ -33,5 +33,6 @@ public class JSFC_1903Test extends OpenFacesTestCase {
         button.click();
         confirmation.okButton().click();
         assertEquals("!", window().document().getAlert());
+        acceptAlert();
     }
 }

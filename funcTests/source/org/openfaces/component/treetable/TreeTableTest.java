@@ -91,6 +91,7 @@ public class TreeTableTest extends OpenFacesTestCase {
      */
     @Test
     public void testSingleSelectionAndKeyboardNavigation() {
+        closeBrowser();
         testAppFunctionalPage("/components/treetable/treeTableSingleSelection.jsf");
         /*check selection and keyboard navigation on the simple TreeTable*/
         Actions click = new Actions(getDriver()).moveToElement(

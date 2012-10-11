@@ -12,15 +12,12 @@
 package org.openfaces.component.datatable;
 
 import org.junit.Test;
-import org.openfaces.renderkit.table.DataTablePaginatorRenderer;
 import org.openfaces.test.OpenFacesTestCase;
-import org.openfaces.util.Rendering;
-import org.openqa.selenium.By;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.openfaces.DataTableInspector;
 import org.seleniuminspector.openfaces.HintLabelInspector;
-import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
 import org.seleniuminspector.openfaces.InputTextFilterInspector;
+import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,7 +93,7 @@ public class DataTableIncludeOFComponentsTest extends OpenFacesTestCase {
                 DataTableUtils.TestDataTableItem currentReferenceRow = currentPageValues.get(rowIndex);
 
                 HintLabelInspector bodyHintLabel1 = hintLabel("fn:hintLabelDataTable:" + rowIndex + ":body_hinLabel_1");
-                bodyHintLabel1.click();
+                bodyHintLabel1.clickAndWait();
                 bodyHintLabel1.hint().mouseOut();
                 bodyHintLabel1.checkVisibilityAndContent(currentReferenceRow.getFirstColumn(), currentReferenceRow.getSecondColumn());
                 bodyHintLabel1.hint().mouseOut();
@@ -116,7 +113,7 @@ public class DataTableIncludeOFComponentsTest extends OpenFacesTestCase {
                     .checkVisibilityAndContent("Footer hint label value 2", "Footer hint label title 2");
 
             dataTablePaginator("fn:hintLabelDataTable:hintLabelDataTablePaginator").nextPage()
-                    .clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
+                    .clickAndWait();
         }
 
         /* filtering and filtered data verification */
@@ -128,7 +125,6 @@ public class DataTableIncludeOFComponentsTest extends OpenFacesTestCase {
         hintLabel.assertText(filterCriterion);
         hintLabel.hint().assertText("col3_row1");
     }
-
 
 
     @Test
@@ -154,8 +150,8 @@ public class DataTableIncludeOFComponentsTest extends OpenFacesTestCase {
                 DataTableUtils.TestDataTableItem currentReferenceRow = currentPageValues.get(rowIndex);
 
                 // invoke popupLayers in current row
-                element("fn:popupDataTable:" + rowIndex + ":body_invoker").clickAndWait();
-                element("fn:popupDataTable:" + rowIndex + ":body_invoker1").clickAndWait();
+                element("fn:popupDataTable:" + rowIndex + ":body_invoker").click();
+                element("fn:popupDataTable:" + rowIndex + ":body_invoker1").click();
 
                 //check is single selection performed well
                 dataTable("fn:popupDataTable").checkSelectedIndex(rowIndex);
@@ -182,7 +178,7 @@ public class DataTableIncludeOFComponentsTest extends OpenFacesTestCase {
             element("fn:popupDataTable:footer_popup1").assertSubtext(0, 29, "this is footer popup layer 2!");
 
             if (pageNo < pageCount)
-                nextPage.clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
+                nextPage.click();
         }
         // a little sleep to wait until all visible popupLayers will be hidden
         sleep(4000);

@@ -118,7 +118,7 @@ public class TabSetTest extends OpenFacesTestCase {
 
     @Test
     public void testClientSideAPI() {
-//    restartBrowser();
+        closeBrowser();
         testAppFunctionalPage("/components/tabset/tabSetChangeSelectionStyling.jsf");
         TabSetInspector tabSetWithoutSubmit = tabSet("formID:tabSetWithoutSubmit");
         TabSetInspector tabSetWithSubmit = tabSet("formID:tabSetWithSubmit");

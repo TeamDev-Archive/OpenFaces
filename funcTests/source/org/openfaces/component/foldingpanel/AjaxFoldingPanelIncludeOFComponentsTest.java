@@ -53,15 +53,15 @@ public class AjaxFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase {
 
     @Test
     public void testConfirmationInside() {
-        Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/foldingpanel/confirmationIn.jsf");
         foldingPanel("fn:confirmationFoldingPanel").toggle().clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         for (int i = 0; i < 2; i++) {
             element("button1").click();
             confirmation("fn:conf1").okButton().click();
-            assertTrue(window().document().isAlertPresent());
-            assertEquals("done", window().document().getAlert());
+            assertTrue(isAlertPresent());
+            assertEquals("done", getAlert());
         }
+        acceptAlert();
     }
 
     @Test

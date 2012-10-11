@@ -221,6 +221,7 @@ public class LiveDemoTest extends OpenFacesTestCase {
 //        Actions click = new Actions(getDriver()).moveToElement(okButton).click();
 //        click.build().perform();
         assertTrue(window().document().isAlertPresent());
+        acceptAlert();
 
     }
 

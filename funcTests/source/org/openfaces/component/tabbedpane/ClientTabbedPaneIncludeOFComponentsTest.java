@@ -191,6 +191,7 @@ public class ClientTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
 
     @Test
     public void testHintLabelInside() throws InterruptedException {
+        closeBrowser();
         testAppFunctionalPage("/components/tabbedpane/hintLabelIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());
         hintLabel("fn:firstHintLabelID").checkVisibilityAndContent("First HintLabel Value :-)", "First HintLabel Title ;-)");

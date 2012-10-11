@@ -72,11 +72,11 @@ public abstract class BaseCalendarTestCase extends OpenFacesTestCase {
         calendar.month().assertText(initialMonthName);
 
         //next month
-        calendar.monthIncrease().click();
+        calendar.monthIncrease().evalExpression("click()");
         calendar.month().assertText(nextMonthName);
 
         //previous month
-        calendar.monthDecrease().click();
+        calendar.monthDecrease().evalExpression("click()");
         calendar.month().assertText(previousMonthName);
 
         //choose from month popup list
@@ -105,11 +105,11 @@ public abstract class BaseCalendarTestCase extends OpenFacesTestCase {
         calendar.year().assertText(initialYearName);
 
         //next year
-        calendar.yearIncrease().click();
+        calendar.yearIncrease().evalExpression("click()");
         calendar.year().assertText(nextYearName);
 
         //previous year
-        calendar.yearDecrease().click();
+        calendar.yearDecrease().evalExpression("click()");
         calendar.year().assertText(previousYearName);
 
         //choose from year popup list

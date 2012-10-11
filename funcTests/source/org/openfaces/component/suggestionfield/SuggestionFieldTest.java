@@ -44,7 +44,7 @@ public class SuggestionFieldTest extends BaseDropDownTestCase {
 
     @Test
     public void testTypedValue() {
-//    restartBrowser();
+        closeBrowser();
         checkTypedValue("/components/suggestionfield/suggestionFieldBaseFunctionality.jsf");
     }
 
@@ -74,7 +74,7 @@ public class SuggestionFieldTest extends BaseDropDownTestCase {
 
     @Test
     public void testValueChangeListener() {
-//    restartBrowser();
+        closeBrowser();
         checkValueChangeListener("/components/suggestionfield/suggestionFieldValueChangeListener.jsf");
     }
 

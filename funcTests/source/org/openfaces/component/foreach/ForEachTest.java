@@ -15,6 +15,7 @@ package org.openfaces.component.foreach;
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
+import org.openqa.selenium.By;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.openfaces.ForEachInspector;
 import org.seleniuminspector.openfaces.InputTextInspector;
@@ -206,6 +207,9 @@ public class ForEachTest extends OpenFacesTestCase {
         value1.assertValue("item B");
         value2.assertValue("item C");
 
+        value0.clear();
+        value1.clear();
+        value2.clear();
         value0.type("item F");
         value1.type("item E");
         value2.type("item D");

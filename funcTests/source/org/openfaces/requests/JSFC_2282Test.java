@@ -41,5 +41,6 @@ public class JSFC_2282Test extends OpenFacesTestCase {
         element = getDriver().findElement(By.id("test"));
         element.click();
         assertEquals("OK", window().document().getAlert());
+        acceptAlert();
     }
 }

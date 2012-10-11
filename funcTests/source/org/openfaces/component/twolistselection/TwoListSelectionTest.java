@@ -58,8 +58,7 @@ public class TwoListSelectionTest extends OpenFacesTestCase {
 
     @Test
     public void testReodering() {
-//    restartBrowser();
-
+        closeBrowser();
         reordering(twoListSelection("formID:first"));
         reordering(twoListSelection("formID:second"));
     }
@@ -97,7 +96,7 @@ public class TwoListSelectionTest extends OpenFacesTestCase {
 
     @Test
     public void testValueChangeListener() {
-//    restartBrowser();
+        closeBrowser();
         testAppFunctionalPage("/components/twolistselection/TLSValueChangeListener.jsf");
 
         ElementInspector asTagOutput = element("formID:asTagOutput");

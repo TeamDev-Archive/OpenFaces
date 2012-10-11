@@ -180,8 +180,9 @@ public class ConfirmationTest extends OpenFacesTestCase {
         assertEquals("Test Details input", selenium.getText("form:detailsInputID"));
 
         selenium.click("form:confirm_withInputTextInside::yes_button");
-        assertTrue(selenium.isAlertPresent());
-        assertEquals("Done", selenium.getAlert());
+        assertTrue(isAlertPresent());
+        assertEquals("Done", getAlert());
+        acceptAlert();
     }
 
     @Test
