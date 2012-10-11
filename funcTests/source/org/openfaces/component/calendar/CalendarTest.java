@@ -62,6 +62,7 @@ public class CalendarTest extends BaseCalendarTestCase {
 
     @Test
     public void testMonthChange() {
+        closeBrowser();
         testAppFunctionalPage("/components/calendar/calendarChangeDateMonthYear.jsf");
 
         CalendarInspector calendar = calendar("formID:changeYearMonth");
@@ -75,6 +76,7 @@ public class CalendarTest extends BaseCalendarTestCase {
 
     @Test
     public void testYearChange() {
+        closeBrowser();
         testAppFunctionalPage("/components/calendar/calendarChangeDateMonthYear.jsf");
 
         CalendarInspector calendar = calendar("formID:changeYearMonth");
