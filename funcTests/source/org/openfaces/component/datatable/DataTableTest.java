@@ -110,6 +110,10 @@ public class DataTableTest extends OpenFacesTestCase {
         for (int l = 0; l < newTableValues.length; l++) {
             assertFalse(newTableValues[l].equals(oldTableValues[l]));
         }
+
+        if (isAlertPresent()) {
+            acceptAlert();
+        }
     }
 
     //todo: see JSFC-3080 issue

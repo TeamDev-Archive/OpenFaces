@@ -30,6 +30,7 @@ public class ValidationTest extends OpenFacesTestCase {
 
     @Test
     public void testServerDefaultPresentation() {
+        closeBrowser();
         testAppFunctionalPage("/components/validation/serverDefaultPresentation.jsf");
         isNotDefaultPresentation();
         element("testForm:fillInvalidData").click();
@@ -143,6 +144,7 @@ public class ValidationTest extends OpenFacesTestCase {
 
     @Test
     public void testComponentWideValidation() throws InterruptedException {
+        closeBrowser();
         testAppFunctionalPage("/components/validation/componentWideValidation.jsf");
         InputTextInspector doubleRangeInput = inputText("testForm:validDROnSubmit");
         doubleRangeInput.type("1");

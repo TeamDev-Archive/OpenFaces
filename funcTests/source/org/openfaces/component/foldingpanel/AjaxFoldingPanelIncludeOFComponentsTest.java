@@ -37,6 +37,9 @@ public class AjaxFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase {
         foldingPanel("fn:calendarFoldingPanel").toggle().clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         assertFalse(getSelenium().isAlertPresent());
         calendar.assertElementExists(true);
+        if (isAlertPresent()) {
+            acceptAlert();
+        }
     }
 
     @Test

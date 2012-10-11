@@ -117,6 +117,7 @@ public class DateChooserTest extends BaseCalendarTestCase {
 
     @Test
     public void testMonthChange() {
+        closeBrowser();
         testAppFunctionalPage("/components/datechooser/dateChooserChangeDateMonthYear.jsf");
 
         final String selectedDate = "06.03.2007";

@@ -46,8 +46,8 @@ public class InputTextTest extends OpenFacesTestCase {
         second.clear();
         first.assertValue("");
         second.assertValue("");
-        second.fireEvent("onblur");
-        sleep(1000);
+//        second.fireEvent("onblur");
+        value.click(); // onblur
         second.assertValue("some prompt text");
         submit.clickAndWait();
         value.assertText("");
