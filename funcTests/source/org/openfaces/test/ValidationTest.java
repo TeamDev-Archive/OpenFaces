@@ -51,6 +51,7 @@ public class ValidationTest extends OpenFacesTestCase {
         element("testForm:fillInvalidData").click();
         ElementInspector submit = element("testForm:fmSubmit");
         submit.click();
+        sleep(1000);
         isDefaultPresentation();
         fillValidDataForClientSideAPI();
         submit.click();
