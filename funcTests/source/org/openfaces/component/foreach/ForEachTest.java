@@ -149,11 +149,10 @@ public class ForEachTest extends OpenFacesTestCase {
 
     @Test
     public void testDecode() {
-        Selenium selenium = getSelenium();
         closeBrowser();
         testAppFunctionalPage("/components/foreach/forEach.jsf");
-        selenium.submit("formID");
-        waitForPageToLoad();
+        getDriver().findElement(By.id("formID")).submit();
+//        waitForPageToLoad();
 
         ForEachInspector forEach = forEach("formID:fe7");
 
