@@ -126,11 +126,12 @@ public class DateChooserTest extends BaseCalendarTestCase {
         ElementInspector submitter = element("formID:submit");
         ElementInspector selectedMonthOutput = element("formID:selectedMonth");
 
-        dateChooser.button().mouseDown();
+        dateChooser.button().click();
 
         prepareCheckingMonthChange(dateChooser.calendar(), "December", "January", "December", 2, new int[]{1, 2});
         dateChooser.field().assertValue(selectedDate);
 
+        dateChooser.button().click();
         checkMonthChange(dateChooser.calendar(), "March", selectedMonthOutput, submitter, selectedDate);
         dateChooser.field().assertValue(selectedMonthOutput.text());
     }

@@ -12,6 +12,7 @@
 package org.openfaces.component.calendar;
 
 import org.openfaces.test.OpenFacesTestCase;
+import org.openqa.selenium.By;
 import org.seleniuminspector.openfaces.CalendarInspector;
 import org.seleniuminspector.ElementInspector;
 
@@ -72,11 +73,11 @@ public abstract class BaseCalendarTestCase extends OpenFacesTestCase {
         calendar.month().assertText(initialMonthName);
 
         //next month
-        calendar.monthIncrease().evalExpression("onclick()");
+        calendar.monthIncrease().evalExpression("click()");
         calendar.month().assertText(nextMonthName);
 
         //previous month
-        calendar.monthDecrease().evalExpression("onclick()");
+        calendar.monthDecrease().evalExpression("click()");
         calendar.month().assertText(previousMonthName);
 
         //choose from month popup list
