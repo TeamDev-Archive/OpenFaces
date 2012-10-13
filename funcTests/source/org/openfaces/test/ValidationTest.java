@@ -55,6 +55,7 @@ public class ValidationTest extends OpenFacesTestCase {
         fillValidDataForClientSideAPI();
         submit.click();
         waitForPageToLoad();
+        sleep(1000);
         isNotDefaultPresentation();
     }
 
