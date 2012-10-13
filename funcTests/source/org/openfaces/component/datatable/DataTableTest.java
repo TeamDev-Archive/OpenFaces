@@ -182,7 +182,9 @@ public class DataTableTest extends OpenFacesTestCase {
 
     @Test
     public void testPagination() {
+        closeBrowser();
         pagination(OpenFacesAjaxLoadingMode.getInstance());
+        closeBrowser();
         pagination(ServerLoadingMode.getInstance());
     }
 

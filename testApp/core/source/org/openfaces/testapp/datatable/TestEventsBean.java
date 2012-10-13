@@ -22,6 +22,7 @@ import java.util.Locale;
 /**
  * @author Darya Shumilina
  */
+
 public class TestEventsBean { // todo: this backing bean is used in many non event-related pages. review/rename
 
     private List<TestTableItem> tableTestCollection = new ArrayList<TestTableItem>();
