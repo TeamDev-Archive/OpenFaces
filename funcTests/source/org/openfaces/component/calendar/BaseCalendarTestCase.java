@@ -73,11 +73,18 @@ public abstract class BaseCalendarTestCase extends OpenFacesTestCase {
         calendar.month().assertText(initialMonthName);
 
         //next month
-        calendar.monthIncrease().evalExpression("click()");
+//        calendar.monthIncrease().evalExpression("click()");
+        // Make it bigger to Selenium could click.
+        calendar.monthIncrease().evalExpression("style.fontSize='100%'");
+        calendar.monthIncrease().evalExpression("style.width='100%'");
+        calendar.monthIncrease().click();
         calendar.month().assertText(nextMonthName);
 
         //previous month
-        calendar.monthDecrease().evalExpression("click()");
+        calendar.monthDecrease().evalExpression("style.fontSize='100%'");
+        calendar.monthDecrease().evalExpression("style.width='100%'");
+        calendar.monthDecrease().click();
+//        calendar.monthDecrease().evalExpression("click()");
         calendar.month().assertText(previousMonthName);
 
         //choose from month popup list
