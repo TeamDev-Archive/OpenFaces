@@ -141,6 +141,7 @@ public abstract class BaseDropDownTestCase extends OpenFacesTestCase {
         first.field().assertValue("brown");
 
         DropDownFieldInspector second = dropDownField("formID:second");
+        second.field().click();
         second.field().type("brown");
         second.field().assertValue("brown");
 
