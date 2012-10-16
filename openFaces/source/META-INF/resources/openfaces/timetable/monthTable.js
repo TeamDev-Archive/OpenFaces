@@ -90,6 +90,55 @@ O$.MonthTable = {
 
 
     //TODO: add initializing of dayView styles
+    setTimeout(function(){
+      monthTable._expandedDayView = O$(componentId + "::expandedDayView");
+      monthTable._expandedDayView.eventBlock = O$(componentId + "::expandedDayView::eventBlock");
+      monthTable._expandedDayView.opened = false;
+      //monthTable._expandedDayView.defaultRect = O$.getElementBorderRectangle(monthTable._expandedDayView, true);
+      O$.extend(monthTable._expandedDayView, {
+        scrollPos : 0,
+        allEventHeight : 0,
+        _scrollContent: function (delta){
+          if (Math.abs(this.scrollPos) + O$.getElementSize(this).height + delta >  this.allEventHeight) return;
+          this.scrollPos += delta;
+          for (var i = 0; i<monthTable._expandedDayView.eventBlock.childNodes.length;i++){
+            var position = O$.getNumericElementStyle(monthTable._expandedDayView.eventBlock.childNodes[i], "top");
+            monthTable._expandedDayView.eventBlock.childNodes[i].style.top = (position + delta)+"px";
+          }
+        },
+        _expandDayView: function (dayCell){
+          monthTable._expandedDayView.style.display = "";
+          var cellBoundaries = O$.getElementBorderRectangle(dayCell, true);
+          // O$.setElementSize(monthTable._expandedDayView,{width: cellBoundaries.width, height: 200});
+          O$.setElementPos(this, cellBoundaries);
+          var oldExpandedDay = this.expandedDay;
+          this.expandedDay = dayCell._cellDay;
+          if (oldExpandedDay)
+            monthTable._updateCellEventElements(oldExpandedDay);
+          monthTable._updateCellEventElements(dayCell._cellDay);
+          this.opened = true;
+          var rect = O$.getElementBorderRectangle(this, true).clone();
+          console.log("IMPORTANT!!!!!!!!!!!!!" + rect.toString());
+          O$.setElementSize(this, {height:10});
+          this._lastRectangleTransition = O$.runTransitionEffect(monthTable._expandedDayView, ["rectangle"], [rect], 200, 20, null);
+        },
+        _contractDayView : function (){
+          this.style.display = "none";
+          var oldExpandedDay = monthTable._expandedDayView.expandedDay;
+          this.expandedDay = null;
+          monthTable._updateCellEventElements(oldExpandedDay);
+          this.opened = false;
+        }
+    });
+
+
+
+      //TODO: temp soultion in future neeed to erase this collection
+      monthTable._expandedDayView.parts = [];
+    }, 200);
+
+
+
 
     monthTable._weekdayHeaderCellClass = weekdayHeaderCellClass;
     monthTable._weekendWeekdayHeaderCellClass = weekendWeekdayHeaderCellClass;
@@ -166,7 +215,7 @@ O$.MonthTable = {
         cell.onclick = function() {
           // onclick event can be fired on drag end under IE
           if (monthTable._expandedDayView.opened)
-            monthTable._contractDayView();
+            monthTable._expandedDayView._contractDayView();
           else if (editable) {
             var newEventTime = this._cellDay;
             var event = monthTable._addEvent(newEventTime, this._resource ? this._resource.id : null);
@@ -209,26 +258,6 @@ O$.MonthTable = {
       }
     }
 
-    monthTable._expandDayView = function (dayCell){
-      monthTable._expandedDayView.style.display = "";
-      var cellBoundaries = O$.getElementBorderRectangle(dayCell, true);
-      O$.setElementSize(monthTable._expandedDayView,{width: cellBoundaries.width, height: 200});
-      O$.setElementPos(monthTable._expandedDayView, cellBoundaries);
-      var oldExpandedDay = monthTable._expandedDayView.expandedDay;
-      monthTable._expandedDayView.expandedDay = dayCell._cellDay;
-      if (oldExpandedDay)
-        monthTable._updateCellEventElements(oldExpandedDay);
-      monthTable._updateCellEventElements(dayCell._cellDay);
-      monthTable._expandedDayView.opened = true;
-    }
-
-    monthTable._contractDayView = function (){
-      monthTable._expandedDayView.style.display = "none";
-      var oldExpandedDay = monthTable._expandedDayView.expandedDay;
-      monthTable._expandedDayView.expandedDay = null;
-      monthTable._updateCellEventElements(oldExpandedDay);
-      monthTable._expandedDayView.opened = false;
-    }
 
     monthTable._updateCellEventElements = function(day) {
       var cell = O$.MonthTable.getCellForDay(this, day);
@@ -299,9 +328,9 @@ O$.MonthTable = {
 
       link.onclick = function(e) {
         O$.stopEvent(e);
-        monthTable._expandDayView(cell);
+        monthTable._expandedDayView._expandDayView(cell);
       }
-      link.onmousedown = link.onclick;
+      //link.onmousedown = link.onclick;
 
       moreLinkElement._updatePos = function() {
         if (!cell._moreLinkData) {
@@ -351,7 +380,22 @@ O$.MonthTable = {
     var super_removeEventElement = monthTable._removeEventElement;
     var super_removeEventElements = monthTable._removeEventElements;
     O$.extend(monthTable, {
+              scrollContent: function(delta){
+                this._expandedDayView._scrollContent(delta);
+              },
 
+              _checkDayInEvent: function(day,event){
+                var incDay = O$.incDay(day,1);
+                // TODO: varify if method correct
+                /*console.log("event.start > day && event.start < incDay = " + (event.start > day && event.start < incDay));
+                console.log("event.end > day && event.end < incDay = " + (event.end > day && event.end < incDay));
+                console.log("day>event.start && day<event.end = " + (day>event.start && day<event.end));*/
+                if ((event.start > day && event.start < incDay) ||
+                    (event.end > day && event.end < incDay) ||
+                    (day>event.start && day<event.end) ||
+                    (incDay>event.start && incDay<event.end)) return true;
+                return false;
+              },
               //TODO: realization of splitting to parts for month table
               _splitIntoParts: function(event) {
                 var parts = [];
@@ -367,7 +411,8 @@ O$.MonthTable = {
                     start: partStart,
                     end: (partEnd < end) ? partEnd : end,
                     index: i++,
-                    event: event
+                    event: event,
+                    expandedPart: false
                   };
                   parts.push(part);
                   partStart = O$.cloneDate(partEnd);
@@ -375,6 +420,22 @@ O$.MonthTable = {
                   // adding delta to day need to end till the week end      \
                   partEnd = O$.incDay(O$.cloneDate(partEnd), 7);
                 } while (partStart < end);
+
+
+                if (monthTable._expandedDayView.expandedDay){
+                  if (this._checkDayInEvent(monthTable._expandedDayView.expandedDay,event)){
+                    var part = {
+                      start: monthTable._expandedDayView.expandedDay,
+                      end: monthTable._expandedDayView.expandedDay,
+                      index: i++,
+                      event: event,
+                      expandedPart: true
+                    };
+                    parts.push(part);
+                    //TODO:  temp solution in future need to erase this collection
+                    monthTable._expandedDayView.parts.push(part);
+                  }
+                }
 
                 parts[0].first = true;
                 parts[parts.length - 1].last = true;
@@ -453,7 +514,6 @@ O$.MonthTable = {
                   _getDraggablePartIndex: function() {
                     for (var i = 0; i < event.parts.length; i++) {
                       part = event.parts[i];
-                      console.log("part.start = " + part.start + ",  event._dragPositionTime = " +  event._dragPositionTime + ", part.end = " + part.end);
                       //TODO: rename this attribute and add some stuff
                       var rightBorder = O$.incDay(event._dragPositionTime,0.51);
                       //TODO: FINISH THIS
@@ -595,8 +655,36 @@ O$.MonthTable = {
                   var cell = O$.MonthTable.getCellForDay(monthTable,part.start);
                   var cellEventIndex = event._cellEventIndex;
                   //TODO: temporary we don't have expanded view  if (cell._cellDay != monthTable._expandedDayView.expandedDay){
-                  if (true){
-                    console.log("Start = " + part.start + ", End = " + part.end + ", mainElement = " + part.mainElement);
+                  if (part.expandedPart){
+                    var changeEventParent = function(newParent){
+                      newParent.appendChild(this);
+                      newParent.appendChild(this._backgroundElement);
+                    }
+                    changeEventParent.call(this, monthTable._expandedDayView.eventBlock);
+                    var cellBoundaries = O$.getElementBorderRectangle(monthTable._expandedDayView.eventBlock, true);
+                    var topY = 6 + eventElementHeight * cellEventIndex;
+                    var bottomY = topY + eventElementHeight;
+
+                    monthTable._expandedDayView.allEventHeight = topY + eventElementHeight;
+
+                    // TODO: maybe remove this vaiables
+                    var rightBorderOverflow =  event.end.getDate() > part.end.getDate();
+                    var leftBorderOverflow = event.start.getDate() < part.start.getDate();
+
+                    var x1 = 0 + (event.type != "reserved" ? eventsLeftOffset : reservedEventsLeftOffset);
+                    if (leftBorderOverflow){
+                      x1 -= 50;
+                    }
+                    var x2 = cellBoundaries.getMaxX() - cellBoundaries.getMinX() - (event.type != "reserved" ? eventsRightOffset : reservedEventsRightOffset);
+                    if (rightBorderOverflow){
+                      x2 += 50;
+                    }
+
+                    var rect = new O$.Rectangle(Math.round(x1), Math.round(topY),
+                            Math.round(x2 - x1), Math.round(bottomY - topY));
+                    this._rect = rect;
+                  }
+                  if (!part.expandedPart){
                     //todo: remove this all it's just to remember fields name
                     // cell._row
                     /* row._cells;
@@ -607,13 +695,14 @@ O$.MonthTable = {
                     var endDayCellBoundaries = O$.getElementBorderRectangle(endDayCell, true);
                     var startDayCellBoundaries = O$.getElementBorderRectangle(cell, true);
                     //todo: temporary for future check here if we need some hidden parts for event layout
-                    if (true) {
+                    //if (!monthTable._expandedDayView || cell._cellDay != monthTable._expandedDayView.expandedDay) {
+                    if (!part.expandedPart) {
                       // If we have multi cell event we need to copy event to several lines
                       //todo: maybe put this dirrectly to if
 
-                      var rightBorderOverflow =  part.index < (part.event.parts.length - 1);
+                      var rightBorderOverflow =  part.index < (part.event.parts.length - 1 - (part.event.parts[part.event.parts.length-1].expandedPart ? 1 : 0 ));
                       var leftBorderOverflow = part.index > 0;
-                      console.log("Parts:TOTAL = " + part.event.parts.length + ", Parts:CURRENT = " +  part.index + ", leftBorderOverflow = " + leftBorderOverflow + ", rightBorderOverflow = " + rightBorderOverflow );
+
 
                       endDayCell =  cell._row._cells[cell._row._cells.length-1];
 
@@ -657,7 +746,7 @@ O$.MonthTable = {
                     }
                     if (bottomY > maxY ) {
                       //TODO: temporary commented need to uncomment for showing of more link
-                      //cell._moreLinkData = { topY: topY };
+                      cell._moreLinkData = { topY: topY };
                       this.style.display = "none";
                       return;
                     }
@@ -682,81 +771,7 @@ O$.MonthTable = {
                             Math.round(x2 - x1), Math.round(bottomY - topY));
                     cell.reservedPlaces[placeIndex] =  event;
                     this._rect = rect;
-                  }else{
-//###################################!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  //more link layout
-                    var changeEventParent = function(newParent){
-                      newParent.appendChild(this);
-                      newParent.appendChild(this._backgroundElement);
-                    }
-
-                    changeEventParent.call(this, monthTable._expandedDayView.eventBlock);
-
-                    var cellBoundaries = O$.getElementBorderRectangle(monthTable._expandedDayView.eventBlock, true);
-                    var topY = 6 + eventElementHeight * cellEventIndex;
-                    var bottomY = topY + eventElementHeight;
-                    var lastForCell = (cellEventIndex == cell._cellEvents.length - 1);
-                    var maxY = cellBoundaries.getMaxY();
-                    if (bottomY > maxY ) {
-                      // Need scrolling
-                      var stopScrolling = false;
-                      var delta;
-
-                      function scrollExpandedView(button) {
-                        console.log("scroll view");
-                        for (var i = 0; i<monthTable._expandedDayView.eventBlock.childNodes.length;i++){
-                          var position = O$.getNumericElementStyle(monthTable._expandedDayView.eventBlock.childNodes[i], "top");
-                          monthTable._expandedDayView.eventBlock.childNodes[i].style.top = (position-button._scrollDelta)+"px";
-                        }
-                        if (!stopScrolling)
-                          setTimeout( function() { scrollExpandedView(button) }, 10 );
-
-                      }
-
-                      //TODO: move this some where
-                      var expandedViewControl = {};
-                      O$.extend(expandedViewControl ,{
-                        className : monthTable.dayViewButtonClass,
-
-                        onmousedown: function(e) {
-                          this.className = monthTable.dayViewPressedButtonClass;
-                          O$.cancelEvent(e);
-                        },
-
-                        onmouseup: function(e) {
-                          this.className = monthTable.dayViewRolloverButtonClass;
-                        },
-                        onmouseover: function(e) {
-                          stopScrolling = false;
-                          if (!O$.isEventFromInsideOfElement(e, this))
-                            return;
-                          this.className = monthTable.dayViewRolloverButtonClass;
-                          scrollExpandedView(this);
-                        },
-                        onmouseout: function(e) {
-                          stopScrolling = true;
-                          this.className = monthTable.dayViewButtonClass;
-                        }
-                      });
-                      O$.extend(monthTable._expandedDayView.btnUp,expandedViewControl);
-                      O$.extend(monthTable._expandedDayView.btnDown,expandedViewControl);
-                      monthTable._expandedDayView.btnUp._scrollDelta = 1;
-                      monthTable._expandedDayView.btnDown._scrollDelta = -1;
-
-
-
-
-                    }
-                    var x1 = 0 + (event.type != "reserved" ? eventsLeftOffset : reservedEventsLeftOffset);
-                    var x2 = cellBoundaries.getMaxX() - cellBoundaries.getMinX() - (event.type != "reserved" ? eventsRightOffset : reservedEventsRightOffset);
-                    if (O$.isExplorer() && O$.isStrictMode() && cell._last) {
-                      var scroller = O$(monthTable.id + "::scroller");
-                      var scrollerWidth = scroller.offsetWidth - scroller.clientWidth;
-                      x2 -= scrollerWidth;
-                    }
-                    var rect = new O$.Rectangle(Math.round(x1), Math.round(topY),
-                            Math.round(x2 - x1), Math.round(bottomY - topY));
-                    this._rect = rect;
-                  }
+                  };
                   var backgroundElement = this._backgroundElement;
                   O$.setElementBorderRectangle(eventElement, eventElement._rect);
                   O$.setElementBorderRectangle(backgroundElement, eventElement._rect);
@@ -784,7 +799,6 @@ O$.MonthTable = {
               },
 
               _removeEventElement: function(event, part) {
-                console.log("Removing element = " + part.index);
                 if (!part.mainElement)
                   return;
 

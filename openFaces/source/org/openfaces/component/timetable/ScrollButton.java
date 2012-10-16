@@ -22,9 +22,8 @@ public class ScrollButton extends org.openfaces.component.OUICommand {
     private String buttonClass;
     private String rolloverButtonStyle;
     private String rolloverButtonClass;
-    private String downButtonImg;
-    private String upButtonImg;
-
+    private String buttonImg;
+    private ScrollDirection scrollDirection;
 
     public ScrollButton() {
         setRendererType("org.openfaces.ScrollButtonRenderer");
@@ -39,16 +38,23 @@ public class ScrollButton extends org.openfaces.component.OUICommand {
     public Object saveState(FacesContext context) {
         return new Object[]{
             super.saveState(context),
-
+            buttonStyle, buttonClass, rolloverButtonStyle,
+            rolloverButtonClass, buttonImg, scrollDirection
         };
     }
+
 
     @Override
     public void restoreState(FacesContext context, Object stateObj) {
         Object[] state = (Object[]) stateObj;
         int i = 0;
         super.restoreState(context, state[i++]);
-
+        buttonStyle = (String) state[i++];
+        buttonClass = (String) state[i++];
+        rolloverButtonStyle = (String) state[i++];
+        rolloverButtonClass = (String) state[i++];
+        buttonImg = (String) state[i++];
+        scrollDirection = (ScrollDirection) state[i++];
     }
 
     public String getButtonStyle() {
@@ -83,19 +89,21 @@ public class ScrollButton extends org.openfaces.component.OUICommand {
         this.rolloverButtonClass = rolloverButtonClass;
     }
 
-    public String getDownButtonImg() {
-        return ValueBindings.get(this, "downButtonImg", downButtonImg, "");
+    public String getButtonImg() {
+        return ValueBindings.get(this, "buttonImg", buttonImg, "");
     }
 
-    public void setDownButtonImg(String downButtonImg) {
-        this.downButtonImg = downButtonImg;
+    public void setButtonImg(String downButtonImg) {
+        this.buttonImg = downButtonImg;
     }
 
-    public String getUpButtonImg() {
-        return ValueBindings.get(this, "upButtonImg", upButtonImg, "");
+    public ScrollDirection getScrollDirection() {
+        return ValueBindings.get(this, "scrollDirection", scrollDirection, ScrollDirection.UP,
+                ScrollDirection.class);
     }
 
-    public void setUpButtonImg(String upButtonImg) {
-        this.upButtonImg = upButtonImg;
+    public void setScrollDirection(ScrollDirection scrollDirection) {
+        System.out.println("scrollDirections = " + scrollDirection.toString());
+        this.scrollDirection = scrollDirection;
     }
 }

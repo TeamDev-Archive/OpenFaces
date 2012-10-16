@@ -37,11 +37,12 @@ public class ScrollButtonJspTag extends org.openfaces.taglib.jsp.AbstractCompone
         getDelegate().setPropertyValue("rolloverButtonClass", rolloverButtonClass);
     }
 
-    public void setDownButtonImg(ValueExpression downButtonImg) {
-        getDelegate().setPropertyValue("downButtonImg", downButtonImg);
+    public void setButtonImg(ValueExpression buttonImg) {
+        getDelegate().setPropertyValue("buttonImg", buttonImg);
     }
 
-    public void setUpButtonImg(ValueExpression upButtonImg) {
-        getDelegate().setPropertyValue("upButtonImg", upButtonImg);
+    public void setScrollDirection(ValueExpression scrollDirection) {
+        getDelegate().setPropertyValue("scrollDirection", scrollDirection);
     }
+
 }

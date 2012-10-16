@@ -48114,8 +48114,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Url to down button image.</description>
-      <name>downButtonImg</name>
+      <description>Url to button image.</description>
+      <name>buttonImg</name>
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
@@ -48124,13 +48124,16 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Url to down button image.</description>
-      <name>upButtonImg</name>
+      <description>Specifies destination of scrolling for button.
+      </description>
+      <name>scrollDirection</name>
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType String -->
-      <!-- @default "" -->
+      <!-- @bindingType org.openfaces.component.timetable.ScrollDirection -->
+      <!-- @default "up" -->
+      <!-- @value "up" Specifies that page index should stay the same when sorting is performed. -->
+      <!-- @value "down" Specifies that the first page should be shown when sorting is performed. -->
       <!-- @el true -->
     </attribute>
   </tag>

@@ -498,15 +498,12 @@ O$.TimeTableView = {
                             var newParts = timeTableView._splitIntoParts(event, false);
 
                             if (newParts.length != event.parts.length) {
-                              console.log("Changed parts count:  event.parts.length =  " +  event.parts.length + ", newParts.length = " + newParts.length);
                               var eventElementsLength = timeTableView._eventElements.length;
                               var draggablePart;
                               event.parts.forEach(function(part) {
                                 if (part.mainElement._draggingInProgress) {
-                                  console.log("still exsist = " + part.index);
                                   draggablePart = part;
                                 } else {
-                                  console.log("deleted part = " + part.index);
                                   timeTableView._removeEventElement(event, part);
                                 }
                               });
@@ -525,7 +522,6 @@ O$.TimeTableView = {
                                   draggablePart.index = i;
                                   event.parts[i] = draggablePart;
                                 } else {
-                                  console.log("adding event element = " +event._getDraggablePartIndex() );
                                   timeTableView._addEventElement(event, part);
                                 }
                               }
@@ -551,7 +547,6 @@ O$.TimeTableView = {
                           },
 
                           _removeElements: function() {
-                            console.log("::removing elements::");
                             parts.forEach(function(part) {
                               timeTableView._removeEventElement(event, part);
                             });
@@ -608,7 +603,6 @@ O$.TimeTableView = {
                 event._attachAreas();
 
                 event.parts.forEach(function(part) {
-                  console.log("_addEventElement = " +  part.index);
                   timeTableView._addEventElement(event, part);
                 });
 

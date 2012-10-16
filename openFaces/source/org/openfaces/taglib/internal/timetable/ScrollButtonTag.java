@@ -12,6 +12,7 @@
 package org.openfaces.taglib.internal.timetable;
 
 import org.openfaces.component.timetable.ScrollButton;
+import org.openfaces.component.timetable.ScrollDirection;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -34,7 +35,7 @@ public class ScrollButtonTag extends org.openfaces.taglib.internal.AbstractCompo
         setStringProperty(component, "buttonClass");
         setStringProperty(component, "rolloverButtonStyle");
         setStringProperty(component, "rolloverButtonClass");
-        setObjectProperty(component, "downButtonImg");
-        setObjectProperty(component, "upButtonImg");
+        setStringProperty(component, "buttonImg");
+        setEnumerationProperty(component, "scrollDirection", ScrollDirection.class);
     }
 }

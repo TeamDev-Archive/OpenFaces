@@ -69,13 +69,5 @@ public class MonthTableTag extends TimetableViewTag {
         setStringProperty(component, "inactiveMonthCellClass");
         setStringProperty(component, "moreLinkElementStyle");
         setStringProperty(component, "moreLinkElementClass");
-        setStringProperty(component, "dayViewButtonClass");
-        setStringProperty(component, "dayViewRolloverButtonClass");
-        setStringProperty(component, "dayViewPressedButtonClass");
-        setStringProperty(component, "dayViewButtonStyle");
-        setStringProperty(component, "dayViewRolloverButtonStyle");
-        setStringProperty(component, "dayViewPressedButtonStyle");
-        setStringProperty(component, "dayViewUpButtonImgURL");
-        setStringProperty(component, "dayViewDownButtonImgURL");
     }
 }

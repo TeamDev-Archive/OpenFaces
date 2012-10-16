@@ -11,9 +11,14 @@
  */
 package org.openfaces.renderkit.timetable;
 
-import org.openfaces.component.timetable.MonthTable;
 import org.openfaces.component.timetable.ScrollButton;
+import org.openfaces.org.json.JSONObject;
+import org.openfaces.renderkit.TableUtil;
+import org.openfaces.util.InitScript;
+import org.openfaces.util.Rendering;
 import org.openfaces.util.Resources;
+import org.openfaces.util.ScriptBuilder;
+import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -33,10 +38,11 @@ public class ScrollButtonRenderer extends org.openfaces.renderkit.RendererBase {
     }
 
     protected void encodeButton(FacesContext context, UIComponent component, String buttonOrientation ) throws IOException {
-        System.out.println("Encoding Button");
+        System.out.println("Encoding Button" + component.getParent());
         FacesContext currentInstance = FacesContext.getCurrentInstance();
-//        MonthTable fieldComponent = (MonthTable) component;
+
         ScrollButton scrollButton = (ScrollButton) component;
+
         ResponseWriter writer = context.getResponseWriter();
 
         writeIdAttribute(context,scrollButton);
@@ -55,45 +61,35 @@ public class ScrollButtonRenderer extends org.openfaces.renderkit.RendererBase {
         writeIdAttribute(context,scrollButton);
         writer.writeAttribute("src", imageUrl, null);
         writer.endElement("img");
+        InitScript initScript = renderInitScript(currentInstance,scrollButton);
+        Rendering.renderInitScripts(currentInstance, initScript);
+
     }
 
-
-
-    private void encodeExpandedDayView(FacesContext context, final MonthTable timetableView, String clientId) throws IOException {
-        /*String expandDayViewId = clientId + EXPANDED_VIEW_SUFFIX;
-        ResponseWriter writer = context.getResponseWriter();
-        writer.startElement("div", timetableView);
-        writer.writeAttribute("id", expandDayViewId , null);
-        writer.writeAttribute("style", "background-color: red; position: absolute;width:50px;height:50px;padding:2px;z-index:150;", null);
-
-        writer.startElement("div", timetableView);
-        encodeButton(context, timetableView, "up" );
-        writer.endElement("div");
-
-        writer.startElement("div", timetableView);
-        writer.writeAttribute("style", "background-color: green; height: 100%;margin-top: -10px; margin-bottom: -10px; overflow:hidden;position: relative;", null);
-        writer.writeAttribute("id", expandDayViewId + "::eventBlock" , null);
-        writer.endElement("div");
-
-
-        writer.startElement("div", timetableView);
-        encodeButton(context, timetableView, "down" );
-        writer.endElement("div");
-
-        writer.endElement("div"); */
+    protected InitScript renderInitScript(FacesContext context, ScrollButton scrollButton) throws IOException {
+        ScriptBuilder buf = new ScriptBuilder();
+        JSONObject stylingParams = getStylingParamsObj(context, scrollButton);
+        buf.initScript(context, scrollButton, "O$.ScrollButton._init",
+                scrollButton.getParent().getClientId(context),
+                scrollButton.getScrollDirection().toString(),
+                stylingParams
+                /*Styles.getStyleClassesStr(context, dropDownField, dropDownField.getRolloverListItemStyle(),
+                        dropDownField.getRolloverListItemClass(), DefaultStyles.getDefaultSelectionStyle(), StyleGroup.rolloverStyleGroup()),*/
+        );
+        return new InitScript(buf.toString(), new String[]{
+                TableUtil.getTableUtilJsURL(context),
+                Resources.internalURL(context, "timetable/scrollButton.js")
+        });
     }
 
-    /*   Styles.addStyleJsonParam(context, timetableView, stylingParams, "moreLinkElementClass",
-                timetableView.getMoreLinkElementStyle(), timetableView.getMoreLinkElementClass());
-        Styles.addStyleJsonParam(context, timetableView, stylingParams, "moreLinkClass",
-                timetableView.getMoreLinkStyle(), timetableView.getMoreLinkClass());
-        Rendering.addJsonParam(stylingParams, "moreLinkText", timetableView.getMoreLinkText());
+    private JSONObject getStylingParamsObj(FacesContext context, ScrollButton scrollButton){
+        JSONObject stylingParams = new JSONObject();
+        Styles.addStyleJsonParam(context, scrollButton, stylingParams, "buttonClass",
+                scrollButton.getButtonStyle(), scrollButton.getButtonClass());
+        Styles.addStyleJsonParam(context, scrollButton, stylingParams, "rolloverButtonClass",
+                scrollButton.getRolloverButtonStyle(), scrollButton.getRolloverButtonClass());
+        return stylingParams;
+    }
 
-       Styles.addStyleJsonParam(context, timetableView, stylingParams, "dayViewButtonClass",
-                timetableView.getDayViewButtonStyle(), timetableView.getDayViewButtonClass());
-        Styles.addStyleJsonParam(context, timetableView, stylingParams, "dayViewRolloverButtonClass",
-                timetableView.getDayViewRolloverButtonStyle(), timetableView.getDayViewRolloverButtonClass());
-        Styles.addStyleJsonParam(context, timetableView, stylingParams, "dayViewPressedButtonClass",
-                timetableView.getDayViewPressedButtonStyle(), timetableView.getDayViewPressedButtonClass());*/
 
 }

@@ -57,6 +57,8 @@ public class DayTableBean1 extends DayTableBean implements Serializable {
                 "11111111111Instructor: Gregory House <br/>Fee: $30", blue));
         events.add(new TimetableEvent(generateEventId(), yesterdayAt(10, 50), yesterdayAt(12, 30), "22222222222",
                 "22222222222Instructor: Gregory House <br/>Fee: $30", blue));
+        events.add(new TimetableEvent(generateEventId(), yesterdayAt(10, 50), yesterdayAt(12, 30), "22222222222",
+                "22222222222Instructor: Gregory House <br/>Fee: $30", blue));
         events.add(new TimetableEvent(generateEventId(), yesterdayAt(10, 50), yesterdayAt(12, 30), "333333333333",
                 "333333333333Instructor: Gregory House <br/>Fee: $30", blue));
         events.add(new TimetableEvent(generateEventId(), yesterdayAt(10, 50), yesterdayAt(12, 30), "44444444444",

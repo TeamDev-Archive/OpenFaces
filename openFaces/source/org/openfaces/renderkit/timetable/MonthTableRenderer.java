@@ -14,6 +14,7 @@ package org.openfaces.renderkit.timetable;
 
 import org.openfaces.component.timetable.AbstractTimetableEvent;
 import org.openfaces.component.timetable.MonthTable;
+import org.openfaces.component.timetable.ScrollButton;
 import org.openfaces.component.timetable.Timetable;
 import org.openfaces.component.timetable.TimetableResource;
 import org.openfaces.component.timetable.TimetableView;
@@ -88,8 +89,8 @@ public class MonthTableRenderer extends TimetableViewRenderer {
         writer.startElement("td", timetableView);
         writer.writeAttribute("style", "height: 100%", null);
 
-        renderContentTable(writer, timetableView, clientId, resources);
-        renderExpandedDayView(context, timetableView);
+        renderContentTable(context, timetableView, clientId, resources);
+
         encodeEventEditor(context, timetableView, resources);
         encodeActionBar(context, timetableView);
 
@@ -108,28 +109,38 @@ public class MonthTableRenderer extends TimetableViewRenderer {
 
     private void renderExpandedDayView(FacesContext context, MonthTable monthTable) throws IOException{
         UIComponent header = monthTable.getExpandedDayViewHeader();
-        System.out.println(header);
-           String expandDayViewId = monthTable.getClientId(context) + EXPANDED_VIEW_SUFFIX;
+        if (header == null ){
+            header = new ScrollButton();
+            header.setParent(monthTable);
+        }
+        UIComponent footer = monthTable.getExpandedDayViewFooter();
+        if (footer == null ){
+            footer = new ScrollButton();
+            footer.setParent(monthTable);
+        }
+        String expandDayViewId = monthTable.getClientId(context) + EXPANDED_VIEW_SUFFIX;
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("div", monthTable);
 
         writer.writeAttribute("id", expandDayViewId , null);
-        writer.writeAttribute("style", "background-color: red; position: absolute;width:50px;height:50px;padding:2px;z-index:150;", null);
+        writer.writeAttribute("style", "background-color: red; position: absolute;width:100px;height:150px;padding:2px;z-index:150;", null);
 
         writer.startElement("div", monthTable);
+        writer.writeAttribute("style", "width: 100%; height: 10px; z-index: 999; position: relative", null);
+
         header.encodeAll(context);
-//        header.encodeBegin(context);
-        //encodeButton(context, monthTable, "up" );
         writer.endElement("div");
 
         writer.startElement("div", monthTable);
-        writer.writeAttribute("style", "background-color: green; height: 100%;margin-top: -10px; margin-bottom: -10px; overflow:hidden;position: relative;", null);
+        writer.writeAttribute("style", "background-color: green; height: 100%;margin-top: -10px; margin-bottom: -10px; overflow:hidden; position: relative;", null);
         writer.writeAttribute("id", expandDayViewId + "::eventBlock" , null);
         writer.endElement("div");
 
 
         writer.startElement("div", monthTable);
-       // encodeButton(context, monthTable, "down" );
+        writer.writeAttribute("style", "background: green; width: 100%; height: 10px; position: relative;", null);
+
+        footer.encodeAll(context);
         writer.endElement("div");
 
         writer.endElement("div");
@@ -155,13 +166,16 @@ public class MonthTableRenderer extends TimetableViewRenderer {
     }
 
     private void renderContentTable(
-            ResponseWriter writer,
+            FacesContext context,
             final MonthTable timetableView,
             final String clientId,
             final List<TimetableResource> resources) throws IOException {
+
+        ResponseWriter writer = context.getResponseWriter();
         writer.startElement("div", timetableView);
         writer.writeAttribute("id", clientId + "::scroller", null);
         writer.writeAttribute("class", "o_timetableView_scroller", null);
+        renderExpandedDayView(context, timetableView);
         int colCount = 7;
 
         new TableRenderer(clientId + Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "table", 0, 0, 0, "o_timetableView_table") {
