@@ -42,19 +42,14 @@ public class ScrollButtonRenderer extends org.openfaces.renderkit.RendererBase {
     }
 
     protected void encodeButton(FacesContext context, UIComponent component) throws IOException {
-        System.out.println("Encoding Button" + component.getParent());
         FacesContext currentInstance = FacesContext.getCurrentInstance();
-
         ScrollButton scrollButton = (ScrollButton) component;
-
         ResponseWriter writer = context.getResponseWriter();
 
         writeIdAttribute(context,scrollButton);
         writer.startElement("div", scrollButton);
-        System.out.println("scrollButton = " + scrollButton.getButtonStyle());
         writer.writeAttribute("class", Styles.getCSSClass(context, scrollButton, scrollButton.getButtonStyle(), StyleGroup.regularStyleGroup(),
                 scrollButton.getButtonClass(), getDefaultScrollButtonClass()), null);
-
         writer.writeAttribute("nowrap", "nowrap", null);
         writer.writeAttribute("align", "center", null);
         writer.writeAttribute("valign", "middle", null);
@@ -79,12 +74,11 @@ public class ScrollButtonRenderer extends org.openfaces.renderkit.RendererBase {
     protected InitScript renderInitScript(FacesContext context, ScrollButton scrollButton) throws IOException {
         ScriptBuilder buf = new ScriptBuilder();
         JSONObject stylingParams = getStylingParamsObj(context, scrollButton);
+
         buf.initScript(context, scrollButton, "O$.ScrollButton._init",
                 scrollButton.getParent().getClientId(context),
                 scrollButton.getScrollDirection().toString(),
                 stylingParams
-                /*Styles.getStyleClassesStr(context, dropDownField, dropDownField.getRolloverListItemStyle(),
-                        dropDownField.getRolloverListItemClass(), DefaultStyles.getDefaultSelectionStyle(), StyleGroup.rolloverStyleGroup()),*/
         );
         return new InitScript(buf.toString(), new String[]{
                 TableUtil.getTableUtilJsURL(context),

@@ -13,22 +13,6 @@
 O$.ScrollButton = {
 
   _init: function(scrollButtonId, scrollableElementId, direction ,buttonStyleParams) {
-    _scrollTarget = function(delta) {
-      //      console.log("scroll view = " +scrollButton._targetElement.stopScrolling);
-        // _targetElement.scroll(delta);
-        /*
-         for (var i = 0; i<monthTable._expandedDayView.eventBlock.childNodes.length;i++){
-         var position = O$.getNumericElementStyle(monthTable._expandedDayView.eventBlock.childNodes[i], "top");
-         monthTable._expandedDayView.eventBlock.childNodes[i].style.top = (position-button._scrollDelta)+"px";
-         } */
-      if (direction=="up")
-        scrollButton._targetElement.scrollContent(-delta);
-      if (direction=="down")
-        scrollButton._targetElement.scrollContent(delta);
-
-      if (!scrollButton._targetElement.stopScrolling)
-        setTimeout( function() { _scrollTarget(1) }, 10 );
-    }
     var scrollButton = O$.initComponent(scrollButtonId, buttonStyleParams,
       {
         _direction: direction,
@@ -39,7 +23,11 @@ O$.ScrollButton = {
           this.className = buttonStyleParams.rolloverButtonClass;
           if (this._targetElement.stopScrolling) {
             this._targetElement.stopScrolling = false;
-            _scrollTarget(1);
+            if (scrollButton._direction=="up")
+              _scrollTarget(1);
+            if (scrollButton._direction=="down")
+              _scrollTarget(-1);
+
           }
         },
         onmouseout: function(e) {
@@ -50,6 +38,11 @@ O$.ScrollButton = {
       }
     );
     scrollButton._targetElement.stopScrolling = true;
+    var _scrollTarget = function(delta) {
+      scrollButton._targetElement.scrollContent(delta);
+      if (!scrollButton._targetElement.stopScrolling)
+        setTimeout( function() { _scrollTarget(delta) }, 10 );
+    }
   }
 
 

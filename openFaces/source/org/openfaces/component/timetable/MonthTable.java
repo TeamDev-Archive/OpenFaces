@@ -60,6 +60,7 @@ public class MonthTable extends TimetableView { // todo: extract some common typ
     private String inactiveMonthCellHeaderClass;
     private String inactiveMonthCellStyle;
     private String inactiveMonthCellClass;
+
     private String moreLinkElementStyle;
     private String moreLinkElementClass;
     private String moreLinkStyle;
@@ -67,6 +68,7 @@ public class MonthTable extends TimetableView { // todo: extract some common typ
     private String moreLinkText;
     private String expandedDayViewStyle;
     private String expandedDayViewClass;
+    private Integer expandTransitionPeriod;
 
 
     private Integer scrollOffset = 0;
@@ -414,6 +416,17 @@ public class MonthTable extends TimetableView { // todo: extract some common typ
         this.expandedDayViewClass = expandedDayViewClass;
     }
 
+
+    public Integer getExpandTransitionPeriod() {
+        return ValueBindings.get(this, "expandTransitionPeriod", expandTransitionPeriod, 200);
+    }
+
+    public void setExpandTransitionPeriod(Integer expandTransitionPeriod) {
+        this.expandTransitionPeriod = expandTransitionPeriod;
+    }
+
+
+
     @Override
     public Object saveState(FacesContext context) {
         return new Object[]{
@@ -457,6 +470,7 @@ public class MonthTable extends TimetableView { // todo: extract some common typ
                 moreLinkText,
                 expandedDayViewStyle,
                 expandedDayViewClass,
+                expandTransitionPeriod,
                 scrollOffset
         };
     }
@@ -505,6 +519,7 @@ public class MonthTable extends TimetableView { // todo: extract some common typ
         moreLinkText = (String) state[i++];
         expandedDayViewStyle = (String) state[i++];
         expandedDayViewClass = (String) state[i++];
+        expandTransitionPeriod = (Integer) state[i++];
         scrollOffset = (Integer) state[i++];
     }
 

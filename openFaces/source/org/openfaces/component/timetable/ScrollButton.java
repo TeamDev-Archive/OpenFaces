@@ -30,6 +30,11 @@ public class ScrollButton extends org.openfaces.component.OUIPanel {
         setRendererType("org.openfaces.ScrollButtonRenderer");
     }
 
+    public ScrollButton(ScrollDirection scrollDirection) {
+        this();
+        this.scrollDirection = scrollDirection;
+    }
+
     @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
@@ -104,7 +109,6 @@ public class ScrollButton extends org.openfaces.component.OUIPanel {
     }
 
     public void setScrollDirection(ScrollDirection scrollDirection) {
-        System.out.println("scrollDirections = " + scrollDirection.toString());
         this.scrollDirection = scrollDirection;
     }
 

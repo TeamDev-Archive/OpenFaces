@@ -89,18 +89,25 @@ O$.MonthTable = {
     var inactiveMonthCellClass = O$.combineClassNames([/*cellClass,*/ "o_monthTableInactiveMonthCell", stylingParams.inactiveMonthCellClass]);
 
 
-    //TODO: add initializing of dayView styles
-//    setTimeout(function(){
-      monthTable._expandedDayView = O$(componentId + "::expandedDayView");
-      console.log("expanding view = " + monthTable._expandedDayView )
-      monthTable._expandedDayView.eventBlock = O$(componentId + "::expandedDayView::eventBlock");
-      monthTable._expandedDayView.opened = false;
-      //monthTable._expandedDayView.defaultRect = O$.getElementBorderRectangle(monthTable._expandedDayView, true);
-      O$.extend(monthTable._expandedDayView, {
+    O$.initComponent(componentId, null, {
+      _viewType: "month"
+    });
+
+    monthTable._expandedDayView = O$.initComponent(componentId + "::expandedDayView", null,{
+        eventBlock  : O$(componentId + "::expandedDayView::eventBlock"),
+        opened : false,
         scrollPos : 0,
         allEventHeight : 0,
+        header : O$(componentId + "::expandedDayView::header"),
+        footer : O$(componentId + "::expandedDayView::footer"),
+        headerHeight : 0,
+        footerHeight : 0,
+        transitionPeriod : stylingParams.expandTransitionPeriod
+      },
+      {
         _scrollContent: function (delta){
-          if (Math.abs(this.scrollPos) + O$.getElementSize(this).height + delta >  this.allEventHeight) return;
+          if (Math.abs(this.scrollPos) + O$.getElementSize(this).height - delta - this.footerHeight >  this.allEventHeight || this.scrollPos + delta > 0)
+            return;
           this.scrollPos += delta;
           for (var i = 0; i<monthTable._expandedDayView.eventBlock.childNodes.length;i++){
             var position = O$.getNumericElementStyle(monthTable._expandedDayView.eventBlock.childNodes[i], "top");
@@ -120,7 +127,8 @@ O$.MonthTable = {
           this.opened = true;
           var rect = O$.getElementBorderRectangle(this, true).clone();
           O$.setElementSize(this, {height:10});
-          this._lastRectangleTransition = O$.runTransitionEffect(monthTable._expandedDayView, ["rectangle"], [rect], 200, 20, null);
+          //TODO: find why this.transitionPeriod string and fix it
+          this._lastRectangleTransition = O$.runTransitionEffect(monthTable._expandedDayView, ["rectangle"], [rect], this.transitionPeriod*1, 20, null);
         },
         _contractDayView : function (){
           this.style.display = "none";
@@ -130,9 +138,9 @@ O$.MonthTable = {
           this.opened = false;
         }
     });
-  //  }, 10);
-
-
+    monthTable._expandedDayView.headerHeight = O$.getElementSize(monthTable._expandedDayView.header).height;
+    monthTable._expandedDayView.footerHeight = O$.getElementSize(monthTable._expandedDayView.footer).height;
+    console.log("monthTable._expandedDayView.headerHeight = " + monthTable._expandedDayView.headerHeight + ",  monthTable._expandedDayView.footerHeight = " +  monthTable._expandedDayView.footerHeight);
 
 
     monthTable._weekdayHeaderCellClass = weekdayHeaderCellClass;
@@ -207,11 +215,11 @@ O$.MonthTable = {
         }
         cell.onclick = function() {
           // onclick event can be fired on drag end under IE
-          if (monthTable._expandedDayView.opened)
+          if (monthTable._expandedDayView.opened){
             monthTable._expandedDayView._contractDayView();
-          else if (editable) {
+          }else if (editable) {
             var newEventTime = this._cellDay;
-            var event = monthTable._addEvent(newEventTime, this._resource ? this._resource.id : null);
+            var event = monthTable._addEvent(newEventTime, null);
             event._cell = this;
             monthTable._addEventElements(event);
           }
@@ -408,7 +416,6 @@ O$.MonthTable = {
                   partEnd = O$.incDay(O$.cloneDate(partEnd), 7);
                 } while (partStart < end);
 
-                 console.log("monthTable._expandedDayView.expandedDay = "  + monthTable._expandedDayView);
                 if (monthTable._expandedDayView.expandedDay){
                   if (this._checkDayInEvent(monthTable._expandedDayView.expandedDay,event)){
                     var part = {
@@ -645,7 +652,7 @@ O$.MonthTable = {
                     }
                     changeEventParent.call(this, monthTable._expandedDayView.eventBlock);
                     var cellBoundaries = O$.getElementBorderRectangle(monthTable._expandedDayView.eventBlock, true);
-                    var topY = 6 + eventElementHeight * cellEventIndex;
+                    var topY = monthTable._expandedDayView.headerHeight + eventElementHeight * cellEventIndex;
                     var bottomY = topY + eventElementHeight;
 
                     monthTable._expandedDayView.allEventHeight = topY + eventElementHeight;
@@ -1018,16 +1025,26 @@ O$.MonthTable = {
         dayHeaderCell._cellDay = cellDay;
         dayContentCell._cellDay = cellDay;
         O$.removeAllChildNodes(dayHeaderCell);
-        var text = document.createElement("a");
-        //TODO: LINK UNCLICKABLE
-        text.style.zIndex = monthTable._baseZIndex + 150;
-        text.innerHTML = cellDay.getDate();
-        text.onclick = function(e) {
-          O$.stopEvent(e);
-          if (monthTable._timetable)
-            monthTable._timetable.goViewDay(cellDay);
-        }
-        dayHeaderCell.appendChild(text);
+
+
+        if (monthTable._timetable){
+          var dayLink = document.createElement("a");
+          O$.correctElementZIndex(dayLink, monthTable, 50);
+          dayLink.style.position = "relative";
+          dayLink.style.cursor = "pointer";
+          dayLink.innerHTML = cellDay.getDate();
+          dayLink.linkedDay = O$.cloneDate(cellDay);
+          dayLink.onclick = function(e) {
+            O$.stopEvent(e);
+            if (monthTable._timetable)
+              monthTable._timetable.goViewDay(this.linkedDay);
+          }
+          dayHeaderCell.appendChild(dayLink);
+        }else{
+          var text = document.createElement("span");
+          text.innerHTML = cellDay.getDate();
+          dayHeaderCell.appendChild(text);
+        };
         cellDay = O$.MonthTable.__incDay(cellDay);
       }
     }

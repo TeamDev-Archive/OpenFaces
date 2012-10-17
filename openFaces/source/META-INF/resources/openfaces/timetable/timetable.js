@@ -25,6 +25,7 @@ O$.Timetable = {
       },
 
       goViewDay: function(day){
+        console.log("View day = " + day);
         var viewIndex = this._viewIndexByType(O$.Timetable.DAY);
 
         this._views[viewIndex].setDay(day);

@@ -40825,6 +40825,15 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <name>expandTransitionPeriod</name>
+      <deferred-value>
+        <type>java.lang.Integer</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.Integer -->
+      <!-- @default 200 -->
+      <!-- @el true -->
+    </attribute>
   </tag>
 
   <tag>

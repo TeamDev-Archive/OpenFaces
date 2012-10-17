@@ -15,6 +15,7 @@ package org.openfaces.renderkit.timetable;
 import org.openfaces.component.timetable.AbstractTimetableEvent;
 import org.openfaces.component.timetable.MonthTable;
 import org.openfaces.component.timetable.ScrollButton;
+import org.openfaces.component.timetable.ScrollDirection;
 import org.openfaces.component.timetable.Timetable;
 import org.openfaces.component.timetable.TimetableResource;
 import org.openfaces.component.timetable.TimetableView;
@@ -113,12 +114,12 @@ public class MonthTableRenderer extends TimetableViewRenderer {
     private void renderExpandedDayView(FacesContext context, MonthTable monthTable) throws IOException{
         UIComponent header = monthTable.getExpandedDayViewHeader();
         if (header == null ){
-            header = new ScrollButton();
+            header = new ScrollButton(ScrollDirection.UP);
             header.setParent(monthTable);
         }
         UIComponent footer = monthTable.getExpandedDayViewFooter();
         if (footer == null ){
-            footer = new ScrollButton();
+            footer = new ScrollButton(ScrollDirection.DOWN);
             footer.setParent(monthTable);
         }
         String expandDayViewId = monthTable.getClientId(context) + EXPANDED_VIEW_SUFFIX;
@@ -134,7 +135,7 @@ public class MonthTableRenderer extends TimetableViewRenderer {
         writer.startElement("div", monthTable);
         //TODO: rework with z-index
         writer.writeAttribute("style", "width: 100%; z-index: 999; position: relative;", null);
-
+        writer.writeAttribute("id", expandDayViewId + "::header" , null);
         header.encodeAll(context);
         writer.endElement("div");
 
@@ -145,6 +146,8 @@ public class MonthTableRenderer extends TimetableViewRenderer {
 
 
         writer.startElement("div", monthTable);
+        //TODO: move ID to static
+        writer.writeAttribute("id", expandDayViewId + "::footer" , null);
         //TODO: rework with z-index
         writer.writeAttribute("style", "width: 100%; position: relative; z-index: 999; ", null);
         footer.encodeAll(context);
@@ -361,6 +364,7 @@ public class MonthTableRenderer extends TimetableViewRenderer {
         Styles.addStyleJsonParam(context, timetableView, stylingParams, "moreLinkClass",
                 timetableView.getMoreLinkStyle(), timetableView.getMoreLinkClass());
         Rendering.addJsonParam(stylingParams, "moreLinkText", timetableView.getMoreLinkText());
+        Rendering.addJsonParam(stylingParams, "expandTransitionPeriod", timetableView.getExpandTransitionPeriod());
 
         return stylingParams;
     }

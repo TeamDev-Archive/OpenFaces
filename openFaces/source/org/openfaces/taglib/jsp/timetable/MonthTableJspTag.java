@@ -180,4 +180,7 @@ public class MonthTableJspTag extends TimetableViewJspTag {
         getDelegate().setPropertyValue("expandedDayViewClass", value);
     }
 
+    public void setExpandTransitionPeriod(ValueExpression value) {
+        getDelegate().setPropertyValue("expandTransitionPeriod", value);
+    }
 }
