@@ -205,10 +205,6 @@ if (!window.O$) {
       containsPoint: function(x, y) {
         return x >= this.getMinX() && x <= this.getMaxX() &&
                 y >= this.getMinY() && y <= this.getMaxY();
-      },
-
-      toString: function(){
-        return "x=" + this.x + ", y=" + this.y  + ", width=" + this.width + "height=" + this.height;
       }
     })
   });

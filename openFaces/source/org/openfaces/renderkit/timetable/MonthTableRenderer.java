@@ -30,6 +30,7 @@ import org.openfaces.util.Log;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
+import org.openfaces.util.StyleGroup;
 import org.openfaces.util.Styles;
 
 import javax.el.ValueExpression;
@@ -51,6 +52,8 @@ import java.util.TimeZone;
 public class MonthTableRenderer extends TimetableViewRenderer {
 
     private static String EXPANDED_VIEW_SUFFIX = "::expandedDayView";
+
+    private static final String DEFAULT_EXPANDED_DAY_VIEW_CLASS = "o_expandedDayView";
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
@@ -123,23 +126,27 @@ public class MonthTableRenderer extends TimetableViewRenderer {
         writer.startElement("div", monthTable);
 
         writer.writeAttribute("id", expandDayViewId , null);
-        writer.writeAttribute("style", "background-color: red; position: absolute;width:100px;height:150px;padding:2px;z-index:150;", null);
+
+        writer.writeAttribute("class",Styles.getCSSClass(context, monthTable, monthTable.getExpandedDayViewStyle(), StyleGroup.regularStyleGroup(),
+                monthTable.getExpandedDayViewClass(), getDefaultExpandedDayViewClass()),null);
+        writer.writeAttribute("style", "position: absolute; z-index:150;", null);
 
         writer.startElement("div", monthTable);
-        writer.writeAttribute("style", "width: 100%; height: 10px; z-index: 999; position: relative", null);
+        //TODO: rework with z-index
+        writer.writeAttribute("style", "width: 100%; z-index: 999; position: relative;", null);
 
         header.encodeAll(context);
         writer.endElement("div");
 
         writer.startElement("div", monthTable);
-        writer.writeAttribute("style", "background-color: green; height: 100%;margin-top: -10px; margin-bottom: -10px; overflow:hidden; position: relative;", null);
+        writer.writeAttribute("style", "height: 100%; overflow:hidden; position: relative; margin-top: -10px; margin-bottom: -10px; ", null);
         writer.writeAttribute("id", expandDayViewId + "::eventBlock" , null);
         writer.endElement("div");
 
 
         writer.startElement("div", monthTable);
-        writer.writeAttribute("style", "background: green; width: 100%; height: 10px; position: relative;", null);
-
+        //TODO: rework with z-index
+        writer.writeAttribute("style", "width: 100%; position: relative; z-index: 999; ", null);
         footer.encodeAll(context);
         writer.endElement("div");
 
@@ -349,7 +356,11 @@ public class MonthTableRenderer extends TimetableViewRenderer {
                 timetableView.getInactiveMonthCellHeaderStyle(), timetableView.getInactiveMonthCellHeaderClass());
         Styles.addStyleJsonParam(context, timetableView, stylingParams, "inactiveMonthCellClass",
                 timetableView.getInactiveMonthCellStyle(), timetableView.getInactiveMonthCellClass());
-
+        Styles.addStyleJsonParam(context, timetableView, stylingParams, "moreLinkElementClass",
+                timetableView.getMoreLinkElementStyle(), timetableView.getMoreLinkElementClass());
+        Styles.addStyleJsonParam(context, timetableView, stylingParams, "moreLinkClass",
+                timetableView.getMoreLinkStyle(), timetableView.getMoreLinkClass());
+        Rendering.addJsonParam(stylingParams, "moreLinkText", timetableView.getMoreLinkText());
 
         return stylingParams;
     }
@@ -400,6 +411,10 @@ public class MonthTableRenderer extends TimetableViewRenderer {
 
         encodeEventAreas(context, timetableView, events);
         return DataUtil.listToJSONArray(events, timeZoneParam);
+    }
+
+    protected  String getDefaultExpandedDayViewClass(){
+        return DEFAULT_EXPANDED_DAY_VIEW_CLASS;
     }
 
     protected String getComponentName() {

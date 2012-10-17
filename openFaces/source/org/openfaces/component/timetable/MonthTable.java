@@ -60,6 +60,13 @@ public class MonthTable extends TimetableView { // todo: extract some common typ
     private String inactiveMonthCellHeaderClass;
     private String inactiveMonthCellStyle;
     private String inactiveMonthCellClass;
+    private String moreLinkElementStyle;
+    private String moreLinkElementClass;
+    private String moreLinkStyle;
+    private String moreLinkClass;
+    private String moreLinkText;
+    private String expandedDayViewStyle;
+    private String expandedDayViewClass;
 
 
     private Integer scrollOffset = 0;
@@ -343,12 +350,68 @@ public class MonthTable extends TimetableView { // todo: extract some common typ
         this.inactiveMonthCellClass = inactiveMonthCellClass;
     }
 
+    public String getMoreLinkElementStyle() {
+        return ValueBindings.get(this, "moreLinkElementStyle", moreLinkElementStyle);
+    }
+
+    public void setMoreLinkElementStyle(String moreLinkElementStyle) {
+        this.moreLinkElementStyle = moreLinkElementStyle;
+    }
+
+    public String getMoreLinkElementClass() {
+        return ValueBindings.get(this, "moreLinkElementClass", moreLinkElementClass);
+    }
+
+    public void setMoreLinkElementClass(String moreLinkElementClass) {
+        this.moreLinkElementClass = moreLinkElementClass;
+    }
+
+    public String getMoreLinkStyle() {
+        return ValueBindings.get(this, "moreLinkStyle", moreLinkStyle);
+    }
+
+    public void setMoreLinkStyle(String moreLinkStyle) {
+        this.moreLinkStyle = moreLinkStyle;
+    }
+
+    public String getMoreLinkClass() {
+        return ValueBindings.get(this, "moreLinkClass", moreLinkClass);
+    }
+
+    public void setMoreLinkClass(String moreLinkClass) {
+        this.moreLinkClass = moreLinkClass;
+    }
+
+    public String getMoreLinkText() {
+        return ValueBindings.get(this, "moreLinkText", moreLinkText);
+    }
+
+    public void setMoreLinkText(String moreLinkText) {
+        this.moreLinkText = moreLinkText;
+    }
+
     public int getScrollOffset() {
         return scrollOffset;
     }
 
     public void setScrollOffset(int scrollOffset) {
         this.scrollOffset = scrollOffset;
+    }
+
+    public String getExpandedDayViewStyle() {
+        return ValueBindings.get(this, "expandedDayViewStyle", moreLinkClass);
+    }
+
+    public void setExpandedDayViewStyle(String expandedDayViewStyle) {
+        this.expandedDayViewStyle = expandedDayViewStyle;
+    }
+
+    public String getExpandedDayViewClass() {
+        return ValueBindings.get(this, "expandedDayViewClass", moreLinkClass);
+    }
+
+    public void setExpandedDayViewClass(String expandedDayViewClass) {
+        this.expandedDayViewClass = expandedDayViewClass;
     }
 
     @Override
@@ -387,7 +450,14 @@ public class MonthTable extends TimetableView { // todo: extract some common typ
                 inactiveMonthCellHeaderClass,
                 inactiveMonthCellStyle,
                 inactiveMonthCellClass,
-                scrollOffset,
+                moreLinkElementStyle,
+                moreLinkElementClass,
+                moreLinkStyle,
+                moreLinkClass,
+                moreLinkText,
+                expandedDayViewStyle,
+                expandedDayViewClass,
+                scrollOffset
         };
     }
 
@@ -428,6 +498,13 @@ public class MonthTable extends TimetableView { // todo: extract some common typ
         inactiveMonthCellHeaderClass = (String) state[i++];
         inactiveMonthCellStyle = (String) state[i++];
         inactiveMonthCellClass = (String) state[i++];
+        moreLinkElementStyle = (String) state[i++];
+        moreLinkElementClass = (String) state[i++];
+        moreLinkStyle = (String) state[i++];
+        moreLinkClass = (String) state[i++];
+        moreLinkText = (String) state[i++];
+        expandedDayViewStyle = (String) state[i++];
+        expandedDayViewClass = (String) state[i++];
         scrollOffset = (Integer) state[i++];
     }
 

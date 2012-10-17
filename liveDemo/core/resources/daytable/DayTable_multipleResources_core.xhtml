@@ -1,12 +1,11 @@
 <div xmlns="http://www.w3.org/1999/xhtml"
      xmlns:f="http://java.sun.com/jsf/core"
-     xmlns:o="http://openfaces.org/">
+     xmlns:o="http://openfaces.org/" xmlns:h="http://java.sun.com/jsf/html">
   <div id="Demo">
     <style>
       .test{
-        background-color: black;
+        background-color: red;
         width: 100px;
-        color: black;
       }
 
     </style>
@@ -29,14 +28,13 @@
 
       <f:facet name="expandedDayHeader">
         <o:scrollButton rolloverButtonStyle="background-color: black;"
-                        buttonStyle="background-color: black;"
                         buttonClass="test"
                         scrollDirection="up"
                         rolloverButtonClass="test"/>
       </f:facet>
       <f:facet name="expandedDayFooter">
+        <h:outputText value="TOP" />
         <o:scrollButton rolloverButtonStyle="background-color: black;"
-                        buttonStyle="background-color: black;"
                         buttonClass="test"
                         scrollDirection="down"
                         rolloverButtonClass="test"/>

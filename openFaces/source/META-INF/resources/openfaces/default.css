@@ -608,7 +608,7 @@
 }
 
 .o_moreLinkElement {
-  height:20px;
+  height:18px;
   position: absolute;
   text-align: center;
 }
@@ -616,6 +616,19 @@
 .o_moreLink {
   color: black;
 }
+
+.o_expandedDayView{
+    background-color: #f8f8ff;
+    border: 1px solid;
+    width:100px;
+    height:150px;
+    padding:2px;
+}
+
+.o_scrollButtonClass{
+    background-color: graytext;
+}
+
 
 .o_timeColumn {
   width: 50px;
@@ -665,7 +678,8 @@
 }
 
 .o_monthTableEvent {
-  height: 40px;
+  height: 34px;
+  font-size: 8pt;
 }
 
 .o_dayViewButtonClass{

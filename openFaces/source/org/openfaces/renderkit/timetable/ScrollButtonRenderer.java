@@ -12,12 +12,14 @@
 package org.openfaces.renderkit.timetable;
 
 import org.openfaces.component.timetable.ScrollButton;
+import org.openfaces.component.timetable.ScrollDirection;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.util.InitScript;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
+import org.openfaces.util.StyleGroup;
 import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
@@ -27,6 +29,8 @@ import java.io.IOException;
 
 public class ScrollButtonRenderer extends org.openfaces.renderkit.RendererBase {
 
+    private static final String DEFAULT_SCROLL_BUTTON_CLASS = "o_scrollButtonClass";
+
     private static String BUTTON_SUFFIX = "::button";
 
 
@@ -34,10 +38,10 @@ public class ScrollButtonRenderer extends org.openfaces.renderkit.RendererBase {
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         super.encodeBegin(context, component);
-        encodeButton(context, component, "up");
+        encodeButton(context, component);
     }
 
-    protected void encodeButton(FacesContext context, UIComponent component, String buttonOrientation ) throws IOException {
+    protected void encodeButton(FacesContext context, UIComponent component) throws IOException {
         System.out.println("Encoding Button" + component.getParent());
         FacesContext currentInstance = FacesContext.getCurrentInstance();
 
@@ -46,21 +50,27 @@ public class ScrollButtonRenderer extends org.openfaces.renderkit.RendererBase {
         ResponseWriter writer = context.getResponseWriter();
 
         writeIdAttribute(context,scrollButton);
-        writer.writeAttribute("nowrap", "nowrap", null);
+        writer.startElement("div", scrollButton);
+        System.out.println("scrollButton = " + scrollButton.getButtonStyle());
+        writer.writeAttribute("class", Styles.getCSSClass(context, scrollButton, scrollButton.getButtonStyle(), StyleGroup.regularStyleGroup(),
+                scrollButton.getButtonClass(), getDefaultScrollButtonClass()), null);
 
+        writer.writeAttribute("nowrap", "nowrap", null);
         writer.writeAttribute("align", "center", null);
         writer.writeAttribute("valign", "middle", null);
 
         String imageUrl;
         String buttonImageUrl = (String) scrollButton.getAttributes().get("buttonImageUrl");
-        if (buttonOrientation.equals("up"))
-            imageUrl = Resources.getURL(context, buttonImageUrl, null, "input/dropButton.gif");
+        if (scrollButton.getScrollDirection().equals(ScrollDirection.UP))
+            imageUrl = Resources.getURL(context, buttonImageUrl, null, "input/scrollButtonUp.gif");
         else
-            imageUrl = Resources.getURL(context, buttonImageUrl, null, "input/dropButton.gif");
+            imageUrl = Resources.getURL(context, buttonImageUrl, null, "input/scrollButtonDown.gif");
         writer.startElement("img", scrollButton);
         writeIdAttribute(context,scrollButton);
         writer.writeAttribute("src", imageUrl, null);
         writer.endElement("img");
+
+        writer.endElement("div");
         InitScript initScript = renderInitScript(currentInstance,scrollButton);
         Rendering.renderInitScripts(currentInstance, initScript);
 
@@ -89,6 +99,10 @@ public class ScrollButtonRenderer extends org.openfaces.renderkit.RendererBase {
         Styles.addStyleJsonParam(context, scrollButton, stylingParams, "rolloverButtonClass",
                 scrollButton.getRolloverButtonStyle(), scrollButton.getRolloverButtonClass());
         return stylingParams;
+    }
+
+    protected String getDefaultScrollButtonClass(){
+        return DEFAULT_SCROLL_BUTTON_CLASS;
     }
 
 

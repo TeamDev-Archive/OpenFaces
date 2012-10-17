@@ -15,9 +15,10 @@ import org.openfaces.util.ValueBindings;
 
 import javax.faces.context.FacesContext;
 
-public class ScrollButton extends org.openfaces.component.OUICommand {
+public class ScrollButton extends org.openfaces.component.OUIPanel {
     public static final String COMPONENT_TYPE = "org.openfaces.ScrollButton";
     public static final String COMPONENT_FAMILY = "org.openfaces.ScrollButton";
+
     private String buttonStyle;
     private String buttonClass;
     private String rolloverButtonStyle;
@@ -106,4 +107,5 @@ public class ScrollButton extends org.openfaces.component.OUICommand {
         System.out.println("scrollDirections = " + scrollDirection.toString());
         this.scrollDirection = scrollDirection;
     }
+
 }

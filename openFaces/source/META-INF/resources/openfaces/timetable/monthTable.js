@@ -90,8 +90,9 @@ O$.MonthTable = {
 
 
     //TODO: add initializing of dayView styles
-    setTimeout(function(){
+//    setTimeout(function(){
       monthTable._expandedDayView = O$(componentId + "::expandedDayView");
+      console.log("expanding view = " + monthTable._expandedDayView )
       monthTable._expandedDayView.eventBlock = O$(componentId + "::expandedDayView::eventBlock");
       monthTable._expandedDayView.opened = false;
       //monthTable._expandedDayView.defaultRect = O$.getElementBorderRectangle(monthTable._expandedDayView, true);
@@ -118,7 +119,6 @@ O$.MonthTable = {
           monthTable._updateCellEventElements(dayCell._cellDay);
           this.opened = true;
           var rect = O$.getElementBorderRectangle(this, true).clone();
-          console.log("IMPORTANT!!!!!!!!!!!!!" + rect.toString());
           O$.setElementSize(this, {height:10});
           this._lastRectangleTransition = O$.runTransitionEffect(monthTable._expandedDayView, ["rectangle"], [rect], 200, 20, null);
         },
@@ -130,12 +130,7 @@ O$.MonthTable = {
           this.opened = false;
         }
     });
-
-
-
-      //TODO: temp soultion in future neeed to erase this collection
-      monthTable._expandedDayView.parts = [];
-    }, 200);
+  //  }, 10);
 
 
 
@@ -150,8 +145,6 @@ O$.MonthTable = {
     monthTable._weekendCellClass = weekendCellClass;
     monthTable._inactiveMonthCellHeaderClass = inactiveMonthCellHeaderClass;
     monthTable._inactiveMonthCellClass = inactiveMonthCellClass;
-
-    //TODO: add activation of ExpandedDayView
 
     var eventElementHeight = O$.calculateNumericCSSValue(O$.getStyleClassProperty(monthTable._eventStyleClass, "height"));
     var eventsLeftOffset = O$.calculateNumericCSSValue(O$.getStyleClassProperty(monthTable._eventStyleClass, "marginLeft"));
@@ -258,7 +251,6 @@ O$.MonthTable = {
       }
     }
 
-
     monthTable._updateCellEventElements = function(day) {
       var cell = O$.MonthTable.getCellForDay(this, day);
 
@@ -268,6 +260,7 @@ O$.MonthTable = {
 
       if (cell._cellEvents) {
         cell._cellEvents.forEach(function(oldCellEvent) {
+          //TODO: check for what we need this
           if (oldCellEvent._removeElements)
             oldCellEvent._removeElements();
         });
@@ -278,13 +271,10 @@ O$.MonthTable = {
       var cellEvents = O$.MonthTable.getDayEvents(this._events, day);
 
       function getEventDaysDuration(event){
-
         return O$.getDayInterval(event.end, event.start)
       }
-
-      //sorting events by theirs day interval TODO: доделать нормально
+      //sorting events by theirs day interval TODO: maybe use default sorting
       for (var i = 0; i<cellEvents.length; i++){
-
         var max = i;
         for (var j = i+1; j<cellEvents.length; j++){
           if (getEventDaysDuration(cellEvents[max]) < getEventDaysDuration(cellEvents[j]))
@@ -302,13 +292,11 @@ O$.MonthTable = {
         cell._cellEvents.push(cellEvent);
       }
 
-
       cell._moreLinkData = null;
 
       cellEvents.forEach(function(cellEvent) {
         monthTable._addEventElements(cellEvent);
       });
-      //monthTable._reCalcCells();
       cell._moreLinkElement._update();
       cell._moreLinkData = null;
 
@@ -330,7 +318,6 @@ O$.MonthTable = {
         O$.stopEvent(e);
         monthTable._expandedDayView._expandDayView(cell);
       }
-      //link.onmousedown = link.onclick;
 
       moreLinkElement._updatePos = function() {
         if (!cell._moreLinkData) {
@@ -421,7 +408,7 @@ O$.MonthTable = {
                   partEnd = O$.incDay(O$.cloneDate(partEnd), 7);
                 } while (partStart < end);
 
-
+                 console.log("monthTable._expandedDayView.expandedDay = "  + monthTable._expandedDayView);
                 if (monthTable._expandedDayView.expandedDay){
                   if (this._checkDayInEvent(monthTable._expandedDayView.expandedDay,event)){
                     var part = {
@@ -432,8 +419,6 @@ O$.MonthTable = {
                       expandedPart: true
                     };
                     parts.push(part);
-                    //TODO:  temp solution in future need to erase this collection
-                    monthTable._expandedDayView.parts.push(part);
                   }
                 }
 
@@ -509,7 +494,6 @@ O$.MonthTable = {
               _addEventElement: function(event, part) {
                 var eventElement = super_addEventElement.call(this, event, part);
 
-//######################################################################################################################
                 O$.extend(event, {
                   _getDraggablePartIndex: function() {
                     for (var i = 0; i < event.parts.length; i++) {
@@ -611,12 +595,11 @@ O$.MonthTable = {
                     });
                   }
                 });
-//######################################################################################################################
+
                 event._setupDragAndDrop();
                 event._updateRolloverState = function() {
 
                   var mouseInsideEventElements = false;
-
                   for (var i = 0; i < event.parts.length; i++) {
                     var eventElement = event.parts[i].mainElement;
                     if (!eventElement) {
@@ -683,13 +666,7 @@ O$.MonthTable = {
                     var rect = new O$.Rectangle(Math.round(x1), Math.round(topY),
                             Math.round(x2 - x1), Math.round(bottomY - topY));
                     this._rect = rect;
-                  }
-                  if (!part.expandedPart){
-                    //todo: remove this all it's just to remember fields name
-                    // cell._row
-                    /* row._cells;
-                     for (var cellIndex = 0; cellIndex < cells.length; cellIndex++) {
-                    * */
+                  }else{
                     var endDayCell = O$.MonthTable.getCellForDay(monthTable,part.end);
 
                     var endDayCellBoundaries = O$.getElementBorderRectangle(endDayCell, true);
@@ -817,6 +794,7 @@ O$.MonthTable = {
 
 
               _updateStartEndTime: function() {
+
                 this._startTime = O$.MonthTable.getDay(this._day, firstDayOfWeek);
                 this._endTime = O$.MonthTable.getFirstDayOut(this._day, firstDayOfWeek);
 
@@ -1064,6 +1042,7 @@ O$.MonthTable = {
         var cell = cells[cellIndex];
         var cellDay = cell._cellDay;
         if (O$._datesEqual(cellDay, day)) {
+          //TODO: check if we can delete this
           cell._rowIndex = rowIndex;
           return cell;
         }

@@ -152,4 +152,32 @@ public class MonthTableJspTag extends TimetableViewJspTag {
         getDelegate().setPropertyValue("inactiveMonthCellClass", value);
     }
 
+    public void setMoreLinkElementStyle(ValueExpression value) {
+        getDelegate().setPropertyValue("moreLinkElementStyle", value);
+    }
+
+    public void setMoreLinkElementClass(ValueExpression value) {
+        getDelegate().setPropertyValue("moreLinkElementClass", value);
+    }
+
+    public void setMoreLinkStyle(ValueExpression value) {
+        getDelegate().setPropertyValue("moreLinkStyle", value);
+    }
+
+    public void setMoreLinkClass(ValueExpression value) {
+        getDelegate().setPropertyValue("moreLinkClass", value);
+    }
+
+    public void setMoreLinkText(ValueExpression value) {
+        getDelegate().setPropertyValue("moreLinkText", value);
+    }
+
+    public void setExpandedDayViewStyle(ValueExpression value) {
+        getDelegate().setPropertyValue("expandedDayViewStyle", value);
+    }
+
+    public void setExpandedDayViewClass(ValueExpression value) {
+        getDelegate().setPropertyValue("expandedDayViewClass", value);
+    }
+
 }
