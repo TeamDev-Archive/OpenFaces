@@ -222,6 +222,7 @@ public class LiveDemoTest extends OpenFacesTestCase {
 //        click.build().perform();
         assertTrue(window().document().isAlertPresent());
         acceptAlert();
+        closeBrowser();
 
     }
 
