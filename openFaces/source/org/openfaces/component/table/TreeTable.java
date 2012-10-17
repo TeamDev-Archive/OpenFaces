@@ -11,6 +11,7 @@
  */
 package org.openfaces.component.table;
 
+import org.openfaces.ajax.PartialViewContext;
 import org.openfaces.component.filter.Filter;
 import org.openfaces.component.table.impl.NodeComparator;
 import org.openfaces.component.table.impl.NodeInfo;
@@ -960,7 +961,7 @@ public class TreeTable extends AbstractTable {
 
     private boolean isTableRerenderingNeeded(FacesContext context) {
         String render = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().
-                get(AjaxUtil.PARAM_RENDER);
+                get(PartialViewContext.PARTIAL_RENDER_PARAM_NAME);
         return render != null ? render.contains(getClientId(context)) : false;
     }
 
