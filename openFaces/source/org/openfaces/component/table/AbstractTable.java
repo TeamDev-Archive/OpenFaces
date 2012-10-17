@@ -147,6 +147,10 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     private Boolean deferBodyLoading;
     private Integer totalRowCount;
     private boolean implicitFacetsCreated;
+    private Boolean unsortedStateAllowed;
+
+    private Boolean keepSelectionVisible;
+    private Boolean rowsDecodingRequired = true;
 
     public AbstractTable() {
         super.setUiDataValue(new TableDataModel(this));
@@ -191,7 +195,8 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
                 rolloverRowStyle, rolloverRowClass, noDataRowStyle, noDataRowClass,
                 noDataMessageAllowed, columnIndexVar, columnIdVar, saveAttachedState(context, columnsOrder),
                 sortedAscendingImageUrl, sortedDescendingImageUrl, cachedClientId,
-                autoFilterDelay, deferBodyLoading, totalRowCount, implicitFacetsCreated};
+                autoFilterDelay, deferBodyLoading, totalRowCount, implicitFacetsCreated, unsortedStateAllowed,
+                keepSelectionVisible};
     }
 
     @Override
@@ -280,6 +285,9 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         deferBodyLoading = (Boolean) state[i++];
         totalRowCount = (Integer) state[i++];
         implicitFacetsCreated = (Boolean) state[i++];
+        unsortedStateAllowed = (Boolean) state[i++];
+
+        keepSelectionVisible = (Boolean) state[i++];
 
         beforeUpdateValuesPhase = true;
         incomingSortingRules = null;
@@ -1760,6 +1768,14 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         this.noDataMessageAllowed = noDataMessageAllowed;
     }
 
+    public Boolean getKeepSelectionVisible() {
+        return ValueBindings.get(this, "keepSelectionVisible", keepSelectionVisible, false);
+    }
+
+    public void setKeepSelectionVisible(Boolean keepSelectionVisible) {
+        this.keepSelectionVisible = keepSelectionVisible;
+    }
+
     public abstract boolean isDataSourceEmpty();
 
     public String getColumnIdVar() {
@@ -2181,5 +2197,30 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
      */
     public void restoreRowVariables() {
         Components.restoreRequestVariable(getVar());
+    }
+
+
+    public boolean getUnsortedStateAllowed() {
+        return ValueBindings.get(this, "unsortedStateAllowed", unsortedStateAllowed, false);
+    }
+
+    public void setUnsortedStateAllowed(boolean unsortedStateAllowed) {
+        this.unsortedStateAllowed = unsortedStateAllowed;
+    }
+
+    public Boolean getRowsDecodingRequired() {
+        return rowsDecodingRequired;
+    }
+
+    public void setRowsDecodingRequired(Boolean rowsDecodingRequired) {
+        this.rowsDecodingRequired = rowsDecodingRequired;
+    }
+
+    public Integer getTotalRowCount() {
+        return totalRowCount;
+    }
+
+    public void setTotalRowCount(Integer totalRowCount) {
+        this.totalRowCount = totalRowCount;
     }
 }

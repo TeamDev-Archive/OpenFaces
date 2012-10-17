@@ -19,6 +19,7 @@ import org.openfaces.component.filter.PropertyLocator;
 import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.BaseColumn;
 import org.openfaces.renderkit.RendererBase;
+import org.openfaces.renderkit.TableUtil;
 import org.openfaces.util.Components;
 import org.openfaces.util.RawScript;
 import org.openfaces.util.ScriptBuilder;
@@ -62,6 +63,7 @@ public abstract class ExpressionFilterRenderer extends RendererBase {
                     filterId + ". It should either be placed into some table facet, or its \"for\" attribute should " +
                     "be used to explicitly attach this filter to a filtered component.");
         }
+        TableUtil.markFilteringToggledInThisRequest(FacesContext.getCurrentInstance());
         filteredComponent.filterChanged(filter);
     }
 

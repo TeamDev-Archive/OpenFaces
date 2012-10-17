@@ -378,6 +378,7 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
         }
     }
 
+    //TODO: review this method
     private boolean areExtractedRowsNeeded() {
         return true;
 //    return (isSortingNeeded()) ||
@@ -692,6 +693,9 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
     private int requestNonPagedRowCount() {
         AbstractTable table = getTable();
         setFilteringCriteriaToRequestVariable();
+        if (!table.getRowsDecodingRequired()){
+            return table.getTotalRowCount();
+        }
         ValueExpression valueExpression = table.getValueExpression("totalRowCount");
         if (valueExpression == null)
             throw new IllegalStateException("totalRowCount must be defined for pagination with custom data providing to work. table id = " +
@@ -1279,6 +1283,13 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
         return columnGroupingInfo;
     }
 
+    public Boolean isObjectInList(Object rowData){
+        for (RowInfo extractedRow : extractedRows ){
+            if (extractedRow.getRowData().equals(rowData))
+                return true;
+        }
+        return false;
+    }
 
     /**
      * This class contains the pre-extracted column's data that is repeatedly required during the row grouping process,

@@ -2877,11 +2877,26 @@ if (!window.O$) {
     component._focusable = true;
     component.focus = function() {
       if (O$.getElementStyle(component, "position") == "absolute" || this._preventPageScrolling) {
-        var pageScrollPos = O$.getPageScrollPos();
         var container = O$.getContainingBlock(this._focusControl, true);
-        var containerPos = container ? O$.getElementPos(container) : {x: 0, y: 0};
-        this._focusControl.style.left = pageScrollPos.x - containerPos.x + O$.getVisibleAreaSize().width/2 + "px";
-        this._focusControl.style.top = pageScrollPos.y - containerPos.y + O$.getVisibleAreaSize().height/2 + "px";
+
+        if (container) {
+          var containerRect = O$.getElementBorderRectangle(container);
+        } else {
+          var containerRect = new O$.Rectangle(0, 0, O$.getVisibleAreaSize().width, O$.getVisibleAreaSize().height);
+        }
+        var pageScrollPos =  O$.getPageScrollPos();
+        var pageScrollRect = new O$.Rectangle(pageScrollPos.x, pageScrollPos.y, O$.getVisibleAreaSize().width, O$.getVisibleAreaSize().height);
+
+        if (!pageScrollRect.intersects(containerRect)) {
+          // if rectangle not intersect - we put focus to the mid of container
+          this._focusControl.style.top = (containerRect.getMaxY()  - containerRect.getMinY())/2 + "px";
+          this._focusControl.style.left = (containerRect.getMaxX()  - containerRect.getMinX())/2 + "px";
+        } else{
+          // if rectangles intersects - we put focus to the mid of intersection
+          pageScrollRect.intersectWith(containerRect);
+          this._focusControl.style.left = - containerRect.getMinX() + (pageScrollRect.getMaxX() + pageScrollRect.getMinX())/2 + "px";
+          this._focusControl.style.top =  - containerRect.getMinY() + (pageScrollRect.getMaxY() + pageScrollRect.getMinY())/2 + "px";
+        }
       } else {
         this._focusControl.style.left = "";
         this._focusControl.style.top = "";
@@ -5209,7 +5224,7 @@ if (!window.O$) {
           });
       }, 1);
   };
-  
+
   O$.initUnloadableComponent = function(component) {
     if (!component.onComponentUnload) {
       O$.addThisComponentToAllParents(component);
