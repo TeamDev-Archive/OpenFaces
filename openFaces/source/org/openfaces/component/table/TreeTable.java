@@ -59,6 +59,7 @@ public class TreeTable extends AbstractTable {
     private Map<Object, NodeInfoForRow> rowIndexToExpansionData;
 
     private ExpansionState expansionState = new AllNodesCollapsed();
+    private PreloadingState preloadingState = new PreloadingState();
 
     private Integer sortLevel;
     private Boolean foldingEnabled;
@@ -93,7 +94,7 @@ public class TreeTable extends AbstractTable {
         return new Object[]{superState, nodeLevelVar, nodePathVar, nodeHasChildrenVar, expansionState,
                 sortLevel, foldingEnabled, preloadedNodes,
                 filterAcceptedRowStyle, filterAcceptedRowClass, filterSubsidiaryRowStyle, filterSubsidiaryRowClass,
-                textStyle, textClass};
+                textStyle, textClass, preloadingState};
     }
 
     @Override
@@ -114,6 +115,7 @@ public class TreeTable extends AbstractTable {
         filterSubsidiaryRowClass = (String) state[i++];
         textStyle = (String) state[i++];
         textClass = (String) state[i++];
+        preloadingState = (PreloadingState) state[i++];
     }
 
     @Override
@@ -457,6 +459,12 @@ public class TreeTable extends AbstractTable {
         List<Filter> filters = getActiveFilters();
         deepestLevel = 0;
         rowValuesForFilteringNeeded = null;
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (!AjaxUtil.isAjaxPortionRequest(context, this)) {
+            if (isTableRerenderingNeeded(context)) {
+                preloadingState = new PreloadingState();
+            }
+        }
         int rootNodeCount = proceedWithReadingData
                 ? collectTreeNodeDatas(treeStructure, filters, nodeInfoForRows, null, nodeInfoForRows_unfiltered, 0, sortLevel, null, null, null, true)
                 : 0;
@@ -530,9 +538,12 @@ public class TreeTable extends AbstractTable {
             TreePath nodeKeyPath = new TreePath(nodeKey, parentNodeKeyPath);
             TreePath nodeIndexPath = new TreePath(nodeIndex, parentNodeIndexPath);
             boolean nodeExpanded = isNodeExpanded(nodeKeyPath);
+            if (nodeExpanded && !preloadingState.isPreloaded(nodePath)) {
+                preloadingState.addPreloadedTreePath(nodePath);
+            }
             NodeInfoForRow nodeInfo = new NodeInfoForRow(nodePath, nodeKeyPath, nodeIndexPath, level, nodeExpanded, thisLevelInitiallyVisible);
             boolean preloadChildren = nodeHasChildren && (
-                    nodeExpanded || (preloadedNodes != null && preloadedNodes.getPreloadChildren(nodeKeyPath))
+                    preloadingState.isPreloaded(nodePath) || (preloadedNodes != null && preloadedNodes.getPreloadChildren(nodeKeyPath))
             );
             TempNodeParams thisNodeParams = new TempNodeParams(nodeData, nodeInfo, nodeExpanded, preloadChildren);
             boolean[] flagsArray = new boolean[activeFilters.size()];
@@ -939,6 +950,18 @@ public class TreeTable extends AbstractTable {
             return ((CheckboxColumn) column).getSelectedRowKeys();
         } else
             throw new IllegalArgumentException("Unkown column type: " + (column != null ? column.getClass().getName() : "null"));
+    }
+
+    @Override
+    protected boolean isRowsDecodingRequired() {
+        // That's because we need to decode TreeTable every request to save expansion state.
+        return true;
+    }
+
+    private boolean isTableRerenderingNeeded(FacesContext context) {
+        String render = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().
+                get(AjaxUtil.PARAM_RENDER);
+        return render != null ? render.contains(getClientId(context)) : false;
     }
 
 }
