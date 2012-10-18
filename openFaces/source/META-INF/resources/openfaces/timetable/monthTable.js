@@ -268,8 +268,6 @@ O$.MonthTable = {
 
       if (cell._cellEvents) {
         cell._cellEvents.forEach(function(oldCellEvent) {
-          //TODO: check for what we need this
-          if (oldCellEvent._removeElements)
             oldCellEvent._removeElements();
         });
       }
@@ -281,17 +279,13 @@ O$.MonthTable = {
       function getEventDaysDuration(event){
         return O$.getDayInterval(event.end, event.start)
       }
-      //sorting events by theirs day interval TODO: maybe use default sorting
-      for (var i = 0; i<cellEvents.length; i++){
-        var max = i;
-        for (var j = i+1; j<cellEvents.length; j++){
-          if (getEventDaysDuration(cellEvents[max]) < getEventDaysDuration(cellEvents[j]))
-            max = j;
-        }
-        var tmp = cellEvents[max];
-        cellEvents[max] = cellEvents[i];
-        cellEvents[i] = tmp
-      }
+
+      cellEvents.sort(function(row1, row2){
+        var value1 = getEventDaysDuration(row1), value2 = getEventDaysDuration(row2);
+        return (value1 > value2) ? -1 : ( (value2 > value1) ? 1 : 0 );
+      });
+
+
 
       for (var cellEventIndex = 0; cellEventIndex < cellEvents.length; cellEventIndex++) {
         var cellEvent = cellEvents[cellEventIndex];
@@ -379,22 +373,14 @@ O$.MonthTable = {
                 this._expandedDayView._scrollContent(delta);
               },
 
-              _checkDayInEvent: function(day,event){
+              _checkDayInInterval: function(day, interval){
                 var incDay = O$.incDay(day,1);
-                // TODO: varify if method correct
-                /*console.log("event.start > day && event.start < incDay = " + (event.start > day && event.start < incDay));
-                console.log("event.end > day && event.end < incDay = " + (event.end > day && event.end < incDay));
-                console.log("day>event.start && day<event.end = " + (day>event.start && day<event.end));*/
-                if ((event.start > day && event.start < incDay) ||
-                    (event.end > day && event.end < incDay) ||
-                    (day>event.start && day<event.end) ||
-                    (incDay>event.start && incDay<event.end)) return true;
+                if (!(interval.end < day || interval.start > incDay))
+                  return true;
                 return false;
               },
-              //TODO: realization of splitting to parts for month table
               _splitIntoParts: function(event) {
                 var parts = [];
-
                 var start = this._startTime < event.start ? event.start : this._startTime;
                 var end = this._endTime < event.end ? this._endTime : event.end;
                 var partStart = start;
@@ -417,7 +403,7 @@ O$.MonthTable = {
                 } while (partStart < end);
 
                 if (monthTable._expandedDayView.expandedDay){
-                  if (this._checkDayInEvent(monthTable._expandedDayView.expandedDay,event)){
+                  if (this._checkDayInInterval(monthTable._expandedDayView.expandedDay,event)){
                     var part = {
                       start: monthTable._expandedDayView.expandedDay,
                       end: monthTable._expandedDayView.expandedDay,
@@ -453,8 +439,7 @@ O$.MonthTable = {
                   cell = cell._cell;
                   row = cell._row;
                 }
-                //TODO: do not return JSON object just for one value
-                return { cell: cell};
+                return cell;
               },
 
               _getLayoutCache: function() {
@@ -469,35 +454,6 @@ O$.MonthTable = {
                 return this._eventEditor;
               },
 
-              _cellsToReCalc : [],
-
-              _addCellForReCalc : function(cell){
-                if (!O$.contains(this._cellsToReCalc, cell)){
-                  this._cellsToReCalc.push(cell);
-                }
-              },
-
-              _passedEvent : [],
-
-              //TODO: maybe remove this method because it was added to avoid double event creation when parts wasn't correctly supported
-              _addPassedEvent : function(event){
-                if (!O$.contains(this._passedEvent, event)){
-                  this._passedEvent.push(event);
-                }
-              },
-
-              //TODO: maybe remove this method because it was added to avoid double event creation when parts wasn't correctly supported
-              _validateEvent : function(event){
-                return !O$.contains(this._passedEvent, event);
-              },
-
-              _reCalcCells : function(){
-                if (this._cellsToReCalc.length>0){
-                  monthTable._updateCellEventElements(this._cellsToReCalc[0]._cellDay);
-                  this._cellsToReCalc.splice (0, 1);
-                }
-              },
-
               _addEventElement: function(event, part) {
                 var eventElement = super_addEventElement.call(this, event, part);
 
@@ -505,11 +461,8 @@ O$.MonthTable = {
                   _getDraggablePartIndex: function() {
                     for (var i = 0; i < event.parts.length; i++) {
                       part = event.parts[i];
-                      //TODO: rename this attribute and add some stuff
-                      var rightBorder = O$.incDay(event._dragPositionTime,0.51);
-                      //TODO: FINISH THIS
-                      if ((part.start < event._dragPositionTime && event._dragPositionTime < part.end )||
-                          (part.start < rightBorder && rightBorder < part.end ) ){
+                      var positionTime =  new Date(event._dragPositionTime.getFullYear(), event._dragPositionTime.getMonth(), event._dragPositionTime.getDate());
+                      if (monthTable._checkDayInInterval(positionTime, part )){
                         return i;
                       }
                     }
@@ -533,7 +486,7 @@ O$.MonthTable = {
 
                         var pos = O$.getEventPoint(e, eventElement);
                         event._dragPositionTop = pos.y;
-                        event._dragPositionTime = monthTable._getNearestTimeslotForPosition(eventElement._rect.x, event._dragPositionTop).cell._cellDay;
+                        event._dragPositionTime = monthTable._getNearestTimeslotForPosition(eventElement._rect.x, event._dragPositionTop)._cellDay;
 
                         O$.startDragging(e, this);
                         event._initialStart = event._lastValidStart = event.start;
@@ -559,7 +512,7 @@ O$.MonthTable = {
                         top = top < 0 ? 0 : top > maxTop ? maxTop : top;
 
                         var nearestTimeslot = monthTable._getNearestTimeslotForPosition(left, top);
-                        var timeIncrement = nearestTimeslot.cell._cellDay.getTime() - event._dragPositionTime.getTime();
+                        var timeIncrement = nearestTimeslot._cellDay.getTime() - event._dragPositionTime.getTime();
 
                         var eventUpdated = false;
                         if (timeIncrement != 0) {
@@ -644,7 +597,6 @@ O$.MonthTable = {
 
                   var cell = O$.MonthTable.getCellForDay(monthTable,part.start);
                   var cellEventIndex = event._cellEventIndex;
-                  //TODO: temporary we don't have expanded view  if (cell._cellDay != monthTable._expandedDayView.expandedDay){
                   if (part.expandedPart){
                     var changeEventParent = function(newParent){
                       newParent.appendChild(this);
@@ -656,69 +608,45 @@ O$.MonthTable = {
                     var bottomY = topY + eventElementHeight;
 
                     monthTable._expandedDayView.allEventHeight = topY + eventElementHeight;
-
-                    // TODO: maybe remove this vaiables
-                    var rightBorderOverflow =  event.end.getDate() > part.end.getDate();
-                    var leftBorderOverflow = event.start.getDate() < part.start.getDate();
-
                     var x1 = 0 + (event.type != "reserved" ? eventsLeftOffset : reservedEventsLeftOffset);
-                    if (leftBorderOverflow){
+                    if (event.start.getDate() < part.start.getDate()){
                       x1 -= 50;
-                    }
+                    };
                     var x2 = cellBoundaries.getMaxX() - cellBoundaries.getMinX() - (event.type != "reserved" ? eventsRightOffset : reservedEventsRightOffset);
-                    if (rightBorderOverflow){
+                    if (event.end.getDate() > part.end.getDate()){
                       x2 += 50;
-                    }
-
+                    };
                     var rect = new O$.Rectangle(Math.round(x1), Math.round(topY),
                             Math.round(x2 - x1), Math.round(bottomY - topY));
                     this._rect = rect;
                   }else{
                     var endDayCell = O$.MonthTable.getCellForDay(monthTable,part.end);
-
                     var endDayCellBoundaries = O$.getElementBorderRectangle(endDayCell, true);
                     var startDayCellBoundaries = O$.getElementBorderRectangle(cell, true);
                     //todo: temporary for future check here if we need some hidden parts for event layout
-                    //if (!monthTable._expandedDayView || cell._cellDay != monthTable._expandedDayView.expandedDay) {
-                    if (!part.expandedPart) {
-                      // If we have multi cell event we need to copy event to several lines
-                      //todo: maybe put this dirrectly to if
 
-                      var rightBorderOverflow =  part.index < (part.event.parts.length - 1 - (part.event.parts[part.event.parts.length-1].expandedPart ? 1 : 0 ));
-                      var leftBorderOverflow = part.index > 0;
+                    var rightBorderOverflow =  part.index < (part.event.parts.length - 1 - (part.event.parts[part.event.parts.length-1].expandedPart ? 1 : 0 ));
+                    var leftBorderOverflow = part.index > 0;
 
-
-                      endDayCell =  cell._row._cells[cell._row._cells.length-1];
-
-                      //TODO: make refactoring of calculating x1,x2 right here
-                      var rightDelta = 0;
-                      var leftDelta = 0;
-                      if (rightBorderOverflow)
-                        rightDelta = 1;
-                      if (leftBorderOverflow)
-                        leftDelta = 1;
-                      var x1 = startDayCellBoundaries.getMinX() + (event.type != "reserved" ? eventsLeftOffset : reservedEventsLeftOffset);
-                      var x2 = - (event.type != "reserved" ? eventsRightOffset : reservedEventsRightOffset);
-                      var cellWidth = startDayCellBoundaries.getMaxX() - startDayCellBoundaries.getMinX();
-
-                      if (leftBorderOverflow){
-                        x1 -= cellWidth;
-                      }
-                      if (rightBorderOverflow){
-                        x2 += startDayCellBoundaries.getMaxX() + cellWidth*(7-part.start.getDay());
-                      }else{
-                        x2 += endDayCellBoundaries.getMaxX();
-                      }
+                    //TODO: make refactoring of calculating x1,x2 right here
+                    var x1 = startDayCellBoundaries.getMinX() + (event.type != "reserved" ? eventsLeftOffset : reservedEventsLeftOffset);
+                    var x2 = - (event.type != "reserved" ? eventsRightOffset : reservedEventsRightOffset);
+                    var cellWidth = startDayCellBoundaries.getMaxX() - startDayCellBoundaries.getMinX();
+                    if (leftBorderOverflow){
+                      x1 -= cellWidth;
                     }
-
+                    if (rightBorderOverflow){
+                      x2 += startDayCellBoundaries.getMaxX() + cellWidth*(7-part.start.getDay());
+                    }else{
+                      x2 += endDayCellBoundaries.getMaxX();
+                    }
                     var placeIndex = cell.reservedPlaces.length;
-                    for (i=0; i<cell.reservedPlaces.length; i++){
+                    for (var i=0; i<cell.reservedPlaces.length; i++){
                       if (!cell.reservedPlaces[i] || cell.reservedPlaces[i]==event){
                         placeIndex = i;
                         break;
                       }
                     };
-
 
                     var topY = startDayCellBoundaries.getMinY() + eventElementHeight * placeIndex;
                     var bottomY = topY + eventElementHeight;
@@ -736,11 +664,10 @@ O$.MonthTable = {
                     }
 
                     // проверяем если ивент на 2+ дня резервируем ему место на след ячейки
-                    if (!O$._datesEqual(part.end, part.start) /* && monthTable._validateEvent(event)*/){
+                    if (!O$._datesEqual(part.end, part.start)){
                       var nextDayCell
                       for (day = O$.incDay(part.start,1); !O$._datesEqual(day, O$.incDay(part.end,1)); day=O$.incDay(day,1)){
                         nextDayCell = O$.MonthTable.getCellForDay(monthTable,day);
-                        monthTable._addCellForReCalc(nextDayCell);
                         nextDayCell.reservedPlaces[placeIndex] = event;
                       }
                     }
@@ -1029,7 +956,7 @@ O$.MonthTable = {
 
         if (monthTable._timetable){
           var dayLink = document.createElement("a");
-          O$.correctElementZIndex(dayLink, monthTable, 50);
+          O$.correctElementZIndex(dayLink, monthTable, 20);
           dayLink.style.position = "relative";
           dayLink.style.cursor = "pointer";
           dayLink.innerHTML = cellDay.getDate();
