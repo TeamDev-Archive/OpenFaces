@@ -12,6 +12,7 @@
 package org.openfaces.test;
 
 import com.thoughtworks.selenium.Selenium;
+import org.junit.After;
 import org.junit.Test;
 import org.seleniuminspector.openfaces.DateChooserInspector;
 import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
@@ -91,4 +92,8 @@ public class DateChooserValidationTest extends OpenFacesTestCase {
         assertPageContainsErrorIcon(false);
     }
 
+    @After
+    public void closeBrowser() {
+        getDriver().quit();
+    }
 }
