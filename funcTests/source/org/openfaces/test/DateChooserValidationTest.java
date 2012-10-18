@@ -91,9 +91,4 @@ public class DateChooserValidationTest extends OpenFacesTestCase {
         defaultDateChooser.field().type("17 oct. 2006");
         assertPageContainsErrorIcon(false);
     }
-
-    @After
-    public void closeBrowser() {
-        getDriver().quit();
-    }
 }
