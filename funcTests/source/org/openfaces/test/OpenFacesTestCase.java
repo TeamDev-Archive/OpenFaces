@@ -13,6 +13,7 @@ package org.openfaces.test;
 
 import com.thoughtworks.selenium.Selenium;
 import com.thoughtworks.selenium.SeleniumException;
+import org.junit.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.internal.WrapsDriver;
 import org.seleniuminspector.ElementInspector;
@@ -280,5 +281,11 @@ public abstract class OpenFacesTestCase extends SeleniumTestCase {
 
     protected WebDriver getDriver() {
         return ((WrapsDriver) getSelenium()).getWrappedDriver();
+    }
+
+    @AfterClass
+    public static void closeDriver() {
+        ((WrapsDriver) getSelenium()).getWrappedDriver().close();
+        SeleniumHolder.getInstance().resetSelenium();
     }
 }
