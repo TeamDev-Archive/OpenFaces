@@ -140,7 +140,6 @@ O$.MonthTable = {
     });
     monthTable._expandedDayView.headerHeight = O$.getElementSize(monthTable._expandedDayView.header).height;
     monthTable._expandedDayView.footerHeight = O$.getElementSize(monthTable._expandedDayView.footer).height;
-    console.log("monthTable._expandedDayView.headerHeight = " + monthTable._expandedDayView.headerHeight + ",  monthTable._expandedDayView.footerHeight = " +  monthTable._expandedDayView.footerHeight);
 
 
     monthTable._weekdayHeaderCellClass = weekdayHeaderCellClass;
@@ -604,10 +603,10 @@ O$.MonthTable = {
                     }
                     changeEventParent.call(this, monthTable._expandedDayView.eventBlock);
                     var cellBoundaries = O$.getElementBorderRectangle(monthTable._expandedDayView.eventBlock, true);
-                    var topY = monthTable._expandedDayView.headerHeight + eventElementHeight * cellEventIndex;
-                    var bottomY = topY + eventElementHeight;
+                    var y1 = monthTable._expandedDayView.headerHeight + eventElementHeight * cellEventIndex;
+                    var y2 = y1 + eventElementHeight;
 
-                    monthTable._expandedDayView.allEventHeight = topY + eventElementHeight;
+                    monthTable._expandedDayView.allEventHeight = y1 + eventElementHeight;
                     var x1 = 0 + (event.type != "reserved" ? eventsLeftOffset : reservedEventsLeftOffset);
                     if (event.start.getDate() < part.start.getDate()){
                       x1 -= 50;
@@ -616,30 +615,27 @@ O$.MonthTable = {
                     if (event.end.getDate() > part.end.getDate()){
                       x2 += 50;
                     };
-                    var rect = new O$.Rectangle(Math.round(x1), Math.round(topY),
-                            Math.round(x2 - x1), Math.round(bottomY - topY));
+                    var rect = new O$.Rectangle(Math.round(x1), Math.round(y1),
+                            Math.round(x2 - x1), Math.round(y2 - y1));
                     this._rect = rect;
                   }else{
                     var endDayCell = O$.MonthTable.getCellForDay(monthTable,part.end);
                     var endDayCellBoundaries = O$.getElementBorderRectangle(endDayCell, true);
                     var startDayCellBoundaries = O$.getElementBorderRectangle(cell, true);
-                    //todo: temporary for future check here if we need some hidden parts for event layout
 
                     var rightBorderOverflow =  part.index < (part.event.parts.length - 1 - (part.event.parts[part.event.parts.length-1].expandedPart ? 1 : 0 ));
                     var leftBorderOverflow = part.index > 0;
 
-                    //TODO: make refactoring of calculating x1,x2 right here
                     var x1 = startDayCellBoundaries.getMinX() + (event.type != "reserved" ? eventsLeftOffset : reservedEventsLeftOffset);
                     var x2 = - (event.type != "reserved" ? eventsRightOffset : reservedEventsRightOffset);
                     var cellWidth = startDayCellBoundaries.getMaxX() - startDayCellBoundaries.getMinX();
-                    if (leftBorderOverflow){
+                    if (leftBorderOverflow)
                       x1 -= cellWidth;
-                    }
-                    if (rightBorderOverflow){
+                    if (rightBorderOverflow)
                       x2 += startDayCellBoundaries.getMaxX() + cellWidth*(7-part.start.getDay());
-                    }else{
+                    else
                       x2 += endDayCellBoundaries.getMaxX();
-                    }
+
                     var placeIndex = cell.reservedPlaces.length;
                     for (var i=0; i<cell.reservedPlaces.length; i++){
                       if (!cell.reservedPlaces[i] || cell.reservedPlaces[i]==event){
@@ -648,17 +644,16 @@ O$.MonthTable = {
                       }
                     };
 
-                    var topY = startDayCellBoundaries.getMinY() + eventElementHeight * placeIndex;
-                    var bottomY = topY + eventElementHeight;
+                    var y1 = startDayCellBoundaries.getMinY() + eventElementHeight * placeIndex;
+                    var y2 = y1 + eventElementHeight;
                     var lastForCell = (cellEventIndex == cell._cellEvents.length - 1);
                     var maxY = lastForCell ? startDayCellBoundaries.getMaxY() : startDayCellBoundaries.getMaxY() - moreLinkElementHeight;
                     if (cell._moreLinkData ) {
                       this.style.display = "none";
                       return;
                     }
-                    if (bottomY > maxY ) {
-                      //TODO: temporary commented need to uncomment for showing of more link
-                      cell._moreLinkData = { topY: topY };
+                    if (y2 > maxY ) {
+                      cell._moreLinkData = { topY: y1 };
                       this.style.display = "none";
                       return;
                     }
@@ -678,8 +673,8 @@ O$.MonthTable = {
                       var scrollerWidth = scroller.offsetWidth - scroller.clientWidth;
                       x2 -= scrollerWidth;
                     }
-                    var rect = new O$.Rectangle(Math.round(x1), Math.round(topY),
-                            Math.round(x2 - x1), Math.round(bottomY - topY));
+                    var rect = new O$.Rectangle(Math.round(x1), Math.round(y1),
+                            Math.round(x2 - x1), Math.round(y2 - y1));
                     cell.reservedPlaces[placeIndex] =  event;
                     this._rect = rect;
                   };
@@ -712,7 +707,6 @@ O$.MonthTable = {
               _removeEventElement: function(event, part) {
                 if (!part.mainElement)
                   return;
-
                 super_removeEventElement.call(this, event, part);
               },
 
@@ -985,11 +979,8 @@ O$.MonthTable = {
       for (var cellIndex = 0; cellIndex < cells.length; cellIndex++) {
         var cell = cells[cellIndex];
         var cellDay = cell._cellDay;
-        if (O$._datesEqual(cellDay, day)) {
-          //TODO: check if we can delete this
-          cell._rowIndex = rowIndex;
+        if (O$._datesEqual(cellDay, day))
           return cell;
-        }
       }
     }
     return null;
