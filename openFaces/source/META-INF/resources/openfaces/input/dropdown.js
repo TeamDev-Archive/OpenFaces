@@ -25,7 +25,7 @@ O$.DropDown = {
       _field: O$(dropDownId + "::field"),
       _promptVisible: O$(dropDownId + "::field" + "::promptVisible"),
       _initialText: initialText,
-
+      _focusable : true,
       _fieldDisabled: false,
 
       _setFieldDisabled: function(disabled) {
@@ -84,6 +84,7 @@ O$.DropDown = {
       dropDown.focus = function() {
         try {
           field.focus();
+          console.log("FOCUSING DROP DONW INPUT")
         } catch (e) {
         }
       };
