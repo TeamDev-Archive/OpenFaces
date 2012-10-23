@@ -11,6 +11,7 @@
  */
 package org.openfaces.renderkit.ajax;
 
+import org.openfaces.ajax.AjaxRequest;
 import org.openfaces.component.ajax.Ajax;
 import org.openfaces.component.ajax.AjaxHelper;
 import org.openfaces.component.ajax.AjaxInitializer;
@@ -25,7 +26,6 @@ import javax.el.ELContext;
 import javax.el.MethodExpression;
 import javax.el.MethodNotFoundException;
 import javax.el.ValueExpression;
-import javax.faces.component.ActionSource;
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
 import javax.faces.context.FacesContext;
@@ -102,6 +102,9 @@ public class AjaxRenderer extends AbstractSettingsRenderer {
                                 elContext, valueExpression, void.class, new Class[]{AjaxActionEvent.class});
                         methodExpression.invoke(elContext, new Object[]{event});
                     }
+                    Object listenerResult = ((AjaxActionEvent) event).getAjaxResult();
+                    if (listenerResult != null)
+                        AjaxRequest.getInstance().setAjaxResult(listenerResult);
                 }
             });
             event.setPhaseId(ajax.isImmediate() ? PhaseId.APPLY_REQUEST_VALUES : PhaseId.INVOKE_APPLICATION);
