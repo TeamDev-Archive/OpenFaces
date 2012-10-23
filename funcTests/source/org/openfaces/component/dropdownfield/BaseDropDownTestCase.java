@@ -14,6 +14,9 @@ package org.openfaces.component.dropdownfield;
 import com.thoughtworks.selenium.Selenium;
 import org.openfaces.test.OpenFacesTestCase;
 import org.openfaces.test.RichFacesAjaxLoadingMode;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.html.InputInspector;
 import org.seleniuminspector.html.TableInspector;
@@ -214,12 +217,13 @@ public abstract class BaseDropDownTestCase extends OpenFacesTestCase {
         testAppFunctionalPage(pageUrl);
 
         InputInspector field = dropDownField("formID:substringDD").field();
-        field.keyPress('w');
-        field.keyPress('h');
+        WebElement field_ = getDriver().findElement(By.xpath(field.getXPath()));
+        field_.sendKeys("w");
+        field_.sendKeys("h");
         sleep(700);
         field.assertValue("Wheat");
 
-        field.keyPress('i');
+        field_.sendKeys("i");
         sleep(700);
         field.assertValue("White");
     }
@@ -421,9 +425,10 @@ public abstract class BaseDropDownTestCase extends OpenFacesTestCase {
     protected void checkNoCashingAutoComplete(String pageUrl){
         testAppFunctionalPage(pageUrl);
         DropDownFieldInspector dropdown = dropDownField("formID:plantsNoCaching");
-        dropdown.field().keyPress('a');
+        WebElement field_ = getDriver().findElement(By.xpath(dropdown.field().getXPath()));
+        field_.sendKeys("a");
         OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
-        dropdown.field().keyPress('b');
+        field_.sendKeys("b");
         OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         element("formID:selectedRangeSize").assertText("5");
     }
@@ -431,11 +436,12 @@ public abstract class BaseDropDownTestCase extends OpenFacesTestCase {
     protected void checkNoFieldCleanOnCustomInput(String pageUrl){
         testAppFunctionalPage(pageUrl);
         DropDownFieldInspector dropdown = dropDownField("formID:plantsCustomValue");
-        dropdown.field().keyPress('a');
+        WebElement field = getDriver().findElement(By.xpath(dropdown.field().getXPath()));
+        field.sendKeys("a");
         OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
-        dropdown.field().keyPress('a');
+        field.sendKeys("a");
         OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
-        dropdown.field().keyPress('a');
+        field.sendKeys("a");
         OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         dropdown.field().keyDown(KeyEvent.VK_ESCAPE);
         dropdown.field().keyDown(KeyEvent.VK_DOWN);
