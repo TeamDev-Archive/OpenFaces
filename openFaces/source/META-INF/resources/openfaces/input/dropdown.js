@@ -84,7 +84,6 @@ O$.DropDown = {
       dropDown.focus = function() {
         try {
           field.focus();
-          console.log("FOCUSING DROP DONW INPUT")
         } catch (e) {
         }
       };
