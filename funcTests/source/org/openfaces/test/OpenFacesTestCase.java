@@ -13,11 +13,15 @@ package org.openfaces.test;
 
 import com.thoughtworks.selenium.Selenium;
 import com.thoughtworks.selenium.SeleniumException;
+import org.junit.AfterClass;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.internal.WrapsDriver;
+import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.SeleniumFactory;
 import org.seleniuminspector.SeleniumHolder;
 import org.seleniuminspector.SeleniumTestCase;
-import org.seleniuminspector.SeleniumWithServerAutostartFactory;
 import org.seleniuminspector.openfaces.*;
+import org.seleniuminspector.webriver.OpenFacesPatchedSeleniumFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -49,7 +53,7 @@ public abstract class OpenFacesTestCase extends SeleniumTestCase {
 
         boolean addNamespacesToXpath = OpenFacesTestCase.IMPLEMENTATION.equals("SUN12") && OpenFacesTestCase.IS_FACELETS;
         String browserPath = browserType.getBrowserPath(properties);
-        SeleniumFactory seleniumFactory = new SeleniumWithServerAutostartFactory(CUSTOM_SELENIUM_PORT, browserPath, startUrl, addNamespacesToXpath);
+        SeleniumFactory seleniumFactory = new OpenFacesPatchedSeleniumFactory("localhost", CUSTOM_SELENIUM_PORT, browserPath, startUrl);
         SeleniumHolder.getInstance().setSeleniumFactory(seleniumFactory);
     }
 
@@ -99,6 +103,8 @@ public abstract class OpenFacesTestCase extends SeleniumTestCase {
             boolean lastAttempt = (i == attemptCount);
             try {
                 openAndWait(applicationUrl, pageUrl);
+                sleep(1000);
+                ElementInspector.provideUtils(getDriver());
             } catch (Exception e) {
                 if (!lastAttempt) {
                     sleep(10 * 1000);
@@ -158,7 +164,7 @@ public abstract class OpenFacesTestCase extends SeleniumTestCase {
             if (failIfNotLoaded)
                 fail("Unexpected page content. Page url: " + fullPageUrl + " ; Expected (but missing) HTML " +
                         "source substring: " + htmlSubstringOfAValidPage + "; Current page title: " +
-                        selenium.getTitle());
+                        getDriver().getTitle() + " Current page source: " + getDriver().getPageSource());
             else
                 return false;
         }
@@ -270,6 +276,16 @@ public abstract class OpenFacesTestCase extends SeleniumTestCase {
     protected void assertPageContainsErrorIcon(boolean shouldContainIcon) {
         boolean iconExists = getSelenium().isElementPresent("//img[contains(@src,'javax.faces.resource/validation/error_icon')]");
         assertEquals(shouldContainIcon, iconExists);
+    }
+
+    protected WebDriver getDriver() {
+        return ((WrapsDriver) getSelenium()).getWrappedDriver();
+    }
+
+    @AfterClass
+    public static void closeDriver() {
+        ((WrapsDriver) getSelenium()).getWrappedDriver().close();
+        SeleniumHolder.getInstance().resetSelenium();
     }
 
 }
