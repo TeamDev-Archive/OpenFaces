@@ -203,6 +203,7 @@ public class ValidationTest extends OpenFacesTestCase {
         dateChooser("testForm:dchOnSubmit").field().type("Mar 20, 2007");
         doubleRangeInput.clear();
         doubleRangeInput.type("0.1");
+        urlInput.clear();
         urlInput.type("http://www.teamdev.com");
         InputTextInspector doubleRangeOffInput = inputText("testForm:validDROff");
         doubleRangeOffInput.clear();
@@ -251,6 +252,7 @@ public class ValidationTest extends OpenFacesTestCase {
         dateChooser("testForm:dchOnDemand").field().type("Mar 20, 2007");
         dobleRangeOnDemandInput.clear();
         dobleRangeOnDemandInput.type("0.1");
+        urlOnDemand.clear();
         urlOnDemand.type("http://www.teamdev.com");
         submit.click();
         waitForPageToLoad();
