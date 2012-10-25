@@ -177,7 +177,7 @@ public class DataTableIncludeOFComponentsTest extends OpenFacesTestCase {
             element("fn:popupDataTable:footer_popup1").assertSubtext(0, 29, "this is footer popup layer 2!");
 
             if (pageNo < pageCount)
-                nextPage.click();
+                nextPage.clickAndWait();
         }
         // a little sleep to wait until all visible popupLayers will be hidden
         sleep(4000);
