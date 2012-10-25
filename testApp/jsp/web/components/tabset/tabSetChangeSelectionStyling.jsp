@@ -9,7 +9,7 @@
 <html>
 <head>
   <title>TabSet Change Selected tab. Check Styling</title>
-
+  <script src="../funcTestsUtil.js" type="text/javascript"></script>
   <link rel="STYLESHEET" type="text/css" href="../../main.css"/>
 </head>
 
