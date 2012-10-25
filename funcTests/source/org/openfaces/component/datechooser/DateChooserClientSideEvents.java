@@ -29,7 +29,6 @@ public class DateChooserClientSideEvents extends OpenFacesTestCase {
 
         //onkeypress
         DateChooserInspector keyPressDateChooser = dateChooser("formID:keypressID");
-        keyPressDateChooser.field().setCursorPosition(0);
         keyPressDateChooser.field().keyPress(KeyEvent.VK_Z);
         assertTrue(selenium.isTextPresent("onkeypress works"));
         assertTrue(selenium.isTextPresent("keypress"));
@@ -66,33 +65,27 @@ public class DateChooserClientSideEvents extends OpenFacesTestCase {
 
         //todo: uncomment if JSFC-1431 is fixed
 /*    //onfocus
-    selenium.setCursorPosition("formID:focusID" +  + FIELD_SUFFIX, "0");
     assertTrue(selenium.isTextPresent("onfocus works"));
     assertTrue(selenium.isTextPresent("focus"));
 
     //onblur
-    selenium.setCursorPosition("formID:blurID" + FIELD_SUFFIX, "0");
-    selenium.setCursorPosition("formID:keydownID" +  + FIELD_SUFFIX, "0");
     assertTrue(selenium.isTextPresent("onblur works"));
     assertTrue(selenium.isTextPresent("blur"));*/
 
         //onkeydown
         DateChooserInspector keyDownDateChooser = dateChooser("formID:keydownID");
-        keyDownDateChooser.field().setCursorPosition(0);
         keyDownDateChooser.field().keyDown(KeyEvent.VK_Z);
         assertTrue(selenium.isTextPresent("onkeydown works"));
         assertTrue(selenium.isTextPresent("keydown"));
 
         //onkeyup
         DateChooserInspector keyUpDateChooser = dateChooser("formID:keyupID");
-        keyUpDateChooser.field().setCursorPosition(0);
         keyUpDateChooser.field().keyUp(KeyEvent.VK_Z);
         assertTrue(selenium.isTextPresent("onkeyup works"));
         assertTrue(selenium.isTextPresent("keyup"));
 
         //onchange
         DateChooserInspector changeInputText = dateChooser("formID:changeID");
-        changeInputText.field().setCursorPosition(0);
         changeInputText.field().type("Aug 01, 2007");
         assertTrue(selenium.isTextPresent("onchange works"));
         assertTrue(selenium.isTextPresent("change"));

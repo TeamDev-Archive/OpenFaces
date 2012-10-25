@@ -14,6 +14,8 @@ package org.openfaces.component.dropdownfield;
 import com.thoughtworks.selenium.Selenium;
 import org.openfaces.test.OpenFacesTestCase;
 import org.openfaces.test.RichFacesAjaxLoadingMode;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.html.InputInspector;
 import org.seleniuminspector.html.TableInspector;
@@ -66,7 +68,6 @@ public abstract class BaseDropDownTestCase extends OpenFacesTestCase {
 
         // with keyboard help
         first.popup().assertVisible(false);
-        first.field().setCursorPosition(0);
         first.field().keyDown(KeyEvent.VK_DOWN); // down key
         first.popup().assertVisible(true);
         first.popup().assertItemTexts(new String[]{"Red", "Yellow", "Blue"});
@@ -108,7 +109,6 @@ public abstract class BaseDropDownTestCase extends OpenFacesTestCase {
         testAppFunctionalPage(pageUrl);
 
         DropDownFieldInspector first = dropDownField("formID:first");
-        first.field().setCursorPosition(0);
         first.field().keyDown(KeyEvent.VK_DOWN);
         first.popup().assertVisible(true);
         first.field().keyDown(KeyEvent.VK_DOWN);
@@ -143,6 +143,7 @@ public abstract class BaseDropDownTestCase extends OpenFacesTestCase {
         first.field().assertValue("brown");
 
         DropDownFieldInspector second = dropDownField("formID:second");
+        second.field().click();
         second.field().type("brown");
         second.field().assertValue("brown");
 
@@ -215,12 +216,13 @@ public abstract class BaseDropDownTestCase extends OpenFacesTestCase {
         testAppFunctionalPage(pageUrl);
 
         InputInspector field = dropDownField("formID:substringDD").field();
-        field.keyPress('w');
-        field.keyPress('h');
+        WebElement field_ = getDriver().findElement(By.xpath(field.getXPath()));
+        field_.sendKeys("w");
+        field_.sendKeys("h");
         sleep(700);
         field.assertValue("Wheat");
 
-        field.keyPress('i');
+        field_.sendKeys("i");
         sleep(700);
         field.assertValue("White");
     }
@@ -282,7 +284,6 @@ public abstract class BaseDropDownTestCase extends OpenFacesTestCase {
             }
 
             if (!isDropDown) {
-                dropDown.setCursorPosition(0);
                 dropDown.keyDown(KeyEvent.VK_DOWN);
                 if (!isFocused) {
                     dropDown.fireEvent("onblur");
@@ -396,7 +397,7 @@ public abstract class BaseDropDownTestCase extends OpenFacesTestCase {
         asTagOutput.assertText("true");
     }
 
-    protected void checkNoCachingHighlight(String pageUrl){
+    protected void checkNoCachingHighlight(String pageUrl) {
         testAppFunctionalPage(pageUrl);
         DropDownFieldInspector dropdown = dropDownField("formID:plantsNoCaching");
         dropdown.field().keyDown(KeyEvent.VK_DOWN);
@@ -407,7 +408,7 @@ public abstract class BaseDropDownTestCase extends OpenFacesTestCase {
         dropdown.popup().items().get(1).assertStyle("background-color: black;");
     }
 
-    protected void checkAfterRenderHighlight(String pageUrl){
+    protected void checkAfterRenderHighlight(String pageUrl) {
         testAppFunctionalPage(pageUrl);
         DropDownFieldInspector dropdown = dropDownField("formID:plantsAfterRender");
         dropdown.field().keyDown(KeyEvent.VK_DOWN);
@@ -420,26 +421,26 @@ public abstract class BaseDropDownTestCase extends OpenFacesTestCase {
         dropdown.popup().items().get(1).assertStyle("background-color: black;");
     }
 
-    protected void checkNoCashingAutoComplete(String pageUrl){
+    protected void checkNoCashingAutoComplete(String pageUrl) {
         testAppFunctionalPage(pageUrl);
         DropDownFieldInspector dropdown = dropDownField("formID:plantsNoCaching");
-        dropdown.field().setCursorPosition(0);
-        dropdown.field().keyPress('a');
+        WebElement field_ = getDriver().findElement(By.xpath(dropdown.field().getXPath()));
+        field_.sendKeys("a");
         OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
-        dropdown.field().keyPress('b');
+        field_.sendKeys("b");
         OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         element("formID:selectedRangeSize").assertText("5");
     }
 
-    protected void checkNoFieldCleanOnCustomInput(String pageUrl){
+    protected void checkNoFieldCleanOnCustomInput(String pageUrl) {
         testAppFunctionalPage(pageUrl);
         DropDownFieldInspector dropdown = dropDownField("formID:plantsCustomValue");
-        dropdown.field().setCursorPosition(0);
-        dropdown.field().keyPress('a');
+        WebElement field = getDriver().findElement(By.xpath(dropdown.field().getXPath()));
+        field.sendKeys("a");
         OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
-        dropdown.field().keyPress('a');
+        field.sendKeys("a");
         OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
-        dropdown.field().keyPress('a');
+        field.sendKeys("a");
         OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         dropdown.field().keyDown(KeyEvent.VK_ESCAPE);
         dropdown.field().keyDown(KeyEvent.VK_DOWN);

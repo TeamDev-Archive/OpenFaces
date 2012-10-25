@@ -42,11 +42,11 @@ public class InputTextTest extends OpenFacesTestCase {
         ElementInspector submit = element("formID:submit");
 
         // fill by empty values
-        first.type("");
+        first.clear();
         first.assertValue("");
-        second.type("");
+        second.clear();
         second.assertValue("");
-        second.fireEvent("onblur");
+        value.click();
         second.assertValue("some prompt text");
         submit.clickAndWait();
         value.assertText("");
@@ -55,6 +55,8 @@ public class InputTextTest extends OpenFacesTestCase {
         second.assertValue("some prompt text");
 
         // type own value
+        first.clear();
+        second.clear();
         first.type("val1");
         first.assertValue("val1");
         second.type("val2");
@@ -262,8 +264,9 @@ public class InputTextTest extends OpenFacesTestCase {
         inputText.assertWidth(230, 4);
         inputText.mouseOut();
 
-        inputText.type("");
+        inputText.clear();
         inputText.fireEvent("onblur");
+        sleep(1000);
         inputText.assertValue("ajax4jsf prompt text");
         inputText.assertStyle("background: burlywood; color: #7e7e7e");
     }

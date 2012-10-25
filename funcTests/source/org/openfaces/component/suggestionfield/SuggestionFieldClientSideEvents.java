@@ -14,6 +14,7 @@ package org.openfaces.component.suggestionfield;
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
+import org.openqa.selenium.By;
 import org.seleniuminspector.ElementInspector;
 
 import java.awt.event.KeyEvent;
@@ -70,8 +71,8 @@ public class SuggestionFieldClientSideEvents extends OpenFacesTestCase {
         assertTrue(selenium.isTextPresent("mousedown"));
 
         //onkeypress
+        getDriver().findElement(By.id("formID:keyChange")).sendKeys("Q");
         ElementInspector keyChangeField = element("formID:keyChange");
-        keyChangeField.keyPress(KeyEvent.VK_Q);
         assertTrue(selenium.isTextPresent("onkeypress works"));
         assertTrue(selenium.isTextPresent("keypress"));
 

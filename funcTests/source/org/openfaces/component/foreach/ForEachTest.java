@@ -16,6 +16,7 @@ import com.thoughtworks.selenium.Selenium;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
+import org.openqa.selenium.By;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.openfaces.ForEachInspector;
 import org.seleniuminspector.openfaces.InputTextInspector;
@@ -90,6 +91,7 @@ public class ForEachTest extends OpenFacesTestCase {
 
     @Test
     public void testList() {
+        closeBrowser();
         testAppFunctionalPage("/components/foreach/forEach.jsf");
 
         ForEachInspector forEach = forEach("formID:fe7");
@@ -148,9 +150,9 @@ public class ForEachTest extends OpenFacesTestCase {
 
     @Test
     public void testDecode() {
-        Selenium selenium = getSelenium();
+        closeBrowser();
         testAppFunctionalPage("/components/foreach/forEach.jsf");
-        selenium.submit("formID");
+        getDriver().findElement(By.id("formID")).submit();
         waitForPageToLoad();
 
         ForEachInspector forEach = forEach("formID:fe7");
@@ -207,6 +209,9 @@ public class ForEachTest extends OpenFacesTestCase {
         value1.assertValue("item B");
         value2.assertValue("item C");
 
+        value0.clear();
+        value1.clear();
+        value2.clear();
         value0.type("item F");
         value1.type("item E");
         value2.type("item D");
@@ -224,6 +229,7 @@ public class ForEachTest extends OpenFacesTestCase {
     @Ignore
     @Test
     public void testEvents() {
+        closeBrowser();
         testAppFunctionalPage("/components/foreach/forEach.jsf");
 
         ForEachInspector forEach = forEach("formID:fe7");

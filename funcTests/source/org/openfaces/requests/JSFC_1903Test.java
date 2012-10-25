@@ -13,8 +13,8 @@ package org.openfaces.requests;
 
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
-import org.seleniuminspector.openfaces.ConfirmationInspector;
 import org.seleniuminspector.ElementInspector;
+import org.seleniuminspector.openfaces.ConfirmationInspector;
 
 /**
  * @author Darya Shumilina
@@ -32,6 +32,7 @@ public class JSFC_1903Test extends OpenFacesTestCase {
         confirmation.cancelButton().click();
         button.click();
         confirmation.okButton().click();
-        assertEquals("!", getSelenium().getAlert());
+        assertEquals("!", window().document().getAlert());
+        acceptAlert();
     }
 }

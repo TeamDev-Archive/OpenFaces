@@ -14,12 +14,13 @@ package org.openfaces.test;
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.openfaces.ConfirmationInspector;
 import org.seleniuminspector.openfaces.DateChooserInspector;
-import org.seleniuminspector.openfaces.TabSetInspector;
 import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
-import org.seleniuminspector.ElementInspector;
-import org.seleniuminspector.html.InputInspector;
+import org.seleniuminspector.openfaces.TabSetInspector;
 
 /**
  * @author Darya Shumilina
@@ -160,7 +161,7 @@ public class LiveDemoTest extends OpenFacesTestCase {
         linkPopup.assertVisible(true);
         linkConfirmation.assertVisible(false);
 
-        element("textInvoker").click();
+        getDriver().findElement(By.id("textInvoker")).click();
         ElementInspector textPopup = element("confirmationForm:textPopup");
         textPopup.assertVisible(false);
         ConfirmationInspector textConfirmation = confirmation("confirmationForm:textConfirmation");
@@ -169,7 +170,7 @@ public class LiveDemoTest extends OpenFacesTestCase {
         textPopup.assertVisible(true);
         textConfirmation.assertVisible(false);
 
-        element("confirmationForm:imageInvoker").doubleClick();
+        element("confirmationForm:imageInvoker").evalExpression("ondblclick.call(this, this)");
         ElementInspector imagePopup = element("confirmationForm:imagePopup");
         imagePopup.assertVisible(false);
         ConfirmationInspector imageConfirmation = confirmation("confirmationForm:imageConfirmation");
@@ -179,25 +180,45 @@ public class LiveDemoTest extends OpenFacesTestCase {
         imagePopup.assertVisible(true);
         imageConfirmation.assertVisible(false);
 
-        new InputInspector("message_input").type("Are you sure?");
+        getDriver().findElement(By.id("message_input")).clear();
+        getDriver().findElement(By.id("message_input")).sendKeys("Are you sure?");
         ElementInspector changedInvoker = element("changedInvoker");
-        changedInvoker.click();
-        new InputInspector("detail_input").type("bla bla bla");
-        changedInvoker.click();
-        new InputInspector("yes_input").type("Confirm");
-        changedInvoker.click();
-        new InputInspector("no_input").type("Decline");
-        changedInvoker.click();
-
-        element("//*[@id='confirmationForm:editableConfirmation']//*[contains(text(), 'Are you sure?')]").assertElementExists(true);
-        element("//*[@id='confirmationForm:editableConfirmation']//*[contains(text(), 'Are you really sure?')]").assertElementExists(false);
-        element("//*[@id='confirmationForm:editableConfirmation']//*[contains(text(), 'bla bla bla')]").assertElementExists(true);
-        element("//*[@id='confirmationForm:editableConfirmation']//*[contains(text(), 'Think once again before doing it')]").assertElementExists(false);
+        changedInvoker.evalExpression("click()");
+        getDriver().findElement(By.id("detail_input")).clear();
+        getDriver().findElement(By.id("detail_input")).sendKeys("");
+        getDriver().findElement(By.id("detail_input")).sendKeys("bla bla bla");
+        changedInvoker.evalExpression("click()");
+        getDriver().findElement(By.id("yes_input")).clear();
+        getDriver().findElement(By.id("yes_input")).sendKeys("");
+        getDriver().findElement(By.id("yes_input")).sendKeys("Confirm");
+        changedInvoker.evalExpression("click()");
+        getDriver().findElement(By.id("no_input")).clear();
+        getDriver().findElement(By.id("no_input")).sendKeys("");
+        getDriver().findElement(By.id("no_input")).sendKeys("Decline");
+        changedInvoker.evalExpression("click()");
+        try {
+            getDriver().findElement(By.xpath("//*[@id='confirmationForm:editableConfirmation']//*[contains(text(), 'Are you sure?')]"));
+            getDriver().findElement(By.xpath("//*[@id='confirmationForm:editableConfirmation']//*[contains(text(), 'bla bla bla')]"));
+        } catch (NoSuchElementException e) {
+            assertTrue(false);
+        }
+        try {
+            getDriver().findElement(By.xpath("//*[@id='confirmationForm:editableConfirmation']//*[contains(text(), 'Are you really sure?')]"));
+            assertTrue(false);
+        } catch (NoSuchElementException e) {
+        }
+        try {
+            getDriver().findElement(By.xpath("//*[@id='confirmationForm:editableConfirmation']//*[contains(text(), 'Think once again before doing it')]"));
+            assertTrue(false);
+        } catch (NoSuchElementException e) {
+        }
         ConfirmationInspector editableConfirmation = confirmation("confirmationForm:editableConfirmation");
         editableConfirmation.okButton().assertValue("Confirm");
         editableConfirmation.cancelButton().assertValue("Decline");
         editableConfirmation.okButton().click();
-        assertTrue(selenium.isAlertPresent());
+        assertTrue(window().document().isAlertPresent());
+        acceptAlert();
+        closeBrowser();
 
     }
 

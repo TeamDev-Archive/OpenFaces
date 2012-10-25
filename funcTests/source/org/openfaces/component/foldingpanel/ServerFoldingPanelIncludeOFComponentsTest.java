@@ -61,8 +61,9 @@ public class ServerFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
             element("button1").click();
             confirmationElement.assertVisible(true);
             confirmationElement.okButton().click();
-            assertTrue(selenium.isAlertPresent());
-            assertEquals("done", selenium.getAlert());
+            assertTrue(window().document().isAlertPresent());
+            assertEquals("done", window().document().getAlert());
+            getDriver().switchTo().alert().accept();
             confirmationElement.assertVisible(false);
         }
     }
@@ -117,6 +118,7 @@ public class ServerFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
         foldingPanel("fn:dropDownFoldingPanel").toggle().clickAndWait();
         dropDownField.assertElementExists(true);
         dropDownField.assertVisible(true);
+        dropDownField.button().click();
         dropDownField.popup().items().get(1).click();
         dropDownField.field().assertValue("Yellow");
     }
@@ -194,7 +196,8 @@ public class ServerFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
 
     @Test
     public void testTabSetInside() {
-        if (IS_FACELETS) return; // this for some odd reason fails only on the build server in the Facelets version of tests
+        if (IS_FACELETS)
+            return; // this for some odd reason fails only on the build server in the Facelets version of tests
         testAppFunctionalPage("/components/foldingpanel/tabSetIn.jsf");
 
         tabSet("fn:loadingModes").setTabIndex(2, new LoadingMode() {
@@ -268,7 +271,6 @@ public class ServerFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
         message.assertElementExists(true);
         message.assertVisible(false);
 
-        requiredInput.setCursorPosition(0);
         requiredInput.keyPress(13);
         message.assertVisible(true);
         assertTrue(message.text().contains("Validation Error: Value is required.") ||

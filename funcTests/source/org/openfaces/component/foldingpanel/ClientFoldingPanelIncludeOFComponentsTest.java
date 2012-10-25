@@ -55,7 +55,6 @@ public class ClientFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
 
     @Test
     public void testConfirmationInside() {
-        Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/foldingpanel/confirmationIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());
 
@@ -70,9 +69,9 @@ public class ClientFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
             confirmationElement.assertVisible(true);
 
             confirmationElement.okButton().click();
-            assertTrue(selenium.isAlertPresent());
-            assertEquals("done", selenium.getAlert());
-
+            assertTrue(window().document().isAlertPresent());
+            assertEquals("done", window().document().getAlert());
+            acceptAlert();
             confirmationElement.assertVisible(false);
         }
     }
@@ -232,7 +231,8 @@ public class ClientFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
 
     @Test
     public void testTabSetInside() {
-        if (IS_FACELETS) return; // this for some odd reason fails only on the build server in the Facelets version of tests
+        if (IS_FACELETS)
+            return; // this for some odd reason fails only on the build server in the Facelets version of tests
         testAppFunctionalPage("/components/foldingpanel/tabSetIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(1, new LoadingMode() {
             @Override
@@ -312,7 +312,6 @@ public class ClientFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
         requiredInput.assertVisible(true);
         message.assertVisible(false);
 
-        requiredInput.setCursorPosition(0);
         requiredInput.keyPress(13);
 
         message.assertVisible(true);

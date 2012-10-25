@@ -16,8 +16,8 @@ import org.openfaces.test.OpenFacesTestCase;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.openfaces.DataTableInspector;
 import org.seleniuminspector.openfaces.HintLabelInspector;
-import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
 import org.seleniuminspector.openfaces.InputTextFilterInspector;
+import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,8 +83,7 @@ public class DataTableIncludeOFComponentsTest extends OpenFacesTestCase {
 
         //click at hinlLabel placed in the header to perform sorting
 
-//    dataTableColumn(headerHintLabel1.asSeleniumLocator()).makeSorting(OpenFacesAjaxLoadingMode.getInstance());
-        hintLabelDataTable.column(0).makeSorting();
+        hintLabelDataTable.column(1).makeSorting();
 
 
         for (int pageNo = 1; pageNo <= 2; pageNo++) {
@@ -94,13 +93,17 @@ public class DataTableIncludeOFComponentsTest extends OpenFacesTestCase {
                 DataTableUtils.TestDataTableItem currentReferenceRow = currentPageValues.get(rowIndex);
 
                 HintLabelInspector bodyHintLabel1 = hintLabel("fn:hintLabelDataTable:" + rowIndex + ":body_hinLabel_1");
-                bodyHintLabel1.click();
+                bodyHintLabel1.clickAndWait();
+                bodyHintLabel1.hint().mouseOut();
                 bodyHintLabel1.checkVisibilityAndContent(currentReferenceRow.getFirstColumn(), currentReferenceRow.getSecondColumn());
+                bodyHintLabel1.hint().mouseOut();
 
                 hintLabel("fn:hintLabelDataTable:" + rowIndex + ":body_hinLabel_2")
                         .checkVisibilityAndContent(currentReferenceRow.getSecondColumn(), currentReferenceRow.getFirstColumn());
 
                 // check is single selection performed well
+                bodyHintLabel1.clickAndWait();
+                bodyHintLabel1.hint().mouseOut();
                 hintLabelDataTable.checkSelectedIndex(rowIndex);
             }
             // check footer hintLabels
@@ -110,7 +113,7 @@ public class DataTableIncludeOFComponentsTest extends OpenFacesTestCase {
                     .checkVisibilityAndContent("Footer hint label value 2", "Footer hint label title 2");
 
             dataTablePaginator("fn:hintLabelDataTable:hintLabelDataTablePaginator").nextPage()
-                    .clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
+                    .clickAndWait();
         }
 
         /* filtering and filtered data verification */
@@ -135,7 +138,7 @@ public class DataTableIncludeOFComponentsTest extends OpenFacesTestCase {
         int rowCount = 3;
         int pageCount = 3;
 
-        element("fn:popupDataTable:header_invoker").click();
+        element("fn:popupDataTable:header_invoker").clickAndWait();
         element("fn:popupDataTable:header_popup").assertVisible(true);
         OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         for (int pageNo = 1; pageNo <= pageCount; pageNo++) {
@@ -174,7 +177,7 @@ public class DataTableIncludeOFComponentsTest extends OpenFacesTestCase {
             element("fn:popupDataTable:footer_popup1").assertSubtext(0, 29, "this is footer popup layer 2!");
 
             if (pageNo < pageCount)
-                nextPage.clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
+                nextPage.click();
         }
         // a little sleep to wait until all visible popupLayers will be hidden
         sleep(4000);

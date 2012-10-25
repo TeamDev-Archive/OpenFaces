@@ -12,11 +12,10 @@
 package org.openfaces.component.calendar;
 
 import com.thoughtworks.selenium.Selenium;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.openfaces.test.RichFacesAjaxLoadingMode;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.openfaces.CalendarInspector;
-import org.openfaces.test.RichFacesAjaxLoadingMode;
 
 /**
  * @author Darya Shumilina
@@ -62,6 +61,7 @@ public class CalendarTest extends BaseCalendarTestCase {
 
     @Test
     public void testMonthChange() {
+        closeBrowser();
         testAppFunctionalPage("/components/calendar/calendarChangeDateMonthYear.jsf");
 
         CalendarInspector calendar = calendar("formID:changeYearMonth");
@@ -75,6 +75,7 @@ public class CalendarTest extends BaseCalendarTestCase {
 
     @Test
     public void testYearChange() {
+        closeBrowser();
         testAppFunctionalPage("/components/calendar/calendarChangeDateMonthYear.jsf");
 
         CalendarInspector calendar = calendar("formID:changeYearMonth");
@@ -138,7 +139,9 @@ public class CalendarTest extends BaseCalendarTestCase {
         ElementInspector emptyDiv = element("empty");
         emptyDiv.assertText("3 4 5 6 7 8 9 10 11 ");
 
+        dateChooser("formID:fromDateChooser").field().clear();
         dateChooser("formID:fromDateChooser").field().type("Nov 6, 2007");
+        dateChooser("formID:toDateChooser").field().clear();
         dateChooser("formID:toDateChooser").field().type("Nov 20, 2007");
 
         element("formID:submit").clickAndWait();
@@ -245,7 +248,7 @@ public class CalendarTest extends BaseCalendarTestCase {
         calendar("formID:asTagDD").selectCalendarCell(3, 3);
         calendar("formID:asAttributeDD").selectCalendarCell(3, 3);
 
-        element("formID:submit").clickAndWait();
+        element("formID:submit").click();
 
         asAttributeOutput.assertText("1");
         asTagOutput.assertText("true");
