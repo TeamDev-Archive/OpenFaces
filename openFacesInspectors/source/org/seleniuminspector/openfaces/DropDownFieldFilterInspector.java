@@ -38,7 +38,6 @@ public class DropDownFieldFilterInspector extends AbstractFilterInspector {
 
     public void makeFiltering(String filterValue) {
         searchComponent().field().type(filterValue);
-        searchComponent().field().setCursorPosition(0);
         searchComponent().field().keyPress(13);
 
         getLoadingMode().waitForLoad();
