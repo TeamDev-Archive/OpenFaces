@@ -10,6 +10,7 @@
 <head>
   <title>Reload DataTable by 'O$.ajax.request'</title>
   <link rel="STYLESHEET" type="text/css" href="../../main.css"/>
+  <script src="../funcTestsUtil.js" type="text/javascript"></script>
 </head>
 
 <body>

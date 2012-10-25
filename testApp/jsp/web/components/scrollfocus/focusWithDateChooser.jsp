@@ -6,7 +6,7 @@
 <html>
 <head>
   <title>o:focus with DateChooser</title>
-  <script type="text/javascript" src="../../funcTestsUtil.js"></script>
+  <script src="../funcTestsUtil.js" type="text/javascript"></script>
 <link rel="STYLESHEET" type="text/css" href="../../main.css"/>
 </head>
 <body>
