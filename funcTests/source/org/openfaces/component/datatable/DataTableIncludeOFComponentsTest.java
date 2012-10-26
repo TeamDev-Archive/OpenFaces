@@ -152,8 +152,6 @@ public class DataTableIncludeOFComponentsTest extends OpenFacesTestCase {
                 element("fn:popupDataTable:" + rowIndex + ":body_invoker").click();
                 element("fn:popupDataTable:" + rowIndex + ":body_invoker1").click();
 
-                //check is single selection performed well
-                dataTable("fn:popupDataTable").checkSelectedIndex(rowIndex);
 
                 //check: is popupLayers are visible
                 ElementInspector bodyPopup = element("fn:popupDataTable:" + rowIndex + ":body_popup");
@@ -161,6 +159,8 @@ public class DataTableIncludeOFComponentsTest extends OpenFacesTestCase {
                 ElementInspector bodyPopup1 = element("fn:popupDataTable:" + rowIndex + ":body_popup1");
                 bodyPopup1.assertVisible(true);
 
+                //check is single selection performed well
+                dataTable("fn:popupDataTable").checkSelectedIndex(rowIndex);
                 //get text from the invoked popupLayers
                 String currentFirstCellValue = bodyPopup.text().substring(0, 9);
                 String currentSecondCellValue = bodyPopup1.text().substring(0, 9);
