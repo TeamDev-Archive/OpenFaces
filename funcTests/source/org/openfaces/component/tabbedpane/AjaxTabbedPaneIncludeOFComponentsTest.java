@@ -15,6 +15,7 @@ import com.thoughtworks.selenium.Selenium;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
+import org.openqa.selenium.By;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.openfaces.*;
 
@@ -262,7 +263,8 @@ public class AjaxTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
         testAppFunctionalPage("/components/tabbedpane/treeTableIn.jsf");
         element("fn:firstHeader").assertText("First tab");
         for (int i = 0; i < 3; i++) {
-            window().document().getElementsByTagName("img").get(i).clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
+            getDriver().findElements(By.tagName("img")).get(i).click();
+            sleep(1000);
         }
 
         TreeTableInspector treeTable = treeTable("fn:firstTreeTable");
@@ -271,7 +273,8 @@ public class AjaxTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
         int imagesOnFirstPage = window().document().getElementsByTagName("img").size();
         element("fn:secondHeader").clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         for (int i = 0; i < 3; i++) {
-            window().document().getElementsByTagName("img").get((imagesOnFirstPage + i)).clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
+            getDriver().findElements(By.tagName("img")).get((imagesOnFirstPage + i)).click();
+            sleep(1000);
         }
         TreeTableInspector secondTreeTable = treeTable("fn:secondTreeTable");
         secondTreeTable.column(0).makeSorting();
