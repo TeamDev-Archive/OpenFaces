@@ -273,8 +273,13 @@ public class AjaxTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
         int imagesOnFirstPage = getDriver().findElements(By.tagName("img")).size();
         imagesOnFirstPage = imagesOnFirstPage == 4 ? 3 : imagesOnFirstPage;
         element("fn:secondHeader").clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
+        int afterClick = getDriver().findElements(By.tagName("img")).size();
         for (int i = 0; i < 3; i++) {
-            getDriver().findElements(By.tagName("img")).get((imagesOnFirstPage + i)).click();
+            try {
+                getDriver().findElements(By.tagName("img")).get((imagesOnFirstPage + i)).click();
+            }   catch (IndexOutOfBoundsException e) {
+                throw new AssertionError("i: " + i + ", imagesOnFirstPage: "+ imagesOnFirstPage + "; afterClick:" + afterClick);
+            }
             sleep(1000);
         }
         TreeTableInspector secondTreeTable = treeTable("fn:secondTreeTable");
