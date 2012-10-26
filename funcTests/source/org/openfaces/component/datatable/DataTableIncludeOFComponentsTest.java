@@ -149,13 +149,13 @@ public class DataTableIncludeOFComponentsTest extends OpenFacesTestCase {
                 DataTableUtils.TestDataTableItem currentReferenceRow = currentPageValues.get(rowIndex);
 
                 // invoke popupLayers in current row
-                element("fn:popupDataTable:" + rowIndex + ":body_invoker").click();
-                element("fn:popupDataTable:" + rowIndex + ":body_invoker1").click();
 
 
                 //check: is popupLayers are visible
+                element("fn:popupDataTable:" + rowIndex + ":body_invoker").click();
                 ElementInspector bodyPopup = element("fn:popupDataTable:" + rowIndex + ":body_popup");
                 bodyPopup.assertVisible(true);
+                element("fn:popupDataTable:" + rowIndex + ":body_invoker1").click();
                 ElementInspector bodyPopup1 = element("fn:popupDataTable:" + rowIndex + ":body_popup1");
                 bodyPopup1.assertVisible(true);
 
