@@ -271,7 +271,7 @@ public class AjaxTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
         treeTable.column(0).makeSorting();
         treeTable.column(0).filter(InputTextFilterInspector.class, "fn:firstTreeTable:filter1").makeFiltering("color");
         int imagesOnFirstPage = getDriver().findElements(By.tagName("img")).size();
-        imagesOnFirstPage = imagesOnFirstPage == 4 ? 5 : imagesOnFirstPage;
+        imagesOnFirstPage = imagesOnFirstPage == 4 ? 3 : imagesOnFirstPage;
         element("fn:secondHeader").clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         for (int i = 0; i < 3; i++) {
             getDriver().findElements(By.tagName("img")).get((imagesOnFirstPage + i)).click();
