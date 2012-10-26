@@ -270,14 +270,14 @@ public class AjaxTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
         TreeTableInspector treeTable = treeTable("fn:firstTreeTable");
         treeTable.column(0).makeSorting();
         treeTable.column(0).filter(InputTextFilterInspector.class, "fn:firstTreeTable:filter1").makeFiltering("color");
-        int imagesOnFirstPage = getDriver().findElements(By.tagName("img")).size();
-        imagesOnFirstPage = imagesOnFirstPage == 4 ? 3 : imagesOnFirstPage;
+        int imagesOnFirstPage = getDriver().findElements(By.tagName("img")).size() - 1;
+//        imagesOnFirstPage = imagesOnFirstPage == 4 ? 3 : imagesOnFirstPage;
         element("fn:secondHeader").clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         int afterClick = getDriver().findElements(By.tagName("img")).size();
         for (int i = 0; i < 3; i++) {
             try {
                 getDriver().findElements(By.tagName("img")).get((imagesOnFirstPage + i)).click();
-            }   catch (IndexOutOfBoundsException e) {
+            } catch (IndexOutOfBoundsException e) {
                 throw new AssertionError("i: " + i + ", imagesOnFirstPage: "+ imagesOnFirstPage + "; afterClick:" + afterClick);
             }
             sleep(1000);
