@@ -39,7 +39,7 @@ public class DataTableColumnInspector extends TableColumnInspector {
         headerCell(0).click();
         loadingMode.waitForLoad();
         //true if alert with the message about ajax error absent
-        Assert.assertFalse(getSelenium().isAlertPresent());
+        Assert.assertFalse(isAlertPresent());
     }
 
 

@@ -9,6 +9,7 @@
 <html>
 <head>
   <title>Testing stardard validators and converters on client side</title>
+  <script src="../funcTestsUtil.js" type="text/javascript"></script>
   <script type="text/javascript">
     function fillInvalidData(formName) {
       var field = O$(formName + "required");

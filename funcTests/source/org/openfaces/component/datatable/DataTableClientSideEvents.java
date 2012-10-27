@@ -91,7 +91,7 @@ public class DataTableClientSideEvents extends OpenFacesTestCase {
         testAppFunctionalPage("/components/datatable/OnfocusOnblurEvents.jsf");
         waitForPageToLoad();
         selenium.click("fn:sixth:8:firstColumn_body");
-        selenium.getEval("var el = this.page().findElement('click'); el.focus();");
+        selenium.getEval("var el = O$('click'); el.focus();");
         assertTrue(selenium.isTextPresent("focus"));
         assertTrue(selenium.isTextPresent("blur"));
         assertTrue(selenium.isTextPresent("onfocus works"));

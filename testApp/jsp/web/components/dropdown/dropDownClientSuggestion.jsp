@@ -9,7 +9,7 @@
 <html>
 <head>
   <title>DropDown Client-based Suggestion Functionality</title>
-  <script type="text/javascript" src="../../funcTestsUtil.js"></script>
+
   <link rel="STYLESHEET" type="text/css" href="../../main.css"/>
   <style type="text/css">
     .demo_font {

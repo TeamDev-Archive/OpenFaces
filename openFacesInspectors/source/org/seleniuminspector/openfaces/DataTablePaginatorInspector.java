@@ -58,12 +58,12 @@ public class DataTablePaginatorInspector extends ElementByReferenceInspector {
      */
     public void makePagination(int numberOfPages) { // todo: this method has a too specific purpose to be included into functionality of inspector -- this should be moved out as a functionality of OpenFaces tests
         for (int i = 1; i < numberOfPages; i++) {
-            nextPage().click();
+            nextPage().clickAndWait();
             OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         }
 
         for (int i = 1; i < numberOfPages; i++) {
-            previousPage().click();
+            previousPage().clickAndWait();
             OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         }
 

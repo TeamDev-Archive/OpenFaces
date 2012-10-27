@@ -9,6 +9,8 @@
 <html>
 <head>
   <title>DropDown Inside DataTable</title>
+  <script src="../funcTestsUtil.js" type="text/javascript"></script>
+
   <style type="text/css">
     .container {
       vertical-align: top;
@@ -21,7 +23,7 @@
     }
   </style>
 </head>
-<script type="text/javascript" src="../../funcTestsUtil.js"></script>
+
 <link rel="STYLESHEET" type="text/css" href="../../main.css"/>
 <body>
 <f:view>

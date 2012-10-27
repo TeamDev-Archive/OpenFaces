@@ -37,6 +37,9 @@ public class AjaxFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase {
         foldingPanel("fn:calendarFoldingPanel").toggle().clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         assertFalse(getSelenium().isAlertPresent());
         calendar.assertElementExists(true);
+        if (isAlertPresent()) {
+            acceptAlert();
+        }
     }
 
     @Test
@@ -53,15 +56,15 @@ public class AjaxFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase {
 
     @Test
     public void testConfirmationInside() {
-        Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/foldingpanel/confirmationIn.jsf");
         foldingPanel("fn:confirmationFoldingPanel").toggle().clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         for (int i = 0; i < 2; i++) {
             element("button1").click();
             confirmation("fn:conf1").okButton().click();
-            assertTrue(selenium.isAlertPresent());
-            assertEquals("done", selenium.getAlert());
+            assertTrue(isAlertPresent());
+            assertEquals("done", getAlert());
         }
+        acceptAlert();
     }
 
     @Test
@@ -96,6 +99,7 @@ public class AjaxFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase {
 
         DateChooserInspector dateChooser = dateChooser("fn:dropDownID");
         dateChooser.assertElementExists();
+        dateChooser.button().click();
         dateChooser.popup().items().get(1).click();
         dateChooser.field().assertValue("Yellow");
     }
@@ -225,7 +229,6 @@ public class AjaxFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase {
         requiredInput.assertVisible(true);
         message.assertVisible(false);
 
-        requiredInput.setCursorPosition(0);
         requiredInput.keyPress(13);
 
         message.assertVisible(true);

@@ -10,7 +10,7 @@
 <head>
   <title>DataTable Selection Entire Column Client-Side Events</title>
   <link rel="STYLESHEET" type="text/css" href="../../main.css"/>
-  <script type="text/javascript" src="../../funcTestsUtil.js"></script>
+
 </head>
 
 <body>

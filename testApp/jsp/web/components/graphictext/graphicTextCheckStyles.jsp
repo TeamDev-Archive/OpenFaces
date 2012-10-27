@@ -9,8 +9,10 @@
 <html>
 <head>
   <link rel="STYLESHEET" type="text/css" href="../../main.css"/>
+  <script src="../funcTestsUtil.js" type="text/javascript"></script>
+
   <title>GraphicText's Styles</title>
-  <script type="text/javascript" src="../../funcTestsUtil.js"></script>
+
 </head>
 
 <body>

@@ -30,7 +30,6 @@ public class InputTextFilterInspector extends AbstractFilterInspector {
     InputTextInspector searchComponent = searchComponent();
 
     searchComponent.type(filterValue);
-    searchComponent.setCursorPosition(0);
     sleep(1000);
     searchComponent.keyDown(13);
 

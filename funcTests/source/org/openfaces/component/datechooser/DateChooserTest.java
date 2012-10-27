@@ -13,6 +13,7 @@ package org.openfaces.component.datechooser;
 
 import org.junit.Test;
 import org.openfaces.component.calendar.BaseCalendarTestCase;
+import org.openqa.selenium.By;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.html.InputInspector;
 import org.seleniuminspector.openfaces.CalendarInspector;
@@ -103,6 +104,7 @@ public class DateChooserTest extends BaseCalendarTestCase {
         selectedDateInfo.assertText(changedCalendarDate);
 
         //input date value into the DateChooser field part
+        getDriver().findElement(By.xpath(dateChooser.field().getXPath())).clear();
         dateChooser.field().type(typedDate);
 
         submitter.clickAndWait();
@@ -115,6 +117,7 @@ public class DateChooserTest extends BaseCalendarTestCase {
 
     @Test
     public void testMonthChange() {
+        closeBrowser();
         testAppFunctionalPage("/components/datechooser/dateChooserChangeDateMonthYear.jsf");
 
         final String selectedDate = "06.03.2007";
@@ -123,11 +126,12 @@ public class DateChooserTest extends BaseCalendarTestCase {
         ElementInspector submitter = element("formID:submit");
         ElementInspector selectedMonthOutput = element("formID:selectedMonth");
 
-        dateChooser.button().mouseDown();
+        dateChooser.button().click();
 
         prepareCheckingMonthChange(dateChooser.calendar(), "December", "January", "December", 2, new int[]{1, 2});
         dateChooser.field().assertValue(selectedDate);
 
+        dateChooser.button().click();
         checkMonthChange(dateChooser.calendar(), "March", selectedMonthOutput, submitter, selectedDate);
         dateChooser.field().assertValue(selectedMonthOutput.text());
     }

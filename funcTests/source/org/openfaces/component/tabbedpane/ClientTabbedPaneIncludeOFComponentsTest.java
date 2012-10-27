@@ -53,8 +53,10 @@ public class ClientTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
         confirmation1.assertVisible(true);
 
         confirmation1.okButton().click();
-        assertTrue(selenium.isAlertPresent());
-        assertEquals("done", selenium.getAlert());
+        assertTrue(window().document().isAlertPresent());
+        assertEquals("done", window().document().getAlert());
+        getDriver().switchTo().alert().accept();
+
         confirmation1.assertVisible(false);
 
         element("fn:secondTabID").click();
@@ -62,8 +64,10 @@ public class ClientTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
         confirmation2.assertVisible(true);
 
         confirmation2.okButton().click();
-        assertTrue(selenium.isAlertPresent());
-        assertEquals("done", selenium.getAlert());
+        assertTrue(window().document().isAlertPresent());
+        assertEquals("done", window().document().getAlert());
+        getDriver().switchTo().alert().accept();
+
         confirmation2.assertVisible(false);
     }
 
@@ -128,13 +132,13 @@ public class ClientTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
         DropDownFieldInspector secondDropDown = dropDownField("fn:secondDropDown");
         secondDropDown.assertElementExists();
         secondDropDown.assertVisible(false);
-
+        firstDropDown.button().click();
         firstDropDown.popup().items().get(1).click();
         firstDropDown.field().assertValue("Yellow");
 
         element("fn:secondTabID").click();
         secondDropDown.assertElementExists();
-
+        secondDropDown.button().click();
         secondDropDown.popup().items().get(1).click();
         secondDropDown.field().assertValue("Yellow");
     }
@@ -187,6 +191,7 @@ public class ClientTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
 
     @Test
     public void testHintLabelInside() throws InterruptedException {
+        closeBrowser();
         testAppFunctionalPage("/components/tabbedpane/hintLabelIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());
         hintLabel("fn:firstHintLabelID").checkVisibilityAndContent("First HintLabel Value :-)", "First HintLabel Title ;-)");

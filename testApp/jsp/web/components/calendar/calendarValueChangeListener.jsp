@@ -9,8 +9,9 @@
 <html>
 <head>
   <title>Calendar with 'valueChangeListener'</title>
-  <script type="text/javascript" src="../../funcTestsUtil.js"></script>
-<link rel="STYLESHEET" type="text/css" href="../../main.css"/>
+  <script src="../funcTestsUtil.js" type="text/javascript"></script>
+
+  <link rel="STYLESHEET" type="text/css" href="../../main.css"/>
 </head>
 <body>
 <f:view>

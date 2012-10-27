@@ -20,7 +20,7 @@
       border-right: 2px solid darkgray;
     }
   </style>
-  <script type="text/javascript" src="../../funcTestsUtil.js"></script>
+
 <link rel="STYLESHEET" type="text/css" href="../../main.css"/>
 </head>
 

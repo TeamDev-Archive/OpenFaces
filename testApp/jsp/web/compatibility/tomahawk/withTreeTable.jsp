@@ -10,6 +10,7 @@
 <head>
   <title>Tomahawk Components in TreeTable</title>
   <link rel="stylesheet" type="text/css" href="basic.css" />
+  <script type="text/javascript" src="../funcTestsUtil.js"></script>
   <style type="text/css">
     .container{
       vertical-align:top;

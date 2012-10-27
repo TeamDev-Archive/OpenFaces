@@ -9,8 +9,9 @@
 <html>
 <head>
   <title>Multiple Selection in the TreeTable</title>
+  <script src="../funcTestsUtil.js" type="text/javascript"></script>
   <link rel="STYLESHEET" type="text/css" href="../../main.css"/>
-  <script type="text/javascript" src="../../funcTestsUtil.js"></script>
+
 </head>
 
 <body onload="multipleSelectionChanged('formID:multipleNodePathsSelectionTreeTableID', 'selectionNodePathsID');

@@ -6,6 +6,8 @@
 <%@ taglib uri="http://richfaces.org/rich" prefix="rich"%> 
 <html>
 <head>
+  <script src="../funcTestsUtil.js" type="text/javascript"></script>
+
   <title>a4j:support tag with client-side events of PopupLayer component</title>
 </head>
 

@@ -9,7 +9,7 @@
   <title>Calendar with o:ajax</title>
   <link rel="STYLESHEET" type="text/css" href="../../main.css"/>
 </head>
-<script type="text/javascript" src="../../funcTestsUtil.js"></script>
+
 <link rel="STYLESHEET" type="text/css" href="../../main.css"/>
 <body>
 <f:view>

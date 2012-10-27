@@ -8,6 +8,7 @@
 
 <html>
 <head>
+  <script src="../funcTestsUtil.js" type="text/javascript"></script>
   <title>OpenFaces input components</title>
 </head>
 

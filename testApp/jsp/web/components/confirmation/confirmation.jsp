@@ -8,7 +8,7 @@
 
 <html>
 <head><title>Confirmation client-side events</title>
-  <script type="text/javascript" src="../../funcTestsUtil.js"></script>
+
 </head>
 
 <body>

@@ -12,6 +12,7 @@
 package org.openfaces.test;
 
 import com.thoughtworks.selenium.Selenium;
+import org.junit.After;
 import org.junit.Test;
 import org.seleniuminspector.openfaces.DateChooserInspector;
 import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
@@ -67,21 +68,27 @@ public class DateChooserValidationTest extends OpenFacesTestCase {
         assertPageContainsErrorIcon(false);
 
         DateChooserInspector defaultDateChooser = dateChooser("dcForm:dcDefault");
+        defaultDateChooser.field().clear();
         defaultDateChooser.field().type("Oct 17, 2006sdfsdf");
         DateChooserInspector mMddDateChooser = dateChooser("dcForm:dcMMdd");
+        mMddDateChooser.field().clear();
         mMddDateChooser.field().type("10/17/2006");
         assertPageContainsErrorIcon(true);
+        defaultDateChooser.field().clear();
         defaultDateChooser.field().type("Oct 10, 2006");
+        mMddDateChooser.field().clear();
         mMddDateChooser.field().type("10/17/2006");
         assertPageContainsErrorIcon(false);
         tabSet("dcForm:localeSelector").setTabIndex(1, OpenFacesAjaxLoadingMode.getInstance());
         assertEquals("Date Chooser \u2014 OpenFaces Demo", selenium.getTitle());
         assertPageContainsErrorIcon(false);
+        defaultDateChooser.field().clear();
         defaultDateChooser.field().type("Oct 17, 2006sdfsdf");
+        mMddDateChooser.field().clear();
         mMddDateChooser.field().type("10/17/2006");
         assertPageContainsErrorIcon(true);
+        defaultDateChooser.field().clear();
         defaultDateChooser.field().type("17 oct. 2006");
         assertPageContainsErrorIcon(false);
     }
-
 }

@@ -185,8 +185,9 @@ public class TreeTableClientSideEvents extends OpenFacesTestCase {
     public void testTreeTableColumnBodyEvents() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/treetable/treeColumn_body.jsf");
+        System.out.println();
 
-        ElementInspector bodyOutput = element("fn:treeTable:3:body");
+        ElementInspector bodyOutput = element("fn:treeTable:3:body");      //:0: ?
         //onclick
         bodyOutput.click();
         assertTrue(selenium.isTextPresent("bodyOnclick works"));

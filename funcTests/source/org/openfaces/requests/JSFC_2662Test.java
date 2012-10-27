@@ -35,18 +35,16 @@ public class JSFC_2662Test extends OpenFacesTestCase {
         Assert.assertEquals("JSFC-2662", selenium.getTitle());
 
         ElementInspector suggestionField = element("formID:degree");
-        suggestionField.setCursorPosition(0);
         suggestionField.keyDown(KeyEvent.VK_DOWN);
         suggestionField.keyDown(KeyEvent.VK_DOWN);
 
         //press 'enter'
         suggestionField.keyPress(13);
-        suggestionField.setCursorPosition(5);
         //press 'delete' button
         suggestionField.keyPress(KeyEvent.VK_DELETE);
         //press 'end' button
         suggestionField.keyPress(KeyEvent.VK_END);
-        assertFalse(selenium.isAlertPresent());
+        assertFalse(window().document().isAlertPresent());
     }
 
 }

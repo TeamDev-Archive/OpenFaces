@@ -31,7 +31,16 @@ public class OpenFacesAjaxLoadingMode extends org.seleniuminspector.LoadingMode 
 
     public void waitForLoad() {
         // todo: write a correct processing code for OpenFaces Ajax completion without relying on fixed time delays
-        
+//        WebDriver driver = ((WrapsDriver) SeleniumHolder.getInstance().getSelenium()).getWrappedDriver();
+//        sleep(500);
+////        boolean isListPopulated = (new WebDriverWait(driver, 30000))
+////                .until(new ExpectedCondition<Boolean>() {
+////                    public Boolean apply(WebDriver d) {
+////                        JavascriptExecutor javascriptExecutor = (JavascriptExecutor) d;
+////                        return (Boolean)javascriptExecutor.executeScript("return (document._ajaxInProgressMessage.style.display=='none' ? true : false);");
+////                    }
+////                });
+//        sleep(2000);
         sleep(500); // wait a little while Ajax request starts asynchronously
         Selenium selenium = SeleniumHolder.getInstance().getSelenium();
         selenium.waitForCondition("var value = window.document._ajaxInProgressMessage ? window.document._ajaxInProgressMessage.style.display : 'none'; value == 'none';", "30000");

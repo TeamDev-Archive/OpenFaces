@@ -50,8 +50,9 @@ public class AjaxTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
         confirmation1.assertVisible(true);
 
         confirmation1.okButton().click();
-        assertTrue(selenium.isAlertPresent());
-        assertEquals("done", selenium.getAlert());
+        assertTrue(isAlertPresent());
+        assertEquals("done", getAlert());
+        acceptAlert();
         confirmation1.assertVisible(false);
 
         element("fn:secondTabID").clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
@@ -61,9 +62,10 @@ public class AjaxTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
         confirmation2.assertVisible(true);
 
         confirmation2.okButton().click();
-        assertTrue(selenium.isAlertPresent());
-        assertEquals("done", selenium.getAlert());
+        assertTrue(isAlertPresent());
+        assertEquals("done", getAlert());
         confirmation2.assertVisible(false);
+        acceptAlert();
     }
 
     //todo: uncomment this method if JSFC-2452 fixed
@@ -123,11 +125,13 @@ public class AjaxTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
 
         DropDownFieldInspector secondDropDown = dropDownField("fn:secondDropDown");
         secondDropDown.assertElementExists(false);
+        firstDropDown.button().click();
         firstDropDown.popup().items().get(1).click();
         firstDropDown.field().assertValue("Yellow");
 
         element("fn:secondTabID").clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         secondDropDown.assertElementExists();
+        secondDropDown.button().click();
         secondDropDown.popup().items().get(1).click();
         firstDropDown.field().assertValue("Yellow");
     }
@@ -174,6 +178,7 @@ public class AjaxTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
 
     @Test
     public void testHintLabelInside() throws InterruptedException {
+        closeBrowser();
         testAppFunctionalPage("/components/tabbedpane/hintLabelIn.jsf");
         hintLabel("fn:firstHintLabelID").checkVisibilityAndContent("First HintLabel Value :-)", "First HintLabel Title ;-)");
 
@@ -306,14 +311,12 @@ public class AjaxTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
         ElementInspector firstMessage = element("fn:first_messageID");
         assertFalse(firstMessage.elementExists() && firstMessage.isVisible());
 
-        requiredInput.setCursorPosition(0);
         requiredInput.keyPress(13);
         firstMessage.assertVisible(true);
 
         element("fn:secondHeader").click();
         OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         ElementInspector requiredInput1 = element("fn:required_input1");
-        requiredInput1.setCursorPosition(0);
         requiredInput1.keyPress(13);
         element("fn:second_messageID").assertVisible(true);
     }

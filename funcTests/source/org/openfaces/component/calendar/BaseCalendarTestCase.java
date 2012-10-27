@@ -12,6 +12,7 @@
 package org.openfaces.component.calendar;
 
 import org.openfaces.test.OpenFacesTestCase;
+import org.openqa.selenium.By;
 import org.seleniuminspector.openfaces.CalendarInspector;
 import org.seleniuminspector.ElementInspector;
 
@@ -72,11 +73,18 @@ public abstract class BaseCalendarTestCase extends OpenFacesTestCase {
         calendar.month().assertText(initialMonthName);
 
         //next month
+//        calendar.monthIncrease().evalExpression("click()");
+        // Make it bigger to Selenium could click.
+        calendar.monthIncrease().evalExpression("style.fontSize='100%'");
+        calendar.monthIncrease().evalExpression("style.width='100%'");
         calendar.monthIncrease().click();
         calendar.month().assertText(nextMonthName);
 
         //previous month
+        calendar.monthDecrease().evalExpression("style.fontSize='100%'");
+        calendar.monthDecrease().evalExpression("style.width='100%'");
         calendar.monthDecrease().click();
+//        calendar.monthDecrease().evalExpression("click()");
         calendar.month().assertText(previousMonthName);
 
         //choose from month popup list
@@ -105,11 +113,11 @@ public abstract class BaseCalendarTestCase extends OpenFacesTestCase {
         calendar.year().assertText(initialYearName);
 
         //next year
-        calendar.yearIncrease().click();
+        calendar.yearIncrease().evalExpression("onclick()");
         calendar.year().assertText(nextYearName);
 
         //previous year
-        calendar.yearDecrease().click();
+        calendar.yearDecrease().evalExpression("onclick()");
         calendar.year().assertText(previousYearName);
 
         //choose from year popup list
