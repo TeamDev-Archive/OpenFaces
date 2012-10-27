@@ -9,7 +9,7 @@
 <html>
 <head>
   <title>DropDown with session expiration</title>
-  <script type="text/javascript" src="../functionalTesting/funcTestsUtil.js"></script>
+  <script src="../funcTestsUtil.js" type="text/javascript"></script>
   <link rel="STYLESHEET" type="text/css" href="../../main.css"/>
 </head>
 

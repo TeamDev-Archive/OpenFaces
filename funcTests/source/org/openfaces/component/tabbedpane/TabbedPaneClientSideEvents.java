@@ -66,19 +66,16 @@ public class TabbedPaneClientSideEvents extends OpenFacesTestCase {
         assertTrue(selenium.isTextPresent("mousemove"));
 
         //onkeydown
-        selenium.setCursorPosition("test_form:firstTabKeyDownInputID", "2");
         selenium.keyDown("test_form:firstTabKeyDownInputID", "77");
         assertTrue(selenium.isTextPresent("onkeydown works"));
         assertTrue(selenium.isTextPresent("keydown"));
 
         //onkeyup
-        selenium.setCursorPosition("test_form:firstTabKeyUpInputID", "2");
         selenium.keyUp("test_form:firstTabKeyUpInputID", "77");
         assertTrue(selenium.isTextPresent("onkeyup works"));
         assertTrue(selenium.isTextPresent("keyup"));
 
         //onkeypress
-        selenium.setCursorPosition("test_form:firstTabKeyPressInputID", "2");
         selenium.keyPress("test_form:firstTabKeyPressInputID", "77");
         assertTrue(selenium.isTextPresent("onkeypress works"));
         assertTrue(selenium.isTextPresent("keypress"));

@@ -81,7 +81,7 @@ public class SidePanelTest extends OpenFacesTestCase {
         sidePanel.assertExpressionEquals("_size", "20%");
         sidePanel.splitter().dragAndDrop(0, 60);
         sidePanel.assertExpressionEquals("_size", "20%");
-        sidePanel.splitter().dragAndDrop(-60, 0);
+        sidePanel.splitter().dragAndDrop(-50, 0);
         sidePanel.assertExpressionEquals("_size", "3.5%");
         sidePanel.splitter().dragAndDrop(400, 0);
         sidePanel.assertExpressionEquals("_size", "100%");

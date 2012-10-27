@@ -59,7 +59,7 @@ public class TwoListSelectionTest extends OpenFacesTestCase {
 
     @Test
     public void testReodering() {
-//    restartBrowser();
+        closeBrowser();
 
         reordering(twoListSelection("formID:first"));
         reordering(twoListSelection("formID:second"));
@@ -100,7 +100,7 @@ public class TwoListSelectionTest extends OpenFacesTestCase {
 
     @Test
     public void testValueChangeListener() {
-//    restartBrowser();
+        closeBrowser();
         testAppFunctionalPage("/components/twolistselection/TLSValueChangeListener.jsf");
 
         ElementInspector asTagOutput = element("formID:asTagOutput");
@@ -193,7 +193,7 @@ public class TwoListSelectionTest extends OpenFacesTestCase {
         tlsOutput.assertText("item_Value_3 item_Value_2 item_Value_7 ");
 
         //remove one item by doubleclick
-        tls.rightList().doubleClick();
+        tls.rightList().evalExpression("ondblclick()");
         checkLabelsCorrectness(tls, new String[]{"item_Label_1", "item_Label_4", "item_Label_5", "item_Label_6", "item_Label_2"},
                 new String[]{"item_Label_3", "item_Label_7"}, "Available items", "Selected items");
         submit.clickAndWait();
@@ -211,7 +211,7 @@ public class TwoListSelectionTest extends OpenFacesTestCase {
         tls.removeAllButton().click();
         checkLabelsCorrectness(tls,
                 new String[]{"item_Label_4", "item_Label_6", "item_Label_3", "item_Label_7", "item_Label_1", "item_Label_2", "item_Label_5"},
-                new String[]{""},
+                new String[]{},
                 "Available items", "Selected items");
         submit.clickAndWait();
         tlsOutput.assertText("none");

@@ -11,10 +11,12 @@
  */
 package org.openfaces.component.treetable;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.openfaces.test.RichFacesAjaxLoadingMode;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.interactions.Actions;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.LoadingMode;
 import org.seleniuminspector.ServerLoadingMode;
@@ -88,22 +90,27 @@ public class TreeTableTest extends OpenFacesTestCase {
      */
     @Test
     public void testSingleSelectionAndKeyboardNavigation() {
+        closeBrowser();
         testAppFunctionalPage("/components/treetable/treeTableSingleSelection.jsf");
         /*check selection and keyboard navigation on the simple TreeTable*/
-        element("formID:singleSelectionTreeTableID:0:categoryID").click();
+        Actions click = new Actions(getDriver()).moveToElement(
+                getDriver().findElement(By.id("formID:singleSelectionTreeTableID:0:categoryID")))
+                .click();
+        click.build().perform();
 
         ElementInspector emptyElement = element("empty");
         ElementInspector treeTable = element("formID:singleSelectionTreeTableID");
+        treeTable.focus();
         for (int i = 1; i < 26; i++) {
             if (i == 1 || i == 4 || i == 16 || i == 19 || i == 21 || i == 24) {
                 //click right arrow to expand first TreeTable node
-                treeTable.keyPress(KeyEvent.VK_RIGHT);
+                new Actions(getDriver()).sendKeys(Keys.ARROW_RIGHT).build().perform();
                 OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
             }
             //get selected index value
             emptyElement.assertText(String.valueOf(i - 1));
             //click down arrow
-            treeTable.keyPress(KeyEvent.VK_DOWN);
+            new Actions(getDriver()).sendKeys(Keys.ARROW_DOWN).build().perform();
         }
         //check mouse selection for the same TreeTable
         element("formID:singleSelectionTreeTableID:1:categoryID").click();
@@ -114,7 +121,7 @@ public class TreeTableTest extends OpenFacesTestCase {
         /*Check TreeTable with defined 'nodePath' and 'nodeData' attributes*/
         element("formID:singleNodePathSelectionTreeTableID:3:categoryID").click();
         ElementInspector selectionNodePath = element("selectionNodePathID");
-        String indexBeforeSubmitNodePathTreeTable = selectionNodePath.text();                                               
+        String indexBeforeSubmitNodePathTreeTable = selectionNodePath.text();
 
         element("formID:singleNodeDataSelectionTreeTableID:1:categoryID").keyPress(KeyEvent.VK_RIGHT);
         OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
@@ -135,9 +142,13 @@ public class TreeTableTest extends OpenFacesTestCase {
     public void testMultipleSelectionAndKeyboardNavigation() {
         testAppFunctionalPage("/components/treetable/treeTableMultipleSelection.jsf");
         ElementInspector categoryOutput = element("formID:multipleSelectionTreeTableID:0:categoryID");
-        categoryOutput.click();
+        new Actions(getDriver()).moveToElement(
+                getDriver().findElement(By.id("formID:multipleSelectionTreeTableID:0:categoryID")))
+                .click().build().perform();
+
 
         TreeTableInspector multipleSelectionTreeTable = treeTable("formID:multipleSelectionTreeTableID");
+        multipleSelectionTreeTable.focus();
         /*check keyboard navigation and selection*/
         //select root nodes
         for (int i = 0; i < 5; i++) {
@@ -181,23 +192,32 @@ public class TreeTableTest extends OpenFacesTestCase {
         //check root nodes
         element("formID:multipleNodePathsSelectionTreeTableID:0:categoryID").click();
         TreeTableInspector multipleNodePathsTreeTable = treeTable("formID:multipleNodePathsSelectionTreeTableID");
-        multipleNodePathsTreeTable.keyPress(KeyEvent.VK_DOWN);
+        new Actions(getDriver()).moveToElement(
+                getDriver().findElement(By.xpath(multipleNodePathsTreeTable.getXPath())))
+                .sendKeys(Keys.ARROW_DOWN).build().perform();
         element("formID:multipleNodeDatasSelectionTreeTableID:0:categoryID").click();
         TreeTableInspector multipleNodeDataTreeTable = treeTable("formID:multipleNodeDatasSelectionTreeTableID");
-        multipleNodeDataTreeTable.keyPress(KeyEvent.VK_DOWN);
+        new Actions(getDriver()).moveToElement(
+                getDriver().findElement(By.xpath(multipleNodeDataTreeTable.getXPath())))
+                .sendKeys(Keys.ARROW_DOWN).build().perform();
 
         //check root + expanded child nodes
         element("formID:multipleNodePathsSelectionTreeTableID:4:categoryID").click();
 
         //click right arrow
-        multipleNodePathsTreeTable.keyPress(KeyEvent.VK_RIGHT);
+        new Actions(getDriver()).moveToElement(
+                getDriver().findElement(By.xpath(multipleNodeDataTreeTable.getXPath())))
+                .sendKeys(Keys.ARROW_RIGHT).build().perform();
         OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         for (int i = 0; i < 3; i++) {
             createEvent(multipleNodePathsTreeTable, null, EventType.KEY, "keypress", KeyEvent.VK_DOWN, true);
         }
 
-        element("formID:multipleNodeDatasSelectionTreeTableID:2:categoryID").click();
-        multipleNodeDataTreeTable.keyPress(KeyEvent.VK_RIGHT);
+        new Actions(getDriver()).moveToElement(
+                getDriver().findElement(By.id("formID:multipleNodeDatasSelectionTreeTableID:2:categoryID")))
+                .click().build().perform();
+
+        multipleNodeDataTreeTable.keyPress(Keys.ARROW_RIGHT);
         OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         for (int i = 0; i < 3; i++) {
             createEvent(multipleNodeDataTreeTable, null, EventType.KEY, "keypress", KeyEvent.VK_DOWN, true);
@@ -225,38 +245,38 @@ public class TreeTableTest extends OpenFacesTestCase {
     public void testKeyboardNavigation() {
         testAppFunctionalPage("/components/treetable/treeTableKeyboardNavigation.jsf");
 
-        ElementInspector treeTable = element("formID:treeTableKeyboardNavigation");
+        TreeTableInspector treeTable = treeTable("formID:treeTableKeyboardNavigation");
 
-        treeTable.click();
+        treeTable.focus();
 
         ElementInspector emptyElement = element("empty");
         //down arrow
-        treeTable.keyPress(KeyEvent.VK_DOWN);
+        createEvent(treeTable, null, EventType.KEY, "keypress", KeyEvent.VK_DOWN, false);
         emptyElement.assertText("  0");
 
         //'End' button
-        treeTable.keyPress(KeyEvent.VK_END);
+                createEvent(treeTable, null, EventType.KEY, "keypress", KeyEvent.VK_END, false);
         emptyElement.assertText("  6");
 
         //up arrow
-        treeTable.keyPress(KeyEvent.VK_UP);
+        createEvent(treeTable, null, EventType.KEY, "keypress", KeyEvent.VK_UP, false);
         emptyElement.assertText("  5");
 
         //'Home' button
-        treeTable.keyPress(KeyEvent.VK_HOME);
+        createEvent(treeTable, null, EventType.KEY, "keypress", KeyEvent.VK_HOME, false);
         emptyElement.assertText("  0");
 
         //left arrow
-        treeTable.keyPress(KeyEvent.VK_LEFT);
+        createEvent(treeTable, null, EventType.KEY, "keypress", KeyEvent.VK_LEFT, false);
 
         //right arrow
-        treeTable.keyPress(KeyEvent.VK_RIGHT);
+        createEvent(treeTable, null, EventType.KEY, "keypress", KeyEvent.VK_RIGHT, false);
 
         //'minus' sign
-        treeTable.keyPress(KeyEvent.VK_SUBTRACT);
+        createEvent(treeTable, null, EventType.KEY, "keypress", KeyEvent.VK_SUBTRACT, false);
 
         //'plus' sign
-        treeTable.keyPress(KeyEvent.VK_ADD);
+        createEvent(treeTable, null, EventType.KEY, "keypress", KeyEvent.VK_ADD, false);
 
         //'Shift' + down arrow
         for (int i = 0; i < 6; i++) {

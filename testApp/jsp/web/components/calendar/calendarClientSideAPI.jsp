@@ -9,7 +9,7 @@
 <html>
 <head>
   <title>Calendar client-side API</title>
-  <script type="text/javascript" src="../../funcTestsUtil.js"></script>
+  <script src="../funcTestsUtil.js" type="text/javascript"></script>
   <script type="text/javascript">
     function getActualSelectedDate(){
       var calendar = getControl('formID:calendarAPI::body');

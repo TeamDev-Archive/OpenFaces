@@ -14,6 +14,8 @@ package org.openfaces.test;
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Assert;
 import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.html.InputInspector;
 import org.seleniuminspector.openfaces.CalendarInspector;
@@ -30,6 +32,7 @@ public class ValidationTest extends OpenFacesTestCase {
 
     @Test
     public void testServerDefaultPresentation() {
+        closeBrowser();
         testAppFunctionalPage("/components/validation/serverDefaultPresentation.jsf");
         isNotDefaultPresentation();
         element("testForm:fillInvalidData").click();
@@ -61,15 +64,18 @@ public class ValidationTest extends OpenFacesTestCase {
 
     @Test
     public void testClientDefaultPresentation() {
+        closeBrowser();
         testAppFunctionalPage("/components/validation/clientDefaultPresentation.jsf");
         isNotDefaultPresentation();
         element("testForm:fillInvalidData").click();
         ElementInspector submit = element("testForm:fmSubmit");
         submit.click();
+        sleep(1000);
         isDefaultPresentation();
         fillValidDataForClientSideAPI();
         submit.click();
         waitForPageToLoad();
+        sleep(1000);
         isNotDefaultPresentation();
     }
 
@@ -159,6 +165,7 @@ public class ValidationTest extends OpenFacesTestCase {
 
     @Test
     public void testComponentWideValidation() throws InterruptedException {
+        closeBrowser();
         testAppFunctionalPage("/components/validation/componentWideValidation.jsf");
         InputTextInspector doubleRangeInput = inputText("testForm:validDROnSubmit");
         doubleRangeInput.type("1");
@@ -191,17 +198,24 @@ public class ValidationTest extends OpenFacesTestCase {
         doubleRangeOnDemandMessage.assertText("");
         ElementInspector urlOnDemandMessage = element("testForm:UrlOnDemandMessage");
         urlOnDemandMessage.assertText("");
+        inputText("testForm:inputOnSubmit").clear();
         inputText("testForm:inputOnSubmit").type("Text");
         dateChooser("testForm:dchOnSubmit").field().type("Mar 20, 2007");
+        doubleRangeInput.clear();
         doubleRangeInput.type("0.1");
+        urlInput.clear();
         urlInput.type("http://www.teamdev.com");
         InputTextInspector doubleRangeOffInput = inputText("testForm:validDROff");
+        doubleRangeOffInput.clear();
         doubleRangeOffInput.type("1");
         InputTextInspector urlOffInput = inputText("testForm:urlOff");
+        urlOffInput.clear();
         urlOffInput.type("not url");
         InputTextInspector dobleRangeOnDemandInput = inputText("testForm:validDROnDemand");
+        dobleRangeOnDemandInput.clear();
         dobleRangeOnDemandInput.type("1");
         InputTextInspector urlOnDemand = inputText("testForm:urlOnDemand");
+        urlOnDemand.clear();
         urlOnDemand.type("not url");
 
         submit.click();
@@ -224,13 +238,21 @@ public class ValidationTest extends OpenFacesTestCase {
                 doubleRangeOnDemandMessage.text().contains("Validation Error"));
 
         urlOnDemandMessage.assertText("Validation error occurs Entered value is not url");
+        inputText("testForm:inputOff").clear();
         inputText("testForm:inputOff").type("Text");
+        dateChooser("testForm:dchOff").field().clear();
         dateChooser("testForm:dchOff").field().type("Mar 20, 2007");
+        doubleRangeOffInput.clear();
         doubleRangeOffInput.type("0.1");
+        inputText("testForm:urlOff").clear();
         inputText("testForm:urlOff").type("http://www.teamdev.com");
+        inputText("testForm:inputOnDemand").clear();
         inputText("testForm:inputOnDemand").type("Text");
+        dateChooser("testForm:dchOnDemand").field().clear();
         dateChooser("testForm:dchOnDemand").field().type("Mar 20, 2007");
+        dobleRangeOnDemandInput.clear();
         dobleRangeOnDemandInput.type("0.1");
+        urlOnDemand.clear();
         urlOnDemand.type("http://www.teamdev.com");
         submit.click();
         waitForPageToLoad();
@@ -515,18 +537,19 @@ public class ValidationTest extends OpenFacesTestCase {
     }
 
     private void fillInvalidDataForClientSideAPI() {
-        inputText("testForm:required").type("");
+        getDriver().findElement(By.id("testForm:required")).clear();
 
         CalendarInspector calendar = calendar("testForm:c");
         calendar.selectCalendarCell(1, 6);
         calendar.selectCalendarCell(2, 6);
         calendar.none().mouseUp();
-        dateChooser("testForm:dch").field().type("");
+        dateChooser("testForm:dch").field().clear();
         twoListSelection("testForm:tls").removeAllButton().click();
 
         DropDownFieldInspector dropDownField = dropDownField("testForm:ddf");
+        dropDownField.field().clear();
         dropDownField.field().type("t");
-        dropDownField.field().keyPress(KeyEvent.VK_BACK_SPACE);
+        dropDownField.field().keyPress(Keys.BACK_SPACE);
         element("testForm:fillInvalidData").click();
     }
 
@@ -538,12 +561,13 @@ public class ValidationTest extends OpenFacesTestCase {
         element("testForm:fillValidData").click();
         DropDownFieldInspector dropDownField = dropDownField("testForm:ddf");
         dropDownField.field().type("Value");
-        dropDownField.field().keyPress(KeyEvent.VK_4);
+        dropDownField.field().keyPress(Keys.NUMPAD4);
     }
 
     private void isDefaultPresentation() {
         isDefaultPresentation(0);
     }
+
     private void isDefaultPresentation(int startIdx) {
         String failedBackground = "background-color: #F8D3D4";
         int i = startIdx;

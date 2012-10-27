@@ -16,6 +16,8 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.openfaces.test.RichFacesAjaxLoadingMode;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.seleniuminspector.openfaces.ConfirmationInspector;
 import org.seleniuminspector.openfaces.PopupLayerInspector;
 
@@ -96,9 +98,10 @@ public class ConfirmationTest extends OpenFacesTestCase {
     @Test
     public void testForCommandLinkInvoker() {
         testAppFunctionalPage("/components/confirmation/confirmationTestInvokers.jsf");
-        element("form1:commandLink").click();
-        confirmation("form1:confirmForCommandLink").okButton().click();
-        waitForPageToLoad();
+        WebElement commandLink = getDriver().findElement(By.id("form1:commandLink"));
+        commandLink.click();
+        WebElement confirmForCommandLink = getDriver().findElement(By.id("form1:confirmForCommandLink::yes_button"));
+        confirmForCommandLink.click();
         element("form1:actionConfirmedText").assertText("Confirmed: true");
     }
 
@@ -158,31 +161,28 @@ public class ConfirmationTest extends OpenFacesTestCase {
         selenium.isVisible("form:confirm_withInputTextInside");
         //try to type in caption
         assertEquals("Caption input", selenium.getText("form:captionInputID"));
-        selenium.setCursorPosition("form:captionInputID", "0");
         selenium.type("form:captionInputID", "Test ");
         assertEquals("Test Caption input", selenium.getText("form:captionInputID"));
 
         //try to type in icon
         assertEquals("Icon input", selenium.getText("form:iconInputID"));
-        selenium.setCursorPosition("form:iconInputID", "0");
         selenium.type("form:iconInputID", "Test ");
         assertEquals("Test Icon input", selenium.getText("form:iconInputID"));
 
         //try to type in message
         assertEquals("Message input", selenium.getText("form:messageInputID"));
-        selenium.setCursorPosition("form:messageInputID", "0");
         selenium.type("form:messageInputID", "Test ");
         assertEquals("Test Message input", selenium.getText("form:messageInputID"));
 
         //try to type in details
         assertEquals("Details input", selenium.getText("form:detailsInputID"));
-        selenium.setCursorPosition("form:detailsInputID", "0");
         selenium.type("form:detailsInputID", "Test ");
         assertEquals("Test Details input", selenium.getText("form:detailsInputID"));
 
         selenium.click("form:confirm_withInputTextInside::yes_button");
-        assertTrue(selenium.isAlertPresent());
-        assertEquals("Done", selenium.getAlert());
+        assertTrue(isAlertPresent());
+        assertEquals("Done", getAlert());
+        acceptAlert();
     }
 
     @Test
