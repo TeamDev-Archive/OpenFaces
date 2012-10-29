@@ -1,0 +1,23 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:o="http://openfaces.org/"
+        >
+  <br/>
+  <a href="../../testPageIndex.jsf">Return to main testing page</a><br/><br/>
+
+  <br/>
+  <h:outputText value="File: "/> <h:outputText id="fileName"
+                                               value="#{FileUploadBean.fileName}"/>
+  <h:outputText value=" ; size: "/> <h:outputText id="fileSize"
+                                                  value="#{FileUploadBean.fileSize}"/>
+  <o:singleFileUpload
+          id="fileUpload"
+          browseButtonText="Upload cover image..."
+          acceptedFileTypes="jpg png bmp jpeg gif" acceptedMimeTypes="image/*"
+          completionListener="#{FileUploadBean.fileUploaded}"
+          style="border: none; width:180px" layoutMode="compact"
+          render="formID:fileName formID:fileSize" fileSizeLimit="50"
+          browseButtonDuringUpload="showStop"
+          stopButtonText="Stop it!"
+          />
+
+</div>
