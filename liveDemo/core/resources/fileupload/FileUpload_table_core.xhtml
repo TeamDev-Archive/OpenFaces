@@ -30,7 +30,7 @@
         <o:singleFileUpload browseButtonText="Upload cover image..."
                             acceptedFileTypes="jpg png bmp jpeg gif" acceptedMimeTypes="image/*"
                             completionListener="#{FileUploadBean.bookImageUploaded}"
-                            style="border: none; width:180px" layoutMode="compact"
+                            style="border: none; width:180px" layoutMode="full"
                 onend="O$.ajax.request(this, event, {render: 'form:booksTable:#{rowIndex}:fileName form:booksTable:#{rowIndex}:fileSize'})"/>
       </o:column>
 
