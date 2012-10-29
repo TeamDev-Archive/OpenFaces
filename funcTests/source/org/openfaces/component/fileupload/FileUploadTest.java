@@ -44,7 +44,7 @@ public class FileUploadTest  extends OpenFacesTestCase {
         input.sendKeys(NORMAL_FILE_ADDRESS);
         assertTrue(actionButtonContainer.findElement(By.tagName("input")).getAttribute("value").equals("Stop it!"));
         assertTrue(progressBar.isDisplayed());
-        sleep(2000);
+        sleep(7000);
         assertTrue(getDriver().findElement(By.id("formID:fileName")).getText().equals(NORMAL_FILE_NAME));
         assertTrue(getDriver().findElement(By.id("formID:fileSize")).getText().length() > 1);
     }
@@ -60,7 +60,7 @@ public class FileUploadTest  extends OpenFacesTestCase {
         assertTrue(isAlertPresent());
         acceptAlert();
         input.sendKeys(TOO_BIG_FILE);
-        sleep(2000);
+        sleep(7000);
         assertTrue(getDriver().findElement(By.id("formID:fileSize")).getText().equals("SIZE_LIMIT_EXCEEDED"));
     }
 
