@@ -85,5 +85,6 @@ public class DropDownFieldTag extends DropDownComponentTag {
 
         setIntProperty(component, "size");
         setIntProperty(component, "maxlength");
+        setBooleanProperty(component, "changeValueOnSelect");
     }
 }

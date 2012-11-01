@@ -225,4 +225,14 @@ public class DropDownField extends DropDownFieldBase {
     public void setDisabledButtonImageUrl(String disabledButtonImageUrl) {
         super.setDisabledButtonImageUrl(disabledButtonImageUrl);
     }
+
+    @Override
+    public Boolean getChangeValueOnSelect() {
+        return super.getChangeValueOnSelect();
+    }
+
+    @Override
+    public void setChangeValueOnSelect(Boolean changeValueOnSelect) {
+        super.setChangeValueOnSelect(changeValueOnSelect);
+    }
 }

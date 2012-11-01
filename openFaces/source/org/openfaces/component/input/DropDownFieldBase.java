@@ -61,6 +61,8 @@ public abstract class DropDownFieldBase extends DropDownComponent {
     private Integer maxlength;
     private Integer size;
 
+    private Boolean changeValueOnSelect;
+
     @Override
     public void setId(String id) {
         super.setId(id);
@@ -459,4 +461,13 @@ public abstract class DropDownFieldBase extends DropDownComponent {
     public void setCachingAllowed(boolean cachingAllowed) {
         this.cachingAllowed = cachingAllowed;
     }
+
+    public Boolean getChangeValueOnSelect() {
+        return ValueBindings.get(this, "changeValueOnSelect", changeValueOnSelect, false);
+    }
+
+    public void setChangeValueOnSelect(Boolean changeValueOnSelect) {
+        this.changeValueOnSelect = changeValueOnSelect;
+    }
+
 }

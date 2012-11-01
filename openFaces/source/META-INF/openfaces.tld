@@ -12429,6 +12429,18 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>A flag that indicates whether or not user will be able to  change items of drop down
+        field by using top or bottom arrow.
+      </description>
+      <name>changeValueOnSelect</name>
+      <deferred-value>
+        <type>java.lang.Boolean</type>
+      </deferred-value>
+      <!-- @bindingType Boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
 
   </tag>
 
@@ -39176,7 +39188,18 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
-
+    <attribute>
+      <description>A flag that indicates whether or not user will be able to  change items of drop down
+        field by using top or bottom arrow.
+      </description>
+      <name>changeValueOnSelect</name>
+      <deferred-value>
+        <type>java.lang.Boolean</type>
+      </deferred-value>
+      <!-- @bindingType Boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
   </tag>
 
   <tag>

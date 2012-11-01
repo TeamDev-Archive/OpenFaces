@@ -13,7 +13,8 @@
 O$.DropDownField = {
   _init: function(dropDownId, popupTimeout, listAlignment, rolloverPopupItemClass, itemValues, customValueAllowed,
                   required, suggestionMode, suggestionDelay, suggestionMinChars, manualListOpeningAllowed,
-                  autoCompleteOn, totalItemCount, pageSize, popupTableStructureAndStyleParams, cachingAllowed, itemPresentationColumn) {
+                  autoCompleteOn, totalItemCount, pageSize, popupTableStructureAndStyleParams, cachingAllowed,
+                  itemPresentationColumn, changeValueOnSelect) {
     var dropDown = O$(dropDownId);
     var super_ = O$.extend(dropDown, {
       _listAlignment: listAlignment,
@@ -28,6 +29,7 @@ O$.DropDownField = {
       _itemPresentationContainer: O$(dropDownId + "::itemPresentation::container"),
       _itemPresentationColumn: itemPresentationColumn,
       _fieldContainer: O$(dropDownId + "::field::container"),
+      _changeValueOnSelect:changeValueOnSelect,
 
       _showPresentationPromptText:function (promptText) {
         var td = document.createElement("td");
@@ -665,8 +667,19 @@ O$.DropDownField = {
 
       _setCustomEvents: function(events) {
         O$.extend(this, events);
-      }
+      },
 
+      _selectValueByKeyCode: function (keyCode) {
+        var currentItemIndex = dropDown._getHighlightedItemIndex();
+        if (keyCode == 13 || (dropDown._changeValueOnSelect && (keyCode == 38 || keyCode == 40))) {
+          if (currentItemIndex == -1) {
+            dropDown._selectCurrentValue();
+          } else {
+            var dropDownItem = dropDown._items[currentItemIndex];
+            dropDownItem._select();
+          }
+        }
+      }
     });
 
     if (suggestionMinChars < 0)
@@ -1068,6 +1081,10 @@ O$.DropDownField = {
     var popup = dropDown._popup;
 
     var dropDownOpened = dropDown.isOpened();
+
+    //if pressed top or bottom arrow or enter
+    dropDown._selectValueByKeyCode(keyCode);
+
     if (dropDownOpened && (keyCode == 13 || keyCode == 27)) { // Enter || Esc
       needCancelBubble = true;
       dropDown._keyNavigationStarted = false;
@@ -1083,14 +1100,6 @@ O$.DropDownField = {
         if (O$.isExplorer8AndOlder()) {
           dropDown._field.blur();
           dropDown._field.focus();
-        }
-      }
-      if (keyCode == 13) {
-        if (currentItemIndex != -1) {
-          var dropDownItem = dropDown._items[currentItemIndex];
-          dropDownItem._select();
-        } else {
-          dropDown._selectCurrentValue();
         }
       }
     } else {
