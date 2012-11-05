@@ -99,4 +99,8 @@ public class SelectOneMenuJspTag extends DropDownFieldJspTagBase {
     public void setItemPresentationColumn(ValueExpression itemPresentationColumn) {
         getDelegate().setPropertyValue("itemPresentationColumn", itemPresentationColumn);
     }
+
+    public void setChangeValueOnSelect(ValueExpression changeValueOnSelect) {
+        super.setChangeValueOnSelect(changeValueOnSelect);
+    }
 }

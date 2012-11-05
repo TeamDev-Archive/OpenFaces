@@ -98,4 +98,9 @@ public class DropDownFieldJspTag extends DropDownFieldJspTagBase {
     public void setDisabledFieldStyle(ValueExpression disabledFieldStyle) {
         super.setDisabledFieldStyle(disabledFieldStyle);
     }
+
+    public void setChangeValueOnSelect(ValueExpression changeValueOnSelect) {
+        super.setChangeValueOnSelect(changeValueOnSelect);
+    }
+
 }

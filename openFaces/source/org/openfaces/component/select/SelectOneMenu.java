@@ -270,4 +270,14 @@ public class SelectOneMenu extends DropDownFieldBase {
         this.itemPresentationColumn = itemPresentationColumn;
     }
 
+    @Override
+    public Boolean getChangeValueOnSelect() {
+        return super.getChangeValueOnSelect();
+    }
+
+    @Override
+    public void setChangeValueOnSelect(Boolean changeValueOnSelect) {
+        super.setChangeValueOnSelect(changeValueOnSelect);
+    }
+
 }
