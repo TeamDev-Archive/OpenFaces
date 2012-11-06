@@ -254,6 +254,7 @@ O$.MonthTable = {
             });
           }
           cell._cellEvents = [];
+          cell.reservedPlaces = [];
         }
       }
     }
@@ -546,8 +547,11 @@ O$.MonthTable = {
                             eventElement._elementPartIndex = event.parts.length - part.index - 1;
                             eventElement._elementPartIndexFromTheStart = false;
                           }
-                          event.updatePresentation(70);
-                          event._scrollIntoView();
+                          console.log("removing elements");
+                          monthTable._removeEventElements();
+                          monthTable._updateEventElements(true);
+                          /*event.updatePresentation(70);
+                          event._scrollIntoView();  */
                           event._dragPositionTop += eventElement._rect.y + eventElement._rect.height;
                         }
                       }
