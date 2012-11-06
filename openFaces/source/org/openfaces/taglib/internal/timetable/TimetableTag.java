@@ -31,8 +31,6 @@ public class TimetableTag extends TimeScaleTableTag {
         super.setComponentProperties(facesContext, component);
 
         setEnumerationProperty(component, "viewType", Timetable.ViewType.class);
-        setStringProperty(component, "headerRightStyle");
-        setStringProperty(component, "headerRightClass");
         setStringProperty(component, "onviewchange");
     }
 }

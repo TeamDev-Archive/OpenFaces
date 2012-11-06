@@ -35,6 +35,7 @@ public class MonthTable extends TimetableView { // todo: extract some common typ
 
     private String weekdayHeadersRowSeparator;
     private String weekdayColumnSeparator;
+
     private String rowSeparator;
     private String columnSeparator;
     private String dayHeaderRowStyle;
