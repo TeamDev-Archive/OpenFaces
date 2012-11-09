@@ -381,7 +381,8 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
 
                 tableStructure.getInitParam(context, POPUP_TABLE_DEFAULT_STYLES),
                 dropDownField.isCachingAllowed(),
-                getItemPresentationColumn(dropDown)
+                getItemPresentationColumn(dropDown),
+                dropDownField.getChangeValueOnSelect()
         );
         popup.resetChildData();
         if (!dropDown.isReadonly()) {

@@ -38,7 +38,8 @@
                                  suggestionDelay="0"
                                  onchange="updateTextAreaStyle(this, 'textAlign');"
                                  listItemStyle="padding-top: 7px; padding-bottom: 7px;"
-                                 style="width: 90px;">
+                                 style="width: 90px;"
+                                 changeValueOnSelect="true" >
                   <o:dropDownItem value="Left">
                     <h:graphicImage url="../images/dropdownfield/left.gif" style="vertical-align: middle;"/>
                     <h:outputText value="Left" style="padding-left: 10px;"/>
@@ -51,6 +52,7 @@
                     <h:graphicImage url="../images/dropdownfield/right.gif" style="vertical-align: middle;"/>
                     <h:outputText value="Right" style="padding-left: 10px;"/>
                   </o:dropDownItem>
+                  <o:ajax event="change" render="textAreaID"></o:ajax>
                 </o:dropDownField>
               </td>
               <td width="60" style="text-align: right;">
@@ -103,6 +105,7 @@
                   <o:dropDownItem value="20pt"/>
                   <o:dropDownItem value="23pt"/>
                   <h:outputText value="#{size}" style="font-size: #{size};"/>
+                  <o:ajax event="change" render="textAreaID"></o:ajax>
                 </o:dropDownField>
               </td>
             </tr>
@@ -129,6 +132,7 @@
                                  style="width: 155px;"
                                  listItemStyle="padding: 2px 4px 2px 4px;"
                                  listItemClass="demo_font"
+                                 changeValueOnSelect="true"
                         >
                   <o:dropDownItems value="#{DropDownBean.colors}"/>
                   <o:column width="12px">

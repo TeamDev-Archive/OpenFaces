@@ -32,5 +32,6 @@ public class SelectOneMenuTag extends DropDownFieldTag {
     public void setComponentProperties(FacesContext context, UIComponent component) {
         super.setComponentProperties(context, component);
         setIntProperty(component, "itemPresentationColumn");
+        setBooleanProperty(component, "changeValueOnSelect");
     }
 }

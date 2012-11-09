@@ -101,4 +101,8 @@ public abstract class DropDownComponentJspTag extends OUIInputTextJspTag {
         getDelegate().setPropertyValue("disabledClass", disabledClass);
     }
 
+    protected void setChangeValueOnSelect(ValueExpression changeValueOnSelect) {
+        getDelegate().setPropertyValue("changeValueOnSelect", changeValueOnSelect);
+    }
+
 }
