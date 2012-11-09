@@ -21,12 +21,14 @@ import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.ScriptBuilder;
+import org.openfaces.util.ValueBindings;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -89,6 +91,10 @@ public class ColumnResizingRenderer extends RendererBase {
         return table.getClientId(context) + Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "colWidths";
     }
 
+    private String getColumnOrderFieldName(FacesContext context, AbstractTable table) {
+        return table.getClientId(context) + Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "columnsOrder";
+    }
+
     @Override
     public void decode(FacesContext context, UIComponent component) {
         super.decode(context, component);
@@ -96,6 +102,17 @@ public class ColumnResizingRenderer extends RendererBase {
         AbstractTable table = (AbstractTable) component.getParent();
         String colWidthsFieldName = getColumnWidthsFieldName(context, table);
         String params = (String) requestParams.get(colWidthsFieldName);
+
+        String columnOrderFieldName = getColumnOrderFieldName(context, table);
+        String colOrder = (String) requestParams.get(columnOrderFieldName);
+        Iterable<String> submittedColumnsOrder = null;
+        if (colOrder != null) {
+            colOrder += ",";
+            submittedColumnsOrder = Arrays.asList(colOrder.split(","));
+            if (submittedColumnsOrder != null) {
+                table.setColumnsOrder(submittedColumnsOrder);
+            }
+        }
         if (params == null || params.length() == 0)
             return;
         String[] splitParameters = params.split(":");
@@ -130,6 +147,12 @@ public class ColumnResizingRenderer extends RendererBase {
             }
 
             resizingState.setColumnWidth(column.getId(), newWidth);
+        }
+
+        if (submittedColumnsOrder != null) {
+            if (table.getColumnsOrder() != null && ValueBindings.set(table, "columnsOrder", table.getColumnsOrder())) {
+                table.setColumnsOrder(null);
+            }
         }
         columnResizing.setResizingState(resizingState);
     }

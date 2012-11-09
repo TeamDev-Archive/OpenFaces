@@ -27,6 +27,7 @@ import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlOutputText;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.PartialViewContext;
 import javax.faces.context.ResponseWriter;
@@ -41,6 +42,8 @@ import java.util.Map;
  */
 public class TableStructure extends TableElement {
     public static final String CUSTOM_ROW_RENDERING_INFOS_KEY = "_customRowRenderingInfos";
+    private static final String INIT_PARAM_FORCE_PARTIAL_AJAX = "org.openfaces.table.ajax.columnorder.submit";
+    public static final String INIT_PARAM_ADDITIONAL_IEDOCMODE7_SUPPORT = "org.openfaces.table.ajax.iedocmode.support";
 
     private static final String DEFAULT_STYLE_CLASS = "o_table";
     private static final String DEFAULT_SCROLLABLE_STYLE_CLASS = "o_scrollable_table";
@@ -71,6 +74,8 @@ public class TableStructure extends TableElement {
     private Map<Object, String> rowStylesMap = new HashMap<Object, String>();
     private Map<Object, String> cellStylesMap = new HashMap<Object, String>();
 
+    private JSONObject additionalParams = new JSONObject();
+
     public TableStructure(UIComponent component, TableStyles tableStyles) {
         super(null);
         this.component = component;
@@ -97,6 +102,25 @@ public class TableStructure extends TableElement {
         header = new TableHeader(this);
         body = new TableBody(this);
         footer = new TableFooter(this);
+
+        FacesContext context = FacesContext.getCurrentInstance();
+        ExternalContext externalContext = context.getExternalContext();
+        try{
+            String paramValue = externalContext.getInitParameter(INIT_PARAM_FORCE_PARTIAL_AJAX);
+            if  (paramValue != null){
+                additionalParams.put("forceAjax", Boolean.valueOf(paramValue));
+            }else{
+                additionalParams.put("forceAjax", Boolean.FALSE);
+            }
+            paramValue = externalContext.getInitParameter(INIT_PARAM_ADDITIONAL_IEDOCMODE7_SUPPORT);
+            if  (paramValue != null){
+                additionalParams.put("additionalRowRendered", Boolean.valueOf(paramValue));
+            }else{
+                additionalParams.put("additionalRowRendered", Boolean.FALSE);
+            }
+        }  catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public static TableStructure getCurrentInstance(AbstractTable table) {
@@ -385,6 +409,8 @@ public class TableStructure extends TableElement {
         Rendering.addJsonParam(result, "columns", getColumnHierarchyParam(facesContext, visibleColumns));
         Rendering.addJsonParam(result, "logicalColumns", getColumnHierarchyParam(facesContext, allColumns));
         Rendering.addJsonParam(result, "gridLines", getGridLineParams(tableStyles, defaultStyles));
+
+        Rendering.addJsonParam(result, "additionalParams", additionalParams);
 
         Rendering.addJsonParam(result, "scrolling", getScrollingParam());
 

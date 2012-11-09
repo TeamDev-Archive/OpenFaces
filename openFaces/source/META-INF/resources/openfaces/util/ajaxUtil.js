@@ -207,7 +207,7 @@ window.OpenFaces.Ajax = {
       }, args.delay, delayId);
     }
   },
-  requestComponentPortions: function(componentId, portionNames, customJsonParam, portionProcessor, onerror, skipExecute) {
+  requestComponentPortions: function(componentId, portionNames, customJsonParam, portionProcessor, onerror, skipExecute, additionalParams ) {
     var args = arguments;
     if (!O$.isLoadedFullPage()) {
       O$.addLoadEvent(function() {
@@ -222,6 +222,9 @@ window.OpenFaces.Ajax = {
     if (!portionProcessor)
       throw "O$.Ajax.requestComponentPortions: portionProcessor should be specified";
     var params = skipExecute ? [["_of_skipExecute", "true"]] : [];
+    if (additionalParams){
+      params.push(additionalParams);
+    }
     O$.Ajax.sendRequestIfNoFormSubmission([componentId], {portionNames: portionNames, portionProcessor: portionProcessor,
       params: params, onerror: onerror, customJsonParam: customJsonParam});
   },
