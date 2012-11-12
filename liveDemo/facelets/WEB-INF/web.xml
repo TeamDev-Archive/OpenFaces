@@ -160,7 +160,7 @@
 <!--  <context-param>
     <description>Attribute which says application to run some additional rendering for IE8/IE9 + DocumentMode:IE7 configuration</description>
     <param-name>org.openfaces.table.ajax.iedocmode.support</param-name>
-    <param-value>false</param-value>
+    <param-value>true</param-value>
   </context-param> -->
 
 

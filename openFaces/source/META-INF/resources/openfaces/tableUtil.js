@@ -1755,7 +1755,7 @@ O$.Tables = {
           tableWidth = O$.getElementSize(table).width;
         return tableWidth;
       }
-      function calculateWidthCorrection(cell, gridlinesSpec) {
+      function calculateWidthCorrection(cell, gridlinesSpec, head) {
         if (cell._widthCorrection != undefined) return;
         // inferring border widths from grid-line specifications to avoid border calculation for optimization purposes
         var leftBorderWidth = 0;
@@ -1772,6 +1772,8 @@ O$.Tables = {
         // at all.
         var totalPadding = O$.getNumericElementStyle(cell, "padding-left", true, getTableWidth) +
                 O$.getNumericElementStyle(cell, "padding-right", true, getTableWidth);
+        if (head)
+          totalPadding = 4;
         cell._widthCorrection = !cell ? 0 :
                                   totalPadding +
                                   leftBorderWidth +
@@ -1793,7 +1795,7 @@ O$.Tables = {
         if (!cell) return;
         if ((O$.isExplorer8() || O$.isExplorer9()) && O$.isIEDocMode7 ){
           if (!gridlinesSpec) gridlinesSpec = table._gridLines.vertical;
-          calculateWidthCorrection(cell, gridlinesSpec);
+          calculateWidthCorrection(cell, gridlinesSpec,flag);
         } else{
           cell._widthCorrection = 0;
         }
@@ -2812,7 +2814,7 @@ O$.Tables = {
         if (!column._explicitWidth) column.setWidth(column._tempWidth);
       });
     }
-    return tableWidth;
+    return tblWidth;
   },
 
   getScrollerWidth: function(el) {
