@@ -42,6 +42,7 @@ public abstract class TableHeaderOrFooter extends TableSection {
     private List<HeaderRow> allRows;
     private boolean hasSubHeader;
     private int lastVisibleColHeadersRow = -1;
+    private Boolean ieDocModeAdditionalSupport;
 
     protected TableHeaderOrFooter(TableStructure tableStructure, boolean composeHeader) {
         super(tableStructure);
@@ -117,11 +118,24 @@ public abstract class TableHeaderOrFooter extends TableSection {
             rows.add(isHeader ? rows.size() : 0, subHeaderRow);
             hasSubHeader = true;
         }
+
         TableScrollingArea tableScrollingArea = new TableScrollingArea(
                 this, columns.subList(startColIndex, endColIndex), rows, 
-                scrollable ? TableScrollingArea.ScrollingType.HORIZONTAL : TableScrollingArea.ScrollingType.NONE);
+                scrollable ? TableScrollingArea.ScrollingType.HORIZONTAL : TableScrollingArea.ScrollingType.NONE,isHeader && getIeDocModeAdditionalSupportNeeded());
         tableScrollingArea.setCellpadding(tableStructure.getTableCellPadding());
         return new HeaderCell(null, tableScrollingArea, "td", null);
+    }
+
+    private Boolean getIeDocModeAdditionalSupportNeeded(){
+        if (ieDocModeAdditionalSupport == null){
+            String  paramValue = FacesContext.getCurrentInstance().getExternalContext().getInitParameter(TableStructure.INIT_PARAM_ADDITIONAL_IEDOCMODE7_SUPPORT);
+            if  (paramValue != null){
+                ieDocModeAdditionalSupport = Boolean.valueOf(paramValue);
+            }else{
+                ieDocModeAdditionalSupport = Boolean.FALSE;
+            }
+        }
+        return ieDocModeAdditionalSupport;
     }
 
     private void composeNonScrollingContent(String cellTag, List<BaseColumn> columns) {
@@ -453,7 +467,7 @@ public abstract class TableHeaderOrFooter extends TableSection {
             BaseColumn column,
             List<HeaderRow> columnHeaderRows,
             CellKind cellKind) {
-        int rowIndex = 0;
+        int rowIndex = getIeDocModeAdditionalSupportNeeded() ? 1 : 0;
         for (HeaderRow row : columnHeaderRows) {
             if (!row.isAtLeastOneComponentInThisRow())
                 continue;

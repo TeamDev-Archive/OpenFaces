@@ -251,7 +251,7 @@ O$._ajaxReload = function(render, args) {
   }
 }
 
-O$.requestComponentPortions = function(componentId, portionNames, customJsonParam, portionProcessor, onerror, skipExecute) {
+O$.requestComponentPortions = function(componentId, portionNames, customJsonParam, portionProcessor, onerror, skipExecute, additionalParams) {
   var args = arguments;
   if (!O$.isLoadedFullPage()) {
     O$.addLoadEvent(function() {
@@ -266,6 +266,9 @@ O$.requestComponentPortions = function(componentId, portionNames, customJsonPara
   if (!portionProcessor)
     throw "O$.requestComponentPortions: portionProcessor should be specified";
   var params = skipExecute ? [["_of_skipExecute", "true"]] : [];
+  if (additionalParams){
+    params.push(additionalParams);
+  }
   O$.sendAjaxRequestIfNoFormSubmission([componentId], {portionNames: portionNames, portionProcessor: portionProcessor,
     additionalParams: params, onerror: onerror, customJsonParam: customJsonParam});
 }

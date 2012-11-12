@@ -1055,6 +1055,24 @@ if (!window.O$) {
     return O$._safari;
   };
 
+  O$.isIEDocMode7 = function(){
+    if (O$._ieDocMode7 == undefined)
+      O$._ieDocMode7 = O$.isExplorer() && (document.documentMode == 7);
+    return O$._ieDocMode7;
+  };
+
+  O$.isIEDocMode8 = function(){
+    if (O$._ieDocMode8 == undefined)
+      O$._ieDocMode8 = O$.isExplorer() && (document.documentMode == 8);
+    return O$._ieDocMode8;
+  };
+
+  O$.isIEDocMode9 = function(){
+    if (O$._ieDocMode9 == undefined)
+      O$._ieDocMode9 = O$.isExplorer() && (document.documentMode == 9);
+    return O$._ieDocMode9;
+  };
+
   // ----------------- DOM FUNCTIONS ---------------------------------------------------
 
   O$.byIdOrName = function(idOrName) {
@@ -4057,13 +4075,8 @@ if (!window.O$) {
     if (element.nodeName.toLowerCase() != "table") {
       if (!O$.isExplorer() || O$.isStrictMode()) {
         if (value != null) {
-          if (O$._setElementWidthOrHeight._totalPaddingsAndBordersWidth != null) {
-            value -= O$._setElementWidthOrHeight._totalPaddingsAndBordersWidth;
-            O$._setElementWidthOrHeight._totalPaddingsAndBordersWidth = null;
-          } else {
             value -= O$.getNumericElementStyle(element, "padding-" + edge1Property, false, hundredPercentValue) + O$.getNumericElementStyle(element, "padding-" + edge2Property, false, hundredPercentValue);
             value -= O$.getNumericElementStyle(element, "border-" + edge1Property + "-width", false, hundredPercentValue) + O$.getNumericElementStyle(element, "border-" + edge2Property + "-width", false, hundredPercentValue);
-          }
         }
       }
     }
