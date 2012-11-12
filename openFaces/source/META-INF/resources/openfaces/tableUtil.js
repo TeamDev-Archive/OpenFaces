@@ -1791,11 +1791,11 @@ O$.Tables = {
       var widthForCol = width;
       if (widthForCol < 0) widthForCol = 0;
 
-      function setWidth(cellClass, cell, tableSection, gridlinesSpec, flag) {
+      function setWidth(cellClass, cell, tableSection, gridlinesSpec, isHead) {
         if (!cell) return;
         if ((O$.isExplorer8() || O$.isExplorer9()) && O$.isIEDocMode7 ){
           if (!gridlinesSpec) gridlinesSpec = table._gridLines.vertical;
-          calculateWidthCorrection(cell, gridlinesSpec,flag);
+          calculateWidthCorrection(cell, gridlinesSpec, isHead);
         } else{
           cell._widthCorrection = 0;
         }
