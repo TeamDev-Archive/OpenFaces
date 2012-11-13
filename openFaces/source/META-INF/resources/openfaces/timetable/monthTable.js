@@ -421,20 +421,17 @@ O$.MonthTable = {
               },
 
               _getNearestTimeslotForPosition: function(x, y) {
-                row = this._table.body._rowFromPoint(10, y, true, this._getLayoutCache());
+                //TODO: magic numbers
+                x = x < 10 ? 10 : x;
+                y = y < 10 ? 10 : y;
+            /*    row = this._table.body._rowFromPoint(10, y, true, this._getLayoutCache());
                 var firstRow = this._table.body._rowFromPoint(1, 1, true, this._getLayoutCache());
                 var timeColumnCell = firstRow._cellFromPoint(1, 1, true, this._getLayoutCache());
-                var minX = timeColumnCell.clientWidth;
-                x = x < minX ? minX : x;
+
                 var cell = row._cellFromPoint(x, y, true, this._getLayoutCache());
-                if (cell == null) {
-                  //in case we are butt against cell border
-                  cell = row._cellFromPoint(x + 5, y, true, this._getLayoutCache());
-                }
-                if (cell == null) {
-                  //in case we are butt against cell border
-                  cell = row._cellFromPoint(x - 5, y, true, this._getLayoutCache());
-                }
+             */
+                cell = this._table._cellFromPoint(x, y, true, this._getLayoutCache());
+
                 if (cell._cell) {
                   cell = cell._cell;
                   row = cell._row;
@@ -443,6 +440,7 @@ O$.MonthTable = {
               },
 
               _getLayoutCache: function() {
+                //TODO: check if we need this?
                 if (!this._cachedPositions)
                   this._cachedPositions = {};
                 return this._cachedPositions;
@@ -485,8 +483,7 @@ O$.MonthTable = {
                        // eventElement._bringToFront();
 
                         var pos = O$.getEventPoint(e, eventElement);
-                        event._dragPositionTop = pos.y;
-                        event._dragPositionTime = monthTable._getNearestTimeslotForPosition(eventElement._rect.x, event._dragPositionTop)._cellDay;
+                        event._dragPositionTime = monthTable._getNearestTimeslotForPosition(pos.x, pos.y)._cellDay;
 
                         O$.startDragging(e, this);
                         event._initialStart = event._lastValidStart = event.start;
@@ -501,7 +498,11 @@ O$.MonthTable = {
                       },
 
                       _getPositionTop: function() {
-                        return event._dragPositionTop;
+                        return O$.getElementPos(this,true).y + O$.getElementBorderRectangle(this).height;
+                      },
+
+                      _getPositionLeft: function() {
+                        return O$.getElementPos(this,true).x + O$.getElementBorderRectangle(this).width;
                       },
 
                       setPosition: function (left, top) {
@@ -513,11 +514,12 @@ O$.MonthTable = {
 
                         var nearestTimeslot = monthTable._getNearestTimeslotForPosition(left, top);
                         var timeIncrement = nearestTimeslot._cellDay.getTime() - event._dragPositionTime.getTime();
-
+                        console.log("timeIncrement=" + timeIncrement);
                         var eventUpdated = false;
                         if (timeIncrement != 0) {
+                          console.log("update EVENTS")
                           // TODO: here in others tables we adjusting time so make sure that this correct without adjusting
-                          event._dragPositionTime = O$.dateByTimeMillis(event._dragPositionTime.getTime() + timeIncrement);
+                          event._dragPositionTime = nearestTimeslot._cellDay;
 
                           var newStartTime = O$.dateByTimeMillis(event.start.getTime() + timeIncrement);
                           var newEndTime = O$.dateByTimeMillis(event.end.getTime() + timeIncrement);
@@ -542,7 +544,6 @@ O$.MonthTable = {
                           if (timeIncrement < 0) {
                             eventElement._elementPartIndex = part.index;
                             eventElement._elementPartIndexFromTheStart = true;
-
                           } else {
                             eventElement._elementPartIndex = event.parts.length - part.index - 1;
                             eventElement._elementPartIndexFromTheStart = false;
@@ -552,7 +553,6 @@ O$.MonthTable = {
                           monthTable._updateEventElements(true);
                           /*event.updatePresentation(70);
                           event._scrollIntoView();  */
-                          event._dragPositionTop += eventElement._rect.y + eventElement._rect.height;
                         }
                       }
                     });

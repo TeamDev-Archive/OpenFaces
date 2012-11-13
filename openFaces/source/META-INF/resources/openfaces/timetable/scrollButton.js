@@ -13,6 +13,7 @@
 O$.ScrollButton = {
 
   _init: function(scrollButtonId, scrollableElementId, direction ,buttonStyleParams) {
+    console.log("buttonStyleParams.rolloverButtonClass = " + buttonStyleParams.rolloverButtonClass);
     var scrollButton = O$.initComponent(scrollButtonId, buttonStyleParams,
       {
         _direction: direction,
@@ -20,21 +21,17 @@ O$.ScrollButton = {
       },
       {
         onmouseover: function(e) {
-          this.className = buttonStyleParams.rolloverButtonClass;
           if (this._targetElement.stopScrolling) {
             this._targetElement.stopScrolling = false;
             if (scrollButton._direction=="up")
               _scrollTarget(1);
             if (scrollButton._direction=="down")
               _scrollTarget(-1);
-
           }
         },
         onmouseout: function(e) {
           this._targetElement.stopScrolling = true;
-          this.className = buttonStyleParams.buttonClass;
         }
-
       }
     );
     scrollButton._targetElement.stopScrolling = true;

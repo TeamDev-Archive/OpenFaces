@@ -90,7 +90,7 @@ public class ScrollButtonRenderer extends org.openfaces.renderkit.RendererBase {
         JSONObject stylingParams = new JSONObject();
         Styles.addStyleJsonParam(context, scrollButton, stylingParams, "buttonClass",
                 scrollButton.getButtonStyle(), scrollButton.getButtonClass());
-        Styles.addStyleJsonParam(context, scrollButton, stylingParams, "rolloverButtonClass",
+        Styles.addStyleJsonParam(context, scrollButton, stylingParams, "rollover",
                 scrollButton.getRolloverButtonStyle(), scrollButton.getRolloverButtonClass());
         return stylingParams;
     }
