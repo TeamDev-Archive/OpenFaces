@@ -121,9 +121,10 @@ O$.MonthTable = {
           O$.setElementPos(this, cellBoundaries);
           var oldExpandedDay = this.expandedDay;
           this.expandedDay = dayCell._cellDay;
-          if (oldExpandedDay)
+          /*          if (oldExpandedDay)
             monthTable._updateCellEventElements(oldExpandedDay);
-          monthTable._updateCellEventElements(dayCell._cellDay);
+          monthTable._updateCellEventElements(dayCell._cellDay);*/
+          monthTable._updateEventElements(false,true);
           this.opened = true;
           var rect = O$.getElementBorderRectangle(this, true).clone();
           O$.setElementSize(this, {height:10});
@@ -138,8 +139,11 @@ O$.MonthTable = {
           this.opened = false;
         }
     });
+
+    monthTable._expandedDayView.style.display = "";
     monthTable._expandedDayView.headerHeight = O$.getElementSize(monthTable._expandedDayView.header).height;
     monthTable._expandedDayView.footerHeight = O$.getElementSize(monthTable._expandedDayView.footer).height;
+
 
 
     monthTable._weekdayHeaderCellClass = weekdayHeaderCellClass;
@@ -260,14 +264,15 @@ O$.MonthTable = {
     }
 
     monthTable._updateCellEventElements = function(day) {
-      var cell = O$.MonthTable.getCellForDay(this, day);
+      //TODO: oprimize this method to wrok with cell / day
 
+      var cell = O$.MonthTable.getCellForDay(this, day);
       if (!cell) {
         return;
       }
-
       if (cell._cellEvents) {
         cell._cellEvents.forEach(function(oldCellEvent) {
+          //TODO: make sure that this not duplicate removing with  _updateEventElements -> removeEventElements
             oldCellEvent._removeElements();
         });
       }
@@ -373,12 +378,6 @@ O$.MonthTable = {
                 this._expandedDayView._scrollContent(delta);
               },
 
-              _checkDayInInterval: function(day, interval){
-                var incDay = O$.incDay(day,1);
-                if (!(interval.end < day || interval.start > incDay))
-                  return true;
-                return false;
-              },
               _splitIntoParts: function(event) {
                 var parts = [];
                 var start = this._startTime < event.start ? event.start : this._startTime;
@@ -403,7 +402,8 @@ O$.MonthTable = {
                 } while (partStart < end);
 
                 if (monthTable._expandedDayView.expandedDay){
-                  if (this._checkDayInInterval(monthTable._expandedDayView.expandedDay,event)){
+                  if (O$.MonthTable.checkDayInInterval(monthTable._expandedDayView.expandedDay,event)){
+                    console.log("generating part = " + (i+1));
                     var part = {
                       start: monthTable._expandedDayView.expandedDay,
                       end: monthTable._expandedDayView.expandedDay,
@@ -417,6 +417,7 @@ O$.MonthTable = {
 
                 parts[0].first = true;
                 parts[parts.length - 1].last = true;
+                console.log("parts.length = " + parts.length );
                 return parts;
               },
 
@@ -498,14 +499,25 @@ O$.MonthTable = {
                       },
 
                       _getPositionTop: function() {
-                        return O$.getElementPos(this,true).y + O$.getElementBorderRectangle(this).height;
+                        return this._draggingTop ? this._draggingTop : O$.getElementPos(this,true).y + O$.getElementBorderRectangle(this).height;
                       },
 
                       _getPositionLeft: function() {
-                        return O$.getElementPos(this,true).x + O$.getElementBorderRectangle(this).width;
+                        //TODO: add to fix an issue with wrong dragging remove after fix
+                        return this._draggingLeft ? this._draggingLeft : O$.getElementPos(this,true).x + O$.getElementBorderRectangle(this).width;
                       },
 
-                      setPosition: function (left, top) {
+                      setPosition: function (left, top, dx, dy) {
+                        if (dx>50||dy>50){
+                          //TODO: trick to avoid container lose durring events recreating
+                          var container =  monthTable._timetable ?  monthTable._timetable : monthTable;
+
+                          if (container) {
+                            var containerPos = O$.getElementPos(container);
+                            left -= containerPos.x;
+                            top -= containerPos.y;
+                          }
+                        }
                         var rect = O$.getElementBorderRectangle(monthTable._table, true);
                         var maxTop = rect.height;
                         var maxLeft = rect.width;
@@ -514,10 +526,11 @@ O$.MonthTable = {
 
                         var nearestTimeslot = monthTable._getNearestTimeslotForPosition(left, top);
                         var timeIncrement = nearestTimeslot._cellDay.getTime() - event._dragPositionTime.getTime();
-                        console.log("timeIncrement=" + timeIncrement);
+                        this._draggingTop = top;
+                        this._draggingLeft = left;
                         var eventUpdated = false;
+
                         if (timeIncrement != 0) {
-                          console.log("update EVENTS")
                           // TODO: here in others tables we adjusting time so make sure that this correct without adjusting
                           event._dragPositionTime = nearestTimeslot._cellDay;
 
@@ -548,9 +561,10 @@ O$.MonthTable = {
                             eventElement._elementPartIndex = event.parts.length - part.index - 1;
                             eventElement._elementPartIndexFromTheStart = false;
                           }
-                          console.log("removing elements");
-                          monthTable._removeEventElements();
+
+                          this._repaintInProcess = true;
                           monthTable._updateEventElements(true);
+                          this._repaintInProcess = false;
                           /*event.updatePresentation(70);
                           event._scrollIntoView();  */
                         }
@@ -642,9 +656,12 @@ O$.MonthTable = {
 
                     var placeIndex = cell.reservedPlaces.length;
                     for (var i=0; i<cell.reservedPlaces.length; i++){
-                      if (!cell.reservedPlaces[i] || cell.reservedPlaces[i]==event){
+                      if (!cell.reservedPlaces[i] /*|| cell.reservedPlaces[i]==event*/){
                         placeIndex = i;
                         break;
+                      }
+                      if ( cell.reservedPlaces[i]==event){
+                        return;
                       }
                     };
 
@@ -889,18 +906,30 @@ O$.MonthTable = {
     return new Date(date.getFullYear(), date.getMonth() + 1, 1);
   },
 
+  checkDayInInterval: function(day, interval){
+    day.setHours(0);
+    day.setMinutes(0);
+
+    var incDay = O$.incDay(day,1);
+    if (!(interval.end < day || interval.start > incDay))
+      return true;
+    return false;
+  },
 
   getDayEvents: function(allEvents, day) {
     var result = [];
     allEvents.forEach(function(currEvent) {
       if (currEvent.type != "reserved") {
         var start = currEvent.start;
-        if (O$._datesEqual(start, day)) {
+        if (O$.MonthTable.checkDayInInterval(day, currEvent)) {
           result.push(currEvent);
         }
       }
     });
-    result.sort(O$.Timetable.compareEventsByStart);
+    if (result.length>0)
+      console.log("day = " + day + ", result = " + result.length);
+    //TODO: remove this sorting???
+    //result.sort(O$.Timetable.compareEventsByStart);
     return result;
   },
 

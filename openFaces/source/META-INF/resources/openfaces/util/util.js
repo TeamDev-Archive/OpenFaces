@@ -2536,6 +2536,7 @@ if (!window.O$) {
   };
 
   O$.startDragging = function(e, draggable, simulateDblClickForElement) {
+
     var evt = O$.getEvent(e);
     if (simulateDblClickForElement && evt.type == "mousedown") {
       var thisTime = new Date().getTime();
@@ -2573,6 +2574,7 @@ if (!window.O$) {
       document._fireDocumentClicked(evt);
 
     function handleDragMove(e) {
+
       var evt = O$.getEvent(e);
       var draggable = O$._draggedElement;
 
