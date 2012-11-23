@@ -3060,9 +3060,14 @@ O$.Table = {
             colWidthsField.value = (O$.isOpera() ? table.style.width : totalWidth + "px") + ":" +
                                    "[" + colWidths.join(",") + "]";
             if (autoSaveState) {
-              O$.requestComponentPortions(table.id, ["columnResizingState"], null, function() {
-                // no client-side updates are required -- the request was just for saving data
-              }, null, true);
+              if (table._params.additionalParams.forceAjax)
+                O$.requestComponentPortions(table.id, ["columnResizingState"], null, function() {
+                  // no client-side updates are required -- the request was just for saving data
+                }, null, true, [table.id + "::columnsOrder", table.getColumnsOrder()])
+              else
+                O$.requestComponentPortions(table.id, ["columnResizingState"], null, function() {
+                  // no client-side updates are required -- the request was just for saving data
+                }, null, true);
             }
             if (table._focusable) {
               if (!table._focused)

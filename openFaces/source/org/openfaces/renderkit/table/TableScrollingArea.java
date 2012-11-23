@@ -30,16 +30,19 @@ public class TableScrollingArea extends TableElement {
     private List<? extends AbstractRow> rows;
     private ScrollingType scrollingType;
     private boolean indefiniteHeight;
+    private boolean addAdditionalRow;
 
     public TableScrollingArea(
             TableElement parent,
             List<BaseColumn> columns,
             List<? extends AbstractRow> rows,
-            ScrollingType scrollingType) {
+            ScrollingType scrollingType,
+            boolean addAdditionalRow) {
         super(parent);
         this.rows = rows;
         this.columns = columns;
         this.scrollingType = scrollingType;
+        this.addAdditionalRow = addAdditionalRow;
     }
 
     public boolean isIndefiniteHeight() {
@@ -141,6 +144,16 @@ public class TableScrollingArea extends TableElement {
         writer.writeAttribute("border", "0", null);
         TableUtil.writeColumnTags(context, component, columns);
         writer.startElement("tbody", component);
+        if (addAdditionalRow){
+            writer.startElement("tr", component);
+            writer.writeAttribute("style","display:none;",null);
+            writer.writeAttribute("id","test",null);
+            for (int i=0;i<columns.size();i++){
+                writer.startElement("td", component);
+                writer.endElement("td");
+            }
+            writer.endElement("tr");
+        }
         for (AbstractRow row : rows) {
             row.render(context, additionalContentWriter);
         }

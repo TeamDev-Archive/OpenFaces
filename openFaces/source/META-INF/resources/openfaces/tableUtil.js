@@ -127,6 +127,10 @@ O$.Tables = {
     if (!params.body) params.body = {};
     table._params = params;
 
+    table._headRowsToSkip = 0;
+    if (table._params.additionalParams.additionalRowRendered){
+      table._headRowsToSkip = table._headRowsToSkip + 1;
+    }
     var tempIdx = 0;
     table._gridLines = {
       horizontal: params.gridLines[tempIdx++],
@@ -694,7 +698,7 @@ O$.Tables = {
       var commonHeaderRowIndex = table._params.header && table._params.header.commonHeader ? 0 : -1;
       var subHeaderRowIndex = table._params.header && table._params.header.subHeader ? headRows.length - 1 : -1;
       table._subHeaderRowIndex = subHeaderRowIndex;
-      table._columnHeadersRowIndexRange = [commonHeaderRowIndex + 1, table._params.header && table._params.header.subHeader ? headRows.length - 1 : headRows.length];
+      table._columnHeadersRowIndexRange = [commonHeaderRowIndex + 1 + table._headRowsToSkip, table._params.header && table._params.header.subHeader ? headRows.length - 1 : headRows.length];
       table._commonHeaderRowIndex = commonHeaderRowIndex;
 
       if (commonHeaderRowIndex != -1)
@@ -1163,7 +1167,7 @@ O$.Tables = {
       tableHeader._updateCommonHeaderSeparator = function() {
         if (!(table._params.header && table._params.header.commonHeader))
           return;
-        var commonHeaderRow = headRows[0];
+        var commonHeaderRow = headRows[table._headRowsToSkip];
         var commonHeaderCell = commonHeaderRow._cells[0];
         O$.Tables._setCellStyleProperty(commonHeaderCell, "borderBottom", table._gridLines.commonHeader);
       };
@@ -1747,7 +1751,7 @@ O$.Tables = {
           tableWidth = O$.getElementSize(table).width;
         return tableWidth;
       }
-      function calculateWidthCorrection(cell, gridlinesSpec) {
+      function calculateWidthCorrection(cell, gridlinesSpec, head) {
         if (cell._widthCorrection != undefined) return;
         // inferring border widths from grid-line specifications to avoid border calculation for optimization purposes
         var leftBorderWidth = 0;
@@ -1762,8 +1766,10 @@ O$.Tables = {
         // performed only when running under that particular configuration to minimize performance hit for other
         // configurations. If no such configuration emerges then width correction calculation should probably be removed
         // at all.
-        var totalPadding = 4;/*O$.getNumericElementStyle(cell, "padding-left", true, getTableWidth) +
-                O$.getNumericElementStyle(cell, "padding-right", true, getTableWidth);*/
+        var totalPadding = O$.getNumericElementStyle(cell, "padding-left", true, getTableWidth) +
+                O$.getNumericElementStyle(cell, "padding-right", true, getTableWidth);
+        if (head)
+          totalPadding = 4;
         cell._widthCorrection = !cell ? 0 :
                                   totalPadding +
                                   leftBorderWidth +
@@ -1781,18 +1787,14 @@ O$.Tables = {
       var widthForCol = width;
       if (widthForCol < 0) widthForCol = 0;
 
-      function setWidth(cellClass, cell, tableSection, gridlinesSpec) {
+      function setWidth(cellClass, cell, tableSection, gridlinesSpec, isHead) {
         if (!cell) return;
-        if (!gridlinesSpec) gridlinesSpec = table._gridLines.vertical;
-//        calculateWidthCorrection(cell, gridlinesSpec);
-        var widthForCell = width - cell._widthCorrection;
-        if (widthForCell < 0) widthForCell = 0;
-//  setting cell width seems not to be required (see a note in calculateWidthCorrection)
-//        if (cellClass.style.setProperty) {
-//          cellClass.style.setProperty("width", widthForCell + "px", "important");
-//        } else {
-//          cellClass.style.width = widthForCell + "px";
-//        }
+        if ((O$.isExplorer8() || O$.isExplorer9()) && O$.isIEDocMode7 ){
+          if (!gridlinesSpec) gridlinesSpec = table._gridLines.vertical;
+          calculateWidthCorrection(cell, gridlinesSpec, isHead);
+        } else{
+          cell._widthCorrection = 0;
+        }
 
         var colTag = null;
         column._colTags.forEach(function(col) {
@@ -1800,23 +1802,21 @@ O$.Tables = {
             colTag = col;
         });
         if (colTag) {
-          O$._setElementWidthOrHeight._totalPaddingsAndBordersWidth = 0;
-          O$.setElementWidth(colTag, widthForCol, getTableWidth);
+          if (!cell._widthCorrection ){
+            cell._widthCorrection = 0;
+          }
+          if (widthForCol - cell._widthCorrection < 0){
+            widthForCol = cell._widthCorrection;
+          }
+          O$.setElementWidth(colTag, widthForCol - cell._widthCorrection, getTableWidth);
         }
       }
-      setWidth(this._getEditableIndividualClass("_headerCellsClass").classObj, headerCell, table.header, table._gridLines.headerVert);
-      setWidth(this._getEditableIndividualClass("_bodyCellsClass").classObj, bodyCell, table.body);
+
+        setWidth(this._getEditableIndividualClass("_headerCellsClass").classObj, headerCell, table.header, table._gridLines.headerVert,true);
+        setWidth(this._getEditableIndividualClass("_bodyCellsClass").classObj, bodyCell, table.body, table._gridLines.vertical , false);
+
       if (footerCell)
         setWidth(this._getEditableIndividualClass("_footerCellsClass").classObj, footerCell, table.footer, table._gridLines.footerVert);
-
-//  this doesn't seem to be required according to the current testing, but it causes performance loss (see also a note in calculateWidthCorrection)
-//      var colClass = this._colClass.classObj;
-//      if (colClass.style.setProperty) {
-//        colClass.style.setProperty("width", widthForCol + "px", "important");
-//      } else {
-//        colClass.style.width = widthForCol + "px";
-//      }
-
     };
     column.getDeclaredWidth = function(tableWidth) {
       if (tableWidth == undefined)
@@ -1840,6 +1840,9 @@ O$.Tables = {
       return colWidth;
     };
     column.getWidth = function() {
+      if (this._explicitWidth){
+        return this._explicitWidth;
+      }
       if (this.header && this.header._cell)
         return this.header._cell.offsetWidth;
       if (this.subHeader && this.subHeader._cell)
