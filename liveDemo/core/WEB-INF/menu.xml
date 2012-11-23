@@ -481,6 +481,24 @@
     </demos>
   </menuItem>
   <menuItem>
+    <name>Input Secret</name>
+    <componentName>Input Secret</componentName>
+    <url>/inputsecret/InputSecret.jsf</url>
+    <shortPath>/inputsecret/</shortPath>
+    <image>InputSecret</image>
+    <selectedImage>/images/components/titles/InputSecret.png</selectedImage>
+    <keyFeatures>
+      <feature>All features </feature>
+      <feature>feature 1</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>General</demoName>
+        <demoUrl>/inputsecret/InputSecret.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
     <name>Input Textarea</name>
     <componentName>Input Textarea</componentName>
     <url>/inputtextarea/InputTextarea.jsf</url>

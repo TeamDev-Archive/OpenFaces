@@ -47995,6 +47995,493 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
   </tag>
 
+  <!--InputSecret tag declaration -->
+  <tag>
+    <description>Input Secret description</description>
+    <name>inputSecret</name>
+    <tag-class>org.openfaces.taglib.jsp.input.InputSecretJspTag</tag-class>
+    <body-content>JSP</body-content>
+
+    <attribute>
+      <description>A flag that indicates whether or not the component is visible.</description>
+      <name>rendered</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A value-binding expression that associates the InputSecret with a backing bean property.</description>
+      <name>binding</name>
+      <deferred-value>
+        <type>org.openfaces.component.input.InputSecret</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.input. InputSecret -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>The component identifier.</description>
+      <name>id</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el false -->
+    </attribute>
+
+    <attribute>
+      <description>The current value of this component.</description>
+      <name>value</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.Object -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A style for the InputSecret component.</description>
+      <name>style</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A CSS class name for the InputSecret component.</description>
+      <name>styleClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>This prompt text will be shown when value of component is empty.</description>
+      <name>promptText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A style for the prompt text.</description>
+      <name>promptTextStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A CSS class name for the prompt text.</description>
+      <name>promptTextClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A style for the InputSecret component in the rollover state.</description>
+      <name>rolloverStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A CSS class name for the InputSecret component in the rollover state.</description>
+      <name>rolloverClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A style of the InputSecret component when it is focused.</description>
+      <name>focusedStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A CSS class name of the InputSecret component when it is focused.</description>
+      <name>focusedClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A flag that indicates whether or not valueChangeListener should be executed immediately (during the
+        Apply Request Values phase of the request processing lifecycle instead of Process Validations phase) and the
+        component's input should be converted and validated immediately (during the Apply Request Values phase of the
+        request processing lifecycle instead of the Process Validations phase).
+      </description>
+      <name>immediate</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A MethodBinding that should point to the method in the backing bean
+        that is called to validate the InputSecret's value.
+      </description>
+      <name>validator</name>
+      <deferred-method>
+        <method-signature>
+          void validate(javax.faces.context.FacesContext, javax.faces.component.UIComponent, java.lang.Object)
+        </method-signature>
+      </deferred-method>
+      <!-- @bindingType javax.el.MethodExpression -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+
+    <attribute>
+      <description>A converter for the InputSecret's value. Should be specified as
+        a value-binding expression or converter identifier.
+      </description>
+      <name>converter</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A MethodBinding that should point to the method that accepts
+        a ValueChangeEvent. If the value of the InputSecret changes, this method is executed.
+      </description>
+      <name>valueChangeListener</name>
+      <deferred-method>
+        <method-signature>void valueChange(javax.faces.event.ValueChangeEvent)</method-signature>
+      </deferred-method>
+      <!-- @bindingType javax.el.MethodExpression -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+
+    <attribute>
+      <description>A flag that indicates whether or not the InputSecret requires a value.</description>
+      <name>required</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A flag that enables or disables the component.</description>
+      <name>disabled</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>The width of the InputSecret component in characters.</description>
+      <name>size</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default Integer.MIN_VALUE -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>The maximum number of characters that can be entered in the InputSecret.</description>
+      <name>maxlength</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default Integer.MIN_VALUE -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>The interval during which a inputting character will be visible</description>
+      <name>interval</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default 0 -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>This is the time during which the user can see the last inputted character</description>
+      <name>duration</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default 0 -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>The symbol that will replace the inputting values</description>
+      <name>replacement</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType String -->
+      <!-- @default '%u25CF' -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>Position of the component in the focus transition chain for the current document.</description>
+      <name>tabindex</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>An access key for the InputSecret component.</description>
+      <name>accesskey</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user clicks
+        the left mouse button over the InputSecret.
+      </description>
+      <name>onclick</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user double-clicks
+        the left mouse button over the InputSecret.
+      </description>
+      <name>ondblclick</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>JavaScript code that should be executed when the user clicks over
+        the InputSecret with either mouse button.
+      </description>
+      <name>onmousedown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>JavaScript code that should be executed when the user releases the mouse button over the InputSecret.
+      </description>
+      <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer
+        onto the InputSecret.
+      </description>
+      <name>onmouseover</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer over the InputSecret.
+      </description>
+      <name>onmousemove</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer
+        away from the InputSecret.
+      </description>
+      <name>onmouseout</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user presses and releases a key
+        over the InputSecret.
+      </description>
+      <name>onkeypress</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses a key over the InputSecret.</description>
+      <name>onkeydown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>JavaScript code that should be executed when the user releases a key over the InputSecret.
+      </description>
+      <name>onkeyup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>JavaScript code that should be executed when the InputSecret loses focus.</description>
+      <name>onblur</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>JavaScript code that should be executed when the InputSecret receives focus.</description>
+      <name>onfocus</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the InputSecret's value has changed.
+      </description>
+      <name>onchange</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>Javascript code executed when text within this element is selected by the user.</description>
+      <name>onselect</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+  </tag>
   <!--<tag>-->
     <!--<description>This component is under construction. Displays a box where users may read and write comments. This component works on top of the Disqus-->
       <!--(http://disqus.com) service. You don&apos;t have to provide storage for the comments. You just have to create an-->
