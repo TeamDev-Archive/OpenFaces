@@ -12,11 +12,25 @@
 
 package org.openfaces.demo.beans.inputsecret;
 
+import javax.faces.context.FacesContext;
+import java.util.Map;
+
 /**
  * @author Andre Shapovalov
  */
 public class InputSecretBean {
+
+    private String login;
     private String password;
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
 
     public String getPassword() {
         return password;
@@ -24,5 +38,12 @@ public class InputSecretBean {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String signIn() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Map requestParams = context.getExternalContext().getRequestParameterMap();
+        System.out.println("Login:" + this.getLogin() + "; Password:" + this.getPassword());
+        return "";
     }
 }

@@ -26,6 +26,9 @@ public class InputSecret extends OUIInputText {
 
     private Integer maxlength;
     private Integer size;
+    private Integer interval;
+    private Integer duration;
+    private String replacement;
 
     public InputSecret() {
         setRendererType("org.openfaces.InputSecretRenderer");
@@ -41,7 +44,10 @@ public class InputSecret extends OUIInputText {
         return new Object[]{
             super.saveState(context),
                 maxlength,
-                size
+                size,
+                interval,
+                duration,
+                replacement
         };
     }
 
@@ -53,6 +59,9 @@ public class InputSecret extends OUIInputText {
 
         maxlength = (Integer) values[i++];
         size = (Integer) values[i++];
+        interval = (Integer) values[i++];
+        duration = (Integer) values[i++];
+        replacement = (String) values[i++];
 
     }
 
@@ -70,5 +79,29 @@ public class InputSecret extends OUIInputText {
 
     public void setMaxlength(int maxlength) {
         this.maxlength = maxlength;
+    }
+
+    public int getInterval() {
+        return ValueBindings.get(this, "interval", interval, 0);
+    }
+
+    public void setInterval(int interval) {
+        this.interval = interval;
+    }
+
+    public int getDuration() {
+        return ValueBindings.get(this, "duration", duration, 0);
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public String getReplacement() {
+        return ValueBindings.get(this, "replacement", replacement, "%u25CF");
+    }
+
+    public void setReplacement(String replacement) {
+        this.replacement = replacement;
     }
 }

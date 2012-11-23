@@ -48388,13 +48388,35 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>The interval during which a input character will be visible</description>
+      <description>The interval during which a inputting character will be visible</description>
       <name>interval</name>
       <deferred-value>
         <type>int</type>
       </deferred-value>
-      <!-- @bindingType interval -->
+      <!-- @bindingType int -->
       <!-- @default 0 -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>This is the time during which the user can see the last inputted character</description>
+      <name>duration</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default 0 -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>The symbol that will replace the inputting values</description>
+      <name>replacement</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType String -->
+      <!-- @default '%u25CF' -->
       <!-- @el true -->
     </attribute>
 
@@ -48603,7 +48625,6 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
   </tag>
-
   <!--<tag>-->
     <!--<description>This component is under construction. Displays a box where users may read and write comments. This component works on top of the Disqus-->
       <!--(http://disqus.com) service. You don&apos;t have to provide storage for the comments. You just have to create an-->

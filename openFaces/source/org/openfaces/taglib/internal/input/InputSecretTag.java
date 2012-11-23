@@ -37,5 +37,9 @@ public class InputSecretTag extends OUIInputTextTag {
         super.setComponentProperties(facesContext, component);
         setIntProperty(component, "maxlength");
         setIntProperty(component, "size");
+        setIntProperty(component, "interval");
+        setIntProperty(component, "duration");
+        setObjectProperty(component, "replacement");
+        setObjectProperty(component, "promptText");
     }
 }

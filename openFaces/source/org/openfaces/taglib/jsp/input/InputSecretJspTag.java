@@ -33,4 +33,20 @@ public class InputSecretJspTag  extends OUIInputTextJspTag {
     public void setMaxlength(ValueExpression maxlength) {
         getDelegate().setPropertyValue("maxlength", maxlength);
     }
+
+    public void setInterval(ValueExpression interval) {
+        getDelegate().setPropertyValue("interval", interval);
+    }
+
+    public void setDuration(ValueExpression duration) {
+        getDelegate().setPropertyValue("duration", duration);
+    }
+
+    public void setReplacement(ValueExpression replacement) {
+        getDelegate().setPropertyValue("replacement", replacement);
+    }
+
+    public void setPromptText(ValueExpression promptText) {
+        getDelegate().setPropertyValue("promptText", promptText);
+    }
 }
