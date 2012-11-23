@@ -53,15 +53,15 @@ public class DayTableBean1 extends DayTableBean implements Serializable {
                 "Instructor: Gregory House <br/>Fee: $30", blue));
         events.add(new TimetableEvent(generateEventId(), tomorrowAt(10, 50), tomorrowAt(12, 30), "444444444",
                 "Instructor: Gregory House <br/>Fee: $30", blue));    */
-        events.add(new TimetableEvent(generateEventId(), yesterdayAt(10, 50), yesterdayAt(12, 30), "11111111111",
+        events.add(new TimetableEvent(generateEventId(), tomorrowAt(10, 50), tomorrowAt(12, 30), "11111111111",
                 "11111111111Instructor: Gregory House <br/>Fee: $30", blue));
-        events.add(new TimetableEvent(generateEventId(), yesterdayAt(10, 50), yesterdayAt(12, 30), "22222222222",
+        events.add(new TimetableEvent(generateEventId(), tomorrowAt(10, 50), tomorrowAt(12, 30), "22222222222",
                 "22222222222Instructor: Gregory House <br/>Fee: $30", blue));
-        events.add(new TimetableEvent(generateEventId(), yesterdayAt(10, 50), yesterdayAt(12, 30), "22222222222",
+        events.add(new TimetableEvent(generateEventId(), tomorrowAt(10, 50), tomorrowAt(12, 30), "22222222222",
                 "22222222222Instructor: Gregory House <br/>Fee: $30", blue));
-        events.add(new TimetableEvent(generateEventId(), yesterdayAt(10, 50), yesterdayAt(12, 30), "333333333333",
+        events.add(new TimetableEvent(generateEventId(), tomorrowAt(10, 50), tomorrowAt(12, 30), "333333333333",
                 "333333333333Instructor: Gregory House <br/>Fee: $30", blue));
-        events.add(new TimetableEvent(generateEventId(), yesterdayAt(10, 50), yesterdayAt(12, 30), "44444444444",
+        events.add(new TimetableEvent(generateEventId(), tomorrowAt(10, 50), tomorrowAt(12, 30), "44444444444",
                 "44444444444Instructor: Gregory House <br/>Fee: $30", blue));
 
         Calendar c1 = new GregorianCalendar();

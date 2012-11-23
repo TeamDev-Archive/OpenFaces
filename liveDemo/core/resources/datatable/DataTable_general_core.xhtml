@@ -24,6 +24,8 @@
 
     </table>
 
+
+
     <o:dataTable id="banks" var="bank"
                  value="#{BanksList.banks}"
                  rowKey="#{bank.id}"
@@ -64,6 +66,7 @@
                          pressedStyle="border-left: none; background: url('../images/treetable/columnMenuBtnPressed.gif');"/>
       </f:facet>
 
+
       <o:column id="institutionName"
                 header="Institution Name"
                 width="30%"
@@ -80,10 +83,22 @@
                 headerStyle="white-space: normal;"
                 sortingExpression="#{bank.certificateNumber}"
                 bodyStyle="text-align: right; padding-right: 5px;">
-        <f:facet name="subHeader">
-          <o:inputTextFilter maxlength="5" autoFilterDelay="1000"/>
-        </f:facet>
-        <h:outputText value="#{bank.certificateNumber}"/>
+        <h:commandButton value="Delete">
+          <o:confirmation
+                  caption="Delete Confirmation"
+                  message="Delete Access ?"
+                  details="Details here."
+                  draggable="true" />
+          <f:ajax render="banks" />
+        </h:commandButton>
+        <h:commandButton value="Delete">
+          <o:confirmation
+                  caption="Delete Confirmation"
+                  message="Delete Access ?"
+                  details="Details here."
+                  draggable="true" />
+          <f:ajax render="banks" />
+        </h:commandButton>
       </o:column>
       <o:columnGroup header="Address">
         <o:column header="City"
