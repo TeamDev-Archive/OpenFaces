@@ -110,7 +110,6 @@ O$.Spinner = {
 
     });
 
-    console.log("disabled = " + disabled);
     spinner.setDisabled(disabled);
 
     var increaseButton = O$(spinnerId + "::increase_button");
