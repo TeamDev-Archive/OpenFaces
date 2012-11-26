@@ -1431,4 +1431,12 @@
       <handler-class>org.openfaces.taglib.facelets.table.ResetSortingMenuItemTagHandler</handler-class>
     </component>
   </tag>
+  <tag>
+    <tag-name>inputSecret</tag-name>
+    <component>
+      <component-type>org.openfaces.InputSecret</component-type>
+      <renderer-type>org.openfaces.InputSecretRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.input.InputSecretTagHandler</handler-class>
+    </component>
+  </tag>
 </facelet-taglib>
