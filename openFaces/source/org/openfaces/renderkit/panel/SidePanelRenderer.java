@@ -110,7 +110,7 @@ public class SidePanelRenderer extends RendererBase implements NamingContainer {
                 "o_sidepanel_content", sidePanel.getContentClass()
         );
         writer.writeAttribute("class", contentDefaultClass, null);
-
+        Styles.renderStyleClasses(context, component);
         encodeInitScript(context, component);
     }
 
@@ -119,7 +119,7 @@ public class SidePanelRenderer extends RendererBase implements NamingContainer {
         if (!component.isRendered()) return;
         ResponseWriter writer = context.getResponseWriter();
 
-        Styles.renderStyleClasses(context, component);
+
 
         writer.endElement("div");
         writer.endElement("div");
