@@ -729,6 +729,29 @@ O$.AjaxObject = function(render) {
     // todo: catch exception here and report some meaningful error
   }
 
+  this._processHTTPError = function(requestStatus, ajaxRender, ajaxObject){
+    var errorEvent = O$.createEvent("error");
+    errorEvent.requestStatus = requestStatus;
+    if (OpenFaces.Ajax.Page.onerror) {
+      var onerrorResult = false;
+      try {
+        onerrorResult = OpenFaces.Ajax.Page.onerror(errorEvent);
+      } catch (ex) {
+        if (!ajaxObject._clientSideException) {
+          ajaxObject._clientSideExceptions = [];
+        }
+        ajaxObject._clientSideExceptions.push(ex);
+        O$.requestFinished(ajaxObject);
+        return;
+      }
+
+      if (onerrorResult) {
+        O$.showDefaultHTTPAlertException(requestStatus);
+      }
+      return;
+    }
+  }
+
   this._processResponse = function() {
     var request = this._request;
     if (request.readyState != 4)
@@ -751,39 +774,12 @@ O$.AjaxObject = function(render) {
       }
     }
 
-    if (requestStatus == 0) {
-      alert("An attempt to connect to the server failed. Please, check your network connection.");
-      O$.requestFinished(this);
-      return;
+    if (requestStatus == 0 || requestStatus == 12029 || requestStatus == 12030 || requestStatus == 12031) {
+      this._processHTTPError(requestStatus, this._targetIds, this);
     }
-
-    if (requestStatus == 12029) {
-      alert("An attempt to connect to the server failed. Please, check your network connection.");
-      O$.requestFinished(this);
-      return;
-    }
-    if (requestStatus == 12030) {
-      alert("The connection with the server has been terminated. Please, check your network connection.");
-      O$.requestFinished(this);
-      return;
-    }
-    if (requestStatus == 12031) {
-      alert("The connection with the server has been reset. Please, check your network connection.");
-      O$.requestFinished(this);
-      return;
-    }
-
     if (requestStatus != 200) {
       O$.requestFinished(this);
-
-      if (requestStatus == 500) {
-        alert("Error while performing Ajax request: 500 (internal server error). See server logs for details.");
-      } else if (requestStatus == 302) { // by the spec, 302 responses should be handled transparently by XMLHttpRequest
-        alert("Error while performing Ajax request: 302 (this usually means a bug in the browser). If you're using Opera 9.0.x, please upgrade to Opera 9.1 or higher.");
-      } else {
-        alert("Error while performing Ajax request: \n" + requestStatus);
-      }
-      // todo: fire onerror event and invoke error handler
+      this._processHTTPError(requestStatus, this._targetIds, this);
       return;
     }
 
@@ -1624,6 +1620,37 @@ O$.updateViewStateFields = function(viewStateElementName, viewStateElementIndex,
     }
   }
 }
+
+O$.showDefaultHTTPAlertException = function(requestStatus) {
+  if (requestStatus == 0) {
+    alert("An attempt to connect to the server failed. Please, check your network connection.");
+    return;
+  }
+  if (requestStatus == 12029) {
+    alert("An attempt to connect to the server failed. Please, check your network connection.");
+    return;
+  }
+  if (requestStatus == 12030) {
+    alert("The connection with the server has been terminated. Please, check your network connection.");
+    return;
+  }
+  if (requestStatus == 12031) {
+    alert("The connection with the server has been reset. Please, check your network connection.");
+    return;
+  }
+  if (requestStatus != 200) {
+    O$.requestFinished(this);
+    if (requestStatus == 500) {
+      alert("Error while performing Ajax request: 500 (internal server error). See server logs for details.");
+    } else if (requestStatus == 302) { // by the spec, 302 responses should be handled transparently by XMLHttpRequest
+      alert("Error while performing Ajax request: 302 (this usually means a bug in the browser). If you're using Opera 9.0.x, please upgrade to Opera 9.1 or higher.");
+    } else {
+      alert("Error while performing Ajax request: \n" + requestStatus);
+    }
+    return;
+  }
+}
+
 
 O$.showDefaultAlertAfterException = function(errorMessage, ajaxObject) {
   alert("An error occurred on the server.\nError message:\n\"" + errorMessage + "\".\nPlease see server logs for the full stacktrace.");
