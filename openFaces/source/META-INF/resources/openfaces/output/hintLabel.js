@@ -170,10 +170,11 @@ O$.HintLabel = {
     var scrollX = O$.getPageScrollPos().x;
     if (label._realPos.x + label._hintFullWidth > document.body.offsetWidth + scrollX) {
       hint.style.whiteSpace = "normal";
-      hint.style.width = (document.body.offsetWidth - label._realPos.x - margins + scrollX) + "px";
+      //The line was commented out because the calculated width affected on width of custom styles
+      //hint.style.width = (document.body.offsetWidth - label._realPos.x - margins + scrollX) + "px";
     } else {
       hint.style.whiteSpace = "nowrap";
-      hint.style.width = label._hintFullWidth + "px";
+      //hint.style.width = label._hintFullWidth + "px";
     }
   }
 
