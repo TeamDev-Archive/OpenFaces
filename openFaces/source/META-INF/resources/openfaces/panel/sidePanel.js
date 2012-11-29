@@ -526,9 +526,9 @@ O$._cacheSidePanelSizeVariables = function(sidePanel) {
     splitter._widthDiff = splitter._storedSizeProperties.marginsWidth;
     if (sidePanel._alignment == "left" || sidePanel._alignment == "right") {
       panel._heightDiff = panel._storedSizeProperties.marginsHeight;
-      panel._widthDiff = panel._storedSizeProperties.marginsWidth + O$._calculateOffsetWidth(splitter, false) + splitter._storedSizeProperties.paddingsAndBordersAndMarginsWidth;
+      panel._widthDiff = panel._storedSizeProperties.marginsWidth + O$._calculateOffsetWidth(splitter, true) + splitter._storedSizeProperties.paddingsAndBordersAndMarginsWidth;
     } else {
-      panel._heightDiff = panel._storedSizeProperties.marginsHeight + O$._calculateOffsetHeight(splitter, false) + splitter._storedSizeProperties.paddingsAndBordersAndMarginsHeight;
+      panel._heightDiff = panel._storedSizeProperties.marginsHeight + O$._calculateOffsetHeight(splitter, true) + splitter._storedSizeProperties.paddingsAndBordersAndMarginsHeight;
       panel._widthDiff = panel._storedSizeProperties.marginsWidth;
     }
     if (caption) {
@@ -542,9 +542,9 @@ O$._cacheSidePanelSizeVariables = function(sidePanel) {
     splitter._widthDiff = splitter._storedSizeProperties.paddingsAndBordersAndMarginsWidth;
     if (sidePanel._alignment == "left" || sidePanel._alignment == "right") {
       panel._heightDiff = panel._storedSizeProperties.paddingsAndBordersAndMarginsHeight;
-      panel._widthDiff = panel._storedSizeProperties.paddingsAndBordersAndMarginsWidth + O$._calculateOffsetWidth(splitter, false) + splitter._storedSizeProperties.marginsWidth;
+      panel._widthDiff = panel._storedSizeProperties.paddingsAndBordersAndMarginsWidth + O$._calculateOffsetWidth(splitter, true) + splitter._storedSizeProperties.marginsWidth;
     } else {
-      panel._heightDiff = panel._storedSizeProperties.paddingsAndBordersAndMarginsHeight + O$._calculateOffsetHeight(splitter, false) + splitter._storedSizeProperties.marginsHeight;
+      panel._heightDiff = panel._storedSizeProperties.paddingsAndBordersAndMarginsHeight + O$._calculateOffsetHeight(splitter, true) + splitter._storedSizeProperties.marginsHeight;
       panel._widthDiff = panel._storedSizeProperties.paddingsAndBordersAndMarginsWidth;
     }
     if (caption) {
