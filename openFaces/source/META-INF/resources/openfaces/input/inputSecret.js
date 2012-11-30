@@ -179,7 +179,7 @@ O$.InputSecret = {
     var setPassword = function (id, str) {
       var tmp = "";
       for (var i = 0; i < str.length; i++) {
-        if (str.charAt(i) == replacement) {
+        if (str.charAt(i) == unescape(replacement)){
           var currentSymbol = inputSecret.value;
           tmp = tmp + currentSymbol.charAt(i);
         }
@@ -201,7 +201,7 @@ O$.InputSecret = {
         if (bullets.length > 1) {
           var tmp = '';
           for (i = 0; i < bullets.length - 1; i++) {
-            tmp = tmp + replacement;
+            tmp = tmp + unescape(replacement);
           }
           tmp = tmp + bullets.charAt(bullets.length - 1);
 
@@ -224,7 +224,7 @@ O$.InputSecret = {
       if (substitutionalElement.value != "" && ((substitutionalElement.value != promptText) && !promptVisible)) {
         var tmp = "";
         for (var i = 0; i < substitutionalElement.value.length; i++) {
-          tmp = tmp + replacement;
+          tmp = tmp + unescape(replacement);
         }
         substitutionalElement.value = tmp;
       }
