@@ -12,23 +12,52 @@
 
 //---------------  double buffered element methods  ----------------
 
+O$._getHiddenOffsetHeight = function (element) {
+  // save a reference to a cloned element that can be measured
+  var hiddenElement = O$.cloneElement(element);
+  document.body.appendChild(hiddenElement);
+  // calculate the width of the clone
+  var height = hiddenElement.offsetHeight;
+  console.log("height = " + height);
+  // remove the clone from the DOM
+  document.body.removeChild(hiddenElement);
+
+  return height;
+};
+
+O$._getHiddenOffsetWidth = function (element) {
+  // save a reference to a cloned element that can be measured
+  var hiddenElement = O$.cloneElement(element);
+  document.body.appendChild(hiddenElement);
+  // calculate the width of the clone
+  var width = hiddenElement.offsetWidth;
+
+  // remove the clone from the DOM
+  document.body.removeChild(hiddenElement);
+
+  return width;
+};
+
+
+
+
 O$._calculateOffsetWidth = function(element, useDoubleBuffering) {
-  var offsetWidth = element.offsetWidth;
+  var offsetWidth = O$._getHiddenOffsetWidth(element);
   if (useDoubleBuffering) {
     var styleWidth = O$._calculateNumericWidth(element, false);
     var newStyleWidth = O$._calculateNumericWidth(element, true);
-    return offsetWidth + newStyleWidth - styleWidth;
+    return offsetWidth + newStyleWidth -  styleWidth;
   } else {
     return offsetWidth;
   }
 };
 
 O$._calculateOffsetHeight = function(element, useDoubleBuffering) {
-  var offsetHeight = element.offsetHeight;
+  var offsetHeight = O$._getHiddenOffsetHeight(element);
   if (useDoubleBuffering && element._newStyle) {
     var styleHeight = O$._calculateNumericHeight(element, false);
     var newStyleHeight = O$._calculateNumericHeight(element, true);
-    return offsetHeight + newStyleHeight - styleHeight;
+    return offsetHeight + newStyleHeight -  styleHeight;
   } else {
     return offsetHeight;
   }
