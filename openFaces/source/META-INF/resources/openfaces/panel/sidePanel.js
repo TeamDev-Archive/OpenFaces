@@ -203,6 +203,7 @@ O$._initSidePanel_events = function(sidePanel, events) {
 //--------------------  private functions  ---------------------
 
 O$._recalculateSidePanel = function(sidePanel) {
+  console.log("_recalculateSidePanel")
   var splitter = sidePanel._splitter;
   var panel = sidePanel._panel;
   var caption = sidePanel._caption;
@@ -215,8 +216,7 @@ O$._recalculateSidePanel = function(sidePanel) {
     sidePanel._newStyle.width = sidePanelWidth + "px";
     //splitter
     splitter._newStyle.height = (sidePanelHeight - splitter._heightDiff) + "px";
-  }
-  else {
+  } else {
     //sidePanel
     sidePanelWidth = O$._calculateNumericWidth(sidePanel, true);
     sidePanelHeight = O$._calculateNumericSizeValue(sidePanel, sidePanel._size, false);  //todo create full double buffering
@@ -448,13 +448,11 @@ O$._calculateNumericSizeValue = function(sidePanel, sizeValue, useDoubleBufferin
   if (O$._isPercentageValue(sizeValue)) {
     if (sidePanel._alignment == "left" || sidePanel._alignment == "right") {
       var parentSizeFactor = O$._calculateNumericWidthFactor(sidePanel, useDoubleBuffering);
-    }
-    else {
-      parentSizeFactor = O$._calculateNumericHeightFactor(sidePanel, useDoubleBuffering);
+    } else {
+      var parentSizeFactor = O$._calculateNumericHeightFactor(sidePanel, useDoubleBuffering);
     }
     var size = Math.round(parentSizeFactor * 0.01 * parseFloat(sizeValue));
-  }
-  else {
+  } else {
     size = parseInt(sizeValue);
   }
   return size;

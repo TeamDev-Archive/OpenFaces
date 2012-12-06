@@ -28,7 +28,9 @@ O$._initBorderLayoutPanel = function(borderLayoutPanelId) {
     borderLayoutPanel._newStyle.applyTo(borderLayoutPanel.style);
     if (!borderLayoutPanel._waitForRefresh) {
       borderLayoutPanel._waitForRefresh = true;
-      setTimeout(O$._refreshLaterIfInvisible, 0, borderLayoutPanel);
+      setTimeout(function() {
+        O$._refreshLaterIfInvisible(borderLayoutPanel);
+      }, 0);
     }
   });
 
@@ -511,7 +513,9 @@ O$._refreshLaterIfInvisible = function(borderLayoutPanel) {
   hasHiddenParent = !O$.isVisibleRecursive(currentElement);
 
   if (hasHiddenParent == true) {
-    setTimeout(O$._refreshLaterIfInvisible, 200, borderLayoutPanel);
+    setTimeout(function() {
+      O$._refreshLaterIfInvisible(borderLayoutPanel);
+    }, 200)
   } else {
     borderLayoutPanel.refresh();
     borderLayoutPanel._waitForRefresh = false;

@@ -13,29 +13,19 @@
 //---------------  double buffered element methods  ----------------
 
 O$._getHiddenOffsetHeight = function (element) {
-  // save a reference to a cloned element that can be measured
-  var hiddenElement = O$.cloneElement(element);
-  document.body.appendChild(hiddenElement);
-  // calculate the width of the clone
-  var height = hiddenElement.offsetHeight;
-  console.log("height = " + height);
-  // remove the clone from the DOM
-  document.body.removeChild(hiddenElement);
-
-  return height;
+  var offsetHeight = element.offsetHeight;
+  if (offsetHeight || offsetHeight == 0){
+    var offsetHeight = O$._calculateNumericHeight(element, false);
+  }
+  return offsetHeight;
 };
 
 O$._getHiddenOffsetWidth = function (element) {
-  // save a reference to a cloned element that can be measured
-  var hiddenElement = O$.cloneElement(element);
-  document.body.appendChild(hiddenElement);
-  // calculate the width of the clone
-  var width = hiddenElement.offsetWidth;
-
-  // remove the clone from the DOM
-  document.body.removeChild(hiddenElement);
-
-  return width;
+  var offsetWidth = element.offsetWidth;
+  if (offsetWidth || offsetWidth == 0){
+    var offsetWidth = O$._calculateNumericWidth(element, false);
+  }
+  return offsetWidth;
 };
 
 
@@ -129,12 +119,12 @@ O$._calculateNumericHeight = function(element, useDoubleBuffering) {
     var height = element._newStyle.height;
   } else {
     if (element.style.height) {
-      height = element.style.height;
+      var height = element.style.height;
     } else {
-      height = O$.getStyleClassProperty(element.className, "height");
+      var height = O$.getStyleClassProperty(element.className, "height");
     }
     if (!height) {
-      height = element.offsetHeight;
+      height = O$._getHiddenOffsetHeight(element);
       if (!height) {
         var parentNode = element.parentNode;
         if (parentNode == document.body)
@@ -164,7 +154,7 @@ O$._calculateNumericWidthFactor = function(element, useDoubleBuffering) {
   if (element._isCoupled) {
     var widthFactor = O$._calculateNumericInnerWidth(parent, useDoubleBuffering);
   } else {
-    widthFactor = O$._calculateNumericWidth(parent, false); //todo need testing
+    var widthFactor = O$._calculateNumericWidth(parent, false); //todo need testing
   }
   return widthFactor;
 };
@@ -174,7 +164,7 @@ O$._calculateNumericHeightFactor = function(element, useDoubleBuffering) {
   if (element._isCoupled) {
     var heightFactor = O$._calculateNumericInnerHeight(element.parentNode, useDoubleBuffering);
   } else {
-    heightFactor = O$._calculateNumericHeight(parent, false); //todo need testing
+    var heightFactor = O$._calculateNumericHeight(parent, false); //todo need testing
   }
   return heightFactor;
 };
@@ -221,7 +211,7 @@ O$._setInnerElementOuterWidth = function(element, outerWidth, useDoubleBuffering
   if (O$._isExplorerQuirksMode()) {
     var width = (outerWidth - element._storedSizeProperties.marginsWidth) + "px";
   } else {
-    width = (outerWidth - element._storedSizeProperties.paddingsAndBordersAndMarginsWidth) + "px";
+    var width = (outerWidth - element._storedSizeProperties.paddingsAndBordersAndMarginsWidth) + "px";
   }
 
   if (useDoubleBuffering) {
@@ -235,7 +225,7 @@ O$._setInnerElementOuterHeight = function(element, outerHeight, useDoubleBufferi
   if (O$._isExplorerQuirksMode()) {
     var height = (outerHeight - element._storedSizeProperties.marginsHeight) + "px";
   } else {
-    height = (outerHeight - element._storedSizeProperties.paddingsAndBordersAndMarginsHeight) + "px";
+    var height = (outerHeight - element._storedSizeProperties.paddingsAndBordersAndMarginsHeight) + "px";
   }
 
   if (useDoubleBuffering) {
