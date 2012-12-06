@@ -15,7 +15,7 @@
 O$._getHiddenOffsetHeight = function (element) {
   var offsetHeight = element.offsetHeight;
   if (offsetHeight || offsetHeight == 0){
-    var offsetHeight = O$._calculateNumericHeight(element, false);
+    offsetHeight = O$._calculateNumericHeight(element, false);
   }
   return offsetHeight;
 };
@@ -23,7 +23,7 @@ O$._getHiddenOffsetHeight = function (element) {
 O$._getHiddenOffsetWidth = function (element) {
   var offsetWidth = element.offsetWidth;
   if (offsetWidth || offsetWidth == 0){
-    var offsetWidth = O$._calculateNumericWidth(element, false);
+    offsetWidth = O$._calculateNumericWidth(element, false);
   }
   return offsetWidth;
 };
@@ -86,12 +86,12 @@ O$._calculateNumericWidth = function(element, useDoubleBuffering) {
     var width = element._newStyle.width;
   } else {
     if (element.style.width) {
-      width = element.style.width;
+      var width = element.style.width;
     } else {
-      width = O$.getStyleClassProperty(element.className, "width");
+      var width = O$.getStyleClassProperty(element.className, "width");
     }
     if (!width) {
-      width = element.offsetWidth;
+      var width = element.offsetWidth;
       if (!width) {
         var parentNode = element.parentNode;
         if (parentNode == document.body)
@@ -100,7 +100,7 @@ O$._calculateNumericWidth = function(element, useDoubleBuffering) {
           } else {
             return window.innerWidth;
           }
-        width = O$._calculateNumericWidth(parentNode, useDoubleBuffering);
+        width = O$._calculateNumericWidth(parentNode, true);
       }
       return width;
     }
@@ -124,7 +124,7 @@ O$._calculateNumericHeight = function(element, useDoubleBuffering) {
       var height = O$.getStyleClassProperty(element.className, "height");
     }
     if (!height) {
-      height = O$._getHiddenOffsetHeight(element);
+      height = element.offsetHeight;
       if (!height) {
         var parentNode = element.parentNode;
         if (parentNode == document.body)
@@ -307,8 +307,7 @@ O$._bugFix_divNegativeSizeBug = function(element, useDoubleBuffering) {
       element._newStyle.width = "0px";
       element._newStyle.display = "none";
     }
-  }
-  else {
+  } else {
     element.style.display = "block";
     if (parseFloat(element.style.height) < 0) {
       element.style.height = "0px";
@@ -457,8 +456,8 @@ O$._setAbsoluteCenterPosition = function(element) {
   element.style.position = "absolute";
   element.style.left = "50%";
   element.style.top = "50%";
-  element.style.marginLeft = "-" + Math.round(element.offsetWidth / 2) + "px";
-  element.style.marginTop = "-" + Math.round(element.offsetHeight / 2) + "px";
+  element.style.marginLeft = "-" + Math.round(O$._getHiddenOffsetWidth(element) / 2) + "px";
+  element.style.marginTop = "-" + Math.round(O$._getHiddenOffsetHeight(element) / 2) + "px";
 };
 
 O$._setImageAbsoluteCenterPosition = function(imgElement) {
