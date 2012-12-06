@@ -442,7 +442,8 @@ O$._createPseudoCSSStyle = function(cssStyle) {
 };
 
 O$._isPercentageValue = function(str) {
-  return (str.indexOf(parseFloat(str).toString() + "%") != -1);
+  //return (str.indexOf(parseFloat(str).toString() + "%") != -1);
+  return (str.indexOf("%") != -1);
 };
 
 O$._isPixelValue = function(str) {
