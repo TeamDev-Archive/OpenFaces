@@ -118,11 +118,7 @@ O$._calculateNumericHeight = function(element, useDoubleBuffering) {
   if (useDoubleBuffering && element._newStyle && element._newStyle.height) {
     var height = element._newStyle.height;
   } else {
-    if (element.style.height) {
-      var height = element.style.height;
-    } else {
-      var height = O$.getStyleClassProperty(element.className, "height");
-    }
+    var height = O$.getStyleClassProperty(element.className, "height");
     if (!height) {
       height = element.offsetHeight;
       if (!height) {

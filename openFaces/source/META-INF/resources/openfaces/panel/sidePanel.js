@@ -96,13 +96,7 @@ O$._initSidePanel = function(sidePanelId,
     _minSize: minSize,
     _maxSize: maxSize
   });
-  console.log("Before::: sidePanelId = " + sidePanelId + ", size = " + sidePanel._size);
-  if (sidePanel._size.indexOf("%")!=-1){
-    if (sidePanel._size.indexOf(".")!=-1){
-      sidePanel._size = sidePanel._size.substr(0,sidePanel._size.indexOf(".")) + "%"
-    }
-  }
-  console.log("After::: sidePanelId = " + sidePanelId + ", size = " + size);
+
   sidePanel._panel._isCoupled = true;
 
   O$._initSidePanel_style(sidePanel, rolloverClass, splitterRolloverClass);
