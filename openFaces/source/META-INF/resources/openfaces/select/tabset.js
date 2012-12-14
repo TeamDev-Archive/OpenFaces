@@ -261,6 +261,7 @@ O$.TabSet = {
         O$.setStyleMappings(tab.childNodes[0], {focused:  null});
       };
     }
+    this._loading = true;
   },
 
   _setNextIndex: function(tabSet, inc) {

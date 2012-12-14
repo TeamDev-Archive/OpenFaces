@@ -2,106 +2,171 @@
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:o="http://openfaces.org/">
 
+
   <div id="Demo">
 
-    <script type="text/javascript">
-      window.onload = setDescriptionSource;
+    <o:commandButton execute="test22" render="test22" value="clickme"></o:commandButton>
+    <o:tabbedPane style="height:400px; width:900px;" id="test22" loadingMode="client">
 
-      function setDescriptionSource() {
-        var componentName = O$("form:componentName").value;
-        var frame = O$("componentDescription");
-
-        if (componentName != "") {
-          var componentDescription = componentName + ".html";
-          if (frame.src != componentDescription) {
-            frame.src = componentDescription;
-          }
-
-        } else {
-          if (frame.src != "Index.html") {
-            frame.src = "Index.html";
-          }
-        }
-      }
-
-    </script>
-
-    <o:borderLayoutPanel id="borderLayoutPanel" style="width: 720px; border: 1px solid gray; height: 400px;">
-      <h:panelGroup>
-        <iframe id="componentDescription" src="Index.html"
-                frameborder="0" border="0" cellspacing="0" marginwidth="0" marginheight="0"
-                width="100%" height="100%">
-        </iframe>
+      <o:subPanel caption="global11111111">
 
 
-        <h:inputHidden id="componentName" value="#{BorderLayoutBean.normalizedSelectedComponent}"/>
+            <o:tabbedPane id="test" style="height:100%!important;width:100%!important;" loadingMode="client">
 
-      </h:panelGroup>
+              <o:subPanel caption="11111111">
 
-      <o:sidePanel alignment="top" splitterStyle="border: none; border-top: 1px solid gray; height: 1px;"
-                   resizable="false" collapsible="false" size="22px" style="text-align: center;">
-        Developer's Guide 2.0
-      </o:sidePanel>
+                <o:borderLayoutPanel id="borderLayoutPanel"
+                                     style="width: 100%; border: 1px solid gray; height: 100%;">
+                  content1111111111
 
-      <o:sidePanel alignment="left" size="25%" style="width: 100%;">
-        <f:facet name="caption">
-          <h:outputText style="background-color: #657386;">
-            <h:outputText escape="false" value="&#160; "/>
-          </h:outputText>
-        </f:facet>
+                  <o:sidePanel alignment="top" splitterStyle="border: none; border-top: 1px solid gray; height: 1px;"
+                               resizable="false" collapsible="false" size="22px" style="text-align: center;">
+                    Developer's Guide 2.0
+                  </o:sidePanel>
 
-        <o:treeTable id="componentsTree" var="treeNode" useAjax="true"
-                     expansionState="allExpanded"
-                     style="width: 100%; border: none; font-size: 10pt;"
-                     rolloverStyle="cursor: pointer;"
-                     focusedStyle="border: none">
-          <o:dynamicTreeStructure
-                  nodeChildren="#{BorderLayoutBean.nodeChildren}"
-                  nodeHasChildren="#{BorderLayoutBean.nodeHasChildren}"/>
+                  <o:sidePanel splitterStyle="width:30px;" id="testPanel" alignment="right" size="50%" style="width: 100%;">
+                    <o:borderLayoutPanel>
+                      <div>
+                        <o:dataTable var="dept"
+                                     value="#{StylingBean.deptList}"
+                                     style="border: 0;height:100%;margin-left: 10px; margin-right: 10px;">
+                          <o:singleRowSelection render="testbtn"></o:singleRowSelection>
+                          <o:column style="width: 83px; text-align: left;">
+                            <f:facet name="header">
+                              <h:outputText value=""/>
+                            </f:facet>
+                            <h:outputText value="#{dept.deptName}"/>
+                            <f:facet name="footer">
+                              <h:outputText value="Total"/>
+                            </f:facet>
+                          </o:column>
+                          <o:column id="year2003"
+                                    style="width: 83px; text-align: right;" sortingExpression="#{dept.year2003}">
+                            <f:facet name="header">
+                              <h:outputText value="2003"/>
+                            </f:facet>
+                            <h:outputText value="#{dept.year2003}"/>
+                            <f:facet name="footer">
+                              <h:outputText value="165.8"/>
+                            </f:facet>
+                          </o:column>
+                          <o:column style="width: 83px; text-align: right;" sortingExpression="#{dept.year2004}">
+                            <f:facet name="header">
+                              <h:outputText value="2004"/>
+                            </f:facet>
+                            <h:outputText value="#{dept.year2004}"/>
+                            <f:facet name="footer">
+                              <h:outputText value="168.5"/>
+                            </f:facet>
+                          </o:column>
+                          <o:column style="width: 83px; text-align: right;" sortingExpression="#{dept.year2005}">
+                            <f:facet name="header">
+                              <h:outputText value="2005"/>
+                            </f:facet>
+                            <h:outputText value="#{dept.year2005}"/>
+                            <f:facet name="footer">
+                              <h:outputText value="138.1"/>
+                            </f:facet>
+                          </o:column>
+                          <o:column style="width: 83px; text-align: right;" sortingExpression="#{dept.year2006}">
+                            <f:facet name="header">
+                              <h:outputText value="2006"/>
+                            </f:facet>
+                            <h:outputText value="#{dept.year2006}"/>
+                            <f:facet name="footer">
+                              <h:outputText value="166.0"/>
+                            </f:facet>
+                          </o:column>
+                          <o:column
+                                  style="width: 85px; text-align: right; padding-right: 4px; border-left: 1px solid #666666; font-style: italic;">
+                            <f:facet name="header">
+                              <h:outputText value="Total"/>
+                            </f:facet>
+                            <h:outputText value="#{dept.total}"/>
+                            <f:facet name="footer">
+                              <h:outputText value="639.4"/>
+                            </f:facet>
+                          </o:column>
+                        </o:dataTable>
+                      </div>
 
-          <o:singleNodeSelection
-                  nodeData="#{BorderLayoutBean.selectedComponent}"
-                  style="background-color: gray; color: white; cursor: default;">
-            <o:ajax render=":form:componentName"
-                    listener="#{BorderLayoutBean.selectComponent}"
-                    onajaxend="setDescriptionSource();"/>
-          </o:singleNodeSelection>
+                      <o:sidePanel size="50%" splitterStyle="height:30px;" style="margin-top:30px;"
+                                   alignment="bottom">
 
-          <o:treeColumn>
-            <h:outputText value="#{treeNode}"/>
-          </o:treeColumn>
+                        <div style="width:100%;height:100%">
+                          <o:commandButton id="testbtn" value="DODDDDDDDDDD"/>
+                          <o:dataTable var="dept"
+                                       value="#{StylingBean.deptList}"
+                                       style="border: 0; height:100%; margin-left: 10px; margin-right: 10px;"
+                                  >
+                            <o:singleRowSelection render="testbtn"></o:singleRowSelection>
+                            <o:column style="width: 83px; text-align: right;" sortingExpression="#{dept.year2006}">
+                              <f:facet name="header">
+                                <h:outputText value="2006"/>
+                              </f:facet>
+                              <h:outputText value="#{dept.year2006}"/>
+                              <f:facet name="footer">
+                                <h:outputText value="166.0"/>
+                              </f:facet>
+                            </o:column>
+                            <o:column style="width: 83px; text-align: right;" sortingExpression="#{dept.year2006}">
+                              <f:facet name="header">
+                                <h:outputText value="11111111"/>
+                              </f:facet>
+                              <h:inputText value="#{sessionScope.someValue}"/>
+                              <f:facet name="footer">
+                                <h:outputText value="166.0"/>
+                              </f:facet>
+                            </o:column>
+                            <o:column
+                                    style="width: 85px; text-align: right; padding-right: 4px; border-left: 1px solid #666666; font-style: italic;">
+                              <f:facet name="header">
+                                <h:outputText value="Total"/>
+                              </f:facet>
+                              <h:outputText value="#{dept.total}"/>
+                              <f:facet name="footer">
+                                <h:outputText value="639.4"/>
+                              </f:facet>
+                            </o:column>
+                          </o:dataTable>
 
-        </o:treeTable>
+                          <div align="right" id="entitySelection" style="position: absolute; bottom: 0; right:0">
+                            <h:outputText id="setEntity"
+                                          value="ololololo"/>
+                            <o:commandLink
+                                    id="viewEntityLnk"
+                                    value="click">
+                              <span class="icon circleBackground" style="border: none"/>
+                            </o:commandLink>
 
-      </o:sidePanel>
+                          </div>
+                        </div>
+                      </o:sidePanel>
 
-      <o:sidePanel alignment="bottom"
-                   splitterStyle="border: none; border-top: 1px solid gray; height: 1px;"
-                   resizable="false" collapsible="false" size="22px" style="text-align: center;">
-        <h:outputText escape="false" value="&#169; 2012 TeamDev Ltd. All rights reserved."/>
-      </o:sidePanel>
+                      <div id="omg" style="clear: both;"/>
+                    </o:borderLayoutPanel>
+                  </o:sidePanel>
 
-    </o:borderLayoutPanel>
+                  <o:sidePanel alignment="bottom"
+                               splitterStyle="border: none; border-top: 1px solid gray; height: 1px;"
+                               resizable="false" collapsible="false" size="22px" style="text-align: center;">
+                    <h:outputText escape="false" value="&#169; 2012 TeamDev Ltd. All rights reserved."/>
+                  </o:sidePanel>
 
+                </o:borderLayoutPanel>
 
+              </o:subPanel>
+
+              <o:subPanel caption="11111111">
+                11111111111111
+              </o:subPanel>
+            </o:tabbedPane>
+      </o:subPanel>
+      <o:subPanel caption="global000000">
+        1111111111111111111111111
+      </o:subPanel>
+    </o:tabbedPane>
   </div>
 
-  <div id="Description">
-    <h4>Demonstrated Features</h4>
-    <ul class="hang">
-      <li><strong>Static border layout</strong> - if you're creating a static layout, you can disable the resizing
-        capability by setting the SidePanel's resizable attribute to "false".
-        See the header and footer for the panel above.
-      </li>
-      <li><strong>Side panel resizing/collapsing</strong> - each SidePanel can optionally be configured to have resizing
-        capability by dragging the panel's separator, and/or expanding/collapsing capability by clicking on the
-        separator.
-        Left panel on this demo both resizing and collapsing capabilities.
-      </li>
-      <li><strong>Side panel captions</strong> - you can also specify the caption of SidePanel component by using by
-        using the "caption" facet.See the left panel in this demo.
-      </li>
-    </ul>
-  </div>
 
 </div>

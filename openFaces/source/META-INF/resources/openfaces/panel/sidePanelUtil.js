@@ -11,43 +11,23 @@
  */
 
 //---------------  double buffered element methods  ----------------
-
-O$._getHiddenOffsetHeight = function (element) {
-  var offsetHeight = element.offsetHeight;
-  if (offsetHeight || offsetHeight == 0){
-    offsetHeight = O$._calculateNumericHeight(element, false);
-  }
-  return offsetHeight;
-};
-
-O$._getHiddenOffsetWidth = function (element) {
-  var offsetWidth = element.offsetWidth;
-  if (offsetWidth || offsetWidth == 0){
-    offsetWidth = O$._calculateNumericWidth(element, false);
-  }
-  return offsetWidth;
-};
-
-
-
-
 O$._calculateOffsetWidth = function(element, useDoubleBuffering) {
-  var offsetWidth = O$._getHiddenOffsetWidth(element);
+  var offsetWidth = element.offsetWidth;
   if (useDoubleBuffering) {
     var styleWidth = O$._calculateNumericWidth(element, false);
     var newStyleWidth = O$._calculateNumericWidth(element, true);
-    return offsetWidth + newStyleWidth -  styleWidth;
+    return offsetWidth + newStyleWidth - styleWidth;
   } else {
     return offsetWidth;
   }
 };
 
 O$._calculateOffsetHeight = function(element, useDoubleBuffering) {
-  var offsetHeight = O$._getHiddenOffsetHeight(element);
+  var offsetHeight = element.offsetHeight;
   if (useDoubleBuffering && element._newStyle) {
     var styleHeight = O$._calculateNumericHeight(element, false);
     var newStyleHeight = O$._calculateNumericHeight(element, true);
-    return offsetHeight + newStyleHeight -  styleHeight;
+    return offsetHeight + newStyleHeight - styleHeight;
   } else {
     return offsetHeight;
   }
@@ -118,7 +98,11 @@ O$._calculateNumericHeight = function(element, useDoubleBuffering) {
   if (useDoubleBuffering && element._newStyle && element._newStyle.height) {
     var height = element._newStyle.height;
   } else {
-    var height = O$.getStyleClassProperty(element.className, "height");
+    if (element.style.height) {
+      var height = element.style.height;
+    } else {
+      var height = O$.getStyleClassProperty(element.className, "height");
+    }
     if (!height) {
       height = element.offsetHeight;
       if (!height) {

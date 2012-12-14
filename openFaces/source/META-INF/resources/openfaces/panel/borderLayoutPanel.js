@@ -19,6 +19,22 @@ O$._initBorderLayoutPanel = function(borderLayoutPanelId) {
     _isNotResizableComponent: true,
     _newStyle: new O$._createPseudoCSSStyle()
   });
+
+  function waitForParentLoading(){
+    if (O$._parentIsLoading(borderLayoutPanel)){
+      setTimeout(waitForParentLoading,500);
+      borderLayoutPanel._loading = true;
+      return;
+    }else{
+      borderLayoutPanel._loading = false;
+      O$._additionalBorderLayoutInit(borderLayoutPanel, borderLayoutPanelId);
+    }
+  }
+
+  waitForParentLoading();
+}
+
+O$._additionalBorderLayoutInit = function (borderLayoutPanel, borderLayoutPanelId){
   borderLayoutPanel._isCoupled = borderLayoutPanel.parentNode._isCouplingElement;
   borderLayoutPanel._newStyle.width = borderLayoutPanel.style.width;
   borderLayoutPanel._newStyle.height = borderLayoutPanel.style.height;
@@ -55,6 +71,19 @@ O$._initBorderLayoutPanel = function(borderLayoutPanelId) {
 };
 
 O$._initBorderLayoutPanel_content = function(borderLayoutPanelId, rolloverClass, events) {
+  function waitForParentLoading(){
+    if (O$._parentIsLoading(O$(borderLayoutPanelId))){
+      setTimeout(waitForParentLoading,500);
+      return;
+    }else{
+      O$._additionalInitBorderLayoutPanel_content(borderLayoutPanelId, rolloverClass, events);
+    }
+  }
+
+  waitForParentLoading();
+}
+
+O$._additionalInitBorderLayoutPanel_content = function(borderLayoutPanelId, rolloverClass, events) {
   var borderLayoutPanel = O$(borderLayoutPanelId);
   borderLayoutPanel._content = O$(borderLayoutPanelId + "::content");
   borderLayoutPanel._content._newStyle = new O$._createPseudoCSSStyle();
@@ -166,14 +195,19 @@ O$._calculateBorderLayoutPanelContentRect = function(borderLayoutPanel, useDoubl
   for (var index = 0; index < borderLayoutPanel.sidePanels.length; index++) {
     var sidePanel = borderLayoutPanel.sidePanels[index];
     if (sidePanel._alignment) {
+      var splitter = sidePanel._splitter;
       if (sidePanel._alignment == "left") {
-        contentRectLeft = contentRectLeft + O$._calculateNumericSizeValue(sidePanel, sidePanel._size, useDoubleBuffering);
+        contentRectLeft = contentRectLeft + O$._calculateNumericSizeValue(sidePanel, sidePanel._size, useDoubleBuffering) +
+                 O$._calculateOffsetWidth(splitter, true);
       } else if (sidePanel._alignment == "right") {
-        contentRectRight = contentRectRight + O$._calculateNumericSizeValue(sidePanel, sidePanel._size, useDoubleBuffering);
+        contentRectRight = contentRectRight + O$._calculateNumericSizeValue(sidePanel, sidePanel._size, useDoubleBuffering)+
+                O$._calculateOffsetWidth(splitter, true);
       } else if (sidePanel._alignment == "top") {
-        contentRectTop = contentRectTop + O$._calculateNumericSizeValue(sidePanel, sidePanel._size, useDoubleBuffering);
+        contentRectTop = contentRectTop + O$._calculateNumericSizeValue(sidePanel, sidePanel._size, useDoubleBuffering)+
+                O$._calculateOffsetHeight(splitter, true);
       } else if (sidePanel._alignment == "bottom") {
-        contentRectBottom = contentRectBottom + O$._calculateNumericSizeValue(sidePanel, sidePanel._size, useDoubleBuffering);
+        contentRectBottom = contentRectBottom + O$._calculateNumericSizeValue(sidePanel, sidePanel._size, useDoubleBuffering)+
+                O$._calculateOffsetHeight(splitter, true);
       }
     }
   }
@@ -521,4 +555,18 @@ O$._refreshLaterIfInvisible = function(borderLayoutPanel) {
     borderLayoutPanel._waitForRefresh = false;
   }
 
+}
+
+O$._parentIsLoading = function (element) {
+    if ((element.attributes && element.attributes._loading && element.attributes._loading.value != "false") )
+      return true;
+
+    var parentNode = element.parentNode;
+    if (!parentNode || parentNode == document)
+      return false;
+
+    if (parentNode._loading)
+      return true;
+
+    return O$._parentIsLoading(parentNode);
 }

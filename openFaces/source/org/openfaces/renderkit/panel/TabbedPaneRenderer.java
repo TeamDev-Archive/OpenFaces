@@ -83,13 +83,15 @@ public class TabbedPaneRenderer extends MultiPageContainerRenderer implements Co
         writer.writeAttribute("cellspacing", "0", null);
         writer.writeAttribute("cellpadding", "0", null);
         writer.writeAttribute("id", tabbedPane.getClientId(context), "id");
-
+        writer.writeAttribute("_loading", "true", null);
         Rendering.writeComponentClassAttribute(writer, tabbedPane);
 
         Rendering.writeStandardEvents(writer, tabbedPane);
 
-        TabPlacement tabPlacement = getTabPlacement(tabbedPane);
 
+
+        TabPlacement tabPlacement = getTabPlacement(tabbedPane);
+        encodeStyles(context, tabbedPane);
         boolean horizontalPlacement = TabPlacement.LEFT.equals(tabPlacement) || TabPlacement.RIGHT.equals(tabPlacement);
         boolean paneFirst = TabPlacement.RIGHT.equals(tabPlacement) || TabPlacement.BOTTOM.equals(tabPlacement);
         writer.startElement("tr", tabbedPane);
@@ -164,6 +166,13 @@ public class TabbedPaneRenderer extends MultiPageContainerRenderer implements Co
         return tabPlacement;
     }
 
+    private void encodeStyles(FacesContext context,
+                              TabbedPane tabbedPane) throws IOException {
+        Styles.renderStyleClasses(context, tabbedPane);
+
+    }
+
+
     private void encodeScriptsAndStyles(
             FacesContext context,
             TabbedPane tabbedPane,
@@ -222,7 +231,6 @@ public class TabbedPaneRenderer extends MultiPageContainerRenderer implements Co
                 Resources.internalURL(context, "panel/multiPage.js"),
                 Resources.internalURL(context, "panel/tabbedPane.js"));
 
-        Styles.renderStyleClasses(context, tabbedPane);
     }
 
     private void encodeTabSet(FacesContext context, TabbedPane tabbedPane, List<SubPanel> subPanels,

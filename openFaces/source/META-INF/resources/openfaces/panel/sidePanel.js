@@ -96,7 +96,39 @@ O$._initSidePanel = function(sidePanelId,
     _minSize: minSize,
     _maxSize: maxSize
   });
-
+  function waitForParentLoading(){
+    if (O$._parentIsLoading(sidePanel)){
+      setTimeout(waitForParentLoading,500);
+      sidePanel._loading = true;
+      return;
+    }else{
+      sidePanel._loading = false;
+      O$._additionalInitSidePanel(sidePanel,sidePanelId,
+              alignment,
+              size,
+              minSize,
+              maxSize,
+              collapsible,
+              resizable,
+              collapsed,
+              rolloverClass,
+              splitterRolloverClass,
+              events);
+    }
+  }
+  waitForParentLoading();
+}
+O$._additionalInitSidePanel = function(sidePanel,sidePanelId,
+        alignment,
+        size,
+        minSize,
+        maxSize,
+        collapsible,
+        resizable,
+        collapsed,
+        rolloverClass,
+        splitterRolloverClass,
+        events){
   sidePanel._panel._isCoupled = true;
 
   O$._initSidePanel_style(sidePanel, rolloverClass, splitterRolloverClass);
@@ -213,22 +245,22 @@ O$._recalculateSidePanel = function(sidePanel) {
     //sidePanel
     var sidePanelWidth = O$._calculateNumericSizeValue(sidePanel, sidePanel._size, false);  //todo create full double buffering
     var sidePanelHeight = O$._calculateNumericHeight(sidePanel, true);
-    sidePanel._newStyle.width = sidePanelWidth + "px";
+    sidePanel._newStyle.width = (sidePanelWidth  +  O$._calculateOffsetWidth(splitter, true))+ "px";
     //splitter
     splitter._newStyle.height = (sidePanelHeight - splitter._heightDiff) + "px";
   } else {
     //sidePanel
     sidePanelWidth = O$._calculateNumericWidth(sidePanel, true);
     sidePanelHeight = O$._calculateNumericSizeValue(sidePanel, sidePanel._size, false);  //todo create full double buffering
-    sidePanel._newStyle.height = sidePanelHeight + "px";
+    sidePanel._newStyle.height = (sidePanelHeight  +  O$._calculateOffsetHeight(splitter, true))+ "px";
     //splitter
     splitter._newStyle.width = (sidePanelWidth - splitter._widthDiff) + "px";
   }
   O$._bugFix_divNegativeSizeBug(sidePanel, true);
   O$._bugFix_divNegativeSizeBug(splitter, true);
   //panel
-  var panelWidth = sidePanelWidth - panel._widthDiff;
-  var panelHeight = sidePanelHeight - panel._heightDiff;
+  var panelWidth = sidePanelWidth;
+  var panelHeight = sidePanelHeight;
   panel._newStyle.height = panelHeight + "px";
   panel._newStyle.width = panelWidth + "px";
   O$._bugFix_divNegativeSizeBug(panel, true);
