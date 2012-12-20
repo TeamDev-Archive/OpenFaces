@@ -130,7 +130,7 @@ O$.Spinner = {
           O$.stopEvent(e);
         };
 
-        field.onblur = function() {
+        field.onblur = function(e) {
           checkValueForBounds(spinner);
         };
 
@@ -195,7 +195,6 @@ O$.Spinner = {
         };
 
         field.onblur = function() {
-          O$.stopEvent(e);
         };
 
         increaseButton.ondragstart = function(e) {
@@ -228,6 +227,12 @@ O$.Spinner = {
     var field = spinner._field;
 
     spinner.setDisabled(disabled);
+    var mask = {
+      emptySymbols: '',
+      format: '',
+      regex:   /^-?\d+(\.\d+)?$/
+    }
+    O$.MaskEdit._init(spinner._field.id,mask);
 
 
 
