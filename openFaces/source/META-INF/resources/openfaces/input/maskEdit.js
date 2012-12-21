@@ -67,7 +67,7 @@ O$.MaskEdit = {
       onkeypress: function (e){
         var key = e.keyCode;
         if (this.isControlKey(key)) {
-          console.log(key);
+
         }else if (this.isCharacterKey(key)) {
           var ch = String.fromCharCode( e.charCode);
           var str = this.value + ch;
