@@ -162,6 +162,8 @@ O$.HintLabel = {
     if (baseZIndex)
       hint.style.zIndex = baseZIndex + 1;
 
+    var hintLabelWidth = O$.getStyleClassProperty(label._hintClass, "width");
+
     var margins = 10;
     if (O$.isExplorer()) {
       margins = document.body.leftMargin * 1 + document.body.rightMargin * 1;
@@ -169,11 +171,20 @@ O$.HintLabel = {
     label._realPos = O$.getElementBorderRectangle(label, false);
     var scrollX = O$.getPageScrollPos().x;
     if (label._realPos.x + label._hintFullWidth > document.body.offsetWidth + scrollX) {
-      hint.style.whiteSpace = "normal";
-      hint.style.width = (document.body.offsetWidth - label._realPos.x - margins + scrollX) + "px";
+      //The line was commented out because the calculated width affected on width of custom styles
+      if(hintLabelWidth!=undefined){
+        hint.style.whiteSpace = "normal";
+      }else{
+        hint.style.whiteSpace = "normal";
+        hint.style.width = (document.body.offsetWidth - label._realPos.x - margins + scrollX) + "px";
+      }
     } else {
-      hint.style.whiteSpace = "nowrap";
-      hint.style.width = label._hintFullWidth + "px";
+      if(hintLabelWidth!=undefined){
+        hint.style.whiteSpace = "normal";
+      }else{
+        hint.style.whiteSpace = "nowrap";
+        hint.style.width = label._hintFullWidth + "px";
+      }
     }
   }
 
