@@ -1759,7 +1759,7 @@ O$.Tables = {
         if (cell._widthCorrection != undefined) return;
         // inferring border widths from grid-line specifications to avoid border calculation for optimization purposes
         var leftBorderWidth = 0;
-        var rightBorderWidth = (!gridlinesSpec && gridlinesSpec == "") ? 0 :
+        var rightBorderWidth = (!gridlinesSpec || gridlinesSpec == "") ? 0 :
                 gridlinesSpec.indexOf(",") != -1 || gridlinesSpec.indexOf("px") == -1 ? O$.getNumericElementStyle(cell, "border-right-width", true, getTableWidth) :
                 eval(gridlinesSpec.substring(0, gridlinesSpec.indexOf("px")));
         // The proper calculation of width correction doesn't seem to be required (checked on scrollable/non-scrollable
