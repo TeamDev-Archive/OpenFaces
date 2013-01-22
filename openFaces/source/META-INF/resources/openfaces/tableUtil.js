@@ -1752,7 +1752,7 @@ O$.Tables = {
       var tableWidth = null;
       function getTableWidth() {
         if (tableWidth == null)
-          tableWidth = O$.getElementSize(table).width;
+          tableWidth = O$.getElementWidth(table);
         return tableWidth;
       }
       function calculateWidthCorrection(cell, gridlinesSpec, head) {
@@ -2486,7 +2486,7 @@ O$.Tables = {
         }})
       : O$.fixElement(table, {
           height: function() {
-            var height = O$.getElementSize(table.body._centerScrollingArea._table).height;
+            var height = O$.getElementHeight(table.body._centerScrollingArea._table);
             [table.header, table.footer].forEach(function (section) {
               if (!section) return;
               var sectionTable = section._sectionTable;
@@ -2507,7 +2507,7 @@ O$.Tables = {
         }, null, {onchange: function() {
           var fullHeight = this.values.height;
           if (!scrolling.minimizeHeight || (scrolling.minimizeHeight && fullHeight < _originalPaddingHeight)) {
-            var bodyHeight = O$.getElementSize(table.body._centerScrollingArea._table).height;
+            var bodyHeight = O$.getElementHeight(table.body._centerScrollingArea._table);
             bodyHeight += scrolling.horizontal ? O$.Tables.getScrollerHeight(table.body._centerScrollingArea._scrollingDiv) : 0;
             O$.setElementHeight(table.body._sectionTable, bodyHeight);
             setBodyHeight(bodyHeight);

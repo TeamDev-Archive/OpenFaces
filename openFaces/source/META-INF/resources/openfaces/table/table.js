@@ -2916,7 +2916,7 @@ O$.Table = {
         }
 
         headerCell.appendChild(resizeHandle);
-        O$.correctElementZIndex(resizeHandle, headerCell, O$.Table.HEADER_CELL_Z_INDEX_COLUMN_MENU_RESIZE_HANDLE);
+        O$.correctElementZIndexOptimized(resizeHandle, headerCell, O$.Table.HEADER_CELL_Z_INDEX_COLUMN_MENU_RESIZE_HANDLE);
         column._resizeHandle = resizeHandle;
         resizeHandle._dragEl = column;
         O$.extend(resizeHandle, {
@@ -3129,7 +3129,7 @@ O$.Table = {
           resizeHandle.onmouseout = null;
           resizeHandle.onmouseover = null;
         });
-        column._resizeHandle._updatePos();
+        //column._resizeHandle._updatePos();
       });
 
       function fixWidths() {
@@ -3389,7 +3389,7 @@ O$.Table = {
           additionalAreaListener = O$.listenProperty(headerScroller, "rectangle", function(rect) {
             var subHeaderIndex = table._subHeaderRowIndex;
             var subHeaderHeight = subHeaderIndex != -1
-                    ? O$.getElementSize(table.header._getRows()[subHeaderIndex]._rowNode).height : 0;
+                    ? O$.getElementHeight(table.header._getRows()[subHeaderIndex]._rowNode) : 0;
             O$.setElementHeight(leftAutoScrollArea, rect.height - subHeaderHeight);
             O$.setElementHeight(rightAutoScrollArea, rect.height - subHeaderHeight);
             O$.alignPopupByElement(leftAutoScrollArea, headerScroller, O$.LEFT, O$.CENTER, 0, -subHeaderHeight / 2, true, true);
@@ -3991,7 +3991,7 @@ O$.Table = {
               result.style.cssFloat = "left";  //for browsers
             }
             result.style.height = "100%";
-            var directWrapperWidth = O$.getElementSize(directWrapper).width,
+            var directWrapperWidth = O$.getElementWidth(directWrapper),
                     headerHorizOffsetVal = O$.calculateNumericCSSValue(headerOffset.horizontal, directWrapperWidth);
             result.style.width = (directWrapperWidth + headerHorizOffsetVal) + "px";
             rowGroupingBox.appendChild(result);
@@ -4408,8 +4408,8 @@ O$.Table = {
                     if (headers.length > 0) {
                       var last = headers[headers.length - 1],
                               lowBorder = O$.getElementPos(last, true).y
-                                      + O$.getElementSize(last).height + groupingBoxPaddings.bottom,
-                              actualLowBorder = O$.getElementSize(rowGroupingBox).height;
+                                      + O$.getElementHeight(last) + groupingBoxPaddings.bottom,
+                              actualLowBorder = O$.getElementHeight(rowGroupingBox);
                       if (lowBorder > actualLowBorder) {
                         setHeight(lowBorder);
                       }
@@ -4627,7 +4627,7 @@ O$.ColumnMenu = {
         child.style.position = "";
         child.style.width = "";
         parent.appendChild(child);
-        var width = O$.getElementSize(child).width;
+        var width = O$.getElementWidth(child);
         child.style.position = "absolute";
         child.style.width = width + "px";
       }
@@ -4644,7 +4644,7 @@ O$.ColumnMenu = {
           var bottomOffset = O$.getNumericElementStyle(cell, "border-bottom-width");
           var leftOffset = O$.getNumericElementStyle(cell, "border-left-width");
           var topOffset = O$.getNumericElementStyle(cell, "border-top-width");
-          O$.setElementHeight(this, O$.getElementSize(cell).height - (bottomOffset + topOffset));
+          O$.setElementHeight(this, O$.getElementHeight(cell) - (bottomOffset + topOffset));
           O$.alignPopupByElement(this, cell, O$.RIGHT, O$.BOTTOM, rightOffset + leftOffset, bottomOffset, false, true);
           this._showForCell = cell;
         },
