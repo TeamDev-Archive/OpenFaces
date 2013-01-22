@@ -3608,6 +3608,33 @@ if (!window.O$) {
   };
 
   /*
+   Ensures that z-index of the specified element is greater than that of the specified for container element.
+   IMPORTANT! to use this method you must be sure that containerElement is the parent node of the element by itself
+   */
+  O$.correctElementZIndexOptimized = function(element, containerElement, zIndexIncrement) {
+    if (!containerElement)
+      return;
+    if (zIndexIncrement === undefined)
+      zIndexIncrement = 1;
+   /*TODO: check for what calls / situations this needed
+    if (containerElement && (element.offsetParent == O$.getDefaultAbsolutePositionParent())) {
+      var ref = containerElement;
+      var elt = ref;
+      while (elt && elt.offsetParent && elt.offsetParent != element.offsetParent) {
+        elt = elt.offsetParent;
+        if (O$.getElementStyle(elt, "position") != "static")
+          ref = elt;
+      }
+      containerElement = ref;
+    }*/
+    var zIndex = O$.getElementZIndex(element);
+    var refZIndex = containerElement._maxZIndex ? containerElement._maxZIndex : O$.getNumericElementStyle(containerElement, "z-index");
+    if (zIndex <= refZIndex)
+      element.style.zIndex = refZIndex + zIndexIncrement;
+  };
+
+
+  /*
    Calculates z-index for the specified element, or if it is not a positioned element itself,
    returns z-index of the nearest parent containing block if it exists, otherwise returns the default z-index of 0.
    */
@@ -4001,6 +4028,25 @@ if (!window.O$) {
     }
     return {width: width, height: height};
   };
+
+  //Added this methods according to slow calculating of offsetWidth and Height under IE 8
+  O$.getElementWidth = function(element) {
+    var width = element.offsetWidth;
+    if (O$.isMozillaFF2() && O$.isStrictMode() && element.tagName && element.tagName.toLowerCase() == "table"){
+      var margins = O$.calculateMozillaMargins(element);
+      width -= margins.marginLeft + margins.marginRight;
+    }
+    return width;
+  }
+  //Added this methods according to slow calculating of offsetWidth and Height under IE 8
+  O$.getElementHeight = function(element) {
+    var height = element.offsetHeight;
+    if (O$.isMozillaFF2() && O$.isStrictMode() && element.tagName && element.tagName.toLowerCase() == "table"){
+      var margins = O$.calculateMozillaMargins(element);
+      height -= margins.marginTop + margins.marginBottom;
+    }
+    return height;
+  }
 
   O$.getElementPaddingRectangle = function(element, relativeToContainingBlock, cachedDataContainer) {
     var rect = O$.getElementBorderRectangle(element, relativeToContainingBlock, cachedDataContainer);
@@ -4776,11 +4822,10 @@ if (!window.O$) {
     if (property == "rectangle")
       return O$.getElementBorderRectangle(element, true);
     if (property == "width")
-      return O$.getElementSize(element).width;
+      return O$.getElementWidth(element);
     if (property == "height")
-      return O$.getElementSize(element).height;
+      return O$.getElementHeight(element);
     if (property)
-
       return O$.getElementStyle(element, property);
   };
 
