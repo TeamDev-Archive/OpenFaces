@@ -88,24 +88,33 @@ public class MultipleRowSelection extends DataTableSelection {
         rowKeys = null;
     }
 
-    public List<Integer> getRowIndexes() {
+    public List<Integer> getRowIndexes(Boolean clearUnSelected) {
+        List<Object> rowsForRemove = new ArrayList<Object>();
         if (rowIndexes != null)
             return rowIndexes;
         if (rowKeys != null) {
             List<Integer> result = new ArrayList<Integer>(rowKeys.size());
             for (Object id : rowKeys) {
                 int rowIndexByRowKey = getRowIndexByRowKey(id);
-                if (rowIndexByRowKey != -1)
+                if (rowIndexByRowKey != -1){
                     result.add(rowIndexByRowKey);
+                }else{
+                    rowsForRemove.add(id);
+                }
             }
+            if (clearUnSelected) rowKeys.removeAll(rowsForRemove);
             return Collections.unmodifiableList(result);
         } else if (rowDatas != null) {
             List<Integer> result = new ArrayList<Integer>(rowDatas.size());
             for (Object data : rowDatas) {
                 int rowIndexByRowData = getRowIndexByRowData(data);
-                if (rowIndexByRowData != -1)
+                if (rowIndexByRowData != -1){
                     result.add(rowIndexByRowData);
+                }else{
+                    rowsForRemove.add(data);
+                }
             }
+            if (clearUnSelected) rowDatas.removeAll(rowsForRemove);
             return Collections.unmodifiableList(result);
         } else {
             return Collections.emptyList();
@@ -189,7 +198,7 @@ public class MultipleRowSelection extends DataTableSelection {
     }
 
     protected void writeSelectionToBinding() {
-        ValueBindings.setFromList(this, ROW_INDEXES_PROPERTY, getRowIndexes());
+        ValueBindings.setFromList(this, ROW_INDEXES_PROPERTY, getRowIndexes(false));
         ValueBindings.setFromList(this, ROW_DATAS_PROPERTY, validateRowDatas(getRowDatas()));
     }
 
@@ -212,7 +221,7 @@ public class MultipleRowSelection extends DataTableSelection {
 
     @Override
     protected List<?> encodeSelectionIntoIndexes() {
-        List<Integer> selectedRowIndexes = getRowIndexes();
+        List<Integer> selectedRowIndexes = getRowIndexes(true);
         return selectedRowIndexes;
     }
 
@@ -243,8 +252,9 @@ public class MultipleRowSelection extends DataTableSelection {
         for (int i = 0; i < rowCount; i++) {
             dataModel.setRowIndex(i);
             Object currentRowKey = dataModel.getRowKey();
-            if (currentRowKey == null)
+            if (currentRowKey == null){
                 continue;
+            }
             if (!currentSelectedRowKeys.contains(currentRowKey)) {
                 if (allSelectedRowKeys.contains(currentRowKey)) {
                     // Remove rowKey, because current row was unselected

@@ -434,8 +434,9 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
 
     protected int getRowIndexByRowKey(Object id) {
         getModel().setRowKey(id);
-        if (!getModel().isRowAvailable())
+        if (!getModel().isRowAvailable()){
             return -1;
+        }
         return getModel().getRowIndex();
     }
 

@@ -185,7 +185,7 @@ public class CheckboxColumn extends BaseColumn {
 
     public List<Integer> getRowIndexes() {
         if (selectedRows instanceof MultipleRowSelection)
-            return ((MultipleRowSelection) selectedRows).getRowIndexes();
+            return ((MultipleRowSelection) selectedRows).getRowIndexes(false);
         else if (selectedRows instanceof MultipleNodeSelection)
             throw new UnsupportedOperationException(ROW_INDEXES_ONLY_FOR_TABLES_MESSAGE);
         else

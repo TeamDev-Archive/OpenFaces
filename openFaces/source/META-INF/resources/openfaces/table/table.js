@@ -115,6 +115,12 @@ O$.Table = {
       }
 
     });
+    /*O$._addComponentAjaxReloadHandler(table,
+            function () {
+            },
+            function () {
+            }
+    );*/
     if (table._commonTableFunctionsInitialized)
       return;
     table._commonTableFunctionsInitialized = true;
