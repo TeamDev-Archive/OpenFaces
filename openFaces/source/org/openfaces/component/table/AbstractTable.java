@@ -152,6 +152,10 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     private Boolean keepSelectionVisible;
     private Boolean rowsDecodingRequired = true;
 
+    private String onbeforeajaxreload;
+    private String onafterajaxreload;
+
+
     public AbstractTable() {
         super.setUiDataValue(new TableDataModel(this));
     }
@@ -196,7 +200,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
                 noDataMessageAllowed, columnIndexVar, columnIdVar, saveAttachedState(context, columnsOrder),
                 sortedAscendingImageUrl, sortedDescendingImageUrl, cachedClientId,
                 autoFilterDelay, deferBodyLoading, totalRowCount, implicitFacetsCreated, unsortedStateAllowed,
-                keepSelectionVisible};
+                keepSelectionVisible, onbeforeajaxreload,  onafterajaxreload };
     }
 
     @Override
@@ -288,6 +292,9 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         unsortedStateAllowed = (Boolean) state[i++];
 
         keepSelectionVisible = (Boolean) state[i++];
+
+        onbeforeajaxreload = (String) state[i++];
+        onafterajaxreload = (String) state[i++];
 
         beforeUpdateValuesPhase = true;
         incomingSortingRules = null;
@@ -2222,5 +2229,21 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     public void setTotalRowCount(Integer totalRowCount) {
         this.totalRowCount = totalRowCount;
+    }
+
+    public String getOnbeforeajaxreload() {
+        return ValueBindings.get(this, "onbeforeajaxreload", onbeforeajaxreload);
+    }
+
+    public void setOnbeforeajaxreload(String onbeforeajaxreload) {
+        this.onbeforeajaxreload = onbeforeajaxreload;
+    }
+
+    public String getOnafterajaxreload() {
+        return ValueBindings.get(this, "onafterajaxreload", onafterajaxreload);
+    }
+
+    public void setOnafterajaxreload(String onafterajaxreload) {
+        this.onafterajaxreload = onafterajaxreload;
     }
 }

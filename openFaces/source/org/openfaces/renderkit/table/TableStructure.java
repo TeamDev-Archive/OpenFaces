@@ -416,6 +416,9 @@ public class TableStructure extends TableElement {
         if (component instanceof AbstractTable) {
             AbstractTable table = (AbstractTable) component;
 
+            Rendering.addJsonParam(result, "onafterajaxreload", table.getOnafterajaxreload(), null);
+            Rendering.addJsonParam(result, "onbeforeajaxreload", table.getOnbeforeajaxreload(), null);
+
             // Column initialization code in tableUtil.js needs to know whether there are any features in the table,
             // which will require column width control (setting width for columns on client-side, which might be
             // required not only for interactive column resizing). This information is needed for performance

@@ -121,5 +121,8 @@ public abstract class AbstractTableTag extends AbstractComponentTag {
         setBooleanProperty(component, "unsortedStateAllowed");
 
         setBooleanProperty(component, "keepSelectionVisible");
+
+        setStringProperty(component, "onbeforeajaxreload");
+        setStringProperty(component, "onafterajaxreload");
     }
 }

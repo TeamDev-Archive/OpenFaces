@@ -114,13 +114,20 @@ O$.Table = {
         this._insertRowsAfter(afterRowIndex, newRows, newRowsToStylesMap, newRowCellsToStylesMap, rowKeys);
       }
 
+    }, {
+      onbeforeajaxreload :initParams.onbeforeajaxreload,
+      onafterajaxreload : initParams.onafterajaxreload
     });
-    /*O$._addComponentAjaxReloadHandler(table,
+
+
+    O$._addComponentAjaxReloadHandler(table,
             function () {
+              table.onbeforeajaxreload();
             },
             function () {
+              table.onafterajaxreload();
             }
-    );*/
+    );
     if (table._commonTableFunctionsInitialized)
       return;
     table._commonTableFunctionsInitialized = true;
