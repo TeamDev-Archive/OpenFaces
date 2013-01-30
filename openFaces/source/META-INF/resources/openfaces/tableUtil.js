@@ -1789,7 +1789,7 @@ O$.Tables = {
 
       function setWidth(cellClass, cell, tableSection, gridlinesSpec, isHead) {
         if (!cell) return;
-        if ((O$.isExplorer8() || O$.isExplorer9()) && O$.isIEDocMode7 ){
+        if ((O$.isExplorer8() || O$.isExplorer9()) && O$.isIEDocMode7() ){
           if (!gridlinesSpec) gridlinesSpec = table._gridLines.vertical;
           calculateWidthCorrection(cell, gridlinesSpec, isHead);
         } else{
