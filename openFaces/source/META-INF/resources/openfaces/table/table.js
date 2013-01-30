@@ -119,11 +119,13 @@ O$.Table = {
       onafterajaxreload : initParams.onafterajaxreload
     });
 
-
-    O$._addComponentAjaxReloadHandler(table,
+    //check if the table is using ajax
+    if (O$._addComponentAjaxReloadHandler && (table.onbeforeajaxreload || table.onafterajaxreload) ){
+      O$._addComponentAjaxReloadHandler(table,
             table.onbeforeajaxreload,
             table.onafterajaxreload
-    );
+      );
+    };
     if (table._commonTableFunctionsInitialized)
       return;
     table._commonTableFunctionsInitialized = true;
