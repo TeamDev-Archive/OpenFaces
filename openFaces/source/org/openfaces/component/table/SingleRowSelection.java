@@ -89,8 +89,7 @@ public class SingleRowSelection extends DataTableSelection {
         int resultIndex;
         if (rowIndex != null)
             resultIndex = rowIndex;
-
-        if (rowKey != null) {
+        else if (rowKey != null) {
             int indexById = getRowIndexByRowKey(rowKey);
             resultIndex = indexById;
         } else if (rowData != null) {
