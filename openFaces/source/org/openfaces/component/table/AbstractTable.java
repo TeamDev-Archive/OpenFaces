@@ -155,6 +155,8 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     private String onbeforeajaxreload;
     private String onafterajaxreload;
 
+    private Boolean unDisplayedSelectionAllowed;
+
 
     public AbstractTable() {
         super.setUiDataValue(new TableDataModel(this));
@@ -200,7 +202,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
                 noDataMessageAllowed, columnIndexVar, columnIdVar, saveAttachedState(context, columnsOrder),
                 sortedAscendingImageUrl, sortedDescendingImageUrl, cachedClientId,
                 autoFilterDelay, deferBodyLoading, totalRowCount, implicitFacetsCreated, unsortedStateAllowed,
-                keepSelectionVisible, onbeforeajaxreload,  onafterajaxreload };
+                keepSelectionVisible, onbeforeajaxreload,  onafterajaxreload, unDisplayedSelectionAllowed };
     }
 
     @Override
@@ -295,6 +297,8 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
         onbeforeajaxreload = (String) state[i++];
         onafterajaxreload = (String) state[i++];
+
+        unDisplayedSelectionAllowed =  (Boolean) state[i++];
 
         beforeUpdateValuesPhase = true;
         incomingSortingRules = null;
@@ -2245,5 +2249,13 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     public void setOnafterajaxreload(String onafterajaxreload) {
         this.onafterajaxreload = onafterajaxreload;
+    }
+
+    public Boolean getUnDisplayedSelectionAllowed() {
+        return ValueBindings.get(this, "unDisplayedSelectionAllowed", unDisplayedSelectionAllowed, true);
+    }
+
+    public void setUnDisplayedSelectionAllowed(Boolean unDisplayedSelectionAllowed) {
+        this.unDisplayedSelectionAllowed = unDisplayedSelectionAllowed;
     }
 }

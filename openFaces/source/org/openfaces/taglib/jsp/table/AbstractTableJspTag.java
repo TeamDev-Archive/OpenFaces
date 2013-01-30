@@ -322,4 +322,9 @@ public abstract class AbstractTableJspTag extends AbstractComponentJspTag {
     public void setUnsortedStateAllowed(ValueExpression unsortedStateAllowed) {
         getDelegate().setPropertyValue("unsortedStateAllowed", unsortedStateAllowed);
     }
+
+    public void setUnDisplayedSelectionAllowed(ValueExpression unDisplayedSelectionAllowed) {
+        getDelegate().setPropertyValue("unDisplayedSelectionAllowed", unDisplayedSelectionAllowed);
+    }
+
 }

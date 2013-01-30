@@ -1229,6 +1229,15 @@
       <!-- @default  -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <name>unDisplayedSelectionAllowed</name>
+      <deferred-value>
+        <type>java.lang.Boolean</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.Boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
     <!--<attribute>-->
       <!--<description>Specifies whether table&apos;s body rows should be loaded as part of the page when loading a page-->
         <!--(false), or should be requested with a separate Ajax request after the page is loaded (true). Assigning &quot;true&quot;-->

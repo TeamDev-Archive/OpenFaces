@@ -88,7 +88,7 @@ public class MultipleRowSelection extends DataTableSelection {
         rowKeys = null;
     }
 
-    public List<Integer> getRowIndexes(Boolean clearUnSelected) {
+    public List<Integer> getRowIndexes(Boolean unDisplayedSelectionAllowed) {
         List<Object> rowsForRemove = new ArrayList<Object>();
         if (rowIndexes != null)
             return rowIndexes;
@@ -102,7 +102,7 @@ public class MultipleRowSelection extends DataTableSelection {
                     rowsForRemove.add(id);
                 }
             }
-            if (clearUnSelected) rowKeys.removeAll(rowsForRemove);
+            if (!unDisplayedSelectionAllowed) rowKeys.removeAll(rowsForRemove);
             return Collections.unmodifiableList(result);
         } else if (rowDatas != null) {
             List<Integer> result = new ArrayList<Integer>(rowDatas.size());
@@ -114,7 +114,7 @@ public class MultipleRowSelection extends DataTableSelection {
                     rowsForRemove.add(data);
                 }
             }
-            if (clearUnSelected) rowDatas.removeAll(rowsForRemove);
+            if (!unDisplayedSelectionAllowed) rowDatas.removeAll(rowsForRemove);
             return Collections.unmodifiableList(result);
         } else {
             return Collections.emptyList();
@@ -198,7 +198,7 @@ public class MultipleRowSelection extends DataTableSelection {
     }
 
     protected void writeSelectionToBinding() {
-        ValueBindings.setFromList(this, ROW_INDEXES_PROPERTY, getRowIndexes(false));
+        ValueBindings.setFromList(this, ROW_INDEXES_PROPERTY, getRowIndexes(true));
         ValueBindings.setFromList(this, ROW_DATAS_PROPERTY, validateRowDatas(getRowDatas()));
     }
 
@@ -221,7 +221,12 @@ public class MultipleRowSelection extends DataTableSelection {
 
     @Override
     protected List<?> encodeSelectionIntoIndexes() {
-        List<Integer> selectedRowIndexes = getRowIndexes(true);
+        throw new RuntimeException();
+    }
+
+    @Override
+    protected List<?> encodeSelectionIntoIndexes(Boolean unDisplayedSelectionAllowed) {
+        List<Integer> selectedRowIndexes = getRowIndexes(unDisplayedSelectionAllowed);
         return selectedRowIndexes;
     }
 

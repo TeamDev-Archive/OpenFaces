@@ -121,12 +121,8 @@ O$.Table = {
 
 
     O$._addComponentAjaxReloadHandler(table,
-            function () {
-              table.onbeforeajaxreload();
-            },
-            function () {
-              table.onafterajaxreload();
-            }
+            table.onbeforeajaxreload,
+            table.onafterajaxreload
     );
     if (table._commonTableFunctionsInitialized)
       return;

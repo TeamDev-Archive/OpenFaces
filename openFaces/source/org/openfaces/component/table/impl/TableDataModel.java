@@ -88,6 +88,7 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
     private Integer totalRowCount;
     private int updateInProgress;
     private List<Object> previousRowKeys;
+    private Boolean clearUnDisplayedSelection;
 
     public TableDataModel() {
         setWrappedData(null);
@@ -1377,5 +1378,13 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
         public boolean isGroupFootersCollapsible() {
             return groupFootersCollapsible;
         }
+    }
+
+    public Boolean getClearUnDisplayedSelection() {
+        return clearUnDisplayedSelection;
+    }
+
+    public void setClearUnDisplayedSelection(Boolean clearUnDisplayedSelection) {
+        this.clearUnDisplayedSelection = clearUnDisplayedSelection;
     }
 }

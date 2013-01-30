@@ -1731,7 +1731,7 @@ O$._invokeComponentAjaxReloadEnd = function (componentId){
   O$._componentAjaxHandlers.forEach(function(ajaxHandler) {
     if (ajaxHandler.componentId == componentId){
       if (ajaxHandler.ajaxEnd)
-        ajaxHandler.ajaxEnd();
+        ajaxHandler.ajaxEnd.call(O$(componentId));;
     }
   });
 }
@@ -1741,7 +1741,7 @@ O$._invokeComponentAjaxReloadStart = function (componentId){
   O$._componentAjaxHandlers.forEach(function(ajaxHandler) {
     if (ajaxHandler.componentId == componentId){
       if (ajaxHandler.ajaxStart)
-        ajaxHandler.ajaxStart();
+        ajaxHandler.ajaxStart.call(O$(componentId));
     }
   });
 }

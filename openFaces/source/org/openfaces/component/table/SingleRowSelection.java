@@ -85,18 +85,28 @@ public class SingleRowSelection extends DataTableSelection {
         rowIndex = null;
     }
 
-    public int getRowIndex() {
+    public int getRowIndex(Boolean unDisplayedSelectionAllowed) {
+        int resultIndex;
         if (rowIndex != null)
-            return rowIndex;
+            resultIndex = rowIndex;
 
         if (rowKey != null) {
             int indexById = getRowIndexByRowKey(rowKey);
-            return indexById;
+            resultIndex = indexById;
         } else if (rowData != null) {
             int indexByData = getRowIndexByRowData(rowData);
-            return indexByData;
+            resultIndex = indexByData;
         } else
+            resultIndex = -1;
+
+        if (resultIndex == -1 && !unDisplayedSelectionAllowed){
+            rowIndex = null;
+            rowKey = null;
+            rowData = null;
             return -1;
+        } else {
+            return  resultIndex;
+        }
     }
 
     protected Object getRowKey() {
@@ -161,7 +171,7 @@ public class SingleRowSelection extends DataTableSelection {
         RowGroupingSelectionMode selectionMode = getRowGroupingSelectionMode();
 
 //    setBoundPropertyValue(this, ROW_KEY_PROPERTY, getRowKey());
-        ValueBindings.set(this, ROW_INDEX_PROPERTY, getRowIndex());
+        ValueBindings.set(this, ROW_INDEX_PROPERTY, getRowIndex(true));
         ValueBindings.set(this, ROW_DATA_PROPERTY, validateRowData(selectionMode, getRowData()));
     }
 
@@ -172,7 +182,12 @@ public class SingleRowSelection extends DataTableSelection {
 
     @Override
     protected List<?> encodeSelectionIntoIndexes() {
-        return Collections.singletonList(getRowIndex());
+        throw new RuntimeException();
+    }
+
+    @Override
+    protected List<?> encodeSelectionIntoIndexes(Boolean unDisplayedSelectionAllowed) {
+        return Collections.singletonList(getRowIndex(unDisplayedSelectionAllowed));
     }
 
     @Override
