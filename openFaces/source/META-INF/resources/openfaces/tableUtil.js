@@ -1819,8 +1819,11 @@ O$.Tables = {
         setWidth(this._getEditableIndividualClass("_footerCellsClass").classObj, footerCell, table.footer, table._gridLines.footerVert);
     };
     column.getDeclaredWidth = function(tableWidth) {
-      if (tableWidth == undefined)
+
+      if (tableWidth == undefined){
+        console.log(1822);
         tableWidth = table.offsetWidth;
+      }
       if (table._verticalBordersWidth == undefined) {
         table._verticalBordersWidth = O$.getNumericElementStyle(table, "border-left-width", true) +
                                       O$.getNumericElementStyle(table, "border-right-width", true);
@@ -1843,16 +1846,19 @@ O$.Tables = {
       if (this._explicitWidth){
         return this._explicitWidth;
       }
+      console.log(1847);
       if (this.header && this.header._cell)
         return this.header._cell.offsetWidth;
       if (this.subHeader && this.subHeader._cell)
         return this.subHeader._cell.offsetWidth;
+      console.log(1852);
       for (var idx = 0, count = this.body._cells.length; idx < count; idx++) {
         var cell = this.body._cells[idx];
         if (!cell || cell.colSpan > 1)
           continue;
         return cell.offsetWidth;
       }
+      console.log(1859);
       if (this.footer && this.footer._cell)
         return this.footer._cell.offsetWidth;
       return this._colTags[0].offsetWidth;
@@ -2462,11 +2468,17 @@ O$.Tables = {
       }
       function getBodyHeight(tableHeight) {
         var height = tableHeight;
+        //recalculating cached section heights and store them
+        [table.header, table.footer].forEach(function (section) {
+          if (!section) return;
+          section._sectionTable._cahedSectionHeight = 0;
+        });
         [table.header, table.footer].forEach(function (section) {
           if (!section) return;
           var sectionTable = section._sectionTable;
-          var sectionHeight = sectionTable.offsetHeight;
-          height -= sectionHeight;
+          if (!sectionTable._cahedSectionHeight)
+            sectionTable._cahedSectionHeight = sectionTable.offsetHeight;
+          height -= sectionTable._cahedSectionHeight;
         });
         return height;
       }
@@ -2483,11 +2495,17 @@ O$.Tables = {
       : O$.fixElement(table, {
           height: function() {
             var height = O$.getElementHeight(table.body._centerScrollingArea._table);
+            //recalculating cached section heights and store them
+            [table.header, table.footer].forEach(function (section) {
+              if (!section) return;
+              section._sectionTable._cahedSectionHeight = 0;
+            });
             [table.header, table.footer].forEach(function (section) {
               if (!section) return;
               var sectionTable = section._sectionTable;
-              var sectionHeight = sectionTable.offsetHeight;
-              height += sectionHeight;
+              if (!sectionTable._cahedSectionHeight)
+                sectionTable._cahedSectionHeight = sectionTable.offsetHeight;
+              height += sectionTable._cahedSectionHeight;
             });
             height += O$.getNumericElementStyle(table, "border-top-width") + O$.getNumericElementStyle(table, "border-bottom-width");
             height += scrolling.horizontal ? O$.Tables.getScrollerHeight(table.body._centerScrollingArea._scrollingDiv) : 0;
@@ -2519,9 +2537,9 @@ O$.Tables = {
         if (area._scrollingDivContainer && area._scrollingDivContainer.style.display == "none")
           delayedInitFunctions.push(function() {
             area._scrollingDivContainer.style.display = "block";
-            fixture.update();
           });
       });
+      fixture.update();
     }
 
     fixBodyHeight();
@@ -2732,6 +2750,7 @@ O$.Tables = {
     var defaultColWidth = 120;
 
     var tblWidth = 0;
+    console.log(2735);
     var tableWidth = table.offsetWidth - scrollerWidth;
     tableWidth -= O$.getNumericElementStyle(table, "border-left-width", true);
     tableWidth -= O$.getNumericElementStyle(table, "border-right-width", true);
@@ -2814,6 +2833,7 @@ O$.Tables = {
   },
 
   getScrollerWidth: function(el) {
+    console.log(2818);
     return O$.isExplorer() || /* explorer reports too big values*/
             O$.isMozillaFF() /* mozilla reports 0 in some cases (see TreeTable demo 1) */
             ? 17
