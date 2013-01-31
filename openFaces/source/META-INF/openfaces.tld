@@ -1216,7 +1216,7 @@
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default  -->
+      <!-- @default null -->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -1226,7 +1226,7 @@
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default  -->
+      <!-- @default null -->
       <!-- @el true -->
     </attribute>
     <attribute>
