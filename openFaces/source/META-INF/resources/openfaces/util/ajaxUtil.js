@@ -176,6 +176,15 @@ window.OpenFaces.Ajax = {
    *    immediate - (optional) true means that the action should be executed during Apply Request Values phase, rather than waiting until the Invoke Application phase
    */
   _reload: function(render, args, source, event) {
+    render.forEach(function(componentId){
+      O$._invokeComponentAjaxReloadStart(componentId);
+      var oldAjaxEndFunc = args.onajaxend;
+      args.onajaxend = function (){
+        oldAjaxEndFunc();
+        O$._invokeComponentAjaxReloadEnd(componentId);
+      }
+    });
+
     if (!args) args = {};
     if (source)
       args._source = source;
@@ -951,3 +960,39 @@ O$._fireSessionExpiredEvent = function () {
     }
   }
 }
+
+O$._addComponentAjaxReloadHandler = function (component, ajaxStart, ajaxEnd){
+  if (!O$._componentAjaxHandlers)
+    O$._componentAjaxHandlers = [];
+  for (var i = 0; i < O$._componentAjaxHandlers.length; i ++){
+   if (O$._componentAjaxHandlers[i].componentId == component.id){
+     return
+   }
+  }
+  var ajaxHandler = {};
+  ajaxHandler.componentId = component.id;
+  ajaxHandler.ajaxStart = ajaxStart;
+  ajaxHandler.ajaxEnd = ajaxEnd;
+  O$._componentAjaxHandlers.push(ajaxHandler);
+}
+
+O$._invokeComponentAjaxReloadEnd = function (componentId){
+  if (!O$._componentAjaxHandlers) return;
+  O$._componentAjaxHandlers.forEach(function(ajaxHandler) {
+    if (ajaxHandler.componentId == componentId){
+      if (ajaxHandler.ajaxEnd)
+        ajaxHandler.ajaxEnd.call(O$(componentId));;
+    }
+  });
+}
+
+O$._invokeComponentAjaxReloadStart = function (componentId){
+  if (!O$._componentAjaxHandlers) return;
+  O$._componentAjaxHandlers.forEach(function(ajaxHandler) {
+    if (ajaxHandler.componentId == componentId){
+      if (ajaxHandler.ajaxStart)
+        ajaxHandler.ajaxStart.call(O$(componentId));
+    }
+  });
+}
+

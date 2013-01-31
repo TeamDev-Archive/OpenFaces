@@ -93,6 +93,10 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
     /**
      * @return List of Index instances
      */
+    protected List<?> encodeSelectionIntoIndexes(Boolean unDisplayedSelectionAllowed ){
+       return encodeSelectionIntoIndexes();
+    };
+
     protected abstract List<?> encodeSelectionIntoIndexes();
 
     protected abstract void decodeSelectionFromIndexes(List<?> indexes);
@@ -280,7 +284,7 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
                 isRequired(),
                 getSelectableItems(),
                 getSelectionMode(),
-                table.getDeferBodyLoading() ? null : encodeSelectionIntoIndexes(),
+                table.getDeferBodyLoading() ? null : encodeSelectionIntoIndexes(table.getUnDisplayedSelectionAllowed()),
                 getAttributes().get(ATTR_SELECTION_CLS),
                 getRawStyleClass(),
                 onchange,
@@ -398,7 +402,7 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
     }
 
     public void encodeOnBodyReload(FacesContext context, ScriptBuilder sb) {
-        sb.O$(getTable()).dot().functionCall("_setSelectedItems", encodeSelectionIntoIndexes()).semicolon();
+        sb.O$(getTable()).dot().functionCall("_setSelectedItems", encodeSelectionIntoIndexes(table.getUnDisplayedSelectionAllowed())).semicolon();
     }
 
     protected int getRowIndexByRowData(Object data) {
@@ -437,8 +441,9 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
 
     protected int getRowIndexByRowKey(Object id) {
         getModel().setRowKey(id);
-        if (!getModel().isRowAvailable())
+        if (!getModel().isRowAvailable()){
             return -1;
+        }
         return getModel().getRowIndex();
     }
 

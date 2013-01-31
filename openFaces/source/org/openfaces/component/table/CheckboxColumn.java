@@ -163,12 +163,14 @@ public class CheckboxColumn extends BaseColumn {
         /*getSelectedRowKeys can return List of Integer if it's rowSelection or JSONArray if it's cellSelection
         * There is check on MultipleNodeSelection so getSelectedRowKeys guarantees to return List of Integer
         * */
-        @SuppressWarnings(value = "unchecked") List<Integer> rowIndexes = (List<Integer>) selectedRows.encodeSelectionIntoIndexes();
+        AbstractTable table = Components.getParentWithClass(this, AbstractTable.class);
+
+        @SuppressWarnings(value = "unchecked") List<Integer> rowIndexes = (List<Integer>) selectedRows.encodeSelectionIntoIndexes(table.getUnDisplayedSelectionAllowed());
         for (Integer checkedRowIdx : rowIndexes) {
             checkedRowIndexes.put(checkedRowIdx);
         }
 
-        AbstractTable table = Components.getParentWithClass(this, AbstractTable.class);
+
         int colIndex = table.getRenderedColumns().indexOf(this);
         buf.functionCall("O$.Table._initCheckboxColumn",
                 table,
@@ -185,7 +187,7 @@ public class CheckboxColumn extends BaseColumn {
 
     public List<Integer> getRowIndexes() {
         if (selectedRows instanceof MultipleRowSelection)
-            return ((MultipleRowSelection) selectedRows).getRowIndexes();
+            return ((MultipleRowSelection) selectedRows).getRowIndexes(false);
         else if (selectedRows instanceof MultipleNodeSelection)
             throw new UnsupportedOperationException(ROW_INDEXES_ONLY_FOR_TABLES_MESSAGE);
         else

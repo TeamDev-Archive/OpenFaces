@@ -1793,7 +1793,7 @@ O$.Tables = {
 
       function setWidth(cellClass, cell, tableSection, gridlinesSpec, isHead) {
         if (!cell) return;
-        if ((O$.isExplorer8() || O$.isExplorer9()) && O$.isIEDocMode7 ){
+        if ((O$.isExplorer8() || O$.isExplorer9()) && O$.isIEDocMode7() ){
           if (!gridlinesSpec) gridlinesSpec = table._gridLines.vertical;
           calculateWidthCorrection(cell, gridlinesSpec, isHead);
         } else{
@@ -2466,11 +2466,17 @@ O$.Tables = {
       }
       function getBodyHeight(tableHeight) {
         var height = tableHeight;
+        //recalculating cached section heights and store them
+        [table.header, table.footer].forEach(function (section) {
+          if (!section) return;
+          section._sectionTable._cahedSectionHeight = 0;
+        });
         [table.header, table.footer].forEach(function (section) {
           if (!section) return;
           var sectionTable = section._sectionTable;
-          var sectionHeight = sectionTable.offsetHeight;
-          height -= sectionHeight;
+          if (!sectionTable._cahedSectionHeight)
+            sectionTable._cahedSectionHeight = sectionTable.offsetHeight;
+          height -= sectionTable._cahedSectionHeight;
         });
         return height;
       }
@@ -2487,11 +2493,17 @@ O$.Tables = {
       : O$.fixElement(table, {
           height: function() {
             var height = O$.getElementHeight(table.body._centerScrollingArea._table);
+            //recalculating cached section heights and store them
+            [table.header, table.footer].forEach(function (section) {
+              if (!section) return;
+              section._sectionTable._cahedSectionHeight = 0;
+            });
             [table.header, table.footer].forEach(function (section) {
               if (!section) return;
               var sectionTable = section._sectionTable;
-              var sectionHeight = sectionTable.offsetHeight;
-              height += sectionHeight;
+              if (!sectionTable._cahedSectionHeight)
+                sectionTable._cahedSectionHeight = sectionTable.offsetHeight;
+              height += sectionTable._cahedSectionHeight;
             });
             height += O$.getNumericElementStyle(table, "border-top-width") + O$.getNumericElementStyle(table, "border-bottom-width");
             height += scrolling.horizontal ? O$.Tables.getScrollerHeight(table.body._centerScrollingArea._scrollingDiv) : 0;
@@ -2523,9 +2535,9 @@ O$.Tables = {
         if (area._scrollingDivContainer && area._scrollingDivContainer.style.display == "none")
           delayedInitFunctions.push(function() {
             area._scrollingDivContainer.style.display = "block";
-            fixture.update();
           });
       });
+      fixture.update();
     }
 
     fixBodyHeight();

@@ -114,7 +114,18 @@ O$.Table = {
         this._insertRowsAfter(afterRowIndex, newRows, newRowsToStylesMap, newRowCellsToStylesMap, rowKeys);
       }
 
+    }, {
+      onbeforeajaxreload :initParams.onbeforeajaxreload,
+      onafterajaxreload : initParams.onafterajaxreload
     });
+
+    //check if the table is using ajax
+    if (O$._addComponentAjaxReloadHandler && (table.onbeforeajaxreload || table.onafterajaxreload) ){
+      O$._addComponentAjaxReloadHandler(table,
+            table.onbeforeajaxreload,
+            table.onafterajaxreload
+      );
+    };
 
     try {
       O$.Tables._init(table, initParams);
