@@ -180,10 +180,12 @@ public class AjaxUtil {
             }
         }
         Iterator<UIComponent> descendants = component.getFacetsAndChildren();
-        while (descendants.hasNext()) {
+        //Commented to avoid wrong partial response working for new versions of mojara
+        //Request: http://stackoverflow.com/questions/14397257/openfaces-datatable-issue-throwing-exception-com-sun-faces-facelets-compile
+        /*while (descendants.hasNext()) {
             UIComponent descendant = descendants.next();
             makeComponentsNonTransient(context, descendant);
-        }
+        } */
     }
 
     public static boolean getSkipExtraRenderingOnPortletsAjax(FacesContext context) {
