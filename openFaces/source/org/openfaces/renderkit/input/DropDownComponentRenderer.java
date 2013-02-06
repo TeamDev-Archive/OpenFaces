@@ -132,6 +132,7 @@ public abstract class DropDownComponentRenderer extends RendererBase {
 
         writer.startElement("input", fieldComponent);
         writer.writeAttribute("id", fieldId, null);
+        writer.writeAttribute("value", Rendering.convertToString(context, fieldComponent, fieldComponent.getValue())  , "");
         writer.writeAttribute("name", fieldId, null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);

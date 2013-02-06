@@ -1823,8 +1823,10 @@ O$.Tables = {
         setWidth(this._getEditableIndividualClass("_footerCellsClass").classObj, footerCell, table.footer, table._gridLines.footerVert);
     };
     column.getDeclaredWidth = function(tableWidth) {
-      if (tableWidth == undefined)
+
+      if (tableWidth == undefined){
         tableWidth = table.offsetWidth;
+      }
       if (table._verticalBordersWidth == undefined) {
         table._verticalBordersWidth = O$.getNumericElementStyle(table, "border-left-width", true) +
                                       O$.getNumericElementStyle(table, "border-right-width", true);
