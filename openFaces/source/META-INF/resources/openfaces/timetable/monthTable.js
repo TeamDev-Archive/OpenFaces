@@ -93,6 +93,7 @@ O$.MonthTable = {
       _viewType: "month"
     });
 
+    //TODO : remove monthTable._expandedDayView such calls and make calls with THIS
     monthTable._expandedDayView = O$.initComponent(componentId + "::expandedDayView", null,{
         eventBlock  : O$(componentId + "::expandedDayView::eventBlock"),
         opened : false,
@@ -133,12 +134,20 @@ O$.MonthTable = {
           this.expandedDay = null;
           this.opened = false;
           monthTable._updateEventElements(false,true);
+        },
+        _correctMarginsForButtonLayout : function (){
+          monthTable._expandedDayView.headerHeight = O$.getElementSize(monthTable._expandedDayView.header).height;
+          monthTable._expandedDayView.footerHeight = O$.getElementSize(monthTable._expandedDayView.footer).height;
+          console.log("monthTable._expandedDayView.headerHeight  = " + monthTable._expandedDayView.headerHeight );
+          console.log("monthTable._expandedDayView.footerHeight  = " + monthTable._expandedDayView.footerHeight );
+          monthTable._expandedDayView.eventBlock.style.marginTop = -1 * monthTable._expandedDayView.headerHeight + "px"
+          monthTable._expandedDayView.eventBlock.style.marginBottom = -1 * monthTable._expandedDayView.footerHeight + "px"
+
         }
     });
-
+    monthTable._expandedDayView._correctMarginsForButtonLayout();
     monthTable._expandedDayView.style.display = "";
-    monthTable._expandedDayView.headerHeight = O$.getElementSize(monthTable._expandedDayView.header).height;
-    monthTable._expandedDayView.footerHeight = O$.getElementSize(monthTable._expandedDayView.footer).height;
+
 
 
 
@@ -269,7 +278,7 @@ O$.MonthTable = {
       if (cell._cellEvents) {
         cell._cellEvents.forEach(function(oldCellEvent) {
           //TODO: make sure that this not duplicate removing with  _updateEventElements -> removeEventElements
-            oldCellEvent._removeElements();
+//            oldCellEvent._removeElements();
         });
       }
 

@@ -140,7 +140,7 @@ public class MonthTableRenderer extends TimetableViewRenderer {
         writer.endElement("div");
 
         writer.startElement("div", monthTable);
-        writer.writeAttribute("style", "height: 100%; overflow:hidden; position: relative; margin-top: -10px; margin-bottom: -10px; ", null);
+        writer.writeAttribute("style", "height: 100%; overflow:hidden; position: relative;", null);
         writer.writeAttribute("id", expandDayViewId + "::eventBlock" , null);
         writer.endElement("div");
 
