@@ -180,7 +180,9 @@ window.OpenFaces.Ajax = {
       O$._invokeComponentAjaxReloadStart(componentId);
       var oldAjaxEndFunc = args.onajaxend;
       args.onajaxend = function (){
-        oldAjaxEndFunc();
+        if (oldAjaxEndFunc){
+          oldAjaxEndFunc();
+        }
         O$._invokeComponentAjaxReloadEnd(componentId);
       }
     });
