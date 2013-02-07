@@ -184,6 +184,7 @@ public class MonthTableRenderer extends TimetableViewRenderer {
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("div", timetableView);
         writer.writeAttribute("id", clientId + "::scroller", null);
+        writer.writeAttribute("style",  "overflow : visible; overflow-x : visible; overflow-y = hidden;", null);
         writer.writeAttribute("class", "o_timetableView_scroller", null);
         renderExpandedDayView(context, timetableView);
         int colCount = 7;

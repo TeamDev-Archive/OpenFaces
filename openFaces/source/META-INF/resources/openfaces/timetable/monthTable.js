@@ -110,13 +110,13 @@ O$.MonthTable = {
           if (Math.abs(this.scrollPos) + O$.getElementSize(this).height - delta - this.footerHeight >  this.allEventHeight || this.scrollPos + delta > 0)
             return;
           this.scrollPos += delta;
-          for (var i = 0; i<monthTable._expandedDayView.eventBlock.childNodes.length;i++){
+          for (var i = 0; i<this.eventBlock.childNodes.length;i++){
             var position = O$.getNumericElementStyle(monthTable._expandedDayView.eventBlock.childNodes[i], "top");
-            monthTable._expandedDayView.eventBlock.childNodes[i].style.top = (position + delta)+"px";
+           this.eventBlock.childNodes[i].style.top = (position + delta)+"px";
           }
         },
         _expandDayView: function (dayCell){
-          monthTable._expandedDayView.style.display = "";
+          this..style.display = "";
           var cellBoundaries = O$.getElementBorderRectangle(dayCell, true);
           O$.setElementPos(this, cellBoundaries);
           var oldExpandedDay = this.expandedDay;
@@ -126,23 +126,20 @@ O$.MonthTable = {
           var rect = O$.getElementBorderRectangle(this, true).clone();
           O$.setElementSize(this, {height:10});
           //TODO: find why this.transitionPeriod string and fix it
-          this._lastRectangleTransition = O$.runTransitionEffect(monthTable._expandedDayView, ["rectangle"], [rect], this.transitionPeriod*1, 20, null);
+          this._lastRectangleTransition = O$.runTransitionEffect(this, ["rectangle"], [rect], this.transitionPeriod*1, 20, null);
         },
         _contractDayView : function (){
           this.style.display = "none";
-          var oldExpandedDay = monthTable._expandedDayView.expandedDay;
+          var oldExpandedDay = this.expandedDay;
           this.expandedDay = null;
           this.opened = false;
           monthTable._updateEventElements(false,true);
         },
         _correctMarginsForButtonLayout : function (){
-          monthTable._expandedDayView.headerHeight = O$.getElementSize(monthTable._expandedDayView.header).height;
-          monthTable._expandedDayView.footerHeight = O$.getElementSize(monthTable._expandedDayView.footer).height;
-          console.log("monthTable._expandedDayView.headerHeight  = " + monthTable._expandedDayView.headerHeight );
-          console.log("monthTable._expandedDayView.footerHeight  = " + monthTable._expandedDayView.footerHeight );
-          monthTable._expandedDayView.eventBlock.style.marginTop = -1 * monthTable._expandedDayView.headerHeight + "px"
-          monthTable._expandedDayView.eventBlock.style.marginBottom = -1 * monthTable._expandedDayView.footerHeight + "px"
-
+          this.headerHeight = O$.getElementSize(this.header).height;
+          this.footerHeight = O$.getElementSize(this.footer).height;
+          this.eventBlock.style.marginTop = -1 * this.headerHeight + "px"
+          this.eventBlock.style.marginBottom = -1 * this.footerHeight + "px"
         }
     });
     monthTable._expandedDayView._correctMarginsForButtonLayout();
@@ -470,6 +467,7 @@ O$.MonthTable = {
                   },
 
                   _setupDragAndDrop: function() {
+                    console.log ("setuping drag and drop");
                     var eventPreview = monthTable._getEventPreview();
 
                     function hideExcessiveElementsWhileDragging() {
@@ -486,8 +484,10 @@ O$.MonthTable = {
                        // eventElement._bringToFront();
 
                         var pos = O$.getEventPoint(e, eventElement);
-                        event._dragPositionTime = monthTable._getNearestTimeslotForPosition(pos.x, pos.y)._cellDay;
+                        console.log("left = " + pos.x + ", top = " + pos.y);
 
+                        event._dragPositionTime = monthTable._getNearestTimeslotForPosition(pos.x, pos.y)._cellDay;
+                        console.log("_dragPositionTime = " + event._dragPositionTime);
                         O$.startDragging(e, this);
                         event._initialStart = event._lastValidStart = event.start;
                         event._initialEnd = event._lastValidEnd = event.end;
@@ -500,14 +500,16 @@ O$.MonthTable = {
                         return containingBlock;
                       },
 
-                      /*_getPositionTop: function() {
+                      _getPositionTop: function() {
+                        console.log("_getPositionTop: = " + this._draggingTop)
                         return this._draggingTop ? this._draggingTop : O$.getElementPos(this,true).y;
                       },
 
                       _getPositionLeft: function() {
                         //TODO: add to fix an issue with wrong dragging remove after fix
+                        console.log("_getPositionLeft: =  " + this._draggingLeft)
                         return this._draggingLeft ? this._draggingLeft : O$.getElementPos(this,true).x;
-                      },*/
+                      },
 
                       setPosition: function (left, top, dx, dy) {
                         var rect = O$.getElementBorderRectangle(monthTable._table, true);
@@ -515,7 +517,7 @@ O$.MonthTable = {
                         var maxLeft = rect.width;
                         left = left < 0 ? 0 : left > maxLeft ? maxLeft : left;
                         top = top < 0 ? 0 : top > maxTop ? maxTop : top;
-
+                        console.log("nearestTimeslot = " + left + ", top = " + top);
                         var nearestTimeslot = monthTable._getNearestTimeslotForPosition(left, top);
                         var timeIncrement = nearestTimeslot._cellDay.getTime() - event._dragPositionTime.getTime();
                         //TODO: remove this
@@ -524,6 +526,7 @@ O$.MonthTable = {
                         var eventUpdated = false;
 
                         if (timeIncrement != 0) {
+
                           console.log("left = " + left + ", top = " + top);
                           console.log("timeIncrement = " + timeIncrement);
 
@@ -569,8 +572,8 @@ O$.MonthTable = {
                     });
                   }
                 });
-
                 event._setupDragAndDrop();
+
                 event._updateRolloverState = function() {
 
                   var mouseInsideEventElements = false;

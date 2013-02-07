@@ -522,6 +522,8 @@ O$.TimeTableView = {
 
                           _removeElements: function() {
                             parts.forEach(function(part) {
+                              if (O$._draggedElement == part)
+                                console.log("O$._draggedElement == part");
                               timeTableView._removeEventElement(event, part);
                             });
                             var areas = event._areas;
