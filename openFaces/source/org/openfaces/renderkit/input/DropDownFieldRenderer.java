@@ -91,7 +91,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
         if (AjaxUtil.isAjaxPortionRequest(context, component))
             return;
         Rendering.decodeBehaviors(context, component);
-        
+
         Map<String, String> requestMap = context.getExternalContext().getRequestParameterMap();
         DropDownFieldBase dropDownField = (DropDownFieldBase) component;
         String fieldId = getFieldClientId(context, dropDownField);
@@ -268,18 +268,24 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
 
         Collection itemCollection = (Collection) itemsValue;
         Collection<UISelectItem> items = new ArrayList<UISelectItem>(itemCollection.size());
-        for (Object collectionItem : itemCollection) {
-            if (collectionItem instanceof UISelectItem) {
-                items.add((UISelectItem) collectionItem);
-            } else if (collectionItem instanceof SelectItem) {
-                UISelectItem selectItem = new UISelectItem();
-                fillUISelectItemFromValue(selectItem, collectionItem);
-                items.add(selectItem);
-            } else {
-                UISelectItem selectItem = new UISelectItem();
-                selectItem.setItemValue(collectionItem);
-                items.add(selectItem);
+        if (component.getChildCount() == 0) {
+            for (Object collectionItem : itemCollection) {
+                if (collectionItem instanceof UISelectItem) {
+                    items.add((UISelectItem) collectionItem);
+                } else if (collectionItem instanceof SelectItem) {
+                    UISelectItem selectItem = new UISelectItem();
+                    fillUISelectItemFromValue(selectItem, collectionItem);
+                    items.add(selectItem);
+                } else {
+                    UISelectItem selectItem = new UISelectItem();
+                    selectItem.setItemValue(collectionItem);
+                    items.add(selectItem);
+                }
             }
+        }else{
+            MockItem mockItem = new MockItem();
+            mockItem.setChildren(component.getChildren());
+            items.add(mockItem);
         }
         return items;
     }
@@ -353,7 +359,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
     protected int getItemPresentationColumn(DropDownComponent dropDown) {
         return -1;
     }
-    
+
     protected InitScript renderInitScript(FacesContext context, DropDownComponent dropDown) throws IOException {
         DropDownFieldBase dropDownField = (DropDownFieldBase) dropDown;
 
@@ -543,7 +549,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
     @Override
     protected void writeDefaultFieldStyle(FacesContext context, ResponseWriter writer,
                                           DropDownComponent dropDown) throws IOException {
-        super.writeDefaultFieldStyle(context,writer,dropDown);
+        super.writeDefaultFieldStyle(context, writer, dropDown);
         String fieldClass = getFieldClass(context, dropDown);
         if (fieldClass != null)
             writer.writeAttribute("class", fieldClass, null);
