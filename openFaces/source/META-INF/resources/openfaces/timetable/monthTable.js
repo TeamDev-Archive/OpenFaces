@@ -104,6 +104,7 @@ O$.MonthTable = {
         footer : O$(componentId + "::expandedDayView::footer"),
         headerHeight : 0,
         footerHeight : 0,
+        expandedEvents : [],
         transitionPeriod : stylingParams.expandTransitionPeriod
       },
       {
@@ -116,13 +117,39 @@ O$.MonthTable = {
            this.eventBlock.childNodes[i].style.top = (position + delta)+"px";
           }
         },
+
+        _addExpandedEventElements : function (cell){
+          var i = 0;
+          cell.reservedPlaces.forEach(function(event){
+            var part = {
+              start: monthTable._expandedDayView.expandedDay,
+              end: monthTable._expandedDayView.expandedDay,
+              index: i++,
+              event: event,
+              expandedPart: true
+            };
+            i++;
+            monthTable._addEventElement(event, part);
+            monthTable._expandedDayView.expandedEvents.push({event: event, part: part});
+          });
+        },
+
+        _removeExpandedEventElements : function (cell) {
+          this.expandedEvents.forEach(function(expandedEvent){
+                monthTable._removeEventElement(expandedEvent.event, expandedEvent.part);
+          });
+          monthTable._expandedDayView.expandedEvents = [];
+          monthTable._expandedDayView.eventCount = 0;
+          monthTable._expandedDayView.scrollPos = 0;
+        },
+
         _expandDayView: function (dayCell){
           this.style.display = "";
           var cellBoundaries = O$.getElementBorderRectangle(dayCell, true);
           O$.setElementPos(this, cellBoundaries);
-          var oldExpandedDay = this.expandedDay;
           this.expandedDay = dayCell._cellDay;
-          monthTable._updateEventElements(false,true);
+          this._addExpandedEventElements(dayCell);
+          monthTable._recalculatePositions();
           this.opened = true;
           var rect = O$.getElementBorderRectangle(this, true).clone();
           O$.setElementSize(this, {height:10});
@@ -131,10 +158,10 @@ O$.MonthTable = {
         },
         _contractDayView : function (){
           this.style.display = "none";
-          var oldExpandedDay = this.expandedDay;
           this.expandedDay = null;
           this.opened = false;
-          monthTable._updateEventElements(false,true);
+          this._removeExpandedEventElements();
+          monthTable._recalculatePositions();
         },
         _correctMarginsForButtonLayout : function (){
           this.headerHeight = O$.getElementSize(this.header).height;
@@ -309,21 +336,7 @@ O$.MonthTable = {
                   partEnd = O$.incDay(O$.cloneDate(partEnd), 7);
                 } while (partStart < end);
 
-                if (monthTable._expandedDayView.expandedDay){
-                  if (O$.MonthTable.checkDayInInterval(monthTable._expandedDayView.expandedDay,event)){
-                    var part = {
-                      start: monthTable._expandedDayView.expandedDay,
-                      end: monthTable._expandedDayView.expandedDay,
-                      index: i++,
-                      event: event,
-                      expandedPart: true
-                    };
-                    parts.push(part);
-                  }
-                }
 
-                parts[0].first = true;
-                parts[parts.length - 1].last = true;
                 return parts;
               },
 
@@ -482,14 +495,17 @@ O$.MonthTable = {
                 };
                 eventElement._updatePos = function() {
                   if (!monthTable._layoutNeeded) return;
+
                   if (event.resourceId) {
                     var resource = monthTable._getResourceForEvent(event);
                     if (!resource) {
                       this.style.display = "none";
+                      this._backgroundElement.style.display = "none";
                       return;
                     }
                   }
                   this.style.display = "";
+                  this._backgroundElement.style.display = "";
                   var cell = O$.MonthTable.getCellForDay(monthTable,part.start);
                   if (part.expandedPart){
                     var changeEventParent = function(newParent){
@@ -538,13 +554,16 @@ O$.MonthTable = {
                     var y2 = y1 + eventElementHeight;
                     var lastForCell = (placeIndex == cell._cellEvents.length - 1);
                     var maxY = lastForCell ? startDayCellBoundaries.getMaxY() : startDayCellBoundaries.getMaxY() - moreLinkElementHeight;
+                    //TODO: not actually sure that we need two ifs to hide element that is not displayed
                     if (cell._moreLinkData ) {
                       this.style.display = "none";
+                      this._backgroundElement.style.display = "none";
                       return;
                     }
                     if (y2 > maxY ) {
                       cell._moreLinkData = { topY: y1 };
                       this.style.display = "none";
+                      this._backgroundElement.style.display = "none";
                       return;
                     }
 
@@ -587,8 +606,6 @@ O$.MonthTable = {
               },
 
               _removeEventElement: function(event, part) {
-                if (!part.mainElement)
-                  return;
                 super_removeEventElement.call(this, event, part);
               },
 
@@ -743,7 +760,14 @@ O$.MonthTable = {
                   // recalculate parts if needed
                   if (event.parts) {
                     var newParts = monthTable._splitIntoParts(event);
-                    //TODO: handle parts disappearing or adding
+                    if (newParts.length > event.parts.length) {
+                      event.parts.push(newParts[newParts.length-1]);
+                      monthTable._addEventElement(event, event.parts[event.parts.length-1]);
+                    };
+                    if (newParts.length < event.parts.length) {
+                      monthTable._removeEventElement(event, event.parts[event.parts.length-1]);
+                      event.parts.splice(event.parts.length-1);
+                    };
                     for (var i=0; i<event.parts.length;i++){
                       event.parts[i].start = newParts[i].start;
                       event.parts[i].end = newParts[i].end;
