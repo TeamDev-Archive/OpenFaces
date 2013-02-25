@@ -198,8 +198,8 @@ O$.MonthTable = {
 
     var weekdayHeadersTable = O$(componentId + "::weekdayHeaders");
 
-    var firstDayOfWeek = (calendarOptions && calendarOptions.firstDayOfWeek) ? calendarOptions.firstDayOfWeek : 0;
-
+    monthTable.firstDayOfWeek = (calendarOptions && calendarOptions.firstDayOfWeek) ? calendarOptions.firstDayOfWeek : 0;
+    console.log ("firstDayOfWeek = " + monthTable.firstDayOfWeek);
     var columns = [];
     var weekdayHeaderColumns = [];
 
@@ -315,12 +315,14 @@ O$.MonthTable = {
                 this._expandedDayView._scrollContent(delta);
               },
 
+              //TODO: refactor +/- 1 ms for chrome fix
               _splitIntoParts: function(event) {
                 var parts = [];
-                var start = this._startTime < event.start ? event.start : this._startTime;
+                var start = this._startTime > event.start ? this._startTime : event.start;
                 var end = this._endTime < event.end ? this._endTime : event.end;
                 var partStart = start;
-                var partEnd = O$.incDay(new Date(partStart.getFullYear(), partStart.getMonth(), partStart.getDate()),7 - partStart.getDay());
+                var partEnd = O$.incDay(new Date(partStart.getFullYear(), partStart.getMonth(), partStart.getDate()),(7 - partStart.getDay() + monthTable.firstDayOfWeek)%7);
+                partEnd.setTime(partEnd.getTime() - 1);
                 var i = 0;
 
                 do {
@@ -332,10 +334,13 @@ O$.MonthTable = {
                     expandedPart: false
                   };
                   parts.push(part);
-                  partStart = O$.cloneDate(partEnd);
+                  partStart = O$.cloneDateTime(partEnd);
+                  partStart.setTime(partStart.getTime() + 1);
 
                   // adding delta to day need to end till the week end      \
+                  partEnd.setTime(partEnd.getTime() + 1);
                   partEnd = O$.incDay(O$.cloneDate(partEnd), 7);
+                  partEnd.setTime(partEnd.getTime() - 1);
                 } while (partStart < end);
 
 
@@ -624,8 +629,8 @@ O$.MonthTable = {
 
               _updateStartEndTime: function() {
 
-                this._startTime = O$.MonthTable.getDay(this._day, firstDayOfWeek);
-                this._endTime = O$.MonthTable.getFirstDayOut(this._day, firstDayOfWeek);
+                this._startTime = O$.MonthTable.getDay(this._day, monthTable.firstDayOfWeek);
+                this._endTime = O$.MonthTable.getFirstDayOut(this._day, monthTable.firstDayOfWeek);
 
                 O$.MonthTable.updateCellDays(this);
 

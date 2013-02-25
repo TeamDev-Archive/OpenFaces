@@ -822,7 +822,13 @@ if (!window.O$) {
   //TODO: сделать нормально поддержку дней из разных месяцев пока так
   O$.getDayInterval = function(date1, date2){
     return date1.getDate() - date2.getDate();
-  }
+  };
+
+  O$.firstDateBeforeSecond = function (date1,date2){
+    if (date1.getYear()*10000 + date1.getMonth()*100 + date1.getDay()<date2.getYear()*10000 + date2.getMonth()*100 + date2.getDay())
+      return true;
+    return false;
+  };
 
   O$.incDay = function(date, increment) {
     if (increment == undefined)

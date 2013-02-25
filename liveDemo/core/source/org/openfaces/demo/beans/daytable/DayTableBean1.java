@@ -21,6 +21,8 @@ import org.openfaces.util.Faces;
 import javax.faces.event.ActionEvent;
 import java.awt.*;
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -36,7 +38,7 @@ public class DayTableBean1 extends DayTableBean implements Serializable {
     List<AbstractTimetableEvent> events = new ArrayList<AbstractTimetableEvent>();
     List<AbstractTimetableEvent> reservedTimes = new ArrayList<AbstractTimetableEvent>();
 
-    public DayTableBean1() {
+    public DayTableBean1() throws ParseException {
         Color red1 = new Color(220, 0, 0);
         Color red2 = new Color(230, 100, 100);
         Color green = new Color(0, 180, 0);        
@@ -53,9 +55,12 @@ public class DayTableBean1 extends DayTableBean implements Serializable {
                 "Instructor: Gregory House <br/>Fee: $30", blue));
         events.add(new TimetableEvent(generateEventId(), tomorrowAt(10, 50), tomorrowAt(12, 30), "444444444",
                 "Instructor: Gregory House <br/>Fee: $30", blue));    */
+        SimpleDateFormat sdf =  new SimpleDateFormat("yyyy, MM, dd");
+        Date date1 = sdf.parse("2013, 2, 13");
+        Date date2 = sdf.parse("2013, 2, 23");
         events.add(new TimetableEvent(generateEventId(), tomorrowAt(10, 50), tomorrowAt(12, 30), "11111111111",
                 "11111111111Instructor: Gregory House <br/>Fee: $30", blue));
-        events.add(new TimetableEvent(generateEventId(), tomorrowAt(10, 50), tomorrowAt(12, 30), "22222222222",
+        events.add(new TimetableEvent(generateEventId(), date1, date2, "22222222222",
                 "22222222222Instructor: Gregory House <br/>Fee: $30", blue));
         events.add(new TimetableEvent(generateEventId(), tomorrowAt(10, 50), tomorrowAt(12, 30), "22222222222",
                 "22222222222Instructor: Gregory House <br/>Fee: $30", blue));

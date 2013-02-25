@@ -649,6 +649,7 @@ O$.TimeScaleTable = {
               },
 
               //TODO: move this to timetableScale because we don't need day spliting for month table
+              //TODO: 2move this to weekTable because we don't need day spliting for day table
               _splitIntoParts: function(event) {
                 var parts = [];
                 var start = this._startTime < event.start ? event.start : this._startTime;
