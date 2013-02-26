@@ -199,7 +199,7 @@ O$.MonthTable = {
     var weekdayHeadersTable = O$(componentId + "::weekdayHeaders");
 
     monthTable.firstDayOfWeek = (calendarOptions && calendarOptions.firstDayOfWeek) ? calendarOptions.firstDayOfWeek : 0;
-    console.log ("firstDayOfWeek = " + monthTable.firstDayOfWeek);
+
     var columns = [];
     var weekdayHeaderColumns = [];
 
@@ -321,14 +321,18 @@ O$.MonthTable = {
                 var start = this._startTime > event.start ? this._startTime : event.start;
                 var end = this._endTime < event.end ? this._endTime : event.end;
                 var partStart = start;
-                var partEnd = O$.incDay(new Date(partStart.getFullYear(), partStart.getMonth(), partStart.getDate()),(7 - partStart.getDay() + monthTable.firstDayOfWeek)%7);
+                var partEnd = O$.incDay(
+                        new Date(partStart.getFullYear(), partStart.getMonth(), partStart.getDate()),
+                        partStart.getDay() + 1 != monthTable.firstDayOfWeek ? (7 - partStart.getDay() + monthTable.firstDayOfWeek) % 8 : 1
+                );
+                end.setTime(end.getTime() - 1);
                 partEnd.setTime(partEnd.getTime() - 1);
                 var i = 0;
 
                 do {
                   var part = {
                     start: partStart,
-                    end: (partEnd < end) ? partEnd : end,
+                    end: (partEnd < end) ? O$.cloneDateTime(partEnd) : O$.cloneDateTime(end),
                     index: i++,
                     event: event,
                     expandedPart: false
@@ -354,7 +358,6 @@ O$.MonthTable = {
             /*    row = this._table.body._rowFromPoint(10, y, true, this._getLayoutCache());
                 var firstRow = this._table.body._rowFromPoint(1, 1, true, this._getLayoutCache());
                 var timeColumnCell = firstRow._cellFromPoint(1, 1, true, this._getLayoutCache());
-
                 var cell = row._cellFromPoint(x, y, true, this._getLayoutCache());
              */
                 cell = this._table._cellFromPoint(x, y, true, this._getLayoutCache());
@@ -541,6 +544,7 @@ O$.MonthTable = {
                   }else{
                     var endDayCell = O$.MonthTable.getCellForDay(monthTable,part.end);
                     var endDayCellBoundaries = O$.getElementBorderRectangle(endDayCell, true);
+
                     var startDayCellBoundaries = O$.getElementBorderRectangle(cell, true);
 
                     var rightBorderOverflow =  part.index < (part.event.parts.length - 1 - (part.event.parts[part.event.parts.length-1].expandedPart ? 1 : 0 ));
@@ -549,12 +553,18 @@ O$.MonthTable = {
                     var x1 = startDayCellBoundaries.getMinX() + (event.type != "reserved" ? eventsLeftOffset : reservedEventsLeftOffset);
                     var x2 = - (event.type != "reserved" ? eventsRightOffset : reservedEventsRightOffset);
                     var cellWidth = startDayCellBoundaries.getMaxX() - startDayCellBoundaries.getMinX();
-                    if (leftBorderOverflow)
-                      x1 -= cellWidth;
-                    if (rightBorderOverflow)
-                      x2 += startDayCellBoundaries.getMaxX() + cellWidth*(7-part.start.getDay());
-                    else
+
+
+                    //TODO: connect this with almost the same code for expanded day view
+                    if (event.start.getDate() < part.start.getDate()){
+                      x1 -= 50;
+                    };
+                    if (event.end.getDate() > part.end.getDate()){
+                      x2 +=  endDayCellBoundaries.getMaxX() + 50;
+                    } else {
                       x2 += endDayCellBoundaries.getMaxX();
+                    }
+
 
                     var placeIndex = event.placeIndex;
                     var y1 = startDayCellBoundaries.getMinY() + eventElementHeight * placeIndex;
@@ -761,6 +771,7 @@ O$.MonthTable = {
                     var nextDayCell
                     for (day = O$.incDay(event.start,1); !O$._datesEqual(day, O$.incDay(event.end,1)); day=O$.incDay(day,1)){
                       nextDayCell = O$.MonthTable.getCellForDay(monthTable,day);
+                      if (!nextDayCell) break;
                       nextDayCell.reservedPlaces[placeIndex] = event;
                     }
                   }
