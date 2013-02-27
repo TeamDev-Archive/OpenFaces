@@ -19,170 +19,319 @@
  */
 
 O$.MaskEdit = {
-  _init: function(inputId, mask, validator) {
-    mask = {
-      emptySymbols: '_',
-      format: '__/__/__',
-      //regex:   /^-?\d+(\.\d+)?$/
-      regex:   /^\d+$/
-  }
+  _init:function (inputId, mask, maskSeparator, rolloverClass, focusedClass, disabled, dictionary) {
+
     var maskEdit = O$(inputId);
-    maskEdit.defaultValue = mask.format;
-    if (maskEdit.value.length<0){
-      maskEdit.value = mask.format;
+    maskEdit.mask = "#########";
+    maskEdit.maskSeparator = "+(380) ___ ___ __._ (life,mts)";
+    maskEdit.maskValue = new Array();
+    maskEdit.primaryMaskValue = new Array();
+    maskEdit.maskSeparatorLenght = maskEdit.maskSeparator.length;
+    maskEdit.maskSeparatorPosition = new Array();
+    maskEdit.maskInputPosition = new Array();
+    if (dictionary == null) {
+      maskEdit.dictionary = "absdefghijklmnopqrstuwwxyz"
+    } else {
+      maskEdit.dictionary = dictionary;
     }
-    maskEdit._validateValue = validator;
-    //inputField._value = inputField.value;
-    O$.extend(maskEdit,{
-      isCharacterKey: function(key) {
-        return ( key >= 31 && key < 128 );
-      },
+    for (var i = 0; i < maskEdit.maskSeparator.length; i++) {
+      if (maskEdit.maskSeparator[i] != "_") {
+        maskEdit.maskSeparatorPosition.push(i)
+      } else {
+        maskEdit.maskInputPosition.push(i);
 
-      onKeyPress: function(event, obj) {
-        if(
-                !(event.code == 9) // tab
-                        && !(event.shift && event.code == 9) // shift + tab
-                        && !(event.code == 13) // enter
-                        && !(event.ctrl && event.code == 67) // ctrl + c
-                        && !(event.ctrl && event.code == 86) // ctrl + v
-                        && !(event.ctrl && event.code == 88) // ctrl + x
-                ) {
-          event.stop();
-        }
-      },
-
-      //TODO: move to O$._getCaretPosition
-      _setCaretPosition: function(pos){
-        if(this.setSelectionRange)
-        {
-          this.focus();
-          this.setSelectionRange(pos,pos);
-        }
-        else if (this.createTextRange) {
-          var range = this.createTextRange();
-          range.collapse(true);
-          range.moveEnd('character', pos);
-          range.moveStart('character', pos);
-          range.select();
-        }
-      },
-
-      _isSymbolEditable: function(pos){
-        return mask.emptySymbols.indexOf(mask.format.charAt(pos)) != -1;
-      },
-
-      _getLeftEditableSymbolPos: function(index){
-        var result = index-1;
-        while (result>0){
-          if ( this._isSymbolEditable(result) )
-            return result;
-          result--;
-        }
-        return 0;
-      },
-
-      _getRightEditableSymbolPos: function(index){
-        var result = index+1;
-        while (result<mask.format.length){
-          if ( this._isSymbolEditable(result) != -1 )
-            return result;
-          result++;
-        }
-        return mask.format.length;
-      },
-
-
-
-      isControlKey : function(key) {
-        switch(key) {
-          case 8:
-            return true;
-            break;
-          case 36:
-            return true;
-            break;
-          case 35:
-            return true;
-            break;
-          case 37:
-            return true;
-          case 38:
-            return true;
-            break;
-          case 39:
-            return true;
-            break;
-          case 40:
-            return true;
-            break;
-          case 46:
-            return true;
-            break;
-          default:
-            return false;
-        }
-      },
-
-      _setCharAt : function(str,index,chr) {
-        if (mask.format.length==0){
-          return str.substr(0,index) + chr + str.substr(index);
-        }
-        if(index > str.length-1) return str;
-        return str.substr(0,index) + chr + str.substr(index+1);
-      },
-
-      _controlBackspace : function (){
-        var pos = this._getLeftEditableSymbolPos(O$._getCaretPosition(this));
-        var str = this.value;
-        str = this._setCharAt(str, pos , mask.format[pos]);
-        this.value = str;
-        this._setCaretPosition(pos);
-      },
-
-      _controlDelete : function (){
-        var caretPos = O$._getCaretPosition(this);
-        var pos = this._getRightEditableSymbolPos(caretPos);
-        if (this._isSymbolEditable(caretPos))
-          pos = caretPos;
-        var str = this.value;
-        str = this._setCharAt(str, pos , mask.format[pos]);
-        this.value = str;
-        this._setCaretPosition(pos);
-      },
-
-      //TODO: chrome only solution add support of other browsers
-      onkeydown: function (e){
-        var key = e.keyCode;
-        if (this.isControlKey(key)) {
-          switch(key) {
-            case 8:
-              this._controlBackspace();
-              return false;
-              break;
-            case 46:
-              this._controlDelete();
-              return false;
-              break;
-            default:
-              return true;
-          }
-        }else if (this.isCharacterKey(key)) {
-          var ch = String.fromCharCode( e.keyCode);
-          var str = this.value;
-          var pos = O$._getCaretPosition(this);
-          if ( !this._isSymbolEditable(pos)) {
-            pos = this._getRightEditableSymbolPos(pos);
-          }
-          str = this._setCharAt(str, pos, ch);
-          if ( this._validateValue(str) && (pos <= mask.format.length || mask.format.length == 0) ) {
-            this.value = str;
-            this._setCaretPosition(this._getRightEditableSymbolPos(pos));
-          }
-          return false;
-        }
       }
-    })
+      maskEdit.maskValue.push(maskEdit.maskSeparator[i]);
+      maskEdit.primaryMaskValue.push(maskEdit.maskSeparator[i]);
+    }
+    maskEdit.isFinishPosition = maskEdit.maskInputPosition.length <= 1;
 
+
+    maskEdit.maskInputPositionCursor = 0;
+    maskEdit.value = maskEdit.maskSeparator;
+    maskEdit.cursorPosition = maskEdit.maskInputPosition[0];
+    setCaretToPos(maskEdit, maskEdit.cursorPosition);
+    maskEdit.numeric = "1234567890";
+    maskEdit.symbol = "`~,.?!@#$%^&*(){}[]";
+    function setSelectionRange(input, selectionStart, selectionEnd) {
+      if (input.setSelectionRange) {
+        input.focus();
+        input.setSelectionRange(selectionStart, selectionEnd);
+      }
+      else if (input.createTextRange) {
+        var range = input.createTextRange();
+        range.collapse(true);
+        range.moveEnd('character', selectionEnd);
+        range.moveStart('character', selectionStart);
+        range.select();
+      }
+    }
+
+    function setCaretToPos(input, pos) {
+      setSelectionRange(input, pos, pos);
+    }
+
+    O$.extend(maskEdit, {
+              onkeypress:function (e) {
+                if (this.isFinishPosition)
+                  return false;
+
+                e = e || window.event;
+                if (e.ctrlKey || e.altKey || e.metaKey)
+                  return;
+                var pressChar = this.getChar(e || window.event);
+                if (!pressChar)
+                  return;
+
+                if (this._isValidChar(pressChar)) {
+                  this.maskValue[this.cursorPosition] = pressChar;
+                  this.value = this.toStringMaskValue(this.maskValue);
+                  if (this.maskInputPositionCursor != (this.maskInputPosition.length - 1)) {
+                    this.maskInputPositionCursor++;
+                    this.cursorPosition = this.maskInputPosition[this.maskInputPositionCursor];
+                    this.setCaretToPos(this, this.cursorPosition);
+                  } else {
+                    this.cursorPosition++;
+                    this.isFinishPosition = true;
+                    this.setCaretToPos(this, this.cursorPosition);
+                  }
+                }
+                return false;
+              },
+              toStringMaskValue:function (maskValue) {
+                return maskValue.toString().replace(/\,/g, "");
+              },
+              getChar:function (event) {
+                if (event.which == null) {
+                  if (event.keyCode < 32) return null;
+                  return String.fromCharCode(event.keyCode)
+                }
+                if (event.which != 0 && event.charCode != 0) {
+                  if (event.which < 32) return null;
+                  return String.fromCharCode(event.which);
+                }
+                return null;
+              },
+              setCursorPosition:function (input, selectionStart, selectionEnd) {
+
+                if (input.setSelectionRange) {
+                  input.focus();
+                  input.setSelectionRange(selectionStart, selectionEnd);
+                }
+                else if (input.createTextRange) {
+                  var range = input.createTextRange();
+                  range.collapse(true);
+                  range.moveEnd('character', selectionEnd);
+                  range.moveStart('character', selectionStart);
+                  range.select();
+                }
+              },
+              _isValidChar:function (pressChar) {
+                var maskChar = this.mask[this.maskInputPositionCursor];
+                switch (maskChar) {
+                  case "l":
+                    return this._isOccurrenceChar(pressChar, this.dictionary + this.dictionary.toUpperCase());
+                    break;
+                  case "L":
+                    return this._isOccurrenceChar(pressChar, this.dictionary.toUpperCase());
+                    break;
+                  case "a":
+                    return this._isOccurrenceChar(pressChar, this.dictionary + this.dictionary.toUpperCase() + this.numeric);
+                    break;
+                  case "A":
+                    return this._isOccurrenceChar(pressChar, this.dictionary.toUpperCase() + this.numeric);
+                  case "#":
+                    return this._isOccurrenceChar(pressChar, this.numeric);
+                    break;
+                  case "~":
+                    return this._isOccurrenceChar(pressChar, this.symbol);
+                    break;
+                  default:
+                    return false;
+                }
+              },
+
+              _isOccurrenceChar:function (symbol, symbolArray) {
+                return symbolArray.indexOf(symbol) != -1;
+
+              },
+
+              isControlKey:function (key) {
+                switch (key) {
+                  case 8:
+                    return this.isKeyBackspace();
+                    break;
+                  case 36:
+                    return this.isKeyHome();
+                    break;
+                  case 35:
+                    return this.isKeyEnd();
+                    break;
+                  case 37:
+                    return this.isKeyLeft();
+                    break;
+                  case 39:
+                    return this.isKeyRight();
+                    break;
+                  case 46:
+                    return this.isKeyDelete();
+                    break;
+                  default:
+                    return true;
+                }
+              },
+
+              setCaretToPos:function (input, pos) {
+                this.setCursorPosition(input, pos, pos);
+              },
+
+              onkeydown:function (e) {
+                var key = e.keyCode;
+                return  this.isControlKey(key);
+              },
+
+              onkeyup:function (e) {
+                return false;
+              },
+
+              getSelectionText:function () {
+
+                if (window.getSelection) {
+                  txt = window.getSelection().toString();
+                } else if (document.getSelection) {
+                  txt = document.getSelection();
+                } else if (document.selection) {
+                  txt = document.selection.createRange().text;
+                }
+                return txt;
+              },
+
+              onclick:function () {
+                var clickCursorPosition = this.doGetCaretPosition(this);
+                console.log(this.maskInputPosition);
+                console.log(clickCursorPosition);
+                if (clickCursorPosition < this.maskInputPosition[1]) {
+                  return;
+                }
+                if (clickCursorPosition > this.maskInputPosition[this.maskInputPosition.length]) {
+                  return;
+                }
+
+              },
+
+              doGetCaretPosition:function (ctrl) {
+                var CaretPos = 0;
+                if (document.selection) {
+                  ctrl.focus();
+                  var Sel = document.selection.createRange();
+                  Sel.moveStart('character', -ctrl.value.length);
+                  CaretPos = Sel.text.length;
+
+                }
+                else if (ctrl.selectionStart || ctrl.selectionStart == '0')
+                  CaretPos = ctrl.selectionStart;
+
+                return CaretPos;
+              },
+
+              isKeyDelete:function () {
+                if (this.getSelectionText()) {
+
+                }
+                if (this.isFinishPosition) return false;
+                if (this.maskInputPositionCursor != (this.maskInputPosition.length - 1)) {
+
+                  this.maskValue[ this.maskInputPosition[this.maskInputPositionCursor]] = "_";
+                  this.maskInputPositionCursor++;
+                  this.value = this.toStringMaskValue(this.maskValue);
+                  this.cursorPosition = this.maskInputPosition[this.maskInputPositionCursor];
+                  this.setCaretToPos(this, this.cursorPosition);
+
+                } else {
+                  this.maskValue[ this.maskInputPosition[this.maskInputPositionCursor]] = "_";
+                  this.value = this.toStringMaskValue(this.maskValue);
+                  this.cursorPosition++;
+                  this.isFinishPosition = true;
+                  this.setCaretToPos(this, this.cursorPosition);
+                }
+                return false;
+              },
+
+              isKeyRight:function () {
+                if (this.isFinishPosition) {
+                  return false;
+                }
+                if (this.maskInputPositionCursor != (this.maskInputPosition.length - 1)) {
+                  if ((this.maskInputPositionCursor != (this.maskInputPosition.length - 1)))
+                    this.maskInputPositionCursor++;
+                  this.cursorPosition = this.maskInputPosition[this.maskInputPositionCursor];
+                  this.setCaretToPos(this, this.cursorPosition);
+                  return false;
+                }
+                if (this.maskInputPositionCursor = (this.maskInputPosition.length)) {
+                  this.cursorPosition++;
+                  this.setCaretToPos(this, this.cursorPosition);
+                  this.isFinishPosition = true;
+                  return false;
+
+                }
+                return false;
+              },
+
+              isKeyLeft:function () {
+                if (this.isFinishPosition) {
+                  this.cursorPosition--;
+                  this.setCaretToPos(this, this.cursorPosition);
+                  this.isFinishPosition = false;
+                  return false;
+                }
+                if (this.maskInputPositionCursor != 0) {
+                  this.maskInputPositionCursor--;
+                  this.cursorPosition = this.maskInputPosition[this.maskInputPositionCursor];
+                  this.setCaretToPos(this, this.cursorPosition);
+                }
+                return false;
+
+              },
+              isKeyEnd:function () {
+                this.cursorPosition = this.maskInputPosition[this.maskInputPosition.length - 1] + 1;
+                this.isFinishPosition = true;
+                this.maskInputPositionCursor = this.maskInputPosition.length - 1;
+                this.setCaretToPos(this, this.cursorPosition);
+              },
+
+              isKeyHome:function () {
+                this.cursorPosition = this.maskInputPosition[0];
+                this.maskInputPositionCursor = 0;
+                this.setCaretToPos(this, this.cursorPosition);
+                this.isFinishPosition = false;
+                return false;
+              },
+
+              isKeyBackspace:function () {
+                if (this.isFinishPosition) {
+                  this.maskValue[ this.maskInputPosition[this.maskInputPositionCursor]] = "_";
+                  this.value = this.toStringMaskValue(this.maskValue);
+                  this.cursorPosition--;
+                  this.setCaretToPos(this, this.cursorPosition);
+                  this.isFinishPosition = false;
+                  return false;
+                }
+                if (this.maskInputPositionCursor != 0) {
+                  this.maskInputPositionCursor--;
+                  this.maskValue[ this.maskInputPosition[this.maskInputPositionCursor]] = "_";
+                  this.value = this.toStringMaskValue(this.maskValue);
+                  this.cursorPosition = this.maskInputPosition[this.maskInputPositionCursor];
+                  this.setCaretToPos(this, this.cursorPosition);
+
+                }
+                return false;
+              }
+
+            }
+    )
+    ;
   }
-};
+}
+;
 

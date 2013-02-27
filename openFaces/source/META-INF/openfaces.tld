@@ -48511,14 +48511,399 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
   </tag>
+  <tag>
+    <description>This is a masked input where you would like them to enter the data in a certain format.</description>
+    <name>maskEdit</name>
+    <tag-class>org.openfaces.taglib.jsp.input.MaskEditJspTag</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+      <description>A flag that indicates whether or not the component is visible.</description>
+      <name>rendered</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>The current value of this component.</description>
+      <name>value</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.Object -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A style for the InputSecret component.</description>
+      <name>style</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the InputTextarea component.</description>
+      <name>styleClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The component identifier.</description>
+      <name>id</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el false -->
+    </attribute>
+    <attribute>
+      <description>A style for the MaskEdit component.</description>
+      <name>style</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A converter for the InputText's value. Should be specified as
+        a value-binding expression or converter identifier.
+      </description>
+      <name>converter</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Requires full filling in mask.</description>
+      <name>required</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user clicks
+        the left mouse button over the InputText.
+      </description>
+      <name>onclick</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user double-clicks
+        the left mouse button over the InputText.
+      </description>
+      <name>ondblclick</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user releases the mouse button over the InputText.
+      </description>
+      <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user clicks over
+        the InputText with either mouse button.
+      </description>
+      <name>onmousedown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer
+        onto the InputText.
+      </description>
+      <name>onmouseover</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer over the InputText.
+      </description>
+      <name>onmousemove</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer
+        away from the InputText.
+      </description>
+      <name>onmouseout</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user presses and releases a key
+        over the InputText.
+      </description>
+      <name>onkeypress</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses a key over the InputText.</description>
+      <name>onkeydown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user releases a key over the InputText.
+      </description>
+      <name>onkeyup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the InputText loses focus.</description>
+      <name>onblur</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the InputText receives focus.</description>
+      <name>onfocus</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the InputText's value has changed.
+      </description>
+      <name>onchange</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Javascript code executed when text within this element is selected by the user.</description>
+      <name>onselect</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>An access key for the InputText component.</description>
+      <name>accesskey</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Alternate textual description of the element rendered by this component.</description>
+      <name>alt</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A flag that enables or disables the component.</description>
+      <name>disabled</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Position of the component in the focus transition chain for the current document.</description>
+      <name>tabindex</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The maximum number of characters that can be entered in the InputText.</description>
+      <name>maxlength</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default Integer.MIN_VALUE -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A flag that indicates whether or not valueChangeListener should be executed immediately (during the
+        Apply Request Values phase of the request processing lifecycle instead of Process Validations phase) and the
+        component's input should be converted and validated immediately (during the Apply Request Values phase of the
+        request processing lifecycle instead of the Process Validations phase).
+      </description>
+      <name>immediate</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Language code for this component. Rendered as the HTML lang attribute.</description>
+      <name>lang</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>An advisory title for the InputText component.</description>
+      <name>title</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A localized user presentable name for this component. Used when constructing validation messages for
+        this component in the same way as for the standard &amp;lt;h:inputText> component.
+      </description>
+      <name>label</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A style of the DataTable component when it is focused.</description>
+      <name>focusedStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name of the DataTable component when it is focused.</description>
+      <name>focusedClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Indicates enter helper characters in result.</description>
+      <name>includeliterals</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el false -->
+    </attribute>
+
+  </tag>
+
   <!--<tag>-->
-    <!--<description>This component is under construction. Displays a box where users may read and write comments. This component works on top of the Disqus-->
-      <!--(http://disqus.com) service. You don&apos;t have to provide storage for the comments. You just have to create an-->
-      <!--account for your site to get started: http://disqus.com/admin/register/-->
-    <!--</description>-->
-    <!--<name>disqusComments</name>-->
-    <!--<tag-class>org.openfaces.taglib.jsp.social.DisqusCommentsJspTag</tag-class>-->
-    <!--<body-content>JSP</body-content>-->
+  <!--<description>This component is under construction. Displays a box where users may read and write comments. This component works on top of the Disqus-->
+  <!--(http://disqus.com) service. You don&apos;t have to provide storage for the comments. You just have to create an-->
+  <!--account for your site to get started: http://disqus.com/admin/register/-->
+  <!--</description>-->
+  <!--<name>disqusComments</name>-->
+  <!--<tag-class>org.openfaces.taglib.jsp.social.DisqusCommentsJspTag</tag-class>-->
+  <!--<body-content>JSP</body-content>-->
   <!--</tag>-->
 
 </taglib>

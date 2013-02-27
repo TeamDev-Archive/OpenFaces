@@ -14,7 +14,9 @@ package org.openfaces.renderkit.input;
 import org.openfaces.component.OUIInputText;
 import org.openfaces.component.input.InputText;
 import org.openfaces.util.Rendering;
+import org.openfaces.util.Styles;
 
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
@@ -42,5 +44,7 @@ public class InputTextRenderer extends AbstractInputTextRenderer {
         if (inputText.isReadonly())
             writeAttribute(writer, "readonly", "readonly");
     }
+
+
 
 }

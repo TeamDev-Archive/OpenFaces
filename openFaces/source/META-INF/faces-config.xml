@@ -159,6 +159,11 @@
     <component-class>org.openfaces.component.filter.InputTextFilter</component-class>
   </component>
 
+  <component>
+    <component-type>org.openfaces.MaskEdit</component-type>
+    <component-class>org.openfaces.component.input.MaskEdit</component-class>
+  </component>
+
   <!-- TIMETABLE-RELATED COMPONENTS -->
   <component>
     <component-type>org.openfaces.DayTable</component-type>
@@ -1012,7 +1017,14 @@
       <renderer-type>org.openfaces.InputTextFilterRenderer</renderer-type>
       <renderer-class>org.openfaces.renderkit.filter.InputTextFilterRenderer</renderer-class>
     </renderer>
-    <!-- DROPDOWN COMPONENTS DECLARATION -->
+
+    <renderer>
+      <component-family>org.openfaces.MaskEdit</component-family>
+      <renderer-type>org.openfaces.MaskEditRenderer</renderer-type>
+      <renderer-class>org.openfaces.renderkit.input.MaskEditRenderer</renderer-class>
+    </renderer>
+
+     <!-- DROPDOWN COMPONENTS DECLARATION -->
     <renderer>
       <component-family>org.openfaces.DropDownField</component-family>
       <renderer-type>org.openfaces.DropDownFieldRenderer</renderer-type>
@@ -1313,6 +1325,7 @@
       <renderer-type>org.openfaces.InputTextRenderer</renderer-type>
       <renderer-class>org.openfaces.renderkit.input.InputTextRenderer</renderer-class>
     </renderer>
+
 
     <renderer>
       <component-family>org.openfaces.InputTextarea</component-family>
