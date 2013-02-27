@@ -757,7 +757,9 @@ O$.MonthTable = {
                 this._clearReservedPlaces();
                 this._events.forEach(function(event) {
                   // reserving place inside first cell
-                  var startCell = O$.MonthTable.getCellForDay(monthTable,event.start);
+                  var eventStart = monthTable._startTime > event.start ? monthTable._startTime : event.start;
+                  var eventEnd = monthTable._endTime < event.end ? monthTable._endTime : event.end;
+                  var startCell = O$.MonthTable.getCellForDay(monthTable, eventStart);
                   var placeIndex;
                   for (placeIndex=0; placeIndex<startCell.reservedPlaces.length; placeIndex++){
                     if (!startCell.reservedPlaces[placeIndex]){
@@ -767,9 +769,9 @@ O$.MonthTable = {
                   startCell.reservedPlaces[placeIndex] = event;
                   event.placeIndex = placeIndex;
                   // reserving place inside all continiously days
-                  if (!O$._datesEqual(event.start, event.end)){
+                  if (!O$._datesEqual(eventStart, eventEnd)){
                     var nextDayCell
-                    for (day = O$.incDay(event.start,1); !O$._datesEqual(day, O$.incDay(event.end,1)); day=O$.incDay(day,1)){
+                    for (day = O$.incDay(eventStart,1); !O$._datesEqual(day, O$.incDay(eventEnd,1)); day=O$.incDay(day,1)){
                       nextDayCell = O$.MonthTable.getCellForDay(monthTable,day);
                       if (!nextDayCell) break;
                       nextDayCell.reservedPlaces[placeIndex] = event;
