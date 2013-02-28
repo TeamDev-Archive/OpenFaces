@@ -170,10 +170,8 @@ O$.MonthTable = {
           this.eventBlock.style.marginBottom = -1 * this.footerHeight + "px"
         }
     });
-    setTimeout(function(){
-            monthTable._expandedDayView._correctMarginsForButtonLayout();
-            monthTable._expandedDayView.style.display = "none";
-                },0);
+    monthTable._expandedDayView.style.display = "none";
+    O$.invokeWhenVisible(monthTable._expandedDayView, function (){monthTable._expandedDayView._correctMarginsForButtonLayout()});
 
 
 

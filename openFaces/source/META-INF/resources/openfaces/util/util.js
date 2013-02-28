@@ -5321,6 +5321,14 @@ if (!window.O$) {
     return parent;
   };
 
+  O$.invokeWhenVisible = function (element, func){
+    if (O$.isVisibleRecursive(element)){
+      func();
+    }else{
+      setTimeout(function (){O$.invokeWhenVisible(element, func)},100);
+    }
+  }
+
   O$.Link = {
     _init: function(id, disabled, disabledStyle) {
       var link = O$.initComponent(id, null, {

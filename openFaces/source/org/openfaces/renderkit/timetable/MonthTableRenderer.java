@@ -66,6 +66,7 @@ public class MonthTableRenderer extends TimetableViewRenderer {
         AjaxUtil.prepareComponentForAjax(context, timetableView);
         ResponseWriter writer = context.getResponseWriter();
         String clientId = timetableView.getClientId(context);
+        Styles.renderStyleClasses(context, timetableView);
         writer.startElement("table", timetableView);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("cellspacing", "0", null);
@@ -106,7 +107,7 @@ public class MonthTableRenderer extends TimetableViewRenderer {
         writer.endElement("tbody");
         writer.endElement("table");
         timetableView.getExpandedDayViewFooter();
-        Styles.renderStyleClasses(context, timetableView);
+
 
 
     }
