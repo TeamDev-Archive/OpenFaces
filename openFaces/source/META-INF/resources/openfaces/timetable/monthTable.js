@@ -695,7 +695,7 @@ O$.MonthTable = {
 
                   value1 = getEventDaysDuration(row1);
                   value2 = getEventDaysDuration(row2);
-                  return (value1 > value2) ? -1 : ( (value2 > value1) ? 1 : 0 );
+                  return (Math.abs(value1) > Math.abs(value2)) ? -1 : ( (Math.abs(value2) > Math.abs(value1)) ? 1 : 0 );
                 });
 
                 // fill reserved places for cells

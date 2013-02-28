@@ -819,11 +819,12 @@ if (!window.O$) {
     return clonedDate;
   };
 
-  //TODO: сделать нормально поддержку дней из разных месяцев пока так
   O$.getDayInterval = function(date1, date2){
-    return date1.getDate() - date2.getDate();
+    var difference_ms = date2.getTime() - date1.getTime();
+    return Math.round(difference_ms/86400000);
   };
 
+  //TODO: make sure that we need to calculate exactly difference between dates but not between getTime() values
   O$.firstDateBeforeSecond = function (date1,date2){
     if (date1.getYear()*10000 + date1.getMonth()*100 + date1.getDay()<date2.getYear()*10000 + date2.getMonth()*100 + date2.getDay())
       return true;
