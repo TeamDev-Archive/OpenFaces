@@ -366,7 +366,7 @@ public class MonthTableRenderer extends TimetableViewRenderer {
         Styles.addStyleJsonParam(context, timetableView, stylingParams, "moreLinkClass",
                 timetableView.getMoreLinkStyle(), timetableView.getMoreLinkClass());
         Rendering.addJsonParam(stylingParams, "moreLinkText", timetableView.getMoreLinkText());
-        Rendering.addJsonParam(stylingParams, "expandTransitionPeriod", timetableView.getExpandTransitionPeriod());
+        Rendering.addJsonParam(stylingParams, "expandTransitionPeriod", timetableView.getExpandTransitionPeriod().intValue());
 
         return stylingParams;
     }

@@ -11,8 +11,7 @@
  */
 
 // ================================== PUBLIC API FUNCTIONS
-//TODO: _cellEvents remove them all add getter with the reserved places call
-//TODO: fix more link adding
+
 // ========== implementation
 
 O$.MonthTable = {
@@ -93,8 +92,7 @@ O$.MonthTable = {
     O$.initComponent(componentId, null, {
       _viewType: "month"
     });
-
-    //TODO : remove monthTable._expandedDayView such calls and make calls with THIS
+    console.log("stylingParams =" + stylingParams.toString());
     monthTable._expandedDayView = O$.initComponent(componentId + "::expandedDayView", null,{
         eventBlock  : O$(componentId + "::expandedDayView::eventBlock"),
         opened : false,
@@ -108,12 +106,16 @@ O$.MonthTable = {
         transitionPeriod : stylingParams.expandTransitionPeriod
       },
       {
+        _init: function(){
+          this.style.display = "none";
+          O$.invokeWhenVisible(monthTable._expandedDayView, function (){monthTable._expandedDayView._correctMarginsForButtonLayout()});
+        },
         _scrollContent: function (delta){
           if (Math.abs(this.scrollPos) + O$.getElementSize(this).height - delta - this.footerHeight >  this.allEventHeight || this.scrollPos + delta > 0)
             return;
           this.scrollPos += delta;
           for (var i = 0; i<this.eventBlock.childNodes.length;i++){
-            var position = O$.getNumericElementStyle(monthTable._expandedDayView.eventBlock.childNodes[i], "top");
+            var position = O$.getNumericElementStyle(this.eventBlock.childNodes[i], "top");
            this.eventBlock.childNodes[i].style.top = (position + delta)+"px";
           }
         },
@@ -134,13 +136,13 @@ O$.MonthTable = {
           });
         },
 
-        _removeExpandedEventElements : function (cell) {
+        _removeExpandedEventElements : function () {
           this.expandedEvents.forEach(function(expandedEvent){
                 monthTable._removeEventElement(expandedEvent.event, expandedEvent.part);
           });
-          monthTable._expandedDayView.expandedEvents = [];
-          monthTable._expandedDayView.eventCount = 0;
-          monthTable._expandedDayView.scrollPos = 0;
+          this.expandedEvents = [];
+          this.eventCount = 0;
+          this.scrollPos = 0;
         },
 
         _expandDayView: function (dayCell){
@@ -153,8 +155,7 @@ O$.MonthTable = {
           this.opened = true;
           var rect = O$.getElementBorderRectangle(this, true).clone();
           O$.setElementSize(this, {height:10});
-          //TODO: find why this.transitionPeriod string and fix it
-          this._lastRectangleTransition = O$.runTransitionEffect(this, ["rectangle"], [rect], this.transitionPeriod*1, 20, null);
+          this._lastRectangleTransition = O$.runTransitionEffect(this, ["rectangle"], [rect], this.transitionPeriod, 20, null);
         },
         _contractDayView : function (){
           this.style.display = "none";
@@ -170,8 +171,7 @@ O$.MonthTable = {
           this.eventBlock.style.marginBottom = -1 * this.footerHeight + "px"
         }
     });
-    monthTable._expandedDayView.style.display = "none";
-    O$.invokeWhenVisible(monthTable._expandedDayView, function (){monthTable._expandedDayView._correctMarginsForButtonLayout()});
+    monthTable._expandedDayView._init.call(monthTable._expandedDayView);
 
 
 
@@ -275,30 +275,8 @@ O$.MonthTable = {
 
     monthTable._table.body._updateVerticalGridlines();
 
-    function clearAllCellEvents() {
-      var rows = monthTable._table.body._getRows();
-      for (var rowIndex = 1; rowIndex < rows.length; rowIndex += 2) {
-        var row = rows[rowIndex];
-        var cells = row._cells;
-        for (var cellIndex = 0; cellIndex < cells.length; cellIndex++) {
-          var cell = cells[cellIndex];
-          if (cell._cellEvents) {
-            cell._cellEvents.forEach(function(oldCellEvent) {
-              oldCellEvent._removeElements();
-            });
-          }
-          cell._cellEvents = [];
-          cell.reservedPlaces = [];
-        }
-      }
-    }
-
 
     monthTable._appendEventElements = function(events) {
-      //TODO: not sure that needed try to run month table with out events
-      if (!events) {
-        return;
-      }
       events.forEach(function(event) {
         monthTable._addEventElements(event);
       });
@@ -350,25 +328,14 @@ O$.MonthTable = {
               },
 
               _getNearestTimeslotForPosition: function(x, y) {
-                //TODO: magic numbers
-                x = x < 10 ? 10 : x;
-                y = y < 10 ? 10 : y;
-            /*    row = this._table.body._rowFromPoint(10, y, true, this._getLayoutCache());
-                var firstRow = this._table.body._rowFromPoint(1, 1, true, this._getLayoutCache());
-                var timeColumnCell = firstRow._cellFromPoint(1, 1, true, this._getLayoutCache());
-                var cell = row._cellFromPoint(x, y, true, this._getLayoutCache());
-             */
-                cell = this._table._cellFromPoint(x, y, true, this._getLayoutCache());
-
+                var cell = this._table._cellFromPoint(x, y, true, this._getLayoutCache());
                 if (cell._cell) {
                   cell = cell._cell;
-                  row = cell._row;
                 }
                 return cell;
               },
 
               _getLayoutCache: function() {
-                //TODO: check if we need this?
                 if (!this._cachedPositions)
                   this._cachedPositions = {};
                 return this._cachedPositions;
@@ -425,6 +392,11 @@ O$.MonthTable = {
                         return containingBlock;
                       },
 
+                      ondragend: function (){
+                        //TODO: resolve issue with 1 minute lost after dragging
+                        monthTable.updateEvent(event);
+                      },
+
                       setPosition: function (left, top, dx, dy) {
                         var rect = O$.getElementBorderRectangle(monthTable._table, true);
                         var maxTop = rect.height;
@@ -435,41 +407,16 @@ O$.MonthTable = {
                         var nearestTimeslot = monthTable._getNearestTimeslotForPosition(left, top);
                         var timeIncrement = nearestTimeslot._cellDay.getTime() - event._dragPositionTime.getTime();
 
-                        var eventUpdated = false;
-
                         if (timeIncrement != 0) {
-
-                          // TODO: here in others tables we adjusting time so make sure that this correct without adjusting
                           event._dragPositionTime = nearestTimeslot._cellDay;
 
                           var newStartTime = O$.dateByTimeMillis(event.start.getTime() + timeIncrement);
                           var newEndTime = O$.dateByTimeMillis(event.end.getTime() + timeIncrement);
 
-
                           event.setStart(newStartTime);
                           event.setEnd(newEndTime);
 
-                          eventUpdated = true;
-                        }
-
-                        if (eventUpdated) {
                           eventElement.style.cursor = "move";
-                          if (!event._draggingInProgress) {
-                            event._draggingInProgress = true;
-                            eventElement._draggingInProgress = true;
-                            monthTable._draggingInProgress = true;
-                            hideExcessiveElementsWhileDragging();
-                          }
-
-                          event._dragPositionTop -= eventElement._rect.y + eventElement._rect.height;
-                          if (timeIncrement < 0) {
-                            eventElement._elementPartIndex = part.index;
-                            eventElement._elementPartIndexFromTheStart = true;
-                          } else {
-                            eventElement._elementPartIndex = event.parts.length - part.index - 1;
-                            eventElement._elementPartIndexFromTheStart = false;
-                          }
-
                           monthTable._recalculatePositions();
                         }
                       }
@@ -567,8 +514,8 @@ O$.MonthTable = {
                     var placeIndex = event.placeIndex;
                     var y1 = startDayCellBoundaries.getMinY() + eventElementHeight * placeIndex;
                     var y2 = y1 + eventElementHeight;
-                    var lastForCell = (placeIndex == cell._cellEvents.length - 1);
-                    var maxY = lastForCell ? startDayCellBoundaries.getMaxY() : startDayCellBoundaries.getMaxY() - moreLinkElementHeight;
+
+                    var maxY = startDayCellBoundaries.getMaxY() - moreLinkElementHeight;
                     //TODO: not actually sure that we need two ifs to hide element that is not displayed
                     if (cell._moreLinkData ) {
                       this.style.display = "none";
@@ -666,7 +613,7 @@ O$.MonthTable = {
 
               _removeEventElements: function() {
                 super_removeEventElements.call(this);
-                clearAllCellEvents();
+                this._clearReservedPlaces();
               },
 
               _clearReservedPlaces: function() {
