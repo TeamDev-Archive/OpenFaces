@@ -11,7 +11,7 @@
  */
 
 // ================================== PUBLIC API FUNCTIONS
-//TODO: _cellEvents remove them all add geter with the reserved places call
+//TODO: _cellEvents remove them all add getter with the reserved places call
 //TODO: fix more link adding
 // ========== implementation
 
@@ -965,7 +965,7 @@ O$.MonthTable = {
     var visibleRowCount = 2 * numberOfWeeks;
     O$.MonthTable.setVisibleRowCount(monthTable._table, visibleRowCount);
 
-    var cellDay = monthTable._startTime;
+    var cellDay = O$.cloneDate(monthTable._startTime);
     var rows = monthTable._table.body._getRows();
     for (var rowIndex = 0; rowIndex < visibleRowCount; rowIndex += 2) {
       var dayHeaderRow = rows[rowIndex];
