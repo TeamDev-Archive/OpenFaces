@@ -14,6 +14,8 @@ package org.openfaces.renderkit.timetable;
 
 import org.openfaces.component.timetable.AbstractTimetableEvent;
 import org.openfaces.component.timetable.MonthTable;
+import org.openfaces.component.timetable.ScrollButton;
+import org.openfaces.component.timetable.ScrollDirection;
 import org.openfaces.component.timetable.Timetable;
 import org.openfaces.component.timetable.TimetableResource;
 import org.openfaces.component.timetable.TimetableView;
@@ -29,6 +31,7 @@ import org.openfaces.util.Log;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
+import org.openfaces.util.StyleGroup;
 import org.openfaces.util.Styles;
 
 import javax.el.ValueExpression;
@@ -49,6 +52,10 @@ import java.util.TimeZone;
  */
 public class MonthTableRenderer extends TimetableViewRenderer {
 
+    private static String EXPANDED_VIEW_SUFFIX = "::expandedDayView";
+
+    private static final String DEFAULT_EXPANDED_DAY_VIEW_CLASS = "o_expandedDayView";
+
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         if (!component.isRendered())
@@ -59,6 +66,7 @@ public class MonthTableRenderer extends TimetableViewRenderer {
         AjaxUtil.prepareComponentForAjax(context, timetableView);
         ResponseWriter writer = context.getResponseWriter();
         String clientId = timetableView.getClientId(context);
+        Styles.renderStyleClasses(context, timetableView);
         writer.startElement("table", timetableView);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("cellspacing", "0", null);
@@ -86,7 +94,8 @@ public class MonthTableRenderer extends TimetableViewRenderer {
         writer.startElement("td", timetableView);
         writer.writeAttribute("style", "height: 100%", null);
 
-        renderContentTable(writer, timetableView, clientId, resources);
+        renderContentTable(context, timetableView, clientId, resources);
+
         encodeEventEditor(context, timetableView, resources);
         encodeActionBar(context, timetableView);
 
@@ -97,10 +106,57 @@ public class MonthTableRenderer extends TimetableViewRenderer {
 
         writer.endElement("tbody");
         writer.endElement("table");
+        timetableView.getExpandedDayViewFooter();
 
-        Styles.renderStyleClasses(context, timetableView);
+
 
     }
+
+    private void renderExpandedDayView(FacesContext context, MonthTable monthTable) throws IOException{
+        UIComponent header = monthTable.getExpandedDayViewHeader();
+        if (header == null ){
+            header = new ScrollButton(ScrollDirection.UP);
+            header.setParent(monthTable);
+        }
+        UIComponent footer = monthTable.getExpandedDayViewFooter();
+        if (footer == null ){
+            footer = new ScrollButton(ScrollDirection.DOWN);
+            footer.setParent(monthTable);
+        }
+        String expandDayViewId = monthTable.getClientId(context) + EXPANDED_VIEW_SUFFIX;
+        ResponseWriter writer = context.getResponseWriter();
+        writer.startElement("div", monthTable);
+
+        writer.writeAttribute("id", expandDayViewId , null);
+
+        writer.writeAttribute("class",Styles.getCSSClass(context, monthTable, monthTable.getExpandedDayViewStyle(), StyleGroup.regularStyleGroup(),
+                monthTable.getExpandedDayViewClass(), getDefaultExpandedDayViewClass()),null);
+        writer.writeAttribute("style", "position: absolute; z-index:150;", null);
+
+        writer.startElement("div", monthTable);
+        //TODO: rework with z-index
+        writer.writeAttribute("style", "width: 100%; z-index: 213123; position: relative;", null);
+        writer.writeAttribute("id", expandDayViewId + "::header" , null);
+        header.encodeAll(context);
+        writer.endElement("div");
+
+        writer.startElement("div", monthTable);
+        writer.writeAttribute("style", "height: 100%; overflow:hidden; position: relative;", null);
+        writer.writeAttribute("id", expandDayViewId + "::eventBlock" , null);
+        writer.endElement("div");
+
+
+        writer.startElement("div", monthTable);
+        //TODO: move ID to static
+        writer.writeAttribute("id", expandDayViewId + "::footer" , null);
+        //TODO: rework with z-index
+        writer.writeAttribute("style", "width: 100%; position: relative; z-index: 999; ", null);
+        footer.encodeAll(context);
+        writer.endElement("div");
+
+        writer.endElement("div");
+    }
+
 
     private void renderWeekdayHeadersRow(FacesContext context, final MonthTable timetableView, String clientId) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
@@ -121,14 +177,17 @@ public class MonthTableRenderer extends TimetableViewRenderer {
     }
 
     private void renderContentTable(
-            ResponseWriter writer,
+            FacesContext context,
             final MonthTable timetableView,
             final String clientId,
             final List<TimetableResource> resources) throws IOException {
+
+        ResponseWriter writer = context.getResponseWriter();
         writer.startElement("div", timetableView);
         writer.writeAttribute("id", clientId + "::scroller", null);
+        writer.writeAttribute("style",  "overflow : visible; overflow-x : visible; overflow-y = hidden;", null);
         writer.writeAttribute("class", "o_timetableView_scroller", null);
-
+        renderExpandedDayView(context, timetableView);
         int colCount = 7;
 
         new TableRenderer(clientId + Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "table", 0, 0, 0, "o_timetableView_table") {
@@ -307,6 +366,7 @@ public class MonthTableRenderer extends TimetableViewRenderer {
         Styles.addStyleJsonParam(context, timetableView, stylingParams, "moreLinkClass",
                 timetableView.getMoreLinkStyle(), timetableView.getMoreLinkClass());
         Rendering.addJsonParam(stylingParams, "moreLinkText", timetableView.getMoreLinkText());
+        Rendering.addJsonParam(stylingParams, "expandTransitionPeriod", timetableView.getExpandTransitionPeriod().intValue());
 
         return stylingParams;
     }
@@ -357,6 +417,10 @@ public class MonthTableRenderer extends TimetableViewRenderer {
 
         encodeEventAreas(context, timetableView, events);
         return DataUtil.listToJSONArray(events, timeZoneParam);
+    }
+
+    protected  String getDefaultExpandedDayViewClass(){
+        return DEFAULT_EXPANDED_DAY_VIEW_CLASS;
     }
 
     protected String getComponentName() {

@@ -17,11 +17,6 @@
         <o:timePeriodSwitcher locale="en"/>
       </f:facet>
       <o:timetableEvent style="text-align: center;" descriptionStyle="color: #5f5f5f;" escapeDescription="false" escapeName="false"/>
-      <o:eventArea horizontalAlignment="right" verticalAlignment="above">
-        <o:commandLink render="dayTable" actionListener="#{DayTableBean1.doLater}" title="Postpone training for 1 hour" style="margin: 10px" value="1 hour later">
-          <h:outputText value="1&#160;hour&#160;later" escape="false"/>
-        </o:commandLink>
-      </o:eventArea>
 
       <o:eventActionBar>
         <o:eventAction id="customEventAction" actionListener="#{DayTableBean1.postponeEventActionListener}"
