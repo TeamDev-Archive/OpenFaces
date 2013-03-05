@@ -131,7 +131,7 @@ public class MonthTableRenderer extends TimetableViewRenderer {
 
         writer.writeAttribute("class",Styles.getCSSClass(context, monthTable, monthTable.getExpandedDayViewStyle(), StyleGroup.regularStyleGroup(),
                 monthTable.getExpandedDayViewClass(), getDefaultExpandedDayViewClass()),null);
-        writer.writeAttribute("style", "position: absolute; z-index:150;", null);
+        writer.writeAttribute("style", "position: absolute;", null);
 
         writer.startElement("div", monthTable);
         //TODO: rework with z-index
@@ -150,7 +150,7 @@ public class MonthTableRenderer extends TimetableViewRenderer {
         //TODO: move ID to static
         writer.writeAttribute("id", expandDayViewId + "::footer" , null);
         //TODO: rework with z-index
-        writer.writeAttribute("style", "width: 100%; position: relative; z-index: 999; ", null);
+        writer.writeAttribute("style", "width: 100%; position: relative; ", null);
         footer.encodeAll(context);
         writer.endElement("div");
 

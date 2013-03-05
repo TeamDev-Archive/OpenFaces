@@ -110,7 +110,7 @@ O$.MonthTable = {
           O$.invokeWhenVisible(monthTable._expandedDayView, function (){monthTable._expandedDayView._correctMarginsForButtonLayout()});
         },
         _scrollContent: function (delta){
-          if (Math.abs(this.scrollPos) + O$.getElementSize(this).height - delta - this.footerHeight >  this.allEventHeight || this.scrollPos + delta > 0)
+          if (Math.abs(this.scrollPos) + O$.getElementSize(this).height - delta + this.footerHeight >  this.allEventHeight || this.scrollPos + delta > 0)
             return;
           this.scrollPos += delta;
           for (var i = 0; i<this.eventBlock.childNodes.length;i++){
@@ -145,6 +145,9 @@ O$.MonthTable = {
         },
 
         _expandDayView: function (dayCell){
+          if (this.opened){
+            this._contractDayView();
+          }
           this.style.display = "";
           var cellBoundaries = O$.getElementBorderRectangle(dayCell, true);
           O$.setElementPos(this, cellBoundaries);
@@ -168,6 +171,11 @@ O$.MonthTable = {
           this.footerHeight = O$.getElementSize(this.footer).height;
           this.eventBlock.style.marginTop = -1 * this.headerHeight + "px"
           this.eventBlock.style.marginBottom = -1 * this.footerHeight + "px"
+        },
+        _correctExpandedDayViewZIndex : function (){
+          this.style.zIndex  = monthTable._maxZIndex + 5;
+          this.header.style.zIndex = monthTable._maxZIndex + 5;
+          this.footer.style.zIndex = monthTable._maxZIndex + 5;
         }
     });
     monthTable._expandedDayView._init.call(monthTable._expandedDayView);
@@ -788,7 +796,7 @@ O$.MonthTable = {
                 }
 
                 this._updateEventZIndexes();
-                monthTable._expandedDayView.style.zIndex  = this._maxZIndex + 5;
+                monthTable._expandedDayView._correctExpandedDayViewZIndex();
               },
 
               previousMonth: function() {
