@@ -25,8 +25,8 @@ O$.MaskEdit = {
     //TODO:1 - This values have to be passed from server
     //TODO:2 - Such init attributes have to be initialised inside O$.initComponent method
     maskEdit.mask = "#########";
-    maskEdit.maskSeparator = "+(380) ___ ___ __._ (life,mts)"; // TODO: BadName maskBlank or something like that
-    maskEdit.maskValue = new Array(); // TODO: 4 - usually we use []
+    maskEdit.maskSeparator = "//___///___///__///";   // TODO: rename this it's not separator string Blank maybe?
+    maskEdit.maskValue = new Array(); // TODO: we usually use []
     maskEdit.primaryMaskValue = new Array();
     maskEdit.maskSeparatorLenght = maskEdit.maskSeparator.length;
     maskEdit.maskSeparatorPosition = new Array();
@@ -45,17 +45,17 @@ O$.MaskEdit = {
       maskEdit.maskValue.push(maskEdit.maskSeparator[i]);
       maskEdit.primaryMaskValue.push(maskEdit.maskSeparator[i]);
     }
-    maskEdit.isFinishPosition = maskEdit.maskInputPosition.length <= 1; // ??
-
+    maskEdit.isFinishPosition = maskEdit.maskInputPosition.length <= 1;// ??
+    maskEdit.isCursorIsSeparator = false;
 
     maskEdit.maskInputPositionCursor = 0;
     maskEdit.value = maskEdit.maskSeparator;
     maskEdit.cursorPosition = maskEdit.maskInputPosition[0];
-    setCaretToPos(maskEdit, maskEdit.cursorPosition);
+
     maskEdit.numeric = "1234567890";
     maskEdit.symbol = "`~,.?!@#$%^&*(){}[]";
-
     //TODO: look  O$._selectTextRange from util.js
+    setCaretToPos(maskEdit, maskEdit.cursorPosition);
     function setSelectionRange(input, selectionStart, selectionEnd) {
       if (input.setSelectionRange) {
         input.focus();
@@ -212,17 +212,39 @@ O$.MaskEdit = {
                 return txt;
               },
 
-              onclick:function () {
+              onclick:function (event) {
+                event = event || window.event;
+
                 var clickCursorPosition = this.doGetCaretPosition(this);
-                console.log(this.maskInputPosition);
-                console.log(clickCursorPosition);
-                //TODO: why not one if with "||" ???
-                if (clickCursorPosition < this.maskInputPosition[1]) {
+                //TODO: sure that it not possible to connect them? 
+                if (clickCursorPosition < this.maskInputPosition[0]) {
+                  this.setCaretToPos(this, this.cursorPosition);
+                  event.stopPropagation ? event.stopPropagation() : (event.cancelBubble = true);
+                  return;
+
+                } else if (clickCursorPosition > (this.maskInputPosition[this.maskInputPosition.length - 1] + 1)) {
+                  this.setCaretToPos(this, this.cursorPosition);
+                  event.stopPropagation ? event.stopPropagation() : (event.cancelBubble = true);
                   return;
                 }
-                if (clickCursorPosition > this.maskInputPosition[this.maskInputPosition.length]) {
+
+                for (var i in this.maskInputPosition) {
+                  if (clickCursorPosition == this.maskInputPosition[i]) {
+                    this.cursorPosition = this.maskInputPosition[i];
+                    this.maskInputPositionCursor = i;
+
+                    return;
+                  }
+                }
+                if (clickCursorPosition == this.maskInputPosition[this.maskInputPosition.length - 1]) {
+                  this.isFinishPosition = true;
+                  this.cursorPosition = clickCursorPosition;
                   return;
                 }
+
+                this.isCursorIsSeparator = true;
+
+                console.log(this.cursorPosition);
 
               },
 
@@ -243,7 +265,14 @@ O$.MaskEdit = {
               // TODO: it will be useful to group all control keys workaround inside other 'extend'
               isKeyDelete:function () {
                 if (this.getSelectionText()) {
+                  var clickCursorPosition = this.doGetCaretPosition(this);
+                  for (var i = 0; i < this.getSelectionText().length - 1; i++) {
+                    this.maskValue[clickCursorPosition + i] = this.primaryMaskValue[clickCursorPosition + i];
 
+                  }
+                  this.value = this.toStringMaskValue(this.maskValue);
+                  this.setCaretToPos(this, this.cursorPosition);
+                  return false;
                 }
                 if (this.isFinishPosition) return false;
                 if (this.maskInputPositionCursor != (this.maskInputPosition.length - 1)) {
@@ -268,6 +297,22 @@ O$.MaskEdit = {
                 if (this.isFinishPosition) {
                   return false;
                 }
+
+                if (this.isCursorIsSeparator) {
+                  for (var i in this.maskInputPosition) {
+                    if (this.cursorPosition < this.maskInputPosition[i]) {
+                      this.cursorPosition = this.maskInputPosition[i];
+                      this.setCaretToPos(this, this.cursorPosition);
+                      if (i == this.maskInputPosition.length - 1) {
+                        this.isFinishPosition = true;
+
+                      }
+                      this.isCursorIsSeparator = false;
+                      return false;
+                    }
+                  }
+                }
+
                 if (this.maskInputPositionCursor != (this.maskInputPosition.length - 1)) {
                   if ((this.maskInputPositionCursor != (this.maskInputPosition.length - 1)))
                     this.maskInputPositionCursor++;
@@ -286,6 +331,19 @@ O$.MaskEdit = {
               },
 
               isKeyLeft:function () {
+                if (this.isCursorIsSeparator) {
+                  for (var i in this.maskInputPosition) {
+                    if (this.cursorPosition > this.maskInputPosition[i]) {
+                      if (this.cursorPosition < this.maskInputPosition[i + 1]) {
+                        this.cursorPosition = this.maskInputPosition[i];
+                        this.setCaretToPos(this, this.cursorPosition);
+                        this.isCursorIsSeparator = false;
+                        return false;
+                      }
+                    }
+                  }
+                }
+
                 if (this.isFinishPosition) {
                   this.cursorPosition--;
                   this.setCaretToPos(this, this.cursorPosition);
