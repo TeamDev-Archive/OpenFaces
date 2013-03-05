@@ -360,6 +360,10 @@ O$.MonthTable = {
                 var eventElement = super_addEventElement.call(this, event, part);
 
                 O$.extend(event, {
+                  updatePresentation: function(){
+                    monthTable._recalculatePositions();
+                  },
+
                   _getDraggablePartIndex: function() {
                     for (var i = 0; i < event.parts.length; i++) {
                       part = event.parts[i];
@@ -471,6 +475,7 @@ O$.MonthTable = {
                   this.style.display = "";
                   this._backgroundElement.style.display = "";
                   var cell = O$.MonthTable.getCellForDay(monthTable,part.start);
+                  var x1,y1,x2,y2;
                   if (part.expandedPart){
                     var changeEventParent = function(newParent){
                       newParent.appendChild(this);
@@ -479,35 +484,26 @@ O$.MonthTable = {
                     changeEventParent.call(this, monthTable._expandedDayView.eventBlock);
                     var cellBoundaries = O$.getElementBorderRectangle(monthTable._expandedDayView.eventBlock, true);
 
-                    var y1 = monthTable._expandedDayView.headerHeight + eventElementHeight * monthTable._expandedDayView.eventCount;
-                    var y2 = y1 + eventElementHeight;
+                    y1 = monthTable._expandedDayView.headerHeight + eventElementHeight * monthTable._expandedDayView.eventCount;
+                    y2 = y1 + eventElementHeight;
 
                     monthTable._expandedDayView.eventCount = monthTable._expandedDayView.eventCount + 1;
                     monthTable._expandedDayView.allEventHeight = y1 + eventElementHeight;
-                    var x1 = 0 + (event.type != "reserved" ? eventsLeftOffset : reservedEventsLeftOffset);
+                    x1 = 0 + (event.type != "reserved" ? eventsLeftOffset : reservedEventsLeftOffset);
                     if (event.start.getDate() < part.start.getDate()){
                       x1 -= 50;
                     };
-                    var x2 = cellBoundaries.getMaxX() - cellBoundaries.getMinX() - (event.type != "reserved" ? eventsRightOffset : reservedEventsRightOffset);
+                    x2 = cellBoundaries.getMaxX() - cellBoundaries.getMinX() - (event.type != "reserved" ? eventsRightOffset : reservedEventsRightOffset);
                     if (event.end.getDate() > part.end.getDate()){
                       x2 += 50;
                     };
-                    var rect = new O$.Rectangle(Math.round(x1), Math.round(y1),
-                            Math.round(x2 - x1), Math.round(y2 - y1));
-                    this._rect = rect;
                   }else{
                     var endDayCell = O$.MonthTable.getCellForDay(monthTable,part.end);
                     var endDayCellBoundaries = O$.getElementBorderRectangle(endDayCell, true);
 
                     var startDayCellBoundaries = O$.getElementBorderRectangle(cell, true);
-
-                    var rightBorderOverflow =  part.index < (part.event.parts.length - 1 - (part.event.parts[part.event.parts.length-1].expandedPart ? 1 : 0 ));
-                    var leftBorderOverflow = part.index > 0;
-
-                    var x1 = startDayCellBoundaries.getMinX() + (event.type != "reserved" ? eventsLeftOffset : reservedEventsLeftOffset);
-                    var x2 = - (event.type != "reserved" ? eventsRightOffset : reservedEventsRightOffset);
-                    var cellWidth = startDayCellBoundaries.getMaxX() - startDayCellBoundaries.getMinX();
-
+                    x1 = startDayCellBoundaries.getMinX() + (event.type != "reserved" ? eventsLeftOffset : reservedEventsLeftOffset);
+                    x2 = - (event.type != "reserved" ? eventsRightOffset : reservedEventsRightOffset);
 
                     //TODO: connect this with almost the same code for expanded day view
                     if (event.start.getDate() < part.start.getDate()){
@@ -521,22 +517,20 @@ O$.MonthTable = {
 
 
                     var placeIndex = event.placeIndex;
-                    var y1 = startDayCellBoundaries.getMinY() + eventElementHeight * placeIndex;
-                    var y2 = y1 + eventElementHeight;
+                    y1 = startDayCellBoundaries.getMinY() + eventElementHeight * placeIndex;
+                    y2 = y1 + eventElementHeight;
 
                     var maxY = startDayCellBoundaries.getMaxY() - moreLinkElementHeight;
                     //TODO: not actually sure that we need two ifs to hide element that is not displayed
+                    if (y2 > maxY && ! cell._moreLinkData) {
+                      cell._moreLinkData = { topY: y1 };
+                    }
                     if (cell._moreLinkData ) {
                       this.style.display = "none";
                       this._backgroundElement.style.display = "none";
                       return;
                     }
-                    if (y2 > maxY ) {
-                      cell._moreLinkData = { topY: y1 };
-                      this.style.display = "none";
-                      this._backgroundElement.style.display = "none";
-                      return;
-                    }
+
 
 
 
@@ -545,11 +539,10 @@ O$.MonthTable = {
                       var scrollerWidth = scroller.offsetWidth - scroller.clientWidth;
                       x2 -= scrollerWidth;
                     }
-                    var rect = new O$.Rectangle(Math.round(x1), Math.round(y1),
-                            Math.round(x2 - x1), Math.round(y2 - y1));
-
-                    this._rect = rect;
                   };
+
+                  this._rect = new O$.Rectangle(Math.round(x1), Math.round(y1),
+                          Math.round(x2 - x1), Math.round(y2 - y1));
                   var backgroundElement = this._backgroundElement;
                   O$.setElementBorderRectangle(eventElement, eventElement._rect);
                   O$.setElementBorderRectangle(backgroundElement, eventElement._rect);
@@ -698,7 +691,6 @@ O$.MonthTable = {
 
                 this._events.sort(function(row1, row2){
                   var value1 = row1.start, value2 = row2.start;
-                  console.log("row1.start = " + row1.start + ", row2.start = " + row2.start);
                   if (!O$._datesEqual(value1, value2)){
                     return (value1 > value2) ? 1 : -1;
                   }
