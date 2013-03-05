@@ -110,8 +110,11 @@ O$.MonthTable = {
           O$.invokeWhenVisible(monthTable._expandedDayView, function (){monthTable._expandedDayView._correctMarginsForButtonLayout()});
         },
         _scrollContent: function (delta){
-          if (Math.abs(this.scrollPos) + O$.getElementSize(this).height - delta + this.footerHeight >  this.allEventHeight || this.scrollPos + delta > 0)
+          //TODO: cache O$.getElementSize(this).height value
+          if (this.scrollPos + delta > this.headerHeight ||
+              this.scrollPos + delta + this.footerHeight +this.allEventHeight  < O$.getElementSize(this).height){
             return;
+          };
           this.scrollPos += delta;
           for (var i = 0; i<this.eventBlock.childNodes.length;i++){
             var position = O$.getNumericElementStyle(this.eventBlock.childNodes[i], "top");
