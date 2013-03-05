@@ -23,7 +23,7 @@ O$.MaskEdit = {
 
     var maskEdit = O$(inputId);
     maskEdit.mask = "#########";
-    maskEdit.maskSeparator = "+(380) ___ ___ __._ (life,mts)";
+    maskEdit.maskSeparator = "//___///___///__///";
     maskEdit.maskValue = new Array();
     maskEdit.primaryMaskValue = new Array();
     maskEdit.maskSeparatorLenght = maskEdit.maskSeparator.length;
@@ -45,14 +45,15 @@ O$.MaskEdit = {
       maskEdit.primaryMaskValue.push(maskEdit.maskSeparator[i]);
     }
     maskEdit.isFinishPosition = maskEdit.maskInputPosition.length <= 1;
-
+    maskEdit.isCursorIsSeparator = false;
 
     maskEdit.maskInputPositionCursor = 0;
     maskEdit.value = maskEdit.maskSeparator;
     maskEdit.cursorPosition = maskEdit.maskInputPosition[0];
-    setCaretToPos(maskEdit, maskEdit.cursorPosition);
+
     maskEdit.numeric = "1234567890";
     maskEdit.symbol = "`~,.?!@#$%^&*(){}[]";
+    setCaretToPos(maskEdit, maskEdit.cursorPosition);
     function setSelectionRange(input, selectionStart, selectionEnd) {
       if (input.setSelectionRange) {
         input.focus();
@@ -206,16 +207,39 @@ O$.MaskEdit = {
                 return txt;
               },
 
-              onclick:function () {
+              onclick:function (event) {
+                event = event || window.event;
+
                 var clickCursorPosition = this.doGetCaretPosition(this);
-                console.log(this.maskInputPosition);
-                console.log(clickCursorPosition);
-                if (clickCursorPosition < this.maskInputPosition[1]) {
+
+                if (clickCursorPosition < this.maskInputPosition[0]) {
+                  this.setCaretToPos(this, this.cursorPosition);
+                  event.stopPropagation ? event.stopPropagation() : (event.cancelBubble = true);
+                  return;
+
+                } else if (clickCursorPosition > (this.maskInputPosition[this.maskInputPosition.length - 1] + 1)) {
+                  this.setCaretToPos(this, this.cursorPosition);
+                  event.stopPropagation ? event.stopPropagation() : (event.cancelBubble = true);
                   return;
                 }
-                if (clickCursorPosition > this.maskInputPosition[this.maskInputPosition.length]) {
+
+                for (var i in this.maskInputPosition) {
+                  if (clickCursorPosition == this.maskInputPosition[i]) {
+                    this.cursorPosition = this.maskInputPosition[i];
+                    this.maskInputPositionCursor = i;
+
+                    return;
+                  }
+                }
+                if (clickCursorPosition == this.maskInputPosition[this.maskInputPosition.length - 1]) {
+                  this.isFinishPosition = true;
+                  this.cursorPosition = clickCursorPosition;
                   return;
                 }
+
+                this.isCursorIsSeparator = true;
+
+                console.log(this.cursorPosition);
 
               },
 
@@ -236,7 +260,14 @@ O$.MaskEdit = {
 
               isKeyDelete:function () {
                 if (this.getSelectionText()) {
+                  var clickCursorPosition = this.doGetCaretPosition(this);
+                  for (var i = 0; i < this.getSelectionText().length - 1; i++) {
+                    this.maskValue[clickCursorPosition + i] = this.primaryMaskValue[clickCursorPosition + i];
 
+                  }
+                  this.value = this.toStringMaskValue(this.maskValue);
+                  this.setCaretToPos(this, this.cursorPosition);
+                  return false;
                 }
                 if (this.isFinishPosition) return false;
                 if (this.maskInputPositionCursor != (this.maskInputPosition.length - 1)) {
@@ -261,6 +292,22 @@ O$.MaskEdit = {
                 if (this.isFinishPosition) {
                   return false;
                 }
+
+                if (this.isCursorIsSeparator) {
+                  for (var i in this.maskInputPosition) {
+                    if (this.cursorPosition < this.maskInputPosition[i]) {
+                      this.cursorPosition = this.maskInputPosition[i];
+                      this.setCaretToPos(this, this.cursorPosition);
+                      if (i == this.maskInputPosition.length - 1) {
+                        this.isFinishPosition = true;
+
+                      }
+                      this.isCursorIsSeparator = false;
+                      return false;
+                    }
+                  }
+                }
+
                 if (this.maskInputPositionCursor != (this.maskInputPosition.length - 1)) {
                   if ((this.maskInputPositionCursor != (this.maskInputPosition.length - 1)))
                     this.maskInputPositionCursor++;
@@ -279,6 +326,19 @@ O$.MaskEdit = {
               },
 
               isKeyLeft:function () {
+                if (this.isCursorIsSeparator) {
+                  for (var i in this.maskInputPosition) {
+                    if (this.cursorPosition > this.maskInputPosition[i]) {
+                      if (this.cursorPosition < this.maskInputPosition[i + 1]) {
+                        this.cursorPosition = this.maskInputPosition[i];
+                        this.setCaretToPos(this, this.cursorPosition);
+                        this.isCursorIsSeparator = false;
+                        return false;
+                      }
+                    }
+                  }
+                }
+
                 if (this.isFinishPosition) {
                   this.cursorPosition--;
                   this.setCaretToPos(this, this.cursorPosition);
