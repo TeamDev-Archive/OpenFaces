@@ -22,14 +22,16 @@ O$.MaskEdit = {
   _init:function (inputId, mask, maskSeparator, rolloverClass, focusedClass, disabled, dictionary) {
 
     var maskEdit = O$(inputId);
+    //TODO:1 - This values have to be passed from server
+    //TODO:2 - Such init attributes have to be initialised inside O$.initComponent method
     maskEdit.mask = "#########";
-    maskEdit.maskSeparator = "+(380) ___ ___ __._ (life,mts)";
-    maskEdit.maskValue = new Array();
+    maskEdit.maskSeparator = "+(380) ___ ___ __._ (life,mts)"; // TODO: BadName maskBlank or something like that
+    maskEdit.maskValue = new Array(); // TODO: 4 - usually we use []
     maskEdit.primaryMaskValue = new Array();
     maskEdit.maskSeparatorLenght = maskEdit.maskSeparator.length;
     maskEdit.maskSeparatorPosition = new Array();
     maskEdit.maskInputPosition = new Array();
-    if (dictionary == null) {
+    if (dictionary == null) { // TODO: 3 - why not?:  maskEdit.dictionary = dictionary ?  dictionary : "absdefghijklmnopqrstuwwxyz";
       maskEdit.dictionary = "absdefghijklmnopqrstuwwxyz"
     } else {
       maskEdit.dictionary = dictionary;
@@ -39,12 +41,11 @@ O$.MaskEdit = {
         maskEdit.maskSeparatorPosition.push(i)
       } else {
         maskEdit.maskInputPosition.push(i);
-
       }
       maskEdit.maskValue.push(maskEdit.maskSeparator[i]);
       maskEdit.primaryMaskValue.push(maskEdit.maskSeparator[i]);
     }
-    maskEdit.isFinishPosition = maskEdit.maskInputPosition.length <= 1;
+    maskEdit.isFinishPosition = maskEdit.maskInputPosition.length <= 1; // ??
 
 
     maskEdit.maskInputPositionCursor = 0;
@@ -53,6 +54,8 @@ O$.MaskEdit = {
     setCaretToPos(maskEdit, maskEdit.cursorPosition);
     maskEdit.numeric = "1234567890";
     maskEdit.symbol = "`~,.?!@#$%^&*(){}[]";
+
+    //TODO: look  O$._selectTextRange from util.js
     function setSelectionRange(input, selectionStart, selectionEnd) {
       if (input.setSelectionRange) {
         input.focus();
@@ -66,7 +69,7 @@ O$.MaskEdit = {
         range.select();
       }
     }
-
+    //TODO: look  O$._selectTextRange from util.js
     function setCaretToPos(input, pos) {
       setSelectionRange(input, pos, pos);
     }
@@ -98,9 +101,11 @@ O$.MaskEdit = {
                 }
                 return false;
               },
+              //TODO: start inside methods with '_'
               toStringMaskValue:function (maskValue) {
                 return maskValue.toString().replace(/\,/g, "");
               },
+              //TODO: start inside methods with '_'
               getChar:function (event) {
                 if (event.which == null) {
                   if (event.keyCode < 32) return null;
@@ -112,6 +117,7 @@ O$.MaskEdit = {
                 }
                 return null;
               },
+              //TODO: hm there is function setSelectionRange(input, selectionStart, selectionEnd) above ?
               setCursorPosition:function (input, selectionStart, selectionEnd) {
 
                 if (input.setSelectionRange) {
@@ -180,7 +186,7 @@ O$.MaskEdit = {
                     return true;
                 }
               },
-
+              //TODO: hm there is function setSelectionRange(input, selectionStart, selectionEnd) above ?
               setCaretToPos:function (input, pos) {
                 this.setCursorPosition(input, pos, pos);
               },
@@ -195,7 +201,7 @@ O$.MaskEdit = {
               },
 
               getSelectionText:function () {
-
+                // TODO: var txt ?
                 if (window.getSelection) {
                   txt = window.getSelection().toString();
                 } else if (document.getSelection) {
@@ -210,6 +216,7 @@ O$.MaskEdit = {
                 var clickCursorPosition = this.doGetCaretPosition(this);
                 console.log(this.maskInputPosition);
                 console.log(clickCursorPosition);
+                //TODO: why not one if with "||" ???
                 if (clickCursorPosition < this.maskInputPosition[1]) {
                   return;
                 }
@@ -233,7 +240,7 @@ O$.MaskEdit = {
 
                 return CaretPos;
               },
-
+              // TODO: it will be useful to group all control keys workaround inside other 'extend'
               isKeyDelete:function () {
                 if (this.getSelectionText()) {
 
