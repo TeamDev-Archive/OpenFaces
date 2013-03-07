@@ -69,6 +69,7 @@ O$.MaskEdit = {
         range.select();
       }
     }
+
     //TODO: look  O$._selectTextRange from util.js
     function setCaretToPos(input, pos) {
       setSelectionRange(input, pos, pos);
@@ -82,13 +83,13 @@ O$.MaskEdit = {
                 e = e || window.event;
                 if (e.ctrlKey || e.altKey || e.metaKey)
                   return;
-                var pressChar = this.getChar(e || window.event);
+                var pressChar = this._getChar(e || window.event);
                 if (!pressChar)
                   return;
 
                 if (this._isValidChar(pressChar)) {
                   this.maskValue[this.cursorPosition] = pressChar;
-                  this.value = this.toStringMaskValue(this.maskValue);
+                  this.value = this._toStringMaskValue(this.maskValue);
                   if (this.maskInputPositionCursor != (this.maskInputPosition.length - 1)) {
                     this.maskInputPositionCursor++;
                     this.cursorPosition = this.maskInputPosition[this.maskInputPositionCursor];
@@ -101,12 +102,12 @@ O$.MaskEdit = {
                 }
                 return false;
               },
-              //TODO: start inside methods with '_'
-              toStringMaskValue:function (maskValue) {
+
+              _toStringMaskValue:function (maskValue) {
                 return maskValue.toString().replace(/\,/g, "");
               },
-              //TODO: start inside methods with '_'
-              getChar:function (event) {
+
+              _getChar:function (event) {
                 if (event.which == null) {
                   if (event.keyCode < 32) return null;
                   return String.fromCharCode(event.keyCode)
@@ -118,6 +119,7 @@ O$.MaskEdit = {
                 return null;
               },
               //TODO: hm there is function setSelectionRange(input, selectionStart, selectionEnd) above ?
+              //yes, but if I call this function "setSelectionRange" , I override built function
               setCursorPosition:function (input, selectionStart, selectionEnd) {
 
                 if (input.setSelectionRange) {
@@ -201,7 +203,7 @@ O$.MaskEdit = {
               },
 
               getSelectionText:function () {
-                // TODO: var txt ?
+                var txt;
                 if (window.getSelection) {
                   txt = window.getSelection().toString();
                 } else if (document.getSelection) {
@@ -217,33 +219,7 @@ O$.MaskEdit = {
 
                 var clickCursorPosition = this.doGetCaretPosition(this);
                 //TODO: sure that it not possible to connect them? 
-                if (clickCursorPosition < this.maskInputPosition[0]) {
-                  this.setCaretToPos(this, this.cursorPosition);
-                  event.stopPropagation ? event.stopPropagation() : (event.cancelBubble = true);
-                  return;
-
-                } else if (clickCursorPosition > (this.maskInputPosition[this.maskInputPosition.length - 1] + 1)) {
-                  this.setCaretToPos(this, this.cursorPosition);
-                  event.stopPropagation ? event.stopPropagation() : (event.cancelBubble = true);
-                  return;
-                }
-
-                for (var i in this.maskInputPosition) {
-                  if (clickCursorPosition == this.maskInputPosition[i]) {
-                    this.cursorPosition = this.maskInputPosition[i];
-                    this.maskInputPositionCursor = i;
-
-                    return;
-                  }
-                }
-                if (clickCursorPosition == this.maskInputPosition[this.maskInputPosition.length - 1]) {
-                  this.isFinishPosition = true;
-                  this.cursorPosition = clickCursorPosition;
-                  return;
-                }
-
-                this.isCursorIsSeparator = true;
-
+                this._getCursorPosition(clickCursorPosition, true);
                 console.log(this.cursorPosition);
 
               },
@@ -391,6 +367,37 @@ O$.MaskEdit = {
 
                 }
                 return false;
+              },
+
+              _getCursorPosition:function (allegedPosition, carecter) {
+                if (carecter) {
+                  if ((clickCursorPosition < this.maskInputPosition[0]) ||
+                          (clickCursorPosition > (this.maskInputPosition[this.maskInputPosition.length - 1] + 1))) {
+                    this.setCaretToPos(this, this.cursorPosition);
+                    event.stopPropagation ? event.stopPropagation() : (event.cancelBubble = true);
+                    return;
+                  }
+                  for (var i in this.maskInputPosition) {
+                    if (clickCursorPosition == this.maskInputPosition[i]) {
+                      this.cursorPosition = this.maskInputPosition[i];
+                      this.maskInputPositionCursor = i;
+                      return;
+                    }
+                  }
+                  if (clickCursorPosition == this.maskInputPosition[this.maskInputPosition.length - 1]) {
+                    this.isFinishPosition = true;
+                    this.cursorPosition = clickCursorPosition;
+                    return;
+                  }
+                  this.isCursorIsSeparator = true;
+                }
+                else {
+                  if(allegedPosition<this.cursorPosition){
+
+                  }else{
+
+                  }
+                }
               }
 
             }
