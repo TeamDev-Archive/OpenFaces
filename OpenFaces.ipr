@@ -1297,7 +1297,7 @@
     </library>
     <library name="JSF Implementation - Mojarra 2.0">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/mojarra/javax.faces-2.1.11.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/mojarra/javax.faces-2.1.12.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES>

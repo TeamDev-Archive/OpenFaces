@@ -121,7 +121,7 @@ O$.AbstractSwitcher = {
 O$.TimePeriodSwitcher = {
   _init: function(switcherId, timetableId) {
     var switcher = O$(switcherId);
-    var layeredPane = jQuery(switcher).find(".o_timetablePeriodSwitcher_lp")[0];
+    var layeredPane = O$(switcherId + "_layeredPane");
 
     function selectPageForViewType() {
       var viewType = timetable.getViewType();
@@ -243,11 +243,11 @@ O$.DaySwitcher = {
 
     if (switcher._text) {
       var textCell = switcher._text.parentNode;
-      var popup = jQuery(textCell).find(".o_daySwitcherPopup")[0];
+      var popup = O$(switcherId + "_popup");
       if (popup) {
         popup.onmousedown = popup.onclick = O$.stopEvent;
         O$.appendClassNames(textCell, ["o_daySwitcherClickableCell"]);
-        var calendar = jQuery(popup).find(".o_calendar")[0];
+        var calendar =O$(switcherId + "_calendar");
         textCell.onclick = function(e) {
           calendar.setSelectedDate(switcher.getDay());
           popup.show();

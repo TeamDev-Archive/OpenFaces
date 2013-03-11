@@ -98,8 +98,9 @@ public class DaySwitcherRenderer extends AbstractSwitcherRenderer {
                 calendar.setValue(new Date());
                 calendar.setLocale(daySwitcher.getLocale());
                 calendar.setTimeZone(daySwitcher.getTimeZone());
-
+                calendar.setId(switcher.getId() + TimePeriodSwitcherRenderer.CALENDAR_SUFFIX);
                 SimplePopup popup = new SimplePopup("o_daySwitcherPopup", calendar);
+                popup.setId(switcher.getId() + TimePeriodSwitcherRenderer.POPUP_SUFFIX);
                 try {
                     popup.encodeAll(context);
                 } catch (IOException e) {
