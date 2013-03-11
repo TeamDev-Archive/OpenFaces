@@ -215,7 +215,7 @@ O$.PopupLayer = {
           var firstExternalAnchorOld = O$(popup.id + O$.PopupLayer.FIRST_EXTERNAL_ANCHOR_SUFFIX);
 
           if (!firstExternalAnchorOld) {
-            firstExternalAnchor = O$.createHiddenFocusElement(popup.id);
+            firstExternalAnchor = O$.createHiddenFocusElement(popup.id + O$.PopupLayer.FIRST_EXTERNAL_ANCHOR_SUFFIX);
           }
           else {
             firstExternalAnchor = firstExternalAnchorOld;
@@ -239,7 +239,7 @@ O$.PopupLayer = {
           var lastExternalAnchor = null;
           var lastExternalAnchorOld = O$(popup.id + O$.PopupLayer.LAST_EXTERNAL_ANCHOR_SUFFIX);
           if (!lastExternalAnchorOld) {
-            lastExternalAnchor = O$.createHiddenFocusElement(popup.id);
+            lastExternalAnchor = O$.createHiddenFocusElement(popup.id  + O$.PopupLayer.LAST_EXTERNAL_ANCHOR_SUFFIX);
           }
           else {
             lastExternalAnchor = lastExternalAnchorOld;
@@ -258,7 +258,7 @@ O$.PopupLayer = {
           };
           body.appendChild(lastExternalAnchor);
 
-          popup._firstInternalAnchor = O$.createHiddenFocusElement(popup.id);
+          popup._firstInternalAnchor = O$.createHiddenFocusElement(popup.id + O$.PopupLayer.FIRST_INTERNAL_ANCHOR_SUFFIX);
           popup._firstInternalAnchor._focusControlElement = true;
           popup.insertBefore(popup._firstInternalAnchor, popup.firstChild);
           popup._firstInternalAnchor.onfocus = function() {
@@ -278,7 +278,7 @@ O$.PopupLayer = {
           }else{
             setTimeout(function (){  popup._firstInternalAnchor.focus() } , 150);
           }
-          popup._lastInternalAnchor = O$.createHiddenFocusElement(popup.id);
+          popup._lastInternalAnchor = O$.createHiddenFocusElement(popup.id + O$.PopupLayer.LAST_INTERNAL_ANCHOR_SUFFIX);
           popup._lastInternalAnchor._focusControlElement = true;
           popup._lastInternalAnchor.onfocus = function() {
             var focusable = O$.getFirstFocusableControl(popup);
