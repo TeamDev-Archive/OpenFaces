@@ -40729,6 +40729,33 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default "More..." -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <name>expandedDayViewStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>expandedDayViewClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>expandTransitionPeriod</name>
+      <deferred-value>
+        <type>java.lang.Integer</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.Integer -->
+      <!-- @default 200 -->
+      <!-- @el true -->
+    </attribute>
   </tag>
 
   <tag>
@@ -43012,26 +43039,6 @@ entering a value and returns a list of suggestions from the server -->
         <type>java.lang.Object</type>
       </deferred-value>
       <!-- @bindingType org.openfaces.component.timetable.Timetable.ViewTypeType -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>A style for the timetable header&apos;s right area.</description>
-      <name>headerRightStyle</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>CSS class name(s) for the timetable header&apos;s right area.</description>
-      <name>headerRightClass</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
@@ -48020,6 +48027,74 @@ entering a value and returns a list of suggestions from the server -->
       </deferred-value>
       <!-- @bindingType String -->
       <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+  </tag>
+  <tag>
+    <name>scrollButton</name>
+    <tag-class>org.openfaces.taglib.jsp.timetable.ScrollButtonJspTag</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+      <description>A style for the scrollButton.</description>
+      <name>buttonStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>CSS class name(s) for the scrollButton.</description>
+      <name>buttonClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A style for the rollover scrollButton.</description>
+      <name>rolloverButtonStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>CSS class name(s) for the rollover scrollButton.</description>
+      <name>rolloverButtonClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Url to button image.</description>
+      <name>buttonImg</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Specifies destination of scrolling for button.
+      </description>
+      <name>scrollDirection</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.timetable.ScrollDirection -->
+      <!-- @default "up" -->
+      <!-- @value "up" Specifies that page index should stay the same when sorting is performed. -->
+      <!-- @value "down" Specifies that the first page should be shown when sorting is performed. -->
       <!-- @el true -->
     </attribute>
   </tag>

@@ -111,7 +111,8 @@ O$.TimeScaleTable = {
                 columns: columns,
                 gridLines: [primaryRowSeparator, resourceColumnSeparator, null, null, null, null, null, null, null, null, null],
                 body: {rowClassName: timetableViewRowClass},
-                forceUsingCellStyles: forceUsingCellStyles
+                forceUsingCellStyles: forceUsingCellStyles,
+                additionalParams: {}
               });
 
       var headerColumns = columnStyles.headerColumns;
@@ -121,7 +122,8 @@ O$.TimeScaleTable = {
                   gridLines: [primaryRowSeparator, resourceColumnSeparator, null, null, null, null, null, null, null, null, null],
                   body: {rowClassName: resourceHeadersRowClass},
                   rowStyles: {bodyRowClass: resourceHeadersRowClass},
-                  forceUsingCellStyles: forceUsingCellStyles
+                  forceUsingCellStyles: forceUsingCellStyles,
+                  additionalParams: {}
                 });
         resourceHeadersTable.style.borderBottom = resourceHeadersRowSeparator;
       }
@@ -648,6 +650,32 @@ O$.TimeScaleTable = {
                         });
               },
 
+              //TODO: move this to timetableScale because we don't need day spliting for month table
+              //TODO: 2move this to weekTable because we don't need day spliting for day table
+              _splitIntoParts: function(event) {
+                var parts = [];
+                var start = this._startTime < event.start ? event.start : this._startTime;
+                var end = this._endTime < event.end ? this._endTime : event.end;
+                var partStart = start;
+                var partEnd = O$.incDay(new Date(partStart.getFullYear(), partStart.getMonth(), partStart.getDate()));
+                var i = 0;
+                do {
+                  var part = {
+                    start: partStart,
+                    end: (partEnd < end) ? partEnd : end,
+                    index: i++,
+                    event: event
+                  };
+                  parts.push(part);
+                  partStart = O$.cloneDate(partEnd);
+                  partEnd = O$.incDay(O$.cloneDate(partEnd));
+                } while (partStart < end);
+
+                parts[0].first = true;
+                parts[parts.length - 1].last = true;
+
+                return parts;
+              },
               _addEventElement: function(event, part) {
                 var eventElement = addEventElement(event, part);
 

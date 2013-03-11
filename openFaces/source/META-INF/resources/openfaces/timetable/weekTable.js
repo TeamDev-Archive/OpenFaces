@@ -120,7 +120,8 @@ O$.WeekTable = {
       columns: weekdayHeaderColumns,
       gridLines: [weekTable._primaryRowSeparator, weekdayColumnSeparator, null, null, null, null, null, null, null, null, null],
       body: {rowClassName: weekdayHeadersRowClass},
-      forceUsingCellStyles: true
+      forceUsingCellStyles: true,
+      additionalParams: {}
     });
     weekdayHeadersTable.style.borderBottom = weekdayHeadersRowSeparator;
 

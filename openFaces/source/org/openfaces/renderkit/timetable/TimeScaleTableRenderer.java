@@ -128,9 +128,9 @@ public abstract class TimeScaleTableRenderer extends TimetableViewRenderer {
                     TimetableResource resource = resources.get((colIndex - 1) % resources.size());
                     UIComponent resourceHeader = timetableView.getResourceHeader();
                     if (resourceHeader != null) {
-                        Components.setRequestVariable("resource", resource);
+                        Components.setRequestVariable("resourcce", resource);
                         resourceHeader.encodeAll(context);
-                        Components.restoreRequestVariable("resource");
+                        Components.restoreRequestVariable("resourcce");
                     } else {
                         writer.write(resource.getName());
                     }

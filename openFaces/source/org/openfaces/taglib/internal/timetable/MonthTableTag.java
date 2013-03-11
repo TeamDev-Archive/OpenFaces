@@ -12,7 +12,6 @@
 package org.openfaces.taglib.internal.timetable;
 
 import org.openfaces.component.timetable.MonthTable;
-import org.openfaces.taglib.internal.AbstractComponentTag;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -73,5 +72,9 @@ public class MonthTableTag extends TimetableViewTag {
         setStringProperty(component, "moreLinkStyle");
         setStringProperty(component, "moreLinkClass");
         setStringProperty(component, "moreLinkText");
+        setStringProperty(component, "expandedDayViewStyle");
+        setStringProperty(component, "expandedDayViewClass");
+        setStringProperty(component, "expandTransitionPeriod");
+
     }
 }

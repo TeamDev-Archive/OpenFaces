@@ -28,25 +28,8 @@ public class Timetable extends TimeScaleTable {
     private static final String FACET_WEEK_VIEW = "weekView";
     private static final String FACET_MONTH_VIEW = "monthView";
 
-    private String headerRightStyle;
-    private String headerRightClass;
     private String onviewtypechange;
 
-    public String getHeaderRightStyle() {
-        return ValueBindings.get(this, "headerRightStyle", headerRightStyle);
-    }
-
-    public void setHeaderRightStyle(String headerRightStyle) {
-        this.headerRightStyle = headerRightStyle;
-    }
-
-    public String getHeaderRightClass() {
-        return ValueBindings.get(this, "headerRightClass", headerRightClass);
-    }
-
-    public void setHeaderRightClass(String headerRightClass) {
-        this.headerRightClass = headerRightClass;
-    }
 
     public String getOnviewtypechange() {
         return ValueBindings.get(this, "onviewtypechange", onviewtypechange);
@@ -90,8 +73,6 @@ public class Timetable extends TimeScaleTable {
         return new Object[]{
                 super.saveState(context),
                 viewType,
-                headerRightClass,
-                headerRightClass,
                 onviewtypechange
         };
     }
@@ -102,8 +83,6 @@ public class Timetable extends TimeScaleTable {
         int i = 0;
         super.restoreState(context, state[i++]);
         viewType = (ViewType) state[i++];
-        headerRightStyle = (String) state[i++];
-        headerRightClass = (String) state[i++];
         onviewtypechange = (String) state[i++];
     }
 

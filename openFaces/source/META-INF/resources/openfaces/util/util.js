@@ -207,7 +207,6 @@ if (!window.O$) {
         return x >= this.getMinX() && x <= this.getMaxX() &&
                 y >= this.getMinY() && y <= this.getMaxY();
       }
-
     })
   });
 
@@ -817,6 +816,18 @@ if (!window.O$) {
     var clonedDate = new Date();
     clonedDate.setTime(date.getTime());
     return clonedDate;
+  };
+
+  O$.getDayInterval = function(date1, date2){
+    var difference_ms = date2.getTime() - date1.getTime();
+    return Math.round(difference_ms/86400000);
+  };
+
+  //TODO: make sure that we need to calculate exactly difference between dates but not between getTime() values
+  O$.firstDateBeforeSecond = function (date1,date2){
+    if (date1.getYear()*10000 + date1.getMonth()*100 + date1.getDay()<date2.getYear()*10000 + date2.getMonth()*100 + date2.getDay())
+      return true;
+    return false;
   };
 
   O$.incDay = function(date, increment) {
@@ -2554,6 +2565,7 @@ if (!window.O$) {
   };
 
   O$.startDragging = function(e, draggable, simulateDblClickForElement) {
+
     var evt = O$.getEvent(e);
     if (simulateDblClickForElement && evt.type == "mousedown") {
       var thisTime = new Date().getTime();
@@ -2591,6 +2603,7 @@ if (!window.O$) {
       document._fireDocumentClicked(evt);
 
     function handleDragMove(e) {
+
       var evt = O$.getEvent(e);
       var draggable = O$._draggedElement;
 
@@ -5429,6 +5442,14 @@ if (!window.O$) {
     }
     return parent;
   };
+
+  O$.invokeWhenVisible = function (element, func){
+    if (O$.isVisibleRecursive(element)){
+      func();
+    }else{
+      setTimeout(function (){O$.invokeWhenVisible(element, func)},100);
+    }
+  }
 
   O$.Link = {
     _init: function(id, disabled, disabledStyle) {
