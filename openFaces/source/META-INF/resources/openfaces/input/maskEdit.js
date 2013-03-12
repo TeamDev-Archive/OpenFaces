@@ -21,7 +21,7 @@
 O$.MaskEdit = {
 
   _init:function (inputId, mask, blank, maskSymbolArray, rolloverClass, focusedClass, disabled, dictionary) {
-    var maskEdit = O$.initComponent(inputId, {
+    var maskEdit = O$.initComponent(inputId, {}, {
               mask:mask,
               blank:blank,
               maskSymbolArray:maskSymbolArray,
@@ -60,7 +60,7 @@ O$.MaskEdit = {
         }
       }
 
-      if (IsMaskSymbol) {
+      if (!IsMaskSymbol) {
         maskEdit.maskSeparatorPosition.push(i)
       } else {
         maskEdit.maskInputPosition.push(i);
@@ -187,6 +187,7 @@ O$.MaskEdit = {
                 switch (key) {
                   case 8:
                     return this._isKeyBackspace();
+
                     break;
                   case 36:
                     return this._isKeyHome();
@@ -214,7 +215,9 @@ O$.MaskEdit = {
 
               onkeydown:function (e) {
                 var key = e.keyCode;
-                return  this.isControlKey(key);
+                var isExit = this.isControlKey(key);
+                console.log(this.cursorPosition);
+                return isExit;
               },
 
               onkeyup:function (e) {
@@ -336,6 +339,7 @@ O$.MaskEdit = {
                   for (i in this.maskInputPosition) {
                     if (allegedPosition == this.maskInputPosition[i]) {
                       this.cursorPosition = this.maskInputPosition[i];
+                      this.isFinishPosition = false;
                       this.maskInputPositionCursor = i;
                       return;
                     }
@@ -345,29 +349,51 @@ O$.MaskEdit = {
                     this.cursorPosition = allegedPosition;
                     return;
                   }
+
                   this.isCursorIsSeparator = true;
+                  this.cursorPosition = allegedPosition;
+
                 }
                 else {
 
 
                   if (allegedPosition < this.cursorPosition) {
-                    if (this.maskInputPositionCursor = 0) return false;
+                    if (this.maskInputPositionCursor == 0) return false;
 
                     for (i = this.maskInputPosition.length - 1; i >= 0; i--) {
-                      if (this.maskInputPosition[i] = allegedPosition) {
+                      if (this.maskInputPosition[i] == allegedPosition) {
                         this.maskInputPositionCursor = i;
                         this.cursorPosition = allegedPosition;
+                        this.isFinishPosition = false;
+
                         return true;
                       }
                     }
+                    if (this.isCursorIsSeparator) {
+                      console.log(this.isCursorIsSeparator);
+                      for (i = this.maskInputPosition.length - 2; i >= 0; i--) {
+                        if ((this.maskInputPosition[i] < allegedPosition) && (this.maskInputPosition[i + 1] > allegedPosition)) {
+                          this.maskInputPositionCursor = i;
+                          this.cursorPosition = this.maskInputPosition[i];
+                          this.isCursorIsSeparator = false;
+                          return  false;
+                        }
 
+                      }
+                    }
+
+                    this.isFinishPosition = false;
+                    this.maskInputPositionCursor--;
+                    this.cursorPosition = this.maskInputPosition[this.maskInputPositionCursor];
+                    return false;
                   } else {
                     if (this.isFinishPosition) return false;
 
                     for (i in this.maskInputPosition) {
-                      if (this.maskInputPosition[i] = allegedPosition) {
+                      if (this.maskInputPosition[i] == allegedPosition) {
                         this.maskInputPositionCursor = i;
                         this.cursorPosition = allegedPosition;
+
                         return true;
                       }
                     }
@@ -376,7 +402,14 @@ O$.MaskEdit = {
                       this.cursorPosition = allegedPosition;
                       return false;
                     }
-
+                    if (this.maskInputPositionCursor == this.maskInputPosition.length - 1) {
+                      this.isFinishPosition = true;
+                      this.cursorPosition++;
+                      return false;
+                    }
+                    this.maskInputPositionCursor++;
+                    this.cursorPosition = this.maskInputPosition[this.maskInputPositionCursor];
+                    return false;
 
                   }
                 }
