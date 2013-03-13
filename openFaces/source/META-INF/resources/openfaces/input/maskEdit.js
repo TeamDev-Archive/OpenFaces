@@ -10,32 +10,29 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-/**
- * Created with IntelliJ IDEA.
- * User: dmitry.kashcheiev
- * Date: 12/19/12
- * Time: 6:30 PM
- * To change this template use File | Settings | File Templates.
- */
-
+  //TODO: Common: check if user able to specify his own onKeyDown/onKeyPress etc event from JSF,
+  //TODO: browser compatibility issues
+  //TODO: client API: js methods for common access such as: getMask, setMask, setValue, getValue,
+  // I mark methods which i actually like now with the comment :OK:
 O$.MaskEdit = {
 
   _init:function (inputId, mask, blank, maskSymbolArray, rolloverClass, focusedClass, disabled, dictionary) {
     var maskEdit = O$.initComponent(inputId, {}, {
+              //TODO: almost half of this value is internal values specify them with '_' at start
               mask:mask,
               blank:blank,
               maskSymbolArray:maskSymbolArray,
-              rolloverClass:rolloverClass,
+              rolloverClass:rolloverClass,      //TODO: Style classes can be passed directly to initComponent method see InitComponent signature
               focusedClass:focusedClass,
               disabled:disabled,
               dictionary:dictionary,
-              maskInputPositionCursor:0,
+              maskInputPositionCursor:0, // TODO: maskInputCursorPosition
               value:blank,
               maskValue:[],
               primaryMaskValue:[],
               maskSeparatorPosition:[],
               maskInputPosition:[],
-              isCursorIsSeparator:false,
+              isCursorIsSeparator:false,    //TODO: rename this
               numeric:"1234567890",
               symbol:"`~,.?!@#$%^&*(){}[]"
             }
@@ -54,7 +51,7 @@ O$.MaskEdit = {
 
     for (var i = 0; i < maskEdit.blank.length; i++) {
       var IsMaskSymbol = false;
-      for (var j in maskEdit.maskSymbolArray) {
+      for (var j in maskEdit.maskSymbolArray) { // TODO: see array.contains(obj) from JS and connect this with if (!IsMaskSymbol), remove !IsMaskSymbol at all
         if (maskEdit.blank[i] == maskEdit.maskSymbolArray[j]) {
           IsMaskSymbol = true;
         }
@@ -95,7 +92,7 @@ O$.MaskEdit = {
     }
 
     O$.extend(maskEdit, {
-              onkeypress:function (e) {
+              onkeypress:function (e) { // :OK:
                 if (this.isFinishPosition)
                   return false;
 
@@ -122,11 +119,11 @@ O$.MaskEdit = {
                 return false;
               },
 
-              _toStringMaskValue:function (maskValue) {
+              _toStringMaskValue:function (maskValue) { // :OK:
                 return maskValue.toString().replace(/\,/g, "");
               },
 
-              _getChar:function (event) {
+              _getChar:function (event) { // :OK:
                 if (event.which == null) {
                   if (event.keyCode < 32) return null;
                   return String.fromCharCode(event.keyCode)
@@ -158,7 +155,7 @@ O$.MaskEdit = {
                 switch (maskChar) {
                   case "l":
                     return this._isOccurrenceChar(pressChar, this.dictionary + this.dictionary.toUpperCase());
-                    break;
+                    break; //TODO: we don't need 'break' if we call 'return' so remove them code will become better
                   case "L":
                     return this._isOccurrenceChar(pressChar, this.dictionary.toUpperCase());
                     break;
@@ -178,7 +175,7 @@ O$.MaskEdit = {
                 }
               },
 
-              _isOccurrenceChar:function (symbol, symbolArray) {
+              _isOccurrenceChar:function (symbol, symbolArray) { // :OK:
                 return symbolArray.indexOf(symbol) != -1;
 
               },
@@ -187,7 +184,7 @@ O$.MaskEdit = {
                 switch (key) {
                   case 8:
                     return this._isKeyBackspace();
-
+                    //TODO: we don't need 'break' if we call 'return' so remove them code will become better
                     break;
                   case 36:
                     return this._isKeyHome();
@@ -209,22 +206,22 @@ O$.MaskEdit = {
                 }
               },
               //TODO: hm there is function setSelectionRange(input, selectionStart, selectionEnd) above ?
-              setCaretToPos:function (input, pos) {
+              setCaretToPos:function (input, pos) { // :OK:
                 this.setCursorPosition(input, pos, pos);
               },
 
-              onkeydown:function (e) {
+              onkeydown:function (e) { // :OK:
                 var key = e.keyCode;
                 var isExit = this.isControlKey(key);
                 console.log(this.cursorPosition);
                 return isExit;
               },
 
-              onkeyup:function (e) {
+              onkeyup:function (e) {  // :OK:
                 return false;
               },
 
-              getSelectionText:function () {
+              getSelectionText:function () { // :OK:
                 var txt;
                 if (window.getSelection) {
                   txt = window.getSelection().toString();
@@ -236,8 +233,8 @@ O$.MaskEdit = {
                 return txt;
               },
 
-              onclick:function (event) {
-                event = event || window.event;
+              onclick:function (event) { // :OK:
+                event = event || window.event;  // TODO:  Q: for what we need this?
 
                 var clickCursorPosition = this.doGetCaretPosition(this);
                 this._getCursorPosition(clickCursorPosition, true);
@@ -245,7 +242,7 @@ O$.MaskEdit = {
 
               },
 
-              doGetCaretPosition:function (ctrl) {
+              doGetCaretPosition:function (ctrl) {  // TODO: see O$._getCaretPosition = function(field) from util.js
                 var CaretPos = 0;
                 if (document.selection) {
                   ctrl.focus();
@@ -263,7 +260,7 @@ O$.MaskEdit = {
 
 
     );
-    O$.extend(maskEdit, {
+    O$.extend(maskEdit, { //TODO: now it's much more better!!!!
               _isKeyDelete:function () {
                 if (this.getSelectionText()) {
                   var clickCursorPosition = this.doGetCaretPosition(this);
@@ -281,14 +278,14 @@ O$.MaskEdit = {
                 return false;
               },
 
-              _isKeyRight:function () {
+              _isKeyRight:function () { // :OK:
                 this._getCursorPosition(this.cursorPosition + 1, false);
                 this.setCaretToPos(this, this.cursorPosition);
 
                 return false;
               },
 
-              _isKeyLeft:function () {
+              _isKeyLeft:function () { // :OK:
                 this._getCursorPosition(this.cursorPosition - 1, false);
                 this.setCaretToPos(this, this.cursorPosition);
 
@@ -296,18 +293,18 @@ O$.MaskEdit = {
 
               },
 
-              _isKeyEnd:function () {
+              _isKeyEnd:function () { // :OK:
                 this._getCursorPosition(this.maskInputPosition[this.maskInputPosition.length] + 1, false)
                 this.setCaretToPos(this, this.cursorPosition);
               },
 
-              _isKeyHome:function () {
+              _isKeyHome:function () { // :OK:
                 this._getCursorPosition(this.maskInputPosition[0], false)
                 this.setCaretToPos(this, this.cursorPosition);
                 return false;
               },
 
-              _isKeyBackspace:function () {
+              _isKeyBackspace:function () { // TODO: There are still to much logics in this method separate some part to some other function and put delete function near backspace function
                 if (this.isFinishPosition) {
                   this.maskValue[ this.maskInputPosition[this.maskInputPositionCursor]] = "_";
                   this.value = this.toStringMaskValue(this.maskValue);
@@ -329,12 +326,12 @@ O$.MaskEdit = {
               ///////////////////////////////////////////////////////////////////
               //////////////////////////////////////////////////////////////////////
               /////////////////////////////////////////////////////////////
-              _getCursorPosition:function (allegedPosition, carecter) {
-                var i;
+              _getCursorPosition:function (allegedPosition, carecter) { //TODO: why this method called "get" if it is "set" cursor position
+                var i; //TODO: is it optimisation? why declaring of loop variable separated from the loop by itself?
                 if (carecter) {
                   if ((allegedPosition < this.maskInputPosition[0]) ||
                           (allegedPosition > (this.maskInputPosition[this.maskInputPosition.length - 1] + 1))) {
-                    this.setCaretToPos(this, this.cursorPosition);
+                    this.setCaretToPos(this, this.cursorPosition); // TODO: actually right we've decided to avoid setting of caret pos inside this method
                     event.stopPropagation ? event.stopPropagation() : (event.cancelBubble = true);
                     return;
                   }
@@ -357,13 +354,13 @@ O$.MaskEdit = {
                   this.cursorPosition = allegedPosition;
 
                 }
-                else {
+                else { //TODO: maybe there is a sense to put both this parts to different functions for carecter=true nad carecter=false
 
 
                   if (allegedPosition < this.cursorPosition) {
                     if (this.isCursorIsSeparator) {
                       console.log(this.isCursorIsSeparator);
-                      for (i = this.maskInputPosition.length - 2; i >= 0; i--) {
+                      for (i = this.maskInputPosition.length - 2; i >= 0; i--) { //TODO: -2 ??? magic numbers - at list write some comment or make this code self documented
                         if ((this.maskInputPosition[i] < allegedPosition) && (this.maskInputPosition[i + 1] > allegedPosition)) {
                           this.maskInputPositionCursor = i;
                           this.cursorPosition = this.maskInputPosition[i];
@@ -373,6 +370,19 @@ O$.MaskEdit = {
                       }
                     }
 
+                    //TODO: why: 'this.isFinishPosition == false' but not smt like this '!this.isFinishPosition'
+                    //TODO: remove unneeded '(', ')'
+                    //TODO: in such cases it's better to make:
+                    /*   if (this.maskInputPositionCursor == 0){
+                            ......
+                            if (this.isFinishPosition ){
+                              .....
+                              .....
+                            }
+                            return false;
+                         }
+                    *TODO: because for any situation when you have this.maskInputPositionCursor == 0 you will return false as i understand
+                    * */
                     if ((this.maskInputPositionCursor == 0) && (this.isFinishPosition == false)) return false;
 
                     if ((this.maskInputPositionCursor == 0) && (this.isFinishPosition == true)) {
@@ -395,9 +405,11 @@ O$.MaskEdit = {
                     this.isFinishPosition = false;
                     this.maskInputPositionCursor--;
                     this.cursorPosition = this.maskInputPosition[this.maskInputPositionCursor];
+                    //TODO: in common try to callect all this logic to some tree structure of Ifs with not so much return methods
                     return false;
 
                   } else {
+                    //TODO: in common try to collect all this logic to some tree structure of Ifs with not so much return methods
                     if (this.isCursorIsSeparator) {
                       console.log(this.isCursorIsSeparator);
                       for (i = 1; i < this.maskInputPosition.length - 1; i++) {
@@ -420,6 +432,7 @@ O$.MaskEdit = {
                         return true;
                       }
                     }
+                    //TODO: in common try to collect all this logic to some tree structure of Ifs with not so much return methods
                     if (allegedPosition == this.maskInputPosition[this.maskInputPosition.length - 1] + 1) {
                       this.isFinishPosition = true;
                       this.cursorPosition = allegedPosition;
