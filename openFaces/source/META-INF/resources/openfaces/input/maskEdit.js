@@ -277,7 +277,6 @@ O$.MaskEdit = {
                 }
                 if (this._getCursorPosition(this.cursorPosition + 1, false)) {
                   this.maskInputPosition[this.maskInputPositionCursor] = this.primaryMaskValue[this.cursorPosition];
-                  this._getCursorPosition(this.cursorPosition + 1, false)
                 }
                 return false;
               },
@@ -327,6 +326,9 @@ O$.MaskEdit = {
                 }
                 return false;
               },
+              ///////////////////////////////////////////////////////////////////
+              //////////////////////////////////////////////////////////////////////
+              /////////////////////////////////////////////////////////////
               _getCursorPosition:function (allegedPosition, carecter) {
                 var i;
                 if (carecter) {
@@ -344,9 +346,10 @@ O$.MaskEdit = {
                       return;
                     }
                   }
-                  if (allegedPosition == this.maskInputPosition[this.maskInputPosition.length - 1]) {
+                  if (allegedPosition == this.maskInputPosition[this.maskInputPosition.length - 1] + 1) {
                     this.isFinishPosition = true;
                     this.cursorPosition = allegedPosition;
+                    console.log("finish");
                     return;
                   }
 
@@ -358,17 +361,6 @@ O$.MaskEdit = {
 
 
                   if (allegedPosition < this.cursorPosition) {
-                    if (this.maskInputPositionCursor == 0) return false;
-
-                    for (i = this.maskInputPosition.length - 1; i >= 0; i--) {
-                      if (this.maskInputPosition[i] == allegedPosition) {
-                        this.maskInputPositionCursor = i;
-                        this.cursorPosition = allegedPosition;
-                        this.isFinishPosition = false;
-
-                        return true;
-                      }
-                    }
                     if (this.isCursorIsSeparator) {
                       console.log(this.isCursorIsSeparator);
                       for (i = this.maskInputPosition.length - 2; i >= 0; i--) {
@@ -376,17 +368,48 @@ O$.MaskEdit = {
                           this.maskInputPositionCursor = i;
                           this.cursorPosition = this.maskInputPosition[i];
                           this.isCursorIsSeparator = false;
-                          return  false;
+                          return  true;
                         }
-
                       }
                     }
+
+                    if ((this.maskInputPositionCursor == 0) && (this.isFinishPosition == false)) return false;
+
+                    if ((this.maskInputPositionCursor == 0) && (this.isFinishPosition == true)) {
+                      this.maskInputPositionCursor = this.maskInputPosition.length - 1;
+                      this.isFinishPosition = false;
+                      this.cursorPosition = this.maskInputPosition[this.maskInputPositionCursor];
+                      return false;
+                    }
+
+                    for (i = this.maskInputPosition.length - 1; i >= 0; i--) {
+                      if (this.maskInputPosition[i] == allegedPosition) {
+                        this.maskInputPositionCursor = i;
+                        this.cursorPosition = allegedPosition;
+                        this.isFinishPosition = false;
+                        return true;
+                      }
+                    }
+
 
                     this.isFinishPosition = false;
                     this.maskInputPositionCursor--;
                     this.cursorPosition = this.maskInputPosition[this.maskInputPositionCursor];
                     return false;
+
                   } else {
+                    if (this.isCursorIsSeparator) {
+                      console.log(this.isCursorIsSeparator);
+                      for (i = 1; i < this.maskInputPosition.length - 1; i++) {
+                        if ((this.maskInputPosition[i - 1] < allegedPosition) && (this.maskInputPosition[i ] > allegedPosition)) {
+                          this.maskInputPositionCursor = i;
+                          this.cursorPosition = this.maskInputPosition[i];
+                          this.isCursorIsSeparator = false;
+                          this.isFinishPosition = false;
+                          return  false;
+                        }
+                      }
+                    }
                     if (this.isFinishPosition) return false;
 
                     for (i in this.maskInputPosition) {
