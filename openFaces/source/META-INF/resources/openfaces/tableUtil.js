@@ -1821,7 +1821,6 @@ O$.Tables = {
     column.getDeclaredWidth = function(tableWidth) {
 
       if (tableWidth == undefined){
-        console.log(1822);
         tableWidth = table.offsetWidth;
       }
       if (table._verticalBordersWidth == undefined) {
@@ -1846,19 +1845,16 @@ O$.Tables = {
       if (this._explicitWidth){
         return this._explicitWidth;
       }
-      console.log(1847);
       if (this.header && this.header._cell)
         return this.header._cell.offsetWidth;
       if (this.subHeader && this.subHeader._cell)
         return this.subHeader._cell.offsetWidth;
-      console.log(1852);
       for (var idx = 0, count = this.body._cells.length; idx < count; idx++) {
         var cell = this.body._cells[idx];
         if (!cell || cell.colSpan > 1)
           continue;
         return cell.offsetWidth;
       }
-      console.log(1859);
       if (this.footer && this.footer._cell)
         return this.footer._cell.offsetWidth;
       return this._colTags[0].offsetWidth;
@@ -2750,7 +2746,6 @@ O$.Tables = {
     var defaultColWidth = 120;
 
     var tblWidth = 0;
-    console.log(2735);
     var tableWidth = table.offsetWidth - scrollerWidth;
     tableWidth -= O$.getNumericElementStyle(table, "border-left-width", true);
     tableWidth -= O$.getNumericElementStyle(table, "border-right-width", true);
@@ -2833,7 +2828,6 @@ O$.Tables = {
   },
 
   getScrollerWidth: function(el) {
-    console.log(2818);
     return O$.isExplorer() || /* explorer reports too big values*/
             O$.isMozillaFF() /* mozilla reports 0 in some cases (see TreeTable demo 1) */
             ? 17

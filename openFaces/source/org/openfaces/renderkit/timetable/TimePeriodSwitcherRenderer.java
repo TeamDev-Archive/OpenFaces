@@ -31,6 +31,11 @@ import java.io.IOException;
 import java.util.List;
 
 public class TimePeriodSwitcherRenderer extends RendererBase {
+
+    private static String LAYERED_PANE_SUFFIX = "_layeredPane";
+    public static String POPUP_SUFFIX = "_popup";
+    public static String CALENDAR_SUFFIX = "_calendar";
+
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         TimePeriodSwitcher switcher = (TimePeriodSwitcher) component;
@@ -55,6 +60,7 @@ public class TimePeriodSwitcherRenderer extends RendererBase {
 
         LayeredPane layeredPane = Components.getChildWithClass(switcher, LayeredPane.class, "layeredPane");
         layeredPane.setStyleClass("o_timetablePeriodSwitcher_lp");
+        layeredPane.setId(switcher.getId() + LAYERED_PANE_SUFFIX);
         layeredPane.setLoadingMode(LoadingMode.CLIENT);
         if (layeredPane.getChildCount() == 0) {
             List<UIComponent> children = layeredPane.getChildren();

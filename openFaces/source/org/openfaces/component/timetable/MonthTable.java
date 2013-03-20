@@ -12,8 +12,10 @@
 
 package org.openfaces.component.timetable;
 
+import org.openfaces.util.Components;
 import org.openfaces.util.ValueBindings;
 
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 /**
@@ -33,6 +35,7 @@ public class MonthTable extends TimetableView { // todo: extract some common typ
 
     private String weekdayHeadersRowSeparator;
     private String weekdayColumnSeparator;
+
     private String rowSeparator;
     private String columnSeparator;
     private String dayHeaderRowStyle;
@@ -58,13 +61,30 @@ public class MonthTable extends TimetableView { // todo: extract some common typ
     private String inactiveMonthCellHeaderClass;
     private String inactiveMonthCellStyle;
     private String inactiveMonthCellClass;
+
     private String moreLinkElementStyle;
     private String moreLinkElementClass;
     private String moreLinkStyle;
     private String moreLinkClass;
     private String moreLinkText;
+    private String expandedDayViewStyle;
+    private String expandedDayViewClass;
+    private Integer expandTransitionPeriod;
+
 
     private Integer scrollOffset = 0;
+
+
+    public static final String EXPANDED_DAY_VIEW_HEADER_FACET = "expandedDayHeader";
+    public static final String EXPANDED_DAY_VIEW_FOOTER_FACET = "expandedDayFooter";
+
+    public UIComponent getExpandedDayViewFooter() {
+        return Components.getFacet(this, EXPANDED_DAY_VIEW_FOOTER_FACET);
+    }
+
+    public UIComponent getExpandedDayViewHeader() {
+        return Components.getFacet(this, EXPANDED_DAY_VIEW_HEADER_FACET);
+    }
 
     public MonthTable() {
         setRendererType("org.openfaces.MonthTableRenderer");
@@ -381,6 +401,33 @@ public class MonthTable extends TimetableView { // todo: extract some common typ
         this.scrollOffset = scrollOffset;
     }
 
+    public String getExpandedDayViewStyle() {
+        return ValueBindings.get(this, "expandedDayViewStyle", moreLinkClass);
+    }
+
+    public void setExpandedDayViewStyle(String expandedDayViewStyle) {
+        this.expandedDayViewStyle = expandedDayViewStyle;
+    }
+
+    public String getExpandedDayViewClass() {
+        return ValueBindings.get(this, "expandedDayViewClass", moreLinkClass);
+    }
+
+    public void setExpandedDayViewClass(String expandedDayViewClass) {
+        this.expandedDayViewClass = expandedDayViewClass;
+    }
+
+
+    public Integer getExpandTransitionPeriod() {
+        return ValueBindings.get(this, "expandTransitionPeriod", expandTransitionPeriod, 200);
+    }
+
+    public void setExpandTransitionPeriod(Integer expandTransitionPeriod) {
+        this.expandTransitionPeriod = expandTransitionPeriod;
+    }
+
+
+
     @Override
     public Object saveState(FacesContext context) {
         return new Object[]{
@@ -422,6 +469,9 @@ public class MonthTable extends TimetableView { // todo: extract some common typ
                 moreLinkStyle,
                 moreLinkClass,
                 moreLinkText,
+                expandedDayViewStyle,
+                expandedDayViewClass,
+                expandTransitionPeriod,
                 scrollOffset
         };
     }
@@ -468,6 +518,9 @@ public class MonthTable extends TimetableView { // todo: extract some common typ
         moreLinkStyle = (String) state[i++];
         moreLinkClass = (String) state[i++];
         moreLinkText = (String) state[i++];
+        expandedDayViewStyle = (String) state[i++];
+        expandedDayViewClass = (String) state[i++];
+        expandTransitionPeriod = (Integer) state[i++];
         scrollOffset = (Integer) state[i++];
     }
 

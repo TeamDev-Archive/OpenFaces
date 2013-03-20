@@ -79,8 +79,9 @@ O$.PopupLayer = {
       },
 
       showCentered: function() {
-        this.show();
-        O$.PopupLayer._centerPopup(this, O$.getPageScrollPos());
+        var oldScrollPos  =  O$.getPageScrollPos();
+        this.show(true);
+        O$.PopupLayer._centerPopup(this, oldScrollPos);
       },
 
       showByElement: function(element, horizAlignment, vertAlignment, horizDistance, vertDistance) {
@@ -196,7 +197,7 @@ O$.PopupLayer = {
         return true;
       },
 
-      show: function () { // todo: this partially duplicates popup.show declared in popup.js, merge as much functionality in popupLayer.js and popup.js as possible
+      show: function (focusAfterDelay) { // todo: this partially duplicates popup.show declared in popup.js, merge as much functionality in popupLayer.js and popup.js as possible
         if (popup.isVisible()) return;
         popup.style.display = "block";
         if (autosizing == "on") {
@@ -269,8 +270,12 @@ O$.PopupLayer = {
             } else
               this.blur();
           };
-          popup._firstInternalAnchor.focus();
-
+          // We need delay if we want to avoid scrolling if we change some x,y imediatly after showing popup window.
+          if (!focusAfterDelay){
+            popup._firstInternalAnchor.focus();
+          }else{
+            setTimeout(function (){  popup._firstInternalAnchor.focus() } , 150);
+          }
           popup._lastInternalAnchor = O$.createHiddenFocusElement(popup.id);
           popup._lastInternalAnchor._focusControlElement = true;
           popup._lastInternalAnchor.onfocus = function() {

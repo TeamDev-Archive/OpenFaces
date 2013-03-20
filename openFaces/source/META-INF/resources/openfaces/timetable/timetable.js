@@ -24,6 +24,13 @@ O$.Timetable = {
         return this._viewType;
       },
 
+      goViewDay: function(day){
+        var viewIndex = this._viewIndexByType(O$.Timetable.DAY);
+
+        this._views[viewIndex].setDay(day);
+        this.setViewType(O$.Timetable.DAY);
+      },
+
       setViewType: function(viewType) {
         if (viewType != O$.Timetable.DAY &&
                 viewType != O$.Timetable.WEEK &&
