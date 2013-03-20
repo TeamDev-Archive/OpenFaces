@@ -24,7 +24,6 @@ O$.MaskEdit = {
             { _mask:mask,
               _blank:blank,
               _maskSymbolArray:maskSymbolArray,
-              _focusedClass:focusedClass,
               _disabled:disabled,
               _dictionary:dictionary,
               _maskInputCursorPosition:0,
@@ -162,61 +161,69 @@ O$.MaskEdit = {
 
                 var clickCursorPosition = O$._getCaretPosition(this);
                 this._setCursorPosition(clickCursorPosition, true);
-                console.log(this._cursorPosition);
+
               },
 
               onpaste:function (e) {
                 e = e || event;
 
-                return false;
 
               },
               oninput:function (e) {
-
+                console.log("cool");
+                console.log(this.value);
+                var newValue = this._cutNewMask(this.value);
+                console.log(newValue);
+                if (!(this._valueMaskValidator(newValue) || this._valueBlankValidator(newValue))) {
+                  this.value = this._toStringMaskValue(this._maskValue);
+                }
               },
-              _isValidPasteValue:function () {
-
+              _cutNewMask:function (newValue) {
+                var endMask = newValue.length - this._blank.length;
+                return newValue.substr(this._cursorPosition,endMask);
               },
-              _valueMaskValidator:function (mask, startPosition) {
+
+              _valueMaskValidator:function (mask) {
 
                 if (this._isCursorInSeparator) this._setCursorPosition(this._cursorPosition + 1, false);
                 var bufMaskCursorPosition = this._maskInputCursorPosition;
-                if (mask.length == this._maskInputPosition.length - this._maskInputCursorPosition - 1) {
-
-                } else return false;
-                for (var i = 0; i < this._mask.length - 1; i++) {
-                  this._maskInputCursorPosition = startPosition + i;
-                  if (this._isOccurrenceChar(mask[i], this.symbol)) {
-                    this._maskInputCursorPosition = bufMaskCursorPosition;
-                    return false
-                  }
+                var bufValue = this._maskValue;
+                for (i = 0; i < this._mask.length - 1; i++) {
+                  if (this._setCursorPosition(this._cursorPosition + 1, false)) {
+                    if (this._isValidChar(mask[i])) {
+                      this._maskInputCursorPosition = bufMaskCursorPosition;
+                      return false
+                    }
+                    bufValue[this._maskInputPosition[this._maskInputCursorPosition - 1]] = mask[i];
+                  } else return false;
                 }
-
-                for (var i = 0; i < this._mask.length - 1; i++) {
-                  this._maskValue[this._maskInputPosition[i]] = mask[i];
-                }
-
+                this._maskValue = bufValue;
                 this.value = this._toStringMaskValue(this._maskValue);
-                this._maskInputCursorPosition = bufMaskCursorPosition;
                 O$._selectTextRange(this, this._cursorPosition, this._cursorPosition);
-                return true;
+                return false;
+
               },
-              _valueBlankValidator:function (blank, startPosition) {
-                var bufMaskCursorPosition = this._maskInputCursorPosition;
-
-
-                for (var i = 0; i < this._blank.length - 1; i++) {
-                  this._maskInputCursorPosition = i;
-                  if (this._isOccurrenceChar(blank[i], this.symbol)) {
-                    this._maskInputCursorPosition = bufMaskCursorPosition;
-                    return false
+              _valueBlankValidator:function (blank) {
+                var positionInBlank = 0;
+                var mask = [];
+                if (this._blank.length - 1 - this._cursorPosition <= blank) {
+                  for (var i = this._cursorPosition; i < this._blank.length; i++) {
+                    var IsMaskSymbol = false;
+                    for (var j in maskEdit._maskSymbolArray) {
+                      if (maskEdit._blank[i] == maskEdit._maskSymbolArray[j]) {
+                        IsMaskSymbol = true;
+                      }
+                      if (IsMaskSymbol) {
+                        mask[mask.length] = blank[positionInBlank]
+                      } else {
+                        if (!(this._blank[i] == blank[positionInBlank])) return false
+                      }
+                      positionInBlank++;
+                    }
+                    return this._valueMaskValidator(mask);
                   }
                 }
-
-                this.value = blank;
-                this._maskInputCursorPosition = bufMaskCursorPosition;
-                O$._selectTextRange(this, this._cursorPosition, this._cursorPosition);
-                return true;
+                return false;
               },
 
               _isValidChar:function (pressChar) {
@@ -239,7 +246,8 @@ O$.MaskEdit = {
                 }
               }
             }
-    );
+    )
+    ;
     O$.extend(maskEdit, {
               _isKeyRight:function () { // :OK:
                 this._setCursorPosition(this._cursorPosition + 1, false);
@@ -293,6 +301,7 @@ O$.MaskEdit = {
               },
               _deleteSelectionText:function () {
                 if (this.getSelectionText()) {
+
                   var clickCursorPosition = O$._getCaretPosition(this);
                   for (var i = 0; i < this.getSelectionText().length; i++) {
                     this._maskValue[clickCursorPosition + i] = this._primaryMaskValue[clickCursorPosition + i];
@@ -301,6 +310,7 @@ O$.MaskEdit = {
                   O$._selectTextRange(this, this._cursorPosition, this._cursorPosition);
                   return true;
                 }
+                return false;
               },
               getValue:function () {
                 return this._value
@@ -327,13 +337,13 @@ O$.MaskEdit = {
               _setCursorPosition:function (allegedPosition, carecter) {
 
                 if (carecter) {
-                  this.__mouseClickInBlank(allegedPosition);
+                  return this.__mouseClickInBlank(allegedPosition);
                 }
                 else {
                   if (allegedPosition < this._cursorPosition) {
-                    this.__moveCursorInLeft(allegedPosition);
+                    return this.__moveCursorInLeft(allegedPosition);
                   } else {
-                    this.__moveCursorInRight(allegedPosition);
+                    return this.__moveCursorInRight(allegedPosition);
                   }
                 }
               },
@@ -363,7 +373,7 @@ O$.MaskEdit = {
               },
               __moveCursorInLeft:function (allegedPosition) {
                 if (this._isCursorInSeparator) {
-                  console.log(this._isCursorInSeparator);
+
                   for (var i = this._maskInputPosition.length - 2; i >= 0; i--) {
                     if ((this._maskInputPosition[i] < allegedPosition) && (this._maskInputPosition[i + 1] > allegedPosition)) {
                       this._maskInputCursorPosition = i;
@@ -397,7 +407,7 @@ O$.MaskEdit = {
               },
               __moveCursorInRight:function (allegedPosition) {
                 if (this._isCursorInSeparator) {
-                  console.log(this._isCursorInSeparator);
+
                   for (i = 1; i < this._maskInputPosition.length - 1; i++) {
                     if ((this._maskInputPosition[i - 1] < allegedPosition) && (this._maskInputPosition[i ] > allegedPosition)) {
                       this._maskInputCursorPosition = i;
