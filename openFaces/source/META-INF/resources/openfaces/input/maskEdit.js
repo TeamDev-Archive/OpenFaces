@@ -80,6 +80,7 @@ O$.MaskEdit = {
                 if (this._isValidChar(pressChar)) {
                   this._maskValue[this._cursorPosition] = pressChar;
                   this.value = this._toStringMaskValue(this._maskValue);
+                  console.log("ou fuck");
                   if (this._maskInputCursorPosition != (this._maskInputPosition.length - 1)) {
                     this._maskInputCursorPosition++;
                     this._cursorPosition = this._maskInputPosition[this._maskInputCursorPosition];
@@ -170,37 +171,49 @@ O$.MaskEdit = {
 
               },
               oninput:function (e) {
-                console.log("cool");
-                console.log(this.value);
+
+
                 var newValue = this._cutNewMask(this.value);
-                console.log(newValue);
+
                 if (!(this._valueMaskValidator(newValue) || this._valueBlankValidator(newValue))) {
+                  console.log(this.value);
                   this.value = this._toStringMaskValue(this._maskValue);
+                  console.log(this.value);
                 }
+                return false;
               },
               _cutNewMask:function (newValue) {
                 var endMask = newValue.length - this._blank.length;
-                return newValue.substr(this._cursorPosition,endMask);
+                return newValue.substr(this._cursorPosition, endMask);
               },
 
               _valueMaskValidator:function (mask) {
-
+                console.log(mask);
                 if (this._isCursorInSeparator) this._setCursorPosition(this._cursorPosition + 1, false);
                 var bufMaskCursorPosition = this._maskInputCursorPosition;
                 var bufValue = this._maskValue;
-                for (i = 0; i < this._mask.length - 1; i++) {
+                console.log(bufValue);
+                for (var i = 0; i < this._mask.length - 1; i++) {
                   if (this._setCursorPosition(this._cursorPosition + 1, false)) {
-                    if (this._isValidChar(mask[i])) {
+                    console.log(mask[i].toString());
+                    console.log(this._isValidChar(mask[i].toString()));
+                    if (!this._isValidChar(mask[i].toString())) {
                       this._maskInputCursorPosition = bufMaskCursorPosition;
+                      this._setCursorPosition(this._maskInputPosition[this._maskInputCursorPosition], false)
                       return false
                     }
                     bufValue[this._maskInputPosition[this._maskInputCursorPosition - 1]] = mask[i];
-                  } else return false;
+                  } else {
+                    this._maskInputCursorPosition = bufMaskCursorPosition;
+                    this._setCursorPosition(this._maskInputPosition[this._maskInputCursorPosition], false)
+                    return false
+                  }
                 }
                 this._maskValue = bufValue;
                 this.value = this._toStringMaskValue(this._maskValue);
+
                 O$._selectTextRange(this, this._cursorPosition, this._cursorPosition);
-                return false;
+                return true;
 
               },
               _valueBlankValidator:function (blank) {
