@@ -46,7 +46,7 @@ O$.MaskEdit = {
 
     for (var i = 0; i < maskEdit._blank.length; i++) {
       var IsMaskSymbol = false;
-      for (var j in maskEdit._maskSymbolArray) { // TODO: see array.contains(obj) from JS and connect this with if (!IsMaskSymbol), remove !IsMaskSymbol at all
+      for (var j in maskEdit._maskSymbolArray) {
         if (maskEdit._blank[i] == maskEdit._maskSymbolArray[j]) {
           IsMaskSymbol = true;
         }
@@ -167,12 +167,13 @@ O$.MaskEdit = {
 
               onpaste:function (e) {
                 e = e || event;
-
-
+                return this._validator();
               },
               oninput:function (e) {
+                setTimeout(this._validator(),0);
+              },
 
-
+              _validator:function () {
                 var newValue = this._cutNewMask(this.value);
 
                 this._valueMaskValidator(newValue);
@@ -181,9 +182,8 @@ O$.MaskEdit = {
                 this._setCursorPosition(this._cursorPosition, false);
                 O$._selectTextRange(this, this._cursorPosition, this._cursorPosition);
                 return false;
-
-
               },
+
               _cutNewMask:function (newValue) {
                 var endMask = newValue.length - this._blank.length;
                 return newValue.substr(this._cursorPosition, endMask);
@@ -458,7 +458,9 @@ O$.MaskEdit = {
             }
 
     );
-    O$.addEvent(inputId, "onclick", maskEdit.onclick)
+    O$.addEvent(inputId, "onclick", maskEdit.onclick);
+    O$.addEvent(inputId, "onpaste", maskEdit.onpaste);
+    O$.addEvent(inputId, "oninput", maskEdit.oninput);
   }
 }
 ;
