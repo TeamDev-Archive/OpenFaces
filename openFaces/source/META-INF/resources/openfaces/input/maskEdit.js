@@ -80,7 +80,7 @@ O$.MaskEdit = {
                 if (this._isValidChar(pressChar)) {
                   this._maskValue[this._cursorPosition] = pressChar;
                   this.value = this._toStringMaskValue(this._maskValue);
-                  console.log("ou fuck");
+
                   if (this._maskInputCursorPosition != (this._maskInputPosition.length - 1)) {
                     this._maskInputCursorPosition++;
                     this._cursorPosition = this._maskInputPosition[this._maskInputCursorPosition];
@@ -137,7 +137,7 @@ O$.MaskEdit = {
               onkeydown:function (e) { // :OK:
                 var key = e.keyCode;
                 var isExit = this.isControlKey(key);
-                console.log(this._cursorPosition);
+
                 return isExit;
               },
 
@@ -175,12 +175,14 @@ O$.MaskEdit = {
 
                 var newValue = this._cutNewMask(this.value);
 
-                if (!(this._valueMaskValidator(newValue) || this._valueBlankValidator(newValue))) {
-                  console.log(this.value);
-                  this.value = this._toStringMaskValue(this._maskValue);
-                  console.log(this.value);
-                }
+                this._valueMaskValidator(newValue);
+                this._valueBlankValidator(newValue);
+                this.value = this._toStringMaskValue(this._maskValue);
+                this._setCursorPosition(this._cursorPosition, false);
+                O$._selectTextRange(this, this._cursorPosition, this._cursorPosition);
                 return false;
+
+
               },
               _cutNewMask:function (newValue) {
                 var endMask = newValue.length - this._blank.length;
@@ -188,53 +190,53 @@ O$.MaskEdit = {
               },
 
               _valueMaskValidator:function (mask) {
-                console.log(mask);
+                var bufMaskCursorPosition = this._cursorPosition;
                 if (this._isCursorInSeparator) this._setCursorPosition(this._cursorPosition + 1, false);
-                var bufMaskCursorPosition = this._maskInputCursorPosition;
-                var bufValue = this._maskValue;
-                console.log(bufValue);
-                for (var i = 0; i < this._mask.length - 1; i++) {
+                var bufValue = [].concat(this._maskValue);
+
+                for (var i = 0; i < mask.length; i++) {
                   if (this._setCursorPosition(this._cursorPosition + 1, false)) {
-                    console.log(mask[i].toString());
-                    console.log(this._isValidChar(mask[i].toString()));
-                    if (!this._isValidChar(mask[i].toString())) {
-                      this._maskInputCursorPosition = bufMaskCursorPosition;
-                      this._setCursorPosition(this._maskInputPosition[this._maskInputCursorPosition], false)
+
+                    if (!this._isValidChar(mask.charAt(i))) {
+                      this._cursorPosition = bufMaskCursorPosition;
                       return false
                     }
-                    bufValue[this._maskInputPosition[this._maskInputCursorPosition - 1]] = mask[i];
+                    if (this._isFinishPosition) {
+                      bufValue[this._maskInputPosition[this._maskInputCursorPosition]] = mask[i];
+                    } else {
+                      bufValue[this._maskInputPosition[this._maskInputCursorPosition - 1]] = mask[i];
+                    }
                   } else {
                     this._maskInputCursorPosition = bufMaskCursorPosition;
-                    this._setCursorPosition(this._maskInputPosition[this._maskInputCursorPosition], false)
                     return false
                   }
                 }
                 this._maskValue = bufValue;
-                this.value = this._toStringMaskValue(this._maskValue);
-
-                O$._selectTextRange(this, this._cursorPosition, this._cursorPosition);
                 return true;
 
               },
               _valueBlankValidator:function (blank) {
                 var positionInBlank = 0;
-                var mask = [];
-                if (this._blank.length - 1 - this._cursorPosition <= blank) {
-                  for (var i = this._cursorPosition; i < this._blank.length; i++) {
+                var mask = "";
+                if (blank.length <= this._blank.length - this._cursorPosition) {
+                  for (var i = this._cursorPosition; i < blank.length + this._cursorPosition; i++) {
                     var IsMaskSymbol = false;
-                    for (var j in maskEdit._maskSymbolArray) {
-                      if (maskEdit._blank[i] == maskEdit._maskSymbolArray[j]) {
+                    for (var j in this._maskSymbolArray) {
+                      if (this._blank[i] == this._maskSymbolArray[j]) {
                         IsMaskSymbol = true;
                       }
-                      if (IsMaskSymbol) {
-                        mask[mask.length] = blank[positionInBlank]
-                      } else {
-                        if (!(this._blank[i] == blank[positionInBlank])) return false
-                      }
-                      positionInBlank++;
                     }
-                    return this._valueMaskValidator(mask);
+                    if (IsMaskSymbol) {
+                      mask = mask.concat(blank[positionInBlank]);
+                    } else {
+                      if (!(this._blank.charAt(i) == blank[positionInBlank])) return false
+                    }
+                    positionInBlank++;
+
+
                   }
+                  console.log(mask);
+                  return this._valueMaskValidator(mask);
                 }
                 return false;
               },
@@ -342,8 +344,6 @@ O$.MaskEdit = {
               getBlank:function () {
                 return this._blank
               },
-
-
               ///////////////////////////////////////////////////////////////////
               //////////////////////////////////////////////////////////////////////
               /////////////////////////////////////////////////////////////
