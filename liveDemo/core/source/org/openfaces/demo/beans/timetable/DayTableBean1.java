@@ -10,7 +10,7 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-package org.openfaces.demo.beans.daytable;
+package org.openfaces.demo.beans.timetable;
 
 import org.openfaces.component.timetable.AbstractTimetableEvent;
 import org.openfaces.component.timetable.EventActionEvent;
@@ -30,8 +30,8 @@ import java.util.List;
 /**
  * @author Dmitry Pikhulya
  */
-public class DayTableBean1 extends DayTableBean implements Serializable {
-    private static int eventIdCounter = 0;
+public class DayTableBean1 extends TimeTableBean implements Serializable {
+
 
     List<AbstractTimetableEvent> events = new ArrayList<AbstractTimetableEvent>();
     List<AbstractTimetableEvent> reservedTimes = new ArrayList<AbstractTimetableEvent>();
@@ -97,9 +97,7 @@ public class DayTableBean1 extends DayTableBean implements Serializable {
     }
 
 
-    private String generateEventId() {
-        return String.valueOf(eventIdCounter++);
-    }
+
 
     public List<AbstractTimetableEvent> getEvents() {
         return events;

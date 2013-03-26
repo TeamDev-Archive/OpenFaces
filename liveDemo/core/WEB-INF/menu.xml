@@ -272,8 +272,8 @@
   <menuItem>
     <name>Day Table</name>
     <componentName>Day Table</componentName>
-    <url>/daytable/DayTable_general.jsf</url>
-    <shortPath>/daytable/</shortPath>
+    <url>/timetable/DayTable_general.jsf</url>
+    <shortPath>/timetable/</shortPath>
     <image>DayTable</image>
     <selectedImage>/images/components/titles/DayTable.png</selectedImage>
     <keyFeatures>
@@ -290,12 +290,17 @@
     <demos>
       <demoItem>
         <demoName>General</demoName>
-        <demoUrl>/daytable/DayTable_general.jsf</demoUrl>
+        <demoUrl>/timetable/DayTable_general.jsf</demoUrl>
       </demoItem>
       <demoItem>
         <demoName>Multiple Resources</demoName>
-        <demoUrl>/daytable/DayTable_multipleResources.jsf</demoUrl>
+        <demoUrl>/timetable/DayTable_multipleResources.jsf</demoUrl>
       </demoItem>
+      <demoItem>
+        <demoName>MonthTable</demoName>
+        <demoUrl>/timetable/MonthTable.jsf</demoUrl>
+      </demoItem>
+
     </demos>
   </menuItem>
   <menuItem>
