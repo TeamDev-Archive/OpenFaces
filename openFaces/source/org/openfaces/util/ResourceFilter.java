@@ -227,10 +227,7 @@ public class ResourceFilter implements Filter {
             File resourceFile = getResourceFile(resourceURL);
             long lastModified = resourceFile != null ? resourceFile.lastModified() : -1;
 
-            if (request.getDateHeader("If-Modified-Since") != -1) {
-                response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
-                return;
-            }
+
 
             if (lastModified != -1) {
                 lastModified -= lastModified % 1000;
@@ -458,7 +455,7 @@ public class ResourceFilter implements Filter {
                 writer.print(resetCssUrl);
                 writer.println("\" rel=\"stylesheet\"/>");
             }
-    
+
             writer.print("<link type=\"text/css\" href=\"");
             String defaultCssUrl = httpServletRequest.getContextPath() + INTERNAL_RESOURCE_PATH + Resources.META_INF_RESOURCES_ROOT.substring(1) +
                     "default" + "-" + Resources.getVersionString() + ".css"; // render default.css
