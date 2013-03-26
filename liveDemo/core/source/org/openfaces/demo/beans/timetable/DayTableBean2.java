@@ -10,7 +10,7 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-package org.openfaces.demo.beans.daytable;
+package org.openfaces.demo.beans.timetable;
 
 import org.openfaces.util.Faces;
 import org.openfaces.component.timetable.AbstractTimetableEvent;
@@ -28,7 +28,7 @@ import java.awt.Color;
 /**
  * @author Dmitry Pikhulya
  */
-public class DayTableBean2 extends DayTableBean implements Serializable {
+public class DayTableBean2 extends TimeTableBean implements Serializable {
     private static int eventIdCounter = 0;
    
     List<AbstractTimetableEvent> events = new ArrayList<AbstractTimetableEvent>();
@@ -84,9 +84,6 @@ public class DayTableBean2 extends DayTableBean implements Serializable {
         resources.add(new TimetableResource(alex, alex.getId(), alex.getName()));
     }
 
-    private String generateEventId() {
-        return String.valueOf(eventIdCounter++);
-    }
 
     public List<AbstractTimetableEvent> getEvents() {
         Date startTime = Faces.var("startTime", Date.class);

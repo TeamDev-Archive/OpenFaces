@@ -303,15 +303,17 @@ O$.MonthTable = {
                 this._expandedDayView._scrollContent(delta);
               },
 
-              //TODO: refactor +/- 1 ms for chrome fix
+              //We are using +/- 1 ms for fixing an issue with different work of 00:00:00 time under different browsers
               _splitIntoParts: function(event) {
                 var parts = [];
+                var layoutEndTime = O$.incDay(this._endTime, -1 );
                 var start = this._startTime > event.start ? this._startTime : event.start;
-                var end = this._endTime < event.end ? this._endTime : event.end;
+                var end = layoutEndTime < event.end ? layoutEndTime : event.end;
                 var partStart = start;
                 var partEnd = O$.incDay(
                         new Date(partStart.getFullYear(), partStart.getMonth(), partStart.getDate()),
-                        partStart.getDay() + 1 != monthTable.firstDayOfWeek ? (7 - partStart.getDay() + monthTable.firstDayOfWeek) % 8 : 1
+                        partStart.getDay() + 1 != monthTable.firstDayOfWeek ? (7 - partStart.getDay() + monthTable.firstDayOfWeek) % 8 : 1,
+                        true
                 );
                 end.setTime(end.getTime() - 1);
                 partEnd.setTime(partEnd.getTime() - 1);
@@ -331,9 +333,9 @@ O$.MonthTable = {
 
                   // adding delta to day need to end till the week end      \
                   partEnd.setTime(partEnd.getTime() + 1);
-                  partEnd = O$.incDay(O$.cloneDate(partEnd), 7);
+                  partEnd = O$.incDay(O$.cloneDate(partEnd), 7, true);
                   partEnd.setTime(partEnd.getTime() - 1);
-                } while (partStart < end);
+                } while (partStart.getTime() < end.getTime()+2);
 
 
                 return parts;
@@ -509,10 +511,10 @@ O$.MonthTable = {
                     x2 = - (event.type != "reserved" ? eventsRightOffset : reservedEventsRightOffset);
 
                     //TODO: connect this with almost the same code for expanded day view
-                    if (event.start.getDate() < part.start.getDate()){
+                    if (event.start.getTime() < part.start.getTime()){
                       x1 -= 50;
                     };
-                    if (event.end.getDate() > part.end.getDate()){
+                    if (event.end.getTime() > part.end.getTime()){
                       x2 +=  endDayCellBoundaries.getMaxX() + 50;
                     } else {
                       x2 += endDayCellBoundaries.getMaxX();

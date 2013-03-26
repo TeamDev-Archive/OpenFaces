@@ -10,7 +10,7 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-package org.openfaces.demo.beans.daytable;
+package org.openfaces.demo.beans.timetable;
 
 import org.openfaces.component.timetable.AbstractTimetableEvent;
 
@@ -23,8 +23,12 @@ import java.util.List;
 /**
  * @author Alexey Chystoprudov
  */
-public class DayTableBean {
+public class TimeTableBean {
+
+    private static int eventIdCounter = 0;
+
     private Date date = new Date();
+
 
     public Map<Date, String> getDateSuffixMap() {
         return new DateToSuffixMap();
@@ -76,11 +80,23 @@ public class DayTableBean {
         return c1.getTime();
     }
 
+    protected static Date thisMonth(int date){
+        Calendar c1 = new GregorianCalendar();
+        c1.set(Calendar.DAY_OF_MONTH, date);
+        c1.set(Calendar.HOUR_OF_DAY, 12);
+        c1.set(Calendar.MINUTE, 0);
+        return c1.getTime();
+    }
+
     protected AbstractTimetableEvent eventById(List<AbstractTimetableEvent> events, String eventId) {
         for (AbstractTimetableEvent event : events) {
             if (event.getId().equals(eventId))
                 return event;
         }
         return null;
+    }
+
+    protected String generateEventId() {
+        return String.valueOf(eventIdCounter++);
     }
 }

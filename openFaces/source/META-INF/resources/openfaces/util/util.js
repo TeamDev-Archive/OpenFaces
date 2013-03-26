@@ -831,15 +831,17 @@ if (!window.O$) {
     return false;
   };
 
-  O$.incDay = function(date, increment) {
+  O$.incDay = function(date, increment, noDSTTimeAdjusting) {
     if (increment == undefined)
       increment = 1;
     var backupDate = new Date(date.getTime());
     date.setHours(12, 0, 0, 0);
     var newDate = new Date(date.getTime() + increment * 86400000);
     var removedDstHours = newDate.getHours() - 12; // accounts for DST transition days, e.g. on Oct 10->11 in Chile (Santiago) UTC-4
-    if (removedDstHours < 0)
+    if (removedDstHours < 0 || noDSTTimeAdjusting){
       removedDstHours = 0;
+    }
+
     newDate.setHours(backupDate.getHours() + removedDstHours,
             backupDate.getMinutes(),
             backupDate.getSeconds(),
@@ -847,7 +849,7 @@ if (!window.O$) {
     return newDate;
   };
 
-  O$._datesEqual = function(date1, date2) {
+ O$._datesEqual = function(date1, date2) {
     if (!date1)
       return !date2;
     if (!date2)
