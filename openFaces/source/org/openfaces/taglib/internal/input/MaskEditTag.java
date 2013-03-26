@@ -32,10 +32,11 @@ public class MaskEditTag extends org.openfaces.taglib.internal.AbstractComponent
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
         setBooleanProperty(component, "rendered");
+        setStringProperty(component,"mask");
+        setStringProperty(component,"blank");
+        setObjectProperty(component,"maskSymbolArray");
+        setStringProperty(component,"dictionary");
         setStringProperty(component, "id");
-        setObjectProperty(component, "value");
-        setStringProperty(component, "style");
-        setStringProperty(component, "styleClass");
-        setBooleanProperty(component, "includeliterals");
+
     }
 }

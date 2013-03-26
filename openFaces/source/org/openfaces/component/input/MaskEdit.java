@@ -12,16 +12,56 @@
 package org.openfaces.component.input;
 
 import org.openfaces.component.OUIInputText;
+import org.openfaces.util.ValueBindings;
 
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
+import java.util.LinkedList;
 
 public class MaskEdit extends InputText {
     public static final String COMPONENT_TYPE = "org.openfaces.MaskEdit";
     public static final String COMPONENT_FAMILY = "org.openfaces.MaskEdit";
 
 
-    private Boolean includeliterals;
+    /*inputId, mask, blank, maskSymbolArray, rolloverClass, focusedClass, dictionary*/
+    private String mask;
+    private String blank;
+    private String dictionary;
+    private LinkedList maskSymbolArray;
+
+    public String getMask() {
+        return ValueBindings.get(this, "mask", mask, "%u25CF");
+    }
+
+    public void setMask(String mask) {
+        this.mask = mask;
+    }
+
+    public String getBlank() {
+        return ValueBindings.get(this, "blank", blank, "%u25CF");
+    }
+
+    public void setBlank(String blank) {
+        this.blank = blank;
+    }
+
+    public String getDictionary() {
+        return ValueBindings.get(this, "dictionary", dictionary, "%u25CF");
+    }
+
+    public void setDictionary(String dictionary) {
+        this.dictionary = dictionary;
+    }
+
+    public LinkedList getMaskSymbolArray() {
+        return ValueBindings.get(this, "maskSymbolArray", maskSymbolArray, []);
+    }
+
+    public void setMaskSymbolArray(LinkedList maskSymbolArray) {
+        this.maskSymbolArray = maskSymbolArray;
+    }
+
+
 
     public MaskEdit() {
         setRendererType("org.openfaces.MaskEditRenderer");
@@ -48,7 +88,4 @@ public class MaskEdit extends InputText {
 
     }
 
-    public void setIncludeliterals(boolean includeliterals) {
-        this.includeliterals = includeliterals;
-    }
 }

@@ -16,7 +16,7 @@
 // I mark methods which i actually like now with the comment :OK:
 O$.MaskEdit = {
 
-  _init:function (inputId, mask, blank, maskSymbolArray, rolloverClass, focusedClass, disabled, dictionary) {
+  _init:function (inputId, mask, blank, maskSymbolArray, rolloverClass, focusedClass, dictionary) {
     var maskEdit = O$.initComponent(inputId,
             {_rolloverClass:rolloverClass,
               _focusedClass:focusedClass
@@ -24,7 +24,7 @@ O$.MaskEdit = {
             { _mask:mask,
               _blank:blank,
               _maskSymbolArray:maskSymbolArray,
-              _disabled:disabled,
+
               _dictionary:dictionary,
               _maskInputCursorPosition:0,
               _value:blank,
@@ -164,13 +164,23 @@ O$.MaskEdit = {
                 this._setCursorPosition(clickCursorPosition, true);
 
               },
+              onblur:function () {
+                if (this.value == this._blank) {
+                  this.value = "";
+                }
+              },
+              onfocus:function () {
+                if (this.value == "") {
+                  this.value = this._blank;
 
+                }
+              },
               onpaste:function (e) {
                 e = e || event;
                 return this._validator();
               },
               oninput:function (e) {
-                setTimeout(this._validator(),0);
+                setTimeout(this._validator(), 0);
               },
 
               _validator:function () {

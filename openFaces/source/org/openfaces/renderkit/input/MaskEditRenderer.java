@@ -52,18 +52,18 @@ public class MaskEditRenderer extends AbstractInputTextRenderer {
 
     @Override
     protected void encodeInitScript(FacesContext context, OUIInputText inputText) throws IOException {
-        String promptText = inputText.getPromptText();
-        String promptTextClass = Styles.getCSSClass(context, inputText, inputText.getPromptTextStyle(), StyleGroup.regularStyleGroup(1), inputText.getPromptTextClass(), DEFAULT_PROMPT_CLASS);
-        String rolloverClass = Styles.getCSSClass(context, inputText, inputText.getRolloverStyle(), StyleGroup.regularStyleGroup(2), inputText.getRolloverClass(), null);
-        String focusedClass = Styles.getCSSClass(context, inputText, inputText.getFocusedStyle(), StyleGroup.regularStyleGroup(3), inputText.getFocusedClass(), null);
+        MaskEdit maskEdit = (MaskEdit) inputText;
+        String rolloverClass = Styles.getCSSClass(context, inputText, inputText.getRolloverStyle(), StyleGroup.regularStyleGroup(1), inputText.getRolloverClass(), null);
+        String focusedClass = Styles.getCSSClass(context, inputText, inputText.getFocusedStyle(), StyleGroup.regularStyleGroup(2), inputText.getFocusedClass(), null);
 
         String value = Rendering.convertToString(context, inputText, inputText.getValue());
-        boolean promptVisible = value == null || value.length() == 0;
-
         Script initScript = new ScriptBuilder().initScript(context, inputText, "O$.MaskEdit._init",
+                maskEdit.getMask(),
+                maskEdit.getBlank(),
+                maskEdit.getMaskSymbolArray(),
                 rolloverClass,
                 focusedClass,
-                inputText.isDisabled()
+                maskEdit.getDictionary()
         );
 
         Styles.renderStyleClasses(context, inputText);
