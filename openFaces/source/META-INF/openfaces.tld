@@ -48882,17 +48882,50 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
       <!-- @el true -->
-    </attribute>
+       </attribute>
     <attribute>
       <description>Indicates enter helper characters in result.</description>
-      <name>includeliterals</name>
+      <name>mask</name>
       <deferred-value>
-        <type>boolean</type>
+        <type>String</type>
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- @default false -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>Indicates enter helper characters in result.</description>
+      <name>blank</name>
+      <deferred-value>
+        <type>String</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+      <!--  /*inputId, mask, blank, maskSymbolArray, rolloverClass, focusedClass, dictionary*/    -->
+ </attribute>
+ <attribute>
+   <description>Indicates enter helper characters in result.</description>
+   <name>maskSymbolArray</name>
+   <deferred-value>
+     <type>String</type>
+   </deferred-value>
+   <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>Indicates enter helper characters in result.</description>
+      <name>dictionary</name>
+      <deferred-value>
+        <type>String</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+
 
   </tag>
 
