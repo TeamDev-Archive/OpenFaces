@@ -16,7 +16,7 @@
 // I mark methods which i actually like now with the comment :OK:
 O$.MaskEdit = {
 
-  _init:function (inputId, mask, blank, maskSymbolArray, rolloverClass, focusedClass, dictionary) {
+  _init:function (inputId, mask, blank, maskSymbolArray, dictionary, rolloverClass, focusedClass) {
     var maskEdit = O$.initComponent(inputId,
             {_rolloverClass:rolloverClass,
               _focusedClass:focusedClass
@@ -24,7 +24,6 @@ O$.MaskEdit = {
             { _mask:mask,
               _blank:blank,
               _maskSymbolArray:maskSymbolArray,
-
               _dictionary:dictionary,
               _maskInputCursorPosition:0,
               _value:blank,
@@ -39,11 +38,7 @@ O$.MaskEdit = {
 
 
     );
-    maskEdit._mask = "########";
-    maskEdit._blank = "//DD///MM///YYYY///";
-    maskEdit._maskSymbolArray = ["D", "M", "Y"];
     maskEdit._dictionary = dictionary ? dictionary : "absdefghijklmnopqrstuwwxyz";
-
     for (var i = 0; i < maskEdit._blank.length; i++) {
       var IsMaskSymbol = false;
       for (var j in maskEdit._maskSymbolArray) {
@@ -51,7 +46,6 @@ O$.MaskEdit = {
           IsMaskSymbol = true;
         }
       }
-
       if (!IsMaskSymbol) {
         maskEdit._maskSeparatorPosition.push(i)
       } else {
@@ -176,18 +170,19 @@ O$.MaskEdit = {
                 }
               },
               onpaste:function (e) {
-                e = e || event;
-                return this._validator();
+                if (O$.isExplorer()) {
+                  e = e || event;
+                  setTimeout(this._validator(), 0);
+                }
               },
+
               oninput:function (e) {
-                setTimeout(this._validator(), 0);
+                return this._validator();
               },
 
               _validator:function () {
                 var newValue = this._cutNewMask(this.value);
-
-                this._valueMaskValidator(newValue);
-                this._valueBlankValidator(newValue);
+                if (!this._valueMaskValidator(newValue)) this._valueBlankValidator(newValue);
                 this.value = this._toStringMaskValue(this._maskValue);
                 this._setCursorPosition(this._cursorPosition, false);
                 O$._selectTextRange(this, this._cursorPosition, this._cursorPosition);

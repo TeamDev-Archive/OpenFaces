@@ -34,9 +34,7 @@ public class MaskEditTag extends org.openfaces.taglib.internal.AbstractComponent
         setBooleanProperty(component, "rendered");
         setStringProperty(component,"mask");
         setStringProperty(component,"blank");
-        setObjectProperty(component,"maskSymbolArray");
+        setStringProperty(component,"maskSymbolArray");
         setStringProperty(component,"dictionary");
-        setStringProperty(component, "id");
-
     }
 }

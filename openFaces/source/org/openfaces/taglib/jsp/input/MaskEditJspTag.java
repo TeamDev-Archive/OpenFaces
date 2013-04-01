@@ -26,15 +26,9 @@ public class MaskEditJspTag extends org.openfaces.taglib.jsp.AbstractComponentJs
         getDelegate().setPropertyValue("rendered", rendered);
     }
 
-
     public void setValue(ValueExpression value) {
         getDelegate().setPropertyValue("value", value);
     }
-
-    public void setId(ValueExpression id) {
-        getDelegate().setPropertyValue("id", id);
-    }
-
 
     public void setMask(ValueExpression mask) {
         getDelegate().setPropertyValue("mask", mask);

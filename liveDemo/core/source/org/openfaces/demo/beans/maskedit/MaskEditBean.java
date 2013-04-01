@@ -12,8 +12,59 @@
 
 package org.openfaces.demo.beans.maskedit;
 
+import javax.faces.context.FacesContext;
+import java.util.Map;
+
 /**
  * @author Sergey Pensov
  */
 public class MaskEditBean {
+
+
+    private String value;
+    private String mask = "######";
+    private String blank = "DD/MM/YY";
+    private String maskSymbol = "DMY";
+
+    public String getMaskSymbol() {
+        return maskSymbol;
+    }
+
+    public void setMaskSymbol(String maskSymbol) {
+        this.maskSymbol = maskSymbol;
+    }
+
+    public void setMask(String mask) {
+        this.mask = mask;
+    }
+
+    public void setBlank(String blank) {
+        this.blank = blank;
+    }
+
+    public String getMask() {
+
+        return mask;
+    }
+
+    public String getBlank() {
+        return blank;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        System.out.println(value);
+        this.value = value;
+    }
+
+    public String coolSubmit(){
+        FacesContext context = FacesContext.getCurrentInstance();
+        Map requestParams = context.getExternalContext().getRequestParameterMap();
+        System.out.println("Login:" + this.getValue());
+        return "";
+    }
+
 }

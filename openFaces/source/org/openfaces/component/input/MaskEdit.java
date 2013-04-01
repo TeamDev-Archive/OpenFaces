@@ -27,10 +27,11 @@ public class MaskEdit extends InputText {
     private String mask;
     private String blank;
     private String dictionary;
-    private LinkedList maskSymbolArray;
+    private String maskSymbolArray;
+
 
     public String getMask() {
-        return ValueBindings.get(this, "mask", mask, "%u25CF");
+        return ValueBindings.get(this, "mask", mask, "");
     }
 
     public void setMask(String mask) {
@@ -38,7 +39,7 @@ public class MaskEdit extends InputText {
     }
 
     public String getBlank() {
-        return ValueBindings.get(this, "blank", blank, "%u25CF");
+        return ValueBindings.get(this, "blank", blank, "");
     }
 
     public void setBlank(String blank) {
@@ -46,21 +47,20 @@ public class MaskEdit extends InputText {
     }
 
     public String getDictionary() {
-        return ValueBindings.get(this, "dictionary", dictionary, "%u25CF");
+        return ValueBindings.get(this, "dictionary", dictionary, "absdefghijklmnopqrstuwwxyz");
     }
 
     public void setDictionary(String dictionary) {
         this.dictionary = dictionary;
     }
 
-    public LinkedList getMaskSymbolArray() {
-        return ValueBindings.get(this, "maskSymbolArray", maskSymbolArray, []);
+    public String getMaskSymbolArray() {
+        return ValueBindings.get(this, "maskSymbolArray", maskSymbolArray,"_");
     }
 
-    public void setMaskSymbolArray(LinkedList maskSymbolArray) {
+    public void setMaskSymbolArray(String maskSymbolArray) {
         this.maskSymbolArray = maskSymbolArray;
     }
-
 
 
     public MaskEdit() {

@@ -344,7 +344,8 @@
     <attribute>
       <description>Allows receiving row data objects for the currently displayed rows. This attribute should be
         specified as a value binding expression to a write-only property of type java.util.List, java.util.Set, or
-        Object[].</description>
+        Object[].
+      </description>
       <name>displayedRowDatas</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -1188,7 +1189,8 @@
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>If this attribute is "true" then user can switch between sorted and unsorted states by clicking on column header or
+      <description>If this attribute is "true" then user can switch between sorted and unsorted states by clicking on
+        column header or
         using the column menu.
       </description>
       <name>unsortedStateAllowed</name>
@@ -1200,7 +1202,8 @@
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This attribute specify if pagination must follow selection durring sorting and filtering</description>
+      <description>This attribute specify if pagination must follow selection durring sorting and filtering
+      </description>
       <name>keepSelectionVisible</name>
       <deferred-value>
         <type>boolean</type>
@@ -1239,18 +1242,18 @@
       <!-- @el true -->
     </attribute>
     <!--<attribute>-->
-      <!--<description>Specifies whether table&apos;s body rows should be loaded as part of the page when loading a page-->
-        <!--(false), or should be requested with a separate Ajax request after the page is loaded (true). Assigning &quot;true&quot;-->
-        <!--turns on the deferred loading mode, which might be useful to save page loading time when the table has a lot of-->
-        <!--records.-->
-      <!--</description>-->
-      <!--<name>deferBodyLoading</name>-->
-      <!--<deferred-value>-->
-        <!--<type>boolean</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType boolean &ndash;&gt;-->
-      <!--&amp;lt;!&ndash; @default false &ndash;&gt;-->
-      <!--&amp;lt;!&ndash; @el true &ndash;&gt;-->
+    <!--<description>Specifies whether table&apos;s body rows should be loaded as part of the page when loading a page-->
+    <!--(false), or should be requested with a separate Ajax request after the page is loaded (true). Assigning &quot;true&quot;-->
+    <!--turns on the deferred loading mode, which might be useful to save page loading time when the table has a lot of-->
+    <!--records.-->
+    <!--</description>-->
+    <!--<name>deferBodyLoading</name>-->
+    <!--<deferred-value>-->
+    <!--<type>boolean</type>-->
+    <!--</deferred-value>-->
+    <!--&lt;!&ndash; @bindingType boolean &ndash;&gt;-->
+    <!--&amp;lt;!&ndash; @default false &ndash;&gt;-->
+    <!--&amp;lt;!&ndash; @el true &ndash;&gt;-->
     <!--</attribute>-->
 
   </tag>
@@ -1921,17 +1924,17 @@
       <!-- @el true -->
     </attribute>
     <!--<attribute>-->
-      <!--<description>Specifies the type of values that is displayed in this column. This attribute is optional and might-->
-        <!--be required for the proper detection of columns where the summary should be displayed (when &lt;o:sumaries&gt;-->
-        <!--tag is used), and for the proper detection of applicable search criteria when using the filtering feature.-->
-      <!--</description>-->
-      <!--<name>type</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.Object</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.Class &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
+    <!--<description>Specifies the type of values that is displayed in this column. This attribute is optional and might-->
+    <!--be required for the proper detection of columns where the summary should be displayed (when &lt;o:sumaries&gt;-->
+    <!--tag is used), and for the proper detection of applicable search criteria when using the filtering feature.-->
+    <!--</description>-->
+    <!--<name>type</name>-->
+    <!--<deferred-value>-->
+    <!--<type>java.lang.Object</type>-->
+    <!--</deferred-value>-->
+    <!--&lt;!&ndash; @bindingType java.lang.Class &ndash;&gt;-->
+    <!--&lt;!&ndash; @default null &ndash;&gt;-->
+    <!--&lt;!&ndash; @el true &ndash;&gt;-->
     <!--</attribute>-->
   </tag>
 
@@ -2010,7 +2013,8 @@
       <description>The filtering condition that should be used for comparing the values specified in this filter
         component
         to the values specified in data records. It should have a format of "&amp;lt;condition&gt;" or "not &amp;lt;condition&gt;",
-        where &amp;lt;condition&gt; is one of the following values: equals, contains, beginsWith, endsWith, less, greater,
+        where &amp;lt;condition&gt; is one of the following values: equals, contains, beginsWith, endsWith, less,
+        greater,
         lessOrEqual, greaterOrEqual. This attribute is not effective when the "value" attribute is defined. In case of
         specifying the "value" attribute, you should specify the condition as part of the ExpressionFilterCriterion
         object bound to the "value" attribute.
@@ -2342,7 +2346,8 @@
       <description>The filtering condition that should be used for comparing the values specified in this filter
         component
         to the values specified in data records. It should have a format of "&amp;lt;condition&gt;" or "not &amp;lt;condition&gt;",
-        where &amp;lt;condition&gt; is one of the following values: equals, contains, beginsWith, endsWith, less, greater,
+        where &amp;lt;condition&gt; is one of the following values: equals, contains, beginsWith, endsWith, less,
+        greater,
         lessOrEqual, greaterOrEqual. This attribute is not effective when the "value" attribute is defined. In case of
         specifying the "value" attribute, you should specify the condition as part of the ExpressionFilterCriterion
         object bound to the "value" attribute.
@@ -2937,7 +2942,7 @@
       <!-- @el false -->
     </attribute>
     <attribute>
-    <description>A value-binding expression that associates the component with a backing bean property.</description>
+      <description>A value-binding expression that associates the component with a backing bean property.</description>
       <name>binding</name>
       <deferred-value>
         <type>org.openfaces.component.table.DataTable</type>
@@ -2997,7 +3002,8 @@
       <description>The filtering condition that should be used for comparing the values specified in this filter
         component
         to the values specified in data records. It should have a format of "&amp;lt;condition&gt;" or "not &amp;lt;condition&gt;",
-        where &amp;lt;condition&gt; is one of the following values: equals, contains, beginsWith, endsWith, less, greater,
+        where &amp;lt;condition&gt; is one of the following values: equals, contains, beginsWith, endsWith, less,
+        greater,
         lessOrEqual, greaterOrEqual. This attribute is not effective when the "value" attribute is defined. In case of
         specifying the "value" attribute, you should specify the condition as part of the ExpressionFilterCriterion
         object bound to the "value" attribute.
@@ -3235,7 +3241,8 @@
     <attribute>
       <description>The value that can serve as a convenience substitution for specifying &amp;lt;h:outputText&gt; in the
         column's &quot;header&quot; facet, or serve for identifying the column name in such components as &amp;lt;o:comopsitefilter&gt;
-        or &amp;lt;o:columnVisibilityMenu&gt;. You can use a column data variable specified in the "var" in the expression
+        or &amp;lt;o:columnVisibilityMenu&gt;. You can use a column data variable specified in the "var" in the
+        expression
         for this
         attribute.
       </description>
@@ -3909,18 +3916,18 @@
       <!-- @el false -->
     </attribute>
     <!--<attribute>-->
-      <!--<description>Specifies the type of values that is displayed in the current column (according to the current column-->
-        <!--data variable). This attribute is optional and might be required for the proper detection of columns where the-->
-        <!--summary should be displayed (when &lt;o:sumaries&gt; tag is used), and for the proper detection of applicable-->
-        <!--search criteria when using the filtering feature.-->
-      <!--</description>-->
-      <!--<name>columnType</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.Object</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.Class &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
+    <!--<description>Specifies the type of values that is displayed in the current column (according to the current column-->
+    <!--data variable). This attribute is optional and might be required for the proper detection of columns where the-->
+    <!--summary should be displayed (when &lt;o:sumaries&gt; tag is used), and for the proper detection of applicable-->
+    <!--search criteria when using the filtering feature.-->
+    <!--</description>-->
+    <!--<name>columnType</name>-->
+    <!--<deferred-value>-->
+    <!--<type>java.lang.Object</type>-->
+    <!--</deferred-value>-->
+    <!--&lt;!&ndash; @bindingType java.lang.Class &ndash;&gt;-->
+    <!--&lt;!&ndash; @default null &ndash;&gt;-->
+    <!--&lt;!&ndash; @el true &ndash;&gt;-->
     <!--</attribute>-->
 
   </tag>
@@ -3928,7 +3935,8 @@
   <tag>
     <description>The ColumnGroup component can be used to combine several columns into a group. The columns inside that
       are combined into a group can have an additional header and/or footer that spans across all of these columns. It
-      is also possible to specify style and events for column groups. The set of attributes of &amp;lt;o:columnGroup&gt; tag
+      is also possible to specify style and events for column groups. The set of attributes of &amp;lt;o:columnGroup&gt;
+      tag
       is similar to that of &amp;lt;o:column&gt; tag. In order to create a group of columns, it is just needed to
       enclose the appropriate &amp;lt;o:column&gt; tags into a &amp;lt;o:columnGroup&gt; tag.
     </description>
@@ -5892,7 +5900,7 @@
       <!-- @el only -->
     </attribute>
     <attribute>
-      <description>Enables possibility to specify which cells are selectable.  This attribute is a MethodBinding that
+      <description>Enables possibility to specify which cells are selectable. This attribute is a MethodBinding that
         must point to the method that return boolean value. This method is called for every cell.
         Note that using cellSelectable and selectableCells attributes together is not allowed.
       </description>
@@ -5905,8 +5913,9 @@
       <!-- @el only -->
     </attribute>
     <attribute>
-      <description>Enables possibility to specify which cells are selectable.  This attribute is a MethodBinding that
-        must point to the method that return array of booleans that represent columns. This method is called for every row.
+      <description>Enables possibility to specify which cells are selectable. This attribute is a MethodBinding that
+        must point to the method that return array of booleans that represent columns. This method is called for every
+        row.
         Note that using cellSelectable and selectableCells attributes together is not allowed.
       </description>
       <name>selectableCells</name>
@@ -5949,7 +5958,8 @@
     </attribute>
     <attribute>
       <description>A flag that indicates whether there should always be a selected item (true) or empty selection is
-        allowed (false).</description>
+        allowed (false).
+      </description>
       <name>required</name>
       <deferred-value>
         <type>boolean</type>
@@ -6154,7 +6164,7 @@
       <!-- @el only -->
     </attribute>
     <attribute>
-      <description>Enables possibility to specify which cells are selectable.  This attribute is a MethodBinding that
+      <description>Enables possibility to specify which cells are selectable. This attribute is a MethodBinding that
         must point to the method that return boolean value. This method is called for every cell.
         Note that using cellSelectable and selectableCells attributes together is not allowed.
       </description>
@@ -6167,8 +6177,9 @@
       <!-- @el only -->
     </attribute>
     <attribute>
-      <description>Enables possibility to specify which cells are selectable.  This attribute is a MethodBinding that
-        must point to the method that return array of booleans that represent columns. This method is called for every row.
+      <description>Enables possibility to specify which cells are selectable. This attribute is a MethodBinding that
+        must point to the method that return array of booleans that represent columns. This method is called for every
+        row.
         Note that using cellSelectable and selectableCells attributes together is not allowed.
       </description>
       <name>selectableCells</name>
@@ -6211,7 +6222,8 @@
     </attribute>
     <attribute>
       <description>A flag that indicates whether there should always be a selected item (true) or empty selection is
-        allowed (false).</description>
+        allowed (false).
+      </description>
       <name>required</name>
       <deferred-value>
         <type>boolean</type>
@@ -6442,7 +6454,8 @@
     </attribute>
     <attribute>
       <description>A flag that indicates whether there should always be a selected item (true) or empty selection is
-        allowed (false).</description>
+        allowed (false).
+      </description>
       <name>required</name>
       <deferred-value>
         <type>boolean</type>
@@ -6467,7 +6480,8 @@
     </attribute>
     <attribute>
       <description>Id's of components, which will be rerendered after successful Ajax request.
-        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in OpenFaces 2.x) list if id's.
+        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in
+        OpenFaces 2.x) list if id's.
       </description>
       <name>render</name>
       <required>false</required>
@@ -6498,7 +6512,8 @@
         reloaded components. The difference with render is that components listed in execute will
         just process the submitted data, but won't be rerendered. This can often be needed when the reloaded data
         depends on some other component on a page.
-        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in OpenFaces 2.x) listif id's.
+        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in
+        OpenFaces 2.x) listif id's.
       </description>
       <name>execute</name>
       <required>false</required>
@@ -6550,7 +6565,7 @@
     </attribute>
     <attribute>
       <description>A CSS class name that is applied directly to the selected row. Unlike the styleClass attribute, which
-      changes the visual style, but does not specify which HTML tags will be affected to achieve , this attribute
+        changes the visual style, but does not specify which HTML tags will be affected to achieve , this attribute
         provides an ability to specify CSS class name(s) which will be applied to the respective row tags themselves.
         It is recommended to use styleClass (or style) attribute if your intention is to customize visual representation
         of table's rows, and to use the rawStyleClass if your intention is to provide some style class to the row tags
@@ -6673,7 +6688,8 @@
     </attribute>
     <attribute>
       <description>A flag that indicates whether there should always be at least one selected item (true) or empty
-        selection is allowed (false).</description>
+        selection is allowed (false).
+      </description>
       <name>required</name>
       <deferred-value>
         <type>boolean</type>
@@ -6698,7 +6714,8 @@
     </attribute>
     <attribute>
       <description>Id's of components, which will be rerendered after successful Ajax request.
-        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in OpenFaces 2.x) listif id's.
+        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in
+        OpenFaces 2.x) listif id's.
       </description>
       <name>render</name>
       <required>false</required>
@@ -6729,7 +6746,8 @@
         reloaded components. The difference with render is that components listed in execute will
         just process the submitted data, but won't be rerendered. This can often be needed when the reloaded data
         depends on some other component on a page.
-        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in OpenFaces 2.x) listif id's.
+        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in
+        OpenFaces 2.x) listif id's.
       </description>
       <name>execute</name>
       <required>false</required>
@@ -6780,7 +6798,8 @@
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A CSS class name that is applied directly to each selected row. Unlike the styleClass attribute, which
+      <description>A CSS class name that is applied directly to each selected row. Unlike the styleClass attribute,
+        which
         changes the visual style, but does not specify which HTML tags will be affected to achieve , this attribute
         provides an ability to specify CSS class name(s) which will be applied to the respective row tags themselves.
         It is recommended to use styleClass (or style) attribute if your intention is to customize visual representation
@@ -9011,7 +9030,8 @@ means that only root nodes and their immediate children are preloaded -->
     <attribute>
       <description>Allows receiving row data objects for the currently displayed rows. This attribute should be
         specified as a value binding expression to a write-only property of type java.util.List, java.util.Set, or
-        Object[].</description>
+        Object[].
+      </description>
       <name>displayedRowDatas</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -10084,7 +10104,8 @@ means that only root nodes and their immediate children are preloaded -->
     </attribute>
     <attribute>
       <name>unsortedStateAllowed</name>
-      <description>If this attribute is "true" then user can switch between sorted and unsorted states by clicking on column header or
+      <description>If this attribute is "true" then user can switch between sorted and unsorted states by clicking on
+        column header or
         using the column menu.
       </description>
       <deferred-value>
@@ -10966,7 +10987,8 @@ means that only root nodes and their immediate children are preloaded -->
     </attribute>
     <attribute>
       <description>A flag that indicates whether there should always be a selected item (true) or empty selection is
-        allowed (false).</description>
+        allowed (false).
+      </description>
       <name>required</name>
       <deferred-value>
         <type>boolean</type>
@@ -10991,7 +11013,8 @@ means that only root nodes and their immediate children are preloaded -->
     </attribute>
     <attribute>
       <description>Id's of components, which will be rerendered after successful Ajax request.
-        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in OpenFaces 2.x) listif id's.
+        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in
+        OpenFaces 2.x) listif id's.
       </description>
       <name>render</name>
       <required>false</required>
@@ -11022,7 +11045,8 @@ means that only root nodes and their immediate children are preloaded -->
         reloaded components. The difference with render is that components listed in execute will
         just process the submitted data, but won't be rerendered. This can often be needed when the reloaded data
         depends on some other component on a page.
-        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in OpenFaces 2.x) listif id's.
+        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in
+        OpenFaces 2.x) listif id's.
       </description>
       <name>execute</name>
       <required>false</required>
@@ -11201,7 +11225,8 @@ means that only root nodes and their immediate children are preloaded -->
     </attribute>
     <attribute>
       <description>A flag that indicates whether there should always be at least one selected item (true) or empty
-        selection is allowed (false).</description>
+        selection is allowed (false).
+      </description>
       <name>required</name>
       <deferred-value>
         <type>boolean</type>
@@ -11226,7 +11251,8 @@ means that only root nodes and their immediate children are preloaded -->
     </attribute>
     <attribute>
       <description>Id's of components, which will be rerendered after successful Ajax request.
-        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in OpenFaces 2.x) listif id's.
+        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in
+        OpenFaces 2.x) listif id's.
       </description>
       <name>render</name>
       <required>false</required>
@@ -11257,7 +11283,8 @@ means that only root nodes and their immediate children are preloaded -->
         reloaded components. The difference with render is that components listed in execute will
         just process the submitted data, but won't be rerendered. This can often be needed when the reloaded data
         depends on some other component on a page.
-        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in OpenFaces 2.x) listif id's.
+        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in
+        OpenFaces 2.x) listif id's.
       </description>
       <name>execute</name>
       <required>false</required>
@@ -11308,7 +11335,8 @@ means that only root nodes and their immediate children are preloaded -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A CSS class name that is applied directly to each selected row. Unlike the styleClass attribute, which
+      <description>A CSS class name that is applied directly to each selected row. Unlike the styleClass attribute,
+        which
         changes the visual style, but does not specify which HTML tags will be affected to achieve , this attribute
         provides an ability to specify CSS class name(s) which will be applied to the respective row tags themselves.
         It is recommended to use styleClass (or style) attribute if your intention is to customize visual representation
@@ -12459,7 +12487,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A flag that indicates whether or not user will be able to  change items of drop down
+      <description>A flag that indicates whether or not user will be able to change items of drop down
         field by using top or bottom arrow.
       </description>
       <name>changeValueOnSelect</name>
@@ -12474,92 +12502,92 @@ entering a value and returns a list of suggestions from the server -->
   </tag>
 
   <!--<tag>-->
-    <!--<description>An extended version of &amp;lt;f:selectItem> tag that allows using child components. -->
-    <!--</description>-->
-    <!--<name>selectItem</name>-->
-    <!--<tag-class>org.openfaces.taglib.jsp.select.SelectItemJspTag</tag-class>-->
-    <!--<body-content>JSP</body-content>-->
+  <!--<description>An extended version of &amp;lt;f:selectItem> tag that allows using child components. -->
+  <!--</description>-->
+  <!--<name>selectItem</name>-->
+  <!--<tag-class>org.openfaces.taglib.jsp.select.SelectItemJspTag</tag-class>-->
+  <!--<body-content>JSP</body-content>-->
 
-    <!--<attribute>-->
-      <!--<description>A flag indicating whether or not this component should be rendered (during Render Response Phase),-->
-        <!--or processed on any subsequent form submit. The default value for this property is true.-->
-      <!--</description>-->
-      <!--<name>rendered</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&amp;lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&amp;lt;!&ndash; @default false &ndash;&gt;-->
-      <!--&amp;lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>A value-binding expression that associates a list item with a backing bean property.-->
-      <!--</description>-->
-      <!--<name>binding</name>-->
-      <!--<deferred-value>-->
-        <!--<type>org.openfaces.component.select.OUISelectItem</type>-->
-      <!--</deferred-value>-->
-      <!--&amp;lt;!&ndash; @bindingType org.openfaces.component.input. DropDownItem &ndash;&gt;-->
-      <!--&amp;lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&amp;lt;!&ndash; @el only &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>The value for a list item. This value is converted to String and-->
-        <!--shown in the text field when this item is selected.-->
-      <!--</description>-->
-      <!--<name>itemValue</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.Object</type>-->
-      <!--</deferred-value>-->
-      <!--&amp;lt;!&ndash; @bindingType Object &ndash;&gt;-->
-      <!--&amp;lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&amp;lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>The label of a list item.</description>-->
-      <!--<name>itemLabel</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&amp;lt;!&ndash; @bindingType Object &ndash;&gt;-->
-      <!--&amp;lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&amp;lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>The text description of a list item.</description>-->
-      <!--<name>itemDescription</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&amp;lt;!&ndash; @bindingType Object &ndash;&gt;-->
-      <!--&amp;lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&amp;lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>A flag indicating whether the option created by this component is disabled.-->
-        <!--Expressions must evaluate to a boolean. Default value is false.-->
-      <!--</description>-->
-      <!--<name>itemDisabled</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.Boolean</type>-->
-      <!--</deferred-value>-->
-      <!--&amp;lt;!&ndash; @bindingType boolean &ndash;&gt;-->
-      <!--&amp;lt;!&ndash; @default false &ndash;&gt;-->
-      <!--&amp;lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>A replacement for the itemValue, itemLabel, itemDescription and itemDisabled attributes. You can-->
-        <!--this attribute as a value binding that refers to the javax.faces.model.SelectItem instance holding all of the-->
-        <!--item's parameters.-->
-      <!--</description>-->
-      <!--<name>value</name>-->
-      <!--<deferred-value>-->
-        <!--<type>javax.faces.model.SelectItem</type>-->
-      <!--</deferred-value>-->
-      <!--&amp;lt;!&ndash; @bindingType Object &ndash;&gt;-->
-      <!--&amp;lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&amp;lt;!&ndash; @el only &ndash;&gt;-->
-    <!--</attribute>-->
+  <!--<attribute>-->
+  <!--<description>A flag indicating whether or not this component should be rendered (during Render Response Phase),-->
+  <!--or processed on any subsequent form submit. The default value for this property is true.-->
+  <!--</description>-->
+  <!--<name>rendered</name>-->
+  <!--<deferred-value>-->
+  <!--<type>java.lang.String</type>-->
+  <!--</deferred-value>-->
+  <!--&amp;lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
+  <!--&amp;lt;!&ndash; @default false &ndash;&gt;-->
+  <!--&amp;lt;!&ndash; @el true &ndash;&gt;-->
+  <!--</attribute>-->
+  <!--<attribute>-->
+  <!--<description>A value-binding expression that associates a list item with a backing bean property.-->
+  <!--</description>-->
+  <!--<name>binding</name>-->
+  <!--<deferred-value>-->
+  <!--<type>org.openfaces.component.select.OUISelectItem</type>-->
+  <!--</deferred-value>-->
+  <!--&amp;lt;!&ndash; @bindingType org.openfaces.component.input. DropDownItem &ndash;&gt;-->
+  <!--&amp;lt;!&ndash; @default null &ndash;&gt;-->
+  <!--&amp;lt;!&ndash; @el only &ndash;&gt;-->
+  <!--</attribute>-->
+  <!--<attribute>-->
+  <!--<description>The value for a list item. This value is converted to String and-->
+  <!--shown in the text field when this item is selected.-->
+  <!--</description>-->
+  <!--<name>itemValue</name>-->
+  <!--<deferred-value>-->
+  <!--<type>java.lang.Object</type>-->
+  <!--</deferred-value>-->
+  <!--&amp;lt;!&ndash; @bindingType Object &ndash;&gt;-->
+  <!--&amp;lt;!&ndash; @default null &ndash;&gt;-->
+  <!--&amp;lt;!&ndash; @el true &ndash;&gt;-->
+  <!--</attribute>-->
+  <!--<attribute>-->
+  <!--<description>The label of a list item.</description>-->
+  <!--<name>itemLabel</name>-->
+  <!--<deferred-value>-->
+  <!--<type>java.lang.String</type>-->
+  <!--</deferred-value>-->
+  <!--&amp;lt;!&ndash; @bindingType Object &ndash;&gt;-->
+  <!--&amp;lt;!&ndash; @default null &ndash;&gt;-->
+  <!--&amp;lt;!&ndash; @el true &ndash;&gt;-->
+  <!--</attribute>-->
+  <!--<attribute>-->
+  <!--<description>The text description of a list item.</description>-->
+  <!--<name>itemDescription</name>-->
+  <!--<deferred-value>-->
+  <!--<type>java.lang.String</type>-->
+  <!--</deferred-value>-->
+  <!--&amp;lt;!&ndash; @bindingType Object &ndash;&gt;-->
+  <!--&amp;lt;!&ndash; @default null &ndash;&gt;-->
+  <!--&amp;lt;!&ndash; @el true &ndash;&gt;-->
+  <!--</attribute>-->
+  <!--<attribute>-->
+  <!--<description>A flag indicating whether the option created by this component is disabled.-->
+  <!--Expressions must evaluate to a boolean. Default value is false.-->
+  <!--</description>-->
+  <!--<name>itemDisabled</name>-->
+  <!--<deferred-value>-->
+  <!--<type>java.lang.Boolean</type>-->
+  <!--</deferred-value>-->
+  <!--&amp;lt;!&ndash; @bindingType boolean &ndash;&gt;-->
+  <!--&amp;lt;!&ndash; @default false &ndash;&gt;-->
+  <!--&amp;lt;!&ndash; @el true &ndash;&gt;-->
+  <!--</attribute>-->
+  <!--<attribute>-->
+  <!--<description>A replacement for the itemValue, itemLabel, itemDescription and itemDisabled attributes. You can-->
+  <!--this attribute as a value binding that refers to the javax.faces.model.SelectItem instance holding all of the-->
+  <!--item's parameters.-->
+  <!--</description>-->
+  <!--<name>value</name>-->
+  <!--<deferred-value>-->
+  <!--<type>javax.faces.model.SelectItem</type>-->
+  <!--</deferred-value>-->
+  <!--&amp;lt;!&ndash; @bindingType Object &ndash;&gt;-->
+  <!--&amp;lt;!&ndash; @default null &ndash;&gt;-->
+  <!--&amp;lt;!&ndash; @el only &ndash;&gt;-->
+  <!--</attribute>-->
   <!--</tag>-->
 
   <tag>
@@ -14803,7 +14831,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>Id's of components, which will be rerendered after successful Ajax request.
-        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in OpenFaces 2.x) listif id's.
+        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in
+        OpenFaces 2.x) listif id's.
       </description>
       <name>render</name>
       <required>false</required>
@@ -14818,7 +14847,8 @@ entering a value and returns a list of suggestions from the server -->
         reloaded components. The difference with render is that components listed in execute will
         just process the submitted data, but won't be rerendered. This can often be needed when the reloaded data
         depends on some other component on a page.
-        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in OpenFaces 2.x) listif id's.
+        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in
+        OpenFaces 2.x) listif id's.
       </description>
       <name>execute</name>
       <required>false</required>
@@ -16301,7 +16331,8 @@ entering a value and returns a list of suggestions from the server -->
       the page appears when the current session is expired. This tag should be specified in the "sessionExpiration"
       facet
       of the AjaxSettings component. You can customize the session expiration confirmation by placing the
-      &amp;lt;o:confirmation> tag into the "confirmation" facet of the &amp;lt;defaultSessionExpiration> tag and configuring its
+      &amp;lt;o:confirmation> tag into the "confirmation" facet of the &amp;lt;defaultSessionExpiration> tag and
+      configuring its
       attributes appropriately.
     </description>
     <name>defaultSessionExpiration</name>
@@ -19089,7 +19120,8 @@ on every switch to the tab.-->
     </attribute>
     <attribute>
       <description>This flag indicates whether or not the component caption is togglable. In case the flag value is
-        'true' the component expands/collapses on mouse click at the caption.</description>
+        'true' the component expands/collapses on mouse click at the caption.
+      </description>
       <name>toggleOnCaptionClick</name>
       <deferred-value>
         <type>boolean</type>
@@ -19110,7 +19142,8 @@ on every switch to the tab.-->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A CSS class that is applied to the caption in the rollover state in case component caption is togglable.
+      <description>A CSS class that is applied to the caption in the rollover state in case component caption is
+        togglable.
       </description>
       <name>rolloverTogglableCaptionClass</name>
       <deferred-value>
@@ -20577,7 +20610,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
   </tag>
-<tag>
+  <tag>
     <description>The PieChartView component is used to create and customize a pie chart. It can be specified
       only as a child tag of the {@link chart} component. Child tags:
       {@link pieSectorProperties}, {@link chartLabels}, {@link chartNoDataMessage}.
@@ -20731,7 +20764,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-	  <description>Specifies whether the chart should be displayed with shadows.</description>
+      <description>Specifies whether the chart should be displayed with shadows.</description>
       <name>showShadow</name>
       <deferred-value>
         <type>boolean</type>
@@ -20741,7 +20774,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-	  <description>Specifies the x offset for the shadow.</description>
+      <description>Specifies the x offset for the shadow.</description>
       <name>shadowXOffset</name>
       <deferred-value>
         <type>java.lang.Double</type>
@@ -20751,7 +20784,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-	  <description>Specifies the y offset for the shadow.</description>
+      <description>Specifies the y offset for the shadow.</description>
       <name>shadowYOffset</name>
       <deferred-value>
         <type>java.lang.Double</type>
@@ -20761,7 +20794,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-	  <description>Specifies the color of the shadow.</description>
+      <description>Specifies the color of the shadow.</description>
       <name>shadowColor</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -20770,8 +20803,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
-     <attribute>
-	  <description>Specifies the background paint of the chart.</description>
+    <attribute>
+      <description>Specifies the background paint of the chart.</description>
       <name>backgroundPaint</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -20791,15 +20824,15 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
- 	    <description>Specifies the default style of the chart items shape outlines.</description>
- 	    <name>defaultOutlineStyle</name>
- 	    <deferred-value>
- 	      <type>java.lang.Object</type>
- 	    </deferred-value>
- 	    <!-- @bindingType LineStyle -->
- 	    <!-- @default null -->
- 	    <!-- @el true -->
- 	  </attribute>
+      <description>Specifies the default style of the chart items shape outlines.</description>
+      <name>defaultOutlineStyle</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType LineStyle -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
   </tag>
 
   <tag>
@@ -21022,8 +21055,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
-     <attribute>
-	 <description>Specifies the background paint of the chart.</description>
+    <attribute>
+      <description>Specifies the background paint of the chart.</description>
       <name>backgroundPaint</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -21053,7 +21086,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-	<description>Specifies the default line style for the chart.</description>
+      <description>Specifies the default line style for the chart.</description>
       <name>defaultLineStyle</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -21063,7 +21096,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-	<description>Specifies the default style of the chart items shape outlines.</description>
+      <description>Specifies the default style of the chart items shape outlines.</description>
       <name>defaultOutlineStyle</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -21073,7 +21106,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-	  <description>Specifies the outline style of the chart items shapes.</description>
+      <description>Specifies the outline style of the chart items shapes.</description>
       <name>outlines</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -21093,7 +21126,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-	  <description>Specifies the paints that should be used to fill the chart items' shapes.</description>
+      <description>Specifies the paints that should be used to fill the chart items' shapes.</description>
       <name>fillPaints</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -21123,7 +21156,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-	  <description>Specifies the position of chart labels for items with negative values.</description>
+      <description>Specifies the position of chart labels for items with negative values.</description>
       <name>negativeLabelsPosition</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -21132,8 +21165,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
-     <attribute>
-	  <description>Specifies the offset for chart labels.</description>
+    <attribute>
+      <description>Specifies the offset for chart labels.</description>
       <name>labelsOffset</name>
       <deferred-value>
         <type>java.lang.Double</type>
@@ -21358,7 +21391,9 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-	  <description>Specifies the value where the white part of the gradient ends. The attribute should be specified as numbers in range [0..1]</description>
+      <description>Specifies the value where the white part of the gradient ends. The attribute should be specified as
+        numbers in range [0..1]
+      </description>
       <name>g1WhitePosition</name>
       <deferred-value>
         <type>java.lang.Double</type>
@@ -21368,7 +21403,9 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-	<description>Specifies the value where the fully intensity part of the gradient ends. The attribute should be specified as numbers in range [0..1]</description>
+      <description>Specifies the value where the fully intensity part of the gradient ends. The attribute should be
+        specified as numbers in range [0..1]
+      </description>
       <name>g2FullIntensityPosition</name>
       <deferred-value>
         <type>java.lang.Double</type>
@@ -21378,7 +21415,9 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-	  <description>Specifies the value where the light intensity part of the gradient ends. The attribute should be specified as numbers in range [0..1]</description>
+      <description>Specifies the value where the light intensity part of the gradient ends. The attribute should be
+        specified as numbers in range [0..1]
+      </description>
       <name>g3LightIntensityPosition</name>
       <deferred-value>
         <type>java.lang.Double</type>
@@ -21388,7 +21427,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-	  <description>Specifies whether or not the shadow should be displayed on the chart.</description>
+      <description>Specifies whether or not the shadow should be displayed on the chart.</description>
       <name>showShadow</name>
       <deferred-value>
         <type>boolean</type>
@@ -21398,7 +21437,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-	  <description>Specifies the x offset for the shadow displayed on the chart.</description>
+      <description>Specifies the x offset for the shadow displayed on the chart.</description>
       <name>shadowXOffset</name>
       <deferred-value>
         <type>java.lang.Double</type>
@@ -21408,7 +21447,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-	  <description>Specifies the y offset for the shadow displayed on the chart.</description>
+      <description>Specifies the y offset for the shadow displayed on the chart.</description>
       <name>shadowYOffset</name>
       <deferred-value>
         <type>java.lang.Double</type>
@@ -21418,7 +21457,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-	  <description>Specifies the color to be used for displaying the shadow on the chart.</description>
+      <description>Specifies the color to be used for displaying the shadow on the chart.</description>
       <name>shadowColor</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -21427,8 +21466,9 @@ and it is automatically triggered on any form submission. -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
-     <attribute>
- 	  <description>Specifies the default line style that should be used for displaying outlines for chart items.</description>
+    <attribute>
+      <description>Specifies the default line style that should be used for displaying outlines for chart items.
+      </description>
       <name>defaultOutlineStyle</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -21438,7 +21478,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-	  <description>Specifies the line styles that should be used for displaying outlines for chart items.</description>
+      <description>Specifies the line styles that should be used for displaying outlines for chart items.</description>
       <name>outlines</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -21458,7 +21498,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-	  <description>Specifies the paint for chart's background.</description>
+      <description>Specifies the paint for chart's background.</description>
       <name>backgroundPaint</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -21468,7 +21508,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-	  <description>Specifies the paint for chart's title background.</description>
+      <description>Specifies the paint for chart's title background.</description>
       <name>titlePaint</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -21477,7 +21517,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
-     <attribute>
+    <attribute>
       <description>Specifies the default position of chart labels.</description>
       <name>defaultLabelsPosition</name>
       <deferred-value>
@@ -21498,7 +21538,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-	  <description>Specifies the position of chart labels for items with negative values.</description>
+      <description>Specifies the position of chart labels for items with negative values.</description>
       <name>negativeLabelsPosition</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -21507,8 +21547,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
-     <attribute>
-	  <description>Specifies the offset for chart labels.</description>
+    <attribute>
+      <description>Specifies the offset for chart labels.</description>
       <name>labelsOffset</name>
       <deferred-value>
         <type>java.lang.Double</type>
@@ -21609,7 +21649,8 @@ and it is automatically triggered on any form submission. -->
     </attribute>
     <attribute>
       <description>Setting this attribute to true shows additional tick marks, called minor tick marks, between the
-        regular tick marks, called major tick marks.</description>
+        regular tick marks, called major tick marks.
+      </description>
       <name>minorTicksVisible</name>
       <deferred-value>
         <type>boolean</type>
@@ -21697,7 +21738,8 @@ and it is automatically triggered on any form submission. -->
         a fixed interval regardless of axis value range, or it can be specified as -1 (or a special value of "integer"
         which can be used as an alternative unless you're using Java API) for automatic integer tick selection. The
         value of -1 (or "integer") is similar to the default behavior when this attribute is unspecified when tick
-        interval is deteted automatically, but only integer ticks will be generated in this case.</description>
+        interval is deteted automatically, but only integer ticks will be generated in this case.
+      </description>
       <name>tickInterval</name>
       <deferred-value>
         <type>java.lang.Double</type>
@@ -21748,7 +21790,8 @@ and it is automatically triggered on any form submission. -->
     </attribute>
     <attribute>
       <description>Setting this attribute to true shows additional tick marks, called minor tick marks, between the
-        regular tick marks, called major tick marks.</description>
+        regular tick marks, called major tick marks.
+      </description>
       <name>minorTicksVisible</name>
       <deferred-value>
         <type>boolean</type>
@@ -21893,7 +21936,8 @@ and it is automatically triggered on any form submission. -->
     </attribute>
     <attribute>
       <description>Setting this attribute to true shows additional tick marks, called minor tick marks, between the
-        regular tick marks, called major tick marks.</description>
+        regular tick marks, called major tick marks.
+      </description>
       <name>minorTicksVisible</name>
       <deferred-value>
         <type>boolean</type>
@@ -22252,7 +22296,8 @@ and it is automatically triggered on any form submission. -->
   </tag>
 
   <tag>
-    <description>The &amp;lt;o:chartNoDataMessage&gt; tag is used to specify the text that is shown if there is no data to
+    <description>The &amp;lt;o:chartNoDataMessage&gt; tag is used to specify the text that is shown if there is no data
+      to
       display in the chart. This tag should be defined as a child of the &amp;lt;o:chart&gt; tag.
     </description>
     <name>chartNoDataMessage</name>
@@ -24747,7 +24792,8 @@ and it is automatically triggered on any form submission. -->
 
   <!-- CommandButton tag declaration -->
   <tag>
-    <description>This is an analog of the standard &amp;lt;h:commandButton> component extended with Ajax features making it
+    <description>This is an analog of the standard &amp;lt;h:commandButton> component extended with Ajax features making
+      it
       possible to use Ajax request instead of form submission to execute an action and reload components. By default it
       behaves as its standard analog though Ajax functionality will be turned on if you specify its "render" attribute,
       which is similar to that of &amp;lt;o:ajax> component and specifies the list of components that should be reloaded
@@ -24845,7 +24891,8 @@ and it is automatically triggered on any form submission. -->
         reloaded components. The difference with render is that components listed in execute will
         just process the submitted data, but won't be rerendered. This can often be needed when the reloaded data
         depends on some other component on a page.
-        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in OpenFaces 2.x)
+        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in
+        OpenFaces 2.x)
         list if id's.
       </description>
       <name>execute</name>
@@ -25150,7 +25197,8 @@ and it is automatically triggered on any form submission. -->
       <description>Absolute or relative URL of the image to be displayed for this button. If specified, this &quot;input&quot;
         element will be of type &quot;image&quot;. Otherwise, it will be of the type specified by the &quot;type&quot;
         property with a label specified by the &quot;value&quot; property. If there are child components inside of the
-        &amp;lt;o:commandButton&gt; tag, the &quot;image&quot; attribute&apos;s value will be ignored and child components
+        &amp;lt;o:commandButton&gt; tag, the &quot;image&quot; attribute&apos;s value will be ignored and child
+        components
         will be displayed as the button&apos;s content.
       </description>
       <name>image</name>
@@ -25205,10 +25253,12 @@ and it is automatically triggered on any form submission. -->
 
   <!-- CommandLink tag declaration -->
   <tag>
-    <description>This is an analog of the standard &amp;lt;h:commandLink&gt; component extended with Ajax features making it
+    <description>This is an analog of the standard &amp;lt;h:commandLink&gt; component extended with Ajax features
+      making it
       possible to use Ajax request instead of form submission to execute an action and reload components. By default it
       behaves as its standard analog though Ajax functionality will be turned on if you specify its &quot;render&quot;
-      attribute, which is similar to that of &amp;lt;o:ajax&gt; component and specifies the list of components that should
+      attribute, which is similar to that of &amp;lt;o:ajax&gt; component and specifies the list of components that
+      should
       be reloaded when the link is clicked. An additional optional attribute is &quot;execute&quot;, which just like
       in the &amp;lt;o:ajax&gt; component allows specifying a list of components whose data should be submitted to the
       server for processing during the Ajax request.
@@ -25304,7 +25354,8 @@ and it is automatically triggered on any form submission. -->
         reloaded components. The difference with render is that components listed in execute will
         just process the submitted data, but won't be rerendered. This can often be needed when the reloaded data
         depends on some other component on a page.
-        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in OpenFaces 2.x)
+        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in
+        OpenFaces 2.x)
         list if id's.
       </description>
       <name>execute</name>
@@ -27017,7 +27068,8 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
-      <description>A flag indicating that this component will prohibit changes by the user. The element may receive focus
+      <description>A flag indicating that this component will prohibit changes by the user. The element may receive
+        focus
         unless it has also been disabled.
       </description>
       <name>readonly</name>
@@ -27607,7 +27659,8 @@ and it is automatically triggered on any form submission. -->
 
     <attribute>
       <description>Id's of components, which will be rerendered after successful Ajax request.
-        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in OpenFaces 2.x) listif id's.
+        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in
+        OpenFaces 2.x) listif id's.
       </description>
       <name>render</name>
       <required>false</required>
@@ -27622,7 +27675,8 @@ and it is automatically triggered on any form submission. -->
         reloaded components. The difference with render is that components listed in execute will
         just process the submitted data, but won't be rerendered. This can often be needed when the reloaded data
         depends on some other component on a page.
-        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in OpenFaces 2.x) listif id's.
+        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in
+        OpenFaces 2.x) listif id's.
       </description>
       <name>execute</name>
       <required>false</required>
@@ -28030,7 +28084,8 @@ and it is automatically triggered on any form submission. -->
   <!-- GraphicText tag declaration -->
   <tag>
     <description>GraphicText is a component that displays styled rotated text. It has API similar to the standard
-      &amp;lt;h:outputText> component, though unlike the &amp;lt;h:outputText> component, the GraphicText component displays
+      &amp;lt;h:outputText> component, though unlike the &amp;lt;h:outputText> component, the GraphicText component
+      displays
       a text with an image generated on the server. This component can be useful for displaying vertical headers in a
       table having a lot of thin columns, vertical TabSet components, etc.
     </description>
@@ -28283,8 +28338,9 @@ and it is automatically triggered on any form submission. -->
   <!-- Ajax tag declaration -->
   <tag>
     <description>Allows attaching Ajax event handler to any component, or declaring a stand-alone Ajax action. Besides
-    an optional event handler execution, this component allows reloading the specified component(s) with Ajax, and
-      specifying the list of components whose data should be submitted to the server.</description>
+      an optional event handler execution, this component allows reloading the specified component(s) with Ajax, and
+      specifying the list of components whose data should be submitted to the server.
+    </description>
     <name>ajax</name>
     <tag-class>org.openfaces.taglib.jsp.ajax.AjaxJspTag</tag-class>
     <body-content>JSP</body-content>
@@ -28389,7 +28445,8 @@ and it is automatically triggered on any form submission. -->
         reloaded components. The difference with render is that components listed in execute will
         just process the submitted data, but won't be rerendered. This can often be needed when the reloaded data
         depends on some other component on a page.
-        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in OpenFaces 2.x)
+        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in
+        OpenFaces 2.x)
         list if id's.
       </description>
       <name>execute</name>
@@ -30256,7 +30313,8 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
-      <description>Specifies whether HTML markup that might be present in event resource names should be escaped to avoid
+      <description>Specifies whether HTML markup that might be present in event resource names should be escaped to
+        avoid
         unintended HTML formatting in a displayed text. Assigning false allows HTML formatting in event resource names.
       </description>
       <name>escapeResource</name>
@@ -34715,7 +34773,8 @@ and it is automatically triggered on any form submission. -->
   <!-- SelectBooleanCheckbox TAG DECLARATION -->
   <tag>
     <description>The SelectBooleanCheckbox component is an extended version of the standard
-      &amp;lt;h:selectBooleanCheckbox&gt; component that adds such possibilities as tri-state support, customizing checkbox
+      &amp;lt;h:selectBooleanCheckbox&gt; component that adds such possibilities as tri-state support, customizing
+      checkbox
       images and state-dependent styles.
     </description>
     <name>selectBooleanCheckbox</name>
@@ -36730,7 +36789,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Checkboxes in the component can be distributed into several rows. This attribute specifies the number of rows in the layout.
+      <description>Checkboxes in the component can be distributed into several rows. This attribute specifies the number
+        of rows in the layout.
         Note that 'row' and 'column' attributes cannot be be set at the same time.
       </description>
       <name>rows</name>
@@ -36742,7 +36802,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Checkboxes in the component can be distributed into several columns. This attribute specifies the number of columns in the layout.
+      <description>Checkboxes in the component can be distributed into several columns. This attribute specifies the
+        number of columns in the layout.
         Note that 'row' and 'column' attributes cannot be be set at the same time.
       </description>
       <name>columns</name>
@@ -36856,7 +36917,8 @@ and it is automatically triggered on any form submission. -->
     </attribute>
     <attribute>
       <description>The text that is displayed by the CompositeFilter component when no filtering criteria are
-        specified by the user.</description>
+        specified by the user.
+      </description>
       <name>noFilterMessage</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -38258,7 +38320,9 @@ and it is automatically triggered on any form submission. -->
 
   </tag>
   <tag>
-    <description>An extended version of the standard &amp;lt;selectOneMenu&gt; component. This component is under construction.</description>
+    <description>An extended version of the standard &amp;lt;selectOneMenu&gt; component. This component is under
+      construction.
+    </description>
     <name>selectOneMenu</name>
     <tag-class>org.openfaces.taglib.jsp.select.SelectOneMenuJspTag</tag-class>
     <body-content>JSP</body-content>
@@ -39025,7 +39089,8 @@ entering a value and returns a list of suggestions from the server -->
     <attribute>
       <description>Applicable only for the case when drop-down list is composed of several columns. This attribute
         specifies the number of the column that is shown in presentation view (the combo-box component itself).
-        The value for showing all columns is -1, which is the default behavior. </description>
+        The value for showing all columns is -1, which is the default behavior.
+      </description>
       <name>itemPresentationColumn</name>
       <deferred-value>
         <type>int</type>
@@ -39218,7 +39283,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A flag that indicates whether or not user will be able to  change items of drop down
+      <description>A flag that indicates whether or not user will be able to change items of drop down
         field by using top or bottom arrow.
       </description>
       <name>changeValueOnSelect</name>
@@ -39343,7 +39408,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el only -->
     </attribute>
     <attribute>
-      <description>Defines the amount of events that are preloaded on the client when a page with the WeekTable component
+      <description>Defines the amount of events that are preloaded on the client when a page with the WeekTable
+        component
         is loaded.
       </description>
       <name>preloadedEvents</name>
@@ -39359,7 +39425,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>A flag that indicates whether or not a user can edit events in this WeekTable component.</description>
+      <description>A flag that indicates whether or not a user can edit events in this WeekTable component.
+      </description>
       <name>editable</name>
       <deferred-value>
         <type>boolean</type>
@@ -39425,7 +39492,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>Works only for scrollable WeekTables. Specifies the time to which the top WeekTable's top edge will be
+      <description>Works only for scrollable WeekTables. Specifies the time to which the top WeekTable's top edge will
+        be
         scrolled. The time should be specified as a string in the "HH:mm" format, e.g. "10:00".
       </description>
       <name>scrollTime</name>
@@ -39552,7 +39620,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user moves the mouse pointer away from the WeekTable.
+      <description>JavaScript code that should be executed when the user moves the mouse pointer away from the
+        WeekTable.
       </description>
       <name>onmouseout</name>
       <deferred-value>
@@ -40110,7 +40179,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el only -->
     </attribute>
     <attribute>
-      <description>Defines the amount of events that are preloaded on the client when a page with the MonthTable component
+      <description>Defines the amount of events that are preloaded on the client when a page with the MonthTable
+        component
         is loaded.
       </description>
       <name>preloadedEvents</name>
@@ -40126,7 +40196,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>A flag that indicates whether or not a user can edit events in this MonthTable component.</description>
+      <description>A flag that indicates whether or not a user can edit events in this MonthTable component.
+      </description>
       <name>editable</name>
       <deferred-value>
         <type>boolean</type>
@@ -40264,7 +40335,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user moves the mouse pointer away from the MonthTable.
+      <description>JavaScript code that should be executed when the user moves the mouse pointer away from the
+        MonthTable.
       </description>
       <name>onmouseout</name>
       <deferred-value>
@@ -40855,7 +40927,7 @@ entering a value and returns a list of suggestions from the server -->
   </tag>
 
 
- <tag>
+  <tag>
     <description>Marker component that provides a support to mark specific value or values on chart.</description>
     <name>marker</name>
     <tag-class>org.openfaces.taglib.jsp.chart.MarkerJspTag</tag-class>
@@ -40955,7 +41027,10 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Specifies the layer where the marker should be rendered. The attribute can be defined as foreground or background, or with a value binding expression that points to a property of type org.openfaces.component.chart.MarkerLayer enumeration.</description>
+      <description>Specifies the layer where the marker should be rendered. The attribute can be defined as foreground
+        or background, or with a value binding expression that points to a property of type
+        org.openfaces.component.chart.MarkerLayer enumeration.
+      </description>
       <name>layer</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -41008,22 +41083,27 @@ entering a value and returns a list of suggestions from the server -->
   </tag>
 
   <tag>
-    <description>DomainMarkers is a container component that provides a support for grouping the chart markers displayed on chart's key axis.</description>
+    <description>DomainMarkers is a container component that provides a support for grouping the chart markers displayed
+      on chart's key axis.
+    </description>
     <name>domainMarkers</name>
     <tag-class>org.openfaces.taglib.jsp.chart.DomainMarkersJspTag</tag-class>
     <body-content>JSP</body-content>
   </tag>
 
   <tag>
-    <description>RangeMarkers is a container component that provides a support for grouping the chart markers displayed on chart's value axis.</description>
+    <description>RangeMarkers is a container component that provides a support for grouping the chart markers displayed
+      on chart's value axis.
+    </description>
     <name>rangeMarkers</name>
     <tag-class>org.openfaces.taglib.jsp.chart.RangeMarkersJspTag</tag-class>
     <body-content>JSP</body-content>
   </tag>
 
 
-<tag>
-    <description>LevelIndicator is a chart-like component that displays a meter with three customizable colors.</description>
+  <tag>
+    <description>LevelIndicator is a chart-like component that displays a meter with three customizable colors.
+    </description>
     <name>levelIndicator</name>
     <tag-class>org.openfaces.taglib.jsp.output.LevelIndicatorJspTag</tag-class>
     <body-content>JSP</body-content>
@@ -41136,7 +41216,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user moves the mouse pointer onto the LevelIndicator.
+      <description>JavaScript code that should be executed when the user moves the mouse pointer onto the
+        LevelIndicator.
       </description>
       <name>onmouseover</name>
       <deferred-value>
@@ -41193,7 +41274,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-	  <description>Represent the current value of this LevelIndicator component</description>
+      <description>Represent the current value of this LevelIndicator component</description>
       <name>value</name>
       <deferred-value>
         <type>java.lang.Double</type>
@@ -41243,7 +41324,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-	  <description>Specifies the size of the segment that would be used to fill the display area</description>
+      <description>Specifies the size of the segment that would be used to fill the display area</description>
       <name>segmentSize</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -41253,7 +41334,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-	  <description>Specifies the direction of filling the display area</description>
+      <description>Specifies the direction of filling the display area</description>
       <name>fillDirection</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -41263,7 +41344,9 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-	  <description>Specifies the colors for this LevelIndicator component that should be used to display segments for corresponding levels</description>
+      <description>Specifies the colors for this LevelIndicator component that should be used to display segments for
+        corresponding levels
+      </description>
       <name>colors</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -41273,7 +41356,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-	  <description>Specifies the values where transition between levels take place</description>
+      <description>Specifies the values where transition between levels take place</description>
       <name>transitionLevels</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -41283,7 +41366,9 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-	  <description>Specifies the value for the color intensity that is used to display the inactive segments of this LevelIndicator component</description>
+      <description>Specifies the value for the color intensity that is used to display the inactive segments of this
+        LevelIndicator component
+      </description>
       <name>inactiveSegmentIntensity</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -41295,13 +41380,16 @@ entering a value and returns a list of suggestions from the server -->
   </tag>
 
   <tag>
-    <description>SolidLineAreaFill is a component that provides a functionality for filling the area in Line charts with a solid color</description>
+    <description>SolidLineAreaFill is a component that provides a functionality for filling the area in Line charts with
+      a solid color
+    </description>
     <name>solidLineAreaFill</name>
     <tag-class>org.openfaces.taglib.jsp.chart.SolidLineAreaFillJspTag</tag-class>
     <body-content>JSP</body-content>
     <attribute>
       <description>Allows customizing transparency of the color used to fill the area. This should be a floating-point
-        number in range 0..1. 0 corresponds to fully opaque display, and 1 corresponds to fully transparent display.</description>
+        number in range 0..1. 0 corresponds to fully opaque display, and 1 corresponds to fully transparent display.
+      </description>
       <name>transparency</name>
       <deferred-value>
         <type>java.lang.Double</type>
@@ -41313,13 +41401,17 @@ entering a value and returns a list of suggestions from the server -->
   </tag>
 
   <tag>
-    <description>GradientLineAreaFill is a component that provides a functionality for filling the area in Line charts with a gradient.</description>
+    <description>GradientLineAreaFill is a component that provides a functionality for filling the area in Line charts
+      with a gradient.
+    </description>
     <name>gradientLineAreaFill</name>
     <tag-class>org.openfaces.taglib.jsp.chart.GradientLineAreaFillJspTag</tag-class>
     <body-content>JSP</body-content>
     <attribute>
-      <description>Allows customizing transparency of the min values color used in gradient. This should be a floating-point
-        number in range 0..1. 0 corresponds to fully opaque display, and 1 corresponds to fully transparent display.</description>
+      <description>Allows customizing transparency of the min values color used in gradient. This should be a
+        floating-point
+        number in range 0..1. 0 corresponds to fully opaque display, and 1 corresponds to fully transparent display.
+      </description>
       <name>minValueTransparency</name>
       <deferred-value>
         <type>java.lang.Double</type>
@@ -41329,8 +41421,10 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Allows customizing transparency of the max values color used in gradient. This should be a floating-point
-        number in range 0..1. 0 corresponds to fully opaque display, and 1 corresponds to fully transparent display.</description>
+      <description>Allows customizing transparency of the max values color used in gradient. This should be a
+        floating-point
+        number in range 0..1. 0 corresponds to fully opaque display, and 1 corresponds to fully transparent display.
+      </description>
       <name>maxValueTransparency</name>
       <deferred-value>
         <type>java.lang.Double</type>
@@ -41350,7 +41444,8 @@ entering a value and returns a list of suggestions from the server -->
 
   <tag>
     <description>SaveChartMenuItem is a component that represents the action menu item for the chart's
-      context popup menu and provides a functionality for saving the chart image to the client.</description>
+      context popup menu and provides a functionality for saving the chart image to the client.
+    </description>
     <name>saveChartMenuItem</name>
     <tag-class>org.openfaces.taglib.jsp.chart.SaveChartMenuItemJspTag</tag-class>
     <body-content>JSP</body-content>
@@ -41358,7 +41453,8 @@ entering a value and returns a list of suggestions from the server -->
 
   <tag>
     <description>PrintChartMenuItem is a component that represents the action menu item for the chart's
-      context popup menu and provides a functionality for displaying print dialog for the chart.</description>
+      context popup menu and provides a functionality for displaying print dialog for the chart.
+    </description>
     <name>printChartMenuItem</name>
     <tag-class>org.openfaces.taglib.jsp.chart.PrintChartMenuItemJspTag</tag-class>
     <body-content>JSP</body-content>
@@ -41384,7 +41480,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>The width of the ChartPopup component. Can be specified in any units (px, mm, em, etc.).</description>
+      <description>The width of the ChartPopup component. Can be specified in any units (px, mm, em, etc.).
+      </description>
       <name>width</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -41667,9 +41764,10 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
-     <attribute>
+    <attribute>
       <description>Id's of components, which will be rerendered after successful Ajax request.
-        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in OpenFaces 2.x) listif id's.
+        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in
+        OpenFaces 2.x) listif id's.
       </description>
       <name>render</name>
       <required>false</required>
@@ -41684,7 +41782,8 @@ entering a value and returns a list of suggestions from the server -->
         reloaded components. The difference with render is that components listed in execute will
         just process the submitted data, but won't be rerendered. This can often be needed when the reloaded data
         depends on some other component on a page.
-        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in OpenFaces 2.x) listif id's.
+        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in
+        OpenFaces 2.x) listif id's.
       </description>
       <name>execute</name>
       <required>false</required>
@@ -41758,7 +41857,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
 
-     <attribute>
+    <attribute>
       <description>A converter for the itemText. Should be specified as a value-binding expression or converter
         identifier.
       </description>
@@ -41803,7 +41902,7 @@ entering a value and returns a list of suggestions from the server -->
         A item key that must uniquely identify an appropriate row. All itemKey objects should be
         serializable and correctly implement the equals() and hashCode() methods.
       </description>
-      <name>itemKey</name>              
+      <name>itemKey</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -41881,7 +41980,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
 
-     <attribute>
+    <attribute>
       <description>
         Format for displaying weight. This is String pattern for java.text.DecimalFormat
       </description>
@@ -41953,7 +42052,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default "rectangle" -->
       <!-- @el true -->
     </attribute>
-      
+
     <attribute>
       <description>
         Speed of sphere rotation for sphere layout.
@@ -41983,9 +42082,9 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
 
-     <attribute>
+    <attribute>
       <description>
-        Time in seconds. from mouse out till tag cloud stop rotation. 
+        Time in seconds. from mouse out till tag cloud stop rotation.
       </description>
       <name>stopRotationPeriod3D</name>
       <deferred-value>
@@ -41995,7 +42094,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default "4" -->
       <!-- @el true -->
     </attribute>
-        
+
     <attribute>
       <description>A style for the entire tag cloud.
       </description>
@@ -42019,7 +42118,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
 
-     <attribute>
+    <attribute>
       <description>A rollover style for the entire tag cloud.
       </description>
       <name>rolloverStyle</name>
@@ -42404,7 +42503,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el only -->
     </attribute>
     <attribute>
-      <description>Defines the amount of events that are preloaded on the client when a page with the Timetable component
+      <description>Defines the amount of events that are preloaded on the client when a page with the Timetable
+        component
         is loaded.
       </description>
       <name>preloadedEvents</name>
@@ -42420,7 +42520,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>A flag that indicates whether or not a user can edit events in this Timetable component.</description>
+      <description>A flag that indicates whether or not a user can edit events in this Timetable component.
+      </description>
       <name>editable</name>
       <deferred-value>
         <type>boolean</type>
@@ -42613,7 +42714,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user moves the mouse pointer away from the Timetable.
+      <description>JavaScript code that should be executed when the user moves the mouse pointer away from the
+        Timetable.
       </description>
       <name>onmouseout</name>
       <deferred-value>
@@ -43371,7 +43473,8 @@ entering a value and returns a list of suggestions from the server -->
   </tag>
 
   <tag>
-    <description>This component is under construction. API is subject to change. This component allows attaching the server action to an arbitrary event of another
+    <description>This component is under construction. API is subject to change. This component allows attaching the
+      server action to an arbitrary event of another
       component, or declaring a stand-alone server action which can be invoked with JavaScript explicitly. This tag
       is analogous to &amp;lt;o:ajax&gt;, but it works through form submission, similar to the "action" attribute of
       &amp;lt;h:commandButton&gt; component.
@@ -43965,7 +44068,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>A flag that indicates whether there should always be at least one selected item (true) or empty
-        selection is allowed (false).</description>
+        selection is allowed (false).
+      </description>
       <name>required</name>
       <deferred-value>
         <type>boolean</type>
@@ -44146,7 +44250,8 @@ entering a value and returns a list of suggestions from the server -->
     <attribute>
       <description>Name of a variable which is available when rendering group headers and footers. This variable
         contains the grouping value string -- the grouping value (value of the grouping column which is common for all
-      records in this group), converted to string.</description>
+        records in this group), converted to string.
+      </description>
       <name>groupingValueStringVar</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -44190,7 +44295,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default true -->
       <!-- @el true -->
     </attribute>
-  <attribute>
+    <attribute>
       <description>Defines the table's grouping state. This attribute can be used for saving grouping state between
         different visits of an appropriate page. This attribute should be declared as a value binding expression of type
         java.util.Object, or java.util.List&amp;lt;org.openfaces.component.table.GroupingRule>.
@@ -44340,321 +44445,322 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
   </tag>
   <!--<tag>-->
-    <!--<description>A component which can optionally be placed inside of a grouping-enabled &amp;lt;o:dataTable&gt; tag to-->
-      <!--customize appearance of group header rows.-->
-    <!--</description>-->
-    <!--<name>groupHeaderRow</name>-->
-    <!--<tag-class>org.openfaces.taglib.jsp.table.GroupHeaderRowJspTag</tag-class>-->
-    <!--<body-content>JSP</body-content>-->
-    <!--<attribute>-->
-      <!--<description>A style for rows that meet criterion specified in the condition attribute. Can be specified as-->
-        <!--a value-binding expression that uses request-scope variables those refer to the current row.-->
-      <!--</description>-->
-      <!--<name>style</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>A CSS class name for rows that meet criterion specified in the condition attribute. Can be-->
-        <!--specified as a value-binding expression that uses request-scope variables those refer to the current row.-->
-      <!--</description>-->
-      <!--<name>styleClass</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+  <!--<description>A component which can optionally be placed inside of a grouping-enabled &amp;lt;o:dataTable&gt; tag to-->
+  <!--customize appearance of group header rows.-->
+  <!--</description>-->
+  <!--<name>groupHeaderRow</name>-->
+  <!--<tag-class>org.openfaces.taglib.jsp.table.GroupHeaderRowJspTag</tag-class>-->
+  <!--<body-content>JSP</body-content>-->
+  <!--<attribute>-->
+  <!--<description>A style for rows that meet criterion specified in the condition attribute. Can be specified as-->
+  <!--a value-binding expression that uses request-scope variables those refer to the current row.-->
+  <!--</description>-->
+  <!--<name>style</name>-->
+  <!--<deferred-value>-->
+  <!--<type>java.lang.String</type>-->
+  <!--</deferred-value>-->
+  <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
+  <!--&lt;!&ndash; @default null &ndash;&gt;-->
+  <!--&lt;!&ndash; @el true &ndash;&gt;-->
+  <!--</attribute>-->
+  <!--<attribute>-->
+  <!--<description>A CSS class name for rows that meet criterion specified in the condition attribute. Can be-->
+  <!--specified as a value-binding expression that uses request-scope variables those refer to the current row.-->
+  <!--</description>-->
+  <!--<name>styleClass</name>-->
+  <!--<deferred-value>-->
+  <!--<type>java.lang.String</type>-->
+  <!--</deferred-value>-->
+  <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
+  <!--&lt;!&ndash; @default null &ndash;&gt;-->
+  <!--&lt;!&ndash; @el true &ndash;&gt;-->
+  <!--</attribute>-->
 
-    <!--<attribute>-->
-      <!--<description>JavaScript code that should be executed on the client when the user clicks the left mouse-->
-        <!--button over the row.-->
-      <!--</description>-->
-      <!--<name>onclick</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>JavaScript code that should be executed on the client when the user double-clicks the left-->
-        <!--mouse button over the row.-->
-      <!--</description>-->
-      <!--<name>ondblclick</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>JavaScript code that should be executed when the user presses any mouse button over the row.-->
-      <!--</description>-->
-      <!--<name>onmousedown</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>JavaScript code that should be executed when the user moves the mouse pointer onto the row.-->
-      <!--</description>-->
-      <!--<name>onmouseover</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>JavaScript code that should be executed when the user moves the mouse pointer over the row.-->
-      <!--</description>-->
-      <!--<name>onmousemove</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>JavaScript code that should be executed when the user moves the mouse pointer away from the row.-->
-      <!--</description>-->
-      <!--<name>onmouseout</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>JavaScript code that should be executed when the user releases a mouse button over the row.-->
-      <!--</description>-->
-      <!--<name>onmouseup</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>JavaScript code that should be executed when the user presses right mouse button over the component-->
-        <!--(or performs the other context menu invocation action depending on the platform).-->
-      <!--</description>-->
-      <!--<name>oncontextmenu</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>JavaScript code that should be executed when the user presses a key over the row.</description>-->
-      <!--<name>onkeydown</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>JavaScript code that should be executed when the user releases a key over the row.</description>-->
-      <!--<name>onkeyup</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>JavaScript code that should be executed on the client when the user presses and releases a key-->
-        <!--over the row.-->
-      <!--</description>-->
-      <!--<name>onkeypress</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+  <!--<attribute>-->
+  <!--<description>JavaScript code that should be executed on the client when the user clicks the left mouse-->
+  <!--button over the row.-->
+  <!--</description>-->
+  <!--<name>onclick</name>-->
+  <!--<deferred-value>-->
+  <!--<type>java.lang.String</type>-->
+  <!--</deferred-value>-->
+  <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
+  <!--&lt;!&ndash; @default null &ndash;&gt;-->
+  <!--&lt;!&ndash; @el true &ndash;&gt;-->
+  <!--</attribute>-->
+  <!--<attribute>-->
+  <!--<description>JavaScript code that should be executed on the client when the user double-clicks the left-->
+  <!--mouse button over the row.-->
+  <!--</description>-->
+  <!--<name>ondblclick</name>-->
+  <!--<deferred-value>-->
+  <!--<type>java.lang.String</type>-->
+  <!--</deferred-value>-->
+  <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
+  <!--&lt;!&ndash; @default null &ndash;&gt;-->
+  <!--&lt;!&ndash; @el true &ndash;&gt;-->
+  <!--</attribute>-->
+  <!--<attribute>-->
+  <!--<description>JavaScript code that should be executed when the user presses any mouse button over the row.-->
+  <!--</description>-->
+  <!--<name>onmousedown</name>-->
+  <!--<deferred-value>-->
+  <!--<type>java.lang.String</type>-->
+  <!--</deferred-value>-->
+  <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
+  <!--&lt;!&ndash; @default null &ndash;&gt;-->
+  <!--&lt;!&ndash; @el true &ndash;&gt;-->
+  <!--</attribute>-->
+  <!--<attribute>-->
+  <!--<description>JavaScript code that should be executed when the user moves the mouse pointer onto the row.-->
+  <!--</description>-->
+  <!--<name>onmouseover</name>-->
+  <!--<deferred-value>-->
+  <!--<type>java.lang.String</type>-->
+  <!--</deferred-value>-->
+  <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
+  <!--&lt;!&ndash; @default null &ndash;&gt;-->
+  <!--&lt;!&ndash; @el true &ndash;&gt;-->
+  <!--</attribute>-->
+  <!--<attribute>-->
+  <!--<description>JavaScript code that should be executed when the user moves the mouse pointer over the row.-->
+  <!--</description>-->
+  <!--<name>onmousemove</name>-->
+  <!--<deferred-value>-->
+  <!--<type>java.lang.String</type>-->
+  <!--</deferred-value>-->
+  <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
+  <!--&lt;!&ndash; @default null &ndash;&gt;-->
+  <!--&lt;!&ndash; @el true &ndash;&gt;-->
+  <!--</attribute>-->
+  <!--<attribute>-->
+  <!--<description>JavaScript code that should be executed when the user moves the mouse pointer away from the row.-->
+  <!--</description>-->
+  <!--<name>onmouseout</name>-->
+  <!--<deferred-value>-->
+  <!--<type>java.lang.String</type>-->
+  <!--</deferred-value>-->
+  <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
+  <!--&lt;!&ndash; @default null &ndash;&gt;-->
+  <!--&lt;!&ndash; @el true &ndash;&gt;-->
+  <!--</attribute>-->
+  <!--<attribute>-->
+  <!--<description>JavaScript code that should be executed when the user releases a mouse button over the row.-->
+  <!--</description>-->
+  <!--<name>onmouseup</name>-->
+  <!--<deferred-value>-->
+  <!--<type>java.lang.String</type>-->
+  <!--</deferred-value>-->
+  <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
+  <!--&lt;!&ndash; @default null &ndash;&gt;-->
+  <!--&lt;!&ndash; @el true &ndash;&gt;-->
+  <!--</attribute>-->
+  <!--<attribute>-->
+  <!--<description>JavaScript code that should be executed when the user presses right mouse button over the component-->
+  <!--(or performs the other context menu invocation action depending on the platform).-->
+  <!--</description>-->
+  <!--<name>oncontextmenu</name>-->
+  <!--<deferred-value>-->
+  <!--<type>java.lang.String</type>-->
+  <!--</deferred-value>-->
+  <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
+  <!--&lt;!&ndash; @default null &ndash;&gt;-->
+  <!--&lt;!&ndash; @el true &ndash;&gt;-->
+  <!--</attribute>-->
+  <!--<attribute>-->
+  <!--<description>JavaScript code that should be executed when the user presses a key over the row.</description>-->
+  <!--<name>onkeydown</name>-->
+  <!--<deferred-value>-->
+  <!--<type>java.lang.String</type>-->
+  <!--</deferred-value>-->
+  <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
+  <!--&lt;!&ndash; @default null &ndash;&gt;-->
+  <!--&lt;!&ndash; @el true &ndash;&gt;-->
+  <!--</attribute>-->
+  <!--<attribute>-->
+  <!--<description>JavaScript code that should be executed when the user releases a key over the row.</description>-->
+  <!--<name>onkeyup</name>-->
+  <!--<deferred-value>-->
+  <!--<type>java.lang.String</type>-->
+  <!--</deferred-value>-->
+  <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
+  <!--&lt;!&ndash; @default null &ndash;&gt;-->
+  <!--&lt;!&ndash; @el true &ndash;&gt;-->
+  <!--</attribute>-->
+  <!--<attribute>-->
+  <!--<description>JavaScript code that should be executed on the client when the user presses and releases a key-->
+  <!--over the row.-->
+  <!--</description>-->
+  <!--<name>onkeypress</name>-->
+  <!--<deferred-value>-->
+  <!--<type>java.lang.String</type>-->
+  <!--</deferred-value>-->
+  <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
+  <!--&lt;!&ndash; @default null &ndash;&gt;-->
+  <!--&lt;!&ndash; @el true &ndash;&gt;-->
+  <!--</attribute>-->
   <!--</tag>-->
   <!--<tag>-->
-    <!--<description>This component is under construction. A component which can optionally be placed inside of a-->
-      <!--grouping-enabled &amp;lt;o:dataTable&amp;gt; tag to customize appearance of group footer rows.-->
-    <!--</description>-->
-    <!--<name>groupFooterRow</name>-->
-    <!--<tag-class>org.openfaces.taglib.jsp.table.GroupFooterRowJspTag</tag-class>-->
-    <!--<body-content>JSP</body-content>-->
-    <!--<attribute>-->
-      <!--<description>A style for rows that meet criterion specified in the condition attribute. Can be specified as-->
-        <!--a value-binding expression that uses request-scope variables those refer to the current row.-->
-      <!--</description>-->
-      <!--<name>style</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>A CSS class name for rows that meet criterion specified in the condition attribute. Can be-->
-        <!--specified as a value-binding expression that uses request-scope variables those refer to the current row.-->
-      <!--</description>-->
-      <!--<name>styleClass</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+  <!--<description>This component is under construction. A component which can optionally be placed inside of a-->
+  <!--grouping-enabled &amp;lt;o:dataTable&amp;gt; tag to customize appearance of group footer rows.-->
+  <!--</description>-->
+  <!--<name>groupFooterRow</name>-->
+  <!--<tag-class>org.openfaces.taglib.jsp.table.GroupFooterRowJspTag</tag-class>-->
+  <!--<body-content>JSP</body-content>-->
+  <!--<attribute>-->
+  <!--<description>A style for rows that meet criterion specified in the condition attribute. Can be specified as-->
+  <!--a value-binding expression that uses request-scope variables those refer to the current row.-->
+  <!--</description>-->
+  <!--<name>style</name>-->
+  <!--<deferred-value>-->
+  <!--<type>java.lang.String</type>-->
+  <!--</deferred-value>-->
+  <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
+  <!--&lt;!&ndash; @default null &ndash;&gt;-->
+  <!--&lt;!&ndash; @el true &ndash;&gt;-->
+  <!--</attribute>-->
+  <!--<attribute>-->
+  <!--<description>A CSS class name for rows that meet criterion specified in the condition attribute. Can be-->
+  <!--specified as a value-binding expression that uses request-scope variables those refer to the current row.-->
+  <!--</description>-->
+  <!--<name>styleClass</name>-->
+  <!--<deferred-value>-->
+  <!--<type>java.lang.String</type>-->
+  <!--</deferred-value>-->
+  <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
+  <!--&lt;!&ndash; @default null &ndash;&gt;-->
+  <!--&lt;!&ndash; @el true &ndash;&gt;-->
+  <!--</attribute>-->
 
-    <!--<attribute>-->
-      <!--<description>JavaScript code that should be executed on the client when the user clicks the left mouse-->
-        <!--button over the row.-->
-      <!--</description>-->
-      <!--<name>onclick</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>JavaScript code that should be executed on the client when the user double-clicks the left-->
-        <!--mouse button over the row.-->
-      <!--</description>-->
-      <!--<name>ondblclick</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>JavaScript code that should be executed when the user presses any mouse button over the row.-->
-      <!--</description>-->
-      <!--<name>onmousedown</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>JavaScript code that should be executed when the user moves the mouse pointer onto the row.-->
-      <!--</description>-->
-      <!--<name>onmouseover</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>JavaScript code that should be executed when the user moves the mouse pointer over the row.-->
-      <!--</description>-->
-      <!--<name>onmousemove</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>JavaScript code that should be executed when the user moves the mouse pointer away from the row.-->
-      <!--</description>-->
-      <!--<name>onmouseout</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>JavaScript code that should be executed when the user releases a mouse button over the row.-->
-      <!--</description>-->
-      <!--<name>onmouseup</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>JavaScript code that should be executed when the user presses right mouse button over the component-->
-        <!--(or performs the other context menu invocation action depending on the platform).-->
-      <!--</description>-->
-      <!--<name>oncontextmenu</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>JavaScript code that should be executed when the user presses a key over the row.</description>-->
-      <!--<name>onkeydown</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>JavaScript code that should be executed when the user releases a key over the row.</description>-->
-      <!--<name>onkeyup</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
-    <!--<attribute>-->
-      <!--<description>JavaScript code that should be executed on the client when the user presses and releases a key-->
-        <!--over the row.-->
-      <!--</description>-->
-      <!--<name>onkeypress</name>-->
-      <!--<deferred-value>-->
-        <!--<type>java.lang.String</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
-      <!--&lt;!&ndash; @default null &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+  <!--<attribute>-->
+  <!--<description>JavaScript code that should be executed on the client when the user clicks the left mouse-->
+  <!--button over the row.-->
+  <!--</description>-->
+  <!--<name>onclick</name>-->
+  <!--<deferred-value>-->
+  <!--<type>java.lang.String</type>-->
+  <!--</deferred-value>-->
+  <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
+  <!--&lt;!&ndash; @default null &ndash;&gt;-->
+  <!--&lt;!&ndash; @el true &ndash;&gt;-->
+  <!--</attribute>-->
+  <!--<attribute>-->
+  <!--<description>JavaScript code that should be executed on the client when the user double-clicks the left-->
+  <!--mouse button over the row.-->
+  <!--</description>-->
+  <!--<name>ondblclick</name>-->
+  <!--<deferred-value>-->
+  <!--<type>java.lang.String</type>-->
+  <!--</deferred-value>-->
+  <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
+  <!--&lt;!&ndash; @default null &ndash;&gt;-->
+  <!--&lt;!&ndash; @el true &ndash;&gt;-->
+  <!--</attribute>-->
+  <!--<attribute>-->
+  <!--<description>JavaScript code that should be executed when the user presses any mouse button over the row.-->
+  <!--</description>-->
+  <!--<name>onmousedown</name>-->
+  <!--<deferred-value>-->
+  <!--<type>java.lang.String</type>-->
+  <!--</deferred-value>-->
+  <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
+  <!--&lt;!&ndash; @default null &ndash;&gt;-->
+  <!--&lt;!&ndash; @el true &ndash;&gt;-->
+  <!--</attribute>-->
+  <!--<attribute>-->
+  <!--<description>JavaScript code that should be executed when the user moves the mouse pointer onto the row.-->
+  <!--</description>-->
+  <!--<name>onmouseover</name>-->
+  <!--<deferred-value>-->
+  <!--<type>java.lang.String</type>-->
+  <!--</deferred-value>-->
+  <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
+  <!--&lt;!&ndash; @default null &ndash;&gt;-->
+  <!--&lt;!&ndash; @el true &ndash;&gt;-->
+  <!--</attribute>-->
+  <!--<attribute>-->
+  <!--<description>JavaScript code that should be executed when the user moves the mouse pointer over the row.-->
+  <!--</description>-->
+  <!--<name>onmousemove</name>-->
+  <!--<deferred-value>-->
+  <!--<type>java.lang.String</type>-->
+  <!--</deferred-value>-->
+  <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
+  <!--&lt;!&ndash; @default null &ndash;&gt;-->
+  <!--&lt;!&ndash; @el true &ndash;&gt;-->
+  <!--</attribute>-->
+  <!--<attribute>-->
+  <!--<description>JavaScript code that should be executed when the user moves the mouse pointer away from the row.-->
+  <!--</description>-->
+  <!--<name>onmouseout</name>-->
+  <!--<deferred-value>-->
+  <!--<type>java.lang.String</type>-->
+  <!--</deferred-value>-->
+  <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
+  <!--&lt;!&ndash; @default null &ndash;&gt;-->
+  <!--&lt;!&ndash; @el true &ndash;&gt;-->
+  <!--</attribute>-->
+  <!--<attribute>-->
+  <!--<description>JavaScript code that should be executed when the user releases a mouse button over the row.-->
+  <!--</description>-->
+  <!--<name>onmouseup</name>-->
+  <!--<deferred-value>-->
+  <!--<type>java.lang.String</type>-->
+  <!--</deferred-value>-->
+  <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
+  <!--&lt;!&ndash; @default null &ndash;&gt;-->
+  <!--&lt;!&ndash; @el true &ndash;&gt;-->
+  <!--</attribute>-->
+  <!--<attribute>-->
+  <!--<description>JavaScript code that should be executed when the user presses right mouse button over the component-->
+  <!--(or performs the other context menu invocation action depending on the platform).-->
+  <!--</description>-->
+  <!--<name>oncontextmenu</name>-->
+  <!--<deferred-value>-->
+  <!--<type>java.lang.String</type>-->
+  <!--</deferred-value>-->
+  <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
+  <!--&lt;!&ndash; @default null &ndash;&gt;-->
+  <!--&lt;!&ndash; @el true &ndash;&gt;-->
+  <!--</attribute>-->
+  <!--<attribute>-->
+  <!--<description>JavaScript code that should be executed when the user presses a key over the row.</description>-->
+  <!--<name>onkeydown</name>-->
+  <!--<deferred-value>-->
+  <!--<type>java.lang.String</type>-->
+  <!--</deferred-value>-->
+  <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
+  <!--&lt;!&ndash; @default null &ndash;&gt;-->
+  <!--&lt;!&ndash; @el true &ndash;&gt;-->
+  <!--</attribute>-->
+  <!--<attribute>-->
+  <!--<description>JavaScript code that should be executed when the user releases a key over the row.</description>-->
+  <!--<name>onkeyup</name>-->
+  <!--<deferred-value>-->
+  <!--<type>java.lang.String</type>-->
+  <!--</deferred-value>-->
+  <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
+  <!--&lt;!&ndash; @default null &ndash;&gt;-->
+  <!--&lt;!&ndash; @el true &ndash;&gt;-->
+  <!--</attribute>-->
+  <!--<attribute>-->
+  <!--<description>JavaScript code that should be executed on the client when the user presses and releases a key-->
+  <!--over the row.-->
+  <!--</description>-->
+  <!--<name>onkeypress</name>-->
+  <!--<deferred-value>-->
+  <!--<type>java.lang.String</type>-->
+  <!--</deferred-value>-->
+  <!--&lt;!&ndash; @bindingType java.lang.String &ndash;&gt;-->
+  <!--&lt;!&ndash; @default null &ndash;&gt;-->
+  <!--&lt;!&ndash; @el true &ndash;&gt;-->
+  <!--</attribute>-->
   <!--</tag>-->
   <tag>
     <description>The area which shows and allows to modify the current table's grouping structure, for the
-    grouping-enabled DataTable component. This component should be placed into the "header" or "above" facet of
-    &amp;lt;o:dataTable> tag.</description>
+      grouping-enabled DataTable component. This component should be placed into the "header" or "above" facet of
+      &amp;lt;o:dataTable> tag.
+    </description>
     <name>groupingBox</name>
     <tag-class>org.openfaces.taglib.jsp.table.GroupingBoxJspTag</tag-class>
     <body-content>JSP</body-content>
@@ -44700,7 +44806,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>A prompt text which gives a brief information on how to use thre grouping box while the table is not
-        grouped.</description>
+        grouped.
+      </description>
       <name>promptText</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -44741,7 +44848,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>The distance by which each column header is vertically offset relative to the previous one, when
-        the table is grouped by more than one column.</description>
+        the table is grouped by more than one column.
+      </description>
       <name>headerVertOffset</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -44752,7 +44860,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>Specifies style for the line that connects column headers inside of the grouping box. It should be
-      specified in a truncated CSS form, like "1px solid black".</description>
+        specified in a truncated CSS form, like "1px solid black".
+      </description>
       <name>connectorStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -45540,7 +45649,9 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A style for each row of information about file: it contains fileName, progressBar, status, Remove/Stop/Cancel button.</description>
+      <description>A style for each row of information about file: it contains fileName, progressBar, status,
+        Remove/Stop/Cancel button.
+      </description>
       <name>fileInfoRowStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -45550,7 +45661,9 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A CSS class for each row of information about file: it contains fileName, progressBar, status, Remove/Stop/Cancel button.</description>
+      <description>A CSS class for each row of information about file: it contains fileName, progressBar, status,
+        Remove/Stop/Cancel button.
+      </description>
       <name>fileInfoRowClass</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -45573,8 +45686,10 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A flag that indicates whether or not file(or files) will start upload right after file chooser selection.
-        Note that if the attribute multiple specified assigned as false, this attribute will be assigned to true automatically.
+      <description>A flag that indicates whether or not file(or files) will start upload right after file chooser
+        selection.
+        Note that if the attribute multiple specified assigned as false, this attribute will be assigned to true
+        automatically.
       </description>
       <name>autoUpload</name>
       <deferred-value>
@@ -45652,7 +45767,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>The text which appears as status when it uploading is in progress.
-        You can display useful information about uploading process such as how many already uploaded{uploaded} and size of file{size}.
+        You can display useful information about uploading process such as how many already uploaded{uploaded} and size
+        of file{size}.
         For example: {uploaded} / {size} MB[MB],
         Also you can set how it will display - in bytes[B], kilobytes[KB] or megabytes[MB].
         By default, {uploaded} and {size} is presented in kilobytes.
@@ -45693,7 +45809,8 @@ entering a value and returns a list of suggestions from the server -->
 
     <attribute>
       <description>The text for Browse button.
-        The default value depends on 'multiple' attribute's value - if it is assigned 'true' -> "Add file..." else -> "Upload"
+        The default value depends on 'multiple' attribute's value - if it is assigned 'true' -> "Add file..." else ->
+        "Upload"
       </description>
       <name>browseButtonText</name>
       <deferred-value>
@@ -45999,7 +46116,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>The text which appears as status when between attempt to stop upload and until file uploading will be terminated or uploaded.
+      <description>The text which appears as status when between attempt to stop upload and until file uploading will be
+        terminated or uploaded.
       </description>
       <name>stoppingStatusText</name>
       <deferred-value>
@@ -46034,7 +46152,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when uploading for  all files has been finished,
+      <description>JavaScript code that should be executed when uploading for all files has been finished,
         despite their upload status(successfully, with errors or stopped).
       </description>
       <name>onend</name>
@@ -46046,7 +46164,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when uploading for  file has been started.
+      <description>JavaScript code that should be executed when uploading for file has been started.
       </description>
       <name>onfilestart</name>
       <deferred-value>
@@ -46161,7 +46279,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>Specifies max size of each file in kilobytes.
-        If this attribute isn't specified , max file size would be what is specified at org.openfaces.fileUpload.fileSizeLimit param in web.xml.
+        If this attribute isn't specified , max file size would be what is specified at
+        org.openfaces.fileUpload.fileSizeLimit param in web.xml.
       </description>
       <name>fileSizeLimit</name>
       <deferred-value>
@@ -46251,7 +46370,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This attribute specifies what components will be re-rendered when uploading of all files has been finished.
+      <description>This attribute specifies what components will be re-rendered when uploading of all files has been
+        finished.
       </description>
       <name>render</name>
       <deferred-value>
@@ -46393,7 +46513,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>JavaScript code that should be executed on the client when the list of files for uploading has changed.
+      <description>JavaScript code that should be executed on the client when the list of files for uploading has
+        changed.
       </description>
       <name>onchange</name>
       <deferred-value>
@@ -46516,7 +46637,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>The text which appears as status when it uploading is in progress.
-        You can display useful information about uploading process such as how many already uploaded{uploaded} and size of file{size}.
+        You can display useful information about uploading process such as how many already uploaded{uploaded} and size
+        of file{size}.
         For example: {uploaded} / {size} MB[MB],
         Also you can set how it will display - in bytes[B], kilobytes[KB] or megabytes[MB].
         By default, {uploaded} and {size} is presented in kilobytes.
@@ -46863,7 +46985,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>The text which appears as status when between attempt to stop upload and until file uploading will be terminated or uploaded.
+      <description>The text which appears as status when between attempt to stop upload and until file uploading will be
+        terminated or uploaded.
       </description>
       <name>stoppingStatusText</name>
       <deferred-value>
@@ -46897,7 +47020,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when uploading for  file has been finished,
+      <description>JavaScript code that should be executed when uploading for file has been finished,
         despite its upload status(successfully, with errors or stopped).
       </description>
       <name>onend</name>
@@ -46909,7 +47032,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when uploading for  file has been started.
+      <description>JavaScript code that should be executed when uploading for file has been started.
       </description>
       <name>onfilestart</name>
       <deferred-value>
@@ -47013,7 +47136,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>Text for dropTarget.
-        Default value depends on layoutMode attribute:  if it is assigned to compact -> "Drop file"  else "Drop file here"
+        Default value depends on layoutMode attribute: if it is assigned to compact -> "Drop file" else "Drop file here"
       </description>
       <name>dropTargetText</name>
       <deferred-value>
@@ -47025,7 +47148,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>Specifies max size of each file in kilobytes.
-        If this attribute isn't specified , max file size would be what is specified at org.openfaces.fileUpload.fileSizeLimit param in web.xml.
+        If this attribute isn't specified , max file size would be what is specified at
+        org.openfaces.fileUpload.fileSizeLimit param in web.xml.
       </description>
       <name>fileSizeLimit</name>
       <deferred-value>
@@ -47047,7 +47171,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>This attribute specifies what components will be re-rendered when uploading of all files has been finished.
+      <description>This attribute specifies what components will be re-rendered when uploading of all files has been
+        finished.
       </description>
       <name>render</name>
       <deferred-value>
@@ -47135,7 +47260,8 @@ entering a value and returns a list of suggestions from the server -->
     <attribute>
       <description>
         This attribute defines if stop icon will be displayed near progress while file is uploading.
-        Note that  singleFileUpload component couldn't has two stop buttons - one instead browseButton, and another one is near progressBar.
+        Note that singleFileUpload component couldn't has two stop buttons - one instead browseButton, and another one
+        is near progressBar.
         In this case, attribute is assigned to 'false'
         Default value is depends on layoutMode attribute If it is assigned to "full" -> 'false' else 'true'.
       </description>
@@ -47376,8 +47502,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
   </tag>
 
-  
-  
+
   <tag>
     <description>Defines an output component which shows a summary value for a DataTable column in which it is inserted
       or a custom expression specified for this component explicitly.
@@ -47419,19 +47544,20 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @bindingType boolean -->
       <!-- @default false -->
       <!-- @el true -->
-    </attribute>    <attribute>
-    <description>Specifies a value expression by which the summary value should be calculated. E.g. a value of
-      #{product.price} would result in displaying a &quot;total&quot; price for all table&#39;s rows (a sum
-      average, etc, depending on the function being used in this component).
-    </description>
-    <name>by</name>
-    <deferred-value>
-      <type>java.lang.Object</type>
-    </deferred-value>
-    <!-- @bindingType javax.el.Object -->
-    <!-- @default null -->
-    <!-- @el only -->
-  </attribute>
+    </attribute>
+    <attribute>
+      <description>Specifies a value expression by which the summary value should be calculated. E.g. a value of
+        #{product.price} would result in displaying a &quot;total&quot; price for all table&#39;s rows (a sum
+        average, etc, depending on the function being used in this component).
+      </description>
+      <name>by</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType javax.el.Object -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
     <attribute>
       <description>The function that this &lt;o:summary&gt; component uses for combining the values.</description>
       <name>function</name>
@@ -47812,7 +47938,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>When the FileUpload component will upload file, the method will be invoked. This attribute is a MethodBinding that
+      <description>When the FileUpload component will upload file, the method will be invoked. This attribute is a
+        MethodBinding that
         must point to the method that accepts a org.openfaces.event.FileAttachedEvent.
       </description>
       <name>fileAttachedListener</name>
@@ -48043,7 +48170,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>A value-binding expression that associates the InputSecret with a backing bean property.</description>
+      <description>A value-binding expression that associates the InputSecret with a backing bean property.
+      </description>
       <name>binding</name>
       <deferred-value>
         <type>org.openfaces.component.input.InputSecret</type>
@@ -48444,7 +48572,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>JavaScript code that should be executed when the user presses a key over the InputSecret.</description>
+      <description>JavaScript code that should be executed when the user presses a key over the InputSecret.
+      </description>
       <name>onkeydown</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -48882,9 +49011,9 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
       <!-- @el true -->
-       </attribute>
+    </attribute>
     <attribute>
-      <description>Indicates enter helper characters in result.</description>
+      <description>Determine the type and amount of characters.</description>
       <name>mask</name>
       <deferred-value>
         <type>String</type>
@@ -48894,7 +49023,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Indicates enter helper characters in result.</description>
+      <description>Determines blank display to the user.</description>
       <name>blank</name>
       <deferred-value>
         <type>String</type>
@@ -48902,21 +49031,20 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @bindingType boolean -->
       <!-- @default false -->
       <!-- @el true -->
-      <!--  /*inputId, mask, blank, maskSymbolArray, rolloverClass, focusedClass, dictionary*/    -->
- </attribute>
- <attribute>
-   <description>Indicates enter helper characters in result.</description>
-   <name>maskSymbolArray</name>
-   <deferred-value>
-     <type>String</type>
-   </deferred-value>
-   <!-- @bindingType boolean -->
+    </attribute>
+    <attribute>
+      <description>A string containing the auxiliary characters for the user.</description>
+      <name>maskSymbolArray</name>
+      <deferred-value>
+        <type>String</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
       <!-- @default false -->
       <!-- @el true -->
     </attribute>
 
     <attribute>
-      <description>Indicates enter helper characters in result.</description>
+      <description>String - alphabet composed of lowercase letters.</description>
       <name>dictionary</name>
       <deferred-value>
         <type>String</type>

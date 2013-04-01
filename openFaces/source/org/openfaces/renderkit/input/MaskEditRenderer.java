@@ -26,13 +26,46 @@ import javax.faces.context.FacesContext;
 import javax.faces.component.UIComponent;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
+import java.util.LinkedList;
 
 public class MaskEditRenderer extends AbstractInputTextRenderer {
-    private static final String DEFAULT_PROMPT_CLASS = "o_maskedit_prompt";
+    public static final String SUBSTITUTIONAL_TAG_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "maskEditValue";
 
     @Override
     protected String getTagName() {
         return "input";
+    }
+
+    @Override
+    protected void renderInputComponent(FacesContext facesContext, OUIInputText inputText) throws IOException {
+        String styleClass = Styles.getCSSClass(facesContext, inputText, inputText.getStyle(), StyleGroup.regularStyleGroup(), inputText.getStyleClass(), null);
+
+        ResponseWriter writer = facesContext.getResponseWriter();
+        String clientId = inputText.getClientId(facesContext);
+        String tagName = getTagName();
+
+        //rendering of  visible element
+        writer.startElement(tagName, inputText);
+        writeAttribute(writer, "id", clientId + SUBSTITUTIONAL_TAG_SUFFIX);
+        writeAttribute(writer, "class", styleClass);
+        writeAttribute(writer, "title", inputText.getTitle());
+        if (inputText.isDisabled())
+            writeAttribute(writer, "disabled", "disabled");
+        writeAttribute(writer, "onchange", inputText.getOnchange());
+        writeAttribute(writer, "accesskey", inputText.getAccesskey());
+        writeAttribute(writer, "tabindex", inputText.getTabindex());
+        writeAttribute(writer, "autocomplete", "off");
+        Rendering.writeStandardEvents(writer, inputText);
+
+        writeCustomAttributes(facesContext, inputText);
+
+        writeTagContent(facesContext, inputText);
+
+        writer.endElement(tagName);
+
+
+
+        encodeInitScript(facesContext, inputText);
     }
 
     @Override
@@ -53,24 +86,33 @@ public class MaskEditRenderer extends AbstractInputTextRenderer {
     @Override
     protected void encodeInitScript(FacesContext context, OUIInputText inputText) throws IOException {
         MaskEdit maskEdit = (MaskEdit) inputText;
-        String rolloverClass = Styles.getCSSClass(context, inputText, inputText.getRolloverStyle(), StyleGroup.regularStyleGroup(1), inputText.getRolloverClass(), null);
-        String focusedClass = Styles.getCSSClass(context, inputText, inputText.getFocusedStyle(), StyleGroup.regularStyleGroup(2), inputText.getFocusedClass(), null);
+        String rolloverClass = Styles.getCSSClass(context, maskEdit, maskEdit.getRolloverStyle(), StyleGroup.regularStyleGroup(1), maskEdit.getRolloverClass(), null);
+        String focusedClass = Styles.getCSSClass(context, maskEdit, maskEdit.getFocusedStyle(), StyleGroup.regularStyleGroup(2), maskEdit.getFocusedClass(), null);
 
-        String value = Rendering.convertToString(context, inputText, inputText.getValue());
-        Script initScript = new ScriptBuilder().initScript(context, inputText, "O$.MaskEdit._init",
+        String value = Rendering.convertToString(context, maskEdit, maskEdit.getValue());
+        Script initScript = new ScriptBuilder().initScript(context, maskEdit, "O$.MaskEdit._init",
                 maskEdit.getMask(),
                 maskEdit.getBlank(),
-                maskEdit.getMaskSymbolArray(),
+                maskSymbolStringToArray(maskEdit.getMaskSymbolArray()),
+                maskEdit.getDictionary(),
                 rolloverClass,
-                focusedClass,
-                maskEdit.getDictionary()
+                focusedClass
         );
 
-        Styles.renderStyleClasses(context, inputText);
+        Styles.renderStyleClasses(context, maskEdit);
         Rendering.renderInitScript(context, initScript,
                 Resources.utilJsURL(context),
                 Resources.internalURL(context, "input/maskEdit.js")
         );
+    }
+
+    private LinkedList<Character> maskSymbolStringToArray(String maskSymbolString) {
+        if (maskSymbolString == null) return null;
+        LinkedList<Character> maskSymbolArray = new LinkedList<Character>();
+        for (int i = 0; i < maskSymbolString.length(); i++) {
+            maskSymbolArray.add(maskSymbolString.charAt(i));
+        }
+        return maskSymbolArray;
     }
 
 }

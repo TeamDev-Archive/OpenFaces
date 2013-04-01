@@ -367,7 +367,7 @@
   </managed-bean>
 
   <managed-bean>
-    <managed-bean-name>EditNameBean</managed-bean-name>
+    <managed-bean-name>MaskEditBean</managed-bean-name>
     <managed-bean-class>org.openfaces.demo.beans.maskedit.MaskEditBean</managed-bean-class>
     <managed-bean-scope>session</managed-bean-scope>
   </managed-bean>
