@@ -7,7 +7,21 @@
 
 
     <div>
-      <o:maskEdit/>
+      <o:maskEdit
+              id="Date"
+              blank="#{MaskEditBean.blank}"
+              mask="#{MaskEditBean.mask}"
+              maskSymbolArray="#{MaskEditBean.maskSymbol}"
+              value="#{MaskEditBean.value}"
+              />
+      <o:commandButton value="Display Search Results" style="margin-top: 15px;"
+                       action="#{MaskEditBean.coolSubmit}"
+
+              />
+
+      <div>
+
+      </div>
     </div>
   </div>
 
