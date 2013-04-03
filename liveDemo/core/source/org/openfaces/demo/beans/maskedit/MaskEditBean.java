@@ -12,6 +12,8 @@
 
 package org.openfaces.demo.beans.maskedit;
 
+import org.openfaces.component.input.DefaultMasks;
+
 import javax.faces.context.FacesContext;
 import java.util.Map;
 
@@ -25,6 +27,25 @@ public class MaskEditBean {
     private String mask = "######";
     private String blank = "DD/MM/YY";
     private String maskSymbol = "DMY";
+    private DefaultMasks defaultMasks = DefaultMasks.OFF;
+
+    public DefaultMasks getDefaultMasks() {
+        return defaultMasks;
+    }
+
+    public void setDefaultMasks(DefaultMasks defaultMasks) {
+        this.defaultMasks = defaultMasks;
+    }
+
+    public String getSubmitTest() {
+        return submitTest;
+    }
+
+    public void setSubmitTest(String submitTest) {
+        this.submitTest = submitTest;
+    }
+
+    private String submitTest;
 
     public String getMaskSymbol() {
         return maskSymbol;
@@ -60,10 +81,10 @@ public class MaskEditBean {
         this.value = value;
     }
 
-    public String coolSubmit(){
+    public String coolSubmit() {
         FacesContext context = FacesContext.getCurrentInstance();
         Map requestParams = context.getExternalContext().getRequestParameterMap();
-        System.out.println("Login:" + this.getValue());
+        System.out.println("Login:" + this.getValue() + " blank:" + this.getBlank() + " test:" + this.getSubmitTest());
         return "";
     }
 

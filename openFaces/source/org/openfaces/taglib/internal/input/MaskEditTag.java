@@ -9,22 +9,30 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
+
+
 package org.openfaces.taglib.internal.input;
 
+import org.openfaces.component.input.DefaultMasks;
 import org.openfaces.component.input.MaskEdit;
 import org.openfaces.taglib.internal.AbstractComponentTag;
+import org.openfaces.taglib.internal.OUIInputTextTag;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-public class MaskEditTag extends org.openfaces.taglib.internal.AbstractComponentTag {
+/**
+ * @author Sergey Pensov
+ */
+public class MaskEditTag extends OUIInputTextTag {
+    private static final String RENDERER_TYPE = "org.openfaces.MaskEditRenderer";
 
     public String getComponentType() {
         return MaskEdit.COMPONENT_TYPE;
     }
 
     public String getRendererType() {
-        return "org.openfaces.MaskEditRenderer";
+        return RENDERER_TYPE;
     }
 
 
@@ -32,9 +40,10 @@ public class MaskEditTag extends org.openfaces.taglib.internal.AbstractComponent
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
         setBooleanProperty(component, "rendered");
-        setStringProperty(component,"mask");
-        setStringProperty(component,"blank");
-        setStringProperty(component,"maskSymbolArray");
-        setStringProperty(component,"dictionary");
+        setStringProperty(component, "mask");
+        setStringProperty(component, "blank");
+        setStringProperty(component, "maskSymbolArray");
+        setStringProperty(component, "dictionary");
+        setEnumerationProperty(component,"defaultMask",DefaultMasks.class);
     }
 }

@@ -12,12 +12,18 @@
 package org.openfaces.taglib.facelets.input;
 
 import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
+import org.openfaces.taglib.internal.input.MaskEditTag;
+
 import javax.faces.view.facelets.ComponentConfig;
 
+
+/**
+ * @author Sergey Pensov
+ */
 public class MaskEditTagHandler extends AbstractFaceletsComponentHandler {
 
     public MaskEditTagHandler(ComponentConfig componentConfig) {
-        super(componentConfig, new org.openfaces.taglib.internal.input.MaskEditTag());
+        super(componentConfig, new MaskEditTag());
     }
 
 }

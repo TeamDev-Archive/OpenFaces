@@ -12,22 +12,14 @@
 package org.openfaces.taglib.jsp.input;
 
 import org.openfaces.taglib.jsp.AbstractComponentJspTag;
+import org.openfaces.taglib.jsp.OUIInputTextJspTag;
 
 import javax.el.ValueExpression;
 
-public class MaskEditJspTag extends org.openfaces.taglib.jsp.AbstractComponentJspTag {
+public class MaskEditJspTag extends OUIInputTextJspTag {
 
     public MaskEditJspTag() {
         super(new org.openfaces.taglib.internal.input.MaskEditTag());
-    }
-
-
-    public void setRendered(ValueExpression rendered) {
-        getDelegate().setPropertyValue("rendered", rendered);
-    }
-
-    public void setValue(ValueExpression value) {
-        getDelegate().setPropertyValue("value", value);
     }
 
     public void setMask(ValueExpression mask) {
@@ -45,7 +37,6 @@ public class MaskEditJspTag extends org.openfaces.taglib.jsp.AbstractComponentJs
     public void setDictionary(ValueExpression dictionary) {
         getDelegate().setPropertyValue("dictionary", dictionary);
     }
-
 
 
 }

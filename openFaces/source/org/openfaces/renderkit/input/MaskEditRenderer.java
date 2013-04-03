@@ -12,6 +12,7 @@
 package org.openfaces.renderkit.input;
 
 import org.openfaces.component.OUIInputText;
+import org.openfaces.component.input.DefaultMasks;
 import org.openfaces.component.input.InputText;
 import org.openfaces.component.input.MaskEdit;
 import org.openfaces.renderkit.RendererBase;
@@ -29,7 +30,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 
 public class MaskEditRenderer extends AbstractInputTextRenderer {
-    public static final String SUBSTITUTIONAL_TAG_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "maskEditValue";
+
 
     @Override
     protected String getTagName() {
@@ -46,7 +47,7 @@ public class MaskEditRenderer extends AbstractInputTextRenderer {
 
         //rendering of  visible element
         writer.startElement(tagName, inputText);
-        writeAttribute(writer, "id", clientId + SUBSTITUTIONAL_TAG_SUFFIX);
+        writeAttribute(writer, "id", clientId);
         writeAttribute(writer, "class", styleClass);
         writeAttribute(writer, "title", inputText.getTitle());
         if (inputText.isDisabled())
@@ -64,7 +65,6 @@ public class MaskEditRenderer extends AbstractInputTextRenderer {
         writer.endElement(tagName);
 
 
-
         encodeInitScript(facesContext, inputText);
     }
 
@@ -72,24 +72,60 @@ public class MaskEditRenderer extends AbstractInputTextRenderer {
     protected void writeCustomAttributes(FacesContext context, OUIInputText input) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         MaskEdit inputText = (MaskEdit) input;
-        String value = getConvertedValue(context, inputText);
-        if (!"".equals(value))
-            writeAttribute(writer, "value", value);
         writeAttribute(writer, "type", "text");
         Rendering.writeAttributes(writer, inputText, "dir", "lang", "alt", "onselect");
-        writeAttribute(writer, "maxlength", inputText.getMaxlength(), Integer.MIN_VALUE);
-        writeAttribute(writer, "size", inputText.getSize(), Integer.MIN_VALUE);
         if (inputText.isReadonly())
             writeAttribute(writer, "readonly", "readonly");
     }
 
     @Override
     protected void encodeInitScript(FacesContext context, OUIInputText inputText) throws IOException {
+        String mask;
+        String blank;
+        String maskSymbolArray;
+
         MaskEdit maskEdit = (MaskEdit) inputText;
+
+        switch (maskEdit.getDefaultMask()) {
+            case OFF: {
+                mask = maskEdit.getMask();
+                blank = maskEdit.getBlank();
+                maskSymbolArray = maskEdit.getMaskSymbolArray();
+            }
+            case BARCODE: {
+                mask = "";
+                blank = "";
+                maskSymbolArray = "";
+            }
+            case CREDIT_CARD: {
+                mask = "";
+                blank = "";
+                maskSymbolArray = "";
+            }
+            case DATE: {
+                mask = "";
+                blank = "";
+                maskSymbolArray = "";
+            }
+            case NET_MASK: {
+                mask = "";
+                blank = "";
+                maskSymbolArray = "";
+            }
+            case PERCENT: {
+                mask = "";
+                blank = "";
+                maskSymbolArray = "";
+            }
+            case TIME: {
+                mask = "";
+                blank = "";
+                maskSymbolArray = "";
+            }
+        }
         String rolloverClass = Styles.getCSSClass(context, maskEdit, maskEdit.getRolloverStyle(), StyleGroup.regularStyleGroup(1), maskEdit.getRolloverClass(), null);
         String focusedClass = Styles.getCSSClass(context, maskEdit, maskEdit.getFocusedStyle(), StyleGroup.regularStyleGroup(2), maskEdit.getFocusedClass(), null);
 
-        String value = Rendering.convertToString(context, maskEdit, maskEdit.getValue());
         Script initScript = new ScriptBuilder().initScript(context, maskEdit, "O$.MaskEdit._init",
                 maskEdit.getMask(),
                 maskEdit.getBlank(),

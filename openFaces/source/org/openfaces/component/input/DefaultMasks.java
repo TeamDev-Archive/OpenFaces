@@ -16,6 +16,7 @@ package org.openfaces.component.input;
  * @author Sergey Pensov
  */
 public enum DefaultMasks {
+    OFF("Off"),
     DATE("Date"),
     TIME("Time"),
     NET_MASK("NetMask"),
