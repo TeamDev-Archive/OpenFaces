@@ -18,6 +18,8 @@ import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 import java.util.LinkedList;
 
+import static org.openfaces.component.input.DefaultMasks.*;
+
 public class MaskEdit extends OUIInputText {
     public static final String COMPONENT_TYPE = "org.openfaces.MaskEdit";
     public static final String COMPONENT_FAMILY = "org.openfaces.MaskEdit";
@@ -32,7 +34,10 @@ public class MaskEdit extends OUIInputText {
 
 
     public DefaultMasks getDefaultMask() {
-        return ValueBindings.get(this, "defaultMask", defaultMask.OFF, null, DefaultMasks.class);
+        if (defaultMask==null){
+            return OFF;
+        }
+        return defaultMask;
     }
 
     public void setDefaultMask(DefaultMasks defaultMask) {

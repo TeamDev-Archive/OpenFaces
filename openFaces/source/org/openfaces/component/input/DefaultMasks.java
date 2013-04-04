@@ -21,7 +21,6 @@ public enum DefaultMasks {
     TIME("Time"),
     NET_MASK("NetMask"),
     CREDIT_CARD("CreditCard"),
-    BARCODE("Barcode"),
     PERCENT("Percent");
 
 
