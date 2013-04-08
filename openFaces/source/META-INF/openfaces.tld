@@ -48646,6 +48646,16 @@ entering a value and returns a list of suggestions from the server -->
     <tag-class>org.openfaces.taglib.jsp.input.MaskEditJspTag</tag-class>
     <body-content>JSP</body-content>
     <attribute>
+      <description>A value-binding expression that associates the MaskEdit with a backing bean property.</description>
+      <name>binding</name>
+      <deferred-value>
+        <type>org.openfaces.component.input.MaskEdit</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.input.MaskEdit -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
       <description>A flag that indicates whether or not the component is visible.</description>
       <name>rendered</name>
       <deferred-value>

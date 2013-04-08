@@ -13,13 +13,15 @@
               mask="#{MaskEditBean.mask}"
               maskSymbolArray="#{MaskEditBean.maskSymbol}"
               value="#{MaskEditBean.value}"
+              binding="#{MaskEditBean.maskEditBinding}"
               />
       <o:inputSecret value="#{MaskEditBean.submitTest}"/>
-      <o:commandButton value="Display Search Results" style="margin-top: 15px;"
-                       action="#{MaskEditBean.coolSubmit}"
-
-              />
-
+      <h:commandButton value="Display Search Results" style="margin-top: 15px;"
+              >
+        <f:ajax execute="@all" render="field field2" />
+      </h:commandButton>
+      <h:outputText value="#{MaskEditBean.value}" id="field"></h:outputText>
+      <h:outputText value="#{MaskEditBean.submitTest}" id="field2"></h:outputText>
       <div>
 
       </div>

@@ -56,6 +56,7 @@ public class InputSecretRenderer extends AbstractInputTextRenderer {
         //rendering of  visible element
         writer.startElement(tagName, inputText);
         writeAttribute(writer, "id", clientId + SUBSTITUTIONAL_TAG_SUFFIX);
+        writeAttribute(writer,"name",clientId + SUBSTITUTIONAL_TAG_SUFFIX);
         writeAttribute(writer, "class", styleClass);
         writeAttribute(writer, "title", inputText.getTitle());
         if (inputText.isDisabled())

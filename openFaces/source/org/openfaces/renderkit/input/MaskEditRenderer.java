@@ -28,6 +28,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.Map;
 
 public class MaskEditRenderer extends AbstractInputTextRenderer {
 
@@ -48,10 +49,13 @@ public class MaskEditRenderer extends AbstractInputTextRenderer {
         //rendering of  visible element
         writer.startElement(tagName, inputText);
         writeAttribute(writer, "id", clientId);
+        writeAttribute(writer, "name", clientId);
         writeAttribute(writer, "class", styleClass);
         writeAttribute(writer, "title", inputText.getTitle());
         if (inputText.isDisabled())
             writeAttribute(writer, "disabled", "disabled");
+        writeAttribute(writer, "value", getConvertedValue(facesContext, inputText));
+
         writeAttribute(writer, "onchange", inputText.getOnchange());
         writeAttribute(writer, "accesskey", inputText.getAccesskey());
         writeAttribute(writer, "tabindex", inputText.getTabindex());
@@ -149,6 +153,18 @@ public class MaskEditRenderer extends AbstractInputTextRenderer {
             maskSymbolArray.add(maskSymbolString.charAt(i));
         }
         return maskSymbolArray;
+    }
+
+    public void decode(FacesContext context, UIComponent component) {
+        Rendering.decodeBehaviors(context, component);
+
+        Map requestMap = context.getExternalContext().getRequestParameterMap();
+        OUIInputText inputText = (OUIInputText) component;
+        String clientId = inputText.getClientId(context);
+
+        String value = (String) requestMap.get(clientId);
+
+        inputText.setSubmittedValue(value);
     }
 
 }

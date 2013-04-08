@@ -84,18 +84,25 @@ public class MaskEdit extends OUIInputText {
 
     @Override
     public Object saveState(FacesContext context) {
-        return new Object[]{
-                super.saveState(context),
-
+        return new Object[]{super.saveState(context),
+            mask,
+            blank,
+            dictionary,
+            maskSymbolArray,
+            defaultMask,
         };
     }
 
     @Override
-    public void restoreState(FacesContext context, Object stateObj) {
-        Object[] state = (Object[]) stateObj;
+    public void restoreState(FacesContext context, Object state) {
+        Object[] values = (Object[]) state;
         int i = 0;
-        super.restoreState(context, state[i++]);
-
+        super.restoreState(context, values[i++]);
+        mask = (String) values[i++];
+        blank = (String) values[i++];
+        dictionary = (String) values[i++];
+        maskSymbolArray = (String) values[i++];
+        defaultMask = (DefaultMasks) values[i++];
     }
 
 }

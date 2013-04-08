@@ -13,7 +13,6 @@
 //TODO: Common: check if user able to specify his own пress etc event from JSF, (addEventListener)
 //TODO: browser compatibility issues
 
-// I mark methods which i actually like now with the comment :OK:
 O$.MaskEdit = {
 
   _init:function (inputId, mask, blank, maskSymbolArray, dictionary, rolloverClass, focusedClass) {
@@ -60,7 +59,7 @@ O$.MaskEdit = {
     O$._selectTextRange(maskEdit, maskEdit._cursorPosition, maskEdit._cursorPosition);
 
     O$.extend(maskEdit, {
-              onkeypress:function (e) { // :OK:
+              onkeypress:function (e) {
                 if (this._isFinishPosition)
                   return false;
 
@@ -88,11 +87,11 @@ O$.MaskEdit = {
                 return false;
               },
 
-              _toStringMaskValue:function (maskValue) { // :OK:
+              _toStringMaskValue:function (maskValue) {
                 return maskValue.toString().replace(/\,/g, "");
               },
 
-              _getChar:function (event) { // :OK:
+              _getChar:function (event) {
                 if (event.which == null) {
                   if (event.keyCode < 32) return null;
                   return String.fromCharCode(event.keyCode)
@@ -103,7 +102,7 @@ O$.MaskEdit = {
                 }
                 return null;
               },
-              _isOccurrenceChar:function (symbol, symbolArray) { // :OK:
+              _isOccurrenceChar:function (symbol, symbolArray) {
                 return symbolArray.indexOf(symbol) != -1;
 
               },
@@ -128,18 +127,18 @@ O$.MaskEdit = {
               },
 
 
-              onkeydown:function (e) { // :OK:
+              onkeydown:function (e) {
                 var key = e.keyCode;
                 var isExit = this.isControlKey(key);
 
                 return isExit;
               },
 
-              onkeyup:function (e) {  // :OK:
+              onkeyup:function (e) {
                 return false;
               },
 
-              getSelectionText:function () { // :OK:
+              getSelectionText:function () {
                 var txt;
                 if (window.getSelection) {
                   txt = window.getSelection().toString();
@@ -151,7 +150,7 @@ O$.MaskEdit = {
                 return txt;
               },
 
-              onclick:function (event) { // :OK:
+              onclick:function (event) {
                 event = event || window.event;
 
                 var clickCursorPosition = O$._getCaretPosition(this);
@@ -269,24 +268,24 @@ O$.MaskEdit = {
     )
     ;
     O$.extend(maskEdit, {
-              _isKeyRight:function () { // :OK:
+              _isKeyRight:function () {
                 this._setCursorPosition(this._cursorPosition + 1, false);
                 O$._selectTextRange(this, this._cursorPosition, this._cursorPosition);
 
                 return false;
               },
-              _isKeyLeft:function () { // :OK:
+              _isKeyLeft:function () {
                 this._setCursorPosition(this._cursorPosition - 1, false);
                 O$._selectTextRange(this, this._cursorPosition, this._cursorPosition);
 
                 return false;
 
               },
-              _isKeyEnd:function () { // :OK:
+              _isKeyEnd:function () {
                 this._setCursorPosition(this._maskInputPosition[this._maskInputPosition.length] + 1, false)
                 O$._selectTextRange(this, this._cursorPosition, this._cursorPosition);
               },
-              _isKeyHome:function () { // :OK:
+              _isKeyHome:function () {
                 this._setCursorPosition(this._maskInputPosition[0], false)
                 O$._selectTextRange(this, this._cursorPosition, this._cursorPosition);
                 return false;
