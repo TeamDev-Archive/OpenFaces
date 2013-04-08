@@ -30,6 +30,8 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Map;
 
+import static org.openfaces.component.input.DefaultMasks.*;
+
 public class MaskEditRenderer extends AbstractInputTextRenderer {
 
 
@@ -95,45 +97,51 @@ public class MaskEditRenderer extends AbstractInputTextRenderer {
                 mask = maskEdit.getMask();
                 blank = maskEdit.getBlank();
                 maskSymbolArray = maskEdit.getMaskSymbolArray();
-            }
-            case BARCODE: {
-                mask = "";
-                blank = "";
-                maskSymbolArray = "";
+                break;
             }
             case CREDIT_CARD: {
-                mask = "";
-                blank = "";
-                maskSymbolArray = "";
+                mask = "################";
+                blank = "---- ---- ---- ----";
+                maskSymbolArray = "-";
+                break;
             }
             case DATE: {
-                mask = "";
-                blank = "";
-                maskSymbolArray = "";
+                mask = "########";
+                blank = "YYYY/MM/DD";
+                maskSymbolArray = "YMD";
+                break;
             }
             case NET_MASK: {
-                mask = "";
-                blank = "";
-                maskSymbolArray = "";
+                mask = "#########";
+                blank = "   .   .   .   ";
+                maskSymbolArray = " ";
+                break;
             }
             case PERCENT: {
-                mask = "";
-                blank = "";
-                maskSymbolArray = "";
+                mask = "###";
+                blank = "___%";
+                maskSymbolArray = "_";
+                break;
             }
             case TIME: {
-                mask = "";
-                blank = "";
-                maskSymbolArray = "";
+                mask = "####";
+                blank = "__:__";
+                maskSymbolArray = "_";
+                break;
+            }
+            default:{
+                mask = maskEdit.getMask();
+                blank = maskEdit.getBlank();
+                maskSymbolArray = maskEdit.getMaskSymbolArray();
             }
         }
         String rolloverClass = Styles.getCSSClass(context, maskEdit, maskEdit.getRolloverStyle(), StyleGroup.regularStyleGroup(1), maskEdit.getRolloverClass(), null);
         String focusedClass = Styles.getCSSClass(context, maskEdit, maskEdit.getFocusedStyle(), StyleGroup.regularStyleGroup(2), maskEdit.getFocusedClass(), null);
 
         Script initScript = new ScriptBuilder().initScript(context, maskEdit, "O$.MaskEdit._init",
-                maskEdit.getMask(),
-                maskEdit.getBlank(),
-                maskSymbolStringToArray(maskEdit.getMaskSymbolArray()),
+                mask,
+                blank,
+                maskSymbolStringToArray(maskSymbolArray),
                 maskEdit.getDictionary(),
                 rolloverClass,
                 focusedClass

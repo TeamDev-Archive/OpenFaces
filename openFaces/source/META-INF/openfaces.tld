@@ -49064,6 +49064,18 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
 
+    <attribute>
+      <description>String - alphabet composed of lowercase letters.</description>
+      <name>defaultMask</name>
+      <deferred-value>
+        <type>String</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+
+
 
   </tag>
 
