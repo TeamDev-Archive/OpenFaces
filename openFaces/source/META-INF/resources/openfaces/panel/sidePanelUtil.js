@@ -11,6 +11,7 @@
  */
 
 //---------------  double buffered element methods  ----------------
+
 O$._calculateOffsetWidth = function(element, useDoubleBuffering) {
   var offsetWidth = element.offsetWidth;
   if (useDoubleBuffering) {
@@ -66,12 +67,12 @@ O$._calculateNumericWidth = function(element, useDoubleBuffering) {
     var width = element._newStyle.width;
   } else {
     if (element.style.width) {
-      var width = element.style.width;
+      width = element.style.width;
     } else {
-      var width = O$.getStyleClassProperty(element.className, "width");
+      width = O$.getStyleClassProperty(element.className, "width");
     }
     if (!width) {
-      var width = element.offsetWidth;
+      width = element.offsetWidth;
       if (!width) {
         var parentNode = element.parentNode;
         if (parentNode == document.body)
@@ -80,7 +81,7 @@ O$._calculateNumericWidth = function(element, useDoubleBuffering) {
           } else {
             return window.innerWidth;
           }
-        width = O$._calculateNumericWidth(parentNode, true);
+        width = O$._calculateNumericWidth(parentNode, useDoubleBuffering);
       }
       return width;
     }
@@ -99,9 +100,9 @@ O$._calculateNumericHeight = function(element, useDoubleBuffering) {
     var height = element._newStyle.height;
   } else {
     if (element.style.height) {
-      var height = element.style.height;
+      height = element.style.height;
     } else {
-      var height = O$.getStyleClassProperty(element.className, "height");
+      height = O$.getStyleClassProperty(element.className, "height");
     }
     if (!height) {
       height = element.offsetHeight;
@@ -134,7 +135,7 @@ O$._calculateNumericWidthFactor = function(element, useDoubleBuffering) {
   if (element._isCoupled) {
     var widthFactor = O$._calculateNumericInnerWidth(parent, useDoubleBuffering);
   } else {
-    var widthFactor = O$._calculateNumericWidth(parent, false); //todo need testing
+    widthFactor = O$._calculateNumericWidth(parent, false); //todo need testing
   }
   return widthFactor;
 };
@@ -144,7 +145,7 @@ O$._calculateNumericHeightFactor = function(element, useDoubleBuffering) {
   if (element._isCoupled) {
     var heightFactor = O$._calculateNumericInnerHeight(element.parentNode, useDoubleBuffering);
   } else {
-    var heightFactor = O$._calculateNumericHeight(parent, false); //todo need testing
+    heightFactor = O$._calculateNumericHeight(parent, false); //todo need testing
   }
   return heightFactor;
 };
@@ -191,7 +192,7 @@ O$._setInnerElementOuterWidth = function(element, outerWidth, useDoubleBuffering
   if (O$._isExplorerQuirksMode()) {
     var width = (outerWidth - element._storedSizeProperties.marginsWidth) + "px";
   } else {
-    var width = (outerWidth - element._storedSizeProperties.paddingsAndBordersAndMarginsWidth) + "px";
+    width = (outerWidth - element._storedSizeProperties.paddingsAndBordersAndMarginsWidth) + "px";
   }
 
   if (useDoubleBuffering) {
@@ -205,7 +206,7 @@ O$._setInnerElementOuterHeight = function(element, outerHeight, useDoubleBufferi
   if (O$._isExplorerQuirksMode()) {
     var height = (outerHeight - element._storedSizeProperties.marginsHeight) + "px";
   } else {
-    var height = (outerHeight - element._storedSizeProperties.paddingsAndBordersAndMarginsHeight) + "px";
+    height = (outerHeight - element._storedSizeProperties.paddingsAndBordersAndMarginsHeight) + "px";
   }
 
   if (useDoubleBuffering) {
@@ -287,7 +288,8 @@ O$._bugFix_divNegativeSizeBug = function(element, useDoubleBuffering) {
       element._newStyle.width = "0px";
       element._newStyle.display = "none";
     }
-  } else {
+  }
+  else {
     element.style.display = "block";
     if (parseFloat(element.style.height) < 0) {
       element.style.height = "0px";
@@ -422,8 +424,7 @@ O$._createPseudoCSSStyle = function(cssStyle) {
 };
 
 O$._isPercentageValue = function(str) {
-  //return (str.indexOf(parseFloat(str).toString() + "%") != -1);
-  return (str.indexOf("%") != -1);
+  return (str.indexOf(parseFloat(str).toString() + "%") != -1);
 };
 
 O$._isPixelValue = function(str) {
@@ -437,8 +438,8 @@ O$._setAbsoluteCenterPosition = function(element) {
   element.style.position = "absolute";
   element.style.left = "50%";
   element.style.top = "50%";
-  element.style.marginLeft = "-" + Math.round(O$._getHiddenOffsetWidth(element) / 2) + "px";
-  element.style.marginTop = "-" + Math.round(O$._getHiddenOffsetHeight(element) / 2) + "px";
+  element.style.marginLeft = "-" + Math.round(element.offsetWidth / 2) + "px";
+  element.style.marginTop = "-" + Math.round(element.offsetHeight / 2) + "px";
 };
 
 O$._setImageAbsoluteCenterPosition = function(imgElement) {
