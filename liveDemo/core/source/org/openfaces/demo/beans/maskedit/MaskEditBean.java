@@ -27,7 +27,7 @@ public class MaskEditBean {
     private String mask = "######";
     private String blank = "DD/MM/YY";
     private String maskSymbol = "DMY";
-    private DefaultMasks defaultMasks = DefaultMasks.OFF;
+    private DefaultMasks defaultMasks;
 
     public DefaultMasks getDefaultMasks() {
         return defaultMasks;

@@ -16,23 +16,33 @@ package org.openfaces.component.input;
  * @author Sergey Pensov
  */
 public enum DefaultMasks {
-    OFF("Off"),
-    DATE("Date"),
-    TIME("Time"),
-    NET_MASK("NetMask"),
-    CREDIT_CARD("CreditCard"),
-    PERCENT("Percent");
+    Date("########", "YYYY/MM/DD", "YMD"),
+    Time("####", "__:__", "_"),
+    NetMask("#########", "   .   .   .   ", " "),
+    CreditCard("################", "---- ---- ---- ----", "-"),
+    Percent("###", "___%", "_");
 
+    private String mask;
+    private String blank;
+    private String maskSymbolArray;
 
-    private final String value;
+    public String getMask() {
+        return mask;
+    }
 
-    DefaultMasks(String value) {
-        this.value = value;
+    public String getBlank() {
+        return blank;
+    }
+
+    public String getMaskSymbolArray() {
+        return maskSymbolArray;
+    }
+
+    DefaultMasks(String mask, String blank, String maskSymbolArray) {
+        this.mask = mask;
+        this.blank = blank;
+        this.maskSymbolArray = maskSymbolArray;
     }
 
 
-    @Override
-    public String toString() {
-        return value;
-    }
 }

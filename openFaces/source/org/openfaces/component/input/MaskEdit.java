@@ -34,9 +34,6 @@ public class MaskEdit extends OUIInputText {
 
 
     public DefaultMasks getDefaultMask() {
-        if (defaultMask==null){
-            return OFF;
-        }
         return defaultMask;
     }
 
@@ -69,7 +66,7 @@ public class MaskEdit extends OUIInputText {
     }
 
     public String getMaskSymbolArray() {
-        return ValueBindings.get(this, "maskSymbolArray", maskSymbolArray,"_");
+        return ValueBindings.get(this, "maskSymbolArray", maskSymbolArray, "_");
     }
 
     public void setMaskSymbolArray(String maskSymbolArray) {
@@ -90,11 +87,11 @@ public class MaskEdit extends OUIInputText {
     @Override
     public Object saveState(FacesContext context) {
         return new Object[]{super.saveState(context),
-            mask,
-            blank,
-            dictionary,
-            maskSymbolArray,
-            defaultMask,
+                mask,
+                blank,
+                dictionary,
+                maskSymbolArray,
+                defaultMask,
         };
     }
 

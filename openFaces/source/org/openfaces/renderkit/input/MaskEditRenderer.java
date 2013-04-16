@@ -89,55 +89,19 @@ public class MaskEditRenderer extends AbstractInputTextRenderer {
         String mask;
         String blank;
         String maskSymbolArray;
-
         MaskEdit maskEdit = (MaskEdit) inputText;
-
-        switch (maskEdit.getDefaultMask()) {
-            case OFF: {
-                mask = maskEdit.getMask();
-                blank = maskEdit.getBlank();
-                maskSymbolArray = maskEdit.getMaskSymbolArray();
-                break;
-            }
-            case CREDIT_CARD: {
-                mask = "################";
-                blank = "---- ---- ---- ----";
-                maskSymbolArray = "-";
-                break;
-            }
-            case DATE: {
-                mask = "########";
-                blank = "YYYY/MM/DD";
-                maskSymbolArray = "YMD";
-                break;
-            }
-            case NET_MASK: {
-                mask = "#########";
-                blank = "   .   .   .   ";
-                maskSymbolArray = " ";
-                break;
-            }
-            case PERCENT: {
-                mask = "###";
-                blank = "___%";
-                maskSymbolArray = "_";
-                break;
-            }
-            case TIME: {
-                mask = "####";
-                blank = "__:__";
-                maskSymbolArray = "_";
-                break;
-            }
-            default:{
-                mask = maskEdit.getMask();
-                blank = maskEdit.getBlank();
-                maskSymbolArray = maskEdit.getMaskSymbolArray();
-            }
+        if (!(maskEdit.getDefaultMask() == null)) {
+            DefaultMasks defaultMask = maskEdit.getDefaultMask();
+            mask = defaultMask.getMask();
+            blank = defaultMask.getBlank();
+            maskSymbolArray = defaultMask.getMaskSymbolArray();
+        } else {
+            mask = maskEdit.getMask();
+            blank = maskEdit.getBlank();
+            maskSymbolArray = maskEdit.getMaskSymbolArray();
         }
         String rolloverClass = Styles.getCSSClass(context, maskEdit, maskEdit.getRolloverStyle(), StyleGroup.regularStyleGroup(1), maskEdit.getRolloverClass(), null);
         String focusedClass = Styles.getCSSClass(context, maskEdit, maskEdit.getFocusedStyle(), StyleGroup.regularStyleGroup(2), maskEdit.getFocusedClass(), null);
-
         Script initScript = new ScriptBuilder().initScript(context, maskEdit, "O$.MaskEdit._init",
                 mask,
                 blank,
@@ -146,7 +110,6 @@ public class MaskEditRenderer extends AbstractInputTextRenderer {
                 rolloverClass,
                 focusedClass
         );
-
         Styles.renderStyleClasses(context, maskEdit);
         Rendering.renderInitScript(context, initScript,
                 Resources.utilJsURL(context),
