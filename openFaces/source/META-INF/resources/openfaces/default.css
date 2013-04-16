@@ -1221,10 +1221,13 @@
   height: 100%;
 }
 
-.o_dropdown_list_item {
-  padding: 0 2px 0 2px;
-  text-align: left;
-  font-size: 10pt;
+.o_dropdownfield_list {
+    position: absolute;
+    visibility: hidden;
+    display: none;
+    overflow: auto;
+    width: 0;
+    height: 200px;
 }
 
 .o_dropdown_prompt {
