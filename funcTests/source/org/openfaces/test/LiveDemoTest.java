@@ -47,8 +47,8 @@ public class LiveDemoTest extends OpenFacesTestCase {
         assertDemoPageAvailable("/datatable/DataTable_handlingLargeData.jsf", "Data Table \u2014 OpenFaces Demo");
 
         assertDemoPageAvailable("/datechooser/DateChooser.jsf", "Date Chooser \u2014 OpenFaces Demo");
-        assertDemoPageAvailable("/daytable/DayTable_general.jsf", "Day Table \u2014 OpenFaces Demo");
-        assertDemoPageAvailable("/daytable/DayTable_multipleResources.jsf", "Day Table \u2014 OpenFaces Demo");
+        assertDemoPageAvailable("/timetable/DayTable_general.jsf", "Day Table \u2014 OpenFaces Demo");
+        assertDemoPageAvailable("/timetable/DayTable_multipleResources.jsf", "Day Table \u2014 OpenFaces Demo");
         assertDemoPageAvailable("/dropdownfield/DropDownField_client.jsf", "Drop Down Field \u2014 OpenFaces Demo");
         assertDemoPageAvailable("/dropdownfield/DropDownField_ajax.jsf", "Drop Down Field \u2014 OpenFaces Demo");
 

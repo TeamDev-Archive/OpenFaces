@@ -10,7 +10,7 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-package org.openfaces.demo.beans.daytable;
+package org.openfaces.demo.beans.timetable;
 
 /**
  * @author Alexey Chystoprudov
