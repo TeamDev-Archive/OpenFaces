@@ -476,6 +476,14 @@ O$.DropDownField = {
         dropDown._setValue(text);
       },
 
+      setSelectedIndex: function (index) {
+        dropDown._setSelectedIndex(index);
+      },
+
+      getSelectedIndex: function () {
+        return dropDown._getSelectedIndex();
+      },
+
       _setItemPresentationValue:function () {
 
         var selectedItem = dropDown._getSelectedItem();
@@ -503,6 +511,51 @@ O$.DropDownField = {
         }
 
         dropDown._copyClassesToItemPresentation();
+      },
+
+      _getSelectedIndex: function (){
+        var selectedItem = dropDown._getSelectedItem();
+        return selectedItem ? selectedItem._index : -1;
+      },
+
+      _setSelectedIndex: function (index){
+        var item = dropDown._findItemByIndex(index);
+        if (!item)
+          return; // retain old value when setting a value not from the list
+        var itemValue = item._itemValue;
+        var text = item._itemLabel;
+        if (dropDown.value != text) {
+          dropDown.value = text;
+        }
+
+        //TODO: duplicated code with _setValue remove it
+        if (dropDown.value != text) {
+          dropDown.value = text;
+        }
+        var newItemValue = itemValue != undefined
+                ? (itemValue != null ? "[" + itemValue + "]" : "null")
+                : "";
+        if (dropDown._valueField.value != newItemValue) {
+          dropDown._valueField.value = newItemValue;
+        }
+        dropDown._selectedItemValue = itemValue;
+        if (dropDown.isOpened()) {
+          dropDown._highlightSelectedItem();
+          dropDown._scrollToHighlightedItem();
+        }
+        if (itemPresentation)
+          dropDown._setItemPresentationValue();
+        if (field.value != text)
+          field.value = text;
+
+        if (dropDown._fireOnChangeIfChanged() === false) {
+          var evt = O$.getEvent(initiatingEvent);
+          if (evt) {
+            if (evt.preventDefault)
+              evt.preventDefault();
+            evt.returnValue = false;
+          }
+        }
       },
 
       _setValue: function (text, itemValue, onChangeDisabled, initiatingEvent) {
@@ -603,6 +656,13 @@ O$.DropDownField = {
       _highlightSelectedItem: function() {
         var itemToHighlight = dropDown._getSelectedItem();
         dropDown._setHighlightedItemIndex(itemToHighlight ? itemToHighlight._index : -1);
+      },
+
+      _findItemByIndex: function (index){
+        if (index >= dropDown._items.length || index < 0){
+          return null;
+        }
+        return dropDown._items[index];
       },
 
       _findItemByLabel: function (text) {

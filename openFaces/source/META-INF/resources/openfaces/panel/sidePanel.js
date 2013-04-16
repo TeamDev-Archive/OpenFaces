@@ -96,39 +96,6 @@ O$._initSidePanel = function(sidePanelId,
     _minSize: minSize,
     _maxSize: maxSize
   });
-  function waitForParentLoading(){
-    if (O$._parentIsLoading(sidePanel)){
-      setTimeout(waitForParentLoading,500);
-      sidePanel._loading = true;
-      return;
-    }else{
-      sidePanel._loading = false;
-      O$._additionalInitSidePanel(sidePanel,sidePanelId,
-              alignment,
-              size,
-              minSize,
-              maxSize,
-              collapsible,
-              resizable,
-              collapsed,
-              rolloverClass,
-              splitterRolloverClass,
-              events);
-    }
-  }
-  waitForParentLoading();
-}
-O$._additionalInitSidePanel = function(sidePanel,sidePanelId,
-        alignment,
-        size,
-        minSize,
-        maxSize,
-        collapsible,
-        resizable,
-        collapsed,
-        rolloverClass,
-        splitterRolloverClass,
-        events){
   sidePanel._panel._isCoupled = true;
 
   O$._initSidePanel_style(sidePanel, rolloverClass, splitterRolloverClass);
@@ -245,22 +212,23 @@ O$._recalculateSidePanel = function(sidePanel) {
     //sidePanel
     var sidePanelWidth = O$._calculateNumericSizeValue(sidePanel, sidePanel._size, false);  //todo create full double buffering
     var sidePanelHeight = O$._calculateNumericHeight(sidePanel, true);
-    sidePanel._newStyle.width = (sidePanelWidth  +  O$._calculateOffsetWidth(splitter, true))+ "px";
+    sidePanel._newStyle.width = sidePanelWidth + "px";
     //splitter
     splitter._newStyle.height = (sidePanelHeight - splitter._heightDiff) + "px";
-  } else {
+  }
+  else {
     //sidePanel
     sidePanelWidth = O$._calculateNumericWidth(sidePanel, true);
     sidePanelHeight = O$._calculateNumericSizeValue(sidePanel, sidePanel._size, false);  //todo create full double buffering
-    sidePanel._newStyle.height = (sidePanelHeight  +  O$._calculateOffsetHeight(splitter, true))+ "px";
+    sidePanel._newStyle.height = sidePanelHeight + "px";
     //splitter
     splitter._newStyle.width = (sidePanelWidth - splitter._widthDiff) + "px";
   }
   O$._bugFix_divNegativeSizeBug(sidePanel, true);
   O$._bugFix_divNegativeSizeBug(splitter, true);
   //panel
-  var panelWidth = sidePanelWidth;
-  var panelHeight = sidePanelHeight;
+  var panelWidth = sidePanelWidth - panel._widthDiff;
+  var panelHeight = sidePanelHeight - panel._heightDiff;
   panel._newStyle.height = panelHeight + "px";
   panel._newStyle.width = panelWidth + "px";
   O$._bugFix_divNegativeSizeBug(panel, true);
@@ -480,11 +448,13 @@ O$._calculateNumericSizeValue = function(sidePanel, sizeValue, useDoubleBufferin
   if (O$._isPercentageValue(sizeValue)) {
     if (sidePanel._alignment == "left" || sidePanel._alignment == "right") {
       var parentSizeFactor = O$._calculateNumericWidthFactor(sidePanel, useDoubleBuffering);
-    } else {
-      var parentSizeFactor = O$._calculateNumericHeightFactor(sidePanel, useDoubleBuffering);
+    }
+    else {
+      parentSizeFactor = O$._calculateNumericHeightFactor(sidePanel, useDoubleBuffering);
     }
     var size = Math.round(parentSizeFactor * 0.01 * parseFloat(sizeValue));
-  } else {
+  }
+  else {
     size = parseInt(sizeValue);
   }
   return size;
@@ -556,9 +526,9 @@ O$._cacheSidePanelSizeVariables = function(sidePanel) {
     splitter._widthDiff = splitter._storedSizeProperties.marginsWidth;
     if (sidePanel._alignment == "left" || sidePanel._alignment == "right") {
       panel._heightDiff = panel._storedSizeProperties.marginsHeight;
-      panel._widthDiff = panel._storedSizeProperties.marginsWidth + O$._calculateOffsetWidth(splitter, true) + splitter._storedSizeProperties.paddingsAndBordersAndMarginsWidth;
+      panel._widthDiff = panel._storedSizeProperties.marginsWidth + O$._calculateOffsetWidth(splitter, false) + splitter._storedSizeProperties.paddingsAndBordersAndMarginsWidth;
     } else {
-      panel._heightDiff = panel._storedSizeProperties.marginsHeight + O$._calculateOffsetHeight(splitter, true) + splitter._storedSizeProperties.paddingsAndBordersAndMarginsHeight;
+      panel._heightDiff = panel._storedSizeProperties.marginsHeight + O$._calculateOffsetHeight(splitter, false) + splitter._storedSizeProperties.paddingsAndBordersAndMarginsHeight;
       panel._widthDiff = panel._storedSizeProperties.marginsWidth;
     }
     if (caption) {
@@ -572,9 +542,9 @@ O$._cacheSidePanelSizeVariables = function(sidePanel) {
     splitter._widthDiff = splitter._storedSizeProperties.paddingsAndBordersAndMarginsWidth;
     if (sidePanel._alignment == "left" || sidePanel._alignment == "right") {
       panel._heightDiff = panel._storedSizeProperties.paddingsAndBordersAndMarginsHeight;
-      panel._widthDiff = panel._storedSizeProperties.paddingsAndBordersAndMarginsWidth + O$._calculateOffsetWidth(splitter, true) + splitter._storedSizeProperties.marginsWidth;
+      panel._widthDiff = panel._storedSizeProperties.paddingsAndBordersAndMarginsWidth + O$._calculateOffsetWidth(splitter, false) + splitter._storedSizeProperties.marginsWidth;
     } else {
-      panel._heightDiff = panel._storedSizeProperties.paddingsAndBordersAndMarginsHeight + O$._calculateOffsetHeight(splitter, true) + splitter._storedSizeProperties.marginsHeight;
+      panel._heightDiff = panel._storedSizeProperties.paddingsAndBordersAndMarginsHeight + O$._calculateOffsetHeight(splitter, false) + splitter._storedSizeProperties.marginsHeight;
       panel._widthDiff = panel._storedSizeProperties.paddingsAndBordersAndMarginsWidth;
     }
     if (caption) {

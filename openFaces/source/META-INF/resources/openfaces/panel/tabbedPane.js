@@ -19,6 +19,7 @@ O$.TabbedPane = {
       _mirrorTabSet:(mirrorTabSetSuffix) ? O$(clientId + "--tabSet" + mirrorTabSetSuffix) : null,
       tabOnChangeHandlerMutex: false
     });
+
     // This allow server to use only _indexField of original TabSet.
     if (tabbedPane._mirrorTabSet)
       tabbedPane._mirrorTabSet._indexField = O$(clientId + "--tabSet" + "::selected");
@@ -133,7 +134,6 @@ O$.TabbedPane = {
       if (this._mirrorTabSet)
         O$.TabbedPane._handleMouseout(this._mirrorTabSet, evt);
     });
-    tabbedPane.attributes._loading.value = false;
   },
   _handleMouseout:function(tabSet, evt) {
     if (tabSet._tabs) {

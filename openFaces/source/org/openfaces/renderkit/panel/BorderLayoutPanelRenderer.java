@@ -49,7 +49,7 @@ public class BorderLayoutPanelRenderer extends RendererBase {
                 "o_borderlayoutpanel_container", borderLayoutPanel.getStyleClass()
         );
         writer.writeAttribute("class", classStr, null);
-        Styles.renderStyleClasses(context, component);
+
         Rendering.writeStandardEvents(writer, borderLayoutPanel);
         encodeScriptsAndStyles(context, borderLayoutPanel);
         encodeSidePanels(context, borderLayoutPanel);
@@ -70,21 +70,26 @@ public class BorderLayoutPanelRenderer extends RendererBase {
         if (!component.isRendered()) return;
         ResponseWriter writer = context.getResponseWriter();
         writer.endElement("div");
-
+        Styles.renderStyleClasses(context, component);
         writer.endElement("div");
     }
 
     private void encodeScriptsAndStyles(FacesContext context, BorderLayoutPanel borderLayoutPanel) throws IOException {
         ScriptBuilder initScript = new ScriptBuilder();
 
-        initScript.append("O$.addInternalLoadEvent(function() {\n");
+        if (Environment.isMozillaFF2(context)) { // fix bug with FF2 + Facelets + JSF 1.2 context  // todo add isFacelets() filter
+            initScript.append("O$('").append(borderLayoutPanel.getId()).append("').style.visibility = 'hidden';\n");
+            initScript.append("O$.addLoadEvent(function() {\n");
+        }
 
         initScript.initScript(context,
                 borderLayoutPanel,
                 "O$._initBorderLayoutPanel",
                 borderLayoutPanel.getId());
 
-        initScript.append("});\n");
+        if (Environment.isMozillaFF2(context)) { // fix bug with FF2 + Facelets + JSF 1.2 context  // todo add isFacelets() filter
+            initScript.append("});\n");
+        }
 
         Rendering.renderInitScript(context, initScript,
                 Resources.utilJsURL(context),
@@ -95,14 +100,20 @@ public class BorderLayoutPanelRenderer extends RendererBase {
     private void encodeScriptsAndStyles_content(FacesContext context, BorderLayoutPanel borderLayoutPanel, String clientId) throws IOException {
         ScriptBuilder initScript = new ScriptBuilder();
 
-        initScript.append("O$.addInternalLoadEvent( function() {\n");
+        if (Environment.isMozillaFF2(context)) { // fix bug with FF2 + Facelets + JSF 1.2 context  // todo add isFacelets() filter
+            initScript.append("O$.addLoadEvent( function() {\n");
+        }
 
         initScript.initScript(context, borderLayoutPanel, "O$._initBorderLayoutPanel_content",
                 Rendering.getRolloverClass(context, borderLayoutPanel),
                 new RawScript(JSEventsObject.JSEventObject("oncontentresize", borderLayoutPanel.getOncontentresize()))
         );
 
-        initScript.append("});\n");
+        if (Environment.isMozillaFF2(context)) { // fix bug with FF2 + Facelets + JSF 1.2 context  // todo add isFacelets() filter
+            initScript.append("O$('").append(clientId).append("').style.visibility = 'visible';\n"); // todo: why isn't this built-in into O$._initBorderLayoutPanel_content function itself?
+            initScript.append("});\n");
+        }
+
         Rendering.renderInitScript(context, initScript);
     }
 
