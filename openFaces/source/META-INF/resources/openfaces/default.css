@@ -1182,11 +1182,12 @@
 }
 
 .o_dropdownfield_list {
-  position: absolute;
-  visibility: hidden;
-  overflow: auto;
-  width: 0;
-  height: 200px;
+    position: absolute;
+    visibility: hidden;
+    display: none;
+    overflow: auto;
+    width: 0;
+    height: 200px;
 }
 
 .o_dropdown_button {
