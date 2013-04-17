@@ -20,7 +20,7 @@ O$.MaskEdit = {
             {_rolloverClass:rolloverClass,
               _focusedClass:focusedClass
             },
-            { _mask:mask,
+            { _mask:[],
               _blank:blank,
               _maskSymbolArray:maskSymbolArray,
               _dictionary:dictionary,
@@ -50,6 +50,17 @@ O$.MaskEdit = {
       });
 
     }
+    /*    var arrayMask;
+     for (var i = 0; i < mask.length; i++) {
+     arrayMask.push(mask[i]);
+     }
+
+     for (var i in arrayMask) {
+     if (arrayMask) {
+
+     }
+     }*/
+
     maskEdit._dictionary = dictionary ? dictionary : "absdefghijklmnopqrstuwwxyz";
     for (var i = 0; i < maskEdit._blank.length; i++) {
       var IsMaskSymbol = false;
@@ -66,6 +77,7 @@ O$.MaskEdit = {
       maskEdit._maskValue.push(maskEdit._blank[i]);
       maskEdit._primaryMaskValue.push(maskEdit._blank[i]);
     }
+
     maskEdit._isFinishPosition = maskEdit._maskInputPosition.length <= 1;
     maskEdit.value = maskEdit._blank;
     maskEdit._cursorPosition = maskEdit._maskInputPosition[0];
@@ -134,6 +146,8 @@ O$.MaskEdit = {
                     return this._isKeyRight();
                   case 46:
                     return this._isKeyDelete();
+                  case 9:
+                    return this._isKeyTab();
                   default:
                     return true;
                 }
@@ -315,6 +329,18 @@ O$.MaskEdit = {
                 }
                 return false;
               },
+              _isKeyTab:function () {
+                if (!this._isFinishPosition) {
+                  for (var i in this._maskSeparatorPosition) {
+                    if (this._cursorPosition < this._maskSeparatorPosition[i]) {
+                      var callback = !this._setCursorPosition(this._maskSeparatorPosition[i] + 1, false);
+                      O$._selectTextRange(this, this._cursorPosition, this._cursorPosition);
+                      return callback;
+                    }
+                  }
+                }
+                return true;
+              },
               __deleteAndChangeValue:function (oldInputPosition) {
                 this._maskValue[oldInputPosition]
                         = this._primaryMaskValue[oldInputPosition];
@@ -455,6 +481,9 @@ O$.MaskEdit = {
                     this._isFinishPosition = true;
                     this._cursorPosition++;
                     return true;
+                  }
+                  if (!this._maskInputCursorPosition++) {
+                    return false;
                   }
                   this._maskInputCursorPosition++;
                   this._cursorPosition = this._maskInputPosition[this._maskInputCursorPosition];
