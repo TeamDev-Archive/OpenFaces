@@ -49070,11 +49070,21 @@ entering a value and returns a list of suggestions from the server -->
       <deferred-value>
         <type>String</type>
       </deferred-value>
-      <!-- @bindingType boolean -->
-      <!-- @default false -->
+      <!-- @bindingType String -->
+      <!-- @default  -->
       <!-- @el true -->
     </attribute>
 
+    <attribute>
+      <description>String - alphabet composed of lowercase letters.</description>
+      <name>blankVisible</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
 
 
   </tag>

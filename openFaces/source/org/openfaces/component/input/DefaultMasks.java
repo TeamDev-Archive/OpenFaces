@@ -16,7 +16,7 @@ package org.openfaces.component.input;
  * @author Sergey Pensov
  */
 public enum DefaultMasks {
-    Date("########", "YYYY/MM/DD", "YMD"),
+    Date("########", "DD/MM/YYYY", "YMD"),
     Time("####", "__:__", "_"),
     NetMask("#########", "   .   .   .   ", " "),
     CreditCard("################", "---- ---- ---- ----", "-"),

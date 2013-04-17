@@ -28,6 +28,15 @@ public class MaskEditBean {
     private String blank = "DD/MM/YY";
     private String maskSymbol = "DMY";
     private DefaultMasks defaultMasks;
+    private boolean blankVisible;
+
+    public boolean isBlankVisible() {
+        return blankVisible;
+    }
+
+    public void setBlankVisible(boolean blankVisible) {
+        this.blankVisible = blankVisible;
+    }
 
     public DefaultMasks getDefaultMasks() {
         return defaultMasks;

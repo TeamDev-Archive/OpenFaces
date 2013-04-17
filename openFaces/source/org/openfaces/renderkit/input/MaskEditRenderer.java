@@ -107,6 +107,7 @@ public class MaskEditRenderer extends AbstractInputTextRenderer {
                 blank,
                 maskSymbolStringToArray(maskSymbolArray),
                 maskEdit.getDictionary(),
+                maskEdit.isBlankVisible(),
                 rolloverClass,
                 focusedClass
         );

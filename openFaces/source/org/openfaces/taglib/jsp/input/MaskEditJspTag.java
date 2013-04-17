@@ -38,5 +38,9 @@ public class MaskEditJspTag extends OUIInputTextJspTag {
         getDelegate().setPropertyValue("dictionary", dictionary);
     }
 
+    public void setBlankVisible(ValueExpression blankVisible) {
+        getDelegate().setPropertyValue("blankVisible", blankVisible);
+    }
+
 
 }

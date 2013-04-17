@@ -15,7 +15,7 @@
 
 O$.MaskEdit = {
 
-  _init:function (inputId, mask, blank, maskSymbolArray, dictionary, rolloverClass, focusedClass) {
+  _init:function (inputId, mask, blank, maskSymbolArray, dictionary, blankVisible, rolloverClass, focusedClass) {
     var maskEdit = O$.initComponent(inputId,
             {_rolloverClass:rolloverClass,
               _focusedClass:focusedClass
@@ -37,6 +37,19 @@ O$.MaskEdit = {
 
 
     );
+    if (!blankVisible) {
+      O$.addEvent(inputId, "blur", function () {
+        if (this.value == this._blank) {
+          this.value = "";
+        }
+      });
+      O$.addEvent(inputId, "focus", function () {
+        if (this.value == "") {
+          this.value = this._blank;
+        }
+      });
+
+    }
     maskEdit._dictionary = dictionary ? dictionary : "absdefghijklmnopqrstuwwxyz";
     for (var i = 0; i < maskEdit._blank.length; i++) {
       var IsMaskSymbol = false;
@@ -156,17 +169,6 @@ O$.MaskEdit = {
                 var clickCursorPosition = O$._getCaretPosition(this);
                 this._setCursorPosition(clickCursorPosition, true);
 
-              },
-              onblur:function () {
-                if (this.value == this._blank) {
-                  this.value = "";
-                }
-              },
-              onfocus:function () {
-                if (this.value == "") {
-                  this.value = this._blank;
-
-                }
               },
               onpaste:function (e) {
                 if (O$.isExplorer()) {

@@ -31,7 +31,15 @@ public class MaskEdit extends OUIInputText {
     private String dictionary;
     private String maskSymbolArray;
     private DefaultMasks defaultMask;
+    private boolean blankVisible;
 
+    public boolean isBlankVisible() {
+        return blankVisible;
+    }
+
+    public void setBlankVisible(boolean blankVisible) {
+        this.blankVisible = blankVisible;
+    }
 
     public DefaultMasks getDefaultMask() {
         return defaultMask;
