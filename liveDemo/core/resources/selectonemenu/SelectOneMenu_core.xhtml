@@ -1,7 +1,8 @@
 <div xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:o="http://openfaces.org/"
-     xmlns:c="http://java.sun.com/jsp/jstl/core">
+     xmlns:c="http://java.sun.com/jsp/jstl/core"
+     xmlns:t="http://myfaces.apache.org/tomahawk">
 
   <div id="Demo">
 
@@ -15,6 +16,28 @@
       <o:ajax render="selectedItem"/>
     </o:selectOneMenu>
     <br/>
+
+    <t:selectOneRadio
+            id="contractAddGroupDlgDesiredActionChange"
+            value="#{SelectOneMenuBean.selectedCity}">
+      <o:ajax event="change"
+              render="dialogForm:panelTemplate dialogForm:panelDataToInc dialogForm:panelNewGroup dialogForm:ok_AddGroup"
+              />
+      <f:selectItem id="createNewBlankGroup"
+                    itemLabel="Create a New Blank Group" itemValue="0" />
+      <f:selectItem id="duplicateGroup"
+                    itemLabel="Duplicate Selected Group" itemValue="1" />
+      <f:selectItem id="addTemplateData"
+                    itemLabel="Add Template Data to the Selected Group" itemValue="2" />
+      <f:selectItem id="overideGroup"
+                    itemLabel="Override Selected Group with Template Data"
+                    itemValue="3" />
+      <f:selectItem id="createGroupBasedTemp"
+                    itemLabel="Create a Group based on a Template" itemValue="4" />
+    </t:selectOneRadio>
+
+
+
 
     <h:panelGroup layout="block" id="selectedItem" style="border: 1px solid #a0a0a0; background: #dfdfdf; width: 435px;">
       <table style=" margin: 15px;">

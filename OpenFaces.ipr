@@ -85,6 +85,7 @@
             <element id="library" level="project" name="OpenFaces Dependencies" />
             <element id="library" level="project" name="commons-lang" />
             <element id="file-copy" path="$PROJECT_DIR$/lib/apache/commons-logging-1.1.1.jar" />
+            <element id="library" level="project" name="Tomahawk" />
           </element>
         </element>
       </root>
@@ -1297,11 +1298,13 @@
     </library>
     <library name="JSF Implementation - Mojarra 2.0">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/mojarra/javax.faces-2.1.11.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/mojarra/jsf-api-2.0.3.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/mojarra/jsf-impl-2.0.3.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES>
-        <root url="jar://$PROJECT_DIR$/libsrc/javax.faces-2.1.11-sources.jar!/" />
+        <root url="jar://$PROJECT_DIR$/libsrc/mojarra-2.0.3-FCS-source.zip!/mojarra-2.0.3-FCS-source/jsf-ri/src/main/java" />
+        <root url="jar://$PROJECT_DIR$/libsrc/mojarra-2.0.3-FCS-source.zip!/mojarra-2.0.3-FCS-source/jsf-api/src/main/java" />
       </SOURCES>
     </library>
     <library name="JSF Implementation - MyFaces 2.0">
@@ -1448,10 +1451,11 @@
     </library>
     <library name="Tomahawk">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/tomahawk/tomahawk20-1.1.10.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/commons-fileupload-1.2.2.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/apache/commons-lang-2.4.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/apache/commons-logging-1.1.1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/tomahawk/tomahawk20-1.1.11.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/tomahawk/tomahawk20-1.1.11-tlddoc.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES>
