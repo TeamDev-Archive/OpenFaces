@@ -13,8 +13,9 @@
               mask="#{MaskEditBean.mask}"
               maskSymbolArray="#{MaskEditBean.maskSymbol}"
               value="#{MaskEditBean.value}"
-              defaultMask="CreditCard"
-              blankVisible="false"
+              maskDynamicConstructors="#{MaskEditBean.dynamicConstructors}"
+              maskSymbolConstructors="#{MaskEditBean.symbolConstructors}"
+
 
               />
       <o:inputSecret value="#{MaskEditBean.submitTest}"/>

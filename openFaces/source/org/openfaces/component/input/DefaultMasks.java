@@ -12,19 +12,21 @@
 
 package org.openfaces.component.input;
 
+import java.util.Collection;
+
 /**
  * @author Sergey Pensov
  */
 public enum DefaultMasks {
-    Date("########", "DD/MM/YYYY", "YMD"),
-    Time("####", "__:__", "_"),
-    NetMask("#########", "   .   .   .   ", " "),
-    CreditCard("################", "---- ---- ---- ----", "-"),
-    Percent("###", "___%", "_");
+    Date("########", "DD/MM/YYYY"),
+    Time("####", "__:__"),
+    NetMask("#########", "   .   .   .   "),
+    CreditCard("################", "---- ---- ---- ----"),
+    Percent("###", "___%");
 
     private String mask;
     private String blank;
-    private String maskSymbolArray;
+    private Collection<MaskDynamicConstructor> dynamicConstructors;
 
     public String getMask() {
         return mask;
@@ -34,14 +36,10 @@ public enum DefaultMasks {
         return blank;
     }
 
-    public String getMaskSymbolArray() {
-        return maskSymbolArray;
-    }
-
-    DefaultMasks(String mask, String blank, String maskSymbolArray) {
+    DefaultMasks(String mask, String blank) {
         this.mask = mask;
         this.blank = blank;
-        this.maskSymbolArray = maskSymbolArray;
+
     }
 
 

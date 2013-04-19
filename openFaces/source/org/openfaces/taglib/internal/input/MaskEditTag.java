@@ -42,9 +42,10 @@ public class MaskEditTag extends OUIInputTextTag {
         setBooleanProperty(component, "rendered");
         setStringProperty(component, "mask");
         setStringProperty(component, "blank");
-        setStringProperty(component, "maskSymbolArray");
         setStringProperty(component, "dictionary");
-        setBooleanProperty(component,"blankVisible");
-        setEnumerationProperty(component,"defaultMask",DefaultMasks.class);
+        setBooleanProperty(component, "blankVisible");
+        setEnumerationProperty(component, "defaultMask", DefaultMasks.class);
+        setCollectionProperty(component,"maskDynamicConstructors");
+        setCollectionProperty(component,"maskSymbolConstructors");
     }
 }

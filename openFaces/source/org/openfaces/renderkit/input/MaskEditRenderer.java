@@ -14,7 +14,9 @@ package org.openfaces.renderkit.input;
 import org.openfaces.component.OUIInputText;
 import org.openfaces.component.input.DefaultMasks;
 import org.openfaces.component.input.InputText;
+import org.openfaces.component.input.MaskDynamicConstructor;
 import org.openfaces.component.input.MaskEdit;
+import org.openfaces.component.input.MaskSymbolConstructor;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.Resources;
@@ -27,6 +29,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.component.UIComponent;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Map;
 
@@ -88,24 +91,28 @@ public class MaskEditRenderer extends AbstractInputTextRenderer {
     protected void encodeInitScript(FacesContext context, OUIInputText inputText) throws IOException {
         String mask;
         String blank;
-        String maskSymbolArray;
+        Collection<MaskDynamicConstructor> dynamicConstructor;
+        Collection<MaskSymbolConstructor> symbolConstructors;
         MaskEdit maskEdit = (MaskEdit) inputText;
         if (!(maskEdit.getDefaultMask() == null)) {
             DefaultMasks defaultMask = maskEdit.getDefaultMask();
             mask = defaultMask.getMask();
             blank = defaultMask.getBlank();
-            maskSymbolArray = defaultMask.getMaskSymbolArray();
+            dynamicConstructor = null;
+            symbolConstructors = null;
         } else {
             mask = maskEdit.getMask();
             blank = maskEdit.getBlank();
-            maskSymbolArray = maskEdit.getMaskSymbolArray();
+            dynamicConstructor = maskEdit.getDynamicConstructors();
+            symbolConstructors = maskEdit.getSymbolConstructors();
         }
         String rolloverClass = Styles.getCSSClass(context, maskEdit, maskEdit.getRolloverStyle(), StyleGroup.regularStyleGroup(1), maskEdit.getRolloverClass(), null);
         String focusedClass = Styles.getCSSClass(context, maskEdit, maskEdit.getFocusedStyle(), StyleGroup.regularStyleGroup(2), maskEdit.getFocusedClass(), null);
         Script initScript = new ScriptBuilder().initScript(context, maskEdit, "O$.MaskEdit._init",
                 mask,
                 blank,
-                maskSymbolStringToArray(maskSymbolArray),
+                dynamicConstructorsToString(dynamicConstructor),
+                symbolConstructorsToString(symbolConstructors),
                 maskEdit.getDictionary(),
                 maskEdit.isBlankVisible(),
                 rolloverClass,
@@ -118,14 +125,24 @@ public class MaskEditRenderer extends AbstractInputTextRenderer {
         );
     }
 
-    private LinkedList<Character> maskSymbolStringToArray(String maskSymbolString) {
-        if (maskSymbolString == null) return null;
-        LinkedList<Character> maskSymbolArray = new LinkedList<Character>();
-        for (int i = 0; i < maskSymbolString.length(); i++) {
-            maskSymbolArray.add(maskSymbolString.charAt(i));
+    private Collection<String> dynamicConstructorsToString(
+            Collection<MaskDynamicConstructor> dynamicConstructors) {
+        Collection<String> stringCollectionConstructors = new LinkedList<String>();
+        for (MaskDynamicConstructor dynamicConstructor : dynamicConstructors) {
+            stringCollectionConstructors.add(dynamicConstructor.toString());
         }
-        return maskSymbolArray;
+        return stringCollectionConstructors;
     }
+
+    private Collection<String> symbolConstructorsToString(
+            Collection<MaskSymbolConstructor> symbolConstructors) {
+        Collection<String> stringCollectionConstructors = new LinkedList<String>();
+        for (MaskSymbolConstructor symbolConstructor : symbolConstructors) {
+            stringCollectionConstructors.add(symbolConstructor.toString());
+        }
+        return stringCollectionConstructors;
+    }
+
 
     public void decode(FacesContext context, UIComponent component) {
         Rendering.decodeBehaviors(context, component);

@@ -49086,6 +49086,28 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
 
+    <attribute>
+      <description>String - alphabet composed of lowercase letters.</description>
+      <name>maskDynamicConstructors</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>String - alphabet composed of lowercase letters.</description>
+      <name>maskSymbolConstructors</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+
 
   </tag>
 

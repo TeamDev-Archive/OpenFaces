@@ -13,8 +13,12 @@
 package org.openfaces.demo.beans.maskedit;
 
 import org.openfaces.component.input.DefaultMasks;
+import org.openfaces.component.input.MaskDynamicConstructor;
+import org.openfaces.component.input.MaskSymbolConstructor;
 
 import javax.faces.context.FacesContext;
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.Map;
 
 /**
@@ -24,11 +28,35 @@ public class MaskEditBean {
 
 
     private String value;
-    private String mask = "######";
-    private String blank = "DD/MM/YY";
-    private String maskSymbol = "DMY";
+    private String mask = "+3(###)### ### ##";
+    private String blank = "+3(   )          ";
     private DefaultMasks defaultMasks;
     private boolean blankVisible;
+    private Collection<MaskDynamicConstructor> dynamicConstructors = new LinkedList<MaskDynamicConstructor>();
+    private Collection<MaskSymbolConstructor> symbolConstructors = new LinkedList<MaskSymbolConstructor>();
+
+    public MaskEditBean() {
+        dynamicConstructors.add(new MaskDynamicConstructor('@', '#', 1, 3, '@'));
+        dynamicConstructors.add(new MaskDynamicConstructor('^', '#', 2, 5, ' '));
+        dynamicConstructors.add(new MaskDynamicConstructor('!', '#', 1, 3, 'F'));
+        symbolConstructors.add(new MaskSymbolConstructor('X', "asd123"));
+    }
+
+    public Collection<MaskDynamicConstructor> getDynamicConstructors() {
+        return dynamicConstructors;
+    }
+
+    public void setDynamicConstructors(Collection<MaskDynamicConstructor> dynamicConstructors) {
+        this.dynamicConstructors = dynamicConstructors;
+    }
+
+    public Collection<MaskSymbolConstructor> getSymbolConstructors() {
+        return symbolConstructors;
+    }
+
+    public void setSymbolConstructors(Collection<MaskSymbolConstructor> symbolConstructors) {
+        this.symbolConstructors = symbolConstructors;
+    }
 
     public boolean isBlankVisible() {
         return blankVisible;
@@ -55,14 +83,6 @@ public class MaskEditBean {
     }
 
     private String submitTest;
-
-    public String getMaskSymbol() {
-        return maskSymbol;
-    }
-
-    public void setMaskSymbol(String maskSymbol) {
-        this.maskSymbol = maskSymbol;
-    }
 
     public void setMask(String mask) {
         this.mask = mask;

@@ -15,14 +15,13 @@
 
 O$.MaskEdit = {
 
-  _init:function (inputId, mask, blank, maskSymbolArray, dictionary, blankVisible, rolloverClass, focusedClass) {
+  _init:function (inputId, mask, blank, dynamicConstructor, symbolConstructors, dictionary, blankVisible, rolloverClass, focusedClass) {
     var maskEdit = O$.initComponent(inputId,
             {_rolloverClass:rolloverClass,
               _focusedClass:focusedClass
             },
-            { _mask:[],
+            { _mask:"",
               _blank:blank,
-              _maskSymbolArray:maskSymbolArray,
               _dictionary:dictionary,
               _maskInputCursorPosition:0,
               _value:blank,
@@ -37,6 +36,9 @@ O$.MaskEdit = {
 
 
     );
+
+    console.log(dynamicConstructor);
+    console.log(symbolConstructors);
     if (!blankVisible) {
       O$.addEvent(inputId, "blur", function () {
         if (this.value == this._blank) {
@@ -50,29 +52,17 @@ O$.MaskEdit = {
       });
 
     }
-    /*    var arrayMask;
-     for (var i = 0; i < mask.length; i++) {
-     arrayMask.push(mask[i]);
-     }
-
-     for (var i in arrayMask) {
-     if (arrayMask) {
-
-     }
-     }*/
 
     maskEdit._dictionary = dictionary ? dictionary : "absdefghijklmnopqrstuwwxyz";
+
+
     for (var i = 0; i < maskEdit._blank.length; i++) {
-      var IsMaskSymbol = false;
-      for (var j in maskEdit._maskSymbolArray) {
-        if (maskEdit._blank[i] == maskEdit._maskSymbolArray[j]) {
-          IsMaskSymbol = true;
-        }
-      }
-      if (!IsMaskSymbol) {
+      if (maskEdit._blank[i] == mask[i]) {
         maskEdit._maskSeparatorPosition.push(i)
       } else {
         maskEdit._maskInputPosition.push(i);
+        maskEdit._mask = maskEdit._mask + mask[i];
+
       }
       maskEdit._maskValue.push(maskEdit._blank[i]);
       maskEdit._primaryMaskValue.push(maskEdit._blank[i]);

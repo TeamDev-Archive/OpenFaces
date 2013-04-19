@@ -12,10 +12,12 @@
 package org.openfaces.component.input;
 
 import org.openfaces.component.OUIInputText;
+import org.openfaces.component.table.Column;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
+import java.util.Collection;
 import java.util.LinkedList;
 
 import static org.openfaces.component.input.DefaultMasks.*;
@@ -23,18 +25,32 @@ import static org.openfaces.component.input.DefaultMasks.*;
 public class MaskEdit extends OUIInputText {
     public static final String COMPONENT_TYPE = "org.openfaces.MaskEdit";
     public static final String COMPONENT_FAMILY = "org.openfaces.MaskEdit";
-
-
-    /*inputId, mask, blank, maskSymbolArray, rolloverClass, focusedClass, dictionary*/
     private String mask;
     private String blank;
     private String dictionary;
-    private String maskSymbolArray;
     private DefaultMasks defaultMask;
     private boolean blankVisible;
+    private Collection<MaskDynamicConstructor> maskDynamicConstructors;
+    private Collection<MaskSymbolConstructor> maskSymbolConstructors;
+
+    public Collection getSymbolConstructors() {
+        return ValueBindings.get(this, "maskSymbolConstructors", maskSymbolConstructors, Collection.class);
+    }
+
+    public void setSymbolConstructors(Collection<MaskSymbolConstructor> maskSymbolConstructors) {
+        this.maskSymbolConstructors = maskSymbolConstructors;
+    }
+
+    public Collection getDynamicConstructors() {
+        return ValueBindings.get(this, "maskDynamicConstructors", maskDynamicConstructors, Collection.class);
+    }
+
+    public void setDynamicConstructors(Collection<MaskDynamicConstructor> maskDynamicConstructors) {
+        this.maskDynamicConstructors = maskDynamicConstructors;
+    }
 
     public boolean isBlankVisible() {
-        return blankVisible;
+        return ValueBindings.get(this, "blankVisible", blankVisible, true);
     }
 
     public void setBlankVisible(boolean blankVisible) {
@@ -73,15 +89,6 @@ public class MaskEdit extends OUIInputText {
         this.dictionary = dictionary;
     }
 
-    public String getMaskSymbolArray() {
-        return ValueBindings.get(this, "maskSymbolArray", maskSymbolArray, "_");
-    }
-
-    public void setMaskSymbolArray(String maskSymbolArray) {
-        this.maskSymbolArray = maskSymbolArray;
-    }
-
-
     public MaskEdit() {
         setRendererType("org.openfaces.MaskEditRenderer");
     }
@@ -98,8 +105,10 @@ public class MaskEdit extends OUIInputText {
                 mask,
                 blank,
                 dictionary,
-                maskSymbolArray,
                 defaultMask,
+                blankVisible,
+                maskDynamicConstructors,
+                maskSymbolConstructors,
         };
     }
 
@@ -111,8 +120,10 @@ public class MaskEdit extends OUIInputText {
         mask = (String) values[i++];
         blank = (String) values[i++];
         dictionary = (String) values[i++];
-        maskSymbolArray = (String) values[i++];
         defaultMask = (DefaultMasks) values[i++];
+        blankVisible = (Boolean) values[i++];
+        maskDynamicConstructors = (Collection<MaskDynamicConstructor>) values[i++];
+        maskSymbolConstructors = (Collection<MaskSymbolConstructor>) values[i++];
     }
 
 }

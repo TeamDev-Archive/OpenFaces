@@ -30,10 +30,6 @@ public class MaskEditJspTag extends OUIInputTextJspTag {
         getDelegate().setPropertyValue("blank", blank);
     }
 
-    public void setMaskSymbolArray(ValueExpression maskSymbolArray) {
-        getDelegate().setPropertyValue("maskSymbolArray", maskSymbolArray);
-    }
-
     public void setDictionary(ValueExpression dictionary) {
         getDelegate().setPropertyValue("dictionary", dictionary);
     }
