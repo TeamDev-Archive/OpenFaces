@@ -19,6 +19,7 @@ import org.openfaces.util.ValueBindings;
 
 import javax.el.ValueExpression;
 import javax.faces.context.FacesContext;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -165,4 +166,7 @@ public class SingleCellSelection extends AbstractCellSelection {
         cellId = new CellId(null, cellId == null ? null : cellId.getColumnId());
     }
 
+    public void clearSelection(){
+        setRowKeyCellId(null);
+    }
 }

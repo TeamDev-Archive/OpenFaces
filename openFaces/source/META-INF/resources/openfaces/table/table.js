@@ -1532,6 +1532,15 @@ O$.Table = {
                 var selectionField = O$(selectionFieldId);
                 O$.assert(selectionField, "Couldn't find selectionField by id: " + selectionFieldId);
                 selectionField.value = value;
+
+
+              },
+
+              _setClearSelectionField: function (value) {
+                var clearSelectionFieldId = this.id + "::clear_selection";
+                var clearSselectionField = O$(clearSelectionFieldId);
+                O$.assert(clearSselectionField, "Couldn't find selectionField by id: " + clearSelectionFieldId);
+                clearSselectionField.value = value;
               },
 
               _setSelectedItems: function(items, forceUpdate) {
@@ -1973,6 +1982,7 @@ O$.Table = {
       }
     }
     table._setSelectionFieldValue("");
+    table._setClearSelectionField("false");
 
     if (selectionChangeHandler) {
       eval("table.onchange = function(event) {if (!event._of_event)return;" + selectionChangeHandler + "}");
@@ -2257,8 +2267,10 @@ O$.Table = {
           table._baseRowIndex = (newSelectedRowIndexes.indexOf(row._index) != -1) ? row._index : null;
           table._baseSelectedRowIndexes = newSelectedRowIndexes;
           table._rangeEndRowIndex = null;
-        } else
+        } else {
+          table._setClearSelectionField("true");
           table._setSelectedItems([row._index]);
+        }
       } else {
         // don't change hierarchical selection on row click
       }
