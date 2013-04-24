@@ -78,14 +78,17 @@ public class TabbedPaneRenderer extends MultiPageContainerRenderer implements Co
         // implementation note for one who is going to remove outer table rendering
         // need to check, that style="padding: 10px;" (10px for example) do not breaks border under IE
         // JSFC-754 TabbedPane border is not solid if set paddings
+
         writer.startElement("table", tabbedPane);
         writer.writeAttribute("border", "0", null);
         writer.writeAttribute("cellspacing", "0", null);
         writer.writeAttribute("cellpadding", "0", null);
         writer.writeAttribute("id", tabbedPane.getClientId(context), "id");
+        writer.writeAttribute("height", "100%", null);
+        writer.writeAttribute("width", "100%", null);
 
         Rendering.writeComponentClassAttribute(writer, tabbedPane);
-
+        Styles.renderStyleClasses(context, tabbedPane);
         Rendering.writeStandardEvents(writer, tabbedPane);
 
         TabPlacement tabPlacement = getTabPlacement(tabbedPane);
@@ -222,7 +225,7 @@ public class TabbedPaneRenderer extends MultiPageContainerRenderer implements Co
                 Resources.internalURL(context, "panel/multiPage.js"),
                 Resources.internalURL(context, "panel/tabbedPane.js"));
 
-        Styles.renderStyleClasses(context, tabbedPane);
+
     }
 
     private void encodeTabSet(FacesContext context, TabbedPane tabbedPane, List<SubPanel> subPanels,

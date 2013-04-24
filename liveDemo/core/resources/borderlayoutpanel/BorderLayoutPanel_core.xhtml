@@ -1,171 +1,38 @@
 <div xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:o="http://openfaces.org/">
-
+  <style>
+    .h30{
+      height:30px;
+    }
+    .w30{
+      width:30px;
+    }
+  </style>
 
   <div id="Demo">
-
-    <o:commandButton execute="test22" render="test22" value="clickme"></o:commandButton>
-    <o:tabbedPane style="height:400px; width:900px;" id="test22" loadingMode="client">
-
-      <o:subPanel caption="global11111111">
-
-
-            <o:tabbedPane id="test" style="height:100%!important;width:100%!important;" loadingMode="client">
-
-              <o:subPanel caption="11111111">
-
-                <o:borderLayoutPanel id="borderLayoutPanel"
-                                     style="width: 100%; border: 1px solid gray; height: 100%;">
-                  content1111111111
-
-                  <o:sidePanel alignment="top" splitterStyle="border: none; border-top: 1px solid gray; height: 1px;"
-                               resizable="false" collapsible="false" size="22px" style="text-align: center;">
-                    Developer's Guide 2.0
-                  </o:sidePanel>
-
-                  <o:sidePanel splitterStyle="width:30px;" id="testPanel" alignment="right" size="50%" style="width: 100%;">
-                    <o:borderLayoutPanel>
-                      <div>
-                        <o:dataTable var="dept"
-                                     value="#{StylingBean.deptList}"
-                                     style="border: 0;height:100%;margin-left: 10px; margin-right: 10px;">
-                          <o:singleRowSelection render="testbtn"></o:singleRowSelection>
-                          <o:column style="width: 83px; text-align: left;">
-                            <f:facet name="header">
-                              <h:outputText value=""/>
-                            </f:facet>
-                            <h:outputText value="#{dept.deptName}"/>
-                            <f:facet name="footer">
-                              <h:outputText value="Total"/>
-                            </f:facet>
-                          </o:column>
-                          <o:column id="year2003"
-                                    style="width: 83px; text-align: right;" sortingExpression="#{dept.year2003}">
-                            <f:facet name="header">
-                              <h:outputText value="2003"/>
-                            </f:facet>
-                            <h:outputText value="#{dept.year2003}"/>
-                            <f:facet name="footer">
-                              <h:outputText value="165.8"/>
-                            </f:facet>
-                          </o:column>
-                          <o:column style="width: 83px; text-align: right;" sortingExpression="#{dept.year2004}">
-                            <f:facet name="header">
-                              <h:outputText value="2004"/>
-                            </f:facet>
-                            <h:outputText value="#{dept.year2004}"/>
-                            <f:facet name="footer">
-                              <h:outputText value="168.5"/>
-                            </f:facet>
-                          </o:column>
-                          <o:column style="width: 83px; text-align: right;" sortingExpression="#{dept.year2005}">
-                            <f:facet name="header">
-                              <h:outputText value="2005"/>
-                            </f:facet>
-                            <h:outputText value="#{dept.year2005}"/>
-                            <f:facet name="footer">
-                              <h:outputText value="138.1"/>
-                            </f:facet>
-                          </o:column>
-                          <o:column style="width: 83px; text-align: right;" sortingExpression="#{dept.year2006}">
-                            <f:facet name="header">
-                              <h:outputText value="2006"/>
-                            </f:facet>
-                            <h:outputText value="#{dept.year2006}"/>
-                            <f:facet name="footer">
-                              <h:outputText value="166.0"/>
-                            </f:facet>
-                          </o:column>
-                          <o:column
-                                  style="width: 85px; text-align: right; padding-right: 4px; border-left: 1px solid #666666; font-style: italic;">
-                            <f:facet name="header">
-                              <h:outputText value="Total"/>
-                            </f:facet>
-                            <h:outputText value="#{dept.total}"/>
-                            <f:facet name="footer">
-                              <h:outputText value="639.4"/>
-                            </f:facet>
-                          </o:column>
-                        </o:dataTable>
-                      </div>
-
-                      <o:sidePanel size="50%" splitterStyle="height:30px;" style="margin-top:30px;"
-                                   alignment="bottom">
-
-                        <div style="width:100%;height:100%">
-                          <o:commandButton id="testbtn" value="DODDDDDDDDDD"/>
-                          <o:dataTable var="dept"
-                                       value="#{StylingBean.deptList}"
-                                       style="border: 0; height:100%; margin-left: 10px; margin-right: 10px;"
-                                  >
-                            <o:singleRowSelection render="testbtn"></o:singleRowSelection>
-                            <o:column style="width: 83px; text-align: right;" sortingExpression="#{dept.year2006}">
-                              <f:facet name="header">
-                                <h:outputText value="2006"/>
-                              </f:facet>
-                              <h:outputText value="#{dept.year2006}"/>
-                              <f:facet name="footer">
-                                <h:outputText value="166.0"/>
-                              </f:facet>
-                            </o:column>
-                            <o:column style="width: 83px; text-align: right;" sortingExpression="#{dept.year2006}">
-                              <f:facet name="header">
-                                <h:outputText value="11111111"/>
-                              </f:facet>
-                              <h:inputText value="#{sessionScope.someValue}"/>
-                              <f:facet name="footer">
-                                <h:outputText value="166.0"/>
-                              </f:facet>
-                            </o:column>
-                            <o:column
-                                    style="width: 85px; text-align: right; padding-right: 4px; border-left: 1px solid #666666; font-style: italic;">
-                              <f:facet name="header">
-                                <h:outputText value="Total"/>
-                              </f:facet>
-                              <h:outputText value="#{dept.total}"/>
-                              <f:facet name="footer">
-                                <h:outputText value="639.4"/>
-                              </f:facet>
-                            </o:column>
-                          </o:dataTable>
-
-                          <div align="right" id="entitySelection" style="position: absolute; bottom: 0; right:0">
-                            <h:outputText id="setEntity"
-                                          value="ololololo"/>
-                            <o:commandLink
-                                    id="viewEntityLnk"
-                                    value="click">
-                              <span class="icon circleBackground" style="border: none"/>
-                            </o:commandLink>
-
-                          </div>
-                        </div>
-                      </o:sidePanel>
-
-                      <div id="omg" style="clear: both;"/>
-                    </o:borderLayoutPanel>
-                  </o:sidePanel>
-
-                  <o:sidePanel alignment="bottom"
-                               splitterStyle="border: none; border-top: 1px solid gray; height: 1px;"
-                               resizable="false" collapsible="false" size="22px" style="text-align: center;">
-                    <h:outputText escape="false" value="&#169; 2012 TeamDev Ltd. All rights reserved."/>
-                  </o:sidePanel>
-
-                </o:borderLayoutPanel>
-
-              </o:subPanel>
-
-              <o:subPanel caption="11111111">
-                11111111111111
-              </o:subPanel>
-            </o:tabbedPane>
+    <o:commandButton execute="tabPanel" render="tabPanel" value="renderME"/>
+    <o:tabbedPane style="width:600px; height:400px;" id="tabPanel">
+      <o:subPanel caption="1111">
+        <o:borderLayoutPanel  id="topPanel" style="width:100%;height:100%;">
+          left content
+          <o:sidePanel alignment="right" size="50%" splitterClass="w30">
+            <o:borderLayoutPanel id="childPanel"  style="width:100%">
+              right - top
+              <o:sidePanel splitterClass="h30" alignment="bottom" size="50%">
+                right - bottom
+              </o:sidePanel>
+            </o:borderLayoutPanel>
+          </o:sidePanel>
+        </o:borderLayoutPanel>
       </o:subPanel>
-      <o:subPanel caption="global000000">
-        1111111111111111111111111
+      <o:subPanel caption="2222">
       </o:subPanel>
     </o:tabbedPane>
+
+
+
+
   </div>
 
 
