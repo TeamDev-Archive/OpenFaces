@@ -320,7 +320,7 @@ O$.DateChooser = {
         popup.style.display = "none";
         popup.style.visibility = "visible";
       }
-      dc.style.width = calendarWidth + "px";
+//      dc.style.width = calendarWidth + "px";
       dc.style.visibility = "visible";
       O$.repaintAreaForOpera(dc, true);
     } else {
