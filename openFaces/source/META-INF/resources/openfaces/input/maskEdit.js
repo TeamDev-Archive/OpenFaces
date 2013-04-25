@@ -37,8 +37,7 @@ O$.MaskEdit = {
 
     );
 
-    console.log(dynamicConstructor);
-    console.log(symbolConstructors);
+
     if (!blankVisible) {
       O$.addEvent(inputId, "blur", function () {
         if (this.value == this._blank) {
@@ -146,9 +145,7 @@ O$.MaskEdit = {
 
               onkeydown:function (e) {
                 var key = e.keyCode;
-                var isExit = this.isControlKey(key);
-
-                return isExit;
+                return this.isControlKey(key);
               },
 
               onkeyup:function (e) {
@@ -483,6 +480,8 @@ O$.MaskEdit = {
             }
 
     );
+
+
     O$.addEvent(inputId, "onclick", maskEdit.onclick);
     O$.addEvent(inputId, "onpaste", maskEdit.onpaste);
     O$.addEvent(inputId, "oninput", maskEdit.oninput);
