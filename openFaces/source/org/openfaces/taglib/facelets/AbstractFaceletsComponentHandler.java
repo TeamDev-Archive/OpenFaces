@@ -53,7 +53,7 @@ public abstract class AbstractFaceletsComponentHandler extends ComponentHandler 
         try {
             tag.setComponentProperties(facesContext, component);
         } finally {
-            tag.setFacesContext(null);
+            tag.removeFacesContext();
         }
     }
 
