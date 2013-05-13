@@ -129,67 +129,75 @@ O$.PopupMenu = {
       O$._popupsOnPage.pop(popupMenuId);
     }
 
-    var childNodes = O$.MenuItemConsctructor.renderMenuItems(popupMenu, menuItemsList);
-    var items = popupMenu._items = [];
-
-    // Create object tree for easy access to the PopupMenu and menuItems
-    for (var i = 0; i < childNodes.length; i++) {
-      var menuItem = childNodes[i];
-      items.push(menuItem);
-
-      O$.extend(menuItem, {
-        _isSeparator: function() {
-          return !!this._separator;
-        },
-
-        _popupMenu: popupMenu,
-
-        getDisabled: function() {
-          return this._properties.disabled;
-        },
-
-        setDisabled: function(disabled) {
-          if (this._properties.disabled == disabled) return;
-          this._properties.disabled = disabled;
-          this._disabled = disabled;
-          O$.PopupMenu.setMenuItemEnabled(this.id, !disabled, selectDisabledItems);
-        }
-      });
-
-      var anchor = O$(menuItem.id + "::commandLink");
-      if (anchor) {
-        O$.extend(menuItem, {
-          _anchor: anchor,
-          _index: i,
-          _icon: O$(menuItem.id + "::image"),
-          _caption: O$(menuItem.id + "::caption"),
-          _iconspan: O$(menuItem.id + "::imagespan"),
-
-          _arrow: O$(menuItem.id + "::arrow"),
-          _arrowspan: O$(menuItem.id + "::arrowspan"),
-
-          _imagefakespan: O$(menuItem.id + "::imagefakespan"),
-          _arrowfakespan: O$(menuItem.id + "::arrowfakespan"),
-
-          _separator: null
-        });
-
-        menuItem._anchor._menuItem = menuItem;
-        anchor._defaultItemClass = defaultItemClass;
-        anchor._defaultDisabledClass = defaultDisabledClass;
-
-        if (defaultContentClass)
-          O$.appendClassNames(menuItem._caption, [defaultContentClass]);
-      } else {
-        menuItem._separator = O$(menuItem.id + "::separator");
-      }
-
-    }
-
+    popupMenu._deferredInitializers = [];
     var initialized = false;
     function finishInitialization() {
       if (initialized) return;
       initialized = true;
+
+      var childNodes = O$.MenuItemConsctructor.renderMenuItems(popupMenu, menuItemsList);
+      var items = popupMenu._items = [];
+
+      // Create object tree for easy access to the PopupMenu and menuItems
+      for (var i = 0; i < childNodes.length; i++) {
+        var menuItem = childNodes[i];
+        items.push(menuItem);
+
+        O$.extend(menuItem, {
+          _isSeparator: function() {
+            return !!this._separator;
+          },
+
+          _popupMenu: popupMenu,
+
+          getDisabled: function() {
+            return this._properties.disabled;
+          },
+
+          setDisabled: function(disabled) {
+            if (this._properties.disabled == disabled) return;
+            this._properties.disabled = disabled;
+            this._disabled = disabled;
+            O$.PopupMenu.setMenuItemEnabled(this.id, !disabled, selectDisabledItems);
+          }
+        });
+
+        var anchor = O$(menuItem.id + "::commandLink");
+        if (anchor) {
+          O$.extend(menuItem, {
+            _anchor: anchor,
+            _index: i,
+            _icon: O$(menuItem.id + "::image"),
+            _caption: O$(menuItem.id + "::caption"),
+            _iconspan: O$(menuItem.id + "::imagespan"),
+
+            _arrow: O$(menuItem.id + "::arrow"),
+            _arrowspan: O$(menuItem.id + "::arrowspan"),
+
+            _imagefakespan: O$(menuItem.id + "::imagefakespan"),
+            _arrowfakespan: O$(menuItem.id + "::arrowfakespan"),
+
+            _separator: null
+          });
+
+          menuItem._anchor._menuItem = menuItem;
+          anchor._defaultItemClass = defaultItemClass;
+          anchor._defaultDisabledClass = defaultDisabledClass;
+
+          if (defaultContentClass)
+            O$.appendClassNames(menuItem._caption, [defaultContentClass]);
+        } else {
+          menuItem._separator = O$(menuItem.id + "::separator");
+        }
+
+      }
+
+      if (popupMenu._deferredInitializers && popupMenu._deferredInitializers.length>0){
+        popupMenu._deferredInitializers.forEach(function(initializer){
+          initializer();
+        });
+      }
+
       if (!O$.isElementPresentInDocument(popupMenu)) {
         // can be the case if a PopupMenu was unloaded earlier than the postponed initialization occurred
         return;
