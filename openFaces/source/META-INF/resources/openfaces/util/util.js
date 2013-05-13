@@ -11,14 +11,14 @@
  */
 
 if (!window.O$) {
-  window.OpenFaces = window.O$ = function(id) {
+  window.OpenFaces = window.O$ = function (id) {
     return id ? document.getElementById(id) : null;
   };
 
-  O$.extend = function(obj, withObj) {
+  O$.extend = function (obj, withObj) {
     var previousPropertyValues = {};
     /*Added explorer memory leak fix because of circular references - IE itself doesn't resolve them,
-    * so we call destroyAllFunctions where all functions added with extend method will be cleared */
+     * so we call destroyAllFunctions where all functions added with extend method will be cleared */
     var ie;
     if (O$.isExplorer) {
       ie = O$.isExplorer();
@@ -38,10 +38,10 @@ if (!window.O$) {
     return previousPropertyValues;
   };
 
-  O$.createClass = function(staticClassMembers, instanceMembers) {
+  O$.createClass = function (staticClassMembers, instanceMembers) {
     var constructor = instanceMembers.constructor;
     instanceMembers.constructor = undefined;
-    var classFunction = function() {
+    var classFunction = function () {
       if (constructor)
         constructor.apply(this, arguments);
     };
@@ -52,16 +52,16 @@ if (!window.O$) {
   };
 
   O$.extend(O$, {
-    DEBUG: true,
+    DEBUG:true,
 
-    ACTION_LISTENER: "_of_actionListener",
-    ACTION: "_of_action",
-    ACTION_COMPONENT: "_of_actionComponent",
-    IMMEDIATE: "_of_immediate"
+    ACTION_LISTENER:"_of_actionListener",
+    ACTION:"_of_action",
+    ACTION_COMPONENT:"_of_actionComponent",
+    IMMEDIATE:"_of_immediate"
   });
 
 
-  O$.initComponent = function(clientId, styles, properties, events) {
+  O$.initComponent = function (clientId, styles, properties, events) {
     O$._checkDefaultCssPresence();
     var component = O$(clientId);
     if (!component)
@@ -69,16 +69,16 @@ if (!window.O$) {
 
     if (styles) {
       if (styles.rollover)
-        O$.setupHoverStateFunction(component, function(mouseInside) {
-          O$.setStyleMappings(component, {_rolloverStyle: mouseInside ? styles.rollover : null});
+        O$.setupHoverStateFunction(component, function (mouseInside) {
+          O$.setStyleMappings(component, {_rolloverStyle:mouseInside ? styles.rollover : null});
         });
       if (styles.focused)
-        O$.setupFocusedStateFunction(component, function(focused) {
-          O$.setStyleMappings(component, {_focusedStyle: focused ? styles.focused : null});
+        O$.setupFocusedStateFunction(component, function (focused) {
+          O$.setStyleMappings(component, {_focusedStyle:focused ? styles.focused : null});
         });
       if (styles.pressed)
-        O$.setupMousePressedStateFunction(component, function(pressed) {
-          O$.setStyleMappings(component, {_pressedStyle: pressed ? styles.pressed : null});
+        O$.setupMousePressedStateFunction(component, function (pressed) {
+          O$.setStyleMappings(component, {_pressedStyle:pressed ? styles.pressed : null});
         });
     }
     if (properties) {
@@ -102,11 +102,12 @@ if (!window.O$) {
         else {
           function appendHandler() {
             var prevHandler = component[eventName];
-            component[eventName] = function() {
+            component[eventName] = function () {
               prevHandler.apply(component, arguments);
               handlerFunction.apply(component, arguments);
             }
           }
+
           appendHandler();
         }
       }
@@ -115,30 +116,30 @@ if (!window.O$) {
   };
 
   O$.extend(O$, { /* Rectangle class */
-    Rectangle: O$.createClass(null, {
-      constructor: function (x, y, width, height) {
+    Rectangle:O$.createClass(null, {
+      constructor:function (x, y, width, height) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
       },
-      clone: function() {
+      clone:function () {
         return new O$.Rectangle(this.x, this.y, this.width, this.height);
       },
-      getMinX: function() {
+      getMinX:function () {
         return this.x;
       },
-      getMinY: function() {
+      getMinY:function () {
         return this.y;
       },
-      getMaxX: function() {
+      getMaxX:function () {
         return this.x + this.width;
       },
-      getMaxY: function() {
+      getMaxY:function () {
         return this.y + this.height;
       },
 
-      addRectangle: function(rect) {
+      addRectangle:function (rect) {
         O$.assert(rect, "rect parameter should be passed");
         var x1 = this.getMinX();
         if (rect.getMinX() < x1)
@@ -158,7 +159,7 @@ if (!window.O$) {
         this.height = y2 - y1;
       },
 
-      intersectWith: function(rect) {
+      intersectWith:function (rect) {
         O$.assert(rect, "rect parameter should be passed");
 
         var x1 = O$.maxDefined(this.getMinX(), rect.getMinX());
@@ -177,7 +178,7 @@ if (!window.O$) {
         this.height = y1 !== undefined && y2 !== undefined ? y2 - y1 : undefined;
       },
 
-      intersects: function(rect) {
+      intersects:function (rect) {
         var x1 = this.getMinX();
         var x2 = this.getMaxX();
         var rectX1 = rect.getMinX();
@@ -190,7 +191,7 @@ if (!window.O$) {
         return (rectX2 > x1 && rectY2 > y1 && rectX1 < x2 && rectY1 < y2);
       },
 
-      containsRectangle: function(rect) {
+      containsRectangle:function (rect) {
         var x1 = this.getMinX();
         var x2 = this.getMaxX();
         var rectX1 = rect.getMinX();
@@ -203,7 +204,7 @@ if (!window.O$) {
         return (x1 <= rectX1 && x2 >= rectX2 && y1 <= rectY1 && y2 >= rectY2);
       },
 
-      containsPoint: function(x, y) {
+      containsPoint:function (x, y) {
         return x >= this.getMinX() && x <= this.getMaxX() &&
                 y >= this.getMinY() && y <= this.getMaxY();
       }
@@ -212,11 +213,11 @@ if (!window.O$) {
 
   /* GraphicLine class -- displays a horizontal or vertical line on the specified element. */
   O$.GraphicLine = O$.createClass({
-    ALIGN_BY_TOP_OR_LEFT: "alignByTopOrLeft",
-    ALIGN_BY_CENTER: "alignByCenter",
-    ALIGN_BY_BOTTOM_OR_RIGHT: "alignByBottomOrRight"
+    ALIGN_BY_TOP_OR_LEFT:"alignByTopOrLeft",
+    ALIGN_BY_CENTER:"alignByCenter",
+    ALIGN_BY_BOTTOM_OR_RIGHT:"alignByBottomOrRight"
   }, {
-    constructor: function (lineStyle, alignment, x1, y1, x2, y2) {
+    constructor:function (lineStyle, alignment, x1, y1, x2, y2) {
       this._element = document.createElement("div");
       this._element.style.visibility = "hidden";
       this._element.style.position = "absolute";
@@ -232,7 +233,7 @@ if (!window.O$) {
       this.setAlignment(alignment, false);
     },
 
-    setLine: function(x1, y1, x2, y2, dontUpdateNow) {
+    setLine:function (x1, y1, x2, y2, dontUpdateNow) {
       this.x1 = x1;
       this.y1 = y1;
       this.x2 = x2;
@@ -244,19 +245,19 @@ if (!window.O$) {
         this.updatePresentation();
     },
 
-    setLineStyle: function(lineStyle, dontUpdateNow) {
+    setLineStyle:function (lineStyle, dontUpdateNow) {
       this.lineStyle = lineStyle;
       if (!dontUpdateNow)
         this.updatePresentation();
     },
 
-    setAlignment: function(alignment, dontUpdateNow) {
+    setAlignment:function (alignment, dontUpdateNow) {
       this.alignment = alignment;
       if (!dontUpdateNow)
         this.updatePresentation();
     },
 
-    updatePresentation: function() {
+    updatePresentation:function () {
       if (this.x1 === undefined || this.y1 === undefined || this.x2 === undefined || this.y2 === undefined) {
         this._element.style.visibility = "hidden";
         return;
@@ -279,7 +280,7 @@ if (!window.O$) {
               alignment == O$.GraphicLine.ALIGN_BY_TOP_OR_LEFT ? 0 :
                       alignment == O$.GraphicLine.ALIGN_BY_CENTER || !alignment ? -width / 2 :
                               alignment == O$.GraphicLine.ALIGN_BY_BOTTOM_OR_RIGHT ? -width :
-                                      (function() {
+                                      (function () {
                                         throw "Invalid alignment: " + alignment;
                                       })();
       O$.setElementBorderRectangle(this._element,
@@ -287,7 +288,7 @@ if (!window.O$) {
                       : new O$.Rectangle(this.x1 + alignmentCorrection, this.y1, width, this.y2 - this.y1));
     },
 
-    show: function (parentElement) {
+    show:function (parentElement) {
       if (!parentElement)
         parentElement = O$.getDefaultAbsolutePositionParent();
       this._element.style.visibility = "visible";
@@ -297,11 +298,11 @@ if (!window.O$) {
       this.updatePresentation();
     },
 
-    hide: function () {
+    hide:function () {
       this._element.style.visibility = "hidden";
     },
 
-    remove: function () {
+    remove:function () {
       this._element.parentNode.remove(this._element);
     }
   });
@@ -310,11 +311,11 @@ if (!window.O$) {
   O$.GraphicRectangle = O$.createClass({
     /* the following constants deptermine the way that outline line is aligned with respect to the rectangle's edge
      * (this is especially important for thick lines) */
-    ALIGN_INSIDE: "alignInside", // the entire outline line is aligned to be inside of the rectangle
-    ALIGN_CENTER_LINE: "alignCenterLine", // center of the outline line is aligned with the rectangle edge
-    ALIGN_OUTSIDE: "alignOutside" // the entire contents of outline line is aligned to be outside of the rectangle
+    ALIGN_INSIDE:"alignInside", // the entire outline line is aligned to be inside of the rectangle
+    ALIGN_CENTER_LINE:"alignCenterLine", // center of the outline line is aligned with the rectangle edge
+    ALIGN_OUTSIDE:"alignOutside" // the entire contents of outline line is aligned to be outside of the rectangle
   }, {
-    constructor: function (lineStyle, lineAlignment, rectangle) {
+    constructor:function (lineStyle, lineAlignment, rectangle) {
       this._leftLine = new O$.GraphicLine();
       this._rightLine = new O$.GraphicLine();
       this._topLine = new O$.GraphicLine();
@@ -327,13 +328,13 @@ if (!window.O$) {
       this.setLineAlignment(lineAlignment, false);
     },
 
-    setRectangle: function(rectangle, dontUpdateNow) {
+    setRectangle:function (rectangle, dontUpdateNow) {
       this.rectangle = rectangle;
       if (!dontUpdateNow)
         this._updateRect();
     },
 
-    setLineStyle: function(lineStyle, dontUpdateNow) {
+    setLineStyle:function (lineStyle, dontUpdateNow) {
       this.lineStyle = lineStyle;
       this._leftLine.setLineStyle(lineStyle, dontUpdateNow);
       this._rightLine.setLineStyle(lineStyle, dontUpdateNow);
@@ -343,7 +344,7 @@ if (!window.O$) {
         this._updateRect();
     },
 
-    setLineAlignment: function(lineAlignment, dontUpdateNow) {
+    setLineAlignment:function (lineAlignment, dontUpdateNow) {
       var topAndLeftLinesAlignment =
               lineAlignment == O$.GraphicRectangle.ALIGN_INSIDE ? O$.GraphicLine.ALIGN_BY_TOP_OR_LEFT :
                       lineAlignment == O$.GraphicRectangle.ALIGN_OUTSIDE ? O$.GraphicLine.ALIGN_BY_BOTTOM_OR_RIGHT :
@@ -360,7 +361,7 @@ if (!window.O$) {
         this._updateRect();
     },
 
-    _updateRect: function() {
+    _updateRect:function () {
       var rect = this.rectangle;
       if (!rect)
         return;
@@ -374,7 +375,7 @@ if (!window.O$) {
               alignment == O$.GraphicRectangle.ALIGN_INSIDE ? 0 :
                       alignment == O$.GraphicRectangle.ALIGN_OUTSIDE ? lineWidth :
                               alignment == O$.GraphicRectangle.ALIGN_CENTER_LINE || !alignment ? lineWidth / 2 :
-                                      (function() {
+                                      (function () {
                                         throw "Unknown alignment: " + alignment;
                                       })();
 
@@ -384,21 +385,21 @@ if (!window.O$) {
       this._bottomLine.setLine(x1 - cornerSpacing, y2, x2 + cornerSpacing, y2);
     },
 
-    show: function (parentElement) {
+    show:function (parentElement) {
       this._leftLine.show(parentElement);
       this._rightLine.show(parentElement);
       this._topLine.show(parentElement);
       this._bottomLine.show(parentElement);
     },
 
-    hide: function () {
+    hide:function () {
       this._leftLine.hide();
       this._rightLine.hide();
       this._topLine.hide();
       this._bottomLine.hide();
     },
 
-    remove: function() {
+    remove:function () {
       this._leftLine.remove();
       this._rightLine.remove();
       this._topLine.remove();
@@ -409,34 +410,34 @@ if (!window.O$) {
 
   // ----------------- DEBUG ---------------------------------------------------
 
-  O$.logError = function(message) {
+  O$.logError = function (message) {
     if (O$.DEBUG)
       alert("ERROR: " + message);
   };
 
-  O$.logWarning = function(message) {
+  O$.logWarning = function (message) {
     //  if (O$.DEBUG)
     //    alert("WARNING: " + message);
   };
 
 
-  O$.assert = function(value, message) {
+  O$.assert = function (value, message) {
     if (value !== null && value !== undefined && value !== false)
       return;
     throw message;
   };
 
-  O$.assertEquals = function(expectedValue, actualValue, message) {
+  O$.assertEquals = function (expectedValue, actualValue, message) {
     if (expectedValue == actualValue)
       return;
     O$.logError((message ? message + " ; " : "") + "expected: " + expectedValue + ", but was: " + actualValue);
   };
 
 
-  setTimeout(function() {
+  setTimeout(function () {
     O$._logEnabled = true;
   }, 0);
-  O$.log = function(text) {
+  O$.log = function (text) {
     if (O$.debug) {
       O$.debug.log(text);
       return;
@@ -448,7 +449,7 @@ if (!window.O$) {
     O$._logger.log(text);
   };
 
-  O$.Logger = function() {
+  O$.Logger = function () {
     var div = document.createElement("div");
     div.style.position = "absolute";
     div.style.left = "200px";
@@ -483,18 +484,18 @@ if (!window.O$) {
     };
   };
 
-  O$.Profiler = function() {
+  O$.Profiler = function () {
     this._timeStamps = [];
     this._timeAccumulators = [];
 
-    this.logTimeStamp = function(name) {
-      this._timeStamps.push({time: new Date(), name: name});
+    this.logTimeStamp = function (name) {
+      this._timeStamps.push({time:new Date(), name:name});
     };
 
-    this.startMeasuring = function(name) {
+    this.startMeasuring = function (name) {
       var timeAccumulator = this._timeAccumulators[name];
       if (timeAccumulator == null) {
-        timeAccumulator = {name: name, secondsElapsed: 0.0, lastPeriodStartDate: null};
+        timeAccumulator = {name:name, secondsElapsed:0.0, lastPeriodStartDate:null};
         this._timeAccumulators[name] = timeAccumulator;
         this._timeAccumulators.push(timeAccumulator);
       }
@@ -502,7 +503,7 @@ if (!window.O$) {
       timeAccumulator.lastPeriodStartDate = new Date();
     };
 
-    this.endMeasuring = function(name) {
+    this.endMeasuring = function (name) {
       var dateAfter = new Date();
       var timeAccumulator = this._timeAccumulators[name];
       O$.assert(timeAccumulator, "O$.Profiler.endMeasuring: startMeasuring wasn't called for name: " + name);
@@ -513,7 +514,7 @@ if (!window.O$) {
       timeAccumulator.secondsElapsed += secondsElapsed;
     };
 
-    this.showTimeStamps = function() {
+    this.showTimeStamps = function () {
       var result = "";
       for (var i = 0, count = this._timeStamps.length - 1; i < count; i++) {
         var stampBefore = this._timeStamps[i];
@@ -524,7 +525,7 @@ if (!window.O$) {
       alert(result);
     };
 
-    this.showTimeMeasurements = function() {
+    this.showTimeMeasurements = function () {
       var result = "";
       for (var i = 0, count = this._timeAccumulators.length; i < count; i++) {
         var accumulator = this._timeAccumulators[i];
@@ -535,17 +536,17 @@ if (!window.O$) {
       alert(result);
     };
 
-    this.showAllTimings = function() {
+    this.showAllTimings = function () {
       var result = "--- Time-stamps: --- \n\n";
       var i, count, elapsed;
-      for (i = 0,count = this._timeStamps.length - 1; i < count; i++) {
+      for (i = 0, count = this._timeStamps.length - 1; i < count; i++) {
         var stampBefore = this._timeStamps[i];
         var stampAfter = this._timeStamps[i + 1];
         elapsed = (stampAfter.time.getTime() - stampBefore.time.getTime()) / 1000;
         result += stampBefore.name + " - " + stampAfter.name + " : " + elapsed + "\n";
       }
       result += "\n--- Time measurements: --- \n\n";
-      for (i = 0,count = this._timeAccumulators.length; i < count; i++) {
+      for (i = 0, count = this._timeAccumulators.length; i < count; i++) {
         var accumulator = this._timeAccumulators[i];
         var name = accumulator.name;
         elapsed = accumulator.secondsElapsed;
@@ -558,7 +559,7 @@ if (!window.O$) {
 
   // ----------------- STRING, ARRAYS, OTHER LANGUAGE UTILITIES ---------------------------------------------------
 
-  O$.stringsEqualIgnoreCase = function(str1, str2) {
+  O$.stringsEqualIgnoreCase = function (str1, str2) {
     if (str1)
       str1 = str1.toLowerCase();
     if (str2)
@@ -566,34 +567,34 @@ if (!window.O$) {
     return str1 == str2;
   };
 
-  O$.StringBuffer = function() {
+  O$.StringBuffer = function () {
     this._strings = [];
-    this.append = function(value) {
+    this.append = function (value) {
       this._strings.push(value);
       return this;
     };
-    this.toString = function() {
+    this.toString = function () {
       return this._strings.join("");
     };
-    this.getNextIndex = function() {
+    this.getNextIndex = function () {
       return this._strings.length;
     };
-    this.setValueAtIndex = function(index, value) {
+    this.setValueAtIndex = function (index, value) {
       this._strings[index] = value;
     };
   };
 
-  O$.ltrim = function(value) {
+  O$.ltrim = function (value) {
     var re = /\s*((\S+\s*)*)/;
     return value.replace(re, "$1");
   };
 
-  O$.rtrim = function(value) {
+  O$.rtrim = function (value) {
     var re = /((\s*\S+)*)\s*/;
     return value.replace(re, "$1");
   };
 
-  O$.trim = function(value) {
+  O$.trim = function (value) {
     if (value instanceof Array) {
       var strValue = "";
       for (var i = 0; i < value.length; i++) {
@@ -604,7 +605,7 @@ if (!window.O$) {
     return O$.ltrim(O$.rtrim(value));
   };
 
-  O$.stringEndsWith = function(str, ending) {
+  O$.stringEndsWith = function (str, ending) {
     if (!str || !ending)
       return false;
     var endingLength = ending.length;
@@ -615,7 +616,7 @@ if (!window.O$) {
     return actualEnding == ending;
   };
 
-  O$.stringStartsWith = function(str, text) {
+  O$.stringStartsWith = function (str, text) {
     if (!str || !text)
       return false;
     var textLength = text.length;
@@ -626,7 +627,7 @@ if (!window.O$) {
     return actualStartText == text;
   };
 
-  O$.escapeSymbol = function(str, escapedChars) {
+  O$.escapeSymbol = function (str, escapedChars) {
     var res = new O$.StringBuffer();
     for (var i = 0, count = str.length; i < count; i++) {
       var currChar = str.charAt(i);
@@ -645,7 +646,7 @@ if (!window.O$) {
     return res.toString();
   };
 
-  O$.unescapeSymbol = function(str) {
+  O$.unescapeSymbol = function (str) {
     var LENGTH_UNICODE = 4;
     var LENGTH_BACKSLASH_AND_UNICODE = 5;
     var buf = "";
@@ -669,7 +670,7 @@ if (!window.O$) {
     return buf;
   };
 
-  O$.getArrayFromString = function(str, delimiter) {
+  O$.getArrayFromString = function (str, delimiter) {
     var idx = str.indexOf(delimiter);
     var arr = [];
     var arrIdx = 0;
@@ -682,12 +683,12 @@ if (!window.O$) {
     return arr;
   };
 
-  O$.arrayContainsValue = function(array, value) {
+  O$.arrayContainsValue = function (array, value) {
     var idx = array.indexOf(value);
     return idx != -1;
   };
 
-  O$.unescapeHtml = function(val) {
+  O$.unescapeHtml = function (val) {
     var re = /\&\#(\d+)\;/;
     while (re.test(val)) {
       val = val.replace(re, String.fromCharCode(RegExp.$1));
@@ -696,7 +697,7 @@ if (!window.O$) {
   };
 
   if (!Array.prototype.indexOf) {
-    Array.prototype.indexOf = function(elt /*, from*/) {
+    Array.prototype.indexOf = function (elt /*, from*/) {
       var len = this.length >>> 0;
 
       var from = Number(arguments[1]) || 0;
@@ -716,7 +717,7 @@ if (!window.O$) {
   }
 
   if (!Array.prototype.every) {
-    Array.prototype.every = function(fun /*, thisp*/) {
+    Array.prototype.every = function (fun /*, thisp*/) {
       var len = this.length >>> 0;
       if (typeof fun != "function")
         throw new TypeError();
@@ -733,7 +734,7 @@ if (!window.O$) {
   }
 
   if (!Array.prototype.some) {
-    Array.prototype.some = function(fun /*, thisp*/) {
+    Array.prototype.some = function (fun /*, thisp*/) {
       var i = 0;
       var len = this.length >>> 0;
 
@@ -752,7 +753,7 @@ if (!window.O$) {
   }
 
   if (!Array.prototype.forEach) {
-    Array.prototype.forEach = function(fun, thisp) {
+    Array.prototype.forEach = function (fun, thisp) {
       var len = this.length >>> 0;
       if (typeof fun != "function")
         throw new TypeError();
@@ -765,7 +766,7 @@ if (!window.O$) {
   }
 
   if (!Array.prototype.map) {
-    Array.prototype.map = function(fun /*, thisp*/) {
+    Array.prototype.map = function (fun /*, thisp*/) {
       var len = this.length >>> 0;
       if (typeof fun != "function")
         throw new TypeError();
@@ -781,10 +782,8 @@ if (!window.O$) {
     };
   }
 
-  if (!Array.prototype.filter)
-  {
-    Array.prototype.filter = function(fun /*, thisp*/)
-    {
+  if (!Array.prototype.filter) {
+    Array.prototype.filter = function (fun /*, thisp*/) {
       var len = this.length;
       if (typeof fun != "function")
         throw new TypeError();
@@ -802,42 +801,42 @@ if (!window.O$) {
       return res;
     };
   }
-  O$.dateByTimeMillis = function(time) {
+  O$.dateByTimeMillis = function (time) {
     var date = new Date();
     date.setTime(time);
     return date;
   };
 
-  O$.cloneDate = function(date) {
+  O$.cloneDate = function (date) {
     return new Date(date.getFullYear(), date.getMonth(), date.getDate());
   };
 
-  O$.cloneDateTime = function(date) {
+  O$.cloneDateTime = function (date) {
     var clonedDate = new Date();
     clonedDate.setTime(date.getTime());
     return clonedDate;
   };
 
-  O$.getDayInterval = function(date1, date2){
+  O$.getDayInterval = function (date1, date2) {
     var difference_ms = date2.getTime() - date1.getTime();
-    return Math.round(difference_ms/86400000);
+    return Math.round(difference_ms / 86400000);
   };
 
   //TODO: make sure that we need to calculate exactly difference between dates but not between getTime() values
-  O$.firstDateBeforeSecond = function (date1,date2){
-    if (date1.getYear()*10000 + date1.getMonth()*100 + date1.getDay()<date2.getYear()*10000 + date2.getMonth()*100 + date2.getDay())
+  O$.firstDateBeforeSecond = function (date1, date2) {
+    if (date1.getYear() * 10000 + date1.getMonth() * 100 + date1.getDay() < date2.getYear() * 10000 + date2.getMonth() * 100 + date2.getDay())
       return true;
     return false;
   };
 
-  O$.incDay = function(date, increment, noDSTTimeAdjusting) {
+  O$.incDay = function (date, increment, noDSTTimeAdjusting) {
     if (increment == undefined)
       increment = 1;
     var backupDate = new Date(date.getTime());
     date.setHours(12, 0, 0, 0);
     var newDate = new Date(date.getTime() + increment * 86400000);
     var removedDstHours = newDate.getHours() - 12; // accounts for DST transition days, e.g. on Oct 10->11 in Chile (Santiago) UTC-4
-    if (removedDstHours < 0 || noDSTTimeAdjusting){
+    if (removedDstHours < 0 || noDSTTimeAdjusting) {
       removedDstHours = 0;
     }
 
@@ -848,7 +847,7 @@ if (!window.O$) {
     return newDate;
   };
 
- O$._datesEqual = function(date1, date2) {
+  O$._datesEqual = function (date1, date2) {
     if (!date1)
       return !date2;
     if (!date2)
@@ -858,31 +857,31 @@ if (!window.O$) {
             date1.getFullYear() == date2.getFullYear();
   };
 
-  O$.minDefined = function(value1, value2) {
+  O$.minDefined = function (value1, value2) {
     if (value1 != undefined && value2 != undefined && !isNaN(value1) && !isNaN(value2))
       return Math.min(value1, value2);
     return value1 !== undefined && !isNaN(value1) ? value1 : value2;
   };
 
-  O$.maxDefined = function(value1, value2) {
+  O$.maxDefined = function (value1, value2) {
     if (value1 != undefined && value2 != undefined && !isNaN(value1) && !isNaN(value2))
       return Math.max(value1, value2);
     return value1 !== undefined && !isNaN(value1) ? value1 : value2;
   };
 
-  O$.invokeOnce = function(func, funcId) {
+  O$.invokeOnce = function (func, funcId) {
     if (!O$.isInvoked(funcId)) {
       func();
       O$.getInvokedFunctions().push(funcId);
     }
   };
 
-  O$.isInvoked = function(funcId) {
+  O$.isInvoked = function (funcId) {
     var invokedFunctions = O$.getInvokedFunctions();
     return O$.contains(invokedFunctions, funcId);
   };
 
-  O$.getInvokedFunctions = function() {
+  O$.getInvokedFunctions = function () {
     var invokedFunctions = O$._invokedFunctions;
     if (!invokedFunctions) {
       invokedFunctions = [];
@@ -891,7 +890,7 @@ if (!window.O$) {
     return invokedFunctions;
   };
 
-  O$.contains = function(array, object) {
+  O$.contains = function (array, object) {
     for (var i = 0, count = array.length; i < count; i++) {
       if (object == array[i])
         return true;
@@ -899,34 +898,34 @@ if (!window.O$) {
     return false;
   };
 
-  O$.addAll = function(dest, src) {
+  O$.addAll = function (dest, src) {
     for (var i = 0, count = src.length; i < count; i++)
       dest.push(src[i]);
   };
 
-  O$.isUpperCase = function(str) {
+  O$.isUpperCase = function (str) {
     return str.toUpperCase() == str;
   };
 
-  O$.isLowerCase = function(str) {
+  O$.isLowerCase = function (str) {
     return str.toLowerCase() == str;
   };
 
 
   // ----------------- BROWSER DETECTION ---------------------------------------------------
 
-  O$.userAgentContains = function(browserName) {
+  O$.userAgentContains = function (browserName) {
     return navigator.userAgent.toLowerCase().indexOf(browserName.toLowerCase()) > -1;
   };
 
-  O$.isStrictMode = function() {
+  O$.isStrictMode = function () {
     return !O$.isQuirksMode();
   };
-  O$.isQuirksMode = function() {
+  O$.isQuirksMode = function () {
     return document.compatMode == "BackCompat";
   };
 
-  O$.isMozillaFF = function() {
+  O$.isMozillaFF = function () {
     if (O$._mozilla == undefined)
       O$._mozilla = O$.userAgentContains("mozilla") &&
               !O$.userAgentContains("msie") &&
@@ -934,51 +933,51 @@ if (!window.O$) {
     return O$._mozilla;
   };
 
-  O$.isMozillaFF2 = function() {
+  O$.isMozillaFF2 = function () {
     return O$.isMozillaFF() && O$.userAgentContains("Firefox/2");
   };
 
-  O$.isMozillaFF3 = function() {
+  O$.isMozillaFF3 = function () {
     return O$.isMozillaFF() && O$.userAgentContains("Firefox/3.");
   };
 
-  O$.isExplorer = function() {
+  O$.isExplorer = function () {
     if (O$._explorer == undefined)
       O$._explorer = O$.userAgentContains("msie") && !O$.userAgentContains("opera");
     return O$._explorer;
   };
 
-  O$.isExplorer6 = function() {
+  O$.isExplorer6 = function () {
     if (O$._explorer6 == undefined)
       O$._explorer6 = O$.isExplorer() && O$.userAgentContains("MSIE 6");
     return O$._explorer6;
   };
 
-  O$.isExplorer7 = function() {
+  O$.isExplorer7 = function () {
     if (O$._explorer7 == undefined)
       O$._explorer7 = O$.isExplorer() && O$.userAgentContains("MSIE 7");
     return O$._explorer7;
   };
 
-  O$.isExplorer8 = function() {
+  O$.isExplorer8 = function () {
     if (O$._explorer8 == undefined)
       O$._explorer8 = O$.isExplorer() && O$.userAgentContains("MSIE 8");
     return O$._explorer8;
   };
 
-  O$.isExplorer8AndOlder = function() {
+  O$.isExplorer8AndOlder = function () {
     if (O$._explorer8AndOlder == undefined)
-      O$._explorer8AndOlder = O$.isExplorer6() || O$.isExplorer7() || O$.isExplorer8() ;
+      O$._explorer8AndOlder = O$.isExplorer6() || O$.isExplorer7() || O$.isExplorer8();
     return O$._explorer8AndOlder;
   };
 
-  O$.isExplorer9 = function() {
+  O$.isExplorer9 = function () {
     if (O$._explorer9 == undefined)
       O$._explorer9 = O$.isExplorer() && O$.userAgentContains("MSIE 9");
     return O$._explorer9;
   };
 
-  O$.isOpera9AndLate = function() {
+  O$.isOpera9AndLate = function () {
     if (O$._opera9 == undefined) {
       if (O$.isOpera()) {
         O$._opera9 = /\bOpera(\s|\/)(\d{2,}|([9]){1})/i.test(navigator.userAgent);
@@ -987,7 +986,7 @@ if (!window.O$) {
     return O$._opera9;
   };
 
-  O$.isSafari3AndLate = function() {
+  O$.isSafari3AndLate = function () {
     if (O$._safari3 == undefined)
       if (O$.isSafari()) {
         O$._safari3 = /\bversion(\s|\/)(\d{2,}|[3-9]{1})/i.test(navigator.userAgent);
@@ -995,7 +994,7 @@ if (!window.O$) {
     return O$._safari3;
   };
 
-  O$.isSafari4AndLate = function() {
+  O$.isSafari4AndLate = function () {
     if (O$._safari4 == undefined)
       if (O$.isSafari()) {
         O$._safari4 = /\bversion(\s|\/)(\d{2,}|[4-9]{1})/i.test(navigator.userAgent);
@@ -1003,51 +1002,51 @@ if (!window.O$) {
     return O$._safari4;
   };
 
-  O$.isSafari3 = function() {
+  O$.isSafari3 = function () {
     if (O$._safari3only == undefined) {
       O$._safari3only = O$.isSafari3AndLate() && !O$.isSafari4AndLate();
     }
     return O$._safari3only;
   };
 
-  O$.isSafariOnMac = function() {
+  O$.isSafariOnMac = function () {
     if (O$._safariOnMac == undefined) {
       O$._safariOnMac = O$.isSafari() && O$.userAgentContains("Macintosh");
     }
     return O$._safariOnMac;
   };
 
-  O$.isSafariOnWindows = function() {
+  O$.isSafariOnWindows = function () {
     if (O$._safariOnWindows == undefined) {
       O$._safariOnWindows = O$.isSafari() && O$.userAgentContains("Windows");
     }
     return O$._safariOnWindows;
   };
 
-  O$.isSafari2 = function() {
+  O$.isSafari2 = function () {
     if (O$._safari2 == undefined) {
       O$._safari2 = O$.isSafari() && !O$.isSafari3AndLate() && !O$.isChrome();
     }
     return O$._safari2;
   };
 
-  O$.isChrome = function() {
+  O$.isChrome = function () {
     if (O$._chrome == undefined)
       O$._chrome = O$.userAgentContains("Chrome");
     return O$._chrome;
   };
 
-  O$.isOpera = function() {
+  O$.isOpera = function () {
     if (O$._opera == undefined)
       O$._opera = O$.userAgentContains("opera");
     return O$._opera;
   };
 
-  O$.isOpera10_5AndLater = function() {
+  O$.isOpera10_5AndLater = function () {
     return O$.isOperaLaterThan(10.5);
   };
 
-  O$.isOperaLaterThan = function(version) {
+  O$.isOperaLaterThan = function (version) {
     if (!O$.isOpera())
       return false;
 
@@ -1061,25 +1060,25 @@ if (!window.O$) {
     return false;
   };
 
-  O$.isSafari = function() { // todo: returns true for Chrome as well -- fix this and update usages to account Chrome
+  O$.isSafari = function () { // todo: returns true for Chrome as well -- fix this and update usages to account Chrome
     if (O$._safari == undefined)
       O$._safari = O$.userAgentContains("safari");
     return O$._safari;
   };
 
-  O$.isIEDocMode7 = function(){
+  O$.isIEDocMode7 = function () {
     if (O$._ieDocMode7 == undefined)
       O$._ieDocMode7 = O$.isExplorer() && (document.documentMode == 7);
     return O$._ieDocMode7;
   };
 
-  O$.isIEDocMode8 = function(){
+  O$.isIEDocMode8 = function () {
     if (O$._ieDocMode8 == undefined)
       O$._ieDocMode8 = O$.isExplorer() && (document.documentMode == 8);
     return O$._ieDocMode8;
   };
 
-  O$.isIEDocMode9 = function(){
+  O$.isIEDocMode9 = function () {
     if (O$._ieDocMode9 == undefined)
       O$._ieDocMode9 = O$.isExplorer() && (document.documentMode == 9);
     return O$._ieDocMode9;
@@ -1087,7 +1086,7 @@ if (!window.O$) {
 
   // ----------------- DOM FUNCTIONS ---------------------------------------------------
 
-  O$.byIdOrName = function(idOrName) {
+  O$.byIdOrName = function (idOrName) {
     var el = O$(idOrName);
     if (!el)
       el = document.getElementsByName(idOrName)[0];
@@ -1095,7 +1094,7 @@ if (!window.O$) {
   };
 
 
-  O$.getParentNode = function(element, tagName) {
+  O$.getParentNode = function (element, tagName) {
     tagName = tagName.toUpperCase();
     while (element) {
       var elementNodeName = element.nodeName;
@@ -1108,7 +1107,7 @@ if (!window.O$) {
     return element;
   };
 
-  O$.getAnyParentNode = function(element, tagNames) {
+  O$.getAnyParentNode = function (element, tagNames) {
     for (var i = 0, count = tagNames.length; i < count; i++)
       tagNames[i] = tagNames[i].toUpperCase();
     while (element && tagNames.indexOf(element.nodeName.toUpperCase()) == -1)
@@ -1116,7 +1115,7 @@ if (!window.O$) {
     return element;
   };
 
-  O$.isChild = function(parent, child) {
+  O$.isChild = function (parent, child) {
     if (parent.id && child.id && parent.id == child.id) return true;
     if (child.parentNode && child.parentNode.nodeName && child.parentNode.nodeName.toUpperCase() != "BODY") {
       return O$.isChild(parent, child.parentNode);
@@ -1124,7 +1123,7 @@ if (!window.O$) {
     return false;
   };
 
-  O$.isChildNode = function(parent, child) {
+  O$.isChildNode = function (parent, child) {
     for (var node = child; node; node = node.parentNode) {
       if (node.parentNode == parent)
         return true;
@@ -1132,7 +1131,7 @@ if (!window.O$) {
     return false;
   };
 
-  O$.getChildNodesByClass = function(node, className, searchTopLevelOnly, excludeElementFromSearch) {
+  O$.getChildNodesByClass = function (node, className, searchTopLevelOnly, excludeElementFromSearch) {
     var result = [];
     var children = node.childNodes;
     for (var i = 0, count = children.length; i < count; i++) {
@@ -1153,7 +1152,7 @@ if (!window.O$) {
     return result;
   };
 
-  O$.getChildNodesWithNames = function(node, nodeNames) {
+  O$.getChildNodesWithNames = function (node, nodeNames) {
     var selectedChildren = [];
     var children = node.childNodes;
     for (var i = 0, count = children.length; i < count; i++) {
@@ -1171,7 +1170,7 @@ if (!window.O$) {
     return selectedChildren;
   };
 
-  O$.getElementsByTagNameRegexp = function(parent, regexp, optionalFilter) {
+  O$.getElementsByTagNameRegexp = function (parent, regexp, optionalFilter) {
     var elem_array = [];
     if (typeof parent.firstChild != "undefined") {
       var elem = parent.firstChild;
@@ -1190,7 +1189,7 @@ if (!window.O$) {
     return elem_array;
   };
 
-  O$.getElementByPath = function(node, childPath, ignoreNonExistingElements) {
+  O$.getElementByPath = function (node, childPath, ignoreNonExistingElements) {
     var separatorIndex = childPath.indexOf("/");
     var locator = separatorIndex == -1 ? childPath : childPath.substring(0, separatorIndex);
     var remainingPath = separatorIndex != -1 ? childPath.substring(separatorIndex + 1) : null;
@@ -1229,7 +1228,7 @@ if (!window.O$) {
       return O$.getElementByPath(child, remainingPath);
   };
 
-  O$.isElementPresentInDocument = function(element) {
+  O$.isElementPresentInDocument = function (element) {
     var result = false;
     if (element == document) {
       return true;
@@ -1240,12 +1239,12 @@ if (!window.O$) {
     return result;
   };
 
-  O$.removeAllChildNodes = function(element) {
+  O$.removeAllChildNodes = function (element) {
     while (element.childNodes.length > 0)
       element.removeChild(element.childNodes[0]);
   };
 
-  O$.setInnerText = function(element, text, escapeHtml) {
+  O$.setInnerText = function (element, text, escapeHtml) {
     if (escapeHtml === false) {
       try {
         element.innerHTML = text;
@@ -1259,7 +1258,7 @@ if (!window.O$) {
     element.appendChild(document.createTextNode(text));
   };
 
-  O$.createStyledText = function(text, styleClass) {
+  O$.createStyledText = function (text, styleClass) {
     var container = document.createElement("span");
     container.appendChild(document.createTextNode(text));
     container.className = styleClass;
@@ -1277,21 +1276,21 @@ if (!window.O$) {
   }
 
   // ----------------- AJAX RELATED UTILITY FUNCTIONS -----------------------------------------------------
-  O$.lockAjax = function() {
+  O$.lockAjax = function () {
     O$._ajaxTemporaryLocked = true;
   };
 
-  O$.isAjaxInLockedState = function() {
+  O$.isAjaxInLockedState = function () {
     return O$._ajaxTemporaryLocked;
   };
 
-  O$.resetAjaxState = function() {
+  O$.resetAjaxState = function () {
     O$._ajaxTemporaryLocked = false;
   };
 
   // ----------------- FORM, FORM ELEMENTS MANIPULATION ---------------------------------------------------
 
-  O$.submitEnclosingForm = function(element) {
+  O$.submitEnclosingForm = function (element) {
     O$.assert(element, "element should be passed to O$.submitEnclosingForm");
     var frm = O$.getParentNode(element, "FORM");
     O$.assert(frm, "O$.submitEnclosingForm: Enclosing form not found for element with id: " + element.id + "; element tag name: " + element.tagName);
@@ -1302,10 +1301,10 @@ if (!window.O$) {
     frm.submit();
   };
 
-  O$.submitEnclosingElementsForm = function(elements) {
+  O$.submitEnclosingElementsForm = function (elements) {
     O$.assert(elements[0], "elements should be passed to O$.submitEnclosingElementsForm");
     var frm = O$.getParentNode(elements[0], "FORM");
-    if (!elements.every(function(element) {
+    if (!elements.every(function (element) {
       return (frm == O$.getParentNode(element, "FORM"));
     })) {
       O$.logError("O$.submitEnclosingElementsForm: Enclosing forms differ for components");
@@ -1318,7 +1317,7 @@ if (!window.O$) {
     frm.submit();
   };
 
-  O$.submitWithParams = function(element, params) {
+  O$.submitWithParams = function (element, params) {
     O$.assert(element, "element should be passed to O$.submitWithParams");
     O$.assert(params, "params should be passed to O$.submitWithParams");
     for (var i = 0, count = params.length; i < count; i++) {
@@ -1330,7 +1329,7 @@ if (!window.O$) {
     frm.submit();
   };
 
-  O$.submitWithParam = function(elt, paramName, paramValue) {
+  O$.submitWithParam = function (elt, paramName, paramValue) {
     if (typeof elt == "string")
       elt = O$(elt);
     O$.submitWithParams(elt, [
@@ -1338,7 +1337,7 @@ if (!window.O$) {
     ]);
   };
 
-  O$.setHiddenField = function(element, fieldName, fieldValue) {
+  O$.setHiddenField = function (element, fieldName, fieldValue) {
     var silent = true;
     var frm;
     if (!element) {
@@ -1370,13 +1369,13 @@ if (!window.O$) {
     return newParamField;
   };
 
-  O$.submitById = function(elementId) {
+  O$.submitById = function (elementId) {
     var element = O$(elementId);
     O$.assert(element, "correct element id should be passed to O$.submitById");
     O$.submitEnclosingForm(element);
   };
 
-  O$.submitByIds = function(elementIds) {
+  O$.submitByIds = function (elementIds) {
     var elements = [];
     for (var i = 0, count = elementIds.length; i < count; i++) {
       elements[elements.length] = O$(elementIds[i]);
@@ -1385,7 +1384,7 @@ if (!window.O$) {
     O$.submitEnclosingElementsForm(elements);
   };
 
-  O$.setValue = function(elementId, value) {
+  O$.setValue = function (elementId, value) {
     var field = O$(elementId);
     O$.assert(field, "Correct element id should be passed to O$.setValue; elementId = " + elementId);
     if (field) {
@@ -1393,7 +1392,7 @@ if (!window.O$) {
     }
   };
 
-  O$._getCaretPosition = function(field) {
+  O$._getCaretPosition = function (field) {
     var result = 0;
 
     if (document.selection) {
@@ -1408,7 +1407,7 @@ if (!window.O$) {
     return result;
   };
 
-  O$._setCaretPosition = function(field, caretPos) {
+  O$._setCaretPosition = function (field, caretPos) {
     if (document.selection) {
       field.focus();
       var range = document.selection.createRange();
@@ -1423,7 +1422,7 @@ if (!window.O$) {
     }
   };
 
-  O$._selectTextRange = function(field, beginIdx, endIdx) {
+  O$._selectTextRange = function (field, beginIdx, endIdx) {
     if (field._o_inputField) field = field._o_inputField;
     if (field.setSelectionRange) {
       field.setSelectionRange(beginIdx, endIdx);
@@ -1437,25 +1436,25 @@ if (!window.O$) {
     }
   };
 
-  O$.markNextFormSubmissionAsDownloadAction = function() {
+  O$.markNextFormSubmissionAsDownloadAction = function () {
     O$._formSubmissionAsDownloadAction = true;
   };
 
-  O$.isFormSubmission_A_DownloadAction = function() {
+  O$.isFormSubmission_A_DownloadAction = function () {
     return O$._formSubmissionAsDownloadAction;
   };
 
-  O$.setSubmissionAjaxInactivityTimeout = function(timeout) {
+  O$.setSubmissionAjaxInactivityTimeout = function (timeout) {
     O$._submissionAjaxInactivityTimeout = timeout;
   };
 
-  O$.getSubmissionAjaxInactivityTimeout = function() {
+  O$.getSubmissionAjaxInactivityTimeout = function () {
     return O$._submissionAjaxInactivityTimeout;
   };
 
   // ----------------- EVENT UTILITIES ---------------------------------------------------
 
-  O$.getEventHandlerFunction = function(handlerName, handlerArgs, mainObj) { // todo: rework usages of this function with explicit closure creation
+  O$.getEventHandlerFunction = function (handlerName, handlerArgs, mainObj) { // todo: rework usages of this function with explicit closure creation
     var argString = handlerArgs ? ("[" + handlerArgs + "]") : "arguments";
     var handlerFunction;
     eval("handlerFunction = function() { return arguments.callee.prototype._ownObj." + handlerName + ".apply(arguments.callee.prototype._ownObj," + argString + "); }");
@@ -1463,19 +1462,19 @@ if (!window.O$) {
     return handlerFunction;
   };
 
-  O$.addEvent = function(componentClientId, eventName, functionScript) {
+  O$.addEvent = function (componentClientId, eventName, functionScript) {
     var element = O$.byIdOrName(componentClientId);
     if (element) {
       O$.addEventHandler(element, eventName, functionScript);
     }
   };
 
-  O$.addEventHandler = function(elt, evtName, evtScript, useCapture) {
+  O$.addEventHandler = function (elt, evtName, evtScript, useCapture) {
     if (!elt._attachedEvents)
       elt._attachedEvents = [];
 
     var eventToAttach = {
-      functionScript: evtScript
+      functionScript:evtScript
     };
 
     if (elt.addEventListener) {
@@ -1488,10 +1487,10 @@ if (!window.O$) {
     elt._attachedEvents.push(eventToAttach);
   };
 
-  O$.removeEventHandler = function(elt, evtName, evtScript, useCapture) {
+  O$.removeEventHandler = function (elt, evtName, evtScript, useCapture) {
     var eventToDetach = {
-      eventName: "",
-      functionScript: evtScript
+      eventName:"",
+      functionScript:evtScript
     };
 
     if (elt.addEventListener) {
@@ -1517,16 +1516,16 @@ if (!window.O$) {
 
   /* Use this function instead of direct field assignment to work around Mozilla problems firing old events when
    new page is loading (JSFC-2276) */
-  O$.assignEventHandlerField = function(element, fieldName, handler) {
+  O$.assignEventHandlerField = function (element, fieldName, handler) {
     element[fieldName] = handler;
     if (O$.isMozillaFF()) {
-      O$.addUnloadEvent(function() {
+      O$.addUnloadEvent(function () {
         element[fieldName] = null;
       });
     }
   };
 
-  O$.assignEvents = function(element, eventsContainer, useEventFields, additionalEventProperties) {
+  O$.assignEvents = function (element, eventsContainer, useEventFields, additionalEventProperties) {
     if (!eventsContainer || eventsContainer.length == 0)
       return;
     var eventPrefix = "on";
@@ -1545,7 +1544,7 @@ if (!window.O$) {
       handlerFunction.prototype._handlerScript = eventScript;
       if (additionalEventProperties) {
         function wrapHandlerFunction(originalHandlerFunction) {
-          return function(event) {
+          return function (event) {
             for (var propertyName in additionalEventProperties) {
               var propertyValue = additionalEventProperties[propertyName];
               if (typeof propertyValue != "function")
@@ -1565,7 +1564,7 @@ if (!window.O$) {
     }
   };
 
-  O$.repeatClickOnDblclick = function(e) {
+  O$.repeatClickOnDblclick = function (e) {
     if (O$.isExplorer() && (this._stolenClickHandler || this.onclick)) {
       if (this._stolenClickHandler)
         this._stolenClickHandler(e);
@@ -1576,7 +1575,7 @@ if (!window.O$) {
     O$.stopEvent(e);
   };
 
-  O$.initDocumentMouseClickListeners = function() {
+  O$.initDocumentMouseClickListeners = function () {
     if (O$._initDocumentMouseClickListeners_called) {
       return;
     }
@@ -1604,7 +1603,7 @@ if (!window.O$) {
   /*
    * eventName should be without the "on" prefix, for example: "change", "click", etc.
    */
-  O$.createEvent = function(eventName) {
+  O$.createEvent = function (eventName) {
     var e;
     try {
       e = document.createEvent ? document.createEvent("Events") : document.createEventObject();
@@ -1628,7 +1627,7 @@ if (!window.O$) {
   /*
    * eventName should be without the "on" prefix, for example: "change", "click", etc.
    */
-  O$.sendEvent = function(elt, eventName) {
+  O$.sendEvent = function (elt, eventName) {
     var safari = O$.isSafari();
     var e = safari ? {} :
             document.createEvent ? document.createEvent("Event") :
@@ -1659,36 +1658,36 @@ if (!window.O$) {
   };
 
 
-  O$.isAltPressed = function(event) {
+  O$.isAltPressed = function (event) {
     if (event == null || event.altKey == null)
       return false;
     return event.altKey;
   };
   //
 
-  O$.isCtrlPressed = function(event) {
+  O$.isCtrlPressed = function (event) {
     if (event == null || event.ctrlKey == null)
       return false;
     return event.ctrlKey;
   };
   //
 
-  O$.isShiftPressed = function(event) {
+  O$.isShiftPressed = function (event) {
     if (event == null || event.shiftKey == null)
       return false;
     return event.shiftKey;
   };
 
-  O$.getEvent = function(e) {
+  O$.getEvent = function (e) {
     return e ? e : event;
   };
 
-  O$.cancelEvent = function(e) {
+  O$.cancelEvent = function (e) {
     O$.stopEvent(e);
     O$.preventDefaultEvent(e);
   };
 
-  O$.preventDefaultEvent = function(e) {
+  O$.preventDefaultEvent = function (e) {
     var evt = O$.getEvent(e);
 
     if (evt.preventDefault) {
@@ -1697,7 +1696,7 @@ if (!window.O$) {
     evt.returnValue = false;
   };
 
-  O$.stopEvent = function(e) {
+  O$.stopEvent = function (e) {
     var evt = O$.getEvent(e);
 
     if (evt.stopPropagation)
@@ -1710,10 +1709,10 @@ if (!window.O$) {
    containing block of the element referred to by the forElement parameter, otherwise, the coordinates will be calculated
    relative to the document.
    */
-  O$.getEventPoint = function(e, forElement) {
+  O$.getEventPoint = function (e, forElement) {
     var evt = O$.getEvent(e);
     var pageScrollPos = O$.getPageScrollPos();
-    var pos = {x: evt.clientX + pageScrollPos.x, y: evt.clientY + pageScrollPos.y};
+    var pos = {x:evt.clientX + pageScrollPos.x, y:evt.clientY + pageScrollPos.y};
 
     var container = forElement ? O$.getContainingBlock(forElement, true) : null;
     if (container) {
@@ -1725,7 +1724,7 @@ if (!window.O$) {
     return pos;
   };
 
-  O$.addInternalLoadEvent = function(func) {
+  O$.addInternalLoadEvent = function (func) {
     if (O$._documentLoaded) {
       func();
       return;
@@ -1739,7 +1738,7 @@ if (!window.O$) {
   };
 
 
-  O$.addLoadEvent = function(func) {
+  O$.addLoadEvent = function (func) {
     if (O$._documentLoaded) {
       func();
     } else {
@@ -1753,14 +1752,14 @@ if (!window.O$) {
     O$._documentLoaded = true;
     var i, count;
     if (O$._internalLoadHandlers) {
-      for (i = 0,count = O$._internalLoadHandlers.length; i < count; i++) {
+      for (i = 0, count = O$._internalLoadHandlers.length; i < count; i++) {
         var internalLoadHandler = O$._internalLoadHandlers[i];
         internalLoadHandler();
       }
       O$._internalLoadHandlers = [];
     }
     if (O$._loadHandlers) {
-      for (i = 0,count = O$._loadHandlers.length; i < count; i++) {
+      for (i = 0, count = O$._loadHandlers.length; i < count; i++) {
         var loadHandler = O$._loadHandlers[i];
         loadHandler();
       }
@@ -1769,8 +1768,8 @@ if (!window.O$) {
     O$.removeEventHandler(window, "load", loadDocumentHandler);
   });
 
-  O$.addUnloadEvent = function(func) {
-    var invokeOnUnloadHandlersFunction = function() {
+  O$.addUnloadEvent = function (func) {
+    var invokeOnUnloadHandlersFunction = function () {
       for (var i = 0, count = O$._onUnloadEvents.length; i < count; i++) {
         var onUnloadHandler = O$._onUnloadEvents[i];
         onUnloadHandler();
@@ -1782,11 +1781,11 @@ if (!window.O$) {
 
       var oldOnunload = window.onunload;
       if (typeof window.onunload != "function") {
-        window.onunload = function() {
+        window.onunload = function () {
           invokeOnUnloadHandlersFunction();
         };
       } else {
-        window.onunload = function() {
+        window.onunload = function () {
           oldOnunload();
           invokeOnUnloadHandlersFunction();
         };
@@ -1797,11 +1796,11 @@ if (!window.O$) {
   };
 
 
-  O$.isLoadedFullPage = function() {
+  O$.isLoadedFullPage = function () {
     return O$._documentLoaded;
   };
 
-  O$.getFirstFocusableControl = function(parent, approvalFunction) {
+  O$.getFirstFocusableControl = function (parent, approvalFunction) {
     for (var i = 0, count = parent.childNodes.length; i < count; i++) {
       var child = parent.childNodes[i];
       if (!child._focusControlElement && O$.isControlFocusable(child) && (!approvalFunction || approvalFunction(child)))
@@ -1813,7 +1812,7 @@ if (!window.O$) {
     return null;
   };
 
-  O$.getLastFocusableControl = function(parent, approvalFunction) {
+  O$.getLastFocusableControl = function (parent, approvalFunction) {
     for (var i = parent.childNodes.length - 1; i >= 0; i--) {
       var child = parent.childNodes[i];
       if (!child._focusControlElement && O$.isControlFocusable(child) && (!approvalFunction || approvalFunction(child)))
@@ -1826,7 +1825,7 @@ if (!window.O$) {
   };
 
 
-  O$.createHiddenFocusElement = function(componentId, tabIndex) {
+  O$.createHiddenFocusElement = function (componentId, tabIndex) {
     var focusElementId = componentId + ":::focus";
     var focusElement = O$(focusElementId);
     if (!focusElement) {
@@ -1852,18 +1851,18 @@ if (!window.O$) {
     return focusElement;
   };
 
-  O$.initDefaultScrollPosition = function(trackerFieldId, scrollPos) {
-    O$.addLoadEvent(function() {
+  O$.initDefaultScrollPosition = function (trackerFieldId, scrollPos) {
+    O$.addLoadEvent(function () {
       O$.setHiddenField(null, trackerFieldId, scrollPos);
     });
     O$.initScrollPosition_(trackerFieldId, true, 1, null);
   };
 
-  O$.initScrollPosition = function(scrollPosFieldId, autoSaveScrollPos, scrollableComponentId) {
+  O$.initScrollPosition = function (scrollPosFieldId, autoSaveScrollPos, scrollableComponentId) {
     O$.initScrollPosition_(scrollPosFieldId, autoSaveScrollPos, 2, scrollableComponentId);
   };
 
-  O$.initScrollPosition_ = function(scrollPosFieldId, autoSaveScrollPos, priority, scrollableComponentId) {
+  O$.initScrollPosition_ = function (scrollPosFieldId, autoSaveScrollPos, priority, scrollableComponentId) {
     if (scrollableComponentId) {
       var scrollableComponent = O$(scrollableComponentId);
       if (scrollableComponent && scrollableComponent._of_scrollPosTrackingParams)
@@ -1877,10 +1876,10 @@ if (!window.O$) {
 
     var targetComponent = (scrollableComponent) ? scrollableComponent : window;
 
-    targetComponent._of_scrollPosTrackingParams = {fieldId: scrollPosFieldId, autoSave: autoSaveScrollPos,
-      priority: priority, scrollableId:scrollableComponentId};
+    targetComponent._of_scrollPosTrackingParams = {fieldId:scrollPosFieldId, autoSave:autoSaveScrollPos,
+      priority:priority, scrollableId:scrollableComponentId};
 
-    O$.addLoadEvent(function() {
+    O$.addLoadEvent(function () {
       if (!targetComponent._of_scrollPosTrackingParams)
         return;
       var scrollPosFieldId = targetComponent._of_scrollPosTrackingParams.fieldId;
@@ -1897,7 +1896,7 @@ if (!window.O$) {
 
       O$.scrollToPosition(targetComponent, scrollPos);
 
-      O$.addEventHandler(targetComponent, "scroll", function() {
+      O$.addEventHandler(targetComponent, "scroll", function () {
         var scrollPos = (targetComponent == window)
                 ? O$.getPageScrollPos() : O$.getScrollPos(scrollableComponent);
 
@@ -1910,7 +1909,7 @@ if (!window.O$) {
     });
   };
 
-  O$.saveScrollPositionIfNeeded = function() {
+  O$.saveScrollPositionIfNeeded = function () {
     // needed for saving scroll position between ajax request under Mozilla Firefox
     var isMozilla = O$.isMozillaFF() || O$.isSafari3AndLate() /*todo:check whether O$.isSafari3AndLate check is really needed (it was added by mistake)*/;
     var isScrollPositionTrackingEnabled = (document._of_scrollPositionField);
@@ -1923,7 +1922,7 @@ if (!window.O$) {
     }
   };
 
-  O$.restoreScrollPositionIfNeeded = function() {
+  O$.restoreScrollPositionIfNeeded = function () {
     var isMozilla = O$.isMozillaFF() || O$.isSafari3AndLate() /*todo:check whether O$.isSafari3AndLate check is really needed (it was added by mistake)*/;
     var isScrollPositionTrackingEnabled = (document._of_scrollPositionField);
 
@@ -1934,7 +1933,7 @@ if (!window.O$) {
     }
   };
 
-  O$.scrollToPosition = function(scrollableComponent, scrollPos) {
+  O$.scrollToPosition = function (scrollableComponent, scrollPos) {
     var x, y, separatorIndex, currentScrollPos;
     if (scrollableComponent.scrollTo && scrollPos && scrollPos != "") {
       scrollPos = scrollPos.substring(1, scrollPos.length - 1);
@@ -1950,7 +1949,7 @@ if (!window.O$) {
       }
       scrollableComponent.scrollTo(x, y);
       if (O$.isExplorer()) {
-        setTimeout(function() {
+        setTimeout(function () {
           scrollableComponent.scrollTo(x, y);
         }, 10);
       }
@@ -1971,7 +1970,7 @@ if (!window.O$) {
       scrollableComponent.scrollTop = y;
 
       if (O$.isExplorer()) {
-        setTimeout(function() {
+        setTimeout(function () {
           scrollableComponent.scrollLeft = x;
           scrollableComponent.scrollTop = y;
         }, 10);
@@ -1979,8 +1978,8 @@ if (!window.O$) {
     }
   };
 
-  O$.initDefaultFocus = function(trackerFieldId, focusedComponentId) {
-    O$.addLoadEvent(function() {
+  O$.initDefaultFocus = function (trackerFieldId, focusedComponentId) {
+    O$.addLoadEvent(function () {
       try {
         O$.setHiddenField(null, trackerFieldId, focusedComponentId);
       } catch (e) {
@@ -1990,11 +1989,11 @@ if (!window.O$) {
     O$.initFocus_(trackerFieldId, true, 1);
   };
 
-  O$.initFocus = function(trackerFieldId, autoSaveFocus) {
+  O$.initFocus = function (trackerFieldId, autoSaveFocus) {
     O$.initFocus_(trackerFieldId, autoSaveFocus, 2);
   };
 
-  O$.initFocus_ = function(trackerFieldId, autoSaveFocus, priority) {
+  O$.initFocus_ = function (trackerFieldId, autoSaveFocus, priority) {
     function setupFocus() {
       if (O$._focusPriority && priority < O$._focusPriority)
         return;
@@ -2005,7 +2004,7 @@ if (!window.O$) {
       var focused = false;
       if (componentId) {
         var c = O$(componentId);
-        if (O$._activeElement && O$._activeElement == c){
+        if (O$._activeElement && O$._activeElement == c) {
           focused = true;
         } else {
           if (c && !O$.isControlFocusable(c))
@@ -2047,9 +2046,9 @@ if (!window.O$) {
     }
 
     O$.addLoadEvent(setupFocus);
-    O$.addLoadEvent(function() {
+    O$.addLoadEvent(function () {
       if (O$.Ajax) {
-        OpenFaces.Ajax.setCommonAjaxEventHandler("onajaxend" , function(e) {
+        OpenFaces.Ajax.setCommonAjaxEventHandler("onajaxend", function (e) {
           O$._autoSavingFocusInitialized = false;
           setTimeout(setupFocus, 1);
         });
@@ -2057,7 +2056,7 @@ if (!window.O$) {
     });
   };
 
-  O$.setupFocusOnTags = function(parent, tagName) {
+  O$.setupFocusOnTags = function (parent, tagName) {
     var elements = parent.getElementsByTagName(tagName);
     for (var i = 0; i < elements.length; i++) {
       var element = elements[i];
@@ -2066,7 +2065,7 @@ if (!window.O$) {
         continue;
       element._ofUtil_focusTrackerInstalled = true;
       element._of_prevOnFocusHandler = element.onfocus;
-      element.onfocus = function(e) {
+      element.onfocus = function (e) {
         O$._activeElement = this;
         O$._focusField.value = this.id;
         if (this._of_prevOnFocusHandler)
@@ -2074,9 +2073,9 @@ if (!window.O$) {
         if (O$.onfocuschange)
           O$.onfocuschange(e);
       };
-      O$.addUnloadHandler(element,function () {
-         element.onfocus = null;
-         element.onblur = null;
+      O$.addUnloadHandler(element, function () {
+        element.onfocus = null;
+        element.onblur = null;
       });
       element._of_prevOnBlurHandler = element.onblur;
       element.onblur = function (e) {
@@ -2093,7 +2092,7 @@ if (!window.O$) {
 
   };
 
-  O$.addLoadEvent(function() {
+  O$.addLoadEvent(function () {
     var predefinedTimeout = O$.getSubmissionAjaxInactivityTimeout();
     var timeoutToUnlockAjaxRequests = (O$.isFormSubmission_A_DownloadAction()) ? 100 : predefinedTimeout;
 
@@ -2101,12 +2100,16 @@ if (!window.O$) {
       var buttons = document.getElementsByTagName("button");
       for (var i = 0; i < buttons.length; i++) {
         var btn = buttons[i];
+
         function setClickHandler(btn) {
-          O$.addEventHandler(btn, "click", function() {
+          O$.addEventHandler(btn, "click", function () {
             O$._clickedButton = btn;
-            setTimeout(function() {btn._clickedButton = null;}, 500);
+            setTimeout(function () {
+              btn._clickedButton = null;
+            }, 500);
           });
         }
+
         setClickHandler(btn);
       }
     }
@@ -2122,7 +2125,7 @@ if (!window.O$) {
         if (btn != O$._clickedButton)
           btn.disabled = true;
       }
-      setTimeout(function() {
+      setTimeout(function () {
         for (var i = 0; i < buttons.length; i++) {
           var btn = buttons[i];
           btn.disabled = btn._o_prevDisabled;
@@ -2132,26 +2135,26 @@ if (!window.O$) {
 
     for (var bi = 0, count = document.forms.length; bi < count; bi++) {
       var frm = document.forms[bi];
-      O$.addEventHandler(frm, "submit", function() {
+      O$.addEventHandler(frm, "submit", function () {
         fixIE6ButtonsSubmission();
         if (!this.target || this.target == "_self") {
           O$.lockAjax();
           // _formSubmissionJustStarted should be reset so as not to block further ajax actions if this is not actually
           // a normal form submission, but file download (JSFC-2940)
-          setTimeout(function() {
+          setTimeout(function () {
             O$.resetAjaxState();
           }, timeoutToUnlockAjaxRequests);
         }
       });
       if (frm._of_prevSubmit) continue;
       frm._of_prevSubmit = frm.submit;
-      frm.submit = function() {
+      frm.submit = function () {
         fixIE6ButtonsSubmission();
         if (!this.target || this.target == "_self") {
           O$.lockAjax();
           // _formSubmissionJustStarted should be reset so as not to block further ajax actions if this is not actually
           // a normal form submission, but file download (JSFC-2940)
-          setTimeout(function() {
+          setTimeout(function () {
             O$.resetAjaxState();
           }, timeoutToUnlockAjaxRequests);
         }
@@ -2161,13 +2164,13 @@ if (!window.O$) {
 
   });
 
-  O$.initMouseListenerUtils = function() {
+  O$.initMouseListenerUtils = function () {
     if (O$._mouseListenerUtilsInitialized)
       return;
     O$._mouseListenerUtilsInitialized = true;
     O$._elementUnderMouse = null;
     var prevMouseMove = document.onmousemove;
-    document.onmousemove = function(e) {
+    document.onmousemove = function (e) {
       var result = undefined;
       if (prevMouseMove) {
         result = prevMouseMove.call(this, e);
@@ -2208,7 +2211,7 @@ if (!window.O$) {
         var listener, listenerIndex, listenerCount;
         if (el._of_fireMouseOut) {
           if (el._of_mouseOutListeners)
-            for (listenerIndex = 0,listenerCount = el._of_mouseOutListeners.length; listenerIndex < listenerCount; listenerIndex++) {
+            for (listenerIndex = 0, listenerCount = el._of_mouseOutListeners.length; listenerIndex < listenerCount; listenerIndex++) {
               listener = el._of_mouseOutListeners[listenerIndex];
               listener(e);
             }
@@ -2216,7 +2219,7 @@ if (!window.O$) {
         }
         if (el._of_fireMouseOver) {
           if (el._of_mouseOverListeners)
-            for (listenerIndex = 0,listenerCount = el._of_mouseOverListeners.length; listenerIndex < listenerCount; listenerIndex++) {
+            for (listenerIndex = 0, listenerCount = el._of_mouseOverListeners.length; listenerIndex < listenerCount; listenerIndex++) {
               listener = el._of_mouseOverListeners[listenerIndex];
               listener(e);
             }
@@ -2228,10 +2231,10 @@ if (!window.O$) {
     };
   };
 
-  O$.waitForCondition = function(conditionFunction, func, conditionCheckInterval) {
+  O$.waitForCondition = function (conditionFunction, func, conditionCheckInterval) {
     if (!conditionCheckInterval)
       conditionCheckInterval = 50;
-    var intervalId = setInterval(function() {
+    var intervalId = setInterval(function () {
       if (!conditionFunction())
         return;
       clearInterval(intervalId);
@@ -2239,7 +2242,7 @@ if (!window.O$) {
     }, conditionCheckInterval);
   };
 
-  O$.invokeFunctionAfterDelay = function(func, delay, actionId) {
+  O$.invokeFunctionAfterDelay = function (func, delay, actionId) {
     // Invokes the specified function after the specified delay in milliseconds. If another invocation request comes for
     // the same function during the delay, then the invocation is postponed until that new invocation delay expires, etc.
     // thus making only one call in case of multiple frequent invocations.
@@ -2261,7 +2264,7 @@ if (!window.O$) {
     actionReference._delayedInvocationCount++;
     if (!actionReference._timeoutIds)
       actionReference._timeoutIds = [];
-    actionReference._timeoutIds.push(setTimeout(function() {
+    actionReference._timeoutIds.push(setTimeout(function () {
       actionReference._delayedInvocationCount--;
       if (actionReference._delayedInvocationCount == 0) {
         actionReference._timeoutIds = [];
@@ -2270,7 +2273,7 @@ if (!window.O$) {
     }, delay));
   };
 
-  O$.cancelDelayedAction = function(func, actionId) {
+  O$.cancelDelayedAction = function (func, actionId) {
     var actionReference = func;
     if (typeof actionId == "string") {
       if (!OpenFaces._actionReferences)
@@ -2291,58 +2294,58 @@ if (!window.O$) {
 
   };
 
-  O$.setupHoverAndPressStateFunction = function(element, fn) {
+  O$.setupHoverAndPressStateFunction = function (element, fn) {
     var state = {
-      mouseInside: false,
-      pressed: false,
-      reset: function() {
+      mouseInside:false,
+      pressed:false,
+      reset:function () {
         this.mouseInside = false;
         this.pressed = false;
         this._update();
       },
-      _update: function() {
+      _update:function () {
         fn(this.mouseInside, this.pressed);
       }
     };
-    O$.setupHoverStateFunction(element, function(mouseInside) {
+    O$.setupHoverStateFunction(element, function (mouseInside) {
       state.mouseInside = mouseInside;
       if (!mouseInside)
         state.pressed = false;
       state._update();
 
     });
-    O$.setupMousePressedStateFunction(element, function(pressed) {
+    O$.setupMousePressedStateFunction(element, function (pressed) {
       state.pressed = pressed;
       state._update();
     });
     return state;
   };
 
-  O$.setupHoverStateFunction = function(element, fn) {
+  O$.setupHoverStateFunction = function (element, fn) {
     if (!element._hoverListeners) {
       element._hoverListeners = [];
       element._of_hoverState = {
-        forceHover: null,
-        mouseInside: false,
-        hoverValue: false
+        forceHover:null,
+        mouseInside:false,
+        hoverValue:false
       };
 
-      element._updateHover = function() {
+      element._updateHover = function () {
         var newHoverValue = element._of_hoverState.forceHover != null
                 ? element._of_hoverState.forceHover
                 : element._of_hoverState.mouseInside;
         if (element._of_hoverState.hoverValue == newHoverValue) return;
 
         element._of_hoverState.hoverValue = newHoverValue;
-        element._hoverListeners.forEach(function(fn) {
+        element._hoverListeners.forEach(function (fn) {
           fn.call(element, newHoverValue, element);
         });
       };
-      element.setForceHover = function(forceHover) {
+      element.setForceHover = function (forceHover) {
         element._of_hoverState.forceHover = forceHover;
         element._updateHover();
       };
-      O$.setupHoverStateFunction_(element, function(mouseInside) {
+      O$.setupHoverStateFunction_(element, function (mouseInside) {
         element._of_hoverState.mouseInside = mouseInside;
         element._updateHover();
       });
@@ -2350,36 +2353,36 @@ if (!window.O$) {
     element._hoverListeners.push(fn);
   };
 
-  O$.setupHoverStateFunction_ = function(element, fn) {
-    O$.addMouseOverListener(element, function() {
+  O$.setupHoverStateFunction_ = function (element, fn) {
+    O$.addMouseOverListener(element, function () {
       fn.call(element, true, element);
     });
-    O$.addMouseOutListener(element, function() {
+    O$.addMouseOutListener(element, function () {
       fn.call(element, false, element);
     });
   };
 
-  O$.setupFocusedStateFunction = function(element, fn) {
-    O$.addEventHandler(element, "focus", function() {
+  O$.setupFocusedStateFunction = function (element, fn) {
+    O$.addEventHandler(element, "focus", function () {
       fn.call(element, true, element);
     });
-    O$.addEventHandler(element, "blur", function() {
+    O$.addEventHandler(element, "blur", function () {
       fn.call(element, false, element);
     });
   };
 
 
-  O$.setupMousePressedStateFunction = function(element, fn) {
-    O$.addEventHandler(element, "mousedown", function() {
+  O$.setupMousePressedStateFunction = function (element, fn) {
+    O$.addEventHandler(element, "mousedown", function () {
       fn.call(element, true, element);
     });
-    O$.addEventHandler(element, "mouseup", function() {
+    O$.addEventHandler(element, "mouseup", function () {
       fn.call(element, false, element);
     });
     O$.initUnloadableComponent(element);
   };
 
-  O$.addMouseOverListener = function(element, listener) {
+  O$.addMouseOverListener = function (element, listener) {
     if (O$.isExplorer()) {
       element.onmouseenter = listener;
       return;
@@ -2390,7 +2393,7 @@ if (!window.O$) {
     element._of_mouseOverListeners.push(listener);
   };
 
-  O$.addMouseOutListener = function(element, listener) {
+  O$.addMouseOutListener = function (element, listener) {
     if (O$.isExplorer()) {
       element.onmouseleave = listener;
       return;
@@ -2401,7 +2404,7 @@ if (!window.O$) {
     element._of_mouseOutListeners.push(listener);
   };
 
-  O$.isEventFromInsideOfElement = function(e, element) {
+  O$.isEventFromInsideOfElement = function (e, element) {
     var evt = O$.getEvent(e);
     var eventTarget = evt.target ? evt.target : evt.srcElement;
     for (var currElement = eventTarget; currElement; currElement = currElement.parentNode) {
@@ -2411,11 +2414,11 @@ if (!window.O$) {
     return false;
   };
 
-  O$.disableNativeContextMenuFor = function(element) {
+  O$.disableNativeContextMenuFor = function (element) {
     if (element._isDisabledContextMenu) return;
     if (element) {
       element._oldoncontextmenu = element.oncontextmenu;
-      element.oncontextmenu = function() {
+      element.oncontextmenu = function () {
         if (element._oldoncontextmenu) element._oldoncontextmenu();
         return false;
       };
@@ -2423,11 +2426,11 @@ if (!window.O$) {
     }
   };
 
-  O$.enableNativeContextMenuFor = function(element) {
+  O$.enableNativeContextMenuFor = function (element) {
     if (element) {
       if (element._oldoncontextmenu)
         element.oncontextmenu = element._oldoncontextmenu;
-      else element.oncontextmenu = function() {
+      else element.oncontextmenu = function () {
         return true;
       };
       element._isDisabledContextMenu = false;
@@ -2435,7 +2438,7 @@ if (!window.O$) {
   };
 
 
-  O$._isScrollableElement = function(element) {
+  O$._isScrollableElement = function (element) {
     var elementOverflow = O$.getElementStyle(element, "overflow");
     if (!(elementOverflow == "scroll" || elementOverflow == "auto")) return false;
     var hasVerticalScrollBar = elementOverflow == "scroll" || element.scrollHeight > element.clientHeight;
@@ -2443,21 +2446,21 @@ if (!window.O$) {
     return hasHorizontalScrollBar || hasVerticalScrollBar;
   };
 
-  O$.getTargetComponentHasOwnMouseBehavior = function(evt) {
+  O$.getTargetComponentHasOwnMouseBehavior = function (evt) {
     var element = evt.target ? evt.target : evt.srcElement;
     var tagName = element ? element.tagName : null;
     if (tagName)
       tagName = tagName.toLowerCase();
     var elementHasItsOwnMouseBehavior =
             tagName == "input" ||
-            tagName == "textarea" ||
-            tagName == "select" ||
-            tagName == "option" ||
-            tagName == "button" ||
-            tagName == "a" ||
-            O$._isScrollableElement(element);
+                    tagName == "textarea" ||
+                    tagName == "select" ||
+                    tagName == "option" ||
+                    tagName == "button" ||
+                    tagName == "a" ||
+                    O$._isScrollableElement(element);
     if (!elementHasItsOwnMouseBehavior) {
-      elementHasItsOwnMouseBehavior = function(elem) {
+      elementHasItsOwnMouseBehavior = function (elem) {
         while (elem) {
           if (elem._hasItsOwnMouseBehavior) {
             return true;
@@ -2470,10 +2473,10 @@ if (!window.O$) {
     return elementHasItsOwnMouseBehavior;
   };
 
-  O$.makeDraggable = function(element, dropTargetLocator) {
+  O$.makeDraggable = function (element, dropTargetLocator) {
     var startPos = null;
     O$.initUnloadableComponent(element);
-    O$.addEventHandler(element, "mousedown", function(evt) {
+    O$.addEventHandler(element, "mousedown", function (evt) {
       startPos = O$.getEventPoint(evt);
       O$.cancelEvent(evt);
       function mouseMove(e) {
@@ -2510,7 +2513,7 @@ if (!window.O$) {
       O$.setElementBorderRectangle(elementCopy, rect);
 
       container.appendChild(elementCopy);
-      elementCopy.setPosition = function(x, y) {
+      elementCopy.setPosition = function (x, y) {
         this.style.left = x + "px";
         this.style.top = y + "px";
       };
@@ -2519,7 +2522,7 @@ if (!window.O$) {
         element.ondragstart(evt);
       O$.startDragging(evt, elementCopy);
       elementCopy._originalElement = element;
-      elementCopy.updateCurrentDropTarget = function(evt) {
+      elementCopy.updateCurrentDropTarget = function (evt) {
         var dropTarget = dropTargetLocator(evt);
         if (dropTarget != currentDropTarget) {
           if (currentDropTarget) currentDropTarget.setActive(false);
@@ -2527,12 +2530,12 @@ if (!window.O$) {
           if (currentDropTarget) currentDropTarget.setActive(true);
         }
       };
-      elementCopy.ondragmove = function(evt) {
+      elementCopy.ondragmove = function (evt) {
         if (element.ondragmove)
           element.ondragmove(evt);
         this.updateCurrentDropTarget(evt);
       };
-      elementCopy.ondragend = function(evt) {
+      elementCopy.ondragend = function (evt) {
         if (element.ondragend)
           element.ondragend(evt);
         this.parentNode.removeChild(this);
@@ -2544,29 +2547,32 @@ if (!window.O$) {
     }
   };
 
-  O$.cloneElement = function(element) {
+  O$.cloneElement = function (element) {
     if (element._clone)
       return element._clone();
     else
       return element.cloneNode(true);
   };
 
-  O$.getContainmentRectangle = function(containment, containingBlock) {
+  O$.getContainmentRectangle = function (containment, containingBlock) {
     var containmentRect = !containment ? null
             : containment == "viewport" ? O$.getVisibleAreaRectangle()
             : containment == "document" ? O$.getDocumentRectangle()
             : containment == "containingBlock" ? O$.getElementBorderRectangle(containingBlock)
-            : containment.substring(0, 1) ==  "#" ? function() {
-                  var id = containment.substring(1);
-                  var c = O$(id);
-                  if (!c) throw "Couldn't find containment by id: \"" + id + "\"";
-                  return O$.getElementBorderRectangle(c);}()
-                        : function() {throw "Unsupported containment string: " + containment}();
+            : containment.substring(0, 1) == "#" ? function () {
+      var id = containment.substring(1);
+      var c = O$(id);
+      if (!c) throw "Couldn't find containment by id: \"" + id + "\"";
+      return O$.getElementBorderRectangle(c);
+    }()
+            : function () {
+      throw "Unsupported containment string: " + containment
+    }();
     return containmentRect;
 
   };
 
-  O$.startDragging = function(e, draggable, simulateDblClickForElement) {
+  O$.startDragging = function (e, draggable, simulateDblClickForElement) {
 
     var evt = O$.getEvent(e);
     if (simulateDblClickForElement && evt.type == "mousedown") {
@@ -2589,11 +2595,11 @@ if (!window.O$) {
     draggable._lastDragX = pos.x;
     draggable._lastDragY = pos.y;
     if (!draggable._getPositionLeft)
-      draggable._getPositionLeft = function() {
+      draggable._getPositionLeft = function () {
         return this.offsetLeft;
       };
     if (!draggable._getPositionTop)
-      draggable._getPositionTop = function() {
+      draggable._getPositionTop = function () {
         return this.offsetTop;
       };
     draggable._lastDragOffsetLeft = draggable._getPositionLeft();
@@ -2634,8 +2640,8 @@ if (!window.O$) {
       if (!containingBlock) containingBlock = document.body;
 
       var containmentRect = draggable._containment && (!draggable._containment ||
-                                                        draggable._containmentRole == "restrictMovement" ||
-                                                        draggable._containmentRole == "restrictMovementAndSize")
+              draggable._containmentRole == "restrictMovement" ||
+              draggable._containmentRole == "restrictMovementAndSize")
               ? O$.getContainmentRectangle(draggable._containment, containingBlock)
               : null;
 
@@ -2671,7 +2677,7 @@ if (!window.O$) {
       draggable._lastDragY = dragY;
       draggable._lastDragOffsetLeft = offsetLeftAfterDragging;
       draggable._lastDragOffsetTop = offsetTopAfterDragging;
-      if(draggable._dragEl && draggable._dragEl._onresizing) {
+      if (draggable._dragEl && draggable._dragEl._onresizing) {
         draggable._dragEl._onresizing();
       }
       O$.cancelEvent(evt);
@@ -2706,7 +2712,7 @@ if (!window.O$) {
    * Avoids IE issue where mouse events on an absolute element without backgroud and content "leak" to the underlying layer
    * instead of being processed by the element itself.
    */
-  O$.fixIEEventsForTransparentLayer = function(layerElement) {
+  O$.fixIEEventsForTransparentLayer = function (layerElement) {
     if (O$.isExplorer()) {
       // specify background for an element to avoid passing events to the underlying layer
       layerElement.style.background = "white";
@@ -2735,11 +2741,11 @@ if (!window.O$) {
       O$.fixIEEventsForTransparentLayer(transparentLayer);
       document._of_transparentLayer = transparentLayer;
       document.body.appendChild(transparentLayer);
-      O$.addEventHandler(transparentLayer, "mouseup", function() {
+      O$.addEventHandler(transparentLayer, "mouseup", function () {
         O$.sendEvent(document, "mouseup");
       }, false);
 
-      O$.addEventHandler(transparentLayer, "mousemove", function() {
+      O$.addEventHandler(transparentLayer, "mousemove", function () {
         O$.sendEvent(document, "mousemove");
       }, false);
     }
@@ -2751,19 +2757,19 @@ if (!window.O$) {
     }
   };
 
-  O$._simulateFixedPosForBlockingLayer = function() {
+  O$._simulateFixedPosForBlockingLayer = function () {
     return O$.isExplorer6(); // ie6 doesn't support fixed pos
   };
 
 
-  O$.showFocusOutline = function(component, outlineStyleClass) {
+  O$.showFocusOutline = function (component, outlineStyleClass) {
     if (!outlineStyleClass)
       return;
 
     if (!component._focusOutline) {
       var outline = new O$.GraphicRectangle("2px solid blue", O$.GraphicRectangle.ALIGN_OUTSIDE);
       outline._control = component;
-      outline._updatePosition = function() {
+      outline._updatePosition = function () {
         var outlineToControlSpacingPx = 2;
         var rect = O$.getElementBorderRectangle(component);
         var x = rect.x;
@@ -2775,7 +2781,7 @@ if (!window.O$) {
                 y - outlineToControlSpacingPx,
                 width + outlineToControlSpacingPx * 2,
                 height + outlineToControlSpacingPx * 2
-                ));
+        ));
       };
       component._focusOutline = outline;
     }
@@ -2783,7 +2789,7 @@ if (!window.O$) {
     component._focusOutline.show();
   };
 
-  O$.hideFocusOutline = function(component) {
+  O$.hideFocusOutline = function (component) {
     if (!component._focusOutline)
       return;
     component._focusOutline.hide();
@@ -2791,7 +2797,7 @@ if (!window.O$) {
 
   O$._tableBlurCounter = 0;
 
-  O$.isControlFocusable = function(control, componentToIgnore) {
+  O$.isControlFocusable = function (control, componentToIgnore) {
     if (!control)
       return false;
 
@@ -2819,17 +2825,17 @@ if (!window.O$) {
     return false;
   };
 
-  O$.setupArtificialFocus = function(component, focusedClassName, tabIndex) {
+  O$.setupArtificialFocus = function (component, focusedClassName, tabIndex) {
     var prevOnfocusHandler = component.onfocus;
     var prevOnblurHandler = component.onblur;
 
     O$.extend(component, {
-      _focused: false,
-      _updateOutline: function() {
+      _focused:false,
+      _updateOutline:function () {
         if (this._outlineUpdateBlocked)
           return;
         O$.setStyleMappings(this, {
-          focused: this._focused ? focusedClassName : null
+          focused:this._focused ? focusedClassName : null
         });
 
         if (this._focused)
@@ -2837,7 +2843,7 @@ if (!window.O$) {
         else
           O$.hideFocusOutline(this);
       },
-      _doUnblockOutlineUpdate: function() {
+      _doUnblockOutlineUpdate:function () {
         this._outlineUpdateBlocked = false;
         if (this._focusedBeforeBlocking != null && this._focusedBeforeBlocking != this._focused) {
           this._focusedBeforeBlocking = null;
@@ -2851,7 +2857,7 @@ if (!window.O$) {
         }
         this._updateOutline();
       },
-      onfocus: function(evt) {
+      onfocus:function (evt) {
         if (this._submitting)
           return;
         this._focused = true;
@@ -2860,14 +2866,14 @@ if (!window.O$) {
 
         component._updateOutline();
       },
-      onblur: function(evt) {
+      onblur:function (evt) {
         if (this._submitting)
           return;
         this._focused = false;
         if (prevOnblurHandler && !this._outlineUpdateBlocked)
           prevOnblurHandler.call(this, evt);
         if (!O$.isMozillaFF()) {
-          setTimeout(function() {
+          setTimeout(function () {
             component._updateOutline();
           }, 1);
         } else {
@@ -2890,29 +2896,29 @@ if (!window.O$) {
     }
 
     focusControl._destComponent = component;
-    focusControl.onfocus = function(evt) {
+    focusControl.onfocus = function (evt) {
       this._prevStatusText = window.status;
       window.status = "";
       return fireEvent(this._destComponent, "onfocus", evt);
     };
-    focusControl.onblur = function(evt) {
+    focusControl.onblur = function (evt) {
       window.status = this._prevStatusText;
       return fireEvent(this._destComponent, "onblur", evt);
     };
-    focusControl.onkeydown = function(evt) {
+    focusControl.onkeydown = function (evt) {
       return fireEvent(this._destComponent, "onkeydown", evt);
     };
-    focusControl.onkeyup = function(evt) {
+    focusControl.onkeyup = function (evt) {
       return fireEvent(this._destComponent, "onkeyup", evt);
     };
-    focusControl.onkeypress = function(evt) {
+    focusControl.onkeypress = function (evt) {
       return fireEvent(this._destComponent, "onkeypress", evt);
     };
 
     component._focusControl = focusControl;
 
     component._focusable = true;
-    component.focus = function() {
+    component.focus = function () {
       if (O$.getElementStyle(component, "position") == "absolute" || this._preventPageScrolling) {
         var container = O$.getContainingBlock(this._focusControl, true);
 
@@ -2921,18 +2927,18 @@ if (!window.O$) {
         } else {
           var containerRect = new O$.Rectangle(0, 0, O$.getVisibleAreaSize().width, O$.getVisibleAreaSize().height);
         }
-        var pageScrollPos =  O$.getPageScrollPos();
+        var pageScrollPos = O$.getPageScrollPos();
         var pageScrollRect = new O$.Rectangle(pageScrollPos.x, pageScrollPos.y, O$.getVisibleAreaSize().width, O$.getVisibleAreaSize().height);
 
         if (!pageScrollRect.intersects(containerRect)) {
           // if rectangle not intersect - we put focus to the mid of container
-          this._focusControl.style.top = (containerRect.getMaxY()  - containerRect.getMinY())/2 + "px";
-          this._focusControl.style.left = (containerRect.getMaxX()  - containerRect.getMinX())/2 + "px";
-        } else{
+          this._focusControl.style.top = (containerRect.getMaxY() - containerRect.getMinY()) / 2 + "px";
+          this._focusControl.style.left = (containerRect.getMaxX() - containerRect.getMinX()) / 2 + "px";
+        } else {
           // if rectangles intersects - we put focus to the mid of intersection
           pageScrollRect.intersectWith(containerRect);
-          this._focusControl.style.left = - containerRect.getMinX() + (pageScrollRect.getMaxX() + pageScrollRect.getMinX())/2 + "px";
-          this._focusControl.style.top =  - containerRect.getMinY() + (pageScrollRect.getMaxY() + pageScrollRect.getMinY())/2 + "px";
+          this._focusControl.style.left = -containerRect.getMinX() + (pageScrollRect.getMaxX() + pageScrollRect.getMinX()) / 2 + "px";
+          this._focusControl.style.top = -containerRect.getMinY() + (pageScrollRect.getMaxY() + pageScrollRect.getMinY()) / 2 + "px";
         }
       } else {
         this._focusControl.style.left = "";
@@ -2945,11 +2951,11 @@ if (!window.O$) {
       }
     };
 
-    component.blur = function() {
+    component.blur = function () {
       this._focusControl.blur();
     };
 
-    O$.addEventHandler(component, "click", function(evt) {
+    O$.addEventHandler(component, "click", function (evt) {
       var selectedText = window.getSelection
               ? window.getSelection() :
               (document.selection && document.selection.createRange) ? document.selection.createRange().text : "";
@@ -2982,7 +2988,7 @@ if (!window.O$) {
       if (!O$._tableBlurCounter)
         O$._tableBlurCounter = 0;
       if (!O$.isMozillaFF()) {
-        setTimeout(function() {
+        setTimeout(function () {
           if (!component._doUnblockOutlineUpdate) {
             // can be the case in case of O$.destroyAllFunctions functioning during Ajax when
             // org.openfaces.ajaxCleanupRequired init parameter is set to true
@@ -3005,7 +3011,7 @@ if (!window.O$) {
     if (!oldUnloadHandler) {
       O$.addThisComponentToAllParents(component);
     }
-    component.onComponentUnload = function() {
+    component.onComponentUnload = function () {
       if (oldUnloadHandler)
         oldUnloadHandler();
       else
@@ -3018,19 +3024,20 @@ if (!window.O$) {
 
   // ----------------- STYLE UTILITIES ---------------------------------------------------
 
-  O$.addCssRules = function(ruleArray) {
+  O$.addCssRules = function (ruleArray) {
     for (var i = 0, count = ruleArray.length; i < count; i++) {
       var rule = ruleArray[i];
       O$.addCssRule(rule);
     }
   };
 
-  O$.addUnloadableCssRules = function(componentId, ruleArray) {
+  O$.addUnloadableCssRules = function (componentId, ruleArray) {
     var element = O$(componentId);
     if (element != null) {
       function getNameOfCssClass(fullRule) {
         return fullRule.substring(0, fullRule.indexOf("{"));
       }
+
       O$.initUnloadableComponent(element);
       for (var i = 0, count = ruleArray.length; i < count; i++) {
         O$.addCssRule(ruleArray[i]);
@@ -3045,7 +3052,7 @@ if (!window.O$) {
     }
   };
 
-  O$.getLocalStyleSheet = function() {
+  O$.getLocalStyleSheet = function () {
     if (document._of_localStyleSheet)
       return document._of_localStyleSheet;
 
@@ -3064,7 +3071,7 @@ if (!window.O$) {
     return document._of_localStyleSheet;
   };
 
-  O$.addCssRule = function(strRule) {
+  O$.addCssRule = function (strRule) {
     var styleSheet = O$.getLocalStyleSheet();
     if (!styleSheet)
       return;
@@ -3133,7 +3140,7 @@ if (!window.O$) {
   };
 
   O$._dynamicRulesCreated = 0;
-  O$.createCssClass = function(declaration, disableCaching) {
+  O$.createCssClass = function (declaration, disableCaching) {
     if (!disableCaching) {
       if (!document._cachedDynamicCssRules)
         document._cachedDynamicCssRules = {};
@@ -3180,7 +3187,7 @@ if (!window.O$) {
     return null;
   };
 
-  O$.findCssRule = function(selector) {
+  O$.findCssRule = function (selector) {
     var rules = O$.findCssRules([selector]);
     if (rules === undefined)
       return undefined;
@@ -3193,7 +3200,7 @@ if (!window.O$) {
    * Searches for CSS rules with the specified selectors, and returns an array of CSSStyleRule (or CSSRule) objects
    * in order of their occurrence in DOM
    */
-  O$.findCssRules = function(selectors) {
+  O$.findCssRules = function (selectors) {
     if (!O$._cssRulesBySelectors) O$._cssRulesBySelectors = {};
     var selectorsKey = selectors.join(" ");
     var cachedRules = O$._cssRulesBySelectors[selectorsKey];
@@ -3236,30 +3243,30 @@ if (!window.O$) {
     return rulesFound;
   };
 
-  O$.getStyleClassProperty = function(styleClass, propertyName) {
+  O$.getStyleClassProperty = function (styleClass, propertyName) {
     var propertyValues = O$.getStyleClassProperties(styleClass, [propertyName]);
     return propertyValues[propertyName];
   };
 
-  O$.getStyleClassProperties = function(styleClass, propertyNames) {
+  O$.getStyleClassProperties = function (styleClass, propertyNames) {
     if (!styleClass || propertyNames.length == 0)
       return {};
     var classNames = styleClass.split(" ");
     var classSelectors = [];
     var i, count;
-    for (i = 0,count = classNames.length; i < count; i++) {
+    for (i = 0, count = classNames.length; i < count; i++) {
       var className = classNames[i];
       if (className)
         classSelectors.push("." + className);
     }
     var cssRules = O$.findCssRules(classSelectors);
-    if (!cssRules)
+    if (!cssRules || cssRule != {})
       return {};
 
     var propertyCount = propertyNames.length;
     var propertyValues = {};
     var propertyImportantFlags = [];
-    for (i = 0,count = cssRules.length; i < count; i++) {
+    for (i = 0, count = cssRules.length; i < count; i++) {
       var cssRule = cssRules[i];
       var ruleStyle = cssRule.style;
       for (var propertyIndex = 0; propertyIndex < propertyCount; propertyIndex++) {
@@ -3288,7 +3295,7 @@ if (!window.O$) {
   };
 
 
-  O$.combineClassNames = function(classNames) {
+  O$.combineClassNames = function (classNames) {
     var nonNullClassNames = [];
     for (var i = 0, count = classNames.length; i < count; i++) {
       var className = classNames[i];
@@ -3298,7 +3305,7 @@ if (!window.O$) {
     return nonNullClassNames.join(" ");
   };
 
-  O$.checkClassNameUsed = function(element, className) {
+  O$.checkClassNameUsed = function (element, className) {
     var classNames = element.className.split(" ");
     for (var i = 0, count = classNames.length; i < count; i++) {
       var usedClassName = classNames[i];
@@ -3312,7 +3319,7 @@ if (!window.O$) {
   /*
    * @deprecated use O$.setStyleMappings instead
    */
-  O$.appendClassNames = function(element, classesToAppend) {
+  O$.appendClassNames = function (element, classesToAppend) {
     var oldClassName = element.className;
     var newClassName = O$.combineClassNames(classesToAppend);
     if (oldClassName)
@@ -3325,7 +3332,7 @@ if (!window.O$) {
   /*
    * @deprecated use O$.setStyleMappings instead
    */
-  O$.excludeClassNames = function(element, classesToExclude) {
+  O$.excludeClassNames = function (element, classesToExclude) {
     var newClassesToExclude = [];
     for (var i = 0, count = classesToExclude.length; i < count; i++) {
       var clsToExclude = classesToExclude[i];
@@ -3357,7 +3364,7 @@ if (!window.O$) {
     return someClassesExcluded;
   };
 
-  O$.getElementOwnStyle = function(element) {
+  O$.getElementOwnStyle = function (element) {
     var styleMappings = element._styleMappings;
     if (!styleMappings)
       return element.className;
@@ -3365,7 +3372,7 @@ if (!window.O$) {
       return styleMappings.__initialStyle;
   };
 
-  O$.setElementOwnStyle = function(element, value) {
+  O$.setElementOwnStyle = function (element, value) {
     var styleMappings = element._styleMappings;
     if (!styleMappings)
       return element.className = value;
@@ -3373,9 +3380,9 @@ if (!window.O$) {
       return styleMappings.__initialStyle = value;
   };
 
-  O$.setStyleMappings = function(element, styleMappings) {
+  O$.setStyleMappings = function (element, styleMappings) {
     if (!element._styleMappings)
-      element._styleMappings = {__initialStyle: element.className};
+      element._styleMappings = {__initialStyle:element.className};
     var elementStyleMappings = element._styleMappings;
     var styleName, styleValue;
     for (styleName in styleMappings) {
@@ -3406,7 +3413,7 @@ if (!window.O$) {
     }
   };
 
-  O$.getElementStyle = function(element, propertyNames, enableValueCaching) {
+  O$.getElementStyle = function (element, propertyNames, enableValueCaching) {
     if (typeof propertyNames == "string") {
       if (!enableValueCaching) {
         var currentStyle, computedStyle;
@@ -3457,7 +3464,7 @@ if (!window.O$) {
     return propertyValues;
   };
 
-  O$._capitalizeCssPropertyName = function(propertyName) {
+  O$._capitalizeCssPropertyName = function (propertyName) {
     if (!O$._capitalizedValues) O$._capitalizedValues = {};
     var value = O$._capitalizedValues[propertyName];
     if (value) return value;
@@ -3480,7 +3487,7 @@ if (!window.O$) {
     }
   };
 
-  O$._dashizeCssPropertyName = function(propertyName) {
+  O$._dashizeCssPropertyName = function (propertyName) {
     if (!O$._dashizedValues) O$._dashizedValues = {};
     var value = O$._dashizedValues[propertyName];
     if (value) return value;
@@ -3497,13 +3504,13 @@ if (!window.O$) {
   };
 
 
-  O$.repaintAreaForOpera = function(element, deferredRepainting) {
+  O$.repaintAreaForOpera = function (element, deferredRepainting) {
     if (!O$.isOpera())
       return;
     if (!element)
       return;
     if (deferredRepainting) {
-      setTimeout(function() {
+      setTimeout(function () {
         O$.repaintAreaForOpera(element, false);
       }, 1);
       return;
@@ -3522,14 +3529,14 @@ if (!window.O$) {
   };
 
   // JSFC-3270
-  O$.repaintWindowForSafari = function(deferredRepainting) {
+  O$.repaintWindowForSafari = function (deferredRepainting) {
     if (!O$.isSafari())
       return;
     if (deferredRepainting) {
-      setTimeout(function() {               // for fast machine
+      setTimeout(function () {               // for fast machine
         O$.repaintWindowForSafari(false);
       }, 50);
-      setTimeout(function() {               // for slow machine
+      setTimeout(function () {               // for slow machine
         O$.repaintWindowForSafari(false);
       }, 300);
       return;
@@ -3538,21 +3545,21 @@ if (!window.O$) {
     tempDiv.innerHTML = "<div> <style type='text/css'> .d_u_m_p_c_l_a_s_s_ { background: black; filter: alpha( opacity = 50 ); opacity: .50; } </style> </div>";
   };
 
-  O$.preloadImage = function(imageUrl) {
+  O$.preloadImage = function (imageUrl) {
     if (!imageUrl)
       return;
     var image = new Image();
     image.src = imageUrl;
   };
 
-  O$.preloadImages = function(imageUrls) {
+  O$.preloadImages = function (imageUrls) {
     for (var i = 0, count = imageUrls.length; i < count; i++) {
       var imageUrl = imageUrls[i];
       O$.preloadImage(imageUrl);
     }
   };
 
-  O$.blendColors = function(colorString1, colorString2, color2Proportion) {
+  O$.blendColors = function (colorString1, colorString2, color2Proportion) {
     if (color2Proportion < 0)
       color2Proportion = 0;
     else if (color2Proportion > 1)
@@ -3560,14 +3567,14 @@ if (!window.O$) {
     return new O$.Color(colorString1).blendWith(new O$.Color(colorString2), color2Proportion).toHtmlColorString();
   };
 
-  O$.Color = function(htmlColorString) {
+  O$.Color = function (htmlColorString) {
     if (!O$.stringStartsWith(htmlColorString, "#"))
       throw "Color string should start with '#', but was: " + htmlColorString;
     this.r = parseInt(htmlColorString.substring(1, 3), 16);
     this.g = parseInt(htmlColorString.substring(3, 5), 16);
     this.b = parseInt(htmlColorString.substring(5, 7), 16);
 
-    this.toHtmlColorString = function() {
+    this.toHtmlColorString = function () {
       function intTo2DigitHex(intValue) {
         var str = intValue.toString(16);
         if (str.length < 2)
@@ -3578,7 +3585,7 @@ if (!window.O$) {
       return "#" + intTo2DigitHex(this.r) + intTo2DigitHex(this.g) + intTo2DigitHex(this.b);
     };
 
-    this.blendWith = function(anotherColor, anotherColorPortion) {
+    this.blendWith = function (anotherColor, anotherColorPortion) {
       function blendValues(val1, val2, val2Portion) {
         return Math.round(val1 + (val2 - val1) * val2Portion);
       }
@@ -3591,11 +3598,11 @@ if (!window.O$) {
 
   };
 
-  O$.getOpacityLevel = function(element) {
+  O$.getOpacityLevel = function (element) {
     return element._of_opacity !== undefined ? element._of_opacity : 1;
   };
 
-  O$.setOpacityLevel = function(element, opacity) {
+  O$.setOpacityLevel = function (element, opacity) {
     if (opacity < 0)
       opacity = 0;
     else if (opacity > 1)
@@ -3617,7 +3624,7 @@ if (!window.O$) {
   /*
    Ensures that z-index of the specified element is greater than that of the specified reference element.
    */
-  O$.correctElementZIndex = function(element, referenceElement, zIndexIncrement) {
+  O$.correctElementZIndex = function (element, referenceElement, zIndexIncrement) {
     if (!referenceElement)
       return;
     if (zIndexIncrement === undefined)
@@ -3642,22 +3649,22 @@ if (!window.O$) {
    Ensures that z-index of the specified element is greater than that of the specified for container element.
    IMPORTANT! to use this method you must be sure that containerElement is the parent node of the element by itself
    */
-  O$.correctElementZIndexOptimized = function(element, containerElement, zIndexIncrement) {
+  O$.correctElementZIndexOptimized = function (element, containerElement, zIndexIncrement) {
     if (!containerElement)
       return;
     if (zIndexIncrement === undefined)
       zIndexIncrement = 1;
-   /*TODO: check for what calls / situations this needed
-    if (containerElement && (element.offsetParent == O$.getDefaultAbsolutePositionParent())) {
-      var ref = containerElement;
-      var elt = ref;
-      while (elt && elt.offsetParent && elt.offsetParent != element.offsetParent) {
-        elt = elt.offsetParent;
-        if (O$.getElementStyle(elt, "position") != "static")
-          ref = elt;
-      }
-      containerElement = ref;
-    }*/
+    /*TODO: check for what calls / situations this needed
+     if (containerElement && (element.offsetParent == O$.getDefaultAbsolutePositionParent())) {
+     var ref = containerElement;
+     var elt = ref;
+     while (elt && elt.offsetParent && elt.offsetParent != element.offsetParent) {
+     elt = elt.offsetParent;
+     if (O$.getElementStyle(elt, "position") != "static")
+     ref = elt;
+     }
+     containerElement = ref;
+     }*/
     var zIndex = O$.getElementZIndex(element);
     var refZIndex = containerElement._maxZIndex ? containerElement._maxZIndex : O$.getNumericElementStyle(containerElement, "z-index");
     if (zIndex <= refZIndex)
@@ -3669,7 +3676,7 @@ if (!window.O$) {
    Calculates z-index for the specified element, or if it is not a positioned element itself,
    returns z-index of the nearest parent containing block if it exists, otherwise returns the default z-index of 0.
    */
-  O$.getElementZIndex = function(element) {
+  O$.getElementZIndex = function (element) {
     var container = O$.getContainingBlock(element);
     if (!container)
       return 0;
@@ -3677,7 +3684,7 @@ if (!window.O$) {
     return zIndex;
   };
 
-  O$.getContainingBlock = function(element, ignoreThisElement) {
+  O$.getContainingBlock = function (element, ignoreThisElement) {
     for (var el = !ignoreThisElement ? element : element.parentNode; el; el = el.parentNode) {
       if (O$.isContainingBlock(el))
         return el;
@@ -3687,7 +3694,7 @@ if (!window.O$) {
 
   // ----------------- DATE/TIME UTILITIES ---------------------------------------------------
 
-  O$.initDateTimeFormatObject = function(months, shortMonths, days, shortDays, localeStr) {
+  O$.initDateTimeFormatObject = function (months, shortMonths, days, shortDays, localeStr) {
     if (!this._dateTimeFormatMap) this._dateTimeFormatMap = [];
     if (!this._dateTimeFormatLocales) this._dateTimeFormatLocales = [];
 
@@ -3698,13 +3705,13 @@ if (!window.O$) {
 
   };
 
-  O$.getDateTimeFormatObject = function(locale) {
+  O$.getDateTimeFormatObject = function (locale) {
     if (this._dateTimeFormatMap)
       return this._dateTimeFormatMap[locale];
     return null;
   };
 
-  O$.parseDateTime = function(str) {
+  O$.parseDateTime = function (str) {
     var fields = str.split(" ");
     var dateStr = fields[0];
     var timeStr = fields[1];
@@ -3716,7 +3723,7 @@ if (!window.O$) {
     return date;
   };
 
-  O$.parseTime = function(timeStr, destDate) {
+  O$.parseTime = function (timeStr, destDate) {
     if (!destDate)
       destDate = new Date();
     var timeFields = timeStr.split(":");
@@ -3727,7 +3734,7 @@ if (!window.O$) {
 
   };
 
-  O$.formatDateTime = function(date) {
+  O$.formatDateTime = function (date) {
     if (!date)
       return "";
     var dtf = O$.getDateTimeFormatObject(this._dateTimeFormatLocales[0]);
@@ -3736,7 +3743,7 @@ if (!window.O$) {
     return str;
   };
 
-  O$.formatTime = function(date) {
+  O$.formatTime = function (date) {
     if (!date)
       return "";
     var hours = date.getHours();
@@ -3748,7 +3755,7 @@ if (!window.O$) {
 
   // ----------------- ABSOLUTE POSITIONING / METRICS UTILITIES ---------------------------------------------------
 
-  O$.getDefaultAbsolutePositionParent = function() {
+  O$.getDefaultAbsolutePositionParent = function () {
     var prnt = document.forms[0];
     if (prnt)
       prnt = prnt.parent;
@@ -3760,7 +3767,7 @@ if (!window.O$) {
     return prnt;
   };
 
-  O$.createAbsolutePositionedElement = function(parent) {
+  O$.createAbsolutePositionedElement = function (parent) {
     var elt = document.createElement("div");
     elt.style.position = "absolute";
     if (!parent)
@@ -3769,15 +3776,15 @@ if (!window.O$) {
     return elt;
   };
 
-    /*
-    This function fixes the use-case when components such as DropDownField, need to move their own pop-up component out
-    of their own markup into the "default absolute position parent" element. Then, when such component is reloaded with
-    Ajax, the previous "moved out" pop-up remains intact although it's "owner" component is dismissed during reloading
-    and replaced with the new one with its own new pop-up. As a result there is two pop-ups, and they usually have an
-    equal id, which causes some problems (see for example OF-66). So this method just helps such components to remove
-    the old copy before locating the new popup by id.
-     */
-  O$.removeRelocatedPopupIfExists = function(popupId) {
+  /*
+   This function fixes the use-case when components such as DropDownField, need to move their own pop-up component out
+   of their own markup into the "default absolute position parent" element. Then, when such component is reloaded with
+   Ajax, the previous "moved out" pop-up remains intact although it's "owner" component is dismissed during reloading
+   and replaced with the new one with its own new pop-up. As a result there is two pop-ups, and they usually have an
+   equal id, which causes some problems (see for example OF-66). So this method just helps such components to remove
+   the old copy before locating the new popup by id.
+   */
+  O$.removeRelocatedPopupIfExists = function (popupId) {
     var dapp = O$.getDefaultAbsolutePositionParent();
     var potentialPopups = dapp.childNodes;
     for (var i = 0, count = potentialPopups.length; i < count; i++) {
@@ -3792,7 +3799,7 @@ if (!window.O$) {
    O$.calculateNumericStyleProperty doesn't work when calculating margin on a table under Mozilla 2 for some reason,
    so here's an alternative implementation that works for this case.
    */
-  O$.calculateMozillaMargins = function(element) {
+  O$.calculateMozillaMargins = function (element) {
     var styleClassProperties = {};
     styleClassProperties = O$.getStyleClassProperties(
             element.className, ["marginLeft", "marginRight", "marginTop", "marginBottom"]);
@@ -3804,7 +3811,7 @@ if (!window.O$) {
     marginRight = Math.max(marginRight, O$.calculateNumericCSSValue(element.style.marginRight));
     marginTop = Math.max(marginTop, O$.calculateNumericCSSValue(element.style.marginTop));
     marginBottom = Math.max(marginBottom, O$.calculateNumericCSSValue(element.style.marginBottom));
-    return {marginLeft: marginLeft, marginRight: marginRight, marginTop: marginTop, marginBottom: marginBottom};
+    return {marginLeft:marginLeft, marginRight:marginRight, marginTop:marginTop, marginBottom:marginBottom};
   };
 
   /*
@@ -3825,7 +3832,7 @@ if (!window.O$) {
 
    See also: O$.setElementPos, O$.getElementBorderRectangle, O$.setElementBorderRectangle.
    */
-  O$.getElementPos = function(element, relativeToContainingBlock) {
+  O$.getElementPos = function (element, relativeToContainingBlock) {
     var left, top;
 
     if (element.getBoundingClientRect) {
@@ -3857,13 +3864,13 @@ if (!window.O$) {
           }
         }
       }
-      return {x: left, y: top};
+      return {x:left, y:top};
     }
 
     if (relativeToContainingBlock && relativeToContainingBlock !== true) {
       var pos = O$.getElementPos(element);
       var containerPos = O$.getElementPos(relativeToContainingBlock.offsetParent);
-      return {x: pos.x - containerPos.x, y: pos.y - containerPos.y};
+      return {x:pos.x - containerPos.x, y:pos.y - containerPos.y};
     }
 
     left = top = 0;
@@ -3959,10 +3966,10 @@ if (!window.O$) {
 
       element = offsetParent;
     }
-    return {x: left, y: top};
+    return {x:left, y:top};
   };
 
-  O$.getCuttingContainingRectangle = function(element, cachedDataContainer) {
+  O$.getCuttingContainingRectangle = function (element, cachedDataContainer) {
     var left, right, top, bottom;
 
     var position = O$.getElementStyle(element, "position", true);
@@ -3998,7 +4005,7 @@ if (!window.O$) {
     return result;
   };
 
-  O$.getVisibleElementBorderRectangle = function(element, relativeToContainingBlock, cachedDataContainer) {
+  O$.getVisibleElementBorderRectangle = function (element, relativeToContainingBlock, cachedDataContainer) {
     var rect = O$.getElementBorderRectangle(element, relativeToContainingBlock, cachedDataContainer);
     var cuttingRect = O$.getCuttingContainingRectangle(element, cachedDataContainer);
     if (relativeToContainingBlock) {
@@ -4031,7 +4038,7 @@ if (!window.O$) {
 
    See also: O$.setElementBorderRectangle, O$.getElementPos, O$.setElementPos.
    */
-  O$.getElementBorderRectangle = function(element, relativeToContainingBlock, cachedDataContainer) {
+  O$.getElementBorderRectangle = function (element, relativeToContainingBlock, cachedDataContainer) {
     if (cachedDataContainer) {
       if (!element._of_getElementRectangle)
         element._of_getElementRectangle = {};
@@ -4048,7 +4055,7 @@ if (!window.O$) {
     return rect;
   };
 
-  O$.getElementSize = function(element) {
+  O$.getElementSize = function (element) {
     var width = element.offsetWidth;
     var height = element.offsetHeight;
     // Mozilla 2.0.x strict reports margins on tables to be part of table when measuring it with offsetXXX attributes
@@ -4057,29 +4064,29 @@ if (!window.O$) {
       width -= margins.marginLeft + margins.marginRight;
       height -= margins.marginTop + margins.marginBottom;
     }
-    return {width: width, height: height};
+    return {width:width, height:height};
   };
 
   //Added this methods according to slow calculating of offsetWidth and Height under IE 8
-  O$.getElementWidth = function(element) {
+  O$.getElementWidth = function (element) {
     var width = element.offsetWidth;
-    if (O$.isMozillaFF2() && O$.isStrictMode() && element.tagName && element.tagName.toLowerCase() == "table"){
+    if (O$.isMozillaFF2() && O$.isStrictMode() && element.tagName && element.tagName.toLowerCase() == "table") {
       var margins = O$.calculateMozillaMargins(element);
       width -= margins.marginLeft + margins.marginRight;
     }
     return width;
   }
   //Added this methods according to slow calculating of offsetWidth and Height under IE 8
-  O$.getElementHeight = function(element) {
+  O$.getElementHeight = function (element) {
     var height = element.offsetHeight;
-    if (O$.isMozillaFF2() && O$.isStrictMode() && element.tagName && element.tagName.toLowerCase() == "table"){
+    if (O$.isMozillaFF2() && O$.isStrictMode() && element.tagName && element.tagName.toLowerCase() == "table") {
       var margins = O$.calculateMozillaMargins(element);
       height -= margins.marginTop + margins.marginBottom;
     }
     return height;
   }
 
-  O$.getElementPaddingRectangle = function(element, relativeToContainingBlock, cachedDataContainer) {
+  O$.getElementPaddingRectangle = function (element, relativeToContainingBlock, cachedDataContainer) {
     var rect = O$.getElementBorderRectangle(element, relativeToContainingBlock, cachedDataContainer);
     var borderLeftWidth = O$.getNumericElementStyle(element, "border-left-width");
     var borderRightWidth = O$.getNumericElementStyle(element, "border-right-width");
@@ -4092,7 +4099,7 @@ if (!window.O$) {
     return rect;
   };
 
-  O$.getElementClientRectangle = function(element, relativeToContainingBlock, cachedDataContainer) {
+  O$.getElementClientRectangle = function (element, relativeToContainingBlock, cachedDataContainer) {
     var rect = O$.getElementPaddingRectangle(element, relativeToContainingBlock, cachedDataContainer);
     rect.width = element.clientWidth;
     rect.height = element.clientHeight;
@@ -4106,12 +4113,12 @@ if (!window.O$) {
 
    See also: O$.getElementPos, O$.getElementBorderRectangle, O$.setElementBorderRectangle.
    */
-  O$.setElementPos = function(element, pos) {
+  O$.setElementPos = function (element, pos) {
     element.style.left = pos.x + "px";
     element.style.top = pos.y + "px";
   };
 
-  O$.setElementSize = function(element, size, _paddingsHaveBeenReset) {
+  O$.setElementSize = function (element, size, _paddingsHaveBeenReset) {
     var width = size.width;
     var height = size.height;
 
@@ -4143,7 +4150,7 @@ if (!window.O$) {
       element.style.height = height + "px";
   };
 
-  O$._setElementWidthOrHeight = function(element, property, edge1Property, edge2Property, value, hundredPercentValue, _paddingsHaveBeenReset) {
+  O$._setElementWidthOrHeight = function (element, property, edge1Property, edge2Property, value, hundredPercentValue, _paddingsHaveBeenReset) {
     var valueParam = value;
 
     // hundredPercentValue is required to handle percent-based paddings in O$.getNumericElementStyle
@@ -4152,8 +4159,8 @@ if (!window.O$) {
     if (element.nodeName.toLowerCase() != "table") {
       if (!O$.isExplorer() || O$.isStrictMode()) {
         if (value != null) {
-            value -= O$.getNumericElementStyle(element, "padding-" + edge1Property, false, hundredPercentValue) + O$.getNumericElementStyle(element, "padding-" + edge2Property, false, hundredPercentValue);
-            value -= O$.getNumericElementStyle(element, "border-" + edge1Property + "-width", false, hundredPercentValue) + O$.getNumericElementStyle(element, "border-" + edge2Property + "-width", false, hundredPercentValue);
+          value -= O$.getNumericElementStyle(element, "padding-" + edge1Property, false, hundredPercentValue) + O$.getNumericElementStyle(element, "padding-" + edge2Property, false, hundredPercentValue);
+          value -= O$.getNumericElementStyle(element, "border-" + edge1Property + "-width", false, hundredPercentValue) + O$.getNumericElementStyle(element, "border-" + edge2Property + "-width", false, hundredPercentValue);
         }
       }
     }
@@ -4174,11 +4181,11 @@ if (!window.O$) {
       }
   };
 
-  O$.setElementWidth = function(element, value, hundredPercentValue) {
+  O$.setElementWidth = function (element, value, hundredPercentValue) {
     O$._setElementWidthOrHeight(element, "width", "left", "right", value, hundredPercentValue);
   };
 
-  O$.setElementHeight = function(element, value, hundredPercentValue) {
+  O$.setElementHeight = function (element, value, hundredPercentValue) {
     O$._setElementWidthOrHeight(element, "height", "top", "bottom", value, hundredPercentValue);
   };
 
@@ -4189,16 +4196,16 @@ if (!window.O$) {
 
    See also: O$.getElementBorderRectangle, O$.getElementPos, O$.setElementPos.
    */
-  O$.setElementBorderRectangle = function(element, rect) {
-    O$.setElementSize(element, {width: rect.width, height: rect.height});
-    O$.setElementPos(element, {x: rect.x, y: rect.y});
+  O$.setElementBorderRectangle = function (element, rect) {
+    O$.setElementSize(element, {width:rect.width, height:rect.height});
+    O$.setElementPos(element, {x:rect.x, y:rect.y});
   };
 
   /**
    * Introduced according to CSS spec http://www.w3.org/TR/REC-CSS2/visudet.html#containing-block-details
    * See JSFC-2045 Popups displayed incorrectly under JBoss Portal
    */
-  O$.isContainingBlock = function(elt) {
+  O$.isContainingBlock = function (elt) {
     O$.assert(elt, "elt is null");
     if (elt._containingBlock != undefined) return elt._containingBlock;
     if (elt == document) {
@@ -4212,7 +4219,7 @@ if (!window.O$) {
   };
 
 
-  O$.getVisibleAreaSize = function() {
+  O$.getVisibleAreaSize = function () {
     var width = 0, height = 0;
     if (O$.isMozillaFF()) {
       if (O$.isQuirksMode()) {
@@ -4235,26 +4242,26 @@ if (!window.O$) {
       width = document.body.clientWidth;
       height = document.body.clientHeight;
     }
-    return {width : width, height : height};
+    return {width:width, height:height};
   };
 
-  O$.getDocumentSize = function() {
+  O$.getDocumentSize = function () {
     var width = Math.max(
             document.body.clientWidth, document.documentElement.clientWidth,
-						document.body.scrollWidth, document.documentElement.scrollWidth,
-						document.body.offsetWidth, document.documentElement.offsetWidth
-					);
+            document.body.scrollWidth, document.documentElement.scrollWidth,
+            document.body.offsetWidth, document.documentElement.offsetWidth
+    );
     var height = Math.max(
-						document.body.clientHeight, document.documentElement.clientHeight,
-						document.body.scrollHeight, document.documentElement.scrollHeight,
-						document.body.offsetHeight, document.documentElement.offsetHeight
-					);
+            document.body.clientHeight, document.documentElement.clientHeight,
+            document.body.scrollHeight, document.documentElement.scrollHeight,
+            document.body.offsetHeight, document.documentElement.offsetHeight
+    );
 
-    return {width : width, height : height};
+    return {width:width, height:height};
   };
 
 
-  O$.getVisibleAreaRectangle = function() {
+  O$.getVisibleAreaRectangle = function () {
     var pageScrollPos = O$.getPageScrollPos();
     var x = pageScrollPos.x;
     var y = pageScrollPos.y;
@@ -4264,7 +4271,7 @@ if (!window.O$) {
     return new O$.Rectangle(x, y, width, height);
   };
 
-  O$.getDocumentRectangle = function() {
+  O$.getDocumentRectangle = function () {
     var documentSize = O$.getDocumentSize();
     return new O$.Rectangle(0, 0, documentSize.width, documentSize.height);
   };
@@ -4273,7 +4280,7 @@ if (!window.O$) {
     var scrollingOccurred = false;
     var elements = element instanceof Array ? element : [element];
     var rect;
-    elements.forEach(function(el) {
+    elements.forEach(function (el) {
       if (!rect)
         rect = O$.getElementBorderRectangle(el);
       else
@@ -4339,7 +4346,7 @@ if (!window.O$) {
     return scrollingOccurred;
   };
 
-  O$.scrollRectIntoView = function(rect) {
+  O$.scrollRectIntoView = function (rect) {
     var visibleRect = O$.getVisibleAreaRectangle();
     var dx = 0;
     if (rect.getMinX() < visibleRect.getMinX())
@@ -4363,7 +4370,7 @@ if (!window.O$) {
     window.scrollBy(dx, dy);
   };
 
-  O$.getScrollPos = function(scrollableComponent) {
+  O$.getScrollPos = function (scrollableComponent) {
     var x = 0;
     var y = 0;
 
@@ -4377,10 +4384,10 @@ if (!window.O$) {
       x = scrollableComponent.scrollLeft;
     }
 
-    return {x: x, y: y};
+    return {x:x, y:y};
   };
 
-  O$.getPageScrollPos = function() {
+  O$.getPageScrollPos = function () {
     var x = 0;
     var y = 0;
     if (typeof( window.pageYOffset ) == "number") {
@@ -4393,14 +4400,14 @@ if (!window.O$) {
       y = document.documentElement.scrollTop;
       x = document.documentElement.scrollLeft;
     }
-    return {x: x, y: y};
+    return {x:x, y:y};
   };
 
-  O$.setPageScrollPos = function(scrollPos) {
+  O$.setPageScrollPos = function (scrollPos) {
     window.scrollTo(scrollPos.x, scrollPos.y);
   };
 
-  O$.isCursorOverElement = function(event, element) {
+  O$.isCursorOverElement = function (event, element) {
     var evt = O$.getEvent(event);
     if (!element ||
             !O$.isElementPresentInDocument(element) ||
@@ -4411,7 +4418,7 @@ if (!window.O$) {
     return rect.containsPoint(cursorPos.x, cursorPos.y);
   };
 
-  O$.getNumericElementStyle = function(element, propertyName, enableValueCaching, hundredPercentValue) {
+  O$.getNumericElementStyle = function (element, propertyName, enableValueCaching, hundredPercentValue) {
     var capitalizedPropertyName = O$._capitalizeCssPropertyName(propertyName);
     if (O$.stringStartsWith(capitalizedPropertyName, "border") && O$.stringEndsWith(capitalizedPropertyName, "Width")) {
       var borderName = capitalizedPropertyName.substring(0, capitalizedPropertyName.length - "Width".length);
@@ -4431,7 +4438,7 @@ if (!window.O$) {
     return result;
   };
 
-  O$.getIndentData = function(element, indentDelta) {
+  O$.getIndentData = function (element, indentDelta) {
     var indent = {};
 
     if (indentDelta.marginLeft) {
@@ -4446,7 +4453,7 @@ if (!window.O$) {
     return indent;
   };
 
-  O$.calculateNumericCSSValue = function(value, hundredPercentValue) {
+  O$.calculateNumericCSSValue = function (value, hundredPercentValue) {
     if (!value)
       return 0;
     if (!isNaN(1 * value))
@@ -4473,7 +4480,7 @@ if (!window.O$) {
     return pixelValue;
   };
 
-  O$.calculateLineWidth = function(lineStyleStr) {
+  O$.calculateLineWidth = function (lineStyleStr) {
     if (!lineStyleStr)
       return 0;
     if (!window._of_lineWidthValueMeasurements)
@@ -4515,7 +4522,7 @@ if (!window.O$) {
   O$.BELOW = "below";
 
 
-  O$.alignPopupByPoint = function(popup, x, y, horizAlignment, vertAlignment) {
+  O$.alignPopupByPoint = function (popup, x, y, horizAlignment, vertAlignment) {
     O$.alignPopupByElement(popup, new O$.Rectangle(x, y, 0, 0), horizAlignment, vertAlignment);
   };
   /**
@@ -4533,10 +4540,7 @@ if (!window.O$) {
    * @param disableRepositioning
    * @param repositioningAttempt
    */
-  O$.alignPopupByElement = function(
-          popup, element, horizAlignment, vertAlignment,
-          horizDistance, vertDistance, ignoreVisibleArea,
-          disableRepositioning, repositioningAttempt) {
+  O$.alignPopupByElement = function (popup, element, horizAlignment, vertAlignment, horizDistance, vertDistance, ignoreVisibleArea, disableRepositioning, repositioningAttempt) {
     if (!horizAlignment) horizAlignment = O$.LEFT;
     if (!vertAlignment) vertAlignment = O$.BELOW;
     if (!horizDistance) horizDistance = 0;
@@ -4544,7 +4548,7 @@ if (!window.O$) {
     horizDistance = O$.calculateNumericCSSValue(horizDistance);
     vertDistance = O$.calculateNumericCSSValue(vertDistance);
 
-    var elementRect = function() {
+    var elementRect = function () {
       if (element instanceof O$.Rectangle)
         return element;
       if (element != window)
@@ -4646,23 +4650,23 @@ if (!window.O$) {
       popup.setLeft(x);
       popup.setTop(y);
     } else {
-      O$.setElementPos(popup, {x: x, y: y});
+      O$.setElementPos(popup, {x:x, y:y});
     }
     if (repositioningAttempt)
       return true;
   };
 
-  O$.isAlignmentInsideOfElement = function(horizAlignment, vertAlignment) {
+  O$.isAlignmentInsideOfElement = function (horizAlignment, vertAlignment) {
     var insideHorizontally = horizAlignment == O$.LEFT || horizAlignment == O$.CENTER || horizAlignment == O$.RIGHT;
     var insideVertically = vertAlignment == O$.TOP || vertAlignment == O$.CENTER || vertAlignment == O$.BOTTOM;
     return insideHorizontally && insideVertically;
   };
 
-  O$.isAlignmentInTail = function(vertAlignment) {
+  O$.isAlignmentInTail = function (vertAlignment) {
     return vertAlignment == O$.BOTTOM || vertAlignment == O$.BELOW;
   };
 
-  O$.fixInputsWidthStrict = function(container) {
+  O$.fixInputsWidthStrict = function (container) {
     if (!O$.isStrictMode())
       return;
 
@@ -4700,7 +4704,7 @@ if (!window.O$) {
       processInput(inputs[i]);
     }
     var textAreas = container.getElementsByTagName("textarea");
-    for (i = 0,count = textAreas.length; i < count; i++) {
+    for (i = 0, count = textAreas.length; i < count; i++) {
       processInput(textAreas[i]);
     }
 
@@ -4711,7 +4715,7 @@ if (!window.O$) {
   O$._controlsToHide = O$.isExplorer() ? ["select-one", "select-multiple"] : null;
   O$._controlsHiddenControlsMap = {};
 
-  O$.walkControlsToHide = function(popup, runFunction) {
+  O$.walkControlsToHide = function (popup, runFunction) {
     if (popup._coveredControls) {
       for (var i = 0; i < popup._coveredControls.length; i++) {
         var control = popup._coveredControls[i];
@@ -4720,7 +4724,7 @@ if (!window.O$) {
     }
   };
 
-  O$.initIETransparencyWorkaround = function(popup) {
+  O$.initIETransparencyWorkaround = function (popup) {
     if (!O$.isExplorer6())
       return;
     popup._requireTransparencyWorkaround = true;
@@ -4737,7 +4741,7 @@ if (!window.O$) {
     iframe.style.filter = "progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=0)";
     // to support transparency of the popup itself
 
-    iframe._updatePositionAndSize = function() {
+    iframe._updatePositionAndSize = function () {
       if (this.parentNode != popup.parentNode) {
         popup.parentNode.appendChild(this);
       }
@@ -4760,7 +4764,7 @@ if (!window.O$) {
     popup._preCreatedIETransparencyControl = iframe;
   };
 
-  O$.addIETransparencyControl = function(popup) {
+  O$.addIETransparencyControl = function (popup) {
     if (!popup._requireTransparencyWorkaround)
       return;
     if (popup._ieTransparencyControl) {
@@ -4776,7 +4780,7 @@ if (!window.O$) {
     popup._ieTransparencyControl = iframe;
   };
 
-  O$.removeIETransparencyControl = function(popup) {
+  O$.removeIETransparencyControl = function (popup) {
     if (!popup._requireTransparencyWorkaround || !popup._ieTransparencyControl)
       return;
 
@@ -4784,19 +4788,19 @@ if (!window.O$) {
     popup._ieTransparencyControl = undefined;
   };
 
-  O$.isVisible = function(element) {
+  O$.isVisible = function (element) {
     return element && O$.getElementStyle(element, "display") != "none" && O$.getElementStyle(element, "visibility") != "hidden";
     // todo: check floatingIconMessage behavior in different browsers before reusing this function for O$.isInvisible implementation
   };
 
-  O$.isInvisible = function(element) {
+  O$.isInvisible = function (element) {
     if (!element.style) {
       return false;
     }
     return element.style.display == "none" || element.style.visibility == "hidden";
   };
 
-  O$.isVisibleRecursive = function(element) {
+  O$.isVisibleRecursive = function (element) {
     if (!O$.isVisible(element))
       return false;
 
@@ -4810,7 +4814,7 @@ if (!window.O$) {
 
   // ----------------- EFFECTS ---------------------------------------------------
 
-  O$.getInterpolatedValue = function(value1, value2, value2Proportion) {
+  O$.getInterpolatedValue = function (value1, value2, value2Proportion) {
     // handle numbers
     if (!isNaN(1 * value1) && !isNaN(1 * value2))
       return value1 + (value2 - value1) * value2Proportion;
@@ -4822,8 +4826,8 @@ if (!window.O$) {
     // handle points
     if (typeof value1 === "object" && value1 != null && value1.x !== undefined && value1.width === undefined)
       return {
-        x: O$.getInterpolatedValue(value1.x, value2.x, value2Proportion),
-        y: O$.getInterpolatedValue(value1.y, value2.y, value2Proportion)};
+        x:O$.getInterpolatedValue(value1.x, value2.x, value2Proportion),
+        y:O$.getInterpolatedValue(value1.y, value2.y, value2Proportion)};
 
     // handle rectangles
     if (typeof value1 === "object" && value1 != null && value1.width !== undefined)
@@ -4832,7 +4836,7 @@ if (!window.O$) {
               O$.getInterpolatedValue(value1.y, value2.y, value2Proportion),
               O$.getInterpolatedValue(value1.width, value2.width, value2Proportion),
               O$.getInterpolatedValue(value1.height, value2.height, value2Proportion)
-              );
+      );
 
     // the rest is treated as CSS units such as px, cm, etc.
     value1 = O$.calculateNumericCSSValue(value1);
@@ -4844,7 +4848,7 @@ if (!window.O$) {
    Similar to O$.calculateElementStyleProperty, but it supports some "pseudo" properties for the sake of simplicity and
    portability, such as element's opacity, position, rectangle, etc.
    */
-  O$.getElementEffectProperty = function(element, property) {
+  O$.getElementEffectProperty = function (element, property) {
     if (property == "opacity")
       return O$.getOpacityLevel(element);
     if (property == "position")
@@ -4859,7 +4863,7 @@ if (!window.O$) {
       return O$.getElementStyle(element, property);
   };
 
-  O$.setElementEffectProperty = function(element, property, value) {
+  O$.setElementEffectProperty = function (element, property, value) {
     if (property == "opacity")
       O$.setOpacityLevel(element, value);
     else if (property == "position")
@@ -4874,13 +4878,13 @@ if (!window.O$) {
       element.style[property] = value;
   };
 
-  O$.runTransitionEffect = function(element, propertyNames, newValues, transitionPeriod, updateInterval, events) {
+  O$.runTransitionEffect = function (element, propertyNames, newValues, transitionPeriod, updateInterval, events) {
     if (transitionPeriod === undefined || transitionPeriod < 0)
       transitionPeriod = 0;
     if (!updateInterval)
       updateInterval = 40;
     var initialValues = {};
-    if (! (propertyNames instanceof Array)) {
+    if (!(propertyNames instanceof Array)) {
       propertyNames = [propertyNames];
       if (newValues instanceof Array) throw "newValues must be a single value (not an array) in case when propertyNames is not an array";
       newValues = [newValues];
@@ -4891,13 +4895,13 @@ if (!window.O$) {
     var startTime = new Date().getTime();
     var endTime = startTime + transitionPeriod;
     var transition = {
-      active: true,
-      propertyValues: {},
-      completionProportion: 0,
-      getValueForCompletionProportion: function(propertyName, proportion) {
+      active:true,
+      propertyValues:{},
+      completionProportion:0,
+      getValueForCompletionProportion:function (propertyName, proportion) {
         return O$.getInterpolatedValue(initialValues[propertyName], newValues[propertyName], proportion);
       },
-      update: function(forceProportion) {
+      update:function (forceProportion) {
         var time = new Date().getTime();
         var timeElapsed = time - startTime;
         this.completionProportion = forceProportion === undefined ? timeElapsed / (endTime - startTime) : forceProportion;
@@ -4920,7 +4924,7 @@ if (!window.O$) {
         if (this.onupdate)
           this.onupdate();
       },
-      stop: function(forceCompletionProportion) {
+      stop:function (forceCompletionProportion) {
         if (!this.active)
           return;
         this.active = false;
@@ -4935,7 +4939,7 @@ if (!window.O$) {
         if (this.onstop)
           this.onstop();
       },
-      intervalId: setInterval(function() {
+      intervalId:setInterval(function () {
         transition.update();
         if (transition.completionProportion == 1) {
           transition.stop();
@@ -4963,15 +4967,15 @@ if (!window.O$) {
     return transition;
   };
 
-  O$.fixElement = function(element, properties, workingCondition, events, interval) {
+  O$.fixElement = function (element, properties, workingCondition, events, interval) {
     if (!interval)
       interval = 200;
     var fixture = {
-      values: {},
-      update: function() {
+      values:{},
+      update:function () {
         var elements = element instanceof Array ? element : [element];
         if (
-                !elements.every(function(el) {
+                !elements.every(function (el) {
                   return O$.isElementPresentInDocument(el);
                 }) ||
                         (workingCondition && !workingCondition())
@@ -4985,7 +4989,7 @@ if (!window.O$) {
           if (this.values[propertyName] != propertyValue) {
             this.values[propertyName] = propertyValue;
             if (element instanceof Array)
-              element.forEach(function(el) {
+              element.forEach(function (el) {
                 O$.setElementEffectProperty(el, propertyName, propertyValue);
               });
             else
@@ -4996,11 +5000,11 @@ if (!window.O$) {
           }
         }
       },
-      intervalId: setInterval(function() {
+      intervalId:setInterval(function () {
         fixture.update();
       }, interval),
 
-      release: function() {
+      release:function () {
         clearInterval(this.intervalId);
       }
     };
@@ -5010,7 +5014,7 @@ if (!window.O$) {
     return fixture;
   };
 
-  O$.listenProperty = function(element, propertyNames, listenerFunction, notifiers) {
+  O$.listenProperty = function (element, propertyNames, listenerFunction, notifiers) {
     if (!(propertyNames instanceof Array))
       propertyNames = [propertyNames];
     if (!notifiers)
@@ -5018,15 +5022,15 @@ if (!window.O$) {
     if (!(notifiers instanceof Array))
       notifiers = [notifiers];
     var listener = {
-      values: {},
-      update: function() {
+      values:{},
+      update:function () {
         if (!O$.isElementPresentInDocument(element)) {
           this.release();
           return;
         }
         var changed = false;
         var currentValues = [];
-        propertyNames.forEach(function(propertyName) {
+        propertyNames.forEach(function (propertyName) {
           var propertyValue = O$.getElementEffectProperty(element, propertyName);
           currentValues.push(propertyValue);
           if (listener.values[propertyName] != propertyValue) {
@@ -5038,14 +5042,14 @@ if (!window.O$) {
           listenerFunction.apply(null, currentValues);
       },
 
-      release: function() {
-        notifiers.forEach(function(n) {
+      release:function () {
+        notifiers.forEach(function (n) {
           n.release();
         });
       }
     };
-    notifiers.forEach(function(n) {
-      n.addListener(function() {
+    notifiers.forEach(function (n) {
+      n.addListener(function () {
         listener.update();
       });
       if (n.setActive) n.setActive(true);
@@ -5057,7 +5061,7 @@ if (!window.O$) {
   };
 
   O$.EventListener = O$.createClass(null, {
-    constructor: function(element, eventName, listener) {
+    constructor:function (element, eventName, listener) {
       this._element = element;
       this._eventName = eventName;
       this._listeners = [];
@@ -5068,29 +5072,29 @@ if (!window.O$) {
         eventListener._dispatchNotifications(evt);
       });
     },
-    _dispatchNotifications: function(evt) {
+    _dispatchNotifications:function (evt) {
       var eventListener = this;
-      this._listeners.forEach(function(listener) {
+      this._listeners.forEach(function (listener) {
         listener(evt, eventListener);
       });
     },
-    addListener: function(listener) {
+    addListener:function (listener) {
       this.removeListener(listener);
       this._listeners.push(listener);
     },
-    removeListener: function(listener) {
+    removeListener:function (listener) {
       var idx = this._listeners.indexOf(listener);
       if (idx == -1) return;
       this._listeners = this._listeners.slice(idx, 1);
     },
-    release: function() {
+    release:function () {
       O$.removeEventHandler(this._element, this._eventName, this.handlerOfEvent);
     }
 
   });
 
   O$.Timer = O$.createClass(null, {
-    constructor: function(period, listener) {
+    constructor:function (period, listener) {
       if (!period || period < 0)
         throw "O$.Timer constructor: period parameter must be specified with a positive value: " + period;
       this._period = period;
@@ -5098,52 +5102,52 @@ if (!window.O$) {
       this._listeners = [];
       if (listener) addListener(listener);
     },
-    addListener: function(listener) {
+    addListener:function (listener) {
       this.removeListener(listener);
       this._listeners.push(listener);
     },
-    removeListener: function(listener) {
+    removeListener:function (listener) {
       var idx = this._listeners.indexOf(listener);
       if (idx == -1) return;
       this._listeners = this._listeners.slice(idx, 1);
     },
-    start: function() {
+    start:function () {
       if (this._intervalId) return;
       var timer = this;
-      this._intervalId = setInterval(function() {
-        timer._listeners.forEach(function(listener) {
+      this._intervalId = setInterval(function () {
+        timer._listeners.forEach(function (listener) {
           listener(timer);
         });
       }, timer._period);
     },
-    stop: function() {
+    stop:function () {
       if (!this._intervalId) return;
       clearInterval(this._intervalId);
       this._intervalId = null;
     },
-    isActive: function() {
+    isActive:function () {
       return !!this._intervalId;
     },
-    setActive: function(active) {
+    setActive:function (active) {
       if (active == this.isActive()) return;
       if (active)
         this.start();
       else
         this.stop();
     },
-    release: function() {
+    release:function () {
       this.stop();
     }
   });
 
   // ----------------- COMPONENT UTILS -------------------------------------------
 
-  O$._checkDefaultCssPresence = function(attempt) {
+  O$._checkDefaultCssPresence = function (attempt) {
     if (O$._defaultCssPresenceChecked) return;
-    O$.addLoadEvent(function() {
+    O$.addLoadEvent(function () {
       var defaultCssStyleSheet = O$.findStyleSheet("default.css");
       if (!defaultCssStyleSheet && (!attempt || attempt < 5)) {
-        setTimeout(function() {
+        setTimeout(function () {
           if (!attempt) attempt = 0;
           O$._checkDefaultCssPresence(attempt + 1);
         }, 200);
@@ -5160,7 +5164,7 @@ if (!window.O$) {
    * Fixes the Prototype 1.6.0.2 conflict with the JSON2 library.
    * See http://stackoverflow.com/questions/710586/json-stringify-bizarreness
    */
-  O$.cleanUpPrototypeJsonIncompatibility = function() {
+  O$.cleanUpPrototypeJsonIncompatibility = function () {
     delete Date.prototype.toJSON;
     delete String.prototype.toJSON;
     delete Array.prototype.toJSON;
@@ -5200,7 +5204,7 @@ if (!window.O$) {
 
   O$.cleanUpPrototypeJsonIncompatibility();
 
-  O$.addLoadEvent(function() {
+  O$.addLoadEvent(function () {
     O$._loaded = true;
     O$._lowerPriorityOfDefaultCss();
     // we're repeating the O$.cleanUpPrototypeJsonIncompatibility(); call on load event to account for prototype.js
@@ -5208,10 +5212,10 @@ if (!window.O$) {
     O$.cleanUpPrototypeJsonIncompatibility();
   });
 
-  O$._submitComponentWithField = function(componentId, focusedField, additionalParams, execute) {
+  O$._submitComponentWithField = function (componentId, focusedField, additionalParams, execute) {
     var focusedFieldId = focusedField ? focusedField.id : null;
     var component = O$(componentId);
-    var focusFilterField = function() {
+    var focusFilterField = function () {
       if (!focusedFieldId)
         return;
       var field = O$(focusedFieldId);
@@ -5229,11 +5233,11 @@ if (!window.O$) {
           O$._selectTextRange(field, len, len);
       }
     };
-    O$._submitInternal(component, function() {
+    O$._submitInternal(component, function () {
       setTimeout(focusFilterField, 1);
     }, additionalParams, execute);
   };
-  O$._combineSubmissions = function(component, func) {
+  O$._combineSubmissions = function (component, func) {
     O$._startCompoundSubmission(component);
     try {
       func();
@@ -5241,29 +5245,29 @@ if (!window.O$) {
       O$._finishCompoundSubmission(component);
     }
   };
-  O$._startCompoundSubmission = function(component) {
+  O$._startCompoundSubmission = function (component) {
     if (component._compoundSubmission) throw "O$._startCompoundSubmission has already been called for " +
             "this component (id = " + component.id + ")";
     component._compoundSubmission = {
-      completionCallbacks: [],
-      additionalParams: [],
-      execute: []
+      completionCallbacks:[],
+      additionalParams:[],
+      execute:[]
     };
   };
 
-  O$._finishCompoundSubmission = function(component) {
+  O$._finishCompoundSubmission = function (component) {
     if (!component._compoundSubmission) throw "O$._finishCompoundSubmission: " +
             "O$._startCompoundSubmission hasn't been called for this component (id = " + component.id + ")";
     var submissionData = component._compoundSubmission;
     component._compoundSubmission = null;
-    O$._submitInternal(component, function() {
-      submissionData.completionCallbacks.forEach(function(callback) {
+    O$._submitInternal(component, function () {
+      submissionData.completionCallbacks.forEach(function (callback) {
         callback();
       })
     }, submissionData.additionalParams, submissionData.execute);
   };
 
-  O$._submitInternal = function(component, completionCallback, additionalParams, execute) {
+  O$._submitInternal = function (component, completionCallback, additionalParams, execute) {
     if (additionalParams && typeof additionalParams == "object" && !(additionalParams instanceof Array)) {
       var paramsAsArray = [];
       for (var paramName in additionalParams) {
@@ -5279,11 +5283,11 @@ if (!window.O$) {
       if (additionalParams) {
         var existingParams = component._compoundSubmission.additionalParams;
         var newParams = [];
-        additionalParams.forEach(function(param) {
+        additionalParams.forEach(function (param) {
           var paramName = param[0];
           var paramValue = param[1];
           var existingParamUpdated = false;
-          existingParams.forEach(function(existingParam) {
+          existingParams.forEach(function (existingParam) {
             var existingParamName = existingParam[0];
             if (paramName == existingParamName) {
               existingParam[1] = paramValue;
@@ -5312,13 +5316,13 @@ if (!window.O$) {
       O$.submitEnclosingForm(component);
     } else {
       O$.Ajax._reload([component.id], {
-        onajaxend: completionCallback,
-        params: additionalParams,
-        execute: execute});
+        onajaxend:completionCallback,
+        params:additionalParams,
+        execute:execute});
     }
   };
 
-  O$._submitAction = function(componentId, action, actionListener) {
+  O$._submitAction = function (componentId, action, actionListener) {
     var c = O$(componentId);
     if (!c)
       c = document.forms[0];
@@ -5334,16 +5338,16 @@ if (!window.O$) {
     O$.submitWithParams(c, params);
   };
 
-  O$._initAction = function(id, action, actionListener) {
+  O$._initAction = function (id, action, actionListener) {
     function initComponent() {
       var component = O$(id);
       if (!component) {
-        setTimeout(function() {
+        setTimeout(function () {
           initComponent();
         }, 100);
         return;
       }
-      component.run = function() {
+      component.run = function () {
         O$._submitAction(id, action, actionListener);
       };
     }
@@ -5351,33 +5355,33 @@ if (!window.O$) {
     if (O$(id))
       initComponent();
     else
-      setTimeout(function() {
+      setTimeout(function () {
         if (O$(id))
           initComponent();
         else
-          O$.addLoadEvent(function() {
+          O$.addLoadEvent(function () {
             initComponent();
           });
       }, 1);
   };
 
-  O$.initUnloadableComponent = function(component) {
+  O$.initUnloadableComponent = function (component) {
     if (!component.onComponentUnload) {
       O$.addThisComponentToAllParents(component);
-      component.onComponentUnload = function() {
+      component.onComponentUnload = function () {
         O$.unloadAllHandlersAndEvents(component);
       }
     }
   };
 
-  O$.addUnloadHandler = function(component, func) {
+  O$.addUnloadHandler = function (component, func) {
     if (!component._unloadHandlers) {
       component._unloadHandlers = [];
     }
     component._unloadHandlers.push(func);
   };
 
-  O$.unloadAllHandlersAndEvents = function(component) {
+  O$.unloadAllHandlersAndEvents = function (component) {
     var attachedEvents = component._attachedEvents;
     if (attachedEvents) {
       var length = attachedEvents.length;
@@ -5395,7 +5399,7 @@ if (!window.O$) {
     }
   };
 
-  O$.addThisComponentToAllParents = function(component) {
+  O$.addThisComponentToAllParents = function (component) {
     var parent = component.parentNode;
 
     function isAlreadyInArray(component) {
@@ -5421,7 +5425,7 @@ if (!window.O$) {
     }
   };
 
-  O$.removeThisComponentFromAllDocument = function(component) {
+  O$.removeThisComponentFromAllDocument = function (component) {
     var parent = O$.removeThisComponentFromParentsAbove(component, component.parentNode);
     if (parent != document) {
       return false;
@@ -5430,7 +5434,7 @@ if (!window.O$) {
     }
   };
 
-  O$.removeThisComponentFromParentsAbove = function(component, parent) {
+  O$.removeThisComponentFromParentsAbove = function (component, parent) {
     while (parent != document && parent != null) {
       if (parent._unloadableComponents) {
         for (var index = 0; index < parent._unloadableComponents.length; index++) {
@@ -5445,29 +5449,31 @@ if (!window.O$) {
     return parent;
   };
 
-  O$.invokeWhenVisible = function (element, func){
-    if (O$.isVisibleRecursive(element)){
+  O$.invokeWhenVisible = function (element, func) {
+    if (O$.isVisibleRecursive(element)) {
       func();
-    }else{
-      setTimeout(function (){O$.invokeWhenVisible(element, func)},100);
+    } else {
+      setTimeout(function () {
+        O$.invokeWhenVisible(element, func)
+      }, 100);
     }
   }
 
   O$.Link = {
-    _init: function(id, disabled, disabledStyle) {
+    _init:function (id, disabled, disabledStyle) {
       var link = O$.initComponent(id, null, {
-        _disabled: false,
+        _disabled:false,
 
-        getDisabled: function() {
+        getDisabled:function () {
           return this._disabled;
         },
 
-        setDisabled: function(disabled) {
+        setDisabled:function (disabled) {
           O$.setHiddenField(this, id + "::disabled", disabled);
           if (this._disabled == disabled) return;
           this._disabled = disabled;
-          O$.setStyleMappings(this, {"disabled": this._disabled ? disabledStyle : ""});
-          events.forEach(function(eventName) {
+          O$.setStyleMappings(this, {"disabled":this._disabled ? disabledStyle : ""});
+          events.forEach(function (eventName) {
             link[eventName] = disabled ? null : originalEventHandlers[eventName];
           });
           if (disabled) {
@@ -5479,21 +5485,21 @@ if (!window.O$) {
       });
 
       var events = ["onfocus", "onblur", "onkeydown", "onkeypress", "onkeyup",
-      "onmouseover", "onmousemove", "onmousedown", "onclick", "ondblclick", "onmouseup", "onmouseout"];
+        "onmouseover", "onmousemove", "onmousedown", "onclick", "ondblclick", "onmouseup", "onmouseout"];
       var originalEventHandlers = {};
-      events.forEach(function(eventName) {
+      events.forEach(function (eventName) {
         originalEventHandlers[eventName] = link[eventName];
 
       });
 
-      O$.addLoadEvent(function (){
+      O$.addLoadEvent(function () {
         link.setDisabled(disabled)
       });
 
     }
   };
 
-  O$.isComponentInDOM = function(component) {
+  O$.isComponentInDOM = function (component) {
     var parent = component.parentNode;
     while (parent != document && parent != null) {
       parent = parent.parentNode;
