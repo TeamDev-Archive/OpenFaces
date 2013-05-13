@@ -12,6 +12,7 @@
 package org.openfaces.component.table;
 
 import org.openfaces.component.command.MenuItem;
+import org.openfaces.util.ScriptBuilder;
 
 import javax.faces.context.FacesContext;
 
@@ -42,5 +43,13 @@ public class HideColumnMenuItem extends MenuItem {
         int i = 0;
         super.restoreState(context, state[i++]);
 
+    }
+
+    @Override
+    public void setupMenuItemParams(FacesContext context){
+        if (getValue() == null)
+            setValue("Hide");
+        setOnclick(new ScriptBuilder().functionCall("O$.ColumnMenu._hideColumn",
+                getTable("<o:hideColumnMenuItem>", this)).getScript());
     }
 }

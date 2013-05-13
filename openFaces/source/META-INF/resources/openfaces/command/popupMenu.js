@@ -40,8 +40,11 @@ O$.PopupMenu = {
                   submenuShowDelay,
                   submenuHideDelay,
                   selectDisabledItems,
-                  events) {
+                  events,
+                  menuItemsList,
+                  defaultMenuItemsParams) {
     O$.Popup._init(popupMenuId, false);
+    O$.MenuItemConsctructor.defaultMenuItemsParams = defaultMenuItemsParams;
     var popupMenu = O$.initComponent(popupMenuId, {rollover: rolloverClass}, {
       show: function() {
         finishInitialization();
@@ -126,7 +129,7 @@ O$.PopupMenu = {
       O$._popupsOnPage.pop(popupMenuId);
     }
 
-    var childNodes = popupMenu.childNodes;
+    var childNodes = O$.MenuItemConsctructor.renderMenuItems(popupMenu, menuItemsList);
     var items = popupMenu._items = [];
 
     // Create object tree for easy access to the PopupMenu and menuItems
@@ -140,7 +143,6 @@ O$.PopupMenu = {
         },
 
         _popupMenu: popupMenu,
-        _properties: itemsProperties[i],
 
         getDisabled: function() {
           return this._properties.disabled;
@@ -483,7 +485,8 @@ O$.PopupMenu = {
   _clearSelection: function(popupMenu) {
     var children = popupMenu.childNodes;
     for (var i = 0; i < children.length; i++) {
-      O$.PopupMenu._unselectMenuItem(children[i]);
+      if (children._popupMenu)
+        O$.PopupMenu._unselectMenuItem(children[i]);
     }
   },
 
@@ -528,6 +531,7 @@ O$.PopupMenu = {
     if (!itemAnchor._menuId)
       return;
     var childPopupMenu = O$(itemAnchor._menuId);
+    itemAnchor.appendChild(childPopupMenu.parentNode.removeChild(childPopupMenu));
     if (childPopupMenu.isVisible()) return;
     if (popupMenu._openedChildMenu != childPopupMenu) {
       popupMenu.closeChildMenus();
@@ -851,9 +855,9 @@ O$.PopupMenu = {
 
   _setStyleForSubmenuArea: function(
           menuItem, submenuImageUrl, selectedSubmenuImageUrl, disabledSubmenuImageUrl, selectedDisabledSubmenuImageUrl) {
-    if (menuItem._properties.menuId) {
-      menuItem._menuId = menuItem._properties.menuId;
-      menuItem._anchor._menuId = menuItem._properties.menuId;
+    if (menuItem.menuId) {
+      menuItem._menuId = menuItem.menuId;
+      menuItem._anchor._menuId = menuItem.menuId;
 
       var childPopupMenu = O$(menuItem._menuId);
       childPopupMenu._parentPopupMenu = menuItem._popupMenu;

@@ -40,7 +40,7 @@ public class ColumnVisibilityMenuRenderer extends PopupMenuRenderer {
 
     private void updateMenuItems(FacesContext context, ColumnVisibilityMenu cvm) {
         List<UIComponent> menuChildren = cvm.getChildren();
-        menuChildren.clear();
+//        menuChildren.clear();
         AbstractTable table = getTable(cvm);
         cvm.getAttributes().put(PopupMenuRenderer.ATTR_DEFAULT_INDENT_CLASS, "o_popup_menu_indent o_columnVisibilityMenuIndent");
 

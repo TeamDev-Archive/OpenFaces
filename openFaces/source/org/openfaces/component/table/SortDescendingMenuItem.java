@@ -12,6 +12,8 @@
 package org.openfaces.component.table;
 
 import org.openfaces.component.command.MenuItem;
+import org.openfaces.util.Resources;
+import org.openfaces.util.ScriptBuilder;
 
 import javax.faces.context.FacesContext;
 
@@ -43,4 +45,17 @@ public class SortDescendingMenuItem extends MenuItem {
         super.restoreState(context, state[i++]);
 
     }
+
+    @Override
+    public void setupMenuItemParams(FacesContext context){
+        if (getValue() == null)
+            setValue("Sort Descending");
+        setOnclick(new ScriptBuilder().functionCall("O$.ColumnMenu._sortColumnDescending",
+                getTable("<o:sortDescendingMenuItem>", this)).toString());
+        if (getIconUrl() == null)
+                setIconUrl(Resources.internalURL(
+                    context, "table/sortDescending.png"));
+    }
+
+
 }

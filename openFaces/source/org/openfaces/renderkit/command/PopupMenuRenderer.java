@@ -17,8 +17,11 @@ import org.openfaces.component.command.MenuItem;
 import org.openfaces.component.command.MenuSeparator;
 import org.openfaces.component.command.PopupMenu;
 import org.openfaces.org.json.JSONArray;
+import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.RendererBase;
+import org.openfaces.renderkit.table.ColumnMenuItemRenderer;
+import org.openfaces.util.ConvertibleToJSON;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
@@ -155,13 +158,16 @@ public class PopupMenuRenderer extends RendererBase {
                 rootPopupMenu.getSubmenuHideDelay(),
                 rootPopupMenu.isSelectDisabledItems(),
 
-                eventsObj);
+                eventsObj,
+                encodeMenuItemsToJSON(context, popupMenu),
+                encodeDefaultMenuItemsAttributes(context, rootPopupMenu));
 
         Styles.renderStyleClasses(context, popupMenu);
 
         Rendering.renderInitScript(context, initScript,
                 Resources.utilJsURL(context),
                 Resources.internalURL(context, "command/popupMenu.js"),
+                Resources.internalURL(context, "command/menuItemConstructor.js"),
                 Resources.internalURL(context, "popup.js"));
     }
 
@@ -185,13 +191,75 @@ public class PopupMenuRenderer extends RendererBase {
 
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-        if (!component.isRendered())
+      /*  if (!component.isRendered())
             return;
 
         List<UIComponent> components = component.getChildren();
         for (UIComponent child : components) {
             if (child instanceof MenuItem || child instanceof MenuSeparator)
                 child.encodeAll(context);
-        }
+        }*/
     }
+
+
+    public JSONArray encodeMenuItemsToJSON(FacesContext context, UIComponent component){
+        JSONArray menuItems = new JSONArray();
+        List<UIComponent> components = component.getChildren();
+        Map<String,Object> params = new HashMap<String, Object>();
+        params.put("context", context);
+        for (UIComponent child : components) {
+            if (child instanceof MenuItem || child instanceof MenuSeparator){
+                try {
+                    if (child.getChildCount() > 0) {
+                        PopupMenu childPopup = null;
+                        List<UIComponent> children = child.getChildren();
+                        for (UIComponent childMenu : children) {
+                            if (childMenu instanceof PopupMenu) {
+                                childPopup = (PopupMenu) childMenu;
+                            }
+                        }
+                        if (childPopup!=null){
+                            JSONObject popupMenuItem = ((MenuItem)child).toJSONObject(params);
+                            childPopup.encodeAll(context);
+                            popupMenuItem.put("menuId", childPopup.getClientId(context));
+                            menuItems.put(popupMenuItem);
+                        }else {
+                            JSONObject menuItem = ((MenuItem)child).toJSONObject(params);
+                            menuItems.put(menuItem);
+                        }
+                    }else {
+                        if (child instanceof MenuItem){
+                            ((MenuItem)child).setupMenuItemParams(context);
+                        }
+                        JSONObject menuItem = ((ConvertibleToJSON)child).toJSONObject(params);
+                        menuItems.put(menuItem);
+                    }
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }
+        return menuItems;
+    }
+
+    public JSONObject encodeDefaultMenuItemsAttributes(FacesContext context, UIComponent component){
+        JSONObject defaultAttributes = new JSONObject();
+
+        try {
+         defaultAttributes.put("DEFAULT_LIST_ITEM_CLASS", "o_menu_list_item");
+         defaultAttributes.put("DEFAULT_IMG_CLASS", "o_menu_list_item_img");
+         defaultAttributes.put("DEFAULT_ARROW_SPAN_CLASS", "o_menu_list_item_arrow_span");
+         defaultAttributes.put("DEFAULT_INDENT_CLASS", "o_menu_list_item_image_span");
+         defaultAttributes.put("DEFAULT_CONTENT_CLASS", "o_menu_list_item_content");
+         defaultAttributes.put("DEFAULT_FAKE_SPAN_CLASS", "o_menu_list_item_img_fakespan");
+         defaultAttributes.put("DEFAULT_LIST_SEPARATOR_CLASS", "o_menu_list_item o_menu_list_item_separator");
+         defaultAttributes.put("DEFAULT_MENU_SEPARATOR_CLASS", "o_menu_separator");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return defaultAttributes;
+    }
+
+
+
 }

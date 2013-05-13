@@ -11,24 +11,31 @@
   </style>
 
   <div id="Demo">
-    <o:commandButton execute="tabPanel" render="tabPanel" value="renderME"/>
-    <o:tabbedPane style="width:600px; height:400px;" id="tabPanel">
-      <o:subPanel caption="1111">
-        <o:borderLayoutPanel  id="topPanel" style="width:100%;height:100%;">
-          left content
-          <o:sidePanel alignment="right" size="50%" splitterClass="w30">
-            <o:borderLayoutPanel id="childPanel"  style="width:100%">
-              right - top
-              <o:sidePanel splitterClass="h30" alignment="bottom" size="50%">
-                right - bottom
-              </o:sidePanel>
-            </o:borderLayoutPanel>
-          </o:sidePanel>
-        </o:borderLayoutPanel>
-      </o:subPanel>
-      <o:subPanel caption="2222">
-      </o:subPanel>
-    </o:tabbedPane>
+    <o:commandButton  execute="mainPanel" render="mainPanel" value="renderME"/>
+    <o:borderLayoutPanel  style="width:600px; height:400px;" id="mainPanel">
+      <o:borderLayoutPanel>
+        Content top
+        <o:sidePanel alignment="bottom" size="50%">
+          <o:tabbedPane id="tabPanel">
+            <o:subPanel caption="1111">1111</o:subPanel>
+            <o:subPanel caption="2222">
+              <o:borderLayoutPanel  id="topPanel" style="width:97%;height:97%;">
+                left content
+                <o:sidePanel alignment="right" size="50%" splitterClass="w30">
+                  <o:borderLayoutPanel id="childPanel"  style="width:100%">
+                    right - top
+                    <o:sidePanel splitterClass="h30" alignment="bottom" size="50%">
+                      right - bottom
+                    </o:sidePanel>
+                  </o:borderLayoutPanel>
+                </o:sidePanel>
+              </o:borderLayoutPanel>
+            </o:subPanel>
+          </o:tabbedPane>
+        </o:sidePanel>
+      </o:borderLayoutPanel>
+    </o:borderLayoutPanel>
+
 
 
 

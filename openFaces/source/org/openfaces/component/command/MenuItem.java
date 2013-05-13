@@ -12,14 +12,24 @@
 package org.openfaces.component.command;
 
 import org.openfaces.component.OUICommand;
+import org.openfaces.component.ajax.AjaxInitializer;
+import org.openfaces.component.table.AbstractTable;
+import org.openfaces.org.json.JSONException;
+import org.openfaces.org.json.JSONObject;
+import org.openfaces.util.Components;
+import org.openfaces.util.ConvertibleToJSON;
+import org.openfaces.util.DataUtil;
 import org.openfaces.util.ValueBindings;
 
+import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import java.util.Map;
 
 /**
  * @author Vladimir Kurganov
  */
-public class MenuItem extends OUICommand {
+public class MenuItem extends OUICommand implements ConvertibleToJSON {
     public static final String COMPONENT_TYPE = "org.openfaces.MenuItem";
     public static final String COMPONENT_FAMILY = "org.openfaces.MenuItem";
 
@@ -202,6 +212,62 @@ public class MenuItem extends OUICommand {
         contentAreaStyle = contentStyle;
     }
 
+    public JSONObject toJSONObject(Map params) throws JSONException{
+        JSONObject obj = new JSONObject();
+        obj.put("iconUrl", getIconUrl());
+        obj.put("disabledIconUrl", getDisabledIconUrl());
+        obj.put("selectedIconUrl", getSelectedIconUrl());
+        obj.put("selectedDisabledIconUrl", getSelectedDisabledIconUrl());
+        obj.put("accessKey", getAccessKey());
+        obj.put("submenuImageUrl", getSubmenuImageUrl());
+        obj.put("disabledSubmenuImageUrl", getDisabledSubmenuImageUrl());
+        obj.put("selectedSubmenuImageUrl", getSelectedSubmenuImageUrl());
+        obj.put("selectedDisabledSubmenuImageUrl", getSelectedDisabledSubmenuImageUrl());
+        obj.put("selectedStyle", getSelectedStyle());
+        obj.put("contentAreaStyle", getContentAreaStyle());
+        obj.put("contentAreaClass", getContentAreaClass());
+        obj.put("submenuIconAreaStyle", getSubmenuIconAreaStyle());
+        obj.put("submenuIconAreaClass", getSubmenuIconAreaClass());
+        obj.put("indentAreaStyle", getIndentAreaStyle());
+        obj.put("indentAreaClass", getIndentAreaClass());
+
+        obj.put("value", getValue());
+
+        obj.put("style",getIndentAreaStyle());
+        obj.put("styleClass", getStyleClass());
+        obj.put("rolloverStyle", getRolloverStyle());
+        obj.put("rolloverClass", getRolloverClass());
+        obj.put("onclick", getOnclick());
+        obj.put("ondblclick", getOndblclick());
+        obj.put("onmousedown", getOnmousedown());
+        obj.put("onmouseover", getOnmouseover());
+        obj.put("onmousemove", getOnmousemove());
+        obj.put("onmouseout", getOnmouseout());
+        obj.put("onmouseup", getOnmouseup());
+        obj.put("onfocus", getOnfocus());
+        obj.put("onblur", getOnblur());
+        obj.put("onkeydown", getOnkeydown());
+        obj.put("onkeyup", getOnkeyup());
+        obj.put("onkeypress", getOnkeypress());
+        obj.put("oncontextmenu", getOncontextmenu());
+        obj.put("onajaxstart", getOnajaxstart());
+        obj.put("onajaxend", getOnajaxend());
+        obj.put("onerror", getOnerror());
+        obj.put("onsuccess", getOnsuccess());
+        obj.put("delay", getDelay());
+        obj.put("disabledStyle", getDisabledStyle());
+        obj.put("disabledClass", getDisabledClass());
+
+        obj.put("id", getClientId(FacesContext.getCurrentInstance()));
+
+        FacesContext context = (FacesContext) params.get("context");
+        AjaxInitializer ajaxInitializer = new AjaxInitializer();
+        obj.put("render", ajaxInitializer.getRenderArray(context, this, getRender()));
+        obj.put("execute", ajaxInitializer.getExecuteParam(context, this, getExecute()));
+
+        return obj;
+    }
+
     @Override
     public Object saveState(FacesContext facesContext) {
         return new Object[]{
@@ -254,6 +320,21 @@ public class MenuItem extends OUICommand {
         indentAreaClass = (String) values[i++];
         submenuIconAreaStyle = (String) values[i++];
         submenuIconAreaClass = (String) values[i++];
+    }
+
+
+    public void setupMenuItemParams(FacesContext context){
+
+    }
+
+    protected AbstractTable getTable(String tagName, MenuItem menuItem) {
+        UIComponent parent = menuItem.getParent();
+        while (parent != null && (parent instanceof MenuItem || parent instanceof PopupMenu || Components.isImplicitPanel(parent)))
+            parent = parent.getParent();
+        if (!(parent instanceof AbstractTable))
+            throw new FacesException(tagName + " can only be inserted into the \"columnMenu\" facet of " +
+                    "the <o:dataTable> or <o:treeTable> components (either directly or as its sub-menu).");
+        return (AbstractTable) parent;
     }
 
 }
