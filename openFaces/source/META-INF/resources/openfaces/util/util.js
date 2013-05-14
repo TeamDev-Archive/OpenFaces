@@ -3243,12 +3243,12 @@ if (!window.O$) {
     return rulesFound;
   };
 
-  O$.getStyleClassProperty = function (styleClass, propertyName) {
-    var propertyValues = O$.getStyleClassProperties(styleClass, [propertyName]);
+  O$.getStyleClassProperty = function (styleClass, propertyName,isTable) {
+    var propertyValues = O$.getStyleClassProperties(styleClass, [propertyName],isTable);
     return propertyValues[propertyName];
   };
 
-  O$.getStyleClassProperties = function (styleClass, propertyNames) {
+  O$.getStyleClassProperties = function (styleClass, propertyNames, isTable) {
     if (!styleClass || propertyNames.length == 0)
       return {};
     var classNames = styleClass.split(" ");
@@ -3260,9 +3260,13 @@ if (!window.O$) {
         classSelectors.push("." + className);
     }
     var cssRules = O$.findCssRules(classSelectors);
-    if (!cssRules || cssRule != {})
+    if (isTable || O$.isExplorer()){
+      if (!cssRules || cssRule != {})
+        return {};
+    } else  {
+    if (!cssRules)
       return {};
-
+    }
     var propertyCount = propertyNames.length;
     var propertyValues = {};
     var propertyImportantFlags = [];
@@ -4666,23 +4670,23 @@ if (!window.O$) {
     return vertAlignment == O$.BOTTOM || vertAlignment == O$.BELOW;
   };
 
-  O$.fixInputsWidthStrict = function (container) {
+  O$.fixInputsWidthStrict = function (container,isTable) {
     if (!O$.isStrictMode())
       return;
 
-    function processInput(input) {
+    function processInput(input,isTable) {
       if (input._strictWidthFixed || input.type == "hidden")
         return;
       input._strictWidthFixed = true;
       var parent = input.parentNode;
       var widthCorrection;
-      if ((input._o_fullWidth == undefined && O$.getStyleClassProperty(input.className, "width") == "100%") || input._o_fullWidth) {
+      if ((input._o_fullWidth == undefined && O$.getStyleClassProperty(input.className, "width",isTable) == "100%") || input._o_fullWidth) {
         var bordersX = input._o_zeroBorders ? 0 : O$.getNumericElementStyle(input, "border-left-width") + O$.getNumericElementStyle(input, "border-right-width");
         var paddingsX = O$.getNumericElementStyle(input, "padding-left") + O$.getNumericElementStyle(input, "padding-right");
         widthCorrection = bordersX + paddingsX;
       }
       var heightCorrection;
-      if ((input._o_fullHeight == undefined && O$.getStyleClassProperty(input.className, "height") == "100%") || input._o_fullHeight) {
+      if ((input._o_fullHeight == undefined && O$.getStyleClassProperty(input.className, "height",isTable) == "100%") || input._o_fullHeight) {
         var bordersY = O$.getNumericElementStyle(input, "border-top-width") + O$.getNumericElementStyle(input, "border-bottom-width");
         var paddingsY = O$.getNumericElementStyle(input, "padding-top") + O$.getNumericElementStyle(input, "padding-bottom");
         heightCorrection = bordersY + paddingsY;
@@ -4701,11 +4705,11 @@ if (!window.O$) {
 
     var inputs = container.getElementsByTagName("input");
     for (var i = 0, count = inputs.length; i < count; i++) {
-      processInput(inputs[i]);
+      processInput(inputs[i],isTable);
     }
     var textAreas = container.getElementsByTagName("textarea");
     for (i = 0, count = textAreas.length; i < count; i++) {
-      processInput(textAreas[i]);
+      processInput(textAreas[i],isTable);
     }
 
   };

@@ -184,7 +184,7 @@ O$.Tables = {
     [table.header, table.footer].forEach(function (area) {
       if (!area) return;
       function fixInputWidths(element) {
-        if (element) O$.fixInputsWidthStrict(element);
+        if (element) O$.fixInputsWidthStrict(element,true);
       }
 
       fixInputWidths(area._tag);
