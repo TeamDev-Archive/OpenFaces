@@ -84,24 +84,6 @@ public class PopupMenuRenderer extends RendererBase {
         renderInitJS(facesContext, popupMenu);
     }
 
-    private JSONArray getMenuItemParameters(PopupMenu popupMenu) {
-        JSONArray menuItemParameters = new JSONArray();
-        List<UIComponent> components = popupMenu.getChildren();
-        for (UIComponent component : components) {
-            if (component instanceof MenuItem) {
-                MenuItem menuItem = (MenuItem) component;
-                Map parameters = (Map) menuItem.getAttributes().get(MenuItemRenderer.MENU_ITEMS_PARAMETERS_KEY);
-                if (parameters == null) {
-                    parameters = new HashMap();
-                }
-                JSONObject obj = new JSONObject(parameters);
-                menuItemParameters.put(obj);
-            } else if (component instanceof MenuSeparator) {
-                menuItemParameters.put(new JSONObject());
-            }
-        }
-        return menuItemParameters;
-    }
 
     private void renderInitJS(FacesContext context, PopupMenu popupMenu) throws IOException {
         String forId = OUIClientActionHelper.getClientActionInvoker(context, popupMenu);
@@ -151,7 +133,7 @@ public class PopupMenuRenderer extends RendererBase {
                 popupMenu.getSelectedDisabledSubmenuImageUrl(),
 
                 isRootMenu,
-                getMenuItemParameters(popupMenu),
+                "",
                 popupMenu.getSubmenuHorizontalOffset(),
 
                 rootPopupMenu.getSubmenuShowDelay(),
@@ -191,14 +173,7 @@ public class PopupMenuRenderer extends RendererBase {
 
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-      /*  if (!component.isRendered())
-            return;
 
-        List<UIComponent> components = component.getChildren();
-        for (UIComponent child : components) {
-            if (child instanceof MenuItem || child instanceof MenuSeparator)
-                child.encodeAll(context);
-        }*/
     }
 
 

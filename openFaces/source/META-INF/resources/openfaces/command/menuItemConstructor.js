@@ -20,13 +20,15 @@ O$.MenuItemConsctructor = {
           alert("'execute' attribute can't be specified without the 'render' attribute. Component id: " + popupMenu.id);
           return;
         }
-        O$.Ajax._reload(menuItem.render, {
+        O$.ajax.request("", event, {
+          render: menuItem.render,
           onajaxend : menuItem.onajaxend,
           execute : menuItem.execute,
           onerror : menuItem.onerror,
           onsuccess : menuItem.onsuccess,
           onajaxstart : menuItem.onajaxstart,
-          immediate : menuItem.immediate
+          immediate : menuItem.immediate,
+          _action: menuItem.action
         });
       }
     };

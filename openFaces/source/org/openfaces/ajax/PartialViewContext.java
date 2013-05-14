@@ -545,8 +545,14 @@ public class PartialViewContext extends PartialViewContextWrapper {
 
         Object result = null;
         if (action != null) {
-            MethodExpression methodBinding = context.getApplication().getExpressionFactory().createMethodExpression(
+            MethodExpression methodBinding;
+            if (!action.startsWith("#{")){
+                methodBinding = context.getApplication().getExpressionFactory().createMethodExpression(
                     elContext, "#{" + action + "}", String.class, new Class[]{});
+            }else{
+                methodBinding = context.getApplication().getExpressionFactory().createMethodExpression(
+                        elContext, action, String.class, new Class[]{});
+            }
             methodBinding.invoke(elContext, null);
         }
         if (listener != null) {
@@ -556,6 +562,7 @@ public class PartialViewContext extends PartialViewContextWrapper {
                 }
             });
             event.setPhaseId(Boolean.valueOf(requestParams.get(PARAM_IMMEDIATE)) ? PhaseId.APPLY_REQUEST_VALUES : PhaseId.INVOKE_APPLICATION);
+
             MethodExpression methodExpression = context.getApplication().getExpressionFactory().createMethodExpression(
                     elContext, "#{" + listener + "}", void.class, new Class[]{AjaxBehaviorEvent.class});
             try {

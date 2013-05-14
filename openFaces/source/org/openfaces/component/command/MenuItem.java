@@ -21,6 +21,7 @@ import org.openfaces.util.ConvertibleToJSON;
 import org.openfaces.util.DataUtil;
 import org.openfaces.util.ValueBindings;
 
+import javax.el.MethodExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -264,6 +265,8 @@ public class MenuItem extends OUICommand implements ConvertibleToJSON {
         AjaxInitializer ajaxInitializer = new AjaxInitializer();
         obj.put("render", ajaxInitializer.getRenderArray(context, this, getRender()));
         obj.put("execute", ajaxInitializer.getExecuteParam(context, this, getExecute()));
+        MethodExpression action = getActionExpression();
+        obj.put("action", action!=null ? action.getExpressionString() : null);
 
         return obj;
     }

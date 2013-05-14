@@ -285,8 +285,8 @@ O$.PopupMenu = {
       for (i = 0; i < popupMenu._items.length; i++) {
         menuItem = popupMenu._items[i];
         if (!menuItem._separator) {
-          menuItem.selectedDisabledClass = O$.combineClassNames([itemsProperties[i].selectedClass, defaultSelectedClass]);
-          menuItem.selectedClass = O$.combineClassNames([itemsProperties[i].selectedClass, defaultSelectedClass]);
+          menuItem.selectedDisabledClass = O$.combineClassNames([menuItem.selectedClass, defaultSelectedClass]);
+          menuItem.selectedClass = O$.combineClassNames([menuItem.selectedClass, defaultSelectedClass]);
 
           O$.PopupMenu.setMenuItemEnabled(menuItem.id, !menuItem._properties.disabled, selectDisabledItems);
 

@@ -22,14 +22,6 @@ import java.io.IOException;
 public class SortDescendingMenuItemRenderer extends ColumnMenuItemRenderer {
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
-        MenuItem menuItem = (MenuItem) component;
-        if (menuItem.getValue() == null)
-            menuItem.setValue("Sort Descending");
-        menuItem.setOnclick(new ScriptBuilder().functionCall("O$.ColumnMenu._sortColumnDescending",
-                getTable("<o:sortDescendingMenuItem>", menuItem)).toString());
-        if (menuItem.getIconUrl() == null)
-            menuItem.setIconUrl(Resources.internalURL(
-                    context, "table/sortDescending.png"));
-        super.encodeBegin(context, component);
+        throw new RuntimeException("ColumnMenuItemRenderer doesn't must be called by itself");
     }
 }
