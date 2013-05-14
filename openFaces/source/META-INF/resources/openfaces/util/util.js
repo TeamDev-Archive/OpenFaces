@@ -3243,12 +3243,12 @@ if (!window.O$) {
     return rulesFound;
   };
 
-  O$.getStyleClassProperty = function (styleClass, propertyName,isTable) {
-    var propertyValues = O$.getStyleClassProperties(styleClass, [propertyName],isTable);
+  O$.getStyleClassProperty = function (styleClass, propertyName) {
+    var propertyValues = O$.getStyleClassProperties(styleClass, [propertyName]);
     return propertyValues[propertyName];
   };
 
-  O$.getStyleClassProperties = function (styleClass, propertyNames, isTable) {
+  O$.getStyleClassProperties = function (styleClass, propertyNames) {
     if (!styleClass || propertyNames.length == 0)
       return {};
     var classNames = styleClass.split(" ");
@@ -3260,19 +3260,20 @@ if (!window.O$) {
         classSelectors.push("." + className);
     }
     var cssRules = O$.findCssRules(classSelectors);
-    if (isTable && O$.isExplorer()){
-      if (!cssRules || cssRule != {})
-        return {};
-    } else  {
+    debugger;
     if (!cssRules)
       return {};
-    }
+
     var propertyCount = propertyNames.length;
     var propertyValues = {};
     var propertyImportantFlags = [];
     for (i = 0, count = cssRules.length; i < count; i++) {
       var cssRule = cssRules[i];
-      var ruleStyle = cssRule.style;
+      try {
+        var ruleStyle = cssRule.style;
+      } catch (e) {
+        return {}
+      }
       for (var propertyIndex = 0; propertyIndex < propertyCount; propertyIndex++) {
         var propertyName = propertyNames[propertyIndex];
         var capitalizedPropertyName = O$._capitalizeCssPropertyName(propertyName);
@@ -3294,6 +3295,7 @@ if (!window.O$) {
         }
       }
     }
+
 
     return propertyValues;
   };
@@ -4670,23 +4672,23 @@ if (!window.O$) {
     return vertAlignment == O$.BOTTOM || vertAlignment == O$.BELOW;
   };
 
-  O$.fixInputsWidthStrict = function (container,isTable) {
+  O$.fixInputsWidthStrict = function (container) {
     if (!O$.isStrictMode())
       return;
 
-    function processInput(input,isTable) {
+    function processInput(input) {
       if (input._strictWidthFixed || input.type == "hidden")
         return;
       input._strictWidthFixed = true;
       var parent = input.parentNode;
       var widthCorrection;
-      if ((input._o_fullWidth == undefined && O$.getStyleClassProperty(input.className, "width",isTable) == "100%") || input._o_fullWidth) {
+      if ((input._o_fullWidth == undefined && O$.getStyleClassProperty(input.className, "width") == "100%") || input._o_fullWidth) {
         var bordersX = input._o_zeroBorders ? 0 : O$.getNumericElementStyle(input, "border-left-width") + O$.getNumericElementStyle(input, "border-right-width");
         var paddingsX = O$.getNumericElementStyle(input, "padding-left") + O$.getNumericElementStyle(input, "padding-right");
         widthCorrection = bordersX + paddingsX;
       }
       var heightCorrection;
-      if ((input._o_fullHeight == undefined && O$.getStyleClassProperty(input.className, "height",isTable) == "100%") || input._o_fullHeight) {
+      if ((input._o_fullHeight == undefined && O$.getStyleClassProperty(input.className, "height") == "100%") || input._o_fullHeight) {
         var bordersY = O$.getNumericElementStyle(input, "border-top-width") + O$.getNumericElementStyle(input, "border-bottom-width");
         var paddingsY = O$.getNumericElementStyle(input, "padding-top") + O$.getNumericElementStyle(input, "padding-bottom");
         heightCorrection = bordersY + paddingsY;
@@ -4705,11 +4707,11 @@ if (!window.O$) {
 
     var inputs = container.getElementsByTagName("input");
     for (var i = 0, count = inputs.length; i < count; i++) {
-      processInput(inputs[i],isTable);
+      processInput(inputs[i]);
     }
     var textAreas = container.getElementsByTagName("textarea");
     for (i = 0, count = textAreas.length; i < count; i++) {
-      processInput(textAreas[i],isTable);
+      processInput(textAreas[i]);
     }
 
   };
