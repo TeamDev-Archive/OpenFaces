@@ -3260,7 +3260,7 @@ if (!window.O$) {
         classSelectors.push("." + className);
     }
     var cssRules = O$.findCssRules(classSelectors);
-    if (isTable || O$.isExplorer()){
+    if (isTable && O$.isExplorer()){
       if (!cssRules || cssRule != {})
         return {};
     } else  {
