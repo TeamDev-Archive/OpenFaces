@@ -38,7 +38,11 @@ O$.MenuItemConsctructor = {
     var menuItemFieldSpan = document.createElement("span");
     menuItemFieldSpan.id = menuItem.id + "::caption";
     menuItemFieldSpan.innerHTML = menuItem.value;
-    menuItemFieldSpan.className = O$.MenuItemConsctructor.defaultMenuItemsParams.DEFAULT_CONTENT_CLASS;
+    O$.setStyleMappings(menuItemFieldSpan, {
+      _default : O$.MenuItemConsctructor.defaultMenuItemsParams.DEFAULT_CONTENT_CLASS,
+      _userClass : menuItem.contentAreaClass,
+      _popupMenuClass : menuItem._popupMenu.itemContentClass
+    });
     return menuItemFieldSpan;
   },
 
@@ -67,7 +71,16 @@ O$.MenuItemConsctructor = {
   renderSubMenuImgSpan: function (menuItem){
     var subMenuSpan = document.createElement("span");
     subMenuSpan.id = menuItem.id + "::arrowspan";
-    subMenuSpan.className = O$.MenuItemConsctructor.defaultMenuItemsParams.DEFAULT_ARROW_SPAN_CLASS;
+    O$.setStyleMappings(subMenuSpan, {
+      _default : O$.MenuItemConsctructor.defaultMenuItemsParams.DEFAULT_ARROW_SPAN_CLASS,
+      _userClass : menuItem.contentAreaClass,
+      _popupMenuClass : menuItem._popupMenu.subMenuIconClass
+    });
+    /*
+    *         String submenuIconAreaClass = Styles.getCSSClass(context, menuItem, menuItem.getSubmenuIconAreaStyle(), StyleGroup.regularStyleGroup(),
+     menuItem.getSubmenuIconAreaClass(), Styles.getCSSClass(context, popupMenu, popupMenu.getItemSubmenuIconStyle(), StyleGroup.regularStyleGroup(),
+     popupMenu.getItemSubmenuIconClass(), DEFAULT_ARROW_SPAN_CLASS));
+    * */
     //class
     //IF popupMenuChild != null
     if (menuItem.menuId != null) {
@@ -92,6 +105,7 @@ O$.MenuItemConsctructor = {
     menuItemsList.forEach(function(menuItem){
       var listElement;
       if (!menuItem.separator) {
+        menuItem._popupMenu = popupMenu;
         listElement = O$.MenuItemConsctructor.renderMenuItem(menuItem);
       } else {
         listElement = O$.MenuItemConsctructor.renderMenuSeparator(menuItem);

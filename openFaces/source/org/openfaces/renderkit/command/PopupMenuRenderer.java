@@ -133,7 +133,6 @@ public class PopupMenuRenderer extends RendererBase {
                 popupMenu.getSelectedDisabledSubmenuImageUrl(),
 
                 isRootMenu,
-                "",
                 popupMenu.getSubmenuHorizontalOffset(),
 
                 rootPopupMenu.getSubmenuShowDelay(),

@@ -234,7 +234,7 @@ public class MenuItem extends OUICommand implements ConvertibleToJSON {
 
         obj.put("value", getValue());
 
-        obj.put("style",getIndentAreaStyle());
+        obj.put("style",getStyle());
         obj.put("styleClass", getStyleClass());
         obj.put("rolloverStyle", getRolloverStyle());
         obj.put("rolloverClass", getRolloverClass());
