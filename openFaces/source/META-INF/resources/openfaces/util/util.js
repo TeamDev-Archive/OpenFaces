@@ -3260,7 +3260,6 @@ if (!window.O$) {
         classSelectors.push("." + className);
     }
     var cssRules = O$.findCssRules(classSelectors);
-    debugger;
     if (!cssRules)
       return {};
 
@@ -3272,7 +3271,7 @@ if (!window.O$) {
       try {
         var ruleStyle = cssRule.style;
       } catch (e) {
-        return {}
+        return {};
       }
       for (var propertyIndex = 0; propertyIndex < propertyCount; propertyIndex++) {
         var propertyName = propertyNames[propertyIndex];
