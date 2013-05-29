@@ -71,7 +71,7 @@
                 bodyStyle="text-align: left; white-space: nowrap;"
                 headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;">
         <f:facet name="subHeader">
-          <o:inputTextFilter/>
+
         </f:facet>
         <h:outputText value="#{bank.institutionName}" style="white-space: nowrap;"/>
       </o:column>
@@ -81,7 +81,7 @@
                 sortingExpression="#{bank.certificateNumber}"
                 bodyStyle="text-align: right; padding-right: 5px;">
         <f:facet name="subHeader">
-          <o:inputTextFilter maxlength="5" autoFilterDelay="1000"/>
+
         </f:facet>
         <h:outputText value="#{bank.certificateNumber}"/>
       </o:column>
@@ -92,7 +92,7 @@
                   bodyStyle="padding-left: 5px; "
                   headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;">
           <f:facet name="subHeader">
-            <o:inputTextFilter/>
+
           </f:facet>
 
           <h:outputText value="#{bank.city}"/>
@@ -103,7 +103,7 @@
                   bodyStyle="padding-left: 5px; "
                   headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;">
           <f:facet name="subHeader">
-            <o:dropDownFieldFilter maxlength="2" customValueAllowed="false"/>
+
           </f:facet>
           <h:outputText value="#{bank.state}"/>
         </o:column>
@@ -113,7 +113,7 @@
                   headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;"
                   sortingExpression="#{bank.zip}">
           <f:facet name="subHeader">
-            <o:inputTextFilter maxlength="5" autoFilterDelay="1000"/>
+
           </f:facet>
           <h:outputText value="#{bank.zip}"/>
         </o:column>
@@ -123,7 +123,7 @@
                   bodyStyle="padding-left: 5px; white-space: nowrap;"
                   headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;">
           <f:facet name="subHeader">
-            <o:inputTextFilter/>
+
           </f:facet>
 
           <h:outputText value="#{bank.county}"/>
@@ -136,8 +136,8 @@
                 sortingExpression="#{bank.averageAssets}"
                 groupingExpression="#{BanksList.averageAssetsRange}">
         <f:facet name="subHeader">
-          <o:comboBoxFilter expression="#{BanksList.averageAssetsRange}"
-                            options="#{BanksList.averageAssetsFilterValues}"/>
+
+
         </f:facet>
 
         <h:outputText value="#{bank.averageAssets}">

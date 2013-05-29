@@ -61,24 +61,11 @@ O$.Calendar = {
       onselectstart:O$.cancelEvent
     });
 
-    /*  for (int row = 0; row < 6; row++) {
-     writer.startElement("tr", calendar);
-     writeAttribute(writer, "class", "o_cal_week_row");
-     for (int col = 0; col < 7; col++) {
-     writer.startElement("td", calendar);
-     writer.startElement("div", calendar);
-     writer.endElement("div");
-     if (col == 6 && row == 5 && !isAuxiliaryTagsRenderedInFooter(calendar))
-     encodeAuxiliaryTags(context, calendar);
-     writer.endElement("td");
-     }
-     writer.endElement("tr");
-     }*/
     var tbody = document.getElementById(bodyId);
-    for (row = 0; row < 6; row++) {
+    for (var row = 0; row < 6; row++) {
       var tr = document.createElement("tr");
       tr.className = "o_cal_week_row";
-      for (col = 0; col < 7; col++) {
+      for (var col = 0; col < 7; col++) {
         var td = document.createElement("td");
         var div = document.createElement("div");
         td.appendChild(div);
