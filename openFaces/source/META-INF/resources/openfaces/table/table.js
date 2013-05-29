@@ -2837,9 +2837,10 @@ O$.Table = {
   _initColumnResizing:function (tableId, retainTableWidth, minColWidth, resizeHandleWidth, columnParams, autoSaveState) {
     var thisRef = this;
     var args = arguments;
+    var table = O$(tableId)
+    var visibleParent = O$.isVisibleParentRecursive(table)
     O$.addLoadEvent(function () {
-      var table = O$(tableId);
-      if (!O$.isVisibleRecursive(table)) {
+      if (!O$.isVisible(visibleParent) && visibleParent != null) {
         setTimeout(function () {
           O$.Table._initColumnResizing.apply(thisRef, args);
           args = null;

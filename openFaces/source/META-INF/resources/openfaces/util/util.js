@@ -4798,6 +4798,7 @@ if (!window.O$) {
     // todo: check floatingIconMessage behavior in different browsers before reusing this function for O$.isInvisible implementation
   };
 
+
   O$.isInvisible = function (element) {
     if (!element.style) {
       return false;
@@ -4814,6 +4815,17 @@ if (!window.O$) {
       return true;
 
     return O$.isVisibleRecursive(parentNode);
+  };
+
+  O$.isVisibleParentRecursive = function (element) {
+    if (!O$.isVisible(element))
+      return element;
+
+    var parentNode = element.parentNode;
+    if (!parentNode || parentNode == document)
+      return null;
+
+    return O$.isVisibleParentRecursive(parentNode);
   };
 
 
