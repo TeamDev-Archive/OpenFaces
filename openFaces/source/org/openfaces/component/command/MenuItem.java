@@ -216,30 +216,21 @@ public class MenuItem extends OUICommand implements ConvertibleToJSON {
     public JSONObject toJSONObject(Map params) throws JSONException{
         JSONObject obj = new JSONObject();
         obj.put("iconUrl", getIconUrl());
-        obj.put("disabledIconUrl", getDisabledIconUrl());
-        obj.put("selectedIconUrl", getSelectedIconUrl());
-        obj.put("selectedDisabledIconUrl", getSelectedDisabledIconUrl());
-        obj.put("accessKey", getAccessKey());
-        obj.put("submenuImageUrl", getSubmenuImageUrl());
-        obj.put("disabledSubmenuImageUrl", getDisabledSubmenuImageUrl());
-        obj.put("selectedSubmenuImageUrl", getSelectedSubmenuImageUrl());
-        obj.put("selectedDisabledSubmenuImageUrl", getSelectedDisabledSubmenuImageUrl());
-        obj.put("selectedStyle", getSelectedStyle());
         obj.put("contentAreaStyle", getContentAreaStyle());
         obj.put("contentAreaClass", getContentAreaClass());
-        obj.put("submenuIconAreaStyle", getSubmenuIconAreaStyle());
-        obj.put("submenuIconAreaClass", getSubmenuIconAreaClass());
-        obj.put("indentAreaStyle", getIndentAreaStyle());
-        obj.put("indentAreaClass", getIndentAreaClass());
+        obj.put("disabledIconUrl", getDisabledIconUrl());
+        obj.put("selectedIconUrl", getSelectedIconUrl());
 
-        obj.put("value", getValue());
+        obj.put("selectedDisabledIconUrl", getSelectedDisabledIconUrl());
 
-        obj.put("style",getStyle());
-        obj.put("styleClass", getStyleClass());
-        obj.put("rolloverStyle", getRolloverStyle());
-        obj.put("rolloverClass", getRolloverClass());
+        obj.put("oncontextmenu", getOncontextmenu());
+        obj.put("onajaxstart", getOnajaxstart());
+        obj.put("onajaxend", getOnajaxend());
+        obj.put("onerror", getOnerror());
+        obj.put("onsuccess", getOnsuccess());
+
         obj.put("onclick", getOnclick());
-        obj.put("ondblclick", getOndblclick());
+      /*  obj.put("ondblclick", getOndblclick());
         obj.put("onmousedown", getOnmousedown());
         obj.put("onmouseover", getOnmouseover());
         obj.put("onmousemove", getOnmousemove());
@@ -250,11 +241,27 @@ public class MenuItem extends OUICommand implements ConvertibleToJSON {
         obj.put("onkeydown", getOnkeydown());
         obj.put("onkeyup", getOnkeyup());
         obj.put("onkeypress", getOnkeypress());
-        obj.put("oncontextmenu", getOncontextmenu());
-        obj.put("onajaxstart", getOnajaxstart());
-        obj.put("onajaxend", getOnajaxend());
-        obj.put("onerror", getOnerror());
-        obj.put("onsuccess", getOnsuccess());
+
+
+        obj.put("accessKey", getAccessKey());
+        obj.put("submenuImageUrl", getSubmenuImageUrl());
+        obj.put("disabledSubmenuImageUrl", getDisabledSubmenuImageUrl());
+        obj.put("selectedSubmenuImageUrl", getSelectedSubmenuImageUrl());
+        obj.put("selectedDisabledSubmenuImageUrl", getSelectedDisabledSubmenuImageUrl());
+        obj.put("selectedStyle", getSelectedStyle());
+
+        obj.put("submenuIconAreaStyle", getSubmenuIconAreaStyle());
+        obj.put("submenuIconAreaClass", getSubmenuIconAreaClass());
+        obj.put("indentAreaStyle", getIndentAreaStyle());
+        obj.put("indentAreaClass", getIndentAreaClass());      */
+
+        obj.put("value", getValue());
+
+        obj.put("style",getStyle());
+        obj.put("styleClass", getStyleClass());
+
+
+
         obj.put("delay", getDelay());
         obj.put("disabledStyle", getDisabledStyle());
         obj.put("disabledClass", getDisabledClass());
@@ -262,9 +269,15 @@ public class MenuItem extends OUICommand implements ConvertibleToJSON {
         obj.put("id", getClientId(FacesContext.getCurrentInstance()));
 
         FacesContext context = (FacesContext) params.get("context");
+        Iterable<String>  render = getRender();
+        Iterable<String>  execute = getExecute();
         AjaxInitializer ajaxInitializer = new AjaxInitializer();
-        obj.put("render", ajaxInitializer.getRenderArray(context, this, getRender()));
-        obj.put("execute", ajaxInitializer.getExecuteParam(context, this, getExecute()));
+        if (render!=null && render.iterator().hasNext() ){
+            obj.put("render", ajaxInitializer.getRenderArray(context, this, render));
+        }
+        if (execute!=null && execute.iterator().hasNext() ){
+            obj.put("execute", ajaxInitializer.getExecuteParam(context, this, getExecute()));
+        }
         MethodExpression action = getActionExpression();
         obj.put("action", action!=null ? action.getExpressionString() : null);
 
