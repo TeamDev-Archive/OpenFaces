@@ -178,9 +178,24 @@ public class PopupMenuRenderer extends RendererBase {
 
     public JSONArray encodeMenuItemsToJSON(FacesContext context, UIComponent component){
         JSONArray menuItems = new JSONArray();
-        List<UIComponent> components = component.getChildren();
+        PopupMenu popupMenu = (PopupMenu) component;
         Map<String,Object> params = new HashMap<String, Object>();
         params.put("context", context);
+
+        if (!popupMenu.getPreloadedItems().isEmpty()) {
+            List<MenuItem> preloadedItems = popupMenu.getPreloadedItems();
+            for (MenuItem preloadedItem : preloadedItems){
+                try {
+                    JSONObject menuItem = preloadedItem.toJSONObject(params);
+                    menuItems.put(menuItem);
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            return menuItems;
+        }
+
+        List<UIComponent> components = component.getChildren();
         for (UIComponent child : components) {
             if (child instanceof MenuItem || child instanceof MenuSeparator){
                 try {

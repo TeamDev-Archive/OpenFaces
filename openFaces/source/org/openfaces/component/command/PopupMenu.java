@@ -20,6 +20,8 @@ import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Vladimir Kurganov
@@ -74,6 +76,9 @@ public class PopupMenu extends OUIComponentBase implements OUIClientAction {
     /* properties that are not inherited */
     private String onshow;
     private String onhide;
+
+    /*Field which contains predefined from code menuItems*/
+    private List<MenuItem> preloadedItems = new ArrayList<MenuItem>();
 
     @Override
     public String getStyle() {
@@ -474,6 +479,14 @@ public class PopupMenu extends OUIComponentBase implements OUIClientAction {
 
     public void setDisabledItemClass(String disabledItemClass) {
         this.disabledItemClass = disabledItemClass;
+    }
+
+    public List<MenuItem> getPreloadedItems() {
+        return preloadedItems;
+    }
+
+    public void setPreloadedItems(List<MenuItem> preloadedItems) {
+        this.preloadedItems = preloadedItems;
     }
 
     public void setParent(UIComponent parent) {

@@ -330,11 +330,16 @@ public class Rendering {
                             case 2:
                                 buf[count++] = '0';
                                 buf[count++] = '0';
+                                buf[count++] = hex.charAt(0);
+                                buf[count++] = hex.charAt(1);
                                 break;
                             case 3:
                                 buf[count++] = '0';
+                                buf[count++] = hex.charAt(0);
+                                buf[count++] = hex.charAt(1);
+                                buf[count++] = hex.charAt(2);
+                                break;
                         }
-                        buf[count++] = chr;
                     } else {
                         buf[count++] = chr;
                     }
