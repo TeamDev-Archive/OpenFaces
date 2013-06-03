@@ -272,7 +272,7 @@ public class Rendering {
 
     static String escapeStringForJS(String str) {
         int len = str.length();
-        char buf[] = new char[len << 2];
+        char buf[] = new char[len << 4];
         int count = 0;
         for (int i = 0; i < len; i++) {
             char chr = str.charAt(i);
