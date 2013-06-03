@@ -77,8 +77,21 @@
   <!--   Calculator   -->
   <div class="application">
 
+    <h:panelGrid id="input" columns="1" style="margin-bottom: 12px;" cellspacing="0" cellpadding="0">
+      <h:panelGroup>
+        <div style="margin-bottom: 4px">
+          <div class="smallFont">First name</div>
+          <o:inputText value="#{CommandLinkBean.firstName}" styleClass="inputWithShadow largeFont"/>
+        </div>
+        <div>
+          <div class="smallFont">Last name</div>
+          <o:inputText value="#{CommandLinkBean.lastName}" styleClass="inputWithShadow largeFont"/>
+        </div>
+      </h:panelGroup>
+    </h:panelGrid>
+
     <img src="./images/dragndroppable.png"
-         onclick="O$('form:unresizable_win').show(); Calculator.clearAll(); return false;"
+         onclick="O$('form:unresizable_win').show();"
          style="cursor: pointer;"
          title="Calculator"/>
 
@@ -102,11 +115,61 @@
       </f:facet>
 
       <div style="background: #bbbbbb; padding: 3px; height: 90%">
-        <o:selectOneMenu id="comboBox1" value="#{SelectOneMenuBean.selectedCity}" converter="#{SelectOneMenuBean.cityConverter}">
-              <f:selectItems value="#{SelectOneMenuBean.cityItems}"/>
-              <o:ajax render="selectedItem"/>
-        </o:selectOneMenu>
+        <o:commandLink type="button"
+                       onajaxend="O$('form:unresizable_win1').show()"
+                       value="Ajax Submit" action="#{CommandLinkBean.composeFullName}"
+                       execute="input" render="output"
+                       styleClass="largeFont commandLink"/>
       </div>
+    </o:window>
+
+    <o:window id="unresizable_win1"
+              captionClass="WindowCaption"
+              closable="true"
+              contentClass="WindowContent"
+              draggable="true"
+              height="140px"
+              modal="true"
+              resizable="true"
+              styleClass="dialog2"
+              width="480px"
+              >
+      <o:captionArea>
+        <o:minimizeWindowButton styleClass="captionButton"/>
+        <o:maximizeWindowButton styleClass="captionButton"/>
+        <o:closeWindowButton styleClass="captionButton"/>
+      </o:captionArea>
+      <f:facet name="caption">
+        <h:outputText id="ProgramAdditionOutputTextId1" styleClass="label" value="Program Addition1"/>
+      </f:facet>
+
+      <o:commandLink type="button"
+                     onajaxend="O$('form:unresizable_win').show()"
+                     value="Ajax Submit" action="#{CommandLinkBean.composeFullName}"
+                     execute="input" render="output"
+                     styleClass="largeFont commandLink"/>
+
+    </o:window>
+
+    <o:window id="unresizable_win2"
+              captionClass="WindowCaption"
+              closable="true"
+              contentClass="WindowContent"
+              draggable="true"
+              height="140px"
+              modal="true"
+              resizable="true"
+              styleClass="dialog2"
+              width="480px">
+      <o:captionArea>
+        <o:minimizeWindowButton styleClass="captionButton"/>
+        <o:maximizeWindowButton styleClass="captionButton"/>
+        <o:closeWindowButton styleClass="captionButton"/>
+      </o:captionArea>
+      <f:facet name="caption">
+        <h:outputText id="ProgramAdditionOutputTextId2" styleClass="label" value="Program Addition2"/>
+      </f:facet>
+
     </o:window>
   </div>
 </td>
@@ -114,7 +177,10 @@
 </tr>
 
 </table>
-
+  <div style="margin-top: 12px; margin-bottom: 15px;" class="largeFont">
+    <h:outputText styleClass="smallFont" value="Full name:"/>
+    <h:outputText id="output" value="#{CommandLinkBean.fullName}" escape="false" styleClass="largeFont output #{CommandLinkBean.outputClass}" />
+  </div>
 
 </div>
 
