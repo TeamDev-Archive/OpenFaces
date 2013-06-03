@@ -538,7 +538,7 @@ public abstract class AbstractFileUpload extends OUIInputBase {
     }
 
     public String getOnfilestart() {
-        return ValueBindings.get(this, "onfilestart", onfilestart);
+        return ValueBindings.get(this, "filestart", onfilestart);
     }
 
     public void setOnfilestart(String onfilestart) {
@@ -546,7 +546,7 @@ public abstract class AbstractFileUpload extends OUIInputBase {
     }
 
     public String getOnfileinprogress() {
-        return ValueBindings.get(this, "onfileinprogress", onfileinprogress);
+        return ValueBindings.get(this, "fileinprogress", onfileinprogress);
     }
 
     public void setOnfileinprogress(String onfileinprogress) {
@@ -554,7 +554,7 @@ public abstract class AbstractFileUpload extends OUIInputBase {
     }
 
     public String getOnfileend() {
-        return ValueBindings.get(this, "onfileend", onfileend);
+        return ValueBindings.get(this, "fileend", onfileend);
     }
 
     public void setOnfileend(String onfileend) {
@@ -562,7 +562,7 @@ public abstract class AbstractFileUpload extends OUIInputBase {
     }
 
     public String getOnwrongfiletype() {
-        return ValueBindings.get(this, "onwrongfiletype", onwrongfiletype);
+        return ValueBindings.get(this, "wrongfiletype", onwrongfiletype);
     }
 
     public void setOnwrongfiletype(String onwrongfiletype) {
