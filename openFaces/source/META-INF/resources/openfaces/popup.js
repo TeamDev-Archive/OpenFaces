@@ -178,7 +178,7 @@ document._addClickListener(function(e) {
 
   O$._popupsOnPage.forEach(function(popupId) {
     var popup = O$(popupId) || O$(popupId + O$.Popup.PULLED_OUT_ID_SUFFIX);
-    if ((!popup) && (popup == {}))
+    if ((!popup) || (popup == {}) || !(popup.hide))
       return; // popup can be removed from page with A4J
     var clickedOnChild = O$.isChild(popup, clickedElement);
     if (popupId == clickedElementId || clickedOnChild || clickedElementId == popup._dependedFieldId)
