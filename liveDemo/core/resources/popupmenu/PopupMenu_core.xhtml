@@ -83,7 +83,9 @@
         <o:menuItem iconUrl="icons/save-16x16.png" value="Save" onclick="showAlert('File saved.');"/>
         <o:menuSeparator/>
 
-        <o:menuItem iconUrl="icons/cut-16x16.png" value="Cut" onclick="showAlert('Selection has been cut.');"/>
+        <o:menuItem iconUrl="icons/cut-16x16.png" onclick="showAlert('Selection has been cut.');">
+            <h:outputText value="Cut"/>
+        </o:menuItem>
         <o:menuItem iconUrl="icons/copy-16x16.png" value="Copy" onclick="showAlert('Selection has been copied.');"/>
         <o:menuItem iconUrl="icons/paste-16x16.png" value="Paste" onclick="showAlert('Buffer contents pasted.');"/>
         <o:menuSeparator/>

@@ -32,6 +32,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,6 +51,8 @@ public class PopupMenuRenderer extends RendererBase {
     private static final String DEFAULT_DISABLED_ITEM = "o_menu_list_item_disabled";
 
     public static final String ATTR_DEFAULT_INDENT_CLASS = "_defaultIndentClass";
+
+    private static final String MENU_ITEM_CONTENT_SUFFIX = "::content";
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
@@ -202,9 +205,12 @@ public class PopupMenuRenderer extends RendererBase {
                     if (child.getChildCount() > 0) {
                         PopupMenu childPopup = null;
                         List<UIComponent> children = child.getChildren();
-                        for (UIComponent childMenu : children) {
-                            if (childMenu instanceof PopupMenu) {
-                                childPopup = (PopupMenu) childMenu;
+                        List<UIComponent> componentsToRender = new ArrayList<UIComponent>();
+                        for (UIComponent childElement : children) {
+                            if (childElement instanceof PopupMenu) {
+                                childPopup = (PopupMenu) childElement;
+                            }else{
+                                componentsToRender.add(childElement);
                             }
                         }
                         if (childPopup!=null){
@@ -214,6 +220,8 @@ public class PopupMenuRenderer extends RendererBase {
                             menuItems.put(popupMenuItem);
                         }else {
                             JSONObject menuItem = ((MenuItem)child).toJSONObject(params);
+                            encodeChildElementsWithAnchor(context, popupMenu, componentsToRender, menuItem.getString("id"));
+                            menuItem.put("dynamicContent",true);
                             menuItems.put(menuItem);
                         }
                     }else {
@@ -229,6 +237,18 @@ public class PopupMenuRenderer extends RendererBase {
             }
         }
         return menuItems;
+    }
+
+    public void encodeChildElementsWithAnchor(FacesContext context, UIComponent component, List<UIComponent> children, String anchorId)  throws IOException{
+        ResponseWriter writer = context.getResponseWriter();
+        PopupMenu popupMenu = (PopupMenu) component;
+        writer.startElement("div", popupMenu);
+        writeAttribute(writer, "id", anchorId + MENU_ITEM_CONTENT_SUFFIX);
+        for (UIComponent child : children){
+            child.encodeAll(context);
+        }
+        writer.endElement("div");
+
     }
 
     public JSONObject encodeDefaultMenuItemsAttributes(FacesContext context, UIComponent component){

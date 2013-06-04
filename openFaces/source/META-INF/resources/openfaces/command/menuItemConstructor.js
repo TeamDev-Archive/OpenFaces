@@ -37,7 +37,13 @@ O$.MenuItemConsctructor = {
   renderMenuItemField: function (menuItem){
     var menuItemFieldSpan = document.createElement("span");
     menuItemFieldSpan.id = menuItem.id + "::caption";
-    menuItemFieldSpan.innerHTML = menuItem.value;
+    if (menuItem.dynamicContent){
+      menuItemFieldSpan.appendChild(O$(menuItem.id + "::content"));
+    } else {
+      menuItemFieldSpan.innerHTML = menuItem.value;
+    }
+
+
     O$.setStyleMappings(menuItemFieldSpan, {
       _default : O$.MenuItemConsctructor.defaultMenuItemsParams.DEFAULT_CONTENT_CLASS,
       _userClass : menuItem.contentAreaClass,
