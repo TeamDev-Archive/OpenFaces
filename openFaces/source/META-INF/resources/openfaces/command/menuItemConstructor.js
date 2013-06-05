@@ -12,47 +12,51 @@
 
 O$.MenuItemConsctructor = {
 
-  setupAjaxHandlers: function (menuItemElement, menuItem){
+  setupAjaxHandlers: function (menuItemElement, menuItem) {
     menuItemElement.onclick = function () {
       eval(menuItem.onclick);
-      if (menuItem.render  || (menuItem.execute && menuItem.length>0 ) ) {
-        if (menuItem.render == null){
+      if (menuItem.render || (menuItem.execute && menuItem.length > 0 )) {
+        if (menuItem.render == null) {
           alert("'execute' attribute can't be specified without the 'render' attribute. Component id: " + popupMenu.id);
           return;
         }
         O$.ajax.request("", event, {
           render: menuItem.render,
-          onajaxend : menuItem.onajaxend,
-          execute : menuItem.execute,
-          onerror : menuItem.onerror,
-          onsuccess : menuItem.onsuccess,
-          onajaxstart : menuItem.onajaxstart,
-          immediate : menuItem.immediate,
+          onajaxend: menuItem.onajaxend,
+          execute: menuItem.execute,
+          onerror: menuItem.onerror,
+          onsuccess: menuItem.onsuccess,
+          onajaxstart: menuItem.onajaxstart,
+          immediate: menuItem.immediate,
           _action: menuItem.action
         });
       }
     };
   },
 
-  renderMenuItemField: function (menuItem){
+  renderMenuItemField: function (menuItem) {
     var menuItemFieldSpan = document.createElement("span");
     menuItemFieldSpan.id = menuItem.id + "::caption";
-    if (menuItem.dynamicContent){
-      menuItemFieldSpan.appendChild(O$(menuItem.id + "::content"));
+    if (menuItem.dynamicContent) {
+      var contentElement = O$(menuItem.id + "::content");
+      if (contentElement) {
+        contentElement.style.display = "";
+        menuItemFieldSpan.appendChild(contentElement);
+      }
     } else {
       menuItemFieldSpan.innerHTML = menuItem.value;
     }
 
 
     O$.setStyleMappings(menuItemFieldSpan, {
-      _default : O$.MenuItemConsctructor.defaultMenuItemsParams.DEFAULT_CONTENT_CLASS,
-      _userClass : menuItem.contentAreaClass,
-      _popupMenuClass : menuItem._popupMenu.itemContentClass
+      _default: O$.MenuItemConsctructor.defaultMenuItemsParams.DEFAULT_CONTENT_CLASS,
+      _userClass: menuItem.contentAreaClass,
+      _popupMenuClass: menuItem._popupMenu.itemContentClass
     });
     return menuItemFieldSpan;
   },
 
-  renderMenuItemImgSpan: function (menuItem){
+  renderMenuItemImgSpan: function (menuItem) {
     var menuItemImgSpan = document.createElement("span");
     menuItemImgSpan.id = menuItem.id + "::imagespan";
     menuItemImgSpan.className = O$.MenuItemConsctructor.defaultMenuItemsParams.DEFAULT_INDENT_CLASS;
@@ -69,24 +73,22 @@ O$.MenuItemConsctructor = {
     menuItemImgSpan.appendChild(menuItemImg);
 
 
-
-
     return menuItemImgSpan;
   },
 
-  renderSubMenuImgSpan: function (menuItem){
+  renderSubMenuImgSpan: function (menuItem) {
     var subMenuSpan = document.createElement("span");
     subMenuSpan.id = menuItem.id + "::arrowspan";
     O$.setStyleMappings(subMenuSpan, {
-      _default : O$.MenuItemConsctructor.defaultMenuItemsParams.DEFAULT_ARROW_SPAN_CLASS,
-      _userClass : menuItem.contentAreaClass,
-      _popupMenuClass : menuItem._popupMenu.subMenuIconClass
+      _default: O$.MenuItemConsctructor.defaultMenuItemsParams.DEFAULT_ARROW_SPAN_CLASS,
+      _userClass: menuItem.contentAreaClass,
+      _popupMenuClass: menuItem._popupMenu.subMenuIconClass
     });
     /*
-    *         String submenuIconAreaClass = Styles.getCSSClass(context, menuItem, menuItem.getSubmenuIconAreaStyle(), StyleGroup.regularStyleGroup(),
+     *         String submenuIconAreaClass = Styles.getCSSClass(context, menuItem, menuItem.getSubmenuIconAreaStyle(), StyleGroup.regularStyleGroup(),
      menuItem.getSubmenuIconAreaClass(), Styles.getCSSClass(context, popupMenu, popupMenu.getItemSubmenuIconStyle(), StyleGroup.regularStyleGroup(),
      popupMenu.getItemSubmenuIconClass(), DEFAULT_ARROW_SPAN_CLASS));
-    * */
+     * */
     //class
     //IF popupMenuChild != null
     if (menuItem.menuId != null) {
@@ -106,9 +108,9 @@ O$.MenuItemConsctructor = {
     return subMenuSpan;
   },
 
-  renderMenuItems: function (popupMenu ,menuItemsList){
+  renderMenuItems: function (popupMenu, menuItemsList) {
     var menuItemsResultList = [];
-    menuItemsList.forEach(function(menuItem){
+    menuItemsList.forEach(function (menuItem) {
       var listElement;
       if (!menuItem.separator) {
         menuItem._popupMenu = popupMenu;
@@ -122,7 +124,7 @@ O$.MenuItemConsctructor = {
     return menuItemsResultList;
   },
 
-  renderMenuItem : function (menuItem){
+  renderMenuItem: function (menuItem) {
     var menuItemLiElement = document.createElement("li");
     menuItemLiElement.id = menuItem.id;
 
@@ -130,7 +132,6 @@ O$.MenuItemConsctructor = {
     menuItemMainSpan.id = menuItem.id + "::commandLink";
 
     var menuItemImgSpan = O$.MenuItemConsctructor.renderMenuItemImgSpan(menuItem);
-
     var menuItemFieldSpan = O$.MenuItemConsctructor.renderMenuItemField(menuItem);
 
     menuItemMainSpan.appendChild(menuItemImgSpan);
@@ -138,26 +139,19 @@ O$.MenuItemConsctructor = {
     menuItemMainSpan.appendChild(O$.MenuItemConsctructor.renderSubMenuImgSpan(menuItem));
 
     menuItemLiElement._anchor = menuItemFieldSpan;
-    O$.MenuItemConsctructor.setupAjaxHandlers(menuItemMainSpan,menuItem);
-
-
+    O$.MenuItemConsctructor.setupAjaxHandlers(menuItemMainSpan, menuItem);
     menuItemLiElement.appendChild(menuItemMainSpan);
-
     menuItemLiElement.menuId = menuItem.menuId;
-
-    //=======================================
-    // adding additional attributes
     menuItemLiElement._properties = {};
     menuItemLiElement._properties.imgSelectedSrc = menuItem.selectedIconUrl;
     menuItemLiElement._properties.imgSrc = menuItem.iconUrl;
     menuItemLiElement._properties.disabledImgSelectedSrc = menuItem.selectedDisabledIconUrl;
     menuItemLiElement._properties.disabledImgSrc = menuItem.disabledIconUrl;
-    //=======================================
 
     return menuItemLiElement;
   },
 
-  renderMenuSeparator : function (separatorItem){
+  renderMenuSeparator: function (separatorItem) {
     var menuSeparatorLiElement = document.createElement("li");
     menuSeparatorLiElement.id = separatorItem.id;
     menuSeparatorLiElement.className = O$.MenuItemConsctructor.defaultMenuItemsParams.DEFAULT_LIST_SEPARATOR_CLASS;

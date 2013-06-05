@@ -243,6 +243,7 @@ public class PopupMenuRenderer extends RendererBase {
         ResponseWriter writer = context.getResponseWriter();
         PopupMenu popupMenu = (PopupMenu) component;
         writer.startElement("div", popupMenu);
+        writeAttribute(writer, "style", "display:none;");
         writeAttribute(writer, "id", anchorId + MENU_ITEM_CONTENT_SUFFIX);
         for (UIComponent child : children){
             child.encodeAll(context);
