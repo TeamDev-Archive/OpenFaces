@@ -11,73 +11,69 @@
  */
 
 O$.Calendar = {
-  CURRENT_MONTH: 1,
-  NON_CURRENT_MONTH: 2,
-  SELECTED_DAY: 3,
+  CURRENT_MONTH:1,
+  NON_CURRENT_MONTH:2,
+  SELECTED_DAY:3,
 
-  DAY_COUNTS: [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334],
+  DAY_COUNTS:[0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334],
 
   // ================================== INTERNAL FUNCTIONS
 
-  _init: function(calendarId,
-                  selectedDate,
-                  todayDate,
-                  rolloverClass,
-                  focusable,
-                  focusedClass,
-                  dayClass, rolloverDayClass,
-                  inactiveMonthDayClass, rolloverInactiveMonthDayClass,
-                  selectedDayClass, rolloverSelectedDayClass,
-                  todayClass, rolloverTodayClass,
-                  weekendClass, rolloverWeekendClass,
-                  disabledDayClass, rolloverDisabledDayClass,
-                  firstDayOfWeek,
-                  headerClassName,
-                  dateRanges,
-                  showFooter,
-                  localeStr,
-                  required,
-                  disabled) {
-    var cal = O$.initComponent(calendarId, {rollover: rolloverClass}, {
-      _dayClass: dayClass,
-      _rolloverDayClass: rolloverDayClass,
-      _inactiveMonthDayClass: inactiveMonthDayClass,
-      _rolloverInactiveMonthDayClass: rolloverInactiveMonthDayClass,
-      _selectedDayClass: selectedDayClass,
-      _rolloverSelectedDayClass: rolloverSelectedDayClass,
-      _todayClass: todayClass,
-      _rolloverTodayClass: rolloverTodayClass,
-      _weekendClass: weekendClass,
-      _rolloverWeekendClass: rolloverWeekendClass,
-      _disabledDayClass: disabledDayClass,
-      _rolloverDisabledDayClass: rolloverDisabledDayClass,
-      _headerClass: headerClassName,
+  _init:function (calendarId, selectedDate, todayDate, rolloverClass, focusable, focusedClass, dayClass, rolloverDayClass, inactiveMonthDayClass, rolloverInactiveMonthDayClass, selectedDayClass, rolloverSelectedDayClass, todayClass, rolloverTodayClass, weekendClass, rolloverWeekendClass, disabledDayClass, rolloverDisabledDayClass, firstDayOfWeek, headerClassName, dateRanges, showFooter, localeStr, required, disabled, isAuxiliaryTagsRenderedInFooter, VALUE_HOLDER, valueHold, bodyId) {
+    var cal = O$.initComponent(calendarId, {rollover:rolloverClass}, {
+      _dayClass:dayClass,
+      _rolloverDayClass:rolloverDayClass,
+      _inactiveMonthDayClass:inactiveMonthDayClass,
+      _rolloverInactiveMonthDayClass:rolloverInactiveMonthDayClass,
+      _selectedDayClass:selectedDayClass,
+      _rolloverSelectedDayClass:rolloverSelectedDayClass,
+      _todayClass:todayClass,
+      _rolloverTodayClass:rolloverTodayClass,
+      _weekendClass:weekendClass,
+      _rolloverWeekendClass:rolloverWeekendClass,
+      _disabledDayClass:disabledDayClass,
+      _rolloverDisabledDayClass:rolloverDisabledDayClass,
+      _headerClass:headerClassName,
 
-      _firstDayOfWeek: firstDayOfWeek,
-      _dateRanges: dateRanges,
+      _firstDayOfWeek:firstDayOfWeek,
+      _dateRanges:dateRanges,
 
-      _showFooter: showFooter,
+      _showFooter:showFooter,
 
-      _localeStr: localeStr,
-      _required: required,
-      _disabled: disabled,
+      _localeStr:localeStr,
+      _required:required,
+      _disabled:disabled,
 
-      _weekNumber: O$(calendarId + "::week_num"),
-      _monthSelector: O$(calendarId + "--month"),
-      _decMonthSelector: O$(calendarId + "::month_decrease"),
-      _incMonthSelector: O$(calendarId + "::month_increase"),
-      _yearSelector: O$(calendarId + "--year"),
-      _decYearSelector: O$(calendarId + "::year_decrease"),
-      _incYearSelector: O$(calendarId + "::year_increase"),
-      _todaySelector: O$(calendarId + "::today"),
-      _noneSelector: O$(calendarId + "::none"),
-      _valueHolder: O$(calendarId + "::long_date_holder"),
-      _valueDateHolder: O$(calendarId + "::date_holder"),
-      _hasItsOwnMouseBehavior: true,
+      _weekNumber:O$(calendarId + "::week_num"),
+      _monthSelector:O$(calendarId + "--month"),
+      _decMonthSelector:O$(calendarId + "::month_decrease"),
+      _incMonthSelector:O$(calendarId + "::month_increase"),
+      _yearSelector:O$(calendarId + "--year"),
+      _decYearSelector:O$(calendarId + "::year_decrease"),
+      _incYearSelector:O$(calendarId + "::year_increase"),
+      _todaySelector:O$(calendarId + "::today"),
+      _noneSelector:O$(calendarId + "::none"),
+      _valueHolder:O$(calendarId + "::long_date_holder"),
+      _valueDateHolder:O$(calendarId + "::date_holder"),
+      _hasItsOwnMouseBehavior:true,
 
-      ondragstart: O$.cancelEvent,
-      onselectstart: O$.cancelEvent
+      ondragstart:O$.cancelEvent,
+      onselectstart:O$.cancelEvent
     });
+
+    var tbody = document.getElementById(bodyId);
+    for (row = 0; row < 6; row++) {
+      var tr = document.createElement("tr");
+      tr.className = "o_cal_week_row";
+      for (col = 0; col < 7; col++) {
+        var td = document.createElement("td");
+        var div = document.createElement("div");
+        td.appendChild(div);
+        tr.appendChild(td);
+      }
+      tbody.appendChild(tr);
+    }
+
 
     if (focusable) {
       O$.setupArtificialFocus(cal, focusedClass);
@@ -149,43 +145,43 @@ O$.Calendar = {
 
     if (!cal._disabled) {
       cal._dateChange_listeners = null;
-      cal._addDateChangeListener = function(listenerObjectFunction) {
+      cal._addDateChangeListener = function (listenerObjectFunction) {
         if (!this._dateChange_listeners) {
           this._dateChange_listeners = [];
         }
         this._dateChange_listeners.push(listenerObjectFunction);
       };
 
-      cal._decMonthSelector.onclick = function(e) {
+      cal._decMonthSelector.onclick = function (e) {
         O$.Calendar._decMonthClick(cal);
         O$.cancelEvent(e);
       };
       cal._decMonthSelector.ondblclick = O$.repeatClickOnDblclick;
-      cal._incMonthSelector.onclick = function() {
+      cal._incMonthSelector.onclick = function () {
         O$.Calendar._incMonthClick(cal);
       };
       cal._incMonthSelector.ondblclick = O$.repeatClickOnDblclick;
 
       var monthSelector = cal._monthSelector;
       monthSelector._drop = O$(monthSelector.id + "--drop");
-      monthSelector.onmousedown = function(e) {
+      monthSelector.onmousedown = function (e) {
         O$.Calendar._hideDrops(cal);
         O$.Calendar._showDrop(cal, this);
         O$.cancelEvent(e);
       };
 
-      cal._decYearSelector.onclick = function() {
+      cal._decYearSelector.onclick = function () {
         O$.Calendar._decYearClick(cal);
       };
       cal._decYearSelector.ondblclick = O$.repeatClickOnDblclick;
-      cal._incYearSelector.onclick = function() {
+      cal._incYearSelector.onclick = function () {
         O$.Calendar._incYearClick(cal);
       };
       cal._incYearSelector.ondblclick = O$.repeatClickOnDblclick;
 
       var yearSelector = cal._yearSelector;
       yearSelector._drop = O$(yearSelector.id + "--drop");
-      yearSelector.onmousedown = function(e) {
+      yearSelector.onmousedown = function (e) {
         O$.Calendar._hideDrops(cal);
         O$.Calendar._showDrop(cal, this);
         O$.cancelEvent(e);
@@ -203,7 +199,7 @@ O$.Calendar = {
       } else {
         nonSel.style.color = "";
         nonSel.style.cursor = "pointer";
-        nonSel.onmouseup = function() {
+        nonSel.onmouseup = function () {
           O$.Calendar._noneClick(cal);
         };
       }
@@ -224,7 +220,7 @@ O$.Calendar = {
     };
   },
 
-  _getSelectedDate: function(calendarId) {
+  _getSelectedDate:function (calendarId) {
     var cal = O$(calendarId);
     if (cal._isDateChooser) {
       cal = cal._calendar;
@@ -239,7 +235,7 @@ O$.Calendar = {
     }
   },
 
-  _setSelectedDate: function(calendarId, date) {
+  _setSelectedDate:function (calendarId, date) {
     var cal = O$(calendarId);
     if (cal._isDateChooser) {
       cal = cal._calendar;
@@ -263,24 +259,24 @@ O$.Calendar = {
     O$.Calendar._notifyDateChangeListeners(cal);
   },
 
-  _notifyDateChangeListeners: function(cal) {
+  _notifyDateChangeListeners:function (cal) {
     var listeners = cal._dateChange_listeners;
     if (listeners && listeners != null && listeners.length > 0) {
-      for (var i = 0; i < listeners.length; i ++) {
+      for (var i = 0; i < listeners.length; i++) {
         var listener = listeners[i];
         listener(O$.Calendar._getSelectedDate(cal.id));
       }
     }
   },
 
-  _closestDayOfMonth: function(year, month, day) {
+  _closestDayOfMonth:function (year, month, day) {
     if (new Date(year, month, day).getDate() != day)
       return O$.Calendar._closestDayOfMonth(year, month, --day);
     else
       return new Date(year, month, day);
   },
 
-  _prevMonth: function(cal) {
+  _prevMonth:function (cal) {
     var date = O$.Calendar._getSelectedDate(cal.id);
     if (!date) {
       O$.Calendar._selectCurrentDate(cal);
@@ -303,10 +299,10 @@ O$.Calendar = {
     O$.Calendar._cellClick(cal, newDate);
   },
 
-  _insideRanges: function(date, cal) {
+  _insideRanges:function (date, cal) {
     var found = false;
     var ranges = cal._dateRanges.getDateRanges();
-    for (var i = 0, count = ranges.length; i < count; i ++) {
+    for (var i = 0, count = ranges.length; i < count; i++) {
       if (ranges[i].isDateInRange(date)) {
         found = true;
         break;
@@ -315,12 +311,12 @@ O$.Calendar = {
     return found;
   },
 
-  _selectCurrentDate: function(cal) {
+  _selectCurrentDate:function (cal) {
     O$.Calendar._todayClick(cal);
   },
 
 
-  _nextMonth: function(cal) {
+  _nextMonth:function (cal) {
     var date = O$.Calendar._getSelectedDate(cal.id);
     if (!date) {
       O$.Calendar._selectCurrentDate(cal);
@@ -342,7 +338,7 @@ O$.Calendar = {
     O$.Calendar._cellClick(cal, newDate);
   },
 
-  _incSelectedDate: function(cal, inc) {
+  _incSelectedDate:function (cal, inc) {
     var date = O$.Calendar._getSelectedDate(cal.id);
     if (!date) {
       O$.Calendar._selectCurrentDate(cal);
@@ -355,7 +351,7 @@ O$.Calendar = {
     O$.Calendar._cellClick(cal, newDate);
   },
 
-  _updateCalendar: function(calendar, selectedDate) {
+  _updateCalendar:function (calendar, selectedDate) {
     var monthYearChanged = false;
     var today = calendar._todayDate;
     var dates;
@@ -384,7 +380,7 @@ O$.Calendar = {
         } else {
           none.style.color = "";
           none.style.cursor = "pointer";
-          none.onmouseup = function() {
+          none.onmouseup = function () {
             O$.Calendar._noneClick(calendar);
           };
         }
@@ -437,14 +433,14 @@ O$.Calendar = {
 
         if (!cell._eventsInitialized) {
           cell._eventsInitialized = true;
-          cell.onmouseover = function() {
+          cell.onmouseover = function () {
             if (this._rolloverClassName)
               O$.appendClassNames(this, [this._rolloverClassName]);
             O$.Calendar._operaStrictWorkaround();
             calendar._lastHoveredCell = this;
           };
 
-          cell.onmouseout = function() {
+          cell.onmouseout = function () {
             if (this._rolloverClassName)
               O$.excludeClassNames(this, [this._rolloverClassName]);
             O$.Calendar._operaStrictWorkaround();
@@ -476,7 +472,7 @@ O$.Calendar = {
 
         if (dateRanges) {
           var ranges = dateRanges.getDateRanges();
-          for (var i = 0, count = ranges.length; i < count; i ++) {
+          for (var i = 0, count = ranges.length; i < count; i++) {
             var range = ranges[i];
             if (range.isDateInRange(date)) {
               cell._className += " " + range._styleClassName;
@@ -529,15 +525,15 @@ O$.Calendar = {
         O$.Calendar._updateDateRangesSelectedStyles(calendar, cell);
 
         if (!dateRanges ||
-            (dateRanges && ((foundInRange && !disableIncluded) || (!foundInRange && !disableExcluded)))) {
+                (dateRanges && ((foundInRange && !disableIncluded) || (!foundInRange && !disableExcluded)))) {
           if (type == O$.Calendar.NON_CURRENT_MONTH) {
-            cell.onmouseup = function() {
+            cell.onmouseup = function () {
               O$.Calendar._cellClick(calendar, this._date);
             };
           } else if (type == O$.Calendar.SELECTED_DAY) {
             cell.onmouseup = null;
           } else if (type == O$.Calendar.CURRENT_MONTH) {
-            cell.onmouseup = function() {
+            cell.onmouseup = function () {
               O$.Calendar._updateWithinMonth(calendar, this._date, this);
             };
           }
@@ -560,7 +556,7 @@ O$.Calendar = {
       }
     }
     if (O$.isMozillaFF() || O$.isSafari3AndLate() /*todo:check whether O$.isSafari3AndLate check is really needed (it was added by mistake)*/) {
-      O$.addUnloadEvent(function() {
+      O$.addUnloadEvent(function () {
         // work around Mozilla problems firing old events when new page is loading (JSFC-2276)
         for (var i = 0, count = allCells.length; i < count; i++) {
           var cell = allCells[i];
@@ -603,7 +599,7 @@ O$.Calendar = {
     O$.repaintAreaForOpera(calendar, true);
   },
 
-  _updateToday: function(calendar) {
+  _updateToday:function (calendar) {
     var date = O$.Calendar._getSelectedDate(calendar.id);
     var today = new Date();
     if (date && date.getFullYear() == today.getFullYear()
@@ -616,7 +612,7 @@ O$.Calendar = {
     if (calendar._dateRanges && calendar._applyOnclick4today) {
       var foundInRange = false;
       var ranges = calendar._dateRanges.getDateRanges();
-      for (var i = 0, count = ranges.length; i < count; i ++) {
+      for (var i = 0, count = ranges.length; i < count; i++) {
         if (ranges[i].isDateInRange(today)) {
           foundInRange = true;
           break;
@@ -633,11 +629,11 @@ O$.Calendar = {
         todaySel.style.color = "";
         todaySel.style.cursor = "pointer";
         if (calendar._currentMonth == today.getMonth() && calendar._currentYear == today.getFullYear()) {
-          todaySel.onmouseup = function() {
+          todaySel.onmouseup = function () {
             O$.Calendar._updateWithinMonth(calendar, this._todayCell._date, this._todayCell);
           };
         } else {
-          todaySel.onmouseup = function() {
+          todaySel.onmouseup = function () {
             O$.Calendar._todayClick(calendar);
           };
         }
@@ -650,7 +646,7 @@ O$.Calendar = {
       if (calendar._applyOnclick4today && !calendar._disabled) {
         todaySel.style.color = "";
         todaySel.style.cursor = "pointer";
-        todaySel.onmouseup = function() {
+        todaySel.onmouseup = function () {
           O$.Calendar._todayClick(calendar);
         };
       } else {
@@ -661,14 +657,14 @@ O$.Calendar = {
     }
   },
 
-  _cellClick: function(cal, date) {
+  _cellClick:function (cal, date) {
     O$.Calendar._setSelectedDate(cal.id, O$.cloneDateTime(date));
     if (cal.onchange) {
       cal.onchange();
     }
   },
 
-  _buildDatesArray_YMD: function(calendar, year, month, day) {
+  _buildDatesArray_YMD:function (calendar, year, month, day) {
     if (!year) {
       return O$.Calendar._buildDatesArray(calendar, null, false);
     }
@@ -683,11 +679,11 @@ O$.Calendar = {
     return O$.Calendar._buildDatesArray(calendar, new Date(year, month, day), false);
   },
 
-  _checkMonth: function(month) {
+  _checkMonth:function (month) {
     return month >= 0 && month < 12;
   },
 
-  _buildDatesArray: function(calendar, date, isSelected) {
+  _buildDatesArray:function (calendar, date, isSelected) {
     var today = calendar._todayDate;
     if (!date)
       date = today;
@@ -719,7 +715,7 @@ O$.Calendar = {
       var storedSelectedDate_fullYear = storedSelectedDate.getFullYear();
     }
     var currentDay = monthStartDate;
-    for (var i = 0; i < 42; i ++) {
+    for (var i = 0; i < 42; i++) {
       var y = currentDay.getFullYear();
       var m = currentDay.getMonth();
       var d = currentDay.getDate();
@@ -749,7 +745,7 @@ O$.Calendar = {
     return dates;
   },
 
-  _compareDates: function(date1, date2) {
+  _compareDates:function (date1, date2) {
     if (date1.getFullYear() < date2.getFullYear()) return -1;
     else if (date1.getFullYear() == date2.getFullYear()
             && date1.getMonth() < date2.getMonth()) return -1;
@@ -765,7 +761,7 @@ O$.Calendar = {
     else return 1;
   },
 
-  _decMonthClick: function(cal) {
+  _decMonthClick:function (cal) {
     var month = cal._currentMonth;
     if (month == 0) {
       month = 11;
@@ -777,7 +773,7 @@ O$.Calendar = {
     O$.Calendar._updateCalendar(cal);
   },
 
-  _incMonthClick: function(cal) {
+  _incMonthClick:function (cal) {
     var month = cal._currentMonth;
     if (month == 11) {
       month = 0;
@@ -789,22 +785,22 @@ O$.Calendar = {
     O$.Calendar._updateCalendar(cal);
   },
 
-  _decYearClick: function(cal) {
+  _decYearClick:function (cal) {
     cal._currentYear -= 1;
     O$.Calendar._updateCalendar(cal);
   },
 
-  _incYearClick: function(cal) {
+  _incYearClick:function (cal) {
     cal._currentYear += 1;
     O$.Calendar._updateCalendar(cal);
   },
 
-  _todayClick: function(cal) {
+  _todayClick:function (cal) {
     var date = cal._todayDate;
     if (cal._dateRanges) {
       var found = false;
       var ranges = cal._dateRanges.getDateRanges();
-      for (var i = 0, count = ranges.length; i < count; i ++) {
+      for (var i = 0, count = ranges.length; i < count; i++) {
         if (ranges[i].isDateInRange(date)) {
           found = true;
           break;
@@ -819,7 +815,7 @@ O$.Calendar = {
     }
   },
 
-  _setTodaySettings: function(cal, date) {
+  _setTodaySettings:function (cal, date) {
     O$.Calendar._setSelectedDate(cal.id, date);
 
     if (cal.onchange) {
@@ -827,7 +823,7 @@ O$.Calendar = {
     }
   },
 
-  _noneClick: function(calendar) {
+  _noneClick:function (calendar) {
     O$.Calendar._setSelectedDate(calendar.id);
     calendar._applyOnclick4today = true;
     O$.Calendar._updateToday(calendar);
@@ -845,7 +841,7 @@ O$.Calendar = {
         selectedCell._rolloverClassName
                 = selectedCell._rolloverClassName.replace(calendar._dateRanges._rolloverSelectedDayClass, "");
         var ranges = calendar._dateRanges.getDateRanges();
-        for (var i = 0, count = ranges.length; i < count; i ++) {
+        for (var i = 0, count = ranges.length; i < count; i++) {
           var simpleRange = ranges[i];
           if (simpleRange.isDateInRange(selectedCell._date) && !calendar._dateRanges._disableIncluded) {
             if (simpleRange._selectedDayStyleClassName) {
@@ -873,7 +869,7 @@ O$.Calendar = {
     }
   },
 
-  _fillDrop: function(calendar, dropTable, items, onclickHandler, boldIndex) {
+  _fillDrop:function (calendar, dropTable, items, onclickHandler, boldIndex) {
     var rolloverClass = calendar._selectedDayClass;
     dropTable.className = calendar._headerClass;
 
@@ -896,7 +892,7 @@ O$.Calendar = {
     var parentFontWeight = O$.getElementStyle(dropTable, "font-weight");
     var parentFontStyle = O$.getElementStyle(dropTable, "font-style");
 
-    for (i = 0, count = items.length; i < count; i ++) {
+    for (i = 0, count = items.length; i < count; i++) {
       var tr = document.createElement("tr");
       var td = document.createElement("td");
       tr.appendChild(td);
@@ -921,7 +917,7 @@ O$.Calendar = {
         applyOnclick = false;
       }
 
-      tr.onmouseover = function() {
+      tr.onmouseover = function () {
         O$.Calendar._dropItemMouseOver(this);
         O$.Calendar._operaStrictWorkaround();
       };
@@ -944,18 +940,18 @@ O$.Calendar = {
       if (this._timeout) {
         clearTimeout(this._timeout);
       }
-      this._timeout = setTimeout(function() {
+      this._timeout = setTimeout(function () {
         O$.Calendar._hideDrop(dropTable);
       }, 3000);
     };
-    dropTable.onmouseover = function() {
+    dropTable.onmouseover = function () {
       if (this._timeout) {
         clearTimeout(this._timeout);
       }
     };
   },
 
-  _initializeDrops: function(cal) {
+  _initializeDrops:function (cal) {
     if (cal._dropsInitialized)
       return;
     cal._dropsInitialized = true;
@@ -967,7 +963,7 @@ O$.Calendar = {
       return;
     }
     var months = dtf.getMonths();
-    O$.Calendar._fillDrop(cal, monthDrop, months, function() {
+    O$.Calendar._fillDrop(cal, monthDrop, months, function () {
       O$.Calendar._monthDropItemClick(cal, this);
     }, cal._currentMonth);
 
@@ -986,7 +982,7 @@ O$.Calendar = {
     for (var i = firstYear; i <= lastYear; i++)
       years.push(i);
 
-    O$.Calendar._fillDrop(cal, yearDrop, years, function() {
+    O$.Calendar._fillDrop(cal, yearDrop, years, function () {
       O$.Calendar._yearDropItemClick(cal, this);
     }, yearsBefore);
 
@@ -994,21 +990,21 @@ O$.Calendar = {
     yearDrop.style.textAlign = "center";
   },
 
-  _hideDrop: function(drop) {
+  _hideDrop:function (drop) {
     if (drop._timeout) {
       clearTimeout(drop._timeout);
     }
     drop.hide();
   },
 
-  _hideDrops: function(cal) {
+  _hideDrops:function (cal) {
     var monthDrop = cal._monthSelector._drop;
     var yearDrop = cal._yearSelector._drop;
     O$.Calendar._hideDrop(monthDrop);
     O$.Calendar._hideDrop(yearDrop);
   },
 
-  _showDrop: function(calendar, selector) {
+  _showDrop:function (calendar, selector) {
     var drop = selector._drop;
     O$.correctElementZIndex(drop, calendar);
     O$.Calendar._initializeDrops(calendar);
@@ -1017,7 +1013,7 @@ O$.Calendar = {
     O$.Calendar._operaStrictWorkaround();
   },
 
-  _dropItemMouseOver: function(dropItem) {
+  _dropItemMouseOver:function (dropItem) {
     dropItem.style.background = !O$.isSafari() ? "Highlight" : "blue";
     dropItem.style.color = !O$.isSafari() ? "HighlightText" : "white";
     dropItem.style.cursor = "pointer";
@@ -1026,7 +1022,7 @@ O$.Calendar = {
     }
   },
 
-  _dropItemMouseOut: function(dropItem) {
+  _dropItemMouseOut:function (dropItem) {
     dropItem.style.background = O$.isSafari() ? "none" : "";
     dropItem.style.color = "";
     dropItem.style.cursor = "pointer";
@@ -1035,19 +1031,19 @@ O$.Calendar = {
     }
   },
 
-  _monthDropItemClick: function(cal, item) {
+  _monthDropItemClick:function (cal, item) {
     O$.Calendar._hideDrop(item._drop);
     cal._currentMonth = item._itemNo;
     O$.Calendar._updateCalendar(cal);
   },
 
-  _yearDropItemClick: function(cal, item) {
+  _yearDropItemClick:function (cal, item) {
     O$.Calendar._hideDrop(item._drop);
     cal._currentYear = item._item;
     O$.Calendar._updateCalendar(cal);
   },
 
-  _operaStrictWorkaround: function() {
+  _operaStrictWorkaround:function () {
     if (!O$.isOpera())
       return;
     var body = document.getElementsByTagName("body")[0];
@@ -1055,7 +1051,7 @@ O$.Calendar = {
     body.style.visibility = "visible";
   },
 
-  _updateWithinMonth: function(calendar, date, cell) {
+  _updateWithinMonth:function (calendar, date, cell) {
     var selectedCell = calendar._selectedCell;
     var useTempStyle;
     if (selectedCell) {
@@ -1070,7 +1066,7 @@ O$.Calendar = {
       else
         selectedCell.className = className;
       selectedCell._rolloverClassName = rolloverClassName.replace(calendar._rolloverSelectedDayClass, "");
-      selectedCell.onmouseup = function() {
+      selectedCell.onmouseup = function () {
         O$.Calendar._updateWithinMonth(calendar, this._date, this);
       };
     }
@@ -1087,7 +1083,7 @@ O$.Calendar = {
       var none = calendar._noneSelector;
       none.style.color = "";
       none.style.cursor = "pointer";
-      none.onmouseup = function() {
+      none.onmouseup = function () {
         O$.Calendar._noneClick(calendar);
       };
     }
@@ -1143,7 +1139,7 @@ O$.Calendar = {
     O$.Calendar._notifyDateChangeListeners(calendar);
   },
 
-  _updateDateRangesSelectedStyles: function(calendar, cell) {
+  _updateDateRangesSelectedStyles:function (calendar, cell) {
     var useTempStyle = cell._className !== undefined;
     var dateRanges = calendar._dateRanges;
     if (!dateRanges)
@@ -1151,7 +1147,7 @@ O$.Calendar = {
 
     var foundInRange = false;
     var ranges = dateRanges.getDateRanges();
-    for (var i = 0, count = ranges.length; i < count; i ++) {
+    for (var i = 0, count = ranges.length; i < count; i++) {
       var range = ranges[i];
       if (range.isDateInRange(cell._date)) {
         foundInRange = true;
@@ -1202,7 +1198,7 @@ O$.Calendar = {
 
   },
 
-  _updateDateHolder: function(calendar, date) {
+  _updateDateHolder:function (calendar, date) {
     var valueDate = calendar._valueDateHolder;
     if (date) {
       var dtf = O$.getDateTimeFormatObject(calendar._localeStr);
@@ -1211,12 +1207,12 @@ O$.Calendar = {
     }
   },
 
-  _adjustMonthAndYearSelectorWidth: function(calendar) {
+  _adjustMonthAndYearSelectorWidth:function (calendar) {
     if (calendar._monthSelector._drop.clientWidth) {
       calendar._monthSelector.style.width = calendar._monthSelector._drop.clientWidth - 3 + "px";
       calendar._yearSelector.style.width = calendar._yearSelector._drop.clientWidth - 3 + "px";
     } else {
-      setTimeout(function() {
+      setTimeout(function () {
         O$.Calendar._adjustMonthAndYearSelectorWidth(calendar);
       }, 40);
     }
