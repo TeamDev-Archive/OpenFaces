@@ -85,6 +85,9 @@ O$.MaskEdit = {
                   return;
 
                 if (this._isValidChar(pressChar)) {
+                  if (this._isCursorInSeparator) {
+                    this._setCursorPosition(this._cursorPosition + 1, false);
+                  }
                   this._maskValue[this._cursorPosition] = pressChar;
                   this.value = this._toStringMaskValue(this._maskValue);
 
@@ -122,6 +125,9 @@ O$.MaskEdit = {
               },
 
               isControlKey:function (key) {
+                console.log(this._isCursorInSeparator);
+                console.log(this._cursorPosition);
+                console.log("////////////////////////////////////////////////////////////////////////////");
                 switch (key) {
                   case 8:
                     return this._isKeyBackspace();
@@ -171,16 +177,16 @@ O$.MaskEdit = {
                 this._setCursorPosition(clickCursorPosition, true);
 
               },
-              onpaste:function (e) {
-                if (O$.isExplorer()) {
-                  e = e || event;
-                  setTimeout(this._validator(), 0);
-                }
-              },
+              /*onpaste:function (e) {
+               if (O$.isExplorer()) {
+               e = e || event;
+               setTimeout(this._validator(), 0);
+               }
+               },
 
-              oninput:function (e) {
-                return this._validator();
-              },
+               oninput:function (e) {
+               return this._validator();
+               },*/
 
               _validator:function () {
                 var newValue = this._cutNewMask(this.value);
@@ -271,6 +277,7 @@ O$.MaskEdit = {
     )
     ;
     O$.extend(maskEdit, {
+
               _isKeyRight:function () {
                 this._setCursorPosition(this._cursorPosition + 1, false);
                 O$._selectTextRange(this, this._cursorPosition, this._cursorPosition);
@@ -380,12 +387,14 @@ O$.MaskEdit = {
                 }
               },
               __mouseClickInBlank:function (allegedPosition) {
+
                 if ((allegedPosition < this._maskInputPosition[0]) ||
                         (allegedPosition > (this._maskInputPosition[this._maskInputPosition.length - 1] + 1))) {
                   O$._selectTextRange(this, this._cursorPosition, this._cursorPosition);
                   event.stopPropagation ? event.stopPropagation() : (event.cancelBubble = true);
                   return;
                 }
+                this._isFinishPosition = false;
                 for (var i in this._maskInputPosition) {
                   if (allegedPosition == this._maskInputPosition[i]) {
                     this._cursorPosition = this._maskInputPosition[i];
@@ -441,7 +450,7 @@ O$.MaskEdit = {
                 if (this._isCursorInSeparator) {
 
                   for (i = 1; i < this._maskInputPosition.length - 1; i++) {
-                    if ((this._maskInputPosition[i - 1] < allegedPosition) && (this._maskInputPosition[i ] > allegedPosition)) {
+                    if ((this._maskInputPosition[i - 1] < allegedPosition) && (this._maskInputPosition[i] > allegedPosition)) {
                       this._maskInputCursorPosition = i;
                       this._cursorPosition = this._maskInputPosition[i];
                       this._isCursorInSeparator = false;
@@ -449,6 +458,17 @@ O$.MaskEdit = {
                       return  true;
                     }
                   }
+
+                  for (i = 1; i < this._maskInputPosition.length; i++) {
+                    if (this._maskInputPosition[i] == allegedPosition) {
+                      this._maskInputCursorPosition = i;
+                      this._cursorPosition = this._maskInputPosition[i];
+                      this._isCursorInSeparator = false;
+                      this._isFinishPosition = false;
+                      return  true;
+                    }
+                  }
+
                 }
                 if (!this._isFinishPosition) {
                   for (i in this._maskInputPosition) {
