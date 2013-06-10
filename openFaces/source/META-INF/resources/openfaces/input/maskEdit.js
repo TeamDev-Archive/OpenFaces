@@ -36,20 +36,29 @@ O$.MaskEdit = {
 
 
     );
-
-
+    maskEdit._oldClick = maskEdit.onClick;
+    maskEdit._oldKeyPress = maskEdit.onkeypress;
+    maskEdit._oldKeyUp = maskEdit.onkeyup;
+    maskEdit._oldKeyDown = maskEdit.onkeydown;
+    maskEdit._oldFocus = maskEdit.onfocus;
+    maskEdit._oldBlur = maskEdit.onblur;
+    maskEdit._oldPaste = maskEdit.onpaste;
+    maskEdit._oldInput = maskEdit.oninput;
     if (!blankVisible) {
-      O$.addEvent(inputId, "blur", function () {
-        if (this.value == this._blank) {
-          this.value = "";
-        }
-      });
-      O$.addEvent(inputId, "focus", function () {
-        if (this.value == "") {
-          this.value = this._blank;
-        }
-      });
-
+      if (maskEdit._oldBlur) {
+        O$.addEvent(inputId, "blur", function () {
+          if (this.value == this._blank) {
+            this.value = "";
+          }
+        });
+      }
+      if (maskEdit._oldFocus) {
+        O$.addEvent(inputId, "focus", function () {
+          if (this.value == "") {
+            this.value = this._blank;
+          }
+        });
+      }
     }
 
     maskEdit._dictionary = dictionary ? dictionary : "absdefghijklmnopqrstuwwxyz";
@@ -71,9 +80,13 @@ O$.MaskEdit = {
     maskEdit.value = maskEdit._blank;
     maskEdit._cursorPosition = maskEdit._maskInputPosition[0];
     O$._selectTextRange(maskEdit, maskEdit._cursorPosition, maskEdit._cursorPosition);
+    console.log(maskEdit._maskInputPosition);
 
     O$.extend(maskEdit, {
               onkeypress:function (e) {
+                if (this._oldKeyPress) {
+                  this._oldKeyPress(e);
+                }
                 if (this._isFinishPosition)
                   return false;
 
@@ -125,9 +138,6 @@ O$.MaskEdit = {
               },
 
               isControlKey:function (key) {
-                console.log(this._isCursorInSeparator);
-                console.log(this._cursorPosition);
-                console.log("////////////////////////////////////////////////////////////////////////////");
                 switch (key) {
                   case 8:
                     return this._isKeyBackspace();
@@ -150,11 +160,20 @@ O$.MaskEdit = {
 
 
               onkeydown:function (e) {
+                if (this._oldKeyDown) {
+                  this._oldKeyDown(e);
+                }
+
+
                 var key = e.keyCode;
                 return this.isControlKey(key);
               },
 
               onkeyup:function (e) {
+                if (this._oldKeyUp) {
+                  this._oldKeyUp(e);
+                }
+
                 return false;
               },
 
@@ -171,13 +190,20 @@ O$.MaskEdit = {
               },
 
               onclick:function (event) {
+                if (this._oldClick) {
+                  this._oldClick(event);
+                }
+
                 event = event || window.event;
 
                 var clickCursorPosition = O$._getCaretPosition(this);
                 this._setCursorPosition(clickCursorPosition, true);
 
               },
-              /*onpaste:function (e) {
+              /*   onpaste:function (e) {
+               if (this._oldPaste) {
+               this._oldPaste(e);
+               }
                if (O$.isExplorer()) {
                e = e || event;
                setTimeout(this._validator(), 0);
@@ -185,6 +211,9 @@ O$.MaskEdit = {
                },
 
                oninput:function (e) {
+               if (this._oldInput) {
+               this._oldInput(e);
+               }
                return this._validator();
                },*/
 
@@ -248,7 +277,6 @@ O$.MaskEdit = {
 
 
                   }
-                  console.log(mask);
                   return this._valueMaskValidator(mask);
                 }
                 return false;
@@ -500,11 +528,6 @@ O$.MaskEdit = {
             }
 
     );
-
-
-    O$.addEvent(inputId, "onclick", maskEdit.onclick);
-    O$.addEvent(inputId, "onpaste", maskEdit.onpaste);
-    O$.addEvent(inputId, "oninput", maskEdit.oninput);
   }
 }
 ;

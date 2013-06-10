@@ -121,12 +121,10 @@ public class MaskEditRenderer extends AbstractInputTextRenderer {
         Styles.renderStyleClasses(context, maskEdit);
         Rendering.renderInitScript(context, initScript,
                 Resources.utilJsURL(context),
-                Resources.internalURL(context, "input/maskEdit.js")
+                Resources.internalURL(context, "input/maskEdit.js"),
+                Resources.internalURL(context, "input/mockInput.js")
 
         );
-        Rendering.renderInitScript(context, initScript,
-                Resources.utilJsURL(context),
-                Resources.internalURL(context, "input/mockInput.js"));
     }
 
     private Collection<String> dynamicConstructorsToString(

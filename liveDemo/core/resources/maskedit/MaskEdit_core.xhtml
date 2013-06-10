@@ -5,30 +5,20 @@
 
   <div id="Demo">
 
-
-    <div>
-      <o:maskEdit
-              id="Date"
-              blank="#{MaskEditBean.blank}"
-              mask="#{MaskEditBean.mask}"
-              maskSymbolArray="#{MaskEditBean.maskSymbol}"
-              value="#{MaskEditBean.value}"
-              maskDynamicConstructors="#{MaskEditBean.dynamicConstructors}"
-              maskSymbolConstructors="#{MaskEditBean.symbolConstructors}"
+    <o:maskEdit
+            id="Date"
+            blank="#{MaskEditBean.blank}"
+            mask="#{MaskEditBean.mask}"
+            maskSymbolArray="#{MaskEditBean.maskSymbol}"
+            value="#{MaskEditBean.value}"
+            maskDynamicConstructors="#{MaskEditBean.dynamicConstructors}"
+            maskSymbolConstructors="#{MaskEditBean.symbolConstructors}"
 
 
-              />
-      <o:inputSecret value="#{MaskEditBean.submitTest}"/>
-      <o:commandButton value="Display Search Results" style="margin-top: 15px;"
-                       action="#{MaskEditBean.coolSubmit}"
+            />
 
-              />
-
-      <div>
-
-      </div>
-    </div>
   </div>
+
 
 </div>
 
