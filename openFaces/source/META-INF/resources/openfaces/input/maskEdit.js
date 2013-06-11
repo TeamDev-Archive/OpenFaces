@@ -15,7 +15,7 @@
 
 O$.MaskEdit = {
 
-  _init:function (inputId, mask, blank, dynamicConstructor, symbolConstructors, dictionary, blankVisible, rolloverClass, focusedClass) {
+  _init:function (inputId, mask, blank, dynamicConstructors, symbolConstructors, dictionary, blankVisible, rolloverClass, focusedClass) {
     var maskEdit = O$.initComponent(inputId,
             {_rolloverClass:rolloverClass,
               _focusedClass:focusedClass
@@ -47,14 +47,14 @@ O$.MaskEdit = {
     maskEdit._oldPaste = maskEdit.onpaste;
     maskEdit._oldInput = maskEdit.oninput;
     if (!blankVisible) {
-      if (maskEdit._oldBlur) {
+      if (!maskEdit._oldBlur) {
         O$.addEvent(inputId, "blur", function () {
           if (this.value == this._blank) {
             this.value = "";
           }
         });
       }
-      if (maskEdit._oldFocus) {
+      if (!maskEdit._oldFocus) {
         O$.addEvent(inputId, "focus", function () {
           if (this.value == "") {
             this.value = this._blank;
@@ -83,18 +83,37 @@ O$.MaskEdit = {
     maskEdit._cursorPosition = maskEdit._maskInputPosition[0];
     O$._selectTextRange(maskEdit, maskEdit._cursorPosition, maskEdit._cursorPosition);
     console.log(maskEdit._maskInputPosition);
-    console.log(dynamicConstructor);
+    console.log(dynamicConstructors);
     console.log(symbolConstructors);
     var symbolConstructor = [];
     for (var i in symbolConstructors) {
       symbolConstructor = [];
-      var ch = symbolConstructors[i].charAt(1);
+      ch = symbolConstructors[i].charAt(1);
       symbolConstructor.push(ch);
-      var dynamicOccurrenceChar = symbolConstructors[i].substring(3, symbolConstructors[i].length - 1);
+      dynamicOccurrenceChar = symbolConstructors[i].substring(3, symbolConstructors[i].length - 1);
       symbolConstructor.push(dynamicOccurrenceChar);
       maskEdit._symbolConstructors.push(symbolConstructor);
     }
+
     console.log(maskEdit._symbolConstructors);
+    var dynamicConstructor = [];
+    for (var i in dynamicConstructors) {
+      dynamicConstructor = [];
+      ch = dynamicConstructors[i].charAt(1);
+      dynamicConstructor.push(ch);
+      ch = dynamicConstructors[i].charAt(3);
+      dynamicConstructor.push(ch);
+      minandmaxposition = dynamicConstructors[i].substring(5, dynamicConstructors[i].length - 3);
+      numberSeparator = minandmaxposition.indexOf(",");
+      min = minandmaxposition.substr(0, numberSeparator);
+      max = minandmaxposition.substr(numberSeparator+1, minandmaxposition.length - 1);
+      dynamicConstructor.push(min);
+      dynamicConstructor.push(max);
+      symbolForMaskValue = dynamicConstructors[i].charAt(dynamicConstructors[i].length - 2);
+      dynamicConstructor.push(symbolForMaskValue);
+      maskEdit._dynamicConstructors.push(dynamicConstructor);
+    }
+    console.log(maskEdit._dynamicConstructors);
 
     O$.extend(maskEdit, {
               onkeypress:function (e) {
@@ -556,9 +575,9 @@ O$.MaskEdit = {
                     this._cursorPosition++;
                     return true;
                   }
-                /*  if (!this._maskInputCursorPosition + 1) {
-                    return false;
-                  }*/
+                  /*  if (!this._maskInputCursorPosition + 1) {
+                   return false;
+                   }*/
                   this._maskInputCursorPosition++;
                   this._cursorPosition = this._maskInputPosition[this._maskInputCursorPosition];
                   return true;

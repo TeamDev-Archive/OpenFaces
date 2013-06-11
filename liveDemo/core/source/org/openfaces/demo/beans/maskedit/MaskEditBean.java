@@ -36,9 +36,9 @@ public class MaskEditBean {
     private Collection<MaskSymbolConstructor> symbolConstructors = new LinkedList<MaskSymbolConstructor>();
 
     public MaskEditBean() {
-        dynamicConstructors.add(new MaskDynamicConstructor('@', '#', 1, 3, '@'));
-        dynamicConstructors.add(new MaskDynamicConstructor('^', '#', 2, 5, ' '));
-        dynamicConstructors.add(new MaskDynamicConstructor('!', '#', 1, 3, 'F'));
+        dynamicConstructors.add(new MaskDynamicConstructor('@', '#', 1, 33, '@'));
+        dynamicConstructors.add(new MaskDynamicConstructor('^', '#', 12, 5, ' '));
+        dynamicConstructors.add(new MaskDynamicConstructor('!', '#', 12, 334, 'F'));
         symbolConstructors.add(new MaskSymbolConstructor('X', "asd123"));
     }
 

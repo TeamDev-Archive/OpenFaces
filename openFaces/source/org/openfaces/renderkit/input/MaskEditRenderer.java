@@ -130,6 +130,9 @@ public class MaskEditRenderer extends AbstractInputTextRenderer {
     private Collection<String> dynamicConstructorsToString(
             Collection<MaskDynamicConstructor> dynamicConstructors) {
         Collection<String> stringCollectionConstructors = new LinkedList<String>();
+        if (dynamicConstructors == null){
+            return null;
+        }
         for (MaskDynamicConstructor dynamicConstructor : dynamicConstructors) {
             stringCollectionConstructors.add(dynamicConstructor.toString());
         }
@@ -139,6 +142,9 @@ public class MaskEditRenderer extends AbstractInputTextRenderer {
     private Collection<String> symbolConstructorsToString(
             Collection<MaskSymbolConstructor> symbolConstructors) {
         Collection<String> stringCollectionConstructors = new LinkedList<String>();
+        if (symbolConstructors == null){
+            return null;
+        }
         for (MaskSymbolConstructor symbolConstructor : symbolConstructors) {
             stringCollectionConstructors.add(symbolConstructor.toString());
         }
