@@ -28,7 +28,7 @@ public class MaskEditBean {
 
 
     private String value;
-    private String mask = "+3(###)### ### ##";
+    private String mask = "+3(XXX)### ### ##";
     private String blank = "+3(   )          ";
     private DefaultMasks defaultMasks;
     private boolean blankVisible;

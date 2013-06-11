@@ -31,7 +31,9 @@ O$.MaskEdit = {
               _maskInputPosition:[],
               _isCursorInSeparator:false,
               _numeric:"1234567890",
-              _symbol:"`~,.?!@#$%^&*(){}[]"
+              _symbol:"`~,.?!@#$%^&*(){}[]",
+              _symbolConstructors:[],
+              _dynamicConstructors:[]
             }
 
 
@@ -81,12 +83,27 @@ O$.MaskEdit = {
     maskEdit._cursorPosition = maskEdit._maskInputPosition[0];
     O$._selectTextRange(maskEdit, maskEdit._cursorPosition, maskEdit._cursorPosition);
     console.log(maskEdit._maskInputPosition);
+    console.log(dynamicConstructor);
+    console.log(symbolConstructors);
+    var symbolConstructor = [];
+    for (var i in symbolConstructors) {
+      symbolConstructor = [];
+      var ch = symbolConstructors[i].charAt(1);
+      symbolConstructor.push(ch);
+      var dynamicOccurrenceChar = symbolConstructors[i].substring(3, symbolConstructors[i].length - 1);
+      symbolConstructor.push(dynamicOccurrenceChar);
+      maskEdit._symbolConstructors.push(symbolConstructor);
+    }
+    console.log(maskEdit._symbolConstructors);
 
     O$.extend(maskEdit, {
               onkeypress:function (e) {
                 if (this._oldKeyPress) {
                   this._oldKeyPress(e);
                 }
+                return this._realMaskEditKeyPressListener(e);
+              },
+              _maskEditKeyPress:function (e) {
                 if (this._isFinishPosition)
                   return false;
 
@@ -163,8 +180,10 @@ O$.MaskEdit = {
                 if (this._oldKeyDown) {
                   this._oldKeyDown(e);
                 }
+                return this._realMaskEditKeyDownListener(e);
+              },
 
-
+              _maskEditKeyDown:function (e) {
                 var key = e.keyCode;
                 return this.isControlKey(key);
               },
@@ -173,7 +192,9 @@ O$.MaskEdit = {
                 if (this._oldKeyUp) {
                   this._oldKeyUp(e);
                 }
-
+                return this._realMaskEditKeyUpListener(e);
+              },
+              _maskEditKeyUp:function (e) {
                 return false;
               },
 
@@ -193,6 +214,9 @@ O$.MaskEdit = {
                 if (this._oldClick) {
                   this._oldClick(event);
                 }
+                return this._realMaskEditClickListener(event);
+              },
+              _maskEditOnClick:function (event) {
 
                 event = event || window.event;
 
@@ -204,6 +228,8 @@ O$.MaskEdit = {
                if (this._oldPaste) {
                this._oldPaste(e);
                }
+               },
+               _maskEditOnPaste:function () {
                if (O$.isExplorer()) {
                e = e || event;
                setTimeout(this._validator(), 0);
@@ -214,6 +240,8 @@ O$.MaskEdit = {
                if (this._oldInput) {
                this._oldInput(e);
                }
+               },
+               _maskEditOnInput:function () {
                return this._validator();
                },*/
 
@@ -298,9 +326,20 @@ O$.MaskEdit = {
                   case "~":
                     return this._isOccurrenceChar(pressChar, this._symbol);
                   default:
-                    return false;
+                    return this._checkForDynamicSymbols(pressChar, maskChar);
                 }
+              },
+
+              _checkForDynamicSymbols:function (presChar, maskChar) {
+                for (var i in this._symbolConstructors) {
+                  if (maskChar == this._symbolConstructors[i][0]) {
+                    return  this._isOccurrenceChar(presChar, this._symbolConstructors[i][1]);
+                  }
+                }
+                return false;
               }
+
+
             }
     )
     ;
@@ -517,17 +556,27 @@ O$.MaskEdit = {
                     this._cursorPosition++;
                     return true;
                   }
-                  if (!this._maskInputCursorPosition++) {
+                /*  if (!this._maskInputCursorPosition + 1) {
                     return false;
-                  }
+                  }*/
                   this._maskInputCursorPosition++;
                   this._cursorPosition = this._maskInputPosition[this._maskInputCursorPosition];
                   return true;
                 } else return false;
+              },
+
+              _returnMaskEditEventListeners:function () {
+                maskEdit._realMaskEditKeyPressListener = maskEdit._maskEditKeyPress;
+                maskEdit._realMaskEditKeyUpListener = maskEdit._maskEditKeyUp;
+                maskEdit._realMaskEditKeyDownListener = maskEdit._maskEditKeyDown;
+                maskEdit._realMaskEditClickListener = maskEdit._maskEditOnClick;
+                maskEdit._realMaskEditKeyPressListener = maskEdit._maskEditKeyPress;
               }
+
             }
 
     );
+    maskEdit._returnMaskEditEventListeners();
   }
 }
 ;
