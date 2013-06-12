@@ -29,11 +29,13 @@ O$.MaskEdit = {
               _primaryMaskValue:[],
               _maskSeparatorPosition:[],
               _maskInputPosition:[],
+              _dynamicSymbolsPosition:[],
               _isCursorInSeparator:false,
               _numeric:"1234567890",
               _symbol:"`~,.?!@#$%^&*(){}[]",
               _symbolConstructors:[],
-              _dynamicConstructors:[]
+              _dynamicConstructors:[],
+              _mockInputObject:[]
             }
 
 
@@ -64,8 +66,6 @@ O$.MaskEdit = {
     }
 
     maskEdit._dictionary = dictionary ? dictionary : "absdefghijklmnopqrstuwwxyz";
-
-
     for (var i = 0; i < maskEdit._blank.length; i++) {
       if (maskEdit._blank[i] == mask[i]) {
         maskEdit._maskSeparatorPosition.push(i)
@@ -82,10 +82,6 @@ O$.MaskEdit = {
     maskEdit.value = maskEdit._blank;
     maskEdit._cursorPosition = maskEdit._maskInputPosition[0];
     O$._selectTextRange(maskEdit, maskEdit._cursorPosition, maskEdit._cursorPosition);
-    console.log(maskEdit._maskInputPosition);
-    console.log(dynamicConstructors);
-    console.log(symbolConstructors);
-    var symbolConstructor = [];
     for (var i in symbolConstructors) {
       symbolConstructor = [];
       ch = symbolConstructors[i].charAt(1);
@@ -94,9 +90,6 @@ O$.MaskEdit = {
       symbolConstructor.push(dynamicOccurrenceChar);
       maskEdit._symbolConstructors.push(symbolConstructor);
     }
-
-    console.log(maskEdit._symbolConstructors);
-    var dynamicConstructor = [];
     for (var i in dynamicConstructors) {
       dynamicConstructor = [];
       ch = dynamicConstructors[i].charAt(1);
@@ -106,14 +99,23 @@ O$.MaskEdit = {
       minandmaxposition = dynamicConstructors[i].substring(5, dynamicConstructors[i].length - 3);
       numberSeparator = minandmaxposition.indexOf(",");
       min = minandmaxposition.substr(0, numberSeparator);
-      max = minandmaxposition.substr(numberSeparator+1, minandmaxposition.length - 1);
+      max = minandmaxposition.substr(numberSeparator + 1, minandmaxposition.length - 1);
       dynamicConstructor.push(min);
       dynamicConstructor.push(max);
       symbolForMaskValue = dynamicConstructors[i].charAt(dynamicConstructors[i].length - 2);
       dynamicConstructor.push(symbolForMaskValue);
       maskEdit._dynamicConstructors.push(dynamicConstructor);
     }
-    console.log(maskEdit._dynamicConstructors);
+
+    for (var i in maskEdit._mask) {
+      for (var j in maskEdit._dynamicConstructors) {
+        if (maskEdit._mask[i] == maskEdit._dynamicConstructors[j][0]) {
+          maskEdit._dynamicSymbolsPosition.push(maskEdit._maskInputPosition[i]);
+          maskEdit._mockInputObject.push(O$.mockInput._init());
+          break;
+        }
+      }
+    }
 
     O$.extend(maskEdit, {
               onkeypress:function (e) {
