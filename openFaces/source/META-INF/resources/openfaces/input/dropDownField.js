@@ -716,13 +716,14 @@ O$.DropDownField = {
           }
         },
 
-        _hide:function () {
+        _hide:function (doNotClearList) {
           field._hidden = true;
           dropDown._field._oldValue = dropDown._selectedItemValue;
           dropDown._fieldContainer.style.display = "";
           dropDown._itemPresentationContainer.style.display = "";
           dropDown._fieldContainer.style.height = "0";
-          dropDown._setFilterCriterion(null);
+          if (!doNotClearList)
+            dropDown._setFilterCriterion(null);
           if (O$.isSafari() || O$.isChrome()) {
             if (!O$.checkClassNameUsed(this, ["o_hiddenFocusChromeSafari"]))
               O$.appendClassNames(this, ["o_hiddenFocusChromeSafari"]);
@@ -741,9 +742,9 @@ O$.DropDownField = {
               dropDown._field.value = "";
               dropDown.value = "";
             }
-            dropDown._setFilterCriterion(null);
-            dropDown._setItemPresentationValue();
-            dropDown._field._hide();
+            /*dropDown._setFilterCriterion(null);
+            dropDown._setItemPresentationValue();        */
+            dropDown._field._hide(true);
           }
         }
       });
