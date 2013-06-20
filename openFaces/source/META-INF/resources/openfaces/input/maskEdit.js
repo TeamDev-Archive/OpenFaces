@@ -48,74 +48,12 @@ O$.MaskEdit = {
     maskEdit._oldBlur = maskEdit.onblur;
     maskEdit._oldPaste = maskEdit.onpaste;
     maskEdit._oldInput = maskEdit.oninput;
-    if (!blankVisible) {
-      if (!maskEdit._oldBlur) {
-        O$.addEvent(inputId, "blur", function () {
-          if (this.value == this._blank) {
-            this.value = "";
-          }
-        });
-      }
-      if (!maskEdit._oldFocus) {
-        O$.addEvent(inputId, "focus", function () {
-          if (this.value == "") {
-            this.value = this._blank;
-          }
-        });
-      }
-    }
-
     maskEdit._dictionary = dictionary ? dictionary : "absdefghijklmnopqrstuwwxyz";
-    for (var i = 0; i < maskEdit._blank.length; i++) {
-      if (maskEdit._blank[i] == mask[i]) {
-        maskEdit._maskSeparatorPosition.push(i)
-      } else {
-        maskEdit._maskInputPosition.push(i);
-        maskEdit._mask = maskEdit._mask + mask[i];
-
-      }
-      maskEdit._maskValue.push(maskEdit._blank[i]);
-      maskEdit._primaryMaskValue.push(maskEdit._blank[i]);
-    }
-
     maskEdit._isFinishPosition = maskEdit._maskInputPosition.length <= 1;
     maskEdit.value = maskEdit._blank;
     maskEdit._cursorPosition = maskEdit._maskInputPosition[0];
     O$._selectTextRange(maskEdit, maskEdit._cursorPosition, maskEdit._cursorPosition);
-    for (var i in symbolConstructors) {
-      symbolConstructor = [];
-      ch = symbolConstructors[i].charAt(1);
-      symbolConstructor.push(ch);
-      dynamicOccurrenceChar = symbolConstructors[i].substring(3, symbolConstructors[i].length - 1);
-      symbolConstructor.push(dynamicOccurrenceChar);
-      maskEdit._symbolConstructors.push(symbolConstructor);
-    }
-    for (var i in dynamicConstructors) {
-      dynamicConstructor = [];
-      ch = dynamicConstructors[i].charAt(1);
-      dynamicConstructor.push(ch);
-      ch = dynamicConstructors[i].charAt(3);
-      dynamicConstructor.push(ch);
-      minandmaxposition = dynamicConstructors[i].substring(5, dynamicConstructors[i].length - 3);
-      numberSeparator = minandmaxposition.indexOf(",");
-      min = minandmaxposition.substr(0, numberSeparator);
-      max = minandmaxposition.substr(numberSeparator + 1, minandmaxposition.length - 1);
-      dynamicConstructor.push(min);
-      dynamicConstructor.push(max);
-      symbolForMaskValue = dynamicConstructors[i].charAt(dynamicConstructors[i].length - 2);
-      dynamicConstructor.push(symbolForMaskValue);
-      maskEdit._dynamicConstructors.push(dynamicConstructor);
-    }
 
-    for (var i in maskEdit._mask) {
-      for (var j in maskEdit._dynamicConstructors) {
-        if (maskEdit._mask[i] == maskEdit._dynamicConstructors[j][0]) {
-          maskEdit._dynamicSymbolsPosition.push(maskEdit._maskInputPosition[i]);
-          maskEdit._mockInputObject.push(O$.mockInput._init());
-          break;
-        }
-      }
-    }
 
     O$.extend(maskEdit, {
               onkeypress:function (e) {
@@ -124,6 +62,7 @@ O$.MaskEdit = {
                 }
                 return this._realMaskEditKeyPressListener(e);
               },
+
               _maskEditKeyPress:function (e) {
                 if (this._isFinishPosition)
                   return false;
@@ -170,6 +109,7 @@ O$.MaskEdit = {
                 }
                 return null;
               },
+
               _isOccurrenceChar:function (symbol, symbolArray) {
                 return symbolArray.indexOf(symbol) != -1;
 
@@ -196,7 +136,6 @@ O$.MaskEdit = {
                 }
               },
 
-
               onkeydown:function (e) {
                 if (this._oldKeyDown) {
                   this._oldKeyDown(e);
@@ -215,6 +154,7 @@ O$.MaskEdit = {
                 }
                 return this._realMaskEditKeyUpListener(e);
               },
+
               _maskEditKeyUp:function (e) {
                 return false;
               },
@@ -237,13 +177,11 @@ O$.MaskEdit = {
                 }
                 return this._realMaskEditClickListener(event);
               },
+
               _maskEditOnClick:function (event) {
-
                 event = event || window.event;
-
                 var clickCursorPosition = O$._getCaretPosition(this);
                 this._setCursorPosition(clickCursorPosition, true);
-
               },
               /*   onpaste:function (e) {
                if (this._oldPaste) {
@@ -304,8 +242,8 @@ O$.MaskEdit = {
                 }
                 this._maskValue = bufValue;
                 return true;
-
               },
+
               _valueBlankValidator:function (blank) {
                 var positionInBlank = 0;
                 var mask = "";
@@ -587,17 +525,135 @@ O$.MaskEdit = {
               },
 
               _returnMaskEditEventListeners:function () {
-                maskEdit._realMaskEditKeyPressListener = maskEdit._maskEditKeyPress;
-                maskEdit._realMaskEditKeyUpListener = maskEdit._maskEditKeyUp;
-                maskEdit._realMaskEditKeyDownListener = maskEdit._maskEditKeyDown;
-                maskEdit._realMaskEditClickListener = maskEdit._maskEditOnClick;
-                maskEdit._realMaskEditKeyPressListener = maskEdit._maskEditKeyPress;
+                this._realMaskEditKeyPressListener = this._maskEditKeyPress;
+                this._realMaskEditKeyUpListener = this._maskEditKeyUp;
+                this._realMaskEditKeyDownListener = this._maskEditKeyDown;
+                this._realMaskEditClickListener = this._maskEditOnClick;
+                this._realMaskEditKeyPressListener = this._maskEditKeyPress;
               }
 
             }
 
     );
+    O$.extend(maskEdit, {
+              _createDynamicSymbolArray:function (symbolConstructors) {
+                if (symbolConstructors) {
+                  var ch;
+                  var symbolConstructor;
+                  var dynamicOccurrenceChar;
+                  for (var i in symbolConstructors) {
+                    symbolConstructor = [];
+                    ch = symbolConstructors[i].charAt(1);
+                    symbolConstructor.push(ch);
+                    dynamicOccurrenceChar = symbolConstructors[i].substring(3, symbolConstructors[i].length - 1);
+                    symbolConstructor.push(dynamicOccurrenceChar);
+                    this._symbolConstructors.push(symbolConstructor);
+                  }
+                }
+              },
+
+              _createDynamicMask:function (dynamicConstructors) {
+                if (dynamicConstructors) {
+                  var ch;
+                  var symbolForMaskValue;
+                  var dynamicConstructor;
+                  var minAndMaxPosition;
+                  for (var i in dynamicConstructors) {
+                    dynamicConstructor = [];
+                    ch = dynamicConstructors[i].charAt(1);
+                    dynamicConstructor.push(ch);
+                    ch = dynamicConstructors[i].charAt(3);
+                    dynamicConstructor.push(ch);
+                    minAndMaxPosition = dynamicConstructors[i].substring(5, dynamicConstructors[i].length - 3);
+                    numberSeparator = minAndMaxPosition.indexOf(",");
+                    min = minAndMaxPosition.substr(0, numberSeparator);
+                    max = minAndMaxPosition.substr(numberSeparator + 1, minAndMaxPosition.length - 1);
+                    dynamicConstructor.push(min);
+                    dynamicConstructor.push(max);
+                    symbolForMaskValue = dynamicConstructors[i].charAt(dynamicConstructors[i].length - 2);
+                    dynamicConstructor.push(symbolForMaskValue);
+                    this._dynamicConstructors.push(dynamicConstructor);
+                  }
+                  this._createMockInput();
+                  this._constructorDynamicPrimaryMask();
+                  this._setDynamicPrimaryValue();
+                }
+              },
+
+              _createMockInput:function () {
+                for (var i in this._mask) {
+                  for (var j in this._dynamicConstructors) {
+                    if (this._mask[i] == this._dynamicConstructors[j][0]) {
+                      this._dynamicSymbolsPosition.push(this._maskInputPosition[i]);
+                      var mockInput = new O$.mockInput(this, this._dynamicConstructors[j][2],
+                              this._dynamicConstructors[j][3],
+                              this._dynamicConstructors[j][1]);
+                      this._mockInputObject.push(mockInput);
+                      break;
+                    }
+                  }
+                }
+              },
+
+              _visibleSettings:function (blankVisible) {
+                if (!blankVisible) {
+                  if (!this._oldBlur) {
+                    O$.addEvent(inputId, "blur", function () {
+                      if (this.value == this._blank) {
+                        this.value = "";
+                      }
+                    });
+                  }
+                  if (!this._oldFocus) {
+                    O$.addEvent(inputId, "focus", function () {
+                      if (this.value == "") {
+                        this.value = this._blank;
+                      }
+                    });
+                  }
+                }
+              },
+
+              _maskSetting:function () {
+                for (var i = 0; i < maskEdit._blank.length; i++) {
+                  if (maskEdit._blank[i] == mask[i]) {
+                    maskEdit._maskSeparatorPosition.push(i)
+                  } else {
+                    maskEdit._maskInputPosition.push(i);
+                    maskEdit._mask = maskEdit._mask + mask[i];
+
+                  }
+                  maskEdit._maskValue.push(maskEdit._blank[i]);
+                  maskEdit._primaryMaskValue.push(maskEdit._blank[i]);
+                }
+              },
+
+              _constructorDynamicPrimaryMask:function () {
+                for (var i in  this._dynamicSymbolsPosition) {
+                  this._maskValue[this._dynamicSymbolsPosition[i]] = this._mockInputObject[i]._returnMockValue();
+                  this._primaryMaskValue[this._dynamicSymbolsPosition[i]] = this._mockInputObject[i]._returnMockValue();
+                }
+                console.log(this._maskValue);
+              },
+
+              _setDynamicPrimaryValue:function(){
+                this.value = this._toStringMaskValue(this._primaryMaskValue);
+              }
+
+
+
+            }
+
+
+    )
+    ;
+    maskEdit._maskSetting();
+    maskEdit._visibleSettings(blankVisible);
+    maskEdit._createDynamicMask(dynamicConstructors);
+    maskEdit._createDynamicSymbolArray(symbolConstructors);
     maskEdit._returnMaskEditEventListeners();
+
+
   }
 }
 ;

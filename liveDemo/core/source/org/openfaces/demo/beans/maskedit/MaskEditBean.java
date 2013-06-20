@@ -28,17 +28,15 @@ public class MaskEditBean {
 
 
     private String value;
-    private String mask = "+3(XXX)^#^ #!! #@";
-    private String blank = "+3(   )          ";
+    private String mask = "I.I.I.I";
+    private String blank = " . . . ";
     private DefaultMasks defaultMasks;
     private boolean blankVisible;
     private Collection<MaskDynamicConstructor> dynamicConstructors = new LinkedList<MaskDynamicConstructor>();
     private Collection<MaskSymbolConstructor> symbolConstructors = new LinkedList<MaskSymbolConstructor>();
 
     public MaskEditBean() {
-        dynamicConstructors.add(new MaskDynamicConstructor('@', '#', 1, 33, '@'));
-        dynamicConstructors.add(new MaskDynamicConstructor('^', '#', 12, 5, ' '));
-        dynamicConstructors.add(new MaskDynamicConstructor('!', '#', 12, 334, 'F'));
+        dynamicConstructors.add(new MaskDynamicConstructor('I', '#', 2, 3, '_'));
         symbolConstructors.add(new MaskSymbolConstructor('X', "asd123"));
     }
 
