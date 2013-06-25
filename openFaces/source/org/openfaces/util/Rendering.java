@@ -272,10 +272,12 @@ public class Rendering {
 
     static String escapeStringForJS(String str) {
         int len = str.length();
+        char[] charArray = str.toCharArray();
         char buf[] = new char[len << 4];
         int count = 0;
+        char chr;
         for (int i = 0; i < len; i++) {
-            char chr = str.charAt(i);
+            chr = charArray[i];
             switch (chr) {
                 case '\\':
                     buf[count++] = '\\';
