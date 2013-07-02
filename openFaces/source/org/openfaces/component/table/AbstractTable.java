@@ -165,8 +165,10 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     private Boolean deferBodyLoading;
     private Integer totalRowCount;
     private boolean implicitFacetsCreated;
+    private List<SortingRule> saveSortRule = new ArrayList<SortingRule>();
 
     public AbstractTable() {
+
         super.setUiDataValue(new TableDataModel(this));
     }
 
@@ -218,7 +220,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
                 rolloverRowStyle, rolloverRowClass, noDataRowStyle, noDataRowClass,
                 noDataMessageAllowed, columnIndexVar, columnIdVar, saveAttachedState(context, columnsOrder),
                 sortedAscendingImageUrl, sortedDescendingImageUrl, cachedClientId,
-                autoFilterDelay, deferBodyLoading, totalRowCount, implicitFacetsCreated};
+                autoFilterDelay, deferBodyLoading, totalRowCount, implicitFacetsCreated, saveSortRule};
     }
 
     @Override
@@ -307,6 +309,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         deferBodyLoading = (Boolean) state[i++];
         totalRowCount = (Integer) state[i++];
         implicitFacetsCreated = (Boolean) state[i++];
+        saveSortRule = (List<SortingRule>) state[i++];
 
         beforeUpdateValuesPhase = true;
         incomingSortingRules = null;
@@ -410,6 +413,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
      * Some column facets, which are rendered several times per table, such as "inColumnHeader" might contain some
      * components, such as <o:summary>, which are sensitive to the fact that their client id is not repeated when the
      * same component is rendered in different rows. Hence this resets their client ids
+     *
      * @return
      */
     private List<UIComponent> getAdditionalComponentsRequiringClientIdReset() {
@@ -420,10 +424,10 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
                 Map<String, UIComponent> facets = column.getFacets();
                 for (Map.Entry<String, UIComponent> entry : facets.entrySet()) {
                     String facetName = entry.getKey();
-                    if (! (
+                    if (!(
                             facetName.equals(BaseColumn.FACET_HEADER) ||
-                            facetName.equals(BaseColumn.FACET_SUB_HEADER) ||
-                            facetName.equals(BaseColumn.FACET_FOOTER)
+                                    facetName.equals(BaseColumn.FACET_SUB_HEADER) ||
+                                    facetName.equals(BaseColumn.FACET_FOOTER)
                     ))
                         additionalComponentsRequiringClientIdReset.add(entry.getValue());
                 }
@@ -1024,6 +1028,52 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         this.sortableHeaderRolloverClass = sortableHeaderRolloverClass;
     }
 
+    public List getSaveSortRule(FacesContext context) {
+
+        ValueExpression ve = getValueExpression("saveSortRule");
+        List<SortingRule> sortingRules;
+        try {
+            sortingRules = (List<SortingRule>) ve.getValue(context.getELContext());
+            if (sortingRules.size() == 0)
+                sortingRules = ifDontHaveSaveSortRuleAttr();
+            setSortingRules(sortingRules);
+        } catch (Exception e) {
+            sortingRules = ifDontHaveSaveSortRuleAttr();
+        }
+        return sortingRules;
+    }
+
+    private List<SortingRule> ifDontHaveSaveSortRuleAttr() {
+        List<SortingRule> sortingRules;
+        if (this.saveSortRule != null) {
+            if (this.saveSortRule.size() != 0) {
+                sortingRules = this.saveSortRule;
+                setSortingRules(sortingRules);
+            } else sortingRules = sortingRulesSettings();
+        } else sortingRules = sortingRulesSettings();
+        return sortingRules;
+    }
+
+    private List<SortingRule> sortingRulesSettings() {
+        List<SortingRule> sortingRules;
+        if (this.sortingRules != null) {
+            if (this.sortingRules.size() != 0) {
+                sortingRules = this.sortingRules;
+                setSortingRules(sortingRules);
+            } else {
+                sortingRules = null;
+            }
+        } else sortingRules = null;
+        return sortingRules;
+
+    }
+
+    public void setSaveSortRule(List<SortingRule> saveSortRule, FacesContext context) {
+        this.saveSortRule = saveSortRule;
+        ValueExpression ve = getValueExpression("saveSortRule");
+        ve.setValue(context.getELContext(), saveSortRule);
+    }
+
     @Override
     protected List<UIComponent> getExtensionComponents() {
 
@@ -1096,7 +1146,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
             List<BaseColumn> allColumns = getAllColumns();
             for (BaseColumn column : allColumns) {
-                for(UIComponent parent = column.getParent(); parent instanceof ColumnGroup; parent = parent.getParent())
+                for (UIComponent parent = column.getParent(); parent instanceof ColumnGroup; parent = parent.getParent())
                     columnGroups.add((ColumnGroup) parent);
                 List<UIComponent> applicableFacets = Components.getFacets(column,
                         BaseColumn.FACET_HEADER, BaseColumn.FACET_SUB_HEADER, BaseColumn.FACET_FOOTER,
@@ -1141,12 +1191,14 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
                     final ListIterator<Summary> summaryListIterator = summaries.listIterator();
                     return new Iterator() {
                         private Runnable restoreDynamicColumnVariables;
+
                         private void undeclareLatestDynamicColumnVariables() {
                             if (restoreDynamicColumnVariables != null) {
                                 restoreDynamicColumnVariables.run();
                                 restoreDynamicColumnVariables = null;
                             }
                         }
+
                         public boolean hasNext() {
                             boolean hasNext = summaryListIterator.hasNext();
                             if (!hasNext) {
@@ -1439,6 +1491,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         setSortingRules(sortingRules);
     }
 
+
     public int getSortColumnIndex() {
         String sortColumnId = getSortColumnId();
         List<BaseColumn> columns = getRenderedColumns();
@@ -1557,6 +1610,8 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
      * by any application code.
      */
     public void setSortingRules(List<SortingRule> sortingRules) {
+        TableDataModel model = getModel();
+        model.setSortingRules(sortingRules);
         this.sortingRules = sortingRules;
     }
 
@@ -2269,11 +2324,10 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     }
 
 
-
     /**
      * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
      * by any application code.
-     *
+     * <p/>
      * This method is required for BaseColumn.getExpressionData to be able to detect column type during model
      * construction, when the of displayed rows is still in progress (row data objects have been retrieved but not
      * grouped yet). The BaseColumn.getExpressionData method relies on row variables such as row data and row index
@@ -2304,7 +2358,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     /**
      * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
      * by any application code.
-     *
+     * <p/>
      * Must be invoked after the populateRowVariablesWithAnyModelValue call. Restores original row variables as they
      * were before the preceding populateRowVariablesWithAnyModelValue call.
      */

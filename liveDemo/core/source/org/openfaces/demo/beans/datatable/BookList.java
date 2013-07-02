@@ -12,6 +12,8 @@
 
 package org.openfaces.demo.beans.datatable;
 
+import org.openfaces.component.table.SortingRule;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +22,19 @@ public class BookList implements Serializable {
     private List<Book> books = new ArrayList<Book>();
     private Book selectedBook;
     private List list = new ArrayList();
+    private List<SortingRule> sortingRules = new ArrayList<SortingRule>();
+
+    public List<SortingRule> getSortingRules() {
+        System.out.println("SortingRules++++++");
+        for (SortingRule sortingRule : sortingRules) {
+            System.out.println(sortingRule);
+        }
+        return sortingRules;
+    }
+
+    public void setSortingRules(List<SortingRule> sortingRules) {
+        this.sortingRules = sortingRules;
+    }
 
     public BookList() {
         books.add(new Book(
@@ -69,10 +84,28 @@ public class BookList implements Serializable {
                 "Jayson publishing house",
                 BookCategory.WEB_TECHNOLOGY
         ));
+        sortingRules.add(new SortingRule("title", false));
     }
 
     public List<Book> getBooks() {
+        System.out.println("GET");
+        for (Book book : books) {
+            System.out.println(book.getBookTitle());
+        }
+        System.out.println("SortingRules in get");
+        for (SortingRule sortingRule : sortingRules) {
+            System.out.println(sortingRule);
+        }
         return books;
+    }
+
+    public void setBooks(List<Book> books) {
+        System.out.println("SET");
+        for (Book book : books) {
+            System.out.println(book.getBookTitle());
+        }
+
+        this.books = books;
     }
 
     public Book getSelectedBook() {

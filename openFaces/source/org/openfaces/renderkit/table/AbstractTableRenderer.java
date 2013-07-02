@@ -77,11 +77,11 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
+        sortingInEncode(context, component);
         if (!component.isRendered())
             return;
 
         final AbstractTable table = (AbstractTable) component;
-
         if (table.getUseAjax())
             AjaxUtil.prepareComponentForAjax(context, component);
 
@@ -99,6 +99,14 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
             });
         } finally {
             table.getAttributes().remove(TableStructure.TABLE_STRUCTURE_ATTR);
+        }
+    }
+
+    protected void sortingInEncode(FacesContext context, UIComponent component) {
+        AbstractTable table = (AbstractTable) component;
+        if (table.getSaveSortRule(context) != null){
+            TableUtil.markSortingToggledInThisRequest(context);
+            table.acceptNewSortingRules(table.getSaveSortRule(context));
         }
     }
 
@@ -266,7 +274,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         Resources.renderJSLinkIfNeeded(context, Resources.internalURL(context, "captionButton.js"));
 
         ResponseWriter writer = context.getResponseWriter();
-        // mock table/tr enclosing tags must be rendered for IE8 to process the button's td tag properly 
+        // mock table/tr enclosing tags must be rendered for IE8 to process the button's td tag properly
         writer.startElement("table", table);
         writer.startElement("tr", table);
         button.encodeAll(context);
@@ -487,7 +495,6 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         if (!uiComponent.isRendered())
             return;
         AbstractTable table = (AbstractTable) uiComponent;
-
         decodeKeyboardSupport(context, table);
         AbstractTableSelection selection = table.getSelection();
         if (selection != null)
@@ -496,6 +503,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         ColumnResizing columnResizing = table.getColumnResizing();
         if (columnResizing != null)
             columnResizing.processDecodes(context);
+
 
         decodeSorting(context, table);
         decodeColumnMenu(context, table);
@@ -550,6 +558,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
+        table.setSaveSortRule(sortingRules, context);
         table.acceptNewSortingRules(sortingRules);
     }
 
@@ -791,8 +800,8 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
     }
 
     protected static boolean encodeFoldingSupport(FacesContext context,
-                                               ScriptBuilder buf,
-                                               AbstractTable table) throws IOException {
+                                                  ScriptBuilder buf,
+                                                  AbstractTable table) throws IOException {
         JSONObject treeStructure = formatTreeStructureMap(context, table, -1, -1);
         if (treeStructure == null) {
             // this can be the case for a grouping-enabled table which doesn't have any grouping rule configured,

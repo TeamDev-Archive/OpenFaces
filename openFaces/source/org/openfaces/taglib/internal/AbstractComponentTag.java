@@ -170,6 +170,7 @@ public abstract class AbstractComponentTag extends AbstractTag {
         if (value == null) {
             return;
         }
+
         if (getExpressionCreator().isValueReference(tagAttributeName, value)) {
             FacesContext facesContext = getFacesContext();
             ValueExpression ve = createValueExpression(facesContext, tagAttributeName, value, Object.class);

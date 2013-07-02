@@ -1201,7 +1201,18 @@
       <!--&amp;lt;!&ndash; @default false &ndash;&gt;-->
       <!--&amp;lt;!&ndash; @el true &ndash;&gt;-->
     <!--</attribute>-->
-
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user presses and releases a
+        key over the DataTable.
+      </description>
+      <name>saveSortRule</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.Collection -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
   </tag>
 
   <tag>
