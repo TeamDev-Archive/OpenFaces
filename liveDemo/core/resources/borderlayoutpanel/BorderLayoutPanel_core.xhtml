@@ -20,14 +20,43 @@
             <o:subPanel caption="1111">1111</o:subPanel>
             <o:subPanel caption="2222">
               <o:borderLayoutPanel  id="topPanel" style="width:97%;height:97%;">
-                left content
+
+
+
+
+
+
                 <o:sidePanel alignment="right" size="50%" splitterClass="w30">
-                  <o:borderLayoutPanel id="childPanel"  style="width:100%">
-                    right - top
-                    <o:sidePanel splitterClass="h30" alignment="bottom" size="50%">
-                      right - bottom
-                    </o:sidePanel>
-                  </o:borderLayoutPanel>
+                    <o:dataTable id="bookSingleSelection"
+                                 var="book"
+                                 value="#{BookList.books}"
+                                 sortColumnId="title"
+                                 sortAscending="true"
+                                 sortableHeaderRolloverStyle="background: #d4d4d4"
+                                 style="width: 700px; margin-left: 20px; line-height: 17px;"
+                                 styleClass="datatable"
+                                 rolloverRowStyle="background: #f1f1f1;">
+                        <o:singleRowSelection rowData="#{BookList.selectedBook}" style="background: #a4aec5; color: white"/>
+                        <o:columnReordering/>
+                        <f:facet name="columnMenu">
+                            <o:columnMenu/>
+                        </f:facet>
+                        <o:column id="title" header="Title" sortingExpression="#{book.bookTitle}"
+                                  style="width: 35%; padding-left: 5%;">
+                            <h:outputText value="#{book.bookTitle}"/>
+                        </o:column>
+                        <o:column header="ISBN" sortingExpression="#{book.isbn}" style="width: 13%; text-align: center;">
+                            <h:outputText value="#{book.isbn}"/>
+                        </o:column>
+                        <o:column header="Publication Date" sortingExpression="#{book.publicationDate}"
+                                  style="width: 13%;" bodyStyle="text-align: right;">
+                            <h:outputText value="#{book.publicationDate}"/>
+                        </o:column>
+                        <o:column header="Publisher" sortingExpression="#{book.publisher}"
+                                  style="width: 39%;" bodyStyle="padding-left: 20px;">
+                            <h:outputText value="#{book.publisher}"/>
+                        </o:column>
+                    </o:dataTable>
                 </o:sidePanel>
               </o:borderLayoutPanel>
             </o:subPanel>

@@ -67,10 +67,12 @@ O$.MenuItemConsctructor = {
     menuItemImgSpan.appendChild(subMenuImgFakeSpan);
 
     var menuItemImg = document.createElement("img");
-    menuItemImg.src = menuItem.iconUrl;
-    menuItemImg.className = O$.MenuItemConsctructor.defaultMenuItemsParams.DEFAULT_IMG_CLASS;
-    menuItemImg.id = menuItem.id + "::image";
-    menuItemImgSpan.appendChild(menuItemImg);
+    if (menuItem.iconUrl){
+      menuItemImg.src = menuItem.iconUrl;
+      menuItemImg.className = O$.MenuItemConsctructor.defaultMenuItemsParams.DEFAULT_IMG_CLASS;
+      menuItemImg.id = menuItem.id + "::image";
+      menuItemImgSpan.appendChild(menuItemImg);
+    }
 
 
     return menuItemImgSpan;

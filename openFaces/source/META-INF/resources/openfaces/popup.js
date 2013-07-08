@@ -156,8 +156,9 @@ O$.Popup = {
       var currPopup = O$(popupId) || O$(popupId + O$.Popup.PULLED_OUT_ID_SUFFIX);
       if (!currPopup)
         return; // popup can be removed from page with A4J
-      if (currPopup != popupToRetain)
-        currPopup.hide();
+
+      if (currPopup != popupToRetain && currPopup.hide)
+        currPopup.hide();//currPopup.hide add to be sure that popup is initialized, this made to avoid problem with lazy popup menu
     });
   }
 
