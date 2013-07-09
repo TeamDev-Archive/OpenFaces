@@ -230,31 +230,6 @@ public class MenuItem extends OUICommand implements ConvertibleToJSON {
         obj.put("onsuccess", getOnsuccess());
 
         obj.put("onclick", getOnclick());
-      /*  obj.put("ondblclick", getOndblclick());
-        obj.put("onmousedown", getOnmousedown());
-        obj.put("onmouseover", getOnmouseover());
-        obj.put("onmousemove", getOnmousemove());
-        obj.put("onmouseout", getOnmouseout());
-        obj.put("onmouseup", getOnmouseup());
-        obj.put("onfocus", getOnfocus());
-        obj.put("onblur", getOnblur());
-        obj.put("onkeydown", getOnkeydown());
-        obj.put("onkeyup", getOnkeyup());
-        obj.put("onkeypress", getOnkeypress());
-
-
-        obj.put("accessKey", getAccessKey());
-        obj.put("submenuImageUrl", getSubmenuImageUrl());
-        obj.put("disabledSubmenuImageUrl", getDisabledSubmenuImageUrl());
-        obj.put("selectedSubmenuImageUrl", getSelectedSubmenuImageUrl());
-        obj.put("selectedDisabledSubmenuImageUrl", getSelectedDisabledSubmenuImageUrl());
-        obj.put("selectedStyle", getSelectedStyle());
-
-        obj.put("submenuIconAreaStyle", getSubmenuIconAreaStyle());
-        obj.put("submenuIconAreaClass", getSubmenuIconAreaClass());
-        obj.put("indentAreaStyle", getIndentAreaStyle());
-        obj.put("indentAreaClass", getIndentAreaClass());      */
-
         obj.put("value", getValue());
 
         obj.put("style",getStyle());

@@ -341,6 +341,12 @@ public class Rendering {
                                 buf[count++] = hex.charAt(1);
                                 buf[count++] = hex.charAt(2);
                                 break;
+                            case 4:
+                                buf[count++] = hex.charAt(0);
+                                buf[count++] = hex.charAt(1);
+                                buf[count++] = hex.charAt(2);
+                                buf[count++] = hex.charAt(3);
+                                break;
                         }
                     } else {
                         buf[count++] = chr;
