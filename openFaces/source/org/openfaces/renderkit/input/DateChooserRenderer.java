@@ -214,6 +214,9 @@ public class DateChooserRenderer extends DropDownComponentRenderer {
             blank = dc.getBlank();
         }
         if (blank != null) {
+            if (blank.length() != pattern.length()){
+                throw new RuntimeException("Blank's length must match the pattern's length");
+            }
             for (int i = 0; i < blank.length(); i++) {
                 if (blank.charAt(i) == pattern.charAt(i)) {
                     mask.append(blank.charAt(i));
@@ -240,6 +243,7 @@ public class DateChooserRenderer extends DropDownComponentRenderer {
             dateFormat.setTimeZone(timeZone);
             formatDate = dateFormat.format(date);
         }
+
 
         ScriptBuilder sb = new ScriptBuilder().initScript(context, dc, "O$.DateChooser._init",
                 pattern,
