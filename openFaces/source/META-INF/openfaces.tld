@@ -24379,6 +24379,19 @@ and it is automatically triggered on any form submission. -->
       <!-- @default null -->
       <!-- @el false -->
     </attribute>
+
+    <attribute>
+      <description>The blank.
+      </description>
+      <name>blank</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el false -->
+    </attribute>
+
     <attribute>
       <description>The locale used by DateChooser component. You can specify the "locale" attribute
         as a value-binding expression or as a String in "ll_CC_vv" format, where:&amp;lt;br/&gt;
