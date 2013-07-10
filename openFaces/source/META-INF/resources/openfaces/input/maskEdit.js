@@ -582,8 +582,7 @@ O$.MaskEdit = {
                   this._constructorDynamicPrimaryMask();
                   this._setDynamicPrimaryValue();
                 }
-                console.log();
-                console.log();
+
               },
 
               _createMockInput:function () {
@@ -591,7 +590,7 @@ O$.MaskEdit = {
                   for (var j in this._dynamicConstructors) {
                     if (this._mask[i] == this._dynamicConstructors[j][0]) {
                       this._dynamicSymbolsPosition.push(this._maskInputPosition[i]);
-                      console.log(this._dynamicConstructors);
+
                       var mockInput = new O$.mockInput(this, this._dynamicConstructors[j][2],
                               this._dynamicConstructors[j][3],
                               this._dynamicConstructors[j][1],this._dynamicConstructors[j][4]);
@@ -640,7 +639,6 @@ O$.MaskEdit = {
                   this._maskValue[this._dynamicSymbolsPosition[i]] = this._mockInputObject[i]._returnMockValue();
                   this._primaryMaskValue[this._dynamicSymbolsPosition[i]] = this._mockInputObject[i]._returnMockValue();
                 }
-                console.log(this._maskValue);
               },
 
               _setDynamicPrimaryValue:function () {

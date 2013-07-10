@@ -22,8 +22,7 @@ O$.DateChooser = {
     });
     if (dateBlank) {
       var id = dc._field.id;
-      console.log(id)
-      O$.MaskEdit._init(id, mask, dateBlank);
+            O$.MaskEdit._init(id, mask, dateBlank);
       var maskEdit = document.getElementById(id);
 
     }
@@ -212,7 +211,7 @@ O$.DateChooser = {
 
     // Related to JSFC-2042. Adjust date for calendar inner component.
     if (calendarDate) {
-      console.log(calendarDate);
+
       if (maskEdit) {
         maskEdit._maskValue = [];
         for (var i in calendarDate) {

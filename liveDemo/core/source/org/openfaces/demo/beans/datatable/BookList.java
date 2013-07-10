@@ -25,10 +25,6 @@ public class BookList implements Serializable {
     private List<SortingRule> sortingRules = new ArrayList<SortingRule>();
 
     public List<SortingRule> getSortingRules() {
-        System.out.println("SortingRules++++++");
-        for (SortingRule sortingRule : sortingRules) {
-            System.out.println(sortingRule);
-        }
         return sortingRules;
     }
 
@@ -88,22 +84,12 @@ public class BookList implements Serializable {
     }
 
     public List<Book> getBooks() {
-        System.out.println("GET");
-        for (Book book : books) {
-            System.out.println(book.getBookTitle());
-        }
-        System.out.println("SortingRules in get");
-        for (SortingRule sortingRule : sortingRules) {
-            System.out.println(sortingRule);
-        }
+
         return books;
     }
 
     public void setBooks(List<Book> books) {
-        System.out.println("SET");
-        for (Book book : books) {
-            System.out.println(book.getBookTitle());
-        }
+
 
         this.books = books;
     }
