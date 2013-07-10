@@ -67,10 +67,12 @@ O$.MenuItemConsctructor = {
     menuItemImgSpan.appendChild(subMenuImgFakeSpan);
 
     var menuItemImg = document.createElement("img");
-    menuItemImg.src = menuItem.iconUrl;
+    if (menuItem.iconUrl)
+      menuItemImg.src = menuItem.iconUrl;
     menuItemImg.className = O$.MenuItemConsctructor.defaultMenuItemsParams.DEFAULT_IMG_CLASS;
     menuItemImg.id = menuItem.id + "::image";
     menuItemImgSpan.appendChild(menuItemImg);
+
 
 
     return menuItemImgSpan;
@@ -99,7 +101,8 @@ O$.MenuItemConsctructor = {
       var subMenuImg = document.createElement("img");
       subMenuImg.id = menuItem.id + "::arrow";
       //if (submenuImageUrl != null)
-      subMenuImg.src = menuItem.iconUrl;
+      if (menuItem.iconUrl)
+        subMenuImg.src = menuItem.iconUrl;
       subMenuImg.className = O$.MenuItemConsctructor.defaultMenuItemsParams.DEFAULT_IMG_CLASS;
 
       subMenuSpan.appendChild(subMenuImgFakeSpan);

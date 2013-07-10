@@ -15,10 +15,23 @@
 O$.resizeSidePanel = function(sidePanelId, newSize) {
   var sidePanel = O$(sidePanelId);
   if (!(sidePanel && sidePanel._alignment)) return;
+  var previousSidePanelOverflow = sidePanel.style.overflow;
+  var previousPanelOverflow = sidePanel._panel.style.overflow;
+  var previousPanelContentOverflow = sidePanel._content.overflow;
+
+  sidePanel._panel.style.overflow = "hidden";
+  sidePanel.style.overflow = "hidden";
+  sidePanel._content.style.overflow = "hidden";
+
   O$._resizeSidePanel(sidePanel, newSize, false);
 
   if (sidePanel.onsplitterdrag)
     sidePanel.onsplitterdrag(sidePanel);
+
+  sidePanel._panel.style.overflow = previousSidePanelOverflow;
+  sidePanel.style.overflow = previousPanelOverflow;
+  sidePanel._content.style.overflow = previousPanelContentOverflow;
+
 };
 
 O$.collapseSidePanel = function(sidePanelId) {

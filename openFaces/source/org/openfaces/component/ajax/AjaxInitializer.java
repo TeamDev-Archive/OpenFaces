@@ -119,19 +119,9 @@ public class AjaxInitializer {
         return component;
     }
 
-
-    Map<String, UIComponent> cachedComponentIds = new HashMap<String, UIComponent>();
-
     private UIComponent findComponentAnywhere(UIComponent root, String id) {
-        if (cachedComponentIds.containsKey(id))
-            return cachedComponentIds.get(id);
-        if (id.equals(root.getId())){
-            cachedComponentIds.put(id,root);
+        if (id.equals(root.getId()))
             return root;
-        } else {
-            cachedComponentIds.put(id,root);
-        }
-
         List<UIComponent> children = root.getChildren();
         for (UIComponent child : children) {
             UIComponent c = findComponentAnywhere(child, id);
