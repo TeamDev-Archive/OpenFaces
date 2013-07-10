@@ -10,7 +10,7 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-O$.mockInput = function (maskEdit, minSize, maxSize, symbolForBlank, symbolForMaskValue,realPositionInInput) {
+O$.mockInput = function (maskEdit, minSize, maxSize, symbolForMaskValue,symbolForBlank, realPositionInInput) {
 
   this._minSize = minSize;
   this._maxSize = maxSize;
@@ -18,6 +18,7 @@ O$.mockInput = function (maskEdit, minSize, maxSize, symbolForBlank, symbolForMa
   this._realSize = 0;
   this._cursorPosition = 0;
   this._value = "";
+  this._symbolForMaskValue = symbolForMaskValue;
   this._isNeedAdditionalSymbol = false;
   this._parent = maskEdit;
   this._realPositionInInput = realPositionInInput;

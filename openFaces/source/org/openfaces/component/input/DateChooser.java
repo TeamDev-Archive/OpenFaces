@@ -95,6 +95,7 @@ public class DateChooser extends DropDownComponent {
     private Boolean keepTime;
     private Boolean showFooter;
     private Boolean typingAllowed;
+    private String blank;
 
     public DateChooser() {
         setRendererType("org.openfaces.DateChooserRenderer");
@@ -121,7 +122,7 @@ public class DateChooser extends DropDownComponent {
                 rolloverInactiveMonthDayClass, selectedDayClass, rolloverSelectedDayClass, todayClass,
                 rolloverTodayClass, disabledDayClass, rolloverDisabledDayClass, weekendDayClass,
                 rolloverWeekendDayClass, daysHeaderClass, headerClass, footerClass, firstDayOfWeek, dateFormat,
-                pattern, locale, timeZone, todayText, noneText, keepTime, showFooter, typingAllowed
+                pattern, locale, timeZone, todayText, noneText, keepTime, showFooter, typingAllowed, blank
         };
     }
 
@@ -175,6 +176,7 @@ public class DateChooser extends DropDownComponent {
         keepTime = (Boolean) values[i++];
         showFooter = (Boolean) values[i++];
         typingAllowed = (Boolean) values[i++];
+        blank = (String) values[i++];
     }
 
     @Override
@@ -369,6 +371,14 @@ public class DateChooser extends DropDownComponent {
 
     public void setCalendarClass(String calendarStyle) {
         calendarClass = calendarStyle;
+    }
+
+    public String getBlank() {
+        return ValueBindings.get(this, "blank", blank);
+    }
+
+    public void setBlank(String blank) {
+        this.blank = blank;
     }
 
     public String getDayClass() {

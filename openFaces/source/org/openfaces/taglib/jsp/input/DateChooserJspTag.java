@@ -267,4 +267,8 @@ public class DateChooserJspTag extends DropDownComponentJspTag {
         getDelegate().setPropertyValue("typingAllowed", typingAllowed);
     }
 
+    public void setBlank(ValueExpression blank) {
+        getDelegate().setPropertyValue("blank", blank);
+    }
+
 }

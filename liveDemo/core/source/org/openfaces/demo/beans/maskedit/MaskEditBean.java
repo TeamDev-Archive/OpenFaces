@@ -28,15 +28,15 @@ public class MaskEditBean {
 
 
     private String value;
-    private String mask = "I.I.I.I";
-    private String blank = " . . . ";
+    private String mask = "///I.//I.I.I///";
+    private String blank = "/// .// . . ///";
     private DefaultMasks defaultMasks;
     private boolean blankVisible;
     private Collection<MaskDynamicConstructor> dynamicConstructors = new LinkedList<MaskDynamicConstructor>();
     private Collection<MaskSymbolConstructor> symbolConstructors = new LinkedList<MaskSymbolConstructor>();
 
     public MaskEditBean() {
-        dynamicConstructors.add(new MaskDynamicConstructor('I', '#', 2, 3, '_'));
+        dynamicConstructors.add(new MaskDynamicConstructor('I', '#', 1, 3, '_'));
         symbolConstructors.add(new MaskSymbolConstructor('X', "asd123"));
     }
 

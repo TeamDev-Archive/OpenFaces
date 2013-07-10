@@ -60,6 +60,7 @@
               <h:panelGroup styleClass="field_title"><h:outputText value="MM/dd/yyyy"/></h:panelGroup>
               <o:dateChooser id="dcMMdd"
                              pattern="MM/dd/yyyy"
+                             blank="  /  /    "
                              value="#{DateChooserBean.patternDate}"
                              locale="#{DateChooserBean.selectedLocale}"
                              todayText="#{DateChooserBean.currentTodayText}"

@@ -75,5 +75,6 @@ public class DateChooserTag extends DropDownComponentTag {
         setStringProperty(component, "daysHeaderClass");
         setStringProperty(component, "headerClass");
         setStringProperty(component, "footerClass");
+        setStringProperty(component, "blank");
     }
 }

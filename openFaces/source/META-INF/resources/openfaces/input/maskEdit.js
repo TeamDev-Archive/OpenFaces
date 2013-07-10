@@ -530,6 +530,10 @@ O$.MaskEdit = {
                 this._realMaskEditKeyDownListener = this._maskEditKeyDown;
                 this._realMaskEditClickListener = this._maskEditOnClick;
                 this._realMaskEditKeyPressListener = this._maskEditKeyPress;
+              },
+
+              _enterInMockInputObject:function (){
+
               }
 
             }
@@ -578,6 +582,8 @@ O$.MaskEdit = {
                   this._constructorDynamicPrimaryMask();
                   this._setDynamicPrimaryValue();
                 }
+                console.log();
+                console.log();
               },
 
               _createMockInput:function () {
@@ -585,9 +591,10 @@ O$.MaskEdit = {
                   for (var j in this._dynamicConstructors) {
                     if (this._mask[i] == this._dynamicConstructors[j][0]) {
                       this._dynamicSymbolsPosition.push(this._maskInputPosition[i]);
+                      console.log(this._dynamicConstructors);
                       var mockInput = new O$.mockInput(this, this._dynamicConstructors[j][2],
                               this._dynamicConstructors[j][3],
-                              this._dynamicConstructors[j][1]);
+                              this._dynamicConstructors[j][1],this._dynamicConstructors[j][4]);
                       this._mockInputObject.push(mockInput);
                       break;
                     }
@@ -636,7 +643,7 @@ O$.MaskEdit = {
                 console.log(this._maskValue);
               },
 
-              _setDynamicPrimaryValue:function(){
+              _setDynamicPrimaryValue:function () {
                 this.value = this._toStringMaskValue(this._primaryMaskValue);
               }
 

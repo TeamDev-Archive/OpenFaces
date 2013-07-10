@@ -205,16 +205,32 @@ public class DateChooserRenderer extends DropDownComponentRenderer {
         DateChooser dc = (DateChooser) dropDown;
 
         String pattern = null;
+        String blank = null;
+        StringBuilder mask = new StringBuilder();
         Converter c = dc.getConverter();
         if (c != null && c instanceof DateTimeConverter) {
             DateTimeConverter dtc = (DateTimeConverter) c;
             pattern = dtc.getPattern();
+            blank = dc.getBlank();
         }
+        if (blank != null) {
+            for (int i = 0; i < blank.length(); i++) {
+                if (blank.charAt(i) == pattern.charAt(i)) {
+                    mask.append(blank.charAt(i));
+                } else {
+                    mask.append('#');
+                }
+
+            }
+        }
+
 
         // Related to JSFC-2042. Send date adjusted to GMT on client. It'll be used to set correct date to calendar
         String formatDate = null;
         Object value = dc.getValue();
-        if (value != null) {
+        if (value != null)
+
+        {
             Date date = (Date) value;
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -227,18 +243,25 @@ public class DateChooserRenderer extends DropDownComponentRenderer {
 
         ScriptBuilder sb = new ScriptBuilder().initScript(context, dc, "O$.DateChooser._init",
                 pattern,
+                blank,
+                mask.toString(),
                 formatDate,
                 dc.getLocale(),
                 Rendering.getChangeHandlerScript(dc));
 
-        return new InitScript(sb, new String[]{
+        return new
+
+                InitScript(sb, new String[]{
                 Resources.utilJsURL(context),
                 Resources.jsonJsURL(context),
                 getDropdownJsURL(context),
                 Resources.internalURL(context, "validation/requestHelper.js"),
                 Resources.internalURL(context, "input/dateChooser.js"),
+                Resources.internalURL(context, "input/maskEdit.js"),
                 ValidatorUtil.getValidatorUtilJsUrl(context)
-        });
+        }
+
+        );
     }
 
     @Override
