@@ -23,20 +23,14 @@ O$.Spinner = {
                   onchange,
                   formatOptions) {
     var spinner = O$.initComponent(spinnerId, null, {
-      _disabled: null,
+      _disabled: false,
+
       _prevValue: O$(spinnerId)._initialText,
       setDisabled: function(disabled) {
         if (this._disabled == disabled) return;
 
         this._disabled = disabled;
-
         this._setFieldDisabled(disabled);
-
-        if (disabled){
-          this._unSetupButtonAndFieldEvents();
-        }else{
-          this._setupButtonAndFieldEvents();
-        }
       },
 
       getDisabled: function() {
@@ -116,125 +110,11 @@ O$.Spinner = {
 
     });
 
-
-    O$.extend(spinner,{
-      _setupButtonAndFieldEvents: function(){
-        field.onkeypress = function(e) {
-          var valueBefore = spinner.getValue();
-          setTimeout(function() {
-            var valueAfter = spinner.getValue();
-            if (valueBefore == valueAfter)
-              return;
-            notifyOfInputChanges(spinner);
-          }, 1);
-          O$.stopEvent(e);
-        };
-
-        field.onblur = function(e) {
-          checkValueForBounds(spinner);
-        };
-
-        increaseButton.ondragstart = function(e) {
-          O$.cancelEvent(e);
-        };
-        decreaseButton.ondragstart = function(e) {
-          O$.cancelEvent(e);
-        };
-
-        increaseButton.onselectstart = function (e) {
-          O$.cancelEvent(e);
-        };
-        decreaseButton.onselectstart = function (e) {
-          O$.cancelEvent(e);
-        };
-        O$.setupHoverAndPressStateFunction(increaseButton, function(mouseInside, pressed) {
-          O$.setStyleMappings(increaseButton, {
-            rollover: mouseInside ? rolloverButtonClass : null,
-            pressed: pressed ? pressedButtonClass : null
-          });
-        });
-        O$.setupHoverAndPressStateFunction(decreaseButton, function(mouseInside, pressed) {
-          O$.setStyleMappings(decreaseButton, {
-            rollover: mouseInside ? rolloverButtonClass : null,
-            pressed: pressed ? pressedButtonClass : null
-          });
-        });
-        increaseButton.onmousedown = function(e) {
-          setTimeout(function() {
-            spinner._field.focus();
-          }, 1);
-          spinner.increaseValue();
-          O$.cancelEvent(e);
-        };
-        decreaseButton.onmousedown = function(e) {
-          setTimeout(function() {
-            spinner._field.focus();
-          }, 1);
-
-          spinner.decreaseValue();
-          O$.cancelEvent(e);
-        };
-        field._oldInkeydown = field.onkeydown;
-
-        field.onkeydown = function(e) {
-          var evt = O$.getEvent(e);
-          if (!evt) return;
-          var keyCode = evt.keyCode;
-          if (keyCode == 38) { // Up key
-            increaseButton.onmousedown(e);
-          } else if (keyCode == 40) { // Down key
-            decreaseButton.onmousedown(e);
-          }
-          if (field._oldInkeydown)
-            field._oldInkeydown(e);
-        };
-      },
-      _unSetupButtonAndFieldEvents: function(){
-        field.onkeypress = function(e) {
-          O$.stopEvent(e);
-        };
-
-        field.onblur = function() {
-        };
-
-        increaseButton.ondragstart = function(e) {
-          O$.cancelEvent(e);
-        };
-        decreaseButton.ondragstart = function(e) {
-          O$.cancelEvent(e);
-        };
-
-        increaseButton.onselectstart = function (e) {
-          O$.cancelEvent(e);
-        };
-        decreaseButton.onselectstart = function (e) {
-          O$.cancelEvent(e);
-        };
-        O$.setupHoverAndPressStateFunction(increaseButton, function(){});
-        O$.setupHoverAndPressStateFunction(decreaseButton, function(){});
-        increaseButton.onmousedown = function(e) {
-          O$.cancelEvent(e);
-        };
-        decreaseButton.onmousedown = function(e) {
-          O$.cancelEvent(e);
-        };
-        field.onkeydown = field._oldInkeydown;
-      }
-    });
+    spinner.setDisabled(disabled);
 
     var increaseButton = O$(spinnerId + "::increase_button");
     var decreaseButton = O$(spinnerId + "::decrease_button");
     var field = spinner._field;
-
-    spinner.setDisabled(disabled);
-    var mask = {
-      emptySymbols: '',
-      format: '',
-      regex:   /^-?\d+(\.\d+)?$/
-    }
-    O$.MaskEdit._init(spinner._field.id,mask);
-
-
 
     var buttonsTable = O$.getParentNode(increaseButton, "table");
     if (O$.isExplorer() && O$.isStrictMode()) {
@@ -269,10 +149,85 @@ O$.Spinner = {
       formatOptions.type = "decimal";
     }
 
+    if (!disabled) {
+      field.onkeypress = function(e) {
+        var valueBefore = spinner.getValue();
+        setTimeout(function() {
+          var valueAfter = spinner.getValue();
+          if (valueBefore == valueAfter)
+            return;
+          notifyOfInputChanges(spinner);
+        }, 1);
+        O$.stopEvent(e);
+      };
 
+      field.onblur = function() {
+        checkValueForBounds(spinner);
+      };
+
+      increaseButton.ondragstart = function(e) {
+        O$.cancelEvent(e);
+      };
+      decreaseButton.ondragstart = function(e) {
+        O$.cancelEvent(e);
+      };
+
+      increaseButton.onselectstart = function (e) {
+        O$.cancelEvent(e);
+      };
+      decreaseButton.onselectstart = function (e) {
+        O$.cancelEvent(e);
+      };
+    }
 
     decreaseButton.ondblclick = O$.repeatClickOnDblclick;
     increaseButton.ondblclick = O$.repeatClickOnDblclick;
+
+    if (!disabled) {
+
+      O$.setupHoverAndPressStateFunction(increaseButton, function(mouseInside, pressed) {
+        O$.setStyleMappings(increaseButton, {
+          rollover: mouseInside ? rolloverButtonClass : null,
+          pressed: pressed ? pressedButtonClass : null
+        });
+      });
+      O$.setupHoverAndPressStateFunction(decreaseButton, function(mouseInside, pressed) {
+        O$.setStyleMappings(decreaseButton, {
+          rollover: mouseInside ? rolloverButtonClass : null,
+          pressed: pressed ? pressedButtonClass : null
+        });
+      });
+      increaseButton.onmousedown = function(e) {
+        setTimeout(function() {
+          spinner._field.focus();
+        }, 1);
+        spinner.increaseValue();
+        O$.cancelEvent(e);
+      };
+      decreaseButton.onmousedown = function(e) {
+        setTimeout(function() {
+          spinner._field.focus();
+        }, 1);
+
+        spinner.decreaseValue();
+        O$.cancelEvent(e);
+      };
+      field._oldInkeydown = field.onkeydown;
+
+      field.onkeydown = function(e) {
+        var evt = O$.getEvent(e);
+        if (!evt) return;
+        var keyCode = evt.keyCode;
+        if (keyCode == 38) { // Up key
+          increaseButton.onmousedown(e);
+        } else if (keyCode == 40) { // Down key
+          decreaseButton.onmousedown(e);
+        }
+        if (field._oldInkeydown)
+          field._oldInkeydown(e);
+      };
+
+    }
 
     if (spinner._containerClass != spinner._rolloverContainerClass) {
       O$.addMouseOverListener(spinner, function() {
@@ -308,7 +263,7 @@ O$.Spinner = {
           spinner.setValue(value, true);
         }
       } else {
-          spinner.setValue("", false);
+        spinner.setValue("", false);
       }
     }
 
