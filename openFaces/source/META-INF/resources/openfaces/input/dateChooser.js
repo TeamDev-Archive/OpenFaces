@@ -214,7 +214,7 @@ O$.DateChooser = {
 
       if (maskEdit) {
         maskEdit._maskValue = [];
-        for (var i in calendarDate) {
+        for (var i = 0;i<calendarDate.length;i++) {
           maskEdit._maskValue.push(calendarDate[i]);
         }
         maskEdit._cursorPosition = calendarDate.length - 1;
