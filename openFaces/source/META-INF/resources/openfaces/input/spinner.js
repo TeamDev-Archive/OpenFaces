@@ -10,34 +10,23 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 O$.Spinner = {
-  _init: function(spinnerId,
-                  minValue,
-                  maxValue,
-                  step,
-                  cycled,
-                  buttonClass,
-                  rolloverButtonClass,
-                  pressedButtonClass,
-                  disabled,
-                  required,
-                  onchange,
-                  formatOptions) {
+  _init:function (spinnerId, minValue, maxValue, step, cycled, buttonClass, rolloverButtonClass, pressedButtonClass, disabled, required, onchange, formatOptions) {
     var spinner = O$.initComponent(spinnerId, null, {
-      _disabled: false,
+      _disabled:false,
 
-      _prevValue: O$(spinnerId)._initialText,
-      setDisabled: function(disabled) {
+      _prevValue:O$(spinnerId)._initialText,
+      setDisabled:function (disabled) {
         if (this._disabled == disabled) return;
 
         this._disabled = disabled;
         this._setFieldDisabled(disabled);
       },
 
-      getDisabled: function() {
+      getDisabled:function () {
         return this._disabled;
       },
 
-      getValue: function() {
+      getValue:function () {
         if (!spinner._field)
           return null;
         var value = O$.Dojo.Number.parse(spinner._field.value, formatOptions);
@@ -47,7 +36,7 @@ O$.Spinner = {
         return !isNaN(value) ? value : null;
       },
 
-      setValue: function(value, silent) {
+      setValue:function (value, silent) {
         var newValue = value == null || isNaN(value) ? "" : value;
         if (newValue === "") {
           spinner._field.value = required ? spinner._prevValue : "";
@@ -64,7 +53,7 @@ O$.Spinner = {
         spinner._prevValue = spinner.getValue();
       },
 
-      increaseValue: function() {
+      increaseValue:function () {
         var value = spinner.getValue();
         if (!value && value != 0) {
           spinner.setValue(minValue != null ? minValue : 0, true);
@@ -86,7 +75,7 @@ O$.Spinner = {
         }
       },
 
-      decreaseValue: function() {
+      decreaseValue:function () {
         var value = spinner.getValue();
         if (!value && value != 0) {
           spinner.setValue(minValue != null ? minValue : 0, true);
@@ -138,7 +127,7 @@ O$.Spinner = {
     }
 
     if (onchange) {
-      spinner._onchange = function() {
+      spinner._onchange = function () {
         var event = O$.createEvent("change");
         eval(onchange);
       };
@@ -150,25 +139,33 @@ O$.Spinner = {
     }
 
     if (!disabled) {
-      field.onkeypress = function(e) {
+      field.onkeypress = function (e) {
         var valueBefore = spinner.getValue();
-        setTimeout(function() {
+        setTimeout(function () {
           var valueAfter = spinner.getValue();
+          if (!parseFloat(valueAfter)) {
+            spinner.setValue(valueBefore);
+            return;
+          }
           if (valueBefore == valueAfter)
             return;
+          if (valueAfter > maxValue || valueAfter < minValue) {
+            spinner.setValue(valueBefore);
+            return;
+          }
           notifyOfInputChanges(spinner);
         }, 1);
         O$.stopEvent(e);
       };
 
-      field.onblur = function() {
+      field.onblur = function () {
         checkValueForBounds(spinner);
       };
 
-      increaseButton.ondragstart = function(e) {
+      increaseButton.ondragstart = function (e) {
         O$.cancelEvent(e);
       };
-      decreaseButton.ondragstart = function(e) {
+      decreaseButton.ondragstart = function (e) {
         O$.cancelEvent(e);
       };
 
@@ -185,27 +182,27 @@ O$.Spinner = {
 
     if (!disabled) {
 
-      O$.setupHoverAndPressStateFunction(increaseButton, function(mouseInside, pressed) {
+      O$.setupHoverAndPressStateFunction(increaseButton, function (mouseInside, pressed) {
         O$.setStyleMappings(increaseButton, {
-          rollover: mouseInside ? rolloverButtonClass : null,
-          pressed: pressed ? pressedButtonClass : null
+          rollover:mouseInside ? rolloverButtonClass : null,
+          pressed:pressed ? pressedButtonClass : null
         });
       });
-      O$.setupHoverAndPressStateFunction(decreaseButton, function(mouseInside, pressed) {
+      O$.setupHoverAndPressStateFunction(decreaseButton, function (mouseInside, pressed) {
         O$.setStyleMappings(decreaseButton, {
-          rollover: mouseInside ? rolloverButtonClass : null,
-          pressed: pressed ? pressedButtonClass : null
+          rollover:mouseInside ? rolloverButtonClass : null,
+          pressed:pressed ? pressedButtonClass : null
         });
       });
-      increaseButton.onmousedown = function(e) {
-        setTimeout(function() {
+      increaseButton.onmousedown = function (e) {
+        setTimeout(function () {
           spinner._field.focus();
         }, 1);
         spinner.increaseValue();
         O$.cancelEvent(e);
       };
-      decreaseButton.onmousedown = function(e) {
-        setTimeout(function() {
+      decreaseButton.onmousedown = function (e) {
+        setTimeout(function () {
           spinner._field.focus();
         }, 1);
 
@@ -214,7 +211,7 @@ O$.Spinner = {
       };
       field._oldInkeydown = field.onkeydown;
 
-      field.onkeydown = function(e) {
+      field.onkeydown = function (e) {
         var evt = O$.getEvent(e);
         if (!evt) return;
         var keyCode = evt.keyCode;
@@ -230,14 +227,14 @@ O$.Spinner = {
     }
 
     if (spinner._containerClass != spinner._rolloverContainerClass) {
-      O$.addMouseOverListener(spinner, function() {
+      O$.addMouseOverListener(spinner, function () {
         if (spinner._containerClass != spinner._rolloverContainerClass)
           spinner.className = spinner._rolloverContainerClass;
         if (spinner._fieldClass != spinner._rolloverFieldClass)
           field.className = spinner._rolloverFieldClass;
         O$.repaintAreaForOpera(spinner, true);
       });
-      O$.addMouseOutListener(spinner, function() {
+      O$.addMouseOutListener(spinner, function () {
         if (spinner._containerClass != spinner._rolloverContainerClass)
           spinner.className = spinner._containerClass;
         if (spinner._fieldClass != spinner._rolloverFieldClass)
@@ -256,8 +253,7 @@ O$.Spinner = {
       if (value != null) {
         if (minValue != null && value < minValue) {
           spinner.setValue(minValue);
-        } else
-        if (maxValue != null && value > maxValue) {
+        } else if (maxValue != null && value > maxValue) {
           spinner.setValue(maxValue);
         } else {
           spinner.setValue(value, true);
