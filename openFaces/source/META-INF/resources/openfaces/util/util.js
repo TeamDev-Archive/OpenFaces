@@ -424,7 +424,10 @@ if (!window.O$) {
   O$.assert = function(value, message) {
     if (value !== null && value !== undefined && value !== false)
       return;
-    throw message;
+    if (!message)
+      throw "assert failed with out message";
+    else
+      throw message;
   };
 
   O$.assertEquals = function(expectedValue, actualValue, message) {
