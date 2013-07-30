@@ -79,6 +79,12 @@ O$.MultiPage = {
             var tempDiv = document.createElement("div");
             tempDiv.innerHTML = portionHTML;
             var newPageContainer = tempDiv.childNodes[0];
+            var id = newPageContainer.id;
+            for (var i = 0; i < multiPageComponent._pagesContainer.childNodes.length; i++) {
+              if (multiPageComponent._pagesContainer.childNodes[i].id == id) {
+                multiPageComponent._pagesContainer.removeChild(multiPageComponent._pagesContainer.childNodes[i]);
+              }
+            }
             multiPageComponent._pagesContainer.appendChild(newPageContainer);
             O$.Ajax.executeScripts(portionScripts);
 
