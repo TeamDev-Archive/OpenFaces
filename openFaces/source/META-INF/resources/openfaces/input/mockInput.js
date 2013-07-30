@@ -27,7 +27,7 @@ O$.mockInput = function (maskEdit, minSize, maxSize, symbolForMaskValue,symbolFo
   }
 
   O$.extend(this, {
-    _cursorGoInMockInput:function (leftSide) {
+    _cursorGoInMockInput:function (isLeftSide) {
       if (!leftSide) {
         if (this._isNeedAdditionalSymbolInBlank()) {
           this._addAdditionalSymbolInBlank();
