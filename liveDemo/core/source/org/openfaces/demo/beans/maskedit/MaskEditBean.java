@@ -27,16 +27,95 @@ import java.util.Map;
 public class MaskEditBean {
 
 
-    private String value;
-    private String mask = "///I.//I.I.I///";
-    private String blank = "/// .// . . ///";
+    private String value1;
+    private String mask1 = "///I/#.I.#.#.I///";
+    private String blank1 = "/// /_. ._._. ///";
+    private String value2;
+    private String mask2 = "+3(###) ### ### ##";
+    private String blank2 = "+3(   )           ";
+    private String value3;
+    private String mask3 = "I.I.I";
+    private String blank3 = " . . ";
+
+    public String getValue1() {
+        return value1;
+    }
+
+    public void setValue1(String value1) {
+        this.value1 = value1;
+    }
+
+    public String getMask1() {
+        return mask1;
+    }
+
+    public void setMask1(String mask1) {
+        this.mask1 = mask1;
+    }
+
+    public String getBlank1() {
+        return blank1;
+    }
+
+    public void setBlank1(String blank1) {
+        this.blank1 = blank1;
+    }
+
+    public String getValue2() {
+        return value2;
+    }
+
+    public void setValue2(String value2) {
+        this.value2 = value2;
+    }
+
+    public String getMask2() {
+        return mask2;
+    }
+
+    public void setMask2(String mask2) {
+        this.mask2 = mask2;
+    }
+
+    public String getBlank2() {
+        return blank2;
+    }
+
+    public void setBlank2(String blank2) {
+        this.blank2 = blank2;
+    }
+
+    public String getValue3() {
+        return value3;
+    }
+
+    public void setValue3(String value3) {
+        this.value3 = value3;
+    }
+
+    public String getMask3() {
+        return mask3;
+    }
+
+    public void setMask3(String mask3) {
+        this.mask3 = mask3;
+    }
+
+    public String getBlank3() {
+        return blank3;
+    }
+
+    public void setBlank3(String blank3) {
+        this.blank3 = blank3;
+    }
+
     private DefaultMasks defaultMasks;
     private boolean blankVisible;
     private Collection<MaskDynamicConstructor> dynamicConstructors = new LinkedList<MaskDynamicConstructor>();
     private Collection<MaskSymbolConstructor> symbolConstructors = new LinkedList<MaskSymbolConstructor>();
 
     public MaskEditBean() {
-        dynamicConstructors.add(new MaskDynamicConstructor('I', '#', 1, 3, '_'));
+        dynamicConstructors.add(new MaskDynamicConstructor('I', '#', 1, 4, '_'));
         symbolConstructors.add(new MaskSymbolConstructor('X', "asd123"));
     }
 
@@ -82,37 +161,5 @@ public class MaskEditBean {
 
     private String submitTest;
 
-    public void setMask(String mask) {
-        this.mask = mask;
-    }
-
-    public void setBlank(String blank) {
-        this.blank = blank;
-    }
-
-    public String getMask() {
-
-        return mask;
-    }
-
-    public String getBlank() {
-        return blank;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        System.out.println(value);
-        this.value = value;
-    }
-
-    public String coolSubmit() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        Map requestParams = context.getExternalContext().getRequestParameterMap();
-        System.out.println("Login:" + this.getValue() + " blank:" + this.getBlank() + " test:" + this.getSubmitTest());
-        return "";
-    }
 
 }
