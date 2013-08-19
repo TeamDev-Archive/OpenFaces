@@ -136,6 +136,7 @@ public class LiveDemoTest extends OpenFacesTestCase {
 
 
     @Test
+    @Ignore
     public void testConfirmation() throws Exception {
         Selenium selenium = getSelenium();
         liveDemoPage("/confirmation/ConfirmationDefault.jsf");
