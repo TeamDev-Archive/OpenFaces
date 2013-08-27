@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 3.0
+ * OpenFaces - JSF Component Library 2.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -37,6 +37,7 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -102,6 +103,7 @@ public class TabSetRenderer extends BaseTabSetRenderer {
 
         ResponseWriter writer = context.getResponseWriter();
         TabSet tabSet = (TabSet) component;
+        List<UIComponent> tabChildren = tabSet.getChildren();
 
         TabPlacement tabPlacement = getTabPlacement(tabSet);
         boolean verticalTabs = tabPlacement.equals(TabPlacement.LEFT) || tabPlacement.equals(TabPlacement.RIGHT);
@@ -138,6 +140,7 @@ public class TabSetRenderer extends BaseTabSetRenderer {
             }
         }
         for (int i = 0, tabCount = renderedTabItems.size(); i < tabCount; i++) {
+
             Object item = renderedTabItems.get(i);
             if (!isItemRendered(item))
                 continue;
@@ -214,6 +217,7 @@ public class TabSetRenderer extends BaseTabSetRenderer {
             insertVerticalSpacer(context, tabSet, emptySpaceClasses);
         }
     }
+
 
     private boolean isItemRendered(Object item) {
         if (!(item instanceof UIComponent))
@@ -393,7 +397,12 @@ public class TabSetRenderer extends BaseTabSetRenderer {
         String focusedClass = Styles.getCSSClass(context, tabSet,
                 tabSet.getFocusedStyle(), StyleGroup.selectedStyleGroup(1), tabSet.getFocusedClass(), null);
 
-        String onchange = Rendering.getChangeHandlerScript(tabSet);
+        String onchange = tabSet.getOnchange();
+        String disabledClass = tabSet.getDisabledPanelClass();
+        String disabledStyle = tabSet.getDisabledPanelStyle();
+        String defaultDisabledClass = DEFAULT_CLASS_PREFIX + "disabled";
+        String mergeDisabledClass = Styles.getCSSClass(context, component, disabledStyle, StyleGroup.rolloverStyleGroup(), disabledClass, defaultDisabledClass);
+
 
         ScriptBuilder sb = new ScriptBuilder();
         sb.initScript(context, tabSet, "O$.TabSet._init",
@@ -411,10 +420,13 @@ public class TabSetRenderer extends BaseTabSetRenderer {
                         frontBorderClass,
                         backBorderClassPre,
                         backBorderClassPost
+
                 },
                 tabSet.isFocusable(),
                 focusAreaClass,
                 focusedClass,
+                mergeDisabledClass,
+                tabSet.getDisabledPanel(),
                 onchange != null ? new AnonymousFunction(onchange, "event") : null);
 
         Rendering.renderInitScript(context, sb,

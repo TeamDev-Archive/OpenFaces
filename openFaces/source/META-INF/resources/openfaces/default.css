@@ -199,7 +199,14 @@
   background: #585858;
   width: 3px;
 }
-
+.o_tabset_disabled {
+  background-color: #000000;
+  white-space: nowrap;
+  width: 1%;
+  padding-left: 2px;
+  padding-right: 2px;
+  cursor: default;
+}
 .o_table_draggedColumn {
   border: 1px solid gray;
 }

@@ -11,7 +11,13 @@
  */
 package org.openfaces.component.panel;
 
+import org.openfaces.component.select.TabAlignment;
+import org.openfaces.component.select.TabPlacement;
+import org.openfaces.util.ValueBindings;
+
+import javax.el.MethodExpression;
 import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 import java.io.Serializable;
 import java.util.Arrays;
 
@@ -21,6 +27,16 @@ import java.util.Arrays;
 public class SubPanel extends AbstractPanelWithCaption implements Serializable {
     public static final String COMPONENT_TYPE = "org.openfaces.SubPanel";
     public static final String COMPONENT_FAMILY = "org.openfaces.SubPanel";
+
+    private boolean disabled;
+
+    public boolean isDisabled() {
+        return ValueBindings.get(this, "disabled", disabled, false);
+    }
+
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
+    }
 
     public SubPanel() {
     }
@@ -37,6 +53,22 @@ public class SubPanel extends AbstractPanelWithCaption implements Serializable {
 
     public String getFamily() {
         return COMPONENT_FAMILY;
+    }
+
+    @Override
+    public Object saveState(FacesContext context) {
+        return new Object[]{
+                super.saveState(context),
+                disabled,
+        };
+    }
+
+    @Override
+    public void restoreState(FacesContext context, Object state) {
+        Object values[] = (Object[]) state;
+        int i = 0;
+        super.restoreState(context, values[i++]);
+        disabled = (Boolean) values[i++];
     }
 
 }

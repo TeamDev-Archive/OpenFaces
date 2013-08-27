@@ -65,6 +65,8 @@ public class TabbedPaneTag extends MultiPageContainerTag {
         setBooleanProperty(component, "focusable");
         setStringProperty(component, "focusAreaClass");
         setStringProperty(component, "focusAreaStyle");
+        setStringProperty(component, "disabledStyle");
+        setStringProperty(component, "disabledClassStyle");
 
         String onselectionchange = getPropertyValue("onselectionchange");
         if (!setAsValueExpressionIfPossible(component, "onselectionchange", onselectionchange))

@@ -34,5 +34,6 @@ public class SubPanelsTag extends AbstractComponentTag {
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
         setValueExpressionProperty(component, "value");
+        setBooleanProperty(component,"disabled");
     }
 }

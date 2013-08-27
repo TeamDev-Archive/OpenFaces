@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 3.0
+ * OpenFaces - JSF Component Library 2.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -11,6 +11,7 @@
  */
 package org.openfaces.component.panel;
 
+import org.openfaces.component.CompoundComponent;
 import org.openfaces.component.select.TabAlignment;
 import org.openfaces.component.select.TabPlacement;
 import org.openfaces.component.select.TabSelectionHolder;
@@ -79,6 +80,25 @@ public class TabbedPane extends MultiPageContainer implements TabSelectionHolder
     private String focusedClass;
     private String focusedStyle;
     private Boolean mirrorTabSetVisible;
+
+    private String disabledStyle;
+    private String disabledClassStyle;
+
+    public String getDisabledStyle() {
+        return ValueBindings.get(this, "disabledStyle", disabledStyle);
+    }
+
+    public void setDisabledStyle(String disabledStyle) {
+        this.disabledStyle = disabledStyle;
+    }
+
+    public String getDisabledClassStyle() {
+        return ValueBindings.get(this, "disabledClassStyle", disabledClassStyle);
+    }
+
+    public void setDisabledClassStyle(String disabledClassStyle) {
+        this.disabledClassStyle = disabledClassStyle;
+    }
 
     public TabbedPane() {
         setRendererType("org.openfaces.TabbedPaneRenderer");
@@ -328,7 +348,9 @@ public class TabbedPane extends MultiPageContainer implements TabSelectionHolder
                 focusable,
                 focusAreaStyle,
                 focusAreaClass,
-                mirrorTabSetVisible
+                mirrorTabSetVisible,
+                disabledStyle,
+                disabledClassStyle
         };
     }
 
@@ -365,6 +387,8 @@ public class TabbedPane extends MultiPageContainer implements TabSelectionHolder
         focusAreaStyle = (String) values[i++];
         focusAreaClass = (String) values[i++];
         mirrorTabSetVisible = (Boolean) values[i];
+        disabledStyle = (String) values[i++];
+        disabledClassStyle = (String) values[i++];
     }
 
     @Override
