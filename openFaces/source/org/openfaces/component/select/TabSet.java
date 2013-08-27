@@ -30,13 +30,12 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- *
  * The TabSet is a component that displays a set of tabs that look like the ones used in
  * the TabbedPane component. As opposed to TabbedPane, the TabSet component is not a
  * container and doesn't display any data when the user switches the tab. Instead it
  * just serves as a selector that can be used to introduce a content switching on pages
  * where TabbedPane can't be used because of special layout or some other reason.
- * 
+ *
  * @author Andrew Palval
  */
 public class TabSet extends OUIInputBase implements TabSelectionHolder {
@@ -48,7 +47,7 @@ public class TabSet extends OUIInputBase implements TabSelectionHolder {
     private TabAlignment alignment;
     private TabPlacement placement;
 
-    private Integer gapWidth;                                                        
+    private Integer gapWidth;
 
     private String tabStyle;
     private String rolloverTabStyle;
@@ -70,6 +69,34 @@ public class TabSet extends OUIInputBase implements TabSelectionHolder {
 
     private String focusAreaStyle;
     private String focusAreaClass;
+    private List<Integer> disabledPanel;
+    private String disabledPanelClass;
+    private String disabledPanelStyle;
+
+    public String getDisabledPanelClass() {
+        return disabledPanelClass;
+    }
+
+    public void setDisabledPanelClass(String disabledPanelClass) {
+        this.disabledPanelClass = disabledPanelClass;
+    }
+
+    public String getDisabledPanelStyle() {
+        return disabledPanelStyle;
+    }
+
+    public void setDisabledPanelStyle(String disabledPanelStyle) {
+        this.disabledPanelStyle = disabledPanelStyle;
+    }
+
+
+    public List<Integer> getDisabledPanel() {
+        return disabledPanel;
+    }
+
+    public void setDisabledPanel(List<Integer> disabledPanel) {
+        this.disabledPanel = disabledPanel;
+    }
 
     private MethodExpression selectionChangeListener;
 

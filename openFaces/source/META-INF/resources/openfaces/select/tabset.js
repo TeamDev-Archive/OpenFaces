@@ -11,17 +11,17 @@
  */
 
 O$.TabSet = {
-  _init: function(tabSetId, tabIds, selectedIndex, placement,
-                          tabStylesParams, borderClassesParams, focusable, focusAreaClass, focusedClass,
-                          onchange) {
+  _init:function (tabSetId, tabIds, selectedIndex, placement, tabStylesParams, borderClassesParams, focusable, focusAreaClass, focusedClass, disabledClass, disabledTabs, onchange) {
     var tabSet = O$.initComponent(tabSetId, null, {
-      _index: selectedIndex,
-      _indexField: O$(tabSetId + "::selected"),
-      _placement: placement,
-      _tabs: [],
-      _tabCount: tabIds.length,
-      onchange: onchange,
-      _getTabByAbsoluteIndex: function (absoluteTabIndex) {
+      _index:selectedIndex,
+      _indexField:O$(tabSetId + "::selected"),
+      _placement:placement,
+      _tabs:[],
+      _tabCount:tabIds.length,
+      onchange:onchange,
+      _disabledTabs:disabledTabs,
+      _disabledClass:disabledClass,
+      _getTabByAbsoluteIndex:function (absoluteTabIndex) {
         var tab = null;
         for (var i = 0, count = tabSet._tabs.length; i < count; i++) {
           var currTab = tabSet._tabs[i];
@@ -33,11 +33,11 @@ O$.TabSet = {
         return tab;
       },
 
-      getTabCount: function() {
+      getTabCount:function () {
         return this._tabCount;
       },
 
-      setSelectedIndex: function (index, cancellable) {
+      setSelectedIndex:function (index, cancellable) {
         var tab = this._getTabByAbsoluteIndex(index);
         if (tab == null)
           throw "An attempt to select non-rendered or non-existing tab has been made. index =  " + index + "; TabSet id = " + tabSet.id;
@@ -45,13 +45,18 @@ O$.TabSet = {
         if (index == tabSet._index)
           return;
 
+        for (var i = 0; i < this._disabledTabs.length; i++) {
+          if (index == this._disabledTabs[i]) {
+            return;
+          }
+        }
         var prevTab = this._getTabByAbsoluteIndex(tabSet._index);
 
         O$.setStyleMappings(prevTab, {
-          mouseoverSelected: null
+          mouseoverSelected:null
         });
         O$.setStyleMappings(prevTab, {
-          mouseover_TP: null
+          mouseover_TP:null
         });
 
         var prevIndex = tabSet._index;
@@ -68,14 +73,14 @@ O$.TabSet = {
         }
         if (tabSet._indexOver != null && tabSet._indexOver == index) {
           O$.setStyleMappings(tabSet._tabs[index], {
-            mouseoverSelected: tabSet._rolloverSelectTabClass
+            mouseoverSelected:tabSet._rolloverSelectTabClass
           });
         }
         tabSet._refreshTabs();
       },
 
 
-      _setTabStyles: function (tabClass, selectTabClass, rolloverTabClass, rolloverSelectTabClass, focusedTabClass) {
+      _setTabStyles:function (tabClass, selectTabClass, rolloverTabClass, rolloverSelectTabClass, focusedTabClass) {
         tabSet._tabClass = tabClass;
         tabSet._selectTabClass = selectTabClass;
         tabSet._rolloverTabClass = rolloverTabClass;
@@ -83,7 +88,7 @@ O$.TabSet = {
         tabSet._focusedTabClass = focusedTabClass;
       },
 
-      _setBorderClasses: function (frontBorderClass, backBorderClass1, backBorderClass2) {
+      _setBorderClasses:function (frontBorderClass, backBorderClass1, backBorderClass2) {
         tabSet.frontBorderClass = frontBorderClass;
         if (placement == 'top' || placement == 'right') {
           tabSet.backBorderClass1 = backBorderClass1;
@@ -95,7 +100,7 @@ O$.TabSet = {
         tabSet._refreshTabs();
       },
 
-      _refreshTabs: function () {
+      _refreshTabs:function () {
         if (!tabSet._tabs)
           return;
 
@@ -104,38 +109,51 @@ O$.TabSet = {
         }
 
         for (var i = 0, tabCount = tabSet._tabs.length; i < tabCount; i++) {
+          console.log(i);
           var tab = tabSet._tabs[i];
           O$.setStyleMappings(tab, {
-            main: tabSet._tabClass
+            main:tabSet._tabClass
           });
-          O$.setStyleMappings(tab, {
-            selected: tab._absoluteIndex == tabSet._index ? tabSet._selectTabClass : null
-          });
-
+          if (tab._absoluteIndex == tabSet._index) {
+            O$.setStyleMappings(tab, {
+              selected:tabSet._selectTabClass
+            });
+          } else {
+            O$.setStyleMappings(tab, {
+              selected:null
+            });
+          }
           if (tab._absoluteIndex < tabSet._index) {
             O$.setStyleMappings(tab, {
-              border: tabSet.backBorderClass1
+              border:tabSet.backBorderClass1
             });
             initTabStyles(tab, tabSet.backBorderClass1);
           } else if (tab._absoluteIndex == tabSet._index) {
 
             O$.setStyleMappings(tab, {
-              border: tabSet.frontBorderClass
+              border:tabSet.frontBorderClass
             });
             initTabStyles(tab, tabSet.frontBorderClass);
           } else {
             O$.setStyleMappings(tab, {
-              border: tabSet.backBorderClass2
+              border:tabSet.backBorderClass2
             });
             initTabStyles(tab, tabSet.backBorderClass2);
           }
+          for (var j = 0; j < this._disabledTabs.length; j++) {
+            if (tab._absoluteIndex == this._disabledTabs[j]) {
+              O$.setStyleMappings(tab, {
+                main:this._disabledClass
+              });
+            }
+          }
         }
       },
-      getSelectedIndex: function () {
+      getSelectedIndex:function () {
         return tabSet._index;
       },
 
-      _setNextIndex: function(inc) {
+      _setNextIndex:function (inc) {
         var number = tabSet._tabCount;
         var tab = tabSet._getTabByAbsoluteIndex(tabSet._index);
         var nextIndex = tab._index + inc;
@@ -151,7 +169,7 @@ O$.TabSet = {
 
       },
 
-      _setTabFocused: function(prevIndex, nextIndex) {
+      _setTabFocused:function (prevIndex, nextIndex) {
         var prevTab = tabSet._getTabByAbsoluteIndex(prevIndex);
         var tab = tabSet._getTabByAbsoluteIndex(nextIndex);
 
@@ -189,15 +207,15 @@ O$.TabSet = {
 
         if (this._absoluteIndex == tabSet._index) {
           if (this._tabbedPaneCall == null)
-            O$.setStyleMappings(this, {mouseover: tabSet._rolloverTabClass});
+            O$.setStyleMappings(this, {mouseover:tabSet._rolloverTabClass});
           else
-            O$.setStyleMappings(this, {mouseover_TP: tabSet._rolloverTabClass});
-          O$.setStyleMappings(this, {mouseoverSelected: tabSet._rolloverSelectTabClass});
+            O$.setStyleMappings(this, {mouseover_TP:tabSet._rolloverTabClass});
+          O$.setStyleMappings(this, {mouseoverSelected:tabSet._rolloverSelectTabClass});
 
-          O$.setStyleMappings(this, {border: tabSet.frontBorderClass});
+          O$.setStyleMappings(this, {border:tabSet.frontBorderClass});
         } else {
-          O$.setStyleMappings(this, {mouseover: tabSet._rolloverTabClass});
-          O$.setStyleMappings(this, {border:  this._borderClass});
+          O$.setStyleMappings(this, {mouseover:tabSet._rolloverTabClass});
+          O$.setStyleMappings(this, {border:this._borderClass});
         }
         this._tabbedPaneCall = null;
         O$.stopEvent(e);
@@ -209,26 +227,26 @@ O$.TabSet = {
         }
 
         if (this._absoluteIndex == tabSet._index) {
-          O$.setStyleMappings(this, {mouseoverSelected: null});
+          O$.setStyleMappings(this, {mouseoverSelected:null});
 
           if (this._tabbedPaneCall == null)
-            O$.setStyleMappings(this, {mouseover: null});
-           else
-            O$.setStyleMappings(this, {mouseover_TP: null});
+            O$.setStyleMappings(this, {mouseover:null});
+          else
+            O$.setStyleMappings(this, {mouseover_TP:null});
 
-          O$.setStyleMappings(this, {border:  tabSet.frontBorderClass});
+          O$.setStyleMappings(this, {border:tabSet.frontBorderClass});
         } else {
-          O$.setStyleMappings(this, {border: this._borderClass});
+          O$.setStyleMappings(this, {border:this._borderClass});
         }
-        O$.setStyleMappings(this, {mouseover:  null});
-        O$.setStyleMappings(this, {mouseover_TP: null});
+        O$.setStyleMappings(this, {mouseover:null});
+        O$.setStyleMappings(this, {mouseover_TP:null});
         this._tabbedPaneCall = null;
         O$.stopEvent(e);
       });
 
       O$.assignEventHandlerField(tab, "onclick", function () {
         tabSet.setSelectedIndex(this._absoluteIndex, true);
-        O$.setStyleMappings(this, {mouseoverSelected: tabSet._rolloverSelectTabClass});
+        O$.setStyleMappings(this, {mouseoverSelected:tabSet._rolloverSelectTabClass});
       });
     }
 
@@ -263,20 +281,20 @@ O$.TabSet = {
       };
 
       tabSet._oldfocus = tabSet.onfocus;
-      tabSet.onfocus = function(e) {
+      tabSet.onfocus = function (e) {
         if (tabSet._oldfocus)
           tabSet._oldfocus(e);
         var tab = this._getTabByAbsoluteIndex(tabSet._index);
-        O$.setStyleMappings(tab.childNodes[0], {focused:  focusAreaClass});
-        O$.setStyleMappings(tab, {focused: tabSet._focusedTabClass});
+        O$.setStyleMappings(tab.childNodes[0], {focused:focusAreaClass});
+        O$.setStyleMappings(tab, {focused:tabSet._focusedTabClass});
       };
 
       tabSet._oldblur = tabSet.onblur;
-      tabSet.onblur = function(e) {
+      tabSet.onblur = function (e) {
         if (tabSet._oldblur)
           tabSet._oldblur(e);
         var tab = this._getTabByAbsoluteIndex(tabSet._index);
-        O$.setStyleMappings(tab.childNodes[0], {focused:  null});
+        O$.setStyleMappings(tab.childNodes[0], {focused:null});
       };
     }
   }

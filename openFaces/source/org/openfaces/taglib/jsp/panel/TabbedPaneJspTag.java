@@ -119,4 +119,12 @@ public class TabbedPaneJspTag extends MultiPageContainerJspTag {
     public void setMirrorTabSetVisible(ValueExpression mirrorTabSetVisible) {
         getDelegate().setPropertyValue("mirrorTabSetVisible", mirrorTabSetVisible);
     }
+
+    public void setDisabledStyle(ValueExpression disabledStyle) {
+        getDelegate().setPropertyValue("disabledStyle", disabledStyle);
+    }
+
+    public void setDisabledClassStyle(ValueExpression disabledClassStyle) {
+        getDelegate().setPropertyValue("disabledClassStyle", disabledClassStyle);
+    }
 }

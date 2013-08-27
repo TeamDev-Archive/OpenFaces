@@ -214,6 +214,7 @@ public class TabbedPaneRenderer extends MultiPageContainerRenderer {
                               boolean isMirrorTabSet)
             throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        List<Integer> disabledPanels = new ArrayList<Integer>();
         TabPlacement tabPlacement = getTabPlacement(tabbedPane);
         boolean verticalPlacement = TabPlacement.LEFT.equals(tabPlacement) || TabPlacement.RIGHT.equals(tabPlacement);
         if (verticalPlacement) {
@@ -225,14 +226,19 @@ public class TabbedPaneRenderer extends MultiPageContainerRenderer {
         } else {
             innerTabSet = tabbedPane.getTabSet();
         }
-        initInnerTabSet(tabbedPane, innerTabSet, subPanels, isMirrorTabSet);
+        innerTabSet.setDisabledPanelClass(tabbedPane.getDisabledClassStyle());
+        innerTabSet.setDisabledPanelStyle(tabbedPane.getDisabledStyle());
+        initInnerTabSet(tabbedPane, innerTabSet, subPanels, isMirrorTabSet, disabledPanels);
         innerTabSet.encodeAll(context);
     }
 
     private void initInnerTabSet(TabbedPane tabbedPane, TabSet innerTabSet, List<SubPanel> subPanels,
-                                 boolean isMirrorTabSet) {
+                                 boolean isMirrorTabSet, List<Integer> disabledPanels) {
         List<UIComponent> tabs = new ArrayList<UIComponent>();
         for (SubPanel item : subPanels) {
+            if (item.isDisabled()) {
+                disabledPanels.add(subPanels.indexOf(item));
+            }
             UIComponent captionComponent = item.getCaptionFacet();
             String caption = item.getCaption();
             if (captionComponent != null || caption != null) {
@@ -286,6 +292,7 @@ public class TabbedPaneRenderer extends MultiPageContainerRenderer {
         innerTabSet.setFocusable(tabbedPane.isFocusable());
         innerTabSet.setFocusAreaStyle(tabbedPane.getFocusAreaStyle());
         innerTabSet.setFocusAreaClass(tabbedPane.getFocusAreaClass());
+        innerTabSet.setDisabledPanel(disabledPanels);
     }
 
     private TabPlacement reversePlacement(TabPlacement tabPlacement) {
