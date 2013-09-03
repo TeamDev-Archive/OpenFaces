@@ -162,7 +162,11 @@ O$.Checkbox = {
       // html checkbox
 
       O$.extend(checkbox, {
-        setDisabled: function(flag) { this.disabled = flag; updateStyles(this); },
+        setDisabled: function(flag) {
+          O$.setHiddenField(this, checkboxId + "::disabled", flag);
+          this.disabled = flag;
+          updateStyles(this);
+        },
         getDisabled: function() { return this.disabled; },
         setSelected: function(flag) { this.checked = flag; updateStyles(this); },
         isSelected: function() { return this.checked; },
