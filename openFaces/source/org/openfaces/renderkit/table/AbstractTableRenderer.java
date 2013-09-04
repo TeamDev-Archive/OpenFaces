@@ -76,6 +76,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
+        sortingInEncode(context, component);
         if (!component.isRendered())
             return;
 
@@ -119,6 +120,14 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
                 return AbstractTableRenderer.this.getTextStyle(table);
             }
         };
+    }
+
+    protected void sortingInEncode(FacesContext context, UIComponent component) {
+        AbstractTable table = (AbstractTable) component;
+        if (table.getSaveSortRule(context) != null) {
+            TableUtil.markSortingToggledInThisRequest(context);
+            table.acceptNewSortingRules(table.getSaveSortRule(context));
+        }
     }
 
     private void encodeJsLinks(FacesContext context) throws IOException {
@@ -794,8 +803,8 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
     }
 
     protected static boolean encodeFoldingSupport(FacesContext context,
-                                               ScriptBuilder buf,
-                                               AbstractTable table) throws IOException {
+                                                  ScriptBuilder buf,
+                                                  AbstractTable table) throws IOException {
         JSONObject treeStructure = formatTreeStructureMap(context, table, -1, -1);
         if (treeStructure == null) {
             // this can be the case for a grouping-enabled table which doesn't have any grouping rule configured,

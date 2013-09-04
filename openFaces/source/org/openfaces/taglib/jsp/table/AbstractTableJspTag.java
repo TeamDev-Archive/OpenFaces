@@ -327,4 +327,9 @@ public abstract class AbstractTableJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("unDisplayedSelectionAllowed", unDisplayedSelectionAllowed);
     }
 
+    public void setSaveSortRule(ValueExpression saveSortRule) {
+        getDelegate().setPropertyValue("saveSortRule", saveSortRule);
+    }
+
+
 }

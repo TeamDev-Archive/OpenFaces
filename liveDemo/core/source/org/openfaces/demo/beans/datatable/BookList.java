@@ -12,6 +12,8 @@
 
 package org.openfaces.demo.beans.datatable;
 
+import org.openfaces.component.table.SortingRule;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +22,15 @@ public class BookList implements Serializable {
     private List<Book> books = new ArrayList<Book>();
     private Book selectedBook;
     private List list = new ArrayList();
+    private List<SortingRule> sortingRules = new ArrayList<SortingRule>();
+
+    public List<SortingRule> getSortingRules() {
+        return sortingRules;
+    }
+
+    public void setSortingRules(List<SortingRule> sortingRules) {
+        this.sortingRules = sortingRules;
+    }
 
     public BookList() {
         books.add(new Book(
@@ -69,6 +80,7 @@ public class BookList implements Serializable {
                 "Jayson publishing house",
                 BookCategory.WEB_TECHNOLOGY
         ));
+        sortingRules.add(new SortingRule("title", false));
     }
 
     public List<Book> getBooks() {

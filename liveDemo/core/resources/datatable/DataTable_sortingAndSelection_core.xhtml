@@ -1,7 +1,7 @@
 <div xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:o="http://openfaces.org/"
-     >
+        >
 
   <div id="Demo">
 
@@ -16,7 +16,8 @@
                  sortableHeaderRolloverStyle="background: #d4d4d4"
                  style="width: 700px; margin-left: 20px; line-height: 17px;"
                  styleClass="datatable"
-                 rolloverRowStyle="background: #f1f1f1;">
+                 rolloverRowStyle="background: #f1f1f1;"
+                 saveSortRule="#{BookList.sortingRules}">
       <o:singleRowSelection rowData="#{BookList.selectedBook}" style="background: #a4aec5; color: white"/>
       <o:columnReordering/>
       <f:facet name="columnMenu">

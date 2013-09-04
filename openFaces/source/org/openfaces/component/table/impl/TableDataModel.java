@@ -363,6 +363,7 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
         if (areExtractedRowsNeeded()) {
             extractRows();
             extractedRowKeys = extractRowKeys(extractedRows);
+            sortRows(allRetrievedRows);
             allRetrievedRowKeys = extractRowKeys(allRetrievedRows);
             setRowIndex(0);
         } else {
