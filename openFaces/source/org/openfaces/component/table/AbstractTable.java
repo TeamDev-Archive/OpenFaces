@@ -1071,7 +1071,9 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     public void setSaveSortRule(List<SortingRule> saveSortRule, FacesContext context) {
         this.saveSortRule = saveSortRule;
         ValueExpression ve = getValueExpression("saveSortRule");
-        ve.setValue(context.getELContext(), saveSortRule);
+        if (ve != null) {
+            ve.setValue(context.getELContext(), saveSortRule);
+        }
     }
 
     @Override
