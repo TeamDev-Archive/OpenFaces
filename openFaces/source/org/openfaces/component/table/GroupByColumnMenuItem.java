@@ -17,7 +17,7 @@ import org.openfaces.util.ScriptBuilder;
 
 import javax.faces.context.FacesContext;
 
-public class GroupByColumnMenuItem extends MenuItem {
+public class GroupByColumnMenuItem extends MenuItem implements ColumnMenuItem {
     public static final String COMPONENT_TYPE = "org.openfaces.GroupByColumnMenuItem";
     public static final String COMPONENT_FAMILY = "org.openfaces.GroupByColumnMenuItem";
 
@@ -46,7 +46,6 @@ public class GroupByColumnMenuItem extends MenuItem {
 
     }
 
-    @Override
     public void setupMenuItemParams(FacesContext context){
         if (getValue() == null)
             setValue("Group by This Column");

@@ -17,7 +17,7 @@ import org.openfaces.util.ScriptBuilder;
 
 import javax.faces.context.FacesContext;
 
-public class SortDescendingMenuItem extends MenuItem {
+public class SortDescendingMenuItem extends MenuItem implements ColumnMenuItem {
     public static final String COMPONENT_TYPE = "org.openfaces.SortDescendingMenuItem";
     public static final String COMPONENT_FAMILY = "org.openfaces.SortDescendingMenuItem";
 
@@ -46,7 +46,6 @@ public class SortDescendingMenuItem extends MenuItem {
 
     }
 
-    @Override
     public void setupMenuItemParams(FacesContext context){
         if (getValue() == null)
             setValue("Sort Descending");

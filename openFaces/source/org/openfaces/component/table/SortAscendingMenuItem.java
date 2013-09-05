@@ -18,7 +18,7 @@ import org.openfaces.util.ScriptBuilder;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-public class SortAscendingMenuItem extends MenuItem {
+public class SortAscendingMenuItem  extends MenuItem implements ColumnMenuItem {
     public static final String COMPONENT_TYPE = "org.openfaces.SortAscendingMenuItem";
     public static final String COMPONENT_FAMILY = "org.openfaces.SortAscendingMenuItem";
 

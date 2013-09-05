@@ -314,10 +314,6 @@ public class MenuItem extends OUICommand implements ConvertibleToJSON {
     }
 
 
-    public void setupMenuItemParams(FacesContext context){
-
-    }
-
     protected AbstractTable getTable(String tagName, MenuItem menuItem) {
         UIComponent parent = menuItem.getParent();
         while (parent != null && (parent instanceof MenuItem || parent instanceof PopupMenu || Components.isImplicitPanel(parent)))

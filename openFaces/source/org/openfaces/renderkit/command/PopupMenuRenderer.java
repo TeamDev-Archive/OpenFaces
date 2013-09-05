@@ -16,6 +16,7 @@ import org.openfaces.component.OUIClientActionHelper;
 import org.openfaces.component.command.MenuItem;
 import org.openfaces.component.command.MenuSeparator;
 import org.openfaces.component.command.PopupMenu;
+import org.openfaces.component.table.ColumnMenuItem;
 import org.openfaces.org.json.JSONArray;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
@@ -53,6 +54,7 @@ public class PopupMenuRenderer extends RendererBase {
     public static final String ATTR_DEFAULT_INDENT_CLASS = "_defaultIndentClass";
 
     private static final String MENU_ITEM_CONTENT_SUFFIX = "::content";
+    private static final String MENU_ITEM_CONTROL_SUFFIX = "::control";
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
@@ -225,10 +227,18 @@ public class PopupMenuRenderer extends RendererBase {
                             menuItems.put(menuItem);
                         }
                     }else {
-                        if (child instanceof MenuItem){
-                            ((MenuItem)child).setupMenuItemParams(context);
+                        Boolean addCommand = false;
+                        if (child instanceof ColumnMenuItem){
+                            ((ColumnMenuItem)child).setupMenuItemParams(context);
+                        }else{
+                            if (!(child instanceof MenuSeparator) ){
+                                encodeControlElementWithAnchor(context, popupMenu, (MenuItem)child, ((MenuItem)child).getClientId());
+                                addCommand = true;
+                            }
                         }
                         JSONObject menuItem = ((ConvertibleToJSON)child).toJSONObject(params);
+                        if (addCommand)
+                            menuItem.put("addCommand",true);
                         menuItems.put(menuItem);
                     }
                 } catch (Exception e){
@@ -237,6 +247,19 @@ public class PopupMenuRenderer extends RendererBase {
             }
         }
         return menuItems;
+    }
+
+    public void encodeControlElementWithAnchor (FacesContext context, PopupMenu popupMenu, MenuItem component, String anchorId) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        writer.startElement("div", popupMenu);
+        writeAttribute(writer, "style", "display:none;");
+        writeAttribute(writer, "id", anchorId + MENU_ITEM_CONTROL_SUFFIX);
+        writeEventsWithAjaxSupport(context, writer, component,  getActionRequestKey(context, component));
+        writer.endElement("div");
+    }
+
+    protected String getActionRequestKey(FacesContext context, UIComponent component) {
+        return component.getClientId(context) + "::clicked";
     }
 
     public void encodeChildElementsWithAnchor(FacesContext context, UIComponent component, List<UIComponent> children, String anchorId)  throws IOException{

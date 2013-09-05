@@ -14,22 +14,26 @@ O$.MenuItemConsctructor = {
 
   setupAjaxHandlers: function (menuItemElement, menuItem) {
     menuItemElement.onclick = function () {
-      eval(menuItem.onclick);
-      if (menuItem.render || (menuItem.execute && menuItem.length > 0 )) {
-        if (menuItem.render == null) {
-          alert("'execute' attribute can't be specified without the 'render' attribute. Component id: " + popupMenu.id);
-          return;
+      if (menuItem.addCommand){
+        O$(menuItem.id + "::control").click();
+      } else{
+        eval(menuItem.onclick);
+        if (menuItem.render || (menuItem.execute && menuItem.length > 0 )) {
+          if (menuItem.render == null) {
+            alert("'execute' attribute can't be specified without the 'render' attribute. Component id: " + popupMenu.id);
+            return;
+          }
+          O$.ajax.request("", window.event , {
+            render: menuItem.render,
+            execute: menuItem.execute,
+            onerror: function() { eval(menuItem.onerror); },
+            onsuccess: function() {   eval(menuItem.onsuccess); },
+            onajaxstart: function() {   eval(menuItem.onajaxstart); },
+            onajaxend: function() {  eval(menuItem.onajaxend); },
+            immediate: menuItem.immediate,
+            _action: menuItem.action
+          });
         }
-        O$.ajax.request("", window.event , {
-          render: menuItem.render,
-          execute: menuItem.execute,
-          onerror: function() { eval(menuItem.onerror); },
-          onsuccess: function() {   eval(menuItem.onsuccess); },
-          onajaxstart: function() {   eval(menuItem.onajaxstart); },
-          onajaxend: function() {  eval(menuItem.onajaxend); },
-          immediate: menuItem.immediate,
-          _action: menuItem.action
-        });
       }
     };
   },

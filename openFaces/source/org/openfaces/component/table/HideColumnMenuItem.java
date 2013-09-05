@@ -16,7 +16,7 @@ import org.openfaces.util.ScriptBuilder;
 
 import javax.faces.context.FacesContext;
 
-public class HideColumnMenuItem extends MenuItem {
+public class HideColumnMenuItem extends MenuItem implements ColumnMenuItem {
     public static final String COMPONENT_TYPE = "org.openfaces.HideColumnMenuItem";
     public static final String COMPONENT_FAMILY = "org.openfaces.HideColumnMenuItem";
 
@@ -45,7 +45,6 @@ public class HideColumnMenuItem extends MenuItem {
 
     }
 
-    @Override
     public void setupMenuItemParams(FacesContext context){
         if (getValue() == null)
             setValue("Hide");

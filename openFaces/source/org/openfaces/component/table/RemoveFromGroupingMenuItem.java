@@ -17,7 +17,7 @@ import org.openfaces.util.ScriptBuilder;
 
 import javax.faces.context.FacesContext;
 
-public class RemoveFromGroupingMenuItem extends MenuItem {
+public class RemoveFromGroupingMenuItem extends MenuItem implements ColumnMenuItem {
     public static final String COMPONENT_TYPE = "org.openfaces.RemoveFromGroupingMenuItem";
     public static final String COMPONENT_FAMILY = "org.openfaces.RemoveFromGroupingMenuItem";
 
