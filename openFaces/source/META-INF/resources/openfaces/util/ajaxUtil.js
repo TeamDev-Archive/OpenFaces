@@ -179,9 +179,9 @@ window.OpenFaces.Ajax = {
     render.forEach(function(componentId){
       O$._invokeComponentAjaxReloadStart(componentId);
       var oldAjaxEndFunc = args.onajaxend;
-      args.onajaxend = function (){
+      args.onajaxend = function (event){
         if (oldAjaxEndFunc){
-          oldAjaxEndFunc();
+          oldAjaxEndFunc(event);
         }
         O$._invokeComponentAjaxReloadEnd(componentId);
       }
