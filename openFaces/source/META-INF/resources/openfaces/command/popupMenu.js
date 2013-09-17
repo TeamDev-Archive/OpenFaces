@@ -46,6 +46,7 @@ O$.PopupMenu = {
     O$.MenuItemConsctructor.defaultMenuItemsParams = defaultMenuItemsParams;
     var popupMenu = O$.initComponent(popupMenuId, {rollover: rolloverClass}, {
       show: function() {
+        if (popupMenu.closed) return;
         finishInitialization();
         setTimeout(function() {
           O$.addIETransparencyControl(popupMenu);
@@ -989,8 +990,11 @@ O$.PopupMenu = {
         menuItem._anchor.onclick = function(evt) {
           // ensure hiding the menu _before_ invoking possible Ajax menu reload to avoid menu's visible flag to be
           // saved to the server and thus menu reloading in the visible state in this case
+
           O$.PopupMenu._closeAllMenu(popupMenu);
+          popupMenu.closed=true;
           clickHandler.call(menuItem._anchor, evt);
+          popupMenu.closed=false;
         }
         O$.addUnloadHandler(menuItem._anchor, function () {
           menuItem._anchor.onclick = null;

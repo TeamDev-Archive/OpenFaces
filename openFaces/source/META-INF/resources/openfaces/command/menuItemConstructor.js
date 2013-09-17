@@ -13,9 +13,14 @@
 O$.MenuItemConsctructor = {
 
   setupAjaxHandlers: function (menuItemElement, menuItem) {
-    menuItemElement.onclick = function () {
+    menuItemElement.onclick = function (e) {
       if (menuItem.addCommand){
-        O$(menuItem.id + "::control").click();
+        var el = O$(menuItem.id + "::control");
+        if (el.onclick) {
+          el.onclick();
+        } else if (el.click) {
+          el.click();
+        }
       } else{
         eval(menuItem.onclick);
         if (menuItem.render || (menuItem.execute && menuItem.length > 0 )) {

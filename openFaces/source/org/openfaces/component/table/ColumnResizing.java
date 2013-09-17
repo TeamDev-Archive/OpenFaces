@@ -44,7 +44,6 @@ public class ColumnResizing extends UIComponentBase implements ComponentConfigur
 
     @Override
     public Object saveState(FacesContext context) {
-        System.out.println("Column resize save STATE saveState");
         return new Object[]{super.saveState(context),
                 enabled,
                 retainTableWidth,
