@@ -147,7 +147,6 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     private Boolean deferBodyLoading;
     private Integer totalRowCount;
     private boolean implicitFacetsCreated;
-    private List<SortingRule> saveSortRule = new ArrayList<SortingRule>();
     private Boolean unsortedStateAllowed;
 
     private Boolean keepSelectionVisible;
@@ -203,7 +202,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
                 noDataMessageAllowed, columnIndexVar, columnIdVar, saveAttachedState(context, columnsOrder),
                 sortedAscendingImageUrl, sortedDescendingImageUrl, cachedClientId,
                 autoFilterDelay, deferBodyLoading, totalRowCount, implicitFacetsCreated, unsortedStateAllowed,
-                keepSelectionVisible, onbeforeajaxreload, onafterajaxreload, unDisplayedSelectionAllowed, saveSortRule};
+                keepSelectionVisible, onbeforeajaxreload, onafterajaxreload, unDisplayedSelectionAllowed};
     }
 
     @Override
@@ -300,7 +299,6 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         onafterajaxreload = (String) state[i++];
 
         unDisplayedSelectionAllowed = (Boolean) state[i++];
-        saveSortRule = (List<SortingRule>) state[i++];
 
         beforeUpdateValuesPhase = true;
         incomingSortingRules = null;
@@ -413,51 +411,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         return Components.getFacet(this, FACET_HEADER);
     }
 
-    public List getSaveSortRule(FacesContext context) {
 
-        ValueExpression ve = getValueExpression("saveSortRule");
-        List<SortingRule> sortingRules;
-        try {
-            sortingRules = (List<SortingRule>) ve.getValue(context.getELContext());
-            if (sortingRules.size() == 0)
-                sortingRules = ifDontHaveSaveSortRuleAttr();
-            setSortingRules(sortingRules);
-        } catch (Exception e) {
-            sortingRules = ifDontHaveSaveSortRuleAttr();
-        }
-        return sortingRules;
-    }
-
-    private List<SortingRule> ifDontHaveSaveSortRuleAttr() {
-        List<SortingRule> sortingRules;
-        if (this.saveSortRule != null) {
-            if (this.saveSortRule.size() != 0) {
-                sortingRules = this.saveSortRule;
-                setSortingRules(sortingRules);
-            } else sortingRules = sortingRulesSettings();
-        } else sortingRules = sortingRulesSettings();
-        return sortingRules;
-    }
-
-    private List<SortingRule> sortingRulesSettings() {
-        List<SortingRule> sortingRules;
-        if (this.sortingRules != null) {
-            if (this.sortingRules.size() != 0) {
-                sortingRules = this.sortingRules;
-                setSortingRules(sortingRules);
-            } else {
-                sortingRules = null;
-            }
-        } else sortingRules = null;
-        return sortingRules;
-
-    }
-
-    public void setSaveSortRule(List<SortingRule> saveSortRule, FacesContext context) {
-        this.saveSortRule = saveSortRule;
-        ValueExpression ve = getValueExpression("saveSortRule");
-        ve.setValue(context.getELContext(), saveSortRule);
-    }
 
     public void setHeader(UIComponent component) {
         getFacets().put(FACET_HEADER, component);
@@ -1543,8 +1497,6 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
      * by any application code.
      */
     public void setSortingRules(List<SortingRule> sortingRules) {
-        TableDataModel model = getModel();
-        model.setSortingRules(sortingRules);
         this.sortingRules = sortingRules;
     }
 

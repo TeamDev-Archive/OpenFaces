@@ -76,7 +76,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
-        sortingInEncode(context, component);
+
         if (!component.isRendered())
             return;
 
@@ -122,13 +122,6 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         };
     }
 
-    protected void sortingInEncode(FacesContext context, UIComponent component) {
-        AbstractTable table = (AbstractTable) component;
-        if (table.getSaveSortRule(context) != null) {
-            TableUtil.markSortingToggledInThisRequest(context);
-            table.acceptNewSortingRules(table.getSaveSortRule(context));
-        }
-    }
 
     private void encodeJsLinks(FacesContext context) throws IOException {
         String[] libs = getNecessaryJsLibs(context);

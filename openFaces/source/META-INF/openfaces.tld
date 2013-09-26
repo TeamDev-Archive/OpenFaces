@@ -1201,18 +1201,7 @@
       <!-- @default false -->
       <!-- @el true -->
     </attribute>
-    <attribute>
-      <description>JavaScript code that should be executed on the client when the user presses and releases a
-        key over the DataTable.
-      </description>
-      <name>saveSortRule</name>
-      <deferred-value>
-        <type>java.lang.Object</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.Collection -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
+
 
     <attribute>
       <description>This attribute specify if pagination must follow selection durring sorting and filtering
