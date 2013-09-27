@@ -11,6 +11,7 @@
  */
 package org.openfaces.component.table;
 
+import org.apache.commons.collections.ListUtils;
 import org.openfaces.component.ComponentWithExternalParts;
 import org.openfaces.component.FilterableComponent;
 import org.openfaces.component.OUIData;
