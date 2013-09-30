@@ -238,6 +238,7 @@ public class MenuItem extends OUICommand implements ConvertibleToJSON {
 
 
         obj.put("delay", getDelay());
+        obj.put("disabled", isDisabled());
         obj.put("disabledStyle", getDisabledStyle());
         obj.put("disabledClass", getDisabledClass());
 

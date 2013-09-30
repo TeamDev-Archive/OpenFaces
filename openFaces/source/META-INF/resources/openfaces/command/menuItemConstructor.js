@@ -14,6 +14,7 @@ O$.MenuItemConsctructor = {
 
   setupAjaxHandlers: function (menuItemElement, menuItem) {
     menuItemElement.onclick = function (e) {
+      if (menuItem.disabled) return;
       if (menuItem.addCommand){
         var el = O$(menuItem.id + "::control");
         if (el.onclick) {
@@ -152,9 +153,11 @@ O$.MenuItemConsctructor = {
 
     menuItemLiElement._anchor = menuItemFieldSpan;
     O$.MenuItemConsctructor.setupAjaxHandlers(menuItemMainSpan, menuItem);
+
     menuItemLiElement.appendChild(menuItemMainSpan);
     menuItemLiElement.menuId = menuItem.menuId;
     menuItemLiElement._properties = {};
+    menuItemLiElement._properties.disabled = menuItem.disabled;
     menuItemLiElement._properties.imgSelectedSrc = menuItem.selectedIconUrl;
     menuItemLiElement._properties.imgSrc = menuItem.iconUrl;
     menuItemLiElement._properties.disabledImgSelectedSrc = menuItem.selectedDisabledIconUrl;

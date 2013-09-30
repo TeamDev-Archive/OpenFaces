@@ -103,6 +103,20 @@ O$.PopupMenu = {
         this.show();
       },
 
+      setAllMenuItemsDisabled: function (disable){
+        popupMenu._items.forEach(function(it) {
+          it.setDisabled(disable);
+        });
+      },
+
+      disableAllMenuItems: function (){
+        popupMenu.setAllMenuItemsDisabled(true)
+      },
+
+      enableAllMenuItems: function (){
+        popupMenu.setAllMenuItemsDisabled(false)
+      },
+
       closeChildMenus: function () {
         if (!!popupMenu._openedChildMenu) {
           popupMenu._openedChildMenu.closeChildMenus();
@@ -297,7 +311,7 @@ O$.PopupMenu = {
         }
       }
     }
-
+    popupMenu.defaultDisabledClass = defaultDisabledClass;
   },
 
   setMenuItemEnabled: function(menuItemId, enabled, selectDisabledItems) {
@@ -322,6 +336,7 @@ O$.PopupMenu = {
     /* Update icons and styles if enabled flag has been changed */
     if (enabled) {
       O$.setStyleMappings(menuItem._anchor, {
+
         disabled: null
       });
       if (menuItem._icon) {
