@@ -263,19 +263,13 @@ public class DataTable extends AbstractTable {
             rowGrouping.beforeEncode();
     }
 
-    protected void sortingInEncode(FacesContext context, UIComponent component) {
-        AbstractTable table = (AbstractTable) component;
-        if (table.getSaveSortRule(context) != null){
-            TableUtil.markSortingToggledInThisRequest(context);
-            table.acceptNewSortingRules(table.getSaveSortRule(context));
-        }
-    }
+
 
     @Override
     public void encodeBegin(FacesContext facesContext) throws IOException {
         if (AjaxUtil.getSkipExtraRenderingOnPortletsAjax(facesContext))
             return;
-        sortingInEncode(facesContext, this);
+
         beforeRenderResponse(facesContext);
 
         setRenderedPageCount(getModel().getPageCount());
