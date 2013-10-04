@@ -12,7 +12,7 @@
             <small>(an extract, full list: <a href="http://www.fdic.gov" target="_blank">FDIC</a>)</small>
           </h3>
         </td>
-        <td style="padding-right: 6px; padding-top: 4px; width: 185px;" >
+        <td style="padding-right: 6px; padding-top: 4px; width: 185px;">
           <o:inputTextFilter for="banks"
                              expression="#{bank.institutionName},#{bank.certificateNumber},#{bank.city},#{bank.state},#{bank.zip},#{bank.county},#{bank.averageAssets}"
                              promptText="Search all fields" style="width: 180px"/>
@@ -23,6 +23,37 @@
       </tr>
 
     </table>
+    <script type="text/javascript">
+      var _enabled = true;
+      function enabledMenu() {
+        if (_enabled) {
+          O$("form:banks").setEnabledMenu(false);
+          _enabled = false;
+        } else {
+          O$("form:banks").setEnabledMenu(true);
+          _enabled = true;
+        }
+      }
+
+      var _enabled2 = true;
+      function enabledMenu2() {
+        if (_enabled2) {
+          O$("form:banks").setEnabledSorting(false);
+          _enabled2 = false;
+        } else {
+          O$("form:banks").setEnabledSorting(true);
+          _enabled2 = true;
+        }
+      }
+    </script>
+
+    <button onmouseover=" enabledMenu()" class="bubble" >
+      ololo
+    </button>
+    <button onmouseover=" enabledMenu2()" class="bubble" >
+      ololo2
+    </button>
+
 
     <o:dataTable id="banks" var="bank"
                  value="#{BanksList.banks}"
@@ -51,7 +82,7 @@
                      groupHeaderRowStyle="font-size: 11pt"/>
       <o:scrolling position="#{sessionScope.scrolling}" autoSaveState="true"/>
       <o:singleRowSelection rowData="#{sessionScope.selectedBank}"
-              style="background: url('../images/treetable/selected.gif') repeat-x #5d8bba !important; color: white !important;"/>
+                            style="background: url('../images/treetable/selected.gif') repeat-x #5d8bba !important; color: white !important;"/>
       <o:columnResizing resizingState="#{sessionScope.banks_columnResizingState}" autoSaveState="true"/>
       <o:columnReordering/>
 
@@ -154,7 +185,8 @@
       <li><strong>Row grouping</strong>&#8212;You can group table's records by either dragging column headers to/from
         the special area above the table, or by using the appropriate commands in column menus.
       </li>
-      <li><strong>Interactive filtering</strong>&#8212;You can use different types of column filters under the column headers and
+      <li>
+        <strong>Interactive filtering</strong>&#8212;You can use different types of column filters under the column headers and
         the out-of-table filter above the table.
       </li>
       <li><strong>Drag &amp; drop column reordering</strong>&#8212;Drag a column header to move the appropriate column.
@@ -162,8 +194,10 @@
       <li><strong>Column resizing</strong>&#8212;Drag column header separators to resize columns.</li>
       <li><strong>Column menu</strong>&#8212;Use the drop-down menu in column headers to sort, show and hide columns.
       </li>
-      <li><strong>Data export</strong>&#8212;Click the "Export to CSV" button to save the current records as a CSV file.</li>
-      <li><strong>Content scrolling</strong>&#8212;it's possible to scroll through the entire TreeTable contents when the
+      <li><strong>Data export</strong>&#8212;Click the "Export to CSV" button to save the current records as a CSV file.
+      </li>
+      <li>
+        <strong>Content scrolling</strong>&#8212;it's possible to scroll through the entire TreeTable contents when the
         vertical space is limited.
       </li>
       <li><strong>Selection</strong>&#8212;Use mouse or keyboard to select DataTable rows.</li>
