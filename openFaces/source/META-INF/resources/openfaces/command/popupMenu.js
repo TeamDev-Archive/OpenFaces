@@ -104,9 +104,13 @@ O$.PopupMenu = {
       },
 
       setAllMenuItemsDisabled: function (disable){
-        popupMenu._items.forEach(function(it) {
-          it.setDisabled(disable);
-        });
+        if (popupMenu._items){
+          popupMenu._items.forEach(function(it) {
+            it.setDisabled(disable);
+          });
+        } else {
+          popupMenu._allItemsDisabled = disable;
+        }
       },
 
       disableAllMenuItems: function (){
@@ -169,6 +173,7 @@ O$.PopupMenu = {
           },
 
           setDisabled: function(disabled) {
+            if (!this._properties) return;
             if (this._properties.disabled == disabled) return;
             this._properties.disabled = disabled;
             this._disabled = disabled;
@@ -310,8 +315,13 @@ O$.PopupMenu = {
           O$.PopupMenu._addMouseOverOutEvents(menuItem, selectDisabledItems, submenuHorizontalOffset, submenuShowDelay, submenuHideDelay);
         }
       }
+      if (popupMenu._allItemsDisabled != undefined){
+        popupMenu.setAllMenuItemsDisabled(popupMenu._allItemsDisabled);
+      }
+
     }
     popupMenu.defaultDisabledClass = defaultDisabledClass;
+
   },
 
   setMenuItemEnabled: function(menuItemId, enabled, selectDisabledItems) {
