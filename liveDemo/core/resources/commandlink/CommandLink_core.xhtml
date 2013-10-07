@@ -30,9 +30,15 @@
                    styleClass="largeFont commandLink"/>
 
     &#160;&#160;&#160;
+    <script type="text/javascript">
+      function dis(){
+        O$("form:ololo").setDisabled(true);
+      }
+    </script>
+    <button onmouseover="dis()">ohoho</button>
 
     <o:commandLink type="button"
-
+             id="ololo"
             value="Ajax Submit" actionListener="#{CommandLinkBean.composeFullName}"
                    execute="input" render="output"
                    styleClass="largeFont commandLink"/>
