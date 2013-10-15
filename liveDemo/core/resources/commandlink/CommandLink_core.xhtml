@@ -25,23 +25,41 @@
         </div>
       </h:panelGroup>
     </h:panelGrid>
+    <script type="text/javascript">
+      function dis2(){
+        O$.getDisabledCommandLink(document.getElementById("form:ololo2"),true)
+      }
+      function dis3(){
+        O$.getDisabledCommandLink(document.getElementById("form:ololo2"),false)
+        O$.getDisabledCommandLink(document.getElementById("form:ololo"),false)
+      }
+    </script>
+    <button onmouseover="dis2()">ohoho</button>
 
-    <o:commandLink value="Standard Submit" actionListener="#{CommandLinkBean.composeFullName}"
+    <o:commandLink id="ololo2" value="Standard Submit"
+                   disabled="false"
+                   actionListener="#{CommandLinkBean.composeFullName}"
                    styleClass="largeFont commandLink"/>
 
     &#160;&#160;&#160;
     <script type="text/javascript">
       function dis(){
-        O$("form:ololo").setDisabled(true);
+        O$.getDisabledCommandLink(document.getElementById("form:ololo"),true)
       }
+
+
+
     </script>
     <button onmouseover="dis()">ohoho</button>
 
     <o:commandLink type="button"
              id="ololo"
+             disabled="false"
             value="Ajax Submit" actionListener="#{CommandLinkBean.composeFullName}"
                    execute="input" render="output"
-                   styleClass="largeFont commandLink"/>
+                   styleClass="largeFont commandLink">
+      <span>fff</span>
+                   </o:commandLink>
 
     <div style="margin-top: 12px; margin-bottom: 15px;" class="largeFont">
       <h:outputText styleClass="smallFont" value="Full name:"/>
@@ -65,6 +83,6 @@
       </li>
     </ul>
   </div>
-
+  <button onmouseover="dis3()">ohoho12</button>
 
 </div>

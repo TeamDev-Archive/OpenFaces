@@ -22,7 +22,9 @@ O$.Table = {
     }
     O$.Table.saveEnabledSettings[O$.Table.saveEnabledSettings.length] = {
       tableId:tableId,
-      enabledMenu:isEnabled
+      enabledMenu:isEnabled,
+      enabledSorting:true
+
     }
   },
 
@@ -45,14 +47,15 @@ O$.Table = {
 
     O$.Table.saveEnabledSettings[O$.Table.saveEnabledSettings.length] = {
       tableId:tableId,
-      enabledSorting:isEnabled
+      enabledSorting:isEnabled,
+      enabledMenu:true
     }
   },
 
   getEnabledSettingSortingForId:function (tableId) {
     for (var i = 0; i < O$.Table.saveEnabledSettings.length; i++) {
       if (O$.Table.saveEnabledSettings[i].tableId == tableId) {
-        return O$.Table.saveEnabledSettings[i].enabledMenu;
+        return O$.Table.saveEnabledSettings[i].enabledSorting;
       }
     }
     return true;
