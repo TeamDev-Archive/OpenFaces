@@ -11,7 +11,7 @@
  */
 
 O$.TabSet = {
-  _init:function (tabSetId, tabIds, selectedIndex, placement, tabStylesParams, borderClassesParams, focusable, focusAreaClass, focusedClass, disabledClass, disabledTabs, onchange) {
+  _init:function (tabSetId, tabIds, selectedIndex, placement, tabStylesParams, borderClassesParams, focusable, focusAreaClass, focusedClass,onchange) {
     var tabSet = O$.initComponent(tabSetId, null, {
       _index:selectedIndex,
       _indexField:O$(tabSetId + "::selected"),

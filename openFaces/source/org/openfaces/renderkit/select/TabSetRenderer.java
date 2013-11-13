@@ -103,7 +103,6 @@ public class TabSetRenderer extends BaseTabSetRenderer {
 
         ResponseWriter writer = context.getResponseWriter();
         TabSet tabSet = (TabSet) component;
-        List<UIComponent> tabChildren = tabSet.getChildren();
 
         TabPlacement tabPlacement = getTabPlacement(tabSet);
         boolean verticalTabs = tabPlacement.equals(TabPlacement.LEFT) || tabPlacement.equals(TabPlacement.RIGHT);
@@ -398,11 +397,6 @@ public class TabSetRenderer extends BaseTabSetRenderer {
                 tabSet.getFocusedStyle(), StyleGroup.selectedStyleGroup(1), tabSet.getFocusedClass(), null);
 
         String onchange = tabSet.getOnchange();
-        String disabledClass = tabSet.getDisabledPanelClass();
-        String disabledStyle = tabSet.getDisabledPanelStyle();
-        String defaultDisabledClass = DEFAULT_CLASS_PREFIX + "disabled";
-        String mergeDisabledClass = Styles.getCSSClass(context, component, disabledStyle, StyleGroup.rolloverStyleGroup(), disabledClass, defaultDisabledClass);
-
 
         ScriptBuilder sb = new ScriptBuilder();
         sb.initScript(context, tabSet, "O$.TabSet._init",
@@ -425,8 +419,6 @@ public class TabSetRenderer extends BaseTabSetRenderer {
                 tabSet.isFocusable(),
                 focusAreaClass,
                 focusedClass,
-                mergeDisabledClass,
-                tabSet.getDisabledPanel(),
                 onchange != null ? new AnonymousFunction(onchange, "event") : null);
 
         Rendering.renderInitScript(context, sb,

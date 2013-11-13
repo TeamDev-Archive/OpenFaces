@@ -59,7 +59,7 @@ public class TabbedPaneRenderer extends MultiPageContainerRenderer implements Co
 
             List<SubPanel> subPanels = tabbedPane.getSubPanels(true);
             List<Integer> disabledPanels = new ArrayList<Integer>();
-            initInnerTabSet(tabbedPane, tabbedPane.getTabSet(), subPanels, false, disabledPanels);
+            initInnerTabSet(tabbedPane, tabbedPane.getTabSet(), subPanels, false);
         }
     }
 
