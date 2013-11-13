@@ -11,7 +11,7 @@
  */
 
 O$.TabSet = {
-  _init:function (tabSetId, tabIds, selectedIndex, placement, tabStylesParams, borderClassesParams, focusable, focusAreaClass, focusedClass, disabledClass, disabledTabs, onchange) {
+  _init:function (tabSetId, tabIds, selectedIndex, placement, tabStylesParams, borderClassesParams, focusable, focusAreaClass, focusedClass, onchange) {
     var tabSet = O$.initComponent(tabSetId, null, {
       _index:selectedIndex,
       _indexField:O$(tabSetId + "::selected"),
@@ -19,8 +19,7 @@ O$.TabSet = {
       _tabs:[],
       _tabCount:tabIds.length,
       onchange:onchange,
-      _disabledTabs:disabledTabs,
-      _disabledClass:disabledClass,
+
       _getTabByAbsoluteIndex:function (absoluteTabIndex) {
         var tab = null;
         for (var i = 0, count = tabSet._tabs.length; i < count; i++) {
@@ -45,11 +44,7 @@ O$.TabSet = {
         if (index == tabSet._index)
           return;
 
-        for (var i = 0; i < this._disabledTabs.length; i++) {
-          if (index == this._disabledTabs[i]) {
-            return;
-          }
-        }
+
         var prevTab = this._getTabByAbsoluteIndex(tabSet._index);
 
         O$.setStyleMappings(prevTab, {
@@ -109,20 +104,13 @@ O$.TabSet = {
         }
 
         for (var i = 0, tabCount = tabSet._tabs.length; i < tabCount; i++) {
-          console.log(i);
           var tab = tabSet._tabs[i];
           O$.setStyleMappings(tab, {
             main:tabSet._tabClass
           });
-          if (tab._absoluteIndex == tabSet._index) {
-            O$.setStyleMappings(tab, {
-              selected:tabSet._selectTabClass
-            });
-          } else {
-            O$.setStyleMappings(tab, {
-              selected:null
-            });
-          }
+          O$.setStyleMappings(tab, {
+            selected:tab._absoluteIndex == tabSet._index ? tabSet._selectTabClass : null
+          });
           if (tab._absoluteIndex < tabSet._index) {
             O$.setStyleMappings(tab, {
               border:tabSet.backBorderClass1
@@ -140,13 +128,7 @@ O$.TabSet = {
             });
             initTabStyles(tab, tabSet.backBorderClass2);
           }
-          for (var j = 0; j < this._disabledTabs.length; j++) {
-            if (tab._absoluteIndex == this._disabledTabs[j]) {
-              O$.setStyleMappings(tab, {
-                main:this._disabledClass
-              });
-            }
-          }
+
         }
       },
       getSelectedIndex:function () {
