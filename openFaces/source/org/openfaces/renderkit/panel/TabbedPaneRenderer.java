@@ -242,19 +242,16 @@ public class TabbedPaneRenderer extends MultiPageContainerRenderer implements Co
         } else {
             innerTabSet = tabbedPane.getTabSet();
         }
-        innerTabSet.setDisabledPanelClass(tabbedPane.getDisabledClassStyle());
-        innerTabSet.setDisabledPanelStyle(tabbedPane.getDisabledStyle());
-        initInnerTabSet(tabbedPane, innerTabSet, subPanels, isMirrorTabSet, disabledPanels);
+        initInnerTabSet(tabbedPane, innerTabSet, subPanels, isMirrorTabSet);
+
         innerTabSet.encodeAll(context);
     }
 
     private void initInnerTabSet(TabbedPane tabbedPane, TabSet innerTabSet, List<SubPanel> subPanels,
-                                 boolean isMirrorTabSet, List<Integer> disabledPanels) {
+                                 boolean isMirrorTabSet) {
         List<UIComponent> tabs = new ArrayList<UIComponent>();
         for (SubPanel item : subPanels) {
-            if (item.isDisabled()) {
-                disabledPanels.add(subPanels.indexOf(item));
-            }
+
             UIComponent captionComponent = item.getCaptionFacet();
             String caption = item.getCaption();
             if (captionComponent != null || caption != null) {
@@ -308,7 +305,6 @@ public class TabbedPaneRenderer extends MultiPageContainerRenderer implements Co
         innerTabSet.setFocusable(tabbedPane.isFocusable());
         innerTabSet.setFocusAreaStyle(tabbedPane.getFocusAreaStyle());
         innerTabSet.setFocusAreaClass(tabbedPane.getFocusAreaClass());
-        innerTabSet.setDisabledPanel(disabledPanels);
     }
 
     private TabPlacement reversePlacement(TabPlacement tabPlacement) {

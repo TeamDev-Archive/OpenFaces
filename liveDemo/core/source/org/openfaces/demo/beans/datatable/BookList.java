@@ -12,6 +12,8 @@
 
 package org.openfaces.demo.beans.datatable;
 
+import org.openfaces.component.table.SortingRule;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;

@@ -1201,6 +1201,8 @@
       <!-- @default false -->
       <!-- @el true -->
     </attribute>
+
+
     <attribute>
       <description>This attribute specify if pagination must follow selection durring sorting and filtering
       </description>

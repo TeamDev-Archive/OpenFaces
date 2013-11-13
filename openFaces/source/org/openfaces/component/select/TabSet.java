@@ -69,34 +69,8 @@ public class TabSet extends OUIInputBase implements TabSelectionHolder {
 
     private String focusAreaStyle;
     private String focusAreaClass;
-    private List<Integer> disabledPanel;
-    private String disabledPanelClass;
-    private String disabledPanelStyle;
-
-    public String getDisabledPanelClass() {
-        return disabledPanelClass;
-    }
-
-    public void setDisabledPanelClass(String disabledPanelClass) {
-        this.disabledPanelClass = disabledPanelClass;
-    }
-
-    public String getDisabledPanelStyle() {
-        return disabledPanelStyle;
-    }
-
-    public void setDisabledPanelStyle(String disabledPanelStyle) {
-        this.disabledPanelStyle = disabledPanelStyle;
-    }
 
 
-    public List<Integer> getDisabledPanel() {
-        return disabledPanel;
-    }
-
-    public void setDisabledPanel(List<Integer> disabledPanel) {
-        this.disabledPanel = disabledPanel;
-    }
 
     private MethodExpression selectionChangeListener;
 

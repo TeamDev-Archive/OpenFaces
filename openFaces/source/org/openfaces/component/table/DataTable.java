@@ -237,16 +237,16 @@ public class DataTable extends AbstractTable {
             rowGrouping.beforeEncode();
         if ((TableUtil.isSortingToggledInThisRequest(context) || TableUtil.isFilteringToggledInThisRequest(context)) && getPageSize() > 0) {
             Boolean restorePaginationPage = false;
-            if (getKeepSelectionVisible()){
+            if (getKeepSelectionVisible()) {
                 AbstractTableSelection selection = getSelection();
-                if (selection instanceof DataTableSelection){
+                if (selection instanceof DataTableSelection) {
                     TableDataModel model = getModel();
                     int pageCount = model.getPageCount();
                     Object firstRowData = ((DataTableSelection) selection).getFirstSelectedRowData();
-                    if (firstRowData != null){
+                    if (firstRowData != null) {
                         for (pageIndex = 0; pageIndex < pageCount; pageIndex++) {
                             model.setPageIndex(pageIndex);
-                            if (model.isObjectInList(firstRowData)){
+                            if (model.isObjectInList(firstRowData)) {
                                 restorePaginationPage = true;
                                 break;
                             }
@@ -255,11 +255,11 @@ public class DataTable extends AbstractTable {
                 }
 
             }
-            if (!restorePaginationPage &&  TableUtil.isFilteringToggledInThisRequest(context)){
+            if (!restorePaginationPage && TableUtil.isFilteringToggledInThisRequest(context)) {
                 pageIndex = 0;
                 getModel().setPageIndex(0);
             }
-            if (!restorePaginationPage && TableUtil.isSortingToggledInThisRequest(context) ){
+            if (!restorePaginationPage && TableUtil.isSortingToggledInThisRequest(context)) {
                 PaginationOnSorting paginationOnSorting = getPaginationOnSorting();
                 switch (paginationOnSorting) {
                     case SAME_PAGE:
@@ -279,11 +279,13 @@ public class DataTable extends AbstractTable {
             pageIndex = null;
     }
 
+
+
     @Override
     public void encodeBegin(FacesContext facesContext) throws IOException {
         if (AjaxUtil.getSkipExtraRenderingOnPortletsAjax(facesContext))
             return;
-        beforeRenderResponse(facesContext);
+           beforeRenderResponse(facesContext);
 
         setRenderedPageCount(getModel().getPageCount());
         super.encodeBegin(facesContext);

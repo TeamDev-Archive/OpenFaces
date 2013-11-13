@@ -229,7 +229,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
                 noDataMessageAllowed, columnIndexVar, columnIdVar, saveAttachedState(context, columnsOrder),
                 sortedAscendingImageUrl, sortedDescendingImageUrl, cachedClientId,
                 autoFilterDelay, deferBodyLoading, totalRowCount, implicitFacetsCreated, unsortedStateAllowed,
-                keepSelectionVisible, onbeforeajaxreload,  onafterajaxreload, unDisplayedSelectionAllowed };
+                keepSelectionVisible, onbeforeajaxreload, onafterajaxreload, unDisplayedSelectionAllowed};
     }
 
     @Override
@@ -325,7 +325,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         onbeforeajaxreload = (String) state[i++];
         onafterajaxreload = (String) state[i++];
 
-        unDisplayedSelectionAllowed =  (Boolean) state[i++];
+        unDisplayedSelectionAllowed = (Boolean) state[i++];
 
         beforeUpdateValuesPhase = true;
         incomingSortingRules = null;
@@ -429,6 +429,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
      * Some column facets, which are rendered several times per table, such as "inColumnHeader" might contain some
      * components, such as <o:summary>, which are sensitive to the fact that their client id is not repeated when the
      * same component is rendered in different rows. Hence this resets their client ids
+     *
      * @return
      */
     private List<UIComponent> getAdditionalComponentsRequiringClientIdReset() {
@@ -439,10 +440,10 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
                 Map<String, UIComponent> facets = column.getFacets();
                 for (Map.Entry<String, UIComponent> entry : facets.entrySet()) {
                     String facetName = entry.getKey();
-                    if (! (
+                    if (!(
                             facetName.equals(BaseColumn.FACET_HEADER) ||
-                            facetName.equals(BaseColumn.FACET_SUB_HEADER) ||
-                            facetName.equals(BaseColumn.FACET_FOOTER)
+                                    facetName.equals(BaseColumn.FACET_SUB_HEADER) ||
+                                    facetName.equals(BaseColumn.FACET_FOOTER)
                     ))
                         additionalComponentsRequiringClientIdReset.add(entry.getValue());
                 }
@@ -462,6 +463,8 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     public UIComponent getHeader() {
         return Components.getFacet(this, FACET_HEADER);
     }
+
+
 
     public void setHeader(UIComponent component) {
         getFacets().put(FACET_HEADER, component);
@@ -1115,7 +1118,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
             List<BaseColumn> allColumns = getAllColumns();
             for (BaseColumn column : allColumns) {
-                for(UIComponent parent = column.getParent(); parent instanceof ColumnGroup; parent = parent.getParent())
+                for (UIComponent parent = column.getParent(); parent instanceof ColumnGroup; parent = parent.getParent())
                     columnGroups.add((ColumnGroup) parent);
                 List<UIComponent> applicableFacets = Components.getFacets(column,
                         BaseColumn.FACET_HEADER, BaseColumn.FACET_SUB_HEADER, BaseColumn.FACET_FOOTER,
@@ -1160,12 +1163,14 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
                     final ListIterator<Summary> summaryListIterator = summaries.listIterator();
                     return new Iterator() {
                         private Runnable restoreDynamicColumnVariables;
+
                         private void undeclareLatestDynamicColumnVariables() {
                             if (restoreDynamicColumnVariables != null) {
                                 restoreDynamicColumnVariables.run();
                                 restoreDynamicColumnVariables = null;
                             }
                         }
+
                         public boolean hasNext() {
                             boolean hasNext = summaryListIterator.hasNext();
                             if (!hasNext) {
@@ -2296,11 +2301,10 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     }
 
 
-
     /**
      * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
      * by any application code.
-     *
+     * <p/>
      * This method is required for BaseColumn.getExpressionData to be able to detect column type during model
      * construction, when the of displayed rows is still in progress (row data objects have been retrieved but not
      * grouped yet). The BaseColumn.getExpressionData method relies on row variables such as row data and row index
@@ -2331,7 +2335,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     /**
      * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
      * by any application code.
-     *
+     * <p/>
      * Must be invoked after the populateRowVariablesWithAnyModelValue call. Restores original row variables as they
      * were before the preceding populateRowVariablesWithAnyModelValue call.
      */

@@ -397,32 +397,13 @@ public class TableDataModel extends DataModel implements DataModelListener, Stat
     private void updateExtractedRows() {
         if (updateInProgress > 0)
             return;
-        if (areExtractedRowsNeeded()) {
-            extractRows();
-            extractedRowKeys = extractRowKeys(extractedRows);
-            allRetrievedRowKeys = extractRowKeys(allRetrievedRows);
-            setRowIndex(0);
-        } else {
-            updateValueExpressionModel();
-            totalRowCount = null;
-            extractedRows = null;
-            extractedRowKeys = null;
+        extractRows();
+        extractedRowKeys = extractRowKeys(extractedRows);
+        allRetrievedRowKeys = extractRowKeys(allRetrievedRows);
+        setRowIndex(0);
 
-            allRetrievedRows = null;
-            allRetrievedRowKeys = null;
-            allRetrievedRowFilteringFlags = null;
-            currentlyAppliedFilters = null;
-            setRowIndex(0);
-        }
     }
 
-    //TODO: review this method
-    private boolean areExtractedRowsNeeded() {
-        return true;
-//    return (isSortingNeeded()) ||
-//            isPaginationNeeded() ||
-//            isFilteringNeeded();
-    }
 
     private boolean isFilteringNeeded() {
         return filters != null;
@@ -493,10 +474,10 @@ public class TableDataModel extends DataModel implements DataModelListener, Stat
 
     /**
      * @param groupingRules a list of GroupingRule instances representing the requested grouping hierarchy
-     * @param rows RowInfo objects representing the data rows that are already sorted according to the passed grouping
-     *             rules hierarchy
-     * @param level hierarchy level of the rows passed in the rows parameters. The group rows created by this method
-     *              invocation (excluding the recursive invocations) will have this value of their level property.
+     * @param rows          RowInfo objects representing the data rows that are already sorted according to the passed grouping
+     *                      rules hierarchy
+     * @param level         hierarchy level of the rows passed in the rows parameters. The group rows created by this method
+     *                      invocation (excluding the recursive invocations) will have this value of their level property.
      * @return a list of RowInfo instances representing the newly created group header rows for the top-level grouping
      *         rule (the first one in the list), and having the group header rows for its lower-level grouping rules
      *         in the immediateSubRows field of the appropriate top-level RowInfos, and so deeper into the hierarchy of
@@ -731,7 +712,7 @@ public class TableDataModel extends DataModel implements DataModelListener, Stat
     private int requestNonPagedRowCount() {
         AbstractTable table = getTable();
         setFilteringCriteriaToRequestVariable();
-        if (!table.getRowsDecodingRequired()){
+        if (!table.getRowsDecodingRequired()) {
             return table.getTotalRowCount();
         }
         ValueExpression valueExpression = table.getValueExpression("totalRowCount");
@@ -1311,6 +1292,7 @@ public class TableDataModel extends DataModel implements DataModelListener, Stat
     private void clearCachedColumnGroupingInfos() {
         columnGroupingInfos.clear();
     }
+
     private ColumnGroupingInfo getColumnGroupingInfo(String columnId) {
         ColumnGroupingInfo columnGroupingInfo = columnGroupingInfos.get(columnId);
         if (columnGroupingInfo != null)
@@ -1321,8 +1303,8 @@ public class TableDataModel extends DataModel implements DataModelListener, Stat
         return columnGroupingInfo;
     }
 
-    public Boolean isObjectInList(Object rowData){
-        for (RowInfo extractedRow : extractedRows ){
+    public Boolean isObjectInList(Object rowData) {
+        for (RowInfo extractedRow : extractedRows) {
             if (extractedRow.getRowData().equals(rowData))
                 return true;
         }

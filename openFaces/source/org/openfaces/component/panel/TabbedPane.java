@@ -81,25 +81,6 @@ public class TabbedPane extends MultiPageContainer implements TabSelectionHolder
     private String focusedStyle;
     private Boolean mirrorTabSetVisible;
 
-    private String disabledStyle;
-    private String disabledClassStyle;
-
-    public String getDisabledStyle() {
-        return ValueBindings.get(this, "disabledStyle", disabledStyle);
-    }
-
-    public void setDisabledStyle(String disabledStyle) {
-        this.disabledStyle = disabledStyle;
-    }
-
-    public String getDisabledClassStyle() {
-        return ValueBindings.get(this, "disabledClassStyle", disabledClassStyle);
-    }
-
-    public void setDisabledClassStyle(String disabledClassStyle) {
-        this.disabledClassStyle = disabledClassStyle;
-    }
-
     public TabbedPane() {
         setRendererType("org.openfaces.TabbedPaneRenderer");
     }
@@ -348,9 +329,7 @@ public class TabbedPane extends MultiPageContainer implements TabSelectionHolder
                 focusable,
                 focusAreaStyle,
                 focusAreaClass,
-                mirrorTabSetVisible,
-                disabledStyle,
-                disabledClassStyle
+
         };
     }
 
@@ -387,8 +366,7 @@ public class TabbedPane extends MultiPageContainer implements TabSelectionHolder
         focusAreaStyle = (String) values[i++];
         focusAreaClass = (String) values[i++];
         mirrorTabSetVisible = (Boolean) values[i];
-        disabledStyle = (String) values[i++];
-        disabledClassStyle = (String) values[i++];
+
     }
 
     @Override
