@@ -36,11 +36,7 @@ import java.io.IOException;
  *
  * @author Andrew Palval
  */
-@ResourceDependencies({
-        @ResourceDependency(name = "jsf.js", library = "javax.faces"),
-        @ResourceDependency(name = "default.css", library = "openfaces")
-})
-public class TabbedPane extends MultiPageContainer implements TabSelectionHolder {
+public class TabbedPane extends MultiPageContainer implements TabSelectionHolder, CompoundComponent {
     public static final String COMPONENT_TYPE = "org.openfaces.TabbedPane";
     public static final String COMPONENT_FAMILY = "org.openfaces.TabbedPane";
 
@@ -80,6 +76,25 @@ public class TabbedPane extends MultiPageContainer implements TabSelectionHolder
     private String focusedClass;
     private String focusedStyle;
     private Boolean mirrorTabSetVisible;
+
+    private String disabledStyle;
+    private String disabledClassStyle;
+
+    public String getDisabledStyle() {
+        return ValueBindings.get(this, "disabledStyle", disabledStyle);
+    }
+
+    public void setDisabledStyle(String disabledStyle) {
+        this.disabledStyle = disabledStyle;
+    }
+
+    public String getDisabledClassStyle() {
+        return ValueBindings.get(this, "disabledClassStyle", disabledClassStyle);
+    }
+
+    public void setDisabledClassStyle(String disabledClassStyle) {
+        this.disabledClassStyle = disabledClassStyle;
+    }
 
     public TabbedPane() {
         setRendererType("org.openfaces.TabbedPaneRenderer");
@@ -329,7 +344,7 @@ public class TabbedPane extends MultiPageContainer implements TabSelectionHolder
                 focusable,
                 focusAreaStyle,
                 focusAreaClass,
-
+                mirrorTabSetVisible
         };
     }
 

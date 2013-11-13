@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 3.0
+ * OpenFaces - JSF Component Library 2.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -11,7 +11,7 @@
  */
 
 O$.TabSet = {
-  _init:function (tabSetId, tabIds, selectedIndex, placement, tabStylesParams, borderClassesParams, focusable, focusAreaClass, focusedClass,onchange) {
+  _init:function (tabSetId, tabIds, selectedIndex, placement, tabStylesParams, borderClassesParams, focusable, focusAreaClass, focusedClass, onchange) {
     var tabSet = O$.initComponent(tabSetId, null, {
       _index:selectedIndex,
       _indexField:O$(tabSetId + "::selected"),
@@ -19,8 +19,7 @@ O$.TabSet = {
       _tabs:[],
       _tabCount:tabIds.length,
       onchange:onchange,
-      _disabledTabs:disabledTabs,
-      _disabledClass:disabledClass,
+
       _getTabByAbsoluteIndex:function (absoluteTabIndex) {
         var tab = null;
         for (var i = 0, count = tabSet._tabs.length; i < count; i++) {

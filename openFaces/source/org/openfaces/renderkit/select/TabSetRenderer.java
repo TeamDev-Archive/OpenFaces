@@ -380,6 +380,7 @@ public class TabSetRenderer extends BaseTabSetRenderer {
         }
 
         String defaultClass = DEFAULT_CLASS_PREFIX + placement;
+        /**/
         String tabClass = Styles.getCSSClass(context, component, tabSet.getTabStyle(), defaultClass, tabSet.getTabClass());
         String defaultRolloverClass = DEFAULT_ROLLOVER_CLASS_PREFIX + placement;
         String rolloverClass = Styles.getCSSClass(context, component, tabSet.getRolloverTabStyle(), StyleGroup.rolloverStyleGroup(), tabSet.getRolloverTabClass(), defaultRolloverClass);
