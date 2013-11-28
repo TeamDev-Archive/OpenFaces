@@ -45,6 +45,7 @@
           _enabled2 = true;
         }
       }
+
     </script>
 
     <button onmouseover=" enabledMenu()" class="bubble" >
@@ -53,6 +54,15 @@
     <button onmouseover=" enabledMenu2()" class="bubble" >
       ololo2
     </button>
+  <o:commandButton action="#{BanksList.deleteBanks}">
+    ololo123
+  </o:commandButton>
+    <o:commandLink type="button"
+                   onclick="O$('form:banks:1:unresizable_win').showCentered()"
+                   value="olololo"
+                   execute="input" render="output"
+                   styleClass="largeFont commandLink"/>
+
 
 
     <o:dataTable id="banks" var="bank"
@@ -159,6 +169,7 @@
 
           <h:outputText value="#{bank.county}"/>
         </o:column>
+
       </o:columnGroup>
       <o:column header="Average Assets"
                 width="19%"
@@ -174,6 +185,41 @@
         <h:outputText value="#{bank.averageAssets}">
           <f:convertNumber type="number"/>
         </h:outputText>
+      </o:column>
+
+      <o:column header="testWindows"
+                width="19%"
+                bodyStyle="text-align: right; padding-right: 5px;"
+                headerStyle="text-align: center; padding-left: 5px; padding-right: 5px; white-space: normal;"
+                sortingExpression="#{bank.averageAssets}"
+                groupingExpression="#{BanksList.averageAssetsRange}">
+        <f:facet name="subHeader">
+
+
+        </f:facet>
+        <o:window id="unresizable_win"
+                  captionClass="WindowCaption"
+                  modal="true"
+                  contentClass="WindowContent"
+                  draggable="true"
+                  height="140px"
+                  inBodyRender="true"
+                  resizable="true"
+                  styleClass="dialog2"
+                  width="480px">
+          <o:captionArea>
+            <o:minimizeWindowButton styleClass="captionButton"/>
+            <o:maximizeWindowButton styleClass="captionButton"/>
+            <o:closeWindowButton styleClass="captionButton"/>
+          </o:captionArea>
+          <f:facet name="caption">
+            <h:outputText id="ProgramAdditionOutputTextId" styleClass="label" value="Program Addition"/>
+          </f:facet>
+
+          <div style="background: #bbbbbb; padding: 3px; height: 90%">
+
+          </div>
+        </o:window>
       </o:column>
     </o:dataTable>
   </div>

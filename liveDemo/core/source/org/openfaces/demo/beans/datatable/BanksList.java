@@ -241,4 +241,9 @@ public class BanksList implements Serializable {
                 new CSVTableDataFormatter());
     }
 
+    public void deleteBanks() {
+        System.out.println(banks.remove(banks.size()-1));
+        banks.remove(banks.size()-1);
+    }
+
 }

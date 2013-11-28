@@ -35,6 +35,7 @@ public class AbstractWindow extends PopupLayer implements ComponentWithCaption {
     private Boolean resizable;
     private String minWidth;
     private String minHeight;
+    private Boolean inBodyRender;
 
     public String getCaption() {
         return ValueBindings.get(this, "caption", caption);
@@ -48,8 +49,17 @@ public class AbstractWindow extends PopupLayer implements ComponentWithCaption {
         return Components.getFacet(this, CAPTION_FACET_NAME);
     }
 
+    public Boolean getInBodyRender() {
+        return ValueBindings.get(this, "inBodyRender", inBodyRender, false);
+    }
+
+    public void setInBodyRender(Boolean inBodyRender) {
+        this.inBodyRender = inBodyRender;
+    }
+
     public void setCaptionFacet(UIComponent component) {
         getFacets().put(CAPTION_FACET_NAME, component);
+
     }
 
     protected String getDefaultCaptionText() {

@@ -130,6 +130,7 @@
               draggable="true"
               height="140px"
               modal="true"
+
               resizable="true"
               styleClass="dialog2"
               width="480px"
@@ -148,29 +149,29 @@
                      value="Ajax Submit" action="#{CommandLinkBean.composeFullName}"
                      execute="input" render="output"
                      styleClass="largeFont commandLink"/>
+      <o:window id="unresizable_win2"
+                captionClass="WindowCaption"
+                closable="true"
+                contentClass="WindowContent"
+                draggable="true"
+                height="140px"
+                modal="true"
+                resizable="true"
+                styleClass="dialog2"
+                width="480px">
+        <o:captionArea>
+          <o:minimizeWindowButton styleClass="captionButton"/>
+          <o:maximizeWindowButton styleClass="captionButton"/>
+          <o:closeWindowButton styleClass="captionButton"/>
+        </o:captionArea>
+        <f:facet name="caption">
+          <h:outputText id="ProgramAdditionOutputTextId2" styleClass="label" value="Program Addition2"/>
+        </f:facet>
 
+      </o:window>
     </o:window>
 
-    <o:window id="unresizable_win2"
-              captionClass="WindowCaption"
-              closable="true"
-              contentClass="WindowContent"
-              draggable="true"
-              height="140px"
-              modal="true"
-              resizable="true"
-              styleClass="dialog2"
-              width="480px">
-      <o:captionArea>
-        <o:minimizeWindowButton styleClass="captionButton"/>
-        <o:maximizeWindowButton styleClass="captionButton"/>
-        <o:closeWindowButton styleClass="captionButton"/>
-      </o:captionArea>
-      <f:facet name="caption">
-        <h:outputText id="ProgramAdditionOutputTextId2" styleClass="label" value="Program Addition2"/>
-      </f:facet>
 
-    </o:window>
   </div>
 </td>
 

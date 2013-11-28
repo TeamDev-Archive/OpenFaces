@@ -153,7 +153,9 @@ public abstract class AbstractWindowRenderer extends PopupLayerRenderer {
                 win.isResizable(),
                 win.isDraggableByContent(),
                 win.getMinWidth(),
-                win.getMinHeight());
+                win.getMinHeight(),
+                null,
+                win.getInBodyRender());
         Rendering.renderInitScript(context, sb, getWindowJs(context));
     }
 

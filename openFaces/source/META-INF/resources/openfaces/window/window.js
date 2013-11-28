@@ -15,12 +15,19 @@ O$.Window = {
   STATE_MAXIMIZED: "maximized",
   STATE_MINIMIZED: "minimized",
 
-  _init: function(windowId, resizable, draggableByContent, minWidth, minHeight, desktopElementId) {
+  _init: function(windowId, resizable, draggableByContent, minWidth, minHeight, desktopElementId,inBodyRendered) {
     var win = O$(windowId);
     if (win._autosizing == "on" && resizable) {
       resizable = false;
     }
     var super_setSize = win._setSize;
+    if(inBodyRendered){
+
+      windowsParent = win.parentNode;
+      windowsParent.removeChild(win);
+      document.body.appendChild(win);
+
+    }
     O$.initComponent(windowId, null, {
       _form: O$.getParentNode(win, "form"),
       _draggableByContent: draggableByContent,
@@ -38,6 +45,9 @@ O$.Window = {
       _declaredResizable: resizable,
 
       _resizable: false,
+
+
+
       _setResizable: function(resizable) {
         if (win._resizable == resizable)
           return;

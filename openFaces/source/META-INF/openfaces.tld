@@ -14073,6 +14073,15 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <name>inBodyRender</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>A flag that indicates whether or not the Window component is visible.</description>
       <name>visible</name>
       <deferred-value>
