@@ -710,7 +710,7 @@ public class BaseColumn extends UIColumn {
                         }
 
                     } else {
-                        valueType = String.class;
+                        valueType = Object.class;
                     }
 
                 }
