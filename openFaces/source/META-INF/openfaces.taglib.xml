@@ -1431,4 +1431,18 @@
       <handler-class>org.openfaces.taglib.facelets.util.KeepVisibleTagHandler</handler-class>
     </component>
   </tag>
+  <tag>
+    <tag-name>LazyAttributesProcessorStart</tag-name>
+    <component>
+      <component-type>org.openfaces.LazyAttributesProcessorStart</component-type>
+      <handler-class>org.openfaces.taglib.facelets.LazyAttributesProcessorStartTagHandler</handler-class>
+    </component>
+  </tag>
+  <tag>
+    <tag-name>LazyAttributesProcessorEnd</tag-name>
+    <component>
+      <component-type>org.openfaces.LazyAttributesProcessorEnd</component-type>
+      <handler-class>org.openfaces.taglib.facelets.LazyAttributesProcessorEndTagHandler</handler-class>
+    </component>
+  </tag>
 </facelet-taglib>

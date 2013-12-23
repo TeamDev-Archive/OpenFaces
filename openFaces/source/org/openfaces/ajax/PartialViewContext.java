@@ -187,7 +187,7 @@ public class PartialViewContext extends PartialViewContextWrapper {
         for (String id : result) {
             UIComponent component = null;
             try {
-                component = Components.findComponent(viewRoot, id);
+                component = PartialViewContext.findComponentById(viewRoot, id, false, false, false);
             } catch (IllegalArgumentException e) {
                 // this can be the case when using <f:ajax> on <h:selectOneRadio>, which generates several
                 // <input type="radio"> tags with ids like form:radio:N, where N is a number of item, and
@@ -659,7 +659,9 @@ public class PartialViewContext extends PartialViewContextWrapper {
                                              boolean preProcessDecodesOnTables, boolean preRenderResponseOnTables,
                                              List<Runnable> restoreDataPointerRunnables) {
         FacesContext context = FacesContext.getCurrentInstance();
-        if (id.length() > 0 && (isNumberBasedId(id) || id.startsWith(":")) && parent instanceof AbstractTable) {
+        Boolean isNumberBasedIdFlag = isNumberBasedId(id);
+        Boolean isIdRelativeFlag = id.startsWith(":");
+        if (id.length() > 0 && (isNumberBasedIdFlag || isIdRelativeFlag) && parent instanceof AbstractTable) {
             final AbstractTable table = ((AbstractTable) parent);
             if (!isLastComponentInPath) {
                 if (preProcessDecodesOnTables)
@@ -710,7 +712,7 @@ public class PartialViewContext extends PartialViewContextWrapper {
                     });
             }
             return table;
-        } else if (isNumberBasedId(id) && parent instanceof UIData) {
+        } else if (isNumberBasedIdFlag && parent instanceof UIData) {
             final UIData uiData = ((UIData) parent);
             int rowIndex = Integer.parseInt(id);
             final int prevRowIndex = uiData.getRowIndex();
@@ -729,7 +731,7 @@ public class PartialViewContext extends PartialViewContextWrapper {
                     }
                 });
             return uiData;
-        } else if (id.charAt(0) == ':' && parent instanceof OUIObjectIterator) {
+        } else if (isIdRelativeFlag && parent instanceof OUIObjectIterator) {
             id = id.substring(1);
             final OUIObjectIterator iterator = (OUIObjectIterator) parent;
             final String prevObjectId = iterator.getObjectId();
@@ -741,7 +743,7 @@ public class PartialViewContext extends PartialViewContextWrapper {
                     }
                 });
             return (UIComponent) iterator;
-        } else if (isNumberBasedId(id)) {
+        } else if (isNumberBasedIdFlag) {
             Class clazz;
             try {
                 clazz = Class.forName("com.sun.faces.facelets.component.UIRepeat");

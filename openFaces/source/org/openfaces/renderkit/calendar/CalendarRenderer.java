@@ -99,9 +99,13 @@ public class CalendarRenderer extends RendererBase {
         if (AjaxUtil.getSkipExtraRenderingOnPortletsAjax(context))
             return;
 
+        Calendar calendar = (Calendar) component;
+        if (calendar.isLazyProcess()){
+            calendar.lazyComponentPropertiesSetter();
+        }
+
         Components.generateIdIfNotSpecified(component);
 
-        Calendar calendar = (Calendar) component;
         Rendering.registerDateTimeFormatObject(calendar.getLocale());
 
         String clientId = component.getClientId(context);

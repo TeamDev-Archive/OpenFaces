@@ -87,7 +87,11 @@ public class DateChooserRenderer extends DropDownComponentRenderer {
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
-        setUpConverter((DateChooser) component);
+        DateChooser dateChooser = (DateChooser) component;
+        if (dateChooser.isLazyProcess()){
+            dateChooser.lazyComponentPropertiesSetter();
+        }
+        setUpConverter(dateChooser);
         Components.generateIdIfNotSpecified(component);
         super.encodeBegin(context, component);
     }

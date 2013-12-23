@@ -37,6 +37,7 @@ public class CommandButtonRenderer extends OUICommandRenderer {
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         CommandButton btn = (CommandButton) component;
+        btn.lazyComponentPropertiesSetter();
         String tagName = getTagName(btn);
         writer.startElement(tagName, btn);
         Rendering.writeIdAttribute(context, component);

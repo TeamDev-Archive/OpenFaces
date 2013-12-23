@@ -47970,6 +47970,21 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
   </tag>
+  <tag>
+    <name>LazyAttributesProcessorStart</name>
+    <tag-class>org.openfaces.taglib.jsp..LazyAttributesProcessorStartJspTag</tag-class>
+    <body-content>JSP</body-content>
+  </tag>
+  <tag>
+    <name></name>
+    <tag-class>org.openfaces.taglib.jsp.LazyAttributesProcessorEnd.JspTag</tag-class>
+    <body-content>JSP</body-content>
+  </tag>
+  <tag>
+    <name>LazyAttributesProcessorEnd</name>
+    <tag-class>org.openfaces.taglib.jsp..LazyAttributesProcessorEndJspTag</tag-class>
+    <body-content>JSP</body-content>
+  </tag>
 
   <!--<tag>-->
     <!--<description>This component is under construction. Displays a box where users may read and write comments. This component works on top of the Disqus-->

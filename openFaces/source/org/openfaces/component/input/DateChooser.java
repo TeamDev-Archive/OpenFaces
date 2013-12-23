@@ -11,7 +11,10 @@
  */
 package org.openfaces.component.input;
 
+import org.openfaces.component.LazyProcessSupport;
 import org.openfaces.component.Side;
+import org.openfaces.taglib.facelets.FaceletsExpressionCreator;
+import org.openfaces.taglib.internal.AbstractComponentTag;
 import org.openfaces.util.CalendarUtil;
 import org.openfaces.util.MessageUtil;
 import org.openfaces.util.ValueBindings;
@@ -33,7 +36,7 @@ import static java.lang.Boolean.valueOf;
  *
  * @author Kharchenko
  */
-public class DateChooser extends DropDownComponent {
+public class DateChooser extends DropDownComponent implements LazyProcessSupport {
     public static final String COMPONENT_TYPE = "org.openfaces.DateChooser";
     public static final String COMPONENT_FAMILY = "org.openfaces.DateChooser";
 
@@ -104,6 +107,11 @@ public class DateChooser extends DropDownComponent {
     @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
+    }
+
+    public void setLazyProcessAttributes(FaceletsExpressionCreator faceletsExpressionCreator, AbstractComponentTag abstractComponentTag){
+        this.setFaceletsExpressionCreator(faceletsExpressionCreator);
+        this.setTag(abstractComponentTag);
     }
 
     @Override

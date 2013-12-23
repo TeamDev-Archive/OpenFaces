@@ -168,8 +168,12 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     private boolean implicitFacetsCreated;
 
     public AbstractTable() {
-
         super.setUiDataValue(new TableDataModel(this));
+    }
+
+    @Override
+    public void lazyComponentPropertiesSetter(){
+        super.lazyComponentPropertiesSetter();
     }
 
     @Override
@@ -1222,10 +1226,10 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     @Override
     public void processDecodes(FacesContext context) {
-        invokeBeforeProcessDecodes(context);
-        super.processDecodes(context);
         if (!isRendered())
             return;
+        invokeBeforeProcessDecodes(context);
+        super.processDecodes(context);
         if (getRowIndex() != -1)
             setRowIndex(-1);
     }

@@ -477,6 +477,8 @@ if (!window.O$) {
       O$.debug.log(text);
       return;
     }
+
+    disableMenu();
     if (!O$._logEnabled)
       return;
     if (!O$._logger)
@@ -5398,7 +5400,6 @@ if (!window.O$) {
   O$._disabledClassLink = null;
   O$.Link = {
     _init:function (id, disabled, disabledStyle) {
-      console.log(id);
       O$._disabledClassLink = disabledStyle;
       var link = O$.initComponent(id, null, {
         _disabled:false,
@@ -5434,7 +5435,6 @@ if (!window.O$) {
       });
 
       link.setDisabled(disabled);
-      console.log("///////");
     }
 
   };

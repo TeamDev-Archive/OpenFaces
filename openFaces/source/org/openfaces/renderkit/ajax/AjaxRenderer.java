@@ -14,6 +14,7 @@ package org.openfaces.renderkit.ajax;
 import org.openfaces.component.ajax.Ajax;
 import org.openfaces.component.ajax.AjaxHelper;
 import org.openfaces.component.ajax.AjaxInitializer;
+import org.openfaces.component.select.SelectOneMenu;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.AnonymousFunction;
 import org.openfaces.util.Rendering;
@@ -44,6 +45,10 @@ public class AjaxRenderer extends AbstractSettingsRenderer {
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         Ajax ajax = (Ajax) component;
+        if (ajax.isLazyProcess()){
+            ajax.lazyComponentPropertiesSetter();
+        }
+
         if (ajax.getAttributes().remove(ATTACH_ON_CLIENT) != null) {
             AjaxHelper ajaxHelper = new AjaxHelper(ajax);
             String handlerScript = ajaxHelper.getClientActionScript(context, ajax);

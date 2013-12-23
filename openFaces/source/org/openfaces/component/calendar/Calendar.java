@@ -11,12 +11,14 @@
  */
 package org.openfaces.component.calendar;
 
+import org.openfaces.component.LazyProcessSupport;
 import org.openfaces.component.OUIInputBase;
+import org.openfaces.taglib.facelets.FaceletsExpressionCreator;
+import org.openfaces.taglib.internal.AbstractComponentTag;
 import org.openfaces.util.ValueBindings;
 import org.openfaces.util.CalendarUtil;
 import org.openfaces.util.DataUtil;
 
-import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -41,7 +43,7 @@ import java.util.TimeZone;
  * 
  * @author Kharchenko
  */
-public class Calendar extends OUIInputBase {
+public class Calendar extends OUIInputBase implements LazyProcessSupport {
     public static final String COMPONENT_TYPE = "org.openfaces.Calendar";
     public static final String COMPONENT_FAMILY = "org.openfaces.Calendar";
 
@@ -114,6 +116,11 @@ public class Calendar extends OUIInputBase {
     @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
+    }
+
+    public void setLazyProcessAttributes(FaceletsExpressionCreator faceletsExpressionCreator, AbstractComponentTag abstractComponentTag){
+        this.setFaceletsExpressionCreator(faceletsExpressionCreator);
+        this.setTag(abstractComponentTag);
     }
 
     @Override
