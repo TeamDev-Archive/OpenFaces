@@ -63,10 +63,12 @@ O$.Window = {
       windowsParent = win.parentNode;
       windowsParent.removeChild(win);
       document.body.appendChild(win);
-
+      if (!O$.Window.getInBodyRenderForId(windowId)) {
+        O$.Window.setInBodyRenderForId(windowId);
+      }
     }
 
-    O$.Window.setInBodyRenderForId(windowId)
+
     O$.initComponent(windowId, null, {
       _form:O$.getParentNode(win, "form"),
       _draggableByContent:draggableByContent,

@@ -66,118 +66,118 @@
 
 <div id="Demo">
 
-<script type="text/javascript" src="window.js"></script>
-<div align="left">
-  <h:graphicImage url="./images/openfaces-windows-are.png"/>
-</div>
-
-<table>
-<tr>
-<td>
-  <!--   Calculator   -->
-  <div class="application">
-
-    <h:panelGrid id="input" columns="1" style="margin-bottom: 12px;" cellspacing="0" cellpadding="0">
-      <h:panelGroup>
-        <div style="margin-bottom: 4px">
-          <div class="smallFont">First name</div>
-          <o:inputText value="#{CommandLinkBean.firstName}" styleClass="inputWithShadow largeFont"/>
-        </div>
-        <div>
-          <div class="smallFont">Last name</div>
-          <o:inputText value="#{CommandLinkBean.lastName}" styleClass="inputWithShadow largeFont"/>
-        </div>
-      </h:panelGroup>
-    </h:panelGrid>
-
-    <img src="./images/dragndroppable.png"
-         onclick="O$('form:unresizable_win').show();"
-         style="cursor: pointer;"
-         title="Calculator"/>
-
-    <o:window id="unresizable_win"
-              captionClass="WindowCaption"
-              closable="true"
-              contentClass="WindowContent"
-              draggable="true"
-              height="140px"
-              modal="true"
-              resizable="true"
-              styleClass="dialog2"
-              width="480px">
-      <o:captionArea>
-        <o:minimizeWindowButton styleClass="captionButton"/>
-        <o:maximizeWindowButton styleClass="captionButton"/>
-        <o:closeWindowButton styleClass="captionButton"/>
-      </o:captionArea>
-      <f:facet name="caption">
-        <h:outputText id="ProgramAdditionOutputTextId" styleClass="label" value="Program Addition"/>
-      </f:facet>
-
-      <div style="background: #bbbbbb; padding: 3px; height: 90%">
-        <o:commandLink type="button"
-                       onajaxend="O$('form:unresizable_win1').show()"
-                       value="Ajax Submit" action="#{CommandLinkBean.composeFullName}"
-                       execute="input" render="output"
-                       styleClass="largeFont commandLink"/>
-      </div>
-    </o:window>
-
-    <o:window id="unresizable_win1"
-              captionClass="WindowCaption"
-              closable="true"
-              contentClass="WindowContent"
-              draggable="true"
-              height="140px"
-              modal="true"
-
-              resizable="true"
-              styleClass="dialog2"
-              width="480px"
-              >
-      <o:captionArea>
-        <o:minimizeWindowButton styleClass="captionButton"/>
-        <o:maximizeWindowButton styleClass="captionButton"/>
-        <o:closeWindowButton styleClass="captionButton"/>
-      </o:captionArea>
-      <f:facet name="caption">
-        <h:outputText id="ProgramAdditionOutputTextId1" styleClass="label" value="Program Addition1"/>
-      </f:facet>
-
-      <o:commandLink type="button"
-                     onajaxend="O$('form:unresizable_win').show()"
-                     value="Ajax Submit" action="#{CommandLinkBean.composeFullName}"
-                     execute="input" render="output"
-                     styleClass="largeFont commandLink"/>
-      <o:window id="unresizable_win2"
-                captionClass="WindowCaption"
-                closable="true"
-                contentClass="WindowContent"
-                draggable="true"
-                height="140px"
-                modal="true"
-                resizable="true"
-                styleClass="dialog2"
-                width="480px">
-        <o:captionArea>
-          <o:minimizeWindowButton styleClass="captionButton"/>
-          <o:maximizeWindowButton styleClass="captionButton"/>
-          <o:closeWindowButton styleClass="captionButton"/>
-        </o:captionArea>
-        <f:facet name="caption">
-          <h:outputText id="ProgramAdditionOutputTextId2" styleClass="label" value="Program Addition2"/>
-        </f:facet>
-
-      </o:window>
-    </o:window>
-
-
+  <script type="text/javascript" src="window.js"></script>
+  <div align="left">
+    <h:graphicImage url="./images/openfaces-windows-are.png"/>
   </div>
-</td>
 
-</tr>
+  <table>
+    <tr>
+      <td>
+        <!--   Calculator   -->
+        <div class="application">
 
-</table>
+          <h:panelGrid id="input" columns="1" style="margin-bottom: 12px;" cellspacing="0" cellpadding="0">
+            <h:panelGroup>
+              <div style="margin-bottom: 4px">
+                <div class="smallFont">First name</div>
+                <o:inputText value="#{CommandLinkBean.firstName}" styleClass="inputWithShadow largeFont"/>
+              </div>
+              <div>
+                <div class="smallFont">Last name</div>
+                <o:inputText value="#{CommandLinkBean.lastName}" styleClass="inputWithShadow largeFont"/>
+              </div>
+            </h:panelGroup>
+          </h:panelGrid>
+
+          <o:commandButton render="render_zone" onajaxstart="console.log('here0');" onajaxend="console.log('here');" value="SHOHW"/>
+          <o:commandButton  onclick="O$('form:unresizable_winDOW').show();return false;" value="SHOH ONLY"/>
+
+          <h:panelGroup id="render_zone">
+            fasfasfasfdsf
+            <o:window id="unresizable_winDOW"
+                      captionClass="WindowCaption"
+                      closable="true"
+                      contentClass="WindowContent"
+                      draggable="true"
+                      height="140px"
+                      modal="true"
+                      resizable="true"
+                      styleClass="dialog2"
+                      width="480px">
+              <o:captionArea>
+                <o:minimizeWindowButton styleClass="captionButton"/>
+                <o:maximizeWindowButton styleClass="captionButton"/>
+                <o:closeWindowButton styleClass="captionButton"/>
+              </o:captionArea>
+              <f:facet name="caption">
+                <h:outputText id="ProgramAdditionOutputTextId" styleClass="label" value="Program Addition"/>
+              </f:facet>
+
+              <div style="background: #bbbbbb; padding: 3px; height: 90%">
+                <o:commandLink type="button"
+                               onajaxend="O$('form:unresizable_win1').show()"
+                               value="Ajax Submit" action="#{CommandLinkBean.composeFullName}"
+                               execute="input" render="output"
+                               styleClass="largeFont commandLink"/>
+              </div>
+            </o:window>
+          </h:panelGroup>
+          <o:window id="unresizable_win1"
+                    captionClass="WindowCaption"
+                    closable="true"
+                    contentClass="WindowContent"
+                    draggable="true"
+                    height="140px"
+                    modal="true"
+
+                    resizable="true"
+                    styleClass="dialog2"
+                    width="480px"
+                  >
+            <o:captionArea>
+              <o:minimizeWindowButton styleClass="captionButton"/>
+              <o:maximizeWindowButton styleClass="captionButton"/>
+              <o:closeWindowButton styleClass="captionButton"/>
+            </o:captionArea>
+            <f:facet name="caption">
+              <h:outputText id="ProgramAdditionOutputTextId1" styleClass="label" value="Program Addition1"/>
+            </f:facet>
+
+            <o:commandLink type="button"
+                           onajaxend="O$('form:unresizable_win').show()"
+                           value="Ajax Submit" action="#{CommandLinkBean.composeFullName}"
+                           execute="input" render="output"
+                           styleClass="largeFont commandLink"/>
+            <o:window id="unresizable_win2"
+                      captionClass="WindowCaption"
+                      closable="true"
+                      contentClass="WindowContent"
+                      draggable="true"
+                      height="140px"
+                      modal="true"
+                      resizable="true"
+                      styleClass="dialog2"
+                      width="480px">
+              <o:captionArea>
+                <o:minimizeWindowButton styleClass="captionButton"/>
+                <o:maximizeWindowButton styleClass="captionButton"/>
+                <o:closeWindowButton styleClass="captionButton"/>
+              </o:captionArea>
+              <f:facet name="caption">
+                <h:outputText id="ProgramAdditionOutputTextId2" styleClass="label" value="Program Addition2"/>
+              </f:facet>
+
+            </o:window>
+          </o:window>
+
+
+        </div>
+      </td>
+
+    </tr>
+
+  </table>
   <div style="margin-top: 12px; margin-bottom: 15px;" class="largeFont">
     <h:outputText styleClass="smallFont" value="Full name:"/>
     <h:outputText id="output" value="#{CommandLinkBean.fullName}" escape="false" styleClass="largeFont output #{CommandLinkBean.outputClass}" />
@@ -200,7 +200,7 @@
       <strong>Customization of the area that surrounding the modal window</strong> - Click on the
       <i>Shadeable</i> icon and you can see
       the modal window with customized visible
-      part of the page which is not covered by a Window component
+      part of the page.. which is not covered by a Window component
     </li>
     <li><strong>Support for custom caption buttons</strong> - Click on the
       <i>Customizable</i> icon and you can see the window
