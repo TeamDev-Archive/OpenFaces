@@ -2327,14 +2327,30 @@ O$.Table = {
       } else if (table._selectionMode != "hierarchical") {
         if (e.ctrlKey || e.metaKey) {
           table._toggleItemSelected(row._index);
-          var newSelectedRowIndexes = table.__getSelectedRowIndexes();
+
           table._baseRowIndex = (newSelectedRowIndexes.indexOf(row._index) != -1) ? row._index : null;
           table._baseSelectedRowIndexes = newSelectedRowIndexes;
           table._rangeEndRowIndex = null;
-        } else
+        } else if (e.shiftKey) {
+          var newSelectedRowIndexes = table.__getSelectedRowIndexes();
+          var addNewIndex = []
+          var lastIndex = newSelectedRowIndexes[newSelectedRowIndexes.length - 1];
+          if (row._index > lastIndex) {
+            for (var i = lastIndex; i <= row._index; i++) {
+              addNewIndex.push(i)
+            }
+          } else {
+            for (var i = row._index; i <= lastIndex; i++) {
+              addNewIndex.push(i)
+            }
+          }
+          table._setSelectedItems(addNewIndex);
+        } else {
           table._setSelectedItems([row._index]);
+        }
+
       } else {
-        // don't change hierarchical selection on row click
+// don't change hierarchical selection on row click
       }
     }
   },
