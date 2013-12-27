@@ -76,6 +76,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
+
         if (!component.isRendered())
             return;
 
@@ -120,6 +121,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
             }
         };
     }
+
 
     private void encodeJsLinks(FacesContext context) throws IOException {
         String[] libs = getNecessaryJsLibs(context);
@@ -794,8 +796,8 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
     }
 
     protected static boolean encodeFoldingSupport(FacesContext context,
-                                               ScriptBuilder buf,
-                                               AbstractTable table) throws IOException {
+                                                  ScriptBuilder buf,
+                                                  AbstractTable table) throws IOException {
         JSONObject treeStructure = formatTreeStructureMap(context, table, -1, -1);
         if (treeStructure == null) {
             // this can be the case for a grouping-enabled table which doesn't have any grouping rule configured,

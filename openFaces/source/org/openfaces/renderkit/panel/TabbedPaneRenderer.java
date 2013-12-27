@@ -214,6 +214,7 @@ public class TabbedPaneRenderer extends MultiPageContainerRenderer {
                               boolean isMirrorTabSet)
             throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        List<Integer> disabledPanels = new ArrayList<Integer>();
         TabPlacement tabPlacement = getTabPlacement(tabbedPane);
         boolean verticalPlacement = TabPlacement.LEFT.equals(tabPlacement) || TabPlacement.RIGHT.equals(tabPlacement);
         if (verticalPlacement) {
@@ -226,6 +227,7 @@ public class TabbedPaneRenderer extends MultiPageContainerRenderer {
             innerTabSet = tabbedPane.getTabSet();
         }
         initInnerTabSet(tabbedPane, innerTabSet, subPanels, isMirrorTabSet);
+
         innerTabSet.encodeAll(context);
     }
 
@@ -233,6 +235,7 @@ public class TabbedPaneRenderer extends MultiPageContainerRenderer {
                                  boolean isMirrorTabSet) {
         List<UIComponent> tabs = new ArrayList<UIComponent>();
         for (SubPanel item : subPanels) {
+
             UIComponent captionComponent = item.getCaptionFacet();
             String caption = item.getCaption();
             if (captionComponent != null || caption != null) {

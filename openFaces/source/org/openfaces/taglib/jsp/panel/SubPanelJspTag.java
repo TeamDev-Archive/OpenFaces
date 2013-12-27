@@ -13,6 +13,8 @@ package org.openfaces.taglib.jsp.panel;
 
 import org.openfaces.taglib.internal.panel.SubPanelTag;
 
+import javax.el.ValueExpression;
+
 /**
  * @author Andrew Palval
  */
@@ -21,4 +23,9 @@ public class SubPanelJspTag extends AbstractPanelWithCaptionJspTag {
     public SubPanelJspTag() {
         super(new SubPanelTag());
     }
+
+    public void disabled(ValueExpression disabled) {
+        getDelegate().setPropertyValue("disabled", disabled);
+    }
+
 }

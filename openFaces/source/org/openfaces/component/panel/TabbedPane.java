@@ -359,6 +359,7 @@ public class TabbedPane extends MultiPageContainer implements TabSelectionHolder
         focusAreaStyle = (String) values[i++];
         focusAreaClass = (String) values[i++];
         mirrorTabSetVisible = (Boolean) values[i];
+
     }
 
     public void createSubComponents(FacesContext context) {
@@ -368,7 +369,7 @@ public class TabbedPane extends MultiPageContainer implements TabSelectionHolder
         tabSet.getChildren().add(items);
 
         UIComponent mirrorTabSet = Components.createChildComponent(context, this, TabSet.COMPONENT_TYPE, TAB_SET_SUFFIX, 1);
-        mirrorTabSet.setId(mirrorTabSet.getId()+ MIRROR_TABSET_SUFFIX);
+        mirrorTabSet.setId(mirrorTabSet.getId() + MIRROR_TABSET_SUFFIX);
         TabSetItems mirrorItems = new TabSetItems();
         mirrorItems.setId(getId() + Rendering.SERVER_ID_SUFFIX_SEPARATOR + "tabSetItems" + MIRROR_TABSET_SUFFIX);
         mirrorTabSet.getChildren().add(mirrorItems);

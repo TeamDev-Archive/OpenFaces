@@ -73,7 +73,7 @@ public abstract class AbstractComponentTag extends AbstractTag {
         STANDARD_TYPES.put("double", double.class);
     }
 
-    private FacesContext facesContext;
+    private ThreadLocal<FacesContext> facesContext = new ThreadLocal<FacesContext>();
 
     /**
      * Implementations of this method must not use FacesContext.getCurrentInstance() because it doesn't contain
@@ -126,12 +126,16 @@ public abstract class AbstractComponentTag extends AbstractTag {
     public abstract String getRendererType();
 
     public FacesContext getFacesContext() {
-        return facesContext;
+        return facesContext.get();
     }
 
     public void setFacesContext(FacesContext facesContext) {
-        this.facesContext = facesContext;
+        this.facesContext.set(facesContext);
     }
+    public void removeFacesContext(){
+        this.facesContext.remove();
+    }
+
 
     protected void setStringProperty(UIComponent component, String propertyName) {
         setStringProperty(component, propertyName, true, false);
@@ -773,7 +777,7 @@ public abstract class AbstractComponentTag extends AbstractTag {
     }
 
     protected void setConverterProperty(UIComponent component, String propertyName) {
-        Application application = facesContext.getApplication();
+        Application application = facesContext.get().getApplication();
         String converterValue = getPropertyValue(propertyName);
         if (!setAsValueExpressionIfPossible(component, propertyName)) {
             Converter converter = application.createConverter(converterValue);

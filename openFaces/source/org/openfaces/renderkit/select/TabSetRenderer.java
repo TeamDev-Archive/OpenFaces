@@ -37,6 +37,7 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -102,6 +103,7 @@ public class TabSetRenderer extends BaseTabSetRenderer {
 
         ResponseWriter writer = context.getResponseWriter();
         TabSet tabSet = (TabSet) component;
+        List<UIComponent> tabChildren = tabSet.getChildren();
 
         TabPlacement tabPlacement = getTabPlacement(tabSet);
         boolean verticalTabs = tabPlacement.equals(TabPlacement.LEFT) || tabPlacement.equals(TabPlacement.RIGHT);
@@ -138,6 +140,7 @@ public class TabSetRenderer extends BaseTabSetRenderer {
             }
         }
         for (int i = 0, tabCount = renderedTabItems.size(); i < tabCount; i++) {
+
             Object item = renderedTabItems.get(i);
             if (!isItemRendered(item))
                 continue;
@@ -171,7 +174,7 @@ public class TabSetRenderer extends BaseTabSetRenderer {
                         !Environment.isExplorer6() ? "border: 1px solid transparent;" : "", StyleGroup.selectedStyleGroup(1));
                 writer.writeAttribute("class", defaultFocusedClass, null);
             }
-
+            /*...............*/
             if (item instanceof String) {
                 writer.writeText(item, null);
             } else if (item instanceof UIComponent) {
@@ -179,7 +182,7 @@ public class TabSetRenderer extends BaseTabSetRenderer {
             } else if (item != null) {
                 writer.writeText(item.toString(), null);
             }
-
+            /*                      */
             if (tabSet.isFocusable()) {
                 writer.endElement("div");
             }
@@ -214,6 +217,7 @@ public class TabSetRenderer extends BaseTabSetRenderer {
             insertVerticalSpacer(context, tabSet, emptySpaceClasses);
         }
     }
+
 
     private boolean isItemRendered(Object item) {
         if (!(item instanceof UIComponent))
@@ -377,6 +381,7 @@ public class TabSetRenderer extends BaseTabSetRenderer {
         }
 
         String defaultClass = DEFAULT_CLASS_PREFIX + placement;
+        /**/
         String tabClass = Styles.getCSSClass(context, component, tabSet.getTabStyle(), defaultClass, tabSet.getTabClass());
         String defaultRolloverClass = DEFAULT_ROLLOVER_CLASS_PREFIX + placement;
         String rolloverClass = Styles.getCSSClass(context, component, tabSet.getRolloverTabStyle(), StyleGroup.rolloverStyleGroup(), tabSet.getRolloverTabClass(), defaultRolloverClass);
@@ -395,7 +400,8 @@ public class TabSetRenderer extends BaseTabSetRenderer {
 
         String onchange = tabSet.getOnchange();
 
-        ScriptBuilder sb = new ScriptBuilder();
+        String defaultDisabledClass = DEFAULT_CLASS_PREFIX + "disabled";
+             ScriptBuilder sb = new ScriptBuilder();
         sb.initScript(context, tabSet, "O$.TabSet._init",
                 getTabIds(context, tabSet, tabs),
                 selectedIndex,
@@ -411,11 +417,12 @@ public class TabSetRenderer extends BaseTabSetRenderer {
                         frontBorderClass,
                         backBorderClassPre,
                         backBorderClassPost
+
                 },
                 tabSet.isFocusable(),
                 focusAreaClass,
                 focusedClass,
-                onchange != null ? new AnonymousFunction(onchange, "event") : null);
+               onchange != null ? new AnonymousFunction(onchange, "event") : null);
 
         Rendering.renderInitScript(context, sb,
                 Resources.utilJsURL(context),
