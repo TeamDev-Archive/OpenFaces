@@ -676,7 +676,7 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
         AbstractTable table = getTable();
         setFilteringCriteriaToRequestVariable();
         if (!table.getRowsDecodingRequired()) {
-            return table.getTotalRowCount();
+            return table.getTotalRowCount() == null ? 0 : table.getTotalRowCount();
         }
         ValueExpression valueExpression = table.getValueExpression("totalRowCount");
         if (valueExpression == null)
