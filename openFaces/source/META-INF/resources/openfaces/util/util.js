@@ -4497,7 +4497,7 @@ if (!window.O$) {
    * @param disableRepositioning
    * @param repositioningAttempt
    */
-  O$.alignPopupByElement = function (popup, element, horizAlignment, vertAlignment, horizDistance, vertDistance, ignoreVisibleArea, disableRepositioning, repositioningAttempt) {
+  O$.alignPopupByElement = function (popup, element, horizAlignment, vertAlignment, horizDistance, vertDistance, ignoreVisibleArea, disableRepositioning, repositioningAttempt, xDelta, yDelta) {
     if (!horizAlignment) horizAlignment = O$.LEFT;
     if (!vertAlignment) vertAlignment = O$.BELOW;
     if (!horizDistance) horizDistance = 0;
@@ -4517,6 +4517,9 @@ if (!window.O$) {
     var popupSize = O$.getElementSize(popup);
     var popupWidth = popupSize.width;
     var popupHeight = popupSize.height;
+
+    xDelta = xDelta ? xDelta : 0;
+    yDelta = yDelta ? yDelta : 0;
 
     var x;
     switch (horizAlignment) {
@@ -4558,6 +4561,8 @@ if (!window.O$) {
       default:
         O$.logError("O$.alignPopupByElement: unrecognized vertAlignment: " + vertAlignment);
     }
+    x += xDelta;
+    y += yDelta;
 
     if (!disableRepositioning) {
       var allowedRectangle = O$.getCuttingContainingRectangle(popup);
@@ -4566,23 +4571,52 @@ if (!window.O$) {
       if (shouldBeRepositioned) {
         if (repositioningAttempt)
           return false;
+        if (popup.setLeft) {
+          popup.setLeft(x);
+          popup.setTop(y);
+        }
         var alternativeVertAlignment = vertAlignment == O$.BELOW || vertAlignment == O$.ABOVE
                 ? vertAlignment == O$.BELOW ? O$.ABOVE : O$.BELOW
                 : null;
         if (alternativeVertAlignment) {
           if (O$.alignPopupByElement(popup, element, horizAlignment, alternativeVertAlignment, horizDistance, vertDistance, ignoreVisibleArea, false, true))
-            return;
+            return true;
         }
         var alternativeHorizAlignment = horizAlignment == O$.LEFT_OUTSIDE || horizAlignment == O$.RIGHT_OUTSIDE
                 ? horizAlignment == O$.RIGHT_OUTSIDE ? O$.LEFT_OUTSIDE : O$.RIGHT_OUTSIDE
                 : null;
         if (alternativeHorizAlignment) {
           if (O$.alignPopupByElement(popup, element, alternativeHorizAlignment, vertAlignment, horizDistance, vertDistance, ignoreVisibleArea, false, true))
-            return;
+            return true;
         }
         if (alternativeHorizAlignment && alternativeVertAlignment) {
           if (O$.alignPopupByElement(popup, element, alternativeHorizAlignment, alternativeVertAlignment, horizDistance, vertDistance, ignoreVisibleArea, false, true))
-            return;
+            return true;
+        }
+        // possible align correction with offsets
+        if (!alternativeHorizAlignment && alternativeVertAlignment){
+          var xCorrection =  x < allowedRectangle.getMinX()
+                  ? allowedRectangle.getMinX() - x
+                  : x + popupWidth > allowedRectangle.getMaxX() ? allowedRectangle.getMaxX() - (x + popupWidth) : 0;
+          if (O$.alignPopupByElement(popup, element, horizAlignment, vertAlignment, horizDistance, vertDistance, ignoreVisibleArea, false, true, xCorrection, 0)){
+            return true;
+          }
+          if (O$.alignPopupByElement(popup, element, horizAlignment, alternativeVertAlignment, horizDistance, vertDistance, ignoreVisibleArea, false, true, xCorrection, 0)){
+            return true;
+          }
+        }
+
+        // possible align correction with offsets
+        if (alternativeHorizAlignment && !alternativeVertAlignment){
+          var yCorrection =  y < allowedRectangle.getMinY()
+                  ? allowedRectangle.getMinY() - y
+                  : y + popupHeight > allowedRectangle.getMaxY() ? allowedRectangle.getMaxY() - (y + popupHeight) : 0;
+          if (O$.alignPopupByElement(popup, element, horizAlignment, vertAlignment, horizDistance, vertDistance, ignoreVisibleArea, false, true,  0, yCorrection)){
+            return true;
+          }
+          if (O$.alignPopupByElement(popup, element, alternativeHorizAlignment, vertAlignment, horizDistance, vertDistance, ignoreVisibleArea, false, true, 0, yCorrection)){
+            return true;
+          }
         }
         var xOffset = x < allowedRectangle.getMinX()
                 ? allowedRectangle.getMinX() - x
