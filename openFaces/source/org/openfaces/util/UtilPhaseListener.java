@@ -197,7 +197,11 @@ public class UtilPhaseListener extends PhaseListenerBase {
         boolean isPortletRequest = AjaxUtil.isPortletRequest(context);
 
         if (isAjax4jsfRequest || isPortletRequest) {
-            Rendering.appendUniqueRTLibraryScripts(context, script);
+            try {
+                Rendering.renderInitScript(context, script);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         } else {
             Rendering.appendOnLoadScript(context, script);
         }
