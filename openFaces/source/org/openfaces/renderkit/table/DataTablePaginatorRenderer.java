@@ -67,7 +67,7 @@ public class DataTablePaginatorRenderer extends RendererBase {
                 explicitIdSpecified = true;
                 break;
             }
-            if (c.getParent()  == table) {
+            if (c.getParent() == table) {
                 immediateFacetChild = c;
                 break;
             }
@@ -336,10 +336,21 @@ public class DataTablePaginatorRenderer extends RendererBase {
         DataTablePaginator paginator = (DataTablePaginator) component;
         String clientId = getActionFieldName(context, paginator);
         String actionStr = requestParams.get(clientId);
-        if (actionStr == null || actionStr.length() == 0)
-            return;
         DataTable table = paginator.getTable();
-        executePaginationAction(context, table, actionStr);
+        if (actionStr == null || actionStr.length() == 0) {
+            String pageIndexId = getPageNoFieldName(context, paginator);
+            String newPageIndex = requestParams.get(pageIndexId);
+            executePaginationActionInInput(context, table, Integer.parseInt(newPageIndex));
+        } else{
+            executePaginationAction(context, table, actionStr);
+        }
+
+
+    }
+
+    public static void executePaginationActionInInput(FacesContext context, DataTable table, int newPageIndex) {
+        DataTablePaginatorAction action = new SelectPageActionInInput(newPageIndex);
+        action.execute(table);
     }
 
     public static void executePaginationAction(FacesContext context, DataTable table, String actionStr) {
@@ -387,4 +398,8 @@ public class DataTablePaginatorRenderer extends RendererBase {
         return result;
     }
 
+    private String getPageNoFieldName(FacesContext context, DataTablePaginator paginator) {
+        String result = paginator.getClientId(context) + "--pageNo";
+        return result;
+    }
 }
