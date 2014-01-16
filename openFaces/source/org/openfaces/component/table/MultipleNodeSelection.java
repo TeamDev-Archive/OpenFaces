@@ -347,4 +347,12 @@ public class MultipleNodeSelection extends TreeTableSelection {
     }
 
 
+    @Override
+    public void clearSelection() {
+        List<TreePath> allSelectedNodeKeys = (getNodeKeyPaths() != null)
+                ? getNodeKeyPaths() : new ArrayList<TreePath>();
+        allSelectedNodeKeys.clear();
+        setNodeKeyPaths(allSelectedNodeKeys);
+    }
+
 }

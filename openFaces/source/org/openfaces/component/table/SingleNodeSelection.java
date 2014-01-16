@@ -196,4 +196,8 @@ public class SingleNodeSelection extends TreeTableSelection {
         List<TreePath> emptyPath = Collections.emptyList();
         return path != null ? Collections.singletonList(path) : emptyPath;
     }
+
+    public void clearSelection(){
+        setNodeKeyPath(null);
+    }
 }

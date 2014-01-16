@@ -15,6 +15,7 @@ package org.openfaces.demo.beans.datatable;
 import org.openfaces.component.filter.CompositeFilterCriterion;
 import org.openfaces.component.filter.ExpressionFilterCriterion;
 import org.openfaces.component.filter.FilterCriterion;
+import org.openfaces.component.table.DataTable;
 import org.openfaces.demo.beans.util.City;
 import org.openfaces.util.Faces;
 
