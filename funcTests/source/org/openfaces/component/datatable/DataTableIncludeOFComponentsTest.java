@@ -11,6 +11,7 @@
  */
 package org.openfaces.component.datatable;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.seleniuminspector.ElementInspector;
@@ -128,6 +129,7 @@ public class DataTableIncludeOFComponentsTest extends OpenFacesTestCase {
 
 
     @Test
+    @Ignore
     public void testPopupLayerInside() {
         testAppFunctionalPage("/components/datatable/popupLayerIn.jsf");
 
