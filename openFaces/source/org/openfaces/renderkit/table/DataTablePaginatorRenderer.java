@@ -297,9 +297,9 @@ public class DataTablePaginatorRenderer extends RendererBase {
             boolean focusTable) {
         Script submitScript = useAjax
                 ? new ScriptBuilder().functionCall("O$.Table._performPaginatorAction",
-                                        table, new RawScript(focusTable ? "null" : "this"), paramName, paramValue).semicolon()
+                table, new RawScript(focusTable ? "null" : "this"), paramName, paramValue).semicolon()
                 : new ScriptBuilder().functionCall("O$.submitWithParam",
-                                        new RawScript("this"), paramName, paramValue).semicolon();
+                new RawScript("this"), paramName, paramValue).semicolon();
         return submitScript;
     }
 
@@ -340,8 +340,11 @@ public class DataTablePaginatorRenderer extends RendererBase {
         if (actionStr == null || actionStr.length() == 0) {
             String pageIndexId = getPageNoFieldName(context, paginator);
             String newPageIndex = requestParams.get(pageIndexId);
+            if (newPageIndex == null) {
+                return;
+            }
             executePaginationActionInInput(context, table, Integer.parseInt(newPageIndex));
-        } else{
+        } else {
             executePaginationAction(context, table, actionStr);
         }
 
