@@ -69,7 +69,6 @@ public class AjaxFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase {
     }
 
     @Test
-    @Ignore
     public void testDataTableInside() throws InterruptedException {
         testAppFunctionalPage("/components/foldingpanel/dataTableIn.jsf");
         foldingPanel("fn:dataTableFoldingPanel").toggle().clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
@@ -82,7 +81,6 @@ public class AjaxFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase {
     }
 
     @Test
-    @Ignore
     public void testDateChooserInside() {
         testAppFunctionalPage("/components/foldingpanel/dateChooserIn.jsf");
 
@@ -95,7 +93,6 @@ public class AjaxFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase {
     }
 
     @Test
-    @Ignore
     public void testDropDownInside() {
         testAppFunctionalPage("/components/foldingpanel/dropDownIn.jsf");
 
@@ -151,7 +148,6 @@ public class AjaxFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase {
     }
 
     @Test
-    @Ignore
     public void testAjaxTabbedPaneInside() {
         testAppFunctionalPage("/components/foldingpanel/tabbedPaneIn.jsf");
 
@@ -171,7 +167,6 @@ public class AjaxFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase {
     }
 
     @Test
-    @Ignore
     public void testTabSetInside() {
         testAppFunctionalPage("/components/foldingpanel/tabSetIn.jsf");
 
@@ -190,7 +185,6 @@ public class AjaxFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase {
 
     //todo: selection test is absent
     @Test
-    @Ignore
     public void testTreeTableInside() {
         testAppFunctionalPage("/components/foldingpanel/treeTableIn.jsf");
 
@@ -225,7 +219,6 @@ public class AjaxFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase {
     }
 
     @Test
-    @Ignore
     public void testValidationInside() {
         testAppFunctionalPage("/components/foldingpanel/validationIn.jsf");
 
