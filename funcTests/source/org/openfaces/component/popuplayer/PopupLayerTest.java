@@ -121,7 +121,7 @@ public class PopupLayerTest extends OpenFacesTestCase {
         testAppFunctionalPage("/components/popuplayer/popupLayerJSFunctions.jsf");
 
         PopupLayerInspector popupLayer = popupLayer("formID:centered");
-        element("showCentered").click();
+        element("showCentered").clickAndWait();
 
         int popupLayerWidth = 200;
         int popupLayerHeight = 200;

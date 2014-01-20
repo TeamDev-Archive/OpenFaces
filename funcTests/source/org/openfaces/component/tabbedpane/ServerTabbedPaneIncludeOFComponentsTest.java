@@ -71,6 +71,7 @@ public class ServerTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
     }
 
     @Test
+    @Ignore
     public void testDataTableInside() {
         testAppFunctionalPage("/components/tabbedpane/dataTableIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(2, ServerLoadingMode.getInstance());

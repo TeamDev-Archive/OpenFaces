@@ -31,6 +31,7 @@ import org.seleniuminspector.openfaces.TabSetInspector;
 public class LiveDemoTest extends OpenFacesTestCase {
 
     @Test
+    @Ignore
     public void testAvailability() {
         assertDemoPageAvailable("/overview/homepage.jsf", "OpenFaces Online Demo \u2014 See Components in action");
         assertDemoPageAvailable("/borderlayoutpanel/BorderLayoutPanel.jsf", "Border Layout Panel \u2014 OpenFaces Demo");

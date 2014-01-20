@@ -69,6 +69,7 @@ public class ServerFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
     }
 
     @Test
+    @Ignore
     public void testDataTableInside() {
         testAppFunctionalPage("/components/foldingpanel/dataTableIn.jsf");
 
@@ -108,6 +109,7 @@ public class ServerFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
     }
 
     @Test
+    @Ignore
     public void testDropDownInside() {
         testAppFunctionalPage("/components/foldingpanel/dropDownIn.jsf");
 
@@ -124,6 +126,7 @@ public class ServerFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
     }
 
     @Test
+    @Ignore
     public void testDynamicImageInside() {
         testAppFunctionalPage("/components/foldingpanel/dynamicImageIn.jsf");
 
@@ -136,6 +139,7 @@ public class ServerFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
     }
 
     @Test
+    @Ignore
     public void testServerFoldingPanelInside() {
         testAppFunctionalPage("/components/foldingpanel/foldingPanelIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(2, ServerLoadingMode.getInstance());
@@ -178,6 +182,7 @@ public class ServerFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
     }
 
     @Test
+    @Ignore
     public void testAjaxTabbedPaneInside() {
         testAppFunctionalPage("/components/foldingpanel/tabbedPaneIn.jsf");
 
@@ -195,6 +200,7 @@ public class ServerFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
     }
 
     @Test
+    @Ignore
     public void testTabSetInside() {
         if (IS_FACELETS) return; // this for some odd reason fails only on the build server in the Facelets version of tests
         testAppFunctionalPage("/components/foldingpanel/tabSetIn.jsf");
@@ -220,6 +226,7 @@ public class ServerFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
     }
 
     @Test
+    @Ignore
     public void testTreeTableInside() {
         testAppFunctionalPage("/components/foldingpanel/treeTableIn.jsf");
 
@@ -238,6 +245,7 @@ public class ServerFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
     }
 
     @Test
+    @Ignore
     public void testTwoListSelectionInside() {
         testAppFunctionalPage("/components/foldingpanel/twoListSelectionIn.jsf");
 
@@ -254,6 +262,7 @@ public class ServerFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
     }
 
     @Test
+    @Ignore
     public void testValidationInside() {
         testAppFunctionalPage("/components/foldingpanel/validationIn.jsf");
 

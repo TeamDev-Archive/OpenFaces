@@ -11,6 +11,7 @@
  */
 package org.openfaces.component.miscellaneous;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.seleniuminspector.openfaces.DropDownFieldFilterInspector;
@@ -40,6 +41,7 @@ public class LoadBundleTest extends OpenFacesTestCase {
     private static final String WEEK_RU = "\u0421\u0431\u0440\u043E\u0441";
 
     @Test
+    @Ignore
     public void testWithDataTable() {
         testAppFunctionalPage("/components/loadbundle/withDataTable.jsf");
 
