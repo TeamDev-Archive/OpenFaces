@@ -65,7 +65,6 @@ public class DataTableIncludeOFComponentsTest extends OpenFacesTestCase {
       }
     */
     @Test
-    @Ignore
     public void testHintLabelInside() {
         testAppFunctionalPage("/components/datatable/hintLabelIn.jsf");
 
@@ -99,7 +98,6 @@ public class DataTableIncludeOFComponentsTest extends OpenFacesTestCase {
                 bodyHintLabel1.hint().mouseOut();
                 bodyHintLabel1.checkVisibilityAndContent(currentReferenceRow.getFirstColumn(), currentReferenceRow.getSecondColumn());
                 bodyHintLabel1.hint().mouseOut();
-
                 hintLabel("fn:hintLabelDataTable:" + rowIndex + ":body_hinLabel_2")
                         .checkVisibilityAndContent(currentReferenceRow.getSecondColumn(), currentReferenceRow.getFirstColumn());
 
@@ -130,7 +128,6 @@ public class DataTableIncludeOFComponentsTest extends OpenFacesTestCase {
 
 
     @Test
-    @Ignore
     public void testPopupLayerInside() {
         testAppFunctionalPage("/components/datatable/popupLayerIn.jsf");
 

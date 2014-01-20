@@ -79,7 +79,6 @@ public class ClientFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
     }
 
     @Test
-    @Ignore
     public void testDataTableInside() {
         testAppFunctionalPage("/components/foldingpanel/dataTableIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());
@@ -159,7 +158,6 @@ public class ClientFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
     }
 
     @Test
-    @Ignore
     public void testClientFoldingPanelInside() {
         testAppFunctionalPage("/components/foldingpanel/foldingPanelIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());
@@ -211,7 +209,6 @@ public class ClientFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
     }
 
     @Test
-    @Ignore
     public void testAjaxTabbedPaneInside() {
         testAppFunctionalPage("/components/foldingpanel/tabbedPaneIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());
@@ -257,7 +254,6 @@ public class ClientFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
     }
 
     @Test
-    @Ignore
     public void testTreeTableInside() {
         testAppFunctionalPage("/components/foldingpanel/treeTableIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());
@@ -279,7 +275,6 @@ public class ClientFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
     }
 
     @Test
-    @Ignore
     public void testTwoListSelectionInside() {
         testAppFunctionalPage("/components/foldingpanel/twoListSelectionIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());
@@ -299,7 +294,6 @@ public class ClientFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
     }
 
     @Test
-    @Ignore
     public void testValidationInside() {
         testAppFunctionalPage("/components/foldingpanel/validationIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());
