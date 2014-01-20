@@ -78,7 +78,7 @@ public class DefaultProgressMessageRenderer extends AbstractSettingsRenderer {
             }
 
             if (isAjax4jsfRequest || isPortletRequest) {
-                Rendering.appendUniqueRTLibraryScripts(context, setMessageScript);
+                Rendering.renderInitScript(context, setMessageScript);
             } else {
                 Rendering.appendOnLoadScript(context, setMessageScript);
                 if (isAjaxCleanupRequired()) {
