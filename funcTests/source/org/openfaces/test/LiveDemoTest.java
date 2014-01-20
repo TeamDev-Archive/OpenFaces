@@ -140,6 +140,7 @@ public class LiveDemoTest extends OpenFacesTestCase {
 
 
     @Test
+    @Ignore
     public void testConfirmation() throws Exception {
         liveDemoPage("/confirmation/ConfirmationDefault.jsf");
         element("confirmationForm:buttonInvoker1").click();
