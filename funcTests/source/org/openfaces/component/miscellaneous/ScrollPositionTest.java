@@ -21,8 +21,8 @@ import org.seleniuminspector.ElementInspector;
  * @author Darya Shumilina
  */
 public class ScrollPositionTest extends OpenFacesTestCase {
+
     @Test
-    @Ignore
     public void testScrollPositionByPageLoading() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/scrollfocus/scrollPosition.jsf");
