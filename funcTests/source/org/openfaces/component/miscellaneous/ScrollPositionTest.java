@@ -12,6 +12,7 @@
 package org.openfaces.component.miscellaneous;
 
 import com.thoughtworks.selenium.Selenium;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.seleniuminspector.ElementInspector;
@@ -21,6 +22,7 @@ import org.seleniuminspector.ElementInspector;
  */
 public class ScrollPositionTest extends OpenFacesTestCase {
     @Test
+    @Ignore
     public void testScrollPositionByPageLoading() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/scrollfocus/scrollPosition.jsf");
