@@ -1,33 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="AntConfiguration">
-    <defaultAnt bundledAnt="true" />
     <buildFile url="file://$PROJECT_DIR$/build.xml">
       <additionalClassPath>
         <entry path="file://$PROJECT_DIR$/tools/ant-libs/jakarta-oro-2.0.8.zip" />
         <entry path="file://$PROJECT_DIR$/tools/ant-libs/commons-net-1.4.1.zip" />
       </additionalClassPath>
-      <antReference projectDefault="true" />
-      <customJdkName value="" />
-      <maximumHeapSize value="128" />
       <maximumStackSize value="32" />
-      <properties />
     </buildFile>
     <buildFile url="file://$PROJECT_DIR$/openFaces/build.xml">
-      <additionalClassPath />
-      <antReference projectDefault="true" />
-      <customJdkName value="" />
-      <maximumHeapSize value="128" />
       <maximumStackSize value="32" />
-      <properties />
     </buildFile>
     <buildFile url="file://$PROJECT_DIR$/openFacesInspectors/build.xml">
-      <additionalClassPath />
-      <antReference projectDefault="true" />
-      <customJdkName value="" />
-      <maximumHeapSize value="128" />
       <maximumStackSize value="32" />
-      <properties />
     </buildFile>
   </component>
   <component name="ArtifactManager">
@@ -1589,19 +1574,17 @@
     </library>
     <library name="selenium-java-client-driver">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/seleniuminspector/selenium-java-2.14.0.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/seleniuminspector/selenium-java-2.34.0.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
     </library>
     <library name="selenium-server">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/seleniuminspector/selenium-server-standalone-2.14.0.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/seleniuminspector/selenium-server-standalone-2.34.0.jar!/" />
       </CLASSES>
       <JAVADOC />
-      <SOURCES>
-        <root url="jar://$PROJECT_DIR$/lib/seleniuminspector/selenium-server-standalone-2.14.0.jar!/" />
-      </SOURCES>
+      <SOURCES />
     </library>
     <library name="SeleniumInspector">
       <CLASSES>
