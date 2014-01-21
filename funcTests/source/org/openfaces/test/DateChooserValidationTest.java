@@ -36,7 +36,7 @@ public class DateChooserValidationTest extends OpenFacesTestCase {
         assertConversionErrorOccured(true);
     }
 
-     //@Test
+     @Test
     public void testClientValidationOnSubmit() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/datechooser/dateChooserValid.jsf");
@@ -49,7 +49,7 @@ public class DateChooserValidationTest extends OpenFacesTestCase {
         assertConversionErrorOccured(true);
     }
 
-     //@Test
+     @Test
     public void testClientValidationDefault() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/datechooser/dateChooserValid.jsf");
@@ -62,7 +62,7 @@ public class DateChooserValidationTest extends OpenFacesTestCase {
         assertConversionErrorOccured(true);
     }
 
-     //@Test
+     @Test
     @Ignore
     public void testChangeLocaleFromBinding() {
         Selenium selenium = getSelenium();

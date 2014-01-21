@@ -44,7 +44,7 @@ public class ValidationTest extends OpenFacesTestCase {
         isNotDefaultPresentation();
     }
 
-     //@Test
+     @Test
     public void testClientDefaultPresentation() {
         closeBrowser();
         testAppFunctionalPage("/components/validation/clientDefaultPresentation.jsf");
@@ -61,7 +61,7 @@ public class ValidationTest extends OpenFacesTestCase {
         isNotDefaultPresentation();
     }
 
-     //@Test
+     @Test
     public void testOFInputComponents() {
         testAppFunctionalPage("/components/validation/openFacesInputComponents.jsf");
         String formName;
@@ -88,7 +88,7 @@ public class ValidationTest extends OpenFacesTestCase {
         isValidationPassed(formName);
     }
 
-     //@Test
+     @Test
     public void testClientSideAPI() {
         testAppFunctionalPage("/components/validation/clientSideAPI.jsf");
         String formName;
@@ -145,7 +145,7 @@ public class ValidationTest extends OpenFacesTestCase {
         isPassedClientSideAPI();
     }
 
-     //@Test
+     @Test
     public void testComponentWideValidation() throws InterruptedException {
         closeBrowser();
         testAppFunctionalPage("/components/validation/componentWideValidation.jsf");
@@ -262,7 +262,7 @@ public class ValidationTest extends OpenFacesTestCase {
         assertTrue(fullUpperCase.contains(subUpperCase));
     }
 
-     //@Test
+     @Test
     public void testOpenFacesValidators() {
         testAppFunctionalPage("/components/validation/openFacesValidators.jsf");
         //server-side
@@ -290,7 +290,7 @@ public class ValidationTest extends OpenFacesTestCase {
         isPassedOFValidators(clientValidationFormName);
     }
 
-     //@Test
+     @Test
     public void testStandardValidators() {
         testAppFunctionalPage("/components/validation/standardValidators.jsf");
         //server-side
@@ -317,7 +317,7 @@ public class ValidationTest extends OpenFacesTestCase {
         isPassedStandardValidators(clientValidationFormName);
     }
 
-     //@Test
+     @Test
     public void testWithStandardInputs() {
         testAppFunctionalPage("/components/validation/validationWithStandardInputs.jsf");
         //server-side failed

@@ -83,7 +83,7 @@ public class LiveDemoTest extends OpenFacesTestCase {
     }
 
     // see JSFC-1840 TabSet with locales can switch own value but doesn't switch locale in DateChoosers if validation triggered
-     //@Test
+     @Test
     @Ignore
     // todo: works locally, but investigate why it fails on the server
     public void testDateChooserTabSetValidation() {
@@ -108,7 +108,7 @@ public class LiveDemoTest extends OpenFacesTestCase {
 
     //todo: rework the test appropriately to new demo content
     @Ignore
-     //@Test
+     @Test
     public void _testSaveFilterInSession() throws Exception {
         Selenium selenium = getSelenium();
         liveDemoPage("/datatable/DataTable_filteringAndPaging.jsf");
@@ -139,7 +139,7 @@ public class LiveDemoTest extends OpenFacesTestCase {
     }
 
 
-     //@Test
+     @Test
     @Ignore
     public void testConfirmation() throws Exception {
         liveDemoPage("/confirmation/ConfirmationDefault.jsf");

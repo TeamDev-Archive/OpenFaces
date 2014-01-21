@@ -70,7 +70,7 @@ public class InputTextTest extends OpenFacesTestCase {
         second.assertValue("val2");
     }
 
-     //@Test
+     @Test
     public void testFocusAndBlurEvent() {
         testAppFunctionalPage("/components/inputtext/inputTextFieldBaseFunctionality.jsf");
 
@@ -104,7 +104,7 @@ public class InputTextTest extends OpenFacesTestCase {
         second.assertValue("val2");
     }
 
-     //@Test
+     @Test
     public void testStyles() {
         testAppFunctionalPage("/components/inputtext/inputTextStyling.jsf");
 
@@ -153,7 +153,7 @@ public class InputTextTest extends OpenFacesTestCase {
         secondInput.mouseOut();
     }
 
-     //@Test
+     @Test
     public void testValueChangeListener() {
         testAppFunctionalPage("/components/inputtext/inputTextValueChangeListener.jsf");
 
@@ -171,7 +171,7 @@ public class InputTextTest extends OpenFacesTestCase {
         asTagOutput.assertText("true");
     }
 
-     //@Test
+     @Test
     public void testClientSideEvents() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/inputtext/inputTextEvents.jsf");
@@ -245,7 +245,7 @@ public class InputTextTest extends OpenFacesTestCase {
         assertTrue(selenium.isTextPresent("mousemove"));
     }
 
-     //@Test
+     @Test
     public void testReRenderingThroughA4J() {
         testAppFunctionalPage("/components/inputtext/inputText_a4j.jsf");
 

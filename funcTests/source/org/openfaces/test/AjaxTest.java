@@ -38,7 +38,7 @@ public class AjaxTest extends OpenFacesTestCase {
 
     //JSFC-1954
     @Ignore
-     //@Test
+     @Test
     public void disabledTestFPClientValidation() throws Exception {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/foldingpanel/foldingPanelAjax.jsf");
@@ -51,7 +51,7 @@ public class AjaxTest extends OpenFacesTestCase {
 
     //JSFC-1954
     @Ignore
-     //@Test
+     @Test
     public void disabledTestTPClientValidation() throws Exception {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/tabbedpane/tabbedPaneAjax.jsf");
@@ -65,7 +65,7 @@ public class AjaxTest extends OpenFacesTestCase {
 
     //JSFC-1953
     @Ignore
-     //@Test
+     @Test
     public void disabledTestFPMessages() throws Exception {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/foldingpanel/foldingPanelAjax.jsf");
@@ -83,7 +83,7 @@ public class AjaxTest extends OpenFacesTestCase {
         assertFalse(selenium.isTextPresent("Validation Error"));
     }
 
-     //@Test
+     @Test
     public void testTabbedPaneAjax() throws Exception {
         testAppFunctionalPage("/components/tabbedpane/tabbedPaneAjax.jsf");
         ElementInspector tab1Output = element("form1:tab1Output");
@@ -106,7 +106,7 @@ public class AjaxTest extends OpenFacesTestCase {
     }
 
     @Ignore
-     //@Test
+     @Test
     public void disabledTestPagingValidation() throws Exception {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/datatable/dataTableAjax.jsf");
@@ -120,7 +120,7 @@ public class AjaxTest extends OpenFacesTestCase {
     }
 
     @Ignore
-     //@Test
+     @Test
     public void disabledTestPagingClientValidation() throws Exception {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/datatable/dataTableAjax.jsf");

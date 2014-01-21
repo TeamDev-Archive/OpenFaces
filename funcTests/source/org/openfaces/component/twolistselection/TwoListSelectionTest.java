@@ -44,32 +44,32 @@ public class TwoListSelectionTest extends OpenFacesTestCase {
         }
     }
 
-     //@Test
+     @Test
     public void testItemsVisibilityCorrectness() {
         itemsVisibilityCorrectness(twoListSelection("formID:first"));
         itemsVisibilityCorrectness(twoListSelection("formID:second"));
     }
 
-     //@Test
+     @Test
     public void testAddingRemoving() {
         addingRemoving(twoListSelection("formID:first"));
         addingRemoving(twoListSelection("formID:second"));
     }
 
-     //@Test
+     @Test
     public void testReodering() {
         closeBrowser();
         reordering(twoListSelection("formID:first"));
         reordering(twoListSelection("formID:second"));
     }
 
-     //@Test
+     @Test
     public void testStyling() {
         checkStyles(false);
         checkStyles(true);
     }
 
-     //@Test
+     @Test
     public void testClientSideAPI() {
         testAppFunctionalPage("/components/twolistselection/TLSJSFunctions.jsf");
 
@@ -94,7 +94,7 @@ public class TwoListSelectionTest extends OpenFacesTestCase {
         serverValueOutput.assertText("itemV_1 itemV_2 ");
     }
 
-     //@Test
+     @Test
     public void testValueChangeListener() {
         closeBrowser();
         testAppFunctionalPage("/components/twolistselection/TLSValueChangeListener.jsf");
@@ -311,7 +311,7 @@ public class TwoListSelectionTest extends OpenFacesTestCase {
         removeBtn.assertValue("remove");
     }
 
-     //@Test
+     @Test
     public void testDefaultView() {
         testAppFunctionalPage("/components/twolistselection/twoListSelection_defaultView.jsf");
         assertAppearanceNotChanged("TwoListSelectionDefaultView");
@@ -322,7 +322,7 @@ public class TwoListSelectionTest extends OpenFacesTestCase {
         assertEquals(expectedTabindex, tabindex);
     }
 
-     //@Test
+     @Test
     public void testTabindex() {
         testAppFunctionalPage("/components/twolistselection/twoListSelection_tabindex.jsf");
 

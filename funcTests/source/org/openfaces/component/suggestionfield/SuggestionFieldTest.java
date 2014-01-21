@@ -27,39 +27,39 @@ public class SuggestionFieldTest extends BaseDropDownTestCase {
         checkReRenderingThroughA4J("/components/suggestionfield/suggestionField_a4j.jsf");
     }
 
-     //@Test
+     @Test
     public void testListCorrectness() {
         checkListCorrectness("/components/dropdown/dropDownBaseFunctionality.jsf", false);
     }
 
-     //@Test
+     @Test
     public void testManualListOpeningAndClosing() {
         checkManualListOpeningAndClosing("/components/dropdown/dropDownBaseFunctionality.jsf", false);
     }
 
-     //@Test
+     @Test
     public void testValueSelectionFromList() {
         checkValueSelectionFromList("/components/suggestionfield/suggestionFieldBaseFunctionality.jsf", false);
     }
 
-     //@Test
+     @Test
     public void testTypedValue() {
         closeBrowser();
         checkTypedValue("/components/suggestionfield/suggestionFieldBaseFunctionality.jsf");
     }
 
-     //@Test
+     @Test
     @Ignore // todo: temporarily ignored because of failures in 2.x branch only
     public void testAjaxBasedSuggestion() {
         checkAjaxBasedSuggestion("/components/suggestionfield/suggestionFieldAjaxSuggestion.jsf");
     }
 
-     //@Test
+     @Test
     public void testClientBasedSuggestion() {
         checkClientBasedSuggestion("/components/suggestionfield/suggestionFieldClientSuggestion.jsf");
     }
 
-     //@Test
+     @Test
     public void testStyling() {
         checkStyles(false, true, false, "/components/suggestionfield/suggestionFieldStyling.jsf", false);
         checkStyles(true, false, false, "/components/suggestionfield/suggestionFieldStyling.jsf", false);
@@ -67,12 +67,12 @@ public class SuggestionFieldTest extends BaseDropDownTestCase {
         checkStyles(true, true, true, "/components/suggestionfield/suggestionFieldStyling.jsf", false);
     }
 
-     //@Test
+     @Test
     public void testClintSideAPI() {
         checkClintSideAPI("/components/suggestionfield/suggestionFieldClientSideAPI.jsf");
     }
 
-     //@Test
+     @Test
     public void testValueChangeListener() {
         closeBrowser();
         checkValueChangeListener("/components/suggestionfield/suggestionFieldValueChangeListener.jsf");

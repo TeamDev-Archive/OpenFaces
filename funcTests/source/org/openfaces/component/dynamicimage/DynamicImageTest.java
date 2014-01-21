@@ -31,7 +31,7 @@ public class DynamicImageTest extends OpenFacesTestCase {
         assertFalse(newValue.equals(oldValue));
     }
 
-     //@Test
+     @Test
     public void testDefaultView() {
         testAppFunctionalPage("/components/dynamicimage/dynamicImage_defaultView.jsf");
         assertAppearanceNotChanged("DynamicImageDefaultView");

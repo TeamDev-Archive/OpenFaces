@@ -127,7 +127,7 @@ public class DataTableIncludeOFComponentsTest extends OpenFacesTestCase {
     }
 
 
-     //@Test
+     @Test
     @Ignore
     public void testPopupLayerInside() {
         testAppFunctionalPage("/components/datatable/popupLayerIn.jsf");

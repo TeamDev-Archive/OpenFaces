@@ -49,7 +49,7 @@ public class FileUploadTest  extends OpenFacesTestCase {
         assertTrue(getDriver().findElement(By.id("formID:fileSize")).getText().length() > 1);
     }
 
-     //@Test
+     @Test
     public void testWrongMimeTypeAndSize() {
         testAppFunctionalPage("/components/fileupload/singleFileUpload.jsf");
         WebElement input = getDriver().

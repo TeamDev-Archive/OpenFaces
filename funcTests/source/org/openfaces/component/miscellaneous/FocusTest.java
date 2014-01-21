@@ -38,13 +38,13 @@ public class FocusTest extends OpenFacesTestCase {
         element("out").assertText(FOCUSED);
     }
 
-     //@Test
+     @Test
     public void testFocusByPageLoadWithInputText() {
         testAppFunctionalPage("/components/scrollfocus/focus.jsf");
         element("out").assertText(FOCUSED);
     }
 
-     //@Test
+     @Test
     public void testFocusWithOFDataTable() {
         testAppFunctionalPage("/components/scrollfocus/focusWithDataTable.jsf");
 

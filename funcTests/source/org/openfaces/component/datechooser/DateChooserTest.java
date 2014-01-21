@@ -55,7 +55,7 @@ public class DateChooserTest extends BaseCalendarTestCase {
         assertFalse(newValue.equals(oldValue));
     }
 
-     //@Test
+     @Test
     public void testChangingSelectedDate() {
         testAppFunctionalPage("/components/datechooser/dateChooserChangeDateMonthYear.jsf");
 
@@ -115,7 +115,7 @@ public class DateChooserTest extends BaseCalendarTestCase {
         selectedDateInfo.assertText(expectedTypedDate);
     }
 
-     //@Test
+     @Test
     public void testMonthChange() {
         closeBrowser();
         testAppFunctionalPage("/components/datechooser/dateChooserChangeDateMonthYear.jsf");
@@ -154,7 +154,7 @@ public class DateChooserTest extends BaseCalendarTestCase {
         dateChooser.field().assertValue(selectedYearOutput.text());
     }
 
-     //@Test
+     @Test
     public void testTodayNoneButtons() {
         testAppFunctionalPage("/components/datechooser/dateChooserTodayNoneButton.jsf");
 
@@ -206,7 +206,7 @@ public class DateChooserTest extends BaseCalendarTestCase {
         checkButtonPairState(todayStyleButton1, todayInfoOutput1, noneStyleButton1, noneInfoOutput1);
     }
 
-     //@Test
+     @Test
     public void testLocalesPatternsFormats() {
         testAppFunctionalPage("/components/datechooser/dateChooserFormatLocalePattern.jsf");
 
@@ -329,13 +329,13 @@ public class DateChooserTest extends BaseCalendarTestCase {
         element("out81").assertText(firstDaysOfWeek.get(locale));
     }
 
-     //@Test
+     @Test
     public void testDefaultView() {
         testAppFunctionalPage("/components/datechooser/datachooser_defaultView.jsf");
         assertAppearanceNotChanged("DateChooserDefaultView");
     }
 
-     //@Test
+     @Test
     public void testStyling() {
         checkEnabledStyles(false);
         checkEnabledStyles(true);
@@ -343,7 +343,7 @@ public class DateChooserTest extends BaseCalendarTestCase {
         checkDisabledStyles(true);
     }
 
-     //@Test
+     @Test
     public void testValueChangeListener() {
         testAppFunctionalPage("/components/datechooser/dateChooserValueChangeListener.jsf");
 

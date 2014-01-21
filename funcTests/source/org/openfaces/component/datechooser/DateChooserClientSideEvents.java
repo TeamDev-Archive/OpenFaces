@@ -22,7 +22,7 @@ import java.awt.event.KeyEvent;
  * @author Darya Shumilina
  */
 public class DateChooserClientSideEvents extends OpenFacesTestCase {
-     //@Test
+     @Test
     public void testDateChooserEvents() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/datechooser/dateChooser.jsf");

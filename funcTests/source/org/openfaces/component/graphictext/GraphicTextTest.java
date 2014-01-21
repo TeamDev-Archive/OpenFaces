@@ -31,55 +31,55 @@ public class GraphicTextTest extends OpenFacesTestCase {
         assertAppearanceNotChanged("StylesAndDirections", "formID:test");
     }
 
-     //@Test
+     @Test
     public void testStylesAndDirectionRightToLeft() {
         testAppFunctionalPage("/components/graphictext/graphicTextCheckStyles.jsf");
         //font-size: 45px; color:#a10d07; font-style:italic; font-weight:bold; direction="rightToLeft"
         assertAppearanceNotChanged("StylesAndDirectionRightToLeft", "formID:test4");
     }
 
-     //@Test
+     @Test
     public void testStylesAndDirectionTopToBottom() {
         testAppFunctionalPage("/components/graphictext/graphicTextCheckStyles.jsf");
         //font-size: 15pt; color:red;}; direction="topToBottom"
         assertAppearanceNotChanged("StylesAndDirectionTopToBottom", "formID:test1");
     }
 
-     //@Test
+     @Test
     public void testStylesAndDirectionsBottomToTop() {
         testAppFunctionalPage("/components/graphictext/graphicTextCheckStyles.jsf");
         //font-size: 20px; color:green; font-style:italic; font-family:Arial; direction="115"
         assertAppearanceNotChanged("StylesAndDirectionsBottomToTop", "formID:test5");
     }
 
-     //@Test
+     @Test
     public void testStylesAndDirection50() {
         testAppFunctionalPage("/components/graphictext/graphicTextCheckStyles.jsf");
         //font-size: 45px; color:#FFA07A; font-style:italic; direction="50"
         assertAppearanceNotChanged("StylesAndDirection50", "formID:test2");
     }
 
-     //@Test
+     @Test
     public void testStylesAndDirection15() {
         testAppFunctionalPage("/components/graphictext/graphicTextCheckStyles.jsf");
         //font-size: 15px; color:blue; font-weight:bold; font-family:Courier; direction="15"
         assertAppearanceNotChanged("StylesAndDirection15", "formID:test6");
     }
 
-     //@Test
+     @Test
     public void testDateConverterDefinedByPattern() {
         testAppFunctionalPage("/components/graphictext/graphicTextCheckStyles.jsf");
         //<f:convertDateTime pattern="dd/MM/yyyy"/>
         assertAppearanceNotChanged("DateConverterDefinedByPattern", "formID:test7");
     }
 
-     //@Test
+     @Test
     public void testBindedCustomDateConverter() {
         testAppFunctionalPage("/components/graphictext/graphicTextCheckStyles.jsf");
         assertAppearanceNotChanged("BindedCustomDateConverter", "formID:test8");
     }
 
-     //@Test
+     @Test
     public void testBindingAttribute() {
         testAppFunctionalPage("/components/graphictext/graphicTextCheckStyles.jsf");
         assertAppearanceNotChanged("BindingAttribute", "formID:test9");
