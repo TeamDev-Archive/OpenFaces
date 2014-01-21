@@ -21,9 +21,10 @@ import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
 /**
  * @author Pavel Kaplin
  */
+
 public class JSFC_2294Test extends OpenFacesTestCase {
 
-    @Test
+     //@Test
     @Ignore
     public void testThereIsNoJSErrorOnAjaxTreeTableReloading() {
         Selenium selenium = getSelenium();

@@ -22,7 +22,7 @@ import java.awt.event.KeyEvent;
  * @author Darya Shumilina
  */
 public class PopupLayerClientSideEvents extends OpenFacesTestCase {
-    @Test
+     //@Test
     public void testPopupLayerClientSideEvents() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/popuplayer/popupLayer.jsf");

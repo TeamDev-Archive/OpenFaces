@@ -28,7 +28,7 @@ public class ConfirmationTest extends OpenFacesTestCase {
 
     //todo: uncomment when JSFC-3627 is fixed
     @Ignore
-    @Test
+     //@Test
     public void _testConfirmationReRenderThroughA4J() throws InterruptedException {
         testAppFunctionalPage("/components/confirmation/confirmation_a4j.jsf");
         Selenium selenium = getSelenium();
@@ -55,7 +55,7 @@ public class ConfirmationTest extends OpenFacesTestCase {
 
     //todo: uncomment when JSFC-3627 is fixed
     @Ignore
-    @Test
+     //@Test
     public void _testConfirmationInvocationThroughA4JControl() {
         testAppFunctionalPage("/components/confirmation/confirmation_a4j.jsf");
         Selenium selenium = getSelenium();
@@ -78,7 +78,7 @@ public class ConfirmationTest extends OpenFacesTestCase {
         }
     }
 
-    @Test
+     //@Test
     public void testForCommandButtonWithAction() {
         testAppFunctionalPage("/components/confirmation/confirmationTestInvokers.jsf");
         element("form1:buttonWithAction").click();
@@ -86,7 +86,7 @@ public class ConfirmationTest extends OpenFacesTestCase {
         element("form1:actionConfirmedText1").assertText("Confirmed: true");
     }
 
-    @Test
+     //@Test
     public void testForCommandButtonInvoker() {
         testAppFunctionalPage("/components/confirmation/confirmationTestInvokers.jsf");
         Selenium selenium = getSelenium();
@@ -95,7 +95,7 @@ public class ConfirmationTest extends OpenFacesTestCase {
         assertTrue(selenium.isTextPresent("button with onclick"));
     }
 
-    @Test
+     //@Test
     public void testForCommandLinkInvoker() {
         testAppFunctionalPage("/components/confirmation/confirmationTestInvokers.jsf");
         WebElement commandLink = getDriver().findElement(By.id("form1:commandLink"));
@@ -105,7 +105,7 @@ public class ConfirmationTest extends OpenFacesTestCase {
         element("form1:actionConfirmedText").assertText("Confirmed: true");
     }
 
-    @Test
+     //@Test
     public void testForOutputLinkInvoker() {
         testAppFunctionalPage("/components/confirmation/confirmationTestInvokers.jsf");
 
@@ -123,7 +123,7 @@ public class ConfirmationTest extends OpenFacesTestCase {
 */
     }
 
-    @Test
+     //@Test
     public void testConfirmationHTMLInvoker() {
         testAppFunctionalPage("/components/confirmation/confirmationTestInvokers.jsf");
         element("htmlButton").click();
@@ -131,7 +131,7 @@ public class ConfirmationTest extends OpenFacesTestCase {
         assertTrue(getSelenium().isTextPresent("HTML button"));
     }
 
-    @Test
+     //@Test
     public void testRunConfirmedFunctionFunction() {
         testAppFunctionalPage("/components/confirmation/confirmationTestInvokers.jsf");
         element("form1:linkInvokerID1").click();
@@ -139,7 +139,7 @@ public class ConfirmationTest extends OpenFacesTestCase {
         element("empty3").assertText("runConfirmedFunction works");
     }
 
-    @Test
+     //@Test
     public void testSetConfirmationTextsFunction() {
         testAppFunctionalPage("/components/confirmation/confirmationTestInvokers.jsf");
         element("form1:linkInvokerID2").click();
@@ -153,7 +153,7 @@ public class ConfirmationTest extends OpenFacesTestCase {
 
     //todo: uncomment this test if JSFC-2683 is fixed
     @Ignore
-    @Test
+     //@Test
     public void _testInputTextInside() {
         testAppFunctionalPage("/components/confirmation/confirmationContentWithArbitraryComponents.jsf");
         Selenium selenium = getSelenium();
@@ -185,7 +185,7 @@ public class ConfirmationTest extends OpenFacesTestCase {
         acceptAlert();
     }
 
-    @Test
+     //@Test
     public void testOutputTextInside() {
         testAppFunctionalPage("/components/confirmation/confirmationContentWithArbitraryComponents.jsf");
 
@@ -198,7 +198,7 @@ public class ConfirmationTest extends OpenFacesTestCase {
         getSelenium().isTextPresent("Confirmation with output text");
     }
 
-    @Test
+     //@Test
     public void testGraphicImageInside() {
         testAppFunctionalPage("/components/confirmation/confirmationContentWithArbitraryComponents.jsf");
 
@@ -213,7 +213,7 @@ public class ConfirmationTest extends OpenFacesTestCase {
 
     //todo: uncomment when JSFC-3627 is fixed
     @Ignore
-    @Test
+     //@Test
     public void _testConfirmationClientSideEvents() {
         testAppFunctionalPage("/components/confirmation/confirmation.jsf");
         Selenium selenium = getSelenium();
@@ -297,7 +297,7 @@ public class ConfirmationTest extends OpenFacesTestCase {
         assertTrue(selenium.isTextPresent("onkeyup"));
     }
 
-    @Test
+     //@Test
     public void testStyles() {
         testAppFunctionalPage("/components/confirmation/confirmationStyles.jsf");
 

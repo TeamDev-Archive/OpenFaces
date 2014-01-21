@@ -21,7 +21,7 @@ import org.openfaces.test.RichFacesAjaxLoadingMode;
  */
 public class ChartTest extends OpenFacesTestCase {
 
-    @Test
+     //@Test
     public void testReRenderThroughA4J() {
         testAppFunctionalPage("/components/chart/chart_a4j.jsf");
         Selenium selenium = getSelenium();
@@ -32,7 +32,7 @@ public class ChartTest extends OpenFacesTestCase {
         assertFalse(newValue.equals(oldValue));
     }
 
-    @Test
+     //@Test
     public void testDefaultView() {
         testAppFunctionalPage("/components/chart/chart_defaultView.jsf");
         assertAppearanceNotChanged("DefaultView");
@@ -42,19 +42,19 @@ public class ChartTest extends OpenFacesTestCase {
      * Check charts where 'view' and 'model' defined as attributes. All three variants (line, bar , pie)
      */
 
-    @Test
+     //@Test
     public void testPieChartViewModelDefinedAsAttributes() {
         testAppFunctionalPage("/components/chart/chartSimplestConfiguration.jsf");
         assertAppearanceNotChanged("PieChartViewModelDefinedAsAttributes", "formID:pieChart");
     }
 
-    @Test
+     //@Test
     public void testLineChartViewModelDefinedAsAttributes() {
         testAppFunctionalPage("/components/chart/chartSimplestConfiguration.jsf");
         assertAppearanceNotChanged("LineChartViewModelDefinedAsAttributes", "formID:lineChart");
     }
 
-    @Test
+     //@Test
     public void testBarChartViewModelDefinedAsAttributes() {
         testAppFunctionalPage("/components/chart/chartSimplestConfiguration.jsf");
         assertAppearanceNotChanged("BarChartViewModelDefinedAsAttributes", "formID:barChart");
@@ -64,19 +64,19 @@ public class ChartTest extends OpenFacesTestCase {
      * Check charts where 'view' as child tag. All three variants (line, bar , pie)
      */
 
-    @Test
+     //@Test
     public void testPieChartViewAsChildTags() {
         testAppFunctionalPage("/components/chart/chartSimplestConfiguration.jsf");
         assertAppearanceNotChanged("PieChartViewAsChildTags", "formID:pieChart");
     }
 
-    @Test
+     //@Test
     public void testLineChartViewAsChildTags() {
         testAppFunctionalPage("/components/chart/chartSimplestConfiguration.jsf");
         assertAppearanceNotChanged("LineChartViewAsChildTags", "formID:lineChart");
     }
 
-    @Test
+     //@Test
     public void testBarChartViewAsChildTags() {
         testAppFunctionalPage("/components/chart/chartSimplestConfiguration.jsf");
         assertAppearanceNotChanged("BarChartViewAsChildTags", "formID:barChart");

@@ -18,7 +18,7 @@ import org.openfaces.test.OpenFacesTestCase;
 import org.seleniuminspector.ElementInspector;
 
 public class DynamicImageClientSideEvents extends OpenFacesTestCase {
-    @Test
+     //@Test
     public void testDynamicImageClientSideEvents() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/dynamicimage/dynamicImage_clientEvents.jsf");

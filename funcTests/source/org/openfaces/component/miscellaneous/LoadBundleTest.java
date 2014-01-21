@@ -40,7 +40,7 @@ public class LoadBundleTest extends OpenFacesTestCase {
     private static final String WEEK_JA = "\u9031";
     private static final String WEEK_RU = "\u0421\u0431\u0440\u043E\u0441";
 
-    @Test
+     //@Test
     @Ignore
     public void testWithDataTable() {
         testAppFunctionalPage("/components/loadbundle/withDataTable.jsf");
@@ -122,7 +122,7 @@ public class LoadBundleTest extends OpenFacesTestCase {
         localeChanger.tabs().get(0).clickAndWait();
     }
 
-    @Test
+     //@Test
     public void testWithropDownField() {
         testAppFunctionalPage("/components/loadbundle/withDropDownField.jsf");
 
@@ -156,7 +156,7 @@ public class LoadBundleTest extends OpenFacesTestCase {
         localeChanger.tabs().get(0).clickAndWait();
     }
 
-    @Test
+     //@Test
     public void testWithFoldingPanel() {
         testAppFunctionalPage("/components/loadbundle/withFoldingPanel.jsf");
 
@@ -198,7 +198,7 @@ public class LoadBundleTest extends OpenFacesTestCase {
         localeChanger.tabs().get(0).clickAndWait();
     }
 
-    @Test
+     //@Test
     public void testWithSuggestionField() {
         testAppFunctionalPage("/components/loadbundle/withSuggestionField.jsf");
 
@@ -234,7 +234,7 @@ public class LoadBundleTest extends OpenFacesTestCase {
         localeChanger.tabs().get(0).clickAndWait();
     }
 
-    @Test
+     //@Test
     public void testWithTabbedPane() {
         testAppFunctionalPage("/components/loadbundle/withTabbedPane.jsf");
         TabSetInspector localeChanger = tabSet("formID:localeChanger");
@@ -293,7 +293,7 @@ public class LoadBundleTest extends OpenFacesTestCase {
         localeChanger.tabs().get(0).clickAndWait();
     }
 
-    @Test
+     //@Test
     public void testWithTreeTable() {
         testAppFunctionalPage("/components/loadbundle/withTreeTable.jsf");
 

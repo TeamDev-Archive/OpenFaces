@@ -26,7 +26,7 @@ public class FileUploadTest  extends OpenFacesTestCase {
     final static private String TOO_BIG_FILE = "c:\\fileUploadTestResources\\too_big_size.bmp";
     final static private String WRONG_TYPE_FILE = "c:\\fileUploadTestResources\\wrong_type.txt";
 
-    @Test
+     //@Test
     public void testSingleFileUpload() {
         testAppFunctionalPage("/components/fileupload/singleFileUpload.jsf");
         assertTrue(element("formID:fileUpload::dragArea").elementExists());
@@ -49,7 +49,7 @@ public class FileUploadTest  extends OpenFacesTestCase {
         assertTrue(getDriver().findElement(By.id("formID:fileSize")).getText().length() > 1);
     }
 
-    @Test
+     //@Test
     public void testWrongMimeTypeAndSize() {
         testAppFunctionalPage("/components/fileupload/singleFileUpload.jsf");
         WebElement input = getDriver().

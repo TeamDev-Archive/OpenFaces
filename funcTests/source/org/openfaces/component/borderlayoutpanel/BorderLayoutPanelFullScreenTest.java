@@ -29,7 +29,7 @@ public class BorderLayoutPanelFullScreenTest extends OpenFacesTestCase {
         return true;
     }
 
-    @Test
+     //@Test
     @Ignore
     // todo: investigate why this test fails on build server (but works locally)
     public void testRendering() {
@@ -75,7 +75,7 @@ public class BorderLayoutPanelFullScreenTest extends OpenFacesTestCase {
 //    saveScreenshotToFile("c:/temp/BorderLayoutPanelFullScreenTest.testRendering.3.png");
     }
 
-    @Test
+     //@Test
     @Ignore
     // todo: investigate why this test fails on build server (but works locally)
     public void testContentResizeOnWindowResize() {

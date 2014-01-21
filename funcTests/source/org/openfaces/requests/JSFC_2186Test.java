@@ -23,7 +23,7 @@ import org.seleniuminspector.LoadingMode;
  *         JSFC-2186 Floating Icon bleeds through to other panes when using the Tabbed Pane
  */
 public class JSFC_2186Test extends OpenFacesTestCase {
-    @Test
+     //@Test
     public void testFloatingIconMessageIsHidedWhenTargetElementIsInvisible() throws InterruptedException {
         testAppFunctionalPage("/requests/JSFC-2186.jsf");
 
