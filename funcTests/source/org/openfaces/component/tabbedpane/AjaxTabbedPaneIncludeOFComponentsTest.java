@@ -22,7 +22,7 @@ import org.seleniuminspector.openfaces.*;
  * @author Darya Shumilina
  */
 public class AjaxTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
-     //@Test
+     @Test
     public void testCalendarInside() {
         testAppFunctionalPage("/components/tabbedpane/calendarIn.jsf");
 

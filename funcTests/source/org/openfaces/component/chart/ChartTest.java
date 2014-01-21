@@ -21,7 +21,7 @@ import org.openfaces.test.RichFacesAjaxLoadingMode;
  */
 public class ChartTest extends OpenFacesTestCase {
 
-     //@Test
+     @Test
     public void testReRenderThroughA4J() {
         testAppFunctionalPage("/components/chart/chart_a4j.jsf");
         Selenium selenium = getSelenium();

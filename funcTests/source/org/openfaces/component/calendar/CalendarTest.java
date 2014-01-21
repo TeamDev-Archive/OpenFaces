@@ -22,7 +22,7 @@ import org.seleniuminspector.openfaces.CalendarInspector;
  * @author Darya Shumilina
  */
 public class CalendarTest extends BaseCalendarTestCase {
-     //@Test
+     @Test
     public void testReRenderThroughA4J() {
         testAppFunctionalPage("/components/calendar/calendar_a4j.jsf");
 

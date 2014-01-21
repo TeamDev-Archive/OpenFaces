@@ -29,7 +29,7 @@ import org.seleniuminspector.openfaces.TabbedPaneInspector;
  * @author Darya Shumilina
  */
 public class TabbedPaneTest extends OpenFacesTestCase {
-     //@Test
+     @Test
     public void testReRenderThroughA4J() {
         testAppFunctionalPage("/components/tabbedpane/tabbedPane_a4j.jsf");
 

@@ -23,7 +23,7 @@ import org.seleniuminspector.ElementInspector;
  */
 public class HintLabelTest extends OpenFacesTestCase {
 
-     //@Test
+     @Test
     public void testReRenderThroughA4J() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/hintlabel/hintLabel_a4j.jsf");

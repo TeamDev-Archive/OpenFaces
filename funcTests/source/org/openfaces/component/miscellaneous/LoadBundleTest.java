@@ -40,7 +40,7 @@ public class LoadBundleTest extends OpenFacesTestCase {
     private static final String WEEK_JA = "\u9031";
     private static final String WEEK_RU = "\u0421\u0431\u0440\u043E\u0441";
 
-     //@Test
+     @Test
     @Ignore
     public void testWithDataTable() {
         testAppFunctionalPage("/components/loadbundle/withDataTable.jsf");

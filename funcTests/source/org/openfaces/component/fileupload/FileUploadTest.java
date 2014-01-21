@@ -26,7 +26,7 @@ public class FileUploadTest  extends OpenFacesTestCase {
     final static private String TOO_BIG_FILE = "c:\\fileUploadTestResources\\too_big_size.bmp";
     final static private String WRONG_TYPE_FILE = "c:\\fileUploadTestResources\\wrong_type.txt";
 
-     //@Test
+     @Test
     public void testSingleFileUpload() {
         testAppFunctionalPage("/components/fileupload/singleFileUpload.jsf");
         assertTrue(element("formID:fileUpload::dragArea").elementExists());

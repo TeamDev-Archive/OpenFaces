@@ -22,7 +22,7 @@ import org.seleniuminspector.LoadingMode;
  * @author Alexey Tarasyuk
  */
 public class SidePanelTest extends OpenFacesTestCase {
-     //@Test
+     @Test
     public void testRendering() {
         testAppFunctionalPage("/components/borderlayoutpanel/sidePanelft.jsf");
         // test defaultSidePanel rendering

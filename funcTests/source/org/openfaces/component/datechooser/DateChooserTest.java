@@ -41,7 +41,7 @@ public class DateChooserTest extends BaseCalendarTestCase {
     private Map<String, String> calendarValues = new HashMap<String, String>();
     private Map<String, String> firstDaysOfWeek = new HashMap<String, String>();
 
-     //@Test
+     @Test
     public void testReRenderThroughA4J() {
         testAppFunctionalPage("/components/datechooser/dateChooser_a4j.jsf");
 

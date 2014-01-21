@@ -64,7 +64,7 @@ public class DataTableIncludeOFComponentsTest extends OpenFacesTestCase {
         testAppPage("/functionalTesting/datatable/foldingPanelIn.jsf");
       }
     */
-     //@Test
+     @Test
     public void testHintLabelInside() {
         testAppFunctionalPage("/components/datatable/hintLabelIn.jsf");
 

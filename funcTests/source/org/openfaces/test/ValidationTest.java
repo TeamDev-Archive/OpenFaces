@@ -28,7 +28,7 @@ import java.awt.event.KeyEvent;
  */
 public class ValidationTest extends OpenFacesTestCase {
 
-     //@Test
+     @Test
     public void testServerDefaultPresentation() {
         closeBrowser();
         testAppFunctionalPage("/components/validation/serverDefaultPresentation.jsf");

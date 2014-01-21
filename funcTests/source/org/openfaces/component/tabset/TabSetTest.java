@@ -23,7 +23,7 @@ import org.seleniuminspector.openfaces.TabSetInspector;
  * @author Darya Shumilina
  */
 public class TabSetTest extends OpenFacesTestCase {
-     //@Test
+     @Test
     public void testReRenderThroughA4J() {
         testAppFunctionalPage("/components/tabset/tabSet_a4j.jsf");
 

@@ -29,7 +29,7 @@ public class BorderLayoutPanelFullScreenTest extends OpenFacesTestCase {
         return true;
     }
 
-     //@Test
+    @Test
     @Ignore
     // todo: investigate why this test fails on build server (but works locally)
     public void testRendering() {

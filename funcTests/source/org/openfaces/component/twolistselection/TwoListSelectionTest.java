@@ -24,7 +24,7 @@ import java.util.List;
  * @author Darya Shumilina
  */
 public class TwoListSelectionTest extends OpenFacesTestCase {
-     //@Test
+     @Test
     public void testReRenderThroughA4J() {
         testAppFunctionalPage("/components/twolistselection/twoListSelection_a4j.jsf");
         String[] oldTLSValues = new String[7];

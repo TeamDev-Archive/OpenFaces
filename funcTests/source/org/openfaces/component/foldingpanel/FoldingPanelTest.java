@@ -22,7 +22,7 @@ import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
  * @author Darya Shumilina
  */
 public class FoldingPanelTest extends OpenFacesTestCase {
-     //@Test
+     @Test
     public void testReRenderThroughA4J() {
         testAppFunctionalPage("/components/foldingpanel/foldingPanel_a4j.jsf");
         ElementInspector foldingPanelToggle = foldingPanel("formID:foldingPanelID").toggle();

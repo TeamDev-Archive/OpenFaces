@@ -27,7 +27,7 @@ import org.seleniuminspector.openfaces.SuggestionFieldInspector;
  */
 public class ForEachTest extends OpenFacesTestCase {
 
-     //@Test
+     @Test
     public void testForEachWithoutItems() {
         testAppFunctionalPage("/components/foreach/forEach.jsf");
 

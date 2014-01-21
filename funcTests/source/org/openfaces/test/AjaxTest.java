@@ -26,7 +26,7 @@ import java.util.List;
 public class AjaxTest extends OpenFacesTestCase {
 
     //All DataTable features, that use Ajax is Tested on the demo (DataTable_general.jsf)
-     //@Test
+     @Test
     public void testFoldingPanelAjax() throws Exception {
         testAppFunctionalPage("/components/foldingpanel/foldingPanelAjax.jsf");
         element("form1:Output").assertElementExists(false);

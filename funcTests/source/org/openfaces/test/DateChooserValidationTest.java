@@ -23,7 +23,7 @@ import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
  */
 public class DateChooserValidationTest extends OpenFacesTestCase {
 
-     //@Test
+     @Test
     public void testClientValidationOff() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/datechooser/dateChooserValid.jsf");

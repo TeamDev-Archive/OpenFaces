@@ -20,7 +20,7 @@ import org.openfaces.test.RichFacesAjaxLoadingMode;
  * @author Darya Shumilina
  */
 public class DynamicImageTest extends OpenFacesTestCase {
-     //@Test
+     @Test
     public void testReRenderThroughA4J() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/dynamicimage/dynamicImage_a4j.jsf");

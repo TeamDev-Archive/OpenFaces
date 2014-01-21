@@ -28,7 +28,7 @@ import org.seleniuminspector.openfaces.TwoListSelectionInspector;
  * @author Darya Shumilina
  */
 public class AjaxFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase {
-     //@Test
+     @Test
     public void testCalendarInside() {
         testAppFunctionalPage("/components/foldingpanel/calendarIn.jsf");
 

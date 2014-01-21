@@ -48,7 +48,7 @@ public class DataTableTest extends OpenFacesTestCase {
 
     //todo: see JSFC-3080 issue
     @Ignore
-     //@Test
+     @Test
     public void _testDataTableReRenderThroughA4J() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/datatable/dataTable_a4j.jsf");

@@ -23,7 +23,7 @@ import org.seleniuminspector.openfaces.SidePanelInspector;
  *         // todo: consider optimizing performance by combinbing several tests that involve various splitter draggings into one test
  */
 public class BorderLayoutPanelTest extends OpenFacesTestCase {
-     //@Test
+     @Test
     @Ignore
     public void testRendering() {
         testAppFunctionalPage("/components/borderlayoutpanel/borderLayoutPanelft.jsf");

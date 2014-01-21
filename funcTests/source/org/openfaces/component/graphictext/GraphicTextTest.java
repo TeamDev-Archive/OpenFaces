@@ -20,7 +20,7 @@ import org.openfaces.test.OpenFacesTestCase;
 public class GraphicTextTest extends OpenFacesTestCase {
 
     //todo: problems with image comparison are possible if the test server dpi doesn't equals to 96 when 'font-size' defined via 'pt'
-     //@Test
+     @Test
     public void testStylesAndDirections() {
 
         testAppFunctionalPage("/components/graphictext/graphicTextCheckStyles.jsf");

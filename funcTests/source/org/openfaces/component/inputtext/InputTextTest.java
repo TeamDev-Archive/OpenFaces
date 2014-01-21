@@ -26,7 +26,7 @@ import java.awt.event.KeyEvent;
  * @author Vladimir Kurganov
  */
 public class InputTextTest extends OpenFacesTestCase {
-     //@Test
+     @Test
     public void testTypedValue() {
         testAppFunctionalPage("/components/inputtext/inputTextFieldBaseFunctionality.jsf");
 

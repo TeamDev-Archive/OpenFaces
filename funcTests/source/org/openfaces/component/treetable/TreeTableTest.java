@@ -33,7 +33,7 @@ import java.util.List;
  * @author Darya Shumilina
  */
 public class TreeTableTest extends OpenFacesTestCase {
-     //@Test
+     @Test
     public void testReRenderThroughA4J() {
         testAppFunctionalPage("/components/treetable/treeTable_a4j.jsf");
 

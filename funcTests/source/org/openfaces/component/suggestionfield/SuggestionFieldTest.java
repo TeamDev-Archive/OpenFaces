@@ -22,7 +22,7 @@ public class SuggestionFieldTest extends BaseDropDownTestCase {
 
     //todo: uncomment if 'JSFC-3319' is in 'Fixed' state
     @Ignore
-     //@Test
+     @Test
     public void _testReRenderThroughA4J() {
         checkReRenderingThroughA4J("/components/suggestionfield/suggestionField_a4j.jsf");
     }

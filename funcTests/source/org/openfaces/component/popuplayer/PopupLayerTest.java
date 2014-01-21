@@ -25,7 +25,7 @@ import java.awt.*;
  * @author Darya Shumilina
  */
 public class PopupLayerTest extends OpenFacesTestCase {
-     //@Test
+     @Test
     public void testReRenderThroughA4J() {
         testAppFunctionalPage("/components/popuplayer/popupLayer_a4j.jsf");
         PopupLayerInspector popupLayer = popupLayer("formID:popupLayerID");

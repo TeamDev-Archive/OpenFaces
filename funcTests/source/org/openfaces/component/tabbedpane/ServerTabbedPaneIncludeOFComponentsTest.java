@@ -24,7 +24,7 @@ import org.seleniuminspector.openfaces.*;
  */
 public class ServerTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
 
-     //@Test
+     @Test
     public void testCalendarInside() {
         testAppFunctionalPage("/components/tabbedpane/calendarIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(2, ServerLoadingMode.getInstance());

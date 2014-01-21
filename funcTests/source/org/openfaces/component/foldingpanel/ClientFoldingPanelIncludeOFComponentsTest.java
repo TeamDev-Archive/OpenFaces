@@ -24,7 +24,7 @@ import org.seleniuminspector.openfaces.*;
  * @author Darya Shumilina
  */
 public class ClientFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase {
-     //@Test
+     @Test
     public void testCalendarInside() {
         testAppFunctionalPage("/components/foldingpanel/calendarIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());

@@ -23,7 +23,7 @@ import org.seleniuminspector.openfaces.*;
  * @author Darya Shumilina
  */
 public class ClientTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
-     //@Test
+     @Test
     public void testCalendarInside() {
         testAppFunctionalPage("/components/tabbedpane/calendarIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());

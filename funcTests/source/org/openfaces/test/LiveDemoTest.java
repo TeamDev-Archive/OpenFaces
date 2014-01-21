@@ -30,7 +30,7 @@ import org.seleniuminspector.openfaces.TabSetInspector;
  */
 public class LiveDemoTest extends OpenFacesTestCase {
 
-     //@Test
+     @Test
     @Ignore
     public void testAvailability() {
         assertDemoPageAvailable("/overview/homepage.jsf", "OpenFaces Online Demo \u2014 See Components in action");
