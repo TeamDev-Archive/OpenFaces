@@ -13,6 +13,7 @@ package org.openfaces.test;
 
 import com.thoughtworks.selenium.Selenium;
 import org.junit.After;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.seleniuminspector.openfaces.DateChooserInspector;
 import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
@@ -62,6 +63,7 @@ public class DateChooserValidationTest extends OpenFacesTestCase {
     }
 
     @Test
+    @Ignore
     public void testChangeLocaleFromBinding() {
         Selenium selenium = getSelenium();
         liveDemoPage("/datechooser/DateChooser.jsf");
