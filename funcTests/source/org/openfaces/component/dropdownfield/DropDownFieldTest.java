@@ -18,7 +18,7 @@ import org.junit.Test;
  * @author Darya Shumilina
  */
 public class DropDownFieldTest extends BaseDropDownTestCase {
-     //@Test
+     @Test
     public void testReRenderThroughA4J() {
         checkReRenderingThroughA4J("/components/dropdown/dropDown_a4j.jsf");
     }
