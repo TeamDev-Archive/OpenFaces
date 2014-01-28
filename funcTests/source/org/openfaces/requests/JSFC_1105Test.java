@@ -21,7 +21,7 @@ import org.openfaces.test.OpenFacesTestCase;
 public class JSFC_1105Test extends OpenFacesTestCase {
 
     // JSFC-1105 Client-side validation does'n work for RegExpValidator with "[-\+]?[0-9]*\.?[0-9]*" pattern
-    @Test
+     @Test
     public void testRegExpValidator() {
         final String messageText = "its not correct number";
         final String validateButtonLocator = "//input[@value='Validate']";

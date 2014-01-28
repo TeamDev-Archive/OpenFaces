@@ -21,8 +21,8 @@ import org.seleniuminspector.ElementInspector;
  * @author Darya Shumilina
  */
 public class ScrollPositionTest extends OpenFacesTestCase {
-    @Test
-    @Ignore
+
+     @Test
     public void testScrollPositionByPageLoading() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/scrollfocus/scrollPosition.jsf");
@@ -30,7 +30,7 @@ public class ScrollPositionTest extends OpenFacesTestCase {
         assertEquals("700", selenium.getEval("window.pageXOffset"));
     }
 
-    @Test
+     @Test
     public void testScrollPositionSaveAfterPageSubmission() {
         testAppFunctionalPage("/components/scrollfocus/scrollPosition.jsf");
         ElementInspector button = element("formID:clickIt");

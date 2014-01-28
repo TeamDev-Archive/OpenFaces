@@ -48,7 +48,7 @@ public class DataTableTest extends OpenFacesTestCase {
 
     //todo: see JSFC-3080 issue
     @Ignore
-    @Test
+     @Test
     public void _testDataTableReRenderThroughA4J() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/datatable/dataTable_a4j.jsf");
@@ -118,7 +118,7 @@ public class DataTableTest extends OpenFacesTestCase {
 
     //todo: see JSFC-3080 issue
     @Ignore
-    @Test
+     @Test
     public void _testDataTableWithA4JInside() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/datatable/dataTable_a4j.jsf");
@@ -180,13 +180,13 @@ public class DataTableTest extends OpenFacesTestCase {
         }
     }
 
-    @Test
+     @Test
     public void testPagination() {
         pagination(OpenFacesAjaxLoadingMode.getInstance());
         pagination(ServerLoadingMode.getInstance());
     }
 
-    @Test
+     @Test
     public void testColumnGroups_headers() {
         testAppFunctionalPage("/components/datatable/dataTableColumnGroups.jsf");
         TableInspector table = dataTable("formID:twoHeadersTable");
@@ -238,7 +238,7 @@ public class DataTableTest extends OpenFacesTestCase {
         table.footer().assertElementExists(false);
     }
 
-    @Test
+     @Test
     public void testColumnGroups_styles() {
         testAppFunctionalPage("/components/datatable/dataTableColumnGroups.jsf");
         tabbedPane("formID:testSelector").setPageIndex(1, ServerLoadingMode.getInstance());
@@ -272,7 +272,7 @@ public class DataTableTest extends OpenFacesTestCase {
         table.column(6).assertStyle("background: SteelBlue");
     }
 
-    @Test
+     @Test
     public void testColumnGroups_footers() {
         testAppFunctionalPage("/components/datatable/dataTableColumnGroups.jsf");
         tabbedPane("formID:testSelector").setPageIndex(2, ServerLoadingMode.getInstance());
@@ -310,7 +310,7 @@ public class DataTableTest extends OpenFacesTestCase {
             table.column(i).assertStyle("background: Bisque");
     }
 
-    @Test
+     @Test
     public void testColumnGroups_mixed() {
         testAppFunctionalPage("/components/datatable/dataTableColumnGroups.jsf");
         tabbedPane("formID:testSelector").setPageIndex(3, ServerLoadingMode.getInstance());
@@ -384,7 +384,7 @@ public class DataTableTest extends OpenFacesTestCase {
             footer.row(i).assertStyle("color: DarkBlue; font-weight: bold; font-family: Tahoma,Arial; font-size: 19px;");
     }
 
-    @Test
+     @Test
     public void testSingleSelectionAndKeyboardNavigation() {
         testAppFunctionalPage("/components/datatable/datatableSingleSelection.jsf");
 
@@ -419,7 +419,7 @@ public class DataTableTest extends OpenFacesTestCase {
     }
 
     //todo: row selection checking with 'Ctrl' key is absent
-    @Test
+     @Test
     public void testMultipleSelectionAndKeyboardNavigation() {
         testAppFunctionalPage("/components/datatable/datatableMultipleSelection.jsf");
 
@@ -467,25 +467,25 @@ public class DataTableTest extends OpenFacesTestCase {
         withRowIndexesDataTable.checkSelectedIndexes(0, 1, 2, 3);
     }
 
-    @Test
+     @Test
     public void testSortingFeature() {
         sorting(OpenFacesAjaxLoadingMode.getInstance());
         sorting(ServerLoadingMode.getInstance());
     }
 
-    @Test
+     @Test
     public void testFilteringComboBox() {
         filteringComboBox(OpenFacesAjaxLoadingMode.getInstance());
         filteringComboBox(ServerLoadingMode.getInstance());
     }
 
-    @Test
+     @Test
     public void testFilteringDropDown() {
         filteringDropDown(OpenFacesAjaxLoadingMode.getInstance());
         filteringDropDown(ServerLoadingMode.getInstance());
     }
 
-    @Test
+     @Test
     public void testSelectAllCheckboxInsideCheckboxColumnFunctionality() {
         testAppFunctionalPage("/components/datatable/datatableSelectAllCheckbox_chb.jsf");
 
@@ -502,7 +502,7 @@ public class DataTableTest extends OpenFacesTestCase {
         }
     }
 
-    @Test
+     @Test
     public void test_q_refreshDataTable() {
         testAppFunctionalPage("/components/datatable/datatableQRefresh.jsf");
 
@@ -549,7 +549,7 @@ public class DataTableTest extends OpenFacesTestCase {
         }
     }
 
-    @Test
+     @Test
     public void testRowKeyFunctionality() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/datatable/datatableRowKey.jsf");
@@ -565,7 +565,7 @@ public class DataTableTest extends OpenFacesTestCase {
         assertFalse(withRowKeyDataTableIndex == withoutRowKeyDataTableIndex);
     }
 
-    @Test
+     @Test
     public void testSelectAllCheckboxInsideSelectionColumnFunctionality() {
         testAppFunctionalPage("/components/datatable/datatableSelectAllCheckbox__sel.jsf");
 
@@ -589,18 +589,18 @@ public class DataTableTest extends OpenFacesTestCase {
         assertEquals(isFooterChecked, "true");
     }
 
-    @Test
+     @Test
     public void testFeaturesCombination_ajax() {
             featuresCombination(OpenFacesAjaxLoadingMode.getInstance());
     }
 
-    @Test
+     @Test
     @Ignore
     public void testFeaturesCombination_server() {
         featuresCombination(ServerLoadingMode.getInstance());
     }
 
-    @Test
+     @Test
     public void testNoDataRowMessages() {
         testAppFunctionalPage("/components/datatable/datatableNoData.jsf");
 
@@ -972,7 +972,7 @@ public class DataTableTest extends OpenFacesTestCase {
         }
     }
 
-    @Test
+     @Test
     public void testStylesCustomizationAsImage() {
         testAppFunctionalPage("/components/datatable/DataTableStylesCustomization.jsf");
         assertAppearanceNotChanged("StylesCustomizationAsImage", "form1:table1");

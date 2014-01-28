@@ -23,7 +23,7 @@ import org.seleniuminspector.openfaces.*;
  * @author Darya Shumilina
  */
 public class ClientTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
-    @Test
+     @Test
     public void testCalendarInside() {
         testAppFunctionalPage("/components/tabbedpane/calendarIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());
@@ -38,7 +38,7 @@ public class ClientTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
         secondCalendar.assertVisible(true);
     }
 
-    @Test
+     @Test
     public void testConfirmationInside() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/tabbedpane/confirmationIn.jsf");
@@ -71,7 +71,7 @@ public class ClientTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
         confirmation2.assertVisible(false);
     }
 
-    @Test
+     @Test
     public void testDataTableInside() {
         testAppFunctionalPage("/components/tabbedpane/dataTableIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());
@@ -100,7 +100,7 @@ public class ClientTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
         secondDataTable.column(0).filter(ComboBoxFilterInspector.class, "fn:secondDataTableID:filter1").makeFiltering("col1_row1");
     }
 
-    @Test
+     @Test
     public void testDateChooserInside() {
         testAppFunctionalPage("/components/tabbedpane/dateChooserIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());
@@ -120,7 +120,7 @@ public class ClientTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
         secondDateChooser.field().assertValue("Jul 30, 2006");
     }
 
-    @Test
+     @Test
     public void testDropDownInside() {
         testAppFunctionalPage("/components/tabbedpane/dropDownIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());
@@ -143,7 +143,7 @@ public class ClientTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
         secondDropDown.field().assertValue("Yellow");
     }
 
-    @Test
+     @Test
     public void testDynamicImageInside() {
         testAppFunctionalPage("/components/tabbedpane/dynamicImageIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());
@@ -160,7 +160,7 @@ public class ClientTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
         secondDynamicImage.assertVisible(true);
     }
 
-    @Test
+     @Test
     public void testAjaxFoldingPanelInside() {
         testAppFunctionalPage("/components/tabbedpane/foldingPanelIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());
@@ -189,7 +189,7 @@ public class ClientTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
         secondPanelContent.assertVisible(true);
     }
 
-    @Test
+     @Test
     public void testHintLabelInside() throws InterruptedException {
         closeBrowser();
         testAppFunctionalPage("/components/tabbedpane/hintLabelIn.jsf");
@@ -200,7 +200,7 @@ public class ClientTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
         hintLabel("fn:secondHintLabelID").checkVisibilityAndContent("Second HintLabel Value :-)", "Second HintLabel Title ;-)");
     }
 
-    @Test
+     @Test
     public void testPopupLayerInside() {
         testAppFunctionalPage("/components/tabbedpane/popupLayerIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());
@@ -226,7 +226,7 @@ public class ClientTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
 
     //todo: uncomment when the  JSFC-3629 is fixed
     @Ignore
-    @Test
+     @Test
     public void _testClientTabbedPaneClientClientTabbedPane() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/tabbedpane/tabbedPaneIn.jsf");
@@ -253,7 +253,7 @@ public class ClientTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
         assertTrue(selenium.getText("fn:secondItem_secondContent").equals("Some text on the second tab"));
     }
 
-    @Test
+     @Test
     public void testTabSetInside() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/tabbedpane/tabSetIn.jsf");
@@ -272,7 +272,7 @@ public class ClientTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
         secondTabSetSecondTab.assertText("Server");
     }
 
-    @Test
+     @Test
     public void testTreeTableInside() {
         testAppFunctionalPage("/components/tabbedpane/treeTableIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());
@@ -294,7 +294,7 @@ public class ClientTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
         secondTreeTable.column(0).filter(DropDownFieldFilterInspector.class, "fn:secondTreeTable:filter1").makeFiltering("color");
     }
 
-    @Test
+     @Test
     public void testTwoListSelectionInside() {
         testAppFunctionalPage("/components/tabbedpane/twoListSelectionIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());

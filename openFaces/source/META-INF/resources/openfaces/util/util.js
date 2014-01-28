@@ -3042,7 +3042,10 @@ if (!window.O$) {
 
   O$.getLocalStyleSheet = function() {
     if (document._of_localStyleSheet)
-      return document._of_localStyleSheet;
+      if (!document._of_localAdditionalStyleSheets)
+        return document._of_localStyleSheet;
+      else
+        return document._of_localAdditionalStyleSheets[document._of_localAdditionalStyleSheetsCount-1];
 
     if (document.createStyleSheet) {
       document._of_localStyleSheet = document.createStyleSheet();
@@ -3059,7 +3062,29 @@ if (!window.O$) {
     return document._of_localStyleSheet;
   };
 
-  O$.addCssRule = function(strRule) {
+  // TODO: in IE for high loaded pages we get limit for rules inside one style sheet, in this case we are starting to cr8 additionale sheets
+  O$.addAdditionalStyleSheet = function() {
+    document._of_localAdditionalStyleSheetsCount = document._of_localAdditionalStyleSheetsCount ? document._of_localAdditionalStyleSheetsCount + 1 : 1;
+    document._of_localAdditionalStyleSheets = [];
+
+    if (document.createStyleSheet) {
+      document._of_localAdditionalStyleSheets[document._of_localAdditionalStyleSheetsCount-1] = document.createStyleSheet();
+    } else {
+      var styleElement = document.createElement("style");
+      var headTags = document.getElementsByTagName("head");
+      var styleParent = headTags.length > 0 ? headTags[0] : document.getElementsByTagName("body")[0];
+      styleParent.appendChild(styleElement);
+      if (styleElement.styleSheet)
+        document._of_localAdditionalStyleSheets[document._of_localAdditionalStyleSheetsCount-1] = styleElement.styleSheet;
+      else
+      document._of_localAdditionalStyleSheets[document._of_localAdditionalStyleSheetsCount-1] =  styleElement.sheet;
+    }
+  }
+
+
+  //TODO: temporary solution for
+
+  O$.addCssRule = function(strRule, cachingDisabled) {
     var styleSheet = O$.getLocalStyleSheet();
     if (!styleSheet)
       return;
@@ -3070,14 +3095,48 @@ if (!window.O$) {
         var idx2 = strRule.indexOf("}");
         O$.assert(idx1 != -1 && idx2 != -1 && idx2 > idx1, "O$.addCssRule: Couldn't parse CSS rule \"{...}\"  boundaries: " + strRule);
         var selector = strRule.substring(0, idx1);
-        var declaration = strRule.substring(idx1 + 1, idx2);
+        if (!cachingDisabled){
+          var selector_name = selector;
 
+          //TODO: temp solution for name hash have to be replaced asap
+          selector_name = selector_name.replace(/ /g,"s");
+          selector_name = selector_name.replace(/\./g,"d");
+          selector_name = selector_name.replace(/:/g,"d_d");
+          selector_name = selector_name.replace(/#/g,"s_h");
+          selector_name = selector_name.replace(/\*/g,"a");
+          selector_name = selector_name.replace(/,/g,"k");
+          selector_name = selector_name.replace(/>/g,"r");
+          selector_name = selector_name.replace(/\+/g,"p");
+          selector_name = selector_name.replace(/\]/g,"s_k");
+          selector_name = selector_name.replace(/=/g,"e");
+          selector_name = selector_name.replace(/~/g,"t");
+          selector_name = selector_name.replace(/\|/g,"o_r");
+          selector_name = selector_name.replace(/\^/g,"s_t");
+
+          if (!document._cachedDynamicCssRules)
+            document._cachedDynamicCssRules = {};
+          if (document._cachedDynamicCssRules[selector_name])
+            return;
+        }
+        var declaration = strRule.substring(idx1 + 1, idx2);
         styleSheet.addRule(selector, declaration);
+        if (!cachingDisabled){
+          try {
+            document._cachedDynamicCssRules[selector_name] = selector;
+          } catch (e){
+            //TODO: temporary 'try catch block' have to be removed after cleanup is ready
+          }
+        }
       } else { // all others
         styleSheet.insertRule(strRule, styleSheet.cssRules.length);
       }
       return styleSheet;
     } catch (e) {
+      if (styleSheet.addRule) { // IE only
+        //TODO: add cleanup phase here, right now we just creating new style sheet
+        O$.addAdditionalStyleSheet();
+        O$.addCssRule(strRule, cachingDisabled);
+      }
       O$.logError("O$.addCssRule threw an exception " + (e ? e.message : e) +
               "; tried to add the following rule: " + strRule);
       throw e;

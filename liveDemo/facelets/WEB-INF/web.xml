@@ -181,7 +181,6 @@
     <param-value>true</param-value>
   </context-param>
 
-  <!-- FILTER FOR PROCESSING INTERNAL OPENFACES RESOURCES -->
   <filter>
     <filter-name>ResourceFilter</filter-name>
     <filter-class>org.openfaces.util.ResourceFilter</filter-class>

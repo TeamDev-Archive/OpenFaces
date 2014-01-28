@@ -19,7 +19,7 @@ import org.openfaces.test.OpenFacesTestCase;
  * @author Darya Shumilina
  */
 public class TabSetClientSideEvents extends OpenFacesTestCase {
-    @Test
+     @Test
     public void testTabSetClientSideEvents() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/tabset/tabSet.jsf");

@@ -23,7 +23,7 @@ import org.seleniuminspector.openfaces.SidePanelInspector;
  *         // todo: consider optimizing performance by combinbing several tests that involve various splitter draggings into one test
  */
 public class BorderLayoutPanelTest extends OpenFacesTestCase {
-    @Test
+     @Test
     @Ignore
     public void testRendering() {
         testAppFunctionalPage("/components/borderlayoutpanel/borderLayoutPanelft.jsf");
@@ -91,7 +91,7 @@ public class BorderLayoutPanelTest extends OpenFacesTestCase {
         contentDiv.assertElementExists();
     }
 
-    @Test
+     @Test
     @Ignore
     public void testSidePanelSplitterDragging() {
         testAppFunctionalPage("/components/borderlayoutpanel/borderLayoutPanelft.jsf");
@@ -181,7 +181,7 @@ public class BorderLayoutPanelTest extends OpenFacesTestCase {
         sidePanel08.assertExpressionEquals("offsetHeight", 50);
     }
 
-    @Test
+     @Test
     @Ignore
     public void testEvents() {
         testAppFunctionalPage("/components/borderlayoutpanel/borderLayoutPanelft.jsf");
@@ -194,7 +194,7 @@ public class BorderLayoutPanelTest extends OpenFacesTestCase {
         contentText.assertExpressionEquals("innerHTML", "offsetWidth = 300 offsetHeight = 200");
     }
 
-    @Test
+     @Test
     @Ignore
     public void testContentResizeOnSplitterDrag() {
         testAppFunctionalPage("/components/borderlayoutpanel/borderLayoutPanelft.jsf");
@@ -283,7 +283,7 @@ public class BorderLayoutPanelTest extends OpenFacesTestCase {
         borderLayoutPanel00.content().assertExpressionEquals("offsetHeight", 200);
     }
 
-    @Test
+     @Test
     @Ignore
     public void testContentResizeOnParentResize() {
         testAppFunctionalPage("/components/borderlayoutpanel/borderLayoutPanelft.jsf");
@@ -331,7 +331,7 @@ public class BorderLayoutPanelTest extends OpenFacesTestCase {
         content2.assertExpressionEquals("offsetHeight", 300);
     }
 
-    @Test
+     @Test
     @Ignore
     public void testTruncatedMode() {
         testAppFunctionalPage("/components/borderlayoutpanel/borderLayoutPanelft.jsf");
@@ -550,7 +550,7 @@ public class BorderLayoutPanelTest extends OpenFacesTestCase {
         sidePanel4.assertExpressionEquals("offsetHeight", 50);
     }
 
-    @Test
+     @Test
     @Ignore
     // todo: investigate why this test fails on build server (but works locally)
     public void testBoxLayoutModel() {
