@@ -453,7 +453,7 @@ O$.DropDownField = {
       _checkFieldValueAgainstList: function(allowAsynchronousFilterSetting) {
         if (dropDown._customValueAllowed)
           return;
-        var preferredText = dropDown._field.oldValue != undefined?dropDown._field.oldValue:"";
+        var preferredText = dropDown._field._oldValue != undefined?dropDown._field._oldValue : "";
         if (field.value != preferredText) {
           field.value = preferredText;
           if (allowAsynchronousFilterSetting)
@@ -533,7 +533,7 @@ O$.DropDownField = {
 
         if (dropDown.value != text) {
           dropDown.value = text;
-          dropDown._field.oldValue = text;
+          dropDown._field._oldValue = text;
         }
         var newItemValue = itemValue != undefined
                 ? (itemValue != null ? "[" + itemValue + "]" : "null")
@@ -692,7 +692,7 @@ O$.DropDownField = {
     var field = dropDown._field;
     var popup = dropDown._popup;
     var itemPresentation = dropDown._itemPresentation;
-    field._oldValue = "";
+    field._oldValue = field.value;
     // Switch off browser input field autocomplete
     field.setAttribute("autocomplete","off");
 
