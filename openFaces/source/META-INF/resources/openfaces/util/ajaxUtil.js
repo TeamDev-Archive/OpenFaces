@@ -805,6 +805,11 @@ O$.AjaxObject = function(render) {
       document._of_page_is_already_initialized = true;
       if (request.responseXML) {
         var responseXML = request.responseXML;
+        //TODO: for huge xml responses some versions of IE can't automaticly parse XML
+        if ( O$.isExplorer && responseXML && !responseXML.firstChild ){
+          var parser = new DOMParser();
+          var responseXML = parser.parseFromString(request.responseText, 'text/xml');
+        }
         this._jsIncludes = responseXML.getElementsByTagName(O$.TAG_AJAX_SCRIPT);
         this._updatables = responseXML.getElementsByTagName(O$.TAG_AJAX_UPDATABLE);
         this._styles = responseXML.getElementsByTagName(O$.TAG_AJAX_STYLE);
