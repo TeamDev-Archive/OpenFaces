@@ -3077,12 +3077,15 @@ if (!window.O$) {
       if (styleElement.styleSheet)
         document._of_localAdditionalStyleSheets[document._of_localAdditionalStyleSheetsCount-1] = styleElement.styleSheet;
       else
-      document._of_localAdditionalStyleSheets[document._of_localAdditionalStyleSheetsCount-1] =  styleElement.sheet;
+        document._of_localAdditionalStyleSheets[document._of_localAdditionalStyleSheetsCount-1] =  styleElement.sheet;
     }
+    return document._of_localAdditionalStyleSheets[document._of_localAdditionalStyleSheetsCount-1];
   }
 
+  O$.replaceGlobalStyleSheet = function(newStyleSheet){
+    var currentStyleSheet = O$.getLocalStyleSheet();
 
-  //TODO: temporary solution for
+  }
 
   O$.addCssRule = function(strRule, cachingDisabled) {
     var styleSheet = O$.getLocalStyleSheet();
@@ -3091,6 +3094,15 @@ if (!window.O$) {
 
     try {
       if (styleSheet.addRule) { // IE only
+        if (styleSheet.cssRules.length > 4000){ // IN IE there are MAX 4096 rules
+          styleSheet = O$.packCssStyleSheet(styleSheet);
+          if (styleSheet.cssRules.length > 3800){ // we add a little bit less number to avoid calls for each adding when you have smth like 3999 rules
+            styleSheet = O$.addAdditionalStyleSheet();
+
+          }
+        }
+
+
         var idx1 = strRule.indexOf("{");
         var idx2 = strRule.indexOf("}");
         O$.assert(idx1 != -1 && idx2 != -1 && idx2 > idx1, "O$.addCssRule: Couldn't parse CSS rule \"{...}\"  boundaries: " + strRule);
@@ -3133,8 +3145,6 @@ if (!window.O$) {
       return styleSheet;
     } catch (e) {
       if (styleSheet.addRule) { // IE only
-        //TODO: add cleanup phase here, right now we just creating new style sheet
-        O$.addAdditionalStyleSheet();
         O$.addCssRule(strRule, cachingDisabled);
       }
       O$.logError("O$.addCssRule threw an exception " + (e ? e.message : e) +
@@ -3143,6 +3153,75 @@ if (!window.O$) {
     }
 
   };
+
+
+
+
+  // Function which used in IE to pack different rules to one
+  // @styleSheet link to style sheet in DOM which need to be packed
+  // #return link to new style sheet with packed rules
+  O$.packCssStyleSheet = function (styleSheet){
+    var initialRulesList = [];
+    O$.extend(initialRulesList, styleSheet.cssRules);
+    var packedRulesList = [];
+    for (var i = 0; i < initialRulesList.length; i++){
+      if (!initialRulesList[i]) continue;
+      var resultSelector = O$.getCssSelectorFromString(initialRulesList[i].cssText);
+      var resultDeclaration = O$.getCssDeclarationFromString(initialRulesList[i].cssText);
+      initialRulesList[i] = null;
+      for (var j = i + 1; j < initialRulesList.length; j++){
+        if (!initialRulesList[j]) continue;
+        var currentDeclaration =  O$.getCssDeclarationFromString(initialRulesList[j].cssText);
+        if ( O$.compareCssDeclarationString(resultDeclaration, currentDeclaration) ) {
+          resultSelector += ", " + O$.getCssSelectorFromString(initialRulesList[j].cssText);
+          initialRulesList[j] = null;
+        }
+      }
+      packedRulesList.push({
+        selector: resultSelector,
+        declaration: resultDeclaration
+      })
+
+    }
+
+
+    var resultStyleSheet = O$.getLocalStyleSheet();
+    while (resultStyleSheet.cssRules.length>0){
+      resultStyleSheet.removeRule(resultStyleSheet.length-1);
+    }
+
+    for (var i = 0; i < packedRulesList.length; i++){
+      if (resultStyleSheet.addRule){ //IE
+        resultStyleSheet.addRule(packedRulesList[i].selector, packedRulesList[i].declaration, i);
+      } else { // all others
+        var cssText = packedRulesList[i].selector + " " + packedRulesList[i].declaration;
+        resultStyleSheet.insertRule(cssText, resultStyleSheet.cssRules.length);
+      }
+    }
+
+    return resultStyleSheet;
+  }
+
+  O$.getCssSelectorFromString = function (cssRuleString){
+    var idx1 = cssRuleString.indexOf("{");
+    return cssRuleString.substring(0, idx1);
+  }
+
+  O$.getCssDeclarationFromString = function (cssRuleString){
+    var idx1 = cssRuleString.indexOf("{");
+    var idx2 = cssRuleString.indexOf("}");
+    O$.assert(idx1 != -1 && idx2 != -1 && idx2 > idx1, "O$.addCssRule: Couldn't parse CSS rule \"{...}\"  boundaries: " + cssRuleString);
+    return cssRuleString.substring(idx1 + 1, idx2);
+  }
+
+  O$.compareCssDeclarationString = function (declaration1, declaration2){
+    if (declaration1)
+      declaration1 = declaration1.replace(/ /g,"s");
+    if (declaration2)
+      declaration2 = declaration2.replace(/ /g,"s");
+    return O$.stringsEqualIgnoreCase(declaration1, declaration2);
+  }
+
 
   O$.removeCssRule = function (nameOfCssClass, _iePredefClasses) {
 
