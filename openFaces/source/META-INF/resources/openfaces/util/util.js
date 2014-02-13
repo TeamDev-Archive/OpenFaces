@@ -3062,7 +3062,7 @@ if (!window.O$) {
     return document._of_localStyleSheet;
   };
 
-  // TODO: in IE for high loaded pages we get limit for rules inside one style sheet, in this case we are starting to cr8 additionale sheets
+  // TODO: in IE for high loaded pages we get limit for rules inside one style sheet, in this case we are starting to cr8 additional sheets
   O$.addAdditionalStyleSheet = function() {
     document._of_localAdditionalStyleSheetsCount = document._of_localAdditionalStyleSheetsCount ? document._of_localAdditionalStyleSheetsCount + 1 : 1;
     document._of_localAdditionalStyleSheets = [];
@@ -3094,9 +3094,10 @@ if (!window.O$) {
 
     try {
       if (styleSheet.addRule) { // IE only
-        if (styleSheet.cssRules.length > 4000){ // IN IE there are MAX 4096 rules
+        var rules = styleSheet.cssRules ? styleSheet.cssRules : styleSheet.rules;
+        if (rules && rules.length > 4000){ // IN IE there are MAX 4096 rules
           styleSheet = O$.packCssStyleSheet(styleSheet);
-          if (styleSheet.cssRules.length > 3800){ // we add a little bit less number to avoid calls for each adding when you have smth like 3999 rules
+          if (rules.length > 3800){ // we add a little bit less number to avoid calls for each adding when you have smth like 3999 rules
             styleSheet = O$.addAdditionalStyleSheet();
 
           }
@@ -3140,7 +3141,7 @@ if (!window.O$) {
           }
         }
       } else { // all others
-        styleSheet.insertRule(strRule, styleSheet.cssRules.length);
+        styleSheet.insertRule(strRule, styleSheet.rules.length);
       }
       return styleSheet;
     } catch (e) {
@@ -3162,32 +3163,35 @@ if (!window.O$) {
   // #return link to new style sheet with packed rules
   O$.packCssStyleSheet = function (styleSheet){
     var initialRulesList = [];
-    O$.extend(initialRulesList, styleSheet.cssRules);
+    var rules = styleSheet.cssRules ? styleSheet.cssRules : styleSheet.rules;
+    O$.extend(initialRulesList, rules);
     var packedRulesList = [];
     for (var i = 0; i < initialRulesList.length; i++){
       if (!initialRulesList[i]) continue;
-      var resultSelector = O$.getCssSelectorFromString(initialRulesList[i].cssText);
-      var resultDeclaration = O$.getCssDeclarationFromString(initialRulesList[i].cssText);
+      var resultSelector = initialRulesList[i].selectorText;
+      var resultDeclaration = initialRulesList[i].style;
       initialRulesList[i] = null;
       for (var j = i + 1; j < initialRulesList.length; j++){
         if (!initialRulesList[j]) continue;
-        var currentDeclaration =  O$.getCssDeclarationFromString(initialRulesList[j].cssText);
-        if ( O$.compareCssDeclarationString(resultDeclaration, currentDeclaration) ) {
-          resultSelector += ", " + O$.getCssSelectorFromString(initialRulesList[j].cssText);
+        var currentDeclaration =  initialRulesList[j].style;
+        if ( O$.compareCssDeclarationString(resultDeclaration.cssText, currentDeclaration.cssText) ) {
+          resultSelector = initialRulesList[j].selectorText;
           initialRulesList[j] = null;
         }
       }
       packedRulesList.push({
         selector: resultSelector,
-        declaration: resultDeclaration
+        declaration: resultDeclaration.cssText
       })
 
     }
 
 
     var resultStyleSheet = O$.getLocalStyleSheet();
-    while (resultStyleSheet.cssRules.length>0){
-      resultStyleSheet.removeRule(resultStyleSheet.length-1);
+    rules = resultStyleSheet.cssRules ? resultStyleSheet.cssRules : resultStyleSheet.rules;
+    while (rules.length>0){
+      rules = resultStyleSheet.cssRules ? resultStyleSheet.cssRules : resultStyleSheet.rules;
+      resultStyleSheet.removeRule(rules.length-1);
     }
 
     for (var i = 0; i < packedRulesList.length; i++){
@@ -3195,7 +3199,8 @@ if (!window.O$) {
         resultStyleSheet.addRule(packedRulesList[i].selector, packedRulesList[i].declaration, i);
       } else { // all others
         var cssText = packedRulesList[i].selector + " " + packedRulesList[i].declaration;
-        resultStyleSheet.insertRule(cssText, resultStyleSheet.cssRules.length);
+        rules = resultStyleSheet.cssRules ? resultStyleSheet.cssRules : resultStyleSheet.rules;
+        resultStyleSheet.insertRule(cssText, rules.length);
       }
     }
 
@@ -3246,7 +3251,7 @@ if (!window.O$) {
           }
         }
       } else { // all others
-        var rules = styleSheet.cssRules;
+        var rules = styleSheet.rules;
         for (var i = 0; i < rules.length; i++) {
           if (rules[i].selectorText == nameOfCssClass) {
             var ruleBySelector = O$._cssRulesBySelectors ? O$._cssRulesBySelectors[nameOfCssClass] : null;

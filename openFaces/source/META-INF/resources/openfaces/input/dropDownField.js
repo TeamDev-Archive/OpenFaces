@@ -895,7 +895,7 @@ O$.DropDownField = {
         }, 100);
       else {
         dropDown._reacquireFocus = undefined;
-        dropDown.focus();
+       // dropDown.focus();
       }
     };
 

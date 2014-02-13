@@ -856,6 +856,32 @@ O$.Table = {
               if (newIdx != null) {
                 passEvent = false;
                 this.__setSelectedRowIndexes([newIdx]);
+                ///////////////////////////////////////////////////
+                if (O$._activeElement.nodeName == "INPUT") {
+                  var needElement = O$._activeElement;
+                  var isNeedNode = true;
+                  var needColumn = null;
+                  var needChildrenNodes = null;
+                  while (isNeedNode) {
+                    needElement = needElement.parentNode;
+                    if (needElement.nodeName == "TD") {
+                      if (needElement._column._table == this) {
+                        needColumn = needElement.cellIndex;
+                        needElement = needElement.parentNode.parentNode;
+                        needChildrenNodes = needElement.childNodes;
+                        needElement = needChildrenNodes[newIdx];
+                        needChildrenNodes = needElement.childNodes
+                        needElement = needChildrenNodes[needColumn];
+                        needElement = O$.getFirstFocusableControl(needElement);
+                        needElement.focus();
+                        isNeedNode = false;
+                      }
+                    }
+                  }
+
+
+                }
+                ///////////////////////////////////////////////////////
                 O$.Table._scrollToRowIndexes(this, [newIdx]);
                 this._baseRowIndex = null;
                 this._baseSelectedRowIndexes = null;
