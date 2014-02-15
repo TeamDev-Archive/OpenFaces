@@ -39,6 +39,7 @@ import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.event.PreRenderComponentEvent;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -83,6 +84,14 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         final AbstractTable table = (AbstractTable) component;
         if (table.getUseAjax())
             AjaxUtil.prepareComponentForAjax(context, component);
+
+        List<BaseColumn> columns = table.getRenderedColumns();
+        for (BaseColumn column : columns) {
+            context.getApplication().publishEvent(context,
+                    PreRenderComponentEvent.class,
+                    column);
+        }
+        table.clearRenderedColumnCache();
 
         TableStructure tableStructure = createTableStructure(table);
         table.getAttributes().put(TableStructure.TABLE_STRUCTURE_ATTR, tableStructure);

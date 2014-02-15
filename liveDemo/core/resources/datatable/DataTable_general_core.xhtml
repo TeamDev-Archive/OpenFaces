@@ -182,26 +182,7 @@
 
         </f:facet>
 
-          <o:selectOneMenu
-                  id="contractAddGroupDlgDesiredActionChange"
-                  value="#{SelectOneMenuBean.selectedCity}">
-              <o:ajax event="change"
-                      render="dialogForm:panelTemplate dialogForm:panelDataToInc dialogForm:panelNewGroup dialogForm:ok_AddGroup"
-                      />
-              <f:selectItem id="createNewBlankGroup"
-                            itemLabel="Create a New Blank Group" itemValue="0" />
-              <f:selectItem id="duplicateGroup"
-                            itemLabel="Duplicate Selected Group" itemValue="1" />
-              <f:selectItem id="addTemplateData"
-                            itemLabel="Add Template Data to the Selected Group" itemValue="2" />
-              <f:selectItem id="overideGroup"
-                            itemLabel="Override Selected Group with Template Data"
-                            itemValue="3" />
-              <f:selectItem id="createGroupBasedTemp"
-                            itemLabel="Create a Group based on a Template" itemValue="4" />
-          </o:selectOneMenu>
-
-      </o:column>
+    </o:column>
 
       <o:column header="testWindows"
                 width="19%"
@@ -239,24 +220,6 @@
       </o:column>
     </o:dataTable>
   </div>
-  <o:selectOneMenu
-          id="contractAddGroupDlgDesiredActionChange"
-          value="#{SelectOneMenuBean.selectedCity}">
-      <o:ajax event="change"
-              render="dialogForm:panelTemplate dialogForm:panelDataToInc dialogForm:panelNewGroup dialogForm:ok_AddGroup"
-              />
-      <f:selectItem id="createNewBlankGroup"
-                    itemLabel="Create a New Blank Group" itemValue="0" />
-      <f:selectItem id="duplicateGroup"
-                    itemLabel="Duplicate Selected Group" itemValue="1" />
-      <f:selectItem id="addTemplateData"
-                    itemLabel="Add Template Data to the Selected Group" itemValue="2" />
-      <f:selectItem id="overideGroup"
-                    itemLabel="Override Selected Group with Template Data"
-                    itemValue="3" />
-      <f:selectItem id="createGroupBasedTemp"
-                    itemLabel="Create a Group based on a Template" itemValue="4" />
-  </o:selectOneMenu>
 
   <div id="Description">
     <h4>Demonstrated Features</h4>

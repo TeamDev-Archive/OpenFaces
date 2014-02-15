@@ -560,6 +560,10 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         return cachedRenderedColumns;
     }
 
+    public  void clearRenderedColumnCache(){
+        cachedRenderedColumns = null;
+    }
+
     private List<BaseColumn> calculateRenderedColumns() {
         Iterable<String> columnsOrder = getColumnsOrder();
         if (columnsOrder == null) {
