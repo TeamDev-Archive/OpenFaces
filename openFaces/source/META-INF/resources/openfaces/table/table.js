@@ -857,7 +857,13 @@ O$.Table = {
                 passEvent = false;
                 this.__setSelectedRowIndexes([newIdx]);
                 ///////////////////////////////////////////////////
-                if (O$._activeElement.nodeName == "INPUT") {
+                var activeElement = null
+                if (O$._activeElement != null) {
+                  activeElement = O$._activeElement
+                } else if (document.activeElement != null) {
+                  activeElement = document.activeElement;
+                }
+                if (activeElement.nodeName == "INPUT") {
                   var needElement = O$._activeElement;
                   var isNeedNode = true;
                   var needColumn = null;
@@ -878,8 +884,6 @@ O$.Table = {
                       }
                     }
                   }
-
-
                 }
                 ///////////////////////////////////////////////////////
                 O$.Table._scrollToRowIndexes(this, [newIdx]);
@@ -915,7 +919,13 @@ O$.Table = {
               passEvent = false;
               this.__setSelectedRowIndex(newIdx);
               ///////////////////////////////////////////////////
-              if (O$._activeElement.nodeName == "INPUT") {
+              var activeElement = null
+              if (O$._activeElement != null) {
+                activeElement = O$._activeElement
+              } else if (document.activeElement != null) {
+                activeElement = document.activeElement;
+              }
+              if (activeElement.nodeName == "INPUT") {
                 var needElement = O$._activeElement;
                 var isNeedNode = true;
                 var needColumn = null;
@@ -936,8 +946,6 @@ O$.Table = {
                     }
                   }
                 }
-
-
               }
               ///////////////////////////////////////////////////////
               O$.Table._scrollToRowIndexes(this, [newIdx]);
@@ -1145,6 +1153,7 @@ O$.Table = {
       }
     }
     ;
+
     O$.addUnloadHandler(table, function () {
       table[eventName] = null;
     });
@@ -1200,6 +1209,29 @@ O$.Table = {
     O$.scrollElementIntoView(rowIndexes.map(function (i) {
       return i != -1 && bodyRows[i]._rowNode;
     }), true, false);
+  },
+
+  _setActiveInput:function (newIdx) {
+    var needElement = O$._activeElement;
+    var isNeedNode = true;
+    var needColumn = null;
+    var needChildrenNodes = null;
+    while (isNeedNode) {
+      needElement = needElement.parentNode;
+      if (needElement.nodeName == "TD") {
+        if (needElement._column._table == this) {
+          needColumn = needElement.cellIndex;
+          needElement = needElement.parentNode.parentNode;
+          needChildrenNodes = needElement.childNodes;
+          needElement = needChildrenNodes[newIdx];
+          needChildrenNodes = needElement.childNodes
+          needElement = needChildrenNodes[needColumn];
+          needElement = O$.getFirstFocusableControl(needElement);
+          needElement.focus();
+          isNeedNode = false;
+        }
+      }
+    }
   },
 
   _scrollToCells:function (table, cells) {
@@ -3677,7 +3709,7 @@ O$.Table = {
                               }
 
 
-                              columnIds.splice(oldIndex < newIndex ? oldIndex : oldIndex+gropingColumnIds.length , gropingColumnIds.length);
+                              columnIds.splice(oldIndex < newIndex ? oldIndex : oldIndex + gropingColumnIds.length, gropingColumnIds.length);
                             }
                             else {
                               columnIds.splice(newIndex, 0, sourceColumnId);
