@@ -13,23 +13,23 @@
 // ================================== PUBLIC API FUNCTIONS
 
 O$.extend(O$, {
-  AjaxComponent: O$.createClass(null, {
-    constructor: function(render, params) {
+  AjaxComponent:O$.createClass(null, {
+    constructor:function (render, params) {
       this.render = render;
       if (params)
         O$.extend(this, params);
     },
 
-    run: function() {
+    run:function () {
       O$._ajaxReload(this.render, this);
     }
   }),
 
-  _initAjax: function(id, render, params) {
+  _initAjax:function (id, render, params) {
     function initComponent() {
       var component = O$(id);
       if (!component) {
-        setTimeout(function() {
+        setTimeout(function () {
           initComponent();
         }, 100);
         return;
@@ -40,11 +40,11 @@ O$.extend(O$, {
     if (O$(id))
       initComponent();
     else
-      setTimeout(function() {
+      setTimeout(function () {
         if (O$(id))
           initComponent();
         else
-          O$.addLoadEvent(function() {
+          O$.addLoadEvent(function () {
             initComponent();
           });
       }, 1);
@@ -67,7 +67,7 @@ O$.ajax = {
    *    - immediate - (optional) true means that the action should be executed during Apply Request Values phase, rather than waiting until the Invoke Application phase
    *    - params - (optional) an object containing the additional request parameters
    */
-  request: function(source, event, options) {
+  request:function (source, event, options) {
     var args = options ? options : {};
 
     args.actionComponent = source && typeof source != "string" ? source.id : source;
@@ -125,26 +125,26 @@ O$.TEXT_RESPONSE_PREFIX = "_openfaces_ajax_response_prefix_";
 O$.TEXT_RESPONSE_SUFFIX = "_openfaces_ajax_response_suffix_";
 
 window.OpenFaces.Ajax = {
-  _ajaxEndHandlers: [],
-  _addAjaxEndHandler: function(handler) {
+  _ajaxEndHandlers:[],
+  _addAjaxEndHandler:function (handler) {
     this._ajaxEndHandlers.push(handler);
   },
-  _removeAjaxEndHandler: function(handler) {
+  _removeAjaxEndHandler:function (handler) {
     var idx = this._ajaxEndHandlers.indexOf(handler);
     if (idx == -1) throw "O$.Ajax._removeAjaxEndHandler: this event handler is not registered";
     this._ajaxEndHandlers.splice(idx, 1);
   },
 
-  onajaxend: function(event) {
-    this._ajaxEndHandlers.forEach(function(handler) {
+  onajaxend:function (event) {
+    this._ajaxEndHandlers.forEach(function (handler) {
       handler(event);
     });
   },
-  Page: {},
-  Components: []
+  Page:{},
+  Components:[]
 };
 
-O$.setCommonAjaxEventHandler = function(eventName, func) {
+O$.setCommonAjaxEventHandler = function (eventName, func) {
   if (!eventName || !func)
     return;
 
@@ -156,7 +156,7 @@ O$.setCommonAjaxEventHandler = function(eventName, func) {
   }
   else {
     var oldEventHandlerFunction = OpenFaces.Ajax.Page[eventName];
-    OpenFaces.Ajax.Page[eventName] = function(event) {
+    OpenFaces.Ajax.Page[eventName] = function (event) {
       if (oldEventHandlerFunction(event) !== false)
         func(event);
     };
@@ -171,7 +171,7 @@ O$.setCommonAjaxEventHandler = function(eventName, func) {
 }
 
 
-O$.setComponentAjaxEventHandler = function(eventName, func, componentId) {
+O$.setComponentAjaxEventHandler = function (eventName, func, componentId) {
   if (!eventName || !func || !componentId)
     return;
 
@@ -189,7 +189,7 @@ O$.setComponentAjaxEventHandler = function(eventName, func, componentId) {
     OpenFaces.Ajax.Components[componentId][eventName] = func;
   } else {
     var oldComponentEventHandlerFunction = OpenFaces.Ajax.Components[componentId][eventName];
-    OpenFaces.Ajax.Components[componentId][eventName] = function(event) {
+    OpenFaces.Ajax.Components[componentId][eventName] = function (event) {
       if (oldComponentEventHandlerFunction(event)) {
         func(event);
       }
@@ -209,7 +209,7 @@ O$.setComponentAjaxEventHandler = function(eventName, func, componentId) {
 }
 
 
-O$.reloadPage = function(loc) {
+O$.reloadPage = function (loc) {
   window.location = loc;
 }
 
@@ -223,11 +223,11 @@ O$.reloadPage = function(loc) {
  *    onajaxstart - (optional) the function that should be invoked before ajax request is started
  *    immediate - (optional) true means that the action should be executed during Apply Request Values phase, rather than waiting until the Invoke Application phase
  */
-O$._ajaxReload = function(render, args) {
-  render.forEach(function(componentId){
+O$._ajaxReload = function (render, args) {
+  render.forEach(function (componentId) {
     O$._invokeComponentAjaxReloadStart(componentId);
     var oldAjaxEndFunc = args.onajaxend;
-    args.onajaxend = function (){
+    args.onajaxend = function () {
       if (oldAjaxEndFunc)
         oldAjaxEndFunc();
       O$._invokeComponentAjaxReloadEnd(componentId);
@@ -254,39 +254,41 @@ O$._ajaxReload = function(render, args) {
           delayId += ",";
       }
     }
-    O$.invokeFunctionAfterDelay(function() {
+    O$.invokeFunctionAfterDelay(function () {
       O$.sendAjaxRequestIfNoFormSubmission(ids, args);
     }, args.delay, delayId);
   }
 }
 
-O$.requestComponentPortions = function(componentId, portionNames, customJsonParam, portionProcessor, onerror, skipExecute, additionalParams) {
+O$.requestComponentPortions = function (componentId, portionNames, customJsonParam, portionProcessor, onerror, skipExecute, additionalParams) {
   var args = arguments;
   if (!O$.isLoadedFullPage()) {
-    O$.addLoadEvent(function() {
+    O$.addLoadEvent(function () {
       O$.requestComponentPortions.apply(null, args);
     });
     return;
   }
   if (!componentId)
     throw "componentId should be specified";
-  if (! (portionNames instanceof Array))
+  if (!(portionNames instanceof Array))
     throw "portionNames should be specified as an array, but specified as: " + portionNames;
   if (!portionProcessor)
     throw "O$.requestComponentPortions: portionProcessor should be specified";
-  var params = skipExecute ? [["_of_skipExecute", "true"]] : [];
-  if (additionalParams){
+  var params = skipExecute ? [
+    ["_of_skipExecute", "true"]
+  ] : [];
+  if (additionalParams) {
     params.push(additionalParams);
   }
-  O$.sendAjaxRequestIfNoFormSubmission([componentId], {portionNames: portionNames, portionProcessor: portionProcessor,
-    additionalParams: params, onerror: onerror, customJsonParam: customJsonParam});
+  O$.sendAjaxRequestIfNoFormSubmission([componentId], {portionNames:portionNames, portionProcessor:portionProcessor,
+    additionalParams:params, onerror:onerror, customJsonParam:customJsonParam});
 }
 
 /*
  Sends ajax request only if no form submission is initated in the same event handler
  (e.g. a submit button invoking an ajax request in the onclick handler)
  */
-O$.sendAjaxRequestIfNoFormSubmission = function() {
+O$.sendAjaxRequestIfNoFormSubmission = function () {
   var ajaxArgs = arguments;
   O$._ajaxRequestScheduled = true;
   if (O$._ajax_request_processing) {
@@ -296,7 +298,7 @@ O$.sendAjaxRequestIfNoFormSubmission = function() {
     O$._ajax_requests_queue.push(ajaxArgs);
     return;
   }
-  setTimeout(function() {
+  setTimeout(function () {
     O$._ajaxRequestScheduled = false;
     if (O$.isAjaxInLockedState()) {
       return;
@@ -324,15 +326,15 @@ O$.sendAjaxRequestIfNoFormSubmission = function() {
  * actionComponent - (optional) client id of a component from which this action is initiated (e.g. actual for a button in a table which needs current row's data in the action)
  *
  */
-O$.sendAjaxRequest = function(render, args) {
+O$.sendAjaxRequest = function (render, args) {
   if (document.__sessionHasExpired
           && document.__componentsAjaxEventHandlerInitialized
-          && render.every(function(element) {
-              return (document.__componentsAjaxEventHandlerInitialized[element]);
-            })
-          && render.every(function(element) {
-              return (document.__componentsAjaxEventHandlerInitialized[element]["onsessionexpired"]);
-            })) {
+          && render.every(function (element) {
+    return (document.__componentsAjaxEventHandlerInitialized[element]);
+  })
+          && render.every(function (element) {
+    return (document.__componentsAjaxEventHandlerInitialized[element]["onsessionexpired"]);
+  })) {
     if (O$.processSessionExpiration(document.__sessionReloadLocation, render, null, true)) {
       if (args.onerror) {
         args.onerror();
@@ -343,8 +345,8 @@ O$.sendAjaxRequest = function(render, args) {
   }
 
   if (document.__sessionHasExpired &&
-      document.__commonAjaxEventHandlerInitialized &&
-      document.__commonAjaxEventHandlerInitialized["onsessionexpired"]) {
+          document.__commonAjaxEventHandlerInitialized &&
+          document.__commonAjaxEventHandlerInitialized["onsessionexpired"]) {
     if (O$.processSessionExpiration(document.__sessionReloadLocation, render, null, true)) {
       if (args.onerror) {
         args.onerror();
@@ -356,7 +358,7 @@ O$.sendAjaxRequest = function(render, args) {
 
   var submittedComponent = null;
   if (args.execute != null)
-    args.execute.forEach(function(submittedComponentId) {
+    args.execute.forEach(function (submittedComponentId) {
       var comp = O$(submittedComponentId);
       if (!comp) return;
       if (!submittedComponent)
@@ -469,7 +471,7 @@ O$.sendAjaxRequest = function(render, args) {
 
 O$._ajaxRequestsInProgress = 0;
 
-O$.requestStarted = function(ajaxObject) {
+O$.requestStarted = function (ajaxObject) {
   O$._ajaxRequestsInProgress++;
 
   for (var i = 0; i < ajaxObject._targetIds.length; i++) {
@@ -513,7 +515,7 @@ O$.requestStarted = function(ajaxObject) {
   }
 };
 
-O$.requestFinished = function(ajaxObject) {
+O$.requestFinished = function (ajaxObject) {
   O$._ajaxRequestsInProgress--;
   for (var i = 0; i < ajaxObject._targetIds.length; i++) {
     var targetId = ajaxObject._targetIds[i];
@@ -576,8 +578,8 @@ O$.requestFinished = function(ajaxObject) {
   }
 
 //  setTimeout(function() {
-    if (!newRequestStarted)
-      O$._ajax_request_processing = false;
+  if (!newRequestStarted)
+    O$._ajax_request_processing = false;
 //  }, 1);
 
 
@@ -587,16 +589,16 @@ O$.requestFinished = function(ajaxObject) {
   }
 };
 
-O$.setAjaxCleanupRequired = function(ajaxCleanupRequired) {
+O$.setAjaxCleanupRequired = function (ajaxCleanupRequired) {
   document._ajaxCleanupRequired = ajaxCleanupRequired;
 };
 
-O$.setAjaxMessageHTML = function(messageHTML, horizAlignment, vertAlignment, transparency, opacityTransitionPeriod, blockingLayer) {
+O$.setAjaxMessageHTML = function (messageHTML, horizAlignment, vertAlignment, transparency, opacityTransitionPeriod, blockingLayer) {
   if (document._ajaxInProgressMessage) {
     return;
   }
   if (O$._ajaxRequestsInProgress > 0)
-    O$.showAjaxProgressMessage();  
+    O$.showAjaxProgressMessage();
 
   var msg = document.createElement("div");
   msg._horizAlignment = horizAlignment || O$.RIGHT;
@@ -613,7 +615,7 @@ O$.setAjaxMessageHTML = function(messageHTML, horizAlignment, vertAlignment, tra
   document._ajaxInProgressMessage = msg;
 
   if (blockingLayer) {
-    msg._blockingLayer = function() {
+    msg._blockingLayer = function () {
       var div = document.createElement("div");
       div.className = blockingLayer.className ? blockingLayer.className : "";
       div.style.visibility = "hidden";
@@ -621,7 +623,7 @@ O$.setAjaxMessageHTML = function(messageHTML, horizAlignment, vertAlignment, tra
       div._opacity = opacity;
       div._opacityTransitionPeriod = blockingLayer.transparencyTransitionPeriod != undefined ? blockingLayer.transparencyTransitionPeriod : 150;
       O$.setOpacityLevel(div, 0);
-      div.updatePos = function() {
+      div.updatePos = function () {
         var rect = O$.getVisibleAreaRectangle();
         div.style.zIndex = O$.getElementZIndex(msg) - 1;
         O$.setElementBorderRectangle(div, rect);
@@ -630,14 +632,14 @@ O$.setAjaxMessageHTML = function(messageHTML, horizAlignment, vertAlignment, tra
     }();
   }
 
-  O$.addLoadEvent(function() {
+  O$.addLoadEvent(function () {
     var prnt = O$.getDefaultAbsolutePositionParent();
 
     prnt.appendChild(msg);
     if (document._ajaxInProgressMessage._blockingLayer)
       prnt.appendChild(document._ajaxInProgressMessage._blockingLayer);
     setTimeout(
-            function() {
+            function () {
               if (msg.style.visibility == "hidden") {
                 msg.style.display = "none";
                 msg.style.visibility = "";
@@ -650,11 +652,11 @@ O$.setAjaxMessageHTML = function(messageHTML, horizAlignment, vertAlignment, tra
   });
 };
 
-O$._initAjaxRequestUrl = function(ajaxRequestUrl) {
-    O$.Ajax._ajaxRequestUrl = ajaxRequestUrl;
+O$._initAjaxRequestUrl = function (ajaxRequestUrl) {
+  O$.Ajax._ajaxRequestUrl = ajaxRequestUrl;
 };
 
-O$.showAjaxProgressMessage = function() {
+O$.showAjaxProgressMessage = function () {
   var msg = document._ajaxInProgressMessage;
   if (!msg)
     return;
@@ -689,7 +691,7 @@ O$.showAjaxProgressMessage = function() {
   }
 };
 
-O$.hideAjaxProgressMessage = function() {
+O$.hideAjaxProgressMessage = function () {
   var msg = document._ajaxInProgressMessage;
   if (!msg) return;
   var simulateFixedPos = true;//O$.isExplorer();
@@ -703,7 +705,7 @@ O$.hideAjaxProgressMessage = function() {
     msg._blockingLayer.style.display = "none";
 };
 
-O$.updateAjaxInProgressMessagePos = function() {
+O$.updateAjaxInProgressMessagePos = function () {
   var msg = document._ajaxInProgressMessage;
   if (msg.style.display == "none") {
     // replace hiding with "visibility" instead of "display" to allow element size measurement,
@@ -717,17 +719,17 @@ O$.updateAjaxInProgressMessagePos = function() {
     msg._blockingLayer.updatePos();
 };
 
-O$._pageReloadConfirmation = function(confirmationId, location) {
+O$._pageReloadConfirmation = function (confirmationId, location) {
   var confirmation = O$(confirmationId);
   if (document._ajaxInProgressMessage._blockingLayer)
     O$.correctElementZIndex(confirmation, document._ajaxInProgressMessage._blockingLayer);
-  confirmation.runConfirmedFunction(function() {
+  confirmation.runConfirmedFunction(function () {
     O$.reloadPage(location);
   });
 };
 
 // O$.AjaxObject class
-O$.AjaxObject = function(render) {
+O$.AjaxObject = function (render) {
   this._targetIds = render;
   this._mode = undefined;
   this._loc = undefined;
@@ -738,7 +740,7 @@ O$.AjaxObject = function(render) {
     // todo: catch exception here and report some meaningful error
   }
 
-  this._processHTTPError = function(requestStatus, ajaxRender, ajaxObject){
+  this._processHTTPError = function (requestStatus, ajaxRender, ajaxObject) {
     var errorEvent = O$.createEvent("error");
     errorEvent.requestStatus = requestStatus;
     if (OpenFaces.Ajax.Page.onerror) {
@@ -761,7 +763,7 @@ O$.AjaxObject = function(render) {
     }
   }
 
-  this._processResponse = function() {
+  this._processResponse = function () {
     var request = this._request;
     if (request.readyState != 4)
       return;
@@ -804,12 +806,40 @@ O$.AjaxObject = function(render) {
       //set flag - ajax update in progress
       document._of_page_is_already_initialized = true;
       if (request.responseXML) {
-        var responseXML = request.responseXML;
+        var responseXML = null;
+        responseXML = request.responseXML;
+
         //TODO: for huge xml responses some versions of IE can't automaticly parse XML
-        if ( O$.isExplorer && responseXML && !responseXML.firstChild ){
-          var parser = new DOMParser();
-          var responseXML = parser.parseFromString(request.responseText, 'text/xml');
+
+        if (O$.isExplorer && responseXML && !responseXML.firstChild) {
+          var pos = request.responseText.indexOf('scripts="') + 9;
+          var pos2 = request.responseText.indexOf('value="');
+          var oldValue = null;
+          var oldScripts = request.responseText.slice(pos, pos2 - 2);
+          oldValue = request.responseText.slice(pos2 + 7);
+          var pos3 = oldValue.indexOf(">");
+          oldValue = oldValue.slice(0, pos3 - 3)
+          pos3 += pos2;
+          var newResponseText = request.responseText.slice(0, pos);
+          newResponseText += 'temporary" value="temporary"';
+          newResponseText += request.responseText.slice(pos3 + 6);
+
+          if (window.DOMParser) {
+            var parser = new DOMParser();
+            responseXML = parser.parseFromString(newResponseText, 'text/xml');
+          } else if (window.ActiveXObject) {
+            responseXML = new ActiveXObject("Microsoft.XMLDOM");
+            responseXML.async = false;
+            responseXML.loadXML(newResponseText);
+          }
+          responseXML.childNodes[0].childNodes[1].attributes.scripts.nodeValue = O$.decodeHTML(oldScripts);
+          responseXML.childNodes[0].childNodes[1].attributes.scripts.textContent = O$.decodeHTML(oldScripts);
+          responseXML.childNodes[0].childNodes[1].attributes.scripts.value = O$.decodeHTML(oldScripts);
+          responseXML.childNodes[0].childNodes[1].attributes.value.nodeValue = O$.decodeHTML(oldValue);
+          responseXML.childNodes[0].childNodes[1].attributes.value.textContent = O$.decodeHTML(oldValue);
+          responseXML.childNodes[0].childNodes[1].attributes.value.value = O$.decodeHTML(oldValue);
         }
+
         this._jsIncludes = responseXML.getElementsByTagName(O$.TAG_AJAX_SCRIPT);
         this._updatables = responseXML.getElementsByTagName(O$.TAG_AJAX_UPDATABLE);
         this._styles = responseXML.getElementsByTagName(O$.TAG_AJAX_STYLE);
@@ -881,7 +911,9 @@ O$.AjaxObject = function(render) {
         O$.restoreDocumentWrite();
         throw e;
       }
-    } catch (e) {
+    }
+    catch
+            (e) {
       O$.requestFinished(this);
       throw e;
     }
@@ -910,7 +942,7 @@ O$.AjaxObject = function(render) {
 
     document._of_page_is_already_initialized = null;
   };
-  this._processUpdatesWhenReady = function() {
+  this._processUpdatesWhenReady = function () {
     try {
       var jsIncludes = this._jsIncludes;
       if (!O$.areRequiredLibrariesLoaded(jsIncludes)) {
@@ -939,7 +971,7 @@ O$.AjaxObject = function(render) {
     this._request = false;
   };
 
-  this._processUpdates = function() {
+  this._processUpdates = function () {
     var updatables = this._updatables;
     var rtLibrary = undefined;
 
@@ -1070,7 +1102,7 @@ O$.AjaxObject = function(render) {
 
     document.__sessionExpirationUpd = true;
   };
-  this._processSimpleUpdate = function(updId, updHTML, updScripts, updateStateHTML) {
+  this._processSimpleUpdate = function (updId, updHTML, updScripts, updateStateHTML) {
 
     var replacedElement = O$(updId);
 
@@ -1128,7 +1160,7 @@ O$.AjaxObject = function(render) {
     }
   };
 
-  this._processPortionUpdate = function(portionName, portionHTML, portionScripts, portionDataStr) {
+  this._processPortionUpdate = function (portionName, portionHTML, portionScripts, portionDataStr) {
     var componentId = this._targetIds;
     var component = O$(componentId);
     O$.assert(component, "Couldn't find component by id: " + componentId);
@@ -1138,7 +1170,8 @@ O$.AjaxObject = function(render) {
     this._customProcessor(component, portionName, portionHTML, portionScripts, portionData);
   };
 
-};
+}
+;
 
 /*
  Replaces all elements in htmlPortion if they have an appropriate counterpart with the same Id in the document. All
@@ -1146,7 +1179,7 @@ O$.AjaxObject = function(render) {
  document) are retained in the returned "div" element. The "div" element itself is just a temporary container and is
  not a part of HTML passed as a parameter.
  */
-O$.replaceDocumentElements = function(htmlPortion, allowElementsWithNewIds) {
+O$.replaceDocumentElements = function (htmlPortion, allowElementsWithNewIds) {
   var tempDiv = document.createElement("div");
   try {
     tempDiv.innerHTML = htmlPortion;
@@ -1179,7 +1212,7 @@ O$.replaceDocumentElements = function(htmlPortion, allowElementsWithNewIds) {
         oldElement._cleanUp();
       }
       if (document._ajaxCleanupRequired) {
-        setTimeout(function() {
+        setTimeout(function () {
           O$.destroyAllFunctions(oldElement);
         }, 1);
       }
@@ -1198,13 +1231,13 @@ O$.replaceDocumentElements = function(htmlPortion, allowElementsWithNewIds) {
   return tempDiv;
 }
 
-O$.processSessionExpiration = function(loc, ajaxRender, ajaxObject, isHandlingWasDelayed) {
+O$.processSessionExpiration = function (loc, ajaxRender, ajaxObject, isHandlingWasDelayed) {
 
   if (ajaxRender) {
-    if (ajaxRender.every(function(element) {
+    if (ajaxRender.every(function (element) {
       return !!OpenFaces.Ajax.Components[element];
     })
-            && ajaxRender.every(function(element) {
+            && ajaxRender.every(function (element) {
       return !!OpenFaces.Ajax.Components[ajaxRender].onsessionexpired;
     })) {
       var sessionexpiredEvent = O$.createEvent("sessionexpired");
@@ -1256,12 +1289,12 @@ O$.processSessionExpiration = function(loc, ajaxRender, ajaxObject, isHandlingWa
   return false;
 }
 
-O$.processErrorDuringAjaxRequest = function(errorMessage, ajaxRender, ajaxObject) {
+O$.processErrorDuringAjaxRequest = function (errorMessage, ajaxRender, ajaxObject) {
   if (ajaxRender) {
-    if (ajaxRender.every(function(element) {
+    if (ajaxRender.every(function (element) {
       return (OpenFaces.Ajax.Components[element]);
     })
-            && ajaxRender.every(function(element) {
+            && ajaxRender.every(function (element) {
       return (OpenFaces.Ajax.Components[ajaxRender].onerror);
     })) {
       var errorEvent = O$.createEvent("error");
@@ -1311,7 +1344,7 @@ O$.processErrorDuringAjaxRequest = function(errorMessage, ajaxRender, ajaxObject
   O$.showDefaultAlertAfterException(errorMessage, ajaxObject);
 }
 
-O$.processStateUpdate = function(updId, updHTML) {
+O$.processStateUpdate = function (updId, updHTML) {
   if (!updHTML) return;
 
   var updatedElement = O$(updId);
@@ -1333,8 +1366,7 @@ O$.processStateUpdate = function(updId, updHTML) {
   else {
     // Try to add hidden field into updated element
     var tagName = updatedElement.tagName.toUpperCase();
-    if (tagName == "TABLE")
-    {
+    if (tagName == "TABLE") {
       var firstTD = O$.getFirstChildWithName(updatedElement, "TD");
       firstTD.appendChild(stateField);
     }
@@ -1342,26 +1374,23 @@ O$.processStateUpdate = function(updId, updHTML) {
     {
       updatedElement.appendChild(stateField);
     }
-    else
-    {
+    else {
       prnt.appendChild(stateField);
     }
   }
   tempDiv.innerHTML = "";
 }
 
-O$.getFirstChildWithName = function(node, tagName) {
+O$.getFirstChildWithName = function (node, tagName) {
   tagName = tagName.toUpperCase();
   var children = node.childNodes;
-  for (var i = 0; i < children.length; i++)
-  {
+  for (var i = 0; i < children.length; i++) {
     var childrenTagName = children[i].tagName;
     if (childrenTagName && tagName == childrenTagName.toUpperCase()) {
       return children[i];
     }
     var deepResult = O$.getFirstChildWithName(children[i], tagName);
-    if (deepResult)
-    {
+    if (deepResult) {
       return deepResult;
     }
   }
@@ -1369,7 +1398,7 @@ O$.getFirstChildWithName = function(node, tagName) {
   return null;
 }
 
-O$.ajax_pushElementsWithId = function(destElements, element) {
+O$.ajax_pushElementsWithId = function (destElements, element) {
   if (!element)
     return;
   if (element.id) {
@@ -1384,7 +1413,7 @@ O$.ajax_pushElementsWithId = function(destElements, element) {
 
 }
 
-O$.processJSIncludes = function(jsIncludes) {
+O$.processJSIncludes = function (jsIncludes) {
   if (jsIncludes) {
     for (var i = 0; i < jsIncludes.length; i++) {
       var jsIncludeElement = jsIncludes[i];
@@ -1394,7 +1423,7 @@ O$.processJSIncludes = function(jsIncludes) {
   }
 }
 
-O$.canonifyLibraryName = function(lib) {
+O$.canonifyLibraryName = function (lib) {
   var hostIndex = lib.indexOf("://");
   if (hostIndex != -1) {
     var startIdx = lib.indexOf("/", hostIndex + 3);
@@ -1416,27 +1445,27 @@ O$.canonifyLibraryName = function(lib) {
   return lib;
 }
 
-O$.markLibraryLoaded = function(lib) {
+O$.markLibraryLoaded = function (lib) {
   lib = O$.canonifyLibraryName(lib);
   window["_of_loadedLibrary:" + lib] = true;
 }
 
-O$.processJSInclude = function(jsInclude) {
+O$.processJSInclude = function (jsInclude) {
   var found = O$.isLibraryLoaded(jsInclude);
   if (!found) {
     var newScript = document.createElement("script");
     newScript.type = "text/javascript";
     newScript.src = jsInclude;
-    newScript.onload = function() {
+    newScript.onload = function () {
       O$.markLibraryLoaded(jsInclude);
     };
-    newScript.onreadystatechange = function() {
+    newScript.onreadystatechange = function () {
       if (this.readyState == "complete")
         O$.markLibraryLoaded(jsInclude);
       else if (O$.isExplorer() && this.readyState == "loaded") {
         // IE for some reason sometimes reports the "loaded" state and skips the "complete" one, so we're processing
         // this one too (after making a spare timeout just in case)
-        setTimeout(function() {
+        setTimeout(function () {
           O$.markLibraryLoaded(jsInclude);
         }, 50);
       }
@@ -1445,7 +1474,7 @@ O$.processJSInclude = function(jsInclude) {
     head.appendChild(newScript);
   }
 }
-O$.processCSSFilesIncludes = function(cssFiles) {
+O$.processCSSFilesIncludes = function (cssFiles) {
   if (!cssFiles)
     return;
   var head = document.getElementsByTagName("head")[0];
@@ -1460,7 +1489,7 @@ O$.processCSSFilesIncludes = function(cssFiles) {
   }
 }
 
-O$.processStylesIncludes = function(styles) {
+O$.processStylesIncludes = function (styles) {
   if (!styles)
     return;
 
@@ -1471,7 +1500,7 @@ O$.processStylesIncludes = function(styles) {
   }
 }
 
-O$.executeScripts = function(source) {
+O$.executeScripts = function (source) {
   if (!source || source.length == 0) return;
   var idx1 = source.indexOf("<script");
   var result;
@@ -1496,7 +1525,7 @@ O$.executeScripts = function(source) {
   }
 }
 
-O$.prepareUpdates = function(buf, componentId, portionName) {
+O$.prepareUpdates = function (buf, componentId, portionName) {
   if (!portionName || portionName.length <= 0) return false;
 
   buf.append(O$.UPDATE_PORTIONS_SUFFIX).append("=");
@@ -1510,7 +1539,7 @@ O$.prepareUpdates = function(buf, componentId, portionName) {
   return true;
 }
 
-O$.prepareFormParams = function(form, buf) {
+O$.prepareFormParams = function (form, buf) {
   var elements = form.elements;
   for (var i = 0, count = elements.length; i < count; i++) {
     var element = elements[i];
@@ -1540,7 +1569,7 @@ O$.prepareFormParams = function(form, buf) {
   }
 }
 
-O$.areRequiredLibrariesLoaded = function(libs) {
+O$.areRequiredLibrariesLoaded = function (libs) {
   if (!libs) return true;
   for (var i = 0; i < libs.length; i++) {
     var libElement = libs[i];
@@ -1551,7 +1580,7 @@ O$.areRequiredLibrariesLoaded = function(libs) {
   return true;
 }
 
-O$._markPreloadedLibraries = function() {
+O$._markPreloadedLibraries = function () {
   if (O$._preloadedLibrariesMarked) return;
   O$._preloadedLibrariesMarked = true;
   var scriptElements = document.getElementsByTagName("script");
@@ -1562,29 +1591,29 @@ O$._markPreloadedLibraries = function() {
   }
 }
 
-O$.isLibraryLoaded = function(lib) {
+O$.isLibraryLoaded = function (lib) {
   O$._markPreloadedLibraries();
   lib = O$.canonifyLibraryName(lib);
   var result = eval("window['_of_loadedLibrary:" + lib + "']");
   return result;
 }
 
-O$.validationErrorDuringProcessing = function(request) {
+O$.validationErrorDuringProcessing = function (request) {
   if (!request)
     return true;
   return request.responseText && request.responseText.indexOf("validation error") > -1;
 
 }
 
-O$.substituteDocumentWrite = function() {
+O$.substituteDocumentWrite = function () {
   document._oldWrite = document.write;
   document._tempAjaxStr = "";
-  document.write = function(str) {
+  document.write = function (str) {
     document._tempAjaxStr += str;
   };
 }
 
-O$.restoreDocumentWrite = function(placeHolderId) {
+O$.restoreDocumentWrite = function (placeHolderId) {
   if (document._tempAjaxStr.length > 0) {
     var div = document.createElement("div");
     div.innerHTML = document._tempAjaxStr;
@@ -1609,7 +1638,7 @@ O$.restoreDocumentWrite = function(placeHolderId) {
   document._tempAjaxStr = undefined;
 }
 
-O$.updateViewId = function(viewId, formId) {
+O$.updateViewId = function (viewId, formId) {
   var viewStateElementName = 'javax.faces.ViewState';
   var viewStateElements = document.getElementsByName(viewStateElementName);
   if (viewStateElements) {
@@ -1621,7 +1650,7 @@ O$.updateViewId = function(viewId, formId) {
   }
 }
 
-O$.updateViewStateFields = function(viewStateElementName, viewStateElementIndex, viewId, formId) {
+O$.updateViewStateFields = function (viewStateElementName, viewStateElementIndex, viewId, formId) {
   var viewStateElement = document.getElementsByName(viewStateElementName)[viewStateElementIndex];
   if (viewStateElement) {
     if (!formId) {
@@ -1635,7 +1664,7 @@ O$.updateViewStateFields = function(viewStateElementName, viewStateElementIndex,
   }
 }
 
-O$.showDefaultHTTPAlertException = function(requestStatus) {
+O$.showDefaultHTTPAlertException = function (requestStatus) {
   if (requestStatus == 0) {
     alert("An attempt to connect to the server failed. Please, check your network connection.");
     return;
@@ -1666,12 +1695,12 @@ O$.showDefaultHTTPAlertException = function(requestStatus) {
 }
 
 
-O$.showDefaultAlertAfterException = function(errorMessage, ajaxObject) {
+O$.showDefaultAlertAfterException = function (errorMessage, ajaxObject) {
   alert("An error occurred on the server.\nError message:\n\"" + errorMessage + "\".\nPlease see server logs for the full stacktrace.");
   O$.requestFinished(ajaxObject);
 }
 
-O$.destroyAllFunctions = function(elt) {
+O$.destroyAllFunctions = function (elt) {
   if (!elt || elt.nodeName == "#text")
     return;
 
@@ -1690,7 +1719,7 @@ O$.destroyAllFunctions = function(elt) {
     if (!elt[member])
       continue;
     if (typeof elt[member] === "function")
-      (function() {
+      (function () {
         elt[member] = null;
       })();
     else
@@ -1717,13 +1746,13 @@ O$._fireSessionExpiredEvent = function () {
   }
 }
 
-O$._addComponentAjaxReloadHandler = function (component, ajaxStart, ajaxEnd){
+O$._addComponentAjaxReloadHandler = function (component, ajaxStart, ajaxEnd) {
   if (!O$._componentAjaxHandlers)
     O$._componentAjaxHandlers = [];
-  for (var i = 0; i < O$._componentAjaxHandlers.length; i ++){
-   if (O$._componentAjaxHandlers[i].componentId == component.id){
-     return
-   }
+  for (var i = 0; i < O$._componentAjaxHandlers.length; i++) {
+    if (O$._componentAjaxHandlers[i].componentId == component.id) {
+      return
+    }
   }
   var ajaxHandler = {};
   ajaxHandler.componentId = component.id;
@@ -1732,20 +1761,21 @@ O$._addComponentAjaxReloadHandler = function (component, ajaxStart, ajaxEnd){
   O$._componentAjaxHandlers.push(ajaxHandler);
 }
 
-O$._invokeComponentAjaxReloadEnd = function (componentId){
+O$._invokeComponentAjaxReloadEnd = function (componentId) {
   if (!O$._componentAjaxHandlers) return;
-  O$._componentAjaxHandlers.forEach(function(ajaxHandler) {
-    if (ajaxHandler.componentId == componentId){
+  O$._componentAjaxHandlers.forEach(function (ajaxHandler) {
+    if (ajaxHandler.componentId == componentId) {
       if (ajaxHandler.ajaxEnd)
-        ajaxHandler.ajaxEnd.call(O$(componentId));;
+        ajaxHandler.ajaxEnd.call(O$(componentId));
+      ;
     }
   });
 }
 
-O$._invokeComponentAjaxReloadStart = function (componentId){
+O$._invokeComponentAjaxReloadStart = function (componentId) {
   if (!O$._componentAjaxHandlers) return;
-  O$._componentAjaxHandlers.forEach(function(ajaxHandler) {
-    if (ajaxHandler.componentId == componentId){
+  O$._componentAjaxHandlers.forEach(function (ajaxHandler) {
+    if (ajaxHandler.componentId == componentId) {
       if (ajaxHandler.ajaxStart)
         ajaxHandler.ajaxStart.call(O$(componentId));
     }
