@@ -3117,14 +3117,16 @@ if (!window.O$) {
     try {
       if (styleSheet.addRule) { // IE only
         var rules = styleSheet.cssRules ? styleSheet.cssRules : styleSheet.rules;
-        if (rules && rules.length > 4000) { // IN IE there are MAX 4096 rules
-          styleSheet = O$.packCssStyleSheet(styleSheet);
-          if (rules.length > 3800) { // we add a little bit less number to avoid calls for each adding when you have smth like 3999 rules
-            styleSheet = O$.addAdditionalStyleSheet();
+        if (rules && rules.length > 4000) { // IN IE (<10) there are MAX readable 4096 rules
+          O$._removeUnusedCssRules();
 
-          }
+            if (rules.length > 4000) { // IN IE there are MAX 4096 rules
+              styleSheet = O$.packCssStyleSheet(styleSheet);
+            if (rules.length > 3800) { // we add a little bit less number to avoid calls for each adding when you have smth like 3999 rules
+              styleSheet = O$.addAdditionalStyleSheet();
+            }
         }
-
+        }
 
         var idx1 = strRule.indexOf("{");
         var idx2 = strRule.indexOf("}");
