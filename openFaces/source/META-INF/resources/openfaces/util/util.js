@@ -2637,11 +2637,21 @@ if (!window.O$) {
       var newLeft = left + dx;
       var newTop = top + dy;
 
-      var containmentCorrectedLeft = newLeft;
-      var containmentCorrectedTop = newTop;
+
+
       var containingBlock = draggable.offsetParent;
       if (!containingBlock) containingBlock = document.body;
+      var containmentCorrectedLeft =
+              newLeft <= 0 ? 0
+                      : newLeft >= (containingBlock.offsetWidth - draggable._originalSize.width)
+                      ? (containingBlock.offsetWidth - draggable._originalSize.width) - 1
+                      : newLeft;
 
+      var containmentCorrectedTop =
+              newTop <= 0 ? 0
+                      : newTop >= (containingBlock.offsetHeight - draggable._originalSize.height)
+                      ? (containingBlock.offsetHeight - draggable._originalSize.height) - 1
+                      : newTop;
       var containmentRect = draggable._containment && (!draggable._containment ||
               draggable._containmentRole == "restrictMovement" ||
               draggable._containmentRole == "restrictMovementAndSize")
@@ -4594,27 +4604,27 @@ if (!window.O$) {
             return true;
         }
         // possible align correction with offsets
-        if (!alternativeHorizAlignment && alternativeVertAlignment){
-          var xCorrection =  x < allowedRectangle.getMinX()
+        if (!alternativeHorizAlignment && alternativeVertAlignment) {
+          var xCorrection = x < allowedRectangle.getMinX()
                   ? allowedRectangle.getMinX() - x
                   : x + popupWidth > allowedRectangle.getMaxX() ? allowedRectangle.getMaxX() - (x + popupWidth) : 0;
-          if (O$.alignPopupByElement(popup, element, horizAlignment, vertAlignment, horizDistance, vertDistance, ignoreVisibleArea, false, true, xCorrection, 0)){
+          if (O$.alignPopupByElement(popup, element, horizAlignment, vertAlignment, horizDistance, vertDistance, ignoreVisibleArea, false, true, xCorrection, 0)) {
             return true;
           }
-          if (O$.alignPopupByElement(popup, element, horizAlignment, alternativeVertAlignment, horizDistance, vertDistance, ignoreVisibleArea, false, true, xCorrection, 0)){
+          if (O$.alignPopupByElement(popup, element, horizAlignment, alternativeVertAlignment, horizDistance, vertDistance, ignoreVisibleArea, false, true, xCorrection, 0)) {
             return true;
           }
         }
 
         // possible align correction with offsets
-        if (alternativeHorizAlignment && !alternativeVertAlignment){
-          var yCorrection =  y < allowedRectangle.getMinY()
+        if (alternativeHorizAlignment && !alternativeVertAlignment) {
+          var yCorrection = y < allowedRectangle.getMinY()
                   ? allowedRectangle.getMinY() - y
                   : y + popupHeight > allowedRectangle.getMaxY() ? allowedRectangle.getMaxY() - (y + popupHeight) : 0;
-          if (O$.alignPopupByElement(popup, element, horizAlignment, vertAlignment, horizDistance, vertDistance, ignoreVisibleArea, false, true,  0, yCorrection)){
+          if (O$.alignPopupByElement(popup, element, horizAlignment, vertAlignment, horizDistance, vertDistance, ignoreVisibleArea, false, true, 0, yCorrection)) {
             return true;
           }
-          if (O$.alignPopupByElement(popup, element, alternativeHorizAlignment, vertAlignment, horizDistance, vertDistance, ignoreVisibleArea, false, true, 0, yCorrection)){
+          if (O$.alignPopupByElement(popup, element, alternativeHorizAlignment, vertAlignment, horizDistance, vertDistance, ignoreVisibleArea, false, true, 0, yCorrection)) {
             return true;
           }
         }
