@@ -85,12 +85,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         if (table.getUseAjax())
             AjaxUtil.prepareComponentForAjax(context, component);
 
-        List<BaseColumn> columns = table.getRenderedColumns();
-        for (BaseColumn column : columns) {
-            context.getApplication().publishEvent(context,
-                    PreRenderComponentEvent.class,
-                    column);
-        }
+        getPublishEventForAllChildren(context, component);
         table.clearRenderedColumnCache();
 
         TableStructure tableStructure = createTableStructure(table);
@@ -110,6 +105,20 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         }
     }
 
+
+    private void getPublishEventForAllChildren(FacesContext context, UIComponent component) {
+        if (!component.isRendered()) return;
+        List<UIComponent> children = component.getChildren();
+        context.getApplication().publishEvent(context,
+                PreRenderComponentEvent.class,
+                component);
+        if (children.size() != 0) {
+            for (UIComponent child : children) {
+                getPublishEventForAllChildren(context, child);
+            }
+        }
+        System.out.println(component.getId());
+    }
 
     protected TableStructure createTableStructure(final AbstractTable table) {
         return new TableStructure(table, table) {
