@@ -23,7 +23,13 @@ O$.MenuItemConsctructor = {
           el.click();
         }
       } else{
-        eval(menuItem.onclick);
+        if (menuItem.onclick){
+          eval(menuItem.onclick);
+        } else {
+          if (menuItem.click){
+            eval(menuItem.click);
+          }
+        }
         if (menuItem.render || (menuItem.execute && menuItem.length > 0 )) {
           if (menuItem.render == null) {
             alert("'execute' attribute can't be specified without the 'render' attribute. Component id: " + popupMenu.id);
