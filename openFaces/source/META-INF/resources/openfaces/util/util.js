@@ -2641,6 +2641,7 @@ if (!window.O$) {
 
       var containingBlock = draggable.offsetParent;
       if (!containingBlock) containingBlock = document.body;
+      if (!draggable._originalSize) draggable._originalSize = O$.getElementSize(draggable);
       var containmentCorrectedLeft =
               newLeft <= 0 ? 0
                       : newLeft >= (containingBlock.offsetWidth - draggable._originalSize.width)
