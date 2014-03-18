@@ -35,7 +35,7 @@ public class AbstractWindow extends PopupLayer implements ComponentWithCaption {
     private Boolean resizable;
     private String minWidth;
     private String minHeight;
-    private Boolean inBodyRender;
+    private String parentId;
 
     public String getCaption() {
         return ValueBindings.get(this, "caption", caption);
@@ -49,12 +49,12 @@ public class AbstractWindow extends PopupLayer implements ComponentWithCaption {
         return Components.getFacet(this, CAPTION_FACET_NAME);
     }
 
-    public Boolean getInBodyRender() {
-        return ValueBindings.get(this, "inBodyRender", inBodyRender, false);
+    public String getParentId() {
+        return ValueBindings.get(this, "parentId", parentId);
     }
 
-    public void setInBodyRender(Boolean inBodyRender) {
-        this.inBodyRender = inBodyRender;
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
     }
 
     public void setCaptionFacet(UIComponent component) {
@@ -162,7 +162,8 @@ public class AbstractWindow extends PopupLayer implements ComponentWithCaption {
                 contentStyle,
                 contentClass,
                 draggableByContent,
-                caption};
+                caption,
+                parentId};
     }
 
     @Override
@@ -179,6 +180,6 @@ public class AbstractWindow extends PopupLayer implements ComponentWithCaption {
         contentClass = (String) state[i++];
         draggableByContent = (Boolean) state[i++];
         caption = (String) state[i++];
+        parentId = (String) state[i++];
     }
-
 }

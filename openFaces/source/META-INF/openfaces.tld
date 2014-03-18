@@ -11567,6 +11567,19 @@ means that only root nodes and their immediate children are preloaded -->
     </attribute>
 
     <attribute>
+      <description>
+      Specifies whether the field has parent xhtml tag
+      </description>
+      <name>parentId</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
       <description>Specifies whether and how the drop-down list with suggestions should
         be shown when typing in the field. Any value except "none" means that suggestions
         are displayed. See also the suggestionMinChars and suggestionDelay attributes which
@@ -13952,7 +13965,8 @@ entering a value and returns a list of suggestions from the server -->
   </tag>
 
   <!-- WINDOW TAG DECLARATOIN -->
-  <tag>
+
+ <tag>
     <description>The Window component is a window-styled container for other JSF components that is displayed over the
       page content. The Window component has a caption and a content area, it can be dragged around on the page, and
       resized. Besides, it has the usual maximize/restore, minimize and close buttons in the caption.
@@ -13970,6 +13984,15 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default null -->
       <!-- @el false -->
     </attribute>
+   <attribute>
+     <name>parentId</name>
+     <deferred-value>
+       <type>java.lang.String</type>
+     </deferred-value>
+     <!-- @bindingType java.lang.String -->
+     <!-- @default document.body -->
+     <!-- @el true -->
+   </attribute>
     <attribute>
       <description>A flag that indicates whether or not the component is visible.</description>
       <name>rendered</name>
@@ -14049,7 +14072,8 @@ entering a value and returns a list of suggestions from the server -->
       <description>Specifies how the value of the &quot;containment&quot; attribute is used.</description>
       <name>containmentRole</name>
       <deferred-value>
-        <type>java.lang.Object</type>
+        <type>java.lang.Obje
+          ct</type>
       </deferred-value>
       <!-- @bindingType org.openfaces.component.window.ContainmentRole -->
       <!-- @default "restrictMovement" -->
@@ -14073,12 +14097,12 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <name>inBodyRender</name>
+      <name>parentId</name>
       <deferred-value>
-        <type>boolean</type>
+        <type>java.lang.String</type>
       </deferred-value>
-      <!-- @bindingType boolean -->
-      <!-- @default false -->
+      <!-- @bindingType java.lang.String -->
+      <!-- @default document.body -->
       <!-- @el true -->
     </attribute>
     <attribute>

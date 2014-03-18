@@ -41,6 +41,6 @@ public class WindowTag extends AbstractWindowTag {
         setBooleanProperty(window, "resizable");
         setStringProperty(window, "minWidth");
         setStringProperty(window, "minHeight");
-        setBooleanProperty(window,"inBodyRender");
+        setStringProperty(window,"parentId");
     }
 }
