@@ -326,6 +326,7 @@ O$.PopupLayer = {
         }
 
         popup._visibleField.value = "true";
+        O$._getPopupVisionStateStorage()[popup.id] = true;
         if (popup.onshow) {
           popup.onshow();
         }
@@ -390,6 +391,8 @@ O$.PopupLayer = {
           clearTimeout(popup.hideTimer);
         }
         popup._visibleField.value = "false";
+        O$._getPopupVisionStateStorage()[popup.id] = false;
+
 
         if (popup._blockingLayer) {
           O$.removeIETransparencyControl(popup._blockingLayer);
@@ -585,7 +588,10 @@ O$.PopupLayer = {
 
     O$.addLoadEvent(function () {
       if (popup._visibleField.value == "true")
-        popup.show();
+        if (O$._getPopupVisionStateStorage()[popup.id] == true)
+          popup.show();
+        else
+          popup._visibleField.value == "false"
     }, isAjaxRequest);
 
   },
