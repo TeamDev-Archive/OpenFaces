@@ -103,16 +103,6 @@ public class ColumnResizingRenderer extends RendererBase {
         String colWidthsFieldName = getColumnWidthsFieldName(context, table);
         String params = (String) requestParams.get(colWidthsFieldName);
 
-        String columnOrderFieldName = getColumnOrderFieldName(context, table);
-        String colOrder = (String) requestParams.get(columnOrderFieldName);
-        Iterable<String> submittedColumnsOrder = null;
-        if (colOrder != null) {
-            colOrder += ",";
-            submittedColumnsOrder = Arrays.asList(colOrder.split(","));
-            if (submittedColumnsOrder != null) {
-                table.setColumnsOrder(submittedColumnsOrder);
-            }
-        }
         if (params == null || params.length() == 0)
             return;
         String[] splitParameters = params.split(":");
@@ -127,6 +117,19 @@ public class ColumnResizingRenderer extends RendererBase {
             throw new RuntimeException(e);
         }
         List<BaseColumn> columns = table.getRenderedColumns();
+        Iterable<String> submittedColumnsOrder = null;
+        if (columns.size() != widthsArray.length()){
+            String columnOrderFieldName = getColumnOrderFieldName(context, table);
+            String colOrder = (String) requestParams.get(columnOrderFieldName);
+            if (colOrder != null) {
+                colOrder += ",";
+                submittedColumnsOrder = Arrays.asList(colOrder.split(","));
+                if (submittedColumnsOrder != null) {
+                    table.setColumnsOrder(submittedColumnsOrder);
+                }
+            }
+            columns = table.getRenderedColumns();
+        }
         if (columns.size() != widthsArray.length())
             throw new IllegalStateException("columns.size() != widthsArray.length(): " + columns.size() + " != " + widthsArray.length());
 

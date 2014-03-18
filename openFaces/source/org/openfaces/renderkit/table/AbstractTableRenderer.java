@@ -24,15 +24,7 @@ import org.openfaces.renderkit.AjaxPortionRenderer;
 import org.openfaces.renderkit.CaptionButtonRenderer;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.renderkit.TableUtil;
-import org.openfaces.util.AjaxUtil;
-import org.openfaces.util.Components;
-import org.openfaces.util.Environment;
-import org.openfaces.util.Log;
-import org.openfaces.util.Rendering;
-import org.openfaces.util.Resources;
-import org.openfaces.util.ScriptBuilder;
-import org.openfaces.util.StyleGroup;
-import org.openfaces.util.Styles;
+import org.openfaces.util.*;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -117,7 +109,6 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
                 getPublishEventForAllChildren(context, child);
             }
         }
-        System.out.println(component.getId());
     }
 
     protected TableStructure createTableStructure(final AbstractTable table) {
