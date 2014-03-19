@@ -1098,6 +1098,23 @@ if (!window.O$) {
     return el;
   };
 
+  O$.getParentById = function(elementId, parentId){
+    var element = O$(elementId);
+    var parent = O$(parentId);
+
+    if (!parent && parentId) {
+      parentId = parentId.toLowerCase();
+
+      while (element) {
+        element = element.id.toLowerCase();
+        if (element.indexOf(parentId) > -1) {
+          return element;
+        }
+        element = element.offsetParent;
+      }
+    }
+    return parent;
+  };
 
   O$.getParentNode = function (element, tagName) {
     tagName = tagName.toUpperCase();

@@ -168,7 +168,7 @@ public abstract class AbstractWindowRenderer extends PopupLayerRenderer {
 
         AbstractWindow window = (AbstractWindow) component;
         String sizeKey = window.getClientId(context) + "::size";
-        final String parentId = window.getClientId();
+        final String parentId = window.getClientId() + "::parentId";
 
         String sizeStr = context.getExternalContext().getRequestParameterMap().get(sizeKey);
         window.setParentId(context.getExternalContext().getRequestParameterMap().get(parentId));

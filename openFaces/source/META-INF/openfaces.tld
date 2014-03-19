@@ -14072,8 +14072,7 @@ entering a value and returns a list of suggestions from the server -->
       <description>Specifies how the value of the &quot;containment&quot; attribute is used.</description>
       <name>containmentRole</name>
       <deferred-value>
-        <type>java.lang.Obje
-          ct</type>
+        <type>java.lang.Object</type>
       </deferred-value>
       <!-- @bindingType org.openfaces.component.window.ContainmentRole -->
       <!-- @default "restrictMovement" -->
