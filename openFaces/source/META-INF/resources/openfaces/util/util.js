@@ -5527,6 +5527,13 @@ if (!window.O$) {
     }
   };
 
+  O$._getPopupVisionStateStorage = function() {
+    if (!O$._popupVisionStateStorage){
+      O$._popupVisionStateStorage = {};
+    }
+    return O$._popupVisionStateStorage;
+  }
+
 }
 
 
