@@ -2706,7 +2706,7 @@ if (!window.O$) {
     function getLeftPosition(containingBlock, left) {
       var minLeft = containingBlock.offsetLeft;
       var maxWidth = (minLeft + containingBlock.offsetWidth) - draggable.offsetWidth;
-      var minPosition = isStaticContext(containingBlock.tagName) ? 0 : minLeft;
+      var minPosition = O$.isStaticContext(containingBlock.tagName) ? 0 : minLeft;
 
       return left <= minPosition ? minPosition
               : left >= maxWidth ? maxWidth - 1 : left;
@@ -2715,13 +2715,13 @@ if (!window.O$) {
     function getTopPosition(containingBlock, top) {
       var minTop = containingBlock.offsetTop;
       var maxHeight = (minTop + containingBlock.offsetHeight) - draggable.offsetHeight;
-      var minPosition = isStaticContext(containingBlock.tagName) ? 0 : minTop;
+      var minPosition = O$.isStaticContext(containingBlock.tagName) ? 0 : minTop;
 
       return top <= minPosition ? minPosition
               : top >= maxHeight ? maxHeight - 1 : top;
     }
 
-    function isStaticContext(tagName) {
+    O$.isStaticContext = function(tagName) {
       return tagName.toUpperCase() === "BODY" ||
               tagName.toUpperCase() === "TABLE" ||
               tagName.toUpperCase() === "TR" ||
@@ -4666,8 +4666,8 @@ if (!window.O$) {
         var yOffset = y < allowedRectangle.getMinY()
                 ? allowedRectangle.getMinY() - y
                 : y + popupHeight > allowedRectangle.getMaxY() ? allowedRectangle.getMaxY() - (y + popupHeight) : 0;
-        x += xOffset;
-        y += yOffset;
+        x += xOffset ? 0 : xOffset;
+        y += yOffset ? 0 : yOffset;
       }
     }
 
@@ -5499,7 +5499,6 @@ if (!window.O$) {
             link.onclick = null;
           }
         }
-
       });
 
       var events = ["onfocus", "onblur", "onkeydown", "onkeypress", "onkeyup",

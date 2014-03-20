@@ -128,8 +128,6 @@ O$.Window = {
       },
 
       _setSize: function (width, height) {
-        super_setSize.call(this, width, height);
-
         O$.setElementSize(win, {width: width, height: height});
         O$.setHiddenField(win, windowId + "::size", width + "," + height);
         if (!win._table._widthInitialized) {
