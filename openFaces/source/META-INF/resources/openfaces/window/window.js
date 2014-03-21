@@ -16,13 +16,7 @@ O$.Window = {
   STATE_MINIMIZED: "minimized",
   parent: "",
   _init: function (windowId, resizable, draggableByContent, minWidth, minHeight, desktopElementId, parentId) {
-    var parent = O$.getParentById(windowId, parentId);
-
-    if (parent) {
-      O$.Window.parent = parent;
-    } else {
-      O$.Window.parent = document.body;
-    }
+    O$.Window.parent = O$.getParentById(windowId, parentId) || O$.getParentById(windowId, "form") || document.body;
 
     var win = O$(windowId);
     if (win._autosizing == "on" && resizable) {
@@ -36,6 +30,7 @@ O$.Window = {
       _minHeight: O$.calculateNumericCSSValue(minHeight),
       _table: O$(windowId + "::table"),
       _content: O$(windowId + "::content"),
+
       _caption: O$(windowId + "::caption"),
       _captionContent: O$(windowId + "::caption_content"),
       _contentRow: O$(windowId + "::contentRow"),
@@ -46,8 +41,7 @@ O$.Window = {
       _declaredResizable: resizable,
 
       _resizable: false,
-      _parentId: parent,
-
+      _parentId: O$.Window.parent.id,
 
       _setResizable: function (resizable) {
         if (win._resizable == resizable)
