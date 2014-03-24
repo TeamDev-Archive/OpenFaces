@@ -13,6 +13,7 @@
 
 O$.Table = {
   saveEnabledSettings:[],
+
   setEnabledSettingMenuForId:function (tableId, isEnabled) {
     for (var i = 0; i < O$.Table.saveEnabledSettings.length; i++) {
       if (O$.Table.saveEnabledSettings[i].tableId == tableId) {
@@ -247,6 +248,12 @@ O$.Table = {
             table.appendChild(auxiliaryTags);
         });
       });
+    if (table._params.scrolling && table.style.height == "auto") {
+      table.style.height = table.body._centerScrollingArea._table.style.height;
+    }
+    if (table._params.scrolling && table.style.width == "auto") {
+      table.style.width = table.body._centerScrollingArea._table.style.width;
+    }
   },
 
   _initApiFunctions:function (table) {
