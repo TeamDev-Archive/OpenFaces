@@ -209,7 +209,7 @@ public class PartialViewContext extends PartialViewContextWrapper {
                     unprocessableIds.add(externalPartId);
                 }
             }
-            context.getExternalContext().getRequestMap().put(getUnprocessableComponentIdsKey(), unprocessableIds);
+            UnprocessableContextHolder.addToContext(getUnprocessableComponentIdsKey(), unprocessableIds);
             additionalComponents.addAll(externalPartIds);
         }
 
@@ -222,7 +222,7 @@ public class PartialViewContext extends PartialViewContextWrapper {
     }
 
     public Collection<String> getRenderIdsNotRenderedYet(FacesContext context) {
-        Map<String, Object> map = context.getExternalContext().getRequestMap();
+        final Map<String, Object> map = UnprocessableContextHolder.getContext();
         return (Collection<String>) map.get(getUnprocessableComponentIdsKey());
     }
 
@@ -1027,6 +1027,23 @@ public class PartialViewContext extends PartialViewContextWrapper {
         final List<UIComponent> children = component.getChildren();
         for (UIComponent uiComponent : children) {
             deepCheckForForm(uiComponent, renderId);
+        }
+    }
+
+    private static class UnprocessableContextHolder {
+        private static final ThreadLocal<Map<String, Object>> CONTEXT = new ThreadLocal<Map<String, Object>>();
+
+        private UnprocessableContextHolder(){}
+
+        public static void addToContext(String key, Object value){
+            if(CONTEXT.get() == null){
+                CONTEXT.set(new HashMap<String, Object>());
+            }
+            CONTEXT.get().put(key, value);
+        }
+
+        public static Map<String, Object> getContext(){
+            return CONTEXT.get();
         }
     }
 }
