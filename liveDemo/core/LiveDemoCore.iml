@@ -18,7 +18,7 @@
       <excludeFolder url="file://$MODULE_DIR$/exploded" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
-    <orderEntry type="jdk" jdkName="1.5" jdkType="JavaSDK" />
+    <orderEntry type="jdk" jdkName="1.6" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Tomcat 6" level="application_server_libraries" />
     <orderEntry type="library" exported="" name="JSF Implementation - Mojarra 2.0" level="project" />

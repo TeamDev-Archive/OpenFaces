@@ -3157,7 +3157,10 @@ if (!window.O$) {
           }
         }
       } else { // all others
-        styleSheet.insertRule(strRule, styleSheet.rules.length);
+        if (styleSheet.rules)
+          styleSheet.insertRule(strRule, styleSheet.rules.length);
+        else
+          styleSheet.insertRule(strRule, styleSheet.cssRules.length);
       }
       return styleSheet;
     } catch (e) {
