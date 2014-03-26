@@ -68,7 +68,7 @@
     <o:dataTable id="banks" var="bank"
                  value="#{BanksList.banks}"
                  rowKey="#{bank.id}"
-                 style="margin-top: 15px; width: 95%; height: 420px;"
+                 style="margin-top: 15px; width: 100%; height: auto;"
 
                  sortColumnId="institutionName"
                  sortedAscendingImageUrl="../images/treetable/sort_a.gif"
@@ -87,10 +87,10 @@
       <f:facet name="header">
         <o:groupingBox/>
       </f:facet>
+      <o:scrolling horizontal="true"/>
       <o:rowGrouping groupingRules="#{sessionScope.banks_savedGroupingRules}"
                      expansionState="#{BanksList.expansionState}"
                      groupHeaderRowStyle="font-size: 11pt"/>
-      <o:scrolling position="#{sessionScope.scrolling}" autoSaveState="true"/>
       <o:singleRowSelection rowData="#{sessionScope.selectedBank}"
                             style="background: url('../images/treetable/selected.gif') repeat-x #5d8bba !important; color: white !important;"/>
       <o:columnResizing resizingState="#{sessionScope.banks_columnResizingState}" autoSaveState="true"/>
@@ -107,7 +107,6 @@
 
       <o:column id="institutionName"
                 header="Institution Name"
-                width="30%"
                 sortingExpression="#{bank.institutionName}"
                 bodyStyle="text-align: left; white-space: nowrap;"
                 headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;">
@@ -117,7 +116,6 @@
         <h:outputText value="#{bank.institutionName}" style="white-space: nowrap;"/>
       </o:column>
       <o:column header="Certificate Number"
-                width="10%"
                 headerStyle="white-space: normal;"
                 sortingExpression="#{bank.certificateNumber}"
                 bodyStyle="text-align: right; padding-right: 5px;">
@@ -128,7 +126,6 @@
       </o:column>
       <o:columnGroup header="Address">
         <o:column header="City"
-                  width="14%"
                   sortingExpression="#{bank.city}"
                   bodyStyle="padding-left: 5px; "
                   headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;">
@@ -139,7 +136,6 @@
           <h:outputText value="#{bank.city}"/>
         </o:column>
         <o:column header="State"
-                  width="7%"
                   sortingExpression="#{bank.state}"
                   bodyStyle="padding-left: 5px; "
                   headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;">
@@ -149,7 +145,6 @@
           <h:outputText value="#{bank.state}"/>
         </o:column>
         <o:column header="Zip"
-                  width="7%"
                   bodyStyle="text-align: right; padding-right: 5px;"
                   headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;"
                   sortingExpression="#{bank.zip}">
@@ -159,7 +154,6 @@
           <h:outputText value="#{bank.zip}"/>
         </o:column>
         <o:column header="County"
-                  width="13%"
                   sortingExpression="#{bank.county}"
                   bodyStyle="padding-left: 5px; white-space: nowrap;"
                   headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;">
@@ -172,7 +166,6 @@
 
       </o:columnGroup>
       <o:column header="Average Assets"
-                width="19%"
                 bodyStyle="text-align: right; padding-right: 5px;"
                 headerStyle="text-align: center; padding-left: 5px; padding-right: 5px; white-space: normal;"
                 sortingExpression="#{bank.averageAssets}"
@@ -185,7 +178,6 @@
     </o:column>
 
       <o:column header="testWindows"
-                width="19%"
                 bodyStyle="text-align: right; padding-right: 5px;"
                 headerStyle="text-align: center; padding-left: 5px; padding-right: 5px; white-space: normal;"
                 sortingExpression="#{bank.averageAssets}"

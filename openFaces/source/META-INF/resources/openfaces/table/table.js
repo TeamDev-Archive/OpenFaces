@@ -249,10 +249,14 @@ O$.Table = {
         });
       });
     if (table._params.scrolling && table.style.height == "auto") {
-      table.style.height = table.body._centerScrollingArea._table.style.height;
+      console.log(table.body._centerScrollingArea._table.clientHeight);
+      console.log(table.header._centerScrollingArea._rowContainer.clientHeight);
+      table.style.height = table.body._centerScrollingArea._table.clientHeight
+              +table.header._sectionTable.clientHeight +25 + "px";
+      console.log(table.style.height);
     }
     if (table._params.scrolling && table.style.width == "auto") {
-      table.style.width = table.body._centerScrollingArea._table.style.width;
+      table.style.width = table.body._centerScrollingArea._table.clientWidth+"px";
     }
   },
 
