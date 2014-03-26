@@ -1098,6 +1098,12 @@ if (!window.O$) {
     return el;
   };
 
+  O$.getElementByType = function(tagName){
+    var form = document.getElementsByTagName(tagName.toUpperCase())[0];
+    var el = O$(form.id);
+    return el;
+  };
+
   O$.getParentById = function(elementId, parentId){
     var element = O$(elementId);
     var parent = O$(parentId);

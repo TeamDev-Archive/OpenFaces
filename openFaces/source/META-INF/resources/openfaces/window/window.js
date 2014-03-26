@@ -16,7 +16,7 @@ O$.Window = {
   STATE_MINIMIZED: "minimized",
   parent: "",
   _init: function (windowId, resizable, draggableByContent, minWidth, minHeight, desktopElementId, parentId) {
-    O$.Window.parent = O$.getParentById(windowId, parentId) || O$.getParentById(windowId, "form") || document.body;
+    O$.Window.parent = O$.getParentById(windowId, parentId) || O$.getElementByType("form") || document.body;
 
     var win = O$(windowId);
     if (win._autosizing == "on" && resizable) {
