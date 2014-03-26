@@ -285,7 +285,7 @@ public abstract class OpenFacesTestCase extends SeleniumTestCase {
 
     @AfterClass
     public static void closeDriver() {
-        ((WrapsDriver) getSelenium()).getWrappedDriver().close();
+        ((WrapsDriver) getSelenium()).getWrappedDriver().quit();
         SeleniumHolder.getInstance().resetSelenium();
     }
 

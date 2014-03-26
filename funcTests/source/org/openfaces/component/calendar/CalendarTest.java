@@ -21,7 +21,7 @@ import org.seleniuminspector.openfaces.CalendarInspector;
  * @author Darya Shumilina
  */
 public class CalendarTest extends BaseCalendarTestCase {
-    @Test
+     @Test
     public void testReRenderThroughA4J() {
         testAppFunctionalPage("/components/calendar/calendar_a4j.jsf");
 
@@ -33,7 +33,7 @@ public class CalendarTest extends BaseCalendarTestCase {
         }
     }
 
-    @Test
+     @Test
     public void testClientSideEvents() {
         testAppFunctionalPage("/components/calendar/calendar.jsf");
         Selenium selenium = getSelenium();
@@ -46,7 +46,7 @@ public class CalendarTest extends BaseCalendarTestCase {
 //    assertTrue(selenium.isTextPresent("Event name: change"));
     }
 
-    @Test
+     @Test
     public void testChangingSelectedDate() {
         testAppFunctionalPage("/components/calendar/calendarChangeDateMonthYear.jsf");
 
@@ -59,7 +59,7 @@ public class CalendarTest extends BaseCalendarTestCase {
                 element("formID:submit"));
     }
 
-    @Test
+     @Test
     public void testMonthChange() {
         closeBrowser();
         testAppFunctionalPage("/components/calendar/calendarChangeDateMonthYear.jsf");
@@ -73,7 +73,7 @@ public class CalendarTest extends BaseCalendarTestCase {
                 new int[]{1, 2}, submitter, "06.03.2007");
     }
 
-    @Test
+     @Test
     public void testYearChange() {
         closeBrowser();
         testAppFunctionalPage("/components/calendar/calendarChangeDateMonthYear.jsf");
@@ -87,7 +87,7 @@ public class CalendarTest extends BaseCalendarTestCase {
                 submitter, "06.12.2005");
     }
 
-    @Test
+     @Test
     public void testTodayNoneButtons() {
         testAppFunctionalPage("/components/calendar/calendarTodayNoneButtons.jsf");
 
@@ -129,7 +129,7 @@ public class CalendarTest extends BaseCalendarTestCase {
         checkButtonPairState(todayStyleButton1, todayInfoOutput1, noneStyleButton1, noneInfoOutput1);
     }
 
-    @Test
+     @Test
     public void testDateRangeChanging() {
         testAppFunctionalPage("/components/calendar/calendarChangeDateRanges.jsf");
 
@@ -150,13 +150,13 @@ public class CalendarTest extends BaseCalendarTestCase {
         emptyDiv.assertText("6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 ");
     }
 
-    @Test
+     @Test
     public void testStyles() {
         checkStyles(false);
         checkStyles(true);
     }
 
-    @Test
+     @Test
     public void testClientSideAPI() {
         testAppFunctionalPage("/components/calendar/calendarClientSideAPI.jsf");
 
@@ -230,13 +230,13 @@ public class CalendarTest extends BaseCalendarTestCase {
         //todo: add code here!
     }
 
-    @Test
+     @Test
     public void testDefaultView() {
         testAppFunctionalPage("/components/calendar/calendar_defaultView.jsf");
         assertAppearanceNotChanged("CalendarDefaultView");
     }
 
-    @Test
+     @Test
     public void testValueChangeListener() {
         testAppFunctionalPage("/components/calendar/calendarValueChangeListener.jsf");
 
@@ -254,7 +254,7 @@ public class CalendarTest extends BaseCalendarTestCase {
         asTagOutput.assertText("true");
     }
 
-    @Test
+     @Test
     public void testKeepTime() {
         testAppFunctionalPage("/components/calendar/calendarChangeDateMonthYear.jsf");
 

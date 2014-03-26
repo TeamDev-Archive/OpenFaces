@@ -53,7 +53,7 @@ public class HintLabelInspector extends ElementByReferenceInspector {
         sleep(250);
 
         if (!hint().isVisible()) {
-            sleep(100);
+            sleep(750);
         }
     }
 

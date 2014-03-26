@@ -257,6 +257,7 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
         AbstractTable table = getTable();
         ResponseWriter writer = context.getResponseWriter();
         Rendering.renderHiddenField(writer, getSelectionFieldName(context, table), null);
+        Rendering.renderHiddenField(writer, getClearSelectionFieldName(context, table), null);
 
         String onchange = Rendering.getEventHandlerScript(this, table, "change", "action");
         Script automaticChangeHandler = null;
@@ -348,6 +349,10 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
         return table.getClientId(facesContext) + "::selection";
     }
 
+    private String getClearSelectionFieldName(FacesContext facesContext, UIComponent table) {
+        return table.getClientId(facesContext) + "::clear_selection";
+    }
+
     public void decode(FacesContext context) {
         super.decode(context);
 
@@ -357,6 +362,12 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
         if (!isEnabled())
             return;
         Map<String, String> requestParameterMap = context.getExternalContext().getRequestParameterMap();
+
+        String clearSelectionFieldName = getClearSelectionFieldName(context, table);
+        String clearSelectionFieldValue = requestParameterMap.get(clearSelectionFieldName);
+        if ("true".equals(clearSelectionFieldValue)){
+            clearSelection();
+        }
         String selectionFieldName = getSelectionFieldName(context, table);
         String selectionFieldValue = requestParameterMap.get(selectionFieldName);
         if (selectionFieldValue == null || selectionFieldValue.length() == 0)
@@ -451,4 +462,6 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
         TableDataModel.RowInfo rowInfo = getModel().getRowInfoByRowKey(id);
         return rowInfo.getRowData();
     }
+
+    abstract public void clearSelection();
 }

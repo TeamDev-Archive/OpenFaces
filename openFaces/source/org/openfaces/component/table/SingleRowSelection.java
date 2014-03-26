@@ -205,4 +205,8 @@ public class SingleRowSelection extends DataTableSelection {
         return getRowData();
     }
 
+    public void clearSelection(){
+        setRowKey(null);
+    }
+
 }

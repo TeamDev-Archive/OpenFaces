@@ -12,6 +12,7 @@
 package org.openfaces.component.miscellaneous;
 
 import com.thoughtworks.selenium.Selenium;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.seleniuminspector.ElementInspector;
@@ -20,7 +21,8 @@ import org.seleniuminspector.ElementInspector;
  * @author Darya Shumilina
  */
 public class ScrollPositionTest extends OpenFacesTestCase {
-    @Test
+
+     @Test
     public void testScrollPositionByPageLoading() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/scrollfocus/scrollPosition.jsf");
@@ -28,7 +30,7 @@ public class ScrollPositionTest extends OpenFacesTestCase {
         assertEquals("700", selenium.getEval("window.pageXOffset"));
     }
 
-    @Test
+     @Test
     public void testScrollPositionSaveAfterPageSubmission() {
         testAppFunctionalPage("/components/scrollfocus/scrollPosition.jsf");
         ElementInspector button = element("formID:clickIt");

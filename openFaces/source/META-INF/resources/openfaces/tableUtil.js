@@ -1528,7 +1528,7 @@ O$.Tables = {
   },
 
   _initColumnOrGroup: function(column, table) {
-    function newClass_IE(declaration) {
+    function newClass_IE(declaration, cachingDisabled) {
       function createPredefinedColClasses(prefix, preallocateCount) {
         var styleElement = document.createElement("style");
         styleElement.setAttribute("type", "text/css");
@@ -1563,20 +1563,20 @@ O$.Tables = {
           classObj:colClasses[colClasses._obtained++],
           _iePredefClasses:colClasses};
       } else {
-        return newClass_raw(declaration);
+        return newClass_raw(declaration, cachingDisabled);
       }
     }
-    function newClass_raw(declaration) {
-      var className = O$.createCssClass(declaration, true);
+    function newClass_raw(declaration, cachingDisabled) {
+      var className = O$.createCssClass(declaration, cachingDisabled);
       var cls = O$.findCssRule("." + className);
       return {className: className, classObj: cls};
     }
 
-    function newClass(declaration) {
+    function newClass(declaration, cachingDisabled) {
       if (O$.isExplorer())
-        return newClass_IE(declaration);
+        return newClass_IE(declaration, cachingDisabled);
       else
-        return newClass_raw(declaration);
+        return newClass_raw(declaration, cachingDisabled);
     }
     var defaultSharedColumnStyle = "o_tableColumn";
     column._getEditableIndividualClass = function(propertyName) {
@@ -1586,12 +1586,12 @@ O$.Tables = {
       }
       return this[propertyName];
     };
-    column._headerCellsClass = table._params.columnWidthControlRequired ? newClass("overflow: hidden") : defaultSharedColumnStyle;
-    column._bodyCellsClass = table._params.columnWidthControlRequired ? newClass("overflow: hidden") : defaultSharedColumnStyle;
+    column._headerCellsClass = table._params.columnWidthControlRequired ? newClass("overflow: hidden", false) : defaultSharedColumnStyle;
+    column._bodyCellsClass = table._params.columnWidthControlRequired ? newClass("overflow: hidden", false) : defaultSharedColumnStyle;
     column._colClass = defaultSharedColumnStyle; //newClass("overflow: hidden"); -- dynamic individual col class doesn't seem to
                                         // be required, see the commented usage in column.setWidth
     if (column.footer) {
-      column._footerCellsClass = table._params.columnWidthControlRequired ? newClass("overflow: hidden") : defaultSharedColumnStyle;
+      column._footerCellsClass = table._params.columnWidthControlRequired ? newClass("overflow: hidden", false) : defaultSharedColumnStyle;
       if (table._params.columnWidthControlRequired) {
         O$.addUnloadHandler(table, function () {
           O$.removeCssRule(column._footerCellsClass.classObj.selectorText,column._footerCellsClass._iePredefClasses);
@@ -1723,7 +1723,7 @@ O$.Tables = {
         var width = O$.getStyleClassProperty(column._className, "width");
         // don't allow the column width to be ignored due to the fake row, e.g. in the 50px width in DayTable's time column
         if (width) {
-          colTagClassName += " " + O$.createCssClass("width: " + width);
+          colTagClassName += " " + O$.createCssClass("width: " + width, false);
         }
       }
       column._colTags.forEach(function(colTag) {

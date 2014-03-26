@@ -135,15 +135,16 @@ public abstract class ExpressionFilterRenderer extends RendererBase {
                                             "\" ; consider declaring the filter expression explicitly if you're using a filter component in this column.");
                         }
                         Class type = data.getValueType();
+
                         if (String.class.equals(type))
                             condition = FilterCondition.CONTAINS;
                         else
-                            condition = FilterCondition.EQUALS;
+                            condition = FilterCondition.CONTAINS;
                     } else {
                         // it is allowed to specify expression as a string, e.g. in case of custom data providing,
                         // in which case the actual filtering is performed by the application code so the condition
                         // specified in the ValueExpression object doesn't matter 
-                        condition = FilterCondition.EQUALS;
+                        condition = FilterCondition.CONTAINS;
                     }
                 }
             }

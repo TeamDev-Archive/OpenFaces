@@ -209,4 +209,8 @@ public class MultipleCellSelection extends AbstractCellSelection {
 
     }
 
+    public void clearSelection(){
+        setRowKeyCellIds(new ArrayList<CellId>());
+    }
+
 }

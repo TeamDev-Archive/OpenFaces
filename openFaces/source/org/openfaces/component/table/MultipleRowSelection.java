@@ -293,5 +293,13 @@ public class MultipleRowSelection extends DataTableSelection {
         return rowDatas != null ? rowDatas.get(0) : null;
     }
 
+    @Override
+    public void clearSelection(){
+        List<Object> allSelectedRowKeys = (getRowKeys() != null)
+                ? getRowKeys() : new ArrayList<Object>();
+        allSelectedRowKeys.clear();
+        setRowKeys(allSelectedRowKeys);
+    }
+
 
 }

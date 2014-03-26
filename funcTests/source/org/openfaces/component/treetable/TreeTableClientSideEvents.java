@@ -26,7 +26,7 @@ public class TreeTableClientSideEvents extends OpenFacesTestCase {
 
     /*test entire TreeTable*/
     //TODO Dont't work warn
-    @Test
+     @Test
     public void testCommonTreeTableEvents() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/treetable/treeTable_events.jsf");
@@ -95,7 +95,7 @@ public class TreeTableClientSideEvents extends OpenFacesTestCase {
     }
 
     /*test entire TreeTable column events*/
-    @Test
+     @Test
     public void testTreeTableColumnEvents() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/treetable/treeTable_entireColumn.jsf");
@@ -138,7 +138,7 @@ public class TreeTableClientSideEvents extends OpenFacesTestCase {
     }
 
     /*test TreeTable column header*/
-    @Test
+     @Test
     public void testTreeTableColumnHeaderEvents() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/treetable/treeColumn_header.jsf");
@@ -181,7 +181,7 @@ public class TreeTableClientSideEvents extends OpenFacesTestCase {
     }
 
     /*test TreeTable column body*/
-    @Test
+     @Test
     public void testTreeTableColumnBodyEvents() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/treetable/treeColumn_body.jsf");
@@ -224,7 +224,7 @@ public class TreeTableClientSideEvents extends OpenFacesTestCase {
     }
 
     /*test TreeTable column footer*/
-    @Test
+     @Test
     public void testTreeTableColumnFooterEvents() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/treetable/treeColumn_footer.jsf");
@@ -267,7 +267,7 @@ public class TreeTableClientSideEvents extends OpenFacesTestCase {
     }
 
     /*test 'onchange' events for the TreeTable selection*/
-    @Test
+     @Test
     public void testOnchangeForTreeTableSelection() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/treetable/TTOnchange_row_events.jsf");
@@ -284,7 +284,7 @@ public class TreeTableClientSideEvents extends OpenFacesTestCase {
     }
 
     /*test row events*/
-    @Test
+     @Test
     public void testRowEvents() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/treetable/TTOnchange_row_events.jsf");
@@ -327,7 +327,7 @@ public class TreeTableClientSideEvents extends OpenFacesTestCase {
     }
 
     /*test cell events*/
-    @Test
+     @Test
     public void testCellAndRowEvents() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/treetable/treeTableCellRowsEvents.jsf");

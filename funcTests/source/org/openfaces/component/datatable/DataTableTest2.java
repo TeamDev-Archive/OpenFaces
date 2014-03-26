@@ -26,7 +26,7 @@ import org.seleniuminspector.ElementInspector;
  */
 public class DataTableTest2 extends OpenFacesTestCase {
 
-    @Test
+     @Test
     public void testFilteringSearchField() {
         filteringSearchField(OpenFacesAjaxLoadingMode.getInstance());
         filteringSearchField(ServerLoadingMode.getInstance());
