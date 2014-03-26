@@ -3057,7 +3057,10 @@ if (!window.O$) {
 
   O$.getLocalStyleSheet = function () {
     if (document._of_localStyleSheet)
-      return document._of_localStyleSheet;
+      if (!document._of_localAdditionalStyleSheets)
+        return document._of_localStyleSheet;
+      else
+        return document._of_localAdditionalStyleSheets[document._of_localAdditionalStyleSheetsCount - 1];
 
     if (document.createStyleSheet) {
       document._of_localStyleSheet = document.createStyleSheet();
@@ -3074,25 +3077,93 @@ if (!window.O$) {
     return document._of_localStyleSheet;
   };
 
-  O$.addCssRule = function (strRule) {
+  O$.addAdditionalStyleSheet = function() {
+    document._of_localAdditionalStyleSheetsCount = document._of_localAdditionalStyleSheetsCount ? document._of_localAdditionalStyleSheetsCount + 1 : 1;
+    document._of_localAdditionalStyleSheets = [];
+
+    if (document.createStyleSheet) {
+      document._of_localAdditionalStyleSheets[document._of_localAdditionalStyleSheetsCount-1] = document.createStyleSheet();
+    } else {
+      var styleElement = document.createElement("style");
+      var headTags = document.getElementsByTagName("head");
+      var styleParent = headTags.length > 0 ? headTags[0] : document.getElementsByTagName("body")[0];
+      styleParent.appendChild(styleElement);
+      if (styleElement.styleSheet)
+        document._of_localAdditionalStyleSheets[document._of_localAdditionalStyleSheetsCount-1] = styleElement.styleSheet;
+      else
+        document._of_localAdditionalStyleSheets[document._of_localAdditionalStyleSheetsCount-1] =  styleElement.sheet;
+    }
+    return document._of_localAdditionalStyleSheets[document._of_localAdditionalStyleSheetsCount-1];
+  }
+
+  O$.replaceGlobalStyleSheet = function(newStyleSheet){
+    var currentStyleSheet = O$.getLocalStyleSheet();
+
+  }
+
+  O$.addCssRule = function (strRule, cachingDisabled) {
     var styleSheet = O$.getLocalStyleSheet();
     if (!styleSheet)
       return;
 
     try {
       if (styleSheet.addRule) { // IE only
+        var rules = styleSheet.cssRules ? styleSheet.cssRules : styleSheet.rules;
+        if (rules && rules.length > 4000) { // IN IE (<10) there are MAX readable 4096 rules
+          O$._removeUnusedCssRules();
+
+          if (rules.length > 4000) { // IN IE there are MAX 4096 rules
+            styleSheet = O$.packCssStyleSheet(styleSheet);
+            if (rules.length > 3800) { // we add a little bit less number to avoid calls for each adding when you have smth like 3999 rules
+              styleSheet = O$.addAdditionalStyleSheet();
+            }
+          }
+        }
+
         var idx1 = strRule.indexOf("{");
         var idx2 = strRule.indexOf("}");
         O$.assert(idx1 != -1 && idx2 != -1 && idx2 > idx1, "O$.addCssRule: Couldn't parse CSS rule \"{...}\"  boundaries: " + strRule);
         var selector = strRule.substring(0, idx1);
-        var declaration = strRule.substring(idx1 + 1, idx2);
+        if (!cachingDisabled) {
+          var selector_name = selector;
 
+          //TODO: temp solution for name hash have to be replaced asap
+          selector_name = selector_name.replace(/ /g, "s");
+          selector_name = selector_name.replace(/\./g, "d");
+          selector_name = selector_name.replace(/:/g, "d_d");
+          selector_name = selector_name.replace(/#/g, "s_h");
+          selector_name = selector_name.replace(/\*/g, "a");
+          selector_name = selector_name.replace(/,/g, "k");
+          selector_name = selector_name.replace(/>/g, "r");
+          selector_name = selector_name.replace(/\+/g, "p");
+          selector_name = selector_name.replace(/\]/g, "s_k");
+          selector_name = selector_name.replace(/=/g, "e");
+          selector_name = selector_name.replace(/~/g, "t");
+          selector_name = selector_name.replace(/\|/g, "o_r");
+          selector_name = selector_name.replace(/\^/g, "s_t");
+
+          if (!document._cachedDynamicCssRules)
+            document._cachedDynamicCssRules = {};
+          if (document._cachedDynamicCssRules[selector_name])
+            return;
+        }
+        var declaration = strRule.substring(idx1 + 1, idx2);
         styleSheet.addRule(selector, declaration);
+        if (!cachingDisabled) {
+          try {
+            document._cachedDynamicCssRules[selector_name] = selector;
+          } catch (e) {
+            //TODO: temporary 'try catch block' have to be removed after cleanup is ready
+          }
+        }
       } else { // all others
-        styleSheet.insertRule(strRule, styleSheet.cssRules.length);
+        styleSheet.insertRule(strRule, styleSheet.rules.length);
       }
       return styleSheet;
     } catch (e) {
+      if (styleSheet.addRule) { // IE only
+        O$.addCssRule(strRule, cachingDisabled);
+      }
       O$.logError("O$.addCssRule threw an exception " + (e ? e.message : e) +
               "; tried to add the following rule: " + strRule);
       throw e;
@@ -3100,8 +3171,70 @@ if (!window.O$) {
 
   };
 
-  O$.removeCssRule = function (nameOfCssClass, _iePredefClasses) {
 
+  O$._removeUnusedCssRules = function () {
+    var styleSheet = O$.getLocalStyleSheet();
+    var rules = styleSheet.cssRules || styleSheet.rules;
+    for (var i = rules.length - 1; i >= 0; i--) {
+      var selectorText = rules[i].selectorText;
+      if (!document.querySelector(selectorText) || !selectorText) {
+        styleSheet.removeRule(i);
+      }
+    }
+  };
+
+
+  // Function which used in IE to pack different rules to one
+  // @styleSheet link to style sheet in DOM which need to be packed
+  // #return link to new style sheet with packed rules
+  O$.packCssStyleSheet = function (styleSheet) {
+    var initialRulesList = [];
+    var rules = styleSheet.cssRules ? styleSheet.cssRules : styleSheet.rules;
+    O$.extend(initialRulesList, rules);
+    var packedRulesList = [];
+    for (var i = 0; i < initialRulesList.length; i++) {
+      if (!initialRulesList[i]) continue;
+      var resultSelector = initialRulesList[i].selectorText;
+      var resultDeclaration = initialRulesList[i].style;
+      initialRulesList[i] = null;
+      for (var j = i + 1; j < initialRulesList.length; j++) {
+        if (!initialRulesList[j]) continue;
+        var currentDeclaration = initialRulesList[j].style;
+        if (O$.compareCssDeclarationString(resultDeclaration.cssText, currentDeclaration.cssText)) {
+          resultSelector = initialRulesList[j].selectorText;
+          initialRulesList[j] = null;
+        }
+      }
+      packedRulesList.push({
+        selector:resultSelector,
+        declaration:resultDeclaration.cssText
+      })
+
+    }
+
+  }
+
+  O$.getCssSelectorFromString = function (cssRuleString){
+    var idx1 = cssRuleString.indexOf("{");
+    return cssRuleString.substring(0, idx1);
+  }
+
+  O$.getCssDeclarationFromString = function (cssRuleString){
+    var idx1 = cssRuleString.indexOf("{");
+    var idx2 = cssRuleString.indexOf("}");
+    O$.assert(idx1 != -1 && idx2 != -1 && idx2 > idx1, "O$.addCssRule: Couldn't parse CSS rule \"{...}\"  boundaries: " + cssRuleString);
+    return cssRuleString.substring(idx1 + 1, idx2);
+  }
+
+  O$.compareCssDeclarationString = function (declaration1, declaration2){
+    if (declaration1)
+      declaration1 = declaration1.replace(/ /g,"s");
+    if (declaration2)
+      declaration2 = declaration2.replace(/ /g,"s");
+    return O$.stringsEqualIgnoreCase(declaration1, declaration2);
+  }
+
+  O$.removeCssRule = function (nameOfCssClass, _iePredefClasses) {
     if (_iePredefClasses) {
       _iePredefClasses._obtained--;
       return;
