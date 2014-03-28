@@ -183,6 +183,7 @@ O$.Table = {
       }
 
     });
+
     if (table._commonTableFunctionsInitialized)
       return;
     table._commonTableFunctionsInitialized = true;
@@ -248,16 +249,22 @@ O$.Table = {
             table.appendChild(auxiliaryTags);
         });
       });
+
     if (table._params.scrolling && table.style.height == "auto") {
-      console.log(table.body._centerScrollingArea._table.clientHeight);
-      console.log(table.header._centerScrollingArea._rowContainer.clientHeight);
       table.style.height = table.body._centerScrollingArea._table.clientHeight
-              +table.header._sectionTable.clientHeight +25 + "px";
-      console.log(table.style.height);
+              + table.header._sectionTable.clientHeight + 25 + "px";
     }
     if (table._params.scrolling && table.style.width == "auto") {
-      table.style.width = table.body._centerScrollingArea._table.clientWidth+"px";
+      table.style.width = table.body._centerScrollingArea._table.clientWidth + "px";
     }
+
+    if ((table.parentElement.className.indexOf("FixWidthPercent") != -1)) {
+      var oldValue = table.style.width;
+      table.style.width = "10px";
+      table.parentElement.style.width = table.parentElement.parentElement.parentElement.clientWidth + "px";
+      table.style.width = oldValue;
+    }
+
   },
 
   _initApiFunctions:function (table) {
