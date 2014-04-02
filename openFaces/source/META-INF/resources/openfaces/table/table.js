@@ -250,23 +250,33 @@ O$.Table = {
         });
       });
 
-    if (table._params.scrolling && table.style.height == "auto") {
-      table.style.height = table.body._centerScrollingArea._table.clientHeight
-              + table.header._sectionTable.clientHeight + 25 + "px";
+    if (table._params.scrolling) {
+      if (table.style.height == "auto") {
+        table.style.height = table.body._centerScrollingArea._table.clientHeight
+                + table.header._sectionTable.clientHeight + 25 + "px";
+      }
     }
-    if (table._params.scrolling && table.style.width == "auto") {
-      table.style.width = table.body._centerScrollingArea._table.clientWidth + "px";
-    }
-
     if ((table.parentElement.className.indexOf("FixWidthPercent") != -1)) {
       var oldValue = table.style.width;
       table.style.width = "10px";
+      table.style.height = "10px";
+      var saveDifference = table.parentElement.parentElement.parentElement.parentElement.clientHeight;
       table.parentElement.style.width = table.parentElement.parentElement.parentElement.clientWidth + "px";
+      table.style.height = table.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.clientHeight -
+              table.parentElement.parentElement.parentElement.parentElement.clientHeight + "px";
       table.style.width = oldValue;
+
+      window.onresize = function () {
+        table.parentElement.style.width = table.parentElement.parentElement.parentElement.clientWidth + "px";
+        table.style.height = table.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.clientHeight -
+        saveDifference + "px";
+      }
     }
 
   },
+  _fixProblemWithResize:function () {
 
+  },
   _initApiFunctions:function (table) {
     O$.extend(table, {
       __selectAllRows:function () {
@@ -786,7 +796,7 @@ O$.Table = {
     O$.Ajax.executeScripts(portionScripts);
   },
 
-  // -------------------------- KEYBOARD NAVIGATION SUPPORT
+// -------------------------- KEYBOARD NAVIGATION SUPPORT
 
   _initKeyboardNavigation:function (tableId, controlPaginationWithKeyboard, focusedClassName, canPageBack, canPageForth, canSelectLastPage, tabIndex) {
     var table = O$.initComponent(tableId, null, {
@@ -1546,7 +1556,7 @@ O$.Table = {
     return bodyColumns[destColumnIndex].columnId;
   },
 
-  // -------------------------- TABLE SELECTION SUPPORT
+// -------------------------- TABLE SELECTION SUPPORT
 
   _initSelection:function (tableId, enabled, required, selectableItems, selectionMode, selectedItems, selectionClass, rawSelectionClass, selectionChangeHandler, postEventOnSelectionChange, selectionColumnIndexes, mouseSupport, keyboardSupport, trackLeafNodesOnly, fillDirection, selectablesCells, cursorStyle) {
     var table = O$.initComponent(tableId);
@@ -2643,7 +2653,7 @@ O$.Table = {
     }, 10);
   },
 
-  // -------------------------- CHECKBOX COLUMN SUPPORT
+// -------------------------- CHECKBOX COLUMN SUPPORT
 
   _setCheckboxColValues:function (tableId, colIndex, checkedRowIndexes) {
     var table = O$(tableId);
@@ -2779,7 +2789,7 @@ O$.Table = {
 
   },
 
-  // -------------------------- TABLE SORTING SUPPORT
+// -------------------------- TABLE SORTING SUPPORT
 
   _initSorting:function (tableId, sortingRules, sortableColumnsIds, sortedColIndex, sortableHeaderClass, sortableHeaderRolloverClass, sortedColClass, sortedColHeaderClass, sortedColBodyClass, sortedColFooterClass, sortedAscImageUrl, sortedDescImageUrl) {
     var table = O$.initComponent(tableId, null, {
@@ -2906,7 +2916,7 @@ O$.Table = {
     ]);
   },
 
-  // -------------------------- COLUMN RESIZING SUPPORT
+// -------------------------- COLUMN RESIZING SUPPORT
 
   _initColumnResizing:function (tableId, retainTableWidth, minColWidth, resizeHandleWidth, columnParams, autoSaveState) {
     var thisRef = this;
@@ -3335,7 +3345,7 @@ O$.Table = {
 
   },
 
-  // -------------------------- COLUMN REORDERING SUPPORT
+// -------------------------- COLUMN REORDERING SUPPORT
 
   _initColumnReordering:function (tableId, draggedCellClass, draggedCellTransparency, autoScrollAreaClass, autoScrollAreaTransparency, autoScrollLeftImage, autoScrollRightImage, dropTargetClass, dropTargetTopImage, dropTargetBottomImage) {
 
@@ -4643,7 +4653,8 @@ O$.Table = {
   HEADER_CELL_Z_INDEX_COLUMN_MENU_BUTTON:1,
   HEADER_CELL_Z_INDEX_COLUMN_MENU_RESIZE_HANDLE:2
 
-};
+}
+;
 
 
 // -------------------------- COLUMN MENU SUPPORT
