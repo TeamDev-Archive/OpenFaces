@@ -500,6 +500,10 @@ O$.DropDown = {
             if (heightCorrection)
               popup.style.height = (preferredHeight - heightCorrection - borderAccomodation) + "px";
           }
+
+          if (innerTable.offsetHeight < popup.offsetHeight){
+            popup.style.height = innerTable.offsetHeight + "px";
+          }
         }
 
         adjustHeight();
