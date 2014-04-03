@@ -1098,7 +1098,7 @@ if (!window.O$) {
     return el;
   };
 
-  O$.getParentById = function(elementId, parentId){
+  O$.getParentById = function (elementId, parentId) {
     var element = O$(elementId);
     var parent = O$(parentId);
 
@@ -2654,6 +2654,9 @@ if (!window.O$) {
       var newTop = top + dy;
 
       var containingBlock = O$(draggable._parentId);
+      if (!draggable._isRealParent) {
+          containingBlock = null;
+      }
 
       var containmentCorrectedLeft = getLeftPosition(containingBlock, newLeft);
       var containmentCorrectedTop = getTopPosition(containingBlock, newTop);
@@ -2726,7 +2729,7 @@ if (!window.O$) {
       return top;
     }
 
-    O$.isStaticContext = function(tagName) {
+    O$.isStaticContext = function (tagName) {
       return tagName.toUpperCase() === "BODY" ||
               tagName.toUpperCase() === "TABLE" ||
               tagName.toUpperCase() === "TR" ||
@@ -5531,8 +5534,8 @@ if (!window.O$) {
     }
   };
 
-  O$._getPopupVisionStateStorage = function() {
-    if (!O$._popupVisionStateStorage){
+  O$._getPopupVisionStateStorage = function () {
+    if (!O$._popupVisionStateStorage) {
       O$._popupVisionStateStorage = {};
     }
     return O$._popupVisionStateStorage;

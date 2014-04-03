@@ -81,8 +81,9 @@ O$.PopupLayer = {
       },
 
       showCentered: function() {
+        var pos = O$.getPageScrollPos()
         this.show();
-        O$.PopupLayer._centerPopup(this, O$.getPageScrollPos());
+        O$.PopupLayer._centerPopup(this,pos);
       },
 
       showByElement: function(element, horizAlignment, vertAlignment, horizDistance, vertDistance) {
