@@ -924,8 +924,11 @@ O$.DropDownField = {
         var valueAfter = field.value;
         if (valueBefore == valueAfter)
           return;
-        if (dropDown._itemPresentation)
+        if (dropDown._itemPresentation) {
           field._show();
+          field.select();
+          field.selectionStart = field.selectionEnd = valueAfter.length;
+        }
         dropDown._setValue(valueAfter, undefined, true);
         if (suggestionMode == "none") {
           if (autoCompleteOn && autoCompletionAllowedForThisKey) {
