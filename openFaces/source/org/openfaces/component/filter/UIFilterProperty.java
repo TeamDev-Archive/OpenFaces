@@ -53,6 +53,20 @@ public class UIFilterProperty extends OUIComponentBase implements ValueHolder, S
     public UIFilterProperty() {
     }
 
+    public UIFilterProperty(FilterProperty property){
+        this.name = property.getName();
+        this.value = property.getTitle();
+        this.type = property.getType();
+        this.dataProvider = property.getDataProvider();
+        this.converter = property.getConverter();
+        this.maxValue = property.getMaxValue();
+        this.minValue = property.getMinValue();
+        this.step = property.getStep();
+        this.pattern = property.getPattern();
+        this.timeZone = property.getTimeZone();
+        this.caseSensitive = property.isCaseSensitive();
+    }
+
     public String getFamily() {
         return COMPONENT_FAMILY;
     }

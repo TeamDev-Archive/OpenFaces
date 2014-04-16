@@ -262,8 +262,26 @@ public class FilterRow implements Serializable {
     private void initOperationSelector(DropDownField operationSelector, CompositeFilter compositeFilter) {
         operationSelector.setValue(operation);
         DropDownItems dropDownItems = getOperationSelectorItems(operationSelector);
+        if (property == null) {
+            property = initProperty(compositeFilter);
+        }
         EnumSet<FilterCondition> operations = compositeFilter.getOperations(property);
         dropDownItems.setValue(operations);
+    }
+
+    private FilterProperty initProperty(CompositeFilter compositeFilter){
+        DropDownField propertySelector = findPropertySelector(compositeFilter);
+
+        if(propertySelector == null || compositeFilter == null) {
+            property = null;
+            return null;
+        }
+
+        String propertyValue = (String) propertySelector.getValue();
+
+        if(propertyValue == null){ return null; }
+
+        return compositeFilter.getFilterPropertyByTitle(propertyValue);
     }
 
 
@@ -364,6 +382,11 @@ public class FilterRow implements Serializable {
         if (parametersEditorContainer == null) {
             parametersEditorContainer = createParametersEditorContainer(context, rowContainer);
         }
+
+        if (property == null) {
+            property = initProperty(compositeFilter);
+        }
+
         if (parametersEditor == null) {
             ParametersEditor.ParameterEditorType type = ParametersEditor.getParameterEditorType(property, operation);
             parametersEditor = ParametersEditor.getInstance(type, property, operation, null);
@@ -399,19 +422,19 @@ public class FilterRow implements Serializable {
 
     public ExpressionFilterCriterion updateRowModelFromEditors(FacesContext context, CompositeFilter compositeFilter) {
         UIComponent parametersEditorContainer = findParametersEditorContainer(compositeFilter);
-        DropDownField propertySelector = findPropertySelector(compositeFilter);
-        if (propertySelector == null) {
-            property = null;
+
+        FilterProperty newProperty = initProperty(compositeFilter);
+        if (newProperty == null) {
             operation = null;
             parametersEditor = null;
             return null;
         }
-        String propertyValue = (String) propertySelector.getValue();
-        FilterProperty newProperty = compositeFilter.getFilterPropertyByTitle(propertyValue);
-        boolean propertyModified = property == null ? newProperty != null : newProperty != null && !newProperty.getName().equals(property.getName());
+        boolean propertyModified = property != null && !newProperty.getName().equals(property.getName());
         property = newProperty;
+
         DropDownField operationSelector = findOperationSelector(compositeFilter);
         HtmlSelectBooleanCheckbox inverseCheckBox = findInverseCheckBox(context, compositeFilter);
+
         if (propertyModified || property == null || operationSelector == null || inverseCheckBox == null) {
             operation = null;
             parametersEditor = null;

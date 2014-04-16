@@ -209,7 +209,7 @@ public class PartialViewContext extends PartialViewContextWrapper {
                     unprocessableIds.add(externalPartId);
                 }
             }
-            UnprocessableContextHolder.addToContext(getUnprocessableComponentIdsKey(), unprocessableIds);
+            context.getExternalContext().getRequestMap().put(getUnprocessableComponentIdsKey(), unprocessableIds);
             additionalComponents.addAll(externalPartIds);
         }
 
@@ -222,7 +222,7 @@ public class PartialViewContext extends PartialViewContextWrapper {
     }
 
     public Collection<String> getRenderIdsNotRenderedYet(FacesContext context) {
-        final Map<String, Object> map = UnprocessableContextHolder.getContext();
+        final Map<String, Object> map = context.getExternalContext().getRequestMap();
         return (Collection<String>) map.get(getUnprocessableComponentIdsKey());
     }
 
