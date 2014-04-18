@@ -2219,7 +2219,8 @@ table.o_filter_parameter {
 }
 
 .o_captionButton_rollover {
-  background: #a0a0a0;
+  /*background: #a0a0a0;*/
+  z-index: -1 !important;
 }
 
 .o_captionButton_pressed {

@@ -731,7 +731,7 @@ O$.FileUploadUtil = {
         var iframe;
         if (O$.isExplorer() &&
                 (O$.isQuirksMode()
-                        ||  ((O$.isExplorer6() ||O$.isExplorer7() || O$.isExplorer8() || O$.isExplorer9()) &&
+                        ||  ((O$.isExplorer6() ||O$.isExplorer7() || O$.isExplorer8() || O$.isExplorer9() || O$.isExplorer11()) &&
                         (document.documentMode == 7 || document.documentMode == 6)))) {
           iframe = document.createElement('<iframe name="' + formForInput.id + "::iframe" + '">');
           iframe.width = 0;

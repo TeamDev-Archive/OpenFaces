@@ -2950,11 +2950,11 @@ O$.Table = {
         resizeHandle.style.position = "absolute";
         resizeHandle.style.border = "0px none transparent";
 
-        if (O$.isExplorer()) {
+        if (O$.isExplorer10AndOlder()) {
           // IE needs an explicit background because otherwise this absolute div will "leak" some events to the underlying
           // component (when a mouse is directly over any of table's gridline)
-          resizeHandle.style.background = "silver";
-          resizeHandle.style.filter = "alpha(opacity=0)";
+          resizeHandle.style.filter = "progid:DXImageTransform.Microsoft.Alpha(Opacity=30);";
+          resizeHandle.style.filter = resizeHandle.style.filter + "alpha(opacity=30);";
         }
 
         headerCell.appendChild(resizeHandle);
@@ -2974,6 +2974,7 @@ O$.Table = {
             if (!table._showingMenuForColumn)
               table._columns.forEach(function (c) {
                 var headerCell = c.header && c.header._cell;
+
                 if (headerCell && headerCell.setForceHover) headerCell.setForceHover(false);
               });
           },
@@ -4913,6 +4914,12 @@ O$.ColumnMenu = {
       result.style.position = "absolute";
       result._tr.appendChild(columnMenuButton);
       O$.setOpacityLevel(result, 1 - menuInvokerAreaTransparency);
+
+      if(O$.isExplorer10AndOlder()){
+        result.style.filter = "alpha(opacity=30)";
+        result.style.zoom = 1;
+      }
+
       O$.extend(result, {
         showForCell:function (cell) {
           this.hide();

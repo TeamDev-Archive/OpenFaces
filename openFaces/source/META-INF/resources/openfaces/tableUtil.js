@@ -1535,16 +1535,24 @@ O$.Tables = {
         var buf = new O$.StringBuffer();
         for (var i = 0; i < 4 * preallocateCount; i++)
           buf.append("." + prefix).append(i).append("{overflow:hidden} ");
-        styleElement.styleSheet.cssText = buf.toString();
+
+        if(styleElement.styleSheet){ //If IE < 11
+          styleElement.styleSheet.cssText = buf.toString();
+        }
+        if(styleElement.style){ //If IE < 11
+          styleElement.style.cssText = buf.toString();
+        }
 
         var headTags = document.getElementsByTagName("head");
         var styleParent = headTags.length > 0 ? headTags[0] : document.getElementsByTagName("body")[0];
         styleParent.appendChild(styleElement);
 
-        var predefinedColClasses = styleElement.styleSheet.rules;
+        var predefinedColClasses;
+        predefinedColClasses = styleElement.styleSheet || styleElement.style;
+        predefinedColClasses._styleSheet = styleElement.styleSheet || styleElement.style;
+
         predefinedColClasses._obtained = 0;
         predefinedColClasses._prefix = prefix;
-        predefinedColClasses._styleSheet = styleElement.styleSheet;
         return predefinedColClasses;
       }
       var colClasses = null;
@@ -1793,7 +1801,7 @@ O$.Tables = {
 
       function setWidth(cellClass, cell, tableSection, gridlinesSpec, isHead) {
         if (!cell) return;
-        if ((O$.isExplorer8() || O$.isExplorer9()) && O$.isIEDocMode7() ){
+        if ((O$.isExplorer8() || O$.isExplorer9() || O$.isExplorer11()) && O$.isIEDocMode7() ){
           if (!gridlinesSpec) gridlinesSpec = table._gridLines.vertical;
           calculateWidthCorrection(cell, gridlinesSpec, isHead);
         } else{

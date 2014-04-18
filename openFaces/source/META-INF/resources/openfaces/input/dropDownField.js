@@ -394,7 +394,7 @@ O$.DropDownField = {
             onclick:function () {
               O$.DropDownField._itemClicked(dropDown, this);
             },
-            onmouseup:function () {
+            onmousedown:function () {
               O$.DropDownField._itemClicked(dropDown, this);
             },
 
@@ -405,8 +405,6 @@ O$.DropDownField = {
               dropDown._filterCriterion = null;
             }
           });
-
-
         }
       },
 
