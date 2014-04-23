@@ -1,0 +1,117 @@
+/*
+ * OpenFaces - JSF Component Library 3.0
+ * Copyright (C) 2007-2014, TeamDev Ltd.
+ * licensing@openfaces.org
+ * Unless agreed in writing the contents of this file are subject to 
+ * the GNU Lesser General Public License Version 2.1 (the "LGPL" License).
+ * This library is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of 
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+ * Please visit http://openfaces.org/licensing/ for more details.
+ */
+
+/* Navigation Menu */
+#Navigation ul{
+	display:block;
+	position:relative; right:-7px;
+	margin: 0 0 0 2000px;
+	font-size:10px;
+	list-style:none;
+	padding:0 3em 0 0;
+	background: url(/resources/images/backgrounds/navigation_ul.png) no-repeat right top;
+	height:20px;
+}
+#Navigation ul li{float:left; margin:2px .3em;}
+#Navigation ul li a{text-decoration:none;}
+#Navigation ul li a:hover{text-decoration:underline;}
+
+
+
+/* Component Menu */
+#Title ul{
+	margin:0;
+	padding:0;
+	list-style:none;
+	font-size:12pt;
+	line-height:56px;
+}
+#Title ul li{
+	float:left;
+}
+#Title ul li a,
+#Title ul li span{
+	display:block;
+	padding: 0 11px;
+}
+#Title ul li.active{background:url(/resources/images/backgrounds/title_active.png) no-repeat 0 0;}
+#Title ul li span{background:url(/resources/images/backgrounds/title_active_right.png) no-repeat right 0;}
+#Title ul li a{
+	color:#ebf8ff;
+	text-decoration:none;
+}
+#Title ul li a:hover{
+	text-decoration:underline;
+}
+
+
+/* Components Menu */
+#Components ul{
+	background:url(/resources/images/backgrounds/components_ul.jpg) no-repeat 0 0;
+	margin:0;
+	padding:10px 0;
+	list-style:none;
+}
+#Components ul li a{
+	display:block;
+	height:16px;
+	padding:2px 5px 3px 12px;
+	margin:0 1px;
+	color:white;
+	text-decoration:none;
+	overflow:hidden;
+	line-height:16px;
+}
+#Components ul li a:hover{background:url(/resources/images/backgrounds/components_selection.png) repeat-x 0 -21px;}
+#Components ul li a.active{background:url(/resources/images/backgrounds/components_selection.png) repeat-x 0 0 !important; cursor:default;}
+#Components ul li a em{float:left; width:16px; height:16px; margin-right:5px; background-repeat:no-repeat;}
+
+#Components ul li a.AjaxFramework em {background-image:url(/resources/images/components/icons/AjaxFramework.png);}
+#Components ul li a.BorderLayoutPanel em {background-image:url(/resources/images/components/icons/BorderLayoutPanel.png);}
+#Components ul li a.Calendar em {background-image:url(/resources/images/components/icons/Calendar.png);}
+#Components ul li a.Chart em {background-image:url(/resources/images/components/icons/Chart.png);}
+#Components ul li a.CommandButton em {background-image:url(/resources/images/components/icons/CommandButton.png);}
+#Components ul li a.CommandLink em {background-image:url(/resources/images/components/icons/CommandLink.png);}
+#Components ul li a.Confirmation em {background-image:url(/resources/images/components/icons/Confirmation.png);}
+#Components ul li a.CompositeFilter em {background-image:url(/resources/images/components/icons/CompositeFilter.png);}
+#Components ul li a.DataTable em {background-image:url(/resources/images/components/icons/DataTable.png);}
+#Components ul li a.DataTable em {_background-image:url(/resources/images/components/icons/DataTable.gif);}
+#Components ul li a.DateChooser em {background-image:url(/resources/images/components/icons/DateChooser.png);}
+#Components ul li a.DayTable em {background-image:url(/resources/images/components/icons/DayTable.png);}
+#Components ul li a.DropDownField em {background-image:url(/resources/images/components/icons/DropDownField.png);}
+#Components ul li a.DynamicImage em {background-image:url(/resources/images/components/icons/DynamicImage.png);}
+#Components ul li a.FileUpload em {background-image:url(/resources/images/components/icons/FileUpload.png);}
+#Components ul li a.FoldingPanel em {background-image:url(/resources/images/components/icons/FoldingPanel.png);}
+#Components ul li a.ForEach em {background-image:url(/resources/images/components/icons/ForEach.png);}
+#Components ul li a.GraphicText em {background-image:url(/resources/images/components/icons/GraphicText.png);}
+#Components ul li a.HintLabel em {background-image:url(/resources/images/components/icons/HintLabel.png);}
+#Components ul li a.InputText em {background-image:url(/resources/images/components/icons/InputText.png);}
+#Components ul li a.InputTextarea em {background-image:url(/resources/images/components/icons/InputTextarea.png);}
+#Components ul li a.LayeredPane em {background-image:url(/resources/images/components/icons/LayeredPane.png);}
+#Components ul li a.LevelIndicator em {background-image:url(/resources/images/components/icons/LevelIndicator.png);}
+#Components ul li a.PopupLayer em {background-image:url(/resources/images/components/icons/PopupLayer.png);}
+#Components ul li a.PopupMenu em {background-image:url(/resources/images/components/icons/PopupMenu.png);}
+#Components ul li a.Spinner em {background-image:url(/resources/images/components/icons/Spinner.png);}
+#Components ul li a.SelectBooleanCheckbox em {background-image:url(/resources/images/components/icons/SelectBooleanCheckbox.png);}
+#Components ul li a.SelectManyCheckbox em {background-image:url(/resources/images/components/icons/SelectManyCheckbox.png);}
+#Components ul li a.SelectOneMenu em {background-image:url(/resources/images/components/icons/SelectOneMenu.png);}
+#Components ul li a.SelectOneRadio em {background-image:url(/resources/images/components/icons/SelectOneRadio.png);}
+#Components ul li a.SelectOneRadio em {_background-image:url(/resources/images/components/icons/SelectOneRadio.gif);}
+#Components ul li a.Slider em {background-image:url(/resources/images/components/icons/Slider.png);}
+#Components ul li a.SuggestionField em {background-image:url(/resources/images/components/icons/SuggestionField.png);}
+#Components ul li a.TabSet em {background-image:url(/resources/images/components/icons/TabSet.png);}
+#Components ul li a.TagCloud em {background-image:url(/resources/images/components/icons/TagCloud.png);}
+#Components ul li a.TabbedPane em {background-image:url(/resources/images/components/icons/TabbedPane.png);}
+#Components ul li a.TreeTable em {background-image:url(/resources/images/components/icons/TreeTable.png);}
+#Components ul li a.TwoListSelection em {background-image:url(/resources/images/components/icons/TwoListSelection.png);}
+#Components ul li a.ValidationFramework em {background-image:url(/resources/images/components/icons/ValidationFramework.png);}
+#Components ul li a.Window em {background-image:url(/resources/images/components/icons/Window.png);}

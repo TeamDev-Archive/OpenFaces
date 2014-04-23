@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.springframework.org/schema/webflow"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd"
+      parent="parent-flow">
+  <!--/WEB-INF/flows/parent-flow.xml-->
+
+  <var name="inputTextBean" class="org.openfaces.demo.spring.beans.inputText.InputTextBean"/>
+  <view-state id="view">
+    <transition on="">
+
+    </transition>
+  </view-state>
+</flow>

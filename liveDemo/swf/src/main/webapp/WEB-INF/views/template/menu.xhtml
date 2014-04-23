@@ -1,0 +1,26 @@
+<div xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:o="http://openfaces.org/">
+    <div id="Components">
+        <ul>
+            <o:forEach items="#{menuService.menus}" var="menuItem">
+                <h:panelGroup rendered="#{!menuItem.selected}">
+                    <li>
+                        <h:outputLink styleClass="#{menuItem.menuImage}" value="/demo/#{menuItem.shortPath}">
+                            <em></em><h:outputText value="#{menuItem.menuName}"/>
+                        </h:outputLink>
+                    </li>
+                </h:panelGroup>
+                <h:panelGroup rendered="#{menuItem.selected}">
+                    <li>
+                        <h:outputLink styleClass="#{menuItem.menuImage}" value="/demo/#{menuItem.shortPath}">
+                            <em></em><h:outputText value="#{menuItem.menuName}"/>
+                        </h:outputLink>
+                    </li>
+                </h:panelGroup>
+            </o:forEach>
+        </ul>
+    </div>
+
+    <div id="Shadow"><!-- Components list shadow --></div>
+</div>
