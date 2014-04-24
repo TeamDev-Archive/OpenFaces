@@ -68,7 +68,7 @@ public class MenuService implements Serializable {
         digester.addCallMethod("*/demos/demoItem/demoUrl", "setDemoUrl", 0);
 
         try {
-            menus = (List<MenuItem>) digester.parse(exContext.getResource("/WEB-INF/menu.xml").openStream());
+            menus = (List<MenuItem>) digester.parse(exContext.getResource("/WEB-INF/spring/menu.xml").openStream());
         } catch (IOException e) {
             Log.log(e.getMessage(), e);
         } catch (SAXException e) {

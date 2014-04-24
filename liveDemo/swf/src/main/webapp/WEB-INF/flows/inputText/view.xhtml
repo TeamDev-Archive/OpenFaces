@@ -2,54 +2,56 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:o="http://openfaces.org/"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
                 template="/WEB-INF/layouts/template/template-layout.xhtml">
 
     <ui:define name="title">Input Text Field</ui:define>
     <ui:define name="content">
         <div id="Demo">
-            <div id="inputDataPanel">
-                <h3>Fill in the following information</h3>
-
-                <div>
-                    <o:inputText promptText="Client's first name" value="#{inputTextBean.clientFirstName}"
-                                 size="20" maxlength="23"
-                                 styleClass="templateInput" focusedClass="focusedTemplateInput"
-                                 rolloverClass="rolloverTemplateInput">
-                        <o:ajax event="keyup" render=":form:previewPanel" delay="500"/>
-                        <o:ajax event="change" render=":form:previewPanel"/>
-                    </o:inputText>
+            <h:form>
+                <div id="inputDataPanel">
+                    <h3>Fill in the following information</h3>
+                    <div>
+                        <o:inputText promptText="Client's first name" value="#{inputTextBean.clientFirstName}"
+                                     size="20" maxlength="23"
+                                     styleClass="templateInput" focusedClass="focusedTemplateInput"
+                                     rolloverClass="rolloverTemplateInput">
+                            <o:ajax event="keyup" render=":form:previewPanel" delay="500"/>
+                            <o:ajax event="change" render=":form:previewPanel"/>
+                        </o:inputText>
+                    </div>
+                    <div>
+                        <o:inputText promptText="Your first name" value="#{inputTextBean.firstName}"
+                                     size="20" maxlength="23"
+                                     styleClass="templateInput" focusedClass="focusedTemplateInput"
+                                     rolloverClass="rolloverTemplateInput">
+                            <o:ajax event="keyup" render=":form:previewPanel" delay="500"/>
+                            <o:ajax event="change" render=":form:previewPanel"/>
+                        </o:inputText>
+                    </div>
+                    <div>
+                        <o:inputText promptText="Your last name" value="#{inputTextBean.lastName}"
+                                     size="20" maxlength="23"
+                                     styleClass="templateInput" focusedClass="focusedTemplateInput"
+                                     rolloverClass="rolloverTemplateInput">
+                            <o:ajax event="keyup" render=":form:previewPanel" delay="500"/>
+                            <o:ajax event="change" render=":form:previewPanel"/>
+                        </o:inputText>
+                    </div>
+                    <div>
+                        <o:commandButton action="suggest" value="Suggest" render="previewPanel"/>
+                    </div>
                 </div>
+                <div id="preview">
+                    <h3>Preview</h3>
+                    <h:panelGroup id="previewPanel" styleClass="previewPanel">
+                        <h:outputText value="#{outputSuggestion}" escape="false"/>
+                    </h:panelGroup>
 
-                <div>
-                    <o:inputText promptText="Your first name" value="#{inputTextBean.firstName}"
-                                 size="20" maxlength="23"
-                                 styleClass="templateInput" focusedClass="focusedTemplateInput"
-                                 rolloverClass="rolloverTemplateInput">
-                        <o:ajax event="keyup" render=":form:previewPanel" delay="500"/>
-                        <o:ajax event="change" render=":form:previewPanel"/>
-                    </o:inputText>
                 </div>
-
-                <div>
-                    <o:inputText promptText="Your last name" value="#{inputTextBean.lastName}"
-                                 size="20" maxlength="23"
-                                 styleClass="templateInput" focusedClass="focusedTemplateInput"
-                                 rolloverClass="rolloverTemplateInput">
-                        <o:ajax event="keyup" render=":form:previewPanel" delay="500"/>
-                        <o:ajax event="change" render=":form:previewPanel"/>
-                    </o:inputText>
-                </div>
-            </div>
-
-            <div id="preview">
-                <h3>Preview</h3>
-                <h:panelGroup id="previewPanel" styleClass="previewPanel">
-                    <h:outputText value="#{inputTextBean.text}" escape="false"/>
-                </h:panelGroup>
-            </div>
+            </h:form>
         </div>
     </ui:define>
 
@@ -58,10 +60,14 @@
             <h4>Demonstrated Features</h4>
             <ul class="hang">
                 <li>
-                    <strong>Prompt Text</strong> - Input Text component allows to set text value displayed in case the input text field is empty and not focused. It provides you with an ability to make input fields self-explanatory telling users what kind of information is expected.
+                    <strong>Prompt Text</strong> - Input Text component allows to set text value displayed in case the input text
+                    field is empty and not focused. It provides you with an ability to make input fields self-explanatory telling
+                    users what kind of information is expected.
                 </li>
                 <li>
-                    <strong>Customized styles for focus and rollover</strong> - Put your mouse over one of text fields above and notice the custom style for rollover is applied. To edit the text field value just click it. Then focused style is applied to let you know the text field is ready for editing.
+                    <strong>Customized styles for focus and rollover</strong> - Put your mouse over one of text fields above and
+                    notice the custom style for rollover is applied. To edit the text field value just click it. Then focused
+                    style is applied to let you know the text field is ready for editing.
                 </li>
             </ul>
         </div>

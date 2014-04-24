@@ -54,6 +54,25 @@ public class InputTextBean implements Serializable {
         this.lastName = lastName;
     }
 
+    public boolean fieldsAreFilled() {
+        return !isEmpty(clientFirstName) && !isEmpty(firstName) && !isEmpty(lastName);
+    }
+
+    private boolean isEmpty(String expression){
+        return expression != null && expression.isEmpty();
+    }
+
+    public String createOutputSuggestion() {
+        return "<p>Dear &#160;" + StringEscapeUtils.escapeHtml(getClientFirstName()) +
+                "!</p><p>Each year during the holiday season, we take great pleasure in setting aside our regular work and sending a heartfelt message to all our best friends and customers." +
+                "</p><p>How joyful we are that this time has come again to extend to you our sincere gratitude because it is good friends and customers like you that make our business possible." +
+                "</p><p>May your holiday be filled with joy and the coming year be overflowing with all the good things in life." +
+                "</p><p>Sincerely Yours, &#160;" +
+                StringEscapeUtils.escapeHtml(getFirstName()) + " &#160; " +
+                StringEscapeUtils.escapeHtml(getLastName()) +
+                ".</p>";
+    }
+
     public String getText() {
         return "<p>Dear &#160;" + StringEscapeUtils.escapeHtml(getClientFirstName()) + "!</p><p>Each year during the holiday season, we take great pleasure in setting aside our regular work and sending a heartfelt message to all our best friends and customers." + "</p><p>How joyful we are that this time has come again to extend to you our sincere gratitude because it is good friends and customers like you that make our business possible." + "</p><p>May your holiday be filled with joy and the coming year be overflowing with all the good things in life." + "</p><p>Sincerely Yours, &#160;" + StringEscapeUtils.escapeHtml(getFirstName()) + " &#160; " + StringEscapeUtils.escapeHtml(getLastName()) + ".</p>";
     }

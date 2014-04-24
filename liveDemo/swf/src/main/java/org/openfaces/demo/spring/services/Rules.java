@@ -37,7 +37,7 @@ public class Rules {
             digester.addCallMethod("*/menuItem/url", "setUrl", 0);
             digester.addCallMethod("*/menuItem/shortPath", "setShortPath", 0);
 
-            InputStream is = context.getResource("/WEB-INF/menu.xml").openStream();
+            InputStream is = context.getResource("/WEB-INF/spring/menu.xml").openStream();
             rules = (List<RuleItem>) digester.parse(is);
 
         } catch (IOException e) {

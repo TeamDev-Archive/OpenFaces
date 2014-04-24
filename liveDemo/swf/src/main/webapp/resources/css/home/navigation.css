@@ -19,7 +19,7 @@
 }
 
 .NavigationPanel{
-	background:url(../images/backgrounds/navigation.png) repeat-x 0 0;
+	background:url(/resources/images/backgrounds/navigation.png) repeat-x 0 0;
 	position:absolute;
 	top:0;
 	right:0;
@@ -123,7 +123,7 @@
 
 .NavigationControls-mail-new,
 .NavigationControls-mail-reply,
-.NavigationControls-mail-forward{background-image:url(../images/icons/navigation-mail.png); color:white;}
+.NavigationControls-mail-forward{background-image:url(/resources/images/icons/navigation-mail.png); color:white;}
 
 .NavigationControls-mail-new{background-position:0 0;}
 .NavigationControls-mail-new:hover{background-position:-50px 0;}
@@ -142,7 +142,7 @@
 .NavigationControls a.NavigationControls-tasks-edit,
 .NavigationControls a.NavigationControls-tasks-delete,
 .NavigationControls a.NavigationControls-tasks-save,
-.NavigationControls .NavigationControls-tasks-columns{background-image:url(../images/icons/navigation-tasks.png); background-color:transparent !important; border:none !important; color:#333;}
+.NavigationControls .NavigationControls-tasks-columns{background-image:url(/resources/images/icons/navigation-tasks.png); background-color:transparent !important; border:none !important; color:#333;}
 
 .NavigationControls-tasks-new{background-position:0 0;}
 .NavigationControls-tasks-new:hover{background-position:-50px 0;}
@@ -164,4 +164,4 @@
 .NavigationControls-tasks-save:hover{background-position:-50px -200px;}
 .NavigationControls-tasks-save:active{background-position:-100px -200px;}
 
-.CancelChanges{background:url('../images/icons/cancel.png') no-repeat 10px 10px;}
+.CancelChanges{background:url('/resources/images/icons/cancel.png') no-repeat 10px 10px;}
