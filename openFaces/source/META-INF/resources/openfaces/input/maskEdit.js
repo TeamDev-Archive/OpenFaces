@@ -43,7 +43,7 @@ O$.MaskEdit = {
     maskEdit._oldClick = this.onClick;
     maskEdit._oldKeyPress = this.onkeypress;
     maskEdit._oldKeyUp = this.onkeyup;
-    console.log(maskEdit.onkeyup);
+    /*    console.log(maskEdit.onkeyup);*/
     maskEdit._oldKeyDown = maskEdit.onkeydown;
     maskEdit._oldFocus = maskEdit.onfocus;
     maskEdit._oldBlur = maskEdit.onblur;
@@ -63,8 +63,8 @@ O$.MaskEdit = {
               },
 
               _maskEditKeyPress:function (e) {
-                console.log("do keyPress");
-                console.log(this._inMockInput);
+                /*  console.log("do keyPress");
+                 console.log(this._inMockInput);*/
                 if (this._isFinishPosition)
                   return false;
 
@@ -78,7 +78,7 @@ O$.MaskEdit = {
                   if (this._mockInputObjects[this._mockNumber]._isKeyPress(pressChar)) {
                     this._inMockInput = false;
                     this._isKeyRight();
-                    console.log("?--------------?");
+                    /*console.log("?--------------?");*/
                   } else return false;
                 } else {
                   if (this._isValidChar(pressChar, this._mask[this._maskInputCursorPosition])) {
@@ -92,7 +92,7 @@ O$.MaskEdit = {
 
 
                 }
-                console.log("/++++++/");
+                /*      console.log("/++++++/");*/
                 return false;
               },
 
@@ -311,7 +311,9 @@ O$.MaskEdit = {
                     this._inMockInput = false;
                     this._setNewDynamicMask();
                   } else return false;
+                  console.log("ololo");
                 }
+
                 this._setCursorPosition(this._cursorPosition + 1, false);
                 this._isMockInput(true);
                 this._selectMaskEditTextRange(this._cursorPosition, this._cursorPosition);
@@ -680,8 +682,11 @@ O$.MaskEdit = {
 
               _selectMaskEditTextRange:function (beginIdx, endIdx) {
                 var field = this;
-                beginIdx += this._incWithCursorPos();
-                endIdx += this._incWithCursorPos();
+                console.log("beginIdx1 "+beginIdx);
+                beginIdx += this._incWithCursorPos(beginIdx);
+                endIdx += this._incWithCursorPos(endIdx);
+
+                console.log("beginIdx2 "+beginIdx);
                 if (field._o_inputField) field = field._o_inputField;
                 if (field.setSelectionRange) {
                   field.setSelectionRange(beginIdx, endIdx);
@@ -704,19 +709,22 @@ O$.MaskEdit = {
                   }
                 }
               },
-              _incWithCursorPos:function () {
+              _incWithCursorPos:function (positionInMaskEdit) {
                 var _incWithCursorPos = 0;
-                try {
-                  var i = 0;
-                  while ((i < this._mockNumber) && (this._inMockInput == false)) {
-                    if (this._mockInputObjects[i]._getIncWithCursorPos() > 1)
-                      _incWithCursorPos += this._mockInputObjects[i]._getIncWithCursorPos() - 1;
-                    i++;
-                  }
-                } catch (e) {
-                  _incWithCursorPos = 0;
+           /*     console.log("maskEdit._cursorPosition "+maskEdit._cursorPosition );*/
+                if(!this._mockInputObjects[0]){
+                  return _incWithCursorPos;
                 }
-                console.log(_incWithCursorPos);
+                for (var i = 0; i < maskEdit._cursorPosition; i++) {
+                  if(this._dynamicSymbolsPosition[i] >= maskEdit._cursorPosition){
+                    return _incWithCursorPos;
+
+                  }
+                  if (this._mockInputObjects[i]._getIncWithCursorPos() > 1)
+                    _incWithCursorPos += this._mockInputObjects[i]._getIncWithCursorPos() - 1;
+                /*  console.log("_incWithCursorPos"+_incWithCursorPos);*/
+                }
+
                 return _incWithCursorPos;
               }
             }

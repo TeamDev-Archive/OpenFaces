@@ -34,8 +34,8 @@ public class MaskEditBean {
     private String mask2 = "+3(###) ### ### ##";
     private String blank2 = "+3(   )           ";
     private String value3;
-    private String mask3 = "I.I.I";
-    private String blank3 = " . . ";
+    private String mask3 = "I/I/I";
+    private String blank3 = " / / ";
 
     public String getValue1() {
         return value1;
@@ -115,7 +115,7 @@ public class MaskEditBean {
     private Collection<MaskSymbolConstructor> symbolConstructors = new LinkedList<MaskSymbolConstructor>();
 
     public MaskEditBean() {
-        dynamicConstructors.add(new MaskDynamicConstructor('I', '#', 1, 4, '_'));
+        dynamicConstructors.add(new MaskDynamicConstructor('I', '#', 1, 2, ' '));
         symbolConstructors.add(new MaskSymbolConstructor('X', "asd123"));
     }
 
