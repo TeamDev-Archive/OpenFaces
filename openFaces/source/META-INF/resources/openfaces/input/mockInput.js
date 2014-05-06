@@ -47,7 +47,7 @@ O$.mockInput = {
                 } else {
                   this._cursorPosition = 0;
                 }
-                this._realPositionInInput = this._parent._cursorPosition + this._parent._incWithCursorPos();
+
               },
 
               _isKeyPress:function (pressChar) {
@@ -110,11 +110,11 @@ O$.mockInput = {
               },
 
               _isKeyDelete:function () {
-
+               console.log("isDelete")
               },
 
               _isKeyBackspace:function () {
-
+                console.log("isBackspace")
               },
 
               _deleteSelectionText:function (startSelection, endSelection) {
@@ -144,6 +144,11 @@ O$.mockInput = {
 
               _selectMaskEditTextRangeFromMockInput:function (size) {
                 var realPositionInInput = this._realPositionInInput + size;
+                console.log("/////////////////");
+                console.log("size" +size);
+                console.log("this._realPositionInInput" + this._realPositionInInput);
+
+                console.log("realPositionInInput"+realPositionInInput);
                 this._parent._selectMaskEditTextRange(realPositionInInput, realPositionInInput)
               },
 
