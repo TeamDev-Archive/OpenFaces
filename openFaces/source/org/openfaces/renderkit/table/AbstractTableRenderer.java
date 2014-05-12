@@ -82,7 +82,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
                     PreRenderComponentEvent.class,
                     column);
         }*/
-           getPublishEventForAllChildren(context, component);
+        getPublishEventForAllChildren(context, component);
         table.clearRenderedColumnCache();
 
         TableStructure tableStructure = createTableStructure(table);
@@ -104,17 +104,27 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
 
 
     private void getPublishEventForAllChildren(FacesContext context, UIComponent component) {
-        if (!component.isRendered()) return;
-        List<UIComponent> children = component.getChildren();
+        while (true) {
+            try {
+                if (!component.isRendered()) return;
+                List<UIComponent> children = component.getChildren();
 
-        if (children.size() != 0) {
-            for (UIComponent child : children) {
-                getPublishEventForAllChildren(context, child);
+                if (children.size() != 0) {
+                    for (UIComponent child : children) {
+                        getPublishEventForAllChildren(context, child);
+                    }
+                    context.getApplication().publishEvent(context,
+                            PreRenderComponentEvent.class,
+                            component);
+                }
+               return;
+            } catch (Exception ignored) {
+
             }
-            context.getApplication().publishEvent(context,
-                    PreRenderComponentEvent.class,
-                    component);
+
+
         }
+
     }
 
     protected TableStructure createTableStructure(final AbstractTable table) {
