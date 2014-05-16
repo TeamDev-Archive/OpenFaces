@@ -44,8 +44,21 @@ O$.PopupMenu = {
                   defaultMenuItemsParams) {
     O$.Popup._init(popupMenuId, false);
     O$.MenuItemConsctructor.defaultMenuItemsParams = defaultMenuItemsParams;
+    try{
+      O$(forId). oncontextmenu=function(event){
+        if (!popupMenu.initialized){
+          finishInitialization();
+          popupMenu.showForEvent(event);
+          return false;
+        }
+
+
+    };} catch (e){
+
+    }
+
     var popupMenu = O$.initComponent(popupMenuId, {rollover: rolloverClass}, {
-      show: function() {
+        show: function() {
         if (popupMenu.closed) return;
         finishInitialization();
         setTimeout(function() {
@@ -57,8 +70,9 @@ O$.PopupMenu = {
         if (this.onshow)
           this.onshow();
       },
+
        hide: function() {
-        if (!initialized) return;
+        if (!popupMenu.initialized) return;
         finishInitialization();
         O$.removeIETransparencyControl(popupMenu);
         this.closeChildMenus();
@@ -102,7 +116,6 @@ O$.PopupMenu = {
         O$.alignPopupByPoint(this, pos.x, pos.y);
         this.show();
       },
-
       setAllMenuItemsDisabled: function (disable){
         if (popupMenu._items){
           popupMenu._items.forEach(function(it) {
@@ -133,7 +146,7 @@ O$.PopupMenu = {
         return !!isRootMenu;
       }
     });
-
+    popupMenu.initialized = false;
     if ((O$.isQuirksMode() && O$.isExplorer()) || (O$.isExplorer6() && O$.isStrictMode())) {
       O$.setStyleMappings(popupMenu, {ieQuirksFix: "o_popup_menu_iequirks"});
     }
@@ -148,10 +161,9 @@ O$.PopupMenu = {
     }
 
     popupMenu._deferredInitializers = [];
-    var initialized = false;
     function finishInitialization() {
-      if (initialized) return;
-      initialized = true;
+      if (popupMenu.initialized) return;
+      popupMenu.initialized = true;
 
       var childNodes = O$.MenuItemConsctructor.renderMenuItems(popupMenu, menuItemsList);
       var items = popupMenu._items = [];
