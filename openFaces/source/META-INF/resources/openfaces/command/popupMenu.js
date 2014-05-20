@@ -44,18 +44,6 @@ O$.PopupMenu = {
                   defaultMenuItemsParams) {
     O$.Popup._init(popupMenuId, false);
     O$.MenuItemConsctructor.defaultMenuItemsParams = defaultMenuItemsParams;
-    try{
-      O$(forId). oncontextmenu=function(event){
-        if (!popupMenu.initialized){
-          finishInitialization();
-          popupMenu.showForEvent(event);
-          return false;
-        }
-
-
-    };} catch (e){
-
-    }
 
     var popupMenu = O$.initComponent(popupMenuId, {rollover: rolloverClass}, {
         show: function() {
@@ -72,8 +60,10 @@ O$.PopupMenu = {
       },
 
        hide: function() {
+
+
         if (!popupMenu.initialized) return;
-        finishInitialization();
+         finishInitialization();
         O$.removeIETransparencyControl(popupMenu);
         this.closeChildMenus();
         if (O$.PopupMenu._getStyleProperty(this, "visibility") != "hidden" &&
@@ -146,6 +136,21 @@ O$.PopupMenu = {
         return !!isRootMenu;
       }
     });
+    try{
+      var forElement = O$(forId);
+      if (!forElement)
+        forElement = popupMenu.parentNode;
+      forElement . oncontextmenu=function(event){
+        if (!popupMenu.initialized){
+          finishInitialization();
+          popupMenu.showForEvent(event);
+          return false;
+        }
+
+
+      };} catch (e){
+
+    }
     popupMenu.initialized = false;
     if ((O$.isQuirksMode() && O$.isExplorer()) || (O$.isExplorer6() && O$.isStrictMode())) {
       O$.setStyleMappings(popupMenu, {ieQuirksFix: "o_popup_menu_iequirks"});
