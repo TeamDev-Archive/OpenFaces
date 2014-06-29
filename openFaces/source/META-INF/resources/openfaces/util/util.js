@@ -988,15 +988,15 @@ if (!window.O$) {
     return O$._explorer10;
   };
 
-  O$.isExplorer10AndOlder = function(){
-    if(!O$._explorer10AndOlder){
+  O$.isExplorer10AndOlder = function () {
+    if (!O$._explorer10AndOlder) {
       O$._explorer10AndOlder = O$.isExplorer10() || O$.isExplorer9() || O$.isExplorer8AndOlder();
     }
     return O$._explorer10AndOlder;
   };
 
-  O$.isExplorer11 = function(){
-    if (!O$._explorer11){
+  O$.isExplorer11 = function () {
+    if (!O$._explorer11) {
       O$._explorer11 = !!navigator.userAgent.match(/Trident.*rv[ :]*11\./);
     }
     return O$._explorer11;
@@ -3099,26 +3099,26 @@ if (!window.O$) {
     return document._of_localStyleSheet;
   };
 
-  O$.addAdditionalStyleSheet = function() {
+  O$.addAdditionalStyleSheet = function () {
     document._of_localAdditionalStyleSheetsCount = document._of_localAdditionalStyleSheetsCount ? document._of_localAdditionalStyleSheetsCount + 1 : 1;
     document._of_localAdditionalStyleSheets = [];
 
     if (document.createStyleSheet) {
-      document._of_localAdditionalStyleSheets[document._of_localAdditionalStyleSheetsCount-1] = document.createStyleSheet();
+      document._of_localAdditionalStyleSheets[document._of_localAdditionalStyleSheetsCount - 1] = document.createStyleSheet();
     } else {
       var styleElement = document.createElement("style");
       var headTags = document.getElementsByTagName("head");
       var styleParent = headTags.length > 0 ? headTags[0] : document.getElementsByTagName("body")[0];
       styleParent.appendChild(styleElement);
       if (styleElement.styleSheet)
-        document._of_localAdditionalStyleSheets[document._of_localAdditionalStyleSheetsCount-1] = styleElement.styleSheet;
+        document._of_localAdditionalStyleSheets[document._of_localAdditionalStyleSheetsCount - 1] = styleElement.styleSheet;
       else
-        document._of_localAdditionalStyleSheets[document._of_localAdditionalStyleSheetsCount-1] =  styleElement.sheet;
+        document._of_localAdditionalStyleSheets[document._of_localAdditionalStyleSheetsCount - 1] = styleElement.sheet;
     }
-    return document._of_localAdditionalStyleSheets[document._of_localAdditionalStyleSheetsCount-1];
+    return document._of_localAdditionalStyleSheets[document._of_localAdditionalStyleSheetsCount - 1];
   }
 
-  O$.replaceGlobalStyleSheet = function(newStyleSheet){
+  O$.replaceGlobalStyleSheet = function (newStyleSheet) {
     var currentStyleSheet = O$.getLocalStyleSheet();
 
   }
@@ -3239,23 +3239,23 @@ if (!window.O$) {
 
   }
 
-  O$.getCssSelectorFromString = function (cssRuleString){
+  O$.getCssSelectorFromString = function (cssRuleString) {
     var idx1 = cssRuleString.indexOf("{");
     return cssRuleString.substring(0, idx1);
   }
 
-  O$.getCssDeclarationFromString = function (cssRuleString){
+  O$.getCssDeclarationFromString = function (cssRuleString) {
     var idx1 = cssRuleString.indexOf("{");
     var idx2 = cssRuleString.indexOf("}");
     O$.assert(idx1 != -1 && idx2 != -1 && idx2 > idx1, "O$.addCssRule: Couldn't parse CSS rule \"{...}\"  boundaries: " + cssRuleString);
     return cssRuleString.substring(idx1 + 1, idx2);
   }
 
-  O$.compareCssDeclarationString = function (declaration1, declaration2){
+  O$.compareCssDeclarationString = function (declaration1, declaration2) {
     if (declaration1)
-      declaration1 = declaration1.replace(/ /g,"s");
+      declaration1 = declaration1.replace(/ /g, "s");
     if (declaration2)
-      declaration2 = declaration2.replace(/ /g,"s");
+      declaration2 = declaration2.replace(/ /g, "s");
     return O$.stringsEqualIgnoreCase(declaration1, declaration2);
   }
 

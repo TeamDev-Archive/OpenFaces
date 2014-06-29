@@ -3424,7 +3424,7 @@ O$.Table = {
 
               table.setColumnsOrder(columnIds);
             }));
-            return dropTargets;
+          return dropTargets;
         }
 
         O$.makeDraggable(headerCell, function (evt) {
@@ -3620,7 +3620,7 @@ O$.Table = {
                               }
 
 
-                              columnIds.splice(oldIndex < newIndex ? oldIndex : oldIndex+gropingColumnIds.length , gropingColumnIds.length);
+                              columnIds.splice(oldIndex < newIndex ? oldIndex : oldIndex + gropingColumnIds.length, gropingColumnIds.length);
                             }
                             else {
                               columnIds.splice(newIndex, 0, sourceColumnId);
@@ -3723,7 +3723,7 @@ O$.Table = {
                 }
               });
             }
-    ) ;
+    );
     table._columnsLogicalStructure = function () {
       var currentColumnsOrder = table.getColumnsOrder();
 
@@ -4915,7 +4915,7 @@ O$.ColumnMenu = {
       result._tr.appendChild(columnMenuButton);
       O$.setOpacityLevel(result, 1 - menuInvokerAreaTransparency);
 
-      if(O$.isExplorer10AndOlder()){
+      if (O$.isExplorer10AndOlder()) {
         result.style.filter = "alpha(opacity=30)";
         result.style.zoom = 1;
       }
