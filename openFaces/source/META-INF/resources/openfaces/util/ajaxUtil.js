@@ -13,23 +13,23 @@
 // ================================== PUBLIC API FUNCTIONS
 
 O$.extend(O$, {
-  AjaxComponent: O$.createClass(null, {
-    constructor: function(render, params) {
+  AjaxComponent:O$.createClass(null, {
+    constructor:function (render, params) {
       this.render = render;
       if (params)
         O$.extend(this, params);
     },
 
-    run: function() {
+    run:function () {
       O$.Ajax._reload(this.render, this, this);
     }
   }),
 
-  _initAjax: function(id, render, params) {
+  _initAjax:function (id, render, params) {
     function initComponent() {
       var component = O$(id);
       if (!component) {
-        setTimeout(function() {
+        setTimeout(function () {
           initComponent();
         }, 100);
         return;
@@ -40,11 +40,11 @@ O$.extend(O$, {
     if (O$(id))
       initComponent();
     else
-      setTimeout(function() {
+      setTimeout(function () {
         if (O$(id))
           initComponent();
         else
-          O$.addLoadEvent(function() {
+          O$.addLoadEvent(function () {
             initComponent();
           });
       }, 1);
@@ -52,7 +52,7 @@ O$.extend(O$, {
 
 });
 
-O$.setAjaxCleanupRequired = function(ajaxCleanupRequired) {
+O$.setAjaxCleanupRequired = function (ajaxCleanupRequired) {
   document._ajaxCleanupRequired = ajaxCleanupRequired;
 };
 
@@ -71,21 +71,21 @@ O$.ajax = {
    *    - immediate - (optional) true means that the action should be executed during Apply Request Values phase, rather than waiting until the Invoke Application phase
    *    - params - (optional) an object containing the additional request parameters
    */
-  request: function(source, event, options) {
+  request:function (source, event, options) {
     var args = options ? options : {};
 
     args._source = source;
     args._event = event;
     args.actionComponent = source && typeof source != "string" ? source.id : source;
     var render;
-    if (!options.render instanceof Array){
+    if (!options.render instanceof Array) {
       render = options.render ? options.render.split(" ") : undefined;
-    }else{
+    } else {
       render = options.render;
     }
-    if (!options.execute instanceof Array){
+    if (!options.execute instanceof Array) {
       args.execute = options.execute ? options.execute.split(" ") : undefined;
-    }else{
+    } else {
       args.execute = options.execute;
     }
     args.onajaxstart = options.onajaxstart;
@@ -120,25 +120,25 @@ O$.CUSTOM_JSON_PARAM = "_of_customJsonParam";
 O$.EXECUTE_RENDERED_COMPONENTS = "_of_executeRenderedComponents";
 
 window.OpenFaces.Ajax = {
-  _ajaxEndHandlers: [],
-  _addAjaxEndHandler: function(handler) {
+  _ajaxEndHandlers:[],
+  _addAjaxEndHandler:function (handler) {
     this._ajaxEndHandlers.push(handler);
   },
-  _removeAjaxEndHandler: function(handler) {
+  _removeAjaxEndHandler:function (handler) {
     var idx = this._ajaxEndHandlers.indexOf(handler);
     if (idx == -1) throw "O$.Ajax._removeAjaxEndHandler: this event handler is not registered";
     this._ajaxEndHandlers.splice(idx, 1);
   },
 
-  onajaxend: function(event) {
-    this._ajaxEndHandlers.forEach(function(handler) {
+  onajaxend:function (event) {
+    this._ajaxEndHandlers.forEach(function (handler) {
       handler(event);
     });
   },
-  Page: {},
-  Components: [],
+  Page:{},
+  Components:[],
 
-  setCommonAjaxEventHandler: function(eventName, func) {
+  setCommonAjaxEventHandler:function (eventName, func) {
     if (!eventName || !func)
       return;
 
@@ -147,7 +147,7 @@ window.OpenFaces.Ajax = {
     }
     else {
       var oldEventHandlerFunction = OpenFaces.Ajax.Page[eventName];
-      OpenFaces.Ajax.Page[eventName] = function(event) {
+      OpenFaces.Ajax.Page[eventName] = function (event) {
         if (oldEventHandlerFunction(event) !== false)
           func(event);
       };
@@ -161,7 +161,7 @@ window.OpenFaces.Ajax = {
     document.__commonAjaxEventHandlerInitialized[eventName] = true;
   },
 
-  _attachHandler: function(id, eventName, handler) {
+  _attachHandler:function (id, eventName, handler) {
     var el = O$(id) || (O$.stringStartsWith(id, ":") ? O$(id.substring(1)) : null);
     if (!el) {
       O$.logError("<o:ajax> couldn't find a component/HTML node to attach to by id of \"" + id + "\"");
@@ -171,7 +171,7 @@ window.OpenFaces.Ajax = {
     el["on" + eventName] = handler;
   },
 
-  reloadPage: function(loc) {
+  reloadPage:function (loc) {
     window.location = loc;
   },
 
@@ -185,7 +185,7 @@ window.OpenFaces.Ajax = {
    *    onajaxstart - (optional) the function that should be invoked before ajax request is started
    *    immediate - (optional) true means that the action should be executed during Apply Request Values phase, rather than waiting until the Invoke Application phase
    */
-  _reload: function(render, args, source, event) {
+  _reload:function (render, args, source, event) {
     if (!args) args = {};
     if (source)
       args._source = source;
@@ -212,37 +212,39 @@ window.OpenFaces.Ajax = {
             delayId += ",";
         }
       }
-      O$.invokeFunctionAfterDelay(function() {
+      O$.invokeFunctionAfterDelay(function () {
         O$.Ajax.sendRequestIfNoFormSubmission(ids, args);
       }, args.delay, delayId);
     }
   },
-  requestComponentPortions: function(componentId, portionNames, customJsonParam, portionProcessor, onerror, skipExecute, additionalParams ) {
+  requestComponentPortions:function (componentId, portionNames, customJsonParam, portionProcessor, onerror, skipExecute, additionalParams) {
     var args = arguments;
     if (!O$.isLoadedFullPage()) {
-      O$.addLoadEvent(function() {
+      O$.addLoadEvent(function () {
         O$.Ajax.requestComponentPortions.apply(null, args);
       });
       return;
     }
     if (!componentId)
       throw "componentId should be specified";
-    if (! (portionNames instanceof Array))
+    if (!(portionNames instanceof Array))
       throw "portionNames should be specified as an array, but specified as: " + portionNames;
     if (!portionProcessor)
       throw "O$.Ajax.requestComponentPortions: portionProcessor should be specified";
-    var params = skipExecute ? [["_of_skipExecute", "true"]] : [];
-    if (additionalParams){
+    var params = skipExecute ? [
+      ["_of_skipExecute", "true"]
+    ] : [];
+    if (additionalParams) {
       params.push(additionalParams);
     }
-    O$.Ajax.sendRequestIfNoFormSubmission([componentId], {portionNames: portionNames, portionProcessor: portionProcessor,
-      params: params, onerror: onerror, customJsonParam: customJsonParam});
+    O$.Ajax.sendRequestIfNoFormSubmission([componentId], {portionNames:portionNames, portionProcessor:portionProcessor,
+      params:params, onerror:onerror, customJsonParam:customJsonParam});
   },
   /*
    Sends ajax request only if no form submission is initated in the same event handler
    (e.g. a submit button invoking an ajax request in the onclick handler)
    */
-  sendRequestIfNoFormSubmission: function() {
+  sendRequestIfNoFormSubmission:function () {
     var ajaxArgs = arguments;
     var evt = ajaxArgs[1]._event;
     if (evt && O$.isExplorer()) {
@@ -252,19 +254,19 @@ window.OpenFaces.Ajax = {
       O$.extend(evtCopy, evt);
       ajaxArgs[1]._event = evtCopy;
     }
-    setTimeout(function() {
+    setTimeout(function () {
       if (O$.isAjaxInLockedState())
         return;
       O$.Ajax.sendRequest.apply(null, ajaxArgs);
     }, 1);
   },
 
-  _runScript: function(script, libs) {
+  _runScript:function (script, libs) {
     var runScriptState = {
-      _postExecuteHandlers: []
+      _postExecuteHandlers:[]
     };
-    runScriptState.postExecuteHandler = function(handler) {
-        runScriptState._postExecuteHandlers.push(handler);
+    runScriptState.postExecuteHandler = function (handler) {
+      runScriptState._postExecuteHandlers.push(handler);
     };
     O$.Ajax._currentlyScheduledScript = runScriptState;
     libs.forEach(O$.Ajax.loadLibrary);
@@ -273,13 +275,14 @@ window.OpenFaces.Ajax = {
         script();
         if (O$.Ajax._currentlyScheduledScript == runScriptState) {
           O$.Ajax._currentlyScheduledScript = null;
-          for (var i =0; i < runScriptState._postExecuteHandlers.length; i++) {
+          for (var i = 0; i < runScriptState._postExecuteHandlers.length; i++) {
             runScriptState._postExecuteHandlers[i]();
           }
         }
       } else
         setTimeout(runScriptWhenReady, 100);
     }
+
     runScriptWhenReady();
   },
 
@@ -300,7 +303,7 @@ window.OpenFaces.Ajax = {
    * actionComponent - (optional) client id of a component from which this action is initiated (e.g. actual for a button in a table which needs current row's data in the action)
    *
    */
-  sendRequest: function(render, args) {
+  sendRequest:function (render, args) {
     if (window._of_ajax_onsessionexpired) {
       if (OpenFaces.Ajax.Page.onsessionexpired) {
         var sessionExpiredEvent = O$.createEvent("sessionexpired");
@@ -319,7 +322,7 @@ window.OpenFaces.Ajax = {
     params[O$.AJAX_REQUEST_MARKER] = "true";
     if (args.params) {
       if (args.params instanceof Array) {
-        args.params.forEach(function(param) {
+        args.params.forEach(function (param) {
           var paramName = param[0];
           var paramValue = param[1];
           params[paramName] = paramValue;
@@ -335,7 +338,7 @@ window.OpenFaces.Ajax = {
     if (args.portionNames) {
       var buf = new O$.StringBuffer();
       var commaNeeded = false;
-      args.portionNames.forEach(function(portionName) {
+      args.portionNames.forEach(function (portionName) {
         var encodedPortionName = O$.Ajax.escapeSymbol(portionName, ",");
         if (commaNeeded) buf.append(",");
         buf.append(encodedPortionName);
@@ -375,12 +378,15 @@ window.OpenFaces.Ajax = {
       if (OpenFaces.Ajax.Page[eventName])
         OpenFaces.Ajax.Page[eventName](event);
     }
+
     var ajaxResult;
     var validationError;
 
     function success(data) {
       if (O$.Ajax._currentlyScheduledScript) {
-        O$.Ajax._currentlyScheduledScript.postExecuteHandler(function() {success(data)});
+        O$.Ajax._currentlyScheduledScript.postExecuteHandler(function () {
+          success(data)
+        });
         return;
       }
       var successEvent = O$.createEvent("success");
@@ -388,10 +394,13 @@ window.OpenFaces.Ajax = {
       successEvent.validationError = validationError;
       fireEvent("onsuccess", successEvent);
     }
+
     function ajaxEnd(data) {
       setTimeout(destroyMemoryLeaks, 1);
       if (O$.Ajax._currentlyScheduledScript) {
-        O$.Ajax._currentlyScheduledScript.postExecuteHandler(function() {ajaxEnd(data)});
+        O$.Ajax._currentlyScheduledScript.postExecuteHandler(function () {
+          ajaxEnd(data)
+        });
         return;
       }
       var ajaxendEvent = O$.createEvent("ajaxend");
@@ -443,7 +452,7 @@ window.OpenFaces.Ajax = {
           if (!parentOfElementInDom._unloadableComponents)
             return null;
           var elementsWithSameId = [];
-          parentOfElementInDom._unloadableComponents.forEach(function(comp) {
+          parentOfElementInDom._unloadableComponents.forEach(function (comp) {
             if (comp.id == idOfElement) {
               elementsWithSameId.push(comp);
             }
@@ -455,21 +464,28 @@ window.OpenFaces.Ajax = {
         }
       }
     }
+
     function eventHandler(data) {
       if (args.onevent)
         args.onevent.call(null, data);
       if (data.status == "complete") {
-        setTimeout(function() {source._openFaces_ajax_inProgress = false;}, 1);
+        setTimeout(function () {
+          source._openFaces_ajax_inProgress = false;
+        }, 1);
         validationError = undefined;
         var atLeastOnePortionProcessed = false;
         var xml = data.responseXML;
-        if (!xml) {alert("Error while performing Ajax request: No xml response received -- check server logs."); return;}
+        if (!xml) {
+          alert("Error while performing Ajax request: No xml response received -- check server logs.");
+          return;
+        }
         var rootTags = xml.getElementsByTagName("partial-response");
         if (rootTags.length == 0) {
           alert("Malformed Ajax XML response: couldn't find the <partial-response> tag");
           return;
         }
         var childNodes = rootTags[0].childNodes;
+
         function processExtension(extensionNode) {
           var ln = extensionNode.getAttribute("ln");
           if (ln != "openfaces") return;
@@ -485,7 +501,7 @@ window.OpenFaces.Ajax = {
             var jsLibs = eval(jsLibsStr);
             var portionData = portionDataStr ? eval("(" + portionDataStr + ")") : null;
             var component = O$(render);
-            O$.Ajax._runScript(function() {
+            O$.Ajax._runScript(function () {
               if (!args.portionProcessor) throw "OpenFaces Ajax portion node received but no portionProcessor was specified by the request invoker";
               args.portionProcessor(component, portionName, portionText, portionScripts, portionData);
             }, jsLibs);
@@ -495,7 +511,7 @@ window.OpenFaces.Ajax = {
             jsLibsStr = extensionNode.getAttribute("jsLibs");
             portionScripts = extensionNode.getAttribute("scripts");
             jsLibs = eval(jsLibsStr);
-            O$.Ajax._runScript(function() {
+            O$.Ajax._runScript(function () {
               O$.Ajax._processUpdateOnExpirationOrError(html, portionScripts);
               if (OpenFaces.Ajax.Page.onsessionexpired) {
                 var sessionExpiredEvent = O$.createEvent("sessionexpired");
@@ -510,11 +526,12 @@ window.OpenFaces.Ajax = {
               ajaxResult = ajaxResultStr;
             }
           } else if (extensionType == "validationError") {
-              var validationErrorStr = extensionNode.getAttribute("validationError");
-              validationError = (validationErrorStr == "true");
+            var validationErrorStr = extensionNode.getAttribute("validationError");
+            validationError = (validationErrorStr == "true");
           } else
             throw "Unknown OpenFaces Ajax extension node type: " + extensionType;
         }
+
         for (var i = 0, count = childNodes.length; i < count; i++) {
           var childNode = childNodes[i];
           if (childNode.nodeName == "extension")
@@ -541,7 +558,9 @@ window.OpenFaces.Ajax = {
         ajaxEnd(data);
       }
     }
+
     var onerrorTriggered = false;
+
     function errorHandler(data) {
       var errorEvent = O$.createEvent("error");
       errorEvent.data = data;
@@ -555,11 +574,12 @@ window.OpenFaces.Ajax = {
         ajaxEnd(data);
       }
     }
+
     var options = {
-      execute: execute,
-      render: render,
-      onevent: eventHandler,
-      onerror: errorHandler
+      execute:execute,
+      render:render,
+      onevent:eventHandler,
+      onerror:errorHandler
     };
     if (params)
       O$.extend(options, params);
@@ -612,7 +632,7 @@ window.OpenFaces.Ajax = {
     O$.saveScrollPositionIfNeeded();
   },
 
-  escapeSymbol: function(portionName, escapedChars) {
+  escapeSymbol:function (portionName, escapedChars) {
     var res = new O$.StringBuffer();
     for (var i = 0, count = portionName.length; i < count; i++) {
       var currChar = portionName.charAt(i);
@@ -632,7 +652,7 @@ window.OpenFaces.Ajax = {
   },
 
 
-  executeScripts: function(source) {
+  executeScripts:function (source) {
     if (!source || source.length == 0) return;
     var idx1 = source.indexOf("<script");
     var result;
@@ -662,10 +682,9 @@ window.OpenFaces.Ajax = {
     }
   },
 
-  _requestsInProgress: 0,
+  _requestsInProgress:0,
 
-  setMessageHTML: function(messageHTML, horizAlignment, vertAlignment, transparency, opacityTransitionPeriod,
-                                   blockingLayer, useForNonOpenFacesRequests) {
+  setMessageHTML:function (messageHTML, horizAlignment, vertAlignment, transparency, opacityTransitionPeriod, blockingLayer, useForNonOpenFacesRequests) {
     if (O$.isChrome() || O$.isSafari()) {
       messageHTML = messageHTML.replace("&", "&amp;");
     }
@@ -685,7 +704,7 @@ window.OpenFaces.Ajax = {
     document._ajaxInProgressMessage = msg;
 
     if (blockingLayer) {
-      msg._blockingLayer = function() {
+      msg._blockingLayer = function () {
         var div = document.createElement("div");
         div.className = blockingLayer.className ? blockingLayer.className : "";
         div.style.visibility = "hidden";
@@ -693,7 +712,7 @@ window.OpenFaces.Ajax = {
         div._opacity = opacity;
         div._opacityTransitionPeriod = blockingLayer.transparencyTransitionPeriod != undefined ? blockingLayer.transparencyTransitionPeriod : 150;
         O$.setOpacityLevel(div, 0);
-        div.updatePos = function() {
+        div.updatePos = function () {
           var rect = O$.getVisibleAreaRectangle();
           div.style.zIndex = O$.getElementZIndex(msg) - 1;
           O$.setElementBorderRectangle(div, rect);
@@ -703,7 +722,7 @@ window.OpenFaces.Ajax = {
     }
 
     if (!O$._ajaxProgressInitialized) {
-      O$.addLoadEvent(function() {
+      O$.addLoadEvent(function () {
         var msg = document._ajaxInProgressMessage;
         var prnt = O$.getDefaultAbsolutePositionParent();
 
@@ -711,7 +730,7 @@ window.OpenFaces.Ajax = {
         if (document._ajaxInProgressMessage._blockingLayer)
           prnt.appendChild(document._ajaxInProgressMessage._blockingLayer);
         setTimeout(
-                function() {
+                function () {
                   if (msg.style.visibility == "hidden") {
                     msg.style.display = "none";
                     msg.style.visibility = "";
@@ -726,7 +745,7 @@ window.OpenFaces.Ajax = {
       O$._ajaxProgressInitialized = true;
       if (O$.Ajax._requestsInProgress == undefined) O$.Ajax._requestsInProgress = 0;
       if (window.jsf)
-        jsf.ajax.addOnEvent(function(data) {
+        jsf.ajax.addOnEvent(function (data) {
           if (document._ajaxInProgressMessage._includeNonOpenFacesRequests || (data.source && data.source._openFaces_ajax_inProgress)) {
             if (data.status == "begin") {
               if (++O$.Ajax._requestsInProgress == 1) {
@@ -747,7 +766,7 @@ window.OpenFaces.Ajax = {
 
   },
 
-  showProgressMessage: function() {
+  showProgressMessage:function () {
     var msg = document._ajaxInProgressMessage;
     if (!msg)
       return;
@@ -782,9 +801,9 @@ window.OpenFaces.Ajax = {
     }
   },
 
-  hideProgressMessage: function() {
+  hideProgressMessage:function () {
     var msg = document._ajaxInProgressMessage;
-    if(!msg) return;
+    if (!msg) return;
     var simulateFixedPos = true;//O$.isExplorer();
     if (simulateFixedPos) {
       O$.removeEventHandler(window, "scroll", O$.Ajax.updateProgressMessagePos);
@@ -796,7 +815,7 @@ window.OpenFaces.Ajax = {
       msg._blockingLayer.style.display = "none";
   },
 
-  updateProgressMessagePos: function() {
+  updateProgressMessagePos:function () {
     var msg = document._ajaxInProgressMessage;
     if (msg.style.display == "none") {
       // replace hiding with "visibility" instead of "display" to allow element size measurement,
@@ -810,16 +829,16 @@ window.OpenFaces.Ajax = {
       msg._blockingLayer.updatePos();
   },
 
-  _pageReloadConfirmation: function(confirmationId, location) {
+  _pageReloadConfirmation:function (confirmationId, location) {
     var confirmation = O$(confirmationId);
     if (document._ajaxInProgressMessage._blockingLayer)
       O$.correctElementZIndex(confirmation, document._ajaxInProgressMessage._blockingLayer);
-    confirmation.runConfirmedFunction(function() {
+    confirmation.runConfirmedFunction(function () {
       O$.Ajax.reloadPage(location);
     });
   },
 
-  _pushElementsWithId: function(destElements, element) {
+  _pushElementsWithId:function (destElements, element) {
     if (!element)
       return;
     if (element.id) {
@@ -833,7 +852,7 @@ window.OpenFaces.Ajax = {
     }
   },
 
-  _processUpdateOnExpirationOrError: function (updHTML, updScripts) {
+  _processUpdateOnExpirationOrError:function (updHTML, updScripts) {
     var tempDiv = document.createElement("div");
     tempDiv.innerHTML = updHTML;
 
@@ -843,7 +862,7 @@ window.OpenFaces.Ajax = {
       O$.Ajax._pushElementsWithId(newElements, newElement);
     }
 
-    newElements.forEach(function(newElement) {
+    newElements.forEach(function (newElement) {
       O$.assert(newElement.id, "_processSimpleUpdate: newElement without id encountered");
       var parent = document.body;
       parent.insertBefore(newElement, parent.lastChild);
@@ -852,7 +871,7 @@ window.OpenFaces.Ajax = {
     eval(updScripts);
   },
 
-  canonifyLibraryName: function(lib) {
+  canonifyLibraryName:function (lib) {
     var hostIndex = lib.indexOf("://");
     if (hostIndex != -1) {
       var startIdx = lib.indexOf("/", hostIndex + 3);
@@ -864,28 +883,28 @@ window.OpenFaces.Ajax = {
     return lib;
   },
 
-  markLibraryLoaded: function(lib) {
+  markLibraryLoaded:function (lib) {
     lib = O$.Ajax.canonifyLibraryName(lib);
     window["_of_loadedLibrary:" + lib] = true;
   },
 
-  loadLibrary: function(fileUrl) {
+  loadLibrary:function (fileUrl) {
     if (!fileUrl) return;
     var found = O$.Ajax.isLibraryLoaded(fileUrl);
     if (!found) {
       var newScript = document.createElement("script");
       newScript.type = "text/javascript";
       newScript.src = fileUrl;
-      newScript.onload = function() {
+      newScript.onload = function () {
         O$.Ajax.markLibraryLoaded(fileUrl);
       };
-      newScript.onreadystatechange = function() {
+      newScript.onreadystatechange = function () {
         if (this.readyState == "complete")
           O$.Ajax.markLibraryLoaded(fileUrl);
         else if (O$.isExplorer() && this.readyState == "loaded") {
           // IE for some reason sometimes reports the "loaded" state and skips the "complete" one, so we're processing
           // this one too (after making a spare timeout just in case)
-          setTimeout(function() {
+          setTimeout(function () {
             O$.Ajax.markLibraryLoaded(fileUrl);
           }, 50);
         }
@@ -895,7 +914,7 @@ window.OpenFaces.Ajax = {
     }
   },
 
-  _markPreloadedLibraries: function() {
+  _markPreloadedLibraries:function () {
     if (O$._preloadedLibrariesMarked) return;
     O$._preloadedLibrariesMarked = true;
     var scriptElements = document.getElementsByTagName("script");
@@ -906,7 +925,7 @@ window.OpenFaces.Ajax = {
     }
   },
 
-  isLibraryLoaded: function(lib) {
+  isLibraryLoaded:function (lib) {
     O$.Ajax._markPreloadedLibraries();
     lib = O$.Ajax.canonifyLibraryName(lib);
     var result = eval("window['_of_loadedLibrary:" + lib + "']");
@@ -915,11 +934,11 @@ window.OpenFaces.Ajax = {
 
 };
 
-O$.addLoadEvent(function() {
+O$.addLoadEvent(function () {
   O$.Ajax._markPreloadedLibraries();
 });
 
-O$.destroyAllFunctions = function(elt) {
+O$.destroyAllFunctions = function (elt) {
   if (!elt || elt.nodeName == "#text")
     return;
 
@@ -938,7 +957,7 @@ O$.destroyAllFunctions = function(elt) {
     if (!elt[member])
       continue;
     if (typeof elt[member] === "function")
-      (function() {
+      (function () {
         elt[member] = null;
       })();
     else

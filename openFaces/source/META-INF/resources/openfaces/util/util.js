@@ -2655,7 +2655,7 @@ if (!window.O$) {
 
       var containingBlock = O$(draggable._parentId);
       if (!draggable._isRealParent) {
-          containingBlock = null;
+        containingBlock = null;
       }
 
       var containmentCorrectedLeft = getLeftPosition(containingBlock, newLeft);

@@ -269,7 +269,7 @@ O$.Table = {
       window.onresize = function () {
         table.parentElement.style.width = table.parentElement.parentElement.parentElement.clientWidth + "px";
         table.style.height = table.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.clientHeight -
-        saveDifference + "px";
+                saveDifference + "px";
       }
     }
 
