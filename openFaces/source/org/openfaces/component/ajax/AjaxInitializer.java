@@ -183,7 +183,7 @@ public class AjaxInitializer {
                     actionExpressionString);
     }
 
-    protected Object getExecuteParam(FacesContext context,
+    public Object getExecuteParam(FacesContext context,
                                      OUICommand command,
                                      Iterable<String> execute) {
         JSONArray renderArray = getRenderArray(context, command, execute);

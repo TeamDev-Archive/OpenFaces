@@ -1,6 +1,6 @@
 /*
  * OpenFaces - JSF Component Library 3.0
- * Copyright (C) 2007-2012, TeamDev Ltd.
+ * Copyright (C) 2007-2013, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
  * the GNU Lesser General Public License Version 2.1 (the "LGPL" License).
@@ -87,7 +87,11 @@ public class DateChooserRenderer extends DropDownComponentRenderer {
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
-        setUpConverter((DateChooser) component);
+        DateChooser dateChooser = (DateChooser) component;
+        if (dateChooser.isLazyProcess()){
+            dateChooser.lazyComponentPropertiesSetter();
+        }
+        setUpConverter(dateChooser);
         Components.generateIdIfNotSpecified(component);
         super.encodeBegin(context, component);
     }
@@ -205,16 +209,35 @@ public class DateChooserRenderer extends DropDownComponentRenderer {
         DateChooser dc = (DateChooser) dropDown;
 
         String pattern = null;
+        String blank = null;
+        StringBuilder mask = new StringBuilder();
         Converter c = dc.getConverter();
         if (c != null && c instanceof DateTimeConverter) {
             DateTimeConverter dtc = (DateTimeConverter) c;
             pattern = dtc.getPattern();
+            blank = dc.getBlank();
         }
+        if (blank != null) {
+            if (blank.length() != pattern.length()){
+                throw new RuntimeException("Blank's length must match the pattern's length");
+            }
+            for (int i = 0; i < blank.length(); i++) {
+                if (blank.charAt(i) == pattern.charAt(i)) {
+                    mask.append(blank.charAt(i));
+                } else {
+                    mask.append('#');
+                }
+
+            }
+        }
+
 
         // Related to JSFC-2042. Send date adjusted to GMT on client. It'll be used to set correct date to calendar
         String formatDate = null;
         Object value = dc.getValue();
-        if (value != null) {
+        if (value != null)
+
+        {
             Date date = (Date) value;
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -225,20 +248,28 @@ public class DateChooserRenderer extends DropDownComponentRenderer {
             formatDate = dateFormat.format(date);
         }
 
+
         ScriptBuilder sb = new ScriptBuilder().initScript(context, dc, "O$.DateChooser._init",
                 pattern,
+                blank,
+                mask.toString(),
                 formatDate,
                 dc.getLocale(),
                 Rendering.getChangeHandlerScript(dc));
 
-        return new InitScript(sb, new String[]{
+        return new
+
+                InitScript(sb, new String[]{
                 Resources.utilJsURL(context),
                 Resources.jsonJsURL(context),
                 getDropdownJsURL(context),
                 Resources.internalURL(context, "validation/requestHelper.js"),
                 Resources.internalURL(context, "input/dateChooser.js"),
+                Resources.internalURL(context, "input/maskEdit.js"),
                 ValidatorUtil.getValidatorUtilJsUrl(context)
-        });
+        }
+
+        );
     }
 
     @Override

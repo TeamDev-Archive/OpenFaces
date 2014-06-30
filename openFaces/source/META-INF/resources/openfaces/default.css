@@ -107,7 +107,7 @@
   "leak" events to underlying elements */
 .o_explicitly_transparent_background,
   .o_popuplayer_modal_layer {
-  background: url(clear.gif) repeat center center;
+ /* background: url(clear.gif) repeat center center;*/
 }
 
 .o_debugRow1 {
@@ -1200,7 +1200,7 @@
 }
 
 .o_dropdown_field {
-  background: url(clear.gif) repeat center center !important; /*"important" overrides RichFaces default skin's border */
+  /*background: url(clear.gif) repeat center center !important; /*"important" overrides RichFaces default skin's border */
 
   margin: 0;
   padding: 2px 2px 0 2px;
@@ -1215,11 +1215,12 @@
 }
 
 .o_dropdownfield_list {
-  position: absolute;
-  visibility: hidden;
-  overflow: auto;
-  width: 0;
-  height: 200px;
+    position: absolute;
+    visibility: hidden;
+    display: none;
+    overflow: auto;
+    width: 0;
+    height: 200px;
 }
 
 .o_dropdown_button {
@@ -2267,7 +2268,7 @@ html>/**/body .o_selectonemenu_field_container_middle {
 
 .o_hiddenFocusChromeSafari {
     /* Class is added for handling keypress event for hidden input text field in Chrome and Safari */
-    position: absolute !important;
+   /* position: absolute !important;*/
     width: 1px !important;
     height: 1px !important;
     font-size: 1px !important;

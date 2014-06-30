@@ -15,6 +15,7 @@ import org.openfaces.ajax.AjaxRequest;
 import org.openfaces.component.ajax.Ajax;
 import org.openfaces.component.ajax.AjaxHelper;
 import org.openfaces.component.ajax.AjaxInitializer;
+import org.openfaces.component.select.SelectOneMenu;
 import org.openfaces.event.AjaxActionEvent;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.AnonymousFunction;
@@ -26,6 +27,7 @@ import javax.el.ELContext;
 import javax.el.MethodExpression;
 import javax.el.MethodNotFoundException;
 import javax.el.ValueExpression;
+import javax.faces.component.ActionSource;
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
 import javax.faces.context.FacesContext;
@@ -46,6 +48,10 @@ public class AjaxRenderer extends AbstractSettingsRenderer {
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         Ajax ajax = (Ajax) component;
+        if (ajax.isLazyProcess()){
+            ajax.lazyComponentPropertiesSetter();
+        }
+
         if (ajax.getAttributes().remove(ATTACH_ON_CLIENT) != null) {
             AjaxHelper ajaxHelper = new AjaxHelper(ajax);
             String handlerScript = ajaxHelper.getClientActionScript(context, ajax);

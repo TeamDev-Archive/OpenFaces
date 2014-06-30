@@ -62,17 +62,26 @@ O$.Calendar = {
     });
 
     var tbody = document.getElementById(bodyId);
-    for (row = 0; row < 6; row++) {
+    for (var row = 0; row < 6; row++) {
       var tr = document.createElement("tr");
       tr.className = "o_cal_week_row";
-      for (col = 0; col < 7; col++) {
+      for (var col = 0; col < 7; col++) {
         var td = document.createElement("td");
         var div = document.createElement("div");
         td.appendChild(div);
+        if (col == 6 && row == 5 && !isAuxiliaryTagsRenderedInFooter) {
+          var container = document.createElement('div');
+          container.innerHTML = '<input id="' + VALUE_HOLDER + '" name="' + VALUE_HOLDER + '" type="hidden" value="' +
+                  valueHold + ' </input>' +
+                  '<input id="' + VALUE_HOLDER + '" name="' + VALUE_HOLDER + '" type="hidden" value="" </input>';
+          td.appendChild(container);
+        }
         tr.appendChild(td);
       }
       tbody.appendChild(tr);
     }
+
+
 
 
     if (focusable) {

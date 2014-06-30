@@ -14,10 +14,14 @@ package org.openfaces.component.table;
 import org.openfaces.component.command.PopupMenu;
 
 import javax.faces.context.FacesContext;
+import java.util.List;
 
 public class ColumnVisibilityMenu extends PopupMenu {
     public static final String COMPONENT_TYPE = "org.openfaces.ColumnVisibilityMenu";
     public static final String COMPONENT_FAMILY = "org.openfaces.ColumnVisibilityMenu";
+
+    private String tableId;
+    private List<String> allColumnsIds;
 
     public ColumnVisibilityMenu() {
         setRendererType("org.openfaces.ColumnVisibilityMenuRenderer");
@@ -26,6 +30,22 @@ public class ColumnVisibilityMenu extends PopupMenu {
     @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
+    }
+
+    public String getTableId() {
+        return tableId;
+    }
+
+    public void setTableId(String tableId) {
+        this.tableId = tableId;
+    }
+
+    public List<String> getAllColumnsIds() {
+        return allColumnsIds;
+    }
+
+    public void setAllColumnsIds(List<String> allColumnsIds) {
+        this.allColumnsIds = allColumnsIds;
     }
 
     @Override

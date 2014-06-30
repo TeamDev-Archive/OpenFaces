@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:o="http://openfaces.org/">
+
+
+    <ui:composition>
+        <h:panelGroup id="#{id}">
+          <h:panelGroup rendered="#{renderThis}">
+              <o:LazyAttributesProcessorStart/>
+              <o:commandButton value="#{BorderLayoutBean.testStr}" />
+            <o:commandButton type="submit" value="#{okLabel}" />
+            <o:commandButton type="reset" value="#{cancelLabel}" />
+            <o:inputText value="ddddd" />
+            <o:tabSet ></o:tabSet>
+
+              <o:calendar style="border: 1px solid #f6f7f8;"
+                          headerStyle="background: #f6f7f8;"
+                          rolloverDayStyle="background: #f6f7f8; border: 1px solid #8eb5d4; color: black;"
+                          rolloverWeekendDayStyle="background: #f9f6f1; border: 1px solid #f3922b; color: black;"
+                          selectedDayStyle="background: #8eb5d4;"
+                          todayStyle="color: #ff8a01; font-weight: bold; background: #f6f7f8;"
+                          footerStyle="border-top: 1px solid #505050; background: #f6f7f8;"
+                          daysHeaderStyle="background: #505050; color: f6f7f8;"
+                          inactiveMonthDayStyle="color: #b4b4b4; background: #f6f7f8;"
+                          dayStyle="color: #505050;  background: #f6f7f8; border: 1px solid #f9f9f9;"
+                          weekendDayStyle="color: #000000;  background: #f6f7f8;"/>
+
+              <o:tabSet ></o:tabSet>
+              <o:LazyAttributesProcessorEnd/>
+          </h:panelGroup>
+        </h:panelGroup>
+    </ui:composition>
+</html>

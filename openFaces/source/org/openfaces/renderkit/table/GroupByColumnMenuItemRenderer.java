@@ -22,13 +22,6 @@ import java.io.IOException;
 public class GroupByColumnMenuItemRenderer extends ColumnMenuItemRenderer {
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
-        MenuItem menuItem = (MenuItem) component;
-        if (menuItem.getValue() == null)
-            menuItem.setValue("Group by This Column");
-        menuItem.setOnclick(new ScriptBuilder().functionCall("O$.ColumnMenu._groupByColumn",
-                getTable("<o:sortDescendingMenuItem>", menuItem)).toString());
-        if (menuItem.getIconUrl() == null)
-            menuItem.setIconUrl(Resources.internalURL(context, "table/groupByColumn.png"));
-        super.encodeBegin(context, component);
+        throw new RuntimeException("ColumnMenuItemRenderer doesn't must be called by itself");
     }
 }

@@ -1,6 +1,6 @@
 /*
  * OpenFaces - JSF Component Library 3.0
- * Copyright (C) 2007-2012, TeamDev Ltd.
+ * Copyright (C) 2007-2013, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
  * the GNU Lesser General Public License Version 2.1 (the "LGPL" License).
@@ -11,7 +11,10 @@
  */
 package org.openfaces.component.input;
 
+import org.openfaces.component.LazyProcessSupport;
 import org.openfaces.component.Side;
+import org.openfaces.taglib.facelets.FaceletsExpressionCreator;
+import org.openfaces.taglib.internal.AbstractComponentTag;
 import org.openfaces.util.CalendarUtil;
 import org.openfaces.util.MessageUtil;
 import org.openfaces.util.ValueBindings;
@@ -33,7 +36,7 @@ import static java.lang.Boolean.valueOf;
  *
  * @author Kharchenko
  */
-public class DateChooser extends DropDownComponent {
+public class DateChooser extends DropDownComponent implements LazyProcessSupport {
     public static final String COMPONENT_TYPE = "org.openfaces.DateChooser";
     public static final String COMPONENT_FAMILY = "org.openfaces.DateChooser";
 
@@ -95,6 +98,7 @@ public class DateChooser extends DropDownComponent {
     private Boolean keepTime;
     private Boolean showFooter;
     private Boolean typingAllowed;
+    private String blank;
 
     public DateChooser() {
         setRendererType("org.openfaces.DateChooserRenderer");
@@ -103,6 +107,11 @@ public class DateChooser extends DropDownComponent {
     @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
+    }
+
+    public void setLazyProcessAttributes(FaceletsExpressionCreator faceletsExpressionCreator, AbstractComponentTag abstractComponentTag){
+        this.setFaceletsExpressionCreator(faceletsExpressionCreator);
+        this.setTag(abstractComponentTag);
     }
 
     @Override
@@ -121,7 +130,7 @@ public class DateChooser extends DropDownComponent {
                 rolloverInactiveMonthDayClass, selectedDayClass, rolloverSelectedDayClass, todayClass,
                 rolloverTodayClass, disabledDayClass, rolloverDisabledDayClass, weekendDayClass,
                 rolloverWeekendDayClass, daysHeaderClass, headerClass, footerClass, firstDayOfWeek, dateFormat,
-                pattern, locale, timeZone, todayText, noneText, keepTime, showFooter, typingAllowed
+                pattern, locale, timeZone, todayText, noneText, keepTime, showFooter, typingAllowed, blank
         };
     }
 
@@ -175,6 +184,7 @@ public class DateChooser extends DropDownComponent {
         keepTime = (Boolean) values[i++];
         showFooter = (Boolean) values[i++];
         typingAllowed = (Boolean) values[i++];
+        blank = (String) values[i++];
     }
 
     @Override
@@ -369,6 +379,14 @@ public class DateChooser extends DropDownComponent {
 
     public void setCalendarClass(String calendarStyle) {
         calendarClass = calendarStyle;
+    }
+
+    public String getBlank() {
+        return ValueBindings.get(this, "blank", blank);
+    }
+
+    public void setBlank(String blank) {
+        this.blank = blank;
     }
 
     public String getDayClass() {

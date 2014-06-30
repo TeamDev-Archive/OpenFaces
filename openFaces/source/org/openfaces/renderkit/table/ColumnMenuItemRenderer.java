@@ -24,13 +24,5 @@ import javax.faces.component.UIComponent;
  * @author Dmitry Pikhulya
  */
 public class ColumnMenuItemRenderer extends MenuItemRenderer {
-    protected AbstractTable getTable(String tagName, MenuItem menuItem) {
-        UIComponent parent = menuItem.getParent();
-        while (parent != null && (parent instanceof MenuItem || parent instanceof PopupMenu || Components.isImplicitPanel(parent)))
-            parent = parent.getParent();
-        if (!(parent instanceof AbstractTable))
-            throw new FacesException(tagName + " can only be inserted into the \"columnMenu\" facet of " +
-                    "the <o:dataTable> or <o:treeTable> components (either directly or as its sub-menu).");
-        return (AbstractTable) parent;
-    }
+
 }

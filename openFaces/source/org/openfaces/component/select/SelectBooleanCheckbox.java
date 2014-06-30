@@ -403,4 +403,10 @@ public class SelectBooleanCheckbox extends OUIInputBase {
             }
         }
     }
+
+    @Override
+    public void decode(FacesContext context) {
+        getAttributes().put("decodeDisabledState",true);
+        super.decode(context);    //To change body of overridden methods use File | Settings | File Templates.
+    }
 }

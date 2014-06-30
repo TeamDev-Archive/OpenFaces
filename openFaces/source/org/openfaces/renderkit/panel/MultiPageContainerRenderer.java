@@ -67,7 +67,11 @@ public abstract class MultiPageContainerRenderer extends BaseTabSetRenderer impl
         writer.writeAttribute("border", "0", null);
         writer.writeAttribute("cellspacing", "0", null);
         writer.writeAttribute("cellpadding", "0", null);
+        writer.writeAttribute("width", "100%", null);
+        writer.writeAttribute("height", "100%", null);
         String clientId = container.getClientId(context);
+        writer.writeAttribute("multiPageContainerId", clientId, "multiPageContainerId");
+        writer.writeAttribute("absolutePageIndex", absolutePageIndex, "absolutePageIndex");
         writer.writeAttribute("id", clientId + PANE_SUFFIX + absolutePageIndex, null);
         if (!initiallyVisible) {
             writer.writeAttribute("style", "display: none;", null);
@@ -109,6 +113,7 @@ public abstract class MultiPageContainerRenderer extends BaseTabSetRenderer impl
         ResponseWriter writer = context.getResponseWriter();
 
         writer.writeAttribute("width", "100%", null);
+        writer.writeAttribute("height", "100%", null);
         writer.writeAttribute("style", "vertical-align: top;", null); // required for correct content alignment with left/right tab placements under strict mode
 
         int allItemCount = subPanels.size();

@@ -271,57 +271,90 @@ public class Rendering {
     }
 
     static String escapeStringForJS(String str) {
-        if (str == null)
-            return "";
-
         int len = str.length();
-        StringBuilder buf = new StringBuilder(len << 2);
+        char[] charArray = str.toCharArray();
+        char buf[] = new char[len << 4];
+        int count = 0;
+        char chr;
         for (int i = 0; i < len; i++) {
-            char chr = str.charAt(i);
+            chr = charArray[i];
             switch (chr) {
                 case '\\':
-                    buf.append("\\x5c");
+                    buf[count++] = '\\';
+                    buf[count++] = 'x';
+                    buf[count++] = '5';
+                    buf[count++] = 'c';
                     break;
                 case '\'':
-                    buf.append("\\x27");
+                    buf[count++] = '\\';
+                    buf[count++] = 'x';
+                    buf[count++] = '2';
+                    buf[count++] = '7';
                     break;
                 case '\"':
-                    buf.append("\\x22");
+                    buf[count++] = '\\';
+                    buf[count++] = 'x';
+                    buf[count++] = '2';
+                    buf[count++] = '2';
                     break;
                 case '\n':
-                    buf.append("\\n");
+                    buf[count++] = '\\';
+                    buf[count++] = 'n';
                     break;
                 case '[':
-                    buf.append("\\x5b");
+                    buf[count++] = '\\';
+                    buf[count++] = 'x';
+                    buf[count++] = '5';
+                    buf[count++] = 'b';
                     break;
                 case ']':
-                    buf.append("\\x5d");
+                    buf[count++] = '\\';
+                    buf[count++] = 'x';
+                    buf[count++] = '5';
+                    buf[count++] = 'd';
                     break;
                 case '\r':
-                    buf.append("\\r");
+                    buf[count++] = '\\';
+                    buf[count++] = 'r';
                     break;
                 case '<':
-                    buf.append("\\x3C");
+                    buf[count++] = '\\';
+                    buf[count++] = 'x';
+                    buf[count++] = '3';
+                    buf[count++] = 'C';
                     break;
                 default:
                     if (((int) chr) >= 0x80) {
                         String hex = Integer.toString(chr, 16);
-                        buf.append("\\u");
+                        buf[count++] = '\\';
+                        buf[count++] = 'u';
                         switch (hex.length()) {
                             case 2:
-                                buf.append("00");
+                                buf[count++] = '0';
+                                buf[count++] = '0';
+                                buf[count++] = hex.charAt(0);
+                                buf[count++] = hex.charAt(1);
                                 break;
                             case 3:
-                                buf.append('0');
+                                buf[count++] = '0';
+                                buf[count++] = hex.charAt(0);
+                                buf[count++] = hex.charAt(1);
+                                buf[count++] = hex.charAt(2);
+                                break;
+                            case 4:
+                                buf[count++] = hex.charAt(0);
+                                buf[count++] = hex.charAt(1);
+                                buf[count++] = hex.charAt(2);
+                                buf[count++] = hex.charAt(3);
+                                break;
                         }
-                        buf.append(hex);
                     } else {
-                        buf.append(chr);
+                        buf[count++] = chr;
                     }
             }
         }
 
-        return buf.toString();
+        return new String(buf, 0, count);
     }
 
     /**

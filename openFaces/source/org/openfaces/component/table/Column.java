@@ -11,6 +11,9 @@
  */
 package org.openfaces.component.table;
 
+import org.openfaces.component.LazyProcessSupport;
+import org.openfaces.taglib.facelets.FaceletsExpressionCreator;
+import org.openfaces.taglib.internal.AbstractComponentTag;
 import org.openfaces.util.Components;
 import org.openfaces.util.ValueBindings;
 
@@ -43,6 +46,11 @@ public class Column extends BaseColumn implements ValueHolder {
     @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
+    }
+
+    public void setLazyProcessAttributes(FaceletsExpressionCreator faceletsExpressionCreator, AbstractComponentTag abstractComponentTag){
+        this.setFaceletsExpressionCreator(faceletsExpressionCreator);
+        this.setTag(abstractComponentTag);
     }
 
     @Override

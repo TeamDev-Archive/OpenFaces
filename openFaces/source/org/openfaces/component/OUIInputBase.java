@@ -11,6 +11,8 @@
  */
 package org.openfaces.component;
 
+import org.openfaces.taglib.facelets.FaceletsExpressionCreator;
+import org.openfaces.taglib.internal.AbstractComponentTag;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.FacesException;
@@ -60,6 +62,40 @@ public class OUIInputBase extends UIInput implements OUIInput, ClientBehaviorHol
     private String onkeypress;
     private String oncontextmenu;
     private String label;
+
+
+    private AbstractComponentTag tag;
+    private FaceletsExpressionCreator faceletsExpressionCreator;
+    private Boolean lazyProcess = false;
+
+
+    public void setTag(AbstractComponentTag tag) {
+        this.tag = tag;
+        lazyProcess = true;
+    }
+
+    public void setFaceletsExpressionCreator(FaceletsExpressionCreator faceletsExpressionCreator) {
+        this.faceletsExpressionCreator = faceletsExpressionCreator;
+        lazyProcess = true;
+    }
+
+    public Boolean isLazyProcess (){
+        return lazyProcess;
+    }
+
+    public void lazyComponentPropertiesSetter(){
+        if (!lazyProcess) return;
+        FacesContext facesContext = getFacesContext();
+        tag.setFacesContext(facesContext);
+        tag.setExpressionCreator(faceletsExpressionCreator);
+        try {
+            tag.setComponentProperties(facesContext, this);
+        } finally {
+            tag.removeFacesContext();
+        }
+        tag = null;
+        lazyProcess = false;
+    }
 
     public String getStyle() {
         return ValueBindings.get(this, "style", style);

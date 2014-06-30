@@ -22,6 +22,24 @@ public class BookList implements Serializable {
     private List<Book> books = new ArrayList<Book>();
     private Book selectedBook;
     private List list = new ArrayList();
+    private String sortColumnId;
+    private boolean sortAscending;
+
+    public String getSortColumnId() {
+        return sortColumnId;
+    }
+
+    public void setSortColumnId(String sortColumnId) {
+        this.sortColumnId = sortColumnId;
+    }
+
+    public boolean isSortAscending() {
+        return sortAscending;
+    }
+
+    public void setSortAscending(boolean sortAscending) {
+        this.sortAscending = sortAscending;
+    }
 
     public BookList() {
         books.add(new Book(
@@ -71,10 +89,20 @@ public class BookList implements Serializable {
                 "Jayson publishing house",
                 BookCategory.WEB_TECHNOLOGY
         ));
+
+        sortColumnId = "title";
+        sortAscending = false;
     }
 
     public List<Book> getBooks() {
+
         return books;
+    }
+
+    public void setBooks(List<Book> books) {
+
+
+        this.books = books;
     }
 
     public Book getSelectedBook() {

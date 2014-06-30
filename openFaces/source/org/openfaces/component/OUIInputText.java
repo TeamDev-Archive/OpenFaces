@@ -11,6 +11,8 @@
  */
 package org.openfaces.component;
 
+import org.openfaces.taglib.facelets.FaceletsExpressionCreator;
+import org.openfaces.taglib.internal.AbstractComponentTag;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.context.FacesContext;
@@ -18,7 +20,7 @@ import javax.faces.context.FacesContext;
 /**
  * @author Dmitry Pikhulya
  */
-public class OUIInputText extends OUIInputBase {
+public class OUIInputText extends OUIInputBase implements LazyProcessSupport {
     // todo: add "lang" attribute as it is a standard attribute for JSF input components
     // todo: add "dir" attribute as it is a standard attribute for JSF input components
     // todo: add "onselect" attribute as it is a standard attribute for JSF input components
@@ -29,6 +31,11 @@ public class OUIInputText extends OUIInputBase {
     private String tabindex;
     private String title;
     private Boolean readonly;
+
+    public void setLazyProcessAttributes(FaceletsExpressionCreator faceletsExpressionCreator, AbstractComponentTag abstractComponentTag){
+        this.setFaceletsExpressionCreator(faceletsExpressionCreator);
+        this.setTag(abstractComponentTag);
+    }
 
     public String getPromptText() {
         return ValueBindings.get(this, "promptText", promptText);

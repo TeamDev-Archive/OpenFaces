@@ -1,6 +1,6 @@
 /*
  * OpenFaces - JSF Component Library 3.0
- * Copyright (C) 2007-2012, TeamDev Ltd.
+ * Copyright (C) 2007-2013, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
  * the GNU Lesser General Public License Version 2.1 (the "LGPL" License).
@@ -10,23 +10,25 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 O$.DateChooser = {
-  _init: function(dateChooserId,
-                  dateFormat,
-                  calendarDate,
-                  localeStr,
-                  valueChangeHandler) {
+  _init:function (dateChooserId, dateFormat, dateBlank, mask, calendarDate, localeStr, valueChangeHandler) {
     var dc = O$.initComponent(dateChooserId, null, {
-      _isDateChooser: true,
-      _calendar: O$(dateChooserId + "--popup--calendar"),
+      _isDateChooser:true,
+      _calendar:O$(dateChooserId + "--popup--calendar"),
 
-      _dateFormat: dateFormat,
-      _localeStr: localeStr,
+      _dateFormat:dateFormat,
+      _localeStr:localeStr,
 
-      _valueChangeHandler: valueChangeHandler
+      _valueChangeHandler:valueChangeHandler
     });
+    if (dateBlank) {
+      var id = dc._field.id;
+            O$.MaskEdit._init(id, mask, dateBlank);
+      var maskEdit = document.getElementById(id);
+
+    }
 
     dc._field._oldValueHolder = dc._initialText;
-    dc._field.onchange = function(e) {
+    dc._field.onchange = function (e) {
       if (!e)
         e = event;
       e.cancelBubble = true;
@@ -38,18 +40,19 @@ O$.DateChooser = {
     if (valueChangeHandler) {
       dc._prevOnchange = dc.onchange;
       eval("dc._invokeChangeHandler = function(event) {" + valueChangeHandler + "}");
-      dc.onchange = function(e) {
+      dc.onchange = function (e) {
         if (e && e.target && e.target == dc._field) // works everywhere except IE
           return;
         if (this._prevOnchange)
           this._prevOnchange();
         dc._invokeChangeHandler(e);
+
       };
     }
 
     // Sometimes date chooser may be placed into container with "display: none;".
     // We have to catch the moment when container becomes to displayable one and set the date chooser width
-    var timeoutID = setTimeout(function() {
+    var timeoutID = setTimeout(function () {
       O$.DateChooser._checkCalendarWidth(dc);
     }, 100);
 
@@ -61,7 +64,7 @@ O$.DateChooser = {
       O$.DateChooser._changeCalendarVisibility(dc);
     };
 
-    dc._dateChangeListener = function(date) {
+    dc._dateChangeListener = function (date) {
       if (dc._isSetDateFromInput) return;
       var popup = dc._popup;
       if (O$.validateById != undefined) {
@@ -92,7 +95,7 @@ O$.DateChooser = {
 
     var eventName = (O$.isSafariOnMac() || O$.isOpera() || O$.isMozillaFF()) ? "onkeypress" : "onkeydown";
     dc._prevKeyHandler_DC = dc[eventName];
-    dc[eventName] = function(evt) {
+    dc[eventName] = function (evt) {
       var e = evt ? evt : window.event;
       dc._keyDownEvent = e;
       switch (e.keyCode) {
@@ -108,7 +111,7 @@ O$.DateChooser = {
 
     var cal = dc._calendar;
     cal._prevKeyHandler_DC = cal[eventName];
-    cal[eventName] = function(evt) {
+    cal[eventName] = function (evt) {
       var e = evt ? evt : window.event;
       dc._keyDownEvent = e;
       switch (e.keyCode) {
@@ -126,11 +129,11 @@ O$.DateChooser = {
 
     cal._addDateChangeListener(dc._dateChangeListener);
 
-    dc.validateInputAndUpdateCalendar = function() {
+    dc.validateInputAndUpdateCalendar = function () {
       var date;
       if (O$.validateById != undefined) {
         var converters = O$.getValidators(dc);
-        for (var i = 0; i < converters.length; i ++) {
+        for (var i = 0; i < converters.length; i++) {
           var v = converters[i];
           if (v instanceof O$._DateTimeConverterValidator) {
             if (dc._of_messages) {
@@ -208,6 +211,22 @@ O$.DateChooser = {
 
     // Related to JSFC-2042. Adjust date for calendar inner component.
     if (calendarDate) {
+
+      if (maskEdit) {
+        maskEdit._maskValue = [];
+        for (var i = 0;i<calendarDate.length;i++) {
+          maskEdit._maskValue.push(calendarDate[i]);
+        }
+        maskEdit._cursorPosition = calendarDate.length - 1;
+        var bufCharCalendarDate;
+        for (var i = 0; i < 2; i++) {
+          bufCharCalendarDate = maskEdit._maskValue[0 + i];
+          maskEdit._maskValue[0 + i] = maskEdit._maskValue[3 + i];
+          maskEdit._maskValue[3 + i] = bufCharCalendarDate;
+        }
+      }
+
+
       cal._valueDateHolder.value = calendarDate;
       var dtf = O$.getDateTimeFormatObject(cal._localeStr);
       if (!dtf) return;
@@ -225,7 +244,7 @@ O$.DateChooser = {
     };
   },
 
-  _changeCalendarVisibility: function(dc) {
+  _changeCalendarVisibility:function (dc) {
     var popup = dc._popup;
     var calendar = dc._calendar;
     if (popup.isVisible()) {
@@ -246,7 +265,7 @@ O$.DateChooser = {
     }
   },
 
-  _updateDCField: function(dc, date) {
+  _updateDCField:function (dc, date) {
     var field = dc._field;
     if (date) {
       var dtf = O$.getDateTimeFormatObject(dc._localeStr);
@@ -284,17 +303,17 @@ O$.DateChooser = {
     }
   },
 
-  _getDate: function(dcId) {
+  _getDate:function (dcId) {
     var dc = O$(dcId);
     return O$.Calendar._getSelectedDate(dc._calendar.id);
   },
 
-  _setDate: function(dcId, date) {
+  _setDate:function (dcId, date) {
     var dc = O$(dcId);
     O$.Calendar._setSelectedDate(dc._calendar.id, date);
   },
 
-  _checkCalendarWidth: function(dc) {
+  _checkCalendarWidth:function (dc) {
     var isElementInDocument = O$.isElementPresentInDocument(dc);
     if (!isElementInDocument) {
       clearTimeout(O$._dateChooserTimerID);
@@ -324,7 +343,7 @@ O$.DateChooser = {
       dc.style.visibility = "visible";
       O$.repaintAreaForOpera(dc, true);
     } else {
-      setTimeout(function() {
+      setTimeout(function () {
         O$.DateChooser._checkCalendarWidth(dc);
       }, 100);
     }

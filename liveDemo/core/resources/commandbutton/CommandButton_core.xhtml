@@ -7,14 +7,15 @@
 
     <h:panelGrid id="input" columns="1" style="margin-bottom: 5px;" cellspacing="0" cellpadding="0" border="0">
       <h:panelGroup>
-        <div style="padding-bottom: 2px"><o:inputText value="#{requestScope['firstName']}" promptText="First name"/></div>
+        <div style="padding-bottom: 2px"><o:inputText value="#{requestScope['firstName']}" promptText="First name"/>
+        </div>
         <div><o:inputText value="#{requestScope['lastName']}" promptText="Last name"/></div>
       </h:panelGroup>
     </h:panelGrid>
     <o:commandButton value="Standard Submit"/>
     &#160;
     <o:commandButton value="Ajax Submit" execute="input" render="output"/>
-    <div style="margin-top: 5px; margin-bottom: 5px;">
+        <div style="margin-top: 5px; margin-bottom: 5px;">
       <h:outputText id="output" value="Full name: #{requestScope['firstName']} #{requestScope['lastName']}"/>
     </div>
 
@@ -132,7 +133,8 @@
         &lt;h:commandButton> tag and behaves in the same way if no additional settings are specified.
       </li>
       <li>
-        <strong>Ajax support</strong> - The <span class="codeSnippet">render</span> and <span class="codeSnippet">execute</span>
+        <strong>Ajax support</strong> - The <span class="codeSnippet">render</span> and <span
+              class="codeSnippet">execute</span>
         attributes are identical to those of the <span class="codeSnippet">&lt;o:ajax></span> tag and allow turning
         the button into the Ajax-based one as demonstrated in the "Ajax Submit" button above.
       </li>

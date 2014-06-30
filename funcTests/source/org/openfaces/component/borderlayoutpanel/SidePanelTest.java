@@ -11,6 +11,7 @@
  */
 package org.openfaces.component.borderlayoutpanel;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.seleniuminspector.openfaces.SidePanelInspector;
@@ -128,7 +129,8 @@ public class SidePanelTest extends OpenFacesTestCase {
         sidePanel.assertExpressionEquals("_size", "100%");
     }
 
-     @Test
+    @Ignore
+    @Test
     public void testBoxLayoutModel() {
         testAppFunctionalPage("/components/borderlayoutpanel/sidePanelft.jsf");
 

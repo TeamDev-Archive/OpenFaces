@@ -14,31 +14,42 @@ O$.Window = {
   STATE_NORMAL: "normal",
   STATE_MAXIMIZED: "maximized",
   STATE_MINIMIZED: "minimized",
+  parent: "",
+  _init: function (windowId, resizable, draggableByContent, minWidth, minHeight, desktopElementId, parentId) {
 
-  _init: function(windowId, resizable, draggableByContent, minWidth, minHeight, desktopElementId) {
     var win = O$(windowId);
+    if (!parentId) {
+      O$.Window._isRealParent = false;
+    } else {
+      O$.Window._isRealParent = true;
+    }
+    O$.Window.parent = O$.getParentById(windowId, parentId) || O$.getParentNode(win, "form") || document.body;
+
     if (win._autosizing == "on" && resizable) {
       resizable = false;
     }
-    var super_setSize = win._setSize;
+
     O$.initComponent(windowId, null, {
-      _form: O$.getParentNode(win, "form"),
-      _draggableByContent: draggableByContent,
-      _minWidth: O$.calculateNumericCSSValue(minWidth),
-      _minHeight: O$.calculateNumericCSSValue(minHeight),
-      _table: O$(windowId + "::table"),
-      _content: O$(windowId + "::content"),
-      _caption: O$(windowId + "::caption"),
-      _captionContent: O$(windowId + "::caption_content"),
-      _contentRow: O$(windowId + "::contentRow"),
-      _footerRow: O$(windowId + "::footerRow"),
-      _desktopElement: desktopElementId ? O$(desktopElementId) : null,
+      _form:O$.getParentNode(win, "form"),
+      _draggableByContent:draggableByContent,
+      _minWidth:O$.calculateNumericCSSValue(minWidth),
+      _minHeight:O$.calculateNumericCSSValue(minHeight),
+      _table:O$(windowId + "::table"),
+      _content:O$(windowId + "::content"),
 
-      _state: O$.Window.STATE_NORMAL,
-      _declaredResizable: resizable,
+      _caption:O$(windowId + "::caption"),
+      _captionContent:O$(windowId + "::caption_content"),
+      _contentRow:O$(windowId + "::contentRow"),
+      _footerRow:O$(windowId + "::footerRow"),
+      _desktopElement:desktopElementId ? O$(desktopElementId) : null,
 
-      _resizable: false,
-      _setResizable: function(resizable) {
+      _state:O$.Window.STATE_NORMAL,
+      _declaredResizable:resizable,
+
+      _resizable:false,
+      _parentId:O$.Window.parent.id,
+      _isRealParent:O$.Window._isRealParent,
+      _setResizable:function (resizable) {
         if (win._resizable == resizable)
           return;
         win._resizable = resizable;
@@ -48,22 +59,22 @@ O$.Window = {
           O$.Window._removeResizers(win);
       },
 
-      _getMinSize: function() {
-        return {width: this._minWidth, height: this._minHeight};
+      _getMinSize:function () {
+        return {width:this._minWidth, height:this._minHeight};
       },
 
-      _getAutosizingArea: function() {
+      _getAutosizingArea:function () {
         return this._content;
       },
 
 
-      _beforeAutosizing: function() {
+      _beforeAutosizing:function () {
         var autosizingMargins = this._getAutosizingMargins();
 
         this._autosizing = {
-          prevWidth: this.style.width,
-          prevLeft: this.style.left,
-          prevTop: this.style.top
+          prevWidth:this.style.width,
+          prevLeft:this.style.left,
+          prevTop:this.style.top
         };
 
         this.style.width = "0";
@@ -72,54 +83,52 @@ O$.Window = {
           this._containmentRect = this._getContainmentRect(this._containment || "document");
 
         this.style.width = this._containmentRect.width - autosizingMargins.width + "px";
-        O$.setElementPos(this, {x: this._containmentRect.x, y: this._containmentRect.y});
+        O$.setElementPos(this, {x:this._containmentRect.x, y:this._containmentRect.y});
       },
 
-      _afterAutosizing: function() {
+      _afterAutosizing:function () {
         this.style.width = this._autosizing.prevWidth;
         this.style.left = this._autosizing.prevLeft;
         this.style.top = this._autosizing.prevTop;
         this._autosizing = null;
       },
 
-      _getAutosizingBorders: function(area) {
+      _getAutosizingBorders:function (area) {
         var borderLeft = O$.getNumericElementStyle(area, "border-left-width", true);
         var borderRight = O$.getNumericElementStyle(area, "border-right-width", true);
         var borderTop = O$.getNumericElementStyle(area, "border-top-width", true);
         var borderBottom = O$.getNumericElementStyle(area, "border-bottom-width", true);
 
-        return {width: borderLeft + borderRight, height: borderTop + borderBottom};
+        return {width:borderLeft + borderRight, height:borderTop + borderBottom};
       },
 
-      _getAutosizingMargins: function() {
+      _getAutosizingMargins:function () {
         var captionHeight = O$.getElementSize(this._caption).height;
         var autosizingBorders = this._getAutosizingBorders(this);
-        return {width: autosizingBorders.width, height: autosizingBorders.height + captionHeight};
+        return {width:autosizingBorders.width, height:autosizingBorders.height + captionHeight};
       },
 
-      _getAutosizingContentBorders: function() {
+      _getAutosizingContentBorders:function () {
         var autosizingBorders = this._getAutosizingBorders(this._content);
-        return {width: autosizingBorders.width, height: autosizingBorders.height};
+        return {width:autosizingBorders.width, height:autosizingBorders.height};
       },
 
-      _getAutosizingContentPaddings: function() {
+      _getAutosizingContentPaddings:function () {
         var area = this._content;
         var paddingRight = O$.getNumericElementStyle(area, "padding-right", true);
         var paddingLeft = O$.getNumericElementStyle(area, "padding-left", true);
         var paddingTop = O$.getNumericElementStyle(area, "padding-top", true);
         var paddingBottom = O$.getNumericElementStyle(area, "padding-bottom", true);
 
-        return {width: paddingLeft + paddingRight, height: paddingTop + paddingBottom};
+        return {width:paddingLeft + paddingRight, height:paddingTop + paddingBottom};
       },
 
-      _autosizingAllowed: function() {
+      _autosizingAllowed:function () {
         return this.isNormal();
       },
 
-      _setSize: function(width, height) {
-        super_setSize.call(this, width, height);
-
-        O$.setElementSize(win, {width: width, height: height});
+      _setSize:function (width, height) {
+        O$.setElementSize(win, {width:width, height:height});
         O$.setHiddenField(win, windowId + "::size", width + "," + height);
         if (!win._table._widthInitialized) {
           win._table.style.width = "100%";
@@ -134,7 +143,7 @@ O$.Window = {
         }
       },
 
-      _setRect: function(rect) {
+      _setRect:function (rect) {
         this._rect = rect;
         O$.setElementBorderRectangle(win, rect);
         this._setPos(rect.x, rect.y);
@@ -143,9 +152,9 @@ O$.Window = {
           this._updateResizersPos();
       },
 
-      _afterShow: function() {
+      _afterShow:function () {
         if (win._postponedInitialization) {
-          O$.waitForCondition(function() {
+          O$.waitForCondition(function () {
             return !win._postponedInitialization;
           }, win._afterShow);
           return;
@@ -157,17 +166,17 @@ O$.Window = {
         O$.correctElementZIndex(win, win._form, 100);
       },
 
-      _afterHide: function() {
+      _afterHide:function () {
         if (resizable)
           this._updateResizersPos();
       },
 
-      _positionChanged: function() {
+      _positionChanged:function () {
         if (resizable)
           this._updateResizersPos();
       },
 
-      _updateContentPos: function() {
+      _updateContentPos:function () {
         if (O$.getElementStyle(this._content, "position", true) != "absolute")
           return; // todo: the case for Confirmation -- unify implementation if possible
         var captionHeight = O$.getElementSize(this._caption).height;
@@ -182,15 +191,15 @@ O$.Window = {
                 captionHeight,
                 this._rect.width - borderLeft - borderRight,
                 this._rect.height - borderTop - borderBottom - captionHeight
-                ));
+        ));
         this._content.style.visibility = "visible";
       },
 
-      _sizeChanged: function() {
+      _sizeChanged:function () {
         this._updateContentPos();
       },
 
-      _checkScrollersVisibility: function() {
+      _checkScrollersVisibility:function () {
         // Remove scrollers that might have appeared when the content actually fits without scroll-bars.
         // Simply removing scroll-bars might reveal more space and the content might fit, which we're addressing here.
         // This is for example the case for autosizable windows in Chrome when minimizing and then restoring them.
@@ -198,24 +207,24 @@ O$.Window = {
           this._content._originalOverflow = this._content.style.overflow;
         this._content.style.overflow = "hidden";
         var win = this;
-        setTimeout(function() {
+        setTimeout(function () {
           win._content.style.overflow = win._content._originalOverflow;
         }, 1000);
       },
 
-      isMinimized: function() {
+      isMinimized:function () {
         return this._state == O$.Window.STATE_MINIMIZED;
       },
 
-      isNormal: function() {
+      isNormal:function () {
         return this._state == O$.Window.STATE_NORMAL;
       },
 
-      isMaximized: function() {
+      isMaximized:function () {
         return this._state == O$.Window.STATE_MAXIMIZED;
       },
 
-      minimize: function() {
+      minimize:function () {
         if (this._state == O$.Window.STATE_MINIMIZED)
           return;
         this.restore();
@@ -235,7 +244,7 @@ O$.Window = {
         this._setRect(new O$.Rectangle(rect.x, rect.y, rect.width, newHeight));
       },
 
-      maximize: function() {
+      maximize:function () {
         if (this._state == O$.Window.STATE_MAXIMIZED)
           return;
         this.restore();
@@ -261,7 +270,7 @@ O$.Window = {
         this._setRect(rect);
       },
 
-      restore: function() {
+      restore:function () {
         if (this._state == O$.Window.STATE_NORMAL)
           return;
         if (this._state == O$.Window.STATE_MINIMIZED) {
@@ -284,7 +293,7 @@ O$.Window = {
         this._checkScrollersVisibility();
       },
 
-      _setState: function(state) {
+      _setState:function (state) {
         this._state = state;
         if (!this._stateChangeListeners)
           return;
@@ -306,7 +315,7 @@ O$.Window = {
     if (draggable && !draggableByContent) {
       win._draggable = false;
       if (win._caption) {
-        win._caption.onmousedown = function(e) {
+        win._caption.onmousedown = function (e) {
           if (win._draggingDisabled)
             return;
           O$._enableIFrameFix();
@@ -319,23 +328,22 @@ O$.Window = {
     O$.Window._processCaptionStyle(win);
 
     if (resizable)
-      win._caption.ondblclick = function() {
+      win._caption.ondblclick = function () {
         if (!win.isNormal())
           win.restore();
         else
           win.maximize();
       };
-
   },
 
-  _addStateChangeListener: function(win, listener) {
+  _addStateChangeListener: function (win, listener) {
     if (!win._stateChangeListeners)
       win._stateChangeListeners = [];
     win._stateChangeListeners.push(listener);
   },
 
 
-  _initCloseButton: function(clientId) {
+  _initCloseButton: function (clientId) {
     O$._initCaptionButton.apply(null, arguments);
     var btn = O$(clientId);
     O$.addEventHandler(btn, "click", function () {
@@ -344,10 +352,10 @@ O$.Window = {
     });
   },
 
-  _initMinimizeButton: function(clientId) {
+  _initMinimizeButton: function (clientId) {
     O$._initToggleCaptionButton.apply(null, arguments);
     var btn = O$(clientId);
-    btn._addToggleStateChangeListener(function(toggled) {
+    btn._addToggleStateChangeListener(function (toggled) {
       if (toggled) {
         btn._container.minimize();
       }
@@ -355,35 +363,35 @@ O$.Window = {
         btn._container.restore();
       }
     });
-    O$.Window._addStateChangeListener(btn._container, function(win) {
+    O$.Window._addStateChangeListener(btn._container, function (win) {
       btn.setToggleState(win.isMinimized(), true);
     });
   },
 
-  _initMaximizeButton: function(clientId) {
+  _initMaximizeButton: function (clientId) {
     O$._initToggleCaptionButton.apply(null, arguments);
     var btn = O$(clientId);
-    btn._addToggleStateChangeListener(function(toggled) {
+    btn._addToggleStateChangeListener(function (toggled) {
       if (toggled)
         btn._container.maximize();
       else
         btn._container.restore();
     });
-    O$.Window._addStateChangeListener(btn._container, function(win) {
+    O$.Window._addStateChangeListener(btn._container, function (win) {
       btn.setToggleState(win.isMinimized() || win.isMaximized(), true);
       btn.style.display = win.isMinimized() ? "none" : "";
     });
   },
 
 
-  _createResizers: function(win) {
+  _createResizers: function (win) {
     if (O$.isExplorer()) {
       if (!win._initScheduled) {
         win._initScheduled = true;
         win._postponedInitialization = true;
         var initArgs = arguments;
         // postpone initialization to avoid IE failure during page loading
-        O$.addLoadEvent(function() {
+        O$.addLoadEvent(function () {
           O$.Window._createResizers.apply(null, initArgs);
         });
         return;
@@ -395,16 +403,14 @@ O$.Window = {
     var cornerLength = O$.calculateNumericCSSValue("20px");
     var halfResizerWidth = resizerWidth / 2;
 
-    function createResizer(resizerRectFromWindowRect, horizontal,
-                           resizeSide, resizeCorner1, resizeCorner2,
-                           cursor, corner1Cursor, corner2Cursor) {
+    function createResizer(resizerRectFromWindowRect, horizontal, resizeSide, resizeCorner1, resizeCorner2, cursor, corner1Cursor, corner2Cursor) {
       var resizer = document.createElement("div");
       resizer.style.position = "absolute";
       resizer.style.cursor = cursor;
       O$.fixIEEventsForTransparentLayer(resizer);
       win.parentNode.appendChild(resizer);
       resizer._resizeFunction = resizeSide;
-      resizer._updatePos = function(windowRect) {
+      resizer._updatePos = function (windowRect) {
         if (!windowRect)
           windowRect = O$.getElementBorderRectangle(win);
         var rect = resizerRectFromWindowRect(windowRect);
@@ -417,12 +423,12 @@ O$.Window = {
         O$.startDragging(e, this);
       };
 
-      resizer.setPosition = function(x, y, dx, dy) {
+      resizer.setPosition = function (x, y, dx, dy) {
         var rect = O$.getElementBorderRectangle(win, true);
         this._resizeFunction(rect, dx, dy);
         win._setRect(rect);
       };
-      resizer.onmousemove = function(e) {
+      resizer.onmousemove = function (e) {
         if (this._draggingInProgress)
           return;
         var eventPoint = O$.getEventPoint(e, win);
@@ -434,10 +440,10 @@ O$.Window = {
         if (coord > range - adjustedCornerLength) {
           this.style.cursor = corner2Cursor;
           this._resizeFunction = resizeCorner2;
-          this._getPositionLeft = function() {
+          this._getPositionLeft = function () {
             return this._rect.getMaxX();
           };
-          this._getPositionTop = function() {
+          this._getPositionTop = function () {
             return this._rect.getMaxY();
           };
         } else if (coord < adjustedCornerLength) {
@@ -454,64 +460,64 @@ O$.Window = {
       return resizer;
     }
 
-    win._resizeTopEdge = function(rect, dx, dy) {
+    win._resizeTopEdge = function (rect, dx, dy) {
       dy = Math.min(dy, rect.height - win._minHeight);
       rect.y += dy;
       rect.height -= dy;
     };
-    win._resizeBottomEdge = function(rect, dx, dy) {
+    win._resizeBottomEdge = function (rect, dx, dy) {
       dy = Math.max(dy, win._minHeight - rect.height);
       rect.height += dy;
     };
-    win._resizeLeftEdge = function(rect, dx/*, dy*/) {
+    win._resizeLeftEdge = function (rect, dx/*, dy*/) {
       dx = Math.min(dx, rect.width - win._minWidth);
       rect.x += dx;
       rect.width -= dx;
     };
-    win._resizeRightEdge = function(rect, dx/*, dy*/) {
+    win._resizeRightEdge = function (rect, dx/*, dy*/) {
       dx = Math.max(dx, win._minWidth - rect.width);
       rect.width += dx;
     };
-    win._resizeTopLeftCorner = function(rect, dx, dy) {
+    win._resizeTopLeftCorner = function (rect, dx, dy) {
       win._resizeTopEdge(rect, dx, dy);
       win._resizeLeftEdge(rect, dx, dy);
     };
-    win._resizeTopRightCorner = function(rect, dx, dy) {
+    win._resizeTopRightCorner = function (rect, dx, dy) {
       win._resizeTopEdge(rect, dx, dy);
       win._resizeRightEdge(rect, dx, dy);
     };
-    win._resizeBottomLeftCorner = function(rect, dx, dy) {
+    win._resizeBottomLeftCorner = function (rect, dx, dy) {
       win._resizeBottomEdge(rect, dx, dy);
       win._resizeLeftEdge(rect, dx, dy);
     };
-    win._resizeBottomRightCorner = function(rect, dx, dy) {
+    win._resizeBottomRightCorner = function (rect, dx, dy) {
       win._resizeBottomEdge(rect, dx, dy);
       win._resizeRightEdge(rect, dx, dy);
     };
 
 
-    var topResizer = createResizer(function(rect) {
+    var topResizer = createResizer(function (rect) {
       return new O$.Rectangle(rect.x - halfResizerWidth, rect.y - halfResizerWidth, rect.width + resizerWidth, resizerWidth);
     }, true, win._resizeTopEdge, win._resizeTopLeftCorner, win._resizeTopRightCorner, "n-resize", "nw-resize", "ne-resize");
 
-    var bottomResizer = createResizer(function(rect) {
+    var bottomResizer = createResizer(function (rect) {
       return new O$.Rectangle(rect.x - halfResizerWidth, rect.getMaxY() - halfResizerWidth, rect.width + resizerWidth, resizerWidth);
     }, true, win._resizeBottomEdge, win._resizeBottomLeftCorner, win._resizeBottomRightCorner, "s-resize", "sw-resize", "se-resize");
 
-    var leftResizer = createResizer(function(rect) {
+    var leftResizer = createResizer(function (rect) {
       return new O$.Rectangle(rect.x - halfResizerWidth, rect.y + halfResizerWidth, resizerWidth, rect.height - resizerWidth);
     }, false, win._resizeLeftEdge, win._resizeTopLeftCorner, win._resizeBottomLeftCorner, "w-resize", "nw-resize", "sw-resize");
 
-    var rightResizer = createResizer(function(rect) {
+    var rightResizer = createResizer(function (rect) {
       return new O$.Rectangle(rect.getMaxX() - halfResizerWidth, rect.y + halfResizerWidth, resizerWidth, rect.height - resizerWidth);
     }, false, win._resizeRightEdge, win._resizeTopRightCorner, win._resizeBottomRightCorner, "e-resize", "ne-resize", "se-resize");
 
     win._resizers = [topResizer, bottomResizer, leftResizer, rightResizer];
-    win._updateResizersPos = function() {
+    win._updateResizersPos = function () {
       var windowVisible = win.isVisible();
       var resizerDisplay = windowVisible ? "block" : "none";
       var windowRect = O$.getElementBorderRectangle(win, true);
-      win._resizers.forEach(function(resizer) {
+      win._resizers.forEach(function (resizer) {
         resizer.style.display = resizerDisplay;
         resizer._updatePos(windowRect);
         O$.correctElementZIndex(resizer, win);
@@ -520,14 +526,14 @@ O$.Window = {
     win._updateResizersPos();
   },
 
-  _removeResizers: function(win) {
-    win._resizers.forEach(function(r) {
+  _removeResizers: function (win) {
+    win._resizers.forEach(function (r) {
       r.parentNode.removeChild(r);
     });
     win._resizers = [];
   },
 
-  _processCaptionStyle: function(win) {
+  _processCaptionStyle: function (win) {
     if (!win._caption)
       return;
     var paddings = O$.getElementStyle(win._caption, ["padding-left", "padding-right", "padding-top", "padding-bottom"]);
@@ -536,6 +542,6 @@ O$.Window = {
     win._captionContent.style.paddingTop = paddings.paddingTop;
     win._captionContent.style.paddingBottom = paddings.paddingBottom;
     win._caption.style.paddingLeft = win._caption.style.paddingRight =
-                                     win._caption.style.paddingTop = win._caption.style.paddingBottom = "0";
+            win._caption.style.paddingTop = win._caption.style.paddingBottom = "0";
   }
 };

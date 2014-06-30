@@ -23,13 +23,6 @@ import java.io.IOException;
 public class RemoveFromGroupingMenuItemRenderer extends ColumnMenuItemRenderer {
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
-        MenuItem menuItem = (MenuItem) component;
-        if (menuItem.getValue() == null)
-            menuItem.setValue("Remove from Grouping");
-        menuItem.setOnclick(new ScriptBuilder().functionCall("O$.ColumnMenu._removeFromGrouping",
-                getTable("<o:sortDescendingMenuItem>", menuItem)).toString());
-        if (menuItem.getIconUrl() == null)
-            menuItem.setIconUrl(Resources.internalURL(context, "table/removeFromGrouping.png"));
-        super.encodeBegin(context, component);
+        throw new RuntimeException("ColumnMenuItemRenderer doesn't must be called by itself");
     }
 }

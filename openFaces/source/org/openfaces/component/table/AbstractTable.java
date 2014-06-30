@@ -11,6 +11,7 @@
  */
 package org.openfaces.component.table;
 
+import org.apache.commons.collections.ListUtils;
 import org.openfaces.component.ComponentWithExternalParts;
 import org.openfaces.component.FilterableComponent;
 import org.openfaces.component.OUIData;
@@ -178,6 +179,11 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     public AbstractTable() {
         super.setUiDataValue(new TableDataModel(this));
+    }
+
+    @Override
+    public void lazyComponentPropertiesSetter(){
+        super.lazyComponentPropertiesSetter();
     }
 
     @Override
@@ -573,6 +579,10 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
             cachedRenderedColumns = Collections.unmodifiableList(calculateRenderedColumns());
         }
         return cachedRenderedColumns;
+    }
+
+    public  void clearRenderedColumnCache(){
+        cachedRenderedColumns = null;
     }
 
     private List<BaseColumn> calculateRenderedColumns() {
@@ -1046,6 +1056,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         this.sortableHeaderRolloverClass = sortableHeaderRolloverClass;
     }
 
+
     @Override
     protected List<UIComponent> getExtensionComponents() {
 
@@ -1240,10 +1251,10 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     @Override
     public void processDecodes(FacesContext context) {
-        invokeBeforeProcessDecodes(context);
-        super.processDecodes(context);
         if (!isRendered())
             return;
+        invokeBeforeProcessDecodes(context);
+        super.processDecodes(context);
         if (getRowIndex() != -1)
             setRowIndex(-1);
     }
@@ -1273,14 +1284,16 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         processModelUpdates(context);
 
         processModelDependentUpdates(context);
-
         ValueExpression sortColumnIdExpression = getValueExpression("sortColumnId");
+        ValueExpression sortAscendingExpression = getValueExpression("sortAscending");
+
         ELContext elContext = context.getELContext();
         if (sortColumnIdExpression != null)
             sortColumnIdExpression.setValue(elContext, getSortColumnId());
-        ValueExpression sortAscendingExpression = getValueExpression("sortAscending");
+
         if (sortAscendingExpression != null)
             sortAscendingExpression.setValue(elContext, isSortAscending());
+
 
         List<Filter> filters = getFilters();
         for (Filter filter : filters) {
@@ -1462,6 +1475,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
             sortingRules = null;
         setSortingRules(sortingRules);
     }
+
 
     public int getSortColumnIndex() {
         String sortColumnId = getSortColumnId();

@@ -31,6 +31,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ColumnVisibilityMenuRenderer extends PopupMenuRenderer {
+
+
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ColumnVisibilityMenu cvm = (ColumnVisibilityMenu) component;
@@ -39,16 +41,19 @@ public class ColumnVisibilityMenuRenderer extends PopupMenuRenderer {
     }
 
     private void updateMenuItems(FacesContext context, ColumnVisibilityMenu cvm) {
-        List<UIComponent> menuChildren = cvm.getChildren();
-        menuChildren.clear();
+        //List<UIComponent> menuChildren = cvm.getChildren();
+//        menuChildren.clear();
         AbstractTable table = getTable(cvm);
+        cvm.setTableId(table.getClientId());
         cvm.getAttributes().put(PopupMenuRenderer.ATTR_DEFAULT_INDENT_CLASS, "o_popup_menu_indent o_columnVisibilityMenuIndent");
-
+        List<MenuItem> preloadedItems = new ArrayList<MenuItem>();
         List<BaseColumn> visibleColumns = table.getRenderedColumns();
         List<BaseColumn> allColumns = table.getAllColumns();
+        final List<String> allColumnsIds = new ArrayList<String>(allColumns.size());
         for (int i = 0, count = allColumns.size(); i < count; i++) {
             BaseColumn column = allColumns.get(i);
-            MenuItem menuItem = Components.createComponent(context, MenuItem.COMPONENT_TYPE, MenuItem.class, cvm, "col" + i);
+            MenuItem menuItem = new MenuItem();
+            menuItem.setId(cvm.getId() + Rendering.SERVER_ID_SUFFIX_SEPARATOR +  "col" + i);
             menuItem.setValue(column.getColumnHeader());
             boolean columnVisible = visibleColumns.contains(column);
             menuItem.setIconUrl(Resources.internalURL(context,
@@ -56,8 +61,11 @@ public class ColumnVisibilityMenuRenderer extends PopupMenuRenderer {
                             ? SelectBooleanCheckboxImageManager.DEFAULT_SELECTED_IMAGE
                             : SelectBooleanCheckboxImageManager.DEFAULT_UNSELECTED_IMAGE
             ));
-            menuChildren.add(menuItem);
+            preloadedItems.add(menuItem);
+            allColumnsIds.add(column.getId());
         }
+        cvm.setPreloadedItems(preloadedItems);
+        cvm.setAllColumnsIds(allColumnsIds);
     }
 
     private AbstractTable getTable(ColumnVisibilityMenu cvm) {
@@ -75,15 +83,12 @@ public class ColumnVisibilityMenuRenderer extends PopupMenuRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         super.encodeEnd(context, component);
         ColumnVisibilityMenu cvm = (ColumnVisibilityMenu) component;
-        AbstractTable table = getTable(cvm);
-        final List<BaseColumn> allColumns = table.getAllColumns();
-        final List<String> allColumnsIds = new ArrayList<String>(allColumns.size());
-        for (BaseColumn each : allColumns) {
-            allColumnsIds.add(each.getId());
-        }
         Rendering.renderInitScript(context, new ScriptBuilder().initScript(context,
-                component, "O$.ColumnMenu._initColumnVisibilityMenu", table, allColumnsIds),
+                component, "O$.ColumnMenu._initColumnVisibilityMenu", cvm.getTableId(), cvm.getAllColumnsIds()),
                 AbstractTableRenderer.getTableJsURL(context));
-        cvm.getChildren().clear();
+
     }
+
+
+
 }

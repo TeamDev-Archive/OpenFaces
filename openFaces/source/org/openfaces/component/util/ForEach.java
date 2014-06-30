@@ -46,6 +46,7 @@ public class ForEach extends OUIObjectIteratorBase {
 
     private Object itemsValues;
     private Object items;
+    private Object itemsValues;
     private DataModel data;
     private Integer index;
     private Integer beginIndex;
@@ -313,6 +314,10 @@ public class ForEach extends OUIObjectIteratorBase {
             }
         }
         this.setIndex(null);
+    }
+
+    public void cleanData(){
+        itemsValues = null;
     }
 
     @Override
