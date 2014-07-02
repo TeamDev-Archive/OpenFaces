@@ -2,11 +2,7 @@
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:o="http://openfaces.org/"
         id="Demo" class="emptyDescription">
-  <script type="text/javascript" >
-    String.prototype.boolean = function() {
-      return "true" == this;
-    };
-  </script>
+
   <o:focus focusedComponentId="dcDefault"/>
 
   <div id="Description">
@@ -64,7 +60,6 @@
               <h:panelGroup styleClass="field_title"><h:outputText value="MM/dd/yyyy"/></h:panelGroup>
               <o:dateChooser id="dcMMdd"
                              pattern="MM/dd/yyyy"
-                             blank="  /  /    "
                              value="#{DateChooserBean.patternDate}"
                              locale="#{DateChooserBean.selectedLocale}"
                              todayText="#{DateChooserBean.currentTodayText}"

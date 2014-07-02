@@ -11,13 +11,10 @@
  */
 package org.openfaces.component.ajax;
 
-import org.openfaces.component.LazyProcessSupport;
 import org.openfaces.component.OUIClientAction;
 import org.openfaces.component.OUIClientActionHelper;
 import org.openfaces.component.OUICommand;
 import org.openfaces.renderkit.ajax.AjaxRenderer;
-import org.openfaces.taglib.facelets.FaceletsExpressionCreator;
-import org.openfaces.taglib.internal.AbstractComponentTag;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.ValueBindings;
 
@@ -37,7 +34,7 @@ import javax.faces.event.PostAddToViewEvent;
 @ListenersFor({
         @ListenerFor(systemEventClass = PostAddToViewEvent.class)
 })
-public class Ajax extends OUICommand implements OUIClientAction, LazyProcessSupport {
+public class Ajax extends OUICommand implements OUIClientAction {
     public static final String COMPONENT_TYPE = "org.openfaces.Ajax";
     public static final String COMPONENT_FAMILY = "org.openfaces.Ajax";
 
@@ -59,11 +56,6 @@ public class Ajax extends OUICommand implements OUIClientAction, LazyProcessSupp
     @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
-    }
-
-    public void setLazyProcessAttributes(FaceletsExpressionCreator faceletsExpressionCreator, AbstractComponentTag abstractComponentTag){
-        this.setFaceletsExpressionCreator(faceletsExpressionCreator);
-        this.setTag(abstractComponentTag);
     }
 
     @Override

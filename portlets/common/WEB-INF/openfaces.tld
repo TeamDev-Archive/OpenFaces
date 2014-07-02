@@ -11977,17 +11977,6 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A parent component ID
-      </description>
-      <name>parentId</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default document.body -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
       <description>A CSS class name for the visible part of the page which is not covered by a Window component.
       </description>
       <name>modalLayerClass</name>

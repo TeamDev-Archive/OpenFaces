@@ -11,20 +11,105 @@
 
     <h3 style="margin-bottom: 1em;">Shopping Cart</h3>
 
+    <o:dataTable id="table" value="#{SpinnerBean.products}"
+                 var="product"
+                 rowIndexVar="rowIndex"
+                 style="width: 100%; border: 0;"
+                 commonFooterRowStyle="height: 35px">
 
-        <o:spinner id="quantityField"
-                   value="2"
+      <o:column header="Product Name"
+                style="padding: 0.5em 1em 0.5em 1em;"
+                headerStyle="text-align: left"
+                bodyStyle="text-align: left;">
+        <h:outputText value="#{product.name}"/>
+      </o:column>
+
+      <o:column headerStyle="text-align: right"
+                bodyStyle="text-align: right;"
+                style="padding: 0.5em 0em 0.5em 1em;" width="15%">
+        <f:facet name="header">
+          <h:outputText style="display: block; margin-right: 25px" value="Price"/>
+        </f:facet>
+        <h:outputText style="display: block; margin-right: 22px" value="#{product.price}"
+                      rendered="#{not SpinnerBean.pricesEditable}">
+          <f:convertNumber pattern="$0.00" groupingUsed="true" minFractionDigits="2" maxFractionDigits="0"/>
+        </h:outputText>
+        <o:spinner id="priceField" value="#{product.price}" rendered="#{SpinnerBean.pricesEditable}"
+                   style="width: 80px; margin-left: 10px"
                    styleClass="spinnerDefault"
                    rolloverClass="spinnerRollover"
                    focusedClass="spinnerFocused"
                    buttonClass="spinnerButton"
-                   minValue="1"
+                   minValue="0"
+                   step="0.5"
+                   onchange="O$.ajax.request(this, event, {
+                          execute: 'form:table:#{rowIndex}:priceField',
+                          render: 'form:table:#{rowIndex}:cost form:table:totalCost',
+                          listener: 'SpinnerBean.calculateTotalCost'})">
+          <f:convertNumber pattern="$#,##0.00" groupingUsed="true" minFractionDigits="2" maxFractionDigits="2"/>
+        </o:spinner>
+      </o:column>
 
-                   maxValue="5"
-                   />
+      <o:column header="Quantity"
+                align="right"
+                headerStyle="text-align: right;"
+                style="padding: 0.5em 1em 0.5em 1em;" width="15%">
+        <o:spinner id="quantityField"
+                   value="#{product.quantity}"
+                   styleClass="spinnerDefault"
+                   rolloverClass="spinnerRollover"
+                   focusedClass="spinnerFocused"
+                   buttonClass="spinnerButton"
+                   minValue="0"
+                   maxValue="#{product.inStock}"
+                   onchange="O$.ajax.request(this, event, {
+                          execute: 'form:table:#{rowIndex}:quantityField',
+                          render: 'form:table:#{rowIndex}:leftInStock form:table:#{rowIndex}:cost form:table:totalCost',
+                          listener: 'SpinnerBean.calculateTotalCost'})"/>
+      </o:column>
+
+      <o:column header="Left in Stock"
+                style="padding: 0.5em 1em 0.5em 1em;" width="10%"
+                bodyStyle="text-align: right;"
+                headerStyle="text-align: right;">
+        <h:outputText id="leftInStock" value="#{product.leftInStock}"/>
+      </o:column>
+
+      <o:column header="Cost"
+                headerStyle="text-align: right;"
+                bodyStyle="text-align: right;"
+                footerStyle="text-align: right;"
+                style="padding: 0.5em 1em 0.5em 1em;"
+                width="25%">
+        <h:outputText id="cost" value="#{product.productTotalCost}" styleClass="currency">
+          <f:convertNumber pattern="$0.00" groupingUsed="true" minFractionDigits="2" maxFractionDigits="0"/>
+        </h:outputText>
+      </o:column>
+
+      <f:facet name="footer">
+        <h:panelGroup layout="block" style="padding: 5px">
+          <o:selectBooleanCheckbox id="editPricesCheckbox" value="#{SpinnerBean.pricesEditable}">
+            <o:ajax event="click" execute="table" render="table"/>
+          </o:selectBooleanCheckbox>
+          <h:outputLabel for="editPricesCheckbox" value="Price editing mode -- shows Spinner editors for prices"/>
+
+          <h:panelGroup layout="block" style="float: right">
+            <h:outputText value="Total Cost:"/>
+            &#160;
+              <span style="font-size: 120%; font-weight: bold;">
+                 <h:outputText id="totalCost" value="#{SpinnerBean.totalCost}">
+                   <f:convertNumber pattern="$0.00" groupingUsed="true" minFractionDigits="2" maxFractionDigits="0"/>
+                 </h:outputText>
+              </span>
+          </h:panelGroup>
+        </h:panelGroup>
+      </f:facet>
+    </o:dataTable>
 
 
- </div>
+  </div>
+
+
   <div id="Description">
     <h4>Demonstrated Features</h4>
     <ul class="hang">

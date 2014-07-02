@@ -12,13 +12,10 @@
 package org.openfaces.component.table;
 
 import org.openfaces.component.command.MenuItem;
-import org.openfaces.util.Resources;
-import org.openfaces.util.ScriptBuilder;
 
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-public class SortAscendingMenuItem  extends MenuItem implements ColumnMenuItem {
+public class SortAscendingMenuItem extends MenuItem {
     public static final String COMPONENT_TYPE = "org.openfaces.SortAscendingMenuItem";
     public static final String COMPONENT_FAMILY = "org.openfaces.SortAscendingMenuItem";
 
@@ -45,15 +42,5 @@ public class SortAscendingMenuItem  extends MenuItem implements ColumnMenuItem {
         int i = 0;
         super.restoreState(context, state[i++]);
 
-    }
-
-    public void setupMenuItemParams(FacesContext context){
-        if (getValue() == null)
-            setValue("Sort Ascending");
-        setOnclick(new ScriptBuilder().functionCall("O$.ColumnMenu._sortColumnAscending",
-                getTable("<o:sortDescendingMenuItem>", this)).toString());
-        if (getIconUrl() == null)
-            setIconUrl(Resources.internalURL(
-                context, "table/sortAscending.png"));
     }
 }

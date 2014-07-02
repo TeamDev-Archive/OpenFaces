@@ -21,8 +21,6 @@ import org.openfaces.renderkit.table.CustomCellRenderingInfo;
 import org.openfaces.renderkit.table.CustomContentCellRenderingInfo;
 import org.openfaces.renderkit.table.CustomRowRenderingInfo;
 import org.openfaces.renderkit.table.TableStructure;
-import org.openfaces.taglib.facelets.FaceletsExpressionCreator;
-import org.openfaces.taglib.internal.AbstractComponentTag;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -193,38 +191,6 @@ public class OUIData extends UIData implements NamingContainer, UniqueIdVendor, 
     //private int _rows;
     //private boolean _rowsSet;
     //private Object _value;
-
-    private AbstractComponentTag tag;
-    private FaceletsExpressionCreator faceletsExpressionCreator;
-    private Boolean lazyProcess = false;
-
-
-    public void setTag(AbstractComponentTag tag) {
-        this.tag = tag;
-        lazyProcess = true;
-    }
-
-    public void setFaceletsExpressionCreator(FaceletsExpressionCreator faceletsExpressionCreator) {
-        this.faceletsExpressionCreator = faceletsExpressionCreator;
-        lazyProcess = true;
-    }
-
-    public Boolean isLazyProcess (){
-        return lazyProcess;
-    }
-
-    public void lazyComponentPropertiesSetter(){
-        if (!lazyProcess) return;
-        FacesContext facesContext = getFacesContext();
-        tag.setFacesContext(facesContext);
-        tag.setExpressionCreator(faceletsExpressionCreator);
-        try {
-            tag.setComponentProperties(facesContext, this);
-        } finally {
-            tag.removeFacesContext();
-        }
-        lazyProcess = false;
-    }
 
     private static class FacesEventWrapper extends FacesEvent {
         private static final long serialVersionUID = 6648047974065628773L;

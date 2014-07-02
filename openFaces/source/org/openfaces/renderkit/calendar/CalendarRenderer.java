@@ -99,13 +99,9 @@ public class CalendarRenderer extends RendererBase {
         if (AjaxUtil.getSkipExtraRenderingOnPortletsAjax(context))
             return;
 
-        Calendar calendar = (Calendar) component;
-        if (calendar.isLazyProcess()){
-            calendar.lazyComponentPropertiesSetter();
-        }
-
         Components.generateIdIfNotSpecified(component);
 
+        Calendar calendar = (Calendar) component;
         Rendering.registerDateTimeFormatObject(calendar.getLocale());
 
         String clientId = component.getClientId(context);
@@ -256,13 +252,10 @@ public class CalendarRenderer extends RendererBase {
                 calendar.getLocale().toString(),
                 calendar.isRequired(),
                 calendar.isDisabled(),
-
-        //////////////////////////////////////////////////////////////////
                 isAuxiliaryTagsRenderedInFooter(calendar),
                 clientId + VALUE_HOLDER_SUFFIX,
                 Rendering.convertToString(context, calendar, calendar.getValue()),
                 clientId + BODY_SUFFIX
-
         );
 
         Styles.renderStyleClasses(context, calendar);
@@ -468,19 +461,8 @@ public class CalendarRenderer extends RendererBase {
             renderDayNameCell(context, calendar, dayNames[idx]);
         }
         writer.endElement("tr");
-
-        for (int row = 0; row < 6; row++) {
-            writer.startElement("tr", calendar);
-            writeAttribute(writer, "class", "o_cal_week_row");
-            for (int col = 0; col < 7; col++) {
-                writer.startElement("td", calendar);
-                writer.startElement("div", calendar);
-                writer.endElement("div");
-                if (col == 6 && row == 5 && !isAuxiliaryTagsRenderedInFooter(calendar))
-                    encodeAuxiliaryTags(context, calendar);
-                writer.endElement("td");
-            }
-            writer.endElement("tr");
+        if (!isAuxiliaryTagsRenderedInFooter(calendar)) {
+            encodeAuxiliaryTags(context, calendar);
         }
 
         writer.endElement("tbody");

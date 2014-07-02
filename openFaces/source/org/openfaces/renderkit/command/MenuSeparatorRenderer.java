@@ -27,8 +27,8 @@ import java.io.IOException;
  */
 public class MenuSeparatorRenderer extends RendererBase {
 
-    public static final String DEFAULT_LIST_ITEM_CLASS = "o_menu_list_item o_menu_list_item_separator";
-    public static final String DEFAULT_MENU_SEPARATOR_CLASS = "o_menu_separator";
+    private static final String DEFAULT_LIST_ITEM_CLASS = "o_menu_list_item o_menu_list_item_separator";
+    private static final String DEFAULT_MENU_SEPARATOR_CLASS = "o_menu_separator";
     private static final String DIV_PREFIX = "::separator";
 
     @Override

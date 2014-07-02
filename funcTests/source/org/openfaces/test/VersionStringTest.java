@@ -23,8 +23,6 @@ public class VersionStringTest extends ComponentTestCase {
     private static final String EA_STRING = "EA";
     private static final Pattern CUSTOM_CLIENT_BRANCH_BUILD_NO_PATTERN = Pattern.compile("c\\d+_.+_(\\d+)");
 
-    // test commit 1 for c1_aug2012 branch
-
     /**
      * This test checks the correctness of the value returned by Resources.getVersionString(). This is needed to ensure
      * that the correct string is appended at the end of internal resource file names (see JSFC-3722).

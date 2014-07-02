@@ -1,24 +1,107 @@
 <div xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:o="http://openfaces.org/">
-  <style>
-    .h30 {
-      height: 30px;
-    }
-
-    .w30 {
-      width: 30px;
-    }
-  </style>
 
   <div id="Demo">
-    <o:borderLayoutPanel>
-      <o:tabbedPane>
 
-      </o:tabbedPane>
+    <script type="text/javascript">
+      window.onload = setDescriptionSource;
+
+      function setDescriptionSource() {
+        var componentName = O$("form:componentName").value;
+        var frame = O$("componentDescription");
+
+        if (componentName != "") {
+          var componentDescription = componentName + ".html";
+          if (frame.src != componentDescription) {
+            frame.src = componentDescription;
+          }
+
+        } else {
+          if (frame.src != "Index.html") {
+            frame.src = "Index.html";
+          }
+        }
+      }
+
+    </script>
+
+    <o:borderLayoutPanel id="borderLayoutPanel" style="width: 720px; border: 1px solid gray; height: 400px;">
+      <h:panelGroup>
+        <iframe id="componentDescription" src="Index.html"
+                frameborder="0" border="0" cellspacing="0" marginwidth="0" marginheight="0"
+                width="100%" height="100%">
+        </iframe>
+
+
+        <h:inputHidden id="componentName" value="#{BorderLayoutBean.normalizedSelectedComponent}"/>
+
+      </h:panelGroup>
+
+      <o:sidePanel alignment="top" splitterStyle="border: none; border-top: 1px solid gray; height: 1px;"
+                   resizable="false" collapsible="false" size="22px" style="text-align: center;">
+        Developer's Guide 2.0
+      </o:sidePanel>
+
+      <o:sidePanel alignment="left" size="25%" style="width: 100%;">
+        <f:facet name="caption">
+          <h:outputText style="background-color: #657386;">
+            <h:outputText escape="false" value="&#160; "/>
+          </h:outputText>
+        </f:facet>
+
+        <o:treeTable id="componentsTree" var="treeNode" useAjax="true"
+                     expansionState="allExpanded"
+                     style="width: 100%; border: none; font-size: 10pt;"
+                     rolloverStyle="cursor: pointer;"
+                     focusedStyle="border: none">
+          <o:dynamicTreeStructure
+                  nodeChildren="#{BorderLayoutBean.nodeChildren}"
+                  nodeHasChildren="#{BorderLayoutBean.nodeHasChildren}"/>
+
+          <o:singleNodeSelection
+                  nodeData="#{BorderLayoutBean.selectedComponent}"
+                  style="background-color: gray; color: white; cursor: default;">
+            <o:ajax render=":form:componentName"
+                    listener="#{BorderLayoutBean.selectComponent}"
+                    onajaxend="setDescriptionSource();"/>
+          </o:singleNodeSelection>
+
+          <o:treeColumn>
+            <h:outputText value="#{treeNode}"/>
+          </o:treeColumn>
+
+        </o:treeTable>
+
+      </o:sidePanel>
+
+      <o:sidePanel alignment="bottom"
+                   splitterStyle="border: none; border-top: 1px solid gray; height: 1px;"
+                   resizable="false" collapsible="false" size="22px" style="text-align: center;">
+        <h:outputText escape="false" value="&#169; 2012 TeamDev Ltd. All rights reserved."/>
+      </o:sidePanel>
+
     </o:borderLayoutPanel>
+
 
   </div>
 
+  <div id="Description">
+    <h4>Demonstrated Features</h4>
+    <ul class="hang">
+      <li><strong>Static border layout</strong> - if you're creating a static layout, you can disable the resizing
+        capability by setting the SidePanel's resizable attribute to "false".
+        See the header and footer for the panel above.
+      </li>
+      <li><strong>Side panel resizing/collapsing</strong> - each SidePanel can optionally be configured to have resizing
+        capability by dragging the panel's separator, and/or expanding/collapsing capability by clicking on the
+        separator.
+        Left panel on this demo both resizing and collapsing capabilities.
+      </li>
+      <li><strong>Side panel captions</strong> - you can also specify the caption of SidePanel component by using by
+        using the "caption" facet.See the left panel in this demo.
+      </li>
+    </ul>
+  </div>
 
 </div>

@@ -13,8 +13,6 @@ package org.openfaces.component.table;
 
 import org.openfaces.component.table.impl.DynamicCol;
 import org.openfaces.component.table.impl.DynamicColumn;
-import org.openfaces.taglib.facelets.FaceletsExpressionCreator;
-import org.openfaces.taglib.internal.AbstractComponentTag;
 import org.openfaces.util.Components;
 import org.openfaces.util.ReflectionUtil;
 import org.openfaces.util.Rendering;
@@ -103,39 +101,6 @@ public class BaseColumn extends UIColumn {
     private String footerOnmousemove;
     private String footerOnmouseout;
     private String footerOnmouseup;
-
-    private AbstractComponentTag tag;
-    private FaceletsExpressionCreator faceletsExpressionCreator;
-    private Boolean lazyProcess = false;
-
-
-    public void setTag(AbstractComponentTag tag) {
-        this.tag = tag;
-        lazyProcess = true;
-    }
-
-    public void setFaceletsExpressionCreator(FaceletsExpressionCreator faceletsExpressionCreator) {
-        this.faceletsExpressionCreator = faceletsExpressionCreator;
-        lazyProcess = true;
-    }
-
-    public Boolean isLazyProcess (){
-        return lazyProcess;
-    }
-
-    public void lazyComponentPropertiesSetter(){
-        if (!lazyProcess) return;
-        FacesContext facesContext = getFacesContext();
-        tag.setFacesContext(facesContext);
-        tag.setExpressionCreator(faceletsExpressionCreator);
-        try {
-            tag.setComponentProperties(facesContext, this);
-        } finally {
-            tag.removeFacesContext();
-        }
-        tag = null;
-        lazyProcess = false;
-    }
 
     @Override
     public Object saveState(FacesContext context) {

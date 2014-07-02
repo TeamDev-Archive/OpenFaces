@@ -242,7 +242,6 @@ public abstract class DropDownComponentRenderer extends RendererBase {
         String promptText = dropDown.getPromptText();
 
         List<Object> params = new ArrayList<Object>();
-        params.add(dropDown.getParentId());
         params.add(fieldText);
         params.addAll(getInputStyles(facesContext, dropDown));
         params.addAll(getButtonAndListStyles(facesContext, dropDown));

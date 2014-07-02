@@ -32,9 +32,9 @@ public class ColumnReorderingRenderer extends RendererBase {
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ColumnReordering cr = (ColumnReordering) component;
         AbstractTable table = cr.getTable();
-        StyleParam draggedCellStyle = new StyleParam(cr, "draggedCell", "o_table_draggedColumn", true);
-        StyleParam autoScrollAreaStyle = new StyleParam(cr, "autoScrollArea", "o_headerAutoScrollArea", true);
-        StyleParam dropTargetStyle = new StyleParam(cr, "dropTarget", "o_table_columnDropTarget", true);
+        StyleParam draggedCellStyle = new StyleParam(cr, "draggedCell", "o_table_draggedColumn");
+        StyleParam autoScrollAreaStyle = new StyleParam(cr, "autoScrollArea", "o_headerAutoScrollArea");
+        StyleParam dropTargetStyle = new StyleParam(cr, "dropTarget", "o_table_columnDropTarget");
         Styles.renderStyleClasses(context, cr);
         // important: style rendering is made earlier than init function deliberately to allow script to
         // inspect styles dynamically

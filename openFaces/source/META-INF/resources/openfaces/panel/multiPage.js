@@ -11,32 +11,32 @@
  */
 
 O$.MultiPage = {
-  _init:function (clientId, rolloverClass, containerClass, loadingMode, pageCount, selectedIndex) {
+  _init: function(clientId, rolloverClass, containerClass, loadingMode, pageCount, selectedIndex) {
     var multiPage = O$.initComponent(clientId, null, {
-      _loadingMode:loadingMode,
-      _rolloverClass:rolloverClass,
-      _containerClass:containerClass,
+      _loadingMode: loadingMode,
+      _rolloverClass: rolloverClass,
+      _containerClass: containerClass,
 
-      getPageCount:function () {
+      getPageCount: function() {
         return pageCount;
       },
 
-      getSelectedIndex:function () {
+      getSelectedIndex: function () {
         return selectedIndex;
       },
 
-      setSelectedIndex:function (index) {
+      setSelectedIndex: function(index) {
         if (selectedIndex == index) return;
         selectedIndex = index;
         multiPage.doSetSelectedIndex(index);
       },
 
-      _getPageContainer:function (pageIndex) {
+      _getPageContainer: function(pageIndex) {
         var result = O$(this.id + "::pane" + pageIndex);
         return result;
       },
 
-      _changeCurrentPageContainer:function (newPageContainer) {
+      _changeCurrentPageContainer: function(newPageContainer) {
         var prevPageContainer = this._currentPageContainer;
         O$.MultiPage._hideContainer(prevPageContainer);
 
@@ -66,7 +66,7 @@ O$.MultiPage = {
       O$.repaintAreaForOpera(this, true);
     });
 
-    multiPage.doSetSelectedIndex = function (absoluteIndex) {
+    multiPage.doSetSelectedIndex = function(absoluteIndex) {
       O$.setHiddenField(multiPage, clientId + "::index", absoluteIndex);
       var loadingMode = multiPage._loadingMode;
       var newPageContainer;
@@ -75,7 +75,7 @@ O$.MultiPage = {
       } else if (loadingMode == "ajaxLazy" || loadingMode == "ajaxAlways") {
         newPageContainer = multiPage._getPageContainer(absoluteIndex);
         if (!newPageContainer || loadingMode == "ajaxAlways")
-          O$.Ajax.requestComponentPortions(multiPage.id, ["page:" + absoluteIndex], null, function (multiPageComponent, portionName, portionHTML, portionScripts) {
+          O$.Ajax.requestComponentPortions(multiPage.id, ["page:" + absoluteIndex], null, function(multiPageComponent, portionName, portionHTML, portionScripts) {
             var tempDiv = document.createElement("div");
             tempDiv.innerHTML = portionHTML;
             var newPageContainer = tempDiv.childNodes[0];
@@ -107,11 +107,11 @@ O$.MultiPage = {
     O$.MultiPage._showContainer(currentPageContainer);
   },
 
-  _hideContainer:function (paneContainer) {
+  _hideContainer: function(paneContainer) {
     paneContainer.style.display = "none";
   },
 
-  _showContainer:function (paneContainer) {
+  _showContainer: function(paneContainer) {
     paneContainer.style.display = "";
     paneContainer.parentNode.style.height = "100%";
     paneContainer.parentNode.style.width = "100%";
@@ -120,20 +120,20 @@ O$.MultiPage = {
     O$.repaintAreaForOpera(paneContainer, true); // JSFC-2244
   },
 
-  _getContianerStyleElement:function (container) {
+  _getContianerStyleElement: function(container) {
     if (!container._styleElement)
       container._styleElement = container.getElementsByTagName("td")[0];
     return container._styleElement;
   },
 
-  _getTargetComponentHasOwnKeyBehavior:function (evt) {
+  _getTargetComponentHasOwnKeyBehavior: function(evt) {
     var element = evt.target ? evt.target : evt.srcElement;
     var tagName = element ? element.tagName : null;
     if (tagName)
       tagName = tagName.toLowerCase();
     var elementHasItsOwnMouseBehavior =
             tagName == "input" ||
-                    tagName == "textarea";
+            tagName == "textarea";
     return  elementHasItsOwnMouseBehavior && element.className != "o_hiddenFocus";
   }
 };

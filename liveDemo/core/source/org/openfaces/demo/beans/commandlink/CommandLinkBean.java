@@ -39,14 +39,8 @@ public class CommandLinkBean implements Serializable {
         this.lastName = lastName;
     }
 
-    public void composeFullName() {
+    public void composeFullName(ActionEvent event) {
         fullName = firstName + " " + lastName;
-        try{
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-
-        }
-
     }
 
     public void composeFullName(AjaxBehaviorEvent event) {

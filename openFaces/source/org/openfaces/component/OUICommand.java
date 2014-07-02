@@ -11,8 +11,6 @@
  */
 package org.openfaces.component;
 
-import org.openfaces.taglib.facelets.FaceletsExpressionCreator;
-import org.openfaces.taglib.internal.AbstractComponentTag;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.FacesException;
@@ -68,39 +66,6 @@ public abstract class OUICommand extends UICommand implements OUIComponent, Clie
     private Boolean disabled;
     private String disabledStyle;
     private String disabledClass;
-
-    private AbstractComponentTag tag;
-    private FaceletsExpressionCreator faceletsExpressionCreator;
-    private Boolean lazyProcess = false;
-
-
-    public void setTag(AbstractComponentTag tag) {
-        this.tag = tag;
-        lazyProcess = true;
-    }
-
-    public void setFaceletsExpressionCreator(FaceletsExpressionCreator faceletsExpressionCreator) {
-        this.faceletsExpressionCreator = faceletsExpressionCreator;
-        lazyProcess = true;
-    }
-
-    public Boolean isLazyProcess (){
-        return lazyProcess;
-    }
-
-    public void lazyComponentPropertiesSetter(){
-        if (!lazyProcess) return;
-        FacesContext facesContext = getFacesContext();
-        tag.setFacesContext(facesContext);
-        tag.setExpressionCreator(faceletsExpressionCreator);
-        try {
-            tag.setComponentProperties(facesContext, this);
-        } finally {
-            tag.removeFacesContext();
-        }
-        lazyProcess = false;
-    }
-
 
     @Override
     public Object saveState(FacesContext context) {

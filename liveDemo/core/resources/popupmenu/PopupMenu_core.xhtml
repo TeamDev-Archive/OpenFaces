@@ -69,7 +69,7 @@
       <o:popupMenu>
         <o:menuItem iconUrl="icons/new-16x16.png" value="New">
           <o:popupMenu>
-            <o:menuItem value="Class" onajaxstart="alert('start')" onclick="alert('click')" onajaxend="alert('end')" action="#{PopupMenuBean.newClass}" render="container"/>
+            <o:menuItem value="Class" action="#{PopupMenuBean.newClass}" render="container"/>
             <o:menuItem value="Interface" action="#{PopupMenuBean.newInterface}" render="container"/>
             <o:menuItem value="Enumeration" action="#{PopupMenuBean.newEnumeration}" render="container"/>
             <o:menuItem value="Annotation" action="#{PopupMenuBean.newAnnotation}" render="container"/>
@@ -83,9 +83,7 @@
         <o:menuItem iconUrl="icons/save-16x16.png" value="Save" onclick="showAlert('File saved.');"/>
         <o:menuSeparator/>
 
-        <o:menuItem iconUrl="icons/cut-16x16.png" onclick="showAlert('Selection has been cut.');">
-            <h:outputText value="Cut"/>
-        </o:menuItem>
+        <o:menuItem iconUrl="icons/cut-16x16.png" value="Cut" onclick="showAlert('Selection has been cut.');"/>
         <o:menuItem iconUrl="icons/copy-16x16.png" value="Copy" onclick="showAlert('Selection has been copied.');"/>
         <o:menuItem iconUrl="icons/paste-16x16.png" value="Paste" onclick="showAlert('Buffer contents pasted.');"/>
         <o:menuSeparator/>

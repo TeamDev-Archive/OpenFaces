@@ -543,14 +543,8 @@ public class PartialViewContext extends PartialViewContextWrapper {
         String action = requestParams.get(PARAM_ACTION);
         Object result = null;
         if (action != null) {
-            MethodExpression methodBinding;
-            if (!action.startsWith("#{")){
-                methodBinding = context.getApplication().getExpressionFactory().createMethodExpression(
+            MethodExpression methodBinding = context.getApplication().getExpressionFactory().createMethodExpression(
                     elContext, "#{" + action + "}", String.class, new Class[]{});
-            }else{
-                methodBinding = context.getApplication().getExpressionFactory().createMethodExpression(
-                        elContext, action, String.class, new Class[]{});
-            }
             methodBinding.invoke(elContext, null);
         }
         if (listener != null) {
@@ -560,7 +554,6 @@ public class PartialViewContext extends PartialViewContextWrapper {
                 }
             });
             event.setPhaseId(Boolean.valueOf(requestParams.get(PARAM_IMMEDIATE)) ? PhaseId.APPLY_REQUEST_VALUES : PhaseId.INVOKE_APPLICATION);
-
             MethodExpression methodExpression = context.getApplication().getExpressionFactory().createMethodExpression(
                     elContext, "#{" + listener + "}", void.class, new Class[]{AjaxBehaviorEvent.class});
             try {
@@ -665,9 +658,7 @@ public class PartialViewContext extends PartialViewContextWrapper {
                                              boolean preProcessDecodesOnTables, boolean preRenderResponseOnTables,
                                              List<Runnable> restoreDataPointerRunnables) {
         FacesContext context = FacesContext.getCurrentInstance();
-        Boolean isNumberBasedIdFlag = isNumberBasedId(id);
-        Boolean isIdRelativeFlag = id.startsWith(":");
-        if (id.length() > 0 && (isNumberBasedIdFlag || isIdRelativeFlag) && parent instanceof AbstractTable) {
+        if (id.length() > 0 && (isNumberBasedId(id) || id.startsWith(":")) && parent instanceof AbstractTable) {
             final AbstractTable table = ((AbstractTable) parent);
             if (!isLastComponentInPath) {
                 if (preProcessDecodesOnTables)
@@ -718,7 +709,7 @@ public class PartialViewContext extends PartialViewContextWrapper {
                     });
             }
             return table;
-        } else if (isNumberBasedIdFlag && parent instanceof UIData) {
+        } else if (isNumberBasedId(id) && parent instanceof UIData) {
             final UIData uiData = ((UIData) parent);
             int rowIndex = Integer.parseInt(id);
             final int prevRowIndex = uiData.getRowIndex();
@@ -737,7 +728,7 @@ public class PartialViewContext extends PartialViewContextWrapper {
                     }
                 });
             return uiData;
-        } else if (isIdRelativeFlag && parent instanceof OUIObjectIterator) {
+        } else if (id.charAt(0) == ':' && parent instanceof OUIObjectIterator) {
             id = id.substring(1);
             final OUIObjectIterator iterator = (OUIObjectIterator) parent;
             final String prevObjectId = iterator.getObjectId();
@@ -749,7 +740,7 @@ public class PartialViewContext extends PartialViewContextWrapper {
                     }
                 });
             return (UIComponent) iterator;
-        } else if (isNumberBasedIdFlag) {
+        } else if (isNumberBasedId(id)) {
             Class clazz;
             try {
                 clazz = Class.forName("com.sun.faces.facelets.component.UIRepeat");

@@ -10,17 +10,25 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 O$.DropDown = {
-  _initInput: function (dropDownId, initialText, containerClass, rolloverContainerClass, disabledClass, fieldClass, rolloverFieldClass, disabledFieldClass, focusedClass, promptText, promptTextClass) {
+  _initInput: function(dropDownId,
+                       initialText,
+                       containerClass,
+                       rolloverContainerClass,
+                       disabledClass,
+                       fieldClass,
+                       rolloverFieldClass,
+                       disabledFieldClass,
+                       focusedClass,
+                       promptText,
+                       promptTextClass) {
     var dropDown = O$.initComponent(dropDownId, null, {
       _field: O$(dropDownId + "::field"),
       _promptVisible: O$(dropDownId + "::field" + "::promptVisible"),
       _initialText: initialText,
-      _focusable: true,
+      _focusable : true,
       _fieldDisabled: false,
-      _parentId: null,
-      _containerHeight: 0,
 
-      _setFieldDisabled: function (disabled) {
+      _setFieldDisabled: function(disabled) {
         if (this._fieldDisabled == disabled) return;
 
         this._fieldDisabled = disabled;
@@ -51,7 +59,7 @@ O$.DropDown = {
 
     if (dropDown._promptText) {
       if ((initialText.length = 0 && dropDown._field.value.length == 0) ||
-              (initialText.length = 0 && dropDown._field.value == dropDown._promptText)) {
+          (initialText.length = 0 && dropDown._field.value == dropDown._promptText)) {
         //needed for FireFox, when press F5 key
         dropDown._promptVisible.value = true;
       }
@@ -73,7 +81,7 @@ O$.DropDown = {
     };
 
     if (dropDown != field)
-      dropDown.focus = function () {
+      dropDown.focus = function() {
         try {
           field.focus();
         } catch (e) {
@@ -82,7 +90,7 @@ O$.DropDown = {
     dropDown._onfocus = dropDown.onfocus;
 
     var waitingForFocusReacquiring = false;
-    dropDown._focusHandler = function () {
+    dropDown._focusHandler = function() {
       if (waitingForFocusReacquiring) {
         waitingForFocusReacquiring = false;
         return;
@@ -107,9 +115,9 @@ O$.DropDown = {
     O$.initUnloadableComponent(field);
 
     dropDown._onblur = dropDown.onblur;
-    O$.addEventHandler(field, "blur", function () {
+    O$.addEventHandler(field, "blur", function() {
       waitingForFocusReacquiring = true;
-      setTimeout(function () {
+      setTimeout(function() {
         if (!waitingForFocusReacquiring)
           return;
         waitingForFocusReacquiring = false;
@@ -128,8 +136,8 @@ O$.DropDown = {
             }
 
             // This timeout is required for the prompt text under IE
-            setTimeout(function () {
-              if (dropDown._itemPresentation) {
+            setTimeout(function() {
+              if (dropDown._itemPresentation){
                 dropDown._showPresentationPromptText(dropDown._promptText);
               } else {
                 dropDown._field.value = dropDown._promptText;
@@ -144,7 +152,7 @@ O$.DropDown = {
     });
 
     if (O$.isMozillaFF() || O$.isSafari3AndLate() /*todo:check whether O$.isSafari3AndLate check is really needed (it was added by mistake)*/) {
-      O$.addEventHandler(dropDown, "keyup", function (evt) {
+      O$.addEventHandler(dropDown, "keyup", function(evt) {
         if (evt.keyCode == 27) {//ESC key
           if (dropDown._field.value == dropDown._promptText) {
             dropDown._field.value = "";
@@ -154,14 +162,14 @@ O$.DropDown = {
       O$.initUnloadableComponent(dropDown);
     }
 
-    setTimeout(function () {
+    setTimeout(function() {
       if (initialText.length > 0) {
         dropDown._initValue(initialText);
       } else if (initialText.length == 0 && dropDown._promptText) {
         dropDown._initValue(initialText);
 
-        setTimeout(function () {
-          if (dropDown._itemPresentation) {
+        setTimeout(function() {
+          if (dropDown._itemPresentation){
             dropDown._showPresentationPromptText(dropDown._promptText);
           } else {
             dropDown._field.value = dropDown._promptText;
@@ -185,7 +193,27 @@ O$.DropDown = {
     O$.fixInputsWidthStrict(dropDown);
   },
 
-  _init: function (dropDownId, parentId, initialText, containerClass, rolloverContainerClass, disabledClass, fieldClass, rolloverFieldClass, disabledFieldClass, focusedClass, buttonClass, rolloverButtonClass, pressedButtonClass, disabledButtonClass, disabledButtonImageUrl, popupClass, rolloverPopupClass, disabled, readOnly, promptText, promptTextClass, pullPopupFromContainer) {
+  _init: function(dropDownId,
+                  initialText,
+                  containerClass,
+                  rolloverContainerClass,
+                  disabledClass,
+                  fieldClass,
+                  rolloverFieldClass,
+                  disabledFieldClass,
+                  focusedClass,
+                  buttonClass,
+                  rolloverButtonClass,
+                  pressedButtonClass,
+                  disabledButtonClass,
+                  disabledButtonImageUrl,
+                  popupClass,
+                  rolloverPopupClass,
+                  disabled,
+                  readOnly,
+                  promptText,
+                  promptTextClass,
+                  pullPopupFromContainer) {
 
     O$.DropDown._initInput(dropDownId,
             initialText,
@@ -200,8 +228,6 @@ O$.DropDown = {
             promptTextClass);
 
     var popupId = dropDownId + "--popup";
-    O$.DropDown._parentId = parentId;
-
     O$.removeRelocatedPopupIfExists(popupId);
 
     var originalEnabledButtonImageUrl = null;
@@ -211,7 +237,7 @@ O$.DropDown = {
       _popup: O$(popupId),
       _disabled: false,
 
-      setDisabled: function (disabled) {
+      setDisabled: function(disabled) {
         O$.setHiddenField(this, dropDownId + "::disabled", disabled);
         if (this._disabled == disabled) return;
 
@@ -240,7 +266,7 @@ O$.DropDown = {
         }
       },
 
-      getDisabled: function () {
+      getDisabled: function() {
         return this._disabled;
       }
 
@@ -263,7 +289,7 @@ O$.DropDown = {
       button._dropDown = dropDown;
     popup._dropDown = dropDown;
 
-    O$.addEventHandler(popup, "mousedown", function (e) {
+    O$.addEventHandler(popup, "mousedown", function(e) {
       O$.stopEvent(e);
     });
     O$.initUnloadableComponent(popup);
@@ -284,7 +310,7 @@ O$.DropDown = {
     if (button) {
       if (!readOnly) {
         O$.extend(button, {
-          onmousedown: function (e) {
+          onmousedown: function(e) {
             if (dropDown._disabled) return;
             if (O$.isEventFromInsideOfElement(e, popup))
               return;
@@ -293,7 +319,7 @@ O$.DropDown = {
             O$.Popup._hideAllPopupsExceptOne(popup);
             O$.cancelEvent(e);
           },
-          ondblclick: function (e) {
+          ondblclick: function(e) {
             if (dropDown._disabled) return;
             if (O$.isEventFromInsideOfElement(e, popup))
               return;
@@ -302,26 +328,26 @@ O$.DropDown = {
             dropDown._showHidePopup();
             O$.cancelEvent(e);
           },
-          onmousemove: function (e) {
+          onmousemove: function(e) {
             if (dropDown._disabled) return;
             if (O$.isEventFromInsideOfElement(e, popup))
               return;
             O$.cancelEvent(e);
           },
-          onmouseup: function (e) {
+          onmouseup: function(e) {
             if (dropDown._disabled) return;
             if (O$.isEventFromInsideOfElement(e, popup))
               return;
             button.className = dropDown._rolloverButtonClass;
           },
-          onmouseover: function (e) {
+          onmouseover: function(e) {
             if (dropDown._disabled) return;
             if (O$.isEventFromInsideOfElement(e, popup))
               return;
             if (dropDown._buttonClass != dropDown._rolloverButtonClass)
               button.className = dropDown._rolloverButtonClass;
           },
-          onmouseout: function (e) {
+          onmouseout: function(e) {
             if (dropDown._disabled) return;
             if (O$.isEventFromInsideOfElement(e, popup))
               return;
@@ -329,10 +355,10 @@ O$.DropDown = {
             if (dropDown._buttonClass != dropDown._rolloverButtonClass)
               button.className = dropDown._buttonClass;
           },
-          ondragstart: function (e) {
+          ondragstart: function(e) {
             O$.cancelEvent(e);
           },
-          onselectstart: function (e) {
+          onselectstart: function(e) {
             O$.cancelEvent(e);
           }
         });
@@ -340,7 +366,7 @@ O$.DropDown = {
       }
     }
 
-    popup.onmousemove = function (e) {
+    popup.onmousemove = function(e) {
       O$.cancelEvent(e);
     };
     O$.addUnloadHandler(popup, function () {
@@ -353,7 +379,7 @@ O$.DropDown = {
     dropDown._rolloverPopupClass = dropDown._popupClass + " " + O$.DropDown._getClassName(rolloverPopupClass);
 
     if (mouseOverBehaviorNeeded) {
-      dropDown._dropDownMouseOver = function () {
+      dropDown._dropDownMouseOver = function() {
         if (dropDown._disabled) return;
         if (dropDown && dropDown._containerClass != dropDown._rolloverContainerClass)
           dropDown.className = dropDown._rolloverContainerClass;
@@ -365,7 +391,7 @@ O$.DropDown = {
         O$.repaintAreaForOpera(popup, true);
       };
 
-      dropDown._dropDownMouseOut = function () {
+      dropDown._dropDownMouseOut = function() {
         if (dropDown._disabled) return;
         if (dropDown && dropDown._containerClass != dropDown._rolloverContainerClass)
           dropDown.className = dropDown._containerClass;
@@ -401,7 +427,7 @@ O$.DropDown = {
   /*
    @deprecated: don't use or copy -- use O$.setStyleMappings instead
    */
-  _addInClassName: function (classDest, className) { // todo: remove this method and replace usages with O$.appendClassNames or O$.setStyleMappings
+  _addInClassName: function(classDest, className) { // todo: remove this method and replace usages with O$.appendClassNames or O$.setStyleMappings
     if (classDest.length > 0) {
       classDest = classDest + " " + className;
     } else {
@@ -413,44 +439,43 @@ O$.DropDown = {
   /*
    @deprecated: don't use or copy -- use O$.setStyleMappings instead
    */
-  _removeOfClassName: function (classDest, className) { // todo: remove this method and replace usages with O$.excludeClassNames or O$.setStyleMappings
+  _removeOfClassName: function(classDest, className) { // todo: remove this method and replace usages with O$.excludeClassNames or O$.setStyleMappings
     if (classDest.length > 0) {
       classDest = classDest.replace(className, "");
     }
     return classDest;
   },
 
-  _getClassName: function (param) { // todo: remove the need for this function. merging styles should be done in a more localized way
+  _getClassName: function(param) { // todo: remove the need for this function. merging styles should be done in a more localized way
     return (param == null) ? "" : " " + param;
   },
 
 
-  _initPopup: function (dropDown, calendar) {
+  _initPopup: function(dropDown, calendar) {
     var repaintDropDown = false;
     var popup = dropDown._popup;
-    var container = O$(dropDown._parentId) || O$.getDefaultAbsolutePositionParent();
+    var container = O$.getDefaultAbsolutePositionParent();
     if ((O$.isExplorer() && O$.isQuirksMode() && dropDown._popup.parentNode != container) ||
-            (O$.isMozillaFF2() && O$.isStrictMode())) {
+        (O$.isMozillaFF2() && O$.isStrictMode())) {
       // prevent clipping the drop-down with parent nodes with hidden overflow (possible only in IE+quirks)
       // (e.g. scrollable table header might prevent drop-down filter popup from displaying fully) 
       container.appendChild(dropDown._popup);
     }
 
+    var sizeChanged = false;
     if (calendar) {
       popup.style.width = calendar.offsetWidth + "px";
     } else {
       var innerTable = O$(dropDown.id + "--popup::innerTable");
       var tableWidth = innerTable.offsetWidth;
       var tableHeight = innerTable.offsetHeight;
-      if (popup._initializedTableWidth != tableWidth ||
-              popup._initializedTableHeight != tableHeight ||
-              container.offsetHeight != dropDown._containerHeight) {
+      if (popup._initializedTableWidth != tableWidth || popup._initializedTableHeight != tableHeight) {
         popup._initializedTableWidth = tableWidth;
         popup._initializedTableHeight = tableHeight;
-        dropDown._containerHeight = container.offsetHeight;
+        sizeChanged = true;
 
         var minWidth;
-        if (!popup._initialClientWidth) {
+        if (popup._initialClientWidth == undefined) {
           popup._initialClientWidth = popup.clientWidth;
         }
         var dropDownRect = O$.getElementBorderRectangle(dropDown);
@@ -485,15 +510,7 @@ O$.DropDown = {
           popup.style.height = popup._initialClientHeight + "px";
         }
         function adjustHeight() {
-          var contentHeight;
-          if (container || container.tagName.toLowerCase() === "table") {
-            var dropDownOffset = (dropDown.offsetTop + dropDown.offsetHeight) + dropDown.clientHeight;
-            contentHeight = container.clientHeight - dropDownOffset - 8;
-            contentHeight = contentHeight < 21 ? 20 : contentHeight;
-          } else {
-            contentHeight = innerTable.offsetHeight;
-          }
-
+          var contentHeight = innerTable.offsetHeight;
           if (popup.clientHeight > contentHeight) {
             var borderAccomodation = (O$.isExplorer() && document.compatMode == "BackCompat") ? 10 : 0;
             var preferredHeight = borderAccomodation + (contentHeight ? contentHeight : 20);
@@ -501,10 +518,6 @@ O$.DropDown = {
             var heightCorrection = popup.clientHeight - preferredHeight;
             if (heightCorrection)
               popup.style.height = (preferredHeight - heightCorrection - borderAccomodation) + "px";
-          }
-
-          if (innerTable.offsetHeight < popup.offsetHeight){
-            popup.style.height = innerTable.offsetHeight + "px";
           }
         }
 
@@ -539,7 +552,7 @@ O$.DropDown = {
       popup._ieTransparencyControl._updatePositionAndSize();
   },
 
-  _alignPopup: function (dropDown, calendar) {
+  _alignPopup: function(dropDown, calendar) {
     var popup = dropDown._popup;
     if (dropDown._listAlignment == "right" || calendar) { // align by the right edge
       O$.alignPopupByElement(popup, dropDown, O$.RIGHT, O$.BELOW);

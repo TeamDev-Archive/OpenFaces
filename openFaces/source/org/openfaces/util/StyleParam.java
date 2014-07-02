@@ -23,16 +23,6 @@ public class StyleParam extends RawScript {
         this(component, styleName, defaultStyleClass, StyleGroup.regularStyleGroup());
     }
 
-    public StyleParam(UIComponent component, String styleName, String defaultStyleClass, Boolean noEscapeNeeded) {
-        super(FunctionCallScript.quoteStringForJS(Styles.getCSSClass(
-                FacesContext.getCurrentInstance(), component,
-                (String) component.getAttributes().get(styleName + "Style"),
-                StyleGroup.regularStyleGroup(),
-                (String) component.getAttributes().get(styleName + "Class"),
-                defaultStyleClass))
-        );
-    }
-
     public StyleParam(UIComponent component, String styleName, String defaultStyleClass, StyleGroup styleGroup) {
         this(component,
                 (String) component.getAttributes().get(styleName + "Style"),

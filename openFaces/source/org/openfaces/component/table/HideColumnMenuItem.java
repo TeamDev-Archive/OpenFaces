@@ -12,11 +12,10 @@
 package org.openfaces.component.table;
 
 import org.openfaces.component.command.MenuItem;
-import org.openfaces.util.ScriptBuilder;
 
 import javax.faces.context.FacesContext;
 
-public class HideColumnMenuItem extends MenuItem implements ColumnMenuItem {
+public class HideColumnMenuItem extends MenuItem {
     public static final String COMPONENT_TYPE = "org.openfaces.HideColumnMenuItem";
     public static final String COMPONENT_FAMILY = "org.openfaces.HideColumnMenuItem";
 
@@ -43,12 +42,5 @@ public class HideColumnMenuItem extends MenuItem implements ColumnMenuItem {
         int i = 0;
         super.restoreState(context, state[i++]);
 
-    }
-
-    public void setupMenuItemParams(FacesContext context){
-        if (getValue() == null)
-            setValue("Hide");
-        setOnclick(new ScriptBuilder().functionCall("O$.ColumnMenu._hideColumn",
-                getTable("<o:hideColumnMenuItem>", this)).getScript());
     }
 }

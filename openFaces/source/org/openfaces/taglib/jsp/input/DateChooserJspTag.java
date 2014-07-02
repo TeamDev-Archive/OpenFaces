@@ -1,6 +1,6 @@
 /*
  * OpenFaces - JSF Component Library 3.0
- * Copyright (C) 2007-2013, TeamDev Ltd.
+ * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
  * the GNU Lesser General Public License Version 2.1 (the "LGPL" License).
@@ -265,10 +265,6 @@ public class DateChooserJspTag extends DropDownComponentJspTag {
 
     public void setTypingAllowed(ValueExpression typingAllowed) {
         getDelegate().setPropertyValue("typingAllowed", typingAllowed);
-    }
-
-    public void setBlank(ValueExpression blank) {
-        getDelegate().setPropertyValue("blank", blank);
     }
 
 }

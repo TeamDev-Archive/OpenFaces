@@ -1122,58 +1122,52 @@ public class JSONObject {
         char         c = 0;
         int          i;
         int          len = string.length();
-        char[] charArray = string.toCharArray();
-        char buf[] = new char[len + 4];
-        int count = 0;
+        StringBuffer sb = new StringBuffer(len + 4);
+        String       t;
 
-        buf[count++] = '"';
+        sb.append('"');
         for (i = 0; i < len; i += 1) {
             b = c;
-            c = charArray[i];
+            c = string.charAt(i);
             switch (c) {
             case '\\':
             case '"':
-                buf[count++] = '\\';
-                buf[count++] = c;
+                sb.append('\\');
+                sb.append(c);
                 break;
             case '/':
                 if (b == '<') {
-                    buf[count++] = '\\';
+                    sb.append('\\');
                 }
-                buf[count++] = c;
+                sb.append(c);
                 break;
             case '\b':
-                buf[count++] = '\\';
-                buf[count++] = 'b';
+                sb.append("\\b");
                 break;
             case '\t':
-                buf[count++] = '\\';
-                buf[count++] = 't';
+                sb.append("\\t");
                 break;
             case '\n':
-                buf[count++] = '\\';
-                buf[count++] = 'n';
+                sb.append("\\n");
                 break;
             case '\f':
-                buf[count++] = '\\';
-                buf[count++] = 'f';
+                sb.append("\\f");
                 break;
             case '\r':
-                buf[count++] = '\\';
-                buf[count++] = 'r';
+                sb.append("\\r");
                 break;
             default:
                 if (c < ' ' || (c >= '\u0080' && c < '\u00a0') ||
                                (c >= '\u2000' && c < '\u2100')) {
-                   /* t = "000" + Integer.toHexString(c);
-                    sb.append("\\u" + t.substring(t.length() - 4));*/
+                    t = "000" + Integer.toHexString(c);
+                    sb.append("\\u" + t.substring(t.length() - 4));
                 } else {
-                    buf[count++] = c;
+                    sb.append(c);
                 }
             }
         }
-        buf[count++] = '"';
-        return new String(buf, 0, count);
+        sb.append('"');
+        return sb.toString();
     }
 
     /**

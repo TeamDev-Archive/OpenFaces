@@ -2,9 +2,8 @@
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:o="http://openfaces.org/"
      style="win-height: 700px;">
-
   <div id="Demo">
-        <o:dataTable id="citiesTable"
+    <o:dataTable id="citiesTable"
                  value="#{CitiesList.citiesList}"
                  var="city"
                  customDataProviding="true"
@@ -48,7 +47,7 @@
         <h:outputText value="#{city.country}"/>
       </o:column>
 
-      <f:facet name="below">
+<f:facet name="below">
         <h:panelGroup>
           <o:dataTablePaginator id="paginator"
                                 style="margin-left: 240px; margin-top: 10px;"
@@ -122,8 +121,7 @@
         amounts of data. So the custom data providing mode addresses this by allowing the developer to implement custom
         optimized logic for querying the data according to the filtering, sorting and pagination parameters specified in
         the table. Please see the data fetch quries in the event log when sorting, pagination or filtering is performed
-        on the DataTable.
-      </li>
+        on the DataTable.</li>
       <li><strong>Pagination</strong>&#8212;Use the paginator at the bottom of the DataTable component to
         navigate between the table pages.
       </li>
@@ -132,7 +130,7 @@
         ("Up/Down Arrow", "Home", "End").
       </li>
       <li><strong>Selection</strong>&#8212;Use mouse or keyboard to select DataTable rows.</li>
-
+      
     </ul>
 
   </div>

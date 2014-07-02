@@ -128,7 +128,7 @@ var Calculator = {
   },
 
   clearInput : function () {
-    //O$("form:calcInputField").value = this.formatValue(this.stringValue());
+    O$("form:calcInputField").value = this.formatValue(this.stringValue());
   },
 
   typeNumber : function (character) {
@@ -185,7 +185,7 @@ var Calculator = {
     this.focus();
   },
   focus : function() {
-  //  O$('form:calcInputField').focus();
+    O$('form:calcInputField').focus();
   }
 };
 

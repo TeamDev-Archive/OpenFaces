@@ -11,7 +11,6 @@
  */
 package org.openfaces.requests;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.openqa.selenium.By;

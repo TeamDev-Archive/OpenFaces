@@ -135,7 +135,6 @@ public class Resources {
     }
 
     private static String versionString;
-    private static String versionStringWithPrefix;
 
     /**
      * Return version of OpenFaces
@@ -160,18 +159,6 @@ public class Resources {
 
         versionString = version;
         return version;
-    }
-
-    /**
-     * Return version of OpenFaces with "ofver=" prefix
-     *
-     * @return requested version of OpenFaces with "ofver=" prefix
-     */
-    public static String getVersionStringWithPrefix() {
-        if (versionStringWithPrefix != null)
-            return versionStringWithPrefix;
-        versionStringWithPrefix = "&ofver=" + getVersionString();
-        return versionStringWithPrefix;
     }
 
     private static String readBuildInfo() {

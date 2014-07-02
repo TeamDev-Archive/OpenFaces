@@ -11,7 +11,6 @@
  */
 package org.openfaces.renderkit.select;
 
-import org.openfaces.component.input.DateChooser;
 import org.openfaces.component.input.DropDownComponent;
 import org.openfaces.component.input.DropDownFieldBase;
 import org.openfaces.component.select.SelectOneMenu;
@@ -35,10 +34,6 @@ public class SelectOneMenuRenderer extends DropDownFieldRenderer {
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
-        SelectOneMenu selectOneMenu = (SelectOneMenu) component;
-        if (selectOneMenu.isLazyProcess()){
-            selectOneMenu.lazyComponentPropertiesSetter();
-        }
         super.encodeBegin(context, component);
 
     }

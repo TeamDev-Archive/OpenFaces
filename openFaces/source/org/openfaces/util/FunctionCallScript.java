@@ -55,7 +55,7 @@ public class FunctionCallScript extends Script {
             sb.append(((JSONString) param).toJSONString());
         } else if (param instanceof UIComponent) {
             String componentId = ((UIComponent) param).getClientId(FacesContext.getCurrentInstance());
-            sb.append(quoteStringForJS(componentId));
+            sb.append(escapeStringForJSAndQuote(componentId));
         } else if (param instanceof Iterable || param.getClass().isArray()) {
             if (param.getClass().isArray())
                 param = Arrays.asList((Object[]) param);
@@ -92,13 +92,6 @@ public class FunctionCallScript extends Script {
             return "null";
         else
             return '\'' + Rendering.escapeStringForJS(str) + '\'';
-    }
-
-    public static String quoteStringForJS(String str) {
-        if (str == null)
-            return "null";
-        else
-            return '\'' + str + '\'';
     }
 
 

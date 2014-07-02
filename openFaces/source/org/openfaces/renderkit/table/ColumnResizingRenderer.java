@@ -37,7 +37,7 @@ import java.util.Map;
  */
 public class ColumnResizingRenderer extends RendererBase {
     @Override
-    public void encodeBegin(FacesContext context, UIComponent component) throws IOExseption {
+    public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         super.encodeBegin(context, component);
         ColumnResizing columnResizing = (ColumnResizing) component;
         if (!columnResizing.isEnabled())
@@ -127,19 +127,6 @@ public class ColumnResizingRenderer extends RendererBase {
             throw new RuntimeException(e);
         }
         List<BaseColumn> columns = table.getRenderedColumns();
-        Iterable<String> submittedColumnsOrder = null;
-        if (columns.size() != widthsArray.length()){
-            String columnOrderFieldName = getColumnOrderFieldName(context, table);
-            String colOrder = (String) requestParams.get(columnOrderFieldName);
-            if (colOrder != null) {
-                colOrder += ",";
-                submittedColumnsOrder = Arrays.asList(colOrder.split(","));
-                if (submittedColumnsOrder != null) {
-                    table.setColumnsOrder(submittedColumnsOrder);
-                }
-            }
-            columns = table.getRenderedColumns();
-        }
         if (columns.size() != widthsArray.length())
             throw new IllegalStateException("columns.size() != widthsArray.length(): " + columns.size() + " != " + widthsArray.length());
 

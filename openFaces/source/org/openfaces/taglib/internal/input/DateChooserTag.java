@@ -1,6 +1,6 @@
 /*
  * OpenFaces - JSF Component Library 3.0
- * Copyright (C) 2007-2013, TeamDev Ltd.
+ * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
  * the GNU Lesser General Public License Version 2.1 (the "LGPL" License).
@@ -75,6 +75,5 @@ public class DateChooserTag extends DropDownComponentTag {
         setStringProperty(component, "daysHeaderClass");
         setStringProperty(component, "headerClass");
         setStringProperty(component, "footerClass");
-        setStringProperty(component, "blank");
     }
 }

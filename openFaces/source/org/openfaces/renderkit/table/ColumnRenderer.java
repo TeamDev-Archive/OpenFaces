@@ -41,14 +41,6 @@ public class ColumnRenderer extends RendererBase {
         return true;
     }
 
-    public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
-        Column column = (Column) component;
-        if (column.isLazyProcess()){
-            column.lazyComponentPropertiesSetter();
-        }
-        super.encodeBegin(context, component);
-    }
-
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         Column column = (Column) component;

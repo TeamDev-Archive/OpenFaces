@@ -56,8 +56,4 @@ public class AbstractWindowJspTag extends PopupLayerJspTag {
         getDelegate().setPropertyValue("minHeight", height);
     }
 
-    public void setParentId(ValueExpression parentId) {
-        getDelegate().setPropertyValue("parentId", parentId);
-    }
-
 }

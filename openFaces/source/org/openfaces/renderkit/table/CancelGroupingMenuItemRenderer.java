@@ -21,6 +21,11 @@ import java.io.IOException;
 public class CancelGroupingMenuItemRenderer extends ColumnMenuItemRenderer {
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
-        throw new RuntimeException("ColumnMenuItemRenderer doesn't must be called by itself");
+        MenuItem menuItem = (MenuItem) component;
+        if (menuItem.getValue() == null)
+            menuItem.setValue("Cancel Grouping");
+        menuItem.setOnclick(new ScriptBuilder().functionCall("O$.ColumnMenu._cancelGrouping",
+                getTable("<o:cancelGroupingItem>", menuItem)).toString());
+        super.encodeBegin(context, component);
     }
 }

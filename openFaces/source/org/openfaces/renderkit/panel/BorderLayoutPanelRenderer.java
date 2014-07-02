@@ -49,7 +49,7 @@ public class BorderLayoutPanelRenderer extends RendererBase {
                 "o_borderlayoutpanel_container", borderLayoutPanel.getStyleClass()
         );
         writer.writeAttribute("class", classStr, null);
-        Styles.renderStyleClasses(context, component);
+
         Rendering.writeStandardEvents(writer, borderLayoutPanel);
         encodeScriptsAndStyles(context, borderLayoutPanel);
         encodeSidePanels(context, borderLayoutPanel);

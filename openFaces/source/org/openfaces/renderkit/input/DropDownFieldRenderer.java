@@ -122,8 +122,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
 
         String state = requestMap.get(fieldId + PROMPT_VISIBLE_SUFFIX);
         if ("false".equals(state)) {
-            if (!dropDownField.isDisabled())
-                dropDownField.setSubmittedValue(submittedValue);
+            dropDownField.setSubmittedValue(submittedValue);
         }
     }
 
@@ -369,7 +368,6 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
         ScriptBuilder buf = new ScriptBuilder();
         TableStructure tableStructure = popup.getChildData().getTableStructure();
         buf.initScript(context, dropDownField, "O$.DropDownField._init",
-                dropDown.getParentId(),
                 dropDownField.getTimeout(),
                 dropDownField.getListAlignment(),
 

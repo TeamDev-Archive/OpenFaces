@@ -37,13 +37,11 @@ public class CommandButtonRenderer extends OUICommandRenderer {
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         CommandButton btn = (CommandButton) component;
-        btn.lazyComponentPropertiesSetter();
         String tagName = getTagName(btn);
         writer.startElement(tagName, btn);
         Rendering.writeIdAttribute(context, component);
         Rendering.writeNameAttribute(context, component);
         String type = btn.getType();
-        boolean isBtnDisabled = btn.isDisabled();
         if (!("submit".equals(type) || "reset".equals(type) || "button".equals(type)))
             type = "submit";
         if ("input".equals(tagName)) {
@@ -56,7 +54,7 @@ public class CommandButtonRenderer extends OUICommandRenderer {
 
         }
         writer.writeAttribute("type", type, "type");
-        if (isBtnDisabled)
+        if (btn.isDisabled())
             writer.writeAttribute("disabled", "disabled", "");
 
         Rendering.writeAttributes(writer, btn,
@@ -72,7 +70,7 @@ public class CommandButtonRenderer extends OUICommandRenderer {
 
         Rendering.writeStyleAndClassAttributes(writer, btn);
 
-        if (!isBtnDisabled) {
+        if (!btn.isDisabled()) {
             boolean ajaxJsRequired = writeEventsWithAjaxSupport(context, writer, btn);
             if (ajaxJsRequired)
                 btn.getAttributes().put(ATTR_AJAX_REQUIRED, Boolean.TRUE);

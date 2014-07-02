@@ -39,9 +39,6 @@ public abstract class AbstractInputTextRenderer extends RendererBase {
         if (!component.isRendered()) return;
 
         OUIInputText inputText = (OUIInputText) component;
-        if (inputText.isLazyProcess()){
-            inputText.lazyComponentPropertiesSetter();
-        }
 
         renderInputComponent(facesContext, inputText);
 

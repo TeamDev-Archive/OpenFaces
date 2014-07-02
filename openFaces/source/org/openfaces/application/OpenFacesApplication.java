@@ -32,30 +32,24 @@ public class OpenFacesApplication extends ApplicationWrapper {
         super(application);
     }
 
-    private static   ThreadLocal<Boolean> constructingView = new ThreadLocal<Boolean>();
-
     @Override
     public void publishEvent(FacesContext context, Class<? extends SystemEvent> systemEventClass, Object source) {
         boolean postAddToViewEvent = PostAddToViewEvent.class.isAssignableFrom(systemEventClass);
 
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-        Boolean prevConstructingViewBool = null;
-        if (postAddToViewEvent){
-            prevConstructingViewBool = constructingView.get();
-            constructingView.set(Boolean.TRUE);
-        }
+        Object prevConstructingView = null;
+        if (postAddToViewEvent)
+            prevConstructingView = requestMap.put(CONSTRUCTING_VIEW_KEY, Boolean.TRUE);
         super.publishEvent(context, systemEventClass, source);
 
         if (postAddToViewEvent && source instanceof UIViewRoot)
             viewRootAddedToView(context);
 
         if (postAddToViewEvent) {
-            if (prevConstructingViewBool == null){
+            if (prevConstructingView == null)
                 requestMap.remove(CONSTRUCTING_VIEW_KEY);
-                constructingView.remove();
-            }else{
-                constructingView.set(prevConstructingViewBool);
-            }
+            else
+                requestMap.put(CONSTRUCTING_VIEW_KEY, prevConstructingView);
         }
     }
 
@@ -67,22 +61,21 @@ public class OpenFacesApplication extends ApplicationWrapper {
             Object source) {
         boolean postAddToViewEvent = PostAddToViewEvent.class.isAssignableFrom(systemEventClass);
 
-
-        Boolean prevConstructingViewBool = null;
+        Map<String, Object> requestMap = null; // avoid invoking getRequestMap() here for MyFaces compatibility (see http://requests.openfaces.org/browse/OF-65) 
+        Object prevConstructingView = null;
         if (postAddToViewEvent) {
-            prevConstructingViewBool = constructingView.get();
-            constructingView.set(Boolean.TRUE);
+            requestMap = context.getExternalContext().getRequestMap();
+            prevConstructingView = requestMap.put(CONSTRUCTING_VIEW_KEY, Boolean.TRUE);
         }
         super.publishEvent(context, systemEventClass, sourceBaseType, source);
         if (postAddToViewEvent && source instanceof UIViewRoot)
             viewRootAddedToView(context);
 
         if (postAddToViewEvent) {
-            if (prevConstructingViewBool == null){
-                constructingView.remove();
-            }else{
-                constructingView.set(prevConstructingViewBool);
-            }
+            if (prevConstructingView == null)
+                requestMap.remove(CONSTRUCTING_VIEW_KEY);
+            else
+                requestMap.put(CONSTRUCTING_VIEW_KEY, prevConstructingView);
         }
     }
 
@@ -92,7 +85,8 @@ public class OpenFacesApplication extends ApplicationWrapper {
     }
 
     public static boolean isConstructingView(FacesContext context) {
-        return (constructingView.get()!=null);
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+        return requestMap.containsKey(CONSTRUCTING_VIEW_KEY);
     }
 
     private void viewRootAddedToView(FacesContext context) {

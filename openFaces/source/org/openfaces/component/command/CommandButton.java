@@ -11,10 +11,7 @@
  */
 package org.openfaces.component.command;
 
-import org.openfaces.component.LazyProcessSupport;
 import org.openfaces.component.OUICommand;
-import org.openfaces.taglib.facelets.FaceletsExpressionCreator;
-import org.openfaces.taglib.internal.AbstractComponentTag;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.context.FacesContext;
@@ -25,7 +22,7 @@ import javax.faces.context.FacesContext;
  *
  * @author Dmitry Pikhulya
  */
-public class CommandButton extends OUICommand implements LazyProcessSupport {
+public class CommandButton extends OUICommand {
     public static final String COMPONENT_TYPE = "org.openfaces.CommandButton";
     public static final String COMPONENT_FAMILY = "org.openfaces.CommandButton";
 
@@ -44,11 +41,6 @@ public class CommandButton extends OUICommand implements LazyProcessSupport {
 
     public String getFamily() {
         return COMPONENT_FAMILY;
-    }
-
-    public void setLazyProcessAttributes(FaceletsExpressionCreator faceletsExpressionCreator, AbstractComponentTag abstractComponentTag){
-        this.setFaceletsExpressionCreator(faceletsExpressionCreator);
-        this.setTag(abstractComponentTag);
     }
 
     @Override

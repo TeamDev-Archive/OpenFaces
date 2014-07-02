@@ -73,7 +73,7 @@ public abstract class AbstractComponentTag extends AbstractTag {
         STANDARD_TYPES.put("double", double.class);
     }
 
-    private  ThreadLocal<FacesContext> facesContext = new ThreadLocal<FacesContext>();
+    private ThreadLocal<FacesContext> facesContext = new ThreadLocal<FacesContext>();
 
     /**
      * Implementations of this method must not use FacesContext.getCurrentInstance() because it doesn't contain
@@ -83,7 +83,7 @@ public abstract class AbstractComponentTag extends AbstractTag {
      * @param component    component whose properties should be set up
      */
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
-//        ensureSupportedJSFVersion();
+        ensureSupportedJSFVersion();
 
         if (component instanceof UIViewRoot) {
             throw new FacesException("All JSF components must be placed inside the <f:view> tag, " +
@@ -135,6 +135,7 @@ public abstract class AbstractComponentTag extends AbstractTag {
     public void removeFacesContext(){
         this.facesContext.remove();
     }
+
 
     protected void setStringProperty(UIComponent component, String propertyName) {
         setStringProperty(component, propertyName, true, false);

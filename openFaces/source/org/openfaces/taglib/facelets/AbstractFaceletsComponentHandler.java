@@ -11,9 +11,6 @@
  */
 package org.openfaces.taglib.facelets;
 
-import org.openfaces.component.LazyAttributesProcessorEnd;
-import org.openfaces.component.LazyAttributesProcessorStart;
-import org.openfaces.component.LazyProcessSupport;
 import org.openfaces.taglib.internal.AbstractComponentTag;
 
 import javax.faces.component.UIComponent;
@@ -41,43 +38,18 @@ public abstract class AbstractFaceletsComponentHandler extends ComponentHandler 
         return metaRuleset;
     }
 
-    private static int lazyProcessorsCount =0;
-
 
     public void setAttributes(FaceletContext faceletContext, Object object) {
         super.setAttributes(faceletContext, object);
         UIComponent component = (UIComponent) object;
-
-        if (component instanceof LazyAttributesProcessorStart){
-            lazyProcessorsCount++;
-        }
-
-        if (component instanceof LazyAttributesProcessorEnd){
-            lazyProcessorsCount--;
-        }
-
-        if (lazyProcessorsCount != 0 && component instanceof LazyProcessSupport){
-            LazyProcessSupport lazyProcessSupport = (LazyProcessSupport) component;
-            lazyProcessSupport.setLazyProcessAttributes(new FaceletsExpressionCreator(faceletContext) {
-                protected TagAttribute getAttribute(String attributeName) {
-                    return AbstractFaceletsComponentHandler.this.getAttribute(attributeName);
-                }
-            },(AbstractComponentTag) metaRule.getTag());
-        }else{
-            AbstractComponentTag tag = (AbstractComponentTag) metaRule.getTag();
-            FacesContext facesContext = faceletContext.getFacesContext();
-            tag.setFacesContext(facesContext);
-            tag.setExpressionCreator(new FaceletsExpressionCreator(faceletContext) {
-                protected TagAttribute getAttribute(String attributeName) {
-                    return AbstractFaceletsComponentHandler.this.getAttribute(attributeName);
-                }
-            });
-            try {
-                tag.setComponentProperties(facesContext, component);
-            } finally {
-                tag.removeFacesContext();
+        AbstractComponentTag tag = (AbstractComponentTag) metaRule.getTag();
+        FacesContext facesContext = faceletContext.getFacesContext();
+        tag.setFacesContext(facesContext);
+        tag.setExpressionCreator(new FaceletsExpressionCreator(faceletContext) {
+            protected TagAttribute getAttribute(String attributeName) {
+                return AbstractFaceletsComponentHandler.this.getAttribute(attributeName);
             }
-        }
+        });
         try {
             tag.setComponentProperties(facesContext, component);
         } finally {

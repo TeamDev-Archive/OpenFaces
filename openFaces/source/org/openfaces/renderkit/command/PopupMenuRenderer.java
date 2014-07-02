@@ -16,13 +16,9 @@ import org.openfaces.component.OUIClientActionHelper;
 import org.openfaces.component.command.MenuItem;
 import org.openfaces.component.command.MenuSeparator;
 import org.openfaces.component.command.PopupMenu;
-import org.openfaces.component.table.ColumnMenuItem;
 import org.openfaces.org.json.JSONArray;
-import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.RendererBase;
-import org.openfaces.renderkit.table.ColumnMenuItemRenderer;
-import org.openfaces.util.ConvertibleToJSON;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
@@ -33,7 +29,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,9 +47,6 @@ public class PopupMenuRenderer extends RendererBase {
     private static final String DEFAULT_DISABLED_ITEM = "o_menu_list_item_disabled";
 
     public static final String ATTR_DEFAULT_INDENT_CLASS = "_defaultIndentClass";
-
-    private static final String MENU_ITEM_CONTENT_SUFFIX = "::content";
-    private static final String MENU_ITEM_CONTROL_SUFFIX = "::control";
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
@@ -89,6 +81,24 @@ public class PopupMenuRenderer extends RendererBase {
         renderInitJS(facesContext, popupMenu);
     }
 
+    private JSONArray getMenuItemParameters(PopupMenu popupMenu) {
+        JSONArray menuItemParameters = new JSONArray();
+        List<UIComponent> components = popupMenu.getChildren();
+        for (UIComponent component : components) {
+            if (component instanceof MenuItem) {
+                MenuItem menuItem = (MenuItem) component;
+                Map parameters = (Map) menuItem.getAttributes().get(MenuItemRenderer.MENU_ITEMS_PARAMETERS_KEY);
+                if (parameters == null) {
+                    parameters = new HashMap();
+                }
+                JSONObject obj = new JSONObject(parameters);
+                menuItemParameters.put(obj);
+            } else if (component instanceof MenuSeparator) {
+                menuItemParameters.put(new JSONObject());
+            }
+        }
+        return menuItemParameters;
+    }
 
     private void renderInitJS(FacesContext context, PopupMenu popupMenu) throws IOException {
         String forId = OUIClientActionHelper.getClientActionInvoker(context, popupMenu);
@@ -138,22 +148,20 @@ public class PopupMenuRenderer extends RendererBase {
                 popupMenu.getSelectedDisabledSubmenuImageUrl(),
 
                 isRootMenu,
+                getMenuItemParameters(popupMenu),
                 popupMenu.getSubmenuHorizontalOffset(),
 
                 rootPopupMenu.getSubmenuShowDelay(),
                 rootPopupMenu.getSubmenuHideDelay(),
                 rootPopupMenu.isSelectDisabledItems(),
 
-                eventsObj,
-                encodeMenuItemsToJSON(context, popupMenu),
-                encodeDefaultMenuItemsAttributes(context, rootPopupMenu));
+                eventsObj);
 
         Styles.renderStyleClasses(context, popupMenu);
 
         Rendering.renderInitScript(context, initScript,
                 Resources.utilJsURL(context),
                 Resources.internalURL(context, "command/popupMenu.js"),
-                Resources.internalURL(context, "command/menuItemConstructor.js"),
                 Resources.internalURL(context, "popup.js"));
     }
 
@@ -177,122 +185,13 @@ public class PopupMenuRenderer extends RendererBase {
 
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-
-    }
-
-
-    public JSONArray encodeMenuItemsToJSON(FacesContext context, UIComponent component){
-        JSONArray menuItems = new JSONArray();
-        PopupMenu popupMenu = (PopupMenu) component;
-        Map<String,Object> params = new HashMap<String, Object>();
-        params.put("context", context);
-
-        if (!popupMenu.getPreloadedItems().isEmpty()) {
-            List<MenuItem> preloadedItems = popupMenu.getPreloadedItems();
-            for (MenuItem preloadedItem : preloadedItems){
-                try {
-                    JSONObject menuItem = preloadedItem.toJSONObject(params);
-                    menuItems.put(menuItem);
-                } catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
-            return menuItems;
-        }
+        if (!component.isRendered())
+            return;
 
         List<UIComponent> components = component.getChildren();
         for (UIComponent child : components) {
-            if (child instanceof MenuItem || child instanceof MenuSeparator){
-                try {
-                    if (child.getChildCount() > 0) {
-                        PopupMenu childPopup = null;
-                        List<UIComponent> children = child.getChildren();
-                        List<UIComponent> componentsToRender = new ArrayList<UIComponent>();
-                        for (UIComponent childElement : children) {
-                            if (childElement instanceof PopupMenu) {
-                                childPopup = (PopupMenu) childElement;
-                            }else{
-                                componentsToRender.add(childElement);
-                            }
-                        }
-                        if (childPopup!=null){
-                            JSONObject popupMenuItem = ((MenuItem)child).toJSONObject(params);
-                            childPopup.encodeAll(context);
-                            popupMenuItem.put("menuId", childPopup.getClientId(context));
-                            menuItems.put(popupMenuItem);
-                        }else {
-                            JSONObject menuItem = ((MenuItem)child).toJSONObject(params);
-                            encodeChildElementsWithAnchor(context, popupMenu, componentsToRender, menuItem.getString("id"));
-                            menuItem.put("dynamicContent",true);
-                            menuItems.put(menuItem);
-                        }
-                    }else {
-                        Boolean addCommand = false;
-                        if (child instanceof ColumnMenuItem){
-                            ((ColumnMenuItem)child).setupMenuItemParams(context);
-                        }else{
-                            if (!(child instanceof MenuSeparator) ){
-                                encodeControlElementWithAnchor(context, popupMenu, (MenuItem)child, ((MenuItem)child).getClientId());
-                                addCommand = true;
-                            }
-                        }
-                        JSONObject menuItem = ((ConvertibleToJSON)child).toJSONObject(params);
-                        if (addCommand)
-                            menuItem.put("addCommand",true);
-                        menuItems.put(menuItem);
-                    }
-                } catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
+            if (child instanceof MenuItem || child instanceof MenuSeparator)
+                child.encodeAll(context);
         }
-        return menuItems;
     }
-
-    public void encodeControlElementWithAnchor (FacesContext context, PopupMenu popupMenu, MenuItem component, String anchorId) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        writer.startElement("div", popupMenu);
-        writeAttribute(writer, "style", "display:none;");
-        writeAttribute(writer, "id", anchorId + MENU_ITEM_CONTROL_SUFFIX);
-        writeEventsWithAjaxSupport(context, writer, component,  getActionRequestKey(context, component));
-        writer.endElement("div");
-    }
-
-    protected String getActionRequestKey(FacesContext context, UIComponent component) {
-        return component.getClientId(context) + "::clicked";
-    }
-
-    public void encodeChildElementsWithAnchor(FacesContext context, UIComponent component, List<UIComponent> children, String anchorId)  throws IOException{
-        ResponseWriter writer = context.getResponseWriter();
-        PopupMenu popupMenu = (PopupMenu) component;
-        writer.startElement("div", popupMenu);
-        writeAttribute(writer, "style", "display:none;");
-        writeAttribute(writer, "id", anchorId + MENU_ITEM_CONTENT_SUFFIX);
-        for (UIComponent child : children){
-            child.encodeAll(context);
-        }
-        writer.endElement("div");
-
-    }
-
-    public JSONObject encodeDefaultMenuItemsAttributes(FacesContext context, UIComponent component){
-        JSONObject defaultAttributes = new JSONObject();
-
-        try {
-         defaultAttributes.put("DEFAULT_LIST_ITEM_CLASS", "o_menu_list_item");
-         defaultAttributes.put("DEFAULT_IMG_CLASS", "o_menu_list_item_img");
-         defaultAttributes.put("DEFAULT_ARROW_SPAN_CLASS", "o_menu_list_item_arrow_span");
-         defaultAttributes.put("DEFAULT_INDENT_CLASS", "o_menu_list_item_image_span");
-         defaultAttributes.put("DEFAULT_CONTENT_CLASS", "o_menu_list_item_content");
-         defaultAttributes.put("DEFAULT_FAKE_SPAN_CLASS", "o_menu_list_item_img_fakespan");
-         defaultAttributes.put("DEFAULT_LIST_SEPARATOR_CLASS", "o_menu_list_item o_menu_list_item_separator");
-         defaultAttributes.put("DEFAULT_MENU_SEPARATOR_CLASS", "o_menu_separator");
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return defaultAttributes;
-    }
-
-
-
 }

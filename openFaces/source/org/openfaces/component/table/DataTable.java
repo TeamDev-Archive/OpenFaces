@@ -16,8 +16,6 @@ import org.openfaces.component.table.impl.GroupingStructureColumn;
 import org.openfaces.component.table.impl.NodeInfo;
 import org.openfaces.component.table.impl.TableDataModel;
 import org.openfaces.renderkit.TableUtil;
-import org.openfaces.taglib.facelets.FaceletsExpressionCreator;
-import org.openfaces.taglib.internal.AbstractComponentTag;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.Components;
 import org.openfaces.util.Faces;
@@ -45,7 +43,7 @@ import java.util.Set;
  *
  * @author Dmitry Pikhulya
  */
-public class DataTable extends AbstractTable  {
+public class DataTable extends AbstractTable {
     public static final String COMPONENT_TYPE = "org.openfaces.DataTable";
     public static final String COMPONENT_FAMILY = "org.openfaces.DataTable";
     private static final String RENDERED_PAGE_COUNT_ATTR = "_renderedPageCount";
@@ -59,18 +57,12 @@ public class DataTable extends AbstractTable  {
     private Boolean customDataProviding;
 
     public DataTable() {
-
         setRendererType("org.openfaces.DataTableRenderer");
     }
 
     @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
-    }
-
-    public void setLazyProcessAttributes(FaceletsExpressionCreator faceletsExpressionCreator, AbstractComponentTag abstractComponentTag){
-        this.setFaceletsExpressionCreator(faceletsExpressionCreator);
-        this.setTag(abstractComponentTag);
     }
 
     @Override
@@ -293,8 +285,7 @@ public class DataTable extends AbstractTable  {
     public void encodeBegin(FacesContext facesContext) throws IOException {
         if (AjaxUtil.getSkipExtraRenderingOnPortletsAjax(facesContext))
             return;
-        lazyComponentPropertiesSetter();
-        beforeRenderResponse(facesContext);
+           beforeRenderResponse(facesContext);
 
         setRenderedPageCount(getModel().getPageCount());
         super.encodeBegin(facesContext);

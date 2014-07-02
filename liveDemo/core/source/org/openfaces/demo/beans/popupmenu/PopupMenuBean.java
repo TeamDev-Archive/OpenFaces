@@ -11,7 +11,6 @@
  */
 package org.openfaces.demo.beans.popupmenu;
 
-import javax.faces.event.AjaxBehaviorEvent;
 import java.io.Serializable;
 
 /**

@@ -11,17 +11,14 @@
  */
 package org.openfaces.component.select;
 
-import org.openfaces.component.LazyProcessSupport;
 import org.openfaces.component.Side;
 import org.openfaces.component.input.DropDownFieldBase;
 import org.openfaces.component.input.SuggestionMode;
-import org.openfaces.taglib.facelets.FaceletsExpressionCreator;
-import org.openfaces.taglib.internal.AbstractComponentTag;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.context.FacesContext;
 
-public class SelectOneMenu extends DropDownFieldBase implements LazyProcessSupport {
+public class SelectOneMenu extends DropDownFieldBase {
     public static final String COMPONENT_TYPE = "org.openfaces.SelectOneMenu";
     public static final String COMPONENT_FAMILY = "org.openfaces.SelectOneMenu";
     private static final int DEFAULT_ITEM_PRESENTATION_COLUMN = -1;
@@ -36,12 +33,6 @@ public class SelectOneMenu extends DropDownFieldBase implements LazyProcessSuppo
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
-
-    public void setLazyProcessAttributes(FaceletsExpressionCreator faceletsExpressionCreator, AbstractComponentTag abstractComponentTag){
-        this.setFaceletsExpressionCreator(faceletsExpressionCreator);
-        this.setTag(abstractComponentTag);
-    }
-
 
     @Override
     public Object saveState(FacesContext context) {

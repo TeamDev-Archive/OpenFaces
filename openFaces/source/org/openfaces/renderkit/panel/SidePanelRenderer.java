@@ -12,7 +12,6 @@
 package org.openfaces.renderkit.panel;
 
 import org.openfaces.component.panel.SidePanel;
-import org.openfaces.component.panel.SidePanelAlignment;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.Environment;
 import org.openfaces.util.RawScript;
@@ -80,12 +79,6 @@ public class SidePanelRenderer extends RendererBase implements NamingContainer {
         //panel
         writer.startElement("div", sidePanel);
         writer.writeAttribute("id", clientId + PANEL_SUFFIX, null);
-        if (sidePanel.getAlignment().equals(SidePanelAlignment.TOP) || sidePanel.getAlignment().equals(SidePanelAlignment.BOTTOM)){
-            writer.writeAttribute("style", "height:"+ sidePanel.getSize(),null);
-        }else{
-            writer.writeAttribute("style", "width:"+ sidePanel.getSize(),null);
-        }
-
         Rendering.writeStandardEvents(writer, sidePanel);
         String panelDefaultClass = Styles.getCSSClass(context,
                 sidePanel, sidePanel.getStyle(),
@@ -117,7 +110,7 @@ public class SidePanelRenderer extends RendererBase implements NamingContainer {
                 "o_sidepanel_content", sidePanel.getContentClass()
         );
         writer.writeAttribute("class", contentDefaultClass, null);
-        Styles.renderStyleClasses(context, component);
+
         encodeInitScript(context, component);
     }
 
@@ -126,7 +119,7 @@ public class SidePanelRenderer extends RendererBase implements NamingContainer {
         if (!component.isRendered()) return;
         ResponseWriter writer = context.getResponseWriter();
 
-
+        Styles.renderStyleClasses(context, component);
 
         writer.endElement("div");
         writer.endElement("div");

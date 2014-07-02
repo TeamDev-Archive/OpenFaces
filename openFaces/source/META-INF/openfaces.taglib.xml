@@ -1454,19 +1454,5 @@
       <renderer-type>org.openfaces.InputSecretRenderer</renderer-type>
       <handler-class>org.openfaces.taglib.facelets.input.InputSecretTagHandler</handler-class>
     </component>
-  </tag>
-  <tag>
-    <tag-name>LazyAttributesProcessorStart</tag-name>
-    <component>
-      <component-type>org.openfaces.LazyAttributesProcessorStart</component-type>
-      <handler-class>org.openfaces.taglib.facelets.LazyAttributesProcessorStartTagHandler</handler-class>
-    </component>
-  </tag>
-  <tag>
-    <tag-name>LazyAttributesProcessorEnd</tag-name>
-    <component>
-      <component-type>org.openfaces.LazyAttributesProcessorEnd</component-type>
-      <handler-class>org.openfaces.taglib.facelets.LazyAttributesProcessorEndTagHandler</handler-class>
-    </component>
-  </tag>
+  </tag>  
 </facelet-taglib>

@@ -12,22 +12,22 @@
 
 O$.Popup = {
   PULLED_OUT_ID_SUFFIX: "_pulledOut",
-  _init: function (popupId, useDisplayNoneByDefault) {
+  _init: function(popupId, useDisplayNoneByDefault) {
     var popup = O$.initComponent(popupId, null, {
       _visibilityChangeListeners: null,
 
-      _addVisibilityChangeListener: function (listenerObjectFunction) {
+      _addVisibilityChangeListener: function(listenerObjectFunction) {
         if (!this._visibilityChangeListeners) {
           this._visibilityChangeListeners = [];
         }
         this._visibilityChangeListeners.push(listenerObjectFunction);
       },
 
-      getLeft: function () {
+      getLeft: function() {
         return O$.getElementPos(popup, true).x;
       },
 
-      getTop: function () {
+      getTop: function() {
         return O$.getElementPos(popup, true).y;
       },
 
@@ -43,7 +43,7 @@ O$.Popup = {
           popup._ieTransparencyControl.style.top = top + "px";
       },
 
-      _prepareForRearrangementBeforeShowing: function () {
+      _prepareForRearrangementBeforeShowing: function() {
         if (this.isVisible())
           return;
         var style = O$.getElementStyle(this, ["display"]);
@@ -51,23 +51,23 @@ O$.Popup = {
           this.style.display = this._originalStyleDisplay;
       },
 
-      showAtXY: function (x, y) {
+      showAtXY: function(x, y) {
         popup.style.left = x + "px";
         popup.style.top = y + "px";
         this.show();
       },
 
-      _showByElement: function (element, horizAlignment, vertAlignment, horizDistance, vertDistance, ignoreVisibleArea, disableRepositioning) {
+      _showByElement: function(element, horizAlignment, vertAlignment, horizDistance, vertDistance, ignoreVisibleArea, disableRepositioning) {
         this.show();
         O$.alignPopupByElement(this, element, horizAlignment, vertAlignment, horizDistance, vertDistance, ignoreVisibleArea, disableRepositioning);
       },
 
 
-      show: function () {
+      show: function() {
         if (this.isVisible())
           return;
 
-        setTimeout(function () {
+        setTimeout(function() {
           O$.addIETransparencyControl(popup);
         }, 1);
         this.style.visibility = "visible";
@@ -77,7 +77,7 @@ O$.Popup = {
         O$.Popup._notifyVisibilityChangeListeners(this);
       },
 
-      hide: function () {
+      hide: function() {
         if (!this.isVisible())
           return;
 
@@ -86,7 +86,7 @@ O$.Popup = {
         if (O$.isMozillaFF() || O$.isSafari3AndLate() /*todo:check whether O$.isSafari3AndLate check is really needed (it was added by mistake)*/) {
           var oldOverflow = O$.getElementStyle(this, "overflow");
           this.style.overflow = "hide"; // to avoid regaining focus when tabbing out from an opened DropDownField under Mozilla
-          setTimeout(function () { // time-out is needed for Mozilla when selecting an item in DropDownField (JSFC-2620)
+          setTimeout(function() { // time-out is needed for Mozilla when selecting an item in DropDownField (JSFC-2620)
             popup.style.display = "none";
             popup.style.overflow = oldOverflow;
           }, 1);
@@ -96,13 +96,13 @@ O$.Popup = {
         O$.Popup._notifyVisibilityChangeListeners(this);
       },
 
-      isVisible: function () {
+      isVisible: function() {
         var style = O$.getElementStyle(this, ["visibility", "display"]);
         var visible = (style.visibility != "hidden") && (style.display != "none");
         return visible;
       },
 
-      _pullFromContainer: function () {
+      _pullFromContainer: function() {
         if (this._pulledOut) return;
         this._pulledOut = true;
         var newParent = O$.getDefaultAbsolutePositionParent();
@@ -140,52 +140,30 @@ O$.Popup = {
 
   },
 
-  _notifyVisibilityChangeListeners: function (popup) {
+  _notifyVisibilityChangeListeners: function(popup) {
     var listeners = popup._visibilityChangeListeners;
     if (listeners && listeners.length > 0) {
-      for (var i = 0; i < listeners.length; i++) {
+      for (var i = 0; i < listeners.length; i ++) {
         listeners[i](popup.isVisible());
       }
     }
   },
 
-  _hideAllPopupsExceptOne: function (popupToRetain) {
+  _hideAllPopupsExceptOne: function(popupToRetain) {
     if (!O$._popupsOnPage)
       return;
-    O$._popupsOnPage.forEach(function (popupId) {
+    O$._popupsOnPage.forEach(function(popupId) {
       var currPopup = O$(popupId) || O$(popupId + O$.Popup.PULLED_OUT_ID_SUFFIX);
       if (!currPopup)
         return; // popup can be removed from page with A4J
-
-      if (currPopup != popupToRetain && currPopup.hide)
-        currPopup.hide();//currPopup.hide add to be sure that popup is initialized, this made to avoid problem with lazy popup menu
+      if (currPopup != popupToRetain)
+        currPopup.hide();
     });
   }
 
 };
 
-O$.addEventHandler(document, "mousewheel", function (e) {
-  var evt = O$.getEvent(e);
-  if (!evt && !O$._popupsOnPage) return;
-
-  O$._popupsOnPage.forEach(function (popupId) {
-    var popup = O$(popupId) || O$(popupId + O$.Popup.PULLED_OUT_ID_SUFFIX);
-    if (!popup || !popup.isVisible() || insidePopup(popup, evt.x, evt.y)) {
-      return;
-    }
-    popup.hide();
-  });
-
-  function insidePopup(popup, x, y) {
-    var rect = popup.getBoundingClientRect();
-    var insideByX = x > rect.left && x < (rect.left + rect.width);
-    var insideByY = y > rect.top && y < (rect.top + rect.height);
-
-    return insideByX && insideByY;
-  }
-});
-
-document._addClickListener(function (e) {
+document._addClickListener(function(e) {
   var evt = O$.getEvent(e);
   if (!evt || !O$._popupsOnPage) return;
 
@@ -198,7 +176,7 @@ document._addClickListener(function (e) {
 
   var clickedElementId = clickedElement.id;
 
-  O$._popupsOnPage.forEach(function (popupId) {
+  O$._popupsOnPage.forEach(function(popupId) {
     var popup = O$(popupId) || O$(popupId + O$.Popup.PULLED_OUT_ID_SUFFIX);
     if ((!popup) || (popup == {}) || !(popup.hide))
       return; // popup can be removed from page with A4J
@@ -209,11 +187,11 @@ document._addClickListener(function (e) {
   });
 });
 
-O$.addEventHandler(document, "keydown", function (e) {
+O$.addEventHandler(document, "keydown", function(e) {
   var evt = O$.getEvent(e);
   if (evt.keyCode != 27 || !O$._popupsOnPage) return;
 
-  O$._popupsOnPage.forEach(function (popupId) {
+  O$._popupsOnPage.forEach(function(popupId) {
     var popup = O$(popupId) || O$(popupId + O$.Popup.PULLED_OUT_ID_SUFFIX);
     if (!popup)
       return; // popup can be removed from page with A4J

@@ -31,6 +31,7 @@ public class ForEachRenderer extends RendererBase {
         if (!component.isRendered()) return;
         super.encodeBegin(context, component);
         ForEach forEach = (ForEach) component;
+        forEach.cleanData();
         forEach.setObjectId(null);
         String wrapperTagName = forEach.getWrapperTagName();
         if (wrapperTagName == null || wrapperTagName.length() == 0)
@@ -44,7 +45,7 @@ public class ForEachRenderer extends RendererBase {
             writer.writeAttribute("class", classStr, null);
         }
         Styles.renderStyleClasses(context, forEach);
-        forEach.cleanData();
+
     }
 
     @Override
@@ -72,6 +73,7 @@ public class ForEachRenderer extends RendererBase {
             return;
         ResponseWriter writer = context.getResponseWriter();
         writer.endElement(wrapperTagName);
+
     }
 
     @Override

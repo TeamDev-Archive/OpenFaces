@@ -5,43 +5,89 @@
 
   <div style="overflow: hidden;">
 
-    <o:tabbedPane loadingMode="ajaxAlways"
-                  style="margin-top: 10px;"
-                  containerStyle="padding: 15px 15px 15px 15px;"
-                  tabClass="tab_name">
-      <o:subPanel caption="Poppy">
-        <h:graphicImage url="../images/tabbedpane/bigFlower_small.jpg" width="228" height="171"/>
-      </o:subPanel>
-      <o:subPanel caption="Tree stump">
-        <h:graphicImage url="../images/tabbedpane/bole_small.jpg" width="228" height="171"/>
-      </o:subPanel>
-      <o:subPanel caption="Lane">
-        <h:graphicImage url="../images/tabbedpane/pathway_small.jpg" width="228" height="171"/>
-      </o:subPanel>
+    <div style="float: left; width: 315px; margin-bottom: 2em;">
+      <h3 style="text-align: left;">Server</h3>
+      <br/>
+      <span class="simple_text">Every time a tab is changed, a corresponding tabbed page is reloaded with the tab content.</span>
+      <br/>
 
-      <o:subPanel caption="calendar">
-        <o:calendar/>
-        <o:commandLink type="button"
-                       id="ololo"
-                       disabled="false"
-                       value="Ajax Submit" actionListener="#{CommandLinkBean.composeFullName}"
-                       execute="input" render="output"
-                       styleClass="largeFont commandLink">
-          <span>fff</span>
-        </o:commandLink>
-      </o:subPanel>
+      <o:tabbedPane loadingMode="server"
+                    style="margin-top: 10px;"
+                    containerStyle="padding: 15px 15px 15px 15px;"
+                    tabClass="tab_name">
+        <o:subPanel caption="Poppy">
+          <h:graphicImage url="../images/tabbedpane/bigFlower_small.jpg" width="228" height="171"/>
+        </o:subPanel>
+        <o:subPanel caption="Tree stump">
+          <h:graphicImage url="../images/tabbedpane/bole_small.jpg" width="228" height="171"/>
+        </o:subPanel>
+        <o:subPanel caption="Lane">
+          <h:graphicImage url="../images/tabbedpane/pathway_small.jpg" width="228" height="171"/>
+        </o:subPanel>
+      </o:tabbedPane>
+    </div>
+    <div style="float: left; width: 315px; margin-bottom: 2em;">
+      <h3 style="text-align: left;">Client</h3>
+      <br/>
+      <span class="simple_text"> The content of all tabs is loaded to the client side on the first page load.</span>
+      <br/>
 
-      <div style="margin-top: 12px; margin-bottom: 15px;" class="largeFont">
-        <h:outputText styleClass="smallFont" value="Full name:"/>
-        <h:outputText id="output" value="#{CommandLinkBean.fullName}" escape="false" styleClass="largeFont output #{CommandLinkBean.outputClass}" />
-      </div>
+      <o:tabbedPane loadingMode="client"
+                    style="margin-top: 10px;"
+                    containerStyle="padding: 15px 15px 15px 15px;"
+                    tabClass="tab_name">
+        <o:subPanel caption="Poppy">
+          <h:graphicImage url="../images/tabbedpane/bigFlower_small.jpg" width="228" height="171"/>
+        </o:subPanel>
+        <o:subPanel caption="Tree stump">
+          <h:graphicImage url="../images/tabbedpane/bole_small.jpg" width="228" height="171"/>
+        </o:subPanel>
+        <o:subPanel caption="Lane">
+          <h:graphicImage url="../images/tabbedpane/pathway_small.jpg" width="228" height="171"/>
+        </o:subPanel>
+      </o:tabbedPane>
+    </div>
+    <div style="float: left; width: 315px; margin-bottom: 2em;">
+      <h3 style="text-align: left;">AjaxLazy</h3>
+      <br/>
+      <span class="simple_text"> The tab content is retrieved from the server with Ajax request on the first switch to the tab.</span>
+      <br/>
 
-    </o:tabbedPane>
-    <script type="text/javascript">
-    function dis(){
-      document.getElementById("form:ololo").setDisabled(true);
-    }
-  </script>
-    <button onmouseover="dis()">ohoho</button>
+      <o:tabbedPane loadingMode="ajaxLazy"
+                    style="margin-top: 10px;"
+                    containerStyle="padding: 15px 15px 15px 15px;"
+                    tabClass="tab_name">
+        <o:subPanel caption="Poppy">
+          <h:graphicImage url="../images/tabbedpane/bigFlower_small.jpg" width="228" height="171"/>
+        </o:subPanel>
+        <o:subPanel caption="Tree stump">
+          <h:graphicImage url="../images/tabbedpane/bole_small.jpg" width="228" height="171"/>
+        </o:subPanel>
+        <o:subPanel caption="Lane">
+          <h:graphicImage url="../images/tabbedpane/pathway_small.jpg" width="228" height="171"/>
+        </o:subPanel>
+      </o:tabbedPane>
+    </div>
+    <div style="float: left; width: 315px; margin-bottom: 2em;">
+      <h3 style="text-align: left;">AjaxAlways</h3>
+      <br/>
+      <span class="simple_text"> The tab content is retrieved from the server with Ajax request on every tab switch.</span>
+      <br/>
+
+      <o:tabbedPane loadingMode="ajaxAlways"
+                    style="margin-top: 10px;"
+                    containerStyle="padding: 15px 15px 15px 15px;"
+                    tabClass="tab_name">
+        <o:subPanel caption="Poppy">
+          <h:graphicImage url="../images/tabbedpane/bigFlower_small.jpg" width="228" height="171"/>
+        </o:subPanel>
+        <o:subPanel caption="Tree stump">
+          <h:graphicImage url="../images/tabbedpane/bole_small.jpg" width="228" height="171"/>
+        </o:subPanel>
+        <o:subPanel caption="Lane">
+          <h:graphicImage url="../images/tabbedpane/pathway_small.jpg" width="228" height="171"/>
+        </o:subPanel>
+      </o:tabbedPane>
+    </div>
   </div>
 </div>
