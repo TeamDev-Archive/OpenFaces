@@ -106,6 +106,7 @@ public class PopupLayerTest extends OpenFacesTestCase {
     public void testShowPopupLayerAtXYJSFunction() {
         testAppFunctionalPage("/components/popuplayer/popupLayerJSFunctions.jsf");
 
+
         PopupLayerInspector popupLayer = popupLayer("formID:showAtXY");
 
         element("showPopupLayerAtXY").click();
