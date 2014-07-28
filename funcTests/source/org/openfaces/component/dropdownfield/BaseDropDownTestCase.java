@@ -405,6 +405,7 @@ public abstract class BaseDropDownTestCase extends OpenFacesTestCase {
         dropdown.popup().items().get(1).click();
         dropdown.field().keyDown(KeyEvent.VK_DOWN);
         OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
+        sleep(1300);
         dropdown.popup().items().get(1).assertStyle("background-color: black;");
     }
 
