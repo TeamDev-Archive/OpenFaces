@@ -574,6 +574,10 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         }
         return cachedRenderedColumns;
     }
+    public  void clearRenderedColumnCache(){
+        cachedRenderedColumns = null;
+    }
+
 
     private List<BaseColumn> calculateRenderedColumns() {
         Iterable<String> columnsOrder = getColumnsOrder();
@@ -1273,12 +1277,12 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         processModelUpdates(context);
 
         processModelDependentUpdates(context);
-
         ValueExpression sortColumnIdExpression = getValueExpression("sortColumnId");
+        ValueExpression sortAscendingExpression = getValueExpression("sortAscending");
+
         ELContext elContext = context.getELContext();
         if (sortColumnIdExpression != null)
             sortColumnIdExpression.setValue(elContext, getSortColumnId());
-        ValueExpression sortAscendingExpression = getValueExpression("sortAscending");
         if (sortAscendingExpression != null)
             sortAscendingExpression.setValue(elContext, isSortAscending());
 

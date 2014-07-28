@@ -157,19 +157,28 @@
     <param-value>true</param-value>
   </context-param>-->
 
+  <context-param>
+    <description>Attribute which says application to submit additional column order during ajax resizing added to fix august Issue</description>
+    <param-name>org.openfaces.borderLayout.split.calculating</param-name>
+    <param-value>true</param-value>
+  </context-param>
+
 <!--  <context-param>
     <description>Attribute which says application to run some additional rendering for IE8/IE9 + DocumentMode:IE7 configuration</description>
     <param-name>org.openfaces.table.ajax.iedocmode.support</param-name>
     <param-value>true</param-value>
   </context-param> -->
 
-
+  <context-param>
+    <description></description>
+    <param-name> org.openfaces.disabledBorderLayoutPanelCalculating</param-name>
+    <param-value>false</param-value>
+  </context-param>
   <context-param>
     <description>Specifies the maximum size of each file in kilobytes.</description>
     <param-name>org.openfaces.fileUpload.fileSizeLimit</param-name>
     <param-value>10000</param-value>
   </context-param>
-
 
   <context-param>
     <description>This flag indicates whether the focus is saved between form submissions

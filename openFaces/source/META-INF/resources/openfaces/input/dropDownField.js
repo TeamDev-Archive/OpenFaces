@@ -11,7 +11,7 @@
  */
 
 O$.DropDownField = {
-  _init:function (dropDownId, popupTimeout, listAlignment, rolloverPopupItemClass, itemValues, customValueAllowed, required, suggestionMode, suggestionDelay, suggestionMinChars, manualListOpeningAllowed, autoCompleteOn, totalItemCount, pageSize, popupTableStructureAndStyleParams, cachingAllowed, itemPresentationColumn, changeValueOnSelect) {
+  _init:function (dropDownId,parentId, popupTimeout, listAlignment, rolloverPopupItemClass, itemValues, customValueAllowed, required, suggestionMode, suggestionDelay, suggestionMinChars, manualListOpeningAllowed, autoCompleteOn, totalItemCount, pageSize, popupTableStructureAndStyleParams, cachingAllowed, itemPresentationColumn, changeValueOnSelect) {
     var dropDown = O$(dropDownId);
     var super_ = O$.extend(dropDown, {
       _listAlignment:listAlignment,
@@ -26,6 +26,7 @@ O$.DropDownField = {
       _itemPresentationContainer:O$(dropDownId + "::itemPresentation::container"),
       _itemPresentationColumn:itemPresentationColumn,
       _fieldContainer:O$(dropDownId + "::field::container"),
+      _parentId: parentId,
       _changeValueOnSelect:changeValueOnSelect,
 
       _showPresentationPromptText:function (promptText) {

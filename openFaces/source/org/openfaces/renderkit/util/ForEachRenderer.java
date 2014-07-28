@@ -45,7 +45,7 @@ public class ForEachRenderer extends RendererBase {
             writer.writeAttribute("class", classStr, null);
         }
         Styles.renderStyleClasses(context, forEach);
-
+        forEach.cleanData();
     }
 
     @Override

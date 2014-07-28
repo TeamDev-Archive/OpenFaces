@@ -12,6 +12,57 @@
 // -------------------------- COMMON TABLE FUNCTIONS
 
 O$.Table = {
+  saveEnabledSettings:[],
+
+  setEnabledSettingMenuForId:function (tableId, isEnabled) {
+    for (var i = 0; i < O$.Table.saveEnabledSettings.length; i++) {
+      if (O$.Table.saveEnabledSettings[i].tableId == tableId) {
+        O$.Table.saveEnabledSettings[i].enabledMenu = isEnabled
+        return;
+      }
+    }
+    O$.Table.saveEnabledSettings[O$.Table.saveEnabledSettings.length] = {
+      tableId:tableId,
+      enabledMenu:isEnabled,
+      enabledSorting:true
+
+    }
+  },
+
+  getEnabledSettingMenuForId:function (tableId) {
+    for (var i = 0; i < O$.Table.saveEnabledSettings.length; i++) {
+      if (O$.Table.saveEnabledSettings[i].tableId == tableId) {
+        return O$.Table.saveEnabledSettings[i].enabledMenu;
+      }
+    }
+    return true;
+  },
+
+  setEnabledSettingSortingForId:function (tableId, isEnabled) {
+    for (var i = 0; i < O$.Table.saveEnabledSettings.length; i++) {
+      if (O$.Table.saveEnabledSettings[i].tableId == tableId) {
+        O$.Table.saveEnabledSettings[i].enabledSorting = isEnabled
+        return;
+      }
+    }
+
+    O$.Table.saveEnabledSettings[O$.Table.saveEnabledSettings.length] = {
+      tableId:tableId,
+      enabledSorting:isEnabled,
+      enabledMenu:true
+    }
+  },
+
+  getEnabledSettingSortingForId:function (tableId) {
+    for (var i = 0; i < O$.Table.saveEnabledSettings.length; i++) {
+      if (O$.Table.saveEnabledSettings[i].tableId == tableId) {
+        return O$.Table.saveEnabledSettings[i].enabledSorting;
+      }
+    }
+    return true;
+  },
+
+
   SortingRule:O$.createClass(null, {
     constructor:function (columnId, ascending) {
       this.columnId = columnId;
@@ -36,6 +87,23 @@ O$.Table = {
   _initDataTableAPI:function (table) {
     O$.extend(table, {
       _of_dataTableComponentMarker:true,
+
+      isEnabledMenu:function () {
+        return  O$.Table.getEnabledSettingMenuForId(this.id)
+      },
+
+      setEnabledMenu:function (EnabledMenu) {
+        O$.Table.setEnabledSettingMenuForId(this.id, EnabledMenu)
+      },
+
+      isEnabledSorting:function () {
+        return  O$.Table.getEnabledSettingSortingForId(this.id)
+      },
+
+      setEnabledSorting:function (EnabledSorting) {
+        O$.Table.setEnabledSettingSortingForId(this.id, EnabledSorting)
+      },
+
       selectAllRows:function () {
         this.__selectAllRows();
       },
@@ -189,6 +257,29 @@ O$.Table = {
             table.appendChild(auxiliaryTags);
         });
       });
+
+    if (table._params.scrolling) {
+      if (table.style.height == "auto") {
+        table.style.height = table.body._centerScrollingArea._table.clientHeight
+                + table.header._sectionTable.clientHeight + 25 + "px";
+      }
+    }
+    if ((table.parentElement.className.indexOf("FixWidthPercent") != -1)) {
+      var oldValue = table.style.width;
+      table.style.width = "10px";
+      table.style.height = "10px";
+      var saveDifference = table.parentElement.parentElement.parentElement.parentElement.clientHeight;
+      table.parentElement.style.width = table.parentElement.parentElement.parentElement.clientWidth + "px";
+      table.style.height = table.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.clientHeight -
+              table.parentElement.parentElement.parentElement.parentElement.clientHeight + "px";
+      table.style.width = oldValue;
+
+      window.onresize = function () {
+        table.parentElement.style.width = table.parentElement.parentElement.parentElement.clientWidth + "px";
+        table.style.height = table.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.clientHeight -
+                saveDifference + "px";
+      }
+    }
   },
 
   _initApiFunctions:function (table) {
@@ -2269,14 +2360,30 @@ O$.Table = {
       } else if (table._selectionMode != "hierarchical") {
         if (e.ctrlKey || e.metaKey) {
           table._toggleItemSelected(row._index);
-          var newSelectedRowIndexes = table.__getSelectedRowIndexes();
+
           table._baseRowIndex = (newSelectedRowIndexes.indexOf(row._index) != -1) ? row._index : null;
           table._baseSelectedRowIndexes = newSelectedRowIndexes;
           table._rangeEndRowIndex = null;
-        } else
+        } else if (e.shiftKey) {
+          var newSelectedRowIndexes = table.__getSelectedRowIndexes();
+          var addNewIndex = []
+          var lastIndex = newSelectedRowIndexes[newSelectedRowIndexes.length - 1];
+          if (row._index > lastIndex) {
+            for (var i = lastIndex; i <= row._index; i++) {
+              addNewIndex.push(i)
+            }
+          } else {
+            for (var i = row._index; i <= lastIndex; i++) {
+              addNewIndex.push(i)
+            }
+          }
+          table._setSelectedItems(addNewIndex);
+        } else {
           table._setSelectedItems([row._index]);
+        }
+
       } else {
-        // don't change hierarchical selection on row click
+// don't change hierarchical selection on row click
       }
     }
   },
@@ -2758,36 +2865,31 @@ O$.Table = {
 
       O$.initUnloadableComponent(colHeader);
       O$.addEventHandler(colHeader, "click", function () {
-        var focusField = O$(table.id + "::focused");
-        if (focusField)
-          focusField.value = true; // set true explicitly before it gets auto-set when the click bubbles up (JSFC-801)
-        var columnIndex = column._index;
+        if (table.isEnabledSorting()) {
+          var focusField = O$(table.id + "::focused");
+          if (focusField)
+            focusField.value = true; // set true explicitly before it gets auto-set when the click bubbles up (JSFC-801)
+          var columnIndex = column._index;
 
-        var columnId = table._columns[columnIndex].columnId;
-        var rule = table.sorting._getPrimarySortingRule();
-        if (rule == null)
-          rule = new O$.Table.SortingRule(columnId, true);
-        else {
-          if (rule.columnId == columnId)
-            if (rule.ascending) {
-              rule.ascending = false;
-            } else {
-              if (unsortedStateAllowed)
-                rule = null;
-              else
-                rule.ascending = true;
-            }
+          var columnId = table._columns[columnIndex].columnId;
+          var rule = table.sorting._getPrimarySortingRule();
+          if (rule == null)
+            rule = new O$.Table.SortingRule(columnId, true);
           else {
-            rule.columnId = columnId;
-            rule.ascending = true;
+            if (rule.columnId == columnId)
+              rule.ascending = !rule.ascending;
+            else {
+              rule.columnId = columnId;
+              rule.ascending = true;
+            }
           }
+          table.combineSubmissions(function () {
+            table.sorting._setPrimarySortingRule(rule);
+            if (table.grouping && table.grouping._groupOnHeaderClick) {
+              table.grouping.setGroupingRules([new O$.Table.GroupingRule(rule.columnId, rule.ascending)]);
+            }
+          });
         }
-        table.combineSubmissions(function () {
-          table.sorting._setPrimarySortingRule(rule);
-          if (table.grouping && table.grouping._groupOnHeaderClick) {
-            table.grouping.setGroupingRules([new O$.Table.GroupingRule(rule.columnId, rule.ascending)]);
-          }
-        });
       });
 
       O$.setupHoverStateFunction(colHeader, function (mouseInside) {
@@ -4811,6 +4913,7 @@ O$.Table = {
 O$.ColumnMenu = {
 
   _appendMenu:function (tableId, cell, columnId, hidingEnabled) {
+    O$.ColumnMenu.table = O$(tableId);
     var table = O$(tableId);
     var columnMenuButtonTable = table._columnMenuButtonTable;
     var columnMenuId = table._columnMenuId;
@@ -4849,17 +4952,20 @@ O$.ColumnMenu = {
     }
 
     O$.setupHoverStateFunction(cell, function (mouseOver) {
-      if (mouseOver && !O$.ColumnMenu._menuOpened) {
-        O$.ColumnMenu._currentColumnId = columnId;
-        O$.ColumnMenu._menuFixer = menuFixer;
-        columnMenuButtonTable.showForCell(cell);
-      } else {
-        if (O$.ColumnMenu._currentColumnId == columnId) {
-          O$.ColumnMenu._currentColumnId = null;
-          O$.ColumnMenu._menuFixer = null;
+      if (O$.ColumnMenu.table.isEnabledMenu()) {
+        if (mouseOver && !O$.ColumnMenu._menuOpened) {
+          O$.ColumnMenu._currentColumnId = columnId;
+          O$.ColumnMenu._menuFixer = menuFixer;
+          columnMenuButtonTable.showForCell(cell);
+        } else {
+          if (O$.ColumnMenu._currentColumnId == columnId) {
+            O$.ColumnMenu._currentColumnId = null;
+            O$.ColumnMenu._menuFixer = null;
+          }
+          columnMenuButtonTable.hideForCell(cell);
         }
-        columnMenuButtonTable.hideForCell(cell);
       }
+
     });
   },
 
@@ -4890,6 +4996,9 @@ O$.ColumnMenu = {
         break;
       }
     }
+
+
+
     var columnMenu = O$.initComponent(columnMenuId, null, {
       _sortAscMenuItem:O$(sortAscMenuId),
       _sortDescMenuItem:O$(sortDescMenuId),

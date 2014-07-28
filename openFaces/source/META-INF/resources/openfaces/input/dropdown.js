@@ -27,7 +27,8 @@ O$.DropDown = {
       _initialText: initialText,
       _focusable : true,
       _fieldDisabled: false,
-
+      _parentId: null,
+      _containerHeight: 0,
       _setFieldDisabled: function(disabled) {
         if (this._fieldDisabled == disabled) return;
 
@@ -194,6 +195,7 @@ O$.DropDown = {
   },
 
   _init: function(dropDownId,
+                  parentId,
                   initialText,
                   containerClass,
                   rolloverContainerClass,
@@ -213,7 +215,8 @@ O$.DropDown = {
                   readOnly,
                   promptText,
                   promptTextClass,
-                  pullPopupFromContainer) {
+                  pullPopupFromContainer,
+                  parentId) {
 
     O$.DropDown._initInput(dropDownId,
             initialText,
@@ -228,6 +231,7 @@ O$.DropDown = {
             promptTextClass);
 
     var popupId = dropDownId + "--popup";
+    O$.DropDown._parentId = parentId;
     O$.removeRelocatedPopupIfExists(popupId);
 
     var originalEnabledButtonImageUrl = null;
@@ -454,7 +458,7 @@ O$.DropDown = {
   _initPopup: function(dropDown, calendar) {
     var repaintDropDown = false;
     var popup = dropDown._popup;
-    var container = O$.getDefaultAbsolutePositionParent();
+    var container = O$(dropDown._parentId) || O$.getDefaultAbsolutePositionParent();
     if ((O$.isExplorer() && O$.isQuirksMode() && dropDown._popup.parentNode != container) ||
         (O$.isMozillaFF2() && O$.isStrictMode())) {
       // prevent clipping the drop-down with parent nodes with hidden overflow (possible only in IE+quirks)
@@ -469,13 +473,15 @@ O$.DropDown = {
       var innerTable = O$(dropDown.id + "--popup::innerTable");
       var tableWidth = innerTable.offsetWidth;
       var tableHeight = innerTable.offsetHeight;
-      if (popup._initializedTableWidth != tableWidth || popup._initializedTableHeight != tableHeight) {
+      if (popup._initializedTableWidth != tableWidth ||
+              popup._initializedTableHeight != tableHeight ||
+              container.offsetHeight != dropDown._containerHeight) {
         popup._initializedTableWidth = tableWidth;
         popup._initializedTableHeight = tableHeight;
-        sizeChanged = true;
+        dropDown._containerHeight = container.offsetHeight;
 
         var minWidth;
-        if (popup._initialClientWidth == undefined) {
+        if (!popup._initialClientWidth) {
           popup._initialClientWidth = popup.clientWidth;
         }
         var dropDownRect = O$.getElementBorderRectangle(dropDown);
@@ -509,17 +515,29 @@ O$.DropDown = {
         } else {
           popup.style.height = popup._initialClientHeight + "px";
         }
-        function adjustHeight() {
-          var contentHeight = innerTable.offsetHeight;
-          if (popup.clientHeight > contentHeight) {
-            var borderAccomodation = (O$.isExplorer() && document.compatMode == "BackCompat") ? 10 : 0;
-            var preferredHeight = borderAccomodation + (contentHeight ? contentHeight : 20);
-            popup.style.height = preferredHeight + "px";
-            var heightCorrection = popup.clientHeight - preferredHeight;
-            if (heightCorrection)
-              popup.style.height = (preferredHeight - heightCorrection - borderAccomodation) + "px";
+          function adjustHeight() {
+            var contentHeight;
+            if (container || container.tagName.toLowerCase() === "table") {
+              var dropDownOffset = (dropDown.offsetTop + dropDown.offsetHeight) + dropDown.clientHeight;
+              contentHeight = container.clientHeight - dropDownOffset - 8;
+              contentHeight = contentHeight < 21 ? 20 : contentHeight;
+            } else {
+              contentHeight = innerTable.offsetHeight;
+            }
+
+            if (popup.clientHeight > contentHeight) {
+              var borderAccomodation = (O$.isExplorer() && document.compatMode == "BackCompat") ? 10 : 0;
+              var preferredHeight = borderAccomodation + (contentHeight ? contentHeight : 20);
+              popup.style.height = preferredHeight + "px";
+              var heightCorrection = popup.clientHeight - preferredHeight;
+              if (heightCorrection)
+                popup.style.height = (preferredHeight - heightCorrection - borderAccomodation) + "px";
+            }
+
+            if (innerTable.offsetHeight < popup.offsetHeight){
+              popup.style.height = innerTable.offsetHeight + "px";
+            }
           }
-        }
 
         adjustHeight();
 

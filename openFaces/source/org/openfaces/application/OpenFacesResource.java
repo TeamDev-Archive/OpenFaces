@@ -36,9 +36,10 @@ public class OpenFacesResource extends ResourceWrapper {
 
     @Override
     public String getRequestPath() {
-        String requestPath = super.getRequestPath();
-        requestPath += "&ofver=" + Resources.getVersionString();
-        return requestPath;
+        StringBuffer requestPath = new StringBuffer();
+        requestPath.append(super.getRequestPath());
+        requestPath.append(Resources.getVersionStringWithPrefix());
+        return requestPath.toString();
     }
 
     @Override

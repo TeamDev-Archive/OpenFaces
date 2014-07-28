@@ -23,6 +23,7 @@ import org.openfaces.util.Styles;
 
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
@@ -37,6 +38,7 @@ public class SidePanelRenderer extends RendererBase implements NamingContainer {
     public static final String PANEL_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "panel";
     public static final String CAPTION_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "caption";
     public static final String CONTENT_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "content";
+    private static final String DISABLED_BORDER_LAYOUT_PANEL_CALCULATING_PARAM = "org.openfaces.disabledBorderLayoutPanelCalculating";
 
     public static final String SIDE_PANEL_UTIL_JS = "panel/sidePanelUtil.js";
 
@@ -155,6 +157,18 @@ public class SidePanelRenderer extends RendererBase implements NamingContainer {
             initScript.append("O$.addLoadEvent( function() {\n");
         }
 
+        ExternalContext externalContext = context.getExternalContext();
+        boolean isRecalculatingSplitterInBorder = true;
+        try{
+            String paramValue = externalContext.getInitParameter(DISABLED_BORDER_LAYOUT_PANEL_CALCULATING_PARAM);
+            if  (paramValue != null){
+                isRecalculatingSplitterInBorder = Boolean.valueOf(paramValue);
+            }else{
+                isRecalculatingSplitterInBorder =Boolean.TRUE;
+            }
+        }  catch (Exception e){
+            e.printStackTrace();
+        }
         initScript.initScript(context, sidePanel, "O$._initSidePanel",
                 sidePanel.getAlignment(),
                 sidePanel.getSize(),
@@ -165,7 +179,8 @@ public class SidePanelRenderer extends RendererBase implements NamingContainer {
                 sidePanel.getCollapsed(),
                 getRolloverClass(context, sidePanel),
                 getSplitterRolloverClass(context, sidePanel),
-                new RawScript(events.toString()));
+                new RawScript(events.toString()),
+                isRecalculatingSplitterInBorder );
 
         if (Environment.isMozillaFF2(context)) { //fix bug with FF2 and Facelets 1.2 context  //todo add isFacelets() filter
             initScript.append("O$('").append(clientId).append("').style.visibility = 'visible';\n");
