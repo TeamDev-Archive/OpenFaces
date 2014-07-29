@@ -15,7 +15,7 @@
 O$.resizeSidePanel = function (sidePanelId, newSize) {
   var sidePanel = O$(sidePanelId);
   if (!(sidePanel && sidePanel._alignment)) return;
-  if (sidePanel._isRecalculatingSplitterInBorder) {
+  if (!sidePanel._isRecalculatingSplitterInBorder) {
     var previousSidePanelOverflow = sidePanel.style.overflow;
     var previousPanelOverflow = sidePanel._panel.style.overflow;
     var previousPanelContentOverflow = sidePanel._content.overflow;
@@ -26,7 +26,7 @@ O$.resizeSidePanel = function (sidePanelId, newSize) {
   O$._resizeSidePanel(sidePanel, newSize, false);
   if (sidePanel.onsplitterdrag)
     sidePanel.onsplitterdrag(sidePanel);
-  if (sidePanel._isRecalculatingSplitterInBorder) {
+  if (!sidePanel._isRecalculatingSplitterInBorder) {
     sidePanel._panel.style.overflow = previousSidePanelOverflow;
     sidePanel.style.overflow = previousPanelOverflow;
     sidePanel._content.style.overflow = previousPanelContentOverflow;
