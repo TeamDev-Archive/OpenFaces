@@ -530,14 +530,14 @@ O$._cacheSidePanelSizeVariables = function (sidePanel) {
     splitter._widthDiff = splitter._storedSizeProperties.marginsWidth;
     if (sidePanel._alignment == "left" || sidePanel._alignment == "right") {
       panel._heightDiff = panel._storedSizeProperties.marginsHeight;
-      if (panel._isRecalculatingSplitterInBorder) {
+      if (sidePanel._isRecalculatingSplitterInBorder) {
         panel._widthDiff = panel._storedSizeProperties.marginsWidth + O$._calculateOffsetWidth(splitter, false) + splitter._storedSizeProperties.paddingsAndBordersAndMarginsWidth;
       } else {
         //TODO: 0 * - this is temporary solution to make tests with pagination
         panel._widthDiff = panel._storedSizeProperties.marginsWidth + 0 * O$._calculateOffsetWidth(splitter, false) + splitter._storedSizeProperties.paddingsAndBordersAndMarginsWidth;
       }
     } else {
-      if (panel._isRecalculatingSplitterInBorder) {
+      if (sidePanel._isRecalculatingSplitterInBorder) {
         panel._heightDiff = panel._storedSizeProperties.marginsHeight + O$._calculateOffsetHeight(splitter, false) + splitter._storedSizeProperties.paddingsAndBordersAndMarginsHeight;
       } else {
         panel._heightDiff = panel._storedSizeProperties.marginsHeight + 0 * O$._calculateOffsetHeight(splitter, false) + splitter._storedSizeProperties.paddingsAndBordersAndMarginsHeight;
@@ -555,13 +555,13 @@ O$._cacheSidePanelSizeVariables = function (sidePanel) {
     splitter._widthDiff = splitter._storedSizeProperties.paddingsAndBordersAndMarginsWidth;
     if (sidePanel._alignment == "left" || sidePanel._alignment == "right") {
       panel._heightDiff = panel._storedSizeProperties.paddingsAndBordersAndMarginsHeight;
-      if (panel._isRecalculatingSplitterInBorder) {
+      if (sidePanel._isRecalculatingSplitterInBorder) {
         panel._widthDiff = panel._storedSizeProperties.paddingsAndBordersAndMarginsWidth + O$._calculateOffsetWidth(splitter, false) + splitter._storedSizeProperties.marginsWidth;
       } else {
         panel._widthDiff = panel._storedSizeProperties.paddingsAndBordersAndMarginsWidth + 0 * O$._calculateOffsetWidth(splitter, false) + splitter._storedSizeProperties.marginsWidth;
       }
     } else {
-      if (panel._isRecalculatingSplitterInBorder) {
+      if (sidePanel._isRecalculatingSplitterInBorder) {
         panel._heightDiff = panel._storedSizeProperties.paddingsAndBordersAndMarginsHeight + O$._calculateOffsetHeight(splitter, false) + splitter._storedSizeProperties.marginsHeight;
       } else {
         panel._heightDiff = panel._storedSizeProperties.paddingsAndBordersAndMarginsHeight + 0 * O$._calculateOffsetHeight(splitter, false) + splitter._storedSizeProperties.marginsHeight;
