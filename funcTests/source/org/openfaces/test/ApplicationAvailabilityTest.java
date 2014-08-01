@@ -19,7 +19,7 @@ import org.junit.Test;
  */
 public class ApplicationAvailabilityTest extends OpenFacesTestCase {
 
-     @Test
+     //@Test
     public void testAvailability() {
         Selenium selenium = getSelenium();
         selenium.setTimeout("60000");

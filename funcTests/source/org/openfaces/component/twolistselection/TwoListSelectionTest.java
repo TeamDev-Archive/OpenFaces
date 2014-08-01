@@ -25,7 +25,7 @@ import java.util.List;
  * @author Darya Shumilina
  */
 public class TwoListSelectionTest extends OpenFacesTestCase {
-    @Test
+    //@Test
     public void testReRenderThroughA4J() {
         testAppFunctionalPage("/components/twolistselection/twoListSelection_a4j.jsf");
         String[] oldTLSValues = new String[7];
@@ -45,19 +45,19 @@ public class TwoListSelectionTest extends OpenFacesTestCase {
         }
     }
 
-    @Test
+    //@Test
     public void testItemsVisibilityCorrectness() {
         itemsVisibilityCorrectness(twoListSelection("formID:first"));
         itemsVisibilityCorrectness(twoListSelection("formID:second"));
     }
 
-    @Test
+    //@Test
     public void testAddingRemoving() {
         addingRemoving(twoListSelection("formID:first"));
         addingRemoving(twoListSelection("formID:second"));
     }
 
-    @Test
+    //@Test
     public void testReodering() {
         closeBrowser();
 
@@ -65,7 +65,7 @@ public class TwoListSelectionTest extends OpenFacesTestCase {
         reordering(twoListSelection("formID:second"));
     }
 
-    @Test
+    //@Test
     @Ignore
     // todo: bring this test back when it's clear how to disable skinning in RichFaces 4 (M2)
     public void testStyling() {
@@ -73,7 +73,7 @@ public class TwoListSelectionTest extends OpenFacesTestCase {
         checkStyles(true);
     }
 
-    @Test
+    //@Test
     public void testClientSideAPI() {
         testAppFunctionalPage("/components/twolistselection/TLSJSFunctions.jsf");
 
@@ -98,7 +98,7 @@ public class TwoListSelectionTest extends OpenFacesTestCase {
         serverValueOutput.assertText("itemV_1 itemV_2 ");
     }
 
-    @Test
+    //@Test
     public void testValueChangeListener() {
         closeBrowser();
         testAppFunctionalPage("/components/twolistselection/TLSValueChangeListener.jsf");
@@ -315,7 +315,7 @@ public class TwoListSelectionTest extends OpenFacesTestCase {
         removeBtn.assertValue("remove");
     }
 
-    @Test
+    //@Test
     public void testDefaultView() {
         testAppFunctionalPage("/components/twolistselection/twoListSelection_defaultView.jsf");
         assertAppearanceNotChanged("TwoListSelectionDefaultView");
@@ -326,7 +326,7 @@ public class TwoListSelectionTest extends OpenFacesTestCase {
         assertEquals(expectedTabindex, tabindex);
     }
 
-    @Test
+    //@Test
     public void testTabindex() {
         testAppFunctionalPage("/components/twolistselection/twoListSelection_tabindex.jsf");
 

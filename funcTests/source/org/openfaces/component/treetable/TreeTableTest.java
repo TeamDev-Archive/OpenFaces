@@ -32,7 +32,7 @@ import java.util.List;
  * @author Darya Shumilina
  */
 public class TreeTableTest extends OpenFacesTestCase {
-     @Test
+     //@Test
     public void testReRenderThroughA4J() {
         testAppFunctionalPage("/components/treetable/treeTable_a4j.jsf");
 
@@ -70,7 +70,7 @@ public class TreeTableTest extends OpenFacesTestCase {
      * Check simple TreeTable with static structure and verify rows content (with Ajax and without)
      */
 
-     @Test
+     //@Test
     public void testStaticStructure() {
         staticTreeStructure(OpenFacesAjaxLoadingMode.getInstance());
         staticTreeStructure(ServerLoadingMode.getInstance());
@@ -79,7 +79,7 @@ public class TreeTableTest extends OpenFacesTestCase {
     /**
      * Check simple TreeTable with dynamic structure and verify rows content (with Ajax and without)
      */
-     @Test
+     //@Test
     public void testDynamicStructure() {
         dynamicTreeStructure(OpenFacesAjaxLoadingMode.getInstance());
         dynamicTreeStructure(ServerLoadingMode.getInstance());
@@ -88,7 +88,7 @@ public class TreeTableTest extends OpenFacesTestCase {
     /**
      * Check TreeTable single selection
      */
-     @Test
+     //@Test
     public void testSingleSelectionAndKeyboardNavigation() {
         closeBrowser();
         testAppFunctionalPage("/components/treetable/treeTableSingleSelection.jsf");
@@ -138,7 +138,7 @@ public class TreeTableTest extends OpenFacesTestCase {
      * Check TreeTable multiple selection
      */
     //todo: add checking multiple selection functionality with the 'Ctrl' key
-     @Test
+     //@Test
     public void testMultipleSelectionAndKeyboardNavigation() {
         testAppFunctionalPage("/components/treetable/treeTableMultipleSelection.jsf");
         ElementInspector categoryOutput = element("formID:multipleSelectionTreeTableID:0:categoryID");
@@ -231,17 +231,17 @@ public class TreeTableTest extends OpenFacesTestCase {
     }
 
     //Created two different tests because of JSFC-3572
-     @Test
+     //@Test
     public void testSortingAjax() {
         testSorting(OpenFacesAjaxLoadingMode.getInstance());
     }
 
-     @Test
+     //@Test
     public void testSortingServer() {
         testSorting(ServerLoadingMode.getInstance());
     }
 
-     @Test
+     //@Test
     public void testKeyboardNavigation() {
         testAppFunctionalPage("/components/treetable/treeTableKeyboardNavigation.jsf");
 
@@ -301,7 +301,7 @@ public class TreeTableTest extends OpenFacesTestCase {
     /**
      * TODO Check TreeTable features combination: sorting, selection and filtering with different filter kinds
      */
-     @Test
+     //@Test
     public void testTreeTableFeaturesCombination() {
 
     }
@@ -309,7 +309,7 @@ public class TreeTableTest extends OpenFacesTestCase {
     /**
      * TODO Check TreeTable function 'q_refreshTreeTable'
      */
-     @Test
+     //@Test
     public void test_q_refreshTreeTable() {
 
     }
@@ -317,7 +317,7 @@ public class TreeTableTest extends OpenFacesTestCase {
     /**
      * TODO Check <o:selectAllCheckbox> tag inside checkbox column
      */
-     @Test
+     //@Test
     public void testSelectAllCheckboxInsideCheckboxColumnFunctionality() {
 
     }
@@ -325,7 +325,7 @@ public class TreeTableTest extends OpenFacesTestCase {
     /**
      * TODO Check <o:selectAllCheckbox> tag inside selection column
      */
-     @Test
+     //@Test
     public void testSelectAllCheckboxInsideSelectionColumnFunctionality() {
 
     }
@@ -333,7 +333,7 @@ public class TreeTableTest extends OpenFacesTestCase {
     /**
      * TODO Check preloaded loading mode
      */
-     @Test
+     //@Test
     public void testPreloadedLoadingMode() {
 
     }
@@ -341,7 +341,7 @@ public class TreeTableTest extends OpenFacesTestCase {
     /**
      * TODO Test <o:treeColumn> tag functionality
      */
-     @Test
+     //@Test
     public void testTreeColumnFunctionality() {
 
     }
@@ -349,7 +349,7 @@ public class TreeTableTest extends OpenFacesTestCase {
     /**
      * TODO No data row funtionality
      */
-     @Test
+     //@Test
     public void testNoDataRowFunctionality() {
 
     }

@@ -22,7 +22,7 @@ import java.awt.event.KeyEvent;
  * @author Darya Shumilina
  */
 public class FoldingPanelClientSideEvents extends OpenFacesTestCase {
-     @Test
+     //@Test
     public void testFoldingPanelClientSideEvents() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/foldingpanel/foldingPanel.jsf");

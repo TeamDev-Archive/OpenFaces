@@ -19,7 +19,7 @@ import org.openfaces.test.OpenFacesTestCase;
  * @author Pavel Kaplin
  */
 public class JSFC_2321Test extends OpenFacesTestCase {
-     @Test
+     //@Test
     public void testGlobalMessagesAreShown() throws Exception {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/requests/JSFC-2321.jsf");

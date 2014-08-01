@@ -23,7 +23,7 @@ import java.awt.event.KeyEvent;
  * @author Darya Shumilina
  */
 public class SuggestionFieldClientSideEvents extends OpenFacesTestCase {
-     @Test
+     //@Test
     public void testSuggestionFieldClientSideEvents() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/suggestionfield/SuggestionFieldEvents.jsf");

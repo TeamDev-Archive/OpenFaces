@@ -22,7 +22,7 @@ import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
  */
 public class AjaxTest extends OpenFacesTestCase {
      //
-     @Test
+     ////@Test
     public void testActionPhase() {
         testAppFunctionalPage("/components/ajax/ajax.jsf");
         element("form1:resetBtn").clickAndWait(OpenFacesAjaxLoadingMode.getInstance());

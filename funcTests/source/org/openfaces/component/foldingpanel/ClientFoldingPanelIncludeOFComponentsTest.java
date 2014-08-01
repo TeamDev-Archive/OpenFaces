@@ -24,7 +24,7 @@ import org.seleniuminspector.openfaces.*;
  * @author Darya Shumilina
  */
 public class ClientFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase {
-    @Test
+    //@Test
     public void testCalendarInside() {
         testAppFunctionalPage("/components/foldingpanel/calendarIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());
@@ -39,7 +39,7 @@ public class ClientFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
         calendar.assertVisible(true);
     }
 
-    @Test
+    //@Test
     @Ignore
     public void testChartInside() {
         testAppFunctionalPage("/components/foldingpanel/chartIn.jsf");
@@ -53,7 +53,7 @@ public class ClientFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
         chart.assertElementExists();
     }
 
-    @Test
+    //@Test
     public void testConfirmationInside() {
         testAppFunctionalPage("/components/foldingpanel/confirmationIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());
@@ -76,7 +76,7 @@ public class ClientFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
         }
     }
 
-    @Test
+    //@Test
     public void testDataTableInside() {
         testAppFunctionalPage("/components/foldingpanel/dataTableIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());
@@ -95,7 +95,7 @@ public class ClientFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
     }
 
 
-    @Test
+    //@Test
     @Ignore
     public void testDateChooserInside() {
         testAppFunctionalPage("/components/foldingpanel/dateChooserIn.jsf");
@@ -121,7 +121,7 @@ public class ClientFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
         dateChooser.field().assertValue("Jul 30, 2006");
     }
 
-    @Test
+    //@Test
     @Ignore // was failing in nightly build only for some reason
     public void testDropDownInside() {
         testAppFunctionalPage("/components/foldingpanel/dropDownIn.jsf");
@@ -140,7 +140,7 @@ public class ClientFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
         dropDownField.field().assertValue("Yellow");
     }
 
-    @Test
+    //@Test
     public void testDynamicImageInside() {
         testAppFunctionalPage("/components/foldingpanel/dynamicImageIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());
@@ -155,7 +155,7 @@ public class ClientFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
         dynamicImage.assertVisible(true);
     }
 
-    @Test
+    //@Test
     public void testClientFoldingPanelInside() {
         testAppFunctionalPage("/components/foldingpanel/foldingPanelIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());
@@ -174,7 +174,7 @@ public class ClientFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
         foldingPanel.content().assertVisible(true);
     }
 
-    @Test
+    //@Test
     public void testHintLabelInside() throws InterruptedException {
         testAppFunctionalPage("/components/foldingpanel/hintLabelIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());
@@ -190,7 +190,7 @@ public class ClientFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
         hintLabel.checkVisibilityAndContent("HintLabel Value", "HintLabel Title ;-)");
     }
 
-    @Test
+    //@Test
     @Ignore // command timeout on switchng the tab was happening (on server only)
     public void testPopupLayerInside() {
         testAppFunctionalPage("/components/foldingpanel/popupLayerIn.jsf");
@@ -207,7 +207,7 @@ public class ClientFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
         headerPopup.assertSubtext(0, 28, "this is popup layer on tab 1");
     }
 
-    @Test
+    //@Test
     public void testAjaxTabbedPaneInside() {
         testAppFunctionalPage("/components/foldingpanel/tabbedPaneIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());
@@ -229,7 +229,7 @@ public class ClientFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
         element("fn:secondContent").assertText("Some text on the second tab");
     }
 
-    @Test
+    //@Test
     public void testTabSetInside() {
         if (IS_FACELETS)
             return; // this for some odd reason fails only on the build server in the Facelets version of tests
@@ -253,7 +253,7 @@ public class ClientFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
         secondTab.assertText("Server");
     }
 
-    @Test
+    //@Test
     public void testTreeTableInside() {
         testAppFunctionalPage("/components/foldingpanel/treeTableIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());
@@ -274,7 +274,7 @@ public class ClientFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
         treeTable.column(0).filter(InputTextFilterInspector.class, "fn:treeTableID:filter1").makeFiltering("colors");
     }
 
-    @Test
+    //@Test
     @Ignore
     public void testTwoListSelectionInside() {
         testAppFunctionalPage("/components/foldingpanel/twoListSelectionIn.jsf");
@@ -294,7 +294,7 @@ public class ClientFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
         twoListSelection.rightList().assertText("item 1 labelitem 5 labelitem 3 label");
     }
 
-    @Test
+    //@Test
     public void testValidationInside() {
         testAppFunctionalPage("/components/foldingpanel/validationIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());

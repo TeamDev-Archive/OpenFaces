@@ -20,7 +20,7 @@ import org.seleniuminspector.ElementInspector;
  * @author Darya Shumilina
  */
 public class GraphicTextClientSideEvents extends OpenFacesTestCase {
-     @Test
+     //@Test
     public void testClientSideEvents() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/graphictext/graphicText_JS_Events.jsf");
