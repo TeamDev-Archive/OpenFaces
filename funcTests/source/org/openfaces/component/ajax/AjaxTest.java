@@ -11,7 +11,6 @@
  */
 package org.openfaces.component.ajax;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.seleniuminspector.ElementInspector;
@@ -23,7 +22,7 @@ import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
  */
 public class AjaxTest extends OpenFacesTestCase {
      //
-     @Test @Ignore
+     @Test
     public void testActionPhase() {
         testAppFunctionalPage("/components/ajax/ajax.jsf");
         element("form1:resetBtn").clickAndWait(OpenFacesAjaxLoadingMode.getInstance());

@@ -21,7 +21,7 @@ import org.seleniuminspector.html.TextAreaInspector;
  * @author Pavel Kaplin
  */
 public class JSFC_2257Test extends OpenFacesTestCase {
-     @Test @Ignore
+     @Test
     public void testTextAreaIsNotAffectedByOpenFacesValidation() throws Exception {
         testAppFunctionalPage("/requests/JSFC_2257.jsf");
 

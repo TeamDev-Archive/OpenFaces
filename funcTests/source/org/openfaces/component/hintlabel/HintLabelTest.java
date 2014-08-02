@@ -23,7 +23,7 @@ import org.seleniuminspector.openfaces.HintLabelInspector;
  */
 public class HintLabelTest extends OpenFacesTestCase {
 
-     @Test @Ignore
+     @Test
     public void testReRenderThroughA4J() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/hintlabel/hintLabel_a4j.jsf");
@@ -45,13 +45,13 @@ public class HintLabelTest extends OpenFacesTestCase {
         assertFalse(newValue.equals(oldValue));
     }
 
-     @Test @Ignore
+     @Test
     public void testDefaultView() {
         testAppFunctionalPage("/components/hintlabel/hintLabel_defaultView.jsf");
         assertAppearanceNotChanged("HintLabelDefaultView");
     }
 
-     @Test @Ignore
+     @Test
     public void testBasicFunctionality() {
         testAppFunctionalPage("/components/hintlabel/hintLabelBasicFunctionality.jsf");
         sufficientLengthWithoutHintSpecified();
@@ -103,7 +103,7 @@ public class HintLabelTest extends OpenFacesTestCase {
 //    forthHintLabel.hint().assertText("Jupiter is more than twice as massive as all the other planets combined (the mass of Jupiter is 318 times that of Earth)");
 //  }
 
-     @Test @Ignore
+     @Test
     public void testStyles() {
         testAppFunctionalPage("/components/hintlabel/hintLabelStyles.jsf");
         checkStyles(false);

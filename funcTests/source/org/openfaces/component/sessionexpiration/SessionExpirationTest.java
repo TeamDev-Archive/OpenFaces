@@ -22,7 +22,7 @@ import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
  * @author Eugene Goncharov
  */
 public class SessionExpirationTest extends OpenFacesTestCase {
-     @Test @Ignore
+     @Test
     public void testSessionExpiration() {
         testAppFunctionalPage("/components/sessionexpiration/rawTesting.jsf");
 

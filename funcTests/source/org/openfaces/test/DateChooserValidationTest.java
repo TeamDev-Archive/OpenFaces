@@ -21,7 +21,7 @@ import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
  */
 public class DateChooserValidationTest extends OpenFacesTestCase {
 
-    @Test @Ignore
+    @Test
     public void testClientValidationOff() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/datechooser/dateChooserValid.jsf");
@@ -34,7 +34,7 @@ public class DateChooserValidationTest extends OpenFacesTestCase {
         assertConversionErrorOccured(true);
     }
 
-    @Test @Ignore
+    @Test
     public void testClientValidationOnSubmit() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/datechooser/dateChooserValid.jsf");
@@ -47,7 +47,7 @@ public class DateChooserValidationTest extends OpenFacesTestCase {
         assertConversionErrorOccured(true);
     }
 
-    @Test @Ignore
+    @Test
     public void testClientValidationDefault() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/datechooser/dateChooserValid.jsf");
@@ -60,7 +60,7 @@ public class DateChooserValidationTest extends OpenFacesTestCase {
         assertConversionErrorOccured(true);
     }
 
-    @Test @Ignore
+    @Test
     public void testChangeLocaleFromBinding() {
         Selenium selenium = getSelenium();
         liveDemoPage("/datechooser/DateChooser.jsf");

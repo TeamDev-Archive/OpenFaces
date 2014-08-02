@@ -20,7 +20,7 @@ import org.seleniuminspector.openfaces.TwoListSelectionInspector;
  * @author Darya Shumilina
  */
 public class TwoListSelectionClientSideEvents extends OpenFacesTestCase {
-     @Test @Ignore
+     @Test
     public void testTLSClientSideEvents() {
 
         Selenium selenium = getSelenium();

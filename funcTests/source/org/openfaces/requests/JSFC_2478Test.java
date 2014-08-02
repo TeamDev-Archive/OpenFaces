@@ -19,7 +19,7 @@ import org.seleniuminspector.openfaces.DataTableInspector;
  * @author Darya Shumilina
  */
 public class JSFC_2478Test extends OpenFacesTestCase {
-     @Test @Ignore
+     @Test
     public void testJSFC_2478Fix() {
         testAppFunctionalPage("/requests/JSFC-2478.jsf");
 

@@ -12,7 +12,6 @@
 package org.openfaces.test;
 
 import com.thoughtworks.selenium.Selenium;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -20,7 +19,7 @@ import org.junit.Test;
  */
 public class ApplicationAvailabilityTest extends OpenFacesTestCase {
 
-     @Test @Ignore
+     @Test
     public void testAvailability() {
         Selenium selenium = getSelenium();
         selenium.setTimeout("60000");

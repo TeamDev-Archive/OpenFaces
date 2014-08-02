@@ -21,7 +21,7 @@ import org.seleniuminspector.openfaces.HintLabelInspector;
  * @author Darya Shumilina
  */
 public class HintLabelClientSideEvents extends OpenFacesTestCase {
-     @Test @Ignore
+     @Test
     public void testHintLabelClientSideEvents() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/hintlabel/hintLabel.jsf");
@@ -64,8 +64,8 @@ public class HintLabelClientSideEvents extends OpenFacesTestCase {
     }
 
     //todo: uncomment this test if JSFC-1440 fixed
-
-     @Test @Ignore
+    @Ignore
+     @Test
     public void _testHintLabelTooltipPartClientSideEvents() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/hintlabel/hintLabel.jsf");

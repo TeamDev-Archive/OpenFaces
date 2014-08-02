@@ -11,7 +11,6 @@
  */
 package org.openfaces.component.datatable;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.seleniuminspector.ElementInspector;
@@ -64,14 +63,14 @@ public class DataTableIncludeOFComponentsTest extends OpenFacesTestCase {
         testAppPage("/functionalTesting/datatable/foldingPanelIn.jsf");
       }
     */
-    @Test @Ignore
+    @Test
     public void testHintLabelInside() {
         testAppFunctionalPage("/components/datatable/hintLabelIn.jsf");
 
         //create and fill list of the reference hintLabel values
         List<DataTableUtils.TestDataTableItem> hintLabelDataTableValues = new ArrayList<DataTableUtils.TestDataTableItem>(DataTableUtils.TWO_STRING_COLUMN_LIST);
 
-        /* sorting, p\agination, single selection */
+        /* sorting, pagination, single selection */
 
         //check is hinLabel in first column header visible
         DataTableInspector hintLabelDataTable = dataTable("fn:hintLabelDataTable");
@@ -127,7 +126,7 @@ public class DataTableIncludeOFComponentsTest extends OpenFacesTestCase {
         hintLabel.hint().assertText("col3_row1");
     }
 
-    @Test @Ignore
+    @Test
     public void testPopupLayerInside() {
         testAppFunctionalPage("/components/datatable/popupLayerIn.jsf");
 

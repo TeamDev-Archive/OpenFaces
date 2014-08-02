@@ -23,8 +23,8 @@ import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
 public class TabbedPaneClientSideEvents extends OpenFacesTestCase {
 
     //todo: uncomment when the JSFC-3629 is fixed
-
-     @Test @Ignore
+    @Ignore
+     @Test
     public void _testTabbedPaneClientSideEvents() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/tabbedpane/tabbedPane.jsf");

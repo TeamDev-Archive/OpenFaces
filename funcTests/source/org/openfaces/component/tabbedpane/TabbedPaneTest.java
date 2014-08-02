@@ -29,7 +29,7 @@ import org.seleniuminspector.openfaces.TabbedPaneInspector;
  * @author Darya Shumilina
  */
 public class TabbedPaneTest extends OpenFacesTestCase {
-     @Test @Ignore
+     @Test
     public void testReRenderThroughA4J() {
         testAppFunctionalPage("/components/tabbedpane/tabbedPane_a4j.jsf");
 
@@ -60,7 +60,7 @@ public class TabbedPaneTest extends OpenFacesTestCase {
         assertFalse(newContentSecond.equals(oldContentSecond));
     }
 
-     @Test @Ignore
+     @Test
     public void testWithA4JControlsInside() {
         testAppFunctionalPage("/components/tabbedpane/tabbedPane_a4j.jsf");
 
@@ -92,31 +92,31 @@ public class TabbedPaneTest extends OpenFacesTestCase {
     }
 
     //todo: uncomment when the  JSFC-3629 is fixed
-
-     @Test @Ignore
+    @Ignore
+     @Test
     public void _testTabSelectionChangeClientLoadingMode() {
         checkSelectionChange(ClientLoadingMode.getInstance());
     }
 
     //todo: uncomment when the  JSFC-3629 is fixed
-
-     @Test @Ignore
+    @Ignore
+     @Test
     public void _testTabSelectionChangeServerLoadingMode() {
         testAppFunctionalPage("/components/tabbedpane/tabbedPaneChangeSelectionStyling.jsf");
         checkSelectionChange(ServerLoadingMode.getInstance());
     }
 
     //todo: uncomment when the  JSFC-3629 is fixed
-
-     @Test @Ignore
+    @Ignore
+     @Test
     public void _testTabSelectionChangeAjaxLoadingMode() {
         testAppFunctionalPage("/components/tabbedpane/tabbedPaneChangeSelectionStyling.jsf");
         checkSelectionChange(OpenFacesAjaxLoadingMode.getInstance());
     }
 
     //todo: uncomment when the  JSFC-3629 is fixed
-
-     @Test @Ignore
+    @Ignore
+     @Test
     public void _testClientSideAPI() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/tabbedpane/tabbedPaneChangeSelectionStyling.jsf");
@@ -135,7 +135,7 @@ public class TabbedPaneTest extends OpenFacesTestCase {
     }
 
     //todo: uncomment when JSFC-3626 is fixed
-     @Test @Ignore
+     @Test
     public void testSelectionChangeListener() {
         //todo: uncomment if JSFC-3001 is in 'fixed' state
         //checkSelectionChangeListener("ajax");
@@ -315,7 +315,7 @@ public class TabbedPaneTest extends OpenFacesTestCase {
         tabbedPane.assertSize(200, 250);
     }
 
-     @Test @Ignore
+     @Test
     public void testDefaultView() {
         testAppFunctionalPage("/components/tabbedpane/tabbedpane_defaultView.jsf");
         assertAppearanceNotChanged("TabbedPaneDefaultView");

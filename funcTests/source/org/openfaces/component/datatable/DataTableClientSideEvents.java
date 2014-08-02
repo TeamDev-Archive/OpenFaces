@@ -12,7 +12,6 @@
 package org.openfaces.component.datatable;
 
 import com.thoughtworks.selenium.Selenium;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.seleniuminspector.ElementInspector;
@@ -27,7 +26,7 @@ import java.awt.event.KeyEvent;
 public class DataTableClientSideEvents extends OpenFacesTestCase {
 
     /*test for checking client-side events for the entire DataTable*/
-     @Test @Ignore
+     @Test
     public void testCommonDataTableEvents() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/datatable/dataTable_events.jsf");
@@ -86,7 +85,7 @@ public class DataTableClientSideEvents extends OpenFacesTestCase {
     }
 
     /*check onfocus and onblur events for the entire DataTable*/
-     @Test @Ignore
+     @Test
     public void testOnblurOnfocusEvents() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/datatable/OnfocusOnblurEvents.jsf");
@@ -100,7 +99,7 @@ public class DataTableClientSideEvents extends OpenFacesTestCase {
     }
 
     /*test that checks client-side events for the entire DataTable column*/
-     @Test @Ignore
+     @Test
     public void testDataTableEntireColumnEvents() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/datatable/column_entire_column.jsf");
@@ -143,7 +142,7 @@ public class DataTableClientSideEvents extends OpenFacesTestCase {
     }
 
     /*test for DataTable column header client-side events*/
-     @Test @Ignore
+     @Test
     public void testDataTableColumnHeaderEvents() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/datatable/column_columnHeader.jsf");
@@ -186,7 +185,7 @@ public class DataTableClientSideEvents extends OpenFacesTestCase {
     }
 
     /*test for DataTable column body client-side events*/
-     @Test @Ignore
+     @Test
     public void testDataTableColumnBodyEvents() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/datatable/column_columnBoby.jsf");
@@ -229,7 +228,7 @@ public class DataTableClientSideEvents extends OpenFacesTestCase {
     }
 
     /*test for DataTable column footer client-side events*/
-     @Test @Ignore
+     @Test
     public void testDataTableColumnFooterEvents() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/datatable/column_columnFooter.jsf");
@@ -272,7 +271,7 @@ public class DataTableClientSideEvents extends OpenFacesTestCase {
     }
 
     /*test for DataTable checkbox column client-side events*/
-     @Test @Ignore
+     @Test
     public void testDataTableCheckboxColumnEvents() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/datatable/checkbox_entire_column.jsf");
@@ -318,7 +317,7 @@ public class DataTableClientSideEvents extends OpenFacesTestCase {
     }
 
     /*test for DataTable checkbox column header client-side events*/
-     @Test @Ignore
+     @Test
     public void testDataTableCheckboxColumnHeaderEvents() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/datatable/checkbox_columnHeader.jsf");
@@ -361,7 +360,7 @@ public class DataTableClientSideEvents extends OpenFacesTestCase {
     }
 
     /* test for DataTable checkbox column footer client-side events */
-     @Test @Ignore
+     @Test
     public void testDataTableCheckboxColumnFooterEvents() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/datatable/checkbox_columnFooter.jsf");
@@ -404,7 +403,7 @@ public class DataTableClientSideEvents extends OpenFacesTestCase {
     }
 
     /* test for DataTable checkbox column body client-side events */
-     @Test @Ignore
+     @Test
     public void testDataTableCheckboxColumnBodyEvents() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/datatable/checkbox_columnBoby.jsf");
@@ -449,7 +448,7 @@ public class DataTableClientSideEvents extends OpenFacesTestCase {
     }
 
     /*test for DataTable selection column client-side events*/
-     @Test @Ignore
+     @Test
     public void testDataTableSelectionColumnEvents() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/datatable/selection_entire_column.jsf");
@@ -492,7 +491,7 @@ public class DataTableClientSideEvents extends OpenFacesTestCase {
     }
 
     /*test for DataTable selection column header client-side events*/
-     @Test @Ignore
+     @Test
     public void testDataTableSelectionColumnHeaderEvents() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/datatable/selection_columnHeader.jsf");
@@ -536,7 +535,7 @@ public class DataTableClientSideEvents extends OpenFacesTestCase {
     }
 
     /*test for DataTable selection column footer client-side events*/
-     @Test @Ignore
+     @Test
     public void testDataTableSelectionColumnFooterEvents() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/datatable/selection_columnFooter.jsf");
@@ -580,7 +579,7 @@ public class DataTableClientSideEvents extends OpenFacesTestCase {
     }
 
     /*test for DataTable selection column body client-side events*/
-     @Test @Ignore
+     @Test
     public void testDataTableSelectionColumnBodyEvents() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/datatable/selection_columnBoby.jsf");
@@ -623,7 +622,7 @@ public class DataTableClientSideEvents extends OpenFacesTestCase {
     }
 
     /*test 'onchange' events for the DataTable selection*/
-     @Test @Ignore
+     @Test
     public void testOnchangeForDataTableSelection() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/datatable/selectionOnChange.jsf");
@@ -643,7 +642,7 @@ public class DataTableClientSideEvents extends OpenFacesTestCase {
     }
 
     /*test row events*/
-     @Test @Ignore
+     @Test
     public void testRowEvents() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/datatable/rowEvents.jsf");

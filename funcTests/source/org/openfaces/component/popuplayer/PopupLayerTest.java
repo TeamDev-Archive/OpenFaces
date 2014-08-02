@@ -25,7 +25,7 @@ import java.awt.*;
  * @author Darya Shumilina
  */
 public class PopupLayerTest extends OpenFacesTestCase {
-     @Test @Ignore
+     @Test
     public void testReRenderThroughA4J() {
         testAppFunctionalPage("/components/popuplayer/popupLayer_a4j.jsf");
         PopupLayerInspector popupLayer = popupLayer("formID:popupLayerID");
@@ -47,7 +47,7 @@ public class PopupLayerTest extends OpenFacesTestCase {
         assertFalse(newValue.equals(oldValue));
     }
 
-     @Test @Ignore
+     @Test
     public void testWithA4JControls() {
         testAppFunctionalPage("/components/popuplayer/popupLayer_a4j.jsf");
         PopupLayerInspector popupLayer = popupLayer("formID:popupLayer_a4j_ID");
@@ -71,7 +71,7 @@ public class PopupLayerTest extends OpenFacesTestCase {
         assertFalse(newValue.equals(oldValue));
     }
 
-     @Test @Ignore
+     @Test
     public void testPopupLayerVisibleByPageLoad() {
         testAppFunctionalPage("/components/popuplayer/popupLayerVisibleByLoad.jsf");
 
@@ -82,7 +82,7 @@ public class PopupLayerTest extends OpenFacesTestCase {
     }
 
     // showPopupLayer, hidePopupLayer
-     @Test @Ignore
+     @Test
     public void testShowHideJSFunctions() {
         testAppFunctionalPage("/components/popuplayer/popupLayerJSFunctions.jsf");
 
@@ -102,7 +102,7 @@ public class PopupLayerTest extends OpenFacesTestCase {
     }
 
     // showPopupLayerAtXY
-     @Test @Ignore
+     @Test
     public void testShowPopupLayerAtXYJSFunction() {
         testAppFunctionalPage("/components/popuplayer/popupLayerJSFunctions.jsf");
 
@@ -118,8 +118,8 @@ public class PopupLayerTest extends OpenFacesTestCase {
     }
 
     // showCentered
-     @Test @Ignore
-
+     @Test
+    @Ignore
     public void testShowPopupLayerCenteredJSFunction() {
         testAppFunctionalPage("/components/popuplayer/popupLayerJSFunctions.jsf");
 
@@ -140,7 +140,7 @@ public class PopupLayerTest extends OpenFacesTestCase {
     }
 
     // setPopupLayerLeft, setPopupLayerTop
-     @Test @Ignore
+     @Test
     public void testSetTopAndLeftJSFunctions() {
         testAppFunctionalPage("/components/popuplayer/popupLayerJSFunctions.jsf");
 
@@ -167,13 +167,13 @@ public class PopupLayerTest extends OpenFacesTestCase {
         popupLayer.assertPosition(300, 500);
     }
 
-     @Test @Ignore
+     @Test
     public void testModality() {
         testAppFunctionalPage("/components/popuplayer/popupLayerStyling.jsf");
         popupLayer("formID:styled").modalLayer().assertStyle("background-color: beige");
     }
 
-     @Test @Ignore
+     @Test
     public void testStyling() {
         testAppFunctionalPage("/components/popuplayer/popupLayerStyling.jsf");
         PopupLayerInspector popupLayer = popupLayer("formID:styled");
