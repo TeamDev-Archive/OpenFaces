@@ -11,6 +11,7 @@
  */
 package org.openfaces.requests;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.openqa.selenium.By;
@@ -24,6 +25,7 @@ public class JSFC_2282Test extends OpenFacesTestCase {
 
     // modal layer in ie6 behaves incorrectly if there's no background color or image specified
      @Test
+     @Ignore
     public void testDefaultStyleForModalLayerIncludesClearGif() {
         testAppFunctionalPage("/requests/JSFC_2282.jsf");
         WebElement element = getDriver().findElement(By.id("fm:bt"));

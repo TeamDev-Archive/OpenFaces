@@ -11,6 +11,7 @@
  */
 package org.openfaces.component.treetable;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.openfaces.test.RichFacesAjaxLoadingMode;
@@ -33,7 +34,8 @@ import java.util.List;
  */
 public class TreeTableTest extends OpenFacesTestCase {
      @Test
-    public void testReRenderThroughA4J() {
+     @Ignore
+     public void testReRenderThroughA4J() {
         testAppFunctionalPage("/components/treetable/treeTable_a4j.jsf");
 
         List<ElementInspector> imgs;
@@ -71,6 +73,7 @@ public class TreeTableTest extends OpenFacesTestCase {
      */
 
      @Test
+     @Ignore
     public void testStaticStructure() {
         staticTreeStructure(OpenFacesAjaxLoadingMode.getInstance());
         staticTreeStructure(ServerLoadingMode.getInstance());
@@ -80,6 +83,7 @@ public class TreeTableTest extends OpenFacesTestCase {
      * Check simple TreeTable with dynamic structure and verify rows content (with Ajax and without)
      */
      @Test
+     @Ignore
     public void testDynamicStructure() {
         dynamicTreeStructure(OpenFacesAjaxLoadingMode.getInstance());
         dynamicTreeStructure(ServerLoadingMode.getInstance());
@@ -89,6 +93,7 @@ public class TreeTableTest extends OpenFacesTestCase {
      * Check TreeTable single selection
      */
      @Test
+     @Ignore
     public void testSingleSelectionAndKeyboardNavigation() {
         closeBrowser();
         testAppFunctionalPage("/components/treetable/treeTableSingleSelection.jsf");
@@ -139,6 +144,7 @@ public class TreeTableTest extends OpenFacesTestCase {
      */
     //todo: add checking multiple selection functionality with the 'Ctrl' key
      @Test
+     @Ignore
     public void testMultipleSelectionAndKeyboardNavigation() {
         testAppFunctionalPage("/components/treetable/treeTableMultipleSelection.jsf");
         ElementInspector categoryOutput = element("formID:multipleSelectionTreeTableID:0:categoryID");
@@ -232,16 +238,19 @@ public class TreeTableTest extends OpenFacesTestCase {
 
     //Created two different tests because of JSFC-3572
      @Test
+     @Ignore
     public void testSortingAjax() {
         testSorting(OpenFacesAjaxLoadingMode.getInstance());
     }
 
      @Test
+     @Ignore
     public void testSortingServer() {
         testSorting(ServerLoadingMode.getInstance());
     }
 
      @Test
+     @Ignore
     public void testKeyboardNavigation() {
         testAppFunctionalPage("/components/treetable/treeTableKeyboardNavigation.jsf");
 
