@@ -294,6 +294,7 @@ public class LoadBundleTest extends OpenFacesTestCase {
     }
 
      @Test
+     @Ignore
     public void testWithTreeTable() {
         testAppFunctionalPage("/components/loadbundle/withTreeTable.jsf");
 
