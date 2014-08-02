@@ -698,7 +698,7 @@ public class DataTableTest extends OpenFacesTestCase {
             //get text from the body rows
             String currentFirstCellValue = selenium.getText("formID:paginableDataTable:" + j + ":paginableDataTable_firstColumnBody");
             String currentSecondCellValue = selenium.getText("formID:paginableDataTable:" + j + ":paginableDataTable_secondColumnBody");
-            sleep(1300);
+
             //compare received values with their reference values
             assertEquals("Checking contents for page index: " + pageNo, currentReferenceRow.getFirstColumn(), currentFirstCellValue);
             assertEquals("Checking contents for page index: " + pageNo, currentReferenceRow.getSecondColumn(), currentSecondCellValue);
