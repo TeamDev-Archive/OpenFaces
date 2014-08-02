@@ -26,7 +26,7 @@ import java.awt.event.KeyEvent;
  * @author Vladimir Kurganov
  */
 public class InputTextTest extends OpenFacesTestCase {
-    //@Test
+    @Test @Ignore
     public void testTypedValue() {
         testAppFunctionalPage("/components/inputtext/inputTextFieldBaseFunctionality.jsf");
 
@@ -68,7 +68,7 @@ public class InputTextTest extends OpenFacesTestCase {
         second.assertValue("val2");
     }
 
-    //@Test
+    @Test @Ignore
     public void testFocusAndBlurEvent() {
         testAppFunctionalPage("/components/inputtext/inputTextFieldBaseFunctionality.jsf");
 
@@ -102,7 +102,7 @@ public class InputTextTest extends OpenFacesTestCase {
         second.assertValue("val2");
     }
 
-    //@Test
+    @Test @Ignore
     public void testStyles() {
         testAppFunctionalPage("/components/inputtext/inputTextStyling.jsf");
 
@@ -151,7 +151,7 @@ public class InputTextTest extends OpenFacesTestCase {
         secondInput.mouseOut();
     }
 
-    //@Test
+    @Test @Ignore
     public void testValueChangeListener() {
         testAppFunctionalPage("/components/inputtext/inputTextValueChangeListener.jsf");
 
@@ -169,7 +169,7 @@ public class InputTextTest extends OpenFacesTestCase {
         asTagOutput.assertText("true");
     }
 
-    //@Test
+    @Test @Ignore
     public void testClientSideEvents() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/inputtext/inputTextEvents.jsf");
@@ -243,8 +243,8 @@ public class InputTextTest extends OpenFacesTestCase {
         assertTrue(selenium.isTextPresent("mousemove"));
     }
 
-    //@Test
-    @Ignore
+    @Test @Ignore
+
     // revive this test when RichFaces 4 is fully functional
     public void testReRenderingThroughA4J() {
         testAppFunctionalPage("/components/inputtext/inputText_a4j.jsf");

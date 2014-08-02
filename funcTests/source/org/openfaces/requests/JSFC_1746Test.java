@@ -21,7 +21,7 @@ import org.openfaces.test.OpenFacesTestCase;
 public class JSFC_1746Test extends OpenFacesTestCase {
 
     // JSFC-1746 Exception after "Clear selection" for Data Table
-     //@Test
+     @Test @Ignore
     public void testNoExceptionAfterClientClearSelection() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/datatable/tableDemo.jsf");

@@ -22,7 +22,7 @@ import java.awt.event.KeyEvent;
  * @author Darya Shumilina
  */
 public class DropDownClientSideEvents extends OpenFacesTestCase {
-     //@Test
+     @Test @Ignore
     public void testDropDownEvents() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/dropdown/dropDown.jsf");

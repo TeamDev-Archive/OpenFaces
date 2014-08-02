@@ -22,7 +22,7 @@ import org.seleniuminspector.openfaces.ConfirmationInspector;
 public class JSFC_1903Test extends OpenFacesTestCase {
 
     // JSFC-1903 Infinite recursion in JS on invoking Confirmation by "invokerID" attribute
-     //@Test
+     @Test @Ignore
     public void testConfirmationWithInvokerId() {
         testAppFunctionalPage("/requests/JSFC-1903.jsf");
         ElementInspector button = element("button1");

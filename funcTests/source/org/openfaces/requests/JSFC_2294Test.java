@@ -24,8 +24,8 @@ import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
 
 public class JSFC_2294Test extends OpenFacesTestCase {
 
-     //@Test
-    @Ignore
+     @Test @Ignore
+
     public void testThereIsNoJSErrorOnAjaxTreeTableReloading() {
         Selenium selenium = getSelenium();
         liveDemoPage("/treetable/TreeTable_selectionAndKeyboard.jsf");

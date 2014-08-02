@@ -41,7 +41,7 @@ public class DateChooserTest extends BaseCalendarTestCase {
     private Map<String, String> calendarValues = new HashMap<String, String>();
     private Map<String, String> firstDaysOfWeek = new HashMap<String, String>();
 
-    //@Test
+    @Test @Ignore
     public void testReRenderThroughA4J() {
         testAppFunctionalPage("/components/datechooser/dateChooser_a4j.jsf");
 
@@ -55,7 +55,7 @@ public class DateChooserTest extends BaseCalendarTestCase {
         assertFalse(newValue.equals(oldValue));
     }
 
-    //@Test
+    @Test @Ignore
     public void testChangingSelectedDate() {
         testAppFunctionalPage("/components/datechooser/dateChooserChangeDateMonthYear.jsf");
 
@@ -115,7 +115,7 @@ public class DateChooserTest extends BaseCalendarTestCase {
         selectedDateInfo.assertText(expectedTypedDate);
     }
 
-    //@Test
+    @Test @Ignore
     public void testMonthChange() {
         closeBrowser();
         testAppFunctionalPage("/components/datechooser/dateChooserChangeDateMonthYear.jsf");
@@ -154,7 +154,7 @@ public class DateChooserTest extends BaseCalendarTestCase {
         dateChooser.field().assertValue(selectedYearOutput.text());
     }
 
-    //@Test
+    @Test @Ignore
     public void testTodayNoneButtons() {
         testAppFunctionalPage("/components/datechooser/dateChooserTodayNoneButton.jsf");
 
@@ -206,7 +206,7 @@ public class DateChooserTest extends BaseCalendarTestCase {
         checkButtonPairState(todayStyleButton1, todayInfoOutput1, noneStyleButton1, noneInfoOutput1);
     }
 
-    //@Test
+    @Test @Ignore
     public void testLocalesPatternsFormats() {
         testAppFunctionalPage("/components/datechooser/dateChooserFormatLocalePattern.jsf");
 
@@ -329,14 +329,14 @@ public class DateChooserTest extends BaseCalendarTestCase {
         element("out81").assertText(firstDaysOfWeek.get(locale));
     }
 
-    //@Test
+    @Test @Ignore
     public void testDefaultView() {
         testAppFunctionalPage("/components/datechooser/datachooser_defaultView.jsf");
         assertAppearanceNotChanged("DateChooserDefaultView");
     }
 
-    //@Test
-    @Ignore // todo: bring this test back when it's clear how to disable skinning in RichFaces 4 (M2)
+    @Test @Ignore
+     // todo: bring this test back when it's clear how to disable skinning in RichFaces 4 (M2)
     public void testStyling() {
         checkEnabledStyles(false);
         checkEnabledStyles(true);
@@ -344,7 +344,7 @@ public class DateChooserTest extends BaseCalendarTestCase {
         checkDisabledStyles(true);
     }
 
-    //@Test
+    @Test @Ignore
     public void testValueChangeListener() {
         testAppFunctionalPage("/components/datechooser/dateChooserValueChangeListener.jsf");
 

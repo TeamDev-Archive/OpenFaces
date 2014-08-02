@@ -22,7 +22,7 @@ import org.seleniuminspector.ElementInspector;
 public class JSFC_1727Test extends OpenFacesTestCase {
 
     // JSFC-1927 Non modal popup hides after submit
-     //@Test
+     @Test @Ignore
     public void testNonModalPopupStateSaving() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/requests/JSFC-1727.jsf");

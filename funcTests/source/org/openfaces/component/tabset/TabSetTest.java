@@ -23,7 +23,7 @@ import org.seleniuminspector.openfaces.TabSetInspector;
  * @author Darya Shumilina
  */
 public class TabSetTest extends OpenFacesTestCase {
-     //@Test
+     @Test @Ignore
     public void testReRenderThroughA4J() {
         testAppFunctionalPage("/components/tabset/tabSet_a4j.jsf");
 
@@ -40,7 +40,7 @@ public class TabSetTest extends OpenFacesTestCase {
         closerButton.click();
     }
 
-     //@Test
+     @Test @Ignore
     public void testA4JControlInside() {
         testAppFunctionalPage("/components/tabset/tabSet_a4j.jsf");
 
@@ -57,7 +57,7 @@ public class TabSetTest extends OpenFacesTestCase {
         closerButton.click();
     }
 
-     //@Test
+     @Test @Ignore
     public void testChangeSelectedTabWithoutSubmit() {
         testAppFunctionalPage("/components/tabset/tabSetChangeSelectionStyling.jsf");
         TabSetInspector tabSet = tabSet("formID:tabSetWithoutSubmit");
@@ -82,7 +82,7 @@ public class TabSetTest extends OpenFacesTestCase {
         verifyStyles(tabSet, 1);
     }
 
-     //@Test
+     @Test @Ignore
     public void testChangeSelectedTabWithSubmit() {
         closeBrowser();
         testAppFunctionalPage("/components/tabset/tabSetChangeSelectionStyling.jsf");
@@ -117,7 +117,7 @@ public class TabSetTest extends OpenFacesTestCase {
         verifyStyles(tabSet, 1);
     }
 
-     //@Test
+     @Test @Ignore
     public void testClientSideAPI() {
         closeBrowser();
         testAppFunctionalPage("/components/tabset/tabSetChangeSelectionStyling.jsf");
@@ -157,7 +157,7 @@ public class TabSetTest extends OpenFacesTestCase {
         selectedValueOutput.assertText("Yellow");
     }
 
-     //@Test
+     @Test @Ignore
     public void testSelectionChangeListener() {
         testAppFunctionalPage("/components/tabset/tabSetChangeListeners.jsf");
 
@@ -184,7 +184,7 @@ public class TabSetTest extends OpenFacesTestCase {
     }
 
     //todo: fill the method body if 'JSFC-2994' is in 'fixed' state
-     //@Test
+     @Test @Ignore
     public void testValueChangeListener() {
 //    Selenium selenium = getSelenium();
 //    testAppPage("functionalTesting/tabset/tabSetChangeListeners.jsf");
@@ -278,7 +278,7 @@ public class TabSetTest extends OpenFacesTestCase {
         tabSet.assertStyle("width: 300px");
     }
 
-     //@Test
+     @Test @Ignore
     public void testDefaultView() {
         testAppFunctionalPage("/components/tabset/tabSet_defaultView.jsf");
         assertAppearanceNotChanged("TabSetDefaultView");

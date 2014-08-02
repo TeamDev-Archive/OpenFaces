@@ -23,7 +23,7 @@ public class FocusTest extends OpenFacesTestCase {
 
     private final static String FOCUSED = "FOCUSED";
 
-    //@Test
+    @Test @Ignore
     public void testAutoSaveFocusWithInputTextAndCommandButton() {
         testAppFunctionalPage("/components/scrollfocus/focus.jsf");
 
@@ -39,14 +39,14 @@ public class FocusTest extends OpenFacesTestCase {
         element("out").assertText(FOCUSED);
     }
 
-    //@Test
+    @Test @Ignore
     public void testFocusByPageLoadWithInputText() {
         testAppFunctionalPage("/components/scrollfocus/focus.jsf");
         element("out").assertText(FOCUSED);
     }
 
-    //@Test
-    @Ignore
+    @Test @Ignore
+
     public void testFocusWithOFDataTable() {
         testAppFunctionalPage("/components/scrollfocus/focusWithDataTable.jsf");
 

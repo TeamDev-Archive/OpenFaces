@@ -30,7 +30,7 @@ import java.util.List;
  */
 public class ValidationTest extends OpenFacesTestCase {
 
-    //@Test
+    @Test @Ignore
     public void testServerDefaultPresentation() {
         closeBrowser();
         testAppFunctionalPage("/components/validation/serverDefaultPresentation.jsf");
@@ -62,7 +62,7 @@ public class ValidationTest extends OpenFacesTestCase {
         return firstIconIndex;
     }
 
-    //@Test
+    @Test @Ignore
     public void testClientDefaultPresentation() {
         closeBrowser();
         testAppFunctionalPage("/components/validation/clientDefaultPresentation.jsf");
@@ -79,7 +79,7 @@ public class ValidationTest extends OpenFacesTestCase {
         isNotDefaultPresentation();
     }
 
-    //@Test
+    @Test @Ignore
     public void testOFInputComponents() {
         testAppFunctionalPage("/components/validation/openFacesInputComponents.jsf");
         String formName;
@@ -106,7 +106,7 @@ public class ValidationTest extends OpenFacesTestCase {
         isValidationPassed(formName);
     }
 
-    //@Test
+    @Test @Ignore
     public void testClientSideAPI() {
         testAppFunctionalPage("/components/validation/clientSideAPI.jsf");
         String formName;
@@ -163,7 +163,7 @@ public class ValidationTest extends OpenFacesTestCase {
         isPassedClientSideAPI();
     }
 
-    //@Test
+    @Test @Ignore
     public void testComponentWideValidation() throws InterruptedException {
         closeBrowser();
         testAppFunctionalPage("/components/validation/componentWideValidation.jsf");
@@ -280,7 +280,7 @@ public class ValidationTest extends OpenFacesTestCase {
         assertTrue(fullUpperCase.contains(subUpperCase));
     }
 
-    //@Test
+    @Test @Ignore
     public void testOpenFacesValidators() {
         testAppFunctionalPage("/components/validation/openFacesValidators.jsf");
         //server-side
@@ -308,7 +308,7 @@ public class ValidationTest extends OpenFacesTestCase {
         isPassedOFValidators(clientValidationFormName);
     }
 
-    //@Test
+    @Test @Ignore
     public void testStandardValidators() {
         testAppFunctionalPage("/components/validation/standardValidators.jsf");
         //server-side
@@ -335,7 +335,7 @@ public class ValidationTest extends OpenFacesTestCase {
         isPassedStandardValidators(clientValidationFormName);
     }
 
-    //@Test
+    @Test @Ignore
     public void testWithStandardInputs() {
         testAppFunctionalPage("/components/validation/validationWithStandardInputs.jsf");
         //server-side failed

@@ -26,7 +26,7 @@ import java.util.List;
 public class AjaxTest extends OpenFacesTestCase {
 
     //All DataTable features, that use Ajax is Tested on the demo (DataTable_general.jsf)
-     //@Test
+     @Test @Ignore
     public void testFoldingPanelAjax() throws Exception {
         testAppFunctionalPage("/components/foldingpanel/foldingPanelAjax.jsf");
         element("form1:Output").assertElementExists(false);
@@ -37,8 +37,8 @@ public class AjaxTest extends OpenFacesTestCase {
     }
 
     //JSFC-1954
-    @Ignore
-     //@Test
+
+     @Test @Ignore
     public void disabledTestFPClientValidation() throws Exception {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/foldingpanel/foldingPanelAjax.jsf");
@@ -50,8 +50,8 @@ public class AjaxTest extends OpenFacesTestCase {
     }
 
     //JSFC-1954
-    @Ignore
-     //@Test
+
+     @Test @Ignore
     public void disabledTestTPClientValidation() throws Exception {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/tabbedpane/tabbedPaneAjax.jsf");
@@ -64,8 +64,8 @@ public class AjaxTest extends OpenFacesTestCase {
     }
 
     //JSFC-1953
-    @Ignore
-     //@Test
+
+     @Test @Ignore
     public void disabledTestFPMessages() throws Exception {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/foldingpanel/foldingPanelAjax.jsf");
@@ -83,7 +83,7 @@ public class AjaxTest extends OpenFacesTestCase {
         assertFalse(selenium.isTextPresent("Validation Error"));
     }
 
-     //@Test
+     @Test @Ignore
     public void testTabbedPaneAjax() throws Exception {
         testAppFunctionalPage("/components/tabbedpane/tabbedPaneAjax.jsf");
         ElementInspector tab1Output = element("form1:tab1Output");
@@ -105,8 +105,8 @@ public class AjaxTest extends OpenFacesTestCase {
         tab1Output.assertElementExists(true);
     }
 
-    @Ignore
-     //@Test
+
+     @Test @Ignore
     public void disabledTestPagingValidation() throws Exception {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/datatable/dataTableAjax.jsf");
@@ -119,8 +119,8 @@ public class AjaxTest extends OpenFacesTestCase {
         assertEquals("1", selenium.getValue("form2:dataTable2:paginator2--pageNo"));
     }
 
-    @Ignore
-     //@Test
+
+     @Test @Ignore
     public void disabledTestPagingClientValidation() throws Exception {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/datatable/dataTableAjax.jsf");

@@ -26,8 +26,8 @@ import java.awt.event.KeyEvent;
 public class JSFC_2662Test extends OpenFacesTestCase {
 
     //todo: test is not completed; there is problem with 'end' key pressing in selenium
-     //@Test
-    @Ignore
+     @Test @Ignore
+
     public void testUnexpectedAlertByKeyboardActions() throws InterruptedException {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/requests/JSFC-2662.jsf");

@@ -18,49 +18,49 @@ import org.junit.Test;
  * @author Darya Shumilina
  */
 public class DropDownFieldTest extends BaseDropDownTestCase {
-    //@Test
+    @Test @Ignore
     public void testReRenderThroughA4J() {
         checkReRenderingThroughA4J("/components/dropdown/dropDown_a4j.jsf");
     }
 
-    //@Test
+    @Test @Ignore
     public void testListCorrectness() {
         checkListCorrectness("/components/dropdown/dropDownBaseFunctionality.jsf", true);
     }
 
-    //@Test
+    @Test @Ignore
     public void testManualOpeningAndClosing() {
         checkManualListOpeningAndClosing("/components/dropdown/dropDownBaseFunctionality.jsf", true);
     }
 
-    //@Test
+    @Test @Ignore
     public void testValueSelectionFromList() {
         checkValueSelectionFromList("/components/dropdown/dropDownBaseFunctionality.jsf", true);
     }
 
-    //@Test
+    @Test @Ignore
     public void testTypedValue() {
         checkTypedValue("/components/dropdown/dropDownBaseFunctionality.jsf");
     }
 
-    //@Test
-    @Ignore // todo: temporarily ignored because of failures in 2.x branch only
+    @Test @Ignore
+     // todo: temporarily ignored because of failures in 2.x branch only
     public void testAjaxBasedSuggestion() {
         checkAjaxBasedSuggestion("/components/dropdown/dropDownAjaxSuggestion.jsf");
     }
 
-    //@Test
+    @Test @Ignore
     public void testClientBasedSuggestion() {
         checkClientBasedSuggestion("/components/dropdown/dropDownClientSuggestion.jsf");
     }
 
-    //@Test
+    @Test @Ignore
     public void testAutoCompletionFeature() {
         checkAutoCompletionFeature("/components/dropdown/dropDownClientSuggestion.jsf");
     }
 
-    //@Test
-    @Ignore
+    @Test @Ignore
+
     // todo: bring this test back when it's clear how to disable skinning in RichFaces 4 (M2)
     public void testStyling() {
         checkStyles(false, true, false, "/components/dropdown/dropDownStyling.jsf", true);
@@ -69,33 +69,33 @@ public class DropDownFieldTest extends BaseDropDownTestCase {
         checkStyles(true, true, true, "/components/dropdown/dropDownStyling.jsf", true);
     }
 
-    //@Test
+    @Test @Ignore
     public void testClintSideAPI() {
         checkClintSideAPI("/components/dropdown/dropDownClientSideAPI.jsf");
     }
 
-    //@Test
+    @Test @Ignore
     public void testValueChangeListener() {
         checkValueChangeListener("/components/dropdown/dropDownValueChangeListener.jsf");
     }
 
-    //@Test
-    @Ignore
+    @Test @Ignore
+
     public void testNoCashingHighlight() {
         checkNoCachingHighlight("/components/dropdown/dropDownAjaxSuggestion.jsf");
     }
 
-    //@Test
+    @Test @Ignore
          public void testAfterRenderHighlight() {
         checkAfterRenderHighlight("/components/dropdown/dropDownAjaxSuggestion.jsf");
     }
 
-    //@Test
+    @Test @Ignore
     public void testNoCashingAutoComplete() {
         checkNoCashingAutoComplete("/components/dropdown/dropDownAjaxSuggestion.jsf");
     }
 
-    //@Test
+    @Test @Ignore
     public void testNoFieldCleanOnCustomInput() {
         checkNoFieldCleanOnCustomInput("/components/dropdown/dropDownAjaxSuggestion.jsf");
     }

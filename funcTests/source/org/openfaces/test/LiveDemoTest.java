@@ -27,7 +27,7 @@ import org.seleniuminspector.openfaces.TabSetInspector;
  */
 public class LiveDemoTest extends OpenFacesTestCase {
 
-    //@Test
+    @Test @Ignore
     public void testAvailability() {
         assertDemoPageAvailable("/overview/homepage.jsf", "OpenFaces Online Demo \u2014 See Components in action");
         assertDemoPageAvailable("/borderlayoutpanel/BorderLayoutPanel.jsf", "Border Layout Panel \u2014 OpenFaces Demo");
@@ -79,8 +79,8 @@ public class LiveDemoTest extends OpenFacesTestCase {
     }
 
     // see JSFC-1840 TabSet with locales can switch own value but doesn't switch locale in DateChoosers if validation triggered
-    //@Test
-    @Ignore
+    @Test @Ignore
+
     // todo: works locally, but investigate why it fails on the server
     public void testDateChooserTabSetValidation() {
         liveDemoPage("/datechooser/DateChooser.jsf");
@@ -103,8 +103,8 @@ public class LiveDemoTest extends OpenFacesTestCase {
     }
 
     //todo: rework the test appropriately to new demo content
-    @Ignore
-    //@Test
+
+    @Test @Ignore
     public void _testSaveFilterInSession() throws Exception {
         Selenium selenium = getSelenium();
         liveDemoPage("/datatable/DataTable_filteringAndPaging.jsf");
@@ -135,8 +135,8 @@ public class LiveDemoTest extends OpenFacesTestCase {
     }
 
 
-    //@Test
-    @Ignore
+    @Test @Ignore
+
     public void testConfirmation() throws Exception {
         Selenium selenium = getSelenium();
         liveDemoPage("/confirmation/ConfirmationDefault.jsf");
