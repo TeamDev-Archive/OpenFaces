@@ -1,7 +1,7 @@
 <div xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:o="http://openfaces.org/"
-        id="Demo" class="emptyDescription">
+     id="Demo" class="emptyDescription">
 
 
 <div>You can assign the Confirmation component to a client-side event of
@@ -61,23 +61,23 @@
               id="linkInvoker"
               onclick="O$('confirmationForm:linkPopup').showCentered();return false;">
         <h:outputText value="Remove"/>
+        <o:confirmation id="linkConfirmation"
+                        caption="Gray Styled Confirmation"
+                        message="Confirm your action!"
+                        draggable="true"
+                        modalLayerClass="modalLayer"
+                        style="font-family: Tahoma;"
+                        contentStyle="background: #ffffff;"
+                        captionStyle="background: url(../images/confirmation/gray_back.gif); color: white; font-size: 13px;"
+                        messageIconUrl="../images/confirmation/gray_icon.gif"
+                        messageStyle="color: #2a57ac;"
+                        detailsStyle="color: black;"
+                        buttonAreaStyle="background: #dddddd;"
+                        okButtonStyle="border: 2px solid white; background: #dddddd; width: 85px;"
+                        cancelButtonStyle="border: 2px solid white; background: #dddddd; width: 85px;"
+                />
       </h:outputLink> link to perform an action with confirmation.
-      <o:confirmation id="linkConfirmation"
-                      caption="Gray Styled Confirmation"
-                      message="Confirm your action!"
-                      draggable="true"
-                      modalLayerClass="modalLayer"
-                      style="font-family: Tahoma;"
-                      contentStyle="background: #ffffff;"
-                      captionStyle="background: url(../images/confirmation/gray_back.gif); color: white; font-size: 13px;"
-                      messageIconUrl="../images/confirmation/gray_icon.gif"
-                      messageStyle="color: #2a57ac;"
-                      detailsStyle="color: black;"
-                      buttonAreaStyle="background: #dddddd;"
-                      okButtonStyle="border: 2px solid white; background: #dddddd; width: 85px;"
-                      cancelButtonStyle="border: 2px solid white; background: #dddddd; width: 85px;"
-              />
-        </span>
+      </span>
 
   <div style="margin-bottom: 10px;"></div>
 
@@ -202,13 +202,13 @@
     <tr>
       <td class="title">"Yes" button *:</td>
       <td class="inputfield_class">
-        <input id="yes_input" style="width: 200px;" maxlength="15" type="text" name="yes"  value="Let it be"/>
+        <input id="yes_input" style="width: 200px;" maxlength="15" type="text" name="yes" value="Let it be"/>
       </td>
     </tr>
     <tr>
       <td class="title">"No" button *:</td>
       <td class="inputfield_class">
-        <input id="no_input" style="width: 200px;"  maxlength="15" type="text" name="no" value="No way"/>
+        <input id="no_input" style="width: 200px;" maxlength="15" type="text" name="no" value="No way"/>
       </td>
     </tr>
     <tr>

@@ -18,7 +18,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * User: Roman Perin
+ * @author: Roman Perin
  * Date: 12.08.14
  */
 public class ExtractionFilter {
