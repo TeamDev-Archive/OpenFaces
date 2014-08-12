@@ -33,26 +33,19 @@ public class TableDataExtractor {
 
     public static final String EXTRACTED_DATA_ATTRIBUTE = "extractedData";
 
-    private static List<ComponentDataExtractor> defaultComponentExtractors = new LinkedList<ComponentDataExtractor>();
+    private List<ComponentDataExtractor> defaultComponentExtractors = new LinkedList<ComponentDataExtractor>();
+    private List<ComponentDataExtractor> componentExtractors = new LinkedList<ComponentDataExtractor>();
+    private List<CellDataExtractor> cellDataExtractors = new LinkedList<CellDataExtractor>();
 
-    static {
+    private DataScope scope;
+
+    public TableDataExtractor(DataScope scope, Class... extractionIgnoredClasses) {
         defaultComponentExtractors.add(new UICommandDataExtractor());
         defaultComponentExtractors.add(new SelectValueExtractor());
         defaultComponentExtractors.add(new ValueHolderDataExtractor());
         defaultComponentExtractors.add(new UIInstructionsDataExtractor());
-    }
-
-    private List<ComponentDataExtractor> componentExtractors = new LinkedList<ComponentDataExtractor>();
-    private List<CellDataExtractor> cellDataExtractors = new LinkedList<CellDataExtractor>();
-
-    {
         componentExtractors.addAll(defaultComponentExtractors);
-        cellDataExtractors.add(new CellComponentsDataExtractor(componentExtractors));
-    }
-
-    private DataScope scope;
-
-    public TableDataExtractor(DataScope scope) {
+        cellDataExtractors.add(new CellComponentsDataExtractor(componentExtractors, extractionIgnoredClasses));
         this.scope = scope;
     }
 
