@@ -71,6 +71,7 @@ O$.FoldingPanel = {
           body.style.visibility = "hidden";
           body.style.visibility = "visible";
         }
+        O$.Popup._refreshOpenedPopupIfItExists();
       },
 
       expand: function() {
@@ -151,7 +152,7 @@ O$.FoldingPanel = {
           }
         },
         onclick:function (e) {
-          fp.setExpanded(!fp._expanded);
+          fp.isExpanded() ? fp.collapse() : fp.expand();
         },
         onmouseover:function () {
           captionContent._updateToggleButtonsImages(true);

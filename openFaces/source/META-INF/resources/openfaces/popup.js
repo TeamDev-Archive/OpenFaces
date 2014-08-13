@@ -159,6 +159,17 @@ O$.Popup = {
       if (currPopup != popupToRetain && currPopup.hide)
         currPopup.hide();//currPopup.hide add to be sure that popup is initialized, this made to avoid problem with lazy popup menu
     });
+  },
+
+  _refreshOpenedPopupIfItExists: function() {
+    if (!O$._popupsOnPage)
+      return;
+    O$._popupsOnPage.forEach(function (popupId) {
+      var currPopup = O$(popupId) || O$(popupId + O$.Popup.PULLED_OUT_ID_SUFFIX);
+      if (currPopup && currPopup.isVisible()) {
+        currPopup._showByElement(currPopup._dropDown);
+      }
+    });
   }
 
 };
