@@ -11,32 +11,22 @@
  */
 
 O$.FoldingPanel = {
-  _init: function(controlId,
-                  expanded,
-                  direction,
-                  rolloverClass,
-                  loadingMode,
-                  focusable,
-                  focusedClass,
-                  focusedContentClass,
-                  focusedCaptionClass,
-                  toggleOnCaptionClick,
-                  rolloverTogglableCaptionClass) {
-    var fp = O$.initComponent(controlId, {rollover: rolloverClass}, {
-      _stateHolderId: controlId + "::state",
-      _contentHolderId: controlId + "::content",
-      _captionContentId: controlId + "::caption_content",
-      _captionId: controlId + "::caption",
-      _toggleOnCaptionClick:  toggleOnCaptionClick,
-      _contentLoaded: loadingMode == "client" || expanded,
-      _expanded: expanded,
-      _direction: direction,
+  _init:function (controlId, expanded, direction, rolloverClass, loadingMode, focusable, focusedClass, focusedContentClass, focusedCaptionClass, toggleOnCaptionClick, rolloverTogglableCaptionClass) {
+    var fp = O$.initComponent(controlId, {rollover:rolloverClass}, {
+      _stateHolderId:controlId + "::state",
+      _contentHolderId:controlId + "::content",
+      _captionContentId:controlId + "::caption_content",
+      _captionId:controlId + "::caption",
+      _toggleOnCaptionClick:toggleOnCaptionClick,
+      _contentLoaded:loadingMode == "client" || expanded,
+      _expanded:expanded,
+      _direction:direction,
 
-      isExpanded: function() {
+      isExpanded:function () {
         return fp._expanded;
       },
 
-      setExpanded: function(expanded) {
+      setExpanded:function (expanded) {
         if (this._expanded == expanded)
           return;
         this._expanded = expanded;
@@ -71,13 +61,16 @@ O$.FoldingPanel = {
           body.style.visibility = "hidden";
           body.style.visibility = "visible";
         }
+        if (O$.Popup) {
+          O$.Popup._refreshOpenedPopupIfItExists();
+        }
       },
 
-      expand: function() {
+      expand:function () {
         this.setExpanded(true);
       },
 
-      collapse: function() {
+      collapse:function () {
         this.setExpanded(false);
       }
     });
@@ -90,11 +83,11 @@ O$.FoldingPanel = {
       var captionContent = O$(fp._captionId);
 
       O$.extend(fp, {
-        _prevOnfocus: fp.onfocus,
-        _prevOnBlur: fp.onblur,
+        _prevOnfocus:fp.onfocus,
+        _prevOnBlur:fp.onblur,
 
-        _prevOnKeyDown: fp.onkeypress,
-        onkeypress: function (evt) {
+        _prevOnKeyDown:fp.onkeypress,
+        onkeypress:function (evt) {
           var e = evt ? evt : window.event;
           if (fp._prevOnKeyDown)
             fp._prevOnKeyDown(e);
@@ -119,39 +112,39 @@ O$.FoldingPanel = {
           }
         },
 
-        onfocus: function(e) {
+        onfocus:function (e) {
           if (this._prevOnfocus)
             this._prevOnfocus(e);
 
           if (focusedContentClass) {
-            O$.setStyleMappings(contentHolder, {focused: focusedContentClass});
+            O$.setStyleMappings(contentHolder, {focused:focusedContentClass});
           }
           if (focusedCaptionClass) {
-            O$.setStyleMappings(captionContent, {focused: focusedCaptionClass});
+            O$.setStyleMappings(captionContent, {focused:focusedCaptionClass});
           }
         },
-        onblur: function(e) {
+        onblur:function (e) {
           if (this._prevOnBlur)
             this._prevOnBlur(e);
           if (focusedContentClass) {
-            O$.setStyleMappings(contentHolder, {focused: null});
+            O$.setStyleMappings(contentHolder, {focused:null});
           }
           if (focusedCaptionClass) {
-            O$.setStyleMappings(captionContent, {focused: null});
+            O$.setStyleMappings(captionContent, {focused:null});
           }
         }
       });
     }
     if (toggleOnCaptionClick) {
       O$.extend(captionContent, {
-        _updateToggleButtonsImages: function(isMouseInside) {
+        _updateToggleButtonsImages:function (isMouseInside) {
           var toggleButtons = fp._expansionToggleButtons;
           for (var i = 0, count = toggleButtons ? toggleButtons.length : 0; i < count; i++) {
             toggleButtons[i]._updateImage(isMouseInside, false);
           }
         },
         onclick:function (e) {
-          fp.setExpanded(!fp._expanded);
+          fp.isExpanded() ? fp.collapse() : fp.expand();
         },
         onmouseover:function () {
           captionContent._updateToggleButtonsImages(true);
@@ -168,7 +161,7 @@ O$.FoldingPanel = {
 
   },
 
-  _ajaxResponseProcessor: function(fp, portionName, portionHTML, portionScripts) {
+  _ajaxResponseProcessor:function (fp, portionName, portionHTML, portionScripts) {
     var oldComponent, prnt, tempDiv, newControl, oldId;
     if (portionName == "content") {
       oldComponent = O$(fp._contentHolderId);
@@ -184,7 +177,7 @@ O$.FoldingPanel = {
     fp._contentLoaded = true;
   },
 
-  _processCaptionStyle: function(fp) {
+  _processCaptionStyle:function (fp) {
     if (!fp._caption)
       return;
     var paddings = O$.getElementStyle(fp._caption, ["padding-left", "padding-right", "padding-top", "padding-bottom"]);
@@ -193,7 +186,7 @@ O$.FoldingPanel = {
     fp._captionContent.style.paddingTop = paddings.paddingTop;
     fp._captionContent.style.paddingBottom = paddings.paddingBottom;
     fp._caption.style.paddingLeft = fp._caption.style.paddingRight =
-                                     fp._caption.style.paddingTop = fp._caption.style.paddingBottom = "0";
+            fp._caption.style.paddingTop = fp._caption.style.paddingBottom = "0";
   }
 };
 
