@@ -166,7 +166,7 @@ O$.Popup = {
       return;
     O$._popupsOnPage.forEach(function (popupId) {
       var currPopup = O$(popupId) || O$(popupId + O$.Popup.PULLED_OUT_ID_SUFFIX);
-      if (currPopup && currPopup.isVisible()) {
+      if (currPopup && currPopup.isVisible() && currPopup._dropDown) {
         currPopup._showByElement(currPopup._dropDown);
       }
     });

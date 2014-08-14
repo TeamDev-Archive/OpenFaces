@@ -11,7 +11,17 @@
  */
 
 O$.FoldingPanel = {
-  _init:function (controlId, expanded, direction, rolloverClass, loadingMode, focusable, focusedClass, focusedContentClass, focusedCaptionClass, toggleOnCaptionClick, rolloverTogglableCaptionClass) {
+  _init:function (controlId,
+                  expanded,
+                  direction,
+                  rolloverClass,
+                  loadingMode,
+                  focusable,
+                  focusedClass,
+                  focusedContentClass,
+                  focusedCaptionClass,
+                  toggleOnCaptionClick,
+                  rolloverTogglableCaptionClass) {
     var fp = O$.initComponent(controlId, {rollover:rolloverClass}, {
       _stateHolderId:controlId + "::state",
       _contentHolderId:controlId + "::content",
