@@ -280,7 +280,9 @@ O$.Table = {
                 saveDifference + "px";
       }
     }
-    O$.invokeFunctionAfterDelay(table._alignRowHeights, 0);
+    if (table._alignRowHeights) {
+      O$.invokeFunctionAfterDelay(table._alignRowHeights, 0);
+    }
   },
 
   _initApiFunctions:function (table) {
