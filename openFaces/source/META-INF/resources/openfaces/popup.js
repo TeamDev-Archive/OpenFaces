@@ -156,13 +156,43 @@ O$.Popup = {
       var currPopup = O$(popupId) || O$(popupId + O$.Popup.PULLED_OUT_ID_SUFFIX);
       if (!currPopup)
         return; // popup can be removed from page with A4J
-      if (currPopup != popupToRetain)
-        currPopup.hide();
+      if (currPopup != popupToRetain && currPopup.hide)
+        currPopup.hide();//currPopup.hide add to be sure that popup is initialized, this made to avoid problem with lazy popup menu
+    });
+  },
+
+  _refreshOpenedPopupIfItExists: function() {
+    if (!O$._popupsOnPage)
+      return;
+    O$._popupsOnPage.forEach(function (popupId) {
+      var currPopup = O$(popupId) || O$(popupId + O$.Popup.PULLED_OUT_ID_SUFFIX);
+      if (currPopup && currPopup.isVisible() && currPopup._dropDown) {
+        currPopup._showByElement(currPopup._dropDown);
+      }
     });
   }
 
 };
+O$.addEventHandler(document, "mousewheel", function (e) {
+  var evt = O$.getEvent(e);
+  if (!evt && !O$._popupsOnPage) return;
 
+  O$._popupsOnPage.forEach(function (popupId) {
+    var popup = O$(popupId) || O$(popupId + O$.Popup.PULLED_OUT_ID_SUFFIX);
+    if (!popup || !popup.isVisible() || insidePopup(popup, evt.x, evt.y)) {
+      return;
+    }
+    popup.hide();
+  });
+
+  function insidePopup(popup, x, y) {
+    var rect = popup.getBoundingClientRect();
+    var insideByX = x > rect.left && x < (rect.left + rect.width);
+    var insideByY = y > rect.top && y < (rect.top + rect.height);
+
+    return insideByX && insideByY;
+  }
+});
 document._addClickListener(function(e) {
   var evt = O$.getEvent(e);
   if (!evt || !O$._popupsOnPage) return;

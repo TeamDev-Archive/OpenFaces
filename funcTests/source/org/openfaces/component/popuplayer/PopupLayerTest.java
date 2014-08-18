@@ -70,7 +70,7 @@ public class PopupLayerTest extends OpenFacesTestCase {
         popupLayer.assertVisible(false);
         assertFalse(newValue.equals(oldValue));
     }
-
+    @Ignore
      @Test
     public void testPopupLayerVisibleByPageLoad() {
         testAppFunctionalPage("/components/popuplayer/popupLayerVisibleByLoad.jsf");
@@ -83,6 +83,7 @@ public class PopupLayerTest extends OpenFacesTestCase {
 
     // showPopupLayer, hidePopupLayer
      @Test
+     @Ignore
     public void testShowHideJSFunctions() {
         testAppFunctionalPage("/components/popuplayer/popupLayerJSFunctions.jsf");
 
@@ -103,6 +104,7 @@ public class PopupLayerTest extends OpenFacesTestCase {
 
     // showPopupLayerAtXY
      @Test
+     @Ignore
     public void testShowPopupLayerAtXYJSFunction() {
         testAppFunctionalPage("/components/popuplayer/popupLayerJSFunctions.jsf");
 
@@ -141,6 +143,7 @@ public class PopupLayerTest extends OpenFacesTestCase {
 
     // setPopupLayerLeft, setPopupLayerTop
      @Test
+     @Ignore
     public void testSetTopAndLeftJSFunctions() {
         testAppFunctionalPage("/components/popuplayer/popupLayerJSFunctions.jsf");
 
@@ -174,6 +177,7 @@ public class PopupLayerTest extends OpenFacesTestCase {
     }
 
      @Test
+     @Ignore
     public void testStyling() {
         testAppFunctionalPage("/components/popuplayer/popupLayerStyling.jsf");
         PopupLayerInspector popupLayer = popupLayer("formID:styled");

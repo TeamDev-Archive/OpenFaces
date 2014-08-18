@@ -122,7 +122,8 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
 
         String state = requestMap.get(fieldId + PROMPT_VISIBLE_SUFFIX);
         if ("false".equals(state)) {
-            dropDownField.setSubmittedValue(submittedValue);
+            if (!dropDownField.isDisabled())
+                dropDownField.setSubmittedValue(submittedValue);
         }
     }
 
@@ -282,7 +283,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
                     items.add(selectItem);
                 }
             }
-        }else{
+        } else {
             MockItem mockItem = new MockItem();
             mockItem.setChildren(component.getChildren());
             items.add(mockItem);
@@ -368,6 +369,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
         ScriptBuilder buf = new ScriptBuilder();
         TableStructure tableStructure = popup.getChildData().getTableStructure();
         buf.initScript(context, dropDownField, "O$.DropDownField._init",
+                dropDown.getParentId(),
                 dropDownField.getTimeout(),
                 dropDownField.getListAlignment(),
 
@@ -387,8 +389,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
 
                 tableStructure.getInitParam(context, POPUP_TABLE_DEFAULT_STYLES),
                 dropDownField.isCachingAllowed(),
-                getItemPresentationColumn(dropDown),
-                dropDownField.getChangeValueOnSelect()
+                getItemPresentationColumn(dropDown)
         );
         popup.resetChildData();
         if (!dropDown.isReadonly()) {

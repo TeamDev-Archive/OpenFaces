@@ -49,6 +49,16 @@ public abstract class DropDownComponent extends OUIInputText {
     private String buttonImageUrl;
     private String disabledButtonImageUrl;
 
+    private String parentId;
+
+    public String getParentId() {
+        return ValueBindings.get(this, "parentId", parentId);
+    }
+
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
+    }
+
 
     protected String getListClass() {
         return ValueBindings.get(this, "listClass", listClass);
@@ -265,6 +275,7 @@ public abstract class DropDownComponent extends OUIInputText {
 
                 buttonImageUrl,
                 disabledButtonImageUrl,
+                parentId
         };
     }
 
@@ -300,5 +311,6 @@ public abstract class DropDownComponent extends OUIInputText {
 
         buttonImageUrl = (String) values[i++];
         disabledButtonImageUrl = (String) values[i++];
+        parentId = (String) values[i++];
     }
 }

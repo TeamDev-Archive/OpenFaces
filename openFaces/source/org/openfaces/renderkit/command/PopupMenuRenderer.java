@@ -47,7 +47,8 @@ public class PopupMenuRenderer extends RendererBase {
     private static final String DEFAULT_DISABLED_ITEM = "o_menu_list_item_disabled";
 
     public static final String ATTR_DEFAULT_INDENT_CLASS = "_defaultIndentClass";
-
+    private static final String MENU_ITEM_CONTENT_SUFFIX = "::content";
+    private static final String MENU_ITEM_CONTROL_SUFFIX = "::control";
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         if (!component.isRendered()) return;

@@ -19,11 +19,14 @@ import org.openfaces.org.json.JSONArray;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.util.AnonymousFunction;
+import org.openfaces.util.Rendering;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
+import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.context.FacesContext;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -169,6 +172,24 @@ public class AjaxInitializer {
 
             result.put("actionTriggerParam", command.getActionTriggerParam());
 
+            UIComponent source = command;
+            if (source instanceof Ajax) {
+                source = source.getParent();
+                if (source instanceof ComponentConfigurator)
+                    source = ((ComponentConfigurator) source).getConfiguredComponent();
+            }
+            if (source != null) {
+                result.put("_sourceId", source.getClientId(context));
+                Collection<ClientBehaviorContext.Parameter> behaviorParams = Rendering.getBehaviorParameters(source);
+                if (behaviorParams != null && behaviorParams.size() > 0) {
+                    JSONObject params = new JSONObject();
+                    for (ClientBehaviorContext.Parameter behaviorParam : behaviorParams) {
+                        params.put(behaviorParam.getName(), behaviorParam.getValue());
+                    }
+                    result.put("params", params);
+                }
+            }
+
             result.put("immediate", command.isImmediate());
             return result;
         } catch (JSONException e) {
@@ -183,7 +204,7 @@ public class AjaxInitializer {
                     actionExpressionString);
     }
 
-    protected Object getExecuteParam(FacesContext context,
+     public Object getExecuteParam(FacesContext context,
                                      OUICommand command,
                                      Iterable<String> execute) {
         JSONArray renderArray = getRenderArray(context, command, execute);

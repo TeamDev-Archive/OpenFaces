@@ -39,6 +39,7 @@ import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.event.PreRenderComponentEvent;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -85,7 +86,14 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
 
         if (table.getUseAjax())
             AjaxUtil.prepareComponentForAjax(context, component);
-
+        /*List<BaseColumn> columns = table.getRenderedColumns();
+        for (BaseColumn column : columns) {
+            context.getApplication().publishEvent(context,
+                    PreRenderComponentEvent.class,
+                    column);
+        }*/
+        getPublishEventForAllChildren(context, component);
+        table.clearRenderedColumnCache();
         TableStructure tableStructure = createTableStructure(table);
         table.getAttributes().put(TableStructure.TABLE_STRUCTURE_ATTR, tableStructure);
         try {
@@ -102,7 +110,29 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
             table.getAttributes().remove(TableStructure.TABLE_STRUCTURE_ATTR);
         }
     }
+    private void getPublishEventForAllChildren(FacesContext context, UIComponent component) {
+        while (true) {
+            try {
+                if (!component.isRendered()) return;
+                List<UIComponent> children = component.getChildren();
 
+                if (children.size() != 0) {
+                    for (UIComponent child : children) {
+                        getPublishEventForAllChildren(context, child);
+                    }
+                    context.getApplication().publishEvent(context,
+                            PreRenderComponentEvent.class,
+                            component);
+                }
+                return;
+            } catch (Exception ignored) {
+
+            }
+
+
+        }
+
+    }
     protected TableStructure createTableStructure(final AbstractTable table) {
         return new TableStructure(table, table) {
             protected String getAdditionalRowClass(FacesContext context, AbstractTable table, Object rowData, int rowIndex) {

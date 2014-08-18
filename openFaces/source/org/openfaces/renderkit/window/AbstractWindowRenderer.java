@@ -31,7 +31,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * @author Dmitry Pikhulya
@@ -39,7 +38,6 @@ import java.util.UUID;
 public abstract class AbstractWindowRenderer extends PopupLayerRenderer {
     private static final String DEFAULT_CAPTION_CLASS = "o_window_caption";
     private static final String DEFAULT_CAPTION_WIDTH_CLASS = "o_default_caption_width";
-    private static int uniqIdSuffix = 0;
     public static final String MIDDLE_AREA_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "content";
 
     public static String getWindowJs(FacesContext context) {
@@ -57,13 +55,7 @@ public abstract class AbstractWindowRenderer extends PopupLayerRenderer {
             area.setAlignment(Side.RIGHT);
             AbstractWindow win = (AbstractWindow) component;
             CloseWindowButton closeButton = new CloseWindowButton();
-            //TODO: this is temporary solution for duplicate ID's inside dataTable rows it mus be removed when the problem will be solved
-
-            String uid = UUID.randomUUID().toString();
-
-            uid = uid.replaceAll("-","");
-
-            closeButton.setId(win.getId() + Rendering.SERVER_ID_SUFFIX_SEPARATOR + "closeButton" + uid);
+            closeButton.setId(win.getId() + Rendering.SERVER_ID_SUFFIX_SEPARATOR + "closeButton");
             List<UIComponent> areaChildren = area.getChildren();
             if (isMinimizeAllowed())
                 areaChildren.add(new MinimizeWindowButton());
@@ -176,7 +168,7 @@ public abstract class AbstractWindowRenderer extends PopupLayerRenderer {
 
         AbstractWindow window = (AbstractWindow) component;
         String sizeKey = window.getClientId(context) + "::size";
-        final String parentId = window.getClientId() + "::parentId";
+        final String parentId = window.getClientId();
 
         String sizeStr = context.getExternalContext().getRequestParameterMap().get(sizeKey);
         window.setParentId(context.getExternalContext().getRequestParameterMap().get(parentId));

@@ -53,6 +53,7 @@ public class Resources {
     public static final String UTIL_JS_PATH = "util/util.js";
     public static final String JSON_JS_PATH = "util/json2.js";
     public static final String AJAX_UTIL_JS_PATH = "util/ajaxUtil.js";
+    private static String versionStringWithPrefix;
 
 
     private Resources() {
@@ -132,6 +133,18 @@ public class Resources {
             throw new FacesException("Couldn't find resource: " + resourcePath);
         resourcePath = resource.getRequestPath();
         return resourcePath;
+    }
+
+    /**
+     * Return version of OpenFaces with "ofver=" prefix
+     *
+     * @return requested version of OpenFaces with "ofver=" prefix
+     */
+    public static String getVersionStringWithPrefix() {
+        if (versionStringWithPrefix != null)
+            return versionStringWithPrefix;
+        versionStringWithPrefix = "&ofver=" + getVersionString();
+        return versionStringWithPrefix;
     }
 
     private static String versionString;

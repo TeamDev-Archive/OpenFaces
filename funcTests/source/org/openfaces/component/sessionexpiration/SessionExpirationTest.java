@@ -12,6 +12,7 @@
 
 package org.openfaces.component.sessionexpiration;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.openqa.selenium.By;
@@ -23,6 +24,7 @@ import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
  */
 public class SessionExpirationTest extends OpenFacesTestCase {
      @Test
+     @Ignore
     public void testSessionExpiration() {
         testAppFunctionalPage("/components/sessionexpiration/rawTesting.jsf");
 

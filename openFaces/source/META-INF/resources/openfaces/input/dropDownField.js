@@ -11,7 +11,7 @@
  */
 
 O$.DropDownField = {
-  _init:function (dropDownId, popupTimeout, listAlignment, rolloverPopupItemClass, itemValues, customValueAllowed, required, suggestionMode, suggestionDelay, suggestionMinChars, manualListOpeningAllowed, autoCompleteOn, totalItemCount, pageSize, popupTableStructureAndStyleParams, cachingAllowed, itemPresentationColumn, changeValueOnSelect) {
+  _init:function (dropDownId,parentId, popupTimeout, listAlignment, rolloverPopupItemClass, itemValues, customValueAllowed, required, suggestionMode, suggestionDelay, suggestionMinChars, manualListOpeningAllowed, autoCompleteOn, totalItemCount, pageSize, popupTableStructureAndStyleParams, cachingAllowed, itemPresentationColumn, changeValueOnSelect) {
     var dropDown = O$(dropDownId);
     var super_ = O$.extend(dropDown, {
       _listAlignment:listAlignment,
@@ -26,6 +26,7 @@ O$.DropDownField = {
       _itemPresentationContainer:O$(dropDownId + "::itemPresentation::container"),
       _itemPresentationColumn:itemPresentationColumn,
       _fieldContainer:O$(dropDownId + "::field::container"),
+      _parentId: parentId,
       _changeValueOnSelect:changeValueOnSelect,
 
       _showPresentationPromptText:function (promptText) {
@@ -39,7 +40,7 @@ O$.DropDownField = {
 
       _copyClassesToItemPresentation:function () {
 
-        function removeClassFromСlassName(className, classesToRemove) {
+        function removeClassFromClassName(className, classesToRemove) {
           var newClassName = className;
           for (var i = 0; i < classesToRemove.length; i++) {
             if (classesToRemove[i]) {
@@ -55,7 +56,7 @@ O$.DropDownField = {
         var selectedRow = dropDown._getSelectedItem() || dropDown._items[0];
         var rowTable = selectedRow._table;
         if (rowTable) {
-          itemPresentation.className = removeClassFromСlassName(selectedRow.className, [rowTable._selectionClass, oddRowClassName]);
+          itemPresentation.className = removeClassFromClassName(selectedRow.className, [rowTable._selectionClass, oddRowClassName]);
           itemPresentation.style.cssText = selectedRow.style.cssText;
           for (var i = 0; i < itemPresentation.childNodes.length; i++) {
             var tdElemnt = itemPresentation.childNodes[i];

@@ -38,8 +38,7 @@ public class DefaultProgressMessageRenderer extends AbstractSettingsRenderer {
         JSONObject backgroundLayerParams = null;
         if (dpm.getFillBackground()) {
             backgroundLayerParams = new JSONObject();
-            Rendering.addJsonParam(backgroundLayerParams, "className", new StyleParam(dpm, "background", "o_ajax_blockingLayer"));
-            //noinspection RedundantCast
+            Rendering.addJsonParam(backgroundLayerParams, "className", new StyleParam(dpm, "background", "o_ajax_blockingLayer", true));  //noinspection RedundantCast
             Rendering.addJsonParam(backgroundLayerParams, "transparency", /*don't remove (double) cast -- the other function will be invoked*/(double) dpm.getBackgroundTransparency());
             //noinspection RedundantCast
             Rendering.addJsonParam(backgroundLayerParams, "transparencyTransitionPeriod", /*don't remove (int) cast -- the other function will be invoked*/(int) dpm.getBackgroundTransparencyTransitionPeriod());

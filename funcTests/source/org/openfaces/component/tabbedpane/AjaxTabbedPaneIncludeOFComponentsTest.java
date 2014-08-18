@@ -38,6 +38,7 @@ public class AjaxTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
     }
 
      @Test
+     @Ignore
     public void testConfirmationInside() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/tabbedpane/confirmationIn.jsf");
@@ -259,6 +260,7 @@ public class AjaxTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
     }
 
      @Test
+     @Ignore
     public void testTreeTableInside() {
         testAppFunctionalPage("/components/tabbedpane/treeTableIn.jsf");
         element("fn:firstHeader").assertText("First tab");

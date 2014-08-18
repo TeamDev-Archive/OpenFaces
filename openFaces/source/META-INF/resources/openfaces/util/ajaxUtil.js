@@ -76,9 +76,18 @@ O$.ajax = {
 
     args._source = source;
     args._event = event;
-    var render = options.render ? options.render.split(" ") : undefined;
-    args.execute = options.execute ? options.execute.split(" ") : undefined;
-    args.onajaxstart = options.onajaxstart;
+    args.actionComponent = source && typeof source != "string" ? source.id : source;
+    var render;
+    if (!(options.render instanceof Array)) {
+      render = options.render ? options.render.split(" ") : undefined;
+    } else {
+      render = options.render;
+    }
+    if (!(options.execute instanceof Array)) {
+      args.execute = options.execute ? options.execute.split(" ") : undefined;
+    } else {
+      args.execute = options.execute;
+    }
     args.onajaxend = options.onajaxend;
     args.onsuccess = options.onsuccess;
     args.onerror = options.onerror;

@@ -77,6 +77,7 @@ public class ClientFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
     }
 
     @Test
+
     public void testDataTableInside() {
         testAppFunctionalPage("/components/foldingpanel/dataTableIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());
@@ -254,6 +255,7 @@ public class ClientFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
     }
 
     @Test
+    @Ignore
     public void testTreeTableInside() {
         testAppFunctionalPage("/components/foldingpanel/treeTableIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());

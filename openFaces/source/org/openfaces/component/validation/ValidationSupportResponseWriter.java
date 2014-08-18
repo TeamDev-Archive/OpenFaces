@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -55,6 +56,8 @@ public class ValidationSupportResponseWriter extends ResponseWriterWrapper {
             "input", "textarea", "select"
     };
 
+    private static HashMap<String, String> map = new HashMap<String, String>();
+
     private ResponseWriter wrapped;
     private StringWriter validationScriptWriter;
     private List<String> validationScripts;
@@ -64,10 +67,27 @@ public class ValidationSupportResponseWriter extends ResponseWriterWrapper {
     private boolean processingValidation;
     private String element;
     private ValidationProcessor validationProcessor;
+    private static HashMap<String, String> mapElementsAllowedRenderAfterTheirStart;
+    private static HashMap<String, String> mapElementsAllowRenderAfterTheirEnd;
+    private static HashMap<String, String> mapElementsAllowedForId;
 
     public ValidationSupportResponseWriter(ResponseWriter writer) {
         this.wrapped = writer;
         formsHaveOnSubmitRendered = new HashSet<String>();
+
+        mapElementsAllowedRenderAfterTheirStart = new HashMap<String, String>();
+        for (int i = 0; i < ELEMENTS_ALLOWED_RENDER_AFTER_THEIR_START.length; i++){
+            mapElementsAllowedRenderAfterTheirStart.put(ELEMENTS_ALLOWED_RENDER_AFTER_THEIR_START[i],ELEMENTS_ALLOWED_RENDER_AFTER_THEIR_START[i]);
+        }
+        mapElementsAllowRenderAfterTheirEnd = new HashMap<String, String>();
+        for (int i = 0; i < ELEMENTS_ALLOW_RENDERER_AFTER_THEIR_END.length; i++){
+            mapElementsAllowRenderAfterTheirEnd.put(ELEMENTS_ALLOW_RENDERER_AFTER_THEIR_END[i],ELEMENTS_ALLOW_RENDERER_AFTER_THEIR_END[i]);
+        }
+        mapElementsAllowedForId = new HashMap<String, String>();
+        for (int i = 0; i < ELEMENTS_ALLOWED_FOR_ID.length; i++){
+            mapElementsAllowedForId.put(ELEMENTS_ALLOWED_FOR_ID[i],ELEMENTS_ALLOWED_FOR_ID[i]);
+        }
+
     }
 
     @Override
@@ -216,9 +236,9 @@ public class ValidationSupportResponseWriter extends ResponseWriterWrapper {
     private void renderClientIdIfNecessary(boolean endingElement) throws IOException {
         if (element != null && clientId != null) {
             if (!clientIdRendered &&
-                isValidationScriptNotEmpty() &&
-                !processingValidation &&
-                isElementAllowedForId(element)) {
+                    isValidationScriptNotEmpty() &&
+                    !processingValidation &&
+                    isElementAllowedForId(element)) {
                 writeAttribute("id", clientId, null);
                 clientId = null;
                 clientIdRendered = true;
@@ -252,7 +272,7 @@ public class ValidationSupportResponseWriter extends ResponseWriterWrapper {
         if (parentForm == null) {
             String componentClass = component.getClass().getName();
             if (componentClass.equals("org.richfaces.component.html.HtmlModalPanel") ||
-                componentClass.equals("org.richfaces.component.html.HtmlTabPanel")) {
+                    componentClass.equals("org.richfaces.component.html.HtmlTabPanel")) {
                 // RichFaces TabPanel and ModalPanel implement EditableValueHolder though it can normally be out of form
                 return;
             }
@@ -350,9 +370,9 @@ public class ValidationSupportResponseWriter extends ResponseWriterWrapper {
     }
 
     private static FloatingIconMessage renderFloatingIconMessage(FacesContext context,
-                                                          String id,
-                                                          UIComponent component,
-                                                          FloatingIconMessage template) throws IOException {
+                                                                 String id,
+                                                                 UIComponent component,
+                                                                 FloatingIconMessage template) throws IOException {
         FloatingIconMessage message = new FloatingIconMessage(template, true);
         message.setId(id);
         message.setFor(":" + component.getClientId(context));
@@ -363,26 +383,27 @@ public class ValidationSupportResponseWriter extends ResponseWriterWrapper {
         return message;
     }
 
-    private boolean isAllowedToRenderAfterElementStart(String element) {
-        return element != null && !isStringInArray(element, ELEMENTS_ALLOWED_RENDER_AFTER_THEIR_START);
+    public boolean isAllowedToRenderAfterElementStart(String element) {
+        return element != null && !isStringInArray(element, mapElementsAllowedRenderAfterTheirStart);
 
     }
 
     private boolean isAllowedToRenderAfterElementEnd(String element) {
-        return !isStringInArray(element, ELEMENTS_ALLOW_RENDERER_AFTER_THEIR_END);
+        return !isStringInArray(element, mapElementsAllowRenderAfterTheirEnd);
     }
 
-    private static boolean isElementAllowedForId(String element) {
-        return isStringInArray(element, ELEMENTS_ALLOWED_FOR_ID);
+    private boolean isElementAllowedForId(String element) {
+        return isStringInArray(element, mapElementsAllowedForId);
     }
 
-    private static boolean isStringInArray(String str, String[] array) {
-        str = str.toLowerCase();
+    private static boolean isStringInArray(String str, HashMap<String,String> possibleValues) {
+/*        str = str.toLowerCase();
         for (String s : array) {
             if (s.equals(str))
                 return true;
         }
-        return false;
+        return false;*/
+        return possibleValues.containsKey(str);
     }
 
     private List<String> substituteRenderedJsLinks(FacesContext context) {

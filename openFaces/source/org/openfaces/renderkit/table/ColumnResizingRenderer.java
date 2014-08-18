@@ -127,6 +127,7 @@ public class ColumnResizingRenderer extends RendererBase {
             throw new RuntimeException(e);
         }
         List<BaseColumn> columns = table.getRenderedColumns();
+
         if (columns.size() != widthsArray.length())
             throw new IllegalStateException("columns.size() != widthsArray.length(): " + columns.size() + " != " + widthsArray.length());
 

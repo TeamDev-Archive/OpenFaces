@@ -80,6 +80,7 @@ public class DropDownFieldTest extends BaseDropDownTestCase {
     }
 
     @Test
+    @Ignore
     public void testNoCashingHighlight() {
         checkNoCachingHighlight("/components/dropdown/dropDownAjaxSuggestion.jsf");
     }

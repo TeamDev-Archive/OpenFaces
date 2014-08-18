@@ -274,6 +274,7 @@ public class ClientTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
     }
 
      @Test
+     @Ignore
     public void testTreeTableInside() {
         testAppFunctionalPage("/components/tabbedpane/treeTableIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());

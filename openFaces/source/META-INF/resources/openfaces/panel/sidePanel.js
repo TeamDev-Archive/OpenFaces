@@ -12,16 +12,29 @@
 
 //--------------------  public functions  ----------------------
 
-O$.resizeSidePanel = function(sidePanelId, newSize) {
+O$.resizeSidePanel = function (sidePanelId, newSize) {
   var sidePanel = O$(sidePanelId);
   if (!(sidePanel && sidePanel._alignment)) return;
+  if (!sidePanel._isRecalculatingSplitterInBorder) {
+    var previousSidePanelOverflow = sidePanel.style.overflow;
+    var previousPanelOverflow = sidePanel._panel.style.overflow;
+    var previousPanelContentOverflow = sidePanel._content.overflow;
+    sidePanel._panel.style.overflow = "hidden";
+    sidePanel.style.overflow = "hidden";
+    sidePanel._content.style.overflow = "hidden";
+  }
   O$._resizeSidePanel(sidePanel, newSize, false);
-
   if (sidePanel.onsplitterdrag)
     sidePanel.onsplitterdrag(sidePanel);
+  if (!sidePanel._isRecalculatingSplitterInBorder) {
+    sidePanel._panel.style.overflow = previousSidePanelOverflow;
+    sidePanel.style.overflow = previousPanelOverflow;
+    sidePanel._content.style.overflow = previousPanelContentOverflow;
+  }
+
 };
 
-O$.collapseSidePanel = function(sidePanelId) {
+O$.collapseSidePanel = function (sidePanelId) {
   var sidePanel = O$(sidePanelId);
   if (!(sidePanel && sidePanel._alignment)) return;
   if (sidePanel._collapsed) return;
@@ -34,7 +47,7 @@ O$.collapseSidePanel = function(sidePanelId) {
     sidePanel.oncollapse(sidePanel);
 };
 
-O$.restoreSidePanel = function(sidePanelId) {
+O$.restoreSidePanel = function (sidePanelId) {
   var sidePanel = O$(sidePanelId);
   if (!(sidePanel && sidePanel._alignment)) return;
   if (!sidePanel._collapsed && !sidePanel._maximized) return;
@@ -48,7 +61,7 @@ O$.restoreSidePanel = function(sidePanelId) {
     sidePanel.onrestore(sidePanel);
 };
 
-O$.maximizeSidePanel = function(sidePanelId) {
+O$.maximizeSidePanel = function (sidePanelId) {
   var sidePanel = O$(sidePanelId);
   if (!(sidePanel && sidePanel._alignment)) return;
   O$._resizeSidePanel(sidePanel, sidePanel._maxSize, false);
@@ -58,7 +71,7 @@ O$.maximizeSidePanel = function(sidePanelId) {
     sidePanel.onmaximize(sidePanel);
 };
 
-O$.refreshSidePanel = function(sidePanelId) {
+O$.refreshSidePanel = function (sidePanelId) {
   var sidePanel = O$(sidePanelId);
   if (!(sidePanel && sidePanel._alignment)) return;
   O$._recalculateSidePanel(sidePanel);
@@ -67,34 +80,25 @@ O$.refreshSidePanel = function(sidePanelId) {
 
 //------------------  SidePanel init method  -------------------
 
-O$._initSidePanel = function(sidePanelId,
-                             alignment,
-                             size,
-                             minSize,
-                             maxSize,
-                             collapsible,
-                             resizable,
-                             collapsed,
-                             rolloverClass,
-                             splitterRolloverClass,
-                             events) {
+O$._initSidePanel = function (sidePanelId, alignment, size, minSize, maxSize, collapsible, resizable, collapsed, rolloverClass, splitterRolloverClass, events, isRecalculatingSplitterInBorder) {
   var sidePanel = O$.initComponent(sidePanelId, null, {
-    _splitter: O$(sidePanelId + "::splitter"),
-    _panel: O$(sidePanelId + "::panel"),
-    _caption: O$(sidePanelId + "::caption"),
-    _content: O$(sidePanelId + "::content"),
+    _splitter:O$(sidePanelId + "::splitter"),
+    _panel:O$(sidePanelId + "::panel"),
+    _caption:O$(sidePanelId + "::caption"),
+    _content:O$(sidePanelId + "::content"),
 
-    _isClicking: false,
-    _alignment: alignment,
-    _collapsed: false,
-    _collapsible: collapsible,
-    _resizable: resizable,
-    _iframeBugCorrection: true,
-    _selectBugCorrection: true,
-    _blockSelfRepaint: false,
-    _size: size,
-    _minSize: minSize,
-    _maxSize: maxSize
+    _isClicking:false,
+    _alignment:alignment,
+    _collapsed:false,
+    _collapsible:collapsible,
+    _resizable:resizable,
+    _iframeBugCorrection:true,
+    _selectBugCorrection:true,
+    _blockSelfRepaint:false,
+    _size:size,
+    _minSize:minSize,
+    _maxSize:maxSize,
+    _isRecalculatingSplitterInBorder:isRecalculatingSplitterInBorder
   });
   sidePanel._panel._isCoupled = true;
 
@@ -102,7 +106,7 @@ O$._initSidePanel = function(sidePanelId,
   O$._initSidePanel_events(sidePanel, events);
 
   O$._checkAsRootDoubleBufferedElement(sidePanel);
-  O$._subscribeToOnresizeEvent(sidePanel, function() {
+  O$._subscribeToOnresizeEvent(sidePanel, function () {
     O$.refreshSidePanel(sidePanelId);
     O$._sendResizeEvent(sidePanel._content);
   });
@@ -118,7 +122,7 @@ O$._initSidePanel = function(sidePanelId,
   O$.correctElementZIndex(sidePanel._splitter, sidePanel);
 };
 
-O$._initSidePanel_style = function(sidePanel, rolloverClass, splitterRolloverClass) {
+O$._initSidePanel_style = function (sidePanel, rolloverClass, splitterRolloverClass) {
   var splitter = sidePanel._splitter;
   var panel = sidePanel._panel;
   var caption = sidePanel._caption;
@@ -178,22 +182,22 @@ O$._initSidePanel_style = function(sidePanel, rolloverClass, splitterRolloverCla
   content._isCouplingElement = true;
 };
 
-O$._initSidePanel_events = function(sidePanel, events) {
+O$._initSidePanel_events = function (sidePanel, events) {
   O$.addEventHandler(sidePanel._splitter, "mousedown", O$._splitterMouseDown, false);
   O$.addEventHandler(sidePanel._splitter, "click", O$._splitterMouseClick, false);
-  sidePanel.resize = function(newSize) {
+  sidePanel.resize = function (newSize) {
     O$.resizeSidePanel(sidePanel.id, newSize);
   };
-  sidePanel.collapse = function() {
+  sidePanel.collapse = function () {
     O$.collapseSidePanel(sidePanel.id);
   };
-  sidePanel.restore = function() {
+  sidePanel.restore = function () {
     O$.restoreSidePanel(sidePanel.id);
   };
-  sidePanel.maximize = function() {
+  sidePanel.maximize = function () {
     O$.maximizeSidePanel(sidePanel.id);
   };
-  sidePanel.refresh = function() {
+  sidePanel.refresh = function () {
     O$.refreshSidePanel(sidePanel.id);
   };
   O$._applyEventsObjectToElement(events, sidePanel);
@@ -202,7 +206,7 @@ O$._initSidePanel_events = function(sidePanel, events) {
 
 //--------------------  private functions  ---------------------
 
-O$._recalculateSidePanel = function(sidePanel) {
+O$._recalculateSidePanel = function (sidePanel) {
   var splitter = sidePanel._splitter;
   var panel = sidePanel._panel;
   var caption = sidePanel._caption;
@@ -273,7 +277,7 @@ O$._recalculateSidePanel = function(sidePanel) {
   O$._bugFix_divNegativeSizeBug(sidePanel._content, true);
 };
 
-O$._repaintSidePanel = function(sidePanel) {
+O$._repaintSidePanel = function (sidePanel) {
   var curHeight = parseInt(sidePanel._panel.style.height);
   var curWidth = parseInt(sidePanel._panel.style.width);
   var newHeight = parseInt(sidePanel._panel._newStyle.height);
@@ -300,7 +304,7 @@ O$._repaintSidePanel = function(sidePanel) {
   O$._sendResizeEvent(sidePanel._content);
 };
 
-O$._resizeSidePanel = function(sidePanel, newSize, ignoreMinMaxSize) {
+O$._resizeSidePanel = function (sidePanel, newSize, ignoreMinMaxSize) {
   sidePanel._size = newSize;
   if (!ignoreMinMaxSize) {
     O$._correctSizeOnMinMax(sidePanel);
@@ -312,7 +316,7 @@ O$._resizeSidePanel = function(sidePanel, newSize, ignoreMinMaxSize) {
   }
 };
 
-O$._sidePanelResizingBegin = function(sidePanel, event) {
+O$._sidePanelResizingBegin = function (sidePanel, event) {
   sidePanel._resizeBeginSize = sidePanel._size;
   if (O$.isExplorer()) {
     var mouseX = event.clientX + document.body.scrollLeft;
@@ -336,7 +340,7 @@ O$._sidePanelResizingBegin = function(sidePanel, event) {
   }
 };
 
-O$._sidePanelResizingEnd = function(sidePanel) {
+O$._sidePanelResizingEnd = function (sidePanel) {
   if (!document._nowResizingSidePanel) return;
   //remove event handlers from DOCUMENT
   O$.removeEventHandler(document, "mousemove", O$._documentMouseMoveForSidePanel, false);
@@ -364,7 +368,7 @@ O$._sidePanelResizingEnd = function(sidePanel) {
   }
 };
 
-O$._splitterMouseDown = function(event) {
+O$._splitterMouseDown = function (event) {
   if (O$._mouseButton(event) == "left") {
     if (O$.isExplorer()) {
       var sidePanel = event.srcElement.parentNode;
@@ -377,7 +381,7 @@ O$._splitterMouseDown = function(event) {
   O$.cancelEvent(event);
 };
 
-O$._splitterMouseClick = function(event) {
+O$._splitterMouseClick = function (event) {
   if (O$.isExplorer()) {
     var sidePanel = event.srcElement.parentNode;
   } else {
@@ -393,7 +397,7 @@ O$._splitterMouseClick = function(event) {
   }
 };
 
-O$._documentMouseUpForSidePanel = function() {
+O$._documentMouseUpForSidePanel = function () {
   if (!document._nowResizingSidePanel) return;
   var sidePanel = document._nowResizingSidePanel;
 
@@ -407,7 +411,7 @@ O$._documentMouseUpForSidePanel = function() {
   O$._sidePanelResizingEnd(document._nowResizingSidePanel);
 };
 
-O$._documentMouseMoveForSidePanel = function(event) {
+O$._documentMouseMoveForSidePanel = function (event) {
   if (!document._nowResizingSidePanel) return;
   var sidePanel = document._nowResizingSidePanel;
   sidePanel._isClicking = false;
@@ -444,7 +448,7 @@ O$._documentMouseMoveForSidePanel = function(event) {
   }
 };
 
-O$._calculateNumericSizeValue = function(sidePanel, sizeValue, useDoubleBuffering) {
+O$._calculateNumericSizeValue = function (sidePanel, sizeValue, useDoubleBuffering) {
   if (O$._isPercentageValue(sizeValue)) {
     if (sidePanel._alignment == "left" || sidePanel._alignment == "right") {
       var parentSizeFactor = O$._calculateNumericWidthFactor(sidePanel, useDoubleBuffering);
@@ -460,7 +464,7 @@ O$._calculateNumericSizeValue = function(sidePanel, sizeValue, useDoubleBufferin
   return size;
 };
 
-O$._correctSizeOnMinMax = function(sidePanel) {
+O$._correctSizeOnMinMax = function (sidePanel) {
   var size = O$._calculateNumericSizeValue(sidePanel, sidePanel._size);
   var minSize = O$._calculateNumericSizeValue(sidePanel, sidePanel._minSize);
   var maxSize = O$._calculateNumericSizeValue(sidePanel, sidePanel._maxSize);
@@ -485,7 +489,7 @@ O$._correctSizeOnMinMax = function(sidePanel) {
   sidePanel._size = size;
 };
 
-O$._sidePanelSaveState = function(sidePanel, stateStr) {
+O$._sidePanelSaveState = function (sidePanel, stateStr) {
   if (!stateStr) {
     if (sidePanel._collapsed) {
       stateStr = sidePanel._normalSize + ";" + sidePanel._collapsed;
@@ -498,7 +502,7 @@ O$._sidePanelSaveState = function(sidePanel, stateStr) {
     sidePanel._stateHolder.value = stateStr;
   } else {
     if (O$.isExplorer()) {
-      O$.addLoadEvent(function() {
+      O$.addLoadEvent(function () {
         sidePanel._stateHolder = O$.setHiddenField(sidePanel, stateHolderId, stateStr);
       });
     } else {
@@ -507,7 +511,7 @@ O$._sidePanelSaveState = function(sidePanel, stateStr) {
   }
 };
 
-O$._cacheSidePanelSizeVariables = function(sidePanel) {
+O$._cacheSidePanelSizeVariables = function (sidePanel) {
   var splitter = sidePanel._splitter;
   var panel = sidePanel._panel;
   var caption = sidePanel._caption;
@@ -526,9 +530,18 @@ O$._cacheSidePanelSizeVariables = function(sidePanel) {
     splitter._widthDiff = splitter._storedSizeProperties.marginsWidth;
     if (sidePanel._alignment == "left" || sidePanel._alignment == "right") {
       panel._heightDiff = panel._storedSizeProperties.marginsHeight;
-      panel._widthDiff = panel._storedSizeProperties.marginsWidth + O$._calculateOffsetWidth(splitter, false) + splitter._storedSizeProperties.paddingsAndBordersAndMarginsWidth;
+      if (sidePanel._isRecalculatingSplitterInBorder) {
+        panel._widthDiff = panel._storedSizeProperties.marginsWidth + O$._calculateOffsetWidth(splitter, false) + splitter._storedSizeProperties.paddingsAndBordersAndMarginsWidth;
+      } else {
+        //TODO: 0 * - this is temporary solution to make tests with pagination
+        panel._widthDiff = panel._storedSizeProperties.marginsWidth + 0 * O$._calculateOffsetWidth(splitter, false) + splitter._storedSizeProperties.paddingsAndBordersAndMarginsWidth;
+      }
     } else {
-      panel._heightDiff = panel._storedSizeProperties.marginsHeight + O$._calculateOffsetHeight(splitter, false) + splitter._storedSizeProperties.paddingsAndBordersAndMarginsHeight;
+      if (sidePanel._isRecalculatingSplitterInBorder) {
+        panel._heightDiff = panel._storedSizeProperties.marginsHeight + O$._calculateOffsetHeight(splitter, false) + splitter._storedSizeProperties.paddingsAndBordersAndMarginsHeight;
+      } else {
+        panel._heightDiff = panel._storedSizeProperties.marginsHeight + 0 * O$._calculateOffsetHeight(splitter, false) + splitter._storedSizeProperties.paddingsAndBordersAndMarginsHeight;
+      }
       panel._widthDiff = panel._storedSizeProperties.marginsWidth;
     }
     if (caption) {
@@ -542,9 +555,17 @@ O$._cacheSidePanelSizeVariables = function(sidePanel) {
     splitter._widthDiff = splitter._storedSizeProperties.paddingsAndBordersAndMarginsWidth;
     if (sidePanel._alignment == "left" || sidePanel._alignment == "right") {
       panel._heightDiff = panel._storedSizeProperties.paddingsAndBordersAndMarginsHeight;
-      panel._widthDiff = panel._storedSizeProperties.paddingsAndBordersAndMarginsWidth + O$._calculateOffsetWidth(splitter, false) + splitter._storedSizeProperties.marginsWidth;
+      if (sidePanel._isRecalculatingSplitterInBorder) {
+        panel._widthDiff = panel._storedSizeProperties.paddingsAndBordersAndMarginsWidth + O$._calculateOffsetWidth(splitter, false) + splitter._storedSizeProperties.marginsWidth;
+      } else {
+        panel._widthDiff = panel._storedSizeProperties.paddingsAndBordersAndMarginsWidth + 0 * O$._calculateOffsetWidth(splitter, false) + splitter._storedSizeProperties.marginsWidth;
+      }
     } else {
-      panel._heightDiff = panel._storedSizeProperties.paddingsAndBordersAndMarginsHeight + O$._calculateOffsetHeight(splitter, false) + splitter._storedSizeProperties.marginsHeight;
+      if (sidePanel._isRecalculatingSplitterInBorder) {
+        panel._heightDiff = panel._storedSizeProperties.paddingsAndBordersAndMarginsHeight + O$._calculateOffsetHeight(splitter, false) + splitter._storedSizeProperties.marginsHeight;
+      } else {
+        panel._heightDiff = panel._storedSizeProperties.paddingsAndBordersAndMarginsHeight + 0 * O$._calculateOffsetHeight(splitter, false) + splitter._storedSizeProperties.marginsHeight;
+      }
       panel._widthDiff = panel._storedSizeProperties.paddingsAndBordersAndMarginsWidth;
     }
     if (caption) {
@@ -562,7 +583,7 @@ O$._cacheSidePanelSizeVariables = function(sidePanel) {
 
 //--------------------  splitter tools  ------------------------
 
-O$._createSplitterImage = function(sidePanel, imgSrc, IEPngBugFixEnabled) {
+O$._createSplitterImage = function (sidePanel, imgSrc, IEPngBugFixEnabled) {
   var addFunction = function () {
     image.style.padding = "0px";
     image.style.margin = "0px";
@@ -586,7 +607,7 @@ O$._createSplitterImage = function(sidePanel, imgSrc, IEPngBugFixEnabled) {
   }
 };
 
-O$._createSplitterButton = function(sidePanel, imgSrc, imgSrc_collapsed, imgSrc_rollover, imgSrc_rollover_collapsed, imgSrc_pressed, imgSrc_pressed_collapsed, IEPngBugFixEnabled) {
+O$._createSplitterButton = function (sidePanel, imgSrc, imgSrc_collapsed, imgSrc_rollover, imgSrc_rollover_collapsed, imgSrc_pressed, imgSrc_pressed_collapsed, IEPngBugFixEnabled) {
   var addFunction = function () {
     sidePanel._splitter.appendChild(button);
     if (IEPngBugFixEnabled)
@@ -595,7 +616,7 @@ O$._createSplitterButton = function(sidePanel, imgSrc, imgSrc_collapsed, imgSrc_
     sidePanel._splitter._button = button;
 
     O$.extend(button, {
-      onmouseover: function() {
+      onmouseover:function () {
         if (sidePanel._collapsed) {
           button.src = imgSrc_rollover_collapsed;
         } else {
@@ -604,7 +625,7 @@ O$._createSplitterButton = function(sidePanel, imgSrc, imgSrc_collapsed, imgSrc_
         if (IEPngBugFixEnabled)
           O$._bugFix_IEPng(button);
       },
-      onmouseout: function() {
+      onmouseout:function () {
         if (sidePanel._collapsed) {
           button.src = imgSrc_collapsed;
         } else {
@@ -613,7 +634,7 @@ O$._createSplitterButton = function(sidePanel, imgSrc, imgSrc_collapsed, imgSrc_
         if (IEPngBugFixEnabled)
           O$._bugFix_IEPng(button);
       },
-      onmousedown: function(e) {
+      onmousedown:function (e) {
         if (sidePanel._collapsed) {
           button.src = imgSrc_pressed_collapsed;
         } else {
@@ -623,7 +644,7 @@ O$._createSplitterButton = function(sidePanel, imgSrc, imgSrc_collapsed, imgSrc_
           O$._bugFix_IEPng(button);
         O$.stopEvent(e);
       },
-      onclick: function(event) {
+      onclick:function (event) {
         if (sidePanel._collapsed) {
           O$.restoreSidePanel(sidePanel.id);
         } else {
@@ -631,9 +652,9 @@ O$._createSplitterButton = function(sidePanel, imgSrc, imgSrc_collapsed, imgSrc_
         }
         O$.cancelEvent(event);
       }
-  });
-  button.onmouseup = button.onmouseout;
-};
+    });
+    button.onmouseup = button.onmouseout;
+  };
 
   var button = document.createElement("img");
   button.style.padding = "0px";
@@ -648,7 +669,7 @@ O$._createSplitterButton = function(sidePanel, imgSrc, imgSrc_collapsed, imgSrc_
   }
 };
 
-O$._createSplitterMouseSattelite = function(sidePanel, imgSrc, imgSrc_flipped, IEPngBugFixEnabled) {
+O$._createSplitterMouseSattelite = function (sidePanel, imgSrc, imgSrc_flipped, IEPngBugFixEnabled) {
   var addFunction = function () {
     O$._setImageAbsoluteCenterPosition(sidePanel._splitter, imgSrc);
     sidePanel._splitter.style.overflow = "visible";
@@ -664,13 +685,13 @@ O$._createSplitterMouseSattelite = function(sidePanel, imgSrc, imgSrc_flipped, I
       mouseSattelite._fixedY = true;
     }
     mouseSattelite._sidePanelOncollapse = sidePanel.oncollapse;
-    sidePanel.oncollapse = function() {
+    sidePanel.oncollapse = function () {
       O$._mouseSatteliteHide(mouseSattelite);
       O$._flipSplitterMouseSattelite(sidePanel);
       mouseSattelite._sidePanelOncollapse();
     };
     mouseSattelite._sidePanelOnrestore = sidePanel.onrestore;
-    sidePanel.onrestore = function() {
+    sidePanel.onrestore = function () {
       O$._mouseSatteliteHide(mouseSattelite);
       O$._flipSplitterMouseSattelite(sidePanel);
       mouseSattelite._sidePanelOnrestore();
@@ -684,7 +705,7 @@ O$._createSplitterMouseSattelite = function(sidePanel, imgSrc, imgSrc_flipped, I
   }
 };
 
-O$._refreshSplitterMouseSattelite = function(sidePanel) {
+O$._refreshSplitterMouseSattelite = function (sidePanel) {
   var mouseSattelite = sidePanel._splitter._mouseSattelite;
   if (mouseSattelite.readyState == "loading") {
     setTimeout(O$._refreshSplitterMouseSattelite(sidePanel), 100);
@@ -692,28 +713,28 @@ O$._refreshSplitterMouseSattelite = function(sidePanel) {
     var alignment = sidePanel._alignment;
     var flipped = mouseSattelite._flipped;
     if ((alignment == "left" && !flipped) || (alignment == "right" && flipped)) {
-      mouseSattelite._posX = - mouseSattelite.offsetWidth;
-      mouseSattelite._shiftX = - 10;
-      mouseSattelite._shiftY = - Math.round(mouseSattelite.offsetHeight / 2);
+      mouseSattelite._posX = -mouseSattelite.offsetWidth;
+      mouseSattelite._shiftX = -10;
+      mouseSattelite._shiftY = -Math.round(mouseSattelite.offsetHeight / 2);
     } else if ((alignment == "left" && flipped) || (alignment == "right" && !flipped)) {
       mouseSattelite._posX = sidePanel._splitter.offsetWidth;
-      mouseSattelite._shiftX = + 10;
-      mouseSattelite._shiftY = - Math.round(mouseSattelite.offsetHeight / 2);
+      mouseSattelite._shiftX = +10;
+      mouseSattelite._shiftY = -Math.round(mouseSattelite.offsetHeight / 2);
     } else if ((sidePanel._alignment == "top" && !flipped) || (sidePanel._alignment == "bottom" && flipped)) {
-      mouseSattelite._posY = - mouseSattelite.offsetHeight;
-      mouseSattelite._shiftX = - Math.round(mouseSattelite.offsetWidth / 2);
-      mouseSattelite._shiftY = + 10;
+      mouseSattelite._posY = -mouseSattelite.offsetHeight;
+      mouseSattelite._shiftX = -Math.round(mouseSattelite.offsetWidth / 2);
+      mouseSattelite._shiftY = +10;
     } else {
       mouseSattelite._posY = sidePanel._splitter.offsetHeight;
-      mouseSattelite._shiftX = - Math.round(mouseSattelite.offsetWidth / 2);
-      mouseSattelite._shiftY = - 10;
+      mouseSattelite._shiftX = -Math.round(mouseSattelite.offsetWidth / 2);
+      mouseSattelite._shiftY = -10;
     }
     if (mouseSattelite._IEPngBugFixEnabled)
       O$._bugFix_IEPng(mouseSattelite);
   }
 };
 
-O$._flipSplitterMouseSattelite = function(sidePanel) {
+O$._flipSplitterMouseSattelite = function (sidePanel) {
   var mouseSattelite = sidePanel._splitter._mouseSattelite;
   mouseSattelite._flipped = !mouseSattelite._flipped;
   if (mouseSattelite._flipped) {

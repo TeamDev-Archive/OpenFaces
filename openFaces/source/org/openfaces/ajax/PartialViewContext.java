@@ -543,8 +543,14 @@ public class PartialViewContext extends PartialViewContextWrapper {
         String action = requestParams.get(PARAM_ACTION);
         Object result = null;
         if (action != null) {
-            MethodExpression methodBinding = context.getApplication().getExpressionFactory().createMethodExpression(
-                    elContext, "#{" + action + "}", String.class, new Class[]{});
+            MethodExpression methodBinding;
+            if (!action.startsWith("#{")){
+                methodBinding = context.getApplication().getExpressionFactory().createMethodExpression(
+                        elContext, "#{" + action + "}", String.class, new Class[]{});
+            }else{
+                methodBinding = context.getApplication().getExpressionFactory().createMethodExpression(
+                        elContext, action, String.class, new Class[]{});
+            }
             methodBinding.invoke(elContext, null);
         }
         if (listener != null) {
@@ -658,7 +664,9 @@ public class PartialViewContext extends PartialViewContextWrapper {
                                              boolean preProcessDecodesOnTables, boolean preRenderResponseOnTables,
                                              List<Runnable> restoreDataPointerRunnables) {
         FacesContext context = FacesContext.getCurrentInstance();
-        if (id.length() > 0 && (isNumberBasedId(id) || id.startsWith(":")) && parent instanceof AbstractTable) {
+        Boolean isNumberBasedIdFlag = isNumberBasedId(id);
+        Boolean isIdRelativeFlag = id.startsWith(":");
+        if (id.length() > 0 && (isNumberBasedIdFlag || isIdRelativeFlag) && parent instanceof AbstractTable) {
             final AbstractTable table = ((AbstractTable) parent);
             if (!isLastComponentInPath) {
                 if (preProcessDecodesOnTables)
@@ -709,7 +717,7 @@ public class PartialViewContext extends PartialViewContextWrapper {
                     });
             }
             return table;
-        } else if (isNumberBasedId(id) && parent instanceof UIData) {
+        } else if (isNumberBasedIdFlag && parent instanceof UIData) {
             final UIData uiData = ((UIData) parent);
             int rowIndex = Integer.parseInt(id);
             final int prevRowIndex = uiData.getRowIndex();
@@ -740,7 +748,7 @@ public class PartialViewContext extends PartialViewContextWrapper {
                     }
                 });
             return (UIComponent) iterator;
-        } else if (isNumberBasedId(id)) {
+        } else if (isNumberBasedIdFlag) {
             Class clazz;
             try {
                 clazz = Class.forName("com.sun.faces.facelets.component.UIRepeat");

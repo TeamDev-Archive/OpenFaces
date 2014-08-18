@@ -1576,8 +1576,8 @@ O$.Tables = {
       }
     }
 
-    function newClass_raw(declaration, cachingDisabled) {
-      var className = O$.createCssClass(declaration, cachingDisabled);
+    function newClass_raw(declaration) {
+      var className = O$.createCssClass(declaration, true);
       var cls = O$.findCssRule("." + className);
       return {className:className, classObj:cls};
     }
@@ -2863,6 +2863,5 @@ O$.Tables = {
             : el.offsetHeight - el.clientHeight;
   }
 
-
-};
+  };
 

@@ -11,6 +11,7 @@
  */
 package org.openfaces.component.datatable;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.seleniuminspector.ElementInspector;
@@ -63,6 +64,7 @@ public class DataTableIncludeOFComponentsTest extends OpenFacesTestCase {
         testAppPage("/functionalTesting/datatable/foldingPanelIn.jsf");
       }
     */
+    @Ignore
     @Test
     public void testHintLabelInside() {
         testAppFunctionalPage("/components/datatable/hintLabelIn.jsf");
@@ -125,7 +127,7 @@ public class DataTableIncludeOFComponentsTest extends OpenFacesTestCase {
         hintLabel.assertText(filterCriterion);
         hintLabel.hint().assertText("col3_row1");
     }
-
+    @Ignore
     @Test
     public void testPopupLayerInside() {
         testAppFunctionalPage("/components/datatable/popupLayerIn.jsf");

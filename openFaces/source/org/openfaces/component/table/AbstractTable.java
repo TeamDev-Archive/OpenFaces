@@ -574,6 +574,10 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         }
         return cachedRenderedColumns;
     }
+    public  void clearRenderedColumnCache(){
+        cachedRenderedColumns = null;
+    }
+
 
     private List<BaseColumn> calculateRenderedColumns() {
         Iterable<String> columnsOrder = getColumnsOrder();
@@ -1273,12 +1277,12 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         processModelUpdates(context);
 
         processModelDependentUpdates(context);
-
         ValueExpression sortColumnIdExpression = getValueExpression("sortColumnId");
+        ValueExpression sortAscendingExpression = getValueExpression("sortAscending");
+
         ELContext elContext = context.getELContext();
         if (sortColumnIdExpression != null)
             sortColumnIdExpression.setValue(elContext, getSortColumnId());
-        ValueExpression sortAscendingExpression = getValueExpression("sortAscending");
         if (sortAscendingExpression != null)
             sortAscendingExpression.setValue(elContext, isSortAscending());
 
@@ -2278,18 +2282,23 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     }
 
     public void export(DataScope scope, TableDataFormatter formatter) {
-        String fileName = getId();
-        if (fileName == null)
-            fileName = "tableData";
-        export(scope, formatter, fileName + "." + formatter.getDefaultFileExtension());
-    }
-
-    protected void checkExportSupportedInCurrentState() {
-        // Export is allowed in all states by default. Subclasses can define their own state checks.
+        String fileName = createFileName(formatter);
+        export(scope, formatter, fileName);
     }
 
     public void export(DataScope scope, TableDataFormatter formatter, String fileName) {
         TableDataExtractor extractor = new TableDataExtractor(scope);
+        export(scope, extractor, formatter, fileName);
+    }
+
+    public void export(DataScope scope, TableDataFormatter formatter, Class... extractionIgnoredClasses) {
+        String fileName = createFileName(formatter);
+        export(scope, formatter, fileName, extractionIgnoredClasses);
+    }
+
+    public void export(DataScope scope, TableDataFormatter formatter,
+                       String fileName, Class... extractionIgnoredClasses) {
+        TableDataExtractor extractor = new TableDataExtractor(scope, extractionIgnoredClasses);
         export(scope, extractor, formatter, fileName);
     }
 
@@ -2300,6 +2309,9 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         formatter.sendResponse(context, tableData, fileName);
     }
 
+    protected void checkExportSupportedInCurrentState() {
+        // Export is allowed in all states by default. Subclasses can define their own state checks.
+    }
 
     /**
      * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
@@ -2390,5 +2402,13 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     public void setUnDisplayedSelectionAllowed(Boolean unDisplayedSelectionAllowed) {
         this.unDisplayedSelectionAllowed = unDisplayedSelectionAllowed;
+    }
+
+    private String createFileName(TableDataFormatter formatter){
+        String fileName = getId();
+        if (fileName == null){
+            fileName = "tableData";
+        }
+        return fileName + "." + formatter.getDefaultFileExtension();
     }
 }

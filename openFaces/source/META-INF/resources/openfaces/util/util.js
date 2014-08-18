@@ -60,6 +60,39 @@ if (!window.O$) {
     IMMEDIATE:"_of_immediate"
   });
 
+  O$.getDisabledCommandLink = function (element, disabled) {
+    O$.setHiddenField(element, element.id + "::disabled", disabled);
+    if (element._disabled == disabled) return;
+    element._disabled = disabled;
+    O$.setStyleMappings(element, {"disabled":element._disabled ? O$._disabledClassLink : ""});
+    O$.events.forEach(function (eventName, element) {
+      if (disabled) {
+        element[eventName] = null;
+      } else {
+        element[eventName] = O$.originalEventHandlers[eventName];
+      }
+    });
+    if (disabled) {
+      element.onclick = O$.preventDefaultEvent;
+    } else if (element.onclick == O$.preventDefaultEvent) {
+      element.onclick = null;
+    }
+  }
+  O$.originalEventHandlers = {};
+  O$.events = ["onfocus", "onblur", "onkeydown", "onkeypress", "onkeyup",
+    "onmouseover", "onmousemove", "onmousedown", "onclick", "ondblclick", "onmouseup", "onmouseout"];
+  O$.events.forEach(function (eventName, element) {
+    O$.originalEventHandlers[eventName] = element[eventName];
+
+  });
+  O$._setOriginalEventHandler = function () {
+
+  }
+
+  O$._getOriginalEventHandler = function () {
+
+  }
+
 
   O$.initComponent = function (clientId, styles, properties, events) {
     O$._checkDefaultCssPresence();
@@ -445,6 +478,8 @@ if (!window.O$) {
       O$.debug.log(text);
       return;
     }
+
+    disableMenu();
     if (!O$._logEnabled)
       return;
     if (!O$._logger)
@@ -4756,7 +4791,7 @@ if (!window.O$) {
    * @param disableRepositioning
    * @param repositioningAttempt
    */
-  O$.alignPopupByElement = function (popup, element, horizAlignment, vertAlignment, horizDistance, vertDistance, ignoreVisibleArea, disableRepositioning, repositioningAttempt) {
+  O$.alignPopupByElement = function (popup, element, horizAlignment, vertAlignment, horizDistance, vertDistance, ignoreVisibleArea, disableRepositioning, repositioningAttempt, xDelta, yDelta) {
     if (!horizAlignment) horizAlignment = O$.LEFT;
     if (!vertAlignment) vertAlignment = O$.BELOW;
     if (!horizDistance) horizDistance = 0;
@@ -4776,7 +4811,8 @@ if (!window.O$) {
     var popupSize = O$.getElementSize(popup);
     var popupWidth = popupSize.width;
     var popupHeight = popupSize.height;
-
+    xDelta = xDelta ? xDelta : 0;
+    yDelta = yDelta ? yDelta : 0;
     var x;
     switch (horizAlignment) {
       case O$.LEFT_OUTSIDE:
@@ -4797,6 +4833,7 @@ if (!window.O$) {
       default:
         O$.logError("O$.alignPopupByElement: unrecognized horizAlignment: " + horizAlignment);
     }
+
     var y;
     switch (vertAlignment) {
       case O$.ABOVE:
@@ -4817,7 +4854,8 @@ if (!window.O$) {
       default:
         O$.logError("O$.alignPopupByElement: unrecognized vertAlignment: " + vertAlignment);
     }
-
+    x += xDelta;
+    y += yDelta;
     if (!disableRepositioning) {
       var allowedRectangle = O$.getCuttingContainingRectangle(popup);
       var shouldBeRepositioned = !allowedRectangle.containsRectangle(new O$.Rectangle(x, y, popupWidth, popupHeight)) &&
@@ -4825,23 +4863,52 @@ if (!window.O$) {
       if (shouldBeRepositioned) {
         if (repositioningAttempt)
           return false;
+        if (popup.setLeft) {
+          popup.setLeft(x);
+          popup.setTop(y);
+        }
         var alternativeVertAlignment = vertAlignment == O$.BELOW || vertAlignment == O$.ABOVE
                 ? vertAlignment == O$.BELOW ? O$.ABOVE : O$.BELOW
                 : null;
         if (alternativeVertAlignment) {
           if (O$.alignPopupByElement(popup, element, horizAlignment, alternativeVertAlignment, horizDistance, vertDistance, ignoreVisibleArea, false, true))
-            return;
+            return true;
         }
         var alternativeHorizAlignment = horizAlignment == O$.LEFT_OUTSIDE || horizAlignment == O$.RIGHT_OUTSIDE
                 ? horizAlignment == O$.RIGHT_OUTSIDE ? O$.LEFT_OUTSIDE : O$.RIGHT_OUTSIDE
                 : null;
         if (alternativeHorizAlignment) {
           if (O$.alignPopupByElement(popup, element, alternativeHorizAlignment, vertAlignment, horizDistance, vertDistance, ignoreVisibleArea, false, true))
-            return;
+            return true;
         }
         if (alternativeHorizAlignment && alternativeVertAlignment) {
           if (O$.alignPopupByElement(popup, element, alternativeHorizAlignment, alternativeVertAlignment, horizDistance, vertDistance, ignoreVisibleArea, false, true))
-            return;
+            return true;
+        }
+        // possible align correction with offsets
+        if (!alternativeHorizAlignment && alternativeVertAlignment) {
+          var xCorrection = x < allowedRectangle.getMinX()
+                  ? allowedRectangle.getMinX() - x
+                  : x + popupWidth > allowedRectangle.getMaxX() ? allowedRectangle.getMaxX() - (x + popupWidth) : 0;
+          if (O$.alignPopupByElement(popup, element, horizAlignment, vertAlignment, horizDistance, vertDistance, ignoreVisibleArea, false, true, xCorrection, 0)) {
+            return true;
+          }
+          if (O$.alignPopupByElement(popup, element, horizAlignment, alternativeVertAlignment, horizDistance, vertDistance, ignoreVisibleArea, false, true, xCorrection, 0)) {
+            return true;
+          }
+        }
+
+        // possible align correction with offsets
+        if (alternativeHorizAlignment && !alternativeVertAlignment) {
+          var yCorrection = y < allowedRectangle.getMinY()
+                  ? allowedRectangle.getMinY() - y
+                  : y + popupHeight > allowedRectangle.getMaxY() ? allowedRectangle.getMaxY() - (y + popupHeight) : 0;
+          if (O$.alignPopupByElement(popup, element, horizAlignment, vertAlignment, horizDistance, vertDistance, ignoreVisibleArea, false, true, 0, yCorrection)) {
+            return true;
+          }
+          if (O$.alignPopupByElement(popup, element, alternativeHorizAlignment, vertAlignment, horizDistance, vertDistance, ignoreVisibleArea, false, true, 0, yCorrection)) {
+            return true;
+          }
         }
         var xOffset = x < allowedRectangle.getMinX()
                 ? allowedRectangle.getMinX() - x
@@ -4849,8 +4916,8 @@ if (!window.O$) {
         var yOffset = y < allowedRectangle.getMinY()
                 ? allowedRectangle.getMinY() - y
                 : y + popupHeight > allowedRectangle.getMaxY() ? allowedRectangle.getMaxY() - (y + popupHeight) : 0;
-        x += xOffset;
-        y += yOffset;
+        x += xOffset ? 0 : xOffset;
+        y += yOffset ? 0 : yOffset;
       }
     }
 
@@ -5686,7 +5753,7 @@ if (!window.O$) {
       }, 100);
     }
   }
-
+  O$._disabledClassLink = null;
   O$.Link = {
     _init:function (id, disabled, disabledStyle) {
       var link = O$.initComponent(id, null, {
@@ -5738,6 +5805,13 @@ if (!window.O$) {
       return false;
     }
   };
+
+  O$._getPopupVisionStateStorage = function () {
+    if (!O$._popupVisionStateStorage) {
+      O$._popupVisionStateStorage = {};
+    }
+    return O$._popupVisionStateStorage;
+  }
 
 }
 

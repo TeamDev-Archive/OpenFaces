@@ -37,6 +37,14 @@ public class AbstractWindow extends PopupLayer implements ComponentWithCaption {
     private String minHeight;
     private String parentId;
 
+
+    public String getParentId() {
+        return ValueBindings.get(this, "parentId", parentId);
+    }
+
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
+    }
     public String getCaption() {
         return ValueBindings.get(this, "caption", caption);
     }

@@ -15,9 +15,10 @@ O$.Window = {
   STATE_MAXIMIZED: "maximized",
   STATE_MINIMIZED: "minimized",
   parent: "",
+  
   _init: function (windowId, resizable, draggableByContent, minWidth, minHeight, desktopElementId, parentId) {
-
     var win = O$(windowId);
+    
     if (!parentId) {
       O$.Window._isRealParent = false;
     } else {

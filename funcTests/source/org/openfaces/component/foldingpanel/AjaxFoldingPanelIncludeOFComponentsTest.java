@@ -11,6 +11,7 @@
  */
 package org.openfaces.component.foldingpanel;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.seleniuminspector.ElementInspector;
@@ -26,6 +27,7 @@ import org.seleniuminspector.openfaces.TwoListSelectionInspector;
  * @author Darya Shumilina
  */
 public class AjaxFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase {
+    @Ignore
     @Test
     public void testCalendarInside() {
         testAppFunctionalPage("/components/foldingpanel/calendarIn.jsf");
@@ -40,7 +42,7 @@ public class AjaxFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase {
             acceptAlert();
         }
     }
-
+    @Ignore
     @Test
     public void testChartInside() {
         testAppFunctionalPage("/components/foldingpanel/chartIn.jsf");
@@ -52,7 +54,7 @@ public class AjaxFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase {
         chart.assertElementExists(true);
         chart.assertVisible(true);
     }
-
+    @Ignore
     @Test
     public void testConfirmationInside() {
         testAppFunctionalPage("/components/foldingpanel/confirmationIn.jsf");
@@ -65,7 +67,7 @@ public class AjaxFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase {
         }
         acceptAlert();
     }
-
+    @Ignore
     @Test
     public void testDataTableInside() throws InterruptedException {
         testAppFunctionalPage("/components/foldingpanel/dataTableIn.jsf");
@@ -77,7 +79,7 @@ public class AjaxFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase {
         dataTablePaginator("fn:dataTableID:dataTablePaginator_A4J").makePagination(3);
         dataTable.column(1).filter(InputTextFilterInspector.class, "fn:dataTableID:filter1").makeFiltering("col2_row1");
     }
-
+    @Ignore
     @Test
     public void testDateChooserInside() {
         testAppFunctionalPage("/components/foldingpanel/dateChooserIn.jsf");
@@ -89,7 +91,7 @@ public class AjaxFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase {
         dateChooser.field().assertValue("Jul 30, 2006");
         dateChooser.button().assertElementExists();
     }
-
+    @Ignore
     @Test
     public void testDropDownInside() {
         testAppFunctionalPage("/components/foldingpanel/dropDownIn.jsf");
@@ -102,14 +104,14 @@ public class AjaxFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase {
         dateChooser.popup().items().get(1).click();
         dateChooser.field().assertValue("Yellow");
     }
-
+    @Ignore
     @Test
     public void testDynamicImageInside() {
         testAppFunctionalPage("/components/foldingpanel/dynamicImageIn.jsf");
         foldingPanel("fn:dynamicImageFoldingPanel").toggle().clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         element("fn:dynamicImageID").assertElementExists();
     }
-
+    @Ignore
     @Test
     public void testAjaxFoldingPanelInside() {
         testAppFunctionalPage("/components/foldingpanel/foldingPanelIn.jsf");
@@ -123,7 +125,7 @@ public class AjaxFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase {
         foldingPanel.caption().assertElementExists();
         foldingPanel.content().assertVisible(true);
     }
-
+    @Ignore
     @Test
     public void testHintLabelInside() throws InterruptedException {
         testAppFunctionalPage("/components/foldingpanel/hintLabelIn.jsf");
@@ -131,7 +133,7 @@ public class AjaxFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase {
         foldingPanel("fn:hintLabelFoldingPanel").toggle().clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         hintLabel("fn:hintLabelID").checkVisibilityAndContent("HintLabel Value", "HintLabel Title ;-)");
     }
-
+    @Ignore
     @Test
     public void testPopupLayerInside() {
         testAppFunctionalPage("/components/foldingpanel/popupLayerIn.jsf");
@@ -143,7 +145,7 @@ public class AjaxFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase {
         headerPopup.assertVisible(true);
         headerPopup.assertSubtext(0, 28, "this is popup layer on tab 1");
     }
-
+    @Ignore
     @Test
     public void testAjaxTabbedPaneInside() {
         testAppFunctionalPage("/components/foldingpanel/tabbedPaneIn.jsf");
@@ -162,7 +164,7 @@ public class AjaxFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase {
         secondHeader.clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         element("fn:secondContent").assertText("Some text on the second tab");
     }
-
+    @Ignore
     @Test
     public void testTabSetInside() {
         testAppFunctionalPage("/components/foldingpanel/tabSetIn.jsf");
@@ -179,7 +181,7 @@ public class AjaxFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase {
         secondTab.click();
         secondTab.assertText("Server");
     }
-
+    @Ignore
     //todo: selection test is absent
     @Test
     public void testTreeTableInside() {
@@ -199,7 +201,7 @@ public class AjaxFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase {
         treeTable.column(0).makeSorting();
         treeTable.column(0).filter(InputTextFilterInspector.class, "fn:treeTableID:filter1").makeFiltering("colors");
     }
-
+    @Ignore
     @Test
     public void testTwoListSelectionInside() {
         testAppFunctionalPage("/components/foldingpanel/twoListSelectionIn.jsf");
@@ -214,7 +216,7 @@ public class AjaxFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase {
         twoListSelection.addAllButton().click();
         twoListSelection.rightList().assertText("item 1 labelitem 5 labelitem 3 label");
     }
-
+    @Ignore
     @Test
     public void testValidationInside() {
         testAppFunctionalPage("/components/foldingpanel/validationIn.jsf");

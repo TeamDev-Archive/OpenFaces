@@ -12,19 +12,19 @@
 
 //--------------------------------------  BorderLayoutPanel init method
 
-O$._initBorderLayoutPanel = function(borderLayoutPanelId) {
+O$._initBorderLayoutPanel = function (borderLayoutPanelId) {
   var borderLayoutPanel = O$.initComponent(borderLayoutPanelId, null, {
-    _isBorderLayoutPanel: true,
-    _truncateMode: false,
-    _isNotResizableComponent: true,
-    _newStyle: new O$._createPseudoCSSStyle()
+    _isBorderLayoutPanel:true,
+    _truncateMode:false,
+    _isNotResizableComponent:true,
+    _newStyle:new O$._createPseudoCSSStyle()
   });
   borderLayoutPanel._isCoupled = borderLayoutPanel.parentNode._isCouplingElement;
   borderLayoutPanel._newStyle.width = borderLayoutPanel.style.width;
   borderLayoutPanel._newStyle.height = borderLayoutPanel.style.height;
 
   O$._storeSizeProperties(borderLayoutPanel);
-  O$._subscribeToOnresizeEvent(borderLayoutPanel, function() {
+  O$._subscribeToOnresizeEvent(borderLayoutPanel, function () {
     borderLayoutPanel._newStyle.applyTo(borderLayoutPanel.style);
     if (!borderLayoutPanel._waitForRefresh) {
       borderLayoutPanel._waitForRefresh = true;
@@ -52,8 +52,9 @@ O$._initBorderLayoutPanel = function(borderLayoutPanelId) {
   }
 };
 
-O$._initBorderLayoutPanel_content = function(borderLayoutPanelId, rolloverClass, events) {
+O$._initBorderLayoutPanel_content = function (borderLayoutPanelId, rolloverClass, events, isRecalculatingSplitterInBorder) {
   var borderLayoutPanel = O$(borderLayoutPanelId);
+  borderLayoutPanel._isRecalculatingSplitterInBorder = isRecalculatingSplitterInBorder;
   borderLayoutPanel._content = O$(borderLayoutPanelId + "::content");
   borderLayoutPanel._content._newStyle = new O$._createPseudoCSSStyle();
   borderLayoutPanel._content._isResizableElement = true;
@@ -62,7 +63,7 @@ O$._initBorderLayoutPanel_content = function(borderLayoutPanelId, rolloverClass,
 
   O$._storeSizeProperties(borderLayoutPanel._content);
   O$._setupRolloverClass(borderLayoutPanel, rolloverClass);
-  borderLayoutPanel.refresh = function() {
+  borderLayoutPanel.refresh = function () {
     O$._recalculateBorderLayoutPanel(borderLayoutPanel);
     O$._repaintBorderLayoutPanel(borderLayoutPanel);
   };
@@ -79,7 +80,7 @@ O$._initBorderLayoutPanel_content = function(borderLayoutPanelId, rolloverClass,
       borderLayoutPanel.sidePanels.push(sidePanel);
 
       sidePanel._forBorderLayoutPanel.onsplitterdrag = sidePanel.onsplitterdrag;
-      sidePanel.onsplitterdrag = function(curSidePanel) {
+      sidePanel.onsplitterdrag = function (curSidePanel) {
         if (curSidePanel._forBorderLayoutPanel.onsplitterdrag)
           curSidePanel._forBorderLayoutPanel.onsplitterdrag(curSidePanel);
         if (curSidePanel._forBorderLayoutPanel._truncateMode) {
@@ -91,13 +92,13 @@ O$._initBorderLayoutPanel_content = function(borderLayoutPanelId, rolloverClass,
         O$._repaintBorderLayoutPanel(borderLayoutPanel);
       };
       sidePanel._forBorderLayoutPanel.oncollapse = sidePanel.oncollapse;
-      sidePanel.oncollapse = function(sidePanel) {
+      sidePanel.oncollapse = function (sidePanel) {
         if (sidePanel._forBorderLayoutPanel.oncollapse)
           sidePanel._forBorderLayoutPanel.oncollapse(sidePanel);
         borderLayoutPanel.refresh();
       };
       sidePanel._forBorderLayoutPanel.onrestore = sidePanel.onrestore;
-      sidePanel.onrestore = function(sidePanel) {
+      sidePanel.onrestore = function (sidePanel) {
         if (sidePanel._forBorderLayoutPanel.onrestore)
           sidePanel._forBorderLayoutPanel.onrestore(sidePanel);
         borderLayoutPanel.refresh();
@@ -107,7 +108,7 @@ O$._initBorderLayoutPanel_content = function(borderLayoutPanelId, rolloverClass,
   O$._calculateBorderLayoutPanelContentRect(borderLayoutPanel, true);
   borderLayoutPanel.refresh();
   if (O$.isExplorer())
-    setTimeout(function() {
+    setTimeout(function () {
       borderLayoutPanel.refresh();
     }, 1);
   O$._applyEventsObjectToElement(events, borderLayoutPanel);
@@ -116,7 +117,7 @@ O$._initBorderLayoutPanel_content = function(borderLayoutPanelId, rolloverClass,
 
 //--------------------------------------  private functions
 
-O$._recalculateBorderLayoutPanel = function(borderLayoutPanel) {
+O$._recalculateBorderLayoutPanel = function (borderLayoutPanel) {
   // borderLayoutPanel
   if (borderLayoutPanel._isCoupled) {
     var borderLayoutPanelOuterWidth = O$._calculateNumericInnerWidth(borderLayoutPanel.parentNode, false);
@@ -140,9 +141,9 @@ O$._recalculateBorderLayoutPanel = function(borderLayoutPanel) {
   O$._recalculateContent(borderLayoutPanel);
 };
 
-O$._repaintBorderLayoutPanel = function(borderLayoutPanel) {
+O$._repaintBorderLayoutPanel = function (borderLayoutPanel) {
   if ((parseInt(borderLayoutPanel._content._newStyle.height) < parseInt(borderLayoutPanel._content.style.height)) ||
-      (parseInt(borderLayoutPanel._content._newStyle.width) < parseInt(borderLayoutPanel._content.style.width))) {
+          (parseInt(borderLayoutPanel._content._newStyle.width) < parseInt(borderLayoutPanel._content.style.width))) {
     var isDecrase = true;
   }
   if (isDecrase) {
@@ -156,7 +157,7 @@ O$._repaintBorderLayoutPanel = function(borderLayoutPanel) {
   }
 };
 
-O$._calculateBorderLayoutPanelContentRect = function(borderLayoutPanel, useDoubleBuffering) {
+O$._calculateBorderLayoutPanelContentRect = function (borderLayoutPanel, useDoubleBuffering) {
   var contentRectTop = 0;
   var contentRectLeft = 0;
   var contentRectRight = 0;
@@ -184,7 +185,7 @@ O$._calculateBorderLayoutPanelContentRect = function(borderLayoutPanel, useDoubl
   return borderLayoutPanel._contentRect;
 };
 
-O$._recalculateInnerSidePanels = function(borderLayoutPanel, isDecrase) {
+O$._recalculateInnerSidePanels = function (borderLayoutPanel, isDecrase) {
   var topSidePanelOffset = 0;
   var leftSidePanelOffset = 0;
   var rightSidePanelOffset = 0;
@@ -238,14 +239,14 @@ O$._recalculateInnerSidePanels = function(borderLayoutPanel, isDecrase) {
   }
 };
 
-O$._recalculateContent = function(borderLayoutPanel) {
+O$._recalculateContent = function (borderLayoutPanel) {
   O$._setInnerElementOuterLeftTopCorner(borderLayoutPanel._content, borderLayoutPanel._contentRect.x, borderLayoutPanel._contentRect.y, true);
   O$._setInnerElementOuterWidth(borderLayoutPanel._content, borderLayoutPanel._contentRect.width, true);
   O$._setInnerElementOuterHeight(borderLayoutPanel._content, borderLayoutPanel._contentRect.height, true);
   O$._bugFix_divNegativeSizeBug(borderLayoutPanel._content, true);
 };
 
-O$._repaintInnerSidePanels = function(borderLayoutPanel) {
+O$._repaintInnerSidePanels = function (borderLayoutPanel) {
   for (var index = 0; index < borderLayoutPanel.sidePanels.length; index++) {
     var sidePanel = borderLayoutPanel.sidePanels[index];
     O$._repaintSidePanel(sidePanel);
@@ -255,14 +256,14 @@ O$._repaintInnerSidePanels = function(borderLayoutPanel) {
   }
 };
 
-O$._repaintContent = function(borderLayoutPanel) {
+O$._repaintContent = function (borderLayoutPanel) {
   borderLayoutPanel._content._newStyle.applyTo(borderLayoutPanel._content.style);
   O$._sendResizeEvent(borderLayoutPanel._content);
   if (borderLayoutPanel.oncontentresize)
     borderLayoutPanel.oncontentresize();
 };
 
-O$._setCorrectedSidePanelNewSize = function(sidePanel, borderLayoutPanel) {
+O$._setCorrectedSidePanelNewSize = function (sidePanel, borderLayoutPanel) {
   var sidePanelSize = O$._calculateNumericSizeValue(sidePanel, sidePanel._size, true);
   if (sidePanel._alignment == "left" || sidePanel._alignment == "right") {
     var oldSize = O$._calculateNumericWidth(sidePanel, true);
@@ -289,7 +290,7 @@ O$._setCorrectedSidePanelNewSize = function(sidePanel, borderLayoutPanel) {
 };
 
 //--------------------------------------  truncated mode functions
-O$._truncateMode_recalculateBorderLayoutPanel = function(borderLayoutPanel, useDoubleBuffering) {
+O$._truncateMode_recalculateBorderLayoutPanel = function (borderLayoutPanel, useDoubleBuffering) {
   if (borderLayoutPanel._truncateMode_Vert || borderLayoutPanel._contentRect.width < 0) {
     borderLayoutPanel._truncateMode_Vert = O$._truncateMode_recalculateVerticalSidePanels(borderLayoutPanel, useDoubleBuffering);
   }
@@ -299,7 +300,7 @@ O$._truncateMode_recalculateBorderLayoutPanel = function(borderLayoutPanel, useD
   borderLayoutPanel._truncateMode = borderLayoutPanel._truncateMode_Vert || borderLayoutPanel._truncateMode_Hor;
 };
 
-O$._truncateMode_recalculateVerticalSidePanels = function(borderLayoutPanel, useDoubleBuffering) {
+O$._truncateMode_recalculateVerticalSidePanels = function (borderLayoutPanel, useDoubleBuffering) {
   var freeSpace = borderLayoutPanel._contentRect.width;
   if (!borderLayoutPanel._truncateMode_forceVert) borderLayoutPanel._truncateMode_forceVert = 2;
   var force = borderLayoutPanel._truncateMode_forceVert;
@@ -343,7 +344,7 @@ O$._truncateMode_recalculateVerticalSidePanels = function(borderLayoutPanel, use
   return undefined;
 };
 
-O$._truncateMode_recalculateHorizontalSidePanels = function(borderLayoutPanel, useDoubleBuffering) {
+O$._truncateMode_recalculateHorizontalSidePanels = function (borderLayoutPanel, useDoubleBuffering) {
   var freeSpace = borderLayoutPanel._contentRect.height;
   if (!borderLayoutPanel._truncateMode_forceHor) borderLayoutPanel._truncateMode_forceHor = 2;
   var force = borderLayoutPanel._truncateMode_forceHor;
@@ -387,7 +388,7 @@ O$._truncateMode_recalculateHorizontalSidePanels = function(borderLayoutPanel, u
   return undefined;
 };
 
-O$._truncateMode_collectSidePanelsSortedList = function(borderLayoutPanel, isVertDirection, isTruncateOp) {
+O$._truncateMode_collectSidePanelsSortedList = function (borderLayoutPanel, isVertDirection, isTruncateOp) {
   // make sorted sidePanels array to truncate it
   for (var index = 0; index < borderLayoutPanel.sidePanels.length; index++) {
     var sidePanel = borderLayoutPanel.sidePanels[index];
@@ -412,7 +413,7 @@ O$._truncateMode_collectSidePanelsSortedList = function(borderLayoutPanel, isVer
   return sidePanels;
 };
 
-O$._truncateMode_calculateSidePanelPriority = function(sidePanel, isTruncateOp) {
+O$._truncateMode_calculateSidePanelPriority = function (sidePanel, isTruncateOp) {
   var sidePanelSize = O$._calculateNumericSizeValue(sidePanel, sidePanel._size);
   var sidePanelMinSize = O$._calculateNumericSizeValue(sidePanel, sidePanel._minSize);
   var sidePanelCollapsedSize = parseInt(sidePanel._collapsedSize);
@@ -446,7 +447,7 @@ O$._truncateMode_calculateSidePanelPriority = function(sidePanel, isTruncateOp) 
   return priority;
 };
 
-O$._truncateMode_truncateSidePanel = function(sidePanel, freeSpace, useDoubleBuffering, force) {
+O$._truncateMode_truncateSidePanel = function (sidePanel, freeSpace, useDoubleBuffering, force) {
   var needSpace = -freeSpace;
   var sidePanelSize = O$._calculateNumericSizeValue(sidePanel, sidePanel._size, useDoubleBuffering);
 
@@ -470,7 +471,7 @@ O$._truncateMode_truncateSidePanel = function(sidePanel, freeSpace, useDoubleBuf
   return -(needSpace - truncationSize);
 };
 
-O$._truncateMode_untruncateSidePanel = function(sidePanel, freeSpace, useDoubleBuffering, force) {
+O$._truncateMode_untruncateSidePanel = function (sidePanel, freeSpace, useDoubleBuffering, force) {
   if (sidePanel._forBorderLayoutPanel._truncateMode) {
     var sidePanelSize = O$._calculateNumericSizeValue(sidePanel, sidePanel._size, useDoubleBuffering);
     if (force <= 2) {
@@ -502,7 +503,7 @@ O$._truncateMode_untruncateSidePanel = function(sidePanel, freeSpace, useDoubleB
   return freeSpace;
 };
 
-O$._refreshLaterIfInvisible = function(borderLayoutPanel) {
+O$._refreshLaterIfInvisible = function (borderLayoutPanel) {
 
   var hasHiddenParent = false;
   var currentElement = borderLayoutPanel;

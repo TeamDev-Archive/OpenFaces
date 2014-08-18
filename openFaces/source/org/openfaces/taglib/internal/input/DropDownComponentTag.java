@@ -50,6 +50,7 @@ public abstract class DropDownComponentTag extends OUIInputTextTag {
 
         setStringProperty(component, "rolloverStyle");
         setStringProperty(component, "rolloverClass");
+        setStringProperty(component, "parentId");
     }
 
 }

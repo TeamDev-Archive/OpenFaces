@@ -11,6 +11,7 @@
  */
 package org.openfaces.requests;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.seleniuminspector.openfaces.DataTableInspector;
@@ -20,6 +21,7 @@ import org.seleniuminspector.openfaces.DataTableInspector;
  */
 public class JSFC_2478Test extends OpenFacesTestCase {
      @Test
+     @Ignore
     public void testJSFC_2478Fix() {
         testAppFunctionalPage("/requests/JSFC-2478.jsf");
 
