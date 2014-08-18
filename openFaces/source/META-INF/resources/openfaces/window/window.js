@@ -14,13 +14,21 @@ O$.Window = {
   STATE_NORMAL: "normal",
   STATE_MAXIMIZED: "maximized",
   STATE_MINIMIZED: "minimized",
+  parent: "",
+  _init: function (windowId, resizable, draggableByContent, minWidth, minHeight, desktopElementId, parentId) {
 
-  _init: function(windowId, resizable, draggableByContent, minWidth, minHeight, desktopElementId) {
     var win = O$(windowId);
+    if (!parentId) {
+      O$.Window._isRealParent = false;
+    } else {
+      O$.Window._isRealParent = true;
+    }
+    O$.Window.parent = O$.getParentById(windowId, parentId) || O$.getParentNode(win, "form") || document.body;
+
     if (win._autosizing == "on" && resizable) {
       resizable = false;
     }
-    var super_setSize = win._setSize;
+
     O$.initComponent(windowId, null, {
       _form: O$.getParentNode(win, "form"),
       _draggableByContent: draggableByContent,
@@ -38,6 +46,8 @@ O$.Window = {
       _declaredResizable: resizable,
 
       _resizable: false,
+      _parentId:O$.Window.parent.id,
+      _isRealParent:O$.Window._isRealParent,
       _setResizable: function(resizable) {
         if (win._resizable == resizable)
           return;
@@ -117,8 +127,6 @@ O$.Window = {
       },
 
       _setSize: function(width, height) {
-        super_setSize.call(this, width, height);
-
         O$.setElementSize(win, {width: width, height: height});
         O$.setHiddenField(win, windowId + "::size", width + "," + height);
         if (!win._table._widthInitialized) {

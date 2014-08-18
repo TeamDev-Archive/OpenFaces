@@ -1118,6 +1118,22 @@ if (!window.O$) {
     return el;
   };
 
+  O$.getParentById = function (elementId, parentId) {
+    var element = O$(elementId);
+    var parent = O$(parentId);
+
+    if (!parent && parentId) {
+      parentId = parentId.toLowerCase();
+
+      while (element) {
+        element = element.offsetParent;
+        if (element.id.toLowerCase().indexOf(parentId) > -1) {
+          return element;
+        }
+      }
+    }
+    return parent;
+  };
 
   O$.getParentNode = function (element, tagName) {
     tagName = tagName.toUpperCase();
@@ -2659,10 +2675,13 @@ if (!window.O$) {
       var newLeft = left + dx;
       var newTop = top + dy;
 
-      var containmentCorrectedLeft = newLeft;
-      var containmentCorrectedTop = newTop;
-      var containingBlock = draggable.offsetParent;
-      if (!containingBlock) containingBlock = document.body;
+      var containingBlock = O$(draggable._parentId);
+      if (!draggable._isRealParent) {
+        containingBlock = null;
+      }
+
+      var containmentCorrectedLeft = getLeftPosition(containingBlock, newLeft);
+      var containmentCorrectedTop = getTopPosition(containingBlock, newTop);
 
       var containmentRect = draggable._containment && (!draggable._containment ||
               draggable._containmentRole == "restrictMovement" ||
@@ -2706,6 +2725,37 @@ if (!window.O$) {
         draggable._dragEl._onresizing();
       }
       O$.cancelEvent(evt);
+    }
+
+    function getLeftPosition(containingBlock, left) {
+      if (containingBlock) {
+        var minLeft = containingBlock.offsetLeft;
+        var maxLeft = (minLeft + containingBlock.offsetWidth) - draggable.offsetWidth;
+        var minPosition = O$.isStaticContext(containingBlock.tagName) ? 0 : minLeft;
+
+        return left <= minPosition ? minPosition
+                : left >= maxLeft ? maxLeft - 1 : left;
+      }
+      return left;
+    }
+
+    function getTopPosition(containingBlock, top) {
+      if (containingBlock) {
+        var minTop = containingBlock.offsetTop;
+        var maxTop = (minTop + containingBlock.offsetHeight) - draggable.offsetHeight;
+        var minPosition = O$.isStaticContext(containingBlock.tagName) ? 0 : minTop;
+
+        return top <= minPosition ? minPosition
+                : top >= maxTop ? maxTop - 1 : top;
+      }
+      return top;
+    }
+
+    O$.isStaticContext = function (tagName) {
+      return tagName.toUpperCase() === "BODY" ||
+              tagName.toUpperCase() === "TABLE" ||
+              tagName.toUpperCase() === "TR" ||
+              tagName.toUpperCase() === "TD";
     }
 
     function handleDragEnd(e) {
