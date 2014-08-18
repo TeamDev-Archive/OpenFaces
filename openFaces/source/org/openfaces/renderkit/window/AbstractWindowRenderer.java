@@ -82,7 +82,7 @@ public abstract class AbstractWindowRenderer extends PopupLayerRenderer {
 
         writer.startElement("table", win);
         writer.writeAttribute("id", clientId + "::table", null);
-        writer.writeAttribute("parentId", win.getParentId() + "::parentId", null);
+        writer.writeAttribute("parentId", win.getParentId(), null);
 
         writer.writeAttribute("border", "0", null);
         writer.writeAttribute("cellspacing", "0", null);
@@ -168,7 +168,7 @@ public abstract class AbstractWindowRenderer extends PopupLayerRenderer {
 
         AbstractWindow window = (AbstractWindow) component;
         String sizeKey = window.getClientId(context) + "::size";
-        final String parentId = window.getClientId() + "::parentId";
+        final String parentId = window.getClientId();
 
         String sizeStr = context.getExternalContext().getRequestParameterMap().get(sizeKey);
         window.setParentId(context.getExternalContext().getRequestParameterMap().get(parentId));

@@ -2710,7 +2710,6 @@ if (!window.O$) {
       var newLeft = left + dx;
       var newTop = top + dy;
 
-
       var containingBlock = O$(draggable._parentId);
       if (!draggable._isRealParent) {
         containingBlock = null;
@@ -2718,11 +2717,6 @@ if (!window.O$) {
 
       var containmentCorrectedLeft = getLeftPosition(containingBlock, newLeft);
       var containmentCorrectedTop = getTopPosition(containingBlock, newTop);
-
-      var containmentCorrectedLeft = newLeft;
-      var containmentCorrectedTop = newTop;
-      var containingBlock = draggable.offsetParent;
-      if (!containingBlock) containingBlock = document.body;
 
       var containmentRect = draggable._containment && (!draggable._containment ||
               draggable._containmentRole == "restrictMovement" ||
@@ -2798,6 +2792,7 @@ if (!window.O$) {
               tagName.toUpperCase() === "TR" ||
               tagName.toUpperCase() === "TD";
     }
+
     function handleDragEnd(e) {
       var evt = O$.getEvent(e);
 
