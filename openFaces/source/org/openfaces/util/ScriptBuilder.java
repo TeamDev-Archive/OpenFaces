@@ -51,6 +51,14 @@ public class ScriptBuilder extends Script {
         return this;
     }
 
+    public ScriptBuilder appendNullOrJsString(String str) {
+        if (str == null) {
+            return append("null");
+        } else {
+            return append('\'' + str + '\'');
+        }
+    }
+
     public ScriptBuilder dot() {
         scriptBuilder.append('.');
         return this;

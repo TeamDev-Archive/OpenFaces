@@ -201,22 +201,15 @@ public class PopupLayerRenderer extends RendererBase {
             sb.append("\nO$('");
             sb.append(clientId);
             sb.append("').attachToElement(O$('").append(popupInvokerId).append("'), ");
-            sb.append(nullOrJsString(popup.getAnchorX()));
+            sb.appendNullOrJsString(popup.getAnchorX());
             sb.append(", ");
-            sb.append(nullOrJsString(popup.getAnchorY()));
+            sb.appendNullOrJsString(popup.getAnchorY());
             sb.append(");");
         }
 
         Rendering.renderInitScript(context, sb,
                 Resources.utilJsURL(context),
                 Resources.internalURL(context, "window/popupLayer.js"));
-    }
-
-    private static String nullOrJsString(String str) { // todo: replace using ScriptBuilder and remove this method
-        if (str == null)
-            return "null";
-        else
-            return '\'' + str + '\'';
     }
 
     @Override
