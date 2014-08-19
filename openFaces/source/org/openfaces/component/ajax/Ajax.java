@@ -65,14 +65,14 @@ public class Ajax extends OUICommand implements OUIClientAction {
         if (event instanceof PostAddToViewEvent) {
             if (isStandalone()) return;
             UIComponent parent = getParent();
-            ClientBehaviorHolder cbh;
+            ClientBehaviorHolder behaviorHolder;
             if (getFor() == null) {
                 if (!(parent instanceof ClientBehaviorHolder)) {
                     throw new IllegalStateException("<o:ajax> can only be inserted into components that allow placing " +
                             "client behaviors inside (components that implement ClientBehaviorHolder interface). " +
                             "Component id is: " + parent.getClientId() + "; Component class: " + parent.getClass().getName());
                 }
-                cbh = (ClientBehaviorHolder) parent;
+                behaviorHolder = (ClientBehaviorHolder) parent;
             } else {
                 FacesContext context = FacesContext.getCurrentInstance();
                 String invokerId = OUIClientActionHelper.getClientActionInvoker(context, this);
@@ -86,23 +86,23 @@ public class Ajax extends OUICommand implements OUIClientAction {
                             "client behaviors (components that implement ClientBehaviorHolder interface). " +
                             "Component id is: " + invokerId + "; Component class: " + parent.getClass().getName());
                 }
-                cbh = (ClientBehaviorHolder) targetComponent;
+                behaviorHolder = (ClientBehaviorHolder) targetComponent;
             }
 
             String eventName = getEvent();
             if (eventName == null)
-                eventName = cbh.getDefaultEventName();
+                eventName = behaviorHolder.getDefaultEventName();
             if (eventName == null) {
                 FacesContext context = getFacesContext();
-                String invokerId = ((UIComponent) cbh).getClientId(context);
+                String invokerId = ((UIComponent) behaviorHolder).getClientId(context);
                 throw new IllegalStateException("The 'event' attribute of <o:ajax> is not specified and no default event " +
                         "name exists for component: " + invokerId + " (component class: " + parent.getClass().getName() + "); " +
                         "you should specify the 'event' attribute for the appropriate <o:ajax> tag");
             }
-            if (!cbh.getClientBehaviors().containsKey(eventName)) {
+            if (!behaviorHolder.getClientBehaviors().containsKey(eventName)) {
                 //OFCS-57: PostAddToViewEvent could be fired multiple time under certain conditions
                 AjaxHelper ajaxHelper = new AjaxHelper(this);
-                cbh.addClientBehavior(eventName, ajaxHelper);
+                behaviorHolder.addClientBehavior(eventName, ajaxHelper);
             }
         }
     }
