@@ -11,11 +11,10 @@
  */
 package org.openfaces.testapp.datatable;
 
-import org.openfaces.component.filter.FilterCriterion;
-import org.openfaces.component.filter.FilterCondition;
 import org.openfaces.component.filter.CompositeFilterCriterion;
 import org.openfaces.component.filter.ExpressionFilterCriterion;
-import org.openfaces.component.table.FilterKind;
+import org.openfaces.component.filter.FilterCondition;
+import org.openfaces.component.filter.FilterCriterion;
 import org.openfaces.util.Faces;
 
 import javax.faces.event.AjaxBehaviorEvent;
@@ -420,23 +419,6 @@ public class TableTestBean {
         return colIndex % 2 == 0;
     }
 
-    public FilterKind getFilterKind() {
-        String colData = Faces.var("col", String.class);
-        int colIndex = Integer.parseInt(colData);
-        if (colIndex == 4) {
-            return null;
-        }
-        switch (colIndex % 3) {
-            case 0:
-                return FilterKind.COMBO_BOX;
-            case 1:
-                return FilterKind.DROP_DOWN_FIELD;
-            case 2:
-                return FilterKind.SEARCH_FIELD;
-            default:
-                throw new UnsupportedOperationException();
-        }
-    }
 
     private Map filterValue = new HashMap();
 

@@ -26,7 +26,7 @@ import java.util.List;
 * todo: indexes for children of this component is not correct - try to use Iterator setObjectId and look on method resetChildrenIds()
 * todo: when page is  reloading, abstractAttachmentAction doesn't save state fileAttachments and fileAttachment in AbstractFileAttachmentAction
 * todo: make the size to display in more pleasant form  - like in fileupload.
-* todo: */
+* */
 public final class FileAttachments extends OUIObjectIteratorBase {
     public static final String COMPONENT_TYPE = "org.openfaces.FileAttachments";
     public static final String COMPONENT_FAMILY = "org.openfaces.FileAttachments";

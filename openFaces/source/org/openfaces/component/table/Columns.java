@@ -784,7 +784,7 @@ public class Columns extends UIComponentBase implements ValueHolder, NamingConta
     }
 
     private void applyFilteringParameters(FacesContext context, DynamicColumn column) {
-        // todo: review this with new filtering API
+        // todo: review this with new filtering API (enum FilterKind was deleted)
 //        FilterKind filterKind = getFilterKind();
 //        if (filterKind != null) {
 //            column.setFilterKind(filterKind);

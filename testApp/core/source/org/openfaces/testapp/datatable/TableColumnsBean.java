@@ -12,7 +12,6 @@
 
 package org.openfaces.testapp.datatable;
 
-import org.openfaces.component.table.FilterKind;
 import org.openfaces.util.Faces;
 
 import javax.faces.event.ActionEvent;
@@ -66,22 +65,6 @@ public class TableColumnsBean {
         }
     }
 
-    public FilterKind getFilterKind() {
-        String col = Faces.var("col", String.class);
-        try {
-            int colIndex = Integer.parseInt(col);
-            if (colIndex < 4) {
-                return FilterKind.DROP_DOWN_FIELD;
-            } else if (colIndex == 4) {
-                return null;
-            } else {
-                return FilterKind.COMBO_BOX;
-            }
-        } catch (NumberFormatException e) {
-            // if col not a number
-            return FilterKind.SEARCH_FIELD;
-        }
-    }
 
     public List<SelectItem> getUsedColumns() {
         usedColumns = new ArrayList<SelectItem>();

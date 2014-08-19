@@ -12,7 +12,6 @@
 
 package org.openfaces.testapp.treetable;
 
-import org.openfaces.component.table.FilterKind;
 import org.openfaces.component.table.TreePath;
 import org.openfaces.util.Faces;
 
@@ -92,22 +91,6 @@ public class TreeTableColumnsBean {
         return (String) Faces.var("col");
     }
 
-    public FilterKind getFilterKind() {
-        String col = getCurrentColumn();
-        try {
-            int colIndex = Integer.parseInt(col);
-            if (colIndex < 4) {
-                return FilterKind.DROP_DOWN_FIELD;
-            } else if (colIndex == 4) {
-                return null;
-            } else {
-                return FilterKind.COMBO_BOX;
-            }
-        } catch (NumberFormatException e) {
-            // if col not a nubmer
-            return FilterKind.SEARCH_FIELD;
-        }
-    }
 
     public List<SelectItem> getUsedColumns() {
         usedColumns = new ArrayList<SelectItem>();
