@@ -18,13 +18,16 @@ import org.openfaces.component.tagcloud.TagCloud;
 import org.openfaces.component.tagcloud.TagsOrder;
 import org.openfaces.demo.beans.dropdown.Color;
 import org.openfaces.demo.beans.dropdown.Colors;
+import org.openfaces.event.AjaxActionEvent;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
+import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
 import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.FacesEvent;
 import javax.faces.model.SelectItem;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -66,6 +69,7 @@ public class TagCloudBean implements ActionListener, Serializable {
     private List<SelectItem> orderList;
     private List<String> weightFormatList;
     private Theme selectedTheme = Theme.SUNNYDAY;
+
 
     public static enum Theme {
         SUNNYDAY("SunDay"), BRONZE("Bronze"), MIXEDCOLORS("MixedColor"), GHOST("Ghost");
@@ -315,7 +319,16 @@ public class TagCloudBean implements ActionListener, Serializable {
         this.maxFontSize = maxFontSize;
     }
 
-    public void processAction(ActionEvent event) {
+    @Override
+    public void processAction(ActionEvent event) throws AbortProcessingException {
+        handle(event);
+    }
+
+    public void processAction(AjaxActionEvent event) {
+        handle(event);
+    }
+
+    private void handle(FacesEvent event) {
         TagCloud cloud = (TagCloud) event.getComponent();
         Map<String, Object> requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
         var = (Item) requestMap.get(cloud.getVar());
