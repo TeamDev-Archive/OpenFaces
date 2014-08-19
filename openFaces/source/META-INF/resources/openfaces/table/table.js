@@ -3971,10 +3971,7 @@ O$.Table = {
     };
     table._innerDropTargetsByColumnId = function (columnId, dropHandler) {
       var dropTargets = [];
-      //TODO: [s.kurilin] we shouldn't use this counter
-      var counter = 0;
       table._columns.forEach(function (targetColumn) {
-        var index = counter;
         var headerCell = targetColumn.header ? targetColumn.header._cell : null;
         var targetCell = headerCell;
 
@@ -4020,8 +4017,8 @@ O$.Table = {
                 var markMinY;
                 if (parent == null) {
                   var anyHighLevelColumn = table._columnsLogicalStructure.root().visibleChildren()[0].columnId;
-                  var rect = O$.getElementBorderRectangle(table._getHeaderCell(anyHighLevelColumn).header._cell, true);
-                  markMinY = rect.getMinY();
+                  var rectangle = O$.getElementBorderRectangle(table._getHeaderCell(anyHighLevelColumn).header._cell, true);
+                  markMinY = rectangle.getMinY();
                 } else {
                   var rect = O$.getElementBorderRectangle(table._getHeaderCell(parent).header._cell, true);
                   markMinY = rect.getMaxY();
