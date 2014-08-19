@@ -12,7 +12,7 @@
 
 package org.openfaces.testapp.slider;
 
-import org.openfaces.component.chart.Orientation;
+import org.openfaces.component.Orientation;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;

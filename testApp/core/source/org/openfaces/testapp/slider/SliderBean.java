@@ -13,7 +13,7 @@
 package org.openfaces.testapp.slider;
 
 import org.openfaces.component.FillDirection;
-import org.openfaces.component.chart.Orientation;
+import org.openfaces.component.Orientation;
 import org.openfaces.component.input.TextFieldState;
 import org.openfaces.component.input.TicksAlignment;
 
