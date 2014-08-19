@@ -419,8 +419,8 @@ O$.MonthTable = {
                         var rect = O$.getElementBorderRectangle(monthTable._table, true);
                         var maxTop = rect.height;
                         var maxLeft = rect.width;
-                        left = left < 0 ? 0 : left > maxLeft ? maxLeft : left;
-                        top = top < 0 ? 0 : top > maxTop ? maxTop : top;
+                        left = (left < 0) ? 0 : ((left > maxLeft) ? maxLeft : left);
+                        top = (top < 0) ? 0 : ((top > maxTop) ? maxTop : top);
 
                         var nearestTimeslot = monthTable._getNearestTimeslotForPosition(left, top);
                         var timeIncrement = nearestTimeslot._cellDay.getTime() - event._dragPositionTime.getTime();

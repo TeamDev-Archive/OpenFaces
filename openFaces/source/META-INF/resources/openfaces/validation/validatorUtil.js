@@ -305,7 +305,8 @@ O$.addMessageFromChild = function(messages, child) {
       messages.push(im[i]);
     }
   } catch (e) {
-    //todo: to something
+    console.log("Exception happened: " + e);
+    //todo: handle properly
   }
 
 }
