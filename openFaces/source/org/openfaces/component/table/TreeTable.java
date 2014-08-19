@@ -158,8 +158,9 @@ public class TreeTable extends AbstractTable {
         }
 
         NodeInfoForRow nodeInfoForRow = nodeInfoForRows.get(index);
-        if (nodeInfoForRow == null)
+        if (nodeInfoForRow == null) {
             return null;
+        }
         TreePath indexPath = nodeInfoForRow.getNodeIndexPath();
         return indexPathToStr(indexPath);
     }
@@ -180,7 +181,9 @@ public class TreeTable extends AbstractTable {
     private String indexPathToStr(TreePath indexPath) {
         StringBuilder sb = new StringBuilder();
         for (TreePath path = indexPath; path != null; path = path.getParentPath()) {
-            if (sb.length() > 0) sb.insert(0, "_");
+            if (sb.length() > 0) {
+                sb.insert(0, "_");
+            }
             sb.insert(0, path.getValue());
         }
         return sb.toString();
@@ -300,8 +303,9 @@ public class TreeTable extends AbstractTable {
         TreeStructure treeStructure = null;
         for (UIComponent child : children) {
             if (child instanceof TreeStructure) {
-                if (treeStructure != null)
+                if (treeStructure != null) {
                     throw new RuntimeException("There should be only one tree structure child under the TreeTable component");
+                }
                 treeStructure = (TreeStructure) child;
             }
         }
@@ -312,8 +316,9 @@ public class TreeTable extends AbstractTable {
     public void processUpdates(FacesContext context) {
         super.processUpdates(context);
         ValueExpression expansionStateExpression = getValueExpression("expansionState");
-        if (expansionStateExpression != null)
+        if (expansionStateExpression != null) {
             expansionStateExpression.setValue(context.getELContext(), expansionState);
+        }
     }
 
 
@@ -330,16 +335,18 @@ public class TreeTable extends AbstractTable {
     @Override
     public void encodeBegin(FacesContext context) throws IOException {
         encodingStarted = true;
-        if (AjaxUtil.getSkipExtraRenderingOnPortletsAjax(context))
+        if (AjaxUtil.getSkipExtraRenderingOnPortletsAjax(context)) {
             return;
+        }
 
         beforeRenderResponse(context);
 
         ValueExpression expansionStateExpression = getValueExpression("expansionState");
         if (expansionStateExpression != null) {
             ExpansionState newExpansionState = (ExpansionState) expansionStateExpression.getValue(context.getELContext());
-            if (newExpansionState != null)
+            if (newExpansionState != null) {
                 expansionState = newExpansionState;
+            }
         }
         updateSortingFromBindings();
         prepareModelFromTreeStructure(true);
@@ -349,34 +356,40 @@ public class TreeTable extends AbstractTable {
 
     @Override
     public void encodeChildren(FacesContext context) throws IOException {
-        if (AjaxUtil.getSkipExtraRenderingOnPortletsAjax(context))
+        if (AjaxUtil.getSkipExtraRenderingOnPortletsAjax(context)) {
             return;
+        }
         super.encodeChildren(context);
     }
 
 
     @Override
     public void encodeEnd(FacesContext context) throws IOException {
-        if (AjaxUtil.getSkipExtraRenderingOnPortletsAjax(context))
+        if (AjaxUtil.getSkipExtraRenderingOnPortletsAjax(context)) {
             return;
+        }
         super.encodeEnd(context);
     }
 
     public int loadSubNodes(int rowIndex) {
-        if (!isRowAvailableAfterRestoring(rowIndex))
+        if (!isRowAvailableAfterRestoring(rowIndex)) {
             return 0;
+        }
         NodeInfoForRow nodeInfo = nodeInfoForRows.get(rowIndex);
 
-        if (!nodeInfo.getNodeHasChildren())
+        if (!nodeInfo.getNodeHasChildren()) {
             throw new IllegalArgumentException("The node at this rowIndex doesn't have children: " + rowIndex);
-        if (nodeInfo.getChildrenPreloaded())
+        }
+        if (nodeInfo.getChildrenPreloaded()) {
             throw new IllegalArgumentException("The node at this rowIndex already has its children preloaded: " + rowIndex);
+        }
         TreeStructure treeStructure = findTreeStructureChild();
         TreePath nodeKeyPath = nodeInfo.getNodeKeyPath();
         TreePath nodePath = nodeInfo.getNodePath();
         TreePath nodeIndexPath = nodeInfo.getNodeIndexPath();
-        if (!locateNodeChildrenByKeyPath(treeStructure, nodeKeyPath))
+        if (!locateNodeChildrenByKeyPath(treeStructure, nodeKeyPath)) {
             return 0; // the node has probably been removed (can be the case here in server-side state saving)
+        }
 
         List<NodeInfoForRow> nodeInfoForRows = new ArrayList<NodeInfoForRow>();
         List<NodeInfoForRow> nodeInfoForRows_unfiltered = new ArrayList<NodeInfoForRow>();
@@ -413,8 +426,9 @@ public class TreeTable extends AbstractTable {
                     continue;
                 }
                 Integer i = (Integer) keyObj;
-                if (i > rowIndex)
+                if (i > rowIndex) {
                     i = i + addedRowCount;
+                }
                 newRowIndexToExpansionData.put(i, entry.getValue());
             }
 
@@ -438,11 +452,13 @@ public class TreeTable extends AbstractTable {
             for (; nodeIndex < nodeCount; nodeIndex++) {
                 treeStructure.setNodeIndex(nodeIndex);
                 Object currentNodeKey = treeStructure.getNodeKey();
-                if (nodeKey.equals(currentNodeKey))
+                if (nodeKey.equals(currentNodeKey)) {
                     break;
+                }
             }
-            if (nodeIndex == nodeCount)
+            if (nodeIndex == nodeCount) {
                 return false;
+            }
             treeStructure.goToChildLevel();
         }
         return true;
@@ -451,8 +467,9 @@ public class TreeTable extends AbstractTable {
     private void prepareModelFromTreeStructure(boolean readActualData) {
         TreeStructure treeStructure = findTreeStructureChild();
         boolean proceedWithReadingData = treeStructure != null && isRendered() && readActualData;
-        if (proceedWithReadingData)
+        if (proceedWithReadingData) {
             treeStructure.goToTopLevel();
+        }
 
         List<NodeInfoForRow> nodeInfoForRows = new ArrayList<NodeInfoForRow>();
         List<NodeInfoForRow> nodeInfoForRows_unfiltered = new ArrayList<NodeInfoForRow>();
@@ -479,9 +496,9 @@ public class TreeTable extends AbstractTable {
 
     private void updateModelRowDatasAndExpansionData(List<NodeInfoForRow> nodeInfoForRows, int rootNodeCount) {
         setModelFromNodeInfos(nodeInfoForRows);
-        if (!isRendered())
+        if (!isRendered()) {
             return;
-
+        }
         Map<Object, NodeInfoForRow> rowIndexToExpansionData = new HashMap<Object, NodeInfoForRow>();
         if (rootNodeCount != -1) {
             NodeInfoForRow nodeInfoForRow = new NodeInfoForRow(null, null, null, -1, true, false);
@@ -492,8 +509,9 @@ public class TreeTable extends AbstractTable {
         }
         for (int rowIndex = 0; rowIndex < nodeInfoForRows.size(); rowIndex++) {
             NodeInfoForRow nodeInfoForRow = nodeInfoForRows.get(rowIndex);
-            if (nodeInfoForRow.getNodeHasChildren())
+            if (nodeInfoForRow.getNodeHasChildren()) {
                 rowIndexToExpansionData.put(rowIndex, nodeInfoForRow);
+            }
         }
         this.rowIndexToExpansionData = rowIndexToExpansionData;
     }
@@ -523,15 +541,16 @@ public class TreeTable extends AbstractTable {
                                      TreePath parentNodeKeyPath,
                                      TreePath parentNodeIndexPath,
                                      boolean thisLevelInitiallyVisible) {
-        if (level > deepestLevel)
+        if (level > deepestLevel) {
             deepestLevel = level;
-
+        }
         List<TempNodeParams> thisLevelNodeParams = new ArrayList<TempNodeParams>();
         PreloadedNodes preloadedNodes = getPreloadedNodes();
         for (int nodeIndex = 0, nodeCount = treeStructure.getNodeCount(); nodeIndex < nodeCount; nodeIndex++) {
             treeStructure.setNodeIndex(nodeIndex);
-            if (!treeStructure.isNodeAvailable())
+            if (!treeStructure.isNodeAvailable()) {
                 break;
+            }
             Object nodeData = treeStructure.getNodeData();
             Object nodeKey = treeStructure.getNodeKey();
             boolean nodeHasChildren = treeStructure.getNodeHasChildren();
@@ -577,18 +596,18 @@ public class TreeTable extends AbstractTable {
                 nodeInfo.setChildrenPreloaded(false);
                 nodeInfo.setChildNodeCount(0);
             }
-
             thisLevelNodeParams.add(thisNodeParams);
         }
-        if (sortLevel == -1 || level == sortLevel)
+        if (sortLevel == -1 || level == sortLevel) {
             sortNodes(thisLevelNodeParams, level);
-
+        }
         List<boolean[]> thisLevelNodeFilteringFlags = new ArrayList<boolean[]>();
         List<TempNodeParams> filteredNodeParams = new ArrayList<TempNodeParams>();
         for (TempNodeParams rowObj : thisLevelNodeParams) {
             thisLevelNodeFilteringFlags.add(rowObj.getFilteringFlags());
-            if (rowObj.isRowAccepted())
+            if (rowObj.isRowAccepted()) {
                 filteredNodeParams.add(rowObj);
+            }
         }
 
         for (TempNodeParams nodeParams : filteredNodeParams) {
@@ -604,21 +623,24 @@ public class TreeTable extends AbstractTable {
             nodeInfoForRow.setNodeFilteringFlags(nodeFilteringFlags);
             List<NodeInfoForRow> subtreeNodeInfos_unfiltered = nodeParams.getSubtreeNodeInfos_unfiltered();
             nodeInfos_unfiltered.add(nodeInfoForRow);
-            if (subtreeNodeInfos_unfiltered != null)
+            if (subtreeNodeInfos_unfiltered != null) {
                 nodeInfos_unfiltered.addAll(subtreeNodeInfos_unfiltered);
-
+            }
             List<NodeInfoForRow> subtreeNodeInfosForRendering = nodeParams.getSubtreeNodeInfosForRendering();
             List<NodeInfoForRow> subtreeNodeInfosAllFiltered = nodeParams.getSubtreeNodeInfosAllFiltered();
             if (nodeInfoForRow.isAcceptedByFilters() || (subtreeNodeInfosAllFiltered != null && subtreeNodeInfosAllFiltered.size() > 0)) {
                 nodeInfosForRendering.add(nodeInfoForRow);
-                if (nodeInfosAllFiltered != null)
+                if (nodeInfosAllFiltered != null) {
                     nodeInfosAllFiltered.add(nodeInfoForRow);
+                }
                 passedChildCount++;
                 boolean preloadChildrenToClient = nodeParams.getPreloadChildrenToClient();
-                if (preloadChildrenToClient)
+                if (preloadChildrenToClient) {
                     nodeInfosForRendering.addAll(subtreeNodeInfosForRendering);
-                if (nodeInfosAllFiltered != null && subtreeNodeInfosAllFiltered != null)
+                }
+                if (nodeInfosAllFiltered != null && subtreeNodeInfosAllFiltered != null) {
                     nodeInfosAllFiltered.addAll(subtreeNodeInfosAllFiltered);
+                }
             }
 
         }
@@ -627,9 +649,9 @@ public class TreeTable extends AbstractTable {
     }
 
     private boolean isRowValuesForFilteringNeeded() {
-        if (rowValuesForFilteringNeeded != null)
+        if (rowValuesForFilteringNeeded != null) {
             return rowValuesForFilteringNeeded;
-
+        }
         List<Filter> filters = getFilters();
         boolean rowListNeeded = false;
         for (Filter filter : filters) {
@@ -645,8 +667,9 @@ public class TreeTable extends AbstractTable {
     private void sortNodes(List<TempNodeParams> thisLevelArrays, int level) {
         List<SortingRule> sortingRules = getSortingRules();
         Comparator<Object> sortingComparator = createRowDataComparator(null, sortingRules);
-        if (sortingComparator == null)
+        if (sortingComparator == null) {
             return;
+        }
         String nodeLevelVar = getNodeLevelVar();
         if (nodeLevelVar != null) {
             Map<String, Object> requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
@@ -678,23 +701,29 @@ public class TreeTable extends AbstractTable {
 
             requestMap.put(var, nodeData);
             final Object prevNodePathVarValue;
-            if (nodePathVar != null)
+            if (nodePathVar != null) {
                 prevNodePathVarValue = requestMap.put(nodePathVar, nodeInfo.getNodePath());
-            else
+            }
+            else {
                 prevNodePathVarValue = null;
+            }
             final Object prevNodeHasChildrenVarValue;
-            if (nodeHasChildrenVar != null)
+            if (nodeHasChildrenVar != null) {
                 prevNodeHasChildrenVarValue = requestMap.put(nodeHasChildrenVar, nodeInfo.getNodeHasChildren());
-            else
+            }
+            else {
                 prevNodeHasChildrenVarValue = null;
+            }
             String nodeParamsKey = TempNodeParams.class.getName();
             final Object prevNodeParamsValue = requestMap.put(nodeParamsKey, nodeParams);
             return new Runnable() {
                 public void run() {
-                    if (nodePathVar != null)
+                    if (nodePathVar != null) {
                         requestMap.put(nodePathVar, prevNodePathVarValue);
-                    if (nodeHasChildrenVar != null)
+                    }
+                    if (nodeHasChildrenVar != null) {
                         requestMap.put(nodeHasChildrenVar, prevNodeHasChildrenVarValue);
+                    }
                     String nodeParamsKey = TempNodeParams.class.getName();
                     requestMap.put(nodeParamsKey, prevNodeParamsValue);
                 }
@@ -712,12 +741,15 @@ public class TreeTable extends AbstractTable {
         // invocations, but nodes have not been initialized yet, so we have to skip variable declaration here (it's not
         // needed during building a view anyway)
         if (!preEncodingStage) {
-            if (nodePathVar != null)
+            if (nodePathVar != null) {
                 requestMap.put(nodePathVar, rowAvailable ? getNodePath() : null);
-            if (nodeLevelVar != null)
+            }
+            if (nodeLevelVar != null) {
                 requestMap.put(nodeLevelVar, rowAvailable ? getNodeLevel() : null);
-            if (nodeHasChildrenVar != null)
+            }
+            if (nodeHasChildrenVar != null) {
                 requestMap.put(nodeHasChildrenVar, rowAvailable ? getNodeHasChildren() : null);
+            }
         }
     }
 
@@ -728,87 +760,104 @@ public class TreeTable extends AbstractTable {
     }
 
     public Object getNodeKey() {
-        if (nodeInfoForRows == null)
+        if (nodeInfoForRows == null) {
             return null;
+        }
         int rowIndex = getRowIndex();
-        if (rowIndex == -1)
+        if (rowIndex == -1) {
             return null;
-        if (!isRowAvailableAfterRestoring(rowIndex))
+        }
+        if (!isRowAvailableAfterRestoring(rowIndex)) {
             return null;
+        }
         return getNodeKey(rowIndex);
     }
 
     public TreePath getNodeKeyPath() {
-        if (nodeInfoForRows == null)
+        if (nodeInfoForRows == null) {
             return null;
+        }
         int rowIndex = getRowIndex();
-        if (rowIndex == -1)
+        if (rowIndex == -1) {
             return null;
-        if (!isRowAvailableAfterRestoring(rowIndex))
+        }
+        if (!isRowAvailableAfterRestoring(rowIndex)) {
             return null;
+        }
         return getNodeKeyPath(rowIndex);
     }
 
     public Object getNodeKey(int rowIndex) {
-        if (!isRowAvailableAfterRestoring(rowIndex))
+        if (!isRowAvailableAfterRestoring(rowIndex)) {
             return null;
+        }
         NodeInfoForRow nodeInfo = nodeInfoForRows.get(rowIndex);
         return nodeInfo.getNodeKey();
     }
 
     public Object getNodeData(int rowIndex) {
-        if (!isRowAvailableAfterRestoring(rowIndex))
+        if (!isRowAvailableAfterRestoring(rowIndex)) {
             return null;
+        }
         NodeInfoForRow nodeInfo = nodeInfoForRows.get(rowIndex);
         return nodeInfo.getNodeData();
     }
 
     public int getNodeLevel() {
-        if (nodeInfoForRows == null)
+        if (nodeInfoForRows == null) {
             return 0;
+        }
         int rowIndex = getRowIndex();
-        if (rowIndex == -1)
+        if (rowIndex == -1) {
             return 0;
+        }
         NodeInfoForRow nodeInfo = nodeInfoForRows.get(rowIndex);
         return nodeInfo.getNodeLevel();
     }
 
     public TreePath getNodePath() {
-        if (nodeInfoForRows == null)
+        if (nodeInfoForRows == null) {
             return null;
+        }
         int rowIndex = getRowIndex();
-        if (rowIndex == -1)
+        if (rowIndex == -1) {
             return null;
+        }
         return getNodePath(rowIndex);
     }
 
     public TreePath getNodePath(int rowIndex) {
-        if (!isRowAvailableAfterRestoring(rowIndex))
+        if (!isRowAvailableAfterRestoring(rowIndex)) {
             return null;
+        }
         NodeInfoForRow nodeInfo = nodeInfoForRows.get(rowIndex);
         return nodeInfo.getNodePath();
     }
 
     public TreePath getNodeKeyPath(int rowIndex) {
-        if (!isRowAvailableAfterRestoring(rowIndex))
+        if (!isRowAvailableAfterRestoring(rowIndex)) {
             return null;
+        }
         NodeInfoForRow nodeInfo = nodeInfoForRows.get(rowIndex);
         return nodeInfo.getNodeKeyPath();
     }
 
     public boolean getNodeHasChildren() {
-        if (nodeInfoForRows == null)
+        if (nodeInfoForRows == null) {
             return false;
+        }
         int rowIndex = getRowIndex();
         return getNodeHasChildren(rowIndex);
     }
 
     @Override
     protected boolean getNodeHasChildren(int rowIndex) {
-        if (rowIndex == -1)
+        if (rowIndex == -1) {
             return false;
-        if (!isRowAvailableAfterRestoring(rowIndex))
+        }
+        if (!isRowAvailableAfterRestoring(rowIndex)) {
             return false;
+        }
         NodeInfoForRow nodeInfo = nodeInfoForRows.get(rowIndex);
         return nodeInfo.getNodeHasChildren();
     }
@@ -817,72 +866,83 @@ public class TreeTable extends AbstractTable {
     public String getClientRowKey() {
         TreePath treePath = (TreePath) super.getRowKey();
         Object nodeKey = treePath.getValue();
-        if (nodeKey == null) return null;
+        if (nodeKey == null) {
+            return null;
+        }
         return nodeKey.toString();
     }
 
     public boolean isNodeExpanded() {
-        if (nodeInfoForRows == null)
+        if (nodeInfoForRows == null) {
             return false;
+        }
         int rowIndex = getRowIndex();
-
-        if (rowIndex == -1)
+        if (rowIndex == -1) {
             return false;
-        if (!isRowAvailableAfterRestoring(rowIndex))
+        }
+        if (!isRowAvailableAfterRestoring(rowIndex)) {
             return false;
-
+        }
         NodeInfoForRow nodeInfo = nodeInfoForRows.get(rowIndex);
         return nodeInfo.isExpanded();
     }
 
     public boolean isNodeInitiallyVisible() {
-        if (nodeInfoForRows == null)
+        if (nodeInfoForRows == null) {
             return false;
+        }
         int rowIndex = getRowIndex();
-        if (rowIndex == -1)
+        if (rowIndex == -1) {
             return false;
-        if (!isRowAvailableAfterRestoring(rowIndex))
+        }
+        if (!isRowAvailableAfterRestoring(rowIndex)) {
             return false;
-
+        }
         NodeInfoForRow nodeInfo = nodeInfoForRows.get(rowIndex);
         return nodeInfo.isNodeInitiallyVisible();
     }
 
     public boolean isNodeAcceptedByFilters() {
-        if (nodeInfoForRows == null)
+        if (nodeInfoForRows == null) {
             return false;
+        }
         int rowIndex = getRowIndex();
-        if (rowIndex == -1)
+        if (rowIndex == -1) {
             return false;
-        if (!isRowAvailableAfterRestoring(rowIndex))
+        }
+        if (!isRowAvailableAfterRestoring(rowIndex)) {
             return false;
-
+        }
         NodeInfoForRow nodeInfo = nodeInfoForRows.get(rowIndex);
         return nodeInfo.isAcceptedByFilters();
     }
 
     public boolean isFilteringPerformed() {
-        if (collectedFilters == null || collectedFilters.size() == 0)
+        if (collectedFilters == null || collectedFilters.size() == 0) {
             return false;
+        }
         for (Filter filter : collectedFilters) {
-            if (!filter.isAcceptingAllRecords())
+            if (!filter.isAcceptingAllRecords()) {
                 return true;
+            }
         }
         return false;
     }
 
     @Override
     public boolean isNodeExpanded(TreePath keyPath) {
-        if (keyPath == null)
+        if (keyPath == null) {
             return false;
+        }
         return expansionState.isNodeExpanded(keyPath);
     }
 
     @Override
     public void setNodeExpanded(TreePath keyPath, boolean expanded) {
         boolean oldExpansion = isNodeExpanded(keyPath);
-        if (expanded == oldExpansion)
+        if (expanded == oldExpansion) {
             return;
+        }
         expansionState = expansionState.getMutableExpansionState();
         expansionState.setNodeExpanded(keyPath, expanded);
     }
@@ -914,22 +974,24 @@ public class TreeTable extends AbstractTable {
         requestMap.put(var, nodeData);
 
         String nodeLevelVar = getNodeLevelVar();
-        if (nodeLevelVar != null)
+        if (nodeLevelVar != null) {
             requestMap.put(nodeLevelVar, nodeInfo.getNodeLevel());
-
+        }
         String nodePathVar = getNodePathVar();
-        if (nodePathVar != null)
+        if (nodePathVar != null) {
             requestMap.put(nodePathVar, nodeInfo.getNodePath());
-
+        }
         String nodeHasChildrenVar = getNodeHasChildrenVar();
-        if (nodeHasChildrenVar != null)
+        if (nodeHasChildrenVar != null) {
             requestMap.put(nodeHasChildrenVar, nodeInfo.getNodeHasChildren());
+        }
         return nodeData;
     }
 
     public boolean isDataSourceEmpty() {
-        if (nodeInfoForRows_unfiltered == null)
+        if (nodeInfoForRows_unfiltered == null) {
             return true;
+        }
         int originalRowCount = nodeInfoForRows_unfiltered.size();
         return originalRowCount == 0;
     }
@@ -962,7 +1024,7 @@ public class TreeTable extends AbstractTable {
     private boolean isTableRerenderingNeeded(FacesContext context) {
         String render = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().
                 get(PartialViewContext.PARTIAL_RENDER_PARAM_NAME);
-        return render != null ? render.contains(getClientId(context)) : false;
+        return render != null && render.contains(getClientId(context));
     }
 
 }
