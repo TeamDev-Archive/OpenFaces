@@ -15,7 +15,7 @@ import org.jfree.chart.axis.CategoryLabelPositions;
 import org.jfree.chart.plot.PlotOrientation;
 import org.openfaces.component.chart.CategoryAxisLabelPosition;
 import org.openfaces.component.chart.LineStyle;
-import org.openfaces.component.chart.Orientation;
+import org.openfaces.component.Orientation;
 import org.openfaces.renderkit.cssparser.CSSUtil;
 import org.openfaces.renderkit.cssparser.StyleBorderModel;
 

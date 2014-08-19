@@ -13,7 +13,7 @@ package org.openfaces.component.output;
 
 import org.openfaces.component.FillDirection;
 import org.openfaces.component.OUIOutput;
-import org.openfaces.component.chart.Orientation;
+import org.openfaces.component.Orientation;
 import org.openfaces.util.ValueBindings;
 
 import javax.el.ValueExpression;

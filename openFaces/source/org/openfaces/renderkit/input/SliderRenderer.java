@@ -13,7 +13,6 @@
 package org.openfaces.renderkit.input;
 
 import org.openfaces.component.FillDirection;
-import org.openfaces.component.chart.Orientation;
 import org.openfaces.component.input.Slider;
 import org.openfaces.component.input.TextFieldState;
 import org.openfaces.component.input.TicksAlignment;
@@ -44,6 +43,9 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import static org.openfaces.component.Orientation.HORIZONTAL;
+import static org.openfaces.component.Orientation.VERTICAL;
 
 /**
  * @author : roman.nikolaienko
@@ -191,7 +193,7 @@ public class SliderRenderer extends RendererBase {
                 getDefaultClass());
         sliderStyleClass = Styles.mergeClassNames(DefaultStyles.CLASS_INITIALLY_INVISIBLE, sliderStyleClass);
         boolean isCenter = slider.getTicksAlignment().equals(TicksAlignment.CENTER);
-        if (slider.getOrientation().equals(Orientation.HORIZONTAL)) {
+        if (slider.getOrientation().equals(HORIZONTAL)) {
             sliderStyleClass = Styles.mergeClassNames(sliderStyleClass, isCenter ? HORIZONTAL_CENTER_CLASS : HORIZONTAL_CLASS);
         } else {
             sliderStyleClass = Styles.mergeClassNames(sliderStyleClass, isCenter ? VERTICAL_CENTER_CLASS : VERTICAL_CLASS);
@@ -230,7 +232,7 @@ public class SliderRenderer extends RendererBase {
         //   }
         writeAttribute(writer, "style", slider.getStyle());//centerCorrection + slider.getStyle());
 
-        if (slider.getOrientation().equals(Orientation.HORIZONTAL)) {
+        if (slider.getOrientation().equals(HORIZONTAL)) {
             writer.startElement("tr", slider);
         }
         List<String> imagesUrls = getAllImagesList(context, slider);
@@ -280,7 +282,7 @@ public class SliderRenderer extends RendererBase {
     }
 
     private void encodeContent(FacesContext context, Slider slider) throws IOException {
-        boolean isHorizontal = slider.getOrientation().equals(Orientation.HORIZONTAL);
+        boolean isHorizontal = slider.getOrientation().equals(HORIZONTAL);
         boolean isInverted = slider.getFillDirection().equals(FillDirection.FROM_END);
         if ((isInverted && isHorizontal) || (!isInverted && !isHorizontal)) {
             encodeTextField(context, slider);
@@ -303,7 +305,7 @@ public class SliderRenderer extends RendererBase {
     }
 
     private String getElementPositioning(Slider slider) {
-        boolean isHorizontal = slider.getOrientation().equals(Orientation.HORIZONTAL);
+        boolean isHorizontal = slider.getOrientation().equals(HORIZONTAL);
         return isHorizontal ? "vertical-align:top;" :
                 "text-align:left;vertical-align:middle;";
     }
@@ -314,7 +316,7 @@ public class SliderRenderer extends RendererBase {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = slider.getClientId(currentInstance);
         String textFieldId = clientId + DEFAULT_TEXT_FIELD_SUFFIX;
-        boolean isHorizontal = slider.getOrientation().equals(Orientation.HORIZONTAL);
+        boolean isHorizontal = slider.getOrientation().equals(HORIZONTAL);
         boolean isOff = slider.getTextFieldState().equals(TextFieldState.OFF);
         if (isHorizontal) {
             writer.startElement("td", slider);
@@ -357,7 +359,7 @@ public class SliderRenderer extends RendererBase {
             writer.endElement("div");
         }
         writer.endElement("td");
-        if (slider.getOrientation().equals(Orientation.VERTICAL)) {
+        if (slider.getOrientation().equals(VERTICAL)) {
             writer.endElement("tr");
         }
     }
@@ -369,7 +371,7 @@ public class SliderRenderer extends RendererBase {
         String clientId = slider.getClientId(currentInstance);
         String workSpaceId = clientId + DEFAULT_WORK_SPACE_SUFFIX;
 
-        if (slider.getOrientation().equals(Orientation.VERTICAL)) {
+        if (slider.getOrientation().equals(VERTICAL)) {
             writer.startElement("tr", slider);
         }
         writer.startElement("td", slider);
@@ -390,12 +392,12 @@ public class SliderRenderer extends RendererBase {
         if (!slider.getTicksAlignment().equals(TicksAlignment.RIGHT_OR_BOTTOM)) {
             encodeTicks(currentInstance, slider, DEFAULT_LEFT_BOTTOM_TICKS, true);
         }
-        if (slider.getOrientation().equals(Orientation.HORIZONTAL)) {
+        if (slider.getOrientation().equals(HORIZONTAL)) {
             writer.endElement("tr");
             writer.startElement("tr", slider);
         }
         encodeBar(currentInstance, slider);
-        if (slider.getOrientation().equals(Orientation.HORIZONTAL)) {
+        if (slider.getOrientation().equals(HORIZONTAL)) {
             writer.endElement("tr");
             writer.startElement("tr", slider);
         }
@@ -405,7 +407,7 @@ public class SliderRenderer extends RendererBase {
         writer.endElement("tr");
         writer.endElement("table");
         writer.endElement("td");
-        if (slider.getOrientation().equals(Orientation.VERTICAL)) {
+        if (slider.getOrientation().equals(VERTICAL)) {
             writer.endElement("tr");
         }
     }
@@ -468,7 +470,7 @@ public class SliderRenderer extends RendererBase {
         String clientId = slider.getClientId(context);
         String ticksId = clientId + DEFAULT_TICKS_SUFFIX + id;
         String tickId = ticksId + DEFAULT_A_TICK_SUFFIX;
-        boolean isHorizontal = slider.getOrientation().equals(Orientation.HORIZONTAL);
+        boolean isHorizontal = slider.getOrientation().equals(HORIZONTAL);
 
         String defaultMajorImageUrl = isHorizontal ? DEFAULT_MAJOR_TICK_URL : DEFAULT_VERTICAL_MAJOR_TICK_URL;
         String defaultMinorImageUrl = isHorizontal ? DEFAULT_MINOR_TICK_URL : DEFAULT_VERTICAL_MINOR_TICK_URL;
@@ -565,7 +567,7 @@ public class SliderRenderer extends RendererBase {
         String barId = clientId + DEFAULT_BAR_SUFFIX;
 
         boolean isDisabled = slider.isDisabled();
-        boolean isHorizontal = slider.getOrientation().equals(Orientation.HORIZONTAL);
+        boolean isHorizontal = slider.getOrientation().equals(HORIZONTAL);
         String defaultImageUrl = isHorizontal ?
                 (isDisabled ? DEFAULT_BAR_DISABLED_URL : DEFAULT_BAR_URL) :
                 (isDisabled ? DEFAULT_VERTICAL_BAR_DISABLED_URL : DEFAULT_VERTICAL_BAR_URL);
@@ -644,7 +646,7 @@ public class SliderRenderer extends RendererBase {
         ResponseWriter writer = context.getResponseWriter();
         String buttonId = slider.getClientId(currentInstance) + defaultSuffix;
         String defaultImageUrl = null;
-        boolean isHorizontal = slider.getOrientation().equals(Orientation.HORIZONTAL);
+        boolean isHorizontal = slider.getOrientation().equals(HORIZONTAL);
         if (isHorizontal) {
             writer.startElement("td", slider);
             writer.writeAttribute("align", "center", null);
@@ -689,14 +691,14 @@ public class SliderRenderer extends RendererBase {
         writer.endElement("img");
         writer.endElement("div");
         writer.endElement("td");
-        if (slider.getOrientation().equals(Orientation.VERTICAL)) {
+        if (slider.getOrientation().equals(VERTICAL)) {
             writer.endElement("tr");
         }
     }
 
     private List<String> getAllImagesList(FacesContext context, Slider slider) throws IOException {
         List<String> imagesUrls = new ArrayList<String>();
-        boolean isHorizontal = slider.getOrientation().equals(Orientation.HORIZONTAL);
+        boolean isHorizontal = slider.getOrientation().equals(HORIZONTAL);
 
         String handleImageUrl = (String) slider.getAttributes().get("dragHandleImageUrl");
         handleImageUrl = Resources.getURL(context, handleImageUrl, isHorizontal ? DEFAULT_HANDLE_URL : DEFAULT_VERTICAL_HANDLE_URL);
@@ -771,7 +773,7 @@ public class SliderRenderer extends RendererBase {
 
     protected void encodeInitScript(FacesContext context, UIComponent component) throws IOException {
         Slider slider = (Slider) component;
-        boolean isHorizontal = slider.getOrientation().equals(Orientation.HORIZONTAL);
+        boolean isHorizontal = slider.getOrientation().equals(HORIZONTAL);
         String rolloverAEStyle = (String) slider.getAttributes().get("activeElementRolloverStyle");
         String rolloverAEClass = (String) slider.getAttributes().get("activeElementRolloverClass");
         String activeElementRolloverStyleClass = Styles.getCSSClass(context, slider, rolloverAEStyle, StyleGroup.rolloverStyleGroup(), rolloverAEClass, DEFAULT_ACTIVE_ELEMENT_ROLLOVER_CLASS);
@@ -869,7 +871,7 @@ public class SliderRenderer extends RendererBase {
         ResponseWriter writer = context.getResponseWriter();
         Slider slider = (Slider) component;
 
-        if (slider.getOrientation().equals(Orientation.HORIZONTAL)) {
+        if (slider.getOrientation().equals(HORIZONTAL)) {
             writer.endElement("tr");
         }
 

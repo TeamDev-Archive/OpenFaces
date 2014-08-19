@@ -12,6 +12,7 @@
 package org.openfaces.component.chart;
 
 import org.jfree.chart.entity.ChartEntity;
+import org.openfaces.component.Orientation;
 import org.openfaces.component.chart.impl.helpers.ChartInfoUtil;
 import org.openfaces.util.ValueBindings;
 

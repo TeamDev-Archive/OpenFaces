@@ -11,7 +11,7 @@
  */
 package org.openfaces.renderkit.output;
 
-import org.openfaces.component.chart.Orientation;
+import org.openfaces.component.Orientation;
 import org.openfaces.component.output.LevelIndicator;
 import org.openfaces.renderkit.cssparser.CSSUtil;
 import org.openfaces.util.InitScript;

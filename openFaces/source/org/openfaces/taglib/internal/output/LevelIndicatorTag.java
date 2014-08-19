@@ -12,7 +12,7 @@
 package org.openfaces.taglib.internal.output;
 
 import org.openfaces.component.FillDirection;
-import org.openfaces.component.chart.Orientation;
+import org.openfaces.component.Orientation;
 import org.openfaces.component.output.LevelIndicator;
 import org.openfaces.renderkit.cssparser.CSSUtil;
 import org.openfaces.taglib.internal.OUIOutputTag;

@@ -13,7 +13,7 @@ package org.openfaces.taglib.internal.chart;
 
 import org.openfaces.component.chart.ChartDomain;
 import org.openfaces.component.chart.ChartLabelPosition;
-import org.openfaces.component.chart.Orientation;
+import org.openfaces.component.Orientation;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;

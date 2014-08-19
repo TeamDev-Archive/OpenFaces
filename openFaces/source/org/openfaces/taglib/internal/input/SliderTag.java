@@ -13,7 +13,7 @@
 package org.openfaces.taglib.internal.input;
 
 import org.openfaces.component.FillDirection;
-import org.openfaces.component.chart.Orientation;
+import org.openfaces.component.Orientation;
 import org.openfaces.component.input.Slider;
 import org.openfaces.component.input.TextFieldState;
 import org.openfaces.component.input.TicksAlignment;

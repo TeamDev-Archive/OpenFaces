@@ -14,7 +14,7 @@ package org.openfaces.component.input;
 
 import org.openfaces.component.FillDirection;
 import org.openfaces.component.OUIInputBase;
-import org.openfaces.component.chart.Orientation;
+import org.openfaces.component.Orientation;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.context.FacesContext;
