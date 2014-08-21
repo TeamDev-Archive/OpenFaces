@@ -54,7 +54,6 @@ O$._initBorderLayoutPanel = function (borderLayoutPanelId) {
 
 O$._initBorderLayoutPanel_content = function (borderLayoutPanelId, rolloverClass, events, isRecalculatingSplitterInBorder) {
   var borderLayoutPanel = O$(borderLayoutPanelId);
-  borderLayoutPanel._isRecalculatingSplitterInBorder = isRecalculatingSplitterInBorder;
   borderLayoutPanel._content = O$(borderLayoutPanelId + "::content");
   borderLayoutPanel._content._newStyle = new O$._createPseudoCSSStyle();
   borderLayoutPanel._content._isResizableElement = true;
