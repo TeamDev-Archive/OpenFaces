@@ -21,6 +21,8 @@ import org.openfaces.org.json.JSONObject;
 import org.openfaces.util.AnonymousFunction;
 import org.openfaces.util.Rendering;
 
+import javax.el.MethodExpression;
+import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
@@ -170,7 +172,14 @@ public class AjaxInitializer {
                 result.put("delayId", getAjaxComponentParam(context, command));
             }
 
-            result.put("actionTriggerParam", command.getActionTriggerParam());
+            MethodExpression action = !(command instanceof Ajax) ? command.getActionExpression() : null;
+            if (action != null) {
+                String actionExpressionString = action.getExpressionString();
+                validateExpressionString(actionExpressionString);
+                result.put("_action", actionExpressionString.substring(
+                        EXPRESSION_PREFIX.length(), actionExpressionString.length() - EXPRESSION_SUFFIX.length()));
+                result.put("actionComponent", command.getClientId(context));
+            }
 
             UIComponent source = command;
             if (source instanceof Ajax) {
@@ -188,6 +197,18 @@ public class AjaxInitializer {
                     }
                     result.put("params", params);
                 }
+            }
+
+
+            ValueExpression actionListener = command instanceof Ajax
+                    ? command.getValueExpression("listener")
+                    : command.getValueExpression("actionListener");
+            if (actionListener != null) {
+                String actionListenerExpressionString = actionListener.getExpressionString();
+                validateExpressionString(actionListenerExpressionString);
+                result.put("listener", actionListenerExpressionString.substring(EXPRESSION_PREFIX.length(),
+                        actionListenerExpressionString.length() - EXPRESSION_SUFFIX.length()));
+                result.put("actionComponent", getAjaxComponentParam(context, command));
             }
 
             result.put("immediate", command.isImmediate());

@@ -76,18 +76,9 @@ O$.ajax = {
 
     args._source = source;
     args._event = event;
-    args.actionComponent = source && typeof source != "string" ? source.id : source;
-    var render;
-    if (!(options.render instanceof Array)) {
-      render = options.render ? options.render.split(" ") : undefined;
-    } else {
-      render = options.render;
-    }
-    if (!(options.execute instanceof Array)) {
-      args.execute = options.execute ? options.execute.split(" ") : undefined;
-    } else {
-      args.execute = options.execute;
-    }
+    var render = options.render ? options.render.split(" ") : undefined;
+    args.execute = options.execute ? options.execute.split(" ") : undefined;
+    args.onajaxstart = options.onajaxstart;
     args.onajaxend = options.onajaxend;
     args.onsuccess = options.onsuccess;
     args.onerror = options.onerror;
@@ -185,17 +176,6 @@ window.OpenFaces.Ajax = {
    *    immediate - (optional) true means that the action should be executed during Apply Request Values phase, rather than waiting until the Invoke Application phase
    */
   _reload:function (render, args, source, event) {
-    render.forEach(function (componentId) {
-      O$._invokeComponentAjaxReloadStart(componentId);
-      var oldAjaxEndFunc = args.onajaxend;
-      args.onajaxend = function () {
-        if (oldAjaxEndFunc) {
-          oldAjaxEndFunc();
-        }
-        O$._invokeComponentAjaxReloadEnd(componentId);
-      }
-    });
-
     if (!args) args = {};
     if (source)
       args._source = source;
