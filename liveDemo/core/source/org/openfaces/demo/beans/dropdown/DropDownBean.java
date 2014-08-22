@@ -93,7 +93,7 @@ public class DropDownBean implements Serializable {
         List<Color> result = new ArrayList<Color>();
         for (Color color : allColors) {
             String colorName = color.getName();
-            if (colorName.toUpperCase().indexOf(searchString.toUpperCase()) != -1)
+            if (colorName.toUpperCase().contains(searchString.toUpperCase()))
                 result.add(color);
         }
         return result;

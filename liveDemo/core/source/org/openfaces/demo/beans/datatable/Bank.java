@@ -12,8 +12,6 @@
 
 package org.openfaces.demo.beans.datatable;
 
-import java.io.Serializable;
-
 /**
  * @author Darya Shumilina
  */
@@ -163,8 +161,8 @@ public class Bank {
         WY("Wyoming");
         private String description;
 
-        private State(String desciption) {
-            this.description = desciption;
+        private State(String description) {
+            this.description = description;
         }
 
         public String getDescription() {

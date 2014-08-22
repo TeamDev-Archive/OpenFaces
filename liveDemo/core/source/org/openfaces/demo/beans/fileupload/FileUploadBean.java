@@ -61,8 +61,7 @@ public class FileUploadBean implements Serializable {
 
     public String getFileSize() {
         FileUploadItem fileUploadItem = Faces.var("fileUploadItem", FileUploadItem.class);
-        String result = getFileSizeStr(fileUploadItem);
-        return result;
+        return getFileSizeStr(fileUploadItem);
     }
 
     private String getFileSizeStr(FileUploadItem fileUploadItem) {

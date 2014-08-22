@@ -30,11 +30,31 @@ import java.util.Random;
  */
 public class SelectOneMenuBean implements Serializable {
 
-
     private List<Region> availableRegions = new ArrayList<Region>();
+
     private List<String> availableRooms = new ArrayList<String>();
-    private List<Food> availableFood = new ArrayList<Food>();
-    private List<String> availableHolidays = new ArrayList<String>();
+
+    private List<Food> availableFood = new ArrayList<Food>() {{
+        add(new Food("RO", "Room only", false, false, false, false));
+        add(new Food("BB", "Bed & breakfast", true, false, false, false));
+        add(new Food("HB", "Half board", true, false, true, false));
+        add(new Food("FB", "Full board", true, true, true, false));
+        add(new Food("AI", "All inclusive", true, true, true, true));
+    }};
+
+    private static final List<String> availableHolidays = new ArrayList<String>() {{
+        add("New Year's Day");
+        add("Martin Luther King, Jr.");
+        add("Inauguration Day");
+        add("Presidents Day");
+        add("Memorial Day");
+        add("Independence Day");
+        add("Labor Day");
+        add("Columbus Day");
+        add("Veterans Day");
+        add("Thanksgiving Day");
+        add("Christmas");
+    }};
 
     private String selectedRegion = "";
     private String selectedFood = "";
@@ -83,42 +103,24 @@ public class SelectOneMenuBean implements Serializable {
     }
 
     public SelectOneMenuBean() {
-        availableFood.add(new Food("RO", "Room only", false, false, false, false));
-        availableFood.add(new Food("BB", "Bed & breakfast", true, false, false, false));
-        availableFood.add(new Food("HB", "Half board", true, false, true, false));
-        availableFood.add(new Food("FB", "Full board", true, true, true, false));
-        availableFood.add(new Food("AI", "All inclusive", true, true, true, true));
-
-        availableHolidays.add("New Year's Day");
-        availableHolidays.add("Martin Luther King, Jr.");
-        availableHolidays.add("Inauguration Day");
-        availableHolidays.add("Presidents Day");
-        availableHolidays.add("Memorial Day");
-        availableHolidays.add("Independence Day");
-        availableHolidays.add("Labor Day");
-        availableHolidays.add("Columbus Day");
-        availableHolidays.add("Veterans Day");
-        availableHolidays.add("Thanksgiving Day");
-        availableHolidays.add("Christmas");
 
         try {
             InputStream resource = Tour.class.getResourceAsStream("Tours.txt");
             BufferedReader reader = new BufferedReader(new InputStreamReader(resource));
             String currentString;
-            int i = 0;
             Random random = new Random();
 
             while (true) {
                 currentString = reader.readLine();
                 if (currentString == null) break;
-                String[] toursAtributes = currentString.split("\t");
-                String country = new String(toursAtributes[0].getBytes(), "utf-8");
-                String region = new String(toursAtributes[1].getBytes(), "utf-8");
-                String nights = new String(toursAtributes[2].getBytes(), "utf-8");
-                String hotel = new String(toursAtributes[3].getBytes(), "utf-8");
-                String food = new String(toursAtributes[4].getBytes(), "utf-8");
-                String room = new String(toursAtributes[5].getBytes(), "utf-8");
-                String cost = new String(toursAtributes[6].getBytes(), "utf-8");
+                String[] toursAttributes = currentString.split("\t");
+                String country = new String(toursAttributes[0].getBytes(), "utf-8");
+                String region = new String(toursAttributes[1].getBytes(), "utf-8");
+                String nights = new String(toursAttributes[2].getBytes(), "utf-8");
+                String hotel = new String(toursAttributes[3].getBytes(), "utf-8");
+                String food = new String(toursAttributes[4].getBytes(), "utf-8");
+                String room = new String(toursAttributes[5].getBytes(), "utf-8");
+                String cost = new String(toursAttributes[6].getBytes(), "utf-8");
                 tours.add(new Tour(availableHolidays.get(random.nextInt(availableHolidays.size())), new Region(country, region), Integer.parseInt(nights), hotel, food, room, Integer.parseInt(cost)));
                 if (!availableRegions.contains(new Region(country, region))) {
                     availableRegions.add(new Region(country, region));
@@ -135,7 +137,7 @@ public class SelectOneMenuBean implements Serializable {
 
     public List<Region> getAvailableRegions() {
         String typedValue = Faces.var("searchString", String.class);
-        if (typedValue == null || typedValue == "") return availableRegions;
+        if (typedValue == null || typedValue.isEmpty()) return availableRegions;
 
         List<Region> result = new ArrayList<Region>();
         for (Region region : availableRegions) {
@@ -245,4 +247,19 @@ public class SelectOneMenuBean implements Serializable {
         return filteredTours;
     }
 
+    public List<Tour> getTours() {
+        return tours;
+    }
+
+    public void setTours(List<Tour> tours) {
+        this.tours = tours;
+    }
+
+    public Map<TourSearchCriteria, List<Tour>> getCachedToursSearchResults() {
+        return cachedToursSearchResults;
+    }
+
+    public void setCachedToursSearchResults(Map<TourSearchCriteria, List<Tour>> cachedToursSearchResults) {
+        this.cachedToursSearchResults = cachedToursSearchResults;
+    }
 }

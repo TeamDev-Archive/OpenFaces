@@ -32,7 +32,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import static java.awt.BasicStroke.JOIN_ROUND;
+
 public class DynamicImageBean implements Serializable {
+
     private static final List<DropDownItem> PREDEFINED_FONT_SIZES = Arrays.asList(
             new DropDownItem("12"),
             new DropDownItem("16"),
@@ -42,6 +45,7 @@ public class DynamicImageBean implements Serializable {
             new DropDownItem("80"),
             new DropDownItem("150"),
             new DropDownItem("300"));
+
     private static final List<DropDownItem> PREDEFINED_GLOW_WIDTHS = Arrays.asList(
             new DropDownItem("3"),
             new DropDownItem("4"),
@@ -77,9 +81,9 @@ public class DynamicImageBean implements Serializable {
     private Color textColor = Color.DARK_GRAY;
     private Color glowColor = Color.ORANGE;
     private int fontSize = 50;
-    private String fontName = "Tahoma";
-    private int fontStyle = Font.PLAIN;
-    private float paddingSize = 20;
+    private static final String FONT_NAME = "Tahoma";
+    private static final int FONT_STYLE = Font.PLAIN;
+    private static final float PADDING_SIZE = 20;
 
     public List<SelectItem> getColorItems() {
         return COLOR_ITEMS;
@@ -148,7 +152,7 @@ public class DynamicImageBean implements Serializable {
     }
 
     public RenderedImage getTextAsImage() {
-        Font font = new Font(fontName, fontStyle, fontSize);
+        Font font = new Font(FONT_NAME, FONT_STYLE, fontSize);
 
         AffineTransform transform = new AffineTransform();
         FontRenderContext frc = new FontRenderContext(transform, true, true);
@@ -156,8 +160,8 @@ public class DynamicImageBean implements Serializable {
         LineMetrics lineMetrics = font.getLineMetrics(text, frc);
         Rectangle2D logicalBounds = glyphVector.getLogicalBounds();
 
-        int imageWidth = (int) Math.ceil(logicalBounds.getWidth() + glowWidth * 2 + paddingSize * 2);
-        int imageHeight = (int) Math.ceil(logicalBounds.getHeight() + glowWidth * 2 + paddingSize * 2);
+        int imageWidth = (int) Math.ceil(logicalBounds.getWidth() + glowWidth * 2 + PADDING_SIZE * 2);
+        int imageHeight = (int) Math.ceil(logicalBounds.getHeight() + glowWidth * 2 + PADDING_SIZE * 2);
         BufferedImage image = new BufferedImage(
                 imageWidth,
                 imageHeight,
@@ -171,8 +175,8 @@ public class DynamicImageBean implements Serializable {
         graphics.fill(new Rectangle2D.Float(0, 0, imageWidth, imageHeight));
 
 
-        float x = glowWidth + paddingSize;
-        float y = glowWidth + paddingSize + lineMetrics.getAscent();
+        float x = glowWidth + PADDING_SIZE;
+        float y = glowWidth + PADDING_SIZE + lineMetrics.getAscent();
         Shape textShape = glyphVector.getOutline(x, y);
 
         float glowR = 255 - glowColor.getRed();
@@ -187,7 +191,7 @@ public class DynamicImageBean implements Serializable {
             float b = 255 - saturation * glowB;
             Color currentGlowColor = new Color((int) r, (int) g, (int) b);
             float strokeWidth = maxStrokeWidth - maxStrokeWidth / gradationCount * (i - 1);
-            Stroke stroke = new BasicStroke(strokeWidth, BasicStroke.JOIN_ROUND, BasicStroke.JOIN_ROUND);
+            Stroke stroke = new BasicStroke(strokeWidth, JOIN_ROUND, JOIN_ROUND);
             Shape textOutlineShape = stroke.createStrokedShape(textShape);
             graphics.setStroke(stroke);
             graphics.setPaint(currentGlowColor);

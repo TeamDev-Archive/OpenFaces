@@ -47,12 +47,11 @@ public class IncomeData implements Serializable {
     }
 
     public void makeData() {
-        for (int i = 0, count = income.size(); i < count; i++) {
-            MonthIncome income = this.income.get(i);
+        for (MonthIncome currIncome : income) {
             int a = 200 + (int) (Math.random() * 800);
             int b = 200 + (int) (Math.random() * 800);
-            income.setSecondProduct(a);
-            income.setFirstProduct(b);
+            currIncome.setSecondProduct(a);
+            currIncome.setFirstProduct(b);
         }
     }
 

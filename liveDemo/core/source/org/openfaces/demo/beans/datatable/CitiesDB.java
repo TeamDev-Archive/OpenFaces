@@ -248,14 +248,14 @@ public class CitiesDB implements Serializable {
                 if (criteria.isSearchFromTextStartOnly()) {
                     if (!itemNameUC.startsWith(criterionUC)) continue;
                 } else {
-                    if (itemNameUC.indexOf(criterionUC) == -1) continue;
+                    if (!itemNameUC.contains(criterionUC)) continue;
                 }
             }
 
             if (countryFilterCriterion != null) {
                 String criterionUC = countryFilterCriterion.toUpperCase();
                 String itemUC = city.getCountry().toUpperCase();
-                if (itemUC.indexOf(criterionUC) == -1) continue;
+                if (!itemUC.contains(criterionUC)) continue;
             }
 
             if ((minFilterCriterion > 0) && (maxFilterCriterion > 0)) {

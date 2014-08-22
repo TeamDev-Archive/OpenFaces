@@ -88,8 +88,7 @@ public class PieModel implements ChartModel {
     }
 
     private int getProductsSum(MonthIncome income) {
-        int result = income.getSecondProduct() + income.getFirstProduct();
-        return result;
+        return income.getSecondProduct() + income.getFirstProduct();
     }
 }
 

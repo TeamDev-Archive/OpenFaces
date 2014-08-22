@@ -12,18 +12,18 @@
 
 package org.openfaces.demo.beans.timetable;
 
-import org.openfaces.util.Faces;
 import org.openfaces.component.timetable.AbstractTimetableEvent;
+import org.openfaces.component.timetable.ReservedTimeEvent;
 import org.openfaces.component.timetable.TimetableChangeEvent;
 import org.openfaces.component.timetable.TimetableEvent;
 import org.openfaces.component.timetable.TimetableResource;
-import org.openfaces.component.timetable.ReservedTimeEvent;
+import org.openfaces.util.Faces;
 
+import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.awt.Color;
 
 /**
  * @author Dmitry Pikhulya
@@ -89,8 +89,7 @@ public class DayTableBean2 extends TimeTableBean implements Serializable {
         Date startTime = Faces.var("startTime", Date.class);
         Date endTime = Faces.var("endTime", Date.class);
 
-        List<AbstractTimetableEvent> result = retrieveEventsForPeriod(startTime, endTime);
-        return result;
+        return retrieveEventsForPeriod(startTime, endTime);
     }
 
     private List<AbstractTimetableEvent> retrieveEventsForPeriod(Date startTime, Date endTime) {
