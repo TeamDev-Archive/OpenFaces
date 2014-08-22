@@ -19,23 +19,22 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.openfaces.demo.beans.ajax.Task.createCompletedTask;
+import static org.openfaces.demo.beans.ajax.Task.createUncompletedTask;
+
 public class TaskBean implements Serializable {
-    private List<Task> tasks;
+
+    private List<Task> tasks = new ArrayList<Task>() {{
+        add(createUncompletedTask("Buy a new Bentley"));
+        add(createUncompletedTask("Cleanup hard drive"));
+        add(createCompletedTask("Throw away television"));
+        add(createUncompletedTask("Become a billionaire"));
+        add(createUncompletedTask("Find a better task manager"));
+    }};
+
     private String filter;
     private String newTaskName;
 
-    public TaskBean() {
-        initTasks();
-    }
-
-    private void initTasks() {
-        tasks = new ArrayList<Task>();
-        tasks.add(Task.createUncompletedTask("Buy a new Bentley"));
-        tasks.add(Task.createUncompletedTask("Cleanup hard drive"));
-        tasks.add(Task.createCompletedTask("Throw away television"));
-        tasks.add(Task.createUncompletedTask("Become a billionaire"));
-        tasks.add(Task.createUncompletedTask("Find a better task manager"));
-    }
 
     public String getFilter() {
         return filter;
@@ -54,7 +53,7 @@ public class TaskBean implements Serializable {
     }
 
     public void addTask(AjaxBehaviorEvent event) {
-        Task newTask = Task.createUncompletedTask(newTaskName);
+        Task newTask = createUncompletedTask(newTaskName);
         tasks.add(newTask);
         newTaskName = "";
     }
@@ -95,7 +94,7 @@ public class TaskBean implements Serializable {
 
     private List<Task> filterTasks(List<Task> tasks, String filter) {
         List<Task> filteredTasks = new ArrayList<Task>(tasks.size());
-        if (filter == null || "".equals(filter)) {
+        if (filter == null || filter.isEmpty()) {
             filteredTasks.addAll(tasks);
         } else {
             for (Task task : tasks) {
