@@ -397,12 +397,10 @@ public class DataTablePaginatorRenderer extends RendererBase {
     }
 
     private String getActionFieldName(FacesContext context, DataTablePaginator paginator) {
-        String result = paginator.getClientId(context) + "::action";
-        return result;
+        return paginator.getClientId(context) + "::action";
     }
 
     private String getPageNoFieldName(FacesContext context, DataTablePaginator paginator) {
-        String result = paginator.getClientId(context) + "--pageNo";
-        return result;
+        return paginator.getClientId(context) + "--pageNo";
     }
 }

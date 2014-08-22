@@ -15,8 +15,8 @@ package org.openfaces.org.json;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -1118,12 +1118,12 @@ public class JSONObject {
             return "\"\"";
         }
 
-        char         b;
-        char         c = 0;
-        int          i;
-        int          len = string.length();
+        char b;
+        char c = 0;
+        int i;
+        int len = string.length();
         StringBuffer sb = new StringBuffer(len + 4);
-        String       t;
+        String t;
 
         sb.append('"');
         for (i = 0; i < len; i += 1) {
@@ -1224,14 +1224,13 @@ public class JSONObject {
                 if (s.length() > 2 &&
                         (s.charAt(1) == 'x' || s.charAt(1) == 'X')) {
                     try {
-                        return new Integer(Integer.parseInt(s.substring(2),
-                                16));
+                        return Integer.parseInt(s.substring(2), 16);
                     } catch (Exception e) {
                         /* Ignore the error */
                     }
                 } else {
                     try {
-                        return new Integer(Integer.parseInt(s, 8));
+                        return Integer.parseInt(s, 8);
                     } catch (Exception e) {
                         /* Ignore the error */
                     }
@@ -1242,8 +1241,8 @@ public class JSONObject {
                     return Double.valueOf(s);
                 } else {
                     Long myLong = new Long(s);
-                    if (myLong.longValue() == myLong.intValue()) {
-                        return new Integer(myLong.intValue());
+                    if (myLong == myLong.intValue()) {
+                        return myLong.intValue();
                     } else {
                         return myLong;
                     }
@@ -1367,10 +1366,10 @@ public class JSONObject {
         if (n == 0) {
             return "{}";
         }
-        Iterator     keys = sortedKeys();
+        Iterator keys = sortedKeys();
         StringBuffer sb = new StringBuffer("{");
-        int          newindent = indent + indentFactor;
-        Object       o;
+        int newindent = indent + indentFactor;
+        Object o;
         if (n == 1) {
             o = keys.next();
             sb.append(quote(o.toString()));

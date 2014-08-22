@@ -49,7 +49,7 @@ public abstract class RequestFacade {
             } catch (NoClassDefFoundError e) {
                 considerPortlets = false;
             } catch (IllegalAccessError e) {
-                if (e.getMessage().indexOf("PortletRequest") == -1) // we don't check the package here because NoClassDefFoundError and Oracle's AnnotatedNoClassDefFoundError separate packages with different characters (JSFC-2380)
+                if (!e.getMessage().contains("PortletRequest")) // we don't check the package here because NoClassDefFoundError and Oracle's AnnotatedNoClassDefFoundError separate packages with different characters (JSFC-2380)
                     throw e;
                 else {
                     considerPortlets = false;

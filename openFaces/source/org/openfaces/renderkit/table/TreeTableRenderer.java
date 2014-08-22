@@ -51,10 +51,9 @@ public class TreeTableRenderer extends AbstractTableRenderer {
         if (!treeTable.isFilteringPerformed())
             return null;
         boolean nodeAcceptedByFilters = treeTable.isNodeAcceptedByFilters();
-        String result = nodeAcceptedByFilters
+        return nodeAcceptedByFilters
                 ? getFilterAcceptedRowClass(context, treeTable)
                 : getFilterSubsidiaryRowClass(context, treeTable);
-        return result;
     }
 
     private String getFilterSubsidiaryRowClass(FacesContext context, TreeTable treeTable) {

@@ -80,7 +80,7 @@ public class TreeColumnRenderer extends ColumnRenderer {
         }
 
         boolean showTreeStructure = false;
-        String treeStructureStyle = showTreeStructure
+        String treeStructureStyle = showTreeStructure // TODO: why it is always false?
                 ? "background: url('" + Resources.internalURL(context, "table/treeStructureSolid.png") +
                 "') no-repeat left center;"
                 : null;

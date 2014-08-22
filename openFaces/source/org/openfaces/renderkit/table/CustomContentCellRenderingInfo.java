@@ -43,7 +43,6 @@ public class CustomContentCellRenderingInfo extends CustomCellRenderingInfo impl
             if (child instanceof Cell)
                 cells.add((Cell) child);
         }
-        Cell result = cells.get(tableCellDeclarationIndex);
-        return result;
+        return cells.get(tableCellDeclarationIndex);
     }
 }

@@ -485,9 +485,8 @@ public class TableStructure extends TableElement {
                         Environment.isSafari() || /* doesn't handle column width in TreeTable if width is applied to <col> tags */
                         Environment.isOpera(); /* DataTable, TreeTable are jerking when reloading them with OF Ajax if width is applied to <col> tags */
         String forceUsingCellStylesAttr = (String) styleOwnerComponent.getAttributes().get("forceUsingCellStyles");
-        boolean forceUsingCellStyles = requireCellStylesForCorrectColWidthBehavior ||
-                Boolean.valueOf(forceUsingCellStylesAttr);
-        return forceUsingCellStyles;
+
+        return requireCellStylesForCorrectColWidthBehavior || Boolean.valueOf(forceUsingCellStylesAttr);
     }
 
     private JSONArray getColumnHierarchyParam(

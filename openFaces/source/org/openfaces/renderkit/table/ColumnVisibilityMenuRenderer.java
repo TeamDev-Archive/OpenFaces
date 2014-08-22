@@ -17,7 +17,6 @@ import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.BaseColumn;
 import org.openfaces.component.table.ColumnVisibilityMenu;
 import org.openfaces.renderkit.command.PopupMenuRenderer;
-import org.openfaces.renderkit.select.SelectBooleanCheckboxImageManager;
 import org.openfaces.util.Components;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.Resources;
@@ -29,6 +28,9 @@ import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.openfaces.renderkit.select.SelectBooleanCheckboxImageManager.DEFAULT_SELECTED_IMAGE;
+import static org.openfaces.renderkit.select.SelectBooleanCheckboxImageManager.DEFAULT_UNSELECTED_IMAGE;
 
 public class ColumnVisibilityMenuRenderer extends PopupMenuRenderer {
     @Override
@@ -52,9 +54,7 @@ public class ColumnVisibilityMenuRenderer extends PopupMenuRenderer {
             menuItem.setValue(column.getColumnHeader());
             boolean columnVisible = visibleColumns.contains(column);
             menuItem.setIconUrl(Resources.internalURL(context,
-                    columnVisible
-                            ? SelectBooleanCheckboxImageManager.DEFAULT_SELECTED_IMAGE
-                            : SelectBooleanCheckboxImageManager.DEFAULT_UNSELECTED_IMAGE
+                    (columnVisible ? DEFAULT_SELECTED_IMAGE : DEFAULT_UNSELECTED_IMAGE)
             ));
             menuChildren.add(menuItem);
         }
@@ -62,13 +62,15 @@ public class ColumnVisibilityMenuRenderer extends PopupMenuRenderer {
 
     private AbstractTable getTable(ColumnVisibilityMenu cvm) {
         UIComponent parent = cvm.getParent();
-        while (parent != null && (parent instanceof MenuItem || parent instanceof PopupMenu || Components.isImplicitPanel(parent)))
+        while (parent != null &&
+                (parent instanceof MenuItem || parent instanceof PopupMenu || Components.isImplicitPanel(parent))) {
             parent = parent.getParent();
-        if (!(parent instanceof AbstractTable))
+        }
+        if (!(parent instanceof AbstractTable)) {
             throw new FacesException("<o:columnVisibilityMenu> can only be inserted into the \"columnMenu\" facet of " +
-                    "the <o:dataTable> or <o:treeTable> components (either directly or as its sub-menu).");
-        AbstractTable table = (AbstractTable) parent;
-        return table;
+                                "the <o:dataTable> or <o:treeTable> components (either directly or as its sub-menu).");
+        }
+        return (AbstractTable) parent;
     }
 
     @Override

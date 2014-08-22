@@ -110,6 +110,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
             table.getAttributes().remove(TableStructure.TABLE_STRUCTURE_ATTR);
         }
     }
+
     private void getPublishEventForAllChildren(FacesContext context, UIComponent component) {
         while (true) {
             try {
@@ -126,13 +127,11 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
                 }
                 return;
             } catch (Exception ignored) {
-
+                ignored.printStackTrace();
             }
-
-
         }
-
     }
+
     protected TableStructure createTableStructure(final AbstractTable table) {
         return new TableStructure(table, table) {
             protected String getAdditionalRowClass(FacesContext context, AbstractTable table, Object rowData, int rowIndex) {
@@ -260,7 +259,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
     }
 
     protected void encodeSortingSupportOnBodyReload(FacesContext context, AbstractTable table, ScriptBuilder sb) {
-
+        // TODO: investigate why method is empty
     }
 
     private void encodeColumnMenuSupport(FacesContext context, AbstractTable table, ScriptBuilder buf) throws IOException {
@@ -648,8 +647,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         AbstractTableSelection selection = table.getSelection();
         boolean forSelection = selection != null && selection.isEnabled() && selection.isKeyboardSupport();
         boolean forPaging = getUseKeyboardForPagination(table);
-        boolean result = forSelection || forPaging;
-        return result;
+        return (forSelection || forPaging);
     }
 
     private void encodeCheckboxColumnSupport(

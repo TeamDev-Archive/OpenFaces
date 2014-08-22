@@ -120,7 +120,7 @@ public class CSSUtil {
         if (cssString.endsWith("}"))
             cssString = cssString.substring(0, cssString.length() - 1);
 
-        if (hint != null && cssString.indexOf(hint) == -1) {
+        if ((hint != null) && !cssString.contains(hint)) {
             String startBlock = cssString.substring(0, 1);
             String endBlock = cssString.substring(2);
             cssString = startBlock + hint + ": " + endBlock;
@@ -329,11 +329,12 @@ public class CSSUtil {
             float g = getAlpha(rgb.getGreen().getFloatValue(CSSPrimitiveValue.CSS_NUMBER));
             float b = getAlpha(rgb.getBlue().getFloatValue(CSSPrimitiveValue.CSS_NUMBER));
             //todo: workaround for 'JSFC-3671'
-            if (r == 0 && g == 0 && b == 0)
+            if (r == 0 && g == 0 && b == 0) {
                 color = new Color(1, 1, 1);
-            else
+            } else {
                 //------------------------------------
                 color = new Color(r, g, b);
+            }
         } else if (value.getPrimitiveType() == CSSPrimitiveValue.CSS_IDENT) {
             String colorName = value.getStringValue();
             color = getColorByName(colorName);
@@ -385,8 +386,7 @@ public class CSSUtil {
         Color color = getColorByName(colorStr);
         if (color == null)
             throw new IllegalArgumentException("Unknown HTML color string: " + colorStr);
-        String result = formatColor(color);
-        return result;
+        return formatColor(color);
     }
 
     private static StyleBorderModel getBorder(CSSValueList value) {

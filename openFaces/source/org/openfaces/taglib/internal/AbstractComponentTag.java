@@ -691,7 +691,7 @@ public abstract class AbstractComponentTag extends AbstractTag {
 
     protected void setLineStyleProperty(UIComponent component, String propertyName, String propertyValue) {
         if (propertyValue != null) {
-            if (propertyValue.indexOf(":") != -1 || propertyValue.indexOf(";") != -1)
+            if (propertyValue.contains(":") || propertyValue.contains(";"))
                 throw new IllegalArgumentException("Invalid attribute value. Attribute name: " + propertyName +
                         ". Full CSS declarations are not allowed for this property. " +
                         "The value should be of the following form: \"1px solid black\", but was: \"" + propertyValue + "\"");

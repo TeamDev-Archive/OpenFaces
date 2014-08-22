@@ -122,9 +122,7 @@ public class OpenFacesResourceHandler extends ResourceHandlerWrapper {
             Log.log(context, "isDynamicResourceRequest failed to detect request path");
             return false;
         }
-        if ((path.indexOf(DYNAMIC_RESOURCE_IDENTIFIER) != -1))
-            return true;
-        return false;
+        return (path.contains(DYNAMIC_RESOURCE_IDENTIFIER));
     }
 
     private String getDecodedResourcePath(ExternalContext extCtx) {
@@ -222,9 +220,7 @@ public class OpenFacesResourceHandler extends ResourceHandlerWrapper {
             return "/*";
 
         String pathInfo = context.getExternalContext().getRequestPathInfo();
-        if (pathInfo != null)
-            return servletPath;
-        if (servletPath.indexOf(".") == -1)
+        if ((pathInfo != null) || (!servletPath.contains(".")))
             return servletPath;
 
         int extIdx = servletPath.lastIndexOf('.');

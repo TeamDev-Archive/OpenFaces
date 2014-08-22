@@ -894,8 +894,7 @@ public class TableBody extends TableSection {
                                 "either an array or a collection of column id strings, but a value of the following " +
                                 "type encountered: " + columnIds.getClass().getName());
                     String colId = column.getId();
-                    boolean result = columnIdsCollection.contains(colId);
-                    return result;
+                    return columnIdsCollection.contains(colId);
                 }
 
                 ValueExpression conditionExpression = cell.getConditionExpression();

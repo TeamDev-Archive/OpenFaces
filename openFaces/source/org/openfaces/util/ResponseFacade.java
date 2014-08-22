@@ -53,7 +53,7 @@ public abstract class ResponseFacade implements AbstractResponseFacade {
             } catch (NoClassDefFoundError e) {
                 considerPortlets = false;
             } catch (IllegalAccessError e) {
-                if (e.getMessage().indexOf("RenderResponse") == -1) // we don't check the package here because NoClassDefFoundError and Oracle's AnnotatedNoClassDefFoundError separate packages with different characters (JSFC-2380)
+                if (!e.getMessage().contains("RenderResponse")) // we don't check the package here because NoClassDefFoundError and Oracle's AnnotatedNoClassDefFoundError separate packages with different characters (JSFC-2380)
                     throw e;
                 else {
                     considerPortlets = false;
